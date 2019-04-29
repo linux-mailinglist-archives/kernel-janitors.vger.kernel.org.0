@@ -2,31 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7334FE3EE
-	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Apr 2019 15:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72159E414
+	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Apr 2019 15:58:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728239AbfD2NrB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 29 Apr 2019 09:47:01 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:48282 "EHLO huawei.com"
+        id S1728263AbfD2N6K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 29 Apr 2019 09:58:10 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:58232 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725838AbfD2NrB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 29 Apr 2019 09:47:01 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id A366693F2C37064144E6;
-        Mon, 29 Apr 2019 21:46:57 +0800 (CST)
+        id S1727710AbfD2N6I (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 29 Apr 2019 09:58:08 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 7CD20C9C64512253D5B8;
+        Mon, 29 Apr 2019 21:58:03 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 29 Apr 2019 21:46:47 +0800
+ DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
+ 14.3.439.0; Mon, 29 Apr 2019 21:57:53 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>
-CC:     YueHaibing <yuehaibing@huawei.com>, <linux-omap@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net-next] net: ethernet: ti: cpsw: Fix inconsistent IS_ERR and PTR_ERR in cpsw_probe()
-Date:   Mon, 29 Apr 2019 13:56:50 +0000
-Message-ID: <20190429135650.72794-1-yuehaibing@huawei.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        <alexander@wetzel-home.de>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <linux-wireless@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, <netdev@vger.kernel.org>
+Subject: [PATCH] mac80211: remove set but not used variable 'old'
+Date:   Mon, 29 Apr 2019 14:07:54 +0000
+Message-ID: <20190429140754.76537-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -38,28 +37,35 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Change the call to PTR_ERR to access the value just tested by IS_ERR.
+Fixes gcc '-Wunused-but-set-variable' warning:
+
+net/mac80211/key.c: In function 'ieee80211_set_tx_key':
+net/mac80211/key.c:271:24: warning:
+ variable 'old' set but not used [-Wunused-but-set-variable]
+
+It is not used since introduction in
+commit 96fc6efb9ad9 ("mac80211: IEEE 802.11 Extended Key ID support")
 
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/net/ethernet/ti/cpsw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/key.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index c3cba46fac9d..e37680654a13 100644
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -2381,7 +2381,7 @@ static int cpsw_probe(struct platform_device *pdev)
+diff --git a/net/mac80211/key.c b/net/mac80211/key.c
+index 20bf9db7a388..89f09a09efdb 100644
+--- a/net/mac80211/key.c
++++ b/net/mac80211/key.c
+@@ -268,11 +268,9 @@ int ieee80211_set_tx_key(struct ieee80211_key *key)
+ {
+ 	struct sta_info *sta = key->sta;
+ 	struct ieee80211_local *local = key->local;
+-	struct ieee80211_key *old;
  
- 	clk = devm_clk_get(dev, "fck");
- 	if (IS_ERR(clk)) {
--		ret = PTR_ERR(mode);
-+		ret = PTR_ERR(clk);
- 		dev_err(dev, "fck is not found %d\n", ret);
- 		return ret;
- 	}
-
-
+ 	assert_key_lock(local);
+ 
+-	old = key_mtx_dereference(local, sta->ptk[sta->ptk_idx]);
+ 	sta->ptk_idx = key->conf.keyidx;
+ 	ieee80211_check_fast_xmit(sta);
 
 
 

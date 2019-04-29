@@ -2,75 +2,133 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A472FE287
-	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Apr 2019 14:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1938E2D3
+	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Apr 2019 14:38:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728048AbfD2M1X (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 29 Apr 2019 08:27:23 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:39456 "EHLO huawei.com"
+        id S1728116AbfD2MiC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 29 Apr 2019 08:38:02 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:7142 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727956AbfD2M1X (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 29 Apr 2019 08:27:23 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id B11085537030402A0CCD;
-        Mon, 29 Apr 2019 20:27:21 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 29 Apr 2019 20:27:11 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linaro.org>,
-        Chunyan Zhang <zhang.lyra@gmail.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] ASoC: sprd: Fix to use list_for_each_entry_safe() when delete items
-Date:   Mon, 29 Apr 2019 12:37:13 +0000
-Message-ID: <20190429123713.64280-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728054AbfD2MiC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 29 Apr 2019 08:38:02 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 4FF3A2625511BE6A939F;
+        Mon, 29 Apr 2019 20:37:59 +0800 (CST)
+Received: from use12-sp2.huawei.com (10.67.188.190) by
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.439.0; Mon, 29 Apr 2019 20:37:49 +0800
+From:   ChenGang <cg.chen@huawei.com>
+To:     <mark@fasheh.com>, <jlbec@evilplan.org>, <jiangqi903@gmail.com>
+CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        <ocfs2-devel@oss.oracle.com>, <joseph.qi@linux.alibaba.com>,
+        ChenGang <cg.chen@huawei.com>
+Subject: Re: [PATCH] fs: ocfs: fix spelling mistake "hearbeating" -> "heartbeat"
+Date:   Mon, 29 Apr 2019 20:41:40 +0800
+Message-ID: <1556541700-35237-1-git-send-email-cg.chen@huawei.com>
+X-Mailer: git-send-email 1.8.5.6
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
+Content-Type: text/plain
+X-Originating-IP: [10.67.188.190]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Since we will remove items off the list using list_del() we need
-to use a safe version of the list_for_each_entry() macro aptly named
-list_for_each_entry_safe().
+Hi Joseph,
+Thanks for your advice, and I folded the four patches into one.
 
-Fixes: d7bff893e04f ("ASoC: sprd: Add Spreadtrum multi-channel data transfer support")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+On 19/4/28 20:22, Joseph Qi wrote:
+>Hi ChenGang,
+>Could you please fold these four patches into one?
+
+>Thanks,
+>Joseph
+
+>On 19/4/27 20:22, ChenGang wrote:
+>> There is a spelling mistake in o2hb_do_disk_heartbeat debug message.Fix it.
+>> 
+>> Signed-off-by: ChenGang <cg.chen@huawei.com>
+>> ---
+>>  fs/ocfs2/cluster/heartbeat.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>> 
+>> diff --git a/fs/ocfs2/cluster/heartbeat.c 
+>> b/fs/ocfs2/cluster/heartbeat.c index f3c20b2..e4e7df1 100644
+>> --- a/fs/ocfs2/cluster/heartbeat.c
+>> +++ b/fs/ocfs2/cluster/heartbeat.c
+>> @@ -1198,7 +1198,7 @@ static int o2hb_do_disk_heartbeat(struct o2hb_region *reg)
+>>  	if (atomic_read(&reg->hr_steady_iterations) != 0) {
+>>  		if (atomic_dec_and_test(&reg->hr_unsteady_iterations)) {
+>>  			printk(KERN_NOTICE "o2hb: Unable to stabilize "
+>> -			       "heartbeart on region %s (%s)\n",
+>> +			       "heartbeat on region %s (%s)\n",
+>>  			       config_item_name(&reg->hr_item),
+>>  			       reg->hr_dev_name);
+>> 			atomic_set(&reg->hr_steady_iterations, 0);
+>>
+
+
+Signed-off-by: ChenGang <cg.chen@huawei.com>
 ---
- sound/soc/sprd/sprd-mcdt.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/ocfs2/cluster/heartbeat.c | 2 +-
+ fs/ocfs2/cluster/quorum.c    | 2 +-
+ fs/ocfs2/cluster/tcp.c       | 2 +-
+ fs/ocfs2/dlm/dlmmaster.c     | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/sprd/sprd-mcdt.c b/sound/soc/sprd/sprd-mcdt.c
-index 28f5e649733d..df250f7f2b6f 100644
---- a/sound/soc/sprd/sprd-mcdt.c
-+++ b/sound/soc/sprd/sprd-mcdt.c
-@@ -978,12 +978,12 @@ static int sprd_mcdt_probe(struct platform_device *pdev)
+diff --git a/fs/ocfs2/cluster/heartbeat.c b/fs/ocfs2/cluster/heartbeat.c
+index f3c20b2..e4e7df1 100644
+--- a/fs/ocfs2/cluster/heartbeat.c
++++ b/fs/ocfs2/cluster/heartbeat.c
+@@ -1198,7 +1198,7 @@ static int o2hb_do_disk_heartbeat(struct o2hb_region *reg)
+ 	if (atomic_read(&reg->hr_steady_iterations) != 0) {
+ 		if (atomic_dec_and_test(&reg->hr_unsteady_iterations)) {
+ 			printk(KERN_NOTICE "o2hb: Unable to stabilize "
+-			       "heartbeart on region %s (%s)\n",
++			       "heartbeat on region %s (%s)\n",
+ 			       config_item_name(&reg->hr_item),
+ 			       reg->hr_dev_name);
+ 			atomic_set(&reg->hr_steady_iterations, 0);
+diff --git a/fs/ocfs2/cluster/quorum.c b/fs/ocfs2/cluster/quorum.c
+index af2e747..792132f 100644
+--- a/fs/ocfs2/cluster/quorum.c
++++ b/fs/ocfs2/cluster/quorum.c
+@@ -89,7 +89,7 @@ static void o2quo_fence_self(void)
+ 	};
+ }
  
- static int sprd_mcdt_remove(struct platform_device *pdev)
- {
--	struct sprd_mcdt_chan *temp;
-+	struct sprd_mcdt_chan *chan, *temp;
+-/* Indicate that a timeout occurred on a hearbeat region write. The
++/* Indicate that a timeout occurred on a heartbeat region write. The
+  * other nodes in the cluster may consider us dead at that time so we
+  * want to "fence" ourselves so that we don't scribble on the disk
+  * after they think they've recovered us. This can't solve all
+diff --git a/fs/ocfs2/cluster/tcp.c b/fs/ocfs2/cluster/tcp.c
+index e9f236a..7a43c04 100644
+--- a/fs/ocfs2/cluster/tcp.c
++++ b/fs/ocfs2/cluster/tcp.c
+@@ -1776,7 +1776,7 @@ static void o2net_hb_node_up_cb(struct o2nm_node *node, int node_num,
+ 		(msecs_to_jiffies(o2net_reconnect_delay()) + 1);
  
- 	mutex_lock(&sprd_mcdt_list_mutex);
- 
--	list_for_each_entry(temp, &sprd_mcdt_chan_list, list)
--		list_del(&temp->list);
-+	list_for_each_entry_safe(chan, temp, &sprd_mcdt_chan_list, list)
-+		list_del(&chan->list);
- 
- 	mutex_unlock(&sprd_mcdt_list_mutex);
-
-
+ 	if (node_num != o2nm_this_node()) {
+-		/* believe it or not, accept and node hearbeating testing
++		/* believe it or not, accept and node heartbeating testing
+ 		 * can succeed for this node before we got here.. so
+ 		 * only use set_nn_state to clear the persistent error
+ 		 * if that hasn't already happened */
+diff --git a/fs/ocfs2/dlm/dlmmaster.c b/fs/ocfs2/dlm/dlmmaster.c
+index 826f056..41b80d5 100644
+--- a/fs/ocfs2/dlm/dlmmaster.c
++++ b/fs/ocfs2/dlm/dlmmaster.c
+@@ -2176,7 +2176,7 @@ static void dlm_assert_master_worker(struct dlm_work_item *item, void *data)
+  * think that $RECOVERY is currently mastered by a dead node.  If so,
+  * we wait a short time to allow that node to get notified by its own
+  * heartbeat stack, then check again.  All $RECOVERY lock resources
+- * mastered by dead nodes are purged when the hearbeat callback is
++ * mastered by dead nodes are purged when the heartbeat callback is
+  * fired, so we can know for sure that it is safe to continue once
+  * the node returns a live node or no node.  */
+ static int dlm_pre_master_reco_lockres(struct dlm_ctxt *dlm,
+-- 
+1.8.5.6
 

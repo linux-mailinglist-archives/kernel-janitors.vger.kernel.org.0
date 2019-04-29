@@ -2,35 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BDC7E20A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Apr 2019 14:15:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFAC2E20B
+	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Apr 2019 14:16:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728034AbfD2MPW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 29 Apr 2019 08:15:22 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:55716 "EHLO huawei.com"
+        id S1727997AbfD2MQm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 29 Apr 2019 08:16:42 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:7140 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727936AbfD2MPV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 29 Apr 2019 08:15:21 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 671BAF2465F76369B807;
-        Mon, 29 Apr 2019 20:15:19 +0800 (CST)
+        id S1727956AbfD2MQm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 29 Apr 2019 08:16:42 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id E5B03775C5A6F9D27CCD;
+        Mon, 29 Apr 2019 20:16:37 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 29 Apr 2019 20:15:10 +0800
+ DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
+ 14.3.439.0; Mon, 29 Apr 2019 20:16:28 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Baolin Wang <baolin.wang@linaro.org>,
-        Chunyan Zhang <zhang.lyra@gmail.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ajay Gupta <ajayg@nvidia.com>, Wolfram Sang <wsa@the-dreams.de>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-usb@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] ASoC: sprd: Fix return value check in sprd_mcdt_probe()
-Date:   Mon, 29 Apr 2019 12:25:12 +0000
-Message-ID: <20190429122512.59242-1-weiyongjun1@huawei.com>
+Subject: [PATCH -next] usb: typec: ucsi: ccg: fix missing unlock on error in ccg_cmd_write_flash_row()
+Date:   Mon, 29 Apr 2019 12:26:30 +0000
+Message-ID: <20190429122630.59334-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -42,31 +37,26 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, the function devm_ioremap_resource() returns ERR_PTR()
-and never returns NULL. The NULL test in the return value check should
-be replaced with IS_ERR().
+Add the missing unlock before return from function ccg_cmd_write_flash_row()
+in the error handling case.
 
-Fixes: d7bff893e04f ("ASoC: sprd: Add Spreadtrum multi-channel data transfer support")
+Fixes: 5c9ae5a87573 ("usb: typec: ucsi: ccg: add firmware flashing support")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- sound/soc/sprd/sprd-mcdt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/typec/ucsi/ucsi_ccg.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/sprd/sprd-mcdt.c b/sound/soc/sprd/sprd-mcdt.c
-index 28f5e649733d..e9318d7a4810 100644
---- a/sound/soc/sprd/sprd-mcdt.c
-+++ b/sound/soc/sprd/sprd-mcdt.c
-@@ -951,8 +951,8 @@ static int sprd_mcdt_probe(struct platform_device *pdev)
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	mcdt->base = devm_ioremap_resource(&pdev->dev, res);
--	if (!mcdt->base)
--		return -ENOMEM;
-+	if (IS_ERR(mcdt->base))
-+		return PTR_ERR(mcdt->base);
- 
- 	mcdt->dev = &pdev->dev;
- 	spin_lock_init(&mcdt->lock);
+diff --git a/drivers/usb/typec/ucsi/ucsi_ccg.c b/drivers/usb/typec/ucsi/ucsi_ccg.c
+index 4632b91a04a6..9d46aa9e4e35 100644
+--- a/drivers/usb/typec/ucsi/ucsi_ccg.c
++++ b/drivers/usb/typec/ucsi/ucsi_ccg.c
+@@ -631,6 +631,7 @@ ccg_cmd_write_flash_row(struct ucsi_ccg *uc, u16 row,
+ 	ret = i2c_master_send(client, buf, CCG4_ROW_SIZE + 2);
+ 	if (ret != CCG4_ROW_SIZE + 2) {
+ 		dev_err(uc->dev, "REG_FLASH_RW_MEM write fail %d\n", ret);
++		mutex_unlock(&uc->lock);
+ 		return ret < 0 ? ret : -EIO;
+ 	}
 
 
 

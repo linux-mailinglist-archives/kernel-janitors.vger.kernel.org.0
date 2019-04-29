@@ -2,70 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72159E414
-	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Apr 2019 15:58:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7029E480
+	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Apr 2019 16:18:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728263AbfD2N6K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 29 Apr 2019 09:58:10 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:58232 "EHLO huawei.com"
+        id S1728315AbfD2OR6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 29 Apr 2019 10:17:58 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:7708 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727710AbfD2N6I (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 29 Apr 2019 09:58:08 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 7CD20C9C64512253D5B8;
-        Mon, 29 Apr 2019 21:58:03 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 29 Apr 2019 21:57:53 +0800
+        id S1728258AbfD2ORy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 29 Apr 2019 10:17:54 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 3D3799B46EFC098ABCCE;
+        Mon, 29 Apr 2019 22:17:50 +0800 (CST)
+Received: from [127.0.0.1] (10.177.31.96) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Mon, 29 Apr 2019
+ 22:17:49 +0800
+Subject: Re: [PATCH net-next] net: ethernet: ti: cpsw: Fix inconsistent IS_ERR
+ and PTR_ERR in cpsw_probe()
+To:     Andrew Lunn <andrew@lunn.ch>
+References: <20190429135650.72794-1-yuehaibing@huawei.com>
+ <20190429135603.GI10772@lunn.ch>
+CC:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     Johannes Berg <johannes@sipsolutions.net>,
-        <alexander@wetzel-home.de>
-CC:     YueHaibing <yuehaibing@huawei.com>,
-        <linux-wireless@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, <netdev@vger.kernel.org>
-Subject: [PATCH] mac80211: remove set but not used variable 'old'
-Date:   Mon, 29 Apr 2019 14:07:54 +0000
-Message-ID: <20190429140754.76537-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+Message-ID: <f3b8d542-9ba6-d867-4979-530b53a395d5@huawei.com>
+Date:   Mon, 29 Apr 2019 22:17:48 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
+In-Reply-To: <20190429135603.GI10772@lunn.ch>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.31.96]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+On 2019/4/29 21:56, Andrew Lunn wrote:
+> On Mon, Apr 29, 2019 at 01:56:50PM +0000, YueHaibing wrote:
+>> Change the call to PTR_ERR to access the value just tested by IS_ERR.
+>>
+>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> 
+> Please could you add a Fixes: tag.
+> 
 
-net/mac80211/key.c: In function 'ieee80211_set_tx_key':
-net/mac80211/key.c:271:24: warning:
- variable 'old' set but not used [-Wunused-but-set-variable]
+Ok, will sendv2, thanks!
 
-It is not used since introduction in
-commit 96fc6efb9ad9 ("mac80211: IEEE 802.11 Extended Key ID support")
-
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- net/mac80211/key.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/net/mac80211/key.c b/net/mac80211/key.c
-index 20bf9db7a388..89f09a09efdb 100644
---- a/net/mac80211/key.c
-+++ b/net/mac80211/key.c
-@@ -268,11 +268,9 @@ int ieee80211_set_tx_key(struct ieee80211_key *key)
- {
- 	struct sta_info *sta = key->sta;
- 	struct ieee80211_local *local = key->local;
--	struct ieee80211_key *old;
- 
- 	assert_key_lock(local);
- 
--	old = key_mtx_dereference(local, sta->ptk[sta->ptk_idx]);
- 	sta->ptk_idx = key->conf.keyidx;
- 	ieee80211_check_fast_xmit(sta);
-
-
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> 
+>     Andrew
+> 
+> .
+> 
 

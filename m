@@ -2,68 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BDD80E4AF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Apr 2019 16:25:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5ADFE54B
+	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Apr 2019 16:49:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728375AbfD2OZg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 29 Apr 2019 10:25:36 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:7709 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728254AbfD2OZf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 29 Apr 2019 10:25:35 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id D21DD5BC497B71DE06AC;
-        Mon, 29 Apr 2019 22:22:01 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 29 Apr 2019 22:21:55 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Grygorii Strashko <grygorii.strashko@ti.com>,
-        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>
-CC:     YueHaibing <yuehaibing@huawei.com>, <linux-omap@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH v2 net-next] net: ethernet: ti: cpsw: Fix inconsistent IS_ERR and PTR_ERR in cpsw_probe()
-Date:   Mon, 29 Apr 2019 14:31:57 +0000
-Message-ID: <20190429143157.79035-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190429135650.72794-1-yuehaibing@huawei.com>
-References: <20190429135650.72794-1-yuehaibing@huawei.com>
+        id S1728366AbfD2Otr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 29 Apr 2019 10:49:47 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:41020 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728318AbfD2Otr (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 29 Apr 2019 10:49:47 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 9D5E660134; Mon, 29 Apr 2019 14:49:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556549386;
+        bh=3vJP8OAvsIMdfwwgjadMzhPbTsAnYAw/jnCOUsKYxSA=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=MlRYh2y9yDP471kMH9i0eJtbD05NLuRaFBjiVrYg5FEZ/j8UgXUA1GZ59f33I31HI
+         y8WJrqdrJTaOhzR5o5xyt86ejxnT4fLNo8sStT4bu8nL4qcxJNFkbOM5o+VeHlqqGo
+         e9GbeAoBT/Y9kVBPN9qN9apHUL94HT2ukXKGoFos=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 693EC6028C;
+        Mon, 29 Apr 2019 14:49:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556549386;
+        bh=3vJP8OAvsIMdfwwgjadMzhPbTsAnYAw/jnCOUsKYxSA=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=ZT+j8k2gBeK9xAXQPMJHoKA5txfjA6yxr1CSariMd1hkYjBUW5LI6qp2HoH7XNcwS
+         oQ+JL3G9hQ5Le3vSaDFIwZnXpdV4IBf9opCGIvE7lsgLhjvK7lMV960ZJL1bWeZ2XR
+         i+PfF6rD6vFhorPSAiI25GWcu03Fjbm+k3QSkRPs=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 693EC6028C
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] ath6kl: add some bounds checking
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190404085651.GC20193@kadam>
+References: <20190404085651.GC20193@kadam>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190429144946.9D5E660134@smtp.codeaurora.org>
+Date:   Mon, 29 Apr 2019 14:49:46 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Change the call to PTR_ERR to access the value just tested by IS_ERR.
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-Fixes: 83a8471ba255 ("net: ethernet: ti: cpsw: refactor probe to group common hw initialization")
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
----
-v2: add Fixes tag
----
- drivers/net/ethernet/ti/cpsw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> The "ev->traffic_class" and "reply->ac" variables come from the network
+> and they're used as an offset into the wmi->stream_exist_for_ac[] array.
+> Those variables are u8 so they can be 0-255 but the stream_exist_for_ac[]
+> array only has WMM_NUM_AC (4) elements.  We need to add a couple bounds
+> checks to prevent array overflows.
+> 
+> I also modified one existing check from "if (traffic_class > 3) {" to
+> "if (traffic_class >= WMM_NUM_AC) {" just to make them all consistent.
+> 
+> Fixes: bdcd81707973 (" Add ath6kl cleaned up driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
-index c3cba46fac9d..e37680654a13 100644
---- a/drivers/net/ethernet/ti/cpsw.c
-+++ b/drivers/net/ethernet/ti/cpsw.c
-@@ -2381,7 +2381,7 @@ static int cpsw_probe(struct platform_device *pdev)
- 
- 	clk = devm_clk_get(dev, "fck");
- 	if (IS_ERR(clk)) {
--		ret = PTR_ERR(mode);
-+		ret = PTR_ERR(clk);
- 		dev_err(dev, "fck is not found %d\n", ret);
- 		return ret;
- 	}
+Patch applied to ath-next branch of ath.git, thanks.
 
+5d6751eaff67 ath6kl: add some bounds checking
 
+-- 
+https://patchwork.kernel.org/patch/10885299/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

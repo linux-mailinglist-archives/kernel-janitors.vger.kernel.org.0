@@ -2,110 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B3F3EEEF
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Apr 2019 05:05:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8056F2C9
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Apr 2019 11:27:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729931AbfD3DF0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 29 Apr 2019 23:05:26 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:42803 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729909AbfD3DF0 (ORCPT
+        id S1726700AbfD3J1D (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 30 Apr 2019 05:27:03 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:53356 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725938AbfD3J1D (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 29 Apr 2019 23:05:26 -0400
-Received: by mail-ot1-f67.google.com with SMTP id f23so10593203otl.9
-        for <kernel-janitors@vger.kernel.org>; Mon, 29 Apr 2019 20:05:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=IWZIhQH13t7up+A8LAQ0WG0QKdeSgcY1YMpA39miM9M=;
-        b=TTYmZcgryWx4jv0IxAfd8fDg3iAVensTO0uOB6gqkA/cTu0G1y0w3soe+/MdVWSty7
-         U6DKE5QXP6rk/iQUIuQ/p7FVQ2OvkVPC+WIFwcDg4xxoopsFdmoCu1YW8lBPe+6gbpvF
-         0fwk9tgqQqe6RpUb1/IDo2zTL00HxnH31CUwdW3byu5QT8W/b7+ypv6FzI0ZVDw+/cnt
-         /aUxVeeadXzieV08coGaZejGHKUVujJ0F36f/8g8z6lRymuYBKS4gzyzhz4t07v91O9E
-         cD2EmVztPrT6ZrBfLxM2i14kM7v/o07XXsy5CELZfBaT86I08optmaHLpF3N2NzoRbZg
-         I7bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=IWZIhQH13t7up+A8LAQ0WG0QKdeSgcY1YMpA39miM9M=;
-        b=mXBEXBFLK/jYKwGlT9KzUtOtkQb4WDU3R1b2ENec9fSyXHocCDn5MQVOi6WjjL2uK7
-         BL2aHtobujnZAN/L7CeiLYPoYkIR23+seSFOA5VnKd6W+K+rBbqTazjJ4VYdfqltlBlQ
-         sVqrRl9c95/Dkto0PBiQa35HODin0+I7nzZrvWfWybzn4RBdRiA9bCKicqQfSkDLjF9X
-         PAa2NyxjLFQ0vMUTClBd1fxQ17gOU3YGpmxZXYhYMDqANZ1ctqroJwky4Ab6Iu6pj9DP
-         GCEdYfLOTq42jtujeEBdhaoMGzvsQsmkwI73kgMUrzIwYq1t8rXbs4n2V/ZNy0eX23MC
-         2KkQ==
-X-Gm-Message-State: APjAAAUOIx8ZWkOCuyhNvYDybDfIfBrnpqPse3wU59VfkWrVv3xf/0pX
-        IsRe+Oh9txHm2udjbpAULehPQZqYqoMM7Ky7XUorOw==
-X-Google-Smtp-Source: APXvYqxSbr+MgQHT97JlimaGQfOmQJ3pSvxXhgdPQzpWhzrLX4J4I8y1k5W+BBYumzvXcYWqdcOtc8eS+ciBE2sDm20=
-X-Received: by 2002:a9d:7ad9:: with SMTP id m25mr41025914otn.75.1556593525418;
- Mon, 29 Apr 2019 20:05:25 -0700 (PDT)
+        Tue, 30 Apr 2019 05:27:03 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x3U9NkoF001045;
+        Tue, 30 Apr 2019 09:26:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=lRccY/9PTB0SivUe58hPvmQhJIneVtvQmamNLiMyYXo=;
+ b=rmioHu8wwvnnPfKWLqL2H0FfeCaD+l8ZqHxQjz3ts9vY+EgJPuXV9z+DhKYNdqE2CTRN
+ N55ap6zKBVrPikY8f3B1zLLIId8A1YhS5rwZEb1WKaPvHQjPSW9foRiOWxmUXV0LOhHB
+ OWkesZr5zk4lKZ5OHqsdZbWUXAiVOpo9yjH/T1ktX61mZgKN5OZx516GpOe2NDtb7gVp
+ UnkVVJXbVDGQqWCtFkb+qJxC2Ssei/hk6+wwaDsTTAb7BqvZjj0+Yg5eRpx7+HqKWdGw
+ 7t7RTauJPF+dPImPn5QYkeyvM5GsQKHPXllK1Y3d0TT5bqIqdPcg61JezyEvnCOwsk6s zg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2s5j5u02j4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 30 Apr 2019 09:26:37 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x3U9Ol3S006872;
+        Tue, 30 Apr 2019 09:26:36 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 2s4ew14swn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 30 Apr 2019 09:26:36 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x3U9QRYh027604;
+        Tue, 30 Apr 2019 09:26:33 GMT
+Received: from kadam (/196.97.65.153)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 30 Apr 2019 02:26:27 -0700
+Date:   Tue, 30 Apr 2019 12:26:19 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     "David S. Miller" <davem@davemloft.net>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Jens Axboe <axboe@kernel.dk>
+Cc:     Amritha Nambiar <amritha.nambiar@intel.com>,
+        Willem de Bruijn <willemb@google.com>,
+        kernel-janitors@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v2 2/2] io_uring: Potential Oops in io_sq_offload_start()
+Message-ID: <20190430092619.GC2239@kadam>
+References: <20190404104527.GX4038@hirez.programming.kicks-ass.net>
+ <20190408081513.GB15239@kadam>
 MIME-Version: 1.0
-References: <20190429123713.64280-1-weiyongjun1@huawei.com>
-In-Reply-To: <20190429123713.64280-1-weiyongjun1@huawei.com>
-From:   Baolin Wang <baolin.wang@linaro.org>
-Date:   Tue, 30 Apr 2019 11:05:14 +0800
-Message-ID: <CAMz4ku+v+DS_7N+6yWzqGQvn3KiW-3ACNbXL1W4YjWSmu3AxwA@mail.gmail.com>
-Subject: Re: [PATCH -next] ASoC: sprd: Fix to use list_for_each_entry_safe()
- when delete items
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Orson Zhai <orsonzhai@gmail.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        alsa-devel@alsa-project.org, LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190408081513.GB15239@kadam>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9242 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=846
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1904300062
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9242 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=889 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1904300062
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
+The io_uring patches are slated for v5.7 so we should figure out a
+solution for this bug.
 
-On Mon, 29 Apr 2019 at 20:27, Wei Yongjun <weiyongjun1@huawei.com> wrote:
->
-> Since we will remove items off the list using list_del() we need
-> to use a safe version of the list_for_each_entry() macro aptly named
-> list_for_each_entry_safe().
->
-> Fixes: d7bff893e04f ("ASoC: sprd: Add Spreadtrum multi-channel data transfer support")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-
-Yes, thanks for your fixes.
-Reviewed-by: Baolin Wang <baolin.wang@linaro.org>
-
-> ---
->  sound/soc/sprd/sprd-mcdt.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/sound/soc/sprd/sprd-mcdt.c b/sound/soc/sprd/sprd-mcdt.c
-> index 28f5e649733d..df250f7f2b6f 100644
-> --- a/sound/soc/sprd/sprd-mcdt.c
-> +++ b/sound/soc/sprd/sprd-mcdt.c
-> @@ -978,12 +978,12 @@ static int sprd_mcdt_probe(struct platform_device *pdev)
->
->  static int sprd_mcdt_remove(struct platform_device *pdev)
->  {
-> -       struct sprd_mcdt_chan *temp;
-> +       struct sprd_mcdt_chan *chan, *temp;
->
->         mutex_lock(&sprd_mcdt_list_mutex);
->
-> -       list_for_each_entry(temp, &sprd_mcdt_chan_list, list)
-> -               list_del(&temp->list);
-> +       list_for_each_entry_safe(chan, temp, &sprd_mcdt_chan_list, list)
-> +               list_del(&chan->list);
->
->         mutex_unlock(&sprd_mcdt_list_mutex);
->
->
->
-
-
--- 
-Baolin Wang
-Best Regards
+regrds,
+dan carpenter

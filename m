@@ -2,68 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C7961F8A2
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Apr 2019 14:18:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F881FA70
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Apr 2019 15:32:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727311AbfD3MST (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 30 Apr 2019 08:18:19 -0400
-Received: from mail.us.es ([193.147.175.20]:42682 "EHLO mail.us.es"
+        id S1727580AbfD3Nch (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 30 Apr 2019 09:32:37 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45060 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726916AbfD3MSS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 30 Apr 2019 08:18:18 -0400
-Received: from antivirus1-rhel7.int (unknown [192.168.2.11])
-        by mail.us.es (Postfix) with ESMTP id 3F59C11FBF0
-        for <kernel-janitors@vger.kernel.org>; Tue, 30 Apr 2019 14:18:17 +0200 (CEST)
-Received: from antivirus1-rhel7.int (localhost [127.0.0.1])
-        by antivirus1-rhel7.int (Postfix) with ESMTP id 30B8CDA70F
-        for <kernel-janitors@vger.kernel.org>; Tue, 30 Apr 2019 14:18:17 +0200 (CEST)
-Received: by antivirus1-rhel7.int (Postfix, from userid 99)
-        id 109C2DA714; Tue, 30 Apr 2019 14:18:17 +0200 (CEST)
-X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on antivirus1-rhel7.int
-X-Spam-Level: 
-X-Spam-Status: No, score=-108.2 required=7.5 tests=ALL_TRUSTED,BAYES_50,
-        SMTPAUTH_US2,USER_IN_WHITELIST autolearn=disabled version=3.4.1
-Received: from antivirus1-rhel7.int (localhost [127.0.0.1])
-        by antivirus1-rhel7.int (Postfix) with ESMTP id E7AD0DA705;
-        Tue, 30 Apr 2019 14:18:14 +0200 (CEST)
-Received: from 192.168.1.97 (192.168.1.97)
- by antivirus1-rhel7.int (F-Secure/fsigk_smtp/550/antivirus1-rhel7.int);
- Tue, 30 Apr 2019 14:18:14 +0200 (CEST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/antivirus1-rhel7.int)
-Received: from us.es (129.166.216.87.static.jazztel.es [87.216.166.129])
+        id S1727534AbfD3Ncg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 30 Apr 2019 09:32:36 -0400
+Received: from pobox.suse.cz (prg-ext-pat.suse.com [213.151.95.130])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: 1984lsi)
-        by entrada.int (Postfix) with ESMTPSA id AF95F4265A32;
-        Tue, 30 Apr 2019 14:18:14 +0200 (CEST)
-Date:   Tue, 30 Apr 2019 14:18:13 +0200
-X-SMTPAUTHUS: auth mail.us.es
-From:   Pablo Neira Ayuso <pablo@netfilter.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id 3017C21707;
+        Tue, 30 Apr 2019 13:32:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1556631156;
+        bh=nkqy1SU0QtczOCC8nIqP7tfrsWYnwbc33jsstTISlG8=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=NxL8dH2nvFwzJNM40LUZjwQEXoxcmlpUki3IvVJct6fcFNi9Ee1Fh3XX8QzxMAtqQ
+         7sijGQWzDX63iDfLnjmaqYZHBbD1QZyBXC/obi2WIRy9fDBaY0f3zGEKtFAtGkU7c8
+         Dtr1QH/KSV+WvZpP6sVo6ws3h+lSKKDmdm6N7Wlw=
+Date:   Tue, 30 Apr 2019 15:32:33 +0200 (CEST)
+From:   Jiri Kosina <jikos@kernel.org>
 To:     Colin King <colin.king@canonical.com>
-Cc:     Jozsef Kadlecsik <kadlec@blackhole.kfki.hu>,
-        Florian Westphal <fw@strlen.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+cc:     Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        linux-input@vger.kernel.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] netfilter: connlabels: fix spelling mistake "trackling"
- -> "tracking"
-Message-ID: <20190430121813.37rqojcdzabtq5vp@salvia>
-References: <20190418170056.22486-1-colin.king@canonical.com>
+Subject: Re: [PATCH][next] HID: logitech-dj: fix spelling mistake "Unexpect"
+ -> "Unexpected"
+In-Reply-To: <20190426131631.26692-1-colin.king@canonical.com>
+Message-ID: <nycvar.YFH.7.76.1904301532210.9803@cbobk.fhfr.pm>
+References: <20190426131631.26692-1-colin.king@canonical.com>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190418170056.22486-1-colin.king@canonical.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Virus-Scanned: ClamAV using ClamSMTP
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Apr 18, 2019 at 06:00:56PM +0100, Colin King wrote:
+On Fri, 26 Apr 2019, Colin King wrote:
+
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> There is a spelling mistake in the module description. Fix this.
+> There is a spelling mistake in a hid_err error message, fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Applied.
+Applied to for-5.2/logitech. Thanks,
+
+-- 
+Jiri Kosina
+SUSE Labs
+

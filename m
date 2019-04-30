@@ -2,141 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36219EE6A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Apr 2019 03:31:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6777EE73
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Apr 2019 03:33:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729745AbfD3Bbx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 29 Apr 2019 21:31:53 -0400
-Received: from out30-54.freemail.mail.aliyun.com ([115.124.30.54]:48640 "EHLO
-        out30-54.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729626AbfD3Bbx (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 29 Apr 2019 21:31:53 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e07487;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0TQafK3A_1556587909;
-Received: from JosephdeMacBook-Pro.local(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0TQafK3A_1556587909)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 30 Apr 2019 09:31:50 +0800
-Subject: Re: [PATCH] fs: ocfs: fix spelling mistake "hearbeating" ->
- "heartbeat"
-To:     ChenGang <cg.chen@huawei.com>, mark@fasheh.com, jlbec@evilplan.org,
-        jiangqi903@gmail.com
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        ocfs2-devel@oss.oracle.com
-References: <1556541700-35237-1-git-send-email-cg.chen@huawei.com>
-From:   Joseph Qi <joseph.qi@linux.alibaba.com>
-Message-ID: <27ff3446-8f17-6acc-808c-56f26a9d66e2@linux.alibaba.com>
-Date:   Tue, 30 Apr 2019 09:31:49 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:60.0)
- Gecko/20100101 Thunderbird/60.6.1
+        id S1729877AbfD3BdX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 29 Apr 2019 21:33:23 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:35608 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729745AbfD3BdX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 29 Apr 2019 21:33:23 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 68AAA797134B1A9AA658;
+        Tue, 30 Apr 2019 09:33:19 +0800 (CST)
+Received: from [127.0.0.1] (10.177.31.96) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Tue, 30 Apr 2019
+ 09:33:17 +0800
+Subject: Re: [PATCH v2 net-next] net: ethernet: ti: cpsw: Fix inconsistent
+ IS_ERR and PTR_ERR in cpsw_probe()
+To:     Julia Lawall <julia.lawall@lip6.fr>
+References: <20190429135650.72794-1-yuehaibing@huawei.com>
+ <20190429143157.79035-1-yuehaibing@huawei.com>
+ <alpine.DEB.2.21.1904291228000.2444@hadrien>
+CC:     Grygorii Strashko <grygorii.strashko@ti.com>,
+        Ivan Khoronzhuk <ivan.khoronzhuk@linaro.org>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        <linux-omap@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+From:   YueHaibing <yuehaibing@huawei.com>
+Message-ID: <a2766de6-d0cd-d840-2546-33ce0b388585@huawei.com>
+Date:   Tue, 30 Apr 2019 09:33:16 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-In-Reply-To: <1556541700-35237-1-git-send-email-cg.chen@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <alpine.DEB.2.21.1904291228000.2444@hadrien>
+Content-Type: text/plain; charset="windows-1252"
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.31.96]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On 2019/4/30 0:30, Julia Lawall wrote:
+> 
+> 
+> On Mon, 29 Apr 2019, YueHaibing wrote:
+> 
+>> Change the call to PTR_ERR to access the value just tested by IS_ERR.
+> 
+> I assume you didn't find the problem just looking through the code by
+> hand.  If you used a tool, it would be really good to acknowledge the tool
+> that was used.  The tools don't come for free, and you don't pay for them.
+> The only payment that you can offer is to acknowledge that the tool was
+> used, which helps justify that the tool is useful and what it is useful
+> for.
 
+Sorry, I forgot edit the commit log and add this info.
 
-On 19/4/29 20:41, ChenGang wrote:
-> Hi Joseph,
-> Thanks for your advice, and I folded the four patches into one.
+It was detected by Coccinelle, I will add this and resend.
+
+> 
+> julia
+> 
+>>
+>> Fixes: 83a8471ba255 ("net: ethernet: ti: cpsw: refactor probe to group common hw initialization")
+>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+>> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+>> ---
+>> v2: add Fixes tag
+>> ---
+>>  drivers/net/ethernet/ti/cpsw.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/ethernet/ti/cpsw.c b/drivers/net/ethernet/ti/cpsw.c
+>> index c3cba46fac9d..e37680654a13 100644
+>> --- a/drivers/net/ethernet/ti/cpsw.c
+>> +++ b/drivers/net/ethernet/ti/cpsw.c
+>> @@ -2381,7 +2381,7 @@ static int cpsw_probe(struct platform_device *pdev)
+>>
+>>  	clk = devm_clk_get(dev, "fck");
+>>  	if (IS_ERR(clk)) {
+>> -		ret = PTR_ERR(mode);
+>> +		ret = PTR_ERR(clk);
+>>  		dev_err(dev, "fck is not found %d\n", ret);
+>>  		return ret;
+>>  	}
+>>
+>>
+>>
+>>
+> 
+> .
 > 
 
-Please resend an official version for conveniently track and then pick.
-Thanks.
-
-> On 19/4/28 20:22, Joseph Qi wrote:
->> Hi ChenGang,
->> Could you please fold these four patches into one?
-> 
->> Thanks,
->> Joseph
-> 
->> On 19/4/27 20:22, ChenGang wrote:
->>> There is a spelling mistake in o2hb_do_disk_heartbeat debug message.Fix it.
->>>
->>> Signed-off-by: ChenGang <cg.chen@huawei.com>
->>> ---
->>>  fs/ocfs2/cluster/heartbeat.c | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/fs/ocfs2/cluster/heartbeat.c 
->>> b/fs/ocfs2/cluster/heartbeat.c index f3c20b2..e4e7df1 100644
->>> --- a/fs/ocfs2/cluster/heartbeat.c
->>> +++ b/fs/ocfs2/cluster/heartbeat.c
->>> @@ -1198,7 +1198,7 @@ static int o2hb_do_disk_heartbeat(struct o2hb_region *reg)
->>>  	if (atomic_read(&reg->hr_steady_iterations) != 0) {
->>>  		if (atomic_dec_and_test(&reg->hr_unsteady_iterations)) {
->>>  			printk(KERN_NOTICE "o2hb: Unable to stabilize "
->>> -			       "heartbeart on region %s (%s)\n",
->>> +			       "heartbeat on region %s (%s)\n",
->>>  			       config_item_name(&reg->hr_item),
->>>  			       reg->hr_dev_name);
->>> 			atomic_set(&reg->hr_steady_iterations, 0);
->>>
-> 
-> 
-> Signed-off-by: ChenGang <cg.chen@huawei.com>
-> ---
->  fs/ocfs2/cluster/heartbeat.c | 2 +-
->  fs/ocfs2/cluster/quorum.c    | 2 +-
->  fs/ocfs2/cluster/tcp.c       | 2 +-
->  fs/ocfs2/dlm/dlmmaster.c     | 2 +-
->  4 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/fs/ocfs2/cluster/heartbeat.c b/fs/ocfs2/cluster/heartbeat.c
-> index f3c20b2..e4e7df1 100644
-> --- a/fs/ocfs2/cluster/heartbeat.c
-> +++ b/fs/ocfs2/cluster/heartbeat.c
-> @@ -1198,7 +1198,7 @@ static int o2hb_do_disk_heartbeat(struct o2hb_region *reg)
->  	if (atomic_read(&reg->hr_steady_iterations) != 0) {
->  		if (atomic_dec_and_test(&reg->hr_unsteady_iterations)) {
->  			printk(KERN_NOTICE "o2hb: Unable to stabilize "
-> -			       "heartbeart on region %s (%s)\n",
-> +			       "heartbeat on region %s (%s)\n",
->  			       config_item_name(&reg->hr_item),
->  			       reg->hr_dev_name);
->  			atomic_set(&reg->hr_steady_iterations, 0);
-> diff --git a/fs/ocfs2/cluster/quorum.c b/fs/ocfs2/cluster/quorum.c
-> index af2e747..792132f 100644
-> --- a/fs/ocfs2/cluster/quorum.c
-> +++ b/fs/ocfs2/cluster/quorum.c
-> @@ -89,7 +89,7 @@ static void o2quo_fence_self(void)
->  	};
->  }
->  
-> -/* Indicate that a timeout occurred on a hearbeat region write. The
-> +/* Indicate that a timeout occurred on a heartbeat region write. The
->   * other nodes in the cluster may consider us dead at that time so we
->   * want to "fence" ourselves so that we don't scribble on the disk
->   * after they think they've recovered us. This can't solve all
-> diff --git a/fs/ocfs2/cluster/tcp.c b/fs/ocfs2/cluster/tcp.c
-> index e9f236a..7a43c04 100644
-> --- a/fs/ocfs2/cluster/tcp.c
-> +++ b/fs/ocfs2/cluster/tcp.c
-> @@ -1776,7 +1776,7 @@ static void o2net_hb_node_up_cb(struct o2nm_node *node, int node_num,
->  		(msecs_to_jiffies(o2net_reconnect_delay()) + 1);
->  
->  	if (node_num != o2nm_this_node()) {
-> -		/* believe it or not, accept and node hearbeating testing
-> +		/* believe it or not, accept and node heartbeating testing
->  		 * can succeed for this node before we got here.. so
->  		 * only use set_nn_state to clear the persistent error
->  		 * if that hasn't already happened */
-> diff --git a/fs/ocfs2/dlm/dlmmaster.c b/fs/ocfs2/dlm/dlmmaster.c
-> index 826f056..41b80d5 100644
-> --- a/fs/ocfs2/dlm/dlmmaster.c
-> +++ b/fs/ocfs2/dlm/dlmmaster.c
-> @@ -2176,7 +2176,7 @@ static void dlm_assert_master_worker(struct dlm_work_item *item, void *data)
->   * think that $RECOVERY is currently mastered by a dead node.  If so,
->   * we wait a short time to allow that node to get notified by its own
->   * heartbeat stack, then check again.  All $RECOVERY lock resources
-> - * mastered by dead nodes are purged when the hearbeat callback is
-> + * mastered by dead nodes are purged when the heartbeat callback is
->   * fired, so we can know for sure that it is safe to continue once
->   * the node returns a live node or no node.  */
->  static int dlm_pre_master_reco_lockres(struct dlm_ctxt *dlm,
-> 

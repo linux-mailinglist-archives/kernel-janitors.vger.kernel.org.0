@@ -2,57 +2,49 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F881FA70
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Apr 2019 15:32:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF078FC1B
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Apr 2019 17:04:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727580AbfD3Nch (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 30 Apr 2019 09:32:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45060 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727534AbfD3Ncg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 30 Apr 2019 09:32:36 -0400
-Received: from pobox.suse.cz (prg-ext-pat.suse.com [213.151.95.130])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3017C21707;
-        Tue, 30 Apr 2019 13:32:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1556631156;
-        bh=nkqy1SU0QtczOCC8nIqP7tfrsWYnwbc33jsstTISlG8=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=NxL8dH2nvFwzJNM40LUZjwQEXoxcmlpUki3IvVJct6fcFNi9Ee1Fh3XX8QzxMAtqQ
-         7sijGQWzDX63iDfLnjmaqYZHBbD1QZyBXC/obi2WIRy9fDBaY0f3zGEKtFAtGkU7c8
-         Dtr1QH/KSV+WvZpP6sVo6ws3h+lSKKDmdm6N7Wlw=
-Date:   Tue, 30 Apr 2019 15:32:33 +0200 (CEST)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-cc:     Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-input@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] HID: logitech-dj: fix spelling mistake "Unexpect"
- -> "Unexpected"
-In-Reply-To: <20190426131631.26692-1-colin.king@canonical.com>
-Message-ID: <nycvar.YFH.7.76.1904301532210.9803@cbobk.fhfr.pm>
-References: <20190426131631.26692-1-colin.king@canonical.com>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        id S1725995AbfD3PE3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 30 Apr 2019 11:04:29 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:43836 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725930AbfD3PE2 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 30 Apr 2019 11:04:28 -0400
+Received: from localhost (adsl-173-228-226-134.prtc.net [173.228.226.134])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id A16D71403ED5B;
+        Tue, 30 Apr 2019 08:04:27 -0700 (PDT)
+Date:   Tue, 30 Apr 2019 11:04:25 -0400 (EDT)
+Message-Id: <20190430.110425.1977792345336253148.davem@davemloft.net>
+To:     dan.carpenter@oracle.com
+Cc:     andrew@lunn.ch, vivien.didelot@gmail.com, f.fainelli@gmail.com,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] net: dsa: bcm_sf2: fix buffer overflow doing set_rxnfc
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190430104419.GA9096@mwanda>
+References: <20190430104419.GA9096@mwanda>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 30 Apr 2019 08:04:28 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 26 Apr 2019, Colin King wrote:
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Date: Tue, 30 Apr 2019 13:44:19 +0300
 
-> From: Colin Ian King <colin.king@canonical.com>
+> The "fs->location" is a u32 that comes from the user in ethtool_set_rxnfc().
+> We can't pass unclamped values to test_bit() or it results in an out of
+> bounds access beyond the end of the bitmap.
 > 
-> There is a spelling mistake in a hid_err error message, fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Fixes: 7318166cacad ("net: dsa: bcm_sf2: Add support for ethtool::rxnfc")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Applied to for-5.2/logitech. Thanks,
-
--- 
-Jiri Kosina
-SUSE Labs
-
+Applied and queued up for -stable, thanks Dan.

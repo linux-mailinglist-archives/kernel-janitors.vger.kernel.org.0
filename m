@@ -2,29 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BBD881085D
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2019 15:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCFA9108ED
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2019 16:20:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726289AbfEANmI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 May 2019 09:42:08 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:47651 "EHLO
+        id S1726472AbfEAOTw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 May 2019 10:19:52 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:48450 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726010AbfEANmI (ORCPT
+        with ESMTP id S1726165AbfEAOTw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 May 2019 09:42:08 -0400
+        Wed, 1 May 2019 10:19:52 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hLpUp-000820-OF; Wed, 01 May 2019 13:42:03 +0000
+        id 1hLq5J-000340-G4; Wed, 01 May 2019 14:19:45 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Pravin B Shelar <pshelar@ovn.org>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        dev@openvswitch.org
+To:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] openvswitch: check for null pointer return from nla_nest_start_noflag
-Date:   Wed,  1 May 2019 14:41:58 +0100
-Message-Id: <20190501134158.15307-1-colin.king@canonical.com>
+Subject: [PATCH][next] rtw88: fix shift of more than 32 bits of a integer
+Date:   Wed,  1 May 2019 15:19:45 +0100
+Message-Id: <20190501141945.22522-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,32 +37,39 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The call to nla_nest_start_noflag can return null in the unlikely
-event that nla_put returns -EMSGSIZE.  Check for this condition to
-avoid a null pointer dereference on pointer nla_reply.
+Currently the shift of an integer value more than 32 bits can
+occur when nss is more than 32.  Fix this by making the integer
+constants unsigned long longs before shifting and bit-wise or'ing
+with the u64 ra_mask to avoid the undefined shift behaviour.
 
-Addresses-Coverity: ("Dereference null return value")
-Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
+Addresses-Coverity: ("Bad shift operation")
+Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- net/openvswitch/conntrack.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/realtek/rtw88/main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
-index c4128082f88b..333ec5f298fe 100644
---- a/net/openvswitch/conntrack.c
-+++ b/net/openvswitch/conntrack.c
-@@ -2175,6 +2175,10 @@ static int ovs_ct_limit_cmd_get(struct sk_buff *skb, struct genl_info *info)
- 		return PTR_ERR(reply);
- 
- 	nla_reply = nla_nest_start_noflag(reply, OVS_CT_LIMIT_ATTR_ZONE_LIMIT);
-+	if (!nla_reply) {
-+		err = -EMSGSIZE;
-+		goto exit_err;
-+	}
- 
- 	if (a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT]) {
- 		err = ovs_ct_limit_get_zone_limit(
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 9893e5e297e3..6304082361a7 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -363,13 +363,13 @@ static u64 get_vht_ra_mask(struct ieee80211_sta *sta)
+ 		vht_mcs_cap = mcs_map & 0x3;
+ 		switch (vht_mcs_cap) {
+ 		case 2: /* MCS9 */
+-			ra_mask |= 0x3ff << nss;
++			ra_mask |= 0x3ffULL << nss;
+ 			break;
+ 		case 1: /* MCS8 */
+-			ra_mask |= 0x1ff << nss;
++			ra_mask |= 0x1ffULL << nss;
+ 			break;
+ 		case 0: /* MCS7 */
+-			ra_mask |= 0x0ff << nss;
++			ra_mask |= 0x0ffULL << nss;
+ 			break;
+ 		default:
+ 			break;
 -- 
 2.20.1
 

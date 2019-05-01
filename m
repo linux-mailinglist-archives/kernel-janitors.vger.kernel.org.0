@@ -2,96 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2213B10BE2
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2019 19:17:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8889C10CB0
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2019 20:29:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726079AbfEARR2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 May 2019 13:17:28 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:33779 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726019AbfEARR2 (ORCPT
+        id S1726096AbfEAS3z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 May 2019 14:29:55 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:37416 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726004AbfEAS3z (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 May 2019 13:17:28 -0400
-Received: by mail-lj1-f193.google.com with SMTP id f23so16061322ljc.0;
-        Wed, 01 May 2019 10:17:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tb3e5ndhy+yPYfLxxwqvS+VC2wvQfTcibV/Zpc10t8Q=;
-        b=M6re7UiwzFF81SnvukKzpOhzXOVMusmPCGgYLA0vFDmgKc+WjzPpsG9q2me+FOZrUK
-         55erpX71KWunJAh5MXpnVoW4KxPWQGbCyN5+w1hn40qIVvC5eB43ErBvrZ6wZok/vbW2
-         uqt5PrFvhVhjXPAmxCQqhXHwTxNHbeFIBlBN6yIYd+u28S3DVPnVgxnvssnM6Hq6zdeO
-         RlOFuVTYCwZ35nTLZaW4TNexXJgIIVNq0xkMrH4KJ4TKgkGUCPcvIZK+ij5J5Azffzi3
-         ByDC3sOmKjns6h5AyldOQrlX5a3jBmNHO8jLwJede/8NuAZBXQfyC5Vye7LxkT5YPkaZ
-         cZvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tb3e5ndhy+yPYfLxxwqvS+VC2wvQfTcibV/Zpc10t8Q=;
-        b=PBhR8+om3Eq+SQowSnWesTVw2lF1PskkC/ix665qCLtgBlJ8n/+WMbRg6ULRMqd9mW
-         frUmJXOFpV4mY1uSMA682UxCidiJ2ixW6T4fn/YjPYpG8hya09THndZflnfZvykxaNBk
-         yGnjXS9XOba8MSL5Sv8ax1PNGHnmDaQDlk5OkXZxtWaAq/7kSL/ILh6uzNP8+vnH2Y1h
-         rfr46GvhqMF0EZqQnuu9iii3WqbWSyyzyV4rjO68f915rOUydOJtMX0mPX9GD1iBDmv8
-         6OiZy3DWae0uwM8L+zaxF6SJL3IZv1MOoiVZPfV9sv9fERClIqehVQYAS1ZNVNNfovF3
-         aVFQ==
-X-Gm-Message-State: APjAAAUtcasoZ1R46zI3ky3SExtCRTzFEwv1GoUZqzuqOAVun4bFxFJ/
-        bk1kVyUEACNtZCFntyFXcIn1ZZjF/MD6E/5UrKc=
-X-Google-Smtp-Source: APXvYqwQLXbgeLz+rgT79Zp142ymbrEJCJe2sY3bjwnPhirtV576CfqsSAvz58YD9Q1Mw/IiKthO54oGaz/Ho4ZoktY=
-X-Received: by 2002:a2e:92ce:: with SMTP id k14mr16778740ljh.83.1556731045705;
- Wed, 01 May 2019 10:17:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190501134158.15307-1-colin.king@canonical.com>
-In-Reply-To: <20190501134158.15307-1-colin.king@canonical.com>
-From:   Yi-Hung Wei <yihung.wei@gmail.com>
-Date:   Wed, 1 May 2019 10:17:15 -0700
-Message-ID: <CAG1aQhLQ5kLV4TuYU0fwTviDoaZmryyZ+kWbsj=Bdo+CxFXQtA@mail.gmail.com>
-Subject: Re: [ovs-dev] [PATCH][next] openvswitch: check for null pointer
- return from nla_nest_start_noflag
-To:     Colin King <colin.king@canonical.com>
-Cc:     Pravin B Shelar <pshelar@ovn.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Linux Kernel Network Developers <netdev@vger.kernel.org>,
-        ovs dev <dev@openvswitch.org>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Wed, 1 May 2019 14:29:55 -0400
+Received: from localhost (adsl-173-228-226-134.prtc.net [173.228.226.134])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 37D421263F1F3;
+        Wed,  1 May 2019 11:29:53 -0700 (PDT)
+Date:   Wed, 01 May 2019 14:29:48 -0400 (EDT)
+Message-Id: <20190501.142948.1053446771181544161.davem@davemloft.net>
+To:     yuehaibing@huawei.com
+Cc:     grygorii.strashko@ti.com, ivan.khoronzhuk@linaro.org,
+        andrew@lunn.ch, ilias.apalodimas@linaro.org, julia.lawall@lip6.fr,
+        linux-omap@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v3 net-next] net: ethernet: ti: cpsw: Fix inconsistent
+ IS_ERR and PTR_ERR in cpsw_probe()
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190430015524.50997-1-yuehaibing@huawei.com>
+References: <20190429143157.79035-1-yuehaibing@huawei.com>
+        <20190430015524.50997-1-yuehaibing@huawei.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 01 May 2019 11:29:54 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, May 1, 2019 at 6:42 AM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> The call to nla_nest_start_noflag can return null in the unlikely
-> event that nla_put returns -EMSGSIZE.  Check for this condition to
-> avoid a null pointer dereference on pointer nla_reply.
->
-> Addresses-Coverity: ("Dereference null return value")
-> Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  net/openvswitch/conntrack.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
-> index c4128082f88b..333ec5f298fe 100644
-> --- a/net/openvswitch/conntrack.c
-> +++ b/net/openvswitch/conntrack.c
-> @@ -2175,6 +2175,10 @@ static int ovs_ct_limit_cmd_get(struct sk_buff *skb, struct genl_info *info)
->                 return PTR_ERR(reply);
->
->         nla_reply = nla_nest_start_noflag(reply, OVS_CT_LIMIT_ATTR_ZONE_LIMIT);
-> +       if (!nla_reply) {
-> +               err = -EMSGSIZE;
-> +               goto exit_err;
-> +       }
->
->         if (a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT]) {
->                 err = ovs_ct_limit_get_zone_limit(
-> --
-Thanks for the bug fix.  Should it be on net rather than net-next?
+From: YueHaibing <yuehaibing@huawei.com>
+Date: Tue, 30 Apr 2019 01:55:24 +0000
 
-Acked-by: Yi-Hung Wei <yihung.wei@gmail.com>
+> Fix inconsistent IS_ERR and PTR_ERR in cpsw_probe,
+> The proper pointer to use is clk instead of mode.
+> 
+> This issue was detected with the help of Coccinelle.
+> 
+> Fixes: 83a8471ba255 ("net: ethernet: ti: cpsw: refactor probe to group common hw initialization")
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> ---
+> v3: Fix commit log
+> v2: add Fixes tag
+
+Applied.

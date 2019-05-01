@@ -2,97 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 888C710A05
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2019 17:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2213B10BE2
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2019 19:17:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726961AbfEAPZy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 May 2019 11:25:54 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:50338 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726515AbfEAPZy (ORCPT
+        id S1726079AbfEARR2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 May 2019 13:17:28 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:33779 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726019AbfEARR2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 May 2019 11:25:54 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 5D75960735; Wed,  1 May 2019 15:25:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1556724353;
-        bh=L5W6NQ46o1GDCMhL5s7MAOl/KdCd2uwU5A8w+8Q0T2E=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=my/HAFeTVer4JK3k5TeaVS/1RaMOKQaJslNmXDNUcYGcHL0VqUxjNmAxQB8VpStwH
-         dgbB6E+eearb+0crVhLn4X7x6DlX2DzfbBfMNDS1MuzPNlSlJkofftPL0qJY12T8xS
-         c9HQyiX8TvXLux35IvX+IzVAQd/H9DaSOsXCjvQY=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D1CA06044E;
-        Wed,  1 May 2019 15:25:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1556724353;
-        bh=L5W6NQ46o1GDCMhL5s7MAOl/KdCd2uwU5A8w+8Q0T2E=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=ba5w+yCTwe0jcl+HpqWsGuAaSpk4GXck+pXV8hdIMUSL7+q5HVwgmmKtdhB0CAJti
-         gYdKSQsKmJLqPJtpZCWWXKs6ccS5ghdlxIt2Cc5PpjdAzJu2CGMMEKrS5NYGatqPWV
-         mKHC5vGwlA198gV5E+9YHy/cG5yaOhtsAIv8FU+U=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D1CA06044E
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Wed, 1 May 2019 13:17:28 -0400
+Received: by mail-lj1-f193.google.com with SMTP id f23so16061322ljc.0;
+        Wed, 01 May 2019 10:17:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=tb3e5ndhy+yPYfLxxwqvS+VC2wvQfTcibV/Zpc10t8Q=;
+        b=M6re7UiwzFF81SnvukKzpOhzXOVMusmPCGgYLA0vFDmgKc+WjzPpsG9q2me+FOZrUK
+         55erpX71KWunJAh5MXpnVoW4KxPWQGbCyN5+w1hn40qIVvC5eB43ErBvrZ6wZok/vbW2
+         uqt5PrFvhVhjXPAmxCQqhXHwTxNHbeFIBlBN6yIYd+u28S3DVPnVgxnvssnM6Hq6zdeO
+         RlOFuVTYCwZ35nTLZaW4TNexXJgIIVNq0xkMrH4KJ4TKgkGUCPcvIZK+ij5J5Azffzi3
+         ByDC3sOmKjns6h5AyldOQrlX5a3jBmNHO8jLwJede/8NuAZBXQfyC5Vye7LxkT5YPkaZ
+         cZvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=tb3e5ndhy+yPYfLxxwqvS+VC2wvQfTcibV/Zpc10t8Q=;
+        b=PBhR8+om3Eq+SQowSnWesTVw2lF1PskkC/ix665qCLtgBlJ8n/+WMbRg6ULRMqd9mW
+         frUmJXOFpV4mY1uSMA682UxCidiJ2ixW6T4fn/YjPYpG8hya09THndZflnfZvykxaNBk
+         yGnjXS9XOba8MSL5Sv8ax1PNGHnmDaQDlk5OkXZxtWaAq/7kSL/ILh6uzNP8+vnH2Y1h
+         rfr46GvhqMF0EZqQnuu9iii3WqbWSyyzyV4rjO68f915rOUydOJtMX0mPX9GD1iBDmv8
+         6OiZy3DWae0uwM8L+zaxF6SJL3IZv1MOoiVZPfV9sv9fERClIqehVQYAS1ZNVNNfovF3
+         aVFQ==
+X-Gm-Message-State: APjAAAUtcasoZ1R46zI3ky3SExtCRTzFEwv1GoUZqzuqOAVun4bFxFJ/
+        bk1kVyUEACNtZCFntyFXcIn1ZZjF/MD6E/5UrKc=
+X-Google-Smtp-Source: APXvYqwQLXbgeLz+rgT79Zp142ymbrEJCJe2sY3bjwnPhirtV576CfqsSAvz58YD9Q1Mw/IiKthO54oGaz/Ho4ZoktY=
+X-Received: by 2002:a2e:92ce:: with SMTP id k14mr16778740ljh.83.1556731045705;
+ Wed, 01 May 2019 10:17:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] brcm80211: potential NULL dereference in
- brcmf_cfg80211_vndr_cmds_dcmd_handler()
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190424095218.GB16450@mwanda>
-References: <20190424095218.GB16450@mwanda>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Arend van Spriel <arend.vanspriel@broadcom.com>,
-        Franky Lin <franky.lin@broadcom.com>,
-        Hante Meuleman <hante.meuleman@broadcom.com>,
-        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
-        Wright Feng <wright.feng@cypress.com>,
-        linux-wireless@vger.kernel.org,
-        brcm80211-dev-list.pdl@broadcom.com,
-        brcm80211-dev-list@cypress.com, kernel-janitors@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190501152553.5D75960735@smtp.codeaurora.org>
-Date:   Wed,  1 May 2019 15:25:53 +0000 (UTC)
+References: <20190501134158.15307-1-colin.king@canonical.com>
+In-Reply-To: <20190501134158.15307-1-colin.king@canonical.com>
+From:   Yi-Hung Wei <yihung.wei@gmail.com>
+Date:   Wed, 1 May 2019 10:17:15 -0700
+Message-ID: <CAG1aQhLQ5kLV4TuYU0fwTviDoaZmryyZ+kWbsj=Bdo+CxFXQtA@mail.gmail.com>
+Subject: Re: [ovs-dev] [PATCH][next] openvswitch: check for null pointer
+ return from nla_nest_start_noflag
+To:     Colin King <colin.king@canonical.com>
+Cc:     Pravin B Shelar <pshelar@ovn.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Linux Kernel Network Developers <netdev@vger.kernel.org>,
+        ovs dev <dev@openvswitch.org>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+On Wed, May 1, 2019 at 6:42 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The call to nla_nest_start_noflag can return null in the unlikely
+> event that nla_put returns -EMSGSIZE.  Check for this condition to
+> avoid a null pointer dereference on pointer nla_reply.
+>
+> Addresses-Coverity: ("Dereference null return value")
+> Fixes: 11efd5cb04a1 ("openvswitch: Support conntrack zone limit")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  net/openvswitch/conntrack.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+> index c4128082f88b..333ec5f298fe 100644
+> --- a/net/openvswitch/conntrack.c
+> +++ b/net/openvswitch/conntrack.c
+> @@ -2175,6 +2175,10 @@ static int ovs_ct_limit_cmd_get(struct sk_buff *skb, struct genl_info *info)
+>                 return PTR_ERR(reply);
+>
+>         nla_reply = nla_nest_start_noflag(reply, OVS_CT_LIMIT_ATTR_ZONE_LIMIT);
+> +       if (!nla_reply) {
+> +               err = -EMSGSIZE;
+> +               goto exit_err;
+> +       }
+>
+>         if (a[OVS_CT_LIMIT_ATTR_ZONE_LIMIT]) {
+>                 err = ovs_ct_limit_get_zone_limit(
+> --
+Thanks for the bug fix.  Should it be on net rather than net-next?
 
-> If "ret_len" is negative then it could lead to a NULL dereference.
-> 
-> The "ret_len" value comes from nl80211_vendor_cmd(), if it's negative
-> then we don't allocate the "dcmd_buf" buffer.  Then we pass "ret_len" to
-> brcmf_fil_cmd_data_set() where it is cast to a very high u32 value.
-> Most of the functions in that call tree check whether the buffer we pass
-> is NULL but there are at least a couple places which don't such as
-> brcmf_dbg_hex_dump() and brcmf_msgbuf_query_dcmd().  We memcpy() to and
-> from the buffer so it would result in a NULL dereference.
-> 
-> The fix is to change the types so that "ret_len" can't be negative.  (If
-> we memcpy() zero bytes to NULL, that's a no-op and doesn't cause an
-> issue).
-> 
-> Fixes: 1bacb0487d0e ("brcmfmac: replace cfg80211 testmode with vendor command")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-Patch applied to wireless-drivers-next.git, thanks.
-
-e025da3d7aa4 brcm80211: potential NULL dereference in brcmf_cfg80211_vndr_cmds_dcmd_handler()
-
--- 
-https://patchwork.kernel.org/patch/10914427/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Acked-by: Yi-Hung Wei <yihung.wei@gmail.com>

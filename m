@@ -2,78 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B6B8107D6
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2019 14:16:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C3CC107F7
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2019 14:43:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726425AbfEAMQT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 May 2019 08:16:19 -0400
-Received: from mga05.intel.com ([192.55.52.43]:60979 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726416AbfEAMQT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 May 2019 08:16:19 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 May 2019 05:16:19 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,417,1549958400"; 
-   d="scan'208";a="169578990"
-Received: from sbahirat-mobl1.amr.corp.intel.com (HELO [10.255.231.197]) ([10.255.231.197])
-  by fmsmga001.fm.intel.com with ESMTP; 01 May 2019 05:16:18 -0700
-Subject: Re: [alsa-devel] [PATCH][next] ASoC: SOF: Intel: fix spelling mistake
- "incompatble" -> "incompatible"
-To:     Colin King <colin.king@canonical.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Keyon Jie <yang.jie@linux.intel.com>,
-        alsa-devel@alsa-project.org
+        id S1726165AbfEAMnU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 May 2019 08:43:20 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:46625 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726010AbfEAMnT (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 1 May 2019 08:43:19 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hLoZx-0000eF-I3; Wed, 01 May 2019 12:43:17 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190501102308.30390-1-colin.king@canonical.com>
-From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Message-ID: <7aff79bd-e0d5-a10b-7443-6f27ea1f47c7@linux.intel.com>
-Date:   Wed, 1 May 2019 07:16:17 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+Subject: [PATCH][next] kobject: fix dereference before null check on kobj
+Date:   Wed,  1 May 2019 13:43:17 +0100
+Message-Id: <20190501124317.1759-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190501102308.30390-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
+The kobj pointer is being null-checked so potentially it could be null,
+however, the ktype declaration before the null check is dereferencing kobj
+hence we have a potential null pointer deference. Fix this by moving the
+assignment of ktype after kobj has been null checked.
 
-On 5/1/19 5:23 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in a hda_dsp_rom_msg message, fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Addresses-Coverity: ("Dereference before null check")
+Fixes: aa30f47cf666 ("kobject: Add support for default attribute groups to kobj_type")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ lib/kobject.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+diff --git a/lib/kobject.c b/lib/kobject.c
+index a30ee0467942..095bcb55c2ba 100644
+--- a/lib/kobject.c
++++ b/lib/kobject.c
+@@ -603,12 +603,13 @@ EXPORT_SYMBOL_GPL(kobject_move);
+ void kobject_del(struct kobject *kobj)
+ {
+ 	struct kernfs_node *sd;
+-	const struct kobj_type *ktype = get_ktype(kobj);
++	const struct kobj_type *ktype;
+ 
+ 	if (!kobj)
+ 		return;
+ 
+ 	sd = kobj->sd;
++	ktype = get_ktype(kobj);
+ 
+ 	if (ktype)
+ 		sysfs_remove_groups(kobj, ktype->default_groups);
+-- 
+2.20.1
 
-Thanks for the fix!
-
-> ---
->   sound/soc/sof/intel/hda.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
-> index b8fc19790f3b..84baf275b467 100644
-> --- a/sound/soc/sof/intel/hda.c
-> +++ b/sound/soc/sof/intel/hda.c
-> @@ -54,7 +54,7 @@ static const struct hda_dsp_msg_code hda_dsp_rom_msg[] = {
->   	{HDA_DSP_ROM_L2_CACHE_ERROR, "error: L2 cache error"},
->   	{HDA_DSP_ROM_LOAD_OFFSET_TO_SMALL, "error: load offset too small"},
->   	{HDA_DSP_ROM_API_PTR_INVALID, "error: API ptr invalid"},
-> -	{HDA_DSP_ROM_BASEFW_INCOMPAT, "error: base fw incompatble"},
-> +	{HDA_DSP_ROM_BASEFW_INCOMPAT, "error: base fw incompatible"},
->   	{HDA_DSP_ROM_UNHANDLED_INTERRUPT, "error: unhandled interrupt"},
->   	{HDA_DSP_ROM_MEMORY_HOLE_ECC, "error: ECC memory hole"},
->   	{HDA_DSP_ROM_KERNEL_EXCEPTION, "error: kernel exception"},
-> 

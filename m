@@ -2,61 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0A0710815
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2019 14:58:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E9ED10820
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 May 2019 15:08:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726352AbfEAM6W (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 May 2019 08:58:22 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:46911 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725971AbfEAM6W (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 May 2019 08:58:22 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hLonV-0002Vk-J1; Wed, 01 May 2019 12:57:17 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] dm: remove redundant unsigned comparison to less than zero
-Date:   Wed,  1 May 2019 13:57:17 +0100
-Message-Id: <20190501125717.5695-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726379AbfEANI2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 May 2019 09:08:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36230 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725993AbfEANI2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 1 May 2019 09:08:28 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A82242085A;
+        Wed,  1 May 2019 13:08:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1556716108;
+        bh=SRO4r3Co9WuqsnOgY0780Sz3PYGcGIFeiwKYqJlAa1A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=gwxV1JApnL7suD71vDinkM0jGvS0+hYCIKzOOpZQ+cLL4DKg4uLQhOlf9Iw9/64uI
+         sgNKvMXFb/67aOweL8suJZelhdO6on/R679WPfEK7kApoGiUChM8qKWITB52QjC0FX
+         9mBiVNokfU5SZ7gDHgGhPLxhA329dOLLtwgprLw8=
+Date:   Wed, 1 May 2019 15:08:25 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "Rafael J . Wysocki" <rafael@kernel.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] kobject: fix dereference before null check on kobj
+Message-ID: <20190501130825.GA28441@kroah.com>
+References: <20190501124317.1759-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190501124317.1759-1-colin.king@canonical.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Wed, May 01, 2019 at 01:43:17PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The kobj pointer is being null-checked so potentially it could be null,
+> however, the ktype declaration before the null check is dereferencing kobj
+> hence we have a potential null pointer deference. Fix this by moving the
+> assignment of ktype after kobj has been null checked.
+> 
+> Addresses-Coverity: ("Dereference before null check")
+> Fixes: aa30f47cf666 ("kobject: Add support for default attribute groups to kobj_type")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  lib/kobject.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-Variable block is an unsigned long long hence the less than zero
-comparison is always false, hence it is redundant and can be removed.
+Nice catch, thanks, will go queue this up now.
 
-Addresses-Coverity: ("Unsigned compared against 0")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/md/dm-dust.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/md/dm-dust.c b/drivers/md/dm-dust.c
-index 178587bdc626..e739092bfc65 100644
---- a/drivers/md/dm-dust.c
-+++ b/drivers/md/dm-dust.c
-@@ -411,7 +411,7 @@ static int dust_message(struct dm_target *ti, unsigned int argc, char **argv,
- 
- 		block = tmp;
- 		sector_div(size, dd->sect_per_block);
--		if (block > size || block < 0) {
-+		if (block > size) {
- 			DMERR("selected block value out of range");
- 			return result;
- 		}
--- 
-2.20.1
-
+greg k-h

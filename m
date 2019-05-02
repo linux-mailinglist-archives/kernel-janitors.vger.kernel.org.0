@@ -2,47 +2,47 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A286011122
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 May 2019 04:18:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9FDF1111E
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 May 2019 04:18:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726304AbfEBCSR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 May 2019 22:18:17 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:54828 "EHLO
+        id S1726386AbfEBCST (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 May 2019 22:18:19 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:54866 "EHLO
         heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726166AbfEBCSR (ORCPT
+        with ESMTP id S1726152AbfEBCST (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 May 2019 22:18:17 -0400
+        Wed, 1 May 2019 22:18:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
         Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
         List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=w52+WD1FRjYJTS1b/QlKeFRTLrKcf/MWXa48o0J7BR8=; b=wv38btT2KChe
-        tdM3DnV0rSaLva6jN2TxBVg/+98h0I8EJ2FIeE5zY1bVDogbV2Aq6ATypOhlNptyymuVa2tIDI4Gt
-        HrtPVICwFbw7gviM1+P2BfckKhaUMryzzhJXX8/G6Ui14drVEt5ai+kMSUD8TW8+43UuuNmZz7X42
-        0qDQ8=;
+        List-Archive; bh=tSRP9AREY1phAztSLdhpxjCCxjAVr/6vVxlS8p739D8=; b=ulRALQv+WaEZ
+        dWAzFCLY+CxW6k6PgY3Y8PFjrGSd3H7DCO491Tl3E05IMZiuViUgwAlR4nmwo6GZgtZqKiPUxLFxl
+        uxoNGF6k89EDqMqzlE+I96cwLemX7HXY6YehuuhQdwAKu6kauZrd3N6VoGnzGwnKyhG9dze4qa13Y
+        5CEiU=;
 Received: from [211.55.52.15] (helo=finisterre.ee.mobilebroadband)
         by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.89)
         (envelope-from <broonie@sirena.org.uk>)
-        id 1hM1IT-0005pm-8v; Thu, 02 May 2019 02:18:05 +0000
+        id 1hM1IV-0005ps-20; Thu, 02 May 2019 02:18:07 +0000
 Received: by finisterre.ee.mobilebroadband (Postfix, from userid 1000)
-        id 515C4441D3D; Thu,  2 May 2019 03:18:01 +0100 (BST)
+        id 0F5F9441D41; Thu,  2 May 2019 03:18:03 +0100 (BST)
 From:   Mark Brown <broonie@kernel.org>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     alsa-devel@alsa-project.org, Jaroslav Kysela <perex@perex.cz>,
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     alsa-devel@alsa-project.org, Baolin Wang <baolin.wang@linaro.org>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Jaroslav Kysela <perex@perex.cz>,
         kernel-janitors@vger.kernel.org,
-        Keyon Jie <yang.jie@linux.intel.com>,
         Liam Girdwood <lgirdwood@gmail.com>,
         linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Takashi Iwai <tiwai@suse.com>
-Subject: Applied "ASoC: SOF: Intel: fix spelling mistake "incompatble" -> "incompatible"" to the asoc tree
-In-Reply-To: <20190501102308.30390-1-colin.king@canonical.com>
+        Orson Zhai <orsonzhai@gmail.com>, Takashi Iwai <tiwai@suse.com>
+Subject: Applied "ASoC: sprd: Fix return value check in sprd_mcdt_probe()" to the asoc tree
+In-Reply-To: <20190429122512.59242-1-weiyongjun1@huawei.com>
 X-Patchwork-Hint: ignore
-Message-Id: <20190502021801.515C4441D3D@finisterre.ee.mobilebroadband>
-Date:   Thu,  2 May 2019 03:18:01 +0100 (BST)
+Message-Id: <20190502021803.0F5F9441D41@finisterre.ee.mobilebroadband>
+Date:   Thu,  2 May 2019 03:18:02 +0100 (BST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -50,7 +50,7 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 The patch
 
-   ASoC: SOF: Intel: fix spelling mistake "incompatble" -> "incompatible"
+   ASoC: sprd: Fix return value check in sprd_mcdt_probe()
 
 has been applied to the asoc tree at
 
@@ -75,35 +75,38 @@ to this mail.
 Thanks,
 Mark
 
-From 07f80454369e5a8141dbbf4ae0a535230f223f2b Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king@canonical.com>
-Date: Wed, 1 May 2019 11:23:08 +0100
-Subject: [PATCH] ASoC: SOF: Intel: fix spelling mistake "incompatble" ->
- "incompatible"
+From 7c88b92816dfe5eab224b96577b50ac00b4be68a Mon Sep 17 00:00:00 2001
+From: Wei Yongjun <weiyongjun1@huawei.com>
+Date: Mon, 29 Apr 2019 12:25:12 +0000
+Subject: [PATCH] ASoC: sprd: Fix return value check in sprd_mcdt_probe()
 
-There is a spelling mistake in a hda_dsp_rom_msg message, fix it.
+In case of error, the function devm_ioremap_resource() returns ERR_PTR()
+and never returns NULL. The NULL test in the return value check should
+be replaced with IS_ERR().
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
-Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Fixes: d7bff893e04f ("ASoC: sprd: Add Spreadtrum multi-channel data transfer support")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Reviewed-by: Baolin Wang <baolin.wang@linaro.org>
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/soc/sof/intel/hda.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sprd/sprd-mcdt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
-index b8fc19790f3b..84baf275b467 100644
---- a/sound/soc/sof/intel/hda.c
-+++ b/sound/soc/sof/intel/hda.c
-@@ -54,7 +54,7 @@ static const struct hda_dsp_msg_code hda_dsp_rom_msg[] = {
- 	{HDA_DSP_ROM_L2_CACHE_ERROR, "error: L2 cache error"},
- 	{HDA_DSP_ROM_LOAD_OFFSET_TO_SMALL, "error: load offset too small"},
- 	{HDA_DSP_ROM_API_PTR_INVALID, "error: API ptr invalid"},
--	{HDA_DSP_ROM_BASEFW_INCOMPAT, "error: base fw incompatble"},
-+	{HDA_DSP_ROM_BASEFW_INCOMPAT, "error: base fw incompatible"},
- 	{HDA_DSP_ROM_UNHANDLED_INTERRUPT, "error: unhandled interrupt"},
- 	{HDA_DSP_ROM_MEMORY_HOLE_ECC, "error: ECC memory hole"},
- 	{HDA_DSP_ROM_KERNEL_EXCEPTION, "error: kernel exception"},
+diff --git a/sound/soc/sprd/sprd-mcdt.c b/sound/soc/sprd/sprd-mcdt.c
+index 28f5e649733d..e9318d7a4810 100644
+--- a/sound/soc/sprd/sprd-mcdt.c
++++ b/sound/soc/sprd/sprd-mcdt.c
+@@ -951,8 +951,8 @@ static int sprd_mcdt_probe(struct platform_device *pdev)
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	mcdt->base = devm_ioremap_resource(&pdev->dev, res);
+-	if (!mcdt->base)
+-		return -ENOMEM;
++	if (IS_ERR(mcdt->base))
++		return PTR_ERR(mcdt->base);
+ 
+ 	mcdt->dev = &pdev->dev;
+ 	spin_lock_init(&mcdt->lock);
 -- 
 2.20.1
 

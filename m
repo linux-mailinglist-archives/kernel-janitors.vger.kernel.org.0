@@ -2,79 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BB0811837
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 May 2019 13:34:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B499911A21
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 May 2019 15:27:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726442AbfEBLdx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 2 May 2019 07:33:53 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:44063 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726302AbfEBLdx (ORCPT
+        id S1726350AbfEBN1R (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 May 2019 09:27:17 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:41592 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726283AbfEBN1R (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 2 May 2019 07:33:53 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hM9y8-0005q6-Uv; Thu, 02 May 2019 11:33:41 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        alsa-devel@alsa-project.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ASoC: SOF: remove redundant null checks of dai
-Date:   Thu,  2 May 2019 12:33:40 +0100
-Message-Id: <20190502113340.8688-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Thu, 2 May 2019 09:27:17 -0400
+Received: by mail-wr1-f67.google.com with SMTP id c12so3362223wrt.8
+        for <kernel-janitors@vger.kernel.org>; Thu, 02 May 2019 06:27:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=klk9BfNLobZFzvvv3RWonkuC3y07XDsJxgsitF+PBMI=;
+        b=qOHmcqy3EHCK6AexNbRileaCwlwx3/PzRurQef2yZJYqR7iFJ9DsBq+c6DBfM5KWYu
+         Q1GyZUkSmOmICclqCtB3BR+qAfzqBvbRj3tD/LATwhtklPPdLYp5ytsmHeQeiBbszzj8
+         ZdRrXzNEI3jqMcuOoLua/OlpTZMoIygtCHiZxyJABWbvoJ8+FkloKhcYv/MBSbCHvkp3
+         BOyYCOMiwtTIf5wOsdOeSdt11F6Up3K9ncC9mKVXzZNUNSj0jA/esk2Zp/JQ2SITBwWq
+         OqgR4+DxSfi4R3hpGT2jLQYEDgenqMNeaB/SVbp/mNrXEsmF2iLTOHHvN2sCOrvrwpCW
+         guVw==
+X-Gm-Message-State: APjAAAX8yYJQKGQMeiQ4XdNI0yPmHBgpA6Kf+UkJfW+KTWdgL6Ppl3/R
+        PVjGPLzCI8zHMWWB357VOJnsrTmh5l5R8sYLRtTrZA==
+X-Google-Smtp-Source: APXvYqzwqgHiTGnc/CUv5ctBzIs+Lutqt2xj3BHihx/LSigv+LRUxs2dNE20e+3GgBpSacsfbpEzd2l4Oe6+XZAb8TE=
+X-Received: by 2002:a5d:548d:: with SMTP id h13mr2948846wrv.218.1556803636210;
+ Thu, 02 May 2019 06:27:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20190501125717.5695-1-colin.king@canonical.com>
+In-Reply-To: <20190501125717.5695-1-colin.king@canonical.com>
+From:   Bryan Gurney <bgurney@redhat.com>
+Date:   Thu, 2 May 2019 09:27:05 -0400
+Message-ID: <CAHhmqcTRVWBNnynaAJ7mbtke-MCiBma-6z_=bYrFzh0ubky-Fw@mail.gmail.com>
+Subject: Re: [PATCH][next] dm: remove redundant unsigned comparison to less
+ than zero
+To:     Colin King <colin.king@canonical.com>
+Cc:     Alasdair Kergon <agk@redhat.com>,
+        Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Wed, May 1, 2019 at 8:58 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> Variable block is an unsigned long long hence the less than zero
+> comparison is always false, hence it is redundant and can be removed.
+>
+> Addresses-Coverity: ("Unsigned compared against 0")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/md/dm-dust.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/md/dm-dust.c b/drivers/md/dm-dust.c
+> index 178587bdc626..e739092bfc65 100644
+> --- a/drivers/md/dm-dust.c
+> +++ b/drivers/md/dm-dust.c
+> @@ -411,7 +411,7 @@ static int dust_message(struct dm_target *ti, unsigned int argc, char **argv,
+>
+>                 block = tmp;
+>                 sector_div(size, dd->sect_per_block);
+> -               if (block > size || block < 0) {
+> +               if (block > size) {
+>                         DMERR("selected block value out of range");
+>                         return result;
+>                 }
+> --
+> 2.20.1
+>
 
-Currently there are two null checks of pointer dai in function
-sof_connect_dai_widget and yet there is no null check of dai
-at the end of the function when checking !dai->name.  The latter
-would be a null pointer deference if dai is null (as picked up
-by static analysis), however the function is only ever called
-when dai is successfully allocated, so the null checks are
-redundant. Clean up the code by removing the null checks.
+Thanks.
 
-Addresses-Coverity: ("Dereference after null check")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- sound/soc/sof/topology.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+There was already a check before that to ensure that the argument
+feeding this variable is an unsigned long long; if it isn't, it will
+fail with EINVAL:
 
-diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
-index 2b9de1b97447..1f71857298a9 100644
---- a/sound/soc/sof/topology.c
-+++ b/sound/soc/sof/topology.c
-@@ -1127,15 +1127,13 @@ static int sof_connect_dai_widget(struct snd_soc_component *scomp,
- 		switch (w->id) {
- 		case snd_soc_dapm_dai_out:
- 			rtd->cpu_dai->capture_widget = w;
--			if (dai)
--				dai->name = rtd->dai_link->name;
-+			dai->name = rtd->dai_link->name;
- 			dev_dbg(sdev->dev, "tplg: connected widget %s -> DAI link %s\n",
- 				w->name, rtd->dai_link->name);
- 			break;
- 		case snd_soc_dapm_dai_in:
- 			rtd->cpu_dai->playback_widget = w;
--			if (dai)
--				dai->name = rtd->dai_link->name;
-+			dai->name = rtd->dai_link->name;
- 			dev_dbg(sdev->dev, "tplg: connected widget %s -> DAI link %s\n",
- 				w->name, rtd->dai_link->name);
- 			break;
--- 
-2.20.1
+# dmsetup message -- dust1 0 queryblock -1
+device-mapper: message ioctl on dust1  failed: Invalid argument
+Command failed
 
+Reviewed-by: Bryan Gurney <bgurney@redhat.com>

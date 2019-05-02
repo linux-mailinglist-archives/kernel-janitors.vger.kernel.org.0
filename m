@@ -2,90 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B499911A21
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 May 2019 15:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 768E911B99
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 May 2019 16:37:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726350AbfEBN1R (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 2 May 2019 09:27:17 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:41592 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726283AbfEBN1R (ORCPT
+        id S1726282AbfEBOhw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 May 2019 10:37:52 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:59430 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726197AbfEBOhw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 2 May 2019 09:27:17 -0400
-Received: by mail-wr1-f67.google.com with SMTP id c12so3362223wrt.8
-        for <kernel-janitors@vger.kernel.org>; Thu, 02 May 2019 06:27:16 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=klk9BfNLobZFzvvv3RWonkuC3y07XDsJxgsitF+PBMI=;
-        b=qOHmcqy3EHCK6AexNbRileaCwlwx3/PzRurQef2yZJYqR7iFJ9DsBq+c6DBfM5KWYu
-         Q1GyZUkSmOmICclqCtB3BR+qAfzqBvbRj3tD/LATwhtklPPdLYp5ytsmHeQeiBbszzj8
-         ZdRrXzNEI3jqMcuOoLua/OlpTZMoIygtCHiZxyJABWbvoJ8+FkloKhcYv/MBSbCHvkp3
-         BOyYCOMiwtTIf5wOsdOeSdt11F6Up3K9ncC9mKVXzZNUNSj0jA/esk2Zp/JQ2SITBwWq
-         OqgR4+DxSfi4R3hpGT2jLQYEDgenqMNeaB/SVbp/mNrXEsmF2iLTOHHvN2sCOrvrwpCW
-         guVw==
-X-Gm-Message-State: APjAAAX8yYJQKGQMeiQ4XdNI0yPmHBgpA6Kf+UkJfW+KTWdgL6Ppl3/R
-        PVjGPLzCI8zHMWWB357VOJnsrTmh5l5R8sYLRtTrZA==
-X-Google-Smtp-Source: APXvYqzwqgHiTGnc/CUv5ctBzIs+Lutqt2xj3BHihx/LSigv+LRUxs2dNE20e+3GgBpSacsfbpEzd2l4Oe6+XZAb8TE=
-X-Received: by 2002:a5d:548d:: with SMTP id h13mr2948846wrv.218.1556803636210;
- Thu, 02 May 2019 06:27:16 -0700 (PDT)
+        Thu, 2 May 2019 10:37:52 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 1537260863; Thu,  2 May 2019 14:37:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556807872;
+        bh=LFrnrg1kd52WYVEfpqt6x7qXfH3+6LG4aPrINU56sFQ=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=PggLeIyrqgYZTXaGSJYZRamicPs/efCCoHcRQGtm223IYL7xcFnkgzNmaWb31vh22
+         en6LdMJYHmhQsCBOZcjtDjBYaedMPbXHmqc43yeK9MoFvOUBKTM7g22jk6HCEUUfel
+         giCm2bHOd+JBepEV9w1oclysnr1ZTSQnNKBYHpNs=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from [10.204.79.15] (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: mojha@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6B901607C3;
+        Thu,  2 May 2019 14:37:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1556807871;
+        bh=LFrnrg1kd52WYVEfpqt6x7qXfH3+6LG4aPrINU56sFQ=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=AZixdJk/U74e2NG2xXw2qB0k18C4BojmhLUimCgLlQJ3NbXItjLv6raL1y9JuR7sd
+         iwV/NWforWtg/Hywt/9BKAchq+elwr7kg62wC7VY0091OTr3wWzJ6CECs49ueTMCy4
+         OX6rFDDo6g/SYVFsxxoCSCAo0/XFmctFfV6QzWAg=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6B901607C3
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=mojha@codeaurora.org
+Subject: Re: [PATCH][next] KVM: PPC: Book3S HV: XIVE: fix spelling mistake
+ "acessing" -> "accessing"
+To:     Colin King <colin.king@canonical.com>,
+        Paul Mackerras <paulus@ozlabs.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Michael Ellerman <mpe@ellerman.id.au>, kvm-ppc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190502102313.25093-1-colin.king@canonical.com>
+From:   Mukesh Ojha <mojha@codeaurora.org>
+Message-ID: <a7883281-bae0-694e-8436-f385023c1f88@codeaurora.org>
+Date:   Thu, 2 May 2019 20:07:39 +0530
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-References: <20190501125717.5695-1-colin.king@canonical.com>
-In-Reply-To: <20190501125717.5695-1-colin.king@canonical.com>
-From:   Bryan Gurney <bgurney@redhat.com>
-Date:   Thu, 2 May 2019 09:27:05 -0400
-Message-ID: <CAHhmqcTRVWBNnynaAJ7mbtke-MCiBma-6z_=bYrFzh0ubky-Fw@mail.gmail.com>
-Subject: Re: [PATCH][next] dm: remove redundant unsigned comparison to less
- than zero
-To:     Colin King <colin.king@canonical.com>
-Cc:     Alasdair Kergon <agk@redhat.com>,
-        Mike Snitzer <snitzer@redhat.com>, dm-devel@redhat.com,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190502102313.25093-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, May 1, 2019 at 8:58 AM Colin King <colin.king@canonical.com> wrote:
->
+
+On 5/2/2019 3:53 PM, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 >
-> Variable block is an unsigned long long hence the less than zero
-> comparison is always false, hence it is redundant and can be removed.
+> There is a spelling mistake in a pr_err message, fix it.
 >
-> Addresses-Coverity: ("Unsigned compared against 0")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
+
+Cheers,
+-Mukesh
+
+
 > ---
->  drivers/md/dm-dust.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>   arch/powerpc/kvm/book3s_xive_native.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/md/dm-dust.c b/drivers/md/dm-dust.c
-> index 178587bdc626..e739092bfc65 100644
-> --- a/drivers/md/dm-dust.c
-> +++ b/drivers/md/dm-dust.c
-> @@ -411,7 +411,7 @@ static int dust_message(struct dm_target *ti, unsigned int argc, char **argv,
->
->                 block = tmp;
->                 sector_div(size, dd->sect_per_block);
-> -               if (block > size || block < 0) {
-> +               if (block > size) {
->                         DMERR("selected block value out of range");
->                         return result;
->                 }
-> --
-> 2.20.1
->
-
-Thanks.
-
-There was already a check before that to ensure that the argument
-feeding this variable is an unsigned long long; if it isn't, it will
-fail with EINVAL:
-
-# dmsetup message -- dust1 0 queryblock -1
-device-mapper: message ioctl on dust1  failed: Invalid argument
-Command failed
-
-Reviewed-by: Bryan Gurney <bgurney@redhat.com>
+> diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
+> index 5e14df1a4403..6a8e698c4b6e 100644
+> --- a/arch/powerpc/kvm/book3s_xive_native.c
+> +++ b/arch/powerpc/kvm/book3s_xive_native.c
+> @@ -235,7 +235,7 @@ static vm_fault_t xive_native_esb_fault(struct vm_fault *vmf)
+>   	arch_spin_unlock(&sb->lock);
+>   
+>   	if (WARN_ON(!page)) {
+> -		pr_err("%s: acessing invalid ESB page for source %lx !\n",
+> +		pr_err("%s: accessing invalid ESB page for source %lx !\n",
+>   		       __func__, irq);
+>   		return VM_FAULT_SIGBUS;
+>   	}

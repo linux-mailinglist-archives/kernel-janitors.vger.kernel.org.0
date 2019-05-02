@@ -2,117 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD78711121
-	for <lists+kernel-janitors@lfdr.de>; Thu,  2 May 2019 04:18:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EB7411726
+	for <lists+kernel-janitors@lfdr.de>; Thu,  2 May 2019 12:23:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726362AbfEBCSS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 May 2019 22:18:18 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:54858 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726205AbfEBCSS (ORCPT
+        id S1726383AbfEBKXS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 2 May 2019 06:23:18 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:42748 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726231AbfEBKXS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 May 2019 22:18:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
-        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
-        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=qPjR5TzRDbnAqxV3DwfYDMNhhBwZAe2KIxcyy2P9zos=; b=h10UDky+3huF
-        btSF4G/2IKX2b6vivJBPW/IGONFd3A3bVh0bZ/vrZHQWUs0DuB+dp7Pg3IovUUy5dbvhXvvqcDFdg
-        YvWf+WOdz29/LdR2ZxTvxxY9fovVeYIUzc2vfGqVu3jxivs/sSwjSnfksyMeeyAcaqSzUuLvnCf/S
-        HNOiI=;
-Received: from [211.55.52.15] (helo=finisterre.ee.mobilebroadband)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1hM1IT-0005pn-MY; Thu, 02 May 2019 02:18:06 +0000
-Received: by finisterre.ee.mobilebroadband (Postfix, from userid 1000)
-        id 767DF441D3F; Thu,  2 May 2019 03:18:02 +0100 (BST)
-From:   Mark Brown <broonie@kernel.org>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     alsa-devel@alsa-project.org, Baolin Wang <baolin.wang@linaro.org>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        kernel-janitors@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Orson Zhai <orsonzhai@gmail.com>, Takashi Iwai <tiwai@suse.com>
-Subject: Applied "ASoC: sprd: Fix to use list_for_each_entry_safe() when delete items" to the asoc tree
-In-Reply-To: <20190429123713.64280-1-weiyongjun1@huawei.com>
-X-Patchwork-Hint: ignore
-Message-Id: <20190502021802.767DF441D3F@finisterre.ee.mobilebroadband>
-Date:   Thu,  2 May 2019 03:18:02 +0100 (BST)
+        Thu, 2 May 2019 06:23:18 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hM8ry-0006jK-0U; Thu, 02 May 2019 10:23:14 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Paul Mackerras <paulus@ozlabs.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Michael Ellerman <mpe@ellerman.id.au>, kvm-ppc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] KVM: PPC: Book3S HV: XIVE: fix spelling mistake "acessing" -> "accessing"
+Date:   Thu,  2 May 2019 11:23:13 +0100
+Message-Id: <20190502102313.25093-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
+From: Colin Ian King <colin.king@canonical.com>
 
-   ASoC: sprd: Fix to use list_for_each_entry_safe() when delete items
+There is a spelling mistake in a pr_err message, fix it.
 
-has been applied to the asoc tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.2
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From 81a812c98b6eda7e3101305d57354433e3edc541 Mon Sep 17 00:00:00 2001
-From: Wei Yongjun <weiyongjun1@huawei.com>
-Date: Mon, 29 Apr 2019 12:37:13 +0000
-Subject: [PATCH] ASoC: sprd: Fix to use list_for_each_entry_safe() when delete
- items
-
-Since we will remove items off the list using list_del() we need
-to use a safe version of the list_for_each_entry() macro aptly named
-list_for_each_entry_safe().
-
-Fixes: d7bff893e04f ("ASoC: sprd: Add Spreadtrum multi-channel data transfer support")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-Reviewed-by: Baolin Wang <baolin.wang@linaro.org>
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- sound/soc/sprd/sprd-mcdt.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/powerpc/kvm/book3s_xive_native.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/sprd/sprd-mcdt.c b/sound/soc/sprd/sprd-mcdt.c
-index e9318d7a4810..7448015a4935 100644
---- a/sound/soc/sprd/sprd-mcdt.c
-+++ b/sound/soc/sprd/sprd-mcdt.c
-@@ -978,12 +978,12 @@ static int sprd_mcdt_probe(struct platform_device *pdev)
+diff --git a/arch/powerpc/kvm/book3s_xive_native.c b/arch/powerpc/kvm/book3s_xive_native.c
+index 5e14df1a4403..6a8e698c4b6e 100644
+--- a/arch/powerpc/kvm/book3s_xive_native.c
++++ b/arch/powerpc/kvm/book3s_xive_native.c
+@@ -235,7 +235,7 @@ static vm_fault_t xive_native_esb_fault(struct vm_fault *vmf)
+ 	arch_spin_unlock(&sb->lock);
  
- static int sprd_mcdt_remove(struct platform_device *pdev)
- {
--	struct sprd_mcdt_chan *temp;
-+	struct sprd_mcdt_chan *chan, *temp;
- 
- 	mutex_lock(&sprd_mcdt_list_mutex);
- 
--	list_for_each_entry(temp, &sprd_mcdt_chan_list, list)
--		list_del(&temp->list);
-+	list_for_each_entry_safe(chan, temp, &sprd_mcdt_chan_list, list)
-+		list_del(&chan->list);
- 
- 	mutex_unlock(&sprd_mcdt_list_mutex);
- 
+ 	if (WARN_ON(!page)) {
+-		pr_err("%s: acessing invalid ESB page for source %lx !\n",
++		pr_err("%s: accessing invalid ESB page for source %lx !\n",
+ 		       __func__, irq);
+ 		return VM_FAULT_SIGBUS;
+ 	}
 -- 
 2.20.1
 

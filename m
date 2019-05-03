@@ -2,85 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C3480132BB
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 May 2019 19:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9942F133B3
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 May 2019 20:45:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728058AbfECRCi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 May 2019 13:02:38 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:56318 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726724AbfECRCh (ORCPT
+        id S1726531AbfECSpU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 May 2019 14:45:20 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:34680 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725997AbfECSpU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 May 2019 13:02:37 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43GxPbM141123;
-        Fri, 3 May 2019 17:02:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2018-07-02;
- bh=BncSkmKFfSjgngfBN0eKIEFvp3WAo4qj1izyOTi5oSU=;
- b=Laftfx5AdthWx83pArbwSNaQCp2334pSq8Nd3V+Lf4APplC9cbaTIUg0gREZxZKNfIzt
- xbHhLDOisBrHOFg+HrjZG1jjrScs+5RF2go67GY1u2odxUp4LF83/0LcyAFD62qDvVDn
- SJx57SB5qA0vXf3la01p3Hqx/xygF05KacrwvMo4qqLsr0qkd2Xd7htbwst8ER4NzOn4
- 4zkbYsAa0wja5JzjTMTIv3cx/dv8AWQFQxYIGfKNwqI6JTF58bBfHg+61e+jnYcWcQIn
- fqS1V5AnE0lz6R5t2nE39ct+/5UR4Hshk6mh8khKM/UmG+f6g/M5sa2kLAManHrq3pEL RA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 2s6xhyr3ts-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 May 2019 17:02:26 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43H18eQ143976;
-        Fri, 3 May 2019 17:02:25 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-        by userp3020.oracle.com with ESMTP id 2s6xhhqx69-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Fri, 03 May 2019 17:02:25 +0000
-Received: from userp3020.oracle.com (userp3020.oracle.com [127.0.0.1])
-        by pps.reinject (8.16.0.27/8.16.0.27) with SMTP id x43H2PZq147775;
-        Fri, 3 May 2019 17:02:25 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 2s6xhhqx61-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 May 2019 17:02:25 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x43H2OEZ010679;
-        Fri, 3 May 2019 17:02:24 GMT
-Received: from [10.209.243.127] (/10.209.243.127)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 03 May 2019 10:02:24 -0700
-Subject: Re: [PATCH] net: rds: fix spelling mistake "syctl" -> "sysctl"
-To:     Colin King <colin.king@canonical.com>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190503121017.5227-1-colin.king@canonical.com>
-From:   Santosh Shilimkar <santosh.shilimkar@oracle.com>
-Organization: Oracle Corporation
-Message-ID: <0fc4a8a5-d275-ef2c-3cbc-5cfa97fe6881@oracle.com>
-Date:   Fri, 3 May 2019 10:05:12 -0700
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        Fri, 3 May 2019 14:45:20 -0400
+Received: by mail-ot1-f65.google.com with SMTP id n15so6225775ota.1
+        for <kernel-janitors@vger.kernel.org>; Fri, 03 May 2019 11:45:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QFIm1hDHtUjLdOYqNjnkn9Poy1ZSguPT9bbKFukhSS8=;
+        b=YMODis9sBj4XZd9MlvfJoI3CbW00K76GzXKxVJ9NjVU/3eQZADqKzdnC/cZ0ffQfoN
+         lQvddYFg93ENY3JXkaTX4wcdNv+9ZCa+9gQEztFV46xC9XHucupEgDThMXJEGT43f92m
+         vDtbQsOMJ5kSV26pnIHC/GJ/wUj8K8e9SF0I617OhUNJ0IO9Gm2TnZuQXgs1kivXci1h
+         bl/VdttMavDflJRCS2fa1PjqfktLV8PAFo76pVBsHKEkF6DrbTPwh4+qSdUIm1dq2uHq
+         FAmY4REnYy194a2W8ix0ozwhB0fkv/a176Hk2Hngdf8wvHw+PqWFNzEyjFtZxoeAY3KO
+         //AA==
+X-Gm-Message-State: APjAAAVIJY4Zxvi8+YwnakPy6Lxn1wVcDOPpQSlRtC6BGI0/NSuYVSn9
+        cTM2yDZ3J1fv15GUnhwQ8uvUXOFn
+X-Google-Smtp-Source: APXvYqxKZ4j3Yx1jP6mxN/G0sPTVLyzbhqsAwQfH/kscRwaI4qd45dPkZ88rQl8e8qDaE37dKNxNGQ==
+X-Received: by 2002:a05:6830:16c3:: with SMTP id l3mr7972786otr.359.1556909119351;
+        Fri, 03 May 2019 11:45:19 -0700 (PDT)
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com. [209.85.167.181])
+        by smtp.gmail.com with ESMTPSA id s26sm1051533otk.24.2019.05.03.11.45.18
+        for <kernel-janitors@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 03 May 2019 11:45:18 -0700 (PDT)
+Received: by mail-oi1-f181.google.com with SMTP id v23so5191006oif.8
+        for <kernel-janitors@vger.kernel.org>; Fri, 03 May 2019 11:45:18 -0700 (PDT)
+X-Received: by 2002:aca:b50b:: with SMTP id e11mr102116oif.51.1556909118233;
+ Fri, 03 May 2019 11:45:18 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190503121017.5227-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9245 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=802 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905030109
+References: <20190503131551.GB1236@mwanda>
+In-Reply-To: <20190503131551.GB1236@mwanda>
+From:   Li Yang <leoyang.li@nxp.com>
+Date:   Fri, 3 May 2019 13:45:07 -0500
+X-Gmail-Original-Message-ID: <CADRPPNTGovYXL8vo7B6d73xu5BzpZBJLV=sGXK9HXrad-3HMeg@mail.gmail.com>
+Message-ID: <CADRPPNTGovYXL8vo7B6d73xu5BzpZBJLV=sGXK9HXrad-3HMeg@mail.gmail.com>
+Subject: Re: [PATCH] soc: fsl: qe: gpio: Fix an error code in qe_pin_request()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Qiang Zhao <qiang.zhao@nxp.com>,
+        Grant Likely <grant.likely@secretlab.ca>,
+        kernel-janitors@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 5/3/2019 5:10 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in a pr_warn warning. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On Fri, May 3, 2019 at 8:19 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> There was a missing error code in this path.  It meant that we returned
+> ERR_PTR(0) which is NULL and would result in a NULL dereference in the
+> caller.
+
+Thanks Dan.  An early version of this patch has been included in a
+pending pull request to arm-soc.
+https://lkml.org/lkml/2019/5/1/506
+
+
+>
+> Fixes: 1a2d397a6eb5 ("gpio/powerpc: Eliminate duplication of of_get_named_gpio_flags()")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
-Acked-by: Santosh Shilimkar <santosh.shilimkar@oracle.com>
+>  drivers/soc/fsl/qe/gpio.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/soc/fsl/qe/gpio.c b/drivers/soc/fsl/qe/gpio.c
+> index 819bed0f5667..51b3a47b5a55 100644
+> --- a/drivers/soc/fsl/qe/gpio.c
+> +++ b/drivers/soc/fsl/qe/gpio.c
+> @@ -179,8 +179,10 @@ struct qe_pin *qe_pin_request(struct device_node *np, int index)
+>         if (err < 0)
+>                 goto err0;
+>         gc = gpio_to_chip(err);
+> -       if (WARN_ON(!gc))
+> +       if (WARN_ON(!gc)) {
+> +               err = -ENODEV;
+>                 goto err0;
+> +       }
+>
+>         if (!of_device_is_compatible(gc->of_node, "fsl,mpc8323-qe-pario-bank")) {
+>                 pr_debug("%s: tried to get a non-qe pin\n", __func__);
+> --
+> 2.18.0
+>

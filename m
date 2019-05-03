@@ -2,52 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D85012EDE
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 May 2019 15:16:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC9AF12EE1
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 May 2019 15:17:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726719AbfECNQO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 May 2019 09:16:14 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:53676 "EHLO
+        id S1727501AbfECNRK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 May 2019 09:17:10 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:54828 "EHLO
         aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726681AbfECNQO (ORCPT
+        with ESMTP id S1726719AbfECNRK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 May 2019 09:16:14 -0400
+        Fri, 3 May 2019 09:17:10 -0400
 Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43DE9Z8139285;
-        Fri, 3 May 2019 13:16:02 GMT
+        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43DEGPk139327;
+        Fri, 3 May 2019 13:17:02 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=LKoaRH4hte2H2gUAeE/hBpDseBARYBBMupgVpZ6MJsg=;
- b=MkgAYKJii7S3MkefBB4xrK2gBNOYc2R8NlKIkGKDg0i1qDnor9mBZ/NFRYV0F/S6wWbE
- pwsBeHSIVV5FsRC4R3Mchrix2xfqRu2ejBDsZkhZm3or1XLbSpmoTQZP+86DUcFHvOq6
- yUYGJResPYpZ23kSIKLJA9yvcF7q8xXT/U7wBgBeQ+WhuR1kj10UGoEvJIsrzeCYTvjh
- TAdkroV/qGIalovgXNLOkIKPBBZx2AkCZVDeKe9GnUjapZbSX54KbzQoUiKdkwj9sONO
- DtEm0e0irdQ11NpDQAipfua8Y48BjLVWeRdtgqkNzqR+yof7dmEKdi4fyToluYLdYmMY Zg== 
+ bh=vlCSxJN8BUUTjnqBqXalyKb7GIxVl2UFBGtLovvlGgA=;
+ b=FrqgKEcBjOG8a0turrqKK8tO+u885/fjydv2g31iW1+b54WQ7K1XwLOeXrfclnWN7AQ9
+ mcXw9mB+V3F1THJlucHga4lxZDBdxI1Dckk/eEv+6rK/tMaz3i19+ol/nYsm+4ifjESj
+ WIZZcmMuFgLb+jpvD2932PGAUxzCOmhq5E7bO1SJyLZCwZmbtEfZASWKqg1hs6D0QfUS
+ ++IBBX6ln5t585HLIHsae/JQo1gJCVqWsGmMwfapPEboMi7J8NiRscVOYm2KR+7NlbKO
+ euhdRAOCCiMiQk8rsxh6gaVxkBoCjAIMimtADLeWUqpM6muTuf5t28e4txdiYsuMuLbO Xw== 
 Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2130.oracle.com with ESMTP id 2s6xhypn1p-1
+        by aserp2130.oracle.com with ESMTP id 2s6xhypn95-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 May 2019 13:16:02 +0000
+        Fri, 03 May 2019 13:17:02 +0000
 Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43DEvYZ173502;
-        Fri, 3 May 2019 13:16:01 GMT
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43DGowD177600;
+        Fri, 3 May 2019 13:17:02 GMT
 Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 2s7rtc9efj-1
+        by aserp3030.oracle.com with ESMTP id 2s7rtc9eu4-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 May 2019 13:16:01 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x43DFx3b006657;
-        Fri, 3 May 2019 13:16:00 GMT
+        Fri, 03 May 2019 13:17:01 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x43DGxOO007680;
+        Fri, 3 May 2019 13:17:00 GMT
 Received: from mwanda (/196.104.111.181)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 03 May 2019 06:15:59 -0700
-Date:   Fri, 3 May 2019 16:15:51 +0300
+        with ESMTP ; Fri, 03 May 2019 06:16:58 -0700
+Date:   Fri, 3 May 2019 16:16:51 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Qiang Zhao <qiang.zhao@nxp.com>,
-        Grant Likely <grant.likely@secretlab.ca>
-Cc:     Li Yang <leoyang.li@nxp.com>, linuxppc-dev@lists.ozlabs.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] soc: fsl: qe: gpio: Fix an error code in qe_pin_request()
-Message-ID: <20190503131551.GB1236@mwanda>
+To:     Krzysztof Halasa <khalasa@piap.pl>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] soc: ixp4xx: qmgr: Fix an NULL vs IS_ERR() check in probe
+Message-ID: <20190503131651.GC1236@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -69,32 +68,30 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There was a missing error code in this path.  It meant that we returned
-ERR_PTR(0) which is NULL and would result in a NULL dereference in the
-caller.
+The devm_ioremap_resource() function doesn't retunr NULL, it returns
+error pointers.
 
-Fixes: 1a2d397a6eb5 ("gpio/powerpc: Eliminate duplication of of_get_named_gpio_flags()")
+Fixes: ecc133c6da60 ("soc: ixp4xx: qmgr: Pass resources")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/soc/fsl/qe/gpio.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/soc/ixp4xx/ixp4xx-qmgr.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/fsl/qe/gpio.c b/drivers/soc/fsl/qe/gpio.c
-index 819bed0f5667..51b3a47b5a55 100644
---- a/drivers/soc/fsl/qe/gpio.c
-+++ b/drivers/soc/fsl/qe/gpio.c
-@@ -179,8 +179,10 @@ struct qe_pin *qe_pin_request(struct device_node *np, int index)
- 	if (err < 0)
- 		goto err0;
- 	gc = gpio_to_chip(err);
--	if (WARN_ON(!gc))
-+	if (WARN_ON(!gc)) {
-+		err = -ENODEV;
- 		goto err0;
-+	}
+diff --git a/drivers/soc/ixp4xx/ixp4xx-qmgr.c b/drivers/soc/ixp4xx/ixp4xx-qmgr.c
+index 13a8a13c9b01..bb90670ec160 100644
+--- a/drivers/soc/ixp4xx/ixp4xx-qmgr.c
++++ b/drivers/soc/ixp4xx/ixp4xx-qmgr.c
+@@ -385,8 +385,8 @@ static int ixp4xx_qmgr_probe(struct platform_device *pdev)
+ 	if (!res)
+ 		return -ENODEV;
+ 	qmgr_regs = devm_ioremap_resource(dev, res);
+-	if (!qmgr_regs)
+-		return -ENOMEM;
++	if (IS_ERR(qmgr_regs))
++		return PTR_ERR(qmgr_regs);
  
- 	if (!of_device_is_compatible(gc->of_node, "fsl,mpc8323-qe-pario-bank")) {
- 		pr_debug("%s: tried to get a non-qe pin\n", __func__);
+ 	irq1 = platform_get_irq(pdev, 0);
+ 	if (irq1 <= 0)
 -- 
 2.18.0
 

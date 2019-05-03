@@ -2,96 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC9AF12EE1
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 May 2019 15:17:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7BE713099
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 May 2019 16:41:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727501AbfECNRK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 May 2019 09:17:10 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:54828 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726719AbfECNRK (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 May 2019 09:17:10 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43DEGPk139327;
-        Fri, 3 May 2019 13:17:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=vlCSxJN8BUUTjnqBqXalyKb7GIxVl2UFBGtLovvlGgA=;
- b=FrqgKEcBjOG8a0turrqKK8tO+u885/fjydv2g31iW1+b54WQ7K1XwLOeXrfclnWN7AQ9
- mcXw9mB+V3F1THJlucHga4lxZDBdxI1Dckk/eEv+6rK/tMaz3i19+ol/nYsm+4ifjESj
- WIZZcmMuFgLb+jpvD2932PGAUxzCOmhq5E7bO1SJyLZCwZmbtEfZASWKqg1hs6D0QfUS
- ++IBBX6ln5t585HLIHsae/JQo1gJCVqWsGmMwfapPEboMi7J8NiRscVOYm2KR+7NlbKO
- euhdRAOCCiMiQk8rsxh6gaVxkBoCjAIMimtADLeWUqpM6muTuf5t28e4txdiYsuMuLbO Xw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2130.oracle.com with ESMTP id 2s6xhypn95-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 May 2019 13:17:02 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43DGowD177600;
-        Fri, 3 May 2019 13:17:02 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 2s7rtc9eu4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 May 2019 13:17:01 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x43DGxOO007680;
-        Fri, 3 May 2019 13:17:00 GMT
-Received: from mwanda (/196.104.111.181)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 03 May 2019 06:16:58 -0700
-Date:   Fri, 3 May 2019 16:16:51 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Krzysztof Halasa <khalasa@piap.pl>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] soc: ixp4xx: qmgr: Fix an NULL vs IS_ERR() check in probe
-Message-ID: <20190503131651.GC1236@mwanda>
+        id S1726444AbfECOlR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 May 2019 10:41:17 -0400
+Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:35088 "EHLO
+        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725283AbfECOlR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 3 May 2019 10:41:17 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CD048374;
+        Fri,  3 May 2019 07:41:16 -0700 (PDT)
+Received: from e110455-lin.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.72.51.249])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9B1DC3F5C1;
+        Fri,  3 May 2019 07:41:16 -0700 (PDT)
+Received: by e110455-lin.cambridge.arm.com (Postfix, from userid 1000)
+        id DF83E68240F; Fri,  3 May 2019 15:41:14 +0100 (BST)
+Date:   Fri, 3 May 2019 15:41:14 +0100
+From:   Liviu Dudau <liviu.dudau@arm.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     "James (Qian) Wang" <james.qian.wang@arm.com>,
+        Brian Starkey <brian.starkey@arm.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] drm/komeda: Potential error pointer dereference
+Message-ID: <20190503144114.GF15144@e110455-lin.cambridge.arm.com>
+References: <20190503122525.GA29695@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9245 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1905030083
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9245 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905030083
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190503122525.GA29695@mwanda>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The devm_ioremap_resource() function doesn't retunr NULL, it returns
-error pointers.
+On Fri, May 03, 2019 at 03:25:25PM +0300, Dan Carpenter wrote:
+> We need to check whether drm_atomic_get_crtc_state() returns an error
+> pointer before dereferencing "crtc_st".
+> 
+> Fixes: 7d31b9e7a550 ("drm/komeda: Add komeda_plane/plane_helper_funcs")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Fixes: ecc133c6da60 ("soc: ixp4xx: qmgr: Pass resources")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/soc/ixp4xx/ixp4xx-qmgr.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
 
-diff --git a/drivers/soc/ixp4xx/ixp4xx-qmgr.c b/drivers/soc/ixp4xx/ixp4xx-qmgr.c
-index 13a8a13c9b01..bb90670ec160 100644
---- a/drivers/soc/ixp4xx/ixp4xx-qmgr.c
-+++ b/drivers/soc/ixp4xx/ixp4xx-qmgr.c
-@@ -385,8 +385,8 @@ static int ixp4xx_qmgr_probe(struct platform_device *pdev)
- 	if (!res)
- 		return -ENODEV;
- 	qmgr_regs = devm_ioremap_resource(dev, res);
--	if (!qmgr_regs)
--		return -ENOMEM;
-+	if (IS_ERR(qmgr_regs))
-+		return PTR_ERR(qmgr_regs);
- 
- 	irq1 = platform_get_irq(pdev, 0);
- 	if (irq1 <= 0)
+I'll pull this and send it as a fix after -rc1.
+
+Best regards,
+Liviu
+
+> ---
+>  drivers/gpu/drm/arm/display/komeda/komeda_plane.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_plane.c b/drivers/gpu/drm/arm/display/komeda/komeda_plane.c
+> index 07ed0cc1bc44..c7e5fc6e5500 100644
+> --- a/drivers/gpu/drm/arm/display/komeda/komeda_plane.c
+> +++ b/drivers/gpu/drm/arm/display/komeda/komeda_plane.c
+> @@ -64,7 +64,7 @@ komeda_plane_atomic_check(struct drm_plane *plane,
+>  		return 0;
+>  
+>  	crtc_st = drm_atomic_get_crtc_state(state->state, state->crtc);
+> -	if (!crtc_st->enable) {
+> +	if (IS_ERR(crtc_st) || !crtc_st->enable) {
+>  		DRM_DEBUG_ATOMIC("Cannot update plane on a disabled CRTC.\n");
+>  		return -EINVAL;
+>  	}
+> -- 
+> 2.18.0
+> 
+
 -- 
-2.18.0
-
+====================
+| I would like to |
+| fix the world,  |
+| but they're not |
+| giving me the   |
+ \ source code!  /
+  ---------------
+    ¯\_(ツ)_/¯

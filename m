@@ -2,96 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E480D12E80
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 May 2019 14:51:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FCB612E88
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 May 2019 14:55:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727594AbfECMvK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 May 2019 08:51:10 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:33486 "EHLO
+        id S1727524AbfECMzS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 May 2019 08:55:18 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:37760 "EHLO
         userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727365AbfECMvK (ORCPT
+        with ESMTP id S1727641AbfECMzS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 May 2019 08:51:10 -0400
+        Fri, 3 May 2019 08:55:18 -0400
 Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43CiUU7123808;
-        Fri, 3 May 2019 12:51:01 GMT
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43Cra0o131650;
+        Fri, 3 May 2019 12:54:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2018-07-02; bh=2G3+knudik998BX57KRVJhtFszU4RCr5pw8WFXkmQJ0=;
- b=JAC4P8XLkBG1ZIUP/1tXwCVcDXLLftdyy2qy+CWsMMY6OKAoZ0a9+AR1RCpIXnw0ScOn
- LB4xEgvrzCmN0r7vcGtXmaE0+mvDSf1DrH2tcgF5U+9F/GtZXL3j5HAfnlx3rOAP11tc
- BVip/xsB3WiFqu+BEp12sEXjxn0qTLRRtdqlwMYq4KOWUhOBk5KYPTOzTs31EGGsuqP2
- uUxAcP4NESoi5XCSNSSV5INhE1IYaHohprqaBoh9fVX3ZXDD1u6U86svywRXkvaJ3qIT
- hePCPmWwDZ8vPOk2SjnU+4XAiI22YJGg/DPkMd7riqAledwVRYi/PgnVQ32RAYGksLC1 HQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 2s6xhyxgbr-1
+ : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
+ bh=/EJcOtCKHzyP28w2BqK4Nm8RSbHZ1MiSLldUmj3B1uQ=;
+ b=jFv2J2yl4Awq0vybuY/lRpX7TFepbXcWknMK9WpSaMYRpkkGPjJsho2mRx8cIu0wTWbK
+ urtRsetJ+T56pfSwZU4t8X+z3fPjInw9EA1bmkutdavMHBjFTunW2bE81PiDsXy+Nu4o
+ LoN9KJdPRIKNrvyJNeXI/NWWAe8ET+go86YB1YWmc60/rko4tdzmdn4lhQhCgUQDQ0Xe
+ wTevNiTmJ2iKqSn0zb/WMXdtdi9NN1oBc7+2gO47GuOi/0nSdDXa/nbfYyhF1x+ExKG5
+ YPDbQYVAP0kefCtJ7DGOJthsEBxfTu+Y+a2o9E9l7tGD6J/YuGNCqRNtNyOGl9xzWSAq hw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 2s6xhyxh0u-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 May 2019 12:51:01 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43ConC6110854;
-        Fri, 3 May 2019 12:51:00 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 2s7rtc91ag-1
+        Fri, 03 May 2019 12:54:57 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43CrxGG127592;
+        Fri, 3 May 2019 12:54:57 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 2s7p8aak8w-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 May 2019 12:51:00 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x43CoxY9021678;
-        Fri, 3 May 2019 12:50:59 GMT
+        Fri, 03 May 2019 12:54:57 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x43CsqSS018138;
+        Fri, 3 May 2019 12:54:52 GMT
 Received: from mwanda (/196.104.111.181)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 03 May 2019 05:50:58 -0700
-Date:   Fri, 3 May 2019 15:50:51 +0300
+        with ESMTP ; Fri, 03 May 2019 05:54:52 -0700
+Date:   Fri, 3 May 2019 15:54:36 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "David S. Miller" <davem@davemloft.net>,
-        Esben Haabendal <esben@geanix.com>
-Cc:     Michal Simek <michal.simek@xilinx.com>,
-        Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org,
+To:     Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH 2/2 net-next] net: ll_temac: remove an unnecessary condition
-Message-ID: <20190503125051.GG29695@mwanda>
+Subject: [PATCH] mt76: Fix a signedness bug in mt7615_add_interface()
+Message-ID: <20190502212341.GA31847@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190503125024.GF29695@mwanda>
 X-Mailer: git-send-email haha only kidding
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9245 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
  phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1905030080
+ engine=8.0.1-1810050000 definitions=main-1905030081
 X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9245 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905030080
+ definitions=main-1905030081
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "pdata->mdio_bus_id" is unsigned so this condition is always true.
-This patch just removes it.
+The problem is that "mvif->omac_idx" is a u8 so it can't be negative
+and the error handling won't work.  The get_omac_idx() function returns
+-1 on error.
 
+Fixes: 04b8e65922f6 ("mt76: add mac80211 driver for MT7615 PCIe-based chipsets")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/ethernet/xilinx/ll_temac_mdio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/ll_temac_mdio.c b/drivers/net/ethernet/xilinx/ll_temac_mdio.c
-index c2a11703bc6d..a4667326f745 100644
---- a/drivers/net/ethernet/xilinx/ll_temac_mdio.c
-+++ b/drivers/net/ethernet/xilinx/ll_temac_mdio.c
-@@ -99,7 +99,7 @@ int temac_mdio_setup(struct temac_local *lp, struct platform_device *pdev)
- 		of_address_to_resource(np, 0, &res);
- 		snprintf(bus->id, MII_BUS_ID_SIZE, "%.8llx",
- 			 (unsigned long long)res.start);
--	} else if (pdata && pdata->mdio_bus_id >= 0) {
-+	} else if (pdata) {
- 		snprintf(bus->id, MII_BUS_ID_SIZE, "%.8llx",
- 			 pdata->mdio_bus_id);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/main.c b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+index 80e6b211f60b..8d7a47d1b205 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/main.c
+@@ -77,11 +77,12 @@ static int mt7615_add_interface(struct ieee80211_hw *hw,
+ 		goto out;
  	}
+ 
+-	mvif->omac_idx = get_omac_idx(vif->type, dev->omac_mask);
+-	if (mvif->omac_idx < 0) {
++	idx = get_omac_idx(vif->type, dev->omac_mask);
++	if (idx < 0) {
+ 		ret = -ENOSPC;
+ 		goto out;
+ 	}
++	mvif->omac_idx = idx;
+ 
+ 	/* TODO: DBDC support. Use band 0 and wmm 0 for now */
+ 	mvif->band_idx = 0;
 -- 
 2.18.0
 

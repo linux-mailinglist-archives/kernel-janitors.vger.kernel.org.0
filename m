@@ -2,68 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A00412ED3
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 May 2019 15:09:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 936E212ED8
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 May 2019 15:12:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727892AbfECNJi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 May 2019 09:09:38 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:46172 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726377AbfECNJi (ORCPT
+        id S1727032AbfECNMZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 May 2019 09:12:25 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:53810 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726719AbfECNMZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 May 2019 09:09:38 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43CxSMG125045;
-        Fri, 3 May 2019 13:09:25 GMT
+        Fri, 3 May 2019 09:12:25 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43CxPwU115991;
+        Fri, 3 May 2019 13:12:20 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=qUI30iuQjAmm87uWs76TDx2QVxkW3XKVNbir16Y2Z1Y=;
- b=ayqNl+TM2CCC+3wJRrsmGVGPU9GDWP8839ASLcJMQflgrcapOpISKzsYecxW7MFAGrB3
- /fPSDCMjnLr4PWTz0jR1kmmrwKkqA44B+m43wh+7tdJYieomyq6jpR8WReR8e9hSOCaI
- ueQ/pnwaCQSXSXxc3RlKtJXGguWH9DBCEwSs+fRkjQjL+SJ/mkyp8FxQ+3eNlS8DEKY/
- Lx4sOaGz3k6s7Q0XIzyScCVyoAonLK0Oci0ZrHQJKKWdLOWGZxDOBvxPKD+dU+6uQSmn
- DubFPCWUsNPwJGN8Sa1hP8OmHutsSfJ5Xh+6ZUCFToSjaFoCpN7lnvYZk7qc8/1EE+mR 5w== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2130.oracle.com with ESMTP id 2s6xhypkrf-1
+ bh=VGGMsTUess2E4yuxX2j3MKEs+0uPSz2RNZwEOrv3StE=;
+ b=w2r4l8YHICpOnKcqqg/dLv4WkbIzNANMUu1c5P4DGUg/3bAk/5Ix4Zpvna8g27nXCLv7
+ g6kzMon9xOw1tKsmdFQpQ7k7C2fYrFFZ4F9htpYjMzv7cebZoIu/DQQ/fdcAj0a9MEPk
+ HZVJpi4TzIRvhRQSClQ4qMq25s4iZ0vvBhmxDMFKpmjqOmUPt91ggSWkQbyGKZXXGAPe
+ iRCyC23DrDBN5OGTpsddy3Rq/aHAq41U9LwoxAn86U4hG2b5VBgJCUogUjJ0tAM8wUpO
+ WzAfJ0QifcUJ+TguTC1QUDK8jMoHC6+maexO4I4zGH3ET5UOULdhc/4+EnuNqsd5GYh/ tg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2s6xhypmyh-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 May 2019 13:09:24 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43D99DA136935;
-        Fri, 3 May 2019 13:09:24 GMT
+        Fri, 03 May 2019 13:12:20 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x43D8oEd157832;
+        Fri, 3 May 2019 13:10:20 GMT
 Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 2s6xhhm5p0-1
+        by aserp3030.oracle.com with ESMTP id 2s7rtc9bsf-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 May 2019 13:09:24 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x43D9LGj029163;
-        Fri, 3 May 2019 13:09:22 GMT
+        Fri, 03 May 2019 13:10:19 +0000
+Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x43DAIFv029900;
+        Fri, 3 May 2019 13:10:18 GMT
 Received: from mwanda (/196.104.111.181)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 03 May 2019 06:09:21 -0700
-Date:   Fri, 3 May 2019 16:09:13 +0300
+        with ESMTP ; Fri, 03 May 2019 06:10:17 -0700
+Date:   Fri, 3 May 2019 16:10:11 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] mt76: mt7615: Use after free in mt7615_mcu_set_bcn()
-Message-ID: <20190503130909.GI29695@mwanda>
+To:     biju.das@bp.renesas.com
+Cc:     kernel-janitors@vger.kernel.org
+Subject: [bug report] phy: renesas: phy-rcar-gen2: Add support for r8a77470
+Message-ID: <20190503131010.GJ29695@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9245 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=837
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.0.1-1810050000 definitions=main-1905030082
 X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9245 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=865 adultscore=0
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
  definitions=main-1905030082
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -71,39 +66,83 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We dereference "skb" when we assign:
+Hello Biju Das,
 
-	req.pkt_len = cpu_to_le16(MT_TXD_SIZE + skb->len);
-                                                ^^^^^^^^
-So this patch just moves the dev_kfree_skb() down a bit to avoid the
-use after free.
+The patch b7187e001a10: "phy: renesas: phy-rcar-gen2: Add support for
+r8a77470" from Apr 10, 2019, leads to the following static checker
+warning:
 
-Fixes: 04b8e65922f6 ("mt76: add mac80211 driver for MT7615 PCIe-based chipsets")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+	drivers/phy/renesas/phy-rcar-gen2.c:403 rcar_gen2_phy_probe()
+	warn: array off by one? 'data->select_value[channel_num]'
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-index ea67c6022fe6..dc1301effa24 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
-@@ -1270,7 +1270,6 @@ int mt7615_mcu_set_bcn(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 	mt7615_mac_write_txwi(dev, (__le32 *)(req.pkt), skb, wcid, NULL,
- 			      0, NULL);
- 	memcpy(req.pkt + MT_TXD_SIZE, skb->data, skb->len);
--	dev_kfree_skb(skb);
- 
- 	req.omac_idx = mvif->omac_idx;
- 	req.enable = en;
-@@ -1281,6 +1280,7 @@ int mt7615_mcu_set_bcn(struct mt7615_dev *dev, struct ieee80211_vif *vif,
- 	req.pkt_len = cpu_to_le16(MT_TXD_SIZE + skb->len);
- 	req.tim_ie_pos = cpu_to_le16(MT_TXD_SIZE + tim_off);
- 
-+	dev_kfree_skb(skb);
- 	skb = mt7615_mcu_msg_alloc(&req, sizeof(req));
- 
- 	return mt7615_mcu_msg_send(dev, skb, MCU_EXT_CMD_BCN_OFFLOAD,
--- 
-2.18.0
+drivers/phy/renesas/phy-rcar-gen2.c
+   262  static const u32 pci_select_value[][PHYS_PER_CHANNEL] = {
+   263          [0]     = { USBHS_UGCTRL2_USB0SEL_PCI, USBHS_UGCTRL2_USB0SEL_HS_USB },
+   264          [2]     = { USBHS_UGCTRL2_USB2SEL_PCI, USBHS_UGCTRL2_USB2SEL_USB30 },
 
+This select array has three elements.
+
+   265  };
+   266  
+   267  static const u32 usb20_select_value[][PHYS_PER_CHANNEL] = {
+   268          { USBHS_UGCTRL2_USB0SEL_USB20, USBHS_UGCTRL2_USB0SEL_HS_USB20 },
+
+But this one only has two.
+
+   269  };
+   270  
+   271  static const struct rcar_gen2_phy_data rcar_gen2_usb_phy_data = {
+   272          .gen2_phy_ops = &rcar_gen2_phy_ops,
+   273          .select_value = pci_select_value,
+   274  };
+   275  
+   276  static const struct rcar_gen2_phy_data rz_g1c_usb_phy_data = {
+   277          .gen2_phy_ops = &rz_g1c_phy_ops,
+   278          .select_value = usb20_select_value,
+   279  };
+
+[ snip ]
+
+   382          for_each_child_of_node(dev->of_node, np) {
+   383                  struct rcar_gen2_channel *channel = drv->channels + i;
+   384                  u32 channel_num;
+   385                  int error, n;
+   386  
+   387                  channel->of_node = np;
+   388                  channel->drv = drv;
+   389                  channel->selected_phy = -1;
+   390  
+   391                  error = of_property_read_u32(np, "reg", &channel_num);
+   392                  if (error || channel_num > 2) {
+                                     ^^^^^^^^^^^^^^^
+The code seems to assume they all have 3 elements
+
+   393                          dev_err(dev, "Invalid \"reg\" property\n");
+   394                          return error;
+   395                  }
+   396                  channel->select_mask = select_mask[channel_num];
+   397  
+   398                  for (n = 0; n < PHYS_PER_CHANNEL; n++) {
+   399                          struct rcar_gen2_phy *phy = &channel->phys[n];
+   400  
+   401                          phy->channel = channel;
+   402                          phy->number = n;
+   403                          phy->select_value = data->select_value[channel_num][n];
+                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Smatch warning.
+
+   404  
+   405                          phy->phy = devm_phy_create(dev, NULL,
+   406                                                     data->gen2_phy_ops);
+   407                          if (IS_ERR(phy->phy)) {
+   408                                  dev_err(dev, "Failed to create PHY\n");
+   409                                  return PTR_ERR(phy->phy);
+   410                          }
+   411                          phy_set_drvdata(phy->phy, phy);
+   412                  }
+   413  
+   414                  i++;
+   415          }
+
+regards,
+dan carpenter

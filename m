@@ -2,33 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC035137F4
-	for <lists+kernel-janitors@lfdr.de>; Sat,  4 May 2019 08:54:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 946EC137FB
+	for <lists+kernel-janitors@lfdr.de>; Sat,  4 May 2019 08:55:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726965AbfEDGyb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 4 May 2019 02:54:31 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:42946 "EHLO huawei.com"
+        id S1727111AbfEDGyz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 4 May 2019 02:54:55 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:43158 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726605AbfEDGyb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 4 May 2019 02:54:31 -0400
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 085F011DB492C2F31232;
-        Sat,  4 May 2019 14:54:29 +0800 (CST)
+        id S1726969AbfEDGyy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 4 May 2019 02:54:54 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 208E47543CC32401C728;
+        Sat,  4 May 2019 14:54:51 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.439.0; Sat, 4 May 2019 14:54:21 +0800
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.439.0; Sat, 4 May 2019 14:54:43 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Felipe Balbi <balbi@kernel.org>,
+To:     Frederic Barrat <fbarrat@linux.ibm.com>,
+        Andrew Donnellan <ajd@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        "Sylvain Lemieux" <slemieux.tyco@gmail.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-usb@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
+        Alastair D'Silva <alastair@d-silva.org>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] usb: gadget: udc: lpc32xx: fix return value check in lpc32xx_udc_probe()
-Date:   Sat, 4 May 2019 07:04:07 +0000
-Message-ID: <20190504070407.56915-1-weiyongjun1@huawei.com>
+Subject: [PATCH -next] ocxl: Fix return value check in afu_ioctl()
+Date:   Sat, 4 May 2019 07:04:30 +0000
+Message-ID: <20190504070430.57008-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -40,34 +40,32 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, the function devm_ioremap_resource() returns ERR_PTR()
-and never returns NULL. The NULL test in the return value check should
-be replaced with IS_ERR().
+In case of error, the function eventfd_ctx_fdget() returns ERR_PTR() and
+never returns NULL. The NULL test in the return value check should be
+replaced with IS_ERR().
 
 This issue was detected by using the Coccinelle software.
 
-Fixes: 408b56ca5c8e ("usb: gadget: udc: lpc32xx: simplify probe")
+Fixes: 060146614643 ("ocxl: move event_fd handling to frontend")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/usb/gadget/udc/lpc32xx_udc.c | 4 ++--
+ drivers/misc/ocxl/file.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/lpc32xx_udc.c b/drivers/usb/gadget/udc/lpc32xx_udc.c
-index d8f1c60793ed..00fb79c6d025 100644
---- a/drivers/usb/gadget/udc/lpc32xx_udc.c
-+++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
-@@ -3070,9 +3070,9 @@ static int lpc32xx_udc_probe(struct platform_device *pdev)
- 	}
- 
- 	udc->udp_baseaddr = devm_ioremap_resource(dev, res);
--	if (!udc->udp_baseaddr) {
-+	if (IS_ERR(udc->udp_baseaddr)) {
- 		dev_err(udc->dev, "IO map failure\n");
--		return -ENOMEM;
-+		return PTR_ERR(udc->udp_baseaddr);
- 	}
- 
- 	/* Get USB device clock */
+diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c
+index 8aa22893ed76..2870c25da166 100644
+--- a/drivers/misc/ocxl/file.c
++++ b/drivers/misc/ocxl/file.c
+@@ -257,8 +257,8 @@ static long afu_ioctl(struct file *file, unsigned int cmd,
+ 			return -EINVAL;
+ 		irq_id = ocxl_irq_offset_to_id(ctx, irq_fd.irq_offset);
+ 		ev_ctx = eventfd_ctx_fdget(irq_fd.eventfd);
+-		if (!ev_ctx)
+-			return -EFAULT;
++		if (IS_ERR(ev_ctx))
++			return PTR_ERR(ev_ctx);
+ 		rc = ocxl_irq_set_handler(ctx, irq_id, irq_handler, irq_free, ev_ctx);
+ 		break;
 
 
 

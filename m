@@ -2,31 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 23DD4137EE
-	for <lists+kernel-janitors@lfdr.de>; Sat,  4 May 2019 08:53:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC035137F4
+	for <lists+kernel-janitors@lfdr.de>; Sat,  4 May 2019 08:54:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726604AbfEDGxl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 4 May 2019 02:53:41 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:42370 "EHLO huawei.com"
+        id S1726965AbfEDGyb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 4 May 2019 02:54:31 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:42946 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726217AbfEDGxl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 4 May 2019 02:53:41 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id EB8C92830414EEFF216F;
-        Sat,  4 May 2019 14:53:38 +0800 (CST)
+        id S1726605AbfEDGyb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 4 May 2019 02:54:31 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 085F011DB492C2F31232;
+        Sat,  4 May 2019 14:54:29 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
- 14.3.439.0; Sat, 4 May 2019 14:53:31 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Linus Walleij <linusw@kernel.org>, Imre Kaloz <kaloz@openwrt.org>,
-        Krzysztof Halasa <khalasa@piap.pl>,
-        Russell King <linux@armlinux.org.uk>
-CC:     YueHaibing <yuehaibing@huawei.com>,
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.439.0; Sat, 4 May 2019 14:54:21 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        "Sylvain Lemieux" <slemieux.tyco@gmail.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-usb@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] ARM: ixp4xx: Remove duplicated include from common.c
-Date:   Sat, 4 May 2019 07:03:18 +0000
-Message-ID: <20190504070318.56760-1-yuehaibing@huawei.com>
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] usb: gadget: udc: lpc32xx: fix return value check in lpc32xx_udc_probe()
+Date:   Sat, 4 May 2019 07:04:07 +0000
+Message-ID: <20190504070407.56915-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -38,27 +40,34 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove duplicated include.
+In case of error, the function devm_ioremap_resource() returns ERR_PTR()
+and never returns NULL. The NULL test in the return value check should
+be replaced with IS_ERR().
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+This issue was detected by using the Coccinelle software.
+
+Fixes: 408b56ca5c8e ("usb: gadget: udc: lpc32xx: simplify probe")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- arch/arm/mach-ixp4xx/common.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/gadget/udc/lpc32xx_udc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-ixp4xx/common.c b/arch/arm/mach-ixp4xx/common.c
-index cc5f15679d29..381f452de28d 100644
---- a/arch/arm/mach-ixp4xx/common.c
-+++ b/arch/arm/mach-ixp4xx/common.c
-@@ -27,7 +27,6 @@
- #include <linux/cpu.h>
- #include <linux/pci.h>
- #include <linux/sched_clock.h>
--#include <linux/bitops.h>
- #include <linux/irqchip/irq-ixp4xx.h>
- #include <linux/platform_data/timer-ixp4xx.h>
- #include <mach/udc.h>
-
-
+diff --git a/drivers/usb/gadget/udc/lpc32xx_udc.c b/drivers/usb/gadget/udc/lpc32xx_udc.c
+index d8f1c60793ed..00fb79c6d025 100644
+--- a/drivers/usb/gadget/udc/lpc32xx_udc.c
++++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
+@@ -3070,9 +3070,9 @@ static int lpc32xx_udc_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	udc->udp_baseaddr = devm_ioremap_resource(dev, res);
+-	if (!udc->udp_baseaddr) {
++	if (IS_ERR(udc->udp_baseaddr)) {
+ 		dev_err(udc->dev, "IO map failure\n");
+-		return -ENOMEM;
++		return PTR_ERR(udc->udp_baseaddr);
+ 	}
+ 
+ 	/* Get USB device clock */
 
 
 

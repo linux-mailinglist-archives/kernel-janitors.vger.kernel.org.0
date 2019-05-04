@@ -2,70 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 946EC137FB
-	for <lists+kernel-janitors@lfdr.de>; Sat,  4 May 2019 08:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D69B13883
+	for <lists+kernel-janitors@lfdr.de>; Sat,  4 May 2019 11:52:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727111AbfEDGyz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 4 May 2019 02:54:55 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:43158 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726969AbfEDGyy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 4 May 2019 02:54:54 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 208E47543CC32401C728;
-        Sat,  4 May 2019 14:54:51 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.439.0; Sat, 4 May 2019 14:54:43 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Frederic Barrat <fbarrat@linux.ibm.com>,
-        Andrew Donnellan <ajd@linux.ibm.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alastair D'Silva <alastair@d-silva.org>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] ocxl: Fix return value check in afu_ioctl()
-Date:   Sat, 4 May 2019 07:04:30 +0000
-Message-ID: <20190504070430.57008-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726217AbfEDJwX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 4 May 2019 05:52:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54842 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725823AbfEDJwX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 4 May 2019 05:52:23 -0400
+Received: from localhost.localdomain (unknown [151.66.59.15])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4EE44206DF;
+        Sat,  4 May 2019 09:52:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1556963542;
+        bh=BqZ5JiWkvHkc3lAZvNDNmOQq2YEoCS6tHKgUvGvJXVQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=pxvM9teiIZbYOqhRHkz2n/HXkEHEr4dOOGdVnkTliw4EMLPRagrs4iAh++HUHlOpK
+         cJk4GPEwdkgtD0S8XWXjlNjpZb7jAGSUbczUa/Gk/aXYSN67UibOXq97ultTeAQt7o
+         /cawM5/Np/2FRGObAEQAXhNgHi2W3t7xdTjaQURY=
+Date:   Sat, 4 May 2019 11:52:16 +0200
+From:   Lorenzo Bianconi <lorenzo@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Felix Fietkau <nbd@nbd.name>, Ryder Lee <ryder.lee@mediatek.com>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] mt76: mt7615: Use after free in mt7615_mcu_set_bcn()
+Message-ID: <20190504095215.GA23263@localhost.localdomain>
+References: <20190503130909.GI29695@mwanda>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="PNTmBPCT7hxwcZjr"
+Content-Disposition: inline
+In-Reply-To: <20190503130909.GI29695@mwanda>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, the function eventfd_ctx_fdget() returns ERR_PTR() and
-never returns NULL. The NULL test in the return value check should be
-replaced with IS_ERR().
 
-This issue was detected by using the Coccinelle software.
+--PNTmBPCT7hxwcZjr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 060146614643 ("ocxl: move event_fd handling to frontend")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/misc/ocxl/file.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
 
-diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c
-index 8aa22893ed76..2870c25da166 100644
---- a/drivers/misc/ocxl/file.c
-+++ b/drivers/misc/ocxl/file.c
-@@ -257,8 +257,8 @@ static long afu_ioctl(struct file *file, unsigned int cmd,
- 			return -EINVAL;
- 		irq_id = ocxl_irq_offset_to_id(ctx, irq_fd.irq_offset);
- 		ev_ctx = eventfd_ctx_fdget(irq_fd.eventfd);
--		if (!ev_ctx)
--			return -EFAULT;
-+		if (IS_ERR(ev_ctx))
-+			return PTR_ERR(ev_ctx);
- 		rc = ocxl_irq_set_handler(ctx, irq_id, irq_handler, irq_free, ev_ctx);
- 		break;
+> We dereference "skb" when we assign:
+>=20
+> 	req.pkt_len =3D cpu_to_le16(MT_TXD_SIZE + skb->len);
+>                                                 ^^^^^^^^
+> So this patch just moves the dev_kfree_skb() down a bit to avoid the
+> use after free.
+>=20
+> Fixes: 04b8e65922f6 ("mt76: add mac80211 driver for MT7615 PCIe-based chi=
+psets")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7615/mcu.c
+> index ea67c6022fe6..dc1301effa24 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+> @@ -1270,7 +1270,6 @@ int mt7615_mcu_set_bcn(struct mt7615_dev *dev, stru=
+ct ieee80211_vif *vif,
+>  	mt7615_mac_write_txwi(dev, (__le32 *)(req.pkt), skb, wcid, NULL,
+>  			      0, NULL);
+>  	memcpy(req.pkt + MT_TXD_SIZE, skb->data, skb->len);
+> -	dev_kfree_skb(skb);
+> =20
+>  	req.omac_idx =3D mvif->omac_idx;
+>  	req.enable =3D en;
+> @@ -1281,6 +1280,7 @@ int mt7615_mcu_set_bcn(struct mt7615_dev *dev, stru=
+ct ieee80211_vif *vif,
+>  	req.pkt_len =3D cpu_to_le16(MT_TXD_SIZE + skb->len);
+>  	req.tim_ie_pos =3D cpu_to_le16(MT_TXD_SIZE + tim_off);
+> =20
+> +	dev_kfree_skb(skb);
+>  	skb =3D mt7615_mcu_msg_alloc(&req, sizeof(req));
+> =20
+>  	return mt7615_mcu_msg_send(dev, skb, MCU_EXT_CMD_BCN_OFFLOAD,
+> --=20
+> 2.18.0
+>=20
 
+--PNTmBPCT7hxwcZjr
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYIAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCXM1gzAAKCRA6cBh0uS2t
+rDeKAQDGjECddgKPoW1n3Dnye8aHew95bCQqgsIeRCLiVSH00QD/VWP4FLjdbVHM
++9OT95BeBDbj0eG7VaB6OROPr+8wLwg=
+=UKNW
+-----END PGP SIGNATURE-----
+
+--PNTmBPCT7hxwcZjr--

@@ -2,30 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C2DAC13B41
-	for <lists+kernel-janitors@lfdr.de>; Sat,  4 May 2019 18:48:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF25E13B60
+	for <lists+kernel-janitors@lfdr.de>; Sat,  4 May 2019 19:22:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727046AbfEDQse (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 4 May 2019 12:48:34 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:39516 "EHLO
+        id S1726555AbfEDRW2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 4 May 2019 13:22:28 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:39759 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726217AbfEDQse (ORCPT
+        with ESMTP id S1726432AbfEDRW1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 4 May 2019 12:48:34 -0400
+        Sat, 4 May 2019 13:22:27 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hMxpu-0006Hl-8j; Sat, 04 May 2019 16:48:30 +0000
+        id 1hMyMg-0000d9-RZ; Sat, 04 May 2019 17:22:22 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     QLogic-Storage-Upstream@qlogic.com,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org
+To:     Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        linux-input@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] scsi: bnx2fc: fix incorrect cast to u64 on shift operation
-Date:   Sat,  4 May 2019 17:48:29 +0100
-Message-Id: <20190504164829.26631-1-colin.king@canonical.com>
+Subject: [PATCH] HID: uclogic: fix dereferences of hdev before null check on hdev
+Date:   Sat,  4 May 2019 18:22:22 +0100
+Message-Id: <20190504172222.1260-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,30 +36,97 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently an int is being shifted and the result is being cast to a u64
-which leads to undefined behaviour if the shift is more than 31 bits. Fix
-this by casting the integer value 1 to u64 before the shift operation.
+Currently hdev is being dereferenced when using macro hid_to_usb_dev
+before hdev is being null checked, hence there is a potential null
+pointer dereference.  Fix this by only dereferencing hdev after it has
+been null checked.
 
-Addresses-Coverity: ("Bad shift operation")
-Fixes: 7b594769120b ("[SCSI] bnx2fc: Handle REC_TOV error code from firmware")
+Fixes: 9614219e9310 ("HID: uclogic: Extract tablet parameter discovery into a module")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/scsi/bnx2fc/bnx2fc_hwi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hid/hid-uclogic-params.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/scsi/bnx2fc/bnx2fc_hwi.c b/drivers/scsi/bnx2fc/bnx2fc_hwi.c
-index 19734ec7f42e..747f019fb393 100644
---- a/drivers/scsi/bnx2fc/bnx2fc_hwi.c
-+++ b/drivers/scsi/bnx2fc/bnx2fc_hwi.c
-@@ -830,7 +830,7 @@ static void bnx2fc_process_unsol_compl(struct bnx2fc_rport *tgt, u16 wqe)
- 			((u64)err_entry->data.err_warn_bitmap_hi << 32) |
- 			(u64)err_entry->data.err_warn_bitmap_lo;
- 		for (i = 0; i < BNX2FC_NUM_ERR_BITS; i++) {
--			if (err_warn_bit_map & (u64) (1 << i)) {
-+			if (err_warn_bit_map & ((u64)1 << i)) {
- 				err_warn = i;
- 				break;
- 			}
+diff --git a/drivers/hid/hid-uclogic-params.c b/drivers/hid/hid-uclogic-params.c
+index 0187c9f8fc22..bc5a2f860501 100644
+--- a/drivers/hid/hid-uclogic-params.c
++++ b/drivers/hid/hid-uclogic-params.c
+@@ -65,7 +65,7 @@ static int uclogic_params_get_str_desc(__u8 **pbuf, struct hid_device *hdev,
+ 					__u8 idx, size_t len)
+ {
+ 	int rc;
+-	struct usb_device *udev = hid_to_usb_dev(hdev);
++	struct usb_device *udev;
+ 	__u8 *buf = NULL;
+ 
+ 	/* Check arguments */
+@@ -73,6 +73,7 @@ static int uclogic_params_get_str_desc(__u8 **pbuf, struct hid_device *hdev,
+ 		rc = -EINVAL;
+ 		goto cleanup;
+ 	}
++	udev = hid_to_usb_dev(hdev);
+ 
+ 	buf = kmalloc(len, GFP_KERNEL);
+ 	if (buf == NULL) {
+@@ -449,7 +450,7 @@ static int uclogic_params_frame_init_v1_buttonpad(
+ {
+ 	int rc;
+ 	bool found = false;
+-	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
++	struct usb_device *usb_dev;
+ 	char *str_buf = NULL;
+ 	const size_t str_len = 16;
+ 
+@@ -458,6 +459,7 @@ static int uclogic_params_frame_init_v1_buttonpad(
+ 		rc = -EINVAL;
+ 		goto cleanup;
+ 	}
++	usb_dev = hid_to_usb_dev(hdev);
+ 
+ 	/*
+ 	 * Enable generic button mode
+@@ -705,7 +707,7 @@ static int uclogic_params_huion_init(struct uclogic_params *params,
+ 				     struct hid_device *hdev)
+ {
+ 	int rc;
+-	struct usb_device *udev = hid_to_usb_dev(hdev);
++	struct usb_device *udev;
+ 	struct usb_interface *iface = to_usb_interface(hdev->dev.parent);
+ 	__u8 bInterfaceNumber = iface->cur_altsetting->desc.bInterfaceNumber;
+ 	bool found;
+@@ -720,6 +722,7 @@ static int uclogic_params_huion_init(struct uclogic_params *params,
+ 		rc = -EINVAL;
+ 		goto cleanup;
+ 	}
++	udev = hid_to_usb_dev(hdev);
+ 
+ 	/* If it's not a pen interface */
+ 	if (bInterfaceNumber != 0) {
+@@ -832,10 +835,9 @@ int uclogic_params_init(struct uclogic_params *params,
+ 			struct hid_device *hdev)
+ {
+ 	int rc;
+-	struct usb_device *udev = hid_to_usb_dev(hdev);
+-	__u8  bNumInterfaces = udev->config->desc.bNumInterfaces;
+-	struct usb_interface *iface = to_usb_interface(hdev->dev.parent);
+-	__u8 bInterfaceNumber = iface->cur_altsetting->desc.bInterfaceNumber;
++	struct usb_device *udev;
++	struct usb_interface *iface;
++	__u8 bNumInterfaces, bInterfaceNumber;
+ 	bool found;
+ 	/* The resulting parameters (noop) */
+ 	struct uclogic_params p = {0, };
+@@ -846,6 +848,10 @@ int uclogic_params_init(struct uclogic_params *params,
+ 		rc = -EINVAL;
+ 		goto cleanup;
+ 	}
++	udev = hid_to_usb_dev(hdev);
++	bNumInterfaces = udev->config->desc.bNumInterfaces;
++	iface = to_usb_interface(hdev->dev.parent);
++	bInterfaceNumber = iface->cur_altsetting->desc.bInterfaceNumber;
+ 
+ 	/*
+ 	 * Set replacement report descriptor if the original matches the
 -- 
 2.20.1
 

@@ -2,33 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2416A137D6
-	for <lists+kernel-janitors@lfdr.de>; Sat,  4 May 2019 08:42:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23DD4137EE
+	for <lists+kernel-janitors@lfdr.de>; Sat,  4 May 2019 08:53:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726444AbfEDGmK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 4 May 2019 02:42:10 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:7150 "EHLO huawei.com"
+        id S1726604AbfEDGxl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 4 May 2019 02:53:41 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:42370 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725808AbfEDGmK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 4 May 2019 02:42:10 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 086F3EAAFBB6FF155F08;
-        Sat,  4 May 2019 14:42:07 +0800 (CST)
+        id S1726217AbfEDGxl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 4 May 2019 02:53:41 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id EB8C92830414EEFF216F;
+        Sat,  4 May 2019 14:53:38 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
- 14.3.439.0; Sat, 4 May 2019 14:41:59 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Christian Borntraeger <borntraeger@de.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Cornelia Huck <cohuck@redhat.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        "Heiko Carstens" <heiko.carstens@de.ibm.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-s390@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] KVM: s390: fix typo in parameter description
-Date:   Sat, 4 May 2019 06:51:45 +0000
-Message-ID: <20190504065145.53665-1-weiyongjun1@huawei.com>
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.439.0; Sat, 4 May 2019 14:53:31 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Linus Walleij <linusw@kernel.org>, Imre Kaloz <kaloz@openwrt.org>,
+        Krzysztof Halasa <khalasa@piap.pl>,
+        Russell King <linux@armlinux.org.uk>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] ARM: ixp4xx: Remove duplicated include from common.c
+Date:   Sat, 4 May 2019 07:03:18 +0000
+Message-ID: <20190504070318.56760-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -40,27 +38,27 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix typo in parameter description.
+Remove duplicated include.
 
-Fixes: 8b905d28ee17 ("KVM: s390: provide kvm_arch_no_poll function")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- arch/s390/kvm/kvm-s390.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-ixp4xx/common.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index 8d6d75db8de6..ac6163c334d6 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -181,7 +181,7 @@ MODULE_PARM_DESC(hpage, "1m huge page backing support");
- /* maximum percentage of steal time for polling.  >100 is treated like 100 */
- static u8 halt_poll_max_steal = 10;
- module_param(halt_poll_max_steal, byte, 0644);
--MODULE_PARM_DESC(hpage, "Maximum percentage of steal time to allow polling");
-+MODULE_PARM_DESC(halt_poll_max_steal, "Maximum percentage of steal time to allow polling");
- 
- /*
-  * For now we handle at most 16 double words as this is what the s390 base
+diff --git a/arch/arm/mach-ixp4xx/common.c b/arch/arm/mach-ixp4xx/common.c
+index cc5f15679d29..381f452de28d 100644
+--- a/arch/arm/mach-ixp4xx/common.c
++++ b/arch/arm/mach-ixp4xx/common.c
+@@ -27,7 +27,6 @@
+ #include <linux/cpu.h>
+ #include <linux/pci.h>
+ #include <linux/sched_clock.h>
+-#include <linux/bitops.h>
+ #include <linux/irqchip/irq-ixp4xx.h>
+ #include <linux/platform_data/timer-ixp4xx.h>
+ #include <mach/udc.h>
+
+
 
 
 

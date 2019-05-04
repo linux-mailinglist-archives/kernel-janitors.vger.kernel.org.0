@@ -2,72 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79AAB1399D
-	for <lists+kernel-janitors@lfdr.de>; Sat,  4 May 2019 14:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4919139B3
+	for <lists+kernel-janitors@lfdr.de>; Sat,  4 May 2019 14:18:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727681AbfEDMAV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 4 May 2019 08:00:21 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:44120 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727633AbfEDMAV (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 4 May 2019 08:00:21 -0400
-Received: by mail-lf1-f68.google.com with SMTP id n134so4329904lfn.11
-        for <kernel-janitors@vger.kernel.org>; Sat, 04 May 2019 05:00:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=bVUZ/YdfIbEAyeXyxlZd8C1Dn3iXlSts8Rn7bzFJXgo=;
-        b=kGhXJihKafot6irmobTIl6Oc/jaJTM7ilojeVby1fdeUoYY1bwyJyEkb/fkyPxsS4/
-         kTevTY+CK++MYB+OpW/NTSerAKU2rgWWFs2K6XhP9dXhN1d/HGmybKLJb54DfeM3SNCx
-         u5SOLWs3HwSZDiKzbJ55SvmB17Zv8nlf3Op6P6yDQrCi+QBLwRGAmG0iDB0AiJ3fAuNQ
-         vJnkoCwP1yNvLBBUEDHEH8EnYehG045loHp7wED4F9xcYUCsy3gfmKlQyIluiAH3a/fq
-         LbwWJC+sGQXQxYFKLltphezTZ18/M4FaSvSbsqUY2bIoFcpYuhOJ48I+nAR7W55F4pi2
-         WSNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bVUZ/YdfIbEAyeXyxlZd8C1Dn3iXlSts8Rn7bzFJXgo=;
-        b=jRfR00WPo+hvEby/ZJuTFNONHZJrZh3pbLaFSeEp/RoeOodlZZsaC+A3N0K0Ntsdze
-         EvCw4+Pd4o+FYw0E6LPL5kRAZtct1rRVLsOD8fAHKIAY+iPzpDQyRbnEerS4DqLChELX
-         xJXoh6AFM67eg8jXWMpVrmVAZ6ru0PitJKajiwjgJ5/KAcHmUPiZluM4Taynn3ejrkkA
-         e+M1wxQ+qDos9/xqQynduy4S1fXfAW8t1hhlU/G5Z0q46sKPAMY9Fbiqe8Symw5tGVoQ
-         4h6+CHkZij9XUlYVztD3lQRLnugyF3E0P+lXax/OXjGd1y6CRTh1Gl+DU6oJ1kBcMurl
-         Xxnw==
-X-Gm-Message-State: APjAAAU/p3AZ746K3xqRYeHgAzABp67PYLJpGaRREKyZ7lDeBFSzo7dp
-        KEwXW8cZf9TV+al6RuhECz3KaBnxi3UXjHWZSRYZYg==
-X-Google-Smtp-Source: APXvYqzHb3J2SQJgpBCRN+rySa3T5qo6CkgHRVTBI6q3LGfhjNT7Dye0M39QqMKy0La/eziTVGqnfSlDJ08oWBgpIEA=
-X-Received: by 2002:ac2:51a1:: with SMTP id f1mr7143976lfk.129.1556971219802;
- Sat, 04 May 2019 05:00:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190504070318.56760-1-yuehaibing@huawei.com>
-In-Reply-To: <20190504070318.56760-1-yuehaibing@huawei.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sat, 4 May 2019 14:00:07 +0200
-Message-ID: <CACRpkdaN+BeaKA91rvMJwJsSW2epEb1YJPzpvXoJ=+M=Ly-7tQ@mail.gmail.com>
-Subject: Re: [PATCH -next] ARM: ixp4xx: Remove duplicated include from common.c
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Linus Walleij <linusw@kernel.org>, Imre Kaloz <kaloz@openwrt.org>,
-        Krzysztof Halasa <khalasa@piap.pl>,
-        Russell King <linux@armlinux.org.uk>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        id S1726230AbfEDMSA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 4 May 2019 08:18:00 -0400
+Received: from mleia.com ([178.79.152.223]:42728 "EHLO mail.mleia.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725981AbfEDMSA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 4 May 2019 08:18:00 -0400
+Received: from mail.mleia.com (localhost [127.0.0.1])
+        by mail.mleia.com (Postfix) with ESMTP id 5F5AD46792C;
+        Sat,  4 May 2019 13:17:58 +0100 (BST)
+Subject: Re: [PATCH -next] usb: gadget: udc: lpc32xx: fix return value check
+ in lpc32xx_udc_probe()
+To:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Cc:     linux-usb@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+References: <20190504070407.56915-1-weiyongjun1@huawei.com>
+From:   Vladimir Zapolskiy <vz@mleia.com>
+Message-ID: <5a3a89cf-eee3-136c-1c5a-58024e946a24@mleia.com>
+Date:   Sat, 4 May 2019 15:17:56 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.6.0
+MIME-Version: 1.0
+In-Reply-To: <20190504070407.56915-1-weiyongjun1@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
+X-CRM114-CacheID: sfid-20190504_131758_411217_35442B8F 
+X-CRM114-Status: GOOD (  18.24  )
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, May 4, 2019 at 8:53 AM YueHaibing <yuehaibing@huawei.com> wrote:
+Hi Wei Yongjun,
 
-> Remove duplicated include.
->
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+On 05/04/2019 10:04 AM, Wei Yongjun wrote:
+> In case of error, the function devm_ioremap_resource() returns ERR_PTR()
+> and never returns NULL. The NULL test in the return value check should
+> be replaced with IS_ERR().
+> 
+> This issue was detected by using the Coccinelle software.
+> 
+> Fixes: 408b56ca5c8e ("usb: gadget: udc: lpc32xx: simplify probe")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  drivers/usb/gadget/udc/lpc32xx_udc.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/usb/gadget/udc/lpc32xx_udc.c b/drivers/usb/gadget/udc/lpc32xx_udc.c
+> index d8f1c60793ed..00fb79c6d025 100644
+> --- a/drivers/usb/gadget/udc/lpc32xx_udc.c
+> +++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
+> @@ -3070,9 +3070,9 @@ static int lpc32xx_udc_probe(struct platform_device *pdev)
+>  	}
+>  
+>  	udc->udp_baseaddr = devm_ioremap_resource(dev, res);
+> -	if (!udc->udp_baseaddr) {
+> +	if (IS_ERR(udc->udp_baseaddr)) {
+>  		dev_err(udc->dev, "IO map failure\n");
+> -		return -ENOMEM;
+> +		return PTR_ERR(udc->udp_baseaddr);
+>  	}
+>  
+>  	/* Get USB device clock */
 
-Patch applied, thanks!
+thank you for the change, it is a correct fix.
 
-Yours,
-Linus Walleij
+I do suppose that dev_err() in the context can be evenly removed, but
+likely it should be another change.
+
+Acked-by: Vladimir Zapolskiy <vz@mleia.com>
+
+--
+Best wishes,
+Vladimir

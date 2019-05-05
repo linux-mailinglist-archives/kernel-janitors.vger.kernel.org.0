@@ -2,49 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5944C14161
-	for <lists+kernel-janitors@lfdr.de>; Sun,  5 May 2019 19:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAFBE1416C
+	for <lists+kernel-janitors@lfdr.de>; Sun,  5 May 2019 19:26:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727749AbfEERUB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 5 May 2019 13:20:01 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:52752 "EHLO
+        id S1727565AbfEER0N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 5 May 2019 13:26:13 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:52852 "EHLO
         shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726905AbfEERUA (ORCPT
+        with ESMTP id S1726905AbfEER0M (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 5 May 2019 13:20:00 -0400
+        Sun, 5 May 2019 13:26:12 -0400
 Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d8])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 20E2014D9FADE;
-        Sun,  5 May 2019 10:20:00 -0700 (PDT)
-Date:   Sun, 05 May 2019 10:19:59 -0700 (PDT)
-Message-Id: <20190505.101959.1864240642373241547.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     santosh.shilimkar@oracle.com, netdev@vger.kernel.org,
-        linux-rdma@vger.kernel.org, rds-devel@oss.oracle.com,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: rds: fix spelling mistake "syctl" -> "sysctl"
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 0663A14DA0325;
+        Sun,  5 May 2019 10:26:11 -0700 (PDT)
+Date:   Sun, 05 May 2019 10:26:11 -0700 (PDT)
+Message-Id: <20190505.102611.257025800032151893.davem@davemloft.net>
+To:     dan.carpenter@oracle.com
+Cc:     gustavo@embeddedor.com, dwmw2@infradead.org,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net] net: atm: clean up a range check
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190503121017.5227-1-colin.king@canonical.com>
-References: <20190503121017.5227-1-colin.king@canonical.com>
+In-Reply-To: <20190503123948.GD29695@mwanda>
+References: <20190503123948.GD29695@mwanda>
 X-Mailer: Mew version 6.8 on Emacs 26.1
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 05 May 2019 10:20:00 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 05 May 2019 10:26:12 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Fri,  3 May 2019 13:10:17 +0100
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Date: Fri, 3 May 2019 15:39:48 +0300
 
-> From: Colin Ian King <colin.king@canonical.com>
+> The code works fine but the problem is that check for negatives is a
+> no-op:
 > 
-> There is a spelling mistake in a pr_warn warning. Fix it.
+> 	if (arg < 0)
+> 		i = 0;
 > 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> The "i" value isn't used.  We immediately overwrite it with:
+> 
+> 	i = array_index_nospec(arg, MAX_LEC_ITF);
+> 
+> The array_index_nospec() macro returns zero if "arg" is out of bounds so
+> this works, but the dead code is confusing and it doesn't look very
+> intentional.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> This applies to net, but it's just a clean up.
 
-Applied.
+I'm applying this to net-next, thanks Dan.

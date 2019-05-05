@@ -2,54 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CE871419E
-	for <lists+kernel-janitors@lfdr.de>; Sun,  5 May 2019 19:47:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D26E14271
+	for <lists+kernel-janitors@lfdr.de>; Sun,  5 May 2019 23:16:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726965AbfEERrf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 5 May 2019 13:47:35 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:53204 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726081AbfEERrf (ORCPT
+        id S1727950AbfEEVQa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 5 May 2019 17:16:30 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:56518 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727765AbfEEVQa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 5 May 2019 13:47:35 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d8])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 4CA4214D3B5AD;
-        Sun,  5 May 2019 10:47:34 -0700 (PDT)
-Date:   Sun, 05 May 2019 10:47:33 -0700 (PDT)
-Message-Id: <20190505.104733.1706247040193919651.davem@davemloft.net>
-To:     yuehaibing@huawei.com
-Cc:     maxime.chevallier@bootlin.com, antoine.tenart@bootlin.com,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next] net: mvpp2: cls: Remove set but not used
- variable 'act'
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190504040405.13004-1-yuehaibing@huawei.com>
-References: <20190504040405.13004-1-yuehaibing@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 05 May 2019 10:47:34 -0700 (PDT)
+        Sun, 5 May 2019 17:16:30 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hNOUh-0006yv-SY; Sun, 05 May 2019 21:16:24 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Franky Lin <franky.lin@broadcom.com>,
+        Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] brcmfmac: remove redundant u32 comparison with less than zero
+Date:   Sun,  5 May 2019 22:16:23 +0100
+Message-Id: <20190505211623.3153-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
-Date: Sat, 4 May 2019 04:04:05 +0000
+From: Colin Ian King <colin.king@canonical.com>
 
-> Fixes gcc '-Wunused-but-set-variable' warning:
-> 
-> drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c: In function 'mvpp2_cls_c2_build_match':
-> drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c:1159:28: warning:
->  variable 'act' set but not used [-Wunused-but-set-variable]
-> 
-> It is never used since introduction in
-> commit 90b509b39ac9 ("net: mvpp2: cls: Add Classification offload support")
-> 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+The check for the u32 variable idx being less than zero is
+always false and is redundant. Remove it.
 
-Applied.
+Addresses-Coverity: ("Unsigned compared against 0")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
+index 9d1f9ff25bfa..e874dddc7b7f 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/msgbuf.c
+@@ -375,7 +375,7 @@ brcmf_msgbuf_get_pktid(struct device *dev, struct brcmf_msgbuf_pktids *pktids,
+ 	struct brcmf_msgbuf_pktid *pktid;
+ 	struct sk_buff *skb;
+ 
+-	if (idx < 0 || idx >= pktids->array_size) {
++	if (idx >= pktids->array_size) {
+ 		brcmf_err("Invalid packet id %d (max %d)\n", idx,
+ 			  pktids->array_size);
+ 		return NULL;
+-- 
+2.20.1
+

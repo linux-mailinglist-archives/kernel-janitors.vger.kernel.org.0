@@ -2,131 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF25E13B60
-	for <lists+kernel-janitors@lfdr.de>; Sat,  4 May 2019 19:22:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D39EC13C79
+	for <lists+kernel-janitors@lfdr.de>; Sun,  5 May 2019 03:07:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726555AbfEDRW2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 4 May 2019 13:22:28 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:39759 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726432AbfEDRW1 (ORCPT
+        id S1726310AbfEEBHg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 4 May 2019 21:07:36 -0400
+Received: from out30-44.freemail.mail.aliyun.com ([115.124.30.44]:45242 "EHLO
+        out30-44.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726278AbfEEBHg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 4 May 2019 13:22:27 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hMyMg-0000d9-RZ; Sat, 04 May 2019 17:22:22 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-input@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] HID: uclogic: fix dereferences of hdev before null check on hdev
-Date:   Sat,  4 May 2019 18:22:22 +0100
-Message-Id: <20190504172222.1260-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Sat, 4 May 2019 21:07:36 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R711e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04394;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0TQtyQw-_1557018451;
+Received: from JosephdeMacBook-Pro.local(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0TQtyQw-_1557018451)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Sun, 05 May 2019 09:07:31 +0800
+Subject: Re: [PATCH v2] fs: ocfs: fix spelling mistake "hearbeating" ->
+ "heartbeat"
+To:     ChenGang <cg.chen@huawei.com>, mark@fasheh.com, jlbec@evilplan.org,
+        jiangqi903@gmail.com
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        ocfs2-devel@oss.oracle.com,
+        Andrew Morton <akpm@linux-foundation.org>
+References: <1556855636-121101-1-git-send-email-cg.chen@huawei.com>
+From:   Joseph Qi <joseph.qi@linux.alibaba.com>
+Message-ID: <071ee914-17a8-5e3e-ab49-ac4bdad5eaed@linux.alibaba.com>
+Date:   Sun, 5 May 2019 09:07:40 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:60.0)
+ Gecko/20100101 Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <1556855636-121101-1-git-send-email-cg.chen@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
 
-Currently hdev is being dereferenced when using macro hid_to_usb_dev
-before hdev is being null checked, hence there is a potential null
-pointer dereference.  Fix this by only dereferencing hdev after it has
-been null checked.
 
-Fixes: 9614219e9310 ("HID: uclogic: Extract tablet parameter discovery into a module")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/hid/hid-uclogic-params.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+On 19/5/3 11:53, ChenGang wrote:
+> There are some spelling mistakes in ocfs, fix it.
 
-diff --git a/drivers/hid/hid-uclogic-params.c b/drivers/hid/hid-uclogic-params.c
-index 0187c9f8fc22..bc5a2f860501 100644
---- a/drivers/hid/hid-uclogic-params.c
-+++ b/drivers/hid/hid-uclogic-params.c
-@@ -65,7 +65,7 @@ static int uclogic_params_get_str_desc(__u8 **pbuf, struct hid_device *hdev,
- 					__u8 idx, size_t len)
- {
- 	int rc;
--	struct usb_device *udev = hid_to_usb_dev(hdev);
-+	struct usb_device *udev;
- 	__u8 *buf = NULL;
- 
- 	/* Check arguments */
-@@ -73,6 +73,7 @@ static int uclogic_params_get_str_desc(__u8 **pbuf, struct hid_device *hdev,
- 		rc = -EINVAL;
- 		goto cleanup;
- 	}
-+	udev = hid_to_usb_dev(hdev);
- 
- 	buf = kmalloc(len, GFP_KERNEL);
- 	if (buf == NULL) {
-@@ -449,7 +450,7 @@ static int uclogic_params_frame_init_v1_buttonpad(
- {
- 	int rc;
- 	bool found = false;
--	struct usb_device *usb_dev = hid_to_usb_dev(hdev);
-+	struct usb_device *usb_dev;
- 	char *str_buf = NULL;
- 	const size_t str_len = 16;
- 
-@@ -458,6 +459,7 @@ static int uclogic_params_frame_init_v1_buttonpad(
- 		rc = -EINVAL;
- 		goto cleanup;
- 	}
-+	usb_dev = hid_to_usb_dev(hdev);
- 
- 	/*
- 	 * Enable generic button mode
-@@ -705,7 +707,7 @@ static int uclogic_params_huion_init(struct uclogic_params *params,
- 				     struct hid_device *hdev)
- {
- 	int rc;
--	struct usb_device *udev = hid_to_usb_dev(hdev);
-+	struct usb_device *udev;
- 	struct usb_interface *iface = to_usb_interface(hdev->dev.parent);
- 	__u8 bInterfaceNumber = iface->cur_altsetting->desc.bInterfaceNumber;
- 	bool found;
-@@ -720,6 +722,7 @@ static int uclogic_params_huion_init(struct uclogic_params *params,
- 		rc = -EINVAL;
- 		goto cleanup;
- 	}
-+	udev = hid_to_usb_dev(hdev);
- 
- 	/* If it's not a pen interface */
- 	if (bInterfaceNumber != 0) {
-@@ -832,10 +835,9 @@ int uclogic_params_init(struct uclogic_params *params,
- 			struct hid_device *hdev)
- {
- 	int rc;
--	struct usb_device *udev = hid_to_usb_dev(hdev);
--	__u8  bNumInterfaces = udev->config->desc.bNumInterfaces;
--	struct usb_interface *iface = to_usb_interface(hdev->dev.parent);
--	__u8 bInterfaceNumber = iface->cur_altsetting->desc.bInterfaceNumber;
-+	struct usb_device *udev;
-+	struct usb_interface *iface;
-+	__u8 bNumInterfaces, bInterfaceNumber;
- 	bool found;
- 	/* The resulting parameters (noop) */
- 	struct uclogic_params p = {0, };
-@@ -846,6 +848,10 @@ int uclogic_params_init(struct uclogic_params *params,
- 		rc = -EINVAL;
- 		goto cleanup;
- 	}
-+	udev = hid_to_usb_dev(hdev);
-+	bNumInterfaces = udev->config->desc.bNumInterfaces;
-+	iface = to_usb_interface(hdev->dev.parent);
-+	bInterfaceNumber = iface->cur_altsetting->desc.bInterfaceNumber;
- 
- 	/*
- 	 * Set replacement report descriptor if the original matches the
--- 
-2.20.1
+s/ocfs/ocfs2
 
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+> 
+> Signed-off-by: ChenGang <cg.chen@huawei.com>
+> ---
+>  fs/ocfs2/cluster/heartbeat.c | 2 +-
+>  fs/ocfs2/cluster/quorum.c    | 2 +-
+>  fs/ocfs2/cluster/tcp.c       | 2 +-
+>  fs/ocfs2/dlm/dlmmaster.c     | 2 +-
+>  4 files changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/fs/ocfs2/cluster/heartbeat.c b/fs/ocfs2/cluster/heartbeat.c
+> index f3c20b2..e4e7df1 100644
+> --- a/fs/ocfs2/cluster/heartbeat.c
+> +++ b/fs/ocfs2/cluster/heartbeat.c
+> @@ -1198,7 +1198,7 @@ static int o2hb_do_disk_heartbeat(struct o2hb_region *reg)
+>  	if (atomic_read(&reg->hr_steady_iterations) != 0) {
+>  		if (atomic_dec_and_test(&reg->hr_unsteady_iterations)) {
+>  			printk(KERN_NOTICE "o2hb: Unable to stabilize "
+> -			       "heartbeart on region %s (%s)\n",
+> +			       "heartbeat on region %s (%s)\n",
+>  			       config_item_name(&reg->hr_item),
+>  			       reg->hr_dev_name);
+>  			atomic_set(&reg->hr_steady_iterations, 0);
+> diff --git a/fs/ocfs2/cluster/quorum.c b/fs/ocfs2/cluster/quorum.c
+> index af2e747..792132f 100644
+> --- a/fs/ocfs2/cluster/quorum.c
+> +++ b/fs/ocfs2/cluster/quorum.c
+> @@ -89,7 +89,7 @@ static void o2quo_fence_self(void)
+>  	};
+>  }
+>  
+> -/* Indicate that a timeout occurred on a hearbeat region write. The
+> +/* Indicate that a timeout occurred on a heartbeat region write. The
+>   * other nodes in the cluster may consider us dead at that time so we
+>   * want to "fence" ourselves so that we don't scribble on the disk
+>   * after they think they've recovered us. This can't solve all
+> diff --git a/fs/ocfs2/cluster/tcp.c b/fs/ocfs2/cluster/tcp.c
+> index e9f236a..7a43c04 100644
+> --- a/fs/ocfs2/cluster/tcp.c
+> +++ b/fs/ocfs2/cluster/tcp.c
+> @@ -1776,7 +1776,7 @@ static void 	(struct o2nm_node *node, int node_num,
+>  		(msecs_to_jiffies(o2net_reconnect_delay()) + 1);
+>  
+>  	if (node_num != o2nm_this_node()) {
+> -		/* believe it or not, accept and node hearbeating testing
+> +		/* believe it or not, accept and node heartbeating testing
+>  		 * can succeed for this node before we got here.. so
+>  		 * only use set_nn_state to clear the persistent error
+>  		 * if that hasn't already happened */
+> diff --git a/fs/ocfs2/dlm/dlmmaster.c b/fs/ocfs2/dlm/dlmmaster.c
+> index 826f056..41b80d5 100644
+> --- a/fs/ocfs2/dlm/dlmmaster.c
+> +++ b/fs/ocfs2/dlm/dlmmaster.c
+> @@ -2176,7 +2176,7 @@ static void dlm_assert_master_worker(struct dlm_work_item *item, void *data)
+>   * think that $RECOVERY is currently mastered by a dead node.  If so,
+>   * we wait a short time to allow that node to get notified by its own
+>   * heartbeat stack, then check again.  All $RECOVERY lock resources
+> - * mastered by dead nodes are purged when the hearbeat callback is
+> + * mastered by dead nodes are purged when the heartbeat callback is
+>   * fired, so we can know for sure that it is safe to continue once
+>   * the node returns a live node or no node.  */
+>  static int dlm_pre_master_reco_lockres(struct dlm_ctxt *dlm,
+> 

@@ -2,49 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 337B314174
-	for <lists+kernel-janitors@lfdr.de>; Sun,  5 May 2019 19:29:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CE871419E
+	for <lists+kernel-janitors@lfdr.de>; Sun,  5 May 2019 19:47:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727916AbfEER3y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 5 May 2019 13:29:54 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:52914 "EHLO
+        id S1726965AbfEERrf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 5 May 2019 13:47:35 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:53204 "EHLO
         shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727901AbfEER3x (ORCPT
+        with ESMTP id S1726081AbfEERrf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 5 May 2019 13:29:53 -0400
+        Sun, 5 May 2019 13:47:35 -0400
 Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d8])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id EC47F14DA6461;
-        Sun,  5 May 2019 10:29:51 -0700 (PDT)
-Date:   Sun, 05 May 2019 10:29:51 -0700 (PDT)
-Message-Id: <20190505.102951.1109077189450790567.davem@davemloft.net>
-To:     dan.carpenter@oracle.com
-Cc:     esben@geanix.com, michal.simek@xilinx.com, andrew@lunn.ch,
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 4CA4214D3B5AD;
+        Sun,  5 May 2019 10:47:34 -0700 (PDT)
+Date:   Sun, 05 May 2019 10:47:33 -0700 (PDT)
+Message-Id: <20190505.104733.1706247040193919651.davem@davemloft.net>
+To:     yuehaibing@huawei.com
+Cc:     maxime.chevallier@bootlin.com, antoine.tenart@bootlin.com,
         netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 2/2 net-next] net: ll_temac: remove an unnecessary
- condition
+Subject: Re: [PATCH net-next] net: mvpp2: cls: Remove set but not used
+ variable 'act'
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190503125051.GG29695@mwanda>
-References: <20190503125024.GF29695@mwanda>
-        <20190503125051.GG29695@mwanda>
+In-Reply-To: <20190504040405.13004-1-yuehaibing@huawei.com>
+References: <20190504040405.13004-1-yuehaibing@huawei.com>
 X-Mailer: Mew version 6.8 on Emacs 26.1
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 05 May 2019 10:29:52 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 05 May 2019 10:47:34 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Fri, 3 May 2019 15:50:51 +0300
+From: YueHaibing <yuehaibing@huawei.com>
+Date: Sat, 4 May 2019 04:04:05 +0000
 
-> The "pdata->mdio_bus_id" is unsigned so this condition is always true.
-> This patch just removes it.
+> Fixes gcc '-Wunused-but-set-variable' warning:
 > 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c: In function 'mvpp2_cls_c2_build_match':
+> drivers/net/ethernet/marvell/mvpp2/mvpp2_cls.c:1159:28: warning:
+>  variable 'act' set but not used [-Wunused-but-set-variable]
+> 
+> It is never used since introduction in
+> commit 90b509b39ac9 ("net: mvpp2: cls: Add Classification offload support")
+> 
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
 Applied.

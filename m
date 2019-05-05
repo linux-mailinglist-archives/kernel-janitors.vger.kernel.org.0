@@ -2,115 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1846213D8B
-	for <lists+kernel-janitors@lfdr.de>; Sun,  5 May 2019 07:28:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4D4213DD8
+	for <lists+kernel-janitors@lfdr.de>; Sun,  5 May 2019 08:23:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726837AbfEEF2x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 5 May 2019 01:28:53 -0400
-Received: from [66.55.73.32] ([66.55.73.32]:51784 "EHLO
-        ushosting.nmnhosting.com" rhost-flags-FAIL-FAIL-OK-OK)
-        by vger.kernel.org with ESMTP id S1725814AbfEEF2w (ORCPT
+        id S1727427AbfEEGXX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 5 May 2019 02:23:23 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:35350 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726237AbfEEGXW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 5 May 2019 01:28:52 -0400
-X-Greylist: delayed 553 seconds by postgrey-1.27 at vger.kernel.org; Sun, 05 May 2019 01:28:52 EDT
-Received: from mail2.nmnhosting.com (unknown [202.169.106.97])
-        by ushosting.nmnhosting.com (Postfix) with ESMTPS id 669C22DC0068;
-        Sun,  5 May 2019 01:19:38 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=d-silva.org;
-        s=201810a; t=1557033578;
-        bh=jTyWNX0tenu8oSQr1YIabggyKqUeXI66jOG52Th+zoI=;
-        h=From:To:Cc:References:In-Reply-To:Subject:Date:From;
-        b=mL/hJNzkdJZkxnMvbbWj1t882MsD+hC/wqp2+mlgQnaNxKIBDEH0uegq984+iGuLT
-         J6tsN3djphhaKLr9Tfjki7hCjn17efcZzii65JN7bHtpzydbag3GVokQQvopgn5o9x
-         NSGqSgvTaH0a2oHAYp+zgDEq60tZkb9foLNHGhDBG32BWwMbGwrKy2SbBOK7MbUWgw
-         rCfaBofYJ5XsT/Yx3hDGRxtE1qt6/tGCniwIlZOZfXr7QVoNSMYgWvjYjKMDvvcEKK
-         hUyKkpIEVn8y+8Q2GM7V56eCgNtiKjQkwet3km60McmutYTNPryVZR3v2UkkuifdQb
-         dy1FL3jTFG05TpMbcNjbFZUiLc6FPJMMj1QsXNofjPaxzsQ+dHArD1oQNgt4tth3e8
-         D2jaeRg8l4SzFnt8bpyjdDGNZ0x95rNj+0MVaMXxfc+VdknxRGj+/Vms8KmxW2PBs1
-         B+p6LEd/oH4Xll/9M9iydCluUIwAw+E1uIrcQumtwTaRPegVxWVCb6xtU//7KUVIIW
-         TyGPE3O0iowGR0lxm3d1Fuw//BYpkyF92otb5rlT7p0fSY/NSY+CQruEeYKAIxjK3y
-         NnzzslYESFYRdfl5XxzTpaRUAFQ2IV2ULnKDsXkxZE83jO1UcA1LzhnNEpK2ijB4PN
-         /3yq50LD6t15MHAApax1s8P4=
-Received: from Hawking (ntp.lan [10.0.1.1])
-        (authenticated bits=0)
-        by mail2.nmnhosting.com (8.15.2/8.15.2) with ESMTPSA id x454ki37097385
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Sun, 5 May 2019 14:46:44 +1000 (AEST)
-        (envelope-from alastair@d-silva.org)
-From:   "Alastair D'Silva" <alastair@d-silva.org>
-To:     "'Wei Yongjun'" <weiyongjun1@huawei.com>,
-        "'Frederic Barrat'" <fbarrat@linux.ibm.com>,
-        "'Andrew Donnellan'" <ajd@linux.ibm.com>,
-        "'Arnd Bergmann'" <arnd@arndb.de>,
-        "'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>
-Cc:     <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <20190504070430.57008-1-weiyongjun1@huawei.com>
-In-Reply-To: <20190504070430.57008-1-weiyongjun1@huawei.com>
-Subject: RE: [PATCH -next] ocxl: Fix return value check in afu_ioctl()
-Date:   Sun, 5 May 2019 14:46:46 +1000
-Message-ID: <01d701d502fd$8c2da240$a488e6c0$@d-silva.org>
+        Sun, 5 May 2019 02:23:22 -0400
+Received: by mail-lf1-f65.google.com with SMTP id j20so7008614lfh.2;
+        Sat, 04 May 2019 23:23:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VHPSmeiaEyI+fZI5jnTJrK4KWAfYaHxzzqx2Hh2oJWI=;
+        b=gk+gb6/j94zsaoE97skuYE1/Pv9RcbdsI5m6pu5xXsPvE5LSPPl1dKNrzhSjw72k6G
+         0oGu7aDUl4sB/2GaJp6Yxfm2XwBdd58mgiah9zFLDSKfHR/TLRPLtvPNoBSKYG/Gv+7x
+         MZhOnqlM392DzjhsW2aj/q32LGcwAMOjLRkJgWiv6SOALv6H/EufvmwEK60Kc9OeAnL8
+         ZLHi99S73hd3VUTSPCnHQTYqDlMCMlLnA8PSzmGnhUre+nPF/YwOnagmd2kZ1PgLkMPd
+         soYIjBGfbsHeGVG1nYs+K87NDDv++1ajoped5vkVcCWNkzhV6T8b1vPXa/i0oWSRGlDn
+         dtgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VHPSmeiaEyI+fZI5jnTJrK4KWAfYaHxzzqx2Hh2oJWI=;
+        b=Q9Yrg+6BgKE5ifDN3YphLoaUZeh7lUKNGe1/Kln+ZrZOy/Zo8y4ikX5s9rDqnnDp8Y
+         TGUEiis+3DupCgy4wPdg6UC1l3iboexHVIcJchFBM502Qlh+2oXUugWJWEWc4gKhVL+V
+         H+yZnsEv3oJOXd7XFSsCmw5IJlFZD0YrnKSRKGcxF1yqTgvvVQ+DQy9URjItwuK6PeN4
+         LZYmDJsuh3/C+l5THD3/tLvl8WiqkdZ7kQKFswb8lh71sRZRr7OKIEQkMivuJY3MTek1
+         /xqkbHPZtkSTR4XlCXqv4djmY4Ln2v8VkQ1f7yOQ76/TPnS64OeLVI62ZeKI7lLwd9LB
+         xEew==
+X-Gm-Message-State: APjAAAU4JxIkzfWJ2XiY6Givw4IDPVDRR7Kl3Sl34tuyV3PdFZjMyc2U
+        z5uuTvy90uizwLOenYd0HF1rXbGjTTW34H7D+94=
+X-Google-Smtp-Source: APXvYqxmzye1w9ywCiF5Mf9/PUrmPP1RRpHTVk/MlTGKqqXTbd/JZjNEtAN712PgpQ4fDy962zTQC9Ie8bZE5diZCa4=
+X-Received: by 2002:a19:8:: with SMTP id 8mr9593361lfa.125.1557037400792; Sat,
+ 04 May 2019 23:23:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQJOAUDns2AVT+PBmhNLMaSajBbpZaVp+Ezg
-Content-Language: en-au
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.6.2 (mail2.nmnhosting.com [10.0.1.20]); Sun, 05 May 2019 14:46:45 +1000 (AEST)
+References: <20190429135611.72640-1-yuehaibing@huawei.com> <20190429154017.j5yotcmvtw4fcbuo@kafai-mbp.dhcp.thefacebook.com>
+ <20190429154052.7qtxsqex5xure4a3@kafai-mbp.dhcp.thefacebook.com>
+In-Reply-To: <20190429154052.7qtxsqex5xure4a3@kafai-mbp.dhcp.thefacebook.com>
+From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date:   Sat, 4 May 2019 23:23:08 -0700
+Message-ID: <CAADnVQJ+GpPn7g=zv5KdZhdu5=uT4SWT6rGsMn_onFwO7oH=pA@mail.gmail.com>
+Subject: Re: [PATCH net-next] bpf: Use PTR_ERR_OR_ZERO in bpf_fd_sk_storage_update_elem()
+To:     Martin Lau <kafai@fb.com>
+Cc:     YueHaibing <yuehaibing@huawei.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> -----Original Message-----
-> From: Wei Yongjun <weiyongjun1@huawei.com>
-> Sent: Saturday, 4 May 2019 5:05 PM
-> To: Frederic Barrat <fbarrat@linux.ibm.com>; Andrew Donnellan
-> <ajd@linux.ibm.com>; Arnd Bergmann <arnd@arndb.de>; Greg Kroah-
-> Hartman <gregkh@linuxfoundation.org>; Alastair D'Silva <alastair@d-
-> silva.org>
-> Cc: Wei Yongjun <weiyongjun1@huawei.com>; linuxppc-
-> dev@lists.ozlabs.org; linux-kernel@vger.kernel.org; kernel-
-> janitors@vger.kernel.org
-> Subject: [PATCH -next] ocxl: Fix return value check in afu_ioctl()
-> 
-> In case of error, the function eventfd_ctx_fdget() returns ERR_PTR() and
-> never returns NULL. The NULL test in the return value check should be
-> replaced with IS_ERR().
-> 
-> This issue was detected by using the Coccinelle software.
-> 
-> Fixes: 060146614643 ("ocxl: move event_fd handling to frontend")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->  drivers/misc/ocxl/file.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/misc/ocxl/file.c b/drivers/misc/ocxl/file.c index
-> 8aa22893ed76..2870c25da166 100644
-> --- a/drivers/misc/ocxl/file.c
-> +++ b/drivers/misc/ocxl/file.c
-> @@ -257,8 +257,8 @@ static long afu_ioctl(struct file *file, unsigned int
-cmd,
->  			return -EINVAL;
->  		irq_id = ocxl_irq_offset_to_id(ctx, irq_fd.irq_offset);
->  		ev_ctx = eventfd_ctx_fdget(irq_fd.eventfd);
-> -		if (!ev_ctx)
-> -			return -EFAULT;
-> +		if (IS_ERR(ev_ctx))
-> +			return PTR_ERR(ev_ctx);
->  		rc = ocxl_irq_set_handler(ctx, irq_id, irq_handler,
-irq_free,
-> ev_ctx);
->  		break;
+On Mon, Apr 29, 2019 at 8:42 AM Martin Lau <kafai@fb.com> wrote:
+>
+> On Mon, Apr 29, 2019 at 08:40:17AM -0700, Martin KaFai Lau wrote:
+> > On Mon, Apr 29, 2019 at 01:56:11PM +0000, YueHaibing wrote:
+> > > Use PTR_ERR_OR_ZERO rather than if(IS_ERR(...)) + PTR_ERR
+> > Acked-by: Martin KaFai Lau <kafai@fb.com>
+> btw, that should go to the bpf-next branch.
 
-LGTM
-
-Acked-by: Alastair D'Silva <alastair@d-silva.org>
-
--- 
-Alastair D'Silva           mob: 0423 762 819
-skype: alastair_dsilva     msn: alastair@d-silva.org
-blog: http://alastair.d-silva.org    Twitter: @EvilDeece
-
+Applied to bpf-next. Thanks!

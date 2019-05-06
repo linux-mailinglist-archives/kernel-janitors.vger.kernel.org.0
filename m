@@ -2,52 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59A6514A40
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 May 2019 14:52:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E420114A48
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 May 2019 14:54:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725856AbfEFMwY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 May 2019 08:52:24 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:52070 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725852AbfEFMwY (ORCPT
+        id S1726229AbfEFMy2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 May 2019 08:54:28 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:48096 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725852AbfEFMy1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 May 2019 08:52:24 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x46CiMga148036;
-        Mon, 6 May 2019 12:51:35 GMT
+        Mon, 6 May 2019 08:54:27 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x46CiOL0157962;
+        Mon, 6 May 2019 12:54:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=TO5p6U844mSabPmFZ/xowTJwJRPCrR8Q/DL//O5FccE=;
- b=kWIJ4hR/ElT3WJJ3fe6F9qJg/VK1EZFY7AYa6nWB12LVaP8SmC8i46bzpFSZAeyLHg5k
- FlIA1swniW7ao5FxIZrCAG7cA9E2b4CPqySePmPyIzCHkjkhkEsWsqLeV5ZHdX3mNNby
- wjcVrHpmHmeltdSbd47YLIR357fM/LBDQYwT49v5xyZcBmM8HkDdFJ/gW+ZloLZpRCyh
- nydTkZYZIWw3iDLKtL5hZS7CKPgIQIs6YAAXo7ITS990ynrEUtsbHrSAD10WPpWcu2Eo
- a9Z1m5ELMau+h22VQwj/zyy3vNmkvzpr1Z1IvDqlsnu+cC+pd0LGnYaKGqaMN/vbwDm7 Tg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 2s94bfp8v6-1
+ bh=+QirhigEffLdcMVAjibEhy8hlxrWaK2VezDFWTYfl9o=;
+ b=dOBcNcXyMVl4RNOr43UgQ1umiEbL0MtwvJiemCRcVFRT6FxAhIn/KgENLHFj9kaIUIY+
+ BjD7LIojVANf1Qd+xuJgJc7WW+TgPebQFnMqb950LtAgPfiUz5tSnlTWsr2q+kNp68hJ
+ uOUGpUKrqqewbuJ5UC+tUl7t7ZiCOsSh6rJTx0Jbq0tXHksFQutXXF53lhrt228duKFr
+ pPhZcC01w3+O3nJjMVp+gTDt2KqWdLGegs+Cvrj45mBct6V5jOMlMcYDK0C1OjV6shuQ
+ tEE+s6/mWnG/kg/tegzVIXrG4WN5GrxBfTPPtiLL2ioyNBi/oAZ7pTxTUzOzIMxHt41D 7A== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2130.oracle.com with ESMTP id 2s94b5p9jv-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 06 May 2019 12:51:35 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x46CpF5G068622;
-        Mon, 6 May 2019 12:51:35 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 2s94aevtxf-1
+        Mon, 06 May 2019 12:54:22 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x46Cr1YJ140473;
+        Mon, 6 May 2019 12:54:22 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2s9aye9q4w-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 06 May 2019 12:51:35 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x46CpR8H025954;
-        Mon, 6 May 2019 12:51:32 GMT
+        Mon, 06 May 2019 12:54:22 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x46CsKwR009565;
+        Mon, 6 May 2019 12:54:20 GMT
 Received: from mwanda (/105.52.123.240)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 06 May 2019 05:51:26 -0700
-Date:   Mon, 6 May 2019 15:51:19 +0300
+        with ESMTP ; Mon, 06 May 2019 05:54:20 -0700
+Date:   Mon, 6 May 2019 15:54:09 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jaroslav Kysela <perex@perex.cz>
-Cc:     Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] ALSA: synth: emux: soundfont.c: divide by zero in
- calc_gus_envelope_time()
-Message-ID: <20190506125119.GB13799@mwanda>
+To:     Johannes Berg <johannes.berg@intel.com>
+Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Naftali Goldstein <naftali.goldstein@intel.com>,
+        Sara Sharon <sara.sharon@intel.com>,
+        Shaul Triebitz <shaul.triebitz@intel.com>,
+        Mordechay Goodstein <mordechay.goodstein@intel.com>,
+        Liad Kaufman <liad.kaufman@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] iwlwifi: remove some unnecessary NULL checks
+Message-ID: <20190506125409.GC13799@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -69,28 +77,109 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This function is called from load_guspatch() and the rate is specified
-by the user.  If they accidentally selected zero then it would crash the
-kernel.  I've just changed the zero to a one.
+These pointers are an offset into the "sta" struct.  They're assigned
+like this:
+
+	const struct ieee80211_sta_vht_cap *vht_cap = &sta->vht_cap;
+
+They're not the first member of the struct (->supp_rates[] is first) so
+they can't be NULL.
 
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- sound/synth/emux/soundfont.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    | 23 +++++++++----------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/sound/synth/emux/soundfont.c b/sound/synth/emux/soundfont.c
-index 31a4ea94830e..9b5d70104489 100644
---- a/sound/synth/emux/soundfont.c
-+++ b/sound/synth/emux/soundfont.c
-@@ -856,6 +856,8 @@ calc_gus_envelope_time(int rate, int start, int end)
- 	int r, p, t;
- 	r = (3 - ((rate >> 6) & 3)) * 3;
- 	p = rate & 0x3f;
-+	if (!p)
-+		p = 1;
- 	t = end - start;
- 	if (t < 0) t = -t;
- 	if (13 > r)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
+index 659e21b2d4e7..b6fb670d249c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
+@@ -101,7 +101,7 @@ static u8 rs_fw_sgi_cw_support(struct ieee80211_sta *sta)
+ 	struct ieee80211_sta_he_cap *he_cap = &sta->he_cap;
+ 	u8 supp = 0;
+ 
+-	if (he_cap && he_cap->has_he)
++	if (he_cap->has_he)
+ 		return 0;
+ 
+ 	if (ht_cap->cap & IEEE80211_HT_CAP_SGI_20)
+@@ -123,12 +123,12 @@ static u16 rs_fw_get_config_flags(struct iwl_mvm *mvm,
+ 	struct ieee80211_sta_ht_cap *ht_cap = &sta->ht_cap;
+ 	struct ieee80211_sta_vht_cap *vht_cap = &sta->vht_cap;
+ 	struct ieee80211_sta_he_cap *he_cap = &sta->he_cap;
+-	bool vht_ena = vht_cap && vht_cap->vht_supported;
++	bool vht_ena = vht_cap->vht_supported;
+ 	u16 flags = 0;
+ 
+ 	if (mvm->cfg->ht_params->stbc &&
+ 	    (num_of_ant(iwl_mvm_get_valid_tx_ant(mvm)) > 1)) {
+-		if (he_cap && he_cap->has_he) {
++		if (he_cap->has_he) {
+ 			if (he_cap->he_cap_elem.phy_cap_info[2] &
+ 			    IEEE80211_HE_PHY_CAP2_STBC_RX_UNDER_80MHZ)
+ 				flags |= IWL_TLC_MNG_CFG_FLAGS_STBC_MSK;
+@@ -136,15 +136,14 @@ static u16 rs_fw_get_config_flags(struct iwl_mvm *mvm,
+ 			if (he_cap->he_cap_elem.phy_cap_info[7] &
+ 			    IEEE80211_HE_PHY_CAP7_STBC_RX_ABOVE_80MHZ)
+ 				flags |= IWL_TLC_MNG_CFG_FLAGS_HE_STBC_160MHZ_MSK;
+-		} else if ((ht_cap &&
+-			    (ht_cap->cap & IEEE80211_HT_CAP_RX_STBC)) ||
++		} else if ((ht_cap->cap & IEEE80211_HT_CAP_RX_STBC) ||
+ 			   (vht_ena &&
+ 			    (vht_cap->cap & IEEE80211_VHT_CAP_RXSTBC_MASK)))
+ 			flags |= IWL_TLC_MNG_CFG_FLAGS_STBC_MSK;
+ 	}
+ 
+ 	if (mvm->cfg->ht_params->ldpc &&
+-	    ((ht_cap && (ht_cap->cap & IEEE80211_HT_CAP_LDPC_CODING)) ||
++	    ((ht_cap->cap & IEEE80211_HT_CAP_LDPC_CODING) ||
+ 	     (vht_ena && (vht_cap->cap & IEEE80211_VHT_CAP_RXLDPC))))
+ 		flags |= IWL_TLC_MNG_CFG_FLAGS_LDPC_MSK;
+ 
+@@ -154,7 +153,7 @@ static u16 rs_fw_get_config_flags(struct iwl_mvm *mvm,
+ 	     IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD))
+ 		flags &= ~IWL_TLC_MNG_CFG_FLAGS_LDPC_MSK;
+ 
+-	if (he_cap && he_cap->has_he &&
++	if (he_cap->has_he &&
+ 	    (he_cap->he_cap_elem.phy_cap_info[3] &
+ 	     IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_RX_MASK))
+ 		flags |= IWL_TLC_MNG_CFG_FLAGS_HE_DCM_NSS_1_MSK;
+@@ -293,13 +292,13 @@ static void rs_fw_set_supp_rates(struct ieee80211_sta *sta,
+ 	cmd->mode = IWL_TLC_MNG_MODE_NON_HT;
+ 
+ 	/* HT/VHT rates */
+-	if (he_cap && he_cap->has_he) {
++	if (he_cap->has_he) {
+ 		cmd->mode = IWL_TLC_MNG_MODE_HE;
+ 		rs_fw_he_set_enabled_rates(sta, sband, cmd);
+-	} else if (vht_cap && vht_cap->vht_supported) {
++	} else if (vht_cap->vht_supported) {
+ 		cmd->mode = IWL_TLC_MNG_MODE_VHT;
+ 		rs_fw_vht_set_enabled_rates(sta, vht_cap, cmd);
+-	} else if (ht_cap && ht_cap->ht_supported) {
++	} else if (ht_cap->ht_supported) {
+ 		cmd->mode = IWL_TLC_MNG_MODE_HT;
+ 		cmd->ht_rates[0][0] = cpu_to_le16(ht_cap->mcs.rx_mask[0]);
+ 		cmd->ht_rates[1][0] = cpu_to_le16(ht_cap->mcs.rx_mask[1]);
+@@ -381,7 +380,7 @@ static u16 rs_fw_get_max_amsdu_len(struct ieee80211_sta *sta)
+ 	const struct ieee80211_sta_vht_cap *vht_cap = &sta->vht_cap;
+ 	const struct ieee80211_sta_ht_cap *ht_cap = &sta->ht_cap;
+ 
+-	if (vht_cap && vht_cap->vht_supported) {
++	if (vht_cap->vht_supported) {
+ 		switch (vht_cap->cap & IEEE80211_VHT_CAP_MAX_MPDU_MASK) {
+ 		case IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454:
+ 			return IEEE80211_MAX_MPDU_LEN_VHT_11454;
+@@ -391,7 +390,7 @@ static u16 rs_fw_get_max_amsdu_len(struct ieee80211_sta *sta)
+ 			return IEEE80211_MAX_MPDU_LEN_VHT_3895;
+ 	}
+ 
+-	} else if (ht_cap && ht_cap->ht_supported) {
++	} else if (ht_cap->ht_supported) {
+ 		if (ht_cap->cap & IEEE80211_HT_CAP_MAX_AMSDU)
+ 			/*
+ 			 * agg is offloaded so we need to assume that agg
 -- 
 2.18.0
 

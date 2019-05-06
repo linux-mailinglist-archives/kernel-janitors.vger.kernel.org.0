@@ -2,97 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D8ED1497B
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 May 2019 14:23:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1894F14A3B
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 May 2019 14:51:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725886AbfEFMXl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 May 2019 08:23:41 -0400
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:38625 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725827AbfEFMXl (ORCPT
+        id S1726094AbfEFMvT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 May 2019 08:51:19 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:44722 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725856AbfEFMvT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 May 2019 08:23:41 -0400
-Received: by mail-pf1-f193.google.com with SMTP id 10so6691448pfo.5;
-        Mon, 06 May 2019 05:23:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=qJlbbJUk/umc1r+ihS+Nt/YsegxyHF+juTXFN4glmIU=;
-        b=QVCadkqe16PIEow/jPRhbFJA0mFn05X+vsdVJLqrma0xlVK241GySq3hdRx8Wip8JE
-         3p8KXEZ5Iizcb5CZTR3On9YNo+5XS1dDJzZmy1xV2BxMTGmUqB5kUq2rCnfKUJHlrtvn
-         iwz20GdlGD2wnPHRBNVDIcsruBmEDZyeKC36ZrQPcBGawY9mU3yhxdW+wDyPwh0FdzkH
-         tiSqTo7HCv9Ffe3SYgmyo3zX+HZTduY1fLfUFyilScZdPhWGix1AOfT4pNnCWv/jVaMC
-         pfUaiMeoH4COlSazbcC9fzeSRSsJaJVDZGa0C653vKeYB/l8AtFVwh2oQxliOnr86pP2
-         vvCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=qJlbbJUk/umc1r+ihS+Nt/YsegxyHF+juTXFN4glmIU=;
-        b=Nkvz7DaxpQXDSAaTibvlHEFj0C8h301YE0Xg6U/5roahkNzsB9XYC3xM+6YVcMqDJ/
-         jVlnq2XJFZ1co1XM+cVFonOdlh5/H+k4vmped/NfsUKldDkO6Q5XBd1OIxKBWPk7Py1J
-         ZsGQ909KAVO905aXWMRNdUGiYDxACK0DMMwGgt7biC2vCBLqrtCfu/B80jhLmQRxnXNL
-         MGBffABmSHVtM8EeOv/fVzfFN3shwGtS+sHQHVn3lHmgkn66ui4TRGOln6az7/MMVd1M
-         b6eU8wicsDqvZFfkl86NJ/r5DCGNAl+2ox3sI39RDTSoH7HPVA7oRzE3QugJmwN3IAPf
-         VOVg==
-X-Gm-Message-State: APjAAAWtgCk9d7y59SUrx2RCw1yPUC2FyCHIAu9ILAWdvgwy+W2ytSBQ
-        Lr3xVqK0aEeVTfSf9beJ6LvSAkNtE1unfqm3cCk5QvHqZij+MNH3
-X-Google-Smtp-Source: APXvYqxgw7T/k2WnlhwTtfeHP2cADfa7pTdDasyWFNl3Yud4Kq/cNba/YU3KNmRclaZZDv7diT/qJSwVuzern7EBrq0=
-X-Received: by 2002:a63:42:: with SMTP id 63mr31668620pga.337.1557145420565;
- Mon, 06 May 2019 05:23:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190424094417.GA15818@mwanda> <1556109784971.72307@Dell.com>
-In-Reply-To: <1556109784971.72307@Dell.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Mon, 6 May 2019 15:23:29 +0300
-Message-ID: <CAHp75Vcww6YbHcimpiYWV==9-CQzXjwsbVF+EOA3rKmdU4Wm9A@mail.gmail.com>
-Subject: Re: [PATCH] platform/x86: alienware-wmi: printing the wrong error code
-To:     Mario Limonciello <Mario.Limonciello@dell.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        Mon, 6 May 2019 08:51:19 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x46CiT9Z158006;
+        Mon, 6 May 2019 12:50:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
+ bh=ZqgoNDVMow9tzy6yMM0RxqKAEBnofHDY9EXOg2QtaG4=;
+ b=XD+I3u3AGiYylFXjBBaOZndm1bgZHoBMYi4dJgJet/w8J6qdpyxfF7tPeb/FpA0o89lE
+ tS1HzWDjKWgF5lRvTh69kDq4bfKLDakF78BiwWbIhgB/WC9xK4x7YBXB4p1UBiTGWoqT
+ EXoYROIIDxD6WX5KgBfn/oIc+KTpXu+CCx6FjAx6Tb7XG6WueWa30ErnDFVNy7hlRLMw
+ 4iVa6ETSt2RJOKSmQv3L3EjmxrARf+qEoVtWwym7xCx9WcF5lelac4kzhFlL0GG3EZm1
+ Yg5txZifDv7s/+luNzjXvb+e3WeIiV14QFnEJvp3tA+gCiwua6oREj/SF7UC1RA4A234 3A== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2130.oracle.com with ESMTP id 2s94b5p8yt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 06 May 2019 12:50:37 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x46Cno5N094544;
+        Mon, 6 May 2019 12:50:36 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 2sagytbdqu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 06 May 2019 12:50:36 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x46CoS2T001968;
+        Mon, 6 May 2019 12:50:28 GMT
+Received: from mwanda (/105.52.123.240)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 06 May 2019 05:50:28 -0700
+Date:   Mon, 6 May 2019 15:50:18 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jason Wessel <jason.wessel@windriver.com>
+Cc:     Daniel Thompson <daniel.thompson@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Nicholas Mc Guire <hofrat@osadl.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        kgdb-bugreport@lists.sourceforge.net,
         kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: [PATCH] kdb: do a sanity check on the cpu in kdb_per_cpu()
+Message-ID: <20190506125018.GA13799@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9248 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905060112
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9248 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905060112
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Apr 24, 2019 at 3:43 PM <Mario.Limonciello@dell.com> wrote:
->
-> >Fixes: bc2ef884320b ("alienware-wmi: For WMAX HDMI method, introduce a way to query HDMI cable status")
-> >Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+The "whichcpu" comes from argv[3].  The cpu_online() macro looks up the
+cpu in a bitmap of online cpus, but if the value is too high then it
+could read beyond the end of the bitmap and possibly Oops.
 
-Pushed to my review and testing queue, thanks!
+Fixes: 5d5314d6795f ("kdb: core for kgdb back end (1 of 2)")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ kernel/debug/kdb/kdb_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-> >---
-> > drivers/platform/x86/alienware-wmi.c | 2 +-
-> > 1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> >diff --git a/drivers/platform/x86/alienware-wmi.c b/drivers/platform/x86/alienware-wmi.c
-> >index c0d1555735cd..83fd7677af24 100644
-> >--- a/drivers/platform/x86/alienware-wmi.c
-> >+++ b/drivers/platform/x86/alienware-wmi.c
-> >@@ -587,7 +587,7 @@ static ssize_t show_hdmi_source(struct device *dev,
-> >                        return scnprintf(buf, PAGE_SIZE,
-> >                                         "input [gpu] unknown\n");
-> >        }
-> >-       pr_err("alienware-wmi: unknown HDMI source status: %d\n", out_data);
-> >+       pr_err("alienware-wmi: unknown HDMI source status: %u\n", status);
-> >        return scnprintf(buf, PAGE_SIZE, "input gpu [unknown]\n");
-> > }
-> >
-> >--
-> >2.18.0
->
-> Yes, thanks.
-> Reviewed-by: Mario Limonciello <mario.limonciello@dell.com>
->
-
-
+diff --git a/kernel/debug/kdb/kdb_main.c b/kernel/debug/kdb/kdb_main.c
+index fc96dbf8d9de..9ecfa37c7fbf 100644
+--- a/kernel/debug/kdb/kdb_main.c
++++ b/kernel/debug/kdb/kdb_main.c
+@@ -2583,7 +2583,7 @@ static int kdb_per_cpu(int argc, const char **argv)
+ 		diag = kdbgetularg(argv[3], &whichcpu);
+ 		if (diag)
+ 			return diag;
+-		if (!cpu_online(whichcpu)) {
++		if (whichcpu >= nr_cpu_ids || !cpu_online(whichcpu)) {
+ 			kdb_printf("cpu %ld is not online\n", whichcpu);
+ 			return KDB_BADCPUNUM;
+ 		}
 -- 
-With Best Regards,
-Andy Shevchenko
+2.18.0
+

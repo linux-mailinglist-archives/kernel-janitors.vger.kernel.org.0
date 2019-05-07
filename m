@@ -2,98 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 20F4A15F69
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 May 2019 10:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B418B15F74
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 May 2019 10:36:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726998AbfEGIcU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 May 2019 04:32:20 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:60953 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726063AbfEGIcT (ORCPT
+        id S1726313AbfEGIgw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 May 2019 04:36:52 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:51036 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725780AbfEGIgw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 May 2019 04:32:19 -0400
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1hNvWJ-0000Ck-8h; Tue, 07 May 2019 10:32:15 +0200
-Received: from mfe by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <mfe@pengutronix.de>)
-        id 1hNvWI-0003SX-L7; Tue, 07 May 2019 10:32:14 +0200
-Date:   Tue, 7 May 2019 10:32:14 +0200
-From:   Marco Felsch <m.felsch@pengutronix.de>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rob Herring <robh@kernel.org>, linux-input@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] Input: qt1050: fix less than zero comparison on an
- unsigned int
-Message-ID: <20190507083214.rcew5cjfvlbwbov5@pengutronix.de>
-References: <20190507082135.21538-1-colin.king@canonical.com>
+        Tue, 7 May 2019 04:36:52 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x478TBxo096718;
+        Tue, 7 May 2019 08:36:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
+ bh=gk9Dtv9o1/4gyZrnDr3aPqWHNTjb2IjnVRwXqAT2xgU=;
+ b=D1SGwGWt0cE5S9XyXe999RT+OEkQUheSHMhRyFjCLb/yPLwgb7FaKDgArE/Xwb/apB4h
+ 9wsYL1YIMzPARXwxixv0oSQHCVbIQ5tW2Ras++Ctt/oDF1MJsn+UWQu3oKYxBhHYAIF7
+ yvQixaMstJHJi3Ov5NkPjLP3vOgOQt78gQIkAoQn4NC2V0zt/qB4TS2dUiLFKhX3j8vg
+ K6gEODdmvPMlimBdGYztdJBjFfLf9Ary0dxukIQueD0S+K0Rb0TWvcntTZI6T1Yl5EJ0
+ HIww9FRCtbE3HW+Me0uiKtHhhCQII5AWL7OErlisxWZ85ygUZAU/yyoHJSSCEzf0DY0m MA== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 2s94bfufx8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 07 May 2019 08:36:45 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x478ZqNP106670;
+        Tue, 7 May 2019 08:36:45 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 2sagyttcxp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 07 May 2019 08:36:45 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x478ae1v003958;
+        Tue, 7 May 2019 08:36:41 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 07 May 2019 01:36:40 -0700
+Date:   Tue, 7 May 2019 11:36:34 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Frank Haverkamp <haver@linux.ibm.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] genwqe: Prevent an integer overflow in the ioctl
+Message-ID: <20190507083634.GA13046@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190507082135.21538-1-colin.king@canonical.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL:  http://www.pengutronix.de/
-X-IRC:  #ptxdist @freenode
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-Uptime: 10:29:30 up 108 days, 13:11, 83 users,  load average: 0.00, 0.01,
- 0.00
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9249 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905070056
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9249 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905070056
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Ian,
+There are a couple potential integer overflows here.
 
-On 19-05-07 09:21, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently the less than zero comparison of val is always false because
-> val is an unsigned int. Fix this by making val a signed int.
+	round_up(m->size + (m->addr & ~PAGE_MASK), PAGE_SIZE);
 
-Thanks for covering that, was an copy 'n' paste failure..
-> 
-> Addresses-Coverity: ("Unsigned compared against zero")
-> Fixes: a33ff45923c8 ("Input: qt1050 - add Microchip AT42QT1050 support")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/input/keyboard/qt1050.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/input/keyboard/qt1050.c b/drivers/input/keyboard/qt1050.c
-> index 6b1603cb7515..4debddb13972 100644
-> --- a/drivers/input/keyboard/qt1050.c
-> +++ b/drivers/input/keyboard/qt1050.c
-> @@ -222,7 +222,7 @@ static struct regmap_config qt1050_regmap_config = {
->  
->  static bool qt1050_identify(struct qt1050_priv *ts)
->  {
-> -	unsigned int val;
-> +	int val;
+The first thing is that the "m->size + (...)" addition could overflow,
+and the second is that round_up() overflows to zero if the result is
+within PAGE_SIZE of the type max.
 
-I think the proper solution is to add a ret val, because this covers the
-success/fail. I will send a patch to fix this.
+In this code, the "m->size" variable is an u64 but we're saving the
+result in "map_size" which is an unsigned long and genwqe_user_vmap()
+takes an unsigned long as well.  So I have used ULONG_MAX as the upper
+bound.  From a practical perspective unsigned long is fine/better than
+trying to change all the types to u64.
 
-Regards,
-  Marco
+Fixes: eaf4722d4645 ("GenWQE Character device and DDCB queue")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/misc/genwqe/card_dev.c   | 2 ++
+ drivers/misc/genwqe/card_utils.c | 4 ++++
+ 2 files changed, 6 insertions(+)
 
->  	/* Read Chip ID */
->  	regmap_read(ts->regmap, QT1050_CHIP_ID, &val);
-> -- 
-> 2.20.1
-> 
-> 
-
+diff --git a/drivers/misc/genwqe/card_dev.c b/drivers/misc/genwqe/card_dev.c
+index 8c1b63a4337b..d2098b4d2945 100644
+--- a/drivers/misc/genwqe/card_dev.c
++++ b/drivers/misc/genwqe/card_dev.c
+@@ -780,6 +780,8 @@ static int genwqe_pin_mem(struct genwqe_file *cfile, struct genwqe_mem *m)
+ 
+ 	if ((m->addr == 0x0) || (m->size == 0))
+ 		return -EINVAL;
++	if (m->size > ULONG_MAX - PAGE_SIZE - (m->addr & ~PAGE_MASK))
++		return -EINVAL;
+ 
+ 	map_addr = (m->addr & PAGE_MASK);
+ 	map_size = round_up(m->size + (m->addr & ~PAGE_MASK), PAGE_SIZE);
+diff --git a/drivers/misc/genwqe/card_utils.c b/drivers/misc/genwqe/card_utils.c
+index 89cff9d1012b..7571700abc6e 100644
+--- a/drivers/misc/genwqe/card_utils.c
++++ b/drivers/misc/genwqe/card_utils.c
+@@ -586,6 +586,10 @@ int genwqe_user_vmap(struct genwqe_dev *cd, struct dma_mapping *m, void *uaddr,
+ 	/* determine space needed for page_list. */
+ 	data = (unsigned long)uaddr;
+ 	offs = offset_in_page(data);
++	if (size > ULONG_MAX - PAGE_SIZE - offs) {
++		m->size = 0;	/* mark unused and not added */
++		return -EINVAL;
++	}
+ 	m->nr_pages = DIV_ROUND_UP(offs + size, PAGE_SIZE);
+ 
+ 	m->page_list = kcalloc(m->nr_pages,
 -- 
-Pengutronix e.K.                           |                             |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.18.0
+

@@ -2,85 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 626A317B7E
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 May 2019 16:24:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 488EA17CD6
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 May 2019 17:09:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727393AbfEHOYa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 May 2019 10:24:30 -0400
-Received: from bedivere.hansenpartnership.com ([66.63.167.143]:51052 "EHLO
-        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726914AbfEHOYa (ORCPT
+        id S1726869AbfEHPJD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 May 2019 11:09:03 -0400
+Received: from mail-vk1-f193.google.com ([209.85.221.193]:43476 "EHLO
+        mail-vk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726543AbfEHPJC (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 May 2019 10:24:30 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by bedivere.hansenpartnership.com (Postfix) with ESMTP id D13058EE2B1;
-        Wed,  8 May 2019 07:24:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1557325469;
-        bh=xydTi/hn1JDJTRyeJqcJB5CNRIzFduahaKTlPNfO1IM=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=g9J2++dy2yHjw1VgAG+xuKtM3+Ffdl90VFrw8hMWS5OgnG15ZSG29vx3WWHYinwv9
-         NaciE0RfPfGVsVKEOEphmxnK7sbh/ih6GLZ8a7E9qR9BsXxXllu2adpGkb7yLMZFup
-         w6Bk1ctdc12FOZRshyvo/zvuvq7udEKyH3RQjoOs=
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
-        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id xgX-hAvPV0kW; Wed,  8 May 2019 07:24:29 -0700 (PDT)
-Received: from [153.66.254.194] (unknown [50.35.68.20])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 22C688EE0D2;
-        Wed,  8 May 2019 07:24:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
-        s=20151216; t=1557325469;
-        bh=xydTi/hn1JDJTRyeJqcJB5CNRIzFduahaKTlPNfO1IM=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=g9J2++dy2yHjw1VgAG+xuKtM3+Ffdl90VFrw8hMWS5OgnG15ZSG29vx3WWHYinwv9
-         NaciE0RfPfGVsVKEOEphmxnK7sbh/ih6GLZ8a7E9qR9BsXxXllu2adpGkb7yLMZFup
-         w6Bk1ctdc12FOZRshyvo/zvuvq7udEKyH3RQjoOs=
-Message-ID: <1557325468.3196.2.camel@HansenPartnership.com>
-Subject: Re: [PATCH] mptsas: fix undefined behaviour of a shift of an int by
- more than 31 places
-From:   James Bottomley <James.Bottomley@HansenPartnership.com>
-To:     Colin Ian King <colin.king@canonical.com>,
-        Sathya Prakash <sathya.prakash@broadcom.com>,
-        Chaitra P B <chaitra.basappa@broadcom.com>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>,
-        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Wed, 08 May 2019 07:24:28 -0700
-In-Reply-To: <de7e3aaf-0155-5007-c228-510f0d0de428@canonical.com>
-References: <20190504164010.24937-1-colin.king@canonical.com>
-         <1557027274.2821.2.camel@HansenPartnership.com>
-         <de7e3aaf-0155-5007-c228-510f0d0de428@canonical.com>
+        Wed, 8 May 2019 11:09:02 -0400
+Received: by mail-vk1-f193.google.com with SMTP id h72so373453vkh.10
+        for <kernel-janitors@vger.kernel.org>; Wed, 08 May 2019 08:09:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=A8J0qnJ8havQgpBwxndFjEeiRIL08r2bIZgoFLIonko=;
+        b=AQf5TTC+m4D1srb6ruLAqA6thPAWsN+VeCyPcRUQz0lBwC57hkXffZhI3HYEwhtdX3
+         DRdB4YCcgAnQKqb/ZUOr7e/4C0k84noZ8MC1A2386UlhROWdoQ5eFO7GkB2IMCZPG+zQ
+         YHxBJXTXoujPfvUQF2cTQVxh/2oqBp2W0qPag=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=A8J0qnJ8havQgpBwxndFjEeiRIL08r2bIZgoFLIonko=;
+        b=Kyth2QUTIw3bwOEiXHtlhY0b1QZo6jQQKqA1w7No8Bwewa45p2tAwVKPGmWrKU9ySH
+         2S66nraxgYAIN+/UjgARrg/4gnLUCFrHKvZW//PtyDAybefcC9xas3EtXdSiWXyFX1Q1
+         cone5/RrFYrWHmmhrIm0dn4/e95bByStbnQWCpA95J8TsS+nYmaCgBTiyJyZZXece0Dg
+         V1XkReLBgkuXzTeUcQeKQ8z6Dx3JVNCHAR8HUli/MfDemD7NRGkilOmW7aDcVPvpiwwz
+         H/MGSCSK2Y1ULUQyzRne63FWx5GsnKbjmgXu7UI87K1frm0+RYkhbOvm1P1OgEpeGl38
+         umvg==
+X-Gm-Message-State: APjAAAWy9PXkctOpn1qJ1wbKjV/NZ0MqhGyGyPj7RSrki5dzUODIFv4m
+        UFcRbEOff9aRk0HeV0Z7Ptn8SDX0fcI=
+X-Google-Smtp-Source: APXvYqxnWP0Gge5Mo/np/83QUbfrXqfUnt5ZgZJ0F3bl+Tq1m1Fi3d1GdAN0Jcf8hRNCybdo8q4/Fw==
+X-Received: by 2002:a1f:61c6:: with SMTP id v189mr20307690vkb.87.1557328141437;
+        Wed, 08 May 2019 08:09:01 -0700 (PDT)
+Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com. [209.85.222.47])
+        by smtp.gmail.com with ESMTPSA id c2sm16658664vsc.32.2019.05.08.08.08.57
+        for <kernel-janitors@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Wed, 08 May 2019 08:08:59 -0700 (PDT)
+Received: by mail-ua1-f47.google.com with SMTP id 94so5229257uaf.10
+        for <kernel-janitors@vger.kernel.org>; Wed, 08 May 2019 08:08:57 -0700 (PDT)
+X-Received: by 2002:ab0:59aa:: with SMTP id g39mr11441309uad.124.1557328136009;
+ Wed, 08 May 2019 08:08:56 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190506125018.GA13799@mwanda>
+In-Reply-To: <20190506125018.GA13799@mwanda>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Wed, 8 May 2019 08:08:44 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=WB=om5sPH+p0FN7i=RJfj0L+9-3YUz_djF4Nw30B221Q@mail.gmail.com>
+Message-ID: <CAD=FV=WB=om5sPH+p0FN7i=RJfj0L+9-3YUz_djF4Nw30B221Q@mail.gmail.com>
+Subject: Re: [PATCH] kdb: do a sanity check on the cpu in kdb_per_cpu()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jason Wessel <jason.wessel@windriver.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Nicholas Mc Guire <hofrat@osadl.org>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        kgdb-bugreport@lists.sourceforge.net,
+        kernel-janitors@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 2019-05-08 at 14:07 +0100, Colin Ian King wrote:
-> On 05/05/2019 04:34, James Bottomley wrote:
-> > On Sat, 2019-05-04 at 17:40 +0100, Colin King wrote:
-> > > From: Colin Ian King <colin.king@canonical.com>
-> > > 
-> > > Currently the shift of int value 1 by more than 31 places can
-> > > result in undefined behaviour. Fix this by making the 1 a ULL
-> > > value before the shift operation.
-> > 
-> > Fusion SAS is pretty ancient.  I thought the largest one ever
-> > produced had four phys, so how did you produce the overflow?
-> 
-> This was an issue found by static analysis with Coverity; so I guess
-> won't happen in the wild, in which case the patch could be ignored.
+Hi,
 
-The point I was more making is that if we thought this could ever
-happen in practice, we'd need more error handling than simply this:
-we'd be setting the phy_bitmap to zero which would be every bit as bad
-as some random illegal value.
+On Mon, May 6, 2019 at 5:50 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> The "whichcpu" comes from argv[3].  The cpu_online() macro looks up the
+> cpu in a bitmap of online cpus, but if the value is too high then it
+> could read beyond the end of the bitmap and possibly Oops.
+>
+> Fixes: 5d5314d6795f ("kdb: core for kgdb back end (1 of 2)")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  kernel/debug/kdb/kdb_main.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-James
-
+Reviewed-by: Douglas Anderson <dianders@chromium.org>

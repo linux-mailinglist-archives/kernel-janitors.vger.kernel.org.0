@@ -2,59 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C58E418160
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 May 2019 22:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48899181E3
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 May 2019 00:02:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727548AbfEHU6N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 May 2019 16:58:13 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:52038 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727097AbfEHU6N (ORCPT
+        id S1728682AbfEHWCL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 May 2019 18:02:11 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53933 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726837AbfEHWCL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 May 2019 16:58:13 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d8])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id D436913411E10;
-        Wed,  8 May 2019 13:58:12 -0700 (PDT)
-Date:   Wed, 08 May 2019 13:58:08 -0700 (PDT)
-Message-Id: <20190508.135808.610382717397984273.davem@davemloft.net>
-To:     olteanv@gmail.com
-Cc:     dan.carpenter@oracle.com, f.fainelli@gmail.com,
-        vivien.didelot@gmail.com, andrew@lunn.ch,
-        kernel-janitors@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] net: dsa: sja1105: Don't return a negative in u8
- sja1105_stp_state_get
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190508203225.13275-1-olteanv@gmail.com>
-References: <20190508203225.13275-1-olteanv@gmail.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 08 May 2019 13:58:13 -0700 (PDT)
+        Wed, 8 May 2019 18:02:11 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hOUdc-0007yV-Eg; Wed, 08 May 2019 22:02:08 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Josef Bacik <josef@toxicpanda.com>, Jens Axboe <axboe@kernel.dk>,
+        linux-block@vger.kernel.org, nbd@other.debian.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] nbd: add null check on dev_list to avoid potential null pointer dereference
+Date:   Wed,  8 May 2019 23:02:08 +0100
+Message-Id: <20190508220208.26146-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Vladimir Oltean <olteanv@gmail.com>
-Date: Wed,  8 May 2019 23:32:25 +0300
+From: Colin Ian King <colin.king@canonical.com>
 
-> Dan Carpenter says:
-> 
-> The patch 640f763f98c2: "net: dsa: sja1105: Add support for Spanning
-> Tree Protocol" from May 5, 2019, leads to the following static
-> checker warning:
-> 
->         drivers/net/dsa/sja1105/sja1105_main.c:1073 sja1105_stp_state_get()
->         warn: signedness bug returning '(-22)'
-> 
-> The caller doesn't check for negative errors anyway.
-> 
-> Fixes: 640f763f98c2: ("net: dsa: sja1105: Add support for Spanning Tree Protocol")
-> Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Signed-off-by: Vladimir Oltean <olteanv@gmail.com>
+The call to nla_nest_start_noflag can return a null pointer and currently
+this is not being checked and this can lead to a null pointer dereference
+when the null pointer dev_list is passed to function nla_nest_end. Fix
+this by adding in a null pointer check.
 
-Applied.
+Addresses-Coverity: ("Dereference null return value")
+Fixes: 47d902b90a32 ("nbd: add a status netlink command")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/block/nbd.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 053958a8a2ba..ed263963e778 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -2117,6 +2117,10 @@ static int nbd_genl_status(struct sk_buff *skb, struct genl_info *info)
+ 	}
+ 
+ 	dev_list = nla_nest_start_noflag(reply, NBD_ATTR_DEVICE_LIST);
++	if (!dev_list) {
++		nlmsg_free(reply);
++		goto out;
++	}
+ 	if (index == -1) {
+ 		ret = idr_for_each(&nbd_index_idr, &status_cb, reply);
+ 		if (ret) {
+-- 
+2.20.1
+

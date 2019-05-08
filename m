@@ -2,90 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 621EE17AA4
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 May 2019 15:30:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 626A317B7E
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 May 2019 16:24:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727216AbfEHNap (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 May 2019 09:30:45 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42613 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725778AbfEHNap (ORCPT
+        id S1727393AbfEHOYa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 May 2019 10:24:30 -0400
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:51052 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726914AbfEHOYa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 May 2019 09:30:45 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hOMef-00032b-UV; Wed, 08 May 2019 13:30:42 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Vladimir Oltean <olteanv@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-kernel@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, netdev@vger.kernel.org
-Subject: [PATCH][V3] net: dsa: sja1105: fix check on while loop exit
-Date:   Wed,  8 May 2019 14:30:41 +0100
-Message-Id: <20190508133041.14435-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Wed, 8 May 2019 10:24:30 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id D13058EE2B1;
+        Wed,  8 May 2019 07:24:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1557325469;
+        bh=xydTi/hn1JDJTRyeJqcJB5CNRIzFduahaKTlPNfO1IM=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=g9J2++dy2yHjw1VgAG+xuKtM3+Ffdl90VFrw8hMWS5OgnG15ZSG29vx3WWHYinwv9
+         NaciE0RfPfGVsVKEOEphmxnK7sbh/ih6GLZ8a7E9qR9BsXxXllu2adpGkb7yLMZFup
+         w6Bk1ctdc12FOZRshyvo/zvuvq7udEKyH3RQjoOs=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id xgX-hAvPV0kW; Wed,  8 May 2019 07:24:29 -0700 (PDT)
+Received: from [153.66.254.194] (unknown [50.35.68.20])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 22C688EE0D2;
+        Wed,  8 May 2019 07:24:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1557325469;
+        bh=xydTi/hn1JDJTRyeJqcJB5CNRIzFduahaKTlPNfO1IM=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=g9J2++dy2yHjw1VgAG+xuKtM3+Ffdl90VFrw8hMWS5OgnG15ZSG29vx3WWHYinwv9
+         NaciE0RfPfGVsVKEOEphmxnK7sbh/ih6GLZ8a7E9qR9BsXxXllu2adpGkb7yLMZFup
+         w6Bk1ctdc12FOZRshyvo/zvuvq7udEKyH3RQjoOs=
+Message-ID: <1557325468.3196.2.camel@HansenPartnership.com>
+Subject: Re: [PATCH] mptsas: fix undefined behaviour of a shift of an int by
+ more than 31 places
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Colin Ian King <colin.king@canonical.com>,
+        Sathya Prakash <sathya.prakash@broadcom.com>,
+        Chaitra P B <chaitra.basappa@broadcom.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
+        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Wed, 08 May 2019 07:24:28 -0700
+In-Reply-To: <de7e3aaf-0155-5007-c228-510f0d0de428@canonical.com>
+References: <20190504164010.24937-1-colin.king@canonical.com>
+         <1557027274.2821.2.camel@HansenPartnership.com>
+         <de7e3aaf-0155-5007-c228-510f0d0de428@canonical.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Wed, 2019-05-08 at 14:07 +0100, Colin Ian King wrote:
+> On 05/05/2019 04:34, James Bottomley wrote:
+> > On Sat, 2019-05-04 at 17:40 +0100, Colin King wrote:
+> > > From: Colin Ian King <colin.king@canonical.com>
+> > > 
+> > > Currently the shift of int value 1 by more than 31 places can
+> > > result in undefined behaviour. Fix this by making the 1 a ULL
+> > > value before the shift operation.
+> > 
+> > Fusion SAS is pretty ancient.  I thought the largest one ever
+> > produced had four phys, so how did you produce the overflow?
+> 
+> This was an issue found by static analysis with Coverity; so I guess
+> won't happen in the wild, in which case the patch could be ignored.
 
-The while-loop exit condition check is not correct; the
-loop should continue if the returns from the function calls are
-negative or the CRC status returns are invalid.  Currently it
-is ignoring the returns from the function calls.  Fix this by
-removing the status return checks and only break from the loop
-at the very end when we know that all the success condtions have
-been met.
+The point I was more making is that if we thought this could ever
+happen in practice, we'd need more error handling than simply this:
+we'd be setting the phy_bitmap to zero which would be every bit as bad
+as some random illegal value.
 
-Kudos to Dan Carpenter for describing the correct fix and
-Vladimir Oltean for noting the change to the check on the number
-of retries.
-
-Addresses-Coverity: ("Uninitialized scalar variable")
-Fixes: 8aa9ebccae87 ("net: dsa: Introduce driver for NXP SJA1105 5-port L2 switch")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Tested-by: Vladimir Oltean <olteanv@gmail.com>
----
-
-V2: Discard my broken origina fix. Use correct fix as described by
-    Dan Carpenter.
-V3: Remove empty line and check for retries != RETRIES fix.
----
- drivers/net/dsa/sja1105/sja1105_spi.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/dsa/sja1105/sja1105_spi.c b/drivers/net/dsa/sja1105/sja1105_spi.c
-index 244a94ccfc18..49c5252a8dc6 100644
---- a/drivers/net/dsa/sja1105/sja1105_spi.c
-+++ b/drivers/net/dsa/sja1105/sja1105_spi.c
-@@ -466,14 +466,15 @@ int sja1105_static_config_upload(struct sja1105_private *priv)
- 				"invalid, retrying...\n");
- 			continue;
- 		}
--	} while (--retries && (status.crcchkl == 1 || status.crcchkg == 1 ||
--		 status.configs == 0 || status.ids == 1));
-+		/* Success! */
-+		break;
-+	} while (--retries);
- 
- 	if (!retries) {
- 		rc = -EIO;
- 		dev_err(dev, "Failed to upload config to device, giving up\n");
- 		goto out;
--	} else if (retries != RETRIES - 1) {
-+	} else if (retries != RETRIES) {
- 		dev_info(dev, "Succeeded after %d tried\n", RETRIES - retries);
- 	}
- 
--- 
-2.20.1
+James
 

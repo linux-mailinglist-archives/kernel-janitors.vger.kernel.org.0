@@ -2,106 +2,126 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46DEA1743B
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 May 2019 10:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53FA817441
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 May 2019 10:53:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727128AbfEHIso (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 May 2019 04:48:44 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:52634 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726387AbfEHIsm (ORCPT
+        id S1726602AbfEHIx4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 May 2019 04:53:56 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:38176 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726387AbfEHIx4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 May 2019 04:48:42 -0400
-Received: by mail-wm1-f67.google.com with SMTP id o25so2167169wmf.2
-        for <kernel-janitors@vger.kernel.org>; Wed, 08 May 2019 01:48:41 -0700 (PDT)
+        Wed, 8 May 2019 04:53:56 -0400
+Received: by mail-wr1-f65.google.com with SMTP id v11so5956119wru.5
+        for <kernel-janitors@vger.kernel.org>; Wed, 08 May 2019 01:53:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=pA4oZ7mGlzJnhNFULh/+qwzD5DlNWy+0yxQhURm3SoM=;
-        b=fR+KBI9BQi0aN7Z9LOL4SDuWNDpgoqcdWrAwDWTc00t+R/d42BzfQfa0VQ1xVGByt7
-         r+Z8lTtSJUlo7AHe5z+rn30iVMXiKBwP609Y61g+NyHMJvEska5fV5DbCA8a3T7OXD/N
-         u6azZipWyuP0dFnZTuqhz/AcZDiXw7mvKAjn6yv4jK6sSN5LS/gBKIF4TqBjAPuhGWtS
-         TnMf7nNAtnaWKmy4R8zO5fbnwja89AjFxDtDaRLF6Wr1RpQMfl51KHHL8d7ZWxsx5u9L
-         F2pM6Ek6ulTxTfdZFbHZRaLURGY+b2J+2LuqYzSyrSHgjKbYP1mQI/ogOH6TyGmTfdsN
-         LH+A==
+        d=netronome-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:references:cc:from:organization:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding;
+        bh=xV3M12FdNpL4/Lx8obmho0bS3Xjz6R4xytsasP5yzq4=;
+        b=ZEjw+sco/pSIi93nELZMXMQYXRQUIkcAl5NVXjJRuBw8wVFrMD/OXp9XqEkRnM/zWO
+         v/8eQgkC7iv2EKRaD2XgTUx5shPo5Gd1UWtDgnehrvKWMQfR1jR1ZWRZZxHd0RNvMOJ4
+         snZkjl1Xy/PaywNsuFesblC9eeZ8pr+fftErSMvWAO6alCh2kPNtgVUHG5hDGgGepRqg
+         1psiG5PbGzTWLLjgLI5I+j0zjwoZJ+1CAte/AiJQyjAN5+PHVz+6yXt2L8QkREjmsqGJ
+         fdtulBy6v8HFEf68uQmD6aUbM/y7jTUtJqhIkTW6R44RZcpeoDQavtAuLK6XzrIhRdJa
+         b8gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=pA4oZ7mGlzJnhNFULh/+qwzD5DlNWy+0yxQhURm3SoM=;
-        b=BDPTrNzvAku1GItRZCBD+pItugkZ3WHYnIkiogOK9L6NJ8LnCqNrMsm/tfBQ+Xd4Ht
-         JBQP+SXLwmbQtDycXsG1Jnrtksp3lCqq+7UlJZV11yjBtu+EAgquUmEruRnE6NndNb4Z
-         QDmvV5tr7OEnYASW3opOrnqwjRXwA3VFdEd1qU85iElcN8mHpMXvt/qfsWQKVZYgDRhZ
-         pWJx6SGGhbxtwyT1RDKgPkM4ZwEH62OrMyvB7WZ74BIYrsgon8lY2cqAn63M92P2/YDb
-         l+Lj1h/wwHYG7HGLDv3Gj/3Q4qcCRgQIuRvJaL+fCXkHg89AlpFQtDg1F9M3nK4fDLPS
-         mq0w==
-X-Gm-Message-State: APjAAAWcwcAzdVlEy3CMshKW57Hg5vN6y3FNa+j4jdqwwe08Lj06/Prp
-        vuQEnzrsJkLCDUiZwfphAUr00g==
-X-Google-Smtp-Source: APXvYqwPf1J9m8LDiRXqWVFpptl/XV9DXySpKB/Kv+9l1UywcROKBlFQHCh3ZjHr8Ii4O6DbKui6uA==
-X-Received: by 2002:a1c:cb48:: with SMTP id b69mr2196684wmg.109.1557305321231;
-        Wed, 08 May 2019 01:48:41 -0700 (PDT)
-Received: from holly.lan (cpc141214-aztw34-2-0-cust773.18-1.cable.virginm.net. [86.9.19.6])
-        by smtp.gmail.com with ESMTPSA id s3sm32448144wre.97.2019.05.08.01.48.40
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 08 May 2019 01:48:40 -0700 (PDT)
-Date:   Wed, 8 May 2019 09:48:38 +0100
-From:   Daniel Thompson <daniel.thompson@linaro.org>
+        h=x-gm-message-state:subject:to:references:cc:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-transfer-encoding;
+        bh=xV3M12FdNpL4/Lx8obmho0bS3Xjz6R4xytsasP5yzq4=;
+        b=GGkQT8Nq8/4l3u86zJX/xop4750pf4IWC3mIZNyDJSyViyNRftynu+8Cr0wPJfRoWE
+         jJIIJWf9PLWlP/ltBSIkSmrJXFg4wQxtkPJB9EnbJY3LBzermIyNxUXkEUTpbJO16zRE
+         GcmLe+/liOw44KfyP1TcNNv4OGC3wiMqrWtVIM9kLdkOVSdc15Bw22Y5dfrcaOiH091X
+         xddjKjYmOqlZkeVa4zTG3Pyem+m6/6lpU6Yx+FroCkMEpSV3/mJFPxvk0vyc4Z7SjLOA
+         RHf/+9dBxctPDfjoBDyJ21EDiD1/PpqIFuriDLrRaWXurs9kfUEDaATwnHBE7VwmJP4H
+         Dnuw==
+X-Gm-Message-State: APjAAAUAF3faL7enK+QXBcblinrX9g1DMO6cdPDSSm2F70w3h4+QDpGT
+        WP3LuPMsP1O9oKHe26fT/+IO1L/CKvE=
+X-Google-Smtp-Source: APXvYqzQ3cOXPGuuiqaOenV1qbvFFcChJgSKlL5Z7MT8UdPEKWvRN7DVxrL4I8ih2ujrF6xmRRg6KQ==
+X-Received: by 2002:adf:f508:: with SMTP id q8mr8000870wro.225.1557305634530;
+        Wed, 08 May 2019 01:53:54 -0700 (PDT)
+Received: from ?IPv6:2a00:23a8:4c11:1300:2830:9d5c:bf4b:72ae? ([2a00:23a8:4c11:1300:2830:9d5c:bf4b:72ae])
+        by smtp.googlemail.com with ESMTPSA id i9sm2542901wmb.4.2019.05.08.01.53.53
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 08 May 2019 01:53:53 -0700 (PDT)
+Subject: Re: [bug report] net/sched: use the hardware intermediate
+ representation for matchall
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jason Wessel <jason.wessel@windriver.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Nicholas Mc Guire <hofrat@osadl.org>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        kgdb-bugreport@lists.sourceforge.net,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] kdb: do a sanity check on the cpu in kdb_per_cpu()
-Message-ID: <20190508084838.w7t3nwamobpmwgkv@holly.lan>
-References: <20190506125018.GA13799@mwanda>
+References: <20190508071704.GA11889@mwanda>
+ <6ce3bc18-94e8-298f-8ae5-1db9608ee575@netronome.com>
+ <20190508081907.GX2239@kadam>
+Cc:     kernel-janitors@vger.kernel.org
+From:   Pieter Jansen van Vuuren <pieter.jansenvanvuuren@netronome.com>
+Organization: Netronome
+Message-ID: <34551f9c-279e-abe7-8843-0b68be563c07@netronome.com>
+Date:   Wed, 8 May 2019 09:53:53 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190506125018.GA13799@mwanda>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20190508081907.GX2239@kadam>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, May 06, 2019 at 03:50:18PM +0300, Dan Carpenter wrote:
-> The "whichcpu" comes from argv[3].  The cpu_online() macro looks up the
-> cpu in a bitmap of online cpus, but if the value is too high then it
-> could read beyond the end of the bitmap and possibly Oops.
+On 08/05/2019 09:19, Dan Carpenter wrote:
+> On Wed, May 08, 2019 at 08:41:13AM +0100, Pieter Jansen van Vuuren wrote:
+>> On 08/05/2019 08:17, Dan Carpenter wrote:
+>>> Hello Pieter Jansen van Vuuren,
+>>>
+>>> The patch f00cbf196814: "net/sched: use the hardware intermediate
+>>> representation for matchall" from May 4, 2019, leads to the following
+>>> static checker warning:
+>>>
+>>> 	net/sched/cls_matchall.c:317 mall_reoffload()
+>>> 	error: double free of 'cls_mall.rule'
+>>>
+>>> net/sched/cls_matchall.c
+>>>    286  static int mall_reoffload(struct tcf_proto *tp, bool add, tc_setup_cb_t *cb,
+>>>    287                            void *cb_priv, struct netlink_ext_ack *extack)
+>>>    288  {
+>>>    289          struct cls_mall_head *head = rtnl_dereference(tp->root);
+>>>    290          struct tc_cls_matchall_offload cls_mall = {};
+>>>    291          struct tcf_block *block = tp->chain->block;
+>>>    292          int err;
+>>>    293  
+>>>    294          if (tc_skip_hw(head->flags))
+>>>    295                  return 0;
+>>>    296  
+>>>    297          cls_mall.rule = flow_rule_alloc(tcf_exts_num_actions(&head->exts));
+>>>    298          if (!cls_mall.rule)
+>>>    299                  return -ENOMEM;
+>>>    300  
+>>>    301          tc_cls_common_offload_init(&cls_mall.common, tp, head->flags, block,
+>>>    302                                     extack);
+>>>    303          cls_mall.command = add ?
+>>>    304                  TC_CLSMATCHALL_REPLACE : TC_CLSMATCHALL_DESTROY;
+>>>    305          cls_mall.cookie = (unsigned long)head;
+>>>    306  
+>>>    307          err = tc_setup_flow_action(&cls_mall.rule->action, &head->exts);
+>>>    308          if (err) {
+>>>    309                  kfree(cls_mall.rule);
+>>>                         ^^^^^^^^^^^^^^^^^^^
+>>>    310                  if (add && tc_skip_sw(head->flags)) {
+>>>    311                          NL_SET_ERR_MSG_MOD(extack, "Failed to setup flow action");
+>>>    312                          return err;
+>>>    313                  }
+>>>
+>>> My guess is that there should be a "return err;" here?
+>>
+>> Thank you. Yes, I think this should be "return 0;" instead of "return err;"
 > 
-> Fixes: 5d5314d6795f ("kdb: core for kgdb back end (1 of 2)")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-Just out of interest... why isn't this copied to LKML? Omiting LKML makes
-the patch hard to find in a patchwork instance.
-
-
-Daniel.
-
-> ---
->  kernel/debug/kdb/kdb_main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> You would know the code better, than I.  :)
 > 
-> diff --git a/kernel/debug/kdb/kdb_main.c b/kernel/debug/kdb/kdb_main.c
-> index fc96dbf8d9de..9ecfa37c7fbf 100644
-> --- a/kernel/debug/kdb/kdb_main.c
-> +++ b/kernel/debug/kdb/kdb_main.c
-> @@ -2583,7 +2583,7 @@ static int kdb_per_cpu(int argc, const char **argv)
->  		diag = kdbgetularg(argv[3], &whichcpu);
->  		if (diag)
->  			return diag;
-> -		if (!cpu_online(whichcpu)) {
-> +		if (whichcpu >= nr_cpu_ids || !cpu_online(whichcpu)) {
->  			kdb_printf("cpu %ld is not online\n", whichcpu);
->  			return KDB_BADCPUNUM;
->  		}
-> -- 
-> 2.18.0
+> Could you send a patch to Dave?  The merge window is open but he still
+> accepts bug fixes.
 > 
+> regards,
+> dan carpenter
+> 
+
+Will do. And thank you again.

@@ -2,76 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A853218C99
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 May 2019 17:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C93D18CF9
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 May 2019 17:30:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726561AbfEIPBu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 May 2019 11:01:50 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:38992 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726234AbfEIPBu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 May 2019 11:01:50 -0400
-Received: from zn.tnic (p200300EC2F0F5F00A4EF991375FD2B9A.dip0.t-ipconnect.de [IPv6:2003:ec:2f0f:5f00:a4ef:9913:75fd:2b9a])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 7E06F1EC0AD6;
-        Thu,  9 May 2019 17:01:48 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1557414108;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=lcBwb2Z+A8lEvl5TQHsmwSZ2gCU/axb76s/Arz6Z4D4=;
-        b=f+T0ZaBI9tX1QOINVSzFPUnyUS/ia4dOu7sR6qAO3Ct0zzrAx/jtbKTtzju7UdvnxSgqZ7
-        hjmG5doHYBzxV4aH2MKdN75OegL5Af7PV8YGFmvDHh7iFz3xAAKWQ/0bJ1Lt502CxDNnuf
-        MHFx+w2d7kzCYrJItufLtEVgf/Aeo3I=
-Date:   Thu, 9 May 2019 17:01:46 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     Tony Luck <tony.luck@intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        James Morse <james.morse@arm.com>, linux-edac@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] EDAC, sb_edac: remove redundant update of tad_base
-Message-ID: <20190509150146.GE17053@zn.tnic>
-References: <20190508224201.27120-1-colin.king@canonical.com>
- <20190509141313.GA17053@zn.tnic>
- <55f8efee-a02c-1574-42fa-35e1d3df14f7@canonical.com>
- <20190509144113.GB17053@zn.tnic>
- <ebe15617-fe6a-2668-f14e-146811147f14@canonical.com>
+        id S1726576AbfEIPam (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 May 2019 11:30:42 -0400
+Received: from mx2.suse.de ([195.135.220.15]:42548 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726187AbfEIPal (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 9 May 2019 11:30:41 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 75D39ACE3;
+        Thu,  9 May 2019 15:30:40 +0000 (UTC)
+Subject: Re: [PATCH] mptsas: fix undefined behaviour of a shift of an int by
+ more than 31 places
+To:     James Bottomley <James.Bottomley@HansenPartnership.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        Sathya Prakash <sathya.prakash@broadcom.com>,
+        Chaitra P B <chaitra.basappa@broadcom.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
+        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190504164010.24937-1-colin.king@canonical.com>
+ <1557027274.2821.2.camel@HansenPartnership.com>
+ <de7e3aaf-0155-5007-c228-510f0d0de428@canonical.com>
+ <1557325468.3196.2.camel@HansenPartnership.com>
+From:   Hannes Reinecke <hare@suse.de>
+Message-ID: <9b4c84b5-31eb-6068-57c2-80ededc21b43@suse.de>
+Date:   Thu, 9 May 2019 17:30:39 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ebe15617-fe6a-2668-f14e-146811147f14@canonical.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <1557325468.3196.2.camel@HansenPartnership.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, May 09, 2019 at 03:55:32PM +0100, Colin Ian King wrote:
-> Yep, I agree, but explaining all the Coverity error types in a kernel
-> doc is going to take some effort, which I really don't have much time
-> for at the moment.
+On 5/8/19 4:24 PM, James Bottomley wrote:
+> On Wed, 2019-05-08 at 14:07 +0100, Colin Ian King wrote:
+>> On 05/05/2019 04:34, James Bottomley wrote:
+>>> On Sat, 2019-05-04 at 17:40 +0100, Colin King wrote:
+>>>> From: Colin Ian King <colin.king@canonical.com>
+>>>>
+>>>> Currently the shift of int value 1 by more than 31 places can
+>>>> result in undefined behaviour. Fix this by making the 1 a ULL
+>>>> value before the shift operation.
+>>>
+>>> Fusion SAS is pretty ancient.  I thought the largest one ever
+>>> produced had four phys, so how did you produce the overflow?
+>>
+>> This was an issue found by static analysis with Coverity; so I guess
+>> won't happen in the wild, in which case the patch could be ignored.
+> 
+> The point I was more making is that if we thought this could ever
+> happen in practice, we'd need more error handling than simply this:
+> we'd be setting the phy_bitmap to zero which would be every bit as bad
+> as some random illegal value.
+> 
+Thing is, mptsas is used as the default emulation in VMWare, and that 
+does allow you to do some pretty weird configurations (I've found myself 
+fixing a bug with SATA hotplug on mptsas once ...).
+So I wouldn't discard this issue out of hand.
 
-I'm not suggesting you should document them all or write a comprehensive
-howto on how to run Coverity - all I'm suggesting is starting a small
-doc somewhere in Documentation/ which contains some info on what all
-those tools tags we use, mean and how people can find the information
-they contain. Basically what you said above (which I've snipped).
+Cheers,
 
-But it would be a lot more helpful if it is written down so that people
-can look it up. Also, that doc will serve as a documentation of all
-those tags we're using in the kernel and what their format, etc would
-be.
-
-Otherwise we'll have the current head scratching when a tag like that is
-encountered...
-
-Thx.
-
+Hannes
 -- 
-Regards/Gruss,
-    Boris.
-
-Good mailing practices for 400: avoid top-posting and trim the reply.
+Dr. Hannes Reinecke            Teamlead Storage & Networking
+hare@suse.de                              +49 911 74053 688
+SUSE LINUX GmbH, Maxfeldstr. 5, 90409 Nürnberg
+GF: Felix Imendörffer, Mary Higgins, Sri Rasiah
+HRB 21284 (AG Nürnberg)

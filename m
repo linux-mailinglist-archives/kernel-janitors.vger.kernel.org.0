@@ -2,71 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54B2F18B50
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 May 2019 16:13:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AA7118B85
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 May 2019 16:17:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726880AbfEIONX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 May 2019 10:13:23 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:59610 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726859AbfEIONX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 May 2019 10:13:23 -0400
-Received: from zn.tnic (p200300EC2F0F5F00A4EF991375FD2B9A.dip0.t-ipconnect.de [IPv6:2003:ec:2f0f:5f00:a4ef:9913:75fd:2b9a])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 844EF1EC0AD6;
-        Thu,  9 May 2019 16:13:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1557411201;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=+PHLiSfYmDjlELYK+9z1QfW58niSz8+w36T8ZEcU68k=;
-        b=mrm0yewwvirES4xxq5BoKs3UMEVvkMcA4rAauxjG9tRKhxdr5ouftUo6GE72JG6VL+FlJC
-        9oC3Q73j5v28nuII7af0DPlN7wxZ2VZeZzOYXoBz4BbTqC8nj1Q5pMVeBCSBXI9C1FLXEy
-        FKrSvk/ByJrF7GRIL4l6bXNpdScYXIw=
-Date:   Thu, 9 May 2019 16:13:13 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Tony Luck <tony.luck@intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        James Morse <james.morse@arm.com>, linux-edac@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] EDAC, sb_edac: remove redundant update of tad_base
-Message-ID: <20190509141313.GA17053@zn.tnic>
-References: <20190508224201.27120-1-colin.king@canonical.com>
+        id S1727100AbfEIOQH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 May 2019 10:16:07 -0400
+Received: from mail-it1-f194.google.com ([209.85.166.194]:40078 "EHLO
+        mail-it1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726839AbfEIOQH (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 9 May 2019 10:16:07 -0400
+Received: by mail-it1-f194.google.com with SMTP id g71so3570408ita.5;
+        Thu, 09 May 2019 07:16:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VB9VW1DXgM5qsk34IWnaFfc5rrlp9hnpSv4gxGZLTzw=;
+        b=LlqjSbHWA1WFzBfPS7JC2JpLHcIH3PlnAWBx5OhX3OrDq0LwVisdc3gmp8fmVz+ik1
+         /l1+xH4+zOAK7kUdtQUSgPYqjvRRWWiirSHTw1GyC6ucAJB1PKCEVjsYPeL/WFp42yZL
+         c6/2M/IpPmXqe1hzXxo/0x06f77J9nLiCXO/nSQt50sdpgPemR3Mmu/9eInVXBqb8yLM
+         4YQQnM4iyNCi/4YzTjsiU2QJJVL8MNOvKxr5SMl8Yz6aU/p4ux4H2Mp2g5Ep96I79GUE
+         KpKeqHVg9FSouihmQN4lSt2vfIEB32OebkIOpdo5uwDSLZAHkTlVALq94HAa1OjNaKdw
+         Bzpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VB9VW1DXgM5qsk34IWnaFfc5rrlp9hnpSv4gxGZLTzw=;
+        b=eQez2O0KJRq0KGUZMs30T6sV5vk74AAugyT4uOZQfu/Tc6W21K9ijqSeTWyHeNaNix
+         vPsjoay/ZZ8jTr4gGvLGDWqGqDm2Hprs5Mg5H357egUyJjDU+spWCaibz+41EoTBUetu
+         RBK8bq/uP9hQdOxUIdk/mTrUnB/vrRMn2Id0Qdn1GVjH+y08LXdQE+V3UJWB2+8dPg55
+         dVtFPa70XWGEDWRXLA8gNhIPNwayBSSxvWHr0Zf6MvCGZEkTdz4zY3ztkbrNmmfFmKeD
+         m9B77S+8Tikmfs5FlPFBLz+lznUYr5woRkhSZBWzFexIms41AifD5AHq5qxokoNqu5iR
+         kPuw==
+X-Gm-Message-State: APjAAAXdrVb/aSqvMjRHvklDzWaV+39UkhtGVJBHfdppH6NPmKI+cj/N
+        RYQXCKBZ3L21ZpjDdhSTMnZtpABEj/WS5jcqGX4qm8Z7ELg=
+X-Google-Smtp-Source: APXvYqx/fExGbExiF3LH9V1VVeMV1Wj79ugYIqqIfBk7vXMkbUDBUyYgY8WiMCd/APzg6HCsy+XVoJOKTUS6PytMV/Q=
+X-Received: by 2002:a24:cd05:: with SMTP id l5mr2978259itg.44.1557411366279;
+ Thu, 09 May 2019 07:16:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190508224201.27120-1-colin.king@canonical.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20190504070407.56915-1-weiyongjun1@huawei.com> <5a3a89cf-eee3-136c-1c5a-58024e946a24@mleia.com>
+In-Reply-To: <5a3a89cf-eee3-136c-1c5a-58024e946a24@mleia.com>
+From:   Sylvain Lemieux <slemieux.tyco@gmail.com>
+Date:   Thu, 9 May 2019 10:15:54 -0400
+Message-ID: <CA+rxa6oh+Qxo5aLgW11vrAvuu7t7JAFONC6b0+kxRx9rwCmjhg@mail.gmail.com>
+Subject: Re: [PATCH -next] usb: gadget: udc: lpc32xx: fix return value check
+ in lpc32xx_udc_probe()
+To:     Vladimir Zapolskiy <vz@mleia.com>
+Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        linux-usb@vger.kernel.org,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, May 08, 2019 at 11:42:01PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable tad_base is being set to a value that is never read
-> and is being over-written on the next iteration of a for-loop.
-> This assignment is therefore redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
+Thanks
 
-What's that tag's function supposed to be?
+Acked-by: Sylvain Lemieux <slemieux.tyco@gmail.com>
 
-I see a lot of those in commit messages but it is nowhere documented in
-the tree.
-
-$ git grep -i coverity
-
-doesn't give anything relevant.
-
-Hmm?
-
--- 
-Regards/Gruss,
-    Boris.
-
-Good mailing practices for 400: avoid top-posting and trim the reply.
+On Sat, May 4, 2019 at 8:17 AM Vladimir Zapolskiy <vz@mleia.com> wrote:
+>
+> Hi Wei Yongjun,
+>
+> On 05/04/2019 10:04 AM, Wei Yongjun wrote:
+> > In case of error, the function devm_ioremap_resource() returns ERR_PTR()
+> > and never returns NULL. The NULL test in the return value check should
+> > be replaced with IS_ERR().
+> >
+> > This issue was detected by using the Coccinelle software.
+> >
+> > Fixes: 408b56ca5c8e ("usb: gadget: udc: lpc32xx: simplify probe")
+> > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> > ---
+> >  drivers/usb/gadget/udc/lpc32xx_udc.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/usb/gadget/udc/lpc32xx_udc.c b/drivers/usb/gadget/udc/lpc32xx_udc.c
+> > index d8f1c60793ed..00fb79c6d025 100644
+> > --- a/drivers/usb/gadget/udc/lpc32xx_udc.c
+> > +++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
+> > @@ -3070,9 +3070,9 @@ static int lpc32xx_udc_probe(struct platform_device *pdev)
+> >       }
+> >
+> >       udc->udp_baseaddr = devm_ioremap_resource(dev, res);
+> > -     if (!udc->udp_baseaddr) {
+> > +     if (IS_ERR(udc->udp_baseaddr)) {
+> >               dev_err(udc->dev, "IO map failure\n");
+> > -             return -ENOMEM;
+> > +             return PTR_ERR(udc->udp_baseaddr);
+> >       }
+> >
+> >       /* Get USB device clock */
+>
+> thank you for the change, it is a correct fix.
+>
+> I do suppose that dev_err() in the context can be evenly removed, but
+> likely it should be another change.
+>
+> Acked-by: Vladimir Zapolskiy <vz@mleia.com>
+>
+> --
+> Best wishes,
+> Vladimir

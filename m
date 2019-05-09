@@ -2,112 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AA7118B85
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 May 2019 16:17:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC9ED18BC0
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 May 2019 16:29:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727100AbfEIOQH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 May 2019 10:16:07 -0400
-Received: from mail-it1-f194.google.com ([209.85.166.194]:40078 "EHLO
-        mail-it1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726839AbfEIOQH (ORCPT
+        id S1726511AbfEIO3q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 May 2019 10:29:46 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:44123 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726448AbfEIO3q (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 May 2019 10:16:07 -0400
-Received: by mail-it1-f194.google.com with SMTP id g71so3570408ita.5;
-        Thu, 09 May 2019 07:16:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VB9VW1DXgM5qsk34IWnaFfc5rrlp9hnpSv4gxGZLTzw=;
-        b=LlqjSbHWA1WFzBfPS7JC2JpLHcIH3PlnAWBx5OhX3OrDq0LwVisdc3gmp8fmVz+ik1
-         /l1+xH4+zOAK7kUdtQUSgPYqjvRRWWiirSHTw1GyC6ucAJB1PKCEVjsYPeL/WFp42yZL
-         c6/2M/IpPmXqe1hzXxo/0x06f77J9nLiCXO/nSQt50sdpgPemR3Mmu/9eInVXBqb8yLM
-         4YQQnM4iyNCi/4YzTjsiU2QJJVL8MNOvKxr5SMl8Yz6aU/p4ux4H2Mp2g5Ep96I79GUE
-         KpKeqHVg9FSouihmQN4lSt2vfIEB32OebkIOpdo5uwDSLZAHkTlVALq94HAa1OjNaKdw
-         Bzpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VB9VW1DXgM5qsk34IWnaFfc5rrlp9hnpSv4gxGZLTzw=;
-        b=eQez2O0KJRq0KGUZMs30T6sV5vk74AAugyT4uOZQfu/Tc6W21K9ijqSeTWyHeNaNix
-         vPsjoay/ZZ8jTr4gGvLGDWqGqDm2Hprs5Mg5H357egUyJjDU+spWCaibz+41EoTBUetu
-         RBK8bq/uP9hQdOxUIdk/mTrUnB/vrRMn2Id0Qdn1GVjH+y08LXdQE+V3UJWB2+8dPg55
-         dVtFPa70XWGEDWRXLA8gNhIPNwayBSSxvWHr0Zf6MvCGZEkTdz4zY3ztkbrNmmfFmKeD
-         m9B77S+8Tikmfs5FlPFBLz+lznUYr5woRkhSZBWzFexIms41AifD5AHq5qxokoNqu5iR
-         kPuw==
-X-Gm-Message-State: APjAAAXdrVb/aSqvMjRHvklDzWaV+39UkhtGVJBHfdppH6NPmKI+cj/N
-        RYQXCKBZ3L21ZpjDdhSTMnZtpABEj/WS5jcqGX4qm8Z7ELg=
-X-Google-Smtp-Source: APXvYqx/fExGbExiF3LH9V1VVeMV1Wj79ugYIqqIfBk7vXMkbUDBUyYgY8WiMCd/APzg6HCsy+XVoJOKTUS6PytMV/Q=
-X-Received: by 2002:a24:cd05:: with SMTP id l5mr2978259itg.44.1557411366279;
- Thu, 09 May 2019 07:16:06 -0700 (PDT)
+        Thu, 9 May 2019 10:29:46 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212])
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hOk3K-0000kg-Oh; Thu, 09 May 2019 14:29:42 +0000
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Tony Luck <tony.luck@intel.com>, Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        James Morse <james.morse@arm.com>, linux-edac@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190508224201.27120-1-colin.king@canonical.com>
+ <20190509141313.GA17053@zn.tnic>
+From:   Colin Ian King <colin.king@canonical.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
+ 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
+Subject: Re: [PATCH] EDAC, sb_edac: remove redundant update of tad_base
+Message-ID: <55f8efee-a02c-1574-42fa-35e1d3df14f7@canonical.com>
+Date:   Thu, 9 May 2019 15:29:42 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-References: <20190504070407.56915-1-weiyongjun1@huawei.com> <5a3a89cf-eee3-136c-1c5a-58024e946a24@mleia.com>
-In-Reply-To: <5a3a89cf-eee3-136c-1c5a-58024e946a24@mleia.com>
-From:   Sylvain Lemieux <slemieux.tyco@gmail.com>
-Date:   Thu, 9 May 2019 10:15:54 -0400
-Message-ID: <CA+rxa6oh+Qxo5aLgW11vrAvuu7t7JAFONC6b0+kxRx9rwCmjhg@mail.gmail.com>
-Subject: Re: [PATCH -next] usb: gadget: udc: lpc32xx: fix return value check
- in lpc32xx_udc_probe()
-To:     Vladimir Zapolskiy <vz@mleia.com>
-Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-usb@vger.kernel.org,
-        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190509141313.GA17053@zn.tnic>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Thanks
+On 09/05/2019 15:13, Borislav Petkov wrote:
+> On Wed, May 08, 2019 at 11:42:01PM +0100, Colin King wrote:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> The variable tad_base is being set to a value that is never read
+>> and is being over-written on the next iteration of a for-loop.
+>> This assignment is therefore redundant and can be removed.
+>>
+>> Addresses-Coverity: ("Unused value")
+> 
+> What's that tag's function supposed to be?
 
-Acked-by: Sylvain Lemieux <slemieux.tyco@gmail.com>
+These are the Coverity static analysis warning/error message
+classifications.  Tagging them should be useful for several reasons:
 
-On Sat, May 4, 2019 at 8:17 AM Vladimir Zapolskiy <vz@mleia.com> wrote:
->
-> Hi Wei Yongjun,
->
-> On 05/04/2019 10:04 AM, Wei Yongjun wrote:
-> > In case of error, the function devm_ioremap_resource() returns ERR_PTR()
-> > and never returns NULL. The NULL test in the return value check should
-> > be replaced with IS_ERR().
-> >
-> > This issue was detected by using the Coccinelle software.
-> >
-> > Fixes: 408b56ca5c8e ("usb: gadget: udc: lpc32xx: simplify probe")
-> > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> > ---
-> >  drivers/usb/gadget/udc/lpc32xx_udc.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/usb/gadget/udc/lpc32xx_udc.c b/drivers/usb/gadget/udc/lpc32xx_udc.c
-> > index d8f1c60793ed..00fb79c6d025 100644
-> > --- a/drivers/usb/gadget/udc/lpc32xx_udc.c
-> > +++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
-> > @@ -3070,9 +3070,9 @@ static int lpc32xx_udc_probe(struct platform_device *pdev)
-> >       }
-> >
-> >       udc->udp_baseaddr = devm_ioremap_resource(dev, res);
-> > -     if (!udc->udp_baseaddr) {
-> > +     if (IS_ERR(udc->udp_baseaddr)) {
-> >               dev_err(udc->dev, "IO map failure\n");
-> > -             return -ENOMEM;
-> > +             return PTR_ERR(udc->udp_baseaddr);
-> >       }
-> >
-> >       /* Get USB device clock */
->
-> thank you for the change, it is a correct fix.
->
-> I do suppose that dev_err() in the context can be evenly removed, but
-> likely it should be another change.
->
-> Acked-by: Vladimir Zapolskiy <vz@mleia.com>
->
-> --
-> Best wishes,
-> Vladimir
+1. We can classify the types of issues being fixed
+2. We can see how many issues are being found/fixed with the use of
+static analysis tools like Coverity
+3. It provides some context on how these bugs were being found.
+
+I hope that helps.
+
+> 
+> I see a lot of those in commit messages but it is nowhere documented in
+> the tree.
+> 
+> $ git grep -i coverity
+> 
+> doesn't give anything relevant.
+> 
+> Hmm?
+> 
+

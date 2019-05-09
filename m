@@ -2,63 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0250E1882D
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 May 2019 12:11:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFA3918834
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 May 2019 12:11:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726426AbfEIKLC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 May 2019 06:11:02 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:34706 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725847AbfEIKLC (ORCPT
+        id S1726521AbfEIKL4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 May 2019 06:11:56 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:44844 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725847AbfEIKLz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 May 2019 06:11:02 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x49A3vVQ169330;
-        Thu, 9 May 2019 10:10:58 GMT
+        Thu, 9 May 2019 06:11:55 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x49A47r7151887;
+        Thu, 9 May 2019 10:11:36 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=qupKCE1+9NLgvlLFD55x9x37iyyxp1hRx7TkBzJRv64=;
- b=cur0yw0xXOixscpXpojSdVFeqrb9W3jEx1XMHwlmLc9ySINPEKJs5ZPNZcG9q0jxya0Y
- rObtgn5HRwEY6vtRMn4zgnyFd91EYlbNcM3V+RzKtADa3o+r/OF7lzGJeIgU2Q5Vhrw6
- F3C40aiw/ItXNBnTy1MF8cniUARnGE4Qn9jVgX9VR7+EHl81d1m3LvSXwmz8wXNvA+ed
- mNY9dSPjQcOvhyvgLY7LKH810tEz+lEnxWZWYMl7gdm0P8TFF0UQspCk/15+Oz+SxLeQ
- JaB9q8IkvkfcA6VbVo9PMMSOVAj6DjCqXNuxUJMf0OpMY8xRL+eJc18Y9AUUv7+NBJz5 bQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 2s94b11rp4-1
+ bh=neR6KgNTfO3pr9d8gVWPxShCmiFnAFlvpMLhr9CMJKc=;
+ b=v4ZKiMpxTD1jLCtxQhxvk07Li/h8O1tL6dXkCkzjkLuXs80ypU2gLp7jKP3M5tC8eFGH
+ QnEurOkncfKMMDmqcSDBEeAYZ/vcX6u8b7syn7fw4s8HWxLSRavxi+YdHB/QY9vWQ8J4
+ 8PO/Hb+FVnrF4eJwq3EJ/tpVRa8swxelUQJImJWxjv4JwCY4Do/0I4bDX6sbEh05yZdo
+ FsyZBhSYr7sRVqQtasoCnVK86KgpgRXyQW6k+t8iw3BlAG5pP3ty1ZKNPi8RDaVvUDUQ
+ pbwGawp3DV70baeEU+driTIApmvCpuVPPAK323BfciWonl+aKQ47HwXulAWP0Zzsrrt3 Aw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2s94bg9s8r-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 09 May 2019 10:10:58 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x49A9w4J185529;
-        Thu, 9 May 2019 10:10:58 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2sagyv5jsn-1
+        Thu, 09 May 2019 10:11:36 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x49AB6JC028094;
+        Thu, 9 May 2019 10:11:34 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 2schvyr9tg-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 09 May 2019 10:10:58 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x49AAvGK015241;
-        Thu, 9 May 2019 10:10:57 GMT
+        Thu, 09 May 2019 10:11:34 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x49ABWds004114;
+        Thu, 9 May 2019 10:11:32 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 09 May 2019 03:10:56 -0700
-Date:   Thu, 9 May 2019 13:10:51 +0300
+        with ESMTP ; Thu, 09 May 2019 03:11:32 -0700
+Date:   Thu, 9 May 2019 13:11:25 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jeff Kirsher <jeffrey.t.kirsher@intel.com>
-Cc:     intel-wired-lan@lists.osuosl.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] i40e/i40evf: cleanup i40e_update_nvm_checksum()
-Message-ID: <20190509101051.GB7024@mwanda>
+To:     "Yan, Zheng" <zyan@redhat.com>, Jeff Layton <jlayton@kernel.org>
+Cc:     Sage Weil <sage@redhat.com>, Ilya Dryomov <idryomov@gmail.com>,
+        ceph-devel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] ceph: Silence a checker warning on the error path
+Message-ID: <20190509101125.GC7024@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9251 signatures=668686
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
  phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.0.1-1810050000 definitions=main-1905090062
 X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9251 signatures=668686
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
  definitions=main-1905090062
@@ -67,39 +68,31 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Smatch complains that we use 'checksum' when it's uninitialized.
+The problem is that if ceph_mdsc_build_path() fails then we set "path"
+to NULL and the "pathlen" variable is uninitialized.  The we call
+ceph_mdsc_free_path(path, pathlen) to clean up.  Since "path" is NULL,
+the function is a no-op but Smatch and UBSan still complain that
+"pathlen" is uninitialized.
 
-    drivers/net/ethernet/intel/i40e/i40e_nvm.c:581 i40e_update_nvm_checksum()
-    error: uninitialized symbol 'checksum'.
-
-This is true, but it harmless because we don't use it again.
+This patch doesn't change run time, it just silence the warnings.
 
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/ethernet/intel/i40e/i40e_nvm.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ fs/ceph/debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_nvm.c b/drivers/net/ethernet/intel/i40e/i40e_nvm.c
-index c508b75c3c09..a60ab9d48065 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_nvm.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_nvm.c
-@@ -578,12 +578,11 @@ i40e_status i40e_update_nvm_checksum(struct i40e_hw *hw)
- 	__le16 le_sum;
+diff --git a/fs/ceph/debugfs.c b/fs/ceph/debugfs.c
+index b3fc5fe26a1a..a14d64664878 100644
+--- a/fs/ceph/debugfs.c
++++ b/fs/ceph/debugfs.c
+@@ -52,7 +52,7 @@ static int mdsc_show(struct seq_file *s, void *p)
+ 	struct ceph_mds_client *mdsc = fsc->mdsc;
+ 	struct ceph_mds_request *req;
+ 	struct rb_node *rp;
+-	int pathlen;
++	int pathlen = 0;
+ 	u64 pathbase;
+ 	char *path;
  
- 	ret_code = i40e_calc_nvm_checksum(hw, &checksum);
-+	if (ret_code)
-+		return ret_code;
- 	le_sum = cpu_to_le16(checksum);
--	if (!ret_code)
--		ret_code = i40e_write_nvm_aq(hw, 0x00, I40E_SR_SW_CHECKSUM_WORD,
--					     1, &le_sum, true);
--
--	return ret_code;
-+	return i40e_write_nvm_aq(hw, 0x00, I40E_SR_SW_CHECKSUM_WORD, 1,
-+				 &le_sum, true);
- }
- 
- /**
 -- 
 2.18.0
-

@@ -2,63 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EDC98198B7
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 May 2019 09:07:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A3D819A59
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 May 2019 11:14:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727018AbfEJHHl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 May 2019 03:07:41 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:35831 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726934AbfEJHHl (ORCPT
+        id S1727094AbfEJJOh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 May 2019 05:14:37 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:37735 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726992AbfEJJOe (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 May 2019 03:07:41 -0400
-Received: from cpc129250-craw9-2-0-cust139.know.cable.virginm.net ([82.43.126.140] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hOzd0-0003za-Oz; Fri, 10 May 2019 07:07:34 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/amdgpu: fix spelling mistake "retrived" -> "retrieved"
-Date:   Fri, 10 May 2019 08:07:34 +0100
-Message-Id: <20190510070734.20625-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Fri, 10 May 2019 05:14:34 -0400
+Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
+        by metis.ext.pengutronix.de with esmtp (Exim 4.89)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1hP1bs-0004X1-DN; Fri, 10 May 2019 11:14:32 +0200
+Message-ID: <1557479671.7859.2.camel@pengutronix.de>
+Subject: Re: [PATCH] reset: fix potential null pointer dereference on
+ pointer dev
+From:   Philipp Zabel <p.zabel@pengutronix.de>
+To:     Colin King <colin.king@canonical.com>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Date:   Fri, 10 May 2019 11:14:31 +0200
+In-Reply-To: <20190509160036.19433-1-colin.king@canonical.com>
+References: <20190509160036.19433-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.22.6-1+deb9u1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hi Colin,
 
-There is a spelling mistake in a DRM_ERROR error message. Fix this.
+[added Bartosz to Cc:]
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/amd/amdgpu/df_v3_6.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Thu, 2019-05-09 at 17:00 +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Pointer dev is being dereferenced when passed to the inlined
+> functon dev_name, however, dev is later being null checked.
+> Thus there is a potential null pointer dereference on a null
+> dev. Fix this by performing the null check on dev before
+> dereferencing it.
+> 
+> Addresses-Coverity: ("Dereference before null check")
+> Fixes: 6691dffab0ab ("reset: add support for non-DT systems")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/reset/core.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/reset/core.c b/drivers/reset/core.c
+> index 81ea77cba123..83f1a1d5ee67 100644
+> --- a/drivers/reset/core.c
+> +++ b/drivers/reset/core.c
+> @@ -691,12 +691,13 @@ __reset_control_get_from_lookup(struct device *dev, const char *con_id,
+>  {
+>  	const struct reset_control_lookup *lookup;
+>  	struct reset_controller_dev *rcdev;
+> -	const char *dev_id = dev_name(dev);
+> +	const char *dev_id;
+>  	struct reset_control *rstc = NULL;
+>  
+>  	if (!dev)
+>  		return ERR_PTR(-EINVAL);
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/df_v3_6.c b/drivers/gpu/drm/amd/amdgpu/df_v3_6.c
-index 7d375f8dcce6..a5c3558869fb 100644
---- a/drivers/gpu/drm/amd/amdgpu/df_v3_6.c
-+++ b/drivers/gpu/drm/amd/amdgpu/df_v3_6.c
-@@ -194,7 +194,7 @@ static void df_v3_6_pmc_get_ctrl_settings(struct amdgpu_device *adev,
- 		return;
- 
- 	if ((*lo_base_addr == 0) || (*hi_base_addr == 0)) {
--		DRM_ERROR("DF PMC addressing not retrived! Lo: %x, Hi: %x",
-+		DRM_ERROR("DF PMC addressing not retrieved! Lo: %x, Hi: %x",
- 				*lo_base_addr, *hi_base_addr);
- 		return;
- 	}
--- 
-2.20.1
+Thank you for the patch. I think this check should be removed instead,
+though, as __reset_control_get_from_lookup is only ever called from
+__reset_control_get, right after checking dev->of_node. So dev can not
+be NULL here.
 
+regards
+Philipp

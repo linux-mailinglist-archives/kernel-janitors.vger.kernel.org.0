@@ -2,67 +2,114 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CA33D19B92
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 May 2019 12:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84A3E19C5F
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 May 2019 13:17:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727539AbfEJKZa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 May 2019 06:25:30 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:43621 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727376AbfEJKZa (ORCPT
+        id S1727353AbfEJLQo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 May 2019 07:16:44 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:50378 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727210AbfEJLQo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 May 2019 06:25:30 -0400
-Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
-        by metis.ext.pengutronix.de with esmtp (Exim 4.89)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1hP2iV-0001HQ-Pr; Fri, 10 May 2019 12:25:27 +0200
-Message-ID: <1557483927.7859.3.camel@pengutronix.de>
-Subject: Re: [PATCH][V2] reset: remove redundant null check on pointer dev
-From:   Philipp Zabel <p.zabel@pengutronix.de>
-To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Colin King <colin.king@canonical.com>
-Cc:     kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Date:   Fri, 10 May 2019 12:25:27 +0200
-In-Reply-To: <CAMpxmJWyVZ2hHE=1tu5NgSzEHZKD2pBo8KUXg1CLUaB-WX4KHQ@mail.gmail.com>
-References: <20190510095832.28233-1-colin.king@canonical.com>
-         <CAMpxmJWyVZ2hHE=1tu5NgSzEHZKD2pBo8KUXg1CLUaB-WX4KHQ@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.22.6-1+deb9u1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
+        Fri, 10 May 2019 07:16:44 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4ABDrMj173329;
+        Fri, 10 May 2019 11:16:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=pugw6u1DF8kTo0TWxMB5HqnwhA3PgsdFoHz299/SPlk=;
+ b=Abzn+43JBICvtCRhuBAc1+7aLsd0eu2y45um2Qpgp5bmifpmkUigT+VkE0zItNmAAKcP
+ EPPn9+PcjPFl4Yhcs8ufQKpHM/cQ3pjA014xZzC4xy8ibuOGb/saqubvtcsEWG7MQcD5
+ fHPiJq6t/0bu4r1gJkt/mYy2AVh9ya7HU4X0Dr8AYaelLivfGTOhEwgZznAw4Eyky00X
+ qnwI9AtRbn04ZZzs9x288o8gT6+weVjrPI5zaijD61ySNeeWIoEM8xSetRWIDD9P+yCm
+ dvLooM+zKzCvwtizvKij9p5hYh3VUd5Snw7gEl7JS6q5xpc4eMBXJWSdYAkDdKlO+2So AA== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 2s94b18btq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 10 May 2019 11:16:37 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4ABG0im010795;
+        Fri, 10 May 2019 11:16:36 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 2sagyvsc8h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 10 May 2019 11:16:36 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x4ABGVnM023759;
+        Fri, 10 May 2019 11:16:31 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 10 May 2019 04:16:31 -0700
+Date:   Fri, 10 May 2019 14:16:23 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] drm/amdgpu: fix return of an uninitialized value
+ in variable ret
+Message-ID: <20190510111623.GC18105@kadam>
+References: <20190510100842.30458-1-colin.king@canonical.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190510100842.30458-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9252 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905100080
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9252 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905100080
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 2019-05-10 at 12:14 +0200, Bartosz Golaszewski wrote:
-> pt., 10 maj 2019 o 11:58 Colin King <colin.king@canonical.com> napisał(a):
-> > 
-> > From: Colin Ian King <colin.king@canonical.com>
-> > 
-> > Pointer dev is being dereferenced when passed to the inlined
-> > functon dev_name, however, dev is later being null checked
-> > so at first this seems like a potential null pointer dereference.
-> > 
-> > In fact, _reset_control_get_from_lookup is only ever called from
-> > __reset_control_get, right after checking dev->of_node hence
-> > dev can never be null.  Clean this up by removing the redundant
-> > null check.
-> > 
-> > Thanks to Philipp Zabel for spotting that dev can never be null.
-> > 
-> > Addresses-Coverity: ("Dereference before null check")
-> > Fixes: 6691dffab0ab ("reset: add support for non-DT systems")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-[...]
-> Reviewed-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
+On Fri, May 10, 2019 at 11:08:42AM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> In the case where is_enable is false and lo_base_addr is non-zero the
+> variable ret has not been initialized and is being checked for non-zero
+> and potentially garbage is being returned. Fix this by not returning
+> ret but instead returning -EINVAL on the zero lo_base_addr case.
+> 
+> Addresses-Coverity: ("Uninitialized scalar variable")
+> Fixes: a6ac0b44bab9 ("drm/amdgpu: add df perfmon regs and funcs for xgmi")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/gpu/drm/amd/amdgpu/df_v3_6.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/amd/amdgpu/df_v3_6.c b/drivers/gpu/drm/amd/amdgpu/df_v3_6.c
+> index a5c3558869fb..8c09bf994acd 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/df_v3_6.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/df_v3_6.c
+> @@ -398,10 +398,7 @@ static int df_v3_6_start_xgmi_link_cntr(struct amdgpu_device *adev,
+>  				NULL);
+>  
+>  		if (lo_base_addr == 0)
+> -			ret = -EINVAL;
+> -
+> -		if (ret)
+> -			return ret;
+> +			return -EINVAL;
 
-Thank you both, applied to reset/fixes.
+From a naive reading of the code without knowing the hardware spec then
+you would probably think that lo_base_addr can also be uninitialized.
 
-regards
-Philipp
+<sad face emoji>
+
+regards,
+dan carpenter
+

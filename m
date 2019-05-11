@@ -2,60 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BF871A8AB
-	for <lists+kernel-janitors@lfdr.de>; Sat, 11 May 2019 19:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F18471A74B
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 May 2019 11:37:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727523AbfEKRTo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 11 May 2019 13:19:44 -0400
-Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:47196 "EHLO
-        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726787AbfEKRTn (ORCPT
+        id S1728445AbfEKJhV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 11 May 2019 05:37:21 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:52974 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726518AbfEKJhV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 11 May 2019 13:19:43 -0400
-Received: from callcc.thunk.org (rrcs-67-53-55-100.west.biz.rr.com [67.53.55.100])
-        (authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id x4BHJauK030273
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sat, 11 May 2019 13:19:38 -0400
-Received: by callcc.thunk.org (Postfix, from userid 15806)
-        id 51DC2420030; Fri, 10 May 2019 22:09:30 -0400 (EDT)
-Date:   Fri, 10 May 2019 22:09:30 -0400
-From:   "Theodore Ts'o" <tytso@mit.edu>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Andreas Dilger <adilger.kernel@dilger.ca>,
-        linux-ext4@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] ext4: fix two cases where a u32 is being checked
- for a less than zero error return
-Message-ID: <20190511020930.GG2534@mit.edu>
-Mail-Followup-To: Theodore Ts'o <tytso@mit.edu>,
-        Colin King <colin.king@canonical.com>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        linux-ext4@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20190426220908.12790-1-colin.king@canonical.com>
+        Sat, 11 May 2019 05:37:21 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4B9U200134178;
+        Sat, 11 May 2019 09:37:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=1sSyjG1UHkf4BGaOevG5w41Ncg19JwlhgkXOf02AopQ=;
+ b=DC0BqHMJK6scXHybhPC12M/cpYTtDC8OXCQhgryfop+1VE43/aoWmc/FA6OgGlAntqdB
+ TK7UyQyyhy5B5DjCTycs/Gc7LnUSr2P7fzbglUH4Et0bu/ahmaMvab9SHLMhoaLX0iON
+ N+aG41MOz7iygeEfxudsESB2/3GKaDIzXAsR7Nt0T42PgSEKoSGoTHyirdRz4e9lKCgX
+ iCgNfo4jfKa9uNM1jd7Zozbd0TqPhvBZck4Nq16ol2XS6bBWiJ+iHJtvpiLRXZlFD8aT
+ 6l2RBWhEcJpF6loMU9LDidkZ2zUMCyceGdttNKBppmWroxL39J7Kilgi75X85hv+WuIE dQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2sdntt8q7b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 11 May 2019 09:37:01 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4B9ZI4Y113369;
+        Sat, 11 May 2019 09:37:01 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2sdme9v355-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 11 May 2019 09:37:01 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x4B9auqc016242;
+        Sat, 11 May 2019 09:36:56 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 11 May 2019 02:36:56 -0700
+Date:   Sat, 11 May 2019 12:36:48 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     walter harms <wharms@bfs.de>
+Cc:     Maxim Levitsky <maximlevitsky@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>, Alex Dubov <oakad@yahoo.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Hannes Reinecke <hare@suse.de>,
+        Martin Wilck <martin.wilck@suse.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        linux-mmc@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] mspro_block: Fix an error code in mspro_block_issue_req()
+Message-ID: <20190511093648.GF18105@kadam>
+References: <20190510112440.GA22858@mwanda>
+ <5CD57891.9000505@bfs.de>
+ <20190510132347.GH16030@kadam>
+ <5CD598C3.9090003@bfs.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190426220908.12790-1-colin.king@canonical.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <5CD598C3.9090003@bfs.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9253 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=548
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905110067
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9253 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=595 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905110067
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Apr 26, 2019 at 11:09:08PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There are two cases where u32 variables n and err are being checked
-> for less than zero error values, the checks is always false because
-> the variables are not signed. Fix this by making the variables ints.
-> 
-> Addresses-Coverity: ("Unsigned compared against 0")
-> Fixes: 345c0dbf3a30 ("ext4: protect journal inode's blocks using block_validity")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+return -EINVAL; is more readable (100% unambiguous) than a break
+statement.
 
-Thanks, applied.
+ergards,
+dan carpenter
 
-					- Ted

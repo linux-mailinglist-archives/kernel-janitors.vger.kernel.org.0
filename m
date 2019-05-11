@@ -2,27 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 881361A7DB
-	for <lists+kernel-janitors@lfdr.de>; Sat, 11 May 2019 14:41:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D11A1A7E9
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 May 2019 15:18:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728559AbfEKMli (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 11 May 2019 08:41:38 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:35172 "EHLO
+        id S1728583AbfEKNSy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 11 May 2019 09:18:54 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:35474 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726240AbfEKMli (ORCPT
+        with ESMTP id S1726319AbfEKNSy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 11 May 2019 08:41:38 -0400
+        Sat, 11 May 2019 09:18:54 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hPRJo-0008Us-2r; Sat, 11 May 2019 12:41:36 +0000
+        id 1hPRtp-0003S1-S0; Sat, 11 May 2019 13:18:49 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Joerg Roedel <joro@8bytes.org>, iommu@lists.linux-foundation.org
+To:     Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iommu/amd: remove redundant assignment to variable npages
-Date:   Sat, 11 May 2019 13:41:35 +0100
-Message-Id: <20190511124135.3635-1-colin.king@canonical.com>
+Subject: [PATCH] sched: remove redundant assignment to variable utime
+Date:   Sat, 11 May 2019 14:18:49 +0100
+Message-Id: <20190511131849.4513-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -34,29 +35,32 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable npages is being initialized however this is never read and
-later it is being reassigned to a new value. The initialization is
-redundant and hence can be removed.
+The variable utime is being assigned a value however this is never
+read and later it is being reassigned to a new value. The assignment
+is redundant and hence can be removed.
 
 Addresses-Coverity: ("Unused Value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/iommu/amd_iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/cputime.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/amd_iommu.c b/drivers/iommu/amd_iommu.c
-index 09c9e45f7fa2..c0b5b9298e8e 100644
---- a/drivers/iommu/amd_iommu.c
-+++ b/drivers/iommu/amd_iommu.c
-@@ -2609,7 +2609,7 @@ static void unmap_sg(struct device *dev, struct scatterlist *sglist,
- 	struct protection_domain *domain;
- 	struct dma_ops_domain *dma_dom;
- 	unsigned long startaddr;
--	int npages = 2;
-+	int npages;
+diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
+index ba4a143bdcf3..ad647711ffb8 100644
+--- a/kernel/sched/cputime.c
++++ b/kernel/sched/cputime.c
+@@ -616,10 +616,8 @@ void cputime_adjust(struct task_cputime *curr, struct prev_cputime *prev,
+ 	 * Once a task gets some ticks, the monotonicy code at 'update:'
+ 	 * will ensure things converge to the observed ratio.
+ 	 */
+-	if (stime == 0) {
+-		utime = rtime;
++	if (stime == 0)
+ 		goto update;
+-	}
  
- 	domain = get_domain(dev);
- 	if (IS_ERR(domain))
+ 	if (utime == 0) {
+ 		stime = rtime;
 -- 
 2.20.1
 

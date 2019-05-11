@@ -2,108 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD16C1A034
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 May 2019 17:29:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 057DD1A638
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 May 2019 03:37:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727613AbfEJP3O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 May 2019 11:29:14 -0400
-Received: from mx01-fr.bfs.de ([193.174.231.67]:1275 "EHLO mx01-fr.bfs.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727413AbfEJP3O (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 May 2019 11:29:14 -0400
-Received: from mail-fr.bfs.de (mail-fr.bfs.de [10.177.18.200])
-        by mx01-fr.bfs.de (Postfix) with ESMTPS id 745592036B;
-        Fri, 10 May 2019 17:29:08 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1557502148; h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=x7rUq6g66N4nwvS2jevP/8cgut3AdGljfT53km0/eVU=;
-        b=hESCG5HKqL5ZcIzqa286iClzPM4jW3UHOzILA4ki4vQ+BMfSgDcXMQDH/WT4ys7+PCYy/V
-        y6yITjEnBRCQBfkj0r9hivY2u+vnDuMCZXTo8fvNShOCNyOOoVlDAKqS/sGtBzM3VhJjuE
-        kiQgcvlbgey9ogS0Q5rk5HcC0K6ensvZFzuFZW7jBxq/JGY5BfE5aeF+6ZWJt7VED55qnh
-        v/SgXbEgbTNtl8siy+nDe2zuZ8/ty/bx4af2xS/wDRr9POEyVz8veE90SHrpCxshrYehV3
-        7KWBvJj/PKthKbslcK44uRWBG9Ke+PfBkD4haZGxjYi5MKqMJdaFgo7qmFmgLQ==
-Received: from [134.92.181.33] (unknown [134.92.181.33])
-        by mail-fr.bfs.de (Postfix) with ESMTPS id DF9C7BEEBD;
-        Fri, 10 May 2019 17:29:07 +0200 (CEST)
-Message-ID: <5CD598C3.9090003@bfs.de>
-Date:   Fri, 10 May 2019 17:29:07 +0200
-From:   walter harms <wharms@bfs.de>
-Reply-To: wharms@bfs.de
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; de; rv:1.9.1.16) Gecko/20101125 SUSE/3.0.11 Thunderbird/3.0.11
+        id S1728194AbfEKBhF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 May 2019 21:37:05 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:39843 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728064AbfEKBhE (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 10 May 2019 21:37:04 -0400
+Received: by mail-ed1-f68.google.com with SMTP id e24so7602111edq.6;
+        Fri, 10 May 2019 18:37:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=cMq/4MVOYTLAY5QCZFXsiVplr0BJ1X0QHMo57CSt7M0=;
+        b=CkNDRldwZfIz+X4uABrZClSDUWHjBfaBuu7G2n7Gpczgt75QH0WclEqN4k6TsURw68
+         Qxt3ESXCC/ATWtJOOqRe8qpgnsqNovPgvq7dC6tbcHMU//mqFVvwAEq8Vx8JBSaaxhM6
+         /YSqC/tKAAnWDQDclisONzDZbVRc27N7lIsH+WlXYnFkSQf5NFehFX5vSY5JVk/9UQEx
+         vx4BLyFZ5CtxqH6lTtR5r28RR3GuuEHO+fh/73/LD8XPw1rzG5BFaBmLlnM1KoBRatqE
+         NtyXxvSkhlNSavw0FGRj4B7inEBomdaBSgl1ZgZ1PAJ2H4tP4CxfFG1YiknsYFqrurQJ
+         PcdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=cMq/4MVOYTLAY5QCZFXsiVplr0BJ1X0QHMo57CSt7M0=;
+        b=X6v/0xH0uwJ0c4JP/4MjntMkkNskrk6LrhlR3q5Hj1FrW0pWfxCCl0b08ocCJqt5Tj
+         ekxHxEvJ4bA6Jm7CYdSVKkDmrMupN3SlMHJAKc1HD7pddVSWwKSTKQqWqNJ6soNwYqQu
+         oWYKZFEU8CsEWMk8iBzdVEQvI3pRh3OlV72kCMC0agGcM4dbFS0GZyWcBJxrxFE2onwU
+         omzsxOUckXkE2DyhZsWkJiTvCh8cpvCZTCB5Z/C4uWAdTR0kKFajMVpqPCy8H/kb4h+K
+         SgEp7bxsi1cR6jkODBHcxHYfa+Z+J3MspIwwrW1SnibYoirRaTZvgL5eoh28mNOVCw4b
+         pDDg==
+X-Gm-Message-State: APjAAAXcEvc2j9c93uwolGE2GCmCD3/1Eee4Dvo84AziIaeIWnAhcszg
+        /Ox9YMIRtBXBlB0LRoM7z8c=
+X-Google-Smtp-Source: APXvYqwEslwWnu/DDdBLnHiDjFx0U3EFjNGO7nlU7JO0Cna0SAFoYxwor0qw9RJIv7RkJryDnJDIzQ==
+X-Received: by 2002:a50:87ab:: with SMTP id a40mr14362661eda.188.1557538622698;
+        Fri, 10 May 2019 18:37:02 -0700 (PDT)
+Received: from archlinux-i9 ([2a01:4f9:2b:2b84::2])
+        by smtp.gmail.com with ESMTPSA id x49sm1943909edm.25.2019.05.10.18.37.01
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 10 May 2019 18:37:01 -0700 (PDT)
+Date:   Fri, 10 May 2019 18:37:00 -0700
+From:   Nathan Chancellor <natechancellor@gmail.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] drm/amdgpu: fix return of an uninitialized value
+ in variable ret
+Message-ID: <20190511013700.GA3530@archlinux-i9>
+References: <20190510100842.30458-1-colin.king@canonical.com>
 MIME-Version: 1.0
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     Maxim Levitsky <maximlevitsky@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>, Alex Dubov <oakad@yahoo.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Hannes Reinecke <hare@suse.de>,
-        Martin Wilck <martin.wilck@suse.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        linux-mmc@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] mspro_block: Fix an error code in mspro_block_issue_req()
-References: <20190510112440.GA22858@mwanda> <5CD57891.9000505@bfs.de> <20190510132347.GH16030@kadam>
-In-Reply-To: <20190510132347.GH16030@kadam>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.10
-Authentication-Results: mx01-fr.bfs.de
-X-Spamd-Result: default: False [-3.10 / 7.00];
-         ARC_NA(0.00)[];
-         HAS_REPLYTO(0.00)[wharms@bfs.de];
-         BAYES_HAM(-3.00)[100.00%];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         FREEMAIL_ENVRCPT(0.00)[gmail.com,yahoo.com];
-         MIME_GOOD(-0.10)[text/plain];
-         REPLYTO_ADDR_EQ_FROM(0.00)[];
-         DKIM_SIGNED(0.00)[];
-         RCPT_COUNT_SEVEN(0.00)[10];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         FREEMAIL_CC(0.00)[gmail.com];
-         MID_RHS_MATCH_FROM(0.00)[];
-         RCVD_TLS_ALL(0.00)[];
-         RCVD_COUNT_TWO(0.00)[2]
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190510100842.30458-1-colin.king@canonical.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-Am 10.05.2019 15:23, schrieb Dan Carpenter:
-> On Fri, May 10, 2019 at 03:11:45PM +0200, walter harms wrote:
->> If i see this correcly everybody leaving the loop making the function return something.
->> I do not know how would do that but IMHO is better to be defensive and end the function
->> with a propper return code (perhaps 0).
->>
+On Fri, May 10, 2019 at 11:08:42AM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> It's a forever loop.  If we add another break statement without adding
-> at return then GCC will complain.
+> In the case where is_enable is false and lo_base_addr is non-zero the
+> variable ret has not been initialized and is being checked for non-zero
+> and potentially garbage is being returned. Fix this by not returning
+> ret but instead returning -EINVAL on the zero lo_base_addr case.
 > 
-> I feel like maybe you're saying that you don't like forever loops?  That
-> becomes a pretty complicated position to take...
+> Addresses-Coverity: ("Uninitialized scalar variable")
+> Fixes: a6ac0b44bab9 ("drm/amdgpu: add df perfmon regs and funcs for xgmi")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
+Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+
+This fixes a clang warning complaining about the same thing.
+
+> ---
+>  drivers/gpu/drm/amd/amdgpu/df_v3_6.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
 > 
-
-No, not really,
-but after several years of programming i have learned that forever() is never
-forever and a break statement is easily added (in future).
-
-Also it also looks strange to have a function returning int but the last thing
-is not returning something.
-
-just my 2 cents,
-
-re,
- wh
-
-ps: you could easily do
- 	memstick_new_req(card->host);
-  	break;
-  }
-return 0;
-
+> diff --git a/drivers/gpu/drm/amd/amdgpu/df_v3_6.c b/drivers/gpu/drm/amd/amdgpu/df_v3_6.c
+> index a5c3558869fb..8c09bf994acd 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/df_v3_6.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/df_v3_6.c
+> @@ -398,10 +398,7 @@ static int df_v3_6_start_xgmi_link_cntr(struct amdgpu_device *adev,
+>  				NULL);
+>  
+>  		if (lo_base_addr == 0)
+> -			ret = -EINVAL;
+> -
+> -		if (ret)
+> -			return ret;
+> +			return -EINVAL;
+>  
+>  		lo_val = RREG32_PCIE(lo_base_addr);
+>  
+> -- 
+> 2.20.1
+> 

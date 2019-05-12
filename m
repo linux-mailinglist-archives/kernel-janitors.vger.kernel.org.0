@@ -2,64 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A8681ADB7
-	for <lists+kernel-janitors@lfdr.de>; Sun, 12 May 2019 20:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 804051ADD6
+	for <lists+kernel-janitors@lfdr.de>; Sun, 12 May 2019 20:44:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726832AbfELSKt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 12 May 2019 14:10:49 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:58980 "EHLO mx1.redhat.com"
+        id S1726832AbfELSoS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 12 May 2019 14:44:18 -0400
+Received: from mx01-fr.bfs.de ([193.174.231.67]:60694 "EHLO mx01-fr.bfs.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726529AbfELSKs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 12 May 2019 14:10:48 -0400
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 8212D81F19;
-        Sun, 12 May 2019 18:10:48 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-61.rdu2.redhat.com [10.10.120.61])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 7808860BCD;
-        Sun, 12 May 2019 18:10:46 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <5CD844B0.5060206@bfs.de>
-References: <5CD844B0.5060206@bfs.de> <155764714099.24080.1233326575922058381.stgit@warthog.procyon.org.uk> <155764714872.24080.15171754166782593095.stgit@warthog.procyon.org.uk>
-To:     wharms@bfs.de
-Cc:     dhowells@redhat.com, colin.king@canonical.com, joe@perches.com,
-        jaltman@auristor.com, linux-afs@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] afs: Fix afs_xattr_get_yfs() to not try freeing an error value
+        id S1726695AbfELSoS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 12 May 2019 14:44:18 -0400
+Received: from mail-fr.bfs.de (mail-fr.bfs.de [10.177.18.200])
+        by mx01-fr.bfs.de (Postfix) with ESMTPS id 1A78220366;
+        Sun, 12 May 2019 20:44:12 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1557686652; h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=otGbpeOBUxPubh373VfctsNYuIcg2bUblAv6dqaMf+U=;
+        b=Zi0SN6eD6GaX54lrqv1SUnB2TXa1kiIxMJbfaWBuWg9lMTdFZYu+54FfVG1WP9YeLgs6gg
+        ds84cy9FxPewKnawtYrFvAkrGVaU1nviZz8yEw9g/7gNv72YN+u8/dsG4AXuflBA4yLETz
+        SSjWvHN84sshvI9FqFOVvrFgiqCXWDH+sVWckJ1AITC2bsKNm0YYuKWMlG7d0VE2wwAcUF
+        WRbOm2bkKYuWFuPCXz/YJE/IQAAd2x9SqZ5PEZYE/Qz9ZldGnzP0UzqIT9MoUX3yOoLjQD
+        Hh/WzeKpFBHv9AZ8tPZI2B9USzAGTwZIqj6kaTsyuKspwii2Bmgcx7+dfoftAQ==
+Received: from [134.92.181.33] (unknown [134.92.181.33])
+        by mail-fr.bfs.de (Postfix) with ESMTPS id 99460BEEBD;
+        Sun, 12 May 2019 20:44:11 +0200 (CEST)
+Message-ID: <5CD8697B.6010004@bfs.de>
+Date:   Sun, 12 May 2019 20:44:11 +0200
+From:   walter harms <wharms@bfs.de>
+Reply-To: wharms@bfs.de
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; de; rv:1.9.1.16) Gecko/20101125 SUSE/3.0.11 Thunderbird/3.0.11
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <31807.1557684645.1@warthog.procyon.org.uk>
-Date:   Sun, 12 May 2019 19:10:45 +0100
-Message-ID: <31808.1557684645@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.25]); Sun, 12 May 2019 18:10:48 +0000 (UTC)
+To:     David Howells <dhowells@redhat.com>
+CC:     colin.king@canonical.com, joe@perches.com, jaltman@auristor.com,
+        linux-afs@lists.infradead.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] afs: Fix afs_xattr_get_yfs() to not try freeing an
+ error value
+References: <5CD844B0.5060206@bfs.de> <155764714099.24080.1233326575922058381.stgit@warthog.procyon.org.uk> <155764714872.24080.15171754166782593095.stgit@warthog.procyon.org.uk> <31808.1557684645@warthog.procyon.org.uk>
+In-Reply-To: <31808.1557684645@warthog.procyon.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.10
+Authentication-Results: mx01-fr.bfs.de
+X-Spamd-Result: default: False [-3.10 / 7.00];
+         HAS_REPLYTO(0.00)[wharms@bfs.de];
+         TO_DN_SOME(0.00)[];
+         REPLYTO_ADDR_EQ_FROM(0.00)[];
+         RCPT_COUNT_SEVEN(0.00)[7];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         MID_RHS_MATCH_FROM(0.00)[];
+         BAYES_HAM(-3.00)[100.00%];
+         ARC_NA(0.00)[];
+         FROM_HAS_DN(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         MIME_GOOD(-0.10)[text/plain];
+         DKIM_SIGNED(0.00)[];
+         RCVD_COUNT_TWO(0.00)[2];
+         RCVD_TLS_ALL(0.00)[]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-walter harms <wharms@bfs.de> wrote:
 
-> > +	ret = dsize;
-> > +	if (size > 0) {
-> > +		if (dsize > size) {
-> > +			ret = -ERANGE;
-> > +			goto error_key;
-> >  		}
-> > +		memcpy(buffer, data, dsize);
-> >  	}
-> >  
+
+Am 12.05.2019 20:10, schrieb David Howells:
+> walter harms <wharms@bfs.de> wrote:
 > 
-> i am confused: if size is <= 0 then the error is in dsize ?
+>>> +	ret = dsize;
+>>> +	if (size > 0) {
+>>> +		if (dsize > size) {
+>>> +			ret = -ERANGE;
+>>> +			goto error_key;
+>>>  		}
+>>> +		memcpy(buffer, data, dsize);
+>>>  	}
+>>>  
+>>
+>> i am confused: if size is <= 0 then the error is in dsize ?
+> 
+> See this bit, before that hunk:
+> 
+>> +	if (ret < 0)
+>> +		goto error_key;
+> 
+> David
+> 
 
-See this bit, before that hunk:
+Sorry, you misunderstood me, my fault, i did not see that size is unsigned.
+NTL i do not think size=0 is useful.
 
-> +	if (ret < 0)
-> +		goto error_key;
+You get size from outside, and if i follow the flow correct
+the first use of it is to check size>0.
+perhaps you can check size at start and simply return.
+Now if size==0 it will return dsize and give the impression
+that buffer is used (it is not).
 
-David
+while you are there:
+  flags |= YFS_ACL_WANT_ACL is always flags = YFS_ACL_WANT_ACL;
+since flags is 0 at this point.
+IMHO that sould be moved to the strcmp() section.
+
+hope that helps,
+
+re,
+ wh

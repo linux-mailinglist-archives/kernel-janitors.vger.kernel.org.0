@@ -2,58 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AADB1A848
-	for <lists+kernel-janitors@lfdr.de>; Sat, 11 May 2019 17:41:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14C301AAF0
+	for <lists+kernel-janitors@lfdr.de>; Sun, 12 May 2019 08:55:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728618AbfEKPlJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 11 May 2019 11:41:09 -0400
-Received: from smtprelay0187.hostedemail.com ([216.40.44.187]:34635 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726250AbfEKPlJ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 11 May 2019 11:41:09 -0400
-X-Greylist: delayed 312 seconds by postgrey-1.27 at vger.kernel.org; Sat, 11 May 2019 11:41:08 EDT
-Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
-        by smtpgrave01.hostedemail.com (Postfix) with ESMTP id 10FE5180397D8
-        for <kernel-janitors@vger.kernel.org>; Sat, 11 May 2019 15:35:57 +0000 (UTC)
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 694EE837F27D;
-        Sat, 11 May 2019 15:35:55 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::,RULES_HIT:41:355:379:599:966:968:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2196:2199:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3865:3867:3868:3871:3872:4321:4385:5007:8603:10004:10400:10848:11026:11232:11658:11914:12296:12555:12740:12760:12895:13069:13311:13357:13439:14096:14097:14659:14721:21080:21627:30054:30091,0,RBL:23.242.196.136:@perches.com:.lbl8.mailshell.net-62.14.0.180 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:27,LUA_SUMMARY:none
-X-HE-Tag: ant46_8ada80935915e
-X-Filterd-Recvd-Size: 2045
-Received: from XPS-9350 (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
-        (Authenticated sender: joe@perches.com)
-        by omf04.hostedemail.com (Postfix) with ESMTPA;
-        Sat, 11 May 2019 15:35:54 +0000 (UTC)
-Message-ID: <eb1862ebb97f41dcdf85abbea43a22d51ec94c9c.camel@perches.com>
-Subject: Re: [PATCH] afs: remove redundant assignment to variable ret
-From:   Joe Perches <joe@perches.com>
-To:     Colin King <colin.king@canonical.com>,
-        David Howells <dhowells@redhat.com>,
-        linux-afs@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Sat, 11 May 2019 08:35:52 -0700
+        id S1726027AbfELGz2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 12 May 2019 02:55:28 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:48700 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725913AbfELGz2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 12 May 2019 02:55:28 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 13AAD308A946;
+        Sun, 12 May 2019 06:55:28 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-61.rdu2.redhat.com [10.10.120.61])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 218C7691BE;
+        Sun, 12 May 2019 06:55:26 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
 In-Reply-To: <20190511123603.3265-1-colin.king@canonical.com>
 References: <20190511123603.3265-1-colin.king@canonical.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.30.1-1build1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+To:     Colin King <colin.king@canonical.com>
+Cc:     dhowells@redhat.com, linux-afs@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] afs: remove redundant assignment to variable ret
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <26747.1557644126.1@warthog.procyon.org.uk>
+Date:   Sun, 12 May 2019 07:55:26 +0100
+Message-ID: <26748.1557644126@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.41]); Sun, 12 May 2019 06:55:28 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 2019-05-11 at 13:36 +0100, Colin King wrote:
+Colin King <colin.king@canonical.com> wrote:
+
 > The variable ret is being assigned a value however this is never
 > read and later it is being reassigned to a new value. The assignment
 > is redundant and hence can be removed.
-[]
-> diff --git a/fs/afs/xattr.c b/fs/afs/xattr.c
-[]
-> @@ -71,7 +71,6 @@ static int afs_xattr_get_acl(const struct xattr_handler *handler,
+
+No.
+
 >  	if (ret == 0) {
 >  		ret = acl->size;
 >  		if (size > 0) {
@@ -62,27 +58,7 @@ On Sat, 2019-05-11 at 13:36 +0100, Colin King wrote:
 >  				return -ERANGE;
 >  			memcpy(buffer, acl->data, acl->size);
 
-It looks like the ret = acl->size immediately
-after the memcpy should be removed as well.
----
- fs/afs/xattr.c | 2 --
- 1 file changed, 2 deletions(-)
+This is the wrong solution.  acl and key need releasing, so the return should
+be a goto.
 
-diff --git a/fs/afs/xattr.c b/fs/afs/xattr.c
-index c81f85003fc7..e21de2f166a4 100644
---- a/fs/afs/xattr.c
-+++ b/fs/afs/xattr.c
-@@ -71,11 +71,9 @@ static int afs_xattr_get_acl(const struct xattr_handler *handler,
- 	if (ret == 0) {
- 		ret = acl->size;
- 		if (size > 0) {
--			ret = -ERANGE;
- 			if (acl->size > size)
- 				return -ERANGE;
- 			memcpy(buffer, acl->data, acl->size);
--			ret = acl->size;
- 		}
- 		kfree(acl);
- 	}
-
-
+David

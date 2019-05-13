@@ -2,71 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96E591B07D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 May 2019 08:49:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D87E71B189
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 May 2019 09:55:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726841AbfEMGti (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 May 2019 02:49:38 -0400
-Received: from mout.kundenserver.de ([212.227.17.13]:49293 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725866AbfEMGti (ORCPT
+        id S1728214AbfEMHzj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 May 2019 03:55:39 -0400
+Received: from merlin.infradead.org ([205.233.59.134]:52384 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727870AbfEMHzj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 May 2019 02:49:38 -0400
-Received: from [192.168.178.187] ([109.104.40.7]) by mrelayeu.kundenserver.de
- (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MD9Kp-1hYdLQ1ZJ3-00985K; Mon, 13 May 2019 08:49:17 +0200
-Subject: Re: [PATCH] staging: vc04_services: bcm2835-camera: remove redundant
- assignment to variable ret
-To:     Colin King <colin.king@canonical.com>,
-        Eric Anholt <eric@anholt.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, devel@driverdev.osuosl.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190511134813.5645-1-colin.king@canonical.com>
-From:   Stefan Wahren <stefan.wahren@i2se.com>
-Message-ID: <5fd5c89a-4bd0-1d2d-f027-819fe954bd5f@i2se.com>
-Date:   Mon, 13 May 2019 08:49:15 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        Mon, 13 May 2019 03:55:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=o6Rg9AFzu3xtSgxocTnQYX1DHwYY26QqjZV0zMsV5zQ=; b=20sa5qkL4roz196zuNWMbOgko
+        zyYrFWyBJbu9V8PhHZymhWNZqcSTplBpVeCN3VuYpOGqGFniF6Vt1wJjQ9k5e+DhH2JslBiCYVCd4
+        i2qddjoUfD/tkXqbmRrW3w5G3l4aNBG25cXR+KTtQF+mjaV/jjypU+8GgWv2ILcpRmFPRB1dKIst7
+        j4zcHMm6jIRf/sxtmgEZZx7M+mKjY7+bO+3d8F4TjO8oo31pTecy/NS8J7I76r2LyDQk+MwecQedQ
+        nJ5ARVskbeDBAq1AlVWXnhLSj7DVTBVVjw5EEySiZjI1BBlC+T1sjWUQjZIedlAR9V2pieq4T9VE3
+        5p+YeiAnQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=hirez.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hQ5o8-0005Ge-JP; Mon, 13 May 2019 07:55:36 +0000
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 545E22029F87A; Mon, 13 May 2019 09:55:35 +0200 (CEST)
+Date:   Mon, 13 May 2019 09:55:35 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Ingo Molnar <mingo@redhat.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] sched: remove redundant assignment to variable utime
+Message-ID: <20190513075535.GI2623@hirez.programming.kicks-ass.net>
+References: <20190511131849.4513-1-colin.king@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <20190511134813.5645-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Provags-ID: V03:K1:6gjO/x7pdDWHJchMfTFoYpMrc2jCJwMLYflU4Gu8ajN8J46umg6
- aMe2yCTYt5dfh5L90OffWgr+De4ZEbH7zWOzULis8Wg7jHu11WCzgZWtKNKPAptARDx0oJ0
- onjJagH2RY6NH+NAetYiMMsie9qoyv3MvH4KUKzjZocbDIdCRjsjk1SFU/5wxaBPr4iNuWQ
- hQtDghl6UxoBPf6cQUayg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ATE5Qe06IYI=:LutzhZvoFJqtjnVznCcyii
- tuxoWieuRi4pbG6k9Au0IJ9Ub5XgOXfj1MY0QsBkBbMXSbDvguUogyLLnjeSwNGOsWeOMjvSM
- 8AkIDckWw+Udpaq5coHqFCoxBKcqTR7tymRibv5jN5rdQTe4mOvO6FD6Cxvt5xk9taq/JjZJn
- jrCvrFs1sK6T9EdG8v0Adu8/TbKi8+UV9AvAIDXtJsnDHMeen1p5PYYLP3xRp86bo2osT0NzL
- gjEeHhxxREkPSAG3zyCYMeiMMgdOtvFpoiT6gStg5XSWBLCinF8NVQh91n/7yl/bddj2JjWGI
- 8fmMZFsL4MKtdLf4SBPlvPfx26E8QaGGPnL5CVeqqT8v7UsY2PpUyh05QtzsXlem2TNnGYdtH
- /b7eub9w1KSlYIAhLVUN41vJBSQGjgKWIgUav2Aim1M4Dw7uND/9bidkmVIKu3A3z4lY3OQoZ
- rDIu0sAWbt8ZzTOf3H2ERZPU0gDkDtxPV602BDNE2JIIIdO0+iThd7fQntiBQXFljbxxLj6ZY
- SdEZ1f6CfX5ji1ZM3gHrlI/hMwZXuB+NOPfSOzXYSAgLOPhbU2wXA6d5Vw+g5A4k+zvp79plc
- ZilfIzGQj5RS7eD1od8LSX00t9D0pz+yL1Ue+1Xvs/ALaEkzKRnnV/oo6RcUd4VeZ6MvUlMiD
- 1akkc4W8Sn/78m4OlWg088rvmNW8BJ9j+uUosZe0QQWCqFvYXJ9YTIICv0weU9AAR/pn8B25i
- R7N7C825vhSBDGmX7QLdXGT7S6Vx3XH2oT5Ig3b8K9XyfNS5TXKSbguR/3Y=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190511131849.4513-1-colin.king@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 11.05.19 15:48, Colin King wrote:
+On Sat, May 11, 2019 at 02:18:49PM +0100, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
->
-> The variable ret is being initialized however this is never read and later
-> it is being reassigned to a new value. The initialization is redundant and
-> hence can be removed.
->
+> 
+> The variable utime is being assigned a value however this is never
+> read and later it is being reassigned to a new value. The assignment
+> is redundant and hence can be removed.
+> 
 > Addresses-Coverity: ("Unused Value")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Acked-by: Stefan Wahren <stefan.wahren@i2se.com>
+
+Argh. not again.. still no.

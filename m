@@ -2,73 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 794261B4BE
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 May 2019 13:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA9131BF7F
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 May 2019 00:31:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727613AbfEMLRl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 May 2019 07:17:41 -0400
-Received: from mout.kundenserver.de ([217.72.192.73]:42443 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727576AbfEMLRl (ORCPT
+        id S1726568AbfEMWbp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 May 2019 18:31:45 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:44628 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726475AbfEMWbp (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 May 2019 07:17:41 -0400
-Received: from [192.168.178.187] ([109.104.33.66]) by mrelayeu.kundenserver.de
- (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MQeDw-1h5i9a2mhy-00NghP; Mon, 13 May 2019 13:17:16 +0200
-Subject: Re: [PATCH] Staging: vc04_services: Fix a couple error codes
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Eric Anholt <eric@anholt.net>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Madhumitha Prabakaran <madhumithabiw@gmail.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Vatsala Narang <vatsalanarang@gmail.com>,
-        linux-rpi-kernel@lists.infradead.org, devel@driverdev.osuosl.org,
-        kernel-janitors@vger.kernel.org
-References: <20190513110718.GA15764@mwanda>
-From:   Stefan Wahren <stefan.wahren@i2se.com>
-Message-ID: <bdb03bff-f5e5-ef29-b009-ff9072347af1@i2se.com>
-Date:   Mon, 13 May 2019 13:17:14 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        Mon, 13 May 2019 18:31:45 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4DMSrYO015738;
+        Mon, 13 May 2019 22:31:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2018-07-02;
+ bh=EYCIybkCpMm3pCwu4oudEmfn7i5k7APcg1IEb3ENHxk=;
+ b=AYF6gBPqGPJh4ulnlyD6RkiDTqj5MuHvvFC5Wgh2VYalZ5ub1oYR6Rqrf1cZ46Z+CkKT
+ xWtbuhH2TjDJDFdr7bhwrl6YEaOsFuCs6o3oCuiwCTp3mA6vYiesmcADgbMggqLW+4qS
+ A6NTn0qcLzKriWW/MWgKO8/DX1cRRjVT8eAI662RNYZdxHzTYuqx69CaDDz3HzsCdDsi
+ 7FKl+QnjJvTFWxZ8z4SD09snE6KXkPw5mx/P3Abp1ezo1EtDZQE9YXO+0WQA8epmPWzE
+ TwkYtwu/+alm3IkzLIQdgqOEKwJGOsteMils2+wJf07eJW2+oXzFZ2n1192tAmcT5w2K Kw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 2sdkwdjath-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 13 May 2019 22:31:34 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4DMVGAq033012;
+        Mon, 13 May 2019 22:31:33 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 2sdmear9qg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 13 May 2019 22:31:33 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x4DMVWLd015595;
+        Mon, 13 May 2019 22:31:32 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 13 May 2019 15:31:32 -0700
+To:     Yue Haibing <yuehaibing@huawei.com>
+Cc:     <QLogic-Storage-Upstream@cavium.com>, <jejb@linux.ibm.com>,
+        <martin.petersen@oracle.com>, <mojha@codeaurora.org>,
+        <skashyap@marvell.com>, <linux-kernel@vger.kernel.org>,
+        <linux-scsi@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] scsi: qedi: remove memset/memcpy to nfunc and use func instead
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20190412094829.15868-1-colin.king@canonical.com>
+        <20190420040554.41888-1-yuehaibing@huawei.com>
+Date:   Mon, 13 May 2019 18:31:29 -0400
+In-Reply-To: <20190420040554.41888-1-yuehaibing@huawei.com> (Yue Haibing's
+        message of "Sat, 20 Apr 2019 12:05:54 +0800")
+Message-ID: <yq1d0kmgf5q.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <20190513110718.GA15764@mwanda>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Provags-ID: V03:K1:XlFuzwWOnVsq1wd6nHfLT+dtsctEpFSezEGI+eHGIX5x5ev2B+B
- ra7ruB7gElDAeaEE3oKQFHcatM6N7IU6M6TETT/cudWLTGk8f9KgqvJFf/btzdb65TNWnBi
- KXl3F5105Gj/cw7XNMMBQ71PyPIoM2HoyyV5WwwO0olpHJUR53+Hv2Xx43l4Eyix/BD3GMu
- 8u295vMRatKCd2a4J4DBw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:cgkp6WuhVys=:l80pJeTc1O2wwW4YIOloHO
- vIsnPBr17j3pA3tpDaoKv5z0+sfuHsOBtM9IK5+sc0Q9+NT9UmdEAVlJkbC56PDmX5S4DWNQn
- LR59nwcQt9gQ22HGG27IYynJOtZgnIn2gS6CXR+Xir3Qz9LNvhtG5BWtYtnrtVG97s45SZ1lk
- O/P5SSCGadlnBan9r7LxzAEuYFO1QySZZhZoE5oJVAwDMUEqf/QtNQ4msoEBekT6ggkVFqqYj
- UiM8DHtZYI3u6vaW5rVZMIo+taitkFK/yxO3K1K3IYmzDXFf5runYFriel7AonEW9kPSJR8UG
- JqKV7SvxegNR1GbrLl6vLemWwL38xyWX6ItwLPPU3A0tODgm5MYLUHjCYJk3zp9NBDwGQyEdM
- 4UBSb4T/nqk5L7R0TTfc4YfVxxqt1z3B+fPsP2iI/MsJVgjw9s9U6EFR7+70kivVD4COauhoo
- 2qGtUVKaM3CAo3O/WklVanyDq/2pYaBKOO17Pj5MLkU7igQEvh6WBL9huPa9fp9rOJSAU+7lE
- SQ7Doi9E7DZmaX2Vyz+MKTYH6nE6z//+cD55l3+bFD9vR8BocRsSLr5zEHWFt6KEouenUtVdy
- oSEzewKAYEDc5mJDgN4wCskfZEVeKrra/2IfV9HHARShS0DwZlsVoJp4x/F1mhjkCaoqG2HRB
- Mr+6qj79sRP/8k3EIYGoUm0ScQXd4hidwU/giGEcLbUN5HGLvVkbox52X5kBx2KR7gyHf4seQ
- k3sbhZusMJhn/oh1o8fmdCG9vFyxPx1k2kxvSsMy8Y+RrA1o3jsphdHLW04=
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9256 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=692
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905130150
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9256 signatures=668686
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=744 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905130150
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 13.05.19 13:07, Dan Carpenter wrote:
-> These are accidentally returning positive EINVAL instead of negative
-> -EINVAL.  Some of the callers treat positive values as success.
+
+Yue,
+
+> KASAN report this:
 >
-> Fixes: 7b3ad5abf027 ("staging: Import the BCM2835 MMAL-based V4L2 camera driver.")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> BUG: KASAN: global-out-of-bounds in qedi_dbg_err+0xda/0x330 [qedi]
+> Read of size 31 at addr ffffffffc12b0ae0 by task syz-executor.0/2429
 
-Good catch
+Applied to 5.2/scsi-queue. Thanks!
 
-Acked-by: Stefan Wahren <stefan.wahren@i2se.com>
-
+-- 
+Martin K. Petersen	Oracle Linux Engineering

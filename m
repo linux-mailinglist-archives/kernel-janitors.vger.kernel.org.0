@@ -2,65 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 915661AE07
-	for <lists+kernel-janitors@lfdr.de>; Sun, 12 May 2019 22:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96E591B07D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 May 2019 08:49:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726900AbfELUG1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 12 May 2019 16:06:27 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:52180 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726664AbfELUG1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 12 May 2019 16:06:27 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id B0E0230821C0;
-        Sun, 12 May 2019 20:06:26 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-120-61.rdu2.redhat.com [10.10.120.61])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C646A19C65;
-        Sun, 12 May 2019 20:06:24 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-From:   David Howells <dhowells@redhat.com>
-In-Reply-To: <5CD8697B.6010004@bfs.de>
-References: <5CD8697B.6010004@bfs.de> <5CD844B0.5060206@bfs.de> <155764714099.24080.1233326575922058381.stgit@warthog.procyon.org.uk> <155764714872.24080.15171754166782593095.stgit@warthog.procyon.org.uk> <31808.1557684645@warthog.procyon.org.uk>
-To:     wharms@bfs.de
-Cc:     dhowells@redhat.com, colin.king@canonical.com, joe@perches.com,
-        jaltman@auristor.com, linux-afs@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] afs: Fix afs_xattr_get_yfs() to not try freeing an error value
+        id S1726841AbfEMGti (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 May 2019 02:49:38 -0400
+Received: from mout.kundenserver.de ([212.227.17.13]:49293 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725866AbfEMGti (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 13 May 2019 02:49:38 -0400
+Received: from [192.168.178.187] ([109.104.40.7]) by mrelayeu.kundenserver.de
+ (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MD9Kp-1hYdLQ1ZJ3-00985K; Mon, 13 May 2019 08:49:17 +0200
+Subject: Re: [PATCH] staging: vc04_services: bcm2835-camera: remove redundant
+ assignment to variable ret
+To:     Colin King <colin.king@canonical.com>,
+        Eric Anholt <eric@anholt.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, devel@driverdev.osuosl.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190511134813.5645-1-colin.king@canonical.com>
+From:   Stefan Wahren <stefan.wahren@i2se.com>
+Message-ID: <5fd5c89a-4bd0-1d2d-f027-819fe954bd5f@i2se.com>
+Date:   Mon, 13 May 2019 08:49:15 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <6818.1557691584.1@warthog.procyon.org.uk>
-Date:   Sun, 12 May 2019 21:06:24 +0100
-Message-ID: <6819.1557691584@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.47]); Sun, 12 May 2019 20:06:27 +0000 (UTC)
+In-Reply-To: <20190511134813.5645-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Provags-ID: V03:K1:6gjO/x7pdDWHJchMfTFoYpMrc2jCJwMLYflU4Gu8ajN8J46umg6
+ aMe2yCTYt5dfh5L90OffWgr+De4ZEbH7zWOzULis8Wg7jHu11WCzgZWtKNKPAptARDx0oJ0
+ onjJagH2RY6NH+NAetYiMMsie9qoyv3MvH4KUKzjZocbDIdCRjsjk1SFU/5wxaBPr4iNuWQ
+ hQtDghl6UxoBPf6cQUayg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ATE5Qe06IYI=:LutzhZvoFJqtjnVznCcyii
+ tuxoWieuRi4pbG6k9Au0IJ9Ub5XgOXfj1MY0QsBkBbMXSbDvguUogyLLnjeSwNGOsWeOMjvSM
+ 8AkIDckWw+Udpaq5coHqFCoxBKcqTR7tymRibv5jN5rdQTe4mOvO6FD6Cxvt5xk9taq/JjZJn
+ jrCvrFs1sK6T9EdG8v0Adu8/TbKi8+UV9AvAIDXtJsnDHMeen1p5PYYLP3xRp86bo2osT0NzL
+ gjEeHhxxREkPSAG3zyCYMeiMMgdOtvFpoiT6gStg5XSWBLCinF8NVQh91n/7yl/bddj2JjWGI
+ 8fmMZFsL4MKtdLf4SBPlvPfx26E8QaGGPnL5CVeqqT8v7UsY2PpUyh05QtzsXlem2TNnGYdtH
+ /b7eub9w1KSlYIAhLVUN41vJBSQGjgKWIgUav2Aim1M4Dw7uND/9bidkmVIKu3A3z4lY3OQoZ
+ rDIu0sAWbt8ZzTOf3H2ERZPU0gDkDtxPV602BDNE2JIIIdO0+iThd7fQntiBQXFljbxxLj6ZY
+ SdEZ1f6CfX5ji1ZM3gHrlI/hMwZXuB+NOPfSOzXYSAgLOPhbU2wXA6d5Vw+g5A4k+zvp79plc
+ ZilfIzGQj5RS7eD1od8LSX00t9D0pz+yL1Ue+1Xvs/ALaEkzKRnnV/oo6RcUd4VeZ6MvUlMiD
+ 1akkc4W8Sn/78m4OlWg088rvmNW8BJ9j+uUosZe0QQWCqFvYXJ9YTIICv0weU9AAR/pn8B25i
+ R7N7C825vhSBDGmX7QLdXGT7S6Vx3XH2oT5Ig3b8K9XyfNS5TXKSbguR/3Y=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-walter harms <wharms@bfs.de> wrote:
-
-> Sorry, you misunderstood me, my fault, i did not see that size is unsigned.
-> NTL i do not think size=0 is useful.
-
-Allow me to quote from the getxattr manpage:
-
-       If size is specified as zero, these calls return the  current  size  of
-       the  named extended attribute (and leave value unchanged).  This can be
-       used to determine the size of the buffer that should be supplied  in  a
-       subsequent  call.   [...]
-
-> while you are there:
->   flags |= YFS_ACL_WANT_ACL is always flags = YFS_ACL_WANT_ACL;
-> since flags is 0 at this point.
-> IMHO that sould be moved to the strcmp() section.
-
-Why?  It makes the strcmp() section more complicated and means I now either
-have to cache flags in a variable or do the allocation of yacl first.
-
-David
+On 11.05.19 15:48, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The variable ret is being initialized however this is never read and later
+> it is being reassigned to a new value. The initialization is redundant and
+> hence can be removed.
+>
+> Addresses-Coverity: ("Unused Value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Acked-by: Stefan Wahren <stefan.wahren@i2se.com>

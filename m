@@ -2,158 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C50E31C31C
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 May 2019 08:16:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E51571C380
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 May 2019 08:57:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726246AbfENGQI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 May 2019 02:16:08 -0400
-Received: from paleale.coelho.fi ([176.9.41.70]:54238 "EHLO
-        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726201AbfENGQH (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 May 2019 02:16:07 -0400
-X-Greylist: delayed 2204 seconds by postgrey-1.27 at vger.kernel.org; Tue, 14 May 2019 02:16:07 EDT
-Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
-        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <luca@coelho.fi>)
-        id 1hQQ9l-0007fb-NA; Tue, 14 May 2019 08:39:17 +0300
-Message-ID: <d02c4f44024be655cc939490e32442e5a23e5cb0.camel@coelho.fi>
-Subject: Re: [PATCH] iwlwifi: remove some unnecessary NULL checks
-From:   Luca Coelho <luca@coelho.fi>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Cc:     Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Naftali Goldstein <naftali.goldstein@intel.com>,
-        Sara Sharon <sara.sharon@intel.com>,
-        Shaul Triebitz <shaul.triebitz@intel.com>,
-        Mordechay Goodstein <mordechay.goodstein@intel.com>,
-        Liad Kaufman <liad.kaufman@intel.com>,
-        Gregory Greenman <gregory.greenman@intel.com>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-Date:   Tue, 14 May 2019 08:39:16 +0300
-In-Reply-To: <20190506125409.GC13799@mwanda>
-References: <20190506125409.GC13799@mwanda>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5-1 
+        id S1726481AbfENG5O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 May 2019 02:57:14 -0400
+Received: from mga04.intel.com ([192.55.52.120]:58531 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726314AbfENG5O (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 14 May 2019 02:57:14 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 May 2019 23:57:13 -0700
+X-ExtLoop1: 1
+Received: from zhen-hp.sh.intel.com (HELO zhen-hp) ([10.239.13.116])
+  by orsmga001.jf.intel.com with ESMTP; 13 May 2019 23:57:10 -0700
+Date:   Tue, 14 May 2019 14:56:26 +0800
+From:   Zhenyu Wang <zhenyuw@linux.intel.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Zhenyu Wang <zhenyuw@linux.intel.com>,
+        Aleksei Gimbitskii <aleksei.gimbitskii@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        intel-gfx@lists.freedesktop.org,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        kernel-janitors@vger.kernel.org,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        intel-gvt-dev@lists.freedesktop.org,
+        Zhi Wang <zhi.a.wang@intel.com>
+Subject: Re: [PATCH] drm/i915/gvt: Fix an error code in
+ ppgtt_populate_spt_by_guest_entry()
+Message-ID: <20190514065626.GK12913@zhen-hp.sh.intel.com>
+Reply-To: Zhenyu Wang <zhenyuw@linux.intel.com>
+References: <20190513092244.GA12077@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="/Q1T9Q8JmUrFqdou"
+Content-Disposition: inline
+In-Reply-To: <20190513092244.GA12077@mwanda>
+User-Agent: Mutt/1.10.0 (2018-05-17)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 2019-05-06 at 15:54 +0300, Dan Carpenter wrote:
-> These pointers are an offset into the "sta" struct.  They're assigned
-> like this:
-> 
-> 	const struct ieee80211_sta_vht_cap *vht_cap = &sta->vht_cap;
-> 
-> They're not the first member of the struct (->supp_rates[] is first) so
-> they can't be NULL.
-> 
+
+--/Q1T9Q8JmUrFqdou
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On 2019.05.13 12:22:44 +0300, Dan Carpenter wrote:
+> "ret" is uninitialized on this path but it should be -EINVAL.
+>=20
+> Fixes: 930c8dfea4b8 ("drm/i915/gvt: Check if get_next_pt_type() always re=
+turns a valid value")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  .../net/wireless/intel/iwlwifi/mvm/rs-fw.c    | 23 +++++++++----------
->  1 file changed, 11 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-> index 659e21b2d4e7..b6fb670d249c 100644
-> --- a/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/rs-fw.c
-> @@ -101,7 +101,7 @@ static u8 rs_fw_sgi_cw_support(struct ieee80211_sta *sta)
->  	struct ieee80211_sta_he_cap *he_cap = &sta->he_cap;
->  	u8 supp = 0;
->  
-> -	if (he_cap && he_cap->has_he)
-> +	if (he_cap->has_he)
->  		return 0;
->  
->  	if (ht_cap->cap & IEEE80211_HT_CAP_SGI_20)
-> @@ -123,12 +123,12 @@ static u16 rs_fw_get_config_flags(struct iwl_mvm *mvm,
->  	struct ieee80211_sta_ht_cap *ht_cap = &sta->ht_cap;
->  	struct ieee80211_sta_vht_cap *vht_cap = &sta->vht_cap;
->  	struct ieee80211_sta_he_cap *he_cap = &sta->he_cap;
-> -	bool vht_ena = vht_cap && vht_cap->vht_supported;
-> +	bool vht_ena = vht_cap->vht_supported;
->  	u16 flags = 0;
->  
->  	if (mvm->cfg->ht_params->stbc &&
->  	    (num_of_ant(iwl_mvm_get_valid_tx_ant(mvm)) > 1)) {
-> -		if (he_cap && he_cap->has_he) {
-> +		if (he_cap->has_he) {
->  			if (he_cap->he_cap_elem.phy_cap_info[2] &
->  			    IEEE80211_HE_PHY_CAP2_STBC_RX_UNDER_80MHZ)
->  				flags |= IWL_TLC_MNG_CFG_FLAGS_STBC_MSK;
-> @@ -136,15 +136,14 @@ static u16 rs_fw_get_config_flags(struct iwl_mvm *mvm,
->  			if (he_cap->he_cap_elem.phy_cap_info[7] &
->  			    IEEE80211_HE_PHY_CAP7_STBC_RX_ABOVE_80MHZ)
->  				flags |= IWL_TLC_MNG_CFG_FLAGS_HE_STBC_160MHZ_MSK;
-> -		} else if ((ht_cap &&
-> -			    (ht_cap->cap & IEEE80211_HT_CAP_RX_STBC)) ||
-> +		} else if ((ht_cap->cap & IEEE80211_HT_CAP_RX_STBC) ||
->  			   (vht_ena &&
->  			    (vht_cap->cap & IEEE80211_VHT_CAP_RXSTBC_MASK)))
->  			flags |= IWL_TLC_MNG_CFG_FLAGS_STBC_MSK;
->  	}
->  
->  	if (mvm->cfg->ht_params->ldpc &&
-> -	    ((ht_cap && (ht_cap->cap & IEEE80211_HT_CAP_LDPC_CODING)) ||
-> +	    ((ht_cap->cap & IEEE80211_HT_CAP_LDPC_CODING) ||
->  	     (vht_ena && (vht_cap->cap & IEEE80211_VHT_CAP_RXLDPC))))
->  		flags |= IWL_TLC_MNG_CFG_FLAGS_LDPC_MSK;
->  
-> @@ -154,7 +153,7 @@ static u16 rs_fw_get_config_flags(struct iwl_mvm *mvm,
->  	     IEEE80211_HE_PHY_CAP1_LDPC_CODING_IN_PAYLOAD))
->  		flags &= ~IWL_TLC_MNG_CFG_FLAGS_LDPC_MSK;
->  
-> -	if (he_cap && he_cap->has_he &&
-> +	if (he_cap->has_he &&
->  	    (he_cap->he_cap_elem.phy_cap_info[3] &
->  	     IEEE80211_HE_PHY_CAP3_DCM_MAX_CONST_RX_MASK))
->  		flags |= IWL_TLC_MNG_CFG_FLAGS_HE_DCM_NSS_1_MSK;
-> @@ -293,13 +292,13 @@ static void rs_fw_set_supp_rates(struct ieee80211_sta *sta,
->  	cmd->mode = IWL_TLC_MNG_MODE_NON_HT;
->  
->  	/* HT/VHT rates */
-> -	if (he_cap && he_cap->has_he) {
-> +	if (he_cap->has_he) {
->  		cmd->mode = IWL_TLC_MNG_MODE_HE;
->  		rs_fw_he_set_enabled_rates(sta, sband, cmd);
-> -	} else if (vht_cap && vht_cap->vht_supported) {
-> +	} else if (vht_cap->vht_supported) {
->  		cmd->mode = IWL_TLC_MNG_MODE_VHT;
->  		rs_fw_vht_set_enabled_rates(sta, vht_cap, cmd);
-> -	} else if (ht_cap && ht_cap->ht_supported) {
-> +	} else if (ht_cap->ht_supported) {
->  		cmd->mode = IWL_TLC_MNG_MODE_HT;
->  		cmd->ht_rates[0][0] = cpu_to_le16(ht_cap->mcs.rx_mask[0]);
->  		cmd->ht_rates[1][0] = cpu_to_le16(ht_cap->mcs.rx_mask[1]);
-> @@ -381,7 +380,7 @@ static u16 rs_fw_get_max_amsdu_len(struct ieee80211_sta *sta)
->  	const struct ieee80211_sta_vht_cap *vht_cap = &sta->vht_cap;
->  	const struct ieee80211_sta_ht_cap *ht_cap = &sta->ht_cap;
->  
-> -	if (vht_cap && vht_cap->vht_supported) {
-> +	if (vht_cap->vht_supported) {
->  		switch (vht_cap->cap & IEEE80211_VHT_CAP_MAX_MPDU_MASK) {
->  		case IEEE80211_VHT_CAP_MAX_MPDU_LENGTH_11454:
->  			return IEEE80211_MAX_MPDU_LEN_VHT_11454;
-> @@ -391,7 +390,7 @@ static u16 rs_fw_get_max_amsdu_len(struct ieee80211_sta *sta)
->  			return IEEE80211_MAX_MPDU_LEN_VHT_3895;
->  	}
->  
-> -	} else if (ht_cap && ht_cap->ht_supported) {
-> +	} else if (ht_cap->ht_supported) {
->  		if (ht_cap->cap & IEEE80211_HT_CAP_MAX_AMSDU)
->  			/*
->  			 * agg is offloaded so we need to assume that agg
+>  drivers/gpu/drm/i915/gvt/gtt.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/gpu/drm/i915/gvt/gtt.c b/drivers/gpu/drm/i915/gvt/gt=
+t.c
+> index 08c74e65836b..244ad1729764 100644
+> --- a/drivers/gpu/drm/i915/gvt/gtt.c
+> +++ b/drivers/gpu/drm/i915/gvt/gtt.c
+> @@ -1076,8 +1076,10 @@ static struct intel_vgpu_ppgtt_spt *ppgtt_populate=
+_spt_by_guest_entry(
+>  	} else {
+>  		int type =3D get_next_pt_type(we->type);
+> =20
+> -		if (!gtt_type_is_pt(type))
+> +		if (!gtt_type_is_pt(type)) {
+> +			ret =3D -EINVAL;
+>  			goto err;
+> +		}
+> =20
+>  		spt =3D ppgtt_alloc_spt_gfn(vgpu, type, ops->get_pfn(we), ips);
+>  		if (IS_ERR(spt)) {
+> --=20
 
-Thanks! Applied to our internal tree and it will reach the mainline
-following our normal upstreaming process.
+Applied this, thanks!
 
---
-Cheers,
-Luca.
+--=20
+Open Source Technology Center, Intel ltd.
 
+$gpg --keyserver wwwkeys.pgp.net --recv-keys 4D781827
+
+--/Q1T9Q8JmUrFqdou
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EARECAB0WIQTXuabgHDW6LPt9CICxBBozTXgYJwUCXNpmmgAKCRCxBBozTXgY
+J8PrAJ9hmMJUVJA/WcxFVYDp5dmrCIWThACfXEUodqTtaZAUTakJt7C3vBzTioI=
+=FjA+
+-----END PGP SIGNATURE-----
+
+--/Q1T9Q8JmUrFqdou--

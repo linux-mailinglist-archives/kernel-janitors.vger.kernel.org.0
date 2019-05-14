@@ -2,100 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B89891C953
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 May 2019 15:23:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 121B71CDA5
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 May 2019 19:12:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726260AbfENNXA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 May 2019 09:23:00 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:38670 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726246AbfENNW7 (ORCPT
+        id S1726652AbfENRMo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 May 2019 13:12:44 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:43428 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726646AbfENRMo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 May 2019 09:22:59 -0400
-Received: by mail-wr1-f67.google.com with SMTP id v11so1376147wru.5
-        for <kernel-janitors@vger.kernel.org>; Tue, 14 May 2019 06:22:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=uFHSJsNByyay2Kmq9r271hEwxa2SlTHGMXGEWSzHBMI=;
-        b=CP0GdvubXlXKtJW0sqMGURMBcFN+i4Pn1UYnIYngMpv9D+v7yjvkB/fDShgJ9qBrdn
-         pEjLLCNEDSsp8xlGC1pddscaT0RepeU2d1PUlaOD+lr2+7lBbKOeFttuhJrMREMyCsk2
-         MrQy1LmHp4mLU3fGNe1CEkhRlcIFLz0m4NcapkF2Vz36N3SdcY1N/ajGaKHfBDFVARds
-         CWncsnNPMtQakTNjeo9FqBr7AvOfqO5ykcQ4cqZrC2R80gyXerXD9y32k/NbxNpqbRhR
-         Y6oB+8HA1uBVV4TYrjDzLt9HEf6efHfJvYaSLHxIuvSjdWsbe6gIxhRrDeLEd0Lz+ups
-         B+qg==
-X-Gm-Message-State: APjAAAVg6sTBRVmE2J640MvuvL+Ue9kCflPf4ETjtjol3CE4zGbcCzFJ
-        X6hlf/dA3Dm5h3aAqDkQTW9/VylG9jc=
-X-Google-Smtp-Source: APXvYqzLA7DdgWaapFTZmwqb7mHH3YTIXbyeudVVfoFPH8Bo3tN3uBaZw6hz9LJ9L3lpSlUDwHsiVA==
-X-Received: by 2002:adf:ce90:: with SMTP id r16mr22028791wrn.156.1557840177629;
-        Tue, 14 May 2019 06:22:57 -0700 (PDT)
-Received: from vitty.brq.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id s22sm4289095wmh.45.2019.05.14.06.22.56
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 14 May 2019 06:22:56 -0700 (PDT)
-From:   Vitaly Kuznetsov <vkuznets@redhat.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Paolo Bonzini <pbonzini@redhat.com>
-Cc:     Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] KVM: selftests: Fix a condition in test_hv_cpuid()
-In-Reply-To: <20190514103451.GA1694@mwanda>
-References: <20190514103451.GA1694@mwanda>
-Date:   Tue, 14 May 2019 09:22:56 -0400
-Message-ID: <87lfz9npan.fsf@vitty.brq.redhat.com>
+        Tue, 14 May 2019 13:12:44 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4EGwlTx140052;
+        Tue, 14 May 2019 17:12:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2018-07-02;
+ bh=/0OET/cQliuWWpQppXkzvcVEWQheyPLedxuG0KwhB8E=;
+ b=F3olIyvAr2UG5U66ifcnnU/O5AbRFeH1iPbuDnzWVG1lROiJrEJ+9lS+ANbQvm7fqNC9
+ ygA+91moImm8GsUH+7jeEvbvDIMfb8TTHPvtAjIg0rMFzWuVegFbmJsRd3DM8KA80V0r
+ T9PIARuMrS/TNlgCQq7JQemlH8WJiZtP8b/atfrNduG4G6MuUNiAdOP/ojYpY1QGdNky
+ 8ggHRRNWwQBMQHF6KQuZxSIAvYVahJ+6t5dkxzbaMxbAkAGZF9pt6DDMV0clcyczRUrY
+ SC8XdQhEOYj537Qptu0H1sbaTfHWJb/nW39qeuQsyaFJFGl9FYykimrTy1xBu4p+e73Z NQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2sdq1qfhx6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 14 May 2019 17:12:37 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4EHBJ92178859;
+        Tue, 14 May 2019 17:12:37 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2sdmeb72c0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 14 May 2019 17:12:36 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x4EHCWOj016898;
+        Tue, 14 May 2019 17:12:33 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 14 May 2019 10:12:32 -0700
+To:     Colin King <colin.king@canonical.com>
+Cc:     QLogic-Storage-Upstream@qlogic.com,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] scsi: bnx2fc: fix incorrect cast to u64 on shift operation
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20190504164829.26631-1-colin.king@canonical.com>
+Date:   Tue, 14 May 2019 13:12:30 -0400
+In-Reply-To: <20190504164829.26631-1-colin.king@canonical.com> (Colin King's
+        message of "Sat, 4 May 2019 17:48:29 +0100")
+Message-ID: <yq18sv9dkox.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9257 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=771
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905140118
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9257 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=822 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905140118
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> writes:
 
-> The code is trying to check that all the padding is zeroed out and it
-> does this:
->
->     entry->padding[0] == entry->padding[1] == entry->padding[2] == 0
->
-> Assume everything is zeroed correctly, then the first comparison is
-> true, the next comparison is false and false is equal to zero so the
-> overall condition is true.  This bug doesn't affect run time very
-> badly, but the code should instead just check that all three paddings
-> are zero individually.
->
-> Also the error message was copy and pasted from an earlier error and it
-> wasn't correct.
->
-> Fixes: 7edcb7343327 ("KVM: selftests: Add hyperv_cpuid test")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  tools/testing/selftests/kvm/x86_64/hyperv_cpuid.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/tools/testing/selftests/kvm/x86_64/hyperv_cpuid.c b/tools/testing/selftests/kvm/x86_64/hyperv_cpuid.c
-> index 9a21e912097c..63b9fc3fdfbe 100644
-> --- a/tools/testing/selftests/kvm/x86_64/hyperv_cpuid.c
-> +++ b/tools/testing/selftests/kvm/x86_64/hyperv_cpuid.c
-> @@ -58,9 +58,8 @@ static void test_hv_cpuid(struct kvm_cpuid2
-> *hv_cpuid_entries,
+Colin,
 
-we also seem to check for 'entry->index == 0' twice here.
+> Currently an int is being shifted and the result is being cast to a
+> u64 which leads to undefined behaviour if the shift is more than 31
+> bits. Fix this by casting the integer value 1 to u64 before the shift
+> operation.
 
->  		TEST_ASSERT(entry->flags == 0,
->  			    ".flags field should be zero");
->  
-> -		TEST_ASSERT(entry->padding[0] == entry->padding[1]
-> -			    == entry->padding[2] == 0,
-> -			    ".index field should be zero");
-> +		TEST_ASSERT(!entry->padding[0] && !entry->padding[1] &&
-> +			    !entry->padding[2], "padding should be zero");
->  
->  		/*
->  		 * If needed for debug:
-
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Applied to 5.2/scsi-fixes, thanks!
 
 -- 
-Vitaly
+Martin K. Petersen	Oracle Linux Engineering

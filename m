@@ -2,87 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 121B71CDA5
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 May 2019 19:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 062AE1D0F0
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 May 2019 22:57:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726652AbfENRMo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 May 2019 13:12:44 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:43428 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726646AbfENRMo (ORCPT
+        id S1726174AbfENU5H (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 May 2019 16:57:07 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53122 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726148AbfENU5H (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 May 2019 13:12:44 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4EGwlTx140052;
-        Tue, 14 May 2019 17:12:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2018-07-02;
- bh=/0OET/cQliuWWpQppXkzvcVEWQheyPLedxuG0KwhB8E=;
- b=F3olIyvAr2UG5U66ifcnnU/O5AbRFeH1iPbuDnzWVG1lROiJrEJ+9lS+ANbQvm7fqNC9
- ygA+91moImm8GsUH+7jeEvbvDIMfb8TTHPvtAjIg0rMFzWuVegFbmJsRd3DM8KA80V0r
- T9PIARuMrS/TNlgCQq7JQemlH8WJiZtP8b/atfrNduG4G6MuUNiAdOP/ojYpY1QGdNky
- 8ggHRRNWwQBMQHF6KQuZxSIAvYVahJ+6t5dkxzbaMxbAkAGZF9pt6DDMV0clcyczRUrY
- SC8XdQhEOYj537Qptu0H1sbaTfHWJb/nW39qeuQsyaFJFGl9FYykimrTy1xBu4p+e73Z NQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 2sdq1qfhx6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 14 May 2019 17:12:37 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4EHBJ92178859;
-        Tue, 14 May 2019 17:12:37 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 2sdmeb72c0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 14 May 2019 17:12:36 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x4EHCWOj016898;
-        Tue, 14 May 2019 17:12:33 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 14 May 2019 10:12:32 -0700
-To:     Colin King <colin.king@canonical.com>
-Cc:     QLogic-Storage-Upstream@qlogic.com,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] scsi: bnx2fc: fix incorrect cast to u64 on shift operation
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20190504164829.26631-1-colin.king@canonical.com>
-Date:   Tue, 14 May 2019 13:12:30 -0400
-In-Reply-To: <20190504164829.26631-1-colin.king@canonical.com> (Colin King's
-        message of "Sat, 4 May 2019 17:48:29 +0100")
-Message-ID: <yq18sv9dkox.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        Tue, 14 May 2019 16:57:07 -0400
+Received: from cpc129250-craw9-2-0-cust139.know.cable.virginm.net ([82.43.126.140] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hQeTu-0002fC-Bd; Tue, 14 May 2019 20:57:02 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Ben Skeggs <bskeggs@redhat.com>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/nouveau/bios/init: fix spelling mistake "CONDITON" -> "CONDITION"
+Date:   Tue, 14 May 2019 21:57:01 +0100
+Message-Id: <20190514205701.5750-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9257 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=771
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1905140118
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9257 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=822 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905140118
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
-Colin,
+There is a spelling mistake in a warning message. Fix it.
 
-> Currently an int is being shifted and the result is being cast to a
-> u64 which leads to undefined behaviour if the shift is more than 31
-> bits. Fix this by casting the integer value 1 to u64 before the shift
-> operation.
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Applied to 5.2/scsi-fixes, thanks!
-
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c
+index ec0e9f7224b5..3f4f27d191ae 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c
+@@ -834,7 +834,7 @@ init_generic_condition(struct nvbios_init *init)
+ 		init_exec_set(init, false);
+ 		break;
+ 	default:
+-		warn("INIT_GENERIC_CONDITON: unknown 0x%02x\n", cond);
++		warn("INIT_GENERIC_CONDITION: unknown 0x%02x\n", cond);
+ 		init->offset += size;
+ 		break;
+ 	}
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.20.1
+

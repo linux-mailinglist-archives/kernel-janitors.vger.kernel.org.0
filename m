@@ -2,134 +2,153 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B05FF1EB7F
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 May 2019 11:53:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4EF61EC40
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 May 2019 12:45:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726319AbfEOJxh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 May 2019 05:53:37 -0400
-Received: from mail-eopbgr820085.outbound.protection.outlook.com ([40.107.82.85]:44000
-        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725871AbfEOJxh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 May 2019 05:53:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector1-amd-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Or52atg8YJnOTTBGFPQiFNxPXaFfve+O3QanFTK33VE=;
- b=LPGA0H2QgVlutUBy48zTaj3to2bhXS8SoQr3yl9BWkj7wTqZIUt+CTwlUnpqzMK4fiprmSuvXd9895dVavsMEhvVWFaTcYAQtDIut5MaRSMHASHtFzHpGDzdjenyKkhrqa0jpvfBaS/hFsZ6XTx8EFHdBMjs7WAF48qwhfTHL4g=
-Received: from MN2PR12MB3309.namprd12.prod.outlook.com (20.179.83.157) by
- MN2PR12MB3647.namprd12.prod.outlook.com (20.178.241.17) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1878.25; Wed, 15 May 2019 09:53:34 +0000
-Received: from MN2PR12MB3309.namprd12.prod.outlook.com
- ([fe80::2918:1f51:2768:efc0]) by MN2PR12MB3309.namprd12.prod.outlook.com
- ([fe80::2918:1f51:2768:efc0%3]) with mapi id 15.20.1878.024; Wed, 15 May 2019
- 09:53:34 +0000
-From:   "Huang, Ray" <Ray.Huang@amd.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Wang, Kevin(Yang)" <Kevin1.Wang@amd.com>
-CC:     "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "Gao, Likun" <Likun.Gao@amd.com>, "Gui, Jack" <Jack.Gui@amd.com>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: RE: [PATCH] drm/amd/powerplay: fix locking in
- smu_feature_set_supported()
-Thread-Topic: [PATCH] drm/amd/powerplay: fix locking in
- smu_feature_set_supported()
-Thread-Index: AQHVCwPOpB/hJLSRrUiLtn9T08l916Zr8bjw
-Date:   Wed, 15 May 2019 09:53:33 +0000
-Message-ID: <MN2PR12MB33099BF7946484E6AE1F75F5EC090@MN2PR12MB3309.namprd12.prod.outlook.com>
-References: <20190515095130.GF3409@mwanda>
-In-Reply-To: <20190515095130.GF3409@mwanda>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Ray.Huang@amd.com; 
-x-originating-ip: [180.167.199.189]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: f7dcbf1f-96d1-4da5-9e6a-08d6d91b31b5
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);SRVR:MN2PR12MB3647;
-x-ms-traffictypediagnostic: MN2PR12MB3647:
-x-microsoft-antispam-prvs: <MN2PR12MB364730FBD7903C81C0FF29F6EC090@MN2PR12MB3647.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6430;
-x-forefront-prvs: 0038DE95A2
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(39860400002)(346002)(366004)(396003)(136003)(376002)(189003)(199004)(13464003)(74316002)(25786009)(478600001)(6246003)(68736007)(53936002)(86362001)(99286004)(6636002)(66066001)(71200400001)(71190400001)(54906003)(72206003)(305945005)(110136005)(7736002)(14444005)(76176011)(256004)(7696005)(52536014)(446003)(26005)(186003)(11346002)(14454004)(486006)(476003)(66476007)(66556008)(64756008)(66446008)(66946007)(73956011)(8676002)(55016002)(81156014)(8936002)(316002)(6506007)(102836004)(53546011)(9686003)(81166006)(5660300002)(229853002)(4326008)(6116002)(3846002)(2906002)(76116006)(33656002)(6436002);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR12MB3647;H:MN2PR12MB3309.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: amd.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: tak69VBt5fKPVC92dIaWuSQRgSJKy8YsWB6/0DRZ6DgBY0ywYlTM0ISM2t5HVHda6wWqId7foMbQPWBQAllHmwk9mUFp5q/XJv4r0By9BJ/ScxUYT6S8p83iSfEh3U9J1IlU0UMJMOzLVMQFCifaOP1ELb1b8Oxwurn4vXEiLWe16S/NOzSLQCckuY2ugnqKpaEfrNus4SHZjaCwWrtqlwcMgoF3daaH1xjoNRy7b8JTlXb8j73K9lClObfpfQYgGhgM4IaWEAUVdGT7pdXq9YS3dMN2Fp7G5Nr2hG2zLvJP1CsCbDMN0mrOpnL89gqKh3NRknixGDYQW2HsgRXpiYYiaSPRV4YXq6p5ujYq9SLow3+OCQppi5+bxNyeSwGIrX1Re+N64CCoeu7HrYZgph6p0qJLk/Eh4Ga5wCMt9lE=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1726260AbfEOKpY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 May 2019 06:45:24 -0400
+Received: from mga05.intel.com ([192.55.52.43]:2882 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725974AbfEOKpY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 15 May 2019 06:45:24 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 May 2019 03:45:24 -0700
+X-ExtLoop1: 1
+Received: from rajeev-desktop.iind.intel.com (HELO intel.com) ([10.223.25.113])
+  by orsmga001.jf.intel.com with ESMTP; 15 May 2019 03:45:22 -0700
+Date:   Wed, 15 May 2019 16:14:59 +0530
+From:   Rushikesh S Kadam <rushikesh.s.kadam@intel.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Guenter Roeck <groeck@chromium.org>,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [bug report] platform/chrome: Add ChromeOS EC ISHTP driver
+Message-ID: <20190515104459.GA31364@intel.com>
+References: <20190514210846.GA6848@mwanda>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f7dcbf1f-96d1-4da5-9e6a-08d6d91b31b5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 May 2019 09:53:33.9403
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB3647
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190514210846.GA6848@mwanda>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> -----Original Message-----
-> From: Dan Carpenter <dan.carpenter@oracle.com>
-> Sent: Wednesday, May 15, 2019 5:52 PM
-> To: Deucher, Alexander <Alexander.Deucher@amd.com>; Wang, Kevin(Yang)
-> <Kevin1.Wang@amd.com>
-> Cc: Koenig, Christian <Christian.Koenig@amd.com>; Zhou, David(ChunMing)
-> <David1.Zhou@amd.com>; David Airlie <airlied@linux.ie>; Daniel Vetter
-> <daniel@ffwll.ch>; Huang, Ray <Ray.Huang@amd.com>; Gao, Likun
-> <Likun.Gao@amd.com>; Gui, Jack <Jack.Gui@amd.com>; amd-
-> gfx@lists.freedesktop.org; dri-devel@lists.freedesktop.org; linux-
-> kernel@vger.kernel.org; kernel-janitors@vger.kernel.org
-> Subject: [PATCH] drm/amd/powerplay: fix locking in
-> smu_feature_set_supported()
->=20
-> There is a typo so the code unlocks twice instead of taking the lock and =
-then
-> releasing it.
->=20
-> Fixes: f14a323db5b0 ("drm/amd/powerplay: implement update enabled
-> feature state to smc for smu11")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
->=20
+Hi Dan
 
-Thanks!
-Reviewed-by: Huang Rui <ray.huang@amd.com>
+On Wed, May 15, 2019 at 12:08:46AM +0300, Dan Carpenter wrote:
+> Hello Rushikesh S Kadam,
+> 
+> The patch 4f346361cf42: "platform/chrome: Add ChromeOS EC ISHTP
+> driver" from May 4, 2019, leads to the following static checker
+> warning:
+> 
+> drivers/platform/chrome/cros_ec_ishtp.c:527 cros_ec_pkt_xfer_ish()
+> warn: inconsistent returns 'read_sem:&init_lock'.
+>   Locked on:   line 475
+>                line 482
+>   Unlocked on: line 467
+>                line 527
+> 
+> drivers/platform/chrome/cros_ec_ishtp.c
+>    450  static int cros_ec_pkt_xfer_ish(struct cros_ec_device *ec_dev,
+>    451                                  struct cros_ec_command *msg)
+>    452  {
+>    453          int rv;
+>    454          struct ishtp_cl *cros_ish_cl = ec_dev->priv;
+>    455          struct ishtp_cl_data *client_data = ishtp_get_client_data(cros_ish_cl);
+>    456          struct device *dev = cl_data_to_dev(client_data);
+>    457          struct cros_ish_in_msg *in_msg = (struct cros_ish_in_msg *)ec_dev->din;
+>    458          struct cros_ish_out_msg *out_msg =
+>    459                  (struct cros_ish_out_msg *)ec_dev->dout;
+>    460          size_t in_size = sizeof(struct cros_ish_in_msg) + msg->insize;
+>    461          size_t out_size = sizeof(struct cros_ish_out_msg) + msg->outsize;
+>    462  
+>    463          /* Proceed only if reset-init is not in progress */
+>    464          if (!down_read_trylock(&init_lock)) {
+>    465                  dev_warn(dev,
+>    466                           "Host is not ready to send messages to ISH. Try again\n");
+>    467                  return -EAGAIN;
+>    468          }
+>    469  
+>    470          /* Sanity checks */
+>    471          if (in_size > ec_dev->din_size) {
+>    472                  dev_err(dev,
+>    473                          "Incoming payload size %zu is too large for ec_dev->din_size %d\n",
+>    474                          in_size, ec_dev->din_size);
+>    475                  return -EMSGSIZE;
+>                         ^^^^^^^^^^^^^^^^^
+>    476          }
+>    477  
+>    478          if (out_size > ec_dev->dout_size) {
+>    479                  dev_err(dev,
+>    480                          "Outgoing payload size %zu is too large for ec_dev->dout_size %d\n",
+>    481                          out_size, ec_dev->dout_size);
+>    482                  return -EMSGSIZE;
+>                         ^^^^^^^^^^^^^^^^^
+> Could we move these sanity checks to before we take the lock?  Otherwise
+> we need to goto end_error;
 
-Will apply it.
+Thanks for reporting. I submitted updated patch
+with fix here https://lkml.org/lkml/2019/5/15/263
 
----
->  drivers/gpu/drm/amd/powerplay/amdgpu_smu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
-> b/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
-> index 52d919a8b70a..85ac29af5363 100644
-> --- a/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
-> +++ b/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
-> @@ -310,7 +310,7 @@ int smu_feature_set_supported(struct smu_context
-> *smu, int feature_id,
->=20
->         WARN_ON(feature_id > feature->feature_num);
->=20
-> -       mutex_unlock(&feature->mutex);
-> +       mutex_lock(&feature->mutex);
->         if (enable)
->                 test_and_set_bit(feature_id, feature->supported);
->         else
-> --
-> 2.20.1
+Regards
+Rushikesh
 
+
+
+> 
+>    483          }
+>    484  
+>    485          /* Prepare the package to be sent over ISH TP */
+>    486          out_msg->hdr.channel = CROS_EC_COMMAND;
+>    487          out_msg->hdr.status = 0;
+>    488  
+>    489          ec_dev->dout += OUT_MSG_EC_REQUEST_PREAMBLE;
+>    490          cros_ec_prepare_tx(ec_dev, msg);
+>    491          ec_dev->dout -= OUT_MSG_EC_REQUEST_PREAMBLE;
+>    492  
+>    493          dev_dbg(dev,
+>    494                  "out_msg: struct_ver=0x%x checksum=0x%x command=0x%x command_ver=0x%x data_len=0x%x\n",
+>    495                  out_msg->ec_request.struct_version,
+>    496                  out_msg->ec_request.checksum,
+>    497                  out_msg->ec_request.command,
+>    498                  out_msg->ec_request.command_version,
+>    499                  out_msg->ec_request.data_len);
+>    500  
+>    501          /* Send command to ISH EC firmware and read response */
+>    502          rv = ish_send(client_data,
+>    503                        (u8 *)out_msg, out_size,
+>    504                        (u8 *)in_msg, in_size);
+>    505          if (rv < 0)
+>    506                  goto end_error;
+>    507  
+>    508          rv = prepare_cros_ec_rx(ec_dev, in_msg, msg);
+>    509          if (rv)
+>    510                  goto end_error;
+>    511  
+>    512          rv = in_msg->ec_response.data_len;
+>    513  
+>    514          dev_dbg(dev,
+>    515                  "in_msg: struct_ver=0x%x checksum=0x%x result=0x%x data_len=0x%x\n",
+>    516                  in_msg->ec_response.struct_version,
+>    517                  in_msg->ec_response.checksum,
+>    518                  in_msg->ec_response.result,
+>    519                  in_msg->ec_response.data_len);
+>    520  
+>    521  end_error:
+>    522          if (msg->command == EC_CMD_REBOOT_EC)
+>    523                  msleep(EC_REBOOT_DELAY_MS);
+>    524  
+>    525          up_read(&init_lock);
+>    526  
+>    527          return rv;
+>    528  }
+> 
+> regards,
+> dan carpenter
+
+-- 

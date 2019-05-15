@@ -2,96 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE3EC1F454
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 May 2019 14:26:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 718971F53F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 May 2019 15:14:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726790AbfEOM0s (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 May 2019 08:26:48 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:42918 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726441AbfEOM0r (ORCPT
+        id S1727370AbfEONOv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 May 2019 09:14:51 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:42842 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726752AbfEONOv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 May 2019 08:26:47 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 22E636072E; Wed, 15 May 2019 12:26:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1557923207;
-        bh=Jq8r59j8L9cuyE+iEkCCfN3oZ7FkZj2PtazceDgQIjs=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=oxW5omhHHyz7C9XvHRLXNw5dodUZ1FGR3SDDAHbzIJKj69TEsCuwCuMHEGRRbidUb
-         CUOWf9faIeT0AQAccSZ7dMzPTahYJiUB/x7YuaCjaO/ydYZM9j8n6k6FubPJ8uZj9z
-         0JvL4BuxqD+LREygXFYvQRobAgfA+W5EAS59ZADc=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from [10.204.79.15] (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: mojha@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 4DF336072E;
-        Wed, 15 May 2019 12:26:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1557923206;
-        bh=Jq8r59j8L9cuyE+iEkCCfN3oZ7FkZj2PtazceDgQIjs=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=MoPgbp/Xauv8laEhwNTlkhgZ2bVtQ1U1SDf8IfsQqY4VSnd2bSnTWIriAbPiMcu76
-         Ycm+5nIoOdpmSiqxx4RE6/feZYh8xgI++0BVVMCFl5oLbuHKYkyMwCFXbNkPxVokLa
-         pYJpINMcVfPd1N/SbBZv3QTsV0W3Efs1ckc6aIQ0=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 4DF336072E
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=mojha@codeaurora.org
-Subject: Re: [PATCH] drm/nouveau/bios/init: fix spelling mistake "CONDITON" ->
- "CONDITION"
-To:     Colin King <colin.king@canonical.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190514205701.5750-1-colin.king@canonical.com>
-From:   Mukesh Ojha <mojha@codeaurora.org>
-Message-ID: <c214275e-912b-9cec-d0c1-4eadd07a100e@codeaurora.org>
-Date:   Wed, 15 May 2019 17:56:40 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        Wed, 15 May 2019 09:14:51 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4FDEYE5098121;
+        Wed, 15 May 2019 13:14:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2018-07-02; bh=0DM8Zd/vrI5DngyCF4cDMV1bvR8ByAC+SJiy59iXGdU=;
+ b=UDJwuWe6GzN/hxoJ1yY3K3fVGNwGMX98k6CqjToCOyjDmC3VkKmt4TBVYbvtRso8DhbE
+ +H6cdxzNYPJ20RMvgbcuT9UYCitCTX3W2yzFmv28oS44ia0VA0bZdH1DuwiZ0dPhf9mY
+ 8BhwoQRhmrx+NE9aOef++YJRQZGZPSpgtzjgPYmHQzlvvCS8RUgedcVaRw20f3e0RCEi
+ gAjvDV3ZTm9kM324q9XGsSlRL3m7+82w+sBKXSRZ5Em69YrNqgrWzckR6BHCchFvQ3TU
+ 2Tt2pU7MT4JIqZEQjW/fIoc1EiJKeqRLhCSPJNpww/o/u0s6TlWztpbrNngOuylH8zaq WA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2130.oracle.com with ESMTP id 2sdkwdvvfm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 15 May 2019 13:14:45 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4FDDLY4079773;
+        Wed, 15 May 2019 13:14:45 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2sgk76ga31-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 15 May 2019 13:14:45 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x4FDEhBX017295;
+        Wed, 15 May 2019 13:14:43 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 15 May 2019 06:14:42 -0700
+Date:   Wed, 15 May 2019 16:14:34 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Sowjanya Komatineni <skomatineni@nvidia.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-mmc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH v2] mmc: tegra: Fix a warning message
+Message-ID: <20190515131434.GA18205@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20190514205701.5750-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAPDyKFpm9dB55aCUQkDHgyfcJdniNG9jCbdQ4ezYgQ=L8Rxfhw@mail.gmail.com>
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9257 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905150084
+X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9257 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905150085
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+The WARN_ON() macro takes a condition, not a warning message.  Really,
+this should probably be dev_warn_once().
 
-On 5/15/2019 2:27 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->
-> There is a spelling mistake in a warning message. Fix it.
->
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
+Fixes: ea8fc5953e8b ("mmc: tegra: update hw tuning process")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+v2: Use dev_warn_once()
 
-Cheers,
--Mukesh
+ drivers/mmc/host/sdhci-tegra.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> ---
->   drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c
-> index ec0e9f7224b5..3f4f27d191ae 100644
-> --- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c
-> +++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c
-> @@ -834,7 +834,7 @@ init_generic_condition(struct nvbios_init *init)
->   		init_exec_set(init, false);
->   		break;
->   	default:
-> -		warn("INIT_GENERIC_CONDITON: unknown 0x%02x\n", cond);
-> +		warn("INIT_GENERIC_CONDITION: unknown 0x%02x\n", cond);
->   		init->offset += size;
->   		break;
->   	}
+diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
+index f608417ae967..fc07970acaf5 100644
+--- a/drivers/mmc/host/sdhci-tegra.c
++++ b/drivers/mmc/host/sdhci-tegra.c
+@@ -865,7 +865,8 @@ static void tegra_sdhci_tap_correction(struct sdhci_host *host, u8 thd_up,
+ 	}
+ 
+ 	if (!first_fail) {
+-		WARN_ON("no edge detected, continue with hw tuned delay.\n");
++		dev_warn_once(mmc_dev(host->mmc),
++			      "no edge detected, continue with hw tuned delay.\n");
+ 	} else if (first_pass) {
+ 		/* set tap location at fixed tap relative to the first edge */
+ 		edge1 = first_fail_tap + (first_pass_tap - first_fail_tap) / 2;
+-- 
+2.20.1
+

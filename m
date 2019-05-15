@@ -2,102 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 718971F53F
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 May 2019 15:14:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 848661FBDE
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 May 2019 22:57:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727370AbfEONOv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 May 2019 09:14:51 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:42842 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726752AbfEONOv (ORCPT
+        id S1726410AbfEOU5l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 May 2019 16:57:41 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:55995 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726170AbfEOU5l (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 May 2019 09:14:51 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4FDEYE5098121;
-        Wed, 15 May 2019 13:14:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2018-07-02; bh=0DM8Zd/vrI5DngyCF4cDMV1bvR8ByAC+SJiy59iXGdU=;
- b=UDJwuWe6GzN/hxoJ1yY3K3fVGNwGMX98k6CqjToCOyjDmC3VkKmt4TBVYbvtRso8DhbE
- +H6cdxzNYPJ20RMvgbcuT9UYCitCTX3W2yzFmv28oS44ia0VA0bZdH1DuwiZ0dPhf9mY
- 8BhwoQRhmrx+NE9aOef++YJRQZGZPSpgtzjgPYmHQzlvvCS8RUgedcVaRw20f3e0RCEi
- gAjvDV3ZTm9kM324q9XGsSlRL3m7+82w+sBKXSRZ5Em69YrNqgrWzckR6BHCchFvQ3TU
- 2Tt2pU7MT4JIqZEQjW/fIoc1EiJKeqRLhCSPJNpww/o/u0s6TlWztpbrNngOuylH8zaq WA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2130.oracle.com with ESMTP id 2sdkwdvvfm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 15 May 2019 13:14:45 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4FDDLY4079773;
-        Wed, 15 May 2019 13:14:45 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 2sgk76ga31-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 15 May 2019 13:14:45 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x4FDEhBX017295;
-        Wed, 15 May 2019 13:14:43 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 15 May 2019 06:14:42 -0700
-Date:   Wed, 15 May 2019 16:14:34 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Adrian Hunter <adrian.hunter@intel.com>,
-        Sowjanya Komatineni <skomatineni@nvidia.com>
-Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        linux-mmc@vger.kernel.org, linux-tegra@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] mmc: tegra: Fix a warning message
-Message-ID: <20190515131434.GA18205@mwanda>
+        Wed, 15 May 2019 16:57:41 -0400
+Received: by mail-wm1-f68.google.com with SMTP id x64so1391727wmb.5;
+        Wed, 15 May 2019 13:57:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=9QC3JYnFQfQeHTD5SCXfr2i6Pl6XhnaYs2JDAFIiQBI=;
+        b=QeUIN/c7/YlIejWIwDt9XpSOZFjPytX3cqV93/cmYyOrRFBjhoggdWvA1mF7Egm8tA
+         DzhN/Cuw+ZLuErtfNYEZB4jo5O5FGD11ZnB605idA/y+STjc2189YFgIK2HEzr9rFBDT
+         poNNvgRRz21DX81CL83xAYOF+/vJjiUXxSxQr9pP5+fff8oLf7ImO+U2U5MeqsE+E+Wt
+         lf8sBzUthaSu6G8+2cMrbJ3tqpLLhxUTe1opNv45y00rmsBbJrx3t/XeoKMEu28ODADF
+         qa3479sDLLiyKNhFVOfpTaXR7i+NS10ln4juNbQQaQ4wfmnZ0S/GL8Dp7+EQK7/fgTFc
+         BWAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9QC3JYnFQfQeHTD5SCXfr2i6Pl6XhnaYs2JDAFIiQBI=;
+        b=WjPyZPQ2vdEFQAKXmIe04oa61xv9BH/zXl/2xWp4LXT10pSrVsq27n20lBH68aMkmM
+         7yCxjyhjMBmBLAshWrklteb8KCJqdmof8NtS7QGMcGYNIZERsu6gAnk6rEWO7cs0vTOr
+         e4yErFEAlMPIPm4v1z9d/m6ztKbdpcAvx/adHo7f58FfVrnfu2WtWgX7u/JF63DLRwBV
+         XTTZLqAP5qQpBSgmbNot3zJDfW5pHUZduOXRCz/RLDKfah+J1fWKBVj6FZsTgqgLDg2F
+         e69FUl3hBBH3hfmmk725kTjynDjNgv6xkd7MXK/WEHiX9bc1ZLugGCn65Pz9V8Tn1dra
+         dfrQ==
+X-Gm-Message-State: APjAAAUlnb+Qg5OOEMxUo1Hjv4eH/V0dbxft/FaQTRzAWJAdDHuR2AH9
+        j0mmgvUsDOLJP/nk66CD1+bHGt8Z4bnfUBsu7+I=
+X-Google-Smtp-Source: APXvYqxGtShHVqgtKX28zrE0zDc8LxPX+LlBig2BJi7/d6r7rjEHXXcdI8xJ5BM9S3hf8gdE6Mu12kvBDP6zlo+c+i8=
+X-Received: by 2002:a1c:a755:: with SMTP id q82mr4208430wme.82.1557953858913;
+ Wed, 15 May 2019 13:57:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAPDyKFpm9dB55aCUQkDHgyfcJdniNG9jCbdQ4ezYgQ=L8Rxfhw@mail.gmail.com>
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9257 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1905150084
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9257 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905150085
+References: <20190510070734.20625-1-colin.king@canonical.com>
+In-Reply-To: <20190510070734.20625-1-colin.king@canonical.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Wed, 15 May 2019 16:57:22 -0400
+Message-ID: <CADnq5_PPv42iXCad7HqgG-3zbE307bPrMSsXCdYCNpgrHi4iRA@mail.gmail.com>
+Subject: Re: [PATCH][next] drm/amdgpu: fix spelling mistake "retrived" -> "retrieved"
+To:     Colin King <colin.king@canonical.com>
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The WARN_ON() macro takes a condition, not a warning message.  Really,
-this should probably be dev_warn_once().
+On Fri, May 10, 2019 at 3:07 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There is a spelling mistake in a DRM_ERROR error message. Fix this.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Fixes: ea8fc5953e8b ("mmc: tegra: update hw tuning process")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-v2: Use dev_warn_once()
+Applied.  thanks!
 
- drivers/mmc/host/sdhci-tegra.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Alex
 
-diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-index f608417ae967..fc07970acaf5 100644
---- a/drivers/mmc/host/sdhci-tegra.c
-+++ b/drivers/mmc/host/sdhci-tegra.c
-@@ -865,7 +865,8 @@ static void tegra_sdhci_tap_correction(struct sdhci_host *host, u8 thd_up,
- 	}
- 
- 	if (!first_fail) {
--		WARN_ON("no edge detected, continue with hw tuned delay.\n");
-+		dev_warn_once(mmc_dev(host->mmc),
-+			      "no edge detected, continue with hw tuned delay.\n");
- 	} else if (first_pass) {
- 		/* set tap location at fixed tap relative to the first edge */
- 		edge1 = first_fail_tap + (first_pass_tap - first_fail_tap) / 2;
--- 
-2.20.1
-
+> ---
+>  drivers/gpu/drm/amd/amdgpu/df_v3_6.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/df_v3_6.c b/drivers/gpu/drm/amd/amdgpu/df_v3_6.c
+> index 7d375f8dcce6..a5c3558869fb 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/df_v3_6.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/df_v3_6.c
+> @@ -194,7 +194,7 @@ static void df_v3_6_pmc_get_ctrl_settings(struct amdgpu_device *adev,
+>                 return;
+>
+>         if ((*lo_base_addr == 0) || (*hi_base_addr == 0)) {
+> -               DRM_ERROR("DF PMC addressing not retrived! Lo: %x, Hi: %x",
+> +               DRM_ERROR("DF PMC addressing not retrieved! Lo: %x, Hi: %x",
+>                                 *lo_base_addr, *hi_base_addr);
+>                 return;
+>         }
+> --
+> 2.20.1
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

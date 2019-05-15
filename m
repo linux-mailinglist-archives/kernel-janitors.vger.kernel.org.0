@@ -2,100 +2,134 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D3DC1EB76
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 May 2019 11:53:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B05FF1EB7F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 May 2019 11:53:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726325AbfEOJxC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 May 2019 05:53:02 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:34296 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725871AbfEOJxB (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 May 2019 05:53:01 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4F9iJxq123334;
-        Wed, 15 May 2019 09:52:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=3z/ZITDsN/CZCVjpOcBaC3VoGrsdFz/v/qIHsdipx4w=;
- b=dy6REMmuR6tOqjgBLdhC3FKuJCbH/cthnKcWn7F9aUNyyHkNktmnzWN3Pqon/wQVbsV6
- ezkp3uiLIj1G1kXHvmY8YzjARrud2msbXOrxlg4SJLwGGzu28DmGKjOKOCKtc3kBobNH
- aD6KxveBmtBvb+28Ib1JEu/K58ZYeiUG2KQ1uBUY02ukRE+Aoaq1UXUHYkFCF4Xff+oA
- s/4mm40PGtb/8BbAfU1014CH17zWkZOsYonggNsu5l4swQ0UI8NYgCNK8Po2WLB2GUa5
- P0+98C/+5acM6koOsiAnXcFQbO1AhTrdRbO5kTuVxIik8FLTEspr4tCzQwzFQgGPNxNn 6A== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 2sdq1qkkjy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 15 May 2019 09:52:56 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4F9qP2K022013;
-        Wed, 15 May 2019 09:52:56 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 2sggdur332-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 15 May 2019 09:52:56 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x4F9qsl5028971;
-        Wed, 15 May 2019 09:52:54 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 15 May 2019 02:52:53 -0700
-Date:   Wed, 15 May 2019 12:52:46 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Matt Sickler <Matt.Sickler@daktronics.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] staging: kpc2000: double unlock in error handling in
- kpc_dma_transfer()
-Message-ID: <20190515095246.GH3409@mwanda>
+        id S1726319AbfEOJxh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 May 2019 05:53:37 -0400
+Received: from mail-eopbgr820085.outbound.protection.outlook.com ([40.107.82.85]:44000
+        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725871AbfEOJxh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 15 May 2019 05:53:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amdcloud.onmicrosoft.com; s=selector1-amd-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Or52atg8YJnOTTBGFPQiFNxPXaFfve+O3QanFTK33VE=;
+ b=LPGA0H2QgVlutUBy48zTaj3to2bhXS8SoQr3yl9BWkj7wTqZIUt+CTwlUnpqzMK4fiprmSuvXd9895dVavsMEhvVWFaTcYAQtDIut5MaRSMHASHtFzHpGDzdjenyKkhrqa0jpvfBaS/hFsZ6XTx8EFHdBMjs7WAF48qwhfTHL4g=
+Received: from MN2PR12MB3309.namprd12.prod.outlook.com (20.179.83.157) by
+ MN2PR12MB3647.namprd12.prod.outlook.com (20.178.241.17) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1878.25; Wed, 15 May 2019 09:53:34 +0000
+Received: from MN2PR12MB3309.namprd12.prod.outlook.com
+ ([fe80::2918:1f51:2768:efc0]) by MN2PR12MB3309.namprd12.prod.outlook.com
+ ([fe80::2918:1f51:2768:efc0%3]) with mapi id 15.20.1878.024; Wed, 15 May 2019
+ 09:53:34 +0000
+From:   "Huang, Ray" <Ray.Huang@amd.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Wang, Kevin(Yang)" <Kevin1.Wang@amd.com>
+CC:     "Koenig, Christian" <Christian.Koenig@amd.com>,
+        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        "Gao, Likun" <Likun.Gao@amd.com>, "Gui, Jack" <Jack.Gui@amd.com>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: RE: [PATCH] drm/amd/powerplay: fix locking in
+ smu_feature_set_supported()
+Thread-Topic: [PATCH] drm/amd/powerplay: fix locking in
+ smu_feature_set_supported()
+Thread-Index: AQHVCwPOpB/hJLSRrUiLtn9T08l916Zr8bjw
+Date:   Wed, 15 May 2019 09:53:33 +0000
+Message-ID: <MN2PR12MB33099BF7946484E6AE1F75F5EC090@MN2PR12MB3309.namprd12.prod.outlook.com>
+References: <20190515095130.GF3409@mwanda>
+In-Reply-To: <20190515095130.GF3409@mwanda>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Ray.Huang@amd.com; 
+x-originating-ip: [180.167.199.189]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: f7dcbf1f-96d1-4da5-9e6a-08d6d91b31b5
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);SRVR:MN2PR12MB3647;
+x-ms-traffictypediagnostic: MN2PR12MB3647:
+x-microsoft-antispam-prvs: <MN2PR12MB364730FBD7903C81C0FF29F6EC090@MN2PR12MB3647.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6430;
+x-forefront-prvs: 0038DE95A2
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(39860400002)(346002)(366004)(396003)(136003)(376002)(189003)(199004)(13464003)(74316002)(25786009)(478600001)(6246003)(68736007)(53936002)(86362001)(99286004)(6636002)(66066001)(71200400001)(71190400001)(54906003)(72206003)(305945005)(110136005)(7736002)(14444005)(76176011)(256004)(7696005)(52536014)(446003)(26005)(186003)(11346002)(14454004)(486006)(476003)(66476007)(66556008)(64756008)(66446008)(66946007)(73956011)(8676002)(55016002)(81156014)(8936002)(316002)(6506007)(102836004)(53546011)(9686003)(81166006)(5660300002)(229853002)(4326008)(6116002)(3846002)(2906002)(76116006)(33656002)(6436002);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR12MB3647;H:MN2PR12MB3309.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: amd.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: tak69VBt5fKPVC92dIaWuSQRgSJKy8YsWB6/0DRZ6DgBY0ywYlTM0ISM2t5HVHda6wWqId7foMbQPWBQAllHmwk9mUFp5q/XJv4r0By9BJ/ScxUYT6S8p83iSfEh3U9J1IlU0UMJMOzLVMQFCifaOP1ELb1b8Oxwurn4vXEiLWe16S/NOzSLQCckuY2ugnqKpaEfrNus4SHZjaCwWrtqlwcMgoF3daaH1xjoNRy7b8JTlXb8j73K9lClObfpfQYgGhgM4IaWEAUVdGT7pdXq9YS3dMN2Fp7G5Nr2hG2zLvJP1CsCbDMN0mrOpnL89gqKh3NRknixGDYQW2HsgRXpiYYiaSPRV4YXq6p5ujYq9SLow3+OCQppi5+bxNyeSwGIrX1Re+N64CCoeu7HrYZgph6p0qJLk/Eh4Ga5wCMt9lE=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9257 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1905150064
-X-Proofpoint-Virus-Version: vendor=nai engine=5900 definitions=9257 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905150063
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f7dcbf1f-96d1-4da5-9e6a-08d6d91b31b5
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 May 2019 09:53:33.9403
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB3647
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The goto err_descr_too_many; calls unlock_engine() so this unlocks
-twice.
+> -----Original Message-----
+> From: Dan Carpenter <dan.carpenter@oracle.com>
+> Sent: Wednesday, May 15, 2019 5:52 PM
+> To: Deucher, Alexander <Alexander.Deucher@amd.com>; Wang, Kevin(Yang)
+> <Kevin1.Wang@amd.com>
+> Cc: Koenig, Christian <Christian.Koenig@amd.com>; Zhou, David(ChunMing)
+> <David1.Zhou@amd.com>; David Airlie <airlied@linux.ie>; Daniel Vetter
+> <daniel@ffwll.ch>; Huang, Ray <Ray.Huang@amd.com>; Gao, Likun
+> <Likun.Gao@amd.com>; Gui, Jack <Jack.Gui@amd.com>; amd-
+> gfx@lists.freedesktop.org; dri-devel@lists.freedesktop.org; linux-
+> kernel@vger.kernel.org; kernel-janitors@vger.kernel.org
+> Subject: [PATCH] drm/amd/powerplay: fix locking in
+> smu_feature_set_supported()
+>=20
+> There is a typo so the code unlocks twice instead of taking the lock and =
+then
+> releasing it.
+>=20
+> Fixes: f14a323db5b0 ("drm/amd/powerplay: implement update enabled
+> feature state to smc for smu11")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+>=20
 
-Fixes: 7df95299b94a ("staging: kpc2000: Add DMA driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Thanks!
+Reviewed-by: Huang Rui <ray.huang@amd.com>
+
+Will apply it.
+
 ---
- drivers/staging/kpc2000/kpc_dma/fileops.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/staging/kpc2000/kpc_dma/fileops.c b/drivers/staging/kpc2000/kpc_dma/fileops.c
-index 5741d2b49a7d..d96eaa5e72a6 100644
---- a/drivers/staging/kpc2000/kpc_dma/fileops.c
-+++ b/drivers/staging/kpc2000/kpc_dma/fileops.c
-@@ -116,13 +116,11 @@ int  kpc_dma_transfer(struct dev_private_data *priv, struct kiocb *kcb, unsigned
- 	if (desc_needed >= ldev->desc_pool_cnt){
- 		dev_warn(&priv->ldev->pldev->dev, "    mapped_entry_count = %d    num_descrs_needed = %d    num_descrs_avail = %d    TOO MANY to ever complete!\n", acd->mapped_entry_count, desc_needed, num_descrs_avail);
- 		rv = -EAGAIN;
--		unlock_engine(ldev);
- 		goto err_descr_too_many;
- 	}
- 	if (desc_needed > num_descrs_avail){
- 		dev_warn(&priv->ldev->pldev->dev, "    mapped_entry_count = %d    num_descrs_needed = %d    num_descrs_avail = %d    Too many to complete right now.\n", acd->mapped_entry_count, desc_needed, num_descrs_avail);
- 		rv = -EMSGSIZE;
--		unlock_engine(ldev);
- 		goto err_descr_too_many;
- 	}
- 
--- 
-2.20.1
+>  drivers/gpu/drm/amd/powerplay/amdgpu_smu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
+> b/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
+> index 52d919a8b70a..85ac29af5363 100644
+> --- a/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
+> +++ b/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
+> @@ -310,7 +310,7 @@ int smu_feature_set_supported(struct smu_context
+> *smu, int feature_id,
+>=20
+>         WARN_ON(feature_id > feature->feature_num);
+>=20
+> -       mutex_unlock(&feature->mutex);
+> +       mutex_lock(&feature->mutex);
+>         if (enable)
+>                 test_and_set_bit(feature_id, feature->supported);
+>         else
+> --
+> 2.20.1
 

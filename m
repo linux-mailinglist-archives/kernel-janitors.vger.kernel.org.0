@@ -2,53 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F0801EAFB
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 May 2019 11:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FE3F1EAFE
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 May 2019 11:35:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726170AbfEOJeg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 May 2019 05:34:36 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:43860 "EHLO
+        id S1726335AbfEOJfa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 May 2019 05:35:30 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:44818 "EHLO
         userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725871AbfEOJef (ORCPT
+        with ESMTP id S1725871AbfEOJf3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 May 2019 05:34:35 -0400
+        Wed, 15 May 2019 05:35:29 -0400
 Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4F9OKDw107179;
-        Wed, 15 May 2019 09:34:31 GMT
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4F9Ok9c107630;
+        Wed, 15 May 2019 09:35:25 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=GUI7ZbGATOrJEgO4TwLWVEHn+UrdekXRQuwSfP9RpvI=;
- b=u0q6UkQ0/t170K/e7xsR0gLqwxWaU/i+UtI+vnDXqSIcjg4p0b7Cwdsg7LTmwFnhFe2Y
- Tkklp2I0VK4pj0+LZc+PqOWyL5km30X+Vex/NNrkyVXj80OypLBknrNUy8qJ6Kjyr3CU
- 4Pkjq+kLmP9VUFJ02CkOn4VfBel2XE/UrNkEpl8gfOBRiYPk1B1W5ZSsesBsOcgtYbHx
- CtLZCUg7FvtNYMJtXEMBFLR4Yu5CWR2CW6MouKg+5xmiVw44+FdNuAEcFSz7wUxwK7fS
- Hj1d+WG666of5O0CIpfdzuvRYsjB+Zct8Ze7xlVic4cDeSYZPWkUYPoTM0AfeOf9ezbr 5A== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 2sdq1qkgrr-1
+ bh=DTLu+306jeoQ71JC0Verk/5lk+Fahjkf4IY4TjYIpB8=;
+ b=zZYz42jdhC+iqrGWnQGaT5ExLVwSjdyHIJE5gWbydr7zqW/UzZu3x1mpMzr3S3lIJWVL
+ sEQRPopZdUInLckNpwWfR9RqOns4zwkaTVPXPKdrMpK6487mmEfUpkwMtVD2H0Foqxd7
+ WIVR7WbiemdWGpHZebIJldLKZY1a+5mLhuWjKTPFY9TnN69Mbiv1Ps80KgHpGIShqWII
+ hZHSSJiuLMTE8foi3bLY9r7FbgcSjKSLtpFJ77ZajcUK+F5Uwp7y5tEeNXGCnwZra//V
+ IP20zqLMnS7IpW1L4gVd9TC380psfoTR1u2l3orN5bUJaTRqrnpGPZkGd3BMlKsV3y6I nw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2sdq1qkgx8-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 15 May 2019 09:34:30 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4F9XffB097925;
-        Wed, 15 May 2019 09:34:30 GMT
+        Wed, 15 May 2019 09:35:25 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4F9ZJUd148809;
+        Wed, 15 May 2019 09:35:24 GMT
 Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 2sdnqk4484-1
+        by aserp3030.oracle.com with ESMTP id 2sdmebmuka-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 15 May 2019 09:34:30 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x4F9YTHN027732;
-        Wed, 15 May 2019 09:34:29 GMT
+        Wed, 15 May 2019 09:35:24 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x4F9ZNE5028224;
+        Wed, 15 May 2019 09:35:23 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 15 May 2019 02:34:28 -0700
-Date:   Wed, 15 May 2019 12:34:21 +0300
+        with ESMTP ; Wed, 15 May 2019 02:35:23 -0700
+Date:   Wed, 15 May 2019 12:35:14 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Talel Shenhar <talel@amazon.com>
-Cc:     Zhang Rui <rui.zhang@intel.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        linux-pm@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] thermal: mmio: remove some dead code
-Message-ID: <20190515093420.GC3409@mwanda>
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Sowjanya Komatineni <skomatineni@nvidia.com>
+Cc:     Ulf Hansson <ulf.hansson@linaro.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-mmc@vger.kernel.org, linux-tegra@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] mmc: tegra: Fix a warning message
+Message-ID: <20190515093512.GD3409@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -70,33 +72,28 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The platform_get_resource() function doesn't return error pointers, it
-returns NULL.  The way this is normally done, is that we pass the NULL
-resource to devm_ioremap_resource() and then check for errors from that.
-See the comment in front of devm_ioremap_resource() for more details.
+The WARN_ON() macro takes a condition, not a warning message.  I've
+changed this to use WARN(1, "msg...
 
+Fixes: ea8fc5953e8b ("mmc: tegra: update hw tuning process")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/thermal/thermal_mmio.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/mmc/host/sdhci-tegra.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/thermal_mmio.c b/drivers/thermal/thermal_mmio.c
-index de3cceea23bc..40524fa13533 100644
---- a/drivers/thermal/thermal_mmio.c
-+++ b/drivers/thermal/thermal_mmio.c
-@@ -53,13 +53,6 @@ static int thermal_mmio_probe(struct platform_device *pdev)
- 		return -ENOMEM;
+diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
+index f608417ae967..10d7aaf68bab 100644
+--- a/drivers/mmc/host/sdhci-tegra.c
++++ b/drivers/mmc/host/sdhci-tegra.c
+@@ -865,7 +865,7 @@ static void tegra_sdhci_tap_correction(struct sdhci_host *host, u8 thd_up,
+ 	}
  
- 	resource = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (IS_ERR(resource)) {
--		dev_err(&pdev->dev,
--			"fail to get platform memory resource (%ld)\n",
--			PTR_ERR(resource));
--		return PTR_ERR(resource);
--	}
--
- 	sensor->mmio_base = devm_ioremap_resource(&pdev->dev, resource);
- 	if (IS_ERR(sensor->mmio_base)) {
- 		dev_err(&pdev->dev, "failed to ioremap memory (%ld)\n",
+ 	if (!first_fail) {
+-		WARN_ON("no edge detected, continue with hw tuned delay.\n");
++		WARN(1, "no edge detected, continue with hw tuned delay.\n");
+ 	} else if (first_pass) {
+ 		/* set tap location at fixed tap relative to the first edge */
+ 		edge1 = first_fail_tap + (first_pass_tap - first_fail_tap) / 2;
 -- 
 2.20.1
+

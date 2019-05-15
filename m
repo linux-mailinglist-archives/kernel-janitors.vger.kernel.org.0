@@ -2,98 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3737A1F0CA
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 May 2019 13:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C4951F351
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 May 2019 14:13:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732130AbfEOLrR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 May 2019 07:47:17 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:44701 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731760AbfEOLrR (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 May 2019 07:47:17 -0400
-Received: by mail-vs1-f65.google.com with SMTP id j184so1459084vsd.11
-        for <kernel-janitors@vger.kernel.org>; Wed, 15 May 2019 04:47:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8CaNTciGEsHBR+UTd+uCW4xRoPEY0Ah8mRVVm+sOGOk=;
-        b=GW5qLT99fTjNxKbhvCZACauQJBvVRAlAQnNaIkPUUN1ClwMaXyk9V097k7+3sNUuF4
-         vpRCYbi+Drt9IdY1MS/kyaVQg9t1z7QRLFqlM7IrPYGXQpbM+XFKEzTg3n+iuzgL6m3K
-         Rp7n56F8iafdDVh6oftWvNNQyColmbSKHggU+T7ylrtdaSJR8nXLI3FkujJ78KlQozUH
-         M+CTtfjUJdzm0c1JXx5+SHtrxSvufnxFRt/mQ4v9zTv+40VJfvEwFb7NJHsioVxZM8IZ
-         b+Cm3xSSvCbUrIM6MRaPYq6reo5b9q7kSFUaHenagtAsF68BV5pYFEntMYDwXSX+irPs
-         mMtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8CaNTciGEsHBR+UTd+uCW4xRoPEY0Ah8mRVVm+sOGOk=;
-        b=rL8gl+Ja9h3mtAh5+nuFvTB44zOfu+NU6DMzKp9NqUk8dy0SDaNyZuMKW/ERwUw+20
-         dp9yY8Mna/5cOkWbVANfKhvqDzfuEaDP30/oXeW4ti5RqMikD2XlnTNCLEXTXp6VRdhB
-         Ht0Tqn57B42fB+GRLFtXE4hM8GmvVN9sSJK1OMCvB5GXYnQz5H097l2TaZMOUTwqjolG
-         df/NOWx1xe+OEU+1OQTZb+VF+uLYPcGwhgMthiiHR01dERy0v8g/HnbA+PpESX4iRQoS
-         B0EzXJRHnBXA/1tHlvUP2D0aZY68gO5N1lePvApJWjLjXUF3AfymeRqxZVksjM8s3qT1
-         8s3A==
-X-Gm-Message-State: APjAAAWIYqh6TdtBRsmDF2xkFohnPpBkYJRAdBujMP96a9gl1x2dSbcJ
-        nObHiArpBjTUFl4/dMts08O371nbGcVBM3QUIst6LQ==
-X-Google-Smtp-Source: APXvYqxv3EjsB/HLoWV0JoOdPbs8OtLIh/Pa3Lms7B8RBJhHyMns7p3zd86ZrsKz4XVdkXUFCKsYY3ajS2OzVB9UAZk=
-X-Received: by 2002:a67:7c58:: with SMTP id x85mr657717vsc.191.1557920836166;
- Wed, 15 May 2019 04:47:16 -0700 (PDT)
+        id S1728723AbfEOMNC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 May 2019 08:13:02 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:57740 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727269AbfEOMM5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 15 May 2019 08:12:57 -0400
+Received: from zn.tnic (p200300EC2F0A7C00329C23FFFEA6A903.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:7c00:329c:23ff:fea6:a903])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 0DC2E1EC0283;
+        Wed, 15 May 2019 14:12:56 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1557922376;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:references;
+        bh=WvJVj7h798nwLewX6tRbjM3FogL3I2Jr97HhbpLU4k4=;
+        b=XZeNYCsAE9quqjT+NQ+FtYeMwOY7FpsCU/+o4H7j32pRxFWQgkeuhfcG5GUnAl7MmOiRUc
+        pV1dFf8MgEA91vZHsQ7ngMDi6lqvRWr6WnssjqLNLZT2b2o+5A722RhWywvTAXXmcQ5xqo
+        szD02RRK+D6ICwQQEfyxB+IP3fQImxI=
+Date:   Wed, 15 May 2019 14:12:48 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     kernel-janitors@vger.kernel.org
+Subject: Spelling fixes for new people to get involved
+Message-ID: <20190515121247.GF24212@zn.tnic>
 MIME-Version: 1.0
-References: <20190515093512.GD3409@mwanda>
-In-Reply-To: <20190515093512.GD3409@mwanda>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Wed, 15 May 2019 13:46:40 +0200
-Message-ID: <CAPDyKFpm9dB55aCUQkDHgyfcJdniNG9jCbdQ4ezYgQ=L8Rxfhw@mail.gmail.com>
-Subject: Re: [PATCH] mmc: tegra: Fix a warning message
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Sowjanya Komatineni <skomatineni@nvidia.com>
-Cc:     Adrian Hunter <adrian.hunter@intel.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 15 May 2019 at 11:35, Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> The WARN_ON() macro takes a condition, not a warning message.  I've
-> changed this to use WARN(1, "msg...
->
-> Fixes: ea8fc5953e8b ("mmc: tegra: update hw tuning process")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/mmc/host/sdhci-tegra.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-> index f608417ae967..10d7aaf68bab 100644
-> --- a/drivers/mmc/host/sdhci-tegra.c
-> +++ b/drivers/mmc/host/sdhci-tegra.c
-> @@ -865,7 +865,7 @@ static void tegra_sdhci_tap_correction(struct sdhci_host *host, u8 thd_up,
->         }
->
->         if (!first_fail) {
-> -               WARN_ON("no edge detected, continue with hw tuned delay.\n");
-> +               WARN(1, "no edge detected, continue with hw tuned delay.\n");
+Hi,
 
-Not sure why this is a WARN*() in the first place.
+if you grep the kernel tree for the word "compliment":
 
-Seems like a dev_warn() or possibly a dev_warn_once() should be used instead.
+$ git grep compliment
+arch/nios2/include/asm/asm-macros.h:126: * Tests the bit in reg2 and then compliments the bit in reg2.
+arch/nios2/include/asm/asm-macros.h:189: * Tests the bit in reg2 and then compliments the bit in reg2.
+arch/nios2/include/asm/asm-macros.h:202: * Tests the bit in reg2 and then compliments the bit in reg2.
+arch/powerpc/platforms/pseries/mobility.c:82:    * A negative value is also the two's compliment of the actual value.
+drivers/block/rsxx/config.c:48:  * Return the compliment of the CRC to ensure compatibility
+drivers/block/skd_main.c:2039:  /* Note that the compliment of mask is written. A 1-bit means
+...
 
->         } else if (first_pass) {
->                 /* set tap location at fixed tap relative to the first edge */
->                 edge1 = first_fail_tap + (first_pass_tap - first_fail_tap) / 2;
-> --
-> 2.20.1
->
+you'll see that in almost all cases, the word the author meant to use
+was "complement", with an 'e'.
 
-Kind regards
-Uffe
+I think the respective maintainer wouldn't mind a patch fixing that in their
+driver/subsystem. :-)
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+Good mailing practices for 400: avoid top-posting and trim the reply.

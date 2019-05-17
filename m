@@ -2,91 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2898621E64
-	for <lists+kernel-janitors@lfdr.de>; Fri, 17 May 2019 21:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BAD02205A
+	for <lists+kernel-janitors@lfdr.de>; Sat, 18 May 2019 00:34:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728315AbfEQTgi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 17 May 2019 15:36:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50378 "EHLO mail.kernel.org"
+        id S1727041AbfEQWeU convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 17 May 2019 18:34:20 -0400
+Received: from mga12.intel.com ([192.55.52.136]:48203 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726293AbfEQTgh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 17 May 2019 15:36:37 -0400
-Received: from quaco.ghostprotocols.net (unknown [190.15.121.82])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7B5CA21734;
-        Fri, 17 May 2019 19:36:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558121796;
-        bh=/jikZdqg9KRirWSKO1FieiI4jJaKPP4l9tb8U2nvelY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SB0CMCTL0KdycgrtezMqxWd+PlBpMRM4bSygOYA+Uo6VIidIvfW2AqpqQm7j+d5DS
-         0RuaBPGHM3KzN3wKqI8r42FoRP5w3N7aAXxwn0Z8vtkFvAANP/gWxorfiVbwNr4CxO
-         oOglZHunxq2TajcwZMLVsV79R0QC7CcPzFcuu+ak=
-From:   Arnaldo Carvalho de Melo <acme@kernel.org>
-To:     Ingo Molnar <mingo@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
-        Clark Williams <williams@redhat.com>,
-        linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
-        Colin Ian King <colin.king@canonical.com>,
-        Mukesh Ojha <mojha@codeaurora.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        kernel-janitors@vger.kernel.org,
-        Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH 02/73] perf test: Fix spelling mistake "leadking" -> "leaking"
-Date:   Fri, 17 May 2019 16:35:00 -0300
-Message-Id: <20190517193611.4974-3-acme@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190517193611.4974-1-acme@kernel.org>
-References: <20190517193611.4974-1-acme@kernel.org>
+        id S1726761AbfEQWeU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 17 May 2019 18:34:20 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 May 2019 15:34:20 -0700
+X-ExtLoop1: 1
+Received: from orsmsx103.amr.corp.intel.com ([10.22.225.130])
+  by fmsmga005.fm.intel.com with ESMTP; 17 May 2019 15:34:19 -0700
+Received: from orsmsx104.amr.corp.intel.com ([169.254.4.200]) by
+ ORSMSX103.amr.corp.intel.com ([169.254.5.55]) with mapi id 14.03.0415.000;
+ Fri, 17 May 2019 15:34:19 -0700
+From:   "Bowers, AndrewX" <andrewx.bowers@intel.com>
+To:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
+Subject: RE: [Intel-wired-lan] [PATCH] i40e/i40evf: cleanup
+ i40e_update_nvm_checksum()
+Thread-Topic: [Intel-wired-lan] [PATCH] i40e/i40evf: cleanup
+ i40e_update_nvm_checksum()
+Thread-Index: AQHVBk+PEe+aAebrB0izRitjLZDSJqZv9IzQ
+Date:   Fri, 17 May 2019 22:34:19 +0000
+Message-ID: <26D9FDECA4FBDD4AADA65D8E2FC68A4A1D3DB7A7@ORSMSX104.amr.corp.intel.com>
+References: <20190509101051.GB7024@mwanda>
+In-Reply-To: <20190509101051.GB7024@mwanda>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMjU2Y2MwZmEtZDNlNC00N2E0LTg5YWItYWVmODkwOWIzNmQyIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiRHN0OXpcL09LZkNLXC9uQjdackRPQlRNT3BLQUxNVEtaYndBM1ZDZ3BxMFhXSStGWnZOd2hmUzF3cmtMYmhZbndiIn0=
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.0.400.15
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.139]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+> -----Original Message-----
+> From: Intel-wired-lan [mailto:intel-wired-lan-bounces@osuosl.org] On
+> Behalf Of Dan Carpenter
+> Sent: Thursday, May 9, 2019 3:11 AM
+> To: Kirsher, Jeffrey T <jeffrey.t.kirsher@intel.com>
+> Cc: kernel-janitors@vger.kernel.org; intel-wired-lan@lists.osuosl.org
+> Subject: [Intel-wired-lan] [PATCH] i40e/i40evf: cleanup
+> i40e_update_nvm_checksum()
+> 
+> Smatch complains that we use 'checksum' when it's uninitialized.
+> 
+>     drivers/net/ethernet/intel/i40e/i40e_nvm.c:581
+> i40e_update_nvm_checksum()
+>     error: uninitialized symbol 'checksum'.
+> 
+> This is true, but it harmless because we don't use it again.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/net/ethernet/intel/i40e/i40e_nvm.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
 
-There are a couple of spelling mistakes in test assert messages. Fix them.
+kernel-janitors@vger.kernel.org; intel-wired-lan@lists.osuosl.org
 
-Signed-off-by: Colin King <colin.king@canonical.com>
-Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: kernel-janitors@vger.kernel.org
-Link: http://lkml.kernel.org/r/20190417105539.5902-1-colin.king@canonical.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
----
- tools/perf/tests/dso-data.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/tools/perf/tests/dso-data.c b/tools/perf/tests/dso-data.c
-index 7f6c52021e41..946ab4b63acd 100644
---- a/tools/perf/tests/dso-data.c
-+++ b/tools/perf/tests/dso-data.c
-@@ -304,7 +304,7 @@ int test__dso_data_cache(struct test *test __maybe_unused, int subtest __maybe_u
- 	/* Make sure we did not leak any file descriptor. */
- 	nr_end = open_files_cnt();
- 	pr_debug("nr start %ld, nr stop %ld\n", nr, nr_end);
--	TEST_ASSERT_VAL("failed leadking files", nr == nr_end);
-+	TEST_ASSERT_VAL("failed leaking files", nr == nr_end);
- 	return 0;
- }
- 
-@@ -380,6 +380,6 @@ int test__dso_data_reopen(struct test *test __maybe_unused, int subtest __maybe_
- 	/* Make sure we did not leak any file descriptor. */
- 	nr_end = open_files_cnt();
- 	pr_debug("nr start %ld, nr stop %ld\n", nr, nr_end);
--	TEST_ASSERT_VAL("failed leadking files", nr == nr_end);
-+	TEST_ASSERT_VAL("failed leaking files", nr == nr_end);
- 	return 0;
- }
--- 
-2.20.1
 

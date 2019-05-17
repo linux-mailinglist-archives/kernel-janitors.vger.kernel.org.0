@@ -2,133 +2,232 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C61702169F
-	for <lists+kernel-janitors@lfdr.de>; Fri, 17 May 2019 12:00:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BE1A218FC
+	for <lists+kernel-janitors@lfdr.de>; Fri, 17 May 2019 15:15:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728263AbfEQKAh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 17 May 2019 06:00:37 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:54104 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727309AbfEQKAh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 17 May 2019 06:00:37 -0400
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 2B4D630B46F1;
-        Fri, 17 May 2019 10:00:32 +0000 (UTC)
-Received: from thuth.remote.csb (ovpn-117-142.ams2.redhat.com [10.36.117.142])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id B242C101E661;
-        Fri, 17 May 2019 10:00:24 +0000 (UTC)
-Subject: Re: [PATCH] KVM: selftests: Fix a condition in test_hv_cpuid()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc:     =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Peter Xu <peterx@redhat.com>
-References: <20190514103451.GA1694@mwanda>
-From:   Thomas Huth <thuth@redhat.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=thuth@redhat.com; keydata=
- xsFNBFH7eUwBEACzyOXKU+5Pcs6wNpKzrlJwzRl3VGZt95VCdb+FgoU9g11m7FWcOafrVRwU
- yYkTm9+7zBUc0sW5AuPGR/dp3pSLX/yFWsA/UB4nJsHqgDvDU7BImSeiTrnpMOTXb7Arw2a2
- 4CflIyFqjCpfDM4MuTmzTjXq4Uov1giGE9X6viNo1pxyEpd7PanlKNnf4PqEQp06X4IgUacW
- tSGj6Gcns1bCuHV8OPWLkf4hkRnu8hdL6i60Yxz4E6TqlrpxsfYwLXgEeswPHOA6Mn4Cso9O
- 0lewVYfFfsmokfAVMKWzOl1Sr0KGI5T9CpmRfAiSHpthhHWnECcJFwl72NTi6kUcUzG4se81
- O6n9d/kTj7pzTmBdfwuOZ0YUSqcqs0W+l1NcASSYZQaDoD3/SLk+nqVeCBB4OnYOGhgmIHNW
- 0CwMRO/GK+20alxzk//V9GmIM2ACElbfF8+Uug3pqiHkVnKqM7W9/S1NH2qmxB6zMiJUHlTH
- gnVeZX0dgH27mzstcF786uPcdEqS0KJuxh2kk5IvUSL3Qn3ZgmgdxBMyCPciD/1cb7/Ahazr
- 3ThHQXSHXkH/aDXdfLsKVuwDzHLVSkdSnZdt5HHh75/NFHxwaTlydgfHmFFwodK8y/TjyiGZ
- zg2Kje38xnz8zKn9iesFBCcONXS7txENTzX0z80WKBhK+XSFJwARAQABzRxUaG9tYXMgSHV0
- aCA8dGguaHV0aEBnbXguZGU+wsF7BBMBAgAlAhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIX
- gAUCUfuWKwIZAQAKCRAu2dd0/nAttbe/EACb9hafyOb2FmhUqeAiBORSsUifFacQ7laVjcgR
- I4um8CSHvxijYftpkM2EdAtmXIKgbNDpQoXcWLXB9lu9mLgTO4DVT00TRR65ikn3FCWcyT74
- ENTOzRKyKLsDCjhXKPblTPIQbYAUCOWElcyAPm0ERd62fA/rKNxgIiNo/l4UODOMoOJm2/Ox
- ZoTckW68Eqv7k9L7m7j+Hn3hoDTjAmcCBJt+j7pOhzWvCbqoNOIH8C8qvPaNlrba+R/K6jkO
- 6jZkTbYQpGIofEQJ/TNn38IsNGpI1ALTHWFtoMxp3j2Imz0REO6dRE2fHRN8sVlHgkoeGhmY
- NbDsDE1jFQOEObFnu0euk//7BXU7tGOHckVAZ8T1smiRPHfQU7UEH2a/grndxJ+PNeM5w7n2
- l+FN3cf2KgPotCK2s9MjSdZA7C5e3rFYO8lqiqTJKvc62vqp3e7B0Kjyy5/QtzSOejBij2QL
- xkKSFNtxIz4MtuxN8e3IDQNxsKry3nF7R4MDvouXlMo6wP9KuyNWb+vFJt9GtbgfDMIFVamp
- ZfhEWzWRJH4VgksENA4K/BzjEHCcbTUb1TFsiB1VRnBPJ0SqlvifnfKk6HcpkDk6Pg8Q5FOJ
- gbNHrdgXsm+m/9GF2zUUr+rOlhVbK23TUqKqPfwnD7uxjpakVcJnsVCFqJpZi1F/ga9IN87B
- TQRR+3lMARAAtp831HniPHb9AuKq3wj83ujZK8lH5RLrfVsB4X1wi47bwo56BqhXpR/zxPTR
- eOFT0gnbw9UkphVc7uk/alnXMDEmgvnuxv89PwIQX6k3qLABeV7ykJQG/WT5HQ6+2DdGtVw3
- 2vjYAPiWQeETsgWRRQMDR0/hwp8s8tL/UodwYCScH6Vxx9pdy353L1fK4Bb9G73a+9FPjp9l
- x+WwKTsltVqSBuSjyZQ3c3EE8qbTidXZxB38JwARH8yN3TX+t65cbBqLl/zRUUUTapHQpUEd
- yoAsHIml32e4q+3xdLtTdlLi7FgPBItSazcqZPjEcYW73UAuLcmQmfJlQ5PkDiuqcitn+KzH
- /1pqsTU7QFZjbmSMJyXY0TDErOFuMOjf20b6arcpEqse1V3IKrb+nqqA2azboRm3pEANLAJw
- iVTwK3qwGRgK5ut6N/Znv20VEHkFUsRAZoOusrIRfR5HFDxlXguAdEz8M/hxXFYYXqOoaCYy
- 6pJxTjy0Y/tIfmS/g9Bnp8qg9wsrsnk0+XRnDVPak++G3Uq9tJPwpJbyO0vcqEI3vAXkAB7X
- VXLzvFwi66RrsPUoDkuzj+aCNumtOePDOCpXQGPpKl+l1aYRMN/+lNSk3+1sVuc2C07WnYyE
- gV/cbEVklPmKrNwu6DeUyD0qI/bVzKMWZAiB1r56hsGeyYcAEQEAAcLBXwQYAQIACQUCUft5
- TAIbDAAKCRAu2dd0/nAttYTwEACLAS/THRqXRKb17PQmKwZHerUvZm2klo+lwQ3wNQBHUJAT
- p2R9ULexyXrJPqjUpy7+voz+FcKiuQBTKyieiIxO46oMxsbXGZ70o3gxjxdYdgimUD6U8PPd
- JH8tfAL4BR5FZNjspcnscN2jgbF4OrpDeOLyBaj6HPmElNPtECHWCaf1xbIFsZxSDGMA6cUh
- 0uX3Q8VI7JN1AR2cfiIRY7NrIlWYucJxyKjO3ivWm69nCtsHiJ0wcF8KlVo7F2eLaufo0K8A
- ynL8SHMF3VEyxsXOP2f1UR9T2Ur30MXcTBpjUxml1TX3RWY5uH89Js/jlIugBwuAmacJ7JYh
- lTg6sF/GNc4nPb4kk2yktNWTade+TzsllYlJPaorD2Qe8qX0iFUhFC6y9+O6mP4ZvWoYapp9
- ezYNuebMgEr93ob1+4sFg3812wNP01WqsGtWCJHnPv/JoonFdMzD/bIkXGEJMk6ks2kxQQZq
- g6Ik/s/vxOfao/xCn8nHt7GwvVy41795hzK6tbSl+BuyCRp0vfPRP34OnK7+jR2nvQpJu/pU
- rCELuGwT9hsYkUPjVd4lfylN3mzEc6iAv/wwjsc0DRTSQCpXT3v2ymTAsRKrVaEZLibTXaf+
- WslxWek3xNYRiqwwWAJuL652eAlxUgQ5ZS+fXBRTiQpJ+F26I/2lccScRd9G5w==
-Organization: Red Hat
-Message-ID: <b97371ae-5ae3-5df6-6ee3-a7c5fbb4b69e@redhat.com>
-Date:   Fri, 17 May 2019 12:00:23 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <20190514103451.GA1694@mwanda>
-Content-Type: text/plain; charset=utf-8
+        id S1728766AbfEQNPt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 17 May 2019 09:15:49 -0400
+Received: from mail-eopbgr50066.outbound.protection.outlook.com ([40.107.5.66]:53479
+        "EHLO EUR03-VE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726556AbfEQNPt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 17 May 2019 09:15:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=itdevltd.onmicrosoft.com; s=selector1-itdevltd-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4Bq7kxBYjSuOHBzHUWiVirE24zmLr+g86XteVOR1cZo=;
+ b=aI2em27oo6vCRHywUqDi76TC+/kf1026UtdBSoo59M7LUtBnP9yzG6tmICAWqYXRtPMqhAuVyQjRmUlBthrP/PbNdoxU7mfydnNUTfL/33ZF2qu++fA6lNtIc/27LE1bz1pSTTnVtHCeQDGQeM3A/RJbCJG2MZB7HNdhXJBuMsE=
+Received: from VI1PR08MB3168.eurprd08.prod.outlook.com (52.133.15.143) by
+ VI1PR08MB3264.eurprd08.prod.outlook.com (52.134.30.147) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1900.17; Fri, 17 May 2019 13:15:43 +0000
+Received: from VI1PR08MB3168.eurprd08.prod.outlook.com
+ ([fe80::8e9:9487:4f0a:fdaf]) by VI1PR08MB3168.eurprd08.prod.outlook.com
+ ([fe80::8e9:9487:4f0a:fdaf%3]) with mapi id 15.20.1878.028; Fri, 17 May 2019
+ 13:15:43 +0000
+From:   Quentin Deslandes <quentin.deslandes@itdev.co.uk>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        Mukesh Ojha <mojha@codeaurora.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Forest Bond <forest@alittletooquiet.net>,
+        Ojaswin Mujoo <ojaswin25111998@gmail.com>
+Subject: Re: [PATCH v3] staging: vt6656: returns error code on
+ vnt_int_start_interrupt fail
+Thread-Topic: [PATCH v3] staging: vt6656: returns error code on
+ vnt_int_start_interrupt fail
+Thread-Index: AQHVDIWpJheiltxkuEGGqxIJz+Vw2aZvCaCAgABClAA=
+Date:   Fri, 17 May 2019 13:15:43 +0000
+Message-ID: <20190517131539.GA9842@qd-ubuntu>
+References: <20190516093046.1400-1-quentin.deslandes@itdev.co.uk>
+ <20190517075331.3658-1-quentin.deslandes@itdev.co.uk>
+ <20190517091723.GA4602@kroah.com>
+In-Reply-To: <20190517091723.GA4602@kroah.com>
+Accept-Language: en-GB, en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.46]); Fri, 17 May 2019 10:00:37 +0000 (UTC)
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: DB6PR0202CA0030.eurprd02.prod.outlook.com
+ (2603:10a6:4:a5::16) To VI1PR08MB3168.eurprd08.prod.outlook.com
+ (2603:10a6:803:47::15)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=quentin.deslandes@itdev.co.uk; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [89.21.227.133]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 542f9ec4-977b-41d7-f205-08d6dac9c3d1
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(7021145)(8989299)(4534185)(7022145)(4603075)(4627221)(201702281549075)(8990200)(7048125)(7024125)(7027125)(7023125)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:VI1PR08MB3264;
+x-ms-traffictypediagnostic: VI1PR08MB3264:
+x-microsoft-antispam-prvs: <VI1PR08MB3264C7CE129C5C2D37FD720AB30B0@VI1PR08MB3264.eurprd08.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-forefront-prvs: 0040126723
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(7916004)(346002)(396003)(366004)(376002)(136003)(39830400003)(189003)(199004)(40764003)(8936002)(68736007)(7736002)(6512007)(66446008)(66556008)(66946007)(44832011)(486006)(9686003)(66476007)(54906003)(316002)(3846002)(6116002)(52116002)(26005)(33656002)(1076003)(476003)(386003)(8676002)(81156014)(81166006)(33716001)(186003)(76176011)(73956011)(64756008)(11346002)(6506007)(229853002)(305945005)(6486002)(6916009)(2906002)(6436002)(99286004)(102836004)(66066001)(25786009)(446003)(14444005)(53936002)(6246003)(5660300002)(4326008)(71190400001)(86362001)(256004)(508600001)(71200400001)(74482002)(14454004);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR08MB3264;H:VI1PR08MB3168.eurprd08.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: itdev.co.uk does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: +MXDBJHJ5GC9kAO9OqBPs2U6gKdHeN97GtEl+BnzdEW921VcicCH2ze4EsaEEgulcvgqsZrwPG3tzPIve2QRhmjL9UtTOE/QhzkFHVpekSJ1x2iFO4l2wKVsA3PdbsEAb0UClzo/doK+amnH8qWP2vtkq4ghteQnrs+CkJGf7HAhXJqCQ0p/jZlBAQtjMtShl2ykJK9JXWyUK79/xtvf0WQA0p8xkpPM/7GgSYFlFbnCguCgWn3k5SoqDQ0JTQlSPCq1+3/RahGQopO78atA1cldJ48LKY0AhfSHCPZc5RQnYwbs3perGgvs9gBqFS81uFj7zfKGidA/g3cWoI78J5nYBYTnMmto2MI0WSBT2T/oi7J/t9DsoE8sI1KzQ8Onz+vw25YPU3WjkPTajZklRgvcZtyGcRgO4WNIQV2ojRg=
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <6C5DE0311380A844B362DFE6208B51BA@eurprd08.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: itdev.co.uk
+X-MS-Exchange-CrossTenant-Network-Message-Id: 542f9ec4-977b-41d7-f205-08d6dac9c3d1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 May 2019 13:15:43.3505
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 2d2930c4-2251-45b4-ad79-3582c5f41740
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR08MB3264
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 14/05/2019 12.34, Dan Carpenter wrote:
-> The code is trying to check that all the padding is zeroed out and it
-> does this:
-> 
->     entry->padding[0] == entry->padding[1] == entry->padding[2] == 0
-> 
-> Assume everything is zeroed correctly, then the first comparison is
-> true, the next comparison is false and false is equal to zero so the
-> overall condition is true.  This bug doesn't affect run time very
-> badly, but the code should instead just check that all three paddings
-> are zero individually.
-> 
-> Also the error message was copy and pasted from an earlier error and it
-> wasn't correct.
-> 
-> Fixes: 7edcb7343327 ("KVM: selftests: Add hyperv_cpuid test")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  tools/testing/selftests/kvm/x86_64/hyperv_cpuid.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/kvm/x86_64/hyperv_cpuid.c b/tools/testing/selftests/kvm/x86_64/hyperv_cpuid.c
-> index 9a21e912097c..63b9fc3fdfbe 100644
-> --- a/tools/testing/selftests/kvm/x86_64/hyperv_cpuid.c
-> +++ b/tools/testing/selftests/kvm/x86_64/hyperv_cpuid.c
-> @@ -58,9 +58,8 @@ static void test_hv_cpuid(struct kvm_cpuid2 *hv_cpuid_entries,
->  		TEST_ASSERT(entry->flags == 0,
->  			    ".flags field should be zero");
->  
-> -		TEST_ASSERT(entry->padding[0] == entry->padding[1]
-> -			    == entry->padding[2] == 0,
-> -			    ".index field should be zero");
-> +		TEST_ASSERT(!entry->padding[0] && !entry->padding[1] &&
-> +			    !entry->padding[2], "padding should be zero");
->  
->  		/*
->  		 * If needed for debug:
-> 
+On Fri, May 17, 2019 at 11:17:23AM +0200, Greg Kroah-Hartman wrote:
+> On Fri, May 17, 2019 at 07:53:49AM +0000, Quentin Deslandes wrote:
+> > Returns error code from 'vnt_int_start_interrupt()' so the device's pri=
+vate
+> > buffers will be correctly freed and 'struct ieee80211_hw' start functio=
+n
+> > will return an error code.
+> >=20
+> > Signed-off-by: Quentin Deslandes <quentin.deslandes@itdev.co.uk>
+> > ---
+> > v2: returns 'status' value to caller instead of removing it.
+> > v3: add patch version details. Thanks to Greg K-H for his help.
+>=20
+> Looking better!
+>=20
+> But a few minor things below:
+>=20
+> >=20
+> >  drivers/staging/vt6656/int.c      |  4 +++-
+> >  drivers/staging/vt6656/int.h      |  2 +-
+> >  drivers/staging/vt6656/main_usb.c | 12 +++++++++---
+> >  3 files changed, 13 insertions(+), 5 deletions(-)
+> >=20
+> > diff --git a/drivers/staging/vt6656/int.c b/drivers/staging/vt6656/int.=
+c
+> > index 504424b19fcf..f3ee2198e1b3 100644
+> > --- a/drivers/staging/vt6656/int.c
+> > +++ b/drivers/staging/vt6656/int.c
+> > @@ -39,7 +39,7 @@ static const u8 fallback_rate1[5][5] =3D {
+> >  	{RATE_54M, RATE_54M, RATE_36M, RATE_18M, RATE_18M}
+> >  };
+> > =20
+> > -void vnt_int_start_interrupt(struct vnt_private *priv)
+> > +int vnt_int_start_interrupt(struct vnt_private *priv)
+> >  {
+> >  	unsigned long flags;
+> >  	int status;
+> > @@ -51,6 +51,8 @@ void vnt_int_start_interrupt(struct vnt_private *priv=
+)
+> >  	status =3D vnt_start_interrupt_urb(priv);
+> > =20
+> >  	spin_unlock_irqrestore(&priv->lock, flags);
+> > +
+> > +	return status;
+> >  }
+> > =20
+> >  static int vnt_int_report_rate(struct vnt_private *priv, u8 pkt_no, u8=
+ tsr)
+> > diff --git a/drivers/staging/vt6656/int.h b/drivers/staging/vt6656/int.=
+h
+> > index 987c454e99e9..8a6d60569ceb 100644
+> > --- a/drivers/staging/vt6656/int.h
+> > +++ b/drivers/staging/vt6656/int.h
+> > @@ -41,7 +41,7 @@ struct vnt_interrupt_data {
+> >  	u8 sw[2];
+> >  } __packed;
+> > =20
+> > -void vnt_int_start_interrupt(struct vnt_private *priv);
+> > +int vnt_int_start_interrupt(struct vnt_private *priv);
+> >  void vnt_int_process_data(struct vnt_private *priv);
+> > =20
+> >  #endif /* __INT_H__ */
+> > diff --git a/drivers/staging/vt6656/main_usb.c b/drivers/staging/vt6656=
+/main_usb.c
+> > index ccafcc2c87ac..71e10b9ae253 100644
+> > --- a/drivers/staging/vt6656/main_usb.c
+> > +++ b/drivers/staging/vt6656/main_usb.c
+> > @@ -483,6 +483,7 @@ static void vnt_tx_80211(struct ieee80211_hw *hw,
+> > =20
+> >  static int vnt_start(struct ieee80211_hw *hw)
+> >  {
+> > +	int err =3D 0;
+> >  	struct vnt_private *priv =3D hw->priv;
+> > =20
+> >  	priv->rx_buf_sz =3D MAX_TOTAL_SIZE_WITH_ALL_HEADERS;
+> > @@ -496,15 +497,20 @@ static int vnt_start(struct ieee80211_hw *hw)
+> > =20
+> >  	if (vnt_init_registers(priv) =3D=3D false) {
+> >  		dev_dbg(&priv->usb->dev, " init register fail\n");
+> > +		err =3D -ENOMEM;
+>=20
+> Why ENOMEM?  vnt_init_registers() should return a proper error code,
+> based on what went wrong, not true/false.  So fix that up first, and
+> then you can do this patch.
+>=20
+> See, your one tiny coding style fix is turning into real cleanups, nice!
+>=20
+> >  		goto free_all;
+> >  	}
+> > =20
+> > -	if (vnt_key_init_table(priv))
+> > +	if (vnt_key_init_table(priv)) {
+> > +		err =3D -ENOMEM;
+>=20
+> Same here, vnt_key_init_table() should return a real error value, and
+> then just return that here.
+>=20
+> >  		goto free_all;
+> > +	}
+> > =20
+> >  	priv->int_interval =3D 1;  /* bInterval is set to 1 */
+> > =20
+> > -	vnt_int_start_interrupt(priv);
+> > +	err =3D vnt_int_start_interrupt(priv);
+> > +	if (err)
+> > +		goto free_all;
+>=20
+> Like this, that is the correct thing.
+>=20
+> So, this is now going to be a patch series, fixing up those two
+> functions (and any functions they call possibly), and then this can be
+> the last patch of the series.
+>=20
+> thanks,
+>=20
+> greg k-h
 
-That was yet another good example that compiling with "-Wall" is a good
-idea...
+Thank you for your help, this is getting really exciting! However, I had
+a look at these function (vnt_init_registers() and vnt_key_init_table())
+and some questions popped in my mind.
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+If I understand correctly, your request is to fix these function so they
+can return an error code instead of just failing, as I did with
+vnt_int_start_interrupt() in the third patch, which is also the most
+logical behaviour.
+
+So, vnt_init_registers() is a big function (~240 lines), which should
+return a proper error code. For this, all the function called in
+vnt_init_registers() should also return a proper error code, right?
+
+What about functions called that does not return any value, but their only
+action is to call a function that return a status code? As I learn with thi=
+s
+patch, discarding error values is not a acceptable behaviour. Why would we =
+write
+functions returning an error code solely to discard it? So such function sh=
+ould
+be changed too?
+
+I listed up to 22 function that need to be updated in order to correctly
+propagate errors up to vnt_start() so it could "nicely" fail and here is
+the last problem: regarding this fair amount of changes, how to ensure
+the device will work as well as before? I don't have this device at home
+or at work and it doesn't seems easy to find.
+
+Thank you,
+Quentin

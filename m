@@ -2,64 +2,156 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 485FE2151F
-	for <lists+kernel-janitors@lfdr.de>; Fri, 17 May 2019 10:12:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E12052161A
+	for <lists+kernel-janitors@lfdr.de>; Fri, 17 May 2019 11:17:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728722AbfEQIMg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 17 May 2019 04:12:36 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:38196 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727624AbfEQIMf (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 17 May 2019 04:12:35 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hRXyj-0004tg-LP; Fri, 17 May 2019 08:12:33 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Steve French <sfrench@samba.org>, linux-cifs@vger.kernel.org,
-        samba-technical@lists.samba.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] cifs: fix memory leak of pneg_inbuf on -EOPNOTSUPP ioctl case
-Date:   Fri, 17 May 2019 09:12:33 +0100
-Message-Id: <20190517081233.11764-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728679AbfEQJR1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 17 May 2019 05:17:27 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51816 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727620AbfEQJR1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 17 May 2019 05:17:27 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B695F20818;
+        Fri, 17 May 2019 09:17:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1558084646;
+        bh=x8xM42vRfxXpkjm9JoKWC83RWedLTJsZZqfbIa6ntcQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cqqM1da66TINk7r17jzm+neh5fRW/d6kj1JI9lA5JEr27bv83rASrldtEkTaFsgBF
+         0eXRbpsjJtUVNMq52+G9TFsnbAbevBdRFRLiJpbIN+3fkdqNAT+rDT65F9lk3gsjSL
+         MKdAOfiLiC51PtmwNYYA86jBnfEGkIApOz8p+AKk=
+Date:   Fri, 17 May 2019 11:17:23 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Quentin Deslandes <quentin.deslandes@itdev.co.uk>
+Cc:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        Mukesh Ojha <mojha@codeaurora.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Forest Bond <forest@alittletooquiet.net>,
+        Ojaswin Mujoo <ojaswin25111998@gmail.com>
+Subject: Re: [PATCH v3] staging: vt6656: returns error code on
+ vnt_int_start_interrupt fail
+Message-ID: <20190517091723.GA4602@kroah.com>
+References: <20190516093046.1400-1-quentin.deslandes@itdev.co.uk>
+ <20190517075331.3658-1-quentin.deslandes@itdev.co.uk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190517075331.3658-1-quentin.deslandes@itdev.co.uk>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Fri, May 17, 2019 at 07:53:49AM +0000, Quentin Deslandes wrote:
+> Returns error code from 'vnt_int_start_interrupt()' so the device's private
+> buffers will be correctly freed and 'struct ieee80211_hw' start function
+> will return an error code.
+> 
+> Signed-off-by: Quentin Deslandes <quentin.deslandes@itdev.co.uk>
+> ---
+> v2: returns 'status' value to caller instead of removing it.
+> v3: add patch version details. Thanks to Greg K-H for his help.
 
-Currently in the case where SMB2_ioctl returns the -EOPNOTSUPP error
-there is a memory leak of pneg_inbuf. Fix this by returning via
-the out_free_inbuf exit path that will perform the relevant kfree.
+Looking better!
 
-Addresses-Coverity: ("Resource leak")
-Fixes: 969ae8e8d4ee ("cifs: Accept validate negotiate if server return NT_STATUS_NOT_SUPPORTED")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- fs/cifs/smb2pdu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+But a few minor things below:
 
-diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
-index 710ceb875161..5b8d1482ffbd 100644
---- a/fs/cifs/smb2pdu.c
-+++ b/fs/cifs/smb2pdu.c
-@@ -1054,7 +1054,8 @@ int smb3_validate_negotiate(const unsigned int xid, struct cifs_tcon *tcon)
- 		 * not supported error. Client should accept it.
- 		 */
- 		cifs_dbg(VFS, "Server does not support validate negotiate\n");
--		return 0;
-+		rc = 0;
-+		goto out_free_inbuf;
- 	} else if (rc != 0) {
- 		cifs_dbg(VFS, "validate protocol negotiate failed: %d\n", rc);
- 		rc = -EIO;
--- 
-2.20.1
+> 
+>  drivers/staging/vt6656/int.c      |  4 +++-
+>  drivers/staging/vt6656/int.h      |  2 +-
+>  drivers/staging/vt6656/main_usb.c | 12 +++++++++---
+>  3 files changed, 13 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/staging/vt6656/int.c b/drivers/staging/vt6656/int.c
+> index 504424b19fcf..f3ee2198e1b3 100644
+> --- a/drivers/staging/vt6656/int.c
+> +++ b/drivers/staging/vt6656/int.c
+> @@ -39,7 +39,7 @@ static const u8 fallback_rate1[5][5] = {
+>  	{RATE_54M, RATE_54M, RATE_36M, RATE_18M, RATE_18M}
+>  };
+>  
+> -void vnt_int_start_interrupt(struct vnt_private *priv)
+> +int vnt_int_start_interrupt(struct vnt_private *priv)
+>  {
+>  	unsigned long flags;
+>  	int status;
+> @@ -51,6 +51,8 @@ void vnt_int_start_interrupt(struct vnt_private *priv)
+>  	status = vnt_start_interrupt_urb(priv);
+>  
+>  	spin_unlock_irqrestore(&priv->lock, flags);
+> +
+> +	return status;
+>  }
+>  
+>  static int vnt_int_report_rate(struct vnt_private *priv, u8 pkt_no, u8 tsr)
+> diff --git a/drivers/staging/vt6656/int.h b/drivers/staging/vt6656/int.h
+> index 987c454e99e9..8a6d60569ceb 100644
+> --- a/drivers/staging/vt6656/int.h
+> +++ b/drivers/staging/vt6656/int.h
+> @@ -41,7 +41,7 @@ struct vnt_interrupt_data {
+>  	u8 sw[2];
+>  } __packed;
+>  
+> -void vnt_int_start_interrupt(struct vnt_private *priv);
+> +int vnt_int_start_interrupt(struct vnt_private *priv);
+>  void vnt_int_process_data(struct vnt_private *priv);
+>  
+>  #endif /* __INT_H__ */
+> diff --git a/drivers/staging/vt6656/main_usb.c b/drivers/staging/vt6656/main_usb.c
+> index ccafcc2c87ac..71e10b9ae253 100644
+> --- a/drivers/staging/vt6656/main_usb.c
+> +++ b/drivers/staging/vt6656/main_usb.c
+> @@ -483,6 +483,7 @@ static void vnt_tx_80211(struct ieee80211_hw *hw,
+>  
+>  static int vnt_start(struct ieee80211_hw *hw)
+>  {
+> +	int err = 0;
+>  	struct vnt_private *priv = hw->priv;
+>  
+>  	priv->rx_buf_sz = MAX_TOTAL_SIZE_WITH_ALL_HEADERS;
+> @@ -496,15 +497,20 @@ static int vnt_start(struct ieee80211_hw *hw)
+>  
+>  	if (vnt_init_registers(priv) == false) {
+>  		dev_dbg(&priv->usb->dev, " init register fail\n");
+> +		err = -ENOMEM;
 
+Why ENOMEM?  vnt_init_registers() should return a proper error code,
+based on what went wrong, not true/false.  So fix that up first, and
+then you can do this patch.
+
+See, your one tiny coding style fix is turning into real cleanups, nice!
+
+>  		goto free_all;
+>  	}
+>  
+> -	if (vnt_key_init_table(priv))
+> +	if (vnt_key_init_table(priv)) {
+> +		err = -ENOMEM;
+
+Same here, vnt_key_init_table() should return a real error value, and
+then just return that here.
+
+>  		goto free_all;
+> +	}
+>  
+>  	priv->int_interval = 1;  /* bInterval is set to 1 */
+>  
+> -	vnt_int_start_interrupt(priv);
+> +	err = vnt_int_start_interrupt(priv);
+> +	if (err)
+> +		goto free_all;
+
+Like this, that is the correct thing.
+
+So, this is now going to be a patch series, fixing up those two
+functions (and any functions they call possibly), and then this can be
+the last patch of the series.
+
+thanks,
+
+greg k-h

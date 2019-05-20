@@ -2,78 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BAD02205A
-	for <lists+kernel-janitors@lfdr.de>; Sat, 18 May 2019 00:34:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14A20229B2
+	for <lists+kernel-janitors@lfdr.de>; Mon, 20 May 2019 03:20:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727041AbfEQWeU convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 17 May 2019 18:34:20 -0400
-Received: from mga12.intel.com ([192.55.52.136]:48203 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726761AbfEQWeU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 17 May 2019 18:34:20 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 17 May 2019 15:34:20 -0700
-X-ExtLoop1: 1
-Received: from orsmsx103.amr.corp.intel.com ([10.22.225.130])
-  by fmsmga005.fm.intel.com with ESMTP; 17 May 2019 15:34:19 -0700
-Received: from orsmsx104.amr.corp.intel.com ([169.254.4.200]) by
- ORSMSX103.amr.corp.intel.com ([169.254.5.55]) with mapi id 14.03.0415.000;
- Fri, 17 May 2019 15:34:19 -0700
-From:   "Bowers, AndrewX" <andrewx.bowers@intel.com>
-To:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-Subject: RE: [Intel-wired-lan] [PATCH] i40e/i40evf: cleanup
- i40e_update_nvm_checksum()
-Thread-Topic: [Intel-wired-lan] [PATCH] i40e/i40evf: cleanup
- i40e_update_nvm_checksum()
-Thread-Index: AQHVBk+PEe+aAebrB0izRitjLZDSJqZv9IzQ
-Date:   Fri, 17 May 2019 22:34:19 +0000
-Message-ID: <26D9FDECA4FBDD4AADA65D8E2FC68A4A1D3DB7A7@ORSMSX104.amr.corp.intel.com>
-References: <20190509101051.GB7024@mwanda>
-In-Reply-To: <20190509101051.GB7024@mwanda>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMjU2Y2MwZmEtZDNlNC00N2E0LTg5YWItYWVmODkwOWIzNmQyIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiRHN0OXpcL09LZkNLXC9uQjdackRPQlRNT3BLQUxNVEtaYndBM1ZDZ3BxMFhXSStGWnZOd2hmUzF3cmtMYmhZbndiIn0=
-x-ctpclassification: CTP_NT
-dlp-product: dlpe-windows
-dlp-version: 11.0.400.15
-dlp-reaction: no-action
-x-originating-ip: [10.22.254.139]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1729848AbfETBUa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 19 May 2019 21:20:30 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:46513 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726741AbfETBUa (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 19 May 2019 21:20:30 -0400
+Received: by mail-pg1-f195.google.com with SMTP id t187so5912272pgb.13;
+        Sun, 19 May 2019 18:20:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dLGowd605TGgiEF9LE+kSadzQc7KbvCMX2YqZwW09gY=;
+        b=XdL3IWjAD1FV+MhMS67oSDrUskQtqgM7vvr4+6/AJ0ASseWPJxbwHSzZaepORKwrR6
+         CWxsdrla0ghPoAKf1VKpMtVswkSEL5Y4Me+UnJFPDMJ9nbJ0U/Nbu2SsUGUh4oKYhkrm
+         +tdGobM3RlgQ5v4HI/EVGpr0DB57dQBMn7h1eZFhrYlykkqTWxy1BU5QiAhK8dHKSn7U
+         aGAXLYo4fbCTBWT2IPU+/6801/bpnaBb0Y6ZyPX9pAqEpm3nKCD13hbuXsrj7Gb0DMC5
+         a8rd1iSGNviyHsSPiVmKIg6zrOmPCsltalEcnS5s04EgEuOE+diFsiyNopzSBZjthIIt
+         SRKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dLGowd605TGgiEF9LE+kSadzQc7KbvCMX2YqZwW09gY=;
+        b=jJrfJvVQGME+HBYTkwD56L0XQ4oU3DTtwafvyuBDg7IIRnQ/uAU+wSVqsVVksH31+d
+         1pI070hcNHvOMAnfKGUaw/GLSWAdx5b+cr/YY/O7l7tyfZSffZCNdxCaWvh0M4mJfMOr
+         UaHu35J3gzfJ6Gqe8nTjwEdn/zWIkPmIYuKfxmABnZlM3p5herzRY4BNLvJomHdlTJdU
+         I2dGkqTpGzasi3gyBskUxIoESolRRInrLWTYubgnOm4VgxLpOAcEtQQqZmG/iS2Gy21h
+         xVT89XxPhxjP2oDhpF+A2LKhGGTmzt5mJ+Uuds6nbGpi4u+rTkytDl80gMZwzLLe+5g7
+         5xtg==
+X-Gm-Message-State: APjAAAUBH8wicDrAVQjnFUm0Jj7vefJZTOSE7MVEvwkPDruUUHGO+Peu
+        mQUypahz5RuWIX2x+p9V7DeLopZPrvwkRxLxLwMzjQ==
+X-Google-Smtp-Source: APXvYqw7Ze0TS0tXKiVTrOqkkzcY/f2Enpq+/Q7SuIXcZOdzLP+S/wVb8jcgB218cBW61fSaAICw6itdksz96UWv7eY=
+X-Received: by 2002:a62:2b82:: with SMTP id r124mr68797198pfr.235.1558315229268;
+ Sun, 19 May 2019 18:20:29 -0700 (PDT)
 MIME-Version: 1.0
+References: <20190517081233.11764-1-colin.king@canonical.com>
+In-Reply-To: <20190517081233.11764-1-colin.king@canonical.com>
+From:   Steve French <smfrench@gmail.com>
+Date:   Sun, 19 May 2019 20:20:18 -0500
+Message-ID: <CAH2r5muO=GLx2Hh77rTPqCZ1yP6a0r5yjSEu5j58o__Mni1bsQ@mail.gmail.com>
+Subject: Re: [PATCH] cifs: fix memory leak of pneg_inbuf on -EOPNOTSUPP ioctl case
+To:     Colin King <colin.king@canonical.com>
+Cc:     Steve French <sfrench@samba.org>,
+        CIFS <linux-cifs@vger.kernel.org>,
+        samba-technical <samba-technical@lists.samba.org>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> -----Original Message-----
-> From: Intel-wired-lan [mailto:intel-wired-lan-bounces@osuosl.org] On
-> Behalf Of Dan Carpenter
-> Sent: Thursday, May 9, 2019 3:11 AM
-> To: Kirsher, Jeffrey T <jeffrey.t.kirsher@intel.com>
-> Cc: kernel-janitors@vger.kernel.org; intel-wired-lan@lists.osuosl.org
-> Subject: [Intel-wired-lan] [PATCH] i40e/i40evf: cleanup
-> i40e_update_nvm_checksum()
-> 
-> Smatch complains that we use 'checksum' when it's uninitialized.
-> 
->     drivers/net/ethernet/intel/i40e/i40e_nvm.c:581
-> i40e_update_nvm_checksum()
->     error: uninitialized symbol 'checksum'.
-> 
-> This is true, but it harmless because we don't use it again.
-> 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+merged into cifs-2.6.git for-next (and added cc:stable #v5.1)
+
+On Fri, May 17, 2019 at 3:42 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> Currently in the case where SMB2_ioctl returns the -EOPNOTSUPP error
+> there is a memory leak of pneg_inbuf. Fix this by returning via
+> the out_free_inbuf exit path that will perform the relevant kfree.
+>
+> Addresses-Coverity: ("Resource leak")
+> Fixes: 969ae8e8d4ee ("cifs: Accept validate negotiate if server return NT_STATUS_NOT_SUPPORTED")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/net/ethernet/intel/i40e/i40e_nvm.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
+>  fs/cifs/smb2pdu.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
+> index 710ceb875161..5b8d1482ffbd 100644
+> --- a/fs/cifs/smb2pdu.c
+> +++ b/fs/cifs/smb2pdu.c
+> @@ -1054,7 +1054,8 @@ int smb3_validate_negotiate(const unsigned int xid, struct cifs_tcon *tcon)
+>                  * not supported error. Client should accept it.
+>                  */
+>                 cifs_dbg(VFS, "Server does not support validate negotiate\n");
+> -               return 0;
+> +               rc = 0;
+> +               goto out_free_inbuf;
+>         } else if (rc != 0) {
+>                 cifs_dbg(VFS, "validate protocol negotiate failed: %d\n", rc);
+>                 rc = -EIO;
+> --
+> 2.20.1
+>
 
-kernel-janitors@vger.kernel.org; intel-wired-lan@lists.osuosl.org
 
+-- 
+Thanks,
 
+Steve

@@ -2,112 +2,159 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BDFE22B5F
-	for <lists+kernel-janitors@lfdr.de>; Mon, 20 May 2019 07:43:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2F8822D50
+	for <lists+kernel-janitors@lfdr.de>; Mon, 20 May 2019 09:41:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728435AbfETFnm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 20 May 2019 01:43:42 -0400
-Received: from mail-eopbgr130070.outbound.protection.outlook.com ([40.107.13.70]:63374
-        "EHLO EUR01-HE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725807AbfETFnm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 20 May 2019 01:43:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
- s=selector2-armh-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pu9FZSU02YyFspJ2JSmkuUX1BpVOZlFv9wXLfeue16U=;
- b=RqfC3qpbySxvXqln2VP4gUNAPvRR2uvbYSL4VJZ0v5jNbAlYN/T527GCIcbYoxKk6st5jE5kLFkApyzhUWkgBhMyGueSn8dEpoNZz+JhaecHxzr7AxYxbEqyWGwVZVhZNLcE/nTZKQvFkBYQzWoMPpqK0It/6I2VX2OEUyieQTU=
-Received: from VE1PR08MB5006.eurprd08.prod.outlook.com (10.255.159.31) by
- VE1PR08MB4958.eurprd08.prod.outlook.com (10.255.158.83) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1900.17; Mon, 20 May 2019 05:43:38 +0000
-Received: from VE1PR08MB5006.eurprd08.prod.outlook.com
- ([fe80::206b:5cf6:97e:1358]) by VE1PR08MB5006.eurprd08.prod.outlook.com
- ([fe80::206b:5cf6:97e:1358%7]) with mapi id 15.20.1900.020; Mon, 20 May 2019
- 05:43:38 +0000
-From:   "james qian wang (Arm Technology China)" <james.qian.wang@arm.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     David Airlie <airlied@linux.ie>, Liviu Dudau <Liviu.Dudau@arm.com>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        nd <nd@arm.com>
-Subject: Re: drm/komeda: Potential error pointer dereference
-Thread-Topic: drm/komeda: Potential error pointer dereference
-Thread-Index: AQHVDs75IJ2/qTTzt0+NH2vjSD797g==
-Date:   Mon, 20 May 2019 05:43:38 +0000
-Message-ID: <20190520054331.GB1724@james-ThinkStation-P300>
-References: <20190503122525.GA29695@mwanda>
-In-Reply-To: <20190503122525.GA29695@mwanda>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mutt/1.9.4 (2018-02-28)
-x-originating-ip: [113.29.88.7]
-x-clientproxiedby: HK2PR02CA0164.apcprd02.prod.outlook.com
- (2603:1096:201:1f::24) To VE1PR08MB5006.eurprd08.prod.outlook.com
- (2603:10a6:803:113::31)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=james.qian.wang@arm.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 2fe05b8e-94d9-4b49-07d5-08d6dce61b6a
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(7168020)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(4618075)(2017052603328)(7193020);SRVR:VE1PR08MB4958;
-x-ms-traffictypediagnostic: VE1PR08MB4958:
-nodisclaimer: True
-x-microsoft-antispam-prvs: <VE1PR08MB4958007CFDC2BA717B0685A1B3060@VE1PR08MB4958.eurprd08.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6430;
-x-forefront-prvs: 004395A01C
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(7916004)(346002)(136003)(39860400002)(376002)(396003)(366004)(199004)(189003)(66066001)(11346002)(8936002)(54906003)(81166006)(58126008)(55236004)(8676002)(305945005)(6916009)(99286004)(476003)(486006)(6246003)(5660300002)(7736002)(81156014)(86362001)(446003)(256004)(71190400001)(71200400001)(14444005)(229853002)(33656002)(316002)(6116002)(386003)(68736007)(14454004)(2906002)(52116002)(102836004)(6486002)(66946007)(1076003)(53936002)(478600001)(6436002)(186003)(26005)(33716001)(73956011)(3846002)(25786009)(6506007)(6512007)(9686003)(66476007)(66556008)(4326008)(64756008)(66446008)(76176011);DIR:OUT;SFP:1101;SCL:1;SRVR:VE1PR08MB4958;H:VE1PR08MB5006.eurprd08.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: arm.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: +DSEyaH1kgLMz3u0kiLdhG3Zr8xB+Mk2niys6p/e6ZofcsdH83qE3aw4DwevshUCAmJcIo9cX8FtlI87SD3th7JzVKJZydGNoWudsESsp34r89qQnd3ccrLhqL2UU72rwjHEqI/Zh6Ay74T+Rds2ruwfMNVTlnVKaDG5Z8GA1baskwb6gtb43lo9uKTz6HOo59pORUofZjkdb4mRJ0TqsvzoJyCHZY5sLx/hxjX8PDyUDO/a01RlUdreT09LSjlfKlkImxbIVh3QCdwlzhKgPbB/d5mqYqDhQ3Jy8nxsq7Q8Jjw6JpFSBuWoHfqOnHNyjpqx78HWUXjFJFOupy5/bNsGXg0e0wIRgia5QohtEBFnLd9lrjbpvtTXEtr/p1fUv+z0VNFzi/oWocn1EUYphUI3tc2kmGeD2DbR2mE3FUU=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <1A8BFFC4EC453A408D2336704001C380@eurprd08.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        id S1730494AbfETHly (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 20 May 2019 03:41:54 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:46290 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1730485AbfETHlx (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 20 May 2019 03:41:53 -0400
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4K7YUpg066724
+        for <kernel-janitors@vger.kernel.org>; Mon, 20 May 2019 03:41:53 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2skmwaqbjf-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <kernel-janitors@vger.kernel.org>; Mon, 20 May 2019 03:41:52 -0400
+Received: from localhost
+        by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <kernel-janitors@vger.kernel.org> from <borntraeger@de.ibm.com>;
+        Mon, 20 May 2019 08:41:50 +0100
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (9.149.109.195)
+        by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Mon, 20 May 2019 08:41:47 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x4K7fko942336376
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 20 May 2019 07:41:46 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A2A174203F;
+        Mon, 20 May 2019 07:41:46 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3E52C42041;
+        Mon, 20 May 2019 07:41:46 +0000 (GMT)
+Received: from oc7455500831.ibm.com (unknown [9.152.224.226])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Mon, 20 May 2019 07:41:46 +0000 (GMT)
+Subject: Re: [PATCH -next] KVM: s390: fix typo in parameter description
+From:   Christian Borntraeger <borntraeger@de.ibm.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        David Hildenbrand <david@redhat.com>,
+        Cornelia Huck <cohuck@redhat.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>
+Cc:     linux-s390@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>
+References: <20190504065145.53665-1-weiyongjun1@huawei.com>
+ <1fdd0337-6d73-99aa-2dea-25f5d10c8107@de.ibm.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=borntraeger@de.ibm.com; prefer-encrypt=mutual; keydata=
+ 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
+ syiRa+UVlsKmx1hsEg==
+Date:   Mon, 20 May 2019 09:41:46 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2fe05b8e-94d9-4b49-07d5-08d6dce61b6a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 May 2019 05:43:38.2864
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR08MB4958
+In-Reply-To: <1fdd0337-6d73-99aa-2dea-25f5d10c8107@de.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19052007-0028-0000-0000-0000036F7FFE
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19052007-0029-0000-0000-0000242F242F
+Message-Id: <a6d67ef5-2db8-5373-04ae-d54f5bdb79db@de.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-20_04:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1905200055
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, May 03, 2019 at 03:25:25PM +0300, Dan Carpenter wrote:
-> We need to check whether drm_atomic_get_crtc_state() returns an error
-> pointer before dereferencing "crtc_st".
->=20
-> Fixes: 7d31b9e7a550 ("drm/komeda: Add komeda_plane/plane_helper_funcs")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> Acked-by: Liviu Dudau <liviu.dudau@arm.com>
-> ---
->  drivers/gpu/drm/arm/display/komeda/komeda_plane.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_plane.c b/drivers/=
-gpu/drm/arm/display/komeda/komeda_plane.c
-> index 07ed0cc1bc44..c7e5fc6e5500 100644
-> --- a/drivers/gpu/drm/arm/display/komeda/komeda_plane.c
-> +++ b/drivers/gpu/drm/arm/display/komeda/komeda_plane.c
-> @@ -64,7 +64,7 @@ komeda_plane_atomic_check(struct drm_plane *plane,
->  		return 0;
-> =20
->  	crtc_st =3D drm_atomic_get_crtc_state(state->state, state->crtc);
-> -	if (!crtc_st->enable) {
-> +	if (IS_ERR(crtc_st) || !crtc_st->enable) {
->  		DRM_DEBUG_ATOMIC("Cannot update plane on a disabled CRTC.\n");
->  		return -EINVAL;
->  	}
+On 06.05.19 09:52, Christian Borntraeger wrote:
+> 
+> 
+> On 04.05.19 08:51, Wei Yongjun wrote:
+>> Fix typo in parameter description.
+>>
+>> Fixes: 8b905d28ee17 ("KVM: s390: provide kvm_arch_no_poll function")
+>> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> 
+> Acked-by: Christian Borntraeger <borntraeger@de.ibm.com>
 
-Thank you for the fixing.
+Since I have another fix pending, I now picked this up myself and
+this will be in my next pull request for 5.2-rc2.
 
-Reviewed-by: James Qian Wang (Arm Technology China) <james.qian.wang@arm.co=
-m>
+> 
+>> ---
+>>  arch/s390/kvm/kvm-s390.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+>> index 8d6d75db8de6..ac6163c334d6 100644
+>> --- a/arch/s390/kvm/kvm-s390.c
+>> +++ b/arch/s390/kvm/kvm-s390.c
+>> @@ -181,7 +181,7 @@ MODULE_PARM_DESC(hpage, "1m huge page backing support");
+>>  /* maximum percentage of steal time for polling.  >100 is treated like 100 */
+>>  static u8 halt_poll_max_steal = 10;
+>>  module_param(halt_poll_max_steal, byte, 0644);
+>> -MODULE_PARM_DESC(hpage, "Maximum percentage of steal time to allow polling");
+>> +MODULE_PARM_DESC(halt_poll_max_steal, "Maximum percentage of steal time to allow polling");
+>>  
+>>  /*
+>>   * For now we handle at most 16 double words as this is what the s390 base
+>>
+>>
+>>
+

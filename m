@@ -2,69 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E967524731
-	for <lists+kernel-janitors@lfdr.de>; Tue, 21 May 2019 06:58:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6917D24AEE
+	for <lists+kernel-janitors@lfdr.de>; Tue, 21 May 2019 10:56:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726193AbfEUE6z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 21 May 2019 00:58:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54268 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725793AbfEUE6z (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 21 May 2019 00:58:55 -0400
-Received: from localhost (unknown [106.201.107.13])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4207121019;
-        Tue, 21 May 2019 04:58:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1558414735;
-        bh=w0PrRhb/VLNDP5E1yQloNmbdNQpf/jLdu2sJYIQzoqU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=wmWkLTPAQGqtWF4/jrOD7kyg84A83fKHEk6yU+xZ3MeatGBuQ2XTplO2ASwvXXW8f
-         jSHwl6zOpH+h2vhWkCJjY/v3sVd31AGKwC5TZF/oL7TM6CS/ifXpKaeoIdx2pEpNnN
-         PQlVn0vCEPAoBikbm3TbaIf0ZkRVki+DzGy6e0B0=
-Date:   Tue, 21 May 2019 10:28:51 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Shun-Chih Yu <shun-chih.yu@mediatek.com>,
-        Sean Wang <sean.wang@mediatek.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        dmaengine@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] dmaengine: mediatek-cqdma: sleeping in atomic context
-Message-ID: <20190521045851.GR15118@vkoul-mobl>
-References: <20190509100923.GA7024@mwanda>
+        id S1726391AbfEUI4d (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 21 May 2019 04:56:33 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:38066 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726289AbfEUI4d (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 21 May 2019 04:56:33 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hT0ZM-0000vb-P9; Tue, 21 May 2019 08:56:24 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Li Yang <leoyang.li@nxp.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] soc: fsl: fix spelling mistake "Firmaware" -> "Firmware"
+Date:   Tue, 21 May 2019 09:56:24 +0100
+Message-Id: <20190521085624.13665-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190509100923.GA7024@mwanda>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 09-05-19, 13:09, Dan Carpenter wrote:
-> The mtk_cqdma_poll_engine_done() function takes a true/false parameter
-> where true means it's called from atomic context.  There are a couple
-> places where it was set to false but it's actually in atomic context
-> so it should be true.
-> 
-> All the callers for mtk_cqdma_hard_reset() are holding a spin_lock and
-> in mtk_cqdma_free_chan_resources() we take a spin_lock before calling
-> the mtk_cqdma_poll_engine_done() function.
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied, thanks
+There is a spelling mistake in a pr_err message. Fix it.
 
-> 
-> Fixes: b1f01e48df5a ("dmaengine: mediatek: Add MediaTek Command-Queue DMA controller for MT6765 SoC")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> The "atomic" parameter is always true so the temptation was to just
-> remove it entirely.
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/soc/fsl/dpaa2-console.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-a patch is welcome :)
-
+diff --git a/drivers/soc/fsl/dpaa2-console.c b/drivers/soc/fsl/dpaa2-console.c
+index 9168d8ddc932..27243f706f37 100644
+--- a/drivers/soc/fsl/dpaa2-console.c
++++ b/drivers/soc/fsl/dpaa2-console.c
+@@ -73,7 +73,7 @@ static u64 get_mc_fw_base_address(void)
+ 
+ 	mcfbaregs = ioremap(mc_base_addr.start, resource_size(&mc_base_addr));
+ 	if (!mcfbaregs) {
+-		pr_err("could not map MC Firmaware Base registers\n");
++		pr_err("could not map MC Firmware Base registers\n");
+ 		return 0;
+ 	}
+ 
 -- 
-~Vinod
+2.20.1
+

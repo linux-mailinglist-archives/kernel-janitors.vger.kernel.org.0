@@ -2,113 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7228627109
-	for <lists+kernel-janitors@lfdr.de>; Wed, 22 May 2019 22:48:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 384D227219
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 May 2019 00:14:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730150AbfEVUst (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 22 May 2019 16:48:49 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:41329 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729844AbfEVUst (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 22 May 2019 16:48:49 -0400
-Received: by mail-lj1-f196.google.com with SMTP id q16so3378153ljj.8;
-        Wed, 22 May 2019 13:48:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=smckmYiROd8TfrSlooS1zTGOXnlqxP3nKtXXuWXW1/w=;
-        b=cKc2UJHG/VNOdoqg3/aPA5d8s8mZerYxr/ngfA7kUj9qG8etw1VgQrgqUHClEt78kN
-         1VEpMABpiOoGTO9NymwafOeCFTaEeFbtN9M1/eQ1s/rzHxLuL+A2ccaNgOU9vV8VcD/q
-         Izp7yiWxaHt0eqvMFlJ3OIEY+ytZjtKbDYtAtbBHLTQg6rNyJsCaif2HXLtQ3OInVdzp
-         AsPb5Cs3RkCeZzVjvE0ej6phCyrLrnTsi19xYsBGr41XNbouv9lhekaQdDgQ/sWpW078
-         FZ4KWFYf/nCxGCNtRUw0ds12uz4T3NngYRkNpcv6i1LrQtLvD9e/S75Vv8zo6i8p+pjK
-         Sz0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=smckmYiROd8TfrSlooS1zTGOXnlqxP3nKtXXuWXW1/w=;
-        b=A6jff4Fvb374e5/ts8c0x0y24yUIwPfq59WxsUrfSK22qVwGN6k6G+vpYRqn/FgSR8
-         yxMe0P5b0esIVCYdn1SXUsb/BCxQh44vA7BhBviqPwvSKaabifgLa8k9mZoaRCVVfcBe
-         yqWo4W0KCOsTNT7xwnnUyQQPJA9uwcy7tV/bmdaazm7G/2MJs9IIhm/z3usNo8SRpHts
-         MHkC6O847qXcUxy800iQ4SPu0ucjJ2aCscGpGmx2NwT7PD16lOGhySr1GvERkkQl8VU4
-         vsNgI+5mBFziLkpmWImYc05HQ0drethzOaZl+yAlCPO1vnCK8Dt/RBIhVwa6JO6yb0hf
-         6Qag==
-X-Gm-Message-State: APjAAAXfUXajgrnASc09qjCvOnIIuEgGZTsy+/JD5X1eHOfzBFlrvoBp
-        FCa9ZhbIkw0bHyvQZ2JpSQ6E+e5u
-X-Google-Smtp-Source: APXvYqwVtcVCyb7sG+hTvRvcE9aLBetcccRb/2nMei/ndConFgTNMXsTkLyq/ngxorSZjBGhF9rXVA==
-X-Received: by 2002:a2e:1284:: with SMTP id 4mr16169111ljs.138.1558558127032;
-        Wed, 22 May 2019 13:48:47 -0700 (PDT)
-Received: from [192.168.1.17] (dma4.neoplus.adsl.tpnet.pl. [83.24.56.4])
-        by smtp.gmail.com with ESMTPSA id r3sm3238139ljr.76.2019.05.22.13.48.45
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 22 May 2019 13:48:46 -0700 (PDT)
-Subject: Re: [PATCH][V2] leds: TI LMU: fix u8 variable comparisons with less
- than zero
-To:     Colin King <colin.king@canonical.com>
-Cc:     Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        linux-leds@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20190522101745.21828-1-colin.king@canonical.com>
-From:   Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Message-ID: <1dab790f-0b82-5fac-2081-7943379ccc54@gmail.com>
-Date:   Wed, 22 May 2019 22:48:44 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-In-Reply-To: <20190522101745.21828-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+        id S1727802AbfEVWO1 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 22 May 2019 18:14:27 -0400
+Received: from mga14.intel.com ([192.55.52.115]:15959 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726553AbfEVWO1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 22 May 2019 18:14:27 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 May 2019 15:14:27 -0700
+X-ExtLoop1: 1
+Received: from orsmsx109.amr.corp.intel.com ([10.22.240.7])
+  by fmsmga001.fm.intel.com with ESMTP; 22 May 2019 15:14:27 -0700
+Received: from orsmsx126.amr.corp.intel.com (10.22.240.126) by
+ ORSMSX109.amr.corp.intel.com (10.22.240.7) with Microsoft SMTP Server (TLS)
+ id 14.3.408.0; Wed, 22 May 2019 15:14:26 -0700
+Received: from orsmsx104.amr.corp.intel.com ([169.254.4.200]) by
+ ORSMSX126.amr.corp.intel.com ([169.254.4.35]) with mapi id 14.03.0415.000;
+ Wed, 22 May 2019 15:14:26 -0700
+From:   "Bowers, AndrewX" <andrewx.bowers@intel.com>
+To:     "'kernel-janitors@vger.kernel.org'" <kernel-janitors@vger.kernel.org>,
+        "'intel-wired-lan@lists.osuosl.org'" 
+        <intel-wired-lan@lists.osuosl.org>
+Subject: RE: [Intel-wired-lan] [PATCH] i40e/i40evf: cleanup
+ i40e_update_nvm_checksum()
+Thread-Topic: [Intel-wired-lan] [PATCH] i40e/i40evf: cleanup
+ i40e_update_nvm_checksum()
+Thread-Index: AQHVBk+PEe+aAebrB0izRitjLZDSJqZv9IzQgAfV1tA=
+Date:   Wed, 22 May 2019 22:14:26 +0000
+Message-ID: <26D9FDECA4FBDD4AADA65D8E2FC68A4A1D3DCB1E@ORSMSX104.amr.corp.intel.com>
+References: <20190509101051.GB7024@mwanda>
+ <26D9FDECA4FBDD4AADA65D8E2FC68A4A1D3DB7A7@ORSMSX104.amr.corp.intel.com>
+In-Reply-To: <26D9FDECA4FBDD4AADA65D8E2FC68A4A1D3DB7A7@ORSMSX104.amr.corp.intel.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMjU2Y2MwZmEtZDNlNC00N2E0LTg5YWItYWVmODkwOWIzNmQyIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiRHN0OXpcL09LZkNLXC9uQjdackRPQlRNT3BLQUxNVEtaYndBM1ZDZ3BxMFhXSStGWnZOd2hmUzF3cmtMYmhZbndiIn0=
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.0.400.15
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.140]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
+MIME-Version: 1.0
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Colin,
+> -----Original Message-----
+> From: Bowers, AndrewX
+> Sent: Friday, May 17, 2019 3:34 PM
+> To: kernel-janitors@vger.kernel.org; intel-wired-lan@lists.osuosl.org
+> Subject: RE: [Intel-wired-lan] [PATCH] i40e/i40evf: cleanup
+> i40e_update_nvm_checksum()
+> 
+> > -----Original Message-----
+> > From: Intel-wired-lan [mailto:intel-wired-lan-bounces@osuosl.org] On
+> > Behalf Of Dan Carpenter
+> > Sent: Thursday, May 9, 2019 3:11 AM
+> > To: Kirsher, Jeffrey T <jeffrey.t.kirsher@intel.com>
+> > Cc: kernel-janitors@vger.kernel.org; intel-wired-lan@lists.osuosl.org
+> > Subject: [Intel-wired-lan] [PATCH] i40e/i40evf: cleanup
+> > i40e_update_nvm_checksum()
+> >
+> > Smatch complains that we use 'checksum' when it's uninitialized.
+> >
+> >     drivers/net/ethernet/intel/i40e/i40e_nvm.c:581
+> > i40e_update_nvm_checksum()
+> >     error: uninitialized symbol 'checksum'.
+> >
+> > This is true, but it harmless because we don't use it again.
+> >
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> >  drivers/net/ethernet/intel/i40e/i40e_nvm.c | 9 ++++-----
+> >  1 file changed, 4 insertions(+), 5 deletions(-)
+> 
+> kernel-janitors@vger.kernel.org; intel-wired-lan@lists.osuosl.org
 
-Thank you for the patch.
+Tested-by: Andrew Bowers <andrewx.bowers@intel.com>
 
-On 5/22/19 12:17 PM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The u8 variables ramp_ups and ramp_downs are being compared to less
-> than zero, this will always be false.  Fix this by making the ramp
-> variables ints.
-> 
-> Addresses-Coverity: ("Unsigned compared against 0")
-> Fixes: 9a8e66ebeaa2 ("leds: TI LMU: Add common code for TI LMU devices")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
-> 
-> V2: make u8 vars ints rather than removing the comparison. Thanks once
-> more to Dan Carpenter for spotting my clearly stupid V1 version and
-> correcting my mistake.
-> 
-> ---
->   drivers/leds/leds-ti-lmu-common.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/leds/leds-ti-lmu-common.c b/drivers/leds/leds-ti-lmu-common.c
-> index adc7293004f1..c9ab40d5a6ba 100644
-> --- a/drivers/leds/leds-ti-lmu-common.c
-> +++ b/drivers/leds/leds-ti-lmu-common.c
-> @@ -84,7 +84,7 @@ static int ti_lmu_common_convert_ramp_to_index(unsigned int usec)
->   int ti_lmu_common_set_ramp(struct ti_lmu_bank *lmu_bank)
->   {
->   	struct regmap *regmap = lmu_bank->regmap;
-> -	u8 ramp, ramp_up, ramp_down;
-> +	int ramp, ramp_up, ramp_down;
->   
->   	if (lmu_bank->ramp_up_usec == 0 && lmu_bank->ramp_down_usec == 0) {
->   		ramp_up = 0;
-> 
+Helps to paste in my "Tested by" and not the addresses I'm sending it to... 
 
-Applied.
-
--- 
-Best regards,
-Jacek Anaszewski

@@ -2,54 +2,130 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FD6F2733C
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 May 2019 02:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F6422811B
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 May 2019 17:26:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728511AbfEWAWc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 22 May 2019 20:22:32 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:36492 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727634AbfEWAWb (ORCPT
+        id S1730865AbfEWPZ7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 May 2019 11:25:59 -0400
+Received: from esa2.microchip.iphmx.com ([68.232.149.84]:49569 "EHLO
+        esa2.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730741AbfEWPZ6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 22 May 2019 20:22:31 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d8])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 455FB15042EA8;
-        Wed, 22 May 2019 17:22:31 -0700 (PDT)
-Date:   Wed, 22 May 2019 17:22:30 -0700 (PDT)
-Message-Id: <20190522.172230.230166759225525041.davem@davemloft.net>
-To:     dan.carpenter@oracle.com
-Cc:     isdn@linux-pingi.de, zhongjiang@huawei.com, deepa.kernel@gmail.com,
-        penguin-kernel@I-love.SAKURA.ne.jp, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] mISDN: make sure device name is NUL terminated
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190522084513.GA2129@mwanda>
-References: <20190522084513.GA2129@mwanda>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 22 May 2019 17:22:31 -0700 (PDT)
+        Thu, 23 May 2019 11:25:58 -0400
+Received-SPF: Pass (esa2.microchip.iphmx.com: domain of
+  Don.Brace@microchip.com designates 198.175.253.82 as
+  permitted sender) identity=mailfrom;
+  client-ip=198.175.253.82; receiver=esa2.microchip.iphmx.com;
+  envelope-from="Don.Brace@microchip.com";
+  x-sender="Don.Brace@microchip.com"; x-conformance=spf_only;
+  x-record-type="v=spf1"; x-record-text="v=spf1 mx
+  a:ushub1.microchip.com a:smtpout.microchip.com
+  a:mx1.microchip.iphmx.com a:mx2.microchip.iphmx.com
+  include:servers.mcsv.net include:mktomail.com
+  include:spf.protection.outlook.com ~all"
+Received-SPF: None (esa2.microchip.iphmx.com: no sender
+  authenticity information available from domain of
+  postmaster@email.microchip.com) identity=helo;
+  client-ip=198.175.253.82; receiver=esa2.microchip.iphmx.com;
+  envelope-from="Don.Brace@microchip.com";
+  x-sender="postmaster@email.microchip.com";
+  x-conformance=spf_only
+Authentication-Results: esa2.microchip.iphmx.com; spf=Pass smtp.mailfrom=Don.Brace@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dkim=pass (signature verified) header.i=@microchiptechnology.onmicrosoft.com; dmarc=pass (p=none dis=none) d=microchip.com
+X-IronPort-AV: E=Sophos;i="5.60,503,1549954800"; 
+   d="scan'208";a="34344722"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa2.microchip.iphmx.com with ESMTP/TLS/DHE-RSA-AES256-SHA; 23 May 2019 08:25:57 -0700
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (10.10.215.89) by
+ email.microchip.com (10.10.76.107) with Microsoft SMTP Server (TLS) id
+ 14.3.352.0; Thu, 23 May 2019 08:25:54 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=microchiptechnology.onmicrosoft.com;
+ s=selector1-microchiptechnology-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8puLPXCNYA/+uZgztRV/M5ABTGBQh2fcLQYj44T2bz4=;
+ b=rCsmatqBP1TLNtZEdzF6DlgqCGtRNNRuYjyem6BupNQz3oWJB1z+w35mQVCruNI/LeFgh4NXNhzhOehYC/RgO9+ogHV5+7+FWm/W3OkaiykJMdXEUl1fDuHrFZPHQ48L5SxBrEGh5tYGQGeYA2v0Ix0/gJTWPalYMLT3ptvGpoo=
+Received: from SN6PR11MB2767.namprd11.prod.outlook.com (52.135.92.154) by
+ SN6PR11MB3119.namprd11.prod.outlook.com (52.135.127.10) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1922.16; Thu, 23 May 2019 15:25:48 +0000
+Received: from SN6PR11MB2767.namprd11.prod.outlook.com
+ ([fe80::d415:48f:41b6:1ae8]) by SN6PR11MB2767.namprd11.prod.outlook.com
+ ([fe80::d415:48f:41b6:1ae8%6]) with mapi id 15.20.1922.018; Thu, 23 May 2019
+ 15:25:48 +0000
+From:   <Don.Brace@microchip.com>
+To:     <colin.king@canonical.com>, <don.brace@microsemi.com>,
+        <jejb@linux.ibm.com>, <martin.petersen@oracle.com>,
+        <esc.storagedev@microsemi.com>, <linux-scsi@vger.kernel.org>
+CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH][next] scsi: hpsa: fix an uninitialized read and
+ dereference of pointer dev
+Thread-Topic: [PATCH][next] scsi: hpsa: fix an uninitialized read and
+ dereference of pointer dev
+Thread-Index: AQHVEHpBQxBuxxIZgEeWRpYmBxaPFaZ41iow
+Date:   Thu, 23 May 2019 15:25:48 +0000
+Message-ID: <SN6PR11MB27672A7C88FE3EB111B4FF64E1010@SN6PR11MB2767.namprd11.prod.outlook.com>
+References: <20190522083903.18849-1-colin.king@canonical.com>
+In-Reply-To: <20190522083903.18849-1-colin.king@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [216.54.225.58]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: d17aa04a-768f-40b1-852f-08d6df92eeac
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600141)(711020)(4605104)(2017052603328)(7193020);SRVR:SN6PR11MB3119;
+x-ms-traffictypediagnostic: SN6PR11MB3119:
+x-microsoft-antispam-prvs: <SN6PR11MB311979950020AD8A281AD2BBE1010@SN6PR11MB3119.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:3968;
+x-forefront-prvs: 00462943DE
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(136003)(376002)(39860400002)(346002)(396003)(366004)(13464003)(189003)(199004)(71200400001)(71190400001)(11346002)(66446008)(14444005)(66556008)(64756008)(66476007)(72206003)(4326008)(2906002)(2501003)(478600001)(256004)(7736002)(8676002)(102836004)(81156014)(25786009)(66946007)(186003)(486006)(8936002)(73956011)(2201001)(81166006)(14454004)(68736007)(5660300002)(76116006)(446003)(86362001)(316002)(229853002)(33656002)(74316002)(52536014)(9686003)(26005)(76176011)(3846002)(6116002)(54906003)(305945005)(6436002)(6246003)(53936002)(53546011)(66066001)(55016002)(7696005)(6506007)(110136005)(476003)(99286004);DIR:OUT;SFP:1101;SCL:1;SRVR:SN6PR11MB3119;H:SN6PR11MB2767.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: microchip.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: ZFppXqt3BhmD7HaoL8jsojlY7zKZMBSXMs5WfFvMFTzHoUPLet7BDo3cOjZ0D57vVbxlE1PKHP0krPXB/K76vnXvnVi0pypNeZhmRKqmv5mWhD4zUCiyzPIhvXdEjKuy2NK2opZJvW4a3VCtITR5DUJw0QtPf4ShbKg217Gsgy3/j8HH1rG4LR5Me5P7yJ0FmyY1Ps84UL4Y5xzA8jDq8LrU1FD3PiiSbu0vBKEgv8z14M76+mujvcd7XrYj397ZA32llG035N2s8k5PjMG6kgCTpBfBvE8euCpOlRz+yepTuriGil+3c7ieZK6GubGcLCnF5k2ugJ+TKbqUEg/oOFRAuazKG7xzl2eayutJigek48sW7ajMop5+4q0Fpi83bqiQ9bholLklJ9ODHVupj5rbfpk6aefW+1VGVYmUwrQ=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-Network-Message-Id: d17aa04a-768f-40b1-852f-08d6df92eeac
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 May 2019 15:25:48.1317
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3f4057f3-b418-4d4e-ba84-d55b4e897d88
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Don.Brace@microchip.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN6PR11MB3119
+X-OriginatorOrg: microchip.com
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Wed, 22 May 2019 11:45:13 +0300
-
-> The user can change the device_name with the IMSETDEVNAME ioctl, but we
-> need to ensure that the user's name is NUL terminated.  Otherwise it
-> could result in a buffer overflow when we copy the name back to the user
-> with IMGETDEVINFO ioctl.
-> 
-> I also changed two strcpy() calls which handle the name to strscpy().
-> Hopefully, there aren't any other ways to create a too long name, but
-> it's nice to do this as a kernel hardening measure.
-> 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-Applied.
+LS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KRnJvbTogbGludXgtc2NzaS1vd25lckB2Z2VyLmtl
+cm5lbC5vcmcgW21haWx0bzpsaW51eC1zY3NpLW93bmVyQHZnZXIua2VybmVsLm9yZ10gT24gQmVo
+YWxmIE9mIENvbGluIEtpbmcNClNlbnQ6IFdlZG5lc2RheSwgTWF5IDIyLCAyMDE5IDM6MzkgQU0N
+ClRvOiBEb24gQnJhY2UgPGRvbi5icmFjZUBtaWNyb3NlbWkuY29tPjsgSmFtZXMgRSAuIEogLiBC
+b3R0b21sZXkgPGplamJAbGludXguaWJtLmNvbT47IE1hcnRpbiBLIC4gUGV0ZXJzZW4gPG1hcnRp
+bi5wZXRlcnNlbkBvcmFjbGUuY29tPjsgZXNjLnN0b3JhZ2VkZXZAbWljcm9zZW1pLmNvbTsgbGlu
+dXgtc2NzaUB2Z2VyLmtlcm5lbC5vcmcNCkNjOiBrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwu
+b3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnDQpTdWJqZWN0OiBbUEFUQ0hdW25leHRd
+IHNjc2k6IGhwc2E6IGZpeCBhbiB1bmluaXRpYWxpemVkIHJlYWQgYW5kIGRlcmVmZXJlbmNlIG9m
+IHBvaW50ZXIgZGV2DQoNCkZyb206IENvbGluIElhbiBLaW5nIDxjb2xpbi5raW5nQGNhbm9uaWNh
+bC5jb20+DQoNCkN1cnJlbnRseSB0aGUgY2hlY2sgZm9yIGEgbG9ja3VwX2RldGVjdGVkIGZhaWx1
+cmUgZXhpdHMgdmlhIHRoZSBsYWJlbCByZXR1cm5fcmVzZXRfc3RhdHVzIHRoYXQgcmVhZHMgYW5k
+IGRlcmVmZXJlbmNlcyBhbiB1bmluaXRpYWxpemVkIHBvaW50ZXIgZGV2LiAgRml4IHRoaXMgYnkg
+ZW5zdXJpbmcgZGV2IGlzIGluaW50aWFsaXplZCB0byBudWxsLg0KDQpBZGRyZXNzZXMtQ292ZXJp
+dHk6ICgiVW5pbml0aWFsaXplZCBwb2ludGVyIHJlYWQiKQ0KRml4ZXM6IDE0OTkxYTViYWRlNSAo
+InNjc2k6IGhwc2E6IGNvcnJlY3QgZGV2aWNlIHJlc2V0cyIpDQpTaWduZWQtb2ZmLWJ5OiBDb2xp
+biBJYW4gS2luZyA8Y29saW4ua2luZ0BjYW5vbmljYWwuY29tPg0KDQpJIHNlbnQgdXAgYSBzaW1p
+bGFyIHBhdGNoIG9uIDUvMTYsIGJ1dCB0aGlzIGlzIGp1c3QgYXMgZ29vZC4NCkFja2VkLWJ5OiBE
+b24gQnJhY2UgPGRvbi5icmFjZUBtaWNyb3NlbWkuY29tPg0KDQpUaGFua3MgZm9yIHlvdXIgcGF0
+Y2guDQoNCi0tLQ0KIGRyaXZlcnMvc2NzaS9ocHNhLmMgfCAyICstDQogMSBmaWxlIGNoYW5nZWQs
+IDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQoNCmRpZmYgLS1naXQgYS9kcml2ZXJzL3Nj
+c2kvaHBzYS5jIGIvZHJpdmVycy9zY3NpL2hwc2EuYyBpbmRleCBjNTYwYTQ1MzI3MzMuLmFjODMz
+OGIwNTcxYiAxMDA2NDQNCi0tLSBhL2RyaXZlcnMvc2NzaS9ocHNhLmMNCisrKyBiL2RyaXZlcnMv
+c2NzaS9ocHNhLmMNCkBAIC01OTQ3LDcgKzU5NDcsNyBAQCBzdGF0aWMgaW50IGhwc2FfZWhfZGV2
+aWNlX3Jlc2V0X2hhbmRsZXIoc3RydWN0IHNjc2lfY21uZCAqc2NzaWNtZCkNCiAJaW50IHJjID0g
+U1VDQ0VTUzsNCiAJaW50IGk7DQogCXN0cnVjdCBjdGxyX2luZm8gKmg7DQotCXN0cnVjdCBocHNh
+X3Njc2lfZGV2X3QgKmRldjsNCisJc3RydWN0IGhwc2Ffc2NzaV9kZXZfdCAqZGV2ID0gTlVMTDsN
+CiAJdTggcmVzZXRfdHlwZTsNCiAJY2hhciBtc2dbNDhdOw0KIAl1bnNpZ25lZCBsb25nIGZsYWdz
+Ow0KLS0NCjIuMjAuMQ0KDQo=

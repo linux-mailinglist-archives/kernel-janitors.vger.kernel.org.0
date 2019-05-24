@@ -2,33 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 168D72A05B
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 May 2019 23:26:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B8F82A06D
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 May 2019 23:34:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404237AbfEXV0j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 May 2019 17:26:39 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:58802 "EHLO
+        id S2404251AbfEXVeA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 May 2019 17:34:00 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:58896 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404163AbfEXV0i (ORCPT
+        with ESMTP id S2404176AbfEXVeA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 May 2019 17:26:38 -0400
+        Fri, 24 May 2019 17:34:00 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hUHhr-0007g4-Jm; Fri, 24 May 2019 21:26:27 +0000
+        id 1hUHp1-0008Ea-TX; Fri, 24 May 2019 21:33:52 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Chris Wilson <chris@chris-wilson.co.uk>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+To:     Clemens Ladisch <clemens@ladisch.de>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/i915/gtt: set err to -ENOMEM on memory allocation failure
-Date:   Fri, 24 May 2019 22:26:27 +0100
-Message-Id: <20190524212627.24256-1-colin.king@canonical.com>
+Subject: [PATCH][next] ALSA: firewire-lib: remove redundant assignment to cip_header
+Date:   Fri, 24 May 2019 22:33:51 +0100
+Message-Id: <20190524213351.24594-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -40,33 +36,28 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently when the allocation of ppgtt->work fails the error return
-path via err_free returns an uninitialized value in err. Fix this
-by setting err to the appropriate error return of -ENOMEM.
+The assignement to cip_header is redundant as the value never
+read and it is being re-assigned in the if and else paths of
+the following if statement. Clean up the code by removing it.
 
-Addresses-Coverity: ("Uninitialized scalar variable")
-Fixes: d3622099c76f ("drm/i915/gtt: Always acquire struct_mutex for gen6_ppgtt_cleanup")
+Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/i915/i915_gem_gtt.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/firewire/amdtp-stream.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_gem_gtt.c b/drivers/gpu/drm/i915/i915_gem_gtt.c
-index 8d8a4b0ad4d9..8a9b506387d4 100644
---- a/drivers/gpu/drm/i915/i915_gem_gtt.c
-+++ b/drivers/gpu/drm/i915/i915_gem_gtt.c
-@@ -2035,8 +2035,10 @@ static struct i915_hw_ppgtt *gen6_ppgtt_create(struct drm_i915_private *i915)
- 	ppgtt->base.vm.pte_encode = ggtt->vm.pte_encode;
+diff --git a/sound/firewire/amdtp-stream.c b/sound/firewire/amdtp-stream.c
+index 2d9c764061d1..4236955bbf57 100644
+--- a/sound/firewire/amdtp-stream.c
++++ b/sound/firewire/amdtp-stream.c
+@@ -675,7 +675,6 @@ static int handle_in_packet(struct amdtp_stream *s, unsigned int cycle,
+ 		return -EIO;
+ 	}
  
- 	ppgtt->work = kmalloc(sizeof(*ppgtt->work), GFP_KERNEL);
--	if (!ppgtt->work)
-+	if (!ppgtt->work) {
-+		err = -ENOMEM;
- 		goto err_free;
-+	}
- 
- 	err = gen6_ppgtt_init_scratch(ppgtt);
- 	if (err)
+-	cip_header = ctx_header + 2;
+ 	if (!(s->flags & CIP_NO_HEADER)) {
+ 		cip_header = &ctx_header[2];
+ 		err = check_cip_header(s, cip_header, payload_length,
 -- 
 2.20.1
 

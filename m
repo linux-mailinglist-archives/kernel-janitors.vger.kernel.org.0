@@ -2,104 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01C0C2815A
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 May 2019 17:36:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFD57295E1
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 May 2019 12:33:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730990AbfEWPfx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 May 2019 11:35:53 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:36422 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730866AbfEWPfx (ORCPT
+        id S2390242AbfEXKdA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 May 2019 06:33:00 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:36696 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389448AbfEXKdA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 May 2019 11:35:53 -0400
-Received: by mail-ed1-f66.google.com with SMTP id a8so9851491edx.3;
-        Thu, 23 May 2019 08:35:51 -0700 (PDT)
+        Fri, 24 May 2019 06:33:00 -0400
+Received: by mail-wr1-f66.google.com with SMTP id s17so9493602wru.3;
+        Fri, 24 May 2019 03:32:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=u7LRGUAkc7MmENWtPTnGBlH4AqK0GL/jUqDDtZhAKtY=;
-        b=hkLe4JMmxf0dcgTvJtjxIAYwmwWavbwwRoIPkmLlqnh2eTIKFOcvLi4cgcphOplATt
-         POTcp28T3R8sosv4sem6hFp1nsu86K7mb0NLEno1CtbIYorggPaSWfSHaNvDQ5lcb9h1
-         quewMMnxmno5KjR/Wvrh8IXKXf78dzrUgH//sYNEUImyy+hUgOG+SYx0Z+VVMr1PJxK8
-         3c5badxV6idEMF2w8hx3oomth6R2Pd4UyEz2Hy4Jd3KuqKwcAJeHcZQX3s3+cQOys5tY
-         IH4C0IqpRDifzFLYE3mBWv+K8X14840gPwP9A0YTV2O9Zq4dQ8RBpZv4UmvjCrm+RNh3
-         MPxg==
+        h=sender:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=43H7NEPhk13B4dzNlL0gCOKayUYB6rO3EyAsXttShWI=;
+        b=t/rJt4ZKXr5z/Poulu/FjatdRCaCYjOm2V1fOmg9Z5Z/0zIQQzMykgDzX6PRH1PTaz
+         SqdXRDCZFDF8Ey5F+62ueQuNH3eNoLnATAztmg1tqqvOVARpxNsGs9SAfKk+nG+S4awj
+         kzJ39Xm8iITs6MhUkwXK2ZFOQO5XRYDxEzDPkdzgvClHZd/1UfH+TlQGEoFNzC6aAX2Z
+         vngBWREvA0uFd+rfvAu+J1RmdO+zodE4MZLtTOb600cuN/K/rGlBuqZNTpi5jkL5PDAH
+         KuwhA2T/hwh2I7davoS9GYavP7omcLV7ohn64rE+M9NngcL8vIGNrx895fvf9HCJUlxq
+         ObzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=u7LRGUAkc7MmENWtPTnGBlH4AqK0GL/jUqDDtZhAKtY=;
-        b=XNOOvaBOI379vftmpCgM5qT2AXsHQVjP4sJF84tMvYYsSwMXlletG+xmTJif9rC7IV
-         7AMcRsARMq9yeC692X0FKx2uqar6gX/VYWrWh+J/A3/DSorfmxAaq/w/7NSx2jg7VN6T
-         6bQNw2DHe9k/VNgf7wm6WdLEjKNQ/NYqd0kohpRrhWut8bs9pox/XFyiIkHE6zgaNVTq
-         pzlIbrnh73sz5FGo94AaMnEYj+mv09xuZUtAhgwfrQJKDe0+A6/GjIVGKx2OIWBBpR4Q
-         r8aZLbmzHWTQoK502nOtsLQIoZye9JbVQZslQPp2Zoz482TnuOtYy1n30n999SEdzBqj
-         pwgQ==
-X-Gm-Message-State: APjAAAU8aKyILRmHjDxTsDoulYh64P5ztYxvLeMRTlrutB0taMrc+5F3
-        DDsZmfKCMD8tXFIeN5n/a3o=
-X-Google-Smtp-Source: APXvYqx7lm1bbh3OsTk/Fnw+a8KwyrgCSMljf9Y1/4Z8cKrIXySVZ6A9GXIjHJO1dWEdwWOsXX3Hrw==
-X-Received: by 2002:a17:906:265b:: with SMTP id i27mr35933745ejc.147.1558625751135;
-        Thu, 23 May 2019 08:35:51 -0700 (PDT)
-Received: from archlinux-epyc ([2a01:4f9:2b:2b15::2])
-        by smtp.gmail.com with ESMTPSA id z32sm7942897edz.85.2019.05.23.08.35.49
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Thu, 23 May 2019 08:35:50 -0700 (PDT)
-Date:   Thu, 23 May 2019 08:35:48 -0700
-From:   Nathan Chancellor <natechancellor@gmail.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Don Brace <don.brace@microsemi.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        esc.storagedev@microsemi.com, linux-scsi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] scsi: hpsa: fix an uninitialized read and
- dereference of pointer dev
-Message-ID: <20190523153548.GA112363@archlinux-epyc>
-References: <20190522083903.18849-1-colin.king@canonical.com>
+        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
+         :mime-version:content-transfer-encoding;
+        bh=43H7NEPhk13B4dzNlL0gCOKayUYB6rO3EyAsXttShWI=;
+        b=SwwlZAP8gI7XDpt+1wmpY/sslmDGjkLcj+3/pgLmxuLCYXcYOxKV2acj9CJ9CNsj9b
+         ebG6OKrik6Xl0v3XEGab8pxf+Y6RjF7TxGynjFZyPBghTK1WN1Bpp/9QZaR5hOM6u/zI
+         2lAP2xJdTrzklP64REMRGyxGrawgKM6qazTgcv1/JfNNjX51CBxVrM1k4q//oiLCwfOm
+         iRoR1xGegKQlG+S6/WzQV+Mgs7kj2pzGADLB6tzEnBAHoup9G/gSMFdcS8vN677UK3F6
+         8RatnEuuQrILzJdoVXDZZBnf6g1ZLociUjURyMdIYHujM9f5ht6OxjqEU5/yHqw+7YLa
+         2Z9w==
+X-Gm-Message-State: APjAAAWc+2wsoO/l+oUH4KdYoNxB+5ZBMtPSl+hjln7wH7L+tjHEhRgi
+        1i84HK3g6MyMbH32BY4g4Ss=
+X-Google-Smtp-Source: APXvYqy9hMbxDrGpmcWBZqGaOnxSh5id0OZbq5E53Xu7si60swphJIc8cBK1WhyxL072WvFo5bBWnQ==
+X-Received: by 2002:a5d:5342:: with SMTP id t2mr169047wrv.71.1558693978476;
+        Fri, 24 May 2019 03:32:58 -0700 (PDT)
+Received: from macbookpro.malat.net ([2a01:e34:ee1e:860:6f23:82e6:aa2d:bbd1])
+        by smtp.gmail.com with ESMTPSA id k184sm4818626wmk.0.2019.05.24.03.32.55
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 24 May 2019 03:32:56 -0700 (PDT)
+Received: by macbookpro.malat.net (Postfix, from userid 1000)
+        id 150C211415E7; Fri, 24 May 2019 12:32:55 +0200 (CEST)
+From:   Mathieu Malaterre <malat@debian.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     trivial@kernel.org, kernel-janitors@vger.kernel.org,
+        Mathieu Malaterre <malat@debian.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] x86/tsc: Move inline keyword to the beginning of function declarations
+Date:   Fri, 24 May 2019 12:32:51 +0200
+Message-Id: <20190524103252.28575-1-malat@debian.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190522083903.18849-1-colin.king@canonical.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, May 22, 2019 at 09:39:03AM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently the check for a lockup_detected failure exits via the
-> label return_reset_status that reads and dereferences an uninitialized
-> pointer dev.  Fix this by ensuring dev is inintialized to null.
-> 
-> Addresses-Coverity: ("Uninitialized pointer read")
-> Fixes: 14991a5bade5 ("scsi: hpsa: correct device resets")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+The inline keyword was not at the beginning of the function declarations.
+Fix the following warnings triggered when using W=1:
 
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+  arch/x86/kernel/tsc.c:62:1: warning: 'inline' is not at beginning of declaration [-Wold-style-declaration]
+  arch/x86/kernel/tsc.c:79:1: warning: 'inline' is not at beginning of declaration [-Wold-style-declaration]
 
-Clang similarly warns about this, hence my identical submission after
-this, sorry for the noise.
+Cc: Peter Zijlstra <peterz@infradead.org>
+Signed-off-by: Mathieu Malaterre <malat@debian.org>
+---
+ arch/x86/kernel/tsc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> ---
->  drivers/scsi/hpsa.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/scsi/hpsa.c b/drivers/scsi/hpsa.c
-> index c560a4532733..ac8338b0571b 100644
-> --- a/drivers/scsi/hpsa.c
-> +++ b/drivers/scsi/hpsa.c
-> @@ -5947,7 +5947,7 @@ static int hpsa_eh_device_reset_handler(struct scsi_cmnd *scsicmd)
->  	int rc = SUCCESS;
->  	int i;
->  	struct ctlr_info *h;
-> -	struct hpsa_scsi_dev_t *dev;
-> +	struct hpsa_scsi_dev_t *dev = NULL;
->  	u8 reset_type;
->  	char msg[48];
->  	unsigned long flags;
-> -- 
-> 2.20.1
-> 
+diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
+index 0b29e58f288e..75a41bddbc9d 100644
+--- a/arch/x86/kernel/tsc.c
++++ b/arch/x86/kernel/tsc.c
+@@ -59,7 +59,7 @@ struct cyc2ns {
+ 
+ static DEFINE_PER_CPU_ALIGNED(struct cyc2ns, cyc2ns);
+ 
+-void __always_inline cyc2ns_read_begin(struct cyc2ns_data *data)
++__always_inline void cyc2ns_read_begin(struct cyc2ns_data *data)
+ {
+ 	int seq, idx;
+ 
+@@ -76,7 +76,7 @@ void __always_inline cyc2ns_read_begin(struct cyc2ns_data *data)
+ 	} while (unlikely(seq != this_cpu_read(cyc2ns.seq.sequence)));
+ }
+ 
+-void __always_inline cyc2ns_read_end(void)
++__always_inline void cyc2ns_read_end(void)
+ {
+ 	preempt_enable_notrace();
+ }
+-- 
+2.20.1
+

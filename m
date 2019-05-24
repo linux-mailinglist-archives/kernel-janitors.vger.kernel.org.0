@@ -2,29 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B8F82A06D
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 May 2019 23:34:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC0312A09A
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 May 2019 23:44:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404251AbfEXVeA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 May 2019 17:34:00 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:58896 "EHLO
+        id S2404320AbfEXVo3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 May 2019 17:44:29 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59006 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404176AbfEXVeA (ORCPT
+        with ESMTP id S2404176AbfEXVo3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 May 2019 17:34:00 -0400
+        Fri, 24 May 2019 17:44:29 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hUHp1-0008Ea-TX; Fri, 24 May 2019 21:33:52 +0000
+        id 1hUHz9-0000fU-TG; Fri, 24 May 2019 21:44:20 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Clemens Ladisch <clemens@ladisch.de>,
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org
+        Takashi Iwai <tiwai@suse.com>,
+        Simon Ho <simon.ho@conexant.com>, alsa-devel@alsa-project.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ALSA: firewire-lib: remove redundant assignment to cip_header
-Date:   Fri, 24 May 2019 22:33:51 +0100
-Message-Id: <20190524213351.24594-1-colin.king@canonical.com>
+Subject: [PATCH][next] ASoC: cx2072x: remove redundant assignment to pulse_len
+Date:   Fri, 24 May 2019 22:44:19 +0100
+Message-Id: <20190524214419.25075-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,28 +38,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The assignement to cip_header is redundant as the value never
-read and it is being re-assigned in the if and else paths of
-the following if statement. Clean up the code by removing it.
+Variable pulse_len is being initialized to 1 however this value is
+never read and pulse_len is being re-assigned later in a switch
+statement.  Clean up the code by removing the redundant initialization.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- sound/firewire/amdtp-stream.c | 1 -
- 1 file changed, 1 deletion(-)
+ sound/soc/codecs/cx2072x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/firewire/amdtp-stream.c b/sound/firewire/amdtp-stream.c
-index 2d9c764061d1..4236955bbf57 100644
---- a/sound/firewire/amdtp-stream.c
-+++ b/sound/firewire/amdtp-stream.c
-@@ -675,7 +675,6 @@ static int handle_in_packet(struct amdtp_stream *s, unsigned int cycle,
- 		return -EIO;
- 	}
- 
--	cip_header = ctx_header + 2;
- 	if (!(s->flags & CIP_NO_HEADER)) {
- 		cip_header = &ctx_header[2];
- 		err = check_cip_header(s, cip_header, payload_length,
+diff --git a/sound/soc/codecs/cx2072x.c b/sound/soc/codecs/cx2072x.c
+index 23d2b25fe04c..c11a585bbf70 100644
+--- a/sound/soc/codecs/cx2072x.c
++++ b/sound/soc/codecs/cx2072x.c
+@@ -679,7 +679,7 @@ static int cx2072x_config_i2spcm(struct cx2072x_priv *cx2072x)
+ 	int is_right_j = 0;
+ 	int is_frame_inv = 0;
+ 	int is_bclk_inv = 0;
+-	int pulse_len = 1;
++	int pulse_len;
+ 	int frame_len = cx2072x->frame_size;
+ 	int sample_size = cx2072x->sample_size;
+ 	int i2s_right_slot;
 -- 
 2.20.1
 

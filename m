@@ -2,94 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 009FD2A0F2
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 May 2019 00:05:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 112E92A11F
+	for <lists+kernel-janitors@lfdr.de>; Sat, 25 May 2019 00:26:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730167AbfEXWE6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 May 2019 18:04:58 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:46104 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729552AbfEXWE6 (ORCPT
+        id S2404303AbfEXW00 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 May 2019 18:26:26 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59667 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404287AbfEXW00 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 May 2019 18:04:58 -0400
-Received: by mail-pl1-f196.google.com with SMTP id r18so4661222pls.13;
-        Fri, 24 May 2019 15:04:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=YnnyVNqUxh2k/cxJmn0sG9tavfiNdKrpTqEXdJVnlro=;
-        b=Upz4APO1cM07lMLyjajBRGcUaIxxWc2xSIZPv0yCdbKk3bgt8lhoMg/RBm5woTdxPr
-         nACGQHxt104QMt3YOOh2M23sdsn8KzWP43N33VaglrLr0tP4Uc0GjOGD2Enlhex9VIQJ
-         /yNsLnXqaY7H7SRuzusM6LohshAGdco0DOPG58aQuYHlVn+khi52A4xolC0Syz96GUlg
-         AONdEtSU9gMyoKyKxxlCZ+f2GCXI1k7BJOOgckQPYpu5r3jPA7qyv80idWO6GzETPGKv
-         Wo6lFlJbmAFy8PTdZ+uLnfhPiv7bcyUp6FDJfa9Qo2vVvj1pDoHAB6fMuQ+tsu1ZewBH
-         2bYQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=YnnyVNqUxh2k/cxJmn0sG9tavfiNdKrpTqEXdJVnlro=;
-        b=pfxKN3zAPReirnVmToZpIV4v+7tV/Ak2+nxzafvlHKZjwTsdo2/Jr8u7eAipS+lyEM
-         +8t8jxxZ4GbpYv11Rgg0jBr5Ll+tb/Go5P5Xwe+Pf5GrFUJXjfByb15KSI6KzqWohd61
-         8iHAu2LQ84+EkL4/t1LbUMfiSeGwjB5krwygMIusvdnOihD6t/QM/GIFzn16qZ5Mn7fh
-         J//+zFU9WGQzxLGevA9gqDQe6w7l1iuWTdjUixuK/9en6b+WLtgFw1F0qSC5NIAyBap5
-         37ElRdUiS5pT/c2EWKHkbiXgWozbnT6UjW5webZcPNq8oS6LGG7J45r1jUWcew+dYdbE
-         dKTA==
-X-Gm-Message-State: APjAAAX3IrWp9sRilSWvxgD/N2s3Q1mY/wQvVMTHoi/JlWd97N4az+KA
-        odJdgYycAeh2oVAv4nwv+mXOZ5tz
-X-Google-Smtp-Source: APXvYqypmiDhXsU+qDxVxiydwYZ6k6hTxblUTrBF2RHXWA3cgKgAk9DsWjvYxZl+U+7+y7nr6JubvQ==
-X-Received: by 2002:a17:902:a70f:: with SMTP id w15mr39764422plq.222.1558735497195;
-        Fri, 24 May 2019 15:04:57 -0700 (PDT)
-Received: from ?IPv6:2601:282:800:fd80:59ee:6a57:8906:e2a1? ([2601:282:800:fd80:59ee:6a57:8906:e2a1])
-        by smtp.googlemail.com with ESMTPSA id o7sm4736191pfp.168.2019.05.24.15.04.55
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 24 May 2019 15:04:56 -0700 (PDT)
-Subject: Re: [PATCH][next] ipv4: remove redundant assignment to n
-To:     Colin King <colin.king@canonical.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        netdev@vger.kernel.org
+        Fri, 24 May 2019 18:26:26 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hUIdN-00042D-5d; Fri, 24 May 2019 22:25:53 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Simon Ho <simon.ho@conexant.com>, alsa-devel@alsa-project.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190524215658.25432-1-colin.king@canonical.com>
-From:   David Ahern <dsahern@gmail.com>
-Message-ID: <fece118c-22ca-30c5-51b7-b6e9dc56ae59@gmail.com>
-Date:   Fri, 24 May 2019 16:04:54 -0600
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:52.0)
- Gecko/20100101 Thunderbird/52.9.1
+Subject: [PATCH][next] ASoC: cx2072x: fix integer overflow on unsigned int multiply
+Date:   Fri, 24 May 2019 23:25:51 +0100
+Message-Id: <20190524222551.26573-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190524215658.25432-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 5/24/19 3:56 PM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The pointer n is being assigned a value however this value is
-> never read in the code block and the end of the code block
-> continues to the next loop iteration. Clean up the code by
-> removing the redundant assignment.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  net/ipv4/fib_trie.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
+From: Colin Ian King <colin.king@canonical.com>
 
-This looks right to me -- n should have been dropped. It is used in
-fib_trie_free from which I created  __fib_info_notify_update but
-__fib_info_notify_update does do the put_child_root or node_free, it
-only walks the tree looking for relevant entries that need to send the
-NEWROUTE notifications.
+In the case where frac_div larger than 96 the result of an unsigned
+multiplication overflows an unsigned int.  For example, this can
+happen when the sample_rate is 192000 and pll_input is 122.  Fix
+this by casing the first term of the mutiply to a u64. Also remove
+the extraneous parentheses around the expression.
 
-Fixes: 1bff1a0c9bbda ("ipv4: Add function to send route updates")
-Reviewed-by: David Ahern <dsahern@gmail.com>
+Addresses-Coverity: ("Unintentional integer overflow")
+Fixes: a497a4363706 ("ASoC: Add support for Conexant CX2072X CODEC")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ sound/soc/codecs/cx2072x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sound/soc/codecs/cx2072x.c b/sound/soc/codecs/cx2072x.c
+index c11a585bbf70..e8e6fd2e97b6 100644
+--- a/sound/soc/codecs/cx2072x.c
++++ b/sound/soc/codecs/cx2072x.c
+@@ -627,7 +627,7 @@ static int cx2072x_config_pll(struct cx2072x_priv *cx2072x)
+ 	if (frac_div) {
+ 		frac_div *= 1000;
+ 		frac_div /= pll_input;
+-		frac_num = ((4000 + frac_div) * ((1 << 20) - 4));
++		frac_num = (u64)(4000 + frac_div) * ((1 << 20) - 4);
+ 		do_div(frac_num, 7);
+ 		frac = ((u32)frac_num + 499) / 1000;
+ 	}
+-- 
+2.20.1
 

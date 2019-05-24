@@ -2,98 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D03FA295E6
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 May 2019 12:33:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 168D72A05B
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 May 2019 23:26:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390274AbfEXKdq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 May 2019 06:33:46 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:34591 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389942AbfEXKdq (ORCPT
+        id S2404237AbfEXV0j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 May 2019 17:26:39 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:58802 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404163AbfEXV0i (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 May 2019 06:33:46 -0400
-Received: by mail-wr1-f68.google.com with SMTP id f8so9492016wrt.1;
-        Fri, 24 May 2019 03:33:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=xy3TJvnccS7kGUcSZLX9sdDSzruBA3cqxWDF1khBA+4=;
-        b=a5ovVBZw+lCIGJjdJVOqP7nQ8+/GJah+4KRJNDsic1i593Xr2molZadc/TTL321dhs
-         6h+tDBCJh+WhiklO4rE7x07qlQCGLadG/4db6XsJZ7moFJvtkuRQfYWyfjS2T9GngewH
-         bMnu2E9D2iCPv0O9425dOC58fFLEK1jnINmW17ztiyXog0siLAICmazaUr/J4MiDKQOd
-         z+7yzpWYUgIY+NfxG8GjpXRohOqAQUayvuosE7qiIzeziUuxFWlUaBSTUWZCsFXFqMkb
-         eLqN7GY91W5+taYvQfV+j+e34K43aY0vn8KSGGULj/ouBjNlp/RcGHHtbYFnrV6g4gmA
-         +uaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:from:to:cc:subject:date:message-id
-         :mime-version:content-transfer-encoding;
-        bh=xy3TJvnccS7kGUcSZLX9sdDSzruBA3cqxWDF1khBA+4=;
-        b=XNKs8gEz1CNReDq4fOZUu0fPS44gKtmO5eYkHQWSmQx2uhU6jqUhLCWLYOxI21oUfZ
-         IDMb6lJquRbDnX/q+9nqPSU9i44mALiCgfvLc1UmKJ7fYE54kYq2mhPlWxS/efMkz8zL
-         +HzspWOxlhyTMt8KAXQ5wbDzmyPisLEN1tAC87FBkZNWwmTxLz6EfUisPWiKbguSKK/C
-         LaZ9gpQ4cJ4Qsa5bK/9uGL2d/qbv83YyPLKNBHHbnw19f9O6q2s/dCswRrW1yKtJuzcp
-         rABfyc56ogGFI3DtmPasyoDvG3qiTUghGhLcz7pBCx0Ea5nednw9qt0QlDEzVkzKGWxa
-         /DBQ==
-X-Gm-Message-State: APjAAAUkKg54p3EMTue7hTZvEvSnJR/1+dDUC6QLUAwz/XPwTUeMkTWP
-        IZ9hWAFZZMVdv+qFNk17ysdoI22M
-X-Google-Smtp-Source: APXvYqxaatb4farmltlaj0cwWSTh0PzBX2v0mslJ3vCUXBT5o/rX4TmsParooCTTZ8kwa95GD1gYcw==
-X-Received: by 2002:adf:ec0f:: with SMTP id x15mr63377772wrn.120.1558694023967;
-        Fri, 24 May 2019 03:33:43 -0700 (PDT)
-Received: from macbookpro.malat.net ([2a01:e34:ee1e:860:6f23:82e6:aa2d:bbd1])
-        by smtp.gmail.com with ESMTPSA id f16sm1976736wrx.58.2019.05.24.03.33.43
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 24 May 2019 03:33:43 -0700 (PDT)
-Received: by macbookpro.malat.net (Postfix, from userid 1000)
-        id 8D3EB11415E7; Fri, 24 May 2019 12:33:41 +0200 (CEST)
-From:   Mathieu Malaterre <malat@debian.org>
-To:     Thomas Gleixner <tglx@linutronix.de>
-Cc:     trivial@kernel.org, kernel-janitors@vger.kernel.org,
-        Mathieu Malaterre <malat@debian.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>, linux-kernel@vger.kernel.org
-Subject: [PATCH] clocksource: Move inline keyword to the beginning of function declarations
-Date:   Fri, 24 May 2019 12:33:39 +0200
-Message-Id: <20190524103339.28787-1-malat@debian.org>
+        Fri, 24 May 2019 17:26:38 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hUHhr-0007g4-Jm; Fri, 24 May 2019 21:26:27 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Chris Wilson <chris@chris-wilson.co.uk>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/i915/gtt: set err to -ENOMEM on memory allocation failure
+Date:   Fri, 24 May 2019 22:26:27 +0100
+Message-Id: <20190524212627.24256-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The inline keyword was not at the beginning of the function declarations.
-Fix the following warnings triggered when using W=1:
+From: Colin Ian King <colin.king@canonical.com>
 
-  kernel/time/clocksource.c:108:1: warning: 'inline' is not at beginning of declaration [-Wold-style-declaration]
-  kernel/time/clocksource.c:113:1: warning: 'inline' is not at beginning of declaration [-Wold-style-declaration]
+Currently when the allocation of ppgtt->work fails the error return
+path via err_free returns an uninitialized value in err. Fix this
+by setting err to the appropriate error return of -ENOMEM.
 
-Signed-off-by: Mathieu Malaterre <malat@debian.org>
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: d3622099c76f ("drm/i915/gtt: Always acquire struct_mutex for gen6_ppgtt_cleanup")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- kernel/time/clocksource.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/i915/i915_gem_gtt.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index 3bcc19ceb073..fff5f64981c6 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -105,12 +105,12 @@ static DEFINE_SPINLOCK(watchdog_lock);
- static int watchdog_running;
- static atomic_t watchdog_reset_pending;
+diff --git a/drivers/gpu/drm/i915/i915_gem_gtt.c b/drivers/gpu/drm/i915/i915_gem_gtt.c
+index 8d8a4b0ad4d9..8a9b506387d4 100644
+--- a/drivers/gpu/drm/i915/i915_gem_gtt.c
++++ b/drivers/gpu/drm/i915/i915_gem_gtt.c
+@@ -2035,8 +2035,10 @@ static struct i915_hw_ppgtt *gen6_ppgtt_create(struct drm_i915_private *i915)
+ 	ppgtt->base.vm.pte_encode = ggtt->vm.pte_encode;
  
--static void inline clocksource_watchdog_lock(unsigned long *flags)
-+static inline void clocksource_watchdog_lock(unsigned long *flags)
- {
- 	spin_lock_irqsave(&watchdog_lock, *flags);
- }
+ 	ppgtt->work = kmalloc(sizeof(*ppgtt->work), GFP_KERNEL);
+-	if (!ppgtt->work)
++	if (!ppgtt->work) {
++		err = -ENOMEM;
+ 		goto err_free;
++	}
  
--static void inline clocksource_watchdog_unlock(unsigned long *flags)
-+static inline void clocksource_watchdog_unlock(unsigned long *flags)
- {
- 	spin_unlock_irqrestore(&watchdog_lock, *flags);
- }
+ 	err = gen6_ppgtt_init_scratch(ppgtt);
+ 	if (err)
 -- 
 2.20.1
 

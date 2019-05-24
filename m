@@ -2,56 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00BFD2A09C
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 May 2019 23:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 661C02A0CA
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 May 2019 23:57:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404255AbfEXVpQ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 May 2019 17:45:16 -0400
-Received: from mail.fireflyinternet.com ([109.228.58.192]:50350 "EHLO
-        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2404237AbfEXVpQ (ORCPT
+        id S2404448AbfEXV5G (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 May 2019 17:57:06 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59271 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404259AbfEXV5G (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 May 2019 17:45:16 -0400
-X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
-Received: from localhost (unverified [78.156.65.138]) 
-        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 16674029-1500050 
-        for multiple; Fri, 24 May 2019 22:45:08 +0100
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-To:     Colin King <colin.king@canonical.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
-From:   Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20190524212627.24256-1-colin.king@canonical.com>
+        Fri, 24 May 2019 17:57:06 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hUIBO-0001hg-OD; Fri, 24 May 2019 21:56:58 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     "David S . Miller" <davem@davemloft.net>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190524212627.24256-1-colin.king@canonical.com>
-Message-ID: <155873430650.6190.1054401334708975483@skylake-alporthouse-com>
-User-Agent: alot/0.6
-Subject: Re: [PATCH][next] drm/i915/gtt: set err to -ENOMEM on memory allocation
- failure
-Date:   Fri, 24 May 2019 22:45:06 +0100
+Subject: [PATCH][next] ipv4: remove redundant assignment to n
+Date:   Fri, 24 May 2019 22:56:58 +0100
+Message-Id: <20190524215658.25432-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Colin King (2019-05-24 22:26:27)
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently when the allocation of ppgtt->work fails the error return
-> path via err_free returns an uninitialized value in err. Fix this
-> by setting err to the appropriate error return of -ENOMEM.
-> 
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Fixes: d3622099c76f ("drm/i915/gtt: Always acquire struct_mutex for gen6_ppgtt_cleanup")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Saw that last night but got distracted by the panic-on-boot...
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
--Chris
+The pointer n is being assigned a value however this value is
+never read in the code block and the end of the code block
+continues to the next loop iteration. Clean up the code by
+removing the redundant assignment.
+
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ net/ipv4/fib_trie.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
+index ea7df7ebf597..b53ecef89d59 100644
+--- a/net/ipv4/fib_trie.c
++++ b/net/ipv4/fib_trie.c
+@@ -1961,7 +1961,6 @@ static void __fib_info_notify_update(struct net *net, struct fib_table *tb,
+ 			if (IS_TRIE(pn))
+ 				break;
+ 
+-			n = pn;
+ 			pn = node_parent(pn);
+ 			cindex = get_index(pkey, pn);
+ 			continue;
+-- 
+2.20.1
+

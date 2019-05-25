@@ -2,68 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8527B2A32F
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 May 2019 08:39:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACF5C2A359
+	for <lists+kernel-janitors@lfdr.de>; Sat, 25 May 2019 10:05:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726334AbfEYGjb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 25 May 2019 02:39:31 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:60374 "EHLO huawei.com"
+        id S1726368AbfEYIFC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 25 May 2019 04:05:02 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:58434 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726145AbfEYGjb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 25 May 2019 02:39:31 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id A65D8E51DCCD4520424E;
-        Sat, 25 May 2019 14:39:21 +0800 (CST)
-Received: from [127.0.0.1] (10.177.96.96) by DGGEMS407-HUB.china.huawei.com
- (10.3.19.207) with Microsoft SMTP Server id 14.3.439.0; Sat, 25 May 2019
- 14:39:19 +0800
-Subject: =?UTF-8?Q?Re:_[PATCH_net]_staging:_Remove_set_but_not_used_variable?=
- =?UTF-8?B?IOKAmHN0YXR1c+KAmQ==?=
-To:     Greg KH <gregkh@linuxfoundation.org>
+        id S1726256AbfEYIFC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 25 May 2019 04:05:02 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id C69EB89F2EF8727085CA;
+        Sat, 25 May 2019 16:04:58 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.439.0; Sat, 25 May 2019 16:04:49 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <gregkh@linuxfoundation.org>, <jeremy@azazel.net>
+CC:     <devel@driverdev.osuosl.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH -next v2] =?UTF-8?q?staging:=20kpc2000:=20Remove=20set=20b?= =?UTF-8?q?ut=20not=20used=20variable=20=E2=80=98status=E2=80=99?=
+Date:   Sat, 25 May 2019 16:13:21 +0800
+Message-ID: <20190525081321.121294-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190525042642.78482-1-maowenan@huawei.com>
 References: <20190525042642.78482-1-maowenan@huawei.com>
- <20190525050113.GB18684@kroah.com>
-CC:     <jeremy@azazel.net>, <devel@driverdev.osuosl.org>,
-        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <68a66947-928c-d2e6-be2b-aa412613f90c@huawei.com>
-Date:   Sat, 25 May 2019 14:39:18 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
 MIME-Version: 1.0
-In-Reply-To: <20190525050113.GB18684@kroah.com>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.177.96.96]
+X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Fixes gcc '-Wunused-but-set-variable' warning:
 
+drivers/staging/kpc2000/kpc_spi/spi_driver.c: In function
+‘kp_spi_transfer_one_message’:
+drivers/staging/kpc2000/kpc_spi/spi_driver.c:282:9: warning: variable
+‘status’ set but not used [-Wunused-but-set-variable]
+     int status = 0;
+         ^~~~~~
+The variable 'status' is not used any more, remve it.
 
-On 2019/5/25 13:01, Greg KH wrote:
-> On Sat, May 25, 2019 at 12:26:42PM +0800, Mao Wenan wrote:
->> Fixes gcc '-Wunused-but-set-variable' warning:
->>
->> drivers/staging/kpc2000/kpc_spi/spi_driver.c: In function
->> ‘kp_spi_transfer_one_message’:
->> drivers/staging/kpc2000/kpc_spi/spi_driver.c:282:9: warning: variable
->> ‘status’ set but not used [-Wunused-but-set-variable]
->>      int status = 0;
->>          ^~~~~~
->> The variable 'status' is not used any more, remve it.
->>
->> Signed-off-by: Mao Wenan <maowenan@huawei.com>
->> ---
->>  drivers/staging/kpc2000/kpc_spi/spi_driver.c | 3 ---
->>  1 file changed, 3 deletions(-)
-> 
-> What is [PATCH net] in the subject for?  This is not a networking driver
-> :(
-Sorry, this is my mistake.
-> 
-> 
-> .
-> 
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ v2: change the subject of the patch.
+---
+ drivers/staging/kpc2000/kpc_spi/spi_driver.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/drivers/staging/kpc2000/kpc_spi/spi_driver.c b/drivers/staging/kpc2000/kpc_spi/spi_driver.c
+index 86df16547a92..16f9518f8d63 100644
+--- a/drivers/staging/kpc2000/kpc_spi/spi_driver.c
++++ b/drivers/staging/kpc2000/kpc_spi/spi_driver.c
+@@ -279,7 +279,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
+     struct kp_spi       *kpspi;
+     struct spi_transfer *transfer;
+     union kp_spi_config sc;
+-    int status = 0;
+     
+     spidev = m->spi;
+     kpspi = spi_master_get_devdata(master);
+@@ -332,7 +331,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
+     /* do the transfers for this message */
+     list_for_each_entry(transfer, &m->transfers, transfer_list) {
+         if (transfer->tx_buf == NULL && transfer->rx_buf == NULL && transfer->len) {
+-            status = -EINVAL;
+             break;
+         }
+         
+@@ -370,7 +368,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
+             m->actual_length += count;
+             
+             if (count != transfer->len) {
+-                status = -EIO;
+                 break;
+             }
+         }
+-- 
+2.20.1
 

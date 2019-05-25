@@ -2,82 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C8512A2B2
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 May 2019 06:18:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 846E42A2F2
+	for <lists+kernel-janitors@lfdr.de>; Sat, 25 May 2019 07:01:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726008AbfEYES2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 25 May 2019 00:18:28 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:57098 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725839AbfEYES2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 25 May 2019 00:18:28 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id A3AC57A6F2A73DE5BF64;
-        Sat, 25 May 2019 12:18:22 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
- 14.3.439.0; Sat, 25 May 2019 12:18:13 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <gregkh@linuxfoundation.org>, <jeremy@azazel.net>
-CC:     <devel@driverdev.osuosl.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH net] =?UTF-8?q?staging:=20Remove=20set=20but=20not=20used?= =?UTF-8?q?=20variable=20=E2=80=98status=E2=80=99?=
-Date:   Sat, 25 May 2019 12:26:42 +0800
-Message-ID: <20190525042642.78482-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726280AbfEYFBQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 25 May 2019 01:01:16 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46678 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725878AbfEYFBQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 25 May 2019 01:01:16 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 684B62177E;
+        Sat, 25 May 2019 05:01:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1558760475;
+        bh=K2x3V9gQMbEthWVgYRvaGovpqU7FYDu4zGAHQOI+UrI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=q4JBXx4G+eF3CTr+DPwu9g2B9C+QAoRWW1ijSdSJ8IHIw0N5ST7MDyutvA47SRJlm
+         bwuquF4sH/nuYrzNX2mdHkC4RXIiHGdqHEwNwp88SK5C2OAbrQv1G5yl7STZOnBNRj
+         /O1c1NPeGh5UlhvyK2yoOXLXmLccvVflZfZ3i3EA=
+Date:   Sat, 25 May 2019 07:01:13 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     jeremy@azazel.net, devel@driverdev.osuosl.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] staging: =?utf-8?Q?Remove_?=
+ =?utf-8?Q?set_but_not_used_variable_=E2=80=98status=E2=80=99?=
+Message-ID: <20190525050113.GB18684@kroah.com>
+References: <20190525042642.78482-1-maowenan@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20190525042642.78482-1-maowenan@huawei.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+On Sat, May 25, 2019 at 12:26:42PM +0800, Mao Wenan wrote:
+> Fixes gcc '-Wunused-but-set-variable' warning:
+> 
+> drivers/staging/kpc2000/kpc_spi/spi_driver.c: In function
+> ‘kp_spi_transfer_one_message’:
+> drivers/staging/kpc2000/kpc_spi/spi_driver.c:282:9: warning: variable
+> ‘status’ set but not used [-Wunused-but-set-variable]
+>      int status = 0;
+>          ^~~~~~
+> The variable 'status' is not used any more, remve it.
+> 
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> ---
+>  drivers/staging/kpc2000/kpc_spi/spi_driver.c | 3 ---
+>  1 file changed, 3 deletions(-)
 
-drivers/staging/kpc2000/kpc_spi/spi_driver.c: In function
-‘kp_spi_transfer_one_message’:
-drivers/staging/kpc2000/kpc_spi/spi_driver.c:282:9: warning: variable
-‘status’ set but not used [-Wunused-but-set-variable]
-     int status = 0;
-         ^~~~~~
-The variable 'status' is not used any more, remve it.
-
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
----
- drivers/staging/kpc2000/kpc_spi/spi_driver.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/drivers/staging/kpc2000/kpc_spi/spi_driver.c b/drivers/staging/kpc2000/kpc_spi/spi_driver.c
-index 86df16547a92..16f9518f8d63 100644
---- a/drivers/staging/kpc2000/kpc_spi/spi_driver.c
-+++ b/drivers/staging/kpc2000/kpc_spi/spi_driver.c
-@@ -279,7 +279,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
-     struct kp_spi       *kpspi;
-     struct spi_transfer *transfer;
-     union kp_spi_config sc;
--    int status = 0;
-     
-     spidev = m->spi;
-     kpspi = spi_master_get_devdata(master);
-@@ -332,7 +331,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
-     /* do the transfers for this message */
-     list_for_each_entry(transfer, &m->transfers, transfer_list) {
-         if (transfer->tx_buf == NULL && transfer->rx_buf == NULL && transfer->len) {
--            status = -EINVAL;
-             break;
-         }
-         
-@@ -370,7 +368,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
-             m->actual_length += count;
-             
-             if (count != transfer->len) {
--                status = -EIO;
-                 break;
-             }
-         }
--- 
-2.20.1
+What is [PATCH net] in the subject for?  This is not a networking driver
+:(
 

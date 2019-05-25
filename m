@@ -2,68 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 112E92A11F
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 May 2019 00:26:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C8512A2B2
+	for <lists+kernel-janitors@lfdr.de>; Sat, 25 May 2019 06:18:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404303AbfEXW00 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 May 2019 18:26:26 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59667 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404287AbfEXW00 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 May 2019 18:26:26 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hUIdN-00042D-5d; Fri, 24 May 2019 22:25:53 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Simon Ho <simon.ho@conexant.com>, alsa-devel@alsa-project.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ASoC: cx2072x: fix integer overflow on unsigned int multiply
-Date:   Fri, 24 May 2019 23:25:51 +0100
-Message-Id: <20190524222551.26573-1-colin.king@canonical.com>
+        id S1726008AbfEYES2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 25 May 2019 00:18:28 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:57098 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725839AbfEYES2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 25 May 2019 00:18:28 -0400
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id A3AC57A6F2A73DE5BF64;
+        Sat, 25 May 2019 12:18:22 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
+ 14.3.439.0; Sat, 25 May 2019 12:18:13 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <gregkh@linuxfoundation.org>, <jeremy@azazel.net>
+CC:     <devel@driverdev.osuosl.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH net] =?UTF-8?q?staging:=20Remove=20set=20but=20not=20used?= =?UTF-8?q?=20variable=20=E2=80=98status=E2=80=99?=
+Date:   Sat, 25 May 2019 12:26:42 +0800
+Message-ID: <20190525042642.78482-1-maowenan@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-In the case where frac_div larger than 96 the result of an unsigned
-multiplication overflows an unsigned int.  For example, this can
-happen when the sample_rate is 192000 and pll_input is 122.  Fix
-this by casing the first term of the mutiply to a u64. Also remove
-the extraneous parentheses around the expression.
+drivers/staging/kpc2000/kpc_spi/spi_driver.c: In function
+‘kp_spi_transfer_one_message’:
+drivers/staging/kpc2000/kpc_spi/spi_driver.c:282:9: warning: variable
+‘status’ set but not used [-Wunused-but-set-variable]
+     int status = 0;
+         ^~~~~~
+The variable 'status' is not used any more, remve it.
 
-Addresses-Coverity: ("Unintentional integer overflow")
-Fixes: a497a4363706 ("ASoC: Add support for Conexant CX2072X CODEC")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
 ---
- sound/soc/codecs/cx2072x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/kpc2000/kpc_spi/spi_driver.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/sound/soc/codecs/cx2072x.c b/sound/soc/codecs/cx2072x.c
-index c11a585bbf70..e8e6fd2e97b6 100644
---- a/sound/soc/codecs/cx2072x.c
-+++ b/sound/soc/codecs/cx2072x.c
-@@ -627,7 +627,7 @@ static int cx2072x_config_pll(struct cx2072x_priv *cx2072x)
- 	if (frac_div) {
- 		frac_div *= 1000;
- 		frac_div /= pll_input;
--		frac_num = ((4000 + frac_div) * ((1 << 20) - 4));
-+		frac_num = (u64)(4000 + frac_div) * ((1 << 20) - 4);
- 		do_div(frac_num, 7);
- 		frac = ((u32)frac_num + 499) / 1000;
- 	}
+diff --git a/drivers/staging/kpc2000/kpc_spi/spi_driver.c b/drivers/staging/kpc2000/kpc_spi/spi_driver.c
+index 86df16547a92..16f9518f8d63 100644
+--- a/drivers/staging/kpc2000/kpc_spi/spi_driver.c
++++ b/drivers/staging/kpc2000/kpc_spi/spi_driver.c
+@@ -279,7 +279,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
+     struct kp_spi       *kpspi;
+     struct spi_transfer *transfer;
+     union kp_spi_config sc;
+-    int status = 0;
+     
+     spidev = m->spi;
+     kpspi = spi_master_get_devdata(master);
+@@ -332,7 +331,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
+     /* do the transfers for this message */
+     list_for_each_entry(transfer, &m->transfers, transfer_list) {
+         if (transfer->tx_buf == NULL && transfer->rx_buf == NULL && transfer->len) {
+-            status = -EINVAL;
+             break;
+         }
+         
+@@ -370,7 +368,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
+             m->actual_length += count;
+             
+             if (count != transfer->len) {
+-                status = -EIO;
+                 break;
+             }
+         }
 -- 
 2.20.1
 

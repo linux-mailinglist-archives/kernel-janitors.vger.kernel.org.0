@@ -2,63 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1D412A45A
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 May 2019 14:15:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BDB92A480
+	for <lists+kernel-janitors@lfdr.de>; Sat, 25 May 2019 14:59:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726901AbfEYMPb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 25 May 2019 08:15:31 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:42111 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726808AbfEYMPa (ORCPT
+        id S1726935AbfEYM7U (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 25 May 2019 08:59:20 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:36466 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726585AbfEYM7U (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 25 May 2019 08:15:30 -0400
-Received: by mail-wr1-f68.google.com with SMTP id l2so12436329wrb.9
-        for <kernel-janitors@vger.kernel.org>; Sat, 25 May 2019 05:15:29 -0700 (PDT)
+        Sat, 25 May 2019 08:59:20 -0400
+Received: by mail-ot1-f68.google.com with SMTP id c3so11114918otr.3;
+        Sat, 25 May 2019 05:59:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=message-id:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to:return-receipt-to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=TAd8tz1SKPSkM8v0XYGmp+KF52fmwHfWqnhXMNl3e3PduHBrwCuMFo5F/rv/lvOvb3
-         OAShNLmEmSZ65Uhbj/j39Udj6n2j9FyERp67Qd0Zl6/thRxiSmy2Chh6ufEsFs8Eq1d7
-         IvTrKkHh2iW6hATDwHIymOEDA+Ch3MPc+RzT0Q3JsjJ/USWiBWEVTkgjJBGy1bBHscQA
-         grPIpPEujCsvDsfJCBTBGLbG4aCl7FMo6npAKasZPLOK0EHZ6QqXnoA8I9syuhNxjv3N
-         b4ASNGP4ZUlQyi4a+780Ml1hFD1eYHKx+nA67c414S99rxOBjo961hvAgFpZPN8oFAw0
-         eYFg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BtQTuMfATWXiK2KsTqvrmBV015lDA1qcyuiicuIi0vA=;
+        b=RMDw8eSGj+mSLywZgF2YVM3V88/obPnHf2Y5qE2tGnMQuxg1KUitGTXqbpra8UAY4F
+         iL/9EKNFEx/t65gZ1+iyTD9zo28S0oIcIU8sXqEb/fCAFW4glZK+vr0Ymdy9svKSeG1r
+         n4F4Zn+SDVawAjeSnJvFXqdzOo6kGBWyrYfZZMAWAAQhQ/SIv5SyeJ/ct7zThVxeb2yQ
+         vQ+CB16LyQNs4QTbiSQbYAraZAqaZbTd981NeyrlS3Z9bMlr8FKcLh+/3PBQuJ0+oEBY
+         DmrkqjWhRjoMbnseUHKTFHKghbplHnpXkexkHyWSaa4Tl5d4d7eX/JPnZ0LFWKAZNXdy
+         T8Pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to:return-receipt-to;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        b=SAGnp3jRitiWuYAJSsVdCAIqQbCPIEkf2xLydz2b6OS9hh3f584q5jxAIjAfPdf18z
-         ennmQKQ2ymRZ5Dmz70UpE1UJCKmF9VcyGE6lowSwVHjB/+Xvz82mx9AO9DhcI54jYShu
-         CU9ivzJ4/yr+Zb1Fadc4fx/GUuLIbd8p8y5mMrNYGJ9oSXHw5b4nXpDWFugDqZ2ALd0U
-         chCivc9NnDhYi/7i4WWvcWZCOqVOJEDZaUh7XUVnZhy72MxtLUscbZOw1hwB96OEQ4rf
-         MVcfOvyVm+bR6k8GquN4zi2kPsvHy2k27j1gF5b0n3PkryFVcdK7ytSR3vsNRw3Bjde5
-         DnCA==
-X-Gm-Message-State: APjAAAVQ9H0IYs8xI2RUlYHuzpbuHchSema+jxYwzjz+soAxsGMRhXCM
-        tEmOiQSJzKMr4WoZn8ouSQw=
-X-Google-Smtp-Source: APXvYqzY36xK8HXUJG7zHUvsUjSoVYft7dLv/Cyr4eoG09Qz364BHjuHUkluTJer9pMlWaT37H+gJg==
-X-Received: by 2002:adf:dc8a:: with SMTP id r10mr7242196wrj.15.1558786529141;
-        Sat, 25 May 2019 05:15:29 -0700 (PDT)
-Received: from SAMSUNG-PC.Home ([196.170.233.164])
-        by smtp.gmail.com with ESMTPSA id t15sm4142581wmt.2.2019.05.25.05.15.25
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Sat, 25 May 2019 05:15:28 -0700 (PDT)
-Message-ID: <5ce931e0.1c69fb81.16d3a.60ea@mx.google.com>
-From:   Katie Higgins <janehemssusan1958@gmail.com>
-X-Google-Original-From: "Katie Higgins" <katiehiggins144@gmail.com>
-Content-Type: text/plain; charset="iso-8859-1"
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BtQTuMfATWXiK2KsTqvrmBV015lDA1qcyuiicuIi0vA=;
+        b=gwEj0bmT1+vV+o0tYJu0LyYN96YB9ZuRnHRBDHIq3tXVHKjBg+jIiC/4kXazmoNcuY
+         EHUukevw2QsVcDicCQE4vY4EOVVP/1b94tuLfdZKIeO8IAaZ+3b6WOsBYYtbnaEmLQhN
+         +r17Hce0/oPBINtgIxg5eP2bT9BOMuT59PujISUkeh+kl5BRH0jmf6KuRpEoysD+ZqS/
+         WJHd4SSLlZb5dxzOeVgw0xbNIQOucwerwSlXLIKC5p2v/wNorYfuG5mttcKKs5Yn7k3Q
+         cNq4Jr5g8N+N0qqGM4kA9Tdfnpy7H7HrZrSFErnZ/k3m+7oqZskzLlE/2miPJj48dcE8
+         nclQ==
+X-Gm-Message-State: APjAAAVNY+bweGpYmqHJI+qDNsvXMoLOMBdevrGi+1X6mOty66cfXsKt
+        SOpDBwZbtibK8/cVSeZuwGfp9NyIAOcByzj1P7w=
+X-Google-Smtp-Source: APXvYqyOxYb9KGXupIouUlbnXLWlQ3BdKVA8gjHY4z+gTj3DWLA44KWiOPwIW9eLNLODIq5iS6L/1oncgUFQX9wbIDs=
+X-Received: by 2002:a9d:12f2:: with SMTP id g105mr50298032otg.116.1558789159170;
+ Sat, 25 May 2019 05:59:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Re: Can we talk please?
-To:     Recipients <katiehiggins144@gmail.com>
-Date:   Sat, 25 May 2019 05:15:26 -0700
-Reply-To: katiehiggins144@gmail.com
+References: <20190525042642.78482-1-maowenan@huawei.com>
+In-Reply-To: <20190525042642.78482-1-maowenan@huawei.com>
+From:   Sven Van Asbroeck <thesven73@gmail.com>
+Date:   Sat, 25 May 2019 08:59:08 -0400
+Message-ID: <CAGngYiX04W+-jxqnWUD6CLh8LAr61FhtADGM0zbGcdeArqzC-Q@mail.gmail.com>
+Subject: =?UTF-8?Q?Re=3A_=5BPATCH_net=5D_staging=3A_Remove_set_but_not_used_var?=
+        =?UTF-8?Q?iable_=E2=80=98status=E2=80=99?=
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        Jeremy Sowden <jeremy@azazel.net>, devel@driverdev.osuosl.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Matt Sickler <matt.sickler@daktronics.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Sat, May 25, 2019 at 12:20 AM Mao Wenan <maowenan@huawei.com> wrote:
+>
+> The variable 'status' is not used any more, remve it.
+
+>      /* do the transfers for this message */
+>      list_for_each_entry(transfer, &m->transfers, transfer_list) {
+>          if (transfer->tx_buf == NULL && transfer->rx_buf == NULL && transfer->len) {
+> -            status = -EINVAL;
+>              break;
+>          }
+
+This looks like an error condition that's not reported to the spi core.
+
+Instead of removing the status variable (which also removes the error value!),
+maybe this should be reported to the spi core instead ?
+
+Other spi drivers appear to do the following on the error path:
+m->status = status;
+return status;
+
+>
+> @@ -370,7 +368,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
+>
+>              if (count != transfer->len) {
+> -                status = -EIO;
+>                  break;
+
+Same issue here.

@@ -2,90 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BDB92A480
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 May 2019 14:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 334802A6EB
+	for <lists+kernel-janitors@lfdr.de>; Sat, 25 May 2019 22:33:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726935AbfEYM7U (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 25 May 2019 08:59:20 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:36466 "EHLO
-        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726585AbfEYM7U (ORCPT
+        id S1727263AbfEYUc4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 25 May 2019 16:32:56 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:44641 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725938AbfEYUcz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 25 May 2019 08:59:20 -0400
-Received: by mail-ot1-f68.google.com with SMTP id c3so11114918otr.3;
-        Sat, 25 May 2019 05:59:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BtQTuMfATWXiK2KsTqvrmBV015lDA1qcyuiicuIi0vA=;
-        b=RMDw8eSGj+mSLywZgF2YVM3V88/obPnHf2Y5qE2tGnMQuxg1KUitGTXqbpra8UAY4F
-         iL/9EKNFEx/t65gZ1+iyTD9zo28S0oIcIU8sXqEb/fCAFW4glZK+vr0Ymdy9svKSeG1r
-         n4F4Zn+SDVawAjeSnJvFXqdzOo6kGBWyrYfZZMAWAAQhQ/SIv5SyeJ/ct7zThVxeb2yQ
-         vQ+CB16LyQNs4QTbiSQbYAraZAqaZbTd981NeyrlS3Z9bMlr8FKcLh+/3PBQuJ0+oEBY
-         DmrkqjWhRjoMbnseUHKTFHKghbplHnpXkexkHyWSaa4Tl5d4d7eX/JPnZ0LFWKAZNXdy
-         T8Pg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BtQTuMfATWXiK2KsTqvrmBV015lDA1qcyuiicuIi0vA=;
-        b=gwEj0bmT1+vV+o0tYJu0LyYN96YB9ZuRnHRBDHIq3tXVHKjBg+jIiC/4kXazmoNcuY
-         EHUukevw2QsVcDicCQE4vY4EOVVP/1b94tuLfdZKIeO8IAaZ+3b6WOsBYYtbnaEmLQhN
-         +r17Hce0/oPBINtgIxg5eP2bT9BOMuT59PujISUkeh+kl5BRH0jmf6KuRpEoysD+ZqS/
-         WJHd4SSLlZb5dxzOeVgw0xbNIQOucwerwSlXLIKC5p2v/wNorYfuG5mttcKKs5Yn7k3Q
-         cNq4Jr5g8N+N0qqGM4kA9Tdfnpy7H7HrZrSFErnZ/k3m+7oqZskzLlE/2miPJj48dcE8
-         nclQ==
-X-Gm-Message-State: APjAAAVNY+bweGpYmqHJI+qDNsvXMoLOMBdevrGi+1X6mOty66cfXsKt
-        SOpDBwZbtibK8/cVSeZuwGfp9NyIAOcByzj1P7w=
-X-Google-Smtp-Source: APXvYqyOxYb9KGXupIouUlbnXLWlQ3BdKVA8gjHY4z+gTj3DWLA44KWiOPwIW9eLNLODIq5iS6L/1oncgUFQX9wbIDs=
-X-Received: by 2002:a9d:12f2:: with SMTP id g105mr50298032otg.116.1558789159170;
- Sat, 25 May 2019 05:59:19 -0700 (PDT)
+        Sat, 25 May 2019 16:32:55 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hUdLR-00020n-4x; Sat, 25 May 2019 20:32:45 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] ASoC: cx2072x: fix spelling mistake "configued" -> "configured"
+Date:   Sat, 25 May 2019 21:32:44 +0100
+Message-Id: <20190525203244.7829-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20190525042642.78482-1-maowenan@huawei.com>
-In-Reply-To: <20190525042642.78482-1-maowenan@huawei.com>
-From:   Sven Van Asbroeck <thesven73@gmail.com>
-Date:   Sat, 25 May 2019 08:59:08 -0400
-Message-ID: <CAGngYiX04W+-jxqnWUD6CLh8LAr61FhtADGM0zbGcdeArqzC-Q@mail.gmail.com>
-Subject: =?UTF-8?Q?Re=3A_=5BPATCH_net=5D_staging=3A_Remove_set_but_not_used_var?=
-        =?UTF-8?Q?iable_=E2=80=98status=E2=80=99?=
-To:     Mao Wenan <maowenan@huawei.com>
-Cc:     Greg KH <gregkh@linuxfoundation.org>,
-        Jeremy Sowden <jeremy@azazel.net>, devel@driverdev.osuosl.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Matt Sickler <matt.sickler@daktronics.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, May 25, 2019 at 12:20 AM Mao Wenan <maowenan@huawei.com> wrote:
->
-> The variable 'status' is not used any more, remve it.
+From: Colin Ian King <colin.king@canonical.com>
 
->      /* do the transfers for this message */
->      list_for_each_entry(transfer, &m->transfers, transfer_list) {
->          if (transfer->tx_buf == NULL && transfer->rx_buf == NULL && transfer->len) {
-> -            status = -EINVAL;
->              break;
->          }
+There is a spelling mistake in a dev_err error message. Fit it.
 
-This looks like an error condition that's not reported to the spi core.
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ sound/soc/codecs/cx2072x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Instead of removing the status variable (which also removes the error value!),
-maybe this should be reported to the spi core instead ?
+diff --git a/sound/soc/codecs/cx2072x.c b/sound/soc/codecs/cx2072x.c
+index e8e6fd2e97b6..f25376789c5c 100644
+--- a/sound/soc/codecs/cx2072x.c
++++ b/sound/soc/codecs/cx2072x.c
+@@ -933,7 +933,7 @@ static int cx2072x_hw_params(struct snd_pcm_substream *substream,
+ 		return frame_size;
+ 
+ 	if (cx2072x->mclk_rate == 0) {
+-		dev_err(dev, "Master clock rate is not configued\n");
++		dev_err(dev, "Master clock rate is not configured\n");
+ 		return -EINVAL;
+ 	}
+ 
+-- 
+2.20.1
 
-Other spi drivers appear to do the following on the error path:
-m->status = status;
-return status;
-
->
-> @@ -370,7 +368,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
->
->              if (count != transfer->len) {
-> -                status = -EIO;
->                  break;
-
-Same issue here.

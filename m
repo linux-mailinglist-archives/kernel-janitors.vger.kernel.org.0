@@ -2,114 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0E852ACF7
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 May 2019 04:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 912002ADEB
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 May 2019 07:12:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726046AbfE0Cdg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 May 2019 22:33:36 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:17162 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725973AbfE0Cdg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 May 2019 22:33:36 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id D7F0E9D3FE75A93C40BB;
-        Mon, 27 May 2019 10:33:33 +0800 (CST)
-Received: from [127.0.0.1] (10.177.96.96) by DGGEMS404-HUB.china.huawei.com
- (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Mon, 27 May 2019
- 10:33:29 +0800
-Subject: =?UTF-8?Q?Re:_[PATCH_net]_staging:_Remove_set_but_not_used_variable?=
- =?UTF-8?B?IOKAmHN0YXR1c+KAmQ==?=
-To:     Sven Van Asbroeck <thesven73@gmail.com>
-References: <20190525042642.78482-1-maowenan@huawei.com>
- <CAGngYiX04W+-jxqnWUD6CLh8LAr61FhtADGM0zbGcdeArqzC-Q@mail.gmail.com>
-CC:     Greg KH <gregkh@linuxfoundation.org>,
-        Jeremy Sowden <jeremy@azazel.net>,
-        <devel@driverdev.osuosl.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>,
-        "Matt Sickler" <matt.sickler@daktronics.com>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <05c9bfac-c3ad-5889-8f47-0e6f53844a76@huawei.com>
-Date:   Mon, 27 May 2019 10:33:27 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
-MIME-Version: 1.0
-In-Reply-To: <CAGngYiX04W+-jxqnWUD6CLh8LAr61FhtADGM0zbGcdeArqzC-Q@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
+        id S1726154AbfE0FMU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 May 2019 01:12:20 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:50644 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725774AbfE0FMU (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 May 2019 01:12:20 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d8])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 5D051148F8198;
+        Sun, 26 May 2019 22:12:19 -0700 (PDT)
+Date:   Sun, 26 May 2019 22:12:18 -0700 (PDT)
+Message-Id: <20190526.221218.594997463672055463.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     kuznet@ms2.inr.ac.ru, yoshfuji@linux-ipv6.org,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] ipv4: remove redundant assignment to n
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190524215658.25432-1-colin.king@canonical.com>
+References: <20190524215658.25432-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.96.96]
-X-CFilter-Loop: Reflected
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 26 May 2019 22:12:19 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin King <colin.king@canonical.com>
+Date: Fri, 24 May 2019 22:56:58 +0100
 
-
-On 2019/5/25 20:59, Sven Van Asbroeck wrote:
-> On Sat, May 25, 2019 at 12:20 AM Mao Wenan <maowenan@huawei.com> wrote:
->>
->> The variable 'status' is not used any more, remve it.
+> From: Colin Ian King <colin.king@canonical.com>
 > 
->>      /* do the transfers for this message */
->>      list_for_each_entry(transfer, &m->transfers, transfer_list) {
->>          if (transfer->tx_buf == NULL && transfer->rx_buf == NULL && transfer->len) {
->> -            status = -EINVAL;
->>              break;
->>          }
+> The pointer n is being assigned a value however this value is
+> never read in the code block and the end of the code block
+> continues to the next loop iteration. Clean up the code by
+> removing the redundant assignment.
 > 
-> This looks like an error condition that's not reported to the spi core.
-> 
-> Instead of removing the status variable (which also removes the error value!),
-> maybe this should be reported to the spi core instead ?
-> 
-> Other spi drivers appear to do the following on the error path:
-> m->status = status;
-> return status;
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-I have reviewed the code again, and it is good idea to store m->status in error path, like below?
-
-@@ -374,7 +374,7 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
-     list_for_each_entry(transfer, &m->transfers, transfer_list) {
-         if (transfer->tx_buf == NULL && transfer->rx_buf == NULL && transfer->len) {
-             status = -EINVAL;
--            break;
-+            goto error;
-         }
-
-         /* transfer */
-@@ -412,7 +412,7 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
-
-             if (count != transfer->len) {
-                 status = -EIO;
--                break;
-+                goto error;
-             }
-         }
-
-
-...
-
-     /* done work */
-     spi_finalize_current_message(master);
-     return 0;
-+
-+ error:
-+    m->status = status;
-+    return status;
-
- }
-
-
-> 
->>
->> @@ -370,7 +368,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
->>
->>              if (count != transfer->len) {
->> -                status = -EIO;
->>                  break;
-> 
-> Same issue here.
-> 
-> 
-
+Applied, thanks Colin.

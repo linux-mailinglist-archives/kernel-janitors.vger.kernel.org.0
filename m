@@ -2,93 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72B642BD1F
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 May 2019 04:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AACC52BFB6
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 May 2019 08:52:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727887AbfE1CJs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 May 2019 22:09:48 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:17169 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727858AbfE1CJs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 May 2019 22:09:48 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 7FD15975CEE8A2494546;
-        Tue, 28 May 2019 10:09:45 +0800 (CST)
-Received: from [127.0.0.1] (10.177.96.96) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.439.0; Tue, 28 May 2019
- 10:09:42 +0800
-Subject: =?UTF-8?Q?Re:_[PATCH_-next_v2]_staging:_kpc2000:_Remove_set_but_not?=
- =?UTF-8?B?IHVzZWQgdmFyaWFibGUg4oCYc3RhdHVz4oCZ?=
-To:     <gregkh@linuxfoundation.org>, <jeremy@azazel.net>
-References: <20190525042642.78482-1-maowenan@huawei.com>
- <20190525081321.121294-1-maowenan@huawei.com>
-CC:     <devel@driverdev.osuosl.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>,
-        Sven Van Asbroeck <thesven73@gmail.com>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <69398d9c-68e1-e4c5-35f9-4bf09627e48a@huawei.com>
-Date:   Tue, 28 May 2019 10:09:38 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+        id S1727463AbfE1GwW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 May 2019 02:52:22 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:35165 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726305AbfE1GwW (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 May 2019 02:52:22 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hVVy5-0003nF-Hi; Tue, 28 May 2019 06:52:17 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Ariel Elior <aelior@marvell.com>, GR-everest-linux-l2@marvell.com,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] qed: fix spelling mistake "inculde" -> "include"
+Date:   Tue, 28 May 2019 07:52:17 +0100
+Message-Id: <20190528065217.7311-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190525081321.121294-1-maowenan@huawei.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.177.96.96]
-X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-please ignore v2 version.
-I will send v3 later according to Sven Van Asbroeck 's comments.
+From: Colin Ian King <colin.king@canonical.com>
 
-On 2019/5/25 16:13, Mao Wenan wrote:
-> Fixes gcc '-Wunused-but-set-variable' warning:
-> 
-> drivers/staging/kpc2000/kpc_spi/spi_driver.c: In function
-> ‘kp_spi_transfer_one_message’:
-> drivers/staging/kpc2000/kpc_spi/spi_driver.c:282:9: warning: variable
-> ‘status’ set but not used [-Wunused-but-set-variable]
->      int status = 0;
->          ^~~~~~
-> The variable 'status' is not used any more, remve it.
-> 
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> ---
->  v2: change the subject of the patch.
-> ---
->  drivers/staging/kpc2000/kpc_spi/spi_driver.c | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> diff --git a/drivers/staging/kpc2000/kpc_spi/spi_driver.c b/drivers/staging/kpc2000/kpc_spi/spi_driver.c
-> index 86df16547a92..16f9518f8d63 100644
-> --- a/drivers/staging/kpc2000/kpc_spi/spi_driver.c
-> +++ b/drivers/staging/kpc2000/kpc_spi/spi_driver.c
-> @@ -279,7 +279,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
->      struct kp_spi       *kpspi;
->      struct spi_transfer *transfer;
->      union kp_spi_config sc;
-> -    int status = 0;
->      
->      spidev = m->spi;
->      kpspi = spi_master_get_devdata(master);
-> @@ -332,7 +331,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
->      /* do the transfers for this message */
->      list_for_each_entry(transfer, &m->transfers, transfer_list) {
->          if (transfer->tx_buf == NULL && transfer->rx_buf == NULL && transfer->len) {
-> -            status = -EINVAL;
->              break;
->          }
->          
-> @@ -370,7 +368,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
->              m->actual_length += count;
->              
->              if (count != transfer->len) {
-> -                status = -EIO;
->                  break;
->              }
->          }
-> 
+There is a spelling mistake in a DP_INFO message. Fix it.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/ethernet/qlogic/qed/qed_dev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_dev.c b/drivers/net/ethernet/qlogic/qed/qed_dev.c
+index 61ca49a967df..a971418755e9 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_dev.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_dev.c
+@@ -3836,7 +3836,7 @@ static int qed_hw_get_ppfid_bitmap(struct qed_hwfn *p_hwfn,
+ 
+ 	if (!(cdev->ppfid_bitmap & (0x1 << native_ppfid_idx))) {
+ 		DP_INFO(p_hwfn,
+-			"Fix the PPFID bitmap to inculde the native PPFID [native_ppfid_idx %hhd, orig_bitmap 0x%hhx]\n",
++			"Fix the PPFID bitmap to include the native PPFID [native_ppfid_idx %hhd, orig_bitmap 0x%hhx]\n",
+ 			native_ppfid_idx, cdev->ppfid_bitmap);
+ 		cdev->ppfid_bitmap = 0x1 << native_ppfid_idx;
+ 	}
+-- 
+2.20.1
 

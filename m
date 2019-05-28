@@ -2,855 +2,125 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 656FD2C0A1
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 May 2019 09:54:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E9302C16C
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 May 2019 10:34:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727857AbfE1HyG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 May 2019 03:54:06 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:17173 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726810AbfE1HyF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 May 2019 03:54:05 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 4B45111D3423AFB55917;
-        Tue, 28 May 2019 15:54:01 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.439.0; Tue, 28 May 2019 15:53:52 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <gregkh@linuxfoundation.org>, <jeremy@azazel.net>
-CC:     <thesven73@gmail.com>, <devel@driverdev.osuosl.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        <matt.sickler@daktronics.com>, Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH -next v3 2/2] staging: kpc2000: replace white spaces with tabs for kpc2000_spi.c
-Date:   Tue, 28 May 2019 16:02:14 +0800
-Message-ID: <20190528080214.18382-3-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190528080214.18382-1-maowenan@huawei.com>
-References: <20190525081321.121294-1-maowenan@huawei.com>
- <20190528080214.18382-1-maowenan@huawei.com>
+        id S1726802AbfE1Iee (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 May 2019 04:34:34 -0400
+Received: from mx0b-0016f401.pphosted.com ([67.231.156.173]:59488 "EHLO
+        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726557AbfE1Iee (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 May 2019 04:34:34 -0400
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+        by mx0b-0016f401.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x4S8WjYr016093;
+        Tue, 28 May 2019 01:34:30 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
+ subject : date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pfpt0818;
+ bh=IuklDDH21MYIVeuL01ZQnCZb5D6D3+lgcMFYhAzktGU=;
+ b=RQkJJHu0RUNltlRbq01PXim+lWQ5jXleq1FaMlamvxMflKLzJqBBxegg51OoVUmiM+hl
+ HMbuZ7cGD+ynTIWayj3XTqsN0cXui9FDfz6D8fjxNaKBzuoAkU2x9eCqPeaBk1GmoGci
+ CA1pTnJjSBDswXQLkUvJWK48fyq4Eanm9CQssQF0f6EcISOh5yBRxKCrlu9D9WeO9RjV
+ 7ekA0r6szWSRYV6EwaANYZB+fXZ0uerY/yUwdwnXlkMYzUC4X2FTf8UfuBJPeEBHXP/m
+ 6Dsj9LU+lfjZhmy3a06I54CWHOlkS19f71Obg2SKGJuScQDW8LrXtQxbMEbVIVF+ZvGk qw== 
+Received: from sc-exch04.marvell.com ([199.233.58.184])
+        by mx0b-0016f401.pphosted.com with ESMTP id 2sr7e4dg3r-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
+        Tue, 28 May 2019 01:34:30 -0700
+Received: from SC-EXCH03.marvell.com (10.93.176.83) by SC-EXCH04.marvell.com
+ (10.93.176.84) with Microsoft SMTP Server (TLS) id 15.0.1367.3; Tue, 28 May
+ 2019 01:34:29 -0700
+Received: from NAM05-BY2-obe.outbound.protection.outlook.com (104.47.50.56) by
+ SC-EXCH03.marvell.com (10.93.176.83) with Microsoft SMTP Server (TLS) id
+ 15.0.1367.3 via Frontend Transport; Tue, 28 May 2019 01:34:29 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=marvell.onmicrosoft.com; s=selector2-marvell-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=IuklDDH21MYIVeuL01ZQnCZb5D6D3+lgcMFYhAzktGU=;
+ b=PQsAEkEJ+qsthEVy32wjb9RSuW3wNl/yyDrSisRfGFDO1CwaBa8Zl8tWsrRvquwxN9LLSJ1LMVbO3FVz1IZjRIEm4OGwljfS3Hk1565mzHLPU4TaWNX6ocr1huix1arw7K2ZBicqMPmW92jLlazR80vKRj5MFj3DIoVRPf+M5WI=
+Received: from MN2PR18MB3182.namprd18.prod.outlook.com (10.255.236.143) by
+ MN2PR18MB2672.namprd18.prod.outlook.com (20.179.84.74) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1922.15; Tue, 28 May 2019 08:34:23 +0000
+Received: from MN2PR18MB3182.namprd18.prod.outlook.com
+ ([fe80::9880:2b8b:52e5:b413]) by MN2PR18MB3182.namprd18.prod.outlook.com
+ ([fe80::9880:2b8b:52e5:b413%3]) with mapi id 15.20.1922.021; Tue, 28 May 2019
+ 08:34:23 +0000
+From:   Michal Kalderon <mkalderon@marvell.com>
+To:     Colin King <colin.king@canonical.com>,
+        Ariel Elior <aelior@marvell.com>,
+        GR-everest-linux-l2 <GR-everest-linux-l2@marvell.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [EXT] [PATCH][next] qed: fix spelling mistake "inculde" ->
+ "include"
+Thread-Topic: [EXT] [PATCH][next] qed: fix spelling mistake "inculde" ->
+ "include"
+Thread-Index: AQHVFSHr8lMSvwYvE06Dm65I9JgLzaaANeoQ
+Date:   Tue, 28 May 2019 08:34:23 +0000
+Message-ID: <MN2PR18MB3182F2B217A519FA20F3427AA11E0@MN2PR18MB3182.namprd18.prod.outlook.com>
+References: <20190528065217.7311-1-colin.king@canonical.com>
+In-Reply-To: <20190528065217.7311-1-colin.king@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [212.199.69.1]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 9ee0233e-78de-48d5-d5df-08d6e34749c7
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:MN2PR18MB2672;
+x-ms-traffictypediagnostic: MN2PR18MB2672:
+x-microsoft-antispam-prvs: <MN2PR18MB2672AB82C128A3803B627620A11E0@MN2PR18MB2672.namprd18.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7219;
+x-forefront-prvs: 00514A2FE6
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(346002)(136003)(39850400004)(366004)(396003)(376002)(199004)(189003)(74316002)(7696005)(73956011)(81166006)(14454004)(2501003)(229853002)(6506007)(305945005)(186003)(26005)(14444005)(256004)(81156014)(25786009)(66066001)(53936002)(8936002)(76116006)(11346002)(102836004)(2906002)(7736002)(76176011)(478600001)(3846002)(99286004)(6116002)(5660300002)(71190400001)(6246003)(66476007)(486006)(6436002)(8676002)(71200400001)(9686003)(33656002)(4326008)(52536014)(66556008)(66446008)(64756008)(55016002)(446003)(66946007)(110136005)(86362001)(476003)(68736007)(54906003)(316002);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR18MB2672;H:MN2PR18MB3182.namprd18.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: marvell.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: GJ1SR5m/XZuS+I7l7qtd1XVnDAoe4P7hg4QHdHLxJ/zXDETULp6HZRJBWO7AMbq8wHou5csJ1/qkdu8GRBBJwA9Z/46X/v55FhkFXMmfHsAGZUnwhPVlSJvt/mCqa/VM8soEJfHp1eW23ZlFtflwRB/pW2fvm27H7vkqRsKw3tuVARMuhfN15ERxSkYawaON4F1XNmuRRuUJqQg71E7N7bckvsO/OynE5f0FcbvQBtlQ0Yrrx9AxxMX4CUIx+hCVzuHz49CJDRdwH8vy/lDPFNQ4aSEZjOTXw1CNes9rJaiFeSGSyh54ztMbxDpCm0o41VqJijyS3qJdekKsW181awUdCkwLszXy2W1CMLz6qDxAhZCOxh+PLlOmdVEGdUBla9MQL25JqwAtXFvju5NDz6iE3UZhKwxv44JEAueQpM8=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9ee0233e-78de-48d5-d5df-08d6e34749c7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 May 2019 08:34:23.8390
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: mkalderon@marvell.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR18MB2672
+X-OriginatorOrg: marvell.com
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-05-28_04:,,
+ signatures=0
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There are multiple wrong formats in kpc2000_spi.c,
-is time to do clean work for it.
-
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
----
- drivers/staging/kpc2000/kpc2000_spi.c | 722 +++++++++++++-------------
- 1 file changed, 361 insertions(+), 361 deletions(-)
-
-diff --git a/drivers/staging/kpc2000/kpc2000_spi.c b/drivers/staging/kpc2000/kpc2000_spi.c
-index 628a447642ad..9a23808ffaa1 100644
---- a/drivers/staging/kpc2000/kpc2000_spi.c
-+++ b/drivers/staging/kpc2000/kpc2000_spi.c
-@@ -113,59 +113,59 @@ struct kp_spi {
- 
- 
- struct kp_spi_controller_state {
--    void __iomem   *base;
--    unsigned long   phys;
--    unsigned char   chip_select;
--    int             word_len;
--    s64             conf_cache;
-+	void __iomem   *base;
-+	unsigned long   phys;
-+	unsigned char   chip_select;
-+	int             word_len;
-+	s64             conf_cache;
- };
- 
- 
- union kp_spi_config {
--    /* use this to access individual elements */
--    struct __attribute__((packed)) spi_config_bitfield {
--        unsigned int pha       : 1; /* spim_clk Phase      */
--        unsigned int pol       : 1; /* spim_clk Polarity   */
--        unsigned int epol      : 1; /* spim_csx Polarity   */
--        unsigned int dpe       : 1; /* Transmission Enable */
--        unsigned int wl        : 5; /* Word Length         */
--        unsigned int           : 3;
--        unsigned int trm       : 2; /* TxRx Mode           */
--        unsigned int cs        : 4; /* Chip Select         */
--        unsigned int wcnt      : 7; /* Word Count          */
--        unsigned int ffen      : 1; /* FIFO Enable         */
--        unsigned int spi_en    : 1; /* SPI Enable          */
--        unsigned int           : 5;
--    } bitfield;
--    /* use this to grab the whole register */
--    u32 reg;
-+	/* use this to access individual elements */
-+	struct __attribute__((packed)) spi_config_bitfield {
-+		unsigned int pha       : 1; /* spim_clk Phase      */
-+		unsigned int pol       : 1; /* spim_clk Polarity   */
-+		unsigned int epol      : 1; /* spim_csx Polarity   */
-+		unsigned int dpe       : 1; /* Transmission Enable */
-+		unsigned int wl        : 5; /* Word Length         */
-+		unsigned int           : 3;
-+		unsigned int trm       : 2; /* TxRx Mode           */
-+		unsigned int cs        : 4; /* Chip Select         */
-+		unsigned int wcnt      : 7; /* Word Count          */
-+		unsigned int ffen      : 1; /* FIFO Enable         */
-+		unsigned int spi_en    : 1; /* SPI Enable          */
-+		unsigned int           : 5;
-+	} bitfield;
-+	/* use this to grab the whole register */
-+	u32 reg;
- };
- 
- 
- 
- union kp_spi_status {
--    struct __attribute__((packed)) spi_status_bitfield {
--        unsigned int rx    :  1; /* Rx Status       */
--        unsigned int tx    :  1; /* Tx Status       */
--        unsigned int eo    :  1; /* End of Transfer */
--        unsigned int       :  1;
--        unsigned int txffe :  1; /* Tx FIFO Empty   */
--        unsigned int txfff :  1; /* Tx FIFO Full    */
--        unsigned int rxffe :  1; /* Rx FIFO Empty   */
--        unsigned int rxfff :  1; /* Rx FIFO Full    */
--        unsigned int       : 24;
--    } bitfield;
--    u32 reg;
-+	struct __attribute__((packed)) spi_status_bitfield {
-+		unsigned int rx    :  1; /* Rx Status       */
-+		unsigned int tx    :  1; /* Tx Status       */
-+		unsigned int eo    :  1; /* End of Transfer */
-+		unsigned int       :  1;
-+		unsigned int txffe :  1; /* Tx FIFO Empty   */
-+		unsigned int txfff :  1; /* Tx FIFO Full    */
-+		unsigned int rxffe :  1; /* Rx FIFO Empty   */
-+		unsigned int rxfff :  1; /* Rx FIFO Full    */
-+		unsigned int       : 24;
-+	} bitfield;
-+	u32 reg;
- };
- 
- 
- 
- union kp_spi_ffctrl {
--    struct __attribute__((packed)) spi_ffctrl_bitfield {
--        unsigned int ffstart :  1; /* FIFO Start */
--        unsigned int         : 31;
--    } bitfield;
--    u32 reg;
-+	struct __attribute__((packed)) spi_ffctrl_bitfield {
-+		unsigned int ffstart :  1; /* FIFO Start */
-+		unsigned int         : 31;
-+	} bitfield;
-+	u32 reg;
- };
- 
- 
-@@ -173,276 +173,276 @@ union kp_spi_ffctrl {
- /***************
-  * SPI Helpers *
-  ***************/
--static inline int
-+	static inline int
- kp_spi_bytes_per_word(int word_len)
- {
--    if (word_len <= 8){
--        return 1;
--    }
--    else if (word_len <= 16) {
--        return 2;
--    }
--    else { /* word_len <= 32 */
--        return 4;
--    }
-+	if (word_len <= 8){
-+		return 1;
-+	}
-+	else if (word_len <= 16) {
-+		return 2;
-+	}
-+	else { /* word_len <= 32 */
-+		return 4;
-+	}
- }
- 
--static inline u64
-+	static inline u64
- kp_spi_read_reg(struct kp_spi_controller_state *cs, int idx)
- {
--    u64 __iomem *addr = cs->base;
--    u64 val;
--
--    addr += idx;
--    if ((idx == KP_SPI_REG_CONFIG) && (cs->conf_cache >= 0)){
--        return cs->conf_cache;
--    }
--    val = readq((void*)addr);
--    return val;
-+	u64 __iomem *addr = cs->base;
-+	u64 val;
-+
-+	addr += idx;
-+	if ((idx == KP_SPI_REG_CONFIG) && (cs->conf_cache >= 0)){
-+		return cs->conf_cache;
-+	}
-+	val = readq((void*)addr);
-+	return val;
- }
- 
--static inline void
-+	static inline void
- kp_spi_write_reg(struct kp_spi_controller_state *cs, int idx, u64 val)
- {
--    u64 __iomem *addr = cs->base;
--    addr += idx;
--    writeq(val, (void*)addr);
--    if (idx == KP_SPI_REG_CONFIG)
--        cs->conf_cache = val;
-+	u64 __iomem *addr = cs->base;
-+	addr += idx;
-+	writeq(val, (void*)addr);
-+	if (idx == KP_SPI_REG_CONFIG)
-+		cs->conf_cache = val;
- }
- 
--static int
-+	static int
- kp_spi_wait_for_reg_bit(struct kp_spi_controller_state *cs, int idx, unsigned long bit)
- {
--    unsigned long timeout;
--    timeout = jiffies + msecs_to_jiffies(1000);
--    while (!(kp_spi_read_reg(cs, idx) & bit)) {
--        if (time_after(jiffies, timeout)) {
--            if (!(kp_spi_read_reg(cs, idx) & bit)) {
--                return -ETIMEDOUT;
--            } else {
--                return 0;
--            }
--        }
--        cpu_relax();
--    }
--    return 0;
-+	unsigned long timeout;
-+	timeout = jiffies + msecs_to_jiffies(1000);
-+	while (!(kp_spi_read_reg(cs, idx) & bit)) {
-+		if (time_after(jiffies, timeout)) {
-+			if (!(kp_spi_read_reg(cs, idx) & bit)) {
-+				return -ETIMEDOUT;
-+			} else {
-+				return 0;
-+			}
-+		}
-+		cpu_relax();
-+	}
-+	return 0;
- }
- 
--static unsigned
-+	static unsigned
- kp_spi_txrx_pio(struct spi_device *spidev, struct spi_transfer *transfer)
- {
--    struct kp_spi_controller_state *cs = spidev->controller_state;
--    unsigned int count = transfer->len;
--    unsigned int c = count;
--    
--    int i;
--    u8 *rx       = transfer->rx_buf;
--    const u8 *tx = transfer->tx_buf;
--    int processed = 0;
--    
--    if (tx) {
--        for (i = 0 ; i < c ; i++) {
--            char val = *tx++;
--            
--            if (kp_spi_wait_for_reg_bit(cs, KP_SPI_REG_STATUS, KP_SPI_REG_STATUS_TXS) < 0) {
--                goto out;
--            }
--            
--            kp_spi_write_reg(cs, KP_SPI_REG_TXDATA, val);
--            processed++;
--        }
--    }
--    else if(rx) {
--        for (i = 0 ; i < c ; i++) {
--            char test=0;
--            
--            kp_spi_write_reg(cs, KP_SPI_REG_TXDATA, 0x00);
--            
--            if (kp_spi_wait_for_reg_bit(cs, KP_SPI_REG_STATUS, KP_SPI_REG_STATUS_RXS) < 0) {
--                goto out;
--            }
--            
--            test = kp_spi_read_reg(cs, KP_SPI_REG_RXDATA);
--            *rx++ = test;
--            processed++;
--        }
--    }
--    
--    if (kp_spi_wait_for_reg_bit(cs, KP_SPI_REG_STATUS, KP_SPI_REG_STATUS_EOT) < 0) {
--        //TODO: Figure out how to abort transaction??  This has never happened in practice though...
--    }
--    
-- out:
--    return processed;
-+	struct kp_spi_controller_state *cs = spidev->controller_state;
-+	unsigned int count = transfer->len;
-+	unsigned int c = count;
-+
-+	int i;
-+	u8 *rx       = transfer->rx_buf;
-+	const u8 *tx = transfer->tx_buf;
-+	int processed = 0;
-+
-+	if (tx) {
-+		for (i = 0 ; i < c ; i++) {
-+			char val = *tx++;
-+
-+			if (kp_spi_wait_for_reg_bit(cs, KP_SPI_REG_STATUS, KP_SPI_REG_STATUS_TXS) < 0) {
-+				goto out;
-+			}
-+
-+			kp_spi_write_reg(cs, KP_SPI_REG_TXDATA, val);
-+			processed++;
-+		}
-+	}
-+	else if(rx) {
-+		for (i = 0 ; i < c ; i++) {
-+			char test=0;
-+
-+			kp_spi_write_reg(cs, KP_SPI_REG_TXDATA, 0x00);
-+
-+			if (kp_spi_wait_for_reg_bit(cs, KP_SPI_REG_STATUS, KP_SPI_REG_STATUS_RXS) < 0) {
-+				goto out;
-+			}
-+
-+			test = kp_spi_read_reg(cs, KP_SPI_REG_RXDATA);
-+			*rx++ = test;
-+			processed++;
-+		}
-+	}
-+
-+	if (kp_spi_wait_for_reg_bit(cs, KP_SPI_REG_STATUS, KP_SPI_REG_STATUS_EOT) < 0) {
-+		//TODO: Figure out how to abort transaction??  This has never happened in practice though...
-+	}
-+
-+out:
-+	return processed;
- }
- 
- /*****************
-  * SPI Functions *
-  *****************/
--static int
-+	static int
- kp_spi_setup(struct spi_device *spidev)
- {
--    union kp_spi_config sc;
--    struct kp_spi *kpspi = spi_master_get_devdata(spidev->master);
--    struct kp_spi_controller_state *cs;
--    
--    /* setup controller state */
--    cs = spidev->controller_state;
--    if (!cs) {
--        cs = kzalloc(sizeof(*cs), GFP_KERNEL);
--        if(!cs) {
--            return -ENOMEM;
--        }
--        cs->base = kpspi->base;
--        cs->phys = kpspi->phys;
--        cs->chip_select = spidev->chip_select;
--        cs->word_len = spidev->bits_per_word;
--        cs->conf_cache = -1;
--        spidev->controller_state = cs;
--    }
--    
--    /* set config register */
--    sc.bitfield.wl = spidev->bits_per_word - 1;
--    sc.bitfield.cs = spidev->chip_select;
--    sc.bitfield.spi_en = 0;
--    sc.bitfield.trm = 0;
--    sc.bitfield.ffen = 0;
--    kp_spi_write_reg(spidev->controller_state, KP_SPI_REG_CONFIG, sc.reg);
--    return 0;
-+	union kp_spi_config sc;
-+	struct kp_spi *kpspi = spi_master_get_devdata(spidev->master);
-+	struct kp_spi_controller_state *cs;
-+
-+	/* setup controller state */
-+	cs = spidev->controller_state;
-+	if (!cs) {
-+		cs = kzalloc(sizeof(*cs), GFP_KERNEL);
-+		if(!cs) {
-+			return -ENOMEM;
-+		}
-+		cs->base = kpspi->base;
-+		cs->phys = kpspi->phys;
-+		cs->chip_select = spidev->chip_select;
-+		cs->word_len = spidev->bits_per_word;
-+		cs->conf_cache = -1;
-+		spidev->controller_state = cs;
-+	}
-+
-+	/* set config register */
-+	sc.bitfield.wl = spidev->bits_per_word - 1;
-+	sc.bitfield.cs = spidev->chip_select;
-+	sc.bitfield.spi_en = 0;
-+	sc.bitfield.trm = 0;
-+	sc.bitfield.ffen = 0;
-+	kp_spi_write_reg(spidev->controller_state, KP_SPI_REG_CONFIG, sc.reg);
-+	return 0;
- }
- 
--static int
-+	static int
- kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
- {
--    struct kp_spi_controller_state *cs;
--    struct spi_device   *spidev;
--    struct kp_spi       *kpspi;
--    struct spi_transfer *transfer;
--    union kp_spi_config sc;
--    int status = 0;
--    
--    spidev = m->spi;
--    kpspi = spi_master_get_devdata(master);
--    m->actual_length = 0;
--    m->status = 0;
--    
--    cs = spidev->controller_state;
--    
--    /* reject invalid messages and transfers */
--    if (list_empty(&m->transfers)) {
--        return -EINVAL;
--    }
--    
--    /* validate input */
--    list_for_each_entry(transfer, &m->transfers, transfer_list) {
--        const void *tx_buf = transfer->tx_buf;
--        void       *rx_buf = transfer->rx_buf;
--        unsigned    len = transfer->len;
--        
--        if (transfer->speed_hz > KP_SPI_CLK || (len && !(rx_buf || tx_buf))) {
--            dev_dbg(kpspi->dev, "  transfer: %d Hz, %d %s%s, %d bpw\n",
--                    transfer->speed_hz,
--                    len,
--                    tx_buf ? "tx" : "",
--                    rx_buf ? "rx" : "",
--                    transfer->bits_per_word);
--            dev_dbg(kpspi->dev, "  transfer -EINVAL\n");
--            return -EINVAL;
--        }
--        if (transfer->speed_hz && (transfer->speed_hz < (KP_SPI_CLK >> 15))) {
--            dev_dbg(kpspi->dev, "speed_hz %d below minimum %d Hz\n",
--                    transfer->speed_hz,
--                    KP_SPI_CLK >> 15);
--            dev_dbg(kpspi->dev, "  speed_hz -EINVAL\n");
--            return -EINVAL;
--        }
--    }
--    
--    /* assert chip select to start the sequence*/
--    sc.reg = kp_spi_read_reg(cs, KP_SPI_REG_CONFIG);
--    sc.bitfield.spi_en = 1;
--    kp_spi_write_reg(cs, KP_SPI_REG_CONFIG, sc.reg);
--    
--    /* work */
--    if (kp_spi_wait_for_reg_bit(cs, KP_SPI_REG_STATUS, KP_SPI_REG_STATUS_EOT) < 0) {
--        dev_info(kpspi->dev, "EOT timed out\n");
--        goto out;
--    }
--    
--    /* do the transfers for this message */
--    list_for_each_entry(transfer, &m->transfers, transfer_list) {
--        if (transfer->tx_buf == NULL && transfer->rx_buf == NULL && transfer->len) {
--            status = -EINVAL;
--            goto error;
--        }
--        
--        /* transfer */
--        if (transfer->len) {
--            unsigned int word_len = spidev->bits_per_word;
--            unsigned count;
--            
--            /* set up the transfer... */
--            sc.reg = kp_spi_read_reg(cs, KP_SPI_REG_CONFIG);
--            
--            /* ...direction */
--            if (transfer->tx_buf) {
--                sc.bitfield.trm = KP_SPI_REG_CONFIG_TRM_TX;
--            }
--            else if (transfer->rx_buf) {
--                sc.bitfield.trm = KP_SPI_REG_CONFIG_TRM_RX;
--            }
--            
--            /* ...word length */
--            if (transfer->bits_per_word) {
--                word_len = transfer->bits_per_word;
--            }
--            cs->word_len = word_len;
--            sc.bitfield.wl = word_len-1;
--            
--            /* ...chip select */
--            sc.bitfield.cs = spidev->chip_select;
--            
--            /* ...and write the new settings */
--            kp_spi_write_reg(cs, KP_SPI_REG_CONFIG, sc.reg);
--            
--            /* do the transfer */
--            count = kp_spi_txrx_pio(spidev, transfer);
--            m->actual_length += count;
--            
--            if (count != transfer->len) {
--                status = -EIO;
--                goto error;
--            }
--        }
--        
--        if (transfer->delay_usecs) {
--            udelay(transfer->delay_usecs);
--        }
--    }
--    
--    /* de-assert chip select to end the sequence */
--    sc.reg = kp_spi_read_reg(cs, KP_SPI_REG_CONFIG);
--    sc.bitfield.spi_en = 0;
--    kp_spi_write_reg(cs, KP_SPI_REG_CONFIG, sc.reg);
--    
-- out:
--    /* done work */
--    spi_finalize_current_message(master);
--    return 0;
--
-- error:
--    m->status = status;
--    return status;
-+	struct kp_spi_controller_state *cs;
-+	struct spi_device   *spidev;
-+	struct kp_spi       *kpspi;
-+	struct spi_transfer *transfer;
-+	union kp_spi_config sc;
-+	int status = 0;
-+
-+	spidev = m->spi;
-+	kpspi = spi_master_get_devdata(master);
-+	m->actual_length = 0;
-+	m->status = 0;
-+
-+	cs = spidev->controller_state;
-+
-+	/* reject invalid messages and transfers */
-+	if (list_empty(&m->transfers)) {
-+		return -EINVAL;
-+	}
-+
-+	/* validate input */
-+	list_for_each_entry(transfer, &m->transfers, transfer_list) {
-+		const void *tx_buf = transfer->tx_buf;
-+		void       *rx_buf = transfer->rx_buf;
-+		unsigned    len = transfer->len;
-+
-+		if (transfer->speed_hz > KP_SPI_CLK || (len && !(rx_buf || tx_buf))) {
-+			dev_dbg(kpspi->dev, "  transfer: %d Hz, %d %s%s, %d bpw\n",
-+					transfer->speed_hz,
-+					len,
-+					tx_buf ? "tx" : "",
-+					rx_buf ? "rx" : "",
-+					transfer->bits_per_word);
-+			dev_dbg(kpspi->dev, "  transfer -EINVAL\n");
-+			return -EINVAL;
-+		}
-+		if (transfer->speed_hz && (transfer->speed_hz < (KP_SPI_CLK >> 15))) {
-+			dev_dbg(kpspi->dev, "speed_hz %d below minimum %d Hz\n",
-+					transfer->speed_hz,
-+					KP_SPI_CLK >> 15);
-+			dev_dbg(kpspi->dev, "  speed_hz -EINVAL\n");
-+			return -EINVAL;
-+		}
-+	}
-+
-+	/* assert chip select to start the sequence*/
-+	sc.reg = kp_spi_read_reg(cs, KP_SPI_REG_CONFIG);
-+	sc.bitfield.spi_en = 1;
-+	kp_spi_write_reg(cs, KP_SPI_REG_CONFIG, sc.reg);
-+
-+	/* work */
-+	if (kp_spi_wait_for_reg_bit(cs, KP_SPI_REG_STATUS, KP_SPI_REG_STATUS_EOT) < 0) {
-+		dev_info(kpspi->dev, "EOT timed out\n");
-+		goto out;
-+	}
-+
-+	/* do the transfers for this message */
-+	list_for_each_entry(transfer, &m->transfers, transfer_list) {
-+		if (transfer->tx_buf == NULL && transfer->rx_buf == NULL && transfer->len) {
-+			status = -EINVAL;
-+			goto error;
-+		}
-+
-+		/* transfer */
-+		if (transfer->len) {
-+			unsigned int word_len = spidev->bits_per_word;
-+			unsigned count;
-+
-+			/* set up the transfer... */
-+			sc.reg = kp_spi_read_reg(cs, KP_SPI_REG_CONFIG);
-+
-+			/* ...direction */
-+			if (transfer->tx_buf) {
-+				sc.bitfield.trm = KP_SPI_REG_CONFIG_TRM_TX;
-+			}
-+			else if (transfer->rx_buf) {
-+				sc.bitfield.trm = KP_SPI_REG_CONFIG_TRM_RX;
-+			}
-+
-+			/* ...word length */
-+			if (transfer->bits_per_word) {
-+				word_len = transfer->bits_per_word;
-+			}
-+			cs->word_len = word_len;
-+			sc.bitfield.wl = word_len-1;
-+
-+			/* ...chip select */
-+			sc.bitfield.cs = spidev->chip_select;
-+
-+			/* ...and write the new settings */
-+			kp_spi_write_reg(cs, KP_SPI_REG_CONFIG, sc.reg);
-+
-+			/* do the transfer */
-+			count = kp_spi_txrx_pio(spidev, transfer);
-+			m->actual_length += count;
-+
-+			if (count != transfer->len) {
-+				status = -EIO;
-+				goto error;
-+			}
-+		}
-+
-+		if (transfer->delay_usecs) {
-+			udelay(transfer->delay_usecs);
-+		}
-+	}
-+
-+	/* de-assert chip select to end the sequence */
-+	sc.reg = kp_spi_read_reg(cs, KP_SPI_REG_CONFIG);
-+	sc.bitfield.spi_en = 0;
-+	kp_spi_write_reg(cs, KP_SPI_REG_CONFIG, sc.reg);
-+
-+out:
-+	/* done work */
-+	spi_finalize_current_message(master);
-+	return 0;
-+
-+error:
-+	m->status = status;
-+	return status;
- }
- 
--static void
-+	static void
- kp_spi_cleanup(struct spi_device *spidev)
- {
--    struct kp_spi_controller_state *cs = spidev->controller_state;
--    if (cs) {
--        kfree(cs);
--    }
-+	struct kp_spi_controller_state *cs = spidev->controller_state;
-+	if (cs) {
-+		kfree(cs);
-+	}
- }
- 
- 
-@@ -450,101 +450,101 @@ kp_spi_cleanup(struct spi_device *spidev)
- /******************
-  * Probe / Remove *
-  ******************/
--static int
-+	static int
- kp_spi_probe(struct platform_device *pldev)
- {
--    struct kpc_core_device_platdata *drvdata;
--    struct spi_master *master;
--    struct kp_spi *kpspi;
--    struct resource *r;
--    int status = 0;
--    int i;
--
--    drvdata = pldev->dev.platform_data;
--    if (!drvdata){
--        dev_err(&pldev->dev, "kp_spi_probe: platform_data is NULL!\n");
--        return -ENODEV;
--    }
--    
--    master = spi_alloc_master(&pldev->dev, sizeof(struct kp_spi));
--    if (master == NULL) {
--        dev_err(&pldev->dev, "kp_spi_probe: master allocation failed\n");
--        return -ENOMEM;
--    }
--    
--    /* set up the spi functions */
--    master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
--    master->bits_per_word_mask = (unsigned int)SPI_BPW_RANGE_MASK(4, 32);
--    master->setup = kp_spi_setup;
--    master->transfer_one_message = kp_spi_transfer_one_message;
--    master->cleanup = kp_spi_cleanup;
--    
--    platform_set_drvdata(pldev, master);
--    
--    kpspi = spi_master_get_devdata(master);
--    kpspi->master = master;
--    kpspi->dev = &pldev->dev;
--    
--    master->num_chipselect = 4;
--    if (pldev->id != -1) {
--        master->bus_num = pldev->id;
--    }
--    kpspi->pin_dir = 0;
--    
--    r = platform_get_resource(pldev, IORESOURCE_MEM, 0);
--    if (r == NULL) {
--        dev_err(&pldev->dev, "kp_spi_probe: Unable to get platform resources\n");
--        status = -ENODEV;
--        goto free_master;
--    }
--    
--    kpspi->phys = (unsigned long)ioremap_nocache(r->start, resource_size(r));
--    kpspi->base = (u64 __iomem *)kpspi->phys;
--    
--    status = spi_register_master(master);
--    if (status < 0) {
--        dev_err(&pldev->dev, "Unable to register SPI device\n");
--        goto free_master;
--    }
--    
--    /* register the slave boards */
--    #define NEW_SPI_DEVICE_FROM_BOARD_INFO_TABLE(table) \
--        for (i = 0 ; i < ARRAY_SIZE(table) ; i++) { \
--            spi_new_device(master, &(table[i])); \
--        }
--    
--    switch ((drvdata->card_id & 0xFFFF0000) >> 16){
--        case PCI_DEVICE_ID_DAKTRONICS_KADOKA_P2KR0:
--            NEW_SPI_DEVICE_FROM_BOARD_INFO_TABLE(p2kr0_board_info);
--            break;
--        default:
--            dev_err(&pldev->dev, "Unknown hardware, cant know what partition table to use!\n");
--            goto free_master;
--            break;
--    }
--    
--    return status;
--
-- free_master:
--    spi_master_put(master);
--    return status;
-+	struct kpc_core_device_platdata *drvdata;
-+	struct spi_master *master;
-+	struct kp_spi *kpspi;
-+	struct resource *r;
-+	int status = 0;
-+	int i;
-+
-+	drvdata = pldev->dev.platform_data;
-+	if (!drvdata){
-+		dev_err(&pldev->dev, "kp_spi_probe: platform_data is NULL!\n");
-+		return -ENODEV;
-+	}
-+
-+	master = spi_alloc_master(&pldev->dev, sizeof(struct kp_spi));
-+	if (master == NULL) {
-+		dev_err(&pldev->dev, "kp_spi_probe: master allocation failed\n");
-+		return -ENOMEM;
-+	}
-+
-+	/* set up the spi functions */
-+	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH;
-+	master->bits_per_word_mask = (unsigned int)SPI_BPW_RANGE_MASK(4, 32);
-+	master->setup = kp_spi_setup;
-+	master->transfer_one_message = kp_spi_transfer_one_message;
-+	master->cleanup = kp_spi_cleanup;
-+
-+	platform_set_drvdata(pldev, master);
-+
-+	kpspi = spi_master_get_devdata(master);
-+	kpspi->master = master;
-+	kpspi->dev = &pldev->dev;
-+
-+	master->num_chipselect = 4;
-+	if (pldev->id != -1) {
-+		master->bus_num = pldev->id;
-+	}
-+	kpspi->pin_dir = 0;
-+
-+	r = platform_get_resource(pldev, IORESOURCE_MEM, 0);
-+	if (r == NULL) {
-+		dev_err(&pldev->dev, "kp_spi_probe: Unable to get platform resources\n");
-+		status = -ENODEV;
-+		goto free_master;
-+	}
-+
-+	kpspi->phys = (unsigned long)ioremap_nocache(r->start, resource_size(r));
-+	kpspi->base = (u64 __iomem *)kpspi->phys;
-+
-+	status = spi_register_master(master);
-+	if (status < 0) {
-+		dev_err(&pldev->dev, "Unable to register SPI device\n");
-+		goto free_master;
-+	}
-+
-+	/* register the slave boards */
-+#define NEW_SPI_DEVICE_FROM_BOARD_INFO_TABLE(table) \
-+	for (i = 0 ; i < ARRAY_SIZE(table) ; i++) { \
-+		spi_new_device(master, &(table[i])); \
-+	}
-+
-+	switch ((drvdata->card_id & 0xFFFF0000) >> 16){
-+		case PCI_DEVICE_ID_DAKTRONICS_KADOKA_P2KR0:
-+			NEW_SPI_DEVICE_FROM_BOARD_INFO_TABLE(p2kr0_board_info);
-+			break;
-+		default:
-+			dev_err(&pldev->dev, "Unknown hardware, cant know what partition table to use!\n");
-+			goto free_master;
-+			break;
-+	}
-+
-+	return status;
-+
-+free_master:
-+	spi_master_put(master);
-+	return status;
- }
- 
--static int
-+	static int
- kp_spi_remove(struct platform_device *pldev)
- {
--    struct spi_master * master = platform_get_drvdata(pldev);
--    spi_unregister_master(master);
--    return 0;
-+	struct spi_master * master = platform_get_drvdata(pldev);
-+	spi_unregister_master(master);
-+	return 0;
- }
- 
- 
- static struct platform_driver kp_spi_driver = {
--    .driver = {
--        .name =     KP_DRIVER_NAME_SPI,
--    },
--    .probe =    kp_spi_probe,
--    .remove =   kp_spi_remove,
-+	.driver = {
-+		.name =     KP_DRIVER_NAME_SPI,
-+	},
-+	.probe =    kp_spi_probe,
-+	.remove =   kp_spi_remove,
- };
- 
- module_platform_driver(kp_spi_driver);
--- 
-2.20.1
-
+PiBGcm9tOiBDb2xpbiBLaW5nIDxjb2xpbi5raW5nQGNhbm9uaWNhbC5jb20+DQo+IFNlbnQ6IFR1
+ZXNkYXksIE1heSAyOCwgMjAxOSA5OjUyIEFNDQo+IA0KPiBFeHRlcm5hbCBFbWFpbA0KPiANCj4g
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLQ0KPiBGcm9tOiBDb2xpbiBJYW4gS2luZyA8Y29saW4ua2luZ0BjYW5vbmlj
+YWwuY29tPg0KPiANCj4gVGhlcmUgaXMgYSBzcGVsbGluZyBtaXN0YWtlIGluIGEgRFBfSU5GTyBt
+ZXNzYWdlLiBGaXggaXQuDQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBDb2xpbiBJYW4gS2luZyA8Y29s
+aW4ua2luZ0BjYW5vbmljYWwuY29tPg0KPiAtLS0NCj4gIGRyaXZlcnMvbmV0L2V0aGVybmV0L3Fs
+b2dpYy9xZWQvcWVkX2Rldi5jIHwgMiArLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9u
+KCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvZXRoZXJu
+ZXQvcWxvZ2ljL3FlZC9xZWRfZGV2LmMNCj4gYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9xbG9naWMv
+cWVkL3FlZF9kZXYuYw0KPiBpbmRleCA2MWNhNDlhOTY3ZGYuLmE5NzE0MTg3NTVlOSAxMDA2NDQN
+Cj4gLS0tIGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvcWxvZ2ljL3FlZC9xZWRfZGV2LmMNCj4gKysr
+IGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvcWxvZ2ljL3FlZC9xZWRfZGV2LmMNCj4gQEAgLTM4MzYs
+NyArMzgzNiw3IEBAIHN0YXRpYyBpbnQgcWVkX2h3X2dldF9wcGZpZF9iaXRtYXAoc3RydWN0DQo+
+IHFlZF9od2ZuICpwX2h3Zm4sDQo+IA0KPiAgCWlmICghKGNkZXYtPnBwZmlkX2JpdG1hcCAmICgw
+eDEgPDwgbmF0aXZlX3BwZmlkX2lkeCkpKSB7DQo+ICAJCURQX0lORk8ocF9od2ZuLA0KPiAtCQkJ
+IkZpeCB0aGUgUFBGSUQgYml0bWFwIHRvIGluY3VsZGUgdGhlIG5hdGl2ZSBQUEZJRA0KPiBbbmF0
+aXZlX3BwZmlkX2lkeCAlaGhkLCBvcmlnX2JpdG1hcCAweCVoaHhdXG4iLA0KPiArCQkJIkZpeCB0
+aGUgUFBGSUQgYml0bWFwIHRvIGluY2x1ZGUgdGhlIG5hdGl2ZSBQUEZJRA0KPiBbbmF0aXZlX3Bw
+ZmlkX2lkeCAlaGhkLCBvcmlnX2JpdG1hcCAweCVoaHhdXG4iLA0KPiAgCQkJbmF0aXZlX3BwZmlk
+X2lkeCwgY2Rldi0+cHBmaWRfYml0bWFwKTsNCj4gIAkJY2Rldi0+cHBmaWRfYml0bWFwID0gMHgx
+IDw8IG5hdGl2ZV9wcGZpZF9pZHg7DQo+ICAJfQ0KPiAtLQ0KPiAyLjIwLjENCg0KVGhhbmtzLMKg
+DQoNCkFja2VkLWJ5OiBNaWNoYWwgS2FsZGVyb27CoDxtaWNoYWwua2FsZGVyb25AbWFydmVsbC5j
+b20+DQoNCg0K

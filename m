@@ -2,113 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AF552C1BA
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 May 2019 10:53:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 992EB2C596
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 May 2019 13:41:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726719AbfE1Ix2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 May 2019 04:53:28 -0400
-Received: from mail-vs1-f68.google.com ([209.85.217.68]:39818 "EHLO
-        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726701AbfE1Ix1 (ORCPT
+        id S1726824AbfE1LlJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 May 2019 07:41:09 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:57602 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726650AbfE1LlJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 May 2019 04:53:27 -0400
-Received: by mail-vs1-f68.google.com with SMTP id m1so12279334vsr.6
-        for <kernel-janitors@vger.kernel.org>; Tue, 28 May 2019 01:53:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=63rNflCdSI9s1lypjb9kjGuIPUPYyEDW7V3KDJZf4ho=;
-        b=hhZ7Ugx8NIA5gGvOhA440AmvtVLs8x74arAvCWzkmIisOX+1tFrNHlQvZrZ4qaspo8
-         fMpDnmSprEB9MwIMSTZPRMpZ4dKAeW+HQX6ryQVRBt6+Xvovoq0jldnv0Jksc5Raad/Y
-         3Jcp85rjCvKkXHQn2oluvtELFTeTijuBgiLBFvwo7c+S6TjskQQnIUgA4082jjngEI1C
-         OVPdhrgfVyYrw1peAtk5DnfFulx7ieluR4jL3Mi7WvUCZ6r48XEHbkLjc8lbl9DAdzJc
-         sCsOPh2VGVPYrwj3ICxFPJTrk3fxcCi87nfHPCpgHYObCW1vXRINgVNW+KNQIhvYKuVb
-         0Smw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=63rNflCdSI9s1lypjb9kjGuIPUPYyEDW7V3KDJZf4ho=;
-        b=P7wqcZSX+11FhGlXQlZhLCYjwyXYVj3vyYMVJ7z5UnvbCMROUYK7gsWSeAMP+L8v8D
-         /gmppKDQwWFaGCmegSlPEazyOy+5qKsLu2kYvvyuP3QYkZjSW0cKCoAWI6PNnuSJpVjF
-         3OYGSnYIDr4BILDJtcMo/NN3cHjqJvoxu7YBzdeRoqhwMV3yHxMivusHiQ3n6x7/InHC
-         hoGqi6lfQg3YR8PX422F1vat391gkvhSc99f7tlim9tkaoNJhjvYp0OCSbMWig3C36VZ
-         vVnceZhM5GNxQlNITi8otgJToIEyT+T+tKIrBxMameTqcGfczGCzKB6RCPDJDv+UzE4y
-         FVpw==
-X-Gm-Message-State: APjAAAX/LcTVN12zKaSPuiB1A3jU1QFwIknNsXXvb6WlhdmSmu2PDPM/
-        8p6ltoMb46bGf4KprBypW183nTaxwnYQKTFJhUkVEw==
-X-Google-Smtp-Source: APXvYqy8Gwi8FdbaqibNI40miRadKGRT4k+l+pInetAz3+qmOqETE/H2IYF4/nOcOLypwZKbIuTILXTiP+gRsOJZaCs=
-X-Received: by 2002:a67:3046:: with SMTP id w67mr54793522vsw.165.1559033606406;
- Tue, 28 May 2019 01:53:26 -0700 (PDT)
+        Tue, 28 May 2019 07:41:09 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4SBcadL087846;
+        Tue, 28 May 2019 11:41:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
+ bh=MN57hUpgpY3H8YYlVbmW+Gv7AfB2kO8pYtNwkuwN+/s=;
+ b=bqH7Zxhp/r+ta6PK14bhgjZ/gfjk9KYqLJsjZAbCB7e/FOHogopDZpD30rjvlDGXa8Vr
+ vg+p7UGbugFzgPAkaScQNtnuCH6ODEu0d+FlgGqiTU8Y7YQNfx+HahWPIy4RGfmDATJs
+ QfUvXk9w5m1eiVSvGyCWMTwpIFod9k41OROXIo9mq/xbSFVyhdzhnKzjdptiq703hyX7
+ G3UVp3WiQgy0NOVowEdTqmSVHcWHirjUzrrhlCKXf3BTHEg2VP4ekoqmnLrCcFM9vOzs
+ eW+jpH2ueXA7kyMBhLd/k/aV3acLkoVFuTPcDfEmTjDYz74L1313Y9KfXeTpc2LK4E4w UQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2spxbq2abn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 28 May 2019 11:41:06 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4SBc7TV127367;
+        Tue, 28 May 2019 11:39:06 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2srbdwr379-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 28 May 2019 11:39:05 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x4SBd44K014541;
+        Tue, 28 May 2019 11:39:04 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 28 May 2019 04:39:03 -0700
+Date:   Tue, 28 May 2019 14:38:58 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     alexandre.bounine@idt.com
+Cc:     kernel-janitors@vger.kernel.org
+Subject: [bug report] rapidio: add mport char device driver
+Message-ID: <20190528113858.GA6670@mwanda>
 MIME-Version: 1.0
-References: <20190515093512.GD3409@mwanda> <CAPDyKFpm9dB55aCUQkDHgyfcJdniNG9jCbdQ4ezYgQ=L8Rxfhw@mail.gmail.com>
- <20190522133709.GP30938@ulmo> <f8b4cc7c-6f12-21df-e76c-59699ff647b0@nvidia.com>
-In-Reply-To: <f8b4cc7c-6f12-21df-e76c-59699ff647b0@nvidia.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Tue, 28 May 2019 10:52:50 +0200
-Message-ID: <CAPDyKFpB+gEaS0J_Ro3-ovvLwYpCXG6OPK4dspsp4r_bfow8uA@mail.gmail.com>
-Subject: Re: [PATCH] mmc: tegra: Fix a warning message
-To:     Sowjanya Komatineni <skomatineni@nvidia.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9270 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905280077
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9270 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905280077
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 22 May 2019 at 18:22, Sowjanya Komatineni
-<skomatineni@nvidia.com> wrote:
->
-> On 5/22/19 6:37 AM, Thierry Reding wrote:
-> > On Wed, May 15, 2019 at 01:46:40PM +0200, Ulf Hansson wrote:
-> >> On Wed, 15 May 2019 at 11:35, Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> >>> The WARN_ON() macro takes a condition, not a warning message.  I've
-> >>> changed this to use WARN(1, "msg...
-> >>>
-> >>> Fixes: ea8fc5953e8b ("mmc: tegra: update hw tuning process")
-> >>> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> >>> ---
-> >>>   drivers/mmc/host/sdhci-tegra.c | 2 +-
-> >>>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/drivers/mmc/host/sdhci-tegra.c b/drivers/mmc/host/sdhci-tegra.c
-> >>> index f608417ae967..10d7aaf68bab 100644
-> >>> --- a/drivers/mmc/host/sdhci-tegra.c
-> >>> +++ b/drivers/mmc/host/sdhci-tegra.c
-> >>> @@ -865,7 +865,7 @@ static void tegra_sdhci_tap_correction(struct sdhci_host *host, u8 thd_up,
-> >>>          }
-> >>>
-> >>>          if (!first_fail) {
-> >>> -               WARN_ON("no edge detected, continue with hw tuned delay.\n");
-> >>> +               WARN(1, "no edge detected, continue with hw tuned delay.\n");
-> >> Not sure why this is a WARN*() in the first place.
-> >>
-> >> Seems like a dev_warn() or possibly a dev_warn_once() should be used instead.
-> > I think this was on purpose in order to increase the likelihood of this
-> > getting reported. Sowjanya knows the details much better, but I think
-> > this is supposed to be very rare and really a problem with the tap
-> > settings in device tree, which is something that we want to know and
-> > fix.
-> >
-> > Let's see if Sowjanya can shed some light on this.
-> >
-> > Thierry
-> >
-> This warn can happen when no edge is detected and hw tuning results include
->
-> all passing taps which is very unlikely. So, I believe WARN(1, msg)
-> should be good to use.
->
-> Sowjanya
+Hello Alexandre Bounine,
 
-Okay, so I have picked v1 instead, for fixes, thanks!
+The patch e8de370188d0: "rapidio: add mport char device driver" from
+Mar 22, 2016, leads to the following static checker warning:
 
-Kind regards
-Uffe
+	drivers/rapidio/devices/rio_mport_cdev.c:1694 rio_mport_add_riodev()
+	warn: '__dynamic_pr_debug' unterminated user string 'dev_info.name'
+
+drivers/rapidio/devices/rio_mport_cdev.c
+  1676  static int rio_mport_add_riodev(struct mport_cdev_priv *priv,
+  1677                                     void __user *arg)
+  1678  {
+  1679          struct mport_dev *md = priv->md;
+  1680          struct rio_rdev_info dev_info;
+  1681          struct rio_dev *rdev;
+  1682          struct rio_switch *rswitch = NULL;
+  1683          struct rio_mport *mport;
+  1684          size_t size;
+  1685          u32 rval;
+  1686          u32 swpinfo = 0;
+  1687          u16 destid;
+  1688          u8 hopcount;
+  1689          int err;
+  1690  
+  1691          if (copy_from_user(&dev_info, arg, sizeof(dev_info)))
+                                    ^^^^^^^^
+  1692                  return -EFAULT;
+  1693  
+  1694          rmcd_debug(RDEV, "name:%s ct:0x%x did:0x%x hc:0x%x", dev_info.name,
+                                                                     ^^^^^^^^^^^^^
+The user might have forgotten to NUL terminate this string.
+
+  1695                     dev_info.comptag, dev_info.destid, dev_info.hopcount);
+  1696  
+  1697          if (bus_find_device_by_name(&rio_bus_type, NULL, dev_info.name)) {
+  1698                  rmcd_debug(RDEV, "device %s already exists", dev_info.name);
+  1699                  return -EEXIST;
+  1700          }
+
+regards,
+dan carpenter

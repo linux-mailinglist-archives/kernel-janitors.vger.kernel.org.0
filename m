@@ -2,63 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C43B62B991
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 May 2019 19:52:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72B642BD1F
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 May 2019 04:09:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726670AbfE0Rwg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 May 2019 13:52:36 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50979 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726346AbfE0Rwg (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 May 2019 13:52:36 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hVJnS-0001iE-Qa; Mon, 27 May 2019 17:52:30 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Casey Schaufler <casey@schaufler-ca.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        linux-security-module@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] smack: remove redundant assignment to variable m
-Date:   Mon, 27 May 2019 18:52:26 +0100
-Message-Id: <20190527175226.17191-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727887AbfE1CJs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 May 2019 22:09:48 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:17169 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727858AbfE1CJs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 27 May 2019 22:09:48 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 7FD15975CEE8A2494546;
+        Tue, 28 May 2019 10:09:45 +0800 (CST)
+Received: from [127.0.0.1] (10.177.96.96) by DGGEMS401-HUB.china.huawei.com
+ (10.3.19.201) with Microsoft SMTP Server id 14.3.439.0; Tue, 28 May 2019
+ 10:09:42 +0800
+Subject: =?UTF-8?Q?Re:_[PATCH_-next_v2]_staging:_kpc2000:_Remove_set_but_not?=
+ =?UTF-8?B?IHVzZWQgdmFyaWFibGUg4oCYc3RhdHVz4oCZ?=
+To:     <gregkh@linuxfoundation.org>, <jeremy@azazel.net>
+References: <20190525042642.78482-1-maowenan@huawei.com>
+ <20190525081321.121294-1-maowenan@huawei.com>
+CC:     <devel@driverdev.osuosl.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>,
+        Sven Van Asbroeck <thesven73@gmail.com>
+From:   maowenan <maowenan@huawei.com>
+Message-ID: <69398d9c-68e1-e4c5-35f9-4bf09627e48a@huawei.com>
+Date:   Tue, 28 May 2019 10:09:38 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
+In-Reply-To: <20190525081321.121294-1-maowenan@huawei.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.177.96.96]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+please ignore v2 version.
+I will send v3 later according to Sven Van Asbroeck 's comments.
 
-Variable m is assigned a value that is never read and m is later
-reassigned in for-loop.  This the assignment is redundant and can
-be mored.
-
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- security/smack/smackfs.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
-index 47f73a0dabb1..b66adafeb5fa 100644
---- a/security/smack/smackfs.c
-+++ b/security/smack/smackfs.c
-@@ -1174,7 +1174,6 @@ static ssize_t smk_write_net4addr(struct file *file, const char __user *buf,
- 			rc = -EINVAL;
- 			goto free_out;
- 		}
--		m = BEBITS;
- 		masks = 32;
- 	}
- 	if (masks > BEBITS) {
--- 
-2.20.1
+On 2019/5/25 16:13, Mao Wenan wrote:
+> Fixes gcc '-Wunused-but-set-variable' warning:
+> 
+> drivers/staging/kpc2000/kpc_spi/spi_driver.c: In function
+> ‘kp_spi_transfer_one_message’:
+> drivers/staging/kpc2000/kpc_spi/spi_driver.c:282:9: warning: variable
+> ‘status’ set but not used [-Wunused-but-set-variable]
+>      int status = 0;
+>          ^~~~~~
+> The variable 'status' is not used any more, remve it.
+> 
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> ---
+>  v2: change the subject of the patch.
+> ---
+>  drivers/staging/kpc2000/kpc_spi/spi_driver.c | 3 ---
+>  1 file changed, 3 deletions(-)
+> 
+> diff --git a/drivers/staging/kpc2000/kpc_spi/spi_driver.c b/drivers/staging/kpc2000/kpc_spi/spi_driver.c
+> index 86df16547a92..16f9518f8d63 100644
+> --- a/drivers/staging/kpc2000/kpc_spi/spi_driver.c
+> +++ b/drivers/staging/kpc2000/kpc_spi/spi_driver.c
+> @@ -279,7 +279,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
+>      struct kp_spi       *kpspi;
+>      struct spi_transfer *transfer;
+>      union kp_spi_config sc;
+> -    int status = 0;
+>      
+>      spidev = m->spi;
+>      kpspi = spi_master_get_devdata(master);
+> @@ -332,7 +331,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
+>      /* do the transfers for this message */
+>      list_for_each_entry(transfer, &m->transfers, transfer_list) {
+>          if (transfer->tx_buf == NULL && transfer->rx_buf == NULL && transfer->len) {
+> -            status = -EINVAL;
+>              break;
+>          }
+>          
+> @@ -370,7 +368,6 @@ kp_spi_transfer_one_message(struct spi_master *master, struct spi_message *m)
+>              m->actual_length += count;
+>              
+>              if (count != transfer->len) {
+> -                status = -EIO;
+>                  break;
+>              }
+>          }
+> 
 

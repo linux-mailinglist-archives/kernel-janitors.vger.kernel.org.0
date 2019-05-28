@@ -2,83 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 490C82C6D1
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 May 2019 14:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE3CC2C8EC
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 May 2019 16:38:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727418AbfE1MnJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 May 2019 08:43:09 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:52428 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727201AbfE1MnJ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 May 2019 08:43:09 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 9879C60850; Tue, 28 May 2019 12:43:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559047388;
-        bh=lCVRucRy9Sh6Z/3jPpo/oYImhufsBY/lliFa5yolGa4=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=o25HtyBqfNi2i01JLZ5hxBYQjJ7vyTAKInSln/u1L+DO0giyKEgKn/FpCsMoR2jaO
-         AcvOYi0p0bedIgz6LLgIUvsX28CApYTkpMxbugUvZdDxiM4Fmt9vjj/n0HdA5Qlc6u
-         nqdxJiet48XhlVRYxzH9dHenkxiu4z5fEtpjs8qo=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        id S1726546AbfE1OiS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 May 2019 10:38:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60722 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726453AbfE1OiS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 May 2019 10:38:18 -0400
+Received: from localhost (unknown [193.47.165.251])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7736B6070D;
-        Tue, 28 May 2019 12:43:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1559047387;
-        bh=lCVRucRy9Sh6Z/3jPpo/oYImhufsBY/lliFa5yolGa4=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=awL5ZifMTWVpkswr4/nnP/KgwlWZaQqhJMqj+EwH2ZKy9jFreXTNSPTrqSsNTDnoy
-         ZeXeLFO95+9oBDBHIbTvrC+1Ka7a8mldwzNljH7gnV0ejZmnshlkoX9O2SuEqArqDp
-         /MaJbIZ3YTzR3Fx6TNH+hG/GOmGNsMH6/rMh2oqc=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7736B6070D
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        by mail.kernel.org (Postfix) with ESMTPSA id 248E520679;
+        Tue, 28 May 2019 14:38:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1559054297;
+        bh=FliAhEdRTiOnsN7QkSsB6eiQWNcJG4v+nIWcscoRjWs=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=K3rSZcnLDBYc31OeLl3Rsqps37QDdX1kfwN7ZuwjzDOYKbPgaThdD9d9ryJfZWSY0
+         dz7lSbYn0YVSBCDyfRkTDP0hTv+TSJFBAWPdrFHwsRLu1hj57BiUE0QX5wbFSOdbFO
+         cWvHHNbbiiVmqgo1V2YP0SnwR4wnFc12wrHWPMhU=
+Date:   Tue, 28 May 2019 17:38:14 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Saeed Mahameed <saeedm@mellanox.com>,
+        Maor Gottlieb <maorg@mellanox.com>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] net/mlx5: potential error pointer dereference in error
+ handling
+Message-ID: <20190528143814.GQ4633@mtr-leonro.mtl.com>
+References: <20190503122839.GB29695@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] libertas: fix spelling mistake "Donwloading" ->
- "Downloading"
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190514211406.6353-1-colin.king@canonical.com>
-References: <20190514211406.6353-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190528124308.9879C60850@smtp.codeaurora.org>
-Date:   Tue, 28 May 2019 12:43:08 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190503122839.GB29695@mwanda>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+On Fri, May 03, 2019 at 03:28:39PM +0300, Dan Carpenter wrote:
+> The error handling was a bit flipped around.  If the mlx5_create_flow_group()
+> function failed then it would have resulted in dereferencing "fg" when
+> it was an error pointer.
+>
+> Fixes: 80f09dfc237f ("net/mlx5: Eswitch, enable RoCE loopback traffic")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/net/ethernet/mellanox/mlx5/core/rdma.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is are two spelling mistakes in lbtf_deb_usb2 messages, fix these.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
+Sorry for the delay, applied to mlx5-next branch.
+6cc070bdf07c net/mlx5: potential error pointer dereference in error handling
 
-Patch applied to wireless-drivers-next.git, thanks.
-
-aeffda6b10f8 libertas: fix spelling mistake "Donwloading" -> "Downloading"
-
--- 
-https://patchwork.kernel.org/patch/10943765/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Thanks

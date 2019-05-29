@@ -2,91 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 775A12E686
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 May 2019 22:53:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9871F2E776
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 May 2019 23:30:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726362AbfE2Ux2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 May 2019 16:53:28 -0400
-Received: from mail-ot1-f46.google.com ([209.85.210.46]:40221 "EHLO
-        mail-ot1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726139AbfE2Ux2 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 May 2019 16:53:28 -0400
-Received: by mail-ot1-f46.google.com with SMTP id u11so3466665otq.7;
-        Wed, 29 May 2019 13:53:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=D2+H7EZcpvU21TkBJqjVERhn4aghur1shp/MYn/imNU=;
-        b=m+/sPdWc7eaXJhnfKEBLgk8Rmx0byEo9ZcvMEYGlRDmvpvNw89EfzD7FZmTYMsjo2E
-         oGOwSgsOKAXqcXDMzkkN/3+aKBkzxjVKC3/ha0YVYksOpj7c0C0+DHisu4zV3Ju+uzya
-         vRHJuBS4PDH9EFzWEXKNBxt6rYztxVpgpBYKMzPumIz8ZP2TDkEOtmQ8Z33rVFMpQ06s
-         +BVlnA9XUFM1wJXAdxuKxih6xV+P3zgcTiMuwhsCaIngTa5x6g3rf1+ZPulUtBnkHT7R
-         g9F1XDEhN3o+JUR4D9gUHrfUsYZ6XcMx6vlHVUTxFwwS41MEhpchtTsmw2Tvun9N7UcP
-         LS3Q==
-X-Gm-Message-State: APjAAAW/GwpB+/wAOJsq83tVF/q8lf7xQD66Pc7G29nmx3w006TOymP/
-        fmIH1tsNa4ivVRyQ22QbeDT77cV9
-X-Google-Smtp-Source: APXvYqze83Zg9NsuFA/4G0fUXNF0IB2o4nEyhx+YjVb9jk83eZEMbhjWnb5oXGp8UiBCfrM5CPqvwQ==
-X-Received: by 2002:a9d:4b15:: with SMTP id q21mr10964705otf.139.1559163207455;
-        Wed, 29 May 2019 13:53:27 -0700 (PDT)
-Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com. [209.85.210.49])
-        by smtp.gmail.com with ESMTPSA id j189sm226274oia.2.2019.05.29.13.53.26
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 29 May 2019 13:53:26 -0700 (PDT)
-Received: by mail-ot1-f49.google.com with SMTP id r7so3480576otn.6;
-        Wed, 29 May 2019 13:53:26 -0700 (PDT)
-X-Received: by 2002:a9d:7343:: with SMTP id l3mr58178960otk.63.1559163206194;
- Wed, 29 May 2019 13:53:26 -0700 (PDT)
+        id S1726464AbfE2VaC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 May 2019 17:30:02 -0400
+Received: from mail-eopbgr800074.outbound.protection.outlook.com ([40.107.80.74]:48218
+        "EHLO NAM03-DM3-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726189AbfE2VaB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 29 May 2019 17:30:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amdcloud.onmicrosoft.com; s=selector1-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NvGgg2zOXK0CfpVwnqsUlEGhaIB8BTrOOnD28S2534g=;
+ b=weCrRJGrcw19BfcL6MrzfZ5vpJnKT+xdj2+lE6+oo/XKbIghfrTRlxfwKY+C/sKEPwOdqIpbagI3BDXdP7JzF98uVKdovOkV3KtwDOJsZlBukf1RPQfTqahqMTWuAXjlwAoIbh5ERDedT2WLtUuPAzGBVNUE6xo3PowTm45C5QQ=
+Received: from DM6PR12MB3947.namprd12.prod.outlook.com (10.255.174.156) by
+ DM6PR12MB2619.namprd12.prod.outlook.com (20.176.116.16) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1922.16; Wed, 29 May 2019 21:29:58 +0000
+Received: from DM6PR12MB3947.namprd12.prod.outlook.com
+ ([fe80::5964:8c3c:1b5b:c480]) by DM6PR12MB3947.namprd12.prod.outlook.com
+ ([fe80::5964:8c3c:1b5b:c480%2]) with mapi id 15.20.1922.021; Wed, 29 May 2019
+ 21:29:58 +0000
+From:   "Kuehling, Felix" <Felix.Kuehling@amd.com>
+To:     Colin King <colin.king@canonical.com>,
+        Oded Gabbay <oded.gabbay@gmail.com>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Koenig, Christian" <Christian.Koenig@amd.com>,
+        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "Zeng, Oak" <Oak.Zeng@amd.com>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][next] drm/amdkfd: fix null pointer dereference on dev
+Thread-Topic: [PATCH][next] drm/amdkfd: fix null pointer dereference on dev
+Thread-Index: AQHVFjBCaD/NqbYM90qWqX83f23XTKaCnvEA
+Date:   Wed, 29 May 2019 21:29:58 +0000
+Message-ID: <caa18dab-ac66-a909-1d94-3dc5604971da@amd.com>
+References: <20190529150734.18120-1-colin.king@canonical.com>
+In-Reply-To: <20190529150734.18120-1-colin.king@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [165.204.55.251]
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+x-clientproxiedby: YTOPR0101CA0026.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b00:15::39) To DM6PR12MB3947.namprd12.prod.outlook.com
+ (2603:10b6:5:1cb::28)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Felix.Kuehling@amd.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: f05e16e4-a41c-4100-fe8a-08d6e47cccb0
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:DM6PR12MB2619;
+x-ms-traffictypediagnostic: DM6PR12MB2619:
+x-microsoft-antispam-prvs: <DM6PR12MB2619AF60555BE877914D50C9921F0@DM6PR12MB2619.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4941;
+x-forefront-prvs: 0052308DC6
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(366004)(346002)(39860400002)(396003)(376002)(136003)(199004)(189003)(58126008)(8676002)(6486002)(6512007)(81166006)(68736007)(73956011)(71200400001)(486006)(6246003)(54906003)(110136005)(476003)(6436002)(86362001)(71190400001)(31696002)(2201001)(66476007)(66556008)(64756008)(66446008)(4326008)(66946007)(446003)(65826007)(6636002)(316002)(53546011)(81156014)(2501003)(305945005)(6506007)(26005)(25786009)(256004)(14444005)(64126003)(31686004)(229853002)(14454004)(52116002)(5660300002)(76176011)(478600001)(99286004)(3846002)(65806001)(6116002)(65956001)(72206003)(7736002)(2616005)(11346002)(8936002)(2906002)(102836004)(53936002)(186003)(386003)(66066001)(36756003)(921003)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR12MB2619;H:DM6PR12MB3947.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: amd.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: P7mYtFDx4WcjP8s3+WcrbTEr4iHd0bHJqCOKXWekomMaa85ADTo2tQgLFksoCLYa3MG/HHe2al7ZvJxsm5YKZN6tlcmttiyPsWwZBbHeNhKsGQ8SeBH1YWbmHadBrp+V+lBYIC0gyFLKwXx09RkqzwnZuUUBhZoLT8C4jKHIS56aPdyqzJ99/CnkH90n+ZrDraCY2Y3gL67rUmPSS7Td+8Ux21b3lrDydVMPpkJACzy4Qx3kCg8phyWtBUhESSp4sKjZhdvrmiemGxg4BqCifuJS8GlhZ44nCM4gfMHwO6QaEoe5xxF2WYPdfpOscIW1aNcoqi6ghkU5mBLryZ7sKhlNdVphvHXMEVJmw4B9kdEOmHxXZz8C3Og/e7wB5mZlvDGcZre0eh9HzBoEmkzOqEeNkuzpGD+j9+agWEQZhcs=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <5DDDE1C51BFA0C4CA50EF3091B91A1F2@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20190521085624.13665-1-colin.king@canonical.com>
-In-Reply-To: <20190521085624.13665-1-colin.king@canonical.com>
-From:   Li Yang <leoyang.li@nxp.com>
-Date:   Wed, 29 May 2019 15:53:15 -0500
-X-Gmail-Original-Message-ID: <CADRPPNS5EbVrQ_ayvs=s7fYAc4JM1DfNeXwrmCXMvk6HzPouEQ@mail.gmail.com>
-Message-ID: <CADRPPNS5EbVrQ_ayvs=s7fYAc4JM1DfNeXwrmCXMvk6HzPouEQ@mail.gmail.com>
-Subject: Re: [PATCH][next] soc: fsl: fix spelling mistake "Firmaware" -> "Firmware"
-To:     Colin King <colin.king@canonical.com>
-Cc:     linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "moderated list:ARM/FREESCALE IMX / MXC ARM ARCHITECTURE" 
-        <linux-arm-kernel@lists.infradead.org>,
-        kernel-janitors@vger.kernel.org,
-        lkml <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f05e16e4-a41c-4100-fe8a-08d6e47cccb0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 May 2019 21:29:58.3261
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: fkuehlin@amd.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB2619
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, May 21, 2019 at 3:57 AM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> There is a spelling mistake in a pr_err message. Fix it.
->
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Applied.  Thanks!
-
-Regards,
-Leo
-> ---
->  drivers/soc/fsl/dpaa2-console.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/soc/fsl/dpaa2-console.c b/drivers/soc/fsl/dpaa2-console.c
-> index 9168d8ddc932..27243f706f37 100644
-> --- a/drivers/soc/fsl/dpaa2-console.c
-> +++ b/drivers/soc/fsl/dpaa2-console.c
-> @@ -73,7 +73,7 @@ static u64 get_mc_fw_base_address(void)
->
->         mcfbaregs = ioremap(mc_base_addr.start, resource_size(&mc_base_addr));
->         if (!mcfbaregs) {
-> -               pr_err("could not map MC Firmaware Base registers\n");
-> +               pr_err("could not map MC Firmware Base registers\n");
->                 return 0;
->         }
->
-> --
-> 2.20.1
->
+T24gMjAxOS0wNS0yOSAxMTowNyBhLm0uLCBDb2xpbiBLaW5nIHdyb3RlOg0KPiBGcm9tOiBDb2xp
+biBJYW4gS2luZyA8Y29saW4ua2luZ0BjYW5vbmljYWwuY29tPg0KPg0KPiBUaGUgcG9pbnRlciBk
+ZXYgaXMgc2V0IHRvIG51bGwgeWV0IGl0IGlzIGJlaW5nIGRlcmVmZXJlbmNlZCB3aGVuDQo+IGNo
+ZWNraW5nIGRldi0+ZHFtLT5zY2hlZF9wb2xpY3kuICBGaXggdGhpcyBieSBwZXJmb3JtaW5nIHRo
+ZSBjaGVjaw0KPiBvbiBkZXYtPmRxbS0+c2NoZWRfcG9saWN5IGFmdGVyIGRldiBoYXMgYmVlbiBh
+c3NpZ25lZCBhbmQgbnVsbA0KPiBjaGVja2VkLiAgQWxzbyByZW1vdmUgdGhlIHJlZHVuZGFudCBu
+dWxsIGFzc2lnbm1lbnQgdG8gZGV2Lg0KPg0KPiBBZGRyZXNzZXMtQ292ZXJpdHk6ICgiRXhwbGlj
+aXQgbnVsbCBkZXJlZmVyZW5jZSIpDQo+IEZpeGVzOiAxYTA1OGMzMzc2NzYgKCJkcm0vYW1ka2Zk
+OiBOZXcgSU9DVEwgdG8gYWxsb2NhdGUgcXVldWUgR1dTIikNCj4gU2lnbmVkLW9mZi1ieTogQ29s
+aW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fub25pY2FsLmNvbT4NCg0KUmV2aWV3ZWQtYnk6IEZl
+bGl4IEt1ZWhsaW5nIDxGZWxpeC5LdWVobGluZ0BhbWQuY29tPg0KDQpUaGFua3MhDQoNCiDCoCBG
+ZWxpeA0KDQo+IC0tLQ0KPiAgIGRyaXZlcnMvZ3B1L2RybS9hbWQvYW1ka2ZkL2tmZF9jaGFyZGV2
+LmMgfCA3ICsrKystLS0NCj4gICAxIGZpbGUgY2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAzIGRl
+bGV0aW9ucygtKQ0KPg0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9ncHUvZHJtL2FtZC9hbWRrZmQv
+a2ZkX2NoYXJkZXYuYyBiL2RyaXZlcnMvZ3B1L2RybS9hbWQvYW1ka2ZkL2tmZF9jaGFyZGV2LmMN
+Cj4gaW5kZXggYWFiMmFhNmMxZGVlLi5lYTgyODI4ZmRjNzYgMTAwNjQ0DQo+IC0tLSBhL2RyaXZl
+cnMvZ3B1L2RybS9hbWQvYW1ka2ZkL2tmZF9jaGFyZGV2LmMNCj4gKysrIGIvZHJpdmVycy9ncHUv
+ZHJtL2FtZC9hbWRrZmQva2ZkX2NoYXJkZXYuYw0KPiBAQCAtMTU3MiwxMCArMTU3Miw5IEBAIHN0
+YXRpYyBpbnQga2ZkX2lvY3RsX2FsbG9jX3F1ZXVlX2d3cyhzdHJ1Y3QgZmlsZSAqZmlsZXAsDQo+
+ICAgew0KPiAgIAlpbnQgcmV0dmFsOw0KPiAgIAlzdHJ1Y3Qga2ZkX2lvY3RsX2FsbG9jX3F1ZXVl
+X2d3c19hcmdzICphcmdzID0gZGF0YTsNCj4gLQlzdHJ1Y3Qga2ZkX2RldiAqZGV2ID0gTlVMTDsN
+Cj4gKwlzdHJ1Y3Qga2ZkX2RldiAqZGV2Ow0KPiAgIA0KPiAtCWlmICghaHdzX2d3c19zdXBwb3J0
+IHx8DQo+IC0JCWRldi0+ZHFtLT5zY2hlZF9wb2xpY3kgPT0gS0ZEX1NDSEVEX1BPTElDWV9OT19I
+V1MpDQo+ICsJaWYgKCFod3NfZ3dzX3N1cHBvcnQpDQo+ICAgCQlyZXR1cm4gLUVJTlZBTDsNCj4g
+ICANCj4gICAJZGV2ID0ga2ZkX2RldmljZV9ieV9pZChhcmdzLT5ncHVfaWQpOw0KPiBAQCAtMTU4
+Myw2ICsxNTgyLDggQEAgc3RhdGljIGludCBrZmRfaW9jdGxfYWxsb2NfcXVldWVfZ3dzKHN0cnVj
+dCBmaWxlICpmaWxlcCwNCj4gICAJCXByX2RlYnVnKCJDb3VsZCBub3QgZmluZCBncHUgaWQgMHgl
+eFxuIiwgYXJncy0+Z3B1X2lkKTsNCj4gICAJCXJldHVybiAtRUlOVkFMOw0KPiAgIAl9DQo+ICsJ
+aWYgKGRldi0+ZHFtLT5zY2hlZF9wb2xpY3kgPT0gS0ZEX1NDSEVEX1BPTElDWV9OT19IV1MpDQo+
+ICsJCXJldHVybiAtRUlOVkFMOw0KPiAgIA0KPiAgIAltdXRleF9sb2NrKCZwLT5tdXRleCk7DQo+
+ICAgCXJldHZhbCA9IHBxbV9zZXRfZ3dzKCZwLT5wcW0sIGFyZ3MtPnF1ZXVlX2lkLCBhcmdzLT5u
+dW1fZ3dzID8gZGV2LT5nd3MgOiBOVUxMKTsNCg==

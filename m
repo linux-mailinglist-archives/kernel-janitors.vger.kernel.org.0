@@ -2,80 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E3ADD2E074
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 May 2019 17:01:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 508762E08B
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 May 2019 17:07:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726892AbfE2PB3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 May 2019 11:01:29 -0400
-Received: from mga07.intel.com ([134.134.136.100]:23070 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726012AbfE2PB3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 May 2019 11:01:29 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 May 2019 08:01:26 -0700
-X-ExtLoop1: 1
-Received: from jnikula-mobl3.fi.intel.com (HELO localhost) ([10.237.66.150])
-  by fmsmga001.fm.intel.com with ESMTP; 29 May 2019 08:01:23 -0700
-From:   Jani Nikula <jani.nikula@linux.intel.com>
-To:     Colin King <colin.king@canonical.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        id S1726396AbfE2PHk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 May 2019 11:07:40 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:48809 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725914AbfE2PHj (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 29 May 2019 11:07:39 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hW0Aw-0004FY-R3; Wed, 29 May 2019 15:07:34 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Oded Gabbay <oded.gabbay@gmail.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Stuart Summers <stuart.summers@intel.com>,
-        Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Subject: Re: [PATCH][next] drm/i915: fix uninitialized variable 'subslice_mask'
-In-Reply-To: <20190529144325.17235-1-colin.king@canonical.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20190529144325.17235-1-colin.king@canonical.com>
-Date:   Wed, 29 May 2019 18:04:35 +0300
-Message-ID: <87lfyp47zw.fsf@intel.com>
+        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
+        Oak Zeng <Oak.Zeng@amd.com>,
+        Felix Kuehling <Felix.Kuehling@amd.com>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/amdkfd: fix null pointer dereference on dev
+Date:   Wed, 29 May 2019 16:07:34 +0100
+Message-Id: <20190529150734.18120-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 29 May 2019, Colin King <colin.king@canonical.com> wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Currently subslice_mask is not initialized and so data is being
-> bit-wise or'd into a garbage value. Fix this by inintializing
-> subslice_mask to zero.
->
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Fixes: 1ac159e23c2c ("drm/i915: Expand subslice mask")
+From: Colin Ian King <colin.king@canonical.com>
 
-This was already reverted for other reasons. Need to be fixed on the
-next round. For future reference, please Cc: author and reviewers of the
-referenced commit.
+The pointer dev is set to null yet it is being dereferenced when
+checking dev->dqm->sched_policy.  Fix this by performing the check
+on dev->dqm->sched_policy after dev has been assigned and null
+checked.  Also remove the redundant null assignment to dev.
 
-BR,
-Jani.
+Addresses-Coverity: ("Explicit null dereference")
+Fixes: 1a058c337676 ("drm/amdkfd: New IOCTL to allocate queue GWS")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/gpu/drm/i915/intel_device_info.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/i915/intel_device_info.c b/drivers/gpu/drm/i915/intel_device_info.c
-> index 3625f777f3a3..d395a09b994f 100644
-> --- a/drivers/gpu/drm/i915/intel_device_info.c
-> +++ b/drivers/gpu/drm/i915/intel_device_info.c
-> @@ -298,7 +298,7 @@ static void cherryview_sseu_info_init(struct drm_i915_private *dev_priv)
->  {
->  	struct sseu_dev_info *sseu = &RUNTIME_INFO(dev_priv)->sseu;
->  	u32 fuse;
-> -	u8 subslice_mask;
-> +	u8 subslice_mask = 0;
->  
->  	fuse = I915_READ(CHV_FUSE_GT);
-
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+index aab2aa6c1dee..ea82828fdc76 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -1572,10 +1572,9 @@ static int kfd_ioctl_alloc_queue_gws(struct file *filep,
+ {
+ 	int retval;
+ 	struct kfd_ioctl_alloc_queue_gws_args *args = data;
+-	struct kfd_dev *dev = NULL;
++	struct kfd_dev *dev;
+ 
+-	if (!hws_gws_support ||
+-		dev->dqm->sched_policy == KFD_SCHED_POLICY_NO_HWS)
++	if (!hws_gws_support)
+ 		return -EINVAL;
+ 
+ 	dev = kfd_device_by_id(args->gpu_id);
+@@ -1583,6 +1582,8 @@ static int kfd_ioctl_alloc_queue_gws(struct file *filep,
+ 		pr_debug("Could not find gpu id 0x%x\n", args->gpu_id);
+ 		return -EINVAL;
+ 	}
++	if (dev->dqm->sched_policy == KFD_SCHED_POLICY_NO_HWS)
++		return -EINVAL;
+ 
+ 	mutex_lock(&p->mutex);
+ 	retval = pqm_set_gws(&p->pqm, args->queue_id, args->num_gws ? dev->gws : NULL);
 -- 
-Jani Nikula, Intel Open Source Graphics Center
+2.20.1
+

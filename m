@@ -2,84 +2,49 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 508762E08B
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 May 2019 17:07:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 589BD2E606
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 May 2019 22:26:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726396AbfE2PHk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 May 2019 11:07:40 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:48809 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725914AbfE2PHj (ORCPT
+        id S1726557AbfE2U0C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 May 2019 16:26:02 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:41276 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725990AbfE2U0B (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 May 2019 11:07:39 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hW0Aw-0004FY-R3; Wed, 29 May 2019 15:07:34 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Oded Gabbay <oded.gabbay@gmail.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
-        Oak Zeng <Oak.Zeng@amd.com>,
-        Felix Kuehling <Felix.Kuehling@amd.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/amdkfd: fix null pointer dereference on dev
-Date:   Wed, 29 May 2019 16:07:34 +0100
-Message-Id: <20190529150734.18120-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Wed, 29 May 2019 16:26:01 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 8A9F914A68A01;
+        Wed, 29 May 2019 13:26:00 -0700 (PDT)
+Date:   Wed, 29 May 2019 13:26:00 -0700 (PDT)
+Message-Id: <20190529.132600.834772691456137212.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     aelior@marvell.com, GR-everest-linux-l2@marvell.com,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] qed: fix spelling mistake "inculde" -> "include"
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190528065217.7311-1-colin.king@canonical.com>
+References: <20190528065217.7311-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 29 May 2019 13:26:00 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Colin King <colin.king@canonical.com>
+Date: Tue, 28 May 2019 07:52:17 +0100
 
-The pointer dev is set to null yet it is being dereferenced when
-checking dev->dqm->sched_policy.  Fix this by performing the check
-on dev->dqm->sched_policy after dev has been assigned and null
-checked.  Also remove the redundant null assignment to dev.
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a spelling mistake in a DP_INFO message. Fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Addresses-Coverity: ("Explicit null dereference")
-Fixes: 1a058c337676 ("drm/amdkfd: New IOCTL to allocate queue GWS")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-index aab2aa6c1dee..ea82828fdc76 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -1572,10 +1572,9 @@ static int kfd_ioctl_alloc_queue_gws(struct file *filep,
- {
- 	int retval;
- 	struct kfd_ioctl_alloc_queue_gws_args *args = data;
--	struct kfd_dev *dev = NULL;
-+	struct kfd_dev *dev;
- 
--	if (!hws_gws_support ||
--		dev->dqm->sched_policy == KFD_SCHED_POLICY_NO_HWS)
-+	if (!hws_gws_support)
- 		return -EINVAL;
- 
- 	dev = kfd_device_by_id(args->gpu_id);
-@@ -1583,6 +1582,8 @@ static int kfd_ioctl_alloc_queue_gws(struct file *filep,
- 		pr_debug("Could not find gpu id 0x%x\n", args->gpu_id);
- 		return -EINVAL;
- 	}
-+	if (dev->dqm->sched_policy == KFD_SCHED_POLICY_NO_HWS)
-+		return -EINVAL;
- 
- 	mutex_lock(&p->mutex);
- 	retval = pqm_set_gws(&p->pqm, args->queue_id, args->num_gws ? dev->gws : NULL);
--- 
-2.20.1
-
+Applied.

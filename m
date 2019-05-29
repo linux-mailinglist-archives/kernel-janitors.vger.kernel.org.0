@@ -2,52 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 498002DB71
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 May 2019 13:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDA1C2DBFA
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 May 2019 13:35:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726080AbfE2LLA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 May 2019 07:11:00 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:36010 "EHLO
+        id S1726843AbfE2LfP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 May 2019 07:35:15 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:58036 "EHLO
         aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725911AbfE2LLA (ORCPT
+        with ESMTP id S1726101AbfE2LfP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 May 2019 07:11:00 -0400
+        Wed, 29 May 2019 07:35:15 -0400
 Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4TB46qZ050499;
-        Wed, 29 May 2019 11:10:51 GMT
+        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4TBT3Su069315;
+        Wed, 29 May 2019 11:35:08 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=j3HAaoMqE6iuqyfvW0nAhvODR9j2mUzCGvByfduj3lw=;
- b=0T7FC52lvVRETlu4Q2nJLBteQPUIiBdTb9iykHn5qi1kSA56R3oDOwbFQ+YoEQf8qLPu
- 15x/91qY7jMjVLLfUF3imVRRNq0Li/sKD+jgzUFviCE0Nw4GzBqTr68y26M6d58MRm9p
- HxrevIN7lisSCzyNknHoOWs9QXi4ax4Ceiwvrj3a1mNef5vgQnY3MS5xC9rOEtkuJjNJ
- XYGDgmeBeAU/s1lw+ZmCMkVT/1pAqM3dTpImiZ4Is5bGHhiy4molzBAcj+KTIZkYS4y0
- nGOt5UF+VuSeQ2D5AefIEvTItFEDbsfTFVXd9/rln2lhLSGe+xLc/VTWnj9I4gzzXMiK xw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2130.oracle.com with ESMTP id 2spu7dh5m9-1
+ bh=+b6PzCmzHOqCAsONZWcgBpVTvrx2iz0jbNueJJ48hsc=;
+ b=ngoqhXYOn+ufxF85iD8LeCi6ji04piM98Lvi/UcN/Av9Oia6uLxEptBuHJ3XGNGzJFfo
+ 5RriIyCarntnSmkgthf+7cnUD9bwkZu6Q3ThaOqcdeS2cwhNBPQukicx920yrGhbqdZv
+ /4CQtNmmk6nSsXS/fQgqTG7M/+XAxGoCV3VlnwhJGmR0eG15INKRF5Z7Kaa0K13oYdAS
+ Kd2GmuDxIOchPmyQEu1z8kzjwEKHabRkdgm7+vsN3vK7byASgWdtjoVCp4fNv+oW8PbS
+ gxkF30zBZs1YYPI/3jWAtItiKr8+cS186kUUT2ZgmH+nEEnGdGCcwEgRkRc3/NmsLr1/ 8Q== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 2spu7dh8w4-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 29 May 2019 11:10:51 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4TBA0Qp024008;
-        Wed, 29 May 2019 11:10:50 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 2sr31v6rfq-1
+        Wed, 29 May 2019 11:35:08 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4TBYDZb058353;
+        Wed, 29 May 2019 11:35:08 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2srbdxb84a-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 29 May 2019 11:10:50 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x4TBAms6002516;
-        Wed, 29 May 2019 11:10:48 GMT
+        Wed, 29 May 2019 11:35:08 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x4TBZ688029299;
+        Wed, 29 May 2019 11:35:06 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 29 May 2019 04:10:48 -0700
-Date:   Wed, 29 May 2019 14:10:41 +0300
+        with ESMTP ; Wed, 29 May 2019 04:35:05 -0700
+Date:   Wed, 29 May 2019 14:34:58 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     David Airlie <airlied@linux.ie>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] agp: Re-order a condition to please static checkers
-Message-ID: <20190529111041.GE19119@mwanda>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] drm/mcde: Fix an uninitialized variable
+Message-ID: <20190529113458.GG19119@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -57,41 +56,43 @@ X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9271 signatures=6
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
  phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1905290075
+ engine=8.0.1-1810050000 definitions=main-1905290078
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9271 signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
  suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1905290075
+ definitions=main-1905290078
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-It's nicer to check for integer overflow first and then check for if
-the "page_count" is within bounds, otherwise static checkers complain.
+We never set "vblank" to "false".
 
+Current versions of GCC will initialize it to zero automatically at
+certain optimization levels so that's probably why this didn't show up
+in testing.
+
+Fixes: 5fc537bfd000 ("drm/mcde: Add new driver for ST-Ericsson MCDE")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/char/agp/generic.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mcde/mcde_display.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/char/agp/generic.c b/drivers/char/agp/generic.c
-index 658664a5a5aa..89901e5710bf 100644
---- a/drivers/char/agp/generic.c
-+++ b/drivers/char/agp/generic.c
-@@ -227,8 +227,8 @@ struct agp_memory *agp_allocate_memory(struct agp_bridge_data *bridge,
- 		return NULL;
+diff --git a/drivers/gpu/drm/mcde/mcde_display.c b/drivers/gpu/drm/mcde/mcde_display.c
+index f3ef108a41d9..751454ae3cd1 100644
+--- a/drivers/gpu/drm/mcde/mcde_display.c
++++ b/drivers/gpu/drm/mcde/mcde_display.c
+@@ -65,7 +65,7 @@ enum mcde_dsi_formatter {
+ void mcde_display_irq(struct mcde *mcde)
+ {
+ 	u32 mispp, misovl, mischnl;
+-	bool vblank;
++	bool vblank = false;
  
- 	cur_memory = atomic_read(&bridge->current_memory_agp);
--	if ((cur_memory + page_count > bridge->max_memory_agp) ||
--	    (cur_memory + page_count < page_count))
-+	if ((cur_memory + page_count < page_count) ||
-+	    (cur_memory + page_count > bridge->max_memory_agp))
- 		return NULL;
- 
- 	if (type >= AGP_USER_TYPES) {
+ 	/* Handle display IRQs */
+ 	mispp = readl(mcde->regs + MCDE_MISPP);
 -- 
 2.20.1
 

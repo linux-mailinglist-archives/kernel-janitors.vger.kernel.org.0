@@ -2,58 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D81CB2DD04
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 May 2019 14:28:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69CCC2DFBB
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 May 2019 16:29:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727374AbfE2M2H convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 May 2019 08:28:07 -0400
-Received: from mail.fireflyinternet.com ([109.228.58.192]:53228 "EHLO
-        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727372AbfE2M2G (ORCPT
+        id S1726744AbfE2O3d (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 May 2019 10:29:33 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:47727 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726118AbfE2O3d (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 May 2019 08:28:06 -0400
-X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
-Received: from localhost (unverified [78.156.65.138]) 
-        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 16719614-1500050 
-        for multiple; Wed, 29 May 2019 13:28:03 +0100
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>
-From:   Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <155912801762.13891.15171740473591714585@skylake-alporthouse-com>
-Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Wed, 29 May 2019 10:29:33 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hVza3-0000sX-ED; Wed, 29 May 2019 14:29:27 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
         Rodrigo Vivi <rodrigo.vivi@intel.com>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-        Mika Kuoppala <mika.kuoppala@linux.intel.com>,
-        Matthew Auld <matthew.william.auld@gmail.com>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org
-References: <20190529110355.GA19119@mwanda>
- <155912801762.13891.15171740473591714585@skylake-alporthouse-com>
-Message-ID: <155913288011.13891.1426155673802597558@skylake-alporthouse-com>
-User-Agent: alot/0.6
-Subject: Re: [PATCH] drm/i915: selftest_lrc: Check the correct variable
-Date:   Wed, 29 May 2019 13:28:00 +0100
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/i915: fix uninitialized variable 'mask'
+Date:   Wed, 29 May 2019 15:29:27 +0100
+Message-Id: <20190529142927.16699-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Chris Wilson (2019-05-29 12:06:57)
-> Quoting Dan Carpenter (2019-05-29 12:03:55)
-> > We should check "request[n]" instead of just "request".
-> > 
-> > Fixes: 78e41ddd2198 ("drm/i915: Apply an execution_mask to the virtual_engine")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> 
-> Oops.
-> Reviewd-by: Chris Wilson <chris@chris-wilson.co.uk>
+From: Colin Ian King <colin.king@canonical.com>
 
-s/Reviewd/Reviewed/
-And pushed, thanks for the fix.
--Chris
+Currently mask is not initialized and so data is being bit-wise or'd into
+a garbage value. Fix this by inintializing mask to zero.
+
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: 1ac159e23c2c ("drm/i915: Expand subslice mask")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/i915/gt/intel_sseu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/i915/gt/intel_sseu.c b/drivers/gpu/drm/i915/gt/intel_sseu.c
+index 763b811f2c9d..5a89672d98a2 100644
+--- a/drivers/gpu/drm/i915/gt/intel_sseu.c
++++ b/drivers/gpu/drm/i915/gt/intel_sseu.c
+@@ -41,7 +41,7 @@ void intel_sseu_copy_subslices(const struct sseu_dev_info *sseu, int slice,
+ u32 intel_sseu_get_subslices(const struct sseu_dev_info *sseu, u8 slice)
+ {
+ 	int i, offset = slice * sseu->ss_stride;
+-	u32 mask;
++	u32 mask = 0;
+ 
+ 	GEM_BUG_ON(slice >= sseu->max_slices);
+ 
+-- 
+2.20.1
+

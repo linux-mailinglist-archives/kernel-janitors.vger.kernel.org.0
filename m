@@ -2,107 +2,133 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F6E02C996
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 May 2019 17:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C33842DA5F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 May 2019 12:23:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727092AbfE1PHI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 May 2019 11:07:08 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:42856 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726984AbfE1PHI (ORCPT
+        id S1726016AbfE2KXQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 May 2019 06:23:16 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:48546 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725914AbfE2KXP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 May 2019 11:07:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
-        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
-        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=DRrmUfZErlU0wblgTemga0P+08sSa7slNopRc/Wl/bM=; b=vXgRzWpF6smn
-        +rDhJ9B6evMagY+iFx+xzZkbVqYI//DRzVwbBoH4u+RPwj1dX+cQ7frf09DbtFsVHsACbGreiwQzB
-        3xXoi5GZnHXJNuM5KlAJHsvWEBkXxsnfC7RUoJujjMsBpHcsPUGWu/aWaK1vP94V95aHPa9+r8qOP
-        BwUeE=;
-Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=finisterre.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1hVdgr-0002oR-BF; Tue, 28 May 2019 15:07:01 +0000
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-        id A5290440046; Tue, 28 May 2019 16:07:00 +0100 (BST)
-From:   Mark Brown <broonie@kernel.org>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     alsa-devel@alsa-project.org, Jaroslav Kysela <perex@perex.cz>,
-        kernel-janitors@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Simon Ho <simon.ho@conexant.com>, Takashi Iwai <tiwai@suse.com>
-Subject: Applied "ASoC: cx2072x: remove redundant assignment to pulse_len" to the asoc tree
-In-Reply-To: <20190524214419.25075-1-colin.king@canonical.com>
-X-Patchwork-Hint: ignore
-Message-Id: <20190528150700.A5290440046@finisterre.sirena.org.uk>
-Date:   Tue, 28 May 2019 16:07:00 +0100 (BST)
+        Wed, 29 May 2019 06:23:15 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4TADxHl010616;
+        Wed, 29 May 2019 10:23:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
+ bh=YSX4soczZU8acP0Y1KOfTFMHboxo2+ZXjqe+IMkap6k=;
+ b=zQdCgbq4yv/VvoGvUpN36YOPlasi548eZ2Je99x+WhmAl7+Dt0COzUpzQXHwW+GA4ABT
+ NJiSuVO0JEidgP4qk/LCsvBTQnUIShDULziHHYZlCB5Vufn0vO9GHXqwmqOwfAV1Mkmk
+ w5ejERUCfzV3V0j1iWvGjItoK8yYJwqsPjHopV0YXGimD4aAODqOtcnlKfLbxnZakFSk
+ h3Rk5c+K4Cq33BlylKhbTPL0NVbgf8QrLMl0J53G1BRKXIV5LbMtyCsJ7R2balNp/R3J
+ Ov8chfRBtGcbdn6pVbvH3bN8xH02l7RgnxlgMwsA5JXi2vaTaOz8Irj1vUYF4jaBeJqT 7w== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2130.oracle.com with ESMTP id 2spu7dgxsr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 29 May 2019 10:23:13 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x4TALLMs025809;
+        Wed, 29 May 2019 10:23:12 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 2ss1fncf3a-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 29 May 2019 10:23:12 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x4TANB9S007138;
+        Wed, 29 May 2019 10:23:11 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 29 May 2019 03:23:11 -0700
+Date:   Wed, 29 May 2019 13:23:05 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     michal.kalderon@marvell.com
+Cc:     kernel-janitors@vger.kernel.org
+Subject: [bug report] qed: Add llh ppfid interface and 100g support for
+ offload protocols
+Message-ID: <20190529102305.GA13975@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9271 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=966
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1905290069
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9271 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=995 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1905290069
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
+Hello Michal Kalderon,
 
-   ASoC: cx2072x: remove redundant assignment to pulse_len
+The patch 79284adeb99e: "qed: Add llh ppfid interface and 100g
+support for offload protocols" from May 26, 2019, leads to the
+following static checker warning:
 
-has been applied to the asoc tree at
+	drivers/net/ethernet/qlogic/qed/qed_dev.c:1014 qed_llh_add_mac_filter()
+	error: uninitialized symbol 'abs_ppfid'.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.3
+drivers/net/ethernet/qlogic/qed/qed_dev.c
+   976  int qed_llh_add_mac_filter(struct qed_dev *cdev,
+   977                             u8 ppfid, u8 mac_addr[ETH_ALEN])
+   978  {
+   979          struct qed_hwfn *p_hwfn = QED_LEADING_HWFN(cdev);
+   980          struct qed_ptt *p_ptt = qed_ptt_acquire(p_hwfn);
+   981          union qed_llh_filter filter = {};
+   982          u8 filter_idx, abs_ppfid;
+                               ^^^^^^^^^
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+   983          u32 high, low, ref_cnt;
+   984          int rc = 0;
+   985  
+   986          if (!p_ptt)
+   987                  return -EAGAIN;
+   988  
+   989          if (!test_bit(QED_MF_LLH_MAC_CLSS, &cdev->mf_bits))
+   990                  goto out;
+   991  
+   992          memcpy(filter.mac.addr, mac_addr, ETH_ALEN);
+   993          rc = qed_llh_shadow_add_filter(cdev, ppfid,
+   994                                         QED_LLH_FILTER_TYPE_MAC,
+   995                                         &filter, &filter_idx, &ref_cnt);
+   996          if (rc)
+   997                  goto err;
+   998  
+   999          /* Configure the LLH only in case of a new the filter */
+  1000          if (ref_cnt == 1) {
+                    ^^^^^^^^^^^^
+Assume != 1
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+  1001                  rc = qed_llh_abs_ppfid(cdev, ppfid, &abs_ppfid);
+  1002                  if (rc)
+  1003                          goto err;
+  1004  
+  1005                  high = mac_addr[1] | (mac_addr[0] << 8);
+  1006                  low = mac_addr[5] | (mac_addr[4] << 8) | (mac_addr[3] << 16) |
+  1007                        (mac_addr[2] << 24);
+  1008                  rc = qed_llh_add_filter(p_hwfn, p_ptt, abs_ppfid, filter_idx,
+  1009                                          0, high, low);
+  1010                  if (rc)
+  1011                          goto err;
+  1012          }
+  1013  
+  1014          DP_VERBOSE(cdev,
+  1015                     QED_MSG_SP,
+  1016                     "LLH: Added MAC filter [%pM] to ppfid %hhd [abs %hhd] at idx %hhd [ref_cnt %d]\n",
+  1017                     mac_addr, ppfid, abs_ppfid, filter_idx, ref_cnt);
+                                            ^^^^^^^^^
+See also:
+drivers/net/ethernet/qlogic/qed/qed_dev.c:1160 qed_llh_add_protocol_filter() error: uninitialized symbol 'abs_ppfid'.
+drivers/net/ethernet/qlogic/qed/qed_dev.c:1210 qed_llh_remove_mac_filter() error: uninitialized symbol 'abs_ppfid'.
+drivers/net/ethernet/qlogic/qed/qed_dev.c:1268 qed_llh_remove_protocol_filter() error: uninitialized symbol 'abs_ppfid'.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From 9b33d2e526c53b0339ddba8b875bb8b8b3a11207 Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king@canonical.com>
-Date: Fri, 24 May 2019 22:44:19 +0100
-Subject: [PATCH] ASoC: cx2072x: remove redundant assignment to pulse_len
-
-Variable pulse_len is being initialized to 1 however this value is
-never read and pulse_len is being re-assigned later in a switch
-statement.  Clean up the code by removing the redundant initialization.
-
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- sound/soc/codecs/cx2072x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/sound/soc/codecs/cx2072x.c b/sound/soc/codecs/cx2072x.c
-index 23d2b25fe04c..c11a585bbf70 100644
---- a/sound/soc/codecs/cx2072x.c
-+++ b/sound/soc/codecs/cx2072x.c
-@@ -679,7 +679,7 @@ static int cx2072x_config_i2spcm(struct cx2072x_priv *cx2072x)
- 	int is_right_j = 0;
- 	int is_frame_inv = 0;
- 	int is_bclk_inv = 0;
--	int pulse_len = 1;
-+	int pulse_len;
- 	int frame_len = cx2072x->frame_size;
- 	int sample_size = cx2072x->sample_size;
- 	int i2s_right_slot;
--- 
-2.20.1
-
+regards,
+dan carpenter

@@ -2,67 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF7752E007
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 May 2019 16:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28CE62E06A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 May 2019 17:00:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726504AbfE2Ona (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 May 2019 10:43:30 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:48209 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726118AbfE2On3 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 May 2019 10:43:29 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hVznZ-0002GG-Dy; Wed, 29 May 2019 14:43:25 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        id S1726238AbfE2PAt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 May 2019 11:00:49 -0400
+Received: from mga01.intel.com ([192.55.52.88]:36443 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726012AbfE2PAs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 29 May 2019 11:00:48 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 May 2019 08:00:48 -0700
+X-ExtLoop1: 1
+Received: from jnikula-mobl3.fi.intel.com (HELO localhost) ([10.237.66.150])
+  by fmsmga001.fm.intel.com with ESMTP; 29 May 2019 08:00:44 -0700
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Colin King <colin.king@canonical.com>,
         Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
         Rodrigo Vivi <rodrigo.vivi@intel.com>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
         intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/i915: fix uninitialized variable 'subslice_mask'
-Date:   Wed, 29 May 2019 15:43:25 +0100
-Message-Id: <20190529144325.17235-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Stuart Summers <stuart.summers@intel.com>,
+        Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Subject: Re: [PATCH][next] drm/i915: fix uninitialized variable 'mask'
+In-Reply-To: <20190529142927.16699-1-colin.king@canonical.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20190529142927.16699-1-colin.king@canonical.com>
+Date:   Wed, 29 May 2019 18:03:56 +0300
+Message-ID: <87o93l480z.fsf@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Wed, 29 May 2019, Colin King <colin.king@canonical.com> wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> Currently mask is not initialized and so data is being bit-wise or'd into
+> a garbage value. Fix this by inintializing mask to zero.
+>
+> Addresses-Coverity: ("Uninitialized scalar variable")
+> Fixes: 1ac159e23c2c ("drm/i915: Expand subslice mask")
 
-Currently subslice_mask is not initialized and so data is being
-bit-wise or'd into a garbage value. Fix this by inintializing
-subslice_mask to zero.
+This was already reverted for other reasons. Need to be fixed on the
+next round. For future reference, please Cc: author and reviewers of the
+referenced commit.
 
-Addresses-Coverity: ("Uninitialized scalar variable")
-Fixes: 1ac159e23c2c ("drm/i915: Expand subslice mask")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/i915/intel_device_info.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+BR,
+Jani.
 
-diff --git a/drivers/gpu/drm/i915/intel_device_info.c b/drivers/gpu/drm/i915/intel_device_info.c
-index 3625f777f3a3..d395a09b994f 100644
---- a/drivers/gpu/drm/i915/intel_device_info.c
-+++ b/drivers/gpu/drm/i915/intel_device_info.c
-@@ -298,7 +298,7 @@ static void cherryview_sseu_info_init(struct drm_i915_private *dev_priv)
- {
- 	struct sseu_dev_info *sseu = &RUNTIME_INFO(dev_priv)->sseu;
- 	u32 fuse;
--	u8 subslice_mask;
-+	u8 subslice_mask = 0;
- 
- 	fuse = I915_READ(CHV_FUSE_GT);
- 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/gpu/drm/i915/gt/intel_sseu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/i915/gt/intel_sseu.c b/drivers/gpu/drm/i915/gt/intel_sseu.c
+> index 763b811f2c9d..5a89672d98a2 100644
+> --- a/drivers/gpu/drm/i915/gt/intel_sseu.c
+> +++ b/drivers/gpu/drm/i915/gt/intel_sseu.c
+> @@ -41,7 +41,7 @@ void intel_sseu_copy_subslices(const struct sseu_dev_info *sseu, int slice,
+>  u32 intel_sseu_get_subslices(const struct sseu_dev_info *sseu, u8 slice)
+>  {
+>  	int i, offset = slice * sseu->ss_stride;
+> -	u32 mask;
+> +	u32 mask = 0;
+>  
+>  	GEM_BUG_ON(slice >= sseu->max_slices);
+
 -- 
-2.20.1
-
+Jani Nikula, Intel Open Source Graphics Center

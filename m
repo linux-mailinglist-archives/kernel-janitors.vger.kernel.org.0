@@ -2,29 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54E433019C
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 May 2019 20:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3D7430215
+	for <lists+kernel-janitors@lfdr.de>; Thu, 30 May 2019 20:40:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726489AbfE3SPB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 May 2019 14:15:01 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:54163 "EHLO
+        id S1726501AbfE3Skv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 May 2019 14:40:51 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:54523 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726328AbfE3SPB (ORCPT
+        with ESMTP id S1726029AbfE3Skv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 May 2019 14:15:01 -0400
+        Thu, 30 May 2019 14:40:51 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hWPZq-0001NL-Td; Thu, 30 May 2019 18:14:59 +0000
+        id 1hWPym-000383-FS; Thu, 30 May 2019 18:40:44 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] usb: gadget: net2272: remove redundant assignments to pointer 's'
-Date:   Thu, 30 May 2019 19:14:58 +0100
-Message-Id: <20190530181458.7488-1-colin.king@canonical.com>
+Subject: [PATCH] rtlwifi: remove redundant assignment to variable badworden
+Date:   Thu, 30 May 2019 19:40:44 +0100
+Message-Id: <20190530184044.8479-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,35 +37,28 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The pointer 's' is being assigned however the pointer is
-never used with either of these values before it it reassigned much
-later on.  I suspect it was going to be used in the output of the
-main control registers scnprintf but was omitted.  The assignments
-of 's' to the driver name or the literal string are redundant and
-can be removed.
+The variable badworden is assigned with a value that is never read and
+it is re-assigned a new value immediately afterwards.  The assignment is
+redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/usb/gadget/udc/net2272.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/efuse.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/udc/net2272.c b/drivers/usb/gadget/udc/net2272.c
-index 564aeee1a1fe..247de0faaeb7 100644
---- a/drivers/usb/gadget/udc/net2272.c
-+++ b/drivers/usb/gadget/udc/net2272.c
-@@ -1178,11 +1178,6 @@ registers_show(struct device *_dev, struct device_attribute *attr, char *buf)
- 	size = PAGE_SIZE;
- 	spin_lock_irqsave(&dev->lock, flags);
- 
--	if (dev->driver)
--		s = dev->driver->driver.name;
--	else
--		s = "(none)";
--
- 	/* Main Control Registers */
- 	t = scnprintf(next, size, "%s version %s,"
- 		"chiprev %02x, locctl %02x\n"
+diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+index e68340dfd980..37ab582a8afb 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
++++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+@@ -986,7 +986,6 @@ static int efuse_pg_packet_write(struct ieee80211_hw *hw,
+ 		} else if (write_state == PG_STATE_DATA) {
+ 			RTPRINT(rtlpriv, FEEPROM, EFUSE_PG,
+ 				"efuse PG_STATE_DATA\n");
+-			badworden = 0x0f;
+ 			badworden =
+ 			    enable_efuse_data_write(hw, efuse_addr + 1,
+ 						    target_pkt.word_en,
 -- 
 2.20.1
 

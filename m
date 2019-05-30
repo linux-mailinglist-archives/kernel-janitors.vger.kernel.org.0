@@ -2,64 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6596E3028D
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 May 2019 21:04:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8F8D30718
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 May 2019 05:45:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726376AbfE3TEo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 May 2019 15:04:44 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:54995 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725961AbfE3TEn (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 May 2019 15:04:43 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hWQLu-0004Od-Lv; Thu, 30 May 2019 19:04:38 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Wei Liu <wei.liu2@citrix.com>,
-        Paul Durrant <paul.durrant@citrix.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        xen-devel@lists.xenproject.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] xen-netback: remove redundant assignment to err
-Date:   Thu, 30 May 2019 20:04:38 +0100
-Message-Id: <20190530190438.9571-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
+        id S1726610AbfEaDp2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 May 2019 23:45:28 -0400
+Received: from smtp.tjto.jus.br ([189.10.44.215]:60614 "EHLO smtp.tjto.jus.br"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726535AbfEaDp2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 30 May 2019 23:45:28 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by smtp.tjto.jus.br (Postfix) with ESMTP id AB79C3F328E;
+        Thu, 30 May 2019 21:25:59 -0300 (BRT)
+Received: from smtp.tjto.jus.br ([127.0.0.1])
+        by localhost (mta-in.tjto.jus.br [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id na8tIwjbOywg; Thu, 30 May 2019 21:25:59 -0300 (BRT)
+Received: from localhost (localhost [127.0.0.1])
+        by smtp.tjto.jus.br (Postfix) with ESMTP id EF3833EF276;
+        Thu, 30 May 2019 20:54:29 -0300 (BRT)
+X-Virus-Scanned: amavisd-new at mta-in.tjto.jus.br
+Received: from smtp.tjto.jus.br ([127.0.0.1])
+        by localhost (mta-in.tjto.jus.br [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id UXZeBPFLFuDP; Thu, 30 May 2019 20:54:29 -0300 (BRT)
+Received: from [192.99.135.118] (ip118.ip-192-99-135.net [192.99.135.118])
+        (Authenticated sender: nelsonsena@tjto.jus.br)
+        by smtp.tjto.jus.br (Postfix) with ESMTPSA id 5C4A13ED6AC;
+        Thu, 30 May 2019 20:35:39 -0300 (BRT)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: =?utf-8?b?UmU6IOKCrCAyLDAwMCwwMDAuMDAgRXVybw==?=
+To:     Recipients <nelsonsena@tjto.jus.br>
+From:   nelsonsena@tjto.jus.br
+Date:   Thu, 30 May 2019 16:35:36 -0700
+Reply-To: myburghhugohendrik@gmail.com
+Message-Id: <20190530233539.5C4A13ED6AC@smtp.tjto.jus.br>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Lieber Freund,
 
-The variable err is assigned with the value -ENOMEM that is never
-read and it is re-assigned a new value later on.  The assignment is
-redundant and can be removed.
+Ich bin Herr Richard Wahl der Mega-Gewinner von $ 533M In Mega Millions Jackpot spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt. Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt. Ich habe mich freiwillig dazu entschieden, Ihnen den Betrag von € 2.000.000,00 zu spenden eine der ausgewählten 5, um meine Gewinne zu überprüfen, finden Sie auf meiner You Tube Seite unten.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/xen-netback/interface.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+UHR MICH HIER: https://www.youtube.com/watch?v=tne02ExNDrw
 
-diff --git a/drivers/net/xen-netback/interface.c b/drivers/net/xen-netback/interface.c
-index 783198844dd7..240f762b3749 100644
---- a/drivers/net/xen-netback/interface.c
-+++ b/drivers/net/xen-netback/interface.c
-@@ -633,7 +633,7 @@ int xenvif_connect_data(struct xenvif_queue *queue,
- 			unsigned int rx_evtchn)
- {
- 	struct task_struct *task;
--	int err = -ENOMEM;
-+	int err;
- 
- 	BUG_ON(queue->tx_irq);
- 	BUG_ON(queue->task);
--- 
-2.20.1
+Das ist dein Spendencode: [DF00430342018]
 
+Antworten Sie mit dem Spendencode auf diese E-Mail: wahlfoundationorg@gmail.com
+
+Ich hoffe, Sie und Ihre Familie glücklich zu machen.
+
+Grüße
+
+Herr Richard Wahl

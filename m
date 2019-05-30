@@ -2,86 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4425130229
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 May 2019 20:47:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2A5130236
+	for <lists+kernel-janitors@lfdr.de>; Thu, 30 May 2019 20:50:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726501AbfE3SrL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 May 2019 14:47:11 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:34328 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726462AbfE3SrL (ORCPT
+        id S1726462AbfE3SuF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 May 2019 14:50:05 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:37507 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725961AbfE3SuF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 May 2019 14:47:11 -0400
-Received: by mail-qt1-f195.google.com with SMTP id h1so8300874qtp.1
-        for <kernel-janitors@vger.kernel.org>; Thu, 30 May 2019 11:47:11 -0700 (PDT)
+        Thu, 30 May 2019 14:50:05 -0400
+Received: by mail-oi1-f195.google.com with SMTP id i4so5393019oih.4;
+        Thu, 30 May 2019 11:50:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=diBaFFpQOlJHpKJW383mUN2AuWiME+bQ0o/ZMr4CX7g=;
-        b=UFO9adfCo/18SlB8rmLEWfhdTO1VLvgTQXQr+f5VpR5Vn+60DZpIydGbIK9797GNFq
-         Xy3XecSK+3Fky6d/uUhIOfVwldEY9gVT5EHyOwpoqoQHpyOYbSKtoo44D3q14TNBPFFB
-         HLkXYxRF66RbP7Iw8709C5bOahsIRVvGRhKkVYwmwFBW10BpF6wfOXwSIr4s5EVbMEno
-         X3oe+DWVYOcR3duLcUBWTxcsHVu+Kd0Vr4/BwFmTxhlre4bXP1T3gGRc0betIe8ua/vg
-         GAh+WcYICUA8+boK+8aWE7aEsf8CePt5RcjY9ljTbCmx1xq0/17bFvBsTH6/JNLOaFpO
-         sLrw==
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=Ce2QS3RaYP3t12+eJA77KiPxw6iF0JqafgY8edP/dg4=;
+        b=G7HSSszzgsZ7kMPqLK8cM+CY5UsKu62Ea/q7i+LyTDA4xrhkFUNRs+jCjsnhF9H+oU
+         CzIhFI6Rcur/hSUwBimnINlrG2je6NUBdofvj6hfb4z6egCHEv+AIHf28mnAdj9uNEhA
+         cONMmB3oqiGlJ2Iqskv+17F9rYvLreUVbLnR1KgQihbs0P4SwmYdS1v2qaaTh2QfJzwY
+         W0NESuOMiDPDeCnWMarQ4I9gaoKhiohJ/jZm2BHXqxzHU+PGo8it4UrXd4eKFrmidCN1
+         8X3PAvd3aWeV+OMWl+GmhXOsnp4gtRWyMWrmDja7TOBCjzxshVxpy/vn80AkEjUbALkZ
+         iWkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=diBaFFpQOlJHpKJW383mUN2AuWiME+bQ0o/ZMr4CX7g=;
-        b=qSZ5dZVSc6uzNAehFWHPqbj4is8vGXBUMBDvoDD5aiS+Nb9vd9AjKkkQ6HpXB0Bwdy
-         jdu4ESP+fEehSSG8yWARDrKPV30eAyr09zlKSkvt9X+Jpe8kn8wqjiXjlxx8aplBUlyU
-         CskMFowPeloGmsn3IypIZ3SbsMg0LK01wNtleC2JWRw44UKOzuA08SqdDPsDr4S1k7RS
-         7uv4hJe2jdy5D2sXriWbRdV0yUefIJyasxmadMtavEPH54rLhnw9i1MA+XQPilt+b1Nd
-         9/a/Hqrvn8FximU1bQZ0XfjTKYJNxQe5J8HVf03HLfvGshvm0vWic9YXKHfkesSa1MID
-         RLqQ==
-X-Gm-Message-State: APjAAAUEdaA2/i4631d454gkniqJhhWP0DKHhhSl2dVhWelkEK1007Tp
-        xGJNdZfukLLDX1AHd7w0SEtF3w==
-X-Google-Smtp-Source: APXvYqwDry+6XP937lrELkrm98AM/hLZ9gH2okpbVOKmcOx5qydqW0tC4kDYVRTSKn5XTtjb5r/lvQ==
-X-Received: by 2002:ac8:30a7:: with SMTP id v36mr4983567qta.119.1559242030613;
-        Thu, 30 May 2019 11:47:10 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-156-34-55-100.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.55.100])
-        by smtp.gmail.com with ESMTPSA id j33sm2185547qtc.10.2019.05.30.11.47.10
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 30 May 2019 11:47:10 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1hWQ4z-0000Gn-OX; Thu, 30 May 2019 15:47:09 -0300
-Date:   Thu, 30 May 2019 15:47:09 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Doug Ledford <dledford@redhat.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Yishai Hadas <yishaih@mellanox.com>,
-        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] RDMA/uverbs: check for allocation failure in
- uapi_add_elm()
-Message-ID: <20190530184709.GA982@ziepe.ca>
-References: <20190530082024.GA11836@mwanda>
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Ce2QS3RaYP3t12+eJA77KiPxw6iF0JqafgY8edP/dg4=;
+        b=JUOhY1p547lXMycBNF3ee4AVPpsR9lpm8ffh+n6xwoZEOoIFRxT0afWoFj98JGt/ia
+         dlLKR5xFl2CV3WL4plY1qupKo73RP3UU5/5q3Ss3RipUZOMecdtVnxLc/gud0KZ92khv
+         42wixF96BXtSew1Mn+w4oqK5pPyI51k8bG4zHTH/J6hmlhR7cVAQkafMa6boykXSqaK9
+         UqhhU5Ib4KLSMTU+M+nZnZhm8Tc6rOUcuy4NaLhgGLcShbGFRcTjmCEQzarPvGVTi4h8
+         9wdDkcTdUfpeO3eFirxkgAHbNrDysD7vqeElkSfvObIEH7oqvjLRQkN+XnDiHbsCF7sT
+         EqCw==
+X-Gm-Message-State: APjAAAXNQVryk2LUfbSeiegD3lvl7PyR07y1o3XejVhgZt8L3zpTSv+4
+        6IAHfamg3qRBJi1amW/XKPGTxE2+
+X-Google-Smtp-Source: APXvYqx6B3eEw5o1YxwFS//iW2ShUftFt8HYlMd2e7NAQMOnB00Ilq+mSvSonEh+Jc9QZafJO2EnOA==
+X-Received: by 2002:a05:6808:603:: with SMTP id y3mr51487oih.74.1559242204523;
+        Thu, 30 May 2019 11:50:04 -0700 (PDT)
+Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id k83sm1254259oia.10.2019.05.30.11.50.02
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Thu, 30 May 2019 11:50:03 -0700 (PDT)
+Subject: Re: [PATCH] rtlwifi: remove redundant assignment to variable
+ badworden
+To:     Colin King <colin.king@canonical.com>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190530184044.8479-1-colin.king@canonical.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <da50d69f-0117-3911-e15f-cf7731300886@lwfinger.net>
+Date:   Thu, 30 May 2019 13:50:01 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190530082024.GA11836@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20190530184044.8479-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, May 30, 2019 at 11:20:24AM +0300, Dan Carpenter wrote:
-> If the kzalloc() fails then we should return ERR_PTR(-ENOMEM).  In the
-> current code it's possible that the kzalloc() fails and the
-> radix_tree_insert() inserts the NULL pointer successfully and we return
-> the NULL "elm" pointer to the caller.  That results in a NULL pointer
-> dereference.
+On 5/30/19 1:40 PM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Fixes: 9ed3e5f44772 ("IB/uverbs: Build the specs into a radix tree at runtime")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> The variable badworden is assigned with a value that is never read and
+> it is re-assigned a new value immediately afterwards.  The assignment is
+> redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/infiniband/core/uverbs_uapi.c | 2 ++
->  1 file changed, 2 insertions(+)
 
-Applied to for-next, thanks
+Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-Jason
+Thanks,
+
+Larry
+
+>   drivers/net/wireless/realtek/rtlwifi/efuse.c | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+> index e68340dfd980..37ab582a8afb 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+> @@ -986,7 +986,6 @@ static int efuse_pg_packet_write(struct ieee80211_hw *hw,
+>   		} else if (write_state == PG_STATE_DATA) {
+>   			RTPRINT(rtlpriv, FEEPROM, EFUSE_PG,
+>   				"efuse PG_STATE_DATA\n");
+> -			badworden = 0x0f;
+>   			badworden =
+>   			    enable_efuse_data_write(hw, efuse_addr + 1,
+>   						    target_pkt.word_en,
+> 
+

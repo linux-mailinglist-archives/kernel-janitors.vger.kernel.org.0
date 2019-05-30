@@ -2,30 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7307F2FFB8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 May 2019 17:58:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 155372FFF9
+	for <lists+kernel-janitors@lfdr.de>; Thu, 30 May 2019 18:12:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727463AbfE3P6C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 May 2019 11:58:02 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:51272 "EHLO
+        id S1727147AbfE3QMY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 May 2019 12:12:24 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:51786 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725961AbfE3P6B (ORCPT
+        with ESMTP id S1726320AbfE3QMX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 May 2019 11:58:01 -0400
+        Thu, 30 May 2019 12:12:23 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hWNRC-0000U8-AQ; Thu, 30 May 2019 15:57:54 +0000
+        id 1hWNf9-0001rC-CV; Thu, 30 May 2019 16:12:19 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     "David S . Miller" <davem@davemloft.net>,
-        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        netdev@vger.kernel.org
+To:     Anthony Koo <anthony.koo@amd.com>,
+        Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] nexthop: remove redundant assignment to err
-Date:   Thu, 30 May 2019 16:57:54 +0100
-Message-Id: <20190530155754.31634-1-colin.king@canonical.com>
+Subject: [PATCH][next] drm/amd/display: remove redundant assignment to status
+Date:   Thu, 30 May 2019 17:12:19 +0100
+Message-Id: <20190530161219.2507-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,29 +42,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable err is initialized with a value that is never read
-and err is reassigned a few statements later. This initialization
+The variable status is initialized with a value that is never read
+and status is reassigned several statements later. This initialization
 is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- net/ipv4/nexthop.c | 2 +-
+ drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 1af8a329dacb..7a5a3d08fec3 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -836,7 +836,7 @@ static int nh_create_ipv6(struct net *net,  struct nexthop *nh,
- 		.fc_encap = cfg->nh_encap,
- 		.fc_encap_type = cfg->nh_encap_type,
- 	};
--	int err = -EINVAL;
-+	int err;
- 
- 	if (!ipv6_addr_any(&cfg->gw.ipv6))
- 		fib6_cfg.fc_flags |= RTF_GATEWAY;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c b/drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c
+index 65d6caedbd82..cf6166a1be53 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c
+@@ -2367,7 +2367,7 @@ static bool retrieve_link_cap(struct dc_link *link)
+ 	union down_stream_port_count down_strm_port_count;
+ 	union edp_configuration_cap edp_config_cap;
+ 	union dp_downstream_port_present ds_port = { 0 };
+-	enum dc_status status = DC_ERROR_UNEXPECTED;
++	enum dc_status status;
+ 	uint32_t read_dpcd_retry_cnt = 3;
+ 	int i;
+ 	struct dp_sink_hw_fw_revision dp_hw_fw_revision;
 -- 
 2.20.1
 

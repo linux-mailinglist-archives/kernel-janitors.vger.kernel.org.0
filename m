@@ -2,28 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC1C030036
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 May 2019 18:33:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54E433019C
+	for <lists+kernel-janitors@lfdr.de>; Thu, 30 May 2019 20:15:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726501AbfE3Qdj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 May 2019 12:33:39 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:52332 "EHLO
+        id S1726489AbfE3SPB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 May 2019 14:15:01 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:54163 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726045AbfE3Qdj (ORCPT
+        with ESMTP id S1726328AbfE3SPB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 May 2019 12:33:39 -0400
+        Thu, 30 May 2019 14:15:01 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hWNzk-0003HE-Ds; Thu, 30 May 2019 16:33:36 +0000
+        id 1hWPZq-0001NL-Td; Thu, 30 May 2019 18:14:59 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        Vitaly Wool <vitalywool@gmail.com>, linux-mm@kvack.org
+To:     Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] z3fold: remove redundant assignment to bud
-Date:   Thu, 30 May 2019 17:33:36 +0100
-Message-Id: <20190530163336.5148-1-colin.king@canonical.com>
+Subject: [PATCH] usb: gadget: net2272: remove redundant assignments to pointer 's'
+Date:   Thu, 30 May 2019 19:14:58 +0100
+Message-Id: <20190530181458.7488-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,30 +36,35 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable bud is initialized with the value 'LAST' which is never
-read and bud is reassigned later on the return from the call to the
-function handle_to_buddy. This initialization is redundant and
+The pointer 's' is being assigned however the pointer is
+never used with either of these values before it it reassigned much
+later on.  I suspect it was going to be used in the output of the
+main control registers scnprintf but was omitted.  The assignments
+of 's' to the driver name or the literal string are redundant and
 can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- mm/z3fold.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/udc/net2272.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/mm/z3fold.c b/mm/z3fold.c
-index 2bc3dbde6255..0a62bc293de4 100644
---- a/mm/z3fold.c
-+++ b/mm/z3fold.c
-@@ -1176,7 +1176,7 @@ static void z3fold_free(struct z3fold_pool *pool, unsigned long handle)
- {
- 	struct z3fold_header *zhdr;
- 	struct page *page;
--	enum buddy bud = LAST; /* initialize to !HEADLESS */
-+	enum buddy bud;
+diff --git a/drivers/usb/gadget/udc/net2272.c b/drivers/usb/gadget/udc/net2272.c
+index 564aeee1a1fe..247de0faaeb7 100644
+--- a/drivers/usb/gadget/udc/net2272.c
++++ b/drivers/usb/gadget/udc/net2272.c
+@@ -1178,11 +1178,6 @@ registers_show(struct device *_dev, struct device_attribute *attr, char *buf)
+ 	size = PAGE_SIZE;
+ 	spin_lock_irqsave(&dev->lock, flags);
  
- 	zhdr = get_z3fold_header(handle);
- 
+-	if (dev->driver)
+-		s = dev->driver->driver.name;
+-	else
+-		s = "(none)";
+-
+ 	/* Main Control Registers */
+ 	t = scnprintf(next, size, "%s version %s,"
+ 		"chiprev %02x, locctl %02x\n"
 -- 
 2.20.1
 

@@ -2,29 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B06330F56
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 May 2019 15:53:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AB4530FB8
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 May 2019 16:14:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726616AbfEaNxu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 May 2019 09:53:50 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:47817 "EHLO
+        id S1726579AbfEaOOT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 31 May 2019 10:14:19 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:48217 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726330AbfEaNxu (ORCPT
+        with ESMTP id S1726037AbfEaOOT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 May 2019 09:53:50 -0400
+        Fri, 31 May 2019 10:14:19 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hWhyd-0008Q9-Oe; Fri, 31 May 2019 13:53:47 +0000
+        id 1hWiIP-0001I2-0F; Fri, 31 May 2019 14:14:13 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        linux-usb@vger.kernel.org
+To:     Ping-Ke Shih <pkshih@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] usb: cdc-wdm: remove redundant assignment to rv
-Date:   Fri, 31 May 2019 14:53:47 +0100
-Message-Id: <20190531135347.18026-1-colin.king@canonical.com>
+Subject: [PATCH] rtlwifi: remove redundant assignment to variable k
+Date:   Fri, 31 May 2019 15:14:12 +0100
+Message-Id: <20190531141412.18632-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,29 +37,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable rv is assigned with a value that is never read and
-it is re-assigned a new value on the next statement. The
-assignment is redundant and can be removed.
+The assignment of 0 to variable k is never read once we break out of
+the loop, so the assignment is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/usb/class/cdc-wdm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/efuse.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/usb/class/cdc-wdm.c b/drivers/usb/class/cdc-wdm.c
-index 9e9caff905d5..a7824a51f86d 100644
---- a/drivers/usb/class/cdc-wdm.c
-+++ b/drivers/usb/class/cdc-wdm.c
-@@ -949,7 +949,7 @@ struct usb_driver *usb_cdc_wdm_register(struct usb_interface *intf,
- 					int bufsize,
- 					int (*manage_power)(struct usb_interface *, int))
- {
--	int rv = -EINVAL;
-+	int rv;
- 
- 	rv = wdm_create(intf, ep, bufsize, manage_power);
- 	if (rv < 0)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+index e68340dfd980..83e5318ca04f 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
++++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
+@@ -117,10 +117,8 @@ u8 efuse_read_1byte(struct ieee80211_hw *hw, u16 address)
+ 						 rtlpriv->cfg->
+ 						 maps[EFUSE_CTRL] + 3);
+ 			k++;
+-			if (k == 1000) {
+-				k = 0;
++			if (k == 1000)
+ 				break;
+-			}
+ 		}
+ 		data = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
+ 		return data;
 -- 
 2.20.1
 

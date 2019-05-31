@@ -2,75 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 686C730D64
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 May 2019 13:36:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0189F30DD0
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 May 2019 14:06:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726515AbfEaLgq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 May 2019 07:36:46 -0400
-Received: from mga06.intel.com ([134.134.136.31]:10520 "EHLO mga06.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726307AbfEaLgq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 May 2019 07:36:46 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 May 2019 04:36:45 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.60,535,1549958400"; 
-   d="scan'208";a="180297619"
-Received: from ahunter-desktop.fi.intel.com (HELO [10.237.72.198]) ([10.237.72.198])
-  by fmsmga002.fm.intel.com with ESMTP; 31 May 2019 04:36:43 -0700
-Subject: Re: [PATCH] mmc: sdhci-pci: remove redundant check of slots == 0
-To:     Colin King <colin.king@canonical.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
+        id S1727326AbfEaMGD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 31 May 2019 08:06:03 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:45699 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727112AbfEaMGD (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 31 May 2019 08:06:03 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hWgIJ-0000iw-Lk; Fri, 31 May 2019 12:05:59 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Andy Gross <agross@kernel.org>,
+        David Brown <david.brown@linaro.org>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        linux-arm-msm@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190531113223.27474-1-colin.king@canonical.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-Message-ID: <4336bf57-5fcf-5758-8d0d-9fd4aec3df4a@intel.com>
-Date:   Fri, 31 May 2019 14:35:33 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+Subject: [PATCH] phy: qcom-qusb2: fix missing assignment of ret when calling clk_prepare_enable
+Date:   Fri, 31 May 2019 13:05:59 +0100
+Message-Id: <20190531120559.2202-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190531113223.27474-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 31/05/19 2:32 PM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The calculation of slots results in a value in the range 1..8
-> and so slots can never be zero.  The check for slots == 0 is
-> always going to be false, hence it is redundant and can be
-> removed.
-> 
-> Addresses-Coverity: ("Logically dead code")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+The error return from the call to clk_prepare_enable is not being assigned
+to variable ret even though ret is being used to check if the call failed.
+Fix this by adding in the missing assignment.
 
-> ---
->  drivers/mmc/host/sdhci-pci-core.c | 2 --
->  1 file changed, 2 deletions(-)
-> 
-> diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
-> index ab9e2b901094..f70436261746 100644
-> --- a/drivers/mmc/host/sdhci-pci-core.c
-> +++ b/drivers/mmc/host/sdhci-pci-core.c
-> @@ -2044,8 +2044,6 @@ static int sdhci_pci_probe(struct pci_dev *pdev,
->  
->  	slots = PCI_SLOT_INFO_SLOTS(slots) + 1;
->  	dev_dbg(&pdev->dev, "found %d slot(s)\n", slots);
-> -	if (slots == 0)
-> -		return -ENODEV;
->  
->  	BUG_ON(slots > MAX_SLOTS);
->  
-> 
+Addresses-Coverity: ("Logically dead code")
+Fixes: 891a96f65ac3 ("phy: qcom-qusb2: Add support for runtime PM")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/phy/qualcomm/phy-qcom-qusb2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/phy/qualcomm/phy-qcom-qusb2.c b/drivers/phy/qualcomm/phy-qcom-qusb2.c
+index 1cbf1d6f28ce..bf94a52d3087 100644
+--- a/drivers/phy/qualcomm/phy-qcom-qusb2.c
++++ b/drivers/phy/qualcomm/phy-qcom-qusb2.c
+@@ -564,7 +564,7 @@ static int __maybe_unused qusb2_phy_runtime_resume(struct device *dev)
+ 	}
+ 
+ 	if (!qphy->has_se_clk_scheme) {
+-		clk_prepare_enable(qphy->ref_clk);
++		ret = clk_prepare_enable(qphy->ref_clk);
+ 		if (ret) {
+ 			dev_err(dev, "failed to enable ref clk, %d\n", ret);
+ 			goto disable_ahb_clk;
+-- 
+2.20.1
 

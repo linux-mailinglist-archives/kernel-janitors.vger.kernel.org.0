@@ -2,32 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0408130B4A
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 May 2019 11:21:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98BAA30CA0
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 May 2019 12:32:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726666AbfEaJVK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 May 2019 05:21:10 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42123 "EHLO
+        id S1727034AbfEaKcK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 31 May 2019 06:32:10 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:44310 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726240AbfEaJVK (ORCPT
+        with ESMTP id S1726233AbfEaKcK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 May 2019 05:21:10 -0400
+        Fri, 31 May 2019 06:32:10 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hWdig-0004Hk-1h; Fri, 31 May 2019 09:21:02 +0000
+        id 1hWepN-0002fd-GV; Fri, 31 May 2019 10:32:01 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Lijun Ou <oulijun@huawei.com>, Wei Hu <xavier.huwei@huawei.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org
+To:     Matthew Auld <matthew.auld@intel.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2][next] RDMA/hns: fix inverted logic of readl read and shift
-Date:   Fri, 31 May 2019 10:21:01 +0100
-Message-Id: <20190531092101.28772-2-colin.king@canonical.com>
+Subject: [PATCH][next] drm/i915: fix use of uninitialized pointer vaddr
+Date:   Fri, 31 May 2019 11:32:01 +0100
+Message-Id: <20190531103201.10124-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190531092101.28772-1-colin.king@canonical.com>
-References: <20190531092101.28772-1-colin.king@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
@@ -38,31 +41,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-A previous change incorrectly changed the inverted logic and logically
-negated the readl rather than the shifted readl result. Fix this by
-adding in missing parentheses around the expression that needs to be
-logically negated.
+The assignment of err is using the incorrect pointer vaddr that has
+not been initialized. Fix this by using the correct pointer obj instead.
 
-Addresses-Coverity: ("Logically dead code")
-Fixes: 669cefb654cb ("RDMA/hns: Remove jiffies operation in disable interrupt context")
+Addresses-Coverity: ("Uninitialized pointer read")
+Fixes: 6501aa4e3a45 ("drm/i915: add in-kernel blitter client")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/infiniband/hw/hns/hns_roce_hem.c | 2 +-
+ drivers/gpu/drm/i915/gem/selftests/i915_gem_object_blt.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
-index b3641aeff27a..a8e9329cbf4e 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hem.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
-@@ -378,7 +378,7 @@ static int hns_roce_set_hem(struct hns_roce_dev *hr_dev,
+diff --git a/drivers/gpu/drm/i915/gem/selftests/i915_gem_object_blt.c b/drivers/gpu/drm/i915/gem/selftests/i915_gem_object_blt.c
+index 8de568d2c792..e23d8c9e9298 100644
+--- a/drivers/gpu/drm/i915/gem/selftests/i915_gem_object_blt.c
++++ b/drivers/gpu/drm/i915/gem/selftests/i915_gem_object_blt.c
+@@ -32,7 +32,7 @@ static int igt_fill_blt(void *arg)
  
- 		end = HW_SYNC_TIMEOUT_MSECS;
- 		while (end > 0) {
--			if (!readl(bt_cmd) >> BT_CMD_SYNC_SHIFT)
-+			if (!(readl(bt_cmd) >> BT_CMD_SYNC_SHIFT))
- 				break;
+ 		obj = i915_gem_object_create_internal(i915, sz);
+ 		if (IS_ERR(obj)) {
+-			err = PTR_ERR(vaddr);
++			err = PTR_ERR(obj);
+ 			goto err_flush;
+ 		}
  
- 			mdelay(HW_SYNC_SLEEP_TIME_INTERVAL);
 -- 
 2.20.1
 

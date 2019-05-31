@@ -2,33 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63B5C30CF4
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 May 2019 12:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 552C730D5B
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 May 2019 13:32:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727107AbfEaK5O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 May 2019 06:57:14 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:44782 "EHLO
+        id S1727201AbfEaLc1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 31 May 2019 07:32:27 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:45213 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726002AbfEaK5O (ORCPT
+        with ESMTP id S1726002AbfEaLc0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 May 2019 06:57:14 -0400
+        Fri, 31 May 2019 07:32:26 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hWfDg-0004Th-GR; Fri, 31 May 2019 10:57:08 +0000
+        id 1hWfln-0006pU-Dz; Fri, 31 May 2019 11:32:23 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Andy Gross <agross@kernel.org>,
-        David Brown <david.brown@linaro.org>,
-        Amit Kucheria <amit.kucheria@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org
+To:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drivers: thermal: tsens: remove redundant u32 comparison with less than zero
-Date:   Fri, 31 May 2019 11:57:08 +0100
-Message-Id: <20190531105708.15312-1-colin.king@canonical.com>
+Subject: [PATCH] mmc: sdhci-pci: remove redundant check of slots == 0
+Date:   Fri, 31 May 2019 12:32:23 +0100
+Message-Id: <20190531113223.27474-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -40,29 +35,30 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The u32 variable hw_id is unsigned and cannot be less than zero so
-the comparison with less than zero is always false and hence is redundant
-and can be removed.
+The calculation of slots results in a value in the range 1..8
+and so slots can never be zero.  The check for slots == 0 is
+always going to be false, hence it is redundant and can be
+removed.
 
-Addresses-Coverity: ("Unsigned compared against 0")
+Addresses-Coverity: ("Logically dead code")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/thermal/qcom/tsens-common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mmc/host/sdhci-pci-core.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/thermal/qcom/tsens-common.c b/drivers/thermal/qcom/tsens-common.c
-index 928e8e81ba69..f4419f45025d 100644
---- a/drivers/thermal/qcom/tsens-common.c
-+++ b/drivers/thermal/qcom/tsens-common.c
-@@ -69,7 +69,7 @@ bool is_sensor_enabled(struct tsens_priv *priv, u32 hw_id)
- 	u32 val;
- 	int ret;
+diff --git a/drivers/mmc/host/sdhci-pci-core.c b/drivers/mmc/host/sdhci-pci-core.c
+index ab9e2b901094..f70436261746 100644
+--- a/drivers/mmc/host/sdhci-pci-core.c
++++ b/drivers/mmc/host/sdhci-pci-core.c
+@@ -2044,8 +2044,6 @@ static int sdhci_pci_probe(struct pci_dev *pdev,
  
--	if ((hw_id > (priv->num_sensors - 1)) || (hw_id < 0))
-+	if (hw_id > (priv->num_sensors - 1))
- 		return -EINVAL;
- 	ret = regmap_field_read(priv->rf[SENSOR_EN], &val);
- 	if (ret)
+ 	slots = PCI_SLOT_INFO_SLOTS(slots) + 1;
+ 	dev_dbg(&pdev->dev, "found %d slot(s)\n", slots);
+-	if (slots == 0)
+-		return -ENODEV;
+ 
+ 	BUG_ON(slots > MAX_SLOTS);
+ 
 -- 
 2.20.1
 

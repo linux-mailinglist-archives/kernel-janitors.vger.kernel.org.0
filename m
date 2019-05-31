@@ -2,54 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D42E30CBB
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 May 2019 12:40:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63B5C30CF4
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 May 2019 12:57:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726461AbfEaKkd convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 May 2019 06:40:33 -0400
-Received: from mail.fireflyinternet.com ([109.228.58.192]:54113 "EHLO
-        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726002AbfEaKkd (ORCPT
+        id S1727107AbfEaK5O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 31 May 2019 06:57:14 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:44782 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726002AbfEaK5O (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 May 2019 06:40:33 -0400
-X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
-Received: from localhost (unverified [78.156.65.138]) 
-        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 16746809-1500050 
-        for multiple; Fri, 31 May 2019 11:40:31 +0100
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-To:     Colin King <colin.king@canonical.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Matthew Auld <matthew.auld@intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
-From:   Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20190531103201.10124-1-colin.king@canonical.com>
+        Fri, 31 May 2019 06:57:14 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hWfDg-0004Th-GR; Fri, 31 May 2019 10:57:08 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Andy Gross <agross@kernel.org>,
+        David Brown <david.brown@linaro.org>,
+        Amit Kucheria <amit.kucheria@linaro.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190531103201.10124-1-colin.king@canonical.com>
-Message-ID: <155929922781.27302.13050993726222660588@skylake-alporthouse-com>
-User-Agent: alot/0.6
-Subject: Re: [PATCH][next] drm/i915: fix use of uninitialized pointer vaddr
-Date:   Fri, 31 May 2019 11:40:27 +0100
+Subject: [PATCH][next] drivers: thermal: tsens: remove redundant u32 comparison with less than zero
+Date:   Fri, 31 May 2019 11:57:08 +0100
+Message-Id: <20190531105708.15312-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Colin King (2019-05-31 11:32:01)
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The assignment of err is using the incorrect pointer vaddr that has
-> not been initialized. Fix this by using the correct pointer obj instead.
-> 
-> Addresses-Coverity: ("Uninitialized pointer read")
-> Fixes: 6501aa4e3a45 ("drm/i915: add in-kernel blitter client")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Reviewed and pushed, thanks for the fix!
--Chris
+The u32 variable hw_id is unsigned and cannot be less than zero so
+the comparison with less than zero is always false and hence is redundant
+and can be removed.
+
+Addresses-Coverity: ("Unsigned compared against 0")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/thermal/qcom/tsens-common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/thermal/qcom/tsens-common.c b/drivers/thermal/qcom/tsens-common.c
+index 928e8e81ba69..f4419f45025d 100644
+--- a/drivers/thermal/qcom/tsens-common.c
++++ b/drivers/thermal/qcom/tsens-common.c
+@@ -69,7 +69,7 @@ bool is_sensor_enabled(struct tsens_priv *priv, u32 hw_id)
+ 	u32 val;
+ 	int ret;
+ 
+-	if ((hw_id > (priv->num_sensors - 1)) || (hw_id < 0))
++	if (hw_id > (priv->num_sensors - 1))
+ 		return -EINVAL;
+ 	ret = regmap_field_read(priv->rf[SENSOR_EN], &val);
+ 	if (ret)
+-- 
+2.20.1
+

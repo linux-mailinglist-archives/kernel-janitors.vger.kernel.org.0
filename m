@@ -2,174 +2,116 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C8A23157F
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 May 2019 21:41:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E1394315FE
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 May 2019 22:19:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727361AbfEaTlT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 May 2019 15:41:19 -0400
-Received: from smtprelay0192.hostedemail.com ([216.40.44.192]:36847 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726808AbfEaTlT (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 May 2019 15:41:19 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay05.hostedemail.com (Postfix) with ESMTP id C6BDE1801BD6A;
-        Fri, 31 May 2019 19:41:17 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::,RULES_HIT:41:69:355:379:599:800:960:968:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1535:1544:1593:1594:1605:1711:1730:1747:1777:1792:2393:2559:2562:2693:2828:3138:3139:3140:3141:3142:3622:3865:3866:3867:3868:3870:3871:3872:3874:4321:4605:5007:7576:7875:7904:7974:9036:9592:10004:10848:11026:11232:11233:11473:11657:11658:11914:12043:12048:12151:12296:12438:12555:12740:12760:12895:13153:13161:13228:13229:13439:14181:14659:14721:21080:21451:21627:30003:30012:30054:30091,0,RBL:23.242.196.136:@perches.com:.lbl8.mailshell.net-62.8.0.180 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:26,LUA_SUMMARY:none
-X-HE-Tag: cork99_626698073144d
-X-Filterd-Recvd-Size: 5611
-Received: from XPS-9350 (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
-        (Authenticated sender: joe@perches.com)
-        by omf12.hostedemail.com (Postfix) with ESMTPA;
-        Fri, 31 May 2019 19:41:16 +0000 (UTC)
-Message-ID: <b4cb2a0c12110b6e47900926551c81cd9652e3c4.camel@perches.com>
-Subject: Re: [PATCH] rtlwifi: remove redundant assignment to variable k
-From:   Joe Perches <joe@perches.com>
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Colin King <colin.king@canonical.com>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Fri, 31 May 2019 12:41:14 -0700
-In-Reply-To: <14372bed-6522-d81c-7d68-04adc0d71193@lwfinger.net>
-References: <20190531141412.18632-1-colin.king@canonical.com>
-         <14372bed-6522-d81c-7d68-04adc0d71193@lwfinger.net>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.30.1-1build1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S1727461AbfEaUTH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 31 May 2019 16:19:07 -0400
+Received: from mail-eopbgr730046.outbound.protection.outlook.com ([40.107.73.46]:47328
+        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727405AbfEaUTH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 31 May 2019 16:19:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amdcloud.onmicrosoft.com; s=selector1-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W/JAMtynybMWerw24qc2JYYegD+4aTaodV+xq/idkXY=;
+ b=Ebjrt6hs2Dsq+1NDloB5iz8jHfwlZG1YWnjXDiyUw26VObNhQDl3LaeGCxZUFyjLY4SiL0q641WmwlKQn/RnjFcULIN25fCXEvGJ+T0CpTXxWWv1c1vYhLyXfCXNpwvcxGxHUu/sQ+ZDkIFpSP3TX0RWJkXu0gE3TFCRF0IXtqU=
+Received: from CY4PR1201MB0230.namprd12.prod.outlook.com (10.172.79.7) by
+ CY4PR1201MB2487.namprd12.prod.outlook.com (10.172.116.22) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1900.18; Fri, 31 May 2019 20:19:04 +0000
+Received: from CY4PR1201MB0230.namprd12.prod.outlook.com
+ ([fe80::7500:b13:ffcb:f9e3]) by CY4PR1201MB0230.namprd12.prod.outlook.com
+ ([fe80::7500:b13:ffcb:f9e3%10]) with mapi id 15.20.1922.021; Fri, 31 May 2019
+ 20:19:04 +0000
+From:   Harry Wentland <hwentlan@amd.com>
+To:     Colin King <colin.king@canonical.com>,
+        "Koo, Anthony" <Anthony.Koo@amd.com>,
+        "Wentland, Harry" <Harry.Wentland@amd.com>,
+        "Li, Sun peng (Leo)" <Sunpeng.Li@amd.com>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Koenig, Christian" <Christian.Koenig@amd.com>,
+        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][next] drm/amd/display: remove redundant assignment to
+ status
+Thread-Topic: [PATCH][next] drm/amd/display: remove redundant assignment to
+ status
+Thread-Index: AQHVFwJ4oaGCI0RQgEeQuQaLiUBi0KaFrfoA
+Date:   Fri, 31 May 2019 20:19:03 +0000
+Message-ID: <a190bcd5-cda8-84c6-093a-98438a605032@amd.com>
+References: <20190530161219.2507-1-colin.king@canonical.com>
+In-Reply-To: <20190530161219.2507-1-colin.king@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [69.28.222.43]
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+x-clientproxiedby: BL0PR0102CA0058.prod.exchangelabs.com
+ (2603:10b6:208:25::35) To CY4PR1201MB0230.namprd12.prod.outlook.com
+ (2603:10b6:910:1e::7)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Harry.Wentland@amd.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: a4b4a011-f742-445e-6dc9-08d6e605398f
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:CY4PR1201MB2487;
+x-ms-traffictypediagnostic: CY4PR1201MB2487:
+x-microsoft-antispam-prvs: <CY4PR1201MB248701EAE4259AD02F835AF38C190@CY4PR1201MB2487.namprd12.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4714;
+x-forefront-prvs: 00540983E2
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(346002)(376002)(396003)(366004)(39860400002)(136003)(199004)(189003)(305945005)(7736002)(446003)(256004)(31696002)(11346002)(6436002)(14454004)(229853002)(72206003)(36756003)(186003)(14444005)(478600001)(486006)(81166006)(8676002)(81156014)(25786009)(6486002)(71200400001)(71190400001)(476003)(2906002)(26005)(5660300002)(68736007)(6512007)(2201001)(8936002)(65826007)(3846002)(2616005)(6116002)(66556008)(66476007)(316002)(66946007)(386003)(73956011)(4326008)(6506007)(53936002)(6246003)(76176011)(52116002)(31686004)(64756008)(99286004)(102836004)(64126003)(53546011)(66446008)(58126008)(110136005)(65806001)(65956001)(2501003)(54906003)(66066001)(921003)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:CY4PR1201MB2487;H:CY4PR1201MB0230.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: amd.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: VoNnNoDfbErvFyGcPUrjTxFfCUKgmFC0ELd6OnQqoNsxBX36jDJ7KNaHnW4eco/nknXa5NKX2hPnQ4qpnE81SpLUQX+vjM+AJY2RLS7c2u8lAENApWnqmT00dXAe1TnOS3yIPjxJ5Kk5ALn5rq/eQ3ymSvKqC16D0aFaBYpPQWnNSFc2bITssxRFkOhMi2JvldtAVYUxMTDoFsMnW2Ol5Fm/EzMFTrqEKIJJyrTBfDIJbrKS7YBV9Kn7F+hIuZrTvjodsZ2erwlQ4jOKb6aQViJgG7T8DCsSZYzDwpWGXSYYcihQkYZF6PqO0SocT7qTjgMYUG17s9BweHT86Tkpl8js0QbsRgY/vlgsMQFux/ABl8IincI2mR79QwC6Tc7+9xjY8BiS+LCTzziA9xu90qgLifi36msQMWAtftSeT8c=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <6B414A2346E324478E8EC5C835BA381A@namprd12.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a4b4a011-f742-445e-6dc9-08d6e605398f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 May 2019 20:19:03.8453
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR1201MB2487
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 2019-05-31 at 12:29 -0500, Larry Finger wrote:
-> On 5/31/19 9:14 AM, Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> > 
-> > The assignment of 0 to variable k is never read once we break out of
-> > the loop, so the assignment is redundant and can be removed.
-> > 
-> > Addresses-Coverity: ("Unused value")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > ---
-> >   drivers/net/wireless/realtek/rtlwifi/efuse.c | 4 +---
-> >   1 file changed, 1 insertion(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/wireless/realtek/rtlwifi/efuse.c
-> > index e68340dfd980..83e5318ca04f 100644
-> > --- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
-> > +++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
-> > @@ -117,10 +117,8 @@ u8 efuse_read_1byte(struct ieee80211_hw *hw, u16 address)
-> >   						 rtlpriv->cfg->
-> >   						 maps[EFUSE_CTRL] + 3);
-> >   			k++;
-> > -			if (k == 1000) {
-> > -				k = 0;
-> > +			if (k == 1000)
-> >   				break;
-> > -			}
-> >   		}
-> >   		data = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
-> >   		return data;
-> 
-> Colin,
-> 
-> Your patch is not wrong, but it fails to address a basic deficiency of this code 
-> snippet - when an error is detected, there is no attempt to either fix the 
-> problem or report it upstream. As the data returned will be garbage if this 
-> condition happens, we might as well replace the "break" with "return 0xFF", as 
-> well as deleting the "k = 0" line. Most of the callers of efuse_read_1byte() 
-> ignore the returned result when bits 0 and 4 are set, thus returning all 8 bits 
-> is not a bad fixup.
-> 
-> My suspicion is that this test is in the code merely to prevent an potential 
-> unterminated "while" loop, and that this condition is extremely unlikely to happen.
-> 
-> Larry
-
-The function is also overly verbose with many
-unnecessary rtlpriv->cfg->maps dereferences.
-
-I'd've written it more like:
----
- drivers/net/wireless/realtek/rtlwifi/efuse.c | 57 +++++++++++-----------------
- 1 file changed, 22 insertions(+), 35 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/efuse.c b/drivers/net/wireless/realtek/rtlwifi/efuse.c
-index e68340dfd980..db253f45e87d 100644
---- a/drivers/net/wireless/realtek/rtlwifi/efuse.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/efuse.c
-@@ -87,46 +87,33 @@ void efuse_initialize(struct ieee80211_hw *hw)
- u8 efuse_read_1byte(struct ieee80211_hw *hw, u16 address)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
--	u8 data;
- 	u8 bytetemp;
- 	u8 temp;
--	u32 k = 0;
--	const u32 efuse_len =
--		rtlpriv->cfg->maps[EFUSE_REAL_CONTENT_SIZE];
--
--	if (address < efuse_len) {
--		temp = address & 0xFF;
--		rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL] + 1,
--			       temp);
--		bytetemp = rtl_read_byte(rtlpriv,
--					 rtlpriv->cfg->maps[EFUSE_CTRL] + 2);
--		temp = ((address >> 8) & 0x03) | (bytetemp & 0xFC);
--		rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL] + 2,
--			       temp);
--
--		bytetemp = rtl_read_byte(rtlpriv,
--					 rtlpriv->cfg->maps[EFUSE_CTRL] + 3);
--		temp = bytetemp & 0x7F;
--		rtl_write_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL] + 3,
--			       temp);
-+	int k = 0;
-+	u32 *maps = rtlpriv->cfg->maps;
-+	const u32 efuse_len = maps[EFUSE_REAL_CONTENT_SIZE];
- 
--		bytetemp = rtl_read_byte(rtlpriv,
--					 rtlpriv->cfg->maps[EFUSE_CTRL] + 3);
--		while (!(bytetemp & 0x80)) {
--			bytetemp = rtl_read_byte(rtlpriv,
--						 rtlpriv->cfg->
--						 maps[EFUSE_CTRL] + 3);
--			k++;
--			if (k == 1000) {
--				k = 0;
--				break;
--			}
--		}
--		data = rtl_read_byte(rtlpriv, rtlpriv->cfg->maps[EFUSE_CTRL]);
--		return data;
--	} else
-+	if (address >= efuse_len)
- 		return 0xFF;
- 
-+	temp = address & 0xFF;
-+	rtl_write_byte(rtlpriv, maps[EFUSE_CTRL] + 1, temp);
-+	bytetemp = rtl_read_byte(rtlpriv, maps[EFUSE_CTRL] + 2);
-+	temp = ((address >> 8) & 0x03) | (bytetemp & 0xFC);
-+	rtl_write_byte(rtlpriv, maps[EFUSE_CTRL] + 2, temp);
-+
-+	bytetemp = rtl_read_byte(rtlpriv, maps[EFUSE_CTRL] + 3);
-+	temp = bytetemp & 0x7F;
-+	rtl_write_byte(rtlpriv, maps[EFUSE_CTRL] + 3, temp);
-+
-+	bytetemp = rtl_read_byte(rtlpriv, maps[EFUSE_CTRL] + 3);
-+	while (!(bytetemp & 0x80)) {
-+		bytetemp = rtl_read_byte(rtlpriv, maps[EFUSE_CTRL] + 3);
-+		if (++k >= 1000)
-+			return 0xFF;	/* Likely defect */
-+	}
-+
-+	return rtl_read_byte(rtlpriv, maps[EFUSE_CTRL]);
- }
- EXPORT_SYMBOL(efuse_read_1byte);
- 
-
+T24gMjAxOS0wNS0zMCAxMjoxMiBwLm0uLCBDb2xpbiBLaW5nIHdyb3RlOg0KPiBGcm9tOiBDb2xp
+biBJYW4gS2luZyA8Y29saW4ua2luZ0BjYW5vbmljYWwuY29tPg0KPiANCj4gVGhlIHZhcmlhYmxl
+IHN0YXR1cyBpcyBpbml0aWFsaXplZCB3aXRoIGEgdmFsdWUgdGhhdCBpcyBuZXZlciByZWFkDQo+
+IGFuZCBzdGF0dXMgaXMgcmVhc3NpZ25lZCBzZXZlcmFsIHN0YXRlbWVudHMgbGF0ZXIuIFRoaXMg
+aW5pdGlhbGl6YXRpb24NCj4gaXMgcmVkdW5kYW50IGFuZCBjYW4gYmUgcmVtb3ZlZC4NCj4gDQo+
+IEFkZHJlc3Nlcy1Db3Zlcml0eTogKCJVbnVzZWQgdmFsdWUiKQ0KPiBTaWduZWQtb2ZmLWJ5OiBD
+b2xpbiBJYW4gS2luZyA8Y29saW4ua2luZ0BjYW5vbmljYWwuY29tPg0KPiAtLS0NCj4gIGRyaXZl
+cnMvZ3B1L2RybS9hbWQvZGlzcGxheS9kYy9jb3JlL2RjX2xpbmtfZHAuYyB8IDIgKy0NCj4gIDEg
+ZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAt
+LWdpdCBhL2RyaXZlcnMvZ3B1L2RybS9hbWQvZGlzcGxheS9kYy9jb3JlL2RjX2xpbmtfZHAuYyBi
+L2RyaXZlcnMvZ3B1L2RybS9hbWQvZGlzcGxheS9kYy9jb3JlL2RjX2xpbmtfZHAuYw0KPiBpbmRl
+eCA2NWQ2Y2FlZGJkODIuLmNmNjE2NmExYmU1MyAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9ncHUv
+ZHJtL2FtZC9kaXNwbGF5L2RjL2NvcmUvZGNfbGlua19kcC5jDQo+ICsrKyBiL2RyaXZlcnMvZ3B1
+L2RybS9hbWQvZGlzcGxheS9kYy9jb3JlL2RjX2xpbmtfZHAuYw0KPiBAQCAtMjM2Nyw3ICsyMzY3
+LDcgQEAgc3RhdGljIGJvb2wgcmV0cmlldmVfbGlua19jYXAoc3RydWN0IGRjX2xpbmsgKmxpbmsp
+DQo+ICAJdW5pb24gZG93bl9zdHJlYW1fcG9ydF9jb3VudCBkb3duX3N0cm1fcG9ydF9jb3VudDsN
+Cj4gIAl1bmlvbiBlZHBfY29uZmlndXJhdGlvbl9jYXAgZWRwX2NvbmZpZ19jYXA7DQo+ICAJdW5p
+b24gZHBfZG93bnN0cmVhbV9wb3J0X3ByZXNlbnQgZHNfcG9ydCA9IHsgMCB9Ow0KPiAtCWVudW0g
+ZGNfc3RhdHVzIHN0YXR1cyA9IERDX0VSUk9SX1VORVhQRUNURUQ7DQo+ICsJZW51bSBkY19zdGF0
+dXMgc3RhdHVzOw0KDQpOb3Qgc3VyZSB0aGlzIGltcHJvdmVzIHRoZSBzaXR1YXRpb24uDQoNCkkn
+ZCBwcmVmZXIgdG8gaGF2ZSBhIGRlZmF1bHQgaGVyZSBpbiBjYXNlIHNvbWVvbmUgY2hhbmdlcyB0
+aGUgY29kZSBiZWxvdw0KYW5kIGZvcmdldHMgdG8gc2V0IHRoZSBzdGF0dXMuDQoNCkhhcnJ5DQoN
+Cj4gIAl1aW50MzJfdCByZWFkX2RwY2RfcmV0cnlfY250ID0gMzsNCj4gIAlpbnQgaTsNCj4gIAlz
+dHJ1Y3QgZHBfc2lua19od19md19yZXZpc2lvbiBkcF9od19md19yZXZpc2lvbjsNCj4gDQo=

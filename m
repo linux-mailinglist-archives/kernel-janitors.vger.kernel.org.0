@@ -2,28 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1866630ED9
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 May 2019 15:27:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CABEE30F04
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 May 2019 15:39:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726667AbfEaN1o (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 May 2019 09:27:44 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:47264 "EHLO
+        id S1726762AbfEaNje (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 31 May 2019 09:39:34 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:47425 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726386AbfEaN1n (ORCPT
+        with ESMTP id S1726421AbfEaNje (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 May 2019 09:27:43 -0400
+        Fri, 31 May 2019 09:39:34 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hWhZL-0006nj-74; Fri, 31 May 2019 13:27:39 +0000
+        id 1hWhkk-0007Qf-Sd; Fri, 31 May 2019 13:39:26 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Ariel Elior <aelior@marvell.com>, GR-everest-linux-l2@marvell.com,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+To:     Eric Anholt <eric@anholt.net>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] qed: remove redundant assignment to rc
-Date:   Fri, 31 May 2019 14:27:38 +0100
-Message-Id: <20190531132738.17221-1-colin.king@canonical.com>
+Subject: [PATCH] staging: vc04_services: remove redundant assignment to pointer service
+Date:   Fri, 31 May 2019 14:39:26 +0100
+Message-Id: <20190531133926.17644-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,29 +38,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable rc is assigned with a value that is never read and
-it is re-assigned a new value later on.  The assignment is redundant
-and can be removed.
+Pointer service is being set to NULL however this value is never
+read and so the assignment is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/ethernet/qlogic/qed/qed_sp_commands.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../staging/vc04_services/interface/vchiq_arm/vchiq_shim.c    | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_sp_commands.c b/drivers/net/ethernet/qlogic/qed/qed_sp_commands.c
-index 5a495fda9e9d..7e0b795230b2 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_sp_commands.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_sp_commands.c
-@@ -588,7 +588,7 @@ int qed_sp_pf_update_stag(struct qed_hwfn *p_hwfn)
- {
- 	struct qed_spq_entry *p_ent = NULL;
- 	struct qed_sp_init_data init_data;
--	int rc = -EINVAL;
-+	int rc;
+diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_shim.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_shim.c
+index 13910d205fce..17a4f2c8d8b1 100644
+--- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_shim.c
++++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_shim.c
+@@ -639,10 +639,8 @@ int32_t vchi_service_close(const VCHI_SERVICE_HANDLE_T handle)
  
- 	/* Get SPQ entry */
- 	memset(&init_data, 0, sizeof(init_data));
+ 	if (service) {
+ 		VCHIQ_STATUS_T status = vchiq_close_service(service->handle);
+-		if (status == VCHIQ_SUCCESS) {
++		if (status == VCHIQ_SUCCESS)
+ 			service_free(service);
+-			service = NULL;
+-		}
+ 
+ 		ret = vchiq_status_to_vchi(status);
+ 	}
 -- 
 2.20.1
 

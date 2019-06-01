@@ -2,55 +2,50 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C24ED32025
-	for <lists+kernel-janitors@lfdr.de>; Sat,  1 Jun 2019 19:29:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D965C320BD
+	for <lists+kernel-janitors@lfdr.de>; Sat,  1 Jun 2019 23:09:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726683AbfFAR3l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 1 Jun 2019 13:29:41 -0400
-Received: from mx0b-0016f401.pphosted.com ([67.231.156.173]:56448 "EHLO
-        mx0b-0016f401.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726075AbfFAR3l (ORCPT
+        id S1726628AbfFAVJ2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 1 Jun 2019 17:09:28 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:41446 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726149AbfFAVJ2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 1 Jun 2019 13:29:41 -0400
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-        by mx0b-0016f401.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x51HQW7o025981;
-        Sat, 1 Jun 2019 10:29:33 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pfpt0818;
- bh=VEXJAPUyXQ1tmq30nNNR7Z+xEWFfQ24I/OO1e5N8kcw=;
- b=dH+gSu3faad4e+X3cLXGb7vcn8vFTYTQmPQng5mGb3OSqBAJylhovg6k2TP39oQ+XFy8
- 073XfRLhUvKR8PUDsy0OhFHbsMzousP5b5WSxEwUHi9LFSscadW65fGM9YVoHVTohzAM
- Hns1jxji0cVpsHhWoZGrAO+Wv4C1shxMQ+bWVTQjtfZDLz9DX8Q3Drxh+im+kfGahnw4
- bNwvmImDgTxsU5/H0tM6YQ1bBAI2Xu720gLzXjfWuAY1a00Xd0cw17g7eSZIEloZnUb0
- Ntro0w2bbuD/1Uug0RbVyschEoN5HNVKK5KVpqxAgLqwSMt3ZZzWR/dldW37r6x1hEm4 VQ== 
-Received: from sc-exch01.marvell.com ([199.233.58.181])
-        by mx0b-0016f401.pphosted.com with ESMTP id 2survk0uyc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Sat, 01 Jun 2019 10:29:33 -0700
-Received: from SC-EXCH02.marvell.com (10.93.176.82) by SC-EXCH01.marvell.com
- (10.93.176.81) with Microsoft SMTP Server (TLS) id 15.0.1367.3; Sat, 1 Jun
- 2019 10:29:31 -0700
-Received: from NAM02-CY1-obe.outbound.protection.outlook.com (104.47.37.56) by
- SC-EXCH02.marvell.com (10.93.176.82) with Microsoft SMTP Server (TLS) id
- 15.0.1367.3 via Frontend Transport; Sat, 1 Jun 2019 10:29:31 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=marvell.onmicrosoft.com; s=selector2-marvell-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VEXJAPUyXQ1tmq30nNNR7Z+xEWFfQ24I/OO1e5N8kcw=;
- b=ZS0PZKzo5/Hkdx/MQ6sT2R9cwObT/4NETW0y5KIwp1+K1HdzxcAfT+NowZKCaasMjfZJURM4j+USHGqCbXXsrXKnpPIrQwtIIbETgdzvrqdXV7M7bGFUJP7rchDW0Px1qIpEceVFO2l1hROh01AhrEkXzcWUdJIeLu2ZOME/EXU=
-Received: from MN2PR18MB2637.namprd18.prod.outlook.com (20.179.80.147) by
- MN2PR18MB2784.namprd18.prod.outlook.com (20.179.23.89) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1922.18; Sat, 1 Jun 2019 17:29:26 +0000
-Received: from MN2PR18MB2637.namprd18.prod.outlook.com
- ([fe80::3c77:9f53:7e47:7eb8]) by MN2PR18MB2637.namprd18.prod.outlook.com
- ([fe80::3c77:9f53:7e47:7eb8%7]) with mapi id 15.20.1922.021; Sat, 1 Jun 2019
- 17:29:26 +0000
-From:   Ganapathi Bhat <gbhat@marvell.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Colin King <colin.king@canonical.com>
-CC:     Amitkumar Karwar <amitkarwar@gmail.com>,
+        Sat, 1 Jun 2019 17:09:28 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x51L46G3137258;
+        Sat, 1 Jun 2019 21:09:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=lFRaHJV4AGaMGcCZiaC3ENU3IoTU0EjPSzC0mon4Pw8=;
+ b=l6HbYv0V4EtKyZ0owaeuuMaDS8qE+aLFVzv7JIcl+6UpfTX2xhNJwusiCNWKRXuN5pzQ
+ vDXUytzmHT32WlvbBCgZ12k7IPY9OPzOQou773+zDjC/L6Nj0+SBIU45tJEwQ09FHUTh
+ HnOZ3oCBRYsqWChnKPDDtS1HbsUGAXQsvvQ1ePMMKYJj7Y8DHIEf140E4amww+nQSZQk
+ fXNbm9McFg7wiOWpMA+poFw3YtiZ3/cgVkHMwH2brXV+6zHKkyqVnqvpnHDNm1SEbXJ4
+ lF7JrWguYk948C/upAmVl3iROuNJk1e6FmTGJRKHteiKX0cU8uyccK0PVzH7JI7fwlwx nA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 2suj0q1p0x-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 01 Jun 2019 21:09:14 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x51L8djc149730;
+        Sat, 1 Jun 2019 21:09:14 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 2suh60y1qk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 01 Jun 2019 21:09:14 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x51L98Z7029165;
+        Sat, 1 Jun 2019 21:09:08 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 01 Jun 2019 14:09:07 -0700
+Date:   Sun, 2 Jun 2019 00:08:58 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Ganapathi Bhat <gbhat@marvell.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
         Nishant Sarmukadam <nishants@marvell.com>,
         Xinming Hu <huxinming820@gmail.com>,
         Kalle Valo <kvalo@codeaurora.org>,
@@ -59,59 +54,46 @@ CC:     Amitkumar Karwar <amitkarwar@gmail.com>,
         "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
         "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [EXT] Re: [PATCH] mwifiex: check for null return from skb_copy
-Thread-Topic: [EXT] Re: [PATCH] mwifiex: check for null return from skb_copy
-Thread-Index: AQHU8i7/8jDHsxlJZE+NM+DVVJab26aHWmow
-Date:   Sat, 1 Jun 2019 17:29:26 +0000
-Message-ID: <MN2PR18MB2637DAA4852542EDA2BBC01DA01A0@MN2PR18MB2637.namprd18.prod.outlook.com>
+Subject: Re: [EXT] Re: [PATCH] mwifiex: check for null return from skb_copy
+Message-ID: <20190601210858.GG31203@kadam>
 References: <20190413161438.6376-1-colin.king@canonical.com>
  <20190413192729.GL6095@kadam>
-In-Reply-To: <20190413192729.GL6095@kadam>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [157.45.208.183]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 2330b682-847b-41f0-dbba-08d6e6b6b242
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:MN2PR18MB2784;
-x-ms-traffictypediagnostic: MN2PR18MB2784:
-x-microsoft-antispam-prvs: <MN2PR18MB2784803E6C38B29B07054C7DA01A0@MN2PR18MB2784.namprd18.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6430;
-x-forefront-prvs: 00550ABE1F
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(366004)(346002)(396003)(136003)(39850400004)(376002)(199004)(189003)(3846002)(2906002)(229853002)(6116002)(476003)(6246003)(25786009)(73956011)(11346002)(446003)(66946007)(14454004)(4326008)(7736002)(66556008)(64756008)(486006)(52536014)(558084003)(256004)(66476007)(33656002)(5660300002)(71190400001)(71200400001)(86362001)(66446008)(305945005)(76116006)(68736007)(99286004)(6506007)(53936002)(316002)(66066001)(7696005)(54906003)(26005)(110136005)(478600001)(81166006)(81156014)(55016002)(7416002)(74316002)(8936002)(9686003)(102836004)(76176011)(8676002)(186003)(6436002);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR18MB2784;H:MN2PR18MB2637.namprd18.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: marvell.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: GoyTU02FbGE9T7qAX/L3AsFXKsRsAvVuirybqJr1cj9LBLMKN8k28BBHAaRWdLtvU7HyM2oq6IXk6/l6ePcDcojvMS4lYw4yTFacHOlzN6AA74KmytcemA+Yf8HH2hzcCjr3M8yxLx9hsaslb8I7zroaFZYSAIXrqcVr4DUZKgY8YhrcalnMpgehGmaxT9r8pIRpBYrMCDstiM2+1d4uE9Twx3WfrkodXHo+gxdz5JzIJw2CsuDv1XW+Ml71mazPR6UIBfX/x4s5UP/XTNlvCiqIgNkzMIKegXQyipNE88VN0KSBjX6ks3nbvRa1Hhh1wCZoEjgCAkP1MUr2yl1YLNp98FHjnLsiCaKHfc9/8RwAnOBgJiXInrFExF2an09YIrQeyZSDbywA5tkcE5k2Bzy7dza2g1j6ejPcnl59rIM=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ <MN2PR18MB2637DAA4852542EDA2BBC01DA01A0@MN2PR18MB2637.namprd18.prod.outlook.com>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2330b682-847b-41f0-dbba-08d6e6b6b242
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jun 2019 17:29:26.7377
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: gbhat@marvell.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR18MB2784
-X-OriginatorOrg: marvell.com
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-01_12:,,
- signatures=0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <MN2PR18MB2637DAA4852542EDA2BBC01DA01A0@MN2PR18MB2637.namprd18.prod.outlook.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9275 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=790
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906010152
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9275 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=825 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906010152
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
+On Sat, Jun 01, 2019 at 05:29:26PM +0000, Ganapathi Bhat wrote:
+> Hi Dan,
+> 
+> > >  	if (is_multicast_ether_addr(ra)) {
+> > >  		skb_uap = skb_copy(skb, GFP_ATOMIC);
+> > > +		if (!skb_uap)
+> > > +			return -ENOMEM;
+> > 
+> > I think we would want to free dev_kfree_skb_any(skb) before returning.
+> I think if the pointer is NULL, no need to free it; 
 
-> >  	if (is_multicast_ether_addr(ra)) {
-> >  		skb_uap =3D skb_copy(skb, GFP_ATOMIC);
-> > +		if (!skb_uap)
-> > +			return -ENOMEM;
->=20
-> I think we would want to free dev_kfree_skb_any(skb) before returning.
-I think if the pointer is NULL, no need to free it;=20
+You're misreading skb vs skb_uap.  "skb_uap" is NULL but "skb" is
+non-NULL and I'm pretty sure we should free it.
 
-Regards,
-Ganapathi
+regards,
+dan carpenter
+

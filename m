@@ -2,52 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF4B1316AC
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 May 2019 23:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B9BE3192F
+	for <lists+kernel-janitors@lfdr.de>; Sat,  1 Jun 2019 05:10:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726520AbfEaVhN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 May 2019 17:37:13 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:50942 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725913AbfEaVhN (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 May 2019 17:37:13 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id E711415010A34;
-        Fri, 31 May 2019 14:37:11 -0700 (PDT)
-Date:   Fri, 31 May 2019 14:37:11 -0700 (PDT)
-Message-Id: <20190531.143711.1406359688787927167.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     wei.liu2@citrix.com, paul.durrant@citrix.com,
-        xen-devel@lists.xenproject.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] xen-netback: remove redundant assignment to err
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190530190438.9571-1-colin.king@canonical.com>
-References: <20190530190438.9571-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 31 May 2019 14:37:12 -0700 (PDT)
+        id S1726652AbfFADJ7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 31 May 2019 23:09:59 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:50734 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726485AbfFADJ7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 31 May 2019 23:09:59 -0400
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 9D78D7EB97B003E534BD;
+        Sat,  1 Jun 2019 11:09:56 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.439.0; Sat, 1 Jun 2019 11:09:50 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Kashyap Desai <kashyap.desai@broadcom.com>,
+        Sumit Saxena <sumit.saxena@broadcom.com>,
+        Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <megaraidlinux.pdl@broadcom.com>, <linux-scsi@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] scsi: megaraid_sas: Remove unused including <linux/version.h>
+Date:   Sat, 1 Jun 2019 03:18:06 +0000
+Message-ID: <20190601031806.46753-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Thu, 30 May 2019 20:04:38 +0100
+Remove including <linux/version.h> that don't need it.
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable err is assigned with the value -ENOMEM that is never
-> read and it is re-assigned a new value later on.  The assignment is
-> redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/scsi/megaraid/megaraid_sas_debugfs.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Applied to net-next.
+diff --git a/drivers/scsi/megaraid/megaraid_sas_debugfs.c b/drivers/scsi/megaraid/megaraid_sas_debugfs.c
+index e52837bb6807..c69760775efa 100644
+--- a/drivers/scsi/megaraid/megaraid_sas_debugfs.c
++++ b/drivers/scsi/megaraid/megaraid_sas_debugfs.c
+@@ -25,7 +25,6 @@
+  *
+  *  Send feedback to: megaraidlinux.pdl@broadcom.com
+  */
+-#include <linux/version.h>
+ #include <linux/kernel.h>
+ #include <linux/types.h>
+ #include <linux/pci.h>
+
+
+
+
+

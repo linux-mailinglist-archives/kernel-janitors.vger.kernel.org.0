@@ -2,32 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 957FF3196D
-	for <lists+kernel-janitors@lfdr.de>; Sat,  1 Jun 2019 06:04:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C48331A02
+	for <lists+kernel-janitors@lfdr.de>; Sat,  1 Jun 2019 09:14:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725892AbfFAEEG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 1 Jun 2019 00:04:06 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:17643 "EHLO huawei.com"
+        id S1726089AbfFAHOC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 1 Jun 2019 03:14:02 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:35468 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725800AbfFAEEG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 1 Jun 2019 00:04:06 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 8CF64136B7EF2269589D;
-        Sat,  1 Jun 2019 12:04:03 +0800 (CST)
+        id S1726013AbfFAHOC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 1 Jun 2019 03:14:02 -0400
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 92328B4C434BBCF60B04;
+        Sat,  1 Jun 2019 15:13:59 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.439.0; Sat, 1 Jun 2019 12:03:57 +0800
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.439.0; Sat, 1 Jun 2019 15:13:53 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        "Kate Stewart" <kstewart@linuxfoundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Allison Randal" <allison@lohutok.net>
-CC:     YueHaibing <yuehaibing@huawei.com>, <alsa-devel@alsa-project.org>,
+To:     <harry.wentland@amd.com>, <sunpeng.li@amd.com>,
+        <alexander.deucher@amd.com>, <christian.koenig@amd.com>,
+        <David1.Zhou@amd.com>, <airlied@linux.ie>, <daniel@ffwll.ch>,
+        <hanghong.ma@amd.com>, <Jun.Lei@amd.com>, <Wenjing.Liu@amd.com>,
+        <Krunoslav.Kovac@amd.com>, <nicholas.kazlauskas@amd.com>,
+        <David.Francis@amd.com>, <Bhawanpreet.Lakha@amd.com>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
         <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] ALSA: lx6464es - Remove set but not used variables 'orun_mask, urun_mask'
-Date:   Sat, 1 Jun 2019 04:12:14 +0000
-Message-ID: <20190601041214.99366-1-yuehaibing@huawei.com>
+Subject: [PATCH -next] drm/amd/display: Use kmemdup in dc_copy_stream()
+Date:   Sat, 1 Jun 2019 07:22:08 +0000
+Message-ID: <20190601072208.193673-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -39,46 +41,33 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+Use kmemdup rather than duplicating its implementation.
 
-sound/pci/lx6464es/lx_core.c: In function 'lx_interrupt_handle_async_events':
-sound/pci/lx6464es/lx_core.c:990:6: warning:
- variable 'urun_mask' set but not used [-Wunused-but-set-variable]
-sound/pci/lx6464es/lx_core.c:989:6: warning:
- variable 'orun_mask' set but not used [-Wunused-but-set-variable]
-
-They are never used, so can be removed.
+Detected by coccinelle.
 
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- sound/pci/lx6464es/lx_core.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_stream.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/lx6464es/lx_core.c b/sound/pci/lx6464es/lx_core.c
-index 9236a1a8c49b..dd3a873777eb 100644
---- a/sound/pci/lx6464es/lx_core.c
-+++ b/sound/pci/lx6464es/lx_core.c
-@@ -986,8 +986,6 @@ static int lx_interrupt_handle_async_events(struct lx6464es *chip, u32 irqsrc,
- 	 * Stat[8]	LSB overrun
- 	 * */
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
+index a002e690814f..b166c732b532 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
+@@ -167,12 +167,11 @@ struct dc_stream_state *dc_copy_stream(const struct dc_stream_state *stream)
+ {
+ 	struct dc_stream_state *new_stream;
  
--	u64 orun_mask;
--	u64 urun_mask;
- 	int eb_pending_out = (irqsrc & MASK_SYS_STATUS_EOBO) ? 1 : 0;
- 	int eb_pending_in  = (irqsrc & MASK_SYS_STATUS_EOBI) ? 1 : 0;
+-	new_stream = kzalloc(sizeof(struct dc_stream_state), GFP_KERNEL);
++	new_stream = kmemdup(stream, sizeof(struct dc_stream_state),
++			     GFP_KERNEL);
+ 	if (!new_stream)
+ 		return NULL;
  
-@@ -1010,9 +1008,6 @@ static int lx_interrupt_handle_async_events(struct lx6464es *chip, u32 irqsrc,
- 			    *r_notified_out_pipe_mask);
- 	}
- 
--	orun_mask = ((u64)stat[7] << 32) + stat[8];
--	urun_mask = ((u64)stat[5] << 32) + stat[6];
+-	memcpy(new_stream, stream, sizeof(struct dc_stream_state));
 -
- 	/* todo: handle xrun notification */
- 
- 	return err;
-
-
+ 	if (new_stream->sink)
+ 		dc_sink_retain(new_stream->sink);
 
 
 

@@ -2,80 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7041631A18
-	for <lists+kernel-janitors@lfdr.de>; Sat,  1 Jun 2019 09:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC7B031BC4
+	for <lists+kernel-janitors@lfdr.de>; Sat,  1 Jun 2019 15:03:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726109AbfFAHfg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 1 Jun 2019 03:35:36 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:17644 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726013AbfFAHff (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 1 Jun 2019 03:35:35 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 245A96B0BBF58C89DE03;
-        Sat,  1 Jun 2019 15:35:32 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
- 14.3.439.0; Sat, 1 Jun 2019 15:35:22 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Jason Cooper <jason@lakedaemon.net>, Andrew Lunn <andrew@lunn.ch>,
-        "Gregory Clement" <gregory.clement@bootlin.com>,
-        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Viresh Kumar <viresh.kumar@linaro.org>
-CC:     YueHaibing <yuehaibing@huawei.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-pm@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] cpufreq: armada-37xx: Remove set but not used variable 'freq'
-Date:   Sat, 1 Jun 2019 07:43:38 +0000
-Message-ID: <20190601074338.64187-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727189AbfFANDV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 1 Jun 2019 09:03:21 -0400
+Received: from mail-ot1-f52.google.com ([209.85.210.52]:43705 "EHLO
+        mail-ot1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726142AbfFANDU (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 1 Jun 2019 09:03:20 -0400
+Received: by mail-ot1-f52.google.com with SMTP id i8so11922836oth.10;
+        Sat, 01 Jun 2019 06:03:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=X0RT0bSFsstj788K6nAv5udFE+lgAJWct48DSKlasro=;
+        b=PvsMTCfZZv2kYtmqyC+2t6ZuwaogZZ6iBuijIjh6BQFa+OBX44VkmtSbPb19rw7d4w
+         yhxUlEOWxtAde/T/5iyWCT7VmMvA66Y6ervk1TZieoww8oVY6XwZUP/V/l2qIFCy+jqP
+         8tVqCJYYKXZUrapR6ZQnl/uSrjzlhqDm/kEheq2BXba+JdtovMJvs6dUnQfzDeaoA1kw
+         iLM85hh6FNvdb7iiQTCC2TIUq+AW6g75njjlnO1AApCKeLwTLFYdWoJhs7zihkdmZt0j
+         SCY3MGSiLNPtmSkl263ZkhR2kAUrv805pe1CXDchiPZCMDjzbOmgplqbjaS/0QTabVqF
+         +J1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=X0RT0bSFsstj788K6nAv5udFE+lgAJWct48DSKlasro=;
+        b=cknAjSx7QpUCS8f1ikQdMxBYo4oJOS662C2xsSD9w1h45BGO4p3oL7KltOpLZQdWRO
+         4G3PRvspLeI2MvEmmsZa5NFhG5QmCPXJzum8tZjcsJeCduMAQiBbK1DCSzynC6MS7X0Q
+         XxSPar5qsbLt9Nk4BHkF6ZAxAxHFJKzwrpF1FArRMSPLjo2Y0fr9buY3epuS2mZK0Yoa
+         ca0RiEiSGjWFw8IlQ015b1fWoe+VsfWB0QUBYNpiWeJgt56PUosavc29nVZdgky/Cv2k
+         VvWBOMex2f1t7Fa3oug9EZWmtHwVnGGMWCdhr13rXSBoRDpNmWmw5hhOGsP3oJ/2fjAa
+         rvEA==
+X-Gm-Message-State: APjAAAUSfDTZBn4RTn2TFF2/DaRV5S4Q7/h9gJqa8fsfXqetl5tnBZ17
+        zHdIfd9Mh9jMujoIIKnBKxGlqNOlVqOCbb/85cw=
+X-Google-Smtp-Source: APXvYqzLz/5A8GYcpQqqegkE3RMuS37XlWhCDzGUSDoA+PD4nPAEP3TWoiPuccwfudkUl8kBmvjHBGGyG71QdLgk8lA=
+X-Received: by 2002:a9d:7245:: with SMTP id a5mr5577799otk.232.1559394199943;
+ Sat, 01 Jun 2019 06:03:19 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+References: <20190601035709.85379-1-yuehaibing@huawei.com>
+In-Reply-To: <20190601035709.85379-1-yuehaibing@huawei.com>
+From:   Sven Van Asbroeck <thesven73@gmail.com>
+Date:   Sat, 1 Jun 2019 09:03:09 -0400
+Message-ID: <CAGngYiXZM0QUdKE_zDK763J9iDuiKSbmFeTVA1PJ_4WvjntjQQ@mail.gmail.com>
+Subject: Re: [PATCH -next] pwm: pca9685: Remove set but not used variable 'pwm'
+To:     YueHaibing <yuehaibing@huawei.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        u.kleine-koenig@pengutronix.de,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-pwm@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+Hi YueHaibing,
 
-drivers/cpufreq/armada-37xx-cpufreq.c: In function 'armada37xx_cpufreq_avs_setup':
-drivers/cpufreq/armada-37xx-cpufreq.c:260:28: warning:
- variable 'freq' set but not used [-Wunused-but-set-variable]
+On Fri, May 31, 2019 at 11:49 PM YueHaibing <yuehaibing@huawei.com> wrote:
+>
+>         mutex_lock(&pca->lock);
+> -       pwm = &pca->chip.pwms[offset];
+>         mutex_unlock(&pca->lock);
 
-It's never used since introduction in commit 1c3528232f4b ("cpufreq:
-armada-37xx: Add AVS support")
+Thanks for noticing this issue. However it should be fixed differently.
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/cpufreq/armada-37xx-cpufreq.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+This was introduced by Uwe's clean-up patch:
+commit e926b12c611c2095c79 ("pwm: Clear chip_data in pwm_put()")
 
-diff --git a/drivers/cpufreq/armada-37xx-cpufreq.c b/drivers/cpufreq/armada-37xx-cpufreq.c
-index 0df16eb1eb3c..aa0f06dec959 100644
---- a/drivers/cpufreq/armada-37xx-cpufreq.c
-+++ b/drivers/cpufreq/armada-37xx-cpufreq.c
-@@ -257,7 +257,7 @@ static void __init armada37xx_cpufreq_avs_configure(struct regmap *base,
- static void __init armada37xx_cpufreq_avs_setup(struct regmap *base,
- 						struct armada_37xx_dvfs *dvfs)
- {
--	unsigned int avs_val = 0, freq;
-+	unsigned int avs_val = 0;
- 	int load_level = 0;
- 
- 	if (base == NULL)
-@@ -275,8 +275,6 @@ static void __init armada37xx_cpufreq_avs_setup(struct regmap *base,
- 
- 
- 	for (load_level = 1; load_level < LOAD_LEVEL_NR; load_level++) {
--		freq = dvfs->cpu_freq_max / dvfs->divider[load_level];
--
- 		avs_val = dvfs->avs[load_level];
- 		regmap_update_bits(base, ARMADA_37XX_AVS_VSET(load_level-1),
- 		    ARMADA_37XX_AVS_VDD_MASK << ARMADA_37XX_AVS_HIGH_VDD_LIMIT |
+But Uwe did not realize that in this case, the pwm chip_data is used as a
+synchronization mechanism between pwm and gpio. Moving the chip_data
+clear out of the mutex breaks this mechanism.
 
+I think the following would restore the mechanism:
 
+>         mutex_lock(&pca->lock);
+>        pwm = &pca->chip.pwms[offset];
+> +     pwm_set_chip_data(pwm, NULL);
+>         mutex_unlock(&pca->lock);
 
+This would of course clear the pwm chip_data twice, once in the driver and
+once in the core, but that's not a problem.
+
+I'd like to hear Mika Westerberg's opinion, because he introduced this
+synchronization mechanism back in 2016.
+
+[Adding Mika]
+
+Sven

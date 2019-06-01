@@ -2,34 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C48331A02
-	for <lists+kernel-janitors@lfdr.de>; Sat,  1 Jun 2019 09:14:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7041631A18
+	for <lists+kernel-janitors@lfdr.de>; Sat,  1 Jun 2019 09:35:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726089AbfFAHOC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 1 Jun 2019 03:14:02 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:35468 "EHLO huawei.com"
+        id S1726109AbfFAHfg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 1 Jun 2019 03:35:36 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:17644 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726013AbfFAHOC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 1 Jun 2019 03:14:02 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 92328B4C434BBCF60B04;
-        Sat,  1 Jun 2019 15:13:59 +0800 (CST)
+        id S1726013AbfFAHff (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 1 Jun 2019 03:35:35 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 245A96B0BBF58C89DE03;
+        Sat,  1 Jun 2019 15:35:32 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.439.0; Sat, 1 Jun 2019 15:13:53 +0800
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.439.0; Sat, 1 Jun 2019 15:35:22 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     <harry.wentland@amd.com>, <sunpeng.li@amd.com>,
-        <alexander.deucher@amd.com>, <christian.koenig@amd.com>,
-        <David1.Zhou@amd.com>, <airlied@linux.ie>, <daniel@ffwll.ch>,
-        <hanghong.ma@amd.com>, <Jun.Lei@amd.com>, <Wenjing.Liu@amd.com>,
-        <Krunoslav.Kovac@amd.com>, <nicholas.kazlauskas@amd.com>,
-        <David.Francis@amd.com>, <Bhawanpreet.Lakha@amd.com>
+To:     Jason Cooper <jason@lakedaemon.net>, Andrew Lunn <andrew@lunn.ch>,
+        "Gregory Clement" <gregory.clement@bootlin.com>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Viresh Kumar <viresh.kumar@linaro.org>
 CC:     YueHaibing <yuehaibing@huawei.com>,
-        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] drm/amd/display: Use kmemdup in dc_copy_stream()
-Date:   Sat, 1 Jun 2019 07:22:08 +0000
-Message-ID: <20190601072208.193673-1-yuehaibing@huawei.com>
+        <linux-arm-kernel@lists.infradead.org>, <linux-pm@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] cpufreq: armada-37xx: Remove set but not used variable 'freq'
+Date:   Sat, 1 Jun 2019 07:43:38 +0000
+Message-ID: <20190601074338.64187-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -41,33 +40,42 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Use kmemdup rather than duplicating its implementation.
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-Detected by coccinelle.
+drivers/cpufreq/armada-37xx-cpufreq.c: In function 'armada37xx_cpufreq_avs_setup':
+drivers/cpufreq/armada-37xx-cpufreq.c:260:28: warning:
+ variable 'freq' set but not used [-Wunused-but-set-variable]
+
+It's never used since introduction in commit 1c3528232f4b ("cpufreq:
+armada-37xx: Add AVS support")
 
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_stream.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/cpufreq/armada-37xx-cpufreq.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-index a002e690814f..b166c732b532 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-@@ -167,12 +167,11 @@ struct dc_stream_state *dc_copy_stream(const struct dc_stream_state *stream)
+diff --git a/drivers/cpufreq/armada-37xx-cpufreq.c b/drivers/cpufreq/armada-37xx-cpufreq.c
+index 0df16eb1eb3c..aa0f06dec959 100644
+--- a/drivers/cpufreq/armada-37xx-cpufreq.c
++++ b/drivers/cpufreq/armada-37xx-cpufreq.c
+@@ -257,7 +257,7 @@ static void __init armada37xx_cpufreq_avs_configure(struct regmap *base,
+ static void __init armada37xx_cpufreq_avs_setup(struct regmap *base,
+ 						struct armada_37xx_dvfs *dvfs)
  {
- 	struct dc_stream_state *new_stream;
+-	unsigned int avs_val = 0, freq;
++	unsigned int avs_val = 0;
+ 	int load_level = 0;
  
--	new_stream = kzalloc(sizeof(struct dc_stream_state), GFP_KERNEL);
-+	new_stream = kmemdup(stream, sizeof(struct dc_stream_state),
-+			     GFP_KERNEL);
- 	if (!new_stream)
- 		return NULL;
+ 	if (base == NULL)
+@@ -275,8 +275,6 @@ static void __init armada37xx_cpufreq_avs_setup(struct regmap *base,
  
--	memcpy(new_stream, stream, sizeof(struct dc_stream_state));
+ 
+ 	for (load_level = 1; load_level < LOAD_LEVEL_NR; load_level++) {
+-		freq = dvfs->cpu_freq_max / dvfs->divider[load_level];
 -
- 	if (new_stream->sink)
- 		dc_sink_retain(new_stream->sink);
+ 		avs_val = dvfs->avs[load_level];
+ 		regmap_update_bits(base, ARMADA_37XX_AVS_VSET(load_level-1),
+ 		    ARMADA_37XX_AVS_VDD_MASK << ARMADA_37XX_AVS_HIGH_VDD_LIMIT |
 
 
 

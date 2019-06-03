@@ -2,116 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DE8B32E03
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Jun 2019 12:51:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 347C632ED0
+	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Jun 2019 13:40:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727524AbfFCKvW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Jun 2019 06:51:22 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:42982 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727255AbfFCKvW (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Jun 2019 06:51:22 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x53AmuCS163383;
-        Mon, 3 Jun 2019 10:51:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=Gu0o0x2fagVzjtrF48ON8xTqqLz95bguenIm3DqiX/I=;
- b=4Uvuk/qB/oEB4hTs8/cHJh9Gr/kYFed7PoUSTY088uzZ4r4LkBxAYvpMrToI7XmJ1maA
- fkpngaf9PidlKm75nVL9wK0c0fVjTlrOkV082MwxJMLxdxA4g+Afa0B+suSUtiQTx7ve
- TN8v4C7Qf54Fqa+n7gBtWpHeCjwSWvnY3XMvHizag1QSGeTMW+AfyJJgFhJMDqCreiDP
- RldBki0tV6iLiFaiTQeEZ7Iia8hdtzQsfk3c39Ilfj0IDIKzZjnIqHRL2CoTFBWvLhVl
- BYY3GFfOytxXHFtPm5hq7Ggftf+1DDCTW+wJ5iVcVgKSCXNOf8Yv7v+5X33iEu6a1srv sA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 2suj0q61hf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 03 Jun 2019 10:51:10 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x53AoDWL089637;
-        Mon, 3 Jun 2019 10:51:10 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 2svnn86wj8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 03 Jun 2019 10:51:10 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x53Ap9kf015060;
-        Mon, 3 Jun 2019 10:51:09 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 03 Jun 2019 03:51:08 -0700
-Date:   Mon, 3 Jun 2019 13:51:01 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Eduardo Valentin <edubezval@gmail.com>
-Cc:     "Shenhar, Talel" <talel@amazon.com>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        linux-pm@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] thermal: mmio: remove some dead code
-Message-ID: <20190603105101.GH31203@kadam>
-References: <20190515093420.GC3409@mwanda>
- <87257cd4-a7c8-3531-1033-84a6f79e6588@amazon.com>
- <20190603020901.GA7918@localhost.localdomain>
+        id S1728460AbfFCLkd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Jun 2019 07:40:33 -0400
+Received: from mga11.intel.com ([192.55.52.93]:57686 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728216AbfFCLkd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 3 Jun 2019 07:40:33 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Jun 2019 04:40:32 -0700
+X-ExtLoop1: 1
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
+  by fmsmga001.fm.intel.com with SMTP; 03 Jun 2019 04:40:29 -0700
+Received: by lahna (sSMTP sendmail emulation); Mon, 03 Jun 2019 14:40:29 +0300
+Date:   Mon, 3 Jun 2019 14:40:29 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Sven Van Asbroeck <thesven73@gmail.com>
+Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-pwm@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH -next] pwm: pca9685: Remove set but not used variable
+ 'pwm'
+Message-ID: <20190603114029.GC2781@lahna.fi.intel.com>
+References: <20190601035709.85379-1-yuehaibing@huawei.com>
+ <CAGngYiXZM0QUdKE_zDK763J9iDuiKSbmFeTVA1PJ_4WvjntjQQ@mail.gmail.com>
+ <20190601160459.baedo5pp5hsrltzs@pengutronix.de>
+ <CAGngYiUfGGF+PwaT4SE2ZJkrCidc7-QWeuRsPTDwrLL1onm88w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20190603020901.GA7918@localhost.localdomain>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9276 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=943
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906030080
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9276 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=989 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906030080
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAGngYiUfGGF+PwaT4SE2ZJkrCidc7-QWeuRsPTDwrLL1onm88w@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Jun 02, 2019 at 07:09:03PM -0700, Eduardo Valentin wrote:
-> hey Dan, Talel,
+On Sun, Jun 02, 2019 at 10:18:15AM -0400, Sven Van Asbroeck wrote:
+> On Sat, Jun 1, 2019 at 12:05 PM Uwe Kleine-König
+> <u.kleine-koenig@pengutronix.de> wrote:
+> >
+> > I didn't look into the driver to try to understand that, but the
+> > definitely needs a comment to explain for the next person to think they
+> > can do a cleanup here.
 > 
-> On Mon, May 20, 2019 at 05:26:51PM +0300, Shenhar, Talel wrote:
-> > 
-> > On 5/15/2019 12:34 PM, Dan Carpenter wrote:
-> > >The platform_get_resource() function doesn't return error pointers, it
-> > >returns NULL.  The way this is normally done, is that we pass the NULL
-> > >resource to devm_ioremap_resource() and then check for errors from that.
-> > >See the comment in front of devm_ioremap_resource() for more details.
-> > >
-> > >Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > Acked-by: Talel Shenhar <talel@amazon.com>
-> 
-> Cool. I will be collecting this. The only change I will do while
-> applying this is that the subject will look like this:
-> "thermal: thermal_mmio: remove some dead code"
-> 
-> Just to match the file / driver name.
-> 
+> Certainly.
 
-I feel like it's duplicative to have "thermal" twice, but whatever.
-What I normally do is I copy-and-paste what other people use because the
-prefered format varies from subsystem to subsystem.  Here the only
-previous patch was:
+I agree.
 
-71aa3693493d thermal: Introduce Amazon's Annapurna Labs Thermal Driver
+> But if we do restore the old behaviour, there may still be problems.
+> I'm unsure if the old synchronization was working correctly.
+> See the example at the end of this email.
 
-This format was obviously even worse...
+I think you are right. pca9685_pwm_request() should take the mutex as
+long as it is requesting PWM.
 
-I'm often the first person to send a patch for new drivers.  It used to
-be common for people to not use a correct patch prefix for the patch
-which adds a driver.  But what happened was people got annoyed with the
-prefixes I chose.  And I was like, "Nah.  Forget about it.  I got here
-first and I claim this land for my ownself.  Be grateful I didn't choose
-a snide or rude patch prefix because that's my authority as a prefix
-chooser."
+> An intuitive way forward would be to use a simple bitfield in
+> struct pca9685 to track if a specific pwm is in use by either
+> pwm or gpio. Protected by a mutex.
 
-regards,
-dan carpenter
+A flag would probably be easier to understand than the magic we have
+now. Or then wrap it inside function with an explanation comment:
 
+static inline void pca9685_pwm_set_as_gpio(struct pwm_device *pwm)
+{
+	/*
+	 * We use ->chip_data to convoy the fact that the PWM channel is
+	 * being used as GPIO instead of PWM.
+	 */
+	pwm_set_chip_data(pwm, (void *)1)
+}
+
+static inline void pca9685_pwm_set_as_pwm(struct pwm_device *pwm)
+{
+	pwm_set_chip_data(pwm, NULL);
+}

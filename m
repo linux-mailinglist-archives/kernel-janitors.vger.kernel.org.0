@@ -2,98 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A554432A84
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Jun 2019 10:12:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 504BA32CA5
+	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Jun 2019 11:20:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726292AbfFCIMM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Jun 2019 04:12:12 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:38148 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725975AbfFCIMJ (ORCPT
+        id S1727653AbfFCJUM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Jun 2019 05:20:12 -0400
+Received: from mx07-00178001.pphosted.com ([62.209.51.94]:56047 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726555AbfFCJUL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Jun 2019 04:12:09 -0400
-Received: by mail-wm1-f67.google.com with SMTP id t5so9974430wmh.3
-        for <kernel-janitors@vger.kernel.org>; Mon, 03 Jun 2019 01:12:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=rA1VCD3GAb0PD3btTSc5UgdukJM3iIv+UYfmDc9ijRY=;
-        b=HGDr+SaPaEwwAm5phsdsWmtpxmne/TyhXv5ImfuOj5Gdkuffhte9CgCwbYvRoDlMGW
-         cZe1B3eJ6guyNqvjTTos4JKJ0TZtV7wTXJdtoL28/uBddgf9sTiCHJSdgOpLl8/VQKl5
-         6eS5cwBV47ZjOAXI3mPTXUF9k67RJEO44bMyXgZ0gq/lakJg9LeGdKiY0v2OHO2wrial
-         nW6bjAV1pfhovdKC8wax7NwTLOArUb4g664DhmxNdX1OCjpYA8pU/UCUPGPtzEZa2g/G
-         IPVzQy/MrRWfbHKXecWu7c0/BNRP8WBhgTUYJOPMmyAcJSMWFhN3DAsuYiiRfBgD8GBs
-         O7yA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=rA1VCD3GAb0PD3btTSc5UgdukJM3iIv+UYfmDc9ijRY=;
-        b=CHn6SRikIlJl9XWpAhkh9DNpHfoiCQ/JjXFDl0kdmW59DIR9aQYUGJwWxnfYgU0htv
-         lVumilPFOzMAlmEQwEMYqd7fegUlF7V3np8yFJ+rsyDJuVGZ7HeK9C2iW0WLJ7/UGuI6
-         Uwf93RE3l/lY9bmcqvlOTAzaNNYwzHKuh9MDuO5qJ15ijxDHpJ1YczTB/I3MWirU7TtD
-         X6iHz5VBIVU6KhPNPmuXYIO0omApxGT+QE7k+KK5gn9wkkS2mdbBrKA4dPnb9w/CsSSU
-         mH9CryI3fkAFn5etltKX2C9caR5MOKXGRq7vC6dtZwntOlRtmW2lxzJ6BzUQl237MsZI
-         1/aw==
-X-Gm-Message-State: APjAAAWnU1Prc/WZmfykisZ9C9oNCebhi40mQ54QT9wnMAwl3lMS6L3V
-        9Mhb8LIQ+u5icqbZdvJJ4w+pHg==
-X-Google-Smtp-Source: APXvYqzs9kYOpuv0Oqi4vkNcyrdkKxl7+hada0n0FgsvyjwLdnHbT2Pjc30QWl9yRlT4LRH3YpsV6Q==
-X-Received: by 2002:a1c:e356:: with SMTP id a83mr1365844wmh.38.1559549526778;
-        Mon, 03 Jun 2019 01:12:06 -0700 (PDT)
-Received: from dell ([2.27.167.43])
-        by smtp.gmail.com with ESMTPSA id x83sm12809175wmb.42.2019.06.03.01.12.06
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 03 Jun 2019 01:12:06 -0700 (PDT)
-Date:   Mon, 3 Jun 2019 09:12:04 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Amelie Delaunay <amelie.delaunay@st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+        Mon, 3 Jun 2019 05:20:11 -0400
+Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x539G8qF016966;
+        Mon, 3 Jun 2019 11:20:03 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type : content-id
+ : content-transfer-encoding : mime-version; s=STMicroelectronics;
+ bh=KP1E2smY61q6p4hXM1Poa06ylj50nuS1wWa3VqF16Hw=;
+ b=HFaqQm0fM+7F/PSlDShv3fAXd4tCEhioUJFUpktHYtv5ej4P2yund40IoGpbUy3RoFb7
+ y0KYACDxLfOLieIn71YtUCyn3sg1J+h0P6BoP3KWybqkqDw6789aMJoyimNIyvCB5A6j
+ cGgA1yvkQeL3kDgm8jljxHwkrMvpDMjBKH34jqNl/MKvcfF9efDOPUixbGVrf22WLZpD
+ kdmPChZA45thqjZeUYsc6jP6rbJSEURQwiEmpV10l+ZifMbj+VGp4dSP4kBuHRjlMv1f
+ 3D6eEGaXbd6UugL8HuNQXoNLkh5oRWtpJdHV0ZnHtwcNhu7TTRYy5rhF4rb4nQetXSjj Kg== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2sunmc13fk-1
+        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Mon, 03 Jun 2019 11:20:03 +0200
+Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 939683F;
+        Mon,  3 Jun 2019 09:20:02 +0000 (GMT)
+Received: from Webmail-eu.st.com (sfhdag3node3.st.com [10.75.127.9])
+        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 3B8BC2619;
+        Mon,  3 Jun 2019 09:20:02 +0000 (GMT)
+Received: from SFHDAG3NODE2.st.com (10.75.127.8) by SFHDAG3NODE3.st.com
+ (10.75.127.9) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Mon, 3 Jun
+ 2019 11:20:02 +0200
+Received: from SFHDAG3NODE2.st.com ([fe80::b82f:1ce:8854:5b96]) by
+ SFHDAG3NODE2.st.com ([fe80::b82f:1ce:8854:5b96%20]) with mapi id
+ 15.00.1347.000; Mon, 3 Jun 2019 11:20:01 +0200
+From:   Amelie DELAUNAY <amelie.delaunay@st.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Lee Jones <lee.jones@linaro.org>
+CC:     Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre TORGUE <alexandre.torgue@st.com>,
+        "linux-stm32@st-md-mailman.stormreply.com" 
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
 Subject: Re: [PATCH] mfd: stmfx: Uninitialized variable in stmfx_irq_handler()
-Message-ID: <20190603081204.GG4797@dell>
+Thread-Topic: [PATCH] mfd: stmfx: Uninitialized variable in
+ stmfx_irq_handler()
+Thread-Index: AQHVCwEO/u3xED8wwkiZua0lI4uaJqaJo4GA
+Date:   Mon, 3 Jun 2019 09:20:01 +0000
+Message-ID: <ccefbd0b-3397-a26e-95e7-059fcced9154@st.com>
 References: <20190515093141.GA3409@mwanda>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 In-Reply-To: <20190515093141.GA3409@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.75.127.49]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <DC5391FCB7987D46B2273D74DD2C441A@st.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-03_07:,,
+ signatures=0
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 15 May 2019, Dan Carpenter wrote:
-
-> The problem is that on 64bit systems then we don't clear the higher
-> bits of the "pending" variable.  So when we do:
-> 
-> 	ack = pending & ~BIT(STMFX_REG_IRQ_SRC_EN_GPIO);
-> 	if (ack) {
-> 
-> the if (ack) condition relies on uninitialized data.  The fix it that
-> I've changed "pending" from an unsigned long to a u32.  I changed "n" as
-> well, because that's a number in the 0-10 range and it fits easily
-> inside an int.  We do need to add a cast to "pending" when we use it in
-> the for_each_set_bit() loop, but that doesn't cause a proble, it's
-> fine.
-> 
-> Fixes: 06252ade9156 ("mfd: Add ST Multi-Function eXpander (STMFX) core driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/mfd/stmfx.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
-
-Could do with an author's Ack here.
-
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+SGkgRGFuLA0KDQpUaGFua3MgZm9yIHlvdXIgcGF0Y2guIE9uZSBtaW5vciBjb21tZW50Og0KDQpP
+biA1LzE1LzE5IDExOjMxIEFNLCBEYW4gQ2FycGVudGVyIHdyb3RlOg0KPiBUaGUgcHJvYmxlbSBp
+cyB0aGF0IG9uIDY0Yml0IHN5c3RlbXMgdGhlbiB3ZSBkb24ndCBjbGVhciB0aGUgaGlnaGVyDQo+
+IGJpdHMgb2YgdGhlICJwZW5kaW5nIiB2YXJpYWJsZS4gIFNvIHdoZW4gd2UgZG86DQo+IA0KPiAJ
+YWNrID0gcGVuZGluZyAmIH5CSVQoU1RNRlhfUkVHX0lSUV9TUkNfRU5fR1BJTyk7DQo+IAlpZiAo
+YWNrKSB7DQo+IA0KPiB0aGUgaWYgKGFjaykgY29uZGl0aW9uIHJlbGllcyBvbiB1bmluaXRpYWxp
+emVkIGRhdGEuICBUaGUgZml4IGl0IHRoYXQNCj4gSSd2ZSBjaGFuZ2VkICJwZW5kaW5nIiBmcm9t
+IGFuIHVuc2lnbmVkIGxvbmcgdG8gYSB1MzIuICBJIGNoYW5nZWQgIm4iIGFzDQo+IHdlbGwsIGJl
+Y2F1c2UgdGhhdCdzIGEgbnVtYmVyIGluIHRoZSAwLTEwIHJhbmdlIGFuZCBpdCBmaXRzIGVhc2ls
+eQ0KPiBpbnNpZGUgYW4gaW50LiAgV2UgZG8gbmVlZCB0byBhZGQgYSBjYXN0IHRvICJwZW5kaW5n
+IiB3aGVuIHdlIHVzZSBpdCBpbg0KPiB0aGUgZm9yX2VhY2hfc2V0X2JpdCgpIGxvb3AsIGJ1dCB0
+aGF0IGRvZXNuJ3QgY2F1c2UgYSBwcm9ibGUsIGl0J3MNCj4gZmluZS4NCj4gDQo+IEZpeGVzOiAw
+NjI1MmFkZTkxNTYgKCJtZmQ6IEFkZCBTVCBNdWx0aS1GdW5jdGlvbiBlWHBhbmRlciAoU1RNRlgp
+IGNvcmUgZHJpdmVyIikNCj4gU2lnbmVkLW9mZi1ieTogRGFuIENhcnBlbnRlciA8ZGFuLmNhcnBl
+bnRlckBvcmFjbGUuY29tPg0KPiAtLS0NCj4gICBkcml2ZXJzL21mZC9zdG1meC5jIHwgOCArKysr
+LS0tLQ0KPiAgIDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDQgZGVsZXRpb25zKC0p
+DQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9tZmQvc3RtZnguYyBiL2RyaXZlcnMvbWZkL3N0
+bWZ4LmMNCj4gaW5kZXggZmU4ZWZiYTJkNDVmLi5mZWU3NWI1ZDA5OGUgMTAwNjQ0DQo+IC0tLSBh
+L2RyaXZlcnMvbWZkL3N0bWZ4LmMNCj4gKysrIGIvZHJpdmVycy9tZmQvc3RtZnguYw0KPiBAQCAt
+MjA0LDEyICsyMDQsMTIgQEAgc3RhdGljIHN0cnVjdCBpcnFfY2hpcCBzdG1meF9pcnFfY2hpcCA9
+IHsNCj4gICBzdGF0aWMgaXJxcmV0dXJuX3Qgc3RtZnhfaXJxX2hhbmRsZXIoaW50IGlycSwgdm9p
+ZCAqZGF0YSkNCj4gICB7DQo+ICAgCXN0cnVjdCBzdG1meCAqc3RtZnggPSBkYXRhOw0KPiAtCXVu
+c2lnbmVkIGxvbmcgbiwgcGVuZGluZzsNCj4gKwl1MzIgcGVuZGluZzsNCj4gICAJdTMyIGFjazsN
+Cj4gKwlpbnQgbjsNCj4gICAJaW50IHJldDsNCg0KQ291bGQgeW91IGdyb3VwOg0KDQp1MzIgcGVu
+ZGluZywgYWNrOw0KaW50IG4sIHJldDsNCg0KPiAgIA0KPiAtCXJldCA9IHJlZ21hcF9yZWFkKHN0
+bWZ4LT5tYXAsIFNUTUZYX1JFR19JUlFfUEVORElORywNCj4gLQkJCSAgKHUzMiAqKSZwZW5kaW5n
+KTsNCj4gKwlyZXQgPSByZWdtYXBfcmVhZChzdG1meC0+bWFwLCBTVE1GWF9SRUdfSVJRX1BFTkRJ
+TkcsICZwZW5kaW5nKTsNCj4gICAJaWYgKHJldCkNCj4gICAJCXJldHVybiBJUlFfTk9ORTsNCj4g
+ICANCj4gQEAgLTIyNCw3ICsyMjQsNyBAQCBzdGF0aWMgaXJxcmV0dXJuX3Qgc3RtZnhfaXJxX2hh
+bmRsZXIoaW50IGlycSwgdm9pZCAqZGF0YSkNCj4gICAJCQlyZXR1cm4gSVJRX05PTkU7DQo+ICAg
+CX0NCj4gICANCj4gLQlmb3JfZWFjaF9zZXRfYml0KG4sICZwZW5kaW5nLCBTVE1GWF9SRUdfSVJR
+X1NSQ19NQVgpDQo+ICsJZm9yX2VhY2hfc2V0X2JpdChuLCAodW5zaWduZWQgbG9uZyAqKSZwZW5k
+aW5nLCBTVE1GWF9SRUdfSVJRX1NSQ19NQVgpDQo+ICAgCQloYW5kbGVfbmVzdGVkX2lycShpcnFf
+ZmluZF9tYXBwaW5nKHN0bWZ4LT5pcnFfZG9tYWluLCBuKSk7DQo+ICAgDQo+ICAgCXJldHVybiBJ
+UlFfSEFORExFRDsNCj4gDQoNCkkndmUgdGVzdGVkIGl0IG9uIHN0bTMybXAxNTdjLWV2MSwgc28g
+eW91IGNhbiBhZGQgbXkNClRlc3RlZC1ieTogQW1lbGllIERlbGF1bmF5IDxhbWVsaWUuZGVsYXVu
+YXlAc3QuY29tPg0KDQpSZWdhcmRzLA0KQW1lbGll

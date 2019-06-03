@@ -2,89 +2,116 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CDA932CD7
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Jun 2019 11:27:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DE8B32E03
+	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Jun 2019 12:51:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727107AbfFCJ13 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Jun 2019 05:27:29 -0400
-Received: from smtp-fw-2101.amazon.com ([72.21.196.25]:6481 "EHLO
-        smtp-fw-2101.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726684AbfFCJ13 (ORCPT
+        id S1727524AbfFCKvW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Jun 2019 06:51:22 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:42982 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727255AbfFCKvW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Jun 2019 05:27:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1559554048; x=1591090048;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=tyftZePYeklME2yiiktsV1Ph2NihOusiCYamtIRSu5o=;
-  b=Hd1aHQ/D/eyQwmlhYJbxNfAXrFG7g3htilvzIRSKazgvSsv86MlNuClF
-   gMXWI98fi9kqspmDCjVCPp+SnGBjMfsSFqRU4l8VMHIrjlUpjEKAkRDCh
-   UXO+edcfdgsMHhZxvCZW3peI7dBbGB5v/IdBIna6H9ynY4rmhKHi64UNT
-   s=;
-X-IronPort-AV: E=Sophos;i="5.60,546,1549929600"; 
-   d="scan'208";a="735800863"
-Received: from iad6-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-2a-119b4f96.us-west-2.amazon.com) ([10.124.125.2])
-  by smtp-border-fw-out-2101.iad2.amazon.com with ESMTP; 03 Jun 2019 09:27:25 +0000
-Received: from EX13MTAUEA001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
-        by email-inbound-relay-2a-119b4f96.us-west-2.amazon.com (Postfix) with ESMTPS id 293E31A2386;
-        Mon,  3 Jun 2019 09:27:25 +0000 (UTC)
-Received: from EX13D01EUB001.ant.amazon.com (10.43.166.194) by
- EX13MTAUEA001.ant.amazon.com (10.43.61.243) with Microsoft SMTP Server (TLS)
- id 15.0.1367.3; Mon, 3 Jun 2019 09:27:24 +0000
-Received: from [10.95.66.110] (10.43.162.203) by EX13D01EUB001.ant.amazon.com
- (10.43.166.194) with Microsoft SMTP Server (TLS) id 15.0.1367.3; Mon, 3 Jun
- 2019 09:27:20 +0000
-Subject: Re: [PATCH -next] thermal: Fix platform_no_drv_owner.cocci warnings
-To:     YueHaibing <yuehaibing@huawei.com>,
+        Mon, 3 Jun 2019 06:51:22 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x53AmuCS163383;
+        Mon, 3 Jun 2019 10:51:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=Gu0o0x2fagVzjtrF48ON8xTqqLz95bguenIm3DqiX/I=;
+ b=4Uvuk/qB/oEB4hTs8/cHJh9Gr/kYFed7PoUSTY088uzZ4r4LkBxAYvpMrToI7XmJ1maA
+ fkpngaf9PidlKm75nVL9wK0c0fVjTlrOkV082MwxJMLxdxA4g+Afa0B+suSUtiQTx7ve
+ TN8v4C7Qf54Fqa+n7gBtWpHeCjwSWvnY3XMvHizag1QSGeTMW+AfyJJgFhJMDqCreiDP
+ RldBki0tV6iLiFaiTQeEZ7Iia8hdtzQsfk3c39Ilfj0IDIKzZjnIqHRL2CoTFBWvLhVl
+ BYY3GFfOytxXHFtPm5hq7Ggftf+1DDCTW+wJ5iVcVgKSCXNOf8Yv7v+5X33iEu6a1srv sA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2suj0q61hf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 03 Jun 2019 10:51:10 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x53AoDWL089637;
+        Mon, 3 Jun 2019 10:51:10 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 2svnn86wj8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 03 Jun 2019 10:51:10 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x53Ap9kf015060;
+        Mon, 3 Jun 2019 10:51:09 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 03 Jun 2019 03:51:08 -0700
+Date:   Mon, 3 Jun 2019 13:51:01 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Eduardo Valentin <edubezval@gmail.com>
+Cc:     "Shenhar, Talel" <talel@amazon.com>,
         Zhang Rui <rui.zhang@intel.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>
-CC:     <linux-pm@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-References: <20190601032338.47195-1-yuehaibing@huawei.com>
-From:   "Shenhar, Talel" <talel@amazon.com>
-Message-ID: <ff61b7d5-5134-7179-6f0d-79f3bb3bcdc1@amazon.com>
-Date:   Mon, 3 Jun 2019 12:27:15 +0300
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-pm@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] thermal: mmio: remove some dead code
+Message-ID: <20190603105101.GH31203@kadam>
+References: <20190515093420.GC3409@mwanda>
+ <87257cd4-a7c8-3531-1033-84a6f79e6588@amazon.com>
+ <20190603020901.GA7918@localhost.localdomain>
 MIME-Version: 1.0
-In-Reply-To: <20190601032338.47195-1-yuehaibing@huawei.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Originating-IP: [10.43.162.203]
-X-ClientProxiedBy: EX13D14UWC001.ant.amazon.com (10.43.162.5) To
- EX13D01EUB001.ant.amazon.com (10.43.166.194)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190603020901.GA7918@localhost.localdomain>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9276 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=943
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906030080
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9276 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=989 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906030080
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Thanks. This issue was already fixed by previous patch.
+On Sun, Jun 02, 2019 at 07:09:03PM -0700, Eduardo Valentin wrote:
+> hey Dan, Talel,
+> 
+> On Mon, May 20, 2019 at 05:26:51PM +0300, Shenhar, Talel wrote:
+> > 
+> > On 5/15/2019 12:34 PM, Dan Carpenter wrote:
+> > >The platform_get_resource() function doesn't return error pointers, it
+> > >returns NULL.  The way this is normally done, is that we pass the NULL
+> > >resource to devm_ioremap_resource() and then check for errors from that.
+> > >See the comment in front of devm_ioremap_resource() for more details.
+> > >
+> > >Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > Acked-by: Talel Shenhar <talel@amazon.com>
+> 
+> Cool. I will be collecting this. The only change I will do while
+> applying this is that the subject will look like this:
+> "thermal: thermal_mmio: remove some dead code"
+> 
+> Just to match the file / driver name.
+> 
 
-On 6/1/2019 6:23 AM, YueHaibing wrote:
-> Remove .owner field if calls are used which set it automatically
-> Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
->
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> ---
->   drivers/thermal/thermal_mmio.c | 1 -
->   1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/thermal/thermal_mmio.c b/drivers/thermal/thermal_mmio.c
-> index de3cceea23bc..1dce9f00d45c 100644
-> --- a/drivers/thermal/thermal_mmio.c
-> +++ b/drivers/thermal/thermal_mmio.c
-> @@ -117,7 +117,6 @@ static struct platform_driver thermal_mmio_driver = {
->   	.probe = thermal_mmio_probe,
->   	.driver = {
->   		.name = "thermal-mmio",
-> -		.owner = THIS_MODULE,
->   		.of_match_table = of_match_ptr(thermal_mmio_id_table),
->   	},
->   };
->
->
->
->
->
+I feel like it's duplicative to have "thermal" twice, but whatever.
+What I normally do is I copy-and-paste what other people use because the
+prefered format varies from subsystem to subsystem.  Here the only
+previous patch was:
+
+71aa3693493d thermal: Introduce Amazon's Annapurna Labs Thermal Driver
+
+This format was obviously even worse...
+
+I'm often the first person to send a patch for new drivers.  It used to
+be common for people to not use a correct patch prefix for the patch
+which adds a driver.  But what happened was people got annoyed with the
+prefixes I chose.  And I was like, "Nah.  Forget about it.  I got here
+first and I claim this land for my ownself.  Be grateful I didn't choose
+a snide or rude patch prefix because that's my authority as a prefix
+chooser."
+
+regards,
+dan carpenter
+

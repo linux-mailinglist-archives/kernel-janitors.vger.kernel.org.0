@@ -2,89 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 347C632ED0
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Jun 2019 13:40:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF39733135
+	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Jun 2019 15:37:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728460AbfFCLkd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Jun 2019 07:40:33 -0400
-Received: from mga11.intel.com ([192.55.52.93]:57686 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728216AbfFCLkd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Jun 2019 07:40:33 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Jun 2019 04:40:32 -0700
-X-ExtLoop1: 1
-Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
-  by fmsmga001.fm.intel.com with SMTP; 03 Jun 2019 04:40:29 -0700
-Received: by lahna (sSMTP sendmail emulation); Mon, 03 Jun 2019 14:40:29 +0300
-Date:   Mon, 3 Jun 2019 14:40:29 +0300
-From:   Mika Westerberg <mika.westerberg@linux.intel.com>
-To:     Sven Van Asbroeck <thesven73@gmail.com>
-Cc:     Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        linux-pwm@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH -next] pwm: pca9685: Remove set but not used variable
- 'pwm'
-Message-ID: <20190603114029.GC2781@lahna.fi.intel.com>
-References: <20190601035709.85379-1-yuehaibing@huawei.com>
- <CAGngYiXZM0QUdKE_zDK763J9iDuiKSbmFeTVA1PJ_4WvjntjQQ@mail.gmail.com>
- <20190601160459.baedo5pp5hsrltzs@pengutronix.de>
- <CAGngYiUfGGF+PwaT4SE2ZJkrCidc7-QWeuRsPTDwrLL1onm88w@mail.gmail.com>
+        id S1728760AbfFCNhB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Jun 2019 09:37:01 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:52862 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726635AbfFCNhB (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 3 Jun 2019 09:37:01 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hXn8w-0008OS-C3; Mon, 03 Jun 2019 13:36:54 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        netdev@vger.kernel.org, bpf@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] bpf: hbm: fix spelling mistake "notifcations" -> "notificiations"
+Date:   Mon,  3 Jun 2019 14:36:53 +0100
+Message-Id: <20190603133653.18185-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAGngYiUfGGF+PwaT4SE2ZJkrCidc7-QWeuRsPTDwrLL1onm88w@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Jun 02, 2019 at 10:18:15AM -0400, Sven Van Asbroeck wrote:
-> On Sat, Jun 1, 2019 at 12:05 PM Uwe Kleine-König
-> <u.kleine-koenig@pengutronix.de> wrote:
-> >
-> > I didn't look into the driver to try to understand that, but the
-> > definitely needs a comment to explain for the next person to think they
-> > can do a cleanup here.
-> 
-> Certainly.
+From: Colin Ian King <colin.king@canonical.com>
 
-I agree.
+There is a spelling mistake in the help information, fix this.
 
-> But if we do restore the old behaviour, there may still be problems.
-> I'm unsure if the old synchronization was working correctly.
-> See the example at the end of this email.
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ samples/bpf/hbm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I think you are right. pca9685_pwm_request() should take the mutex as
-long as it is requesting PWM.
+diff --git a/samples/bpf/hbm.c b/samples/bpf/hbm.c
+index 480b7ad6a1f2..bdfce592207a 100644
+--- a/samples/bpf/hbm.c
++++ b/samples/bpf/hbm.c
+@@ -411,7 +411,7 @@ static void Usage(void)
+ 	       "    -l         also limit flows using loopback\n"
+ 	       "    -n <#>     to create cgroup \"/hbm#\" and attach prog\n"
+ 	       "               Default is /hbm1\n"
+-	       "    --no_cn    disable CN notifcations\n"
++	       "    --no_cn    disable CN notifications\n"
+ 	       "    -r <rate>  Rate in Mbps\n"
+ 	       "    -s         Update HBM stats\n"
+ 	       "    -t <time>  Exit after specified seconds (default is 0)\n"
+-- 
+2.20.1
 
-> An intuitive way forward would be to use a simple bitfield in
-> struct pca9685 to track if a specific pwm is in use by either
-> pwm or gpio. Protected by a mutex.
-
-A flag would probably be easier to understand than the magic we have
-now. Or then wrap it inside function with an explanation comment:
-
-static inline void pca9685_pwm_set_as_gpio(struct pwm_device *pwm)
-{
-	/*
-	 * We use ->chip_data to convoy the fact that the PWM channel is
-	 * being used as GPIO instead of PWM.
-	 */
-	pwm_set_chip_data(pwm, (void *)1)
-}
-
-static inline void pca9685_pwm_set_as_pwm(struct pwm_device *pwm)
-{
-	pwm_set_chip_data(pwm, NULL);
-}

@@ -2,66 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B15E331FC
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Jun 2019 16:21:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8AF33331D
+	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Jun 2019 17:08:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728569AbfFCOVK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Jun 2019 10:21:10 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:54005 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727429AbfFCOVJ (ORCPT
+        id S1729112AbfFCPIT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Jun 2019 11:08:19 -0400
+Received: from mail-oi1-f182.google.com ([209.85.167.182]:37617 "EHLO
+        mail-oi1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729011AbfFCPIS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Jun 2019 10:21:09 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hXnpe-0002aE-GG; Mon, 03 Jun 2019 14:21:02 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jyri Sarha <jsarha@ti.com>, Andrzej Hajda <a.hajda@samsung.com>,
-        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/bridge: sii902x: fix comparision of u32 with less than zero
-Date:   Mon,  3 Jun 2019 15:21:02 +0100
-Message-Id: <20190603142102.27191-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Mon, 3 Jun 2019 11:08:18 -0400
+Received: by mail-oi1-f182.google.com with SMTP id i4so12688557oih.4;
+        Mon, 03 Jun 2019 08:08:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=2TpWLC/3pjegvr7+ZY607fBn8ns10+mMnCutLvJGdDc=;
+        b=BxKx13QGT/u12HpIJlheCSwymOrc6/3N741u0oXueQXTvXYPQk9FniPmJw02/PpwGP
+         HPlkOXw5/oIVOgGgf4NZ75BgpVofdv/b1uUMVePU+MCoUiiYrFulNO6X7NULofrMRhv4
+         rT9fzp5o2y2+BrHfLmo+EScZx89Yy5yrdcZ0U1nYfy52apl1I40mHD152CJHfUEAFA5c
+         8zTdL7W/cmeYe/TLb5RO6XgskUpDYVOvPLbRtIkIXG6lKP7vdkGVgXZ4W/sOaGXxOMWF
+         yZRPuW5R8utLHSiDQBiGPrpJNwgsQoC1ZKUkvrOBEPw+RYxETO4GevcJzD4Ah1v7nbjj
+         eRpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2TpWLC/3pjegvr7+ZY607fBn8ns10+mMnCutLvJGdDc=;
+        b=hX9o3nNcS1Z5NfZsuAphVwRNYmv/dL0/+Cr8lGv4HQqopNTfxnZbyMqyDsc91Rw+OA
+         b2g621j6I7oDC3Cgu20rVZFkKnPX/tuzmnYIrhZ0bt4LTdweM05CEwfE6s00/QXVOKHC
+         wZiJejuRVPwvjBTcGu/PL63RZOxKa5XKN7ZeFju2FJelaczkKb+7GuhaAQYGesK2Co1v
+         0vmlj+51jwtURTaLO27BP1GPvvTxUKGXC5s3vkBKjmggzYB5OV5rog4PYdnGHUVYpgbj
+         g1+KUxx+oa27qRMDegkahWXME5bWLAL5HyAEz8Z9OOgo63X46c80n6MM0GCTG8UXsJYu
+         LGng==
+X-Gm-Message-State: APjAAAWBP4NE4VAnwr/CIg9xJkh9p4eZ/MVn5tVi2Sj1MMJll1KJ1w8q
+        KLtXQvT8YxLwRl7TMxak/F+W2w4yv1gFLhfq6Ic=
+X-Google-Smtp-Source: APXvYqyN8niOOFjDc1/bu7+5/khKNtYwG2pVxy8zfSbxr3MBICAqPh21tPm0Vkra1Gsc84iWMeV0bfiWwSmfBMglGVE=
+X-Received: by 2002:aca:5416:: with SMTP id i22mr1334706oib.103.1559574497679;
+ Mon, 03 Jun 2019 08:08:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20190601035709.85379-1-yuehaibing@huawei.com> <CAGngYiXZM0QUdKE_zDK763J9iDuiKSbmFeTVA1PJ_4WvjntjQQ@mail.gmail.com>
+ <20190601160459.baedo5pp5hsrltzs@pengutronix.de> <CAGngYiUfGGF+PwaT4SE2ZJkrCidc7-QWeuRsPTDwrLL1onm88w@mail.gmail.com>
+ <20190603114029.GC2781@lahna.fi.intel.com>
+In-Reply-To: <20190603114029.GC2781@lahna.fi.intel.com>
+From:   Sven Van Asbroeck <thesven73@gmail.com>
+Date:   Mon, 3 Jun 2019 11:08:06 -0400
+Message-ID: <CAGngYiVDCCjo6VKt660Uz5mbEGOBOZpcUWeRHWx_L=TapZgv_w@mail.gmail.com>
+Subject: Re: [PATCH -next] pwm: pca9685: Remove set but not used variable 'pwm'
+To:     Mika Westerberg <mika.westerberg@linux.intel.com>
+Cc:     =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        linux-pwm@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Mon, Jun 3, 2019 at 7:40 AM Mika Westerberg
+<mika.westerberg@linux.intel.com> wrote:
+>
+> I think you are right. pca9685_pwm_request() should take the mutex as
+> long as it is requesting PWM.
 
-The less than check for the variable num_lanes is always going to be
-false because the variable is a u32.  Fix this by making num_lanes an
-int and also make loop index i an int too.
+Yes, but things get hairy because pca9685_pwm_request() will have to
+give up the mutex when it returns. I cannot see a way to keep holding
+this mutex while the in-use flag is set by the pwm core ?
 
-Addresses-Coverity: ("Unsigned compared against 0")
-Fixes: ff5781634c41 ("drm/bridge: sii902x: Implement HDMI audio support")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/bridge/sii902x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Alternatively, we could set (void *)1 pwm_data inside the pwm_request,
+wrapped inside the mutex.
+But then things get 'messy'.
 
-diff --git a/drivers/gpu/drm/bridge/sii902x.c b/drivers/gpu/drm/bridge/sii902x.c
-index d6f98d388ac2..21a947603c88 100644
---- a/drivers/gpu/drm/bridge/sii902x.c
-+++ b/drivers/gpu/drm/bridge/sii902x.c
-@@ -719,7 +719,7 @@ static int sii902x_audio_codec_init(struct sii902x *sii902x,
- 		.max_i2s_channels = 0,
- 	};
- 	u8 lanes[4];
--	u32 num_lanes, i;
-+	int num_lanes, i;
- 
- 	if (!of_property_read_bool(dev->of_node, "#sound-dai-cells")) {
- 		dev_dbg(dev, "%s: No \"#sound-dai-cells\", no audio\n",
--- 
-2.20.1
+> A flag would probably be easier to understand than the magic we have
+> now.
 
+I have the feeling that a flag (plus a mutex) would be the clearest and
+safest way forward. I'll post a patch soon, you guys tell me what you
+think.
+
+Unfortunately, I no longer have any test hardware. The project that
+required this chip is long dead.

@@ -2,74 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55B3D3460E
-	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Jun 2019 13:59:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4D1B34A60
+	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Jun 2019 16:28:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727398AbfFDL7T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 4 Jun 2019 07:59:19 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:53130 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727358AbfFDL7T (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 4 Jun 2019 07:59:19 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 961DA3001834;
-        Tue,  4 Jun 2019 11:59:10 +0000 (UTC)
-Received: from carbon (ovpn-200-32.brq.redhat.com [10.40.200.32])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 33EA42B6FE;
-        Tue,  4 Jun 2019 11:58:58 +0000 (UTC)
-Date:   Tue, 4 Jun 2019 13:58:57 +0200
-From:   Jesper Dangaard Brouer <brouer@redhat.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <jakub.kicinski@netronome.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
-        Magnus Karlsson <magnus.karlsson@intel.com>,
-        netdev@vger.kernel.org, xdp-newbies@vger.kernel.org,
-        bpf@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, brouer@redhat.com
-Subject: Re: [PATCH][next][V2] bpf: remove redundant assignment to err
-Message-ID: <20190604135857.3f0e6cdc@carbon>
-In-Reply-To: <20190604082146.2049-1-colin.king@canonical.com>
-References: <20190604082146.2049-1-colin.king@canonical.com>
+        id S1727569AbfFDO2J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 4 Jun 2019 10:28:09 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:54860 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727169AbfFDO2I (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 4 Jun 2019 10:28:08 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hYAPh-0007mb-2k; Tue, 04 Jun 2019 14:27:45 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jens Axboe <axboe@kernel.dk>, Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] blktrace: remove redundant assignment to ret
+Date:   Tue,  4 Jun 2019 15:27:44 +0100
+Message-Id: <20190604142744.15330-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.40]); Tue, 04 Jun 2019 11:59:18 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue,  4 Jun 2019 09:21:46 +0100
-Colin King <colin.king@canonical.com> wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable err is assigned with the value -EINVAL that is never
-> read and it is re-assigned a new value later on.  The assignment is
-> redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> 
-> ---
-> 
-> V2: reorder variables as recommended by Jakub Kicinski to keep in
->     the networking code style.
+Variable ret is being assigned a value that is never read, hence
+the assignment is redundant and can be removed.
 
-Thank you for following the networking coding style.
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ kernel/trace/blktrace.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-Acked-by: Jesper Dangaard Brouer <brouer@redhat.com>
-
+diff --git a/kernel/trace/blktrace.c b/kernel/trace/blktrace.c
+index 2d6e93ab0478..ae7c63d6782c 100644
+--- a/kernel/trace/blktrace.c
++++ b/kernel/trace/blktrace.c
+@@ -507,8 +507,6 @@ static int do_blk_trace_setup(struct request_queue *q, char *name, dev_t dev,
+ 	if (!bt->msg_data)
+ 		goto err;
+ 
+-	ret = -ENOENT;
+-
+ 	dir = debugfs_lookup(buts->name, blk_debugfs_root);
+ 	if (!dir)
+ 		bt->dir = dir = debugfs_create_dir(buts->name, blk_debugfs_root);
 -- 
-Best regards,
-  Jesper Dangaard Brouer
-  MSc.CS, Principal Kernel Engineer at Red Hat
-  LinkedIn: http://www.linkedin.com/in/brouer
+2.20.1
+

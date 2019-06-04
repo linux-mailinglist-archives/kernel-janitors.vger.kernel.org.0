@@ -2,94 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F75934C81
-	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Jun 2019 17:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2577E34CC9
+	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Jun 2019 18:02:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728123AbfFDPnb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 4 Jun 2019 11:43:31 -0400
-Received: from mail-pg1-f176.google.com ([209.85.215.176]:33805 "EHLO
-        mail-pg1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728063AbfFDPnb (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 4 Jun 2019 11:43:31 -0400
-Received: by mail-pg1-f176.google.com with SMTP id h2so7346141pgg.1
-        for <kernel-janitors@vger.kernel.org>; Tue, 04 Jun 2019 08:43:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=1tqQUYkCiTPuRzyCy9UBEdirWqMAznB0ETrGx/j7ot8=;
-        b=M998QStZ8hrJ2FjhCVVSwN4KLJOgz73IXrSf06GwSHt2Kcyb8QwopbYLocRJJn8Qna
-         9aoKrKIr+IW0SGQkkLodklP545PgTzJxSr+KqJok3jhl9FZyPtLFpnVr6oTSg/Iy1IFv
-         DCfmBZzmwGb70dSfOxZ04RZQfecnq1skXX2/fjkv/J1WTJQWZCTSGkmY9LtQJoGBvyD2
-         KB4YUr/Y3kg1wVLYNmcI9f16MnhS9TzjSFehLMAdTUsFM836NLGXci80US8XQ1yxMzbQ
-         tOeOd8a2kGtBHuMrCKEyQIIpNZ659MrOaooDKXkFMJgyeOgq1Nj6DxUSmWmY7LnW6aXi
-         q73Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=1tqQUYkCiTPuRzyCy9UBEdirWqMAznB0ETrGx/j7ot8=;
-        b=bXOmo61cgVMEPz6rvVjXcME0VFjfOvR4m7A1vblLD2Pbormko0OnR7N/AC11j00qWe
-         C9e2dzfkgrKKw3mWgDQFK/5LV3iEmM+JOQS7CYJGu4Q47H+g+6NPT+2fS2cEXCfFsauJ
-         YYH3iinSGCh+jBiPtDwwK8i2N3oUvdi8NQLKzg7yp+sDRsJvy+LlxZRQw1hbO5i/4ytO
-         LCVUEkrWvFPuCDWqbrZ7L9CiQXf/J3S2RIZ+YJjOUsBZVUcktRFAyWBNWi2AgaX+hECY
-         Lt4e8t3D4QUw5cfgOp6Wfc4exrGKm0QJomurBNFMxTiR8vuahirEseoRVxXgAq2vlMwK
-         D4Uw==
-X-Gm-Message-State: APjAAAXieRslGiV7CMgCuz4JD41llDA2izGTqoxsKMyFxdulLyJX9e0h
-        WXBb74Vpbw3kFIEco7yS9dpxLg==
-X-Google-Smtp-Source: APXvYqw+0N0zrwtySyXMlKkP0zfzYI5m7MA0xh3RMk9nK5rSOHW7riQreacg0ndGgXI3TCzaBMFfRA==
-X-Received: by 2002:a62:63c6:: with SMTP id x189mr26994829pfb.31.1559663011107;
-        Tue, 04 Jun 2019 08:43:31 -0700 (PDT)
-Received: from [192.168.1.158] ([65.144.74.34])
-        by smtp.gmail.com with ESMTPSA id r64sm25606402pfr.58.2019.06.04.08.43.29
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 04 Jun 2019 08:43:30 -0700 (PDT)
-Subject: Re: [PATCH][next] blktrace: remove redundant assignment to ret
-To:     Colin King <colin.king@canonical.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190604142744.15330-1-colin.king@canonical.com>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <f834f32d-ab6e-c429-1a3e-13512583ee08@kernel.dk>
-Date:   Tue, 4 Jun 2019 09:43:28 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1728253AbfFDQCB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 4 Jun 2019 12:02:01 -0400
+Received: from mga06.intel.com ([134.134.136.31]:4025 "EHLO mga06.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727422AbfFDQCA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 4 Jun 2019 12:02:00 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Jun 2019 09:02:00 -0700
+X-ExtLoop1: 1
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.145])
+  by orsmga004.jf.intel.com with ESMTP; 04 Jun 2019 09:01:57 -0700
+Received: from andy by smile with local (Exim 4.92)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1hYBsr-0000jd-Fb; Tue, 04 Jun 2019 19:01:57 +0300
+Date:   Tue, 4 Jun 2019 19:01:57 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Sven Van Asbroeck <thesven73@gmail.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-pwm@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH -next] pwm: pca9685: Remove set but not used variable
+ 'pwm'
+Message-ID: <20190604160157.GL9224@smile.fi.intel.com>
+References: <20190601035709.85379-1-yuehaibing@huawei.com>
+ <CAGngYiXZM0QUdKE_zDK763J9iDuiKSbmFeTVA1PJ_4WvjntjQQ@mail.gmail.com>
+ <20190601160459.baedo5pp5hsrltzs@pengutronix.de>
+ <CAGngYiUfGGF+PwaT4SE2ZJkrCidc7-QWeuRsPTDwrLL1onm88w@mail.gmail.com>
+ <20190603114029.GC2781@lahna.fi.intel.com>
+ <CAGngYiVDCCjo6VKt660Uz5mbEGOBOZpcUWeRHWx_L=TapZgv_w@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190604142744.15330-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGngYiVDCCjo6VKt660Uz5mbEGOBOZpcUWeRHWx_L=TapZgv_w@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 6/4/19 8:27 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Variable ret is being assigned a value that is never read, hence
-> the assignment is redundant and can be removed.
+On Mon, Jun 03, 2019 at 11:08:06AM -0400, Sven Van Asbroeck wrote:
+> On Mon, Jun 3, 2019 at 7:40 AM Mika Westerberg
+> <mika.westerberg@linux.intel.com> wrote:
 
-This doesn't look correct to me, here's the full code:
+> Unfortunately, I no longer have any test hardware. The project that
+> required this chip is long dead.
 
-	ret = -ENOENT;
-
-	dir = debugfs_lookup(buts->name, blk_debugfs_root);
-	if (!dir)
-		bt->dir = dir = debugfs_create_dir(buts->name, blk_debugfs_root);
-	if (!dir)
-		goto err;
-	[...]
-err:
-	[...]
-	return ret;
-
-The main issue here, to me, looks like we're not dealing with ERR_PTR
-returns from debugfs_create_dir(), just checking for NULL.
+Anyone in possession of Intel Galileo Gen 2 can test this.
 
 -- 
-Jens Axboe
+With Best Regards,
+Andy Shevchenko
+
 

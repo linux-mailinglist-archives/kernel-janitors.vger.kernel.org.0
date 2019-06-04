@@ -2,65 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 848B634B14
-	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Jun 2019 16:57:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2085434B74
+	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Jun 2019 17:04:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727873AbfFDO5P (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 4 Jun 2019 10:57:15 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:55746 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727848AbfFDO5P (ORCPT
+        id S1728003AbfFDPER (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 4 Jun 2019 11:04:17 -0400
+Received: from www62.your-server.de ([213.133.104.62]:55992 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727920AbfFDPER (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 4 Jun 2019 10:57:15 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hYAqJ-0001XK-SM; Tue, 04 Jun 2019 14:55:15 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Hans Verkuil <hverkuil@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org
+        Tue, 4 Jun 2019 11:04:17 -0400
+Received: from [78.46.172.2] (helo=sslproxy05.your-server.de)
+        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1hYAyz-0007QG-Sc; Tue, 04 Jun 2019 17:04:13 +0200
+Received: from [178.197.249.21] (helo=linux.home)
+        by sslproxy05.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1hYAyz-000J7F-Lb; Tue, 04 Jun 2019 17:04:13 +0200
+Subject: Re: [PATCH][next] bpf: hbm: fix spelling mistake "notifcations" ->
+ "notificiations"
+To:     Colin King <colin.king@canonical.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        netdev@vger.kernel.org, bpf@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] media: vivid: fix incorrect assignment operation when setting video mode
-Date:   Tue,  4 Jun 2019 15:55:15 +0100
-Message-Id: <20190604145515.20669-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+References: <20190603133653.18185-1-colin.king@canonical.com>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <aa66f68c-81c2-d2c1-8b95-a7673dc1f89f@iogearbox.net>
+Date:   Tue, 4 Jun 2019 17:04:12 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190603133653.18185-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.100.3/25470/Tue Jun  4 10:01:16 2019)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 06/03/2019 03:36 PM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a spelling mistake in the help information, fix this.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-The assigment of FB_VMODE_NONINTERLACE to var->vmode should be a
-bit-wise or of FB_VMODE_NONINTERLACE instead of an assignment,
-otherwise the previous clearing of the FB_VMODE_MASK bits of
-var->vmode makes no sense and is redundant.
-
-Addresses-Coverity: ("Unused value")
-Fixes: ad4e02d5081d ("[media] vivid: add a simple framebuffer device for overlay testing")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/media/platform/vivid/vivid-osd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/media/platform/vivid/vivid-osd.c b/drivers/media/platform/vivid/vivid-osd.c
-index 1a89593b0c86..f2e789bdf4a6 100644
---- a/drivers/media/platform/vivid/vivid-osd.c
-+++ b/drivers/media/platform/vivid/vivid-osd.c
-@@ -155,7 +155,7 @@ static int _vivid_fb_check_var(struct fb_var_screeninfo *var, struct vivid_dev *
- 	var->nonstd = 0;
- 
- 	var->vmode &= ~FB_VMODE_MASK;
--	var->vmode = FB_VMODE_NONINTERLACED;
-+	var->vmode |= FB_VMODE_NONINTERLACED;
- 
- 	/* Dummy values */
- 	var->hsync_len = 24;
--- 
-2.20.1
-
+Applied, thanks!

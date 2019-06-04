@@ -2,64 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 342DE34B7F
-	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Jun 2019 17:04:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F75934C81
+	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Jun 2019 17:43:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727858AbfFDPEr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 4 Jun 2019 11:04:47 -0400
-Received: from www62.your-server.de ([213.133.104.62]:56112 "EHLO
-        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727771AbfFDPEr (ORCPT
+        id S1728123AbfFDPnb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 4 Jun 2019 11:43:31 -0400
+Received: from mail-pg1-f176.google.com ([209.85.215.176]:33805 "EHLO
+        mail-pg1-f176.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728063AbfFDPnb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 4 Jun 2019 11:04:47 -0400
-Received: from [78.46.172.2] (helo=sslproxy05.your-server.de)
-        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1hYAzO-0007Rt-AO; Tue, 04 Jun 2019 17:04:38 +0200
-Received: from [178.197.249.21] (helo=linux.home)
-        by sslproxy05.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1hYAzO-000MVF-2f; Tue, 04 Jun 2019 17:04:38 +0200
-Subject: Re: [PATCH][next][V2] bpf: remove redundant assignment to err
+        Tue, 4 Jun 2019 11:43:31 -0400
+Received: by mail-pg1-f176.google.com with SMTP id h2so7346141pgg.1
+        for <kernel-janitors@vger.kernel.org>; Tue, 04 Jun 2019 08:43:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=1tqQUYkCiTPuRzyCy9UBEdirWqMAznB0ETrGx/j7ot8=;
+        b=M998QStZ8hrJ2FjhCVVSwN4KLJOgz73IXrSf06GwSHt2Kcyb8QwopbYLocRJJn8Qna
+         9aoKrKIr+IW0SGQkkLodklP545PgTzJxSr+KqJok3jhl9FZyPtLFpnVr6oTSg/Iy1IFv
+         DCfmBZzmwGb70dSfOxZ04RZQfecnq1skXX2/fjkv/J1WTJQWZCTSGkmY9LtQJoGBvyD2
+         KB4YUr/Y3kg1wVLYNmcI9f16MnhS9TzjSFehLMAdTUsFM836NLGXci80US8XQ1yxMzbQ
+         tOeOd8a2kGtBHuMrCKEyQIIpNZ659MrOaooDKXkFMJgyeOgq1Nj6DxUSmWmY7LnW6aXi
+         q73Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=1tqQUYkCiTPuRzyCy9UBEdirWqMAznB0ETrGx/j7ot8=;
+        b=bXOmo61cgVMEPz6rvVjXcME0VFjfOvR4m7A1vblLD2Pbormko0OnR7N/AC11j00qWe
+         C9e2dzfkgrKKw3mWgDQFK/5LV3iEmM+JOQS7CYJGu4Q47H+g+6NPT+2fS2cEXCfFsauJ
+         YYH3iinSGCh+jBiPtDwwK8i2N3oUvdi8NQLKzg7yp+sDRsJvy+LlxZRQw1hbO5i/4ytO
+         LCVUEkrWvFPuCDWqbrZ7L9CiQXf/J3S2RIZ+YJjOUsBZVUcktRFAyWBNWi2AgaX+hECY
+         Lt4e8t3D4QUw5cfgOp6Wfc4exrGKm0QJomurBNFMxTiR8vuahirEseoRVxXgAq2vlMwK
+         D4Uw==
+X-Gm-Message-State: APjAAAXieRslGiV7CMgCuz4JD41llDA2izGTqoxsKMyFxdulLyJX9e0h
+        WXBb74Vpbw3kFIEco7yS9dpxLg==
+X-Google-Smtp-Source: APXvYqw+0N0zrwtySyXMlKkP0zfzYI5m7MA0xh3RMk9nK5rSOHW7riQreacg0ndGgXI3TCzaBMFfRA==
+X-Received: by 2002:a62:63c6:: with SMTP id x189mr26994829pfb.31.1559663011107;
+        Tue, 04 Jun 2019 08:43:31 -0700 (PDT)
+Received: from [192.168.1.158] ([65.144.74.34])
+        by smtp.gmail.com with ESMTPSA id r64sm25606402pfr.58.2019.06.04.08.43.29
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 04 Jun 2019 08:43:30 -0700 (PDT)
+Subject: Re: [PATCH][next] blktrace: remove redundant assignment to ret
 To:     Colin King <colin.king@canonical.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <jakub.kicinski@netronome.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
-        Magnus Karlsson <magnus.karlsson@intel.com>,
-        netdev@vger.kernel.org, xdp-newbies@vger.kernel.org,
-        bpf@vger.kernel.org
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>, linux-block@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190604082146.2049-1-colin.king@canonical.com>
-From:   Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <4e971d2b-1143-dd1a-6d2a-a2b75dec815b@iogearbox.net>
-Date:   Tue, 4 Jun 2019 17:04:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
+References: <20190604142744.15330-1-colin.king@canonical.com>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <f834f32d-ab6e-c429-1a3e-13512583ee08@kernel.dk>
+Date:   Tue, 4 Jun 2019 09:43:28 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-In-Reply-To: <20190604082146.2049-1-colin.king@canonical.com>
+In-Reply-To: <20190604142744.15330-1-colin.king@canonical.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.100.3/25470/Tue Jun  4 10:01:16 2019)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 06/04/2019 10:21 AM, Colin King wrote:
+On 6/4/19 8:27 AM, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> The variable err is assigned with the value -EINVAL that is never
-> read and it is re-assigned a new value later on.  The assignment is
-> redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Variable ret is being assigned a value that is never read, hence
+> the assignment is redundant and can be removed.
 
-Applied, thanks!
+This doesn't look correct to me, here's the full code:
+
+	ret = -ENOENT;
+
+	dir = debugfs_lookup(buts->name, blk_debugfs_root);
+	if (!dir)
+		bt->dir = dir = debugfs_create_dir(buts->name, blk_debugfs_root);
+	if (!dir)
+		goto err;
+	[...]
+err:
+	[...]
+	return ret;
+
+The main issue here, to me, looks like we're not dealing with ERR_PTR
+returns from debugfs_create_dir(), just checking for NULL.
+
+-- 
+Jens Axboe
+

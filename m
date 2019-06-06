@@ -2,123 +2,128 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D7537371BE
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Jun 2019 12:31:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DFE8371F7
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Jun 2019 12:45:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726631AbfFFKbT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Jun 2019 06:31:19 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:34168 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725784AbfFFKbT (ORCPT
+        id S1727089AbfFFKpQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Jun 2019 06:45:16 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:44654 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725784AbfFFKpQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Jun 2019 06:31:19 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x56AOfEE090289;
-        Thu, 6 Jun 2019 10:31:10 GMT
+        Thu, 6 Jun 2019 06:45:16 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x56AdBIo121846;
+        Thu, 6 Jun 2019 10:44:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : references : mime-version : content-type :
  in-reply-to; s=corp-2018-07-02;
- bh=chC2ESL5ETHD38DyfimbY9RtBdco74fFfMWbdfWI37s=;
- b=sPdb6bVX9Qok6LhENtfhx82iUfg9TJljlGnbqE8wGy5gxt8GL3y4zis/zphkxNW7ytSS
- 0z2P5b8rPGUO9RKFph0zdIQnjCXHnzJiqEfOrykw5BfTtZ7Im1n8/I1cJjiWak4KfFtI
- NTM9sGIjh7nOC9SC8gMTVzrNQ2nYW7vdxO0JqrX6ZA2VB8WgAxfghcSYAOw4BXlaScVG
- uQQ8gwS+XcUqunslovdAIwhut5tAYIuzFS9g9iOcIz/UX0+xX1VHS9nGvIS1mJIbXYPf
- QNKshbVFTnwlufNr3Fh5Bxm9RPCSva2zs+7dXYwnQF/XtXepcFf/X9/FBPMq850Ic2fc eg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2sugstqkkx-1
+ bh=rlTNItZ+vRzH1C5J9n3DIzZYXoQt0JFY3F5NEZCvtS8=;
+ b=oWdP9WZFGCHw1qxWUhunX2JomZIVQPQhXJ2qwjvgRnbfY6feGLqv4FAbh8QZTqO9x2Lv
+ GnyEYOdVNPpZYKVuC18tIW66GsQL6erL2HQrQj7ewltvSjVh93QhEEWh+D+N1Cxm/Qd5
+ okGibrOrohrLg+bAMOd7POOERxAJ818UIs8/sQ5GYRMgtcU98fkMWnDBfFKQQmYfP/dQ
+ AM+PnfG0Wzru10foVzr8RFpORFxWERTa8rIpEmYfwG+8Fad3tpZUYMme6iheDeaS3Gud
+ eJJOotZ8HZcAh8A7NNppd9IllLw/YGG2GNSN2eflBbPmoizY+KDlF7SfhC/NpoeFVOmk Tg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 2suevdqw7u-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 06 Jun 2019 10:31:10 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x56AV4M4026798;
-        Thu, 6 Jun 2019 10:31:10 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2swngmedha-1
+        Thu, 06 Jun 2019 10:44:42 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x56Aifb8006245;
+        Thu, 6 Jun 2019 10:44:42 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2swnhcmdqm-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 06 Jun 2019 10:31:09 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x56AV5up032634;
-        Thu, 6 Jun 2019 10:31:06 GMT
+        Thu, 06 Jun 2019 10:44:41 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x56AidWx000959;
+        Thu, 6 Jun 2019 10:44:39 GMT
 Received: from kadam (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 06 Jun 2019 03:31:05 -0700
-Date:   Thu, 6 Jun 2019 13:30:55 +0300
+        with ESMTP ; Thu, 06 Jun 2019 03:44:38 -0700
+Date:   Thu, 6 Jun 2019 13:44:28 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Harry Wentland <hwentlan@amd.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        "Koo, Anthony" <Anthony.Koo@amd.com>,
-        "Wentland, Harry" <Harry.Wentland@amd.com>,
-        "Li, Sun peng (Leo)" <Sunpeng.Li@amd.com>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH][next] drm/amd/display: remove redundant assignment to
- status
-Message-ID: <20190606103055.GJ31203@kadam>
-References: <20190530161219.2507-1-colin.king@canonical.com>
- <a190bcd5-cda8-84c6-093a-98438a605032@amd.com>
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     Jakub Kicinski <jakub.kicinski@netronome.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn.topel@intel.com>,
+        Magnus Karlsson <magnus.karlsson@intel.com>,
+        netdev@vger.kernel.org, xdp-newbies@vger.kernel.org,
+        bpf@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] bpf: remove redundant assignment to err
+Message-ID: <20190606104428.GK31203@kadam>
+References: <20190603170247.9951-1-colin.king@canonical.com>
+ <20190603102140.70fee157@cakuba.netronome.com>
+ <276525bd-dd79-052e-7663-9acc92621853@canonical.com>
+ <20190603104930.466a306b@cakuba.netronome.com>
+ <e351d18c-21cd-6617-2a59-31a48be54b7e@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a190bcd5-cda8-84c6-093a-98438a605032@amd.com>
+In-Reply-To: <e351d18c-21cd-6617-2a59-31a48be54b7e@canonical.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9279 signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
  phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906060076
+ engine=8.0.1-1810050000 definitions=main-1906060078
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9279 signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
  suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906060076
+ definitions=main-1906060078
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, May 31, 2019 at 08:19:03PM +0000, Harry Wentland wrote:
-> On 2019-05-30 12:12 p.m., Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
+On Mon, Jun 03, 2019 at 07:07:20PM +0100, Colin Ian King wrote:
+> On 03/06/2019 18:49, Jakub Kicinski wrote:
+> > On Mon, 3 Jun 2019 18:39:16 +0100, Colin Ian King wrote:
+> >> On 03/06/2019 18:21, Jakub Kicinski wrote:
+> >>> On Mon,  3 Jun 2019 18:02:47 +0100, Colin King wrote:  
+> >>>> From: Colin Ian King <colin.king@canonical.com>
+> >>>>
+> >>>> The variable err is assigned with the value -EINVAL that is never
+> >>>> read and it is re-assigned a new value later on.  The assignment is
+> >>>> redundant and can be removed.
+> >>>>
+> >>>> Addresses-Coverity: ("Unused value")
+> >>>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> >>>> ---
+> >>>>  kernel/bpf/devmap.c | 2 +-
+> >>>>  kernel/bpf/xskmap.c | 2 +-
+> >>>>  2 files changed, 2 insertions(+), 2 deletions(-)
+> >>>>
+> >>>> diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
+> >>>> index 5ae7cce5ef16..a76cc6412fc4 100644
+> >>>> --- a/kernel/bpf/devmap.c
+> >>>> +++ b/kernel/bpf/devmap.c
+> >>>> @@ -88,7 +88,7 @@ static u64 dev_map_bitmap_size(const union bpf_attr *attr)
+> >>>>  static struct bpf_map *dev_map_alloc(union bpf_attr *attr)
+> >>>>  {
+> >>>>  	struct bpf_dtab *dtab;
+> >>>> -	int err = -EINVAL;
+> >>>> +	int err;
+> >>>>  	u64 cost;  
+> >>>
+> >>> Perhaps keep the variables ordered longest to shortest?  
+> >>
+> >> Is that a required coding standard?
 > > 
-> > The variable status is initialized with a value that is never read
-> > and status is reassigned several statements later. This initialization
-> > is redundant and can be removed.
-> > 
-> > Addresses-Coverity: ("Unused value")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > ---
-> >  drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c b/drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c
-> > index 65d6caedbd82..cf6166a1be53 100644
-> > --- a/drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c
-> > +++ b/drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c
-> > @@ -2367,7 +2367,7 @@ static bool retrieve_link_cap(struct dc_link *link)
-> >  	union down_stream_port_count down_strm_port_count;
-> >  	union edp_configuration_cap edp_config_cap;
-> >  	union dp_downstream_port_present ds_port = { 0 };
-> > -	enum dc_status status = DC_ERROR_UNEXPECTED;
-> > +	enum dc_status status;
+> > For networking code, yes.  Just look around the files you're changing
+> > and see for yourself.
 > 
-> Not sure this improves the situation.
-> 
-> I'd prefer to have a default here in case someone changes the code below
-> and forgets to set the status.
+> Ah, informal coding standards. Great. Won't this end up with more diff
+> churn?
 
-The dead code confuses human readers, because people naturally assume it
-is not dead.
-
-GCC has a feature to warn about uninitialized variables and we're
-randomly initializing status to a bogus value to disable static
-analysis...
+Everyone knows that netdev uses reverse Christmas tree declarations...
 
 regards,
 dan carpenter

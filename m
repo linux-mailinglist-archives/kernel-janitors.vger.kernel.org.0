@@ -2,108 +2,139 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 369743768B
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Jun 2019 16:25:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1492737776
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Jun 2019 17:11:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728782AbfFFOY5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Jun 2019 10:24:57 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:33020 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727133AbfFFOY5 (ORCPT
+        id S1729099AbfFFPLV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Jun 2019 11:11:21 -0400
+Received: from mail-it1-f195.google.com ([209.85.166.195]:56215 "EHLO
+        mail-it1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727559AbfFFPLV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Jun 2019 10:24:57 -0400
-Received: by mail-pg1-f195.google.com with SMTP id h17so1476633pgv.0;
-        Thu, 06 Jun 2019 07:24:56 -0700 (PDT)
+        Thu, 6 Jun 2019 11:11:21 -0400
+Received: by mail-it1-f195.google.com with SMTP id i21so471773ita.5;
+        Thu, 06 Jun 2019 08:11:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=LQYAX0Ik20hq3rHNgG5ZoN3VJukEDz/h1qNn+gur0Yc=;
-        b=F0Urs0vjcvUPDMVH3ss6E1lfrrwePnXPxS8VxAk0ZhxTaiOp2GopcOz+9v2JPv28Iw
-         +50FxoFHRhkOJr+V3RH5kiVJfd12zbyz6nfYplWizlqtM9WRo9SICFXhlYSa7JwJDdhV
-         yS/wDnHjjQIVg0EqcEwJJ/L04dpSBEj2S44oYVJCZjS41P2Ui2h/sq+LxHz8vYotig+7
-         T1u26tOcmZu2XrzhQA7HSZESCustX+qkH9JVBclpOby1ERexv1I3xqHoCUe0DM//sP4F
-         xcrupJrBV0oNaihnsK5ieWESk2BJaiFBmSfxzRhczFMz1mfmiOY5GyzmxUmnWPbqSM9X
-         re1w==
+        h=from:to:cc:subject:date:message-id:in-reply-to;
+        bh=5SPGUHVlJick6kceIZSXGPsmfdklx5MdvZ8RjbvntVc=;
+        b=lrI7P5Rot6lc2fVWBsIJrP4Oypa0f7ksHYaGart8/4oMRbKAZ2QnW6yv6fWzYSzna+
+         bPqb54q+fRid7mgfDhoJBC3fqu2PrIYkGOAdWpZkfGxnGLYSDb8+5Zp09oi7+kmYEuH4
+         ZBsvk1iXBaM74qdc+uH4NmU3uI0DmXHNg47/AlznzNrrAj98WXRYGqsQDKKVedHK57Bm
+         0yaFXrgbbYzIEmwfXSKaYaDsPGYBo0GKs4tG7UwwnuqEd4XaeC9kbhM359vmo3kIiqK8
+         s8oBNuVJHpxUM302ThOTM0AIIe1qWd1wdNU0teQMdhiFsbDpDfxh5rWQTbbTeN3laSED
+         dmvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=LQYAX0Ik20hq3rHNgG5ZoN3VJukEDz/h1qNn+gur0Yc=;
-        b=TpDnqc7LHB/+VFYWYsFsDv5U+PDRRgod26Kv2jkuaEDN6naxSG733VNBQjjUqgiQcq
-         uBA5pzuIQKDkqKV37BkRxw7PXmXu9zjD+pLyZF7WQ0wPROIK4y/BZJ2rFe5Q6EvHNMVy
-         dpt3OeLTr3N9C2gxjGPdidiRuo9bHAWJI52SKwGpdTwXpklFO8ouCWz084hVbwLKU76k
-         wVfTRw0CvRs/L652LI2joh5nZ/9ig9d4N/xe9wDkj1nq4yNbZVSxq81f2JZrPv/wP91c
-         w9IEArT5uGezjkZCTEq5qu8AzSTYT0Uadfi67a+DSCNP2wbLWEKz+eL6dbB0iNnqeIVC
-         nE4w==
-X-Gm-Message-State: APjAAAVTSrPJulkMzDaAyKzTCL+Apcf+2DRZBkrjj5443/zodLJ9rQN1
-        JpJ3yUbYRHMCW25ljY/Fm1U=
-X-Google-Smtp-Source: APXvYqxNWKZP/TTBjt3l/KT4pko8KyN1r7pV04OfzznlgsWnlokhYtmWgnbnadbK+gXJWYrmQ5quAQ==
-X-Received: by 2002:a17:90a:290b:: with SMTP id g11mr161148pjd.122.1559831096095;
-        Thu, 06 Jun 2019 07:24:56 -0700 (PDT)
-Received: from localhost.localdomain ([2601:644:8201:32e0:7256:81ff:febd:926d])
-        by smtp.gmail.com with ESMTPSA id f11sm2884243pjg.1.2019.06.06.07.24.54
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to;
+        bh=5SPGUHVlJick6kceIZSXGPsmfdklx5MdvZ8RjbvntVc=;
+        b=aMt11uBmS2Fa/8BZnjb2xgnIo+7mZHUw1yyOtWf+Gh4CBMOKVhSkkjr8KQWfknlfP9
+         rSHsV7vbq8GPkzZZAFlaZHqTHcBsFcxMa9Sdlg8bVZ8/XOZ268be8J4+R5AbvWzG4I8c
+         9iXgEfeK0gg2KBw51R9eQ6fP0yM0/Y/cpkZRzIHol64zjhqMFjASAy/y1Ta2P+Eovg5T
+         OMdZLuDI3Ygrmnes9RfwDu1q/vq4xb3RDCq5Gltu/SXDl5rxt3oMqG1ftIyTciJOgwq3
+         Hkw6noWFDBqP8/s3b0j6VX1TFwv1Y2zXMA9Vm05e6dpc8MDuwsOPOr5gTCW+IDI4lD+/
+         z8aA==
+X-Gm-Message-State: APjAAAVl9BxTqHzmDlZCVDiXVYWDEUW6/hnbyDLb42f71QlW0uoKhDKZ
+        mWa/nR4TSRBj4wv31HDPGmg=
+X-Google-Smtp-Source: APXvYqwlXsCpqRur+5Jt8bSFc2RmTw8rvQOpzXBiESeYlHmvIFZOWZwtUO04WsLUlQcc9h9YymsDfQ==
+X-Received: by 2002:a24:fcc7:: with SMTP id b190mr478252ith.122.1559833880661;
+        Thu, 06 Jun 2019 08:11:20 -0700 (PDT)
+Received: from svens-asus.arcx.com ([184.94.50.30])
+        by smtp.gmail.com with ESMTPSA id b196sm1028238itb.30.2019.06.06.08.11.19
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 06 Jun 2019 07:24:55 -0700 (PDT)
-Date:   Thu, 6 Jun 2019 07:24:53 -0700
-From:   Eduardo Valentin <edubezval@gmail.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        David Brown <david.brown@linaro.org>,
-        Amit Kucheria <amit.kucheria@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] drivers: thermal: tsens: remove redundant u32
- comparison with less than zero
-Message-ID: <20190606142450.GA7846@localhost.localdomain>
-References: <20190531105708.15312-1-colin.king@canonical.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20190531105708.15312-1-colin.king@canonical.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+        Thu, 06 Jun 2019 08:11:20 -0700 (PDT)
+From:   Sven Van Asbroeck <thesven73@gmail.com>
+X-Google-Original-From: Sven Van Asbroeck <TheSven73@gmail.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc:     Mika Westerberg <mika.westerberg@linux.intel.com>,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-pwm@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH -next] pwm: pca9685: Remove set but not used variable 'pwm'
+Date:   Thu,  6 Jun 2019 11:11:11 -0400
+Message-Id: <20190606151111.14237-1-TheSven73@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <CAGngYiVDCCjo6VKt660Uz5mbEGOBOZpcUWeRHWx_L=TapZgv_w@mail.gmail.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-hey Colin,
+I was able to test the patch [1] exclusion mechanism without access to actual
+hardware - by giving it a dummy regmap. See patch below.
 
-On Fri, May 31, 2019 at 11:57:08AM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> The u32 variable hw_id is unsigned and cannot be less than zero so
-> the comparison with less than zero is always false and hence is redundant
-> and can be removed.
->=20
-> Addresses-Coverity: ("Unsigned compared against 0")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Test cases (all via sysfs):
+1. verify requested pwm cannot be requested as gpio
+2. verify requested gpio cannot be requested as pwm
+3. verify pwm "all LEDs" cannot be used if pwms/gpios in use
+4. verify pwms/gpios cannot be requested if pwm "all LEDs" in use
 
-Thanks for the patch but the commit that introduced this has been
-reverted. I pushed an update on my -next branch to silence this in the
-linux-next tree too.
+All test cases ok.
+ Obviously, I could not test multi-threaded correctness.
 
-> ---
->  drivers/thermal/qcom/tsens-common.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/thermal/qcom/tsens-common.c b/drivers/thermal/qcom/t=
-sens-common.c
-> index 928e8e81ba69..f4419f45025d 100644
-> --- a/drivers/thermal/qcom/tsens-common.c
-> +++ b/drivers/thermal/qcom/tsens-common.c
-> @@ -69,7 +69,7 @@ bool is_sensor_enabled(struct tsens_priv *priv, u32 hw_=
-id)
->  	u32 val;
->  	int ret;
-> =20
-> -	if ((hw_id > (priv->num_sensors - 1)) || (hw_id < 0))
-> +	if (hw_id > (priv->num_sensors - 1))
->  		return -EINVAL;
->  	ret =3D regmap_field_read(priv->rf[SENSOR_EN], &val);
->  	if (ret)
+[1] https://lkml.org/lkml/2019/6/4/1039
+
+---
+ drivers/pwm/pwm-pca9685.c | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pwm/pwm-pca9685.c b/drivers/pwm/pwm-pca9685.c
+index 259fd58812ae..c059da5f86f4 100644
+--- a/drivers/pwm/pwm-pca9685.c
++++ b/drivers/pwm/pwm-pca9685.c
+@@ -83,6 +83,7 @@ struct pca9685 {
+ 	struct regmap *regmap;
+ 	int duty_ns;
+ 	int period_ns;
++	u8 regs[PCA9685_NUMREGS];
+ #if IS_ENABLED(CONFIG_GPIOLIB)
+ 	struct mutex lock;
+ 	struct gpio_chip gpio;
+@@ -446,11 +447,31 @@ static const struct pwm_ops pca9685_pwm_ops = {
+ 	.owner = THIS_MODULE,
+ };
+ 
++static int read_reg_dummy(void *context, unsigned int reg,
++			unsigned int *val)
++{
++	struct pca9685 *pca = context;
++
++	*val = pca->regs[reg];
++	return 0;
++}
++
++static int write_reg_dummy(void *context, unsigned int reg,
++			 unsigned int val)
++{
++	struct pca9685 *pca = context;
++
++	pca->regs[reg] = val;
++	return 0;
++}
++
+ static const struct regmap_config pca9685_regmap_i2c_config = {
+ 	.reg_bits = 8,
+ 	.val_bits = 8,
+ 	.max_register = PCA9685_NUMREGS,
+ 	.cache_type = REGCACHE_NONE,
++	.reg_read = read_reg_dummy,
++	.reg_write = write_reg_dummy,
+ };
+ 
+ static int pca9685_pwm_probe(struct i2c_client *client,
+@@ -464,7 +485,8 @@ static int pca9685_pwm_probe(struct i2c_client *client,
+ 	if (!pca)
+ 		return -ENOMEM;
+ 
+-	pca->regmap = devm_regmap_init_i2c(client, &pca9685_regmap_i2c_config);
++	pca->regmap = devm_regmap_init(&client->dev, NULL, pca,
++					&pca9685_regmap_i2c_config);
+ 	if (IS_ERR(pca->regmap)) {
+ 		ret = PTR_ERR(pca->regmap);
+ 		dev_err(&client->dev, "Failed to initialize register map: %d\n",
+-- 
+2.17.1
+

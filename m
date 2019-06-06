@@ -2,65 +2,126 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 297053745B
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Jun 2019 14:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5FA13746D
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Jun 2019 14:42:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727545AbfFFMjC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Jun 2019 08:39:02 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:51352 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725782AbfFFMjC (ORCPT
+        id S1727512AbfFFMls (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Jun 2019 08:41:48 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:59916 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726870AbfFFMls (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Jun 2019 08:39:02 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hYrfU-0005oo-W8; Thu, 06 Jun 2019 12:38:57 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     "amy . shih" <amy.shih@advantech.com.tw>,
-        Jean Delvare <jdelvare@suse.com>,
-        Guenter Roeck <linux@roeck-us.net>, linux-hwmon@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] hwmon: nct7904: fix comparison of u8 variable ret with less than zero
-Date:   Thu,  6 Jun 2019 13:38:56 +0100
-Message-Id: <20190606123856.18531-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Thu, 6 Jun 2019 08:41:48 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x56CNvve189323;
+        Thu, 6 Jun 2019 12:41:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2018-07-02; bh=msmH1U56crPbNRzTsdy2al8tC5H9vw5+sq8L4C2RUK4=;
+ b=CJ6xVfHkWbX33y5VWh0/BWBGQNvT7JHh3QbV3oeluLGYSgqO/q9sVDPNf6V+EkjAOPN0
+ MccSfZKZWDrbq1OXVvhi53r+hWTL2lJZs81RBesSv2z8fK9Xt8cFQG/9BV7lUdkZdinf
+ CyOHysAUR6gOPsYhfCr4A+FIW/vzkl8zudBuNHrC5K0GBaZHCvq4C4CZPuOTtBDHaIEt
+ GvgWkFIkS5J9WUzp5rYGYAFDVAtN5zkvpc+FRNbNdHoluEtpyHw+DtdpsJvbBAdp6pWX
+ DIOw0yb5dNU4BmCAUdmhL3LgmRLvDi022zwnu7GI5/s02O1YhxU+baXesjMNT85pI5oE 1g== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2suj0qr2x0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 06 Jun 2019 12:41:37 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x56CeZxp165567;
+        Thu, 6 Jun 2019 12:41:36 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 2swnhaqv70-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 06 Jun 2019 12:41:36 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x56CfZP1023460;
+        Thu, 6 Jun 2019 12:41:35 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 06 Jun 2019 05:41:34 -0700
+Date:   Thu, 6 Jun 2019 15:41:27 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Lee Jones <lee.jones@linaro.org>,
+        Amelie DELAUNAY <amelie.delaunay@st.com>
+Cc:     Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH v2] mfd: stmfx: Uninitialized variable in stmfx_irq_handler()
+Message-ID: <20190606124127.GA17082@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ccefbd0b-3397-a26e-95e7-059fcced9154@st.com>
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9279 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906060090
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9279 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906060090
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+The problem is that on 64bit systems then we don't clear the higher
+bits of the "pending" variable.  So when we do:
 
-Currently u8 variable tmp is being checked for negative error returns
-however this will be false since tmp is unsigned. Fix this by making
-tmp an int.
+        ack = pending & ~BIT(STMFX_REG_IRQ_SRC_EN_GPIO);
+        if (ack) {
 
-Addresses-Coverity: ("Unsigned compared against 0")
-Fixes: af55ab0b0792 ("hwmon: (nct7904) Add extra sysfs support for fan, voltage and temperature.")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+the if (ack) condition relies on uninitialized data.  The fix it that
+I've changed "pending" from an unsigned long to a u32.  I changed "n" as
+well, because that's a number in the 0-10 range and it fits easily
+inside an int.  We do need to add a cast to "pending" when we use it in
+the for_each_set_bit() loop, but that doesn't cause a proble, it's
+fine.
+
+Fixes: 06252ade9156 ("mfd: Add ST Multi-Function eXpander (STMFX) core driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/hwmon/nct7904.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+v2: white space changes
 
-diff --git a/drivers/hwmon/nct7904.c b/drivers/hwmon/nct7904.c
-index 5fa69898674c..b63f51d0378e 100644
---- a/drivers/hwmon/nct7904.c
-+++ b/drivers/hwmon/nct7904.c
-@@ -567,8 +567,7 @@ static int nct7904_write_in(struct device *dev, u32 attr, int channel,
- 			    long val)
+ drivers/mfd/stmfx.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/mfd/stmfx.c b/drivers/mfd/stmfx.c
+index fe8efba2d45f..7c419c078688 100644
+--- a/drivers/mfd/stmfx.c
++++ b/drivers/mfd/stmfx.c
+@@ -204,12 +204,10 @@ static struct irq_chip stmfx_irq_chip = {
+ static irqreturn_t stmfx_irq_handler(int irq, void *data)
  {
- 	struct nct7904_data *data = dev_get_drvdata(dev);
--	int ret, index;
--	u8 tmp;
-+	int ret, index, tmp;
+ 	struct stmfx *stmfx = data;
+-	unsigned long n, pending;
+-	u32 ack;
+-	int ret;
++	u32 pending, ack;
++	int n, ret;
  
- 	index = nct7904_chan_to_index[channel];
+-	ret = regmap_read(stmfx->map, STMFX_REG_IRQ_PENDING,
+-			  (u32 *)&pending);
++	ret = regmap_read(stmfx->map, STMFX_REG_IRQ_PENDING, &pending);
+ 	if (ret)
+ 		return IRQ_NONE;
  
+@@ -224,7 +222,7 @@ static irqreturn_t stmfx_irq_handler(int irq, void *data)
+ 			return IRQ_NONE;
+ 	}
+ 
+-	for_each_set_bit(n, &pending, STMFX_REG_IRQ_SRC_MAX)
++	for_each_set_bit(n, (unsigned long *)&pending, STMFX_REG_IRQ_SRC_MAX)
+ 		handle_nested_irq(irq_find_mapping(stmfx->irq_domain, n));
+ 
+ 	return IRQ_HANDLED;
 -- 
 2.20.1
 

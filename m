@@ -2,61 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FE1B36EE9
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Jun 2019 10:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 974C336FB1
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Jun 2019 11:20:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727309AbfFFIks (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Jun 2019 04:40:48 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:46913 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725769AbfFFIks (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Jun 2019 04:40:48 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hYnwu-00080J-5v; Thu, 06 Jun 2019 08:40:40 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     "David S . Miller" <davem@davemloft.net>,
-        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
-        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
-        netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ipv6: fix spelling mistake: "wtih" -> "with"
-Date:   Thu,  6 Jun 2019 09:40:39 +0100
-Message-Id: <20190606084039.6265-1-colin.king@canonical.com>
+        id S1727702AbfFFJUB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Jun 2019 05:20:01 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:48042 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727540AbfFFJUB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 6 Jun 2019 05:20:01 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 8B9DE754B11790C956AC;
+        Thu,  6 Jun 2019 17:19:57 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 6 Jun 2019 17:19:46 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     JC Kuo <jckuo@nvidia.com>, Kishon Vijay Abraham I <kishon@ti.com>,
+        "Thierry Reding" <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-kernel@vger.kernel.org>,
+        <linux-tegra@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] phy: tegra: xusb: Remove set but not used variable 'priv'
+Date:   Thu, 6 Jun 2019 09:27:46 +0000
+Message-ID: <20190606092746.80310-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-There is a spelling mistake in a NL_SET_ERR_MSG message. Fix it.
+drivers/phy/tegra/xusb-tegra210.c: In function 'tegra210_hsic_phy_power_on':
+drivers/phy/tegra/xusb-tegra210.c:1236:31: warning:
+ variable 'priv' set but not used [-Wunused-but-set-variable]
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+It's never used, so can be removed
+
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- net/ipv6/route.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/tegra/xusb-tegra210.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index fbaa7e9e0d9c..641a31d42ef9 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -3342,7 +3342,7 @@ static struct fib6_info *ip6_route_info_create(struct fib6_config *cfg,
- 			goto out;
- 		}
- 		if (rt->fib6_src.plen) {
--			NL_SET_ERR_MSG(extack, "Nexthops can not be used wtih source routing");
-+			NL_SET_ERR_MSG(extack, "Nexthops can not be used with source routing");
- 			goto out;
- 		}
- 		rt->nh = nh;
--- 
-2.20.1
+diff --git a/drivers/phy/tegra/xusb-tegra210.c b/drivers/phy/tegra/xusb-tegra210.c
+index eb754baa8d71..4076b22c4087 100644
+--- a/drivers/phy/tegra/xusb-tegra210.c
++++ b/drivers/phy/tegra/xusb-tegra210.c
+@@ -1233,13 +1233,10 @@ static int tegra210_hsic_phy_power_on(struct phy *phy)
+ 	struct tegra_xusb_hsic_lane *hsic = to_hsic_lane(lane);
+ 	struct tegra_xusb_hsic_pad *pad = to_hsic_pad(lane->pad);
+ 	struct tegra_xusb_padctl *padctl = lane->pad->padctl;
+-	struct tegra210_xusb_padctl *priv;
+ 	unsigned int index = lane->index;
+ 	u32 value;
+ 	int err;
+ 
+-	priv = to_tegra210_xusb_padctl(padctl);
+-
+ 	err = regulator_enable(pad->supply);
+ 	if (err)
+ 		return err;
+
+
 

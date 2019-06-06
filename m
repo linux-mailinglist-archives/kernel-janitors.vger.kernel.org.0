@@ -2,114 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D8683749D
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Jun 2019 14:56:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54322374BE
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Jun 2019 15:02:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727316AbfFFM4r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Jun 2019 08:56:47 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:40127 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726157AbfFFM4r (ORCPT
+        id S1727388AbfFFNCL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Jun 2019 09:02:11 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:36112 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725782AbfFFNCL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Jun 2019 08:56:47 -0400
-Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x56CpgJ9024951;
-        Thu, 6 Jun 2019 14:56:39 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : references : in-reply-to : content-type : content-id
- : content-transfer-encoding : mime-version; s=STMicroelectronics;
- bh=3XRD9FfY9zRJABUqAPerjZxsdeAr2LTW6QMwjpkVYM8=;
- b=G2VI2HJGDpDpawQG1e5DIvMdp1QjJTU5g7y/gfYbtI9wMFVCB2aMQ6w53Kq7zEhk3dUm
- eXNBXb5YP15Fv/gUgwHdm/sRkgXyiMYkUTpc+tIWwkffrdxb8le8meIkJL1WXazwqoUl
- vwv/UvMETCV6PN8gABb3rdJp44+bPm3fixSQyPdmhA5VmAwRPlVtpVOjVZN5qbmm5qj4
- CuPQjcqp/6tV9T3IrlzH6B9Nq3b2UwYrM2Yz6pvZboAbK89YblR2iyHDodSSFnyqxOjb
- 7M2YKAURi+IflP2OGlNKDbGC4rViTEtc/4JfcLj8jCa3vAj9eOZPQKZUCuSf1CSk9+M2 pw== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2sxqxmubxf-1
-        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Thu, 06 Jun 2019 14:56:39 +0200
-Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 0430D38;
-        Thu,  6 Jun 2019 12:56:38 +0000 (GMT)
-Received: from Webmail-eu.st.com (sfhdag3node2.st.com [10.75.127.8])
-        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id D65D827D5;
-        Thu,  6 Jun 2019 12:56:38 +0000 (GMT)
-Received: from SFHDAG3NODE2.st.com (10.75.127.8) by SFHDAG3NODE2.st.com
- (10.75.127.8) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Thu, 6 Jun
- 2019 14:56:38 +0200
-Received: from SFHDAG3NODE2.st.com ([fe80::b82f:1ce:8854:5b96]) by
- SFHDAG3NODE2.st.com ([fe80::b82f:1ce:8854:5b96%20]) with mapi id
- 15.00.1347.000; Thu, 6 Jun 2019 14:56:38 +0200
-From:   Amelie DELAUNAY <amelie.delaunay@st.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Lee Jones <lee.jones@linaro.org>
-CC:     Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre TORGUE <alexandre.torgue@st.com>,
-        "linux-stm32@st-md-mailman.stormreply.com" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH v2] mfd: stmfx: Uninitialized variable in
- stmfx_irq_handler()
-Thread-Topic: [PATCH v2] mfd: stmfx: Uninitialized variable in
- stmfx_irq_handler()
-Thread-Index: AQHVHGU0uMlMYc9f1UugMwgEk54JpKaOdDoA
-Date:   Thu, 6 Jun 2019 12:56:38 +0000
-Message-ID: <b1374627-7af2-77cd-c7f2-40166fce5a04@st.com>
-References: <20190606124127.GA17082@mwanda>
-In-Reply-To: <20190606124127.GA17082@mwanda>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thu, 6 Jun 2019 09:02:11 -0400
+Received: by mail-pf1-f196.google.com with SMTP id u22so1481747pfm.3;
+        Thu, 06 Jun 2019 06:02:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=gJDaE/9aWNqi/p+iU5+nQDsd9sq5Dk3XWXtLMHSqFQU=;
+        b=qcXR66lDHA4Jn9Znzb4kxBbzrl/hUYKOZ38PU0qD4AHM4JCHLpGM5mDuuX4uJuVWgB
+         CFzkA+cASdMERV8pNxvSFa367SvHndvwso5X1GczAPYkf0QhAAcdOJW3S+FGBnv6tVv+
+         3wyOzfpgQCssVnCVgnQ9Q4I+AzOLxz40x7ySvRr3dbgmfM5xtK3fH1ZlwM1oF9zJQ7jL
+         7TCwKWa4CspP6kQffvpAlE9zuWekZrvrdzrKNBsa/WoLfy/+qblMbXlScmPRqhq7Hny8
+         3/W4QDFvuXQjRfkOltaEpsmVx5J27UnBNPfyRHbKX3Pp8sg2PHJWM1qnbJWlbACDgGX9
+         Rk+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=gJDaE/9aWNqi/p+iU5+nQDsd9sq5Dk3XWXtLMHSqFQU=;
+        b=J9H/KH+p8peIVgRWs8goPdLPFz67RMH19tsS+u92mKjwU1Hd+CQ1R58ythF4MDnhzb
+         YaxzyEyd5bFJYbtKZiSk2QJlSwgyN7ls47ZCWUDFc7nq2RWrUovO91JxIwLHQ9lzhh0I
+         CRCfYLLZGnm5YFQH7j5MIunU2Ah5ywuQ4bN/h40AITFQXnnqHIuXvKfKnwM8BaOdgNi6
+         PaxcRPeoXiqiAN6IwokvQ3QL6ChjVdkX8al0u21hhi/Rfx89WbGwXdFMe5NNVSPRciUj
+         JDc7IGTJH5ovFvCfGqfcL5km//pwnkysI332G7E+2ETu9LFyrH4/X31Cs6F2v1/P8p6l
+         O/Hg==
+X-Gm-Message-State: APjAAAUXHZpXL3s7e+azvIlmVUdMeUg3jRfldzmUkDqPz/Jb30DUTsWD
+        SPWvGlS6wQQhB4epPhvVVgRPwkrs
+X-Google-Smtp-Source: APXvYqzQki2Do+LimfG95UuAeEFtzpFWlZVN4/GwwE9XErPDZFtahI30tmHO71BzPRGMXH/B0HWTXA==
+X-Received: by 2002:a17:90a:5288:: with SMTP id w8mr8674490pjh.61.1559826130087;
+        Thu, 06 Jun 2019 06:02:10 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id ds13sm1779702pjb.5.2019.06.06.06.02.08
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 06 Jun 2019 06:02:08 -0700 (PDT)
+Subject: Re: [PATCH] hwmon: nct7904: fix error check on register read
+To:     Colin King <colin.king@canonical.com>,
+        "amy . shih" <amy.shih@advantech.com.tw>,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190606122707.16107-1-colin.king@canonical.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Message-ID: <52b996c1-a52e-8cd6-e570-53b873768bc4@roeck-us.net>
+Date:   Thu, 6 Jun 2019 06:02:07 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.0
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.75.127.50]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <29AF75230286B44FBCB97240115B5CF5@st.com>
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-06_10:,,
- signatures=0
+In-Reply-To: <20190606122707.16107-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-T24gNi82LzE5IDI6NDEgUE0sIERhbiBDYXJwZW50ZXIgd3JvdGU6DQo+IFRoZSBwcm9ibGVtIGlz
-IHRoYXQgb24gNjRiaXQgc3lzdGVtcyB0aGVuIHdlIGRvbid0IGNsZWFyIHRoZSBoaWdoZXINCj4g
-Yml0cyBvZiB0aGUgInBlbmRpbmciIHZhcmlhYmxlLiAgU28gd2hlbiB3ZSBkbzoNCj4gDQo+ICAg
-ICAgICAgIGFjayA9IHBlbmRpbmcgJiB+QklUKFNUTUZYX1JFR19JUlFfU1JDX0VOX0dQSU8pOw0K
-PiAgICAgICAgICBpZiAoYWNrKSB7DQo+IA0KPiB0aGUgaWYgKGFjaykgY29uZGl0aW9uIHJlbGll
-cyBvbiB1bmluaXRpYWxpemVkIGRhdGEuICBUaGUgZml4IGl0IHRoYXQNCj4gSSd2ZSBjaGFuZ2Vk
-ICJwZW5kaW5nIiBmcm9tIGFuIHVuc2lnbmVkIGxvbmcgdG8gYSB1MzIuICBJIGNoYW5nZWQgIm4i
-IGFzDQo+IHdlbGwsIGJlY2F1c2UgdGhhdCdzIGEgbnVtYmVyIGluIHRoZSAwLTEwIHJhbmdlIGFu
-ZCBpdCBmaXRzIGVhc2lseQ0KPiBpbnNpZGUgYW4gaW50LiAgV2UgZG8gbmVlZCB0byBhZGQgYSBj
-YXN0IHRvICJwZW5kaW5nIiB3aGVuIHdlIHVzZSBpdCBpbg0KPiB0aGUgZm9yX2VhY2hfc2V0X2Jp
-dCgpIGxvb3AsIGJ1dCB0aGF0IGRvZXNuJ3QgY2F1c2UgYSBwcm9ibGUsIGl0J3MNCj4gZmluZS4N
-Cj4gDQo+IEZpeGVzOiAwNjI1MmFkZTkxNTYgKCJtZmQ6IEFkZCBTVCBNdWx0aS1GdW5jdGlvbiBl
-WHBhbmRlciAoU1RNRlgpIGNvcmUgZHJpdmVyIikNCj4gU2lnbmVkLW9mZi1ieTogRGFuIENhcnBl
-bnRlciA8ZGFuLmNhcnBlbnRlckBvcmFjbGUuY29tPg0KDQpBY2tlZC1ieTogQW1lbGllIERlbGF1
-bmF5IDxhbWVsaWUuZGVsYXVuYXlAc3QuY29tPg0KDQo+IC0tLQ0KPiB2Mjogd2hpdGUgc3BhY2Ug
-Y2hhbmdlcw0KPiANCj4gICBkcml2ZXJzL21mZC9zdG1meC5jIHwgMTAgKysrKy0tLS0tLQ0KPiAg
-IDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pDQo+IA0KPiBk
-aWZmIC0tZ2l0IGEvZHJpdmVycy9tZmQvc3RtZnguYyBiL2RyaXZlcnMvbWZkL3N0bWZ4LmMNCj4g
-aW5kZXggZmU4ZWZiYTJkNDVmLi43YzQxOWMwNzg2ODggMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMv
-bWZkL3N0bWZ4LmMNCj4gKysrIGIvZHJpdmVycy9tZmQvc3RtZnguYw0KPiBAQCAtMjA0LDEyICsy
-MDQsMTAgQEAgc3RhdGljIHN0cnVjdCBpcnFfY2hpcCBzdG1meF9pcnFfY2hpcCA9IHsNCj4gICBz
-dGF0aWMgaXJxcmV0dXJuX3Qgc3RtZnhfaXJxX2hhbmRsZXIoaW50IGlycSwgdm9pZCAqZGF0YSkN
-Cj4gICB7DQo+ICAgCXN0cnVjdCBzdG1meCAqc3RtZnggPSBkYXRhOw0KPiAtCXVuc2lnbmVkIGxv
-bmcgbiwgcGVuZGluZzsNCj4gLQl1MzIgYWNrOw0KPiAtCWludCByZXQ7DQo+ICsJdTMyIHBlbmRp
-bmcsIGFjazsNCj4gKwlpbnQgbiwgcmV0Ow0KPiAgIA0KPiAtCXJldCA9IHJlZ21hcF9yZWFkKHN0
-bWZ4LT5tYXAsIFNUTUZYX1JFR19JUlFfUEVORElORywNCj4gLQkJCSAgKHUzMiAqKSZwZW5kaW5n
-KTsNCj4gKwlyZXQgPSByZWdtYXBfcmVhZChzdG1meC0+bWFwLCBTVE1GWF9SRUdfSVJRX1BFTkRJ
-TkcsICZwZW5kaW5nKTsNCj4gICAJaWYgKHJldCkNCj4gICAJCXJldHVybiBJUlFfTk9ORTsNCj4g
-ICANCj4gQEAgLTIyNCw3ICsyMjIsNyBAQCBzdGF0aWMgaXJxcmV0dXJuX3Qgc3RtZnhfaXJxX2hh
-bmRsZXIoaW50IGlycSwgdm9pZCAqZGF0YSkNCj4gICAJCQlyZXR1cm4gSVJRX05PTkU7DQo+ICAg
-CX0NCj4gICANCj4gLQlmb3JfZWFjaF9zZXRfYml0KG4sICZwZW5kaW5nLCBTVE1GWF9SRUdfSVJR
-X1NSQ19NQVgpDQo+ICsJZm9yX2VhY2hfc2V0X2JpdChuLCAodW5zaWduZWQgbG9uZyAqKSZwZW5k
-aW5nLCBTVE1GWF9SRUdfSVJRX1NSQ19NQVgpDQo+ICAgCQloYW5kbGVfbmVzdGVkX2lycShpcnFf
-ZmluZF9tYXBwaW5nKHN0bWZ4LT5pcnFfZG9tYWluLCBuKSk7DQo+ICAgDQo+ICAgCXJldHVybiBJ
-UlFfSEFORExFRDsNCj4g
+Hi Colin,
+
+On 6/6/19 5:27 AM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently the return from the call to nct7904_read is being masked
+> and so and negative error returns are being stripped off and the
+> error check is always false.  Fix this by checking on err first and
+> then masking the return value in ret.
+> 
+> Addresses-Coverity: ("Logically dead code")
+> Fixes: af55ab0b0792 ("hwmon: (nct7904) Add extra sysfs support for fan, voltage and temperature.")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
+Thanks a lot for the patch. The offending patch had several additional
+problems (shame on me for sloppy review), so I pulled it from the branch
+and asked the author to fix all problems and resubmit.
+
+Guenter
+
+> ---
+>   drivers/hwmon/nct7904.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/hwmon/nct7904.c b/drivers/hwmon/nct7904.c
+> index dd450dd29ac7..5fa69898674c 100644
+> --- a/drivers/hwmon/nct7904.c
+> +++ b/drivers/hwmon/nct7904.c
+> @@ -928,10 +928,10 @@ static int nct7904_probe(struct i2c_client *client,
+>   
+>   	/* Check DTS enable status */
+>   	if (data->enable_dts) {
+> -		ret = nct7904_read_reg(data, BANK_0, DTS_T_CTRL0_REG) & 0xF;
+> +		ret = nct7904_read_reg(data, BANK_0, DTS_T_CTRL0_REG);
+>   		if (ret < 0)
+>   			return ret;
+> -		data->has_dts = ret;
+> +		data->has_dts = ret & 0xF;
+>   		if (data->enable_dts & ENABLE_TSI) {
+>   			ret = nct7904_read_reg(data, BANK_0, DTS_T_CTRL1_REG);
+>   			if (ret < 0)
+> 
+

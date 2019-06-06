@@ -2,126 +2,114 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E5FA13746D
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Jun 2019 14:42:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D8683749D
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Jun 2019 14:56:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727512AbfFFMls (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Jun 2019 08:41:48 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:59916 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726870AbfFFMls (ORCPT
+        id S1727316AbfFFM4r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Jun 2019 08:56:47 -0400
+Received: from mx07-00178001.pphosted.com ([62.209.51.94]:40127 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726157AbfFFM4r (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Jun 2019 08:41:48 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x56CNvve189323;
-        Thu, 6 Jun 2019 12:41:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2018-07-02; bh=msmH1U56crPbNRzTsdy2al8tC5H9vw5+sq8L4C2RUK4=;
- b=CJ6xVfHkWbX33y5VWh0/BWBGQNvT7JHh3QbV3oeluLGYSgqO/q9sVDPNf6V+EkjAOPN0
- MccSfZKZWDrbq1OXVvhi53r+hWTL2lJZs81RBesSv2z8fK9Xt8cFQG/9BV7lUdkZdinf
- CyOHysAUR6gOPsYhfCr4A+FIW/vzkl8zudBuNHrC5K0GBaZHCvq4C4CZPuOTtBDHaIEt
- GvgWkFIkS5J9WUzp5rYGYAFDVAtN5zkvpc+FRNbNdHoluEtpyHw+DtdpsJvbBAdp6pWX
- DIOw0yb5dNU4BmCAUdmhL3LgmRLvDi022zwnu7GI5/s02O1YhxU+baXesjMNT85pI5oE 1g== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 2suj0qr2x0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 06 Jun 2019 12:41:37 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x56CeZxp165567;
-        Thu, 6 Jun 2019 12:41:36 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 2swnhaqv70-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 06 Jun 2019 12:41:36 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x56CfZP1023460;
-        Thu, 6 Jun 2019 12:41:35 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 06 Jun 2019 05:41:34 -0700
-Date:   Thu, 6 Jun 2019 15:41:27 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Lee Jones <lee.jones@linaro.org>,
-        Amelie DELAUNAY <amelie.delaunay@st.com>
-Cc:     Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] mfd: stmfx: Uninitialized variable in stmfx_irq_handler()
-Message-ID: <20190606124127.GA17082@mwanda>
+        Thu, 6 Jun 2019 08:56:47 -0400
+Received: from pps.filterd (m0046037.ppops.net [127.0.0.1])
+        by mx07-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x56CpgJ9024951;
+        Thu, 6 Jun 2019 14:56:39 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type : content-id
+ : content-transfer-encoding : mime-version; s=STMicroelectronics;
+ bh=3XRD9FfY9zRJABUqAPerjZxsdeAr2LTW6QMwjpkVYM8=;
+ b=G2VI2HJGDpDpawQG1e5DIvMdp1QjJTU5g7y/gfYbtI9wMFVCB2aMQ6w53Kq7zEhk3dUm
+ eXNBXb5YP15Fv/gUgwHdm/sRkgXyiMYkUTpc+tIWwkffrdxb8le8meIkJL1WXazwqoUl
+ vwv/UvMETCV6PN8gABb3rdJp44+bPm3fixSQyPdmhA5VmAwRPlVtpVOjVZN5qbmm5qj4
+ CuPQjcqp/6tV9T3IrlzH6B9Nq3b2UwYrM2Yz6pvZboAbK89YblR2iyHDodSSFnyqxOjb
+ 7M2YKAURi+IflP2OGlNKDbGC4rViTEtc/4JfcLj8jCa3vAj9eOZPQKZUCuSf1CSk9+M2 pw== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx07-00178001.pphosted.com with ESMTP id 2sxqxmubxf-1
+        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Thu, 06 Jun 2019 14:56:39 +0200
+Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 0430D38;
+        Thu,  6 Jun 2019 12:56:38 +0000 (GMT)
+Received: from Webmail-eu.st.com (sfhdag3node2.st.com [10.75.127.8])
+        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id D65D827D5;
+        Thu,  6 Jun 2019 12:56:38 +0000 (GMT)
+Received: from SFHDAG3NODE2.st.com (10.75.127.8) by SFHDAG3NODE2.st.com
+ (10.75.127.8) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Thu, 6 Jun
+ 2019 14:56:38 +0200
+Received: from SFHDAG3NODE2.st.com ([fe80::b82f:1ce:8854:5b96]) by
+ SFHDAG3NODE2.st.com ([fe80::b82f:1ce:8854:5b96%20]) with mapi id
+ 15.00.1347.000; Thu, 6 Jun 2019 14:56:38 +0200
+From:   Amelie DELAUNAY <amelie.delaunay@st.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Lee Jones <lee.jones@linaro.org>
+CC:     Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre TORGUE <alexandre.torgue@st.com>,
+        "linux-stm32@st-md-mailman.stormreply.com" 
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH v2] mfd: stmfx: Uninitialized variable in
+ stmfx_irq_handler()
+Thread-Topic: [PATCH v2] mfd: stmfx: Uninitialized variable in
+ stmfx_irq_handler()
+Thread-Index: AQHVHGU0uMlMYc9f1UugMwgEk54JpKaOdDoA
+Date:   Thu, 6 Jun 2019 12:56:38 +0000
+Message-ID: <b1374627-7af2-77cd-c7f2-40166fce5a04@st.com>
+References: <20190606124127.GA17082@mwanda>
+In-Reply-To: <20190606124127.GA17082@mwanda>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.75.127.50]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <29AF75230286B44FBCB97240115B5CF5@st.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ccefbd0b-3397-a26e-95e7-059fcced9154@st.com>
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9279 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906060090
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9279 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906060090
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-06_10:,,
+ signatures=0
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The problem is that on 64bit systems then we don't clear the higher
-bits of the "pending" variable.  So when we do:
-
-        ack = pending & ~BIT(STMFX_REG_IRQ_SRC_EN_GPIO);
-        if (ack) {
-
-the if (ack) condition relies on uninitialized data.  The fix it that
-I've changed "pending" from an unsigned long to a u32.  I changed "n" as
-well, because that's a number in the 0-10 range and it fits easily
-inside an int.  We do need to add a cast to "pending" when we use it in
-the for_each_set_bit() loop, but that doesn't cause a proble, it's
-fine.
-
-Fixes: 06252ade9156 ("mfd: Add ST Multi-Function eXpander (STMFX) core driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-v2: white space changes
-
- drivers/mfd/stmfx.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/mfd/stmfx.c b/drivers/mfd/stmfx.c
-index fe8efba2d45f..7c419c078688 100644
---- a/drivers/mfd/stmfx.c
-+++ b/drivers/mfd/stmfx.c
-@@ -204,12 +204,10 @@ static struct irq_chip stmfx_irq_chip = {
- static irqreturn_t stmfx_irq_handler(int irq, void *data)
- {
- 	struct stmfx *stmfx = data;
--	unsigned long n, pending;
--	u32 ack;
--	int ret;
-+	u32 pending, ack;
-+	int n, ret;
- 
--	ret = regmap_read(stmfx->map, STMFX_REG_IRQ_PENDING,
--			  (u32 *)&pending);
-+	ret = regmap_read(stmfx->map, STMFX_REG_IRQ_PENDING, &pending);
- 	if (ret)
- 		return IRQ_NONE;
- 
-@@ -224,7 +222,7 @@ static irqreturn_t stmfx_irq_handler(int irq, void *data)
- 			return IRQ_NONE;
- 	}
- 
--	for_each_set_bit(n, &pending, STMFX_REG_IRQ_SRC_MAX)
-+	for_each_set_bit(n, (unsigned long *)&pending, STMFX_REG_IRQ_SRC_MAX)
- 		handle_nested_irq(irq_find_mapping(stmfx->irq_domain, n));
- 
- 	return IRQ_HANDLED;
--- 
-2.20.1
-
+T24gNi82LzE5IDI6NDEgUE0sIERhbiBDYXJwZW50ZXIgd3JvdGU6DQo+IFRoZSBwcm9ibGVtIGlz
+IHRoYXQgb24gNjRiaXQgc3lzdGVtcyB0aGVuIHdlIGRvbid0IGNsZWFyIHRoZSBoaWdoZXINCj4g
+Yml0cyBvZiB0aGUgInBlbmRpbmciIHZhcmlhYmxlLiAgU28gd2hlbiB3ZSBkbzoNCj4gDQo+ICAg
+ICAgICAgIGFjayA9IHBlbmRpbmcgJiB+QklUKFNUTUZYX1JFR19JUlFfU1JDX0VOX0dQSU8pOw0K
+PiAgICAgICAgICBpZiAoYWNrKSB7DQo+IA0KPiB0aGUgaWYgKGFjaykgY29uZGl0aW9uIHJlbGll
+cyBvbiB1bmluaXRpYWxpemVkIGRhdGEuICBUaGUgZml4IGl0IHRoYXQNCj4gSSd2ZSBjaGFuZ2Vk
+ICJwZW5kaW5nIiBmcm9tIGFuIHVuc2lnbmVkIGxvbmcgdG8gYSB1MzIuICBJIGNoYW5nZWQgIm4i
+IGFzDQo+IHdlbGwsIGJlY2F1c2UgdGhhdCdzIGEgbnVtYmVyIGluIHRoZSAwLTEwIHJhbmdlIGFu
+ZCBpdCBmaXRzIGVhc2lseQ0KPiBpbnNpZGUgYW4gaW50LiAgV2UgZG8gbmVlZCB0byBhZGQgYSBj
+YXN0IHRvICJwZW5kaW5nIiB3aGVuIHdlIHVzZSBpdCBpbg0KPiB0aGUgZm9yX2VhY2hfc2V0X2Jp
+dCgpIGxvb3AsIGJ1dCB0aGF0IGRvZXNuJ3QgY2F1c2UgYSBwcm9ibGUsIGl0J3MNCj4gZmluZS4N
+Cj4gDQo+IEZpeGVzOiAwNjI1MmFkZTkxNTYgKCJtZmQ6IEFkZCBTVCBNdWx0aS1GdW5jdGlvbiBl
+WHBhbmRlciAoU1RNRlgpIGNvcmUgZHJpdmVyIikNCj4gU2lnbmVkLW9mZi1ieTogRGFuIENhcnBl
+bnRlciA8ZGFuLmNhcnBlbnRlckBvcmFjbGUuY29tPg0KDQpBY2tlZC1ieTogQW1lbGllIERlbGF1
+bmF5IDxhbWVsaWUuZGVsYXVuYXlAc3QuY29tPg0KDQo+IC0tLQ0KPiB2Mjogd2hpdGUgc3BhY2Ug
+Y2hhbmdlcw0KPiANCj4gICBkcml2ZXJzL21mZC9zdG1meC5jIHwgMTAgKysrKy0tLS0tLQ0KPiAg
+IDEgZmlsZSBjaGFuZ2VkLCA0IGluc2VydGlvbnMoKyksIDYgZGVsZXRpb25zKC0pDQo+IA0KPiBk
+aWZmIC0tZ2l0IGEvZHJpdmVycy9tZmQvc3RtZnguYyBiL2RyaXZlcnMvbWZkL3N0bWZ4LmMNCj4g
+aW5kZXggZmU4ZWZiYTJkNDVmLi43YzQxOWMwNzg2ODggMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMv
+bWZkL3N0bWZ4LmMNCj4gKysrIGIvZHJpdmVycy9tZmQvc3RtZnguYw0KPiBAQCAtMjA0LDEyICsy
+MDQsMTAgQEAgc3RhdGljIHN0cnVjdCBpcnFfY2hpcCBzdG1meF9pcnFfY2hpcCA9IHsNCj4gICBz
+dGF0aWMgaXJxcmV0dXJuX3Qgc3RtZnhfaXJxX2hhbmRsZXIoaW50IGlycSwgdm9pZCAqZGF0YSkN
+Cj4gICB7DQo+ICAgCXN0cnVjdCBzdG1meCAqc3RtZnggPSBkYXRhOw0KPiAtCXVuc2lnbmVkIGxv
+bmcgbiwgcGVuZGluZzsNCj4gLQl1MzIgYWNrOw0KPiAtCWludCByZXQ7DQo+ICsJdTMyIHBlbmRp
+bmcsIGFjazsNCj4gKwlpbnQgbiwgcmV0Ow0KPiAgIA0KPiAtCXJldCA9IHJlZ21hcF9yZWFkKHN0
+bWZ4LT5tYXAsIFNUTUZYX1JFR19JUlFfUEVORElORywNCj4gLQkJCSAgKHUzMiAqKSZwZW5kaW5n
+KTsNCj4gKwlyZXQgPSByZWdtYXBfcmVhZChzdG1meC0+bWFwLCBTVE1GWF9SRUdfSVJRX1BFTkRJ
+TkcsICZwZW5kaW5nKTsNCj4gICAJaWYgKHJldCkNCj4gICAJCXJldHVybiBJUlFfTk9ORTsNCj4g
+ICANCj4gQEAgLTIyNCw3ICsyMjIsNyBAQCBzdGF0aWMgaXJxcmV0dXJuX3Qgc3RtZnhfaXJxX2hh
+bmRsZXIoaW50IGlycSwgdm9pZCAqZGF0YSkNCj4gICAJCQlyZXR1cm4gSVJRX05PTkU7DQo+ICAg
+CX0NCj4gICANCj4gLQlmb3JfZWFjaF9zZXRfYml0KG4sICZwZW5kaW5nLCBTVE1GWF9SRUdfSVJR
+X1NSQ19NQVgpDQo+ICsJZm9yX2VhY2hfc2V0X2JpdChuLCAodW5zaWduZWQgbG9uZyAqKSZwZW5k
+aW5nLCBTVE1GWF9SRUdfSVJRX1NSQ19NQVgpDQo+ICAgCQloYW5kbGVfbmVzdGVkX2lycShpcnFf
+ZmluZF9tYXBwaW5nKHN0bWZ4LT5pcnFfZG9tYWluLCBuKSk7DQo+ICAgDQo+ICAgCXJldHVybiBJ
+UlFfSEFORExFRDsNCj4g

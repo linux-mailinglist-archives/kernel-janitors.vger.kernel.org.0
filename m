@@ -2,90 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DE8E39423
-	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Jun 2019 20:19:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EECC39537
+	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Jun 2019 21:03:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731363AbfFGST2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 7 Jun 2019 14:19:28 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:53227 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729817AbfFGST1 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 7 Jun 2019 14:19:27 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hZJSS-0007zx-Mn; Fri, 07 Jun 2019 18:19:20 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jacob Keller <jacob.e.keller@intel.com>,
-        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next][V2] ixgbe: fix potential u32 overflow on shift
-Date:   Fri,  7 Jun 2019 19:19:20 +0100
-Message-Id: <20190607181920.23339-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
+        id S1730228AbfFGTDc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 7 Jun 2019 15:03:32 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60192 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730212AbfFGTDc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 7 Jun 2019 15:03:32 -0400
+Received: from kernel.org (unknown [104.132.0.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8B06020868;
+        Fri,  7 Jun 2019 19:03:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1559934211;
+        bh=mrL8ZvU1j098gqUDw8JKIJmCCxGU9vpbYH6xVhe34iM=;
+        h=In-Reply-To:References:To:From:Subject:Cc:Date:From;
+        b=aBft8Ng32JulEBE9OCaXF/cfqepkKpawjKLmviZxT4hl2AUj+eStMAu2WpzSfOfr6
+         CYtJlXMPERBWssrLSooM/NOAcjFr3wTTXL59aQAzpUKEiVsJuCAco1QNi9mo+uqxI3
+         F0zju3tuU/ktvo9M1pqGD5IuNkLFt43gwkfkoHJU=
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20190607104533.14700-1-colin.king@canonical.com>
+References: <20190607104533.14700-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>,
+        Eric Anholt <eric@anholt.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Stefan Wahren <stefan.wahren@i2se.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+        linux-rpi-kernel@lists.infradead.org
+From:   Stephen Boyd <sboyd@kernel.org>
+Subject: Re: [PATCH][next] clk: bcm2835: fix memork leak on unfree'd pll struct
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: alot/0.8.1
+Date:   Fri, 07 Jun 2019 12:03:30 -0700
+Message-Id: <20190607190331.8B06020868@mail.kernel.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Quoting Colin King (2019-06-07 03:45:33)
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> The pll struct is being allocated but not kfree'd on an error return
+> path when devm_clk_hw_register fails.  Fix this with a kfree on pll
+> if an error occurs.
+>=20
+> Addresses-Coverity: ("Resource leak")
+> Fixes: b19f009d4510 ("clk: bcm2835: Migrate to clk_hw based registration =
+and OF APIs")
 
-The u32 variable rem is being shifted using u32 arithmetic however
-it is being passed to div_u64 that expects the expression to be a u64.
-The 32 bit shift may potentially overflow, so cast rem to a u64 before
-shifting to avoid this.  Also remove comment about overflow.
+I suspect this problem was there before this commit, but OK.
 
-Addresses-Coverity: ("Unintentional integer overflow")
-Fixes: cd4583206990 ("ixgbe: implement support for SDP/PPS output on X550 hardware")
-Fixes: 68d9676fc04e ("ixgbe: fix PTP SDP pin setup on X540 hardware")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/clk/bcm/clk-bcm2835.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/clk/bcm/clk-bcm2835.c b/drivers/clk/bcm/clk-bcm2835.c
+> index 770bb01f523e..90584deaf416 100644
+> --- a/drivers/clk/bcm/clk-bcm2835.c
+> +++ b/drivers/clk/bcm/clk-bcm2835.c
+> @@ -1310,8 +1310,10 @@ static struct clk_hw *bcm2835_register_pll(struct =
+bcm2835_cprman *cprman,
+>         pll->hw.init =3D &init;
+> =20
+>         ret =3D devm_clk_hw_register(cprman->dev, &pll->hw);
+> -       if (ret)
+> +       if (ret) {
+> +               kfree(pll);
+>                 return NULL;
+> +       }
+>         return &pll->hw;
+>  }
 
-V2: update comment
-
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c
-index 2c4d327fcc2e..0be13a90ff79 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c
-@@ -205,11 +205,8 @@ static void ixgbe_ptp_setup_sdp_X540(struct ixgbe_adapter *adapter)
- 	 */
- 	rem = (NS_PER_SEC - rem);
- 
--	/* Adjust the clock edge to align with the next full second. This
--	 * assumes that the cycle counter shift is small enough to avoid
--	 * overflowing when shifting the remainder.
--	 */
--	clock_edge += div_u64((rem << cc->shift), cc->mult);
-+	/* Adjust the clock edge to align with the next full second. */
-+	clock_edge += div_u64(((u64)rem << cc->shift), cc->mult);
- 	trgttiml = (u32)clock_edge;
- 	trgttimh = (u32)(clock_edge >> 32);
- 
-@@ -291,11 +288,8 @@ static void ixgbe_ptp_setup_sdp_X550(struct ixgbe_adapter *adapter)
- 	 */
- 	rem = (NS_PER_SEC - rem);
- 
--	/* Adjust the clock edge to align with the next full second. This
--	 * assumes that the cycle counter shift is small enough to avoid
--	 * overflowing when shifting the remainder.
--	 */
--	clock_edge += div_u64((rem << cc->shift), cc->mult);
-+	/* Adjust the clock edge to align with the next full second. */
-+	clock_edge += div_u64(((u64)rem << cc->shift), cc->mult);
- 
- 	/* X550 hardware stores the time in 32bits of 'billions of cycles' and
- 	 * 32bits of 'cycles'. There's no guarantee that cycles represents
--- 
-2.20.1
+Aren't there more leaks in this driver?=20
 

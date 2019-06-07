@@ -2,88 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 863B338435
-	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Jun 2019 08:15:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DE693854F
+	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Jun 2019 09:44:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727024AbfFGGPI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 7 Jun 2019 02:15:08 -0400
-Received: from mail-vs1-f67.google.com ([209.85.217.67]:43496 "EHLO
-        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726609AbfFGGPI (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 7 Jun 2019 02:15:08 -0400
-Received: by mail-vs1-f67.google.com with SMTP id d128so495250vsc.10
-        for <kernel-janitors@vger.kernel.org>; Thu, 06 Jun 2019 23:15:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=KvN+6NK5XeZcx/uDS+eaq/chxq7rr+3iXQ6JaWco14o=;
-        b=e44ssolHhtlDiYJSMUccwgT5Ovw91RUCahGWwApdaPjx3Tob2XLQqRHFyoeQ4e6sxN
-         AJ5/4RI8/LZgfZduandrxtd6cq2pG2r1aAgrq1bTRu7R+4Cl0//js75QL3kxtBlZSo6D
-         OPoE0tjryuXjc++5pcdy9JmIiu4/wkg5FZ5ro=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=KvN+6NK5XeZcx/uDS+eaq/chxq7rr+3iXQ6JaWco14o=;
-        b=IifBgYJORhaIptmYJa6Yrh0deVUBohMRxyQdgxorDcmpMmDK1qfuZ9lumNDFVuhb8u
-         th16HAud1KjgL0iAbM8Xu3dW+QHZ7PAZD4e3RtYaxLNILEo7s25WCLyXq02J+CdWEkaO
-         HN82CxlfNnlBlWZbbd2jVxQCr12S3HWWb6E3PZrEvA0QLkYq0//Hfe4o0qxxTAfXoNZI
-         3WNtQah+Oelaqtu+31pmyvNSoE92L2wt/ce8dUFMJNuvlEBxZT6lDD6l4D4Yqmay6OEh
-         BSmuRXOGnZCFBGUtRPcjkpsYvmnJU+HBDsCfCr44Ocpnlh9OJ5Dm78NNoz9CjPf2PR6j
-         m6rA==
-X-Gm-Message-State: APjAAAUXznNMgXmCPwyujcsfifqwDeUKZGtguBGFA1k5xR9YH++8qghe
-        QYAmZpzP2GudJvpabxaBJPxGRWA9q73ac7Reb/vMaQ==
-X-Google-Smtp-Source: APXvYqx+U6MZGnxEkzNkajm3pdzfu0lUV7WmSXEOAyE42958JCYI0TFzW4KTUQg7JpfqsGz0HnxSnJt6atYp9ioLYiw=
-X-Received: by 2002:a67:c496:: with SMTP id d22mr11616865vsk.205.1559888107343;
- Thu, 06 Jun 2019 23:15:07 -0700 (PDT)
+        id S1727890AbfFGHof (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 7 Jun 2019 03:44:35 -0400
+Received: from smtp4.iitb.ac.in ([103.21.127.18]:48822 "EHLO smtp1.iitb.ac.in"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727875AbfFGHof (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 7 Jun 2019 03:44:35 -0400
+X-Greylist: delayed 2886 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 Jun 2019 03:44:34 EDT
+Received: from ldns2.iitb.ac.in (ldns2.iitb.ac.in [10.200.12.2])
+        by smtp1.iitb.ac.in (Postfix) with SMTP id C490C1050D15
+        for <kernel-janitors@vger.kernel.org>; Fri,  7 Jun 2019 12:01:53 +0530 (IST)
+Received: (qmail 29995 invoked by uid 510); 7 Jun 2019 12:01:34 +0530
+X-Qmail-Scanner-Diagnostics: from 10.200.1.25 by ldns2 (envelope-from <rws@aero.iitb.ac.in>, uid 501) with qmail-scanner-2.11
+ spamassassin: 3.4.1. mhr: 1.0. {clamdscan: 0.100.0/25472} 
+ Clear:RC:1(10.200.1.25):SA:0(1.5/7.0):. Processed in 3.224183 secs; 07 Jun 2019 12:01:34 +0530
+X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on ldns2.iitb.ac.in
+X-Spam-Level: *
+X-Spam-Status: No, score=1.5 required=7.0 tests=BAYES_50,IITB_ORIG,
+        MISSING_HEADERS,PROPER_IITB_MSGID autolearn=disabled version=3.4.1
+X-Spam-Pyzor: Reported 1 times.
+X-Envelope-From: rws@aero.iitb.ac.in
+X-Qmail-Scanner-Mime-Attachments: |
+X-Qmail-Scanner-Zip-Files: |
+Received: from unknown (HELO ldns2.iitb.ac.in) (10.200.1.25)
+  by ldns2.iitb.ac.in with SMTP; 7 Jun 2019 12:01:31 +0530
+Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
+        by ldns2.iitb.ac.in (Postfix) with ESMTP id CB958341965;
+        Fri,  7 Jun 2019 12:01:17 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 9509A8902E52F;
+        Fri,  7 Jun 2019 12:01:17 +0530 (IST)
+Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
+        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 3VnK-_U7b-vs; Fri,  7 Jun 2019 12:01:17 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 5DAB88902E54D;
+        Fri,  7 Jun 2019 12:01:14 +0530 (IST)
+X-Virus-Scanned: amavisd-new at aero.iitb.ac.in
+Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
+        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id TgJiwoMo_EHZ; Fri,  7 Jun 2019 12:01:14 +0530 (IST)
+Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 0EEE684310111;
+        Fri,  7 Jun 2019 12:01:10 +0530 (IST)
+Date:   Fri, 7 Jun 2019 12:01:09 +0530 (IST)
+From:   Martins Henry <rws@aero.iitb.ac.in>
+Message-ID: <412557711.60336.1559889069980.JavaMail.zimbra@aero.iitb.ac.in>
+Subject: Thanks and I wait for your answer
 MIME-Version: 1.0
-References: <20190601031806.46753-1-yuehaibing@huawei.com>
-In-Reply-To: <20190601031806.46753-1-yuehaibing@huawei.com>
-From:   Sumit Saxena <sumit.saxena@broadcom.com>
-Date:   Fri, 7 Jun 2019 11:44:55 +0530
-Message-ID: <CAL2rwxpPh=QEH5WhvsN_=aNhunzNny6B1CVov8p=cuFaMjOpsQ@mail.gmail.com>
-Subject: Re: [PATCH -next] scsi: megaraid_sas: Remove unused including <linux/version.h>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Kashyap Desai <kashyap.desai@broadcom.com>,
-        Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        "PDL,MEGARAIDLINUX" <megaraidlinux.pdl@broadcom.com>,
-        Linux SCSI List <linux-scsi@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.101.1.5]
+X-Mailer: Zimbra 8.8.12_GA_3803 (ZimbraWebClient - FF11 (Win)/8.8.12_GA_3794)
+Thread-Index: SsslhYkcLNFU69da/wYft5cO9/ZYnA==
+Thread-Topic: Thanks and I wait for your answer
+To:     unlisted-recipients:; (no To-header on input)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Jun 1, 2019 at 8:40 AM YueHaibing <yuehaibing@huawei.com> wrote:
->
-> Remove including <linux/version.h> that don't need it.
->
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Acked-by: Sumit Saxena <sumit.saxena@broadcom.com>
+Hello,
 
-> ---
->  drivers/scsi/megaraid/megaraid_sas_debugfs.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/scsi/megaraid/megaraid_sas_debugfs.c b/drivers/scsi/megaraid/megaraid_sas_debugfs.c
-> index e52837bb6807..c69760775efa 100644
-> --- a/drivers/scsi/megaraid/megaraid_sas_debugfs.c
-> +++ b/drivers/scsi/megaraid/megaraid_sas_debugfs.c
-> @@ -25,7 +25,6 @@
->   *
->   *  Send feedback to: megaraidlinux.pdl@broadcom.com
->   */
-> -#include <linux/version.h>
->  #include <linux/kernel.h>
->  #include <linux/types.h>
->  #include <linux/pci.h>
->
->
->
->
->
+I am Martin Henry, An American Citizen; I am the personal secretary to
+Mr. Donald Railton, the controller of a Lottery Company. Please I am
+having big problem now, I have a 6yrs old daughter who has leukemia, a
+disease of the blood, and she needs a bone marrow transplant or she
+will die.
+
+Please I am only asking for your help and you will benefit from it
+also. As an insider with Lottery Firm, working as the personal
+secretary to the controller, I want you to send me your name to play,
+I have some numbers that are going to win, stored in his secret data
+system in the office. The Lottery is an online entry with credit card
+anywhere with a name and address. All I want you to do is to send your
+name to play it and I will send confirmation to you.
+
+I will play with my card on your name and the Prize will be shared
+equally between us. Immediately the results are released they will
+contact you for payment as the oversea winner. The lotto can be played
+with 9.00 dollars, or 50 dollars but the prize will be Millions.
+Remember that I am playing on your name with my card; I just want to
+front you for this, because I need this money to save the life of my
+little daughter.
+
+Thanks and I wait for your answer
+Martin Henry.

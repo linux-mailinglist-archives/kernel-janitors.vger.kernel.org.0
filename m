@@ -2,55 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 249EE38C06
-	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Jun 2019 15:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8915F38C0B
+	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Jun 2019 15:56:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729180AbfFGN4q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 7 Jun 2019 09:56:46 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:45594 "EHLO
+        id S1729187AbfFGN4z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 7 Jun 2019 09:56:55 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:45770 "EHLO
         aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727915AbfFGN4q (ORCPT
+        with ESMTP id S1727915AbfFGN4z (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 7 Jun 2019 09:56:46 -0400
+        Fri, 7 Jun 2019 09:56:55 -0400
 Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57DmTei007580;
-        Fri, 7 Jun 2019 13:56:30 GMT
+        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57Dmpce007694;
+        Fri, 7 Jun 2019 13:56:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=sl3r5jCoha9AwpUHzlc6e/+sE+z9uZcaWIv3yOHjo/U=;
- b=FhH4IGw/pdnGDeWhTainIQBB9WIENv5+snDCsoDhr/gqFmabWxYjNAifT5vZlWzes7u7
- oNsn5HTp/NSQ/SnbuWtm5ZqMXnM7WTmsFL/PvewZzN07ZSO2+BPAZKpMaoAuCPDyN/pe
- zcts1m5Px3dN8sEr/a/JXNynlu7QMDg60HSnUF/kycqFu9ySAcuJjGoKaKdqSsj5XsQo
- wDbIry9tEmQlZYUbKgpp8/W19noRgLkZknWkUT4Es4kjT5ML+VNajzb/jKPb0YfUDryH
- PWbryA0gShX4TgoL4IZRJep7468SgKqtE3Qtcse+v7RAL/t+rlWObFY/C8bcN4mM1Wm+ tA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2130.oracle.com with ESMTP id 2suevdxp6n-1
+ bh=wCcpCJJ5E/lKFhkG6QP8lWHon8q7sPH1icP0EYuahQI=;
+ b=RYgtjc1td1fg/lpplD81autb7rlF+B8LeyqN63LXpRErJJGcbVBlhJ9lXUNB2OryTGbM
+ a8Bdsd2GmWYcKqYJ78NziuLAG9VokNAyKrl5AK/Q+zo7qVC9RlDFNUdM0AooLIXElj8h
+ jjcp/JEgheO1pIkRk+jkCerVarehECxpOx+Z6HoH1IpBvhSLGTWvTAkasyn29WJLtj91
+ RFqzYT/UsVeeMV7YP5V1i6IHNyajNgRJnbqA0DrlAQB310IHJ0FPCipdareVM+VyoHL5
+ PQwSc26RMxZhgBuUrDjvxYywIH33m5+b2gbAtIEIPk8MRZGHNctZWVbWfNjEfGfFJ0Qw JA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2130.oracle.com with ESMTP id 2suevdxp7v-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 07 Jun 2019 13:56:30 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57Du7ss129194;
-        Fri, 7 Jun 2019 13:56:29 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 2swngk1d8d-1
+        Fri, 07 Jun 2019 13:56:45 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57DubsK012067;
+        Fri, 7 Jun 2019 13:56:44 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 2swnhbbbxb-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 07 Jun 2019 13:56:29 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x57DuHwg017850;
-        Fri, 7 Jun 2019 13:56:19 GMT
+        Fri, 07 Jun 2019 13:56:44 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x57DuhGT024463;
+        Fri, 7 Jun 2019 13:56:43 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 07 Jun 2019 06:56:17 -0700
-Date:   Fri, 7 Jun 2019 16:56:09 +0300
+        with ESMTP ; Fri, 07 Jun 2019 06:56:43 -0700
+Date:   Fri, 7 Jun 2019 16:56:36 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Boris Brezillon <boris.brezillon@collabora.com>
-Cc:     Heiko Stuebner <heiko@sntech.de>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Ezequiel Garcia <ezequiel@collabora.com>,
-        linux-media@vger.kernel.org, linux-rockchip@lists.infradead.org,
+To:     David Ahern <dsahern@kernel.org>
+Cc:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] media: rockchip/vpu: remove an unnecessary NULL check
-Message-ID: <20190607135609.GA16718@mwanda>
+Subject: [PATCH next] nexthop: off by one in nexthop_mpath_select()
+Message-ID: <20190607135636.GB16718@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -72,27 +68,28 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Thus the address of "&ctx->dev->variant->codec_ops[codec_mode]"
-can't possibly be NULL.
+The nhg->nh_entries[] array is allocated in nexthop_grp_alloc() and it
+has nhg->num_nh elements so this check should be >= instead of >.
 
+Fixes: f88d8ea67fbd ("ipv6: Plumb support for nexthop object in a fib6_info")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/staging/media/rockchip/vpu/rockchip_vpu_v4l2.c | 2 +-
+ include/net/nexthop.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/media/rockchip/vpu/rockchip_vpu_v4l2.c b/drivers/staging/media/rockchip/vpu/rockchip_vpu_v4l2.c
-index 1b80a45df8fe..42f4eb0abc8a 100644
---- a/drivers/staging/media/rockchip/vpu/rockchip_vpu_v4l2.c
-+++ b/drivers/staging/media/rockchip/vpu/rockchip_vpu_v4l2.c
-@@ -619,7 +619,7 @@ static int rockchip_vpu_start_streaming(struct vb2_queue *q,
+diff --git a/include/net/nexthop.h b/include/net/nexthop.h
+index aff7b2410057..e019ed9b3dc3 100644
+--- a/include/net/nexthop.h
++++ b/include/net/nexthop.h
+@@ -160,7 +160,7 @@ struct nexthop *nexthop_mpath_select(const struct nexthop *nh, int nhsel)
+ 	/* for_nexthops macros in fib_semantics.c grabs a pointer to
+ 	 * the nexthop before checking nhsel
+ 	 */
+-	if (nhsel > nhg->num_nh)
++	if (nhsel >= nhg->num_nh)
+ 		return NULL;
  
- 		vpu_debug(4, "Codec mode = %d\n", codec_mode);
- 		ctx->codec_ops = &ctx->dev->variant->codec_ops[codec_mode];
--		if (ctx->codec_ops && ctx->codec_ops->init)
-+		if (ctx->codec_ops->init)
- 			ret = ctx->codec_ops->init(ctx);
- 	}
- 
+ 	return nhg->nh_entries[nhsel].nh;
 -- 
 2.20.1
 

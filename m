@@ -2,97 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D8BEE38F1C
-	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Jun 2019 17:31:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3BF33939A
+	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Jun 2019 19:44:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729874AbfFGPbU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 7 Jun 2019 11:31:20 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:59100 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728071AbfFGPbS (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 7 Jun 2019 11:31:18 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57FIl1x087828;
-        Fri, 7 Jun 2019 15:31:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : sender
- : to : cc : subject : message-id : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=a3OkgmEzH6gqSwNclMouTxKHku5+xPAshN1b6v2wvBU=;
- b=Se0OGrfEzlE5W2rp8kutTudx+kqD2weKKQCLl+pp2DlatcDldXTCGowFs/+VfaewxQ/O
- ipl3Io88xLJCfpGHtHvLV0kg3STwY282psTb620PJwhDeRQZaAuEJQYFoqLp/Juo6ml0
- EmCkgjIUmIgZM6gi8gSwU0emA+xdjUjAosCE2KbIZfLD0vAuIK47hpn8VcOSXiZgzJbK
- t7yM1tPumj0DEr4D6snZIoINo0dzGiiFRsE0OeP17FIsT5SlGDCZvKCa093geC+qx6eB
- h7iZz1bPSYzSKWvyH3/2Txot4iMZhbgzVO89zw4RYhmeuNdB3ZLly1xhJKj/VBWRkX2V mg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2130.oracle.com with ESMTP id 2suevdy7hw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 07 Jun 2019 15:31:14 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57FUhCQ145050;
-        Fri, 7 Jun 2019 15:31:14 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2swnhdase8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 07 Jun 2019 15:31:14 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x57FVDC6031482;
-        Fri, 7 Jun 2019 15:31:13 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 07 Jun 2019 08:31:13 -0700
-Date:   Fri, 7 Jun 2019 18:31:07 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     David Ahern <dsahern@kernel.org>
-Cc:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH v2 next] nexthop: off by one in nexthop_mpath_select()
-Message-ID: <20190607153107.GS31203@kadam>
+        id S1731296AbfFGRog (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 7 Jun 2019 13:44:36 -0400
+Received: from mga09.intel.com ([134.134.136.24]:20991 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728684AbfFGRog (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 7 Jun 2019 13:44:36 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Jun 2019 10:44:35 -0700
+X-ExtLoop1: 1
+Received: from orsmsx104.amr.corp.intel.com ([10.22.225.131])
+  by fmsmga001.fm.intel.com with ESMTP; 07 Jun 2019 10:44:35 -0700
+Received: from orsmsx152.amr.corp.intel.com (10.22.226.39) by
+ ORSMSX104.amr.corp.intel.com (10.22.225.131) with Microsoft SMTP Server (TLS)
+ id 14.3.408.0; Fri, 7 Jun 2019 10:44:35 -0700
+Received: from orsmsx121.amr.corp.intel.com ([169.254.10.133]) by
+ ORSMSX152.amr.corp.intel.com ([169.254.8.218]) with mapi id 14.03.0415.000;
+ Fri, 7 Jun 2019 10:44:34 -0700
+From:   "Keller, Jacob E" <jacob.e.keller@intel.com>
+To:     Colin King <colin.king@canonical.com>,
+        "Kirsher, Jeffrey T" <jeffrey.t.kirsher@intel.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH][next] ixgbe: fix potential u32 overflow on shift
+Thread-Topic: [PATCH][next] ixgbe: fix potential u32 overflow on shift
+Thread-Index: AQHVHGlIFzjSo2T24EekWjY0GDeFv6aQeFNA
+Date:   Fri, 7 Jun 2019 17:44:34 +0000
+Message-ID: <02874ECE860811409154E81DA85FBB589674E8A9@ORSMSX121.amr.corp.intel.com>
+References: <20190606131053.25103-1-colin.king@canonical.com>
+In-Reply-To: <20190606131053.25103-1-colin.king@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMzQ0NTdiMjYtMzdlZi00YjZkLWE1ZjgtNWZiMzNhYWZiMWNjIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoic05lQVM1c3BPcGRjQk1xaXFsUVNnUEY1U1Z3cFcwdUxxV3ZEdGpcLzh3T1QyZFUwQ2hkS3VMeTJHUTFVXC9cL0FWUiJ9
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.0.600.7
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.140]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0e02a744-f28e-e206-032b-a0ffac9f7311@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9280 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906070107
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9280 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906070107
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The nhg->nh_entries[] array is allocated in nexthop_grp_alloc() and it
-has nhg->num_nh elements so this check should be >= instead of >.
-
-Fixes: 430a049190de ("nexthop: Add support for nexthop groups")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Reviewed-by: David Ahern <dsahern@gmail.com>
----
-v2: Use the correct Fixes tag
-
- include/net/nexthop.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/include/net/nexthop.h b/include/net/nexthop.h
-index aff7b2410057..e019ed9b3dc3 100644
---- a/include/net/nexthop.h
-+++ b/include/net/nexthop.h
-@@ -160,7 +160,7 @@ struct nexthop *nexthop_mpath_select(const struct nexthop *nh, int nhsel)
- 	/* for_nexthops macros in fib_semantics.c grabs a pointer to
- 	 * the nexthop before checking nhsel
- 	 */
--	if (nhsel > nhg->num_nh)
-+	if (nhsel >= nhg->num_nh)
- 		return NULL;
- 
- 	return nhg->nh_entries[nhsel].nh;
--- 
-2.20.1
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBDb2xpbiBLaW5nIFttYWlsdG86
+Y29saW4ua2luZ0BjYW5vbmljYWwuY29tXQ0KPiBTZW50OiBUaHVyc2RheSwgSnVuZSAwNiwgMjAx
+OSA2OjExIEFNDQo+IFRvOiBLZWxsZXIsIEphY29iIEUgPGphY29iLmUua2VsbGVyQGludGVsLmNv
+bT47IEtpcnNoZXIsIEplZmZyZXkgVA0KPiA8amVmZnJleS50LmtpcnNoZXJAaW50ZWwuY29tPjsg
+RGF2aWQgUyAuIE1pbGxlciA8ZGF2ZW1AZGF2ZW1sb2Z0Lm5ldD47IGludGVsLXdpcmVkLQ0KPiBs
+YW5AbGlzdHMub3N1b3NsLm9yZzsgbmV0ZGV2QHZnZXIua2VybmVsLm9yZw0KPiBDYzoga2VybmVs
+LWphbml0b3JzQHZnZXIua2VybmVsLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0K
+PiBTdWJqZWN0OiBbUEFUQ0hdW25leHRdIGl4Z2JlOiBmaXggcG90ZW50aWFsIHUzMiBvdmVyZmxv
+dyBvbiBzaGlmdA0KPiANCj4gRnJvbTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fub25p
+Y2FsLmNvbT4NCj4gDQo+IFRoZSB1MzIgdmFyaWFibGUgcmVtIGlzIGJlaW5nIHNoaWZ0ZWQgdXNp
+bmcgdTMyIGFyaXRobWV0aWMgaG93ZXZlcg0KPiBpdCBpcyBiZWluZyBwYXNzZWQgdG8gZGl2X3U2
+NCB0aGF0IGV4cGVjdHMgdGhlIGV4cHJlc3Npb24gdG8gYmUgYSB1NjQuDQo+IFRoZSAzMiBiaXQg
+c2hpZnQgbWF5IHBvdGVudGlhbGx5IG92ZXJmbG93LCBzbyBjYXN0IHJlbSB0byBhIHU2NCBiZWZv
+cmUNCj4gc2hpZnRpbmcgdG8gYXZvaWQgdGhpcy4NCj4gDQo+IEFkZHJlc3Nlcy1Db3Zlcml0eTog
+KCJVbmludGVudGlvbmFsIGludGVnZXIgb3ZlcmZsb3ciKQ0KPiBGaXhlczogY2Q0NTgzMjA2OTkw
+ICgiaXhnYmU6IGltcGxlbWVudCBzdXBwb3J0IGZvciBTRFAvUFBTIG91dHB1dCBvbiBYNTUwDQo+
+IGhhcmR3YXJlIikNCj4gRml4ZXM6IDY4ZDk2NzZmYzA0ZSAoIml4Z2JlOiBmaXggUFRQIFNEUCBw
+aW4gc2V0dXAgb24gWDU0MCBoYXJkd2FyZSIpDQo+IFNpZ25lZC1vZmYtYnk6IENvbGluIElhbiBL
+aW5nIDxjb2xpbi5raW5nQGNhbm9uaWNhbC5jb20+DQo+IC0tLQ0KPiAgZHJpdmVycy9uZXQvZXRo
+ZXJuZXQvaW50ZWwvaXhnYmUvaXhnYmVfcHRwLmMgfCA0ICsrLS0NCj4gIDEgZmlsZSBjaGFuZ2Vk
+LCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJp
+dmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaXhnYmUvaXhnYmVfcHRwLmMNCj4gYi9kcml2ZXJzL25l
+dC9ldGhlcm5ldC9pbnRlbC9peGdiZS9peGdiZV9wdHAuYw0KPiBpbmRleCAyYzRkMzI3ZmNjMmUu
+LmZmMjI5ZDBlOTE0NiAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwv
+aXhnYmUvaXhnYmVfcHRwLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvaW50ZWwvaXhn
+YmUvaXhnYmVfcHRwLmMNCj4gQEAgLTIwOSw3ICsyMDksNyBAQCBzdGF0aWMgdm9pZCBpeGdiZV9w
+dHBfc2V0dXBfc2RwX1g1NDAoc3RydWN0IGl4Z2JlX2FkYXB0ZXINCj4gKmFkYXB0ZXIpDQo+ICAJ
+ICogYXNzdW1lcyB0aGF0IHRoZSBjeWNsZSBjb3VudGVyIHNoaWZ0IGlzIHNtYWxsIGVub3VnaCB0
+byBhdm9pZA0KPiAgCSAqIG92ZXJmbG93aW5nIHdoZW4gc2hpZnRpbmcgdGhlIHJlbWFpbmRlci4N
+Cj4gIAkgKi8NCg0KV2l0aCB0aGlzIGNoYW5nZSwgdGhlIGNvbW1lbnQgYWJvdmUgdGhlIGRpdl91
+NjQgZG9lc24ndCBtYWtlIG11Y2ggc2Vuc2UuIEkgd291bGQgYWxzbyBkcm9wIHRoZSBwYXJ0IGFi
+b3V0IHRoZSBhc3N1bWluZyBpdCB3b24ndCBvdmVyZmxvdyB0aGUgcmVtYWluZGVyLg0KDQo+IC0J
+Y2xvY2tfZWRnZSArPSBkaXZfdTY0KChyZW0gPDwgY2MtPnNoaWZ0KSwgY2MtPm11bHQpOw0KPiAr
+CWNsb2NrX2VkZ2UgKz0gZGl2X3U2NCgoKHU2NClyZW0gPDwgY2MtPnNoaWZ0KSwgY2MtPm11bHQp
+Ow0KPiAgCXRyZ3R0aW1sID0gKHUzMiljbG9ja19lZGdlOw0KPiAgCXRyZ3R0aW1oID0gKHUzMiko
+Y2xvY2tfZWRnZSA+PiAzMik7DQo+IA0KPiBAQCAtMjk1LDcgKzI5NSw3IEBAIHN0YXRpYyB2b2lk
+IGl4Z2JlX3B0cF9zZXR1cF9zZHBfWDU1MChzdHJ1Y3QgaXhnYmVfYWRhcHRlcg0KPiAqYWRhcHRl
+cikNCj4gIAkgKiBhc3N1bWVzIHRoYXQgdGhlIGN5Y2xlIGNvdW50ZXIgc2hpZnQgaXMgc21hbGwg
+ZW5vdWdoIHRvIGF2b2lkDQo+ICAJICogb3ZlcmZsb3dpbmcgd2hlbiBzaGlmdGluZyB0aGUgcmVt
+YWluZGVyLg0KPiAgCSAqLw0KDQpTYW1lIGhlcmUuDQoNClRoYW5rcywNCkpha2UNCg0KPiAtCWNs
+b2NrX2VkZ2UgKz0gZGl2X3U2NCgocmVtIDw8IGNjLT5zaGlmdCksIGNjLT5tdWx0KTsNCj4gKwlj
+bG9ja19lZGdlICs9IGRpdl91NjQoKCh1NjQpcmVtIDw8IGNjLT5zaGlmdCksIGNjLT5tdWx0KTsN
+Cj4gDQo+ICAJLyogWDU1MCBoYXJkd2FyZSBzdG9yZXMgdGhlIHRpbWUgaW4gMzJiaXRzIG9mICdi
+aWxsaW9ucyBvZiBjeWNsZXMnIGFuZA0KPiAgCSAqIDMyYml0cyBvZiAnY3ljbGVzJy4gVGhlcmUn
+cyBubyBndWFyYW50ZWUgdGhhdCBjeWNsZXMgcmVwcmVzZW50cw0KPiAtLQ0KPiAyLjIwLjENCg0K

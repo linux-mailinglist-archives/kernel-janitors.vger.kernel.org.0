@@ -2,86 +2,139 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EA6738B54
-	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Jun 2019 15:15:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0128F38B56
+	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Jun 2019 15:15:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728522AbfFGNPR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 7 Jun 2019 09:15:17 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:51344 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727416AbfFGNPR (ORCPT
+        id S1728726AbfFGNPW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 7 Jun 2019 09:15:22 -0400
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:44916 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728689AbfFGNPW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 7 Jun 2019 09:15:17 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57D9AKf147982;
-        Fri, 7 Jun 2019 13:15:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2018-07-02;
- bh=AvCUQpU9k41JKm3TWAKJLXkSYXM1wxm+aqVJW2cq2NA=;
- b=NPe31pbypPGEpJ8DjzVgTD9DFwccj0tFq9f40PRHPVRbb9saTjC2hl5r4GHu6rbSoIQb
- SexcV/M42FVQ2uwObqJHrNGg8PM6KyH+4pDsXSrqu7YOb9nVE0aL7DPuwygRecMooZZA
- gvTnsExxVxJ9LsaWmvkeoMat899Dy47tNRavURnQOTopTWxXyNmADMmzJnGcGW7chkhe
- /WBUq+JedeYgms/qX4NkfoBQxvB5EZTyOAxzkX/OmqlSXESN5eiLjk/nbptRr+7pOz1R
- n8xroLC1LNW3M77MR25vGKFX/KSlW7yooUi4s+uyN0Y+dOd3s7lpe4+J6bkaq5Ybd0I5 mA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2sugstx6xv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 07 Jun 2019 13:15:11 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x57DF6ag028571;
-        Fri, 7 Jun 2019 13:15:10 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 2swngn2ppc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 07 Jun 2019 13:15:10 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x57DF95b031021;
-        Fri, 7 Jun 2019 13:15:10 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 07 Jun 2019 06:15:09 -0700
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Kashyap Desai <kashyap.desai@broadcom.com>,
-        Sumit Saxena <sumit.saxena@broadcom.com>,
-        Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        <megaraidlinux.pdl@broadcom.com>, <linux-scsi@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH -next] scsi: megaraid_sas: Remove unused including <linux/version.h>
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20190601031806.46753-1-yuehaibing@huawei.com>
-Date:   Fri, 07 Jun 2019 09:15:02 -0400
-In-Reply-To: <20190601031806.46753-1-yuehaibing@huawei.com>
-        (yuehaibing@huawei.com's message of "Sat, 1 Jun 2019 03:18:06 +0000")
-Message-ID: <yq1d0jplep5.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        Fri, 7 Jun 2019 09:15:22 -0400
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20190607131520euoutp02122e33d98337a5321bb4f53430b2e909~l7OZzw2cy2515625156euoutp02i
+        for <kernel-janitors@vger.kernel.org>; Fri,  7 Jun 2019 13:15:20 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20190607131520euoutp02122e33d98337a5321bb4f53430b2e909~l7OZzw2cy2515625156euoutp02i
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1559913320;
+        bh=XBMlqySQQ/GP/+OsC9coRem3GJuHR0Nx5AZ2FV6C2fk=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=K5DlyyTPhfbwtpAcb3xboVmdOO19TPkUwVSd1KqMfVVEnlEMK9D+v0qIE3ZVRCix/
+         St6fRrViJ3xihnIacXnCWCBzOCbN99btj3xWhlFFKmiR6EPmxhHGJSZALu6rH519zv
+         o8tPl/x8W0G/xTZVacxntpnJqtwOfuG2/0vDCBWs=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20190607131519eucas1p21c3579210dd84a3d998a8544d021882c~l7OZJ0M180937409374eucas1p2O;
+        Fri,  7 Jun 2019 13:15:19 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id 3D.A7.04325.7636AFC5; Fri,  7
+        Jun 2019 14:15:19 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20190607131518eucas1p11476b07d3c463eab67b1a5f5c6e20b86~l7OYZ052M1824118241eucas1p1R;
+        Fri,  7 Jun 2019 13:15:18 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20190607131518eusmtrp1363324c6af5429506a9180f1a7ae434a~l7OYKNikg2955529555eusmtrp1y;
+        Fri,  7 Jun 2019 13:15:18 +0000 (GMT)
+X-AuditID: cbfec7f5-b75ff700000010e5-85-5cfa6367887e
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id C9.D7.04140.6636AFC5; Fri,  7
+        Jun 2019 14:15:18 +0100 (BST)
+Received: from [106.120.51.74] (unknown [106.120.51.74]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20190607131518eusmtip27b7618c46ea9277f6221c0a34ae603a6~l7OXuiCSc1422014220eusmtip2g;
+        Fri,  7 Jun 2019 13:15:18 +0000 (GMT)
+Subject: Re: [PATCH][next] drm/bridge: sii902x: fix comparision of u32 with
+ less than zero
+To:     Colin King <colin.king@canonical.com>, Jyri Sarha <jsarha@ti.com>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+From:   Andrzej Hajda <a.hajda@samsung.com>
+Message-ID: <4454a547-d8f9-2df8-d3fa-2026860a14a9@samsung.com>
+Date:   Fri, 7 Jun 2019 15:15:14 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9280 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=932
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906070093
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9280 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906070093
+In-Reply-To: <20190603142102.27191-1-colin.king@canonical.com>
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrJKsWRmVeSWpSXmKPExsWy7djPc7rpyb9iDM40yFv0njvJZPF7dS+b
+        xf9tE5ktrnx9z2bR3dnBarH1lrRF58Ql7BaXd81hc+DwmNXQy+ax99sCFo/ZHTNZPbZ/e8Dq
+        cb/7OJPH8RvbmTw+b5ILYI/isklJzcksSy3St0vgyrj0oJO5YBJnxfIzZ9gbGA+zdzFyckgI
+        mEi8uPYTyObiEBJYwSgxqfMHG4TzhVHi6t4mZgjnM6PEy6Y5bDAtbyYsg0osZ5R4cqcPquUt
+        o8S3Ff/AqoQFYiT+f+tjAkmICDxhlDh7ZSczSIJZwFFi3fw7LCA2m4CmxN/NN8EaeAXsJLrP
+        dDKB2CwCKhLLG2YygtiiAhESX3ZuYoSoEZQ4OfMJWC8nUP3bC5egZspLbH87B8oWl7j1ZD7Y
+        YgmBQ+wSx75fAGrmAHJcJC78d4Z4QVji1fEt0BCQkTg9uYcFwq6XuL+ihRmit4NRYusGiKMl
+        BKwlDh+/yAoyhxno6PW79CHCjhILPmxngRjPJ3HjrSDECXwSk7ZNZ4YI80p0tAlBVCtK3D+7
+        FWqguMTSC1/ZJjAqzULy2Cwkz8xC8swshL0LGFlWMYqnlhbnpqcWG+ellusVJ+YWl+al6yXn
+        525iBCao0/+Of93BuO9P0iFGAQ5GJR5eD/afMUKsiWXFlbmHGCU4mJVEeMsu/IgR4k1JrKxK
+        LcqPLyrNSS0+xCjNwaIkzlvN8CBaSCA9sSQ1OzW1ILUIJsvEwSnVwFgVMl+rOf9WSI1qxl8F
+        8cXa7/u3n23hzGAtTmLPfF7HvqPVhvmqc+/mn6q9rteX6HKoTmXS21X3lpO33vFNltfc/x2n
+        o3dPnHps8/L+Bw4rX8xrtT6+PUpc1jhIgGfa7vqfMQ0RzZma380+/tadqvA4a4bC8z3GpWUf
+        ZUTfrdgqk57Iz/BpuRJLcUaioRZzUXEiAGN5mktMAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrDIsWRmVeSWpSXmKPExsVy+t/xe7ppyb9iDB6s07LoPXeSyeL36l42
+        i//bJjJbXPn6ns2iu7OD1WLrLWmLzolL2C0u75rD5sDhMauhl81j77cFLB6zO2ayemz/9oDV
+        4373cSaP4ze2M3l83iQXwB6lZ1OUX1qSqpCRX1xiqxRtaGGkZ2hpoWdkYqlnaGwea2VkqqRv
+        Z5OSmpNZllqkb5egl3HpQSdzwSTOiuVnzrA3MB5m72Lk5JAQMJF4M2EZcxcjF4eQwFJGiQUt
+        61ghEuISu+e/ZYawhSX+XOtigyh6zSjRsfoEWLewQIzE/299TCAJEYEnjBJXV/9lAkkwCzhK
+        rJt/hwXEFhKYyCixuUsWxGYT0JT4u/kmG4jNK2An0X2mE6yeRUBFYnnDTEYQW1QgQmL2rgYW
+        iBpBiZMzn4DZnED1by9cYoaYry7xZx6MLS+x/e0cKFtc4taT+UwTGIVmIWmfhaRlFpKWWUha
+        FjCyrGIUSS0tzk3PLTbSK07MLS7NS9dLzs/dxAiMyW3Hfm7Zwdj1LvgQowAHoxIP7wymnzFC
+        rIllxZW5hxglOJiVRHjLLvyIEeJNSaysSi3Kjy8qzUktPsRoCvTcRGYp0eR8YLrIK4k3NDU0
+        t7A0NDc2NzazUBLn7RA4GCMkkJ5YkpqdmlqQWgTTx8TBKdXAWD1B6/ULseOfAhVmLZrc3y0m
+        voL7aEe8r4XcR5G69nOBz9LWnl8UKuOaZKS62uz54XeNMsZHrCXNfr85vf9i+5e/G1bnL3GP
+        LM3gqGx+y3vw7fQ+o5d5MTeaCkQW8BaoyXjfftyQzXv1x6XGyZmH07K5JKtclkpq5RnJHRaz
+        9974L0Na7HmPEktxRqKhFnNRcSIANqgxjt8CAAA=
+X-CMS-MailID: 20190607131518eucas1p11476b07d3c463eab67b1a5f5c6e20b86
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190603142108epcas2p4625777c1aaea18257804ca86bcb64454
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190603142108epcas2p4625777c1aaea18257804ca86bcb64454
+References: <CGME20190603142108epcas2p4625777c1aaea18257804ca86bcb64454@epcas2p4.samsung.com>
+        <20190603142102.27191-1-colin.king@canonical.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On 03.06.2019 16:21, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The less than check for the variable num_lanes is always going to be
+> false because the variable is a u32.  Fix this by making num_lanes an
+> int and also make loop index i an int too.
+>
+> Addresses-Coverity: ("Unsigned compared against 0")
+> Fixes: ff5781634c41 ("drm/bridge: sii902x: Implement HDMI audio support")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/gpu/drm/bridge/sii902x.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/bridge/sii902x.c b/drivers/gpu/drm/bridge/sii902x.c
+> index d6f98d388ac2..21a947603c88 100644
+> --- a/drivers/gpu/drm/bridge/sii902x.c
+> +++ b/drivers/gpu/drm/bridge/sii902x.c
+> @@ -719,7 +719,7 @@ static int sii902x_audio_codec_init(struct sii902x *sii902x,
+>  		.max_i2s_channels = 0,
+>  	};
+>  	u8 lanes[4];
+> -	u32 num_lanes, i;
+> +	int num_lanes, i;
+>  
+>  	if (!of_property_read_bool(dev->of_node, "#sound-dai-cells")) {
+>  		dev_dbg(dev, "%s: No \"#sound-dai-cells\", no audio\n",
 
-YueHaibing,
+Queued to drm-misc-next.
 
-> Remove including <linux/version.h> that don't need it.
+--
+Regards
+Andrzej
 
-Applied to 5.3/scsi-queue. Thanks.
-
--- 
-Martin K. Petersen	Oracle Linux Engineering

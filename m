@@ -2,56 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B20739C16
-	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Jun 2019 11:24:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAC9239C1A
+	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Jun 2019 11:25:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726613AbfFHJYS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 8 Jun 2019 05:24:18 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:53094 "EHLO
+        id S1726604AbfFHJZj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 8 Jun 2019 05:25:39 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:54090 "EHLO
         aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726478AbfFHJYS (ORCPT
+        with ESMTP id S1726478AbfFHJZj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 8 Jun 2019 05:24:18 -0400
+        Sat, 8 Jun 2019 05:25:39 -0400
 Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x589IQg0042082;
-        Sat, 8 Jun 2019 09:24:11 GMT
+        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x589IfDc042165;
+        Sat, 8 Jun 2019 09:25:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=UEF3RcNQbMOhraajwl43bUezUG05vQzOtXc/1mdAqAk=;
- b=HbS9hhY4LusW456YSOonTNPlWmqlBq701uOKqKe7BGWLQ38L/UyPxqt/5+y9oBKb9p7Q
- T9ovTncV1/xBFq7I9rUdC0ND0WvpnDUnqaMD77IfzyfdLN46cfRl8U67wBMry4AD9saW
- SH1b6cFPZr4mElF9AK+IDFPnyVhceYPSxAMdtSZLPTriz6h5mycidljdn4sgda0mtIvE
- DknS82qxTT5wNWyhOV8liIkdwcuzGpdfqWZKP28ihIzBLQ5M59zT9n60VkC8iwKuYxPc
- 1Sv+tOSO5HtpG0BxbU4Azr9W3C0OyLWRGlPgKt7Nj3oCMvQnoE2E+JvgNgBoSuA8iMks Kw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2130.oracle.com with ESMTP id 2t02he8vnn-1
+ bh=GrWzgX6glrKXbxS3u89SRRHdMSUZtk55ulssWr86Pz8=;
+ b=NYTkOnk24TiyELr2a0OaiOKemvEb//iOQpsCpJVXK7e7ci8jtf47n1HFWnz9NGqKLsnZ
+ JL65SImFqtHmrVCNtiJMripd6ZHReN0Z6RmLe8A/uCso8TP54gsPgDI3k2ZMb/LtuwDI
+ kr40hiz94hCHZ7QvPlJtTO6OYextqpSPn9mJv0BZI5dibnPjxUcZ7kCOHqEqMRU3tFu8
+ af41bAk6sJC0OL5oIMC+tKUEyP3c3rYp5NBCvuiAC79K3WG1TUmvb7ujQjqmao/M+Wwy
+ QtEyyy00+1l4OrBuEHE9qs0YSP6vvfGjxRnaynIJR7NSRqmbZ3eekwrpVpw1kB7Kpxa4 ZQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 2t02he8vq5-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 08 Jun 2019 09:24:11 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x589OA4T019708;
-        Sat, 8 Jun 2019 09:24:10 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 2t0aa900ke-1
+        Sat, 08 Jun 2019 09:25:23 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x589OtYv172907;
+        Sat, 8 Jun 2019 09:25:23 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 2t04hx3qdm-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 08 Jun 2019 09:24:10 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x589O7cj030247;
-        Sat, 8 Jun 2019 09:24:07 GMT
+        Sat, 08 Jun 2019 09:25:22 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x589PL7K000858;
+        Sat, 8 Jun 2019 09:25:21 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 08 Jun 2019 02:24:06 -0700
-Date:   Sat, 8 Jun 2019 12:23:57 +0300
+        with ESMTP ; Sat, 08 Jun 2019 02:25:21 -0700
+Date:   Sat, 8 Jun 2019 12:25:14 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Alex Deucher <alexander.deucher@amd.com>,
-        xinhui pan <xinhui.pan@amd.com>
-Cc:     Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        "David (ChunMing) Zhou" <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Evan Quan <evan.quan@amd.com>,
-        James Zhu <James.Zhu@amd.com>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] drm/amdgpu: Fix bounds checking in amdgpu_ras_is_supported()
-Message-ID: <20190608092357.GB28890@mwanda>
+To:     Lijun Ou <oulijun@huawei.com>
+Cc:     "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] RDMA/hns: prevent undefined behavior in
+ hns_roce_set_user_sq_size()
+Message-ID: <20190608092514.GC28890@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -73,33 +71,30 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "block" variable can be set by the user through debugfs, so it can
-be quite large which leads to shift wrapping here.  This means we report
-a "block" as supported when it's not, and that leads to array overflows
-later on.
+The "ucmd->log_sq_bb_count" variable is a user controlled variable in
+the 0-255 range.  If we shift more than then number of bits in an int
+then it's undefined behavior (it shift wraps).  It turns out this
+doesn't cause any real issues at runtime, but it's good to check anyway.
 
-This bug is not really a security issue in real life, because debugfs is
-generally root only.
-
-Fixes: 36ea1bd2d084 ("drm/amdgpu: add debugfs ctrl node")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/infiniband/hw/hns/hns_roce_qp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
-index c6b34fbd695f..94c652f5265a 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
-@@ -173,6 +173,8 @@ static inline int amdgpu_ras_is_supported(struct amdgpu_device *adev,
- {
- 	struct amdgpu_ras *ras = amdgpu_ras_get_context(adev);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
+index 8db2817a249e..006b3e7f4ed5 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_qp.c
++++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
+@@ -342,7 +342,8 @@ static int hns_roce_set_user_sq_size(struct hns_roce_dev *hr_dev,
+ 	u32 max_cnt;
  
-+	if (block >= AMDGPU_RAS_BLOCK_COUNT)
-+		return 0;
- 	return ras && (ras->supported & (1 << block));
- }
- 
+ 	/* Sanity check SQ size before proceeding */
+-	if ((u32)(1 << ucmd->log_sq_bb_count) > hr_dev->caps.max_wqes ||
++	if (ucmd->log_sq_bb_count > 31 ||
++	    (u32)(1 << ucmd->log_sq_bb_count) > hr_dev->caps.max_wqes ||
+ 	     ucmd->log_sq_stride > max_sq_stride ||
+ 	     ucmd->log_sq_stride < HNS_ROCE_IB_MIN_SQ_STRIDE) {
+ 		dev_err(hr_dev->dev, "check SQ size error!\n");
 -- 
 2.20.1
 

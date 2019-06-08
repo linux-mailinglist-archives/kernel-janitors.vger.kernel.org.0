@@ -2,110 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8BF239688
-	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Jun 2019 22:12:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2294B39C13
+	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Jun 2019 11:23:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730203AbfFGUMf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 7 Jun 2019 16:12:35 -0400
-Received: from mga18.intel.com ([134.134.136.126]:46026 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728724AbfFGUMf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 7 Jun 2019 16:12:35 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Jun 2019 13:12:34 -0700
-X-ExtLoop1: 1
-Received: from orsmsx103.amr.corp.intel.com ([10.22.225.130])
-  by fmsmga005.fm.intel.com with ESMTP; 07 Jun 2019 13:12:33 -0700
-Received: from orsmsx161.amr.corp.intel.com (10.22.240.84) by
- ORSMSX103.amr.corp.intel.com (10.22.225.130) with Microsoft SMTP Server (TLS)
- id 14.3.408.0; Fri, 7 Jun 2019 13:12:33 -0700
-Received: from orsmsx121.amr.corp.intel.com ([169.254.10.133]) by
- ORSMSX161.amr.corp.intel.com ([169.254.4.126]) with mapi id 14.03.0415.000;
- Fri, 7 Jun 2019 13:12:33 -0700
-From:   "Keller, Jacob E" <jacob.e.keller@intel.com>
-To:     Colin King <colin.king@canonical.com>,
-        "Kirsher, Jeffrey T" <jeffrey.t.kirsher@intel.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH][next][V2] ixgbe: fix potential u32 overflow on shift
-Thread-Topic: [PATCH][next][V2] ixgbe: fix potential u32 overflow on shift
-Thread-Index: AQHVHV2OjqHrl9oJCUOLbN4+Vk3DLaaQn9mg
-Date:   Fri, 7 Jun 2019 20:12:33 +0000
-Message-ID: <02874ECE860811409154E81DA85FBB589674F4D9@ORSMSX121.amr.corp.intel.com>
-References: <20190607181920.23339-1-colin.king@canonical.com>
-In-Reply-To: <20190607181920.23339-1-colin.king@canonical.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiNDgzYTI2MjctYWRmOC00MzIyLTg3ZjktYmQ4ZWJhZjYxNjQ2IiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiXC9BM3NKY01ieTVneE1rRWRGbldvZWlRYjVJT01DZHByNTJodE15bEkrc3RJM1hYTks1TVE0dDFlMmV3TEw0M2wifQ==
-x-ctpclassification: CTP_NT
-dlp-product: dlpe-windows
-dlp-version: 11.0.600.7
-dlp-reaction: no-action
-x-originating-ip: [10.22.254.140]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1726692AbfFHJXM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 8 Jun 2019 05:23:12 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:50678 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726478AbfFHJXM (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 8 Jun 2019 05:23:12 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x589IUcD027134;
+        Sat, 8 Jun 2019 09:22:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
+ bh=G2bcD2evvnusxPHeJtXrExNaVSL3tNCaAK0N8Hwe0A4=;
+ b=lzmTP+GHSWBIEjAaMTysOeb1eCJg7olwokE1UED8eSwuJP5jtWW/iK9AMB2fquON9yxJ
+ m1yCjnjlYT4rPOymQuUQV3cWj251VKJXQd0/gbEfAwHlQewdVzRszxmGnYjx0139w2XW
+ ct9xV0VPfsTq3KGAuY70b+R3t5TugxcKHORJmpVo7Pp95aZeYjeK2bC6IMvUYIxsQMgO
+ DauOeMYD54U4TqL9VCfnDnRzX4V7l2Q5O/Zr3jadiYhUy48QbsIsb1JSrmXtVGhA3lzR
+ FLlvtZHu68fGf1IN5H4G0vTEVLvSBIuF0BOYB+HXMsvAGc95C7DCNn3i7Y5Xlvho7Fyc lQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2t05nq8kmy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 08 Jun 2019 09:22:41 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x589MfEM098711;
+        Sat, 8 Jun 2019 09:22:41 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 2t04bkkur9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 08 Jun 2019 09:22:40 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x589Mdo0022994;
+        Sat, 8 Jun 2019 09:22:39 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 08 Jun 2019 02:22:38 -0700
+Date:   Sat, 8 Jun 2019 12:22:31 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Yishai Hadas <yishaih@mellanox.com>
+Cc:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] IB/mlx4: prevent undefined shift in set_user_sq_size()
+Message-ID: <20190608092231.GA28890@mwanda>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9281 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906080071
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9281 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906080071
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBDb2xpbiBLaW5nIFttYWlsdG86
-Y29saW4ua2luZ0BjYW5vbmljYWwuY29tXQ0KPiBTZW50OiBGcmlkYXksIEp1bmUgMDcsIDIwMTkg
-MTE6MTkgQU0NCj4gVG86IEtlbGxlciwgSmFjb2IgRSA8amFjb2IuZS5rZWxsZXJAaW50ZWwuY29t
-PjsgS2lyc2hlciwgSmVmZnJleSBUDQo+IDxqZWZmcmV5LnQua2lyc2hlckBpbnRlbC5jb20+OyBE
-YXZpZCBTIC4gTWlsbGVyIDxkYXZlbUBkYXZlbWxvZnQubmV0PjsgaW50ZWwtd2lyZWQtDQo+IGxh
-bkBsaXN0cy5vc3Vvc2wub3JnOyBuZXRkZXZAdmdlci5rZXJuZWwub3JnDQo+IENjOiBrZXJuZWwt
-amFuaXRvcnNAdmdlci5rZXJuZWwub3JnOyBsaW51eC1rZXJuZWxAdmdlci5rZXJuZWwub3JnDQo+
-IFN1YmplY3Q6IFtQQVRDSF1bbmV4dF1bVjJdIGl4Z2JlOiBmaXggcG90ZW50aWFsIHUzMiBvdmVy
-ZmxvdyBvbiBzaGlmdA0KPiANCj4gRnJvbTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fu
-b25pY2FsLmNvbT4NCj4gDQo+IFRoZSB1MzIgdmFyaWFibGUgcmVtIGlzIGJlaW5nIHNoaWZ0ZWQg
-dXNpbmcgdTMyIGFyaXRobWV0aWMgaG93ZXZlcg0KPiBpdCBpcyBiZWluZyBwYXNzZWQgdG8gZGl2
-X3U2NCB0aGF0IGV4cGVjdHMgdGhlIGV4cHJlc3Npb24gdG8gYmUgYSB1NjQuDQo+IFRoZSAzMiBi
-aXQgc2hpZnQgbWF5IHBvdGVudGlhbGx5IG92ZXJmbG93LCBzbyBjYXN0IHJlbSB0byBhIHU2NCBi
-ZWZvcmUNCj4gc2hpZnRpbmcgdG8gYXZvaWQgdGhpcy4gIEFsc28gcmVtb3ZlIGNvbW1lbnQgYWJv
-dXQgb3ZlcmZsb3cuDQo+IA0KPiBBZGRyZXNzZXMtQ292ZXJpdHk6ICgiVW5pbnRlbnRpb25hbCBp
-bnRlZ2VyIG92ZXJmbG93IikNCj4gRml4ZXM6IGNkNDU4MzIwNjk5MCAoIml4Z2JlOiBpbXBsZW1l
-bnQgc3VwcG9ydCBmb3IgU0RQL1BQUyBvdXRwdXQgb24gWDU1MA0KPiBoYXJkd2FyZSIpDQo+IEZp
-eGVzOiA2OGQ5Njc2ZmMwNGUgKCJpeGdiZTogZml4IFBUUCBTRFAgcGluIHNldHVwIG9uIFg1NDAg
-aGFyZHdhcmUiKQ0KPiBTaWduZWQtb2ZmLWJ5OiBDb2xpbiBJYW4gS2luZyA8Y29saW4ua2luZ0Bj
-YW5vbmljYWwuY29tPg0KPiAtLS0NCj4gDQo+IFYyOiB1cGRhdGUgY29tbWVudA0KDQpUaGFua3Mg
-Q29saW4hDQoNCkFja2VkLWJ5OiBKYWNvYiBLZWxsZXIgPGphY29iLmUua2VsbGVyQGludGVsLmNv
-bT4NCg0KUmVnYXJkcywNCkpha2UNCg0KPiANCj4gLS0tDQo+ICBkcml2ZXJzL25ldC9ldGhlcm5l
-dC9pbnRlbC9peGdiZS9peGdiZV9wdHAuYyB8IDE0ICsrKystLS0tLS0tLS0tDQo+ICAxIGZpbGUg
-Y2hhbmdlZCwgNCBpbnNlcnRpb25zKCspLCAxMCBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1n
-aXQgYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9pbnRlbC9peGdiZS9peGdiZV9wdHAuYw0KPiBiL2Ry
-aXZlcnMvbmV0L2V0aGVybmV0L2ludGVsL2l4Z2JlL2l4Z2JlX3B0cC5jDQo+IGluZGV4IDJjNGQz
-MjdmY2MyZS4uMGJlMTNhOTBmZjc5IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5l
-dC9pbnRlbC9peGdiZS9peGdiZV9wdHAuYw0KPiArKysgYi9kcml2ZXJzL25ldC9ldGhlcm5ldC9p
-bnRlbC9peGdiZS9peGdiZV9wdHAuYw0KPiBAQCAtMjA1LDExICsyMDUsOCBAQCBzdGF0aWMgdm9p
-ZCBpeGdiZV9wdHBfc2V0dXBfc2RwX1g1NDAoc3RydWN0DQo+IGl4Z2JlX2FkYXB0ZXIgKmFkYXB0
-ZXIpDQo+ICAJICovDQo+ICAJcmVtID0gKE5TX1BFUl9TRUMgLSByZW0pOw0KPiANCj4gLQkvKiBB
-ZGp1c3QgdGhlIGNsb2NrIGVkZ2UgdG8gYWxpZ24gd2l0aCB0aGUgbmV4dCBmdWxsIHNlY29uZC4g
-VGhpcw0KPiAtCSAqIGFzc3VtZXMgdGhhdCB0aGUgY3ljbGUgY291bnRlciBzaGlmdCBpcyBzbWFs
-bCBlbm91Z2ggdG8gYXZvaWQNCj4gLQkgKiBvdmVyZmxvd2luZyB3aGVuIHNoaWZ0aW5nIHRoZSBy
-ZW1haW5kZXIuDQo+IC0JICovDQo+IC0JY2xvY2tfZWRnZSArPSBkaXZfdTY0KChyZW0gPDwgY2Mt
-PnNoaWZ0KSwgY2MtPm11bHQpOw0KPiArCS8qIEFkanVzdCB0aGUgY2xvY2sgZWRnZSB0byBhbGln
-biB3aXRoIHRoZSBuZXh0IGZ1bGwgc2Vjb25kLiAqLw0KPiArCWNsb2NrX2VkZ2UgKz0gZGl2X3U2
-NCgoKHU2NClyZW0gPDwgY2MtPnNoaWZ0KSwgY2MtPm11bHQpOw0KPiAgCXRyZ3R0aW1sID0gKHUz
-MiljbG9ja19lZGdlOw0KPiAgCXRyZ3R0aW1oID0gKHUzMikoY2xvY2tfZWRnZSA+PiAzMik7DQo+
-IA0KPiBAQCAtMjkxLDExICsyODgsOCBAQCBzdGF0aWMgdm9pZCBpeGdiZV9wdHBfc2V0dXBfc2Rw
-X1g1NTAoc3RydWN0DQo+IGl4Z2JlX2FkYXB0ZXIgKmFkYXB0ZXIpDQo+ICAJICovDQo+ICAJcmVt
-ID0gKE5TX1BFUl9TRUMgLSByZW0pOw0KPiANCj4gLQkvKiBBZGp1c3QgdGhlIGNsb2NrIGVkZ2Ug
-dG8gYWxpZ24gd2l0aCB0aGUgbmV4dCBmdWxsIHNlY29uZC4gVGhpcw0KPiAtCSAqIGFzc3VtZXMg
-dGhhdCB0aGUgY3ljbGUgY291bnRlciBzaGlmdCBpcyBzbWFsbCBlbm91Z2ggdG8gYXZvaWQNCj4g
-LQkgKiBvdmVyZmxvd2luZyB3aGVuIHNoaWZ0aW5nIHRoZSByZW1haW5kZXIuDQo+IC0JICovDQo+
-IC0JY2xvY2tfZWRnZSArPSBkaXZfdTY0KChyZW0gPDwgY2MtPnNoaWZ0KSwgY2MtPm11bHQpOw0K
-PiArCS8qIEFkanVzdCB0aGUgY2xvY2sgZWRnZSB0byBhbGlnbiB3aXRoIHRoZSBuZXh0IGZ1bGwg
-c2Vjb25kLiAqLw0KPiArCWNsb2NrX2VkZ2UgKz0gZGl2X3U2NCgoKHU2NClyZW0gPDwgY2MtPnNo
-aWZ0KSwgY2MtPm11bHQpOw0KPiANCj4gIAkvKiBYNTUwIGhhcmR3YXJlIHN0b3JlcyB0aGUgdGlt
-ZSBpbiAzMmJpdHMgb2YgJ2JpbGxpb25zIG9mIGN5Y2xlcycgYW5kDQo+ICAJICogMzJiaXRzIG9m
-ICdjeWNsZXMnLiBUaGVyZSdzIG5vIGd1YXJhbnRlZSB0aGF0IGN5Y2xlcyByZXByZXNlbnRzDQo+
-IC0tDQo+IDIuMjAuMQ0KDQo=
+The ucmd->log_sq_bb_count is a u8 that comes from the user.  If it's
+larger than the number of bits in an int then that's undefined behavior.
+It turns out this doesn't really cause an issue at runtime but it's
+still nice to clean it up.
+
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/infiniband/hw/mlx4/qp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/infiniband/hw/mlx4/qp.c b/drivers/infiniband/hw/mlx4/qp.c
+index 5221c0794d1d..9f6eb23e8044 100644
+--- a/drivers/infiniband/hw/mlx4/qp.c
++++ b/drivers/infiniband/hw/mlx4/qp.c
+@@ -439,7 +439,8 @@ static int set_user_sq_size(struct mlx4_ib_dev *dev,
+ 			    struct mlx4_ib_create_qp *ucmd)
+ {
+ 	/* Sanity check SQ size before proceeding */
+-	if ((1 << ucmd->log_sq_bb_count) > dev->dev->caps.max_wqes	 ||
++	if (ucmd->log_sq_bb_count > 31					 ||
++	    (1 << ucmd->log_sq_bb_count) > dev->dev->caps.max_wqes	 ||
+ 	    ucmd->log_sq_stride >
+ 		ilog2(roundup_pow_of_two(dev->dev->caps.max_sq_desc_sz)) ||
+ 	    ucmd->log_sq_stride < MLX4_IB_MIN_SQ_STRIDE)
+-- 
+2.20.1
+

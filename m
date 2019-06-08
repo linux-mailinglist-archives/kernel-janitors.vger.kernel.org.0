@@ -2,52 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2294B39C13
-	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Jun 2019 11:23:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B20739C16
+	for <lists+kernel-janitors@lfdr.de>; Sat,  8 Jun 2019 11:24:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726692AbfFHJXM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 8 Jun 2019 05:23:12 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:50678 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726478AbfFHJXM (ORCPT
+        id S1726613AbfFHJYS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 8 Jun 2019 05:24:18 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:53094 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726478AbfFHJYS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 8 Jun 2019 05:23:12 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x589IUcD027134;
-        Sat, 8 Jun 2019 09:22:41 GMT
+        Sat, 8 Jun 2019 05:24:18 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x589IQg0042082;
+        Sat, 8 Jun 2019 09:24:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=G2bcD2evvnusxPHeJtXrExNaVSL3tNCaAK0N8Hwe0A4=;
- b=lzmTP+GHSWBIEjAaMTysOeb1eCJg7olwokE1UED8eSwuJP5jtWW/iK9AMB2fquON9yxJ
- m1yCjnjlYT4rPOymQuUQV3cWj251VKJXQd0/gbEfAwHlQewdVzRszxmGnYjx0139w2XW
- ct9xV0VPfsTq3KGAuY70b+R3t5TugxcKHORJmpVo7Pp95aZeYjeK2bC6IMvUYIxsQMgO
- DauOeMYD54U4TqL9VCfnDnRzX4V7l2Q5O/Zr3jadiYhUy48QbsIsb1JSrmXtVGhA3lzR
- FLlvtZHu68fGf1IN5H4G0vTEVLvSBIuF0BOYB+HXMsvAGc95C7DCNn3i7Y5Xlvho7Fyc lQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 2t05nq8kmy-1
+ bh=UEF3RcNQbMOhraajwl43bUezUG05vQzOtXc/1mdAqAk=;
+ b=HbS9hhY4LusW456YSOonTNPlWmqlBq701uOKqKe7BGWLQ38L/UyPxqt/5+y9oBKb9p7Q
+ T9ovTncV1/xBFq7I9rUdC0ND0WvpnDUnqaMD77IfzyfdLN46cfRl8U67wBMry4AD9saW
+ SH1b6cFPZr4mElF9AK+IDFPnyVhceYPSxAMdtSZLPTriz6h5mycidljdn4sgda0mtIvE
+ DknS82qxTT5wNWyhOV8liIkdwcuzGpdfqWZKP28ihIzBLQ5M59zT9n60VkC8iwKuYxPc
+ 1Sv+tOSO5HtpG0BxbU4Azr9W3C0OyLWRGlPgKt7Nj3oCMvQnoE2E+JvgNgBoSuA8iMks Kw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2130.oracle.com with ESMTP id 2t02he8vnn-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 08 Jun 2019 09:22:41 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x589MfEM098711;
-        Sat, 8 Jun 2019 09:22:41 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 2t04bkkur9-1
+        Sat, 08 Jun 2019 09:24:11 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x589OA4T019708;
+        Sat, 8 Jun 2019 09:24:10 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2t0aa900ke-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 08 Jun 2019 09:22:40 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x589Mdo0022994;
-        Sat, 8 Jun 2019 09:22:39 GMT
+        Sat, 08 Jun 2019 09:24:10 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x589O7cj030247;
+        Sat, 8 Jun 2019 09:24:07 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 08 Jun 2019 02:22:38 -0700
-Date:   Sat, 8 Jun 2019 12:22:31 +0300
+        with ESMTP ; Sat, 08 Jun 2019 02:24:06 -0700
+Date:   Sat, 8 Jun 2019 12:23:57 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Yishai Hadas <yishaih@mellanox.com>
-Cc:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] IB/mlx4: prevent undefined shift in set_user_sq_size()
-Message-ID: <20190608092231.GA28890@mwanda>
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        xinhui pan <xinhui.pan@amd.com>
+Cc:     Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        "David (ChunMing) Zhou" <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, Evan Quan <evan.quan@amd.com>,
+        James Zhu <James.Zhu@amd.com>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] drm/amdgpu: Fix bounds checking in amdgpu_ras_is_supported()
+Message-ID: <20190608092357.GB28890@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -60,7 +64,7 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 ma
  engine=8.0.1-1810050000 definitions=main-1906080071
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9281 signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
  definitions=main-1906080071
@@ -69,30 +73,33 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The ucmd->log_sq_bb_count is a u8 that comes from the user.  If it's
-larger than the number of bits in an int then that's undefined behavior.
-It turns out this doesn't really cause an issue at runtime but it's
-still nice to clean it up.
+The "block" variable can be set by the user through debugfs, so it can
+be quite large which leads to shift wrapping here.  This means we report
+a "block" as supported when it's not, and that leads to array overflows
+later on.
 
+This bug is not really a security issue in real life, because debugfs is
+generally root only.
+
+Fixes: 36ea1bd2d084 ("drm/amdgpu: add debugfs ctrl node")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/infiniband/hw/mlx4/qp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/mlx4/qp.c b/drivers/infiniband/hw/mlx4/qp.c
-index 5221c0794d1d..9f6eb23e8044 100644
---- a/drivers/infiniband/hw/mlx4/qp.c
-+++ b/drivers/infiniband/hw/mlx4/qp.c
-@@ -439,7 +439,8 @@ static int set_user_sq_size(struct mlx4_ib_dev *dev,
- 			    struct mlx4_ib_create_qp *ucmd)
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
+index c6b34fbd695f..94c652f5265a 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras.h
+@@ -173,6 +173,8 @@ static inline int amdgpu_ras_is_supported(struct amdgpu_device *adev,
  {
- 	/* Sanity check SQ size before proceeding */
--	if ((1 << ucmd->log_sq_bb_count) > dev->dev->caps.max_wqes	 ||
-+	if (ucmd->log_sq_bb_count > 31					 ||
-+	    (1 << ucmd->log_sq_bb_count) > dev->dev->caps.max_wqes	 ||
- 	    ucmd->log_sq_stride >
- 		ilog2(roundup_pow_of_two(dev->dev->caps.max_sq_desc_sz)) ||
- 	    ucmd->log_sq_stride < MLX4_IB_MIN_SQ_STRIDE)
+ 	struct amdgpu_ras *ras = amdgpu_ras_get_context(adev);
+ 
++	if (block >= AMDGPU_RAS_BLOCK_COUNT)
++		return 0;
+ 	return ras && (ras->supported & (1 << block));
+ }
+ 
 -- 
 2.20.1
 

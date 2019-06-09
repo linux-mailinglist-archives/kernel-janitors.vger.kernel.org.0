@@ -2,53 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 08A033A2B1
-	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Jun 2019 03:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7605B3A417
+	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Jun 2019 09:04:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727522AbfFIBZq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 8 Jun 2019 21:25:46 -0400
-Received: from mail-vs1-f65.google.com ([209.85.217.65]:39525 "EHLO
-        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726190AbfFIBZq (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 8 Jun 2019 21:25:46 -0400
-Received: by mail-vs1-f65.google.com with SMTP id n2so3367062vso.6
-        for <kernel-janitors@vger.kernel.org>; Sat, 08 Jun 2019 18:25:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=UcAC8ImZDT6IxJqpP/p/TNBFLfK9lmk6hMLgiyxIpEs=;
-        b=YKIP0rsn/nkYK8+FelI6mISilAOr8PSR4KWTiW1Q1ttdRI0/KT4p/VSoNK/ce/yP3l
-         DQXQK4PYjsqs6fLHDL8pDDCH7F1lEs7AiVcEvq6rQDIt5EaS3acyHWEEcqYzrQWh18SS
-         3atG+hB9BAZDaHU/MGZynTE8hh7k77ygpbaN4Wfb0pggUavsS5QrqoyFMqcEnQZuf2xj
-         qSLXdgku/fv6ADzj9ycvioOxa5LrhhmvAer6wM8xo205Uj3NLbhtstgRUqa+dT+uv2sy
-         g5OQDqGKbMLmCYFGPHCpBeK7pjaqtY7TQPoe/+P6OAA+s8evG+wSEkGSsa3L/mVtlkRd
-         enyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=UcAC8ImZDT6IxJqpP/p/TNBFLfK9lmk6hMLgiyxIpEs=;
-        b=flKvYN6cDR+K8v+UHiWR0AL29xWS48n4q5bIn1kCwkVSths3fWauG/4FarFhYsnOe4
-         HgxIb/Jv5ItE2REY+84wRN6Ig0c5g4Y5obBq8AziYYwNd0Xh3yg0FY8Uy0MvSm9e7bIl
-         JuMAtUTa1Gr0qYfrm4kueNgc9uC8o2ZZAy7o7Ct6vOKeMLIwFBJqOfpESkuwerpsQMbl
-         p7x+ZIp8hVt8KD6zbNB89GvIR/YrLa4NutnuZhojO4DKROorizDVqlo24bCYGWyi6aSR
-         P/+6k1WjjnycA1e2gMltzdi5gI4iiOOSjWGsi07drjnK02wtxvxcIDiZmjNqyI88uIWt
-         GIBw==
-X-Gm-Message-State: APjAAAUfFRLc+rsQGZC0KPVT7H5Qt4zUsJ7GQuYqYOajdC9O2Rpby8PU
-        AZQnfMX1Tahvi5b3z/EySw9HH7Cx+AwsepbqqCbtQYTQ1oCfyg==
-X-Google-Smtp-Source: APXvYqwiRva0Bd7yPkImOQ2G5P4rMV03aMr8HD3SVMgE68SrNjT3NSWeLDrgiJrppa7Ebrxu7syo4LJnBaVGmFzzzxo=
-X-Received: by 2002:a67:ca0a:: with SMTP id z10mr16247659vsk.94.1560043545315;
- Sat, 08 Jun 2019 18:25:45 -0700 (PDT)
+        id S1727657AbfFIHDy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 9 Jun 2019 03:03:54 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:18116 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725850AbfFIHDy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 9 Jun 2019 03:03:54 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 0B0368A77C38820DB5B9;
+        Sun,  9 Jun 2019 15:03:47 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.439.0; Sun, 9 Jun 2019 15:03:40 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <davem@davemloft.net>
+CC:     <alexandre.belloni@bootlin.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH -next] ocelot: remove unused variable 'rc' in vcap_cmd()
+Date:   Sun, 9 Jun 2019 15:11:26 +0800
+Message-ID: <20190609071126.183505-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-From:   Ming Yang <minos.future@gmail.com>
-Date:   Sat, 8 Jun 2019 18:25:32 -0700
-Message-ID: <CAEVNDXuse=mGXOzDFbCRuU8RgAVG8bWyW+3eR=2ouQUk+sdCag@mail.gmail.com>
-Subject: 
-To:     kernel-janitors@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-subscribe kernel-janitors
+Fixes gcc '-Wunused-but-set-variable' warning:
+
+drivers/net/ethernet/mscc/ocelot_ace.c: In function ‘vcap_cmd’:
+drivers/net/ethernet/mscc/ocelot_ace.c:108:6: warning: variable ‘rc’ set
+but not used [-Wunused-but-set-variable]
+  int rc;
+      ^
+It's never used since introduction in commit b596229448dd ("net: mscc:
+ocelot: Add support for tcam")
+
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ drivers/net/ethernet/mscc/ocelot_ace.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/mscc/ocelot_ace.c b/drivers/net/ethernet/mscc/ocelot_ace.c
+index f74b98f7d8d1..39aca1ab4687 100644
+--- a/drivers/net/ethernet/mscc/ocelot_ace.c
++++ b/drivers/net/ethernet/mscc/ocelot_ace.c
+@@ -105,7 +105,6 @@ static void vcap_cmd(struct ocelot *oc, u16 ix, int cmd, int sel)
+ 	u32 value = (S2_CORE_UPDATE_CTRL_UPDATE_CMD(cmd) |
+ 		     S2_CORE_UPDATE_CTRL_UPDATE_ADDR(ix) |
+ 		     S2_CORE_UPDATE_CTRL_UPDATE_SHOT);
+-	int rc;
+ 
+ 	if ((sel & VCAP_SEL_ENTRY) && ix >= vcap_is2.entry_count)
+ 		return;
+@@ -120,7 +119,7 @@ static void vcap_cmd(struct ocelot *oc, u16 ix, int cmd, int sel)
+ 		value |= S2_CORE_UPDATE_CTRL_UPDATE_CNT_DIS;
+ 
+ 	ocelot_write(oc, value, S2_CORE_UPDATE_CTRL);
+-	rc = readx_poll_timeout(vcap_s2_read_update_ctrl, oc, value,
++	readx_poll_timeout(vcap_s2_read_update_ctrl, oc, value,
+ 				(value & S2_CORE_UPDATE_CTRL_UPDATE_SHOT) == 0,
+ 				10, 100000);
+ }
+-- 
+2.20.1
+

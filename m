@@ -2,127 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B0203A25E
-	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Jun 2019 00:23:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08A033A2B1
+	for <lists+kernel-janitors@lfdr.de>; Sun,  9 Jun 2019 03:25:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727829AbfFHWX0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 8 Jun 2019 18:23:26 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:43831 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727552AbfFHWXZ (ORCPT
+        id S1727522AbfFIBZq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 8 Jun 2019 21:25:46 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:39525 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726190AbfFIBZq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 8 Jun 2019 18:23:25 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hZjk9-0008IF-KM; Sat, 08 Jun 2019 22:23:21 +0000
-Subject: Re: [PATCH][next] clk: bcm2835: fix memork leak on unfree'd pll
- struct
-To:     Stephen Boyd <sboyd@kernel.org>, Eric Anholt <eric@anholt.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Stefan Wahren <stefan.wahren@i2se.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-        linux-rpi-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190607104533.14700-1-colin.king@canonical.com>
- <20190607190331.8B06020868@mail.kernel.org>
-From:   Colin Ian King <colin.king@canonical.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <af63f727-d579-ba2d-4fa5-142ad476e293@canonical.com>
-Date:   Sat, 8 Jun 2019 23:23:20 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        Sat, 8 Jun 2019 21:25:46 -0400
+Received: by mail-vs1-f65.google.com with SMTP id n2so3367062vso.6
+        for <kernel-janitors@vger.kernel.org>; Sat, 08 Jun 2019 18:25:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=UcAC8ImZDT6IxJqpP/p/TNBFLfK9lmk6hMLgiyxIpEs=;
+        b=YKIP0rsn/nkYK8+FelI6mISilAOr8PSR4KWTiW1Q1ttdRI0/KT4p/VSoNK/ce/yP3l
+         DQXQK4PYjsqs6fLHDL8pDDCH7F1lEs7AiVcEvq6rQDIt5EaS3acyHWEEcqYzrQWh18SS
+         3atG+hB9BAZDaHU/MGZynTE8hh7k77ygpbaN4Wfb0pggUavsS5QrqoyFMqcEnQZuf2xj
+         qSLXdgku/fv6ADzj9ycvioOxa5LrhhmvAer6wM8xo205Uj3NLbhtstgRUqa+dT+uv2sy
+         g5OQDqGKbMLmCYFGPHCpBeK7pjaqtY7TQPoe/+P6OAA+s8evG+wSEkGSsa3L/mVtlkRd
+         enyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=UcAC8ImZDT6IxJqpP/p/TNBFLfK9lmk6hMLgiyxIpEs=;
+        b=flKvYN6cDR+K8v+UHiWR0AL29xWS48n4q5bIn1kCwkVSths3fWauG/4FarFhYsnOe4
+         HgxIb/Jv5ItE2REY+84wRN6Ig0c5g4Y5obBq8AziYYwNd0Xh3yg0FY8Uy0MvSm9e7bIl
+         JuMAtUTa1Gr0qYfrm4kueNgc9uC8o2ZZAy7o7Ct6vOKeMLIwFBJqOfpESkuwerpsQMbl
+         p7x+ZIp8hVt8KD6zbNB89GvIR/YrLa4NutnuZhojO4DKROorizDVqlo24bCYGWyi6aSR
+         P/+6k1WjjnycA1e2gMltzdi5gI4iiOOSjWGsi07drjnK02wtxvxcIDiZmjNqyI88uIWt
+         GIBw==
+X-Gm-Message-State: APjAAAUfFRLc+rsQGZC0KPVT7H5Qt4zUsJ7GQuYqYOajdC9O2Rpby8PU
+        AZQnfMX1Tahvi5b3z/EySw9HH7Cx+AwsepbqqCbtQYTQ1oCfyg==
+X-Google-Smtp-Source: APXvYqwiRva0Bd7yPkImOQ2G5P4rMV03aMr8HD3SVMgE68SrNjT3NSWeLDrgiJrppa7Ebrxu7syo4LJnBaVGmFzzzxo=
+X-Received: by 2002:a67:ca0a:: with SMTP id z10mr16247659vsk.94.1560043545315;
+ Sat, 08 Jun 2019 18:25:45 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190607190331.8B06020868@mail.kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+From:   Ming Yang <minos.future@gmail.com>
+Date:   Sat, 8 Jun 2019 18:25:32 -0700
+Message-ID: <CAEVNDXuse=mGXOzDFbCRuU8RgAVG8bWyW+3eR=2ouQUk+sdCag@mail.gmail.com>
+Subject: 
+To:     kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 07/06/2019 20:03, Stephen Boyd wrote:
-> Quoting Colin King (2019-06-07 03:45:33)
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> The pll struct is being allocated but not kfree'd on an error return
->> path when devm_clk_hw_register fails.  Fix this with a kfree on pll
->> if an error occurs.
->>
->> Addresses-Coverity: ("Resource leak")
->> Fixes: b19f009d4510 ("clk: bcm2835: Migrate to clk_hw based registration and OF APIs")
-> 
-> I suspect this problem was there before this commit, but OK.
-> 
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>  drivers/clk/bcm/clk-bcm2835.c | 4 +++-
->>  1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/clk/bcm/clk-bcm2835.c b/drivers/clk/bcm/clk-bcm2835.c
->> index 770bb01f523e..90584deaf416 100644
->> --- a/drivers/clk/bcm/clk-bcm2835.c
->> +++ b/drivers/clk/bcm/clk-bcm2835.c
->> @@ -1310,8 +1310,10 @@ static struct clk_hw *bcm2835_register_pll(struct bcm2835_cprman *cprman,
->>         pll->hw.init = &init;
->>  
->>         ret = devm_clk_hw_register(cprman->dev, &pll->hw);
->> -       if (ret)
->> +       if (ret) {
->> +               kfree(pll);
->>                 return NULL;
->> +       }
->>         return &pll->hw;
->>  }
-> 
-> Aren't there more leaks in this driver? 
-> 
-I'll have a look next week.
+subscribe kernel-janitors

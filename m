@@ -2,75 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DFF743B6EF
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Jun 2019 16:09:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A6963B77D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Jun 2019 16:34:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390710AbfFJOJD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Jun 2019 10:09:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39286 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390707AbfFJOJD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Jun 2019 10:09:03 -0400
-Received: from localhost (unknown [37.142.3.125])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C7D22207E0;
-        Mon, 10 Jun 2019 14:09:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560175742;
-        bh=Dmhjn6dmerxXt3ol9jRCHnE5w1zR4m9csfEWBzDuhn4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=k3TGXv+nJgo3yOOp07fNs9ycIRFhMbZiT4PcS0cEAJ02ju98idOf2y9PHPKHXF6V+
-         w8ZxiPBtWL/+Zz6AQVV3DxIbWnfmd/6CJYLx8IuuIFRoVQGlu4QTyvf9sDzgPcVJou
-         XmQ2mMHsCGStAcmRMU6mZ8bQEfW17nWTl9HF3Txs=
-Date:   Mon, 10 Jun 2019 17:08:58 +0300
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Yishai Hadas <yishaih@mellanox.com>,
-        Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] IB/mlx4: prevent undefined shift in set_user_sq_size()
-Message-ID: <20190610140858.GA6369@mtr-leonro.mtl.com>
-References: <20190608092231.GA28890@mwanda>
- <20190610132849.GD18468@ziepe.ca>
+        id S2403949AbfFJOel (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Jun 2019 10:34:41 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:45613 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2403942AbfFJOel (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 10 Jun 2019 10:34:41 -0400
+Received: by mail-ed1-f68.google.com with SMTP id a14so12943113edv.12;
+        Mon, 10 Jun 2019 07:34:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MTGWsUBr2L+P8aBUG4WFSYpu/sxAUSElAPcxJpHZNu0=;
+        b=HKp914S4OkrsKUi0GgHD22923EyP+FFJGm6HKQ1iHKxNtx+/zxQaF9i1rbCrbHl5eb
+         0OHqNXMeYYGNlQtVmEEVUJof06bsfE9J6PcREobzGwzTAw2N30iVnWVifos0ssBpbzTt
+         x6PK9w3mSNENnFZ00RIt5m7CHsTewevwG6blysA42J5R8eH7Ub/HGdqSWiyP1T6kBKxg
+         QnDzaRXb7fJsWeFwLkRHq+R7xaXkK5sOQ3pguBCj7FnNH0j+4V2yhKjCgOyH5/sWZXSN
+         hawir52CgsvkCOghKcMb/aZgBjBiniBHMg5+Y7CDtkM1dr5YU/tjCG55jrKIjr2XC7ub
+         NMsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MTGWsUBr2L+P8aBUG4WFSYpu/sxAUSElAPcxJpHZNu0=;
+        b=ErlwVkrfmdGsjBacKBvy4fynH6ce9kxfzJGbeGidPTKaueZLFduJ+qaAl2s8M2axi2
+         7BGgrz3/1fi0h3S8iDEYMWPDHubqOdIUEuQ6Zl4FmW7T5LCv+Q3Cmt33ekn7wrRUiQoQ
+         WlL9EI6yk9V4S6W99U122Gva5tpZn+DrYjpCXwC9iQj+G6NlfQyjuqFfdOYIxMCFdax3
+         DUl3O9ztQOhim/Y+voHYbO8DBvH0BojTn/egqnGwKvqzAwYsePs9u6HSEu3y1nYTmasQ
+         o++msOmjr2YibnjRqysz7DQoxWakViYdZ0zRLvij8uja0idXXbcUNdKi1W6cH+JvNNJj
+         MP6A==
+X-Gm-Message-State: APjAAAWNGrDGX3dM3f8z7TjJL8B30O8owyj3j6P3BSbTeNiLww1gocWy
+        fjLix2FQ6oVgvShfvQBfsm0j38P+w1PMzW/Zju8=
+X-Google-Smtp-Source: APXvYqzG4pTXEWeYJu/98bKGKeUyLRBM6GfrMiLJSxD5yHuoJDChEYDidfgdt6pimDZUHUwcoAxyiqxSlc+gJJqdup8=
+X-Received: by 2002:a50:b1db:: with SMTP id n27mr28793697edd.62.1560177279272;
+ Mon, 10 Jun 2019 07:34:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190610132849.GD18468@ziepe.ca>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+References: <20190610115831.175710-1-maowenan@huawei.com> <CAF=yD-JOCZHt6q3ArCqY5PMW1vP5ZmNkYMKUB14TrgU-X30cSQ@mail.gmail.com>
+ <caf8d25f-60e2-a0c0-dc21-956ea32ee59a@huawei.com>
+In-Reply-To: <caf8d25f-60e2-a0c0-dc21-956ea32ee59a@huawei.com>
+From:   Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Date:   Mon, 10 Jun 2019 10:34:03 -0400
+Message-ID: <CAF=yD-+g1bSGOubFUE8veZNvGiPy1oYsf+dFDd=hqXYD+k4g_Q@mail.gmail.com>
+Subject: Re: [PATCH -next] packet: remove unused variable 'status' in __packet_lookup_frame_in_block
+To:     maowenan <maowenan@huawei.com>
+Cc:     David Miller <davem@davemloft.net>,
+        Network Development <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jun 10, 2019 at 10:28:49AM -0300, Jason Gunthorpe wrote:
-> On Sat, Jun 08, 2019 at 12:22:31PM +0300, Dan Carpenter wrote:
-> > The ucmd->log_sq_bb_count is a u8 that comes from the user.  If it's
-> > larger than the number of bits in an int then that's undefined behavior.
-> > It turns out this doesn't really cause an issue at runtime but it's
-> > still nice to clean it up.
-> >
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> >  drivers/infiniband/hw/mlx4/qp.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/infiniband/hw/mlx4/qp.c b/drivers/infiniband/hw/mlx4/qp.c
-> > index 5221c0794d1d..9f6eb23e8044 100644
-> > --- a/drivers/infiniband/hw/mlx4/qp.c
-> > +++ b/drivers/infiniband/hw/mlx4/qp.c
-> > @@ -439,7 +439,8 @@ static int set_user_sq_size(struct mlx4_ib_dev *dev,
-> >  			    struct mlx4_ib_create_qp *ucmd)
-> >  {
-> >  	/* Sanity check SQ size before proceeding */
-> > -	if ((1 << ucmd->log_sq_bb_count) > dev->dev->caps.max_wqes	 ||
-> > +	if (ucmd->log_sq_bb_count > 31					 ||
-> > +	    (1 << ucmd->log_sq_bb_count) > dev->dev->caps.max_wqes	 ||
+On Mon, Jun 10, 2019 at 10:03 AM maowenan <maowenan@huawei.com> wrote:
 >
-> Surely this should use check_shl_overflow() ?
-
-Yes
-
 >
-> Jason
+>
+> On 2019/6/10 21:05, Willem de Bruijn wrote:
+> > On Mon, Jun 10, 2019 at 8:17 AM Mao Wenan <maowenan@huawei.com> wrote:
+> >>
+> >> The variable 'status' in  __packet_lookup_frame_in_block() is never used since
+> >> introduction in commit f6fb8f100b80 ("af-packet: TPACKET_V3 flexible buffer
+> >> implementation."), we can remove it.
+> >> And when __packet_lookup_frame_in_block() calls prb_retire_current_block(),
+> >> it can pass macro TP_STATUS_KERNEL instead of 0.
+> >>
+> >> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> >> ---
+
+> >>         /* Ok, close the current block */
+> >> -       prb_retire_current_block(pkc, po, 0);
+> >> +       prb_retire_current_block(pkc, po, TP_STATUS_KERNEL);
+> >
+> > I don't think that 0 is intended to mean TP_STATUS_KERNEL here.
+> >
+> > prb_retire_current_block calls prb_close_block which sets status to
+> >
+> >   TP_STATUS_USER | stat
+> >
+> > where stat is 0 or TP_STATUS_BLK_TMO.
+>
+>
+> #define TP_STATUS_KERNEL                      0
+> #define TP_STATUS_BLK_TMO               (1 << 5)
+>
+> Actually, packet_current_rx_frame calls __packet_lookup_frame_in_block with status=TP_STATUS_KERNEL
+> in original code.
+>
+> __packet_lookup_frame_in_block in this function, first is to check whether the currently active block
+> has enough space for the packet, which means status of block should be TP_STATUS_KERNEL, then it calls
+> prb_retire_current_block to retire this block.
+
+I know. I mean that the status here is what is passed to userspace on
+block retire.
+
+It is not intended to be TP_STATUS_USER | TP_STATUS_KERNEL. That makes no sense.
+
+> Since there needs some discussion about means of status, I can send v2 only removing the parameter status of
+> __packet_lookup_frame_in_block?
+
+Sounds good.

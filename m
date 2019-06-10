@@ -2,80 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2992E3B43B
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Jun 2019 13:51:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85B573B5C2
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Jun 2019 15:06:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388951AbfFJLvA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Jun 2019 07:51:00 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:18541 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2388572AbfFJLvA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Jun 2019 07:51:00 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id B58472FEA26F6711455F;
-        Mon, 10 Jun 2019 19:50:57 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 10 Jun 2019 19:50:51 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <davem@davemloft.net>
-CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH -next] packet: remove unused variable 'status' in __packet_lookup_frame_in_block
-Date:   Mon, 10 Jun 2019 19:58:31 +0800
-Message-ID: <20190610115831.175710-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S2390251AbfFJNG0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Jun 2019 09:06:26 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:37296 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388848AbfFJNG0 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 10 Jun 2019 09:06:26 -0400
+Received: by mail-ed1-f66.google.com with SMTP id w13so14472340eds.4;
+        Mon, 10 Jun 2019 06:06:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=NWUz1aHqiW4DAbvEa0aXgvCzvwmagYC0x0cLUe4LUzs=;
+        b=lVHS+rvVZBNNzX16vb+nHxt79PUNxbNEetX7iQeKrY9v6mupSrGBwom58jdVOsXzG8
+         V+JR6CwvoT29M7S0UPxIYnBcS09QSKr/ytPsDgnElQzuYf9ophRaOCpPmYxhfeexndlw
+         vclK+NuWCLD+BRdmlGnG6PJ5lyyx/2BSyMH31TVhcj2zjNHVxRJS0sTit3vwl73yDPyA
+         w2U8wU7uqVMD9gTcbchk19Xzs0ECYIKPIC0UstCft61fSap1VZOe96jxi4RhBBsbCBVq
+         oG+pxb6M3OqU6e59m/ElqjegcZ2UlDOCsEHtsstY5aHv5KN6Qb3snJA8y+BQwaPbwosW
+         ULTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=NWUz1aHqiW4DAbvEa0aXgvCzvwmagYC0x0cLUe4LUzs=;
+        b=gpKndljPb0ue9E3S+j3pwKPQuDqddtpA8zxlLO0A04fpT5IvtZbfHQJH1bCySY9JTf
+         wNgYBR7V+29bD+zlg4QzLuVS718gpXybRBGrMx8c/ni++xRfSLuNd8Hx0pOTKudxWcj/
+         GLxD0JBEz5XFr3Kc9dUvvQpkG9UP8rvtOFjF5hRs8uIVEAJ2yEqoNTCia8xmlraTgh30
+         k333FSyYX/vuWrjGgccqguHm+Hcnjw/PsSWdRbnDwSrky4iIsG5oc7tqCbQ6tsoTFDiY
+         jJHqXxq4mrovEdmlEFAQYlUmBQdHVtvx9pwDMQy1vHs6d7+5lm7YJ5SAxDyDmY4hdrs2
+         SscQ==
+X-Gm-Message-State: APjAAAWZtE1NU/pq3dQ2M2Dn2lCwFjNsSOZIMMXlDRBDeZGtk+uzDZVL
+        apLOY0C+zgScEoeancnXZC5MXeKXX7tfyfXx0j8=
+X-Google-Smtp-Source: APXvYqxSS0J+uIlJ1ZM3+zGWrrtrh/UcBN3VIHfnnDEiaHbzwTuF+97AIOaYkGCC5d3W7EopU7hzI73Od3NB1wrWPDQ=
+X-Received: by 2002:a50:bdc2:: with SMTP id z2mr73352300edh.245.1560171984540;
+ Mon, 10 Jun 2019 06:06:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+References: <20190610115831.175710-1-maowenan@huawei.com>
+In-Reply-To: <20190610115831.175710-1-maowenan@huawei.com>
+From:   Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Date:   Mon, 10 Jun 2019 09:05:48 -0400
+Message-ID: <CAF=yD-JOCZHt6q3ArCqY5PMW1vP5ZmNkYMKUB14TrgU-X30cSQ@mail.gmail.com>
+Subject: Re: [PATCH -next] packet: remove unused variable 'status' in __packet_lookup_frame_in_block
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     David Miller <davem@davemloft.net>,
+        Network Development <netdev@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The variable 'status' in  __packet_lookup_frame_in_block() is never used since
-introduction in commit f6fb8f100b80 ("af-packet: TPACKET_V3 flexible buffer
-implementation."), we can remove it.
-And when __packet_lookup_frame_in_block() calls prb_retire_current_block(), 
-it can pass macro TP_STATUS_KERNEL instead of 0.
+On Mon, Jun 10, 2019 at 8:17 AM Mao Wenan <maowenan@huawei.com> wrote:
+>
+> The variable 'status' in  __packet_lookup_frame_in_block() is never used since
+> introduction in commit f6fb8f100b80 ("af-packet: TPACKET_V3 flexible buffer
+> implementation."), we can remove it.
+> And when __packet_lookup_frame_in_block() calls prb_retire_current_block(),
+> it can pass macro TP_STATUS_KERNEL instead of 0.
+>
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> ---
+>  net/packet/af_packet.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+> index a29d66d..fb1a79c 100644
+> --- a/net/packet/af_packet.c
+> +++ b/net/packet/af_packet.c
+> @@ -1003,7 +1003,6 @@ static void prb_fill_curr_block(char *curr,
+>  /* Assumes caller has the sk->rx_queue.lock */
+>  static void *__packet_lookup_frame_in_block(struct packet_sock *po,
+>                                             struct sk_buff *skb,
+> -                                               int status,
+>                                             unsigned int len
+>                                             )
+>  {
+> @@ -1046,7 +1045,7 @@ static void *__packet_lookup_frame_in_block(struct packet_sock *po,
+>         }
+>
+>         /* Ok, close the current block */
+> -       prb_retire_current_block(pkc, po, 0);
+> +       prb_retire_current_block(pkc, po, TP_STATUS_KERNEL);
 
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
----
- net/packet/af_packet.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+I don't think that 0 is intended to mean TP_STATUS_KERNEL here.
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index a29d66d..fb1a79c 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -1003,7 +1003,6 @@ static void prb_fill_curr_block(char *curr,
- /* Assumes caller has the sk->rx_queue.lock */
- static void *__packet_lookup_frame_in_block(struct packet_sock *po,
- 					    struct sk_buff *skb,
--						int status,
- 					    unsigned int len
- 					    )
- {
-@@ -1046,7 +1045,7 @@ static void *__packet_lookup_frame_in_block(struct packet_sock *po,
- 	}
- 
- 	/* Ok, close the current block */
--	prb_retire_current_block(pkc, po, 0);
-+	prb_retire_current_block(pkc, po, TP_STATUS_KERNEL);
- 
- 	/* Now, try to dispatch the next block */
- 	curr = (char *)prb_dispatch_next_block(pkc, po);
-@@ -1075,7 +1074,7 @@ static void *packet_current_rx_frame(struct packet_sock *po,
- 					po->rx_ring.head, status);
- 		return curr;
- 	case TPACKET_V3:
--		return __packet_lookup_frame_in_block(po, skb, status, len);
-+		return __packet_lookup_frame_in_block(po, skb, len);
- 	default:
- 		WARN(1, "TPACKET version not supported\n");
- 		BUG();
--- 
-2.7.4
+prb_retire_current_block calls prb_close_block which sets status to
 
+  TP_STATUS_USER | stat
+
+where stat is 0 or TP_STATUS_BLK_TMO.

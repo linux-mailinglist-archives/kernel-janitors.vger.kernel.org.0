@@ -2,99 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 85B573B5C2
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Jun 2019 15:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BBE83B5FB
+	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Jun 2019 15:28:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390251AbfFJNG0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Jun 2019 09:06:26 -0400
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:37296 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388848AbfFJNG0 (ORCPT
+        id S2390182AbfFJN2v (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Jun 2019 09:28:51 -0400
+Received: from mail-qk1-f195.google.com ([209.85.222.195]:45956 "EHLO
+        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389756AbfFJN2v (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Jun 2019 09:06:26 -0400
-Received: by mail-ed1-f66.google.com with SMTP id w13so14472340eds.4;
-        Mon, 10 Jun 2019 06:06:25 -0700 (PDT)
+        Mon, 10 Jun 2019 09:28:51 -0400
+Received: by mail-qk1-f195.google.com with SMTP id s22so5484529qkj.12
+        for <kernel-janitors@vger.kernel.org>; Mon, 10 Jun 2019 06:28:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NWUz1aHqiW4DAbvEa0aXgvCzvwmagYC0x0cLUe4LUzs=;
-        b=lVHS+rvVZBNNzX16vb+nHxt79PUNxbNEetX7iQeKrY9v6mupSrGBwom58jdVOsXzG8
-         V+JR6CwvoT29M7S0UPxIYnBcS09QSKr/ytPsDgnElQzuYf9ophRaOCpPmYxhfeexndlw
-         vclK+NuWCLD+BRdmlGnG6PJ5lyyx/2BSyMH31TVhcj2zjNHVxRJS0sTit3vwl73yDPyA
-         w2U8wU7uqVMD9gTcbchk19Xzs0ECYIKPIC0UstCft61fSap1VZOe96jxi4RhBBsbCBVq
-         oG+pxb6M3OqU6e59m/ElqjegcZ2UlDOCsEHtsstY5aHv5KN6Qb3snJA8y+BQwaPbwosW
-         ULTA==
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=QuNGikApppPlg0NjWKKrBOd/y46mu13TvQokHY9jymY=;
+        b=dRCMPRmC4+wostK1DLkuHVBJYkHjafHfZyRDoauespSItE5FxreYUh5iJ4zrJNYE/s
+         knM+UwfJmj4GQfOa9BSME1zKsqYtD1sa/Y6Ud7giKFp1StdGQDTLbD3n8VPshrHMnEA0
+         AK+QgF3y7Z0XAz+xCC3ddz3b+WtcpFneogqYuq1NmW1fHOPeATrqTaFnTGhmdeunVGo5
+         ouVQOTzLrIDjHSwasVdcx+fd8e6jdXy60K0blnK9H5rdMKRlof13acfz6EvA52YHUdTd
+         gHodtboDZ6WulBSLFdAZLcjjX/UZZtR+AqfqCpoJ872IjCZDE49jWI47okyhXLbf1EZu
+         2ZFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NWUz1aHqiW4DAbvEa0aXgvCzvwmagYC0x0cLUe4LUzs=;
-        b=gpKndljPb0ue9E3S+j3pwKPQuDqddtpA8zxlLO0A04fpT5IvtZbfHQJH1bCySY9JTf
-         wNgYBR7V+29bD+zlg4QzLuVS718gpXybRBGrMx8c/ni++xRfSLuNd8Hx0pOTKudxWcj/
-         GLxD0JBEz5XFr3Kc9dUvvQpkG9UP8rvtOFjF5hRs8uIVEAJ2yEqoNTCia8xmlraTgh30
-         k333FSyYX/vuWrjGgccqguHm+Hcnjw/PsSWdRbnDwSrky4iIsG5oc7tqCbQ6tsoTFDiY
-         jJHqXxq4mrovEdmlEFAQYlUmBQdHVtvx9pwDMQy1vHs6d7+5lm7YJ5SAxDyDmY4hdrs2
-         SscQ==
-X-Gm-Message-State: APjAAAWZtE1NU/pq3dQ2M2Dn2lCwFjNsSOZIMMXlDRBDeZGtk+uzDZVL
-        apLOY0C+zgScEoeancnXZC5MXeKXX7tfyfXx0j8=
-X-Google-Smtp-Source: APXvYqxSS0J+uIlJ1ZM3+zGWrrtrh/UcBN3VIHfnnDEiaHbzwTuF+97AIOaYkGCC5d3W7EopU7hzI73Od3NB1wrWPDQ=
-X-Received: by 2002:a50:bdc2:: with SMTP id z2mr73352300edh.245.1560171984540;
- Mon, 10 Jun 2019 06:06:24 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=QuNGikApppPlg0NjWKKrBOd/y46mu13TvQokHY9jymY=;
+        b=bsaa6rCHq3WqFU8kpTpiwp8nwPK2MhfXpfPBEutF+GpzLt5pyPVm3z26yDOuyg1+hp
+         TAJ38VPcuR1eDS+VNFtfsix10D2FzVumvdSLVsjaPnOCAF/vo+rgIpuPUlx+qh7ua5xG
+         rPGg+cCgGtU/jHA4Dm938anm9kGHmL8FFLr7s+4viE+0N0rlcY1lN8Dzpv88gP2Edizh
+         F8o8DBjznWgcXzfmmFSkTwh6OX0eS4jZxEE9YqNDy1iXt3fNsxa7Zfk2810jLiazXc2x
+         gP5wWp5KLs3cb4uNt9KpJ4KoziNpNHOJVrBwTJ0Bn4CY+qKJvaqtrEexNOBKofEr4S81
+         Orew==
+X-Gm-Message-State: APjAAAXHlYS7ooskkCya+usnpbucH+MIm1RNjywZhKz9CzlOerO4HtPG
+        r4TP5NfADNtcCws4mZKE1zWE4A==
+X-Google-Smtp-Source: APXvYqw9KHhM3oHMB8yDNq7/Zm1qKpKlNMxma8Rlg6pAIXhuhNWj8ray+L0bOOV4P9zgblFWFYvlnw==
+X-Received: by 2002:a37:9a50:: with SMTP id c77mr55972280qke.12.1560173330662;
+        Mon, 10 Jun 2019 06:28:50 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-156-34-55-100.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.55.100])
+        by smtp.gmail.com with ESMTPSA id j9sm4706582qkg.30.2019.06.10.06.28.50
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 10 Jun 2019 06:28:50 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1haKLx-0001qn-Sk; Mon, 10 Jun 2019 10:28:49 -0300
+Date:   Mon, 10 Jun 2019 10:28:49 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Yishai Hadas <yishaih@mellanox.com>,
+        Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] IB/mlx4: prevent undefined shift in set_user_sq_size()
+Message-ID: <20190610132849.GD18468@ziepe.ca>
+References: <20190608092231.GA28890@mwanda>
 MIME-Version: 1.0
-References: <20190610115831.175710-1-maowenan@huawei.com>
-In-Reply-To: <20190610115831.175710-1-maowenan@huawei.com>
-From:   Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Date:   Mon, 10 Jun 2019 09:05:48 -0400
-Message-ID: <CAF=yD-JOCZHt6q3ArCqY5PMW1vP5ZmNkYMKUB14TrgU-X30cSQ@mail.gmail.com>
-Subject: Re: [PATCH -next] packet: remove unused variable 'status' in __packet_lookup_frame_in_block
-To:     Mao Wenan <maowenan@huawei.com>
-Cc:     David Miller <davem@davemloft.net>,
-        Network Development <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190608092231.GA28890@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jun 10, 2019 at 8:17 AM Mao Wenan <maowenan@huawei.com> wrote:
->
-> The variable 'status' in  __packet_lookup_frame_in_block() is never used since
-> introduction in commit f6fb8f100b80 ("af-packet: TPACKET_V3 flexible buffer
-> implementation."), we can remove it.
-> And when __packet_lookup_frame_in_block() calls prb_retire_current_block(),
-> it can pass macro TP_STATUS_KERNEL instead of 0.
->
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+On Sat, Jun 08, 2019 at 12:22:31PM +0300, Dan Carpenter wrote:
+> The ucmd->log_sq_bb_count is a u8 that comes from the user.  If it's
+> larger than the number of bits in an int then that's undefined behavior.
+> It turns out this doesn't really cause an issue at runtime but it's
+> still nice to clean it up.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  net/packet/af_packet.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-> index a29d66d..fb1a79c 100644
-> --- a/net/packet/af_packet.c
-> +++ b/net/packet/af_packet.c
-> @@ -1003,7 +1003,6 @@ static void prb_fill_curr_block(char *curr,
->  /* Assumes caller has the sk->rx_queue.lock */
->  static void *__packet_lookup_frame_in_block(struct packet_sock *po,
->                                             struct sk_buff *skb,
-> -                                               int status,
->                                             unsigned int len
->                                             )
+>  drivers/infiniband/hw/mlx4/qp.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/infiniband/hw/mlx4/qp.c b/drivers/infiniband/hw/mlx4/qp.c
+> index 5221c0794d1d..9f6eb23e8044 100644
+> --- a/drivers/infiniband/hw/mlx4/qp.c
+> +++ b/drivers/infiniband/hw/mlx4/qp.c
+> @@ -439,7 +439,8 @@ static int set_user_sq_size(struct mlx4_ib_dev *dev,
+>  			    struct mlx4_ib_create_qp *ucmd)
 >  {
-> @@ -1046,7 +1045,7 @@ static void *__packet_lookup_frame_in_block(struct packet_sock *po,
->         }
->
->         /* Ok, close the current block */
-> -       prb_retire_current_block(pkc, po, 0);
-> +       prb_retire_current_block(pkc, po, TP_STATUS_KERNEL);
+>  	/* Sanity check SQ size before proceeding */
+> -	if ((1 << ucmd->log_sq_bb_count) > dev->dev->caps.max_wqes	 ||
+> +	if (ucmd->log_sq_bb_count > 31					 ||
+> +	    (1 << ucmd->log_sq_bb_count) > dev->dev->caps.max_wqes	 ||
 
-I don't think that 0 is intended to mean TP_STATUS_KERNEL here.
+Surely this should use check_shl_overflow() ?
 
-prb_retire_current_block calls prb_close_block which sets status to
-
-  TP_STATUS_USER | stat
-
-where stat is 0 or TP_STATUS_BLK_TMO.
+Jason

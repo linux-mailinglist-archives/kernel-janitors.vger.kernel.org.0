@@ -2,109 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A6963B77D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 10 Jun 2019 16:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA4C03C0E6
+	for <lists+kernel-janitors@lfdr.de>; Tue, 11 Jun 2019 03:24:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403949AbfFJOel (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Jun 2019 10:34:41 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:45613 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403942AbfFJOel (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Jun 2019 10:34:41 -0400
-Received: by mail-ed1-f68.google.com with SMTP id a14so12943113edv.12;
-        Mon, 10 Jun 2019 07:34:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MTGWsUBr2L+P8aBUG4WFSYpu/sxAUSElAPcxJpHZNu0=;
-        b=HKp914S4OkrsKUi0GgHD22923EyP+FFJGm6HKQ1iHKxNtx+/zxQaF9i1rbCrbHl5eb
-         0OHqNXMeYYGNlQtVmEEVUJof06bsfE9J6PcREobzGwzTAw2N30iVnWVifos0ssBpbzTt
-         x6PK9w3mSNENnFZ00RIt5m7CHsTewevwG6blysA42J5R8eH7Ub/HGdqSWiyP1T6kBKxg
-         QnDzaRXb7fJsWeFwLkRHq+R7xaXkK5sOQ3pguBCj7FnNH0j+4V2yhKjCgOyH5/sWZXSN
-         hawir52CgsvkCOghKcMb/aZgBjBiniBHMg5+Y7CDtkM1dr5YU/tjCG55jrKIjr2XC7ub
-         NMsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MTGWsUBr2L+P8aBUG4WFSYpu/sxAUSElAPcxJpHZNu0=;
-        b=ErlwVkrfmdGsjBacKBvy4fynH6ce9kxfzJGbeGidPTKaueZLFduJ+qaAl2s8M2axi2
-         7BGgrz3/1fi0h3S8iDEYMWPDHubqOdIUEuQ6Zl4FmW7T5LCv+Q3Cmt33ekn7wrRUiQoQ
-         WlL9EI6yk9V4S6W99U122Gva5tpZn+DrYjpCXwC9iQj+G6NlfQyjuqFfdOYIxMCFdax3
-         DUl3O9ztQOhim/Y+voHYbO8DBvH0BojTn/egqnGwKvqzAwYsePs9u6HSEu3y1nYTmasQ
-         o++msOmjr2YibnjRqysz7DQoxWakViYdZ0zRLvij8uja0idXXbcUNdKi1W6cH+JvNNJj
-         MP6A==
-X-Gm-Message-State: APjAAAWNGrDGX3dM3f8z7TjJL8B30O8owyj3j6P3BSbTeNiLww1gocWy
-        fjLix2FQ6oVgvShfvQBfsm0j38P+w1PMzW/Zju8=
-X-Google-Smtp-Source: APXvYqzG4pTXEWeYJu/98bKGKeUyLRBM6GfrMiLJSxD5yHuoJDChEYDidfgdt6pimDZUHUwcoAxyiqxSlc+gJJqdup8=
-X-Received: by 2002:a50:b1db:: with SMTP id n27mr28793697edd.62.1560177279272;
- Mon, 10 Jun 2019 07:34:39 -0700 (PDT)
+        id S2390088AbfFKBYs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 10 Jun 2019 21:24:48 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:48562 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2388845AbfFKBYs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 10 Jun 2019 21:24:48 -0400
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 53BC6ABED0F103BEE140;
+        Tue, 11 Jun 2019 09:24:45 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 11 Jun 2019 09:24:34 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <davem@davemloft.net>
+CC:     <willemdebruijn.kernel@gmail.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH -next v2] packet: remove unused variable 'status' in __packet_lookup_frame_in_block
+Date:   Tue, 11 Jun 2019 09:32:13 +0800
+Message-ID: <20190611013213.142745-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <CAF=yD-+g1bSGOubFUE8veZNvGiPy1oYsf+dFDd=hqXYD+k4g_Q@mail.gmail.com>
+References: <CAF=yD-+g1bSGOubFUE8veZNvGiPy1oYsf+dFDd=hqXYD+k4g_Q@mail.gmail.com>
 MIME-Version: 1.0
-References: <20190610115831.175710-1-maowenan@huawei.com> <CAF=yD-JOCZHt6q3ArCqY5PMW1vP5ZmNkYMKUB14TrgU-X30cSQ@mail.gmail.com>
- <caf8d25f-60e2-a0c0-dc21-956ea32ee59a@huawei.com>
-In-Reply-To: <caf8d25f-60e2-a0c0-dc21-956ea32ee59a@huawei.com>
-From:   Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Date:   Mon, 10 Jun 2019 10:34:03 -0400
-Message-ID: <CAF=yD-+g1bSGOubFUE8veZNvGiPy1oYsf+dFDd=hqXYD+k4g_Q@mail.gmail.com>
-Subject: Re: [PATCH -next] packet: remove unused variable 'status' in __packet_lookup_frame_in_block
-To:     maowenan <maowenan@huawei.com>
-Cc:     David Miller <davem@davemloft.net>,
-        Network Development <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jun 10, 2019 at 10:03 AM maowenan <maowenan@huawei.com> wrote:
->
->
->
-> On 2019/6/10 21:05, Willem de Bruijn wrote:
-> > On Mon, Jun 10, 2019 at 8:17 AM Mao Wenan <maowenan@huawei.com> wrote:
-> >>
-> >> The variable 'status' in  __packet_lookup_frame_in_block() is never used since
-> >> introduction in commit f6fb8f100b80 ("af-packet: TPACKET_V3 flexible buffer
-> >> implementation."), we can remove it.
-> >> And when __packet_lookup_frame_in_block() calls prb_retire_current_block(),
-> >> it can pass macro TP_STATUS_KERNEL instead of 0.
-> >>
-> >> Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> >> ---
+The variable 'status' in  __packet_lookup_frame_in_block() is never used since
+introduction in commit f6fb8f100b80 ("af-packet: TPACKET_V3 flexible buffer
+implementation."), we can remove it.
 
-> >>         /* Ok, close the current block */
-> >> -       prb_retire_current_block(pkc, po, 0);
-> >> +       prb_retire_current_block(pkc, po, TP_STATUS_KERNEL);
-> >
-> > I don't think that 0 is intended to mean TP_STATUS_KERNEL here.
-> >
-> > prb_retire_current_block calls prb_close_block which sets status to
-> >
-> >   TP_STATUS_USER | stat
-> >
-> > where stat is 0 or TP_STATUS_BLK_TMO.
->
->
-> #define TP_STATUS_KERNEL                      0
-> #define TP_STATUS_BLK_TMO               (1 << 5)
->
-> Actually, packet_current_rx_frame calls __packet_lookup_frame_in_block with status=TP_STATUS_KERNEL
-> in original code.
->
-> __packet_lookup_frame_in_block in this function, first is to check whether the currently active block
-> has enough space for the packet, which means status of block should be TP_STATUS_KERNEL, then it calls
-> prb_retire_current_block to retire this block.
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ v2: don't change parameter from 0 to TP_STATUS_KERNEL when calls 
+ prb_retire_current_block(). 
+---
+ net/packet/af_packet.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-I know. I mean that the status here is what is passed to userspace on
-block retire.
+diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
+index a29d66da7394..7fa847dcea30 100644
+--- a/net/packet/af_packet.c
++++ b/net/packet/af_packet.c
+@@ -1003,7 +1003,6 @@ static void prb_fill_curr_block(char *curr,
+ /* Assumes caller has the sk->rx_queue.lock */
+ static void *__packet_lookup_frame_in_block(struct packet_sock *po,
+ 					    struct sk_buff *skb,
+-						int status,
+ 					    unsigned int len
+ 					    )
+ {
+@@ -1075,7 +1074,7 @@ static void *packet_current_rx_frame(struct packet_sock *po,
+ 					po->rx_ring.head, status);
+ 		return curr;
+ 	case TPACKET_V3:
+-		return __packet_lookup_frame_in_block(po, skb, status, len);
++		return __packet_lookup_frame_in_block(po, skb, len);
+ 	default:
+ 		WARN(1, "TPACKET version not supported\n");
+ 		BUG();
+-- 
+2.20.1
 
-It is not intended to be TP_STATUS_USER | TP_STATUS_KERNEL. That makes no sense.
-
-> Since there needs some discussion about means of status, I can send v2 only removing the parameter status of
-> __packet_lookup_frame_in_block?
-
-Sounds good.

@@ -2,75 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA4C03C0E6
-	for <lists+kernel-janitors@lfdr.de>; Tue, 11 Jun 2019 03:24:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 705D03C581
+	for <lists+kernel-janitors@lfdr.de>; Tue, 11 Jun 2019 10:02:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390088AbfFKBYs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 10 Jun 2019 21:24:48 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:48562 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2388845AbfFKBYs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 10 Jun 2019 21:24:48 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 53BC6ABED0F103BEE140;
-        Tue, 11 Jun 2019 09:24:45 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.439.0; Tue, 11 Jun 2019 09:24:34 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <davem@davemloft.net>
-CC:     <willemdebruijn.kernel@gmail.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH -next v2] packet: remove unused variable 'status' in __packet_lookup_frame_in_block
-Date:   Tue, 11 Jun 2019 09:32:13 +0800
-Message-ID: <20190611013213.142745-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <CAF=yD-+g1bSGOubFUE8veZNvGiPy1oYsf+dFDd=hqXYD+k4g_Q@mail.gmail.com>
-References: <CAF=yD-+g1bSGOubFUE8veZNvGiPy1oYsf+dFDd=hqXYD+k4g_Q@mail.gmail.com>
+        id S2404284AbfFKICp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 11 Jun 2019 04:02:45 -0400
+Received: from Galois.linutronix.de ([146.0.238.70]:57177 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404132AbfFKICp (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 11 Jun 2019 04:02:45 -0400
+Received: from bigeasy by Galois.linutronix.de with local (Exim 4.80)
+        (envelope-from <bigeasy@linutronix.de>)
+        id 1habjm-0004KP-47; Tue, 11 Jun 2019 10:02:34 +0200
+Date:   Tue, 11 Jun 2019 10:02:34 +0200
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Chunfeng Yun <chunfeng.yun@mediatek.com>,
+        Dmitry Torokhov <dtor@chromium.org>,
+        Suwan Kim <suwan.kim027@gmail.com>,
+        Raul E Rangel <rrangel@chromium.org>,
+        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] usb/hcd: Fix a NULL vs IS_ERR() bug in
+ usb_hcd_setup_local_mem()
+Message-ID: <20190611080233.goirgth76ftqpfyf@linutronix.de>
+References: <20190607135709.GC16718@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190607135709.GC16718@mwanda>
+User-Agent: NeoMutt/20180716
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The variable 'status' in  __packet_lookup_frame_in_block() is never used since
-introduction in commit f6fb8f100b80 ("af-packet: TPACKET_V3 flexible buffer
-implementation."), we can remove it.
+On 2019-06-07 16:57:09 [+0300], Dan Carpenter wrote:
+> The devm_memremap() function doesn't return NULL, it returns error
+> pointers.
+> 
+> Fixes: b0310c2f09bb ("USB: use genalloc for USB HCs with local memory")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
----
- v2: don't change parameter from 0 to TP_STATUS_KERNEL when calls 
- prb_retire_current_block(). 
----
- net/packet/af_packet.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index a29d66da7394..7fa847dcea30 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -1003,7 +1003,6 @@ static void prb_fill_curr_block(char *curr,
- /* Assumes caller has the sk->rx_queue.lock */
- static void *__packet_lookup_frame_in_block(struct packet_sock *po,
- 					    struct sk_buff *skb,
--						int status,
- 					    unsigned int len
- 					    )
- {
-@@ -1075,7 +1074,7 @@ static void *packet_current_rx_frame(struct packet_sock *po,
- 					po->rx_ring.head, status);
- 		return curr;
- 	case TPACKET_V3:
--		return __packet_lookup_frame_in_block(po, skb, status, len);
-+		return __packet_lookup_frame_in_block(po, skb, len);
- 	default:
- 		WARN(1, "TPACKET version not supported\n");
- 		BUG();
--- 
-2.20.1
-
+Sebastian

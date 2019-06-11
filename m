@@ -2,66 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC3823D38E
-	for <lists+kernel-janitors@lfdr.de>; Tue, 11 Jun 2019 19:09:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EC333D68B
+	for <lists+kernel-janitors@lfdr.de>; Tue, 11 Jun 2019 21:14:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405873AbfFKRJY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 11 Jun 2019 13:09:24 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:52788 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405615AbfFKRJX (ORCPT
+        id S2391752AbfFKTNw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 11 Jun 2019 15:13:52 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:50544 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388777AbfFKTNw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 11 Jun 2019 13:09:23 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hakGn-0002YS-I1; Tue, 11 Jun 2019 17:09:13 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Ludovic Desroches <ludovic.desroches@microchip.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] video: fbdev: atmel_lcdfb: remove redundant initialization to variable ret
-Date:   Tue, 11 Jun 2019 18:09:13 +0100
-Message-Id: <20190611170913.20913-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Tue, 11 Jun 2019 15:13:52 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 681AF1525A43D;
+        Tue, 11 Jun 2019 12:13:51 -0700 (PDT)
+Date:   Tue, 11 Jun 2019 12:13:50 -0700 (PDT)
+Message-Id: <20190611.121350.119608921995403526.davem@davemloft.net>
+To:     maowenan@huawei.com
+Cc:     willemdebruijn.kernel@gmail.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next v2] packet: remove unused variable 'status' in
+ __packet_lookup_frame_in_block
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190611013213.142745-1-maowenan@huawei.com>
+References: <CAF=yD-+g1bSGOubFUE8veZNvGiPy1oYsf+dFDd=hqXYD+k4g_Q@mail.gmail.com>
+        <20190611013213.142745-1-maowenan@huawei.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 11 Jun 2019 12:13:51 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Mao Wenan <maowenan@huawei.com>
+Date: Tue, 11 Jun 2019 09:32:13 +0800
 
-Currently variable ret is being initialized with -ENOENT however that
-value is never read and ret is being re-assigned later on. Hence this
-assignment is redundant and can be removed.
+> The variable 'status' in  __packet_lookup_frame_in_block() is never used since
+> introduction in commit f6fb8f100b80 ("af-packet: TPACKET_V3 flexible buffer
+> implementation."), we can remove it.
+> 
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> ---
+>  v2: don't change parameter from 0 to TP_STATUS_KERNEL when calls 
+>  prb_retire_current_block(). 
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/video/fbdev/atmel_lcdfb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/video/fbdev/atmel_lcdfb.c b/drivers/video/fbdev/atmel_lcdfb.c
-index fb117ccbeab3..930cc3f92e01 100644
---- a/drivers/video/fbdev/atmel_lcdfb.c
-+++ b/drivers/video/fbdev/atmel_lcdfb.c
-@@ -950,7 +950,7 @@ static int atmel_lcdfb_of_init(struct atmel_lcdfb_info *sinfo)
- 	struct fb_videomode fb_vm;
- 	struct gpio_desc *gpiod;
- 	struct videomode vm;
--	int ret = -ENOENT;
-+	int ret;
- 	int i;
- 
- 	sinfo->config = (struct atmel_lcdfb_config*)
--- 
-2.20.1
-
+Applied.

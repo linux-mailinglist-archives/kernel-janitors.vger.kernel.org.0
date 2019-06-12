@@ -2,117 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E7E942AA8
-	for <lists+kernel-janitors@lfdr.de>; Wed, 12 Jun 2019 17:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 224A042D5D
+	for <lists+kernel-janitors@lfdr.de>; Wed, 12 Jun 2019 19:23:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729654AbfFLPSu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 12 Jun 2019 11:18:50 -0400
-Received: from mx01-fr.bfs.de ([193.174.231.67]:24836 "EHLO mx01-fr.bfs.de"
+        id S2406162AbfFLRXW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 12 Jun 2019 13:23:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53288 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726454AbfFLPSt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 12 Jun 2019 11:18:49 -0400
-Received: from mail-fr.bfs.de (mail-fr.bfs.de [10.177.18.200])
-        by mx01-fr.bfs.de (Postfix) with ESMTPS id 3D0D2201F4;
-        Wed, 12 Jun 2019 17:18:42 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1560352722; h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=iz3CpY34we/DvAotNLRGWsXayWK0i3l2X+/9ZHiFnyw=;
-        b=jjbfNYpPxGZWgMtcEFGgK1M7jzrSmGfdOaQZfXN5TA7uwH5qjLXLYw/9ECOTC2PICKghjD
-        V3eKX1dCeTpnmLbZhkjskt+NIEO7og8F432987h0blEpWYrYxDMw03Kjw0aSiPuaU7s22E
-        m1x4nHyxmh9t7UIQqwo1HgsMPSkVVcxUAHSXkujKSYZWF8C+oQTGvz1BM35lUFomieE02i
-        +OJJit5QLNdPMBYmGWrgBh4pRB45VdylUdL31O2Wj9Tn+oyan/vnIqRfztl4OqS+TZ/7Kx
-        VEK4JbTC3m9TOwE0am5yfFhdCtgy0rHOyatoM1/oZAZOaJ2dRbFzaru/rZyIUg==
-Received: from [134.92.181.33] (unknown [134.92.181.33])
-        by mail-fr.bfs.de (Postfix) with ESMTPS id C86DEBEEBD;
-        Wed, 12 Jun 2019 17:18:41 +0200 (CEST)
-Message-ID: <5D0117D0.501@bfs.de>
-Date:   Wed, 12 Jun 2019 17:18:40 +0200
-From:   walter harms <wharms@bfs.de>
-Reply-To: wharms@bfs.de
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; de; rv:1.9.1.16) Gecko/20101125 SUSE/3.0.11 Thunderbird/3.0.11
+        id S1728091AbfFLRXW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 12 Jun 2019 13:23:22 -0400
+Received: from localhost (unknown [37.142.3.125])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C1597208CA;
+        Wed, 12 Jun 2019 17:23:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560360201;
+        bh=X3y3faqBNWlR6eOmpqdbVZx8q18NB7nAsQLp+75VIac=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=wp+OGFnW+IIJjRn5EdPG84HQL5qr39lyQ6bCzVtlh325+XuZTxkuYNpTSy0iFbaYt
+         pQZ+6AQtZTrC0IJVIrJCF+Xp/bGvfKbNpuizZ+Tq0l1tuHWS6TMru8VOX6X6LSaEUg
+         Akci/zABJ26/+gEyTJMa3nrZukem6d8gsnmt6/Qs=
+Date:   Wed, 12 Jun 2019 20:23:16 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Lijun Ou <oulijun@huawei.com>,
+        "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] RDMA/hns: Fix an error code in
+ hns_roce_set_user_sq_size()
+Message-ID: <20190612172316.GU6369@mtr-leonro.mtl.com>
+References: <20190608092714.GE28890@mwanda>
 MIME-Version: 1.0
-To:     Colin King <colin.king@canonical.com>
-CC:     Dan Murphy <dmurphy@ti.com>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, linux-leds@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH][next] leds: lm36274: remove redundant initialization
- of variable ret
-References: <20190612145659.26514-1-colin.king@canonical.com>
-In-Reply-To: <20190612145659.26514-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.10
-Authentication-Results: mx01-fr.bfs.de
-X-Spamd-Result: default: False [-3.10 / 7.00];
-         ARC_NA(0.00)[];
-         HAS_REPLYTO(0.00)[wharms@bfs.de];
-         BAYES_HAM(-3.00)[100.00%];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         FREEMAIL_ENVRCPT(0.00)[gmail.com];
-         TAGGED_RCPT(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         REPLYTO_ADDR_EQ_FROM(0.00)[];
-         DKIM_SIGNED(0.00)[];
-         RCPT_COUNT_SEVEN(0.00)[7];
-         NEURAL_HAM(-0.00)[-0.999,0];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         MID_RHS_MATCH_FROM(0.00)[];
-         RCVD_TLS_ALL(0.00)[]
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190608092714.GE28890@mwanda>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-Am 12.06.2019 16:56, schrieb Colin King:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable ret is being initialized with a value that is never
-> read, hence it is redundant and can be removed.  Also move the
-> declaration of ret to the for loop scope.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On Sat, Jun 08, 2019 at 12:27:14PM +0300, Dan Carpenter wrote:
+> This function is supposed to return negative kernel error codes but here
+> it returns CMD_RST_PRC_EBUSY (2).  The error code eventually gets passed
+> to IS_ERR() and since it's not an error pointer it leads to an Oops in
+> hns_roce_v1_rsv_lp_qp()
+>
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  drivers/leds/leds-lm36274.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/leds/leds-lm36274.c b/drivers/leds/leds-lm36274.c
-> index ed9dc857ec8f..b55bd238c074 100644
-> --- a/drivers/leds/leds-lm36274.c
-> +++ b/drivers/leds/leds-lm36274.c
-> @@ -74,7 +74,6 @@ static int lm36274_parse_dt(struct lm36274 *lm36274_data)
->  	struct device *dev = &lm36274_data->pdev->dev;
->  	const char *name;
->  	int child_cnt;
-> -	int ret = -EINVAL;
->  
->  	/* There should only be 1 node */
->  	child_cnt = device_get_child_node_count(dev);
-> @@ -82,6 +81,8 @@ static int lm36274_parse_dt(struct lm36274 *lm36274_data)
->  		return -EINVAL;
->  
->  	device_for_each_child_node(dev, child) {
-> +		int ret;
-> +
->  		ret = fwnode_property_read_string(child, "label", &name);
->  		if (ret)
->  			snprintf(label, sizeof(label),
+> Static analysis.  Not tested.
+>
+>  drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+> index ac017c24b200..018ff302ab9e 100644
+> --- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+> +++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+> @@ -1098,7 +1098,7 @@ static int hns_roce_cmq_send(struct hns_roce_dev *hr_dev,
+>  	if (ret == CMD_RST_PRC_SUCCESS)
+>  		return 0;
+>  	if (ret == CMD_RST_PRC_EBUSY)
 
-this looks odd,
-i would leave ret in place or move char *name also.
+The better fix will be to remove CMD_RST_PRC_* definitions in favor of
+normal errno.
 
-just my 2 cents,
-
-re,
- wh
+Thanks

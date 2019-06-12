@@ -2,24 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 980B94163F
-	for <lists+kernel-janitors@lfdr.de>; Tue, 11 Jun 2019 22:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBE3841B8D
+	for <lists+kernel-janitors@lfdr.de>; Wed, 12 Jun 2019 07:28:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406562AbfFKUkl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 11 Jun 2019 16:40:41 -0400
-Received: from mout.kundenserver.de ([212.227.126.135]:35535 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406545AbfFKUkl (ORCPT
+        id S1730572AbfFLF2w (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 12 Jun 2019 01:28:52 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:16276 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725681AbfFLF2w (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 11 Jun 2019 16:40:41 -0400
-Received: from [192.168.1.110] ([95.118.191.213]) by mrelayeu.kundenserver.de
- (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MrQ2R-1iPHOT18lz-00oVWA; Tue, 11 Jun 2019 22:40:30 +0200
-Subject: Re: Coccinelle: api: add devm_platform_ioremap_resource script
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        Julia Lawall <julia.lawall@lip6.fr>,
-        Himanshu Jha <himanshujha199640@gmail.com>
-Cc:     cocci@systeme.lip6.fr, kernel-janitors@vger.kernel.org,
+        Wed, 12 Jun 2019 01:28:52 -0400
+X-IronPort-AV: E=Sophos;i="5.63,363,1557180000"; 
+   d="scan'208";a="386977124"
+Received: from abo-12-105-68.mrs.modulonet.fr (HELO hadrien) ([85.68.105.12])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Jun 2019 07:28:48 +0200
+Date:   Wed, 12 Jun 2019 07:28:48 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@lip6.fr>
+X-X-Sender: jll@hadrien
+To:     "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+cc:     Markus Elfring <Markus.Elfring@web.de>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        cocci@systeme.lip6.fr, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
@@ -29,74 +32,58 @@ Cc:     cocci@systeme.lip6.fr, kernel-janitors@vger.kernel.org,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
         Michal Marek <michal.lkml@markovi.net>,
         Nicolas Palix <nicolas.palix@imag.fr>
-References: <20190406061112.31620-1-himanshujha199640@gmail.com>
- <f09006a3-691c-382a-23b8-8e9ff5b4a5f1@web.de>
- <alpine.DEB.2.21.1906081925090.2543@hadrien>
- <7b4fe770-dadd-80ba-2ba4-0f2bc90984ef@web.de>
-From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Organization: metux IT consult
-Message-ID: <f573b2d3-11d0-92b5-f8ab-4c4b6493e152@metux.net>
-Date:   Tue, 11 Jun 2019 22:40:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+Subject: Re: Coccinelle: api: add devm_platform_ioremap_resource script
+In-Reply-To: <f573b2d3-11d0-92b5-f8ab-4c4b6493e152@metux.net>
+Message-ID: <alpine.DEB.2.21.1906120727300.2535@hadrien>
+References: <20190406061112.31620-1-himanshujha199640@gmail.com> <f09006a3-691c-382a-23b8-8e9ff5b4a5f1@web.de> <alpine.DEB.2.21.1906081925090.2543@hadrien> <7b4fe770-dadd-80ba-2ba4-0f2bc90984ef@web.de> <f573b2d3-11d0-92b5-f8ab-4c4b6493e152@metux.net>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-In-Reply-To: <7b4fe770-dadd-80ba-2ba4-0f2bc90984ef@web.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:f+Ht5hYFuUjeYvOKk6o2JFMqi39l5C6wxnnE8+7O0BKjk77Q6Gu
- qW9aH+F0ZT8XX2DGUe0Sjk2ayDE4lx9wopAmDNfaFfijlhzOFpqsy8LoaCD8wFHpI0IZUel
- ovAoUFC4eCcRwscNpmi84MD7qv7J/UNi3mwOZn58//9eJqryuQDpj3WsV2SpPl7aThOemU/
- BtDuGhGNhqpfa9fFMTlTQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:yXeVLoxn+9I=:RwY/bgJO0YPNmR9AYAPBeS
- /+qzsjqiuP5IAgj2OapVuADyWvI6cWGzbmF3A6aE5gtJaRh2g2WierULflfOPPqEfdaplzAFA
- yo/GMjqfiPMx++tBUZMbrDF7UeX8G8tAOTnX1MPCa+ToME7XY+iIpkCw+7cvN2Fa/Pv0R1bw9
- 4cFL42FCsm+z5AID2Owml/OcPwE1KZmnEQ8jfzxuoBdiuiKaV5vvw4xV5Lz+uWTRyqKIOIbo2
- yu2birfHdrv/orQpu7CQRHhAxwX0Zw5QGhWjbwIc1U7rzNsXpk7D2OmniUi46t7eIA/wHd/od
- /MfCYikLODkOX66TcDDtgAswB+J6ko+0O7zOJH6xSAD9t517IfZQ1DH8S9oXl5vxRMDzAQ2pm
- r9DkylZpbhuI0qTH7s778dPkaX0KSP2MvYf2VVfsI9ILSI8MjDiyRi31Yehmm3YPfLsKcI44o
- MalWbbQurUYeI/DJj3Xh/jxYYlbtyfXn3BPIE4Z72CHa+3Xz31NLb02XLYQlXZpvYN2oiWW4k
- aGTzHQUIvQzA7Y2nSLZkNtDaF0B74I7AlkzGshi5yCOEdjRU1R5gVruYCCif23N98W9UuB6TJ
- 2IjfyxdJSIXsUtwC2oWD0Y4444cuHK+ThFlLQRj5FgW3rBhcK9lOV6wDPgD1KkpTx0R8+5znJ
- pBnkvkZo8TA9DEHzXObMdjfIAFDrUbZRPZtLpjHYUqpVBRZwN0T6E7rsOEAPPPZxwQRH1wVcW
- qbaQS5yN+aTEQmPw5QA13iLHpBYrEbWpvjePeWIqHUgX52/KeA8a1qe/NdY=
+Content-Type: multipart/mixed; boundary="8323329-133965833-1560317328=:2535"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 09.06.19 10:55, Markus Elfring wrote:
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-<snip>
-
->> But there is not usually any interesting formatting on the left side of an
->> assignment (ie typically no newlines or comments).
-> 
-> Is there any need to trigger additional source code reformatting?
-> 
->> I can see no purpose to factorizing the right parenthesis.
-> 
-> These characters at the end of such a function call should be kept unchanged.
-
-Agreed. OTOH, we all know that spatch results still need to be carefully
-checked. I suspect trying to teach it all the formatting rules of the
-kernel isn't an easy task.
-
-> The flag “IORESOURCE_MEM” is passed as the second parameter for the call
-> of the function “platform_get_resource” in this refactoring.
-
-In that particular case, we maybe should consider separate inline
-helpers instead of passing this is a parameter.
-
-Maybe it would even be more efficient to have completely separate
-versions of devm_platform_ioremap_resource(), so we don't even have
-to pass that parameter on stack.
+--8323329-133965833-1560317328=:2535
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 
 
---mtx
 
--- 
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+On Tue, 11 Jun 2019, Enrico Weigelt, metux IT consult wrote:
+
+> On 09.06.19 10:55, Markus Elfring wrote:
+>
+> <snip>
+>
+> >> But there is not usually any interesting formatting on the left side of an
+> >> assignment (ie typically no newlines or comments).
+> >
+> > Is there any need to trigger additional source code reformatting?
+> >
+> >> I can see no purpose to factorizing the right parenthesis.
+> >
+> > These characters at the end of such a function call should be kept unchanged.
+>
+> Agreed. OTOH, we all know that spatch results still need to be carefully
+> checked. I suspect trying to teach it all the formatting rules of the
+> kernel isn't an easy task.
+>
+> > The flag “IORESOURCE_MEM” is passed as the second parameter for the call
+> > of the function “platform_get_resource” in this refactoring.
+>
+> In that particular case, we maybe should consider separate inline
+> helpers instead of passing this is a parameter.
+>
+> Maybe it would even be more efficient to have completely separate
+> versions of devm_platform_ioremap_resource(), so we don't even have
+> to pass that parameter on stack.
+
+I'm lost as to why this discussion suddenly appeared.  What problem is
+actually being discussed?
+
+julia
+--8323329-133965833-1560317328=:2535--

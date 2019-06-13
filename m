@@ -2,90 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EAE5C44559
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 18:43:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB5AD44510
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 18:41:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392814AbfFMQng (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 Jun 2019 12:43:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33392 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730455AbfFMGdU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 13 Jun 2019 02:33:20 -0400
-Received: from localhost (unknown [193.47.165.251])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 394962084D;
-        Thu, 13 Jun 2019 06:33:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560407599;
-        bh=lBafE/WUiaQP+p4uGlW9CCyAoC1xD93nsWP7lin/vlo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=16ot2Qa2RWd59Su8TV7ClZFaz73CEcH+Bp4B3Zkpn4InH4AOjCuEAPk7y1MnM3fBi
-         ptNstOMqp+8wqYOP6km14Pq1MCoxuleGbidd/EnRwNaotE7z0bHrlZaGSi0R0j/Gec
-         joFk81/MenfLTVxp4j4Za01dkKrIAUTNRPEinT7w=
-Date:   Thu, 13 Jun 2019 09:33:16 +0300
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Lijun Ou <oulijun@huawei.com>,
-        "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
+        id S1730540AbfFMQlZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 Jun 2019 12:41:25 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:39654 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730541AbfFMGvq (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 13 Jun 2019 02:51:46 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5D6i23D012518;
+        Thu, 13 Jun 2019 06:51:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
+ bh=Cklcp4WiaQzxRVfrjQ6N2LqnHn1Jb+/D/zOE2f9gAPE=;
+ b=x8G48O4QztLA+T6Q8ej8FS57MNGdfgZ0fSefogeULMSOwZdLRbX0arq8C2FTb1joqfkx
+ cyyN8KybBwKW94TZ2q6z0hL9/y8cSp+n1Jz7JCaoSEoQkcl+Lah8c4vSqkL/9bSegq/I
+ f32t147/KrG1RxvTUhPuOdA3vXHWEpZZI8cmrKI1/riWDWS+zGuTxzxGqcLThzQpMv3/
+ DQMrwbn/kBalmR7Pc7A3QWnludbmdR0zYS8vqBdVwTjIIkf5SAnqmpUFqVOYSJUNNTXv
+ zg6H95flWu3UkxODyOIoix57ytYHUrFzgEddVLb0CyS9RNcfCMit2CAJh5eAtFwQ9076 kQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2t05nqygwq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 13 Jun 2019 06:51:23 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5D6p6lf142351;
+        Thu, 13 Jun 2019 06:51:22 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2t04j0a0qu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 13 Jun 2019 06:51:22 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5D6pBw9002024;
+        Thu, 13 Jun 2019 06:51:11 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 12 Jun 2019 23:51:10 -0700
+Date:   Thu, 13 Jun 2019 09:51:02 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Russell King <linux@armlinux.org.uk>,
+        Ruslan Babayev <ruslan@babayev.com>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] RDMA/hns: Fix an error code in
- hns_roce_set_user_sq_size()
-Message-ID: <20190613063316.GW6369@mtr-leonro.mtl.com>
-References: <20190608092714.GE28890@mwanda>
- <20190612172316.GU6369@mtr-leonro.mtl.com>
- <20190613060517.GF1915@kadam>
+Subject: [PATCH net] net: phy: sfp: clean up a condition
+Message-ID: <20190613065102.GA16334@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190613060517.GF1915@kadam>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9286 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906130054
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9286 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906130054
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jun 12, 2019 at 11:05:17PM -0700, Dan Carpenter wrote:
-> On Wed, Jun 12, 2019 at 08:23:16PM +0300, Leon Romanovsky wrote:
-> > On Sat, Jun 08, 2019 at 12:27:14PM +0300, Dan Carpenter wrote:
-> > > This function is supposed to return negative kernel error codes but here
-> > > it returns CMD_RST_PRC_EBUSY (2).  The error code eventually gets passed
-> > > to IS_ERR() and since it's not an error pointer it leads to an Oops in
-> > > hns_roce_v1_rsv_lp_qp()
-> > >
-> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > > ---
-> > > Static analysis.  Not tested.
-> > >
-> > >  drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++--
-> > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-> > > index ac017c24b200..018ff302ab9e 100644
-> > > --- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-> > > +++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-> > > @@ -1098,7 +1098,7 @@ static int hns_roce_cmq_send(struct hns_roce_dev *hr_dev,
-> > >  	if (ret == CMD_RST_PRC_SUCCESS)
-> > >  		return 0;
-> > >  	if (ret == CMD_RST_PRC_EBUSY)
-> >
-> > The better fix will be to remove CMD_RST_PRC_* definitions in favor of
-> > normal errno.
-> >
->
-> Yes.
->
-> I've looked at that idea and I would almost feel like it's easy enough
-> to send a patch like that without testing it at all.  But it would be
-> better if the people with the hardware sent it.  I reported this bug
-> months ago...
+The acpi_node_get_property_reference() doesn't return ACPI error codes,
+it just returns regular negative kernel error codes.  This patch doesn't
+affect run time, it's just a clean up.
 
-Feel free to send, we will give time to respond.
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/phy/sfp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-thanks
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index a991c80e6567..8a99307c1c39 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -1848,7 +1848,7 @@ static int sfp_probe(struct platform_device *pdev)
+ 		int ret;
+ 
+ 		ret = acpi_node_get_property_reference(fw, "i2c-bus", 0, &args);
+-		if (ACPI_FAILURE(ret) || !is_acpi_device_node(args.fwnode)) {
++		if (ret || !is_acpi_device_node(args.fwnode)) {
+ 			dev_err(&pdev->dev, "missing 'i2c-bus' property\n");
+ 			return -ENODEV;
+ 		}
+-- 
+2.20.1
 
->
-> regards,
-> dan carpenter

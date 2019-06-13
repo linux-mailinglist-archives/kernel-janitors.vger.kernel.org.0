@@ -2,164 +2,198 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F30E446DE
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 18:55:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0A0D445DA
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 18:47:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389324AbfFMQzM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 Jun 2019 12:55:12 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:42466 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730026AbfFMCLE (ORCPT
+        id S2392600AbfFMQrI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 Jun 2019 12:47:08 -0400
+Received: from asavdk3.altibox.net ([109.247.116.14]:53141 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730266AbfFMFEL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 12 Jun 2019 22:11:04 -0400
-Received: by mail-ed1-f65.google.com with SMTP id z25so28754202edq.9;
-        Wed, 12 Jun 2019 19:11:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=0cVvTv62Az1HTrl8FUiIHyxSc2jG6hN8Hla75BR5w4M=;
-        b=QOaYprUy58aYx9mi4m91RPw+yTHHislGhUo783bCLgkBVWrShDTV6jY+zsCkdfCoqG
-         eoauFxtYTWaOLjk5v68w7R1+0tVLBVRIGyEym6CgAfE5xjo+ZYn4i6532sT3AU3kseBw
-         HoQYm9G+7u8HQjuPgvFyM5uitbZ3Ql+z37/l5YxAHXcJo1mkDgw54jy5iF6igvpJbclj
-         b/OevCFYu83pizJrTwDy0DUaW89ilAnz4TvTdtnsSKkSOLrUowI7PvNQ+KC8FZkaXJhq
-         KnU1FkSDXQXkmzOvDqXzkDwWFJ2gkAjRToM8IR/QdReoloeJTV+XiCeMMvUxeMVn++Tu
-         aMUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=0cVvTv62Az1HTrl8FUiIHyxSc2jG6hN8Hla75BR5w4M=;
-        b=R/Sk00goVCDPkJ3GWz6UpQsjkf+fXmGuQ2byT8GqryT99xPM2FBsTqlVOwwqNeP5gB
-         04jd5intdK8fPCo/hNCxDdBzsF/Pl2cTozAS1r6DCc9MBDmlFLQ2rsoRLLZrD67ZsLYQ
-         NhiWxJ333Sw0nHjfoGUtvIDssw01jpZ9DaIbZvVtXeR0ptQ//4iU0qZOplSgg+6PWfDb
-         1eB4JtpV+qhxo27jhHAE1bYRjsuh+YBL9oHIWneEbsvpPvaFiflafI2nf5wqXGEFJOxv
-         mD7M4phd0Iq80xCJtz8cSN/cI4nLdo56HmcE2PLJe/G1gI+8RaGEW9kj/HpeeRteKCs/
-         Bdew==
-X-Gm-Message-State: APjAAAWuLiCc/lufqhqUwfp/0WvTboQ+ypT4l+vwhFlweaeK1OxgCzXP
-        bkCf58PmWEIyyW7gpZJb480=
-X-Google-Smtp-Source: APXvYqzLd3ifguWITMiOZcgmncv5B0deo4wOLKQDnv7+CdbJeThnYCTF1jdNVtCFDE3yxhQCAIzN6g==
-X-Received: by 2002:a17:906:eb93:: with SMTP id mh19mr1902254ejb.42.1560391861842;
-        Wed, 12 Jun 2019 19:11:01 -0700 (PDT)
-Received: from smtp.gmail.com ([187.121.151.146])
-        by smtp.gmail.com with ESMTPSA id d22sm267726ejm.83.2019.06.12.19.10.56
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Wed, 12 Jun 2019 19:11:00 -0700 (PDT)
-Date:   Wed, 12 Jun 2019 23:10:54 -0300
-From:   Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Thu, 13 Jun 2019 01:04:11 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk3.altibox.net (Postfix) with ESMTPS id 81A992001E;
+        Thu, 13 Jun 2019 07:04:05 +0200 (CEST)
+Date:   Thu, 13 Jun 2019 07:04:03 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Maxime Ripard <maxime.ripard@bootlin.com>,
         Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>
-Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, intel-gfx@lists.freedesktop.org
-Subject: [RESEND PATCH V3] drm/drm_vblank: Change EINVAL by the correct errno
-Message-ID: <20190613021054.cdewdb3azy6zuoyw@smtp.gmail.com>
+        Daniel Vetter <daniel@ffwll.ch>,
+        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
+Subject: Drop use of DRM_WAIT_ON() [Was: drm/drm_vblank: Change EINVAL by the
+ correct errno]
+Message-ID: <20190613050403.GA21502@ravnborg.org>
+References: <20190613021054.cdewdb3azy6zuoyw@smtp.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="jmacjpd643vk5d4c"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190613021054.cdewdb3azy6zuoyw@smtp.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=dqr19Wo4 c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=pGLkceISAAAA:8
+        a=e5mUnYsNAAAA:8 a=7gkXJVJtAAAA:8 a=QyXUC8HyAAAA:8 a=P-IC7800AAAA:8
+        a=Jn-_o28iN5fng-a6wa4A:9 a=QEXdDO2ut3YA:10 a=Vxmtnl_E_bksehYqCbjh:22
+        a=E9Po1WZjFZOl8hwRPBS3:22 a=d3PnA9EDa4IxuAV0gXij:22
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hi Rodrigo.
 
---jmacjpd643vk5d4c
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On Wed, Jun 12, 2019 at 11:10:54PM -0300, Rodrigo Siqueira wrote:
+> For historical reason, the function drm_wait_vblank_ioctl always return
+> -EINVAL if something gets wrong. This scenario limits the flexibility
+> for the userspace make detailed verification of the problem and take
+> some action. In particular, the validation of “if (!dev->irq_enabled)”
+> in the drm_wait_vblank_ioctl is responsible for checking if the driver
+> support vblank or not. If the driver does not support VBlank, the
+> function drm_wait_vblank_ioctl returns EINVAL which does not represent
+> the real issue; this patch changes this behavior by return EOPNOTSUPP.
+> Additionally, some operations are unsupported by this function, and
+> returns EINVAL; this patch also changes the return value to EOPNOTSUPP
+> in this case. Lastly, the function drm_wait_vblank_ioctl is invoked by
+> libdrm, which is used by many compositors; because of this, it is
+> important to check if this change breaks any compositor. In this sense,
+> the following projects were examined:
+> 
+> * Drm-hwcomposer
+> * Kwin
+> * Sway
+> * Wlroots
+> * Wayland-core
+> * Weston
+> * Xorg (67 different drivers)
+> 
+> For each repository the verification happened in three steps:
+> 
+> * Update the main branch
+> * Look for any occurrence "drmWaitVBlank" with the command:
+>   git grep -n "drmWaitVBlank"
+> * Look in the git history of the project with the command:
+>   git log -SdrmWaitVBlank
+> 
+> Finally, none of the above projects validate the use of EINVAL which
+> make safe, at least for these projects, to change the return values.
+> 
+> Change since V2:
+>  Daniel Vetter and Chris Wilson
+>  - Replace ENOTTY by EOPNOTSUPP
+>  - Return EINVAL if the parameters are wrong
+> 
+> Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+> ---
+> Update:
+>   Now IGT has a way to validate if a driver has vblank support or not.
+>   See: https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/2d244aed69165753f3adbbd6468db073dc1acf9A
+> 
+>  drivers/gpu/drm/drm_vblank.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
+> index 0d704bddb1a6..d76a783a7d4b 100644
+> --- a/drivers/gpu/drm/drm_vblank.c
+> +++ b/drivers/gpu/drm/drm_vblank.c
+> @@ -1578,10 +1578,10 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, void *data,
+>  	unsigned int flags, pipe, high_pipe;
+>  
+>  	if (!dev->irq_enabled)
+> -		return -EINVAL;
+> +		return -EOPNOTSUPP;
+>  
+>  	if (vblwait->request.type & _DRM_VBLANK_SIGNAL)
+> -		return -EINVAL;
+> +		return -EOPNOTSUPP;
+>  
+>  	if (vblwait->request.type &
+>  	    ~(_DRM_VBLANK_TYPES_MASK | _DRM_VBLANK_FLAGS_MASK |
 
-For historical reason, the function drm_wait_vblank_ioctl always return
--EINVAL if something gets wrong. This scenario limits the flexibility
-for the userspace make detailed verification of the problem and take
-some action. In particular, the validation of =E2=80=9Cif (!dev->irq_enable=
-d)=E2=80=9D
-in the drm_wait_vblank_ioctl is responsible for checking if the driver
-support vblank or not. If the driver does not support VBlank, the
-function drm_wait_vblank_ioctl returns EINVAL which does not represent
-the real issue; this patch changes this behavior by return EOPNOTSUPP.
-Additionally, some operations are unsupported by this function, and
-returns EINVAL; this patch also changes the return value to EOPNOTSUPP
-in this case. Lastly, the function drm_wait_vblank_ioctl is invoked by
-libdrm, which is used by many compositors; because of this, it is
-important to check if this change breaks any compositor. In this sense,
-the following projects were examined:
+When touching this function, could I ask you to take a look at
+eliminating the use of DRM_WAIT_ON()?
+It comes from the deprecated drm_os_linux.h header, and it is only of
+the few remaining users of DRM_WAIT_ON().
 
-* Drm-hwcomposer
-* Kwin
-* Sway
-* Wlroots
-* Wayland-core
-* Weston
-* Xorg (67 different drivers)
+Below you can find my untested first try - where I did an attempt not to
+change behaviour.
 
-For each repository the verification happened in three steps:
+	Sam
 
-* Update the main branch
-* Look for any occurrence "drmWaitVBlank" with the command:
-  git grep -n "drmWaitVBlank"
-* Look in the git history of the project with the command:
-  git log -SdrmWaitVBlank
+commit 17b119b02467356198b57bca9949b146082bcaa1
+Author: Sam Ravnborg <sam@ravnborg.org>
+Date:   Thu May 30 09:38:47 2019 +0200
 
-Finally, none of the above projects validate the use of EINVAL which
-make safe, at least for these projects, to change the return values.
-
-Change since V2:
- Daniel Vetter and Chris Wilson
- - Replace ENOTTY by EOPNOTSUPP
- - Return EINVAL if the parameters are wrong
-
-Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
----
-Update:
-  Now IGT has a way to validate if a driver has vblank support or not.
-  See: https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/2d244aed6916=
-5753f3adbbd6468db073dc1acf9A
-
- drivers/gpu/drm/drm_vblank.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+    drm/vblank: drop use of DRM_WAIT_ON()
+    
+    DRM_WAIT_ON() is from the deprecated drm_os_linux header and
+    the modern replacement is the wait_event_*.
+    
+    The return values differ, so a conversion is needed to
+    keep the original interface towards userspace.
+    Introduced a switch/case to make code obvious and to allow
+    different debug prints depending on the result.
+    
+    The timeout value of 3 * HZ was translated to 30 msec
+    
+    Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+    Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+    Cc: Maxime Ripard <maxime.ripard@bootlin.com>
+    Cc: Sean Paul <sean@poorly.run>
+    Cc: David Airlie <airlied@linux.ie>
+    Cc: Daniel Vetter <daniel@ffwll.ch>
 
 diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
-index 0d704bddb1a6..d76a783a7d4b 100644
+index 0d704bddb1a6..51fc6b106333 100644
 --- a/drivers/gpu/drm/drm_vblank.c
 +++ b/drivers/gpu/drm/drm_vblank.c
-@@ -1578,10 +1578,10 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, v=
-oid *data,
- 	unsigned int flags, pipe, high_pipe;
-=20
- 	if (!dev->irq_enabled)
--		return -EINVAL;
-+		return -EOPNOTSUPP;
-=20
- 	if (vblwait->request.type & _DRM_VBLANK_SIGNAL)
--		return -EINVAL;
-+		return -EOPNOTSUPP;
-=20
- 	if (vblwait->request.type &
- 	    ~(_DRM_VBLANK_TYPES_MASK | _DRM_VBLANK_FLAGS_MASK |
---=20
-2.21.0
-
---jmacjpd643vk5d4c
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAl0BsK0ACgkQWJzP/com
-vP/4gA/7Biiupy7WhSPymKnZ+eYD/VkGhQ4xZ5o56UC7EC2582d/qLV3AGUW5R0C
-syX2HCKmxfNdpOBOa/75VOVjl9w6NS+Le/gnuVL07H9uW7zUefwWCEXNR7l1o22Z
-htFjEkqX8CYCzm9WMA+iUqgcpp0Em+/6FkTqLcTIBQqXsBFNOdnK1UNG8H1yI0jY
-r/Zl2a1Me6B3JtS3vLmBSRLh7xez+fOiX2pXbT1t+WZUlC+TGcIqn14WVaAXgJuw
-XKYzQxl+FJadL291ezbozPXNy29ljZ5PNOvxnhcG4SA9b55WGWM4Zh6GjeLcQqgY
-LaogzlZpe/QfTyk23C0efRUoXEFLhvB92IDWoeGo+brZG3y6ynQkGY7Xra0q1tem
-i0u9QGoFmfbAvlNXvJwZ7Q1ZOHqUGxKvfg0AZO3S0hwV0wb/lFAN2INT2uRMCapj
-VBipChDqv/9q+BLvMfyIMmpeAguVgA21iVtHHS61GvtBkj3tZVUFqlKcicQVe9rL
-nyemMYkrzoeozU+6gVShDJXDonB8Vf7tWB0tqKIsrtfqQsIQ0avY/IMl/Bo++gV3
-9EstV2YuONvhuL6ad2V5tq+ErwrQC0jaya8GWeO0TFGfiEO8XqvWmlnSvaw3+nuw
-UEtMVj3H7eM4zJpUPNm0NoQwUpy6meETdn9pqbmn0JzEeQzs1Xs=
-=Oj71
------END PGP SIGNATURE-----
-
---jmacjpd643vk5d4c--
+@@ -31,7 +31,6 @@
+ #include <drm/drm_drv.h>
+ #include <drm/drm_framebuffer.h>
+ #include <drm/drm_print.h>
+-#include <drm/drm_os_linux.h>
+ #include <drm/drm_vblank.h>
+ 
+ #include "drm_internal.h"
+@@ -1668,18 +1667,27 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, void *data,
+ 	if (req_seq != seq) {
+ 		DRM_DEBUG("waiting on vblank count %llu, crtc %u\n",
+ 			  req_seq, pipe);
+-		DRM_WAIT_ON(ret, vblank->queue, 3 * HZ,
+-			    vblank_passed(drm_vblank_count(dev, pipe),
+-					  req_seq) ||
+-			    !READ_ONCE(vblank->enabled));
++		ret = wait_event_interruptible_timeout(vblank->queue,
++			vblank_passed(drm_vblank_count(dev, pipe), req_seq) ||
++				      !READ_ONCE(vblank->enabled),
++			msecs_to_jiffies(30));
+ 	}
+ 
+-	if (ret != -EINTR) {
++	switch (ret) {
++	case 1:
++		ret = 0;
+ 		drm_wait_vblank_reply(dev, pipe, &vblwait->reply);
+-
+ 		DRM_DEBUG("crtc %d returning %u to client\n",
+ 			  pipe, vblwait->reply.sequence);
+-	} else {
++		break;
++	case 0:
++		ret = -EBUSY;
++		drm_wait_vblank_reply(dev, pipe, &vblwait->reply);
++		DRM_DEBUG("timeout waiting for vblank. crtc %d returning %u to client\n",
++			  pipe, vblwait->reply.sequence);
++		break;
++	default:
++		ret = -EINTR;
+ 		DRM_DEBUG("crtc %d vblank wait interrupted by signal\n", pipe);
+ 	}
+ 

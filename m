@@ -2,79 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD63344CA4
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 21:54:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ED2044E3D
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 23:17:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728796AbfFMTyS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 Jun 2019 15:54:18 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:31326 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726863AbfFMTyS (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 13 Jun 2019 15:54:18 -0400
-Received: from localhost.localdomain ([92.148.209.44])
-        by mwinf5d62 with ME
-        id QKuD2000j0y1A8U03KuEMK; Thu, 13 Jun 2019 21:54:16 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 13 Jun 2019 21:54:16 +0200
-X-ME-IP: 92.148.209.44
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     aviad.krawczyk@huawei.com, davem@davemloft.net
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH net-next] hinic: Use devm_kasprintf instead of hard coding it
-Date:   Thu, 13 Jun 2019 21:54:12 +0200
-Message-Id: <20190613195412.1702-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        id S1726083AbfFMVR4 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 Jun 2019 17:17:56 -0400
+Received: from mga02.intel.com ([134.134.136.20]:28342 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725747AbfFMVR4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 13 Jun 2019 17:17:56 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Jun 2019 14:17:56 -0700
+X-ExtLoop1: 1
+Received: from orsmsx105.amr.corp.intel.com ([10.22.225.132])
+  by orsmga003.jf.intel.com with ESMTP; 13 Jun 2019 14:17:56 -0700
+Received: from orsmsx153.amr.corp.intel.com (10.22.226.247) by
+ ORSMSX105.amr.corp.intel.com (10.22.225.132) with Microsoft SMTP Server (TLS)
+ id 14.3.408.0; Thu, 13 Jun 2019 14:17:55 -0700
+Received: from orsmsx104.amr.corp.intel.com ([169.254.4.84]) by
+ ORSMSX153.amr.corp.intel.com ([169.254.12.125]) with mapi id 14.03.0415.000;
+ Thu, 13 Jun 2019 14:17:55 -0700
+From:   "Bowers, AndrewX" <andrewx.bowers@intel.com>
+To:     "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [Intel-wired-lan] [PATCH][next] ixgbe: fix potential u32
+ overflow on shift
+Thread-Topic: [Intel-wired-lan] [PATCH][next] ixgbe: fix potential u32
+ overflow on shift
+Thread-Index: AQHVHGlXeNde2QC2RkO3vXKBp913h6aaIfLA
+Date:   Thu, 13 Jun 2019 21:17:55 +0000
+Message-ID: <26D9FDECA4FBDD4AADA65D8E2FC68A4A1D3ED66D@ORSMSX104.amr.corp.intel.com>
+References: <20190606131053.25103-1-colin.king@canonical.com>
+In-Reply-To: <20190606131053.25103-1-colin.king@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiOGEyYTkwNjQtMDBhYi00ZTdmLTk3MTUtNjMyNjI5NjA3NWU2IiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiZEMwc3NYdjBLRzhScytHdUx0dklDWnRkT1JhK3Q2Y3NJbHJBS0VMU0hTZnB0VnQ0RHF0ZDNpXC8xbEtUNzhCUXYifQ==
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.0.400.15
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.138]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'devm_kasprintf' is less verbose than:
-   snprintf(NULL, 0, ...);
-   devm_kzalloc(...);
-   sprintf
-so use it instead.
+> -----Original Message-----
+> From: Intel-wired-lan [mailto:intel-wired-lan-bounces@osuosl.org] On
+> Behalf Of Colin King
+> Sent: Thursday, June 6, 2019 6:11 AM
+> To: Keller, Jacob E <jacob.e.keller@intel.com>; Kirsher, Jeffrey T
+> <jeffrey.t.kirsher@intel.com>; David S . Miller <davem@davemloft.net>;
+> intel-wired-lan@lists.osuosl.org; netdev@vger.kernel.org
+> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: [Intel-wired-lan] [PATCH][next] ixgbe: fix potential u32 overflow on
+> shift
+> 
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The u32 variable rem is being shifted using u32 arithmetic however it is being
+> passed to div_u64 that expects the expression to be a u64.
+> The 32 bit shift may potentially overflow, so cast rem to a u64 before shifting
+> to avoid this.
+> 
+> Addresses-Coverity: ("Unintentional integer overflow")
+> Fixes: cd4583206990 ("ixgbe: implement support for SDP/PPS output on X550
+> hardware")
+> Fixes: 68d9676fc04e ("ixgbe: fix PTP SDP pin setup on X540 hardware")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/net/ethernet/intel/ixgbe/ixgbe_ptp.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/net/ethernet/huawei/hinic/hinic_rx.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/huawei/hinic/hinic_rx.c b/drivers/net/ethernet/huawei/hinic/hinic_rx.c
-index 9b4082557ad5..95b09fd110d3 100644
---- a/drivers/net/ethernet/huawei/hinic/hinic_rx.c
-+++ b/drivers/net/ethernet/huawei/hinic/hinic_rx.c
-@@ -493,7 +493,7 @@ int hinic_init_rxq(struct hinic_rxq *rxq, struct hinic_rq *rq,
- 		   struct net_device *netdev)
- {
- 	struct hinic_qp *qp = container_of(rq, struct hinic_qp, rq);
--	int err, pkts, irqname_len;
-+	int err, pkts;
- 
- 	rxq->netdev = netdev;
- 	rxq->rq = rq;
-@@ -502,13 +502,11 @@ int hinic_init_rxq(struct hinic_rxq *rxq, struct hinic_rq *rq,
- 
- 	rxq_stats_init(rxq);
- 
--	irqname_len = snprintf(NULL, 0, "hinic_rxq%d", qp->q_id) + 1;
--	rxq->irq_name = devm_kzalloc(&netdev->dev, irqname_len, GFP_KERNEL);
-+	rxq->irq_name = devm_kasprintf(&netdev->dev, GFP_KERNEL,
-+				       "hinic_rxq%d", qp->q_id);
- 	if (!rxq->irq_name)
- 		return -ENOMEM;
- 
--	sprintf(rxq->irq_name, "hinic_rxq%d", qp->q_id);
--
- 	pkts = rx_alloc_pkts(rxq);
- 	if (!pkts) {
- 		err = -ENOMEM;
--- 
-2.20.1
+Tested-by: Andrew Bowers <andrewx.bowers@intel.com>
 

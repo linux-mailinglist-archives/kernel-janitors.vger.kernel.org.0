@@ -2,100 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C502444F3
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 18:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D97D7444EE
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 18:41:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392542AbfFMQkv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 Jun 2019 12:40:51 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:41106 "EHLO
+        id S2392836AbfFMQkP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 Jun 2019 12:40:15 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:44478 "EHLO
         aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730573AbfFMG5B (ORCPT
+        with ESMTP id S1730516AbfFMHAA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 13 Jun 2019 02:57:01 -0400
+        Thu, 13 Jun 2019 03:00:00 -0400
 Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5D6sMnZ030606;
-        Thu, 13 Jun 2019 06:56:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=Rydac0kByKvRlT58oD81CeEmII8iE4ez/kqn0T7bhHc=;
- b=BVlJnpxV5rDOyTJgv7p3PzIaCOGoglizj9apj5P1I/OeZkHktovm318MJAQjDKX4TmtS
- yhnoh4CbT7AkSPcCWcV1DpXi70uRmTNEi9eq1iBbpEAdCl+Nop8edbPXzN0eHVYSXZBZ
- 37VSiMdjE74vMS2AlqTHtnWmT02DQXWzmdEyKi004CKWNOL6zEPC23KZlDyYjUzq51FL
- mDUzHzrFCna8tLYEKpsNzLvZZIBBK9LMC7ASGdf3mA9zOnUoprMc0Oi6ooimB9rBzUfb
- lu5rZaLKeeTD3MHkwpwxDxMxyFc0AJpIXonGPYdEQyn8EUjeY/LsRTZAbuHvjRDPU2RL FA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2130.oracle.com with ESMTP id 2t02heyryp-1
+        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5D6xBJ1034408;
+        Thu, 13 Jun 2019 06:59:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=mime-version :
+ message-id : date : from : to : cc : subject : content-type :
+ content-transfer-encoding; s=corp-2018-07-02;
+ bh=hAsqs/UCvL0W8EmDOxiao4xeBzroLyAyKeIw+Px3dyU=;
+ b=G6JCEkgrcQ+/dugNXKTSOwlOR1LC8mThLjNBJ0TneBYu8TfH6QXfVxGSem/fcXAnhNtX
+ gkcVfN0Z1LrIYC5kwB9rkYnjAT5j0sfggmGeibiQ0KKcNenVVX2JxC5NKMbfmbgW3rsz
+ +4TIXyWaO1A1MCjCTUa9kfz2WZNEdUccecK5RWOtTSxqKyAyaB64f9ookcJM4Wh4jUja
+ pJL13Msbj/tpTtOX7DndbhDF5oU0IVS4y59lD7ga96+/3SokDGViOxrmiLxuknQp/kWJ
+ iI/EXhaV1PmH3hQAXqPQM/p50mLcK3A38+XcN65m6Avk9RLj8qNWrQ+LDdms/NB5f6XK UQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 2t02heysbs-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 13 Jun 2019 06:56:50 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5D6tLbf005474;
-        Thu, 13 Jun 2019 06:56:50 GMT
+        Thu, 13 Jun 2019 06:59:40 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5D6xI24156856;
+        Thu, 13 Jun 2019 06:59:40 GMT
 Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2t024vbq0r-1
+        by aserp3030.oracle.com with ESMTP id 2t04j0a375-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 13 Jun 2019 06:56:50 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5D6ujtG012959;
-        Thu, 13 Jun 2019 06:56:46 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 12 Jun 2019 23:56:45 -0700
-Date:   Thu, 13 Jun 2019 09:56:37 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Christoph Lameter <cl@linux.com>, Kees Cook <keescook@chromium.org>
-Cc:     Pekka Enberg <penberg@kernel.org>,
-        David Rientjes <rientjes@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] mm/slab: restore IRQs in kfree()
-Message-ID: <20190613065637.GE16334@mwanda>
+        Thu, 13 Jun 2019 06:59:40 +0000
+Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5D6xdHB014323;
+        Thu, 13 Jun 2019 06:59:39 GMT
+Received: from mwanda (/41.57.98.10) by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Wed, 12 Jun 2019 23:58:23 -0700
+USER-AGENT: Mutt/1.10.1 (2018-07-13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Message-ID: <20190613065815.GF16334@mwanda>
+Date:   Wed, 12 Jun 2019 23:58:15 -0700 (PDT)
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Leo Yan <leo.yan@linaro.org>
+Cc:     Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] coresight: potential uninitialized variable in probe()
 X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9286 signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
  phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906130055
+ engine=8.0.1-1810050000 definitions=main-1906130056
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9286 signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
  suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906130055
+ definitions=main-1906130056
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We added a new return here but we need to restore the IRQs before
-we leave.
+The "drvdata->atclk" clock is optional, but if it gets set to an error
+pointer then we're accidentally return an uninitialized variable instead
+of success.
 
-Fixes: 4f5d94fd4ed5 ("mm/slab: sanity-check page type when looking up cache")
+Fixes: 78e6427b4e7b ("coresight: funnel: Support static funnel")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- mm/slab.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hwtracing/coresight/coresight-funnel.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/mm/slab.c b/mm/slab.c
-index 9e3eee5568b6..db01e9aae31b 100644
---- a/mm/slab.c
-+++ b/mm/slab.c
-@@ -3745,8 +3745,10 @@ void kfree(const void *objp)
- 	local_irq_save(flags);
- 	kfree_debugcheck(objp);
- 	c = virt_to_cache(objp);
--	if (!c)
-+	if (!c) {
-+		local_irq_restore(flags);
- 		return;
-+	}
- 	debug_check_no_locks_freed(objp, c->object_size);
+diff --git a/drivers/hwtracing/coresight/coresight-funnel.c b/drivers/hwtracing/coresight/coresight-funnel.c
+index 5867fcb4503b..fa97cb9ab4f9 100644
+--- a/drivers/hwtracing/coresight/coresight-funnel.c
++++ b/drivers/hwtracing/coresight/coresight-funnel.c
+@@ -244,6 +244,7 @@ static int funnel_probe(struct device *dev, struct resource *res)
+ 	}
  
- 	debug_check_no_obj_freed(objp, c->object_size);
+ 	pm_runtime_put(dev);
++	ret = 0;
+ 
+ out_disable_clk:
+ 	if (ret && !IS_ERR_OR_NULL(drvdata->atclk))
 -- 
 2.20.1
 

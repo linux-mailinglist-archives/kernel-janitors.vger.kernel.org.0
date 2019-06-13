@@ -2,110 +2,130 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF64F44419
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 18:36:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0243443D3
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 18:34:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730977AbfFMQet (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 Jun 2019 12:34:49 -0400
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:38393 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730752AbfFMHtf (ORCPT
+        id S1731252AbfFMQcs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 Jun 2019 12:32:48 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:50090 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730846AbfFMIOl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 13 Jun 2019 03:49:35 -0400
-Received: by mail-qt1-f193.google.com with SMTP id n11so19353768qtl.5
-        for <kernel-janitors@vger.kernel.org>; Thu, 13 Jun 2019 00:49:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=xROEx50vg3PrTIRbBL87vn9xq3zmqd182DXiss4gqbM=;
-        b=q3wHpbh5ZcLjlQW7kj7YYZuO2MWWre3rKFc1xRiJRLPzhfF+0X6mVWIIMfzvS7Rsiu
-         qlPzgPoi0qh7StRWKqeJwocEpa4r/p/0lRP7wTbxbWhwGRycC1XHHnsa7tARYuIaHZnm
-         j4fLn76lVPiHH7mJirtdmCF6+fHru+SnN8zCtaQN7+7PoewJmPVd16kR6ZrQZ/OpXdP8
-         klOVVdV4cUYSIuz7trkXErJMZt7wxUdrHLY+SR+Rc+VfJ21s3amIh7TVMbdmHYZLN7gZ
-         hdO61fuW89DO1MElkjaiiN2Xw4u7bb1mVsfdNf85byeAIDhSG0GKhEeZ38Xl8sFqqo2p
-         a21A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=xROEx50vg3PrTIRbBL87vn9xq3zmqd182DXiss4gqbM=;
-        b=aL+80dYxDE+2mMRpJzZomLALmdw75/L+rvea/rFzgWCRfC6Hg3r3gkf0sD5Vmr4sbA
-         FeHmRpJggyCrA1fu4O6Bx1bGg0Uf8bZPFXJMGV5V0bD7FfCWkk0uZSYc94/FvqhLn73m
-         4UIf/zbQthWpsVD/RYp9Fw92gnkvjyTRfh/1IcP/FVlwpN0YcPPe15TreZKmKhSHeAlt
-         gTR6MyhJE4jKRB6xgJpfFCCxO3zhdgiTSPzo+UbWrsdRxBiUCV0YLdyqQnREUeYGpQW+
-         W20PIRm4yj6wqITJWwjLz3A8QaoRJHg0rUA9FScNtRRvYTS7FUzAP43HpwiadFDF/oif
-         UfsQ==
-X-Gm-Message-State: APjAAAWqSvWZuaThYRoKbWuq74hPuAbXLo/pTM3A3Bu/CVUV4I776i1U
-        LuwDiCvXjojtWVyrx03HkjYMvQ==
-X-Google-Smtp-Source: APXvYqwEurFoZHKAEhOSIDN36DqZuW8gdc1FPaANBB2DIiStrJOy1JF8fsQVRp2blw4EqjOl1eZlsQ==
-X-Received: by 2002:ac8:3668:: with SMTP id n37mr29172383qtb.236.1560412174396;
-        Thu, 13 Jun 2019 00:49:34 -0700 (PDT)
-Received: from leoy-ThinkPad-X240s (li1322-146.members.linode.com. [45.79.223.146])
-        by smtp.gmail.com with ESMTPSA id s44sm1537967qtc.8.2019.06.13.00.49.29
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 13 Jun 2019 00:49:33 -0700 (PDT)
-Date:   Thu, 13 Jun 2019 15:49:22 +0800
-From:   Leo Yan <leo.yan@linaro.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
+        Thu, 13 Jun 2019 04:14:41 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5D8DfAM085841;
+        Thu, 13 Jun 2019 08:14:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=XWdgxTdniwntkEIDG2SNziPX1t3Vu0D1U5JGNb+EuBs=;
+ b=sbTI5GJvuNfhg+vQQX93BC3rr5+LeVu+HtdQCRpT6KUFsNzMYFyYfSulOJnK8BLOvIdN
+ 9TbbR+fhcBsihhhbl27k+jgrC4MaR7EFmJM8bRBwLq3FdelgrJBRJv9ZfgW8Ca6aK73m
+ X033eS14x6vpcygJ+POCRb5yq2o0eQJsF0vZks29ygQqIK9Dio+twQvGcDHqFVgMJ744
+ Q5uqJBtChxFcFkkJIcJTGKp99+9FsKrTVfadOCtPou4eiYGcCR5b4wWyWBNcbXn29oa6
+ gl9+2NJUhdJXX7uko787YvsrqrJ86WuvfyTGhIHUt4QB54VT6+U8BNLuhPrMaA41kvdd 9A== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2t05nqywkn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 13 Jun 2019 08:14:30 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5D8DA6s066457;
+        Thu, 13 Jun 2019 08:14:30 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 2t1jpje2vk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 13 Jun 2019 08:14:30 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5D8EStP004671;
+        Thu, 13 Jun 2019 08:14:29 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 13 Jun 2019 01:14:28 -0700
+Date:   Thu, 13 Jun 2019 11:14:19 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Leo Yan <leo.yan@linaro.org>
 Cc:     Mathieu Poirier <mathieu.poirier@linaro.org>,
         Suzuki K Poulose <suzuki.poulose@arm.com>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
 Subject: Re: [PATCH] coresight: potential uninitialized variable in probe()
-Message-ID: <20190613074922.GB21113@leoy-ThinkPad-X240s>
+Message-ID: <20190613081419.GG1893@kadam>
 References: <20190613065815.GF16334@mwanda>
+ <20190613074922.GB21113@leoy-ThinkPad-X240s>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190613065815.GF16334@mwanda>
+In-Reply-To: <20190613074922.GB21113@leoy-ThinkPad-X240s>
 User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9286 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906130066
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9286 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906130066
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
-
-On Wed, Jun 12, 2019 at 11:58:15PM -0700, Dan Carpenter wrote:
-> The "drvdata->atclk" clock is optional, but if it gets set to an error
-> pointer then we're accidentally return an uninitialized variable instead
-> of success.
-
-You are right, thanks a lot for pointing out.
-
-I'd like to initialize 'ret = 0' at the head of function, so we can
-has the same fashion with other CoreSight drivers (e.g. replicator).
-
- static int funnel_probe(struct device *dev, struct resource *res)
- {
--	int ret;
-+	int ret = 0;
-
-If you agree, could you send a new patch for this?
-
-Thanks,
-Leo Yan
-
-> Fixes: 78e6427b4e7b ("coresight: funnel: Support static funnel")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/hwtracing/coresight/coresight-funnel.c | 1 +
->  1 file changed, 1 insertion(+)
+On Thu, Jun 13, 2019 at 03:49:22PM +0800, Leo Yan wrote:
+> Hi Dan,
 > 
-> diff --git a/drivers/hwtracing/coresight/coresight-funnel.c b/drivers/hwtracing/coresight/coresight-funnel.c
-> index 5867fcb4503b..fa97cb9ab4f9 100644
-> --- a/drivers/hwtracing/coresight/coresight-funnel.c
-> +++ b/drivers/hwtracing/coresight/coresight-funnel.c
-> @@ -244,6 +244,7 @@ static int funnel_probe(struct device *dev, struct resource *res)
->  	}
->  
->  	pm_runtime_put(dev);
-> +	ret = 0;
->  
->  out_disable_clk:
->  	if (ret && !IS_ERR_OR_NULL(drvdata->atclk))
-> -- 
-> 2.20.1
+> On Wed, Jun 12, 2019 at 11:58:15PM -0700, Dan Carpenter wrote:
+> > The "drvdata->atclk" clock is optional, but if it gets set to an error
+> > pointer then we're accidentally return an uninitialized variable instead
+> > of success.
 > 
+> You are right, thanks a lot for pointing out.
+> 
+> I'd like to initialize 'ret = 0' at the head of function, so we can
+> has the same fashion with other CoreSight drivers (e.g. replicator).
+> 
+>  static int funnel_probe(struct device *dev, struct resource *res)
+>  {
+> -	int ret;
+> +	int ret = 0;
+> 
+> If you agree, could you send a new patch for this?
+
+Obviously that's an option I considered...  The reason I didn't go with
+that is that a common bug that I see is:
+
+	int ret = 0;
+
+	p = kmalloc();
+	if (!p)
+		goto free_whatever;
+
+In my experience it's better to initialize the return as late as
+possible so that you get static checker warnings when you forget to set
+the error code.
+
+Also I think my way is more readable.  I like to make the success path
+as explicit as possible.  I hate when people do things like:
+
+	if (!ret)
+		return ret;
+
+About 10% of the time when you see this it is a bug, but it's hard to
+tell because it's not readable like it would be if people did:
+
+	if (!ret)
+		return 0;
+
+Or sometimes you see things like:
+
+	if (corner_case)
+		goto free; /* success path */
+
+Without the "/* success path */ comment explaining why we're returning
+zero most readers will assume it's a mistake.
+
+regards,
+dan carpenter

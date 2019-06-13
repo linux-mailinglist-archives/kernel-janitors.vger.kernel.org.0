@@ -2,91 +2,131 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD42F44A14
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 20:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C21D044B00
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 20:45:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727664AbfFMSA0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 Jun 2019 14:00:26 -0400
-Received: from pandora.armlinux.org.uk ([78.32.30.218]:52098 "EHLO
-        pandora.armlinux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726965AbfFMSA0 (ORCPT
+        id S1728766AbfFMSpB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 Jun 2019 14:45:01 -0400
+Received: from asavdk3.altibox.net ([109.247.116.14]:50945 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725851AbfFMSpB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 13 Jun 2019 14:00:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=QqBYpCy9poBhIFTyghikbxuPHZgS3I094QUO8bPWRNc=; b=iwxf7Nysd9QFbabhwwOgvwM/6
-        7KiTJ3j3vfhQz70Qkk7Ql0b8PB7DxGM1MuBTuS3AaQXfNwfcKtUFfvcN5eR7kBGyTc/al4iTE9mkX
-        cD9yS2WPhI9gN9vtVtjlMZbS1UfTiEeXSUIuWJKiQrF3spgTJ1G1T+JDVHB967P3Xjo8dVA+DjXqT
-        J0SiFqQacluMXhcsmW6FjpP2m/4dYgDY4xS6cHW6Az7PRAwFHSYs6LDVKhO97fJ5zvbKn/rnyRYdT
-        Dj5ps+AinHssULJCIStegydvy9NZFFkS9WQ/lZdQOMovkw5c3SPMQTIUGn2DHhjFiNfSNZkyXeesl
-        m6Bd7u7+A==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53016)
-        by pandora.armlinux.org.uk with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.90_1)
-        (envelope-from <linux@armlinux.org.uk>)
-        id 1hbU1L-0004fk-DJ; Thu, 13 Jun 2019 19:00:19 +0100
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.89)
-        (envelope-from <linux@shell.armlinux.org.uk>)
-        id 1hbU1I-0001Pu-JB; Thu, 13 Jun 2019 19:00:16 +0100
-Date:   Thu, 13 Jun 2019 19:00:16 +0100
-From:   Russell King - ARM Linux admin <linux@armlinux.org.uk>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Ruslan Babayev <ruslan@babayev.com>, Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] net: phy: sfp: clean up a condition
-Message-ID: <20190613180016.ekg55vzkuczapfpl@shell.armlinux.org.uk>
-References: <20190613065102.GA16334@mwanda>
+        Thu, 13 Jun 2019 14:45:01 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk3.altibox.net (Postfix) with ESMTPS id 93BD620024;
+        Thu, 13 Jun 2019 20:44:57 +0200 (CEST)
+Date:   Thu, 13 Jun 2019 20:44:56 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+Cc:     Maxime Ripard <maxime.ripard@bootlin.com>,
+        kernel-janitors@vger.kernel.org, intel-gfx@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        David Airlie <airlied@linux.ie>, Sean Paul <sean@poorly.run>
+Subject: Re: Drop use of DRM_WAIT_ON() [Was: drm/drm_vblank: Change EINVAL by
+ the correct errno]
+Message-ID: <20190613184456.GB2385@ravnborg.org>
+References: <20190613021054.cdewdb3azy6zuoyw@smtp.gmail.com>
+ <20190613050403.GA21502@ravnborg.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20190613065102.GA16334@mwanda>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190613050403.GA21502@ravnborg.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=dqr19Wo4 c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=pGLkceISAAAA:8
+        a=e5mUnYsNAAAA:8 a=MGE9myiAT6FqPCjaB2EA:9 a=QEXdDO2ut3YA:10
+        a=Vxmtnl_E_bksehYqCbjh:22
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jun 13, 2019 at 09:51:02AM +0300, Dan Carpenter wrote:
-> The acpi_node_get_property_reference() doesn't return ACPI error codes,
-> it just returns regular negative kernel error codes.  This patch doesn't
-> affect run time, it's just a clean up.
-> 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/net/phy/sfp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-> index a991c80e6567..8a99307c1c39 100644
-> --- a/drivers/net/phy/sfp.c
-> +++ b/drivers/net/phy/sfp.c
-> @@ -1848,7 +1848,7 @@ static int sfp_probe(struct platform_device *pdev)
->  		int ret;
->  
->  		ret = acpi_node_get_property_reference(fw, "i2c-bus", 0, &args);
-> -		if (ACPI_FAILURE(ret) || !is_acpi_device_node(args.fwnode)) {
-> +		if (ret || !is_acpi_device_node(args.fwnode)) {
->  			dev_err(&pdev->dev, "missing 'i2c-bus' property\n");
->  			return -ENODEV;
+Hi Rodrigo et al.
 
-If "ret" is a Linux error code, should we print its value when reporting
-the error so we know why the failure occurred, and propagate the error
-code?
-
->  		}
-> -- 
-> 2.20.1
+On Thu, Jun 13, 2019 at 07:04:03AM +0200, Sam Ravnborg wrote:
+> Hi Rodrigo.
 > 
+> On Wed, Jun 12, 2019 at 11:10:54PM -0300, Rodrigo Siqueira wrote:
+> > For historical reason, the function drm_wait_vblank_ioctl always return
+> > -EINVAL if something gets wrong. This scenario limits the flexibility
+> > for the userspace make detailed verification of the problem and take
+> > some action. In particular, the validation of “if (!dev->irq_enabled)”
+> > in the drm_wait_vblank_ioctl is responsible for checking if the driver
+> > support vblank or not. If the driver does not support VBlank, the
+> > function drm_wait_vblank_ioctl returns EINVAL which does not represent
+> > the real issue; this patch changes this behavior by return EOPNOTSUPP.
+> > Additionally, some operations are unsupported by this function, and
+> > returns EINVAL; this patch also changes the return value to EOPNOTSUPP
+> > in this case. Lastly, the function drm_wait_vblank_ioctl is invoked by
+> > libdrm, which is used by many compositors; because of this, it is
+> > important to check if this change breaks any compositor. In this sense,
+> > the following projects were examined:
+> > 
+> > * Drm-hwcomposer
+> > * Kwin
+> > * Sway
+> > * Wlroots
+> > * Wayland-core
+> > * Weston
+> > * Xorg (67 different drivers)
+> > 
+> > For each repository the verification happened in three steps:
+> > 
+> > * Update the main branch
+> > * Look for any occurrence "drmWaitVBlank" with the command:
+> >   git grep -n "drmWaitVBlank"
+> > * Look in the git history of the project with the command:
+> >   git log -SdrmWaitVBlank
+> > 
+> > Finally, none of the above projects validate the use of EINVAL which
+> > make safe, at least for these projects, to change the return values.
+> > 
+> > Change since V2:
+> >  Daniel Vetter and Chris Wilson
+> >  - Replace ENOTTY by EOPNOTSUPP
+> >  - Return EINVAL if the parameters are wrong
+> > 
+> > Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+> > ---
+> > Update:
+> >   Now IGT has a way to validate if a driver has vblank support or not.
+> >   See: https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/2d244aed69165753f3adbbd6468db073dc1acf9A
+> > 
+> >  drivers/gpu/drm/drm_vblank.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
+> > index 0d704bddb1a6..d76a783a7d4b 100644
+> > --- a/drivers/gpu/drm/drm_vblank.c
+> > +++ b/drivers/gpu/drm/drm_vblank.c
+> > @@ -1578,10 +1578,10 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, void *data,
+> >  	unsigned int flags, pipe, high_pipe;
+> >  
+> >  	if (!dev->irq_enabled)
+> > -		return -EINVAL;
+> > +		return -EOPNOTSUPP;
+> >  
+> >  	if (vblwait->request.type & _DRM_VBLANK_SIGNAL)
+> > -		return -EINVAL;
+> > +		return -EOPNOTSUPP;
+> >  
+> >  	if (vblwait->request.type &
+> >  	    ~(_DRM_VBLANK_TYPES_MASK | _DRM_VBLANK_FLAGS_MASK |
 > 
+> When touching this function, could I ask you to take a look at
+> eliminating the use of DRM_WAIT_ON()?
+> It comes from the deprecated drm_os_linux.h header, and it is only of
+> the few remaining users of DRM_WAIT_ON().
+> 
+> Below you can find my untested first try - where I did an attempt not to
+> change behaviour.
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTC broadband for 0.8mile line in suburbia: sync at 12.1Mbps down 622kbps up
-According to speedtest.net: 11.9Mbps down 500kbps up
+intel-gfx did not like the patch - so no need to spend time looking at
+the patch until I have that fixed.
+
+	Sam

@@ -2,95 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E0C944759
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 18:59:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CBBE449F8
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 19:54:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729874AbfFMQ7G (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 Jun 2019 12:59:06 -0400
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:41899 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727639AbfFMQ7G (ORCPT
+        id S1727178AbfFMRyh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 Jun 2019 13:54:37 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:32874 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725889AbfFMRyh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 13 Jun 2019 12:59:06 -0400
-Received: by mail-qk1-f193.google.com with SMTP id c11so13200920qkk.8;
-        Thu, 13 Jun 2019 09:59:05 -0700 (PDT)
+        Thu, 13 Jun 2019 13:54:37 -0400
+Received: by mail-pg1-f195.google.com with SMTP id k187so10878472pga.0
+        for <kernel-janitors@vger.kernel.org>; Thu, 13 Jun 2019 10:54:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=11OleX27xVveG0LvW8hhS+mOJv2guc7A/BC2mPPxyvA=;
-        b=SurKhAYJRBJsFlMemN2kRJ6bXLy/QXFfseNapj78YrX3aHam6qtgP1hZZjIISPV2bE
-         G7he95bIpytx3uucms6/j1bkIkz+j/rgUnQS+LFSuGoEO5i32gcranmFDcFRPLCpo6Ct
-         Mq+uwM/slJvEhZ6d7K5HTpL/HFTTiBhONMT/FE/LNswyNIFDWUzkEnp7GtZ1cEh8YiC1
-         ZT5vYlxczI/4ylayRQWESpJCAEcvJ9o3UTGzyj9oAd1kK2J78jtfB6Jn8HPmaaAM3uRN
-         NAqtU1gZaw1ObiwUgVDpSHRGBStlsHgh5fp8Y9wG6NChoLD3qlifr0uec+ja1EeNWx8p
-         6z9w==
+        d=babayev.com; s=google;
+        h=references:user-agent:from:to:cc:subject:in-reply-to:date
+         :message-id:mime-version;
+        bh=NbtgBFNRjapeV7XwkkOgD05mL4VUy7Y9ZUCxRxVNsds=;
+        b=SmteWydlDNz3KP2yLordqEQPllb6c8yoRGXU/vCkKFLYVVGRIKLhwz8a/jlM+M6yN8
+         cQT/siSuukJCgOHrZYp/m6tNMZjN0SztWpbUpUlBm0VkgCKFTaRt4rFLzj9xD/1dBnRH
+         n6KIMJimpDWWcyNP+FtnMyMwjrvEjO46YVCxc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=11OleX27xVveG0LvW8hhS+mOJv2guc7A/BC2mPPxyvA=;
-        b=YSlzNoOyPDE39EPXHT5oF3MZzQAMNHcRP2XK4A+rLKrLVW+Na7KvK4JfQkZ6uFGJo5
-         A6eaejaaVs4/2Ns5NZBX88mDkBho/oUpinS14kWyOf0nRxHnai5ZjdmNuCeXN3oN0wSB
-         esdlZi2Y+qBLZCDAytOz91jXFtJAZEB7MA5WY7Ay560dR+EfqU1Q5QOoLJvrx5WBrUWp
-         ysB2NBNq8f0VHiTa7bc8IF3n7NIumow7jn/zyoisD0eYEyQDPhDt6S9/uFRWGT/7l7Oa
-         Gabkhc9HFS6q1kAL7WvHuFVKJUM5TTmXXzT5zLJfKhHTgcP7BZlRG+w+rytz872/gbS4
-         rwuA==
-X-Gm-Message-State: APjAAAXnvz4jxthV40j26ShUceu4LcZXL5r4exdGE8X4f4C+ZbjrsZft
-        Yb8HJ6dSbIl/13VLbgbeCOpsEQvN7pw0MLQV36g=
-X-Google-Smtp-Source: APXvYqydEhoSJBurY1SYbVgwzcyCtxVDPuMxRgTpW+wjNbPpqMDmeECXzdzYcRHH2jfwhtdgtHCfz6vfv62PbxmKdM0=
-X-Received: by 2002:ae9:eb53:: with SMTP id b80mr43330382qkg.172.1560445144990;
- Thu, 13 Jun 2019 09:59:04 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190613070021.GG16334@mwanda>
-In-Reply-To: <20190613070021.GG16334@mwanda>
-From:   Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date:   Thu, 13 Jun 2019 09:58:53 -0700
-Message-ID: <CAEf4BzZn4hHobOBiQmSPQhKTrsi7MC=R-7OjWTMyFC03ehrjgg@mail.gmail.com>
-Subject: Re: [PATCH] selftests/bpf: signedness bug in enable_all_controllers()
+        h=x-gm-message-state:references:user-agent:from:to:cc:subject
+         :in-reply-to:date:message-id:mime-version;
+        bh=NbtgBFNRjapeV7XwkkOgD05mL4VUy7Y9ZUCxRxVNsds=;
+        b=berwsWc0EmHlddKObRsxtnLPgXgdFOmV6rBcAs245WCqY2H1owlbknoCHlaIfFg3te
+         GMvHJ+5a4blZdxcl+XslrBxGHV4ipZ18W4Ux+YOl8J6/ffGL5skiMP7N4U1l03uaQZ/9
+         MJt21GsiUHifqozy7s8BgnD+TdVs87fZ+epJP7mNfY2aF7+m4VwM/1M4gdEncO0FZ21c
+         DnlWyDvu1QrV33/KZQhnHXTVBGqogvbZYhS1+J8KF85ze1IXzm1m2QaRrxnC5tJYBP2Z
+         oECwmlgCB/4CxYmnf5d7tn0Pq+Yk0gKlxZ4twvBbMf0jpDSmwKEQWZ+Lq+EipWrJAIhl
+         JhpA==
+X-Gm-Message-State: APjAAAWq+pxNCcHE8Elm0XVcuTsIvWu9mqqEn+nZISB4GS/tUm1RoJjF
+        710XEGsS7YG42T3cFEPfNR+3Kw==
+X-Google-Smtp-Source: APXvYqxTH3uAS+kmQajroEyFVVfbiTZJmL46A/FfpP+b7ES0UhN2/WJHP71DUtnWI0I+69ErmdQzOw==
+X-Received: by 2002:a62:ac11:: with SMTP id v17mr32157513pfe.236.1560448476115;
+        Thu, 13 Jun 2019 10:54:36 -0700 (PDT)
+Received: from localhost ([128.107.241.189])
+        by smtp.gmail.com with ESMTPSA id p27sm338705pfq.136.2019.06.13.10.54.34
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 13 Jun 2019 10:54:35 -0700 (PDT)
+References: <20190613065102.GA16334@mwanda>
+User-agent: mu4e 1.0; emacs 26.1
+From:   Ruslan Babayev <ruslan@babayev.com>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Shuah Khan <shuah@kernel.org>, Roman Gushchin <guro@fb.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        linux-kselftest@vger.kernel.org, bpf <bpf@vger.kernel.org>,
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Ruslan Babayev <ruslan@babayev.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH net] net: phy: sfp: clean up a condition
+In-reply-to: <20190613065102.GA16334@mwanda>
+Date:   Thu, 13 Jun 2019 10:54:40 -0700
+Message-ID: <87pnnh9xr3.fsf@babayev.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jun 13, 2019 at 9:40 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+
+Dan Carpenter writes:
+
+> The acpi_node_get_property_reference() doesn't return ACPI error codes,
+> it just returns regular negative kernel error codes.  This patch doesn't
+> affect run time, it's just a clean up.
 >
-> The "len" variable needs to be signed for the error handling to work
-> properly.
->
-> Fixes: 596092ef8bea ("selftests/bpf: enable all available cgroup v2 controllers")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
 
-Thanks for the fix!
-
-Acked-by: Andrii Nakryiko <andriin@fb.com>
-
->  tools/testing/selftests/bpf/cgroup_helpers.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/tools/testing/selftests/bpf/cgroup_helpers.c b/tools/testing/selftests/bpf/cgroup_helpers.c
-> index 0d89f0396be4..e95c33e333a4 100644
-> --- a/tools/testing/selftests/bpf/cgroup_helpers.c
-> +++ b/tools/testing/selftests/bpf/cgroup_helpers.c
-> @@ -47,7 +47,7 @@ int enable_all_controllers(char *cgroup_path)
->         char buf[PATH_MAX];
->         char *c, *c2;
->         int fd, cfd;
-> -       size_t len;
-> +       ssize_t len;
->
->         snprintf(path, sizeof(path), "%s/cgroup.controllers", cgroup_path);
->         fd = open(path, O_RDONLY);
-> --
-> 2.20.1
->
+Reviewed-by: Ruslan Babayev <ruslan@babayev.com>

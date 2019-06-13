@@ -2,198 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0A0D445DA
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 18:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 501FE4459F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 18:45:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392600AbfFMQrI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 Jun 2019 12:47:08 -0400
-Received: from asavdk3.altibox.net ([109.247.116.14]:53141 "EHLO
-        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730266AbfFMFEL (ORCPT
+        id S1730395AbfFMQpM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 Jun 2019 12:45:12 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:43080 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730373AbfFMGID (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 13 Jun 2019 01:04:11 -0400
-Received: from ravnborg.org (unknown [158.248.194.18])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by asavdk3.altibox.net (Postfix) with ESMTPS id 81A992001E;
-        Thu, 13 Jun 2019 07:04:05 +0200 (CEST)
-Date:   Thu, 13 Jun 2019 07:04:03 +0200
-From:   Sam Ravnborg <sam@ravnborg.org>
-To:     Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Drop use of DRM_WAIT_ON() [Was: drm/drm_vblank: Change EINVAL by the
- correct errno]
-Message-ID: <20190613050403.GA21502@ravnborg.org>
-References: <20190613021054.cdewdb3azy6zuoyw@smtp.gmail.com>
+        Thu, 13 Jun 2019 02:08:03 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5D63qqV176201;
+        Thu, 13 Jun 2019 06:07:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=mime-version :
+ message-id : date : from : to : cc : subject : references : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2018-07-02;
+ bh=brt7ejG03HkNmk1GNVjb6IlhfoJkTWrsNhNa3NwDIh0=;
+ b=pvEqreaysHPDto5rBCa+vVIkz/d8RXBxEmkZnvuWz3JLjm1FR6g72rm6p5MgyivhAY1i
+ sWYvDrzsEhiudWMuPiJU4Sr2fQZHxNo/q55Bfnn+3/ZTcDW/qUO/Oeyc1aqMJ1vx+neN
+ fj4kqzY1jtDaV3m5hk5+ZmeAVt4Lx5mpSjiGbvK9SX1qe7QrJSKzEROUUyh1lUf/6Z8t
+ W3l10b9rgA/K0XO2/e16yQJdQcbzzbQ4gT8tWfzNKsbtwe9Tutf9e3+DvgxwZoCVHmra
+ Lw2FA8ImquFUPnFwjvqvk8DC6SG7CJx6FGmY3iBpyplcaZ5PMhMMHkscEHSchZktEsnW NQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2t05nqyaju-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 13 Jun 2019 06:07:29 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5D64wVu055937;
+        Thu, 13 Jun 2019 06:05:28 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 2t04j09jbf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 13 Jun 2019 06:05:28 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5D65R4J002458;
+        Thu, 13 Jun 2019 06:05:27 GMT
+Received: from kadam (/41.57.98.10) by default (Oracle Beehive Gateway v4.0)
+ with ESMTP ; Wed, 12 Jun 2019 23:05:25 -0700
+USER-AGENT: Mutt/1.9.4 (2018-02-28)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190613021054.cdewdb3azy6zuoyw@smtp.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-CMAE-Score: 0
-X-CMAE-Analysis: v=2.3 cv=dqr19Wo4 c=1 sm=1 tr=0
-        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
-        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=IkcTkHD0fZMA:10 a=pGLkceISAAAA:8
-        a=e5mUnYsNAAAA:8 a=7gkXJVJtAAAA:8 a=QyXUC8HyAAAA:8 a=P-IC7800AAAA:8
-        a=Jn-_o28iN5fng-a6wa4A:9 a=QEXdDO2ut3YA:10 a=Vxmtnl_E_bksehYqCbjh:22
-        a=E9Po1WZjFZOl8hwRPBS3:22 a=d3PnA9EDa4IxuAV0gXij:22
+Message-ID: <20190613060517.GF1915@kadam>
+Date:   Wed, 12 Jun 2019 23:05:17 -0700 (PDT)
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Leon Romanovsky <leon@kernel.org>
+Cc:     Lijun Ou <oulijun@huawei.com>,
+        "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] RDMA/hns: Fix an error code in
+ hns_roce_set_user_sq_size()
+References: <20190608092714.GE28890@mwanda>
+ <20190612172316.GU6369@mtr-leonro.mtl.com>
+In-Reply-To: <20190612172316.GU6369@mtr-leonro.mtl.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9286 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=892
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906130049
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9286 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=942 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906130049
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Rodrigo.
+On Wed, Jun 12, 2019 at 08:23:16PM +0300, Leon Romanovsky wrote:
+> On Sat, Jun 08, 2019 at 12:27:14PM +0300, Dan Carpenter wrote:
+> > This function is supposed to return negative kernel error codes but here
+> > it returns CMD_RST_PRC_EBUSY (2).  The error code eventually gets passed
+> > to IS_ERR() and since it's not an error pointer it leads to an Oops in
+> > hns_roce_v1_rsv_lp_qp()
+> >
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> > Static analysis.  Not tested.
+> >
+> >  drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+> > index ac017c24b200..018ff302ab9e 100644
+> > --- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+> > +++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+> > @@ -1098,7 +1098,7 @@ static int hns_roce_cmq_send(struct hns_roce_dev *hr_dev,
+> >  	if (ret == CMD_RST_PRC_SUCCESS)
+> >  		return 0;
+> >  	if (ret == CMD_RST_PRC_EBUSY)
+> 
+> The better fix will be to remove CMD_RST_PRC_* definitions in favor of
+> normal errno.
+> 
 
-On Wed, Jun 12, 2019 at 11:10:54PM -0300, Rodrigo Siqueira wrote:
-> For historical reason, the function drm_wait_vblank_ioctl always return
-> -EINVAL if something gets wrong. This scenario limits the flexibility
-> for the userspace make detailed verification of the problem and take
-> some action. In particular, the validation of “if (!dev->irq_enabled)”
-> in the drm_wait_vblank_ioctl is responsible for checking if the driver
-> support vblank or not. If the driver does not support VBlank, the
-> function drm_wait_vblank_ioctl returns EINVAL which does not represent
-> the real issue; this patch changes this behavior by return EOPNOTSUPP.
-> Additionally, some operations are unsupported by this function, and
-> returns EINVAL; this patch also changes the return value to EOPNOTSUPP
-> in this case. Lastly, the function drm_wait_vblank_ioctl is invoked by
-> libdrm, which is used by many compositors; because of this, it is
-> important to check if this change breaks any compositor. In this sense,
-> the following projects were examined:
-> 
-> * Drm-hwcomposer
-> * Kwin
-> * Sway
-> * Wlroots
-> * Wayland-core
-> * Weston
-> * Xorg (67 different drivers)
-> 
-> For each repository the verification happened in three steps:
-> 
-> * Update the main branch
-> * Look for any occurrence "drmWaitVBlank" with the command:
->   git grep -n "drmWaitVBlank"
-> * Look in the git history of the project with the command:
->   git log -SdrmWaitVBlank
-> 
-> Finally, none of the above projects validate the use of EINVAL which
-> make safe, at least for these projects, to change the return values.
-> 
-> Change since V2:
->  Daniel Vetter and Chris Wilson
->  - Replace ENOTTY by EOPNOTSUPP
->  - Return EINVAL if the parameters are wrong
-> 
-> Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-> ---
-> Update:
->   Now IGT has a way to validate if a driver has vblank support or not.
->   See: https://gitlab.freedesktop.org/drm/igt-gpu-tools/commit/2d244aed69165753f3adbbd6468db073dc1acf9A
-> 
->  drivers/gpu/drm/drm_vblank.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
-> index 0d704bddb1a6..d76a783a7d4b 100644
-> --- a/drivers/gpu/drm/drm_vblank.c
-> +++ b/drivers/gpu/drm/drm_vblank.c
-> @@ -1578,10 +1578,10 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, void *data,
->  	unsigned int flags, pipe, high_pipe;
->  
->  	if (!dev->irq_enabled)
-> -		return -EINVAL;
-> +		return -EOPNOTSUPP;
->  
->  	if (vblwait->request.type & _DRM_VBLANK_SIGNAL)
-> -		return -EINVAL;
-> +		return -EOPNOTSUPP;
->  
->  	if (vblwait->request.type &
->  	    ~(_DRM_VBLANK_TYPES_MASK | _DRM_VBLANK_FLAGS_MASK |
+Yes.
 
-When touching this function, could I ask you to take a look at
-eliminating the use of DRM_WAIT_ON()?
-It comes from the deprecated drm_os_linux.h header, and it is only of
-the few remaining users of DRM_WAIT_ON().
+I've looked at that idea and I would almost feel like it's easy enough
+to send a patch like that without testing it at all.  But it would be
+better if the people with the hardware sent it.  I reported this bug
+months ago...
 
-Below you can find my untested first try - where I did an attempt not to
-change behaviour.
-
-	Sam
-
-commit 17b119b02467356198b57bca9949b146082bcaa1
-Author: Sam Ravnborg <sam@ravnborg.org>
-Date:   Thu May 30 09:38:47 2019 +0200
-
-    drm/vblank: drop use of DRM_WAIT_ON()
-    
-    DRM_WAIT_ON() is from the deprecated drm_os_linux header and
-    the modern replacement is the wait_event_*.
-    
-    The return values differ, so a conversion is needed to
-    keep the original interface towards userspace.
-    Introduced a switch/case to make code obvious and to allow
-    different debug prints depending on the result.
-    
-    The timeout value of 3 * HZ was translated to 30 msec
-    
-    Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-    Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-    Cc: Maxime Ripard <maxime.ripard@bootlin.com>
-    Cc: Sean Paul <sean@poorly.run>
-    Cc: David Airlie <airlied@linux.ie>
-    Cc: Daniel Vetter <daniel@ffwll.ch>
-
-diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
-index 0d704bddb1a6..51fc6b106333 100644
---- a/drivers/gpu/drm/drm_vblank.c
-+++ b/drivers/gpu/drm/drm_vblank.c
-@@ -31,7 +31,6 @@
- #include <drm/drm_drv.h>
- #include <drm/drm_framebuffer.h>
- #include <drm/drm_print.h>
--#include <drm/drm_os_linux.h>
- #include <drm/drm_vblank.h>
- 
- #include "drm_internal.h"
-@@ -1668,18 +1667,27 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, void *data,
- 	if (req_seq != seq) {
- 		DRM_DEBUG("waiting on vblank count %llu, crtc %u\n",
- 			  req_seq, pipe);
--		DRM_WAIT_ON(ret, vblank->queue, 3 * HZ,
--			    vblank_passed(drm_vblank_count(dev, pipe),
--					  req_seq) ||
--			    !READ_ONCE(vblank->enabled));
-+		ret = wait_event_interruptible_timeout(vblank->queue,
-+			vblank_passed(drm_vblank_count(dev, pipe), req_seq) ||
-+				      !READ_ONCE(vblank->enabled),
-+			msecs_to_jiffies(30));
- 	}
- 
--	if (ret != -EINTR) {
-+	switch (ret) {
-+	case 1:
-+		ret = 0;
- 		drm_wait_vblank_reply(dev, pipe, &vblwait->reply);
--
- 		DRM_DEBUG("crtc %d returning %u to client\n",
- 			  pipe, vblwait->reply.sequence);
--	} else {
-+		break;
-+	case 0:
-+		ret = -EBUSY;
-+		drm_wait_vblank_reply(dev, pipe, &vblwait->reply);
-+		DRM_DEBUG("timeout waiting for vblank. crtc %d returning %u to client\n",
-+			  pipe, vblwait->reply.sequence);
-+		break;
-+	default:
-+		ret = -EINTR;
- 		DRM_DEBUG("crtc %d vblank wait interrupted by signal\n", pipe);
- 	}
- 
+regards,
+dan carpenter

@@ -2,97 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E88F84385E
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 17:05:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E0C944759
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 18:59:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732981AbfFMPFS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 Jun 2019 11:05:18 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:18569 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1732447AbfFMOPp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 13 Jun 2019 10:15:45 -0400
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 884B35EB88E6AF8D283F;
-        Thu, 13 Jun 2019 22:06:53 +0800 (CST)
-Received: from [127.0.0.1] (10.61.25.96) by DGGEMS402-HUB.china.huawei.com
- (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0; Thu, 13 Jun 2019
- 22:06:32 +0800
-Subject: Re: [PATCH] RDMA/hns: Fix an error code in
- hns_roce_set_user_sq_size()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Leon Romanovsky <leon@kernel.org>
-CC:     "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, <linux-rdma@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <20190608092714.GE28890@mwanda>
- <20190612172316.GU6369@mtr-leonro.mtl.com> <20190613060517.GF1915@kadam>
-From:   oulijun <oulijun@huawei.com>
-Message-ID: <5c35d77f-c9e2-8fe0-86d4-2a1e5a3362e3@huawei.com>
-Date:   Thu, 13 Jun 2019 22:05:49 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.0
+        id S1729874AbfFMQ7G (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 Jun 2019 12:59:06 -0400
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:41899 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727639AbfFMQ7G (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 13 Jun 2019 12:59:06 -0400
+Received: by mail-qk1-f193.google.com with SMTP id c11so13200920qkk.8;
+        Thu, 13 Jun 2019 09:59:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=11OleX27xVveG0LvW8hhS+mOJv2guc7A/BC2mPPxyvA=;
+        b=SurKhAYJRBJsFlMemN2kRJ6bXLy/QXFfseNapj78YrX3aHam6qtgP1hZZjIISPV2bE
+         G7he95bIpytx3uucms6/j1bkIkz+j/rgUnQS+LFSuGoEO5i32gcranmFDcFRPLCpo6Ct
+         Mq+uwM/slJvEhZ6d7K5HTpL/HFTTiBhONMT/FE/LNswyNIFDWUzkEnp7GtZ1cEh8YiC1
+         ZT5vYlxczI/4ylayRQWESpJCAEcvJ9o3UTGzyj9oAd1kK2J78jtfB6Jn8HPmaaAM3uRN
+         NAqtU1gZaw1ObiwUgVDpSHRGBStlsHgh5fp8Y9wG6NChoLD3qlifr0uec+ja1EeNWx8p
+         6z9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=11OleX27xVveG0LvW8hhS+mOJv2guc7A/BC2mPPxyvA=;
+        b=YSlzNoOyPDE39EPXHT5oF3MZzQAMNHcRP2XK4A+rLKrLVW+Na7KvK4JfQkZ6uFGJo5
+         A6eaejaaVs4/2Ns5NZBX88mDkBho/oUpinS14kWyOf0nRxHnai5ZjdmNuCeXN3oN0wSB
+         esdlZi2Y+qBLZCDAytOz91jXFtJAZEB7MA5WY7Ay560dR+EfqU1Q5QOoLJvrx5WBrUWp
+         ysB2NBNq8f0VHiTa7bc8IF3n7NIumow7jn/zyoisD0eYEyQDPhDt6S9/uFRWGT/7l7Oa
+         Gabkhc9HFS6q1kAL7WvHuFVKJUM5TTmXXzT5zLJfKhHTgcP7BZlRG+w+rytz872/gbS4
+         rwuA==
+X-Gm-Message-State: APjAAAXnvz4jxthV40j26ShUceu4LcZXL5r4exdGE8X4f4C+ZbjrsZft
+        Yb8HJ6dSbIl/13VLbgbeCOpsEQvN7pw0MLQV36g=
+X-Google-Smtp-Source: APXvYqydEhoSJBurY1SYbVgwzcyCtxVDPuMxRgTpW+wjNbPpqMDmeECXzdzYcRHH2jfwhtdgtHCfz6vfv62PbxmKdM0=
+X-Received: by 2002:ae9:eb53:: with SMTP id b80mr43330382qkg.172.1560445144990;
+ Thu, 13 Jun 2019 09:59:04 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190613060517.GF1915@kadam>
+References: <20190613070021.GG16334@mwanda>
+In-Reply-To: <20190613070021.GG16334@mwanda>
+From:   Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date:   Thu, 13 Jun 2019 09:58:53 -0700
+Message-ID: <CAEf4BzZn4hHobOBiQmSPQhKTrsi7MC=R-7OjWTMyFC03ehrjgg@mail.gmail.com>
+Subject: Re: [PATCH] selftests/bpf: signedness bug in enable_all_controllers()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Shuah Khan <shuah@kernel.org>, Roman Gushchin <guro@fb.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        linux-kselftest@vger.kernel.org, bpf <bpf@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.61.25.96]
-X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-在 2019/6/13 14:05, Dan Carpenter 写道:
-> On Wed, Jun 12, 2019 at 08:23:16PM +0300, Leon Romanovsky wrote:
->> On Sat, Jun 08, 2019 at 12:27:14PM +0300, Dan Carpenter wrote:
->>> This function is supposed to return negative kernel error codes but here
->>> it returns CMD_RST_PRC_EBUSY (2).  The error code eventually gets passed
->>> to IS_ERR() and since it's not an error pointer it leads to an Oops in
->>> hns_roce_v1_rsv_lp_qp()
->>>
->>> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
->>> ---
->>> Static analysis.  Not tested.
->>>
->>>  drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++--
->>>  1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
->>> index ac017c24b200..018ff302ab9e 100644
->>> --- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
->>> +++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
->>> @@ -1098,7 +1098,7 @@ static int hns_roce_cmq_send(struct hns_roce_dev *hr_dev,
->>>  	if (ret == CMD_RST_PRC_SUCCESS)
->>>  		return 0;
->>>  	if (ret == CMD_RST_PRC_EBUSY)
->> The better fix will be to remove CMD_RST_PRC_* definitions in favor of
->> normal errno.
->>
-> Yes.
+On Thu, Jun 13, 2019 at 9:40 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
 >
-> I've looked at that idea and I would almost feel like it's easy enough
-> to send a patch like that without testing it at all.  But it would be
-> better if the people with the hardware sent it.  I reported this bug
-> months ago...
+> The "len" variable needs to be signed for the error handling to work
+> properly.
 >
-> regards,
-> dan carpenter
+> Fixes: 596092ef8bea ("selftests/bpf: enable all available cgroup v2 controllers")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+
+Thanks for the fix!
+
+Acked-by: Andrii Nakryiko <andriin@fb.com>
+
+>  tools/testing/selftests/bpf/cgroup_helpers.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> .
-Hi, dan carpenter
-   Sorry to reply slowly. I have noticed before months ago when I see your email.
-But we are sorting through our entire process and haven't had time to deal with
-it yet.
-
-  We are agree with your modifications after analysis.   For leon's advice,  We are
-considering. If consider to use normal errno, it is not easy to review the entire
-reset for others.
-  We will give a patch for testing and send it.
-
-Thanks.
-Lijun Ou
-   
-
-
-
+> diff --git a/tools/testing/selftests/bpf/cgroup_helpers.c b/tools/testing/selftests/bpf/cgroup_helpers.c
+> index 0d89f0396be4..e95c33e333a4 100644
+> --- a/tools/testing/selftests/bpf/cgroup_helpers.c
+> +++ b/tools/testing/selftests/bpf/cgroup_helpers.c
+> @@ -47,7 +47,7 @@ int enable_all_controllers(char *cgroup_path)
+>         char buf[PATH_MAX];
+>         char *c, *c2;
+>         int fd, cfd;
+> -       size_t len;
+> +       ssize_t len;
+>
+>         snprintf(path, sizeof(path), "%s/cgroup.controllers", cgroup_path);
+>         fd = open(path, O_RDONLY);
+> --
+> 2.20.1
+>

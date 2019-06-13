@@ -2,98 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB5AD44510
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 18:41:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1917A44505
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 18:41:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730540AbfFMQlZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 Jun 2019 12:41:25 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:39654 "EHLO
+        id S1730753AbfFMQlT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 Jun 2019 12:41:19 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:44006 "EHLO
         userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730541AbfFMGvq (ORCPT
+        with ESMTP id S1730558AbfFMGzS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 13 Jun 2019 02:51:46 -0400
+        Thu, 13 Jun 2019 02:55:18 -0400
 Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5D6i23D012518;
-        Thu, 13 Jun 2019 06:51:23 GMT
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5D6sJG4020287;
+        Thu, 13 Jun 2019 06:55:15 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=Cklcp4WiaQzxRVfrjQ6N2LqnHn1Jb+/D/zOE2f9gAPE=;
- b=x8G48O4QztLA+T6Q8ej8FS57MNGdfgZ0fSefogeULMSOwZdLRbX0arq8C2FTb1joqfkx
- cyyN8KybBwKW94TZ2q6z0hL9/y8cSp+n1Jz7JCaoSEoQkcl+Lah8c4vSqkL/9bSegq/I
- f32t147/KrG1RxvTUhPuOdA3vXHWEpZZI8cmrKI1/riWDWS+zGuTxzxGqcLThzQpMv3/
- DQMrwbn/kBalmR7Pc7A3QWnludbmdR0zYS8vqBdVwTjIIkf5SAnqmpUFqVOYSJUNNTXv
- zg6H95flWu3UkxODyOIoix57ytYHUrFzgEddVLb0CyS9RNcfCMit2CAJh5eAtFwQ9076 kQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 2t05nqygwq-1
+ bh=h0NT7xGLynQwL19g7wAKeNt23KGjzTYzLVjM6PNxors=;
+ b=gdMpfq+IeZhHkl0YuA8Hz3rlm85QqRBVF2kmtZMZdj1PdLRvUds+juRqo2FyEPXUQWBy
+ f2p5rS6EKw5kktqYnRrIiu6aERGIVSo1s/k7kzM/L1ujFAE6zT+v1G+h8woTHgFPEnNl
+ j2D742dVRwjMi4XbCCCva5LZKpwnLqV6tv6vJH5K6v5EV2ZL4kanz/LzIpUZ6JJ1q78P
+ s37wyIyYfkIaoDmIOSp/LDN7RyYpLdOoLHOFV/8OaXAlyOZ4vRNR2/tSfohYry/3TG84
+ hnCCSK+mA4Wo9yRM3+iTMSuPwtfg3B7opVOwoEikzzZJAuJXlnCStbcieLjE6ZrQOAX5 zg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2t05nqyhgh-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 13 Jun 2019 06:51:23 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5D6p6lf142351;
-        Thu, 13 Jun 2019 06:51:22 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 2t04j0a0qu-1
+        Thu, 13 Jun 2019 06:55:14 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5D6sx8w078574;
+        Thu, 13 Jun 2019 06:55:14 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 2t1jpjd06u-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 13 Jun 2019 06:51:22 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5D6pBw9002024;
-        Thu, 13 Jun 2019 06:51:11 GMT
+        Thu, 13 Jun 2019 06:55:14 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5D6tCRr026731;
+        Thu, 13 Jun 2019 06:55:12 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 12 Jun 2019 23:51:10 -0700
-Date:   Thu, 13 Jun 2019 09:51:02 +0300
+        with ESMTP ; Wed, 12 Jun 2019 23:55:11 -0700
+Date:   Thu, 13 Jun 2019 09:55:05 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Russell King <linux@armlinux.org.uk>,
-        Ruslan Babayev <ruslan@babayev.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH net] net: phy: sfp: clean up a condition
-Message-ID: <20190613065102.GA16334@mwanda>
+To:     suzuki.poulose@arm.com
+Cc:     kernel-janitors@vger.kernel.org
+Subject: [bug report] coresight: tmc: Clean up device specific data
+Message-ID: <20190613065505.GC16334@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9286 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=3 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=562
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906130054
+ engine=8.0.1-1810050000 definitions=main-1906130055
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9286 signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ suspectscore=3 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=614 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906130054
+ definitions=main-1906130055
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The acpi_node_get_property_reference() doesn't return ACPI error codes,
-it just returns regular negative kernel error codes.  This patch doesn't
-affect run time, it's just a clean up.
+Hello Suzuki K Poulose,
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/net/phy/sfp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This is a semi-automatic email about new static checker warnings.
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index a991c80e6567..8a99307c1c39 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -1848,7 +1848,7 @@ static int sfp_probe(struct platform_device *pdev)
- 		int ret;
- 
- 		ret = acpi_node_get_property_reference(fw, "i2c-bus", 0, &args);
--		if (ACPI_FAILURE(ret) || !is_acpi_device_node(args.fwnode)) {
-+		if (ret || !is_acpi_device_node(args.fwnode)) {
- 			dev_err(&pdev->dev, "missing 'i2c-bus' property\n");
- 			return -ENODEV;
- 		}
--- 
-2.20.1
+The patch 743256e214e8: "coresight: tmc: Clean up device specific 
+data" from May 22, 2019, leads to the following Smatch complaint:
 
+    drivers/hwtracing/coresight/coresight-tmc-etr.c:625 tmc_etr_free_flat_buf()
+    warn: variable dereferenced before check 'flat_buf' (see line 623)
+
+drivers/hwtracing/coresight/coresight-tmc-etr.c
+   622		struct etr_flat_buf *flat_buf = etr_buf->private;
+   623		struct device *real_dev = flat_buf->dev->parent;
+                                          ^^^^^^^^^^
+The patch introduces a new NULL check
+
+   624	
+   625		if (flat_buf && flat_buf->daddr)
+                    ^^^^^^^^
+but the existing code assumed it can be NULL.
+
+   626			dma_free_coherent(real_dev, flat_buf->size,
+   627					  flat_buf->vaddr, flat_buf->daddr);
+
+regards,
+dan carpenter

@@ -2,96 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DE9E444E6
-	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 18:40:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF64F44419
+	for <lists+kernel-janitors@lfdr.de>; Thu, 13 Jun 2019 18:36:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730522AbfFMQkN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 13 Jun 2019 12:40:13 -0400
-Received: from aserp2130.oracle.com ([141.146.126.79]:47408 "EHLO
-        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730584AbfFMHCT (ORCPT
+        id S1730977AbfFMQet (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 13 Jun 2019 12:34:49 -0400
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:38393 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730752AbfFMHtf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 13 Jun 2019 03:02:19 -0400
-Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
-        by aserp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5D6xg5w034858;
-        Thu, 13 Jun 2019 07:02:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=GWkzr3jkawX0jlNx+2BVZb+IG8NfTmELRDy+IBSm2Yg=;
- b=qKMfWdTBqcBExZ9df8xxGPR6kh7zC1F7ttzJhfJV98th/Vh7U+7vbspfNgXBK7CHxVDA
- KwcEZwPvA2973aDyk6NA/7Ztc7bIK2qOxUGr1owLoXQQeonDQ9/7mF5PYgcRnQfXI8+6
- XMg1L8Ma15aY7mfB+brALCksWH1vIaD2Tp5k9k9yAFEYIbqVxYa5T/mG9PYwV2MVKLQm
- Rw6U9MU+je4/cTMzk4JgOCurZsQzQHq/CgiBMNoUbGy3imBa2Dpf4Si3sVIyTRqh1GJk
- mG3cUPGc33fOv6w3IvbT3RXt7m9/2LgFb61jQKDzL7KT5sj7gIX6xEmzNXeJjBRQut0p Ww== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2130.oracle.com with ESMTP id 2t02heysv7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 13 Jun 2019 07:02:13 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5D72C0o020953;
-        Thu, 13 Jun 2019 07:02:13 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 2t0p9s8b3s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 13 Jun 2019 07:02:13 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5D728mi015951;
-        Thu, 13 Jun 2019 07:02:09 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 13 Jun 2019 00:02:08 -0700
-Date:   Thu, 13 Jun 2019 10:02:01 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Krzysztof Halasa <khalasa@piap.pl>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] soc: ixp4xx: npe: Fix an IS_ERR() vs NULL check in probe
-Message-ID: <20190613070201.GH16334@mwanda>
+        Thu, 13 Jun 2019 03:49:35 -0400
+Received: by mail-qt1-f193.google.com with SMTP id n11so19353768qtl.5
+        for <kernel-janitors@vger.kernel.org>; Thu, 13 Jun 2019 00:49:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=xROEx50vg3PrTIRbBL87vn9xq3zmqd182DXiss4gqbM=;
+        b=q3wHpbh5ZcLjlQW7kj7YYZuO2MWWre3rKFc1xRiJRLPzhfF+0X6mVWIIMfzvS7Rsiu
+         qlPzgPoi0qh7StRWKqeJwocEpa4r/p/0lRP7wTbxbWhwGRycC1XHHnsa7tARYuIaHZnm
+         j4fLn76lVPiHH7mJirtdmCF6+fHru+SnN8zCtaQN7+7PoewJmPVd16kR6ZrQZ/OpXdP8
+         klOVVdV4cUYSIuz7trkXErJMZt7wxUdrHLY+SR+Rc+VfJ21s3amIh7TVMbdmHYZLN7gZ
+         hdO61fuW89DO1MElkjaiiN2Xw4u7bb1mVsfdNf85byeAIDhSG0GKhEeZ38Xl8sFqqo2p
+         a21A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=xROEx50vg3PrTIRbBL87vn9xq3zmqd182DXiss4gqbM=;
+        b=aL+80dYxDE+2mMRpJzZomLALmdw75/L+rvea/rFzgWCRfC6Hg3r3gkf0sD5Vmr4sbA
+         FeHmRpJggyCrA1fu4O6Bx1bGg0Uf8bZPFXJMGV5V0bD7FfCWkk0uZSYc94/FvqhLn73m
+         4UIf/zbQthWpsVD/RYp9Fw92gnkvjyTRfh/1IcP/FVlwpN0YcPPe15TreZKmKhSHeAlt
+         gTR6MyhJE4jKRB6xgJpfFCCxO3zhdgiTSPzo+UbWrsdRxBiUCV0YLdyqQnREUeYGpQW+
+         W20PIRm4yj6wqITJWwjLz3A8QaoRJHg0rUA9FScNtRRvYTS7FUzAP43HpwiadFDF/oif
+         UfsQ==
+X-Gm-Message-State: APjAAAWqSvWZuaThYRoKbWuq74hPuAbXLo/pTM3A3Bu/CVUV4I776i1U
+        LuwDiCvXjojtWVyrx03HkjYMvQ==
+X-Google-Smtp-Source: APXvYqwEurFoZHKAEhOSIDN36DqZuW8gdc1FPaANBB2DIiStrJOy1JF8fsQVRp2blw4EqjOl1eZlsQ==
+X-Received: by 2002:ac8:3668:: with SMTP id n37mr29172383qtb.236.1560412174396;
+        Thu, 13 Jun 2019 00:49:34 -0700 (PDT)
+Received: from leoy-ThinkPad-X240s (li1322-146.members.linode.com. [45.79.223.146])
+        by smtp.gmail.com with ESMTPSA id s44sm1537967qtc.8.2019.06.13.00.49.29
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 13 Jun 2019 00:49:33 -0700 (PDT)
+Date:   Thu, 13 Jun 2019 15:49:22 +0800
+From:   Leo Yan <leo.yan@linaro.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] coresight: potential uninitialized variable in probe()
+Message-ID: <20190613074922.GB21113@leoy-ThinkPad-X240s>
+References: <20190613065815.GF16334@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9286 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906130056
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9286 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906130056
+In-Reply-To: <20190613065815.GF16334@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The devm_ioremap_resource() function doesn't return NULL, it returns
-error pointers.
+Hi Dan,
 
-Fixes: 0b458d7b10f8 ("soc: ixp4xx: npe: Pass addresses as resources")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/soc/ixp4xx/ixp4xx-npe.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Wed, Jun 12, 2019 at 11:58:15PM -0700, Dan Carpenter wrote:
+> The "drvdata->atclk" clock is optional, but if it gets set to an error
+> pointer then we're accidentally return an uninitialized variable instead
+> of success.
 
-diff --git a/drivers/soc/ixp4xx/ixp4xx-npe.c b/drivers/soc/ixp4xx/ixp4xx-npe.c
-index bc10e3194809..ec90b44fa0cd 100644
---- a/drivers/soc/ixp4xx/ixp4xx-npe.c
-+++ b/drivers/soc/ixp4xx/ixp4xx-npe.c
-@@ -695,8 +695,8 @@ static int ixp4xx_npe_probe(struct platform_device *pdev)
- 			continue; /* NPE already disabled or not present */
- 		}
- 		npe->regs = devm_ioremap_resource(dev, res);
--		if (!npe->regs)
--			return -ENOMEM;
-+		if (IS_ERR(npe->regs))
-+			return PTR_ERR(npe->regs);
- 
- 		if (npe_reset(npe)) {
- 			dev_info(dev, "NPE%d at 0x%08x-0x%08x does not reset\n",
--- 
-2.20.1
+You are right, thanks a lot for pointing out.
 
+I'd like to initialize 'ret = 0' at the head of function, so we can
+has the same fashion with other CoreSight drivers (e.g. replicator).
+
+ static int funnel_probe(struct device *dev, struct resource *res)
+ {
+-	int ret;
++	int ret = 0;
+
+If you agree, could you send a new patch for this?
+
+Thanks,
+Leo Yan
+
+> Fixes: 78e6427b4e7b ("coresight: funnel: Support static funnel")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/hwtracing/coresight/coresight-funnel.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/hwtracing/coresight/coresight-funnel.c b/drivers/hwtracing/coresight/coresight-funnel.c
+> index 5867fcb4503b..fa97cb9ab4f9 100644
+> --- a/drivers/hwtracing/coresight/coresight-funnel.c
+> +++ b/drivers/hwtracing/coresight/coresight-funnel.c
+> @@ -244,6 +244,7 @@ static int funnel_probe(struct device *dev, struct resource *res)
+>  	}
+>  
+>  	pm_runtime_put(dev);
+> +	ret = 0;
+>  
+>  out_disable_clk:
+>  	if (ret && !IS_ERR_OR_NULL(drvdata->atclk))
+> -- 
+> 2.20.1
+> 

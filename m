@@ -2,40 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0300463BC
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 18:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91D6E464FA
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 18:50:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725852AbfFNQOs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Jun 2019 12:14:48 -0400
-Received: from mout.web.de ([212.227.15.14]:39921 "EHLO mout.web.de"
+        id S1726743AbfFNQun (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Jun 2019 12:50:43 -0400
+Received: from mout.web.de ([212.227.15.4]:37853 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725814AbfFNQOs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Jun 2019 12:14:48 -0400
+        id S1725812AbfFNQum (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 14 Jun 2019 12:50:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1560528875;
-        bh=hyoTZ1ls8fCxTlRhyKqOMD4QbhgTz2apZlCbsS/JVlU=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=SYTRyH4vSo+tpZZtiCNI5sHFN/1395QFg9f7kG0sYnb166pDw9nPjcMafUQwOgZV9
-         qr0ozidR3Bz5Bs9MnwCWIHeGVOwW0RK7PdbQ7AiI1g84qPtS20lZBVGoTxpGW57/iL
-         Ce57aU7IM7RFRRTclDQlcvjtpUhudVXRBS97v2SE=
+        s=dbaedf251592; t=1560531029;
+        bh=w21hW0UjOS9V/aSHu9UGGrfjEKoKC+6rxpIW2WiCcE8=;
+        h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
+        b=L8D24imof7Pg+A6Zp3gnrUDv/D+dsDizadCqre3CjgyHmzp7Y6hfFJIiejUA3WNH6
+         iWE3hkiSi4aLnQcxbIBChkFXHtfnQvUkQQk57MXd35hJRfcagxts3sKLdJsda8Zbe5
+         /AuQuw0JsH9EuNilDKBBM/GJOOJFo6zvVydcmDGA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.126.132]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MejjU-1hzyTL0hmC-00OFOv; Fri, 14
- Jun 2019 18:14:35 +0200
-Subject: Re: drivers: Provide devm_platform_ioremap_resource_byname()
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+Received: from [192.168.1.2] ([93.133.126.132]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MfYTr-1hz7x02zIR-00P9at; Fri, 14
+ Jun 2019 18:50:29 +0200
+To:     Bartosz Golaszewski <brgl@bgdev.pl>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jack Ping CHNG <jack.ping.chng@linux.intel.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Himanshu Jha <himanshujha199640@gmail.com>
-Cc:     kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Enrico Weigelt <lkml@metux.net>,
-        Linus Walleij <linus.walleij@linaro.org>
-References: <39e46643-d799-94b7-4aa5-d6d99d738f99@web.de>
- <20190614133840.GN9224@smile.fi.intel.com> <20190614141004.GC7234@kroah.com>
- <20190614144706.GO9224@smile.fi.intel.com>
+        Keerthy <j-keerthy@ti.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        linux-gpio@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20190221162627.3476-1-brgl@bgdev.pl>
+Subject: [PATCH] drivers: Adjust scope for CONFIG_HAS_IOMEM before
+ devm_platform_ioremap_resource()
 From:   Markus Elfring <Markus.Elfring@web.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
@@ -81,53 +79,76 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <48877575-90b9-3db5-7a25-53cf3817b2ee@web.de>
-Date:   Fri, 14 Jun 2019 18:14:33 +0200
+Message-ID: <9efcbce2-4d49-7197-a3d8-0e83850892d5@web.de>
+Date:   Fri, 14 Jun 2019 18:50:27 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.1
 MIME-Version: 1.0
-In-Reply-To: <20190614144706.GO9224@smile.fi.intel.com>
+In-Reply-To: <20190221162627.3476-1-brgl@bgdev.pl>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:jetwct6VoPVrtCSuGday/wHl1sy73I8q96GuDTV3uBgpga5/TI8
- DgLGris4ynVEr+h9Xkcp17Qj7WTMa5esinBfO3RXJaSZc6gZrjpEPRYSfegp/5Vhn3dvuNr
- 6vtkuw3YlGFNs2XyE/SbEKP269xWqPAfWxawxvzrC2ON8YlUBKwNWbnzQtBnjFsM5KIQzri
- ZN0Y2RF7qQ3kuhbi5MZUQ==
+X-Provags-ID: V03:K1:CDUmOft4DVOQ0nItkPeEhljEaJ0EnGpyqzjKlXS8EM77gNnsI/N
+ W9eGmgc5XNnCFgYf6xHUM4BFKj6uF0bOGGV+9eKa47L2q+ELfnHt4gFZOhwSWebTGnOkz9z
+ V3Z4yvxQlPd8gZameHJYgMaqZ9CZzjLI3d5PgtKj24But+cg0vnGMlmz7XlcKgOiyhm8JHu
+ YLpKsbZMmzJbW2Q8jqPCA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:wCYArlFSLMk=:rI1RwxGr9fNTWCHTyaOoY7
- HHkmmqxWSPrhDNKnbidUyRC3vaLRkdl4tV9exh77ng5R/QrVglKfcE77augOjD3K2iGjFXbmr
- 3NGYpMAKV4CSzKOQ4/MBFDMqSEF1BMeRvX9oFmewmIabbhy068MaZwZuXIbp9udQoyxQ93jik
- CUROGONDmdxPBVC/VYO5AMATdpbbZbhaiSZ+WubmI0sykdPc9RBvE11hJ0YKFSlliR0GXTqru
- z8ZpR/8iuqHuCdtQio++VZLSwmSqRuAYcLzv6TlBiIxcLND+mWcp6KMdhmfbrhPOQhW6HlHHB
- rZ1uyj1yD2fpPXG9aSqgmvgCOherZ9R46gPG2HI0ove4k6GnjI1HdEiiN1hXm2lGGMTEMXTRn
- pZHd8gNYFLSxF+miJxbD6X6W3GBMO8Xn7wX4CSqZCBJB/gLTsGPV29w8L3S09rlqLSa+aWOfY
- Cyf3Tdz0SQt1xPtkKFoYSat4Pk03f0H8Trb+pXmK+Dns2T4yH7AP2sW56gBdpWj3kV+KnkEZc
- +NKOsUOuAiTjTBCIyHEVBUc4TfSg09gtHqes5nZiwoPFNhJXc5MpmLtvAUCxIkwQM4/zBfuHV
- d/gkZQ3u8utND42yUfA4bkhSu/EDWqN4jvfCT4XuKPlZVCcAoN7KrZTGsvAzocld/tOZjiZj3
- s5VlRQFGYn5sgEhNWjTu0nFYxeNoB2zhTPhmmTlsv3LW6QBlhOG2femaXNwhlVQDhFYrH8YBJ
- YY2Ysxv327/u2LhdpVJvA5NT7ooI8wbwP0bgV/Tc9uOWKgEEx4lZB4w2AuDxCZmOGhVaJTCxY
- qNyqmuCq4zARK34z3H65PBuCTB7+tDIzqwwNMJTnsqa2pSLW4aCQLIXi7xYCi1uedhoumlZPK
- 9YFN/YcHN5LENJ5bMS8+lzH21FIGX+sWh5FJPL6e5MZQA67+ixQWJmT7ickPNK+EMfPsl1Vva
- S5R38hjX6CKCy4SlPEv7Cuh8b9fue/Tco9CcehAV0adHwguadLAws
+X-UI-Out-Filterresults: notjunk:1;V03:K0:W2PfOOkyf+g=:bIszttgVhTZFs9PnMSGGxx
+ 3NAzcpzoSUesADLm5fn6Cylx/KvjyMl6sdNctR5Pt7Xz4yd1Za5K66pbt42q6JWtZPNCRA0uQ
+ oCyFpEvkEWndM7n0ZwHfXqtwaZL4BFtjDj4tJZjjxjN2wvdAKAOq2As6PAmsEFIdDxt0IDj4W
+ S65CoK3IdjeMLQDqdUR53vJf5Ilao/HU6U+IAwVhITxRib7fRpni5OVgCPBps/xpHfFsrFPfo
+ dOwwWcK1l8VhRZDu542u9A19iDav4Zanf0e/XXRZfJ9DEadhfy5OVND0Rr5ReUC9CtQsEAnNP
+ +cleowHQhnT4LsHrg2l+UzXwEV48pF89tBTRIBTFE+hW7NTUw6ACquOnjtqkzQe+GE2/n1u2g
+ xjqXakNo+bNQOnFi7/7qhF5AHcyP8uMI91kKiHqMEC/tFwqMM9vH64CoryMt4vOYMtAYFrgFa
+ jaEyl++24NtE+9uruP3okHxCxxblEk2lP8nMJFqhThRXrraBSys+WzSgT0XEuI/elAlkEAyb8
+ WoD2DV3vXuSAHlv28ZZSnHSq0O19F6QXwdEs6KxRL/3wwaICzRthzxfi5r3zvWp0/QwlZTjDg
+ P0GogRrUl+g2FNRdO+hsZkynasNwi/Ekj56cHkcrrkhcAtkmjDyFEQDyyu8vDtRQE2+XS0aP9
+ 9r2khnrwbPVfDSklZ7V96Q+FZgAxGx9lkufVO8fybFutmINCtTbMom14bCn8CycscdWL0EebA
+ 6zIh6G4Vx7fu1DIcdxiF75TyB2MvL+WUp7AxG0Ij+ssywXk7H+o12gaubpVeP35mADcTRxkvQ
+ uxW/ct/yONbro7Vgg0NMwvMO9w3GkU59LTmQI1ypvH+YDTW443rXyV4XQsOs9mYEWvHRTgoZy
+ YZXeIJBuueGxnMFTLoV2/xcxOz0fJlPZ9J6kopJRMmoo+P8td7MtvWOz01n3IOktV0k+fkziQ
+ 7c5Jyg5jRS1RFvEXde6jtRK2k0oFSLO1YzaBYfu6C+BBhUfJKdJgx
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> I don't like adding new apis with no user.
->
-> Perhaps Jack Ping will send it as a first patch of his series where he u=
-tilizes
-> this functionality. Would it be acceptable?
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Fri, 14 Jun 2019 17:45:13 +0200
 
-The proposed function can get wider application in a reasonable time frame
-if a corresponding script for the semantic patch language (Coccinelle soft=
-ware)
-would perform an automatic source code conversion (for example)
-according to your change acceptance.
-How do you think about to support a bit more collateral software evolution=
-?
+Move the preprocessor statement =E2=80=9C#ifdef CONFIG_HAS_IOMEM=E2=80=9D =
+so that
+the corresponding scope for conditional compilation includes also comments
+for this function implementation.
 
-Regards,
-Markus
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ drivers/base/platform.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 4d1729853d1a..a5f40974a6ef 100644
+=2D-- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -78,6 +78,7 @@ struct resource *platform_get_resource(struct platform_d=
+evice *dev,
+ 	return NULL;
+ }
+ EXPORT_SYMBOL_GPL(platform_get_resource);
++#ifdef CONFIG_HAS_IOMEM
+
+ /**
+  * devm_platform_ioremap_resource - call devm_ioremap_resource() for a pl=
+atform
+@@ -87,7 +88,6 @@ EXPORT_SYMBOL_GPL(platform_get_resource);
+  *        resource management
+  * @index: resource index
+  */
+-#ifdef CONFIG_HAS_IOMEM
+ void __iomem *devm_platform_ioremap_resource(struct platform_device *pdev=
+,
+ 					     unsigned int index)
+ {
+=2D-
+2.22.0
+

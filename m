@@ -2,62 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A823045909
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 11:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 367BC459F0
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 12:07:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727153AbfFNJnO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Jun 2019 05:43:14 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:43200 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727101AbfFNJnO (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Jun 2019 05:43:14 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hbijn-0005SH-Ip; Fri, 14 Jun 2019 09:43:11 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] lkdtm: remove redundant initialization of ret
-Date:   Fri, 14 Jun 2019 10:43:11 +0100
-Message-Id: <20190614094311.24024-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727168AbfFNKHM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Jun 2019 06:07:12 -0400
+Received: from mail.kernel.org ([198.145.29.99]:34462 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726370AbfFNKHM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 14 Jun 2019 06:07:12 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 23EB521773;
+        Fri, 14 Jun 2019 10:07:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560506831;
+        bh=00YDveKIzRA/Wgmz9r0i+z4w5SAjetUkYHtuL3H2+hM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=vW2Rktp3ulPmd/QTN+ZzUshT/ebz7+LLiXzio4Syen++SbD8ngo7mZv9TjU/sAnGm
+         I/iGLyxFxHpzSwqWbjFQ7YpiLvTOGRYOp51Yb4B4cRKKuYSd6BcYiTch484z7PvgDF
+         7HKwuV8X3wga35W2QHI1MY5mhjpmc/a6NaR+OII0=
+Date:   Fri, 14 Jun 2019 12:07:09 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Enrico Weigelt <lkml@metux.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, cocci@systeme.lip6.fr,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>
+Subject: Re: [PATCH] drivers: Inline code in devm_platform_ioremap_resource()
+ from two functions
+Message-ID: <20190614100709.GB8466@kroah.com>
+References: <20190406061112.31620-1-himanshujha199640@gmail.com>
+ <f09006a3-691c-382a-23b8-8e9ff5b4a5f1@web.de>
+ <alpine.DEB.2.21.1906081925090.2543@hadrien>
+ <7b4fe770-dadd-80ba-2ba4-0f2bc90984ef@web.de>
+ <f573b2d3-11d0-92b5-f8ab-4c4b6493e152@metux.net>
+ <032e347f-e575-c89c-fa62-473d52232735@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <032e347f-e575-c89c-fa62-473d52232735@web.de>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Fri, Jun 14, 2019 at 11:22:40AM +0200, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Fri, 14 Jun 2019 11:05:33 +0200
+> 
+> Two function calls were combined in this function implementation.
+> Inline corresponding code so that extra error checks can be avoided here.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> ---
+>  drivers/base/platform.c | 39 ++++++++++++++++++++++++++++++++++-----
+>  1 file changed, 34 insertions(+), 5 deletions(-)
 
-The variable ret is being initialized with the value -EINVAL however
-this value is never read and ret is being re-assigned later on. Hence
-the initialization is redundant and can be removed.
+Hey, looks like you timed out from my kill-file and this snuck through
+somehow.  Let me go add you again to it, so I'm not bothered by
+pointless stuff like this anymore.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/misc/lkdtm/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
-index bba093224813..92df35fdeab0 100644
---- a/drivers/misc/lkdtm/core.c
-+++ b/drivers/misc/lkdtm/core.c
-@@ -390,7 +390,7 @@ static int __init lkdtm_module_init(void)
- {
- 	struct crashpoint *crashpoint = NULL;
- 	const struct crashtype *crashtype = NULL;
--	int ret = -EINVAL;
-+	int ret;
- 	int i;
- 
- 	/* Neither or both of these need to be set */
--- 
-2.20.1
+*plonk*
 

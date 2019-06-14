@@ -2,134 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48726458A1
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 11:27:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A823045909
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 11:43:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726751AbfFNJ1v (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Jun 2019 05:27:51 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:63450
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726479AbfFNJ1v (ORCPT
+        id S1727153AbfFNJnO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Jun 2019 05:43:14 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:43200 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727101AbfFNJnO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Jun 2019 05:27:51 -0400
-X-IronPort-AV: E=Sophos;i="5.63,372,1557180000"; 
-   d="scan'208";a="309239293"
-Received: from unknown (HELO hadrien.local) ([163.173.90.224])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Jun 2019 11:27:47 +0200
-Date:   Fri, 14 Jun 2019 11:27:47 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@lip6.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Enrico Weigelt <lkml@metux.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        cocci@systeme.lip6.fr
-Subject: Re: [Cocci] [PATCH] drivers: Inline code in devm_platform_ioremap_resource()
- from two functions
-In-Reply-To: <032e347f-e575-c89c-fa62-473d52232735@web.de>
-Message-ID: <alpine.DEB.2.20.1906141127030.9068@hadrien>
-References: <20190406061112.31620-1-himanshujha199640@gmail.com> <f09006a3-691c-382a-23b8-8e9ff5b4a5f1@web.de> <alpine.DEB.2.21.1906081925090.2543@hadrien> <7b4fe770-dadd-80ba-2ba4-0f2bc90984ef@web.de> <f573b2d3-11d0-92b5-f8ab-4c4b6493e152@metux.net>
- <032e347f-e575-c89c-fa62-473d52232735@web.de>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+        Fri, 14 Jun 2019 05:43:14 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hbijn-0005SH-Ip; Fri, 14 Jun 2019 09:43:11 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Kees Cook <keescook@chromium.org>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] lkdtm: remove redundant initialization of ret
+Date:   Fri, 14 Jun 2019 10:43:11 +0100
+Message-Id: <20190614094311.24024-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
+The variable ret is being initialized with the value -EINVAL however
+this value is never read and ret is being re-assigned later on. Hence
+the initialization is redundant and can be removed.
 
-On Fri, 14 Jun 2019, Markus Elfring wrote:
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/misc/lkdtm/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Fri, 14 Jun 2019 11:05:33 +0200
->
-> Two function calls were combined in this function implementation.
-> Inline corresponding code so that extra error checks can be avoided here.
+diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
+index bba093224813..92df35fdeab0 100644
+--- a/drivers/misc/lkdtm/core.c
++++ b/drivers/misc/lkdtm/core.c
+@@ -390,7 +390,7 @@ static int __init lkdtm_module_init(void)
+ {
+ 	struct crashpoint *crashpoint = NULL;
+ 	const struct crashtype *crashtype = NULL;
+-	int ret = -EINVAL;
++	int ret;
+ 	int i;
+ 
+ 	/* Neither or both of these need to be set */
+-- 
+2.20.1
 
-I don't see any point to this at all.  By inlining the code, you have
-created a clone, which will introduce extra work to maintain in the
-future.
-
-julia
-
-
->
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
->  drivers/base/platform.c | 39 ++++++++++++++++++++++++++++++++++-----
->  1 file changed, 34 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index 4d1729853d1a..baadca72f949 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -80,8 +80,8 @@ struct resource *platform_get_resource(struct platform_device *dev,
->  EXPORT_SYMBOL_GPL(platform_get_resource);
->
->  /**
-> - * devm_platform_ioremap_resource - call devm_ioremap_resource() for a platform
-> - *				    device
-> + * devm_platform_ioremap_resource
-> + * Achieve devm_ioremap_resource() functionality for a platform device
->   *
->   * @pdev: platform device to use both for memory resource lookup as well as
->   *        resource management
-> @@ -91,10 +91,39 @@ EXPORT_SYMBOL_GPL(platform_get_resource);
->  void __iomem *devm_platform_ioremap_resource(struct platform_device *pdev,
->  					     unsigned int index)
->  {
-> -	struct resource *res;
-> +	u32 i;
->
-> -	res = platform_get_resource(pdev, IORESOURCE_MEM, index);
-> -	return devm_ioremap_resource(&pdev->dev, res);
-> +	for (i = 0; i < pdev->num_resources; i++) {
-> +		struct resource *res = &pdev->resource[i];
-> +
-> +		if (resource_type(res) == IORESOURCE_MEM && index-- == 0) {
-> +			struct device *dev = &pdev->dev;
-> +			resource_size_t size = resource_size(res);
-> +			void __iomem *dest;
-> +
-> +			if (!devm_request_mem_region(dev,
-> +						     res->start,
-> +						     size,
-> +						     dev_name(dev))) {
-> +				dev_err(dev,
-> +					"can't request region for resource %pR\n",
-> +					res);
-> +				return IOMEM_ERR_PTR(-EBUSY);
-> +			}
-> +
-> +			dest = devm_ioremap(dev, res->start, size);
-> +			if (!dest) {
-> +				dev_err(dev,
-> +					"ioremap failed for resource %pR\n",
-> +					res);
-> +				devm_release_mem_region(dev, res->start, size);
-> +				dest = IOMEM_ERR_PTR(-ENOMEM);
-> +			}
-> +
-> +			return dest;
-> +		}
-> +	}
-> +	return IOMEM_ERR_PTR(-EINVAL);
->  }
->  EXPORT_SYMBOL_GPL(devm_platform_ioremap_resource);
->  #endif /* CONFIG_HAS_IOMEM */
-> --
-> 2.22.0
->
-> _______________________________________________
-> Cocci mailing list
-> Cocci@systeme.lip6.fr
-> https://systeme.lip6.fr/mailman/listinfo/cocci
->

@@ -2,109 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B0EDC453AF
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 06:44:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 120B4453C5
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 07:03:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725842AbfFNEoB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Jun 2019 00:44:01 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:46790 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725767AbfFNEoA (ORCPT
+        id S1725775AbfFNFDs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Jun 2019 01:03:48 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:45298 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725767AbfFNFDs (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Jun 2019 00:44:00 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5E4ZH0g059549;
-        Fri, 14 Jun 2019 04:43:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=q04xRDu6igdpOSRMxde5qEAa3x6Mql9CiEYVvoEPLv4=;
- b=sScqjVT5hx7Oh8HF6jjYSH/EfqsP4/BLhSoaU+nHIqsI81OSTBAac+kjwB7AHqte0vEF
- 6TRHYX0vtUVsk+L92veVHdE8rXcWTnNtk/nt+8Sk/oKKA3imYHYfbltF54nlH72kSXNH
- eaZlEoWKtQbAE3CcKPmBfmJaJBUoEk3A1/ljMBcoeB1BRQ8OoRjdgOB/g7t/qwmrgA9w
- dVlci04l1sKBlkSRwOh8T/0+Ev0yZn1ixJaoDGvcg6Cm+eOpCAeF6D26GdUYOmGt5mBp
- CeQJL1wM+Urk7CgLH9X7aObFOVxXDkFIjDUdbdeSYg8gsVoTUBP4ZGh4Rvta1HSxBaA7 AQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 2t05nr54df-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 14 Jun 2019 04:43:42 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5E4h5R2064914;
-        Fri, 14 Jun 2019 04:43:41 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 2t0p9ssrkh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 14 Jun 2019 04:43:41 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5E4ha3f023423;
-        Fri, 14 Jun 2019 04:43:36 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 13 Jun 2019 21:43:35 -0700
-Date:   Fri, 14 Jun 2019 07:43:20 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc:     Ruslan Babayev <ruslan@babayev.com>, Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        Fri, 14 Jun 2019 01:03:48 -0400
+Received: by mail-pl1-f193.google.com with SMTP id bi6so474757plb.12
+        for <kernel-janitors@vger.kernel.org>; Thu, 13 Jun 2019 22:03:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=vzWNfLLLAeGdx7iHT9n2mvQxcG6bp4wZCUilrxRaOBg=;
+        b=bJWdlpRRGB15JzNuxSkj/0RPEWaKqcPRrFrQ3ai2ojLMIPqYEmt/4pm+l2yin+tUio
+         jBug4MBdWstbYkD7RGKZf4N2VB4qY9sUdsxTHweadmHZD1aL/kiWCXzcnum364N04VKt
+         FAIw+kKyYpxZALIoSQEwLjdUTDEzlcJs84i0A=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=vzWNfLLLAeGdx7iHT9n2mvQxcG6bp4wZCUilrxRaOBg=;
+        b=svBqtOEonrrQ8ZWNjj7VFN++evtb7Lfr5fcGhORcXMLeF3Z3YvzXcxC1HM1lc1UIMV
+         gcoupX4Hopdn/ofnmtmlW9PwbYGgDSZPqV47aG/yVDXYHWpIoFbgYkRmMtudIGUI84bZ
+         K7aq0y4qNeVpEBkurd4+PhR0QVzkIPoigwcJlj7asOdqK51Qdgmpb5LnlmAzNSHWmzp1
+         +mhCfTzSzK5MyockFSf+XRJdR5FyTwwkZpW9zul3J0pi+XDU8lamrPGyv6ul2DG6B8Pd
+         alDNu+x6ZqORK5tD1MxaWEe1IVQS6ufpKR6JZMGyYBthKpF5MBHo8h0R/JG9qeHrYCsJ
+         CEvQ==
+X-Gm-Message-State: APjAAAVZv//gV3uLxnFlt14vAIqeBNldfzJ90NtwgSij3YscVaRAR4n1
+        +ct+MOJi5vorGchb9GMvuPZ7Xij3GxDOVA==
+X-Google-Smtp-Source: APXvYqxfIpUPwU4twV+O8Jh78bNwx/c5+KBI1WBnJePmnmvrugbVR3lAaJt7s9ANLBo10/AmsAypzw==
+X-Received: by 2002:a17:902:a60d:: with SMTP id u13mr22780924plq.144.1560488627524;
+        Thu, 13 Jun 2019 22:03:47 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id d123sm1521005pfc.144.2019.06.13.22.03.46
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 13 Jun 2019 22:03:46 -0700 (PDT)
+Date:   Thu, 13 Jun 2019 22:03:45 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Christoph Lameter <cl@linux.com>,
+        Pekka Enberg <penberg@kernel.org>,
+        David Rientjes <rientjes@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>, linux-mm@kvack.org,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] net: phy: sfp: clean up a condition
-Message-ID: <20190614044320.GI1893@kadam>
-References: <20190613065102.GA16334@mwanda>
- <20190613180016.ekg55vzkuczapfpl@shell.armlinux.org.uk>
+Subject: Re: [PATCH] mm/slab: restore IRQs in kfree()
+Message-ID: <201906132202.9BF49E6B@keescook>
+References: <20190613065637.GE16334@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190613180016.ekg55vzkuczapfpl@shell.armlinux.org.uk>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9287 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906140039
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9287 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906140038
+In-Reply-To: <20190613065637.GE16334@mwanda>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jun 13, 2019 at 07:00:16PM +0100, Russell King - ARM Linux admin wrote:
-> On Thu, Jun 13, 2019 at 09:51:02AM +0300, Dan Carpenter wrote:
-> > The acpi_node_get_property_reference() doesn't return ACPI error codes,
-> > it just returns regular negative kernel error codes.  This patch doesn't
-> > affect run time, it's just a clean up.
-> > 
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> >  drivers/net/phy/sfp.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-> > index a991c80e6567..8a99307c1c39 100644
-> > --- a/drivers/net/phy/sfp.c
-> > +++ b/drivers/net/phy/sfp.c
-> > @@ -1848,7 +1848,7 @@ static int sfp_probe(struct platform_device *pdev)
-> >  		int ret;
-> >  
-> >  		ret = acpi_node_get_property_reference(fw, "i2c-bus", 0, &args);
-> > -		if (ACPI_FAILURE(ret) || !is_acpi_device_node(args.fwnode)) {
-> > +		if (ret || !is_acpi_device_node(args.fwnode)) {
-> >  			dev_err(&pdev->dev, "missing 'i2c-bus' property\n");
-> >  			return -ENODEV;
+On Thu, Jun 13, 2019 at 09:56:37AM +0300, Dan Carpenter wrote:
+> We added a new return here but we need to restore the IRQs before
+> we leave.
 > 
-> If "ret" is a Linux error code, should we print its value when reporting
-> the error so we know why the failure occurred, and propagate the error
-> code?
+> Fixes: 4f5d94fd4ed5 ("mm/slab: sanity-check page type when looking up cache")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-We can't propagate the error code because we might have failed because
-acpi_node_get_property_reference() succeeded but it's not a device node.
+Oh yes! Thank you for that catch! Andrew, if you haven't already, can
+you pick this up?
 
-regards,
-dan carpenter
+Thanks!
 
+-Kees
+
+> ---
+>  mm/slab.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/mm/slab.c b/mm/slab.c
+> index 9e3eee5568b6..db01e9aae31b 100644
+> --- a/mm/slab.c
+> +++ b/mm/slab.c
+> @@ -3745,8 +3745,10 @@ void kfree(const void *objp)
+>  	local_irq_save(flags);
+>  	kfree_debugcheck(objp);
+>  	c = virt_to_cache(objp);
+> -	if (!c)
+> +	if (!c) {
+> +		local_irq_restore(flags);
+>  		return;
+> +	}
+>  	debug_check_no_locks_freed(objp, c->object_size);
+>  
+>  	debug_check_no_obj_freed(objp, c->object_size);
+> -- 
+> 2.20.1
+> 
+
+-- 
+Kees Cook

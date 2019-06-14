@@ -2,118 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6426A45E72
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 15:40:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC42645E9B
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 15:43:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728301AbfFNNip (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Jun 2019 09:38:45 -0400
-Received: from mga14.intel.com ([192.55.52.115]:37599 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727808AbfFNNip (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Jun 2019 09:38:45 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Jun 2019 06:38:44 -0700
-X-ExtLoop1: 1
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.145])
-  by orsmga003.jf.intel.com with ESMTP; 14 Jun 2019 06:38:41 -0700
-Received: from andy by smile with local (Exim 4.92)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1hbmPg-0007Ry-BM; Fri, 14 Jun 2019 16:38:40 +0300
-Date:   Fri, 14 Jun 2019 16:38:40 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        Jack Ping CHNG <jack.ping.chng@linux.intel.com>
-Cc:     kernel-janitors@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Enrico Weigelt <lkml@metux.net>,
-        Himanshu Jha <himanshujha199640@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH] drivers: Provide devm_platform_ioremap_resource_byname()
-Message-ID: <20190614133840.GN9224@smile.fi.intel.com>
-References: <39e46643-d799-94b7-4aa5-d6d99d738f99@web.de>
+        id S1728340AbfFNNmi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Jun 2019 09:42:38 -0400
+Received: from stargate.chelsio.com ([12.32.117.8]:22443 "EHLO
+        stargate.chelsio.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727918AbfFNNmi (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 14 Jun 2019 09:42:38 -0400
+Received: from localhost (varun.asicdesigners.com [10.193.190.56])
+        by stargate.chelsio.com (8.13.8/8.13.8) with ESMTP id x5EDfkhn025181;
+        Fri, 14 Jun 2019 06:41:47 -0700
+Date:   Fri, 14 Jun 2019 19:11:44 +0530
+From:   Varun Prakash <varun@chelsio.com>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Mike Christie <mchristi@redhat.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        varun@chelsio.com
+Subject: Re: [PATCH -next] cxgbit: remove set but not used variable 'ppmax'
+Message-ID: <20190614134143.GA1630@chelsio.com>
+References: <20190614024413.110449-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <39e46643-d799-94b7-4aa5-d6d99d738f99@web.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190614024413.110449-1-yuehaibing@huawei.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-+Cc: Jack Ping, who did internally the same
-
-On Fri, Jun 14, 2019 at 03:26:25PM +0200, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Fri, 14 Jun 2019 15:15:14 +0200
+On Fri, Jun 14, 2019 at 02:44:13AM +0000, YueHaibing wrote:
+> Fixes gcc '-Wunused-but-set-variable' warning:
 > 
-> The functions “platform_get_resource_byname” and “devm_ioremap_resource”
-> are called together in 181 source files.
-> This implementation detail can be determined also with the help
-> of the semantic patch language (Coccinelle software).
+> drivers/target/iscsi/cxgbit/cxgbit_ddp.c: In function 'cxgbit_ddp_init':
+> drivers/target/iscsi/cxgbit/cxgbit_ddp.c:303:15: warning:
+>  variable 'ppmax' set but not used [-Wunused-but-set-variable]
 > 
-> Wrap these two calls into another helper function.
-> Thus a local variable does not need to be declared for a resource
-> structure pointer before and a redundant argument can be omitted
-> for the resource type.
-
-This one makes sense.
-Though I'm not sure Greg will see your message.
-
-Rafael, maybe you can apply this one?
-
-FWIW,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-
+> It's not used since commit a248384e6420 ("cxgb4/libcxgb/cxgb4i/cxgbit:
+> enable eDRAM page pods for iSCSI")
 > 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 > ---
->  drivers/base/platform.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
+>  drivers/target/iscsi/cxgbit/cxgbit_ddp.c | 3 ---
+>  1 file changed, 3 deletions(-)
 > 
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index 4d1729853d1a..c1f19a479dd7 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -97,6 +97,24 @@ void __iomem *devm_platform_ioremap_resource(struct platform_device *pdev,
->  	return devm_ioremap_resource(&pdev->dev, res);
->  }
->  EXPORT_SYMBOL_GPL(devm_platform_ioremap_resource);
-> +
-> +/**
-> + * devm_platform_ioremap_resource_byname
-> + * Call devm_ioremap_resource() for a platform device
-> + *
-> + * @pdev: platform device to use both for memory resource lookup as well as
-> + *        resource management
-> + * @name: resource name
-> + */
-> +void __iomem *devm_platform_ioremap_resource_byname(struct platform_device *pdev,
-> +						    const char *name)
-> +{
-> +	struct resource *res;
-> +
-> +	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, name);
-> +	return devm_ioremap_resource(&pdev->dev, res);
-> +}
-> +EXPORT_SYMBOL_GPL(devm_platform_ioremap_resource_byname);
->  #endif /* CONFIG_HAS_IOMEM */
-> 
->  /**
-> --
-> 2.22.0
+> diff --git a/drivers/target/iscsi/cxgbit/cxgbit_ddp.c b/drivers/target/iscsi/cxgbit/cxgbit_ddp.c
+> index 1443ef045a5f..fe1be5feaf21 100644
+> --- a/drivers/target/iscsi/cxgbit/cxgbit_ddp.c
+> +++ b/drivers/target/iscsi/cxgbit/cxgbit_ddp.c
+> @@ -300,7 +300,6 @@ int cxgbit_ddp_init(struct cxgbit_device *cdev)
+>  	struct cxgb4_lld_info *lldi = &cdev->lldi;
+>  	struct net_device *ndev = cdev->lldi.ports[0];
+>  	struct cxgbi_tag_format tformat;
+> -	unsigned int ppmax;
+>  	int ret, i;
+>  
+>  	if (!lldi->vr->iscsi.size) {
+> @@ -308,8 +307,6 @@ int cxgbit_ddp_init(struct cxgbit_device *cdev)
+>  		return -EACCES;
+>  	}
+>  
+> -	ppmax = lldi->vr->iscsi.size >> PPOD_SIZE_SHIFT;
+> -
+>  	memset(&tformat, 0, sizeof(struct cxgbi_tag_format));
+>  	for (i = 0; i < 4; i++)
+>  		tformat.pgsz_order[i] = (lldi->iscsi_pgsz_order >> (i << 3))
 > 
 
--- 
-With Best Regards,
-Andy Shevchenko
+Acked-by: Varun Prakash <varun@chelsio.com>
 
-
+This patch is for net-next tree.

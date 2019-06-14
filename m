@@ -2,122 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41B3146028
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 16:10:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E435146103
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 16:39:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728321AbfFNOKI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Jun 2019 10:10:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54392 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727382AbfFNOKI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Jun 2019 10:10:08 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4826821721;
-        Fri, 14 Jun 2019 14:10:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560521406;
-        bh=X3olSuNcAEC4oKTYoE6rwJUp6F7cA7DAFJwXvntbFZ4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=qZCdPdQZfEwHNfS1xlho9YTjV85ahmdys2IFn8rEms4D6V842SVLCqeSXEw3pePhD
-         g1GXkXCuZikiXJtCdZnAwpn5tgzRwjVDscNV386/YaPYhWhvFgHU0ZqQV9CAmqaPZL
-         pLUQDNGl0AWOgS1B6+W+7D9tWvNw/Fnsodc95VCs=
-Date:   Fri, 14 Jun 2019 16:10:04 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     Markus Elfring <Markus.Elfring@web.de>,
-        Jack Ping CHNG <jack.ping.chng@linux.intel.com>,
-        kernel-janitors@vger.kernel.org,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Enrico Weigelt <lkml@metux.net>,
-        Himanshu Jha <himanshujha199640@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: Re: [PATCH] drivers: Provide devm_platform_ioremap_resource_byname()
-Message-ID: <20190614141004.GC7234@kroah.com>
-References: <39e46643-d799-94b7-4aa5-d6d99d738f99@web.de>
- <20190614133840.GN9224@smile.fi.intel.com>
+        id S1728392AbfFNOjR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Jun 2019 10:39:17 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:49259 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728201AbfFNOjQ (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 14 Jun 2019 10:39:16 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hbnMF-0006G2-Pz; Fri, 14 Jun 2019 14:39:11 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Thomas Zimmermann <tzimmermann@suse.de>,
+        Dave Airlie <airlied@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/mgag200: add in missing { } around if block
+Date:   Fri, 14 Jun 2019 15:39:11 +0100
+Message-Id: <20190614143911.21806-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190614133840.GN9224@smile.fi.intel.com>
-User-Agent: Mutt/1.12.0 (2019-05-25)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jun 14, 2019 at 04:38:40PM +0300, Andy Shevchenko wrote:
-> +Cc: Jack Ping, who did internally the same
-> 
-> On Fri, Jun 14, 2019 at 03:26:25PM +0200, Markus Elfring wrote:
-> > From: Markus Elfring <elfring@users.sourceforge.net>
-> > Date: Fri, 14 Jun 2019 15:15:14 +0200
-> > 
-> > The functions “platform_get_resource_byname” and “devm_ioremap_resource”
-> > are called together in 181 source files.
-> > This implementation detail can be determined also with the help
-> > of the semantic patch language (Coccinelle software).
-> > 
-> > Wrap these two calls into another helper function.
-> > Thus a local variable does not need to be declared for a resource
-> > structure pointer before and a redundant argument can be omitted
-> > for the resource type.
-> 
-> This one makes sense.
-> Though I'm not sure Greg will see your message.
+From: Colin Ian King <colin.king@canonical.com>
 
-Nope, didn't see it, don't want to see it, it will only cause more work
-in the longrun...
+There is an if block that is missing the { } curly brackets. Add
+these in.
 
-> Rafael, maybe you can apply this one?
+Addresses-Coverity: ("Structurally dead code")
+Fixes: 94dc57b10399 ("drm/mgag200: Rewrite cursor handling")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/mgag200/mgag200_cursor.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Um, don't go around maintainers please, that's rude.  There is a reason
-this specific developer is in my blacklist, and perhaps they should be
-in yours as well :)
+diff --git a/drivers/gpu/drm/mgag200/mgag200_cursor.c b/drivers/gpu/drm/mgag200/mgag200_cursor.c
+index f0c61a92351c..117eaedec7aa 100644
+--- a/drivers/gpu/drm/mgag200/mgag200_cursor.c
++++ b/drivers/gpu/drm/mgag200/mgag200_cursor.c
+@@ -99,10 +99,11 @@ int mga_crtc_cursor_set(struct drm_crtc *crtc,
+ 
+ 	/* Pin and map up-coming buffer to write colour indices */
+ 	ret = drm_gem_vram_pin(pixels_next, 0);
+-	if (ret)
++	if (ret) {
+ 		dev_err(&dev->pdev->dev,
+ 			"failed to pin cursor buffer: %d\n", ret);
+ 		goto err_drm_gem_vram_kunmap_src;
++	}
+ 	dst = drm_gem_vram_kmap(pixels_next, true, NULL);
+ 	if (IS_ERR(dst)) {
+ 		ret = PTR_ERR(dst);
+-- 
+2.20.1
 
-> FWIW,
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> 
-> > 
-> > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> > ---
-> >  drivers/base/platform.c | 18 ++++++++++++++++++
-> >  1 file changed, 18 insertions(+)
-> > 
-> > diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> > index 4d1729853d1a..c1f19a479dd7 100644
-> > --- a/drivers/base/platform.c
-> > +++ b/drivers/base/platform.c
-> > @@ -97,6 +97,24 @@ void __iomem *devm_platform_ioremap_resource(struct platform_device *pdev,
-> >  	return devm_ioremap_resource(&pdev->dev, res);
-> >  }
-> >  EXPORT_SYMBOL_GPL(devm_platform_ioremap_resource);
-> > +
-> > +/**
-> > + * devm_platform_ioremap_resource_byname
-> > + * Call devm_ioremap_resource() for a platform device
-> > + *
-> > + * @pdev: platform device to use both for memory resource lookup as well as
-> > + *        resource management
-> > + * @name: resource name
-> > + */
-> > +void __iomem *devm_platform_ioremap_resource_byname(struct platform_device *pdev,
-> > +						    const char *name)
-> > +{
-> > +	struct resource *res;
-> > +
-> > +	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, name);
-> > +	return devm_ioremap_resource(&pdev->dev, res);
-> > +}
-> > +EXPORT_SYMBOL_GPL(devm_platform_ioremap_resource_byname);
-> >  #endif /* CONFIG_HAS_IOMEM */
-
-I don't like adding new apis with no user.
-
-thanks,
-
-greg k-h

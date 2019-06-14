@@ -2,104 +2,198 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 120B4453C5
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 07:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B89E45880
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 11:23:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725775AbfFNFDs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Jun 2019 01:03:48 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:45298 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725767AbfFNFDs (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Jun 2019 01:03:48 -0400
-Received: by mail-pl1-f193.google.com with SMTP id bi6so474757plb.12
-        for <kernel-janitors@vger.kernel.org>; Thu, 13 Jun 2019 22:03:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=vzWNfLLLAeGdx7iHT9n2mvQxcG6bp4wZCUilrxRaOBg=;
-        b=bJWdlpRRGB15JzNuxSkj/0RPEWaKqcPRrFrQ3ai2ojLMIPqYEmt/4pm+l2yin+tUio
-         jBug4MBdWstbYkD7RGKZf4N2VB4qY9sUdsxTHweadmHZD1aL/kiWCXzcnum364N04VKt
-         FAIw+kKyYpxZALIoSQEwLjdUTDEzlcJs84i0A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=vzWNfLLLAeGdx7iHT9n2mvQxcG6bp4wZCUilrxRaOBg=;
-        b=svBqtOEonrrQ8ZWNjj7VFN++evtb7Lfr5fcGhORcXMLeF3Z3YvzXcxC1HM1lc1UIMV
-         gcoupX4Hopdn/ofnmtmlW9PwbYGgDSZPqV47aG/yVDXYHWpIoFbgYkRmMtudIGUI84bZ
-         K7aq0y4qNeVpEBkurd4+PhR0QVzkIPoigwcJlj7asOdqK51Qdgmpb5LnlmAzNSHWmzp1
-         +mhCfTzSzK5MyockFSf+XRJdR5FyTwwkZpW9zul3J0pi+XDU8lamrPGyv6ul2DG6B8Pd
-         alDNu+x6ZqORK5tD1MxaWEe1IVQS6ufpKR6JZMGyYBthKpF5MBHo8h0R/JG9qeHrYCsJ
-         CEvQ==
-X-Gm-Message-State: APjAAAVZv//gV3uLxnFlt14vAIqeBNldfzJ90NtwgSij3YscVaRAR4n1
-        +ct+MOJi5vorGchb9GMvuPZ7Xij3GxDOVA==
-X-Google-Smtp-Source: APXvYqxfIpUPwU4twV+O8Jh78bNwx/c5+KBI1WBnJePmnmvrugbVR3lAaJt7s9ANLBo10/AmsAypzw==
-X-Received: by 2002:a17:902:a60d:: with SMTP id u13mr22780924plq.144.1560488627524;
-        Thu, 13 Jun 2019 22:03:47 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id d123sm1521005pfc.144.2019.06.13.22.03.46
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 13 Jun 2019 22:03:46 -0700 (PDT)
-Date:   Thu, 13 Jun 2019 22:03:45 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Christoph Lameter <cl@linux.com>,
-        Pekka Enberg <penberg@kernel.org>,
-        David Rientjes <rientjes@google.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>, linux-mm@kvack.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] mm/slab: restore IRQs in kfree()
-Message-ID: <201906132202.9BF49E6B@keescook>
-References: <20190613065637.GE16334@mwanda>
+        id S1726765AbfFNJXS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Jun 2019 05:23:18 -0400
+Received: from mout.web.de ([212.227.17.12]:42991 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726083AbfFNJXS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 14 Jun 2019 05:23:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1560504172;
+        bh=SpHQ3JrOfhzaQWP30ANX8/kssmYUbD+lEDsns4CrNWw=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=I2EvWM35gKnBnKmheBgq1jp/Ag+XzAy1ytbP/i7R/wzX4eIeY8pEpCK4SPTUKuiAD
+         h0pVXtzq9Af4rhZNaMtl5vnggAHHS+6F/2TeE+qJf8j838e0bOdrd75SY32nWm+/PR
+         C7CQ6L5aAf8C/mvui/03xvLCNx7me0aKykAZXOrw=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.133.126.132]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MYf78-1i5sJl3FUA-00VPjw; Fri, 14
+ Jun 2019 11:22:51 +0200
+Subject: [PATCH] drivers: Inline code in devm_platform_ioremap_resource() from
+ two functions
+To:     Enrico Weigelt <lkml@metux.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     cocci@systeme.lip6.fr, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>
+References: <20190406061112.31620-1-himanshujha199640@gmail.com>
+ <f09006a3-691c-382a-23b8-8e9ff5b4a5f1@web.de>
+ <alpine.DEB.2.21.1906081925090.2543@hadrien>
+ <7b4fe770-dadd-80ba-2ba4-0f2bc90984ef@web.de>
+ <f573b2d3-11d0-92b5-f8ab-4c4b6493e152@metux.net>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Openpgp: preference=signencrypt
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <032e347f-e575-c89c-fa62-473d52232735@web.de>
+Date:   Fri, 14 Jun 2019 11:22:40 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190613065637.GE16334@mwanda>
+In-Reply-To: <f573b2d3-11d0-92b5-f8ab-4c4b6493e152@metux.net>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:oZZikr5812fm7qJo1EfkL7bt2J1oCpuqPgZapj83jUV/9DsNYsv
+ 0WUda4yE5NBVVkeDvjjHM/yj31jOesCycrxo6ktCIvL/R++Yo/ExkmczJqqTn5Lir/wlLKz
+ wsTHFsB/DMeZuPDjabwLZVefP72Udt+ag+lQvrU3Lz0nNLrNMEWsIxGhLaCG/apPMhgP6K2
+ +17hw5Y5hHKkX0GFgW5Qw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Dvvfi8LZ7AI=:/YZipzaeArtGwaFfdAJZrk
+ YKr0OxA4swcWy+/Yd5hu2nxVAjoW3ve1vOELQV6xw9zer9QtjMBZGfTQpJLj5Bq1/ykJOVVVm
+ hpqndrozTlu1FgdcpuhvYtxwLJ0kbHSmNfGJrkyzl/CuWSDPlLQbciNkldME9hXG9RIT4uAcD
+ dxf0lUpDmZPuwQfwGG1Taz5TXO3ymQLn+o1T9WSEH2ouINVsjoTyHvOIDU/iH6nAqQ4HPuYcg
+ ptYNmllSM3gHHVa0RVgEqUHy4jYEeCEsBmBuJ2qnkVHAIaBVDyZZAQh3+gO+yP3ddB6N63gZG
+ hVS0c26eCT9KX3B7kuzxW19dIRY+YeOOv5h4/x0CXIWzfYz5o1ycuyEz3P5aC9fryZPGyNpOa
+ QwRTJtZoykybi8Hz+D+sC4GlkXKBubmoJ1k4xRnGMBPD/unNCcws4Qxemq6GH0t5RReBEZ2Eg
+ qkJ/3kPhtjGP+2zwnKIS3MGcMb2EkYQeEuRou3fjQdrRXPqabqtBby3fFKmE60WlmdDEzEbbM
+ Bfk1q0zDUV9wltiOiycTgDMrKPS5Vw91yo1D/8xI3UX9q81kjY47NOX+ybZFm9cJAQNSuikkq
+ OuKMYi4KKN7im3QSCFxPoOKDUdilvMw9cn0Hn5gciPJAB039jYu6j6/Dt1/pPirm5ibCjiF1a
+ T9KJ04HeoHvqM7qGtXBnpZVjGFxJAqvGuj/iNwlwhizJaYuYX0J0el603yA8FKY4OFHAzFfFp
+ vnWgYQBjBUf4lKNnwgwjQSO44ex607ayICDFF6WfrACbe/s8Apd7xdTe4MFcECJpfdUyDcX4k
+ fB2oi0lLrNQ14iLXmSb7UZJsBWi6e2ZspUlgKWKdoSWGKZkgwMm7klVIbUdIDyij29XkM+9UR
+ uQfDU/hJBQMFGEizptpN0D2zqHDQPZd94jsQL/rFffDpPGT7XFOIpDUN4KEzIO9FTNgZJeGQP
+ Zkx0HrpZZIvS24eI4YiyHgD2xJUWcfJwcxenlD+iTCSBOfN4HmODD
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jun 13, 2019 at 09:56:37AM +0300, Dan Carpenter wrote:
-> We added a new return here but we need to restore the IRQs before
-> we leave.
-> 
-> Fixes: 4f5d94fd4ed5 ("mm/slab: sanity-check page type when looking up cache")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Fri, 14 Jun 2019 11:05:33 +0200
 
-Oh yes! Thank you for that catch! Andrew, if you haven't already, can
-you pick this up?
+Two function calls were combined in this function implementation.
+Inline corresponding code so that extra error checks can be avoided here.
 
-Thanks!
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ drivers/base/platform.c | 39 ++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 34 insertions(+), 5 deletions(-)
 
--Kees
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 4d1729853d1a..baadca72f949 100644
+=2D-- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -80,8 +80,8 @@ struct resource *platform_get_resource(struct platform_d=
+evice *dev,
+ EXPORT_SYMBOL_GPL(platform_get_resource);
 
-> ---
->  mm/slab.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/mm/slab.c b/mm/slab.c
-> index 9e3eee5568b6..db01e9aae31b 100644
-> --- a/mm/slab.c
-> +++ b/mm/slab.c
-> @@ -3745,8 +3745,10 @@ void kfree(const void *objp)
->  	local_irq_save(flags);
->  	kfree_debugcheck(objp);
->  	c = virt_to_cache(objp);
-> -	if (!c)
-> +	if (!c) {
-> +		local_irq_restore(flags);
->  		return;
-> +	}
->  	debug_check_no_locks_freed(objp, c->object_size);
->  
->  	debug_check_no_obj_freed(objp, c->object_size);
-> -- 
-> 2.20.1
-> 
+ /**
+- * devm_platform_ioremap_resource - call devm_ioremap_resource() for a pl=
+atform
+- *				    device
++ * devm_platform_ioremap_resource
++ * Achieve devm_ioremap_resource() functionality for a platform device
+  *
+  * @pdev: platform device to use both for memory resource lookup as well =
+as
+  *        resource management
+@@ -91,10 +91,39 @@ EXPORT_SYMBOL_GPL(platform_get_resource);
+ void __iomem *devm_platform_ioremap_resource(struct platform_device *pdev=
+,
+ 					     unsigned int index)
+ {
+-	struct resource *res;
++	u32 i;
 
--- 
-Kees Cook
+-	res =3D platform_get_resource(pdev, IORESOURCE_MEM, index);
+-	return devm_ioremap_resource(&pdev->dev, res);
++	for (i =3D 0; i < pdev->num_resources; i++) {
++		struct resource *res =3D &pdev->resource[i];
++
++		if (resource_type(res) =3D=3D IORESOURCE_MEM && index-- =3D=3D 0) {
++			struct device *dev =3D &pdev->dev;
++			resource_size_t size =3D resource_size(res);
++			void __iomem *dest;
++
++			if (!devm_request_mem_region(dev,
++						     res->start,
++						     size,
++						     dev_name(dev))) {
++				dev_err(dev,
++					"can't request region for resource %pR\n",
++					res);
++				return IOMEM_ERR_PTR(-EBUSY);
++			}
++
++			dest =3D devm_ioremap(dev, res->start, size);
++			if (!dest) {
++				dev_err(dev,
++					"ioremap failed for resource %pR\n",
++					res);
++				devm_release_mem_region(dev, res->start, size);
++				dest =3D IOMEM_ERR_PTR(-ENOMEM);
++			}
++
++			return dest;
++		}
++	}
++	return IOMEM_ERR_PTR(-EINVAL);
+ }
+ EXPORT_SYMBOL_GPL(devm_platform_ioremap_resource);
+ #endif /* CONFIG_HAS_IOMEM */
+=2D-
+2.22.0
+

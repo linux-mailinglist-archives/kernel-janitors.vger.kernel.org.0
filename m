@@ -2,69 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E435146103
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 16:39:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE3B14616C
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 16:47:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728392AbfFNOjR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Jun 2019 10:39:17 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:49259 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728201AbfFNOjQ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Jun 2019 10:39:16 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hbnMF-0006G2-Pz; Fri, 14 Jun 2019 14:39:11 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Thomas Zimmermann <tzimmermann@suse.de>,
-        Dave Airlie <airlied@redhat.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/mgag200: add in missing { } around if block
-Date:   Fri, 14 Jun 2019 15:39:11 +0100
-Message-Id: <20190614143911.21806-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728806AbfFNOrL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Jun 2019 10:47:11 -0400
+Received: from mga03.intel.com ([134.134.136.65]:39119 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728233AbfFNOrL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 14 Jun 2019 10:47:11 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Jun 2019 07:47:10 -0700
+X-ExtLoop1: 1
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.145])
+  by orsmga002.jf.intel.com with ESMTP; 14 Jun 2019 07:47:07 -0700
+Received: from andy by smile with local (Exim 4.92)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1hbnTu-0007w7-JT; Fri, 14 Jun 2019 17:47:06 +0300
+Date:   Fri, 14 Jun 2019 17:47:06 +0300
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Markus Elfring <Markus.Elfring@web.de>,
+        Jack Ping CHNG <jack.ping.chng@linux.intel.com>,
+        kernel-janitors@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Enrico Weigelt <lkml@metux.net>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH] drivers: Provide devm_platform_ioremap_resource_byname()
+Message-ID: <20190614144706.GO9224@smile.fi.intel.com>
+References: <39e46643-d799-94b7-4aa5-d6d99d738f99@web.de>
+ <20190614133840.GN9224@smile.fi.intel.com>
+ <20190614141004.GC7234@kroah.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190614141004.GC7234@kroah.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Fri, Jun 14, 2019 at 04:10:04PM +0200, Greg Kroah-Hartman wrote:
+> On Fri, Jun 14, 2019 at 04:38:40PM +0300, Andy Shevchenko wrote:
+> > +Cc: Jack Ping, who did internally the same
+> > 
+> > On Fri, Jun 14, 2019 at 03:26:25PM +0200, Markus Elfring wrote:
+> > > From: Markus Elfring <elfring@users.sourceforge.net>
+> > > Date: Fri, 14 Jun 2019 15:15:14 +0200
+> > > 
+> > > The functions “platform_get_resource_byname” and “devm_ioremap_resource”
+> > > are called together in 181 source files.
+> > > This implementation detail can be determined also with the help
+> > > of the semantic patch language (Coccinelle software).
+> > > 
+> > > Wrap these two calls into another helper function.
+> > > Thus a local variable does not need to be declared for a resource
+> > > structure pointer before and a redundant argument can be omitted
+> > > for the resource type.
+> > 
+> > This one makes sense.
+> > Though I'm not sure Greg will see your message.
+> 
+> Nope, didn't see it, don't want to see it, it will only cause more work
+> in the longrun...
+> 
+> > Rafael, maybe you can apply this one?
+> 
+> Um, don't go around maintainers please, that's rude.  
 
-There is an if block that is missing the { } curly brackets. Add
-these in.
+I won't do it, how should we proceed if de facto this functionality is good to
+have besides the fact of coming new user in the future?
 
-Addresses-Coverity: ("Structurally dead code")
-Fixes: 94dc57b10399 ("drm/mgag200: Rewrite cursor handling")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/mgag200/mgag200_cursor.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> There is a reason
+> this specific developer is in my blacklist, and perhaps they should be
+> in yours as well :)
 
-diff --git a/drivers/gpu/drm/mgag200/mgag200_cursor.c b/drivers/gpu/drm/mgag200/mgag200_cursor.c
-index f0c61a92351c..117eaedec7aa 100644
---- a/drivers/gpu/drm/mgag200/mgag200_cursor.c
-+++ b/drivers/gpu/drm/mgag200/mgag200_cursor.c
-@@ -99,10 +99,11 @@ int mga_crtc_cursor_set(struct drm_crtc *crtc,
- 
- 	/* Pin and map up-coming buffer to write colour indices */
- 	ret = drm_gem_vram_pin(pixels_next, 0);
--	if (ret)
-+	if (ret) {
- 		dev_err(&dev->pdev->dev,
- 			"failed to pin cursor buffer: %d\n", ret);
- 		goto err_drm_gem_vram_kunmap_src;
-+	}
- 	dst = drm_gem_vram_kmap(pixels_next, true, NULL);
- 	if (IS_ERR(dst)) {
- 		ret = PTR_ERR(dst);
+Perhaps.
+
+> I don't like adding new apis with no user.
+
+Perhaps Jack Ping will send it as a first patch of his series where he utilizes
+this functionality. Would it be acceptable?
+
+That's why I Cc'ed him as well.
+
 -- 
-2.20.1
+With Best Regards,
+Andy Shevchenko
+
 

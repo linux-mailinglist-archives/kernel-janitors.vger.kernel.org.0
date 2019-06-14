@@ -2,75 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 367BC459F0
-	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 12:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 38E1D45C42
+	for <lists+kernel-janitors@lfdr.de>; Fri, 14 Jun 2019 14:11:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727168AbfFNKHM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Jun 2019 06:07:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34462 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726370AbfFNKHM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Jun 2019 06:07:12 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 23EB521773;
-        Fri, 14 Jun 2019 10:07:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560506831;
-        bh=00YDveKIzRA/Wgmz9r0i+z4w5SAjetUkYHtuL3H2+hM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vW2Rktp3ulPmd/QTN+ZzUshT/ebz7+LLiXzio4Syen++SbD8ngo7mZv9TjU/sAnGm
-         I/iGLyxFxHpzSwqWbjFQ7YpiLvTOGRYOp51Yb4B4cRKKuYSd6BcYiTch484z7PvgDF
-         7HKwuV8X3wga35W2QHI1MY5mhjpmc/a6NaR+OII0=
-Date:   Fri, 14 Jun 2019 12:07:09 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Enrico Weigelt <lkml@metux.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>, cocci@systeme.lip6.fr,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Himanshu Jha <himanshujha199640@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>
-Subject: Re: [PATCH] drivers: Inline code in devm_platform_ioremap_resource()
- from two functions
-Message-ID: <20190614100709.GB8466@kroah.com>
-References: <20190406061112.31620-1-himanshujha199640@gmail.com>
- <f09006a3-691c-382a-23b8-8e9ff5b4a5f1@web.de>
- <alpine.DEB.2.21.1906081925090.2543@hadrien>
- <7b4fe770-dadd-80ba-2ba4-0f2bc90984ef@web.de>
- <f573b2d3-11d0-92b5-f8ab-4c4b6493e152@metux.net>
- <032e347f-e575-c89c-fa62-473d52232735@web.de>
+        id S1727837AbfFNML3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Jun 2019 08:11:29 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:40690 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727542AbfFNML2 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 14 Jun 2019 08:11:28 -0400
+Received: from [192.168.1.41] ([92.148.209.44])
+        by mwinf5d40 with ME
+        id QcBN2000a0y1A8U03cBNc2; Fri, 14 Jun 2019 14:11:26 +0200
+X-ME-Helo: [192.168.1.41]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 14 Jun 2019 14:11:26 +0200
+X-ME-IP: 92.148.209.44
+Subject: Re: [PATCH net-next] hinic: Use devm_kasprintf instead of hard coding
+ it
+To:     aviad.krawczyk@huawei.com, davem@davemloft.net
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20190613195412.1702-1-christophe.jaillet@wanadoo.fr>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <c55cd76d-2d3e-d9b2-1f1b-4881102c407d@wanadoo.fr>
+Date:   Fri, 14 Jun 2019 14:11:22 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <032e347f-e575-c89c-fa62-473d52232735@web.de>
-User-Agent: Mutt/1.12.0 (2019-05-25)
+In-Reply-To: <20190613195412.1702-1-christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: fr
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jun 14, 2019 at 11:22:40AM +0200, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Fri, 14 Jun 2019 11:05:33 +0200
-> 
-> Two function calls were combined in this function implementation.
-> Inline corresponding code so that extra error checks can be avoided here.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Hi,
+
+I got a:
+
+<aviad.krawczyk@huawei.com>: host huawei.com[103.218.216.136] said: 550
+5.1.1 Error: invalid recipients is found from 80.12.242.127
+
+However, MAINTAINERS has:
+   HUAWEI ETHERNET DRIVER
+   M:	Aviad Krawczyk <aviad.krawczyk@huawei.com>
+   L:	netdev@vger.kernel.org
+   S:	Supported
+   F:	Documentation/networking/hinic.txt
+   F:	drivers/net/ethernet/huawei/hinic/
+
+I don't know how this should be fixed (neither if it should be...), so if s.o. knows, please do.
+
+Best regards,
+Christophe Jaillet
+
+Le 13/06/2019 à 21:54, Christophe JAILLET a écrit :
+> 'devm_kasprintf' is less verbose than:
+>     snprintf(NULL, 0, ...);
+>     devm_kzalloc(...);
+>     sprintf
+> so use it instead.
+>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > ---
->  drivers/base/platform.c | 39 ++++++++++++++++++++++++++++++++++-----
->  1 file changed, 34 insertions(+), 5 deletions(-)
+>   drivers/net/ethernet/huawei/hinic/hinic_rx.c | 8 +++-----
+>   1 file changed, 3 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/net/ethernet/huawei/hinic/hinic_rx.c b/drivers/net/ethernet/huawei/hinic/hinic_rx.c
+> index 9b4082557ad5..95b09fd110d3 100644
+> --- a/drivers/net/ethernet/huawei/hinic/hinic_rx.c
+> +++ b/drivers/net/ethernet/huawei/hinic/hinic_rx.c
+> @@ -493,7 +493,7 @@ int hinic_init_rxq(struct hinic_rxq *rxq, struct hinic_rq *rq,
+>   		   struct net_device *netdev)
+>   {
+>   	struct hinic_qp *qp = container_of(rq, struct hinic_qp, rq);
+> -	int err, pkts, irqname_len;
+> +	int err, pkts;
+>   
+>   	rxq->netdev = netdev;
+>   	rxq->rq = rq;
+> @@ -502,13 +502,11 @@ int hinic_init_rxq(struct hinic_rxq *rxq, struct hinic_rq *rq,
+>   
+>   	rxq_stats_init(rxq);
+>   
+> -	irqname_len = snprintf(NULL, 0, "hinic_rxq%d", qp->q_id) + 1;
+> -	rxq->irq_name = devm_kzalloc(&netdev->dev, irqname_len, GFP_KERNEL);
+> +	rxq->irq_name = devm_kasprintf(&netdev->dev, GFP_KERNEL,
+> +				       "hinic_rxq%d", qp->q_id);
+>   	if (!rxq->irq_name)
+>   		return -ENOMEM;
+>   
+> -	sprintf(rxq->irq_name, "hinic_rxq%d", qp->q_id);
+> -
+>   	pkts = rx_alloc_pkts(rxq);
+>   	if (!pkts) {
+>   		err = -ENOMEM;
 
-Hey, looks like you timed out from my kill-file and this snuck through
-somehow.  Let me go add you again to it, so I'm not bothered by
-pointless stuff like this anymore.
-
-*plonk*
 

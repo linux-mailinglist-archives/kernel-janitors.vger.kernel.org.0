@@ -2,49 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 44E2D46DC3
-	for <lists+kernel-janitors@lfdr.de>; Sat, 15 Jun 2019 04:21:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 706D846EAB
+	for <lists+kernel-janitors@lfdr.de>; Sat, 15 Jun 2019 09:10:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726397AbfFOCVu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Jun 2019 22:21:50 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:57410 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725812AbfFOCVt (ORCPT
+        id S1726094AbfFOHKU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 15 Jun 2019 03:10:20 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:33270 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725830AbfFOHKT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Jun 2019 22:21:49 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id F152713407F73;
-        Fri, 14 Jun 2019 19:21:48 -0700 (PDT)
-Date:   Fri, 14 Jun 2019 19:21:48 -0700 (PDT)
-Message-Id: <20190614.192148.1227986231677887217.davem@davemloft.net>
-To:     dan.carpenter@oracle.com
+        Sat, 15 Jun 2019 03:10:19 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5F79t0r018786;
+        Sat, 15 Jun 2019 07:09:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=Jk075PwM81R3A0PbapUfwNgkRm9/kUVtWd6WglwwUNE=;
+ b=LGrn7veXH5Dgj3GGY1SEZpprO1bJcq6Gc0qe6GNytBq9sQyjiUzq74vdJPjl7PisQpyH
+ bail1QQQ944yVwZ8WiaIgo77fVXeTKvVRKn8CCKxQ5PwaOUT59KwaOpeUs2sohadHyCL
+ JBqSpdAqcUIkB39jxich6GoSwARHrHlBUUsK6tf/TPjLlcsQe4NYN1vcyAOKvAx2cLkC
+ Jo5AqcJ66uoQ4NqEgVp6KVNbhPsogkc1ZeuxswfrKvQbeQtTQU1gYzRUqNZ2qhgJQcNt
+ W21MrpJt5pBO3YIhchgmwYM/JBM2cABIra4K3nBkMmlNtwFre/ME2J4Wmly4mKFZJc6m dg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2t4saq086q-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 15 Jun 2019 07:09:55 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5F792V3134106;
+        Sat, 15 Jun 2019 07:09:54 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 2t4pqakfh0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 15 Jun 2019 07:09:54 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5F79ifH027182;
+        Sat, 15 Jun 2019 07:09:44 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 15 Jun 2019 00:09:43 -0700
+Date:   Sat, 15 Jun 2019 10:09:35 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     David Miller <davem@davemloft.net>
 Cc:     linux@armlinux.org.uk, ruslan@babayev.com, andrew@lunn.ch,
         f.fainelli@gmail.com, hkallweit1@gmail.com, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org
 Subject: Re: [PATCH net] net: phy: sfp: clean up a condition
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190613065102.GA16334@mwanda>
+Message-ID: <20190615070935.GM1893@kadam>
 References: <20190613065102.GA16334@mwanda>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 14 Jun 2019 19:21:49 -0700 (PDT)
+ <20190614.192148.1227986231677887217.davem@davemloft.net>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190614.192148.1227986231677887217.davem@davemloft.net>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9288 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906150065
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9288 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906150065
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Thu, 13 Jun 2019 09:51:02 +0300
-
-> The acpi_node_get_property_reference() doesn't return ACPI error codes,
-> it just returns regular negative kernel error codes.  This patch doesn't
-> affect run time, it's just a clean up.
+On Fri, Jun 14, 2019 at 07:21:48PM -0700, David Miller wrote:
+> From: Dan Carpenter <dan.carpenter@oracle.com>
+> Date: Thu, 13 Jun 2019 09:51:02 +0300
 > 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > The acpi_node_get_property_reference() doesn't return ACPI error codes,
+> > it just returns regular negative kernel error codes.  This patch doesn't
+> > affect run time, it's just a clean up.
+> > 
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> 
+> Applied to net-next.
 
-Applied to net-next.
+I meant to say net-next but I made a typo.  :/
+
+regards,
+dan carpenter

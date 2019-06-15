@@ -2,57 +2,49 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E28546CC8
-	for <lists+kernel-janitors@lfdr.de>; Sat, 15 Jun 2019 01:20:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44E2D46DC3
+	for <lists+kernel-janitors@lfdr.de>; Sat, 15 Jun 2019 04:21:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726405AbfFNXUh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 14 Jun 2019 19:20:37 -0400
-Received: from www62.your-server.de ([213.133.104.62]:40652 "EHLO
-        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725809AbfFNXUh (ORCPT
+        id S1726397AbfFOCVu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 14 Jun 2019 22:21:50 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:57410 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725812AbfFOCVt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 14 Jun 2019 19:20:37 -0400
-Received: from [78.46.172.2] (helo=sslproxy05.your-server.de)
-        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1hbvUj-0008Az-6I; Sat, 15 Jun 2019 01:20:29 +0200
-Received: from [178.199.41.31] (helo=linux.home)
-        by sslproxy05.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1hbvUi-000XyW-VT; Sat, 15 Jun 2019 01:20:29 +0200
-Subject: Re: [PATCH] selftests/bpf: signedness bug in enable_all_controllers()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Shuah Khan <shuah@kernel.org>, Roman Gushchin <guro@fb.com>
-Cc:     Alexei Starovoitov <ast@kernel.org>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        linux-kselftest@vger.kernel.org, bpf@vger.kernel.org,
+        Fri, 14 Jun 2019 22:21:49 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id F152713407F73;
+        Fri, 14 Jun 2019 19:21:48 -0700 (PDT)
+Date:   Fri, 14 Jun 2019 19:21:48 -0700 (PDT)
+Message-Id: <20190614.192148.1227986231677887217.davem@davemloft.net>
+To:     dan.carpenter@oracle.com
+Cc:     linux@armlinux.org.uk, ruslan@babayev.com, andrew@lunn.ch,
+        f.fainelli@gmail.com, hkallweit1@gmail.com, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-References: <20190613070021.GG16334@mwanda>
-From:   Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <e81023df-a17a-57ae-854a-5b6e11ffef15@iogearbox.net>
-Date:   Sat, 15 Jun 2019 01:20:27 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.3.0
-MIME-Version: 1.0
-In-Reply-To: <20190613070021.GG16334@mwanda>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Subject: Re: [PATCH net] net: phy: sfp: clean up a condition
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190613065102.GA16334@mwanda>
+References: <20190613065102.GA16334@mwanda>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.100.3/25480/Fri Jun 14 10:12:45 2019)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 14 Jun 2019 19:21:49 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 06/13/2019 09:00 AM, Dan Carpenter wrote:
-> The "len" variable needs to be signed for the error handling to work
-> properly.
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Date: Thu, 13 Jun 2019 09:51:02 +0300
+
+> The acpi_node_get_property_reference() doesn't return ACPI error codes,
+> it just returns regular negative kernel error codes.  This patch doesn't
+> affect run time, it's just a clean up.
 > 
-> Fixes: 596092ef8bea ("selftests/bpf: enable all available cgroup v2 controllers")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Applied, thanks!
+Applied to net-next.

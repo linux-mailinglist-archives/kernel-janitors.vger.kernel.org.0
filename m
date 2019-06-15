@@ -2,89 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 706D846EAB
-	for <lists+kernel-janitors@lfdr.de>; Sat, 15 Jun 2019 09:10:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D988446F17
+	for <lists+kernel-janitors@lfdr.de>; Sat, 15 Jun 2019 10:44:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726094AbfFOHKU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 15 Jun 2019 03:10:20 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:33270 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725830AbfFOHKT (ORCPT
+        id S1726073AbfFOIod (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 15 Jun 2019 04:44:33 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:49642 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725825AbfFOIoc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 15 Jun 2019 03:10:19 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5F79t0r018786;
-        Sat, 15 Jun 2019 07:09:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=Jk075PwM81R3A0PbapUfwNgkRm9/kUVtWd6WglwwUNE=;
- b=LGrn7veXH5Dgj3GGY1SEZpprO1bJcq6Gc0qe6GNytBq9sQyjiUzq74vdJPjl7PisQpyH
- bail1QQQ944yVwZ8WiaIgo77fVXeTKvVRKn8CCKxQ5PwaOUT59KwaOpeUs2sohadHyCL
- JBqSpdAqcUIkB39jxich6GoSwARHrHlBUUsK6tf/TPjLlcsQe4NYN1vcyAOKvAx2cLkC
- Jo5AqcJ66uoQ4NqEgVp6KVNbhPsogkc1ZeuxswfrKvQbeQtTQU1gYzRUqNZ2qhgJQcNt
- W21MrpJt5pBO3YIhchgmwYM/JBM2cABIra4K3nBkMmlNtwFre/ME2J4Wmly4mKFZJc6m dg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 2t4saq086q-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 15 Jun 2019 07:09:55 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5F792V3134106;
-        Sat, 15 Jun 2019 07:09:54 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2t4pqakfh0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 15 Jun 2019 07:09:54 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5F79ifH027182;
-        Sat, 15 Jun 2019 07:09:44 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 15 Jun 2019 00:09:43 -0700
-Date:   Sat, 15 Jun 2019 10:09:35 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     David Miller <davem@davemloft.net>
-Cc:     linux@armlinux.org.uk, ruslan@babayev.com, andrew@lunn.ch,
-        f.fainelli@gmail.com, hkallweit1@gmail.com, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] net: phy: sfp: clean up a condition
-Message-ID: <20190615070935.GM1893@kadam>
-References: <20190613065102.GA16334@mwanda>
- <20190614.192148.1227986231677887217.davem@davemloft.net>
+        Sat, 15 Jun 2019 04:44:32 -0400
+X-IronPort-AV: E=Sophos;i="5.63,377,1557180000"; 
+   d="scan'208";a="387534746"
+Received: from abo-12-105-68.mrs.modulonet.fr (HELO hadrien) ([85.68.105.12])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Jun 2019 10:44:31 +0200
+Date:   Sat, 15 Jun 2019 10:44:30 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@lip6.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jack Ping CHNG <jack.ping.chng@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Enrico Weigelt <lkml@metux.net>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: drivers: Provide devm_platform_ioremap_resource_byname()
+In-Reply-To: <48877575-90b9-3db5-7a25-53cf3817b2ee@web.de>
+Message-ID: <alpine.DEB.2.21.1906151044160.2614@hadrien>
+References: <39e46643-d799-94b7-4aa5-d6d99d738f99@web.de> <20190614133840.GN9224@smile.fi.intel.com> <20190614141004.GC7234@kroah.com> <20190614144706.GO9224@smile.fi.intel.com> <48877575-90b9-3db5-7a25-53cf3817b2ee@web.de>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190614.192148.1227986231677887217.davem@davemloft.net>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9288 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906150065
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9288 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906150065
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jun 14, 2019 at 07:21:48PM -0700, David Miller wrote:
-> From: Dan Carpenter <dan.carpenter@oracle.com>
-> Date: Thu, 13 Jun 2019 09:51:02 +0300
-> 
-> > The acpi_node_get_property_reference() doesn't return ACPI error codes,
-> > it just returns regular negative kernel error codes.  This patch doesn't
-> > affect run time, it's just a clean up.
-> > 
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> 
-> Applied to net-next.
 
-I meant to say net-next but I made a typo.  :/
 
-regards,
-dan carpenter
+On Fri, 14 Jun 2019, Markus Elfring wrote:
+
+> >> I don't like adding new apis with no user.
+> >
+> > Perhaps Jack Ping will send it as a first patch of his series where he utilizes
+> > this functionality. Would it be acceptable?
+>
+> The proposed function can get wider application in a reasonable time frame
+> if a corresponding script for the semantic patch language (Coccinelle software)
+> would perform an automatic source code conversion (for example)
+> according to your change acceptance.
+> How do you think about to support a bit more collateral software evolution?
+
+Why don't you just do what is asked for?
+
+julia

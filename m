@@ -2,114 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C650C48691
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Jun 2019 17:08:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64FD8487F3
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Jun 2019 17:53:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727850AbfFQPG3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Jun 2019 11:06:29 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:39912 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726669AbfFQPG3 (ORCPT
+        id S1728304AbfFQPxa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 Jun 2019 11:53:30 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:52889 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727750AbfFQPxa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Jun 2019 11:06:29 -0400
-Received: by mail-wm1-f67.google.com with SMTP id z23so9496698wma.4;
-        Mon, 17 Jun 2019 08:06:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=oh4VL4iPNDaGaWS9B+IslavMbhg8v2O15rFQqtXr3DA=;
-        b=AhnkPzcZlgpKjDEw3+xRxeOFXIR4rBRfDc37XV2fRn72EJMb4qZ8fbe4wJKA+CuT+D
-         OLPOGYXVQcZPKfdya2ZqCLSSALJAxqIDWYRoQ1W93f5ujh5ji5/VxPnw8sUtRrx5/OUE
-         Z2OE9rk24ODOJTwUVfqhAMNtFPIJ8floCpl/JgraI+yw+lntSaVl/G6A5Np8mXKpr5Cs
-         Yz86ZLrNQdAJ7auSv5dsL0Hg7w8ndlxykvHk+PAa+IfsoDxUvYQPG+GFStswDfgOhu1V
-         7oB6x9fs4FWi7kkSTMQrtr4vEDy7f6L81XpLC0Knnd1fteIdwHyKAkxZ/rn5BITnmGzt
-         yHWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=oh4VL4iPNDaGaWS9B+IslavMbhg8v2O15rFQqtXr3DA=;
-        b=TCNVYGXiFwCoyNmgJojEszyZUcz/TSo4Dexl4bwPk0E5QSLq+c5wqsOkavqYQ+3sy9
-         MFXS4bdXgHXY2fYd/EBXy1HICArqw7a7TiQrkSHDa+oHJ05VJTY4cx3du5lZXCjhsWCL
-         /vlFOVDeccv0Z84nYcOmD8CKkqDKQOvm9piXULA9UV2Fdr74fpbXj2SIuo60fPT5AS0U
-         4ERTMv6CwP6hLyAJimSTAFmz590v0XlVSxADjN1RjjGLNxdWbEL7wbN5PXhijljTV6fO
-         Tgp0K+sJ4F/OR7icc8ILHkDx7AkV6V/3LRDKgXZpsLEeMSJ/y+mec104edGrDrRxGWKN
-         rRRQ==
-X-Gm-Message-State: APjAAAWbCydFpyZ8E0+hTGX/Rv8XGYexUzIy1E7B5mCdes+i82vTVu6g
-        wuOq4SMC3AhBf31BDQUhX2NWGRhJzTCIVxfxXfI=
-X-Google-Smtp-Source: APXvYqzwnLdmhx4erTT42qjFTICvOKBGEP2f7RWvXDepAPvjY+Gfzf/lBcnfGne43PNShj8tK4VXq9LKd4uItxBeWRE=
-X-Received: by 2002:a1c:67c3:: with SMTP id b186mr18196950wmc.34.1560783986617;
- Mon, 17 Jun 2019 08:06:26 -0700 (PDT)
+        Mon, 17 Jun 2019 11:53:30 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hctwj-0001vz-UI; Mon, 17 Jun 2019 15:53:26 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Derek Chickles <dchickles@marvell.com>,
+        Satanand Burla <sburla@marvell.com>,
+        Felix Manlunas <fmanlunas@marvell.com>,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] net: lio_core: fix potential sign-extension overflow on large shift
+Date:   Mon, 17 Jun 2019 16:53:25 +0100
+Message-Id: <20190617155325.27017-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <de3f6a5e-8ac4-bc8e-0d0c-3a4a5db283e9@web.de>
-In-Reply-To: <de3f6a5e-8ac4-bc8e-0d0c-3a4a5db283e9@web.de>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Mon, 17 Jun 2019 11:06:14 -0400
-Message-ID: <CADnq5_MKRU6-iCJZWwpR8z+mmdkgVh_STJtVJCiSTec21e+oqA@mail.gmail.com>
-Subject: Re: [PATCH] drm/amd/powerplay: Delete a redundant memory setting in vega20_set_default_od8_setttings()
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Maling list - DRI developers <dri-devel@lists.freedesktop.org>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        "David (ChunMing) Zhou" <David1.Zhou@amd.com>,
-        Evan Quan <evan.quan@amd.com>, Rex Zhu <rex.zhu@amd.com>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Applied this and the dc patch.
+From: Colin Ian King <colin.king@canonical.com>
 
-Thanks!
+Left shifting the signed int value 1 by 31 bits has undefined behaviour
+and the shift amount oq_no can be as much as 63.  Fix this by widening
+the int 1 to 1ULL.
 
-Alex
+Addresses-Coverity: ("Bad shift operation")
+Fixes: f21fb3ed364b ("Add support of Cavium Liquidio ethernet adapters")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/ethernet/cavium/liquidio/lio_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On Mon, Jun 17, 2019 at 10:07 AM Markus Elfring <Markus.Elfring@web.de> wro=
-te:
->
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Mon, 17 Jun 2019 14:24:14 +0200
->
-> The memory was set to zero already by a call of the function =E2=80=9Ckza=
-lloc=E2=80=9D.
-> Thus remove an extra call of the function =E2=80=9Cmemset=E2=80=9D for th=
-is purpose.
->
-> This issue was detected by using the Coccinelle software.
->
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
->  drivers/gpu/drm/amd/powerplay/vega20_ppt.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/amd/powerplay/vega20_ppt.c b/drivers/gpu/drm=
-/amd/powerplay/vega20_ppt.c
-> index 4aa8f5a69c4c..62497ad66a39 100644
-> --- a/drivers/gpu/drm/amd/powerplay/vega20_ppt.c
-> +++ b/drivers/gpu/drm/amd/powerplay/vega20_ppt.c
-> @@ -1295,7 +1295,6 @@ static int vega20_set_default_od8_setttings(struct =
-smu_context *smu)
->         if (!table_context->od8_settings)
->                 return -ENOMEM;
->
-> -       memset(table_context->od8_settings, 0, sizeof(struct vega20_od8_s=
-ettings));
->         od8_settings =3D (struct vega20_od8_settings *)table_context->od8=
-_settings;
->
->         if (smu_feature_is_enabled(smu, FEATURE_DPM_SOCCLK_BIT)) {
-> --
-> 2.22.0
->
-> _______________________________________________
-> amd-gfx mailing list
-> amd-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/amd-gfx
+diff --git a/drivers/net/ethernet/cavium/liquidio/lio_core.c b/drivers/net/ethernet/cavium/liquidio/lio_core.c
+index 1c50c10b5a16..e78bdcee200f 100644
+--- a/drivers/net/ethernet/cavium/liquidio/lio_core.c
++++ b/drivers/net/ethernet/cavium/liquidio/lio_core.c
+@@ -964,7 +964,7 @@ static void liquidio_schedule_droq_pkt_handlers(struct octeon_device *oct)
+ 
+ 			if (droq->ops.poll_mode) {
+ 				droq->ops.napi_fn(droq);
+-				oct_priv->napi_mask |= (1 << oq_no);
++				oct_priv->napi_mask |= (1ULL << oq_no);
+ 			} else {
+ 				tasklet_schedule(&oct_priv->droq_tasklet);
+ 			}
+-- 
+2.20.1
+

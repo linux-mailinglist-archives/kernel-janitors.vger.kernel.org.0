@@ -2,64 +2,137 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D66847E1A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Jun 2019 11:15:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A63DD47EE3
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Jun 2019 11:55:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727950AbfFQJPl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Jun 2019 05:15:41 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:18626 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726753AbfFQJPl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Jun 2019 05:15:41 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 73CD570A31DEC0659387;
-        Mon, 17 Jun 2019 17:15:38 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 17 Jun 2019 17:15:29 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Mathieu Poirier <mathieu.poirier@linaro.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next v2] coresight: replicator: Add terminate entry for acpi_device_id tables
-Date:   Mon, 17 Jun 2019 09:22:53 +0000
-Message-ID: <20190617092253.167231-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190615104440.94149-1-weiyongjun1@huawei.com>
-References: <20190615104440.94149-1-weiyongjun1@huawei.com>
+        id S1727565AbfFQJzk convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 Jun 2019 05:55:40 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:41074 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726248AbfFQJzk (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 17 Jun 2019 05:55:40 -0400
+Received: by mail-ot1-f66.google.com with SMTP id 107so8666298otj.8;
+        Mon, 17 Jun 2019 02:55:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=J7SuI9vLUAwXvgnaQIuYQGNgcBOBLIEw7OPkq5rLb6s=;
+        b=pLJnrx8fXWIt6w654Ry6SXdJUWrdxmaaA5t/T8HlOW0vZOxdcM9IYY71DD0kRpt86+
+         ZxcM7055p2F7Wr953yYT1LVMGevexZasDUXXceTXxBD4JD9AXSWdPhvoRH9a6e1/v1/P
+         MHdIuaXMO0fIVKToe+muUWJwYKCWQocLEvb6qtpICPngmZYuk8iPguOXipFQHrujTCG3
+         sVFOb6Suz7M5aaqmcPqK1mZbSECVJIkcZOU74PDXob50lJwlP+B7KlF3qYDQJqbs4bCa
+         bsvD5Dq8xQeId7es/Va09qkgE6IZ+PE//F95M79sjQnxEadb3O9H7dRVQBXG8SOOf9CC
+         /rMw==
+X-Gm-Message-State: APjAAAWR5gEEWu3/SyWJZThMV2Z1pwtE4E8WRHLsYV6BI6to6gUdODZD
+        EtJMjm9lnapCt+C/ueiu474ok3a6pAZj1BHpGR4=
+X-Google-Smtp-Source: APXvYqzYcmzAzTrAIa6DT3XwBZdcJvm+cBivzLoRjMlWNgT2YPWkNLDO9ajhN4pNKdGLrNGl5CyR9/haPnJE33JN5ZE=
+X-Received: by 2002:a9d:5e99:: with SMTP id f25mr29823354otl.262.1560765339826;
+ Mon, 17 Jun 2019 02:55:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+References: <39e46643-d799-94b7-4aa5-d6d99d738f99@web.de> <20190614133840.GN9224@smile.fi.intel.com>
+ <20190614141004.GC7234@kroah.com>
+In-Reply-To: <20190614141004.GC7234@kroah.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Mon, 17 Jun 2019 11:55:28 +0200
+Message-ID: <CAJZ5v0iBSq+DHqkevbLS0kYbaKGM0zYjg0KAzNhqYjCXvrQ-RQ@mail.gmail.com>
+Subject: Re: [PATCH] drivers: Provide devm_platform_ioremap_resource_byname()
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        Jack Ping CHNG <jack.ping.chng@linux.intel.com>,
+        kernel-janitors@vger.kernel.org,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Enrico Weigelt <lkml@metux.net>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Make sure acpi_device_id tables have terminate entry.
+On Fri, Jun 14, 2019 at 4:10 PM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Fri, Jun 14, 2019 at 04:38:40PM +0300, Andy Shevchenko wrote:
+> > +Cc: Jack Ping, who did internally the same
+> >
+> > On Fri, Jun 14, 2019 at 03:26:25PM +0200, Markus Elfring wrote:
+> > > From: Markus Elfring <elfring@users.sourceforge.net>
+> > > Date: Fri, 14 Jun 2019 15:15:14 +0200
+> > >
+> > > The functions “platform_get_resource_byname” and “devm_ioremap_resource”
+> > > are called together in 181 source files.
+> > > This implementation detail can be determined also with the help
+> > > of the semantic patch language (Coccinelle software).
+> > >
+> > > Wrap these two calls into another helper function.
+> > > Thus a local variable does not need to be declared for a resource
+> > > structure pointer before and a redundant argument can be omitted
+> > > for the resource type.
+> >
+> > This one makes sense.
+> > Though I'm not sure Greg will see your message.
+>
+> Nope, didn't see it, don't want to see it, it will only cause more work
+> in the longrun...
+>
+> > Rafael, maybe you can apply this one?
+>
+> Um, don't go around maintainers please, that's rude.
 
-Fixes: fe446287ec9f ("coresight: acpi: Support for platform devices")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
----
- drivers/hwtracing/coresight/coresight-replicator.c | 1 +
- 1 file changed, 1 insertion(+)
+Totally agreed.
 
-diff --git a/drivers/hwtracing/coresight/coresight-replicator.c b/drivers/hwtracing/coresight/coresight-replicator.c
-index 542952759941..b7d6d59d56db 100644
---- a/drivers/hwtracing/coresight/coresight-replicator.c
-+++ b/drivers/hwtracing/coresight/coresight-replicator.c
-@@ -300,6 +300,7 @@ static const struct of_device_id static_replicator_match[] = {
- #ifdef CONFIG_ACPI
- static const struct acpi_device_id static_replicator_acpi_ids[] = {
- 	{"ARMHC985", 0}, /* ARM CoreSight Static Replicator */
-+	{}
- };
- #endif
+And there would be no reason for me to even consider applying it, really.
 
+> There is a reason this specific developer is in my blacklist, and perhaps they should be
+> in yours as well :)
+>
+> > FWIW,
+> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> >
+> > >
+> > > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> > > ---
+> > >  drivers/base/platform.c | 18 ++++++++++++++++++
+> > >  1 file changed, 18 insertions(+)
+> > >
+> > > diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+> > > index 4d1729853d1a..c1f19a479dd7 100644
+> > > --- a/drivers/base/platform.c
+> > > +++ b/drivers/base/platform.c
+> > > @@ -97,6 +97,24 @@ void __iomem *devm_platform_ioremap_resource(struct platform_device *pdev,
+> > >     return devm_ioremap_resource(&pdev->dev, res);
+> > >  }
+> > >  EXPORT_SYMBOL_GPL(devm_platform_ioremap_resource);
+> > > +
+> > > +/**
+> > > + * devm_platform_ioremap_resource_byname
+> > > + * Call devm_ioremap_resource() for a platform device
+> > > + *
+> > > + * @pdev: platform device to use both for memory resource lookup as well as
+> > > + *        resource management
+> > > + * @name: resource name
+> > > + */
+> > > +void __iomem *devm_platform_ioremap_resource_byname(struct platform_device *pdev,
+> > > +                                               const char *name)
+> > > +{
+> > > +   struct resource *res;
+> > > +
+> > > +   res = platform_get_resource_byname(pdev, IORESOURCE_MEM, name);
+> > > +   return devm_ioremap_resource(&pdev->dev, res);
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(devm_platform_ioremap_resource_byname);
+> > >  #endif /* CONFIG_HAS_IOMEM */
+>
+> I don't like adding new apis with no user.
 
+I agree with that too.
 
+Cheers!

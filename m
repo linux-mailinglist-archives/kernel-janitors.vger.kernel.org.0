@@ -2,30 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 808A64886B
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Jun 2019 18:12:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C839248981
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Jun 2019 18:58:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726599AbfFQQMx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Jun 2019 12:12:53 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:53547 "EHLO
+        id S1728301AbfFQQ6p (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 Jun 2019 12:58:45 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:54678 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726005AbfFQQMx (ORCPT
+        with ESMTP id S1725863AbfFQQ6p (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Jun 2019 12:12:53 -0400
+        Mon, 17 Jun 2019 12:58:45 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hcuFV-0004fE-Hb; Mon, 17 Jun 2019 16:12:49 +0000
+        id 1hcuxo-0000Ez-Te; Mon, 17 Jun 2019 16:58:37 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Derek Chickles <dchickles@marvell.com>,
-        Satanand Burla <sburla@marvell.com>,
-        Felix Manlunas <fmanlunas@marvell.com>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+To:     Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][V2] net: lio_core: fix potential sign-extension overflow on large shift
-Date:   Mon, 17 Jun 2019 17:12:49 +0100
-Message-Id: <20190617161249.28846-1-colin.king@canonical.com>
+Subject: [PATCH] net: stmmac: add sanity check to device_property_read_u32_array call
+Date:   Mon, 17 Jun 2019 17:58:36 +0100
+Message-Id: <20190617165836.4673-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,35 +40,47 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Left shifting the signed int value 1 by 31 bits has undefined behaviour
-and the shift amount oq_no can be as much as 63.  Fix this by using
-BIT_ULL(oq_no) instead.
+Currently the call to device_property_read_u32_array is not error checked
+leading to potential garbage values in the delays array that are then used
+in msleep delays.  Add a sanity check to the property fetching.
 
-Addresses-Coverity: ("Bad shift operation")
-Fixes: f21fb3ed364b ("Add support of Cavium Liquidio ethernet adapters")
+Addresses-Coverity: ("Uninitialized scalar variable")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-V2: Use BIT_ULL(oq_no) instead of 1ULL << oq_no. Thanks to Dan Carpenter for
-    noting this is more appropriate.
-
----
- drivers/net/ethernet/cavium/liquidio/lio_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/cavium/liquidio/lio_core.c b/drivers/net/ethernet/cavium/liquidio/lio_core.c
-index 1c50c10b5a16..d7e805749a5b 100644
---- a/drivers/net/ethernet/cavium/liquidio/lio_core.c
-+++ b/drivers/net/ethernet/cavium/liquidio/lio_core.c
-@@ -964,7 +964,7 @@ static void liquidio_schedule_droq_pkt_handlers(struct octeon_device *oct)
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+index da310de06bf6..5b7923c0698c 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c
+@@ -242,6 +242,7 @@ int stmmac_mdio_reset(struct mii_bus *bus)
+ 	if (priv->device->of_node) {
+ 		struct gpio_desc *reset_gpio;
+ 		u32 delays[3];
++		int ret;
  
- 			if (droq->ops.poll_mode) {
- 				droq->ops.napi_fn(droq);
--				oct_priv->napi_mask |= (1 << oq_no);
-+				oct_priv->napi_mask |= BIT_ULL(oq_no);
- 			} else {
- 				tasklet_schedule(&oct_priv->droq_tasklet);
- 			}
+ 		reset_gpio = devm_gpiod_get_optional(priv->device,
+ 						     "snps,reset",
+@@ -249,9 +250,15 @@ int stmmac_mdio_reset(struct mii_bus *bus)
+ 		if (IS_ERR(reset_gpio))
+ 			return PTR_ERR(reset_gpio);
+ 
+-		device_property_read_u32_array(priv->device,
+-					       "snps,reset-delays-us",
+-					       delays, ARRAY_SIZE(delays));
++		ret = device_property_read_u32_array(priv->device,
++						     "snps,reset-delays-us",
++						     delays,
++						     ARRAY_SIZE(delays));
++		if (ret) {
++			dev_err(ndev->dev.parent,
++				"invalid property snps,reset-delays-us\n");
++			return -EINVAL;
++		}
+ 
+ 		if (delays[0])
+ 			msleep(DIV_ROUND_UP(delays[0], 1000));
 -- 
 2.20.1
 

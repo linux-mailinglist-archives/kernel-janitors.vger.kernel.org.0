@@ -2,87 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 365A849122
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Jun 2019 22:15:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A05D49139
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Jun 2019 22:21:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726685AbfFQUPE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Jun 2019 16:15:04 -0400
-Received: from mout.kundenserver.de ([217.72.192.73]:32941 "EHLO
+        id S1727762AbfFQUVX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 Jun 2019 16:21:23 -0400
+Received: from mout.kundenserver.de ([212.227.126.134]:55577 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726048AbfFQUPE (ORCPT
+        with ESMTP id S1726048AbfFQUVX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Jun 2019 16:15:04 -0400
-Received: from orion.localdomain ([77.2.173.233]) by mrelayeu.kundenserver.de
- (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MiJhQ-1iEl1c20F4-00fSZo; Mon, 17 Jun 2019 22:15:02 +0200
-From:   "Enrico Weigelt, metux IT consult" <info@metux.net>
-To:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] lib: devres: devm_ioremap_resource() make res parameter const
-Date:   Mon, 17 Jun 2019 22:15:01 +0200
-Message-Id: <1560802501-26956-1-git-send-email-info@metux.net>
-X-Mailer: git-send-email 1.9.1
-X-Provags-ID: V03:K1:YhnmhRqTRDS4Imrf/9UQ5zF6995Hzn41OF7sKC4+b6bM+zx3bBn
- zZ2cosTlwkUFatCnEl91fBtB82S8oIgXvoymBQVWTH+vb2a0aUrtY0vDyjyTYbchsvURquM
- +Vg+l2FqrGi/nmzpY7+fZHSfDPJhxEkeu1OLaR79bLfoff5Hyel7VQb4XeDfxLPWn2rOEmJ
- cCW6lbpCGARf0kA9RREsw==
+        Mon, 17 Jun 2019 16:21:23 -0400
+Received: from [192.168.1.110] ([77.2.173.233]) by mrelayeu.kundenserver.de
+ (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MekrN-1iAeRt2PkD-00ajfZ; Mon, 17 Jun 2019 22:21:08 +0200
+Subject: Re: [PATCH] drivers: Inline code in devm_platform_ioremap_resource()
+ from two functions
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     cocci@systeme.lip6.fr, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>
+References: <20190406061112.31620-1-himanshujha199640@gmail.com>
+ <f09006a3-691c-382a-23b8-8e9ff5b4a5f1@web.de>
+ <alpine.DEB.2.21.1906081925090.2543@hadrien>
+ <7b4fe770-dadd-80ba-2ba4-0f2bc90984ef@web.de>
+ <f573b2d3-11d0-92b5-f8ab-4c4b6493e152@metux.net>
+ <032e347f-e575-c89c-fa62-473d52232735@web.de>
+From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Organization: metux IT consult
+Message-ID: <910a5806-9a08-adf4-4fba-d5ec2f5807ff@metux.net>
+Date:   Mon, 17 Jun 2019 22:21:06 +0200
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.2.1
+MIME-Version: 1.0
+In-Reply-To: <032e347f-e575-c89c-fa62-473d52232735@web.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:K5hGr7aDqN0OiD+j1BM/crsHbtdWkEiMkJveIo+Dzl/CLujnQAj
+ 5FroUnxU9FmzU4e3pM00kbhMxXtfzw3KBr/v8HQimfFjjti/8q3/bJNqoLbLQykYnS63Ivd
+ f4g8n6pSMr05CBNmmyc84n4a/lEv3TAFV+C+8Msj+qnJMG+Kxak9rQDKtkgZuPRnsisEjqS
+ n9N+AfJ2kqJV3Is7dtJ2g==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:c+C4ZPlINKM=:P1uf8g7FqxdU75QuXNxLxa
- +ovI4iBKbFThrwp5tiRD8YEVbFP+jegnrnTsJpuYPea+s2VDxGqdXfm4Oh0aHbIR9L/2MwhSO
- 9byh0pTxWkNtO0Od1w1Lgr+5FG5izZJPj2muwwdXujEtqQp1mYqKvPkHSoGS5qKjBxRrGPYzM
- 2vcYbOWbMHTuvTi/tw44T8k/p9glITIoZ//rMIFX62KARk1OmYVYulUk9e1R3lrS0PYu4sML3
- 4EMSEgoPW9pdH9x78BUpOF8uFxmb0++8Six+LAVdsHnlGBq8kIqpj/ps8yfII//WWIhkMMDpc
- JZQQAo+mzbVvjjqXZT+fOfuepKJWSGkbBdGzW6jOrVVnIyehEnUUpYxXd9CxnLgJrGVDcGjUZ
- sDNA7YMLPuo4I2wr660gDPzWmUpUWHMTxPa7hC++XebNtfInc4B8We4pvQnS6dvq6o66Eq1FU
- pCTiOqpi1T1xtthXL8QnyD933VFSdZxcNqDLToymzUoGEHS1E5B+hFEqNjsNo6qLb4++r6f4Y
- BTQ5UevUj5EeyZM69g1dQGYyiIuDCA4TCkJhRC3tyfcm19rN6hOqnYMxj+piHwyvb7cMsqPQY
- MSesvKMBhrEOtziveG7gzxLTwNlcsN50MzoGDXdB2MG+lO7+eVeuCPFVRaQZdypF8CWQHZnls
- A6e2l6UepIxbCnSjgCXnVAqXI/hJEUhBEv4YiSB+S1Y6Juzwiyq+x6h27k79Cqc5H21TzEZvn
- mVE1j5xx79PQnnBN4cufp0vY4oyM3J/jZi5+vA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:e4k+1UwuPpo=:pj4CdOIblCwSg8VC4aJl1l
+ FITRwIlP0W6nc0gM1RzkgDuy0iFLEdXy2Pa4xhNkOnSY3dyoChSW78Y2saH9bzgr52viKms2+
+ M33GE2TkDasOC8haG7j0zalrTirIclBUDsHdPKoGJPuTStXjwqa5qmNpSDhdWK38pJk/RV2Kp
+ /GccJPSdVqacRQM7JTnh0jZQBds7UOhkn7cvk3ZkhgW3uIhLFxtnUyuF0rdJqxdeeUmJQ/GAc
+ WxnNpa+cIc1gTBnOCwR7koFQK3ogiMM37hI1gI8I72TcrL0rj9B0DosmH2XmVmdjMcAlZ4u2n
+ pwcjFn+t017QK5gMe51At24oFBfjRi/MhWTufUJvx9OIutEjiJZ2kof70gk/2N8RuZQA6FqJZ
+ fQ6IaRRwwfxLQag3r9720gXWDfqne0TV+G68GSebAGgrZCsOKGESUBbzfavLkflcjRu4J+GL4
+ CofipRYcSPzzrI0uGTCwRv9dfyn9DtpzTYGHxglzw+8qslcPh9klc2KYd6eatZjRUgiFmuQw6
+ x7iKx3Q7rzo/XQ2wI2V0+s1lLCUvyvHZWsbH8jYNEiLlaJthgPN7pByOwEThLuC8HFiOdZ3qT
+ upMNtQqxBe2PpRZtiIreb9Baz8LyOgx+IJOG4r2r4ciDHFf3Oz/SrUs2sxwDap/kwhPAXOHRa
+ ii1b9XLsSPz6TA8ck7vz+Ee8HhU91iCVyokEAlkXGMljAokSKNo1w+zOKzi/vvqdOGkC/2C0G
+ Uy8+l1fb11ahE7k85/i2K+vZW+BubgUHZp9Go6Bz1JSv0M+SDcQnhKA2aN8=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-devm_ioremap_resource() doesn't change the passed struct resource,
-so it can be a const pointer.
+On 14.06.19 11:22, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Fri, 14 Jun 2019 11:05:33 +0200
+> 
+> Two function calls were combined in this function implementation.
+> Inline corresponding code so that extra error checks can be avoided here.
 
-Now, calls sites w/ fixed resources can declare them static.
-(in some cases possibly even __initconst)
+What exactly is the purpose of this ?
 
-Signed-off-by: Enrico Weigelt <info@metux.net>
----
- include/linux/device.h | 3 ++-
- lib/devres.c           | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+Looks like a notable code duplication ... I thought we usually try to
+reduce this, instead of introducing new ones.
 
-diff --git a/include/linux/device.h b/include/linux/device.h
-index 848fc71..4a295e3 100644
---- a/include/linux/device.h
-+++ b/include/linux/device.h
-@@ -704,7 +704,8 @@ extern unsigned long devm_get_free_pages(struct device *dev,
- 					 gfp_t gfp_mask, unsigned int order);
- extern void devm_free_pages(struct device *dev, unsigned long addr);
- 
--void __iomem *devm_ioremap_resource(struct device *dev, struct resource *res);
-+void __iomem *devm_ioremap_resource(struct device *dev,
-+				    const struct resource *res);
- 
- void __iomem *devm_of_iomap(struct device *dev,
- 			    struct device_node *node, int index,
-diff --git a/lib/devres.c b/lib/devres.c
-index 69bed2f..6a0e9bd 100644
---- a/lib/devres.c
-+++ b/lib/devres.c
-@@ -131,7 +131,8 @@ void devm_iounmap(struct device *dev, void __iomem *addr)
-  *	if (IS_ERR(base))
-  *		return PTR_ERR(base);
-  */
--void __iomem *devm_ioremap_resource(struct device *dev, struct resource *res)
-+void __iomem *devm_ioremap_resource(struct device *dev,
-+				    const struct resource *res)
- {
- 	resource_size_t size;
- 	void __iomem *dest_ptr;
+
+--mtx
+
 -- 
-1.9.1
-
+Enrico Weigelt, metux IT consult
+Free software and Linux embedded engineering
+info@metux.net -- +49-151-27565287

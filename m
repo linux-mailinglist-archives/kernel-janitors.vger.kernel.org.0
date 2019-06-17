@@ -2,90 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61F22483E5
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Jun 2019 15:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF03D48444
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Jun 2019 15:43:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726882AbfFQN0n (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Jun 2019 09:26:43 -0400
-Received: from smtp125.ord1c.emailsrvr.com ([108.166.43.125]:46520 "EHLO
-        smtp125.ord1c.emailsrvr.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725884AbfFQN0n (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Jun 2019 09:26:43 -0400
-X-Greylist: delayed 444 seconds by postgrey-1.27 at vger.kernel.org; Mon, 17 Jun 2019 09:26:42 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-        s=20190130-41we5z8j; t=1560777558;
-        bh=5TbJE6kgkkLp1/JINzOKzzcb0A8rBGMKS/yWgPbV0Bo=;
-        h=Subject:To:From:Date:From;
-        b=aasxPrsCPX9YDpRl6CZ8FO8w7OMs0IipOKSScZ3pErTJc9HuVa6NaAqBGrviIXIVB
-         UhNJfVpuIuspNhY6/Q2b7ZEwRjjZzMjSVMOMQkjLnRNsJx5y87AAPhgxHWd3It//Tz
-         VTpGqV09l1TxI1WKwkK3C3jUU4iHDDyBNuLJOOlg=
-X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp16.relay.ord1c.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 90654C0270;
-        Mon, 17 Jun 2019 09:19:17 -0400 (EDT)
-X-Sender-Id: abbotti@mev.co.uk
-Received: from [10.0.0.62] (remote.quintadena.com [81.133.34.160])
-        (using TLSv1.2 with cipher AES128-SHA)
-        by 0.0.0.0:465 (trex/5.7.12);
-        Mon, 17 Jun 2019 09:19:18 -0400
-Subject: Re: [PATCH][next] staging: comedi: usbdux: remove redundant
- initialization of fx2delay
-To:     Colin King <colin.king@canonical.com>,
-        H Hartley Sweeten <hsweeten@visionengravers.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190617130358.28749-1-colin.king@canonical.com>
-From:   Ian Abbott <abbotti@mev.co.uk>
-Organization: MEV Ltd.
-Message-ID: <fe0881ce-90aa-0689-7563-0d94aeebb461@mev.co.uk>
-Date:   Mon, 17 Jun 2019 14:19:16 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1726065AbfFQNmr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 Jun 2019 09:42:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:32912 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725884AbfFQNmr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 17 Jun 2019 09:42:47 -0400
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id F3FC120657;
+        Mon, 17 Jun 2019 13:42:45 +0000 (UTC)
+Date:   Mon, 17 Jun 2019 09:42:44 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Ingo Molnar <mingo@redhat.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] tracing: remove redundant assignment to pointer 'event'
+Message-ID: <20190617094244.14562920@gandalf.local.home>
+In-Reply-To: <20190617123722.27376-1-colin.king@canonical.com>
+References: <20190617123722.27376-1-colin.king@canonical.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20190617130358.28749-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 17/06/2019 14:03, Colin King wrote:
+On Mon, 17 Jun 2019 13:37:22 +0100
+Colin King <colin.king@canonical.com> wrote:
+
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> Variable fx2delay is being initialized to a value that is never read
-> and is being re-assigned a few statements later. The initialization
+> The value assigned to pointer 'event' is never read and hence it
 > is redundant and can be removed.
 > 
 > Addresses-Coverity: ("Unused value")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->   drivers/staging/comedi/drivers/usbdux.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>  kernel/trace/trace_events_hist.c | 1 -
+>  1 file changed, 1 deletion(-)
 > 
-> diff --git a/drivers/staging/comedi/drivers/usbdux.c b/drivers/staging/comedi/drivers/usbdux.c
-> index b8f54b7fb34a..0350f303d557 100644
-> --- a/drivers/staging/comedi/drivers/usbdux.c
-> +++ b/drivers/staging/comedi/drivers/usbdux.c
-> @@ -1226,7 +1226,7 @@ static int usbdux_pwm_period(struct comedi_device *dev,
->   			     unsigned int period)
->   {
->   	struct usbdux_private *devpriv = dev->private;
-> -	int fx2delay = 255;
-> +	int fx2delay;
->   
->   	if (period < MIN_PWM_PERIOD)
->   		return -EAGAIN;
-> 
+> diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+> index ca6b0dff60c5..0013b43d8b4d 100644
+> --- a/kernel/trace/trace_events_hist.c
+> +++ b/kernel/trace/trace_events_hist.c
+> @@ -1294,7 +1294,6 @@ static int __create_synth_event(int argc, const char *name, const char **argv)
+>  	event = alloc_synth_event(name, n_fields, fields);
+>  	if (IS_ERR(event)) {
+>  		ret = PTR_ERR(event);
+> -		event = NULL;
 
-Looks good, thanks!
+This is one of those cases where I rather not touch it.
 
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Yeah, it may not be read, but assigning event to NULL isn't dangerous
+here. And if we change the code to expect event to be NULL or something
+real, it is better to keep this.
 
--- 
--=( Ian Abbott <abbotti@mev.co.uk> || Web: www.mev.co.uk )=-
--=( MEV Ltd. is a company registered in England & Wales. )=-
--=( Registered number: 02862268.  Registered address:    )=-
--=( 15 West Park Road, Bramhall, STOCKPORT, SK7 3JZ, UK. )=-
+-- Steve
+
+
+
+>  		goto err;
+>  	}
+>  	ret = register_synth_event(event);
+

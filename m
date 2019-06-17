@@ -2,40 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FB1A4818F
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Jun 2019 14:10:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AEA748291
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Jun 2019 14:37:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726207AbfFQMKh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Jun 2019 08:10:37 -0400
-Received: from mout.web.de ([212.227.15.14]:56253 "EHLO mout.web.de"
+        id S1727342AbfFQMeb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 Jun 2019 08:34:31 -0400
+Received: from mout.web.de ([212.227.15.3]:44809 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725906AbfFQMKg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Jun 2019 08:10:36 -0400
+        id S1726005AbfFQMeb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 17 Jun 2019 08:34:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1560773412;
-        bh=mlYu8JItkzkaUEYK3B9di0oUcsYk/xS6Vlr7z6Eo05s=;
+        s=dbaedf251592; t=1560774857;
+        bh=7of0paGiux2QgmNkMVygVoiS/Aku0RdePBQPrJ+O2kk=;
         h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=Q3hRNc+jeb6z1AfmmAn42HSzGeI+Ugm1iRy6uWK4nBibU9atJ9WBx7QmE25VSdg/6
-         5i6KqCKdjs9E8vgQggssB5B6COykILAiOKJaBiOer1YMkelFChcDaaHI5cCausSz3r
-         sz39Dv3FsSBHDIJjrVNhfzD3CIB9OLJ6/1db03ds=
+        b=gJipdSKOiIL/b17IS3Gdo9yhTYWoEUamoIdZ09Abw1jxE9gcbv9kFyZHKxp1VqfIa
+         cwY0il1r9S6CRpIKIoVjqBSvjbtKpplIPzD+wdDw6s3GOb3XatMQOa/43xSW4Y1Scu
+         WvZ+4P4llHhDFmNBBWKRWGBNlfiSBl8IRc9K3L8o=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.243.164.208]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LopMx-1iHhfD2r7b-00gtNY; Mon, 17
- Jun 2019 14:10:12 +0200
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M40jS-1iT1x50Ogs-00rWe3; Mon, 17
+ Jun 2019 14:34:17 +0200
 To:     dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
         Alex Deucher <alexander.deucher@amd.com>,
         =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
         Daniel Vetter <daniel@ffwll.ch>,
         David Airlie <airlied@linux.ie>,
-        David Francis <David.Francis@amd.com>,
         "David (ChunMing) Zhou" <David1.Zhou@amd.com>,
-        Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Mario Kleiner <mario.kleiner.de@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>
+        Evan Quan <evan.quan@amd.com>, Rex Zhu <rex.zhu@amd.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] drm/amd/display: Delete a redundant memory setting in
- amdgpu_dm_irq_register_interrupt()
+Subject: [PATCH] drm/amd/powerplay: Delete a redundant memory setting in
+ vega20_set_default_od8_setttings()
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -82,41 +78,41 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
 Cc:     kernel-janitors@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>
-Message-ID: <3900e9c8-4905-1704-686d-90ccf3b00a88@web.de>
-Date:   Mon, 17 Jun 2019 14:10:10 +0200
+Message-ID: <de3f6a5e-8ac4-bc8e-0d0c-3a4a5db283e9@web.de>
+Date:   Mon, 17 Jun 2019 14:34:15 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:gINRoyvJBwA0izvAsysZLEiAXPyc0PdK7XoWn/NowK86RvwMyOB
- CDcFSV0P3DUUQmM4Fcv2MU5A8vQ10pKfKw9Pa/u0V68halCVosCNq746NnxQqiaqWzbLxDQ
- bSeCbhoRexPtceXKYDQosgcEUzltxy/McyIqVP96TZtbM6UVk1dUaYAlz9mImpmY0sstTDv
- /IlwrJ03OZcDRZ/eltzxw==
+X-Provags-ID: V03:K1:6q8YryJyEBQzQL6cr5Dg8HDdKYlBxXGEzN8mpWdY2YzSa+nzMoF
+ 71tn1IqfXL+eG+IOZqRL4SmXd5pQPumVjCEB+gjFhOVzTgcDj5bCO20lHTppQHBkpAOOrmi
+ WlY4a3qXMZCyAULoiQ6Urx5DkYZnO7zW57jr5YoPIQ8z4izIGMf2FuI9KNyRGFAJCz5mCeV
+ g6HI7YkWddqMmWZXpq6Lg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:CJ9U0fhgAi0=:qWDICxmE9F1Ky0JwFFP9lE
- tJbAE5Ltaft6uibCP+CbM8PaHzvkkG0+qU6KsHdBlV7tNWrcb2j+FPtpWBpetGqVF5TyZF2UN
- eLEKTWokKzrFOpLQ7ydnNy3zp9GtYp1Yxze2Pnj0OxE2lZwiIVEEA+BVP46vdeLvd1ZGRmmxo
- kILYrtRJNqs4oxhM+Wn3KH2PdLsDFEqKbLPNw19reUYDdagQes8wd4v60YfRG5RYLI4H8R4ED
- TOsIfkrkgTPCtbiAEB8pRo/tZoylixlqvO7+Y+7MNM4Gbmnfxg7+CBv5AIfqb1lWVgonYk2N8
- 1BqB0a0mXgzb+nBSMmmsI5qdQkUDgeuJ5Mm9Zgy9db8dDjfUB5RtFOoS0iwgxiCnPh85NW1dT
- S2HNXdcX8sz9BxkM0b5ST9HwaTjYKSU//zI94Mjlk5Tf+MmRIV5SSQjvLMMRolLsx3pLoOEjw
- pgnCERXZxLCE1G9nyJ94EuvhjkouE9uNkfMlemTeWuzMkGB+wFZROgbTJ3kOpZlDovx05mn2C
- TBn5gwImeEzxUnv6xBvInSvQpcRFctHD2Z5ZWUco5O05MtuO6wcR5/KLWc0EKQC5kzFS2CRlK
- aqA1vC/kVJcDeRnDdUKonrPO2hBHQ/+a/C/0gO+Laab9B95eeWi9qqegqAqXay/vSPVjeG07l
- aFEMHP2mEyihRGbb8D6B/rDYC/kptauSFteDkS3yGOI8zg/Jiio/lZo0kEY06SgPyTkiDveds
- el72kdFSQu6G/LMBSBbs9UvrUwlFD5DguJf6fLOakJqraMwMHciiyU/A1liBnbxymmg8bti9q
- wkmAqbByTgFKVm6l/cWgvX7hUFPm+lvGNAf7+YtARy8+MM3UxrdwSSsiB/pOFsA9CDu+4uk6q
- dbLQvgVNVf/E3s5FEXrcZmzDD7dEYe7PuFixPTIvZcVLayfYpdcFZXqJgvEXqS7Ef0si2OHHW
- xscmmYXC5SOyAeWcN12sHMhI3ZGPdIWMu7duCIIJDm1tdUH0I6v7C
+X-UI-Out-Filterresults: notjunk:1;V03:K0:hxYF/0J9MCk=:CL0uAgH4fCekHbgjbrsIjT
+ ded0/iCT6NuiDwVNSS6b8e8idaCXyJb339UCaKYE1pBAThzZV8ItFyEOFR3pqdJ9cW1moONFN
+ c3G8JDsXJa4Eebwg2o1dSzmJ5zV18XlqkTwB3aF7I94hSx+x72wIwme2bxRqRttqJdEy9xUlV
+ qYuOj2P03nz2/aFO7qu5nYTfIiaQpPe6gg8vm6YeLmCipqr6iHcQnwXst1UvnONk5GtL+qGPe
+ ITKja1P2ZvaqPza2yA1b6yt18zLKDqesaepPrqoNsERlcrPwzSIO8pHze1gotRElH7LZWQHZL
+ Cn3/Jub4DJQ0jjZ5GUnMsq0q2Od9AIpKLVB14sEupje50jdLtDjhge7+hdqRmswsz5xmG7hIR
+ 7+rsKqEAPPz6ZnX7v3SE/qDqucRruZ1sSNEJv6a/3cy3yIJHOTEWQn61HbNbZOdR5HYr3Ic3s
+ GIaHvpJgbbumlhzcaEmLpUCbhmkq7BbRQ7VGEjMHVcxQdfaRdx4incvgy/4XJgfFwjzgnDYAa
+ zUNT/2ERoPb7H9IX+Olfc30KEz1lzMrZLxwwMdJIuvL+FR8tn6KZNDigo6RxnvoT9pEVXQPcL
+ 1rfoXtjigx5q6DhImF2a2AXgAByrS8jbA5VOyl+mJDuVsOUAkSYTpUiELxkRbARCdmmkCd96x
+ lKLopCpOyl2iRSB+IJw3R0gDGBvngBOL2kwqm3AYZCvNcOxfWyvjpfCTMS+783LyeYAauyZpV
+ l76NNLPFlKYVDzH8k4MW3/40QjKSNXEvzh+sYunb3t4vgsb/jGRQZQCkPC7c/LecBwvxDzhyb
+ KQZhO9heRk/P9jWL4dDH8nXTfKx5hQ0bY8N5d8VRZ44Qt0G8bhi8BMAirj0pq+1FiNvYWPFIB
+ Zf/Oc7cqb5buqPrZuDiaIAKqVXc8Sa57sOVIENxSeo2t4hoz8GBCCdlmRKrn42atlRDzFZqeC
+ ltBK+MYirivBDrf/C+DQQXb9DpRG+bo40cnO8qa7vz7dENzow8ScZ
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Mon, 17 Jun 2019 13:56:39 +0200
+Date: Mon, 17 Jun 2019 14:24:14 +0200
 
 The memory was set to zero already by a call of the function =E2=80=9Ckzal=
 loc=E2=80=9D.
@@ -127,24 +123,25 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/amd/powerplay/vega20_ppt.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c b/drive=
-rs/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
-index 1b59d3d42f7b..fa5d503d379c 100644
-=2D-- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_irq.c
-@@ -277,8 +277,6 @@ void *amdgpu_dm_irq_register_interrupt(struct amdgpu_d=
-evice *adev,
- 		return DAL_INVALID_IRQ_HANDLER_IDX;
- 	}
+diff --git a/drivers/gpu/drm/amd/powerplay/vega20_ppt.c b/drivers/gpu/drm/=
+amd/powerplay/vega20_ppt.c
+index 4aa8f5a69c4c..62497ad66a39 100644
+=2D-- a/drivers/gpu/drm/amd/powerplay/vega20_ppt.c
++++ b/drivers/gpu/drm/amd/powerplay/vega20_ppt.c
+@@ -1295,7 +1295,6 @@ static int vega20_set_default_od8_setttings(struct s=
+mu_context *smu)
+ 	if (!table_context->od8_settings)
+ 		return -ENOMEM;
 
--	memset(handler_data, 0, sizeof(*handler_data));
--
- 	init_handler_common_data(handler_data, ih, handler_args, &adev->dm);
+-	memset(table_context->od8_settings, 0, sizeof(struct vega20_od8_settings=
+));
+ 	od8_settings =3D (struct vega20_od8_settings *)table_context->od8_settin=
+gs;
 
- 	irq_source =3D int_params->irq_source;
+ 	if (smu_feature_is_enabled(smu, FEATURE_DPM_SOCCLK_BIT)) {
 =2D-
 2.22.0
 

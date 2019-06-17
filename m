@@ -2,68 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3232347C34
-	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Jun 2019 10:25:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D66847E1A
+	for <lists+kernel-janitors@lfdr.de>; Mon, 17 Jun 2019 11:15:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726039AbfFQIZR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 17 Jun 2019 04:25:17 -0400
-Received: from foss.arm.com ([217.140.110.172]:41058 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725810AbfFQIZR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 17 Jun 2019 04:25:17 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C12D628;
-        Mon, 17 Jun 2019 01:25:16 -0700 (PDT)
-Received: from [10.1.196.93] (en101.cambridge.arm.com [10.1.196.93])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F2FB13F246;
-        Mon, 17 Jun 2019 01:25:15 -0700 (PDT)
-Subject: Re: [PATCH -next] coresight: replicator: Add terminate entry for
- acpi_device_id tables
-To:     weiyongjun1@huawei.com, mathieu.poirier@linaro.org,
-        alexander.shishkin@linux.intel.com
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20190615104440.94149-1-weiyongjun1@huawei.com>
-From:   Suzuki K Poulose <suzuki.poulose@arm.com>
-Message-ID: <06c751dc-0a23-b33b-1ff1-a98d6503408c@arm.com>
-Date:   Mon, 17 Jun 2019 09:25:13 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
+        id S1727950AbfFQJPl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 17 Jun 2019 05:15:41 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:18626 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726753AbfFQJPl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 17 Jun 2019 05:15:41 -0400
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 73CD570A31DEC0659387;
+        Mon, 17 Jun 2019 17:15:38 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
+ 14.3.439.0; Mon, 17 Jun 2019 17:15:29 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next v2] coresight: replicator: Add terminate entry for acpi_device_id tables
+Date:   Mon, 17 Jun 2019 09:22:53 +0000
+Message-ID: <20190617092253.167231-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190615104440.94149-1-weiyongjun1@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20190615104440.94149-1-weiyongjun1@huawei.com>
+MIME-Version: 1.0
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi
+Make sure acpi_device_id tables have terminate entry.
 
-Thanks for the fix, please find my comment below.
-
-On 15/06/2019 11:44, Wei Yongjun wrote:
-> Make sure acpi_device_id tables have terminate entry.
-> 
-> Fixes: 8f35caae1e1f ("coresight: acpi: Support for platform devices")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->   drivers/hwtracing/coresight/coresight-replicator.c | 1 +
->   1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/hwtracing/coresight/coresight-replicator.c b/drivers/hwtracing/coresight/coresight-replicator.c
-> index 542952759941..0c73dc1073c0 100644
-> --- a/drivers/hwtracing/coresight/coresight-replicator.c
-> +++ b/drivers/hwtracing/coresight/coresight-replicator.c
-> @@ -300,6 +300,7 @@ static const struct of_device_id static_replicator_match[] = {
->   #ifdef CONFIG_ACPI
->   static const struct acpi_device_id static_replicator_acpi_ids[] = {
->   	{"ARMHC985", 0}, /* ARM CoreSight Static Replicator */
-> +	{"", 0},
-
-nit: I would leave it {}, instead of creating an empty string.
-
-With that :
-
+Fixes: fe446287ec9f ("coresight: acpi: Support for platform devices")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+---
+ drivers/hwtracing/coresight/coresight-replicator.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/hwtracing/coresight/coresight-replicator.c b/drivers/hwtracing/coresight/coresight-replicator.c
+index 542952759941..b7d6d59d56db 100644
+--- a/drivers/hwtracing/coresight/coresight-replicator.c
++++ b/drivers/hwtracing/coresight/coresight-replicator.c
+@@ -300,6 +300,7 @@ static const struct of_device_id static_replicator_match[] = {
+ #ifdef CONFIG_ACPI
+ static const struct acpi_device_id static_replicator_acpi_ids[] = {
+ 	{"ARMHC985", 0}, /* ARM CoreSight Static Replicator */
++	{}
+ };
+ #endif
+
+
+

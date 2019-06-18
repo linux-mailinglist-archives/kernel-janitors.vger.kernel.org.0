@@ -2,79 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A64E4A145
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 14:58:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 394CC4A1EB
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 15:20:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728893AbfFRM66 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Jun 2019 08:58:58 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:39842 "EHLO
+        id S1728575AbfFRNUK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Jun 2019 09:20:10 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:58008 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725988AbfFRM66 (ORCPT
+        with ESMTP id S1725988AbfFRNUK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Jun 2019 08:58:58 -0400
+        Tue, 18 Jun 2019 09:20:10 -0400
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5ICwfa1126644;
-        Tue, 18 Jun 2019 12:58:47 GMT
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5IDE9H1141039;
+        Tue, 18 Jun 2019 13:18:57 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=TQk1dSNmuyQhx/dVU9Ha+bmmx+zy4oC9lrmr0y3O+tY=;
- b=st1QU4gauwmAPp6/Tv/ITRMYwYr4f243hNds1I8PVnURxxc4C5NiOshMMI6y0Cr5zJ0G
- AT+fQFq4qe72Qbgqs5dwBBZV/LV/pXZncdxGOc7cMfp/bVafQPZAFMk4Qi+nDS5cy4gF
- wBUO5BOItDbqQfaXgMH4pvJkwrqxmCMgRJwOyenlo6bXhA1WgRwC1MroHX6BMLTsfK3B
- InO9n1BivWNmfU+Rrd44NuBgOWl/JKL1EWgmBTBN1xMIG1o8J6jp73wRcXIm/kiYfnh2
- CbEB/Ffsz5f8/YUxSH11HuGXL9MavoOEFyMgRnCWGfrXCgqy/i2imUlCRuAB2wGSwzum BQ== 
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2018-07-02; bh=6YGkq/bCxydXzjE3rIrKm6a3Acfpx+eRiztMObFEoXg=;
+ b=szGxjT+WzGnmVTHS6PTQ63MPSBOaFfXc5TyDAhbtbG0bTU9QX6VcGaveSH+d/fV4cXyi
+ u0jVZXOGh9X1OKvk/KMFOjOgV0s9bCg3gwzHeo2l0GrZ9co94BVo8mNri+25Y0h+S3OO
+ ly+KilgEjDo6dQU6swmenO8Hsu1kQiOfbZHvF/Um43HMIuZB/dKDJx6o0+PhlSOpnV3S
+ kJ/IVhacdQAUX/3XSZyUYlO+izAOGADcJK1q4Mbn0Df0Pl0NhBZWAkLbAvI/1uuKWmKN
+ sZA1MIhUY6pdWbS37zPm8QtCIXxx8H1tQlnxDtj0mMpqCEjwIA2+CrDngTXKv8Z2/CIa tw== 
 Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 2t4rmp4aaf-1
+        by aserp2120.oracle.com with ESMTP id 2t4rmp4e27-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 18 Jun 2019 12:58:47 +0000
+        Tue, 18 Jun 2019 13:18:57 +0000
 Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5ICw3jf034004;
-        Tue, 18 Jun 2019 12:58:47 GMT
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5IDHB6s090801;
+        Tue, 18 Jun 2019 13:18:56 GMT
 Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 2t5cpe1f7d-1
+        by aserp3030.oracle.com with ESMTP id 2t5cpe1u9p-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 18 Jun 2019 12:58:46 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5ICwhMU024608;
-        Tue, 18 Jun 2019 12:58:44 GMT
-Received: from kadam (/41.57.98.10)
+        Tue, 18 Jun 2019 13:18:56 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5IDIqdR004779;
+        Tue, 18 Jun 2019 13:18:53 GMT
+Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 18 Jun 2019 05:58:43 -0700
-Date:   Tue, 18 Jun 2019 15:58:33 +0300
+        with ESMTP ; Tue, 18 Jun 2019 06:18:52 -0700
+Date:   Tue, 18 Jun 2019 16:18:43 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
 To:     Al Viro <viro@zeniv.linux.org.uk>
 Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
         Maxime Ripard <maxime.ripard@bootlin.com>,
         Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] drm: return -EFAULT if copy_one_buf() fails
-Message-ID: <20190618125833.GG18776@kadam>
-References: <20190618125623.GA24896@mwanda>
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH v2] drm: return -EFAULT if copy_to_user() fails
+Message-ID: <20190618131843.GA29463@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20190618125623.GA24896@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9291 signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=938
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906180107
+ engine=8.0.1-1810050000 definitions=main-1906180109
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9291 signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
  suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=995 adultscore=0
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906180107
+ definitions=main-1906180109
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Ah crap.  I need to fix copy_one_buf32() as well.  I will sent a v2.
+The copy_from_user() function returns the number of bytes remaining
+to be copied but we want to return a negative error code.  Otherwise
+the callers treat it as a successful copy.
 
-regards,
-dan carpenter
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+v2: The first version was missing a chunk
+
+ drivers/gpu/drm/drm_bufs.c  | 5 ++++-
+ drivers/gpu/drm/drm_ioc32.c | 5 ++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/drm_bufs.c b/drivers/gpu/drm/drm_bufs.c
+index 68dacf8422c6..8ce9d73fab4f 100644
+--- a/drivers/gpu/drm/drm_bufs.c
++++ b/drivers/gpu/drm/drm_bufs.c
+@@ -1351,7 +1351,10 @@ static int copy_one_buf(void *data, int count, struct drm_buf_entry *from)
+ 				 .size = from->buf_size,
+ 				 .low_mark = from->low_mark,
+ 				 .high_mark = from->high_mark};
+-	return copy_to_user(to, &v, offsetof(struct drm_buf_desc, flags));
++
++	if (copy_to_user(to, &v, offsetof(struct drm_buf_desc, flags)))
++		return -EFAULT;
++	return 0;
+ }
+ 
+ int drm_legacy_infobufs(struct drm_device *dev, void *data,
+diff --git a/drivers/gpu/drm/drm_ioc32.c b/drivers/gpu/drm/drm_ioc32.c
+index 586aa28024c5..a16b6dc2fa47 100644
+--- a/drivers/gpu/drm/drm_ioc32.c
++++ b/drivers/gpu/drm/drm_ioc32.c
+@@ -378,7 +378,10 @@ static int copy_one_buf32(void *data, int count, struct drm_buf_entry *from)
+ 			      .size = from->buf_size,
+ 			      .low_mark = from->low_mark,
+ 			      .high_mark = from->high_mark};
+-	return copy_to_user(to + count, &v, offsetof(drm_buf_desc32_t, flags));
++
++	if (copy_to_user(to + count, &v, offsetof(drm_buf_desc32_t, flags)))
++		return -EFAULT;
++	return 0;
+ }
+ 
+ static int drm_legacy_infobufs32(struct drm_device *dev, void *data,
+-- 
+2.20.1
 

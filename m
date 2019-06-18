@@ -2,102 +2,128 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E5F2D4AA8D
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 21:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1102E4AB24
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 21:45:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730332AbfFRTDA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Jun 2019 15:03:00 -0400
-Received: from mail-eopbgr150048.outbound.protection.outlook.com ([40.107.15.48]:3905
-        "EHLO EUR01-DB5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727386AbfFRTDA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Jun 2019 15:03:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=EoXDLsFrsdn0r7ejsSlX5l7GKcc7/TCPz/18AQWJ4Go=;
- b=HZFhb20x4m9HxUBx1TJT308CrR+VjRsZOjuS4L5/3kJbecDNC+AAa0aAd7AKpwBC4kYJ3kdf0TdMxU7xhOExogVEedHupCutnsR976yZn+8bkr819hIUllR9P1bY69XBgobsNL0tDnaWAYsKMpr/ude/4T976PybRZgKGughLMQ=
-Received: from DB6PR0501MB2759.eurprd05.prod.outlook.com (10.172.227.7) by
- DB6PR0501MB2695.eurprd05.prod.outlook.com (10.172.225.140) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.1987.10; Tue, 18 Jun 2019 19:02:55 +0000
-Received: from DB6PR0501MB2759.eurprd05.prod.outlook.com
- ([fe80::a901:6951:59de:3278]) by DB6PR0501MB2759.eurprd05.prod.outlook.com
- ([fe80::a901:6951:59de:3278%2]) with mapi id 15.20.1987.014; Tue, 18 Jun 2019
- 19:02:55 +0000
-From:   Saeed Mahameed <saeedm@mellanox.com>
-To:     "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "colin.king@canonical.com" <colin.king@canonical.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "leon@kernel.org" <leon@kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH][next] net/mlx5: add missing void argument to function
- mlx5_devlink_alloc
-Thread-Topic: [PATCH][next] net/mlx5: add missing void argument to function
- mlx5_devlink_alloc
-Thread-Index: AQHVJeigp+yH7eURB0ynX/ql1MMSgKahxQoA
-Date:   Tue, 18 Jun 2019 19:02:54 +0000
-Message-ID: <cbf35c6557791aae0aec2eb3cb1b66cc5030ec9f.camel@mellanox.com>
-References: <20190618151510.18672-1-colin.king@canonical.com>
-In-Reply-To: <20190618151510.18672-1-colin.king@canonical.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.32.2 (3.32.2-1.fc30) 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=saeedm@mellanox.com; 
-x-originating-ip: [209.116.155.178]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 9c454dc5-965c-45d0-a3e1-08d6f41f920f
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:DB6PR0501MB2695;
-x-ms-traffictypediagnostic: DB6PR0501MB2695:
-x-microsoft-antispam-prvs: <DB6PR0501MB26953F225197F98649DE7AC5BEEA0@DB6PR0501MB2695.eurprd05.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3044;
-x-forefront-prvs: 007271867D
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(39860400002)(136003)(346002)(376002)(366004)(396003)(199004)(189003)(6116002)(3846002)(118296001)(6246003)(11346002)(2201001)(26005)(5660300002)(86362001)(6486002)(8676002)(54906003)(305945005)(256004)(99286004)(229853002)(14444005)(2906002)(71200400001)(7736002)(316002)(4326008)(53936002)(6436002)(76176011)(64756008)(66556008)(8936002)(91956017)(66476007)(66946007)(76116006)(66446008)(73956011)(6512007)(2616005)(4744005)(14454004)(81166006)(71190400001)(478600001)(6506007)(81156014)(66066001)(36756003)(102836004)(58126008)(68736007)(486006)(476003)(186003)(2501003)(110136005)(446003)(25786009);DIR:OUT;SFP:1101;SCL:1;SRVR:DB6PR0501MB2695;H:DB6PR0501MB2759.eurprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: mellanox.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: tQHUbyUzwKAS6YmQJnOSf66MBoNe8xFaOMewaz5fVi4uWjOVWjcMiRWNerggmI6rPfNgPlw6Dzh6VxToBMwN2cxxOzPVMKjqdJdRP0DvWuG+ky5iEGdo/QgcwmrWkaDWMDi3KSDimYHI7ETK7eA8XXu1+qw+uWiVdFOdz8heH40/ptxvifvSgKTCNYGrVSE8QBbXK+95/LRODeUYGyRTdbB2TDfN9wcn97ptzK1kbpAUFnjDtinB70ZaL52Wi6v7X1U4zLNjeU9LDKFt2LCGRjUpi4zesqgM+NSWTDtxrgqp+L6eEKmX8CJ2GGaCShOWWhBCmnr5zxY43ZvJAQ5FsTXs5MV0oT+x5r4WIXqw5yjhtCAJ/60UhenDctMOB/bZSesbThjWOoIqRMl3g81epbRYu7fbNpvcM3gwsdlDZkY=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <7431CCDFE395F34992A12CBA4DCCED0E@eurprd05.prod.outlook.com>
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: Mellanox.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9c454dc5-965c-45d0-a3e1-08d6f41f920f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Jun 2019 19:02:54.9734
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a652971c-7d2e-4d9b-a6a4-d149256f461b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: saeedm@mellanox.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR0501MB2695
+        id S1730512AbfFRTpE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Jun 2019 15:45:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58526 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730494AbfFRTpE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 18 Jun 2019 15:45:04 -0400
+Received: from akpm3.svl.corp.google.com (unknown [104.133.8.65])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2E4AF2084B;
+        Tue, 18 Jun 2019 19:45:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1560887103;
+        bh=3SVyETw2E2EX1ucf8dX5XihBlytLx4R2+9VoWquLfZ0=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ux/8q1+R+SGkuJvyxGL5MB3IcTZzJnsY9YYEa8vnbLQQxX+jPZ2QB7LNc/awkQVT8
+         KmXsHCVzPnOmtaydBRw3os8e2NolICsAgAYf7cg/CovkaTK/zb81ap2GkPdqCkCVX7
+         zPfEs99C5nkuUu3LGsXblb+6J32MdX/+ImBYsnw0=
+Date:   Tue, 18 Jun 2019 12:45:02 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>, linux-mm@kvack.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Vladimir Davydov <vdavydov.dev@gmail.com>
+Subject: Re: [PATCH] mm: idle-page: fix oops because end_pfn is larger than
+ max_pfn
+Message-Id: <20190618124502.7b9c32a00a54f0c618a12ca4@linux-foundation.org>
+In-Reply-To: <20190618124352.28307-1-colin.king@canonical.com>
+References: <20190618124352.28307-1-colin.king@canonical.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-T24gVHVlLCAyMDE5LTA2LTE4IGF0IDE2OjE1ICswMTAwLCBDb2xpbiBLaW5nIHdyb3RlOg0KPiBG
-cm9tOiBDb2xpbiBJYW4gS2luZyA8Y29saW4ua2luZ0BjYW5vbmljYWwuY29tPg0KPiANCj4gRnVu
-Y3Rpb24gbWx4NV9kZXZsaW5rX2FsbG9jIGlzIG1pc3NpbmcgYSB2b2lkIGFyZ3VtZW50LCBhZGQg
-aXQNCj4gdG8gY2xlYW4gdXAgdGhlIG5vbi1BTlNJIGZ1bmN0aW9uIGRlY2xhcmF0aW9uLg0KPiAN
-Cj4gU2lnbmVkLW9mZi1ieTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fub25pY2FsLmNv
-bT4NCj4gLS0tDQo+ICBkcml2ZXJzL25ldC9ldGhlcm5ldC9tZWxsYW5veC9tbHg1L2NvcmUvZGV2
-bGluay5jIHwgMiArLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0
-aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvbWVsbGFub3gv
-bWx4NS9jb3JlL2RldmxpbmsuYw0KPiBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L21lbGxhbm94L21s
-eDUvY29yZS9kZXZsaW5rLmMNCj4gaW5kZXggZWQ0MjAyZTg4M2YwLi4xNTMzYzY1NzIyMGIgMTAw
-NjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L21lbGxhbm94L21seDUvY29yZS9kZXZs
-aW5rLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvbWVsbGFub3gvbWx4NS9jb3JlL2Rl
-dmxpbmsuYw0KPiBAQCAtMzcsNyArMzcsNyBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IGRldmxpbmtf
-b3BzIG1seDVfZGV2bGlua19vcHMgPQ0KPiB7DQo+ICAJLmZsYXNoX3VwZGF0ZSA9IG1seDVfZGV2
-bGlua19mbGFzaF91cGRhdGUsDQo+ICB9Ow0KPiAgDQo+IC1zdHJ1Y3QgZGV2bGluayAqbWx4NV9k
-ZXZsaW5rX2FsbG9jKCkNCj4gK3N0cnVjdCBkZXZsaW5rICptbHg1X2RldmxpbmtfYWxsb2Modm9p
-ZCkNCj4gIHsNCj4gIAlyZXR1cm4gZGV2bGlua19hbGxvYygmbWx4NV9kZXZsaW5rX29wcywgc2l6
-ZW9mKHN0cnVjdA0KPiBtbHg1X2NvcmVfZGV2KSk7DQo+ICB9DQoNCkFja2VkLWJ5OiBTYWVlZCBN
-YWhhbWVlZCA8c2FlZWRtQG1lbGxhbm94LmNvbT4NCg0KRGF2ZSwgdGhpcyBvbmUgY2FuIGdvIHRv
-IG5ldC1uZXh0Lg0KDQpUaGFua3MsDQpTYWVlZC4NCg==
+On Tue, 18 Jun 2019 13:43:52 +0100 Colin King <colin.king@canonical.com> wrote:
+
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently the calcuation of end_pfn can round up the pfn number to
+> more than the actual maximum number of pfns, causing an Oops. Fix
+> this by ensuring end_pfn is never more than max_pfn.
+> 
+> This can be easily triggered when on systems where the end_pfn gets
+> rounded up to more than max_pfn using the idle-page stress-ng
+> stress test:
+> 
+
+cc Vladimir.  This seems rather obvious - I'm wondering if the code was
+that way for some subtle reason?
+
+(I'll add a cc:stable to this)
+
+From: Colin Ian King <colin.king@canonical.com>
+Subject: mm/page_idle.c: fix oops because end_pfn is larger than max_pfn
+
+Currently the calcuation of end_pfn can round up the pfn number to more
+than the actual maximum number of pfns, causing an Oops.  Fix this by
+ensuring end_pfn is never more than max_pfn.
+
+This can be easily triggered when on systems where the end_pfn gets
+rounded up to more than max_pfn using the idle-page stress-ng stress test:
+
+sudo stress-ng --idle-page 0
+
+[ 3812.222790] BUG: unable to handle kernel paging request at 00000000000020d8
+[ 3812.224341] #PF error: [normal kernel read fault]
+[ 3812.225144] PGD 0 P4D 0
+[ 3812.225626] Oops: 0000 [#1] SMP PTI
+[ 3812.226264] CPU: 1 PID: 11039 Comm: stress-ng-idle- Not tainted 5.0.0-5-generic #6-Ubuntu
+[ 3812.227643] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1ubuntu1 04/01/2014
+[ 3812.229286] RIP: 0010:page_idle_get_page+0xc8/0x1a0
+[ 3812.230173] Code: 0f b1 0a 75 7d 48 8b 03 48 89 c2 48 c1 e8 33 83 e0 07 48 c1 ea 36 48 8d 0c 40 4c 8d 24 88 49 c1 e4 07 4c 03 24 d5 00 89 c3 be <49> 8b 44 24 58 48 8d b8 80 a1 02 00 e8 07 d5 77 00 48 8b 53 08 48
+[ 3812.234641] RSP: 0018:ffffafd7c672fde8 EFLAGS: 00010202
+[ 3812.235792] RAX: 0000000000000005 RBX: ffffe36341fff700 RCX: 000000000000000f
+[ 3812.237739] RDX: 0000000000000284 RSI: 0000000000000275 RDI: 0000000001fff700
+[ 3812.239225] RBP: ffffafd7c672fe00 R08: ffffa0bc34056410 R09: 0000000000000276
+[ 3812.241027] R10: ffffa0bc754e9b40 R11: ffffa0bc330f6400 R12: 0000000000002080
+[ 3812.242555] R13: ffffe36341fff700 R14: 0000000000080000 R15: ffffa0bc330f6400
+[ 3812.244073] FS: 00007f0ec1ea5740(0000) GS:ffffa0bc7db00000(0000) knlGS:0000000000000000
+[ 3812.245968] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 3812.247162] CR2: 00000000000020d8 CR3: 0000000077d68000 CR4: 00000000000006e0
+[ 3812.249045] Call Trace:
+[ 3812.249625] page_idle_bitmap_write+0x8c/0x140
+[ 3812.250567] sysfs_kf_bin_write+0x5c/0x70
+[ 3812.251406] kernfs_fop_write+0x12e/0x1b0
+[ 3812.252282] __vfs_write+0x1b/0x40
+[ 3812.253002] vfs_write+0xab/0x1b0
+[ 3812.253941] ksys_write+0x55/0xc0
+[ 3812.254660] __x64_sys_write+0x1a/0x20
+[ 3812.255446] do_syscall_64+0x5a/0x110
+[ 3812.256254] entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+--- a/mm/page_idle.c~mm-idle-page-fix-oops-because-end_pfn-is-larger-than-max_pfn
++++ a/mm/page_idle.c
+@@ -136,7 +136,7 @@ static ssize_t page_idle_bitmap_read(str
+ 
+ 	end_pfn = pfn + count * BITS_PER_BYTE;
+ 	if (end_pfn > max_pfn)
+-		end_pfn = ALIGN(max_pfn, BITMAP_CHUNK_BITS);
++		end_pfn = max_pfn;
+ 
+ 	for (; pfn < end_pfn; pfn++) {
+ 		bit = pfn % BITMAP_CHUNK_BITS;
+@@ -181,7 +181,7 @@ static ssize_t page_idle_bitmap_write(st
+ 
+ 	end_pfn = pfn + count * BITS_PER_BYTE;
+ 	if (end_pfn > max_pfn)
+-		end_pfn = ALIGN(max_pfn, BITMAP_CHUNK_BITS);
++		end_pfn = max_pfn;
+ 
+ 	for (; pfn < end_pfn; pfn++) {
+ 		bit = pfn % BITMAP_CHUNK_BITS;
+_
+

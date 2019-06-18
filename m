@@ -2,121 +2,286 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 394CC4A1EB
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 15:20:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05FB84A2B6
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 15:48:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728575AbfFRNUK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Jun 2019 09:20:10 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:58008 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725988AbfFRNUK (ORCPT
+        id S1729143AbfFRNsK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Jun 2019 09:48:10 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50120 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729061AbfFRNsK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Jun 2019 09:20:10 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5IDE9H1141039;
-        Tue, 18 Jun 2019 13:18:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2018-07-02; bh=6YGkq/bCxydXzjE3rIrKm6a3Acfpx+eRiztMObFEoXg=;
- b=szGxjT+WzGnmVTHS6PTQ63MPSBOaFfXc5TyDAhbtbG0bTU9QX6VcGaveSH+d/fV4cXyi
- u0jVZXOGh9X1OKvk/KMFOjOgV0s9bCg3gwzHeo2l0GrZ9co94BVo8mNri+25Y0h+S3OO
- ly+KilgEjDo6dQU6swmenO8Hsu1kQiOfbZHvF/Um43HMIuZB/dKDJx6o0+PhlSOpnV3S
- kJ/IVhacdQAUX/3XSZyUYlO+izAOGADcJK1q4Mbn0Df0Pl0NhBZWAkLbAvI/1uuKWmKN
- sZA1MIhUY6pdWbS37zPm8QtCIXxx8H1tQlnxDtj0mMpqCEjwIA2+CrDngTXKv8Z2/CIa tw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 2t4rmp4e27-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 18 Jun 2019 13:18:57 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5IDHB6s090801;
-        Tue, 18 Jun 2019 13:18:56 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 2t5cpe1u9p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 18 Jun 2019 13:18:56 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5IDIqdR004779;
-        Tue, 18 Jun 2019 13:18:53 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 18 Jun 2019 06:18:52 -0700
-Date:   Tue, 18 Jun 2019 16:18:43 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] drm: return -EFAULT if copy_to_user() fails
-Message-ID: <20190618131843.GA29463@mwanda>
+        Tue, 18 Jun 2019 09:48:10 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hdET1-0001np-WD; Tue, 18 Jun 2019 13:48:08 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] scripts/spelling.txt: add more spellings to spelling.txt
+Date:   Tue, 18 Jun 2019 14:48:07 +0100
+Message-Id: <20190618134807.9729-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190618125623.GA24896@mwanda>
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9291 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906180109
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9291 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906180109
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The copy_from_user() function returns the number of bytes remaining
-to be copied but we want to return a negative error code.  Otherwise
-the callers treat it as a successful copy.
+From: Colin Ian King <colin.king@canonical.com>
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Here are even of the more common spelling mistakes and typos that I've
+found while fixing up spelling mistakes in the kernel over the past few
+months. Developers keep on coming up with more inventive ways to spell
+words.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
-v2: The first version was missing a chunk
+ scripts/spelling.txt | 33 +++++++++++++++++++++++++++++++++
+ 1 file changed, 33 insertions(+)
 
- drivers/gpu/drm/drm_bufs.c  | 5 ++++-
- drivers/gpu/drm/drm_ioc32.c | 5 ++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/drm_bufs.c b/drivers/gpu/drm/drm_bufs.c
-index 68dacf8422c6..8ce9d73fab4f 100644
---- a/drivers/gpu/drm/drm_bufs.c
-+++ b/drivers/gpu/drm/drm_bufs.c
-@@ -1351,7 +1351,10 @@ static int copy_one_buf(void *data, int count, struct drm_buf_entry *from)
- 				 .size = from->buf_size,
- 				 .low_mark = from->low_mark,
- 				 .high_mark = from->high_mark};
--	return copy_to_user(to, &v, offsetof(struct drm_buf_desc, flags));
-+
-+	if (copy_to_user(to, &v, offsetof(struct drm_buf_desc, flags)))
-+		return -EFAULT;
-+	return 0;
- }
- 
- int drm_legacy_infobufs(struct drm_device *dev, void *data,
-diff --git a/drivers/gpu/drm/drm_ioc32.c b/drivers/gpu/drm/drm_ioc32.c
-index 586aa28024c5..a16b6dc2fa47 100644
---- a/drivers/gpu/drm/drm_ioc32.c
-+++ b/drivers/gpu/drm/drm_ioc32.c
-@@ -378,7 +378,10 @@ static int copy_one_buf32(void *data, int count, struct drm_buf_entry *from)
- 			      .size = from->buf_size,
- 			      .low_mark = from->low_mark,
- 			      .high_mark = from->high_mark};
--	return copy_to_user(to + count, &v, offsetof(drm_buf_desc32_t, flags));
-+
-+	if (copy_to_user(to + count, &v, offsetof(drm_buf_desc32_t, flags)))
-+		return -EFAULT;
-+	return 0;
- }
- 
- static int drm_legacy_infobufs32(struct drm_device *dev, void *data,
+diff --git a/scripts/spelling.txt b/scripts/spelling.txt
+index 99f82a2a5b54..de75b9feaaed 100644
+--- a/scripts/spelling.txt
++++ b/scripts/spelling.txt
+@@ -41,6 +41,7 @@ accquired||acquired
+ accross||across
+ acessable||accessible
+ acess||access
++acessing||accessing
+ achitecture||architecture
+ acient||ancient
+ acitions||actions
+@@ -54,6 +55,7 @@ activete||activate
+ actived||activated
+ actualy||actually
+ acumulating||accumulating
++acumulative||accumulative
+ acumulator||accumulator
+ adapater||adapter
+ addional||additional
+@@ -103,6 +105,7 @@ alogrithm||algorithm
+ alot||a lot
+ alow||allow
+ alows||allows
++alredy||already
+ altough||although
+ alue||value
+ ambigious||ambiguous
+@@ -223,6 +226,7 @@ boardcast||broadcast
+ borad||board
+ boundry||boundary
+ brievely||briefly
++brigde||bridge
+ broadcase||broadcast
+ broadcat||broadcast
+ bufufer||buffer
+@@ -239,6 +243,7 @@ calulate||calculate
+ cancelation||cancellation
+ cancle||cancel
+ capabilites||capabilities
++capabilties||capabilities
+ capabilty||capability
+ capabitilies||capabilities
+ capablity||capability
+@@ -325,6 +330,7 @@ conector||connector
+ connecetd||connected
+ configuartion||configuration
+ configuation||configuration
++configued||configured
+ configuratoin||configuration
+ configuraton||configuration
+ configuretion||configuration
+@@ -407,6 +413,7 @@ depreacte||deprecate
+ desactivate||deactivate
+ desciptor||descriptor
+ desciptors||descriptors
++descripto||descriptor
+ descripton||description
+ descrition||description
+ descritptor||descriptor
+@@ -432,6 +439,7 @@ deveolpment||development
+ devided||divided
+ deviece||device
+ diable||disable
++dicline||decline
+ dictionnary||dictionary
+ didnt||didn't
+ diferent||different
+@@ -461,6 +469,7 @@ disharge||discharge
+ disnabled||disabled
+ dispertion||dispersion
+ dissapears||disappears
++dissconect||disconnect
+ distiction||distinction
+ divisable||divisible
+ divsiors||divisors
+@@ -469,11 +478,14 @@ documantation||documentation
+ documentaion||documentation
+ documment||document
+ doesnt||doesn't
++donwload||download
++donwloading||downloading
+ dorp||drop
+ dosen||doesn
+ downlad||download
+ downlads||downloads
+ droped||dropped
++droput||dropout
+ druing||during
+ dynmaic||dynamic
+ eanable||enable
+@@ -482,6 +494,7 @@ ecspecially||especially
+ edditable||editable
+ editting||editing
+ efective||effective
++effectivness||effectiveness
+ efficently||efficiently
+ ehther||ether
+ eigth||eight
+@@ -543,6 +556,7 @@ extensability||extensibility
+ extention||extension
+ extenstion||extension
+ extracter||extractor
++faied||failed
+ faield||failed
+ falied||failed
+ faild||failed
+@@ -567,6 +581,7 @@ fetaures||features
+ fileystem||filesystem
+ fimware||firmware
+ firmare||firmware
++firmaware||firmware
+ firware||firmware
+ finanize||finalize
+ findn||find
+@@ -601,6 +616,8 @@ funtions||functions
+ furthur||further
+ futhermore||furthermore
+ futrue||future
++gatable||gateable
++gateing||gating
+ gauage||gauge
+ gaurenteed||guaranteed
+ generiously||generously
+@@ -641,9 +658,11 @@ iomaped||iomapped
+ imblance||imbalance
+ immeadiately||immediately
+ immedaite||immediate
++immedate||immediate
+ immediatelly||immediately
+ immediatly||immediately
+ immidiate||immediate
++immutible||immutable
+ impelentation||implementation
+ impementated||implemented
+ implemantation||implementation
+@@ -661,10 +680,12 @@ incative||inactive
+ incomming||incoming
+ incompatabilities||incompatibilities
+ incompatable||incompatible
++incompatble||incompatible
+ inconsistant||inconsistent
+ increas||increase
+ incremeted||incremented
+ incrment||increment
++inculde||include
+ indendation||indentation
+ indended||intended
+ independant||independent
+@@ -778,6 +799,7 @@ libary||library
+ librairies||libraries
+ libraris||libraries
+ licenceing||licencing
++logaritmic||logarithmic
+ loggging||logging
+ loggin||login
+ logile||logfile
+@@ -832,6 +854,7 @@ mispelled||misspelled
+ mispelt||misspelt
+ mising||missing
+ mismactch||mismatch
++missign||missing
+ missmanaged||mismanaged
+ missmatch||mismatch
+ miximum||maximum
+@@ -848,6 +871,7 @@ mopdule||module
+ mroe||more
+ mulitplied||multiplied
+ multidimensionnal||multidimensional
++multipe||multiple
+ multple||multiple
+ mumber||number
+ muticast||multicast
+@@ -870,7 +894,9 @@ nescessary||necessary
+ nessessary||necessary
+ noticable||noticeable
+ notications||notifications
++notifcations||notifications
+ notifed||notified
++notity||notify
+ numebr||number
+ numner||number
+ obtaion||obtain
+@@ -887,6 +913,7 @@ occuring||occurring
+ offser||offset
+ offet||offset
+ offloded||offloaded
++offseting||offsetting
+ omited||omitted
+ omiting||omitting
+ omitt||omit
+@@ -1025,6 +1052,7 @@ prosess||process
+ protable||portable
+ protcol||protocol
+ protecion||protection
++protedcted||protected
+ protocoll||protocol
+ promixity||proximity
+ psudo||pseudo
+@@ -1039,6 +1067,7 @@ reasearcher||researcher
+ reasearchers||researchers
+ reasearch||research
+ recepient||recipient
++recevied||received
+ receving||receiving
+ recieved||received
+ recieve||receive
+@@ -1112,6 +1141,7 @@ retreived||retrieved
+ retreive||retrieve
+ retreiving||retrieving
+ retrive||retrieve
++retrived||retrieved
+ retuned||returned
+ reudce||reduce
+ reuest||request
+@@ -1178,6 +1208,7 @@ singaled||signaled
+ singal||signal
+ singed||signed
+ sleeped||slept
++sliped||slipped
+ softwares||software
+ speach||speech
+ specfic||specific
+@@ -1284,6 +1315,7 @@ threds||threads
+ threshhold||threshold
+ thresold||threshold
+ throught||through
++trackling||tracking
+ troughput||throughput
+ thses||these
+ tiggers||triggers
+@@ -1410,5 +1442,6 @@ wnat||want
+ workarould||workaround
+ writeing||writing
+ writting||writing
++wtih||with
+ zombe||zombie
+ zomebie||zombie
 -- 
 2.20.1
 

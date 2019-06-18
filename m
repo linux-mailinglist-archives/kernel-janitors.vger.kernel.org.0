@@ -2,124 +2,126 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DF694A7F8
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 19:15:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DA244A81B
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 19:16:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729794AbfFRRPR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Jun 2019 13:15:17 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:44505 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729319AbfFRRPR (ORCPT
+        id S1730157AbfFRRQc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Jun 2019 13:16:32 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:41961 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728572AbfFRRQc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Jun 2019 13:15:17 -0400
-Received: by mail-ot1-f65.google.com with SMTP id b7so15950635otl.11
-        for <kernel-janitors@vger.kernel.org>; Tue, 18 Jun 2019 10:15:17 -0700 (PDT)
+        Tue, 18 Jun 2019 13:16:32 -0400
+Received: by mail-qt1-f195.google.com with SMTP id d17so11328545qtj.8
+        for <kernel-janitors@vger.kernel.org>; Tue, 18 Jun 2019 10:16:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=xf9JaMcfMTpA+95buSp6V+RKo2piqDxI9Pf5r4xWOgw=;
-        b=DQ/prbm6F/jVALB23o1UX7hNkF+klFj23vBoHAQ0naQTfSoTf2YsYc4H+xShOvuJ/I
-         wii73VN4+ZQ8Sflop7Vp3eleYkzqlaMuNgBF38D3NACNU4Vk86EV5lPAaA2nA8Kq+tvG
-         8lc5ZSXaDohScGj3b3YdhrjE02Cz5WEBLJZDQ=
+        d=poorly.run; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=5HdOkeGTOimtUzxYuQ63HUqEs40RoAuiCtdWAjPZDM0=;
+        b=OaDtkN5HFpjGr/oGrGRtE6pafVhMmdq/+VJSFcdz1WobXMuZUUKApbaDiA9vnXK2j3
+         M1ZG9xkYjtUHKnUSxIWDICD7d9IOcd3cpxqHPwMwqOnwjKwahWRc8XwbX0PJfKH98415
+         37Tsyp4Yhxud4rCL+Rw1GCax0qVqIuAdhttJfj9MfV0epKELmBAAIwOXbAonPiJugOsp
+         EhKXuX5lRWnE12UtILOB1cW4SFsisYFxR1LSJ3zLUupulctUeP/CFusTIdpSZD8JLC4E
+         dlPL2W1HH03olfJL/RXjzT2piEGtlzgdSpRKJfjApX6sjAnrlenIcMgVNTGyGbpx++rF
+         yzsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=xf9JaMcfMTpA+95buSp6V+RKo2piqDxI9Pf5r4xWOgw=;
-        b=sYz/t0/djlUd7xbIwN91IfcQ7MERnHwhAZHYnG9L4YO6NU/v5tdjwqe4vmA1sQ/w2a
-         cINR2585MzpvNICIoIUYYRsDPayB2wXgmgozBF/sZ8xHvB3UXsMPRNfBvYKKqJpPTZdY
-         JfiAkZkQxBaf45ya7vjlwm3oNB2fSkfDYil2PjyzjITvZjFqSG4UqAz05PnSQPkQ/BSu
-         k+o+jlzrc7NSSItBgFxEiDH2HAZzr5QF+tumrHjFf0w72lQlz+ICwGRIBdCMVEbjAl4F
-         qlOwJjV85Q1V6/GARwvAGPQ9zpIjaCTG+Iag/Q0KWMmHw4/j8wofwrzm+9xYTljzeYBR
-         etlg==
-X-Gm-Message-State: APjAAAUnVFsr7pEuRsZeRKuL/DnZv3DcQDZSqPkjQvPc0Jyo11yYi5tO
-        DR0VK735MVj+YXpvc6sSksMAbkdA53g=
-X-Google-Smtp-Source: APXvYqzmoXENRcDdWyDcCdYkJ7RvOM/CLFoo2MmvX11YqGoENAOx26ByHJQh0qibjVdIegCLLe0YGA==
-X-Received: by 2002:a05:6830:93:: with SMTP id a19mr5395298oto.127.1560878116230;
-        Tue, 18 Jun 2019 10:15:16 -0700 (PDT)
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com. [209.85.210.42])
-        by smtp.gmail.com with ESMTPSA id p13sm5694912otq.15.2019.06.18.10.15.15
-        for <kernel-janitors@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Tue, 18 Jun 2019 10:15:15 -0700 (PDT)
-Received: by mail-ot1-f42.google.com with SMTP id r21so13078384otq.6
-        for <kernel-janitors@vger.kernel.org>; Tue, 18 Jun 2019 10:15:15 -0700 (PDT)
-X-Received: by 2002:a9d:2c41:: with SMTP id f59mr40634751otb.268.1560878114700;
- Tue, 18 Jun 2019 10:15:14 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=5HdOkeGTOimtUzxYuQ63HUqEs40RoAuiCtdWAjPZDM0=;
+        b=AK1GgiNX9TLohqtVmUCMisHzVpQOJb3RQk+l2CN2vqyxLQ3pjwd66AnphIr/mQX23t
+         pttdE81qKt+E940lR49E1ZFGvnKBOPcJ9h/+1uvaAZQYxpCLOwl2IZR6D5p7fck1XTF+
+         WgtgbCXNSwzmnRsxR464eYLFdwkFf80AGUEadxjJRpl75TUsUVszk5fcBHzWEHHB71kv
+         zy7VRguJGS9E5sKzIB0NHZW6+LBB4phv/on24NqfC5nQLDBhvwwAyZroOg/qkwF4ug32
+         KD39PXJEwZhKr6mqUSFFp1YMbumGeP1IGxv2SPlnIzO/7QGn0gUSqzwCeVB06YRw2ixi
+         X4bg==
+X-Gm-Message-State: APjAAAXl+QwBAJZRyxRToBn1UB4FqLFyagihCYjJbs9uO3tohS6ukAIO
+        Zp0NcD/u9UmbvTZr65quN6RnnQ==
+X-Google-Smtp-Source: APXvYqxHpvdIJ3r1rR8PFVV6pBLc7jwq+5ZT5DwQvMXjzrBn2Est5EPpbCwUxoMEH+iz1jdelPvGnA==
+X-Received: by 2002:ac8:2bb3:: with SMTP id m48mr98945689qtm.218.1560878191074;
+        Tue, 18 Jun 2019 10:16:31 -0700 (PDT)
+Received: from localhost ([2620:0:1013:11:89c6:2139:5435:371d])
+        by smtp.gmail.com with ESMTPSA id o71sm8278024qke.18.2019.06.18.10.16.30
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 18 Jun 2019 10:16:30 -0700 (PDT)
+Date:   Tue, 18 Jun 2019 13:16:29 -0400
+From:   Sean Paul <sean@poorly.run>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2] drm: return -EFAULT if copy_to_user() fails
+Message-ID: <20190618171629.GB25413@art_vandelay>
+References: <20190618125623.GA24896@mwanda>
+ <20190618131843.GA29463@mwanda>
 MIME-Version: 1.0
-References: <20190618153924.19491-1-colin.king@canonical.com>
-In-Reply-To: <20190618153924.19491-1-colin.king@canonical.com>
-From:   Nick Crews <ncrews@chromium.org>
-Date:   Tue, 18 Jun 2019 11:15:03 -0600
-X-Gmail-Original-Message-ID: <CAHX4x85sETNNS8gdQYQniCM=K35DjMjdHOihJ76pGPrAoB9gyA@mail.gmail.com>
-Message-ID: <CAHX4x85sETNNS8gdQYQniCM=K35DjMjdHOihJ76pGPrAoB9gyA@mail.gmail.com>
-Subject: Re: [PATCH][next] platform/chrome: wilco_ec: fix null pointer
- dereference on failed kzalloc
-To:     Colin King <colin.king@canonical.com>
-Cc:     Benson Leung <bleung@chromium.org>,
-        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
-        kernel-janitors@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190618131843.GA29463@mwanda>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Thanks Colin, good catch.
+On Tue, Jun 18, 2019 at 04:18:43PM +0300, Dan Carpenter wrote:
+> The copy_from_user() function returns the number of bytes remaining
+> to be copied but we want to return a negative error code.  Otherwise
+> the callers treat it as a successful copy.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Enric, could you squash this into the real commit?
+Thanks Dan, I've applied this to drm-misc-fixes.
 
-On Tue, Jun 18, 2019 at 9:39 AM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> If the kzalloc of the entries queue q fails a null pointer dereference
-> occurs when accessing q->capacity and q->lock.  Add a kzalloc failure
-> check and handle the null return case in the calling function
-> event_device_add.
->
-> Addresses-Coverity: ("Dereference null return")
-> Fixes: 75589e37d1dc ("platform/chrome: wilco_ec: Add circular buffer as event queue")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Sean
+
 > ---
->  drivers/platform/chrome/wilco_ec/event.c | 12 ++++++++++--
->  1 file changed, 10 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/platform/chrome/wilco_ec/event.c b/drivers/platform/chrome/wilco_ec/event.c
-> index c975b76e6255..e251a989b152 100644
-> --- a/drivers/platform/chrome/wilco_ec/event.c
-> +++ b/drivers/platform/chrome/wilco_ec/event.c
-> @@ -112,8 +112,11 @@ module_param(queue_size, int, 0644);
->  static struct ec_event_queue *event_queue_new(int capacity)
->  {
->         size_t entries_size = sizeof(struct ec_event *) * capacity;
-> -       struct ec_event_queue *q = kzalloc(sizeof(*q) + entries_size,
-> -                                          GFP_KERNEL);
-> +       struct ec_event_queue *q;
+> v2: The first version was missing a chunk
+> 
+>  drivers/gpu/drm/drm_bufs.c  | 5 ++++-
+>  drivers/gpu/drm/drm_ioc32.c | 5 ++++-
+>  2 files changed, 8 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_bufs.c b/drivers/gpu/drm/drm_bufs.c
+> index 68dacf8422c6..8ce9d73fab4f 100644
+> --- a/drivers/gpu/drm/drm_bufs.c
+> +++ b/drivers/gpu/drm/drm_bufs.c
+> @@ -1351,7 +1351,10 @@ static int copy_one_buf(void *data, int count, struct drm_buf_entry *from)
+>  				 .size = from->buf_size,
+>  				 .low_mark = from->low_mark,
+>  				 .high_mark = from->high_mark};
+> -	return copy_to_user(to, &v, offsetof(struct drm_buf_desc, flags));
 > +
-> +       q = kzalloc(sizeof(*q) + entries_size, GFP_KERNEL);
-> +       if (!q)
-> +               return NULL;
->
->         q->capacity = capacity;
->         spin_lock_init(&q->lock);
-> @@ -474,6 +477,11 @@ static int event_device_add(struct acpi_device *adev)
->         /* Initialize the device data. */
->         adev->driver_data = dev_data;
->         dev_data->events = event_queue_new(queue_size);
-> +       if (!dev_data->events) {
-> +               kfree(dev_data);
-> +               error = -ENOMEM;
-> +               goto free_minor;
-> +       }
->         init_waitqueue_head(&dev_data->wq);
->         dev_data->exist = true;
->         atomic_set(&dev_data->available, 1);
-
-Signed-off-by: Nick Crews <ncrews@chromium.org>
-
-> --
+> +	if (copy_to_user(to, &v, offsetof(struct drm_buf_desc, flags)))
+> +		return -EFAULT;
+> +	return 0;
+>  }
+>  
+>  int drm_legacy_infobufs(struct drm_device *dev, void *data,
+> diff --git a/drivers/gpu/drm/drm_ioc32.c b/drivers/gpu/drm/drm_ioc32.c
+> index 586aa28024c5..a16b6dc2fa47 100644
+> --- a/drivers/gpu/drm/drm_ioc32.c
+> +++ b/drivers/gpu/drm/drm_ioc32.c
+> @@ -378,7 +378,10 @@ static int copy_one_buf32(void *data, int count, struct drm_buf_entry *from)
+>  			      .size = from->buf_size,
+>  			      .low_mark = from->low_mark,
+>  			      .high_mark = from->high_mark};
+> -	return copy_to_user(to + count, &v, offsetof(drm_buf_desc32_t, flags));
+> +
+> +	if (copy_to_user(to + count, &v, offsetof(drm_buf_desc32_t, flags)))
+> +		return -EFAULT;
+> +	return 0;
+>  }
+>  
+>  static int drm_legacy_infobufs32(struct drm_device *dev, void *data,
+> -- 
 > 2.20.1
->
+> 
+
+-- 
+Sean Paul, Software Engineer, Google / Chromium OS

@@ -2,126 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DA244A81B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 19:16:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5F2D4AA8D
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 21:03:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730157AbfFRRQc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Jun 2019 13:16:32 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:41961 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728572AbfFRRQc (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Jun 2019 13:16:32 -0400
-Received: by mail-qt1-f195.google.com with SMTP id d17so11328545qtj.8
-        for <kernel-janitors@vger.kernel.org>; Tue, 18 Jun 2019 10:16:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=poorly.run; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=5HdOkeGTOimtUzxYuQ63HUqEs40RoAuiCtdWAjPZDM0=;
-        b=OaDtkN5HFpjGr/oGrGRtE6pafVhMmdq/+VJSFcdz1WobXMuZUUKApbaDiA9vnXK2j3
-         M1ZG9xkYjtUHKnUSxIWDICD7d9IOcd3cpxqHPwMwqOnwjKwahWRc8XwbX0PJfKH98415
-         37Tsyp4Yhxud4rCL+Rw1GCax0qVqIuAdhttJfj9MfV0epKELmBAAIwOXbAonPiJugOsp
-         EhKXuX5lRWnE12UtILOB1cW4SFsisYFxR1LSJ3zLUupulctUeP/CFusTIdpSZD8JLC4E
-         dlPL2W1HH03olfJL/RXjzT2piEGtlzgdSpRKJfjApX6sjAnrlenIcMgVNTGyGbpx++rF
-         yzsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=5HdOkeGTOimtUzxYuQ63HUqEs40RoAuiCtdWAjPZDM0=;
-        b=AK1GgiNX9TLohqtVmUCMisHzVpQOJb3RQk+l2CN2vqyxLQ3pjwd66AnphIr/mQX23t
-         pttdE81qKt+E940lR49E1ZFGvnKBOPcJ9h/+1uvaAZQYxpCLOwl2IZR6D5p7fck1XTF+
-         WgtgbCXNSwzmnRsxR464eYLFdwkFf80AGUEadxjJRpl75TUsUVszk5fcBHzWEHHB71kv
-         zy7VRguJGS9E5sKzIB0NHZW6+LBB4phv/on24NqfC5nQLDBhvwwAyZroOg/qkwF4ug32
-         KD39PXJEwZhKr6mqUSFFp1YMbumGeP1IGxv2SPlnIzO/7QGn0gUSqzwCeVB06YRw2ixi
-         X4bg==
-X-Gm-Message-State: APjAAAXl+QwBAJZRyxRToBn1UB4FqLFyagihCYjJbs9uO3tohS6ukAIO
-        Zp0NcD/u9UmbvTZr65quN6RnnQ==
-X-Google-Smtp-Source: APXvYqxHpvdIJ3r1rR8PFVV6pBLc7jwq+5ZT5DwQvMXjzrBn2Est5EPpbCwUxoMEH+iz1jdelPvGnA==
-X-Received: by 2002:ac8:2bb3:: with SMTP id m48mr98945689qtm.218.1560878191074;
-        Tue, 18 Jun 2019 10:16:31 -0700 (PDT)
-Received: from localhost ([2620:0:1013:11:89c6:2139:5435:371d])
-        by smtp.gmail.com with ESMTPSA id o71sm8278024qke.18.2019.06.18.10.16.30
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 18 Jun 2019 10:16:30 -0700 (PDT)
-Date:   Tue, 18 Jun 2019 13:16:29 -0400
-From:   Sean Paul <sean@poorly.run>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2] drm: return -EFAULT if copy_to_user() fails
-Message-ID: <20190618171629.GB25413@art_vandelay>
-References: <20190618125623.GA24896@mwanda>
- <20190618131843.GA29463@mwanda>
+        id S1730332AbfFRTDA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Jun 2019 15:03:00 -0400
+Received: from mail-eopbgr150048.outbound.protection.outlook.com ([40.107.15.48]:3905
+        "EHLO EUR01-DB5-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727386AbfFRTDA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 18 Jun 2019 15:03:00 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EoXDLsFrsdn0r7ejsSlX5l7GKcc7/TCPz/18AQWJ4Go=;
+ b=HZFhb20x4m9HxUBx1TJT308CrR+VjRsZOjuS4L5/3kJbecDNC+AAa0aAd7AKpwBC4kYJ3kdf0TdMxU7xhOExogVEedHupCutnsR976yZn+8bkr819hIUllR9P1bY69XBgobsNL0tDnaWAYsKMpr/ude/4T976PybRZgKGughLMQ=
+Received: from DB6PR0501MB2759.eurprd05.prod.outlook.com (10.172.227.7) by
+ DB6PR0501MB2695.eurprd05.prod.outlook.com (10.172.225.140) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.1987.10; Tue, 18 Jun 2019 19:02:55 +0000
+Received: from DB6PR0501MB2759.eurprd05.prod.outlook.com
+ ([fe80::a901:6951:59de:3278]) by DB6PR0501MB2759.eurprd05.prod.outlook.com
+ ([fe80::a901:6951:59de:3278%2]) with mapi id 15.20.1987.014; Tue, 18 Jun 2019
+ 19:02:55 +0000
+From:   Saeed Mahameed <saeedm@mellanox.com>
+To:     "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+        "colin.king@canonical.com" <colin.king@canonical.com>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "leon@kernel.org" <leon@kernel.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][next] net/mlx5: add missing void argument to function
+ mlx5_devlink_alloc
+Thread-Topic: [PATCH][next] net/mlx5: add missing void argument to function
+ mlx5_devlink_alloc
+Thread-Index: AQHVJeigp+yH7eURB0ynX/ql1MMSgKahxQoA
+Date:   Tue, 18 Jun 2019 19:02:54 +0000
+Message-ID: <cbf35c6557791aae0aec2eb3cb1b66cc5030ec9f.camel@mellanox.com>
+References: <20190618151510.18672-1-colin.king@canonical.com>
+In-Reply-To: <20190618151510.18672-1-colin.king@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Evolution 3.32.2 (3.32.2-1.fc30) 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=saeedm@mellanox.com; 
+x-originating-ip: [209.116.155.178]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 9c454dc5-965c-45d0-a3e1-08d6f41f920f
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:DB6PR0501MB2695;
+x-ms-traffictypediagnostic: DB6PR0501MB2695:
+x-microsoft-antispam-prvs: <DB6PR0501MB26953F225197F98649DE7AC5BEEA0@DB6PR0501MB2695.eurprd05.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:3044;
+x-forefront-prvs: 007271867D
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(39860400002)(136003)(346002)(376002)(366004)(396003)(199004)(189003)(6116002)(3846002)(118296001)(6246003)(11346002)(2201001)(26005)(5660300002)(86362001)(6486002)(8676002)(54906003)(305945005)(256004)(99286004)(229853002)(14444005)(2906002)(71200400001)(7736002)(316002)(4326008)(53936002)(6436002)(76176011)(64756008)(66556008)(8936002)(91956017)(66476007)(66946007)(76116006)(66446008)(73956011)(6512007)(2616005)(4744005)(14454004)(81166006)(71190400001)(478600001)(6506007)(81156014)(66066001)(36756003)(102836004)(58126008)(68736007)(486006)(476003)(186003)(2501003)(110136005)(446003)(25786009);DIR:OUT;SFP:1101;SCL:1;SRVR:DB6PR0501MB2695;H:DB6PR0501MB2759.eurprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: mellanox.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: tQHUbyUzwKAS6YmQJnOSf66MBoNe8xFaOMewaz5fVi4uWjOVWjcMiRWNerggmI6rPfNgPlw6Dzh6VxToBMwN2cxxOzPVMKjqdJdRP0DvWuG+ky5iEGdo/QgcwmrWkaDWMDi3KSDimYHI7ETK7eA8XXu1+qw+uWiVdFOdz8heH40/ptxvifvSgKTCNYGrVSE8QBbXK+95/LRODeUYGyRTdbB2TDfN9wcn97ptzK1kbpAUFnjDtinB70ZaL52Wi6v7X1U4zLNjeU9LDKFt2LCGRjUpi4zesqgM+NSWTDtxrgqp+L6eEKmX8CJ2GGaCShOWWhBCmnr5zxY43ZvJAQ5FsTXs5MV0oT+x5r4WIXqw5yjhtCAJ/60UhenDctMOB/bZSesbThjWOoIqRMl3g81epbRYu7fbNpvcM3gwsdlDZkY=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <7431CCDFE395F34992A12CBA4DCCED0E@eurprd05.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190618131843.GA29463@mwanda>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-OriginatorOrg: Mellanox.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9c454dc5-965c-45d0-a3e1-08d6f41f920f
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Jun 2019 19:02:54.9734
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a652971c-7d2e-4d9b-a6a4-d149256f461b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: saeedm@mellanox.com
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR0501MB2695
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jun 18, 2019 at 04:18:43PM +0300, Dan Carpenter wrote:
-> The copy_from_user() function returns the number of bytes remaining
-> to be copied but we want to return a negative error code.  Otherwise
-> the callers treat it as a successful copy.
-> 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-Thanks Dan, I've applied this to drm-misc-fixes.
-
-Sean
-
-> ---
-> v2: The first version was missing a chunk
-> 
->  drivers/gpu/drm/drm_bufs.c  | 5 ++++-
->  drivers/gpu/drm/drm_ioc32.c | 5 ++++-
->  2 files changed, 8 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/drm_bufs.c b/drivers/gpu/drm/drm_bufs.c
-> index 68dacf8422c6..8ce9d73fab4f 100644
-> --- a/drivers/gpu/drm/drm_bufs.c
-> +++ b/drivers/gpu/drm/drm_bufs.c
-> @@ -1351,7 +1351,10 @@ static int copy_one_buf(void *data, int count, struct drm_buf_entry *from)
->  				 .size = from->buf_size,
->  				 .low_mark = from->low_mark,
->  				 .high_mark = from->high_mark};
-> -	return copy_to_user(to, &v, offsetof(struct drm_buf_desc, flags));
-> +
-> +	if (copy_to_user(to, &v, offsetof(struct drm_buf_desc, flags)))
-> +		return -EFAULT;
-> +	return 0;
->  }
->  
->  int drm_legacy_infobufs(struct drm_device *dev, void *data,
-> diff --git a/drivers/gpu/drm/drm_ioc32.c b/drivers/gpu/drm/drm_ioc32.c
-> index 586aa28024c5..a16b6dc2fa47 100644
-> --- a/drivers/gpu/drm/drm_ioc32.c
-> +++ b/drivers/gpu/drm/drm_ioc32.c
-> @@ -378,7 +378,10 @@ static int copy_one_buf32(void *data, int count, struct drm_buf_entry *from)
->  			      .size = from->buf_size,
->  			      .low_mark = from->low_mark,
->  			      .high_mark = from->high_mark};
-> -	return copy_to_user(to + count, &v, offsetof(drm_buf_desc32_t, flags));
-> +
-> +	if (copy_to_user(to + count, &v, offsetof(drm_buf_desc32_t, flags)))
-> +		return -EFAULT;
-> +	return 0;
->  }
->  
->  static int drm_legacy_infobufs32(struct drm_device *dev, void *data,
-> -- 
-> 2.20.1
-> 
-
--- 
-Sean Paul, Software Engineer, Google / Chromium OS
+T24gVHVlLCAyMDE5LTA2LTE4IGF0IDE2OjE1ICswMTAwLCBDb2xpbiBLaW5nIHdyb3RlOg0KPiBG
+cm9tOiBDb2xpbiBJYW4gS2luZyA8Y29saW4ua2luZ0BjYW5vbmljYWwuY29tPg0KPiANCj4gRnVu
+Y3Rpb24gbWx4NV9kZXZsaW5rX2FsbG9jIGlzIG1pc3NpbmcgYSB2b2lkIGFyZ3VtZW50LCBhZGQg
+aXQNCj4gdG8gY2xlYW4gdXAgdGhlIG5vbi1BTlNJIGZ1bmN0aW9uIGRlY2xhcmF0aW9uLg0KPiAN
+Cj4gU2lnbmVkLW9mZi1ieTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fub25pY2FsLmNv
+bT4NCj4gLS0tDQo+ICBkcml2ZXJzL25ldC9ldGhlcm5ldC9tZWxsYW5veC9tbHg1L2NvcmUvZGV2
+bGluay5jIHwgMiArLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0
+aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9uZXQvZXRoZXJuZXQvbWVsbGFub3gv
+bWx4NS9jb3JlL2RldmxpbmsuYw0KPiBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L21lbGxhbm94L21s
+eDUvY29yZS9kZXZsaW5rLmMNCj4gaW5kZXggZWQ0MjAyZTg4M2YwLi4xNTMzYzY1NzIyMGIgMTAw
+NjQ0DQo+IC0tLSBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L21lbGxhbm94L21seDUvY29yZS9kZXZs
+aW5rLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvbWVsbGFub3gvbWx4NS9jb3JlL2Rl
+dmxpbmsuYw0KPiBAQCAtMzcsNyArMzcsNyBAQCBzdGF0aWMgY29uc3Qgc3RydWN0IGRldmxpbmtf
+b3BzIG1seDVfZGV2bGlua19vcHMgPQ0KPiB7DQo+ICAJLmZsYXNoX3VwZGF0ZSA9IG1seDVfZGV2
+bGlua19mbGFzaF91cGRhdGUsDQo+ICB9Ow0KPiAgDQo+IC1zdHJ1Y3QgZGV2bGluayAqbWx4NV9k
+ZXZsaW5rX2FsbG9jKCkNCj4gK3N0cnVjdCBkZXZsaW5rICptbHg1X2RldmxpbmtfYWxsb2Modm9p
+ZCkNCj4gIHsNCj4gIAlyZXR1cm4gZGV2bGlua19hbGxvYygmbWx4NV9kZXZsaW5rX29wcywgc2l6
+ZW9mKHN0cnVjdA0KPiBtbHg1X2NvcmVfZGV2KSk7DQo+ICB9DQoNCkFja2VkLWJ5OiBTYWVlZCBN
+YWhhbWVlZCA8c2FlZWRtQG1lbGxhbm94LmNvbT4NCg0KRGF2ZSwgdGhpcyBvbmUgY2FuIGdvIHRv
+IG5ldC1uZXh0Lg0KDQpUaGFua3MsDQpTYWVlZC4NCg==

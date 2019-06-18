@@ -2,90 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 552064AB53
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 22:03:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9669F4AC61
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 22:57:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730242AbfFRUC6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Jun 2019 16:02:58 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:39781 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730189AbfFRUC5 (ORCPT
+        id S1730877AbfFRUzu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Jun 2019 16:55:50 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:38057 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730864AbfFRUzt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Jun 2019 16:02:57 -0400
-Received: by mail-lf1-f65.google.com with SMTP id p24so10253573lfo.6;
-        Tue, 18 Jun 2019 13:02:56 -0700 (PDT)
+        Tue, 18 Jun 2019 16:55:49 -0400
+Received: by mail-lj1-f196.google.com with SMTP id r9so972394ljg.5
+        for <kernel-janitors@vger.kernel.org>; Tue, 18 Jun 2019 13:55:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=cVl3SIklS0nHd797FYY4cxHoZEAnPslNYDQOv5OhMDM=;
-        b=D4LqXjauq6e8L92SXdCI8dBOeZ9g3qnR+MvRfoDQP4UPl32roBpvGWprF3TjlmHSja
-         eZ/6/ZjWzgRN9htttHJTrPzVJCoFvbIqpDA3vC1Cl8utSLu6XzXuxp7AabXcEV/Om6He
-         yHiGKcbb2hB4xqghyhAsPiwk4UDzPPVak57pe2KgOS495X1pgno1vQnCtMEqE80s7SDd
-         b/xHq26uOBUeyQq+iykM4OWAPJ5VZU59856GZ2QUrHkBfHjmAmn1pe6xmy0ce97q8t4y
-         IfDjJ3INQeQbB5asZ/xxIwCfBifBBZjV8Yfyh2WDBB5G9dWZfMSeieDwA07Xq9c2du8P
-         K49g==
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Rgyz2cVF6lciICHj9aRxm3g8t9416ctrHS5B3PoGzGM=;
+        b=er8IX2IUKbXU9cahan+PR49raLMPgXXPPUR2yIHqZPbkQsvl37yRNMqfD0QJCdAjv/
+         Js7XnzEYA+84AFVz+WBmB839fafHCxPz6VNvQMgMq5clTEv658MFIY2euF6/qDtGFn5n
+         /mCm3ynK8OYbMKS6yBEJaYs5AYJ0Te0crzo84=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=cVl3SIklS0nHd797FYY4cxHoZEAnPslNYDQOv5OhMDM=;
-        b=L+Mw5H2tzDvLIImNk+lqFdo/mYtJN4BEMzCzzEVGODbbeSfr7IGM+GLypvYdOAa6h/
-         Q1aoHhe40DvtMx2y5e9xNQb2TQ8T2ktYrDABU6RVhk+DZfGluuE1fMH+7mK0wDjpiXmE
-         YJEdUTXMTwZKmbRxtrF5Qj54ZlEjaXd4roWCtbN1slPBmX2Y6x8bk2VOIYjp94Zf1hxY
-         qBTwk50bQ3WKs0vdaXU6UDYuNp8PjibeZ3eM4s21gEu5f1aW8g3X/p9iTwGOw85OloTN
-         2XEhzpgUaBT7Q13MJ8XF91p8RQ1SDeZ3HMKYiwAX73D3huBEdcLePjTffCkD/VAols+b
-         exSQ==
-X-Gm-Message-State: APjAAAVxactIGjKsD2BvM0z4i+IPMcbVsUSG7HWws/7qqjpGNpfhMg3a
-        +bHSEg8wR1KH8veoIB64IqksEHY3BDA=
-X-Google-Smtp-Source: APXvYqzKO9zG2G36ym9WsDHSLpShB5YrpwSynDJM7DvNbZeZWMwp4g4634Uhi3PMXIvAfLocbMbxAg==
-X-Received: by 2002:a05:6512:29a:: with SMTP id j26mr26109062lfp.44.1560888175432;
-        Tue, 18 Jun 2019 13:02:55 -0700 (PDT)
-Received: from esperanza ([176.120.239.149])
-        by smtp.gmail.com with ESMTPSA id j23sm1621386lfb.93.2019.06.18.13.02.54
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 18 Jun 2019 13:02:54 -0700 (PDT)
-Date:   Tue, 18 Jun 2019 23:02:51 +0300
-From:   Vladimir Davydov <vdavydov.dev@gmail.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Colin King <colin.king@canonical.com>,
-        Michal Hocko <mhocko@suse.com>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andrey Ryabinin <aryabinin@virtuozzo.com>, linux-mm@kvack.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm: idle-page: fix oops because end_pfn is larger than
- max_pfn
-Message-ID: <20190618200251.hd2uk6qzyvsy55py@esperanza>
-References: <20190618124352.28307-1-colin.king@canonical.com>
- <20190618124502.7b9c32a00a54f0c618a12ca4@linux-foundation.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Rgyz2cVF6lciICHj9aRxm3g8t9416ctrHS5B3PoGzGM=;
+        b=YPt4QrqqaT+pv53AHPUKrGLZstjq8w+MwUwrZn1Kff/Kz6dcCptKSHzmsXceMcRcft
+         dKGuP5NxHduuCkLg5DWhu8Z8Dmev4UnGDdV1DM2/Iqss0ZbO/XDhQaYP6B/re5LU3/CX
+         S9uE7lfenpb5gCsP20G1aLclJUbqPyePMXxPSSpJCYe9vVB0pMBJUFdq7lHlO8tEmcdV
+         6N6t+i9c22Ti+IZApwL6gU76B+D0zmN+/cvY1N8fhHleeo3QAe+vPgMp2ti9Jcq9tSLd
+         fI51j8IppvJspGhsrYs+Avdm7ESqyx+E30pNSbKcJZARRpvOXyq9RkUT90MBVBZvEYkC
+         WLtQ==
+X-Gm-Message-State: APjAAAUKEuk0ObSG3ozBF/o3DN4wlZZJWIOh4t2Mta6lsYDtZnOLpoRW
+        s3+T61W/QpZS4e24oKtev96slBejowE=
+X-Google-Smtp-Source: APXvYqxURPxSLbw7u3Nyzjj5CpbzYz3XOKneebUIq1zCMKzIq1aQCmYa7ILOsVn8n/u690N6bVSb1Q==
+X-Received: by 2002:a2e:980e:: with SMTP id a14mr54762499ljj.60.1560891346861;
+        Tue, 18 Jun 2019 13:55:46 -0700 (PDT)
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com. [209.85.167.51])
+        by smtp.gmail.com with ESMTPSA id q1sm2360139lfc.79.2019.06.18.13.55.45
+        for <kernel-janitors@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Tue, 18 Jun 2019 13:55:45 -0700 (PDT)
+Received: by mail-lf1-f51.google.com with SMTP id a25so10343262lfg.2
+        for <kernel-janitors@vger.kernel.org>; Tue, 18 Jun 2019 13:55:45 -0700 (PDT)
+X-Received: by 2002:a19:f808:: with SMTP id a8mr6231181lff.29.1560891345414;
+ Tue, 18 Jun 2019 13:55:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190618124502.7b9c32a00a54f0c618a12ca4@linux-foundation.org>
+References: <CAHk-=wgTL5sYCGxX8+xQqyBRWRUE05GAdL58+UTG8bYwjFxMkw@mail.gmail.com>
+ <20190617190605.GA21332@mwanda> <20190618081645.GM16364@dell>
+In-Reply-To: <20190618081645.GM16364@dell>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Tue, 18 Jun 2019 13:55:29 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wghW+AKvRGevUiVWwTqWObygSZSdq6Dz2ad81H73VeuRQ@mail.gmail.com>
+Message-ID: <CAHk-=wghW+AKvRGevUiVWwTqWObygSZSdq6Dz2ad81H73VeuRQ@mail.gmail.com>
+Subject: Re: [PATCH] mfd: stmfx: Fix an endian bug in stmfx_irq_handler()
+To:     Lee Jones <lee.jones@linaro.org>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Amelie Delaunay <amelie.delaunay@st.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-stm32@st-md-mailman.stormreply.com,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jun 18, 2019 at 12:45:02PM -0700, Andrew Morton wrote:
-> On Tue, 18 Jun 2019 13:43:52 +0100 Colin King <colin.king@canonical.com> wrote:
-> 
-> > From: Colin Ian King <colin.king@canonical.com>
-> > 
-> > Currently the calcuation of end_pfn can round up the pfn number to
-> > more than the actual maximum number of pfns, causing an Oops. Fix
-> > this by ensuring end_pfn is never more than max_pfn.
-> > 
-> > This can be easily triggered when on systems where the end_pfn gets
-> > rounded up to more than max_pfn using the idle-page stress-ng
-> > stress test:
-> > 
-> 
-> cc Vladimir.  This seems rather obvious - I'm wondering if the code was
-> that way for some subtle reason?
+On Tue, Jun 18, 2019 at 1:16 AM Lee Jones <lee.jones@linaro.org> wrote:
+>
+> > Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
+>
+> Ideally we can get a review too.
 
-No subtle reason at all - just a bug. The patch looks good to me,
+Looks fine to me, but obviously somebody should actually _test_ it too.
 
-Acked-by: Vladimir Davydov <vdavydov.dev@gmail.com>
+              Linus

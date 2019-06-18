@@ -2,128 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1102E4AB24
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 21:45:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AE9C4AB33
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 21:49:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730512AbfFRTpE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Jun 2019 15:45:04 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58526 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730494AbfFRTpE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Jun 2019 15:45:04 -0400
-Received: from akpm3.svl.corp.google.com (unknown [104.133.8.65])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2E4AF2084B;
-        Tue, 18 Jun 2019 19:45:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560887103;
-        bh=3SVyETw2E2EX1ucf8dX5XihBlytLx4R2+9VoWquLfZ0=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ux/8q1+R+SGkuJvyxGL5MB3IcTZzJnsY9YYEa8vnbLQQxX+jPZ2QB7LNc/awkQVT8
-         KmXsHCVzPnOmtaydBRw3os8e2NolICsAgAYf7cg/CovkaTK/zb81ap2GkPdqCkCVX7
-         zPfEs99C5nkuUu3LGsXblb+6J32MdX/+ImBYsnw0=
-Date:   Tue, 18 Jun 2019 12:45:02 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Michal Hocko <mhocko@suse.com>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andrey Ryabinin <aryabinin@virtuozzo.com>, linux-mm@kvack.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Vladimir Davydov <vdavydov.dev@gmail.com>
-Subject: Re: [PATCH] mm: idle-page: fix oops because end_pfn is larger than
- max_pfn
-Message-Id: <20190618124502.7b9c32a00a54f0c618a12ca4@linux-foundation.org>
-In-Reply-To: <20190618124352.28307-1-colin.king@canonical.com>
-References: <20190618124352.28307-1-colin.king@canonical.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S1730388AbfFRTth (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Jun 2019 15:49:37 -0400
+Received: from mail-pl1-f169.google.com ([209.85.214.169]:39212 "EHLO
+        mail-pl1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730176AbfFRTth (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 18 Jun 2019 15:49:37 -0400
+Received: by mail-pl1-f169.google.com with SMTP id b7so6138840pls.6
+        for <kernel-janitors@vger.kernel.org>; Tue, 18 Jun 2019 12:49:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=SCzkPutafS6puOzenmw/jtEGahtjfTycw8CEIiSbQ18=;
+        b=hoC6zDdIV93amSLFot1BR7nmnxvXEgTTZ2MJ8694yabGA7bGfvVfHTvYNBb2uAHK73
+         RFigY5dxByvW0CBNPf3ozXgkP9+XQs9/BMlgN1afYP0eSCmpTkcQIvN5p9G2hLtrnoYl
+         mIC4AomWgK1zpD5Cw6onogaUzO52/eMupcHeiXqGz2c8I08qzXS1oiEzceYksw57tiGJ
+         Fy2nWWuTODVtz3gSZ5Y+i1UEVwmft5z+JMM2mnB/y9MNUQScOg5eUXhZfuZNJwUVv1rP
+         EInECaWQPmaMbyseskPu2FNhhM6ZAkLW6Yh3JJlfm8buCy0dve7e7M1PVr1+zHYAAEbt
+         KTZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=SCzkPutafS6puOzenmw/jtEGahtjfTycw8CEIiSbQ18=;
+        b=WL1Cj01dMSD3hLKdLEKzB79Hqt6ZzKSnHwTgMK/nrLFYEFSF8EyzSlbkW+k8ld8l/O
+         vvpHwQ3S2sRdzv+aRifPa6SdonG8K2FHcpp88Byx3jSaEPeF44o63fsLYSFmKgd/vYKx
+         nt3ukZ2uKPl2ByPVTQCiid97nHZr3vHaTzenkh/XtSiB4CjIez3QoaJFT/XkmI5+2fwB
+         MNzIBSDAMD6KClFAL8Bez1m1CdvxI5S+dqghHiLJXZWLLsPIDWNg2SbPm0l+ZeuFqT4c
+         6nejfr9SjU33Pp0nmGqINo3NMcuigma3TEaGDdGusQ7ldJz5QLW3Rs1vgb/YILzlUDX4
+         lFRw==
+X-Gm-Message-State: APjAAAXsaPIOvVdYRzC3KSVkNmzsPHpHkcfeTWDg/bwKFpppNbliXwl2
+        zExnV9A+jfyHyYI78kROhW08Ew==
+X-Google-Smtp-Source: APXvYqyfDVhE0Rj7KuDcNm/CG3YH2wDN54io4gffIFDGt0FGePEgYgI5wxJrFEl22T+h4+UcoBFmig==
+X-Received: by 2002:a17:902:a405:: with SMTP id p5mr43107506plq.51.1560887376052;
+        Tue, 18 Jun 2019 12:49:36 -0700 (PDT)
+Received: from google.com ([2620:15c:202:201:bc61:d85d:eb16:9036])
+        by smtp.gmail.com with ESMTPSA id y133sm17606800pfb.28.2019.06.18.12.49.34
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 18 Jun 2019 12:49:35 -0700 (PDT)
+Date:   Tue, 18 Jun 2019 12:49:30 -0700
+From:   Benson Leung <bleung@google.com>
+To:     Nick Crews <ncrews@chromium.org>
+Cc:     Colin King <colin.king@canonical.com>,
+        Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        kernel-janitors@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][next] platform/chrome: wilco_ec: fix null pointer
+ dereference on failed kzalloc
+Message-ID: <20190618194930.GA209269@google.com>
+References: <20190618153924.19491-1-colin.king@canonical.com>
+ <CAHX4x85sETNNS8gdQYQniCM=K35DjMjdHOihJ76pGPrAoB9gyA@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="lrZ03NoBR/3+SXJZ"
+Content-Disposition: inline
+In-Reply-To: <CAHX4x85sETNNS8gdQYQniCM=K35DjMjdHOihJ76pGPrAoB9gyA@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 18 Jun 2019 13:43:52 +0100 Colin King <colin.king@canonical.com> wrote:
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently the calcuation of end_pfn can round up the pfn number to
-> more than the actual maximum number of pfns, causing an Oops. Fix
-> this by ensuring end_pfn is never more than max_pfn.
-> 
-> This can be easily triggered when on systems where the end_pfn gets
-> rounded up to more than max_pfn using the idle-page stress-ng
-> stress test:
-> 
+--lrZ03NoBR/3+SXJZ
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-cc Vladimir.  This seems rather obvious - I'm wondering if the code was
-that way for some subtle reason?
+Hi Nick,
 
-(I'll add a cc:stable to this)
+On Tue, Jun 18, 2019 at 11:15:03AM -0600, Nick Crews wrote:
+> Thanks Colin, good catch.
+>=20
+> Enric, could you squash this into the real commit?
 
-From: Colin Ian King <colin.king@canonical.com>
-Subject: mm/page_idle.c: fix oops because end_pfn is larger than max_pfn
+I've applied this to for-next and for-kernelci in chrome-platform.
 
-Currently the calcuation of end_pfn can round up the pfn number to more
-than the actual maximum number of pfns, causing an Oops.  Fix this by
-ensuring end_pfn is never more than max_pfn.
+Thanks,
+Benson
 
-This can be easily triggered when on systems where the end_pfn gets
-rounded up to more than max_pfn using the idle-page stress-ng stress test:
+--=20
+Benson Leung
+Staff Software Engineer
+Chrome OS Kernel
+Google Inc.
+bleung@google.com
+Chromium OS Project
+bleung@chromium.org
 
-sudo stress-ng --idle-page 0
+--lrZ03NoBR/3+SXJZ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-[ 3812.222790] BUG: unable to handle kernel paging request at 00000000000020d8
-[ 3812.224341] #PF error: [normal kernel read fault]
-[ 3812.225144] PGD 0 P4D 0
-[ 3812.225626] Oops: 0000 [#1] SMP PTI
-[ 3812.226264] CPU: 1 PID: 11039 Comm: stress-ng-idle- Not tainted 5.0.0-5-generic #6-Ubuntu
-[ 3812.227643] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1ubuntu1 04/01/2014
-[ 3812.229286] RIP: 0010:page_idle_get_page+0xc8/0x1a0
-[ 3812.230173] Code: 0f b1 0a 75 7d 48 8b 03 48 89 c2 48 c1 e8 33 83 e0 07 48 c1 ea 36 48 8d 0c 40 4c 8d 24 88 49 c1 e4 07 4c 03 24 d5 00 89 c3 be <49> 8b 44 24 58 48 8d b8 80 a1 02 00 e8 07 d5 77 00 48 8b 53 08 48
-[ 3812.234641] RSP: 0018:ffffafd7c672fde8 EFLAGS: 00010202
-[ 3812.235792] RAX: 0000000000000005 RBX: ffffe36341fff700 RCX: 000000000000000f
-[ 3812.237739] RDX: 0000000000000284 RSI: 0000000000000275 RDI: 0000000001fff700
-[ 3812.239225] RBP: ffffafd7c672fe00 R08: ffffa0bc34056410 R09: 0000000000000276
-[ 3812.241027] R10: ffffa0bc754e9b40 R11: ffffa0bc330f6400 R12: 0000000000002080
-[ 3812.242555] R13: ffffe36341fff700 R14: 0000000000080000 R15: ffffa0bc330f6400
-[ 3812.244073] FS: 00007f0ec1ea5740(0000) GS:ffffa0bc7db00000(0000) knlGS:0000000000000000
-[ 3812.245968] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 3812.247162] CR2: 00000000000020d8 CR3: 0000000077d68000 CR4: 00000000000006e0
-[ 3812.249045] Call Trace:
-[ 3812.249625] page_idle_bitmap_write+0x8c/0x140
-[ 3812.250567] sysfs_kf_bin_write+0x5c/0x70
-[ 3812.251406] kernfs_fop_write+0x12e/0x1b0
-[ 3812.252282] __vfs_write+0x1b/0x40
-[ 3812.253002] vfs_write+0xab/0x1b0
-[ 3812.253941] ksys_write+0x55/0xc0
-[ 3812.254660] __x64_sys_write+0x1a/0x20
-[ 3812.255446] do_syscall_64+0x5a/0x110
-[ 3812.256254] entry_SYSCALL_64_after_hwframe+0x44/0xa9
+-----BEGIN PGP SIGNATURE-----
 
---- a/mm/page_idle.c~mm-idle-page-fix-oops-because-end_pfn-is-larger-than-max_pfn
-+++ a/mm/page_idle.c
-@@ -136,7 +136,7 @@ static ssize_t page_idle_bitmap_read(str
- 
- 	end_pfn = pfn + count * BITS_PER_BYTE;
- 	if (end_pfn > max_pfn)
--		end_pfn = ALIGN(max_pfn, BITMAP_CHUNK_BITS);
-+		end_pfn = max_pfn;
- 
- 	for (; pfn < end_pfn; pfn++) {
- 		bit = pfn % BITMAP_CHUNK_BITS;
-@@ -181,7 +181,7 @@ static ssize_t page_idle_bitmap_write(st
- 
- 	end_pfn = pfn + count * BITS_PER_BYTE;
- 	if (end_pfn > max_pfn)
--		end_pfn = ALIGN(max_pfn, BITMAP_CHUNK_BITS);
-+		end_pfn = max_pfn;
- 
- 	for (; pfn < end_pfn; pfn++) {
- 		bit = pfn % BITMAP_CHUNK_BITS;
-_
+iHUEABYKAB0WIQQCtZK6p/AktxXfkOlzbaomhzOwwgUCXQlASgAKCRBzbaomhzOw
+wvzvAQCyOTKS1SOAS0+Jun5Ci7dnvQYHXaDKXlumIB/vwgWr0wD/YyL8KgdowZi8
+meyb3F1r5KtA3s6FXZ/AN0VbqnHDUws=
+=3u8A
+-----END PGP SIGNATURE-----
 
+--lrZ03NoBR/3+SXJZ--

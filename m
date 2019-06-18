@@ -2,81 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9669F4AC61
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 22:57:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD8E84ADF2
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jun 2019 00:44:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730877AbfFRUzu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Jun 2019 16:55:50 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:38057 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730864AbfFRUzt (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Jun 2019 16:55:49 -0400
-Received: by mail-lj1-f196.google.com with SMTP id r9so972394ljg.5
-        for <kernel-janitors@vger.kernel.org>; Tue, 18 Jun 2019 13:55:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Rgyz2cVF6lciICHj9aRxm3g8t9416ctrHS5B3PoGzGM=;
-        b=er8IX2IUKbXU9cahan+PR49raLMPgXXPPUR2yIHqZPbkQsvl37yRNMqfD0QJCdAjv/
-         Js7XnzEYA+84AFVz+WBmB839fafHCxPz6VNvQMgMq5clTEv658MFIY2euF6/qDtGFn5n
-         /mCm3ynK8OYbMKS6yBEJaYs5AYJ0Te0crzo84=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Rgyz2cVF6lciICHj9aRxm3g8t9416ctrHS5B3PoGzGM=;
-        b=YPt4QrqqaT+pv53AHPUKrGLZstjq8w+MwUwrZn1Kff/Kz6dcCptKSHzmsXceMcRcft
-         dKGuP5NxHduuCkLg5DWhu8Z8Dmev4UnGDdV1DM2/Iqss0ZbO/XDhQaYP6B/re5LU3/CX
-         S9uE7lfenpb5gCsP20G1aLclJUbqPyePMXxPSSpJCYe9vVB0pMBJUFdq7lHlO8tEmcdV
-         6N6t+i9c22Ti+IZApwL6gU76B+D0zmN+/cvY1N8fhHleeo3QAe+vPgMp2ti9Jcq9tSLd
-         fI51j8IppvJspGhsrYs+Avdm7ESqyx+E30pNSbKcJZARRpvOXyq9RkUT90MBVBZvEYkC
-         WLtQ==
-X-Gm-Message-State: APjAAAUKEuk0ObSG3ozBF/o3DN4wlZZJWIOh4t2Mta6lsYDtZnOLpoRW
-        s3+T61W/QpZS4e24oKtev96slBejowE=
-X-Google-Smtp-Source: APXvYqxURPxSLbw7u3Nyzjj5CpbzYz3XOKneebUIq1zCMKzIq1aQCmYa7ILOsVn8n/u690N6bVSb1Q==
-X-Received: by 2002:a2e:980e:: with SMTP id a14mr54762499ljj.60.1560891346861;
-        Tue, 18 Jun 2019 13:55:46 -0700 (PDT)
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com. [209.85.167.51])
-        by smtp.gmail.com with ESMTPSA id q1sm2360139lfc.79.2019.06.18.13.55.45
-        for <kernel-janitors@vger.kernel.org>
-        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
-        Tue, 18 Jun 2019 13:55:45 -0700 (PDT)
-Received: by mail-lf1-f51.google.com with SMTP id a25so10343262lfg.2
-        for <kernel-janitors@vger.kernel.org>; Tue, 18 Jun 2019 13:55:45 -0700 (PDT)
-X-Received: by 2002:a19:f808:: with SMTP id a8mr6231181lff.29.1560891345414;
- Tue, 18 Jun 2019 13:55:45 -0700 (PDT)
+        id S1730412AbfFRWoA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Jun 2019 18:44:00 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:58484 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730176AbfFRWoA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 18 Jun 2019 18:44:00 -0400
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id E361C308FC4E;
+        Tue, 18 Jun 2019 22:43:59 +0000 (UTC)
+Received: from mchristi.msp.csb (unknown [10.64.242.22])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6903D5C1B5;
+        Tue, 18 Jun 2019 22:43:58 +0000 (UTC)
+Reply-To: mchristi@redhat.com
+Subject: Re: [PATCH] scsi: tcmu: Simplify 'tcmu_update_uio_info()'
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        martin.petersen@oracle.com
+Cc:     linux-scsi@vger.kernel.org, target-devel@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20190616070220.24189-1-christophe.jaillet@wanadoo.fr>
+From:   Michael Christie <mchristi@redhat.com>
+Organization: Red Hat
+Message-ID: <2ffa1964-30b1-d8bd-a2e2-608fe4f06f45@redhat.com>
+Date:   Tue, 18 Jun 2019 17:43:57 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.0
 MIME-Version: 1.0
-References: <CAHk-=wgTL5sYCGxX8+xQqyBRWRUE05GAdL58+UTG8bYwjFxMkw@mail.gmail.com>
- <20190617190605.GA21332@mwanda> <20190618081645.GM16364@dell>
-In-Reply-To: <20190618081645.GM16364@dell>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Tue, 18 Jun 2019 13:55:29 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wghW+AKvRGevUiVWwTqWObygSZSdq6Dz2ad81H73VeuRQ@mail.gmail.com>
-Message-ID: <CAHk-=wghW+AKvRGevUiVWwTqWObygSZSdq6Dz2ad81H73VeuRQ@mail.gmail.com>
-Subject: Re: [PATCH] mfd: stmfx: Fix an endian bug in stmfx_irq_handler()
-To:     Lee Jones <lee.jones@linaro.org>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Amelie Delaunay <amelie.delaunay@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190616070220.24189-1-christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.43]); Tue, 18 Jun 2019 22:44:00 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jun 18, 2019 at 1:16 AM Lee Jones <lee.jones@linaro.org> wrote:
->
-> > Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
->
-> Ideally we can get a review too.
+On 06/16/2019 02:02 AM, Christophe JAILLET wrote:
+> Use 'kasprintf()' instead of:
+>    - snprintf(NULL, 0...
+>    - kmalloc(...
+>    - snprintf(...
+> 
+> This is less verbose and saves 7 bytes (i.e. the space for '/(null)') if
+> 'udev->dev_config' is NULL.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  drivers/target/target_core_user.c | 16 +++++++---------
+>  1 file changed, 7 insertions(+), 9 deletions(-)
+> 
+> diff --git a/drivers/target/target_core_user.c b/drivers/target/target_core_user.c
+> index b43d6385a1a0..04eda111920e 100644
+> --- a/drivers/target/target_core_user.c
+> +++ b/drivers/target/target_core_user.c
+> @@ -1824,20 +1824,18 @@ static int tcmu_update_uio_info(struct tcmu_dev *udev)
+>  {
+>  	struct tcmu_hba *hba = udev->hba->hba_ptr;
+>  	struct uio_info *info;
+> -	size_t size, used;
+>  	char *str;
+>  
+>  	info = &udev->uio_info;
+> -	size = snprintf(NULL, 0, "tcm-user/%u/%s/%s", hba->host_id, udev->name,
+> -			udev->dev_config);
+> -	size += 1; /* for \0 */
+> -	str = kmalloc(size, GFP_KERNEL);
+> -	if (!str)
+> -		return -ENOMEM;
+>  
+> -	used = snprintf(str, size, "tcm-user/%u/%s", hba->host_id, udev->name);
+>  	if (udev->dev_config[0])
+> -		snprintf(str + used, size - used, "/%s", udev->dev_config);
+> +		str = kasprintf(GFP_KERNEL, "tcm-user/%u/%s/%s", hba->host_id,
+> +				udev->name, udev->dev_config);
+> +	else
+> +		str = kasprintf(GFP_KERNEL, "tcm-user/%u/%s", hba->host_id,
+> +				udev->name);
+> +	if (!str)
+> +		return -ENOMEM;
+>  
+>  	/* If the old string exists, free it */
+>  	kfree(info->name);
+> 
 
-Looks fine to me, but obviously somebody should actually _test_ it too.
+Thanks.
 
-              Linus
+Acked-by: Mike Christie <mchristi@redhat.com>

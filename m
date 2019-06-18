@@ -2,32 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A6774A4F5
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 17:15:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E40C54A597
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 17:39:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729594AbfFRPPP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Jun 2019 11:15:15 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:53304 "EHLO
+        id S1729308AbfFRPj1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Jun 2019 11:39:27 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:54249 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729038AbfFRPPP (ORCPT
+        with ESMTP id S1729189AbfFRPj1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Jun 2019 11:15:15 -0400
+        Tue, 18 Jun 2019 11:39:27 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hdFpG-0004da-Kr; Tue, 18 Jun 2019 15:15:10 +0000
+        id 1hdGCj-000724-6L; Tue, 18 Jun 2019 15:39:25 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Saeed Mahameed <saeedm@mellanox.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-rdma@vger.kernel.org
+To:     Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Nick Crews <ncrews@chromium.org>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] net/mlx5: add missing void argument to function mlx5_devlink_alloc
-Date:   Tue, 18 Jun 2019 16:15:10 +0100
-Message-Id: <20190618151510.18672-1-colin.king@canonical.com>
+Subject: [PATCH][next] platform/chrome: wilco_ec: fix null pointer dereference on failed kzalloc
+Date:   Tue, 18 Jun 2019 16:39:24 +0100
+Message-Id: <20190618153924.19491-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
@@ -36,27 +36,48 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Function mlx5_devlink_alloc is missing a void argument, add it
-to clean up the non-ANSI function declaration.
+If the kzalloc of the entries queue q fails a null pointer dereference
+occurs when accessing q->capacity and q->lock.  Add a kzalloc failure
+check and handle the null return case in the calling function
+event_device_add.
 
+Addresses-Coverity: ("Dereference null return")
+Fixes: 75589e37d1dc ("platform/chrome: wilco_ec: Add circular buffer as event queue")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/devlink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/chrome/wilco_ec/event.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-index ed4202e883f0..1533c657220b 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/devlink.c
-@@ -37,7 +37,7 @@ static const struct devlink_ops mlx5_devlink_ops = {
- 	.flash_update = mlx5_devlink_flash_update,
- };
- 
--struct devlink *mlx5_devlink_alloc()
-+struct devlink *mlx5_devlink_alloc(void)
+diff --git a/drivers/platform/chrome/wilco_ec/event.c b/drivers/platform/chrome/wilco_ec/event.c
+index c975b76e6255..e251a989b152 100644
+--- a/drivers/platform/chrome/wilco_ec/event.c
++++ b/drivers/platform/chrome/wilco_ec/event.c
+@@ -112,8 +112,11 @@ module_param(queue_size, int, 0644);
+ static struct ec_event_queue *event_queue_new(int capacity)
  {
- 	return devlink_alloc(&mlx5_devlink_ops, sizeof(struct mlx5_core_dev));
- }
+ 	size_t entries_size = sizeof(struct ec_event *) * capacity;
+-	struct ec_event_queue *q = kzalloc(sizeof(*q) + entries_size,
+-					   GFP_KERNEL);
++	struct ec_event_queue *q;
++
++	q = kzalloc(sizeof(*q) + entries_size, GFP_KERNEL);
++	if (!q)
++		return NULL;
+ 
+ 	q->capacity = capacity;
+ 	spin_lock_init(&q->lock);
+@@ -474,6 +477,11 @@ static int event_device_add(struct acpi_device *adev)
+ 	/* Initialize the device data. */
+ 	adev->driver_data = dev_data;
+ 	dev_data->events = event_queue_new(queue_size);
++	if (!dev_data->events) {
++		kfree(dev_data);
++		error = -ENOMEM;
++		goto free_minor;
++	}
+ 	init_waitqueue_head(&dev_data->wq);
+ 	dev_data->exist = true;
+ 	atomic_set(&dev_data->available, 1);
 -- 
 2.20.1
 

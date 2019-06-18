@@ -2,88 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39E1749E18
-	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 12:15:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF1B849E2B
+	for <lists+kernel-janitors@lfdr.de>; Tue, 18 Jun 2019 12:22:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728926AbfFRKP6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Jun 2019 06:15:58 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:45936 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726095AbfFRKP6 (ORCPT
+        id S1729143AbfFRKWI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Jun 2019 06:22:08 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:42790 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725934AbfFRKWI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Jun 2019 06:15:58 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hdB9f-0005kT-1n; Tue, 18 Jun 2019 10:15:55 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?q?Simon=20Sandstr=C3=B6m?= <simon@nikanor.nu>,
-        devel@driverdev.osuosl.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: kpc2000: fix integer overflow with left shifts
-Date:   Tue, 18 Jun 2019 11:15:54 +0100
-Message-Id: <20190618101554.31723-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Tue, 18 Jun 2019 06:22:08 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5IAAHFj088122;
+        Tue, 18 Jun 2019 10:21:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=OyEc+wp0PaiaO9MnV6Dj7bsKOR2sVurZum4Hf+fQdN0=;
+ b=2EuYfMDSXbiG5sNOa9IBlt+Z9EOpdnjzm7aDMd7xGqXrtRLIRi0UWzr3at/s/QMzFyLy
+ 5I3Dfh8XJdqSxu/MSrYij0HNyBhB5ceDtzXbcaGdJv7dcovx6xKDHvHh6d0q+QQ1Yhxy
+ pIcyYdHLJNtzfS63o1dZOnrYunYmHQbQnxOhfLc5owXuVOptMqygXgP5J2JsVcAaxAYW
+ RWPOXv35zFPZycmTPaPt4I029POGlDl26WqThxgBswd2uN1g+mxDYnTtPezNJJecMT8a
+ l7yB/4egYvTOemT8RZJQf0XBTz7B/tOxPzMWMjxFcm1WjfrZQZFQd7rDTEeEJyTef+hq IA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2t4saqbgah-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 18 Jun 2019 10:21:47 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5IALE5P072049;
+        Tue, 18 Jun 2019 10:21:46 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2t5cpdyddq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 18 Jun 2019 10:21:46 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5IALXQe024611;
+        Tue, 18 Jun 2019 10:21:33 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 18 Jun 2019 03:21:32 -0700
+Date:   Tue, 18 Jun 2019 13:21:15 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Cc:     Markus Elfring <Markus.Elfring@web.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        cocci@systeme.lip6.fr, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>
+Subject: Re: drivers: Inline code in devm_platform_ioremap_resource() from
+ two functions
+Message-ID: <20190618102115.GK28859@kadam>
+References: <20190406061112.31620-1-himanshujha199640@gmail.com>
+ <f09006a3-691c-382a-23b8-8e9ff5b4a5f1@web.de>
+ <alpine.DEB.2.21.1906081925090.2543@hadrien>
+ <7b4fe770-dadd-80ba-2ba4-0f2bc90984ef@web.de>
+ <f573b2d3-11d0-92b5-f8ab-4c4b6493e152@metux.net>
+ <032e347f-e575-c89c-fa62-473d52232735@web.de>
+ <910a5806-9a08-adf4-4fba-d5ec2f5807ff@metux.net>
+ <efc38197-f846-142d-fbaf-93327c2669c9@web.de>
+ <714a38fe-a733-7264-bb06-d94bd58a245a@metux.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <714a38fe-a733-7264-bb06-d94bd58a245a@metux.net>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9291 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=910
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906180085
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9291 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=960 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906180085
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Greg already commented on this thread.  No need to discuss it further.
 
-Currently there are several left shifts that are assigned to 64 bit
-unsigned longs where a signed int 1 is being shifted, resulting in
-an integer overflow.  Fix this bit using the BIT_ULL macro to perform
-a 64 bit shift.  Also clean up an overly long statement.
-
-Addresses-Coverity: ("Unintentional integer overflow")
-Fixes: 7dc7967fc39a ("staging: kpc2000: add initial set of Daktronics drivers")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/staging/kpc2000/kpc2000/cell_probe.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/staging/kpc2000/kpc2000/cell_probe.c b/drivers/staging/kpc2000/kpc2000/cell_probe.c
-index 138d16bcf6e1..c124a836db27 100644
---- a/drivers/staging/kpc2000/kpc2000/cell_probe.c
-+++ b/drivers/staging/kpc2000/kpc2000/cell_probe.c
-@@ -238,7 +238,7 @@ int  kp2000_check_uio_irq(struct kp2000_device *pcard, u32 irq_num)
- {
- 	u64 interrupt_active   =  readq(pcard->sysinfo_regs_base + REG_INTERRUPT_ACTIVE);
- 	u64 interrupt_mask_inv = ~readq(pcard->sysinfo_regs_base + REG_INTERRUPT_MASK);
--	u64 irq_check_mask = (1 << irq_num);
-+	u64 irq_check_mask = BIT_ULL(irq_num);
- 
- 	if (interrupt_active & irq_check_mask) { // if it's active (interrupt pending)
- 		if (interrupt_mask_inv & irq_check_mask) {    // and if it's not masked off
-@@ -257,7 +257,9 @@ irqreturn_t  kuio_handler(int irq, struct uio_info *uioinfo)
- 		return IRQ_NONE;
- 
- 	if (kp2000_check_uio_irq(kudev->pcard, kudev->cte.irq_base_num)) {
--		writeq((1 << kudev->cte.irq_base_num), kudev->pcard->sysinfo_regs_base + REG_INTERRUPT_ACTIVE); // Clear the active flag
-+		/* Clear the active flag */
-+		writeq(BIT_ULL(kudev->cte.irq_base_num),
-+		       kudev->pcard->sysinfo_regs_base + REG_INTERRUPT_ACTIVE);
- 		return IRQ_HANDLED;
- 	}
- 	return IRQ_NONE;
-@@ -273,9 +275,9 @@ int kuio_irqcontrol(struct uio_info *uioinfo, s32 irq_on)
- 	mutex_lock(&pcard->sem);
- 	mask = readq(pcard->sysinfo_regs_base + REG_INTERRUPT_MASK);
- 	if (irq_on)
--		mask &= ~(1 << (kudev->cte.irq_base_num));
-+		mask &= ~(BIT_ULL(kudev->cte.irq_base_num));
- 	else
--		mask |= (1 << (kudev->cte.irq_base_num));
-+		mask |= BIT_ULL(kudev->cte.irq_base_num);
- 	writeq(mask, pcard->sysinfo_regs_base + REG_INTERRUPT_MASK);
- 	mutex_unlock(&pcard->sem);
- 
--- 
-2.20.1
-
+regards,
+dan carpenter

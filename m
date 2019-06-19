@@ -2,32 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D0B14BE80
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jun 2019 18:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D71D4BEED
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jun 2019 18:50:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727198AbfFSQpY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 Jun 2019 12:45:24 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:60774 "EHLO
+        id S1727818AbfFSQua (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 Jun 2019 12:50:30 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:60872 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726332AbfFSQpY (ORCPT
+        with ESMTP id S1726689AbfFSQu3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 Jun 2019 12:45:24 -0400
+        Wed, 19 Jun 2019 12:50:29 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hddi2-0001iD-9W; Wed, 19 Jun 2019 16:45:18 +0000
+        id 1hddn1-00022n-9Q; Wed, 19 Jun 2019 16:50:27 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Wolfgang Grandegger <wg@grandegger.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        Michal Simek <michal.simek@xilinx.com>,
-        linux-can@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] can: xilinx_can: clean up indentation issue
-Date:   Wed, 19 Jun 2019 17:45:17 +0100
-Message-Id: <20190619164518.5683-1-colin.king@canonical.com>
+Subject: [PATCH] staging: rtl8723bs: os_dep: fix indentation on break statement
+Date:   Wed, 19 Jun 2019 17:50:27 +0100
+Message-Id: <20190619165027.6860-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,26 +35,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-A statement is indented one level too deep, fix this.
+The break statement is indented one level too deep, fix this.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/can/xilinx_can.c | 2 +-
+ drivers/staging/rtl8723bs/os_dep/ioctl_linux.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/xilinx_can.c b/drivers/net/can/xilinx_can.c
-index 63203ff452b5..a3940141555c 100644
---- a/drivers/net/can/xilinx_can.c
-+++ b/drivers/net/can/xilinx_can.c
-@@ -924,7 +924,7 @@ static void xcan_err_interrupt(struct net_device *ndev, u32 isr)
- 				cf->data[3] = CAN_ERR_PROT_LOC_CRC_SEQ;
+diff --git a/drivers/staging/rtl8723bs/os_dep/ioctl_linux.c b/drivers/staging/rtl8723bs/os_dep/ioctl_linux.c
+index ea50ec424e50..6ca896128b73 100644
+--- a/drivers/staging/rtl8723bs/os_dep/ioctl_linux.c
++++ b/drivers/staging/rtl8723bs/os_dep/ioctl_linux.c
+@@ -1181,7 +1181,7 @@ static int rtw_wx_set_wap(struct net_device *dev,
+ 				spin_unlock_bh(&queue->lock);
+ 				goto exit;
  			}
+-				break;
++			break;
  		}
--			priv->can.can_stats.bus_error++;
-+		priv->can.can_stats.bus_error++;
- 	}
  
- 	if (skb) {
+ 	}
 -- 
 2.20.1
 

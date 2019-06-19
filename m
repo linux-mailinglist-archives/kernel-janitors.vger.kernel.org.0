@@ -2,76 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EDF54B6DB
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jun 2019 13:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E2A14BB81
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jun 2019 16:30:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731483AbfFSLN7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 Jun 2019 07:13:59 -0400
-Received: from mx2.suse.de ([195.135.220.15]:60880 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727067AbfFSLN7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 Jun 2019 07:13:59 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 3A905AF90;
-        Wed, 19 Jun 2019 11:13:58 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
-        id BD2D61E15DD; Wed, 19 Jun 2019 13:13:57 +0200 (CEST)
-Date:   Wed, 19 Jun 2019 13:13:57 +0200
-From:   Jan Kara <jack@suse.cz>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Theodore Ts'o <tytso@mit.edu>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        linux-ext4@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ext4: remove redundant assignment to node
-Message-ID: <20190619111357.GD32409@quack2.suse.cz>
-References: <20190619090007.26962-1-colin.king@canonical.com>
+        id S1727242AbfFSOav (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 Jun 2019 10:30:51 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:56887 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725899AbfFSOav (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 19 Jun 2019 10:30:51 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hdbbp-0005sO-5S; Wed, 19 Jun 2019 14:30:45 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][net-next] iavf: fix dereference of null rx_buffer pointer
+Date:   Wed, 19 Jun 2019 15:30:44 +0100
+Message-Id: <20190619143044.10259-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190619090007.26962-1-colin.king@canonical.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed 19-06-19 10:00:06, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Pointer 'node' is assigned a value that is never read, node is
-> later overwritten when it re-assigned a different value inside
-> the while-loop.  The assignment is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Looks good to me. You can add:
+A recent commit efa14c3985828d ("iavf: allow null RX descriptors") added
+a null pointer sanity check on rx_buffer, however, rx_buffer is being
+dereferenced before that check, which implies a null pointer dereference
+bug can potentially occur.  Fix this by only dereferencing rx_buffer
+until after the null pointer check.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+Addresses-Coverity: ("Dereference before null check")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/ethernet/intel/iavf/iavf_txrx.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-								Honza
-
-> ---
->  fs/ext4/extents_status.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
-> index 023a3eb3afa3..7521de2dcf3a 100644
-> --- a/fs/ext4/extents_status.c
-> +++ b/fs/ext4/extents_status.c
-> @@ -1317,7 +1317,6 @@ static int es_do_reclaim_extents(struct ext4_inode_info *ei, ext4_lblk_t end,
->  	es = __es_tree_search(&tree->root, ei->i_es_shrink_lblk);
->  	if (!es)
->  		goto out_wrap;
-> -	node = &es->rb_node;
->  	while (*nr_to_scan > 0) {
->  		if (es->es_lblk > end) {
->  			ei->i_es_shrink_lblk = end + 1;
-> -- 
-> 2.20.1
-> 
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_txrx.c b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
+index 1cde1601bc32..0cca1b589b56 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_txrx.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_txrx.c
+@@ -1296,7 +1296,7 @@ static struct sk_buff *iavf_construct_skb(struct iavf_ring *rx_ring,
+ 					  struct iavf_rx_buffer *rx_buffer,
+ 					  unsigned int size)
+ {
+-	void *va = page_address(rx_buffer->page) + rx_buffer->page_offset;
++	void *va;
+ #if (PAGE_SIZE < 8192)
+ 	unsigned int truesize = iavf_rx_pg_size(rx_ring) / 2;
+ #else
+@@ -1308,6 +1308,7 @@ static struct sk_buff *iavf_construct_skb(struct iavf_ring *rx_ring,
+ 	if (!rx_buffer)
+ 		return NULL;
+ 	/* prefetch first cache line of first page */
++	va = page_address(rx_buffer->page) + rx_buffer->page_offset;
+ 	prefetch(va);
+ #if L1_CACHE_BYTES < 128
+ 	prefetch(va + L1_CACHE_BYTES);
+@@ -1362,7 +1363,7 @@ static struct sk_buff *iavf_build_skb(struct iavf_ring *rx_ring,
+ 				      struct iavf_rx_buffer *rx_buffer,
+ 				      unsigned int size)
+ {
+-	void *va = page_address(rx_buffer->page) + rx_buffer->page_offset;
++	void *va;
+ #if (PAGE_SIZE < 8192)
+ 	unsigned int truesize = iavf_rx_pg_size(rx_ring) / 2;
+ #else
+@@ -1374,6 +1375,7 @@ static struct sk_buff *iavf_build_skb(struct iavf_ring *rx_ring,
+ 	if (!rx_buffer)
+ 		return NULL;
+ 	/* prefetch first cache line of first page */
++	va = page_address(rx_buffer->page) + rx_buffer->page_offset;
+ 	prefetch(va);
+ #if L1_CACHE_BYTES < 128
+ 	prefetch(va + L1_CACHE_BYTES);
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.20.1
+

@@ -2,124 +2,152 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A1D3F4B277
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jun 2019 08:55:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C9ED34B352
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jun 2019 09:49:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731085AbfFSGzg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 Jun 2019 02:55:36 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:44494 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730888AbfFSGzf (ORCPT
+        id S1731227AbfFSHtC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 Jun 2019 03:49:02 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:39796 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731187AbfFSHtC (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 Jun 2019 02:55:35 -0400
-Received: from cpc129250-craw9-2-0-cust139.know.cable.virginm.net ([82.43.126.140] helo=[192.168.0.11])
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hdUVF-0003eV-C9; Wed, 19 Jun 2019 06:55:29 +0000
-Subject: Re: [PATCH] net: stmmac: add sanity check to
- device_property_read_u32_array call
-To:     Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc:     alexandre.torgue@st.com, davem@davemloft.net, joabreu@synopsys.com,
-        kernel-janitors@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        mcoquelin.stm32@gmail.com, netdev@vger.kernel.org,
-        peppe.cavallaro@st.com
-References: <20190617165836.4673-1-colin.king@canonical.com>
- <20190619051308.23582-1-martin.blumenstingl@googlemail.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <92f9e5a6-d2a2-6bf2-ff8a-2430fe977f93@canonical.com>
-Date:   Wed, 19 Jun 2019 07:55:28 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        Wed, 19 Jun 2019 03:49:02 -0400
+Received: by mail-ed1-f67.google.com with SMTP id m10so25756854edv.6
+        for <kernel-janitors@vger.kernel.org>; Wed, 19 Jun 2019 00:49:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=sender:date:from:to:cc:subject:message-id:mail-followup-to
+         :references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to:user-agent;
+        bh=9yRPqLsy9SzgWIOIK5gO9H41NqMgtH7z8Lf0epnTSe8=;
+        b=jWHFk6XqsoYXocFpSE0gn/gHZJ/0TrxElZKm42Ipe0ZdlxBiXBmyo9fX4/WGgeDDO3
+         8AYZ0F+ufO1zlDHVBmH9vwwSvpWZI8HJCpZq3I4Sx2ZL54GWsm81cgHwZAzplxF8c3Me
+         oI3KswqH2dD74mtl53UCCeWZ6zPk1dUxbOPMc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to:user-agent;
+        bh=9yRPqLsy9SzgWIOIK5gO9H41NqMgtH7z8Lf0epnTSe8=;
+        b=rr8qMhthRCVMna2LdFbKd/bFQOHxHpXHHuZT/W7bAPBYaGNsr9wWYPqiI7OhuFSVku
+         YIRlCFX9vJkZtSL2/S2WZuWgaNIg0idBCRQ6hxVEvMbDdHtHIjM2LC1zD/oSdimGWKZY
+         /C0H/FthOPMtXapPO7PVliem/toHhH3yL4HGqTN1TFen3qho+NDpQyyEa3hNgS1LS5oY
+         8dGULwbSQw8S8vlYrHVSY/xCCoSPk8BEQveH/MARWz0q7U8bAm7sY7hpW8e5yHriEzlK
+         Q1CsBAHFZ4F6C5025Xs2VoLQZAQqgiYCJZLJ4+t/l5+aOX5juwyFUXxkpxWfPB5ChAB8
+         Xuhg==
+X-Gm-Message-State: APjAAAXs3U1cr/7FxJ8CfCZIfHc0h1fG5yX2ZQVBXICh/qDuBtaWAhqB
+        XjECYYdKqGuYVRQAimD64kj9lw==
+X-Google-Smtp-Source: APXvYqzcQ/qJVFreUUsYyuaxNjvBsBySdJhnXRVOLZg1dyo7u4fZwHatDwiE/NN42tCU6BsQTm39fg==
+X-Received: by 2002:a50:883b:: with SMTP id b56mr36295341edb.178.1560930540342;
+        Wed, 19 Jun 2019 00:49:00 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:569e:0:3106:d637:d723:e855])
+        by smtp.gmail.com with ESMTPSA id x4sm5546030eda.22.2019.06.19.00.48.59
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 19 Jun 2019 00:48:59 -0700 (PDT)
+Date:   Wed, 19 Jun 2019 09:48:56 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, intel-gfx@lists.freedesktop.org
+Subject: Re: [PATCH V4] drm/drm_vblank: Change EINVAL by the correct errno
+Message-ID: <20190619074856.GJ12905@phenom.ffwll.local>
+Mail-Followup-To: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, intel-gfx@lists.freedesktop.org
+References: <20190619020750.swzerehjbvx6sbk2@smtp.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20190619051308.23582-1-martin.blumenstingl@googlemail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190619020750.swzerehjbvx6sbk2@smtp.gmail.com>
+X-Operating-System: Linux phenom 4.19.0-5-amd64 
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 19/06/2019 06:13, Martin Blumenstingl wrote:
-> Hi Colin,
+On Tue, Jun 18, 2019 at 11:07:50PM -0300, Rodrigo Siqueira wrote:
+> For historical reason, the function drm_wait_vblank_ioctl always return
+> -EINVAL if something gets wrong. This scenario limits the flexibility
+> for the userspace make detailed verification of the problem and take
+> some action. In particular, the validation of “if (!dev->irq_enabled)”
+> in the drm_wait_vblank_ioctl is responsible for checking if the driver
+> support vblank or not. If the driver does not support VBlank, the
+> function drm_wait_vblank_ioctl returns EINVAL which does not represent
+> the real issue; this patch changes this behavior by return EOPNOTSUPP.
+> Additionally, some operations are unsupported by this function, and
+> returns EINVAL; this patch also changes the return value to EOPNOTSUPP
+> in this case. Lastly, the function drm_wait_vblank_ioctl is invoked by
+> libdrm, which is used by many compositors; because of this, it is
+> important to check if this change breaks any compositor. In this sense,
+> the following projects were examined:
 > 
->> Currently the call to device_property_read_u32_array is not error checked
->> leading to potential garbage values in the delays array that are then used
->> in msleep delays.  Add a sanity check to the property fetching.
->>
->> Addresses-Coverity: ("Uninitialized scalar variable")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> I have also sent a patch [0] to fix initialize the array.
-> can you please look at my patch so we can work out which one to use?
+> * Drm-hwcomposer
+> * Kwin
+> * Sway
+> * Wlroots
+> * Wayland-core
+> * Weston
+> * Xorg (67 different drivers)
 > 
-> my concern is that the "snps,reset-delays-us" property is optional,
-> the current dt-bindings documentation states that it's a required
-> property. in reality it isn't, there are boards (two examples are
-> mentioned in my patch: [0]) without it.
+> For each repository the verification happened in three steps:
 > 
-> so I believe that the resulting behavior has to be:
-> 1. don't delay if this property is missing (instead of delaying for
->    <garbage value> ms)
-> 2. don't error out if this property is missing
+> * Update the main branch
+> * Look for any occurrence "drmWaitVBlank" with the command:
+>   git grep -n "drmWaitVBlank"
+> * Look in the git history of the project with the command:
+>   git log -SdrmWaitVBlank
 > 
-> your patch covers #1, can you please check whether #2 is also covered?
-> I tested case #2 when submitting my patch and it worked fine (even
-> though I could not reproduce the garbage values which are being read
-> on some boards)
+> Finally, none of the above projects validate the use of EINVAL which
+> make safe, at least for these projects, to change the return values.
 > 
+> Change since V3:
+>  - Return EINVAL for _DRM_VBLANK_SIGNAL (Daniel)
 > 
-> Thank you!
-> Martin
+> Change since V2:
+>  Daniel Vetter and Chris Wilson
+>  - Replace ENOTTY by EOPNOTSUPP
+>  - Return EINVAL if the parameters are wrong
 > 
-> 
-> [0] https://lkml.org/lkml/2019/4/19/638
-> 
-Is that the correct link?
 
-Colin
+Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+
+Apologies for the confusion on the last time around. btw if someone tells
+you "r-b (or a-b) with these changes", then just apply the r-b/a-b tag
+next time around. Otherwise people will re-review the same thing over and
+over again.
+-Daniel
+
+> Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+> ---
+>  drivers/gpu/drm/drm_vblank.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
+> index 603ab105125d..bed233361614 100644
+> --- a/drivers/gpu/drm/drm_vblank.c
+> +++ b/drivers/gpu/drm/drm_vblank.c
+> @@ -1582,7 +1582,7 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, void *data,
+>  	unsigned int flags, pipe, high_pipe;
+>  
+>  	if (!dev->irq_enabled)
+> -		return -EINVAL;
+> +		return -EOPNOTSUPP;
+>  
+>  	if (vblwait->request.type & _DRM_VBLANK_SIGNAL)
+>  		return -EINVAL;
+> -- 
+> 2.21.0
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch

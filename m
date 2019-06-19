@@ -2,70 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 745994B67D
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jun 2019 12:52:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EDF54B6DB
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jun 2019 13:14:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731178AbfFSKv2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 Jun 2019 06:51:28 -0400
-Received: from mail.us.es ([193.147.175.20]:40958 "EHLO mail.us.es"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726751AbfFSKv1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 Jun 2019 06:51:27 -0400
-Received: from antivirus1-rhel7.int (unknown [192.168.2.11])
-        by mail.us.es (Postfix) with ESMTP id AB9D669672
-        for <kernel-janitors@vger.kernel.org>; Wed, 19 Jun 2019 12:51:25 +0200 (CEST)
-Received: from antivirus1-rhel7.int (localhost [127.0.0.1])
-        by antivirus1-rhel7.int (Postfix) with ESMTP id 8F4E4DA70F
-        for <kernel-janitors@vger.kernel.org>; Wed, 19 Jun 2019 12:51:25 +0200 (CEST)
-Received: by antivirus1-rhel7.int (Postfix, from userid 99)
-        id 86866DA70D; Wed, 19 Jun 2019 12:51:25 +0200 (CEST)
-X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on antivirus1-rhel7.int
-X-Spam-Level: 
-X-Spam-Status: No, score=-108.2 required=7.5 tests=ALL_TRUSTED,BAYES_50,
-        SMTPAUTH_US2,USER_IN_WHITELIST autolearn=disabled version=3.4.1
-Received: from antivirus1-rhel7.int (localhost [127.0.0.1])
-        by antivirus1-rhel7.int (Postfix) with ESMTP id 5515BDA718;
-        Wed, 19 Jun 2019 12:51:23 +0200 (CEST)
-Received: from 192.168.1.97 (192.168.1.97)
- by antivirus1-rhel7.int (F-Secure/fsigk_smtp/550/antivirus1-rhel7.int);
- Wed, 19 Jun 2019 12:51:23 +0200 (CEST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/antivirus1-rhel7.int)
-Received: from us.es (sys.soleta.eu [212.170.55.40])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: 1984lsi)
-        by entrada.int (Postfix) with ESMTPSA id 1D9474265A32;
-        Wed, 19 Jun 2019 12:51:23 +0200 (CEST)
-Date:   Wed, 19 Jun 2019 12:51:22 +0200
-X-SMTPAUTHUS: auth mail.us.es
-From:   Pablo Neira Ayuso <pablo@netfilter.org>
+        id S1731483AbfFSLN7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 Jun 2019 07:13:59 -0400
+Received: from mx2.suse.de ([195.135.220.15]:60880 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727067AbfFSLN7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 19 Jun 2019 07:13:59 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 3A905AF90;
+        Wed, 19 Jun 2019 11:13:58 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+        id BD2D61E15DD; Wed, 19 Jun 2019 13:13:57 +0200 (CEST)
+Date:   Wed, 19 Jun 2019 13:13:57 +0200
+From:   Jan Kara <jack@suse.cz>
 To:     Colin King <colin.king@canonical.com>
-Cc:     Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        "David S . Miller" <davem@davemloft.net>,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+Cc:     Theodore Ts'o <tytso@mit.edu>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        linux-ext4@vger.kernel.org, kernel-janitors@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][V2][next] netfilter: synproxy: ensure zero is returned
- on non-error return path
-Message-ID: <20190619105122.envwm53ew7isp4m2@salvia>
-References: <20190618142244.16463-1-colin.king@canonical.com>
+Subject: Re: [PATCH] ext4: remove redundant assignment to node
+Message-ID: <20190619111357.GD32409@quack2.suse.cz>
+References: <20190619090007.26962-1-colin.king@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190618142244.16463-1-colin.king@canonical.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Virus-Scanned: ClamAV using ClamSMTP
+In-Reply-To: <20190619090007.26962-1-colin.king@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jun 18, 2019 at 03:22:44PM +0100, Colin King wrote:
+On Wed 19-06-19 10:00:06, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> Currently functions nf_synproxy_{ipc4|ipv6}_init return an uninitialized
-> garbage value in variable ret on a successful return.  Fix this by
-> returning zero on success.
+> Pointer 'node' is assigned a value that is never read, node is
+> later overwritten when it re-assigned a different value inside
+> the while-loop.  The assignment is redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Applied, thanks Colin.
+Looks good to me. You can add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+
+> ---
+>  fs/ext4/extents_status.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+> index 023a3eb3afa3..7521de2dcf3a 100644
+> --- a/fs/ext4/extents_status.c
+> +++ b/fs/ext4/extents_status.c
+> @@ -1317,7 +1317,6 @@ static int es_do_reclaim_extents(struct ext4_inode_info *ei, ext4_lblk_t end,
+>  	es = __es_tree_search(&tree->root, ei->i_es_shrink_lblk);
+>  	if (!es)
+>  		goto out_wrap;
+> -	node = &es->rb_node;
+>  	while (*nr_to_scan > 0) {
+>  		if (es->es_lblk > end) {
+>  			ei->i_es_shrink_lblk = end + 1;
+> -- 
+> 2.20.1
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR

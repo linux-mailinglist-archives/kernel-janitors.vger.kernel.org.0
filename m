@@ -2,93 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A50FD4B1BD
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jun 2019 07:58:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F283D4B1C6
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jun 2019 08:04:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725899AbfFSF6U (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 Jun 2019 01:58:20 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:46479 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725854AbfFSF6U (ORCPT
+        id S1730847AbfFSGDI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 Jun 2019 02:03:08 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:48726 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725866AbfFSGDI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 Jun 2019 01:58:20 -0400
-Received: by mail-wr1-f65.google.com with SMTP id n4so1839808wrw.13
-        for <kernel-janitors@vger.kernel.org>; Tue, 18 Jun 2019 22:58:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=v4Lzw69YqCGNT6d2yGg/IWB5HqmTYETWg/4G3e5GhcM=;
-        b=E6zaAPAk1Z4K4tmdwrtkSOWC8nlnur95mxOoftmD56qCT5EXSvT6ycZbg/68lt02Db
-         ANOwmUrYS8w8CEoIGQyyTc12+p7JBLChyKkAGMBvUm8921rg/86HOIoKnjA/G/R8389n
-         OoRBu8SGvOjLJEhFA5uz6sPHwF/dhWNcH3R0aTlwJJfsHcOcmikrhYmCu1usEJe4lyTZ
-         xN3ITGXrDBQodz+8qRz101FS4z+SouBbcBG9U+21yiSi6xIqsHcDAxzY3T1rlTCMg0y8
-         ZGVDqtC6xipnmbNjTRJy0KVXGSMHUadcSXGoWZ7EkPIigPG06rZDh1hvsXAdJMmzfXJ2
-         CxaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=v4Lzw69YqCGNT6d2yGg/IWB5HqmTYETWg/4G3e5GhcM=;
-        b=rpKFPl3PsQlOwb3DqVSHnUkEo0c47l6Y+R+py06udB4sqm2J3K4e9v2vknNgXjV/gm
-         FHrpW/TLaxwKS10nlIpR6DPWl5RyYysATpM5op3AvqA1CFko82734pSkNpTxk4rl61x1
-         BhLWeWI0Ne9RhoRpcuQKqpMJ5+Pej0nFnl3ytI7VrpPfgObg7Yde4D/Zf4f5AQ5rI5h5
-         UgAGaEKu3c2Y6kbLGpN/OzTnEHdD0Nqno0sRnoTDTVtxYaqKcVnCBzpgRM7lgOUKGwL0
-         CjcblfbVAvIn/txQjD7GyF/ijA1b8PSBr19kOwS2/UgY3xnFKL4VS3R2nnMnJA99JIGr
-         jmhw==
-X-Gm-Message-State: APjAAAVWDIiy0QmNSVTkVdGyvW8GX371YDAxK/02y7ez8L6E780rDhow
-        kPomCSlJrcxEaqaUqN4vE5JAqA==
-X-Google-Smtp-Source: APXvYqwCLJB9gv/cQEHgS6YpUkbFLxhQLp+LQAxMubEfU+V09+07SkfNFDSXxJ+QjUIfsER9MWzsng==
-X-Received: by 2002:a5d:4950:: with SMTP id r16mr39947594wrs.136.1560923898554;
-        Tue, 18 Jun 2019 22:58:18 -0700 (PDT)
-Received: from dell ([2.27.35.243])
-        by smtp.gmail.com with ESMTPSA id o126sm592028wmo.1.2019.06.18.22.58.17
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 18 Jun 2019 22:58:18 -0700 (PDT)
-Date:   Wed, 19 Jun 2019 06:58:16 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Amelie Delaunay <amelie.delaunay@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-stm32@st-md-mailman.stormreply.com,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] mfd: stmfx: Fix an endian bug in stmfx_irq_handler()
-Message-ID: <20190619055816.GF18371@dell>
-References: <CAHk-=wgTL5sYCGxX8+xQqyBRWRUE05GAdL58+UTG8bYwjFxMkw@mail.gmail.com>
- <20190617190605.GA21332@mwanda>
- <20190618081645.GM16364@dell>
- <CAHk-=wghW+AKvRGevUiVWwTqWObygSZSdq6Dz2ad81H73VeuRQ@mail.gmail.com>
+        Wed, 19 Jun 2019 02:03:08 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5J5x9E5005962;
+        Wed, 19 Jun 2019 06:03:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=fPuaHyuoIZdDjft/e+uZtMrJ1AQaUg3H7A6qexguayA=;
+ b=Xdp6jmAIDA9gQIaHvu7BwfB+YVlf6RCzPuoJGagELUGOF8qqQ+2SmaQxYY2vnu0vfeTa
+ AW1u/aH0WvN16qt56kJ97K9hp6a3u5v1twzbIE9yKHTajlDWLGIw9oUgrdROyrcspip3
+ iLXR3IIyLD1ri564nFrCHARhMeH3rygRcj7NonC3gJUIwB5net+tiiJJV2BhacwwHYrX
+ MLY7Ph51+CahFF1l5btLy+zcphFtL2t1M6HGV7ZrdVvy3PPojDeG10WmENmI+BhDAh+D
+ YMahWKm2jkv1mIJ64HP+23tj1nP3MW6AZLhIeRpDk5t84r2Q3X3Ce9yAgL0n04wlWRxU /g== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2t7809987f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 Jun 2019 06:03:00 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5J618QG126352;
+        Wed, 19 Jun 2019 06:03:00 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 2t77ymvqtq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 Jun 2019 06:03:00 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5J62wxS019790;
+        Wed, 19 Jun 2019 06:02:58 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 18 Jun 2019 23:02:57 -0700
+Date:   Wed, 19 Jun 2019 09:02:50 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Logan Gunthorpe <logang@deltatee.com>
+Cc:     Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>,
+        Allen Hubbe <allenbh@gmail.com>, linux-ntb@googlegroups.com,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] NTB: test: remove a duplicate check
+Message-ID: <20190619060250.GH18776@kadam>
+References: <20190619053205.GA10452@mwanda>
+ <2f4dea74-d78e-8b53-8dec-df8dc032759c@deltatee.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHk-=wghW+AKvRGevUiVWwTqWObygSZSdq6Dz2ad81H73VeuRQ@mail.gmail.com>
+In-Reply-To: <2f4dea74-d78e-8b53-8dec-df8dc032759c@deltatee.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9292 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=941
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906190048
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9292 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=994 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906190048
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 18 Jun 2019, Linus Torvalds wrote:
+It's not a huge deal obviously but your commit was a6bed7a54165 ("NTB:
+Introduce NTB MSI Test Client") but you know that if I had sent a patch
+called ("NTB: remove a duplicate check") people would have correctly
+complained because the patch prefix is too vague.
 
-> On Tue, Jun 18, 2019 at 1:16 AM Lee Jones <lee.jones@linaro.org> wrote:
-> >
-> > > Reported-by: Linus Torvalds <torvalds@linux-foundation.org>
-> >
-> > Ideally we can get a review too.
-> 
-> Looks fine to me, but obviously somebody should actually _test_ it too.
+What I'm saying is we do this all the time:
 
-Amelie, would you be so kind?
+[PATCH] NTB: add a new foobazle driver
 
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+But it should be:
+
+[PATCH] NTB: foobazle: add a new foobazle driver
+
+Then I can just copy and paste your patch prefix instead of trying
+invent one.
+
+regards,
+dan carpenter
+

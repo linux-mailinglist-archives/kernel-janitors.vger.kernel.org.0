@@ -2,88 +2,128 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D23E24AF5A
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jun 2019 03:10:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1BA84AFDC
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jun 2019 04:08:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728195AbfFSBKr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 18 Jun 2019 21:10:47 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:37354 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725988AbfFSBKr (ORCPT
+        id S1726689AbfFSCIA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 18 Jun 2019 22:08:00 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:39390 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726037AbfFSCH7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 18 Jun 2019 21:10:47 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5J14gVQ192813;
-        Wed, 19 Jun 2019 01:10:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2018-07-02;
- bh=gYDJ565bmJ/QILPFBSke6/24C2eShrgNLI/7RNOCw/w=;
- b=icfG0FHWMgimSuNPuK9FMjXUPxMOECtOivd6pKYKAlFth5lA7sZVGJOzbZjppfZVnNXh
- WbcVRbEE6oOHJG366THADmDiveFXk/KKvFk4+5vy8jbmFc/pBS/WkR7y+rbS+gzmYezk
- m0epdJZz6kg+TwkEQXfBBQ5DzItXsVMXAu21UcDifGXzV0CHDlW441b7FVcxIhpJp4lu
- XQnwPL3CPNAo9ATiseE3r36n1e5GjbhD8KtmOyEQeHJWa3sdsOTm8o/vmrmVBg4UBmBI
- 4QXYi7tCtcLTStp8798vWxD4u6aFhZK5Fb5RjHgHbAbKnpq4iFAVWIIltkuvaYvIIJr+ nw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 2t78098g35-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 19 Jun 2019 01:10:45 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5J19D8l054858;
-        Wed, 19 Jun 2019 01:10:44 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 2t77yn20dn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 19 Jun 2019 01:10:44 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5J1AgQA031238;
-        Wed, 19 Jun 2019 01:10:43 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 18 Jun 2019 18:10:42 -0700
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     martin.petersen@oracle.com, linux-scsi@vger.kernel.org,
-        target-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] scsi: tcmu: Simplify 'tcmu_update_uio_info()'
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20190616070220.24189-1-christophe.jaillet@wanadoo.fr>
-Date:   Tue, 18 Jun 2019 21:10:40 -0400
-In-Reply-To: <20190616070220.24189-1-christophe.jaillet@wanadoo.fr>
-        (Christophe JAILLET's message of "Sun, 16 Jun 2019 09:02:20 +0200")
-Message-ID: <yq1blyuxtv3.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        Tue, 18 Jun 2019 22:07:59 -0400
+Received: by mail-ed1-f67.google.com with SMTP id m10so24644600edv.6;
+        Tue, 18 Jun 2019 19:07:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :content-transfer-encoding:user-agent;
+        bh=s9lpMBH/IugmiFXNYI6ZpyhR++3sMpJb2daAAUrg87c=;
+        b=pWuu1Ni7Pj1W/hQq6vtS/AHazRgRHRM9Y7pAnxIHlPNPp6BXKMhcu6/Tn5/pJhbGQ5
+         vPGGQLKsfjVFADDj+ujB57FNC1EWIjbJTvto5xsdO4cvQVbAfVinkdDrBbRPrbdw9F+I
+         jklYuAY0LP1WIV2QiiCA36FGAMYk+MswrcAPW/Sfze4f491rr9WEqVlAqgB6+dQEJddA
+         IuCq61M1lW1DJKw84V3pP9YP41wIR/AuOw4qzzZyWaRfjXQbl6ps/M5QAILuNMM5cVTE
+         ehUjrIf8MRNDvanyPP30lFjG79ieh+IhvWp7g9VERKAKow8gzilKfGkm8C5LTnWFkUbm
+         c7Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:content-transfer-encoding:user-agent;
+        bh=s9lpMBH/IugmiFXNYI6ZpyhR++3sMpJb2daAAUrg87c=;
+        b=JDzVKgyYP3iFF4mrk/DE8jFtHZFMTnGS/rMnmCu9J8YG2y3dm3hKLBHoVN4fE+Nbq1
+         ObDouB6cUsHO+D49BBpHRJ2YWMW4WhJ9SoO8nP5rLCHO/xvGiqdfRErGfpDmWb5dEWZ/
+         BKRQPZLSmqA/6bulzwGcuAYMUnhovNqQDbCzE/g6+hP1NVZ6w4IfaIdZjrBrYqCJd0wE
+         0wlwxs2H6c9Beo5kpc5qd1YNzjjVr4zaayZz+FWDUE3D+xe8kQxmGjI64Gh0nITiHwu9
+         b/CPFA6WvISstBw63p9ImgmUKnxUZweWF+Ir+bvnpD9Qn7KwlDRiJLaiForvewIul/rX
+         kU3w==
+X-Gm-Message-State: APjAAAV1Qja+hAHyGwUWv9AFYrIRIloJAB7nCPrUVyNTSNyoHkpbiOAV
+        fuB0Q95J4N2GmdL7IESS130=
+X-Google-Smtp-Source: APXvYqyV3lljKw+wProWO8jUjFZkqDRUPrpL6ShZ5xRp5iz2PaEe1L1taSJ0vgFMnRqhprl/oGHqww==
+X-Received: by 2002:a17:906:2301:: with SMTP id l1mr54424834eja.92.1560910077820;
+        Tue, 18 Jun 2019 19:07:57 -0700 (PDT)
+Received: from smtp.gmail.com ([187.121.151.146])
+        by smtp.gmail.com with ESMTPSA id k11sm1974837edq.54.2019.06.18.19.07.53
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Tue, 18 Jun 2019 19:07:57 -0700 (PDT)
+Date:   Tue, 18 Jun 2019 23:07:50 -0300
+From:   Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>
+Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, intel-gfx@lists.freedesktop.org
+Subject: [PATCH V4] drm/drm_vblank: Change EINVAL by the correct errno
+Message-ID: <20190619020750.swzerehjbvx6sbk2@smtp.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9292 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=920
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906190007
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9292 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=984 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906190007
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+User-Agent: NeoMutt/20180716
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+For historical reason, the function drm_wait_vblank_ioctl always return
+-EINVAL if something gets wrong. This scenario limits the flexibility
+for the userspace make detailed verification of the problem and take
+some action. In particular, the validation of “if (!dev->irq_enabled)”
+in the drm_wait_vblank_ioctl is responsible for checking if the driver
+support vblank or not. If the driver does not support VBlank, the
+function drm_wait_vblank_ioctl returns EINVAL which does not represent
+the real issue; this patch changes this behavior by return EOPNOTSUPP.
+Additionally, some operations are unsupported by this function, and
+returns EINVAL; this patch also changes the return value to EOPNOTSUPP
+in this case. Lastly, the function drm_wait_vblank_ioctl is invoked by
+libdrm, which is used by many compositors; because of this, it is
+important to check if this change breaks any compositor. In this sense,
+the following projects were examined:
 
-Christophe,
+* Drm-hwcomposer
+* Kwin
+* Sway
+* Wlroots
+* Wayland-core
+* Weston
+* Xorg (67 different drivers)
 
-> Use 'kasprintf()' instead of:
->    - snprintf(NULL, 0...
->    - kmalloc(...
->    - snprintf(...
->
-> This is less verbose and saves 7 bytes (i.e. the space for '/(null)') if
-> 'udev->dev_config' is NULL.
+For each repository the verification happened in three steps:
 
-Applied to 5.3/scsi-queue. Thanks!
+* Update the main branch
+* Look for any occurrence "drmWaitVBlank" with the command:
+  git grep -n "drmWaitVBlank"
+* Look in the git history of the project with the command:
+  git log -SdrmWaitVBlank
 
+Finally, none of the above projects validate the use of EINVAL which
+make safe, at least for these projects, to change the return values.
+
+Change since V3:
+ - Return EINVAL for _DRM_VBLANK_SIGNAL (Daniel)
+
+Change since V2:
+ Daniel Vetter and Chris Wilson
+ - Replace ENOTTY by EOPNOTSUPP
+ - Return EINVAL if the parameters are wrong
+
+Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+---
+ drivers/gpu/drm/drm_vblank.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
+index 603ab105125d..bed233361614 100644
+--- a/drivers/gpu/drm/drm_vblank.c
++++ b/drivers/gpu/drm/drm_vblank.c
+@@ -1582,7 +1582,7 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, void *data,
+ 	unsigned int flags, pipe, high_pipe;
+ 
+ 	if (!dev->irq_enabled)
+-		return -EINVAL;
++		return -EOPNOTSUPP;
+ 
+ 	if (vblwait->request.type & _DRM_VBLANK_SIGNAL)
+ 		return -EINVAL;
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.21.0

@@ -2,99 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 43AE74B132
-	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jun 2019 07:14:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 602AD4B16C
+	for <lists+kernel-janitors@lfdr.de>; Wed, 19 Jun 2019 07:30:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730792AbfFSFNU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 19 Jun 2019 01:13:20 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:43984 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725893AbfFSFNT (ORCPT
+        id S1730880AbfFSFac (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 19 Jun 2019 01:30:32 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:54638 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726195AbfFSFab (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 19 Jun 2019 01:13:19 -0400
-Received: by mail-wr1-f68.google.com with SMTP id p13so1778462wru.10;
-        Tue, 18 Jun 2019 22:13:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=9guZEDssE8I+Ozz4TU41/U7IQZOO1+3LKJDr7vi/5Ig=;
-        b=OW2v0Mufw9VUMtEQX0EIYMhdF6CFGIbVcMLAKreHYZkGp2OyuSAfASx/K+buOjywda
-         Dk6qy5lfj9BrOmNUZl8p3cKJhYMkjPokGwuXVK6EsSXD9p4uhxX/orHbR2WjAjNgEbcS
-         VMUmfHMO6pK1C8PqH53BeGopVDQr4MsKWW4ZhvihkaJIxYd1aLloqGLIN9IflPdrF+Al
-         K7KRXKaG/oGSStyrstgrltAQBz7LhiLZFOy4fXG2+pTjQkXdffJItdA2mcrSEdkjfUWp
-         GSvHKJBu3v29Bi2p2ENmLZHSdjCxcuk7eJEpq2HcGfO7+y0z2RuNhWxr0WmxVi5kIqzm
-         zpcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=9guZEDssE8I+Ozz4TU41/U7IQZOO1+3LKJDr7vi/5Ig=;
-        b=KE/SSLVmsq8xWqo+dGrFnFkWLIXAPhhfRCDl84ajtcCqpOwp+Y4dbeeT1qxYFssc7j
-         qs/KYupTeX3waCRUFiDh/JEnHW4SgJY2mr3TSYiuOhGSG3onotAa8qex8LCbSZS3SNqT
-         tkUme/yMr7lGBo/n1me3QYMCEL/DU7LG9iDrYphh8QH2G2OLj07nDGeJnDblf3imEvdn
-         h3alWSCrYrhSLJeKzZB8ksJUDQg5+y6mBda2NNh/Ubhfx3FazrHXqR8IK/CIlyzRVqnI
-         Ob88xGYsX3agFVhNGBP5xy+Prjm6OAhZcBq+757krrPaSuVBCUb670mFVqUQsWwku4P2
-         C0ug==
-X-Gm-Message-State: APjAAAWTcu1QT5lHGo9hOLeCAHxL/hg46U4XjL4gWL1WKozJHFWv+Baz
-        rlAw2r+Ypu442qmqynyFWg0fC2iI
-X-Google-Smtp-Source: APXvYqxGBww6ssn1q6Cc/uBn6zveGVb+IPhy76VqGDZJSXuEch6xRNKIOwbG51zvq8ngpGJrw8nuoA==
-X-Received: by 2002:adf:f442:: with SMTP id f2mr17524212wrp.275.1560921196964;
-        Tue, 18 Jun 2019 22:13:16 -0700 (PDT)
-Received: from blackbox.darklights.net (p200300F133C20E000CE01247662D4005.dip0.t-ipconnect.de. [2003:f1:33c2:e00:ce0:1247:662d:4005])
-        by smtp.googlemail.com with ESMTPSA id f204sm301596wme.18.2019.06.18.22.13.15
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 18 Jun 2019 22:13:16 -0700 (PDT)
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-To:     colin.king@canonical.com
-Cc:     alexandre.torgue@st.com, davem@davemloft.net, joabreu@synopsys.com,
-        kernel-janitors@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        mcoquelin.stm32@gmail.com, netdev@vger.kernel.org,
-        peppe.cavallaro@st.com
-Subject: RE: [PATCH] net: stmmac: add sanity check to device_property_read_u32_array call
-Date:   Wed, 19 Jun 2019 07:13:08 +0200
-Message-Id: <20190619051308.23582-1-martin.blumenstingl@googlemail.com>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190617165836.4673-1-colin.king@canonical.com>
-References: <20190617165836.4673-1-colin.king@canonical.com>
+        Wed, 19 Jun 2019 01:30:31 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5J5O27q176930;
+        Wed, 19 Jun 2019 05:30:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=buhWTROSF4QaiBD0PrOB0xejan9MPIV0yZA5jFiSTQ0=;
+ b=kMtb4Gdn2i40OcM675R7t0kdiM3vs9UjF8SABFF70VdrVdTA9sQLC5EJKpJ4FTo7re/w
+ TH63yAuRQ0UsD4WyrIpEowSOP+0LHKFaT6bkF6jbGwOy1B4POEdmiF9pD4J6+F7vrF6J
+ bh/+nSoEZ1RSnaB3i4FibkDUf4ogts4IvsqOXohv+o4tIIDgUgvXeSTtnrjZK1esEcFk
+ 5LqWs+9i1GmTzR93rcUFsrYGu3J6t+moc/nhfO62RisId5MoBDh6yFNuT4TEmPs5a2B5
+ mfZ71S5SiaUUDk7paeQqfG2wSGV2bGgG8lZaCx3xw0zKlQq0QjtpglD0QOwXEriFMtP5 zw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2t780994cw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 Jun 2019 05:30:23 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5J5TEwV068317;
+        Wed, 19 Jun 2019 05:30:23 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 2t77ymvdq1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 19 Jun 2019 05:30:23 +0000
+Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5J5UK2g002327;
+        Wed, 19 Jun 2019 05:30:20 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 18 Jun 2019 22:30:19 -0700
+Date:   Wed, 19 Jun 2019 08:30:12 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Nick Crews <ncrews@chromium.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] platform/chrome: wilco_ec: fix null pointer
+ dereference on failed kzalloc
+Message-ID: <20190619053012.GM28859@kadam>
+References: <20190618153924.19491-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190618153924.19491-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9292 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906190043
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9292 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906190043
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Colin,
+On Tue, Jun 18, 2019 at 04:39:24PM +0100, Colin King wrote:
+> diff --git a/drivers/platform/chrome/wilco_ec/event.c b/drivers/platform/chrome/wilco_ec/event.c
+> index c975b76e6255..e251a989b152 100644
+> --- a/drivers/platform/chrome/wilco_ec/event.c
+> +++ b/drivers/platform/chrome/wilco_ec/event.c
+> @@ -112,8 +112,11 @@ module_param(queue_size, int, 0644);
+>  static struct ec_event_queue *event_queue_new(int capacity)
+>  {
+>  	size_t entries_size = sizeof(struct ec_event *) * capacity;
+> -	struct ec_event_queue *q = kzalloc(sizeof(*q) + entries_size,
+> -					   GFP_KERNEL);
+> +	struct ec_event_queue *q;
+> +
+> +	q = kzalloc(sizeof(*q) + entries_size, GFP_KERNEL);
+> +	if (!q)
+> +		return NULL;
 
-> Currently the call to device_property_read_u32_array is not error checked
-> leading to potential garbage values in the delays array that are then used
-> in msleep delays.  Add a sanity check to the property fetching.
-> 
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-I have also sent a patch [0] to fix initialize the array.
-can you please look at my patch so we can work out which one to use?
+We have a new struct_size() macro designed for these allocations.
 
-my concern is that the "snps,reset-delays-us" property is optional,
-the current dt-bindings documentation states that it's a required
-property. in reality it isn't, there are boards (two examples are
-mentioned in my patch: [0]) without it.
+	q = kzalloc(struct_size(q, entries, capacity), GFP_KERNEL);
 
-so I believe that the resulting behavior has to be:
-1. don't delay if this property is missing (instead of delaying for
-   <garbage value> ms)
-2. don't error out if this property is missing
+The advantage is that it checks for integer overflows.
 
-your patch covers #1, can you please check whether #2 is also covered?
-I tested case #2 when submitting my patch and it worked fine (even
-though I could not reproduce the garbage values which are being read
-on some boards)
+regards,
+dan carpenter
 
-
-Thank you!
-Martin
-
-
-[0] https://lkml.org/lkml/2019/4/19/638

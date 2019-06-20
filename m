@@ -2,102 +2,143 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 030824D79F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Jun 2019 20:20:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FC384D9B5
+	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Jun 2019 20:48:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727577AbfFTSNf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 Jun 2019 14:13:35 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:37778 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729283AbfFTSNe (ORCPT
+        id S1726147AbfFTSs0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 20 Jun 2019 14:48:26 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:4891 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726062AbfFTSs0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 Jun 2019 14:13:34 -0400
-Received: by mail-pl1-f195.google.com with SMTP id bh12so1713993plb.4
-        for <kernel-janitors@vger.kernel.org>; Thu, 20 Jun 2019 11:13:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=RmdL4r6TvJ+oKourpQb+LBst9Fomwh98eeYZGetnRvY=;
-        b=oV9KeU7fuBkBdNRgFANyfh0fcXSl4wDv8kbA4/2xYSLmTm8D40QNMvO/CQH/+cDxK7
-         GbW9f/ukXyTOqWTO2qrk4Tff8D13y9JHIJMsHsnmCAXLnEngZl922vBjaJ4Phu50pSyF
-         pE8CYKHUOKZwcRKjRd0O9tRtzDNgGbDGVRcmw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=RmdL4r6TvJ+oKourpQb+LBst9Fomwh98eeYZGetnRvY=;
-        b=H0p4Ryiiyxi3w8Bi+TimmNlFE5zayQTVsOppxLtJx2MQL19OC+eapWSwI+CSZAJecc
-         +JEXVKQN9gzHm/k0nl2rMuAbNaDGMjTpCKNsFqXSX+GfMyQQHK1Dex/ABrpj3lVImP/I
-         b3D8vp+bFtSLbGWOtgZTbAHbp4XmRzUovzfrotuDFuHYUd3wVR+kNYlIaJCOvVTbc9js
-         XQKuI5Ydgbzx25NAHINo/Qn2cp/TqpanbzwYNmWhj9Z+7apKhFTQl2PiuJRqZRA3eNLw
-         ntpFJg4qz5k6z6/wALvIF6u7s23HaDt/JFleF/OvMLwonIhrOK9gne49hyZG/MHvRdiX
-         TZPw==
-X-Gm-Message-State: APjAAAWkA/x2szTOozHTAk+W49e2oOnQW6PDL9obD57a1ErUCxVWpwjj
-        MLtwj9pf3zdGB2/UQPDEbzYRhQ==
-X-Google-Smtp-Source: APXvYqwRqHmHiOefZUkjtzQ5hzlVB17R/dzjZKqG93Hc2P9UkalWcaAo2ZuXfBOPjxAeefIn2Ir5zA==
-X-Received: by 2002:a17:902:d707:: with SMTP id w7mr8966934ply.128.1561054413761;
-        Thu, 20 Jun 2019 11:13:33 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id b6sm311008pgd.5.2019.06.20.11.13.32
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 20 Jun 2019 11:13:32 -0700 (PDT)
-Date:   Thu, 20 Jun 2019 11:13:32 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Colin King <colin.king@canonical.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] lkdtm: remove redundant initialization of ret
-Message-ID: <201906201112.AE06471@keescook>
-References: <20190614094311.24024-1-colin.king@canonical.com>
+        Thu, 20 Jun 2019 14:48:26 -0400
+X-IronPort-AV: E=Sophos;i="5.63,397,1557180000"; 
+   d="scan'208";a="388394882"
+Received: from abo-12-105-68.mrs.modulonet.fr (HELO hadrien) ([85.68.105.12])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Jun 2019 20:48:23 +0200
+Date:   Thu, 20 Jun 2019 20:48:23 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@lip6.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     kernel-janitors@vger.kernel.org,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Ding Xiang <dingxiang@cmss.chinamobile.com>
+Subject: Re: [PATCH] Coccinelle: Add a SmPL script for the reconsideration
+ of redundant dev_err() calls
+In-Reply-To: <05d85182-7ec3-8fc1-4bcd-fd2528de3a40@web.de>
+Message-ID: <alpine.DEB.2.21.1906202046550.3087@hadrien>
+References: <05d85182-7ec3-8fc1-4bcd-fd2528de3a40@web.de>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190614094311.24024-1-colin.king@canonical.com>
+Content-Type: multipart/mixed; boundary="8323329-1240475580-1561056503=:3087"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jun 14, 2019 at 10:43:11AM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable ret is being initialized with the value -EINVAL however
-> this value is never read and ret is being re-assigned later on. Hence
-> the initialization is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Thanks!
+--8323329-1240475580-1561056503=:3087
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 
-Acked-by: Kees Cook <keescook@chromium.org>
 
-Greg, can you take this please?
 
--Kees
+On Thu, 20 Jun 2019, Markus Elfring wrote:
 
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Thu, 20 Jun 2019 19:12:53 +0200
+>
+> The function “devm_ioremap_resource” contains appropriate error reporting.
+> Thus it can be questionable to present another error message
+> at other places.
+>
+> Provide design options for the adjustment of affected source code
+> by the means of the semantic patch language (Coccinelle software).
+>
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 > ---
->  drivers/misc/lkdtm/core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
-> index bba093224813..92df35fdeab0 100644
-> --- a/drivers/misc/lkdtm/core.c
-> +++ b/drivers/misc/lkdtm/core.c
-> @@ -390,7 +390,7 @@ static int __init lkdtm_module_init(void)
->  {
->  	struct crashpoint *crashpoint = NULL;
->  	const struct crashtype *crashtype = NULL;
-> -	int ret = -EINVAL;
-> +	int ret;
->  	int i;
->  
->  	/* Neither or both of these need to be set */
-> -- 
-> 2.20.1
-> 
+>  .../coccinelle/misc/redundant_dev_err.cocci   | 53 +++++++++++++++++++
+>  1 file changed, 53 insertions(+)
+>  create mode 100644 scripts/coccinelle/misc/redundant_dev_err.cocci
+>
+> diff --git a/scripts/coccinelle/misc/redundant_dev_err.cocci b/scripts/coccinelle/misc/redundant_dev_err.cocci
+> new file mode 100644
+> index 000000000000..aeb228280276
+> --- /dev/null
+> +++ b/scripts/coccinelle/misc/redundant_dev_err.cocci
+> @@ -0,0 +1,53 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/// Reconsider a function call for redundant error reporting.
+> +//
+> +// Keywords: dev_err redundant device error messages
+> +// Confidence: Medium
+> +
+> +virtual patch
+> +virtual context
+> +virtual org
+> +virtual report
+> +
+> +@display depends on context@
+> +expression e;
+> +@@
+> + e = devm_ioremap_resource(...);
+> + if (IS_ERR(e))
+> + {
+> +*   dev_err(...);
+> +    return (...);
+> + }
 
--- 
-Kees Cook
+Why do you assume that there is exactly one dev_err and one return after
+the test?
+
+> +
+> +@deletion depends on patch@
+> +expression e;
+> +@@
+> + e = devm_ioremap_resource(...);
+> + if (IS_ERR(e))
+> +-{
+> +-   dev_err(...);
+> +    return (...);
+> +-}
+> +
+> +@or depends on org || report@
+> +expression e;
+> +position p;
+> +@@
+> + e = devm_ioremap_resource(...);
+> + if (IS_ERR(e))
+> + {
+> +    dev_err@p(...);
+> +    return (...);
+> + }
+> +
+> +@script:python to_do depends on org@
+> +p << or.p;
+> +@@
+> +coccilib.org.print_todo(p[0],
+> +                        "WARNING: An error message is probably not needed here because the previously called function contains appropriate error reporting.")
+
+"the previously called function" would be better as
+"devm_ioremap_resource".
+
+julia
+
+> +
+> +@script:python reporting depends on report@
+> +p << or.p;
+> +@@
+> +coccilib.report.print_report(p[0],
+> +                             "WARNING: An error message is probably not needed here because the previously called function contains appropriate error reporting.")
+> --
+> 2.22.0
+>
+>
+--8323329-1240475580-1561056503=:3087--

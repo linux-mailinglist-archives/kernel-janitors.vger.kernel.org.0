@@ -2,29 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 23EE84CEA0
-	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Jun 2019 15:28:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBFCD4CF93
+	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Jun 2019 15:51:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726796AbfFTN1z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 Jun 2019 09:27:55 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:57397 "EHLO
+        id S1732078AbfFTNu6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 20 Jun 2019 09:50:58 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:57928 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726428AbfFTN1z (ORCPT
+        with ESMTP id S1726654AbfFTNu6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 Jun 2019 09:27:55 -0400
+        Thu, 20 Jun 2019 09:50:58 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hdx6V-0004Te-Cq; Thu, 20 Jun 2019 13:27:51 +0000
+        id 1hdxSn-0005dA-1a; Thu, 20 Jun 2019 13:50:53 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Xue Chaojing <xuechaojing@huawei.com>,
-        Aviad Krawczyk <aviad.krawczyk@huawei.com>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+To:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>,
+        Parav Pandit <parav@mellanox.com>, linux-rdma@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][net-next] hinic: fix dereference of pointer hwdev before it is null checked
-Date:   Thu, 20 Jun 2019 14:27:51 +0100
-Message-Id: <20190620132751.26438-1-colin.king@canonical.com>
+Subject: [PATCH][next] RDMA: check for null return from call to ib_get_client_data
+Date:   Thu, 20 Jun 2019 14:50:52 +0100
+Message-Id: <20190620135052.27367-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,80 +36,30 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently pointer hwdev is dereferenced when assigning hwif before
-hwdev is null checked.  Fix this by only derefencing hwdev after the
-null check.
+The return from ib_get_client_data can potentially be null, so add a null
+check on umad_dev and return -ENODEV in this unlikely case to avoid any
+null pointer deferences.
 
-Addresses-Coverity: ("Dereference before null check")
-Fixes: 4fdc51bb4e92 ("hinic: add support for rss parameters with ethtool")
+Addresses-Coverity: ("Dereference null return")
+Fixes: 8f71bb0030b8 ("RDMA: Report available cdevs through RDMA_NLDEV_CMD_GET_CHARDEV")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- .../net/ethernet/huawei/hinic/hinic_port.c    | 21 +++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/infiniband/core/user_mad.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/huawei/hinic/hinic_port.c b/drivers/net/ethernet/huawei/hinic/hinic_port.c
-index 6b933962de46..1c3b3c0d6298 100644
---- a/drivers/net/ethernet/huawei/hinic/hinic_port.c
-+++ b/drivers/net/ethernet/huawei/hinic/hinic_port.c
-@@ -711,14 +711,17 @@ int hinic_get_rss_type(struct hinic_dev *nic_dev, u32 tmpl_idx,
- {
- 	struct hinic_rss_context_table ctx_tbl = { 0 };
- 	struct hinic_hwdev *hwdev = nic_dev->hwdev;
--	struct hinic_hwif *hwif = hwdev->hwif;
--	struct pci_dev *pdev = hwif->pdev;
-+	struct hinic_hwif *hwif;
-+	struct pci_dev *pdev;
- 	u16 out_size = sizeof(ctx_tbl);
- 	int err;
+diff --git a/drivers/infiniband/core/user_mad.c b/drivers/infiniband/core/user_mad.c
+index 547090b41cfb..d78a35913824 100644
+--- a/drivers/infiniband/core/user_mad.c
++++ b/drivers/infiniband/core/user_mad.c
+@@ -1153,6 +1153,9 @@ static int ib_issm_get_nl_info(struct ib_device *ibdev, void *client_data,
+ 	struct ib_umad_device *umad_dev =
+ 		ib_get_client_data(ibdev, &umad_client);
  
- 	if (!hwdev || !rss_type)
- 		return -EINVAL;
- 
-+	hwif = hwdev->hwif;
-+	pdev = hwif->pdev;
++	if (!umad_dev)
++		return -ENODEV;
 +
- 	ctx_tbl.func_id = HINIC_HWIF_FUNC_IDX(hwif);
- 	ctx_tbl.template_id = tmpl_idx;
- 
-@@ -776,14 +779,17 @@ int hinic_rss_get_template_tbl(struct hinic_dev *nic_dev, u32 tmpl_idx,
- {
- 	struct hinic_rss_template_key temp_key = { 0 };
- 	struct hinic_hwdev *hwdev = nic_dev->hwdev;
--	struct hinic_hwif *hwif = hwdev->hwif;
--	struct pci_dev *pdev = hwif->pdev;
-+	struct hinic_hwif *hwif;
-+	struct pci_dev *pdev;
- 	u16 out_size = sizeof(temp_key);
- 	int err;
- 
- 	if (!hwdev || !temp)
+ 	if (!rdma_is_port_valid(ibdev, res->port))
  		return -EINVAL;
- 
-+	hwif = hwdev->hwif;
-+	pdev = hwif->pdev;
-+
- 	temp_key.func_id = HINIC_HWIF_FUNC_IDX(hwif);
- 	temp_key.template_id = tmpl_idx;
- 
-@@ -832,14 +838,17 @@ int hinic_rss_get_hash_engine(struct hinic_dev *nic_dev, u8 tmpl_idx, u8 *type)
- {
- 	struct hinic_rss_engine_type hash_type = { 0 };
- 	struct hinic_hwdev *hwdev = nic_dev->hwdev;
--	struct hinic_hwif *hwif = hwdev->hwif;
--	struct pci_dev *pdev = hwif->pdev;
-+	struct hinic_hwif *hwif;
-+	struct pci_dev *pdev;
- 	u16 out_size = sizeof(hash_type);
- 	int err;
- 
- 	if (!hwdev || !type)
- 		return -EINVAL;
- 
-+	hwif = hwdev->hwif;
-+	pdev = hwif->pdev;
-+
- 	hash_type.func_id = HINIC_HWIF_FUNC_IDX(hwif);
- 	hash_type.template_id = tmpl_idx;
  
 -- 
 2.20.1

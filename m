@@ -2,80 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 78A794D140
-	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Jun 2019 17:02:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A17DD4D1EE
+	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Jun 2019 17:19:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732049AbfFTPCU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 Jun 2019 11:02:20 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:33132 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731511AbfFTPCT (ORCPT
+        id S1732127AbfFTPTJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 20 Jun 2019 11:19:09 -0400
+Received: from mx08-00178001.pphosted.com ([91.207.212.93]:38120 "EHLO
+        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726798AbfFTPTI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 Jun 2019 11:02:19 -0400
-Received: by mail-qt1-f194.google.com with SMTP id x2so3545666qtr.0
-        for <kernel-janitors@vger.kernel.org>; Thu, 20 Jun 2019 08:02:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=LAmn0cqH4e72se7Q8G77z4kg+TBm3Zco/JpAJhHU5p0=;
-        b=HjU6/VsM0KB/eiFddTY4G73EtF0wkPxc45dCBFALXB1aDrp7J/EZ28r/aC0D6MJ4v1
-         5GbvVt4Fr4ufnUQUKluhoRRc5FT9fByNdINpkPRIjxWEEw8CPQbQd2cLSot/pwWjwHwd
-         TDWwFzB4kLvy3XURKj9vXCAINfI3uBzFBn80p7LrCaitVz5PVpXrqlG5mCDg9vb4eaMg
-         cRMD5aRRxXhfgdnAQqr5JY52mP+kRTo1jxJDTcWQi/TYRRRG61Y7xwOEFFB4zI0TKL/D
-         noQEfYhRw/A2W/doc5ESujoy+wIklIBl+vv+hPExyIYvWT9EDwMSIHb8Ubc/2R6hg6KN
-         F65Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=LAmn0cqH4e72se7Q8G77z4kg+TBm3Zco/JpAJhHU5p0=;
-        b=a3bjYOFSi7cE5ryXphjSibUutkqMJJpIjGojmeQO8BI2zkBbGLkKJHexFWIK+wVR6c
-         fZecZY8e7TfHTSzcWaZ9d4ziNrGhQKIVZ1a8kMQaf/q/tnLmw6KApiVvE1njDTa31K8H
-         JMh7U5PQb1rwHT/E00BF362U7wHdjF714gj4LsjakNtNmXOgE5RjO7tD7kLjKZi6bjdn
-         zEHmWAG2XB+BbvbnZEgIXJ3tGFMzSpQvAaPXRM/+oqhop67MasCPTAPtecnMS4kpG6De
-         C73AoLD++Frr5dWgZgq+sMoWBQJ3RtrLPpSt88e+DtOs25l4iak0bMJ4kNzAn1gO0TDp
-         ryvw==
-X-Gm-Message-State: APjAAAVoaQFfVvY8d9FZSF73qyOwan7P+Wr7AXRwyCy56r40YUvnn7fb
-        HCCjMhfqOidHcBjvG5CErQy4PQ==
-X-Google-Smtp-Source: APXvYqxm++fo1z3dN/3lnL7+x6ZfDiibahHp1txVIF2lDJNMIEgYUqEk6cEvG67c//h2loN0iLxAmw==
-X-Received: by 2002:a0c:88a6:: with SMTP id 35mr9514994qvn.84.1561042938687;
-        Thu, 20 Jun 2019 08:02:18 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-156-34-55-100.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.55.100])
-        by smtp.gmail.com with ESMTPSA id m4sm10510647qka.70.2019.06.20.08.02.17
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 20 Jun 2019 08:02:17 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1hdyZt-0006OH-D4; Thu, 20 Jun 2019 12:02:17 -0300
-Date:   Thu, 20 Jun 2019 12:02:17 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Doug Ledford <dledford@redhat.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Parav Pandit <parav@mellanox.com>, linux-rdma@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] RDMA: check for null return from call to
- ib_get_client_data
-Message-ID: <20190620150217.GA19891@ziepe.ca>
-References: <20190620135052.27367-1-colin.king@canonical.com>
+        Thu, 20 Jun 2019 11:19:08 -0400
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+        by mx08-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5KFHhOE011982;
+        Thu, 20 Jun 2019 17:18:05 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type : content-id
+ : content-transfer-encoding : mime-version; s=STMicroelectronics;
+ bh=3awahpLzjIg/zQ8bAq/yq4u/Eajukl1uJeabfahZE1k=;
+ b=QE4URSfxjpHaljx4dsJHe7OiqHVN6fRUApZ7Yc2CHBNzWUJ0sELxztHUhoNWPWJA9H+p
+ 7bAVnFzPrpkMJ3zKoP/vmqvYoJ4dvQ5bE4U89jwhIRfnJy0I9BTc5ljcBwXAxVp35OOo
+ etfmfe+F7NIo7hFUzjXFv7uPJfEX03p44gkNNV77syS3TtMiB5Q7hP6BEzSII79JKmfW
+ WrkyoyNiAjxyV8RxFpUuCChqDuS3ZJjIL6C3PNr2uosibu4XfNu9UMTZJo7+S7utW3W5
+ RegGBa6tbYoq9e3OhzSxlmX92P8iXb18fHvUVSYGxZCyFtNmyGYvv9XKNGyLWikcjlPp lA== 
+Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
+        by mx08-00178001.pphosted.com with ESMTP id 2t78132f08-1
+        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
+        Thu, 20 Jun 2019 17:18:05 +0200
+Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
+        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id EC41831;
+        Thu, 20 Jun 2019 15:18:03 +0000 (GMT)
+Received: from Webmail-eu.st.com (sfhdag3node3.st.com [10.75.127.9])
+        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id C8FE02C8C;
+        Thu, 20 Jun 2019 15:18:03 +0000 (GMT)
+Received: from SFHDAG3NODE2.st.com (10.75.127.8) by SFHDAG3NODE3.st.com
+ (10.75.127.9) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Thu, 20 Jun
+ 2019 17:18:03 +0200
+Received: from SFHDAG3NODE2.st.com ([fe80::b82f:1ce:8854:5b96]) by
+ SFHDAG3NODE2.st.com ([fe80::b82f:1ce:8854:5b96%20]) with mapi id
+ 15.00.1347.000; Thu, 20 Jun 2019 17:18:03 +0200
+From:   Amelie DELAUNAY <amelie.delaunay@st.com>
+To:     Lee Jones <lee.jones@linaro.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+CC:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre TORGUE <alexandre.torgue@st.com>,
+        "linux-stm32@st-md-mailman.stormreply.com" 
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux List Kernel Mailing <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] mfd: stmfx: Fix an endian bug in stmfx_irq_handler()
+Thread-Topic: [PATCH] mfd: stmfx: Fix an endian bug in stmfx_irq_handler()
+Thread-Index: AQHVJT/EzC9etQZAeEm7fd3OYhvByKag8E+AgADT/ICAAJenAIACLrsA
+Date:   Thu, 20 Jun 2019 15:18:03 +0000
+Message-ID: <f0ff1e54-c1b9-4a08-c7ff-2ff545e398c3@st.com>
+References: <CAHk-=wgTL5sYCGxX8+xQqyBRWRUE05GAdL58+UTG8bYwjFxMkw@mail.gmail.com>
+ <20190617190605.GA21332@mwanda> <20190618081645.GM16364@dell>
+ <CAHk-=wghW+AKvRGevUiVWwTqWObygSZSdq6Dz2ad81H73VeuRQ@mail.gmail.com>
+ <20190619055816.GF18371@dell>
+In-Reply-To: <20190619055816.GF18371@dell>
+Accept-Language: fr-FR, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.75.127.50]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <18B2C5B8D6D879419D1A363687D100BA@st.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190620135052.27367-1-colin.king@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-20_11:,,
+ signatures=0
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jun 20, 2019 at 02:50:52PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The return from ib_get_client_data can potentially be null, so add a null
-> check on umad_dev and return -ENODEV in this unlikely case to avoid any
-> null pointer deferences.
-
-It would be a kernel bug if NULL is seen here.
-
-Jason
+T24gNi8xOS8xOSA3OjU4IEFNLCBMZWUgSm9uZXMgd3JvdGU6DQo+IE9uIFR1ZSwgMTggSnVuIDIw
+MTksIExpbnVzIFRvcnZhbGRzIHdyb3RlOg0KPiANCj4+IE9uIFR1ZSwgSnVuIDE4LCAyMDE5IGF0
+IDE6MTYgQU0gTGVlIEpvbmVzIDxsZWUuam9uZXNAbGluYXJvLm9yZz4gd3JvdGU6DQo+Pj4NCj4+
+Pj4gUmVwb3J0ZWQtYnk6IExpbnVzIFRvcnZhbGRzIDx0b3J2YWxkc0BsaW51eC1mb3VuZGF0aW9u
+Lm9yZz4NCj4+Pg0KPj4+IElkZWFsbHkgd2UgY2FuIGdldCBhIHJldmlldyB0b28uDQo+Pg0KPj4g
+TG9va3MgZmluZSB0byBtZSwgYnV0IG9idmlvdXNseSBzb21lYm9keSBzaG91bGQgYWN0dWFsbHkg
+X3Rlc3RfIGl0IHRvby4NCj4gDQo+IEFtZWxpZSwgd291bGQgeW91IGJlIHNvIGtpbmQ/DQo+IA0K
+DQpUZXN0ZWQgb24gc3RtMzJtcDE1N2MtZXYxLg0KDQpUZXN0ZWQtYnk6IEFtZWxpZSBEZWxhdW5h
+eSA8YW1lbGllLmRlbGF1bmF5QHN0LmNvbT4=

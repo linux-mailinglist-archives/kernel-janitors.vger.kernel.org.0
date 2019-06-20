@@ -2,65 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EBFCD4CF93
-	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Jun 2019 15:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D2264D0C9
+	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Jun 2019 16:50:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732078AbfFTNu6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 Jun 2019 09:50:58 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:57928 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726654AbfFTNu6 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 Jun 2019 09:50:58 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hdxSn-0005dA-1a; Thu, 20 Jun 2019 13:50:53 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Parav Pandit <parav@mellanox.com>, linux-rdma@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] RDMA: check for null return from call to ib_get_client_data
-Date:   Thu, 20 Jun 2019 14:50:52 +0100
-Message-Id: <20190620135052.27367-1-colin.king@canonical.com>
+        id S1727040AbfFTOuY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 20 Jun 2019 10:50:24 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:53824 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726551AbfFTOuY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 20 Jun 2019 10:50:24 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 00E8BD69FDD3116E966A;
+        Thu, 20 Jun 2019 22:50:06 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 20 Jun 2019 22:49:56 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Zhu Yingjiang <yingjiang.zhu@linux.intel.com>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>
+CC:     YueHaibing <yuehaibing@huawei.com>, <alsa-devel@alsa-project.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] ASoC: SOF: Intel: hda: remove duplicated include from hda.c
+Date:   Thu, 20 Jun 2019 14:57:09 +0000
+Message-ID: <20190620145709.122498-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Remove duplicated include.
 
-The return from ib_get_client_data can potentially be null, so add a null
-check on umad_dev and return -ENODEV in this unlikely case to avoid any
-null pointer deferences.
-
-Addresses-Coverity: ("Dereference null return")
-Fixes: 8f71bb0030b8 ("RDMA: Report available cdevs through RDMA_NLDEV_CMD_GET_CHARDEV")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/infiniband/core/user_mad.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/sof/intel/hda.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/user_mad.c b/drivers/infiniband/core/user_mad.c
-index 547090b41cfb..d78a35913824 100644
---- a/drivers/infiniband/core/user_mad.c
-+++ b/drivers/infiniband/core/user_mad.c
-@@ -1153,6 +1153,9 @@ static int ib_issm_get_nl_info(struct ib_device *ibdev, void *client_data,
- 	struct ib_umad_device *umad_dev =
- 		ib_get_client_data(ibdev, &umad_client);
+diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
+index 51c1c1787de7..7f665392618f 100644
+--- a/sound/soc/sof/intel/hda.c
++++ b/sound/soc/sof/intel/hda.c
+@@ -19,7 +19,6 @@
+ #include <sound/hda_register.h>
  
-+	if (!umad_dev)
-+		return -ENODEV;
-+
- 	if (!rdma_is_port_valid(ibdev, res->port))
- 		return -EINVAL;
- 
--- 
-2.20.1
+ #include <linux/module.h>
+-#include <sound/hdaudio_ext.h>
+ #include <sound/sof.h>
+ #include <sound/sof/xtensa.h>
+ #include "../ops.h"
+
+
+
+
 

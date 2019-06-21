@@ -2,64 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ED1E4E9E1
-	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Jun 2019 15:50:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA96C4E9EF
+	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Jun 2019 15:52:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726180AbfFUNuK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 21 Jun 2019 09:50:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54688 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725975AbfFUNuK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 21 Jun 2019 09:50:10 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 69123206B7;
-        Fri, 21 Jun 2019 13:50:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561125009;
-        bh=Lmr5nEZa64/acE0s9PGYlSzHVsyNLy1MxjbIMXj9agk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=q/7vVsu8Op6pp/Fm1q3G8VIy0Pe3ZEtMquDoeyeKmFkxqfVjM2XnwvtnnmOUChYRp
-         Hs7zaNCVv58z20v9+sKOF+2+NVw+qTkWQA5xroDpm9PGShLPhFaI5a2yGoGDfAY847
-         VQJ/0GCXAcmi1iZIH91hW9LKVZpHGYaF9GaX34ZQ=
-Date:   Fri, 21 Jun 2019 15:50:07 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Colin King <colin.king@canonical.com>,
-        Arnd Bergmann <arnd@arndb.de>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] lkdtm: remove redundant initialization of ret
-Message-ID: <20190621135007.GA27890@kroah.com>
-References: <20190614094311.24024-1-colin.king@canonical.com>
- <201906201112.AE06471@keescook>
+        id S1726052AbfFUNwN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 21 Jun 2019 09:52:13 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:58826 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726002AbfFUNwN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 21 Jun 2019 09:52:13 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 877D560B9E224E3E924D;
+        Fri, 21 Jun 2019 21:52:08 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 21 Jun 2019 21:52:00 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Benson Leung <bleung@chromium.org>,
+        Enric Balletbo i Serra <enric.balletbo@collabora.com>,
+        Nick Crews <ncrews@chromium.org>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] platform/chrome: wilco_ec: Use kmemdup in enqueue_events()
+Date:   Fri, 21 Jun 2019 13:59:07 +0000
+Message-ID: <20190621135907.112232-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <201906201112.AE06471@keescook>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jun 20, 2019 at 11:13:32AM -0700, Kees Cook wrote:
-> On Fri, Jun 14, 2019 at 10:43:11AM +0100, Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> > 
-> > The variable ret is being initialized with the value -EINVAL however
-> > this value is never read and ret is being re-assigned later on. Hence
-> > the initialization is redundant and can be removed.
-> > 
-> > Addresses-Coverity: ("Unused value")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> 
-> Thanks!
-> 
-> Acked-by: Kees Cook <keescook@chromium.org>
-> 
-> Greg, can you take this please?
+Use kmemdup rather than duplicating its implementation
 
-Will do, thanks.
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/platform/chrome/wilco_ec/event.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-greg k-h
+diff --git a/drivers/platform/chrome/wilco_ec/event.c b/drivers/platform/chrome/wilco_ec/event.c
+index c975b76e6255..70156e75047e 100644
+--- a/drivers/platform/chrome/wilco_ec/event.c
++++ b/drivers/platform/chrome/wilco_ec/event.c
+@@ -248,10 +248,9 @@ static int enqueue_events(struct acpi_device *adev, const u8 *buf, u32 length)
+ 		offset += event_size;
+ 
+ 		/* Copy event into the queue */
+-		queue_event = kzalloc(event_size, GFP_KERNEL);
++		queue_event = kmemdup(event, event_size, GFP_KERNEL);
+ 		if (!queue_event)
+ 			return -ENOMEM;
+-		memcpy(queue_event, event, event_size);
+ 		event_queue_push(dev_data->events, queue_event);
+ 	}
+
+
+

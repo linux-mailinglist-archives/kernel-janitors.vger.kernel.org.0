@@ -2,69 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5E774F0D5
-	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Jun 2019 00:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CF184F21A
+	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Jun 2019 02:03:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726045AbfFUWfi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 21 Jun 2019 18:35:38 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:43714 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726018AbfFUWfi (ORCPT
+        id S1726054AbfFVADZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 21 Jun 2019 20:03:25 -0400
+Received: from [163.204.241.141] ([163.204.241.141]:33850 "EHLO
+        localhost.localdomain" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726045AbfFVADZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 21 Jun 2019 18:35:38 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1heS86-0000Or-EG; Fri, 21 Jun 2019 22:35:34 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     VMware Graphics <linux-graphics-maintainer@vmware.com>,
-        Thomas Hellstrom <thellstrom@vmware.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/vmwgfx: fix memory leak when too many retries have occurred
-Date:   Fri, 21 Jun 2019 23:35:34 +0100
-Message-Id: <20190621223534.14283-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Fri, 21 Jun 2019 20:03:25 -0400
+X-Greylist: delayed 1618 seconds by postgrey-1.27 at vger.kernel.org; Fri, 21 Jun 2019 20:03:23 EDT
+Received: from localhost (localhost [IPv6:::1])
+        by localhost.localdomain (Postfix) with SMTP id 1937B11E8FBB
+        for <kernel-janitors@vger.kernel.org>; Sat, 22 Jun 2019 07:36:20 +0800 (CST)
+From:   kernel-janitors@vger.kernel.org
+To:     8bsBkernel-janitors@vger.kernel.org
+Reply-To: prodawez@armyspy.com
+Subject: Klientskie bazy. Email: prodawez@armyspy.com Uznajte podrobnee.
+Message-Id: <20190621233621.1937B11E8FBB@localhost.localdomain>
+Date:   Sat, 22 Jun 2019 07:36:20 +0800 (CST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
-
-Currently when too many retries have occurred there is a memory
-leak on the allocation for reply on the error return path. Fix
-this by kfree'ing reply before returning.
-
-Addresses-Coverity: ("Resource leak")
-Fixes: a9cd9c044aa9 ("drm/vmwgfx: Add a check to handle host message failure")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/vmwgfx/vmwgfx_msg.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c b/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c
-index 8b9270f31409..8b61f16f50cf 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c
-@@ -301,8 +301,10 @@ static int vmw_recv_msg(struct rpc_channel *channel, void **msg,
- 		break;
- 	}
- 
--	if (retries == RETRIES)
-+	if (retries == RETRIES) {
-+		kfree(reply);
- 		return -EINVAL;
-+	}
- 
- 	*msg_len = reply_len;
- 	*msg     = reply;
--- 
-2.20.1
-
+Klientskie bazy. Email: prodawez@armyspy.com Uznajte podrobnee.

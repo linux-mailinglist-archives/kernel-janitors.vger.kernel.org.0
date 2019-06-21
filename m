@@ -2,82 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 815304DF55
-	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Jun 2019 05:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C65014DFF3
+	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Jun 2019 07:08:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725958AbfFUDiX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 Jun 2019 23:38:23 -0400
-Received: from mga14.intel.com ([192.55.52.115]:5978 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725941AbfFUDiX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 Jun 2019 23:38:23 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Jun 2019 20:38:21 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,399,1557212400"; 
-   d="scan'208";a="162561701"
-Received: from linux.intel.com ([10.54.29.200])
-  by fmsmga007.fm.intel.com with ESMTP; 20 Jun 2019 20:38:21 -0700
-Received: from xyang32-mobl.amr.corp.intel.com (unknown [10.252.27.214])
-        by linux.intel.com (Postfix) with ESMTP id A53FA58040E;
-        Thu, 20 Jun 2019 20:38:18 -0700 (PDT)
-Subject: Re: [PATCH -next] ASoC: SOF: Intel: hda: remove duplicated include
- from hda.c
-To:     YueHaibing <yuehaibing@huawei.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Bard Liao <yung-chuan.liao@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Zhu Yingjiang <yingjiang.zhu@linux.intel.com>,
-        Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20190620145709.122498-1-yuehaibing@huawei.com>
-From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Message-ID: <4a40d713-72a6-769a-1245-8768fac2411c@linux.intel.com>
-Date:   Fri, 21 Jun 2019 05:38:17 +0200
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0)
- Gecko/20100101 Thunderbird/60.7.1
+        id S1725956AbfFUFIf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 21 Jun 2019 01:08:35 -0400
+Received: from mail-qt1-f169.google.com ([209.85.160.169]:43171 "EHLO
+        mail-qt1-f169.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725856AbfFUFIf (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 21 Jun 2019 01:08:35 -0400
+Received: by mail-qt1-f169.google.com with SMTP id w17so5660119qto.10;
+        Thu, 20 Jun 2019 22:08:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DOVcUfjro0B1EBFw/TjIy6+vaPZDLFKcKq4KPAmbAAM=;
+        b=pwD5NDAWGXsG6Iip6JaL43m80Z3cqDRGGqvo7BF79maNKFQ0yMy95WGpHeEE/7QAMd
+         G+l4a5UFZjyRFHeTbORCs1/za7ZCYmTN8VabBrz15pFMqO6sVF2xEtfgxKvLPh3d08KL
+         ffxtN7xHWi2AWLyJdKy5ZRXmQamHQZbRw1PzwPxaiAn+uAr2j4AdsGjHIf2g2xqePoXa
+         8PMlw37chmJT9KJ5nCu4Kh39gIpegMfjdgqAvNFuLF/Efkc7iaoBGIbw7fnqjAqPX6XT
+         x0pIb8P9BFZaXVIx1M+AvUZb5BEYUi/Vf031O2F9pyOrjrn98QFdPNHluYBSMhHHF1aU
+         ol2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DOVcUfjro0B1EBFw/TjIy6+vaPZDLFKcKq4KPAmbAAM=;
+        b=Ks1HRSW1KsCfaLhaI8dPSQPEZuwg9D4tEUsIoCwYYeBQlcd86WGjczrlg+8MMmKozN
+         iUiApuxKikb/BBRvQ6tKCm2HK+fwVkOd/NEe63Avf9P7hPFRSU72XhhwviFjs612eM5I
+         6xm1J6a2N5ify0dj1rRhUfngj0l8WLPCd+cJGK11R2y8o4ErXm/Ng0NgFLoJgqMdIrwl
+         laUjsjtCeBBsIG1rQn94I6Ac7+TEm/3KhG9AjF47R8K4ZdJR8LbaKLkbYMVdQVVv3zQQ
+         l9mz29++lv2OOQgVm79oz6dPtcaE2RPLjv6LtSi+TpXmmSpZ3QlITBUdl5bz/AlTG7ia
+         O7ng==
+X-Gm-Message-State: APjAAAX5bauFnZNFM80m7RzIJSJTJL3hCe/I+5539W4FHUnrYu51sYjW
+        ddjdCrH1pM5DWKeJl1yao3l4Bt9y4iDqpq0LqIc=
+X-Google-Smtp-Source: APXvYqytyn0o9xW8GexrQp3Lf/WU3HaUXb82Dt0xusrOIWa6KSqDzElqHeK5FRTgTkOoBRhecco/A2uoc0RK9oQQr+w=
+X-Received: by 2002:ac8:2fb7:: with SMTP id l52mr89675282qta.93.1561093713587;
+ Thu, 20 Jun 2019 22:08:33 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190620145709.122498-1-yuehaibing@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20190619162742.985-1-colin.king@canonical.com>
+In-Reply-To: <20190619162742.985-1-colin.king@canonical.com>
+From:   Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date:   Thu, 20 Jun 2019 22:08:22 -0700
+Message-ID: <CAEf4BzZhg0uJtPecF8t5MfXF=V7ycDrcB1RNXDNtjuFmvuAmCw@mail.gmail.com>
+Subject: Re: [PATCH][next] libbpf: fix spelling mistake "conflictling" -> "conflicting"
+To:     Colin King <colin.king@canonical.com>
+Cc:     Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Networking <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 6/20/19 4:57 PM, YueHaibing wrote:
-> Remove duplicated include.
-> 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-
-Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-
+On Wed, Jun 19, 2019 at 9:28 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There are several spelling mistakes in pr_warning messages. Fix these.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->   sound/soc/sof/intel/hda.c | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
-> index 51c1c1787de7..7f665392618f 100644
-> --- a/sound/soc/sof/intel/hda.c
-> +++ b/sound/soc/sof/intel/hda.c
-> @@ -19,7 +19,6 @@
->   #include <sound/hda_register.h>
->   
->   #include <linux/module.h>
-> -#include <sound/hdaudio_ext.h>
->   #include <sound/sof.h>
->   #include <sound/sof/xtensa.h>
->   #include "../ops.h"
-> 
-> 
-> 
-> 
-> 
 
+Oh, the beauty of copy/pasting same typo 4 times :)
+
+Thanks for fixing! Can you please re-submit with [PATCH bpf-next]
+subject prefix, as it's intended for bpf-next tree. With that:
+
+Acked-by: Andrii Nakryiko <andriin@fb.com>
+
+>  tools/lib/bpf/libbpf.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+
+<snip>

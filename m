@@ -2,119 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E92BA4DE55
-	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Jun 2019 03:08:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 815304DF55
+	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Jun 2019 05:38:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725951AbfFUBIq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 Jun 2019 21:08:46 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:33909 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725906AbfFUBIq (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 Jun 2019 21:08:46 -0400
-Received: by mail-io1-f68.google.com with SMTP id k8so820983iot.1;
-        Thu, 20 Jun 2019 18:08:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:references:in-reply-to:subject:date:message-id
-         :mime-version:content-transfer-encoding:thread-index
-         :content-language;
-        bh=OQMetjZyUoUPsTFn8SOJEsiqJU03SCmw6h6Ex7ggGOM=;
-        b=aK6raknsrvrRPolS7lAcqPknBT9z1hipNuKzyvLgR3QnZ+e6JJzskUaz2NL64NxNPX
-         /E3oo8PJrp2AEByUrirS3wV/u8hFtoJA+WQm9LJWpA9muaKz6OFQhLwfeG9jRIRll5N6
-         C3ca7J9kFjfye3zcsxF/heZC/+7vdhMvrXxpq8U3D6QDDPF3ElF9uUKyXQLWwrhDpSEh
-         RVMBDCBtlihfE4gTshXd07ghhcSWAaHkyBhALm8iDmdijS6uu9UBKHmgkpWc1s2FlJ/m
-         9T9iE+C+JJ8/E1IfgaeQtF/RIJMJu0A9pyZbOT1NrYBoyAxSbAM2TZuiI+PlhBHGVEdo
-         ZrTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:references:in-reply-to:subject:date
-         :message-id:mime-version:content-transfer-encoding:thread-index
-         :content-language;
-        bh=OQMetjZyUoUPsTFn8SOJEsiqJU03SCmw6h6Ex7ggGOM=;
-        b=LJOzaxTTcr4u68F7SosvHO3QVzPn57n7Ma07Sq1UsZ1Qn9z5s2K5/n6+v56ersIE/W
-         SU6b/lNRbdd3g75+L6fJ456xwfRCT7xYmLfQybg8fu5qS1FDmlgm7wCc8H//hiUmTPge
-         EiDu9kbdZTlJHqOQRuckti5e8+m2vsb5QB0U4G3uFwfuucoBgdHiVJpr0XOlsPhX/8wH
-         OP5lmIweWV3sWgrIgEHup9DiLNj4kufISmm5wwrIfUq/7howTEBaigJlr9dYVtme9uWb
-         ow2ITsg7dVQ7s2aYA5aeUEoAlqCnSX7HXCrYXb1d0ukFKJAGyo/vAL6wAF4HmSeWuEWG
-         sl8Q==
-X-Gm-Message-State: APjAAAW1+MPG1QCChCWxlEoyWh+LOxUifJjq3iQOHv11HsIUBwcHt5Rz
-        f663i+SN8C70xMhICaarkD0=
-X-Google-Smtp-Source: APXvYqz5xJA4rHilmB13nL0BZpDwoS4B9iQghmci4gARVVr5cxYmXdZfoVZXl44hYYfeG7ksdtEfGg==
-X-Received: by 2002:a02:aa8f:: with SMTP id u15mr95274817jai.39.1561079325719;
-        Thu, 20 Jun 2019 18:08:45 -0700 (PDT)
-Received: from AlexPC (CPEac9e17937810-CM64777dd8e660.cpe.net.cable.rogers.com. [174.112.199.101])
-        by smtp.gmail.com with ESMTPSA id t133sm2863100iof.21.2019.06.20.18.08.44
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 20 Jun 2019 18:08:44 -0700 (PDT)
-From:   <alex.bou9@gmail.com>
-To:     "'Dan Carpenter'" <dan.carpenter@oracle.com>,
-        "'Andrew Morton'" <akpm@linux-foundation.org>
-Cc:     "'Ira Weiny'" <ira.weiny@intel.com>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        "'Matt Porter'" <mporter@kernel.crashing.org>
-References: <20190529110601.GB19119@mwanda>
-In-Reply-To: <20190529110601.GB19119@mwanda>
-Subject: RE: [PATCH] rapidio/mport_cdev: NUL terminate some strings
-Date:   Thu, 20 Jun 2019 21:08:43 -0400
-Message-ID: <001101d527cd$e03b0180$a0b10480$@gmail.com>
+        id S1725958AbfFUDiX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 20 Jun 2019 23:38:23 -0400
+Received: from mga14.intel.com ([192.55.52.115]:5978 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725941AbfFUDiX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 20 Jun 2019 23:38:23 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Jun 2019 20:38:21 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,399,1557212400"; 
+   d="scan'208";a="162561701"
+Received: from linux.intel.com ([10.54.29.200])
+  by fmsmga007.fm.intel.com with ESMTP; 20 Jun 2019 20:38:21 -0700
+Received: from xyang32-mobl.amr.corp.intel.com (unknown [10.252.27.214])
+        by linux.intel.com (Postfix) with ESMTP id A53FA58040E;
+        Thu, 20 Jun 2019 20:38:18 -0700 (PDT)
+Subject: Re: [PATCH -next] ASoC: SOF: Intel: hda: remove duplicated include
+ from hda.c
+To:     YueHaibing <yuehaibing@huawei.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Zhu Yingjiang <yingjiang.zhu@linux.intel.com>,
+        Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20190620145709.122498-1-yuehaibing@huawei.com>
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Message-ID: <4a40d713-72a6-769a-1245-8768fac2411c@linux.intel.com>
+Date:   Fri, 21 Jun 2019 05:38:17 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0)
+ Gecko/20100101 Thunderbird/60.7.1
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="us-ascii"
+In-Reply-To: <20190620145709.122498-1-yuehaibing@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQHqSTig6vd4VCxw0340JcsQqG4IG6Z7CPbw
-Content-Language: en-us
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Acked-by: Alexandre Bounine <alex.bou9@gmail.com>  
+On 6/20/19 4:57 PM, YueHaibing wrote:
+> Remove duplicated include.
+> 
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
------Original Message-----
-From: Dan Carpenter <dan.carpenter@oracle.com> 
-Sent: Wednesday, May 29, 2019 7:06 AM
-To: Matt Porter <mporter@kernel.crashing.org>
-Cc: Alexandre Bounine <alex.bou9@gmail.com>; Andrew Morton
-<akpm@linux-foundation.org>; Ira Weiny <ira.weiny@intel.com>;
-linux-kernel@vger.kernel.org; kernel-janitors@vger.kernel.org
-Subject: [PATCH] rapidio/mport_cdev: NUL terminate some strings
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-The dev_info.name[] array has space for RIO_MAX_DEVNAME_SZ + 1
-characters.  But the problem here is that we don't ensure that the user
-put a NUL terminator on the end of the string.  It could lead to an out
-of bounds read.
-
-Fixes: e8de370188d0 ("rapidio: add mport char device driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/rapidio/devices/rio_mport_cdev.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/rapidio/devices/rio_mport_cdev.c
-b/drivers/rapidio/devices/rio_mport_cdev.c
-index 4a4a75fa26d5..3440b3e8e578 100644
---- a/drivers/rapidio/devices/rio_mport_cdev.c
-+++ b/drivers/rapidio/devices/rio_mport_cdev.c
-@@ -1690,6 +1690,7 @@ static int rio_mport_add_riodev(struct mport_cdev_priv
-*priv,
- 
- 	if (copy_from_user(&dev_info, arg, sizeof(dev_info)))
- 		return -EFAULT;
-+	dev_info.name[sizeof(dev_info.name) - 1] = '\0';
- 
- 	rmcd_debug(RDEV, "name:%s ct:0x%x did:0x%x hc:0x%x", dev_info.name,
- 		   dev_info.comptag, dev_info.destid, dev_info.hopcount);
-@@ -1821,6 +1822,7 @@ static int rio_mport_del_riodev(struct mport_cdev_priv
-*priv, void __user *arg)
- 
- 	if (copy_from_user(&dev_info, arg, sizeof(dev_info)))
- 		return -EFAULT;
-+	dev_info.name[sizeof(dev_info.name) - 1] = '\0';
- 
- 	mport = priv->md->mport;
- 
--- 
-2.20.1
+> ---
+>   sound/soc/sof/intel/hda.c | 1 -
+>   1 file changed, 1 deletion(-)
+> 
+> diff --git a/sound/soc/sof/intel/hda.c b/sound/soc/sof/intel/hda.c
+> index 51c1c1787de7..7f665392618f 100644
+> --- a/sound/soc/sof/intel/hda.c
+> +++ b/sound/soc/sof/intel/hda.c
+> @@ -19,7 +19,6 @@
+>   #include <sound/hda_register.h>
+>   
+>   #include <linux/module.h>
+> -#include <sound/hdaudio_ext.h>
+>   #include <sound/sof.h>
+>   #include <sound/sof/xtensa.h>
+>   #include "../ops.h"
+> 
+> 
+> 
+> 
+> 
 

@@ -2,157 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FC4D4DA43
-	for <lists+kernel-janitors@lfdr.de>; Thu, 20 Jun 2019 21:35:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E92BA4DE55
+	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Jun 2019 03:08:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726571AbfFTTf2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 20 Jun 2019 15:35:28 -0400
-Received: from mout.web.de ([212.227.15.4]:60657 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726169AbfFTTf1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 20 Jun 2019 15:35:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1561059295;
-        bh=g/Q6tFGsegU5Zh0wz2cK248UTbiIMl27+R/SRCYh4wc=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=ACphQQijeXHKdkQmjmXP6hCMU+Qr3w7E+UEDsomvro6lIy6Kqyp1ehgI5Mv8gNxSr
-         IhtlT5LBQGHNw+aQ7hZDcXg0eYKc+lj4iLx/GLlP6V2CgPAWrlk+odk1/umiTEk6fG
-         S4cuRDot655rkLmluAt9eH9+E3PJG6JrvdXSXD78=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.128.109]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MLUDi-1hdUbN0YlO-000Yen; Thu, 20
- Jun 2019 21:34:55 +0200
-Subject: Re: Coccinelle: Add a SmPL script for the reconsideration of
- redundant dev_err() calls
-To:     Julia Lawall <julia.lawall@lip6.fr>,
-        kernel-janitors@vger.kernel.org
-Cc:     Gilles Muller <Gilles.Muller@lip6.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Ding Xiang <dingxiang@cmss.chinamobile.com>
-References: <05d85182-7ec3-8fc1-4bcd-fd2528de3a40@web.de>
- <alpine.DEB.2.21.1906202046550.3087@hadrien>
- <34d528db-5582-5fe2-caeb-89bcb07a1d30@web.de>
- <alpine.DEB.2.21.1906202110310.3087@hadrien>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
- +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
- mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
- lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
- YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
- GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
- rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
- 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
- jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
- BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
- cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
- Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
- g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
- OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
- CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
- LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
- sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
- kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
- i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
- g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
- q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
- NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
- nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
- 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
- 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
- wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
- riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
- DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
- fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
- 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
- xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
- qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
- Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
- Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
- +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
- hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
- /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
- tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
- qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
- Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
- x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
- pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <2cae7d27-c032-20bf-4ecc-66a4a85a77cc@web.de>
-Date:   Thu, 20 Jun 2019 21:34:52 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        id S1725951AbfFUBIq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 20 Jun 2019 21:08:46 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:33909 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725906AbfFUBIq (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 20 Jun 2019 21:08:46 -0400
+Received: by mail-io1-f68.google.com with SMTP id k8so820983iot.1;
+        Thu, 20 Jun 2019 18:08:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:references:in-reply-to:subject:date:message-id
+         :mime-version:content-transfer-encoding:thread-index
+         :content-language;
+        bh=OQMetjZyUoUPsTFn8SOJEsiqJU03SCmw6h6Ex7ggGOM=;
+        b=aK6raknsrvrRPolS7lAcqPknBT9z1hipNuKzyvLgR3QnZ+e6JJzskUaz2NL64NxNPX
+         /E3oo8PJrp2AEByUrirS3wV/u8hFtoJA+WQm9LJWpA9muaKz6OFQhLwfeG9jRIRll5N6
+         C3ca7J9kFjfye3zcsxF/heZC/+7vdhMvrXxpq8U3D6QDDPF3ElF9uUKyXQLWwrhDpSEh
+         RVMBDCBtlihfE4gTshXd07ghhcSWAaHkyBhALm8iDmdijS6uu9UBKHmgkpWc1s2FlJ/m
+         9T9iE+C+JJ8/E1IfgaeQtF/RIJMJu0A9pyZbOT1NrYBoyAxSbAM2TZuiI+PlhBHGVEdo
+         ZrTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:references:in-reply-to:subject:date
+         :message-id:mime-version:content-transfer-encoding:thread-index
+         :content-language;
+        bh=OQMetjZyUoUPsTFn8SOJEsiqJU03SCmw6h6Ex7ggGOM=;
+        b=LJOzaxTTcr4u68F7SosvHO3QVzPn57n7Ma07Sq1UsZ1Qn9z5s2K5/n6+v56ersIE/W
+         SU6b/lNRbdd3g75+L6fJ456xwfRCT7xYmLfQybg8fu5qS1FDmlgm7wCc8H//hiUmTPge
+         EiDu9kbdZTlJHqOQRuckti5e8+m2vsb5QB0U4G3uFwfuucoBgdHiVJpr0XOlsPhX/8wH
+         OP5lmIweWV3sWgrIgEHup9DiLNj4kufISmm5wwrIfUq/7howTEBaigJlr9dYVtme9uWb
+         ow2ITsg7dVQ7s2aYA5aeUEoAlqCnSX7HXCrYXb1d0ukFKJAGyo/vAL6wAF4HmSeWuEWG
+         sl8Q==
+X-Gm-Message-State: APjAAAW1+MPG1QCChCWxlEoyWh+LOxUifJjq3iQOHv11HsIUBwcHt5Rz
+        f663i+SN8C70xMhICaarkD0=
+X-Google-Smtp-Source: APXvYqz5xJA4rHilmB13nL0BZpDwoS4B9iQghmci4gARVVr5cxYmXdZfoVZXl44hYYfeG7ksdtEfGg==
+X-Received: by 2002:a02:aa8f:: with SMTP id u15mr95274817jai.39.1561079325719;
+        Thu, 20 Jun 2019 18:08:45 -0700 (PDT)
+Received: from AlexPC (CPEac9e17937810-CM64777dd8e660.cpe.net.cable.rogers.com. [174.112.199.101])
+        by smtp.gmail.com with ESMTPSA id t133sm2863100iof.21.2019.06.20.18.08.44
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 20 Jun 2019 18:08:44 -0700 (PDT)
+From:   <alex.bou9@gmail.com>
+To:     "'Dan Carpenter'" <dan.carpenter@oracle.com>,
+        "'Andrew Morton'" <akpm@linux-foundation.org>
+Cc:     "'Ira Weiny'" <ira.weiny@intel.com>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        "'Matt Porter'" <mporter@kernel.crashing.org>
+References: <20190529110601.GB19119@mwanda>
+In-Reply-To: <20190529110601.GB19119@mwanda>
+Subject: RE: [PATCH] rapidio/mport_cdev: NUL terminate some strings
+Date:   Thu, 20 Jun 2019 21:08:43 -0400
+Message-ID: <001101d527cd$e03b0180$a0b10480$@gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.21.1906202110310.3087@hadrien>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:WPvLq5xghnJNk3iOktDfdeof1xI/J82wdYAEfSzeK58oA+ZOKA4
- N39tHWtC9sc1su1XoMWJ2WLr5nQPj/6b3HepIytvQgrk0zAXQLu1LiMi0GeQrxH2Od3CkLW
- 5287i8rbh0cghYqtgsp5c6VW94ykOjGboac8z62JfMOx87FJqgsdtNZShPllRU6G5j5xE0D
- KooiuI9FjkeenKsbHpw7g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:I8PZgRiB4RQ=:bN6CsCxOXDpae5kyaUw/5p
- PK5cTW3iLK5lTTUgAJCv/OpWyZ8wQsxZZ30ZWlp7bIYHIwNrJRXGpDD4IwaH42ufqNG+W9Dhh
- Zb6P75I+EvhqbjyU62ajYyYSS8U52diIFdvNjMuH6oSw9QjKU0Fz7VJKQWCCUNagA4z+FEekn
- FdsNzmL5Oy8tBAVc/9d8T1aI0TkwqzxAEPEUFGlP6duC1sRrT9AtlQELEVmlgyRYmCzJ3hf37
- WrZpWRP0AqI581oQIKDqqG3nBpi1B+LJFqfyy1rNpy5I3xc/UZ+y1Oh4AXQ+hm8Upai/O/zke
- YkGwYK6722gNKE9REzWNRhqFdOTPdJ9Zv66uOsxKmheY04ufHJl6Zv1YsbFwUiFfdtW/gqP3P
- 1PWY3U9+IZVAqGw71xytmiQfc61PXlbvIOY1mINOFos6APZ0pnhXN4TQ/zptHheoyzVH9HLFJ
- 5y/WJ1WvG1MVnx6xGF+6BR5MMFILsZssXu01s6GUsngJfUD0URKSRSTLUnECK891l/Woz7Lb+
- 0nBv50NA5UrZ2yhnEzHdR2k0u81+CLqrL1Do6Pmyry2euugX8GvXjJUwjRoIwwdHcHHO+9W+E
- UBtldPpueepMinlCkk+Rui3qAC7HFlAhH92v0343MawSOfa9DtNDW5Dz5uiROdKHF+jM3EXei
- f35iZMaCFEresMpzlGxk/W/9K75CJIBW3hPFqVvzsQgSsy3fGz5T2ecIs+J7BSg8kLwpH+QsS
- KIEMWR7MTJl5oHsDjM99R6Cj8OUftLbKoyCFsy9ymSlR6Q1auVbHqFSX57JAdobP5TnWtVzzC
- v8aKTyYJxDIO1Y3RtHSlVb/d7E0Sp2ncJgytg6ElgCHRwQOlC1nmLKRftyHCTa6IHoEA9wmhF
- f2DoiYwp/Z7Yzx9feMECd58ew77cy3wgyByW8ZCOANa/1PfYln2FFtqiGU2a2Z57a6S57RYAT
- s7OzsRD/JjlHyYi2r/j0RVcCZiv4QGUL0Q0yq+9UyWNq6sIrf+2oe
+Content-Type: text/plain;
+        charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQHqSTig6vd4VCxw0340JcsQqG4IG6Z7CPbw
+Content-Language: en-us
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> Would you prefer to clarify a more advanced approach?
->
-> I think that something like
->
-> if (IS_ERR(e))
-> {
-> <+...
-> *dev_err(...)
-> ...+>
-> }
->
-> would be more appropriate.
+Acked-by: Alexandre Bounine <alex.bou9@gmail.com>  
 
-This SmPL construct can be more powerful.
+-----Original Message-----
+From: Dan Carpenter <dan.carpenter@oracle.com> 
+Sent: Wednesday, May 29, 2019 7:06 AM
+To: Matt Porter <mporter@kernel.crashing.org>
+Cc: Alexandre Bounine <alex.bou9@gmail.com>; Andrew Morton
+<akpm@linux-foundation.org>; Ira Weiny <ira.weiny@intel.com>;
+linux-kernel@vger.kernel.org; kernel-janitors@vger.kernel.org
+Subject: [PATCH] rapidio/mport_cdev: NUL terminate some strings
 
+The dev_info.name[] array has space for RIO_MAX_DEVNAME_SZ + 1
+characters.  But the problem here is that we don't ensure that the user
+put a NUL terminator on the end of the string.  It could lead to an out
+of bounds read.
 
-> Whether there is a return or not doesn't really matter.
+Fixes: e8de370188d0 ("rapidio: add mport char device driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/rapidio/devices/rio_mport_cdev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Such an adjustment can be helpful for a few operation modes.
+diff --git a/drivers/rapidio/devices/rio_mport_cdev.c
+b/drivers/rapidio/devices/rio_mport_cdev.c
+index 4a4a75fa26d5..3440b3e8e578 100644
+--- a/drivers/rapidio/devices/rio_mport_cdev.c
++++ b/drivers/rapidio/devices/rio_mport_cdev.c
+@@ -1690,6 +1690,7 @@ static int rio_mport_add_riodev(struct mport_cdev_priv
+*priv,
+ 
+ 	if (copy_from_user(&dev_info, arg, sizeof(dev_info)))
+ 		return -EFAULT;
++	dev_info.name[sizeof(dev_info.name) - 1] = '\0';
+ 
+ 	rmcd_debug(RDEV, "name:%s ct:0x%x did:0x%x hc:0x%x", dev_info.name,
+ 		   dev_info.comptag, dev_info.destid, dev_info.hopcount);
+@@ -1821,6 +1822,7 @@ static int rio_mport_del_riodev(struct mport_cdev_priv
+*priv, void __user *arg)
+ 
+ 	if (copy_from_user(&dev_info, arg, sizeof(dev_info)))
+ 		return -EFAULT;
++	dev_info.name[sizeof(dev_info.name) - 1] = '\0';
+ 
+ 	mport = priv->md->mport;
+ 
+-- 
+2.20.1
 
-But the number of statements in the if branch will influence the possibili=
-ty
-for the deletion of curly braces together with redundant dev_err() calls
-by the SmPL patch mode.
-
-
->> Would you like to get the relevant function name dynamically determined=
-?
->
-> I have no idea what you consider "the relevant function name" to be.
-> If it is always devm_ioremap_resource then it would seem that it does no=
-t
-> need to be dynamically determined.
-
-Do other functions share the same error reporting strategy so that any mor=
-e
-collateral software evolution can happen?
-
-Regards,
-Markus

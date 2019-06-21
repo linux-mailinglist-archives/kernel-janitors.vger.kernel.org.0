@@ -2,114 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B42234E359
+	by mail.lfdr.de (Postfix) with ESMTP id 4B7534E357
 	for <lists+kernel-janitors@lfdr.de>; Fri, 21 Jun 2019 11:21:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726518AbfFUJVT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 21 Jun 2019 05:21:19 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:56184 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726210AbfFUJVT (ORCPT
+        id S1726285AbfFUJVP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 21 Jun 2019 05:21:15 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:35903 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726210AbfFUJVP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 21 Jun 2019 05:21:19 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5L9JHUd194099;
-        Fri, 21 Jun 2019 09:20:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=zT2CBFR2VSrK59MbhHs/hGKzXGFLl4/Syz7m1oPdgwc=;
- b=SrMdcNUkRaEymSD6Cx01YJYn2dw8HgdlW5Uzcg7rnNg3kUDiuNg1ztwr7rqhzC53n/Qp
- TKApWtEQ0P9gv285PX7Rcki3PnNvkZTyRgfwhX7QnhU+9fJnwaj9/HLVzgOP+k5mdh6z
- akgBpJDZQTD5i+jqOvLzK6JC+O1dyCYB5drCjeVmXDZQqm5Ljqm2G57QTOFcrceEidd/
- zdnv1RaZFrc75XBzQn9S7wQ3iC8S+EW3PgbeiPVxnbkTjySW9APv5VNM1lT1IhJrXajW
- cQOGZVXQzLmQwBUsGHJtFuAXJv04tMglzVYJtM+AUp/GV1pqhi3UMrTyjIu6DsALJY/H RA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 2t7809nge0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 21 Jun 2019 09:20:43 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5L9IY24037988;
-        Fri, 21 Jun 2019 09:18:42 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 2t77ypunkd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 21 Jun 2019 09:18:42 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5L9IbnC019020;
-        Fri, 21 Jun 2019 09:18:37 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 21 Jun 2019 02:18:37 -0700
-Date:   Fri, 21 Jun 2019 12:18:28 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] iio: sca3000: Potential endian bug in
- sca3000_read_event_value()
-Message-ID: <20190621091828.GA1878@mwanda>
+        Fri, 21 Jun 2019 05:21:15 -0400
+X-IronPort-AV: E=Sophos;i="5.63,399,1557180000"; 
+   d="scan'208";a="388479067"
+Received: from vaio-julia.rsr.lip6.fr ([132.227.76.33])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Jun 2019 11:21:13 +0200
+Date:   Fri, 21 Jun 2019 11:21:11 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@lip6.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     kernel-janitors@vger.kernel.org,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Ding Xiang <dingxiang@cmss.chinamobile.com>
+Subject: Re: Coccinelle: Add a SmPL script for the reconsideration of redundant
+ dev_err() calls
+In-Reply-To: <13890878-9e5f-f297-7f7c-bcc1212d83b7@web.de>
+Message-ID: <alpine.DEB.2.20.1906211119430.3740@hadrien>
+References: <05d85182-7ec3-8fc1-4bcd-fd2528de3a40@web.de> <alpine.DEB.2.21.1906202046550.3087@hadrien> <34d528db-5582-5fe2-caeb-89bcb07a1d30@web.de> <alpine.DEB.2.21.1906202110310.3087@hadrien> <13890878-9e5f-f297-7f7c-bcc1212d83b7@web.de>
+User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9294 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906210077
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9294 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906210078
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The problem is that "ret" is an int but we're casting it as
-"(unsigned long *)&ret" when we do the for_each_set_bit() loop.  This
-will not work on big endian 64 bit systems.
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/iio/accel/sca3000.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
-index 4964561595f5..9e9f4347a325 100644
---- a/drivers/iio/accel/sca3000.c
-+++ b/drivers/iio/accel/sca3000.c
-@@ -872,8 +872,9 @@ static int sca3000_read_event_value(struct iio_dev *indio_dev,
- 				    enum iio_event_info info,
- 				    int *val, int *val2)
- {
--	int ret, i;
- 	struct sca3000_state *st = iio_priv(indio_dev);
-+	long ret;
-+	int i;
- 
- 	switch (info) {
- 	case IIO_EV_INFO_VALUE:
-@@ -885,11 +886,11 @@ static int sca3000_read_event_value(struct iio_dev *indio_dev,
- 			return ret;
- 		*val = 0;
- 		if (chan->channel2 == IIO_MOD_Y)
--			for_each_set_bit(i, (unsigned long *)&ret,
-+			for_each_set_bit(i, &ret,
- 					 ARRAY_SIZE(st->info->mot_det_mult_y))
- 				*val += st->info->mot_det_mult_y[i];
- 		else
--			for_each_set_bit(i, (unsigned long *)&ret,
-+			for_each_set_bit(i, &ret,
- 					 ARRAY_SIZE(st->info->mot_det_mult_xz))
- 				*val += st->info->mot_det_mult_xz[i];
- 
--- 
-2.20.1
+On Fri, 21 Jun 2019, Markus Elfring wrote:
 
+> > I think that something like
+> >
+> > if (IS_ERR(e))
+> > {
+> > <+...
+> > *dev_err(...)
+> > ...+>
+> > }
+> >
+> > would be more appropriate.  Whether there is a return or not doesn't
+> > really matter.
+>
+> Do you find the following SmPL change specification useful and acceptable?
+>
+>
+> @deletion depends on patch@
+> expression e;
+> @@
+>  e = devm_ioremap_resource(...);
+>  if (IS_ERR(e))
+> (
+> -{
+> -   dev_err(...);
+>     return (...);
+
+I still don't see the point of specifying return.  Why not just S, where S
+is a statement metavariable?
+
+julia
+
+> -}
+> |{
+
+I realize that you confuse conciseness with readability, but it would
+really look better to have the | on a line by itself.
+
+julia
+
+>  <+...
+> -   dev_err(...);
+>  ...+>
+>  }
+> )
+>
+>
+> Would this approach need a version check for the Coccinelle software?
+
+Why would that be necessary?

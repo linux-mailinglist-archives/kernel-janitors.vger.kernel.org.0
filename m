@@ -2,99 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB51C4F552
-	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Jun 2019 12:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F07F94F5CC
+	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Jun 2019 14:58:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726287AbfFVKnr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 22 Jun 2019 06:43:47 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:52024 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726136AbfFVKnr (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 22 Jun 2019 06:43:47 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5MAe6EL149137;
-        Sat, 22 Jun 2019 10:43:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=kq0vqQjo14XEI66TpU/rqYxVUPhSaWKc+eKAGmgwWQA=;
- b=xUHaVXMSzCBsFfEes7e5FsFtZJjipV7WL6pW++EZJmcpQWQLGIXSBL+JnjPEf9qYFLTk
- WS5T7GxE1Nzobuppq2hF/Bmr8tWQ6Zy/T3sPNfSw2kIhBUhqxPME8z4MzauDRJUtdmnc
- 9s2M6LGTgzzHVuwJl1L5brdsZoo7kEHUn932cQRnyLIpuZx2DVx6oprsFIi0oR+MDKXx
- VY7E23g19pi4QauLQyApJY+qfCVnHWNfd86EFz+PzZYKvn8oF+wLx9QKJrFowKtxdgsF
- pJRmpMpv7Dg1rU+B0p4cCfbq7aAIaDA+YGQk9vI0X3C4QA5uou2aA5WckZXlqZ5BkGBK Dg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 2t9c9p8pp1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 22 Jun 2019 10:43:35 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5MAhPYm103599;
-        Sat, 22 Jun 2019 10:43:35 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 2t9c5239h4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 22 Jun 2019 10:43:35 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5MAhQga013247;
-        Sat, 22 Jun 2019 10:43:26 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 22 Jun 2019 03:43:25 -0700
-Date:   Sat, 22 Jun 2019 13:43:19 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Mao Wenan <maowenan@huawei.com>
-Cc:     airlied@linux.ie, daniel@ffwll.ch, alexander.deucher@amd.com,
-        christian.koenig@amd.com, David1.Zhou@amd.com,
-        kernel-janitors@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH -next] drm/amdgpu: remove set but not used variables 'ret'
-Message-ID: <20190622104318.GT28859@kadam>
-References: <20190622030314.169640-1-maowenan@huawei.com>
+        id S1726293AbfFVM6p (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 22 Jun 2019 08:58:45 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:19058 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726286AbfFVM6p (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 22 Jun 2019 08:58:45 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 2EA12DE6D53BC5843FA8;
+        Sat, 22 Jun 2019 20:58:42 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.439.0; Sat, 22 Jun 2019 20:58:32 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <airlied@linux.ie>, <daniel@ffwll.ch>, <alexander.deucher@amd.com>,
+        <christian.koenig@amd.com>, <David1.Zhou@amd.com>,
+        <dan.carpenter@oracle.com>, <julia.lawall@lip6.fr>
+CC:     <kernel-janitors@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
+        <linux-kernel@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH -next v2] drm/amdgpu: return 'ret' in amdgpu_pmu_init
+Date:   Sat, 22 Jun 2019 21:05:27 +0800
+Message-ID: <20190622130527.182022-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190622104318.GT28859@kadam>
+References: <20190622104318.GT28859@kadam>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190622030314.169640-1-maowenan@huawei.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9295 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906220098
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9295 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906220098
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Jun 22, 2019 at 11:03:14AM +0800, Mao Wenan wrote:
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
-> index 0e6dba9..0bf4dd9 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
-> @@ -246,12 +246,10 @@ static int init_pmu_by_type(struct amdgpu_device *adev,
->  /* init amdgpu_pmu */
->  int amdgpu_pmu_init(struct amdgpu_device *adev)
->  {
-> -	int ret = 0;
-> -
->  	switch (adev->asic_type) {
->  	case CHIP_VEGA20:
->  		/* init df */
-> -		ret = init_pmu_by_type(adev, df_v3_6_attr_groups,
-> +		init_pmu_by_type(adev, df_v3_6_attr_groups,
->  				       "DF", "amdgpu_df", PERF_TYPE_AMDGPU_DF,
->  				       DF_V3_6_MAX_COUNTERS);
+There is one warning:
+drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c: In function ‘amdgpu_pmu_init’:
+drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c:249:6: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
+  int ret = 0;
+      ^
+amdgpu_pmu_init() is called by amdgpu_device_init() in drivers/gpu/drm/amd/amdgpu/amdgpu_device.c,
+which will use the return value. So it returns 'ret' for caller.
+amdgpu_device_init()
+	r = amdgpu_pmu_init(adev);
 
+Fixes: 9c7c85f7ea1f ("drm/amdgpu: add pmu counters")
 
-You're resending this for other reasons, but don't forget to update the
-indenting on the arguments so they still line up with the '('.
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ v1->v2: change the subject for this patch; change the indenting when it calls init_pmu_by_type; use the value 'ret' in
+ amdgpu_pmu_init().
+ drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-regards,
-dan carpenter
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
+index 0e6dba9..145e720 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
+@@ -252,8 +252,8 @@ int amdgpu_pmu_init(struct amdgpu_device *adev)
+ 	case CHIP_VEGA20:
+ 		/* init df */
+ 		ret = init_pmu_by_type(adev, df_v3_6_attr_groups,
+-				       "DF", "amdgpu_df", PERF_TYPE_AMDGPU_DF,
+-				       DF_V3_6_MAX_COUNTERS);
++							   "DF", "amdgpu_df", PERF_TYPE_AMDGPU_DF,
++							   DF_V3_6_MAX_COUNTERS);
+ 
+ 		/* other pmu types go here*/
+ 		break;
+@@ -261,7 +261,7 @@ int amdgpu_pmu_init(struct amdgpu_device *adev)
+ 		return 0;
+ 	}
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ 
+-- 
+2.7.4
 

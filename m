@@ -2,103 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 899434F5CF
-	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Jun 2019 15:06:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A97AF4F5F1
+	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Jun 2019 15:42:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726304AbfFVNGL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 22 Jun 2019 09:06:11 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:6796 "EHLO
-        mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726287AbfFVNGL (ORCPT
+        id S1726307AbfFVNm2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 22 Jun 2019 09:42:28 -0400
+Received: from mail-vs1-f67.google.com ([209.85.217.67]:43182 "EHLO
+        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726276AbfFVNm1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 22 Jun 2019 09:06:11 -0400
-X-IronPort-AV: E=Sophos;i="5.63,404,1557180000"; 
-   d="scan'208";a="311071975"
-Received: from abo-12-105-68.mrs.modulonet.fr (HELO hadrien) ([85.68.105.12])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 22 Jun 2019 15:06:08 +0200
-Date:   Sat, 22 Jun 2019 15:06:07 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@lip6.fr>
-X-X-Sender: jll@hadrien
-To:     Mao Wenan <maowenan@huawei.com>
-cc:     airlied@linux.ie, daniel@ffwll.ch, alexander.deucher@amd.com,
-        christian.koenig@amd.com, David1.Zhou@amd.com,
-        dan.carpenter@oracle.com, kernel-janitors@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH -next v2] drm/amdgpu: return 'ret' in amdgpu_pmu_init
-In-Reply-To: <20190622130527.182022-1-maowenan@huawei.com>
-Message-ID: <alpine.DEB.2.21.1906221504110.3253@hadrien>
-References: <20190622104318.GT28859@kadam> <20190622130527.182022-1-maowenan@huawei.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        Sat, 22 Jun 2019 09:42:27 -0400
+Received: by mail-vs1-f67.google.com with SMTP id j26so5716071vsn.10
+        for <kernel-janitors@vger.kernel.org>; Sat, 22 Jun 2019 06:42:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Un5Ke0Ru3iTFXv9DrHEizflVlYGBaDhARoB+8+C5nXM=;
+        b=DBPdUg9YXUmMu34cAhYEsiCt1r26kzSSCWeHwrXLpkJCi9n2UiEx17YXt+jT4w2MxE
+         k/Z5yWvjMDVB3ulZmzkKkPTd49bMrvEJhZZRodFZl7kw4Cq1uTFxcc/csXD/DZZYJd2t
+         +P/F597mSBpdRUp1l3SoorHqsDtzdX6rGF4Pwc0WOjXwE9P0k7f6um/VTUfCgKTnu8hz
+         VsA1eQJ9UFQQ21dsNcnGkUlUaOCuFz01C3TsVLnYsnpQsy21rzb6wkbXyqAg2Lck1G2J
+         UdgAl9pvZaVyXkD21x667npz7PhPes1LypI/DWWrlMHH6+NUpWmlswC/RtdyxfL0pUZN
+         k4nA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Un5Ke0Ru3iTFXv9DrHEizflVlYGBaDhARoB+8+C5nXM=;
+        b=GBUENw+hgazJ2bzpYMUguagQ63+FiS1WXMfItrqvwIta0B4Fv7uWeLyfAS+95f/UR6
+         4EQZ8meOrir31TpZPwF0P5yTHnHM9B5DmH+XguR4/wXtBGt8LJexy7EEQAXIWvVRlJ5T
+         aZydO9adQb8uPOjAhL3rPnMK5FE/EWrYOylctDsHVz86Mk7RolNgVvz9GYyVbZtpVJJK
+         syGdFsEpo4bJ7NqWZnEzbW4XJS5c7je27gilygKDMyl5lPjDkBJ5U4IaoRoymmq/+Nbn
+         QVpydUHjAVrBoYJFhPzAwHf+zK5hBGbnO4TMsaqwsbAk3WAtwM3nVexGDmQfSQXLszCz
+         HQOw==
+X-Gm-Message-State: APjAAAWl1LmhcrYvMVqbNUU8C3G+a1O6Et17OcOwyClUEiDtovmqxJcF
+        2xvgtX+d1hlisnoU5yq7T/crdiB2nz3k06uRNis=
+X-Google-Smtp-Source: APXvYqzZaZ+cPnxi3HEcJHJKJNGahUObQ4n3xC1LnqcjOeQ5hsfJpkyt83sjl1Ytu+qDNBykmCEHZ6ZiV7uUR1g2wNA=
+X-Received: by 2002:a67:3310:: with SMTP id z16mr60285221vsz.75.1561210946819;
+ Sat, 22 Jun 2019 06:42:26 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-205373768-1561208768=:3253"
+Received: by 2002:a67:e183:0:0:0:0:0 with HTTP; Sat, 22 Jun 2019 06:42:24
+ -0700 (PDT)
+Reply-To: miss.fatimayusuf11@gmail.com
+From:   "Miss.Fatima Yusuf" <fatimayusuf20001@gmail.com>
+Date:   Sat, 22 Jun 2019 13:42:24 +0000
+Message-ID: <CAMYDnHBFov=1p9UdOm+gEapaeZm4iSk7h7OZ_xWe1Hzq70xFLA@mail.gmail.com>
+Subject: From:Miss: Fatima Yusuf.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From:Miss: Fatima Yusuf.
 
---8323329-205373768-1561208768=:3253
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+For sure this mail would definitely come to you as a surprise, but do
+take your good time to go through it, My name is Ms. Fatima Yusuf,i am
+from Ivory Coast.
 
+I lost my parents a year and couple of months ago. My father was a
+serving director of the Agro-exporting board until his death. He was
+assassinated by his business partners.Before his death, he made a
+deposit of US$9.7 Million Dollars here in Cote d'ivoire which was for
+the purchase of cocoa processing machine and development of another
+factory before his untimely death.
 
+Being that this part of the world experiences political and crises
+time without number, there is no guarantee of lives and properties. I
+cannot invest this money here any long, despite the fact it had been
+my late father's industrial plans.
 
-On Sat, 22 Jun 2019, Mao Wenan wrote:
+I want you to do me a favor to receive this funds into your country or
+any safer place as the beneficiary, I have plans to invest this money
+in continuation with the investment vision of my late father, but not
+in this place again rather in your country. I have the vision of going
+into real estate and industrial production or any profitable business
+venture.
 
-> There is one warning:
-> drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c: In function ‘amdgpu_pmu_init’:
-> drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c:249:6: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
->   int ret = 0;
->       ^
-> amdgpu_pmu_init() is called by amdgpu_device_init() in drivers/gpu/drm/amd/amdgpu/amdgpu_device.c,
-> which will use the return value. So it returns 'ret' for caller.
-> amdgpu_device_init()
-> 	r = amdgpu_pmu_init(adev);
->
-> Fixes: 9c7c85f7ea1f ("drm/amdgpu: add pmu counters")
->
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> ---
->  v1->v2: change the subject for this patch; change the indenting when it calls init_pmu_by_type; use the value 'ret' in
->  amdgpu_pmu_init().
->  drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
-> index 0e6dba9..145e720 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
-> @@ -252,8 +252,8 @@ int amdgpu_pmu_init(struct amdgpu_device *adev)
->  	case CHIP_VEGA20:
->  		/* init df */
->  		ret = init_pmu_by_type(adev, df_v3_6_attr_groups,
-> -				       "DF", "amdgpu_df", PERF_TYPE_AMDGPU_DF,
-> -				       DF_V3_6_MAX_COUNTERS);
-> +							   "DF", "amdgpu_df", PERF_TYPE_AMDGPU_DF,
-> +							   DF_V3_6_MAX_COUNTERS);
->
->  		/* other pmu types go here*/
+I will be ready to compensate you with 20% of the total Amount, now
+all my hope is banked on you and i really wants to invest this money
+in your country, where there is stability of Government, political and
+economic welfare.
 
-I don't know what is the impact of the other pmu types that are planned
-for the future.  Perhaps it would be better to abort the function
-immediately in the case of a failure.
+My greatest worry now is how to move out of this country because my
+uncle is threatening to kill me as he killed my father,Please do not
+let anybody hear about this, it is between me and you alone because of
+my security reason.
 
-julia
-
->  		break;
-> @@ -261,7 +261,7 @@ int amdgpu_pmu_init(struct amdgpu_device *adev)
->  		return 0;
->  	}
->
-> -	return 0;
-> +	return ret;
->  }
->
->
-> --
-> 2.7.4
->
->
---8323329-205373768-1561208768=:3253--
+I am waiting to hear from you.
+Yours Sincerely,
+Miss.Fatima Yusuf.

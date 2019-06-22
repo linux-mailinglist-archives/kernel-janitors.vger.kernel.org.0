@@ -2,99 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B8EA74F46E
-	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Jun 2019 10:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB51C4F552
+	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Jun 2019 12:43:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726301AbfFVInc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 22 Jun 2019 04:43:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35442 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726114AbfFVInc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 22 Jun 2019 04:43:32 -0400
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E2350206BA;
-        Sat, 22 Jun 2019 08:43:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1561193011;
-        bh=Ne/FYC7qbqO1MBAcK+ToL5A3274Dk5lz7Tfcussjz8U=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NSf16nj2CHraiG3fFJ6KIYa9hEXZ16pSwtds4a2y/oXL6+dZhe24bN/BNHl5lbBbl
-         uPBZsSM7IbdttFTYqDxrF0VGlBuM2c6YzX6okU/UbYmall1vwQDD8BUkqB9jFNB+H4
-         QN7P4QWzmkmxSCBGYTPZMkyjKvJ/Fkz3qoKJ5M0Y=
-Date:   Sat, 22 Jun 2019 09:43:26 +0100
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] iio: sca3000: Potential endian bug in
- sca3000_read_event_value()
-Message-ID: <20190622094326.742d3e7e@archlinux>
-In-Reply-To: <20190621091828.GA1878@mwanda>
-References: <20190621091828.GA1878@mwanda>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726287AbfFVKnr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 22 Jun 2019 06:43:47 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:52024 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726136AbfFVKnr (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 22 Jun 2019 06:43:47 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5MAe6EL149137;
+        Sat, 22 Jun 2019 10:43:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=kq0vqQjo14XEI66TpU/rqYxVUPhSaWKc+eKAGmgwWQA=;
+ b=xUHaVXMSzCBsFfEes7e5FsFtZJjipV7WL6pW++EZJmcpQWQLGIXSBL+JnjPEf9qYFLTk
+ WS5T7GxE1Nzobuppq2hF/Bmr8tWQ6Zy/T3sPNfSw2kIhBUhqxPME8z4MzauDRJUtdmnc
+ 9s2M6LGTgzzHVuwJl1L5brdsZoo7kEHUn932cQRnyLIpuZx2DVx6oprsFIi0oR+MDKXx
+ VY7E23g19pi4QauLQyApJY+qfCVnHWNfd86EFz+PzZYKvn8oF+wLx9QKJrFowKtxdgsF
+ pJRmpMpv7Dg1rU+B0p4cCfbq7aAIaDA+YGQk9vI0X3C4QA5uou2aA5WckZXlqZ5BkGBK Dg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2t9c9p8pp1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 22 Jun 2019 10:43:35 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5MAhPYm103599;
+        Sat, 22 Jun 2019 10:43:35 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 2t9c5239h4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 22 Jun 2019 10:43:35 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5MAhQga013247;
+        Sat, 22 Jun 2019 10:43:26 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Sat, 22 Jun 2019 03:43:25 -0700
+Date:   Sat, 22 Jun 2019 13:43:19 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     airlied@linux.ie, daniel@ffwll.ch, alexander.deucher@amd.com,
+        christian.koenig@amd.com, David1.Zhou@amd.com,
+        kernel-janitors@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next] drm/amdgpu: remove set but not used variables 'ret'
+Message-ID: <20190622104318.GT28859@kadam>
+References: <20190622030314.169640-1-maowenan@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190622030314.169640-1-maowenan@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9295 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906220098
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9295 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906220098
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 21 Jun 2019 12:18:28 +0300
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
-
-> The problem is that "ret" is an int but we're casting it as
-> "(unsigned long *)&ret" when we do the for_each_set_bit() loop.  This
-> will not work on big endian 64 bit systems.
-> 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Hi Dan,
-
-Great catch,  I've applied this to the togreg branch of iio.git (rather
-than fixes) given the point in the cycle and limited chance anyone is
-actually running this obsolete part on a be64 machine.  I would love
-to be proved wrong though and would be happy to push this for stable
-if we do get any reports!
-
-Thanks,
-
-Jonathan
-> ---
->  drivers/iio/accel/sca3000.c | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iio/accel/sca3000.c b/drivers/iio/accel/sca3000.c
-> index 4964561595f5..9e9f4347a325 100644
-> --- a/drivers/iio/accel/sca3000.c
-> +++ b/drivers/iio/accel/sca3000.c
-> @@ -872,8 +872,9 @@ static int sca3000_read_event_value(struct iio_dev *indio_dev,
->  				    enum iio_event_info info,
->  				    int *val, int *val2)
+On Sat, Jun 22, 2019 at 11:03:14AM +0800, Mao Wenan wrote:
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
+> index 0e6dba9..0bf4dd9 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
+> @@ -246,12 +246,10 @@ static int init_pmu_by_type(struct amdgpu_device *adev,
+>  /* init amdgpu_pmu */
+>  int amdgpu_pmu_init(struct amdgpu_device *adev)
 >  {
-> -	int ret, i;
->  	struct sca3000_state *st = iio_priv(indio_dev);
-> +	long ret;
-> +	int i;
->  
->  	switch (info) {
->  	case IIO_EV_INFO_VALUE:
-> @@ -885,11 +886,11 @@ static int sca3000_read_event_value(struct iio_dev *indio_dev,
->  			return ret;
->  		*val = 0;
->  		if (chan->channel2 == IIO_MOD_Y)
-> -			for_each_set_bit(i, (unsigned long *)&ret,
-> +			for_each_set_bit(i, &ret,
->  					 ARRAY_SIZE(st->info->mot_det_mult_y))
->  				*val += st->info->mot_det_mult_y[i];
->  		else
-> -			for_each_set_bit(i, (unsigned long *)&ret,
-> +			for_each_set_bit(i, &ret,
->  					 ARRAY_SIZE(st->info->mot_det_mult_xz))
->  				*val += st->info->mot_det_mult_xz[i];
->  
+> -	int ret = 0;
+> -
+>  	switch (adev->asic_type) {
+>  	case CHIP_VEGA20:
+>  		/* init df */
+> -		ret = init_pmu_by_type(adev, df_v3_6_attr_groups,
+> +		init_pmu_by_type(adev, df_v3_6_attr_groups,
+>  				       "DF", "amdgpu_df", PERF_TYPE_AMDGPU_DF,
+>  				       DF_V3_6_MAX_COUNTERS);
+
+
+You're resending this for other reasons, but don't forget to update the
+indenting on the arguments so they still line up with the '('.
+
+regards,
+dan carpenter
 

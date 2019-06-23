@@ -2,79 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68DFD4FA78
-	for <lists+kernel-janitors@lfdr.de>; Sun, 23 Jun 2019 08:10:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2A2F4FD76
+	for <lists+kernel-janitors@lfdr.de>; Sun, 23 Jun 2019 20:08:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726342AbfFWGKX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 23 Jun 2019 02:10:23 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:59882 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726050AbfFWGKX (ORCPT
+        id S1726693AbfFWSIg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 23 Jun 2019 14:08:36 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:43318 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726417AbfFWSIg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 23 Jun 2019 02:10:23 -0400
-X-IronPort-AV: E=Sophos;i="5.63,407,1557180000"; 
-   d="scan'208";a="388655915"
-Received: from abo-12-105-68.mrs.modulonet.fr (HELO hadrien) ([85.68.105.12])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Jun 2019 08:10:21 +0200
-Date:   Sun, 23 Jun 2019 08:10:21 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@lip6.fr>
-X-X-Sender: jll@hadrien
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-cc:     Mao Wenan <maowenan@huawei.com>, airlied@linux.ie, daniel@ffwll.ch,
-        alexander.deucher@amd.com, christian.koenig@amd.com,
-        David1.Zhou@amd.com, kernel-janitors@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH -next] drm/amdgpu: remove set but not used variables
- 'ret'
-In-Reply-To: <20190623060027.GU28859@kadam>
-Message-ID: <alpine.DEB.2.21.1906230809400.4961@hadrien>
-References: <20190622030314.169640-1-maowenan@huawei.com> <20190622104318.GT28859@kadam> <20190623060027.GU28859@kadam>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        Sun, 23 Jun 2019 14:08:36 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 6D42A15310D44;
+        Sun, 23 Jun 2019 11:08:35 -0700 (PDT)
+Date:   Sun, 23 Jun 2019 11:08:35 -0700 (PDT)
+Message-Id: <20190623.110835.523516058927476452.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     xuechaojing@huawei.com, aviad.krawczyk@huawei.com,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][net-next] hinic: fix dereference of pointer hwdev
+ before it is null checked
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190620132751.26438-1-colin.king@canonical.com>
+References: <20190620132751.26438-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 23 Jun 2019 11:08:35 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin King <colin.king@canonical.com>
+Date: Thu, 20 Jun 2019 14:27:51 +0100
 
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently pointer hwdev is dereferenced when assigning hwif before
+> hwdev is null checked.  Fix this by only derefencing hwdev after the
+> null check.
+> 
+> Addresses-Coverity: ("Dereference before null check")
+> Fixes: 4fdc51bb4e92 ("hinic: add support for rss parameters with ethtool")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-On Sun, 23 Jun 2019, Dan Carpenter wrote:
-
-> On Sat, Jun 22, 2019 at 01:43:19PM +0300, Dan Carpenter wrote:
-> > On Sat, Jun 22, 2019 at 11:03:14AM +0800, Mao Wenan wrote:
-> > > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
-> > > index 0e6dba9..0bf4dd9 100644
-> > > --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
-> > > +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
-> > > @@ -246,12 +246,10 @@ static int init_pmu_by_type(struct amdgpu_device *adev,
-> > >  /* init amdgpu_pmu */
-> > >  int amdgpu_pmu_init(struct amdgpu_device *adev)
-> > >  {
-> > > -	int ret = 0;
-> > > -
-> > >  	switch (adev->asic_type) {
-> > >  	case CHIP_VEGA20:
-> > >  		/* init df */
-> > > -		ret = init_pmu_by_type(adev, df_v3_6_attr_groups,
-> > > +		init_pmu_by_type(adev, df_v3_6_attr_groups,
-> > >  				       "DF", "amdgpu_df", PERF_TYPE_AMDGPU_DF,
-> > >  				       DF_V3_6_MAX_COUNTERS);
-> >
-> >
-> > You're resending this for other reasons, but don't forget to update the
-> > indenting on the arguments so they still line up with the '('.
-> >
->
-> Sorry, I was unclear.  If you pull the init_pmu_by_type( back 6
-> characters then you also need to pull the "DF" back 6 characters.
->
-> 		init_pmu_by_type(adev, df_v3_6_attr_groups, "DF", "amdgpu_df",
-> 				 PERF_TYPE_AMDGPU_DF, DF_V3_6_MAX_COUNTERS);
->
-> You can actually fit it into two lines afterwards.
-
-My suggestion was to keep the ret = instead of discarding the indication
-of failure, so I think that this is not relevant.
-
-julia
+Applied.

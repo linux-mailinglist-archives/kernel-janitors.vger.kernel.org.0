@@ -2,73 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 917764F7C0
-	for <lists+kernel-janitors@lfdr.de>; Sat, 22 Jun 2019 20:13:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF11D4FA50
+	for <lists+kernel-janitors@lfdr.de>; Sun, 23 Jun 2019 07:00:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726310AbfFVSNb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 22 Jun 2019 14:13:31 -0400
-Received: from smtprelay0129.hostedemail.com ([216.40.44.129]:51928 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725995AbfFVSNb (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 22 Jun 2019 14:13:31 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay07.hostedemail.com (Postfix) with ESMTP id 90855181D33FC;
-        Sat, 22 Jun 2019 18:13:29 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::::::,RULES_HIT:41:152:355:379:599:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2198:2199:2393:2559:2562:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:3872:3873:4321:4605:5007:7903:10004:10400:10848:11026:11232:11233:11473:11657:11658:11914:12043:12048:12296:12297:12438:12679:12740:12895:13069:13161:13229:13311:13357:13894:14659:14721:21063:21080:21451:21627:30012:30054:30070:30091,0,RBL:23.242.196.136:@perches.com:.lbl8.mailshell.net-62.8.0.180 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:24,LUA_SUMMARY:none
-X-HE-Tag: guide54_1e3a390309d01
-X-Filterd-Recvd-Size: 2148
-Received: from XPS-9350.home (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
-        (Authenticated sender: joe@perches.com)
-        by omf08.hostedemail.com (Postfix) with ESMTPA;
-        Sat, 22 Jun 2019 18:13:27 +0000 (UTC)
-Message-ID: <0ab82cdb0bec30e7e431f106f8e0e9d141491555.camel@perches.com>
-Subject: Re: [PATCH -next v2] drm/amdgpu: return 'ret' in amdgpu_pmu_init
-From:   Joe Perches <joe@perches.com>
-To:     Mao Wenan <maowenan@huawei.com>, airlied@linux.ie, daniel@ffwll.ch,
-        alexander.deucher@amd.com, christian.koenig@amd.com,
-        David1.Zhou@amd.com, dan.carpenter@oracle.com, julia.lawall@lip6.fr
-Cc:     kernel-janitors@vger.kernel.org, amd-gfx@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, Jonathan Kim <jonathan.kim@amd.com>
-Date:   Sat, 22 Jun 2019 11:13:26 -0700
-In-Reply-To: <20190622130527.182022-1-maowenan@huawei.com>
-References: <20190622104318.GT28859@kadam>
-         <20190622130527.182022-1-maowenan@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5-0ubuntu0.18.10.1 
+        id S1726263AbfFWFAX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 23 Jun 2019 01:00:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59238 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725268AbfFWFAX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 23 Jun 2019 01:00:23 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id C008C20657;
+        Sun, 23 Jun 2019 05:00:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561266022;
+        bh=zFQ1/H48FzWgTv6CLGVT5WbQRHwPzkIBssyelN4JGBY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=v5hyGDBuXrnwZleT/6R5LpQJYM6i/9R6ETbO+AdEk5oAh+tCHHUkD2oiw5eVBE3n+
+         4aiBaQlw37diejkKDBzBvlQVMBxO9c2WrOAFvZ5Ta2aiB+6US7DxVP//ffBMFgXpAD
+         0f8og+WjVZsf45ij5BdZJ80+Yfx/SsWA6Op24WfY=
+Date:   Sun, 23 Jun 2019 07:00:19 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Colin King <colin.king@canonical.com>,
+        Arnd Bergmann <arnd@arndb.de>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] lkdtm: remove redundant initialization of ret
+Message-ID: <20190623050019.GC4812@kroah.com>
+References: <20190614094311.24024-1-colin.king@canonical.com>
+ <20190621140347.GA7011@kroah.com>
+ <20190621140509.GB7011@kroah.com>
+ <201906210920.E133B26C@keescook>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <201906210920.E133B26C@keescook>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 2019-06-22 at 21:05 +0800, Mao Wenan wrote:
-> There is one warning:
-> drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c: In function ‘amdgpu_pmu_init’:
-> drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c:249:6: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
->   int ret = 0;
-[]
->  v1->v2: change the subject for this patch; change the indenting when it calls init_pmu_by_type; use the value 'ret' in
->  amdgpu_pmu_init().
-[]
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
-[]
-> @@ -252,8 +252,8 @@ int amdgpu_pmu_init(struct amdgpu_device *adev)
->  	case CHIP_VEGA20:
->  		/* init df */
->  		ret = init_pmu_by_type(adev, df_v3_6_attr_groups,
-> -				       "DF", "amdgpu_df", PERF_TYPE_AMDGPU_DF,
-> -				       DF_V3_6_MAX_COUNTERS);
-> +							   "DF", "amdgpu_df", PERF_TYPE_AMDGPU_DF,
-> +							   DF_V3_6_MAX_COUNTERS);
+On Fri, Jun 21, 2019 at 09:26:05AM -0700, Kees Cook wrote:
+> On Fri, Jun 21, 2019 at 04:05:09PM +0200, Greg Kroah-Hartman wrote:
+> > On Fri, Jun 21, 2019 at 04:03:47PM +0200, Greg Kroah-Hartman wrote:
+> > > On Fri, Jun 14, 2019 at 10:43:11AM +0100, Colin King wrote:
+> > > > From: Colin Ian King <colin.king@canonical.com>
+> > > > 
+> > > > The variable ret is being initialized with the value -EINVAL however
+> > > > this value is never read and ret is being re-assigned later on. Hence
+> > > > the initialization is redundant and can be removed.
+> > > > 
+> > > > Addresses-Coverity: ("Unused value")
+> > > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > > > Acked-by: Kees Cook <keescook@chromium.org>
+> > > > ---
+> > > >  drivers/misc/lkdtm/core.c | 2 +-
+> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
+> > > > index bba093224813..92df35fdeab0 100644
+> > > > --- a/drivers/misc/lkdtm/core.c
+> > > > +++ b/drivers/misc/lkdtm/core.c
+> > > > @@ -390,7 +390,7 @@ static int __init lkdtm_module_init(void)
+> > > >  {
+> > > >  	struct crashpoint *crashpoint = NULL;
+> > > >  	const struct crashtype *crashtype = NULL;
+> > > > -	int ret = -EINVAL;
+> > > > +	int ret;
+> > > >  	int i;
+> > > >  
+> > > >  	/* Neither or both of these need to be set */
+> > > > -- 
+> > > > 2.20.1
+> > > > 
+> > > 
+> > > With this patch now applied, I get this build warning:
+> > > drivers/misc/lkdtm/core.c: In function lkdtm_module_init:
+> > > drivers/misc/lkdtm/core.c:467:9: warning: ret may be used uninitialized in this function [-Wmaybe-uninitialized]
+> > >   return ret;
+> > >          ^~~
+> > > 
+> > > So are you _sure_ it shouldn't be initialized?
+> > 
+> > In looking at the code in my tree, ret is used uninitialized with this
+> > patch, so maybe coverity is wrong, or I don't have all of the needed
+> > patches?
+> 
+> The path went away when the check for debugfs_create_file() was removed.
+> I thought that patch was in your tree already?
 
-trivia:
+Ah, other tree, sorry, my fault.  I'll go queue this up to the place
+that patch is...
 
-The indentation change seems superfluous and
-appears to make the code harder to read.
+thanks,
 
-You could also cc Jonathan Kim who wrote all of this.
-
-
+greg k-h

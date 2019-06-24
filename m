@@ -2,29 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0094051D4A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 23:46:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C49751D7F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 23:58:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732338AbfFXVqS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Jun 2019 17:46:18 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:53993 "EHLO
+        id S1728681AbfFXV6J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Jun 2019 17:58:09 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:54186 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727855AbfFXVqQ (ORCPT
+        with ESMTP id S1726372AbfFXV6I (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Jun 2019 17:46:16 -0400
+        Mon, 24 Jun 2019 17:58:08 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hfWmv-00068c-40; Mon, 24 Jun 2019 21:46:09 +0000
+        id 1hfWyS-0007FY-EG; Mon, 24 Jun 2019 21:58:04 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Lijun Ou <oulijun@huawei.com>, Wei Hu <xavier.huwei@huawei.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org
+To:     Hans Verkuil <hverkuil@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] RDMA/hns: fix potential integer overflow on left shift
-Date:   Mon, 24 Jun 2019 22:46:08 +0100
-Message-Id: <20190624214608.11765-1-colin.king@canonical.com>
+Subject: [PATCH][next] media: vivid: fix potential integer overflow on left shift
+Date:   Mon, 24 Jun 2019 22:58:04 +0100
+Message-Id: <20190624215804.12122-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,32 +36,57 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a potential integer overflow when int i is left shifted
+There is a potential integer overflow when int 2 is left shifted
 as this is evaluated using 32 bit arithmetic but is being used in
-a context that expects an expression of type dma_addr_t.  Fix this
-by casting integer i to dma_addr_t before shifting to avoid the
-overflow.
+a context that expects an expression of type s64.  Fix this by
+shifting 2ULL to avoid a 32 bit overflow.
 
 Addresses-Coverity: ("Unintentional integer overflow")
-Fixes: 2ac0bc5e725e ("RDMA/hns: Add a group interfaces for optimizing buffers getting flow")
+Fixes: 8a99e9faa131 ("media: vivid: add HDMI (dis)connect RX emulation")
+Fixes: 79a792dafac6 ("media: vivid: add HDMI (dis)connect TX emulation")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/infiniband/hw/hns/hns_roce_alloc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/vivid/vivid-ctrls.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_alloc.c b/drivers/infiniband/hw/hns/hns_roce_alloc.c
-index 14fcc359599c..2c8defa94107 100644
---- a/drivers/infiniband/hw/hns/hns_roce_alloc.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_alloc.c
-@@ -257,7 +257,7 @@ int hns_roce_get_kmem_bufs(struct hns_roce_dev *hr_dev, dma_addr_t *bufs,
- 	for (i = start; i < end; i++)
- 		if (buf->nbufs == 1)
- 			bufs[total++] = buf->direct.map +
--					(i << buf->page_shift);
-+					((dma_addr_t)i << buf->page_shift);
- 		else
- 			bufs[total++] = buf->page_list[i].map;
+diff --git a/drivers/media/platform/vivid/vivid-ctrls.c b/drivers/media/platform/vivid/vivid-ctrls.c
+index 3e916c8befb7..8f340cfd6993 100644
+--- a/drivers/media/platform/vivid/vivid-ctrls.c
++++ b/drivers/media/platform/vivid/vivid-ctrls.c
+@@ -1634,8 +1634,8 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
+ 			0, V4L2_DV_RGB_RANGE_AUTO);
+ 		dev->ctrl_rx_power_present = v4l2_ctrl_new_std(hdl_vid_cap,
+ 			NULL, V4L2_CID_DV_RX_POWER_PRESENT, 0,
+-			(2 << (dev->num_hdmi_inputs - 1)) - 1, 0,
+-			(2 << (dev->num_hdmi_inputs - 1)) - 1);
++			(2ULL << (dev->num_hdmi_inputs - 1)) - 1, 0,
++			(2ULL << (dev->num_hdmi_inputs - 1)) - 1);
  
+ 	}
+ 	if (dev->num_hdmi_outputs) {
+@@ -1653,16 +1653,16 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
+ 			&vivid_ctrl_display_present, NULL);
+ 		dev->ctrl_tx_hotplug = v4l2_ctrl_new_std(hdl_vid_out,
+ 			NULL, V4L2_CID_DV_TX_HOTPLUG, 0,
+-			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
+-			(2 << (dev->num_hdmi_outputs - 1)) - 1);
++			(2ULL << (dev->num_hdmi_outputs - 1)) - 1, 0,
++			(2ULL << (dev->num_hdmi_outputs - 1)) - 1);
+ 		dev->ctrl_tx_rxsense = v4l2_ctrl_new_std(hdl_vid_out,
+ 			NULL, V4L2_CID_DV_TX_RXSENSE, 0,
+-			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
+-			(2 << (dev->num_hdmi_outputs - 1)) - 1);
++			(2ULL << (dev->num_hdmi_outputs - 1)) - 1, 0,
++			(2ULL << (dev->num_hdmi_outputs - 1)) - 1);
+ 		dev->ctrl_tx_edid_present = v4l2_ctrl_new_std(hdl_vid_out,
+ 			NULL, V4L2_CID_DV_TX_EDID_PRESENT, 0,
+-			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
+-			(2 << (dev->num_hdmi_outputs - 1)) - 1);
++			(2ULL << (dev->num_hdmi_outputs - 1)) - 1, 0,
++			(2ULL << (dev->num_hdmi_outputs - 1)) - 1);
+ 	}
+ 	if ((dev->has_vid_cap && dev->has_vid_out) ||
+ 	    (dev->has_vbi_cap && dev->has_vbi_out))
 -- 
 2.20.1
 

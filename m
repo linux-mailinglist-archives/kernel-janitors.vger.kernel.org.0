@@ -2,62 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDF1950EF9
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 16:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6399C50F3E
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 16:53:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729197AbfFXOsP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Jun 2019 10:48:15 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:44328 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728883AbfFXOsP (ORCPT
+        id S1729806AbfFXOxn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Jun 2019 10:53:43 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:38702 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726414AbfFXOxn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Jun 2019 10:48:15 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hfQGE-0004Fe-Bl; Mon, 24 Jun 2019 14:47:58 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Alexander Aring <alex.aring@gmail.com>,
-        Jukka Rissanen <jukka.rissanen@linux.intel.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-bluetooth@vger.kernel.org, linux-wpan@vger.kernel.org,
-        netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] 6lowpan: fix off-by-one comparison of index id with LOWPAN_IPHC_CTX_TABLE_SIZE
-Date:   Mon, 24 Jun 2019 15:47:57 +0100
-Message-Id: <20190624144757.1285-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Mon, 24 Jun 2019 10:53:43 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5OEmvQ4041482;
+        Mon, 24 Jun 2019 14:53:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=waQPePaU/7Xj6dq9mxwPa/7YRLZYgY2bjH/CbYXyHIU=;
+ b=ktPm5tc6CSRuF1rAb7B26OtxPNBhY55a4sqhg74vNRdlAD6zMqjUAX0konlS2bVASIa7
+ OBGgI/GDOeFF+fq+4bW2dZwYb6OnbYxDh7uD1ewZRcjRwwQbvIQdWdZrUjWA2kkqe1rP
+ FXaEu/c35wOqU2uu291p2xhe7rfpmJueBeZLLMPTWq33ttbl6875n/Jxw708h8alyJRQ
+ 42TEAub0CAqdGFJF/tTsSyzxQRj+O7CNPztazp8OWH8XMiWGk3PkXx1G21xGhkcWNTPB
+ fo65o/h3VlIjWO/TkQkTq33k1oDVW4Erx342kRkpFjSA7FapqPHCx3lRRq4x/3C46vwf 8g== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 2t9brsxxdt-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 24 Jun 2019 14:53:16 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5OEno4s021846;
+        Mon, 24 Jun 2019 14:51:15 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 2t99f3akmr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 24 Jun 2019 14:51:15 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5OEpEob026505;
+        Mon, 24 Jun 2019 14:51:14 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 24 Jun 2019 07:51:13 -0700
+Date:   Mon, 24 Jun 2019 17:51:06 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Tadeusz Struk <tadeusz.struk@intel.com>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>, qat-linux@intel.com,
+        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] crypto: qat - Endian bug in interrupt handler
+Message-ID: <20190624145105.GX28859@kadam>
+References: <20190624134839.GB1754@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190624134839.GB1754@mwanda>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9298 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=804
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906240120
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9298 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=856 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906240121
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
 
-The WARN_ON_ONCE check on id is off-by-one, it should be greater or equal
-to LOWPAN_IPHC_CTX_TABLE_SIZE and not greater than. Fix this.
+Never mind.  Please ignore this patch.
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- net/6lowpan/debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This is Intel hardware so it's little endian.  There are a bunch of
+other test_bit() casts which would be problematic so this wouldn't
+really fix anything anyway.
 
-diff --git a/net/6lowpan/debugfs.c b/net/6lowpan/debugfs.c
-index 1c140af06d52..a510bed8165b 100644
---- a/net/6lowpan/debugfs.c
-+++ b/net/6lowpan/debugfs.c
-@@ -170,7 +170,7 @@ static void lowpan_dev_debugfs_ctx_init(struct net_device *dev,
- 	struct dentry *root;
- 	char buf[32];
- 
--	WARN_ON_ONCE(id > LOWPAN_IPHC_CTX_TABLE_SIZE);
-+	WARN_ON_ONCE(id >= LOWPAN_IPHC_CTX_TABLE_SIZE);
- 
- 	sprintf(buf, "%d", id);
- 
--- 
-2.20.1
+regards,
+dan carpenter
 

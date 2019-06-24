@@ -2,129 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89945519DA
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 19:43:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65CB951A6C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 20:23:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729610AbfFXRna (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Jun 2019 13:43:30 -0400
-Received: from mail-eopbgr810050.outbound.protection.outlook.com ([40.107.81.50]:61920
-        "EHLO NAM01-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726988AbfFXRn3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Jun 2019 13:43:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector1-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pKOrHB6hoLwxQAGqq9dyuNjyW3+XKqaRQrmHBJj7FXc=;
- b=q33CpKJAug3UmStp4ijH6AKGc+4f00iI6CQ3JHtUe6HvAFwVV/KgISn3ZrwU9Gl1ueRoRWdQ9ptEPCd5AUJltf7XlSpY+1qwO7xdYcuPW68tfWTP9E6iUHIsOfr/55kQqKFp0sp3aSyR4soK5/w4PWaIpmBg9Lh8yCSOu0UFei0=
-Received: from CH2PR12MB3831.namprd12.prod.outlook.com (52.132.245.141) by
- CH2PR12MB3783.namprd12.prod.outlook.com (52.132.245.13) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2008.16; Mon, 24 Jun 2019 17:42:47 +0000
-Received: from CH2PR12MB3831.namprd12.prod.outlook.com
- ([fe80::3459:726f:43e7:a64c]) by CH2PR12MB3831.namprd12.prod.outlook.com
- ([fe80::3459:726f:43e7:a64c%4]) with mapi id 15.20.2008.014; Mon, 24 Jun 2019
- 17:42:47 +0000
-From:   "Kim, Jonathan" <Jonathan.Kim@amd.com>
-To:     Mao Wenan <maowenan@huawei.com>,
-        "airlied@linux.ie" <airlied@linux.ie>,
-        "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
-        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
-        "julia.lawall@lip6.fr" <julia.lawall@lip6.fr>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH -next v4] drm/amdgpu: return 'ret' immediately if failed
- in amdgpu_pmu_init
-Thread-Topic: [PATCH -next v4] drm/amdgpu: return 'ret' immediately if failed
- in amdgpu_pmu_init
-Thread-Index: AQHVKn5JEKVMvtxkwUKFh6TNDZEkvaarEYog
-Date:   Mon, 24 Jun 2019 17:42:46 +0000
-Message-ID: <CH2PR12MB3831BE36FF61D74FC529F64F85E00@CH2PR12MB3831.namprd12.prod.outlook.com>
-References: <20190624094850.GQ18776@kadam>
- <20190624112318.149299-1-maowenan@huawei.com>
-In-Reply-To: <20190624112318.149299-1-maowenan@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Jonathan.Kim@amd.com; 
-x-originating-ip: [165.204.55.251]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 0d477039-84db-4fd8-7c54-08d6f8cb5eb9
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:CH2PR12MB3783;
-x-ms-traffictypediagnostic: CH2PR12MB3783:
-x-microsoft-antispam-prvs: <CH2PR12MB3783E513C00516C73437131785E00@CH2PR12MB3783.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6108;
-x-forefront-prvs: 007814487B
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(136003)(396003)(366004)(39860400002)(376002)(346002)(13464003)(199004)(189003)(54906003)(110136005)(76176011)(6506007)(8936002)(7696005)(25786009)(476003)(7736002)(71190400001)(72206003)(33656002)(86362001)(256004)(71200400001)(446003)(486006)(53936002)(305945005)(478600001)(4326008)(2906002)(52536014)(14444005)(74316002)(2501003)(68736007)(9686003)(102836004)(229853002)(316002)(55016002)(6246003)(6436002)(53546011)(66446008)(73956011)(81156014)(64756008)(14454004)(76116006)(99286004)(6116002)(3846002)(66556008)(5660300002)(81166006)(2201001)(66946007)(66476007)(186003)(8676002)(66066001)(11346002)(26005)(14773001)(921003)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR12MB3783;H:CH2PR12MB3831.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: amd.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: mWAFPdEHvjBJauKAcHgTXKzXyvI1wqW+sUSDQYD77Oa16+Mk4YU2Msn7TYVFm7VF+nOet8Cwjk2JeHGfjkEp5CGp7mVk8JVTuVPlkufDTiz6Je+We3laG0amw4npi7L046tjplp4AsEXgWpBPqL7cxxqDpk0ojuSYQEemB2I+Dk3pgDjufptEtI3MuCamnfXhvdzNAxPW/ULbKKhXHLby4jkjYaMebfsbkw4TGOBo3diyyZYo/6UQ4QaVgQqE28eVsFvbVnxB4YxEYYNl6R0+00EoTxuLx+3B8w6Unk4Y7CAwyG9CKCZfpio7HP2su+23cxngPisqpI+mfJ8nPl9DnYT6d83KtWB+5rJUhF7/BgcGXgcdjjIycAL1nxeyeOmvE+LW+8MZZmHBEP4t9KUeLSuDtJfZ24Yl678XPbYIeI=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1732795AbfFXSXR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Jun 2019 14:23:17 -0400
+Received: from mout.kundenserver.de ([212.227.126.134]:44361 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725268AbfFXSXR (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 24 Jun 2019 14:23:17 -0400
+Received: from [192.168.1.110] ([77.4.138.202]) by mrelayeu.kundenserver.de
+ (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1M9Wqa-1hc9gp1oDk-005WqO; Mon, 24 Jun 2019 20:22:47 +0200
+Subject: Re: [PATCH] drivers: Adjust scope for CONFIG_HAS_IOMEM before
+ devm_platform_ioremap_resource()
+To:     Bartosz Golaszewski <brgl@bgdev.pl>
+Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Keerthy <j-keerthy@ti.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-gpio <linux-gpio@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+References: <20190221162627.3476-1-brgl@bgdev.pl>
+ <9efcbce2-4d49-7197-a3d8-0e83850892d5@web.de>
+ <CAMpxmJX-wXQ-ff1RWkPmJBWSsP_v2MjZrA3fhj3HQX0_zM0eZA@mail.gmail.com>
+ <39ae399a-c606-c6de-f84d-35e39d0410c0@metux.net>
+ <CAMRc=McepqowJNi6ay6x9KKoHOC8aCxP_ob12SgbsnJU_sKQng@mail.gmail.com>
+From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Organization: metux IT consult
+Message-ID: <1dd52704-0e41-db31-33f4-c9f446a47344@metux.net>
+Date:   Mon, 24 Jun 2019 20:22:45 +0200
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.2.1
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d477039-84db-4fd8-7c54-08d6f8cb5eb9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Jun 2019 17:42:46.9858
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: jokim@amd.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR12MB3783
+In-Reply-To: <CAMRc=McepqowJNi6ay6x9KKoHOC8aCxP_ob12SgbsnJU_sKQng@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:ZgmkRGHs7Dk+by07gKqk33wnZnw8jFOEY7Mzgtc3URhPyCvBCsp
+ L7tXD4MeY3Xax46GIB0/blF9/NGjT6pAdIcNuaiXYy+qpAvnxV38nbKkqLmxD5l1e0ffUxg
+ cGc1gvVDpkaV2vKyS+EHGXs00cgG7Bp6N5otI5l/92GnSozO9QX52qTDnFOzOAHaLVbEztt
+ yimvgXuW6f0pYDq6sgQvg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:JQHY8EkLn+M=:lJVSEKZy2Nz4CNNSOqZUni
+ EqeYGj7M4IwCCw1HCbCW3SUiu7ZTdr7RPEedoSpwkDfh13u5+kQSble5vLGiCAiK0teAIkOI7
+ llvxXVKhZXASP0VcRyPao9P21+vNMyOKoub8/JrM1YhDERUMe3pXNpi96YwHB9abnjK2EnrLW
+ zuTEPB2A7QLq9RSeDh2mTbGps1v9B3bGdpC8W7b1cwmI3NhHD6JWH0OY8czisXQt/GKrTz64/
+ MYfi/0mKuzwT9FaITglKSHfH1YakogstwdpPj6OAElm3PW6DaVdBl0vF6C4jWPZeczqsNc+2d
+ Guk1BCLf5Skdl1PdW/sk1oszu8DcEawwqZS52osidlchQNxeHJBrIyVIXidlK46tRF+JGNRKV
+ vaxHjrPds05TGoQa7NiKIhp19eldmo6o+77fVnHrFhWQ70ccJrd6TZXnTOoxhCxVz+Z18hqQc
+ Ox/OKf6XnAWhze2iTRyV04Of3IroXksK/VazvPdCl4CgFIQsNzE4jQLufL0nvnF/kpcNS5aza
+ t5bTvRbUSYmKtXwaEyGgWCeP4+vlqAts+/BZhQLXmrc08sNUKCDggXa+fi7RiB/M83shvNzHR
+ aqQ/V8vqkSAcDXWu1FlZ9dHqG9DkcLuk7ib4qZf15xbvXNHP4E4A0qgLRVl0DxXVMw+G1zRkU
+ IFRtpyPnNmRoVgYpyr/eFvTCZ+RyExHBlbh3HUL5h5EnX/GNb7dntJskgj4ZTMPatHHlUinJ8
+ mqHEgn3KBHEbmn7MvQWhWAaS9oly8yjDi9T/7ZpzNpTaniJUupJ71kFvkuU=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-SW1tZWRpYXRlIHJldHVybiBzaG91bGQgYmUgb2sgc2luY2UgcGVyZiByZWdpc3RyYXRpb24gaXNu
-J3QgZGVwZW5kZW50IG9uIGdwdSBody4NCg0KUmV2aWV3ZWQtYnk6IEpvbmF0aGFuIEtpbSA8Sm9u
-YXRoYW4uS2ltQGFtZC5jb20+DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBN
-YW8gV2VuYW4gPG1hb3dlbmFuQGh1YXdlaS5jb20+IA0KU2VudDogTW9uZGF5LCBKdW5lIDI0LCAy
-MDE5IDc6MjMgQU0NClRvOiBhaXJsaWVkQGxpbnV4LmllOyBkYW5pZWxAZmZ3bGwuY2g7IERldWNo
-ZXIsIEFsZXhhbmRlciA8QWxleGFuZGVyLkRldWNoZXJAYW1kLmNvbT47IEtvZW5pZywgQ2hyaXN0
-aWFuIDxDaHJpc3RpYW4uS29lbmlnQGFtZC5jb20+OyBaaG91LCBEYXZpZChDaHVuTWluZykgPERh
-dmlkMS5aaG91QGFtZC5jb20+OyBkYW4uY2FycGVudGVyQG9yYWNsZS5jb207IGp1bGlhLmxhd2Fs
-bEBsaXA2LmZyDQpDYzoga2VybmVsLWphbml0b3JzQHZnZXIua2VybmVsLm9yZzsgYW1kLWdmeEBs
-aXN0cy5mcmVlZGVza3RvcC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IEtpbSwg
-Sm9uYXRoYW4gPEpvbmF0aGFuLktpbUBhbWQuY29tPjsgTWFvIFdlbmFuIDxtYW93ZW5hbkBodWF3
-ZWkuY29tPg0KU3ViamVjdDogW1BBVENIIC1uZXh0IHY0XSBkcm0vYW1kZ3B1OiByZXR1cm4gJ3Jl
-dCcgaW1tZWRpYXRlbHkgaWYgZmFpbGVkIGluIGFtZGdwdV9wbXVfaW5pdA0KDQpbQ0FVVElPTjog
-RXh0ZXJuYWwgRW1haWxdDQoNClRoZXJlIGlzIG9uZSB3YXJuaW5nOg0KZHJpdmVycy9ncHUvZHJt
-L2FtZC9hbWRncHUvYW1kZ3B1X3BtdS5jOiBJbiBmdW5jdGlvbiDigJhhbWRncHVfcG11X2luaXTi
-gJk6DQpkcml2ZXJzL2dwdS9kcm0vYW1kL2FtZGdwdS9hbWRncHVfcG11LmM6MjQ5OjY6IHdhcm5p
-bmc6IHZhcmlhYmxlIOKAmHJldOKAmSBzZXQgYnV0IG5vdCB1c2VkIFstV3VudXNlZC1idXQtc2V0
-LXZhcmlhYmxlXQ0KICBpbnQgcmV0ID0gMDsNCiAgICAgIF4NCmFtZGdwdV9wbXVfaW5pdCgpIGlz
-IGNhbGxlZCBieSBhbWRncHVfZGV2aWNlX2luaXQoKSBpbiBkcml2ZXJzL2dwdS9kcm0vYW1kL2Ft
-ZGdwdS9hbWRncHVfZGV2aWNlLmMsDQp3aGljaCB3aWxsIHVzZSB0aGUgcmV0dXJuIHZhbHVlLiBT
-byBpdCBzaG91bGQgcmV0dXJuICdyZXQnIGltbWVkaWF0ZWx5IGlmIGluaXRfcG11X2J5X3R5cGUo
-KSBmYWlsZWQuDQphbWRncHVfZGV2aWNlX2luaXQoKQ0KICAgICAgICByID0gYW1kZ3B1X3BtdV9p
-bml0KGFkZXYpOw0KDQpGaXhlczogOWM3Yzg1ZjdlYTFmICgiZHJtL2FtZGdwdTogYWRkIHBtdSBj
-b3VudGVycyIpDQoNClNpZ25lZC1vZmYtYnk6IE1hbyBXZW5hbiA8bWFvd2VuYW5AaHVhd2VpLmNv
-bT4NCi0tLQ0KIHYxLT52MjogY2hhbmdlIHRoZSBzdWJqZWN0IGZvciB0aGlzIHBhdGNoOyBjaGFu
-Z2UgdGhlIGluZGVudGluZyB3aGVuIGl0IGNhbGxzIGluaXRfcG11X2J5X3R5cGU7IHVzZSB0aGUg
-dmFsdWUgJ3JldCcgaW4gIGFtZGdwdV9wbXVfaW5pdCgpLg0KIHYyLT52MzogY2hhbmdlIHRoZSBz
-dWJqZWN0IGZvciB0aGlzIHBhdGNoOyByZXR1cm4gJ3JldCcgaW1tZWRpYXRlbHkgaWYgZmFpbGVk
-IHRvIGNhbGwgaW5pdF9wbXVfYnlfdHlwZSgpLg0KIHYzLT52NDogZGVsZXRlIHRoZSBpbmRlbnRp
-bmcgZm9yIGluaXRfcG11X2J5X3R5cGUoKSBhcmd1bWVudHMuIFRoZSBvcmlnaW5hbCBpbmRlbnRp
-bmcgaXMgY29ycmVjdC4NCg0KIGRyaXZlcnMvZ3B1L2RybS9hbWQvYW1kZ3B1L2FtZGdwdV9wbXUu
-YyB8IDIgKysNCiAxIGZpbGUgY2hhbmdlZCwgMiBpbnNlcnRpb25zKCspDQoNCmRpZmYgLS1naXQg
-YS9kcml2ZXJzL2dwdS9kcm0vYW1kL2FtZGdwdS9hbWRncHVfcG11LmMgYi9kcml2ZXJzL2dwdS9k
-cm0vYW1kL2FtZGdwdS9hbWRncHVfcG11LmMNCmluZGV4IDBlNmRiYTlmNjBmMC4uYzk4Y2Y3N2Ez
-N2YzIDEwMDY0NA0KLS0tIGEvZHJpdmVycy9ncHUvZHJtL2FtZC9hbWRncHUvYW1kZ3B1X3BtdS5j
-DQorKysgYi9kcml2ZXJzL2dwdS9kcm0vYW1kL2FtZGdwdS9hbWRncHVfcG11LmMNCkBAIC0yNTQs
-NiArMjU0LDggQEAgaW50IGFtZGdwdV9wbXVfaW5pdChzdHJ1Y3QgYW1kZ3B1X2RldmljZSAqYWRl
-dikNCiAgICAgICAgICAgICAgICByZXQgPSBpbml0X3BtdV9ieV90eXBlKGFkZXYsIGRmX3YzXzZf
-YXR0cl9ncm91cHMsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAiREYi
-LCAiYW1kZ3B1X2RmIiwgUEVSRl9UWVBFX0FNREdQVV9ERiwNCiAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIERGX1YzXzZfTUFYX0NPVU5URVJTKTsNCisgICAgICAgICAgICAg
-ICBpZiAocmV0KQ0KKyAgICAgICAgICAgICAgICAgICAgICAgcmV0dXJuIHJldDsNCg0KICAgICAg
-ICAgICAgICAgIC8qIG90aGVyIHBtdSB0eXBlcyBnbyBoZXJlKi8NCiAgICAgICAgICAgICAgICBi
-cmVhazsNCi0tDQoyLjIwLjENCg0K
+On 24.06.19 12:46, Bartosz Golaszewski wrote:
+
+>> The patch seems pretty trivial and doesn't change any actual code, so
+>> I don't see hard resons for rejecting it.
+>>
+> 
+> In its current form it makes the code even less readable. The #ifdef
+> should actually be one line lower and touch the comment instead of the
+> EXPORT_SYMBOL() related to a different function.
+
+Okay, that missing newline should be fixed (as well as the extra one
+after the #ifdef). Besides that, I don't see any further problems.
+
+--mtx
+
+-- 
+Enrico Weigelt, metux IT consult
+Free software and Linux embedded engineering
+info@metux.net -- +49-151-27565287

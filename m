@@ -2,83 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6399C50F3E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 16:53:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE038510B9
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 17:37:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729806AbfFXOxn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Jun 2019 10:53:43 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:38702 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726414AbfFXOxn (ORCPT
+        id S1731075AbfFXPhT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Jun 2019 11:37:19 -0400
+Received: from www62.your-server.de ([213.133.104.62]:47362 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729580AbfFXPhT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Jun 2019 10:53:43 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5OEmvQ4041482;
-        Mon, 24 Jun 2019 14:53:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=waQPePaU/7Xj6dq9mxwPa/7YRLZYgY2bjH/CbYXyHIU=;
- b=ktPm5tc6CSRuF1rAb7B26OtxPNBhY55a4sqhg74vNRdlAD6zMqjUAX0konlS2bVASIa7
- OBGgI/GDOeFF+fq+4bW2dZwYb6OnbYxDh7uD1ewZRcjRwwQbvIQdWdZrUjWA2kkqe1rP
- FXaEu/c35wOqU2uu291p2xhe7rfpmJueBeZLLMPTWq33ttbl6875n/Jxw708h8alyJRQ
- 42TEAub0CAqdGFJF/tTsSyzxQRj+O7CNPztazp8OWH8XMiWGk3PkXx1G21xGhkcWNTPB
- fo65o/h3VlIjWO/TkQkTq33k1oDVW4Erx342kRkpFjSA7FapqPHCx3lRRq4x/3C46vwf 8g== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2t9brsxxdt-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 24 Jun 2019 14:53:16 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5OEno4s021846;
-        Mon, 24 Jun 2019 14:51:15 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 2t99f3akmr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 24 Jun 2019 14:51:15 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5OEpEob026505;
-        Mon, 24 Jun 2019 14:51:14 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 24 Jun 2019 07:51:13 -0700
-Date:   Mon, 24 Jun 2019 17:51:06 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        Tadeusz Struk <tadeusz.struk@intel.com>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S. Miller" <davem@davemloft.net>, qat-linux@intel.com,
-        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] crypto: qat - Endian bug in interrupt handler
-Message-ID: <20190624145105.GX28859@kadam>
-References: <20190624134839.GB1754@mwanda>
+        Mon, 24 Jun 2019 11:37:19 -0400
+Received: from [78.46.172.2] (helo=sslproxy05.your-server.de)
+        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1hfQRc-00053w-U9; Mon, 24 Jun 2019 16:59:44 +0200
+Received: from [178.199.41.31] (helo=linux.home)
+        by sslproxy05.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1hfQRc-000QfP-Ni; Mon, 24 Jun 2019 16:59:44 +0200
+Subject: Re: [PATCH][next] libbpf: fix spelling mistake "conflictling" ->
+ "conflicting"
+To:     Colin King <colin.king@canonical.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        netdev@vger.kernel.org, bpf@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190619162742.985-1-colin.king@canonical.com>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <fb192b66-9fa9-b1ac-cc11-d621865e83b3@iogearbox.net>
+Date:   Mon, 24 Jun 2019 16:59:43 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190624134839.GB1754@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9298 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=804
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906240120
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9298 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=856 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906240121
+In-Reply-To: <20190619162742.985-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.100.3/25490/Mon Jun 24 10:02:14 2019)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On 06/19/2019 06:27 PM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There are several spelling mistakes in pr_warning messages. Fix these.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Never mind.  Please ignore this patch.
-
-This is Intel hardware so it's little endian.  There are a bunch of
-other test_bit() casts which would be problematic so this wouldn't
-really fix anything anyway.
-
-regards,
-dan carpenter
-
+Applied, thanks!

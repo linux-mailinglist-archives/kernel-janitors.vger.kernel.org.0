@@ -2,79 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC8FE50995
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 13:16:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D7AE50A8E
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 14:17:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728962AbfFXLQe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Jun 2019 07:16:34 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:19064 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727953AbfFXLQd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Jun 2019 07:16:33 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 722C6F7675D79B1559C7;
-        Mon, 24 Jun 2019 19:16:29 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 24 Jun 2019 19:16:22 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <airlied@linux.ie>, <daniel@ffwll.ch>, <alexander.deucher@amd.com>,
-        <christian.koenig@amd.com>, <David1.Zhou@amd.com>,
-        <dan.carpenter@oracle.com>, <julia.lawall@lip6.fr>
-CC:     <kernel-janitors@vger.kernel.org>, <amd-gfx@lists.freedesktop.org>,
-        <linux-kernel@vger.kernel.org>, <jonathan.kim@amd.com>,
-        Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH -next v4] drm/amdgpu: return 'ret' immediately if failed in amdgpu_pmu_init
-Date:   Mon, 24 Jun 2019 19:23:18 +0800
-Message-ID: <20190624112318.149299-1-maowenan@huawei.com>
+        id S1727521AbfFXMQ7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Jun 2019 08:16:59 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:39586 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726524AbfFXMQ7 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 24 Jun 2019 08:16:59 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hfNtx-0000ZK-Uf; Mon, 24 Jun 2019 12:16:50 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Lijun Ou <oulijun@huawei.com>, Wei Hu <xavier.huwei@huawei.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] RDMA/hns: fix spelling mistake "attatch" -> "attach"
+Date:   Mon, 24 Jun 2019 13:16:49 +0100
+Message-Id: <20190624121649.3281-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190624094850.GQ18776@kadam>
-References: <20190624094850.GQ18776@kadam>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is one warning:
-drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c: In function ‘amdgpu_pmu_init’:
-drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c:249:6: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
-  int ret = 0;
-      ^
-amdgpu_pmu_init() is called by amdgpu_device_init() in drivers/gpu/drm/amd/amdgpu/amdgpu_device.c,
-which will use the return value. So it should return 'ret' immediately if init_pmu_by_type() failed.
-amdgpu_device_init()
-	r = amdgpu_pmu_init(adev);
+From: Colin Ian King <colin.king@canonical.com>
 
-Fixes: 9c7c85f7ea1f ("drm/amdgpu: add pmu counters")
+There is a spelling mistake in an dev_err message. Fix it.
 
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- v1->v2: change the subject for this patch; change the indenting when it calls init_pmu_by_type; use the value 'ret' in
- amdgpu_pmu_init().
- v2->v3: change the subject for this patch; return 'ret' immediately if failed to call init_pmu_by_type(). 
- v3->v4: delete the indenting for init_pmu_by_type() arguments. The original indenting is correct.
+ drivers/infiniband/hw/hns/hns_roce_qp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
-index 0e6dba9f60f0..c98cf77a37f3 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
-@@ -254,6 +254,8 @@ int amdgpu_pmu_init(struct amdgpu_device *adev)
- 		ret = init_pmu_by_type(adev, df_v3_6_attr_groups,
- 				       "DF", "amdgpu_df", PERF_TYPE_AMDGPU_DF,
- 				       DF_V3_6_MAX_COUNTERS);
-+		if (ret)
-+			return ret;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
+index 99ec5d43b99b..13a1916b0cdc 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_qp.c
++++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
+@@ -858,7 +858,7 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
+ 	ret = hns_roce_mtr_attach(hr_dev, &hr_qp->mtr, buf_list,
+ 				  hr_qp->regions, hr_qp->region_cnt);
+ 	if (ret) {
+-		dev_err(dev, "mtr attatch error for create qp\n");
++		dev_err(dev, "mtr attach error for create qp\n");
+ 		goto err_mtr;
+ 	}
  
- 		/* other pmu types go here*/
- 		break;
 -- 
 2.20.1
 

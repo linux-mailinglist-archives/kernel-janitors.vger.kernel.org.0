@@ -2,86 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65CB951A6C
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 20:23:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6AB551C43
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 22:25:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732795AbfFXSXR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Jun 2019 14:23:17 -0400
-Received: from mout.kundenserver.de ([212.227.126.134]:44361 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725268AbfFXSXR (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Jun 2019 14:23:17 -0400
-Received: from [192.168.1.110] ([77.4.138.202]) by mrelayeu.kundenserver.de
- (mreue009 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1M9Wqa-1hc9gp1oDk-005WqO; Mon, 24 Jun 2019 20:22:47 +0200
-Subject: Re: [PATCH] drivers: Adjust scope for CONFIG_HAS_IOMEM before
- devm_platform_ioremap_resource()
-To:     Bartosz Golaszewski <brgl@bgdev.pl>
-Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Markus Elfring <Markus.Elfring@web.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Keerthy <j-keerthy@ti.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-gpio <linux-gpio@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-References: <20190221162627.3476-1-brgl@bgdev.pl>
- <9efcbce2-4d49-7197-a3d8-0e83850892d5@web.de>
- <CAMpxmJX-wXQ-ff1RWkPmJBWSsP_v2MjZrA3fhj3HQX0_zM0eZA@mail.gmail.com>
- <39ae399a-c606-c6de-f84d-35e39d0410c0@metux.net>
- <CAMRc=McepqowJNi6ay6x9KKoHOC8aCxP_ob12SgbsnJU_sKQng@mail.gmail.com>
-From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Organization: metux IT consult
-Message-ID: <1dd52704-0e41-db31-33f4-c9f446a47344@metux.net>
-Date:   Mon, 24 Jun 2019 20:22:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+        id S1731252AbfFXUZu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Jun 2019 16:25:50 -0400
+Received: from mga04.intel.com ([192.55.52.120]:25196 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726393AbfFXUZt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 24 Jun 2019 16:25:49 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Jun 2019 13:25:50 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,413,1557212400"; 
+   d="scan'208";a="336613306"
+Received: from tthayer-hp-z620.an.intel.com (HELO [10.122.105.146]) ([10.122.105.146])
+  by orsmga005.jf.intel.com with ESMTP; 24 Jun 2019 13:25:48 -0700
+Reply-To: thor.thayer@linux.intel.com
+Subject: Re: [PATCH] EDAC/altera: Silence an endian warning
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Borislav Petkov <bp@alien8.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        James Morse <james.morse@arm.com>, linux-edac@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20190624134717.GA1754@mwanda>
+From:   Thor Thayer <thor.thayer@linux.intel.com>
+Message-ID: <2baa5124-f0b0-a33e-256b-6a17867862c9@linux.intel.com>
+Date:   Mon, 24 Jun 2019 15:27:55 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
 MIME-Version: 1.0
-In-Reply-To: <CAMRc=McepqowJNi6ay6x9KKoHOC8aCxP_ob12SgbsnJU_sKQng@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20190624134717.GA1754@mwanda>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:ZgmkRGHs7Dk+by07gKqk33wnZnw8jFOEY7Mzgtc3URhPyCvBCsp
- L7tXD4MeY3Xax46GIB0/blF9/NGjT6pAdIcNuaiXYy+qpAvnxV38nbKkqLmxD5l1e0ffUxg
- cGc1gvVDpkaV2vKyS+EHGXs00cgG7Bp6N5otI5l/92GnSozO9QX52qTDnFOzOAHaLVbEztt
- yimvgXuW6f0pYDq6sgQvg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:JQHY8EkLn+M=:lJVSEKZy2Nz4CNNSOqZUni
- EqeYGj7M4IwCCw1HCbCW3SUiu7ZTdr7RPEedoSpwkDfh13u5+kQSble5vLGiCAiK0teAIkOI7
- llvxXVKhZXASP0VcRyPao9P21+vNMyOKoub8/JrM1YhDERUMe3pXNpi96YwHB9abnjK2EnrLW
- zuTEPB2A7QLq9RSeDh2mTbGps1v9B3bGdpC8W7b1cwmI3NhHD6JWH0OY8czisXQt/GKrTz64/
- MYfi/0mKuzwT9FaITglKSHfH1YakogstwdpPj6OAElm3PW6DaVdBl0vF6C4jWPZeczqsNc+2d
- Guk1BCLf5Skdl1PdW/sk1oszu8DcEawwqZS52osidlchQNxeHJBrIyVIXidlK46tRF+JGNRKV
- vaxHjrPds05TGoQa7NiKIhp19eldmo6o+77fVnHrFhWQ70ccJrd6TZXnTOoxhCxVz+Z18hqQc
- Ox/OKf6XnAWhze2iTRyV04Of3IroXksK/VazvPdCl4CgFIQsNzE4jQLufL0nvnF/kpcNS5aza
- t5bTvRbUSYmKtXwaEyGgWCeP4+vlqAts+/BZhQLXmrc08sNUKCDggXa+fi7RiB/M83shvNzHR
- aqQ/V8vqkSAcDXWu1FlZ9dHqG9DkcLuk7ib4qZf15xbvXNHP4E4A0qgLRVl0DxXVMw+G1zRkU
- IFRtpyPnNmRoVgYpyr/eFvTCZ+RyExHBlbh3HUL5h5EnX/GNb7dntJskgj4ZTMPatHHlUinJ8
- mqHEgn3KBHEbmn7MvQWhWAaS9oly8yjDi9T/7ZpzNpTaniJUupJ71kFvkuU=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 24.06.19 12:46, Bartosz Golaszewski wrote:
+Hi Dan,
 
->> The patch seems pretty trivial and doesn't change any actual code, so
->> I don't see hard resons for rejecting it.
->>
+On 6/24/19 8:47 AM, Dan Carpenter wrote:
+> Smatch complains that we're casting a u32 pointer to unsigned long.
 > 
-> In its current form it makes the code even less readable. The #ifdef
-> should actually be one line lower and touch the comment instead of the
-> EXPORT_SYMBOL() related to a different function.
+>      drivers/edac/altera_edac.c:1878 altr_edac_a10_irq_handler()
+>      warn: passing casted pointer '&irq_status' to 'find_first_bit()'
+> 
+> This code wouldn't work on a 64 bit big endian system because we would
+> read past the end of &irq_status.
+> 
+> Fixes: 13ab8448d2c9 ("EDAC, altera: Add ECC Manager IRQ controller support")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> Static analysis obviously and I don't know this subsystem at all.
+> Probably we're never going to run this on a 64 bit big endian system...
+> Feel free to ignore this if you want.
+> 
+>   drivers/edac/altera_edac.c | 4 +++-
+>   1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/edac/altera_edac.c b/drivers/edac/altera_edac.c
+> index c2e693e34d43..bf024ec0116c 100644
+> --- a/drivers/edac/altera_edac.c
+> +++ b/drivers/edac/altera_edac.c
+> @@ -1866,6 +1866,7 @@ static void altr_edac_a10_irq_handler(struct irq_desc *desc)
+>   	struct altr_arria10_edac *edac = irq_desc_get_handler_data(desc);
+>   	struct irq_chip *chip = irq_desc_get_chip(desc);
+>   	int irq = irq_desc_get_irq(desc);
+> +	unsigned long bits;
+>   
+>   	dberr = (irq == edac->db_irq) ? 1 : 0;
+>   	sm_offset = dberr ? A10_SYSMGR_ECC_INTSTAT_DERR_OFST :
+> @@ -1875,7 +1876,8 @@ static void altr_edac_a10_irq_handler(struct irq_desc *desc)
+>   
+>   	regmap_read(edac->ecc_mgr_map, sm_offset, &irq_status);
+>   
+> -	for_each_set_bit(bit, (unsigned long *)&irq_status, 32) {
+> +	bits = irq_status;
+> +	for_each_set_bit(bit, &bits, 32) {
+>   		irq = irq_linear_revmap(edac->domain, dberr * 32 + bit);
+>   		if (irq)
+>   			generic_handle_irq(irq);
+> 
+You are correct that we shouldn't use this on a 64 bit machine but this 
+is a good fix. Thank you!
 
-Okay, that missing newline should be fixed (as well as the extra one
-after the #ifdef). Besides that, I don't see any further problems.
-
---mtx
-
--- 
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+Reviewed-by: Thor Thayer <thor.thayer@linux.intel.com>

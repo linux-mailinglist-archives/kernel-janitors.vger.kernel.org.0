@@ -2,91 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AA5350279
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 08:45:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD3795044F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 10:14:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726351AbfFXGpD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Jun 2019 02:45:03 -0400
-Received: from 178.115.242.59.static.drei.at ([178.115.242.59]:43903 "EHLO
-        mail.osadl.at" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725267AbfFXGpD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Jun 2019 02:45:03 -0400
-X-Greylist: delayed 389 seconds by postgrey-1.27 at vger.kernel.org; Mon, 24 Jun 2019 02:45:02 EDT
-Received: by mail.osadl.at (Postfix, from userid 1001)
-        id C37BB5C02F0; Mon, 24 Jun 2019 08:37:18 +0200 (CEST)
-Date:   Mon, 24 Jun 2019 08:37:18 +0200
-From:   Nicholas Mc Guire <der.herr@hofr.at>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     eric@anholt.net, stefan.wahren@i2se.com,
-        gregkh@linuxfoundation.org, f.fainelli@gmail.com,
-        rjui@broadcom.com, sbranden@broadcom.com,
-        bcm-kernel-feedback-list@broadcom.com, tuomas.tynkkynen@iki.fi,
-        inf.braun@fau.de, tobias.buettner@fau.de, hofrat@osadl.org,
-        linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+        id S1726885AbfFXIOU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Jun 2019 04:14:20 -0400
+Received: from mout.kundenserver.de ([212.227.126.187]:35111 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725881AbfFXIOU (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 24 Jun 2019 04:14:20 -0400
+Received: from [192.168.178.70] ([109.104.35.135]) by mrelayeu.kundenserver.de
+ (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MYvoW-1i1RTc0Q4G-00UvOE; Mon, 24 Jun 2019 10:13:52 +0200
 Subject: Re: [PATCH] staging: bcm2835-camera: Avoid apotential sleep while
  holding a spin_lock
-Message-ID: <20190624063718.GD31913@osadl.at>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        eric@anholt.net, gregkh@linuxfoundation.org, f.fainelli@gmail.com,
+        rjui@broadcom.com, sbranden@broadcom.com,
+        bcm-kernel-feedback-list@broadcom.com, tuomas.tynkkynen@iki.fi,
+        inf.braun@fau.de, tobias.buettner@fau.de, hofrat@osadl.org
+Cc:     linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Dave Stevenson <dave.stevenson@raspberrypi.org>
 References: <20190624053351.5217-1-christophe.jaillet@wanadoo.fr>
+From:   Stefan Wahren <stefan.wahren@i2se.com>
+Message-ID: <c8e5abba-7441-b201-1618-c92dfdfc7b1c@i2se.com>
+Date:   Mon, 24 Jun 2019 10:13:48 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 In-Reply-To: <20190624053351.5217-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: de-DE
+X-Provags-ID: V03:K1:vvqf8FlBVKwdp6cZb6vSQAVE2D3lZnSKipS/eVDH9d3PZ020dMo
+ 6h2/VXzfCkh/Uy/E/8fUwSV+PQovkrLoOjpeR2r0WXSiFkznkl+e5kwkp5t5uY2iezT6+sG
+ D7gejc2XKkjPlW39HneI77Jx0GRdY8YdR4PHlOiCfTyoujJbgK7Y0nokIBuUL9a8xnyltUx
+ WJ4knFYuNX4FHuFqyq9Kg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:4Obk7D5rplk=:qRjazcfX39WGiDmelrFWDQ
+ /n2XvgMMiyNF7JsOrAePp8mx575muX0KrJ5rnbzuSk/By3VrsUCr8or4+6Ekm6O7DTd1xRe0S
+ sNIcUq6mmeQGgvryk53G9xnzwF9KHzKUNrGGp3dD26EyOqo4dajKElbZOiyfQLqTgDH2k8uVe
+ 67vCdqzDcDtRRvcrC02XH1Nbi+gbjAyq0Aa4+BJIH8+0eRWzRezKoN4em3LbTi+nY2HTakjT0
+ ZBf5sNWTVb2TTxdAnNwBEJ6l046vZqgKKBKrdIUXavqhinVfagdR0uKTKOaM/UitwTPdZTuxZ
+ 13JesgH7Fb9iPFbJ1D/PufKAcse1rBl7IBqa+rq5B2B5G3k3WoBuk+hRzQKCtNkeFmS750JND
+ tiQA8FQ7gbu67B1JPvj0N/ZTmRLKWv+LVMvoTaZ6v47xuUmo1+TXeqeOw7l5vADp/kmyjdW5r
+ ZkUB+ScbhID7cgNb1aPY5DFvPJtTj4C926Adc+JiBv+FsD1Rrb9U3FYVmL2oC7G6Vg+c0bRnY
+ 6NFjbUJsqaxboVyFrej91uXI+fOWfsa9lf033vpKiMhUT+RsuE0z4zSXdUUYGANLJY3QN9WkM
+ LDEhKsLgwJh57VTy7/6/oDinLY4gmRWKLFDgVkvr+jD3yTvxmAqpz8g2uCR4tuKWbUTbtZm81
+ hLg6fXTBkMvVGNAtR6OY0A+D22avSDrJclOfR+7+LzxI0UeG8awFfZXZJfC6iyY7L7nQZYSzq
+ p8SYYvr135wQliP+6jYDk0qogj3ObTK6W1/2SV+yPFZ54iPNjNJSctjYfgk=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jun 24, 2019 at 07:33:51AM +0200, Christophe JAILLET wrote:
+Hi Christophe,
+
+Am 24.06.2019 um 07:33 schrieb Christophe JAILLET:
 > Do not allocate memory with GFP_KERNEL when holding a spin_lock, it may
 > sleep. Use GFP_NOWAIT instead.
 >
-
-checking for this in the rest of the kernel with a cocci spatch
-<snip>
-virtual report
-
-@nonatomic@
-position p;
-identifier var;
-@@
-
-  spin_lock(...)
-  ... when != spin_unlock(...)
-* var = idr_alloc@p(...,GFP_KERNEL);
-  ... when != spin_unlock(...)
-  spin_unlock(...);
-<snip>
-this seems to be the only instance of this specific problem.
-
 > Fixes: 950fd867c635 ("staging: bcm2835-camera: Replace open-coded idr with a struct idr.")
-
-The GFP_KERNEL actually was there befor this patch so not sure if this Fixes
-ref is correct - I think the GFP_KERNEL was introduced in:
-4e6bafdfb9f3 ("staging: bcm2835_camera: Use a mapping table for context field of mmal_msg_header")
-
 > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Nicholas Mc Guire <hofrat@osadl.org>
 
-> ---
->  drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
-> index 16af735af5c3..438d548c6e24 100644
-> --- a/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
-> +++ b/drivers/staging/vc04_services/bcm2835-camera/mmal-vchiq.c
-> @@ -186,7 +186,7 @@ get_msg_context(struct vchiq_mmal_instance *instance)
->  	 */
->  	spin_lock(&instance->context_map_lock);
->  	handle = idr_alloc(&instance->context_map, msg_context,
-> -			   0, 0, GFP_KERNEL);
-> +			   0, 0, GFP_NOWAIT);
->  	spin_unlock(&instance->context_map_lock);
->  
->  	if (handle < 0) {
-> -- 
-> 2.20.1
-> 
+there has been a fix for this, which isn't upstreamed yet. The preferred 
+solution is to replace the spin_lock with a mutex. Since i'm currently 
+working on this i would take care of this.
+
+Sorry about this.
+
+Stefan
+

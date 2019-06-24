@@ -2,110 +2,140 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E5255181C
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 18:11:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B28CB5182A
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 18:13:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731688AbfFXQK5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Jun 2019 12:10:57 -0400
-Received: from mail-eopbgr800089.outbound.protection.outlook.com ([40.107.80.89]:39552
-        "EHLO NAM03-DM3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726452AbfFXQK5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Jun 2019 12:10:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vmware.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=tOsXs+cI5bcOLhB+pAxMhmfW/TNhk7z3OIzkAYrP358=;
- b=pyTK6DQq+eqSHs5MysNCk71Bwez02gadBkD6hCT94+OolNpLOQiomyK4TtvwCidWdp2mWmO00c1+nk5LjMEPxN8kRR6QXeMa0XrFdJIqjYI1lX52OemRplktycXxI1zi1tXSpcl/B9Ezvd/voQjBjKnLR+JMassQgp84deFElPM=
-Received: from BYAPR05MB5240.namprd05.prod.outlook.com (20.177.231.90) by
- BYAPR05MB6341.namprd05.prod.outlook.com (20.178.197.223) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2008.13; Mon, 24 Jun 2019 16:10:49 +0000
-Received: from BYAPR05MB5240.namprd05.prod.outlook.com
- ([fe80::400:2b5c:7cd8:8356]) by BYAPR05MB5240.namprd05.prod.outlook.com
- ([fe80::400:2b5c:7cd8:8356%4]) with mapi id 15.20.2008.007; Mon, 24 Jun 2019
- 16:10:49 +0000
-From:   Deepak Singh Rawat <drawat@vmware.com>
-To:     Colin King <colin.king@canonical.com>,
+        id S1731760AbfFXQNi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Jun 2019 12:13:38 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:47015 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731687AbfFXQNi (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 24 Jun 2019 12:13:38 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212])
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hfRb5-0003Rz-EZ; Mon, 24 Jun 2019 16:13:35 +0000
+Subject: Re: [PATCH] drm/vmwgfx: fix memory leak when too many retries have
+ occurred
+To:     Deepak Singh Rawat <drawat@vmware.com>,
         Linux-graphics-maintainer <Linux-graphics-maintainer@vmware.com>,
         Thomas Hellstrom <thellstrom@vmware.com>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
         "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+Cc:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] drm/vmwgfx: fix memory leak when too many retries have
- occurred
-Thread-Topic: [PATCH] drm/vmwgfx: fix memory leak when too many retries have
- occurred
-Thread-Index: AQHVKIGqKLB+io/n0UK4Yb3I5nUXuaaq/gqA
-Date:   Mon, 24 Jun 2019 16:10:49 +0000
-Message-ID: <7b8430b3809eff2341d3e82c398038c1a9a0cc06.camel@vmware.com>
 References: <20190621223534.14283-1-colin.king@canonical.com>
-In-Reply-To: <20190621223534.14283-1-colin.king@canonical.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BY5PR04CA0001.namprd04.prod.outlook.com
- (2603:10b6:a03:1d0::11) To BYAPR05MB5240.namprd05.prod.outlook.com
- (2603:10b6:a03:9f::26)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=drawat@vmware.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-x-originating-ip: [66.170.99.2]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 70a715f9-39ac-4b6a-15c3-08d6f8be85c2
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600148)(711020)(4605104)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:BYAPR05MB6341;
-x-ms-traffictypediagnostic: BYAPR05MB6341:
-x-ld-processed: b39138ca-3cee-4b4a-a4d6-cd83d9dd62f0,ExtAddr
-x-microsoft-antispam-prvs: <BYAPR05MB634195D00A8523A60F64D0E3BAE00@BYAPR05MB6341.namprd05.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6430;
-x-forefront-prvs: 007814487B
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(346002)(396003)(136003)(366004)(376002)(39860400002)(199004)(189003)(66446008)(25786009)(66066001)(2616005)(73956011)(14454004)(53936002)(76176011)(305945005)(66476007)(68736007)(2501003)(2906002)(66946007)(110136005)(478600001)(6116002)(6506007)(4326008)(14444005)(66556008)(3846002)(64756008)(316002)(6486002)(229853002)(54906003)(446003)(11346002)(256004)(71190400001)(50226002)(476003)(486006)(102836004)(81156014)(5660300002)(26005)(386003)(6512007)(8936002)(6246003)(81166006)(8676002)(86362001)(52116002)(99286004)(7736002)(71200400001)(6436002)(186003)(118296001)(36756003)(99106002);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR05MB6341;H:BYAPR05MB5240.namprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: vmware.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 2APgiZx/Htreq/Phcqu/3J9E4NYm1BhoQ8V/aW0vBhd/hldPJ4clfwTuInnuiLTHRyeD9snBWq9pig2TheIVgtSpoJhaA635TfZjKTFDBPZwmLxDMRPy/7CuE+jQFb0FzhK5vUKq3puuUNYXlVjUSTqXf7W88yEA60060BgSMVrh/claM3I1kLVXJW89uM7YdWaPC+4Po+dVT0KKtzwNVCexz3gu7zdrGr36/gHAMiGJvuWKC8X1dB9U+Fkvhqn7+ZJIDEfLvq+ZFmHe2FyMmAeb4I9G8vibfVwAfOCovV3Da0SAh13VY5LGwJXpM3Gj8CcoigxMlwyCEdvpGFjtcIASyPy/AbK+XH1hvt6t/oxBuTf31x4FGU4hKjpVQgtxoFasPc7liITk2UaEiE02q7xUbx6UFGBaZ+mETRDad18=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <0B8CB3EDAB0F1A4FB20E28752BE4FA16@namprd05.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ <7b8430b3809eff2341d3e82c398038c1a9a0cc06.camel@vmware.com>
+From:   Colin Ian King <colin.king@canonical.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <82a6382b-6c9d-5c7f-b411-243cb31b2c16@canonical.com>
+Date:   Mon, 24 Jun 2019 17:13:34 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
 MIME-Version: 1.0
-X-OriginatorOrg: vmware.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 70a715f9-39ac-4b6a-15c3-08d6f8be85c2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Jun 2019 16:10:49.6224
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b39138ca-3cee-4b4a-a4d6-cd83d9dd62f0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: drawat@vmware.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR05MB6341
+In-Reply-To: <7b8430b3809eff2341d3e82c398038c1a9a0cc06.camel@vmware.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-SGkgQ29saW4sDQoNClRoYW5rcyBmb3IgZG9pbmcgdGhpcy4NCg0KUmV2aWV3ZWQtYnk6IERlZXBh
-ayBSYXdhdCA8ZHJhd2F0QHZtd2FyZS5jb20+DQoNCkRvIHlvdSB3YW50IG1lIHRvIGluY2x1ZGUg
-dGhpcyBpbiB2bXdnZngtbmV4dCBvciB3aWxsIHlvdSBzdWJtaXQgdGhpcw0KdmlhIGRybS1taWNz
-Pw0KDQpPbiBGcmksIDIwMTktMDYtMjEgYXQgMjM6MzUgKzAxMDAsIENvbGluIEtpbmcgd3JvdGU6
-DQo+IEZyb206IENvbGluIElhbiBLaW5nIDxjb2xpbi5raW5nQGNhbm9uaWNhbC5jb20+DQo+IA0K
-PiBDdXJyZW50bHkgd2hlbiB0b28gbWFueSByZXRyaWVzIGhhdmUgb2NjdXJyZWQgdGhlcmUgaXMg
-YSBtZW1vcnkNCj4gbGVhayBvbiB0aGUgYWxsb2NhdGlvbiBmb3IgcmVwbHkgb24gdGhlIGVycm9y
-IHJldHVybiBwYXRoLiBGaXgNCj4gdGhpcyBieSBrZnJlZSdpbmcgcmVwbHkgYmVmb3JlIHJldHVy
-bmluZy4NCj4gDQo+IEFkZHJlc3Nlcy1Db3Zlcml0eTogKCJSZXNvdXJjZSBsZWFrIikNCj4gRml4
-ZXM6IGE5Y2Q5YzA0NGFhOSAoImRybS92bXdnZng6IEFkZCBhIGNoZWNrIHRvIGhhbmRsZSBob3N0
-IG1lc3NhZ2UNCj4gZmFpbHVyZSIpDQo+IFNpZ25lZC1vZmYtYnk6IENvbGluIElhbiBLaW5nIDxj
-b2xpbi5raW5nQGNhbm9uaWNhbC5jb20+DQo+IC0tLQ0KPiAgZHJpdmVycy9ncHUvZHJtL3Ztd2dm
-eC92bXdnZnhfbXNnLmMgfCA0ICsrKy0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMo
-KyksIDEgZGVsZXRpb24oLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2dwdS9kcm0vdm13
-Z2Z4L3Ztd2dmeF9tc2cuYw0KPiBiL2RyaXZlcnMvZ3B1L2RybS92bXdnZngvdm13Z2Z4X21zZy5j
-DQo+IGluZGV4IDhiOTI3MGYzMTQwOS4uOGI2MWYxNmY1MGNmIDEwMDY0NA0KPiAtLS0gYS9kcml2
-ZXJzL2dwdS9kcm0vdm13Z2Z4L3Ztd2dmeF9tc2cuYw0KPiArKysgYi9kcml2ZXJzL2dwdS9kcm0v
-dm13Z2Z4L3Ztd2dmeF9tc2cuYw0KPiBAQCAtMzAxLDggKzMwMSwxMCBAQCBzdGF0aWMgaW50IHZt
-d19yZWN2X21zZyhzdHJ1Y3QgcnBjX2NoYW5uZWwNCj4gKmNoYW5uZWwsIHZvaWQgKiptc2csDQo+
-ICAJCWJyZWFrOw0KPiAgCX0NCj4gIA0KPiAtCWlmIChyZXRyaWVzID09IFJFVFJJRVMpDQo+ICsJ
-aWYgKHJldHJpZXMgPT0gUkVUUklFUykgew0KPiArCQlrZnJlZShyZXBseSk7DQo+ICAJCXJldHVy
-biAtRUlOVkFMOw0KPiArCX0NCj4gIA0KPiAgCSptc2dfbGVuID0gcmVwbHlfbGVuOw0KPiAgCSpt
-c2cgICAgID0gcmVwbHk7DQoNCg==
+On 24/06/2019 17:10, Deepak Singh Rawat wrote:
+> Hi Colin,
+> 
+> Thanks for doing this.
+> 
+> Reviewed-by: Deepak Rawat <drawat@vmware.com>
+> 
+> Do you want me to include this in vmwgfx-next or will you submit this
+> via drm-mics?
+
+Can you include it into vmwgfx-next?
+
+Thanks
+
+Colin
+
+> 
+> On Fri, 2019-06-21 at 23:35 +0100, Colin King wrote:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> Currently when too many retries have occurred there is a memory
+>> leak on the allocation for reply on the error return path. Fix
+>> this by kfree'ing reply before returning.
+>>
+>> Addresses-Coverity: ("Resource leak")
+>> Fixes: a9cd9c044aa9 ("drm/vmwgfx: Add a check to handle host message
+>> failure")
+>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>> ---
+>>  drivers/gpu/drm/vmwgfx/vmwgfx_msg.c | 4 +++-
+>>  1 file changed, 3 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c
+>> b/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c
+>> index 8b9270f31409..8b61f16f50cf 100644
+>> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c
+>> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_msg.c
+>> @@ -301,8 +301,10 @@ static int vmw_recv_msg(struct rpc_channel
+>> *channel, void **msg,
+>>  		break;
+>>  	}
+>>  
+>> -	if (retries == RETRIES)
+>> +	if (retries == RETRIES) {
+>> +		kfree(reply);
+>>  		return -EINVAL;
+>> +	}
+>>  
+>>  	*msg_len = reply_len;
+>>  	*msg     = reply;
+> 
+

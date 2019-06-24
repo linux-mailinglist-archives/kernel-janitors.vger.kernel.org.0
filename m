@@ -2,92 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6AB551C43
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 22:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0094051D4A
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 23:46:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731252AbfFXUZu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Jun 2019 16:25:50 -0400
-Received: from mga04.intel.com ([192.55.52.120]:25196 "EHLO mga04.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726393AbfFXUZt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Jun 2019 16:25:49 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Jun 2019 13:25:50 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,413,1557212400"; 
-   d="scan'208";a="336613306"
-Received: from tthayer-hp-z620.an.intel.com (HELO [10.122.105.146]) ([10.122.105.146])
-  by orsmga005.jf.intel.com with ESMTP; 24 Jun 2019 13:25:48 -0700
-Reply-To: thor.thayer@linux.intel.com
-Subject: Re: [PATCH] EDAC/altera: Silence an endian warning
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Borislav Petkov <bp@alien8.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        James Morse <james.morse@arm.com>, linux-edac@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20190624134717.GA1754@mwanda>
-From:   Thor Thayer <thor.thayer@linux.intel.com>
-Message-ID: <2baa5124-f0b0-a33e-256b-6a17867862c9@linux.intel.com>
-Date:   Mon, 24 Jun 2019 15:27:55 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        id S1732338AbfFXVqS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Jun 2019 17:46:18 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53993 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727855AbfFXVqQ (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 24 Jun 2019 17:46:16 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hfWmv-00068c-40; Mon, 24 Jun 2019 21:46:09 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Lijun Ou <oulijun@huawei.com>, Wei Hu <xavier.huwei@huawei.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] RDMA/hns: fix potential integer overflow on left shift
+Date:   Mon, 24 Jun 2019 22:46:08 +0100
+Message-Id: <20190624214608.11765-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190624134717.GA1754@mwanda>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
+From: Colin Ian King <colin.king@canonical.com>
 
-On 6/24/19 8:47 AM, Dan Carpenter wrote:
-> Smatch complains that we're casting a u32 pointer to unsigned long.
-> 
->      drivers/edac/altera_edac.c:1878 altr_edac_a10_irq_handler()
->      warn: passing casted pointer '&irq_status' to 'find_first_bit()'
-> 
-> This code wouldn't work on a 64 bit big endian system because we would
-> read past the end of &irq_status.
-> 
-> Fixes: 13ab8448d2c9 ("EDAC, altera: Add ECC Manager IRQ controller support")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> Static analysis obviously and I don't know this subsystem at all.
-> Probably we're never going to run this on a 64 bit big endian system...
-> Feel free to ignore this if you want.
-> 
->   drivers/edac/altera_edac.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/edac/altera_edac.c b/drivers/edac/altera_edac.c
-> index c2e693e34d43..bf024ec0116c 100644
-> --- a/drivers/edac/altera_edac.c
-> +++ b/drivers/edac/altera_edac.c
-> @@ -1866,6 +1866,7 @@ static void altr_edac_a10_irq_handler(struct irq_desc *desc)
->   	struct altr_arria10_edac *edac = irq_desc_get_handler_data(desc);
->   	struct irq_chip *chip = irq_desc_get_chip(desc);
->   	int irq = irq_desc_get_irq(desc);
-> +	unsigned long bits;
->   
->   	dberr = (irq == edac->db_irq) ? 1 : 0;
->   	sm_offset = dberr ? A10_SYSMGR_ECC_INTSTAT_DERR_OFST :
-> @@ -1875,7 +1876,8 @@ static void altr_edac_a10_irq_handler(struct irq_desc *desc)
->   
->   	regmap_read(edac->ecc_mgr_map, sm_offset, &irq_status);
->   
-> -	for_each_set_bit(bit, (unsigned long *)&irq_status, 32) {
-> +	bits = irq_status;
-> +	for_each_set_bit(bit, &bits, 32) {
->   		irq = irq_linear_revmap(edac->domain, dberr * 32 + bit);
->   		if (irq)
->   			generic_handle_irq(irq);
-> 
-You are correct that we shouldn't use this on a 64 bit machine but this 
-is a good fix. Thank you!
+There is a potential integer overflow when int i is left shifted
+as this is evaluated using 32 bit arithmetic but is being used in
+a context that expects an expression of type dma_addr_t.  Fix this
+by casting integer i to dma_addr_t before shifting to avoid the
+overflow.
 
-Reviewed-by: Thor Thayer <thor.thayer@linux.intel.com>
+Addresses-Coverity: ("Unintentional integer overflow")
+Fixes: 2ac0bc5e725e ("RDMA/hns: Add a group interfaces for optimizing buffers getting flow")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/infiniband/hw/hns/hns_roce_alloc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/infiniband/hw/hns/hns_roce_alloc.c b/drivers/infiniband/hw/hns/hns_roce_alloc.c
+index 14fcc359599c..2c8defa94107 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_alloc.c
++++ b/drivers/infiniband/hw/hns/hns_roce_alloc.c
+@@ -257,7 +257,7 @@ int hns_roce_get_kmem_bufs(struct hns_roce_dev *hr_dev, dma_addr_t *bufs,
+ 	for (i = start; i < end; i++)
+ 		if (buf->nbufs == 1)
+ 			bufs[total++] = buf->direct.map +
+-					(i << buf->page_shift);
++					((dma_addr_t)i << buf->page_shift);
+ 		else
+ 			bufs[total++] = buf->page_list[i].map;
+ 
+-- 
+2.20.1
+

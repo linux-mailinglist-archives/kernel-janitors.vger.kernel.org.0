@@ -2,29 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C49751D7F
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 23:58:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6457951E6F
+	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Jun 2019 00:37:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728681AbfFXV6J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Jun 2019 17:58:09 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:54186 "EHLO
+        id S1726871AbfFXWhb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Jun 2019 18:37:31 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:54765 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726372AbfFXV6I (ORCPT
+        with ESMTP id S1726413AbfFXWhb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Jun 2019 17:58:08 -0400
+        Mon, 24 Jun 2019 18:37:31 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hfWyS-0007FY-EG; Mon, 24 Jun 2019 21:58:04 +0000
+        id 1hfXaY-0001El-FV; Mon, 24 Jun 2019 22:37:26 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Hans Verkuil <hverkuil@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] media: vivid: fix potential integer overflow on left shift
-Date:   Mon, 24 Jun 2019 22:58:04 +0100
-Message-Id: <20190624215804.12122-1-colin.king@canonical.com>
+Subject: [PATCH] fbmem: remove redundant assignment to err
+Date:   Mon, 24 Jun 2019 23:37:24 +0100
+Message-Id: <20190624223724.13629-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,57 +36,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a potential integer overflow when int 2 is left shifted
-as this is evaluated using 32 bit arithmetic but is being used in
-a context that expects an expression of type s64.  Fix this by
-shifting 2ULL to avoid a 32 bit overflow.
+Variable err is initialized to a value that is never read and it
+is re-assigned later.  The initialization is redundant and can
+be removed.
 
-Addresses-Coverity: ("Unintentional integer overflow")
-Fixes: 8a99e9faa131 ("media: vivid: add HDMI (dis)connect RX emulation")
-Fixes: 79a792dafac6 ("media: vivid: add HDMI (dis)connect TX emulation")
+Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/media/platform/vivid/vivid-ctrls.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/video/fbdev/core/fbmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/vivid/vivid-ctrls.c b/drivers/media/platform/vivid/vivid-ctrls.c
-index 3e916c8befb7..8f340cfd6993 100644
---- a/drivers/media/platform/vivid/vivid-ctrls.c
-+++ b/drivers/media/platform/vivid/vivid-ctrls.c
-@@ -1634,8 +1634,8 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
- 			0, V4L2_DV_RGB_RANGE_AUTO);
- 		dev->ctrl_rx_power_present = v4l2_ctrl_new_std(hdl_vid_cap,
- 			NULL, V4L2_CID_DV_RX_POWER_PRESENT, 0,
--			(2 << (dev->num_hdmi_inputs - 1)) - 1, 0,
--			(2 << (dev->num_hdmi_inputs - 1)) - 1);
-+			(2ULL << (dev->num_hdmi_inputs - 1)) - 1, 0,
-+			(2ULL << (dev->num_hdmi_inputs - 1)) - 1);
+diff --git a/drivers/video/fbdev/core/fbmem.c b/drivers/video/fbdev/core/fbmem.c
+index dd1a708df1a7..ae044a1325ca 100644
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -1987,7 +1987,7 @@ int fb_new_modelist(struct fb_info *info)
+ 	struct list_head *pos, *n;
+ 	struct fb_modelist *modelist;
+ 	struct fb_videomode *m, mode;
+-	int err = 1;
++	int err;
  
- 	}
- 	if (dev->num_hdmi_outputs) {
-@@ -1653,16 +1653,16 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
- 			&vivid_ctrl_display_present, NULL);
- 		dev->ctrl_tx_hotplug = v4l2_ctrl_new_std(hdl_vid_out,
- 			NULL, V4L2_CID_DV_TX_HOTPLUG, 0,
--			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
--			(2 << (dev->num_hdmi_outputs - 1)) - 1);
-+			(2ULL << (dev->num_hdmi_outputs - 1)) - 1, 0,
-+			(2ULL << (dev->num_hdmi_outputs - 1)) - 1);
- 		dev->ctrl_tx_rxsense = v4l2_ctrl_new_std(hdl_vid_out,
- 			NULL, V4L2_CID_DV_TX_RXSENSE, 0,
--			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
--			(2 << (dev->num_hdmi_outputs - 1)) - 1);
-+			(2ULL << (dev->num_hdmi_outputs - 1)) - 1, 0,
-+			(2ULL << (dev->num_hdmi_outputs - 1)) - 1);
- 		dev->ctrl_tx_edid_present = v4l2_ctrl_new_std(hdl_vid_out,
- 			NULL, V4L2_CID_DV_TX_EDID_PRESENT, 0,
--			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
--			(2 << (dev->num_hdmi_outputs - 1)) - 1);
-+			(2ULL << (dev->num_hdmi_outputs - 1)) - 1, 0,
-+			(2ULL << (dev->num_hdmi_outputs - 1)) - 1);
- 	}
- 	if ((dev->has_vid_cap && dev->has_vid_out) ||
- 	    (dev->has_vbi_cap && dev->has_vbi_out))
+ 	list_for_each_safe(pos, n, &info->modelist) {
+ 		modelist = list_entry(pos, struct fb_modelist, list);
 -- 
 2.20.1
 

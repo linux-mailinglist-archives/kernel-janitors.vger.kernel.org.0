@@ -2,113 +2,129 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CC205048D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 10:29:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A061504B4
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 10:40:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727885AbfFXI3r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 24 Jun 2019 04:29:47 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:35841 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726700AbfFXI3r (ORCPT
+        id S1727430AbfFXIkW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 24 Jun 2019 04:40:22 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:56934 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726351AbfFXIkW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 24 Jun 2019 04:29:47 -0400
-Received: by mail-ot1-f67.google.com with SMTP id r6so12675491oti.3
-        for <kernel-janitors@vger.kernel.org>; Mon, 24 Jun 2019 01:29:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ko8aLEfz7VyLjGG2Rud4lWnzC784JMvOo3wvqWrCylY=;
-        b=O27JYQHjrIVYtYPY96KP6/xDcPJQgEaFAHlXqjg5fywCA5MavXzZsPvV4g/C96xkrp
-         u1113gVP75+1RepfG5TcDqwYMHtYYYaUOz8HYL5rsvLX9ka2UI9dPqkCf4WQ/XUqDNrH
-         03oTYPII0Gm/Dr9s6Yt9whFrHb1nXUBdx0+kF7k6tC78MXC/Vabo+KZCByPIFoETRLZW
-         TufrwEcpb5nF6inzvhBK0f6T9bNDbctr9r2KdzkW/4t/brO134v7819BJWt+wOLVJWTx
-         6b63YjzgWyLQ/3WQ6hfZU0RSthxVTZT6H+fI49zO4gZZOOL3zWQRx179ba7Bg1D2TiO7
-         1gwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ko8aLEfz7VyLjGG2Rud4lWnzC784JMvOo3wvqWrCylY=;
-        b=Rkyc9m+wX2FDTIFQFgYtD5c83Et83yY8xmsN2lrK0pZqAWCwMQUfyIZz3I+c7t5aX4
-         Bg0OUbV4Se/v9/+GMwGrx8m5ol7bELTUPcd3U4AbKYmiWysFAYzZRCNPnddh5052M1zd
-         scImvfmUW8dBTP4NLaUjUXSDY20O1L1Td1D04vfiU+yD5K99UQT3Bz3OgbQISCXcLsZA
-         a8dLIZQLYwMS9EHf0Uzwh6VouEccq0vfZ1b0q0bUzJhudayo+GRDHzj9LIZtpM4E1b48
-         KZ+4T7FzavAAm9a82VHIqf9lYOS/Z4rk+fHL8AALa+2kBd9YyanSKlJNtQXBMjfdprwV
-         Yo+Q==
-X-Gm-Message-State: APjAAAURabnjbybKA393KnXCnZLQRSU07PARslKdqG7H52+JhbHt9otd
-        BE0hGdgAHEGyjHW577JzCgROUUkA0DdeqWgmAO/6Ow==
-X-Google-Smtp-Source: APXvYqyDMtZ2MXAaR5ez0lNQhMjjgJFRQ44etX1glmyGsTzNbGz2M7BOeIyot5fGBxeHw0eh2LFK1mEXOseX0FkrGCE=
-X-Received: by 2002:a9d:7352:: with SMTP id l18mr16004836otk.292.1561364986392;
- Mon, 24 Jun 2019 01:29:46 -0700 (PDT)
+        Mon, 24 Jun 2019 04:40:22 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5O8dY5K123395;
+        Mon, 24 Jun 2019 08:40:10 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ content-transfer-encoding : in-reply-to; s=corp-2018-07-02;
+ bh=6ck8MBwXxLWycwZKvrYVSaIGF3TxSfLus7KSpoOIBjU=;
+ b=vC2302H4F6dWabhAgytQ6Jo351FpiF16D8mZXPZBMgRXsl529QkM4ygIo8XSTSyqlh7J
+ mhZSMu4lWjxzMYVpM/G/ndyL/7V4XXSLdDwvKZTTpYi3eEzdqOpIB1iENGdw2JpDxneE
+ N3pp0EEjDYIgtXUegZ6CZzty9V3gtAZBx6XrBRB6SsK2sHR+7SrZeFWB+JLtaADrFw1Q
+ T9kGUQc2e/3DS2GOKorK5ZRYCC+ji8BuggTWLQxnn3dsU2q0e27g6ADrcX0JrDZ7Bf/w
+ B45/EUB/DMrWYzNhAJoQMftCLKuChGHHVeo9vbfcH4eyfXpzOx3/n1GTr2cPO8GPW0Yg pw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2t9brsw0gm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 24 Jun 2019 08:40:10 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5O8dRBm050198;
+        Mon, 24 Jun 2019 08:40:09 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2t9acbctw2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 24 Jun 2019 08:40:09 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5O8e1gL028104;
+        Mon, 24 Jun 2019 08:40:02 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 24 Jun 2019 01:40:01 -0700
+Date:   Mon, 24 Jun 2019 11:39:52 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     airlied@linux.ie, daniel@ffwll.ch, alexander.deucher@amd.com,
+        christian.koenig@amd.com, David1.Zhou@amd.com,
+        julia.lawall@lip6.fr, kernel-janitors@vger.kernel.org,
+        amd-gfx@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        jonathan.kim@amd.com
+Subject: Re: [PATCH -next v3] drm/amdgpu: return 'ret' immediately if failed
+ in amdgpu_pmu_init
+Message-ID: <20190624083952.GO18776@kadam>
+References: <alpine.DEB.2.21.1906230809400.4961@hadrien>
+ <20190624034532.135201-1-maowenan@huawei.com>
 MIME-Version: 1.0
-References: <20190221162627.3476-1-brgl@bgdev.pl> <9efcbce2-4d49-7197-a3d8-0e83850892d5@web.de>
-In-Reply-To: <9efcbce2-4d49-7197-a3d8-0e83850892d5@web.de>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Mon, 24 Jun 2019 10:29:35 +0200
-Message-ID: <CAMpxmJX-wXQ-ff1RWkPmJBWSsP_v2MjZrA3fhj3HQX0_zM0eZA@mail.gmail.com>
-Subject: Re: [PATCH] drivers: Adjust scope for CONFIG_HAS_IOMEM before devm_platform_ioremap_resource()
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Bartosz Golaszewski <brgl@bgdev.pl>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Keerthy <j-keerthy@ti.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-gpio <linux-gpio@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190624034532.135201-1-maowenan@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9297 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906240072
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9297 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906240072
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-pt., 14 cze 2019 o 18:50 Markus Elfring <Markus.Elfring@web.de> napisa=C5=
-=82(a):
->
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Fri, 14 Jun 2019 17:45:13 +0200
->
-> Move the preprocessor statement =E2=80=9C#ifdef CONFIG_HAS_IOMEM=E2=80=9D=
- so that
-> the corresponding scope for conditional compilation includes also comment=
-s
-> for this function implementation.
->
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+On Mon, Jun 24, 2019 at 11:45:32AM +0800, Mao Wenan wrote:
+> There is one warning:
+> drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c: In function ‘amdgpu_pmu_init’:
+> drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c:249:6: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
+>   int ret = 0;
+>       ^
+> amdgpu_pmu_init() is called by amdgpu_device_init() in drivers/gpu/drm/amd/amdgpu/amdgpu_device.c,
+> which will use the return value. So it should return 'ret' immediately if init_pmu_by_type() failed.
+> amdgpu_device_init()
+> 	r = amdgpu_pmu_init(adev);
+> 
+> This patch is also to update the indenting on the arguments so they line up with the '('.
+> 
+> Fixes: 9c7c85f7ea1f ("drm/amdgpu: add pmu counters")
+> 
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
 > ---
->  drivers/base/platform.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index 4d1729853d1a..a5f40974a6ef 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -78,6 +78,7 @@ struct resource *platform_get_resource(struct platform_=
-device *dev,
->         return NULL;
->  }
->  EXPORT_SYMBOL_GPL(platform_get_resource);
-> +#ifdef CONFIG_HAS_IOMEM
->
->  /**
->   * devm_platform_ioremap_resource - call devm_ioremap_resource() for a p=
-latform
-> @@ -87,7 +88,6 @@ EXPORT_SYMBOL_GPL(platform_get_resource);
->   *        resource management
->   * @index: resource index
->   */
-> -#ifdef CONFIG_HAS_IOMEM
->  void __iomem *devm_platform_ioremap_resource(struct platform_device *pde=
-v,
->                                              unsigned int index)
->  {
-> --
-> 2.22.0
->
+>  v1->v2: change the subject for this patch; change the indenting when it calls init_pmu_by_type; use the value 'ret' in
+>  amdgpu_pmu_init().
+>  v2->v3: change the subject for this patch; return 'ret' immediately if failed to call init_pmu_by_type(). 
+> 
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
+> index 0e6dba9..b702322 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
+> @@ -252,8 +252,11 @@ int amdgpu_pmu_init(struct amdgpu_device *adev)
+>  	case CHIP_VEGA20:
+>  		/* init df */
+>  		ret = init_pmu_by_type(adev, df_v3_6_attr_groups,
+> -				       "DF", "amdgpu_df", PERF_TYPE_AMDGPU_DF,
+> -				       DF_V3_6_MAX_COUNTERS);
+> +							   "DF", "amdgpu_df",
+> +							   PERF_TYPE_AMDGPU_DF,
+> +							   DF_V3_6_MAX_COUNTERS);
+> +		if (ret)
+> +			return ret;
 
-And what is the purpose of that?
+No no.  Sorry, the original indenting was correct and lined up with the
+'(' character in 'init_pmu_by_type(', that's the way it should be.  If
+we were to remove the "ret = " then we'd have to pull the arguments back
+as well.  I think this fix that Julia suggested is really the right so
+leave the indenting alone.
 
-Bart
+It looks like you've right aligned the arguments.  That's not the right
+way, the original was correct.
+
+regards,
+dan carpenter
+

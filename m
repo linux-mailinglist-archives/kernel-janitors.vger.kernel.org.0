@@ -2,54 +2,133 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B2A2F4FD76
-	for <lists+kernel-janitors@lfdr.de>; Sun, 23 Jun 2019 20:08:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A67815001C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 24 Jun 2019 05:16:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726693AbfFWSIg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 23 Jun 2019 14:08:36 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:43318 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726417AbfFWSIg (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 23 Jun 2019 14:08:36 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 6D42A15310D44;
-        Sun, 23 Jun 2019 11:08:35 -0700 (PDT)
-Date:   Sun, 23 Jun 2019 11:08:35 -0700 (PDT)
-Message-Id: <20190623.110835.523516058927476452.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     xuechaojing@huawei.com, aviad.krawczyk@huawei.com,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][net-next] hinic: fix dereference of pointer hwdev
- before it is null checked
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190620132751.26438-1-colin.king@canonical.com>
-References: <20190620132751.26438-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 23 Jun 2019 11:08:35 -0700 (PDT)
+        id S1727296AbfFXDQu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 23 Jun 2019 23:16:50 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:19062 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726307AbfFXDQu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 23 Jun 2019 23:16:50 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 9FB2A91CF8408B57CC70;
+        Mon, 24 Jun 2019 11:16:47 +0800 (CST)
+Received: from [127.0.0.1] (10.177.96.96) by DGGEMS410-HUB.china.huawei.com
+ (10.3.19.210) with Microsoft SMTP Server id 14.3.439.0; Mon, 24 Jun 2019
+ 11:16:45 +0800
+Subject: Re: [PATCH -next v2] drm/amdgpu: return 'ret' in amdgpu_pmu_init
+To:     Julia Lawall <julia.lawall@lip6.fr>
+References: <20190622104318.GT28859@kadam>
+ <20190622130527.182022-1-maowenan@huawei.com>
+ <alpine.DEB.2.21.1906221504110.3253@hadrien>
+ <063c9726-8f16-f9b7-2d16-bc87a99085bb@huawei.com>
+ <alpine.DEB.2.21.1906221559060.3253@hadrien>
+CC:     <airlied@linux.ie>, <daniel@ffwll.ch>, <alexander.deucher@amd.com>,
+        <christian.koenig@amd.com>, <David1.Zhou@amd.com>,
+        <dan.carpenter@oracle.com>, <kernel-janitors@vger.kernel.org>,
+        <amd-gfx@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+From:   maowenan <maowenan@huawei.com>
+Message-ID: <fced7783-1216-ff3f-039f-d7c3a70b4916@huawei.com>
+Date:   Mon, 24 Jun 2019 11:16:41 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
+MIME-Version: 1.0
+In-Reply-To: <alpine.DEB.2.21.1906221559060.3253@hadrien>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.177.96.96]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Thu, 20 Jun 2019 14:27:51 +0100
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently pointer hwdev is dereferenced when assigning hwif before
-> hwdev is null checked.  Fix this by only derefencing hwdev after the
-> null check.
-> 
-> Addresses-Coverity: ("Dereference before null check")
-> Fixes: 4fdc51bb4e92 ("hinic: add support for rss parameters with ethtool")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Applied.
+On 2019/6/22 22:00, Julia Lawall wrote:
+> 
+> 
+> On Sat, 22 Jun 2019, maowenan wrote:
+> 
+>>
+>>
+>> On 2019/6/22 21:06, Julia Lawall wrote:
+>>>
+>>>
+>>> On Sat, 22 Jun 2019, Mao Wenan wrote:
+>>>
+>>>> There is one warning:
+>>>> drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c: In function ‘amdgpu_pmu_init’:
+>>>> drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c:249:6: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
+>>>>   int ret = 0;
+>>>>       ^
+>>>> amdgpu_pmu_init() is called by amdgpu_device_init() in drivers/gpu/drm/amd/amdgpu/amdgpu_device.c,
+>>>> which will use the return value. So it returns 'ret' for caller.
+>>>> amdgpu_device_init()
+>>>> 	r = amdgpu_pmu_init(adev);
+>>>>
+>>>> Fixes: 9c7c85f7ea1f ("drm/amdgpu: add pmu counters")
+>>>>
+>>>> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+>>>> ---
+>>>>  v1->v2: change the subject for this patch; change the indenting when it calls init_pmu_by_type; use the value 'ret' in
+>>>>  amdgpu_pmu_init().
+>>>>  drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c | 6 +++---
+>>>>  1 file changed, 3 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
+>>>> index 0e6dba9..145e720 100644
+>>>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
+>>>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
+>>>> @@ -252,8 +252,8 @@ int amdgpu_pmu_init(struct amdgpu_device *adev)
+>>>>  	case CHIP_VEGA20:
+>>>>  		/* init df */
+>>>>  		ret = init_pmu_by_type(adev, df_v3_6_attr_groups,
+>>>> -				       "DF", "amdgpu_df", PERF_TYPE_AMDGPU_DF,
+>>>> -				       DF_V3_6_MAX_COUNTERS);
+>>>> +							   "DF", "amdgpu_df", PERF_TYPE_AMDGPU_DF,
+>>>> +							   DF_V3_6_MAX_COUNTERS);
+>>>>
+>>>>  		/* other pmu types go here*/
+>>>
+>>> I don't know what is the impact of the other pmu types that are planned
+>>> for the future.  Perhaps it would be better to abort the function
+>>> immediately in the case of a failure.
+>>
+
+OK, v3 will be sent.
+
+>> I guess it would be better to use new function or new switch case clause to process different PMU types
+>> in future.
+> 
+> I don't know.  But normally when an error may occur it is checked for
+> immediately, rather than just letting it go until the end of the function.
+> But maybe the developer know what is planned for the future for this
+> function.
+> 
+> julia
+> 
+>>
+>>>
+>>> julia
+>>>
+>>>>  		break;
+>>>> @@ -261,7 +261,7 @@ int amdgpu_pmu_init(struct amdgpu_device *adev)
+>>>>  		return 0;
+>>>>  	}
+>>>>
+>>>> -	return 0;
+>>>> +	return ret;
+>>>>  }
+>>>>
+>>>>
+>>>> --
+>>>> 2.7.4
+>>>>
+>>>>
+>>>
+>>
+>>
+> 
+

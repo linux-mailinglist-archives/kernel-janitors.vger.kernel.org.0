@@ -2,96 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFEDF5238C
-	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Jun 2019 08:30:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C663F52413
+	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Jun 2019 09:10:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728207AbfFYG36 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 25 Jun 2019 02:29:58 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:46235 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728087AbfFYG36 (ORCPT
+        id S1729863AbfFYHKi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 25 Jun 2019 03:10:38 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:40677 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726856AbfFYHKi (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 25 Jun 2019 02:29:58 -0400
-Received: by mail-pf1-f194.google.com with SMTP id 81so8897893pfy.13;
-        Mon, 24 Jun 2019 23:29:57 -0700 (PDT)
+        Tue, 25 Jun 2019 03:10:38 -0400
+Received: by mail-io1-f66.google.com with SMTP id n5so587036ioc.7
+        for <kernel-janitors@vger.kernel.org>; Tue, 25 Jun 2019 00:10:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=bgdev-pl.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Yp1pZjIgM8j6nAWCJwr1RviA9TCpOdWc0/KD/+kueE8=;
-        b=nkFsChlNZt6IeXoodY2TGON55dXdvG9cyS5sonM/QFDihbw7N5eQ5pnSitRqcsn5XZ
-         zaNCV4RsHRiOCAHGMrj3lzKN4NPV2/3Q/MJBBlioBzksDgO9oSMQAdfgrOAgzxrdhrz8
-         igy3BH/2aytuFOizukyI1An0Xk1yxzXvef8Ilt7eiecBkcOFozeqAxwHKQI7FisPAHqr
-         x+SiDz5eixHJjZcVFVwIpP20LgJn6BqHsMZHS2sZrcTsowVQztyCTHCN7rSP3qppfNyY
-         Nrw8yFahwBmuE2ajQ1OOHMTyBBIyzzbjTr29CDsjjUKIxMfIL2K+9hP9ZEWM+1nXubGP
-         G+Sw==
+         :cc:content-transfer-encoding;
+        bh=de69OCjWLEoJOVupj+z2Vrj9cMrX8EO/TnQ/3IPkUjg=;
+        b=rUbw2h7m31+afZF5Hr38OLSiDf3+gH/T9QJYuR6ow/SKpzay6u1adULGW2w8WI8swO
+         6TmWtb1H2tnA2eRTp1XhJ6xFuV4KKqYxxLZpwjhmbpDtKoazMS1JkdiWshJKB9fi9y1C
+         1jqjTA8vWAYQ0NXea3jrS/F0o9/oU5bt/JIJ9e4QCjjXBLjnQMqG/VhToI+VHR+Hww/F
+         dh6G+zJ0dDyqFCGAEVZzU2trUTWDnuygPYSNubyDA4UaCzt64ekqZtQRAN7b7kJwJvLR
+         Q4nxcNbstX9ZKADAEFWAVYHsfTVuuk+cJyHNV0276iR6KFhboN5emsKeB/TC9ePB5QM/
+         K3LQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Yp1pZjIgM8j6nAWCJwr1RviA9TCpOdWc0/KD/+kueE8=;
-        b=Gdzrv9+Qv5sOp6BzdnYPvwM7H7dBpcbkMplkHWwejIYhtLXytpeimCEnzw+0MYCW1L
-         hyMivkO0H7gikpn3o6NaAFN5AxTIhZmKtsfmpvNgMt0WCVf0Hu4Wo8qTxhDMDKmwaSUD
-         ueHSY2ElqHZxd41x57iJYpKJrlznsacnUDL1rHuJaOoT+6VJBs8YhPqhcBK1IxA2L2IH
-         XTe8pGrzpUAHoETLTKj7rjvQ48+UFKctaxz6bjuxVFES22qR3P/Acx3qosbv5PKhq/1k
-         GCfmN9iNr1+KVuFgYf3UiVPtqCHC5QmRs40AnRSsYPx3kT4/CIJDIsNrGGJJR0t4IB1K
-         AHTA==
-X-Gm-Message-State: APjAAAUJV0i4/bPtRvrR/X7sHthSwTEZXpbq8/vLdWyo2IHvRfdmWI5n
-        PHpPsJThJhWv7MZKaXmCUcLmJaY3VaOhM6rsPmGgkg==
-X-Google-Smtp-Source: APXvYqzVcTKNjQWoRWqpshVelGz2/WVEbatr5RX3V5UecbE4d8qgv3csXOm9FYwbfR9FWhIFR3pRVjmDt9hAX76HG0E=
-X-Received: by 2002:a63:8b4c:: with SMTP id j73mr26925363pge.11.1561444196820;
- Mon, 24 Jun 2019 23:29:56 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=de69OCjWLEoJOVupj+z2Vrj9cMrX8EO/TnQ/3IPkUjg=;
+        b=rlZPJnDrHApEiT6EO2gOvdq4lsC4SXezTnHrzOW1OvO2zATwEHidKRsdNlBsiaJR88
+         nkOllHZOxrAfa06kk9aM2nEPexaX46FsqPP11J83gLAwD1DT1Ba2U4gi9pPFMdBCUwEP
+         DyXnc/Wx2t7hvt8uP4eJyb8+TjeJ5fApFlkEXlwLieWe2ihrUjhloJ+FvvmS9oAoFQ91
+         UpfZywblBEYevtPioHwcVNKMtDaF+QuBwcd1dsu2/fsPKWirRKtoLgOg0xp1wx2F6B/q
+         0AJlZ5fOg8NsKXBJuBWAWHk1Qnmch2zJr9WIUB1MRP8I7xaxj0k5n1UHrxHjm4kjnE2M
+         d6VQ==
+X-Gm-Message-State: APjAAAVYBXpGHuZUKcm7V0VGJPMYZIaMdOrmA/0sjY+zxlilT4FPCjbG
+        pDsSMDuB2xbVUITRfr/ynT3uS6O/ZeOTNg3oO7OKUQ==
+X-Google-Smtp-Source: APXvYqwt9FUPbNuPIYl40S3Z6LGQFhKnprVrc15JCgOBrx5+zp4ftaGlrybHhDlwTUDwZpPQdqmFp5GLjNd6LUptR+I=
+X-Received: by 2002:a6b:f80b:: with SMTP id o11mr2262547ioh.40.1561446636658;
+ Tue, 25 Jun 2019 00:10:36 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190624163943.6721-1-colin.king@canonical.com>
-In-Reply-To: <20190624163943.6721-1-colin.king@canonical.com>
-From:   Steve French <smfrench@gmail.com>
-Date:   Tue, 25 Jun 2019 01:29:45 -0500
-Message-ID: <CAH2r5mvSOS3khpwQ5bZ4OrTcuMXmxB_oaUuVLqaivD1w5g9n9Q@mail.gmail.com>
-Subject: Re: [PATCH] cifs: fix typo in debug message with struct field ia_valid
-To:     Colin King <colin.king@canonical.com>
-Cc:     Steve French <sfrench@samba.org>,
-        CIFS <linux-cifs@vger.kernel.org>,
-        samba-technical <samba-technical@lists.samba.org>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>,
+References: <20190221162627.3476-1-brgl@bgdev.pl> <9efcbce2-4d49-7197-a3d8-0e83850892d5@web.de>
+ <CAMpxmJX-wXQ-ff1RWkPmJBWSsP_v2MjZrA3fhj3HQX0_zM0eZA@mail.gmail.com>
+ <39ae399a-c606-c6de-f84d-35e39d0410c0@metux.net> <CAMRc=McepqowJNi6ay6x9KKoHOC8aCxP_ob12SgbsnJU_sKQng@mail.gmail.com>
+ <1dd52704-0e41-db31-33f4-c9f446a47344@metux.net>
+In-Reply-To: <1dd52704-0e41-db31-33f4-c9f446a47344@metux.net>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Tue, 25 Jun 2019 09:10:25 +0200
+Message-ID: <CAMRc=Mfp85diy849r_8UHKS9eao26djrsMF0_iwE--d62mQ5jg@mail.gmail.com>
+Subject: Re: [PATCH] drivers: Adjust scope for CONFIG_HAS_IOMEM before devm_platform_ioremap_resource()
+To:     "Enrico Weigelt, metux IT consult" <lkml@metux.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-gpio <linux-gpio@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-merged into cifs-2.6.git for-next
-
-On Mon, Jun 24, 2019 at 3:25 PM Colin King <colin.king@canonical.com> wrote:
+pon., 24 cze 2019 o 20:22 Enrico Weigelt, metux IT consult
+<lkml@metux.net> napisa=C5=82(a):
 >
-> From: Colin Ian King <colin.king@canonical.com>
+> On 24.06.19 12:46, Bartosz Golaszewski wrote:
 >
-> Field ia_valid is being debugged with the field name iavalid, fix this.
+> >> The patch seems pretty trivial and doesn't change any actual code, so
+> >> I don't see hard resons for rejecting it.
+> >>
+> >
+> > In its current form it makes the code even less readable. The #ifdef
+> > should actually be one line lower and touch the comment instead of the
+> > EXPORT_SYMBOL() related to a different function.
 >
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  fs/cifs/inode.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/fs/cifs/inode.c b/fs/cifs/inode.c
-> index d7cc62252634..06a4892e9973 100644
-> --- a/fs/cifs/inode.c
-> +++ b/fs/cifs/inode.c
-> @@ -2415,7 +2415,7 @@ cifs_setattr_nounix(struct dentry *direntry, struct iattr *attrs)
->
->         xid = get_xid();
->
-> -       cifs_dbg(FYI, "setattr on file %pd attrs->iavalid 0x%x\n",
-> +       cifs_dbg(FYI, "setattr on file %pd attrs->ia_valid 0x%x\n",
->                  direntry, attrs->ia_valid);
->
->         if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NO_PERM)
-> --
-> 2.20.1
+> Okay, that missing newline should be fixed (as well as the extra one
+> after the #ifdef). Besides that, I don't see any further problems.
 >
 
+Are we sure this even changes something? Does kernel documentation get
+generated according to current config options? I really think this
+patch just pollutes the history for now apparent reason.
 
--- 
-Thanks,
+Greg, could you give your opinion on this?
 
-Steve
+Bart

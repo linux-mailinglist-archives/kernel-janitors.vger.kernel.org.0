@@ -2,85 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 44ADC52280
-	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Jun 2019 07:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFEDF5238C
+	for <lists+kernel-janitors@lfdr.de>; Tue, 25 Jun 2019 08:30:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726441AbfFYFCa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 25 Jun 2019 01:02:30 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:34190 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726009AbfFYFCa (ORCPT
+        id S1728207AbfFYG36 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 25 Jun 2019 02:29:58 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:46235 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728087AbfFYG36 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 25 Jun 2019 01:02:30 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 244DE606DC; Tue, 25 Jun 2019 05:02:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561438949;
-        bh=fPT0gT7LS22qEGFkJrHhbQkhxQmWqS5gE1kUD0/5/H8=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=g8q3VGp1tr0QDZF9rNCKoWqG7xbbAF4pZuqVe8tXdme3jXVPGQ4owqQDWd2njWDcS
-         DVDgqoucYmhbC/+Lzjj1eWRpnt6JevRwTJY0EJ0zC0RplnwmEAqLqEo6D3PCKHv4NZ
-         SKAL55wTdePh1GbQh/RAQUDY5Uy9VtCzqmD/pQyk=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id A14096025A;
-        Tue, 25 Jun 2019 05:02:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1561438948;
-        bh=fPT0gT7LS22qEGFkJrHhbQkhxQmWqS5gE1kUD0/5/H8=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=V5p1ezBB0o9dKOdCKPQYJz3VLZPGKjVuETJPXKr5Ude6LO3dQGTGHKcHmfcuqpWip
-         R7iFQRaiH6NQuHi1tW3+LiiiXsE0KDUWG/PTz5T1g0o2e35D+nhgGEbRUvW/y/l9CR
-         chh2N3H10elK86aErU1jvw42RUvVuh8Pp2+cDflE=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org A14096025A
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Tue, 25 Jun 2019 02:29:58 -0400
+Received: by mail-pf1-f194.google.com with SMTP id 81so8897893pfy.13;
+        Mon, 24 Jun 2019 23:29:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Yp1pZjIgM8j6nAWCJwr1RviA9TCpOdWc0/KD/+kueE8=;
+        b=nkFsChlNZt6IeXoodY2TGON55dXdvG9cyS5sonM/QFDihbw7N5eQ5pnSitRqcsn5XZ
+         zaNCV4RsHRiOCAHGMrj3lzKN4NPV2/3Q/MJBBlioBzksDgO9oSMQAdfgrOAgzxrdhrz8
+         igy3BH/2aytuFOizukyI1An0Xk1yxzXvef8Ilt7eiecBkcOFozeqAxwHKQI7FisPAHqr
+         x+SiDz5eixHJjZcVFVwIpP20LgJn6BqHsMZHS2sZrcTsowVQztyCTHCN7rSP3qppfNyY
+         Nrw8yFahwBmuE2ajQ1OOHMTyBBIyzzbjTr29CDsjjUKIxMfIL2K+9hP9ZEWM+1nXubGP
+         G+Sw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Yp1pZjIgM8j6nAWCJwr1RviA9TCpOdWc0/KD/+kueE8=;
+        b=Gdzrv9+Qv5sOp6BzdnYPvwM7H7dBpcbkMplkHWwejIYhtLXytpeimCEnzw+0MYCW1L
+         hyMivkO0H7gikpn3o6NaAFN5AxTIhZmKtsfmpvNgMt0WCVf0Hu4Wo8qTxhDMDKmwaSUD
+         ueHSY2ElqHZxd41x57iJYpKJrlznsacnUDL1rHuJaOoT+6VJBs8YhPqhcBK1IxA2L2IH
+         XTe8pGrzpUAHoETLTKj7rjvQ48+UFKctaxz6bjuxVFES22qR3P/Acx3qosbv5PKhq/1k
+         GCfmN9iNr1+KVuFgYf3UiVPtqCHC5QmRs40AnRSsYPx3kT4/CIJDIsNrGGJJR0t4IB1K
+         AHTA==
+X-Gm-Message-State: APjAAAUJV0i4/bPtRvrR/X7sHthSwTEZXpbq8/vLdWyo2IHvRfdmWI5n
+        PHpPsJThJhWv7MZKaXmCUcLmJaY3VaOhM6rsPmGgkg==
+X-Google-Smtp-Source: APXvYqzVcTKNjQWoRWqpshVelGz2/WVEbatr5RX3V5UecbE4d8qgv3csXOm9FYwbfR9FWhIFR3pRVjmDt9hAX76HG0E=
+X-Received: by 2002:a63:8b4c:: with SMTP id j73mr26925363pge.11.1561444196820;
+ Mon, 24 Jun 2019 23:29:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtlwifi: rtl8188ee: remove redundant assignment to
- rtstatus
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190608105800.26571-1-colin.king@canonical.com>
-References: <20190608105800.26571-1-colin.king@canonical.com>
+References: <20190624163943.6721-1-colin.king@canonical.com>
+In-Reply-To: <20190624163943.6721-1-colin.king@canonical.com>
+From:   Steve French <smfrench@gmail.com>
+Date:   Tue, 25 Jun 2019 01:29:45 -0500
+Message-ID: <CAH2r5mvSOS3khpwQ5bZ4OrTcuMXmxB_oaUuVLqaivD1w5g9n9Q@mail.gmail.com>
+Subject: Re: [PATCH] cifs: fix typo in debug message with struct field ia_valid
 To:     Colin King <colin.king@canonical.com>
-Cc:     Ping-Ke Shih <pkshih@realtek.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190625050229.244DE606DC@smtp.codeaurora.org>
-Date:   Tue, 25 Jun 2019 05:02:29 +0000 (UTC)
+Cc:     Steve French <sfrench@samba.org>,
+        CIFS <linux-cifs@vger.kernel.org>,
+        samba-technical <samba-technical@lists.samba.org>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+merged into cifs-2.6.git for-next
 
+On Mon, Jun 24, 2019 at 3:25 PM Colin King <colin.king@canonical.com> wrote:
+>
 > From: Colin Ian King <colin.king@canonical.com>
-> 
-> Variable rtstatus is being initialized with a value that is never read
-> as rtstatus is being re-assigned a little later on. The assignment is
-> redundant and hence can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
+>
+> Field ia_valid is being debugged with the field name iavalid, fix this.
+>
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  fs/cifs/inode.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/fs/cifs/inode.c b/fs/cifs/inode.c
+> index d7cc62252634..06a4892e9973 100644
+> --- a/fs/cifs/inode.c
+> +++ b/fs/cifs/inode.c
+> @@ -2415,7 +2415,7 @@ cifs_setattr_nounix(struct dentry *direntry, struct iattr *attrs)
+>
+>         xid = get_xid();
+>
+> -       cifs_dbg(FYI, "setattr on file %pd attrs->iavalid 0x%x\n",
+> +       cifs_dbg(FYI, "setattr on file %pd attrs->ia_valid 0x%x\n",
+>                  direntry, attrs->ia_valid);
+>
+>         if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NO_PERM)
+> --
+> 2.20.1
+>
 
-Patch applied to wireless-drivers-next.git, thanks.
-
-25a986e426b0 rtlwifi: rtl8188ee: remove redundant assignment to rtstatus
 
 -- 
-https://patchwork.kernel.org/patch/10983111/
+Thanks,
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Steve

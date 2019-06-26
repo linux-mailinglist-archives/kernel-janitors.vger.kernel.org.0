@@ -2,111 +2,251 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D87A456A8D
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 15:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6950B56AC9
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 15:37:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727873AbfFZNct (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Jun 2019 09:32:49 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:49218 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727771AbfFZNc3 (ORCPT
+        id S1727873AbfFZNhY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Jun 2019 09:37:24 -0400
+Received: from mail-ua1-f65.google.com ([209.85.222.65]:36748 "EHLO
+        mail-ua1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725958AbfFZNhY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Jun 2019 09:32:29 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hg82F-0000P8-ND; Wed, 26 Jun 2019 13:32:27 +0000
-Subject: Re: [PATCH][next[ drm/amd/display: fix a couple of spelling mistakes
-To:     Daniel Stone <daniel@fooishbar.org>
-Cc:     Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Nikola Cornij <nikola.cornij@amd.com>,
-        Wenjing Liu <Wenjing.Liu@amd.com>,
-        amd-gfx mailing list <amd-gfx@lists.freedesktop.org>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-References: <20190626132427.12615-1-colin.king@canonical.com>
- <CAPj87rM9y5Zen5A5KkiCqqUF5m+vAwwtLj-iJrcwFfzMev+Mrw@mail.gmail.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <2bd65b8f-f278-1000-d9a2-6476fc3a497f@canonical.com>
-Date:   Wed, 26 Jun 2019 14:32:26 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        Wed, 26 Jun 2019 09:37:24 -0400
+Received: by mail-ua1-f65.google.com with SMTP id v20so765004uao.3;
+        Wed, 26 Jun 2019 06:37:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=is/ujkoZicHG2BibnpnLpAegsLraJDOqvg5EgkUGsS0=;
+        b=IdUyfzpGPTccHKxZnHQiTAf0O89bmOsqYbavdIQtAOB1kU8BwTZYT15uJkoj/1vEcN
+         rm4fS4IbFKYA9KlsN6w6Nk3djG2t7D3mR0MehHmeh4NjwAFi3XUY8R2N1IYSaXcN6zYO
+         4jC4eesVaM5c+rhzsoa5ZdtWe8RIFTYZWM3qDnccj8iaPfmk2VGW8EYwKhdqIswvghU2
+         2j47Itxu8AdbXZU1WLVO8S9s3IOtTBZMcRKa25dilMyRvlha0OcDa4Eg4leTVu7u/MD6
+         g3T+mMhfaVnIhHFrZag/e22PnhEEqGBAVHHSk1oRCxO8rn00KKW2rGEKBtQIi6cQNl5w
+         5d2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=is/ujkoZicHG2BibnpnLpAegsLraJDOqvg5EgkUGsS0=;
+        b=tIjjQrjGG7q2qezhkzIz1XeFgz2nEjRBUkE61LK60WJuJq0wSUW8Ib2NnSa+R0wdgt
+         FQbLUl/+sJjtqpa2omkwLB4Z7vCl9d4SUzYM2wO/kJWWkmIUh/faBwSsa8KUM3HjUDI9
+         Ffwg/Rh/1GypFZZ/VHLzNPAH38RJv+TpLH5pY4D2FcAzF3VaObdWdAkbkHHXe9l78909
+         RACd9/x0jl9ckqPtosazDfz/OhfnphiCgW3dcWAH4qClKXsWG24xSnpzT1NoQ2VthEOE
+         o0tjIXVxVnIQDrvpDer/DAD+5zha/z89NkFIhrxGGSUQy95eW6icY15Lf4jPrAoi/fdK
+         1urQ==
+X-Gm-Message-State: APjAAAXGS4TiunF1GVbiqVKEevSFEXgHlSxy+xTq/zi3Od5eq0wGvB2l
+        gibthMp0732yoHZmSNICVrccbOibPcfCUXbUkpKPv//Vx1I=
+X-Google-Smtp-Source: APXvYqy8R5tVK0LIjN1Tts0iTEE7Nh0qNsb/DwSEKJFOqodoXJVgTSYIWTeyUj8o6H0Q5YI9s6QKfHv+8c+bRRTvXLo=
+X-Received: by 2002:ab0:2850:: with SMTP id c16mr2498783uaq.128.1561556242469;
+ Wed, 26 Jun 2019 06:37:22 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAPj87rM9y5Zen5A5KkiCqqUF5m+vAwwtLj-iJrcwFfzMev+Mrw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20190619020750.swzerehjbvx6sbk2@smtp.gmail.com>
+ <20190619074856.GJ12905@phenom.ffwll.local> <20190619075059.GK12905@phenom.ffwll.local>
+ <20190626020005.vb5gmqcvkyzgcjee@smtp.gmail.com> <CAKMK7uEd71XTeuZeu1Km8Vq1K1VJJbgANyaZNWm4v18Qh-OqVw@mail.gmail.com>
+In-Reply-To: <CAKMK7uEd71XTeuZeu1Km8Vq1K1VJJbgANyaZNWm4v18Qh-OqVw@mail.gmail.com>
+From:   Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+Date:   Wed, 26 Jun 2019 10:37:11 -0300
+Message-ID: <CADKXj+5+QHr1a0aiVZ1cSiPbtZhUAjmqiTmoQHGyEhodbcA2WQ@mail.gmail.com>
+Subject: Re: [Intel-gfx] [PATCH V4] drm/drm_vblank: Change EINVAL by the
+ correct errno
+To:     Daniel Vetter <daniel@ffwll.ch>
+Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 26/06/2019 14:25, Daniel Stone wrote:
-> Hi Colin,
-> 
-> On Wed, 26 Jun 2019 at 14:24, Colin King <colin.king@canonical.com> wrote:
->> There are a couple of spelling mistakes in dm_error messages and
->> a comment. Fix these.
-> 
-> Whilst there, you might fix the '[next[' typo in the commit message.
+On Wed, Jun 26, 2019 at 4:53 AM Daniel Vetter <daniel@ffwll.ch> wrote:
+>
+> On Wed, Jun 26, 2019 at 4:00 AM Rodrigo Siqueira
+> <rodrigosiqueiramelo@gmail.com> wrote:
+> >
+> > On 06/19, Daniel Vetter wrote:
+> > > On Wed, Jun 19, 2019 at 09:48:56AM +0200, Daniel Vetter wrote:
+> > > > On Tue, Jun 18, 2019 at 11:07:50PM -0300, Rodrigo Siqueira wrote:
+> > > > > For historical reason, the function drm_wait_vblank_ioctl always =
+return
+> > > > > -EINVAL if something gets wrong. This scenario limits the flexibi=
+lity
+> > > > > for the userspace make detailed verification of the problem and t=
+ake
+> > > > > some action. In particular, the validation of =E2=80=9Cif (!dev->=
+irq_enabled)=E2=80=9D
+> > > > > in the drm_wait_vblank_ioctl is responsible for checking if the d=
+river
+> > > > > support vblank or not. If the driver does not support VBlank, the
+> > > > > function drm_wait_vblank_ioctl returns EINVAL which does not repr=
+esent
+> > > > > the real issue; this patch changes this behavior by return EOPNOT=
+SUPP.
+> > > > > Additionally, some operations are unsupported by this function, a=
+nd
+> > > > > returns EINVAL; this patch also changes the return value to EOPNO=
+TSUPP
+> > > > > in this case. Lastly, the function drm_wait_vblank_ioctl is invok=
+ed by
+> > > > > libdrm, which is used by many compositors; because of this, it is
+> > > > > important to check if this change breaks any compositor. In this =
+sense,
+> > > > > the following projects were examined:
+> > > > >
+> > > > > * Drm-hwcomposer
+> > > > > * Kwin
+> > > > > * Sway
+> > > > > * Wlroots
+> > > > > * Wayland-core
+> > > > > * Weston
+> > > > > * Xorg (67 different drivers)
+> > > > >
+> > > > > For each repository the verification happened in three steps:
+> > > > >
+> > > > > * Update the main branch
+> > > > > * Look for any occurrence "drmWaitVBlank" with the command:
+> > > > >   git grep -n "drmWaitVBlank"
+> > > > > * Look in the git history of the project with the command:
+> > > > >   git log -SdrmWaitVBlank
+> > > > >
+> > > > > Finally, none of the above projects validate the use of EINVAL wh=
+ich
+> > > > > make safe, at least for these projects, to change the return valu=
+es.
+> > > > >
+> > > > > Change since V3:
+> > > > >  - Return EINVAL for _DRM_VBLANK_SIGNAL (Daniel)
+> > > > >
+> > > > > Change since V2:
+> > > > >  Daniel Vetter and Chris Wilson
+> > > > >  - Replace ENOTTY by EOPNOTSUPP
+> > > > >  - Return EINVAL if the parameters are wrong
+> > > > >
+> > > >
+> > > > Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+> > > >
+> > > > Apologies for the confusion on the last time around. btw if someone=
+ tells
+> > > > you "r-b (or a-b) with these changes", then just apply the r-b/a-b =
+tag
+> > > > next time around. Otherwise people will re-review the same thing ov=
+er and
+> > > > over again.
+> > >
+> > > btw when resending patches it's good practice to add anyone who comme=
+nted
+> > > on it (or who commented on the igt test for the same patch and other =
+way
+> > > round) onto the explicit Cc: list of the patch. That way it's easier =
+for
+> > > them to follow the patch evolution and do a quick r-b once they're ha=
+ppy.
+> >
+> > Thanks for these valuable tips.
+> > Do you think that is a good idea to resend this patch CC's everybody? O=
+r
+> > is it ok if I just apply it?
+>
+> Hm I thought I answered that on irc ... but just today I realized that
+> we missed 2 ioctls. There's also drm_crtc_get_sequence_ioctl and
+> drm_crtc_queue_sequence_ioctl which have the same dev->irq_enabled
+> check and I think should be treated the same.
 
-Ugh, fickle fingers. Maybe the upstream devs will fix that before
-applying...
+Hi,
+
+I reexamined all the composers described in the commit message (latest
+versions) to check if any project use and validate the return value
+from  drm_crtc_get_sequence_ioctl and drm_crtc_queue_sequence_ioctl. I
+noticed that mesa and xserver use them. FWIU replace EINVAL by
+EOPNOTSUPP is harmless for mesa project, however it is not the same
+for xserver.
+
+Take a look at line 189 and 238 of hw/xfree86/drivers/modesetting/vblank.c
+
+* https://gitlab.freedesktop.org/xorg/xserver/blob/master/hw/xfree86/driver=
+s/modesetting/vblank.c#L238
+* https://gitlab.freedesktop.org/xorg/xserver/blob/master/hw/xfree86/driver=
+s/modesetting/vblank.c#L189
+
+A little bit below the above lines, you can see a validation like that:
+
+  if (ret !=3D -1 || (errno !=3D ENOTTY && errno !=3D EINVAL))
+
+In other words, if we change the EINVAL by EOPNOTSUPP
+drm_crtc_[get|queue]_sequence_ioctl we could break xserver. I noticed
+that Keith Packard introduced these ioctls to the kernel and also to
+the xserver, I will prepare a new version and CC Keith. Should I do
+another thing to notify xserver developers?
+
+Thanks
+
+> Can you pls resend with those addressed too? Then you can also resend
+> with the cc's all added.
+> -Daniel
+>
+> >
+> > > If you don't do that then much bigger chances your patch gets ignored=
+.
+> > > -Daniel
+> > > >
+> > > > > Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+> > > > > ---
+> > > > >  drivers/gpu/drm/drm_vblank.c | 2 +-
+> > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > >
+> > > > > diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_v=
+blank.c
+> > > > > index 603ab105125d..bed233361614 100644
+> > > > > --- a/drivers/gpu/drm/drm_vblank.c
+> > > > > +++ b/drivers/gpu/drm/drm_vblank.c
+> > > > > @@ -1582,7 +1582,7 @@ int drm_wait_vblank_ioctl(struct drm_device=
+ *dev, void *data,
+> > > > >   unsigned int flags, pipe, high_pipe;
+> > > > >
+> > > > >   if (!dev->irq_enabled)
+> > > > > -         return -EINVAL;
+> > > > > +         return -EOPNOTSUPP;
+> > > > >
+> > > > >   if (vblwait->request.type & _DRM_VBLANK_SIGNAL)
+> > > > >           return -EINVAL;
+> > > > > --
+> > > > > 2.21.0
+> > > >
+> > > > --
+> > > > Daniel Vetter
+> > > > Software Engineer, Intel Corporation
+> > > > http://blog.ffwll.ch
+> > >
+> > > --
+> > > Daniel Vetter
+> > > Software Engineer, Intel Corporation
+> > > http://blog.ffwll.ch
+> >
+> > --
+> > Rodrigo Siqueira
+> > https://siqueira.tech
+> > _______________________________________________
+> > Intel-gfx mailing list
+> > Intel-gfx@lists.freedesktop.org
+> > https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+>
+>
+>
+> --
+> Daniel Vetter
+> Software Engineer, Intel Corporation
+> +41 (0) 79 365 57 48 - http://blog.ffwll.ch
 
 
-> 
-> Cheers,
-> Daniel
-> 
 
+--=20
+
+Rodrigo Siqueira
+https://siqueira.tech

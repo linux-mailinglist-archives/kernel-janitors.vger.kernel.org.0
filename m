@@ -2,67 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E222C5664E
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 12:11:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 498B25665A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 12:12:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726722AbfFZKL5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Jun 2019 06:11:57 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:46754 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726487AbfFZKL4 (ORCPT
+        id S1727028AbfFZKMY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Jun 2019 06:12:24 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:42878 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725930AbfFZKMY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Jun 2019 06:11:56 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5QA8X51079437;
-        Wed, 26 Jun 2019 10:11:39 GMT
+        Wed, 26 Jun 2019 06:12:24 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5QA8fib178790;
+        Wed, 26 Jun 2019 10:10:49 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=0rjPnFf/3usKiUcf+Z1GXvs1dO9my6qw/hTowI4egCU=;
- b=Cp54Xyno+NH+L2Nhd2qmKhk3hX5L1vYWl2kM53ciZYxx/9JXp88t7U5Jy3P1cs3L/TpR
- efKPP3hcXLPrki5bRkol5IlEGbWv+jJAl/U1M565aRvUTVDlIpK4VT7KA4jcVOnwVp2k
- snMKFGrEso5I+gwqqtGV1I2NBRZYmklZgmfKlgNkNywBWSaNStwFKM0jXPJG+oaMrjCU
- KhFnqr+/1gOAlZMbZTaDlCzhRODoKhoeWWruEHWttk3hztjDheD2GfcqNpIYCdhOa9rU
- dZb0ezIgLT4bzvHdmL//2SIf1/jNoCGoK4Lb9i46XL3iULcHuQl/+VKFtJzxDzvEfjrU KQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 2t9cyqhbf1-1
+ bh=Z0zCG0SMZmwKMXv+ACtzLqdeYvRM/SfClPkGSJ8PA8s=;
+ b=X9pLfqj9VC75vmOc5mWBekP9VDo93nVKSUlAgt7fhcYSVzXGFp3jUG7GErQ/1qwgYkNS
+ Gm1fN51sWKwivKmimFkSC3Qm34zuK+lvWEAyCUIfWdLyAyJfuumsh/4fBretd9HagaRT
+ v85whqDH5eMtlF/XLwWaHojXyd8VPzSXPBHirceMBzyZm9ZNkWDHDM/ew1/IfPEMLWHI
+ zSO271mvt+TypT3He2h3v7AI5acge3CwLZPOeoboa0Hw9KgZvNs7VjmAZoA9IORWUm+G
+ rmIH5FiHw71jZq0lpepymfH1Vy+mhS8gH6xCsLRJCX7NpPaFysP7FouPLTXYk85kESP+ eA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2t9c9pscvj-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 26 Jun 2019 10:11:39 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5QA9WR3171338;
-        Wed, 26 Jun 2019 10:09:39 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 2t9accm7vj-1
+        Wed, 26 Jun 2019 10:10:49 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5QAAlm6045874;
+        Wed, 26 Jun 2019 10:10:49 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 2t9p6upt55-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 26 Jun 2019 10:09:38 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5QA9XVK032710;
-        Wed, 26 Jun 2019 10:09:33 GMT
+        Wed, 26 Jun 2019 10:10:48 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5QAAmgU005403;
+        Wed, 26 Jun 2019 10:10:48 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 26 Jun 2019 03:09:33 -0700
-Date:   Wed, 26 Jun 2019 13:09:26 +0300
+        with ESMTP ; Wed, 26 Jun 2019 03:10:47 -0700
+Date:   Wed, 26 Jun 2019 13:10:41 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        Philip Rakity <prakity@yahoo.com>
-Cc:     Allison Randal <allison@lohutok.net>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] libertas: Fix a double free in if_spi_c2h_data()
-Message-ID: <20190626100926.GD3242@mwanda>
+To:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Rushikesh S Kadam <rushikesh.s.kadam@intel.com>
+Cc:     Jiri Kosina <jikos@kernel.org>,
+        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+        linux-input@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] intel-ish-hid: Fix a use after free in load_fw_from_host()
+Message-ID: <20190626101041.GE3242@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9299 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
  phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.0.1-1810050000 definitions=main-1906260122
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9299 signatures=668687
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
  definitions=main-1906260122
@@ -71,28 +70,29 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The lbs_process_rxed_packet() frees the skb.  It didn't originally, but
-we fixed it in commit f54930f36311 ("libertas: don't leak skb on receive
-error").
+We have to print the filename first before we can kfree it.
 
+Fixes: 91b228107da3 ("HID: intel-ish-hid: ISH firmware loader client driver")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/wireless/marvell/libertas/if_spi.c | 2 +-
+ drivers/hid/intel-ish-hid/ishtp-fw-loader.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/libertas/if_spi.c b/drivers/net/wireless/marvell/libertas/if_spi.c
-index 27067e79e83f..e38f02d1f2e4 100644
---- a/drivers/net/wireless/marvell/libertas/if_spi.c
-+++ b/drivers/net/wireless/marvell/libertas/if_spi.c
-@@ -772,7 +772,7 @@ static int if_spi_c2h_data(struct if_spi_card *card)
- 	/* pass the SKB to libertas */
- 	err = lbs_process_rxed_packet(card->priv, skb);
- 	if (err)
--		goto free_skb;
-+		goto out;  /* lbs_process_rxed_packet() frees skb */
+diff --git a/drivers/hid/intel-ish-hid/ishtp-fw-loader.c b/drivers/hid/intel-ish-hid/ishtp-fw-loader.c
+index 22ba21457035..aa2dbed30fc3 100644
+--- a/drivers/hid/intel-ish-hid/ishtp-fw-loader.c
++++ b/drivers/hid/intel-ish-hid/ishtp-fw-loader.c
+@@ -816,9 +816,9 @@ static int load_fw_from_host(struct ishtp_cl_data *client_data)
+ 		goto end_err_fw_release;
  
- 	/* success */
- 	goto out;
+ 	release_firmware(fw);
+-	kfree(filename);
+ 	dev_info(cl_data_to_dev(client_data), "ISH firmware %s loaded\n",
+ 		 filename);
++	kfree(filename);
+ 	return 0;
+ 
+ end_err_fw_release:
 -- 
 2.20.1
 

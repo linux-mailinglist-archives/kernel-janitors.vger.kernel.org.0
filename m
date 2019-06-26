@@ -2,107 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59A9D567B5
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 13:36:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7885F56992
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 14:43:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726445AbfFZLfx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Jun 2019 07:35:53 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:48536 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725930AbfFZLfw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Jun 2019 07:35:52 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 85506CFD3134A0E4BC1F;
-        Wed, 26 Jun 2019 19:35:50 +0800 (CST)
-Received: from [127.0.0.1] (10.177.96.96) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.439.0; Wed, 26 Jun 2019
- 19:35:45 +0800
-Subject: Re: [PATCH -next v4] drm/amdgpu: return 'ret' immediately if failed
- in amdgpu_pmu_init
-To:     "Kim, Jonathan" <Jonathan.Kim@amd.com>,
-        "airlied@linux.ie" <airlied@linux.ie>,
-        "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
-        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
-        "julia.lawall@lip6.fr" <julia.lawall@lip6.fr>
-References: <20190624094850.GQ18776@kadam>
- <20190624112318.149299-1-maowenan@huawei.com>
- <CH2PR12MB3831BE36FF61D74FC529F64F85E00@CH2PR12MB3831.namprd12.prod.outlook.com>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <2d7c2525-4503-3706-7d00-0b9bf230266d@huawei.com>
-Date:   Wed, 26 Jun 2019 19:35:40 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+        id S1726462AbfFZMne (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Jun 2019 08:43:34 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:47656 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726347AbfFZMne (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 26 Jun 2019 08:43:34 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hg7Gl-0004vr-F0; Wed, 26 Jun 2019 12:43:23 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        linux-nvme@lists.infradead.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] nvme-trace: fix spelling mistake "spcecific" -> "specific"
+Date:   Wed, 26 Jun 2019 13:43:23 +0100
+Message-Id: <20190626124323.5925-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <CH2PR12MB3831BE36FF61D74FC529F64F85E00@CH2PR12MB3831.namprd12.prod.outlook.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.177.96.96]
-X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
+There are two spelling mistakes in trace_seq_printf messages, fix these.
 
-On 2019/6/25 1:42, Kim, Jonathan wrote:
-> Immediate return should be ok since perf registration isn't dependent on gpu hw.
-> 
-> Reviewed-by: Jonathan Kim <Jonathan.Kim@amd.com>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/nvme/host/trace.c   | 2 +-
+ drivers/nvme/target/trace.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-thanks for review.
-
-> 
-> -----Original Message-----
-> From: Mao Wenan <maowenan@huawei.com> 
-> Sent: Monday, June 24, 2019 7:23 AM
-> To: airlied@linux.ie; daniel@ffwll.ch; Deucher, Alexander <Alexander.Deucher@amd.com>; Koenig, Christian <Christian.Koenig@amd.com>; Zhou, David(ChunMing) <David1.Zhou@amd.com>; dan.carpenter@oracle.com; julia.lawall@lip6.fr
-> Cc: kernel-janitors@vger.kernel.org; amd-gfx@lists.freedesktop.org; linux-kernel@vger.kernel.org; Kim, Jonathan <Jonathan.Kim@amd.com>; Mao Wenan <maowenan@huawei.com>
-> Subject: [PATCH -next v4] drm/amdgpu: return 'ret' immediately if failed in amdgpu_pmu_init
-> 
-> [CAUTION: External Email]
-> 
-> There is one warning:
-> drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c: In function ‘amdgpu_pmu_init’:
-> drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c:249:6: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
->   int ret = 0;
->       ^
-> amdgpu_pmu_init() is called by amdgpu_device_init() in drivers/gpu/drm/amd/amdgpu/amdgpu_device.c,
-> which will use the return value. So it should return 'ret' immediately if init_pmu_by_type() failed.
-> amdgpu_device_init()
->         r = amdgpu_pmu_init(adev);
-> 
-> Fixes: 9c7c85f7ea1f ("drm/amdgpu: add pmu counters")
-> 
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> ---
->  v1->v2: change the subject for this patch; change the indenting when it calls init_pmu_by_type; use the value 'ret' in  amdgpu_pmu_init().
->  v2->v3: change the subject for this patch; return 'ret' immediately if failed to call init_pmu_by_type().
->  v3->v4: delete the indenting for init_pmu_by_type() arguments. The original indenting is correct.
-> 
->  drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
-> index 0e6dba9f60f0..c98cf77a37f3 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
-> @@ -254,6 +254,8 @@ int amdgpu_pmu_init(struct amdgpu_device *adev)
->                 ret = init_pmu_by_type(adev, df_v3_6_attr_groups,
->                                        "DF", "amdgpu_df", PERF_TYPE_AMDGPU_DF,
->                                        DF_V3_6_MAX_COUNTERS);
-> +               if (ret)
-> +                       return ret;
-> 
->                 /* other pmu types go here*/
->                 break;
-> --
-> 2.20.1
-> 
+diff --git a/drivers/nvme/host/trace.c b/drivers/nvme/host/trace.c
+index f01ad0fd60bb..6980ab827233 100644
+--- a/drivers/nvme/host/trace.c
++++ b/drivers/nvme/host/trace.c
+@@ -178,7 +178,7 @@ static const char *nvme_trace_fabrics_common(struct trace_seq *p, u8 *spc)
+ {
+ 	const char *ret = trace_seq_buffer_ptr(p);
+ 
+-	trace_seq_printf(p, "spcecific=%*ph", 24, spc);
++	trace_seq_printf(p, "specific=%*ph", 24, spc);
+ 	trace_seq_putc(p, 0);
+ 	return ret;
+ }
+diff --git a/drivers/nvme/target/trace.c b/drivers/nvme/target/trace.c
+index cdcdd14c6408..6af11d493271 100644
+--- a/drivers/nvme/target/trace.c
++++ b/drivers/nvme/target/trace.c
+@@ -146,7 +146,7 @@ static const char *nvmet_trace_fabrics_common(struct trace_seq *p, u8 *spc)
+ {
+ 	const char *ret = trace_seq_buffer_ptr(p);
+ 
+-	trace_seq_printf(p, "spcecific=%*ph", 24, spc);
++	trace_seq_printf(p, "specific=%*ph", 24, spc);
+ 	trace_seq_putc(p, 0);
+ 	return ret;
+ }
+-- 
+2.20.1
 

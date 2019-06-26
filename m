@@ -2,100 +2,268 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BFDF56BC2
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 16:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B85C56BD0
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 16:26:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726484AbfFZOWk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Jun 2019 10:22:40 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:45478 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725958AbfFZOWj (ORCPT
+        id S1727258AbfFZO06 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Jun 2019 10:26:58 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:38817 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726984AbfFZO06 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Jun 2019 10:22:39 -0400
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5QE8fEN062121;
-        Wed, 26 Jun 2019 10:22:35 -0400
-Received: from ppma01dal.us.ibm.com (83.d6.3fa9.ip4.static.sl-reverse.com [169.63.214.131])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2tc8m3dnsw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Jun 2019 10:22:35 -0400
-Received: from pps.filterd (ppma01dal.us.ibm.com [127.0.0.1])
-        by ppma01dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id x5QEKtn5016708;
-        Wed, 26 Jun 2019 14:22:34 GMT
-Received: from b03cxnp08027.gho.boulder.ibm.com (b03cxnp08027.gho.boulder.ibm.com [9.17.130.19])
-        by ppma01dal.us.ibm.com with ESMTP id 2t9by77qjp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 26 Jun 2019 14:22:34 +0000
-Received: from b03ledav001.gho.boulder.ibm.com (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
-        by b03cxnp08027.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x5QEMXeO59441604
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 26 Jun 2019 14:22:33 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 0FA796E04C;
-        Wed, 26 Jun 2019 14:22:33 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 62A316E05D;
-        Wed, 26 Jun 2019 14:22:31 +0000 (GMT)
-Received: from jarvis.ext.hansenpartnership.com (unknown [9.80.213.131])
-        by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Wed, 26 Jun 2019 14:22:31 +0000 (GMT)
-Message-ID: <1561558950.3435.2.camel@linux.ibm.com>
-Subject: Re: [PATCH] scsi: mpt3sas: clean up a sizeof()
-From:   James Bottomley <jejb@linux.ibm.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Sathya Prakash <sathya.prakash@broadcom.com>
-Cc:     Chaitra P B <chaitra.basappa@broadcom.com>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Date:   Wed, 26 Jun 2019 07:22:30 -0700
-In-Reply-To: <20190626101243.GF3242@mwanda>
-References: <20190626101243.GF3242@mwanda>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-26_07:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906260169
+        Wed, 26 Jun 2019 10:26:58 -0400
+Received: by mail-ed1-f65.google.com with SMTP id r12so3665616edo.5
+        for <kernel-janitors@vger.kernel.org>; Wed, 26 Jun 2019 07:26:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ffwll.ch; s=google;
+        h=sender:date:from:to:cc:subject:message-id:mail-followup-to
+         :references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to:user-agent;
+        bh=+Sws+y+jIZZelBzcnrJJ0ZS8ppZIP3b1lsfL6ibj+Hg=;
+        b=fuw0xmzWVsvYQ7NHziWwmctpltE/r/OGyFMtcvpw9sv8qBO+YV33n0Mc7j6fQqiqfB
+         Ja3+Ej4QXaQx/e8rB+5pVFuvF3r+CMYb/7JrhhKN0WLIG5LsbzDOWiR//ynyAmk2sI5H
+         KiJKUjzIa6YTwpMxeeH8JoevX2edcOhSC//Cs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :content-transfer-encoding:in-reply-to:user-agent;
+        bh=+Sws+y+jIZZelBzcnrJJ0ZS8ppZIP3b1lsfL6ibj+Hg=;
+        b=Z1w2b75fWJ7VejOeHvY49giyNMZrgS/h+q2seyGKNM6dsADs0Hx59P2FlodbK4we7v
+         AiG4vnVXCZe6WwmmkY/cXfNgUI2XtB5AgjNOEsAaZwLpcbkfhH6LaffPJqMVjqbbZMrp
+         7AGPhc8sP3Gcx4G/L7+WThRFartg1yeo2Z8g9CzPsgS2nYVmpJFTMteBfltQt5TB/Phm
+         KB/2m4qug0oauRbri55T0QOrAdFRQ0CYJejPhAhdK7EpITkUbhPufWKZaXAHT2uC9T32
+         +H0423RPDHkjT5kA1w/Z68N+bzuq1caPlci8BXsjV2dA84fv+W6Ar7HswHHZL7fJ4OZY
+         pSuQ==
+X-Gm-Message-State: APjAAAVUyhEaEvKvP6trijHweGFrUoKGbLB85GxvmIV+3AdY+b8FmkXm
+        ZTaE9kXs/xRpZxQYxxQTIe306g==
+X-Google-Smtp-Source: APXvYqyp08IXUCIUK4l7d2Jt1o6F4hinDBwuiLEx0381nHzALAYQWsl3wQcRoV43OyBk7eOaVJjQlw==
+X-Received: by 2002:a17:906:15d0:: with SMTP id l16mr4451217ejd.234.1561559215925;
+        Wed, 26 Jun 2019 07:26:55 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:569e:0:3106:d637:d723:e855])
+        by smtp.gmail.com with ESMTPSA id j17sm6164900ede.60.2019.06.26.07.26.54
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 26 Jun 2019 07:26:55 -0700 (PDT)
+Date:   Wed, 26 Jun 2019 16:26:52 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+Cc:     Daniel Vetter <daniel@ffwll.ch>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>
+Subject: Re: [Intel-gfx] [PATCH V4] drm/drm_vblank: Change EINVAL by the
+ correct errno
+Message-ID: <20190626142652.GL12905@phenom.ffwll.local>
+Mail-Followup-To: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        intel-gfx <intel-gfx@lists.freedesktop.org>
+References: <20190619020750.swzerehjbvx6sbk2@smtp.gmail.com>
+ <20190619074856.GJ12905@phenom.ffwll.local>
+ <20190619075059.GK12905@phenom.ffwll.local>
+ <20190626020005.vb5gmqcvkyzgcjee@smtp.gmail.com>
+ <CAKMK7uEd71XTeuZeu1Km8Vq1K1VJJbgANyaZNWm4v18Qh-OqVw@mail.gmail.com>
+ <CADKXj+5+QHr1a0aiVZ1cSiPbtZhUAjmqiTmoQHGyEhodbcA2WQ@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CADKXj+5+QHr1a0aiVZ1cSiPbtZhUAjmqiTmoQHGyEhodbcA2WQ@mail.gmail.com>
+X-Operating-System: Linux phenom 4.19.0-5-amd64 
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 2019-06-26 at 13:12 +0300, Dan Carpenter wrote:
-> This patch is just a cleanup and doesn't change run time because both
-> sizeof EVENT and SCSI are 84 bytes.  But this is clearly a cut and
-> paste
-> error and the SCSI struct was intended.
+On Wed, Jun 26, 2019 at 10:37:11AM -0300, Rodrigo Siqueira wrote:
+> On Wed, Jun 26, 2019 at 4:53 AM Daniel Vetter <daniel@ffwll.ch> wrote:
+> >
+> > On Wed, Jun 26, 2019 at 4:00 AM Rodrigo Siqueira
+> > <rodrigosiqueiramelo@gmail.com> wrote:
+> > >
+> > > On 06/19, Daniel Vetter wrote:
+> > > > On Wed, Jun 19, 2019 at 09:48:56AM +0200, Daniel Vetter wrote:
+> > > > > On Tue, Jun 18, 2019 at 11:07:50PM -0300, Rodrigo Siqueira wrote:
+> > > > > > For historical reason, the function drm_wait_vblank_ioctl always return
+> > > > > > -EINVAL if something gets wrong. This scenario limits the flexibility
+> > > > > > for the userspace make detailed verification of the problem and take
+> > > > > > some action. In particular, the validation of “if (!dev->irq_enabled)”
+> > > > > > in the drm_wait_vblank_ioctl is responsible for checking if the driver
+> > > > > > support vblank or not. If the driver does not support VBlank, the
+> > > > > > function drm_wait_vblank_ioctl returns EINVAL which does not represent
+> > > > > > the real issue; this patch changes this behavior by return EOPNOTSUPP.
+> > > > > > Additionally, some operations are unsupported by this function, and
+> > > > > > returns EINVAL; this patch also changes the return value to EOPNOTSUPP
+> > > > > > in this case. Lastly, the function drm_wait_vblank_ioctl is invoked by
+> > > > > > libdrm, which is used by many compositors; because of this, it is
+> > > > > > important to check if this change breaks any compositor. In this sense,
+> > > > > > the following projects were examined:
+> > > > > >
+> > > > > > * Drm-hwcomposer
+> > > > > > * Kwin
+> > > > > > * Sway
+> > > > > > * Wlroots
+> > > > > > * Wayland-core
+> > > > > > * Weston
+> > > > > > * Xorg (67 different drivers)
+> > > > > >
+> > > > > > For each repository the verification happened in three steps:
+> > > > > >
+> > > > > > * Update the main branch
+> > > > > > * Look for any occurrence "drmWaitVBlank" with the command:
+> > > > > >   git grep -n "drmWaitVBlank"
+> > > > > > * Look in the git history of the project with the command:
+> > > > > >   git log -SdrmWaitVBlank
+> > > > > >
+> > > > > > Finally, none of the above projects validate the use of EINVAL which
+> > > > > > make safe, at least for these projects, to change the return values.
+> > > > > >
+> > > > > > Change since V3:
+> > > > > >  - Return EINVAL for _DRM_VBLANK_SIGNAL (Daniel)
+> > > > > >
+> > > > > > Change since V2:
+> > > > > >  Daniel Vetter and Chris Wilson
+> > > > > >  - Replace ENOTTY by EOPNOTSUPP
+> > > > > >  - Return EINVAL if the parameters are wrong
+> > > > > >
+> > > > >
+> > > > > Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+> > > > >
+> > > > > Apologies for the confusion on the last time around. btw if someone tells
+> > > > > you "r-b (or a-b) with these changes", then just apply the r-b/a-b tag
+> > > > > next time around. Otherwise people will re-review the same thing over and
+> > > > > over again.
+> > > >
+> > > > btw when resending patches it's good practice to add anyone who commented
+> > > > on it (or who commented on the igt test for the same patch and other way
+> > > > round) onto the explicit Cc: list of the patch. That way it's easier for
+> > > > them to follow the patch evolution and do a quick r-b once they're happy.
+> > >
+> > > Thanks for these valuable tips.
+> > > Do you think that is a good idea to resend this patch CC's everybody? Or
+> > > is it ok if I just apply it?
+> >
+> > Hm I thought I answered that on irc ... but just today I realized that
+> > we missed 2 ioctls. There's also drm_crtc_get_sequence_ioctl and
+> > drm_crtc_queue_sequence_ioctl which have the same dev->irq_enabled
+> > check and I think should be treated the same.
 > 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/scsi/mpt3sas/mpt3sas_ctl.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Hi,
 > 
-> diff --git a/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-> b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-> index d4ecfbbe738c..06a901ed743c 100644
-> --- a/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-> +++ b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-> @@ -3280,7 +3280,7 @@ diag_trigger_scsi_store(struct device *cdev,
->  	spin_lock_irqsave(&ioc->diag_trigger_lock, flags);
->  	sz = min(sizeof(struct SL_WH_SCSI_TRIGGERS_T), count);
->  	memset(&ioc->diag_trigger_scsi, 0,
-> -	    sizeof(struct SL_WH_EVENT_TRIGGERS_T));
-> +	    sizeof(struct SL_WH_SCSI_TRIGGERS_T));
+> I reexamined all the composers described in the commit message (latest
+> versions) to check if any project use and validate the return value
+> from  drm_crtc_get_sequence_ioctl and drm_crtc_queue_sequence_ioctl. I
+> noticed that mesa and xserver use them. FWIU replace EINVAL by
+> EOPNOTSUPP is harmless for mesa project, however it is not the same
+> for xserver.
+> 
+> Take a look at line 189 and 238 of hw/xfree86/drivers/modesetting/vblank.c
+> 
+> * https://gitlab.freedesktop.org/xorg/xserver/blob/master/hw/xfree86/drivers/modesetting/vblank.c#L238
+> * https://gitlab.freedesktop.org/xorg/xserver/blob/master/hw/xfree86/drivers/modesetting/vblank.c#L189
+> 
+> A little bit below the above lines, you can see a validation like that:
+> 
+>   if (ret != -1 || (errno != ENOTTY && errno != EINVAL))
+> 
+> In other words, if we change the EINVAL by EOPNOTSUPP
+> drm_crtc_[get|queue]_sequence_ioctl we could break xserver. I noticed
+> that Keith Packard introduced these ioctls to the kernel and also to
+> the xserver, I will prepare a new version and CC Keith. Should I do
+> another thing to notify xserver developers?
 
-Please can we make this the correct pattern of
+If you want cc: xorg-devel or so, but I think they all moved to gitlab and
+the m-l is pretty dead. Cc'ing Keith should be enough.
 
-sizeof(ioc->diag_trigger_scsi)
+I looked at the code and I think we're fine. Better than fine actually,
+because if dev->irq_enabled == false then we really shouldn't use vblank
+ioctl, no matter whether the new or old version.
 
-James
+So for drivers without vblank support, all that will happen is that we
+leave ->has_queue_sequence as false and then fail a bit later on with the
+legacy ioctl. Should be all harmless.
 
+Note that the idea behind filtering out EINVAL is that if you do a
+QueueSequence on a crtc that's currently off, then it'll fail with EINVAL.
+But the ioctl still works, hence why we want to accept that. Setting
+has_queue_sequence = TRUE for the case where there's actually no vblank
+might trigger a bug somewhere later on.
+-Daniel
+
+> 
+> Thanks
+> 
+> > Can you pls resend with those addressed too? Then you can also resend
+> > with the cc's all added.
+> > -Daniel
+> >
+> > >
+> > > > If you don't do that then much bigger chances your patch gets ignored.
+> > > > -Daniel
+> > > > >
+> > > > > > Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+> > > > > > ---
+> > > > > >  drivers/gpu/drm/drm_vblank.c | 2 +-
+> > > > > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > > > >
+> > > > > > diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
+> > > > > > index 603ab105125d..bed233361614 100644
+> > > > > > --- a/drivers/gpu/drm/drm_vblank.c
+> > > > > > +++ b/drivers/gpu/drm/drm_vblank.c
+> > > > > > @@ -1582,7 +1582,7 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, void *data,
+> > > > > >   unsigned int flags, pipe, high_pipe;
+> > > > > >
+> > > > > >   if (!dev->irq_enabled)
+> > > > > > -         return -EINVAL;
+> > > > > > +         return -EOPNOTSUPP;
+> > > > > >
+> > > > > >   if (vblwait->request.type & _DRM_VBLANK_SIGNAL)
+> > > > > >           return -EINVAL;
+> > > > > > --
+> > > > > > 2.21.0
+> > > > >
+> > > > > --
+> > > > > Daniel Vetter
+> > > > > Software Engineer, Intel Corporation
+> > > > > http://blog.ffwll.ch
+> > > >
+> > > > --
+> > > > Daniel Vetter
+> > > > Software Engineer, Intel Corporation
+> > > > http://blog.ffwll.ch
+> > >
+> > > --
+> > > Rodrigo Siqueira
+> > > https://siqueira.tech
+> > > _______________________________________________
+> > > Intel-gfx mailing list
+> > > Intel-gfx@lists.freedesktop.org
+> > > https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+> >
+> >
+> >
+> > --
+> > Daniel Vetter
+> > Software Engineer, Intel Corporation
+> > +41 (0) 79 365 57 48 - http://blog.ffwll.ch
+> 
+> 
+> 
+> -- 
+> 
+> Rodrigo Siqueira
+> https://siqueira.tech
+
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch

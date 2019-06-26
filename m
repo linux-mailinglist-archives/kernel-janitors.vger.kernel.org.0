@@ -2,208 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AAEA563BB
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 09:53:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59597565CD
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 11:43:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727002AbfFZHxH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Jun 2019 03:53:07 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:38779 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725379AbfFZHxG (ORCPT
+        id S1726131AbfFZJnE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Jun 2019 05:43:04 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:53796 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725379AbfFZJnE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Jun 2019 03:53:06 -0400
-Received: by mail-ot1-f67.google.com with SMTP id d17so1601600oth.5
-        for <kernel-janitors@vger.kernel.org>; Wed, 26 Jun 2019 00:53:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=gK6sTyPGkQBsRICOrU/v96WJmqJIHrnWAm3pchdZ41g=;
-        b=dhnixGsyA2slTRiz9/IZXqyzJj+DNdLVG1xw0yaJZotw9dcpV5jLJAP5lOCnVQaycl
-         j14Xs78Ap7s+m7sNn+ZBOpLwEUsTo1zP8VjLSDWRxxQXbeo8lz8SaArHZJyMC6Uvo9gv
-         EmmGw0RuonOrOcm9M0DS3CBlhVro4tLFcehNk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=gK6sTyPGkQBsRICOrU/v96WJmqJIHrnWAm3pchdZ41g=;
-        b=XzveNK4/D6DdzFWwIIokPXDvu4sGEnDe+Higm5LEChbqo9WuKtHt1wNfVcml4rTi1+
-         FBRO7sy5SDK1hfqErPeFU+DjuzHYQNX4RKPYyXF4NDBjOup+pMsm25mTxm4uGeUXqgWR
-         p3jlyb2gxJ2FDO1fy8t+gmNeA6h6XD+XHFP4OcwCJz94dL6NFUTQtxGqXZaXyvN5VTtC
-         Sp5Mp1WsBMAVqyJEBGt7oAEHqvCYLPrHPlo4st1ADwdiI0uSDo+KPL+/Finwbpdo/wk9
-         AILjs/0sgIVhVXu5pLCloYeHtVYy/cWB8LncXMkGYO0gM8tViQn+jSVdfFkFlLPWTOgw
-         4R0g==
-X-Gm-Message-State: APjAAAV//nv6i7sDyV+GzjHmshYgoEHbKIk9Bty/C/gWD/D6l/4PmQi4
-        ht3ArLIzhcK7clYzD8W0CUzH/z16sMtN2pKub56U/A==
-X-Google-Smtp-Source: APXvYqyUs3Td+S7saRzPYCnaOjLCKshI6la+7/TjmiLqpBi3SV2mdzqTgrEw6uzagAHcAMFWXHb9UganSr1nLrAuZHo=
-X-Received: by 2002:a9d:6e8d:: with SMTP id a13mr2161271otr.303.1561535585757;
- Wed, 26 Jun 2019 00:53:05 -0700 (PDT)
+        Wed, 26 Jun 2019 05:43:04 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5Q9ceKM154906;
+        Wed, 26 Jun 2019 09:42:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
+ bh=e0/xG0ASUy2uBBmUc3dT86zM2Bmv/dOFSKkp/z9o+f0=;
+ b=Yj+WnGELfWbi3KFPbp2P2HQK6VvfnqUuZUAeYd2Yzb/r7zEb9NJVtpBPIRFBQsxdlhcH
+ yDto95da4ai5jXKSPnl2BegplFj0ESVQy26ajR+3wiSJxrqpY63ykLpvWRdpMNPfgAe2
+ VE4w+OcOJVabulO3e7nUfmUcjm+8d5Eb515EVmzZikOvfqe1Qfc9g1XH5S0WeBHdGTT/
+ mX0BHRcsdNVBwWR6EfIrGd6fZbDvowzyQDDSCSHaefnBjO5HYyjD6Da2Q/FdiEFcftpb
+ AbUPDGRsFZxKn05333t4a+tx0GMv+p1KJ/goHFtUjSeVq8WjA+4GPu07QoJVFfjaUrQ+ fw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 2t9c9ps8k5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 26 Jun 2019 09:42:58 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5Q9fVsa111026;
+        Wed, 26 Jun 2019 09:42:58 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 2t9acckwb0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 26 Jun 2019 09:42:58 +0000
+Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5Q9gvot024087;
+        Wed, 26 Jun 2019 09:42:57 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 26 Jun 2019 02:42:57 -0700
+Date:   Wed, 26 Jun 2019 12:42:51 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Shaohua Li <shli@kernel.org>, Guoqing Jiang <gqjiang@suse.com>
+Cc:     linux-raid@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] md/raid1: Fix a warning message in remove_wb()
+Message-ID: <20190626094251.GA3242@mwanda>
 MIME-Version: 1.0
-References: <20190619020750.swzerehjbvx6sbk2@smtp.gmail.com>
- <20190619074856.GJ12905@phenom.ffwll.local> <20190619075059.GK12905@phenom.ffwll.local>
- <20190626020005.vb5gmqcvkyzgcjee@smtp.gmail.com>
-In-Reply-To: <20190626020005.vb5gmqcvkyzgcjee@smtp.gmail.com>
-From:   Daniel Vetter <daniel@ffwll.ch>
-Date:   Wed, 26 Jun 2019 09:52:54 +0200
-Message-ID: <CAKMK7uEd71XTeuZeu1Km8Vq1K1VJJbgANyaZNWm4v18Qh-OqVw@mail.gmail.com>
-Subject: Re: [Intel-gfx] [PATCH V4] drm/drm_vblank: Change EINVAL by the
- correct errno
-To:     Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        intel-gfx <intel-gfx@lists.freedesktop.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9299 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906260116
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9299 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906260116
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jun 26, 2019 at 4:00 AM Rodrigo Siqueira
-<rodrigosiqueiramelo@gmail.com> wrote:
->
-> On 06/19, Daniel Vetter wrote:
-> > On Wed, Jun 19, 2019 at 09:48:56AM +0200, Daniel Vetter wrote:
-> > > On Tue, Jun 18, 2019 at 11:07:50PM -0300, Rodrigo Siqueira wrote:
-> > > > For historical reason, the function drm_wait_vblank_ioctl always re=
-turn
-> > > > -EINVAL if something gets wrong. This scenario limits the flexibili=
-ty
-> > > > for the userspace make detailed verification of the problem and tak=
-e
-> > > > some action. In particular, the validation of =E2=80=9Cif (!dev->ir=
-q_enabled)=E2=80=9D
-> > > > in the drm_wait_vblank_ioctl is responsible for checking if the dri=
-ver
-> > > > support vblank or not. If the driver does not support VBlank, the
-> > > > function drm_wait_vblank_ioctl returns EINVAL which does not repres=
-ent
-> > > > the real issue; this patch changes this behavior by return EOPNOTSU=
-PP.
-> > > > Additionally, some operations are unsupported by this function, and
-> > > > returns EINVAL; this patch also changes the return value to EOPNOTS=
-UPP
-> > > > in this case. Lastly, the function drm_wait_vblank_ioctl is invoked=
- by
-> > > > libdrm, which is used by many compositors; because of this, it is
-> > > > important to check if this change breaks any compositor. In this se=
-nse,
-> > > > the following projects were examined:
-> > > >
-> > > > * Drm-hwcomposer
-> > > > * Kwin
-> > > > * Sway
-> > > > * Wlroots
-> > > > * Wayland-core
-> > > > * Weston
-> > > > * Xorg (67 different drivers)
-> > > >
-> > > > For each repository the verification happened in three steps:
-> > > >
-> > > > * Update the main branch
-> > > > * Look for any occurrence "drmWaitVBlank" with the command:
-> > > >   git grep -n "drmWaitVBlank"
-> > > > * Look in the git history of the project with the command:
-> > > >   git log -SdrmWaitVBlank
-> > > >
-> > > > Finally, none of the above projects validate the use of EINVAL whic=
-h
-> > > > make safe, at least for these projects, to change the return values=
-.
-> > > >
-> > > > Change since V3:
-> > > >  - Return EINVAL for _DRM_VBLANK_SIGNAL (Daniel)
-> > > >
-> > > > Change since V2:
-> > > >  Daniel Vetter and Chris Wilson
-> > > >  - Replace ENOTTY by EOPNOTSUPP
-> > > >  - Return EINVAL if the parameters are wrong
-> > > >
-> > >
-> > > Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-> > >
-> > > Apologies for the confusion on the last time around. btw if someone t=
-ells
-> > > you "r-b (or a-b) with these changes", then just apply the r-b/a-b ta=
-g
-> > > next time around. Otherwise people will re-review the same thing over=
- and
-> > > over again.
-> >
-> > btw when resending patches it's good practice to add anyone who comment=
-ed
-> > on it (or who commented on the igt test for the same patch and other wa=
-y
-> > round) onto the explicit Cc: list of the patch. That way it's easier fo=
-r
-> > them to follow the patch evolution and do a quick r-b once they're happ=
-y.
->
-> Thanks for these valuable tips.
-> Do you think that is a good idea to resend this patch CC's everybody? Or
-> is it ok if I just apply it?
+The WARN_ON() macro doesn't take an error message, it just takes a
+condition.  I've changed this to use WARN(1, "...") instead.
 
-Hm I thought I answered that on irc ... but just today I realized that
-we missed 2 ioctls. There's also drm_crtc_get_sequence_ioctl and
-drm_crtc_queue_sequence_ioctl which have the same dev->irq_enabled
-check and I think should be treated the same.
+Fixes: 3e148a320979 ("md/raid1: fix potential data inconsistency issue with write behind device")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+I also considered changing it to:
 
-Can you pls resend with those addressed too? Then you can also resend
-with the cc's all added.
--Daniel
+	WARN(!found, "...");
 
->
-> > If you don't do that then much bigger chances your patch gets ignored.
-> > -Daniel
-> > >
-> > > > Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-> > > > ---
-> > > >  drivers/gpu/drm/drm_vblank.c | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vbl=
-ank.c
-> > > > index 603ab105125d..bed233361614 100644
-> > > > --- a/drivers/gpu/drm/drm_vblank.c
-> > > > +++ b/drivers/gpu/drm/drm_vblank.c
-> > > > @@ -1582,7 +1582,7 @@ int drm_wait_vblank_ioctl(struct drm_device *=
-dev, void *data,
-> > > >   unsigned int flags, pipe, high_pipe;
-> > > >
-> > > >   if (!dev->irq_enabled)
-> > > > -         return -EINVAL;
-> > > > +         return -EOPNOTSUPP;
-> > > >
-> > > >   if (vblwait->request.type & _DRM_VBLANK_SIGNAL)
-> > > >           return -EINVAL;
-> > > > --
-> > > > 2.21.0
-> > >
-> > > --
-> > > Daniel Vetter
-> > > Software Engineer, Intel Corporation
-> > > http://blog.ffwll.ch
-> >
-> > --
-> > Daniel Vetter
-> > Software Engineer, Intel Corporation
-> > http://blog.ffwll.ch
->
-> --
-> Rodrigo Siqueira
-> https://siqueira.tech
-> _______________________________________________
-> Intel-gfx mailing list
-> Intel-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/intel-gfx
+but I decided this way was more clear.  It's to have the error path
+indented an extra tab.
 
+---
+ drivers/md/raid1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
+index 3d44da663797..34e26834ad28 100644
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -96,7 +96,7 @@ static void remove_wb(struct md_rdev *rdev, sector_t lo, sector_t hi)
+ 		}
+ 
+ 	if (!found)
+-		WARN_ON("The write behind IO is not recorded\n");
++		WARN(1, "The write behind IO is not recorded\n");
+ 	spin_unlock_irqrestore(&rdev->wb_list_lock, flags);
+ 	wake_up(&rdev->wb_io_wait);
+ }
+-- 
+2.20.1
 
---=20
-Daniel Vetter
-Software Engineer, Intel Corporation
-+41 (0) 79 365 57 48 - http://blog.ffwll.ch

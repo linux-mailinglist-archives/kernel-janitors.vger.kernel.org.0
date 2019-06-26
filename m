@@ -2,64 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40A2F56F00
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 18:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39DDC57175
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 21:20:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726328AbfFZQoP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Jun 2019 12:44:15 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:55904 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726006AbfFZQoP (ORCPT
+        id S1726420AbfFZTUu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Jun 2019 15:20:50 -0400
+Received: from mail-qk1-f195.google.com ([209.85.222.195]:45658 "EHLO
+        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726227AbfFZTUt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Jun 2019 12:44:15 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hgB1n-00016o-Ah; Wed, 26 Jun 2019 16:44:11 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Saeed Mahameed <saeedm@mellanox.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-rdma@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] net/mlx5: remove redundant assignment to ret
-Date:   Wed, 26 Jun 2019 17:44:11 +0100
-Message-Id: <20190626164411.20403-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Wed, 26 Jun 2019 15:20:49 -0400
+Received: by mail-qk1-f195.google.com with SMTP id s22so2625813qkj.12;
+        Wed, 26 Jun 2019 12:20:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lkGzhJZUrTj0+tmgK0Jf0WPXCaJE0CvyVAstdFUye6Y=;
+        b=fO0WnKAMPAv8VSrgkto9CPT6w4KhA7FqFFxonHN0eY6MqmF7RX6/DpKmWM7xgTj4J5
+         3wRHDbvH+CSGzPq0isjpvBjNYQWu2E7NIUhVC0t0qlkApA6myrcM3ZqT20Knb95Dasic
+         RhARbyDUVFrjypENQUPnzuGVu6vag5LtO0voJ56RrBMSAymrMPesrwm8LUz3eIGS5BVq
+         gnRH9Nha6w04nsyGxhSHJo9F5XMO4aiTmlDi2053nQ6b+7NfMWdBUOKN6Gw/r2PyT9cX
+         s+ZrmfNe/Gqi0wn3TMdKWuDXaUrBbRmXb5IPI4DJkEkEbnoHjSw/x5yH6X2841cx4bp3
+         fXdA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lkGzhJZUrTj0+tmgK0Jf0WPXCaJE0CvyVAstdFUye6Y=;
+        b=RBM1UP7TsPdhPX9myel9z1xKCaKkXBFjjgM9jnw0nZPC03VK99OYhVnNUG7Fm+aVQq
+         beRtU6ZZMjiLsMurAVQBLu0u/94TzUSxWgIM9nuB4b6NwXr53D10Ve5ATBA+2XO9qtO2
+         VFXi/BbmMy7vG46KdrtmwhLVuvX+Nxi3qbIbgY7kw8sia9xXMb77FeTwtm2CH+uSDsgd
+         Sm3OCkkt6bo17KPZk7+gucokcCyDVe8y3/GOabq96TdUIQSAprpkmUqDf5QvRNLnM8tx
+         3Y95ZTcLTd5poIVRPXI7b1zqbUp0cgM9GQbWkJby6HXMdqwp6umjVNEizamO6w4KpSfE
+         cfJg==
+X-Gm-Message-State: APjAAAVpWz9WEb9B9SRi7DSlyyVRUcCRz262lJB/q9MhbZxv5nyrf/rT
+        KVG8tyRCOPrVcj0WqITUy9m8nr5DT1CI3WBFIBHktw==
+X-Google-Smtp-Source: APXvYqwjrYshLpMOhKGVzHfqqsPisVSXhrIVM8zGkLp0TbD1AmjvzOERC2n6CuTc8lyuLWegXnjlycNeNk3Eo5T1HrU=
+X-Received: by 2002:a37:4d82:: with SMTP id a124mr5323292qkb.72.1561576848807;
+ Wed, 26 Jun 2019 12:20:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20190626094251.GA3242@mwanda>
+In-Reply-To: <20190626094251.GA3242@mwanda>
+From:   Song Liu <liu.song.a23@gmail.com>
+Date:   Wed, 26 Jun 2019 12:20:37 -0700
+Message-ID: <CAPhsuW7p14K=6Q7YSxFqKY7j18kyTbP6LwQPt4Ckfx5wZ578pA@mail.gmail.com>
+Subject: Re: [PATCH] md/raid1: Fix a warning message in remove_wb()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Shaohua Li <shli@kernel.org>, Guoqing Jiang <gqjiang@suse.com>,
+        linux-raid <linux-raid@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Wed, Jun 26, 2019 at 2:44 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> The WARN_ON() macro doesn't take an error message, it just takes a
+> condition.  I've changed this to use WARN(1, "...") instead.
+>
+> Fixes: 3e148a320979 ("md/raid1: fix potential data inconsistency issue with write behind device")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Variable ret is being initialized with a value that is never read and
-ret is being re-assigned later on.  The initialization is redundant
-and can be removed.
+Applied. Thanks for the fix.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-index 072b56fda27e..dd47c6d03dad 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
-@@ -1477,7 +1477,7 @@ static const struct pci_error_handlers mlx5_err_handler = {
- static int mlx5_try_fast_unload(struct mlx5_core_dev *dev)
- {
- 	bool fast_teardown = false, force_teardown = false;
--	int ret = 1;
-+	int ret;
- 
- 	fast_teardown = MLX5_CAP_GEN(dev, fast_teardown);
- 	force_teardown = MLX5_CAP_GEN(dev, force_teardown);
--- 
-2.20.1
-
+Song

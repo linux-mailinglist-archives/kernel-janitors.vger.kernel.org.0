@@ -2,82 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4732B56A5C
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 15:26:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1647456A5A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 15:24:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726723AbfFZN03 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Jun 2019 09:26:29 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:52968 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726157AbfFZN03 (ORCPT
+        id S1726723AbfFZNYd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Jun 2019 09:24:33 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:49060 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726157AbfFZNYd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Jun 2019 09:26:29 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5QDOI5i040624;
-        Wed, 26 Jun 2019 13:25:57 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=Jc6Kfrqo1obGKGX3hptI4aB5JIAaOzHxGxab76hqajY=;
- b=LrUnKJ1MjOtfc/B1JoNi+K6yg7FYvyTYxDiBN5Y644tafzbpJeUoz/5ikBTb2eyTqDwI
- 5iSXrYGFZ6LhH35+9v3IUc+DT4xTWeTHgp6dZK7aQ8uV9OfWljf/q3Vz97ND6rOSWulv
- BaPCVEbu4BSvdUYM91GbNQfBGywSeuK1WC8+VlDEXs9hYg4Wt0HTQhSEufC4M+AQwZch
- YXfwNSq30U2BXkSByfQm9/ZEeR4uuu/xY2Sj+f37p8DZuVpSPHcTJfnLx85Xs3fyLNj1
- FrgJ8kIadtNbCGJ3SqiP4VUUrpNI8te1tOwy4XOQyWQH7yJ6qYk8290nOvIjOAVPhqT2 zQ== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 2t9cyqj8n4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 26 Jun 2019 13:25:56 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5QDNRmo136851;
-        Wed, 26 Jun 2019 13:23:56 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 2tat7cttk2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 26 Jun 2019 13:23:56 +0000
-Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5QDNmTr019550;
-        Wed, 26 Jun 2019 13:23:49 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 26 Jun 2019 06:23:48 -0700
-Date:   Wed, 26 Jun 2019 16:23:40 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Dan Williams <dcbw@redhat.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        Philip Rakity <prakity@yahoo.com>,
-        Lubomir Rintel <lkundrak@v3.sk>,
-        kernel-janitors@vger.kernel.org, linux-wireless@vger.kernel.org,
-        Allison Randal <allison@lohutok.net>,
-        libertas-dev@lists.infradead.org
-Subject: Re: [PATCH] libertas: Fix a double free in if_spi_c2h_data()
-Message-ID: <20190626132340.GE28859@kadam>
-References: <20190626100926.GD3242@mwanda>
- <be491ab35ba46111a1c90cc12b6d5ff6ea3f57e8.camel@redhat.com>
+        Wed, 26 Jun 2019 09:24:33 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hg7uW-0008DR-43; Wed, 26 Jun 2019 13:24:28 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Nikola Cornij <nikola.cornij@amd.com>,
+        Wenjing Liu <Wenjing.Liu@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next[ drm/amd/display: fix a couple of spelling mistakes
+Date:   Wed, 26 Jun 2019 14:24:27 +0100
+Message-Id: <20190626132427.12615-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <be491ab35ba46111a1c90cc12b6d5ff6ea3f57e8.camel@redhat.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9299 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=563
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906260160
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9299 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=615 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906260160
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Yeah.  That looks nicer.  Could you send it as a proper patch and give
-me Reported-by credit?
+From: Colin Ian King <colin.king@canonical.com>
 
-regards,
-dan carpenter
+There are a couple of spelling mistakes in dm_error messages and
+a comment. Fix these.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dsc.c | 2 +-
+ drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c      | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dsc.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dsc.c
+index be49fc7f4abe..ffd0014ec3b5 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dsc.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dsc.c
+@@ -126,7 +126,7 @@ static void dsc2_get_enc_caps(struct dsc_enc_caps *dsc_enc_caps, int pixel_clock
+ 
+ 	/* Maximum total throughput with all the slices combined. This is different from how DP spec specifies it.
+ 	 * Our decoder's total throughput in Pix/s is equal to DISPCLK. This is then shared between slices.
+-	 * The value below is the absolute maximum value. The actual througput may be lower, but it'll always
++	 * The value below is the absolute maximum value. The actual throughput may be lower, but it'll always
+ 	 * be sufficient to process the input pixel rate fed into a single DSC engine.
+ 	 */
+ 	dsc_enc_caps->max_total_throughput_mps = DCN20_MAX_DISPLAY_CLOCK_Mhz;
+diff --git a/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c b/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
+index 77e7a0f8a527..ef5f84a144c3 100644
+--- a/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
++++ b/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
+@@ -47,7 +47,7 @@ static bool dsc_buff_block_size_from_dpcd(int dpcd_buff_block_size, int *buff_bl
+ 		*buff_block_size = 64 * 1024;
+ 		break;
+ 	default: {
+-			dm_error("%s: DPCD DSC buffer size not recoginzed.\n", __func__);
++			dm_error("%s: DPCD DSC buffer size not recognized.\n", __func__);
+ 			return false;
+ 		}
+ 	}
+@@ -63,7 +63,7 @@ static bool dsc_line_buff_depth_from_dpcd(int dpcd_line_buff_bit_depth, int *lin
+ 	else if (dpcd_line_buff_bit_depth == 8)
+ 		*line_buff_bit_depth = 8;
+ 	else {
+-		dm_error("%s: DPCD DSC buffer depth not recoginzed.\n", __func__);
++		dm_error("%s: DPCD DSC buffer depth not recognized.\n", __func__);
+ 		return false;
+ 	}
+ 
+@@ -123,7 +123,7 @@ static bool dsc_throughput_from_dpcd(int dpcd_throughput, int *throughput)
+ 		*throughput = 1000;
+ 		break;
+ 	default: {
+-			dm_error("%s: DPCD DSC througput mode not recoginzed.\n", __func__);
++			dm_error("%s: DPCD DSC throughput mode not recognized.\n", __func__);
+ 			return false;
+ 		}
+ 	}
+@@ -152,7 +152,7 @@ static bool dsc_bpp_increment_div_from_dpcd(int bpp_increment_dpcd, uint32_t *bp
+ 		*bpp_increment_div = 1;
+ 		break;
+ 	default: {
+-		dm_error("%s: DPCD DSC bits-per-pixel increment not recoginzed.\n", __func__);
++		dm_error("%s: DPCD DSC bits-per-pixel increment not recognized.\n", __func__);
+ 		return false;
+ 	}
+ 	}
+-- 
+2.20.1
 

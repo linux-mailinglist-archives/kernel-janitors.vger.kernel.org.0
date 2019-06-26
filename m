@@ -2,70 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39DDC57175
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 21:20:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7DB157255
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 22:10:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726420AbfFZTUu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Jun 2019 15:20:50 -0400
-Received: from mail-qk1-f195.google.com ([209.85.222.195]:45658 "EHLO
-        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726227AbfFZTUt (ORCPT
+        id S1726439AbfFZUKo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Jun 2019 16:10:44 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:38659 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726227AbfFZUKo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Jun 2019 15:20:49 -0400
-Received: by mail-qk1-f195.google.com with SMTP id s22so2625813qkj.12;
-        Wed, 26 Jun 2019 12:20:49 -0700 (PDT)
+        Wed, 26 Jun 2019 16:10:44 -0400
+Received: by mail-pf1-f194.google.com with SMTP id y15so60963pfn.5;
+        Wed, 26 Jun 2019 13:10:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lkGzhJZUrTj0+tmgK0Jf0WPXCaJE0CvyVAstdFUye6Y=;
-        b=fO0WnKAMPAv8VSrgkto9CPT6w4KhA7FqFFxonHN0eY6MqmF7RX6/DpKmWM7xgTj4J5
-         3wRHDbvH+CSGzPq0isjpvBjNYQWu2E7NIUhVC0t0qlkApA6myrcM3ZqT20Knb95Dasic
-         RhARbyDUVFrjypENQUPnzuGVu6vag5LtO0voJ56RrBMSAymrMPesrwm8LUz3eIGS5BVq
-         gnRH9Nha6w04nsyGxhSHJo9F5XMO4aiTmlDi2053nQ6b+7NfMWdBUOKN6Gw/r2PyT9cX
-         s+ZrmfNe/Gqi0wn3TMdKWuDXaUrBbRmXb5IPI4DJkEkEbnoHjSw/x5yH6X2841cx4bp3
-         fXdA==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=fr7i/ENp7aGYYEF02skQlZfDr8p6MJ5Q3iZjfvmtRP4=;
+        b=ksFc/o6T+8+Qstfi+VZY39IJmvUmwK0Cbp/zhCtIQ5URgsW1CXdEXIR0rWsZ/5NNJX
+         iEJphcITi+swWG55ImBd2UMi5R1BL9NYQ+GaI/vDvUSfgSmKPmaHEXIGM5XCcVySc+m/
+         louqizTFTFaWODzkwtsSSa5DXpjUMmwMcR3BgWhDchBghzB39Ynr6FymVJ79kDAntlW/
+         Bk3dIu3+k+uf81+Whsa9Se9z97qlbwuMUo5AxORE7mO0KFDxWz1Z4fodVbDRnTGfFkKA
+         4IxPTcHI1wI1BFjuiWcUFn2JNend7VniCds6894A7VbSLGNWZ6xkwhQm0HnwcouPhr4X
+         lGMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lkGzhJZUrTj0+tmgK0Jf0WPXCaJE0CvyVAstdFUye6Y=;
-        b=RBM1UP7TsPdhPX9myel9z1xKCaKkXBFjjgM9jnw0nZPC03VK99OYhVnNUG7Fm+aVQq
-         beRtU6ZZMjiLsMurAVQBLu0u/94TzUSxWgIM9nuB4b6NwXr53D10Ve5ATBA+2XO9qtO2
-         VFXi/BbmMy7vG46KdrtmwhLVuvX+Nxi3qbIbgY7kw8sia9xXMb77FeTwtm2CH+uSDsgd
-         Sm3OCkkt6bo17KPZk7+gucokcCyDVe8y3/GOabq96TdUIQSAprpkmUqDf5QvRNLnM8tx
-         3Y95ZTcLTd5poIVRPXI7b1zqbUp0cgM9GQbWkJby6HXMdqwp6umjVNEizamO6w4KpSfE
-         cfJg==
-X-Gm-Message-State: APjAAAVpWz9WEb9B9SRi7DSlyyVRUcCRz262lJB/q9MhbZxv5nyrf/rT
-        KVG8tyRCOPrVcj0WqITUy9m8nr5DT1CI3WBFIBHktw==
-X-Google-Smtp-Source: APXvYqwjrYshLpMOhKGVzHfqqsPisVSXhrIVM8zGkLp0TbD1AmjvzOERC2n6CuTc8lyuLWegXnjlycNeNk3Eo5T1HrU=
-X-Received: by 2002:a37:4d82:: with SMTP id a124mr5323292qkb.72.1561576848807;
- Wed, 26 Jun 2019 12:20:48 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=fr7i/ENp7aGYYEF02skQlZfDr8p6MJ5Q3iZjfvmtRP4=;
+        b=Y5p8jme7grFtQ5f26pvSsi0CESKz4UuXqpNSernz42fFyrCnwyfw/GevUtx3ZXROn5
+         BVzxgRbrFI0MIb4Sp1saEPYp/CZacC7NMY6Y79/bp5ODJS1cijY3CaI5ltKIDw0SuqqS
+         qDwBnyO4kpNCiMufaVKbZ0e7TdvOklaBb3DA3SlER+3xSlzs6swS30L+3fi8Oi+Ja7er
+         Y0xc9JZco+TdszkcVvldqwXzIzDk8zxS5RfQGRBc04cLPOzBfBtPm5mRxCkBgPK9GSeS
+         yksS2NCSo7loxibE4WRrDWKkwsnC433KwW0OorqiztGtAI+MvJOXJBR+diItIGdLrpnZ
+         svsg==
+X-Gm-Message-State: APjAAAWKjyAI6f4qEV81izhoi1ytmoLAzWTXUl38rRIrxlrgpRuZ6G1f
+        r0+AhxTpOdka659jW1rkp48=
+X-Google-Smtp-Source: APXvYqy+8INAblpkK4j8kdIICVT4WVXnbuGleyKIkOyO4NQmLhPWsTX94aJyxQR0X1SfCpecwrZ5qg==
+X-Received: by 2002:a65:5144:: with SMTP id g4mr4658877pgq.116.1561579843302;
+        Wed, 26 Jun 2019 13:10:43 -0700 (PDT)
+Received: from localhost ([123.213.206.190])
+        by smtp.gmail.com with ESMTPSA id y12sm5054pgi.10.2019.06.26.13.10.41
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 26 Jun 2019 13:10:42 -0700 (PDT)
+Date:   Thu, 27 Jun 2019 05:10:39 +0900
+From:   Minwoo Im <minwoo.im.dev@gmail.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        linux-nvme@lists.infradead.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Minwoo Im <minwoo.im.dev@gmail.com>
+Subject: Re: [PATCH][next] nvme-trace: fix spelling mistake "spcecific" ->
+ "specific"
+Message-ID: <20190626201039.GA4934@minwooim-desktop>
+References: <20190626124323.5925-1-colin.king@canonical.com>
 MIME-Version: 1.0
-References: <20190626094251.GA3242@mwanda>
-In-Reply-To: <20190626094251.GA3242@mwanda>
-From:   Song Liu <liu.song.a23@gmail.com>
-Date:   Wed, 26 Jun 2019 12:20:37 -0700
-Message-ID: <CAPhsuW7p14K=6Q7YSxFqKY7j18kyTbP6LwQPt4Ckfx5wZ578pA@mail.gmail.com>
-Subject: Re: [PATCH] md/raid1: Fix a warning message in remove_wb()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Shaohua Li <shli@kernel.org>, Guoqing Jiang <gqjiang@suse.com>,
-        linux-raid <linux-raid@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190626124323.5925-1-colin.king@canonical.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jun 26, 2019 at 2:44 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> The WARN_ON() macro doesn't take an error message, it just takes a
-> condition.  I've changed this to use WARN(1, "...") instead.
->
-> Fixes: 3e148a320979 ("md/raid1: fix potential data inconsistency issue with write behind device")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+On 19-06-26 13:43:23, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There are two spelling mistakes in trace_seq_printf messages, fix these.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/nvme/host/trace.c   | 2 +-
+>  drivers/nvme/target/trace.c | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/nvme/host/trace.c b/drivers/nvme/host/trace.c
+> index f01ad0fd60bb..6980ab827233 100644
+> --- a/drivers/nvme/host/trace.c
+> +++ b/drivers/nvme/host/trace.c
+> @@ -178,7 +178,7 @@ static const char *nvme_trace_fabrics_common(struct trace_seq *p, u8 *spc)
+>  {
+>  	const char *ret = trace_seq_buffer_ptr(p);
+>  
+> -	trace_seq_printf(p, "spcecific=%*ph", 24, spc);
+> +	trace_seq_printf(p, "specific=%*ph", 24, spc);
+>  	trace_seq_putc(p, 0);
+>  	return ret;
+>  }
+> diff --git a/drivers/nvme/target/trace.c b/drivers/nvme/target/trace.c
+> index cdcdd14c6408..6af11d493271 100644
+> --- a/drivers/nvme/target/trace.c
+> +++ b/drivers/nvme/target/trace.c
+> @@ -146,7 +146,7 @@ static const char *nvmet_trace_fabrics_common(struct trace_seq *p, u8 *spc)
+>  {
+>  	const char *ret = trace_seq_buffer_ptr(p);
+>  
+> -	trace_seq_printf(p, "spcecific=%*ph", 24, spc);
+> +	trace_seq_printf(p, "specific=%*ph", 24, spc);
+>  	trace_seq_putc(p, 0);
+>  	return ret;
+>  }
+> -- 
+> 2.20.1
+> 
+> 
+> _______________________________________________
+> Linux-nvme mailing list
+> Linux-nvme@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-nvme
 
-Applied. Thanks for the fix.
+*facepalm*..
 
-Song
+Thanks for fixing this, Colin!
+
+Reviewed-by: Minwoo Im <minwoo.im.dev@gmail.com>

@@ -2,54 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A508A56E42
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 18:02:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C985956EE2
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 18:35:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726432AbfFZQCZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Jun 2019 12:02:25 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:35084 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726157AbfFZQCZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Jun 2019 12:02:25 -0400
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 62B853087930;
-        Wed, 26 Jun 2019 16:02:22 +0000 (UTC)
-Received: from ovpn-112-45.rdu2.redhat.com (ovpn-112-45.rdu2.redhat.com [10.10.112.45])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 5F78D5D9C6;
-        Wed, 26 Jun 2019 16:02:20 +0000 (UTC)
-Message-ID: <e679c9f99d6952f82924c71f036e4a196d0e72d4.camel@redhat.com>
-Subject: Re: [PATCH] libertas: Fix a double free in if_spi_c2h_data()
-From:   Dan Williams <dcbw@redhat.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Philip Rakity <prakity@yahoo.com>,
-        libertas-dev@lists.infradead.org, kernel-janitors@vger.kernel.org,
-        linux-wireless@vger.kernel.org, Lubomir Rintel <lkundrak@v3.sk>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Allison Randal <allison@lohutok.net>
-Date:   Wed, 26 Jun 2019 11:02:19 -0500
-In-Reply-To: <20190626132340.GE28859@kadam>
-References: <20190626100926.GD3242@mwanda>
-         <be491ab35ba46111a1c90cc12b6d5ff6ea3f57e8.camel@redhat.com>
-         <20190626132340.GE28859@kadam>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        id S1726381AbfFZQfW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Jun 2019 12:35:22 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:55722 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726227AbfFZQfW (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 26 Jun 2019 12:35:22 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hgAtC-0000Zj-0h; Wed, 26 Jun 2019 16:35:18 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        linux-usb@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] usb: gadget: udc: renesas_usb3: remove redundant assignment to ret
+Date:   Wed, 26 Jun 2019 17:35:17 +0100
+Message-Id: <20190626163517.18530-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.45]); Wed, 26 Jun 2019 16:02:25 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 2019-06-26 at 16:23 +0300, Dan Carpenter wrote:
-> Yeah.  That looks nicer.  Could you send it as a proper patch and
-> give
-> me Reported-by credit?
+From: Colin Ian King <colin.king@canonical.com>
 
-Will do.
+Variable ret is being initialized with a value that is never read and
+ret is being re-assigned immediately after the initialization in both
+paths of an if statement. This is redundant and can be removed.
 
-Dan
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/usb/gadget/udc/renesas_usb3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/usb/gadget/udc/renesas_usb3.c b/drivers/usb/gadget/udc/renesas_usb3.c
+index 5a960fce31c5..87062d22134d 100644
+--- a/drivers/usb/gadget/udc/renesas_usb3.c
++++ b/drivers/usb/gadget/udc/renesas_usb3.c
+@@ -1168,7 +1168,7 @@ static void usb3_set_status_stage(struct renesas_usb3_ep *usb3_ep,
+ static void usb3_p0_xfer(struct renesas_usb3_ep *usb3_ep,
+ 			 struct renesas_usb3_request *usb3_req)
+ {
+-	int ret = -EAGAIN;
++	int ret;
+ 
+ 	if (usb3_ep->dir_in)
+ 		ret = usb3_write_pipe(usb3_ep, usb3_req, USB3_P0_WRITE);
+-- 
+2.20.1
 

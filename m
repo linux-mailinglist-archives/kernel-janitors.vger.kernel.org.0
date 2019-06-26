@@ -2,110 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 60A6C56C5D
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 16:40:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8353556CAD
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 16:48:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728116AbfFZOkS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Jun 2019 10:40:18 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:51900 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727741AbfFZOkS (ORCPT
+        id S1728399AbfFZOsQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Jun 2019 10:48:16 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:52400 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728373AbfFZOrv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Jun 2019 10:40:18 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5QEXfix096090;
-        Wed, 26 Jun 2019 14:38:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=k+RXU8fNAkbJZnvKvN9Zh+NmpwwImWtKUca0Q9GKf8Q=;
- b=3qcctqZPtNM32TXcEgCWx3kTgYckI/lMTHWnkx0bHZ+wGkiGWC0lghZ0ZKwTw45fSsHR
- YcLCmQKXhYAz68tOg5Kr2xRiT0BSYCA583n9tbNayD3dI/kkhqEulDbBkwOqKibqprjK
- Frle1Hit2s6nsc6QIYvKvn78O15iD5OsR8TCW9EBEXipa3Nt+hEeN3cJr9BbEZY17o5K
- Y1LjfEy2aDPGE4hWO/X7PWX0F2eoDHZLs1iXYCTA8kwgiqI2mNGutXWh4eNuo2/w1oPG
- c8svXVrmjbTGaJktVAx3dDxR0SLyugcIi+s/ey4khcYHa5NVfhVFH2q2Dcin8lPfmzyL DQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 2t9brtat0q-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 26 Jun 2019 14:38:10 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5QEbimf015777;
-        Wed, 26 Jun 2019 14:38:09 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 2t9accqww1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 26 Jun 2019 14:38:08 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5QEc7Lp027752;
-        Wed, 26 Jun 2019 14:38:07 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 26 Jun 2019 07:38:06 -0700
-Date:   Wed, 26 Jun 2019 17:37:55 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     James Bottomley <jejb@linux.ibm.com>
-Cc:     Sathya Prakash <sathya.prakash@broadcom.com>,
-        Chaitra P B <chaitra.basappa@broadcom.com>,
-        Suganath Prabu Subramani 
-        <suganath-prabu.subramani@broadcom.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] scsi: mpt3sas: clean up a sizeof()
-Message-ID: <20190626143755.GF28859@kadam>
-References: <20190626101243.GF3242@mwanda>
- <1561558950.3435.2.camel@linux.ibm.com>
+        Wed, 26 Jun 2019 10:47:51 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hg9D8-0007AG-Ck; Wed, 26 Jun 2019 14:47:46 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Hans Verkuil <hverkuil@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next][V2] media: vivid: fix potential integer overflow on left shift
+Date:   Wed, 26 Jun 2019 15:47:46 +0100
+Message-Id: <20190626144746.27607-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1561558950.3435.2.camel@linux.ibm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9299 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906260173
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9299 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906260172
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jun 26, 2019 at 07:22:30AM -0700, James Bottomley wrote:
-> On Wed, 2019-06-26 at 13:12 +0300, Dan Carpenter wrote:
-> > This patch is just a cleanup and doesn't change run time because both
-> > sizeof EVENT and SCSI are 84 bytes.  But this is clearly a cut and
-> > paste
-> > error and the SCSI struct was intended.
-> > 
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> >  drivers/scsi/mpt3sas/mpt3sas_ctl.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-> > b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-> > index d4ecfbbe738c..06a901ed743c 100644
-> > --- a/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-> > +++ b/drivers/scsi/mpt3sas/mpt3sas_ctl.c
-> > @@ -3280,7 +3280,7 @@ diag_trigger_scsi_store(struct device *cdev,
-> >  	spin_lock_irqsave(&ioc->diag_trigger_lock, flags);
-> >  	sz = min(sizeof(struct SL_WH_SCSI_TRIGGERS_T), count);
-> >  	memset(&ioc->diag_trigger_scsi, 0,
-> > -	    sizeof(struct SL_WH_EVENT_TRIGGERS_T));
-> > +	    sizeof(struct SL_WH_SCSI_TRIGGERS_T));
-> 
-> Please can we make this the correct pattern of
-> 
-> sizeof(ioc->diag_trigger_scsi)
+From: Colin Ian King <colin.king@canonical.com>
 
-Sure.  I'll resend.
+There is a potential integer overflow when int 2 is left shifted
+as this is evaluated using 32 bit arithmetic but is being used in
+a context that expects an expression of type s64.  Fix this by
+shifting 2ULL to avoid a 32 bit overflow.
 
-regards,
-dan carpenter
+Addresses-Coverity: ("Unintentional integer overflow")
+Fixes: 8a99e9faa131 ("media: vivid: add HDMI (dis)connect RX emulation")
+Fixes: 79a792dafac6 ("media: vivid: add HDMI (dis)connect TX emulation")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+V2: use intermediate variables for the shifted expression to make code
+    a bit more readable.
+---
+ drivers/media/platform/vivid/vivid-ctrls.c | 24 +++++++++++-----------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/media/platform/vivid/vivid-ctrls.c b/drivers/media/platform/vivid/vivid-ctrls.c
+index 3e916c8befb7..df1598e81c7a 100644
+--- a/drivers/media/platform/vivid/vivid-ctrls.c
++++ b/drivers/media/platform/vivid/vivid-ctrls.c
+@@ -1613,6 +1613,8 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
+ 	}
+ 
+ 	if (dev->num_hdmi_inputs) {
++		s64 hdmi_input = (2ULL << (dev->num_hdmi_inputs - 1)) - 1;
++
+ 		dev->ctrl_dv_timings_signal_mode = v4l2_ctrl_new_custom(hdl_vid_cap,
+ 					&vivid_ctrl_dv_timings_signal_mode, NULL);
+ 
+@@ -1633,12 +1635,13 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
+ 			V4L2_CID_DV_RX_RGB_RANGE, V4L2_DV_RGB_RANGE_FULL,
+ 			0, V4L2_DV_RGB_RANGE_AUTO);
+ 		dev->ctrl_rx_power_present = v4l2_ctrl_new_std(hdl_vid_cap,
+-			NULL, V4L2_CID_DV_RX_POWER_PRESENT, 0,
+-			(2 << (dev->num_hdmi_inputs - 1)) - 1, 0,
+-			(2 << (dev->num_hdmi_inputs - 1)) - 1);
++			NULL, V4L2_CID_DV_RX_POWER_PRESENT, 0, hdmi_input,
++			0, hdmi_input);
+ 
+ 	}
+ 	if (dev->num_hdmi_outputs) {
++		s64 hdmi_output = (2ULL << (dev->num_hdmi_outputs - 1)) - 1;
++
+ 		/*
+ 		 * We aren't doing anything with this at the moment, but
+ 		 * HDMI outputs typically have this controls.
+@@ -1652,17 +1655,14 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
+ 		dev->ctrl_display_present = v4l2_ctrl_new_custom(hdl_vid_out,
+ 			&vivid_ctrl_display_present, NULL);
+ 		dev->ctrl_tx_hotplug = v4l2_ctrl_new_std(hdl_vid_out,
+-			NULL, V4L2_CID_DV_TX_HOTPLUG, 0,
+-			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
+-			(2 << (dev->num_hdmi_outputs - 1)) - 1);
++			NULL, V4L2_CID_DV_TX_HOTPLUG, 0, hdmi_output,
++			0, hdmi_output);
+ 		dev->ctrl_tx_rxsense = v4l2_ctrl_new_std(hdl_vid_out,
+-			NULL, V4L2_CID_DV_TX_RXSENSE, 0,
+-			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
+-			(2 << (dev->num_hdmi_outputs - 1)) - 1);
++			NULL, V4L2_CID_DV_TX_RXSENSE, 0, hdmi_output,
++			0, hdmi_output);
+ 		dev->ctrl_tx_edid_present = v4l2_ctrl_new_std(hdl_vid_out,
+-			NULL, V4L2_CID_DV_TX_EDID_PRESENT, 0,
+-			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
+-			(2 << (dev->num_hdmi_outputs - 1)) - 1);
++			NULL, V4L2_CID_DV_TX_EDID_PRESENT, 0, hdmi_output,
++			0, hdmi_output);
+ 	}
+ 	if ((dev->has_vid_cap && dev->has_vid_out) ||
+ 	    (dev->has_vbi_cap && dev->has_vbi_out))
+-- 
+2.20.1
 

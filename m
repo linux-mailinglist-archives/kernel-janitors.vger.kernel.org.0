@@ -2,119 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E7DB157255
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 22:10:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC05357449
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 00:26:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726439AbfFZUKo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Jun 2019 16:10:44 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:38659 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726227AbfFZUKo (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Jun 2019 16:10:44 -0400
-Received: by mail-pf1-f194.google.com with SMTP id y15so60963pfn.5;
-        Wed, 26 Jun 2019 13:10:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=fr7i/ENp7aGYYEF02skQlZfDr8p6MJ5Q3iZjfvmtRP4=;
-        b=ksFc/o6T+8+Qstfi+VZY39IJmvUmwK0Cbp/zhCtIQ5URgsW1CXdEXIR0rWsZ/5NNJX
-         iEJphcITi+swWG55ImBd2UMi5R1BL9NYQ+GaI/vDvUSfgSmKPmaHEXIGM5XCcVySc+m/
-         louqizTFTFaWODzkwtsSSa5DXpjUMmwMcR3BgWhDchBghzB39Ynr6FymVJ79kDAntlW/
-         Bk3dIu3+k+uf81+Whsa9Se9z97qlbwuMUo5AxORE7mO0KFDxWz1Z4fodVbDRnTGfFkKA
-         4IxPTcHI1wI1BFjuiWcUFn2JNend7VniCds6894A7VbSLGNWZ6xkwhQm0HnwcouPhr4X
-         lGMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=fr7i/ENp7aGYYEF02skQlZfDr8p6MJ5Q3iZjfvmtRP4=;
-        b=Y5p8jme7grFtQ5f26pvSsi0CESKz4UuXqpNSernz42fFyrCnwyfw/GevUtx3ZXROn5
-         BVzxgRbrFI0MIb4Sp1saEPYp/CZacC7NMY6Y79/bp5ODJS1cijY3CaI5ltKIDw0SuqqS
-         qDwBnyO4kpNCiMufaVKbZ0e7TdvOklaBb3DA3SlER+3xSlzs6swS30L+3fi8Oi+Ja7er
-         Y0xc9JZco+TdszkcVvldqwXzIzDk8zxS5RfQGRBc04cLPOzBfBtPm5mRxCkBgPK9GSeS
-         yksS2NCSo7loxibE4WRrDWKkwsnC433KwW0OorqiztGtAI+MvJOXJBR+diItIGdLrpnZ
-         svsg==
-X-Gm-Message-State: APjAAAWKjyAI6f4qEV81izhoi1ytmoLAzWTXUl38rRIrxlrgpRuZ6G1f
-        r0+AhxTpOdka659jW1rkp48=
-X-Google-Smtp-Source: APXvYqy+8INAblpkK4j8kdIICVT4WVXnbuGleyKIkOyO4NQmLhPWsTX94aJyxQR0X1SfCpecwrZ5qg==
-X-Received: by 2002:a65:5144:: with SMTP id g4mr4658877pgq.116.1561579843302;
-        Wed, 26 Jun 2019 13:10:43 -0700 (PDT)
-Received: from localhost ([123.213.206.190])
-        by smtp.gmail.com with ESMTPSA id y12sm5054pgi.10.2019.06.26.13.10.41
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 26 Jun 2019 13:10:42 -0700 (PDT)
-Date:   Thu, 27 Jun 2019 05:10:39 +0900
-From:   Minwoo Im <minwoo.im.dev@gmail.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        linux-nvme@lists.infradead.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Minwoo Im <minwoo.im.dev@gmail.com>
-Subject: Re: [PATCH][next] nvme-trace: fix spelling mistake "spcecific" ->
- "specific"
-Message-ID: <20190626201039.GA4934@minwooim-desktop>
-References: <20190626124323.5925-1-colin.king@canonical.com>
+        id S1726591AbfFZW0O convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Jun 2019 18:26:14 -0400
+Received: from mga01.intel.com ([192.55.52.88]:2978 "EHLO mga01.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726481AbfFZW0O (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 26 Jun 2019 18:26:14 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Jun 2019 15:26:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,421,1557212400"; 
+   d="scan'208";a="164503997"
+Received: from orsmsx110.amr.corp.intel.com ([10.22.240.8])
+  by orsmga003.jf.intel.com with ESMTP; 26 Jun 2019 15:26:13 -0700
+Received: from orsmsx111.amr.corp.intel.com (10.22.240.12) by
+ ORSMSX110.amr.corp.intel.com (10.22.240.8) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Wed, 26 Jun 2019 15:26:12 -0700
+Received: from orsmsx104.amr.corp.intel.com ([169.254.4.70]) by
+ ORSMSX111.amr.corp.intel.com ([169.254.12.236]) with mapi id 14.03.0439.000;
+ Wed, 26 Jun 2019 15:26:12 -0700
+From:   "Bowers, AndrewX" <andrewx.bowers@intel.com>
+To:     "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [Intel-wired-lan] [PATCH][net-next] iavf: fix dereference of
+ null rx_buffer pointer
+Thread-Topic: [Intel-wired-lan] [PATCH][net-next] iavf: fix dereference of
+ null rx_buffer pointer
+Thread-Index: AQHVJqupVXnzcA+L3kOQDxvwkDnUOqaujuOg
+Date:   Wed, 26 Jun 2019 22:26:11 +0000
+Message-ID: <26D9FDECA4FBDD4AADA65D8E2FC68A4A1D3FB501@ORSMSX104.amr.corp.intel.com>
+References: <20190619143044.10259-1-colin.king@canonical.com>
+In-Reply-To: <20190619143044.10259-1-colin.king@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiOGIxZTkyNjktNzU5OS00Y2QxLTgzZWMtOTg0ZTczNjMzMzlmIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoicTZrSGFqK1VITGdcL2VaZjhwS2pJaHo1WTF3aFRLQSt6VGVJMTFtMHhaaGpuXC8xQTR6WGk1UXFLeERVV0hrMzBMIn0=
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.0.400.15
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.139]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190626124323.5925-1-colin.king@canonical.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 19-06-26 13:43:23, Colin King wrote:
+> -----Original Message-----
+> From: Intel-wired-lan [mailto:intel-wired-lan-bounces@osuosl.org] On
+> Behalf Of Colin King
+> Sent: Wednesday, June 19, 2019 7:31 AM
+> To: Kirsher, Jeffrey T <jeffrey.t.kirsher@intel.com>; David S . Miller
+> <davem@davemloft.net>; intel-wired-lan@lists.osuosl.org;
+> netdev@vger.kernel.org
+> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: [Intel-wired-lan] [PATCH][net-next] iavf: fix dereference of null
+> rx_buffer pointer
+> 
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> There are two spelling mistakes in trace_seq_printf messages, fix these.
+> A recent commit efa14c3985828d ("iavf: allow null RX descriptors") added a
+> null pointer sanity check on rx_buffer, however, rx_buffer is being
+> dereferenced before that check, which implies a null pointer dereference
+> bug can potentially occur.  Fix this by only dereferencing rx_buffer until after
+> the null pointer check.
 > 
+> Addresses-Coverity: ("Dereference before null check")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/nvme/host/trace.c   | 2 +-
->  drivers/nvme/target/trace.c | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/nvme/host/trace.c b/drivers/nvme/host/trace.c
-> index f01ad0fd60bb..6980ab827233 100644
-> --- a/drivers/nvme/host/trace.c
-> +++ b/drivers/nvme/host/trace.c
-> @@ -178,7 +178,7 @@ static const char *nvme_trace_fabrics_common(struct trace_seq *p, u8 *spc)
->  {
->  	const char *ret = trace_seq_buffer_ptr(p);
->  
-> -	trace_seq_printf(p, "spcecific=%*ph", 24, spc);
-> +	trace_seq_printf(p, "specific=%*ph", 24, spc);
->  	trace_seq_putc(p, 0);
->  	return ret;
->  }
-> diff --git a/drivers/nvme/target/trace.c b/drivers/nvme/target/trace.c
-> index cdcdd14c6408..6af11d493271 100644
-> --- a/drivers/nvme/target/trace.c
-> +++ b/drivers/nvme/target/trace.c
-> @@ -146,7 +146,7 @@ static const char *nvmet_trace_fabrics_common(struct trace_seq *p, u8 *spc)
->  {
->  	const char *ret = trace_seq_buffer_ptr(p);
->  
-> -	trace_seq_printf(p, "spcecific=%*ph", 24, spc);
-> +	trace_seq_printf(p, "specific=%*ph", 24, spc);
->  	trace_seq_putc(p, 0);
->  	return ret;
->  }
-> -- 
-> 2.20.1
-> 
-> 
-> _______________________________________________
-> Linux-nvme mailing list
-> Linux-nvme@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-nvme
+>  drivers/net/ethernet/intel/iavf/iavf_txrx.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
-*facepalm*..
+Tested-by: Andrew Bowers <andrewx.bowers@intel.com>
 
-Thanks for fixing this, Colin!
 
-Reviewed-by: Minwoo Im <minwoo.im.dev@gmail.com>

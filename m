@@ -2,203 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6041955E0A
-	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 04:00:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3251B56240
+	for <lists+kernel-janitors@lfdr.de>; Wed, 26 Jun 2019 08:19:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726287AbfFZCAQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 25 Jun 2019 22:00:16 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:40339 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726068AbfFZCAQ (ORCPT
+        id S1726006AbfFZGS7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Jun 2019 02:18:59 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:41346 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725379AbfFZGS7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 25 Jun 2019 22:00:16 -0400
-Received: by mail-qt1-f194.google.com with SMTP id a15so702832qtn.7;
-        Tue, 25 Jun 2019 19:00:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=HpuOAuDXoNiwLSESipUp418iEseXPPASUvyqCZTf5Mw=;
-        b=ih5M2Y3Xez7rNTHKOdlM0tA286STlKgr0/S9be5v1HeIoO44m1lsSarxkBC+N2Eb5e
-         W6TFBwV5Y8BTqg/UVh2Q54hNNwEsbBxxXJTu+Nb2X5wXpxnEybX189zU6B4XuLFm+1s9
-         py5t3So+h2DLha0uHL255bEV/OSvCwjNW6PG0y7in0SLWPPEeEJLyfA0jiyBloaytdFs
-         Dd314PKfwvjqJbLB37OF/cHZNgB7KDkLcPKvpjGCD9Ey++WWzZwJzsYsT0/7g948xvFB
-         8tXoC/jw5KrGSg/vsypNyJLNyiGtllA9achRbzPAnoKbCGCljkRnzzHLbFWafVbZr4h8
-         p/UQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=HpuOAuDXoNiwLSESipUp418iEseXPPASUvyqCZTf5Mw=;
-        b=ge33L5oGSKSR53+Fg6+/srbpG4PfEqdhv+xcH1C+7k0SS+3zQTXRGNrCdmuTb+mLi/
-         IqYStXuqPDEtXeNZ7OjTeBsHOB+1Pr0GYVw9WIDgYrn279akoahcC+VSL4BB7nzahWv5
-         MdT5clU6RyyoFQ6xJVPul+P2qXfjPxqAxZc+nc903wAdhIVVyVAjEf/VbbJGaehgIpS2
-         5QtxxIoU7v9M8WnBoRMF66hTD9m6/r5sEUCp8D5d7ViIcOfWC8PzX3udeTcSr1kEmglY
-         6zLT+sECmdnSwRNM37SPwu+Oh/1VIWwMDEZ6NQwIpY+YLw7MWc7Kv5IY/C3cVWThmEcX
-         9BMg==
-X-Gm-Message-State: APjAAAWMS/fs1CrKfNptAWW8lHd7xEc609Zof3KDwse217sSFuba/aTK
-        aHJVPszHnJd9/8pB1ecTu1c=
-X-Google-Smtp-Source: APXvYqxsk2sgNVPX0AcZD0OT3YkQmpZyeNJy6aJjXO819o3LNuOBXTzhKg373EnrondH0ZYKDY2mWg==
-X-Received: by 2002:a0c:b0ce:: with SMTP id p14mr1294280qvc.51.1561514415001;
-        Tue, 25 Jun 2019 19:00:15 -0700 (PDT)
-Received: from smtp.gmail.com ([187.121.151.146])
-        by smtp.gmail.com with ESMTPSA id a54sm6533140qtk.85.2019.06.25.19.00.11
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 25 Jun 2019 19:00:14 -0700 (PDT)
-Date:   Tue, 25 Jun 2019 23:00:05 -0300
-From:   Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-To:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, intel-gfx@lists.freedesktop.org
-Subject: Re: [PATCH V4] drm/drm_vblank: Change EINVAL by the correct errno
-Message-ID: <20190626020005.vb5gmqcvkyzgcjee@smtp.gmail.com>
-References: <20190619020750.swzerehjbvx6sbk2@smtp.gmail.com>
- <20190619074856.GJ12905@phenom.ffwll.local>
- <20190619075059.GK12905@phenom.ffwll.local>
+        Wed, 26 Jun 2019 02:18:59 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5Q69Fjf174599;
+        Wed, 26 Jun 2019 06:18:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=6BDe7KrSfyrk0N8EkoAe7mWONmbNyYLrrjOaqe/97HA=;
+ b=nMJdl0t+x2/tZNVW0YDI5WB+O0ihE+k3c0h6G2X0R4MdKo07dpOkdeLEiy9pW1x3wqyE
+ C+ZJPXNu+Fzeww0XC6pAJOi4mPyQWuMwQbrCZKddt6NSZ35fNNrvQHTViJblGmRIblG2
+ dbjfkHxbwNh+xssYmXG/PUCZbYVPkjv+MZfE7ouYhiYVchVoy2rdDe1oqiu8EEav2KCD
+ H2moyhLbbJlwr3y5loq2LvMaTKfMfgIZlEW9cvRYGhXy02Te9dPI/toLf55WMDD8vG2W
+ hdzgzt5gbTjADmoN/7JaIxZa3WiTNgs0jaPYfgIc8mTusbybZS1DUAkFcIRozTWxN8o4 lg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 2t9c9pr7nm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 26 Jun 2019 06:18:13 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5Q6Hten078114;
+        Wed, 26 Jun 2019 06:18:12 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 2t99f49f97-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 26 Jun 2019 06:18:12 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5Q6I9fa014602;
+        Wed, 26 Jun 2019 06:18:10 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 25 Jun 2019 23:18:09 -0700
+Date:   Wed, 26 Jun 2019 09:18:01 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Mike Marshall <hubcap@omnibond.com>
+Cc:     linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Colin King <colin.king@canonical.com>,
+        Martin Brandenburg <martin@omnibond.com>,
+        devel@lists.orangefs.org, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] orangefs: remove redundant assignment to variable
+ buffer_index
+Message-ID: <20190626061801.GA18776@kadam>
+References: <20190511132700.4862-1-colin.king@canonical.com>
+ <CAOg9mSQt42NQu-3nwZOCGOPx45y7G8aaiDaVe4SwotGnD9iY1A@mail.gmail.com>
+ <20190521150311.GL31203@kadam>
+ <CAOg9mSQmV=BDMpTNLJvb4QBr=f96qg4Hr9qu=bB6xZubB+1LZQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="o7ebaymw2qc26tic"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190619075059.GK12905@phenom.ffwll.local>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <CAOg9mSQmV=BDMpTNLJvb4QBr=f96qg4Hr9qu=bB6xZubB+1LZQ@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9299 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906260074
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9299 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906260074
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Tue, Jun 25, 2019 at 02:55:11PM -0400, Mike Marshall wrote:
+> >> You often send these patches before they hit linux-next so I had skipped
+> >> reviewing this one when you sent it.
+> 
+> I know Linus is likely to refuse pull requests for stuff that
+> has not been through linux-next, so I make sure stuff has been
+> there at least a few days before asking for it to be pulled.
+> "A few days" is long enough for robots to see it, perhaps not
+> long enough for humans. I especially appreciate the human review. One of
+> the good things about Orangefs is that it is easy to install and configure,
+> especially for testing. Documentation/filesystems/orangefs.txt has
+> instructions for dnf installing orangefs on Fedora, and also how to download
+> a source tarball and install from that.
 
---o7ebaymw2qc26tic
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+No, no, that comment was to Colin.  It's good that he's sending patches
+for all the trees as soon as possible like the zero day bot does.  But
+it does make it hard to review at times.
 
-On 06/19, Daniel Vetter wrote:
-> On Wed, Jun 19, 2019 at 09:48:56AM +0200, Daniel Vetter wrote:
-> > On Tue, Jun 18, 2019 at 11:07:50PM -0300, Rodrigo Siqueira wrote:
-> > > For historical reason, the function drm_wait_vblank_ioctl always retu=
-rn
-> > > -EINVAL if something gets wrong. This scenario limits the flexibility
-> > > for the userspace make detailed verification of the problem and take
-> > > some action. In particular, the validation of =E2=80=9Cif (!dev->irq_=
-enabled)=E2=80=9D
-> > > in the drm_wait_vblank_ioctl is responsible for checking if the driver
-> > > support vblank or not. If the driver does not support VBlank, the
-> > > function drm_wait_vblank_ioctl returns EINVAL which does not represent
-> > > the real issue; this patch changes this behavior by return EOPNOTSUPP.
-> > > Additionally, some operations are unsupported by this function, and
-> > > returns EINVAL; this patch also changes the return value to EOPNOTSUPP
-> > > in this case. Lastly, the function drm_wait_vblank_ioctl is invoked by
-> > > libdrm, which is used by many compositors; because of this, it is
-> > > important to check if this change breaks any compositor. In this sens=
-e,
-> > > the following projects were examined:
-> > >=20
-> > > * Drm-hwcomposer
-> > > * Kwin
-> > > * Sway
-> > > * Wlroots
-> > > * Wayland-core
-> > > * Weston
-> > > * Xorg (67 different drivers)
-> > >=20
-> > > For each repository the verification happened in three steps:
-> > >=20
-> > > * Update the main branch
-> > > * Look for any occurrence "drmWaitVBlank" with the command:
-> > >   git grep -n "drmWaitVBlank"
-> > > * Look in the git history of the project with the command:
-> > >   git log -SdrmWaitVBlank
-> > >=20
-> > > Finally, none of the above projects validate the use of EINVAL which
-> > > make safe, at least for these projects, to change the return values.
-> > >=20
-> > > Change since V3:
-> > >  - Return EINVAL for _DRM_VBLANK_SIGNAL (Daniel)
-> > >=20
-> > > Change since V2:
-> > >  Daniel Vetter and Chris Wilson
-> > >  - Replace ENOTTY by EOPNOTSUPP
-> > >  - Return EINVAL if the parameters are wrong
-> > >=20
-> >=20
-> > Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-> >=20
-> > Apologies for the confusion on the last time around. btw if someone tel=
-ls
-> > you "r-b (or a-b) with these changes", then just apply the r-b/a-b tag
-> > next time around. Otherwise people will re-review the same thing over a=
-nd
-> > over again.
->=20
-> btw when resending patches it's good practice to add anyone who commented
-> on it (or who commented on the igt test for the same patch and other way
-> round) onto the explicit Cc: list of the patch. That way it's easier for
-> them to follow the patch evolution and do a quick r-b once they're happy.
+regards,
+dan carpenter
 
-Thanks for these valuable tips.
-Do you think that is a good idea to resend this patch CC's everybody? Or
-is it ok if I just apply it?
-=20
-> If you don't do that then much bigger chances your patch gets ignored.
-> -Daniel
-> >=20
-> > > Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-> > > ---
-> > >  drivers/gpu/drm/drm_vblank.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >=20
-> > > diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblan=
-k.c
-> > > index 603ab105125d..bed233361614 100644
-> > > --- a/drivers/gpu/drm/drm_vblank.c
-> > > +++ b/drivers/gpu/drm/drm_vblank.c
-> > > @@ -1582,7 +1582,7 @@ int drm_wait_vblank_ioctl(struct drm_device *de=
-v, void *data,
-> > >  	unsigned int flags, pipe, high_pipe;
-> > > =20
-> > >  	if (!dev->irq_enabled)
-> > > -		return -EINVAL;
-> > > +		return -EOPNOTSUPP;
-> > > =20
-> > >  	if (vblwait->request.type & _DRM_VBLANK_SIGNAL)
-> > >  		return -EINVAL;
-> > > --=20
-> > > 2.21.0
-> >=20
-> > --=20
-> > Daniel Vetter
-> > Software Engineer, Intel Corporation
-> > http://blog.ffwll.ch
->=20
-> --=20
-> Daniel Vetter
-> Software Engineer, Intel Corporation
-> http://blog.ffwll.ch
-
---=20
-Rodrigo Siqueira
-https://siqueira.tech
-
---o7ebaymw2qc26tic
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAl0S0aQACgkQWJzP/com
-vP9OChAAhjuLcUgtK3blJvPIR0GbBQ2YKI5GBvyvsD2cAeC3QEh7a/X+5S9BcncG
-AC/MTchAA76y0nXrgOKMDHD7E6y1wle9Ox+tJg4WsBpiya5f+Z6S8CllyLzfRFzS
-DpIiC2ouqfYJzsecJXj9gveMbblf4YlCE22Cbn0gLajB61yOpuJ8HJK3KhFK6Zjp
-KRD6sNXAuYkrWUPzsfNjOBt55r48DH2DfVtiMzANTo5qgs1yofYn1cwuYIsRqR+x
-ULgg0wKUWxJXuXIWqkk4H7KD0QmZuEwtpMHMxSC85UldTnJ7fxEHiQXA661163x+
-KAMlBLLUtK4LeGU5g2dbP3/ir3xLR5DuX07tZ1EXV8b5SGFzSKqrT1AEFYj2cpH1
-TG62Zc0J2DqX+JuvuISAUkOd0OgKsdC1bDxEMiEy0kZpHLsnl8YOAkLYZBhf58Dy
-O0RamNxYvfIEM9wcUm/wcxHtQVPAPYtqKRe2G1gOHSCHtDmRHF+Hpm8LAJcSRKdF
-FTm6HY/Qbk/Nwx7gSzlVdEqB/qrc8Keqw2f8q/rHCL+zqalsIPM3P55yBWJxroGp
-FM2dNRs6hN2XWRVNGpbZgaJ4im5IwzPCeIt+e+4EHu2AxPNa6jA55bW/JBOGLLOd
-J9BhpzIwTExBxHySR9M97PUNMsKPYeTXG6D+La98edR5uRCDT1U=
-=ksZ9
------END PGP SIGNATURE-----
-
---o7ebaymw2qc26tic--

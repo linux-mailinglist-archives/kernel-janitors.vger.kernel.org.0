@@ -2,90 +2,194 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68726578E7
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 03:15:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B471357973
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 04:24:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726835AbfF0BPn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Jun 2019 21:15:43 -0400
-Received: from mail-eopbgr1410099.outbound.protection.outlook.com ([40.107.141.99]:51280
-        "EHLO JPN01-OS2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726373AbfF0BPn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Jun 2019 21:15:43 -0400
+        id S1727118AbfF0CYz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 26 Jun 2019 22:24:55 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:41283 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726833AbfF0CYz (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 26 Jun 2019 22:24:55 -0400
+Received: by mail-qk1-f194.google.com with SMTP id c11so437676qkk.8;
+        Wed, 26 Jun 2019 19:24:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=renesasgroup.onmicrosoft.com; s=selector2-renesasgroup-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=P2avVQiR3lQuclFmlL/N/rnJt6G4lneF2E4ydIRrq24=;
- b=FZyxg24LHqxTFFpAFkdk+O6ve/ZxgYoGErDeqjnaqWnFtun4Vh7ybs7dr9qToYZ5zz5NscLNSluj6Q0H3EDbE+qgHO12thli68c8tBQ2peuabY8v6wa91mTbNo4AVRRyFCJRulJ9p4tcuoIutk0pC0BnI7/qvSyQu8TbbEIP4aE=
-Received: from TYAPR01MB4544.jpnprd01.prod.outlook.com (20.179.174.85) by
- TYAPR01MB3887.jpnprd01.prod.outlook.com (20.178.138.214) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2008.16; Thu, 27 Jun 2019 01:15:40 +0000
-Received: from TYAPR01MB4544.jpnprd01.prod.outlook.com
- ([fe80::602d:62cc:de62:eaba]) by TYAPR01MB4544.jpnprd01.prod.outlook.com
- ([fe80::602d:62cc:de62:eaba%6]) with mapi id 15.20.2008.014; Thu, 27 Jun 2019
- 01:15:40 +0000
-From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To:     Colin King <colin.king@canonical.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] usb: gadget: udc: renesas_usb3: remove redundant
- assignment to ret
-Thread-Topic: [PATCH] usb: gadget: udc: renesas_usb3: remove redundant
- assignment to ret
-Thread-Index: AQHVLD0mdKJKZlZQqUCpEjW4XqxaaqausuBA
-Date:   Thu, 27 Jun 2019 01:15:39 +0000
-Message-ID: <TYAPR01MB4544D0BC2802B2F914153190D8FD0@TYAPR01MB4544.jpnprd01.prod.outlook.com>
-References: <20190626163517.18530-1-colin.king@canonical.com>
-In-Reply-To: <20190626163517.18530-1-colin.king@canonical.com>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=yoshihiro.shimoda.uh@renesas.com; 
-x-originating-ip: [118.238.235.108]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: b87bb337-658e-4f29-1bfa-08d6fa9cf803
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:TYAPR01MB3887;
-x-ms-traffictypediagnostic: TYAPR01MB3887:
-x-microsoft-antispam-prvs: <TYAPR01MB38871BF6619BEB0713B0DED0D8FD0@TYAPR01MB3887.jpnprd01.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3968;
-x-forefront-prvs: 008184426E
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(39850400004)(366004)(396003)(376002)(136003)(346002)(189003)(199004)(68736007)(54906003)(8676002)(478600001)(71190400001)(256004)(11346002)(316002)(74316002)(2501003)(4744005)(99286004)(53936002)(7696005)(66476007)(7736002)(52536014)(9686003)(81166006)(81156014)(8936002)(86362001)(14454004)(73956011)(229853002)(66446008)(76116006)(110136005)(6436002)(305945005)(55016002)(64756008)(3846002)(486006)(4326008)(2906002)(71200400001)(66556008)(6116002)(33656002)(446003)(6246003)(66066001)(5660300002)(25786009)(66946007)(76176011)(26005)(186003)(102836004)(476003)(6506007);DIR:OUT;SFP:1102;SCL:1;SRVR:TYAPR01MB3887;H:TYAPR01MB4544.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: renesas.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: 6nWM5R7XYEQz1XCEqJllsluIarH7jrF/kmYAaLAlvegB7y5HHpT+BVgwTZJjWrZa78i6WLlH1LPRCGw6+gMD/gYMoQyRhARqof7vWhaeEoTD0ZsHI/l6U69av7qbtGWgzlelSeIamDTDqWNgoxXgegKL8BEfgplq4Fk2gA5kbbzQtpY+npjU8No0ppOEo1BE38wKR7pI6vo6+0mQq/DOAfp/pJbhpt0byWhaWCQPb7owBP+VfCeaty+kGBpvcCj9u/M24lgGszDxHeWDbEgTKmPfFdqZU3cHMSUoaUItEm0PtVVWkfyjO+YCvisW+o0CQJWcDT8XbSXowpJS7rZC2RyDLhQ41Oi5IDAjIRt8bIKacgvfjt6Jpi45DsoHmKfOrM5w+g1tZNBjZ3Njl2iWMn8w26ELHa6ZdZA9A+u0GSo=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=CwXiTfKdRBSuqmsWvDSj+CcpjrFT7bp9Wdj7/SDDQQM=;
+        b=gPQG3Tb3BAqDKCYjknMDPN8Has7WknTuhjx9Onc73ZUttwxlJS7RWqDjI5WjJDKqkc
+         YY0RK5D22jP62x5APzLIRXcBvSFXLswLi4euPI89GtJchEdGEWOPBYk7T17cPaTGW46H
+         sAo8DxxOoYjPy6+1z+q1WEbPEdrVUfARGuO8gIpfkQm/jY6bdXCtERiVrjIUzzLhT5wu
+         JhbqCoKWvAqrcBijMt9eZDrw50UGcpoeAgHrrkL1BGyMLhqEmAhNHqRrMaZNvMT4lGBA
+         iermO0Uahq8pbAds3Hg6SLY1nGxws43CAmQui1woxsrDG9KY5fUaR5PhV4HhUFW5WLuv
+         uewg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=CwXiTfKdRBSuqmsWvDSj+CcpjrFT7bp9Wdj7/SDDQQM=;
+        b=FlqO9w4rRTVJYIznJmJ2wGw3uv8qeFV8rwXfGZYDjtAYhPBFGy+MqU6vcjy4eiVdmc
+         11pWTLmUijcFCEbOery9V9yx4hL5IosSs9lzJ0KtKhV/QlCjk7td3LIK4u1UtXDTyIsI
+         YVQqXBS+j9mW1fzGu0+MYMp48XjLGcOonh/nYvfcYG4kzZsXDZpuqaHAlmFXs1hgQIBt
+         aAKF5oioegr0AqdCnxc25J1+l4Acs1XYSWd3YODcCQiL17P4bA4TLrIGzU45x52fNtfQ
+         Bs9/vFoEpUivD7bve0DrADwbStC2iszvQFNpTDyBXovqGSqYoyDtkq4oDQvlHyP4kAGg
+         rsuw==
+X-Gm-Message-State: APjAAAVYh5e4fk+IlZ9E5tOVyzXrKfgviUQEhqBUluagvQT0Z89sOMfK
+        x79nUWAPPe04xrkAvM4Tt1YU7gJMGXM=
+X-Google-Smtp-Source: APXvYqwILC8Qzl3XDYRopJbpc3veonxZ8pt1ecsAMrdQ8LngY2Fyk6ZNJJGcWZTk1ps0EoHJAC0k6A==
+X-Received: by 2002:a37:a86:: with SMTP id 128mr1164611qkk.169.1561602293573;
+        Wed, 26 Jun 2019 19:24:53 -0700 (PDT)
+Received: from smtp.gmail.com ([187.121.151.146])
+        by smtp.gmail.com with ESMTPSA id y10sm290769qkf.82.2019.06.26.19.24.48
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Wed, 26 Jun 2019 19:24:52 -0700 (PDT)
+Date:   Wed, 26 Jun 2019 23:24:46 -0300
+From:   Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+To:     Keith Packard <keithp@keithp.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>
+Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, intel-gfx@lists.freedesktop.org
+Subject: [PATCH V5] drm/drm_vblank: Change EINVAL by the correct errno
+Message-ID: <20190627022446.fkuomcgiuu3bj3kb@smtp.gmail.com>
 MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b87bb337-658e-4f29-1bfa-08d6fa9cf803
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Jun 2019 01:15:39.9830
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: yoshihiro.shimoda.uh@renesas.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYAPR01MB3887
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="ygl3ejqndwnzekz3"
+Content-Disposition: inline
+User-Agent: NeoMutt/20180716
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-SGkgQ29saW4sDQoNCj4gRnJvbTogQ29saW4gS2luZywgU2VudDogVGh1cnNkYXksIEp1bmUgMjcs
-IDIwMTkgMTozNSBBTQ0KPiANCj4gRnJvbTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fu
-b25pY2FsLmNvbT4NCj4gDQo+IFZhcmlhYmxlIHJldCBpcyBiZWluZyBpbml0aWFsaXplZCB3aXRo
-IGEgdmFsdWUgdGhhdCBpcyBuZXZlciByZWFkIGFuZA0KPiByZXQgaXMgYmVpbmcgcmUtYXNzaWdu
-ZWQgaW1tZWRpYXRlbHkgYWZ0ZXIgdGhlIGluaXRpYWxpemF0aW9uIGluIGJvdGgNCj4gcGF0aHMg
-b2YgYW4gaWYgc3RhdGVtZW50LiBUaGlzIGlzIHJlZHVuZGFudCBhbmQgY2FuIGJlIHJlbW92ZWQu
-DQo+IA0KPiBBZGRyZXNzZXMtQ292ZXJpdHk6ICgiVW51c2VkIHZhbHVlIikNCj4gU2lnbmVkLW9m
-Zi1ieTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fub25pY2FsLmNvbT4NCg0KVGhhbmsg
-eW91IGZvciB0aGUgcGF0Y2ghDQoNClJldmlld2VkLWJ5OiBZb3NoaWhpcm8gU2hpbW9kYSA8eW9z
-aGloaXJvLnNoaW1vZGEudWhAcmVuZXNhcy5jb20+DQoNCkJlc3QgcmVnYXJkcywNCllvc2hpaGly
-byBTaGltb2RhDQoNCg==
+
+--ygl3ejqndwnzekz3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+For historical reasons, the function drm_wait_vblank_ioctl always return
+-EINVAL if something gets wrong. This scenario limits the flexibility
+for the userspace to make detailed verification of any problem and take
+some action. In particular, the validation of =E2=80=9Cif (!dev->irq_enable=
+d)=E2=80=9D
+in the drm_wait_vblank_ioctl is responsible for checking if the driver
+support vblank or not. If the driver does not support VBlank, the
+function drm_wait_vblank_ioctl returns EINVAL, which does not represent
+the real issue; this patch changes this behavior by return EOPNOTSUPP.
+Additionally, drm_crtc_get_sequence_ioctl and
+drm_crtc_queue_sequence_ioctl, also returns EINVAL if vblank is not
+supported; this patch also changes the return value to EOPNOTSUPP in
+these functions. Lastly, these functions are invoked by libdrm, which is
+used by many compositors; because of this, it is important to check if
+this change breaks any compositor. In this sense, the following projects
+were examined:
+
+* Drm-hwcomposer
+* Kwin
+* Sway
+* Wlroots
+* Wayland-core
+* Weston
+* Xorg (67 different drivers)
+
+For each repository the verification happened in three steps:
+
+* Update the main branch
+* Look for any occurrence of "drmCrtcQueueSequence",
+  "drmCrtcGetSequence", and "drmWaitVBlank" with the command git grep -n
+  "STRING".
+* Look in the git history of the project with the command
+git log -S<STRING>
+
+None of the above projects validate the use of EINVAL when using
+drmWaitVBlank(), which make safe, at least for these projects, to change
+the return values. On the other hand, mesa and xserver project uses
+drmCrtcQueueSequence() and drmCrtcGetSequence(); this change is harmless
+for both projects.
+
+Change since V4 (Daniel):
+ - Also return EOPNOTSUPP in drm_crtc_[get|queue]_sequence_ioctl
+
+Change since V3:
+ - Return EINVAL for _DRM_VBLANK_SIGNAL (Daniel)
+
+Change since V2:
+ Daniel Vetter and Chris Wilson
+ - Replace ENOTTY by EOPNOTSUPP
+ - Return EINVAL if the parameters are wrong
+
+Cc: Keith Packard <keithp@keithp.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+---
+ drivers/gpu/drm/drm_vblank.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
+index 603ab105125d..bd4ac834d3ef 100644
+--- a/drivers/gpu/drm/drm_vblank.c
++++ b/drivers/gpu/drm/drm_vblank.c
+@@ -1582,7 +1582,7 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, voi=
+d *data,
+ 	unsigned int flags, pipe, high_pipe;
+=20
+ 	if (!dev->irq_enabled)
+-		return -EINVAL;
++		return -EOPNOTSUPP;
+=20
+ 	if (vblwait->request.type & _DRM_VBLANK_SIGNAL)
+ 		return -EINVAL;
+@@ -1823,7 +1823,7 @@ int drm_crtc_get_sequence_ioctl(struct drm_device *de=
+v, void *data,
+ 		return -EOPNOTSUPP;
+=20
+ 	if (!dev->irq_enabled)
+-		return -EINVAL;
++		return -EOPNOTSUPP;
+=20
+ 	crtc =3D drm_crtc_find(dev, file_priv, get_seq->crtc_id);
+ 	if (!crtc)
+@@ -1881,7 +1881,7 @@ int drm_crtc_queue_sequence_ioctl(struct drm_device *=
+dev, void *data,
+ 		return -EOPNOTSUPP;
+=20
+ 	if (!dev->irq_enabled)
+-		return -EINVAL;
++		return -EOPNOTSUPP;
+=20
+ 	crtc =3D drm_crtc_find(dev, file_priv, queue_seq->crtc_id);
+ 	if (!crtc)
+--=20
+2.21.0
+
+--ygl3ejqndwnzekz3
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAl0UKO0ACgkQWJzP/com
+vP9DYBAAl3K8kqqVa/P2GDZvxDrE3XCKPipZhDER9QiBIHjjIeEFvMavxBEVvm+T
+4fmVKfta/9xYLDcoBvzk8ZxJhpsB8xSrbEZbRcBHKQ+VtF2JU6ArKbqU5TnNBHyZ
+HY4eL0Ju6v9E0A8HmutOfIPZPgJT4DFihHhT2hqqjNldkB2CvfOnny6msf7FytGI
+piD1wPcYwYNN03ZRcXEW5ocyWByA0mY1aTGCVS1ogYkdDtgz/t7+r9I+Yx6oCWOL
+uwhgYCMskG2/PAHm/4xx+qPjwnrN/2TCAW07udDI3Mz0BpxTXlKH+iXC6K5Frt7g
+IK/kN6PHk7JCzsz+1uQMOcH+hJJHfgrLSEyUZtpE02vCe1KYHiE7FpY2D5kHj4s1
+4l5fButamxNI6mHkg1uBigkfF3R06OSuBJE+q3np0EDf7TE4LsLu91KENCdEa1SF
+r3FzrFyW/IZRNWFgNs2ZxbYysUHwogDFkWjvRIxCKnUGGe5Gdg3g2pOsPfJ+yGal
+8Bk0OsTgvVn0J9wwS+R8ldOu/Z6Qdd4wwaQpAESYQnogjAA3U5Hy0dMHV46WlycY
+6+rWBgr6AdiHKuRgXa2Ga3XphXBZCGD/2AtQmm3M8Jl51GdgPErONbMalazsl5Pb
+cTJ7rX4j+lYzlvL+saFge2VhXsi8IV6JICcrQ3eDzrjJnBzPdVY=
+=t8eI
+-----END PGP SIGNATURE-----
+
+--ygl3ejqndwnzekz3--

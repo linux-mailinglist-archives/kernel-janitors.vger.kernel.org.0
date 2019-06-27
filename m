@@ -2,29 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D172058335
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 15:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C1775838E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 15:32:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726587AbfF0NQo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Jun 2019 09:16:44 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:52935 "EHLO
+        id S1726465AbfF0NcZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Jun 2019 09:32:25 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53331 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726480AbfF0NQo (ORCPT
+        with ESMTP id S1726431AbfF0NcZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Jun 2019 09:16:44 -0400
+        Thu, 27 Jun 2019 09:32:25 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hgUGV-000212-Kg; Thu, 27 Jun 2019 13:16:39 +0000
+        id 1hgUVU-0004av-RA; Thu, 27 Jun 2019 13:32:08 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Keerthy <j-keerthy@ti.com>, Liam Girdwood <lgirdwood@gmail.com>,
+To:     =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
+        <amadeuszx.slawinski@linux.intel.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
-        Lee Jones <lee.jones@linaro.org>
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] regulator: lp87565: fix missing break in switch statement
-Date:   Thu, 27 Jun 2019 14:16:39 +0100
-Message-Id: <20190627131639.6394-1-colin.king@canonical.com>
+Subject: [PATCH][next] ASoC: topology: fix memory leaks on sm, se and sbe
+Date:   Thu, 27 Jun 2019 14:32:08 +0100
+Message-Id: <20190627133208.9550-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,29 +39,58 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently the LP87565_DEVICE_TYPE_LP87561_Q1 case does not have a
-break statement, causing it to fall through to a dev_err message.
-Fix this by adding in the missing break statement.
+Currently when a kstrdup fails the error exit paths don't free
+the allocations for sm, se and sbe.  This can be fixed by assigning
+kc[i].private_value to these before doing the ksrtdup so that the error
+exit path will be able to free these objects.
 
-Addresses-Coverity: ("Missing break in switch")
-Fixes: 7ee63bd74750 ("regulator: lp87565: Add 4-phase lp87561 regulator support")
+Addresses-Coverity: ("Resource leak")
+Fixes: 9f90af3a9952 ("ASoC: topology: Consolidate and fix asoc_tplg_dapm_widget_*_create flow")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/regulator/lp87565-regulator.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/soc-topology.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/regulator/lp87565-regulator.c b/drivers/regulator/lp87565-regulator.c
-index 993c11702083..5d067f7c2116 100644
---- a/drivers/regulator/lp87565-regulator.c
-+++ b/drivers/regulator/lp87565-regulator.c
-@@ -180,6 +180,7 @@ static int lp87565_regulator_probe(struct platform_device *pdev)
- 	case LP87565_DEVICE_TYPE_LP87561_Q1:
- 		min_idx = LP87565_BUCK_3210;
- 		max_idx = LP87565_BUCK_3210;
-+		break;
- 	default:
- 		dev_err(lp87565->dev, "Invalid lp config %d\n",
- 			lp87565->dev_type);
+diff --git a/sound/soc/soc-topology.c b/sound/soc/soc-topology.c
+index fc1f1d6f9e92..dc463f1a9e24 100644
+--- a/sound/soc/soc-topology.c
++++ b/sound/soc/soc-topology.c
+@@ -1326,10 +1326,10 @@ static struct snd_kcontrol_new *soc_tplg_dapm_widget_dmixer_create(
+ 		dev_dbg(tplg->dev, " adding DAPM widget mixer control %s at %d\n",
+ 			mc->hdr.name, i);
+ 
++		kc[i].private_value = (long)sm;
+ 		kc[i].name = kstrdup(mc->hdr.name, GFP_KERNEL);
+ 		if (kc[i].name == NULL)
+ 			goto err_sm;
+-		kc[i].private_value = (long)sm;
+ 		kc[i].iface = SNDRV_CTL_ELEM_IFACE_MIXER;
+ 		kc[i].access = mc->hdr.access;
+ 
+@@ -1412,10 +1412,10 @@ static struct snd_kcontrol_new *soc_tplg_dapm_widget_denum_create(
+ 		dev_dbg(tplg->dev, " adding DAPM widget enum control %s\n",
+ 			ec->hdr.name);
+ 
++		kc[i].private_value = (long)se;
+ 		kc[i].name = kstrdup(ec->hdr.name, GFP_KERNEL);
+ 		if (kc[i].name == NULL)
+ 			goto err_se;
+-		kc[i].private_value = (long)se;
+ 		kc[i].iface = SNDRV_CTL_ELEM_IFACE_MIXER;
+ 		kc[i].access = ec->hdr.access;
+ 
+@@ -1524,10 +1524,10 @@ static struct snd_kcontrol_new *soc_tplg_dapm_widget_dbytes_create(
+ 			"ASoC: adding bytes kcontrol %s with access 0x%x\n",
+ 			be->hdr.name, be->hdr.access);
+ 
++		kc[i].private_value = (long)sbe;
+ 		kc[i].name = kstrdup(be->hdr.name, GFP_KERNEL);
+ 		if (kc[i].name == NULL)
+ 			goto err_sbe;
+-		kc[i].private_value = (long)sbe;
+ 		kc[i].iface = SNDRV_CTL_ELEM_IFACE_MIXER;
+ 		kc[i].access = be->hdr.access;
+ 
 -- 
 2.20.1
 

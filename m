@@ -2,107 +2,153 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A48C57CF6
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 09:15:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F012057CF9
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 09:16:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726416AbfF0HPf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Jun 2019 03:15:35 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:46472 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725787AbfF0HPf (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Jun 2019 03:15:35 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5R7EIQc166417;
-        Thu, 27 Jun 2019 07:15:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=p2X+JVbJ5o0EqLYpgLUvQQzWeLdP1wK1qV9gioCssZM=;
- b=PCvB6lNBormgSrc2vPgUdwH8b3ORgsewHDocZwXHuKggSN6m5g4csLt/XVQfSHQqB3pA
- NehbVdj4Pbho+3+r+Wzy5wp/NHlDj8m9NdOSu+/KZvDNxUAwTCIQW9VqWD7wJLUWEF3v
- 5oz31p9gT/09yp8g+3IVij4E7II2xBkRBqZR+vy3m+3VIycU30MznkLiyXJ7gONGgFBW
- 21YnkWiI78cMWLB5JDycfG/HKOpvlfFkWouzoVsPvRol065335rFKJTFdKB61vRp9jrm
- RoJZFtPcJ5gh71HWDfRmb+MgihdyqLEfdouoz0Bo48ZUVYMYR0lNd1r1VTN4234+PLLr jg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 2t9c9pxf8p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 27 Jun 2019 07:15:30 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5R7FU9U032686;
-        Thu, 27 Jun 2019 07:15:30 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 2tat7d7axp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 27 Jun 2019 07:15:30 +0000
-Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5R7FRlA027091;
-        Thu, 27 Jun 2019 07:15:27 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 27 Jun 2019 00:15:26 -0700
-Date:   Thu, 27 Jun 2019 10:15:21 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     vincenzo.frascino@arm.com
-Cc:     kernel-janitors@vger.kernel.org
-Subject: [bug report] lib/vdso: Provide generic VDSO implementation
-Message-ID: <20190627071521.GA22903@mwanda>
+        id S1726418AbfF0HP7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Jun 2019 03:15:59 -0400
+Received: from mx01-fr.bfs.de ([193.174.231.67]:16276 "EHLO mx01-fr.bfs.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725787AbfF0HP7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Jun 2019 03:15:59 -0400
+Received: from mail-fr.bfs.de (mail-fr.bfs.de [10.177.18.200])
+        by mx01-fr.bfs.de (Postfix) with ESMTPS id 824852034F;
+        Thu, 27 Jun 2019 09:15:52 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1561619752; h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=f1/5Z9n4REvDVdHCnPikWKciGEfqNbNYC3LEdIzWTAk=;
+        b=u4L4t4wmWvi8iseBfC9qiTLfnSX/ZyjAH4jO+V2ooWNuU7twJVgVwPDTDoptMW5xVg7b42
+        a0xVCp+kuWeRa1AwCgyoe5m46CrSTROnC9T5kBzxyWaZ9dO80xpPv/nuvqvDeKtmW8xltV
+        Pd1Wfa6+lKdpdXgwvkmzemzsf+VxagbMk8cy4o7TUIRC5+5exIJUm57QYU+PtdI3iH6P4Q
+        VXV+1EEgxPosP9mfyQtpyoVlGKXNiVIAmt5OIShvdNEC42YyCGQRYId6jbMOgT08HwaXhm
+        tqvjlfXVYjAAPGIYDoE4UM2jPKimEUQFU36Fg6uGT+iT0FByxAWPwzqa70mWbg==
+Received: from [134.92.181.33] (unknown [134.92.181.33])
+        by mail-fr.bfs.de (Postfix) with ESMTPS id 4E0A2BEEBD;
+        Thu, 27 Jun 2019 09:15:52 +0200 (CEST)
+Message-ID: <5D146D28.90204@bfs.de>
+Date:   Thu, 27 Jun 2019 09:15:52 +0200
+From:   walter harms <wharms@bfs.de>
+Reply-To: wharms@bfs.de
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; de; rv:1.9.1.16) Gecko/20101125 SUSE/3.0.11 Thunderbird/3.0.11
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9300 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=578
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1906270083
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9300 signatures=668687
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=624 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1906270083
+To:     Colin King <colin.king@canonical.com>
+CC:     Hans Verkuil <hverkuil@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next][V2] media: vivid: fix potential integer overflow
+ on left shift
+References: <20190626144746.27607-1-colin.king@canonical.com>
+In-Reply-To: <20190626144746.27607-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.10
+Authentication-Results: mx01-fr.bfs.de
+X-Spamd-Result: default: False [-3.10 / 7.00];
+         ARC_NA(0.00)[];
+         HAS_REPLYTO(0.00)[wharms@bfs.de];
+         BAYES_HAM(-3.00)[100.00%];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         FREEMAIL_ENVRCPT(0.00)[xs4all.nl];
+         MIME_GOOD(-0.10)[text/plain];
+         REPLYTO_ADDR_EQ_FROM(0.00)[];
+         RCPT_COUNT_FIVE(0.00)[6];
+         DKIM_SIGNED(0.00)[];
+         NEURAL_HAM(-0.00)[-0.999,0];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         FREEMAIL_CC(0.00)[xs4all.nl];
+         MID_RHS_MATCH_FROM(0.00)[];
+         RCVD_TLS_ALL(0.00)[];
+         RCVD_COUNT_TWO(0.00)[2]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello Vincenzo Frascino,
 
-This is a semi-automatic email about new static checker warnings.
 
-The patch 00b26474c2f1: "lib/vdso: Provide generic VDSO
-implementation" from Jun 21, 2019, leads to the following Smatch
-complaint:
+Am 26.06.2019 16:47, schrieb Colin King:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a potential integer overflow when int 2 is left shifted
+> as this is evaluated using 32 bit arithmetic but is being used in
+> a context that expects an expression of type s64.  Fix this by
+> shifting 2ULL to avoid a 32 bit overflow.
+> 
+> Addresses-Coverity: ("Unintentional integer overflow")
+> Fixes: 8a99e9faa131 ("media: vivid: add HDMI (dis)connect RX emulation")
+> Fixes: 79a792dafac6 ("media: vivid: add HDMI (dis)connect TX emulation")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-    arch/x86/entry/vdso/vdso32/../../../../../lib/vdso/gettimeofday.c:120 __cvdso_clock_gettime32()
-    error: we previously assumed 'res' could be null (see line 107)
+Reviewed-by: wharms <wharms@bfs.de>
+ looks less confusing now, thx
 
-lib/vdso/gettimeofday.c
-   101  static __maybe_unused int
-   102  __cvdso_clock_gettime32(clockid_t clock, struct old_timespec32 *res)
-   103  {
-   104          struct __kernel_timespec ts;
-   105          int ret;
-   106	
-   107		if (res == NULL)
-                    ^^^^^^^^^^^
-   108			goto fallback;
-   109	
-   110		ret = __cvdso_clock_gettime(clock, &ts);
-   111	
-   112		if (ret == 0) {
-   113			res->tv_sec = ts.tv_sec;
-   114			res->tv_nsec = ts.tv_nsec;
-   115		}
-   116	
-   117		return ret;
-   118	
-   119	fallback:
-   120		return clock_gettime_fallback(clock, (struct __kernel_timespec *)res);
-                                                                                 ^^^
-On x86 this "res" always gets dereferenced.
 
-   121	}
-
-regards,
-dan carpenter
+> ---
+> V2: use intermediate variables for the shifted expression to make code
+>     a bit more readable.
+> ---
+>  drivers/media/platform/vivid/vivid-ctrls.c | 24 +++++++++++-----------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/media/platform/vivid/vivid-ctrls.c b/drivers/media/platform/vivid/vivid-ctrls.c
+> index 3e916c8befb7..df1598e81c7a 100644
+> --- a/drivers/media/platform/vivid/vivid-ctrls.c
+> +++ b/drivers/media/platform/vivid/vivid-ctrls.c
+> @@ -1613,6 +1613,8 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
+>  	}
+>  
+>  	if (dev->num_hdmi_inputs) {
+> +		s64 hdmi_input = (2ULL << (dev->num_hdmi_inputs - 1)) - 1;
+> +
+>  		dev->ctrl_dv_timings_signal_mode = v4l2_ctrl_new_custom(hdl_vid_cap,
+>  					&vivid_ctrl_dv_timings_signal_mode, NULL);
+>  
+> @@ -1633,12 +1635,13 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
+>  			V4L2_CID_DV_RX_RGB_RANGE, V4L2_DV_RGB_RANGE_FULL,
+>  			0, V4L2_DV_RGB_RANGE_AUTO);
+>  		dev->ctrl_rx_power_present = v4l2_ctrl_new_std(hdl_vid_cap,
+> -			NULL, V4L2_CID_DV_RX_POWER_PRESENT, 0,
+> -			(2 << (dev->num_hdmi_inputs - 1)) - 1, 0,
+> -			(2 << (dev->num_hdmi_inputs - 1)) - 1);
+> +			NULL, V4L2_CID_DV_RX_POWER_PRESENT, 0, hdmi_input,
+> +			0, hdmi_input);
+>  
+>  	}
+>  	if (dev->num_hdmi_outputs) {
+> +		s64 hdmi_output = (2ULL << (dev->num_hdmi_outputs - 1)) - 1;
+> +
+>  		/*
+>  		 * We aren't doing anything with this at the moment, but
+>  		 * HDMI outputs typically have this controls.
+> @@ -1652,17 +1655,14 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
+>  		dev->ctrl_display_present = v4l2_ctrl_new_custom(hdl_vid_out,
+>  			&vivid_ctrl_display_present, NULL);
+>  		dev->ctrl_tx_hotplug = v4l2_ctrl_new_std(hdl_vid_out,
+> -			NULL, V4L2_CID_DV_TX_HOTPLUG, 0,
+> -			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
+> -			(2 << (dev->num_hdmi_outputs - 1)) - 1);
+> +			NULL, V4L2_CID_DV_TX_HOTPLUG, 0, hdmi_output,
+> +			0, hdmi_output);
+>  		dev->ctrl_tx_rxsense = v4l2_ctrl_new_std(hdl_vid_out,
+> -			NULL, V4L2_CID_DV_TX_RXSENSE, 0,
+> -			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
+> -			(2 << (dev->num_hdmi_outputs - 1)) - 1);
+> +			NULL, V4L2_CID_DV_TX_RXSENSE, 0, hdmi_output,
+> +			0, hdmi_output);
+>  		dev->ctrl_tx_edid_present = v4l2_ctrl_new_std(hdl_vid_out,
+> -			NULL, V4L2_CID_DV_TX_EDID_PRESENT, 0,
+> -			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
+> -			(2 << (dev->num_hdmi_outputs - 1)) - 1);
+> +			NULL, V4L2_CID_DV_TX_EDID_PRESENT, 0, hdmi_output,
+> +			0, hdmi_output);
+>  	}
+>  	if ((dev->has_vid_cap && dev->has_vid_out) ||
+>  	    (dev->has_vbi_cap && dev->has_vbi_out))

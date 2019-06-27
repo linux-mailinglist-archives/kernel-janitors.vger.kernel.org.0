@@ -2,115 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FABA57DE0
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 10:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA81E57EC8
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 10:57:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726401AbfF0IFq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Jun 2019 04:05:46 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:46097 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726101AbfF0IFq (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Jun 2019 04:05:46 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hgPPZ-0002y3-DM; Thu, 27 Jun 2019 08:05:41 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Hans Verkuil <hverkuil@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next][V3] media: vivid: fix potential integer overflow on left shift
-Date:   Thu, 27 Jun 2019 09:05:41 +0100
-Message-Id: <20190627080541.11122-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726382AbfF0I5b (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Jun 2019 04:57:31 -0400
+Received: from foss.arm.com ([217.140.110.172]:49536 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726295AbfF0I5b (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Jun 2019 04:57:31 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 577D82B;
+        Thu, 27 Jun 2019 01:57:28 -0700 (PDT)
+Received: from [192.168.1.18] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E7E343F718;
+        Thu, 27 Jun 2019 01:57:27 -0700 (PDT)
+Subject: Re: [bug report] lib/vdso: Provide generic VDSO implementation
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     kernel-janitors@vger.kernel.org
+References: <20190627071521.GA22903@mwanda>
+From:   Vincenzo Frascino <vincenzo.frascino@arm.com>
+Message-ID: <c23609d4-2aff-bc5e-afdf-53a4824a2ef7@arm.com>
+Date:   Thu, 27 Jun 2019 09:58:18 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190627071521.GA22903@mwanda>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hi Dan,
 
-There is a potential integer overflow when int 2 is left shifted
-as this is evaluated using 32 bit arithmetic but is being used in
-a context that expects an expression of type s64.  Fix this by
-generating a mask using GENMASK to avoid a 32 bit overflow.
+thank you for testing my patches.
 
-Addresses-Coverity: ("Unintentional integer overflow")
-Fixes: 8a99e9faa131 ("media: vivid: add HDMI (dis)connect RX emulation")
-Fixes: 79a792dafac6 ("media: vivid: add HDMI (dis)connect TX emulation")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
-V2: use intermediate variables for the shifted expression to make code
-    a bit more readable.
-V3: use GENMASK rather than shifting logic, rename variables adding
-    _mask suffix.
----
+On 6/27/19 8:15 AM, Dan Carpenter wrote:
+> Hello Vincenzo Frascino,
+> 
+> This is a semi-automatic email about new static checker warnings.
+> 
+> The patch 00b26474c2f1: "lib/vdso: Provide generic VDSO
+> implementation" from Jun 21, 2019, leads to the following Smatch
+> complaint:
+> 
+>     arch/x86/entry/vdso/vdso32/../../../../../lib/vdso/gettimeofday.c:120 __cvdso_clock_gettime32()
+>     error: we previously assumed 'res' could be null (see line 107)
+> 
+> lib/vdso/gettimeofday.c
+>    101  static __maybe_unused int
+>    102  __cvdso_clock_gettime32(clockid_t clock, struct old_timespec32 *res)
+>    103  {
+>    104          struct __kernel_timespec ts;
+>    105          int ret;
+>    106	
+>    107		if (res == NULL)
+>                     ^^^^^^^^^^^
+>    108			goto fallback;
+>    109	
+>    110		ret = __cvdso_clock_gettime(clock, &ts);
+>    111	
+>    112		if (ret == 0) {
+>    113			res->tv_sec = ts.tv_sec;
+>    114			res->tv_nsec = ts.tv_nsec;
+>    115		}
+>    116	
+>    117		return ret;
+>    118	
+>    119	fallback:
+>    120		return clock_gettime_fallback(clock, (struct __kernel_timespec *)res);
+>                                                                                  ^^^
+> On x86 this "res" always gets dereferenced.
+> 
+>    121	}
+> 
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/media/platform/vivid/vivid-ctrls.c | 24 +++++++++++-----------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+I am not sure I understand the details of this bug report. As far as I can see
+"res" is never dereferenced in the vDSO library in this case, but it is passed
+to the system call unchanged.
 
-diff --git a/drivers/media/platform/vivid/vivid-ctrls.c b/drivers/media/platform/vivid/vivid-ctrls.c
-index 3e916c8befb7..b04997569228 100644
---- a/drivers/media/platform/vivid/vivid-ctrls.c
-+++ b/drivers/media/platform/vivid/vivid-ctrls.c
-@@ -1613,6 +1613,8 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
- 	}
- 
- 	if (dev->num_hdmi_inputs) {
-+		s64 hdmi_input_mask = GENMASK(dev->num_hdmi_inputs - 1, 0);
-+
- 		dev->ctrl_dv_timings_signal_mode = v4l2_ctrl_new_custom(hdl_vid_cap,
- 					&vivid_ctrl_dv_timings_signal_mode, NULL);
- 
-@@ -1633,12 +1635,13 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
- 			V4L2_CID_DV_RX_RGB_RANGE, V4L2_DV_RGB_RANGE_FULL,
- 			0, V4L2_DV_RGB_RANGE_AUTO);
- 		dev->ctrl_rx_power_present = v4l2_ctrl_new_std(hdl_vid_cap,
--			NULL, V4L2_CID_DV_RX_POWER_PRESENT, 0,
--			(2 << (dev->num_hdmi_inputs - 1)) - 1, 0,
--			(2 << (dev->num_hdmi_inputs - 1)) - 1);
-+			NULL, V4L2_CID_DV_RX_POWER_PRESENT, 0, hdmi_input_mask,
-+			0, hdmi_input_mask);
- 
- 	}
- 	if (dev->num_hdmi_outputs) {
-+		s64 hdmi_output_mask = GENMASK(dev->num_hdmi_outputs - 1, 0);
-+
- 		/*
- 		 * We aren't doing anything with this at the moment, but
- 		 * HDMI outputs typically have this controls.
-@@ -1652,17 +1655,14 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
- 		dev->ctrl_display_present = v4l2_ctrl_new_custom(hdl_vid_out,
- 			&vivid_ctrl_display_present, NULL);
- 		dev->ctrl_tx_hotplug = v4l2_ctrl_new_std(hdl_vid_out,
--			NULL, V4L2_CID_DV_TX_HOTPLUG, 0,
--			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
--			(2 << (dev->num_hdmi_outputs - 1)) - 1);
-+			NULL, V4L2_CID_DV_TX_HOTPLUG, 0, hdmi_output_mask,
-+			0, hdmi_output_mask);
- 		dev->ctrl_tx_rxsense = v4l2_ctrl_new_std(hdl_vid_out,
--			NULL, V4L2_CID_DV_TX_RXSENSE, 0,
--			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
--			(2 << (dev->num_hdmi_outputs - 1)) - 1);
-+			NULL, V4L2_CID_DV_TX_RXSENSE, 0, hdmi_output_mask,
-+			0, hdmi_output_mask);
- 		dev->ctrl_tx_edid_present = v4l2_ctrl_new_std(hdl_vid_out,
--			NULL, V4L2_CID_DV_TX_EDID_PRESENT, 0,
--			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
--			(2 << (dev->num_hdmi_outputs - 1)) - 1);
-+			NULL, V4L2_CID_DV_TX_EDID_PRESENT, 0, hdmi_output_mask,
-+			0, hdmi_output_mask);
- 	}
- 	if ((dev->has_vid_cap && dev->has_vid_out) ||
- 	    (dev->has_vbi_cap && dev->has_vbi_out))
+static __always_inline
+long clock_gettime_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
+{
+	long ret;
+
+	asm ("syscall" : "=a" (ret), "=m" (*_ts) :
+	     "0" (__NR_clock_gettime), "D" (_clkid), "S" (_ts) :
+	     "rcx", "r11");
+
+	return ret;
+}
+
+This is done to maintain consistency in between the returned error code of the
+syscall and of the vDSO library.
+
+Could you please elaborate on why this bug has been reported?
+
+> regards,
+> dan carpenter
+> 
+
 -- 
-2.20.1
-
+Regards,
+Vincenzo

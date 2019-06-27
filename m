@@ -2,30 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC59258320
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 15:09:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D172058335
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 15:16:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726505AbfF0NJI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Jun 2019 09:09:08 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:52694 "EHLO
+        id S1726587AbfF0NQo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Jun 2019 09:16:44 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:52935 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726370AbfF0NJI (ORCPT
+        with ESMTP id S1726480AbfF0NQo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Jun 2019 09:09:08 -0400
+        Thu, 27 Jun 2019 09:16:44 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hgU9A-0000cw-Sr; Thu, 27 Jun 2019 13:09:04 +0000
+        id 1hgUGV-000212-Kg; Thu, 27 Jun 2019 13:16:39 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     John Johansen <john.johansen@canonical.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        linux-security-module@vger.kernel.org
+To:     Keerthy <j-keerthy@ti.com>, Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] apparmor: fix unsigned len comparison with less than zero
-Date:   Thu, 27 Jun 2019 14:09:04 +0100
-Message-Id: <20190627130904.4775-1-colin.king@canonical.com>
+Subject: [PATCH][next] regulator: lp87565: fix missing break in switch statement
+Date:   Thu, 27 Jun 2019 14:16:39 +0100
+Message-Id: <20190627131639.6394-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,51 +36,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The sanity check in macro update_for_len checks to see if len
-is less than zero, however, len is a size_t so it can never be
-less than zero, so this sanity check is a no-op.  Fix this by
-making len a ssize_t so the comparison will work and add ulen
-that is a size_t copy of len so that the min() macro won't
-throw warnings about comparing different types.
+Currently the LP87565_DEVICE_TYPE_LP87561_Q1 case does not have a
+break statement, causing it to fall through to a dev_err message.
+Fix this by adding in the missing break statement.
 
-Addresses-Coverity: ("Macro compares unsigned to 0")
-Fixes: f1bd904175e8 ("apparmor: add the base fns() for domain labels")
+Addresses-Coverity: ("Missing break in switch")
+Fixes: 7ee63bd74750 ("regulator: lp87565: Add 4-phase lp87561 regulator support")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- security/apparmor/label.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/regulator/lp87565-regulator.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/security/apparmor/label.c b/security/apparmor/label.c
-index 59f1cc2557a7..42e849ccb4b5 100644
---- a/security/apparmor/label.c
-+++ b/security/apparmor/label.c
-@@ -1458,11 +1458,13 @@ static inline bool use_label_hname(struct aa_ns *ns, struct aa_label *label,
- /* helper macro for snprint routines */
- #define update_for_len(total, len, size, str)	\
- do {					\
-+	size_t ulen = len;		\
-+					\
- 	AA_BUG(len < 0);		\
--	total += len;			\
--	len = min(len, size);		\
--	size -= len;			\
--	str += len;			\
-+	total += ulen;			\
-+	len = min(ulen, size);		\
-+	size -= ulen;			\
-+	str += ulen;			\
- } while (0)
- 
- /**
-@@ -1597,7 +1599,7 @@ int aa_label_snxprint(char *str, size_t size, struct aa_ns *ns,
- 	struct aa_ns *prev_ns = NULL;
- 	struct label_it i;
- 	int count = 0, total = 0;
--	size_t len;
-+	ssize_t len;
- 
- 	AA_BUG(!str && size != 0);
- 	AA_BUG(!label);
+diff --git a/drivers/regulator/lp87565-regulator.c b/drivers/regulator/lp87565-regulator.c
+index 993c11702083..5d067f7c2116 100644
+--- a/drivers/regulator/lp87565-regulator.c
++++ b/drivers/regulator/lp87565-regulator.c
+@@ -180,6 +180,7 @@ static int lp87565_regulator_probe(struct platform_device *pdev)
+ 	case LP87565_DEVICE_TYPE_LP87561_Q1:
+ 		min_idx = LP87565_BUCK_3210;
+ 		max_idx = LP87565_BUCK_3210;
++		break;
+ 	default:
+ 		dev_err(lp87565->dev, "Invalid lp config %d\n",
+ 			lp87565->dev_type);
 -- 
 2.20.1
 

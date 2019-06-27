@@ -2,97 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EC4558698
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 18:02:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 999CB58778
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 18:43:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726441AbfF0QCN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Jun 2019 12:02:13 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:34591 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726431AbfF0QCN (ORCPT
+        id S1726484AbfF0QnP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Jun 2019 12:43:15 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59284 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725770AbfF0QnP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Jun 2019 12:02:13 -0400
-Received: by mail-wr1-f65.google.com with SMTP id k11so3223324wrl.1;
-        Thu, 27 Jun 2019 09:02:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TX0PH5LENMLq4sqsfzVBDZigOo0jYU9ew5cFE8wrzTg=;
-        b=Xh0eEy4GNq2E1fFz0Mf4HWpAQzWzv+Mh4oLRb7vSZS98yd6MvlK9CboKxTcwOewaHO
-         Y7k7uwsAV/mqnfv4lPq71a6rCgKWf0mciNxHc/aKROYQqo3F7QfHLFBpsmTHsEyYO2mi
-         DeZRhmJ84RgySQzi+KhkdTqhOpF/60KlzvaNaT+wnmmfyxx9o9mMAQZRuJ3B7oLjaK0z
-         7qGkR4TqhRwg11aXJVXbRwP+c9imC8TXDHVwSKLt3ZT2x22NIX17w3krZPySsSg86iZz
-         4RFn4l+ONCVqOh6P/uyGysBZKn3Ns3QSQAS4BOl3KHDqwEIfBp6WlNvvWQGMnMiRESFO
-         Bz6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TX0PH5LENMLq4sqsfzVBDZigOo0jYU9ew5cFE8wrzTg=;
-        b=tP2F5DYvkrXNCqnO77D9n9DiE3L8uzYNQvTg1JYCqsis+gJM2JRbTHzKecZDSHOPtd
-         R3e3gTEvxK6dnCaB++6KGlyzZXpYg6U7MJSHNiZKxhMPRslEVIWtcicRDZOQ35k4gsPI
-         SlHTpahla0BrutOmz0lvPQQe4a8L7pJ0CJElPp/9EDybV36musJzhgUkqQBTSGzm+HsY
-         QIWKuJ2NxXJMG585TaTNqHag5NCz5m0qvojvEcpPS1n03gHUSSyUVyxfVtMVYQXVIGEi
-         /M/+kXzGO/Wkz2qGtyJRAQs95dizUW08aMUJoCwySnNX/odoNrmsSvsiW5UUb3PBn/g+
-         MVmA==
-X-Gm-Message-State: APjAAAVsj3AvDcq0OUFYhqo6EVLRnOv4pyKTCoclG+zJZ+zzxjl0E4nc
-        xKkBRMGPW7PGgqaYvjdtvWLefG1061oc4ORX8MSDiYzw
-X-Google-Smtp-Source: APXvYqyuyR+GwQcgXshLDQQ3dyR5MLZwf3sqxXo+FdDohn6bKxhmN9ZlAtZsWNwu4HWBtHbYKrH5m3umtNSoLetgp1U=
-X-Received: by 2002:a05:6000:106:: with SMTP id o6mr4101553wrx.4.1561651331074;
- Thu, 27 Jun 2019 09:02:11 -0700 (PDT)
+        Thu, 27 Jun 2019 12:43:15 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hgXUK-0006E9-9s; Thu, 27 Jun 2019 16:43:08 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        alsa-devel@alsa-project.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ALSA: usb-audio: fix sign unintended sign extension on left shifts
+Date:   Thu, 27 Jun 2019 17:43:08 +0100
+Message-Id: <20190627164308.21286-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20190626132427.12615-1-colin.king@canonical.com>
- <CAPj87rM9y5Zen5A5KkiCqqUF5m+vAwwtLj-iJrcwFfzMev+Mrw@mail.gmail.com> <2bd65b8f-f278-1000-d9a2-6476fc3a497f@canonical.com>
-In-Reply-To: <2bd65b8f-f278-1000-d9a2-6476fc3a497f@canonical.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Thu, 27 Jun 2019 12:01:58 -0400
-Message-ID: <CADnq5_O9oA4PxnqxwTurRbgQ=M2PceiqUpZiCncdaiYmbJsiQA@mail.gmail.com>
-Subject: Re: [PATCH][next[ drm/amd/display: fix a couple of spelling mistakes
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     Daniel Stone <daniel@fooishbar.org>, Leo Li <sunpeng.li@amd.com>,
-        kernel-janitors@vger.kernel.org, Wenjing Liu <Wenjing.Liu@amd.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        amd-gfx mailing list <amd-gfx@lists.freedesktop.org>,
-        Nikola Cornij <nikola.cornij@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jun 26, 2019 at 9:32 AM Colin Ian King <colin.king@canonical.com> wrote:
->
-> On 26/06/2019 14:25, Daniel Stone wrote:
-> > Hi Colin,
-> >
-> > On Wed, 26 Jun 2019 at 14:24, Colin King <colin.king@canonical.com> wrote:
-> >> There are a couple of spelling mistakes in dm_error messages and
-> >> a comment. Fix these.
-> >
-> > Whilst there, you might fix the '[next[' typo in the commit message.
->
-> Ugh, fickle fingers. Maybe the upstream devs will fix that before
-> applying...
+From: Colin Ian King <colin.king@canonical.com>
 
-Fixed up and applied.
+There are a couple of left shifts of unsigned 8 bit values that
+first get promoted to signed ints and hence get sign extended
+on the shift if the top bit of the 8 bit values are set. Fix
+this by casting the 8 bit values to unsigned ints to stop the
+unintentional sign extension.
 
-Thanks,
+Addresses-Coverity: ("Unintended sign extension")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ sound/usb/mixer_quirks.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Alex
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 1f6011f36bb0..199fa157a411 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -741,7 +741,7 @@ static int snd_ni_control_init_val(struct usb_mixer_interface *mixer,
+ 		return err;
+ 	}
+ 
+-	kctl->private_value |= (value << 24);
++	kctl->private_value |= ((unsigned int)value << 24);
+ 	return 0;
+ }
+ 
+@@ -902,7 +902,7 @@ static int snd_ftu_eff_switch_init(struct usb_mixer_interface *mixer,
+ 	if (err < 0)
+ 		return err;
+ 
+-	kctl->private_value |= value[0] << 24;
++	kctl->private_value |= (unsigned int)value[0] << 24;
+ 	return 0;
+ }
+ 
+-- 
+2.20.1
 
->
->
-> >
-> > Cheers,
-> > Daniel
-> >
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel

@@ -2,194 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B471357973
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 04:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A48C57CF6
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 09:15:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727118AbfF0CYz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 26 Jun 2019 22:24:55 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:41283 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726833AbfF0CYz (ORCPT
+        id S1726416AbfF0HPf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Jun 2019 03:15:35 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:46472 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725787AbfF0HPf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 26 Jun 2019 22:24:55 -0400
-Received: by mail-qk1-f194.google.com with SMTP id c11so437676qkk.8;
-        Wed, 26 Jun 2019 19:24:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=CwXiTfKdRBSuqmsWvDSj+CcpjrFT7bp9Wdj7/SDDQQM=;
-        b=gPQG3Tb3BAqDKCYjknMDPN8Has7WknTuhjx9Onc73ZUttwxlJS7RWqDjI5WjJDKqkc
-         YY0RK5D22jP62x5APzLIRXcBvSFXLswLi4euPI89GtJchEdGEWOPBYk7T17cPaTGW46H
-         sAo8DxxOoYjPy6+1z+q1WEbPEdrVUfARGuO8gIpfkQm/jY6bdXCtERiVrjIUzzLhT5wu
-         JhbqCoKWvAqrcBijMt9eZDrw50UGcpoeAgHrrkL1BGyMLhqEmAhNHqRrMaZNvMT4lGBA
-         iermO0Uahq8pbAds3Hg6SLY1nGxws43CAmQui1woxsrDG9KY5fUaR5PhV4HhUFW5WLuv
-         uewg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=CwXiTfKdRBSuqmsWvDSj+CcpjrFT7bp9Wdj7/SDDQQM=;
-        b=FlqO9w4rRTVJYIznJmJ2wGw3uv8qeFV8rwXfGZYDjtAYhPBFGy+MqU6vcjy4eiVdmc
-         11pWTLmUijcFCEbOery9V9yx4hL5IosSs9lzJ0KtKhV/QlCjk7td3LIK4u1UtXDTyIsI
-         YVQqXBS+j9mW1fzGu0+MYMp48XjLGcOonh/nYvfcYG4kzZsXDZpuqaHAlmFXs1hgQIBt
-         aAKF5oioegr0AqdCnxc25J1+l4Acs1XYSWd3YODcCQiL17P4bA4TLrIGzU45x52fNtfQ
-         Bs9/vFoEpUivD7bve0DrADwbStC2iszvQFNpTDyBXovqGSqYoyDtkq4oDQvlHyP4kAGg
-         rsuw==
-X-Gm-Message-State: APjAAAVYh5e4fk+IlZ9E5tOVyzXrKfgviUQEhqBUluagvQT0Z89sOMfK
-        x79nUWAPPe04xrkAvM4Tt1YU7gJMGXM=
-X-Google-Smtp-Source: APXvYqwILC8Qzl3XDYRopJbpc3veonxZ8pt1ecsAMrdQ8LngY2Fyk6ZNJJGcWZTk1ps0EoHJAC0k6A==
-X-Received: by 2002:a37:a86:: with SMTP id 128mr1164611qkk.169.1561602293573;
-        Wed, 26 Jun 2019 19:24:53 -0700 (PDT)
-Received: from smtp.gmail.com ([187.121.151.146])
-        by smtp.gmail.com with ESMTPSA id y10sm290769qkf.82.2019.06.26.19.24.48
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Wed, 26 Jun 2019 19:24:52 -0700 (PDT)
-Date:   Wed, 26 Jun 2019 23:24:46 -0300
-From:   Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-To:     Keith Packard <keithp@keithp.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>
-Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, intel-gfx@lists.freedesktop.org
-Subject: [PATCH V5] drm/drm_vblank: Change EINVAL by the correct errno
-Message-ID: <20190627022446.fkuomcgiuu3bj3kb@smtp.gmail.com>
+        Thu, 27 Jun 2019 03:15:35 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5R7EIQc166417;
+        Thu, 27 Jun 2019 07:15:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
+ bh=p2X+JVbJ5o0EqLYpgLUvQQzWeLdP1wK1qV9gioCssZM=;
+ b=PCvB6lNBormgSrc2vPgUdwH8b3ORgsewHDocZwXHuKggSN6m5g4csLt/XVQfSHQqB3pA
+ NehbVdj4Pbho+3+r+Wzy5wp/NHlDj8m9NdOSu+/KZvDNxUAwTCIQW9VqWD7wJLUWEF3v
+ 5oz31p9gT/09yp8g+3IVij4E7II2xBkRBqZR+vy3m+3VIycU30MznkLiyXJ7gONGgFBW
+ 21YnkWiI78cMWLB5JDycfG/HKOpvlfFkWouzoVsPvRol065335rFKJTFdKB61vRp9jrm
+ RoJZFtPcJ5gh71HWDfRmb+MgihdyqLEfdouoz0Bo48ZUVYMYR0lNd1r1VTN4234+PLLr jg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 2t9c9pxf8p-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 27 Jun 2019 07:15:30 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5R7FU9U032686;
+        Thu, 27 Jun 2019 07:15:30 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 2tat7d7axp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 27 Jun 2019 07:15:30 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x5R7FRlA027091;
+        Thu, 27 Jun 2019 07:15:27 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 27 Jun 2019 00:15:26 -0700
+Date:   Thu, 27 Jun 2019 10:15:21 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     vincenzo.frascino@arm.com
+Cc:     kernel-janitors@vger.kernel.org
+Subject: [bug report] lib/vdso: Provide generic VDSO implementation
+Message-ID: <20190627071521.GA22903@mwanda>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ygl3ejqndwnzekz3"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: NeoMutt/20180716
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9300 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=578
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906270083
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9300 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=624 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906270083
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hello Vincenzo Frascino,
 
---ygl3ejqndwnzekz3
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This is a semi-automatic email about new static checker warnings.
 
-For historical reasons, the function drm_wait_vblank_ioctl always return
--EINVAL if something gets wrong. This scenario limits the flexibility
-for the userspace to make detailed verification of any problem and take
-some action. In particular, the validation of =E2=80=9Cif (!dev->irq_enable=
-d)=E2=80=9D
-in the drm_wait_vblank_ioctl is responsible for checking if the driver
-support vblank or not. If the driver does not support VBlank, the
-function drm_wait_vblank_ioctl returns EINVAL, which does not represent
-the real issue; this patch changes this behavior by return EOPNOTSUPP.
-Additionally, drm_crtc_get_sequence_ioctl and
-drm_crtc_queue_sequence_ioctl, also returns EINVAL if vblank is not
-supported; this patch also changes the return value to EOPNOTSUPP in
-these functions. Lastly, these functions are invoked by libdrm, which is
-used by many compositors; because of this, it is important to check if
-this change breaks any compositor. In this sense, the following projects
-were examined:
+The patch 00b26474c2f1: "lib/vdso: Provide generic VDSO
+implementation" from Jun 21, 2019, leads to the following Smatch
+complaint:
 
-* Drm-hwcomposer
-* Kwin
-* Sway
-* Wlroots
-* Wayland-core
-* Weston
-* Xorg (67 different drivers)
+    arch/x86/entry/vdso/vdso32/../../../../../lib/vdso/gettimeofday.c:120 __cvdso_clock_gettime32()
+    error: we previously assumed 'res' could be null (see line 107)
 
-For each repository the verification happened in three steps:
+lib/vdso/gettimeofday.c
+   101  static __maybe_unused int
+   102  __cvdso_clock_gettime32(clockid_t clock, struct old_timespec32 *res)
+   103  {
+   104          struct __kernel_timespec ts;
+   105          int ret;
+   106	
+   107		if (res == NULL)
+                    ^^^^^^^^^^^
+   108			goto fallback;
+   109	
+   110		ret = __cvdso_clock_gettime(clock, &ts);
+   111	
+   112		if (ret == 0) {
+   113			res->tv_sec = ts.tv_sec;
+   114			res->tv_nsec = ts.tv_nsec;
+   115		}
+   116	
+   117		return ret;
+   118	
+   119	fallback:
+   120		return clock_gettime_fallback(clock, (struct __kernel_timespec *)res);
+                                                                                 ^^^
+On x86 this "res" always gets dereferenced.
 
-* Update the main branch
-* Look for any occurrence of "drmCrtcQueueSequence",
-  "drmCrtcGetSequence", and "drmWaitVBlank" with the command git grep -n
-  "STRING".
-* Look in the git history of the project with the command
-git log -S<STRING>
+   121	}
 
-None of the above projects validate the use of EINVAL when using
-drmWaitVBlank(), which make safe, at least for these projects, to change
-the return values. On the other hand, mesa and xserver project uses
-drmCrtcQueueSequence() and drmCrtcGetSequence(); this change is harmless
-for both projects.
-
-Change since V4 (Daniel):
- - Also return EOPNOTSUPP in drm_crtc_[get|queue]_sequence_ioctl
-
-Change since V3:
- - Return EINVAL for _DRM_VBLANK_SIGNAL (Daniel)
-
-Change since V2:
- Daniel Vetter and Chris Wilson
- - Replace ENOTTY by EOPNOTSUPP
- - Return EINVAL if the parameters are wrong
-
-Cc: Keith Packard <keithp@keithp.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
----
- drivers/gpu/drm/drm_vblank.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
-index 603ab105125d..bd4ac834d3ef 100644
---- a/drivers/gpu/drm/drm_vblank.c
-+++ b/drivers/gpu/drm/drm_vblank.c
-@@ -1582,7 +1582,7 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, voi=
-d *data,
- 	unsigned int flags, pipe, high_pipe;
-=20
- 	if (!dev->irq_enabled)
--		return -EINVAL;
-+		return -EOPNOTSUPP;
-=20
- 	if (vblwait->request.type & _DRM_VBLANK_SIGNAL)
- 		return -EINVAL;
-@@ -1823,7 +1823,7 @@ int drm_crtc_get_sequence_ioctl(struct drm_device *de=
-v, void *data,
- 		return -EOPNOTSUPP;
-=20
- 	if (!dev->irq_enabled)
--		return -EINVAL;
-+		return -EOPNOTSUPP;
-=20
- 	crtc =3D drm_crtc_find(dev, file_priv, get_seq->crtc_id);
- 	if (!crtc)
-@@ -1881,7 +1881,7 @@ int drm_crtc_queue_sequence_ioctl(struct drm_device *=
-dev, void *data,
- 		return -EOPNOTSUPP;
-=20
- 	if (!dev->irq_enabled)
--		return -EINVAL;
-+		return -EOPNOTSUPP;
-=20
- 	crtc =3D drm_crtc_find(dev, file_priv, queue_seq->crtc_id);
- 	if (!crtc)
---=20
-2.21.0
-
---ygl3ejqndwnzekz3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAl0UKO0ACgkQWJzP/com
-vP9DYBAAl3K8kqqVa/P2GDZvxDrE3XCKPipZhDER9QiBIHjjIeEFvMavxBEVvm+T
-4fmVKfta/9xYLDcoBvzk8ZxJhpsB8xSrbEZbRcBHKQ+VtF2JU6ArKbqU5TnNBHyZ
-HY4eL0Ju6v9E0A8HmutOfIPZPgJT4DFihHhT2hqqjNldkB2CvfOnny6msf7FytGI
-piD1wPcYwYNN03ZRcXEW5ocyWByA0mY1aTGCVS1ogYkdDtgz/t7+r9I+Yx6oCWOL
-uwhgYCMskG2/PAHm/4xx+qPjwnrN/2TCAW07udDI3Mz0BpxTXlKH+iXC6K5Frt7g
-IK/kN6PHk7JCzsz+1uQMOcH+hJJHfgrLSEyUZtpE02vCe1KYHiE7FpY2D5kHj4s1
-4l5fButamxNI6mHkg1uBigkfF3R06OSuBJE+q3np0EDf7TE4LsLu91KENCdEa1SF
-r3FzrFyW/IZRNWFgNs2ZxbYysUHwogDFkWjvRIxCKnUGGe5Gdg3g2pOsPfJ+yGal
-8Bk0OsTgvVn0J9wwS+R8ldOu/Z6Qdd4wwaQpAESYQnogjAA3U5Hy0dMHV46WlycY
-6+rWBgr6AdiHKuRgXa2Ga3XphXBZCGD/2AtQmm3M8Jl51GdgPErONbMalazsl5Pb
-cTJ7rX4j+lYzlvL+saFge2VhXsi8IV6JICcrQ3eDzrjJnBzPdVY=
-=t8eI
------END PGP SIGNATURE-----
-
---ygl3ejqndwnzekz3--
+regards,
+dan carpenter

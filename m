@@ -2,109 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA81E57EC8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 10:57:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC18F57EF1
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 11:07:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726382AbfF0I5b (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Jun 2019 04:57:31 -0400
-Received: from foss.arm.com ([217.140.110.172]:49536 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726295AbfF0I5b (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Jun 2019 04:57:31 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 577D82B;
-        Thu, 27 Jun 2019 01:57:28 -0700 (PDT)
-Received: from [192.168.1.18] (unknown [172.31.20.19])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E7E343F718;
-        Thu, 27 Jun 2019 01:57:27 -0700 (PDT)
-Subject: Re: [bug report] lib/vdso: Provide generic VDSO implementation
-To:     Dan Carpenter <dan.carpenter@oracle.com>
+        id S1726382AbfF0JHr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Jun 2019 05:07:47 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:59100 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725385AbfF0JHr (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Jun 2019 05:07:47 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5R93ra1149602;
+        Thu, 27 Jun 2019 09:07:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=UhHus/Uzy2D755z9H464rH2i3T3MnOF9ibT+vry8ytE=;
+ b=DTCH8ytSYsipLvu1B6z3u/dQ3dhGv//LTBANS72cDI+H7yMXavc6BG4cB7wGVhS+jZmr
+ QUsWLsHYuSKWQCpsMy8RaS/8eIRAcEoWb018dltR0mhHcb4hyr2CNdlNAYzkk3HpC6uM
+ VSwdmBdJtd5iP+JAUT3d/to4wSk8d+C01JxI5PIGfilcXuoRS5kZpy4cCIgp8K/YiPqL
+ 44cJPELVlqvSOvNHP+NFUcCjuJO7AhsLURMPyIkmTs87q/W1VncISINiGnRxIE02u3dT
+ I6OwODGMKuRi1wIAUa495wXc2oMqB3EjO1qOz/SHjdWYY1kBmWKsrWSXiQrKC2jbtvoo 8w== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2t9brtf5wx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 27 Jun 2019 09:07:43 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x5R97YtA187558;
+        Thu, 27 Jun 2019 09:07:42 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 2t9acd4uwj-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 27 Jun 2019 09:07:42 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x5R97fKc005076;
+        Thu, 27 Jun 2019 09:07:41 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 27 Jun 2019 02:07:41 -0700
+Date:   Thu, 27 Jun 2019 12:07:34 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Vincenzo Frascino <vincenzo.frascino@arm.com>
 Cc:     kernel-janitors@vger.kernel.org
+Subject: Re: [bug report] lib/vdso: Provide generic VDSO implementation
+Message-ID: <20190627090734.GD5715@kadam>
 References: <20190627071521.GA22903@mwanda>
-From:   Vincenzo Frascino <vincenzo.frascino@arm.com>
-Message-ID: <c23609d4-2aff-bc5e-afdf-53a4824a2ef7@arm.com>
-Date:   Thu, 27 Jun 2019 09:58:18 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+ <c23609d4-2aff-bc5e-afdf-53a4824a2ef7@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <20190627071521.GA22903@mwanda>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c23609d4-2aff-bc5e-afdf-53a4824a2ef7@arm.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9300 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1906270107
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9300 signatures=668687
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1906270107
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
-
-thank you for testing my patches.
-
-On 6/27/19 8:15 AM, Dan Carpenter wrote:
-> Hello Vincenzo Frascino,
+On Thu, Jun 27, 2019 at 09:58:18AM +0100, Vincenzo Frascino wrote:
+> >    119	fallback:
+> >    120		return clock_gettime_fallback(clock, (struct __kernel_timespec *)res);
+> >                                                                                  ^^^
+> > On x86 this "res" always gets dereferenced.
+> > 
+> >    121	}
+> > 
 > 
-> This is a semi-automatic email about new static checker warnings.
-> 
-> The patch 00b26474c2f1: "lib/vdso: Provide generic VDSO
-> implementation" from Jun 21, 2019, leads to the following Smatch
-> complaint:
-> 
->     arch/x86/entry/vdso/vdso32/../../../../../lib/vdso/gettimeofday.c:120 __cvdso_clock_gettime32()
->     error: we previously assumed 'res' could be null (see line 107)
-> 
-> lib/vdso/gettimeofday.c
->    101  static __maybe_unused int
->    102  __cvdso_clock_gettime32(clockid_t clock, struct old_timespec32 *res)
->    103  {
->    104          struct __kernel_timespec ts;
->    105          int ret;
->    106	
->    107		if (res == NULL)
->                     ^^^^^^^^^^^
->    108			goto fallback;
->    109	
->    110		ret = __cvdso_clock_gettime(clock, &ts);
->    111	
->    112		if (ret == 0) {
->    113			res->tv_sec = ts.tv_sec;
->    114			res->tv_nsec = ts.tv_nsec;
->    115		}
->    116	
->    117		return ret;
->    118	
->    119	fallback:
->    120		return clock_gettime_fallback(clock, (struct __kernel_timespec *)res);
->                                                                                  ^^^
-> On x86 this "res" always gets dereferenced.
-> 
->    121	}
-> 
+> I am not sure I understand the details of this bug report. As far as I can see
+> "res" is never dereferenced in the vDSO library in this case, but it is passed
+> to the system call unchanged.
+>
 
-I am not sure I understand the details of this bug report. As far as I can see
-"res" is never dereferenced in the vDSO library in this case, but it is passed
-to the system call unchanged.
+Oh yeah.  Sorry.  My bad.  False positive.  clock_gettime_fallback()
+doesn't necessarily dereference "res".
 
-static __always_inline
-long clock_gettime_fallback(clockid_t _clkid, struct __kernel_timespec *_ts)
-{
-	long ret;
+regards,
+dan carpenter
 
-	asm ("syscall" : "=a" (ret), "=m" (*_ts) :
-	     "0" (__NR_clock_gettime), "D" (_clkid), "S" (_ts) :
-	     "rcx", "r11");
-
-	return ret;
-}
-
-This is done to maintain consistency in between the returned error code of the
-syscall and of the vDSO library.
-
-Could you please elaborate on why this bug has been reported?
-
-> regards,
-> dan carpenter
-> 
-
--- 
-Regards,
-Vincenzo

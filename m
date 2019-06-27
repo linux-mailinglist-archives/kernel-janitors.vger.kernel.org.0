@@ -2,130 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F039657D0D
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 09:22:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AE5057D40
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 09:38:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726382AbfF0HWd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Jun 2019 03:22:33 -0400
-Received: from lb3-smtp-cloud7.xs4all.net ([194.109.24.31]:38441 "EHLO
-        lb3-smtp-cloud7.xs4all.net" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726054AbfF0HWc (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Jun 2019 03:22:32 -0400
-Received: from [192.168.2.10] ([46.9.252.75])
-        by smtp-cloud7.xs4all.net with ESMTPA
-        id gOjihdZLTF85OgOjlhn7m1; Thu, 27 Jun 2019 09:22:30 +0200
-Subject: Re: [PATCH][next][V2] media: vivid: fix potential integer overflow on
- left shift
-To:     Colin King <colin.king@canonical.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190626144746.27607-1-colin.king@canonical.com>
-From:   Hans Verkuil <hverkuil@xs4all.nl>
-Message-ID: <8ccbbf10-7af1-b7e3-69ba-a24fe0cda86d@xs4all.nl>
-Date:   Thu, 27 Jun 2019 09:22:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1726408AbfF0Him (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Jun 2019 03:38:42 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:19087 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726059AbfF0Hil (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 27 Jun 2019 03:38:41 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 6318C72101FAD001921F;
+        Thu, 27 Jun 2019 15:38:39 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 27 Jun 2019 15:38:33 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        <christian.koenig@amd.com>, <David1.Zhou@amd.com>,
+        <airlied@linux.ie>, <daniel@ffwll.ch>, <dan.carpenter@oracle.com>,
+        <sam@ravnborg.org>, <Kevin1.Wang@amd.com>, <Jack.Xiao@amd.com>,
+        <Hawking.Zhang@amd.com>, <ray.huang@amd.com>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] drm/amdgpu: fix debugfs_simple_attr.cocci warnings
+Date:   Thu, 27 Jun 2019 07:45:24 +0000
+Message-ID: <20190627074524.84150-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190626144746.27607-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-CMAE-Envelope: MS4wfANbeJQlQrExE+ktB/5E8tv9lBQS7REwX+UJwZtmUixBl4f9PhR5U7hB9pr5F3Nt53oyL7NTFI3n8unEsqNvUatk94MFJChn0g/Hy9AeGz3kF9Cig3bN
- SXmx5RdXGx1qesR6b+yPDV7W77NkHdChWolM7PwzAJWA/nRCDGJfojoFH1om4UpmqHkEoCIfdMQWzLIrSPcGQBBmMuDa0200ujR0qAwqlRdDXIRf6peRY+/E
- kfF3zU/GBQEfYiOQhFXlRFOuG5qn1MNtN6FMD3stlYVAgQkwgoonfNUK7giqL7OUYsLH5hChrruywdv5yJ3EWukWp+woKbpDnVgyYbweB18=
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 6/26/19 4:47 PM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a potential integer overflow when int 2 is left shifted
-> as this is evaluated using 32 bit arithmetic but is being used in
-> a context that expects an expression of type s64.  Fix this by
-> shifting 2ULL to avoid a 32 bit overflow.
-> 
-> Addresses-Coverity: ("Unintentional integer overflow")
-> Fixes: 8a99e9faa131 ("media: vivid: add HDMI (dis)connect RX emulation")
-> Fixes: 79a792dafac6 ("media: vivid: add HDMI (dis)connect TX emulation")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
-> V2: use intermediate variables for the shifted expression to make code
->     a bit more readable.
-> ---
->  drivers/media/platform/vivid/vivid-ctrls.c | 24 +++++++++++-----------
->  1 file changed, 12 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/media/platform/vivid/vivid-ctrls.c b/drivers/media/platform/vivid/vivid-ctrls.c
-> index 3e916c8befb7..df1598e81c7a 100644
-> --- a/drivers/media/platform/vivid/vivid-ctrls.c
-> +++ b/drivers/media/platform/vivid/vivid-ctrls.c
-> @@ -1613,6 +1613,8 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
->  	}
->  
->  	if (dev->num_hdmi_inputs) {
-> +		s64 hdmi_input = (2ULL << (dev->num_hdmi_inputs - 1)) - 1;
+Use DEFINE_DEBUGFS_ATTRIBUTE rather than DEFINE_SIMPLE_ATTRIBUTE
+for debugfs files.
 
-Please call this hdmi_input_mask, ditto for the hdmi_output. This is a bitmask,
-not an HDMI input index.
+Semantic patch information:
+Rationale: DEFINE_SIMPLE_ATTRIBUTE + debugfs_create_file()
+imposes some significant overhead as compared to
+DEFINE_DEBUGFS_ATTRIBUTE + debugfs_create_file_unsafe().
 
-We should also use the GENMASK macro here:
+Generated by: scripts/coccinelle/api/debugfs/debugfs_simple_attr.cocci
 
-	s64 hdmi_input_mask = GENMASK(dev->num_hdmi_inputs - 1, 0);
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-This is a lot easier to understand.
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+index 20ce158490db..9d9f4cbbc4bd 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+@@ -1082,15 +1082,15 @@ static int amdgpu_debugfs_ib_preempt(void *data, u64 val)
+ 	return 0;
+ }
+ 
+-DEFINE_SIMPLE_ATTRIBUTE(fops_ib_preempt, NULL,
+-			amdgpu_debugfs_ib_preempt, "%llu\n");
++DEFINE_DEBUGFS_ATTRIBUTE(fops_ib_preempt, NULL, amdgpu_debugfs_ib_preempt,
++			 "%llu\n");
+ 
+ int amdgpu_debugfs_init(struct amdgpu_device *adev)
+ {
+ 	adev->debugfs_preempt =
+-		debugfs_create_file("amdgpu_preempt_ib", 0600,
+-				    adev->ddev->primary->debugfs_root,
+-				    (void *)adev, &fops_ib_preempt);
++		debugfs_create_file_unsafe("amdgpu_preempt_ib", 0600,
++					   adev->ddev->primary->debugfs_root,
++					   (void *)adev, &fops_ib_preempt);
+ 	if (!(adev->debugfs_preempt)) {
+ 		DRM_ERROR("unable to create amdgpu_preempt_ib debugsfs file\n");
+ 		return -EIO;
 
-Regards,
 
-	Hans
 
-> +
->  		dev->ctrl_dv_timings_signal_mode = v4l2_ctrl_new_custom(hdl_vid_cap,
->  					&vivid_ctrl_dv_timings_signal_mode, NULL);
->  
-> @@ -1633,12 +1635,13 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
->  			V4L2_CID_DV_RX_RGB_RANGE, V4L2_DV_RGB_RANGE_FULL,
->  			0, V4L2_DV_RGB_RANGE_AUTO);
->  		dev->ctrl_rx_power_present = v4l2_ctrl_new_std(hdl_vid_cap,
-> -			NULL, V4L2_CID_DV_RX_POWER_PRESENT, 0,
-> -			(2 << (dev->num_hdmi_inputs - 1)) - 1, 0,
-> -			(2 << (dev->num_hdmi_inputs - 1)) - 1);
-> +			NULL, V4L2_CID_DV_RX_POWER_PRESENT, 0, hdmi_input,
-> +			0, hdmi_input);
->  
->  	}
->  	if (dev->num_hdmi_outputs) {
-> +		s64 hdmi_output = (2ULL << (dev->num_hdmi_outputs - 1)) - 1;
-> +
->  		/*
->  		 * We aren't doing anything with this at the moment, but
->  		 * HDMI outputs typically have this controls.
-> @@ -1652,17 +1655,14 @@ int vivid_create_controls(struct vivid_dev *dev, bool show_ccs_cap,
->  		dev->ctrl_display_present = v4l2_ctrl_new_custom(hdl_vid_out,
->  			&vivid_ctrl_display_present, NULL);
->  		dev->ctrl_tx_hotplug = v4l2_ctrl_new_std(hdl_vid_out,
-> -			NULL, V4L2_CID_DV_TX_HOTPLUG, 0,
-> -			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
-> -			(2 << (dev->num_hdmi_outputs - 1)) - 1);
-> +			NULL, V4L2_CID_DV_TX_HOTPLUG, 0, hdmi_output,
-> +			0, hdmi_output);
->  		dev->ctrl_tx_rxsense = v4l2_ctrl_new_std(hdl_vid_out,
-> -			NULL, V4L2_CID_DV_TX_RXSENSE, 0,
-> -			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
-> -			(2 << (dev->num_hdmi_outputs - 1)) - 1);
-> +			NULL, V4L2_CID_DV_TX_RXSENSE, 0, hdmi_output,
-> +			0, hdmi_output);
->  		dev->ctrl_tx_edid_present = v4l2_ctrl_new_std(hdl_vid_out,
-> -			NULL, V4L2_CID_DV_TX_EDID_PRESENT, 0,
-> -			(2 << (dev->num_hdmi_outputs - 1)) - 1, 0,
-> -			(2 << (dev->num_hdmi_outputs - 1)) - 1);
-> +			NULL, V4L2_CID_DV_TX_EDID_PRESENT, 0, hdmi_output,
-> +			0, hdmi_output);
->  	}
->  	if ((dev->has_vid_cap && dev->has_vid_out) ||
->  	    (dev->has_vbi_cap && dev->has_vbi_out))
-> 
+
 

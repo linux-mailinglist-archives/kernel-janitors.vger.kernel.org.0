@@ -2,134 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC88F5844D
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 16:15:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7EC4558698
+	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 18:02:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726472AbfF0OPC convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Jun 2019 10:15:02 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:49882 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726445AbfF0OPC (ORCPT
+        id S1726441AbfF0QCN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Jun 2019 12:02:13 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:34591 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726431AbfF0QCN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Jun 2019 10:15:02 -0400
-Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5RE9HqD006224
-        for <kernel-janitors@vger.kernel.org>; Thu, 27 Jun 2019 10:15:00 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2tcy0shjvw-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <kernel-janitors@vger.kernel.org>; Thu, 27 Jun 2019 10:15:00 -0400
-Received: from localhost
-        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <kernel-janitors@vger.kernel.org> from <sth@linux.ibm.com>;
-        Thu, 27 Jun 2019 15:14:58 +0100
-Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
-        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 27 Jun 2019 15:14:57 +0100
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x5REEjWj24838614
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 27 Jun 2019 14:14:45 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 51905A4066;
-        Thu, 27 Jun 2019 14:14:55 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 03D3BA405F;
-        Thu, 27 Jun 2019 14:14:55 +0000 (GMT)
-Received: from [9.152.97.224] (unknown [9.152.97.224])
-        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Thu, 27 Jun 2019 14:14:54 +0000 (GMT)
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jan Hoeppner <hoeppner@linux.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        linux-s390@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20190626100658.GB3242@mwanda>
-From:   Stefan Haberland <sth@linux.ibm.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=sth@linux.ibm.com; keydata=
- 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
- cH4TNHyhiR0KAbxE8qKx3Jc=
-Subject: Re: [PATCH] s390/dasd: Fix a precision vs width bug in
- dasd_feature_list()
-Date:   Thu, 27 Jun 2019 16:14:54 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        Thu, 27 Jun 2019 12:02:13 -0400
+Received: by mail-wr1-f65.google.com with SMTP id k11so3223324wrl.1;
+        Thu, 27 Jun 2019 09:02:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=TX0PH5LENMLq4sqsfzVBDZigOo0jYU9ew5cFE8wrzTg=;
+        b=Xh0eEy4GNq2E1fFz0Mf4HWpAQzWzv+Mh4oLRb7vSZS98yd6MvlK9CboKxTcwOewaHO
+         Y7k7uwsAV/mqnfv4lPq71a6rCgKWf0mciNxHc/aKROYQqo3F7QfHLFBpsmTHsEyYO2mi
+         DeZRhmJ84RgySQzi+KhkdTqhOpF/60KlzvaNaT+wnmmfyxx9o9mMAQZRuJ3B7oLjaK0z
+         7qGkR4TqhRwg11aXJVXbRwP+c9imC8TXDHVwSKLt3ZT2x22NIX17w3krZPySsSg86iZz
+         4RFn4l+ONCVqOh6P/uyGysBZKn3Ns3QSQAS4BOl3KHDqwEIfBp6WlNvvWQGMnMiRESFO
+         Bz6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=TX0PH5LENMLq4sqsfzVBDZigOo0jYU9ew5cFE8wrzTg=;
+        b=tP2F5DYvkrXNCqnO77D9n9DiE3L8uzYNQvTg1JYCqsis+gJM2JRbTHzKecZDSHOPtd
+         R3e3gTEvxK6dnCaB++6KGlyzZXpYg6U7MJSHNiZKxhMPRslEVIWtcicRDZOQ35k4gsPI
+         SlHTpahla0BrutOmz0lvPQQe4a8L7pJ0CJElPp/9EDybV36musJzhgUkqQBTSGzm+HsY
+         QIWKuJ2NxXJMG585TaTNqHag5NCz5m0qvojvEcpPS1n03gHUSSyUVyxfVtMVYQXVIGEi
+         /M/+kXzGO/Wkz2qGtyJRAQs95dizUW08aMUJoCwySnNX/odoNrmsSvsiW5UUb3PBn/g+
+         MVmA==
+X-Gm-Message-State: APjAAAVsj3AvDcq0OUFYhqo6EVLRnOv4pyKTCoclG+zJZ+zzxjl0E4nc
+        xKkBRMGPW7PGgqaYvjdtvWLefG1061oc4ORX8MSDiYzw
+X-Google-Smtp-Source: APXvYqyuyR+GwQcgXshLDQQ3dyR5MLZwf3sqxXo+FdDohn6bKxhmN9ZlAtZsWNwu4HWBtHbYKrH5m3umtNSoLetgp1U=
+X-Received: by 2002:a05:6000:106:: with SMTP id o6mr4101553wrx.4.1561651331074;
+ Thu, 27 Jun 2019 09:02:11 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190626100658.GB3242@mwanda>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-Content-Language: en-US
-X-TM-AS-GCONF: 00
-x-cbid: 19062714-0016-0000-0000-0000028CFA35
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19062714-0017-0000-0000-000032EA788E
-Message-Id: <7b33439f-6f70-74de-0861-91081e6e048d@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-27_08:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=981 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906270165
+References: <20190626132427.12615-1-colin.king@canonical.com>
+ <CAPj87rM9y5Zen5A5KkiCqqUF5m+vAwwtLj-iJrcwFfzMev+Mrw@mail.gmail.com> <2bd65b8f-f278-1000-d9a2-6476fc3a497f@canonical.com>
+In-Reply-To: <2bd65b8f-f278-1000-d9a2-6476fc3a497f@canonical.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Thu, 27 Jun 2019 12:01:58 -0400
+Message-ID: <CADnq5_O9oA4PxnqxwTurRbgQ=M2PceiqUpZiCncdaiYmbJsiQA@mail.gmail.com>
+Subject: Re: [PATCH][next[ drm/amd/display: fix a couple of spelling mistakes
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     Daniel Stone <daniel@fooishbar.org>, Leo Li <sunpeng.li@amd.com>,
+        kernel-janitors@vger.kernel.org, Wenjing Liu <Wenjing.Liu@amd.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        amd-gfx mailing list <amd-gfx@lists.freedesktop.org>,
+        Nikola Cornij <nikola.cornij@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 26.06.19 12:06, Dan Carpenter wrote:
-> The "len" variable is the length of the option up to the next option or
-> to the end of the string which ever first.  We want to print the invalid
-> option so we want precision "%.*s" but the format is width "%*s" so it
-> prints up to the end of the string.
+On Wed, Jun 26, 2019 at 9:32 AM Colin Ian King <colin.king@canonical.com> wrote:
 >
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> Not tested.
+> On 26/06/2019 14:25, Daniel Stone wrote:
+> > Hi Colin,
+> >
+> > On Wed, 26 Jun 2019 at 14:24, Colin King <colin.king@canonical.com> wrote:
+> >> There are a couple of spelling mistakes in dm_error messages and
+> >> a comment. Fix these.
+> >
+> > Whilst there, you might fix the '[next[' typo in the commit message.
+>
+> Ugh, fickle fingers. Maybe the upstream devs will fix that before
+> applying...
 
-Thanks for the patch. I tested it and it works as expected.
-Will integrate it through the s390 tree.
+Fixed up and applied.
 
+Thanks,
+
+Alex
+
+>
+>
+> >
+> > Cheers,
+> > Daniel
+> >
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

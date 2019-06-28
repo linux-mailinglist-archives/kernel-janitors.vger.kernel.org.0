@@ -2,67 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B7A4A59DD4
-	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Jun 2019 16:33:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97D2D5A0CD
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Jun 2019 18:28:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726801AbfF1OdZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 28 Jun 2019 10:33:25 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59140 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726686AbfF1OdZ (ORCPT
+        id S1726836AbfF1Q2N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 28 Jun 2019 12:28:13 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:50842 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726772AbfF1Q2N (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 28 Jun 2019 10:33:25 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hgrwH-000836-12; Fri, 28 Jun 2019 14:33:21 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Hawking Zhang <Hawking.Zhang@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/amdgpu: fix a missing break in a switch statement
-Date:   Fri, 28 Jun 2019 15:33:20 +0100
-Message-Id: <20190628143320.5182-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Fri, 28 Jun 2019 12:28:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=oagUdOzzDJxA/KC4tIIlqlVHHrLYjT20K+kSrG+HeFo=; b=YHdyvmCd3UwJWLadUxK1fIDPf
+        knbuPeGRkdNzNZNNk/2l8ThczhJRFcy4rt0Y2z37LQrANhtoAyhGeyUMSNRWU6TVmMGm4JLN4eW7H
+        KCK5SEllXCo7OEwFo/Ru9L0L5EnXzO0uvr56y8Xu78KbEa5sfkhj5kPTKZFnFJPfUk/w0=;
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=finisterre.sirena.org.uk)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1hgtjO-00075G-PU; Fri, 28 Jun 2019 16:28:10 +0000
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+        id F1CCE440053; Fri, 28 Jun 2019 15:36:28 +0100 (BST)
+Date:   Fri, 28 Jun 2019 15:36:28 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Keerthy <j-keerthy@ti.com>, Liam Girdwood <lgirdwood@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] regulator: lp87565: fix missing break in switch
+ statement
+Message-ID: <20190628143628.GJ5379@sirena.org.uk>
+References: <20190627131639.6394-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="YPJ8CVbwFUtL7OFW"
+Content-Disposition: inline
+In-Reply-To: <20190627131639.6394-1-colin.king@canonical.com>
+X-Cookie: You need not be present to win.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
 
-Currently for the AMDGPU_IRQ_STATE_DISABLE there is a missing break
-causing the code to fall through to the AMDGPU_IRQ_STATE_ENABLE case.
-Fix this by adding in the missing break statement.
+--YPJ8CVbwFUtL7OFW
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Addresses-Coverity: ("Missing break in switch")
-Fixes: a644d85a5cd4 ("drm/amdgpu: add gfx v10 implementation (v10)")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 1 +
- 1 file changed, 1 insertion(+)
+On Thu, Jun 27, 2019 at 02:16:39PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> Currently the LP87565_DEVICE_TYPE_LP87561_Q1 case does not have a
+> break statement, causing it to fall through to a dev_err message.
+> Fix this by adding in the missing break statement.
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index 2932ade7dbd0..c165200361b2 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -4608,6 +4608,7 @@ gfx_v10_0_set_gfx_eop_interrupt_state(struct amdgpu_device *adev,
- 		cp_int_cntl = REG_SET_FIELD(cp_int_cntl, CP_INT_CNTL_RING0,
- 					    TIME_STAMP_INT_ENABLE, 0);
- 		WREG32(cp_int_cntl_reg, cp_int_cntl);
-+		break;
- 	case AMDGPU_IRQ_STATE_ENABLE:
- 		cp_int_cntl = RREG32(cp_int_cntl_reg);
- 		cp_int_cntl = REG_SET_FIELD(cp_int_cntl, CP_INT_CNTL_RING0,
--- 
-2.20.1
+This doesn't apply against current code, please check and resend.
 
+--YPJ8CVbwFUtL7OFW
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl0WJewACgkQJNaLcl1U
+h9DWSwf/fWJcNMzQ0hbKhW6O4MWjfhdLsKRJMZucvTMjF88x6m0tLqengpmOKGCi
+dONoVEtGU8VQ+y+HssN7utIBx01H8e3Hs0/uLhUAkqgTdDc3pXPA9hdwqwLIfd+/
+I+fNP2IoaU+mToQuD+JmIB2FEHn4KWyZSa7Z/ioV/bj2/tXMOA4zZzZjuqbFJWfi
+Ahiz89WLNBqa6QKQs4JtuFb2nbBqZwOged0TNGRSeQoWN+mwlZiq5w7tjETWdJtz
++8mDkTiqgQAuLL2lf86D9K5tqzNZHLaOJ6Vm7/h5W7F4GVG23uEDsrBZm013ZBTW
+lcPPI9loppwvqM1I8YMT9noJFqHHFQ==
+=e0rj
+-----END PGP SIGNATURE-----
+
+--YPJ8CVbwFUtL7OFW--

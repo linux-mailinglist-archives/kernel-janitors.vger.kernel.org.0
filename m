@@ -2,47 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D5AA58B00
-	for <lists+kernel-janitors@lfdr.de>; Thu, 27 Jun 2019 21:42:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2D5C591F4
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Jun 2019 05:28:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726463AbfF0Tmm convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 27 Jun 2019 15:42:42 -0400
-Received: from sapphire.zyber.co.nz ([54.206.75.62]:48116 "EHLO
-        sapphire.zyber.co.nz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726441AbfF0Tml (ORCPT
+        id S1726892AbfF1D2L (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 27 Jun 2019 23:28:11 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:51606 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726686AbfF1D2L (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 27 Jun 2019 15:42:41 -0400
-X-Greylist: delayed 336 seconds by postgrey-1.27 at vger.kernel.org; Thu, 27 Jun 2019 15:42:41 EDT
-Received: by sapphire.zyber.co.nz (Postfix, from userid 10085)
-        id CC1EA818B8; Fri, 28 Jun 2019 07:37:02 +1200 (NZST)
-To:     kernel-janitors@vger.kernel.org
-Subject: Contact Us Form Submission
-X-PHP-Originating-Script: 10085:Sendmail.php
-From:   info@homeoforigin.co.nz
-Date:   Fri, 28 Jun 2019 07:37:02 +1200
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-Content-Disposition: inline
+        Thu, 27 Jun 2019 23:28:11 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x5S3S6lZ006317;
+        Thu, 27 Jun 2019 22:28:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1561692486;
+        bh=lHtPKETdLi4mz0hSNNJnuE1V/UMtFP6OzWRnYrjP7po=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=cJYYRBPy3RiT5CHxIoh9lbCAyGUZ0Jyhh3HTYiu4pNLfmNYAgv2nPP7/sub8ekxnm
+         unBkNLYeyn0mBZoAM9EsEzy4aMImJe5bhcvJgIyTMMfRpo8qqUf5U3tLLAb1qKanrm
+         7BudChPInpqWkneMujwpafOdwJS6oIOQrxzMfrWY=
+Received: from DLEE104.ent.ti.com (dlee104.ent.ti.com [157.170.170.34])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x5S3S6uH083741
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Thu, 27 Jun 2019 22:28:06 -0500
+Received: from DLEE102.ent.ti.com (157.170.170.32) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Thu, 27
+ Jun 2019 22:28:06 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DLEE102.ent.ti.com
+ (157.170.170.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Thu, 27 Jun 2019 22:28:05 -0500
+Received: from [172.24.191.45] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x5S3S3Ej112735;
+        Thu, 27 Jun 2019 22:28:04 -0500
+Subject: Re: [PATCH][next] regulator: lp87565: fix missing break in switch
+ statement
+To:     Colin King <colin.king@canonical.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Lee Jones <lee.jones@linaro.org>
+CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20190627131639.6394-1-colin.king@canonical.com>
+From:   Keerthy <j-keerthy@ti.com>
+Message-ID: <1a17ea61-a164-d61f-6416-637d47668f1b@ti.com>
+Date:   Fri, 28 Jun 2019 08:58:41 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
 MIME-Version: 1.0
-Message-Id: <20190627193702.CC1EA818B8@sapphire.zyber.co.nz>
+In-Reply-To: <20190627131639.6394-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We have successfully received your Contact Us message on our website.
-
-The following information was provided:
-
-Name: IsmaelrenDA
-
-Email Address: kernel-janitors@vger.kernel.org
-
-Phone: 81344636116
-
-Message: Cannabis investoi Lontooseen: https://chogoon.com/srt/4svr8
 
 
-Thank you very much for your submission.
+On 27/06/19 6:46 PM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently the LP87565_DEVICE_TYPE_LP87561_Q1 case does not have a
+> break statement, causing it to fall through to a dev_err message.
+> Fix this by adding in the missing break statement.
+> 
+> Addresses-Coverity: ("Missing break in switch")
+> Fixes: 7ee63bd74750 ("regulator: lp87565: Add 4-phase lp87561 regulator support")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>   drivers/regulator/lp87565-regulator.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/regulator/lp87565-regulator.c b/drivers/regulator/lp87565-regulator.c
+> index 993c11702083..5d067f7c2116 100644
+> --- a/drivers/regulator/lp87565-regulator.c
+> +++ b/drivers/regulator/lp87565-regulator.c
+> @@ -180,6 +180,7 @@ static int lp87565_regulator_probe(struct platform_device *pdev)
+>   	case LP87565_DEVICE_TYPE_LP87561_Q1:
+>   		min_idx = LP87565_BUCK_3210;
+>   		max_idx = LP87565_BUCK_3210;
+> +		break;
 
+Thanks Colin.
+
+Reviewed-by: Keerthy <j-keerthy@ti.com>
+
+>   	default:
+>   		dev_err(lp87565->dev, "Invalid lp config %d\n",
+>   			lp87565->dev_type);
+> 

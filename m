@@ -2,82 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97D2D5A0CD
-	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Jun 2019 18:28:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5C8059E1F
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Jun 2019 16:45:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726836AbfF1Q2N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 28 Jun 2019 12:28:13 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:50842 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726772AbfF1Q2N (ORCPT
+        id S1726750AbfF1OpW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 28 Jun 2019 10:45:22 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59767 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726657AbfF1OpW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 28 Jun 2019 12:28:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=oagUdOzzDJxA/KC4tIIlqlVHHrLYjT20K+kSrG+HeFo=; b=YHdyvmCd3UwJWLadUxK1fIDPf
-        knbuPeGRkdNzNZNNk/2l8ThczhJRFcy4rt0Y2z37LQrANhtoAyhGeyUMSNRWU6TVmMGm4JLN4eW7H
-        KCK5SEllXCo7OEwFo/Ru9L0L5EnXzO0uvr56y8Xu78KbEa5sfkhj5kPTKZFnFJPfUk/w0=;
-Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=finisterre.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1hgtjO-00075G-PU; Fri, 28 Jun 2019 16:28:10 +0000
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-        id F1CCE440053; Fri, 28 Jun 2019 15:36:28 +0100 (BST)
-Date:   Fri, 28 Jun 2019 15:36:28 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Keerthy <j-keerthy@ti.com>, Liam Girdwood <lgirdwood@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] regulator: lp87565: fix missing break in switch
- statement
-Message-ID: <20190628143628.GJ5379@sirena.org.uk>
-References: <20190627131639.6394-1-colin.king@canonical.com>
+        Fri, 28 Jun 2019 10:45:22 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hgs7p-0000jp-HK; Fri, 28 Jun 2019 14:45:17 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Kevin Wang <kevin1.wang@amd.com>, Rex Zhu <rex.zhu@amd.com>,
+        Evan Quan <evan.quan@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/amd/powerplay: fix incorrect assignments to mclk_mask and soc_mask
+Date:   Fri, 28 Jun 2019 15:45:17 +0100
+Message-Id: <20190628144517.7747-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="YPJ8CVbwFUtL7OFW"
-Content-Disposition: inline
-In-Reply-To: <20190627131639.6394-1-colin.king@canonical.com>
-X-Cookie: You need not be present to win.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
---YPJ8CVbwFUtL7OFW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+There are null pointer checks on mlck_mask and soc_mask however the
+sclk_mask is being used in assignments in what looks to be a cut-n-paste
+coding error. Fix this by using the correct pointers in the assignments.
 
-On Thu, Jun 27, 2019 at 02:16:39PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> Currently the LP87565_DEVICE_TYPE_LP87561_Q1 case does not have a
-> break statement, causing it to fall through to a dev_err message.
-> Fix this by adding in the missing break statement.
+Addresses-Coverity: ("Dereference after null check")
+Fixes: 2d9fb9b06643 ("drm/amd/powerplay: add function get_profiling_clk_mask for navi10")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/amd/powerplay/navi10_ppt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-This doesn't apply against current code, please check and resend.
+diff --git a/drivers/gpu/drm/amd/powerplay/navi10_ppt.c b/drivers/gpu/drm/amd/powerplay/navi10_ppt.c
+index 27e5c80..ac151da 100644
+--- a/drivers/gpu/drm/amd/powerplay/navi10_ppt.c
++++ b/drivers/gpu/drm/amd/powerplay/navi10_ppt.c
+@@ -1134,14 +1134,14 @@ static int navi10_get_profiling_clk_mask(struct smu_context *smu,
+ 			ret = smu_get_dpm_level_count(smu, SMU_MCLK, &level_count);
+ 			if (ret)
+ 				return ret;
+-			*sclk_mask = level_count - 1;
++			*mclk_mask = level_count - 1;
+ 		}
+ 
+ 		if(soc_mask) {
+ 			ret = smu_get_dpm_level_count(smu, SMU_SOCCLK, &level_count);
+ 			if (ret)
+ 				return ret;
+-			*sclk_mask = level_count - 1;
++			*soc_mask = level_count - 1;
+ 		}
+ 	}
+ 
+-- 
+2.7.4
 
---YPJ8CVbwFUtL7OFW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl0WJewACgkQJNaLcl1U
-h9DWSwf/fWJcNMzQ0hbKhW6O4MWjfhdLsKRJMZucvTMjF88x6m0tLqengpmOKGCi
-dONoVEtGU8VQ+y+HssN7utIBx01H8e3Hs0/uLhUAkqgTdDc3pXPA9hdwqwLIfd+/
-I+fNP2IoaU+mToQuD+JmIB2FEHn4KWyZSa7Z/ioV/bj2/tXMOA4zZzZjuqbFJWfi
-Ahiz89WLNBqa6QKQs4JtuFb2nbBqZwOged0TNGRSeQoWN+mwlZiq5w7tjETWdJtz
-+8mDkTiqgQAuLL2lf86D9K5tqzNZHLaOJ6Vm7/h5W7F4GVG23uEDsrBZm013ZBTW
-lcPPI9loppwvqM1I8YMT9noJFqHHFQ==
-=e0rj
------END PGP SIGNATURE-----
-
---YPJ8CVbwFUtL7OFW--

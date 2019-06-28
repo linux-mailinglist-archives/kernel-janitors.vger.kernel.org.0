@@ -2,137 +2,147 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 069C25A190
-	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Jun 2019 18:57:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B6125A62D
+	for <lists+kernel-janitors@lfdr.de>; Fri, 28 Jun 2019 23:18:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726936AbfF1Q4i (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 28 Jun 2019 12:56:38 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:42514 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726883AbfF1Q4i (ORCPT
+        id S1726562AbfF1VS6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 28 Jun 2019 17:18:58 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:48175 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725783AbfF1VS5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 28 Jun 2019 12:56:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
-        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
-        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=GjcHksA4qGiaUnr9QTbALLeGH/gj9DkhMrZ1SbHiikw=; b=oCkunyEKReYW
-        4gnQc44v2vTEo2iacdCajWGkArNGwSog1x2I5M2pXvT5EYfFVoX1gmqFPsw+NauMsl67SlUgOtHWB
-        vp/U+MmYkgpuTKiFFwqORf8UsFlaW0iOuc2aszy1orc/dpEUqAiAPBzEKXhapa4kLhEb4R33z7xA4
-        lJZvw=;
-Received: from [2001:470:1f1d:6b5:7e7a:91ff:fede:4a45] (helo=finisterre.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1hguAm-0007BF-D7; Fri, 28 Jun 2019 16:56:28 +0000
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-        id CAB93440049; Fri, 28 Jun 2019 17:56:27 +0100 (BST)
-From:   Mark Brown <broonie@kernel.org>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     alsa-devel@alsa-project.org, Jaroslav Kysela <perex@perex.cz>,
-        kernel-janitors@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Takashi Iwai <tiwai@suse.com>,
-        =?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= 
-        <amadeuszx.slawinski@linux.intel.com>
-Subject: Applied "ASoC: topology: fix memory leaks on sm, se and sbe" to the asoc tree
-In-Reply-To: <20190627133208.9550-1-colin.king@canonical.com>
-X-Patchwork-Hint: ignore
-Message-Id: <20190628165627.CAB93440049@finisterre.sirena.org.uk>
-Date:   Fri, 28 Jun 2019 17:56:27 +0100 (BST)
+        Fri, 28 Jun 2019 17:18:57 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212])
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hgyGk-0006CC-JA; Fri, 28 Jun 2019 21:18:54 +0000
+Subject: Re: [PATCH][next] regulator: lp87565: fix missing break in switch
+ statement
+To:     Mark Brown <broonie@kernel.org>
+Cc:     Keerthy <j-keerthy@ti.com>, Liam Girdwood <lgirdwood@gmail.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190627131639.6394-1-colin.king@canonical.com>
+ <20190628143628.GJ5379@sirena.org.uk>
+From:   Colin Ian King <colin.king@canonical.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <4cb0e4ab-66c7-2b3d-27d3-fd5cfde8988f@canonical.com>
+Date:   Fri, 28 Jun 2019 22:18:53 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <20190628143628.GJ5379@sirena.org.uk>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="oEKD0TuaAUSDAgkxvBRIrIF2rNVkuo2dS"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
-
-   ASoC: topology: fix memory leaks on sm, se and sbe
-
-has been applied to the asoc tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.3
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From 1ad741d0e8e8ecccc16aa9ccb8362575197d91bf Mon Sep 17 00:00:00 2001
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--oEKD0TuaAUSDAgkxvBRIrIF2rNVkuo2dS
+Content-Type: multipart/mixed; boundary="tQHFnbd530JsHQTzVsockgDr2aN6yzYeZ";
+ protected-headers="v1"
 From: Colin Ian King <colin.king@canonical.com>
-Date: Thu, 27 Jun 2019 14:32:08 +0100
-Subject: [PATCH] ASoC: topology: fix memory leaks on sm, se and sbe
+To: Mark Brown <broonie@kernel.org>
+Cc: Keerthy <j-keerthy@ti.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Lee Jones <lee.jones@linaro.org>, kernel-janitors@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-ID: <4cb0e4ab-66c7-2b3d-27d3-fd5cfde8988f@canonical.com>
+Subject: Re: [PATCH][next] regulator: lp87565: fix missing break in switch
+ statement
+References: <20190627131639.6394-1-colin.king@canonical.com>
+ <20190628143628.GJ5379@sirena.org.uk>
+In-Reply-To: <20190628143628.GJ5379@sirena.org.uk>
 
-Currently when a kstrdup fails the error exit paths don't free
-the allocations for sm, se and sbe.  This can be fixed by assigning
-kc[i].private_value to these before doing the ksrtdup so that the error
-exit path will be able to free these objects.
+--tQHFnbd530JsHQTzVsockgDr2aN6yzYeZ
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
-Addresses-Coverity: ("Resource leak")
-Fixes: 9f90af3a9952 ("ASoC: topology: Consolidate and fix asoc_tplg_dapm_widget_*_create flow")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- sound/soc/soc-topology.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+On 28/06/2019 15:36, Mark Brown wrote:
+> On Thu, Jun 27, 2019 at 02:16:39PM +0100, Colin King wrote:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> Currently the LP87565_DEVICE_TYPE_LP87561_Q1 case does not have a
+>> break statement, causing it to fall through to a dev_err message.
+>> Fix this by adding in the missing break statement.
+>=20
+> This doesn't apply against current code, please check and resend.
+>=20
+So it applies cleanly against linux-next, I think the original code
+landed in mfd/for-mfd-next - c.f. https://lkml.org/lkml/2019/5/28/550
 
-diff --git a/sound/soc/soc-topology.c b/sound/soc/soc-topology.c
-index fc1f1d6f9e92..dc463f1a9e24 100644
---- a/sound/soc/soc-topology.c
-+++ b/sound/soc/soc-topology.c
-@@ -1326,10 +1326,10 @@ static struct snd_kcontrol_new *soc_tplg_dapm_widget_dmixer_create(
- 		dev_dbg(tplg->dev, " adding DAPM widget mixer control %s at %d\n",
- 			mc->hdr.name, i);
- 
-+		kc[i].private_value = (long)sm;
- 		kc[i].name = kstrdup(mc->hdr.name, GFP_KERNEL);
- 		if (kc[i].name == NULL)
- 			goto err_sm;
--		kc[i].private_value = (long)sm;
- 		kc[i].iface = SNDRV_CTL_ELEM_IFACE_MIXER;
- 		kc[i].access = mc->hdr.access;
- 
-@@ -1412,10 +1412,10 @@ static struct snd_kcontrol_new *soc_tplg_dapm_widget_denum_create(
- 		dev_dbg(tplg->dev, " adding DAPM widget enum control %s\n",
- 			ec->hdr.name);
- 
-+		kc[i].private_value = (long)se;
- 		kc[i].name = kstrdup(ec->hdr.name, GFP_KERNEL);
- 		if (kc[i].name == NULL)
- 			goto err_se;
--		kc[i].private_value = (long)se;
- 		kc[i].iface = SNDRV_CTL_ELEM_IFACE_MIXER;
- 		kc[i].access = ec->hdr.access;
- 
-@@ -1524,10 +1524,10 @@ static struct snd_kcontrol_new *soc_tplg_dapm_widget_dbytes_create(
- 			"ASoC: adding bytes kcontrol %s with access 0x%x\n",
- 			be->hdr.name, be->hdr.access);
- 
-+		kc[i].private_value = (long)sbe;
- 		kc[i].name = kstrdup(be->hdr.name, GFP_KERNEL);
- 		if (kc[i].name == NULL)
- 			goto err_sbe;
--		kc[i].private_value = (long)sbe;
- 		kc[i].iface = SNDRV_CTL_ELEM_IFACE_MIXER;
- 		kc[i].access = be->hdr.access;
- 
--- 
-2.20.1
+Colin
 
+
+
+--tQHFnbd530JsHQTzVsockgDr2aN6yzYeZ--
+
+--oEKD0TuaAUSDAgkxvBRIrIF2rNVkuo2dS
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEcGLapPABucZhZwDPaMKH38aoAiYFAl0WhD0ACgkQaMKH38ao
+AiYXqhAAgNjTAegXGgSCgEaVLMbaflCz6y02yhmBbwEtjXJsbDREpATHmq4Gbt+j
+erzMKu9kEXGF0arOAmBOkAVyvtWatjvF0Za6/vvjgUrFS5hBmukxGvzET0H9bTGz
+YNJnIxm1YROmQc8zlJDk/JTChddEsHTdmQaz4oMvhI415EyyMnXXHBnIPKKnt4de
+WRLO6cSk0wtE3uU2ueEBR9RTyaaPzvYYCCrB8ln6muXr1cBI1f2823t8Ty0PRBHS
+TxCKUjTwg1ZBWPwCkk6jqS39ET2sn8NFkhkTbvWccvhTI+EB8vNy3JeNhv/7m+BD
+EX0suKNfuOovcfZISF6ngtnSgZo4YgpuYA+ekfu8hNML2rA7hkLNGa3ykLhGv9L4
+PxqlSI8ejX94A/mAZKHzHE29J+b+LAb7lGSFecFBqOpC1sv7G8Jsv2ftdfOs1qZN
+LkIXVhFRT2dsTAVZb8HyTuDGY4KoP4nAze9ew0VDHw40QCJHwtcBUZIDlKzN+ayN
+FgfXCA3e2RT8VAxNfWU0HRpFoZRbwmfhuvjMMvvUR7ee4VUyNLD0oabI3IoEjFnh
+UXRoq6rHqDQ+aN2iz7Ya4qj+m2QKo7fEo+04uchuKWuBgewNe1Nx9vDHZFJlnw9l
+kuRZPk8KyoUWmzx2BC3j2dae2miEk9gxfZHF2L/8OwNeXYzp8CQ=
+=U/PE
+-----END PGP SIGNATURE-----
+
+--oEKD0TuaAUSDAgkxvBRIrIF2rNVkuo2dS--

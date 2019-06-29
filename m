@@ -2,33 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39B2B5AB8F
-	for <lists+kernel-janitors@lfdr.de>; Sat, 29 Jun 2019 15:31:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FE455AB9C
+	for <lists+kernel-janitors@lfdr.de>; Sat, 29 Jun 2019 15:55:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726849AbfF2NbT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 29 Jun 2019 09:31:19 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:34875 "EHLO
+        id S1726801AbfF2Nzj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 29 Jun 2019 09:55:39 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:35093 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726731AbfF2NbT (ORCPT
+        with ESMTP id S1726754AbfF2Nzj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 29 Jun 2019 09:31:19 -0400
+        Sat, 29 Jun 2019 09:55:39 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hhDRi-0004Ds-LU; Sat, 29 Jun 2019 13:31:14 +0000
+        id 1hhDpG-0006Uw-Gt; Sat, 29 Jun 2019 13:55:34 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Oded Gabbay <oded.gabbay@gmail.com>,
+To:     Rex Zhu <rex.zhu@amd.com>, Evan Quan <evan.quan@amd.com>,
         Alex Deucher <alexander.deucher@amd.com>,
         =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
         David Zhou <David1.Zhou@amd.com>,
         David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/amdkfd: fix potential null pointer dereference on pointer peer_dev
-Date:   Sat, 29 Jun 2019 14:31:14 +0100
-Message-Id: <20190629133114.14271-1-colin.king@canonical.com>
+Subject: [PATCH] drm/amd/pp: fix a dereference of a pointer before it is null checked
+Date:   Sat, 29 Jun 2019 14:55:34 +0100
+Message-Id: <20190629135534.15116-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -40,31 +40,48 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The call to kfd_topology_device_by_proximity_domain can return a NULL
-pointer so add a null pointer check on peer_dev to the existing null
-pointer check on peer_dev->gpu to avoid any potential null pointer
-dereferences.
+The pointer hwmgr is dereferenced when initializing pointer adev however
+it is a little later hwmgr is null checked, implying it could potentially
+be null hence the assignment of adev may cause a null pointer dereference.
+Fix this by moving the assignment after the null check. Note that I did
+think of removing adev as it is only used once, however, hwmgr->adev is
+a void * pointer, so using adev avoids some ugly casting so it makes sense
+to still use it.
 
-Addresses-Coverity: ("Dereference on null return value")
-Fixes: ae9a25aea7f3 ("drm/amdkfd: Generate xGMI direct iolink")
+Addresses-Coverity: ("Dereference before null check")
+Fixes: 59156faf810e ("drm/amd/pp: Remove the cgs wrapper for notify smu version on APU")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_crat.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/powerplay/smumgr/smu8_smumgr.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_crat.c b/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
-index 4e3fc284f6ac..cb6b46cfa6c2 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
-@@ -1293,7 +1293,7 @@ static int kfd_create_vcrat_image_gpu(void *pcrat_image,
- 	if (kdev->hive_id) {
- 		for (nid = 0; nid < proximity_domain; ++nid) {
- 			peer_dev = kfd_topology_device_by_proximity_domain(nid);
--			if (!peer_dev->gpu)
-+			if (!peer_dev || !peer_dev->gpu)
- 				continue;
- 			if (peer_dev->gpu->hive_id != kdev->hive_id)
- 				continue;
+diff --git a/drivers/gpu/drm/amd/powerplay/smumgr/smu8_smumgr.c b/drivers/gpu/drm/amd/powerplay/smumgr/smu8_smumgr.c
+index 8189fe402c6d..12815b3830e4 100644
+--- a/drivers/gpu/drm/amd/powerplay/smumgr/smu8_smumgr.c
++++ b/drivers/gpu/drm/amd/powerplay/smumgr/smu8_smumgr.c
+@@ -722,13 +722,11 @@ static int smu8_request_smu_load_fw(struct pp_hwmgr *hwmgr)
+ 
+ static int smu8_start_smu(struct pp_hwmgr *hwmgr)
+ {
+-	struct amdgpu_device *adev = hwmgr->adev;
+-
++	struct amdgpu_device *adev;
+ 	uint32_t index = SMN_MP1_SRAM_START_ADDR +
+ 			 SMU8_FIRMWARE_HEADER_LOCATION +
+ 			 offsetof(struct SMU8_Firmware_Header, Version);
+ 
+-
+ 	if (hwmgr == NULL || hwmgr->device == NULL)
+ 		return -EINVAL;
+ 
+@@ -738,6 +736,7 @@ static int smu8_start_smu(struct pp_hwmgr *hwmgr)
+ 		((hwmgr->smu_version >> 16) & 0xFF),
+ 		((hwmgr->smu_version >> 8) & 0xFF),
+ 		(hwmgr->smu_version & 0xFF));
++	adev = hwmgr->adev;
+ 	adev->pm.fw_version = hwmgr->smu_version >> 8;
+ 
+ 	return smu8_request_smu_load_fw(hwmgr);
 -- 
 2.20.1
 

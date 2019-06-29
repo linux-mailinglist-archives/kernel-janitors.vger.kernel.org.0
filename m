@@ -2,34 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AE41D5AAFA
-	for <lists+kernel-janitors@lfdr.de>; Sat, 29 Jun 2019 14:37:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39B2B5AB8F
+	for <lists+kernel-janitors@lfdr.de>; Sat, 29 Jun 2019 15:31:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726958AbfF2Mh2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 29 Jun 2019 08:37:28 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:34331 "EHLO
+        id S1726849AbfF2NbT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 29 Jun 2019 09:31:19 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:34875 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726906AbfF2Mh2 (ORCPT
+        with ESMTP id S1726731AbfF2NbT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 29 Jun 2019 08:37:28 -0400
+        Sat, 29 Jun 2019 09:31:19 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hhCbc-0006uv-0b; Sat, 29 Jun 2019 12:37:24 +0000
+        id 1hhDRi-0004Ds-LU; Sat, 29 Jun 2019 13:31:14 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
+To:     Oded Gabbay <oded.gabbay@gmail.com>,
         Alex Deucher <alexander.deucher@amd.com>,
         =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
         David Zhou <David1.Zhou@amd.com>,
         David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/amd/amdgpu: remove redundant assignment to variable res
-Date:   Sat, 29 Jun 2019 13:37:23 +0100
-Message-Id: <20190629123723.12752-1-colin.king@canonical.com>
+Subject: [PATCH] drm/amdkfd: fix potential null pointer dereference on pointer peer_dev
+Date:   Sat, 29 Jun 2019 14:31:14 +0100
+Message-Id: <20190629133114.14271-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -41,29 +40,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Variable res is being initialized with a value that is never read
-and res is being re-assigned a little later on. The assignment is
-redundant and hence can be removed.
+The call to kfd_topology_device_by_proximity_domain can return a NULL
+pointer so add a null pointer check on peer_dev to the existing null
+pointer check on peer_dev->gpu to avoid any potential null pointer
+dereferences.
 
-Addresses-Coverity: ("Unused value")
+Addresses-Coverity: ("Dereference on null return value")
+Fixes: ae9a25aea7f3 ("drm/amdkfd: Generate xGMI direct iolink")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
+ drivers/gpu/drm/amd/amdkfd/kfd_crat.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index df08ea172595..9b1bd8726fc2 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -4527,7 +4527,7 @@ static int amdgpu_dm_plane_init(struct amdgpu_display_manager *dm,
- {
- 	uint32_t formats[32];
- 	int num_formats;
--	int res = -EPERM;
-+	int res;
- 
- 	num_formats = get_plane_formats(plane, plane_cap, formats,
- 					ARRAY_SIZE(formats));
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_crat.c b/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
+index 4e3fc284f6ac..cb6b46cfa6c2 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_crat.c
+@@ -1293,7 +1293,7 @@ static int kfd_create_vcrat_image_gpu(void *pcrat_image,
+ 	if (kdev->hive_id) {
+ 		for (nid = 0; nid < proximity_domain; ++nid) {
+ 			peer_dev = kfd_topology_device_by_proximity_domain(nid);
+-			if (!peer_dev->gpu)
++			if (!peer_dev || !peer_dev->gpu)
+ 				continue;
+ 			if (peer_dev->gpu->hive_id != kdev->hive_id)
+ 				continue;
 -- 
 2.20.1
 

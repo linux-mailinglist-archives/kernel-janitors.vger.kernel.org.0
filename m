@@ -2,34 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77EFF5C413
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jul 2019 22:00:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B4015C449
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jul 2019 22:24:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726686AbfGAUAd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jul 2019 16:00:33 -0400
-Received: from mout.web.de ([217.72.192.78]:57721 "EHLO mout.web.de"
+        id S1726762AbfGAUYp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jul 2019 16:24:45 -0400
+Received: from mout.web.de ([212.227.17.11]:40595 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726586AbfGAUAd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jul 2019 16:00:33 -0400
+        id S1726642AbfGAUYp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 1 Jul 2019 16:24:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1562011222;
-        bh=2bnSCawYQdV0o3KcPJNQgz6BMW1THte849uoCeTmLQs=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=CxPGgMtIachIVM7iGg5xD4+pPaFh4MIvptNnRyno/Ku0YYAAN/3oRxJt7cPgEUTwz
-         U684xK8JbNQmbk9QKGxxWa6S7kMRBpmWpB9g6ZUnSM78Xhsl8jT6vOsOuo5ZWiSEEE
-         vt57R/yYERZtExW2HNxPdVa4QWN2miQOfVTMw2c4=
+        s=dbaedf251592; t=1562012678;
+        bh=tZE31hsTLdrJnV7HFtrizemEn4FOklI4Y6SQ6r9qf+Q=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=Wc1QujpZQoGk5WABxcQ/ouUbXbSszW/5EQOx2+hIGCRvRX33+L4ApBMHyo4NHBJqd
+         K6ur91X67N4roRASRDKMxEdlHK4pYtERwfyuA1jFZo4sf+B94IxW2VLfNU89NseO4j
+         UbRm7IExMHUD3a1j7L6xjSfgGVDTybb8GjgCc3+Q=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.131.131.202]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0McnuP-1hzqRL2LSr-00Hwau; Mon, 01
- Jul 2019 22:00:22 +0200
-Subject: Re: blk-mq: Use seq_puts() in __blk_mq_debugfs_rq_show()
-To:     Bart Van Assche <bvanassche@acm.org>, Jens Axboe <axboe@kernel.dk>,
-        linux-block@vger.kernel.org
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lpw6t-1iDp2H1WPH-00fltV; Mon, 01
+ Jul 2019 22:24:38 +0200
+To:     linux-clk@vger.kernel.org,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
-References: <81847ca5-fac5-710c-29d5-f70b58f6437d@web.de>
- <e2a06dfd-4a03-2f56-59e6-abce261653d6@acm.org>
 From:   Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] clk: Use seq_puts() in possible_parent_show()
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -74,57 +73,81 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <5a8b6e93-72fb-1900-3338-662db7b8975d@web.de>
-Date:   Mon, 1 Jul 2019 22:00:21 +0200
+Message-ID: <5961554a-6416-48ea-44e2-d8e3c7576af0@web.de>
+Date:   Mon, 1 Jul 2019 22:24:37 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <e2a06dfd-4a03-2f56-59e6-abce261653d6@acm.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:P25t0z/Xk7+yzRy5cfQInHyyLeeaFHT2sfFQy6OftBeiipO/4AQ
- teysYV2y8H5+tY/IhmLd9X4RC+EgSRfHuBjI9wcOHHQlNQgMRGluDfJryIRYG+dSoyJHJbR
- YYzK2Gz7JBC3GuSelEtm8cKnwTCOT1A3VHgoPiOH1IggjNDl12cxMOr6pkYra32yt+g3wXz
- x5Y++d9tF+YRYITrwMEmA==
+X-Provags-ID: V03:K1:6UeTsNBdPLOA+5HJ4v7LkjqQ6mPvqpDJ4ZzZkFCzGOYjBTRhsgz
+ y1FEUuCPz+DdKdU+/GSE+FPp6rgXQbQYBN7vNXs1EnotYsaG0PvzdIH90Z8ULOmgzknAXta
+ zDXvGciS28QsvAsveFyMQaT7gQbPXOSVdA+fJa2F5gMiyaP4EYr5zAQam9mhEUeb5gJ90yo
+ p3tUJ3FahvypEkcHebwog==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:8j9uzHAvOyM=:bZxzg39kDDb+8cuHzF5JeZ
- Gn7flCIhIIRYNeysK+qbKs24iQ2UEdtg1LOZRbxMZtlKjYOSqrbL40JP+deJJwI3PGMzZCShd
- 5Y2Ou4cfLeWwWoBs6ccqHFtM5/OWBo+Zqi6slZjSz8ynfo+GprvYgcp417gbOIw+eGbkHDtHi
- 4lzSDKhlEOFZkI7EeFIJmG/revfLhUIJiWikuH4OTSNyPK6Vkk3/PL/6GmLQLbtRWWb1APSB7
- hIFqtaxyVnUpuhfYqw7WmZWTaoFvjM8bdnt6JfCAhNs8Sb281toemSWbOE01Ct8YZ8h4RCMyH
- bo4/KVF0nAH7+2UDLqtEA6ge2opnINDjwIK/vCgBsiL0Wy463ujB5ZOyVGHxYOQMJvh+Hw9kV
- 4PGjRL4s32INDOaE8UC72DXDQL7g8JAcko5Yj2PtpWBi4usAdWN7Np5CemzY1fI6FnmykiZaU
- CX5mjtHvxRr7nchxfMvsF5c/n1SAuEccPViarviuUar0G6gNBqimmLkBl7vWtTC7Ow3PMRen9
- ipMHH0Q/1Gg+bAQz2I41AnOAVoBLS/uYoOq5Y9SKuSghLNzmLrsTXT8Ks5Z57yEjWt7O/SOSZ
- AFBqOW5HsTjoo9rqAn8caliCYUvGl+j67Lk7u7VWXis/rVpzty23rMN7DPJVmYVhVDKfb2otc
- PhA6VCTnwflCi4u3A+FMBkzJNYyM/QYKa5RWoE7/2lDMwQqujqu/oP8c2fou1UzTrqwJ0HoLb
- PwI8j/8csbhhQ+Tc8nctlODI4SzY6d/NUNFmKdns+IgCBRGOzBWpSmEborHfsKmarRYoT7XUE
- kFgjMq0sgvDuYduqxwlo1RKOCmsVMv1TCbcLfSy4U/bXtERnpdOsr0aXYCh1TLbWpCNlpy+29
- tNjCQqqG/2kOzZ55Gqc54UIR0lIWpzNtcDrLazG+uNN8uppV59040lh2gLr+kew5OSOSlZ7KL
- Wpq1bh6BUX3ZKeiE6dw+u8+j1Bqo6/DCxLYFXTNOcbOh2o7u+pQgmQUyanhXyRdQ3eBkkdPe8
- TJwPO0Fah0KIfhaCY0WbrxvKfXP2OJHDtxG2oZ0QfzLCK0pXJ6hI28iB9ikjoimX+TwTmEj9a
- DfewLiEE2/KT4RfpSUxaBfzGGLD1KqqpFED
+X-UI-Out-Filterresults: notjunk:1;V03:K0:nx3iW4owouA=:oUjlNMtC7N2uPMQWtfYkpT
+ OLmvdPl97HrZsoF+AQldC45VAS0BZK4AEV2uZn1a8PZkXTepSBVmsXp43diR1moYahIn7Wh+Z
+ RY4+BRlExwhgVpyU9Wpc5IIc9cFmpgEBAeNr49K/P7kDggAcpHDn+/qc4fKRYLYqohUyC2saA
+ WPVRPXlFPPLjJu6EpdDCywzjRsYH7AGrCcin8EvopQFcu3sHB9bFsMFADRQVBOLodcZUYu0hP
+ 4j632TykhvSGOyjDHcRcn59YRNBwIr5BHw6PRrEcTlW75BZQ8Cp1jz4E+rGAedik1OD1fpy4d
+ YlRhyBcMyQs6Azb92NPuBDupZwcz3Fyp++rbGWelSjWhCF5HOJmRfv69qWzWsMx9quobv3O8C
+ 3FPirLoA3BIEK+JcDVziSGWoKMNnnK2pSQmfSNR7kNxinEz37NSmoHzeu1EbAP4FLHQHNDtRk
+ aaRZMJrO4qPq7c85HFcQ4j9f/U7l7YPWrnx5O8TowalmDpuEOgIuXlU1Je5Szsm8gDWBpc917
+ icttGFZ83t7FsLSKCvA9aI2+xVfckVMCMxSmTNRBnK/M5yIWLih+iVi7g9lidZrdUDTlArIbp
+ 67HlekizDWhaFIQRywWMKzBIfd3hQkEzC/mhdBdu1cdioFimmt4CAXLrfQN7joLN7h1BhymKh
+ EDrEUx+9q4fG3jl/KDUKLQIXoQZ8FNBoBC9NgAHOiiPjBc9vDA96REFFTuYbxrqr0jumy1eqt
+ P7XuS9PhbXvRyKOoTVSA1hZRyBJUvptcjqfwsX96PLykPG9pTBEKysTpRofWP99bSWq+4j8wj
+ JlGTIDWW300ZNbKvFTBHl0UE0/St7Y94JtSQ1GlvAcQfAqNaO1tW6/geAB8Ic8TQErGCogJS5
+ 7QlzZa3CrqdWNcPLQ7woSOSRNhQjdVKMGnnw5Y6phcqPw/eX8NtiGTTACIJA4VEBr+AuymjFv
+ U8d+/kWEIBjsCYf7e/JuLn139grIiVbOKnIbk8HGMTSVb9yLHsyyu9bgmetPP+dwzV1eSiMei
+ 07p7g+56leVb47yHHZ8hG7wWX4CZ6c3XSHPwuzw9NSjL2+seq86muxFIPJjpEE61iBHM4m/HI
+ WwvFP03vKceFhiaAM3wK9aCKjhhmvfFmdpt
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> A string which did not contain a data format specification should be pu=
-t
->> into a sequence. Thus use the corresponding function =E2=80=9Cseq_puts=
-=E2=80=9D.
->
-> Why should this be done?
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Mon, 1 Jul 2019 22:20:40 +0200
 
-Do you prefer an other wording for the desired data output?
+A string which did not contain a data format specification should be put
+into a sequence. Thus use the corresponding function =E2=80=9Cseq_puts=E2=
+=80=9D.
 
+This issue was detected by using the Coccinelle software.
 
-> Or in other words, what is wrong with the current code
-> other than that it is slightly verbose and slightly slower than seq_puts=
-()?
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ drivers/clk/clk.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-I suggest to improve such implementation details also at this place.
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index efa593ecbfa9..140afebeb238 100644
+=2D-- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -3013,15 +3013,15 @@ static void possible_parent_show(struct seq_file *=
+s, struct clk_core *core,
+ 	 */
+ 	parent =3D clk_core_get_parent_by_index(core, i);
+ 	if (parent)
+-		seq_printf(s, "%s", parent->name);
++		seq_puts(s, parent->name);
+ 	else if (core->parents[i].name)
+-		seq_printf(s, "%s", core->parents[i].name);
++		seq_puts(s, core->parents[i].name);
+ 	else if (core->parents[i].fw_name)
+ 		seq_printf(s, "<%s>(fw)", core->parents[i].fw_name);
+ 	else if (core->parents[i].index >=3D 0)
+-		seq_printf(s, "%s",
+-			   of_clk_get_parent_name(core->of_node,
+-						  core->parents[i].index));
++		seq_puts(s,
++			 of_clk_get_parent_name(core->of_node,
++						core->parents[i].index));
+ 	else
+ 		seq_puts(s, "(missing)");
 
-Regards,
-Markus
+=2D-
+2.22.0
+

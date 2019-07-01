@@ -2,23 +2,23 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 825F45B596
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jul 2019 09:14:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E6795B594
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jul 2019 09:14:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727709AbfGAHOA convert rfc822-to-8bit (ORCPT
+        id S1727784AbfGAHOF convert rfc822-to-8bit (ORCPT
         <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jul 2019 03:14:00 -0400
-Received: from relay4-d.mail.gandi.net ([217.70.183.196]:37173 "EHLO
-        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727206AbfGAHOA (ORCPT
+        Mon, 1 Jul 2019 03:14:05 -0400
+Received: from relay7-d.mail.gandi.net ([217.70.183.200]:48267 "EHLO
+        relay7-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727723AbfGAHOE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jul 2019 03:14:00 -0400
+        Mon, 1 Jul 2019 03:14:04 -0400
 X-Originating-IP: 86.250.200.211
 Received: from xps13 (lfbn-1-17395-211.w86-250.abo.wanadoo.fr [86.250.200.211])
         (Authenticated sender: miquel.raynal@bootlin.com)
-        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id D61AEE0007;
-        Mon,  1 Jul 2019 07:13:52 +0000 (UTC)
-Date:   Mon, 1 Jul 2019 09:13:52 +0200
+        by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 929212000C;
+        Mon,  1 Jul 2019 07:14:01 +0000 (UTC)
+Date:   Mon, 1 Jul 2019 09:14:00 +0200
 From:   Miquel Raynal <miquel.raynal@bootlin.com>
 To:     Colin King <colin.king@canonical.com>
 Cc:     Sascha Hauer <s.hauer@pengutronix.de>, Han Xu <han.xu@nxp.com>,
@@ -79,8 +79,4 @@ Colin King <colin.king@canonical.com> wrote on Tue,  4 Jun 2019
 
 Applied to nand/next, thanks.
 
-Miquèl
-
-
-Thanks,
 Miquèl

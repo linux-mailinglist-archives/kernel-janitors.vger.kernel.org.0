@@ -2,32 +2,40 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 217B75BA71
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jul 2019 13:16:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A22195BBD6
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jul 2019 14:42:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728311AbfGALQt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jul 2019 07:16:49 -0400
-Received: from mout.web.de ([212.227.17.12]:35283 "EHLO mout.web.de"
+        id S1729082AbfGAMlg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jul 2019 08:41:36 -0400
+Received: from mout.web.de ([217.72.192.78]:49405 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727239AbfGALQs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jul 2019 07:16:48 -0400
+        id S1727128AbfGAMlg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 1 Jul 2019 08:41:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1561979803;
-        bh=dZ4VcO9pNxsQV4z29dsXRp5NdEoer3A955Q78CzC6Gw=;
-        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=T0FjnRPeKHYk6XmnMGFJW9iGNjFPVjhw8lbwgwalXdCIIvJBAUimTGXfHUpSewV/+
-         gkzr5US0/gnRfFEA7MBRdSUr1wsJKWfDxuItyd+p+/Iy+Zge09PnJ5J86PJl9Yb/CQ
-         l/wJUgs9g9hvvGvOL8ZcJ0SgRH0I6DxGtiWL+aNk=
+        s=dbaedf251592; t=1561984859;
+        bh=LQ55hwCCQ2FoTP2QGEKErwY6kt8vAGzxOs6SmA7nYGY=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=X1IDdAFQKzi660dsrJWh3D3Jv2tvygD2nAQ3tDG4Y0VzPbnR2WlM+RCy5ATkVqdbl
+         RqfrCSFNIgzdPwtYFG6wm5hfybpcA/nNVJNncaHjP3s6JXStXQL/rBWdqqe/8kZtLp
+         /Y2r7sOgX/Cjrw0OWr8DwQEHJ/AgL/ShtTgEF5d4=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.131.131.202]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M3T5g-1iYUt129Zo-00qyEw; Mon, 01
- Jul 2019 13:16:43 +0200
-To:     linux-raid@vger.kernel.org, Shaohua Li <shli@kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+Received: from [192.168.1.2] ([93.131.131.202]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MDP6H-1hkt5q1wp3-00Gs1X; Mon, 01
+ Jul 2019 14:40:59 +0200
+Subject: Re: [v2] Coccinelle: Suppression of warnings?
+To:     Enrico Weigelt <lkml@metux.net>, kernel-janitors@vger.kernel.org
+Cc:     Gilles Muller <Gilles.Muller@lip6.fr>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Ding Xiang <dingxiang@cmss.chinamobile.com>,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        LKML <linux-kernel@vger.kernel.org>
+References: <05d85182-7ec3-8fc1-4bcd-fd2528de3a40@web.de>
+ <2744a3fc-9e67-8113-1dd9-43669e06386a@web.de>
+ <0b48a5c5-0814-6414-39ba-beb1b8b5253a@metux.net>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] md-multipath: Replace a seq_printf() call by seq_putc() in
- multipath_status()
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -72,71 +80,53 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <ad2e4b58-268e-c9e5-8a66-8cb5dee8d91e@web.de>
-Date:   Mon, 1 Jul 2019 13:16:42 +0200
+Message-ID: <eb95005d-e685-0a8f-416c-1a30ad3fbaa0@web.de>
+Date:   Mon, 1 Jul 2019 14:40:43 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.2
 MIME-Version: 1.0
+In-Reply-To: <0b48a5c5-0814-6414-39ba-beb1b8b5253a@metux.net>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:1c20TXWNrjNbZ4TuxWQThN9i7ALgGwSyB2fkS0vBGm1yF0ch/zq
- PI7KsJfdMxrVBMDom7mdNkGR+wDf12qP0BEwjAnka7nhHmNtsv6GSYK0jGawJOpzKUFyGh/
- ura5+DD/uv7fdWyYLo19+noZaty+tQskevsk6Uh0P3EmAx6qRpAdzkelzD6p1czcl+Q25i1
- VI/P7et4lQ6ntibv6SAIw==
+X-Provags-ID: V03:K1:ydQQuOaMKrrPNBxNI2I3+74fCb+1kGiptO3tfChLT3ZEQoyulwE
+ VCAhoo7BuKMDByeQQJ8Hvs8+EjynWyypzMnUAPY2okMsOi5DZ45xQ5kuRK3/DVoUtcEBLsS
+ FD35tiIas8jC6ROLqfXfJl2bAWohcL6o8dBtjOsMIEHnDuoKtsDuJcNPjza6Dm7dN1Ipd7y
+ bh1K9lH0NdGX8ht1KzT3w==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:0eZuVMS2BKE=:L4wXZcJHrCyntAOgsKTguO
- EKRZ+UUMQzsnohTfiZaha9je1XhPC/3U8yGMDZtJgCnUvhnOFJuZMW22E39qDakwHoJpIlSoB
- Ca2KsxqShwypsOH8eIcduItHzJQDuVovDkIpnI1QdQKCpMGT/aXWuCEdc42HYXYp9KOlKre3F
- Y66bpONpIiwofsxKwCJAyvaNBA2vemMLTyF05xAkCRkOBJ3fl/ncX10IGaKFGPEMGKhxzh4wP
- 4h7A/QFYAq2qJW2WgU1hmRYsc6bd4B6wUYdmAKnPzcJFg2U0wfJY9ejmjVvwIi1UI2u4vlnpB
- cJXr73fskkj8sy+WY+WggMYxLhNNdaIHhfP4IrQ/G+grZJ9NT8TYjLAV6PfOf08fG8gLfD1yH
- wntpuQO5XauHzQCQVXxfWBbXxwrlHLDZQuWvt5v1aN7dludNE0lhrSolHOpVo+Ua+cZBFLvWO
- 3c1SLluQIphqwdg3Ca/JJNKT0lnL77CGI8i2VDO22meAypumiEAK3mPOmlZc9oJVmq0pj8a2g
- KcjIVh0kQsS97ioDWm7Yi594x9UbJxBr3jd3EGgwD1xrdtc+uocQx5m46n8AEO/1f1hKo0pBX
- Q3Cnd86/RQ0Zv5tlhNeb/p53sU1Tts5XP9ajSZaxSHOEA7N+F3p7l8mlPQUb5EkCmsJPGc74U
- P6ovKJOdHG2J7+kG2NTyBBEa5aUltO9fKIE92XPtQc02WVqrtSMbeglCgu6YONGtzdm5HrTF7
- YSqzAZZLqG4tPIqIhMq+q017dQh2qL05U1FYPqbuexKBJbCZBhQoqauw04D/BS4iaJVI+Nbnk
- wiky5o76RLHmblbnZ0ixJeQAUBOmPtcw6UmFOlbg5cEcb0gDDXHVZvnd7Z+w5RX03u4favs+i
- ArHZFkcP8fV5h4v6NFEitKq6sv/C2EZg0GC8KS1v0YBfaXuIdF9saN+3U6AdcDx5bZQ9BOcts
- 1d3usfEHCiQABjgeDHckBTk6TIu2MVgh4vcJIeSrLqehvhKb6KtHUTBUSNZTCgmOb91ytjE1W
- Xv+8dMwTLpsw8QndqVaxERRdzSxpDqhKkzjIzKI+vy8j1KbswPO2eFJnwvJT5IWUOi1ny5c3y
- kOM+OfR2Yn0Kx9FriiMG4JJZdRY/0SXmSUM
+X-UI-Out-Filterresults: notjunk:1;V03:K0:0AOVUaSr0H4=:8k9UO0GwcaGwlcFRU3/amX
+ cMXTxKW9vzZsrOrw7CYOEu6zvoMVLtWRz2cQ8DaAwf2qjjKK7TG6jG/pJ6nH1cxm87rVmm3BD
+ 9iHKhXvzcFNfVrbfHGZzvrbY6gwAZAj5CMX64OIDEQdtv7AXS2c4CHHZyjPjmQj42wjfBDC4D
+ 0gZOS2A9ZoOmG43nNh56S72moP5CFgCSkhJBUoWl5Bu/ZPvbh5KfJvURFMjw7cMcfDl4JrO8r
+ SC/CYzl6V8O0X1ikiAVprASYWFG98wMimf6Cfs4dt1kRP/OEDlPnqvRCZqKzrYHElUWY8b6Xe
+ fG5b/l3xjq1GJzDQ6ofYNZPeL6tb2SBWcfsVIa1GXtWrw1KrCye/gwEV0tbGkFDDWln54mWJi
+ x5NKD/p2QRXbeKvmzHSznZCTIbuPRRJ4P3dtEWDw5+ZXE4aYZn2bbl552RNZd/VfnFiLOmr6D
+ e+GI2868ERZRmISjAL/asWEmpF7Ap7kqg8/AXCILnpeRhC82QpnmmhvCxuk5rex9Sfq533GdY
+ k1SFZtbSN+1fogKoFs+oE65Z9RXKj2mvbJM90Ls22wJd3N9sMyKjn37FbWRrHc1Pz40juzq0C
+ mzJVsbBX3twJw+OiVNpFr/vbAELaDksrZ4bmzrhb6bv91lHn0LgT+5TL/LAf+DQ70367LaUsA
+ B4FoO4kafZPRPsgQKh2r5pLHnef5396Bbcf6Vt55ivgrdXKewPn+htDlg2LEg+kzhfbK/LOeB
+ jz4WV6szhnzPiQDgFXPMNMi1aleJ4aFfxLVxTl/99jpOmz5d8rwzffV16BalPdouNHU/OXi6N
+ fHU6YZI0FmUfmVoVTiqqEdEDG5mbZHQwSdWYMBs2YiSWT7RNpTPVxuzViiUc86ILv/MmnLQwV
+ FQPA9tPS1hY7MxZpMWJ7LHSJJbwv14ZOzL7XyAVFCZ6ky5jqL2J+dd8IfGx4sDbtIfvs/qMCG
+ w0jdW/t4tcp1kjlLZxtBqkd42tvkCsjubO0j0AcqdyEhTXO2DRZ0DiZM5H3cCGbCNd4KKmACM
+ ka/XR4CppLOkKidMUyGRLtnbk4Syz6A6e4BRhrxds3AY67B5v58It4CdlOhpLAQxG3BX/rXJc
+ aFx9EHnP+L4PFxAjkewM4127Pfcu7Eie7rF
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Mon, 1 Jul 2019 13:07:55 +0200
+> By the way: do we have any mechanism for explicitly suppressing
+> individual warnings (some kind of annotation),
 
-A single character (depending on a condition check) should be put
-into a sequence. Thus use the corresponding function =E2=80=9Cseq_putc=E2=
-=80=9D.
+I do not know such an accepted specification interface
+(for the handling together with SmPL scripts) so far.
+How would you identify possibly unwanted messages in a safe way?
 
-This issue was detected by using the Coccinelle software.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- drivers/md/md-multipath.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> when the maintainer is sure that some particular case is a false-positive ?
 
-diff --git a/drivers/md/md-multipath.c b/drivers/md/md-multipath.c
-index 6780938d2991..3bf6f97ea264 100644
-=2D-- a/drivers/md/md-multipath.c
-+++ b/drivers/md/md-multipath.c
-@@ -146,7 +146,8 @@ static void multipath_status(struct seq_file *seq, str=
-uct mddev *mddev)
- 	rcu_read_lock();
- 	for (i =3D 0; i < conf->raid_disks; i++) {
- 		struct md_rdev *rdev =3D rcu_dereference(conf->multipaths[i].rdev);
--		seq_printf (seq, "%s", rdev && test_bit(In_sync, &rdev->flags) ? "U" : =
-"_");
-+		seq_putc(seq,
-+			 rdev && test_bit(In_sync, &rdev->flags) ? 'U' : '_');
- 	}
- 	rcu_read_unlock();
- 	seq_putc(seq, ']');
-=2D-
-2.22.0
+Do you know any specific source code places already where you would get
+concerned about the confidence and relevance of the provided information?
 
+Regards,
+Markus

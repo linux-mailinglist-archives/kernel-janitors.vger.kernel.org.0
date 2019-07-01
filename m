@@ -2,107 +2,133 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 495895C4DD
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jul 2019 23:13:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BE9D5C5BE
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 00:43:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726838AbfGAVNm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jul 2019 17:13:42 -0400
-Received: from mail-eopbgr820045.outbound.protection.outlook.com ([40.107.82.45]:3536
-        "EHLO NAM01-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726586AbfGAVNm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jul 2019 17:13:42 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vmware.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nMFR3i3THOPzgS89RB5Oh3siHHrKgG8DK9ESuPmhX6Q=;
- b=F7qU8W2GnSN8ZbdxmVj+9mJRrqObiYR29ZCjI/tSjTxJKPFGIThxxesjncg94plZ4vbz4imeg6HZqHzzuRBH2dbM5C9PyaQblRm+vE/G6rLPN2jJIVOk5VOTkjcK1MN26ncey5tfzdh0LWynehZB1qSBw7St/VJjpqJLfj9Cfbg=
-Received: from BY5PR05MB6883.namprd05.prod.outlook.com (52.132.255.33) by
- BY5PR05MB6803.namprd05.prod.outlook.com (52.133.252.92) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2052.14; Mon, 1 Jul 2019 21:13:30 +0000
-Received: from BY5PR05MB6883.namprd05.prod.outlook.com
- ([fe80::584a:a3a6:b340:a43a]) by BY5PR05MB6883.namprd05.prod.outlook.com
- ([fe80::584a:a3a6:b340:a43a%2]) with mapi id 15.20.2052.010; Mon, 1 Jul 2019
- 21:13:30 +0000
-From:   Deepak Singh Rawat <drawat@vmware.com>
-To:     Colin King <colin.king@canonical.com>,
-        Linux-graphics-maintainer <Linux-graphics-maintainer@vmware.com>,
-        Thomas Hellstrom <thellstrom@vmware.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH][next] drm/vmwgfx: remove redundant assignment to sub_res
-Thread-Topic: [PATCH][next] drm/vmwgfx: remove redundant assignment to sub_res
-Thread-Index: AQHVKt5wIJVpf9QUkUa3BxdGaPrsIKa2Ti8A
-Date:   Mon, 1 Jul 2019 21:13:30 +0000
-Message-ID: <4fbbedfdb26eee7f21d8d681ce9d56a881f41c92.camel@vmware.com>
-References: <20190624224444.14099-1-colin.king@canonical.com>
-In-Reply-To: <20190624224444.14099-1-colin.king@canonical.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: BYAPR06CA0055.namprd06.prod.outlook.com
- (2603:10b6:a03:14b::32) To BY5PR05MB6883.namprd05.prod.outlook.com
- (2603:10b6:a03:1c9::33)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=drawat@vmware.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-x-originating-ip: [66.170.99.2]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 2daaadb9-97c4-4f8f-102a-08d6fe68f760
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:BY5PR05MB6803;
-x-ms-traffictypediagnostic: BY5PR05MB6803:
-x-ld-processed: b39138ca-3cee-4b4a-a4d6-cd83d9dd62f0,ExtAddr
-x-microsoft-antispam-prvs: <BY5PR05MB68031443285AD6D4194C713BBAF90@BY5PR05MB6803.namprd05.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:336;
-x-forefront-prvs: 00851CA28B
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(39860400002)(396003)(376002)(346002)(136003)(366004)(189003)(199004)(6246003)(68736007)(52116002)(26005)(99286004)(6436002)(14454004)(102836004)(3846002)(6116002)(186003)(25786009)(6486002)(76176011)(36756003)(53936002)(110136005)(4326008)(14444005)(256004)(66066001)(386003)(6512007)(6506007)(5660300002)(73956011)(446003)(2501003)(66946007)(8936002)(11346002)(50226002)(66476007)(316002)(66556008)(54906003)(71190400001)(486006)(71200400001)(478600001)(8676002)(64756008)(66446008)(81166006)(2616005)(2906002)(476003)(229853002)(81156014)(86362001)(118296001)(305945005)(7736002)(99106002);DIR:OUT;SFP:1101;SCL:1;SRVR:BY5PR05MB6803;H:BY5PR05MB6883.namprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: vmware.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: hoRIwVbzUNepfF8Us9S8U7/07t2Bwzxtou7a/zrgZ/HC3oVFrIf/Bd3I+RExqGMhZB+tBqc3zjh/CZcfoMW64uHKYMBVVzXOGGGgbu45HjYJoG+LGu5CxGeEpwnaPVdw1mInKN3sFNzr+SsEy8yNr+q2k3j/wasgsNMLdjFQuxHxgPXkHPWLdhfH32ko/wjz3FNzNPStRP5aHlaBDkzG7JZVBog9iRzvj3B6CsBT1wzMMK+WMdGSlCxz6EIZ1EIOAT4ZuIW412FeiQ2FveNL/rpT+uK0dGNQRYkTK4Fze60gLENITh/ButS/11/e/dBosqb68lak9rGmRnW+HBnsINOh0nl+emGY7sDBcC1WbW4ven0QoZgIgPJ09bpBlb6qHWvSd/2qTRXnEvhb+m0Uzmp5gfJm4iNdo7hiTyfqtcA=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <CE59BA881CCFC5499B6C35AB41867D72@namprd05.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S1726967AbfGAWnd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jul 2019 18:43:33 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:40029 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726341AbfGAWnd (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 1 Jul 2019 18:43:33 -0400
+Received: by mail-ot1-f65.google.com with SMTP id e8so15151556otl.7;
+        Mon, 01 Jul 2019 15:43:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=H+FNw+NOlut6naomTH3Jaosx9D2x6bZue6jd4dsjEec=;
+        b=k5sA5zL3ucaqPtCjjSF7aojXfe6ajpmsNM4fd0lVnKYEcKKoQPJe21C/a1CyVBdraN
+         db2pL5M85fQLAqZkff/n44BrT5YkOLFqfqDCw01JOB6Lukm2BAKlUboh1LgM3qvCVnTq
+         1C7pR8xk76zE0Pq/BrZmMTqC5UH6i2yJP3f1Pa/ow4t5NjrNQA3uhVxeFK7eAgDaryaY
+         V0UrQfn2yn9hISC34eOIgM7p/fRy2LeeaspKBC1mFCZ91lqQqPPzgZjyRlSRst1hkcI8
+         EVbUDjlR+DBjMb+lZZ/qOqJsra1/JKILag2e/Be5yBF+DbasnaBShlfMRYhN8L6mB04y
+         MVpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=H+FNw+NOlut6naomTH3Jaosx9D2x6bZue6jd4dsjEec=;
+        b=H19Bs8nh/jok4t5TIRPUI+UOhpAUCcavPEukYpd6KTjEfoyGFEEJzQjuLrpUaZlfZH
+         U/+GY41g8ee00xgotg/9P5UFmF8hptWgg/hcrBX/SPjTPlm2AQy/VD3Dwyzn1B5PnjIs
+         Rfw8TWGXteDqpcwg2yRYXxmOgh0gIJvG3aw8vocJ/UAZVXSBuHkuxOocIM8ju4t6A+Yj
+         0VG1SPCceojtM+W7FO6Dlz2prc0YTDIPIHpzVbfOVw3ClNSWdCOpojpl/VGdZFWobZin
+         be+JgZpxDqalSNx9mmR7cZzi9uVIyAOBS+R/e/KKdWGV4QUyDw53VH2ztBzWT+JjMst2
+         Tafg==
+X-Gm-Message-State: APjAAAVdqKDWSY2FWpavj6MFhiEUlh4+dd0jfqmIkymI74ygcUplTzdr
+        vRSoWShQsCB9NFun3GxP0ybJcmPKSG1rXRYr3sA=
+X-Google-Smtp-Source: APXvYqwmovHM5voAuTylzInGXDPJ/PcyDtIGDZIX7k36UfXqOEDyHSTNd1MplXuOwNAuC5VUWb/c/0g8bRoj7Iou7SM=
+X-Received: by 2002:a9d:23ca:: with SMTP id t68mr21564574otb.98.1562021012050;
+ Mon, 01 Jul 2019 15:43:32 -0700 (PDT)
 MIME-Version: 1.0
-X-OriginatorOrg: vmware.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2daaadb9-97c4-4f8f-102a-08d6fe68f760
-X-MS-Exchange-CrossTenant-originalarrivaltime: 01 Jul 2019 21:13:30.3688
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b39138ca-3cee-4b4a-a4d6-cd83d9dd62f0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: drawat@vmware.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR05MB6803
+References: <20190617165836.4673-1-colin.king@canonical.com>
+ <20190619051308.23582-1-martin.blumenstingl@googlemail.com>
+ <92f9e5a6-d2a2-6bf2-ff8a-2430fe977f93@canonical.com> <CAFBinCDmYVPDMcwAAYhMfxxuTsG=xunduN58_8e20zE_Mhmb7Q@mail.gmail.com>
+ <CAFBinCC-LLpfXQRFcKBbUpCfKc0S9Xtt60QrhEThsOFV-T7vFw@mail.gmail.com>
+ <c46d2d17-c35b-46f0-0674-0c55bea3a272@canonical.com> <CAFBinCBk5aPVE+vq5px3QKS1T_R=WGXXxEJMC9X676KGvi9jdg@mail.gmail.com>
+ <26646ff1-059f-fb2d-e05d-43009aeb2150@canonical.com> <CAFBinCAx5qrPK1z68bF-tGKpJQfKLnee65qBOxMS4nj8t381+Q@mail.gmail.com>
+In-Reply-To: <CAFBinCAx5qrPK1z68bF-tGKpJQfKLnee65qBOxMS4nj8t381+Q@mail.gmail.com>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Tue, 2 Jul 2019 00:43:21 +0200
+Message-ID: <CAFBinCCpJLSQiUeqpQTKQDgjy7-ROgjYa913Xe1My_oc6miTzw@mail.gmail.com>
+Subject: Re: [PATCH] net: stmmac: add sanity check to device_property_read_u32_array
+ call
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     alexandre.torgue@st.com, davem@davemloft.net, joabreu@synopsys.com,
+        kernel-janitors@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        mcoquelin.stm32@gmail.com, netdev@vger.kernel.org,
+        peppe.cavallaro@st.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-SGkgQ29saW4sDQoNClJldmlld2VkLWJ5OiBEZWVwYWsgUmF3YXQgPGRyYXdhdEB2bXdhcmUuY29t
-Pg0KDQpUaGFua3MsDQpEZWVwYWsNCg0KDQpPbiBNb24sIDIwMTktMDYtMjQgYXQgMjM6NDQgKzAx
-MDAsIENvbGluIEtpbmcgd3JvdGU6DQo+IEZyb206IENvbGluIElhbiBLaW5nIDxjb2xpbi5raW5n
-QGNhbm9uaWNhbC5jb20+DQo+IA0KPiBWYXJpYWJsZSBzdWJfcmVzIGlzIGluaXRpYWxpemVkIHRv
-IGEgdmFsdWUgdGhhdCBpcyBuZXZlciByZWFkIGFuZCBpdA0KPiBpcyByZS1hc3NpZ25lZCBsYXRl
-ciBpbiBhIGZvci1sb29wLiAgVGhlIGluaXRpYWxpemF0aW9uIGlzIHJlZHVuZGFudA0KPiBhbmQg
-Y2FuIGJlIHJlbW92ZWQuDQo+IA0KPiBBZGRyZXNzZXMtQ292ZXJpdHk6ICgiVW51c2VkIHZhbHVl
-IikNCj4gU2lnbmVkLW9mZi1ieTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fub25pY2Fs
-LmNvbT4NCj4gLS0tDQo+ICBkcml2ZXJzL2dwdS9kcm0vdm13Z2Z4L3Ztd2dmeF9zdXJmYWNlLmMg
-fCAyICstDQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkN
-Cj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2dwdS9kcm0vdm13Z2Z4L3Ztd2dmeF9zdXJmYWNl
-LmMNCj4gYi9kcml2ZXJzL2dwdS9kcm0vdm13Z2Z4L3Ztd2dmeF9zdXJmYWNlLmMNCj4gaW5kZXgg
-ODYyY2E0NDY4MGNhLi4zMjU3YmE2ODlkOTMgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvZ3B1L2Ry
-bS92bXdnZngvdm13Z2Z4X3N1cmZhY2UuYw0KPiArKysgYi9kcml2ZXJzL2dwdS9kcm0vdm13Z2Z4
-L3Ztd2dmeF9zdXJmYWNlLmMNCj4gQEAgLTE5MTQsNyArMTkxNCw3IEBAIHN0YXRpYyB2b2lkDQo+
-IHZtd19zdXJmYWNlX3RleF9kaXJ0eV9yYW5nZV9hZGQoc3RydWN0IHZtd19yZXNvdXJjZSAqcmVz
-LA0KPiAgCX0gZWxzZSB7DQo+ICAJCS8qIERpcnR5IHJhbmdlIGNvdmVycyBtdWx0aXBsZSBzdWIt
-cmVzb3VyY2VzICovDQo+ICAJCXN0cnVjdCBzdmdhM2RzdXJmYWNlX2xvYyBsb2NfbWluLCBsb2Nf
-bWF4Ow0KPiAtCQl1MzIgc3ViX3JlcyA9IGxvYzEuc3ViX3Jlc291cmNlOw0KPiArCQl1MzIgc3Vi
-X3JlczsNCj4gIA0KPiAgCQlzdmdhM2RzdXJmYWNlX21heF9sb2MoY2FjaGUsIGxvYzEuc3ViX3Jl
-c291cmNlLA0KPiAmbG9jX21heCk7DQo+ICAJCXZtd19zdWJyZXNfZGlydHlfYWRkKGRpcnR5LCAm
-bG9jMSwgJmxvY19tYXgpOw0KDQo=
+On Fri, Jun 28, 2019 at 6:05 PM Martin Blumenstingl
+<martin.blumenstingl@googlemail.com> wrote:
+>
+> Hi Colin,
+>
+> On Fri, Jun 28, 2019 at 10:32 AM Colin Ian King
+> <colin.king@canonical.com> wrote:
+> >
+> > On 28/06/2019 05:15, Martin Blumenstingl wrote:
+> > > On Tue, Jun 25, 2019 at 9:58 AM Colin Ian King <colin.king@canonical.com> wrote:
+> > >>
+> > >> On 25/06/2019 05:44, Martin Blumenstingl wrote:
+> > >>> Hi Colin,
+> > >>>
+> > >>> On Thu, Jun 20, 2019 at 3:34 AM Martin Blumenstingl
+> > >>> <martin.blumenstingl@googlemail.com> wrote:
+> > >>>>
+> > >>>> Hi Colin,
+> > >>>>
+> > >>>> On Wed, Jun 19, 2019 at 8:55 AM Colin Ian King <colin.king@canonical.com> wrote:
+> > >>>>>
+> > >>>>> On 19/06/2019 06:13, Martin Blumenstingl wrote:
+> > >>>>>> Hi Colin,
+> > >>>>>>
+> > >>>>>>> Currently the call to device_property_read_u32_array is not error checked
+> > >>>>>>> leading to potential garbage values in the delays array that are then used
+> > >>>>>>> in msleep delays.  Add a sanity check to the property fetching.
+> > >>>>>>>
+> > >>>>>>> Addresses-Coverity: ("Uninitialized scalar variable")
+> > >>>>>>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > >>>>>> I have also sent a patch [0] to fix initialize the array.
+> > >>>>>> can you please look at my patch so we can work out which one to use?
+> > >>>>>>
+> > >>>>>> my concern is that the "snps,reset-delays-us" property is optional,
+> > >>>>>> the current dt-bindings documentation states that it's a required
+> > >>>>>> property. in reality it isn't, there are boards (two examples are
+> > >>>>>> mentioned in my patch: [0]) without it.
+> > >>>>>>
+> > >>>>>> so I believe that the resulting behavior has to be:
+> > >>>>>> 1. don't delay if this property is missing (instead of delaying for
+> > >>>>>>    <garbage value> ms)
+> > >>>>>> 2. don't error out if this property is missing
+> > >>>>>>
+> > >>>>>> your patch covers #1, can you please check whether #2 is also covered?
+> > >>>>>> I tested case #2 when submitting my patch and it worked fine (even
+> > >>>>>> though I could not reproduce the garbage values which are being read
+> > >>>>>> on some boards)
+> > >>> in the meantime I have tested your patch.
+> > >>> when I don't set the "snps,reset-delays-us" property then I get the
+> > >>> following error:
+> > >>>   invalid property snps,reset-delays-us
+> > >>>
+> > >>> my patch has landed in the meantime: [0]
+> > >>> how should we proceed with your patch?
+> >
+> > Your fix is good, so I think we should just drop/forget about my fix.
+> thank you for looking at the situation
+>
+> as far I understand the -net/-net-next tree all commits are immutable
+> so if we want to remove your patch we need to send a revert
+> do you want me to do that (I can do it on Monday) or will you take care of that?
+I just sent the patch: [0]
+
+
+[0] https://patchwork.ozlabs.org/patch/1125686/

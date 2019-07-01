@@ -2,28 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DEBD25C119
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jul 2019 18:28:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 907595C172
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jul 2019 18:50:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727563AbfGAQ2B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jul 2019 12:28:01 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:54340 "EHLO
+        id S1728798AbfGAQuW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jul 2019 12:50:22 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:55145 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726840AbfGAQ2A (ORCPT
+        with ESMTP id S1727030AbfGAQuW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jul 2019 12:28:00 -0400
+        Mon, 1 Jul 2019 12:50:22 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hhz9r-00038a-9G; Mon, 01 Jul 2019 16:27:59 +0000
+        id 1hhzVU-0005Xj-A3; Mon, 01 Jul 2019 16:50:20 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Haim Dreyfuss <haim.dreyfuss@intel.com>,
-        linux-wireless@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org
-Subject: [PATCH][next] iwlwifi: mvm: fix comparison of u32 variable with less than zero
-Date:   Mon,  1 Jul 2019 17:27:59 +0100
-Message-Id: <20190701162759.15418-1-colin.king@canonical.com>
+To:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] clk: Si5341/Si5340: remove redundant assignment to n_den
+Date:   Mon,  1 Jul 2019 17:50:20 +0100
+Message-Id: <20190701165020.19840-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,30 +35,28 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The comparison of the u32 variable wgds_tbl_idx with less than zero is
-always going to be false because it is unsigned.  Fix this by making
-wgds_tbl_idx a plain signed int.
+The variable n_den is initialized however that value is never read
+as n_den is re-assigned a little later in the two paths of a
+following if-statement.  Remove the redundant assignment.
 
-Addresses-Coverity: ("Unsigned compared against 0")
-Fixes: 4fd445a2c855 ("iwlwifi: mvm: Add log information about SAR status")
+Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/nvm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/clk-si5341.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-index 719f793b3487..a9bb43a2f27b 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
-@@ -620,7 +620,7 @@ void iwl_mvm_rx_chub_update_mcc(struct iwl_mvm *mvm,
- 	enum iwl_mcc_source src;
- 	char mcc[3];
- 	struct ieee80211_regdomain *regd;
--	u32 wgds_tbl_idx;
-+	int wgds_tbl_idx;
+diff --git a/drivers/clk/clk-si5341.c b/drivers/clk/clk-si5341.c
+index 72424eb7e5f8..6e780c2a9e6b 100644
+--- a/drivers/clk/clk-si5341.c
++++ b/drivers/clk/clk-si5341.c
+@@ -547,7 +547,6 @@ static int si5341_synth_clk_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	bool is_integer;
  
- 	lockdep_assert_held(&mvm->mutex);
+ 	n_num = synth->data->freq_vco;
+-	n_den = rate;
  
+ 	/* see if there's an integer solution */
+ 	r = do_div(n_num, rate);
 -- 
 2.20.1
 

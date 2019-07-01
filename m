@@ -2,129 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7892A5B44F
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jul 2019 07:46:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 825F45B596
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jul 2019 09:14:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727312AbfGAFqH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jul 2019 01:46:07 -0400
-Received: from mail-lj1-f193.google.com ([209.85.208.193]:42844 "EHLO
-        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725777AbfGAFqH (ORCPT
+        id S1727709AbfGAHOA convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jul 2019 03:14:00 -0400
+Received: from relay4-d.mail.gandi.net ([217.70.183.196]:37173 "EHLO
+        relay4-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727206AbfGAHOA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jul 2019 01:46:07 -0400
-Received: by mail-lj1-f193.google.com with SMTP id t28so11696807lje.9;
-        Sun, 30 Jun 2019 22:46:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=8yYaeGYH1lk4dhqKXsvPRW0fUGxbl4jEGeDfKa2Ty6Y=;
-        b=kfh5vicc77Conm69He5+G8+PaZuy/aFnTfW7eGf/0g7by8v+gTDKKa3E0WWlj69uu5
-         xcSMYJhYj+K+94FeYJGSkPWVpC4WMpWgxUmu+NyOxZYY1+dfW9U4Mi4l+CGMbzF4Jctb
-         3iBKTJAGhcDfRwEwkkp0m9jC1QQf1O0Q40g5kLxOvAS52UpwPlVOiwZ9Z82ZGbLISm/J
-         i7/lBRwJkWMYEESXHHM3il3VcBySiIlyxHLJYq4Z2iE9sdgBueKyM3Rt6c0E3ac2HSSN
-         2juMxi+rr3EHPPfx/X1onWMfWZmBfYyr9c4njFBxxIkLofQwY5uKm5hTiIyLfZef6KKB
-         ox7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=8yYaeGYH1lk4dhqKXsvPRW0fUGxbl4jEGeDfKa2Ty6Y=;
-        b=RTxVBV7eK6Y8e2aNN3vOJu231R/kaZPKFhgONVmno0REfdT1csvtb8NQIfh+abHCsW
-         FJWtRJQjaaRQBLf23T2MORR6ANy165VQqJRlT2xjkov/Sr1c28BI4xnp/i72yPO4DGGH
-         oktzpRKKVQ0PKYL8JVABp1dRJ/sQqjCfc4phX1dqyowU38sP/qYKDBC3qMhVMUw7UXRr
-         /rD0Q9NxL+yJxVfRCYuGXFmer/DADpuVf+caqV89JnNHcvVFY4VYyhZkUwU9KpG2lkL1
-         cbQH//Gc7mvo/8MScSouSelhbYc0eQ1Z+UpU9FOYP2Hxbrrv4mAC0O77FwQfy5rieDKH
-         zfbA==
-X-Gm-Message-State: APjAAAVHBvvukSRq6U+BEPT72vXuRE7KuoLAET/cH5q828I/upIj4v2u
-        WSaj+wxk3WHq/uPunOtGxUY=
-X-Google-Smtp-Source: APXvYqz6tnhd9uDkTCwEyyQMlwXFBa/szeO/kbZD0HykwS+epBivubnP5CszJLpw3z7J7a1pcp4Jgg==
-X-Received: by 2002:a2e:89ca:: with SMTP id c10mr12904311ljk.106.1561959965169;
-        Sun, 30 Jun 2019 22:46:05 -0700 (PDT)
-Received: from [10.17.182.20] (ll-22.209.223.85.sovam.net.ua. [85.223.209.22])
-        by smtp.gmail.com with ESMTPSA id w15sm3395418ljh.0.2019.06.30.22.46.03
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 30 Jun 2019 22:46:04 -0700 (PDT)
-Subject: Re: [Xen-devel] [PATCH] ALSA: xen-front: fix unintention integer
- overflow on left shifts
-To:     Takashi Iwai <tiwai@suse.de>, Colin King <colin.king@canonical.com>
-Cc:     alsa-devel@alsa-project.org,
-        Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jaroslav Kysela <perex@perex.cz>,
-        xen-devel@lists.xenproject.org
-References: <20190627165853.21864-1-colin.king@canonical.com>
- <s5hv9wq6qrg.wl-tiwai@suse.de>
-From:   Oleksandr Andrushchenko <andr2000@gmail.com>
-Message-ID: <de93db15-c85f-3108-22c3-75b89a3a2e59@gmail.com>
-Date:   Mon, 1 Jul 2019 08:46:02 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        Mon, 1 Jul 2019 03:14:00 -0400
+X-Originating-IP: 86.250.200.211
+Received: from xps13 (lfbn-1-17395-211.w86-250.abo.wanadoo.fr [86.250.200.211])
+        (Authenticated sender: miquel.raynal@bootlin.com)
+        by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id D61AEE0007;
+        Mon,  1 Jul 2019 07:13:52 +0000 (UTC)
+Date:   Mon, 1 Jul 2019 09:13:52 +0200
+From:   Miquel Raynal <miquel.raynal@bootlin.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Sascha Hauer <s.hauer@pengutronix.de>, Han Xu <han.xu@nxp.com>,
+        Richard Weinberger <richard@nod.at>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-mtd@lists.infradead.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] mtd: rawnand: gpmi: remove double assignment to
+ block_size
+Message-ID: <20190701091352.3e3caf11@xps13>
+In-Reply-To: <20190604105859.16627-1-colin.king@canonical.com>
+References: <20190604105859.16627-1-colin.king@canonical.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 3.17.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <s5hv9wq6qrg.wl-tiwai@suse.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 6/28/19 11:46 AM, Takashi Iwai wrote:
-> On Thu, 27 Jun 2019 18:58:53 +0200,
-> Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> Shifting the integer value 1 is evaluated using 32-bit
->> arithmetic and then used in an expression that expects a 64-bit
->> value, so there is potentially an integer overflow. Fix this
->> by using the BIT_ULL macro to perform the shift.
->>
->> Addresses-Coverity: ("Unintentional integer overflow")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Thank you for you patch,
-Oleksandr
-> The fix is correct, but luckily we didn't hit the integer overflow, as
-> all passed values are less than 32bit.
->
-> In anyway, applied now.  Thanks.
->
->
-> Takashi
->
->> ---
->>   sound/xen/xen_snd_front_alsa.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/sound/xen/xen_snd_front_alsa.c b/sound/xen/xen_snd_front_alsa.c
->> index b14ab512c2ce..e01631959ed8 100644
->> --- a/sound/xen/xen_snd_front_alsa.c
->> +++ b/sound/xen/xen_snd_front_alsa.c
->> @@ -196,7 +196,7 @@ static u64 to_sndif_formats_mask(u64 alsa_formats)
->>   	mask = 0;
->>   	for (i = 0; i < ARRAY_SIZE(ALSA_SNDIF_FORMATS); i++)
->>   		if (pcm_format_to_bits(ALSA_SNDIF_FORMATS[i].alsa) & alsa_formats)
->> -			mask |= 1 << ALSA_SNDIF_FORMATS[i].sndif;
->> +			mask |= BIT_ULL(ALSA_SNDIF_FORMATS[i].sndif);
->>   
->>   	return mask;
->>   }
->> @@ -208,7 +208,7 @@ static u64 to_alsa_formats_mask(u64 sndif_formats)
->>   
->>   	mask = 0;
->>   	for (i = 0; i < ARRAY_SIZE(ALSA_SNDIF_FORMATS); i++)
->> -		if (1 << ALSA_SNDIF_FORMATS[i].sndif & sndif_formats)
->> +		if (BIT_ULL(ALSA_SNDIF_FORMATS[i].sndif) & sndif_formats)
->>   			mask |= pcm_format_to_bits(ALSA_SNDIF_FORMATS[i].alsa);
->>   
->>   	return mask;
->> -- 
->> 2.20.1
->>
->>
-> _______________________________________________
-> Xen-devel mailing list
-> Xen-devel@lists.xenproject.org
-> https://lists.xenproject.org/mailman/listinfo/xen-devel
+Hi Colin,
 
+Colin King <colin.king@canonical.com> wrote on Tue,  4 Jun 2019
+11:58:59 +0100:
+
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable block_size is being assigned to itself and to
+> geo->ecc_chunk_size.  Clean up the double assignment by removing
+> the assignment to itself.
+> 
+> Addresses-Coverity: ("Evaluation order violation")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+> index 5db84178edff..334fe3130285 100644
+> --- a/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+> +++ b/drivers/mtd/nand/raw/gpmi-nand/gpmi-nand.c
+> @@ -1428,7 +1428,7 @@ static void gpmi_bch_layout_std(struct gpmi_nand_data *this)
+>  	struct bch_geometry *geo = &this->bch_geometry;
+>  	unsigned int ecc_strength = geo->ecc_strength >> 1;
+>  	unsigned int gf_len = geo->gf_len;
+> -	unsigned int block_size = block_size = geo->ecc_chunk_size;
+> +	unsigned int block_size = geo->ecc_chunk_size;
+>  
+>  	this->bch_flashlayout0 =
+>  		BF_BCH_FLASH0LAYOUT0_NBLOCKS(geo->ecc_chunk_count - 1) |
+
+
+
+Applied to nand/next, thanks.
+
+Miquèl
+
+
+Thanks,
+Miquèl

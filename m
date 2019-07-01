@@ -2,34 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DDC315C117
-	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jul 2019 18:27:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEBD25C119
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jul 2019 18:28:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729004AbfGAQ1E (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 1 Jul 2019 12:27:04 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:54314 "EHLO
+        id S1727563AbfGAQ2B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jul 2019 12:28:01 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:54340 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727387AbfGAQ1D (ORCPT
+        with ESMTP id S1726840AbfGAQ2A (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 1 Jul 2019 12:27:03 -0400
+        Mon, 1 Jul 2019 12:28:00 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hhz8r-000310-TS; Mon, 01 Jul 2019 16:26:58 +0000
+        id 1hhz9r-00038a-9G; Mon, 01 Jul 2019 16:27:59 +0000
 From:   Colin King <colin.king@canonical.com>
 To:     Haim Dreyfuss <haim.dreyfuss@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Intel Linux Wireless <linuxwifi@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.or, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+        linux-wireless@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org
 Subject: [PATCH][next] iwlwifi: mvm: fix comparison of u32 variable with less than zero
-Date:   Mon,  1 Jul 2019 17:26:57 +0100
-Message-Id: <20190701162657.15174-1-colin.king@canonical.com>
+Date:   Mon,  1 Jul 2019 17:27:59 +0100
+Message-Id: <20190701162759.15418-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"

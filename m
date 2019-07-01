@@ -2,86 +2,129 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FE455AB9C
-	for <lists+kernel-janitors@lfdr.de>; Sat, 29 Jun 2019 15:55:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7892A5B44F
+	for <lists+kernel-janitors@lfdr.de>; Mon,  1 Jul 2019 07:46:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726801AbfF2Nzj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 29 Jun 2019 09:55:39 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:35093 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726754AbfF2Nzj (ORCPT
+        id S1727312AbfGAFqH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 1 Jul 2019 01:46:07 -0400
+Received: from mail-lj1-f193.google.com ([209.85.208.193]:42844 "EHLO
+        mail-lj1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725777AbfGAFqH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 29 Jun 2019 09:55:39 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hhDpG-0006Uw-Gt; Sat, 29 Jun 2019 13:55:34 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Rex Zhu <rex.zhu@amd.com>, Evan Quan <evan.quan@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/amd/pp: fix a dereference of a pointer before it is null checked
-Date:   Sat, 29 Jun 2019 14:55:34 +0100
-Message-Id: <20190629135534.15116-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Mon, 1 Jul 2019 01:46:07 -0400
+Received: by mail-lj1-f193.google.com with SMTP id t28so11696807lje.9;
+        Sun, 30 Jun 2019 22:46:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=8yYaeGYH1lk4dhqKXsvPRW0fUGxbl4jEGeDfKa2Ty6Y=;
+        b=kfh5vicc77Conm69He5+G8+PaZuy/aFnTfW7eGf/0g7by8v+gTDKKa3E0WWlj69uu5
+         xcSMYJhYj+K+94FeYJGSkPWVpC4WMpWgxUmu+NyOxZYY1+dfW9U4Mi4l+CGMbzF4Jctb
+         3iBKTJAGhcDfRwEwkkp0m9jC1QQf1O0Q40g5kLxOvAS52UpwPlVOiwZ9Z82ZGbLISm/J
+         i7/lBRwJkWMYEESXHHM3il3VcBySiIlyxHLJYq4Z2iE9sdgBueKyM3Rt6c0E3ac2HSSN
+         2juMxi+rr3EHPPfx/X1onWMfWZmBfYyr9c4njFBxxIkLofQwY5uKm5hTiIyLfZef6KKB
+         ox7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=8yYaeGYH1lk4dhqKXsvPRW0fUGxbl4jEGeDfKa2Ty6Y=;
+        b=RTxVBV7eK6Y8e2aNN3vOJu231R/kaZPKFhgONVmno0REfdT1csvtb8NQIfh+abHCsW
+         FJWtRJQjaaRQBLf23T2MORR6ANy165VQqJRlT2xjkov/Sr1c28BI4xnp/i72yPO4DGGH
+         oktzpRKKVQ0PKYL8JVABp1dRJ/sQqjCfc4phX1dqyowU38sP/qYKDBC3qMhVMUw7UXRr
+         /rD0Q9NxL+yJxVfRCYuGXFmer/DADpuVf+caqV89JnNHcvVFY4VYyhZkUwU9KpG2lkL1
+         cbQH//Gc7mvo/8MScSouSelhbYc0eQ1Z+UpU9FOYP2Hxbrrv4mAC0O77FwQfy5rieDKH
+         zfbA==
+X-Gm-Message-State: APjAAAVHBvvukSRq6U+BEPT72vXuRE7KuoLAET/cH5q828I/upIj4v2u
+        WSaj+wxk3WHq/uPunOtGxUY=
+X-Google-Smtp-Source: APXvYqz6tnhd9uDkTCwEyyQMlwXFBa/szeO/kbZD0HykwS+epBivubnP5CszJLpw3z7J7a1pcp4Jgg==
+X-Received: by 2002:a2e:89ca:: with SMTP id c10mr12904311ljk.106.1561959965169;
+        Sun, 30 Jun 2019 22:46:05 -0700 (PDT)
+Received: from [10.17.182.20] (ll-22.209.223.85.sovam.net.ua. [85.223.209.22])
+        by smtp.gmail.com with ESMTPSA id w15sm3395418ljh.0.2019.06.30.22.46.03
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 30 Jun 2019 22:46:04 -0700 (PDT)
+Subject: Re: [Xen-devel] [PATCH] ALSA: xen-front: fix unintention integer
+ overflow on left shifts
+To:     Takashi Iwai <tiwai@suse.de>, Colin King <colin.king@canonical.com>
+Cc:     alsa-devel@alsa-project.org,
+        Oleksandr Andrushchenko <oleksandr_andrushchenko@epam.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jaroslav Kysela <perex@perex.cz>,
+        xen-devel@lists.xenproject.org
+References: <20190627165853.21864-1-colin.king@canonical.com>
+ <s5hv9wq6qrg.wl-tiwai@suse.de>
+From:   Oleksandr Andrushchenko <andr2000@gmail.com>
+Message-ID: <de93db15-c85f-3108-22c3-75b89a3a2e59@gmail.com>
+Date:   Mon, 1 Jul 2019 08:46:02 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <s5hv9wq6qrg.wl-tiwai@suse.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
-
-The pointer hwmgr is dereferenced when initializing pointer adev however
-it is a little later hwmgr is null checked, implying it could potentially
-be null hence the assignment of adev may cause a null pointer dereference.
-Fix this by moving the assignment after the null check. Note that I did
-think of removing adev as it is only used once, however, hwmgr->adev is
-a void * pointer, so using adev avoids some ugly casting so it makes sense
-to still use it.
-
-Addresses-Coverity: ("Dereference before null check")
-Fixes: 59156faf810e ("drm/amd/pp: Remove the cgs wrapper for notify smu version on APU")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/amd/powerplay/smumgr/smu8_smumgr.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/powerplay/smumgr/smu8_smumgr.c b/drivers/gpu/drm/amd/powerplay/smumgr/smu8_smumgr.c
-index 8189fe402c6d..12815b3830e4 100644
---- a/drivers/gpu/drm/amd/powerplay/smumgr/smu8_smumgr.c
-+++ b/drivers/gpu/drm/amd/powerplay/smumgr/smu8_smumgr.c
-@@ -722,13 +722,11 @@ static int smu8_request_smu_load_fw(struct pp_hwmgr *hwmgr)
- 
- static int smu8_start_smu(struct pp_hwmgr *hwmgr)
- {
--	struct amdgpu_device *adev = hwmgr->adev;
--
-+	struct amdgpu_device *adev;
- 	uint32_t index = SMN_MP1_SRAM_START_ADDR +
- 			 SMU8_FIRMWARE_HEADER_LOCATION +
- 			 offsetof(struct SMU8_Firmware_Header, Version);
- 
--
- 	if (hwmgr == NULL || hwmgr->device == NULL)
- 		return -EINVAL;
- 
-@@ -738,6 +736,7 @@ static int smu8_start_smu(struct pp_hwmgr *hwmgr)
- 		((hwmgr->smu_version >> 16) & 0xFF),
- 		((hwmgr->smu_version >> 8) & 0xFF),
- 		(hwmgr->smu_version & 0xFF));
-+	adev = hwmgr->adev;
- 	adev->pm.fw_version = hwmgr->smu_version >> 8;
- 
- 	return smu8_request_smu_load_fw(hwmgr);
--- 
-2.20.1
+On 6/28/19 11:46 AM, Takashi Iwai wrote:
+> On Thu, 27 Jun 2019 18:58:53 +0200,
+> Colin King wrote:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> Shifting the integer value 1 is evaluated using 32-bit
+>> arithmetic and then used in an expression that expects a 64-bit
+>> value, so there is potentially an integer overflow. Fix this
+>> by using the BIT_ULL macro to perform the shift.
+>>
+>> Addresses-Coverity: ("Unintentional integer overflow")
+>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Thank you for you patch,
+Oleksandr
+> The fix is correct, but luckily we didn't hit the integer overflow, as
+> all passed values are less than 32bit.
+>
+> In anyway, applied now.  Thanks.
+>
+>
+> Takashi
+>
+>> ---
+>>   sound/xen/xen_snd_front_alsa.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/sound/xen/xen_snd_front_alsa.c b/sound/xen/xen_snd_front_alsa.c
+>> index b14ab512c2ce..e01631959ed8 100644
+>> --- a/sound/xen/xen_snd_front_alsa.c
+>> +++ b/sound/xen/xen_snd_front_alsa.c
+>> @@ -196,7 +196,7 @@ static u64 to_sndif_formats_mask(u64 alsa_formats)
+>>   	mask = 0;
+>>   	for (i = 0; i < ARRAY_SIZE(ALSA_SNDIF_FORMATS); i++)
+>>   		if (pcm_format_to_bits(ALSA_SNDIF_FORMATS[i].alsa) & alsa_formats)
+>> -			mask |= 1 << ALSA_SNDIF_FORMATS[i].sndif;
+>> +			mask |= BIT_ULL(ALSA_SNDIF_FORMATS[i].sndif);
+>>   
+>>   	return mask;
+>>   }
+>> @@ -208,7 +208,7 @@ static u64 to_alsa_formats_mask(u64 sndif_formats)
+>>   
+>>   	mask = 0;
+>>   	for (i = 0; i < ARRAY_SIZE(ALSA_SNDIF_FORMATS); i++)
+>> -		if (1 << ALSA_SNDIF_FORMATS[i].sndif & sndif_formats)
+>> +		if (BIT_ULL(ALSA_SNDIF_FORMATS[i].sndif) & sndif_formats)
+>>   			mask |= pcm_format_to_bits(ALSA_SNDIF_FORMATS[i].alsa);
+>>   
+>>   	return mask;
+>> -- 
+>> 2.20.1
+>>
+>>
+> _______________________________________________
+> Xen-devel mailing list
+> Xen-devel@lists.xenproject.org
+> https://lists.xenproject.org/mailman/listinfo/xen-devel
 

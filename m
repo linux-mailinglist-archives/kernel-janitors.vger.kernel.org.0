@@ -2,134 +2,151 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06AD45D616
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 20:25:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 044B15D62C
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 20:33:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726762AbfGBSY6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jul 2019 14:24:58 -0400
-Received: from mail-eopbgr800079.outbound.protection.outlook.com ([40.107.80.79]:42315
-        "EHLO NAM03-DM3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725851AbfGBSY6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jul 2019 14:24:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector1-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yJI/PL/iSbhsETb8zQPLvnsrNHVmwMMtXVYvo7atOb8=;
- b=dHp8k7O0lAnswMlcExAEMWKPAIGeYmNzX5l6dYZ1iOjb31QMQ+cn6lnHJzj6wcjl92w5q4D3N80e200iLQ6gQi/yNPLZnYBtuYsARlsogOEuB96YCQwdb+FHt2KcrJcBAO7QRcQFdLTHanCLI4L2M3NNRAZs7AaP9kAoXpqK7ww=
-Received: from DM6PR12MB3947.namprd12.prod.outlook.com (10.255.174.156) by
- DM6PR12MB3849.namprd12.prod.outlook.com (10.255.173.154) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2032.20; Tue, 2 Jul 2019 18:24:54 +0000
-Received: from DM6PR12MB3947.namprd12.prod.outlook.com
- ([fe80::91a2:f9e7:8c86:f927]) by DM6PR12MB3947.namprd12.prod.outlook.com
- ([fe80::91a2:f9e7:8c86:f927%7]) with mapi id 15.20.2032.019; Tue, 2 Jul 2019
- 18:24:54 +0000
-From:   "Kuehling, Felix" <Felix.Kuehling@amd.com>
-To:     "Liu, Shaoyun" <Shaoyun.Liu@amd.com>,
-        Colin King <colin.king@canonical.com>,
-        Oded Gabbay <oded.gabbay@gmail.com>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] drm/amdkfd: fix potential null pointer dereference on
- pointer peer_dev
-Thread-Topic: [PATCH] drm/amdkfd: fix potential null pointer dereference on
- pointer peer_dev
-Thread-Index: AQHVLn7w/1A+I6Iai0CeKYDxl+5Y0qa3eOCAgAAxAwA=
-Date:   Tue, 2 Jul 2019 18:24:54 +0000
-Message-ID: <20c82f01-af9f-f1b9-ec0e-9f66e5769894@amd.com>
-References: <20190629133114.14271-1-colin.king@canonical.com>
- <66e161b2-dc6e-f8e1-c1f4-dbd15e06040a@amd.com>
-In-Reply-To: <66e161b2-dc6e-f8e1-c1f4-dbd15e06040a@amd.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [165.204.55.251]
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        id S1726762AbfGBSdf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jul 2019 14:33:35 -0400
+Received: from mout.web.de ([212.227.17.11]:42069 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725851AbfGBSde (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jul 2019 14:33:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1562092404;
+        bh=XBXlgdxq8oVU2ycoKygvKHdH4LF9bMOOCgFO6zi/iHg=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=UQ0RKQQTWpVyhCluuNXEd5kiC1n/iJjZ6y7qUs3Yl9B2jd1FEsxanjygbU3oPTxZN
+         yyXwl6WHkX4c2ISt3BEfuoYVr8gTeJoJmTQRNFMQ7qjv2KtdiFx3Gz5Yq4FqYcKgDy
+         iAWDDxBFPxK5AuRqKKz83+cXzfpIGQ7QwTZK0rd8=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.48.11.114]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LqUPN-1iCmWb1zAv-00e8em; Tue, 02
+ Jul 2019 20:33:24 +0200
+To:     linux-security-module@vger.kernel.org,
+        James Morris <jmorris@namei.org>,
+        John Johansen <john.johansen@canonical.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+From:   Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] apparmor: Replace two seq_printf() calls by seq_puts() in
+ aa_label_seq_xprint()
+Openpgp: preference=signencrypt
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <9dd6c122-89f5-70e8-acfc-d6d6596e1261@web.de>
+Date:   Tue, 2 Jul 2019 20:33:21 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.2
-x-clientproxiedby: YT1PR01CA0014.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01::27)
- To DM6PR12MB3947.namprd12.prod.outlook.com (2603:10b6:5:1cb::28)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Felix.Kuehling@amd.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 09e9044d-d69c-4b98-21ff-08d6ff1a945a
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:DM6PR12MB3849;
-x-ms-traffictypediagnostic: DM6PR12MB3849:
-x-ms-exchange-purlcount: 1
-x-microsoft-antispam-prvs: <DM6PR12MB3849CFBEA5F23003FD8337FC92F80@DM6PR12MB3849.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 008663486A
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(39860400002)(366004)(376002)(346002)(136003)(396003)(189003)(199004)(446003)(2616005)(476003)(65956001)(65806001)(11346002)(66066001)(26005)(186003)(14454004)(76176011)(52116002)(81156014)(386003)(53546011)(6506007)(81166006)(102836004)(72206003)(966005)(53936002)(6512007)(31686004)(478600001)(8676002)(6486002)(64756008)(66476007)(66556008)(6436002)(2906002)(8936002)(73956011)(66946007)(66446008)(4326008)(3846002)(71190400001)(6246003)(71200400001)(486006)(229853002)(14444005)(256004)(5660300002)(6306002)(65826007)(6116002)(2501003)(2201001)(110136005)(36756003)(305945005)(58126008)(68736007)(25786009)(7736002)(64126003)(31696002)(86362001)(99286004)(54906003)(316002)(921003)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR12MB3849;H:DM6PR12MB3947.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: amd.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: V9/RGeSXAAyAF2vAXbkjtOC2j6iesNrkYdL25PtSCKi4B2fxwO2bwUpX8gT5jWAXZeb9EOE/n/fHLGiGLfzzESVqsot9B1ncqM0OlGb3Er2E4cGp6vz7E5ewHBgY3q+erd8YxQHTFswoy9eafl+r3Pu1NYAxB2iI3oq2LgzOpuukJiq6lhG1eF3cRifBpcJjMlIhsFxDrTg0S+105Gj+Vb1G/Rhgt6DqVuHcCQv4IXsmo9k1+W4+Y31q4z+YP0Z2yRtwTtXn2kXVuGcTipqHqZJecMuA3Np9JeSaJX0DYNa/jf5A6rZne+WWpts1Dfj9xgGT2I9xo013fl7AaPCrZM3bRJdp2+MXLd8Nm2pHkA7GpzgtmeJBiQxJ1z9jg8z5xxgSgN0fSE8LySukthOy6HLGqYg1nfzqmMrmfxKMi38=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <E7ADE144E744024F8F488F963C141A91@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 09e9044d-d69c-4b98-21ff-08d6ff1a945a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jul 2019 18:24:54.5559
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: fkuehlin@amd.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB3849
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:QYM2+DbNCRM7QoxJl09IOfAxvkii5ttI0N5dO3/pJgg7rpJLVyT
+ i1m+pQrE5LJIL+tIsXaFww3uJ8r36rMk4AU7kJnWvTUJ2tc7EMl3DxPmVfgVtQu9Xmx72lX
+ Q3C/XsELupenEdY/FA6C/AG3JTZnM+9MB0NNE7vcoJlB5MIInIzVVbFQZ8KS1oXkp6w7g67
+ LobsUdsYu4hC+AD6GkFGQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:INLRb3NmPrY=:4SrYQ7JB7D3x8vZh92IS75
+ bKy1PnRDmMXRuAE7vLnDMalzDGCoQ0krHOxIm6Bf4bhAENtKy0zzVncNlweRy0uvFr7nru7ah
+ BhDXUBHLLr/KmH/00fWLcORYAre9ayvTF5A8z8MepcMpd9/xQznWXCChl0XbRYtmD9CQ8KFeb
+ SAzEhgWbBkXlDRWqYCBmIwuonFlk30FHXDrC94+btLt0H4gqcGYI4VxXaY2QEa6xumINU7rhg
+ Ze1/ykZoxiO6Ehi/IG7VgpFzTy2DFCoZYMeWBc2OlDlxg0yEoY7lvu84F8iY9EpsuBzl2P576
+ JY29U/ZPE6YRgwmvCv1ty9QxX4ewmBWlJf8WeYvP/871vx4YEjkQ3cz7N8f5bYpcQFnHWm6VF
+ Dl/wzAZVjxcY7bxlXSYii8dUBkgPYyIotrhyfgZe8Gbcs7AJcV8QmBSdafG9DhlBfO0/7MXrZ
+ jLOHsyEnqio23LAHs3tK+CrlpqAeVde2BAH/3MiZDWj9pRrbZMhO6xnB6crDFqfTiJxAm5JBh
+ oXYxt5foyLHXpPvoFFwwKo0ntJf2S6TgS/eAJgbm/DBJyEka7WQIWk5Lx4CAan1mJ4U9bhtpx
+ DmrD06qXTVrv/QHj2xnCcR/F9Mr/8VnXWJnbEL4TxpUB2FXRV02CrJ5U03sZ9yRKfMDEk77jY
+ W/MUg7j4nLcnLzriYeRmjesa7CSvmuoYxN2a5VPExdInxK38ODwJQ2DFISACKtl3O5S1FYfcL
+ 7n+CwbkDXvMrfcY6TBLdM6ECRAYngYrjQgntWe/nQEksdlI6OMDttuDs38JNmh8Yi+LIyMCtZ
+ V3dfdCeL/XW+3UkLGuNRWA3xPKsbnf0YayhhvcrF/ffIoqWTGLqufflpgOugkXyadlkLbHIPC
+ i26wKjdDWHsM4U4C3zCiUX3y9qHBjxvkhmSOyYc2GN34Uj/oR7rZNsuQUJmLjLkriFJpZ+gRx
+ D/G7yJj9rqDXOVE912TbJo7ca+fWNHxIEupu2x79g1+20dJnQiU1N9cTfsab0/020uXmJaf9Y
+ MfiI6krkX74SY3hJIMjohpRQQh+Z1Pn/uy4Y/MgsG+qtFbo7rm8sk3ZThpkskmWqmxqaiwhem
+ H+w17tflmomg+B6heiBQDp/7Bkn41Rm5+Od
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-SSB0aGluayB0aGlzIGNvdWxkIGhhcHBlbiBpZiBLRkQgaW5pdGlhbGl6YXRpb24gZmFpbHMgZm9y
-IGEgZGV2aWNlLiANCkN1cnJlbnRseSB3ZSdkIGFkZCB0aGUgZGV2aWNlLCBhbmQgdGhlbiByZW1v
-dmUgaXQgYWdhaW4uIFRoYXQgbWF5IGxlYXZlIA0KYSBnYXAgaW4gdGhlIHByb3hpbWl0eSBkb21h
-aW5zLiBPYWsganVzdCBoYWQgYSBmaXggcmVjZW50bHkgdG8gY2xlYW4gDQp0aGF0IHVwIGJ5IG9u
-bHkgYWRkaW5nIEtGRCBkZXZpY2VzIHRvIHRoZSB0b3BvbG9neSBhZnRlciBzdWNjZXNzZnVsIA0K
-aW5pdGlhbGl6YXRpb24uDQoNClJlZ2FyZHMsDQogwqAgRmVsaXgNCg0KT24gMjAxOS0wNy0wMiAx
-MToyOSBhLm0uLCBMaXUsIFNoYW95dW4gd3JvdGU6DQo+ICAgRnJvbSB0aGUgY29tbWVudHMgLCAi
-d2Ugd2lsbMKgIGxvb3AgR1BVcyB0aGF0IGFscmVhZHkgYmUgcHJvY2Vzc2VkICh3aXRoDQo+IGxv
-d2VyIHZhbHVlIG9mIHByb3hpbWl0eV9kb21haW4pICIswqAgdGhlIGRldmljZSBzaG91bGQgYWxy
-ZWFkeSBiZWVuDQo+IGFkZGVkIGludG8gdGhlwqAgdG9wb2xvZ3lfZGV2aWNlX2xpc3QuwqAgU28g
-aW4gdGhpcyBjYXNlICwNCj4ga2ZkX3RvcG9sb2d5X2RldmljZV9ieV9wcm94aW1pdHlfZG9tYWlu
-IHdpbGwgbm90IHJldHVybiBhIE5VTEwgcG9pbnRlci4NCj4gSWYgeW91IHJlYWxseSBnZXQgdGhl
-IG51bGwgcG9pbnRlciBkZXJlZmVyZW5jZXMgaGVyZSAsIHdlIG11c3QgaGF2ZQ0KPiBzb21lIGJp
-Z2dlciBwcm9ibGVtIGFuZMKgIGNhbiBub3Qgc29sdmVkIGJ5IGFkZGVkIHRoZSBudWxsIGNoZWNr
-IGhlcmUuDQo+DQo+IFJlZ2FyZHMNCj4NCj4gc2hhb3l1bi5saXUNCj4NCj4gT24gMjAxOS0wNi0y
-OSA5OjMxIGEubS4sIENvbGluIEtpbmcgd3JvdGU6DQo+PiBGcm9tOiBDb2xpbiBJYW4gS2luZyA8
-Y29saW4ua2luZ0BjYW5vbmljYWwuY29tPg0KPj4NCj4+IFRoZSBjYWxsIHRvIGtmZF90b3BvbG9n
-eV9kZXZpY2VfYnlfcHJveGltaXR5X2RvbWFpbiBjYW4gcmV0dXJuIGEgTlVMTA0KPj4gcG9pbnRl
-ciBzbyBhZGQgYSBudWxsIHBvaW50ZXIgY2hlY2sgb24gcGVlcl9kZXYgdG8gdGhlIGV4aXN0aW5n
-IG51bGwNCj4+IHBvaW50ZXIgY2hlY2sgb24gcGVlcl9kZXYtPmdwdSB0byBhdm9pZCBhbnkgcG90
-ZW50aWFsIG51bGwgcG9pbnRlcg0KPj4gZGVyZWZlcmVuY2VzLg0KPj4NCj4+IEFkZHJlc3Nlcy1D
-b3Zlcml0eTogKCJEZXJlZmVyZW5jZSBvbiBudWxsIHJldHVybiB2YWx1ZSIpDQo+PiBGaXhlczog
-YWU5YTI1YWVhN2YzICgiZHJtL2FtZGtmZDogR2VuZXJhdGUgeEdNSSBkaXJlY3QgaW9saW5rIikN
-Cj4+IFNpZ25lZC1vZmYtYnk6IENvbGluIElhbiBLaW5nIDxjb2xpbi5raW5nQGNhbm9uaWNhbC5j
-b20+DQo+PiAtLS0NCj4+ICAgIGRyaXZlcnMvZ3B1L2RybS9hbWQvYW1ka2ZkL2tmZF9jcmF0LmMg
-fCAyICstDQo+PiAgICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24o
-LSkNCj4+DQo+PiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9ncHUvZHJtL2FtZC9hbWRrZmQva2ZkX2Ny
-YXQuYyBiL2RyaXZlcnMvZ3B1L2RybS9hbWQvYW1ka2ZkL2tmZF9jcmF0LmMNCj4+IGluZGV4IDRl
-M2ZjMjg0ZjZhYy4uY2I2YjQ2Y2ZhNmMyIDEwMDY0NA0KPj4gLS0tIGEvZHJpdmVycy9ncHUvZHJt
-L2FtZC9hbWRrZmQva2ZkX2NyYXQuYw0KPj4gKysrIGIvZHJpdmVycy9ncHUvZHJtL2FtZC9hbWRr
-ZmQva2ZkX2NyYXQuYw0KPj4gQEAgLTEyOTMsNyArMTI5Myw3IEBAIHN0YXRpYyBpbnQga2ZkX2Ny
-ZWF0ZV92Y3JhdF9pbWFnZV9ncHUodm9pZCAqcGNyYXRfaW1hZ2UsDQo+PiAgICAJaWYgKGtkZXYt
-PmhpdmVfaWQpIHsNCj4+ICAgIAkJZm9yIChuaWQgPSAwOyBuaWQgPCBwcm94aW1pdHlfZG9tYWlu
-OyArK25pZCkgew0KPj4gICAgCQkJcGVlcl9kZXYgPSBrZmRfdG9wb2xvZ3lfZGV2aWNlX2J5X3By
-b3hpbWl0eV9kb21haW4obmlkKTsNCj4+IC0JCQlpZiAoIXBlZXJfZGV2LT5ncHUpDQo+PiArCQkJ
-aWYgKCFwZWVyX2RldiB8fCAhcGVlcl9kZXYtPmdwdSkNCj4+ICAgIAkJCQljb250aW51ZTsNCj4+
-ICAgIAkJCWlmIChwZWVyX2Rldi0+Z3B1LT5oaXZlX2lkICE9IGtkZXYtPmhpdmVfaWQpDQo+PiAg
-ICAJCQkJY29udGludWU7DQo+IF9fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fDQo+IGFtZC1nZnggbWFpbGluZyBsaXN0DQo+IGFtZC1nZnhAbGlzdHMuZnJlZWRl
-c2t0b3Aub3JnDQo+IGh0dHBzOi8vbGlzdHMuZnJlZWRlc2t0b3Aub3JnL21haWxtYW4vbGlzdGlu
-Zm8vYW1kLWdmeA0K
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Tue, 2 Jul 2019 20:27:32 +0200
+
+Two strings which did not contain a data format specification should be pu=
+t
+into a sequence. Thus use the corresponding function =E2=80=9Cseq_puts=E2=
+=80=9D.
+
+This issue was detected by using the Coccinelle software.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ security/apparmor/label.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/security/apparmor/label.c b/security/apparmor/label.c
+index 59f1cc2557a7..20acc1f3112e 100644
+=2D-- a/security/apparmor/label.c
++++ b/security/apparmor/label.c
+@@ -1747,13 +1747,13 @@ void aa_label_seq_xprint(struct seq_file *f, struc=
+t aa_ns *ns,
+ 			AA_DEBUG("label print error");
+ 			return;
+ 		}
+-		seq_printf(f, "%s", str);
++		seq_puts(f, str);
+ 		kfree(str);
+ 	} else if (display_mode(ns, label, flags))
+ 		seq_printf(f, "%s (%s)", label->hname,
+ 			   label_modename(ns, label, flags));
+ 	else
+-		seq_printf(f, "%s", label->hname);
++		seq_puts(f, label->hname);
+ }
+
+ void aa_label_xprintk(struct aa_ns *ns, struct aa_label *label, int flags=
+,
+=2D-
+2.22.0
+

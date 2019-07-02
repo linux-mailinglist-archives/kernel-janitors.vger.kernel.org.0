@@ -2,102 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01BFE5CE7C
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 13:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27BB45CF40
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 14:16:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726167AbfGBLg1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jul 2019 07:36:27 -0400
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:53722 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725858AbfGBLg1 (ORCPT
+        id S1726732AbfGBMQJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jul 2019 08:16:09 -0400
+Received: from paleale.coelho.fi ([176.9.41.70]:54838 "EHLO
+        farmhouse.coelho.fi" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726658AbfGBMQJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jul 2019 07:36:27 -0400
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x62BaMoU122076;
-        Tue, 2 Jul 2019 06:36:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1562067382;
-        bh=gIRvrIV2Wc21BZQI/yRZvscQEln3l4qrakkgDdK8Yqw=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=WJarnZQlahTj1u4qn9Lq6B2GYYwT0OWR6zhM9VQ7+FoVe3/MPM1kuj/0blE/AXRbg
-         Z1Ts+Q2J3vWmWul6xfRtm9LO2UmKH6OswZ3ZOCZyK5BwlxlYrw+It6m8MdW/es4371
-         vk+/CHtnXNaT6z0o1SMDlEvw+WeZV+Gu2Cz9z3HI=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x62BaMp6036626
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 2 Jul 2019 06:36:22 -0500
-Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Tue, 2 Jul
- 2019 06:36:22 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Tue, 2 Jul 2019 06:36:22 -0500
-Received: from [172.24.191.45] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x62BaKLS027112;
-        Tue, 2 Jul 2019 06:36:20 -0500
-Subject: Re: [PATCH][next] regulator: lp87565: fix missing break in switch
- statement
-To:     Lee Jones <lee.jones@linaro.org>,
-        Colin Ian King <colin.king@canonical.com>
-CC:     Mark Brown <broonie@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20190627131639.6394-1-colin.king@canonical.com>
- <20190628143628.GJ5379@sirena.org.uk>
- <4cb0e4ab-66c7-2b3d-27d3-fd5cfde8988f@canonical.com>
- <20190702104420.GD4652@dell>
- <4a0a50be-1465-0554-f787-dec72bc07a00@canonical.com>
- <20190702113157.GG4652@dell>
-From:   Keerthy <j-keerthy@ti.com>
-Message-ID: <0c0e0e49-48c3-c1af-b7c7-26603d98cfe3@ti.com>
-Date:   Tue, 2 Jul 2019 17:06:59 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
+        Tue, 2 Jul 2019 08:16:09 -0400
+X-Greylist: delayed 1301 seconds by postgrey-1.27 at vger.kernel.org; Tue, 02 Jul 2019 08:16:08 EDT
+Received: from 91-156-6-193.elisa-laajakaista.fi ([91.156.6.193] helo=redipa)
+        by farmhouse.coelho.fi with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <luca@coelho.fi>)
+        id 1hiHMY-0004Nr-Tm; Tue, 02 Jul 2019 14:54:19 +0300
+Message-ID: <859d0a7dfa39b34919ffd83b4b9b923504a3d737.camel@coelho.fi>
+Subject: Re: [PATCH][next] iwlwifi: mvm: fix comparison of u32 variable with
+ less than zero
+From:   Luca Coelho <luca@coelho.fi>
+To:     Colin King <colin.king@canonical.com>,
+        Haim Dreyfuss <haim.dreyfuss@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Intel Linux Wireless <linuxwifi@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.or, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Tue, 02 Jul 2019 14:54:16 +0300
+In-Reply-To: <20190701162657.15174-1-colin.king@canonical.com>
+References: <20190701162657.15174-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-In-Reply-To: <20190702113157.GG4652@dell>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Mon, 2019-07-01 at 17:26 +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The comparison of the u32 variable wgds_tbl_idx with less than zero is
+> always going to be false because it is unsigned.  Fix this by making
+> wgds_tbl_idx a plain signed int.
+> 
+> Addresses-Coverity: ("Unsigned compared against 0")
+> Fixes: 4fd445a2c855 ("iwlwifi: mvm: Add log information about SAR status")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/net/wireless/intel/iwlwifi/mvm/nvm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+> index 719f793b3487..a9bb43a2f27b 100644
+> --- a/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+> +++ b/drivers/net/wireless/intel/iwlwifi/mvm/nvm.c
+> @@ -620,7 +620,7 @@ void iwl_mvm_rx_chub_update_mcc(struct iwl_mvm *mvm,
+>  	enum iwl_mcc_source src;
+>  	char mcc[3];
+>  	struct ieee80211_regdomain *regd;
+> -	u32 wgds_tbl_idx;
+> +	int wgds_tbl_idx;
+>  
+>  	lockdep_assert_held(&mvm->mutex);
 
+Thanks, Colin!
 
-On 02/07/19 5:01 PM, Lee Jones wrote:
-> On Tue, 02 Jul 2019, Colin Ian King wrote:
-> 
->> On 02/07/2019 11:44, Lee Jones wrote:
->>> On Fri, 28 Jun 2019, Colin Ian King wrote:
->>>
->>>> On 28/06/2019 15:36, Mark Brown wrote:
->>>>> On Thu, Jun 27, 2019 at 02:16:39PM +0100, Colin King wrote:
->>>>>> From: Colin Ian King <colin.king@canonical.com>
->>>>>>
->>>>>> Currently the LP87565_DEVICE_TYPE_LP87561_Q1 case does not have a
->>>>>> break statement, causing it to fall through to a dev_err message.
->>>>>> Fix this by adding in the missing break statement.
->>>>>
->>>>> This doesn't apply against current code, please check and resend.
->>>>>
->>>> So it applies cleanly against linux-next, I think the original code
->>>> landed in mfd/for-mfd-next - c.f. https://lkml.org/lkml/2019/5/28/550
->>>
->>> Applied, thanks Colin.
->>>
->> I'm confused, who is the official maintainer of the regulator patches
->> nowadays?
-> 
-> Mark.  But the patch you're fixing is currently in the MFD tree.
-> 
-> I sent him an updated pull-request.
+I applied this to our internal tree and it will reach the mainline
+following our normal upstreaming process.
 
-Thanks Lee!
+--
+Cheers,
+Luca.
 
-> 
-> Don't worry mate, you're in good hands. ;)
-> 

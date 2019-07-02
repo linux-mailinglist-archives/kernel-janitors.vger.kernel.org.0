@@ -2,121 +2,159 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C8F95D2E3
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 17:29:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3097E5D31F
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 17:40:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727072AbfGBP3b (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jul 2019 11:29:31 -0400
-Received: from mail-eopbgr710066.outbound.protection.outlook.com ([40.107.71.66]:40517
-        "EHLO NAM05-BY2-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726401AbfGBP3a (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jul 2019 11:29:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector1-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jaGLpITlyDt6F8ESbhGdAWJFbp3uniLwL7WWp3B+T8o=;
- b=dNqLerigGtU9Y/Pah0VN0McCw2dEQUwo+j+jZU0tTafYOzg9TKDxGti58RTLpSyKpiZY8ZOXVsI7nTRtU3gJ2pCImxj4hjyuevunOGr1RRfZJoLtby0Iy8RO3G1XEJ8umm9B5fwP/mw1uhBm3BIZXzw3NyKgmxo/5Va+kf/NFLo=
-Received: from DM6PR12MB3241.namprd12.prod.outlook.com (20.179.105.153) by
- DM6PR12MB3769.namprd12.prod.outlook.com (10.255.172.210) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2032.20; Tue, 2 Jul 2019 15:29:27 +0000
-Received: from DM6PR12MB3241.namprd12.prod.outlook.com
- ([fe80::c6d:3ac2:8785:dd09]) by DM6PR12MB3241.namprd12.prod.outlook.com
- ([fe80::c6d:3ac2:8785:dd09%7]) with mapi id 15.20.2032.019; Tue, 2 Jul 2019
- 15:29:27 +0000
-From:   "Liu, Shaoyun" <Shaoyun.Liu@amd.com>
-To:     Colin King <colin.king@canonical.com>,
-        Oded Gabbay <oded.gabbay@gmail.com>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] drm/amdkfd: fix potential null pointer dereference on
- pointer peer_dev
-Thread-Topic: [PATCH] drm/amdkfd: fix potential null pointer dereference on
- pointer peer_dev
-Thread-Index: AQHVL93opeQz06mKNEKONaZnBlSNVqa3diCA
-Date:   Tue, 2 Jul 2019 15:29:27 +0000
-Message-ID: <66e161b2-dc6e-f8e1-c1f4-dbd15e06040a@amd.com>
-References: <20190629133114.14271-1-colin.king@canonical.com>
-In-Reply-To: <20190629133114.14271-1-colin.king@canonical.com>
-Accept-Language: en-CA, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [165.204.55.251]
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.1
-x-clientproxiedby: YTBPR01CA0018.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:14::31) To DM6PR12MB3241.namprd12.prod.outlook.com
- (2603:10b6:5:186::25)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Shaoyun.Liu@amd.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 757ecf26-e31e-4c08-738b-08d6ff0211e4
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:DM6PR12MB3769;
-x-ms-traffictypediagnostic: DM6PR12MB3769:
-x-microsoft-antispam-prvs: <DM6PR12MB37695B7E22C51F2D2EA1DC7CF4F80@DM6PR12MB3769.namprd12.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
-x-forefront-prvs: 008663486A
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(39860400002)(136003)(376002)(396003)(346002)(366004)(189003)(199004)(6436002)(58126008)(6506007)(316002)(229853002)(4326008)(66476007)(36756003)(6486002)(54906003)(53936002)(72206003)(110136005)(486006)(66066001)(5660300002)(6512007)(478600001)(66946007)(65806001)(65956001)(68736007)(25786009)(2906002)(64126003)(73956011)(14454004)(11346002)(3846002)(64756008)(6116002)(66556008)(2616005)(31686004)(52116002)(65826007)(476003)(66446008)(26005)(256004)(14444005)(446003)(71190400001)(71200400001)(2501003)(7736002)(2201001)(76176011)(186003)(31696002)(81156014)(99286004)(86362001)(6246003)(305945005)(8936002)(53546011)(102836004)(386003)(81166006)(8676002)(921003)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR12MB3769;H:DM6PR12MB3241.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: amd.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: WUDA4MJy6tlJpk++6X9cQxBt0NgSwKFOZWLM+wOth/UMzX2K5SOj5LiQ/z4G6Ag0wDllxZJc6kGRq+W4goLNDOlKjH/p5tTbYFoEDubO00TgGp6DGHPnrz+rKeGx/te6e4BycwjNVREY9v7xwFF2j4Xcln4xmTyZM80y00394w2cD6ldQDtS3IOVnEA1EOSL5JtaP9L72DpHZfQmAGY7PlJfOtT/FDeGgTFOcxCKauCCNcYSObN3XQPILColzD6xQOZT3baF2dP2h8uEHAYWy9ZggDDo/2kfBrEMsxlOMCTFd2xhvc0bvp3C+vnSO5BDg4+UmlYx3qmyjP1nM3YEwtDq/CNGYWuu5+1c/AAkapQWHVk8GmYR9xOzYcaOI5vZWv8KHwt1bXNVYb4PwvPnfqPlm0vizrdtPB2O8Ui15Mw=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <F0CB789EF2E3774883C7EE5C744DAE61@namprd12.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S1726150AbfGBPki (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jul 2019 11:40:38 -0400
+Received: from mout.web.de ([212.227.15.14]:50095 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725996AbfGBPki (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jul 2019 11:40:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1562082023;
+        bh=jbQnila/Ly8Ah5+VhWkppnndDp+owZQcXoRR4Iy+/Jw=;
+        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+        b=V79aRUpaV8EuRewQhjXvROH+er02lkhxsTz09+dbCxf+AHHjsfR/79B2uQJN7qv5y
+         DN3sJ1UzP6LdO/gHbpwzQgAEND1cqN2/GbUzIw9RmkdVcfpY3sZtudPu7Aer4kYKkI
+         2xTLh1+MgxIa2ZiI7FxoIOcwIp64jUVRNhRjYoec=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.48.11.114]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M8L3a-1iUEQ115iU-00w0uU; Tue, 02
+ Jul 2019 17:40:23 +0200
+To:     kernel-janitors@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rob Herring <robh@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] openpromfs: Adjust three seq_printf() calls in
+ property_show()
+Openpgp: preference=signencrypt
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Cc:     LKML <linux-kernel@vger.kernel.org>
+Message-ID: <22563348-fefa-8540-9d71-de37764f0596@web.de>
+Date:   Tue, 2 Jul 2019 17:40:21 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 757ecf26-e31e-4c08-738b-08d6ff0211e4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jul 2019 15:29:27.7444
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ShaoyunL@amd.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB3769
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:JxiWIYXw9gmhR5r6woOTjGVR6MjO2eh4EujnnpT0chsKLzSsGWH
+ B2mCJnGEY4HGjFkaldkJKEejp52mp36rN04WdlcTSOyNx+Q1SHqnWTnPS4Zi8je9Z8M+n7M
+ JgXr2jJ4P3qnzOWQ+qVfAsLTn9iEuxkS7HVof4ZJI3vQQlur3ju/FXTzun338MkeLCl/Yl7
+ inH2GvjKi4g2oOHVTAeJA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:J6dmmI/s+y8=:AGCapRw8MW69tokZVkYyPC
+ KdB5Gq6dQpOM2aS95rbkh8DvS/jmWHso1Ze8PdqTQk4qZTtnf/lGxA89SFb1hRLO4xfWOpURA
+ AYGZVhOCYqFVXa3hkuD5cVzd4VzgPDYdaBcR8fJ8LTHld2A64wE+DXqsafO4jfAbH65dUeVXo
+ 2DIXCHsPlYYsPkt1k9iqOn5p1K5eKmiq7J8/tpkLmaQ/JpYvM1uzl/8Uir6L0oPnZRT6DCEYI
+ kji0mLsQy7+KOPU2yY/6EYAgB3F8DQodKVDA/mUuy6BhCp0ffDkPcsDyfDO8E10khBZNKzU9C
+ g235n07NeQOndwIKdfZqcWqAO2u2usYgoHVVX7UPhA/6mom1eJ77RoZxEggkRyREDWNR3kUu6
+ APaC2tRYICy5+u8t2UeODclmfD6UxOb6fqyXlPeAjkN039YOJPz55RrbOmmLmQowimK/yqAsn
+ UkCZBu7A80hyExbDOEdYmOA/dcaWElPK+BFa1rBkHyIGVidMujedLBUMPXzSCR99n2BUwlXbU
+ RkTgO1eEbDUN3xA/G5L9c4fTRg76TEw4rv6hwmZTKNJgw0kDqEnZSrpjusdwyxqC+MpiIQoZH
+ JOaiewLNd03tusylEeiM4HIaXM9Zu618ZEMSwlLLiB3+y5gy/WGZuLwtGOudshtAGVajoNF7G
+ n431ZjfgYWTQUiFxxD4GB69r/mCdFjgpN3V5oLvNzrbTvMR5mzTg2KX1ExhnU0PGL+hbjXwCB
+ sIzDyu6NEbAPhHt3uDqJldywJMYNYRH3NiTtg+UHJqSZrjStIXv1SXipV2FEPUrUGC20O1eMT
+ RKwrc4x7wj9odgxIocRru79UvHhFLFd7TDo5ymMnBA1IrJ3tQh5+i05i2OK4omQ3gn7IbYL8J
+ QVJHfv51H5A289V1SUdvwNTUET46Fp4dajfO6JItbnLhVPwR+wTIoGIqCFidYUUo8nQ+eJerB
+ dBEREiNdlvyChb26xWexQTn6tANzGn0ZfA3WQ9/OUGE1h7FivPnkcbqiU49j+aQhe3wZf7LDH
+ lfnfeopGAA0DqT04biGMQhlCz1SYcjHx17qYhvETXTW50o7KIg12onAlDX3snJ6Gc0JDi1JRB
+ y/PwN0wOLjeHqUU3FooQ1IIPnb9sqgMhjzn
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-IEZyb20gdGhlIGNvbW1lbnRzICwgIndlIHdpbGzCoCBsb29wIEdQVXMgdGhhdCBhbHJlYWR5IGJl
-IHByb2Nlc3NlZCAod2l0aCANCmxvd2VyIHZhbHVlIG9mIHByb3hpbWl0eV9kb21haW4pICIswqAg
-dGhlIGRldmljZSBzaG91bGQgYWxyZWFkeSBiZWVuIA0KYWRkZWQgaW50byB0aGXCoCB0b3BvbG9n
-eV9kZXZpY2VfbGlzdC7CoCBTbyBpbiB0aGlzIGNhc2UgLCANCmtmZF90b3BvbG9neV9kZXZpY2Vf
-YnlfcHJveGltaXR5X2RvbWFpbiB3aWxsIG5vdCByZXR1cm4gYSBOVUxMIHBvaW50ZXIuwqAgDQpJ
-ZiB5b3UgcmVhbGx5IGdldCB0aGUgbnVsbCBwb2ludGVyIGRlcmVmZXJlbmNlcyBoZXJlICwgd2Ug
-bXVzdCBoYXZlwqAgDQpzb21lIGJpZ2dlciBwcm9ibGVtIGFuZMKgIGNhbiBub3Qgc29sdmVkIGJ5
-IGFkZGVkIHRoZSBudWxsIGNoZWNrIGhlcmUuDQoNClJlZ2FyZHMNCg0Kc2hhb3l1bi5saXUNCg0K
-T24gMjAxOS0wNi0yOSA5OjMxIGEubS4sIENvbGluIEtpbmcgd3JvdGU6DQo+IEZyb206IENvbGlu
-IElhbiBLaW5nIDxjb2xpbi5raW5nQGNhbm9uaWNhbC5jb20+DQo+DQo+IFRoZSBjYWxsIHRvIGtm
-ZF90b3BvbG9neV9kZXZpY2VfYnlfcHJveGltaXR5X2RvbWFpbiBjYW4gcmV0dXJuIGEgTlVMTA0K
-PiBwb2ludGVyIHNvIGFkZCBhIG51bGwgcG9pbnRlciBjaGVjayBvbiBwZWVyX2RldiB0byB0aGUg
-ZXhpc3RpbmcgbnVsbA0KPiBwb2ludGVyIGNoZWNrIG9uIHBlZXJfZGV2LT5ncHUgdG8gYXZvaWQg
-YW55IHBvdGVudGlhbCBudWxsIHBvaW50ZXINCj4gZGVyZWZlcmVuY2VzLg0KPg0KPiBBZGRyZXNz
-ZXMtQ292ZXJpdHk6ICgiRGVyZWZlcmVuY2Ugb24gbnVsbCByZXR1cm4gdmFsdWUiKQ0KPiBGaXhl
-czogYWU5YTI1YWVhN2YzICgiZHJtL2FtZGtmZDogR2VuZXJhdGUgeEdNSSBkaXJlY3QgaW9saW5r
-IikNCj4gU2lnbmVkLW9mZi1ieTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fub25pY2Fs
-LmNvbT4NCj4gLS0tDQo+ICAgZHJpdmVycy9ncHUvZHJtL2FtZC9hbWRrZmQva2ZkX2NyYXQuYyB8
-IDIgKy0NCj4gICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkN
-Cj4NCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2RybS9hbWQvYW1ka2ZkL2tmZF9jcmF0LmMg
-Yi9kcml2ZXJzL2dwdS9kcm0vYW1kL2FtZGtmZC9rZmRfY3JhdC5jDQo+IGluZGV4IDRlM2ZjMjg0
-ZjZhYy4uY2I2YjQ2Y2ZhNmMyIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL2dwdS9kcm0vYW1kL2Ft
-ZGtmZC9rZmRfY3JhdC5jDQo+ICsrKyBiL2RyaXZlcnMvZ3B1L2RybS9hbWQvYW1ka2ZkL2tmZF9j
-cmF0LmMNCj4gQEAgLTEyOTMsNyArMTI5Myw3IEBAIHN0YXRpYyBpbnQga2ZkX2NyZWF0ZV92Y3Jh
-dF9pbWFnZV9ncHUodm9pZCAqcGNyYXRfaW1hZ2UsDQo+ICAgCWlmIChrZGV2LT5oaXZlX2lkKSB7
-DQo+ICAgCQlmb3IgKG5pZCA9IDA7IG5pZCA8IHByb3hpbWl0eV9kb21haW47ICsrbmlkKSB7DQo+
-ICAgCQkJcGVlcl9kZXYgPSBrZmRfdG9wb2xvZ3lfZGV2aWNlX2J5X3Byb3hpbWl0eV9kb21haW4o
-bmlkKTsNCj4gLQkJCWlmICghcGVlcl9kZXYtPmdwdSkNCj4gKwkJCWlmICghcGVlcl9kZXYgfHwg
-IXBlZXJfZGV2LT5ncHUpDQo+ICAgCQkJCWNvbnRpbnVlOw0KPiAgIAkJCWlmIChwZWVyX2Rldi0+
-Z3B1LT5oaXZlX2lkICE9IGtkZXYtPmhpdmVfaWQpDQo+ICAgCQkJCWNvbnRpbnVlOw0K
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Tue, 2 Jul 2019 17:24:27 +0200
+
+A bit of information should be put into a sequence.
+Thus improve the execution speed for this data output by better usage
+of corresponding functions.
+
+This issue was detected by using the Coccinelle software.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ fs/openpromfs/inode.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/fs/openpromfs/inode.c b/fs/openpromfs/inode.c
+index e6cb7689fec4..2234103fd8ee 100644
+=2D-- a/fs/openpromfs/inode.c
++++ b/fs/openpromfs/inode.c
+@@ -76,14 +76,14 @@ static int property_show(struct seq_file *f, void *v)
+ 		while (len > 0) {
+ 			int n =3D strlen(pval);
+
+-			seq_printf(f, "%s", (char *) pval);
++			seq_puts(f, (char *) pval);
+
+ 			/* Skip over the NULL byte too.  */
+ 			pval +=3D n + 1;
+ 			len -=3D n + 1;
+
+ 			if (len > 0)
+-				seq_printf(f, " + ");
++				seq_puts(f, " + ");
+ 		}
+ 	} else {
+ 		if (len & 3) {
+@@ -111,8 +111,7 @@ static int property_show(struct seq_file *f, void *v)
+ 			}
+ 		}
+ 	}
+-	seq_printf(f, "\n");
+-
++	seq_putc(f, '\n');
+ 	return 0;
+ }
+
+=2D-
+2.22.0
+

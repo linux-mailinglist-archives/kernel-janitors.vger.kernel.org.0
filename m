@@ -2,93 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F3185CF58
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 14:24:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD3D45CF74
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 14:31:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726636AbfGBMYa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jul 2019 08:24:30 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:57020 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726418AbfGBMYa (ORCPT
+        id S1726960AbfGBMbB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jul 2019 08:31:01 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50364 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726831AbfGBMbB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jul 2019 08:24:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=In-Reply-To:Content-Type:
-        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=cvy0kIJO+R/Gzj/CEXr/8PVzwmIW9DWMbnYx/biL+po=; b=ggVQc4I7QcO67RPYg5FQWUfk1
-        77P9hQCq1bHSFUFFKmuNpNw+xQVarmAw9Gyi2uAIYcbhp+M4E/B+aO7DCnUIB5Lbe1LZ5P26y9QXp
-        0h6S/AqVmg29L91wFLLKfAD1HnExsU42l1ZL7ldK19SiNJjkr/seIVWXmoH1YCq4l/LL4=;
-Received: from [2001:470:1f1d:6b5:7e7a:91ff:fede:4a45] (helo=finisterre.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1hiHpj-0002J7-Hv; Tue, 02 Jul 2019 12:24:27 +0000
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-        id 9C4F3440046; Tue,  2 Jul 2019 13:24:26 +0100 (BST)
-Date:   Tue, 2 Jul 2019 13:24:26 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     Lee Jones <lee.jones@linaro.org>, Keerthy <j-keerthy@ti.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] regulator: lp87565: fix missing break in switch
- statement
-Message-ID: <20190702122426.GI2793@sirena.org.uk>
-References: <20190627131639.6394-1-colin.king@canonical.com>
- <20190628143628.GJ5379@sirena.org.uk>
- <4cb0e4ab-66c7-2b3d-27d3-fd5cfde8988f@canonical.com>
- <20190702104420.GD4652@dell>
- <4a0a50be-1465-0554-f787-dec72bc07a00@canonical.com>
+        Tue, 2 Jul 2019 08:31:01 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hiHw0-0000Fa-Jx; Tue, 02 Jul 2019 12:30:56 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/amd/display/dce_mem_input: fix spelling mistake "eanble" -> "enable"
+Date:   Tue,  2 Jul 2019 13:30:56 +0100
+Message-Id: <20190702123056.8205-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="7SrMUQONj8Rl9QNG"
-Content-Disposition: inline
-In-Reply-To: <4a0a50be-1465-0554-f787-dec72bc07a00@canonical.com>
-X-Cookie: This sentence no verb.
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
---7SrMUQONj8Rl9QNG
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+There is a spelling mistake in a variable name, fix this by renaming
+it to enable.
 
-On Tue, Jul 02, 2019 at 12:12:10PM +0100, Colin Ian King wrote:
-> On 02/07/2019 11:44, Lee Jones wrote:
-> > On Fri, 28 Jun 2019, Colin Ian King wrote:
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-> >> So it applies cleanly against linux-next, I think the original code
-> >> landed in mfd/for-mfd-next - c.f. https://lkml.org/lkml/2019/5/28/550
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c b/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c
+index a24a2bda8656..07e0cc5a26d4 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c
+@@ -606,11 +606,11 @@ static void dce_mi_allocate_dmif(
+ 	}
+ 
+ 	if (dce_mi->wa.single_head_rdreq_dmif_limit) {
+-		uint32_t eanble =  (total_stream_num > 1) ? 0 :
++		uint32_t enable =  (total_stream_num > 1) ? 0 :
+ 				dce_mi->wa.single_head_rdreq_dmif_limit;
+ 
+ 		REG_UPDATE(MC_HUB_RDREQ_DMIF_LIMIT,
+-				ENABLE, eanble);
++				ENABLE, enable);
+ 	}
+ }
+ 
+@@ -636,11 +636,11 @@ static void dce_mi_free_dmif(
+ 			10, 3500);
+ 
+ 	if (dce_mi->wa.single_head_rdreq_dmif_limit) {
+-		uint32_t eanble =  (total_stream_num > 1) ? 0 :
++		uint32_t enable =  (total_stream_num > 1) ? 0 :
+ 				dce_mi->wa.single_head_rdreq_dmif_limit;
+ 
+ 		REG_UPDATE(MC_HUB_RDREQ_DMIF_LIMIT,
+-				ENABLE, eanble);
++				ENABLE, enable);
+ 	}
+ }
+ 
+-- 
+2.20.1
 
-> > Applied, thanks Colin.
-
-> I'm confused, who is the official maintainer of the regulator patches
-> nowadays?
-
-Me and Liam but since this patch only applies against Lee's tree he's
-applied it there (I didn't think it was worth me picking up the entire
-cross tree merge branch Lee prepared for this one fix, if Lee hadn't
-picked it up it'd have waited till after the merge window).
-
---7SrMUQONj8Rl9QNG
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAl0bTPkACgkQJNaLcl1U
-h9Blxgf/X/fK5rQM9Xb+Yt492Z9/NCArCSuCI/mxZbI1rmSe+GDcD8h5mV6hd0ok
-d5MOzJ6HnMDRxgAZIns3zlNJ+Pm9F86FKrpfEv6Amjd8ykg7Xy9Gb0DsNv2PQnj9
-0K9Zf3cD5OBEAM8VusSStT/AvvFxSkejXLjt5nswMdQFN3a7CS16U0aGIZOrd1t+
-rROoqa5YQKTb4AF9Tn6+XoVvpy96zd2ixbFPqDeV8EwXJFt6+Y5PJAbSvXfG6HX+
-PYOQO/IMeJqfH9jbg8a8GyDdOTYC5rKHKIRPmbZVuRGo7O4WEDpMRFO1PwKiBV/J
-hcNdXDspcFdYbwvUUo6Ar3d2F94ScQ==
-=aXbp
------END PGP SIGNATURE-----
-
---7SrMUQONj8Rl9QNG--

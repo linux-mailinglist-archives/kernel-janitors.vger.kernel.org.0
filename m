@@ -2,33 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F53F5D552
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 19:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C19145D5A7
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 19:51:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726936AbfGBRd3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jul 2019 13:33:29 -0400
-Received: from mout.web.de ([217.72.192.78]:53473 "EHLO mout.web.de"
+        id S1726825AbfGBRvM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jul 2019 13:51:12 -0400
+Received: from mout.web.de ([212.227.17.12]:44431 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726150AbfGBRd3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jul 2019 13:33:29 -0400
+        id S1726150AbfGBRvL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jul 2019 13:51:11 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1562088791;
-        bh=lVjT2ewFqk1ytdCtHu/OnHNzgzrQYPG56Na/OyfRN9o=;
+        s=dbaedf251592; t=1562089823;
+        bh=ZY4QJ60SgBCr9rjOeI7wJcWzwyMqawSzvqtqOb7h6q4=;
         h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=q+uICQZuVbm+qQliAF3uODVywi7KkRRU9KBxXxXUSQxMyPwTPBiW3F4AHU31/mnM4
-         CLQkYfJ/6baG0NINIA4FVk0dCmP5o16egB79auUF/Fzz0H+ns2hKCc+lTbOJdKPLg6
-         jQ5mvA7sQsoYJWboDwcmfVBh9QLOrrlXQ60w1fqY=
+        b=fOwI16P8ajUtdvLe+XGAGJcfdEPOS7PG1o+jDdIAqX/1dn/rmotgIrrs9acWWeoW8
+         gug8waSyOtGxWMBHoYQ6lNDjzjKmJm1oF+889zutzHcE0nrbpMws9n2fHPClD6ualc
+         31M3eqmtDwYHBVLdbG8vQ1WIILjX+c85vOGRngbE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([78.48.11.114]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MPHGG-1hdwne3vDU-004Q4N; Tue, 02
- Jul 2019 19:33:11 +0200
-To:     cgroups@vger.kernel.org, Johannes Weiner <hannes@cmpxchg.org>,
-        Li Zefan <lizefan@huawei.com>, Tejun Heo <tj@kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LuLxD-1iiD9N3Olz-011lV2; Tue, 02
+ Jul 2019 19:50:22 +0200
+To:     kernel-janitors@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] cgroup: Replace a seq_printf() call by seq_puts() in
- cgroup_print_ss_mask()
+Subject: [PATCH] locking/lockdep: Replace two seq_printf() calls by seq_puts()
+ in print_name()
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -73,43 +73,43 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <d465ca81-a870-b88c-0ea2-5e8bfbefb79d@web.de>
-Date:   Tue, 2 Jul 2019 19:33:08 +0200
+Message-ID: <f842ca82-b9f1-6aa6-7868-6b6e8c6b0f76@web.de>
+Date:   Tue, 2 Jul 2019 19:50:20 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:gJQ5usvvsq65dzFd7IoGwAqCx0vhE24I0AfbP1vKexyeze6Z8+d
- WcwEi07Y2/Op1Z0xL+DNv2feF1/H8N5qyNeH7UvKvU9ARv3c+qtHGWydFHGYC4k36vPUy6x
- cWb2C4LPaVxgBt8dOCUa3Q5rJWK2DxQupM7WmoKx7cj/PvCUO0+ZGwedTBbCv9s9pHM8pWs
- t1H4sVgxOV4G4agfXanOg==
+X-Provags-ID: V03:K1:8gK4mIV/I0jwSe9wSxlDCudi9olaFmtW/apz0yi1eNu8s3wH/Gy
+ lU20xTDnm0GicDJkPISRtOBY5DI7O4o03RIRufbxLsc2XaPW7wNIFJ0qxLKaP7llD2Lhn1j
+ i4YZI+2D1ox1ZiubWvXRnmFUZHT2Hq1qsNEL4L+0S5UwNKT2eLs5N5w/f65/R+twHY9I2XF
+ ot07xKqdnzIziOUTXbj/g==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:VLd09dWw0KU=:ddbL9FcjRdFzFQRgwmD7OI
- Ipz4qmCixeeng5lGgcqrIH9MksBafFGw0Oyo4t0cDh6kF8d1RGra0RodSUDBlzjwIRfgbCmOF
- wcYXq72PocHA45Ebede2yYdugArw2Tmvh8vw1MKO7y5qy3P+shug3DI9SODNXYv5JBJsVG+DY
- SR2CP4v3mos6zYzdZfbCswpQ8C1PNGqBRAxhMbK4RZ6tvAHY/Qp5q6rdxebl1kALsLWfUANdB
- 8fFJqeYYFo555c4daYGjAtmRWtx+NKlUbxNyfp2cIq2Z4+OBiCCs+OyTK4apEbIUJSPbnh3Bh
- jxvjchu1T6ynGLM0ThnTFBaLj+HAz0d/ViBYNOeEsrP7Zlpkn4vv2u0BHUc144tjG+oN4POO6
- bNLkbXyoLOD5dHo9YXne6275MDRCC5SnKh4Kl9eQQB/zCkWXj+cBGhfyj14m//FEZTT8r6GH0
- TAkATT0pbENamf2f5IIkgDDrKR5yZvUcWvFsbirBI16JD5MMOKgo4gcDrGD8uF+eZJNKonHt/
- 6AyqZOmvwShlFiP68WEGrwEU2wFYSdmiuMRdDJrO4jAVpb0IERQWAHjJ3Y4uqGGLAwojtjx9I
- +mjv0rOSHG0WEGxzvzhJOtdbAStTzp83xVrg02aNcU8XtJ0BtI2AVjBAE+E153uRugTU9gJmL
- QPHeeEHqKSH9RT7ZepYSj8RDgx+omsjdetasglWliZXgX/kYwV5zYWFqArWxqjvYMgGKzTDt+
- oDP9onWHr7HIjCfBEgSzkpUiBK9T9AOkmrLNnIwBeyIYCMT9J3yHOyDSYFQixR930S+jK+H87
- 8IbQVvtSyqT1rVkDiOb4hwnDkIedy748OoWa0hW6w87sFM4ePDo9/rGnWelTBQBzzou522N74
- VTOTWzYobE8qfoqyC3DqjKG/tNU0uoyQ7ATnCCfX1Lqeh7U0Oors/k1Zn56So7kK8NpnPWMMz
- +GJA/NRs6+PwiRpeLwMQypw5wWuVO2XiOt6Ncl2toIPWW/Y+MnDimeCI51yoqpzsRrfQ7PG4W
- Q+bL8wsovy0PkFHpFdajtG5yFMuXSMS8prTUuB4cF6ZCpP6z0nxcPgMDR9iXInx3skDlonulC
- +a1/2ZNjPfMHnDH6uxFn/xKEpHWv0AT/Ygo
+X-UI-Out-Filterresults: notjunk:1;V03:K0:YuVe9wV9BtM=:jikX841Yovyn82Dxkn1qnX
+ Bo1e5OQoNquOd17BYmZNvwpkfPVDQeZRjR+oPoLyfIwX7K0TvGgSh6/3TmgCVvB4+2LGXodPa
+ uroMGuQRfpSYkNpy+Vu0ogDN5H/KXrjQtlb4X0hHw9JCL4uYRCzZQuj+Im8sBqTjisTxli6sE
+ 0qDMC/FoUBmiM/E8QlgB4HrGOdLEgTCFBICofcSEeX27EG3t8WPnHV5Zd4ALALaB8BtP/wYVc
+ YMyT1j8BnAKH2mDVNoAzupo+gT6uYb1axfqhK8JnI822mc73N9NMqeUTaTHFv8iXMiNzXDwsg
+ ZSdu+DTz0g5tKGefJqbGrhE2TB4de/ZOwX/QBPsYLqhX6E+4PU5eBlHDoPyzKVE5bGf2wzmx6
+ bra/AvxissjoJKhcuTqf5nmXb/iVA1IgrAU555VzN6wsgb+5jtuwipomxgRxvrrnHAuV6e0xM
+ oC1J19LmpQtVnY7T0stvxJip7BZFXJGcsA9kzHywa/xFVaEJY/Yf5LKUmlrXS+GeHyppBhteX
+ HTcib4m2E+oX6qxnte0dyOVn4fK4VICQRsZkt4Mndilw84PaWbT43ol4DlvH2iJmp1ryVAyGO
+ dRggxJr5BswuT2kksOO4BZCX8zgD2jjk81t1kP0FLnIXaa2PImBPT/fL/f3L1sdCF0Pr2pAdb
+ cnEK0h6tpQD+vT/guFjJR1VaoO6bLANeBdWMJvr+sNSXhDsF7EfjDFI1Qfc4iAaXV67TTxqBX
+ bBuH5vZfO8Bg2i4s7mU4dvWOkj12Y+Y3HvU/aqeiW+CnQrw3GN7E7Tot/Q2lJ7RGkVGZGSViv
+ dK441pn6yY0b1AVztO2wG5774VfJnVvyfKLx29SF9TaVaaCpugpyeb/8pJDbODtL46YoGjALY
+ +kYC4gj+hm2Uni2yWIfBtU3gi5bHr9Ew54X9+4WdEFAEzJZKUS3YNjnvkBvaOos0ZtIR7F4Ij
+ 5JkwdDJBmcDhHhS7Tvq63BvHgqI/fp7Qf3nI9ZUt4eysC8FCNFskrbWtz/mdAUT2t0kTTA/TU
+ SJoxECa8xVVtHxMONQ6MVgAnQ2dbh+lZfHGhMrE5vgVqe9hRlYWdgk//QmxLChJ2pBB1SpAW8
+ KTAvGIjNrJAsQ5MjDhac8g0y13ZfxAPGfxJ
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 2 Jul 2019 19:26:59 +0200
+Date: Tue, 2 Jul 2019 19:45:26 +0200
 
 A string which did not contain a data format specification should be put
 into a sequence. Thus use the corresponding function =E2=80=9Cseq_puts=E2=
@@ -119,23 +119,26 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- kernel/cgroup/cgroup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/locking/lockdep_proc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 300b0c416341..9d04e3004e3b 100644
-=2D-- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -2851,7 +2851,7 @@ static void cgroup_print_ss_mask(struct seq_file *se=
-q, u16 ss_mask)
- 	do_each_subsys_mask(ss, ssid, ss_mask) {
- 		if (printed)
- 			seq_putc(seq, ' ');
--		seq_printf(seq, "%s", ss->name);
-+		seq_puts(seq, ss->name);
- 		printed =3D true;
- 	} while_each_subsys_mask();
- 	if (printed)
+diff --git a/kernel/locking/lockdep_proc.c b/kernel/locking/lockdep_proc.c
+index 9c49ec645d8b..5bc9187e6246 100644
+=2D-- a/kernel/locking/lockdep_proc.c
++++ b/kernel/locking/lockdep_proc.c
+@@ -45,9 +45,9 @@ static void print_name(struct seq_file *m, struct lock_c=
+lass *class)
+
+ 	if (!name) {
+ 		name =3D __get_key_name(class->key, str);
+-		seq_printf(m, "%s", name);
++		seq_puts(m, name);
+ 	} else{
+-		seq_printf(m, "%s", name);
++		seq_puts(m, name);
+ 		if (class->name_version > 1)
+ 			seq_printf(m, "#%d", class->name_version);
+ 		if (class->subclass)
 =2D-
 2.22.0
 

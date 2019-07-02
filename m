@@ -2,146 +2,142 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DFF9B5D5D7
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 20:02:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DD925D5EE
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 20:12:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727053AbfGBSCf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jul 2019 14:02:35 -0400
-Received: from mx0a-00082601.pphosted.com ([67.231.145.42]:58476 "EHLO
-        mx0a-00082601.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726329AbfGBSCf (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jul 2019 14:02:35 -0400
-Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
-        by mx0a-00082601.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x62HxhB0003514;
-        Tue, 2 Jul 2019 11:02:12 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=from : to : cc : subject
- : date : message-id : references : in-reply-to : content-type : content-id
- : content-transfer-encoding : mime-version; s=facebook;
- bh=+Vg2Yh2J1ZGinZT8yQE7E/mukByk0uWukoIEU4ycctA=;
- b=W5rLnZOPZL70xXJpSwdNnkb9TcVWrsLf6cyOJXFBBkgJyEJ1FOCivAXlm481Fz4Jcgj4
- r5qF0PTA1B6v5IaJ+nTq4PDoqPmr+Z0hqM5NZL5HRHHYiVXsQOn+iytDLQOOSYI1HsIP
- DW4eMk++w7ddXansqMHJw+bwfSw1FFpNIo4= 
-Received: from mail.thefacebook.com (mailout.thefacebook.com [199.201.64.23])
-        by mx0a-00082601.pphosted.com with ESMTP id 2tgafggf0v-11
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-SHA384 bits=256 verify=NOT);
-        Tue, 02 Jul 2019 11:02:11 -0700
-Received: from prn-mbx03.TheFacebook.com (2620:10d:c081:6::17) by
- prn-hub06.TheFacebook.com (2620:10d:c081:35::130) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.1.1713.5; Tue, 2 Jul 2019 11:02:02 -0700
-Received: from prn-hub02.TheFacebook.com (2620:10d:c081:35::126) by
- prn-mbx03.TheFacebook.com (2620:10d:c081:6::17) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- 15.1.1713.5; Tue, 2 Jul 2019 11:02:02 -0700
-Received: from NAM04-BN3-obe.outbound.protection.outlook.com (192.168.54.28)
- by o365-in.thefacebook.com (192.168.16.26) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.1.1713.5
- via Frontend Transport; Tue, 2 Jul 2019 11:02:01 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=testarcselector01; d=microsoft.com; cv=none;
- b=mi2GnipSfBctOfL+ycTRjKDto8J7bIFalq8A797qf5wK1P71YVrUm4UystUtirApfWVvY3xF6cB+M8LxfwHd+ius5pBCGq2erb7AAdQJN0+40l3LyKZggE5KFQf+fQxb0OjA5tUX4IjKhs8CJF5bsJv30eDx9agYdc8/hoL969k=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=testarcselector01;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+Vg2Yh2J1ZGinZT8yQE7E/mukByk0uWukoIEU4ycctA=;
- b=B2acCyWbyAz4bswhoEDL0qJ+ZIJusxRkYIUWi/kTve3+F6niUs8/uuxOK0pobblAI7NcXKL5Ua0TNvR8Ne4DQBahrTXZ9QuUNapBTREKdd7i4ptAGohHAakyfnaHFIStPxRr6NHsDCdQvVx/30NqbWR5R+I24U8g7AxqLLCf5Qo=
-ARC-Authentication-Results: i=1; test.office365.com
- 1;spf=none;dmarc=none;dkim=none;arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.onmicrosoft.com;
- s=selector1-fb-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+Vg2Yh2J1ZGinZT8yQE7E/mukByk0uWukoIEU4ycctA=;
- b=uISEslFl4zbpGX+V7f4A6D53+H28JgJus6hucnau5KnGROPRyEJATC6MGaQW2iff3Pqrrr3mjBFZVW9R8+qgacNO1T8CsYQQBtkmNjkDPaoKDDdKU26oNlTFvRtckubW3DJ8Geuf5+nbk7HjmGiCEPN0EJNeDGJtmZ+wYTcW4QI=
-Received: from BYAPR15MB3384.namprd15.prod.outlook.com (20.179.59.17) by
- BYAPR15MB2374.namprd15.prod.outlook.com (52.135.198.24) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2008.16; Tue, 2 Jul 2019 18:02:00 +0000
-Received: from BYAPR15MB3384.namprd15.prod.outlook.com
- ([fe80::850b:bed:29d5:ae79]) by BYAPR15MB3384.namprd15.prod.outlook.com
- ([fe80::850b:bed:29d5:ae79%7]) with mapi id 15.20.2032.019; Tue, 2 Jul 2019
- 18:02:00 +0000
-From:   Yonghong Song <yhs@fb.com>
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>
-CC:     LKML <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH] bpf: Replace a seq_printf() call by seq_puts() in
- btf_enum_seq_show()
-Thread-Topic: [PATCH] bpf: Replace a seq_printf() call by seq_puts() in
- btf_enum_seq_show()
-Thread-Index: AQHVMPl8laQbH2CXxE6eDmS1GxA+Oaa3noUA
-Date:   Tue, 2 Jul 2019 18:02:00 +0000
-Message-ID: <6e3b1745-f5f7-7b0b-4bde-309c081bcd03@fb.com>
-References: <93898abe-9a7d-0c64-0856-094b62e07ba2@web.de>
-In-Reply-To: <93898abe-9a7d-0c64-0856-094b62e07ba2@web.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: CO2PR04CA0126.namprd04.prod.outlook.com
- (2603:10b6:104:7::28) To BYAPR15MB3384.namprd15.prod.outlook.com
- (2603:10b6:a03:10e::17)
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [2620:10d:c090:200::3:8eae]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: cb3337b5-110d-4efd-2eca-08d6ff176153
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:BYAPR15MB2374;
-x-ms-traffictypediagnostic: BYAPR15MB2374:
-x-microsoft-antispam-prvs: <BYAPR15MB237454BCF63DC546ACAB9A14D3F80@BYAPR15MB2374.namprd15.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:1775;
-x-forefront-prvs: 008663486A
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(136003)(396003)(39860400002)(376002)(346002)(189003)(199004)(81156014)(8676002)(53936002)(73956011)(66446008)(81166006)(54906003)(64756008)(66556008)(52116002)(68736007)(110136005)(7736002)(14454004)(8936002)(71200400001)(71190400001)(66476007)(6636002)(66946007)(256004)(6512007)(36756003)(6486002)(386003)(6436002)(31686004)(76176011)(102836004)(478600001)(53546011)(316002)(99286004)(2906002)(6506007)(476003)(6116002)(446003)(305945005)(486006)(186003)(86362001)(31696002)(5660300002)(4744005)(11346002)(2616005)(25786009)(46003)(6246003)(2201001)(2501003)(4326008)(229853002);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR15MB2374;H:BYAPR15MB3384.namprd15.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: fb.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: DKKWf82aQrBidhxQ98lP9UPznBSwefFxfDhEu9I2ojARFN5kRuuZ2vFiZhdpuBhRaO2rqbDQd04cenuEKVDgfvXYs4BfmvC4FIBRQCTzrbzOORTHhc2ssWtXGapLhKJ2fnX6stY8qhCghFWvbjUv0sSKMeFWDKbQHLBg9/wMji7Gr/HQ/BN0Bmq7pcK+TlUnN/LfW8fCwba4qivJttGfW8TgOc2kliV2iNaIlyQoe/hP6IztOTdC5GZ9oa1SrbFNAM3klBjDOXBlDDt8B/lf+Yq72UbAWhEP8XosR/iv0Ms3UwqSaM8MfTvCr65Le91cucXJ26lbNZH0ZmOyQndtbwntT2psrhX8VLOU5miwCYSAllriAdMoNj2inXMlez7rMWd7d5P1iOkAGPpVDLMJ0FNr9LE1lcbzEdBXQLlJzEo=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <DF4580F4FD5C2348B038F98E84B50EA9@namprd15.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S1726762AbfGBSMI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jul 2019 14:12:08 -0400
+Received: from mout.web.de ([212.227.17.12]:48275 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726150AbfGBSMI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jul 2019 14:12:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1562091115;
+        bh=/a9zSwi0Y/pi9ROY+DTVB0GUvSlQ80eCZXaqiI2JNVc=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=gSwVsfYeBqH9RY6ez6Iq2RACegCF642TuLg7qzF/PHtZb9FNKZbW6sjhWJHaTSRJ8
+         N0gqDRYvzfIu6FO5HylZqXlCdzqzyxA5RApqyuh8//iIo1eASS1Hq7GHpHmjhdF2Gu
+         htw34lEyuSOPesFs/OIRsrPaQslw56mQhe6t44FU=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.48.11.114]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MFcE5-1hnc342ghp-00Ecra; Tue, 02
+ Jul 2019 20:11:55 +0200
+To:     netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+        Florian Westphal <fw@strlen.de>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        Pablo Neira Ayuso <pablo@netfilter.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+From:   Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] netfilter: nf_log: Replace a seq_printf() call by seq_puts()
+ in seq_show()
+Openpgp: preference=signencrypt
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <c7d397c8-4f41-1831-505f-b3fbcc3663fb@web.de>
+Date:   Tue, 2 Jul 2019 20:11:53 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-Network-Message-Id: cb3337b5-110d-4efd-2eca-08d6ff176153
-X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Jul 2019 18:02:00.5084
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: yhs@fb.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR15MB2374
-X-OriginatorOrg: fb.com
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-02_09:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=fb_default_notspam policy=fb_default score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=947 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907020198
-X-FB-Internal: deliver
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:cpD8/pZMkphFpZd+n8qkZ7B8EWpJuKAlsEvsw4IrfzMw31wilNC
+ MAiYqlBo8+Z9gMpj5AycLqtoxFExuXZ552k8Oo+3vtKmGNNG0+wSdGjDcH07JEXeRjRei22
+ SNosxeTi6tRyQ9KgnfS1chVVHHhDB94BxgisXYCEy6ghMWNArCVFP9gDbxryj0/2hhoSi/2
+ M08i9+99ZX0on8/4PEeSA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:j1UiI//MHNI=:1q24Fozeym9A7czh4lSZS5
+ aH+BxtCw63leli5wijwHfUdz+2jxbNknNC9AW2xg4dNAJk8NGHDrD9H2Az1XpHcEbIiJm2DMP
+ D8ytuikh6S00ycKh4DJ/cSdmwEw1fxL7Tc3cFu5uB3sAbysl9vAkcrzOjjX0ClGRIxHXbUYuw
+ hYyXsts50pCpGkRNL0nYLQ6Q7/L0qTFRywRRFvmpVCTLzVBHAvQKJ2+7IX9gjf2yCFHeAd+BJ
+ hr1ErjsMSRcGijCS93eVBniWJT54WTBiLP4GDu7zQxAc+vmofApw6dZNvbs0rcLaQgKrqlCCx
+ 7BOrOqC8aPicdVQIY/2V4rzZDTYg+c5PW/Bqa/wPjNQFWn8UOAq4Lu0vqgDjLXYixXjFKaLx5
+ U+ORT9L6ooEpM8DiQuPwahHx+bFUd0Oxb9YO961YfKKPS3avDqEoPW4c2XqpBjLl57/Nt0OqU
+ 1z3TYeU1dZxpS4WbwlrFadIRPIhkZ43Chzaos1WMIxfbq3kE3tx9TvlfTUhJ5gcqaKwT6xHIn
+ EXBpTSKehdVTg7uCJG4YdWRO0aFCquH1Z0mra3XQI7KEpeveNMIYmtA5lZr7JuGtkDLdS21aL
+ sgk8N6VkmdsFz0LT30hA58hBjxNoMqp9+Wqef9st7U1AybxxWgdoLk1F8wd0ZcDxnddT/EDR1
+ DmTGBHWPvgfuZaNYksD0nYm+AKVU4TuFncL9K1yRf+BedLiO7+e6qM+VKCkH/mvJax5H+DMnv
+ HeCpAY+JJOdOfEcThaq+4M6u4qkpgNf0MUJnH+D0Z+OqXhThILeBjwUAvN/s1PwQvVQ/v6tpW
+ W3jEIVUtBVYUmSn0UMEkjdiqzZXv1ecsEHYb6M0caNMrrV7uCpLXnjIDMbZW0QgIBnOra+QIO
+ AFE4Q2KAJmB8pm3Ll9rldJqQUZx30/YZX4EfL7PrzSapt+xyW1OYFnSEr5myPzaCfeGuCQ4FR
+ l7SlX1NldDVIFyegajhWAOG5KdjwALpfHsJp8jAxjXpBJLVzWNEFX8sTATQf24royR36Irf2B
+ Lh23rx7HqZLyn1Xa/HHBBIPhou4Ohlevu6KYcwE0RRD6kWhEzGl+sOvTa1V8HufmR98Kh6bIE
+ PVAzNAqhpHVsLslaTmsd20kLPNbgRhy75iY
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-DQoNCk9uIDcvMi8xOSAxMDoxMyBBTSwgTWFya3VzIEVsZnJpbmcgd3JvdGU6DQo+IEZyb206IE1h
-cmt1cyBFbGZyaW5nIDxlbGZyaW5nQHVzZXJzLnNvdXJjZWZvcmdlLm5ldD4NCj4gRGF0ZTogVHVl
-LCAyIEp1bCAyMDE5IDE5OjA0OjA4ICswMjAwDQo+IA0KPiBBIHN0cmluZyB3aGljaCBkaWQgbm90
-IGNvbnRhaW4gYSBkYXRhIGZvcm1hdCBzcGVjaWZpY2F0aW9uIHNob3VsZCBiZSBwdXQNCj4gaW50
-byBhIHNlcXVlbmNlLiBUaHVzIHVzZSB0aGUgY29ycmVzcG9uZGluZyBmdW5jdGlvbiDigJxzZXFf
-cHV0c+KAnS4NCj4gDQo+IFRoaXMgaXNzdWUgd2FzIGRldGVjdGVkIGJ5IHVzaW5nIHRoZSBDb2Nj
-aW5lbGxlIHNvZnR3YXJlLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogTWFya3VzIEVsZnJpbmcgPGVs
-ZnJpbmdAdXNlcnMuc291cmNlZm9yZ2UubmV0Pg0KDQpBY2tlZC1ieTogWW9uZ2hvbmcgU29uZyA8
-eWhzQGZiLmNvbT4NCg0KPiAtLS0NCj4gICBrZXJuZWwvYnBmL2J0Zi5jIHwgNSArKy0tLQ0KPiAg
-IDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQo+IA0KPiBk
-aWZmIC0tZ2l0IGEva2VybmVsL2JwZi9idGYuYyBiL2tlcm5lbC9icGYvYnRmLmMNCj4gaW5kZXgg
-NTQ2ZWJlZTM5ZTJhLi42NzlhMTk5NjhmMjkgMTAwNjQ0DQo+IC0tLSBhL2tlcm5lbC9icGYvYnRm
-LmMNCj4gKysrIGIva2VybmVsL2JwZi9idGYuYw0KPiBAQCAtMjQyNiw5ICsyNDI2LDggQEAgc3Rh
-dGljIHZvaWQgYnRmX2VudW1fc2VxX3Nob3coY29uc3Qgc3RydWN0IGJ0ZiAqYnRmLCBjb25zdCBz
-dHJ1Y3QgYnRmX3R5cGUgKnQsDQo+IA0KPiAgIAlmb3IgKGkgPSAwOyBpIDwgbnJfZW51bXM7IGkr
-Kykgew0KPiAgIAkJaWYgKHYgPT0gZW51bXNbaV0udmFsKSB7DQo+IC0JCQlzZXFfcHJpbnRmKG0s
-ICIlcyIsDQo+IC0JCQkJICAgX19idGZfbmFtZV9ieV9vZmZzZXQoYnRmLA0KPiAtCQkJCQkJCWVu
-dW1zW2ldLm5hbWVfb2ZmKSk7DQo+ICsJCQlzZXFfcHV0cyhtLA0KPiArCQkJCSBfX2J0Zl9uYW1l
-X2J5X29mZnNldChidGYsIGVudW1zW2ldLm5hbWVfb2ZmKSk7DQo+ICAgCQkJcmV0dXJuOw0KPiAg
-IAkJfQ0KPiAgIAl9DQo+IC0tDQo+IDIuMjIuMA0KPiANCg==
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Tue, 2 Jul 2019 20:06:30 +0200
+
+A string which did not contain a data format specification should be put
+into a sequence. Thus use the corresponding function =E2=80=9Cseq_puts=E2=
+=80=9D.
+
+This issue was detected by using the Coccinelle software.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ net/netfilter/nf_log.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
+index 3574a212bdc2..bb25d4c794c7 100644
+=2D-- a/net/netfilter/nf_log.c
++++ b/net/netfilter/nf_log.c
+@@ -374,7 +374,7 @@ static int seq_show(struct seq_file *s, void *v)
+ 			continue;
+
+ 		logger =3D nft_log_dereference(loggers[*pos][i]);
+-		seq_printf(s, "%s", logger->name);
++		seq_puts(s, logger->name);
+ 		if (i =3D=3D 0 && loggers[*pos][i + 1] !=3D NULL)
+ 			seq_puts(s, ",");
+
+=2D-
+2.22.0
+

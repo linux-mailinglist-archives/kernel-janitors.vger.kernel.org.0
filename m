@@ -2,63 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 423435D13D
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 16:12:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E2405D195
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 16:22:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726820AbfGBOMQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jul 2019 10:12:16 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:53199 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726341AbfGBOMQ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jul 2019 10:12:16 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hiJUL-00016H-48; Tue, 02 Jul 2019 14:10:29 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] btrfs: fix memory leak of path on error return path
-Date:   Tue,  2 Jul 2019 15:10:28 +0100
-Message-Id: <20190702141028.11566-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727142AbfGBOWT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jul 2019 10:22:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56834 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726803AbfGBOWT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jul 2019 10:22:19 -0400
+Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net [24.9.64.241])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A1AA02184B;
+        Tue,  2 Jul 2019 14:22:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1562077338;
+        bh=7VY9/9lkdfiiEBbUd+s+IdckOZ37wLIuB/BIMGhoNKo=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=YBrYqtiOlFZT+FoNFhrTO6JXJGZ22xJFKK4arhAdCW8/cfS5GSGgmhoMwzuHnPhjR
+         7Hdb2rGKlfDM8EedaCC7shHBn+mot+hv32amP1/wA4IDZsDymPyhU32lUKWXgDwnvM
+         ZKQSEOP3BzCUq/NQhooBuYhdYaNoshZfSYJbTZPc=
+Subject: Re: [PATCH][next] selftests/x86: fix spelling mistake "FAILT" ->
+ "FAIL"
+To:     Andy Lutomirski <luto@kernel.org>,
+        Colin King <colin.king@canonical.com>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>, shuah <shuah@kernel.org>
+References: <20190701130431.13391-1-colin.king@canonical.com>
+ <CALCETrVo0rJVxsYvo=abDfFCZHBuCiB0coSBXoDeP_emSZgESg@mail.gmail.com>
+From:   shuah <shuah@kernel.org>
+Message-ID: <6e5a9bed-4f7f-4851-0421-2b440ff1f584@kernel.org>
+Date:   Tue, 2 Jul 2019 08:22:17 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALCETrVo0rJVxsYvo=abDfFCZHBuCiB0coSBXoDeP_emSZgESg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 7/1/19 11:48 AM, Andy Lutomirski wrote:
+> On Mon, Jul 1, 2019 at 6:04 AM Colin King <colin.king@canonical.com> wrote:
+>>
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> There is an spelling mistake in an a test error message. Fix it.
+>>
+>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>> ---
+>>   tools/testing/selftests/x86/test_vsyscall.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/tools/testing/selftests/x86/test_vsyscall.c b/tools/testing/selftests/x86/test_vsyscall.c
+>> index 4602326b8f5b..a4f4d4cf22c3 100644
+>> --- a/tools/testing/selftests/x86/test_vsyscall.c
+>> +++ b/tools/testing/selftests/x86/test_vsyscall.c
+>> @@ -451,7 +451,7 @@ static int test_vsys_x(void)
+>>                  printf("[OK]\tExecuting the vsyscall page failed: #PF(0x%lx)\n",
+>>                         segv_err);
+>>          } else {
+>> -               printf("[FAILT]\tExecution failed with the wrong error: #PF(0x%lx)\n",
+>> +               printf("[FAIL]\tExecution failed with the wrong error: #PF(0x%lx)\n",
+>>                         segv_err);
+>>                  return 1;
+>>          }
+>> --
+>> 2.20.1
+>>
+> 
+> Acked-by: Andy Lutomirski <luto@kernel.org>
+> 
 
-Currently if the allocation of roots or tmp_ulist fails the error handling
-does not free up the allocation of path causing a memory leak. Fix this by
-freeing path with a call to btrfs_free_path before taking the error return
-path.
+Thanks Andy!
 
-Addresses-Coverity: ("Resource leak")
-Fixes: 5911c8fe05c5 ("btrfs: fiemap: preallocate ulists for btrfs_check_shared")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- fs/btrfs/extent_io.c | 1 +
- 1 file changed, 1 insertion(+)
+I will queue this up for 5.3
 
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 1eb671c16ff1..d7f37a33d597 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -4600,6 +4600,7 @@ int extent_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
- 	tmp_ulist = ulist_alloc(GFP_KERNEL);
- 	if (!roots || !tmp_ulist) {
- 		ret = -ENOMEM;
-+		btrfs_free_path(path);
- 		goto out_free_ulist;
- 	}
- 
--- 
-2.20.1
-
+-- Shuah

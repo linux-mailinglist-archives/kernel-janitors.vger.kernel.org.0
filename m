@@ -2,28 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F7185D03B
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 15:10:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F55E5D056
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 15:16:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727031AbfGBNKd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jul 2019 09:10:33 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:51481 "EHLO
+        id S1726820AbfGBNQo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jul 2019 09:16:44 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:51647 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726636AbfGBNKc (ORCPT
+        with ESMTP id S1726635AbfGBNQo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jul 2019 09:10:32 -0400
+        Tue, 2 Jul 2019 09:16:44 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hiIYH-0003QF-Iz; Tue, 02 Jul 2019 13:10:29 +0000
+        id 1hiIeI-0003vW-Bl; Tue, 02 Jul 2019 13:16:42 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org
+To:     Thomas Gleixner <tglx@linutronix.de>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ACPI: APD: remove redundant assignment to pointer clk
-Date:   Tue,  2 Jul 2019 14:10:29 +0100
-Message-Id: <20190702131029.9621-1-colin.king@canonical.com>
+Subject: [PATCH] nfc: st-nci: remove redundant assignment to variable r
+Date:   Tue,  2 Jul 2019 14:16:42 +0100
+Message-Id: <20190702131642.9865-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,29 +34,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The pointer clk is being initialized with a value that is never
+The variable r is being initialized with a value that is never
 read and it is being updated later with a new value. The
 initialization is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/acpi/acpi_apd.c | 2 +-
+ drivers/nfc/st-nci/i2c.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
-index ff47317d8ef1..7cd0c9ac71ea 100644
---- a/drivers/acpi/acpi_apd.c
-+++ b/drivers/acpi/acpi_apd.c
-@@ -57,7 +57,7 @@ struct apd_private_data {
- static int acpi_apd_setup(struct apd_private_data *pdata)
+diff --git a/drivers/nfc/st-nci/i2c.c b/drivers/nfc/st-nci/i2c.c
+index 67a685adfd44..55d600cd3861 100644
+--- a/drivers/nfc/st-nci/i2c.c
++++ b/drivers/nfc/st-nci/i2c.c
+@@ -72,7 +72,7 @@ static void st_nci_i2c_disable(void *phy_id)
+  */
+ static int st_nci_i2c_write(void *phy_id, struct sk_buff *skb)
  {
- 	const struct apd_device_desc *dev_desc = pdata->dev_desc;
--	struct clk *clk = ERR_PTR(-ENODEV);
-+	struct clk *clk;
+-	int r = -1;
++	int r;
+ 	struct st_nci_i2c_phy *phy = phy_id;
+ 	struct i2c_client *client = phy->i2c_dev;
  
- 	if (dev_desc->fixed_clk_rate) {
- 		clk = clk_register_fixed_rate(&pdata->adev->dev,
 -- 
 2.20.1
 

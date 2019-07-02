@@ -2,159 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3097E5D31F
-	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 17:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FBEA5D3E0
+	for <lists+kernel-janitors@lfdr.de>; Tue,  2 Jul 2019 18:08:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726150AbfGBPki (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jul 2019 11:40:38 -0400
-Received: from mout.web.de ([212.227.15.14]:50095 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725996AbfGBPki (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jul 2019 11:40:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1562082023;
-        bh=jbQnila/Ly8Ah5+VhWkppnndDp+owZQcXoRR4Iy+/Jw=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=V79aRUpaV8EuRewQhjXvROH+er02lkhxsTz09+dbCxf+AHHjsfR/79B2uQJN7qv5y
-         DN3sJ1UzP6LdO/gHbpwzQgAEND1cqN2/GbUzIw9RmkdVcfpY3sZtudPu7Aer4kYKkI
-         2xTLh1+MgxIa2ZiI7FxoIOcwIp64jUVRNhRjYoec=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.48.11.114]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0M8L3a-1iUEQ115iU-00w0uU; Tue, 02
- Jul 2019 17:40:23 +0200
-To:     kernel-janitors@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
+        id S1726418AbfGBQIJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jul 2019 12:08:09 -0400
+Received: from smtprelay0122.hostedemail.com ([216.40.44.122]:60095 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726255AbfGBQII (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jul 2019 12:08:08 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay02.hostedemail.com (Postfix) with ESMTP id 40A97282A;
+        Tue,  2 Jul 2019 16:08:07 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::,RULES_HIT:41:355:379:599:960:968:973:988:989:1042:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2828:2892:3138:3139:3140:3141:3142:3353:3622:3865:3866:3867:3868:3871:3872:4250:4321:4419:5007:7576:7903:7904:10004:10400:10848:10967:11232:11658:11914:12043:12048:12296:12297:12740:12760:12895:13069:13311:13357:13439:14659:14721:21080:21212:21433:21451:21611:21627:21772:30054:30070:30075:30090:30091,0,RBL:23.242.196.136:@perches.com:.lbl8.mailshell.net-62.8.0.180 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:50,LUA_SUMMARY:none
+X-HE-Tag: cake36_63c80d15d405d
+X-Filterd-Recvd-Size: 2264
+Received: from XPS-9350.home (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
+        (Authenticated sender: joe@perches.com)
+        by omf05.hostedemail.com (Postfix) with ESMTPA;
+        Tue,  2 Jul 2019 16:08:05 +0000 (UTC)
+Message-ID: <c26343465261e636ef029b8d0d7cb46183a23d23.camel@perches.com>
+Subject: Re: [PATCH] openpromfs: Adjust three seq_printf() calls in
+ property_show()
+From:   Joe Perches <joe@perches.com>
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        kernel-janitors@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
         "David S. Miller" <davem@davemloft.net>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Rob Herring <robh@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] openpromfs: Adjust three seq_printf() calls in
- property_show()
-Openpgp: preference=signencrypt
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
 Cc:     LKML <linux-kernel@vger.kernel.org>
-Message-ID: <22563348-fefa-8540-9d71-de37764f0596@web.de>
-Date:   Tue, 2 Jul 2019 17:40:21 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+Date:   Tue, 02 Jul 2019 09:08:04 -0700
+In-Reply-To: <22563348-fefa-8540-9d71-de37764f0596@web.de>
+References: <22563348-fefa-8540-9d71-de37764f0596@web.de>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.30.5-0ubuntu0.18.10.1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:JxiWIYXw9gmhR5r6woOTjGVR6MjO2eh4EujnnpT0chsKLzSsGWH
- B2mCJnGEY4HGjFkaldkJKEejp52mp36rN04WdlcTSOyNx+Q1SHqnWTnPS4Zi8je9Z8M+n7M
- JgXr2jJ4P3qnzOWQ+qVfAsLTn9iEuxkS7HVof4ZJI3vQQlur3ju/FXTzun338MkeLCl/Yl7
- inH2GvjKi4g2oOHVTAeJA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:J6dmmI/s+y8=:AGCapRw8MW69tokZVkYyPC
- KdB5Gq6dQpOM2aS95rbkh8DvS/jmWHso1Ze8PdqTQk4qZTtnf/lGxA89SFb1hRLO4xfWOpURA
- AYGZVhOCYqFVXa3hkuD5cVzd4VzgPDYdaBcR8fJ8LTHld2A64wE+DXqsafO4jfAbH65dUeVXo
- 2DIXCHsPlYYsPkt1k9iqOn5p1K5eKmiq7J8/tpkLmaQ/JpYvM1uzl/8Uir6L0oPnZRT6DCEYI
- kji0mLsQy7+KOPU2yY/6EYAgB3F8DQodKVDA/mUuy6BhCp0ffDkPcsDyfDO8E10khBZNKzU9C
- g235n07NeQOndwIKdfZqcWqAO2u2usYgoHVVX7UPhA/6mom1eJ77RoZxEggkRyREDWNR3kUu6
- APaC2tRYICy5+u8t2UeODclmfD6UxOb6fqyXlPeAjkN039YOJPz55RrbOmmLmQowimK/yqAsn
- UkCZBu7A80hyExbDOEdYmOA/dcaWElPK+BFa1rBkHyIGVidMujedLBUMPXzSCR99n2BUwlXbU
- RkTgO1eEbDUN3xA/G5L9c4fTRg76TEw4rv6hwmZTKNJgw0kDqEnZSrpjusdwyxqC+MpiIQoZH
- JOaiewLNd03tusylEeiM4HIaXM9Zu618ZEMSwlLLiB3+y5gy/WGZuLwtGOudshtAGVajoNF7G
- n431ZjfgYWTQUiFxxD4GB69r/mCdFjgpN3V5oLvNzrbTvMR5mzTg2KX1ExhnU0PGL+hbjXwCB
- sIzDyu6NEbAPhHt3uDqJldywJMYNYRH3NiTtg+UHJqSZrjStIXv1SXipV2FEPUrUGC20O1eMT
- RKwrc4x7wj9odgxIocRru79UvHhFLFd7TDo5ymMnBA1IrJ3tQh5+i05i2OK4omQ3gn7IbYL8J
- QVJHfv51H5A289V1SUdvwNTUET46Fp4dajfO6JItbnLhVPwR+wTIoGIqCFidYUUo8nQ+eJerB
- dBEREiNdlvyChb26xWexQTn6tANzGn0ZfA3WQ9/OUGE1h7FivPnkcbqiU49j+aQhe3wZf7LDH
- lfnfeopGAA0DqT04biGMQhlCz1SYcjHx17qYhvETXTW50o7KIg12onAlDX3snJ6Gc0JDi1JRB
- y/PwN0wOLjeHqUU3FooQ1IIPnb9sqgMhjzn
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 2 Jul 2019 17:24:27 +0200
+On Tue, 2019-07-02 at 17:40 +0200, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Tue, 2 Jul 2019 17:24:27 +0200
+> 
+> A bit of information should be put into a sequence.
+> Thus improve the execution speed for this data output by better usage
+> of corresponding functions.
+> 
+> This issue was detected by using the Coccinelle software.
 
-A bit of information should be put into a sequence.
-Thus improve the execution speed for this data output by better usage
-of corresponding functions.
+(wasn't Markus perma-banned?)
 
-This issue was detected by using the Coccinelle software.
+> diff --git a/fs/openpromfs/inode.c b/fs/openpromfs/inode.c
+[]
+> @@ -76,14 +76,14 @@ static int property_show(struct seq_file *f, void *v)
+>  		while (len > 0) {
+>  			int n = strlen(pval);
+> 
+> -			seq_printf(f, "%s", (char *) pval);
+> +			seq_puts(f, (char *) pval);
+> 
+>  			/* Skip over the NULL byte too.  */
+>  			pval += n + 1;
+>  			len -= n + 1;
+> 
+>  			if (len > 0)
+> -				seq_printf(f, " + ");
+> +				seq_puts(f, " + ");
+>  		}
+>  	} else {
+>  		if (len & 3) {
+> @@ -111,8 +111,7 @@ static int property_show(struct seq_file *f, void *v)
+>  			}
+>  		}
+>  	}
+> -	seq_printf(f, "\n");
+> -
+> +	seq_putc(f, '\n');
+>  	return 0;
+>  }
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- fs/openpromfs/inode.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+If this is really useful (and it's really not),
+at least change void *pval to char *pval and
+remove a bunch of useless casts.
 
-diff --git a/fs/openpromfs/inode.c b/fs/openpromfs/inode.c
-index e6cb7689fec4..2234103fd8ee 100644
-=2D-- a/fs/openpromfs/inode.c
-+++ b/fs/openpromfs/inode.c
-@@ -76,14 +76,14 @@ static int property_show(struct seq_file *f, void *v)
- 		while (len > 0) {
- 			int n =3D strlen(pval);
-
--			seq_printf(f, "%s", (char *) pval);
-+			seq_puts(f, (char *) pval);
-
- 			/* Skip over the NULL byte too.  */
- 			pval +=3D n + 1;
- 			len -=3D n + 1;
-
- 			if (len > 0)
--				seq_printf(f, " + ");
-+				seq_puts(f, " + ");
- 		}
- 	} else {
- 		if (len & 3) {
-@@ -111,8 +111,7 @@ static int property_show(struct seq_file *f, void *v)
- 			}
- 		}
- 	}
--	seq_printf(f, "\n");
--
-+	seq_putc(f, '\n');
- 	return 0;
- }
-
-=2D-
-2.22.0
 

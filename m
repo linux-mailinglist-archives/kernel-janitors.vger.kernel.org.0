@@ -2,35 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D22685DC93
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 04:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B97CE5DCB1
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 04:57:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727435AbfGCCfv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jul 2019 22:35:51 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:8688 "EHLO huawei.com"
+        id S1727251AbfGCC5z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jul 2019 22:57:55 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:51646 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727144AbfGCCfv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jul 2019 22:35:51 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 114BFA93318A16B54761;
-        Wed,  3 Jul 2019 10:35:47 +0800 (CST)
+        id S1727108AbfGCC5z (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jul 2019 22:57:55 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 01DDCA6008E8F9D1AD22;
+        Wed,  3 Jul 2019 10:48:53 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 3 Jul 2019 10:35:40 +0800
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 3 Jul 2019 10:48:46 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     Jassi Brar <jaswinder.singh@linaro.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        "Jakub Kicinski" <jakub.kicinski@netronome.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>
-CC:     YueHaibing <yuehaibing@huawei.com>, <netdev@vger.kernel.org>,
-        <xdp-newbies@vger.kernel.org>, <bpf@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net-next] net: socionext: remove set but not used variable 'pkts'
-Date:   Wed, 3 Jul 2019 02:42:13 +0000
-Message-ID: <20190703024213.191191-1-yuehaibing@huawei.com>
+To:     James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        David Howells <dhowells@redhat.com>,
+        Kairui Song <kasong@redhat.com>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "Thiago Jung Bauermann" <bauerman@linux.ibm.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        "Eric Biggers" <ebiggers@google.com>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <linux-security-module@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] integrity: Remove set but not used variable 'acl'
+Date:   Wed, 3 Jul 2019 02:55:18 +0000
+Message-ID: <20190703025518.6379-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -44,37 +46,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Fixes gcc '-Wunused-but-set-variable' warning:
 
-drivers/net/ethernet/socionext/netsec.c: In function 'netsec_clean_tx_dring':
-drivers/net/ethernet/socionext/netsec.c:637:15: warning:
- variable 'pkts' set but not used [-Wunused-but-set-variable]
+security/integrity/digsig.c: In function 'integrity_init_keyring':
+security/integrity/digsig.c:99:18: warning:
+ variable 'acl' set but not used [-Wunused-but-set-variable]
 
-It is not used since commit ba2b232108d3 ("net: netsec: add XDP support")
+It seems 'acl' is needed in __integrity_init_keyring
 
+Fixes: 6100ac53909d ("keys: Replace uid/gid/perm permissions checking with an ACL")
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/net/ethernet/socionext/netsec.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ security/integrity/digsig.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/socionext/netsec.c b/drivers/net/ethernet/socionext/netsec.c
-index 5544a722543f..015d1ec5436a 100644
---- a/drivers/net/ethernet/socionext/netsec.c
-+++ b/drivers/net/ethernet/socionext/netsec.c
-@@ -634,7 +634,7 @@ static void netsec_set_rx_de(struct netsec_priv *priv,
- static bool netsec_clean_tx_dring(struct netsec_priv *priv)
- {
- 	struct netsec_desc_ring *dring = &priv->desc_ring[NETSEC_RING_TX];
--	unsigned int pkts, bytes;
-+	unsigned int bytes;
- 	struct netsec_de *entry;
- 	int tail = dring->tail;
- 	int cnt = 0;
-@@ -642,7 +642,6 @@ static bool netsec_clean_tx_dring(struct netsec_priv *priv)
- 	if (dring->is_xdp)
- 		spin_lock(&dring->lock);
+diff --git a/security/integrity/digsig.c b/security/integrity/digsig.c
+index 1f2c43f62047..f9f3c8ffe786 100644
+--- a/security/integrity/digsig.c
++++ b/security/integrity/digsig.c
+@@ -114,7 +114,7 @@ int __init integrity_init_keyring(const unsigned int id)
+ 	acl = &internal_writable_keyring_acl;
  
--	pkts = 0;
- 	bytes = 0;
- 	entry = dring->vaddr + DESC_SZ * tail;
+ out:
+-	return __integrity_init_keyring(id, &internal_keyring_acl, restriction);
++	return __integrity_init_keyring(id, acl, restriction);
+ }
+ 
+ static int __init integrity_add_key(const unsigned int id, const void *data,
 
 
 

@@ -2,80 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C24365E3A9
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 14:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60C955E5DC
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 15:58:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726473AbfGCMSH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jul 2019 08:18:07 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:32938 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725933AbfGCMSH (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jul 2019 08:18:07 -0400
-Received: by mail-qt1-f194.google.com with SMTP id h24so2668101qto.0;
-        Wed, 03 Jul 2019 05:18:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=IjB7eIx91cGzvCzJPmHdtVCISw8X3L0amGAAfmCgnb8=;
-        b=SKS+5XM1x7Q2aAlwFM+0FFl021AbmFPeJWur5gPnzvrcDlOWGesHuHrReXgapS7D6H
-         HvB6jEeOyjTk69U4MugVZAZ8AV3wrWLMTe8QiShPEh1k1RRfV2y74vHiugcdfMyAqKF+
-         69BTwqfDfPbks2mtGThiF7QkN+hKJgAPGzkJfou7gPMSxYS8gdpkGRFTO2xrDwSs81iq
-         1BTfM0VeiE0d4m6JDguO0zhMzQn5pxDsVAIgx+rbaExD/NMkQWTTk7xrCU+Q12X8Q8l+
-         Fm0SVIHSvRXCNZa3zu4QQzPy5pMV9iwjndzM2FYse1EmZlxDkYcWLguuq2vBWtd4OMa0
-         QRMA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=IjB7eIx91cGzvCzJPmHdtVCISw8X3L0amGAAfmCgnb8=;
-        b=sJLZVxxnWuRyigVAdx36T5tFJqoZi7MD7KFOVcOTpa9zAv7LOW4WtzwsdgyrKnh6mU
-         GixrbcOY+Il2GMXqBJaB5jlFAUonsqyTfBje8yuMQsRLkZB+tI1hJXy/3UVclNDqEr4k
-         dL/E7ed403wgGNDL/Qd7D2dOIfx6fsjX+1sDcvASEpRNW4jxdOhChLbetsCM4zkj9qXS
-         PotcZhtnJZTXCbRNfdTdZRekyQad9yc29VSg7lIYUe3D2/swXmiL+ARcA+eoz/o5S4Ic
-         GX4vokak33dCINvfOhgrIqaQuSAl5MwinDlIJDUgL5lUUWBeErDJiJAQqeyyfpQEWwSU
-         vGaw==
-X-Gm-Message-State: APjAAAU/tc8PYB4/EbpF7HABTyjWqBCAUVGtafvTqH/287F14ZaU/vYV
-        kk/sO4D1qUD6gHZ6njS0Z5Prfd6if3tAgR8pfOnvnlVD
-X-Google-Smtp-Source: APXvYqwGgM5Phb3RLVd4Z4Ax+sqyMgVnOmoG73XQaHgqBxim7OM82B4e7D+F3YtEkaU8KgLKnUOB4WnOnJ6qFelDqsE=
-X-Received: by 2002:aed:38c2:: with SMTP id k60mr28886147qte.83.1562156286006;
- Wed, 03 Jul 2019 05:18:06 -0700 (PDT)
+        id S1726640AbfGCN5z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Jul 2019 09:57:55 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:49516 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726217AbfGCN5z (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 3 Jul 2019 09:57:55 -0400
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id B52962F8BCB;
+        Wed,  3 Jul 2019 13:57:51 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-9.rdu2.redhat.com [10.10.120.9])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id AAF0883CD7;
+        Wed,  3 Jul 2019 13:57:41 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20190703025518.6379-1-yuehaibing@huawei.com>
+References: <20190703025518.6379-1-yuehaibing@huawei.com>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     dhowells@redhat.com, James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Kairui Song <kasong@redhat.com>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        "Thiago Jung Bauermann" <bauerman@linux.ibm.com>,
+        Nayna Jain <nayna@linux.ibm.com>,
+        "Eric Biggers" <ebiggers@google.com>,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] integrity: Remove set but not used variable 'acl'
 MIME-Version: 1.0
-References: <ad2e4b58-268e-c9e5-8a66-8cb5dee8d91e@web.de>
-In-Reply-To: <ad2e4b58-268e-c9e5-8a66-8cb5dee8d91e@web.de>
-From:   Song Liu <liu.song.a23@gmail.com>
-Date:   Wed, 3 Jul 2019 05:17:54 -0700
-Message-ID: <CAPhsuW7CAfu07Y319eHUUi3Ln422-jMmpTHmy0rT+MxZnO8BBA@mail.gmail.com>
-Subject: Re: [PATCH] md-multipath: Replace a seq_printf() call by seq_putc()
- in multipath_status()
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-raid <linux-raid@vger.kernel.org>,
-        Shaohua Li <shli@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <15690.1562162261.1@warthog.procyon.org.uk>
+Date:   Wed, 03 Jul 2019 14:57:41 +0100
+Message-ID: <15691.1562162261@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Wed, 03 Jul 2019 13:57:55 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jul 1, 2019 at 5:25 AM Markus Elfring <Markus.Elfring@web.de> wrote=
-:
->
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Mon, 1 Jul 2019 13:07:55 +0200
->
-> A single character (depending on a condition check) should be put
-> into a sequence. Thus use the corresponding function =E2=80=9Cseq_putc=E2=
-=80=9D.
->
-> This issue was detected by using the Coccinelle software.
->
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+YueHaibing <yuehaibing@huawei.com> wrote:
 
-Can you explain why this is necessary?
+> Fixes gcc '-Wunused-but-set-variable' warning:
+> 
+> security/integrity/digsig.c: In function 'integrity_init_keyring':
+> security/integrity/digsig.c:99:18: warning:
+>  variable 'acl' set but not used [-Wunused-but-set-variable]
+> 
+> It seems 'acl' is needed in __integrity_init_keyring
 
-Thanks,
-Song
+I've folded this fix in, thanks.
+
+David

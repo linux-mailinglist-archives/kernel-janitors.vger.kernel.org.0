@@ -2,27 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BD295DC4B
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 04:22:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 454FB5DC16
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 04:20:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727655AbfGCCPl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jul 2019 22:15:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53992 "EHLO mail.kernel.org"
+        id S1727579AbfGCCSP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jul 2019 22:18:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54974 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727646AbfGCCPk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jul 2019 22:15:40 -0400
+        id S1727469AbfGCCQi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jul 2019 22:16:38 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C1CB021873;
-        Wed,  3 Jul 2019 02:15:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7B19321873;
+        Wed,  3 Jul 2019 02:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562120139;
-        bh=9Yoh8I6freaWFY0+Uec5FuoOX+T7aUlDifN96wj7du0=;
+        s=default; t=1562120197;
+        bh=eb5UpNE5hB2giHBIaYlk1IVM4nC4nFhfey5sEfP+6sY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z0o9saU/7RymDFw26ngxxlvddt3HJORSt5doQCMdTNvG9IvTqxqpVF5hfge3Yw0SX
-         AMqEu/9m0qu0EW3Q6UJPPO+tG+RGlc62uAK1VFY0gExEozHZDIwR+nYPJno/vnHAoU
-         30Wkzpeq1OBK0XOLgQFjpXOfdjcq7Rkk1tygvjB4=
+        b=A9ZziIvgkgLJKqrdqKrgEF198f1ie4AEoRPAJ3mhOEO3KcqrTgI/u79tFkpOoRHsN
+         R4N2naPbXYSuqeAZgE3MchWN74H5jCK7VAefvhwLAbDcXnEj9mmB8cXsBUVPRWKXK5
+         ZfwS26PVlrjMOv/c4HLrfLUSEGiwgSG7Qshfd5pc=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Colin Ian King <colin.king@canonical.com>,
@@ -30,12 +30,12 @@ Cc:     Colin Ian King <colin.king@canonical.com>,
         Borislav Petkov <bp@alien8.de>,
         "H . Peter Anvin" <hpa@zytor.com>, kernel-janitors@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.1 15/39] x86/apic: Fix integer overflow on 10 bit left shift of cpu_khz
-Date:   Tue,  2 Jul 2019 22:14:50 -0400
-Message-Id: <20190703021514.17727-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 08/26] x86/apic: Fix integer overflow on 10 bit left shift of cpu_khz
+Date:   Tue,  2 Jul 2019 22:16:07 -0400
+Message-Id: <20190703021625.18116-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190703021514.17727-1-sashal@kernel.org>
-References: <20190703021514.17727-1-sashal@kernel.org>
+In-Reply-To: <20190703021625.18116-1-sashal@kernel.org>
+References: <20190703021625.18116-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -67,10 +67,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index b7bcdd781651..ec6225cb94f9 100644
+index 84132eddb5a8..2646234380cc 100644
 --- a/arch/x86/kernel/apic/apic.c
 +++ b/arch/x86/kernel/apic/apic.c
-@@ -1458,7 +1458,8 @@ static void apic_pending_intr_clear(void)
+@@ -1452,7 +1452,8 @@ static void apic_pending_intr_clear(void)
  		if (queued) {
  			if (boot_cpu_has(X86_FEATURE_TSC) && cpu_khz) {
  				ntsc = rdtsc();

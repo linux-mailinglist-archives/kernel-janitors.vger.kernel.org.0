@@ -2,83 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 258A05DF93
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 10:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABF745DFA5
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 10:20:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727193AbfGCISS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jul 2019 04:18:18 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:26565
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727045AbfGCISS (ORCPT
+        id S1727351AbfGCIUN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Jul 2019 04:20:13 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:49425 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727459AbfGCIUL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jul 2019 04:18:18 -0400
-X-IronPort-AV: E=Sophos;i="5.63,446,1557180000"; 
-   d="scan'208";a="312254589"
-Received: from vaio-julia.rsr.lip6.fr ([132.227.76.33])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Jul 2019 10:18:16 +0200
-Date:   Wed, 3 Jul 2019 10:18:15 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@lip6.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     linux-nfs@vger.kernel.org,
-        Anna Schumaker <anna.schumaker@netapp.com>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] NFS: Less function calls in show_pnfs()
-In-Reply-To: <d2f73c3e-a55f-5fb7-a8f8-0dc3ce8ff8a5@web.de>
-Message-ID: <alpine.DEB.2.20.1907031018000.4456@hadrien>
-References: <d2f73c3e-a55f-5fb7-a8f8-0dc3ce8ff8a5@web.de>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+        Wed, 3 Jul 2019 04:20:11 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hiaUr-0000vw-H9; Wed, 03 Jul 2019 08:20:09 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] regulator: max77620: remove redundant assignment to variable ret
+Date:   Wed,  3 Jul 2019 09:20:09 +0100
+Message-Id: <20190703082009.18779-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
+The variable ret is being initialized with a value that is never
+read and it is being updated later with a new value. The
+initialization is redundant and can be removed.
 
-On Tue, 2 Jul 2019, Markus Elfring wrote:
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/regulator/max77620-regulator.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Tue, 2 Jul 2019 16:30:53 +0200
->
-> Reduce function calls for data output into a sequence.
->
-> This issue was detected by using the Coccinelle software.
->
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
->  fs/nfs/super.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
->
-> diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-> index f88ddac2dcdf..c301cd585b3b 100644
-> --- a/fs/nfs/super.c
-> +++ b/fs/nfs/super.c
-> @@ -749,11 +749,10 @@ static void show_sessions(struct seq_file *m, struct nfs_server *server) {}
->  #ifdef CONFIG_NFS_V4_1
->  static void show_pnfs(struct seq_file *m, struct nfs_server *server)
->  {
-> -	seq_printf(m, ",pnfs=");
-> -	if (server->pnfs_curr_ld)
-> -		seq_printf(m, "%s", server->pnfs_curr_ld->name);
-> -	else
-> -		seq_printf(m, "not configured");
-> +	seq_printf(m, ",pnfs=%s",
-> +		   server->pnfs_curr_ld
-> +		   ? server->pnfs_curr_ld->name
-> +		   : "not configured");
+diff --git a/drivers/regulator/max77620-regulator.c b/drivers/regulator/max77620-regulator.c
+index 2ae2d319321b..8d9731e4052b 100644
+--- a/drivers/regulator/max77620-regulator.c
++++ b/drivers/regulator/max77620-regulator.c
+@@ -467,7 +467,7 @@ static int max77620_regulator_is_enabled(struct regulator_dev *rdev)
+ {
+ 	struct max77620_regulator *pmic = rdev_get_drvdata(rdev);
+ 	int id = rdev_get_id(rdev);
+-	int ret = 1;
++	int ret;
+ 
+ 	if (pmic->active_fps_src[id] != MAX77620_FPS_SRC_NONE)
+ 		return 1;
+-- 
+2.20.1
 
-Unreadable.
-
-julia
-
->  }
->
->  static void show_implementation_id(struct seq_file *m, struct nfs_server *nfss)
-> --
-> 2.22.0
->
->

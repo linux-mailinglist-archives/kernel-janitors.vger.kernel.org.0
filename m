@@ -2,131 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3A3E5E269
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 13:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 682F25E2AF
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 13:15:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726486AbfGCLBk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jul 2019 07:01:40 -0400
-Received: from mout.web.de ([212.227.17.11]:52001 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725820AbfGCLBj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jul 2019 07:01:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1562151697;
-        bh=7C/NrUBsajY3HikFKE3ESNwy1N7be5V4OIMGJXMzAZo=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=AMT5iW4QJ1a8KIqYjKZoIbPqIvogBhxP+dWdC4Zr7Er9Sd9HmDm4aS/GtcGwDd5re
-         vq3tz4nLectsQgzE+LZp9r4DOI5OSvYptcjigECGopTi5WKkUX/c0v5RQvQPXGI2EC
-         xB6XGVMS4YGLO1yyiPdf5rTmsWpCF5i50n7L52no=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.189.108]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MV4bp-1i1iXc2CUP-00YPRG; Wed, 03
- Jul 2019 13:01:37 +0200
-Subject: Re: fs/seq_file: Replace a seq_printf() call by seq_puts() in
- seq_hex_dump()
-To:     Enrico Weigelt <lkml@metux.net>, linux-fsdevel@vger.kernel.org
-Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-References: <8c295901-cdbd-a4a2-f23f-f63a58330f20@web.de>
- <10744a9b-1c15-1581-8422-bbbf995c0da3@metux.net>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <f62fdb13-59b7-4e5d-b64a-37b96b5c0125@web.de>
-Date:   Wed, 3 Jul 2019 13:01:30 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
-MIME-Version: 1.0
-In-Reply-To: <10744a9b-1c15-1581-8422-bbbf995c0da3@metux.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-X-Provags-ID: V03:K1:N003hvYwQN1uWLMrMfUW4raVikLZDfUNVcDl9uEOKu1vB5wrcoK
- 5VIEMUYS34GpXIficw0cjEVujeGQJoKIVyxtcLw97q2hDcZa9z8sLizvtAGjOnne2i2RjcQ
- weyEGiftOv8ttv6orNtQ65Xk6PEOLiFP7TyBdh4uOL6fH0DhGRHWukONpo9LDL0ekPGdBAD
- gZX9PLHych+wRP7mXoNAw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ncFuTUxlYSc=:H19U2kmrDjNvssYDeae4ng
- ljPPccxY4QwN8nz0rFoUgjqGCqaSY3ZLb+d99Ze2Oh9zvNGNhBtPkrscwrGTyhulbw7As2kZm
- RiHYVnSA6NHvK5eC/T4rpEmKr45oLd1S9z0nWg5Xb47DjQmHNnR/aq6e2Sbh/d3NAcKFcf15r
- VmELRvOVa4xMEbyyAg4kpx6XAuf7iRQbj1sDKj5M8rf9t8tfEkQWjzSme+Lwvi/A5hKB3EmYx
- XB/zIHMgi9WM6GW7QIhWc92q9u+bVK2Q7VzI45cY4phwPVNGycmKSrgiSzdhg61AcxSHpe6K2
- 53AVMM9KmEY8Ca02L4299GtBMqKsn6j7hj+kOjYq3gDE6MyhMg+mMVejqzWu3N8YauXgMWJbJ
- MOc5hA/Iyr9TE7+LdChPvgvNtvW9oLo8UUbUnIXUrLzCHOLnht3Tsj21PMUi4yl/6ISgguIG9
- KD/FlV3cl3UuEpA0bi+D8HNOH2zbd1c/bqJiVMbFXfKGHK56JaiTDGjiHqzU21Uz8/5E0aaxn
- WE11n0CbrHK53EY+2xzPE0iQC7YeZ4Q3NC5Ex1bO4a9Nrp1Ypkpi1IE2KSvH4/n0k1aUavf0d
- QR8qmK7C0raFMo8NNSK08CsFQlhttjf8pNAI2kbMjjcVfOGbVjdzP5ez9tazaMnlru2sPpGLJ
- JZJl289I2mmii/SCZvlQ0vTkOL37RzkQKDLeGS1T3ipT7NKdNyzSuPVlIycBM5g4YpjcqaFQL
- MZKoF76s0tm0vpi0hKb4hRYAowXVsCCbW1mGW76Px9gzaHLe3LAoRmiCNUTN4mwGasXbzKs0t
- N270kgM2DUlcynhFppHESRx3hdxo+9yMI8pRhsoo54TasiZdqAk0pdBIwf9vgtxCQINjv4R+D
- 5AjYB3yndV217zSrzm1TbIC9zxxQqPsgacS8FM7InH08komn2wOW/6lFZFwdDFb0gvMw9sWYQ
- 0rHGrAbsaHCBBvKkvmw4QzOkRPnvDQ+y5Tx9VpYuND8JCMkjGIDn36MMXJghy/XLd3WIVr/1D
- Wd908HeABb5UYF9M+nYMSLMz0VpnxcLMfYoSIkymJkb7MC1MIIhF/43Sdg+JXGSa7jAC52CR1
- IC7bz1NZJ/5e0fwnxxDFO4hxEery1Ev9ntS
+        id S1726930AbfGCLO6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Jul 2019 07:14:58 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:17686 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726486AbfGCLO6 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 3 Jul 2019 07:14:58 -0400
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x63BDHAt096374
+        for <kernel-janitors@vger.kernel.org>; Wed, 3 Jul 2019 07:14:56 -0400
+Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2tgseymrbq-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <kernel-janitors@vger.kernel.org>; Wed, 03 Jul 2019 07:14:56 -0400
+Received: from localhost
+        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <kernel-janitors@vger.kernel.org> from <zohar@linux.ibm.com>;
+        Wed, 3 Jul 2019 12:14:54 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Wed, 3 Jul 2019 12:14:51 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x63BEpOK52953218
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 3 Jul 2019 11:14:51 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id F3397A405C;
+        Wed,  3 Jul 2019 11:14:50 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D3C8CA405B;
+        Wed,  3 Jul 2019 11:14:49 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.80.110.77])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed,  3 Jul 2019 11:14:49 +0000 (GMT)
+Subject: Re: [PATCH] ima: Replace two seq_printf() calls by seq_puts() in
+ ima_show_template_data_ascii()
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     David Laight <David.Laight@ACULAB.COM>,
+        "'Markus Elfring'" <Markus.Elfring@web.de>,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Date:   Wed, 03 Jul 2019 07:14:39 -0400
+In-Reply-To: <d94bfdb9d53b46059787b9bdd10c5919@AcuMS.aculab.com>
+References: <e96eac40-0745-80b5-6aab-f872e6415031@web.de>
+         <d94bfdb9d53b46059787b9bdd10c5919@AcuMS.aculab.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+x-cbid: 19070311-0008-0000-0000-000002F96C24
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19070311-0009-0000-0000-00002266B96B
+Message-Id: <1562152479.4774.18.camel@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-03_03:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=797 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907030135
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Looks good,
+On Wed, 2019-07-03 at 09:16 +0000, David Laight wrote:
 
-Thanks for your feedback.
+> > diff --git a/security/integrity/ima/ima_template_lib.c b/security/integrity/ima/ima_template_lib.c
+> > index 9fe0ef7f91e2..05636e9b19b1 100644
+> > --- a/security/integrity/ima/ima_template_lib.c
+> > +++ b/security/integrity/ima/ima_template_lib.c
+> > @@ -74,7 +74,7 @@ static void ima_show_template_data_ascii(struct seq_file *m,
+> >  	case DATA_FMT_DIGEST_WITH_ALGO:
+> >  		buf_ptr = strnchr(field_data->data, buflen, ':');
+> >  		if (buf_ptr != field_data->data)
+> > -			seq_printf(m, "%s", field_data->data);
+> > +			seq_puts(m, field_data->data);
+> > 
+> >  		/* skip ':' and '\0' */
+> >  		buf_ptr += 2;
+> 
+> That code looks highly suspect!
+> It uses a bounded scan then assumes a '\0' terminated string.
+> It then adds 2 to a potentially NULL pointer.
 
+The code here is used for displaying the IMA measurement list, that
+the kernel itself created.  Protecting the in kernel memory from
+attack is a different problem.  Refer to Igor Stoppa's write once
+memory pools.
 
-> but have you checked whether "m" could ever be NULL
+Mimi
 
-I wonder about this enquiry.
-
-This function parameter should be valid as usual.
-Thus it should not be a null pointer under ordinary conditions.
-
-
-> and whether seq_puts() has a check for that ?
-
-These output functions do not provide an explicit sanity check for their first parameter
-so far.
-
-Regards,
-Markus

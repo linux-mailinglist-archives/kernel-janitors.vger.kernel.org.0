@@ -2,66 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9058F5DDD3
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 07:53:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 510EE5DEC1
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 09:20:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726670AbfGCFxV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jul 2019 01:53:21 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:8130 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725927AbfGCFxV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jul 2019 01:53:21 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 60FD3EDEC9C4AF337995;
-        Wed,  3 Jul 2019 13:53:18 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 3 Jul 2019 13:53:10 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Guan Xuetao <gxt@pku.edu.cn>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Enrico Weigelt <info@metux.net>,
-        Allison Randal <allison@lohutok.net>,
-        GuanXuetao <gxt@mprc.pku.edu.cn>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH] unicore32: dma: fix to pass correct device identity to free_irq()
-Date:   Wed, 3 Jul 2019 05:59:43 +0000
-Message-ID: <20190703055943.141542-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727004AbfGCHU2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Jul 2019 03:20:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41230 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726327AbfGCHU2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 3 Jul 2019 03:20:28 -0400
+Received: from localhost (unknown [37.142.3.125])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 152AE2187F;
+        Wed,  3 Jul 2019 07:20:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1562138427;
+        bh=7ganS0XAuLMClxCIPzDFzc0b49GPzuPWuvoSCEkle78=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=EzZUMOUBTMu0A+uLWYyBEDHzfacOTDyJrOm8mS+ShcZf4FPgWoUq/216VpMrrxGQo
+         bt6HWsiGAn21KcsoSLPOrVAVstKRaQnpddWTQlaYwfP7RjzP9gl/3KKtJllvRkGWa4
+         EpmwBVvlqu8t236dTixINeixYK5s317pl4obysPw=
+Date:   Wed, 3 Jul 2019 10:20:23 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     Lijun Ou <oulijun@huawei.com>,
+        "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] RDMA/hns: Remove set but not used variable
+ 'fclr_write_fail_flag'
+Message-ID: <20190703072023.GY4727@mtr-leonro.mtl.com>
+References: <20190703031021.14896-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190703031021.14896-1-yuehaibing@huawei.com>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-free_irq() expects the same device identity that was passed to
-corresponding request_irq(), otherwise the IRQ is not freed.
+On Wed, Jul 03, 2019 at 03:10:21AM +0000, YueHaibing wrote:
+> Fixes gcc '-Wunused-but-set-variable' warning:
+>
+> drivers/infiniband/hw/hns/hns_roce_hw_v2.c: In function 'hns_roce_function_clear':
+> drivers/infiniband/hw/hns/hns_roce_hw_v2.c:1135:7: warning:
+>  variable 'fclr_write_fail_flag' set but not used [-Wunused-but-set-variable]
+>
+> It is never used, so can be removed.
+>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> ---
+>  drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 --
+>  1 file changed, 2 deletions(-)
+>
 
-Fixes: 10c9c10c3151 ("unicore32 core architecture: mm related: consistent device DMA handling")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- arch/unicore32/kernel/dma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/unicore32/kernel/dma.c b/arch/unicore32/kernel/dma.c
-index 7a0e2d4d6077..2b8666f8a37d 100644
---- a/arch/unicore32/kernel/dma.c
-+++ b/arch/unicore32/kernel/dma.c
-@@ -169,7 +169,7 @@ int __init puv3_init_dma(void)
- 	ret = request_irq(IRQ_DMAERR, dma_err_handler, 0, "DMAERR", NULL);
- 	if (ret) {
- 		printk(KERN_CRIT "Can't register IRQ for DMAERR\n");
--		free_irq(IRQ_DMA, "DMA");
-+		free_irq(IRQ_DMA, NULL);
- 		return ret;
- 	}
-
-
-
+Thanks,
+Reviewed-by: Leon Romanovsky <leonro@mellanox.com>

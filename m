@@ -2,37 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B97CE5DCB1
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 04:57:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E18665DCB7
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 05:03:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727251AbfGCC5z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jul 2019 22:57:55 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:51646 "EHLO huawei.com"
+        id S1727164AbfGCDD5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jul 2019 23:03:57 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:8689 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727108AbfGCC5z (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jul 2019 22:57:55 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 01DDCA6008E8F9D1AD22;
-        Wed,  3 Jul 2019 10:48:53 +0800 (CST)
+        id S1727049AbfGCDD5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jul 2019 23:03:57 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id CE8CBFC842A631321067;
+        Wed,  3 Jul 2019 11:03:54 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 3 Jul 2019 10:48:46 +0800
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 3 Jul 2019 11:03:48 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        David Howells <dhowells@redhat.com>,
-        Kairui Song <kasong@redhat.com>,
-        "Thomas Gleixner" <tglx@linutronix.de>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        "Thiago Jung Bauermann" <bauerman@linux.ibm.com>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        "Eric Biggers" <ebiggers@google.com>
-CC:     YueHaibing <yuehaibing@huawei.com>,
-        <linux-security-module@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] integrity: Remove set but not used variable 'acl'
-Date:   Wed, 3 Jul 2019 02:55:18 +0000
-Message-ID: <20190703025518.6379-1-yuehaibing@huawei.com>
+To:     Lijun Ou <oulijun@huawei.com>,
+        "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-rdma@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] RDMA/hns: Remove set but not used variable 'fclr_write_fail_flag'
+Date:   Wed, 3 Jul 2019 03:10:21 +0000
+Message-ID: <20190703031021.14896-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -46,31 +40,37 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Fixes gcc '-Wunused-but-set-variable' warning:
 
-security/integrity/digsig.c: In function 'integrity_init_keyring':
-security/integrity/digsig.c:99:18: warning:
- variable 'acl' set but not used [-Wunused-but-set-variable]
+drivers/infiniband/hw/hns/hns_roce_hw_v2.c: In function 'hns_roce_function_clear':
+drivers/infiniband/hw/hns/hns_roce_hw_v2.c:1135:7: warning:
+ variable 'fclr_write_fail_flag' set but not used [-Wunused-but-set-variable]
 
-It seems 'acl' is needed in __integrity_init_keyring
+It is never used, so can be removed.
 
-Fixes: 6100ac53909d ("keys: Replace uid/gid/perm permissions checking with an ACL")
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- security/integrity/digsig.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/security/integrity/digsig.c b/security/integrity/digsig.c
-index 1f2c43f62047..f9f3c8ffe786 100644
---- a/security/integrity/digsig.c
-+++ b/security/integrity/digsig.c
-@@ -114,7 +114,7 @@ int __init integrity_init_keyring(const unsigned int id)
- 	acl = &internal_writable_keyring_acl;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index edd62b4dc0a0..edaf900b739c 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -1132,7 +1132,6 @@ static int hns_roce_cmq_query_hw_info(struct hns_roce_dev *hr_dev)
  
- out:
--	return __integrity_init_keyring(id, &internal_keyring_acl, restriction);
-+	return __integrity_init_keyring(id, acl, restriction);
- }
+ static void hns_roce_function_clear(struct hns_roce_dev *hr_dev)
+ {
+-	bool fclr_write_fail_flag = false;
+ 	struct hns_roce_func_clear *resp;
+ 	struct hns_roce_cmq_desc desc;
+ 	unsigned long end;
+@@ -1143,7 +1142,6 @@ static void hns_roce_function_clear(struct hns_roce_dev *hr_dev)
  
- static int __init integrity_add_key(const unsigned int id, const void *data,
+ 	ret = hns_roce_cmq_send(hr_dev, &desc, 1);
+ 	if (ret) {
+-		fclr_write_fail_flag = true;
+ 		dev_err(hr_dev->dev, "Func clear write failed, ret = %d.\n",
+ 			 ret);
+ 		return;
 
 
 

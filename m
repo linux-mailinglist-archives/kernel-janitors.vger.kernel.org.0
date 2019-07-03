@@ -2,76 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA2435DA29
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 03:03:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BD295DC4B
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 04:22:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727164AbfGCBDF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jul 2019 21:03:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51744 "EHLO mail.kernel.org"
+        id S1727655AbfGCCPl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jul 2019 22:15:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53992 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726329AbfGCBDF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jul 2019 21:03:05 -0400
-Received: from localhost (unknown [69.71.4.100])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        id S1727646AbfGCCPk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jul 2019 22:15:40 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1DE7121BF1;
-        Tue,  2 Jul 2019 23:46:18 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C1CB021873;
+        Wed,  3 Jul 2019 02:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562111178;
-        bh=HHd7/JqeDyA8cgnz+y55uY+RyTkhNRZ7JSHv+IT51Gc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CrIu84spArwVRPyBzpYPsRgnNuSm+lDSIBhd3KtX3SHm9xW7OQsYblD6gEf1Pscxf
-         y/k2K0wUqzF65nDFT1nh89HdvzjtV7CzNkbzValklRdVH30+iyOALXAeO19kd8xhCq
-         bCyfUwDDdyUUc6TCvECcWPKG41dYIxhnZ2wWQBeQ=
-Date:   Tue, 2 Jul 2019 18:46:16 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-pci@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] pci/proc: Use seq_puts() in show_device()
-Message-ID: <20190702234616.GH128603@google.com>
-References: <a6b110cb-0d0e-5dc3-9ca1-9041609cf74c@web.de>
+        s=default; t=1562120139;
+        bh=9Yoh8I6freaWFY0+Uec5FuoOX+T7aUlDifN96wj7du0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=z0o9saU/7RymDFw26ngxxlvddt3HJORSt5doQCMdTNvG9IvTqxqpVF5hfge3Yw0SX
+         AMqEu/9m0qu0EW3Q6UJPPO+tG+RGlc62uAK1VFY0gExEozHZDIwR+nYPJno/vnHAoU
+         30Wkzpeq1OBK0XOLgQFjpXOfdjcq7Rkk1tygvjB4=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Colin Ian King <colin.king@canonical.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, kernel-janitors@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.1 15/39] x86/apic: Fix integer overflow on 10 bit left shift of cpu_khz
+Date:   Tue,  2 Jul 2019 22:14:50 -0400
+Message-Id: <20190703021514.17727-15-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190703021514.17727-1-sashal@kernel.org>
+References: <20190703021514.17727-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a6b110cb-0d0e-5dc3-9ca1-9041609cf74c@web.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jul 02, 2019 at 01:26:27PM +0200, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Tue, 2 Jul 2019 13:21:33 +0200
-> 
-> A string which did not contain a data format specification should be put
-> into a sequence. Thus use the corresponding function “seq_puts”.
-> 
-> This issue was detected by using the Coccinelle software.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied to pci/misc for v5.3, thanks!
+[ Upstream commit ea136a112d89bade596314a1ae49f748902f4727 ]
 
-> ---
->  drivers/pci/proc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pci/proc.c b/drivers/pci/proc.c
-> index 445b51db75b0..fe7fe678965b 100644
-> --- a/drivers/pci/proc.c
-> +++ b/drivers/pci/proc.c
-> @@ -377,7 +377,7 @@ static int show_device(struct seq_file *m, void *v)
->  	}
->  	seq_putc(m, '\t');
->  	if (drv)
-> -		seq_printf(m, "%s", drv->name);
-> +		seq_puts(m, drv->name);
->  	seq_putc(m, '\n');
->  	return 0;
->  }
-> --
-> 2.22.0
-> 
+The left shift of unsigned int cpu_khz will overflow for large values of
+cpu_khz, so cast it to a long long before shifting it to avoid overvlow.
+For example, this can happen when cpu_khz is 4194305, i.e. ~4.2 GHz.
+
+Addresses-Coverity: ("Unintentional integer overflow")
+Fixes: 8c3ba8d04924 ("x86, apic: ack all pending irqs when crashed/on kexec")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: "H . Peter Anvin" <hpa@zytor.com>
+Cc: kernel-janitors@vger.kernel.org
+Link: https://lkml.kernel.org/r/20190619181446.13635-1-colin.king@canonical.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/x86/kernel/apic/apic.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index b7bcdd781651..ec6225cb94f9 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -1458,7 +1458,8 @@ static void apic_pending_intr_clear(void)
+ 		if (queued) {
+ 			if (boot_cpu_has(X86_FEATURE_TSC) && cpu_khz) {
+ 				ntsc = rdtsc();
+-				max_loops = (cpu_khz << 10) - (ntsc - tsc);
++				max_loops = (long long)cpu_khz << 10;
++				max_loops -= ntsc - tsc;
+ 			} else {
+ 				max_loops--;
+ 			}
+-- 
+2.20.1
+

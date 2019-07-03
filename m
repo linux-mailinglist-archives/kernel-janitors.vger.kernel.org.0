@@ -2,77 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 832775EB9A
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 20:30:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CE325EBB1
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 20:33:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727091AbfGCSaG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jul 2019 14:30:06 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:60558 "EHLO
+        id S1727177AbfGCScx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Jul 2019 14:32:53 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:60610 "EHLO
         shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725933AbfGCSaG (ORCPT
+        with ESMTP id S1726430AbfGCScw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jul 2019 14:30:06 -0400
+        Wed, 3 Jul 2019 14:32:52 -0400
 Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 6A17D140DA5B3;
-        Wed,  3 Jul 2019 11:30:05 -0700 (PDT)
-Date:   Wed, 03 Jul 2019 11:30:05 -0700 (PDT)
-Message-Id: <20190703.113005.69711790321030429.davem@davemloft.net>
-To:     yuehaibing@huawei.com
-Cc:     jaswinder.singh@linaro.org, ast@kernel.org,
-        ilias.apalodimas@linaro.org, daniel@iogearbox.net,
-        jakub.kicinski@netronome.com, hawk@kernel.org,
-        netdev@vger.kernel.org, xdp-newbies@vger.kernel.org,
-        bpf@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next] net: socionext: remove set but not used
- variable 'pkts'
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 4BE39140F87F2;
+        Wed,  3 Jul 2019 11:32:52 -0700 (PDT)
+Date:   Wed, 03 Jul 2019 11:32:51 -0700 (PDT)
+Message-Id: <20190703.113251.510128079502437520.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     jcliburn@gmail.com, chris.snook@gmail.com, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] atl1c: remove redundant assignment to variable tpd_req
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190703024213.191191-1-yuehaibing@huawei.com>
-References: <20190703024213.191191-1-yuehaibing@huawei.com>
+In-Reply-To: <20190703075358.12470-1-colin.king@canonical.com>
+References: <20190703075358.12470-1-colin.king@canonical.com>
 X-Mailer: Mew version 6.8 on Emacs 26.1
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 03 Jul 2019 11:30:05 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 03 Jul 2019 11:32:52 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
-Date: Wed, 3 Jul 2019 02:42:13 +0000
+From: Colin King <colin.king@canonical.com>
+Date: Wed,  3 Jul 2019 08:53:58 +0100
 
-> Fixes gcc '-Wunused-but-set-variable' warning:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> drivers/net/ethernet/socionext/netsec.c: In function 'netsec_clean_tx_dring':
-> drivers/net/ethernet/socionext/netsec.c:637:15: warning:
->  variable 'pkts' set but not used [-Wunused-but-set-variable]
+> The variable tpd_req is being initialized with a value that is never
+> read and it is being updated later with a new value. The
+> initialization is redundant and can be removed.
 > 
-> It is not used since commit ba2b232108d3 ("net: netsec: add XDP support")
-> 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> ---
->  drivers/net/ethernet/socionext/netsec.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/socionext/netsec.c b/drivers/net/ethernet/socionext/netsec.c
-> index 5544a722543f..015d1ec5436a 100644
-> --- a/drivers/net/ethernet/socionext/netsec.c
-> +++ b/drivers/net/ethernet/socionext/netsec.c
-> @@ -634,7 +634,7 @@ static void netsec_set_rx_de(struct netsec_priv *priv,
->  static bool netsec_clean_tx_dring(struct netsec_priv *priv)
->  {
->  	struct netsec_desc_ring *dring = &priv->desc_ring[NETSEC_RING_TX];
-> -	unsigned int pkts, bytes;
-> +	unsigned int bytes;
->  	struct netsec_de *entry;
->  	int tail = dring->tail;
->  	int cnt = 0;
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-This breaks the reverse christmas-tree ordering of the local variables in this
-function.  Please move the 'bytes' declaration down by two lines when you make
-this change.
-
-Thanks.
+Applied to net-next.

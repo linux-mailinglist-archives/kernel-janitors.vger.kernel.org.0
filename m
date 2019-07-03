@@ -2,84 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 454FB5DC16
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 04:20:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D22685DC93
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 04:35:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727579AbfGCCSP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 2 Jul 2019 22:18:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54974 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727469AbfGCCQi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 2 Jul 2019 22:16:38 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7B19321873;
-        Wed,  3 Jul 2019 02:16:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562120197;
-        bh=eb5UpNE5hB2giHBIaYlk1IVM4nC4nFhfey5sEfP+6sY=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A9ZziIvgkgLJKqrdqKrgEF198f1ie4AEoRPAJ3mhOEO3KcqrTgI/u79tFkpOoRHsN
-         R4N2naPbXYSuqeAZgE3MchWN74H5jCK7VAefvhwLAbDcXnEj9mmB8cXsBUVPRWKXK5
-         ZfwS26PVlrjMOv/c4HLrfLUSEGiwgSG7Qshfd5pc=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Colin Ian King <colin.king@canonical.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>, kernel-janitors@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 08/26] x86/apic: Fix integer overflow on 10 bit left shift of cpu_khz
-Date:   Tue,  2 Jul 2019 22:16:07 -0400
-Message-Id: <20190703021625.18116-8-sashal@kernel.org>
+        id S1727435AbfGCCfv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 2 Jul 2019 22:35:51 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:8688 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727144AbfGCCfv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 2 Jul 2019 22:35:51 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 114BFA93318A16B54761;
+        Wed,  3 Jul 2019 10:35:47 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 3 Jul 2019 10:35:40 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Jassi Brar <jaswinder.singh@linaro.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        "Jakub Kicinski" <jakub.kicinski@netronome.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>
+CC:     YueHaibing <yuehaibing@huawei.com>, <netdev@vger.kernel.org>,
+        <xdp-newbies@vger.kernel.org>, <bpf@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] net: socionext: remove set but not used variable 'pkts'
+Date:   Wed, 3 Jul 2019 02:42:13 +0000
+Message-ID: <20190703024213.191191-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190703021625.18116-1-sashal@kernel.org>
-References: <20190703021625.18116-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-[ Upstream commit ea136a112d89bade596314a1ae49f748902f4727 ]
+drivers/net/ethernet/socionext/netsec.c: In function 'netsec_clean_tx_dring':
+drivers/net/ethernet/socionext/netsec.c:637:15: warning:
+ variable 'pkts' set but not used [-Wunused-but-set-variable]
 
-The left shift of unsigned int cpu_khz will overflow for large values of
-cpu_khz, so cast it to a long long before shifting it to avoid overvlow.
-For example, this can happen when cpu_khz is 4194305, i.e. ~4.2 GHz.
+It is not used since commit ba2b232108d3 ("net: netsec: add XDP support")
 
-Addresses-Coverity: ("Unintentional integer overflow")
-Fixes: 8c3ba8d04924 ("x86, apic: ack all pending irqs when crashed/on kexec")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: "H . Peter Anvin" <hpa@zytor.com>
-Cc: kernel-janitors@vger.kernel.org
-Link: https://lkml.kernel.org/r/20190619181446.13635-1-colin.king@canonical.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- arch/x86/kernel/apic/apic.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/socionext/netsec.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index 84132eddb5a8..2646234380cc 100644
---- a/arch/x86/kernel/apic/apic.c
-+++ b/arch/x86/kernel/apic/apic.c
-@@ -1452,7 +1452,8 @@ static void apic_pending_intr_clear(void)
- 		if (queued) {
- 			if (boot_cpu_has(X86_FEATURE_TSC) && cpu_khz) {
- 				ntsc = rdtsc();
--				max_loops = (cpu_khz << 10) - (ntsc - tsc);
-+				max_loops = (long long)cpu_khz << 10;
-+				max_loops -= ntsc - tsc;
- 			} else {
- 				max_loops--;
- 			}
--- 
-2.20.1
+diff --git a/drivers/net/ethernet/socionext/netsec.c b/drivers/net/ethernet/socionext/netsec.c
+index 5544a722543f..015d1ec5436a 100644
+--- a/drivers/net/ethernet/socionext/netsec.c
++++ b/drivers/net/ethernet/socionext/netsec.c
+@@ -634,7 +634,7 @@ static void netsec_set_rx_de(struct netsec_priv *priv,
+ static bool netsec_clean_tx_dring(struct netsec_priv *priv)
+ {
+ 	struct netsec_desc_ring *dring = &priv->desc_ring[NETSEC_RING_TX];
+-	unsigned int pkts, bytes;
++	unsigned int bytes;
+ 	struct netsec_de *entry;
+ 	int tail = dring->tail;
+ 	int cnt = 0;
+@@ -642,7 +642,6 @@ static bool netsec_clean_tx_dring(struct netsec_priv *priv)
+ 	if (dring->is_xdp)
+ 		spin_lock(&dring->lock);
+ 
+-	pkts = 0;
+ 	bytes = 0;
+ 	entry = dring->vaddr + DESC_SZ * tail;
+
+
 

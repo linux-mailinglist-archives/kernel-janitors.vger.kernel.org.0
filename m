@@ -2,35 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 88EA15DDD0
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 07:52:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9058F5DDD3
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 07:53:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726201AbfGCFwq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jul 2019 01:52:46 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:43848 "EHLO huawei.com"
+        id S1726670AbfGCFxV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Jul 2019 01:53:21 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:8130 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725927AbfGCFwq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jul 2019 01:52:46 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 27B034BD0BDF765E245B;
-        Wed,  3 Jul 2019 13:52:43 +0800 (CST)
+        id S1725927AbfGCFxV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 3 Jul 2019 01:53:21 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 60FD3EDEC9C4AF337995;
+        Wed,  3 Jul 2019 13:53:18 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 3 Jul 2019 13:52:35 +0800
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 3 Jul 2019 13:53:10 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        Yegor Yefremov <yegorslists@googlemail.com>,
-        Jisheng Zhang <Jisheng.Zhang@synaptics.com>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Darwin Dingel <darwin.dingel@alliedtelesis.co.nz>,
-        He Zhe <zhe.he@windriver.com>, Stefan Roese <sr@denx.de>
+To:     Guan Xuetao <gxt@pku.edu.cn>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Enrico Weigelt <info@metux.net>,
+        Allison Randal <allison@lohutok.net>,
+        GuanXuetao <gxt@mprc.pku.edu.cn>
 CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-serial@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] serial: 8250: 8250_core: Fix missing unlock on error in serial8250_register_8250_port()
-Date:   Wed, 3 Jul 2019 05:59:08 +0000
-Message-ID: <20190703055908.141294-1-weiyongjun1@huawei.com>
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH] unicore32: dma: fix to pass correct device identity to free_irq()
+Date:   Wed, 3 Jul 2019 05:59:43 +0000
+Message-ID: <20190703055943.141542-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -42,41 +41,27 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Add the missing unlock before return from function serial8250_register_8250_port()
-in the error handling case.
+free_irq() expects the same device identity that was passed to
+corresponding request_irq(), otherwise the IRQ is not freed.
 
+Fixes: 10c9c10c3151 ("unicore32 core architecture: mm related: consistent device DMA handling")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/tty/serial/8250/8250_core.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/unicore32/kernel/dma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/8250/8250_core.c b/drivers/tty/serial/8250/8250_core.c
-index a4470771005f..df3bcc0b2d74 100644
---- a/drivers/tty/serial/8250/8250_core.c
-+++ b/drivers/tty/serial/8250/8250_core.c
-@@ -1026,8 +1026,10 @@ int serial8250_register_8250_port(struct uart_8250_port *up)
- 		if (!has_acpi_companion(uart->port.dev)) {
- 			gpios = mctrl_gpio_init(&uart->port, 0);
- 			if (IS_ERR(gpios)) {
--				if (PTR_ERR(gpios) != -ENOSYS)
--					return PTR_ERR(gpios);
-+				if (PTR_ERR(gpios) != -ENOSYS) {
-+					ret = PTR_ERR(gpios);
-+					goto out_unlock;
-+				}
- 			} else {
- 				uart->gpios = gpios;
- 			}
-@@ -1099,6 +1101,7 @@ int serial8250_register_8250_port(struct uart_8250_port *up)
- 		}
+diff --git a/arch/unicore32/kernel/dma.c b/arch/unicore32/kernel/dma.c
+index 7a0e2d4d6077..2b8666f8a37d 100644
+--- a/arch/unicore32/kernel/dma.c
++++ b/arch/unicore32/kernel/dma.c
+@@ -169,7 +169,7 @@ int __init puv3_init_dma(void)
+ 	ret = request_irq(IRQ_DMAERR, dma_err_handler, 0, "DMAERR", NULL);
+ 	if (ret) {
+ 		printk(KERN_CRIT "Can't register IRQ for DMAERR\n");
+-		free_irq(IRQ_DMA, "DMA");
++		free_irq(IRQ_DMA, NULL);
+ 		return ret;
  	}
- 
-+out_unlock:
- 	mutex_unlock(&serial_mutex);
- 
- 	return ret;
-
-
 
 
 

@@ -2,28 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ABF745DFA5
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 10:20:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C94C5DFCF
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 10:32:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727351AbfGCIUN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jul 2019 04:20:13 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:49425 "EHLO
+        id S1727308AbfGCIcT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Jul 2019 04:32:19 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:49648 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727459AbfGCIUL (ORCPT
+        with ESMTP id S1727142AbfGCIcT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jul 2019 04:20:11 -0400
+        Wed, 3 Jul 2019 04:32:19 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hiaUr-0000vw-H9; Wed, 03 Jul 2019 08:20:09 +0000
+        id 1hiagZ-0001jo-7v; Wed, 03 Jul 2019 08:32:15 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>
+To:     Shahed Shaikh <shshaikh@marvell.com>,
+        Manish Chopra <manishc@marvell.com>,
+        GR-Linux-NIC-Dev@marvell.com,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] regulator: max77620: remove redundant assignment to variable ret
-Date:   Wed,  3 Jul 2019 09:20:09 +0100
-Message-Id: <20190703082009.18779-1-colin.king@canonical.com>
+Subject: [PATCH] qlcnic: remove redundant assignment to variable err
+Date:   Wed,  3 Jul 2019 09:32:14 +0100
+Message-Id: <20190703083214.20542-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,29 +37,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable ret is being initialized with a value that is never
+The variable err is being initialized with a value that is never
 read and it is being updated later with a new value. The
 initialization is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/regulator/max77620-regulator.c | 2 +-
+ drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_pf.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/regulator/max77620-regulator.c b/drivers/regulator/max77620-regulator.c
-index 2ae2d319321b..8d9731e4052b 100644
---- a/drivers/regulator/max77620-regulator.c
-+++ b/drivers/regulator/max77620-regulator.c
-@@ -467,7 +467,7 @@ static int max77620_regulator_is_enabled(struct regulator_dev *rdev)
+diff --git a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_pf.c b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_pf.c
+index af3b037fa442..5632da05145a 100644
+--- a/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_pf.c
++++ b/drivers/net/ethernet/qlogic/qlcnic/qlcnic_sriov_pf.c
+@@ -1066,7 +1066,7 @@ static int qlcnic_sriov_pf_cfg_ip_cmd(struct qlcnic_bc_trans *trans,
  {
- 	struct max77620_regulator *pmic = rdev_get_drvdata(rdev);
- 	int id = rdev_get_id(rdev);
--	int ret = 1;
-+	int ret;
+ 	struct qlcnic_vf_info *vf = trans->vf;
+ 	struct qlcnic_adapter *adapter = vf->adapter;
+-	int err = -EIO;
++	int err;
  
- 	if (pmic->active_fps_src[id] != MAX77620_FPS_SRC_NONE)
- 		return 1;
+ 	cmd->req.arg[1] |= vf->vp->handle << 16;
+ 	cmd->req.arg[1] |= BIT_31;
 -- 
 2.20.1
 

@@ -2,74 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E55995E16E
-	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 11:53:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2756D5E1B8
+	for <lists+kernel-janitors@lfdr.de>; Wed,  3 Jul 2019 12:10:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726627AbfGCJxv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jul 2019 05:53:51 -0400
-Received: from mout.kundenserver.de ([217.72.192.73]:38337 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726305AbfGCJxv (ORCPT
+        id S1727188AbfGCKJz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Jul 2019 06:09:55 -0400
+Received: from www62.your-server.de ([213.133.104.62]:54970 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726486AbfGCKJz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jul 2019 05:53:51 -0400
-Received: from [192.168.1.110] ([95.114.150.241]) by mrelayeu.kundenserver.de
- (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MYvPq-1i4UQO1u6a-00UvZs; Wed, 03 Jul 2019 11:53:48 +0200
-Subject: Re: [PATCH] fs/seq_file: Replace a seq_printf() call by seq_puts() in
- seq_hex_dump()
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        linux-fsdevel@vger.kernel.org,
-        Alexander Viro <viro@zeniv.linux.org.uk>
+        Wed, 3 Jul 2019 06:09:55 -0400
+Received: from [78.46.172.3] (helo=sslproxy06.your-server.de)
+        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1hicD2-0008UY-FK; Wed, 03 Jul 2019 12:09:52 +0200
+Received: from [2a02:1205:5054:6d70:b45c:ec96:516a:e956] (helo=linux.home)
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1hicD2-000Chv-8q; Wed, 03 Jul 2019 12:09:52 +0200
+Subject: Re: [PATCH] bpf: Replace a seq_printf() call by seq_puts() in
+ btf_enum_seq_show()
+To:     Markus Elfring <Markus.Elfring@web.de>, bpf@vger.kernel.org,
+        netdev@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
-References: <8c295901-cdbd-a4a2-f23f-f63a58330f20@web.de>
-From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Organization: metux IT consult
-Message-ID: <10744a9b-1c15-1581-8422-bbbf995c0da3@metux.net>
-Date:   Wed, 3 Jul 2019 11:53:46 +0200
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+References: <93898abe-9a7d-0c64-0856-094b62e07ba2@web.de>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <e0c9978f-7304-8a25-1bc9-b2be8a038382@iogearbox.net>
+Date:   Wed, 3 Jul 2019 12:09:51 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.3.0
 MIME-Version: 1.0
-In-Reply-To: <8c295901-cdbd-a4a2-f23f-f63a58330f20@web.de>
+In-Reply-To: <93898abe-9a7d-0c64-0856-094b62e07ba2@web.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:xiC9aC0SXQUwA+BYVt/+cV5O9DXdVDss0yAIx+MA2irR0N/sKsm
- udBlm60BA5MbOe92vuTq4Qt3CHgj6T+u2bceMRInHA27d/jhvjAD3DeH5KutUKXwt+tLYep
- QdblIoLPF2rdW/drmNZeV+qy7YXWSajmZ8+rL8bQFq7VTL1W0abzuK0cij6Qf+XH1GEir40
- kyRDkF1zIp2Ne74uoBkOQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:aPL7KJiS+uI=:7S7IBlN8EoVT6GT1IlIKwA
- o12t/oiXZ0KNqic8DlaUWj/Org71srYU03+4+GFF/dqevDPvGGbubRHtcE2+GdaxFotH6DUBm
- sftkTKR7YXHAyDLPAX5wUGQt9IQFXOIQ/8fwocN8i9cAeXDvuLZ1hgsLo0IR6lqKyAdUp83OD
- Gd+Skw2CG+VTgfg6EDktkIDczBP7hj5Rv0jGmdj95wteby4rUo4clq9o+6ZyO8DcJpAp+B9Of
- A+gXm8RyVlzBhYyzBScR6vFRaPjHIKso3LGWcY++CWFLq8SeKc8zFr5moGuSPDs5oWrXgZP8s
- /glNL1Ka+kTuqx9h297iRDHVHezCSUeDHyIBm3exgs8nTLpwI9s1e0aZOKO46BV21gbsGzye7
- hbOl5A+UQRjFcVADjfSTgccapUQ53DM5AlQJlxEnDrPC3MRChfLbMj5Slts54QLuy6BSqYS2m
- y002WGW5kHjCgpgomdSUkHczm3i79jIBpdbFkVhBhg+eR5kjOng7wiT9vdFScM2f31nACvBzT
- xDfQCbw6MXb+twLPqBD4f2viePHc/cGSPXzelRkrGg+aPftF86kiqWbJgIRmpEUnBPexdaaFq
- Fv3uzrlGtsLE9bagQqWa21/Xuijy4kEQymMphQFvC3dXIkUKq8sZa8ypopLl9R62/ge6davtZ
- D4QPyAIjqvowjJ26I7ngOIBwiH0SQZh5W/tvNhLES9yEItSOVPFaFuiRx+osA8gcLDVdw41Vs
- /JQ5f6OQovUAp9WNjXrf1IlnTneUvD45u2SA74H839mWdij/18A9yU1iozg=
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.100.3/25499/Wed Jul  3 10:03:10 2019)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 02.07.19 18:38, Markus Elfring wrote:
+On 07/02/2019 07:13 PM, Markus Elfring wrote:
 > From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Tue, 2 Jul 2019 18:28:10 +0200
+> Date: Tue, 2 Jul 2019 19:04:08 +0200
 > 
 > A string which did not contain a data format specification should be put
 > into a sequence. Thus use the corresponding function “seq_puts”.
+> 
+> This issue was detected by using the Coccinelle software.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-Looks good, but have you checked whether "m" could ever be NULL and
-whether seq_puts() has a check for that ?
-
-
---mtx
-
--- 
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+The code is fine as is, I'm not applying this.

@@ -2,104 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8422F5F42B
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 09:53:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C7805F5E6
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 11:46:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727476AbfGDHxL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jul 2019 03:53:11 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:58372 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727180AbfGDHxL (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jul 2019 03:53:11 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 5C24B609CD; Thu,  4 Jul 2019 07:53:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1562226790;
-        bh=QP02RX+s+abAv40zJSQKeAupeAwqDfByWtGOQhkpzYI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=mgtpmyOCaZE5ynciK0snZPPCz1ArNV+E02B+bRVW/LCdgQ4tqPBQKZU7zkL3aodZC
-         LUpAe+PB/ow+UklBfYWCISNBeK34lhkuvrDOl2LBt7I12RPR3BoaLsNK5ioK5hBuPD
-         0y7Joh9oJPChhWSPCT68nIxuIQXLjMdIWDdn6jYs=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
-Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.codeaurora.org (Postfix) with ESMTP id 90B1860746;
-        Thu,  4 Jul 2019 07:53:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1562226789;
-        bh=QP02RX+s+abAv40zJSQKeAupeAwqDfByWtGOQhkpzYI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=UfCRovyUB63eQs0AYtn62PvDY3v8N9wUpC0m4wLEAXeMNRTa8O1clQTw3MHeyFFNQ
-         06dhZprHqkzdJMJC0h3pvtmVQ0z6Z8Stb0dqrvFiyUpXl6qiHctfy+gjIqq+wV50pT
-         UsEKj7RyePFA8cjBG50TZKVu10QAaHJ+ANSUZwT8=
+        id S1727503AbfGDJqI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jul 2019 05:46:08 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:49842 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727433AbfGDJqH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Jul 2019 05:46:07 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 89A0C282A6D9B3730D51;
+        Thu,  4 Jul 2019 17:46:03 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 4 Jul 2019 17:45:57 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-fbdev@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <dri-devel@lists.freedesktop.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] video: fbdev: imxfb: fix a typo in imxfb_probe()
+Date:   Thu, 4 Jul 2019 09:52:25 +0000
+Message-ID: <20190704095225.143177-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 04 Jul 2019 10:53:09 +0300
-From:   merez@codeaurora.org
-To:     Colin King <colin.king@canonical.com>
-Cc:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] wil6210: fix wil_cid_valid with negative cid values
-In-Reply-To: <20190702144026.13013-1-colin.king@canonical.com>
-References: <20190702144026.13013-1-colin.king@canonical.com>
-Message-ID: <787a6680930c6895d8ede457ec543fb7@codeaurora.org>
-X-Sender: merez@codeaurora.org
-User-Agent: Roundcube Webmail/1.2.5
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2019-07-02 17:40, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There are several occasions where a negative cid value is passed
-> into wil_cid_valid and this is converted into a u8 causing the
-> range check of cid >= 0 to always succeed.  Fix this by making
-> the cid argument an int to handle any -ve error value of cid.
-> 
-> An example of this behaviour is in wil_cfg80211_dump_station,
-> where cid is assigned -ENOENT if the call to wil_find_cid_by_idx
-> fails, and this -ve value is passed to wil_cid_valid.  I believe
-> that the conversion of -ENOENT to the u8 value 254 which is
-> greater than wil->max_assoc_sta causes wil_find_cid_by_idx to
-> currently work fine, but I think is by luck and not the
-> intended behaviour.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/net/wireless/ath/wil6210/wil6210.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/wireless/ath/wil6210/wil6210.h
-> b/drivers/net/wireless/ath/wil6210/wil6210.h
-> index 6f456b311a39..25a1adcb38eb 100644
-> --- a/drivers/net/wireless/ath/wil6210/wil6210.h
-> +++ b/drivers/net/wireless/ath/wil6210/wil6210.h
-> @@ -1144,7 +1144,7 @@ static inline void wil_c(struct wil6210_priv
-> *wil, u32 reg, u32 val)
->  /**
->   * wil_cid_valid - check cid is valid
->   */
-> -static inline bool wil_cid_valid(struct wil6210_priv *wil, u8 cid)
-> +static inline bool wil_cid_valid(struct wil6210_priv *wil, int cid)
->  {
->  	return (cid >= 0 && cid < wil->max_assoc_sta);
->  }
+Fix the return value check which testing the wrong variable
+in imxfb_probe().
 
-Reviewed-by: Maya Erez <merez@codeaurora.org>
+Fixes: 739a6439c2bf ("video: fbdev: imxfb: fix sparse warnings about using incorrect types")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/video/fbdev/imxfb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
--- 
-Maya Erez
-Qualcomm Israel, Inc. on behalf of Qualcomm Innovation Center, Inc.
-The Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, a 
-Linux Foundation Collaborative Project
+diff --git a/drivers/video/fbdev/imxfb.c b/drivers/video/fbdev/imxfb.c
+index 8d1053e9ef9f..b3286d1fa543 100644
+--- a/drivers/video/fbdev/imxfb.c
++++ b/drivers/video/fbdev/imxfb.c
+@@ -976,7 +976,7 @@ static int imxfb_probe(struct platform_device *pdev)
+ 	fbi->map_size = PAGE_ALIGN(info->fix.smem_len);
+ 	info->screen_buffer = dma_alloc_wc(&pdev->dev, fbi->map_size,
+ 					   &fbi->map_dma, GFP_KERNEL);
+-	if (!info->screen_base) {
++	if (!info->screen_buffer) {
+ 		dev_err(&pdev->dev, "Failed to allocate video RAM: %d\n", ret);
+ 		ret = -ENOMEM;
+ 		goto failed_map;
+
+
+

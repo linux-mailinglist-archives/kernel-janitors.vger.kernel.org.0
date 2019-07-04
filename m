@@ -2,68 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 901545F6BC
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 12:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 100435F781
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 13:53:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727529AbfGDKjU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jul 2019 06:39:20 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:60634 "EHLO huawei.com"
+        id S1727608AbfGDLx1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jul 2019 07:53:27 -0400
+Received: from mx2.suse.de ([195.135.220.15]:50218 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727385AbfGDKjU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jul 2019 06:39:20 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 6DD5577DDC701E995BDE;
-        Thu,  4 Jul 2019 18:39:13 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 4 Jul 2019 18:39:06 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Sean Paul <sean@poorly.run>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <intel-gfx@lists.freedesktop.org>,
-        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] drm/i915: fix possible memory leak in intel_hdcp_auth_downstream()
-Date:   Thu, 4 Jul 2019 10:45:34 +0000
-Message-ID: <20190704104534.12508-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727436AbfGDLx1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Jul 2019 07:53:27 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 58775AF6A;
+        Thu,  4 Jul 2019 11:53:26 +0000 (UTC)
+Subject: Re: [PATCH -next] bcache: fix possible memory leak in
+ bch_cached_dev_run()
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Kent Overstreet <kent.overstreet@gmail.com>,
+        linux-bcache@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20190704095257.143492-1-weiyongjun1@huawei.com>
+From:   Coly Li <colyli@suse.de>
+Openpgp: preference=signencrypt
+Organization: SUSE Labs
+Message-ID: <0652186a-7d94-103b-f7e4-168d4910f043@suse.de>
+Date:   Thu, 4 Jul 2019 19:53:19 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20190704095257.143492-1-weiyongjun1@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'ksv_fifo' is malloced in intel_hdcp_auth_downstream() and should be
-freed before leaving from the error handling cases, otherwise it will
-cause memory leak.
+On 2019/7/4 5:52 下午, Wei Yongjun wrote:
+> memory malloced in bch_cached_dev_run() and should be freed before
+> leaving from the error handling cases, otherwise it will cause
+> memory leak.
+> 
+> Fixes: 0b13efecf5f2 ("bcache: add return value check to bch_cached_dev_run()")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/gpu/drm/i915/display/intel_hdcp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Hi Yongjun,
 
-diff --git a/drivers/gpu/drm/i915/display/intel_hdcp.c b/drivers/gpu/drm/i915/display/intel_hdcp.c
-index bc3a94d491c4..27bd7276a82d 100644
---- a/drivers/gpu/drm/i915/display/intel_hdcp.c
-+++ b/drivers/gpu/drm/i915/display/intel_hdcp.c
-@@ -536,7 +536,8 @@ int intel_hdcp_auth_downstream(struct intel_connector *connector)
- 
- 	if (drm_hdcp_check_ksvs_revoked(dev, ksv_fifo, num_downstream)) {
- 		DRM_ERROR("Revoked Ksv(s) in ksv_fifo\n");
--		return -EPERM;
-+		ret = -EPERM;
-+		goto err;
- 	}
- 
- 	/*
+Thanks for the catch, I will add it for the second submission to Linux v5.3.
 
+Coly Li
 
-
+> ---
+>  drivers/md/bcache/super.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/md/bcache/super.c b/drivers/md/bcache/super.c
+> index 26e374fbf57c..20ed838e9413 100644
+> --- a/drivers/md/bcache/super.c
+> +++ b/drivers/md/bcache/super.c
+> @@ -931,6 +931,9 @@ int bch_cached_dev_run(struct cached_dev *dc)
+>  	if (dc->io_disable) {
+>  		pr_err("I/O disabled on cached dev %s",
+>  		       dc->backing_dev_name);
+> +		kfree(env[1]);
+> +		kfree(env[2]);
+> +		kfree(buf);
+>  		return -EIO;
+>  	}

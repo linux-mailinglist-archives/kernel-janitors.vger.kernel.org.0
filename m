@@ -2,93 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C7DF5FB4A
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 17:55:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34D835FB8E
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 18:12:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726977AbfGDPzu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jul 2019 11:55:50 -0400
-Received: from new1-smtp.messagingengine.com ([66.111.4.221]:47323 "EHLO
-        new1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726957AbfGDPzu (ORCPT
+        id S1726875AbfGDQMH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jul 2019 12:12:07 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:39143 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725882AbfGDQMH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jul 2019 11:55:50 -0400
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 9087918E2;
-        Thu,  4 Jul 2019 11:55:46 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Thu, 04 Jul 2019 11:55:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=animalcreek.com;
-         h=date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=mesmtp; bh=mPnkcAZw82aZVs9Z9rG4+ggB
-        DTzCBZWCGqYWdqaNVKo=; b=UoKXTf63vhblNFTYDD5ovIuLnfoPRIkcdpE3lDTX
-        pp6uCs71cXKAbTBfaDi2DPqUrONtik3P0RQGNyx+i6k/alDjwtc3mWkBfObiRhfP
-        wywdn4VSdZRg97zey6ECbueW+PTxpFTMVVptQiawFpUqe71zwstTuWP8iRNLhdiA
-        Azg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=mPnkcA
-        Zw82aZVs9Z9rG4+ggBDTzCBZWCGqYWdqaNVKo=; b=dzUkP6Om+KPVTzCTzYlfku
-        M7nWyC/cKVzyjsFPHkrAkHb76daPECLWsKjlgBcUiiCrWN4IpzK5VDSLV2E7rXxw
-        tCQqoLkTeMxH2fvKcWE0aDtY7OlJ4Dd5CVuY7Om+YbvRd2842eSQdntgNA8XwmBk
-        l+WQj4QM2/4YGZqp9jaYbCzGpAKhS2TN6Vo2j83QgdQziuPY+nVfZ2Bn+zje8c/d
-        aqZMPfO3hLC6/koOm0mjgJpBAo61rLVoZhQ4mYYxCzq5+u4l2chGe82Vr8/fetoe
-        nv3IPtOZvGYP5zbiLC5ZSSTJG8IXJxnPUyVcNzKM0DGawGmrRdWE2er5U+SxuiQg
-        ==
-X-ME-Sender: <xms:gSEeXeSJZ13ZJDRYm6sQZAmbjTgoTtqJTRKVt5mo6hOYiNK66RhmlQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrfedvgdeljecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujghofgesthdtredttdervdenucfhrhhomhepofgrrhhk
-    ucfirhgvvghruceomhhgrhgvvghrsegrnhhimhgrlhgtrhgvvghkrdgtohhmqeenucfkph
-    epieekrddvrdekjedrleehnecurfgrrhgrmhepmhgrihhlfhhrohhmpehmghhrvggvrhes
-    rghnihhmrghltghrvggvkhdrtghomhenucevlhhushhtvghrufhiiigvpedt
-X-ME-Proxy: <xmx:gSEeXYCDTULzTwvjWIlqxBWrN2IdBStYQ-OePsOXybw_vFKaNM4x8Q>
-    <xmx:gSEeXW3q0NqpSkm9RprpJqyoSOOrVIsEJeAlPTgtZjvzlUrWaRJUQw>
-    <xmx:gSEeXeXHDI-EbjNhcop2oajjHqtaPOKdY4s2m9TcbOPA57ojRzoUJw>
-    <xmx:giEeXe7g1ZXBuiE6DWNZzHP8LMlFf7jRSL0UpaHDETllnufFqKrrXQ>
-Received: from blue.animalcreek.com (ip68-2-87-95.ph.ph.cox.net [68.2.87.95])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 6D81D380088;
-        Thu,  4 Jul 2019 11:55:45 -0400 (EDT)
-Received: by blue.animalcreek.com (Postfix, from userid 1000)
-        id 56FC1A22246; Thu,  4 Jul 2019 08:55:42 -0700 (MST)
-Date:   Thu, 4 Jul 2019 08:55:42 -0700
-From:   Mark Greer <mgreer@animalcreek.com>
+        Thu, 4 Jul 2019 12:12:07 -0400
+Received: by mail-ot1-f65.google.com with SMTP id r21so1724031otq.6;
+        Thu, 04 Jul 2019 09:12:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=cOm/HvLRodK9Gmtg8Pu+nD4Ju+GzARos9DN1PBnngww=;
+        b=ZnLAO5N/cjBNnfi05k8nnzcwqeojnDRLbnWpeFhu55YnIK/VkStqmUt2q0KmoNHK7R
+         326a9gF9U5YXEUtZK4LlrxAdtTRYmi22miuCjj1vKxSTW7sLqWAvrl8I4GXAUOzbrHCu
+         SZsFWfcB89i2UCJgu4VLoD/7iQSwVlmeMihp/gsZVlp8PY8mfVfs5gjRrvab7/3GlOdW
+         lovRk3VYcyt/HC3BP/C2sU2NoCCQMNoPuEu4+4MfHJZDDvqDsWAg5/nNn53VgF+A5Ytn
+         p2leV/a6bbtjmjsJZVw4ZsaKL0ofI/LQzeLbgqNXCkPzCHb+3O7DiJ2xQ3JvGHDziQ0r
+         8rwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cOm/HvLRodK9Gmtg8Pu+nD4Ju+GzARos9DN1PBnngww=;
+        b=o0jdNEpA4njlSSLyMALSs8CfIYngHk0GiAgJmJYKQdvNXvPnxLEZt4LiPmFwgB+yJt
+         LN3leYvf6SMKUQL7LGJH23nxC0RmWFnhDbBuknTv1jx1IuklJki676UYfMvgoGxjPubO
+         6R/csVpmN/TCrVn9OkMRplEgaxrifbiXoa49CeVJkUzZGsOyi31/lXHNkeeMsvC/Qv57
+         MbyPxfpbz7fgTkAJFWKQ+LNoP2Z3KkeV+D+jhunTu6DPzSrmQzYpBMYWQCadwJVkVIy1
+         GtjU/0mn3j0h4sfHec2wMk6uifZsFY4ly4hLYT18mydn85zBO1r7X8tbp/xtSQbLMSaR
+         cE5Q==
+X-Gm-Message-State: APjAAAUMtyYnFat1yNx0uuygz4+DeaVo9MNV780DBpr1gokuRL1X8tu+
+        NQZZa6ZPwfwqL+rTA1Hw8YGa/FQiSqt7rNBNr94=
+X-Google-Smtp-Source: APXvYqy4bWZa64/P36dEj/NLPY1nKF3u7sWYt5t9/HNW6LIUW4IHgRkpNfgNmSRLikr+xC7CPyWf3pdHpn5BOKIhuiQ=
+X-Received: by 2002:a9d:76ce:: with SMTP id p14mr34242454otl.342.1562256726047;
+ Thu, 04 Jul 2019 09:12:06 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190704133031.28809-1-colin.king@canonical.com>
+In-Reply-To: <20190704133031.28809-1-colin.king@canonical.com>
+From:   Vaibhav Agarwal <vaibhav.sr@gmail.com>
+Date:   Thu, 4 Jul 2019 21:41:27 +0530
+Message-ID: <CAAs364_ht9ubWrkr3qBYKofmCYUSsQPi-Ahqk4D+hG_JpDXreA@mail.gmail.com>
+Subject: Re: [PATCH] staging: greybus: remove redundant assignment to variable is_empty
 To:     Colin King <colin.king@canonical.com>
-Cc:     Vaibhav Agarwal <vaibhav.sr@gmail.com>,
-        Mark Greer <mgreer@animalcreek.com>,
+Cc:     Mark Greer <mgreer@animalcreek.com>,
         Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         greybus-dev@lists.linaro.org, devel@driverdev.osuosl.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: greybus: remove redundant assignment to
- variable is_empty
-Message-ID: <20190704155542.GA28490@animalcreek.com>
-References: <20190704133031.28809-1-colin.king@canonical.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190704133031.28809-1-colin.king@canonical.com>
-Organization: Animal Creek Technologies, Inc.
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jul 04, 2019 at 02:30:31PM +0100, Colin King wrote:
+On Thu, Jul 4, 2019 at 7:00 PM Colin King <colin.king@canonical.com> wrote:
+>
 > From: Colin Ian King <colin.king@canonical.com>
-> 
+>
 > The variable is_empty is being initialized with a value that is never
 > read and it is being updated later with a new value. The
 > initialization is redundant and can be removed.
-> 
+>
 > Addresses-Coverity: ("Unused value")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
 >  drivers/staging/greybus/audio_manager.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
+>
 > diff --git a/drivers/staging/greybus/audio_manager.c b/drivers/staging/greybus/audio_manager.c
 > index c2a4af4c1d06..9b19ea9d3fa1 100644
 > --- a/drivers/staging/greybus/audio_manager.c
@@ -96,10 +81,13 @@ On Thu, Jul 04, 2019 at 02:30:31PM +0100, Colin King wrote:
 > @@ -86,7 +86,7 @@ EXPORT_SYMBOL_GPL(gb_audio_manager_remove);
 >  void gb_audio_manager_remove_all(void)
 >  {
->  	struct gb_audio_manager_module *module, *next;
-> -	int is_empty = 1;
-> +	int is_empty;
->  
->  	down_write(&modules_rwsem);
-
-Reviewed-by: Mark Greer <mgreer@animalcreek.com>
+>         struct gb_audio_manager_module *module, *next;
+> -       int is_empty = 1;
+> +       int is_empty;
+>
+>         down_write(&modules_rwsem);
+>
+> --
+> 2.20.1
+>
+Reviewed-by: Vaibhav Agarwal <vaibhav.sr@gmail.com>

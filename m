@@ -2,92 +2,125 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 34D835FB8E
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 18:12:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD5FA5FBAD
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 18:22:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726875AbfGDQMH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jul 2019 12:12:07 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:39143 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725882AbfGDQMH (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jul 2019 12:12:07 -0400
-Received: by mail-ot1-f65.google.com with SMTP id r21so1724031otq.6;
-        Thu, 04 Jul 2019 09:12:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=cOm/HvLRodK9Gmtg8Pu+nD4Ju+GzARos9DN1PBnngww=;
-        b=ZnLAO5N/cjBNnfi05k8nnzcwqeojnDRLbnWpeFhu55YnIK/VkStqmUt2q0KmoNHK7R
-         326a9gF9U5YXEUtZK4LlrxAdtTRYmi22miuCjj1vKxSTW7sLqWAvrl8I4GXAUOzbrHCu
-         SZsFWfcB89i2UCJgu4VLoD/7iQSwVlmeMihp/gsZVlp8PY8mfVfs5gjRrvab7/3GlOdW
-         lovRk3VYcyt/HC3BP/C2sU2NoCCQMNoPuEu4+4MfHJZDDvqDsWAg5/nNn53VgF+A5Ytn
-         p2leV/a6bbtjmjsJZVw4ZsaKL0ofI/LQzeLbgqNXCkPzCHb+3O7DiJ2xQ3JvGHDziQ0r
-         8rwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=cOm/HvLRodK9Gmtg8Pu+nD4Ju+GzARos9DN1PBnngww=;
-        b=o0jdNEpA4njlSSLyMALSs8CfIYngHk0GiAgJmJYKQdvNXvPnxLEZt4LiPmFwgB+yJt
-         LN3leYvf6SMKUQL7LGJH23nxC0RmWFnhDbBuknTv1jx1IuklJki676UYfMvgoGxjPubO
-         6R/csVpmN/TCrVn9OkMRplEgaxrifbiXoa49CeVJkUzZGsOyi31/lXHNkeeMsvC/Qv57
-         MbyPxfpbz7fgTkAJFWKQ+LNoP2Z3KkeV+D+jhunTu6DPzSrmQzYpBMYWQCadwJVkVIy1
-         GtjU/0mn3j0h4sfHec2wMk6uifZsFY4ly4hLYT18mydn85zBO1r7X8tbp/xtSQbLMSaR
-         cE5Q==
-X-Gm-Message-State: APjAAAUMtyYnFat1yNx0uuygz4+DeaVo9MNV780DBpr1gokuRL1X8tu+
-        NQZZa6ZPwfwqL+rTA1Hw8YGa/FQiSqt7rNBNr94=
-X-Google-Smtp-Source: APXvYqy4bWZa64/P36dEj/NLPY1nKF3u7sWYt5t9/HNW6LIUW4IHgRkpNfgNmSRLikr+xC7CPyWf3pdHpn5BOKIhuiQ=
-X-Received: by 2002:a9d:76ce:: with SMTP id p14mr34242454otl.342.1562256726047;
- Thu, 04 Jul 2019 09:12:06 -0700 (PDT)
+        id S1727114AbfGDQWW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jul 2019 12:22:22 -0400
+Received: from mx01-fr.bfs.de ([193.174.231.67]:50264 "EHLO mx01-fr.bfs.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727044AbfGDQWW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Jul 2019 12:22:22 -0400
+Received: from mail-fr.bfs.de (mail-fr.bfs.de [10.177.18.200])
+        by mx01-fr.bfs.de (Postfix) with ESMTPS id DA27920218;
+        Thu,  4 Jul 2019 18:22:14 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1562257334; h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=jaFxumsbIvgDr1oe7Gu7eEItmhTPfpnc41s1w8Cw8C8=;
+        b=oOz5/INU3oEaMkX8uIJCsxzJMHv+cm/MtyDtpqKDGEfZFTtBX3FBswAPSfdn3kJJsMjhtd
+        Hc2CS0nhd66uaF4cZEJqZofQohfkywmbqwJQtHO6sy0q/2NUlUIgPL76l0osm+2Myu+0/8
+        DpQkPr5p2OF7sCHAH/Xm7e+3OPt1qtkIEoMtecfgDjghxuXjoBMhMER2QQMgbK21Zn/cLM
+        WCFwSPRb9Z6xtwqDDbZpdwq+COl+OSyxhD5rJl7ZzgiQjYjIuuOJ0vwc5+YnxK5muRmlOQ
+        gEz8B/HkVChsUqQN/4VQww02A72N8q/uUbyK7a0DB3IDas170rRZWE/6ljk3sg==
+Received: from [134.92.181.33] (unknown [134.92.181.33])
+        by mail-fr.bfs.de (Postfix) with ESMTPS id 36779BEEBD;
+        Thu,  4 Jul 2019 18:22:13 +0200 (CEST)
+Message-ID: <5D1E27B4.9000003@bfs.de>
+Date:   Thu, 04 Jul 2019 18:22:12 +0200
+From:   walter harms <wharms@bfs.de>
+Reply-To: wharms@bfs.de
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; de; rv:1.9.1.16) Gecko/20101125 SUSE/3.0.11 Thunderbird/3.0.11
 MIME-Version: 1.0
-References: <20190704133031.28809-1-colin.king@canonical.com>
-In-Reply-To: <20190704133031.28809-1-colin.king@canonical.com>
-From:   Vaibhav Agarwal <vaibhav.sr@gmail.com>
-Date:   Thu, 4 Jul 2019 21:41:27 +0530
-Message-ID: <CAAs364_ht9ubWrkr3qBYKofmCYUSsQPi-Ahqk4D+hG_JpDXreA@mail.gmail.com>
-Subject: Re: [PATCH] staging: greybus: remove redundant assignment to variable is_empty
 To:     Colin King <colin.king@canonical.com>
-Cc:     Mark Greer <mgreer@animalcreek.com>,
-        Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        greybus-dev@lists.linaro.org, devel@driverdev.osuosl.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+CC:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?B?Q2hyaXN0aWFuIEvDtg==?= =?UTF-8?B?bmln?= 
+        <christian.koenig@amd.com>, David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] drm/amdgpu/psp: fix incorrect logic when checking
+ asic_type
+References: <20190704142329.22983-1-colin.king@canonical.com>
+In-Reply-To: <20190704142329.22983-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.10
+Authentication-Results: mx01-fr.bfs.de
+X-Spamd-Result: default: False [-3.10 / 7.00];
+         HAS_REPLYTO(0.00)[wharms@bfs.de];
+         TO_DN_SOME(0.00)[];
+         REPLYTO_ADDR_EQ_FROM(0.00)[];
+         RCPT_COUNT_SEVEN(0.00)[10];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         MID_RHS_MATCH_FROM(0.00)[];
+         BAYES_HAM(-3.00)[100.00%];
+         ARC_NA(0.00)[];
+         FROM_HAS_DN(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         MIME_GOOD(-0.10)[text/plain];
+         DKIM_SIGNED(0.00)[];
+         NEURAL_HAM(-0.00)[-0.999,0];
+         RCVD_COUNT_TWO(0.00)[2];
+         RCVD_TLS_ALL(0.00)[]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jul 4, 2019 at 7:00 PM Colin King <colin.king@canonical.com> wrote:
->
+
+
+Am 04.07.2019 16:23, schrieb Colin King:
 > From: Colin Ian King <colin.king@canonical.com>
->
-> The variable is_empty is being initialized with a value that is never
-> read and it is being updated later with a new value. The
-> initialization is redundant and can be removed.
->
-> Addresses-Coverity: ("Unused value")
+> 
+> Currently the check of the asic_type is always returning true because
+> of the use of ||.  Fix this by using && instead.  Also break overly
+> wide line.
+> 
+> Addresses-Coverity: ("Constant expression result")
+> Fixes: dab70ff24db6 ("drm/amdgpu/psp: add psp support for navi14")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/staging/greybus/audio_manager.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/staging/greybus/audio_manager.c b/drivers/staging/greybus/audio_manager.c
-> index c2a4af4c1d06..9b19ea9d3fa1 100644
-> --- a/drivers/staging/greybus/audio_manager.c
-> +++ b/drivers/staging/greybus/audio_manager.c
-> @@ -86,7 +86,7 @@ EXPORT_SYMBOL_GPL(gb_audio_manager_remove);
->  void gb_audio_manager_remove_all(void)
->  {
->         struct gb_audio_manager_module *module, *next;
-> -       int is_empty = 1;
-> +       int is_empty;
->
->         down_write(&modules_rwsem);
->
-> --
-> 2.20.1
->
-Reviewed-by: Vaibhav Agarwal <vaibhav.sr@gmail.com>
+>  drivers/gpu/drm/amd/amdgpu/psp_v11_0.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c b/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
+> index 527dc371598d..e4afd34e3034 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
+> @@ -540,7 +540,8 @@ psp_v11_0_sram_map(struct amdgpu_device *adev,
+>  
+>  	case AMDGPU_UCODE_ID_RLC_G:
+>  		*sram_offset = 0x2000;
+> -		if (adev->asic_type != CHIP_NAVI10 || adev->asic_type != CHIP_NAVI14) {
+> +		if (adev->asic_type != CHIP_NAVI10 &&
+> +		    adev->asic_type != CHIP_NAVI14) {
+>  			*sram_addr_reg_offset = SOC15_REG_OFFSET(GC, 0, mmRLC_GPM_UCODE_ADDR);
+>  			*sram_data_reg_offset = SOC15_REG_OFFSET(GC, 0, mmRLC_GPM_UCODE_DATA);
+>  		} else {
+> @@ -551,7 +552,8 @@ psp_v11_0_sram_map(struct amdgpu_device *adev,
+>  
+>  	case AMDGPU_UCODE_ID_SDMA0:
+>  		*sram_offset = 0x0;
+> -		if (adev->asic_type != CHIP_NAVI10 || adev->asic_type != CHIP_NAVI14) {
+> +		if (adev->asic_type != CHIP_NAVI10 &&
+> +		    adev->asic_type != CHIP_NAVI14) {
+>  			*sram_addr_reg_offset = SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_UCODE_ADDR);
+>  			*sram_data_reg_offset = SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_UCODE_DATA);
+>  		} else {
+
+
+maybe it is better to use
+		if (adev->asic_type == CHIP_NAVI10 ||
+		    adev->asic_type == CHIP_NAVI14) {
+
+i guess tha was intended here and it is more easy to read.
+ppl are bad in non-non reading.
+
+re,
+ wh

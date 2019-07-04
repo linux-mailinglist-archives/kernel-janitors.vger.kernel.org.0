@@ -2,29 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 341685FA85
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 17:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87EBE5FB17
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 17:40:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727382AbfGDPDo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jul 2019 11:03:44 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:45181 "EHLO
+        id S1727890AbfGDPkk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jul 2019 11:40:40 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:46178 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727066AbfGDPDo (ORCPT
+        with ESMTP id S1727454AbfGDPkk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jul 2019 11:03:44 -0400
+        Thu, 4 Jul 2019 11:40:40 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hj3Gv-0007d4-SB; Thu, 04 Jul 2019 15:03:41 +0000
+        id 1hj3qd-0002R9-PK; Thu, 04 Jul 2019 15:40:35 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Peter Chen <Peter.Chen@nxp.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org
+To:     QLogic-Storage-Upstream@qlogic.com,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] usb: chipidea: udc: remove redundant assignment to variable retval
-Date:   Thu,  4 Jul 2019 16:03:41 +0100
-Message-Id: <20190704150341.759-1-colin.king@canonical.com>
+Subject: [PATCH] scsi: bnx2fc: remove redundant assignment to variable rc
+Date:   Thu,  4 Jul 2019 16:40:35 +0100
+Message-Id: <20190704154035.15233-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,35 +37,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable retval is being initialized with a value that is never
+The variable rc is being initialized with a value that is never
 read and it is being updated later with a new value. The
-initialization is redundant and can be removed.  Also remove a blank
-line.
+initialization is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/usb/chipidea/udc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/scsi/bnx2fc/bnx2fc_fcoe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
-index 6a5ee8e6da10..053432d79bf7 100644
---- a/drivers/usb/chipidea/udc.c
-+++ b/drivers/usb/chipidea/udc.c
-@@ -1746,12 +1746,11 @@ static int ci_udc_start(struct usb_gadget *gadget,
- 			 struct usb_gadget_driver *driver)
+diff --git a/drivers/scsi/bnx2fc/bnx2fc_fcoe.c b/drivers/scsi/bnx2fc/bnx2fc_fcoe.c
+index 7796799bf04a..4eb3fe9ed189 100644
+--- a/drivers/scsi/bnx2fc/bnx2fc_fcoe.c
++++ b/drivers/scsi/bnx2fc/bnx2fc_fcoe.c
+@@ -1893,7 +1893,7 @@ static void bnx2fc_stop(struct bnx2fc_interface *interface)
+ static int bnx2fc_fw_init(struct bnx2fc_hba *hba)
  {
- 	struct ci_hdrc *ci = container_of(gadget, struct ci_hdrc, gadget);
--	int retval = -ENOMEM;
-+	int retval;
+ #define BNX2FC_INIT_POLL_TIME		(1000 / HZ)
+-	int rc = -1;
++	int rc;
+ 	int i = HZ;
  
- 	if (driver->disconnect == NULL)
- 		return -EINVAL;
- 
--
- 	ci->ep0out->ep.desc = &ctrl_endpt_out_desc;
- 	retval = usb_ep_enable(&ci->ep0out->ep);
- 	if (retval)
+ 	rc = bnx2fc_bind_adapter_devices(hba);
 -- 
 2.20.1
 

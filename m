@@ -2,85 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C78B5F1D2
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 05:31:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8422F5F42B
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 09:53:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727261AbfGDDb1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jul 2019 23:31:27 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:8692 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726696AbfGDDb0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jul 2019 23:31:26 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 45656930A83C8CE4AB25;
-        Thu,  4 Jul 2019 11:31:23 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 4 Jul 2019 11:31:16 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Jassi Brar <jaswinder.singh@linaro.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        "Jakub Kicinski" <jakub.kicinski@netronome.com>,
-        Jesper Dangaard Brouer <hawk@kernel.org>
-CC:     YueHaibing <yuehaibing@huawei.com>, <netdev@vger.kernel.org>,
-        <xdp-newbies@vger.kernel.org>, <bpf@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH v3 net-next] net: socionext: remove set but not used variable 'pkts'
-Date:   Thu, 4 Jul 2019 03:37:45 +0000
-Message-ID: <20190704033745.1758-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190704032129.169282-1-yuehaibing@huawei.com>
-References: <20190704032129.169282-1-yuehaibing@huawei.com>
+        id S1727476AbfGDHxL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jul 2019 03:53:11 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:58372 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727180AbfGDHxL (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Jul 2019 03:53:11 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 5C24B609CD; Thu,  4 Jul 2019 07:53:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1562226790;
+        bh=QP02RX+s+abAv40zJSQKeAupeAwqDfByWtGOQhkpzYI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=mgtpmyOCaZE5ynciK0snZPPCz1ArNV+E02B+bRVW/LCdgQ4tqPBQKZU7zkL3aodZC
+         LUpAe+PB/ow+UklBfYWCISNBeK34lhkuvrDOl2LBt7I12RPR3BoaLsNK5ioK5hBuPD
+         0y7Joh9oJPChhWSPCT68nIxuIQXLjMdIWDdn6jYs=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED autolearn=no autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.codeaurora.org (Postfix) with ESMTP id 90B1860746;
+        Thu,  4 Jul 2019 07:53:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1562226789;
+        bh=QP02RX+s+abAv40zJSQKeAupeAwqDfByWtGOQhkpzYI=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=UfCRovyUB63eQs0AYtn62PvDY3v8N9wUpC0m4wLEAXeMNRTa8O1clQTw3MHeyFFNQ
+         06dhZprHqkzdJMJC0h3pvtmVQ0z6Z8Stb0dqrvFiyUpXl6qiHctfy+gjIqq+wV50pT
+         UsEKj7RyePFA8cjBG50TZKVu10QAaHJ+ANSUZwT8=
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 04 Jul 2019 10:53:09 +0300
+From:   merez@codeaurora.org
+To:     Colin King <colin.king@canonical.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] wil6210: fix wil_cid_valid with negative cid values
+In-Reply-To: <20190702144026.13013-1-colin.king@canonical.com>
+References: <20190702144026.13013-1-colin.king@canonical.com>
+Message-ID: <787a6680930c6895d8ede457ec543fb7@codeaurora.org>
+X-Sender: merez@codeaurora.org
+User-Agent: Roundcube Webmail/1.2.5
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+On 2019-07-02 17:40, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There are several occasions where a negative cid value is passed
+> into wil_cid_valid and this is converted into a u8 causing the
+> range check of cid >= 0 to always succeed.  Fix this by making
+> the cid argument an int to handle any -ve error value of cid.
+> 
+> An example of this behaviour is in wil_cfg80211_dump_station,
+> where cid is assigned -ENOENT if the call to wil_find_cid_by_idx
+> fails, and this -ve value is passed to wil_cid_valid.  I believe
+> that the conversion of -ENOENT to the u8 value 254 which is
+> greater than wil->max_assoc_sta causes wil_find_cid_by_idx to
+> currently work fine, but I think is by luck and not the
+> intended behaviour.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/net/wireless/ath/wil6210/wil6210.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/wireless/ath/wil6210/wil6210.h
+> b/drivers/net/wireless/ath/wil6210/wil6210.h
+> index 6f456b311a39..25a1adcb38eb 100644
+> --- a/drivers/net/wireless/ath/wil6210/wil6210.h
+> +++ b/drivers/net/wireless/ath/wil6210/wil6210.h
+> @@ -1144,7 +1144,7 @@ static inline void wil_c(struct wil6210_priv
+> *wil, u32 reg, u32 val)
+>  /**
+>   * wil_cid_valid - check cid is valid
+>   */
+> -static inline bool wil_cid_valid(struct wil6210_priv *wil, u8 cid)
+> +static inline bool wil_cid_valid(struct wil6210_priv *wil, int cid)
+>  {
+>  	return (cid >= 0 && cid < wil->max_assoc_sta);
+>  }
 
-drivers/net/ethernet/socionext/netsec.c: In function 'netsec_clean_tx_dring':
-drivers/net/ethernet/socionext/netsec.c:637:15: warning:
- variable 'pkts' set but not used [-Wunused-but-set-variable]
+Reviewed-by: Maya Erez <merez@codeaurora.org>
 
-It is not used since commit ba2b232108d3 ("net: netsec: add XDP support")
-
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
----
-v3: remove misplaced cc in patch log
-v2: keep reverse christmas-tree ordering of the local variables
----
- drivers/net/ethernet/socionext/netsec.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/socionext/netsec.c b/drivers/net/ethernet/socionext/netsec.c
-index 5544a722543f..d8d640b01119 100644
---- a/drivers/net/ethernet/socionext/netsec.c
-+++ b/drivers/net/ethernet/socionext/netsec.c
-@@ -634,15 +634,14 @@ static void netsec_set_rx_de(struct netsec_priv *priv,
- static bool netsec_clean_tx_dring(struct netsec_priv *priv)
- {
- 	struct netsec_desc_ring *dring = &priv->desc_ring[NETSEC_RING_TX];
--	unsigned int pkts, bytes;
- 	struct netsec_de *entry;
- 	int tail = dring->tail;
-+	unsigned int bytes;
- 	int cnt = 0;
- 
- 	if (dring->is_xdp)
- 		spin_lock(&dring->lock);
- 
--	pkts = 0;
- 	bytes = 0;
- 	entry = dring->vaddr + DESC_SZ * tail;
-
-
-
+-- 
+Maya Erez
+Qualcomm Israel, Inc. on behalf of Qualcomm Innovation Center, Inc.
+The Qualcomm Innovation Center, Inc. is a member of Code Aurora Forum, a 
+Linux Foundation Collaborative Project

@@ -2,69 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 75A135F0F3
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 03:23:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C78B5F1D2
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 05:31:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727060AbfGDBXU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 3 Jul 2019 21:23:20 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:8136 "EHLO huawei.com"
+        id S1727261AbfGDDb1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 3 Jul 2019 23:31:27 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:8692 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726574AbfGDBXU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 3 Jul 2019 21:23:20 -0400
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 32C64764528F2CFDDA99;
-        Thu,  4 Jul 2019 09:23:18 +0800 (CST)
-Received: from [127.0.0.1] (10.133.213.239) by DGGEMS402-HUB.china.huawei.com
- (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0; Thu, 4 Jul 2019
- 09:23:16 +0800
-Subject: Re: [PATCH -next] integrity: Remove set but not used variable 'acl'
-To:     David Howells <dhowells@redhat.com>
-References: <20190703025518.6379-1-yuehaibing@huawei.com>
- <15691.1562162261@warthog.procyon.org.uk>
-CC:     James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Kairui Song <kasong@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Mimi Zohar" <zohar@linux.ibm.com>,
-        Thiago Jung Bauermann <bauerman@linux.ibm.com>,
-        Nayna Jain <nayna@linux.ibm.com>,
-        Eric Biggers <ebiggers@google.com>,
-        <linux-security-module@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-From:   Yuehaibing <yuehaibing@huawei.com>
-Message-ID: <be6aaeb1-13ab-50bc-81a6-c461d3748820@huawei.com>
-Date:   Thu, 4 Jul 2019 09:23:15 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+        id S1726696AbfGDDb0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 3 Jul 2019 23:31:26 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 45656930A83C8CE4AB25;
+        Thu,  4 Jul 2019 11:31:23 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 4 Jul 2019 11:31:16 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Jassi Brar <jaswinder.singh@linaro.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        "Jakub Kicinski" <jakub.kicinski@netronome.com>,
+        Jesper Dangaard Brouer <hawk@kernel.org>
+CC:     YueHaibing <yuehaibing@huawei.com>, <netdev@vger.kernel.org>,
+        <xdp-newbies@vger.kernel.org>, <bpf@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH v3 net-next] net: socionext: remove set but not used variable 'pkts'
+Date:   Thu, 4 Jul 2019 03:37:45 +0000
+Message-ID: <20190704033745.1758-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190704032129.169282-1-yuehaibing@huawei.com>
+References: <20190704032129.169282-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <15691.1562162261@warthog.procyon.org.uk>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.133.213.239]
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2019/7/3 21:57, David Howells wrote:
-> YueHaibing <yuehaibing@huawei.com> wrote:
-> 
->> Fixes gcc '-Wunused-but-set-variable' warning:
->>
->> security/integrity/digsig.c: In function 'integrity_init_keyring':
->> security/integrity/digsig.c:99:18: warning:
->>  variable 'acl' set but not used [-Wunused-but-set-variable]
->>
->> It seems 'acl' is needed in __integrity_init_keyring
-> 
-> I've folded this fix in, thanks.
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-Thanks, also I write a wrong patch title.
+drivers/net/ethernet/socionext/netsec.c: In function 'netsec_clean_tx_dring':
+drivers/net/ethernet/socionext/netsec.c:637:15: warning:
+ variable 'pkts' set but not used [-Wunused-but-set-variable]
 
-> 
-> David
-> 
-> .
-> 
+It is not used since commit ba2b232108d3 ("net: netsec: add XDP support")
+
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+---
+v3: remove misplaced cc in patch log
+v2: keep reverse christmas-tree ordering of the local variables
+---
+ drivers/net/ethernet/socionext/netsec.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/socionext/netsec.c b/drivers/net/ethernet/socionext/netsec.c
+index 5544a722543f..d8d640b01119 100644
+--- a/drivers/net/ethernet/socionext/netsec.c
++++ b/drivers/net/ethernet/socionext/netsec.c
+@@ -634,15 +634,14 @@ static void netsec_set_rx_de(struct netsec_priv *priv,
+ static bool netsec_clean_tx_dring(struct netsec_priv *priv)
+ {
+ 	struct netsec_desc_ring *dring = &priv->desc_ring[NETSEC_RING_TX];
+-	unsigned int pkts, bytes;
+ 	struct netsec_de *entry;
+ 	int tail = dring->tail;
++	unsigned int bytes;
+ 	int cnt = 0;
+ 
+ 	if (dring->is_xdp)
+ 		spin_lock(&dring->lock);
+ 
+-	pkts = 0;
+ 	bytes = 0;
+ 	entry = dring->vaddr + DESC_SZ * tail;
+
+
 

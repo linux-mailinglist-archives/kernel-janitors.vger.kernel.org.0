@@ -2,29 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E4F25F873
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 14:44:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 33D965F88D
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 14:50:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727102AbfGDMoe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jul 2019 08:44:34 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42206 "EHLO
+        id S1727017AbfGDMua (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jul 2019 08:50:30 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:42388 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725865AbfGDMoe (ORCPT
+        with ESMTP id S1725945AbfGDMua (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jul 2019 08:44:34 -0400
+        Thu, 4 Jul 2019 08:50:30 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hj169-0004tp-Ua; Thu, 04 Jul 2019 12:44:26 +0000
+        id 1hj1Bz-0005US-L7; Thu, 04 Jul 2019 12:50:27 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        Connor McAdams <conmanx360@gmail.com>,
-        alsa-devel@alsa-project.org
+To:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        linux-rdma@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ALSA: hda/ca0132 - remove redundant assignment to variable 'changed'
-Date:   Thu,  4 Jul 2019 13:44:25 +0100
-Message-Id: <20190704124425.2142-1-colin.king@canonical.com>
+Subject: [PATCH] RDMA/uverbs: remove redundant assignment to variable ret
+Date:   Thu,  4 Jul 2019 13:50:27 +0100
+Message-Id: <20190704125027.4514-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,29 +35,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable 'changed' is being initialized with a value that is never
-read and it is being updated later with a new value. The initialization
-is redundant and can be removed.
+The variable ret is being initialized with a value that is never
+read and it is being updated later with a new value. The
+initialization is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- sound/pci/hda/patch_ca0132.c | 2 +-
+ drivers/infiniband/core/uverbs_cmd.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_ca0132.c b/sound/pci/hda/patch_ca0132.c
-index c0565437ffed..0d51823d7270 100644
---- a/sound/pci/hda/patch_ca0132.c
-+++ b/sound/pci/hda/patch_ca0132.c
-@@ -5980,7 +5980,7 @@ static int ca0132_alt_volume_put(struct snd_kcontrol *kcontrol,
- 	int ch = get_amp_channels(kcontrol);
- 	long *valp = ucontrol->value.integer.value;
- 	hda_nid_t vnid = 0;
--	int changed = 1;
-+	int changed;
+diff --git a/drivers/infiniband/core/uverbs_cmd.c b/drivers/infiniband/core/uverbs_cmd.c
+index 750c4d484329..7ddd0e5bc6b3 100644
+--- a/drivers/infiniband/core/uverbs_cmd.c
++++ b/drivers/infiniband/core/uverbs_cmd.c
+@@ -2548,7 +2548,7 @@ static int ib_uverbs_detach_mcast(struct uverbs_attr_bundle *attrs)
+ 	struct ib_uqp_object         *obj;
+ 	struct ib_qp                 *qp;
+ 	struct ib_uverbs_mcast_entry *mcast;
+-	int                           ret = -EINVAL;
++	int                           ret;
+ 	bool                          found = false;
  
- 	switch (nid) {
- 	case 0x02:
+ 	ret = uverbs_request(attrs, &cmd, sizeof(cmd));
 -- 
 2.20.1
 

@@ -2,32 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 846CA5F9F9
-	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 16:23:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 341685FA85
+	for <lists+kernel-janitors@lfdr.de>; Thu,  4 Jul 2019 17:03:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727298AbfGDOXe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jul 2019 10:23:34 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:44345 "EHLO
+        id S1727382AbfGDPDo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jul 2019 11:03:44 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:45181 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727264AbfGDOXe (ORCPT
+        with ESMTP id S1727066AbfGDPDo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jul 2019 10:23:34 -0400
+        Thu, 4 Jul 2019 11:03:44 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hj2e1-0004gL-NU; Thu, 04 Jul 2019 14:23:29 +0000
+        id 1hj3Gv-0007d4-SB; Thu, 04 Jul 2019 15:03:41 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
+To:     Peter Chen <Peter.Chen@nxp.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/amdgpu/psp: fix incorrect logic when checking asic_type
-Date:   Thu,  4 Jul 2019 15:23:29 +0100
-Message-Id: <20190704142329.22983-1-colin.king@canonical.com>
+Subject: [PATCH] usb: chipidea: udc: remove redundant assignment to variable retval
+Date:   Thu,  4 Jul 2019 16:03:41 +0100
+Message-Id: <20190704150341.759-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,41 +36,35 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently the check of the asic_type is always returning true because
-of the use of ||.  Fix this by using && instead.  Also break overly
-wide line.
+The variable retval is being initialized with a value that is never
+read and it is being updated later with a new value. The
+initialization is redundant and can be removed.  Also remove a blank
+line.
 
-Addresses-Coverity: ("Constant expression result")
-Fixes: dab70ff24db6 ("drm/amdgpu/psp: add psp support for navi14")
+Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/amd/amdgpu/psp_v11_0.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/chipidea/udc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c b/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
-index 527dc371598d..e4afd34e3034 100644
---- a/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/psp_v11_0.c
-@@ -540,7 +540,8 @@ psp_v11_0_sram_map(struct amdgpu_device *adev,
+diff --git a/drivers/usb/chipidea/udc.c b/drivers/usb/chipidea/udc.c
+index 6a5ee8e6da10..053432d79bf7 100644
+--- a/drivers/usb/chipidea/udc.c
++++ b/drivers/usb/chipidea/udc.c
+@@ -1746,12 +1746,11 @@ static int ci_udc_start(struct usb_gadget *gadget,
+ 			 struct usb_gadget_driver *driver)
+ {
+ 	struct ci_hdrc *ci = container_of(gadget, struct ci_hdrc, gadget);
+-	int retval = -ENOMEM;
++	int retval;
  
- 	case AMDGPU_UCODE_ID_RLC_G:
- 		*sram_offset = 0x2000;
--		if (adev->asic_type != CHIP_NAVI10 || adev->asic_type != CHIP_NAVI14) {
-+		if (adev->asic_type != CHIP_NAVI10 &&
-+		    adev->asic_type != CHIP_NAVI14) {
- 			*sram_addr_reg_offset = SOC15_REG_OFFSET(GC, 0, mmRLC_GPM_UCODE_ADDR);
- 			*sram_data_reg_offset = SOC15_REG_OFFSET(GC, 0, mmRLC_GPM_UCODE_DATA);
- 		} else {
-@@ -551,7 +552,8 @@ psp_v11_0_sram_map(struct amdgpu_device *adev,
+ 	if (driver->disconnect == NULL)
+ 		return -EINVAL;
  
- 	case AMDGPU_UCODE_ID_SDMA0:
- 		*sram_offset = 0x0;
--		if (adev->asic_type != CHIP_NAVI10 || adev->asic_type != CHIP_NAVI14) {
-+		if (adev->asic_type != CHIP_NAVI10 &&
-+		    adev->asic_type != CHIP_NAVI14) {
- 			*sram_addr_reg_offset = SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_UCODE_ADDR);
- 			*sram_data_reg_offset = SOC15_REG_OFFSET(SDMA0, 0, mmSDMA0_UCODE_DATA);
- 		} else {
+-
+ 	ci->ep0out->ep.desc = &ctrl_endpt_out_desc;
+ 	retval = usb_ep_enable(&ci->ep0out->ep);
+ 	if (retval)
 -- 
 2.20.1
 

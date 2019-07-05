@@ -2,28 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A5C37602A0
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jul 2019 10:51:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6DA76032B
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jul 2019 11:36:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728030AbfGEIve (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jul 2019 04:51:34 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:38624 "EHLO
+        id S1727234AbfGEJgP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jul 2019 05:36:15 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:39389 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726427AbfGEIve (ORCPT
+        with ESMTP id S1727092AbfGEJgP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jul 2019 04:51:34 -0400
+        Fri, 5 Jul 2019 05:36:15 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hjJwK-0007O1-T4; Fri, 05 Jul 2019 08:51:33 +0000
+        id 1hjKdY-0002E1-F9; Fri, 05 Jul 2019 09:36:12 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org
+To:     =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali.rohar@gmail.com>,
+        Sebastian Reichel <sre@kernel.org>, linux-pm@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] [media] stv0900_core: remove redundant assignment to variables mclk, div and ad_div
-Date:   Fri,  5 Jul 2019 09:51:32 +0100
-Message-Id: <20190705085132.16237-1-colin.king@canonical.com>
+Subject: [PATCH] power: supply: isp1704: remove redundant assignment to variable ret
+Date:   Fri,  5 Jul 2019 10:36:12 +0100
+Message-Id: <20190705093612.21925-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,29 +35,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variables mclk, div and ad_div are being assigned with a values
-that are never read and are being updated later with a new values.
-The assignments are redundant and can be removed.
+The variable ret is being assigned with a value that is never
+read and it is being updated later with a new value. The
+assignment is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/media/dvb-frontends/stv0900_core.c | 2 +-
+ drivers/power/supply/isp1704_charger.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-frontends/stv0900_core.c b/drivers/media/dvb-frontends/stv0900_core.c
-index 0c50740e7bb8..7d93a1617e86 100644
---- a/drivers/media/dvb-frontends/stv0900_core.c
-+++ b/drivers/media/dvb-frontends/stv0900_core.c
-@@ -270,7 +270,7 @@ static enum fe_stv0900_error stv0900_initialize(struct stv0900_internal *intp)
+diff --git a/drivers/power/supply/isp1704_charger.c b/drivers/power/supply/isp1704_charger.c
+index b48cb7aba97b..4812ac1ff2df 100644
+--- a/drivers/power/supply/isp1704_charger.c
++++ b/drivers/power/supply/isp1704_charger.c
+@@ -342,7 +342,7 @@ static inline int isp1704_test_ulpi(struct isp1704_charger *isp)
+ 	int vendor;
+ 	int product;
+ 	int i;
+-	int ret = -ENODEV;
++	int ret;
  
- static u32 stv0900_get_mclk_freq(struct stv0900_internal *intp, u32 ext_clk)
- {
--	u32 mclk = 90000000, div = 0, ad_div = 0;
-+	u32 mclk, div, ad_div;
- 
- 	div = stv0900_get_bits(intp, F0900_M_DIV);
- 	ad_div = ((stv0900_get_bits(intp, F0900_SELX1RATIO) == 1) ? 4 : 6);
+ 	/* Test ULPI interface */
+ 	ret = isp1704_write(isp, ULPI_SCRATCH, 0xaa);
 -- 
 2.20.1
 

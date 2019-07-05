@@ -2,58 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CEAB860DCB
-	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 00:28:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF2F960DE2
+	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 00:36:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725983AbfGEW2K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jul 2019 18:28:10 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:43524 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725764AbfGEW2K (ORCPT
+        id S1725971AbfGEWgY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jul 2019 18:36:24 -0400
+Received: from relay12.mail.gandi.net ([217.70.178.232]:53881 "EHLO
+        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725776AbfGEWgX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jul 2019 18:28:10 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 74DAE150420B4;
-        Fri,  5 Jul 2019 15:28:09 -0700 (PDT)
-Date:   Fri, 05 Jul 2019 15:28:08 -0700 (PDT)
-Message-Id: <20190705.152808.1175306947779966525.davem@davemloft.net>
-To:     yuehaibing@huawei.com
-Cc:     jaswinder.singh@linaro.org, ast@kernel.org,
-        ilias.apalodimas@linaro.org, daniel@iogearbox.net,
-        jakub.kicinski@netronome.com, hawk@kernel.org,
-        netdev@vger.kernel.org, xdp-newbies@vger.kernel.org,
-        bpf@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v3 net-next] net: socionext: remove set but not used
- variable 'pkts'
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190704033745.1758-1-yuehaibing@huawei.com>
-References: <20190704032129.169282-1-yuehaibing@huawei.com>
-        <20190704033745.1758-1-yuehaibing@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 05 Jul 2019 15:28:09 -0700 (PDT)
+        Fri, 5 Jul 2019 18:36:23 -0400
+Received: from localhost (lfbn-1-1545-137.w90-65.abo.wanadoo.fr [90.65.161.137])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 7A95A200006;
+        Fri,  5 Jul 2019 22:36:17 +0000 (UTC)
+Date:   Sat, 6 Jul 2019 00:36:17 +0200
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-rtc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        Michal Simek <michal.simek@xilinx.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] rtc: zynqmp: One function call less in
+ xlnx_rtc_alarm_irq_enable()
+Message-ID: <20190705223617.GC12409@piout.net>
+References: <6f1db217-cb0a-9f6c-0e2e-5d932103f6ef@web.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6f1db217-cb0a-9f6c-0e2e-5d932103f6ef@web.de>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
-Date: Thu, 4 Jul 2019 03:37:45 +0000
+On 05/07/2019 22:45:39+0200, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Fri, 5 Jul 2019 22:37:58 +0200
+> 
+> Avoid an extra function call by using a ternary operator instead of
+> a conditional statement for a setting selection.
+> 
 
-> Fixes gcc '-Wunused-but-set-variable' warning:
-> 
-> drivers/net/ethernet/socionext/netsec.c: In function 'netsec_clean_tx_dring':
-> drivers/net/ethernet/socionext/netsec.c:637:15: warning:
->  variable 'pkts' set but not used [-Wunused-but-set-variable]
-> 
-> It is not used since commit ba2b232108d3 ("net: netsec: add XDP support")
-> 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Please elaborate on why this is a good thing.
 
-Applied to net-next.
+> This issue was detected by using the Coccinelle software.
+> 
+
+Unless you use an upstream coccinelle script or you share the one you
+are using, this is not a useful information.
+
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> ---
+>  drivers/rtc/rtc-zynqmp.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/rtc/rtc-zynqmp.c b/drivers/rtc/rtc-zynqmp.c
+> index 00639594de0c..4631019a54e2 100644
+> --- a/drivers/rtc/rtc-zynqmp.c
+> +++ b/drivers/rtc/rtc-zynqmp.c
+> @@ -124,11 +124,8 @@ static int xlnx_rtc_alarm_irq_enable(struct device *dev, u32 enabled)
+>  {
+>  	struct xlnx_rtc_dev *xrtcdev = dev_get_drvdata(dev);
+> 
+> -	if (enabled)
+> -		writel(RTC_INT_ALRM, xrtcdev->reg_base + RTC_INT_EN);
+> -	else
+> -		writel(RTC_INT_ALRM, xrtcdev->reg_base + RTC_INT_DIS);
+> -
+> +	writel(RTC_INT_ALRM,
+> +	       xrtcdev->reg_base + (enabled ? RTC_INT_EN : RTC_INT_DIS));
+
+This makes the code less readable.
+
+>  	return 0;
+>  }
+> 
+> --
+> 2.22.0
+> 
+
+-- 
+Alexandre Belloni, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com

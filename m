@@ -2,66 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53FD060344
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jul 2019 11:41:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A8AF60370
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jul 2019 11:57:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728317AbfGEJli (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jul 2019 05:41:38 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:61712 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728109AbfGEJli (ORCPT
+        id S1727982AbfGEJ5f (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jul 2019 05:57:35 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:39702 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727311AbfGEJ5f (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jul 2019 05:41:38 -0400
-Received: from 79.184.254.216.ipv4.supernova.orange.pl (79.184.254.216) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.267)
- id 78a8ff33240e7ec0; Fri, 5 Jul 2019 11:41:36 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ACPI: APD: remove redundant assignment to pointer clk
-Date:   Fri, 05 Jul 2019 11:41:35 +0200
-Message-ID: <2921052.OUaa6v4X4N@kreacher>
-In-Reply-To: <20190702131029.9621-1-colin.king@canonical.com>
-References: <20190702131029.9621-1-colin.king@canonical.com>
+        Fri, 5 Jul 2019 05:57:35 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hjKxk-0003b7-AS; Fri, 05 Jul 2019 09:57:04 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        alsa-devel@alsa-project.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ALSA: cs4281: remove redundant assignment to variable val and remove a goto
+Date:   Fri,  5 Jul 2019 10:57:04 +0100
+Message-Id: <20190705095704.26050-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tuesday, July 2, 2019 3:10:29 PM CEST Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The pointer clk is being initialized with a value that is never
-> read and it is being updated later with a new value. The
-> initialization is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/acpi/acpi_apd.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/acpi_apd.c b/drivers/acpi/acpi_apd.c
-> index ff47317d8ef1..7cd0c9ac71ea 100644
-> --- a/drivers/acpi/acpi_apd.c
-> +++ b/drivers/acpi/acpi_apd.c
-> @@ -57,7 +57,7 @@ struct apd_private_data {
->  static int acpi_apd_setup(struct apd_private_data *pdata)
->  {
->  	const struct apd_device_desc *dev_desc = pdata->dev_desc;
-> -	struct clk *clk = ERR_PTR(-ENODEV);
-> +	struct clk *clk;
->  
->  	if (dev_desc->fixed_clk_rate) {
->  		clk = clk_register_fixed_rate(&pdata->adev->dev,
-> 
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied, thanks!
+The variable val is being assigned with a value that is never
+read and it is being updated later with a new value. The
+assignment is redundant and can be removed.  Also remove a
+goto statement and a label and replace with a break statement.
 
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ sound/pci/cs4281.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-
+diff --git a/sound/pci/cs4281.c b/sound/pci/cs4281.c
+index a2cce3ecda6f..04c712647853 100644
+--- a/sound/pci/cs4281.c
++++ b/sound/pci/cs4281.c
+@@ -694,7 +694,7 @@ static int snd_cs4281_trigger(struct snd_pcm_substream *substream, int cmd)
+ 
+ static unsigned int snd_cs4281_rate(unsigned int rate, unsigned int *real_rate)
+ {
+-	unsigned int val = ~0;
++	unsigned int val;
+ 	
+ 	if (real_rate)
+ 		*real_rate = rate;
+@@ -707,9 +707,8 @@ static unsigned int snd_cs4281_rate(unsigned int rate, unsigned int *real_rate)
+ 	case 44100:	return 1;
+ 	case 48000:	return 0;
+ 	default:
+-		goto __variable;
++		break;
+ 	}
+-      __variable:
+ 	val = 1536000 / rate;
+ 	if (real_rate)
+ 		*real_rate = 1536000 / val;
+-- 
+2.20.1
 

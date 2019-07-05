@@ -2,36 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C78B607AD
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jul 2019 16:17:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D58360850
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jul 2019 16:50:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725778AbfGEORn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jul 2019 10:17:43 -0400
-Received: from mout.web.de ([212.227.17.11]:48141 "EHLO mout.web.de"
+        id S1727326AbfGEOuo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jul 2019 10:50:44 -0400
+Received: from mout.web.de ([217.72.192.78]:47055 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725681AbfGEORm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jul 2019 10:17:42 -0400
+        id S1727188AbfGEOum (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 5 Jul 2019 10:50:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1562336202;
-        bh=c5lQmJWmXCyJqkb7xpERrhX/6DJO/0n7l+cLiVF/Z0U=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=dK9oxuvHRAGSTd/930v7lvZ8UJTomW5ZmnfyWweOjiMwcmgjU5IFOnIK2uFg40ibt
-         upgic5Ymi6PGGxmClD4bN5odUFHlLL85f/nQqXmvaCXILEBQIwyw2fbtt6RN/5V8xJ
-         6cNGhprK4XBvjz3Q9DHZkif9D9L4sgCZ9fs1Vmyo=
+        s=dbaedf251592; t=1562338228;
+        bh=AHWuVzfHlb6NYXmK7t9+VzffJ18kF++Ty2DSAVesCBE=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=lyH3f050DGwnY9BQ7oK1CAPIgIaOqtfMuysq+aQ3PhKVVP2RdhjdeKZL+LWlAH6QM
+         X1rjNnzw4Go07ywV85kg6r9XZA9hAaF/ZjCRDT+p5UugseZozk3XCfnsi6aPJ5D94h
+         2hlqjrF0yzMuEY5Fqv0YNtWIdy7B6Zc4L43Tub+c=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.45.164]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MCqoJ-1hrPNC3oYt-009ev7; Fri, 05
- Jul 2019 16:16:42 +0200
+Received: from [192.168.1.2] ([2.244.45.164]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LbrZ2-1iQPn547ds-00jMl5; Fri, 05
+ Jul 2019 16:50:28 +0200
 To:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
-        Kirill Tkhai <ktkhai@virtuozzo.com>,
-        Ralph Campbell <rcampbell@nvidia.com>,
-        Souptick Joarder <jrdr.linux@gmail.com>,
-        Yang Shi <yang.shi@linux.alibaba.com>
+        Christoph Lameter <cl@linux.com>,
+        David Rientjes <rientjes@google.com>,
+        Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+        Pekka Enberg <penberg@kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] mm/ksm: One function call less in __ksm_enter()
+Subject: [PATCH] mm/slab: One function call less in verify_redzone_free()
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,76 +75,74 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Message-ID: <997c8ec3-9af8-3db0-24dc-cd99fe3efe14@web.de>
-Date:   Fri, 5 Jul 2019 16:16:30 +0200
+Message-ID: <90ca26d4-cc94-d7db-5ab4-ed04b29ced19@web.de>
+Date:   Fri, 5 Jul 2019 16:50:26 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:vv4GTwoOQWvbscKPArHDFagPebc7zNEGdef0te2GLsIWJh3VMoj
- U0MdqUmq20geVaqHfIwQEjAAImz40y5t5vZ4a0lgid/Cvi+cVllVj7KfPu5KBvCe9ViOGkf
- XUH2LEAF/LhrSsZmmaxp2dRDuBmPYsR7TeLi3CZJdKIYjuj0ANzAarWE7/OlzXiCgl1jgX+
- so9DGRg/Ybh25heqJZVcQ==
+X-Provags-ID: V03:K1:QpkNiuBupiQ5eD6VrsoIqXZ3Q9nZAQJUYje5ATMR1Y+Qh2ZBv8b
+ FTpeQQEfGPeiXrVBMTkyWy9St+I4N7Bg+Y4gK7cz90TmfvqOalHzA+0OOrYIOf8Q5VOPkjS
+ mH172jvhk1vVdyY+S2C0HvhiGd3M7At7f0QqojdZrm4HG1EuQhLs2uU8CMIE80H1uu+Ae0l
+ rZD8AsCuVg1DnDOSJmgZw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:r7IhvuN2v9c=:xTyg2lv/XDdCSKRup83bsT
- tDJdUbmgpqZ3vZzoewoNRWhE/c6mXikA+jPICJT5Xb4x2MKqOlQ2clalDz9RVFvOHhCyGWgHN
- aOm614YARfeIEMZJmBILxeNwTzLd8Q/Tfasvooe36lXrPbe2rFPdO6M0A2l/HjZKjbvZ2GOBu
- NvGSdCiXLnomkK+65MMic3zcoMgdefMI9GHrmQR56zj0giowtpcHH1WTpxBDNCIBMSUlsvFpV
- KyF2flNna6Oj4gI2oNeijK7gnxoiSZyYfEbhB3hVu5Z4Cv2fOdiHFEhevklj1JXqD8eTc8glN
- ygYB48gH78GLq18FQ0WkgUGu78miScIMZTKWvrvmsFQUonaHrvjmPNzP7JA/VvYjF+XdUVj1X
- //cbVRGqo7MqYnBrhaZzLrTlmYfiocI6CLO6Snb9SgS5TQu14DcfuWlhNRe5XgERdZCK+0jI3
- NdQhcZ0EI0QiBDZ9aAhXATZTZiqstDcs+oAjrCtR1HnXWtb3iTvcCg2K6wjvj7al+O+0/qsKy
- Zo6H8zb+ararCkHKUDkPYmMIdbo0rLjn6TavXFGhLkwypUI2qMkF6g/JncC/s38arHYNDlqOF
- Zawh2wpS7kwc+w3z5Tt0w3HQJ6W7uxdLWuTdsjo/lWutfvetHOLnNeNMbFGgY1lKijZxo0tf+
- D1qJGbf6bAWcUk8bJ5mJFqDjklT9tHgFwMj2VdQEJh2a8u6I8Dh5InqWVzskxPo4GU3UszH0z
- 63lBQnO0PoBzGeFLi2L0QRMnazmOGsouXvnQZsLznMR+8cJPjJPBgBJAOQ8cyTwvxtQARUDcg
- zd4XgsgSkuNcVTwGgetPFl5S5wCZrC7AVTpUOkde4U/cMLcWhRB2pV14M2E/tWcpPGmPkJTRY
- kdjzQRSnhwdrT5ZDcXl44+CjWKAIQ6ZxjbWz49Q71arDzVk602N/TaSL0ftfXnC6OPbuQZrtg
- kpErOPpFbWNPetXVF89438pz6i9GEA18or+52tUruqlTLlNjy1cIGQxuxzBysM0VBRP9/dYTU
- RiYOqSGcjTn/lRw9T4hvRsKGh+POJMhMWkwtY3SBnfFSD9lM+C8IQYmOZmiNsIgiCMbRnOY1a
- j2NijmGZAXBL6QFI9/9/tv6zNYRZhpSXtdL
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Lid/wJVXkKY=:9MwFr07rbNiYiVtsqn+TXi
+ 6ACxIDhRn9+aJS230v9XinE6mPveP4q9j3PKQFDYs+EzKc7nWtBsYeuaUjpYkCFVQ/zabh34F
+ yedOB7EcZ8JNZIYbiSAgKZw/1R/OW1+IMvTQVFrKGNGaVMmMnm6SYc9Re+dDEtsAQHvNrYLpB
+ +HUTGeHJV6RJMxjSlGX02PJelnRotMPun83RaW6rfpRkRQwNEpG64Az7KJ++fglFk8STx/bls
+ HrymkN+90HcekKUYvaQykI2y+Ai1vp6ou0fl4HJ6B8r3uUvHiWy8m5drTc3EMZ73L+R9ld1It
+ KK/+GIha61yxtsX3I/MdK5qg3f8GYnfRGt2w6pOszn7S0NutKEnJ3bsx+H1KaW2eK8anWLgLD
+ zA8b4Z+XUFv3zN5kk/FX5nr4gYVMYqFtzOeKp0TLXGHASC3DJ3e4HhSWFtMb/+CcrK9ZqfT0v
+ XCrQ1SwZ+Y/5TBDVoNEMT1AyMRe5ubJlHxCzmu7YPPXOjw1PgmDSUxmGaNlw2PXGlEijEh/hb
+ HGMbXXzMFrpiF+EMS9OGC8PfOhEhqKWukC3mjYkrOgDUDaEZHA9i/KLQgEOys7UI4CoRQwerU
+ 7M5hfQy/WwBPuMVgEBm0+tXeLkMLO1NJe5Bn6dKt295MVB4BNLr1FbA43LHKEfjP9JDdyUeT7
+ 8s0sWJQb4d1SmMI/lfv+yMiqISQMcoJLqWpEm6zCJ/VfqkrArgRewig9k22PTPVDWzGIKUDst
+ y6YBHfhXyEFwF0OkbZY8MMkysCP+2Ego+ZO1wxW6F4ByKAYnZmb3nI+53Kwb3l0LlI3snAcX4
+ g+e6NYIB3NJPIARvPqYIvGwmJJRbv4nl+E3er0OE1zfANqb4x0zA6M1JB0PFsfTG6vUn3xNlE
+ UJs5QKkIsHDreTfzOydnANZcsTQth/IQQ9HSH2Z2tjYsee5+bzbuVt3Qw23r45UtRloYGMppB
+ E0Imw33VR3c29Il5Gobc25qSM97JTiu56jOmWh9zmL4I2D3kol+Ld8KKJ/4/aRl6Bz2HnAb+Y
+ hxzWnvCZv4V+XOtFi6psM99A2nM+vcAYWXLaoFtEPoi16gM2rghXVNwu/JOiFWWoYhfPKIuUB
+ VhRpJGtQRBDWkurI2OrZTiQqmJW4YEcuSsW
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Fri, 5 Jul 2019 16:02:26 +0200
+Date: Fri, 5 Jul 2019 16:40:09 +0200
 
 Avoid an extra function call by using a ternary operator instead of
-a conditional statement.
+a conditional statement for a string literal selection.
 
 This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- mm/ksm.c | 8 ++++----
+ mm/slab.c | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 3dc4346411e4..7934bab8ceae 100644
-=2D-- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -2521,10 +2521,10 @@ int __ksm_enter(struct mm_struct *mm)
- 	 * scanning cursor, otherwise KSM pages in newly forked mms will be
- 	 * missed: then we might as well insert at the end of the list.
- 	 */
--	if (ksm_run & KSM_RUN_UNMERGE)
--		list_add_tail(&mm_slot->mm_list, &ksm_mm_head.mm_list);
--	else
--		list_add_tail(&mm_slot->mm_list, &ksm_scan.mm_slot->mm_list);
-+	list_add_tail(&mm_slot->mm_list,
-+		      ksm_run & KSM_RUN_UNMERGE
-+		      ? &ksm_mm_head.mm_list
-+		      : &ksm_scan.mm_slot->mm_list);
- 	spin_unlock(&ksm_mmlist_lock);
+diff --git a/mm/slab.c b/mm/slab.c
+index 9df370558e5d..849b5c276588 100644
+=2D-- a/mm/slab.c
++++ b/mm/slab.c
+@@ -2701,10 +2701,10 @@ static inline void verify_redzone_free(struct kmem=
+_cache *cache, void *obj)
+ 	if (redzone1 =3D=3D RED_ACTIVE && redzone2 =3D=3D RED_ACTIVE)
+ 		return;
 
- 	set_bit(MMF_VM_MERGEABLE, &mm->flags);
+-	if (redzone1 =3D=3D RED_INACTIVE && redzone2 =3D=3D RED_INACTIVE)
+-		slab_error(cache, "double free detected");
+-	else
+-		slab_error(cache, "memory outside object was overwritten");
++	slab_error(cache,
++		   redzone1 =3D=3D RED_INACTIVE && redzone2 =3D=3D RED_INACTIVE
++		   ? "double free detected"
++		   : "memory outside object was overwritten");
+
+ 	pr_err("%px: redzone 1:0x%llx, redzone 2:0x%llx\n",
+ 	       obj, redzone1, redzone2);
 =2D-
 2.22.0
-
 

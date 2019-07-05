@@ -2,47 +2,46 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EB1660AF2
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jul 2019 19:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 793CA60AF0
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jul 2019 19:20:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728020AbfGERUG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jul 2019 13:20:06 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:56370 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727898AbfGERUE (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
+        id S1727982AbfGERUE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
         Fri, 5 Jul 2019 13:20:04 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:56368 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727878AbfGERUD (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 5 Jul 2019 13:20:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
         Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
         List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=ePFcoJ5m87EvMr2n+NPJawIqXaDiVgO7emTiCfYxa/c=; b=w5y81v1T0+ac
-        1+ok1MB6hi0HaqCQBoU8h2Re9kCl/UXILOhp+D7a+371YTeKfoeEJYYTUuuej3O8vSmZUtn7cJW+O
-        UpzJMk/gC9fH4J+I5X+xHd67jGerlq8mL3Byoq/sJwqmf98l0ACGA7PU4xbj5xOy4dXppQmoml5k7
-        IhFzQ=;
-Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
+        List-Archive; bh=ZYvgaJtA/vLN/2sBvTx/hGFHI/+vgI3j7+3oBAfdL3Y=; b=JQXDMkatoAGl
+        nQEXepd7dITrnfRGRR/RDsj6IR7MdlA0ihmacpjKpLOkPVX3Wtu5woy6JLYQMM4RfF+kjGDzxJIVj
+        9T+Hp9JMWIYOLWIS9pAh379n0+gOnkktoY2SmTM1DimLHAeShyGkddkuICMACSWzojh+Y8ltR2XMQ
+        EZk7A=;
+Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
         by heliosphere.sirena.org.uk with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.89)
         (envelope-from <broonie@sirena.org.uk>)
-        id 1hjRsE-0004ZO-Uw; Fri, 05 Jul 2019 17:19:51 +0000
+        id 1hjRsF-0004ZQ-FU; Fri, 05 Jul 2019 17:19:51 +0000
 Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id 730AE2742A10; Fri,  5 Jul 2019 18:19:50 +0100 (BST)
+        id D1D422742B45; Fri,  5 Jul 2019 18:19:50 +0100 (BST)
 From:   Mark Brown <broonie@kernel.org>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     alsa-devel@alsa-project.org, Jaroslav Kysela <perex@perex.cz>,
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     alsa-devel@alsa-project.org, Bard Liao <bardliao@realtek.com>,
+        Jaroslav Kysela <perex@perex.cz>,
         kernel-janitors@vger.kernel.org,
         Liam Girdwood <lgirdwood@gmail.com>,
         linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Pan Xiuli <xiuli.pan@linux.intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+        Oder Chiou <oder_chiou@realtek.com>,
         Takashi Iwai <tiwai@suse.com>
-Subject: Applied "ASoC: SOF: debug: fix possible memory leak in sof_dfsentry_write()" to the asoc tree
-In-Reply-To: <20190705081637.157169-1-weiyongjun1@huawei.com>
+Subject: Applied "ASoC: rt5665: remove redundant assignment to variable idx" to the asoc tree
+In-Reply-To: <20190705075303.14692-1-colin.king@canonical.com>
 X-Patchwork-Hint: ignore
-Message-Id: <20190705171950.730AE2742A10@ypsilon.sirena.org.uk>
+Message-Id: <20190705171950.D1D422742B45@ypsilon.sirena.org.uk>
 Date:   Fri,  5 Jul 2019 18:19:50 +0100 (BST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
@@ -51,7 +50,7 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 The patch
 
-   ASoC: SOF: debug: fix possible memory leak in sof_dfsentry_write()
+   ASoC: rt5665: remove redundant assignment to variable idx
 
 has been applied to the asoc tree at
 
@@ -76,47 +75,36 @@ to this mail.
 Thanks,
 Mark
 
-From b90bab3b1b1b6c56dd6f9d5c960932239f36f6d3 Mon Sep 17 00:00:00 2001
-From: Wei Yongjun <weiyongjun1@huawei.com>
-Date: Fri, 5 Jul 2019 08:16:37 +0000
-Subject: [PATCH] ASoC: SOF: debug: fix possible memory leak in
- sof_dfsentry_write()
+From 590eb2f4ef94cb3f3e73345c6db4de97c9cd539e Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Fri, 5 Jul 2019 08:53:03 +0100
+Subject: [PATCH] ASoC: rt5665: remove redundant assignment to variable idx
 
-'string' is malloced in sof_dfsentry_write() and should be freed
-before leaving from the error handling cases, otherwise it will cause
-memory leak.
+The variable idx is being initialized with a value that is never
+read and it is being updated later with a new value. The
+initialization is redundant and can be removed.
 
-Fixes: 091c12e1f50c ("ASoC: SOF: debug: add new debugfs entries for IPC flood test")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://lore.kernel.org/r/20190705081637.157169-1-weiyongjun1@huawei.com
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Link: https://lore.kernel.org/r/20190705075303.14692-1-colin.king@canonical.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/soc/sof/debug.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/rt5665.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/debug.c b/sound/soc/sof/debug.c
-index 54bb53bfc81b..2388477a965e 100644
---- a/sound/soc/sof/debug.c
-+++ b/sound/soc/sof/debug.c
-@@ -162,7 +162,7 @@ static ssize_t sof_dfsentry_write(struct file *file, const char __user *buffer,
- 	else
- 		ret = kstrtoul(string, 0, &ipc_count);
- 	if (ret < 0)
--		return ret;
-+		goto out;
+diff --git a/sound/soc/codecs/rt5665.c b/sound/soc/codecs/rt5665.c
+index 87263317085a..c050d84a6916 100644
+--- a/sound/soc/codecs/rt5665.c
++++ b/sound/soc/codecs/rt5665.c
+@@ -1478,7 +1478,7 @@ static int set_dmic_clk(struct snd_soc_dapm_widget *w,
+ {
+ 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
+ 	struct rt5665_priv *rt5665 = snd_soc_component_get_drvdata(component);
+-	int pd, idx = -EINVAL;
++	int pd, idx;
  
- 	/* limit max duration/ipc count for flood test */
- 	if (flood_duration_test) {
-@@ -191,7 +191,7 @@ static ssize_t sof_dfsentry_write(struct file *file, const char __user *buffer,
- 				    "error: debugfs write failed to resume %d\n",
- 				    ret);
- 		pm_runtime_put_noidle(sdev->dev);
--		return ret;
-+		goto out;
- 	}
- 
- 	/* flood test */
+ 	pd = rl6231_get_pre_div(rt5665->regmap,
+ 		RT5665_ADDA_CLK_1, RT5665_I2S_PD1_SFT);
 -- 
 2.20.1
 

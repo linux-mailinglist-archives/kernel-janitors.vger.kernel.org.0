@@ -2,89 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF2F960DE2
-	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 00:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41D8560E33
+	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 01:57:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725971AbfGEWgY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jul 2019 18:36:24 -0400
-Received: from relay12.mail.gandi.net ([217.70.178.232]:53881 "EHLO
-        relay12.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725776AbfGEWgX (ORCPT
+        id S1726411AbfGEX5A (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jul 2019 19:57:00 -0400
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:54870 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725878AbfGEX5A (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jul 2019 18:36:23 -0400
-Received: from localhost (lfbn-1-1545-137.w90-65.abo.wanadoo.fr [90.65.161.137])
-        (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay12.mail.gandi.net (Postfix) with ESMTPSA id 7A95A200006;
-        Fri,  5 Jul 2019 22:36:17 +0000 (UTC)
-Date:   Sat, 6 Jul 2019 00:36:17 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+        Fri, 5 Jul 2019 19:57:00 -0400
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id 16F6D281E7;
+        Fri,  5 Jul 2019 19:56:57 -0400 (EDT)
+Date:   Sat, 6 Jul 2019 09:56:56 +1000 (AEST)
+From:   Finn Thain <fthain@telegraphics.com.au>
 To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-rtc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Michal Simek <michal.simek@xilinx.com>,
+cc:     linux-m68k@lists.linux-m68k.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
         LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] rtc: zynqmp: One function call less in
- xlnx_rtc_alarm_irq_enable()
-Message-ID: <20190705223617.GC12409@piout.net>
-References: <6f1db217-cb0a-9f6c-0e2e-5d932103f6ef@web.de>
+Subject: Re: [PATCH] m68k: One function call less in cf_tlb_miss()
+In-Reply-To: <c5713aa4-d290-0f7d-7de8-82bcdf74ee95@web.de>
+Message-ID: <alpine.LNX.2.21.1907060951060.67@nippy.intranet>
+References: <c5713aa4-d290-0f7d-7de8-82bcdf74ee95@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6f1db217-cb0a-9f6c-0e2e-5d932103f6ef@web.de>
-User-Agent: Mutt/1.12.0 (2019-05-25)
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 05/07/2019 22:45:39+0200, Markus Elfring wrote:
+
+On Fri, 5 Jul 2019, Markus Elfring wrote:
+
 > From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Fri, 5 Jul 2019 22:37:58 +0200
+> Date: Fri, 5 Jul 2019 17:11:37 +0200
 > 
-> Avoid an extra function call by using a ternary operator instead of
-> a conditional statement for a setting selection.
+> Avoid an extra function call 
+
+Not really. You've avoided an extra statement.
+
+> by using a ternary operator instead of a conditional statement for a 
+> setting selection.
 > 
-
-Please elaborate on why this is a good thing.
-
 > This issue was detected by using the Coccinelle software.
 > 
-
-Unless you use an upstream coccinelle script or you share the one you
-are using, this is not a useful information.
-
 > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 > ---
->  drivers/rtc/rtc-zynqmp.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+>  arch/m68k/mm/mcfmmu.c | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
 > 
-> diff --git a/drivers/rtc/rtc-zynqmp.c b/drivers/rtc/rtc-zynqmp.c
-> index 00639594de0c..4631019a54e2 100644
-> --- a/drivers/rtc/rtc-zynqmp.c
-> +++ b/drivers/rtc/rtc-zynqmp.c
-> @@ -124,11 +124,8 @@ static int xlnx_rtc_alarm_irq_enable(struct device *dev, u32 enabled)
->  {
->  	struct xlnx_rtc_dev *xrtcdev = dev_get_drvdata(dev);
+> diff --git a/arch/m68k/mm/mcfmmu.c b/arch/m68k/mm/mcfmmu.c
+> index 6cb1e41d58d0..02fc0778028e 100644
+> --- a/arch/m68k/mm/mcfmmu.c
+> +++ b/arch/m68k/mm/mcfmmu.c
+> @@ -146,12 +146,10 @@ int cf_tlb_miss(struct pt_regs *regs, int write, int dtlb, int extension_word)
 > 
-> -	if (enabled)
-> -		writel(RTC_INT_ALRM, xrtcdev->reg_base + RTC_INT_EN);
-> -	else
-> -		writel(RTC_INT_ALRM, xrtcdev->reg_base + RTC_INT_DIS);
+>  	mmu_write(MMUDR, (pte_val(*pte) & PAGE_MASK) |
+>  		((pte->pte) & CF_PAGE_MMUDR_MASK) | MMUDR_SZ_8KB | MMUDR_X);
 > -
-> +	writel(RTC_INT_ALRM,
-> +	       xrtcdev->reg_base + (enabled ? RTC_INT_EN : RTC_INT_DIS));
+> -	if (dtlb)
+> -		mmu_write(MMUOR, MMUOR_ACC | MMUOR_UAA);
+> -	else
+> -		mmu_write(MMUOR, MMUOR_ITLB | MMUOR_ACC | MMUOR_UAA);
+> -
+> +	mmu_write(MMUOR,
+> +		  dtlb
+> +		  ? MMUOR_ACC | MMUOR_UAA
+> +		  : MMUOR_ITLB | MMUOR_ACC | MMUOR_UAA);
 
-This makes the code less readable.
+If you are trying to avoid redundancy, why not finish the job?
 
++     mmu_write(MMUOR, (dtlb ? 0 : MMUOR_ITLB) | MMUOR_ACC | MMUOR_UAA);
+
+-- 
+
+>  	local_irq_restore(flags);
 >  	return 0;
 >  }
-> 
 > --
 > 2.22.0
 > 
-
--- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+> 

@@ -2,67 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 78FF160514
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jul 2019 13:05:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 391506053C
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jul 2019 13:25:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728179AbfGELFt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jul 2019 07:05:49 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:40909 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727667AbfGELFt (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jul 2019 07:05:49 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hjM2B-0008LA-W0; Fri, 05 Jul 2019 11:05:44 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Richard Weinberger <richard@nod.at>,
-        Artem Bityutskiy <dedekind1@gmail.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        linux-mtd@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][V2] ubifs: remove redundant assignment to pointer fname
-Date:   Fri,  5 Jul 2019 12:05:43 +0100
-Message-Id: <20190705110543.31428-1-colin.king@canonical.com>
+        id S1727592AbfGELZE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jul 2019 07:25:04 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:8711 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726523AbfGELZE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 5 Jul 2019 07:25:04 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id D3D5D6788578AE1B141F;
+        Fri,  5 Jul 2019 19:24:56 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 5 Jul 2019 19:24:48 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <jani.nikula@linux.intel.com>, <joonas.lahtinen@linux.intel.com>,
+        <rodrigo.vivi@intel.com>, <airlied@linux.ie>, <daniel@ffwll.ch>,
+        <imre.deak@intel.com>, <dhinakaran.pandiyan@intel.com>,
+        <ville.syrjala@linux.intel.com>, <chris@chris-wilson.co.uk>,
+        <manasi.d.navare@intel.com>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <intel-gfx@lists.freedesktop.org>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] drm/i915: Remove set but not used variable 'encoder'
+Date:   Fri, 5 Jul 2019 11:31:12 +0000
+Message-ID: <20190705113112.64715-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-The pointer fname is being assigned with a value that is never
-read because the function returns after the assignment. The assignment
-is redundant and can be removed.
+drivers/gpu/drm/i915/display/intel_dp.c: In function 'intel_dp_set_drrs_state':
+drivers/gpu/drm/i915/display/intel_dp.c:6623:24: warning:
+ variable 'encoder' set but not used [-Wunused-but-set-variable]
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+It's never used, so can be removed.Also remove related
+variable 'dig_port'
+
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
+ drivers/gpu/drm/i915/display/intel_dp.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-V2: fix up commit message
-
----
- fs/ubifs/debug.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/fs/ubifs/debug.c b/fs/ubifs/debug.c
-index 92fe5c5ed78a..95da71e13fc8 100644
---- a/fs/ubifs/debug.c
-+++ b/fs/ubifs/debug.c
-@@ -2817,7 +2817,6 @@ void dbg_debugfs_init_fs(struct ubifs_info *c)
- 		     c->vi.ubi_num, c->vi.vol_id);
- 	if (n == UBIFS_DFS_DIR_LEN) {
- 		/* The array size is too small */
--		fname = UBIFS_DFS_DIR_NAME;
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index 8f7188d71d08..0bdb7ecc5a81 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -6620,8 +6620,6 @@ static void intel_dp_set_drrs_state(struct drm_i915_private *dev_priv,
+ 				    const struct intel_crtc_state *crtc_state,
+ 				    int refresh_rate)
+ {
+-	struct intel_encoder *encoder;
+-	struct intel_digital_port *dig_port = NULL;
+ 	struct intel_dp *intel_dp = dev_priv->drrs.dp;
+ 	struct intel_crtc *intel_crtc = to_intel_crtc(crtc_state->base.crtc);
+ 	enum drrs_refresh_rate_type index = DRRS_HIGH_RR;
+@@ -6636,9 +6634,6 @@ static void intel_dp_set_drrs_state(struct drm_i915_private *dev_priv,
  		return;
  	}
  
--- 
-2.20.1
+-	dig_port = dp_to_dig_port(intel_dp);
+-	encoder = &dig_port->base;
+-
+ 	if (!intel_crtc) {
+ 		DRM_DEBUG_KMS("DRRS: intel_crtc not initialized\n");
+ 		return;
+
+
 

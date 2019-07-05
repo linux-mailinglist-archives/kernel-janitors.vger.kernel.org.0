@@ -2,53 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0778760157
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jul 2019 09:20:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2638C6016B
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jul 2019 09:26:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727792AbfGEHUF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jul 2019 03:20:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56456 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726436AbfGEHUF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jul 2019 03:20:05 -0400
-Received: from localhost (unknown [122.167.76.109])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id E5DB3218BB;
-        Fri,  5 Jul 2019 07:20:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1562311204;
-        bh=1uqDzrpBxZPWMFNSI0wJ4J/DrSHxwiBbUr7CRF8qQxs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TzKeQy7UmXpxHB9XrFz9e6393jobald8LYWcpIiUCpZyVZQoxiq2MiurlFvuALG5U
-         CANHFx7p1T+C976Qv2+5cZeUJi/oI1TLSgya0cpI9yb8EK5yiL+JMlbl53qBuwmPVt
-         +h/z+bZ6vmHKW4XE951ywiHsPs7atPkGaZlbLBL4=
-Date:   Fri, 5 Jul 2019 12:46:46 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
-        Paul Cercueil <paul@crapouillou.net>,
-        Dan Williams <dan.j.williams@intel.com>,
-        dmaengine@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] dmaengine: jz4780: Fix an endian bug in IRQ handler
-Message-ID: <20190705071646.GZ2911@vkoul-mobl>
-References: <20190624134940.GC1754@mwanda>
+        id S1727352AbfGEH02 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jul 2019 03:26:28 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:37089 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725863AbfGEH02 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 5 Jul 2019 03:26:28 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hjIbw-0008RY-9n; Fri, 05 Jul 2019 07:26:24 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next][V3] btrfs: fix memory leak of path on error return path
+Date:   Fri,  5 Jul 2019 08:26:24 +0100
+Message-Id: <20190705072624.14163-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190624134940.GC1754@mwanda>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 24-06-19, 16:49, Dan Carpenter wrote:
-> The "pending" variable was a u32 but we cast it to an unsigned long
-> pointer when we do the for_each_set_bit() loop.  The problem is that on
-> big endian 64bit systems that results in an out of bounds read.
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied, thanks
+Currently if the allocation of roots or tmp_ulist fails the error handling
+does not free up the allocation of path causing a memory leak. Fix this and
+other similar leaks by moving the call of btrfs_free_path from label out
+to label out_free_ulist.
 
+Kudos to David Sterba for spotting the issue in my original fix and suggesting
+the correct way to fix the leak and Anand Jain for spotting a double free
+issue.
+
+Addresses-Coverity: ("Resource leak")
+Fixes: 5911c8fe05c5 ("btrfs: fiemap: preallocate ulists for btrfs_check_shared")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+V2: move the btrfs_free_path to the out_free_ulist label as suggested by
+     David Sterba as the correct fix.
+V3: fix double free as identified Anand Jain
+---
+
+ fs/btrfs/extent_io.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 1eb671c16ff1..9de119194f8e 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -4613,7 +4613,6 @@ int extent_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 	ret = btrfs_lookup_file_extent(NULL, root, path,
+ 			btrfs_ino(BTRFS_I(inode)), -1, 0);
+ 	if (ret < 0) {
+-		btrfs_free_path(path);
+ 		goto out_free_ulist;
+ 	} else {
+ 		WARN_ON(!ret);
+@@ -4766,11 +4765,11 @@ int extent_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 		ret = emit_last_fiemap_cache(fieinfo, &cache);
+ 	free_extent_map(em);
+ out:
+-	btrfs_free_path(path);
+ 	unlock_extent_cached(&BTRFS_I(inode)->io_tree, start, start + len - 1,
+ 			     &cached_state);
+ 
+ out_free_ulist:
++	btrfs_free_path(path);
+ 	ulist_free(roots);
+ 	ulist_free(tmp_ulist);
+ 	return ret;
 -- 
-~Vinod
+2.20.1
+

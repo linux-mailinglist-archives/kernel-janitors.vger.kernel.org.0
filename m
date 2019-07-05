@@ -2,76 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 08BDC5FE84
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jul 2019 01:03:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFA295FF45
+	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jul 2019 03:10:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727393AbfGDXDJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 4 Jul 2019 19:03:09 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:52638 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726038AbfGDXDJ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 4 Jul 2019 19:03:09 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hjAkp-0003Ev-LC; Thu, 04 Jul 2019 23:03:03 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next][V2] btrfs: fix memory leak of path on error return path
-Date:   Fri,  5 Jul 2019 00:03:03 +0100
-Message-Id: <20190704230303.5583-1-colin.king@canonical.com>
+        id S1727267AbfGEBK0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 4 Jul 2019 21:10:26 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:58626 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726024AbfGEBK0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 4 Jul 2019 21:10:26 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 26FC33DE9F000274A892;
+        Fri,  5 Jul 2019 09:10:22 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 5 Jul 2019 09:10:15 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Catherine Sullivan <csully@google.com>,
+        Sagi Shahar <sagis@google.com>,
+        Jon Olson <jonolson@google.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Luigi Rizzo <lrizzo@google.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <netdev@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] gve: Fix error return code in gve_alloc_qpls()
+Date:   Fri, 5 Jul 2019 01:16:42 +0000
+Message-ID: <20190705011642.156707-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Fix to return a negative error code from the error handling
+case instead of 0, as done elsewhere in this function.
 
-Currently if the allocation of roots or tmp_ulist fails the error handling
-does not free up the allocation of path causing a memory leak. Fix this and
-other similar leaks by moving the call of btrfs_free_path from label out
-to label out_free_ulist.
-
-Kudos to David Sterba for spotting the issue in my original fix and
-providing the correct way to fix the leak.
-
-Addresses-Coverity: ("Resource leak")
-Fixes: 5911c8fe05c5 ("btrfs: fiemap: preallocate ulists for btrfs_check_shared")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Fixes: f5cedc84a30d ("gve: Add transmit and receive support")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
+ drivers/net/ethernet/google/gve/gve_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-V2: move the btrfs_free_path to the out_free_ulist label as suggested by
-    David Sterba as the correct fix.
-
----
- fs/btrfs/extent_io.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 1eb671c16ff1..31127f6d2971 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -4766,11 +4766,11 @@ int extent_fiemap(struct inode *inode, struct fiemap_extent_info *fieinfo,
- 		ret = emit_last_fiemap_cache(fieinfo, &cache);
- 	free_extent_map(em);
- out:
--	btrfs_free_path(path);
- 	unlock_extent_cached(&BTRFS_I(inode)->io_tree, start, start + len - 1,
- 			     &cached_state);
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index eef500bd2ff7..b65f6b010a82 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -625,8 +625,10 @@ static int gve_alloc_qpls(struct gve_priv *priv)
+ 				     sizeof(unsigned long) * BITS_PER_BYTE;
+ 	priv->qpl_cfg.qpl_id_map = kvzalloc(BITS_TO_LONGS(num_qpls) *
+ 					    sizeof(unsigned long), GFP_KERNEL);
+-	if (!priv->qpl_cfg.qpl_id_map)
++	if (!priv->qpl_cfg.qpl_id_map) {
++		err = -ENOMEM;
+ 		goto free_qpls;
++	}
  
- out_free_ulist:
-+	btrfs_free_path(path);
- 	ulist_free(roots);
- 	ulist_free(tmp_ulist);
- 	return ret;
--- 
-2.20.1
+ 	return 0;
+
+
 

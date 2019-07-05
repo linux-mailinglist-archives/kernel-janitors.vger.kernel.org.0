@@ -2,63 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DFFAE60D77
-	for <lists+kernel-janitors@lfdr.de>; Fri,  5 Jul 2019 23:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEAB860DCB
+	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 00:28:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728104AbfGEV74 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 5 Jul 2019 17:59:56 -0400
-Received: from out176.e-adjacentdigital.co.uk ([178.156.202.12]:41367 "EHLO
-        slot0.mathewsons.ga" rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org
-        with ESMTP id S1727876AbfGEV74 (ORCPT
+        id S1725983AbfGEW2K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 5 Jul 2019 18:28:10 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:43524 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725764AbfGEW2K (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 5 Jul 2019 17:59:56 -0400
-X-Greylist: delayed 630 seconds by postgrey-1.27 at vger.kernel.org; Fri, 05 Jul 2019 17:59:54 EDT
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=dkim; d=mathewsons.ga;
- h=Content-Type:MIME-Version:Content-Transfer-Encoding:Content-Description:Subject:To:From:Date:Reply-To:Message-ID; i=purchase@mathewsons.ga;
- bh=onxYcir3NvpNjk2I/gjm/O+ljxo=;
- b=lP5COWGnWyMZS0OujJ9ZF3kVFgm2+/gdvMGcvoc8Fm20BdxlMItR+ftNfMjXIOYBZZKZxNL24j2T
-   zscj1ViVac3JB4dHHp8215VzmvAqwQwuz5A7U1XDsluy/hrBMHf8l0jQNYA1T8Y4tiELKXq5b7pE
-   INjz8eY/xgqXXbhL1EvTzv5SyBPmF6xYo2pp5doqMyFJEUNlNp5ZTSEB9lGTqbOwCyCJ+sfcsETs
-   yLJ9FepWw53NWFZeY2m74xFyucZ9il7UXxqUqzD/4EF7Rfg1Xw6YAftE2aFMqAmae/ccd4bVvPfL
-   PgMrGwAgKqZ2tCKkuVysrwoGo4W4LlrJA4QKAg==
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=dkim; d=mathewsons.ga;
- b=g62mDm6/c8zavjiNV8M8T9eYTbyvwzorm2Z41YGo4Hq0uIKim0olskQyenXcR0eUKgMDTa+Yvjp1
-   PRKNz4jKjhUWfojqjYVjT3LJwGkkw7LcECmJxbu1l2+n1a6Gj6ekgGrjIzC5alVjioMARIxRTfXv
-   uNbX27quPDz2IC6bl+T+IEM23f3LYMohkZIGGPHeA3lmpmSe26gck6VXieCqvCVFJecEiOfN4Gsb
-   +Fuv/2c2CyVNmvEPyknJkUow4SoJXstoG8FRrsNiETLPQkff1zRXBwk6rKbXrUZA6mdNveGTgPiH
-   aDdCSo69Vbk/4mj5LYGmS/tIDONWaHBmQJa+MQ==;
-Content-Type: text/plain; charset="iso-8859-1"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Quotes needed For July Shipments
-To:     Recipients <purchase@mathewsons.ga>
-From:   "Sales -Jpexcc." <purchase@mathewsons.ga>
-Date:   Sat, 06 Jul 2019 00:39:21 +0300
-Reply-To: jpexcc@aol.com
-Message-ID: <0.0.4D.150.1D53379E96EDDB4.0@slot0.mathewsons.ga>
+        Fri, 5 Jul 2019 18:28:10 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 74DAE150420B4;
+        Fri,  5 Jul 2019 15:28:09 -0700 (PDT)
+Date:   Fri, 05 Jul 2019 15:28:08 -0700 (PDT)
+Message-Id: <20190705.152808.1175306947779966525.davem@davemloft.net>
+To:     yuehaibing@huawei.com
+Cc:     jaswinder.singh@linaro.org, ast@kernel.org,
+        ilias.apalodimas@linaro.org, daniel@iogearbox.net,
+        jakub.kicinski@netronome.com, hawk@kernel.org,
+        netdev@vger.kernel.org, xdp-newbies@vger.kernel.org,
+        bpf@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v3 net-next] net: socionext: remove set but not used
+ variable 'pkts'
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190704033745.1758-1-yuehaibing@huawei.com>
+References: <20190704032129.169282-1-yuehaibing@huawei.com>
+        <20190704033745.1758-1-yuehaibing@huawei.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 05 Jul 2019 15:28:09 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello dear,
- =
+From: YueHaibing <yuehaibing@huawei.com>
+Date: Thu, 4 Jul 2019 03:37:45 +0000
 
-We are in the market for your products after meeting at your stand during l=
-ast expo.
- =
+> Fixes gcc '-Wunused-but-set-variable' warning:
+> 
+> drivers/net/ethernet/socionext/netsec.c: In function 'netsec_clean_tx_dring':
+> drivers/net/ethernet/socionext/netsec.c:637:15: warning:
+>  variable 'pkts' set but not used [-Wunused-but-set-variable]
+> 
+> It is not used since commit ba2b232108d3 ("net: netsec: add XDP support")
+> 
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> Acked-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 
-Please kindly send us your latest catalog and price list so as to start a n=
-ew project/order as promised during the exhibition. =
-
- =
-
-I would appreciate your response about the above details required so we can=
- revert back to you asap.
- =
-
-Kind regards
- =
-
-Rhema Zoeh
+Applied to net-next.

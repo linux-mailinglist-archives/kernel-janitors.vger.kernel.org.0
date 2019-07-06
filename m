@@ -2,222 +2,142 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BFDAD610D8
-	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 15:39:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42562610E8
+	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 16:05:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726522AbfGFNjP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 6 Jul 2019 09:39:15 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:41061
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726248AbfGFNjP (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 6 Jul 2019 09:39:15 -0400
-X-IronPort-AV: E=Sophos;i="5.63,458,1557180000"; 
-   d="scan'208";a="312640623"
-Received: from abo-12-105-68.mrs.modulonet.fr (HELO hadrien) ([85.68.105.12])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Jul 2019 15:39:12 +0200
-Date:   Sat, 6 Jul 2019 15:39:11 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@lip6.fr>
-X-X-Sender: jll@hadrien
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>
-cc:     Himanshu Jha <himanshujha199640@gmail.com>,
-        kernel-janitors@vger.kernel.org,
-        Michal Marek <michal.lkml@markovi.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        cocci@systeme.lip6.fr
-Subject: Re: [Cocci] [PATCH] coccinelle: api: add devm_platform_ioremap_resource
- script
-In-Reply-To: <CAK7LNARTJpxRmQzx+vQGfOC5YFuw8QsRQ=_9=9E=g5p62UUf6g@mail.gmail.com>
-Message-ID: <alpine.DEB.2.21.1907061538580.2523@hadrien>
-References: <20190406061112.31620-1-himanshujha199640@gmail.com> <alpine.DEB.2.21.1904060831120.4486@hadrien> <alpine.DEB.2.21.1904060833160.4486@hadrien> <CAK7LNARTJpxRmQzx+vQGfOC5YFuw8QsRQ=_9=9E=g5p62UUf6g@mail.gmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        id S1726683AbfGFOFj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 6 Jul 2019 10:05:39 -0400
+Received: from mout.web.de ([212.227.15.3]:42377 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726446AbfGFOFj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 6 Jul 2019 10:05:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1562421919;
+        bh=C1ppvr7zqj47ZVQowy9V7V+DYD7yZg0Ynyd/2Vo5/DM=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=Y6b3AQKoiP3dpQ5yuK9nBeGjK//YqNdjqsx1BSzHvVKTu0RWtOnj/Pnqcor4MUgbE
+         ICTcpAetDGAQN+EXZQKXK9+lZcupG4speHd4i3uYyXtnsGvBlcrNtTv/zvFowY3bKl
+         tq77SjsBkJgc+lCH8xTzhbPU21hjqFS9f0qC9Q6s=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([2.244.148.45]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LgYRZ-1iFmkU1yS5-00nzFh; Sat, 06
+ Jul 2019 16:05:19 +0200
+To:     kernel-janitors@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] sched/topology: One function call less in
+ build_group_from_child_sched_domain()
+Openpgp: preference=signencrypt
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <ad2e7dfb-3323-b214-716e-a6cae41b8bcc@web.de>
+Date:   Sat, 6 Jul 2019 16:05:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:PPLYipWOeXoJMIecIppbe6rb4FHzVe4Ja4JIf7+IlTUuzfPFJMW
+ yWJHv1KWR/CiPo0LUENxG7jmQqx14aQ6BCgzSdi2iSU3uYDSmuZ61HN1DpVkVf/5maRUPt4
+ dLJr37OYRgpWmvn8YTIsI2v3bO5exhlRl5B5Zrvm0OrGW1s/FnRPX9V4mVW2BcaDJXA/NIN
+ HdOSLvPjDc3iMo20dMi6g==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:jLBiQOvwXBE=:3I6K0MsTz2K4UTbX+OgFOu
+ uPEm3RBCyNbOIvLwo3toAUIy0YjxtuEb/OBqt7gOk63ApiY/+8Tr4ut8j4JEpFQARzFv6N8By
+ TdkXt4AMy45us58QBUVrIC3E3mZfnFHF/8c1MQjXlzidaH473Y7ghqta64jXNvNPSs2CRJTyW
+ TQ2ySdo+hCmilUvB0QfQz+6XL3wRKLZUQu4S5DjCkLR1+a1Vi6bd4UjCwZIhHAZ7LnzIEsi9i
+ 0CThKtFM7V8FT+sHYlWyBukn1K/ssqWnIDYAvzdh3qnmfUwec4wLH3BQaMCpNXhvJ95ipc4ze
+ xce9iOuN2YJrIjG+NpI/zO0+ZdNwU2qmuqKPOa/sXbHjcrSnU3aegb0v63qNqYDVTgiuhyRYC
+ 11Uytf6l9/Gs/b7WvZIPlEPRzKTPxpratQNGht3SSwCtHHAJ8Lc3WOrBMAEewkAX9dIWKBvKr
+ YiOMLhVVxn/Y2ZWGbyzBw+vbptb2BYEOeAbrJFXLf7QmI5a1U5MmBxamcgAGfPk08FBC3Amue
+ aBfqWZl6XtLtL1aGZ0WHytaBjkxvDbl9e2LhFK8DatSMJyoLYztIkB0ZSN1CRO3QVm0B+kNwx
+ 6By+a0PCYepkBJozBTm4bANppntgLMmkTxigeoSAvR3KxEt/N24Hc9cpj4fucof228m+hfwcA
+ hOK+sgzTpo6RjCNU9h8ODoMNJzDMqFOt03qje7rCUFefKX6bUDQGrblIrDCW0Uqoed2RhMl6e
+ nxN9Kt56C4gh7zFoE+k6NI6vkH/qHJf2/W35SN/pJWBmue4vYsw0nm4/F37fCYOBSUVjK1Em+
+ 6Jmc9rrKO/q4XaZ20bdD0egYmLThBVDH/TeH804ocp2OWSZ/q/eRXIf513N902Hmeu1tiPm4d
+ KOKTDMbWNnXRgoyaF7TvqtDjlcCzhGC8wQTs0knl2TYZys+kSTXcJuhYhsYXjnEvbNcZ6llRa
+ T/RbCmENtti/IZCM8LZWRVSiaktXZ9FaaRQska1NHLVi05dqR1r++UrFckFUx7lD0a0gVZWXY
+ ULCJblCrbp2OLBiTOrdWE/5vIxX6u/abpa6aEIniJOqFyQkuYbcNJqQ7j+PKbQr1HTd/QsaPL
+ jjZho3hvQn5qnlR9HxZtwaWmvNZKvg30cnd
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Sat, 6 Jul 2019 16:00:13 +0200
 
+Avoid an extra function call by using a ternary operator instead of
+a conditional statement.
 
-On Sat, 6 Jul 2019, Masahiro Yamada wrote:
+This issue was detected by using the Coccinelle software.
 
-> On Sat, Apr 6, 2019 at 3:34 PM Julia Lawall <julia.lawall@lip6.fr> wrote:
-> >
-> >
-> >
-> > On Sat, 6 Apr 2019, Julia Lawall wrote:
-> >
-> > >
-> > >
-> > > On Sat, 6 Apr 2019, Himanshu Jha wrote:
-> > >
-> > > > Use recently introduced devm_platform_ioremap_resource
-> > > > helper which wraps platform_get_resource() and
-> > > > devm_ioremap_resource() together. This helps produce much
-> > > > cleaner code while removing local `struct resource` declaration.
-> > > >
-> > > > Signed-off-by: Himanshu Jha <himanshujha199640@gmail.com>
-> > >
-> > > Acked-by: Julia Lawall <julia.lawall@lip6.fr>
-> > >
-> > > Thanks for taking up this issue.
-> >
-> > Maybe this should be
-> >
-> > Signed-off-by: Julia Lawall <julia.lawall@lip6.fr>
-> >
-> > since I contributed two lines to the script :)
->
-> I will apply with Julia's Signed-off-by instead of Acked-by.
-> I will also add SPDX tag.
->
-> Is this OK?
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ kernel/sched/topology.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-Yes, thanks.
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index f751ce0b783e..6190eb52c30a 100644
+=2D-- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -886,11 +886,7 @@ build_group_from_child_sched_domain(struct sched_doma=
+in *sd, int cpu)
+ 		return NULL;
 
-julia
+ 	sg_span =3D sched_group_span(sg);
+-	if (sd->child)
+-		cpumask_copy(sg_span, sched_domain_span(sd->child));
+-	else
+-		cpumask_copy(sg_span, sched_domain_span(sd));
+-
++	cpumask_copy(sg_span, sched_domain_span(sd->child ? sd->child : sd));
+ 	atomic_inc(&sg->ref);
+ 	return sg;
+ }
+=2D-
+2.22.0
 
->
->
->
-> > julia
-> >
-> > >
-> > > julia
-> > >
-> > > > ---
-> > > >
-> > > > Tree wide changes has been tested through 0-day test service
-> > > > with build success.
-> > > >
-> > > > BUILD SUCCESS 74ebaaca5d14d3d9b03e911f0b4995b78a4d60f0
-> > > > tree/branch: https://github.com/himanshujha199640/linux-next  20190401-devm_platform_ioremap_resource-final
-> > > > branch HEAD: 74ebaaca5d14d3d9b03e911f0b4995b78a4d60f0  Coccinelle: api: Add devm_platform_ioremap_resource.cocci
-> > > >
-> > > > elapsed time: 385m
-> > > > configs tested: 162
-> > > >
-> > > >
-> > > > Stats:
-> > > > 916 files changed, 1028 insertions(+), 2921 deletions(-)
-> > > >
-> > > > Note: cases where the `struct resource *res` variable is
-> > > > used subsequently in the function have been ignored out because
-> > > > those cases produce:
-> > > >
-> > > > eg., drivers/bus/da8xx-mstpri.c
-> > > >
-> > > > warning: 'res' may be used uninitialized in this function [-Wmaybe-uninitialized]
-> > > >
-> > > > due to:
-> > > >     if (prio_descr->reg + sizeof(u32) > resource_size(res)) {
-> > > >
-> > > > which seems correct as `res` isn't initialized in the scope of
-> > > > the function(da8xx_mstpri_probe) and instead initialized inside:
-> > > >
-> > > >    void __iomem *devm_platform_ioremap_resource(struct platform_device *pdev,
-> > > >                                                 unsigned int index)
-> > > >    {
-> > > >            struct resource *res;
-> > > >
-> > > >            res = platform_get_resource(pdev, IORESOURCE_MEM, index);
-> > > >            return devm_ioremap_resource(&pdev->dev, res);
-> > > >    }
-> > > >    EXPORT_SYMBOL_GPL(devm_platform_ioremap_resource);
-> > > >
-> > > >
-> > > >  .../api/devm_platform_ioremap_resource.cocci  | 63 +++++++++++++++++++
-> > > >  1 file changed, 63 insertions(+)
-> > > >  create mode 100644 scripts/coccinelle/api/devm_platform_ioremap_resource.cocci
-> > > >
-> > > > diff --git a/scripts/coccinelle/api/devm_platform_ioremap_resource.cocci b/scripts/coccinelle/api/devm_platform_ioremap_resource.cocci
-> > > > new file mode 100644
-> > > > index 000000000000..a28274af14df
-> > > > --- /dev/null
-> > > > +++ b/scripts/coccinelle/api/devm_platform_ioremap_resource.cocci
-> > > > @@ -0,0 +1,63 @@
-> > > > +/// Use devm_platform_ioremap_resource helper which wraps
-> > > > +/// platform_get_resource() and devm_ioremap_resource() together.
-> > > > +///
-> > > > +// Confidence: High
-> > > > +// Copyright: (C) 2019 Himanshu Jha GPLv2.
-> > > > +// Copyright: (C) 2019 Julia Lawall, Inria/LIP6. GPLv2.
-> > > > +// Keywords: platform_get_resource, devm_ioremap_resource,
-> > > > +// Keywords: devm_platform_ioremap_resource
-> > > > +
-> > > > +virtual patch
-> > > > +virtual report
-> > > > +
-> > > > +@r depends on patch && !report@
-> > > > +expression e1, e2, arg1, arg2, arg3, arg4;
-> > > > +identifier id;
-> > > > +@@
-> > > > +
-> > > > +(
-> > > > +- id = platform_get_resource(arg1, arg2, arg3);
-> > > > +|
-> > > > +- struct resource *id = platform_get_resource(arg1, arg2, arg3);
-> > > > +)
-> > > > +  ... when != id
-> > > > +- e1 = devm_ioremap_resource(arg4, id);
-> > > > ++ e1 = devm_platform_ioremap_resource(arg1, arg3);
-> > > > +  ... when != id
-> > > > +? id = e2
-> > > > +
-> > > > +@r1 depends on patch && !report@
-> > > > +identifier r.id;
-> > > > +type T;
-> > > > +@@
-> > > > +
-> > > > +- T *id;
-> > > > +  ...when != id
-> > > > +
-> > > > +// ----------------------------------------------------------------------------
-> > > > +
-> > > > +@r2 depends on report && !patch@
-> > > > +identifier id;
-> > > > +expression e1, e2, arg1, arg2, arg3, arg4;
-> > > > +position j0;
-> > > > +@@
-> > > > +
-> > > > +(
-> > > > +  id = platform_get_resource(arg1, arg2, arg3);
-> > > > +|
-> > > > +  struct resource *id = platform_get_resource(arg1, arg2, arg3);
-> > > > +)
-> > > > +  ... when != id
-> > > > +  e1@j0 = devm_ioremap_resource(arg4, id);
-> > > > +  ... when != id
-> > > > +? id = e2
-> > > > +
-> > > > +// ----------------------------------------------------------------------------
-> > > > +
-> > > > +@script:python depends on report && !patch@
-> > > > +e1 << r2.e1;
-> > > > +j0 << r2.j0;
-> > > > +@@
-> > > > +
-> > > > +msg = "WARNING: Use devm_platform_ioremap_resource for %s" % (e1)
-> > > > +coccilib.report.print_report(j0[0], msg)
-> > > > --
-> > > > 2.17.1
-> > > >
-> > > >
-> > >
-> > _______________________________________________
-> > Cocci mailing list
-> > Cocci@systeme.lip6.fr
-> > https://systeme.lip6.fr/mailman/listinfo/cocci
->
->
->
-> --
-> Best Regards
-> Masahiro Yamada
->

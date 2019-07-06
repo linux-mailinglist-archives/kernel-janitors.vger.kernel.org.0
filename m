@@ -2,232 +2,169 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E4AB610A4
-	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 14:19:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A118610A7
+	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 14:29:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726618AbfGFMT3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 6 Jul 2019 08:19:29 -0400
-Received: from condef-03.nifty.com ([202.248.20.68]:43775 "EHLO
-        condef-03.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726207AbfGFMT3 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 6 Jul 2019 08:19:29 -0400
-Received: from conssluserg-01.nifty.com ([10.126.8.80])by condef-03.nifty.com with ESMTP id x66CGlaU003500
-        for <kernel-janitors@vger.kernel.org>; Sat, 6 Jul 2019 21:16:47 +0900
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49]) (authenticated)
-        by conssluserg-01.nifty.com with ESMTP id x66CGepq018678;
-        Sat, 6 Jul 2019 21:16:40 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com x66CGepq018678
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1562415401;
-        bh=FfB1NqG/gE92yWOnQ6/KTKMCyYbR4uXXTkbKQtydcMY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=z1qZbRqlSOwyuHHKhQBoYCFvqKKDWmvl1D/q9ZoGTvDTc9KQbA7s2fNaiuaOrWELp
-         tyXp0ubtEfPmXO106o48+YO8FKkmOeO1rCjEgGklBWeEjuoc9xcZzknaaSPs8O9nyF
-         KhM+FPiZnVB0rzSMFVBC2Uy6cJGYR4B1/LeTXMm2Rhrf9w/M5TH6YylgJHRzwQ+agf
-         224PGH/+TOod4n5PVDi265irVfi41Mh+iSdQ2UdjhZH3RWZNyZNFGa4LYLgkGfgWOM
-         RD+OUaaF2kUM7k4OBsUKkvZ96u1Z2LrYASV9YQ45pnCtDHwXjTTVDCdTShkOMLVZyc
-         gfUlhkDqodoQw==
-X-Nifty-SrcIP: [209.85.217.49]
-Received: by mail-vs1-f49.google.com with SMTP id j26so5384240vsn.10;
-        Sat, 06 Jul 2019 05:16:40 -0700 (PDT)
-X-Gm-Message-State: APjAAAVMRqw9e+7F1jUo0hxfx7E5Ld/tGYamm3bweumsQWHFzF5ixz33
-        0l2X5igNtxrApANLqDnikNMtGKcK5ZVdtxIItqk=
-X-Google-Smtp-Source: APXvYqygMpGz0NVEVvFeGd+Pele9Hueqk0n/t5IwyE+OhHb7yi3tGYRZBW3SzE6pLj+Hqa4UtocBm+uPgajacg0+6AY=
-X-Received: by 2002:a67:cd1a:: with SMTP id u26mr4689375vsl.155.1562415399561;
- Sat, 06 Jul 2019 05:16:39 -0700 (PDT)
+        id S1726207AbfGFM3V (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 6 Jul 2019 08:29:21 -0400
+Received: from mout.web.de ([212.227.15.3]:39479 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726065AbfGFM3V (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 6 Jul 2019 08:29:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1562416142;
+        bh=M7AVTdrfPaHZVLRFf6a6hgf1ocC6FW0AXyK9/AhwvIQ=;
+        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+        b=mviEULBLm0P50M6jOzdK9oQhj6lOwgVF8/Z33QIo3iyyQHjf2SwSHKQ7IbdY6NejI
+         AY/947axfDU2TeS35XJ5ajcjAumFJmh9hLg7aDgsEGErSJMkPvGw9Zd8JWm8gPCRzx
+         OfZ0CHD6PFUlk4r8R86vYhs5ZlJFxF4VGM6rWvsg=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([2.244.148.45]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M1noI-1idE8q0z7a-00tleZ; Sat, 06
+ Jul 2019 14:29:02 +0200
+To:     kernel-janitors@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Manfred Spraul <manfred@colorfullife.com>,
+        Mathieu Malaterre <malat@debian.org>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] ipc/sem: Three function calls less in do_semtimedop()
+Openpgp: preference=signencrypt
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Cc:     LKML <linux-kernel@vger.kernel.org>
+Message-ID: <ba328a83-63ac-c3a3-cbc0-81059012c555@web.de>
+Date:   Sat, 6 Jul 2019 14:28:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-References: <20190406061112.31620-1-himanshujha199640@gmail.com>
- <alpine.DEB.2.21.1904060831120.4486@hadrien> <alpine.DEB.2.21.1904060833160.4486@hadrien>
-In-Reply-To: <alpine.DEB.2.21.1904060833160.4486@hadrien>
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Sat, 6 Jul 2019 21:16:03 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARTJpxRmQzx+vQGfOC5YFuw8QsRQ=_9=9E=g5p62UUf6g@mail.gmail.com>
-Message-ID: <CAK7LNARTJpxRmQzx+vQGfOC5YFuw8QsRQ=_9=9E=g5p62UUf6g@mail.gmail.com>
-Subject: Re: [Cocci] [PATCH] coccinelle: api: add devm_platform_ioremap_resource
- script
-To:     Julia Lawall <julia.lawall@lip6.fr>
-Cc:     Himanshu Jha <himanshujha199640@gmail.com>,
-        kernel-janitors@vger.kernel.org,
-        Michal Marek <michal.lkml@markovi.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        cocci@systeme.lip6.fr
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Xq+TQOwrTfz3o5Oi6RXK8kK/C80DLdsRgqgXcTqhHYExjDCj4zL
+ qTyLVfvAmFK7toRIvjsmpb0a/qktE9/2/CGRYFjJG1ixeTbox2JMAMiER9ZPz7utq5e/Nus
+ 57nTpyv/lD2GQHOpxozCZqtGuP+zLDZ4IFJ8bEHWyFWiKYk+EoWVU0s3gTHi/Ur5+AkIVpf
+ t/hJbNNx/QFfb/ZrS4kgw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1AgzLGCtgI4=:DXnqVDlgxtzyemovjJx9sj
+ hGvYCWioc7/oIbXXHby9ZfydBl0gfApefbKt+7DmYFnJVK6jhKeFolO3IEo0RO43nA+Szz09u
+ 7qNcnWXjWeJEeY27cw1gIU2aBRZ6RJ2P+h9jPFryPKIBXK0iWWBx+GB5nicfkBo15IIc9YVAu
+ zPgJov3pFwUFiqxr0vpqu2Tjp2NgCNyRwOC9ZG4QjlZwnhu4oVJ9KPvEs7TaOa90y1F8at7h3
+ arZEmsRTjVFc7xiw5kVO+3Gofy0PGzacbigClNbxFKFfNSlsGEzmfsbrc2oMfcXQdEhmHH8KV
+ 1Jc9XbU2Ef95sojjX5tGnCk9G2TumY7HKEgjVlXM4lcqOuq8Ly2D7KVRyi/5bMIqUqu/b43LY
+ p8f5ScFk87BpSbVv62y0PnCePVI3QNFCpsjPGow3nMJgSBz5CYEYI81dofkZZ3n1XCREv4hBT
+ Az3UxnmFsiHABC0eeJO/ogwng8LjYpk5x6xigHn3VNFs/ERoXnVlAZYPMYiKmeiITvutm17/+
+ iB/zhCIZHzDvwBrTrOlYbfOJFI+nx4pPoGdkatTFanPkrxXxEK6YOxu345T2ihJnqLcVPrVDn
+ 8u6bm6Itu3BW27oUEsiKcrb8KiC4y81rA5ZE0BBg4eLv+tloUI5lIhdKEUd9WBWQLJq1RjyFK
+ L2dAYSqnPUUH9w7G8fkrGVzaWMOy2w3fjHHY/V1Pg4XeFJzfpMmbSB4iAEePUiQTMguL2/MpI
+ Wzv1a6aPLKUV6+FagOkGVLc9ga8BGVz/xmqE+0T+ze7HM9QyzcOiBoOIigkAds3mNytBCwxhM
+ jIf33dONJhb9Io1Vcqk2I6JepF6f0V8A7CBILhlXpX1J8dgkNXtP+vG+lXFyDG4OmANGqQmmp
+ E6gkWTg4sdWwPyk14+rl50NH9WBOw/GO4BacG3oOpOuOox1OJuaL7ILDfnnkkEISzWmwyNFp7
+ iNPvUVifSAUt5a+1/+7gQ7xgXa5krJ9/SJsr6hKy9mYCbPvqn/vmosTnyccCB/uBCqgKJY41w
+ SjJlQbJSPZnrdGyGE4gergTAVasF2J8NXRI4RjZ/FnlQpB4yayjKaKNSCJYihnyst0F2WAvls
+ ZUQq+KWTwTCHw4+Zi9w91DFtDagMOc/0PNy
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Apr 6, 2019 at 3:34 PM Julia Lawall <julia.lawall@lip6.fr> wrote:
->
->
->
-> On Sat, 6 Apr 2019, Julia Lawall wrote:
->
-> >
-> >
-> > On Sat, 6 Apr 2019, Himanshu Jha wrote:
-> >
-> > > Use recently introduced devm_platform_ioremap_resource
-> > > helper which wraps platform_get_resource() and
-> > > devm_ioremap_resource() together. This helps produce much
-> > > cleaner code while removing local `struct resource` declaration.
-> > >
-> > > Signed-off-by: Himanshu Jha <himanshujha199640@gmail.com>
-> >
-> > Acked-by: Julia Lawall <julia.lawall@lip6.fr>
-> >
-> > Thanks for taking up this issue.
->
-> Maybe this should be
->
-> Signed-off-by: Julia Lawall <julia.lawall@lip6.fr>
->
-> since I contributed two lines to the script :)
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Sat, 6 Jul 2019 14:16:24 +0200
 
-I will apply with Julia's Signed-off-by instead of Acked-by.
-I will also add SPDX tag.
+Avoid three function calls by using ternary operators instead of
+conditional statements.
 
-Is this OK?
+This issue was detected by using the Coccinelle software.
 
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ ipc/sem.c | 25 ++++++++-----------------
+ 1 file changed, 8 insertions(+), 17 deletions(-)
 
+diff --git a/ipc/sem.c b/ipc/sem.c
+index 7da4504bcc7c..56ea549ac270 100644
+=2D-- a/ipc/sem.c
++++ b/ipc/sem.c
+@@ -2122,27 +2122,18 @@ static long do_semtimedop(int semid, struct sembuf=
+ __user *tsops,
+ 		int idx =3D array_index_nospec(sops->sem_num, sma->sem_nsems);
+ 		curr =3D &sma->sems[idx];
 
-> julia
->
-> >
-> > julia
-> >
-> > > ---
-> > >
-> > > Tree wide changes has been tested through 0-day test service
-> > > with build success.
-> > >
-> > > BUILD SUCCESS 74ebaaca5d14d3d9b03e911f0b4995b78a4d60f0
-> > > tree/branch: https://github.com/himanshujha199640/linux-next  20190401-devm_platform_ioremap_resource-final
-> > > branch HEAD: 74ebaaca5d14d3d9b03e911f0b4995b78a4d60f0  Coccinelle: api: Add devm_platform_ioremap_resource.cocci
-> > >
-> > > elapsed time: 385m
-> > > configs tested: 162
-> > >
-> > >
-> > > Stats:
-> > > 916 files changed, 1028 insertions(+), 2921 deletions(-)
-> > >
-> > > Note: cases where the `struct resource *res` variable is
-> > > used subsequently in the function have been ignored out because
-> > > those cases produce:
-> > >
-> > > eg., drivers/bus/da8xx-mstpri.c
-> > >
-> > > warning: 'res' may be used uninitialized in this function [-Wmaybe-uninitialized]
-> > >
-> > > due to:
-> > >     if (prio_descr->reg + sizeof(u32) > resource_size(res)) {
-> > >
-> > > which seems correct as `res` isn't initialized in the scope of
-> > > the function(da8xx_mstpri_probe) and instead initialized inside:
-> > >
-> > >    void __iomem *devm_platform_ioremap_resource(struct platform_device *pdev,
-> > >                                                 unsigned int index)
-> > >    {
-> > >            struct resource *res;
-> > >
-> > >            res = platform_get_resource(pdev, IORESOURCE_MEM, index);
-> > >            return devm_ioremap_resource(&pdev->dev, res);
-> > >    }
-> > >    EXPORT_SYMBOL_GPL(devm_platform_ioremap_resource);
-> > >
-> > >
-> > >  .../api/devm_platform_ioremap_resource.cocci  | 63 +++++++++++++++++++
-> > >  1 file changed, 63 insertions(+)
-> > >  create mode 100644 scripts/coccinelle/api/devm_platform_ioremap_resource.cocci
-> > >
-> > > diff --git a/scripts/coccinelle/api/devm_platform_ioremap_resource.cocci b/scripts/coccinelle/api/devm_platform_ioremap_resource.cocci
-> > > new file mode 100644
-> > > index 000000000000..a28274af14df
-> > > --- /dev/null
-> > > +++ b/scripts/coccinelle/api/devm_platform_ioremap_resource.cocci
-> > > @@ -0,0 +1,63 @@
-> > > +/// Use devm_platform_ioremap_resource helper which wraps
-> > > +/// platform_get_resource() and devm_ioremap_resource() together.
-> > > +///
-> > > +// Confidence: High
-> > > +// Copyright: (C) 2019 Himanshu Jha GPLv2.
-> > > +// Copyright: (C) 2019 Julia Lawall, Inria/LIP6. GPLv2.
-> > > +// Keywords: platform_get_resource, devm_ioremap_resource,
-> > > +// Keywords: devm_platform_ioremap_resource
-> > > +
-> > > +virtual patch
-> > > +virtual report
-> > > +
-> > > +@r depends on patch && !report@
-> > > +expression e1, e2, arg1, arg2, arg3, arg4;
-> > > +identifier id;
-> > > +@@
-> > > +
-> > > +(
-> > > +- id = platform_get_resource(arg1, arg2, arg3);
-> > > +|
-> > > +- struct resource *id = platform_get_resource(arg1, arg2, arg3);
-> > > +)
-> > > +  ... when != id
-> > > +- e1 = devm_ioremap_resource(arg4, id);
-> > > ++ e1 = devm_platform_ioremap_resource(arg1, arg3);
-> > > +  ... when != id
-> > > +? id = e2
-> > > +
-> > > +@r1 depends on patch && !report@
-> > > +identifier r.id;
-> > > +type T;
-> > > +@@
-> > > +
-> > > +- T *id;
-> > > +  ...when != id
-> > > +
-> > > +// ----------------------------------------------------------------------------
-> > > +
-> > > +@r2 depends on report && !patch@
-> > > +identifier id;
-> > > +expression e1, e2, arg1, arg2, arg3, arg4;
-> > > +position j0;
-> > > +@@
-> > > +
-> > > +(
-> > > +  id = platform_get_resource(arg1, arg2, arg3);
-> > > +|
-> > > +  struct resource *id = platform_get_resource(arg1, arg2, arg3);
-> > > +)
-> > > +  ... when != id
-> > > +  e1@j0 = devm_ioremap_resource(arg4, id);
-> > > +  ... when != id
-> > > +? id = e2
-> > > +
-> > > +// ----------------------------------------------------------------------------
-> > > +
-> > > +@script:python depends on report && !patch@
-> > > +e1 << r2.e1;
-> > > +j0 << r2.j0;
-> > > +@@
-> > > +
-> > > +msg = "WARNING: Use devm_platform_ioremap_resource for %s" % (e1)
-> > > +coccilib.report.print_report(j0[0], msg)
-> > > --
-> > > 2.17.1
-> > >
-> > >
-> >
-> _______________________________________________
-> Cocci mailing list
-> Cocci@systeme.lip6.fr
-> https://systeme.lip6.fr/mailman/listinfo/cocci
+-		if (alter) {
+-			if (sma->complex_count) {
+-				list_add_tail(&queue.list,
+-						&sma->pending_alter);
+-			} else {
+-
+-				list_add_tail(&queue.list,
+-						&curr->pending_alter);
+-			}
+-		} else {
+-			list_add_tail(&queue.list, &curr->pending_const);
+-		}
++		list_add_tail(&queue.list,
++			      alter
++			      ? (sma->complex_count
++				? &sma->pending_alter
++				: &curr->pending_alter)
++			      : &curr->pending_const);
+ 	} else {
+ 		if (!sma->complex_count)
+ 			merge_queues(sma);
 
+-		if (alter)
+-			list_add_tail(&queue.list, &sma->pending_alter);
+-		else
+-			list_add_tail(&queue.list, &sma->pending_const);
+-
++		list_add_tail(&queue.list,
++			      alter ? &sma->pending_alter : &sma->pending_const);
+ 		sma->complex_count++;
+ 	}
 
+=2D-
+2.22.0
 
--- 
-Best Regards
-Masahiro Yamada

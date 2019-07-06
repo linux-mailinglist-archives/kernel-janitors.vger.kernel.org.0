@@ -2,37 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4655F60F9B
-	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 11:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F39D60FA1
+	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 11:29:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725971AbfGFJFc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 6 Jul 2019 05:05:32 -0400
-Received: from hera.aquilenet.fr ([185.233.100.1]:51896 "EHLO
-        hera.aquilenet.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725934AbfGFJFc (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 6 Jul 2019 05:05:32 -0400
-X-Greylist: delayed 308 seconds by postgrey-1.27 at vger.kernel.org; Sat, 06 Jul 2019 05:05:32 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by hera.aquilenet.fr (Postfix) with ESMTP id 2ED7F6069;
-        Sat,  6 Jul 2019 11:00:21 +0200 (CEST)
-X-Virus-Scanned: Debian amavisd-new at aquilenet.fr
-Received: from hera.aquilenet.fr ([127.0.0.1])
-        by localhost (hera.aquilenet.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 4_8_IRcTvWRm; Sat,  6 Jul 2019 11:00:20 +0200 (CEST)
-Received: from function (dhcp-64-231.ens-lyon.fr [140.77.64.231])
-        by hera.aquilenet.fr (Postfix) with ESMTPSA id 73E6A6063;
-        Sat,  6 Jul 2019 11:00:20 +0200 (CEST)
-Received: from samy by function with local (Exim 4.92)
-        (envelope-from <samuel.thibault@ens-lyon.org>)
-        id 1hjgYN-0004Wq-Jw; Sat, 06 Jul 2019 11:00:19 +0200
-Date:   Sat, 6 Jul 2019 11:00:19 +0200
-From:   Samuel Thibault <samuel.thibault@ens-lyon.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     speakup@linux-speakup.org, devel@driverdev.osuosl.org,
+        id S1725988AbfGFJ3T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 6 Jul 2019 05:29:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40536 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725934AbfGFJ3T (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 6 Jul 2019 05:29:19 -0400
+Received: from localhost (unknown [62.119.166.9])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DE45220838;
+        Sat,  6 Jul 2019 09:29:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1562405358;
+        bh=q0ChCYbw9BUDkWl5qTb6N9u6aCLW/OO4j39NqDScVdE=;
+        h=Date:From:To:Subject:References:In-Reply-To:From;
+        b=aamOu0XKXSBhtt1yKpU6r/ss1xC8nZzgJj4jyUslKR76f+Ra2rEh4O8h/yEl7rD6V
+         ieQX+PHjtC9RbnIPPDP4hxoy0JuqaDIsgqW1m573K/ooKz9bzdHenhr65sRbFBEarR
+         0fihP89c8qhaBtcYn0lQlkZAGBnLZYdvNAQNBj6U=
+Date:   Sat, 6 Jul 2019 11:28:56 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Samuel Thibault <samuel.thibault@ens-lyon.org>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        speakup@linux-speakup.org, devel@driverdev.osuosl.org,
         Bhagyashri Dighole <digholebhagyashri@gmail.com>,
         Chris Brannon <chris@the-brannons.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Kirk Reiser <kirk@reisers.ca>,
         Okash Khawaja <okash.khawaja@gmail.com>,
         William Hubbs <w.d.hubbs@gmail.com>,
@@ -40,70 +37,39 @@ Cc:     speakup@linux-speakup.org, devel@driverdev.osuosl.org,
         kernel-janitors@vger.kernel.org
 Subject: Re: [PATCH] staging: speakup: One function call less in
  speakup_win_enable()
-Message-ID: <20190706090019.rivposzrqesodhso@function>
-Mail-Followup-To: Samuel Thibault <samuel.thibault@ens-lyon.org>,
-        Markus Elfring <Markus.Elfring@web.de>, speakup@linux-speakup.org,
-        devel@driverdev.osuosl.org,
-        Bhagyashri Dighole <digholebhagyashri@gmail.com>,
-        Chris Brannon <chris@the-brannons.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kirk Reiser <kirk@reisers.ca>,
-        Okash Khawaja <okash.khawaja@gmail.com>,
-        William Hubbs <w.d.hubbs@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+Message-ID: <20190706092856.GA15480@kroah.com>
 References: <11f79333-25c3-1ad9-4975-58c64821f3fe@web.de>
+ <20190706090019.rivposzrqesodhso@function>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <11f79333-25c3-1ad9-4975-58c64821f3fe@web.de>
-Organization: I am not organized
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20190706090019.rivposzrqesodhso@function>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Markus Elfring, le sam. 06 juil. 2019 10:15:30 +0200, a ecrit:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Sat, 6 Jul 2019 10:03:56 +0200
+On Sat, Jul 06, 2019 at 11:00:19AM +0200, Samuel Thibault wrote:
+> Markus Elfring, le sam. 06 juil. 2019 10:15:30 +0200, a ecrit:
+> > From: Markus Elfring <elfring@users.sourceforge.net>
+> > Date: Sat, 6 Jul 2019 10:03:56 +0200
+> > 
+> > Avoid an extra function call by using a ternary operator instead of
+> > a conditional statement.
+> > 
+> > This issue was detected by using the Coccinelle software.
+> > 
+> > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 > 
-> Avoid an extra function call by using a ternary operator instead of
-> a conditional statement.
-> 
-> This issue was detected by using the Coccinelle software.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> Reviewed-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
 
-Reviewed-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
+Sorry, but this author/bot is in my kill-file and I no longer accept
+patches from them.
 
-> ---
->  drivers/staging/speakup/main.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/staging/speakup/main.c b/drivers/staging/speakup/main.c
-> index 488f2539aa9a..03bbc9a4dbb3 100644
-> --- a/drivers/staging/speakup/main.c
-> +++ b/drivers/staging/speakup/main.c
-> @@ -1917,10 +1917,9 @@ static void speakup_win_enable(struct vc_data *vc)
->  		return;
->  	}
->  	win_enabled ^= 1;
-> -	if (win_enabled)
-> -		synth_printf("%s\n", spk_msg_get(MSG_WINDOW_SILENCED));
-> -	else
-> -		synth_printf("%s\n", spk_msg_get(MSG_WINDOW_SILENCE_DISABLED));
-> +	synth_printf("%s\n", spk_msg_get(win_enabled
-> +					 ? MSG_WINDOW_SILENCED
-> +					 : MSG_WINDOW_SILENCE_DISABLED));
->  }
-> 
->  static void speakup_bits(struct vc_data *vc)
-> --
-> 2.22.0
-> 
+And I HATE ternary operators anyway, so it's not like I would take this
+patch if it came from someone else :)
 
--- 
-Samuel
---- christ gives channel operator status to Dieu
- -+- #ens-mim and hell -+-
+thanks,
+
+greg k-h

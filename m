@@ -2,73 +2,118 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AB77F611C9
-	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 17:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A414561258
+	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 19:22:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726683AbfGFPE5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 6 Jul 2019 11:04:57 -0400
-Received: from sauhun.de ([88.99.104.3]:44276 "EHLO pokefinder.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726526AbfGFPE5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 6 Jul 2019 11:04:57 -0400
-Received: from localhost (p5486CF0A.dip0.t-ipconnect.de [84.134.207.10])
-        by pokefinder.org (Postfix) with ESMTPSA id ADFC22C376D;
-        Sat,  6 Jul 2019 17:04:55 +0200 (CEST)
-Date:   Sat, 6 Jul 2019 17:04:55 +0200
-From:   Wolfram Sang <wsa@the-dreams.de>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Stefan Roese <sr@denx.de>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-i2c@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] i2c: mt7621: Fix platform_no_drv_owner.cocci
- warnings
-Message-ID: <20190706150455.GB7429@kunai>
-References: <20190629024421.177153-1-yuehaibing@huawei.com>
+        id S1726966AbfGFRWb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 6 Jul 2019 13:22:31 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:9688 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726876AbfGFRWb (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 6 Jul 2019 13:22:31 -0400
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x66HM0L8115359
+        for <kernel-janitors@vger.kernel.org>; Sat, 6 Jul 2019 13:22:29 -0400
+Received: from e06smtp07.uk.ibm.com (e06smtp07.uk.ibm.com [195.75.94.103])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2tjqua35he-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <kernel-janitors@vger.kernel.org>; Sat, 06 Jul 2019 13:22:29 -0400
+Received: from localhost
+        by e06smtp07.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <kernel-janitors@vger.kernel.org> from <srikar@linux.vnet.ibm.com>;
+        Sat, 6 Jul 2019 18:22:28 +0100
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+        by e06smtp07.uk.ibm.com (192.168.101.137) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Sat, 6 Jul 2019 18:22:26 +0100
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x66HMPsC22610094
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 6 Jul 2019 17:22:25 GMT
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 82336A405B;
+        Sat,  6 Jul 2019 17:22:25 +0000 (GMT)
+Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4B7F9A405C;
+        Sat,  6 Jul 2019 17:22:24 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with SMTP;
+        Sat,  6 Jul 2019 17:22:24 +0000 (GMT)
+Date:   Sat, 6 Jul 2019 22:52:23 +0530
+From:   Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     kernel-janitors@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] sched/topology: One function call less in
+ build_group_from_child_sched_domain()
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+References: <ad2e7dfb-3323-b214-716e-a6cae41b8bcc@web.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="QKdGvSO+nmPlgiQ/"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20190629024421.177153-1-yuehaibing@huawei.com>
+In-Reply-To: <ad2e7dfb-3323-b214-716e-a6cae41b8bcc@web.de>
 User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+x-cbid: 19070617-0028-0000-0000-000003817380
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19070617-0029-0000-0000-00002441780D
+Message-Id: <20190706172223.GA12680@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-06_05:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=869 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907060230
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+* Markus Elfring <Markus.Elfring@web.de> [2019-07-06 16:05:17]:
 
---QKdGvSO+nmPlgiQ/
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Sat, 6 Jul 2019 16:00:13 +0200
+> 
+> Avoid an extra function call by using a ternary operator instead of
+> a conditional statement.
+> 
+> This issue was detected by using the Coccinelle software.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> ---
+>  kernel/sched/topology.c | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
+> 
+> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+> index f751ce0b783e..6190eb52c30a 100644
+> --- a/kernel/sched/topology.c
+> +++ b/kernel/sched/topology.c
+> @@ -886,11 +886,7 @@ build_group_from_child_sched_domain(struct sched_domain *sd, int cpu)
+>  		return NULL;
+> 
+>  	sg_span = sched_group_span(sg);
+> -	if (sd->child)
+> -		cpumask_copy(sg_span, sched_domain_span(sd->child));
+> -	else
+> -		cpumask_copy(sg_span, sched_domain_span(sd));
+> -
+> +	cpumask_copy(sg_span, sched_domain_span(sd->child ? sd->child : sd));
 
-On Sat, Jun 29, 2019 at 02:44:21AM +0000, YueHaibing wrote:
-> Remove .owner field if calls are used which set it automatically
-> Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
->=20
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+At runtime, Are we avoiding a function call?
+However I think we are avoiding a branch instead of a conditional, which may
+be beneficial.
 
-Applied to for-next, thanks!
+>  	atomic_inc(&sg->ref);
+>  	return sg;
+>  }
+> --
+> 2.22.0
+> 
 
+-- 
+Thanks and Regards
+Srikar Dronamraju
 
---QKdGvSO+nmPlgiQ/
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAl0guJcACgkQFA3kzBSg
-KbZvhRAAo4+3YhI39rG4rBWsbdNyRoz5yDVMxqJcCWGiGnwMuR6RATNCRLJGpdP6
-MJUjKMsYiRGVgFM/DeUxxM0/EwxYu5bYVdcD8pVz/rb5Cz89bjlGQgKeQ1qE/f1x
-p8tneSHQmebUv9RVyC3ip+/cyI2JdmRdZF/q2BhRTgXJKgKbzUcBgO5o8j+fdGIz
-GTG9t6WNui6q4cYgnhkD5C9Rsp+e13I1EP14h5AhPVMlvM06xy5fjyzw2OMd+khR
-bK8mOlMqXc391eD7Sslakz4w3mu8zjLT9jedSWyp/621EV5RSyrstFZZaG9StWxD
-mNY0amrWqg3jZxZElj8+CqkQnJt+n8P9jbtI8tKe2m5AmwoKjRB/QUrj8QDK2DsW
-QmGcHumPvGJVBFSP03MB4M9VJ9pp3rwuf5Mm7pQdK4jgdLgNs71G1FYlBzoW7JAP
-Qptvwkt9A4BE2gpWokgtu7O3nb12LfZbe3ot86yRmKQlWlxZGoG/BVuyMUyD/HsE
-42KxXykKAokiovUt049RIQyMLB4IZBLGBuuuwEcaTiUfkDVb1/h8fCiVQX+S6C5v
-BnePbGuf9M0zNPGeBS1NYn0+CkOO4mkR0aiS+2q0KQjuypmdeHbnWXrjl4MfVk7k
-WpMHEHUFGvHQ2LNQsqxUAq4VUtGapi0d0RsNPX4cL+4HhWDqyAo=
-=5oAP
------END PGP SIGNATURE-----
-
---QKdGvSO+nmPlgiQ/--

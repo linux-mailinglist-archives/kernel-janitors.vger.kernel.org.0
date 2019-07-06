@@ -2,68 +2,232 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7682A60FEA
-	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 12:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E4AB610A4
+	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 14:19:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726213AbfGFKvD convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 6 Jul 2019 06:51:03 -0400
-Received: from coyote.holtmann.net ([212.227.132.17]:49002 "EHLO
-        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725926AbfGFKvD (ORCPT
+        id S1726618AbfGFMT3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 6 Jul 2019 08:19:29 -0400
+Received: from condef-03.nifty.com ([202.248.20.68]:43775 "EHLO
+        condef-03.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726207AbfGFMT3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 6 Jul 2019 06:51:03 -0400
-Received: from [192.168.0.113] (CMPC-089-239-107-172.CNet.Gawex.PL [89.239.107.172])
-        by mail.holtmann.org (Postfix) with ESMTPSA id 526A4CEFAE;
-        Sat,  6 Jul 2019 12:59:32 +0200 (CEST)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
-Subject: Re: [PATCH][next] 6lowpan: fix off-by-one comparison of index id with
- LOWPAN_IPHC_CTX_TABLE_SIZE
-From:   Marcel Holtmann <marcel@holtmann.org>
-In-Reply-To: <20190624144757.1285-1-colin.king@canonical.com>
-Date:   Sat, 6 Jul 2019 12:51:00 +0200
-Cc:     Alexander Aring <alex.aring@gmail.com>,
-        Jukka Rissanen <jukka.rissanen@linux.intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        linux-bluetooth@vger.kernel.org, linux-wpan@vger.kernel.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: 8BIT
-Message-Id: <B6A1CB42-C239-42CA-B14E-483A02B930EB@holtmann.org>
-References: <20190624144757.1285-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-X-Mailer: Apple Mail (2.3445.104.11)
+        Sat, 6 Jul 2019 08:19:29 -0400
+Received: from conssluserg-01.nifty.com ([10.126.8.80])by condef-03.nifty.com with ESMTP id x66CGlaU003500
+        for <kernel-janitors@vger.kernel.org>; Sat, 6 Jul 2019 21:16:47 +0900
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49]) (authenticated)
+        by conssluserg-01.nifty.com with ESMTP id x66CGepq018678;
+        Sat, 6 Jul 2019 21:16:40 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com x66CGepq018678
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1562415401;
+        bh=FfB1NqG/gE92yWOnQ6/KTKMCyYbR4uXXTkbKQtydcMY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=z1qZbRqlSOwyuHHKhQBoYCFvqKKDWmvl1D/q9ZoGTvDTc9KQbA7s2fNaiuaOrWELp
+         tyXp0ubtEfPmXO106o48+YO8FKkmOeO1rCjEgGklBWeEjuoc9xcZzknaaSPs8O9nyF
+         KhM+FPiZnVB0rzSMFVBC2Uy6cJGYR4B1/LeTXMm2Rhrf9w/M5TH6YylgJHRzwQ+agf
+         224PGH/+TOod4n5PVDi265irVfi41Mh+iSdQ2UdjhZH3RWZNyZNFGa4LYLgkGfgWOM
+         RD+OUaaF2kUM7k4OBsUKkvZ96u1Z2LrYASV9YQ45pnCtDHwXjTTVDCdTShkOMLVZyc
+         gfUlhkDqodoQw==
+X-Nifty-SrcIP: [209.85.217.49]
+Received: by mail-vs1-f49.google.com with SMTP id j26so5384240vsn.10;
+        Sat, 06 Jul 2019 05:16:40 -0700 (PDT)
+X-Gm-Message-State: APjAAAVMRqw9e+7F1jUo0hxfx7E5Ld/tGYamm3bweumsQWHFzF5ixz33
+        0l2X5igNtxrApANLqDnikNMtGKcK5ZVdtxIItqk=
+X-Google-Smtp-Source: APXvYqygMpGz0NVEVvFeGd+Pele9Hueqk0n/t5IwyE+OhHb7yi3tGYRZBW3SzE6pLj+Hqa4UtocBm+uPgajacg0+6AY=
+X-Received: by 2002:a67:cd1a:: with SMTP id u26mr4689375vsl.155.1562415399561;
+ Sat, 06 Jul 2019 05:16:39 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190406061112.31620-1-himanshujha199640@gmail.com>
+ <alpine.DEB.2.21.1904060831120.4486@hadrien> <alpine.DEB.2.21.1904060833160.4486@hadrien>
+In-Reply-To: <alpine.DEB.2.21.1904060833160.4486@hadrien>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Sat, 6 Jul 2019 21:16:03 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARTJpxRmQzx+vQGfOC5YFuw8QsRQ=_9=9E=g5p62UUf6g@mail.gmail.com>
+Message-ID: <CAK7LNARTJpxRmQzx+vQGfOC5YFuw8QsRQ=_9=9E=g5p62UUf6g@mail.gmail.com>
+Subject: Re: [Cocci] [PATCH] coccinelle: api: add devm_platform_ioremap_resource
+ script
+To:     Julia Lawall <julia.lawall@lip6.fr>
+Cc:     Himanshu Jha <himanshujha199640@gmail.com>,
+        kernel-janitors@vger.kernel.org,
+        Michal Marek <michal.lkml@markovi.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        cocci@systeme.lip6.fr
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Colin,
+On Sat, Apr 6, 2019 at 3:34 PM Julia Lawall <julia.lawall@lip6.fr> wrote:
+>
+>
+>
+> On Sat, 6 Apr 2019, Julia Lawall wrote:
+>
+> >
+> >
+> > On Sat, 6 Apr 2019, Himanshu Jha wrote:
+> >
+> > > Use recently introduced devm_platform_ioremap_resource
+> > > helper which wraps platform_get_resource() and
+> > > devm_ioremap_resource() together. This helps produce much
+> > > cleaner code while removing local `struct resource` declaration.
+> > >
+> > > Signed-off-by: Himanshu Jha <himanshujha199640@gmail.com>
+> >
+> > Acked-by: Julia Lawall <julia.lawall@lip6.fr>
+> >
+> > Thanks for taking up this issue.
+>
+> Maybe this should be
+>
+> Signed-off-by: Julia Lawall <julia.lawall@lip6.fr>
+>
+> since I contributed two lines to the script :)
 
-> The WARN_ON_ONCE check on id is off-by-one, it should be greater or equal
-> to LOWPAN_IPHC_CTX_TABLE_SIZE and not greater than. Fix this.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
-> net/6lowpan/debugfs.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/6lowpan/debugfs.c b/net/6lowpan/debugfs.c
-> index 1c140af06d52..a510bed8165b 100644
-> --- a/net/6lowpan/debugfs.c
-> +++ b/net/6lowpan/debugfs.c
-> @@ -170,7 +170,7 @@ static void lowpan_dev_debugfs_ctx_init(struct net_device *dev,
-> 	struct dentry *root;
-> 	char buf[32];
-> 
-> -	WARN_ON_ONCE(id > LOWPAN_IPHC_CTX_TABLE_SIZE);
-> +	WARN_ON_ONCE(id >= LOWPAN_IPHC_CTX_TABLE_SIZE);
+I will apply with Julia's Signed-off-by instead of Acked-by.
+I will also add SPDX tag.
 
-this patch no longer applied cleanly to bluetooth-next. Can you send me an updated version.
+Is this OK?
 
-Regards
 
-Marcel
 
+> julia
+>
+> >
+> > julia
+> >
+> > > ---
+> > >
+> > > Tree wide changes has been tested through 0-day test service
+> > > with build success.
+> > >
+> > > BUILD SUCCESS 74ebaaca5d14d3d9b03e911f0b4995b78a4d60f0
+> > > tree/branch: https://github.com/himanshujha199640/linux-next  20190401-devm_platform_ioremap_resource-final
+> > > branch HEAD: 74ebaaca5d14d3d9b03e911f0b4995b78a4d60f0  Coccinelle: api: Add devm_platform_ioremap_resource.cocci
+> > >
+> > > elapsed time: 385m
+> > > configs tested: 162
+> > >
+> > >
+> > > Stats:
+> > > 916 files changed, 1028 insertions(+), 2921 deletions(-)
+> > >
+> > > Note: cases where the `struct resource *res` variable is
+> > > used subsequently in the function have been ignored out because
+> > > those cases produce:
+> > >
+> > > eg., drivers/bus/da8xx-mstpri.c
+> > >
+> > > warning: 'res' may be used uninitialized in this function [-Wmaybe-uninitialized]
+> > >
+> > > due to:
+> > >     if (prio_descr->reg + sizeof(u32) > resource_size(res)) {
+> > >
+> > > which seems correct as `res` isn't initialized in the scope of
+> > > the function(da8xx_mstpri_probe) and instead initialized inside:
+> > >
+> > >    void __iomem *devm_platform_ioremap_resource(struct platform_device *pdev,
+> > >                                                 unsigned int index)
+> > >    {
+> > >            struct resource *res;
+> > >
+> > >            res = platform_get_resource(pdev, IORESOURCE_MEM, index);
+> > >            return devm_ioremap_resource(&pdev->dev, res);
+> > >    }
+> > >    EXPORT_SYMBOL_GPL(devm_platform_ioremap_resource);
+> > >
+> > >
+> > >  .../api/devm_platform_ioremap_resource.cocci  | 63 +++++++++++++++++++
+> > >  1 file changed, 63 insertions(+)
+> > >  create mode 100644 scripts/coccinelle/api/devm_platform_ioremap_resource.cocci
+> > >
+> > > diff --git a/scripts/coccinelle/api/devm_platform_ioremap_resource.cocci b/scripts/coccinelle/api/devm_platform_ioremap_resource.cocci
+> > > new file mode 100644
+> > > index 000000000000..a28274af14df
+> > > --- /dev/null
+> > > +++ b/scripts/coccinelle/api/devm_platform_ioremap_resource.cocci
+> > > @@ -0,0 +1,63 @@
+> > > +/// Use devm_platform_ioremap_resource helper which wraps
+> > > +/// platform_get_resource() and devm_ioremap_resource() together.
+> > > +///
+> > > +// Confidence: High
+> > > +// Copyright: (C) 2019 Himanshu Jha GPLv2.
+> > > +// Copyright: (C) 2019 Julia Lawall, Inria/LIP6. GPLv2.
+> > > +// Keywords: platform_get_resource, devm_ioremap_resource,
+> > > +// Keywords: devm_platform_ioremap_resource
+> > > +
+> > > +virtual patch
+> > > +virtual report
+> > > +
+> > > +@r depends on patch && !report@
+> > > +expression e1, e2, arg1, arg2, arg3, arg4;
+> > > +identifier id;
+> > > +@@
+> > > +
+> > > +(
+> > > +- id = platform_get_resource(arg1, arg2, arg3);
+> > > +|
+> > > +- struct resource *id = platform_get_resource(arg1, arg2, arg3);
+> > > +)
+> > > +  ... when != id
+> > > +- e1 = devm_ioremap_resource(arg4, id);
+> > > ++ e1 = devm_platform_ioremap_resource(arg1, arg3);
+> > > +  ... when != id
+> > > +? id = e2
+> > > +
+> > > +@r1 depends on patch && !report@
+> > > +identifier r.id;
+> > > +type T;
+> > > +@@
+> > > +
+> > > +- T *id;
+> > > +  ...when != id
+> > > +
+> > > +// ----------------------------------------------------------------------------
+> > > +
+> > > +@r2 depends on report && !patch@
+> > > +identifier id;
+> > > +expression e1, e2, arg1, arg2, arg3, arg4;
+> > > +position j0;
+> > > +@@
+> > > +
+> > > +(
+> > > +  id = platform_get_resource(arg1, arg2, arg3);
+> > > +|
+> > > +  struct resource *id = platform_get_resource(arg1, arg2, arg3);
+> > > +)
+> > > +  ... when != id
+> > > +  e1@j0 = devm_ioremap_resource(arg4, id);
+> > > +  ... when != id
+> > > +? id = e2
+> > > +
+> > > +// ----------------------------------------------------------------------------
+> > > +
+> > > +@script:python depends on report && !patch@
+> > > +e1 << r2.e1;
+> > > +j0 << r2.j0;
+> > > +@@
+> > > +
+> > > +msg = "WARNING: Use devm_platform_ioremap_resource for %s" % (e1)
+> > > +coccilib.report.print_report(j0[0], msg)
+> > > --
+> > > 2.17.1
+> > >
+> > >
+> >
+> _______________________________________________
+> Cocci mailing list
+> Cocci@systeme.lip6.fr
+> https://systeme.lip6.fr/mailman/listinfo/cocci
+
+
+
+-- 
+Best Regards
+Masahiro Yamada

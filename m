@@ -2,37 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DECBE60F6A
-	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 10:16:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A84560F8D
+	for <lists+kernel-janitors@lfdr.de>; Sat,  6 Jul 2019 10:57:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725990AbfGFIQO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 6 Jul 2019 04:16:14 -0400
-Received: from mout.web.de ([212.227.17.12]:60365 "EHLO mout.web.de"
+        id S1725971AbfGFI5O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 6 Jul 2019 04:57:14 -0400
+Received: from mout.web.de ([217.72.192.78]:44239 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725900AbfGFIQO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 6 Jul 2019 04:16:14 -0400
+        id S1725900AbfGFI5O (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 6 Jul 2019 04:57:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1562400935;
-        bh=8+x5zb8M56IwLI9KqnivxYHcbPvMtQLoFq6LdrTZcLw=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=e6lFzOXYMJdhBNrlpiB0Cxflm9XRNDh3Z77KJOXvTVKiAFV1BMzlGQ8+iIVdyWfi3
-         G60BG45DAi2hoafGV7MofID2q1YWSZCGhyt7Rta5YMD9Cqt06Jd9cC576nCLUqhDXo
-         XSzlxyNRhbZHGw6NBVvzs6nD7T5VD253WP3D1nbQ=
+        s=dbaedf251592; t=1562403418;
+        bh=mga3jcoqarNpM03f1VZ9ZEB8Apx+m+Akum97wS1Kp74=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=hCo3095G193LGVFu1cJcDkTvKcTlSSnEtJpxD1eUsJBDOE1qZIgnCnM9+QO+LfuKA
+         FNU/CvdgL3bdribx1CrKUYAsWXefFxH+UNs7Iiwhk5RKKvIK7xSYhM9Nd6u1MGXgk7
+         biR+RLlsKzHIPE3pgmINNfV4lyBnTRoUKKOzKTYI=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.148.45]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M1G68-1icjLr0fbk-00tDOq; Sat, 06
- Jul 2019 10:15:35 +0200
-To:     speakup@linux-speakup.org, devel@driverdev.osuosl.org,
-        Bhagyashri Dighole <digholebhagyashri@gmail.com>,
-        Chris Brannon <chris@the-brannons.com>,
+Received: from [192.168.1.2] ([2.244.148.45]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MfHsM-1i8O5A065C-00Onja; Sat, 06
+ Jul 2019 10:56:58 +0200
+To:     devel@driverdev.osuosl.org, Aaro Koskinen <aaro.koskinen@iki.fi>,
+        "David S. Miller" <davem@davemloft.net>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kirk Reiser <kirk@reisers.ca>,
-        Okash Khawaja <okash.khawaja@gmail.com>,
-        Samuel Thibault <samuel.thibault@ens-lyon.org>,
-        William Hubbs <w.d.hubbs@gmail.com>
+        Ioannis Valasakis <code@wizofe.uk>,
+        =?UTF-8?Q?Petr_=c5=a0tetiar?= <ynezz@true.cz>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] staging: speakup: One function call less in
- speakup_win_enable()
+Subject: [PATCH] staging: octeon: One function call less in
+ cvm_oct_common_set_multicast_list()
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -77,45 +76,43 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Message-ID: <11f79333-25c3-1ad9-4975-58c64821f3fe@web.de>
-Date:   Sat, 6 Jul 2019 10:15:30 +0200
+Message-ID: <877404bb-a9e4-ffa5-a621-d87fbca549ef@web.de>
+Date:   Sat, 6 Jul 2019 10:56:52 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
+Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:WjlotG6ZLpR1DGdwN0TbZpJZhsy0inkA5QNDz8Lra+YHLAkenpX
- 6uTJUoF6l8DlszWFDC9KBgIu03P1RQKAR17RaIJCu1d0oqOT1q9zR949n4BovGEzpMPy5af
- 21XUKqdgKCHrGJO0HBU8sJ40hgtujfdHd6eHfdHVpz8zHaQqiU5lY8TUohc9btrEt2XXgHq
- qJlsVNmwY9neJxWAoqL3A==
+X-Provags-ID: V03:K1:3SOAS6OIFImhnFeCq412wwiEs+6NcGPbuGVNRS4Jm2jfPZq2Kq0
+ ohsWa0K578Qm16/yGXW2Gh40EGmfDosYUZMsLjn4AQxTKT4AiviO++ddene9jfv/98Ug4Q2
+ QeHAO18L/1qSsTenV9Zqoao/DO8Ekf0NkuxPc7mz/VZ/6J5dSEPnacE/QqEKbsC2+MSvGf8
+ eq34JgIBTT038wGEfG73w==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:CFVnmFccx8k=:+ow3qAQZDdxIYGqSWCYYTR
- cAFXe5+6K239bkRRW+NMFuZB7Ken1PKaYsDQ45xEdCDkTP7eeEvPchw4yQ4WpD1a/H4Xyx7FS
- mgAWBjXUurbJ2DBeSS2jmF1K9Al41lK1p3T1W1m9h5MoqR91FVfz0kuEgwjYXdyFM2wTEqf0e
- kE6WeBXXdaD+dAGJhXXZXsF0fxURe/Zj4bWWQY3addZ52sZDnXtBwYdzV7XwtNYY0BFbgQyub
- sonfuGgUP8gm+RJ+98MqNTJKCqi/aitdQxnNR80gT+lMVEygfiJS9Vuc+pUO63IiBdj+15KkF
- G4fDpgRM8Zviqf+hFw43eP4VDD/KXmPOfx14hTZm4Lwko/Doax/E5B0/ZRLX8DCgS2xsmJ3Ts
- Iu339dYjvpVeeDFHkmnYNWFHx/mBJl/qH/UlG8Rc/syMv6yUL+Kuv2aANWL9hfxTLNt5agupv
- 4FJV4Zqa8afkvnyC8vWz5zTacTXz32wsoH1txpMOGWPr8khomlbFOMnMXnwCRI+JWEcNwE/JS
- /qj0eKcFNyAKIUtNn/t4vl06zQfpz/0LzR1rjKM12eqti3Up4O/rL/ChvNVqtJThFTps6apsc
- OE9hfXdqTIyVkcxkwK0YWo8iByFnVo9OVpQyCXXo5+p+Htc9+8vJZPBUpTRf+t+DPDWDcl5/N
- 5MSZqaa9cz+kTZOvtxUFrU5DV7qszb9oB0/K+j6DFnVX90FZmuTvrCfCuwfMg8p0BpwTKqAHL
- W6kdh/6dSgiN2p2mNGXGT8uTzSa0kwNDLT92KZFxJC1lMXxoxw0sssMRz+D6DF+MaFHn9y5s8
- VB4QIx15NE0pFiJXrHKoJTwJ7tCyFCMPvj+M3pe+ZNdM14wVnuPddZA9bk0/wSF7buPVHz0Df
- E4xaHtsg3hN76pPkxCda8HguXr//U2FfxCibNGTFdtG9knkwfqJZUkSAEZe2/NoCAXQjDdFKu
- ruwf3fC7RT6dDsTdDtQl06oeTpHep9T+vBsYUW0EzgY9Rijv2L9hZ0Lv4+k6ThPT/FcFslySN
- kz8/UaL+ZsJbeGHv5W1iVMh2wKMzS2DTi+XSk0ZXyAlFF9zr0BLikd6YNHnDXBDaBV8nzSdVg
- KjaHZcnyAG6XNY+q0cX2tEOls6zuhESzLRD
+X-UI-Out-Filterresults: notjunk:1;V03:K0:OPlnqBzK9f4=:rOcU37DcUhjiB1pgh72XCQ
+ gw+iKVem0qpNNgCgxc+2JzxyydefFW4XC0gVjSipyoArnI9OkTAcs5OPhZ6MGPwS2MnGZYsrK
+ QFKZ0cfWeI1cdPU1ru1Alx+SWndCTXjZgwLOvT5z807OHlXViJ9W4ZSfhNjJ/WHwIgeAFJlb3
+ ukW8USSCoeeLiMRIhO/XcVXFDTvsGWvf/JL7MBAsW4ZLWyUopFXQC31sCn3K3u+gb+f8lATdP
+ jqowoaTn0CvZP+OvjszdH4mh45lNta2LDkzsM1tCwHCBTydwIiSuttHrxbrW+3gJVq/1EFryt
+ 5u/CBz7/s6Xd+9lfRTAZ3nzeqXP0bL9OzQM6hz8GuwYW6g02utv14GbZbQcAPv7M8Z08PhpOz
+ CBV6swQXSvk2syWPg1Ip8pqgeFW/+hxNQCiw1zyqdEw4WozcXOhxsSrp8WbiLQHKGedUrqlYf
+ Dv0NdM2JF+NpaXmErsYyGTvDBuW8iVSH25XvnzoWufZcUrrher+dim3bJ1PlMG/3Ip6LxyT/y
+ tibUWzzGYuuUGu8Fe5E6EyH9HLtuvlJCNM8LgomX2IY80dSh6Hyqvlpum5BvOg8vJSXYtYohM
+ JEhJ3PseVzBMfiT7dQMNZHBY6kx0TAEWFCjgWxZwzQV0hbvcWpuIBnn551TbSt+zg4EhnAf2g
+ D5nLH6zfB76Q6YQK0xGO6nFfMvu+Xgyy64ts5+NQENs2SGU7aBHmBc/V8xO6xejLzM6DzWbho
+ UKqe16sn3ysQgYEl0HCcgusN+8Yi4ZDuzNacYECUk/O4DV6kXq87nlvU1eChG80oGpSSBJ40A
+ cpqxB3EO2vqmQguLmPEnvexbXy/qMb9gfMwKzMtMV7OOir/7vvTUIzrZlpkrxVGm+VBKJZUQG
+ /gMmjb94n/7HSQ7yoAyBLPjJEDjZs1GWSlX6Nl9BrCcc2+fN/L8Y7Ch6cLFerShor/0MxW01s
+ wcaLow9FUMG0gaHtZCXbNEg01Dwn2S0F7XaVmEj8p3rOVPjrSVjcWo2y0fudv10uQNxa5f4uh
+ rPc/cfXP0Ky9ZCWyyrqnSqA86ERZb6sHUFm3jRltWDWwkPCoDcjYFgMfFm5jpJfl4wfbuYGaN
+ fyNt3wKdWk1NviwEpPciDvwHBHY9kLlSh7f
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 6 Jul 2019 10:03:56 +0200
+Date: Sat, 6 Jul 2019 10:48:23 +0200
 
 Avoid an extra function call by using a ternary operator instead of
 a conditional statement.
@@ -124,28 +121,31 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/staging/speakup/main.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/staging/octeon/ethernet.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/staging/speakup/main.c b/drivers/staging/speakup/main=
-.c
-index 488f2539aa9a..03bbc9a4dbb3 100644
-=2D-- a/drivers/staging/speakup/main.c
-+++ b/drivers/staging/speakup/main.c
-@@ -1917,10 +1917,9 @@ static void speakup_win_enable(struct vc_data *vc)
- 		return;
+diff --git a/drivers/staging/octeon/ethernet.c b/drivers/staging/octeon/et=
+hernet.c
+index 8847a11c212f..93f127a0b287 100644
+=2D-- a/drivers/staging/octeon/ethernet.c
++++ b/drivers/staging/octeon/ethernet.c
+@@ -337,13 +337,8 @@ static void cvm_oct_common_set_multicast_list(struct =
+net_device *dev)
+
+ 		cvmx_write_csr(CVMX_GMXX_RXX_ADR_CTL(index, interface),
+ 			       control.u64);
+-		if (dev->flags & IFF_PROMISC)
+-			cvmx_write_csr(CVMX_GMXX_RXX_ADR_CAM_EN
+-				       (index, interface), 0);
+-		else
+-			cvmx_write_csr(CVMX_GMXX_RXX_ADR_CAM_EN
+-				       (index, interface), 1);
+-
++		cvmx_write_csr(CVMX_GMXX_RXX_ADR_CAM_EN(index, interface),
++			       dev->flags & IFF_PROMISC ? 0 : 1);
+ 		cvmx_write_csr(CVMX_GMXX_PRTX_CFG(index, interface),
+ 			       gmx_cfg.u64);
  	}
- 	win_enabled ^=3D 1;
--	if (win_enabled)
--		synth_printf("%s\n", spk_msg_get(MSG_WINDOW_SILENCED));
--	else
--		synth_printf("%s\n", spk_msg_get(MSG_WINDOW_SILENCE_DISABLED));
-+	synth_printf("%s\n", spk_msg_get(win_enabled
-+					 ? MSG_WINDOW_SILENCED
-+					 : MSG_WINDOW_SILENCE_DISABLED));
- }
-
- static void speakup_bits(struct vc_data *vc)
 =2D-
 2.22.0
 

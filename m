@@ -2,32 +2,41 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82C9C61449
-	for <lists+kernel-janitors@lfdr.de>; Sun,  7 Jul 2019 09:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6B6D61499
+	for <lists+kernel-janitors@lfdr.de>; Sun,  7 Jul 2019 11:56:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727189AbfGGH4V (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 7 Jul 2019 03:56:21 -0400
-Received: from mout.web.de ([212.227.15.3]:59177 "EHLO mout.web.de"
+        id S1727318AbfGGJ4c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 7 Jul 2019 05:56:32 -0400
+Received: from mout.web.de ([212.227.15.4]:40175 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725822AbfGGH4V (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 7 Jul 2019 03:56:21 -0400
+        id S1725822AbfGGJ4b (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 7 Jul 2019 05:56:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1562486174;
-        bh=RZuegKnQZBE0fRTCBplZrfIRKxZU10eJaftbP6wky/A=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=lUZnuFAf8hFeJAY3ZyqkhJzybuE8E+QcWqweNzIH/RBtxKmQ76JT+i+C3o7u6th54
-         yRqay5CoXC4xhTjO2VzIFXQd55UvrWg/Cy2N9dK0TK7CbUhSfrYwP/XEq1+jqUcTlh
-         v9V6wYpFP3THAlrARhyQxis1b7G9wsuydEmlHBqA=
+        s=dbaedf251592; t=1562493340;
+        bh=pIjU5m/hqLHnMDS7/Bh23VXp+9hOmQNr+dTLRGj0K68=;
+        h=X-UI-Sender-Class:To:References:Subject:Cc:From:Date:In-Reply-To;
+        b=W0OfBzOuqHzvAFoWBqdlMUDb8VefY6nIl6ywgfiNunx8X6Nt4RxBSRvt0kLD6sIxo
+         EZXMK0NaVt4WCjmSfZ8dtRq8t0lJ8iwv62oC8/1bPOhGddyNa4EdquakiFXqxkHfum
+         xOeJLF3etDWkqfjDcK0qJztfmD+AnJghN/6LJ6Uo=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.48.61.32]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MZliY-1i5YWJ3J4Y-00LU0L; Sun, 07
- Jul 2019 09:56:13 +0200
-Subject: Re: [PATCH] mfd: asic3: One function call less in asic3_irq_probe()
-To:     Al Viro <viro@zeniv.linux.org.uk>, kernel-janitors@vger.kernel.org
-Cc:     Lee Jones <lee.jones@linaro.org>,
-        LKML <linux-kernel@vger.kernel.org>
-References: <01f6a8cd-0205-8d34-2aa3-e4b691e7eb95@web.de>
- <20190707005251.GQ17978@ZenIV.linux.org.uk>
+Received: from [192.168.1.2] ([78.48.61.32]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MAvVk-1hcOvg1a6e-009vxx; Sun, 07
+ Jul 2019 11:55:40 +0200
+To:     Julia Lawall <julia.lawall@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        kernel-janitors@vger.kernel.org
+References: <alpine.DEB.2.21.1907061538580.2523@hadrien>
+Subject: Re: Coccinelle: api: add devm_platform_ioremap_resource script
+Cc:     Coccinelle <cocci@systeme.lip6.fr>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Enrico Weigelt <lkml@metux.net>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Nicolas Palix <nicolas.palix@imag.fr>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
@@ -73,107 +82,63 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <4b06e2fb-a0ba-56e5-b46b-98e986e6f2fd@web.de>
-Date:   Sun, 7 Jul 2019 09:56:11 +0200
+Message-ID: <de953581-7ae6-952c-3922-3d5b25f48e17@web.de>
+Date:   Sun, 7 Jul 2019 11:55:37 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <20190707005251.GQ17978@ZenIV.linux.org.uk>
+In-Reply-To: <alpine.DEB.2.21.1907061538580.2523@hadrien>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:k7mpQjf5K+BT5ovyDPDaVPMQEr3jIaPICBqQc5fK5UoEPEm8Joz
- YvyIac+o+OTi6oyAvLmR2x/7dhRSzUlVhqP02x2PPJ6FytescEQWXWcCOqC4FG01Eap88PY
- ih4MTz2Ru43N7VnOgjaBDSybhiCJV8ZhS0JJKtHjNZhrrVWU00/LCmWt8Hq6UHNRcsMsxfo
- iVrTRhseeEtI4MODdzaXw==
+X-Provags-ID: V03:K1:Ck4fJzu9yqecdi81wzMxgjvoVpi4RxMhFWtUEhMVkUywLrC3pT7
+ H21csEWb3NiK7yWUuMgWIj+HPSKtKFroB9CxPsuM/KwbgsYt5JG7YNYwtt6f7CCgFlpxjyJ
+ 6YlUGAjn7cgvmjVzuXdC1a844g1P2LkQsKNRdls9vHbPpBHfbYWnHn5i271KjfNcQMVE12y
+ Ax+WbMwoGc3xIt9R90ykA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:kt8Xuw84ONE=:8nKHQDex1imEGHmpxyZ6P1
- AiPZmFD3/420gQJ8KjdKgJQceE8od7uKOWYU8D01JJEeB7/R5IzsX5g2NG7m7Y9AlNxHrBWh5
- XVdO2/ARkj5TGjTbE2d3ik0REqo5oR9lVXE+jcBN53P75ssOsC5QhA/3CYxbyzobQ1tiSZfQ2
- DX3lfmzkI3qehhSq6SMcGZmDyY5gwZtFV3HfxObJgbqhTLijVGd1JJPelljnVj943cyXxvRHk
- +nffHXhj9TTkmsk0in9kHTY2OtclhOSGEyLZ4jHiZnhnoOdJuocgnLuIfwIna8zhBbgp3r1zL
- yOfB4tWS8EB+vL1Tvw1ANTmI/BIlA8W6XPsJHq0Q1da7A/0JpC1xYVfGr2tStOgwJjjMViQ61
- L+zlNFq9tVplmjea0BpOt7qVlpe0FaeftWJolDBcDkZurT4S2YD/6yIZXXIGndWvghpzFfDnc
- wSaHO5Ru/n/tq0B/PBkOOzTteBWm1iQ+CXzWJTy3WHFWXuHS0hak/MV1aS9CoW85UBGltqXoQ
- 0w43JoK4xxN6XnVnu0MbdZ2Q/Y8z7HmWwO1jMulihD7TAMvoRF306hyal2WlJVCz377qAsZVz
- xC3QEJwu93flFE7TfYEN2pEUAUgCP2ej6pBC+dopfhVYYL8lOxkA6fxwOM4lotJNnFbSE2hLV
- OUGa+wAwu6+58zLQrvOGlgi/ulakf6ak54l4r9uxNWrhofzFYIiJt6WnXKKirepB0B6lPypja
- H9F4rXiZVSRAYw/VfymdoLJNNAwVxa/y3fpsxVmLkm7vHWd5QJV9vQhrZCRZ9jNyDPMbRiAmj
- edfXYr5YcA7T4UYylXK0s3dsnNvzth5s2fciWuibkWATSvWVHSqT06vZWtHS8I00tkyxjNHsV
- sfRRkxHJJ0QmaKH+zorXWQC7VLy0YICHPTNipG1irD/oqFkZ9GxY85YNjedo1pCUgJF+6TVWo
- wjWPdZY1Up97RghPXxv4xfPhU4lzykwHB5UOcCyY1ez03mt9MjUcMrJz3OOslxXRzE7w3aYIY
- 18pDizdcoHjHDcf1Zqj9zfDJgFi5VgqmtJBxK3yJ56ezEyqCmH9vkBTe88hc1R+3vMAbNatDR
- /h71IvKQHZ9LKCyznhicTPcP+kQsFwzbc6r
+X-UI-Out-Filterresults: notjunk:1;V03:K0:C2hneSWOXv8=:SvmbeApjUkXpIoGCJdJ5es
+ xMgj0rwSUae2b59xlQkcyY+xBr7P9i+SuXz2OQtcx5U4to3KU3Va/CZ3GxToBrX9O3qsCGYxr
+ DvocH4nNW6/Pd8zuqfD52SriRDfg9OAMeB3KDE3CB+LJOxS+UGlmJB6gugyW/mwMXfLDMkfl0
+ RA+2oYW411EE3tgVtSCUDJ4PEJZ5cwUTBRWLKuws03wSsza+okAj/dRTpm1pP3LGmJaxMAjC/
+ 0vnubdBOUXX5ZlSzX88F6+23KQMj5loFDPDTaFDRdVgYe3GqfIXdzxgDn7r7rI4JIqK20uzB7
+ LvZCxMdyyz1xhXLtCfMjjzLE/0R/830Gi510C7TJNfy2yEo75JZ4EvYVGNfflxCHQE+MIaiDS
+ RAWRWUP9cQzz65zJRsvcVsQ9HpUZdMySqTgJCkDe4F7ZLqIk1zaO1IcSkjdeuO4YpYCdZZNUw
+ LSQoYGgH2bpSUvKtxjxD2mtGLwGKNYzGSM0UoGiEi1fUNfjNusV1iZWg/YGcAWwouP7CIoOMn
+ DMTHfAO38QvFKA+K3jYH6PT66M2eRExxciRi3E8zz6PE0Z4Wel4eO46zZGbWUyAjNY1vtcupg
+ CLXblJ7xoL7aRJqjYU1dx4uD+68eGV5WFuBV5Wwf3vGQZBir2vnbnKhVKh3oUePRZ7zkoNr5x
+ ccNH6Hyx1YXoeU3OLsqvraUaLJtADwNCMfIxh6P8NwJl8bCikPInQWHFWtl+7i9Cwvr73Vjr4
+ FpLi0VKbg5HHeLeSDE21uKdSZQ6HiBspkkzAdn48WqhLLkqLjZJznS88N5aBBlKtwcmfqAIpQ
+ R4LdLZQ/VgF1nmoHUuk1Hw/yDDBI/hyzFk9w8kLLi1uCbAy/0Xv3HajB6CI21FBaPpdMyYStU
+ 7qWc2Jzol+K62LcVux7UC81LEzRPLmQrDuPPhc8qaaoH23N/ikyk56dtig8+MdYvJy3Itv8rO
+ nH0tXRfvZh7H9lUYrP2YljRHa5Cz6tTSFursACWtzQAoxZ5AZdm3ksPikvM4hwf64mPcw98Z/
+ MPpWmclQMgTrSXR76eiu2ZosNkfb62OcsDda+LV4ToGnrlfv0J3Z7HDbhmLBKFpqRN8mn6aZ2
+ kuN42TbTO9j60AVgG3+eeuWoCIYs2+kUz2j
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> Avoid an extra function call by using a ternary operator instead of
->> a conditional statement.
+>> I will apply with Julia's Signed-off-by instead of Acked-by.
+
+>> I will also add SPDX tag.
+
+>>
+
+>> Is this OK?
+
+
 >
-> Which is a good thing, because...?
-
-I suggest to reduce a bit of duplicate source code also at this place.
+> Yes, thanks.
 
 
->> This issue was detected by using the Coccinelle software.
->
-> Oh, I see - that answers all questions.
+Will the clarification for following implementation details get any more
+software development attention?
+https://systeme.lip6.fr/pipermail/cocci/2019-June/005975.html
+https://lore.kernel.org/lkml/7b4fe770-dadd-80ba-2ba4-0f2bc90984ef@web.de/
 
-Obviously not so far.
+* The flag =E2=80=9CIORESOURCE_MEM=E2=80=9D
 
-
-> "Software has detected an issue", so of course an issue it is.
-
-The mentioned development tool can help to point refactoring
-possibilities out.
-
-
->> -		if (irq < asic->irq_base + ASIC3_NUM_GPIOS)
->> -			irq_set_chip(irq, &asic3_gpio_irq_chip);
->> -		else
->> -			irq_set_chip(irq, &asic3_irq_chip);
->> -
->> +		irq_set_chip(irq,
->> +			     (irq < asic->irq_base + ASIC3_NUM_GPIOS)
->> +			     ? &asic3_gpio_irq_chip
->> +			     : &asic3_irq_chip);
->
-> ... except that the result is not objectively better by any real criteri=
-a.
-
-We can have different opinions about the criteria which are relevant here.
-
-
-> It's not more readable,
-
-This is a possible view.
-
-
-> it conveys _less_ information to reader
-
-I guess that the interpretation of this feedback can become more interesti=
-ng.
-
-
-> (the fact that calls differ only by the last argument
-> had been visually obvious already,
-
-Can the repeated code specification make the recognition of this
-implementation detail a bit harder actually?
-
-
-> had been visually obvious already, and logics used to be easier
-> to see), it (obviously) does not generate better (or different) code.
-
-The functionality should be equivalent for the shown software refactoring.
-
-
-> What the hell is the point?
-
-I dare to point another change possibility out.
-I am unsure if this adjustment will be picked up finally.
+* Exclusion of variable assignments by SmPL when constraints
 
 Regards,
 Markus

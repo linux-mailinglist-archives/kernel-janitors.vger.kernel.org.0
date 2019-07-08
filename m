@@ -2,113 +2,136 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E3E526209E
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jul 2019 16:38:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E75286221A
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jul 2019 17:22:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731675AbfGHOit (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Jul 2019 10:38:49 -0400
-Received: from mout.kundenserver.de ([212.227.17.10]:45329 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728998AbfGHOit (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Jul 2019 10:38:49 -0400
-Received: from [192.168.1.110] ([95.117.164.184]) by mrelayeu.kundenserver.de
- (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MAfMc-1hdwH01vQ0-00B2ME; Mon, 08 Jul 2019 16:38:46 +0200
-Subject: Re: mfd: asic3: One function call less in asic3_irq_probe()
-To:     Markus Elfring <Markus.Elfring@web.de>,
+        id S2387945AbfGHPWX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Jul 2019 11:22:23 -0400
+Received: from mout.web.de ([212.227.17.12]:49573 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387932AbfGHPWV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 8 Jul 2019 11:22:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1562599321;
+        bh=5jkFKCmR2GUwlsa0zrqotc5apw9/xdj6vpIuoJNsaqY=;
+        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+        b=SKo+hJ9/1PmXfDpAFKIy9C+kfYeaDQSYesfdNMOxhtIgtbIXPvTGR3q9sg3l65uTq
+         3ZFBvjPPdoF+4jjH+D0lAlV0ctJjL9MFmzxyE/+t0uCp3W0g3oomYFt7Iu01JP3otg
+         bA0MAoyAsiaDw8O0TPpw9O0KK9CoslVi+8bNS+iQ=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([2.243.165.233]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LxweO-1iY5Jl29zQ-015Fl3; Mon, 08
+ Jul 2019 17:22:01 +0200
+Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Cheng Shengyu <cheng.shengyu@zte.com.cn>,
+        Kumar Gala <galak@kernel.crashing.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Scott Wood <oss@buserror.net>,
+        Xue Zhihong <xue.zhihong@zte.com.cn>,
+        Yi Wang <wang.yi59@zte.com.cn>, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Lee Jones <lee.jones@linaro.org>,
-        LKML <linux-kernel@vger.kernel.org>
-References: <01f6a8cd-0205-8d34-2aa3-e4b691e7eb95@web.de>
- <20190707005251.GQ17978@ZenIV.linux.org.uk>
- <4b06e2fb-a0ba-56e5-b46b-98e986e6f2fd@web.de>
- <6e8eab5f-1f5c-b3dc-6b65-96a874ec2789@metux.net>
- <b116fc90-9558-8609-d803-7d8da2b66e0a@web.de>
-From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Organization: metux IT consult
-Message-ID: <143cb102-f310-c3e4-a1fc-ac45690999fa@metux.net>
-Date:   Mon, 8 Jul 2019 16:38:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+References: <1562317084-13140-1-git-send-email-wen.yang99@zte.com.cn>
+Subject: Re: powerpc/83xx: fix use-after-free on mpc831x_usb_cfg()
+To:     Wen Yang <wen.yang99@zte.com.cn>, linuxppc-dev@lists.ozlabs.org
+From:   Markus Elfring <Markus.Elfring@web.de>
+Openpgp: preference=signencrypt
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <99840e11-e0e6-b3f4-e35b-56ef4ec39417@web.de>
+Date:   Mon, 8 Jul 2019 17:21:48 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <b116fc90-9558-8609-d803-7d8da2b66e0a@web.de>
+In-Reply-To: <1562317084-13140-1-git-send-email-wen.yang99@zte.com.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:wa7vmB3eJM2UpBn+wAPEzGkfKJ2qKOqgvGNbxbvku5a1wslOmVr
- FRpRQQLBz3PNGao7N5PClZR+gBakHaR05nUZdjrGoaFuNqz7uEGKC2Qrlzm7lOLzeU1ePyW
- JESsH2qmwEENE2vIu3mgj7H7W5Us79wtGNoLGSygMv/YsxlBg2b6jCOp01oQtwsFMjfXXrR
- 2cqY1zvK7GbwVqubPP6CA==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ckcR2+VKOSFUJ6uGz6jX9tWXCfRXHX1jSP4nJJRSoovyDhyYsES
+ DkzoLdCYgB93ThN0rp+s/yzpSNxRzSHPwuVEsuRVwmNYjgFPY4hwabDTX4BTCmQ2HJzNOom
+ 7I205/htlkGNrag104lMhr74ihYdlMTHjC2t9Q03CgF/X4hTOyPTiEfrN6k6obTMYPawblv
+ ifzD29BWnQf9hE0T4z4eg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:oOuyiMjqq54=:25L/bs01Xm7tAAvobZsgq4
- T0SvS/gYqrVjQVAbfbL194m/LuZSNuXjkALOcPWXp3LcxYsMtvlYk97/tEuloZlunHIkVcxVg
- DQgLa06j3g3yryuIvINidsDpastN43LMrdCFf0QsdboV7+dYz2EGM/Z52PYs04DtRymoS3fJa
- OYTt5rWFIy1Fn1Ta1iINRemiZ/tqXXDJGIdDwwAPOqp0jJ1uzUA4aSilhm0XP3rPZH/An0pWq
- 1qtb0OE90fsUSqBD/le9PnJvghPLNRNa0b6uQmIhyQjZREG3/qYndELaF4WZLeNtRJcPGmA33
- AaIQymTJ02n9dcRDWuawRP/GH+FIqH9Qpm6LqoOoHa0maINAWHvZDOt8BrUVi3THGdqRoK6lR
- fDYSNPZEJP7tgz7L9u9IqapNxD2YMRHGXwid3NJzfD7TpKoerCOiaC0N2X3MigcOG1LtTs02U
- P5Z++duQURUza8BDhzTuAl2iL2H3xD1qwJYnIZxWG7ElFiYvyXEOkpnOZYd9r8n/OJC8Kp3yE
- lYaR+lYKCZTF3xGYe3t8B/vzmNNBWtdA+RZjbeOU2ElHBor9NxcPpNWs1moksXfM55WtB8rbO
- xIKpKUi1S7uBIaTJpjcXfXL/iwMoLozuB5/xYyCMP+ZdJrCfPZibsv8HJNju+I0NmvGAmEbqf
- nV3tu0ZdD3cIrGFk9fjjOzZBmdbzh3nVPI7HS+TfMbsBjrndvNWAYUZSPwd+hwhn3hepx6G4L
- ixQI+cirM9pWIy2Bp4Lq7VuLztU5ra01VezabvxVZhud3USvjIGKa0ajzH9MV3+f8l/xNFWgu
- bl7xsddWrHikYOpWECGSLrHyxKTXR1awkV1IKqFJcfr4B4Zf0/d0oFnZdz+Q6jgz0fUrsuO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:QcNKnEhYpzc=:mKHsD/6aZzyoV5+get5CTm
+ F+8ZlQ5kWQ5FsZAy4hSJOn1z+ODmSfhAymtSao0ltkOLC/sNPoF6E7DIc5hh6jZXQAlC3PcUj
+ Ph9LczXpV0Em+5Drpn14EtlOQy4F37LG4eioRL5zNV1mhLtSoOMFqzdAC7MySU/XAVOrWmZ7Y
+ tqWdJNGSRVteey01fWui45PiQ0nE0ARMC7w5jV/4JKDHmSSbw9hm/NO0k6eaeJqccyzwe6IaP
+ XiM8CkY1QDkz69jLD8ckH3g1LTnTWfCO9iIxs8GOoOIwY+Sj0vtcnzVN33p5/FLBiuj2Nm1O+
+ 4JZjm+oC8H4gstlAuzqOsnHbTopFuiAk3Ask3g1F4V8KdavIGRpWNWotYrpG/A5Zvfjd2XIas
+ DTS1R+66EzXlbPXJIKpQzyabYFktH0hyNpd/jhy06P3TIseBSBMvX4/JEwdyzh6tAs2U+Vwbv
+ rIj2n86X5JD6Z9o4/uin4IRVglVd6nGlBhv5dTsGuUupuzAe/vM8B7FRYo12toOLuvqn/IYsQ
+ BDmiR46bG3zBaln38qWR/RYtP06Snlp5ulsPNjh9hSksGp7HPIW275OZoJFjNFSjug58s2GVW
+ kOGCxnE/+Oa4mD9THzHP4GKerv2EcdkKsVgfDSwsLXIQu9qwrapxF/kO7p31IQdR0rdsMMT3G
+ +hWBAKfVKjhFfLwLA0ZvbDc2m2+p6e9aKCkFxPkc17O9NMUf3yc6pJ4NhRPv1us4cwf6Qi3Hf
+ tuZ1+Qic9hXcXFnsX1Y1xfeYPj94CB/q8yiMKfYEm5NLmx2Yddn6St+sDsXLt4pyxk0p73GCt
+ AeEjEQIf+osQ4Xa9gR0dHXMGfmXHagCRQ8CKhFa+aj58qj9G1o1VB6V5qJOuwrAmNbEhyXewF
+ kKpPHPYeivf/pE+h1TtlUeUQc0Quf+9tS2O9LJqlpRt2M0s5dNB3eeFPecWgZFg/oTr74OY3l
+ FgJlxScgA8xbMfaJ2kISanglgvSk4NUQ9+d+RF/AV057jLIwd/4TkXdaZuQJxromnR6qvwPhk
+ Q9+g5hjqnJlrMLApNDeU633N6sti7ldYy2WurfGcROdKQ4dHY8mhWQ9wNyZCAGRuJsC9+kUq3
+ v/mhIc8kXBgI46YaZOOnK3aI9hNTBJ94Si9
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 08.07.19 13:50, Markus Elfring wrote:
->>> I suggest to reduce a bit of duplicate source code also at this place.
->>
->> Duplicate code (logic) or just characters ?
-> 
-> Both.
+> The np variable is still being used after the of_node_put() call,
 
-You could also complexity for the human reader. That's a point where
-personal perception comes in, which needs to be taken into account.
+> which may result in use-after-free.
 
-> The code text size can influence this aspect in considerable ways.
-
-It *can*, but not necessarily. I'd prefer leaving this choice to the
-maintainer, as he's the one who finally needs to care about all the
-code. Discussions about such choices tend to be pointless (personal
-perception / taste isn't something that can be debated by argument) and
-risks annoying people and waste precious brain time.
-
-> I suggest occasionally again to reconsider consequences around a principle
-> like “Don't repeat yourself”.
-
-In general correct. But in some cases repeating a few words can make the
-code actually easier to read (psychologic phenomenon - human brains work
-very different from computers). This needs to be carefully weighted.
-
-Theorettically, we could do this conversation with much less words,
-using some purely logic language, similar to math formulas - but for
-most people this hard to do. Therefore, let's make the code easy for
-us humans and let the machines (eg. compiler) do the heavy lifting.
-
->> But that doesn't mean that a particular patch can be accepted
->> or not in the greater context.
-> 
-> Would you like to find the corresponding change acceptance out at all?
-
-For particular change, I wouldn't really object, but I don't like it
-so much either. Some your other changes IMHO do make the code prettier.
-
->> - it's not a technical
-> 
-> I got an other impression.
-
-That's the point. Psychology / personal perception plays a big role
-here. We can't deduce it by pure logic.
+> We fix this issue by calling of_node_put() after the last usage.
 
 
---mtx
+I imagine that this commit description can be improved a bit more
+(by mentioning the influence of =E2=80=9Cimmr_node=E2=80=9D?).
+How do you think about to omit the word =E2=80=9CWe=E2=80=9D here?
 
--- 
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+
+> This patatch also do some cleanup.
+
+
+Should the renaming of a jump label be contributed in a separate update
+step of a small patch series besides a wording without a typo?
+
+Regards,
+Markus

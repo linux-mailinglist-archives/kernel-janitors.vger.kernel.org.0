@@ -2,97 +2,124 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B0E861E0E
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jul 2019 13:56:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F254F62012
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jul 2019 16:08:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730687AbfGHL4g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Jul 2019 07:56:36 -0400
-Received: from mail-vs1-f67.google.com ([209.85.217.67]:45032 "EHLO
-        mail-vs1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730668AbfGHL4g (ORCPT
+        id S1731613AbfGHOIL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Jul 2019 10:08:11 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:12300 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727401AbfGHOIL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Jul 2019 07:56:36 -0400
-Received: by mail-vs1-f67.google.com with SMTP id v129so7996825vsb.11
-        for <kernel-janitors@vger.kernel.org>; Mon, 08 Jul 2019 04:56:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=IQ8OPkmw07aEeQyb9mErO8HsEQ8fLM7WgoGd9dnI8OQ=;
-        b=mfHHkqzVTlPh7DD/CXaqQN1IxI2n1m0H59RqJua4BBVg+5iCaga+ERxDXoHUKbEaQq
-         M0oLaH1uL7nA2OJzVPaTjltyNJENi6CoxCBojSt0VeD3ReYSbHjEe3Z0l0FOq9ZGp069
-         ZtBpw1G0uP/YQVNLk+KL7lasYV6EMFMTqH6H5F7a1kvNuClhV4RanPtq4aaAYcIXMa6z
-         1gNYeK8OICR3H5L+I0eVp371+Mq+pIRd1MENdLApQED1DD+Voi7etHnDPvt6l+/Ugf7z
-         KwSFmpdCwN7VOQvTigWk34zWmLIi235TAaKqER4eZH/iR/7JHeXUNOwXS0ImfGkfmlxo
-         Jjlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=IQ8OPkmw07aEeQyb9mErO8HsEQ8fLM7WgoGd9dnI8OQ=;
-        b=iSfxd5sC8IfpaljIloCeHZ4wqJ86fUBgGyyMqjAZC4fJnwIU4qtQXIbOXFSt7Jpt2c
-         igM8lOmAXgw7E4XychpVk5NAQX0+duvnbEw8sWNjd4b3I8Q7Z9w3uBtmV3PvvCERz29T
-         8TCp9zXOCvuftnlkFzHgfPjPlOM1jCocTMJfSBzKsIvfwAQZoSliE/AusGDpcIv48pog
-         WH7Yt+pHZXYYYhq9DeXFF4yC/WbdnaqnoS2EjcLhF2V6C0b7jkMmHUFtsWR0rjckHUo0
-         i1f6+ZeElITtMmIj9KSH2/T2DipqQ1nULAY5k8DTjA2w+sjENRIhxikc+VqPCyw2ifzQ
-         G8Nw==
-X-Gm-Message-State: APjAAAW9AhHP0vT3goPSRvENzr1VKNgGH1Gv07gvLcVYY1et0SmtxYD4
-        WhRqYIg8e+VlBsliGgq5bLhshFLlOBUfERvIGSGSgA==
-X-Google-Smtp-Source: APXvYqwqtOmX5E+dmwbt6Q18NzrXU5GOE2mxAS6wu10KW6bphP9M7qyNV0agevIeb9KZwCnxq8yI0RElrUtd+y91huQ=
-X-Received: by 2002:a67:ee16:: with SMTP id f22mr9850526vsp.191.1562586995022;
- Mon, 08 Jul 2019 04:56:35 -0700 (PDT)
+        Mon, 8 Jul 2019 10:08:11 -0400
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x68E7l7K050221
+        for <kernel-janitors@vger.kernel.org>; Mon, 8 Jul 2019 10:08:09 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2tm57b5qrd-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <kernel-janitors@vger.kernel.org>; Mon, 08 Jul 2019 10:08:07 -0400
+Received: from localhost
+        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <kernel-janitors@vger.kernel.org> from <srikar@linux.vnet.ibm.com>;
+        Mon, 8 Jul 2019 15:07:56 +0100
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
+        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Mon, 8 Jul 2019 15:07:53 +0100
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x68E7q5348758888
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 8 Jul 2019 14:07:53 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D6BB2A4051;
+        Mon,  8 Jul 2019 14:07:52 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id B03F9A4053;
+        Mon,  8 Jul 2019 14:07:51 +0000 (GMT)
+Received: from linux.vnet.ibm.com (unknown [9.126.150.29])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with SMTP;
+        Mon,  8 Jul 2019 14:07:51 +0000 (GMT)
+Date:   Mon, 8 Jul 2019 19:37:51 +0530
+From:   Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Markus Elfring <Markus.Elfring@web.de>,
+        kernel-janitors@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] sched/topology: One function call less in
+ build_group_from_child_sched_domain()
+Reply-To: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+References: <ad2e7dfb-3323-b214-716e-a6cae41b8bcc@web.de>
+ <20190706172223.GA12680@linux.vnet.ibm.com>
+ <20190708102312.GF3402@hirez.programming.kicks-ass.net>
 MIME-Version: 1.0
-References: <20190701175246.32270-1-colin.king@canonical.com>
-In-Reply-To: <20190701175246.32270-1-colin.king@canonical.com>
-From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Mon, 8 Jul 2019 13:55:59 +0200
-Message-ID: <CAPDyKFoXEr+DskqQesxJoe+btA3VXzwZKhVZSXLHiw7tiwhX3g@mail.gmail.com>
-Subject: Re: [PATCH] mmc: alcor: remove a redundant greater or equal to zero comparison
-To:     Colin King <colin.king@canonical.com>
-Cc:     Daniel Drake <drake@endlessm.com>,
-        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+In-Reply-To: <20190708102312.GF3402@hirez.programming.kicks-ass.net>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-TM-AS-GCONF: 00
+x-cbid: 19070814-0016-0000-0000-000002904D88
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19070814-0017-0000-0000-000032EDFB8B
+Message-Id: <20190708140751.GA10675@linux.vnet.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-08_04:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=728 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1907080176
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 1 Jul 2019 at 19:52, Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> A greater or equal comparison on the unsigned int variable tmp_diff
-> is always true as unsigned ints are never negative.  Hence the
-> comparison is redundant and can be removed.
->
-> Addresses-Coverity: ("Unsigned compared against 0")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+* Peter Zijlstra <peterz@infradead.org> [2019-07-08 12:23:12]:
 
-Applied for next, thanks!
+> On Sat, Jul 06, 2019 at 10:52:23PM +0530, Srikar Dronamraju wrote:
+> > * Markus Elfring <Markus.Elfring@web.de> [2019-07-06 16:05:17]:
+> > 
+> > > From: Markus Elfring <elfring@users.sourceforge.net>
+> > > Date: Sat, 6 Jul 2019 16:00:13 +0200
+> > > 
+> > > Avoid an extra function call by using a ternary operator instead of
+> > > a conditional statement.
+> > > 
+> > > This issue was detected by using the Coccinelle software.
+> > > 
+> > > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> > > ---
+> > >  kernel/sched/topology.c | 6 +-----
+> > >  1 file changed, 1 insertion(+), 5 deletions(-)
+> > > 
+> > > diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+> > > index f751ce0b783e..6190eb52c30a 100644
+> > > --- a/kernel/sched/topology.c
+> > > +++ b/kernel/sched/topology.c
+> > > @@ -886,11 +886,7 @@ build_group_from_child_sched_domain(struct sched_domain *sd, int cpu)
+> > >  		return NULL;
+> > > 
+> > >  	sg_span = sched_group_span(sg);
+> > > -	if (sd->child)
+> > > -		cpumask_copy(sg_span, sched_domain_span(sd->child));
+> > > -	else
+> > > -		cpumask_copy(sg_span, sched_domain_span(sd));
+> > > -
+> > > +	cpumask_copy(sg_span, sched_domain_span(sd->child ? sd->child : sd));
+> > 
+> > At runtime, Are we avoiding a function call?
+> > However I think we are avoiding a branch instead of a conditional, which may
+> > be beneficial.
+> 
+> It all depends on what the compiler does; also this is super slow path
+> stuff and the patch makes code less readable (IMO).
+> 
 
-Kind regards
-Uffe
+Yes, it definitely makes code readable. I was only commenting on the
+changelog/subject which says avoids a function call which I think it
+doesn't.
 
+-- 
+Thanks and Regards
+Srikar Dronamraju
 
-> ---
->  drivers/mmc/host/alcor.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/mmc/host/alcor.c b/drivers/mmc/host/alcor.c
-> index e481535cba2b..1aee485d56d4 100644
-> --- a/drivers/mmc/host/alcor.c
-> +++ b/drivers/mmc/host/alcor.c
-> @@ -672,7 +672,7 @@ static void alcor_set_clock(struct alcor_sdmmc_host *host, unsigned int clock)
->                 tmp_clock = DIV_ROUND_UP(cfg->clk_src_freq, tmp_div);
->                 tmp_diff = abs(clock - tmp_clock);
->
-> -               if (tmp_diff >= 0 && tmp_diff < diff) {
-> +               if (tmp_diff < diff) {
->                         diff = tmp_diff;
->                         clk_src = cfg->clk_src_reg;
->                         clk_div = tmp_div;
-> --
-> 2.20.1
->

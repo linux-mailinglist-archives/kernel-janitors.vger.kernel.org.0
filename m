@@ -2,38 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E75286221A
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jul 2019 17:22:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD2F7624BA
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jul 2019 17:45:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387945AbfGHPWX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Jul 2019 11:22:23 -0400
-Received: from mout.web.de ([212.227.17.12]:49573 "EHLO mout.web.de"
+        id S2403893AbfGHPpG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Jul 2019 11:45:06 -0400
+Received: from mout.web.de ([212.227.15.14]:43569 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387932AbfGHPWV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Jul 2019 11:22:21 -0400
+        id S1732408AbfGHPpG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 8 Jul 2019 11:45:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1562599321;
-        bh=5jkFKCmR2GUwlsa0zrqotc5apw9/xdj6vpIuoJNsaqY=;
-        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=SKo+hJ9/1PmXfDpAFKIy9C+kfYeaDQSYesfdNMOxhtIgtbIXPvTGR3q9sg3l65uTq
-         3ZFBvjPPdoF+4jjH+D0lAlV0ctJjL9MFmzxyE/+t0uCp3W0g3oomYFt7Iu01JP3otg
-         bA0MAoyAsiaDw8O0TPpw9O0KK9CoslVi+8bNS+iQ=
+        s=dbaedf251592; t=1562600662;
+        bh=0pUynszGTiwe+CvTdyKDl8scMsMcbRIhObXKLVjYKj0=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=lm08k5m6E1V87wS1lT9p++06UNU0NIFevN5wpAJbbRmLpBzSs8ej+XO0Tc9AgF4uH
+         wpe6TYxclWFJFqgbn5GsD7sc8LtVRG1/7/AmD8Qvz6vMxx2lsWwU9KOW2lgVd09CHO
+         AzARvbOUe+BSSI55/PtQhfXAHHQ7OTLAEuoJc/RE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.243.165.233]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LxweO-1iY5Jl29zQ-015Fl3; Mon, 08
- Jul 2019 17:22:01 +0200
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Cheng Shengyu <cheng.shengyu@zte.com.cn>,
-        Kumar Gala <galak@kernel.crashing.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Scott Wood <oss@buserror.net>,
-        Xue Zhihong <xue.zhihong@zte.com.cn>,
-        Yi Wang <wang.yi59@zte.com.cn>, linux-kernel@vger.kernel.org,
+Received: from [192.168.1.2] ([2.243.165.233]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M9dCJ-1heA2535g7-00CvSw; Mon, 08
+ Jul 2019 17:44:22 +0200
+Subject: Re: sched/topology: One function call less in
+ build_group_from_child_sched_domain()
+To:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
         kernel-janitors@vger.kernel.org
-References: <1562317084-13140-1-git-send-email-wen.yang99@zte.com.cn>
-Subject: Re: powerpc/83xx: fix use-after-free on mpc831x_usb_cfg()
-To:     Wen Yang <wen.yang99@zte.com.cn>, linuxppc-dev@lists.ozlabs.org
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>
+References: <ad2e7dfb-3323-b214-716e-a6cae41b8bcc@web.de>
+ <20190706172223.GA12680@linux.vnet.ibm.com>
+ <20190708102312.GF3402@hirez.programming.kicks-ass.net>
+ <20190708140751.GA10675@linux.vnet.ibm.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
@@ -79,59 +78,52 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <99840e11-e0e6-b3f4-e35b-56ef4ec39417@web.de>
-Date:   Mon, 8 Jul 2019 17:21:48 +0200
+Message-ID: <e3ae5bd2-d963-2422-d4f0-131a5d2edbb4@web.de>
+Date:   Mon, 8 Jul 2019 17:44:13 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <1562317084-13140-1-git-send-email-wen.yang99@zte.com.cn>
+In-Reply-To: <20190708140751.GA10675@linux.vnet.ibm.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ckcR2+VKOSFUJ6uGz6jX9tWXCfRXHX1jSP4nJJRSoovyDhyYsES
- DkzoLdCYgB93ThN0rp+s/yzpSNxRzSHPwuVEsuRVwmNYjgFPY4hwabDTX4BTCmQ2HJzNOom
- 7I205/htlkGNrag104lMhr74ihYdlMTHjC2t9Q03CgF/X4hTOyPTiEfrN6k6obTMYPawblv
- ifzD29BWnQf9hE0T4z4eg==
+Content-Language: en-GB
+X-Provags-ID: V03:K1:SmpCSCit4blAu54s1a/FftGyUr8QJeyydlBzzwUXy6tIEQ70Ks7
+ 9Sn0RSkfbs6T9GzKHm4H/raSqUsC2MlYyukWqLJcnDeMIVd3tr8ti3VYWmkfpa1NdFaCKdf
+ zYqO8X69p977Ouxj60Wm5CRHJZCj9Dhf5uMK9CdgnQ4eWHTvMqXZFskv/zLLwFIQ8MvFu5p
+ 5pSrq4yngqO26DNHDmyXQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:QcNKnEhYpzc=:mKHsD/6aZzyoV5+get5CTm
- F+8ZlQ5kWQ5FsZAy4hSJOn1z+ODmSfhAymtSao0ltkOLC/sNPoF6E7DIc5hh6jZXQAlC3PcUj
- Ph9LczXpV0Em+5Drpn14EtlOQy4F37LG4eioRL5zNV1mhLtSoOMFqzdAC7MySU/XAVOrWmZ7Y
- tqWdJNGSRVteey01fWui45PiQ0nE0ARMC7w5jV/4JKDHmSSbw9hm/NO0k6eaeJqccyzwe6IaP
- XiM8CkY1QDkz69jLD8ckH3g1LTnTWfCO9iIxs8GOoOIwY+Sj0vtcnzVN33p5/FLBiuj2Nm1O+
- 4JZjm+oC8H4gstlAuzqOsnHbTopFuiAk3Ask3g1F4V8KdavIGRpWNWotYrpG/A5Zvfjd2XIas
- DTS1R+66EzXlbPXJIKpQzyabYFktH0hyNpd/jhy06P3TIseBSBMvX4/JEwdyzh6tAs2U+Vwbv
- rIj2n86X5JD6Z9o4/uin4IRVglVd6nGlBhv5dTsGuUupuzAe/vM8B7FRYo12toOLuvqn/IYsQ
- BDmiR46bG3zBaln38qWR/RYtP06Snlp5ulsPNjh9hSksGp7HPIW275OZoJFjNFSjug58s2GVW
- kOGCxnE/+Oa4mD9THzHP4GKerv2EcdkKsVgfDSwsLXIQu9qwrapxF/kO7p31IQdR0rdsMMT3G
- +hWBAKfVKjhFfLwLA0ZvbDc2m2+p6e9aKCkFxPkc17O9NMUf3yc6pJ4NhRPv1us4cwf6Qi3Hf
- tuZ1+Qic9hXcXFnsX1Y1xfeYPj94CB/q8yiMKfYEm5NLmx2Yddn6St+sDsXLt4pyxk0p73GCt
- AeEjEQIf+osQ4Xa9gR0dHXMGfmXHagCRQ8CKhFa+aj58qj9G1o1VB6V5qJOuwrAmNbEhyXewF
- kKpPHPYeivf/pE+h1TtlUeUQc0Quf+9tS2O9LJqlpRt2M0s5dNB3eeFPecWgZFg/oTr74OY3l
- FgJlxScgA8xbMfaJ2kISanglgvSk4NUQ9+d+RF/AV057jLIwd/4TkXdaZuQJxromnR6qvwPhk
- Q9+g5hjqnJlrMLApNDeU633N6sti7ldYy2WurfGcROdKQ4dHY8mhWQ9wNyZCAGRuJsC9+kUq3
- v/mhIc8kXBgI46YaZOOnK3aI9hNTBJ94Si9
+X-UI-Out-Filterresults: notjunk:1;V03:K0:JlB7OxZmBVU=:ZGmPyqPHb6pxzLzM2VL/Zf
+ wpTzH/XAQ3VaLLvsyOgPx24Lxr0oyANGr0T/ZzSHYpkYxq4Ouwyd7lkUeKbUf7NVbbmqw1m0u
+ BQR80IYBnx+ctKecJzN9crw4zwIRTKPPoFRbGLpR7vNrJwb8YEZoLsOzqpLzg80bMOmcEcw+k
+ bbxqMKQcA/WN6f+nUlXguHVTQfjLhF/IMYkOPqRIMTTTEkdItE17ZfKudAz4V/Vz1+9dgnAQa
+ qduOu2GY9Bp7Q75TaORMsq66eRswEd+5bEFg0YS4gbNitkoPLkrjCBjL1ZUzphDH+yGoMgD/s
+ NiIGBbEw5vGy9gUjtxdjktklcy2B/yawHpVRpNR0LjivwU8PH8uAjFdwvt+SzkbqEYaCJUc5p
+ 2IEdBt7JeTNiemPq8XXlbb23GveEA4ICD0Te4Xbn3fV7LMbxrYRv3vlNJAD8PbQyxM8tYVDow
+ KRS1lAEm1VSi/jqSGRwt5VuszSk4NoqtWau7Q9XygR2Vp2fPUaY6GKVy9+i4jtYAoHrDwXVcd
+ lbBuap/9DMiZPyTLRtwyFhcbYxM4cKJKdxVwCLu6R5YWgCJ0v4+/dLzkE0ciPtQBFZT13J4OO
+ UdaT0NIkd5hNecpFR3HjtecxCdAAPeYQ+x5oA36ZZV4T+iZx3rjKsqAUP6ea2fRllouZ2iKVj
+ npEfta91kXnPcVIJ5hGeRbGeTVE41gX4yWWeedFUOVZfgbDc8flSufWVAY7h5phf2Ru01vhGJ
+ M419c2cab0jDNDMNgLXZK078qQ9Slwkz0FuSsK/ElM/mQ99jsgxtca4bJfF786fgZWP1XJ7ki
+ EzRPFCes3JT76ePQqMhkaWE27yb6U9hVQbczbKtADq9IU73SL3wvG0OpzzzF7Uy6EJXYHsro8
+ VerU7u6ITyhV23VdGioLy7EQ6+vTNAdouMfS1R5IfmAPCMj1wta9Uslb2No/msAn2sn/fd2sT
+ 35kTgXHHXfxlIdO/25OfZULEIaBqgNQh8xv+fBcI4kYtokfdqi5mFcqp7FfuUjSQYNJgQ1AVM
+ G4+WmQJfpbGBB7/aUsAm6UH2Y1cqDPu4w6aWjvKwfgyf+18f9OGNimgWg+ipYJxzp5OZtk5lu
+ AAy8S1C8KuzFZMF6VI1HfAC7pQSaYLtJy+K
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> The np variable is still being used after the of_node_put() call,
+> Yes, it definitely makes code readable.
 
-> which may result in use-after-free.
-
-> We fix this issue by calling of_node_put() after the last usage.
+Some developers seem to get difficulties with this view.
 
 
-I imagine that this commit description can be improved a bit more
-(by mentioning the influence of =E2=80=9Cimmr_node=E2=80=9D?).
-How do you think about to omit the word =E2=80=9CWe=E2=80=9D here?
+> I was only commenting on the changelog/subject which says
+> avoids a function call which I think it doesn't.
 
-
-> This patatch also do some cleanup.
-
-
-Should the renaming of a jump label be contributed in a separate update
-step of a small patch series besides a wording without a typo?
+Do you prefer an other wording for calling functions only once
+with a selected parameter value instead of calling them (unoptimised)
+within two branches of an if statement?
 
 Regards,
 Markus

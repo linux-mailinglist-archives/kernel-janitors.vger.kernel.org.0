@@ -2,116 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD14561C24
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jul 2019 11:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43D6461C81
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jul 2019 11:39:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729682AbfGHJNX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Jul 2019 05:13:23 -0400
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:56992 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727065AbfGHJNX (ORCPT
+        id S1729928AbfGHJjj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Jul 2019 05:39:39 -0400
+Received: from mout.kundenserver.de ([212.227.17.13]:52645 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728686AbfGHJjj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Jul 2019 05:13:23 -0400
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x68967am006024;
-        Mon, 8 Jul 2019 11:12:54 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : references : in-reply-to : content-type : content-id
- : content-transfer-encoding : mime-version; s=STMicroelectronics;
- bh=J+VrRoM1vmsyKivpX5U+CqP541ilP0xEicODEegVLtM=;
- b=PIV2XdbgB0aZJqgtreP6xTwlrWKCNkvJeRx2dKmHokXB9K9FELlV+YSQc6+QRoX/Me7z
- TDtZikvgNRGqiCMZRB6CxGHEcgaz716HWePA8rGEnMVFAgb6Jp7OzvWQw2lUc+ooOdFD
- P0QAYK42RYrC65eNtzvHzYcSo9p6i1felTNSB4wdhz+Vv4IvE/Jj5+3ZUGGWDBviHQOh
- NyJOFo8BoqHSL1kyigcxpIpdMnprg4MYIpTXZv+mDaEzkbA2VwNJXmZRdSyvdjWSE4FS
- TcTm26B+l+W5qLnlT9uiMEkQcH3zFSb5JwxnzketnNSAkFZWo9PJOWX8ha62R74IJ8TL pQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2tjh405r6f-1
-        (version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NOT);
-        Mon, 08 Jul 2019 11:12:54 +0200
-Received: from zeta.dmz-eu.st.com (zeta.dmz-eu.st.com [164.129.230.9])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 4971D34;
-        Mon,  8 Jul 2019 09:12:53 +0000 (GMT)
-Received: from Webmail-eu.st.com (sfhdag3node1.st.com [10.75.127.7])
-        by zeta.dmz-eu.st.com (STMicroelectronics) with ESMTP id 07A2D2763;
-        Mon,  8 Jul 2019 09:12:53 +0000 (GMT)
-Received: from SFHDAG3NODE2.st.com (10.75.127.8) by SFHDAG3NODE1.st.com
- (10.75.127.7) with Microsoft SMTP Server (TLS) id 15.0.1347.2; Mon, 8 Jul
- 2019 11:12:52 +0200
-Received: from SFHDAG3NODE2.st.com ([fe80::b82f:1ce:8854:5b96]) by
- SFHDAG3NODE2.st.com ([fe80::b82f:1ce:8854:5b96%20]) with mapi id
- 15.00.1347.000; Mon, 8 Jul 2019 11:12:52 +0200
-From:   Amelie DELAUNAY <amelie.delaunay@st.com>
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
-        "linux-stm32@st-md-mailman.stormreply.com" 
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Alexandre TORGUE <alexandre.torgue@st.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Russell King <linux@armlinux.org.uk>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        Mon, 8 Jul 2019 05:39:39 -0400
+Received: from [192.168.1.110] ([95.117.164.184]) by mrelayeu.kundenserver.de
+ (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1Mgf4k-1iRSYw42Zw-00h3XH; Mon, 08 Jul 2019 11:38:59 +0200
+Subject: Re: [PATCH] sched/topology: One function call less in
+ build_group_from_child_sched_domain()
+To:     Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+        Markus Elfring <Markus.Elfring@web.de>
+Cc:     kernel-janitors@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
         LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] rtc: stm32: One condition check and function call less
- in stm32_rtc_set_alarm()
-Thread-Topic: [PATCH v2] rtc: stm32: One condition check and function call
- less in stm32_rtc_set_alarm()
-Thread-Index: AQHVNWk64H5f1akvVEOEc4o7Pyqv/6bATj4A
-Date:   Mon, 8 Jul 2019 09:12:52 +0000
-Message-ID: <b614006a-17ac-e738-a3f3-08649f69a42c@st.com>
-References: <f04277da-8a98-473e-2566-ac7846f9f8e1@web.de>
- <20190707211638.sehikkear25dffah@shell.armlinux.org.uk>
- <4da614a4-83c6-548c-a112-033b846c561b@web.de>
-In-Reply-To: <4da614a4-83c6-548c-a112-033b846c561b@web.de>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.75.127.47]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <7C37AB1342C2294A8941E133C33BA759@st.com>
-Content-Transfer-Encoding: base64
+References: <ad2e7dfb-3323-b214-716e-a6cae41b8bcc@web.de>
+ <20190706172223.GA12680@linux.vnet.ibm.com>
+From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Organization: metux IT consult
+Message-ID: <65dedcbc-aefb-eb30-39e1-194248214369@metux.net>
+Date:   Mon, 8 Jul 2019 11:38:58 +0200
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.2.1
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-08_02:,,
- signatures=0
+In-Reply-To: <20190706172223.GA12680@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:8wBrfagyDqUmyHZdI4/YvRiTnAGqE1b8phfN4j+zhAitnHbT9bw
+ Qb2gZ9dRKuuuJMvhAJscZssN4vmGOSOjrhkrWyNCTvkD7km2ZS7GXLy+FE5NBNRkwxqz94o
+ sC0JIOP9qD6l3qNeuDdwuucVLFiqrQiIKh9almdJJv2Bu7SgvSfToZex9NxNBHrA5ZtzFkB
+ U85l2pQ+2jXAPSPPQo8pg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:fyZEtlCBsVQ=:7W6MaUzLMjiPoZuwU0Fe+s
+ u6I0SmwNIxdIJKhng/yDzARH4260uXjI8HJvvkx3GeCt64p7F9jsEHbbp4Kbgl8SdD5+Dkc2I
+ MpY36hOxdo5++DOO9bP4krXwvq3iT7e2LTz+w9ylSeITN/sihaQqNSq2ne9pLygNznyOW+B6u
+ s0YWreAvKixY/7j6CZ7/qDOJLbx4qHL1PY+SKPU9py6OZ3g4E9bdF7Fl2a+MPpsIdvT8SxZuC
+ zZCBCVRO4PniFTBE1NSgYlKcL/EszYT6YE0CDZROsY9PSNSP5qb2O7Y9dKw1iRmS7cRBB392U
+ UPKaWeX9IkFYbEnMZnep/5lIdfGw/EKQbmAgU2XnHMkTO6VD/Rx/8PSwJwTPNS5l5rHtIkJre
+ 9o5h4euOQkEXdv5m5NVAMLkcMSqSjemp8/ThUWARIoF8YbjDQiuNoE7EyCIRKgs5maVGQZDt0
+ lZPbe5t/hZtHt3LBUbHO4u9BwwXYnxiEto7frZyGiSN3HXlzJnB5JHBAX17f3LD3WamUO33/J
+ n93RBkWFdCPFOFA6roVy6X2YdSeFC1dhl6nHbeUQBHaQ+bolbAZBqFWkwNyk0iH6UKODI5dC9
+ ry9DH91dKJqv+OCtdwlBU9UnANYlehiRJjBUd174qmh0fMX/L5JLSICE8JUZR7UXyPMTIuOQy
+ 8x4assWGaHLtX2o7WROwyNWorbr48xg/N+ZOcCEJIZTkGKvePJ2KOl2Rtrl8tcwyk0Ch2sYz0
+ UKtpC7guwNDKp+KZdX7dRfrb1Dq69427eN/di7Ep+Cn2E7zFaWgI9TsSULI=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-T24gNy84LzE5IDEwOjQyIEFNLCBNYXJrdXMgRWxmcmluZyB3cm90ZToNCj4gRnJvbTogTWFya3Vz
-IEVsZnJpbmcgPGVsZnJpbmdAdXNlcnMuc291cmNlZm9yZ2UubmV0Pg0KPiBEYXRlOiBNb24sIDgg
-SnVsIDIwMTkgMTA6MjY6NDcgKzAyMDANCj4gDQo+IEEgY29uZGl0aW9uIGNoZWNrIHdhcyByZXBl
-YXRlZCBpbiB0aGlzIGZ1bmN0aW9uIGltcGxlbWVudGF0aW9uIGRlc3BpdGUgb2YNCj4gYSBjb3Jy
-ZXNwb25kaW5nIGNoZWNrIGluIHRoZSBzdG0zMl9ydGNfYWxhcm1faXJxX2VuYWJsZSgpIGZ1bmN0
-aW9uLg0KPiBUaHVzIGRlbGV0ZSByZWR1bmRhbnQgc291cmNlIGNvZGUgaGVyZS4NCj4gDQo+IFN1
-Z2dlc3RlZC1ieTogUnVzc2VsbCBLaW5nIDxsaW51eEBhcm1saW51eC5vcmcudWs+DQo+IExpbms6
-IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xrbWwvMjAxOTA3MDcyMTE2Mzguc2VoaWtrZWFyMjVk
-ZmZhaEBzaGVsbC5hcm1saW51eC5vcmcudWsvDQo+IA0KPiBUaGlzIGlzc3VlIHdhcyBkZXRlY3Rl
-ZCBieSB1c2luZyB0aGUgQ29jY2luZWxsZSBzb2Z0d2FyZS4NCj4gDQo+IFNpZ25lZC1vZmYtYnk6
-IE1hcmt1cyBFbGZyaW5nIDxlbGZyaW5nQHVzZXJzLnNvdXJjZWZvcmdlLm5ldD4NCg0KUmV2aWV3
-ZWQtYnk6IEFtZWxpZSBEZWxhdW5heSA8YW1lbGllLmRlbGF1bmF5QHN0LmNvbT4NCg0KPiAtLS0N
-Cj4gDQo+IHYyOg0KPiBSdXNzZWxsIEtpbmcgcG9pbnRlZCB0aGUgY2hhbmdlIHBvc3NpYmlsaXR5
-IG91dCB0byBvbWl0IGEgY29uZGl0aW9uIGNoZWNrDQo+IGF0IHRoaXMgcGxhY2UuDQo+IA0KPiAN
-Cj4gICBkcml2ZXJzL3J0Yy9ydGMtc3RtMzIuYyB8IDYgKy0tLS0tDQo+ICAgMSBmaWxlIGNoYW5n
-ZWQsIDEgaW5zZXJ0aW9uKCspLCA1IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2Ry
-aXZlcnMvcnRjL3J0Yy1zdG0zMi5jIGIvZHJpdmVycy9ydGMvcnRjLXN0bTMyLmMNCj4gaW5kZXgg
-OGU2YzliM2JjYzI5Li43NzNhMTk5MGI5M2YgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvcnRjL3J0
-Yy1zdG0zMi5jDQo+ICsrKyBiL2RyaXZlcnMvcnRjL3J0Yy1zdG0zMi5jDQo+IEBAIC01MTksMTEg
-KzUxOSw3IEBAIHN0YXRpYyBpbnQgc3RtMzJfcnRjX3NldF9hbGFybShzdHJ1Y3QgZGV2aWNlICpk
-ZXYsIHN0cnVjdCBydGNfd2thbHJtICphbHJtKQ0KPiAgIAkvKiBXcml0ZSB0byBBbGFybSByZWdp
-c3RlciAqLw0KPiAgIAl3cml0ZWxfcmVsYXhlZChhbHJtYXIsIHJ0Yy0+YmFzZSArIHJlZ3MtPmFs
-cm1hcik7DQo+IA0KPiAtCWlmIChhbHJtLT5lbmFibGVkKQ0KPiAtCQlzdG0zMl9ydGNfYWxhcm1f
-aXJxX2VuYWJsZShkZXYsIDEpOw0KPiAtCWVsc2UNCj4gLQkJc3RtMzJfcnRjX2FsYXJtX2lycV9l
-bmFibGUoZGV2LCAwKTsNCj4gLQ0KPiArCXN0bTMyX3J0Y19hbGFybV9pcnFfZW5hYmxlKGRldiwg
-YWxybS0+ZW5hYmxlZCk7DQo+ICAgZW5kOg0KPiAgIAlzdG0zMl9ydGNfd3ByX2xvY2socnRjKTsN
-Cj4gDQo+IC0tDQo+IDIuMjIuMA0KPiANCj4gDQo+IF9fX19fX19fX19fX19fX19fX19fX19fX19f
-X19fX19fX19fX19fX19fX19fX19fDQo+IGxpbnV4LWFybS1rZXJuZWwgbWFpbGluZyBsaXN0DQo+
-IGxpbnV4LWFybS1rZXJuZWxAbGlzdHMuaW5mcmFkZWFkLm9yZw0KPiBodHRwOi8vbGlzdHMuaW5m
-cmFkZWFkLm9yZy9tYWlsbWFuL2xpc3RpbmZvL2xpbnV4LWFybS1rZXJuZWwNCj4g
+On 06.07.19 19:22, Srikar Dronamraju wrote:
+> * Markus Elfring <Markus.Elfring@web.de> [2019-07-06 16:05:17]:
+> 
+>> From: Markus Elfring <elfring@users.sourceforge.net>
+>> Date: Sat, 6 Jul 2019 16:00:13 +0200
+>>
+>> Avoid an extra function call by using a ternary operator instead of
+>> a conditional statement.
+>>
+>> This issue was detected by using the Coccinelle software.
+>>
+>> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+>> ---
+>>  kernel/sched/topology.c | 6 +-----
+>>  1 file changed, 1 insertion(+), 5 deletions(-)
+>>
+>> diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+>> index f751ce0b783e..6190eb52c30a 100644
+>> --- a/kernel/sched/topology.c
+>> +++ b/kernel/sched/topology.c
+>> @@ -886,11 +886,7 @@ build_group_from_child_sched_domain(struct sched_domain *sd, int cpu)
+>>  		return NULL;
+>>
+>>  	sg_span = sched_group_span(sg);
+>> -	if (sd->child)
+>> -		cpumask_copy(sg_span, sched_domain_span(sd->child));
+>> -	else
+>> -		cpumask_copy(sg_span, sched_domain_span(sd));
+>> -
+>> +	cpumask_copy(sg_span, sched_domain_span(sd->child ? sd->child : sd));
+> 
+> At runtime, Are we avoiding a function call?
+> However I think we are avoiding a branch instead of a conditional, which may
+> be beneficial.
+
+If you're assuming the compiler doesn't already optimize that (no idea
+whether gcc really does that).
+
+@Markus: could you check what gcc is actually generating out of both the
+old and your new version ?
+
+
+--mtx
+
+-- 
+Enrico Weigelt, metux IT consult
+Free software and Linux embedded engineering
+info@metux.net -- +49-151-27565287

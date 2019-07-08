@@ -2,49 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B18E661951
-	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jul 2019 04:35:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2D0961AB6
+	for <lists+kernel-janitors@lfdr.de>; Mon,  8 Jul 2019 08:34:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727542AbfGHCfG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 7 Jul 2019 22:35:06 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:45464 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727455AbfGHCfF (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 7 Jul 2019 22:35:05 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 1307F1528C8DD;
-        Sun,  7 Jul 2019 19:35:05 -0700 (PDT)
-Date:   Sun, 07 Jul 2019 19:35:04 -0700 (PDT)
-Message-Id: <20190707.193504.258563830031901437.davem@davemloft.net>
-To:     weiyongjun1@huawei.com
-Cc:     csully@google.com, sagis@google.com, jonolson@google.com,
-        colin.king@canonical.com, willemb@google.com, lrizzo@google.com,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next] gve: Fix error return code in gve_alloc_qpls()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190705011642.156707-1-weiyongjun1@huawei.com>
-References: <20190705011642.156707-1-weiyongjun1@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+        id S1727795AbfGHGeZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Jul 2019 02:34:25 -0400
+Received: from relay.sw.ru ([185.231.240.75]:36798 "EHLO relay.sw.ru"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727420AbfGHGeZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 8 Jul 2019 02:34:25 -0400
+Received: from [172.16.25.169]
+        by relay.sw.ru with esmtp (Exim 4.92)
+        (envelope-from <ktkhai@virtuozzo.com>)
+        id 1hkNE7-0007Z0-NZ; Mon, 08 Jul 2019 09:34:15 +0300
+Subject: Re: [PATCH] mm/ksm: One function call less in __ksm_enter()
+To:     Markus Elfring <Markus.Elfring@web.de>, linux-mm@kvack.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        =?UTF-8?B?SsOpcsO0bWUgR2xpc3Nl?= <jglisse@redhat.com>,
+        Ralph Campbell <rcampbell@nvidia.com>,
+        Souptick Joarder <jrdr.linux@gmail.com>,
+        Yang Shi <yang.shi@linux.alibaba.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+References: <997c8ec3-9af8-3db0-24dc-cd99fe3efe14@web.de>
+From:   Kirill Tkhai <ktkhai@virtuozzo.com>
+Message-ID: <64187a86-e704-140a-ec86-817c14db1812@virtuozzo.com>
+Date:   Mon, 8 Jul 2019 09:34:14 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
+MIME-Version: 1.0
+In-Reply-To: <997c8ec3-9af8-3db0-24dc-cd99fe3efe14@web.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 07 Jul 2019 19:35:05 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
-Date: Fri, 5 Jul 2019 01:16:42 +0000
-
-> Fix to return a negative error code from the error handling
-> case instead of 0, as done elsewhere in this function.
+On 05.07.2019 17:16, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Fri, 5 Jul 2019 16:02:26 +0200
 > 
-> Fixes: f5cedc84a30d ("gve: Add transmit and receive support")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> Avoid an extra function call by using a ternary operator instead of
+> a conditional statement.
+> 
+> This issue was detected by using the Coccinelle software.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> ---
+>  mm/ksm.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 3dc4346411e4..7934bab8ceae 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -2521,10 +2521,10 @@ int __ksm_enter(struct mm_struct *mm)
+>  	 * scanning cursor, otherwise KSM pages in newly forked mms will be
+>  	 * missed: then we might as well insert at the end of the list.
+>  	 */
+> -	if (ksm_run & KSM_RUN_UNMERGE)
+> -		list_add_tail(&mm_slot->mm_list, &ksm_mm_head.mm_list);
+> -	else
+> -		list_add_tail(&mm_slot->mm_list, &ksm_scan.mm_slot->mm_list);
+> +	list_add_tail(&mm_slot->mm_list,
+> +		      ksm_run & KSM_RUN_UNMERGE
+> +		      ? &ksm_mm_head.mm_list
+> +		      : &ksm_scan.mm_slot->mm_list);
 
-Applied, thank you.
+Despite coccinelle warnings, I'm not sure this patch does not make the readability worse...
+
+>  	spin_unlock(&ksm_mmlist_lock);
+> 
+>  	set_bit(MMF_VM_MERGEABLE, &mm->flags);

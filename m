@@ -2,31 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A76AD62D66
-	for <lists+kernel-janitors@lfdr.de>; Tue,  9 Jul 2019 03:29:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A433962D70
+	for <lists+kernel-janitors@lfdr.de>; Tue,  9 Jul 2019 03:32:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726322AbfGIB30 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 8 Jul 2019 21:29:26 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:40856 "EHLO huawei.com"
+        id S1726921AbfGIBch (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 8 Jul 2019 21:32:37 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:43136 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725886AbfGIB3Z (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 8 Jul 2019 21:29:25 -0400
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 7407DB1F755D0F616C3A;
-        Tue,  9 Jul 2019 09:29:23 +0800 (CST)
+        id S1725886AbfGIBcg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 8 Jul 2019 21:32:36 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 12C2C722F2C6693B8C29;
+        Tue,  9 Jul 2019 09:32:35 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.439.0; Tue, 9 Jul 2019 09:29:16 +0800
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 9 Jul 2019 09:32:29 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Matthias Kaehlcke <mka@chromium.org>
+To:     Vadim Pasternak <vadimp@mellanox.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>
 CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-bluetooth@vger.kernel.org>,
+        <platform-driver-x86@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] Bluetooth: hci_qca: Use kfree_skb() instead of kfree()
-Date:   Tue, 9 Jul 2019 01:35:30 +0000
-Message-ID: <20190709013530.11865-1-weiyongjun1@huawei.com>
+Subject: [PATCH -next] platform/x86: mlx-platform: Fix error handling in mlxplat_init()
+Date:   Tue, 9 Jul 2019 01:38:42 +0000
+Message-ID: <20190709013842.17344-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -38,27 +38,28 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Use kfree_skb() instead of kfree() to free sk_buff.
+Add the missing platform_device_unregister() before return
+from mlxplat_init() in the error handling case.
 
-Fixes: 2faa3f15fa2f ("Bluetooth: hci_qca: wcn3990: Drop baudrate change vendor event")
+Fixes: 6b266e91a071 ("platform/x86: mlx-platform: Move regmap initialization before all drivers activation")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/bluetooth/hci_qca.c | 2 +-
+ drivers/platform/x86/mlx-platform.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 9a5c9c1f9484..cbae86e55aed 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -909,7 +909,7 @@ static int qca_recv_event(struct hci_dev *hdev, struct sk_buff *skb)
- 		if (hdr->evt == HCI_EV_VENDOR)
- 			complete(&qca->drop_ev_comp);
- 
--		kfree(skb);
-+		kfree_skb(skb);
- 
- 		return 0;
+diff --git a/drivers/platform/x86/mlx-platform.c b/drivers/platform/x86/mlx-platform.c
+index 2b98f299faa4..8fe51e43f1bc 100644
+--- a/drivers/platform/x86/mlx-platform.c
++++ b/drivers/platform/x86/mlx-platform.c
+@@ -2111,7 +2111,7 @@ static int __init mlxplat_init(void)
+ 					mlxplat_regmap_config);
+ 	if (IS_ERR(priv->regmap)) {
+ 		err = PTR_ERR(priv->regmap);
+-		return err;
++		goto fail_alloc;
  	}
+ 
+ 	err = mlxplat_mlxcpld_verify_bus_topology(&nr);
 
 
 

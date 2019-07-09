@@ -2,147 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04EC6634A1
-	for <lists+kernel-janitors@lfdr.de>; Tue,  9 Jul 2019 12:58:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65FC663832
+	for <lists+kernel-janitors@lfdr.de>; Tue,  9 Jul 2019 16:52:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726618AbfGIK6T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 9 Jul 2019 06:58:19 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:33078 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726411AbfGIK6T (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 9 Jul 2019 06:58:19 -0400
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 199AE73B2FB0975BC6FC;
-        Tue,  9 Jul 2019 18:58:15 +0800 (CST)
-Received: from [127.0.0.1] (10.61.25.96) by DGGEMS403-HUB.china.huawei.com
- (10.3.19.203) with Microsoft SMTP Server id 14.3.439.0; Tue, 9 Jul 2019
- 18:58:09 +0800
-Subject: Re: [PATCH 1/2][next] RDMA/hns: fix comparison of unsigned long
- variable 'end' with less than zero
-To:     Colin King <colin.king@canonical.com>,
-        Wei Hu <xavier.huwei@huawei.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, <linux-rdma@vger.kernel.org>
-CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20190531092101.28772-1-colin.king@canonical.com>
-From:   oulijun <oulijun@huawei.com>
-Message-ID: <2046653d-bc90-d287-22a6-b9eaa2740b6e@huawei.com>
-Date:   Tue, 9 Jul 2019 18:58:08 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
- Thunderbird/52.1.0
+        id S1726133AbfGIOw3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 9 Jul 2019 10:52:29 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:42152 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726025AbfGIOw3 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 9 Jul 2019 10:52:29 -0400
+Received: by mail-pf1-f193.google.com with SMTP id q10so9408370pff.9
+        for <kernel-janitors@vger.kernel.org>; Tue, 09 Jul 2019 07:52:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=bOo5FIdECv8Dk1vdDxbdUDP2ytSbYy3HpCn39a/nI1k=;
+        b=kJQaPdBPe6uBds+wMPLAlAq5MTB/OwElJ+xLcT72OmqhYnRuOQpKFDauzlKzCNTH/o
+         Ab2W9s8Hl8l3WQo4KCWreQ6Fe/7COl70EYhwAYBBnwb3wbGV2Mr//c+c3dGHDV3zAc71
+         Iod2Yn8Vuo56S91zQ4wNLIB3q/UAZZkHE6IGY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=bOo5FIdECv8Dk1vdDxbdUDP2ytSbYy3HpCn39a/nI1k=;
+        b=PqrP23W/+1Gp1K8jbHskd+vFBXNStzWCx2k4JVf+5GdzsDbU4oYM9ZZKDZFdZT7yNn
+         /VkzOQwUOqkzoEWBFJXL9uuTMxCNeU5eHbZTDWr0wTujiCXNYyiWtl+VT5bR1D1CppBI
+         YOK2Gw08cs7MNlrKvq4eeJgxmpUJeg7/ZXkX3RLasJm/afDSuj9N6O846CImXarAtTYw
+         EHBzlnb40TZ/cRNbr3SuZsmr49hU7vMAr9qW0zy2TqyedzV2j4g6WEiX6iuHiDuyMVk2
+         uVNworFsGtjirEHL04TO+yzxi8RoyJFjVPFw4P04gkTUilFCCZLLxQlr1yRfpl/xcTq9
+         r/tg==
+X-Gm-Message-State: APjAAAUKwb0ZZeTqa/rI3wClEOAT0PBkYpabDPVEuBSk8YG2IGBmoSbN
+        X4hGvtqdmrfPvmOxDa0/V4c51g==
+X-Google-Smtp-Source: APXvYqwyZy2W00cKZ0x6dz1QCQ2SgqR3O+dVRvJoge+fK1hcKgny3UXngSqShbK6ZpcrsQ87pfiLRw==
+X-Received: by 2002:a63:4e60:: with SMTP id o32mr2076697pgl.68.1562683948679;
+        Tue, 09 Jul 2019 07:52:28 -0700 (PDT)
+Received: from localhost ([2620:15c:202:1:75a:3f6e:21d:9374])
+        by smtp.gmail.com with ESMTPSA id t9sm3022920pji.18.2019.07.09.07.52.27
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 09 Jul 2019 07:52:28 -0700 (PDT)
+Date:   Tue, 9 Jul 2019 07:52:24 -0700
+From:   Matthias Kaehlcke <mka@chromium.org>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        linux-bluetooth@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] Bluetooth: hci_qca: Use kfree_skb() instead of
+ kfree()
+Message-ID: <20190709145224.GO250418@google.com>
+References: <20190709013530.11865-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <20190531092101.28772-1-colin.king@canonical.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.61.25.96]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190709013530.11865-1-weiyongjun1@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-在 2019/5/31 17:21, Colin King 写道:
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Currently the comparison of end with less than zero is always false
-> because end is an unsigned long.  Also, replace checks of end with
-> non-zero with end > 0 as it is possible that the #defined decrement
-> may be changed in the future causing end to step over zero and go
-> negative.
->
-> The initialization of end with 0 is also redundant as this value is
-> never read and is later set to HW_SYNC_TIMEOUT_MSECS, so fix this by
-> initializing it with this value to begin with.
->
-> Addresses-Coverity: ("Unsigned compared against 0")
-> Fixes: 669cefb654cb ("RDMA/hns: Remove jiffies operation in disable interrupt context")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On Tue, Jul 09, 2019 at 01:35:30AM +0000, Wei Yongjun wrote:
+> Use kfree_skb() instead of kfree() to free sk_buff.
+> 
+> Fixes: 2faa3f15fa2f ("Bluetooth: hci_qca: wcn3990: Drop baudrate change vendor event")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 > ---
->  drivers/infiniband/hw/hns/hns_roce_hem.c   |  4 ++--
->  drivers/infiniband/hw/hns/hns_roce_hw_v1.c | 12 ++++++------
->  2 files changed, 8 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
-> index 157c84a1f55f..b3641aeff27a 100644
-> --- a/drivers/infiniband/hw/hns/hns_roce_hem.c
-> +++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
-> @@ -326,7 +326,7 @@ static int hns_roce_set_hem(struct hns_roce_dev *hr_dev,
->  {
->  	spinlock_t *lock = &hr_dev->bt_cmd_lock;
->  	struct device *dev = hr_dev->dev;
-> -	unsigned long end = 0;
-> +	long end;
->  	unsigned long flags;
->  	struct hns_roce_hem_iter iter;
->  	void __iomem *bt_cmd;
-> @@ -377,7 +377,7 @@ static int hns_roce_set_hem(struct hns_roce_dev *hr_dev,
->  		bt_cmd = hr_dev->reg_base + ROCEE_BT_CMD_H_REG;
+>  drivers/bluetooth/hci_qca.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+> index 9a5c9c1f9484..cbae86e55aed 100644
+> --- a/drivers/bluetooth/hci_qca.c
+> +++ b/drivers/bluetooth/hci_qca.c
+> @@ -909,7 +909,7 @@ static int qca_recv_event(struct hci_dev *hdev, struct sk_buff *skb)
+>  		if (hdr->evt == HCI_EV_VENDOR)
+>  			complete(&qca->drop_ev_comp);
 >  
->  		end = HW_SYNC_TIMEOUT_MSECS;
-> -		while (end) {
-> +		while (end > 0) {
->  			if (!readl(bt_cmd) >> BT_CMD_SYNC_SHIFT)
->  				break;
+> -		kfree(skb);
+> +		kfree_skb(skb);
 >  
-> diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v1.c b/drivers/infiniband/hw/hns/hns_roce_hw_v1.c
-> index 1fc77b1f2c6d..e13fea71bcb8 100644
-> --- a/drivers/infiniband/hw/hns/hns_roce_hw_v1.c
-> +++ b/drivers/infiniband/hw/hns/hns_roce_hw_v1.c
-> @@ -966,7 +966,7 @@ static int hns_roce_v1_recreate_lp_qp(struct hns_roce_dev *hr_dev)
->  	struct hns_roce_free_mr *free_mr;
->  	struct hns_roce_v1_priv *priv;
->  	struct completion comp;
-> -	unsigned long end = HNS_ROCE_V1_RECREATE_LP_QP_TIMEOUT_MSECS;
-> +	long end = HNS_ROCE_V1_RECREATE_LP_QP_TIMEOUT_MSECS;
->  
->  	priv = (struct hns_roce_v1_priv *)hr_dev->priv;
->  	free_mr = &priv->free_mr;
-> @@ -986,7 +986,7 @@ static int hns_roce_v1_recreate_lp_qp(struct hns_roce_dev *hr_dev)
->  
->  	queue_work(free_mr->free_mr_wq, &(lp_qp_work->work));
->  
-> -	while (end) {
-> +	while (end > 0) {
->  		if (try_wait_for_completion(&comp))
->  			return 0;
->  		msleep(HNS_ROCE_V1_RECREATE_LP_QP_WAIT_VALUE);
-> @@ -1104,7 +1104,7 @@ static int hns_roce_v1_dereg_mr(struct hns_roce_dev *hr_dev,
->  	struct hns_roce_free_mr *free_mr;
->  	struct hns_roce_v1_priv *priv;
->  	struct completion comp;
-> -	unsigned long end = HNS_ROCE_V1_FREE_MR_TIMEOUT_MSECS;
-> +	long end = HNS_ROCE_V1_FREE_MR_TIMEOUT_MSECS;
->  	unsigned long start = jiffies;
->  	int npages;
->  	int ret = 0;
-> @@ -1134,7 +1134,7 @@ static int hns_roce_v1_dereg_mr(struct hns_roce_dev *hr_dev,
->  
->  	queue_work(free_mr->free_mr_wq, &(mr_work->work));
->  
-> -	while (end) {
-> +	while (end > 0) {
->  		if (try_wait_for_completion(&comp))
->  			goto free_mr;
->  		msleep(HNS_ROCE_V1_FREE_MR_WAIT_VALUE);
-> @@ -2425,7 +2425,8 @@ static int hns_roce_v1_clear_hem(struct hns_roce_dev *hr_dev,
->  {
->  	struct device *dev = &hr_dev->pdev->dev;
->  	struct hns_roce_v1_priv *priv;
-> -	unsigned long end = 0, flags = 0;
-> +	unsigned long flags = 0;
-> +	long end = HW_SYNC_TIMEOUT_MSECS;
->  	__le32 bt_cmd_val[2] = {0};
->  	void __iomem *bt_cmd;
->  	u64 bt_ba = 0;
-> @@ -2463,7 +2464,6 @@ static int hns_roce_v1_clear_hem(struct hns_roce_dev *hr_dev,
->  
->  	bt_cmd = hr_dev->reg_base + ROCEE_BT_CMD_H_REG;
->  
-> -	end = HW_SYNC_TIMEOUT_MSECS;
->  	while (1) {
->  		if (readl(bt_cmd) >> BT_CMD_SYNC_SHIFT) {
->  			if (end < 0) {
+>  		return 0;
+>  	}
 
-Good, thanks.
+Good catch, thanks!
 
-
+Reviewed-by: Matthias Kaehlcke <mka@chromium.org>

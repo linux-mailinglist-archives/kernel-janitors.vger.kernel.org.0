@@ -2,71 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F1F56427E
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jul 2019 09:19:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 084CB642DF
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jul 2019 09:31:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727097AbfGJHTd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 10 Jul 2019 03:19:33 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:2198 "EHLO huawei.com"
+        id S1726272AbfGJHbh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Jul 2019 03:31:37 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:2250 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726080AbfGJHTc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 10 Jul 2019 03:19:32 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 4D199260C42CCD55D419;
-        Wed, 10 Jul 2019 15:19:28 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 10 Jul 2019 15:19:19 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <amitkarwar@gmail.com>, <nishants@marvell.com>,
-        <gbhat@marvell.com>, <huxinming820@gmail.com>,
-        <kvalo@codeaurora.org>
-CC:     <linux-wireless@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>,
-        "Mao Wenan" <maowenan@huawei.com>
-Subject: [net-next] mwifiex: use eth_broadcast_addr() to assign broadcast address
-Date:   Wed, 10 Jul 2019 15:25:24 +0800
-Message-ID: <20190710072524.65953-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726162AbfGJHbh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 10 Jul 2019 03:31:37 -0400
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 40D38EDBC7DF22691293;
+        Wed, 10 Jul 2019 15:31:34 +0800 (CST)
+Received: from [127.0.0.1] (10.177.96.96) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.439.0; Wed, 10 Jul 2019
+ 15:31:31 +0800
+Subject: Re: [PATCH -next v4] drm/amdgpu: return 'ret' immediately if failed
+ in amdgpu_pmu_init
+To:     "Kim, Jonathan" <Jonathan.Kim@amd.com>,
+        "airlied@linux.ie" <airlied@linux.ie>,
+        "daniel@ffwll.ch" <daniel@ffwll.ch>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Koenig, Christian" <Christian.Koenig@amd.com>,
+        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
+        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
+        "julia.lawall@lip6.fr" <julia.lawall@lip6.fr>
+References: <20190624094850.GQ18776@kadam>
+ <20190624112318.149299-1-maowenan@huawei.com>
+ <CH2PR12MB3831BE36FF61D74FC529F64F85E00@CH2PR12MB3831.namprd12.prod.outlook.com>
+ <2d7c2525-4503-3706-7d00-0b9bf230266d@huawei.com>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+From:   maowenan <maowenan@huawei.com>
+Message-ID: <8008fcf8-47a1-111f-4467-1a16171129dd@huawei.com>
+Date:   Wed, 10 Jul 2019 15:31:28 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
+In-Reply-To: <2d7c2525-4503-3706-7d00-0b9bf230266d@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.177.96.96]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This patch is to use eth_broadcast_addr() to assign broadcast address
-insetad of memcpy().
 
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
----
- drivers/net/wireless/marvell/mwifiex/tdls.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+gentle ping
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wireless/marvell/mwifiex/tdls.c
-index 18e654d..0931304 100644
---- a/drivers/net/wireless/marvell/mwifiex/tdls.c
-+++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
-@@ -731,7 +731,6 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
- 				    u16 status_code, struct sk_buff *skb)
- {
- 	struct ieee80211_mgmt *mgmt;
--	u8 bc_addr[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
- 	int ret;
- 	u16 capab;
- 	struct ieee80211_ht_cap *ht_cap;
-@@ -765,7 +764,7 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
- 		memmove(pos + ETH_ALEN, &mgmt->u.action.category,
- 			sizeof(mgmt->u.action.u.tdls_discover_resp));
- 		/* init address 4 */
--		memcpy(pos, bc_addr, ETH_ALEN);
-+		eth_broadcast_addr(pos);
- 
- 		ret = mwifiex_tdls_append_rates_ie(priv, skb);
- 		if (ret) {
--- 
-2.7.4
+
+On 2019/6/26 19:35, maowenan wrote:
+> 
+> 
+> On 2019/6/25 1:42, Kim, Jonathan wrote:
+>> Immediate return should be ok since perf registration isn't dependent on gpu hw.
+>>
+>> Reviewed-by: Jonathan Kim <Jonathan.Kim@amd.com>
+> 
+> thanks for review.
+> 
+>>
+>> -----Original Message-----
+>> From: Mao Wenan <maowenan@huawei.com> 
+>> Sent: Monday, June 24, 2019 7:23 AM
+>> To: airlied@linux.ie; daniel@ffwll.ch; Deucher, Alexander <Alexander.Deucher@amd.com>; Koenig, Christian <Christian.Koenig@amd.com>; Zhou, David(ChunMing) <David1.Zhou@amd.com>; dan.carpenter@oracle.com; julia.lawall@lip6.fr
+>> Cc: kernel-janitors@vger.kernel.org; amd-gfx@lists.freedesktop.org; linux-kernel@vger.kernel.org; Kim, Jonathan <Jonathan.Kim@amd.com>; Mao Wenan <maowenan@huawei.com>
+>> Subject: [PATCH -next v4] drm/amdgpu: return 'ret' immediately if failed in amdgpu_pmu_init
+>>
+>> [CAUTION: External Email]
+>>
+>> There is one warning:
+>> drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c: In function ‘amdgpu_pmu_init’:
+>> drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c:249:6: warning: variable ‘ret’ set but not used [-Wunused-but-set-variable]
+>>   int ret = 0;
+>>       ^
+>> amdgpu_pmu_init() is called by amdgpu_device_init() in drivers/gpu/drm/amd/amdgpu/amdgpu_device.c,
+>> which will use the return value. So it should return 'ret' immediately if init_pmu_by_type() failed.
+>> amdgpu_device_init()
+>>         r = amdgpu_pmu_init(adev);
+>>
+>> Fixes: 9c7c85f7ea1f ("drm/amdgpu: add pmu counters")
+>>
+>> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+>> ---
+>>  v1->v2: change the subject for this patch; change the indenting when it calls init_pmu_by_type; use the value 'ret' in  amdgpu_pmu_init().
+>>  v2->v3: change the subject for this patch; return 'ret' immediately if failed to call init_pmu_by_type().
+>>  v3->v4: delete the indenting for init_pmu_by_type() arguments. The original indenting is correct.
+>>
+>>  drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c | 2 ++
+>>  1 file changed, 2 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
+>> index 0e6dba9f60f0..c98cf77a37f3 100644
+>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
+>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_pmu.c
+>> @@ -254,6 +254,8 @@ int amdgpu_pmu_init(struct amdgpu_device *adev)
+>>                 ret = init_pmu_by_type(adev, df_v3_6_attr_groups,
+>>                                        "DF", "amdgpu_df", PERF_TYPE_AMDGPU_DF,
+>>                                        DF_V3_6_MAX_COUNTERS);
+>> +               if (ret)
+>> +                       return ret;
+>>
+>>                 /* other pmu types go here*/
+>>                 break;
+>> --
+>> 2.20.1
+>>
+> 
+> 
+> .
+> 
 

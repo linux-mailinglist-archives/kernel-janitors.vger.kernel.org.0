@@ -2,33 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C28363F01
-	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jul 2019 03:51:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AF11640E5
+	for <lists+kernel-janitors@lfdr.de>; Wed, 10 Jul 2019 08:06:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725875AbfGJBvV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 9 Jul 2019 21:51:21 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:60012 "EHLO huawei.com"
+        id S1726089AbfGJGG3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 10 Jul 2019 02:06:29 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:2197 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725807AbfGJBvV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 9 Jul 2019 21:51:21 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 42780A4204CD8B2F87CC;
-        Wed, 10 Jul 2019 09:51:18 +0800 (CST)
+        id S1725839AbfGJGG3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 10 Jul 2019 02:06:29 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id C9567DB7EBE5D5FCFC01;
+        Wed, 10 Jul 2019 14:06:23 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 10 Jul 2019 09:51:10 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Alex Deucher <alexander.deucher@amd.com>,
-        <christian.koenig@amd.com>, <David1.Zhou@amd.com>,
-        <airlied@linux.ie>, <daniel@ffwll.ch>, <Feifei.Xu@amd.com>,
-        <Likun.Gao@amd.com>, <James.Zhu@amd.com>, <shirish.s@amd.com>,
-        <evan.quan@amd.com>, <ray.huang@amd.com>, <Rex.Zhu@amd.com>
-CC:     YueHaibing <yuehaibing@huawei.com>,
-        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] drm/amdgpu: remove duplicated include from gfx_v9_0.c
-Date:   Wed, 10 Jul 2019 01:57:20 +0000
-Message-ID: <20190710015720.107326-1-yuehaibing@huawei.com>
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 10 Jul 2019 14:06:13 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        "Sean Wang" <sean.wang@mediatek.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-bluetooth@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] Bluetooth: btusb: Fix error return code in btusb_mtk_setup_firmware()
+Date:   Wed, 10 Jul 2019 06:12:22 +0000
+Message-ID: <20190710061222.141247-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -40,27 +41,31 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove duplicated include.
+Fix to return error code -EINVAL from the error handling
+case instead of 0, as done elsewhere in this function.
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Fixes: a1c49c434e15 ("Bluetooth: btusb: Add protocol support for MediaTek MT7668U USB devices")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/bluetooth/btusb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-index 5ba332376710..822f45161240 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-@@ -39,7 +39,6 @@
- #include "vega10_enum.h"
- #include "hdp/hdp_4_0_offset.h"
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 3876fee6ad13..5cf0734eb31b 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -2762,8 +2762,10 @@ static int btusb_mtk_setup_firmware(struct hci_dev *hdev, const char *fwname)
+ 	fw_size = fw->size;
  
--#include "soc15.h"
- #include "soc15_common.h"
- #include "clearstate_gfx9.h"
- #include "v9_structs.h"
-
-
+ 	/* The size of patch header is 30 bytes, should be skip */
+-	if (fw_size < 30)
++	if (fw_size < 30) {
++		err = -EINVAL;
+ 		goto err_release_fw;
++	}
+ 
+ 	fw_size -= 30;
+ 	fw_ptr += 30;
 
 
 

@@ -2,89 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45626651F6
-	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Jul 2019 08:47:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 458D46522C
+	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Jul 2019 09:05:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728060AbfGKGrR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 11 Jul 2019 02:47:17 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:10111
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725963AbfGKGrR (ORCPT
+        id S1728164AbfGKHF3 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 11 Jul 2019 03:05:29 -0400
+Received: from coyote.holtmann.net ([212.227.132.17]:60750 "EHLO
+        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728142AbfGKHF2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 11 Jul 2019 02:47:17 -0400
-X-IronPort-AV: E=Sophos;i="5.63,476,1557180000"; 
-   d="scan'208";a="313140146"
-Received: from vaio-julia.rsr.lip6.fr ([132.227.76.33])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Jul 2019 08:47:00 +0200
-Date:   Thu, 11 Jul 2019 08:46:56 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@lip6.fr>
-X-X-Sender: jll@hadrien
-To:     wen.yang99@zte.com.cn
-cc:     Markus.Elfring@web.de, rjw@rjwysocki.net,
-        daniel.lezcano@linaro.org, linux-pm@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, benh@kernel.crashing.org,
-        cheng.shengyu@zte.com.cn, galak@kernel.crashing.org,
-        mpe@ellerman.id.au, paulus@samba.org, oss@buserror.net,
-        xue.zhihong@zte.com.cn, wang.yi59@zte.com.cn,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: Coccinelle: Checking of_node_put() calls with SmPL
-In-Reply-To: <201907111435459627761@zte.com.cn>
-Message-ID: <alpine.DEB.2.20.1907110845551.3626@hadrien>
-References: 201907101533443009168@zte.com.cn,9d515026-5b74-cf0c-0c64-4fe242d4104e@web.de <201907111435459627761@zte.com.cn>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="=====_001_next====="
+        Thu, 11 Jul 2019 03:05:28 -0400
+Received: from [192.168.23.168] (unknown [157.25.100.178])
+        by mail.holtmann.org (Postfix) with ESMTPSA id B8EAACF2B8;
+        Thu, 11 Jul 2019 09:13:59 +0200 (CEST)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: [PATCH -next] Bluetooth: btusb: Fix error return code in
+ btusb_mtk_setup_firmware()
+From:   Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <20190710061222.141247-1-weiyongjun1@huawei.com>
+Date:   Thu, 11 Jul 2019 09:05:25 +0200
+Cc:     Johan Hedberg <johan.hedberg@gmail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Linux Bluetooth mailing list 
+        <linux-bluetooth@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-mediatek@lists.infradead.org, kernel-janitors@vger.kernel.org
+Content-Transfer-Encoding: 8BIT
+Message-Id: <44F125E4-F492-4F33-9E50-F10CE11C09BC@holtmann.org>
+References: <20190710061222.141247-1-weiyongjun1@huawei.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+X-Mailer: Apple Mail (2.3445.104.11)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
---=====_001_next=====
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Hi Wei,
 
+> Fix to return error code -EINVAL from the error handling
+> case instead of 0, as done elsewhere in this function.
+> 
+> Fixes: a1c49c434e15 ("Bluetooth: btusb: Add protocol support for MediaTek MT7668U USB devices")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+> drivers/bluetooth/btusb.c | 4 +++-
+> 1 file changed, 3 insertions(+), 1 deletion(-)
 
+patch has been applied to bluetooth-next tree.
 
-On Thu, 11 Jul 2019, wen.yang99@zte.com.cn wrote:
+Regards
 
-> > > we developed a coccinelle script to detect such problems.
-> >
-> > Would you find the implementation of the function “dt_init_idle_driver”
-> > suspicious according to discussed source code search patterns?
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/cpuidle/dt_idle_states.c?id=e9a83bd2322035ed9d7dcf35753d3f984d76c6a5#n208
-> > https://elixir.bootlin.com/linux/v5.2/source/drivers/cpuidle/dt_idle_states.c#L208
-> >
-> >
-> > > This script is still being improved.
-> >
-> > Will corresponding software development challenges become more interesting?
->
-> Hello Markus,
-> This is the simplified code pattern for it:
->
-> 172         for (i = 0; ; i++) {
-> 173                 state_node = of_parse_phandle(...);     ---> Obtain here
-> ...
-> 177                 match_id = of_match_node(matches, state_node);
-> 178                 if (!match_id) {
-> 179                         err = -ENODEV;
-> 180                         break;                         --->  Jump out of the loop without releasing it
-> 181                 }
-> 182
-> 183                 if (!of_device_is_available(state_node)) {
-> 184                         of_node_put(state_node);
-> 185                         continue;                    --->  Release the object references within a loop
-> 186                 }
-> ...
-> 208                 of_node_put(state_node);  -->  Release the object references within a loop
-> 209         }
-> 210
-> 211         of_node_put(state_node);       -->    There may be double free here.
->
-> This code pattern is very interesting and the coccinelle software should also recognize this pattern.
+Marcel
 
-In my experience, when you start looking at these of_node_put things, all
-sorts of strange things appear...
-
-julia
---=====_001_next=====--

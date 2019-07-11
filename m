@@ -2,132 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E8EB65928
-	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Jul 2019 16:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AABB65944
+	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Jul 2019 16:45:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728491AbfGKOlM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 11 Jul 2019 10:41:12 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:34966 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726833AbfGKOlM (ORCPT
+        id S1728424AbfGKOpf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 11 Jul 2019 10:45:35 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:33628 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728102AbfGKOpf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 11 Jul 2019 10:41:12 -0400
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6BEWnPG070805
-        for <kernel-janitors@vger.kernel.org>; Thu, 11 Jul 2019 10:41:11 -0400
-Received: from e32.co.us.ibm.com (e32.co.us.ibm.com [32.97.110.150])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2tp5qbmj92-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <kernel-janitors@vger.kernel.org>; Thu, 11 Jul 2019 10:41:10 -0400
-Received: from localhost
-        by e32.co.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <kernel-janitors@vger.kernel.org> from <tyreld@linux.vnet.ibm.com>;
-        Thu, 11 Jul 2019 15:41:10 +0100
-Received: from b03cxnp08028.gho.boulder.ibm.com (9.17.130.20)
-        by e32.co.us.ibm.com (192.168.1.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 11 Jul 2019 15:41:06 +0100
-Received: from b03ledav003.gho.boulder.ibm.com (b03ledav003.gho.boulder.ibm.com [9.17.130.234])
-        by b03cxnp08028.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x6BEf5nC64684456
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 11 Jul 2019 14:41:05 GMT
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 251406A054;
-        Thu, 11 Jul 2019 14:41:05 +0000 (GMT)
-Received: from b03ledav003.gho.boulder.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 83C096A051;
-        Thu, 11 Jul 2019 14:41:02 +0000 (GMT)
-Received: from oc6857751186.ibm.com (unknown [9.80.233.139])
-        by b03ledav003.gho.boulder.ibm.com (Postfix) with ESMTP;
-        Thu, 11 Jul 2019 14:41:02 +0000 (GMT)
-Subject: Re: Coccinelle: Checking of_node_put() calls with SmPL
-To:     wen.yang99@zte.com.cn, Markus.Elfring@web.de, julia.lawall@lip6.fr
-Cc:     wang.yi59@zte.com.cn, linux-pm@vger.kernel.org, rjw@rjwysocki.net,
-        daniel.lezcano@linaro.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, oss@buserror.net, paulus@samba.org,
-        xue.zhihong@zte.com.cn, linuxppc-dev@lists.ozlabs.org,
-        cheng.shengyu@zte.com.cn
-References: <201907111435459627761@zte.com.cn>
-From:   Tyrel Datwyler <tyreld@linux.vnet.ibm.com>
-Date:   Thu, 11 Jul 2019 07:41:01 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        Thu, 11 Jul 2019 10:45:35 -0400
+Received: by mail-vs1-f68.google.com with SMTP id m8so4385659vsj.0
+        for <kernel-janitors@vger.kernel.org>; Thu, 11 Jul 2019 07:45:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=oI6s4h9Ci668lvSxyq2hz/qLjBjWeQuXGiONcZqHFE0=;
+        b=Nn2M0Yv2ODpcauKK3n4EJfE5dKw48QkRs4hNtkLN7uo80fQ4h3B20bqnFBI+dGmfcE
+         itUWVqykd6B110aYvyMbCTcx0kZscHPaOFP8Vc5cyMzo7M7s8jJLQ/NW0txoO6ngfxhK
+         SKDDC4rVROoamXWXSpA3a5j6GBzw1zxl2ARabgbw0w1sTHl8Bjum6aV5rUlA8xBHLcwC
+         UtzJxUMHAv2Jaw78r9nby+oAIUvZ5SaCGOgsBLDmlTidjEvPkvuLQ9caMKKqPBOuY9Lp
+         G1f59f6BjPeKN/GH/rElv3wCApgNVmgjwotrzqD+5jMRkRcsynji6q7SulvYyFCldLdK
+         lDLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=oI6s4h9Ci668lvSxyq2hz/qLjBjWeQuXGiONcZqHFE0=;
+        b=SzkQXaIMkZBJv/mrBc25IndGivK4Gs036HCHBYoffUBnobP0AyBaWH0LLrZj0zvNHZ
+         ZVYqomCW7hfNtkrLPf9GoZyKzedmFDHjjLgVknWUpKApxAEtfC1mM2uzy/Fuamaqu9zc
+         qKQEX07vP/G9sTLCpa+rGN7h8i6pxNfyK3zrjFofOpajG1gkMWTdGJjcBqksm4X+rzIR
+         3LU6SUKPYnfdDscURFLQUNrDOmaSQN8iY4qLyZRN4+H7urZdYhkU1PZFLhVZfukSI4ZY
+         /JdypSmUcawQ6doU2yQnLH9aKgOjCGHwEQ40xrwXdgaG1L0K4pC1GgnQ3NhfQOJvcL+Z
+         fH7Q==
+X-Gm-Message-State: APjAAAXwcADYuikFDTmZZBJN5CSMCnEIUBFaVxnqNWXWyyhh6TWXFlXX
+        AoDQQvQW+sKL/qbl/9jLucyXOw==
+X-Google-Smtp-Source: APXvYqydl2JUzM4cAKn9EQUJeP6czlM8+03B+QWXg8CB5dnq9/pjDnipKFe+VcDdMSL9R4xnToDI0A==
+X-Received: by 2002:a67:8d8a:: with SMTP id p132mr4738792vsd.103.1562856334318;
+        Thu, 11 Jul 2019 07:45:34 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-156-34-55-100.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.55.100])
+        by smtp.gmail.com with ESMTPSA id s12sm2296626vkh.51.2019.07.11.07.45.33
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 11 Jul 2019 07:45:33 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1hlaKD-0002V8-6h; Thu, 11 Jul 2019 11:45:33 -0300
+Date:   Thu, 11 Jul 2019 11:45:33 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     bmt@zurich.ibm.com, dledford@redhat.com,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] infiniband: remove set but not used variables 'rv'
+Message-ID: <20190711144533.GB25807@ziepe.ca>
+References: <20190711135930.132501-1-maowenan@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <201907111435459627761@zte.com.cn>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19071114-0004-0000-0000-000015268C22
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011408; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01230664; UDB=6.00648235; IPR=6.01011939;
- MB=3.00027680; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-11 14:41:09
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19071114-0005-0000-0000-00008C69C428
-Message-Id: <23e06fc0-b969-44e9-a44d-f11b19dfdeca@linux.vnet.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-11_03:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1907110164
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190711135930.132501-1-maowenan@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 07/10/2019 11:35 PM, wen.yang99@zte.com.cn wrote:
->>> we developed a coccinelle script to detect such problems.
->>
->> Would you find the implementation of the function “dt_init_idle_driver”
->> suspicious according to discussed source code search patterns?
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/cpuidle/dt_idle_states.c?id=e9a83bd2322035ed9d7dcf35753d3f984d76c6a5#n208
->> https://elixir.bootlin.com/linux/v5.2/source/drivers/cpuidle/dt_idle_states.c#L208
->>
->>
->>> This script is still being improved.
->>
->> Will corresponding software development challenges become more interesting?
+On Thu, Jul 11, 2019 at 09:59:30PM +0800, Mao Wenan wrote:
+> Fixes gcc '-Wunused-but-set-variable' warning:
 > 
-> Hello Markus,
-> This is the simplified code pattern for it:
+> drivers/infiniband/sw/siw/siw_main.c: In function siw_create_tx_threads:
+> drivers/infiniband/sw/siw/siw_main.c:91:11: warning: variable rv set but not used [-Wunused-but-set-variable]
 > 
-> 172         for (i = 0; ; i++) {
-
-This loop can only be exited on a break.
-
-> 173                 state_node = of_parse_phandle(...);     ---> Obtain here
-> ...
-> 177                 match_id = of_match_node(matches, state_node);
-> 178                 if (!match_id) {
-> 179                         err = -ENODEV;                              
-> 180                         break;                         --->  Jump out of the loop without releasing it
-> 181                 }
-> 182 
-> 183                 if (!of_device_is_available(state_node)) {
-> 184                         of_node_put(state_node);
-> 185                         continue;                    --->  Release the object references within a loop
-> 186                 }
-> ...
-> 208                 of_node_put(state_node);  -->  Release the object references within a loop
-
-This is required at the end of every loop or continue to free the reference.
-Only a break will exit the loop where we hit the below of_node_put().
-
-> 209         }
-> 210 
-> 211         of_node_put(state_node);       -->    There may be double free here.
-
-None of the break conditions call of_node_put(), so it needs to be called here.
-
--Tyrel
-
+> It is never used since introduction in bdcf26bf9b3a ("rdma/siw: network and RDMA core interface")
 > 
-> This code pattern is very interesting and the coccinelle software should also recognize this pattern.
-> 
-> Regards,
-> Wen
-> 
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+>  drivers/infiniband/sw/siw/siw_main.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
+This was already fixed, thanks
+
+Jason

@@ -2,82 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AABB65944
-	for <lists+kernel-janitors@lfdr.de>; Thu, 11 Jul 2019 16:45:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2390066375
+	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Jul 2019 03:47:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728424AbfGKOpf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 11 Jul 2019 10:45:35 -0400
-Received: from mail-vs1-f68.google.com ([209.85.217.68]:33628 "EHLO
-        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728102AbfGKOpf (ORCPT
+        id S1729037AbfGLBrv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 11 Jul 2019 21:47:51 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:46372 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726587AbfGLBrv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 11 Jul 2019 10:45:35 -0400
-Received: by mail-vs1-f68.google.com with SMTP id m8so4385659vsj.0
-        for <kernel-janitors@vger.kernel.org>; Thu, 11 Jul 2019 07:45:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=oI6s4h9Ci668lvSxyq2hz/qLjBjWeQuXGiONcZqHFE0=;
-        b=Nn2M0Yv2ODpcauKK3n4EJfE5dKw48QkRs4hNtkLN7uo80fQ4h3B20bqnFBI+dGmfcE
-         itUWVqykd6B110aYvyMbCTcx0kZscHPaOFP8Vc5cyMzo7M7s8jJLQ/NW0txoO6ngfxhK
-         SKDDC4rVROoamXWXSpA3a5j6GBzw1zxl2ARabgbw0w1sTHl8Bjum6aV5rUlA8xBHLcwC
-         UtzJxUMHAv2Jaw78r9nby+oAIUvZ5SaCGOgsBLDmlTidjEvPkvuLQ9caMKKqPBOuY9Lp
-         G1f59f6BjPeKN/GH/rElv3wCApgNVmgjwotrzqD+5jMRkRcsynji6q7SulvYyFCldLdK
-         lDLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=oI6s4h9Ci668lvSxyq2hz/qLjBjWeQuXGiONcZqHFE0=;
-        b=SzkQXaIMkZBJv/mrBc25IndGivK4Gs036HCHBYoffUBnobP0AyBaWH0LLrZj0zvNHZ
-         ZVYqomCW7hfNtkrLPf9GoZyKzedmFDHjjLgVknWUpKApxAEtfC1mM2uzy/Fuamaqu9zc
-         qKQEX07vP/G9sTLCpa+rGN7h8i6pxNfyK3zrjFofOpajG1gkMWTdGJjcBqksm4X+rzIR
-         3LU6SUKPYnfdDscURFLQUNrDOmaSQN8iY4qLyZRN4+H7urZdYhkU1PZFLhVZfukSI4ZY
-         /JdypSmUcawQ6doU2yQnLH9aKgOjCGHwEQ40xrwXdgaG1L0K4pC1GgnQ3NhfQOJvcL+Z
-         fH7Q==
-X-Gm-Message-State: APjAAAXwcADYuikFDTmZZBJN5CSMCnEIUBFaVxnqNWXWyyhh6TWXFlXX
-        AoDQQvQW+sKL/qbl/9jLucyXOw==
-X-Google-Smtp-Source: APXvYqydl2JUzM4cAKn9EQUJeP6czlM8+03B+QWXg8CB5dnq9/pjDnipKFe+VcDdMSL9R4xnToDI0A==
-X-Received: by 2002:a67:8d8a:: with SMTP id p132mr4738792vsd.103.1562856334318;
-        Thu, 11 Jul 2019 07:45:34 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-156-34-55-100.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.55.100])
-        by smtp.gmail.com with ESMTPSA id s12sm2296626vkh.51.2019.07.11.07.45.33
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 11 Jul 2019 07:45:33 -0700 (PDT)
-Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
-        (envelope-from <jgg@ziepe.ca>)
-        id 1hlaKD-0002V8-6h; Thu, 11 Jul 2019 11:45:33 -0300
-Date:   Thu, 11 Jul 2019 11:45:33 -0300
-From:   Jason Gunthorpe <jgg@ziepe.ca>
-To:     Mao Wenan <maowenan@huawei.com>
-Cc:     bmt@zurich.ibm.com, dledford@redhat.com,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] infiniband: remove set but not used variables 'rv'
-Message-ID: <20190711144533.GB25807@ziepe.ca>
-References: <20190711135930.132501-1-maowenan@huawei.com>
+        Thu, 11 Jul 2019 21:47:51 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x6C1ivXa138640;
+        Fri, 12 Jul 2019 01:47:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2018-07-02;
+ bh=bOeKf0HYORGyeDkLlZkGcOq9SCXba9RpDa+uFpu0rk8=;
+ b=k4aHKCd4dVUvEZD1eTuCzxtGbYythkLDYur8hiLgYTzZ+odaFkbGF+g3lKPLg+1+mDR8
+ r5irxzpvl8YVSWmCOUB4eAqehIEg+Ve7C7AC261GYyYXGfYYanM6xu/858TEDEGQUJqz
+ Si1PQYjlMvlACo8mdHQ7jcf+HKm3q+2gxErvsnDknlrKo2o5wGA9JoXBxOlN/e9jre26
+ dV24L7zMydHRljo6LWGhPAAQmBCIEzudbhkrBjvftX9v33ZxGhUVP0Bx2D29qhENbm/a
+ QlkZ+IgcH+cMIMydPuChAydfjd5cIxSreVDoPw/Lj8MQCa9X4XfSfQCxlK1kKXPddMej dg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2tjm9r30bf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 12 Jul 2019 01:47:45 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x6C1hVnu148329;
+        Fri, 12 Jul 2019 01:47:44 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2tmwgygv1b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 12 Jul 2019 01:47:44 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x6C1lgQk030476;
+        Fri, 12 Jul 2019 01:47:42 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 11 Jul 2019 18:47:42 -0700
+To:     Hannes Reinecke <hare@suse.de>
+Cc:     Colin King <colin.king@canonical.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] scsi: libfc: fix null pointer dereference on a null lport
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20190702091835.13629-1-colin.king@canonical.com>
+Date:   Thu, 11 Jul 2019 21:47:40 -0400
+In-Reply-To: <20190702091835.13629-1-colin.king@canonical.com> (Colin King's
+        message of "Tue, 2 Jul 2019 10:18:35 +0100")
+Message-ID: <yq1h87s58hv.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190711135930.132501-1-maowenan@huawei.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9315 signatures=668688
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=863
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1810050000 definitions=main-1907120020
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9315 signatures=668688
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=933 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
+ definitions=main-1907120020
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jul 11, 2019 at 09:59:30PM +0800, Mao Wenan wrote:
-> Fixes gcc '-Wunused-but-set-variable' warning:
-> 
-> drivers/infiniband/sw/siw/siw_main.c: In function siw_create_tx_threads:
-> drivers/infiniband/sw/siw/siw_main.c:91:11: warning: variable rv set but not used [-Wunused-but-set-variable]
-> 
-> It is never used since introduction in bdcf26bf9b3a ("rdma/siw: network and RDMA core interface")
-> 
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
->  drivers/infiniband/sw/siw/siw_main.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
 
-This was already fixed, thanks
+Hannes,
 
-Jason
+Please review!
+
+> Currently if lport is null then the null lport pointer is dereference
+> when printing out debug via the FC_LPORT_DB macro. Fix this by using
+> the more generic FC_LIBFC_DBG debug macro instead that does not use
+> lport.
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

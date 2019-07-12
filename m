@@ -2,34 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EDD75679BC
-	for <lists+kernel-janitors@lfdr.de>; Sat, 13 Jul 2019 12:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 254A667A4F
+	for <lists+kernel-janitors@lfdr.de>; Sat, 13 Jul 2019 15:43:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727513AbfGMKpE convert rfc822-to-8bit (ORCPT
+        id S1727582AbfGMNnE convert rfc822-to-8bit (ORCPT
         <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 13 Jul 2019 06:45:04 -0400
-Received: from mail.iara.government.bg ([95.43.208.99]:47252 "EHLO
+        Sat, 13 Jul 2019 09:43:04 -0400
+Received: from mail.iara.government.bg ([95.43.208.99]:39002 "EHLO
         iara.government.bg" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726460AbfGMKpE (ORCPT
+        with ESMTP id S1726474AbfGMNnE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 13 Jul 2019 06:45:04 -0400
-X-Greylist: delayed 18858 seconds by postgrey-1.27 at vger.kernel.org; Sat, 13 Jul 2019 06:45:03 EDT
+        Sat, 13 Jul 2019 09:43:04 -0400
 Received: from localhost (localhost [127.0.0.1])
-        by iara.government.bg (Postfix) with ESMTP id F3F3A2F0A45;
-        Sat, 13 Jul 2019 06:22:08 +0300 (EEST)
+        by iara.government.bg (Postfix) with ESMTP id DEAC428936F;
+        Sat, 13 Jul 2019 11:03:53 +0300 (EEST)
 Received: from iara.government.bg ([127.0.0.1])
         by localhost (iara.government.bg [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id q-I_N9Wv0wvm; Sat, 13 Jul 2019 06:22:08 +0300 (EEST)
+        with ESMTP id w9erX5G0l2pb; Sat, 13 Jul 2019 11:03:53 +0300 (EEST)
 Received: from localhost (localhost [127.0.0.1])
-        by iara.government.bg (Postfix) with ESMTP id D05B52A9CDE;
-        Sat, 13 Jul 2019 05:34:38 +0300 (EEST)
+        by iara.government.bg (Postfix) with ESMTP id 7A0C42C9865;
+        Sat, 13 Jul 2019 09:40:02 +0300 (EEST)
 X-Virus-Scanned: amavisd-new at iara.government.bg
 Received: from iara.government.bg ([127.0.0.1])
         by localhost (iara.government.bg [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id eCNZhOKFuonF; Sat, 13 Jul 2019 05:34:38 +0300 (EEST)
+        with ESMTP id D-W60afQiuKZ; Sat, 13 Jul 2019 09:40:02 +0300 (EEST)
 Received: from [10.108.11.57] (unknown [105.12.6.226])
-        by iara.government.bg (Postfix) with ESMTPSA id B104B2EB071;
-        Sat, 13 Jul 2019 04:50:54 +0300 (EEST)
+        by iara.government.bg (Postfix) with ESMTPSA id E9CBC2EA6D5;
+        Sat, 13 Jul 2019 02:45:50 +0300 (EEST)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8BIT
@@ -37,9 +36,9 @@ Content-Description: Mail message body
 Subject: =?utf-8?b?RndkOiBSZTog4oKsIDIsMDAwLDAwMC4wMCBFdXJv?=
 To:     Recipients <silistra@iara.government.bg>
 From:   silistra@iara.government.bg
-Date:   Fri, 12 Jul 2019 18:50:39 -0700
+Date:   Fri, 12 Jul 2019 16:45:35 -0700
 Reply-To: carfleon@gmail.com
-Message-Id: <20190713015055.B104B2EB071@iara.government.bg>
+Message-Id: <20190712234550.E9CBC2EA6D5@iara.government.bg>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>

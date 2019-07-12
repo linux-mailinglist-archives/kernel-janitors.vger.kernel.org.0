@@ -2,97 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BCA966B00
-	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Jul 2019 12:44:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CD5F66FA2
+	for <lists+kernel-janitors@lfdr.de>; Fri, 12 Jul 2019 15:08:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726224AbfGLKn7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 12 Jul 2019 06:43:59 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:53773
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726050AbfGLKn7 (ORCPT
+        id S1727414AbfGLNIH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 12 Jul 2019 09:08:07 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:46567 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727335AbfGLNIH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 12 Jul 2019 06:43:59 -0400
-X-IronPort-AV: E=Sophos;i="5.63,482,1557180000"; 
-   d="scan'208";a="313309971"
-Received: from vaio-julia.rsr.lip6.fr ([132.227.76.33])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Jul 2019 12:43:55 +0200
-Date:   Fri, 12 Jul 2019 12:43:52 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@lip6.fr>
-X-X-Sender: jll@hadrien
-To:     Hannes Reinecke <hare@suse.de>
-cc:     Colin King <colin.king@canonical.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] scsi: libfc: fix null pointer dereference on a null
- lport
-In-Reply-To: <14c9e345-dd98-63e7-5ba2-679f10760fe6@suse.de>
-Message-ID: <alpine.DEB.2.20.1907121243220.3900@hadrien>
-References: <20190702091835.13629-1-colin.king@canonical.com> <14c9e345-dd98-63e7-5ba2-679f10760fe6@suse.de>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
+        Fri, 12 Jul 2019 09:08:07 -0400
+Received: by mail-pl1-f193.google.com with SMTP id c2so4742627plz.13;
+        Fri, 12 Jul 2019 06:08:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=a/+LlX3B3GK6gzdUV29pQh7HN2WOr3wu9bemUTyrzY8=;
+        b=E39w18PFiWeQhTjrabdORWHwdDJNL62AEaCIwYmr4jBJuWjbG/BXHIcCXAGCaraA/x
+         NaTPcxKeYs9qGJwkxlw4X4l6Tr7aVtrV7G7lFKNRfc+2fLROwyT9GOu1kDanxB54VfyV
+         +tH/enWGbzxP/znQ35j5/FWkec/QqeccAP3x5YipIuidSYcwzEqpJI56zEispYp7JNml
+         AVv5wVEHaxd2MROzG2314YMqJnR7j35HkSWjFuC0mrMu/hjhNi6IYMbKY2tzgvrWhnk7
+         hYjOgfnmHRWwR7iv6se6IwQ8qvA83qVSGQ+PxZr/CQyFI/Peduas6HYRrdkH4WYLWvWz
+         mQ1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=a/+LlX3B3GK6gzdUV29pQh7HN2WOr3wu9bemUTyrzY8=;
+        b=T78TMh390lxX2iQcAUSAezetj7839pffm12BHya1b0Z0r7X2JZel3Mm43kQY1ZBKcc
+         HbSaRmDg5BW5WnVQvD1WVV7q/tbEIG+hViX9hNSFjnSO4oOH5pkyLGlr9zG6tEYwGlCN
+         hxht+zsbTdEA3yaFeBV0MeEe4x5GBGPFfGU1A4bTw6NVwsAcSTd/9EWvf5DBglGFiHSA
+         Hay3txo32wXN92oBUJaIfcFdc/M+hk9dyBB3n4sQrC8fnha0jIs2fuMN4kweDjppuFub
+         wDkDQGcSGWWvmHrQ0VI1SUx0hG/LMA2AMuWmeKYBDVwQGZ+gQlOsI5qG0WXwzXBzXzX7
+         NrJw==
+X-Gm-Message-State: APjAAAW1Bk+aMub6133vCZLACwuJMSDHe5zRNUfwA9FOMMGQDekKHbmF
+        jQtURxFmMvCTqet8H59gV3NKN7JLvEFB4/B1SPI=
+X-Google-Smtp-Source: APXvYqxSh6cQ1p47C7VHrhPhOFVjMS3zMNLTF75N1+ZULg2+Xs0sNUU8YkwS0FTHfB+jrdYvPzv5Pgj/5ks9F+e0MS4=
+X-Received: by 2002:a17:902:9349:: with SMTP id g9mr11230348plp.262.1562936886935;
+ Fri, 12 Jul 2019 06:08:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323329-1695843507-1562928232=:3900"
+References: <20190709013842.17344-1-weiyongjun1@huawei.com>
+In-Reply-To: <20190709013842.17344-1-weiyongjun1@huawei.com>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Fri, 12 Jul 2019 16:07:55 +0300
+Message-ID: <CAHp75Vf5_UjW6mXhn-rLPNjSaeRTJt7GGaseTXObk3t5HO-CLw@mail.gmail.com>
+Subject: Re: [PATCH -next] platform/x86: mlx-platform: Fix error handling in mlxplat_init()
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Vadim Pasternak <vadimp@mellanox.com>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Platform Driver <platform-driver-x86@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
---8323329-1695843507-1562928232=:3900
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-
-
-
-On Fri, 12 Jul 2019, Hannes Reinecke wrote:
-
-> On 7/2/19 11:18 AM, Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> >
-> > Currently if lport is null then the null lport pointer is dereference
-> > when printing out debug via the FC_LPORT_DB macro. Fix this by using
-> > the more generic FC_LIBFC_DBG debug macro instead that does not use
-> > lport.
-> >
-> > Addresses-Coverity: ("Dereference after null check")
-> > Fixes: 7414705ea4ae ("libfc: Add runtime debugging with debug_logging module parameter")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > ---
-> >  drivers/scsi/libfc/fc_exch.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/scsi/libfc/fc_exch.c b/drivers/scsi/libfc/fc_exch.c
-> > index 025cd2ff9f65..c477fadbf504 100644
-> > --- a/drivers/scsi/libfc/fc_exch.c
-> > +++ b/drivers/scsi/libfc/fc_exch.c
-> > @@ -2591,8 +2591,8 @@ void fc_exch_recv(struct fc_lport *lport, struct fc_frame *fp)
-> >
-> >  	/* lport lock ? */
-> >  	if (!lport || lport->state == LPORT_ST_DISABLED) {
-> > -		FC_LPORT_DBG(lport, "Receiving frames for an lport that "
-> > -			     "has not been initialized correctly\n");
-> > +		FC_LIBFC_DBG("Receiving frames for an lport that "
-> > +			     "has not been initialized correctly\n");
-
-If the code is being changed, perhaps the string could be put onto one
-line as well.
-
-julia
-
-> >  		fc_frame_free(fp);
-> >  		return;
-> >  	}
-> >
-> Reviewed-by: Hannes Reinecke <hare@suse.com>
+On Tue, Jul 9, 2019 at 4:32 AM Wei Yongjun <weiyongjun1@huawei.com> wrote:
 >
-> Cheers,
+> Add the missing platform_device_unregister() before return
+> from mlxplat_init() in the error handling case.
 >
-> Hannes
-> --
-> Dr. Hannes Reinecke		   Teamlead Storage & Networking
-> hare@suse.de			               +49 911 74053 688
-> SUSE LINUX GmbH, Maxfeldstr. 5, 90409 Nürnberg
-> GF: Felix Imendörffer, Mary Higgins, Sri Rasiah
-> HRB 21284 (AG Nürnberg)
+
+Applied, thanks!
+
+> Fixes: 6b266e91a071 ("platform/x86: mlx-platform: Move regmap initialization before all drivers activation")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  drivers/platform/x86/mlx-platform.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
---8323329-1695843507-1562928232=:3900--
+> diff --git a/drivers/platform/x86/mlx-platform.c b/drivers/platform/x86/mlx-platform.c
+> index 2b98f299faa4..8fe51e43f1bc 100644
+> --- a/drivers/platform/x86/mlx-platform.c
+> +++ b/drivers/platform/x86/mlx-platform.c
+> @@ -2111,7 +2111,7 @@ static int __init mlxplat_init(void)
+>                                         mlxplat_regmap_config);
+>         if (IS_ERR(priv->regmap)) {
+>                 err = PTR_ERR(priv->regmap);
+> -               return err;
+> +               goto fail_alloc;
+>         }
+>
+>         err = mlxplat_mlxcpld_verify_bus_topology(&nr);
+>
+>
+>
+
+
+-- 
+With Best Regards,
+Andy Shevchenko

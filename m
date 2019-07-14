@@ -2,28 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9966167E54
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jul 2019 10:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FE1667E73
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jul 2019 12:07:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728208AbfGNIsx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 14 Jul 2019 04:48:53 -0400
-Received: from mout.web.de ([212.227.17.11]:49061 "EHLO mout.web.de"
+        id S1728164AbfGNKHy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 14 Jul 2019 06:07:54 -0400
+Received: from mout.web.de ([212.227.17.12]:37795 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726142AbfGNIsw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 14 Jul 2019 04:48:52 -0400
+        id S1726799AbfGNKHx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 14 Jul 2019 06:07:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1563094054;
-        bh=u0+UBJAk63DP/if+SWGzS+4Hh1T7CazhhWMvMVpjpAE=;
-        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=MczfnUsYW/An7EBRsVVkuiY01ar6Wjsd4/vcad4+hTHcejANyxQ4+s9PSbDudHjdi
-         sHgQD5KmILwwf8Ks7fNNJqv7H9j2v3ruSp/mE0IboCZxtt7cilPQv2zpC3G54VShjj
-         kKT4GiqBPIAUMMJ4tPBWr1IJ3rVldDfRQvQLA3ks=
+        s=dbaedf251592; t=1563098842;
+        bh=bXndHdPJ3jM5bQ1RKItkawRtER4ZAQycYeZkZqs1DWU=;
+        h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
+        b=GwyrUOjtKxDTEfETGu4dHU4shEjLuNo1rZ1+tUgG/E9M1qX/NbNKUAH3bbfWhexla
+         ZkWwPEnDFYV4rmwSDbobiJVrZmxSINVL6R9ZWmt4QEBVuws4KNDGvIL0mTpgs5JDCH
+         Q/GzFz9CSb6tSA2I4WJtAh2cI3tmpmmMz7zKVm0Y=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.159.144]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MSads-1hwNH73X88-00RYOp; Sun, 14
- Jul 2019 10:47:34 +0200
+Received: from [192.168.1.2] ([78.49.159.144]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MCZtW-1hdDUe20Pa-009QHP; Sun, 14
+ Jul 2019 12:07:22 +0200
+To:     Wen Yang <wen.yang99@zte.com.cn>, alsa-devel@alsa-project.org
 Cc:     Cheng Shengyu <cheng.shengyu@zte.com.cn>,
         Jaroslav Kysela <perex@perex.cz>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Sangbeom Kim <sbkim73@samsung.com>,
@@ -33,12 +35,9 @@ Cc:     Cheng Shengyu <cheng.shengyu@zte.com.cn>,
         Yi Wang <wang.yi59@zte.com.cn>,
         LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
-References: <1562989575-33785-2-git-send-email-wen.yang99@zte.com.cn>
-Subject: Re: [PATCH 1/2] ASoC: samsung: odroid: fix an use-after-free issue
- for codec
-To:     Wen Yang <wen.yang99@zte.com.cn>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        alsa-devel@alsa-project.org
+References: <1562989575-33785-1-git-send-email-wen.yang99@zte.com.cn>
+Subject: Re: [PATCH 0/2] ASoC: samsung: odroid: fix err handling of
+ odroid_audio_probe
 From:   Markus Elfring <Markus.Elfring@web.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
@@ -84,66 +83,55 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <0eeabac6-edbd-b829-817f-ffff87e1a825@web.de>
-Date:   Sun, 14 Jul 2019 10:47:20 +0200
+Message-ID: <fbd5666c-f681-4f09-eb5c-35c47d60d857@web.de>
+Date:   Sun, 14 Jul 2019 12:07:18 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <1562989575-33785-2-git-send-email-wen.yang99@zte.com.cn>
+In-Reply-To: <1562989575-33785-1-git-send-email-wen.yang99@zte.com.cn>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Language: en-GB
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:rxYjDolk16ptYg3SOXZ3jY13J6Cf6owqsYMky4Hw2TBKVxwew74
- d90w/+kqJI/cFdZmiVjPBZ1ZPPMMqtHBhHKiDMtYUhng5zC56NNe6GrlsNJ2+/YX01lh0Q9
- c9QEKtU6bJoKIA0FVRvvdPT0t/lN3cGlx6FJaAsmVQ4wye4FfSIvR+iyLQwCH3tueU0FN1O
- tSyjnkdkisYc4jLDIH7Tw==
+X-Provags-ID: V03:K1:5n2Rwt1HpiQQYgHOGVufp3KJuiq5qGuGoupTkQDnbXt19t2izfJ
+ ilRmwUUcgkLWbfVu4ouAvUF32ozP2T6/oBQuHXU9fk+8RQyaUewsc6a8RoxqE3QpHhNSfm8
+ mkqhB4uf+uxb7h156qHKrw+O77+FPZS75eIBXqDvnvjtwrMB+ejVsvVO1JGrRUkap570zJX
+ YQfVccfd+SLMs5MFKV6pQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:sd5OJjYO3hA=:c0VZ102RvND10XMvOO62Xn
- uvuZkxHfmJhE9cVSNwFgAYapGBEI1zkr6goILjptNHhe2njBlQL7WLuHE7dyxSsFY+/XQ2LGO
- IYNIfMAKmww0Ug4HmonXBBnAvGYRkeHyiPb2lTLOaqjXTmJF/lYDNtiTK5SrW+wVh0piB3CHh
- aJ+nINYqcmYpyeO+r2YDRDIGRz1yBWgsiL3L8rtg4aAlQ292KlTdv/bK/01DR42rlheeMkeld
- LCWTDZwAB6sBKD8PSA7GT1pM6Wc5jN0DIU6GRETu1SiilHpxPYI6XzeeZjsXw1Gp93CeF+gzr
- rA3SLkwtXc8R/q7Ud+v4ux4RxwmvchVt024V8pnFa7v7ig8pEhNbKZXdwTvDT/fraxUGbHcOM
- U+xDAc6GBcAq3G5oKEaG2wwmYG9BeXdMxHWGCLSeUR0S37+hQMBObF76V1oItzyBgsCziJml8
- 2hkcmqkSvhQJfnH4BvgIWzanaLOr6HnTkTghufH432fhK6hYRUsNZls4ATF8kazbgWXMqCWa7
- +/4bdCDKrn5UvjUxfwHxYheqzPN8RbivRYO+A53VI9bY9XDjROSd61Esi5d0uOKI0jfe/WXNm
- /rAYrgaV5rZzUs6N+oDzCszPu0358bifvtptZ5b6XSKk3/pAozI2ir3zkMq9QUsZ1NN2k1qoB
- DRDOWatRYOI49zGPJFiDB7NHKVom5HMvLg/Y0464ZAijGGTtL+sJCtumCgrmCeWb5z2g7ifzm
- T2UFWPPE2q8wN8NfpLkc75ZT/HQKFJP9IGUzb1qu/lmvqoJwhApPiMtxu3NTDZqUG/VRiLATp
- OmC8so4Yo3qCvWvZsA6RGtTyW3YTBU3D5zpjGa2PK72UoFlJgPK5I+0Q3S4mkDsrnLSyBpi1p
- iMUAzmSivmvjkuwQ+gEWZqw6RzrsBc5eLikjr++hlD6QznAAMN6zlOV2JLUEqEbCDykqDtc5K
- d+Kboc7VUEoiqsVnqJoTJNKy+/KzeP7CImAVMDmmIqbqokgxOWvN7Taw2fGTgr+LApEfX1wBR
- EXgDg9ruMZd37xkzEzi3sdjegGCfvJStaafKGkD9yaohHmFsX1ZkgAIR+vTfb8HMxW939KiwR
- ql+xdq6gIcht4orzU9gqlGqB1p2TNfQaw8e
+X-UI-Out-Filterresults: notjunk:1;V03:K0:QYTy0z+JYvM=:BnN4HfEsEybItVrKYvv/sj
+ FvANxBXjzi1stt549giywAIO/EGUKxLMTfttfpd3ASiVjUvhVatsLoFkpqhNyQUJ/Vg38DT1A
+ Tis1JQ7gDZGnaw1k0p1ioU1pdPdH7OgJnyrMWjWvV1/NmYlmVzWuMZj0t1wU5GFU4MNTSAnP8
+ u8oD15wwvw+vWr6lATzdKrCihKk1VlPexUxEZ9sYZhdNaF8sbCPPLsfzDpvmADe7k91iuwgG/
+ nNlUv3BGHc+ri+uR9xgZJtZ+GleH8QJrhHN8XPJxy4Tw9dACRBX74OdRtpwenlDkd8G765wCn
+ gv4jri6CHDf9+L60xfmfd6V+ug1SSJJDQt3EQFS3qtTraNkV9irJ/jiieCVASEbH1F87HFK+W
+ 5gk8xYKjFCQh57LeGromQ5Uuvs6H17Ykdg0urM4O3mrj5IGPF/Qpbbmf/87iYXnTCfX5REQKv
+ acSyiWOndT3qysK+z+QZjuZEw+kV7gaPjuRTGeHxg/+064DMzWgPrtVfC8/D8pYqzpV+Frhq7
+ yt2DEVXZVWTqaiuJV+zZ3aq3hT6ryqT+uGuOBNJJrKkoMt6s+ypuQlH7gQvsjRYPCpT3N56Q0
+ PJ8Yh8wnAOWJiHcVOOaXLx6r5uqKB3elNGxRUeh1vxjmC+RKDemVT9L3EiJKu+HZl7XmxW+rS
+ lO6YT1HDhkIzZ96yvAlvv9lGm8LzIg+bpl/xPwUWTVZft42MAAIj9dznnpj9aVc95T0E5v51D
+ GqY6qiXNYzL2rEtn1fDZPeObF8hM+3yf5jB78hETv2Maou/JOVfnf1PtnyoUGTpDAxaXOjvQn
+ pY/PYvFYEK/1WAeZxDcyWNbnU9sImk5Yhg1AMIBaomoM9qRcv4ITQSVI27oVL1kfTFDUYT+0c
+ APJEgkJJPHXz1BT7/nuOMpuFa/RmMCdcipXeM3fi3dXTPATD8dbou9nt6+f+81rK/SQdhK64m
+ VGN4J4QZFgaanDfdosOtf1ZtHmWeRKx4QibnJbqWKyQpBvhHnRS/GCrV/A5DAnD2EYvxu8Ts5
+ Nj29bvmrt01G5LkLcABR2wGxC9YZJVLdMiVnyjF9uPAB5Mh7ZPk84GsiJ/O4dR3zMZxJFa2FW
+ FEaPtwFIVcxDyha4wsufCwiWKJFGXTm2o9e
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> @@ -317,6 +316,7 @@ static int odroid_audio_probe(struct platform_device=
- *pdev)
-
->  		goto err_put_clk_i2s;
-
->  	}
-
->
-
-> +	of_node_put(codec);
+Would a subject like =E2=80=9CASoC: samsung: odroid: Fix handling of devic=
+e node references
+in odroid_audio_probe=E2=80=9D be more appropriate (instead of using the a=
+bbreviation =E2=80=9Cerr=E2=80=9D)?
 
 
-I would prefer to avoid a bit of duplicate source code also at this place.
-Thus I would find a statement like =E2=80=9Cgoto put_node;=E2=80=9D more a=
-ppropriate here.
+> We developed a coccinelle SmPL to detect =E2=80=A6
 
+* I would find a slightly different wording better.
 
->  	return 0;
-
->
-
->  err_put_clk_i2s:
-
-
+* How do you think about to convert this information into software attribu=
+tions
+  for the update steps?
 
 Regards,
 Markus

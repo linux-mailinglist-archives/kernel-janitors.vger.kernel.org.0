@@ -2,28 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FE1667E73
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jul 2019 12:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 515EA67EB1
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jul 2019 12:57:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728164AbfGNKHy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 14 Jul 2019 06:07:54 -0400
-Received: from mout.web.de ([212.227.17.12]:37795 "EHLO mout.web.de"
+        id S1728317AbfGNK5A (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 14 Jul 2019 06:57:00 -0400
+Received: from mout.web.de ([212.227.17.12]:52143 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726799AbfGNKHx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 14 Jul 2019 06:07:53 -0400
+        id S1728147AbfGNK5A (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 14 Jul 2019 06:57:00 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1563098842;
-        bh=bXndHdPJ3jM5bQ1RKItkawRtER4ZAQycYeZkZqs1DWU=;
-        h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
-        b=GwyrUOjtKxDTEfETGu4dHU4shEjLuNo1rZ1+tUgG/E9M1qX/NbNKUAH3bbfWhexla
-         ZkWwPEnDFYV4rmwSDbobiJVrZmxSINVL6R9ZWmt4QEBVuws4KNDGvIL0mTpgs5JDCH
-         Q/GzFz9CSb6tSA2I4WJtAh2cI3tmpmmMz7zKVm0Y=
+        s=dbaedf251592; t=1563101754;
+        bh=81eladfMqsM5f/l52YP902lsEMHFBVleNkfZjwRQdIw=;
+        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+        b=rIbj9rmlDrS9+4Gt1K0MCcAb8MLhINPENJjsLSq5ow3xBI8Z16GMkw1mdlm8IA6/j
+         /aFToe+9pNKmAMvmHFhTxSuhqX3DI8pK09YBJy/J0i3Sdlf0ESMIOm5kbH81Zm9M20
+         gDRx75fQ67hLI/dHpkun2JUiVJtUASAZaQOGX4to=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.159.144]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MCZtW-1hdDUe20Pa-009QHP; Sun, 14
- Jul 2019 12:07:22 +0200
-To:     Wen Yang <wen.yang99@zte.com.cn>, alsa-devel@alsa-project.org
-Cc:     Cheng Shengyu <cheng.shengyu@zte.com.cn>,
+Received: from [192.168.1.2] ([78.49.159.144]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M0Qkb-1icEx50szl-00uXg0; Sun, 14
+ Jul 2019 12:55:54 +0200
+Cc:     kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Cheng Shengyu <cheng.shengyu@zte.com.cn>,
         Jaroslav Kysela <perex@perex.cz>,
         Krzysztof Kozlowski <krzk@kernel.org>,
         Liam Girdwood <lgirdwood@gmail.com>,
@@ -32,12 +33,11 @@ Cc:     Cheng Shengyu <cheng.shengyu@zte.com.cn>,
         Sylwester Nawrocki <s.nawrocki@samsung.com>,
         Takashi Iwai <tiwai@suse.com>,
         Xue Zhihong <xue.zhihong@zte.com.cn>,
-        Yi Wang <wang.yi59@zte.com.cn>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-References: <1562989575-33785-1-git-send-email-wen.yang99@zte.com.cn>
-Subject: Re: [PATCH 0/2] ASoC: samsung: odroid: fix err handling of
- odroid_audio_probe
+        Yi Wang <wang.yi59@zte.com.cn>
+References: <1562989575-33785-2-git-send-email-wen.yang99@zte.com.cn>
+Subject: Re: [1/2] ASoC: samsung: odroid: fix an use-after-free issue for
+ codec
+To:     Wen Yang <wen.yang99@zte.com.cn>, alsa-devel@alsa-project.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
@@ -83,55 +83,46 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <fbd5666c-f681-4f09-eb5c-35c47d60d857@web.de>
-Date:   Sun, 14 Jul 2019 12:07:18 +0200
+Message-ID: <6f537916-9dec-606d-ea4b-8d41cc75a55d@web.de>
+Date:   Sun, 14 Jul 2019 12:55:49 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <1562989575-33785-1-git-send-email-wen.yang99@zte.com.cn>
+In-Reply-To: <1562989575-33785-2-git-send-email-wen.yang99@zte.com.cn>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:5n2Rwt1HpiQQYgHOGVufp3KJuiq5qGuGoupTkQDnbXt19t2izfJ
- ilRmwUUcgkLWbfVu4ouAvUF32ozP2T6/oBQuHXU9fk+8RQyaUewsc6a8RoxqE3QpHhNSfm8
- mkqhB4uf+uxb7h156qHKrw+O77+FPZS75eIBXqDvnvjtwrMB+ejVsvVO1JGrRUkap570zJX
- YQfVccfd+SLMs5MFKV6pQ==
+Content-Language: en-US
+X-Provags-ID: V03:K1:j7Q+ABHMF7uNcALNtrzIqXAhDDMLELYJdE1GISE46wREN9SOZO5
+ gy7kW4ofFOXNb20Rp/pKkTpVBSaknQKjPpDb1KaavkYcA6ffk9ftY9KgC0e1ACea1Fix8Gx
+ BCbmr00oukrEEsLghzMzNLlN+nmp6OBfZY82kHoLifXkvhF4swOJoMt+Tgc+p7lwIXQ5Z+V
+ tcRVw/Szp5N7uHC0FlisA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:QYTy0z+JYvM=:BnN4HfEsEybItVrKYvv/sj
- FvANxBXjzi1stt549giywAIO/EGUKxLMTfttfpd3ASiVjUvhVatsLoFkpqhNyQUJ/Vg38DT1A
- Tis1JQ7gDZGnaw1k0p1ioU1pdPdH7OgJnyrMWjWvV1/NmYlmVzWuMZj0t1wU5GFU4MNTSAnP8
- u8oD15wwvw+vWr6lATzdKrCihKk1VlPexUxEZ9sYZhdNaF8sbCPPLsfzDpvmADe7k91iuwgG/
- nNlUv3BGHc+ri+uR9xgZJtZ+GleH8QJrhHN8XPJxy4Tw9dACRBX74OdRtpwenlDkd8G765wCn
- gv4jri6CHDf9+L60xfmfd6V+ug1SSJJDQt3EQFS3qtTraNkV9irJ/jiieCVASEbH1F87HFK+W
- 5gk8xYKjFCQh57LeGromQ5Uuvs6H17Ykdg0urM4O3mrj5IGPF/Qpbbmf/87iYXnTCfX5REQKv
- acSyiWOndT3qysK+z+QZjuZEw+kV7gaPjuRTGeHxg/+064DMzWgPrtVfC8/D8pYqzpV+Frhq7
- yt2DEVXZVWTqaiuJV+zZ3aq3hT6ryqT+uGuOBNJJrKkoMt6s+ypuQlH7gQvsjRYPCpT3N56Q0
- PJ8Yh8wnAOWJiHcVOOaXLx6r5uqKB3elNGxRUeh1vxjmC+RKDemVT9L3EiJKu+HZl7XmxW+rS
- lO6YT1HDhkIzZ96yvAlvv9lGm8LzIg+bpl/xPwUWTVZft42MAAIj9dznnpj9aVc95T0E5v51D
- GqY6qiXNYzL2rEtn1fDZPeObF8hM+3yf5jB78hETv2Maou/JOVfnf1PtnyoUGTpDAxaXOjvQn
- pY/PYvFYEK/1WAeZxDcyWNbnU9sImk5Yhg1AMIBaomoM9qRcv4ITQSVI27oVL1kfTFDUYT+0c
- APJEgkJJPHXz1BT7/nuOMpuFa/RmMCdcipXeM3fi3dXTPATD8dbou9nt6+f+81rK/SQdhK64m
- VGN4J4QZFgaanDfdosOtf1ZtHmWeRKx4QibnJbqWKyQpBvhHnRS/GCrV/A5DAnD2EYvxu8Ts5
- Nj29bvmrt01G5LkLcABR2wGxC9YZJVLdMiVnyjF9uPAB5Mh7ZPk84GsiJ/O4dR3zMZxJFa2FW
- FEaPtwFIVcxDyha4wsufCwiWKJFGXTm2o9e
+X-UI-Out-Filterresults: notjunk:1;V03:K0:K/2F3bhXJ5g=:Enqa7X56SseLGf3fDudHmr
+ wIOAN4QwMz6DE5RaYK7FnOuAcjM3XR0gYkyyedMBe9Txvn4gpnvctUg5KZ5N9raOqEIgCsMHR
+ otLkrw4gi6Yn3+vQCETY1/AEByY9tKjjMdeeHPwGYwj6hiedCcNs2SKAFXN5qODSbbFvL0Uy+
+ V5xQ0baVCh117MC95u+V2EYTBgx4jtsQFpxmz26MZyU14O3TUvnUVXzT8Tu3RW3Vovc8qi7AU
+ D12e6K9TqgBxCOGgINbAq4ppegjOdRDT5YJsNSV0NhvHLlfd06znjkkQV7Mjv9GLEqfwogD7S
+ PpYF7w+WReGal7vVXOHNZHerz9hnjkSZI9mzmR2ClLYaY8KoQAO4b8roxMbzM3S5jnftgkgO9
+ zeTpiKZk8k7XuMjsjrd0seO1N4NrI2YdUTvak/onHWOBZMih/TJSZQbPMvAeF3iuLigxDSm7D
+ 1iIVpFCTcP8kQt/KUw+ap45gUrsFd+LxFk+Z3j909z5S5xy7z2Be2JRyL2LU0c+0lcBuOeUzg
+ d7goLTceDi4lop/VGxBHAERkPJh/7b99qdZ9/Vktabq31q/ry1R5MXLAL/DfKzj/hsfK54DGD
+ iFVdY4hKHkRtcYN/j91Cmtvyh6WWmEQqEUpKjl7+lgZ3HgPoz8ho4M321iQSrhU6GX8wxC+sX
+ MndzcP+qfAK1kcsPm7/WrDcfjIo1kZxg+6zA/OzLZlZbzP/9zhN2UWh7BklbIBiUZ8qe8layv
+ as/19N3a7RrKZPbZiiPat3nfdgDd2JXHRQI7bX1wXrX+ESL+Yt9dLteS11tMr6I+QTkIeaNnF
+ QJ1hCO9WB51/nPXiZXLLiDV1mcNjeretKPh04eScCkhFCWR7QJmGmDRQbnDaJRzPmM4dTYM4B
+ 11IHyTkX4XsVwS4vrYHOPT9fpv1ZsHJexW8uF+AItJP1DU8QEFj/X4rB4SpG4B/lAuJhcQeY+
+ uzYo6ZsdYZ1YxVM0DWFfPSuprC2aGoPpuboFvCTYetU3FOXDBi4724qmUjaLdzOdmeV14ug5T
+ Uk4SOv1pvsGcWrodqq39a6aRHEbDld3mrQdM6h/zy4AaHROscS93I4JFTShG+4s2NvoTPbRYr
+ BHENVeOT/MyQtIplGYR4cagnUnX+M0c5l92
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Would a subject like =E2=80=9CASoC: samsung: odroid: Fix handling of devic=
-e node references
-in odroid_audio_probe=E2=80=9D be more appropriate (instead of using the a=
-bbreviation =E2=80=9Cerr=E2=80=9D)?
+> Fixes: bc3cf17b575a ("ASoC: samsung: odroid: Add support for secondary CPU DAI")
 
+* Can it be that this commit identification is relevant more for the second update step?
 
-> We developed a coccinelle SmPL to detect =E2=80=A6
-
-* I would find a slightly different wording better.
-
-* How do you think about to convert this information into software attribu=
-tions
-  for the update steps?
+* Was the handling of device node references questionable already before this change?
 
 Regards,
 Markus

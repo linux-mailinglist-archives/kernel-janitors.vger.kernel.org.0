@@ -2,38 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B3B168001
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jul 2019 18:06:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6817368025
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jul 2019 18:21:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728125AbfGNQGD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 14 Jul 2019 12:06:03 -0400
-Received: from mout.web.de ([217.72.192.78]:45025 "EHLO mout.web.de"
+        id S1728441AbfGNQVL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 14 Jul 2019 12:21:11 -0400
+Received: from mout.web.de ([217.72.192.78]:49269 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726783AbfGNQGD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 14 Jul 2019 12:06:03 -0400
+        id S1728095AbfGNQVK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 14 Jul 2019 12:21:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1563120327;
-        bh=6ul08N0Yg2Fi0KueVuVksC96Pqnj+lQwd+aBEH7fEaU=;
+        s=dbaedf251592; t=1563121232;
+        bh=ojBi/XpmMFn0sdEoIQUyl/H2bxFYbME+lLlXjuicgsM=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=RuHyFsX764dr8x8Npatn4Y3EfB8/C9wTMkKL6nj2kpEhgqSz5eqCO/PgYi4YPtYwH
-         Me62lAYbfgT7rbNYcJG1Tj9lq05WDB/rqsrtvjkeswNoPZRw2+cDqLgqEQFpkSN8JV
-         Q1+ZLXChnztTBP8mQLWh8oThEN71GYbE/9fQSosc=
+        b=siPkxUnbDriftMrNvioMMsRB4ID2nA4EKMUJFmfRopavP4QauyqMrQBG2qVlykn54
+         lw9BjtdS9yGfqcVAKJQC7/fN2zObxzIlXZUuXQRJNFBS1QtKNSNZBNZl3l0yDiH44r
+         scjQIUxVH/ELX+p3rqPq87p7EzRmruT2fnmbw28o=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([78.49.159.144]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lw0ht-1iXoWQ2lkj-017jTw; Sun, 14
- Jul 2019 18:05:27 +0200
-Subject: Re: m68k: One function call less in cf_tlb_miss()
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-m68k@lists.linux-m68k.org, kernel-janitors@vger.kernel.org
-Cc:     Finn Thain <fthain@telegraphics.com.au>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        LKML <linux-kernel@vger.kernel.org>
-References: <c5713aa4-d290-0f7d-7de8-82bcdf74ee95@web.de>
- <alpine.LNX.2.21.1907060951060.67@nippy.intranet>
- <CAMuHMdWd31ch+eSje4ww=_JFSZgnxRAUAvS0TCHXq0nzLeVfgg@mail.gmail.com>
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lrs70-1iT9KA32fG-013am7; Sun, 14
+ Jul 2019 18:20:32 +0200
+Subject: Re: [v4] staging: most: remove redundant print statement when
+ kfifo_alloc fails
+To:     Keyur Patel <iamkeyur96@gmail.com>, devel@driverdev.osuosl.org,
+        kernel-janitors@vger.kernel.org
+Cc:     Christian Gromm <christian.gromm@microchip.com>,
+        Colin Ian King <colin.king@canonical.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Suresh Udipi <sudipi@jp.adit-jv.com>,
+        linux-kernel@vger.kernel.org
+References: <20190714150546.31836-1-iamkeyur96@gmail.com>
+ <06fc2495-dda5-61d2-17e8-0c385e02da1e@web.de>
+ <20190714154737.GB32464@keyur-pc>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
@@ -79,54 +79,54 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <e75a25de-861a-8ab8-ffe7-c83572d6e553@web.de>
-Date:   Sun, 14 Jul 2019 18:05:26 +0200
+Message-ID: <ffe057b9-390c-c3c0-a7d2-f0187585377c@web.de>
+Date:   Sun, 14 Jul 2019 18:20:29 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <CAMuHMdWd31ch+eSje4ww=_JFSZgnxRAUAvS0TCHXq0nzLeVfgg@mail.gmail.com>
+In-Reply-To: <20190714154737.GB32464@keyur-pc>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:y9IS2ET9NhQFPEgECELOmGYZGQooFBdL7C+9rcS8oJTLcDEINgV
- ULB+OV/mdPMbGH7pARfX3I5qj1AV+qxD6iPqLNZ8FLNu+x64rOuzhrxPbfsBh+ymLczjs1U
- QPVm/cVlZOX+d0jj6KBHHor9GLzGrmZuDC+sPQL7pOM2Am4/laAmQGubaWOjC3BpvcaOqA5
- +TDarpX44izVqW+nUlPlw==
+X-Provags-ID: V03:K1:ZluLrUm5hhFTbII/ptf7OCIj3yen1WeI3BPnFX+ZtvdVCsjCX/N
+ 0tWCv2P1aqKJEAftwLqvi8NrGkIvHcMuG74kTsNO5cAaQGU/h9ahNj075QigYuc4uCg2cAk
+ dIZeqH/76M+crw4/b4+/X7sVK+v6N2AIgGE5UkyajPaZTqtThnac8d2XjTZraEFAO4r3Pzg
+ Ze+F4dvFpnrKjHq05fUWw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:mFzyn65fay0=:RpfY5CzupkgUxnEbEXzYZ2
- sKWfVwL0mzlhyn7rvR6K/5YIpw3YrexKPy8GgxAPv2usB6UsOgjkUDwcO8kH+7HiuShbkjrBE
- VLsgxp6aD98sQ7XgubY8u28F+pi+LYnvPUKvCD8NaGdAAE4vIPQbQ2+t+9yBc/aWMP12FBMla
- O4LzBeMXpxAjCOhWv5x/VttJ6cMKewb8+surv/x/sk6MBUTbJXLev2hqxVzmmfv3Nvq5Nlzzv
- /AJF7fDjoS6TS44d9NwvV1kHsMubchLeDJ9CYUX4sLQUVB1XpwNIlKaLkf+eiu0LXnrLuduF7
- bkhE2yFbrUokUPXP2xfUn3psdFqX2IC1buoRvcF5vrEcZr7V+BDh67kkNB0bDV2okQo2NL2oz
- VLiOXu6EzQqYje+AW76VuyLHY9lz35FgYKsnoNzEv1z6+zxNPSAWOdqcgjmGrWMc7AXZRAxZf
- SzcJMhXInY72g6/YdXCVZyxhgvhYToNb++VTfmrFfldsK3qKQZ+NhfyRd0Y6vtIdaSvXHgDia
- VqQA7P5DQPeiDod+YBHB6r9JQT4Z9MGhaF817Gqu7W6Pl6b0NVpRyIYlXprnQtFOyI0pgsCVD
- XIcB9BiDuWhcOoG0PQs3QzImUfwVIFJhxDVD09Qiat7RpeNn3ER/Au7H/3PU85dgVfApZLrfd
- e3itcKR3V+L9lkqweDQurGgyfsHt8j8SIfdH/AlYjm5CuaOUv6uB+mNpA/lql+PKuRhRaO1VQ
- Qd0RYoKzdQhx3eGXRBzYKLDsi+U2OpoVhq2p0k3qA9M0VPffVUAv8Jk5g5jEdkHgBqOkx70gm
- yH9MilMvv0NsxeySkOoI7KRc+u/CBmn0GvM0PWvqIrKM1y89V6pBwPw7o8WQJDHf0FndVXm8d
- t8+MFqAAE5h+GB2fI322yBUebPC+0gfUL1CPIPsVe6E6AktSjXtlnnr8/F+SlDkb/thMCOflS
- 2ygpyj3+HzztseZL9OD5AxK7p/9aFWvdLWaCAEWrXxSzMFsbiiLm0l0l+LquyQuTztL1eMs+T
- 7fLTaj5f4B1OtIrlzMng2sklxJb0fZV3fQillbqVvLKJgymnw3oNze6jzuTM79K91ZeSrxGs0
- 984AvbVjKrjcQuwDvs+TZfP+9tZlaFw5++T
+X-UI-Out-Filterresults: notjunk:1;V03:K0:b3ZtDy0Sndo=:3uesOBXhP7afgZBxBUJE7B
+ nHV4kZKT16LIEPMxoZqIS6ZXfCN6ShUO6ZAnmQXUM88Kfv8o3jdGC0j9eYyAePeNmDvQZ6mHx
+ 8dbT+9jiLAkKiMDW3XYWgD85HcCaPCvKIYfeIBdiv2nj2Lr3m7nVh9ek48udrKCTX1qOuv3PS
+ 0r7vFpFiMu9U5Enj9sIfZqzSPRcYrpXn714U0FG7yXA8kOrrNNLTl7L35WX0xt5ifkcQh569t
+ uFug8EIB82/kVw7BOIPZpkkvfBc6hzf3vZdFjjjJ3/l4ewn6TyUDuml8IVGNaC7r4/vrNmfOl
+ YO8Tiyr0//9nB7Z+BffQhr0KzCd8VaZKv27E8wVT3iB5VkEYzCgKPMAZSWfwP//A45sVUw4Yq
+ w3EGPDL7xvP0LAEdvonvzMk7Mwx1wd4PVKJle6oz6grANZM7YxUU0sTZ/Z7jJbajJBmwkk/h9
+ I92v9V0iYhzGibC9tqL7nufFejo5l2dotzO+kO678Kc1kqHFwT2U+z3zK4D0+pEhIYeTiFiVd
+ RMVE5/sZ28JESW+pm+pIpcngs8Bqh7HfugyS7cR4/Ia3Z++ZzjiFn43jHVKLjNfiCcPUc4NrU
+ aTKKxY1m8za8OIlTnA2nPX8vDUn8H+RwhdYM0qd7T/+LMfJM6+FKE7BrwqN1pD7Ekfg4/rbJh
+ QJKPOtTkXwXuGpBAqYiSym811H5s/Nc8EJG2OvS+WxmCRUYOcxl5GdnzO4ePTZE9FE3yjtR6s
+ g+e0nBDJws/yWD0qnrIxVAIt0tW2SoyliFj2KbUuRPiAwTmE3r+aBEQTRbMW5pvhhDqWue7H1
+ 69Gq/SZfzzmzhBB0xS7cf28V92RRNLkWh7RNapiOWSUwtUe87P5soiT82g/u41dXLdMQBjr4b
+ MldS9iHWdE74ybAsqgYdz0CRLwkKKIc0oIPAYM6CihUmRIgR2zQ3xOZfHf6X6q5PgwHhVyGTv
+ 6APCZLbAQzD7X11qdwdpTDXKd91vqf7EL3kaC2g+1sxRDrAP+6wKMGXzvsWRop/pXpF1QpxjO
+ wEoc10elWbbRjJ3wqwYby8jUXVad3poIWB+wecKICBTke4sOwIGYFp/omuzanR2vgbSS6D/Ya
+ Wvz+t1tJ7tYm4mWhHSf1pHClek3Zqtm33EW
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->>> Avoid an extra function call by using a ternary operator
->>> instead of a conditional statement for a setting selection.
->
-> Have you looked at the actual assembler output generated by the compiler=
-?
+> I didn't get you. I stiil need to update changelog
 
-Not yet.
+I would appreciate the completion of the listing for V2 till V4.
+I guess that a message resend could be sufficient for these adjustments.
 
-* Can the suggested small refactoring matter for a specific software combi=
-nation there?
 
-* Would you like to clarify this change possibility a bit more?
+> and send more version
+
+This could be another opportunity if you would like to improve
+the commit description considerably.
+How do you think about previous clarification attempts on a topic like
+=E2=80=9CDelete an error message for a failed memory allocation=E2=80=9D?
 
 Regards,
 Markus

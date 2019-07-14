@@ -2,38 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6817368025
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jul 2019 18:21:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B462A68054
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jul 2019 18:56:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728441AbfGNQVL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 14 Jul 2019 12:21:11 -0400
-Received: from mout.web.de ([217.72.192.78]:49269 "EHLO mout.web.de"
+        id S1728218AbfGNQ4S (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 14 Jul 2019 12:56:18 -0400
+Received: from mout.web.de ([212.227.17.11]:49473 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728095AbfGNQVK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 14 Jul 2019 12:21:10 -0400
+        id S1728125AbfGNQ4S (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 14 Jul 2019 12:56:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1563121232;
-        bh=ojBi/XpmMFn0sdEoIQUyl/H2bxFYbME+lLlXjuicgsM=;
+        s=dbaedf251592; t=1563123334;
+        bh=SaBumk2q8ei0h5DNcVQjd3QXgqrn8xhrXVnM5jWFgU0=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=siPkxUnbDriftMrNvioMMsRB4ID2nA4EKMUJFmfRopavP4QauyqMrQBG2qVlykn54
-         lw9BjtdS9yGfqcVAKJQC7/fN2zObxzIlXZUuXQRJNFBS1QtKNSNZBNZl3l0yDiH44r
-         scjQIUxVH/ELX+p3rqPq87p7EzRmruT2fnmbw28o=
+        b=mdJQEThrNNPx/QIHizys8r8q2f6s04Gc64Rq04GUeIzMlNqjG8rKgcoJl+eys/2m+
+         YREoLYY2JXSmgfVc0t3RP9RcRTItBcB4RhxgjpNMqx2OrTu15TXOwMS8EgCqNNscFB
+         O3zsGc/ihl4guDOTDQ+KgD/NHK1PPqLEbuDmq1U0=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([78.49.159.144]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lrs70-1iT9KA32fG-013am7; Sun, 14
- Jul 2019 18:20:32 +0200
-Subject: Re: [v4] staging: most: remove redundant print statement when
- kfifo_alloc fails
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MEVYz-1hfqAx0M7l-00FlEA; Sun, 14
+ Jul 2019 18:55:34 +0200
+Subject: Re: [v4] staging: most: Delete an error message for a failed memory
+ allocation
 To:     Keyur Patel <iamkeyur96@gmail.com>, devel@driverdev.osuosl.org,
         kernel-janitors@vger.kernel.org
-Cc:     Christian Gromm <christian.gromm@microchip.com>,
-        Colin Ian King <colin.king@canonical.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Christian Gromm <christian.gromm@microchip.com>,
+        Eugeniu Rosca <erosca@de.adit-jv.com>,
         Suresh Udipi <sudipi@jp.adit-jv.com>,
+        Colin Ian King <colin.king@canonical.com>,
         linux-kernel@vger.kernel.org
-References: <20190714150546.31836-1-iamkeyur96@gmail.com>
- <06fc2495-dda5-61d2-17e8-0c385e02da1e@web.de>
- <20190714154737.GB32464@keyur-pc>
+References: <20190711175055.25157-1-iamkeyur96@gmail.com>
+ <20190714164126.3159-1-iamkeyur96@gmail.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
@@ -79,54 +79,51 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <ffe057b9-390c-c3c0-a7d2-f0187585377c@web.de>
-Date:   Sun, 14 Jul 2019 18:20:29 +0200
+Message-ID: <dd7867db-1089-7366-165f-6accba233c38@web.de>
+Date:   Sun, 14 Jul 2019 18:55:30 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190714154737.GB32464@keyur-pc>
+In-Reply-To: <20190714164126.3159-1-iamkeyur96@gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ZluLrUm5hhFTbII/ptf7OCIj3yen1WeI3BPnFX+ZtvdVCsjCX/N
- 0tWCv2P1aqKJEAftwLqvi8NrGkIvHcMuG74kTsNO5cAaQGU/h9ahNj075QigYuc4uCg2cAk
- dIZeqH/76M+crw4/b4+/X7sVK+v6N2AIgGE5UkyajPaZTqtThnac8d2XjTZraEFAO4r3Pzg
- Ze+F4dvFpnrKjHq05fUWw==
+Content-Language: en-GB
+X-Provags-ID: V03:K1:vZwA6t8zqndRtGVxizFChrFjqPxVzyPNJ/KIb35UJp3mfnqAA22
+ SCHwBhImtbpOZwdQQY0LjrTqHUX5BPcf7Jz/93Tamk6swJQxpPRDlvCtM4MCucEARo2bpk+
+ 64XNu0Cqc1LYgKg2+0X2RiyeOZKIU3xYe0N6rwmSCJ9mLpqO5MlfzYuiInpgJyMlaM/v7e6
+ /cMkphkhWagUM1WWODH1g==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:b3ZtDy0Sndo=:3uesOBXhP7afgZBxBUJE7B
- nHV4kZKT16LIEPMxoZqIS6ZXfCN6ShUO6ZAnmQXUM88Kfv8o3jdGC0j9eYyAePeNmDvQZ6mHx
- 8dbT+9jiLAkKiMDW3XYWgD85HcCaPCvKIYfeIBdiv2nj2Lr3m7nVh9ek48udrKCTX1qOuv3PS
- 0r7vFpFiMu9U5Enj9sIfZqzSPRcYrpXn714U0FG7yXA8kOrrNNLTl7L35WX0xt5ifkcQh569t
- uFug8EIB82/kVw7BOIPZpkkvfBc6hzf3vZdFjjjJ3/l4ewn6TyUDuml8IVGNaC7r4/vrNmfOl
- YO8Tiyr0//9nB7Z+BffQhr0KzCd8VaZKv27E8wVT3iB5VkEYzCgKPMAZSWfwP//A45sVUw4Yq
- w3EGPDL7xvP0LAEdvonvzMk7Mwx1wd4PVKJle6oz6grANZM7YxUU0sTZ/Z7jJbajJBmwkk/h9
- I92v9V0iYhzGibC9tqL7nufFejo5l2dotzO+kO678Kc1kqHFwT2U+z3zK4D0+pEhIYeTiFiVd
- RMVE5/sZ28JESW+pm+pIpcngs8Bqh7HfugyS7cR4/Ia3Z++ZzjiFn43jHVKLjNfiCcPUc4NrU
- aTKKxY1m8za8OIlTnA2nPX8vDUn8H+RwhdYM0qd7T/+LMfJM6+FKE7BrwqN1pD7Ekfg4/rbJh
- QJKPOtTkXwXuGpBAqYiSym811H5s/Nc8EJG2OvS+WxmCRUYOcxl5GdnzO4ePTZE9FE3yjtR6s
- g+e0nBDJws/yWD0qnrIxVAIt0tW2SoyliFj2KbUuRPiAwTmE3r+aBEQTRbMW5pvhhDqWue7H1
- 69Gq/SZfzzmzhBB0xS7cf28V92RRNLkWh7RNapiOWSUwtUe87P5soiT82g/u41dXLdMQBjr4b
- MldS9iHWdE74ybAsqgYdz0CRLwkKKIc0oIPAYM6CihUmRIgR2zQ3xOZfHf6X6q5PgwHhVyGTv
- 6APCZLbAQzD7X11qdwdpTDXKd91vqf7EL3kaC2g+1sxRDrAP+6wKMGXzvsWRop/pXpF1QpxjO
- wEoc10elWbbRjJ3wqwYby8jUXVad3poIWB+wecKICBTke4sOwIGYFp/omuzanR2vgbSS6D/Ya
- Wvz+t1tJ7tYm4mWhHSf1pHClek3Zqtm33EW
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1v5xgRA0Jc0=:thd8tQRJpDb+q+7bx8Fq9B
+ hv7IpNsCcr9pbgqTPdhnkU39aex3i2iLYO19YcdBZnWqV57rAizwUKlVI3vomyxXSvhgzrLWD
+ M+20gfvI71UlD8WdzQj1Lq91ASsu+DIohrLWAGNp9xOCnjOXhMjpPvdzN0KixRMkX+eSyoI7M
+ 3LXtfvTItd5VWc2MvmVUTneBgNb2PlWBCCclcD6fhyGgNWi0UbL5C8SAGi0sAY8gvlgzDWEUY
+ s9JjcUYZ/d/lqDvjyNgCm2ZjPOF6ADdfe6hDQNkvhm+7H3OfIkJbONOMcvUPqtceqvOJ7uQCn
+ 5zwdk1AqnzkLZw/Q0wfO9V560RD9PSHaUR84i37o9Osd/0O7+CZ9jGj0CnDsvtHLQw4M12VIV
+ 35fyS31QSbayeEh6yBu71VF6rc2wpLu2Hf66rY3VOY/8xmiY2FoWFvgPepWl2HcMXd8Ke+KQD
+ 43AyZ26BbmAqKglqilfofPwtj1vOYSbjLWXCXD3zCuKtRwNZdoHWR1PVupexWZ9bFrgm3e6Xd
+ fRX33A+HTJQ9bu/VNibhM34lqv99AZ3Lcri3Yn5HT/jy75KBrhB1kZkbrPmt64B9LnWenGTtF
+ 60C5u91pLEejs6C+WkZDt0qSz+RNkZ0lxdWqp+iJeXz5WFyt8AWK/7deL9ALakp/cv46jktJk
+ T8m63BcwIgbOLwL8SWPnpc1yabLcQjwTSHHrgS7n3IOQoQqVZPZiqkN/2p4+I4n2WWmwe3anZ
+ VIP2cd5mXbIFf6mLsrPoezgLW+ZCtMu/jL9mV+6gDqTDE+rbh1I95M5BQd5K+9odxqmP4ljWE
+ rTmh/lyG60rxiZJY97DpD5X2QdnmWI+ngB0lnmN3PpEPo5EhI24dXBtXT6VmylZpiNK4bfim5
+ DWiZA5OVUbW8ZFjbAWdxN7YvEG1zsciNngRxslBNx18+wGUm03xuoZZ4EyiXfkXTdzx42aW4/
+ Ile42J2VA/eCHKaXicsIeQZST/yrBrn0Wcf3TWiyg6ylO9TwWK7P6xitEmssl8ZYDhTRAkO7o
+ 8vTCf8S76T8t/gA8e9trNDAWiK8AFCp2LmdYyUivB7abceB6W4/p5ie0LrxzSDbfsP0G1cFpo
+ r8i4S9HgQrPcMir7bFRIQqOcy83BhviKJLo
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> I didn't get you. I stiil need to update changelog
+> ---
+> Changes in v4:
 
-I would appreciate the completion of the listing for V2 till V4.
-I guess that a message resend could be sufficient for these adjustments.
+I find this change log still incomplete.
 
+You have chosen to adjust the commit message once more.
+(Some contributors might be also not satisfied with this variant.)
 
-> and send more version
-
-This could be another opportunity if you would like to improve
-the commit description considerably.
-How do you think about previous clarification attempts on a topic like
-=E2=80=9CDelete an error message for a failed memory allocation=E2=80=9D?
+Such a change requires to increase the corresponding patch version number,
+doesn't it?
 
 Regards,
 Markus

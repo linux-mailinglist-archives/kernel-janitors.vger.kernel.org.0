@@ -2,40 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39B5068069
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jul 2019 19:13:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C738B68088
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jul 2019 19:39:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728664AbfGNRNB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 14 Jul 2019 13:13:01 -0400
-Received: from mout.web.de ([212.227.17.11]:55871 "EHLO mout.web.de"
+        id S1728297AbfGNRjl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 14 Jul 2019 13:39:41 -0400
+Received: from mout.web.de ([217.72.192.78]:43053 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728065AbfGNRNB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 14 Jul 2019 13:13:01 -0400
+        id S1728164AbfGNRjl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 14 Jul 2019 13:39:41 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1563124348;
-        bh=ZwUVGTes67xwWLPiXZKdeb3x5yXkNmefiwWX7+ZjxNk=;
+        s=dbaedf251592; t=1563125936;
+        bh=dYp0KVG4H+rQWC2lfLRDt60u/ZDbHoxqMrs8D4K53wI=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=rJtWMpu/vF2XCvYCrMDEN3/AWyZ5Og76b4Op4sJhUfAXI7m8XG0jQLxZBpZavyiIl
-         3lisLN0vi3nV/mpGPgpkCscijXsuGhi4JITuXyZsmto6lHuGstg4MCCQtRuQWslxcg
-         sIat+Dg9EMxPwj8RVbW19R38vdhCbCcegoAeLNqA=
+        b=gfEBOC/Sk5XKecDH5O1IpRmkwhNgLGi6mvhBo+PeXGuYQYXxZ9CNu39oLVx4MTuou
+         5uh7Me02DHRFdMR0vCwpwk+hukgagDz0uaSVL4YtQTaQPbtnPCZztoQoPqlwvbumOJ
+         fIzcdryiQJjbmniNeZrR8QvmM2vW7wUXycVlAzGw=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.159.144]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LcPSk-1iDlOM1GA2-00jte3; Sun, 14
- Jul 2019 19:12:28 +0200
-Subject: Re: [v4] staging: most: Delete an error message for a failed memory
+Received: from [192.168.1.2] ([78.49.159.144]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MWB4X-1hxLa52PH7-00XGwE; Sun, 14
+ Jul 2019 19:38:56 +0200
+Subject: Re: [v5] staging: most: Delete an error message for a failed memory
  allocation
 To:     Keyur Patel <iamkeyur96@gmail.com>, devel@driverdev.osuosl.org,
         kernel-janitors@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Christian Gromm <christian.gromm@microchip.com>,
-        Eugeniu Rosca <erosca@de.adit-jv.com>,
         Suresh Udipi <sudipi@jp.adit-jv.com>,
+        Eugeniu Rosca <erosca@de.adit-jv.com>,
         Colin Ian King <colin.king@canonical.com>,
         linux-kernel@vger.kernel.org
-References: <20190711175055.25157-1-iamkeyur96@gmail.com>
- <20190714164126.3159-1-iamkeyur96@gmail.com>
- <dd7867db-1089-7366-165f-6accba233c38@web.de>
- <20190714170424.GA3615@keyur-pc>
+References: <20190714164126.3159-1-iamkeyur96@gmail.com>
+ <20190714172708.5067-1-iamkeyur96@gmail.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
@@ -81,58 +79,55 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <425b30ac-623c-065e-1a2f-fc131dee28d1@web.de>
-Date:   Sun, 14 Jul 2019 19:12:24 +0200
+Message-ID: <1de4f5d4-fc63-9445-c6b9-fbaaf6d7f200@web.de>
+Date:   Sun, 14 Jul 2019 19:38:52 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190714170424.GA3615@keyur-pc>
+In-Reply-To: <20190714172708.5067-1-iamkeyur96@gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
+Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:vLG0Znm3ELZXwizjRjiBtRsjf0xOwJiwg0fohJ84Uxzt8Nx2Kju
- Eii8mfqUOzaXHTgNoRH9gm4TqEgDtiyndhOJ4CKsyT9cXISAFnrssoVhg5qBco9gfZXhHDm
- pWerzPHJgaSPUKtCbtl0mCxRyjx5T/cfB29bEuGksx78kSQNIG6GTZSL2zA6Cb4kofylmf3
- ap4yuN8Se8CqVtWMQ25sQ==
+X-Provags-ID: V03:K1:4cKPn0vk/p6pOVwCSvgE96Ed7lnmE0pkb59VTn6HOSvWqtanMz6
+ Db8C7LMDA975h/j1vAznZT0yY/PMR1ToFhe+DhOGmiXeN8nfHcFm59Flhtbi14hId5zs3sa
+ zoYnmLIDVDSAFc8aHJuRaR032FZSa32AshKiRafCL8O1XtO0nr0W/CNvR42Y8ArdqTYtZ0I
+ mxROU6K8/CkF4dggt1wNA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:6xZQFS62B/g=:QwYyOQcZfSeknepdLyC2WN
- xRK5c55ZEHEr0RfMZkb/hWTjUlmPrdgtTDTdh8j37phAOLv5fkHLugCrVl9DOoA/YGOuTf35F
- eqQyYzAHKkWQsm2JrQZeWx6qPHkzmXPCDE4W1dnkwOqV+uw5BoN8fDci1VFeK65OdYQj826sD
- UiNXD+ToE1vxzelF+ADvGLyb+fq/QaLu1UbBV+pGZuGW17NJLwJ2YxtIowXvWVpeHFGQ9dX1J
- v56XzdRFGLDHqGoPz+kxrcBtYg6gwjcBXjLXJVhXAJ0TGo5ARSrD6eqQc0N9TOrvCSVIHK1qy
- 8Vw277CGlrfzoXvzmogKSplbJMWdn8XQH05GBfWcYIhsZWSMh0A+ZfvgYiXK37XejKhxOwiLg
- oPvUW1H+QkzK+0BDdZ0A0ZNIkwCAJLcz3k9ffC93EZUc/Isag7Dz3NcYDWincNfleqW8/YdGT
- 3m03YMBynbkvZSYDJRyyIpmRgCSeVNGvL4dstjbLHN/kG97qQiV19iKhY+4qQL/yd0qt0ZNCt
- KGF0NxjgXbRUUY3XrEwjd7+G1s+imuqsfOlfxaoDh1HoUpXJJT3IDf64vpRSiyoC1H7tiUPQr
- zFfclnuQI3VmsS1gM0CKWsVk7TAddwwb1PLUAVLXpumzbOTSBKKUM21kri48NGVRzLmshEWdj
- XzMC5wBbWVFtMCfssBl/oggGi9ROz4CkYtsPZI/TeBNh8ao46dcmPznUeNwR4iTyfOVHFEPFL
- obObw59tJiTPMOYVMChWEauQ/1om5UlBrAbSsLRRmzcXgs6D/hxtC/pKzM65sCEPgQU8Js/AH
- O9vPE025xsgnFSODxM6LwYpg3jdBJUQTTObCllX4xb9hGQB/bjjRHnaVRT3wuo2WIU1bPVGqA
- CatFYUV0/uq2EXfkgOe+jW99NKw8uQWwuLOcpJmPMv4v15F3oUFpnCB6jko3zTZPMXEAZEVjk
- nz3tjHyeMhWJrb3bBkLUkgp4cjFNe3YJrEKOsM5MKyUc21nltcmDZvWze6++TpCHdoOQMk2fN
- 5eIP1WN1L/OyTddrFbF7ekcT3pCgo8Lpyuhh86hJ05nJIkYq1mDnnuQGaTdK8NxNc2O1ddkb9
- wQBJ+b6W922Jcb/7h1orO/atRgnHCdzz7Fi
+X-UI-Out-Filterresults: notjunk:1;V03:K0:668FjLF1rGI=:XdT2Ns+hpVEp/FOTS1w1zV
+ w19PQ2eHYt8IZiqpQIR5Q3gUG41JOwr+/pAkDx1UG86bD21NNCihS+Yitrzh7hS7gd/dZk8aR
+ 6qZDvi0oBvOoz0mK0H5HhW8t4yoWY0st9tr0ota3a8MpjbR84XF0OcKyIxM5J0gvCnUdpkBG8
+ h3t56YRHZfTrp4kJf8Au8cbd8eQaA6vpURNe6g9kZeRRhGZ96KWSd7/h2otcGHzgZUcT8+bQC
+ +ogS7qZmi+75qRaweM746VVhHnUI5f3bwvT7jSk02nI7PTF++Pd6KzEFWkQ9bCsvjauDO95rr
+ PVJf8v5vckjGu3bgJ5TQ0UBC79NGAq9AvDRIQo18DFRGRl0R5pXOaQgplbtbwZ52gwqglGyq8
+ RB14O6LAa5ytYEDRb4HNMwytQ0tH6etvs/eJYXOsxjHSxm+caRoeA6VMKHck8QyjBy2rETyvu
+ lc6KSiEI+HovfOILUJ/53uNaUvSMv8O9ue4XR/GsqkB9vSos4G47SH/JChDzR6g9ac5tyKJZ8
+ rNrwE6YYwuZUD6/5RV2VbMihdUDdywPiTcsuEYl/VuvTQnouHCuXLqB33GJLQmKwNMnSDTF9c
+ bIKQT8ZB4C6dQfN/BXmpB0Ns0eGhuXF53nJLnOnfR9lO3CNL/flVxJIWSoejyswmEe4bBDO5S
+ baPuirSuv8FOsZU7vStaRYKnMMHCvZZpOngGF6/fCSTigJQ4As7AaDyoiqv5Nm9bTtEK9OjdR
+ RYkIuw5Gq+n42k5lfQFXMYDch/KuMn+saGDqdolcL9Z9vhNc0Lh19XnPH8swfF2hh+jsRv0FP
+ MSGQPvUCpBRtEG+Ey6JpmZfR9dlu0Mks9SQNm+2aRNhinFT9rNOx/NUZAOu8lcF04xAtzQUv4
+ VACMWRP/vdaRWXRdIZG8CLDG6ezeYd5ny+c1PZNbD5FZY/9Thy8cN/zGmUCCxUIovtu/mtcHe
+ frZPg5DsrSK8kSOTrx/hl/Ega8d3kgY3/wvus2Ctu7iK53njGs14/grk6zvZfCYNF3weVBlaD
+ 5cPU1gmF73HRcUGX9Exx0uz5NUcDX47HkkDd4LnHgPSiaHBzT+A0on8PvtQqO/363/0t/aPXC
+ ue6Gxha/2726usWQImp5xKpfl4yQ5azMvio
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> I think commit message is clear enough to understand why this is needed.
+> The kfifo_alloc() failure generates enough information and doesn't need
+> to be accompanied by another error statement.
 
-There are differences to consider between the involved software developers=
-.
-
-
-> You can send me what should I include in commit description
-
-The clarification should be continued with the number =E2=80=9Cv5=E2=80=9D
-in the message subject.
+I am curious how the acceptance will evolve for this variant of
+another different commit description according to a known software
+transformation pattern.
 
 
-> and I will add and send it again. Otherwise, Greg can comment on this.
+> ---
+> Changes in v5:
 
-Would you like to recheck information sources for the safe description
-of the Linux allocation failure report?
+The subsequent listing should usually be split between V2 till V5
+for such a patch change log.
 
 Regards,
 Markus

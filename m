@@ -2,36 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AF8867F66
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jul 2019 16:43:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7B1067FD6
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jul 2019 17:24:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728362AbfGNOnC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 14 Jul 2019 10:43:02 -0400
-Received: from mout.web.de ([217.72.192.78]:43695 "EHLO mout.web.de"
+        id S1728612AbfGNPYR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 14 Jul 2019 11:24:17 -0400
+Received: from mout.web.de ([212.227.17.12]:44951 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728146AbfGNOnB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 14 Jul 2019 10:43:01 -0400
+        id S1728095AbfGNPYQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 14 Jul 2019 11:24:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1563115336;
-        bh=QlWBoDSI8w5rtSGM2FONMF9eDoomMwZOKM0CWt7f9Qs=;
-        h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
-        b=r0z7sEYyYdbxwwk81BJrfa/s+1tIzSHkt5mRPLBGsHJXONHdlMd+T+Jy+JyA5QXdr
-         0f/znLHpsSaiad9gV2ngh5mLE0YkJ5n1b/ZZSqZLV6f9NqIxVvnVDFcDFLTfJFV+/0
-         J+vWoEEVXnaaeO5X6gHDwqSHdP9kLll5xJQuXkls=
+        s=dbaedf251592; t=1563117817;
+        bh=Sxi8KiZGOSqRDgHk13Cpjv8vrU1eOIJ4xxP749vOkH4=;
+        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+        b=tAZCrdwcGB1wjJejrVSyEIBRRnBZ8Fn7rDd7k9URwJ5knh+qEdgow5cwM3UF5mlpX
+         QwXQf40X2QWuSITKclqRpY+2Q7/p5uG/QqsCzRoa4saRbkIQxy3ZamiyUEEOWYlqJ0
+         4DG2WRy3cKjcDH2RD+Z0d9PMwo/rYZXYu+YT78xw=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.159.144]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MgfFr-1i8zNv1GCt-00Nwyg; Sun, 14
- Jul 2019 16:42:16 +0200
-To:     Keyur Patel <iamkeyur96@gmail.com>, devel@driverdev.osuosl.org,
-        kernel-janitors@vger.kernel.org
+Received: from [192.168.1.2] ([78.49.159.144]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M9os0-1hbhyq3Ivg-00B5P2; Sun, 14
+ Jul 2019 17:23:36 +0200
 Cc:     Christian Gromm <christian.gromm@microchip.com>,
         Colin Ian King <colin.king@canonical.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Suresh Udipi <sudipi@jp.adit-jv.com>,
         linux-kernel@vger.kernel.org
-References: <20190711175055.25157-1-iamkeyur96@gmail.com>
-Subject: Re: [v3] staging: most: remove redundant print statement when
+References: <20190714150546.31836-1-iamkeyur96@gmail.com>
+Subject: Re: [v4] staging: most: remove redundant print statement when
  kfifo_alloc fails
+To:     Keyur Patel <iamkeyur96@gmail.com>, devel@driverdev.osuosl.org,
+        kernel-janitors@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
@@ -77,57 +77,48 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <27df9bec-dbd5-8267-8df2-4948ca14e6d4@web.de>
-Date:   Sun, 14 Jul 2019 16:42:11 +0200
+Message-ID: <06fc2495-dda5-61d2-17e8-0c385e02da1e@web.de>
+Date:   Sun, 14 Jul 2019 17:23:34 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190711175055.25157-1-iamkeyur96@gmail.com>
+In-Reply-To: <20190714150546.31836-1-iamkeyur96@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:CILvNAgH4j/r/l0QeYLmySGJW4sotrIMHgtT/QGXKCwPtVGyNgC
- muc6v29BhaDY3CHud/zwI9Z2nfF8Wjgnap0gwlIL5AVU+Xq3ctJtXaVSIBicpvz2qPXh7q4
- QghdYOMuy8pEHg9/rK9sL2XPGWaa83MEybvEV2S1Q02fAtC1S4kQA0BJYagSPZZne/z650Z
- ztxpHCZqqQegUx3GN+tgg==
+X-Provags-ID: V03:K1:xdFsAciHCdHDSvkGjoB4tSWln+ja+589cYB7nh1B1wrTUwU3tRw
+ x4rF+h361EpVOTO4NFnul29ks2SafX44LWMMfRNWAUC3zvEZLeUweeIE2mA6ZevDsKkhAH2
+ gfK8OcZjtpYXYbUPP2QrDlDy9uKGJSqqiE3IE4mT86YnzmPGkE72YCXrmEc/6JO3ij+lHgJ
+ JtzjR3g53GvL3pgFFkrWg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:2BFl/3eKXy4=:SMmoK8HZlreXscIRauN/Pi
- TVzsrtOnLBzXUAVSopc3EZXGlALNbouN+hzzLn06AjxGhwXRfs3lZXZKSBo7uHbN/mmYnUAfb
- flVsnPvpxqAyPr7Y9E/dU6MdwQsz5G7HStt/Ox7kuvwz2qPw1scWKQ3X3DOJrghFjhTrtO43u
- /iHitrBZyBAX6FCxW9fzqoOLWrs73Ll2EGUyCIDccITD2BK0Bgs4d2BQoYTX2TgLGFBiaznQx
- dim962G9rsoMr/A5mpGTMcbz4y2VZ4gkdN6VhpPkz56b7n7+EhhlDXmuYkf6w6LezkK5hiFNc
- QPhRqY2kBkkPc6oKQj+GGbme2lUixl5mPRmvHevQ1SPV+XNDXyHh4foBMgzw2/pYy2W/KIaTL
- XeK4GP9+zgxAwmlDSNfF20DoH52SBJs8Paehx/hpEXtn7azJguqoX7yCNRbBI1oMmS069SNni
- rKp7aMfh9uV4io2L+KAU1Jzm1FRM75JEuFNjLod1SESLipKGISD62ZTPHz4PvpYxJauhMO19T
- CjzQrCa3237c5i2oImMvPEZ5UcXOAIiuQzifg0OdY0IGvEATjIgo6cjgpESeuYvUKX0+sPvkz
- Yt+ZZv82eqiJpur8XIUnqfA7GKomiZRTyeQiJafDhfnsq1O0kL6n3s2s3H4FYGllp2vZIWID0
- e6/gDc+ulBoycIqnNaXbckQWI4uJjoP/CEsOX09WaSF9jxGx5FTT0Xbfs/u/5sV9YiL8sVi6f
- qH6W/79Guh/DYYIZe2OKqKj0a8Stou+5V0GeMwXMZ/bg04v+Y7R4nFuY85p8tGOWNfBcfnsru
- PW2IGNHwihu/vTTg9xnvYLC1NVpFmOcQ0UIMb+r3HFJ5B0Qikj1MfMPC24657rtcxAFocUVuB
- JNxVUBfv6EBkXIE6EezEpzqCCy7t9G47L3/yRjQe+/oSIlYP281E7A/jVFJ2/MHbhpHlBebBD
- XlcgjAKlVaaAdN1XjL2w8+tXwPHpkmB3IcmR9LOeufAQuKGhpXNoHK3eD8ta6dRCHhmnaFaiu
- AgQCq06a+0ePV+NWe7js56Jk2Aab73rEvSLUJz0GHl4/2RXKrESrijJbqfYGhu1Kq+/7OvXVl
- ENwFQ5EXd046qv5nRuqUnocj1wXSouL0ll4
+X-UI-Out-Filterresults: notjunk:1;V03:K0:v8mqMb1rIHo=:V+95470QiO/yhoFK5TpV64
+ a77b7aCqQyURzzUHAjmDdd/bfM08pfY9la2gNfartUv6URIeHNEpsBPvAPX0QN5mGYZRnTWTm
+ mk+Kp6fldNstT0+fdFhVR0IMO3xU5i4MTzAx9MVVvl/I67GnTtiEYbdSa0K0kT1tDQE8ggB2/
+ uWuON7Y9uFsOtP2q+1ihELmZ67nvB2dxjXLn4Q/yJeqCKzhVNWVcsJ26k5nIIu6EagZbqQCpg
+ qLQj4bFQqS+ofs3m0PmuV+qavUvUsR+Kz0PmRpaq9IIZIhz4hzXZarVlp3i/omQnDGOQvmnbg
+ m8oemOSQlvU9m7anazg7lefSzR3foNg6X73u3wHEOkfOoo16AokQul5LfmgW/y4enA6VPuvh4
+ PvLHHOCZk0VirbFuttEUjQlZZDG4URe+hex9PBNjAy607HpNq6Jv/m+AWyIsW1KSro56+RKQn
+ pYSCQN4fRyZWmdCnhJkDAU+X0hL+PgTcWmjKVdtvpNMtXYYY/brTuz6016d7LoaqlFYLf+O0I
+ Ccp4qDBfQMfH+bkqAfJAB/zAc8vjhUEd6AUgjQ9nxBDgsuO7ztQ0M4UGdt4K7JjZFPOD5CoMq
+ j1ZPiu8rLVaDoCb7d5laRUffuIMAE7h7gpSQJCo16r5R8LJGQq2RzKk1RWFGLMTCyrrXLBsuF
+ etUcofpXk8iRhNe0h2JdWp46vdwd6r0V9S49hdPRbB5b40SgijkZEMjKRJ9ATNHGyEeiONHaZ
+ Ng8rNb8XMuWRbkgmJa97I6JPWrWxBakLQZqXu5Eud+31AVdOoQ4l2sKQzf6YsAtdD1BokDd/N
+ qYU4QYFYyndpTpIxT5ssU0LfZ20eOmXD9yn+f1qobXzonl8LE9Wqde/lwSlck//NGaUYgJ54v
+ hbr0FPldpP3eF3mShkMuGccUJP/wGaYShxe9tPKY6es75Dtkdt3WMlfx79bieia7V3HMTMTQM
+ KGQaX/kb8edBAP8zg7/l6RpKPQ3wiRH68usHqTJM/6JTgn78CV44gz/H8GfAxEXrn7q+9k/IX
+ CJCgRFYn8Cxq2IuNtpEaeWDL3cyf1uohB5SadnsNzwiqf0Dilt4CsGOrCTcpX6t9vm/viUrJG
+ NZtELZrHKPeLt0G/2IrXQUJTNa/A2e+8pPo
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> This print statement is redundant as kfifo_alloc just calls kmalloc_arra=
-y
-> and without the __GFP_NOWARN flag, already does a dump_stack().
-
-I suggest to omit the word =E2=80=9Cand=E2=80=9D from this sentence.
-Will any further wording adjustments become helpful for commit description=
-s?
-
-
-> Changes in v3:
-> - fix checkpatch warrning
 > ---
+> Changes in v3:
 
-Please move such version information below the triple dashes without a typ=
-o.
+Thanks for your quick response.
+
+I find the change log incomplete (even if corresponding information
+can be determined also from public message archives).
 
 Regards,
 Markus

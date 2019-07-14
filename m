@@ -2,26 +2,26 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 515EA67EB1
-	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jul 2019 12:57:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D103967F05
+	for <lists+kernel-janitors@lfdr.de>; Sun, 14 Jul 2019 14:48:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728317AbfGNK5A (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 14 Jul 2019 06:57:00 -0400
-Received: from mout.web.de ([212.227.17.12]:52143 "EHLO mout.web.de"
+        id S1728398AbfGNMr5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 14 Jul 2019 08:47:57 -0400
+Received: from mout.web.de ([212.227.17.12]:60511 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728147AbfGNK5A (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 14 Jul 2019 06:57:00 -0400
+        id S1728351AbfGNMr4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 14 Jul 2019 08:47:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1563101754;
-        bh=81eladfMqsM5f/l52YP902lsEMHFBVleNkfZjwRQdIw=;
+        s=dbaedf251592; t=1563108442;
+        bh=Bv58aXwasISoukBgAwwIyQdm3DHnY22HSUajDGxRpUE=;
         h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=rIbj9rmlDrS9+4Gt1K0MCcAb8MLhINPENJjsLSq5ow3xBI8Z16GMkw1mdlm8IA6/j
-         /aFToe+9pNKmAMvmHFhTxSuhqX3DI8pK09YBJy/J0i3Sdlf0ESMIOm5kbH81Zm9M20
-         gDRx75fQ67hLI/dHpkun2JUiVJtUASAZaQOGX4to=
+        b=X5Al4uIle2ec6UTEliCb2RHjk1L7MXUIa8nKA7OJApxzBthvWfdBl2tQ2ktVYZM63
+         ZYOw2tAW9qDolDVyH3qHYhVvqSbZhY3twptIOUIkyWVC4xEsIxNhQ7Kx7OS+N5hnwd
+         pjKqmVwCVfpW5hBQAbj94loVCe1ejBalR+Uc14q8=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.159.144]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M0Qkb-1icEx50szl-00uXg0; Sun, 14
- Jul 2019 12:55:54 +0200
+Received: from [192.168.1.2] ([78.49.159.144]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LpNwf-1iRDWG3tJt-00fEQC; Sun, 14
+ Jul 2019 14:47:22 +0200
 Cc:     kernel-janitors@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>,
         Cheng Shengyu <cheng.shengyu@zte.com.cn>,
@@ -34,9 +34,8 @@ Cc:     kernel-janitors@vger.kernel.org,
         Takashi Iwai <tiwai@suse.com>,
         Xue Zhihong <xue.zhihong@zte.com.cn>,
         Yi Wang <wang.yi59@zte.com.cn>
-References: <1562989575-33785-2-git-send-email-wen.yang99@zte.com.cn>
-Subject: Re: [1/2] ASoC: samsung: odroid: fix an use-after-free issue for
- codec
+References: <1562989575-33785-3-git-send-email-wen.yang99@zte.com.cn>
+Subject: Re: [2/2] ASoC: samsung: odroid: fix a double-free issue for cpu_dai
 To:     Wen Yang <wen.yang99@zte.com.cn>, alsa-devel@alsa-project.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Openpgp: preference=signencrypt
@@ -83,46 +82,57 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <6f537916-9dec-606d-ea4b-8d41cc75a55d@web.de>
-Date:   Sun, 14 Jul 2019 12:55:49 +0200
+Message-ID: <4545ce50-493c-8faa-fdcd-5aee3ca30792@web.de>
+Date:   Sun, 14 Jul 2019 14:47:18 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <1562989575-33785-2-git-send-email-wen.yang99@zte.com.cn>
+In-Reply-To: <1562989575-33785-3-git-send-email-wen.yang99@zte.com.cn>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-X-Provags-ID: V03:K1:j7Q+ABHMF7uNcALNtrzIqXAhDDMLELYJdE1GISE46wREN9SOZO5
- gy7kW4ofFOXNb20Rp/pKkTpVBSaknQKjPpDb1KaavkYcA6ffk9ftY9KgC0e1ACea1Fix8Gx
- BCbmr00oukrEEsLghzMzNLlN+nmp6OBfZY82kHoLifXkvhF4swOJoMt+Tgc+p7lwIXQ5Z+V
- tcRVw/Szp5N7uHC0FlisA==
+Content-Language: en-GB
+X-Provags-ID: V03:K1:ARMVCvM4n0fZixFkmnwA6Q1ueCcqChHYMLocwTvLTJOsT4zwMJv
+ ZZnCMfu1tzzrYiauyKZXsAacRmYKQrienBCc8fSAk+ek+GEVJRon6ZzOKulL4F+hs5/WgWn
+ IGpm/iS5E1T2oXDEeVpKgGYeuEcd7r4FWdca3cG44QQJthjHf3b8uOtYeddG6S3kNPE11BN
+ a3GAoxdoqlR76h4N0fm6A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:K/2F3bhXJ5g=:Enqa7X56SseLGf3fDudHmr
- wIOAN4QwMz6DE5RaYK7FnOuAcjM3XR0gYkyyedMBe9Txvn4gpnvctUg5KZ5N9raOqEIgCsMHR
- otLkrw4gi6Yn3+vQCETY1/AEByY9tKjjMdeeHPwGYwj6hiedCcNs2SKAFXN5qODSbbFvL0Uy+
- V5xQ0baVCh117MC95u+V2EYTBgx4jtsQFpxmz26MZyU14O3TUvnUVXzT8Tu3RW3Vovc8qi7AU
- D12e6K9TqgBxCOGgINbAq4ppegjOdRDT5YJsNSV0NhvHLlfd06znjkkQV7Mjv9GLEqfwogD7S
- PpYF7w+WReGal7vVXOHNZHerz9hnjkSZI9mzmR2ClLYaY8KoQAO4b8roxMbzM3S5jnftgkgO9
- zeTpiKZk8k7XuMjsjrd0seO1N4NrI2YdUTvak/onHWOBZMih/TJSZQbPMvAeF3iuLigxDSm7D
- 1iIVpFCTcP8kQt/KUw+ap45gUrsFd+LxFk+Z3j909z5S5xy7z2Be2JRyL2LU0c+0lcBuOeUzg
- d7goLTceDi4lop/VGxBHAERkPJh/7b99qdZ9/Vktabq31q/ry1R5MXLAL/DfKzj/hsfK54DGD
- iFVdY4hKHkRtcYN/j91Cmtvyh6WWmEQqEUpKjl7+lgZ3HgPoz8ho4M321iQSrhU6GX8wxC+sX
- MndzcP+qfAK1kcsPm7/WrDcfjIo1kZxg+6zA/OzLZlZbzP/9zhN2UWh7BklbIBiUZ8qe8layv
- as/19N3a7RrKZPbZiiPat3nfdgDd2JXHRQI7bX1wXrX+ESL+Yt9dLteS11tMr6I+QTkIeaNnF
- QJ1hCO9WB51/nPXiZXLLiDV1mcNjeretKPh04eScCkhFCWR7QJmGmDRQbnDaJRzPmM4dTYM4B
- 11IHyTkX4XsVwS4vrYHOPT9fpv1ZsHJexW8uF+AItJP1DU8QEFj/X4rB4SpG4B/lAuJhcQeY+
- uzYo6ZsdYZ1YxVM0DWFfPSuprC2aGoPpuboFvCTYetU3FOXDBi4724qmUjaLdzOdmeV14ug5T
- Uk4SOv1pvsGcWrodqq39a6aRHEbDld3mrQdM6h/zy4AaHROscS93I4JFTShG+4s2NvoTPbRYr
- BHENVeOT/MyQtIplGYR4cagnUnX+M0c5l92
+X-UI-Out-Filterresults: notjunk:1;V03:K0:X0JgI81HCiQ=:b1AbNe+rg82E6KQX5t8E79
+ 5zSJdOfuTQlVmM8AmskRMNiGnlJpg51hawdwWrK5Mcb/+KqAuIMXd194W7On4vkzDWgxChWQ9
+ k63b9nSnQow/m/HqAVtwWDTnyTUWBrYyogk/8tNZMgNZ//NTBtAwVzrq2PUlQeUfPrTEPBzCQ
+ ae6Y1ATsZWCC+JrhhAA+Ut8++VXTI3natF4PzcRzEKEyJ2SkmO1cagrhpR1EsloXg0x8xaJAM
+ vn32F0GavgMGVEMmgCvGaMHvm4Hnjy0nzda7N46OdTKz6o9r1yvvh3H0fbpu8U/RIqjhpyFos
+ MEM6M6rztpLUi4CoHoFeHOIssSRB6xcAsTPGBC2u78QjyJC6ZC6yQXLd+7LJWNuLsyk68NDtz
+ dR8tF0wnbehTigWQPRwOEMbFWCEUDrZRd1AoCvg5kYH9Xy0zfoxklXChLSiYwHa923oNAIGvz
+ +949uvZzuBDGMB9f6NjLR3BM1QnRSeb4hYx1kAQgoRMl97igVnXX0uAIcVv060aoWcGCLejZn
+ TcrzN3W67SF5R2iw9ynfzopzE8oA9DhVjAZvAFb8tG+up6zpZUhKVMqWPgyoJ82bbIAJIGEWQ
+ QxcRrSPo97ESH7ZhboGtPbjok1yhD8vKhFpecXw2ItkhcZhzMjzUgzo+XtKYzw7NVnGthBCcC
+ 9+I9zgo1LpiAZbpQx6yNyXX7x8YFXzsaJBb47vZTv7puDZn05ZIxWB5PICWDHIpiS4kDfgaEv
+ /Mvmf0/UDUVLB+xoZu6MxMPl4VR4BbxxFIPkwOH+BGwRkTNjOBDelvnzJ50p5BBmHdq53pYsQ
+ P/el6xziXo8Ab6qUhPGC7iJXU7zBm2x64svx93///tIy3O+8flX9p3YkkQ60Y+sIenZLjOTXH
+ ER3o/otiiyNxo8qmnb/HxEVeJU9DLHWhMEUm4sM9PRds+ocv0Ppvt0FGxe5lU9kVwfHPGjaXC
+ ZAENQi/u0vNkEwS+ha1JHZwpVGOrdKoFJH8ih2+wjIv0QvV/E9TROHcfmvv0RZOn8uXby/6H5
+ RB6xCrHce52snfMCUmgXaILzPgNyVV1XV9WDtnGr6dZ4RrjhYD2op0XhehWLcYeztajYKxiOp
+ BL5iaH3cFCQUndxf5CG71+G09lc4dBI3AaG
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Fixes: bc3cf17b575a ("ASoC: samsung: odroid: Add support for secondary CPU DAI")
+> The cpu_dai variable is still being used after the of_node_put() call,
 
-* Can it be that this commit identification is relevant more for the second update step?
+Such an implementation detail is questionable.
+https://wiki.sei.cmu.edu/confluence/display/c/MEM30-C.+Do+not+access+freed+memory
 
-* Was the handling of device node references questionable already before this change?
+
+> which may result in double-free:
+
+This consequence is also undesirable.
+https://cwe.mitre.org/data/definitions/415.html
+
+
+Now I wonder if two update steps are really appropriate as a fix
+instead of using a single update step for the desired correction
+in this software module.
+Should a commit (including previous ones) usually be correct by itself?
 
 Regards,
 Markus

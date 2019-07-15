@@ -2,40 +2,39 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D7FC96836E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jul 2019 08:11:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25B55683A2
+	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jul 2019 08:41:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726948AbfGOGLZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 15 Jul 2019 02:11:25 -0400
-Received: from mout.web.de ([212.227.17.12]:33653 "EHLO mout.web.de"
+        id S1728123AbfGOGln (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 15 Jul 2019 02:41:43 -0400
+Received: from mout.web.de ([212.227.17.12]:33443 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726075AbfGOGLY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 15 Jul 2019 02:11:24 -0400
+        id S1726074AbfGOGln (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 15 Jul 2019 02:41:43 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1563171072;
-        bh=3ZZkAHhDv8mQxfxfH1KdMKQ5R68Q0J3rV3Bj4ckDrKk=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=UPTNc4pIOrxuwi17TZdi+U/Uet2xbXI8SMJDXwqAtz67pWOyJdRDHJSFQACr+4Wxx
-         Pjmrpzzk6bkJOHn74tobf6pPCzojEvFsyQcO8Fo3WbuoPpkGxU+e2Y3U/TDAeOqWIt
-         N5iSznzy6fbzrKKhKC9hFbMJ8+wP6LBq5bAUKiIA=
+        s=dbaedf251592; t=1563172835;
+        bh=5N7eSzP8Tge+KuNT1ByNfjpaRy8jABPbJMW1CVN3BO8=;
+        h=X-UI-Sender-Class:Subject:Cc:References:From:To:Date:In-Reply-To;
+        b=Ncd0SFc0uWIbKgSGcepmFx9gSLxV67/NWF8o6nXu8OOftEE6HgOWmfxLiW74gdcwF
+         Daxk31Leg38oDqDMH9nEhbhxcVfWa9Y/GoGdRElFGcjYRRq7cCftMOGnFPSZxUyKiG
+         wP5DCdNgyC5ePRJRzGob0ssqFW4pcsUCqr0T6FoI=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.73.93]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MK24P-1hm5G11IJh-001SD7; Mon, 15
- Jul 2019 08:11:12 +0200
-Subject: Re: m68k: One function call less in cf_tlb_miss()
-To:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        linux-m68k@lists.linux-m68k.org, kernel-janitors@vger.kernel.org
-Cc:     Finn Thain <fthain@telegraphics.com.au>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        LKML <linux-kernel@vger.kernel.org>
-References: <c5713aa4-d290-0f7d-7de8-82bcdf74ee95@web.de>
- <alpine.LNX.2.21.1907060951060.67@nippy.intranet>
- <CAMuHMdWd31ch+eSje4ww=_JFSZgnxRAUAvS0TCHXq0nzLeVfgg@mail.gmail.com>
- <e75a25de-861a-8ab8-ffe7-c83572d6e553@web.de>
- <CAMuHMdU+sDjiTZph1gfii=WoWQ2c+jTvvqjq4mVSbFAi0eb_VA@mail.gmail.com>
+Received: from [192.168.1.2] ([93.133.73.93]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LxweO-1iYQbf1L2i-015GKT; Mon, 15
+ Jul 2019 08:40:35 +0200
+Subject: Re: [2/2] ASoC: samsung: odroid: fix a double-free issue for cpu_dai
+Cc:     linux-kernel@vger.kernel.org,
+        Cheng Shengyu <cheng.shengyu@zte.com.cn>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sangbeom Kim <sbkim73@samsung.com>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        Xue Zhihong <xue.zhihong@zte.com.cn>,
+        Yi Wang <wang.yi59@zte.com.cn>
+References: <201907150949139435825@zte.com.cn>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
@@ -81,60 +80,67 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <f9af74a1-dc4a-5ad9-9da3-8fba4b4f179c@web.de>
-Date:   Mon, 15 Jul 2019 08:11:00 +0200
+To:     Wen Yang <wen.yang99@zte.com.cn>, alsa-devel@alsa-project.org,
+        kernel-janitors@vger.kernel.org
+Message-ID: <23d82d8b-d600-b28f-9444-65afe04a781a@web.de>
+Date:   Mon, 15 Jul 2019 08:40:30 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <CAMuHMdU+sDjiTZph1gfii=WoWQ2c+jTvvqjq4mVSbFAi0eb_VA@mail.gmail.com>
+In-Reply-To: <201907150949139435825@zte.com.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:EibhP3tRbuPvKH+zR2pgGxpY+3THnksqs205VHkel1aU5V4R6uv
- Tchuecuu0xKN5iu0/zTPr2ctNdxxY+A+y8EwHOYmU3VHAFDwgV2yxcw53iUnBwM2bQB1d+I
- lKpCtvHEJMTRwNQ8DzChpMPjJEMotP4IqBHIhdCXvNCohMziLU9Vb9pMwNtmyLNAu1YSS2J
- hRZYWPhs6fiIC/t+kwP0w==
+X-Provags-ID: V03:K1:kdpL+1mGs2vHWKv1DMqvrBT4iGiLJvJV0KoE2AFL1EQCrSCthr7
+ rP3myNrH+dj+I8cRJzcPIRLqHH8t51HF+9ygtIa4JrmNqxjILFHaDKCo+ahs5UlTTbucmMN
+ leZovJkMtme1ZIP8GXDc1TsUCHm4xqMQkp3K3ztGxpKCbwyBTXlIm7y+7cCRbXq5K+QIBY3
+ I3cKROv4WSV7c895ZLlFQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:mbTl0qxx1sU=:qkK3NJkJTrO8B3RCC30Wuf
- TywQqy1riFVfnatqbxhIy1gbvVASxNumHOVGxsv5wQN6iwBxfAGE+1RC5Ef4X7t/znW5h+z4P
- rCAcSw4Tu9ILao996BcEUt39sVwwm84qdsyY7XrP/zLn8QhKQx2zRMxcKT8FLMHmV0UZwG27L
- xW/2MUWBZSktC58cbq9T72pfZCz+BORna+KTxn/xzvgGL4L1AaGKe2AedgiOl1BITN9mV/NGH
- PgUZ2Da8VHHWa9Hv76jGd0FvnZifDbOZtW1hzE3qdbj2ASqwmiCEBcnR3a0tsNuNhjeFxKlLj
- It9/7QWF5g+AW2HTPhCCM9g1YR8SxThroVkCHhmMnfSdLgucqKuNO1X/RDAzIKBn1qpUbWynt
- zzSCjcWZ3efWdc8nGmW9fnyncunbAde0O18g7ishC/EnPVAUBnM4Y+5Wp5gZS2y6+rxfHtCGR
- EE2R3qYbxzTFRNHbIlU9fVtuHURiDv/BkK8pMCveivO9JpKa+8buzriXaRfT9lsJpLLyflZfG
- OFs8rjS0sfU+gZ8vxxCe2iaVI4Bxk7pPqwiyPOG1y0yCnw+NsZopVwQ7hKGgXIRjZ6kEVPwCM
- c/t2QGuK7xdsbsg2FiykEEyvY+wIe/XZ0l3WUwxvYvD4WyJOED3+XB2oBo0xyUHqG7AhkQBzT
- zzkGnqKG4kW3ybvLXS59+2x1dZoIL424q/X5xkDURKZxCRCmfmlksIYmpPKzERv8ryb4fU6m/
- +fh08u79J1oaubS6cLj5lIUdB9RAewBU0Yf7hxLVddwbXNloYoe1dJ9XgFxiCf95iRyl3fRbR
- 0ufZ3X65zdfCbQp2O9TruMzhO4AmUsM6sf1SQJQz9PbBR8XcC6j6qZsw+BPmDw4Ca1Zf2qMsw
- AncmdjiBbZXfKEOu4o/x7lxhhzQmKzQKpGRAsJ81oYp1xWGecX0vBRmscr89qch88I9xqpqgD
- JcOmo66Epn141SQDX2hmjT+LsOkQ78B3iwC5N1AK1geDRB2PrG1jDUQ5BidVCHd+777clTTgQ
- kQFpHAR/hEcSKtwOJeJ8EJmZenRtoUJT5+vuQDRxgdms65OPamzWllp85hczgHPfpPp7SfaPY
- mLzEU3NjmgNX0wk8o505sblwzB8dUvjn1Cg
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Hbv3PXxoCN0=:Zez5eONvyPtHFryPLpU1vt
+ lG370vbqGn7UYA3mLpiiPVthFRZuvVeyEbmNwJAKzJ+nq5jV+JTrvC56jYEnds5TXGZr2bnDr
+ RrmrpoMT9s0Kom041c2rBrKW3viXTfPeIu7NTZ0W9wwaMmm0XnWwW4sGSL5GS91dC07p3+fqb
+ Ur+DvP2FEwkHAMuk8AO71nE2oQz5SAJzgJkIf/WIPuBrE8iEvir2fPP0EEgezSf+ACg7IfkVI
+ BrdNZP7o0V4WY6JB8NHU4UzH10j2bvf6pp3X63WdsSXh/28MbF8kaxBWZfmPZbLbHGoybOOqu
+ SU7uy/Zl2QrX0c8+t12CEDuo/lL/2cKsSoPVwPErKm5+Y90xRFH1N8JrfbV+EZbLU9k8W0PnY
+ zcHyOdl2fjZloJI3Uv05xQXcZR9kSWuHIwWpiaxTgXSLySxMzV+qR4YPbHkvaMJlhO2JZNpH5
+ n0LP/Kw4u0KYxMzTY7TqYuJrSSF5/1tgEeELfkGpwiZ6a73r9+TJVm6n8v97niuI0DDpL1i6D
+ aw5W/TKXD13qVDyIOfqoJmuhHy0TarLUp1FVg7cGqlCj2wbCm+4s3bWKa1JUzJnTBrOrJL7tL
+ 0JowQF3itcCUDEdcNnUy8aa/A02yk2pFUYa8Jw0pgirjR9I5einV5UWo3jhqb+2fTjBZXhgKz
+ je3fmITlZxGbUlFwgn0oCatROXssUn1VgS74HGasoShBMOBjulLQLgBjufsdpXb3RztbSP6VU
+ 72b7vzTRIeYgUmAeQD80RhScu93gxe5vYpMtKQSftTzCezjQYb7rA/rrDENSWYdUJ2T3uajJ4
+ VGGp/e+lu2vvdOI5WHD1vNUYbwBSNE//8B1NFRmY71wJY1JLxGDI4wOyJx9Le34/3cIWmTQ46
+ E29J9KaIBbeuPE6UD/nXi2WfGfb6paqIfEBi1I6U93Uh1N2TwZG3mbVscIqH+lGv4LS6xR4kX
+ Z4Fx6t+FYpIAuc5sQ706wICVn2CyloZK3FFvq59/xcY7xyImiE+d5eKrcVI+xf3jqxlX4LbQ3
+ B1CCQgsbT9Dzo8YUaNEF74eBx41dHGDeJEcH0owMaGDM5BOJYycEMTSGEN8ogMsjw6UhbvQyP
+ SojfNPJ7glue5ScFlkeOEOIIVLWICJOVgUL
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> You better do,
+> These two updates fix two different bugs.
 
-It can eventually happen again under other circumstances.
-
-
-> it can be a good learning experience!
-
-This can be also possible.
+I can follow this view to some degree.
 
 
->> * Can the suggested small refactoring matter for a specific software co=
-mbination there?
->> * Would you like to clarify this change possibility a bit more?
->
-> -EPARSE
+> and the other is the double-free issue
 
-I am curious where you got parsing (or more understanding) difficulties
-for these questions.
+This programming error affects also the use of data structures which becam=
+e invalid.
+https://cwe.mitre.org/data/definitions/415.html#oc_415_Notes
+
+
+> So we sent two patches to fix them separately.
+
+You would like to fix something according to two variables (of the data ty=
+pe =E2=80=9Cdevice_node *=E2=80=9D)
+in the same function implementation.
+Please combine these corrections in an update step under a topic like
+=E2=80=9CASoC: samsung: odroid: Fix handling of device node references in =
+odroid_audio_probe()=E2=80=9D.
+(The previous update step would contain still a known programming mistake =
+otherwise,
+wouldn't it?)
 
 Regards,
 Markus

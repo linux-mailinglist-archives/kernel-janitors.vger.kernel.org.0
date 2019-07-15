@@ -2,94 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9879C6867E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jul 2019 11:41:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 171EC68799
+	for <lists+kernel-janitors@lfdr.de>; Mon, 15 Jul 2019 13:01:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729533AbfGOJlE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 15 Jul 2019 05:41:04 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:39700 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729257AbfGOJlE (ORCPT
+        id S1729757AbfGOLBZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 15 Jul 2019 07:01:25 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:37396 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729603AbfGOLBY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 15 Jul 2019 05:41:04 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id F2A9961112; Mon, 15 Jul 2019 09:41:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1563183663;
-        bh=ct7GW0Ok2mMfuRL4Gmv0L86fX5Qb6y+3jIfZFn5anmo=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=kL4AAtZ0r8F6fRv2EDdEnQKRcPdpf7MYj/bpbbD2nM9PwSI3PGCm636Vqz/yGNkub
-         It1ZKpf96XPugn92NuEx1/75YTUKGdh16ejDgVXQi92I8FuAbG1SNjJgU8Kn7jEpMG
-         gKZTninbXm17NJ+R5U6tNlSiZw1stYo9Za2UBAZk=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from x230.qca.qualcomm.com (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CCF8660E3F;
-        Mon, 15 Jul 2019 09:41:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1563183662;
-        bh=ct7GW0Ok2mMfuRL4Gmv0L86fX5Qb6y+3jIfZFn5anmo=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=R4YBFv4DQa25OT3GB/6w5GR6GKkwS7JUXpuRxxptKvyX3XDkivKZkNI1lEubP1JS1
-         q0OROiXlk7NRaEar58+Z9ghlIJJGxbre0UzQ6IpIbpi+yaoTXjMML1ADRYQsbpU4DH
-         s+YbDZO9W7iEnuvO7kBVhmfDp8JDVdzb/boN32ro=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CCF8660E3F
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] wl3501_cs: remove redundant variable ret
-References: <20190705103732.30568-1-colin.king@canonical.com>
-Date:   Mon, 15 Jul 2019 12:40:58 +0300
-In-Reply-To: <20190705103732.30568-1-colin.king@canonical.com> (Colin King's
-        message of "Fri, 5 Jul 2019 11:37:32 +0100")
-Message-ID: <87zhlfprdh.fsf@codeaurora.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Mon, 15 Jul 2019 07:01:24 -0400
+Received: by mail-pg1-f194.google.com with SMTP id g15so7545664pgi.4
+        for <kernel-janitors@vger.kernel.org>; Mon, 15 Jul 2019 04:01:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=at1U0zLzNGQlxAxn9clrRSHSPpGB2zlKGmciYViXmzQ=;
+        b=Z9oXVPFMLu2uHaJA1Qjp0ttNObBYRa75H5GL/4ONtRz8tfullG/Skqfnj/qhqsn2XF
+         4XYx/OUlIT1ITxiKwJ0NLlTn9aJ/3SM0o29EuBJakQa3t/QZ+ieI2JVD9pPeovy+ik6Z
+         /hr3CEZ03JP+w2RMUiBpSqYxHvp2SIpeTkf+JqgSc2mA6I9ApZCviQ5R85k2HYy05AtN
+         LAYbUtTxdcTOOZET0hphoyT/XLVSCesl9pCLqOv9NR3Es2mk17JKwyWKgHFnjTWgxbat
+         dkO9QV6ePL/iu9cuUS+qRtoqQHI7F1CKVej3u1bTFntcgm8BMe7VPywWSQgOrk+Hd1la
+         Wy5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=at1U0zLzNGQlxAxn9clrRSHSPpGB2zlKGmciYViXmzQ=;
+        b=BbNnNUuNlB8qDj9ihOyPoE3PO44OzNMFDg+Jj52Jmg3S6aknLEsTrjrzIt8xlXBh6C
+         KKb1lsXVxjSXBz3ShQodBy7u8KtT7ze2Guz9gYMT+d5c6hb5auur6XKdfXDSaYfBsdbP
+         9CKR9IxMl8k3tQ6lWHnHou2npYnQMLYdjruvESoOLUzOgn/JoKPNiQ5hjABzDmsDXkSn
+         XRjHV9meUBj3ByvzEfl+lDNLJuN8l3csgYGm+n3Tkuu0Pd4eAKhPQB+C4CiX+hUjsMaq
+         HJ38TDYNpjqrVxSTtGWMusjkQygJRgYfLSYVDzcLQ6unx/SPxiKZ1BmREhl35G6SduEY
+         5Zcg==
+X-Gm-Message-State: APjAAAV/hcsh1X11WtPaqE/2pfcUoxomI7NHX3hUpiVyoLbQBosHAwY6
+        aFgLiMQOmN0zUEL34jLgi3p9/NJ08aJjiLSN7j4=
+X-Google-Smtp-Source: APXvYqzRiqEMdP2oCsG+oCHXb2GHUr0XEf1B7DVR+E89dsJE9BnV66dSLlkj/q/fQwMBNc78Lr9VZjkNFa6Zuiwz9HU=
+X-Received: by 2002:a63:ad07:: with SMTP id g7mr24465546pgf.405.1563188483879;
+ Mon, 15 Jul 2019 04:01:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
+Received: by 2002:a17:90a:b78d:0:0:0:0 with HTTP; Mon, 15 Jul 2019 04:01:23
+ -0700 (PDT)
+From:   Donald Douglas <ddouglasng@gmail.com>
+Date:   Mon, 15 Jul 2019 04:01:23 -0700
+Message-ID: <CALVR28FUKvdu9Zx=69na4BTSWx-HhVeo+1o3JMScYNkFchaezw@mail.gmail.com>
+Subject: Kindly Respond
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> writes:
+Hello,
+I am Barr Fredrick Mbogo a business consultant i have a lucrative
+business to discuss with you from the Eastern part of Africa Uganda to
+be precise aimed at agreed percentage upon your acceptance of my hand
+in business and friendship. Kindly respond to me if you are interested
+to partner with me for an update. Very important.
 
-> From: Colin Ian King <colin.king@canonical.com>
->
-> The variable ret is being initialized with a value that is never
-> read and it is being updated later with a new value that is returned.
-> The variable is redundant and can be replaced with a return 0 as
-> there are no other return points in this function.
->
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/net/wireless/wl3501_cs.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/drivers/net/wireless/wl3501_cs.c b/drivers/net/wireless/wl3501_cs.c
-> index a25b17932edb..007bf6803293 100644
-> --- a/drivers/net/wireless/wl3501_cs.c
-> +++ b/drivers/net/wireless/wl3501_cs.c
-> @@ -1226,7 +1226,6 @@ static int wl3501_init_firmware(struct wl3501_card *this)
->  static int wl3501_close(struct net_device *dev)
->  {
->  	struct wl3501_card *this = netdev_priv(dev);
-> -	int rc = -ENODEV;
-
-I'll manually fix the commit log with:
-
-s/variable ret/variable rc/
-
--- 
-Kalle Valo
+Yours Sincerely,
+Donald Douglas,
+For,
+Barr Frederick Mbogo
+Legal Consultant.
+Reply to: barrfredmbogo@consultant.com

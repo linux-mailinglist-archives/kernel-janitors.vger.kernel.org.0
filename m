@@ -2,87 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C68356B491
-	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Jul 2019 04:34:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2A9A6B697
+	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Jul 2019 08:24:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727245AbfGQCdI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 16 Jul 2019 22:33:08 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:38116 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725892AbfGQCdI (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 16 Jul 2019 22:33:08 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x6H2Tii0077151;
-        Wed, 17 Jul 2019 02:33:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2018-07-02;
- bh=xvyqFU2Fdei8ljgzaJQFc1lnw/+9F3y2gxI3eTRxaxw=;
- b=lSPyRFAQSJnyKBSBT4kBXWcpoXoJEAggEpsYrk0UykTkqR/ilWfg+ti2gv181mXCOOxP
- t6ybED2Yi9+p8fn1CBdhG1ls/bB5HuDU9CehXwtj1burgOF+d77kfs5yanpM+C0Z3Y1C
- 6TfdKx3Rcp0nVKNiPIOzlak5tOlzG4CrsFr3YlrNnbPI4zzJuPJukwSRkqUdcj1HJj77
- qPxo+l1VR07CePlLx0cqZ5PTmn5yUcvdLU23DFxf8/ZiQrVIQI0dDRxilkIRo6JzTLDa
- al8PRKFK0OOuScczWB2O08/LczipkLpolwfHu11f4MOJMRm7OCfAOhNsrEfgz8yDTHHh /Q== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2tq6qtqv7g-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 17 Jul 2019 02:33:01 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x6H2RgRV181553;
-        Wed, 17 Jul 2019 02:33:01 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2tq4du8f7x-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 17 Jul 2019 02:33:01 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x6H2Wxil003297;
-        Wed, 17 Jul 2019 02:32:59 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 17 Jul 2019 02:32:59 +0000
-To:     Colin King <colin.king@canonical.com>
-Cc:     Hannes Reinecke <hare@suse.de>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] scsi: libfc: fix null pointer dereference on a null lport
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20190702091835.13629-1-colin.king@canonical.com>
-Date:   Tue, 16 Jul 2019 22:32:57 -0400
-In-Reply-To: <20190702091835.13629-1-colin.king@canonical.com> (Colin King's
-        message of "Tue, 2 Jul 2019 10:18:35 +0100")
-Message-ID: <yq1o91tz8yu.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        id S1726819AbfGQGYX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 17 Jul 2019 02:24:23 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:2668 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725873AbfGQGYW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 17 Jul 2019 02:24:22 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 62086F44A6FACF7280D7;
+        Wed, 17 Jul 2019 14:24:20 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 17 Jul 2019 14:24:11 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Vladimir Oltean <olteanv@gmail.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <netdev@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH] net: dsa: sja1105: Fix missing unlock on error in sk_buff()
+Date:   Wed, 17 Jul 2019 06:29:56 +0000
+Message-ID: <20190717062956.127446-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9320 signatures=668688
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=819
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1810050000 definitions=main-1907170029
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9320 signatures=668688
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=888 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1810050000
- definitions=main-1907170029
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Add the missing unlock before return from function sk_buff()
+in the error handling case.
 
-Colin,
+Fixes: f3097be21bf1 ("net: dsa: sja1105: Add a state machine for RX timestamping")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ net/dsa/tag_sja1105.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> Currently if lport is null then the null lport pointer is dereference
-> when printing out debug via the FC_LPORT_DB macro. Fix this by using
-> the more generic FC_LIBFC_DBG debug macro instead that does not use
-> lport.
+diff --git a/net/dsa/tag_sja1105.c b/net/dsa/tag_sja1105.c
+index 1d96c9d4a8e9..26363d72d25b 100644
+--- a/net/dsa/tag_sja1105.c
++++ b/net/dsa/tag_sja1105.c
+@@ -216,6 +216,7 @@ static struct sk_buff
+ 		if (!skb) {
+ 			dev_err_ratelimited(dp->ds->dev,
+ 					    "Failed to copy stampable skb\n");
++			spin_unlock(&sp->data->meta_lock);
+ 			return NULL;
+ 		}
+ 		sja1105_transfer_meta(skb, meta);
 
-Applied to 5.3/scsi-fixes, thanks!
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+

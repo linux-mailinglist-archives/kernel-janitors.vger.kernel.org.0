@@ -2,89 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F32C6C0B4
-	for <lists+kernel-janitors@lfdr.de>; Wed, 17 Jul 2019 19:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EDF96C568
+	for <lists+kernel-janitors@lfdr.de>; Thu, 18 Jul 2019 05:08:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727556AbfGQR6l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 17 Jul 2019 13:58:41 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:47009 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726085AbfGQR6l (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 17 Jul 2019 13:58:41 -0400
-Received: by mail-ed1-f65.google.com with SMTP id d4so26884827edr.13;
-        Wed, 17 Jul 2019 10:58:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=eO7nbcftwbGM4xdl7HUrpJSFLczO7ozAf0lOcGpNvos=;
-        b=n1gZoVqxV0vV+ydTl97vaK8pVTIA8bhshiyDmmH4wDz0QmPQUc94JxT2cKfdGKvXQR
-         u8OLZL7mdgHyK5xHBthbsm7eDGEj1Y+lD1mwjd2zUUanZa2ELAeC8tewKQYfmMDon86k
-         MEkdUQX1jjBdENIdpdqVexE2enLQn3eRkJNP6HaPis4GOBLWr/DlCjRtlm5kFOh/lF4D
-         o7zsg1mcSsoiVumeAhO//YvnxW3vF3VTpfoj8QJwolwUWG8kGc5Bph96MQ2eQenHmQnA
-         jjNEt+nR3huL4jKsACY2dW68tnTYzisOwUgA5z6O+K59nfijzK7jVnF4HlTQazFYCsOf
-         +0BQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eO7nbcftwbGM4xdl7HUrpJSFLczO7ozAf0lOcGpNvos=;
-        b=OsgK3sp8/ZTNU7NQBCzoY6QTe8Wmkq8DM44Gmg3bx6zhRoQU65ugirLlNaglp4pRPk
-         N+J7+pdOxKfwJpxBgaxasYNzGtHePEgwKiE6pXGJP4LC/3j3facmKrIhW5ci5NDWjdSI
-         qy+/hZaVpPDagqq3O1D4ruYO1AaMbGh0cTv/tP6Fzug/eBjra0z1dI5XdRLBSXfjKHdV
-         kpCiLreAcgcuspGkRN11k7Si1xDfSdvGuiBapCuTXW/OzYHLi9sB9Y6zOjt7xUgYyZoo
-         ItTsnwB29krPPRpchRHHIZ0agD+pQH3vGDHqIo8NEtsRRxT7YJcULQ325pfWJVt3w0pA
-         lWog==
-X-Gm-Message-State: APjAAAWVnJ2PXDWp7vLAnLboGLowt4D2Nd9Ei+V98H8XHgQ79x/AD9Rn
-        IKkyAhzjfpKcEsyWqPTHuyixy0oojje/02yb7wk=
-X-Google-Smtp-Source: APXvYqyaVmfvTIES3x3xjtugP/2cfgkwxZpK69vlVdL2soU0+rgfsWgVfLBSOBiyHGobZFwUDlWo2bY9dma2KLNPRBQ=
-X-Received: by 2002:a17:906:19d3:: with SMTP id h19mr32298173ejd.300.1563386319311;
- Wed, 17 Jul 2019 10:58:39 -0700 (PDT)
+        id S2390083AbfGRDFy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 17 Jul 2019 23:05:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36992 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2390076AbfGRDFv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 17 Jul 2019 23:05:51 -0400
+Received: from localhost (115.42.148.210.bf.2iij.net [210.148.42.115])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5E97A204EC;
+        Thu, 18 Jul 2019 03:05:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563419150;
+        bh=ll71j7Z6eqb6ZtBhw+Rmj5cmjVRWfbFb2Cv8/1M6umE=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=JHa9+uWhWCWI37ZVO+FYLDdp6uNGD9GC6iE9pQXPskQKiKRkyiSrwARmHsyEqtOd0
+         VXjfXz76e6B8/kryTQzndRX3C3E53rNDsGREslc7FqsUFIYUjoh+K3Hd0K1kcf3Gew
+         gQTLadjWfIE1VKk3jpFC2dZfdcubsFX39yF649Xk=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Colin Ian King <colin.king@canonical.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, kernel-janitors@vger.kernel.org,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.1 20/54] x86/apic: Fix integer overflow on 10 bit left shift of cpu_khz
+Date:   Thu, 18 Jul 2019 12:01:15 +0900
+Message-Id: <20190718030054.951661808@linuxfoundation.org>
+X-Mailer: git-send-email 2.22.0
+In-Reply-To: <20190718030053.287374640@linuxfoundation.org>
+References: <20190718030053.287374640@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-References: <20190717062956.127446-1-weiyongjun1@huawei.com>
-In-Reply-To: <20190717062956.127446-1-weiyongjun1@huawei.com>
-From:   Vladimir Oltean <olteanv@gmail.com>
-Date:   Wed, 17 Jul 2019 20:58:28 +0300
-Message-ID: <CA+h21hr7whb1yk-W-81neG5kRcJR9iR70wzu93nLA_sjeT+ruQ@mail.gmail.com>
-Subject: Re: [PATCH] net: dsa: sja1105: Fix missing unlock on error in sk_buff()
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        netdev <netdev@vger.kernel.org>, kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 17 Jul 2019 at 09:24, Wei Yongjun <weiyongjun1@huawei.com> wrote:
->
-> Add the missing unlock before return from function sk_buff()
-> in the error handling case.
->
-> Fixes: f3097be21bf1 ("net: dsa: sja1105: Add a state machine for RX timestamping")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
+[ Upstream commit ea136a112d89bade596314a1ae49f748902f4727 ]
 
-Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+The left shift of unsigned int cpu_khz will overflow for large values of
+cpu_khz, so cast it to a long long before shifting it to avoid overvlow.
+For example, this can happen when cpu_khz is 4194305, i.e. ~4.2 GHz.
 
->  net/dsa/tag_sja1105.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/net/dsa/tag_sja1105.c b/net/dsa/tag_sja1105.c
-> index 1d96c9d4a8e9..26363d72d25b 100644
-> --- a/net/dsa/tag_sja1105.c
-> +++ b/net/dsa/tag_sja1105.c
-> @@ -216,6 +216,7 @@ static struct sk_buff
->                 if (!skb) {
->                         dev_err_ratelimited(dp->ds->dev,
->                                             "Failed to copy stampable skb\n");
-> +                       spin_unlock(&sp->data->meta_lock);
->                         return NULL;
->                 }
->                 sja1105_transfer_meta(skb, meta);
->
->
->
+Addresses-Coverity: ("Unintentional integer overflow")
+Fixes: 8c3ba8d04924 ("x86, apic: ack all pending irqs when crashed/on kexec")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: "H . Peter Anvin" <hpa@zytor.com>
+Cc: kernel-janitors@vger.kernel.org
+Link: https://lkml.kernel.org/r/20190619181446.13635-1-colin.king@canonical.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/x86/kernel/apic/apic.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
+index b7bcdd781651..ec6225cb94f9 100644
+--- a/arch/x86/kernel/apic/apic.c
++++ b/arch/x86/kernel/apic/apic.c
+@@ -1458,7 +1458,8 @@ static void apic_pending_intr_clear(void)
+ 		if (queued) {
+ 			if (boot_cpu_has(X86_FEATURE_TSC) && cpu_khz) {
+ 				ntsc = rdtsc();
+-				max_loops = (cpu_khz << 10) - (ntsc - tsc);
++				max_loops = (long long)cpu_khz << 10;
++				max_loops -= ntsc - tsc;
+ 			} else {
+ 				max_loops--;
+ 			}
+-- 
+2.20.1
+
+
+

@@ -2,84 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D93A6CC77
-	for <lists+kernel-janitors@lfdr.de>; Thu, 18 Jul 2019 12:00:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2ED76CCED
+	for <lists+kernel-janitors@lfdr.de>; Thu, 18 Jul 2019 12:41:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389953AbfGRJ7D (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 18 Jul 2019 05:59:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48070 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389934AbfGRJ7C (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 18 Jul 2019 05:59:02 -0400
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A7E4D2186A;
-        Thu, 18 Jul 2019 09:59:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563443941;
-        bh=AWjdnSfyXbQ/4ZXvUB6IC11P/UFPFsul4lB9tUBMa/k=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=q3Rkw60UktJUkgRrFr+DK2X5F4Gl9Pd1waBBBy2/XkoQ1wGABpEIdJ1CtYTS//DPJ
-         dcLpmXEerj8/PI4Dehhe++xwX12hAa+RTPS6f7ktxRVlUuIwtT7Qr0OoYcOJ3ikcIe
-         mhCpahy5dptlgJFXdi8ZxRvq5RwaqYZ72ok5OhRk=
-Received: by mail-lj1-f172.google.com with SMTP id r9so26691724ljg.5;
-        Thu, 18 Jul 2019 02:59:00 -0700 (PDT)
-X-Gm-Message-State: APjAAAXD8a0N2nQzgOJylyoxQqfTefJ3IT0o+Wo+8r3LcBK9Q6XNbgsE
-        0Pp2nKPWDvGj+JDjEQJoRoufFokOUjAJdUwgXNU=
-X-Google-Smtp-Source: APXvYqwyiTc2BJqJc/k+YP8sLFe69tVubWrxtf8iAhRiiRjrQvRJaDmNfKv+t71cpGoUpQn2Kl5xR/RzgOxrua6Qu8o=
-X-Received: by 2002:a2e:8155:: with SMTP id t21mr23579565ljg.80.1563443938929;
- Thu, 18 Jul 2019 02:58:58 -0700 (PDT)
+        id S2389532AbfGRKl6 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 18 Jul 2019 06:41:58 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:30736 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726423AbfGRKl5 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 18 Jul 2019 06:41:57 -0400
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6IAbrca063169
+        for <kernel-janitors@vger.kernel.org>; Thu, 18 Jul 2019 06:41:56 -0400
+Received: from smtp.notes.na.collabserv.com (smtp.notes.na.collabserv.com [158.85.210.104])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2ttpxcrpd2-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <kernel-janitors@vger.kernel.org>; Thu, 18 Jul 2019 06:41:56 -0400
+Received: from localhost
+        by smtp.notes.na.collabserv.com with smtp.notes.na.collabserv.com ESMTP
+        for <kernel-janitors@vger.kernel.org> from <BMT@zurich.ibm.com>;
+        Thu, 18 Jul 2019 10:41:56 -0000
+Received: from us1b3-smtp05.a3dr.sjc01.isc4sb.com (10.122.203.183)
+        by smtp.notes.na.collabserv.com (10.122.47.44) with smtp.notes.na.collabserv.com ESMTP;
+        Thu, 18 Jul 2019 10:41:50 -0000
+Received: from us1b3-mail162.a3dr.sjc03.isc4sb.com ([10.160.174.187])
+          by us1b3-smtp05.a3dr.sjc01.isc4sb.com
+          with ESMTP id 2019071810414460-324980 ;
+          Thu, 18 Jul 2019 10:41:44 +0000 
+In-Reply-To: <20190718092710.85709-1-weiyongjun1@huawei.com>
+Subject: Re: [PATCH] RDMA/siw: fix error return code in siw_init_module()
+From:   "Bernard Metzler" <BMT@zurich.ibm.com>
+To:     "Wei Yongjun" <weiyongjun1@huawei.com>
+Cc:     "Doug Ledford" <dledford@redhat.com>,
+        "Jason Gunthorpe" <jgg@ziepe.ca>, <linux-rdma@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Date:   Thu, 18 Jul 2019 10:41:44 +0000
 MIME-Version: 1.0
-References: <c4c10934-f06f-24a8-1162-b023e4ab4066@web.de>
-In-Reply-To: <c4c10934-f06f-24a8-1162-b023e4ab4066@web.de>
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-Date:   Thu, 18 Jul 2019 11:58:47 +0200
-X-Gmail-Original-Message-ID: <CAJKOXPdRY+HaAKEj+jugJpE6kFYpkRacoCoKnMFjFL0t-EuMcg@mail.gmail.com>
-Message-ID: <CAJKOXPdRY+HaAKEj+jugJpE6kFYpkRacoCoKnMFjFL0t-EuMcg@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: samsung: odroid: Use common code in odroid_audio_probe()
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     alsa-devel@alsa-project.org, Jaroslav Kysela <perex@perex.cz>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sangbeom Kim <sbkim73@samsung.com>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Takashi Iwai <tiwai@suse.com>,
-        Wen Yang <wen.yang99@zte.com.cn>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Sensitivity: 
+Importance: Normal
+X-Priority: 3 (Normal)
+References: <20190718092710.85709-1-weiyongjun1@huawei.com>
+X-Mailer: IBM iNotes ($HaikuForm 1054) | IBM Domino Build
+ SCN1812108_20180501T0841_FP55 May 22, 2019 at 11:09
+X-KeepSent: 35A9F852:4EA5883B-0025843B:0035B005;
+ type=4; name=$KeepSent
+X-LLNOutbound: False
+X-Disclaimed: 1183
+X-TNEFEvaluated: 1
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=UTF-8
+x-cbid: 19071810-5525-0000-0000-0000005802EE
+X-IBM-SpamModules-Scores: BY=0; FL=0; FP=0; FZ=0; HX=0; KW=0; PH=0;
+ SC=0.399202; ST=0; TS=0; UL=0; ISC=; MB=0.000062
+X-IBM-SpamModules-Versions: BY=3.00011451; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000287; SDB=6.01233881; UDB=6.00650192; IPR=6.01015209;
+ MB=3.00027775; MTD=3.00000008; XFM=3.00000015; UTC=2019-07-18 10:41:54
+X-IBM-AV-DETECTION: SAVI=unsuspicious REMOTE=unsuspicious XFE=unused
+X-IBM-AV-VERSION: SAVI=2019-07-18 10:27:10 - 6.00010179
+x-cbparentid: 19071810-5526-0000-0000-0000009204F2
+Message-Id: <OF35A9F852.4EA5883B-ON0025843B.0035B005-0025843B.003AC0D0@notes.na.collabserv.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-18_05:,,
+ signatures=0
+X-Proofpoint-Spam-Reason: safe
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 18 Jul 2019 at 11:57, Markus Elfring <Markus.Elfring@web.de> wrote:
->
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Thu, 18 Jul 2019 11:42:29 +0200
->
-> Replace a function call and a return statement by a goto statement so that
-> a bit of common code will be reused at the end of this function.
->
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
->  sound/soc/samsung/odroid.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->
-> diff --git a/sound/soc/samsung/odroid.c b/sound/soc/samsung/odroid.c
-> index f0f5fa9c27d3..d152ef8dfea3 100644
-> --- a/sound/soc/samsung/odroid.c
-> +++ b/sound/soc/samsung/odroid.c
-> @@ -316,8 +316,7 @@ static int odroid_audio_probe(struct platform_device *pdev)
->         }
->
->         of_node_put(cpu_dai);
-> -       of_node_put(codec);
-> -       return 0;
-> +       goto err_put_node;
+-----"Wei Yongjun" <weiyongjun1@huawei.com> wrote: -----
 
-No, it does not look good. It makes the code and flow more difficult to follow.
+>To: "Bernard Metzler" <bmt@zurich.ibm.com>, "Doug Ledford"
+><dledford@redhat.com>, "Jason Gunthorpe" <jgg@ziepe.ca>
+>From: "Wei Yongjun" <weiyongjun1@huawei.com>
+>Date: 07/18/2019 11:21AM
+>Cc: "Wei Yongjun" <weiyongjun1@huawei.com>,
+><linux-rdma@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+>Subject: [EXTERNAL] [PATCH] RDMA/siw: fix error return code in
+>siw_init_module()
+>
+>Fix to return a negative error code from the error handling
+>case instead of 0, as done elsewhere in this function.
+>
+>Fixes: bdcf26bf9b3a ("rdma/siw: network and RDMA core interface")
+>Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+>---
+> drivers/infiniband/sw/siw/siw_main.c | 1 +
+> 1 file changed, 1 insertion(+)
+>
+>diff --git a/drivers/infiniband/sw/siw/siw_main.c
+>b/drivers/infiniband/sw/siw/siw_main.c
+>index fd2552a9091d..9040692f83d7 100644
+>--- a/drivers/infiniband/sw/siw/siw_main.c
+>+++ b/drivers/infiniband/sw/siw/siw_main.c
+>@@ -614,6 +614,7 @@ static __init int siw_init_module(void)
+> 
+> 	if (!siw_create_tx_threads()) {
+> 		pr_info("siw: Could not start any TX thread\n");
+>+		rv = -ENOMEM;
+> 		goto out_error;
+> 	}
+> 	/*
+>
+>
+>
+>
+Yes, thanks Wei!
 
-Best regards,
-Krzysztof
+Bernard.
+

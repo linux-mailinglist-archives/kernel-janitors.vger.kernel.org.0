@@ -2,27 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EDF96C568
-	for <lists+kernel-janitors@lfdr.de>; Thu, 18 Jul 2019 05:08:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EAA86C74C
+	for <lists+kernel-janitors@lfdr.de>; Thu, 18 Jul 2019 05:24:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390083AbfGRDFy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 17 Jul 2019 23:05:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36992 "EHLO mail.kernel.org"
+        id S2390456AbfGRDHa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 17 Jul 2019 23:07:30 -0400
+Received: from mail.kernel.org ([198.145.29.99]:39094 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390076AbfGRDFv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 17 Jul 2019 23:05:51 -0400
+        id S2390444AbfGRDH3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 17 Jul 2019 23:07:29 -0400
 Received: from localhost (115.42.148.210.bf.2iij.net [210.148.42.115])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 5E97A204EC;
-        Thu, 18 Jul 2019 03:05:50 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 331CC205F4;
+        Thu, 18 Jul 2019 03:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563419150;
-        bh=ll71j7Z6eqb6ZtBhw+Rmj5cmjVRWfbFb2Cv8/1M6umE=;
+        s=default; t=1563419248;
+        bh=+aLMt1fy/uI6haRV10yA2RxZH9dLBlZq0WeY9Fm1h5Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JHa9+uWhWCWI37ZVO+FYLDdp6uNGD9GC6iE9pQXPskQKiKRkyiSrwARmHsyEqtOd0
-         VXjfXz76e6B8/kryTQzndRX3C3E53rNDsGREslc7FqsUFIYUjoh+K3Hd0K1kcf3Gew
-         gQTLadjWfIE1VKk3jpFC2dZfdcubsFX39yF649Xk=
+        b=rFajYKcpBXgImxldw7VLLOEs+tJOiNKnwec7XVR0LQA44w6qPF8p8dwtS1LiGJk46
+         yym7W5dfQYGloo9h07fzFufF3RnpHTa2BNWHKbiq/b7IrjLsH2wknoh1qsFBgHl1ZU
+         2Km3JFIRkcKcaxkXl+bls47DZx23dXfErIJ5GbOU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -31,12 +31,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Borislav Petkov <bp@alien8.de>,
         "H . Peter Anvin" <hpa@zytor.com>, kernel-janitors@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.1 20/54] x86/apic: Fix integer overflow on 10 bit left shift of cpu_khz
-Date:   Thu, 18 Jul 2019 12:01:15 +0900
-Message-Id: <20190718030054.951661808@linuxfoundation.org>
+Subject: [PATCH 4.19 14/47] x86/apic: Fix integer overflow on 10 bit left shift of cpu_khz
+Date:   Thu, 18 Jul 2019 12:01:28 +0900
+Message-Id: <20190718030049.850839591@linuxfoundation.org>
 X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190718030053.287374640@linuxfoundation.org>
-References: <20190718030053.287374640@linuxfoundation.org>
+In-Reply-To: <20190718030045.780672747@linuxfoundation.org>
+References: <20190718030045.780672747@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -66,10 +66,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/arch/x86/kernel/apic/apic.c b/arch/x86/kernel/apic/apic.c
-index b7bcdd781651..ec6225cb94f9 100644
+index 84132eddb5a8..2646234380cc 100644
 --- a/arch/x86/kernel/apic/apic.c
 +++ b/arch/x86/kernel/apic/apic.c
-@@ -1458,7 +1458,8 @@ static void apic_pending_intr_clear(void)
+@@ -1452,7 +1452,8 @@ static void apic_pending_intr_clear(void)
  		if (queued) {
  			if (boot_cpu_has(X86_FEATURE_TSC) && cpu_khz) {
  				ntsc = rdtsc();

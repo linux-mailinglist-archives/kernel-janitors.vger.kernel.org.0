@@ -2,34 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53FD46D818
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jul 2019 03:01:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE5826D83A
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jul 2019 03:16:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726147AbfGSBBm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 18 Jul 2019 21:01:42 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:51316 "EHLO huawei.com"
+        id S1726147AbfGSBQ3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 18 Jul 2019 21:16:29 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:2680 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725992AbfGSBBm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 18 Jul 2019 21:01:42 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 14D4288903822913EF0F;
-        Fri, 19 Jul 2019 09:01:38 +0800 (CST)
+        id S1726072AbfGSBQ3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 18 Jul 2019 21:16:29 -0400
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 2940B6CDDC014F673A20;
+        Fri, 19 Jul 2019 09:16:27 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 19 Jul 2019 09:01:29 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <dwmw2@infradead.org>, <computersforpeace@gmail.com>,
-        <marek.vasut@gmail.com>, <miquel.raynal@bootlin.com>,
-        <richard@nod.at>
-CC:     <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH -next] mtd: hyperbus: fix build error about CONFIG_REGMAP
-Date:   Fri, 19 Jul 2019 09:07:03 +0800
-Message-ID: <20190719010703.63815-1-maowenan@huawei.com>
+ DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 19 Jul 2019 09:16:17 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Jay Cliburn <jcliburn@gmail.com>,
+        Chris Snook <chris.snook@gmail.com>,
+        Oleksij Rempel <o.rempel@pengutronix.de>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <netdev@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH v2] ag71xx: fix error return code in ag71xx_probe()
+Date:   Fri, 19 Jul 2019 01:21:57 +0000
+Message-ID: <20190719012157.100396-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190717115215.22965-1-weiyongjun1@huawei.com>
+References: <20190717115215.22965-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
 X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -37,48 +39,34 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-When CONFIG_MUX_MMIO and CONFIG_HBMC_AM654 are both 'm', there are
-some building error as below:
+Fix to return error code -ENOMEM from the dmam_alloc_coherent() error
+handling case instead of 0, as done elsewhere in this function.
 
-drivers/mux/mmio.c: In function mux_mmio_probe:
-drivers/mux/mmio.c:76:20: error: storage size of field isnt known
-   struct reg_field field;
-                    ^~~~~
-drivers/mux/mmio.c:102:15: error: implicit declaration of function devm_regmap_field_alloc; did you mean devm_mux_chip_alloc? [-Werror=implicit-function-declaration]
-   fields[i] = devm_regmap_field_alloc(dev, regmap, field);
-               ^~~~~~~~~~~~~~~~~~~~~~~
-               devm_mux_chip_alloc
-drivers/mux/mmio.c:76:20: warning: unused variable field [-Wunused-variable]
-   struct reg_field field;
-                    ^~~~~
-cc1: some warnings being treated as errors
-make[2]: *** [drivers/mux/mmio.o] Error 1
-make[1]: *** [drivers/mux] Error 2
-make[1]: *** Waiting for unfinished jobs....
-make: *** [drivers] Error 2
-
-This because CONFIG_REGMAP is not enable, so change the Kconfig for HBMC_AM654.
-
-Fixes: b07079f1642c("mtd: hyperbus: Add driver for TI's HyperBus memory controller")
-
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
+Fixes: d51b6ce441d3 ("net: ethernet: add ag71xx driver")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/mtd/hyperbus/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+v1 -> v2: fix subsystem prefix
+---
+ drivers/net/ethernet/atheros/ag71xx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/hyperbus/Kconfig b/drivers/mtd/hyperbus/Kconfig
-index cff6bbd..f324fa6 100644
---- a/drivers/mtd/hyperbus/Kconfig
-+++ b/drivers/mtd/hyperbus/Kconfig
-@@ -14,6 +14,8 @@ if MTD_HYPERBUS
+diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
+index 72a57c6cd254..446d62e93439 100644
+--- a/drivers/net/ethernet/atheros/ag71xx.c
++++ b/drivers/net/ethernet/atheros/ag71xx.c
+@@ -1724,8 +1724,10 @@ static int ag71xx_probe(struct platform_device *pdev)
+ 	ag->stop_desc = dmam_alloc_coherent(&pdev->dev,
+ 					    sizeof(struct ag71xx_desc),
+ 					    &ag->stop_desc_dma, GFP_KERNEL);
+-	if (!ag->stop_desc)
++	if (!ag->stop_desc) {
++		err = -ENOMEM;
+ 		goto err_free;
++	}
  
- config HBMC_AM654
- 	tristate "HyperBus controller driver for AM65x SoC"
-+	select OF
-+	select REGMAP
- 	select MULTIPLEXER
- 	select MUX_MMIO
- 	help
--- 
-2.7.4
+ 	ag->stop_desc->data = 0;
+ 	ag->stop_desc->ctrl = 0;
+
+
 

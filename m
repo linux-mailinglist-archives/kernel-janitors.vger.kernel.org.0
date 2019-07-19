@@ -2,32 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05C956D85A
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jul 2019 03:24:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1115F6D886
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jul 2019 03:46:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726147AbfGSBYL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 18 Jul 2019 21:24:11 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:2286 "EHLO huawei.com"
+        id S1726135AbfGSBqI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 18 Jul 2019 21:46:08 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:2287 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726042AbfGSBYL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 18 Jul 2019 21:24:11 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 0AB1B904D98FE21B46D7;
-        Fri, 19 Jul 2019 09:24:09 +0800 (CST)
+        id S1726042AbfGSBqI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 18 Jul 2019 21:46:08 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id CF09970995D2006834BB;
+        Fri, 19 Jul 2019 09:46:05 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 19 Jul 2019 09:24:01 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <bmt@zurich.ibm.com>, <dledford@redhat.com>, <jgg@ziepe.ca>
-CC:     <linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH -next] infiniband: siw: remove set but not used variables 'rv'
-Date:   Fri, 19 Jul 2019 09:29:38 +0800
-Message-ID: <20190719012938.100628-1-maowenan@huawei.com>
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 19 Jul 2019 09:45:55 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <jani.nikula@linux.intel.com>, <joonas.lahtinen@linux.intel.com>,
+        <rodrigo.vivi@intel.com>, <airlied@linux.ie>, <daniel@ffwll.ch>,
+        <imre.deak@intel.com>, <madhav.chauhan@intel.com>,
+        <vandita.kulkarni@intel.com>, <chris@chris-wilson.co.uk>,
+        <ville.syrjala@linux.intel.com>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <intel-gfx@lists.freedesktop.org>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] drm/i915/dsi: remove set but not used variable 'hfront_porch'
+Date:   Fri, 19 Jul 2019 01:51:36 +0000
+Message-ID: <20190719015136.103988-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
 X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -37,35 +43,40 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Fixes gcc '-Wunused-but-set-variable' warning:
 
-drivers/infiniband/sw/siw/siw_cm.c: In function siw_cep_set_inuse:
-drivers/infiniband/sw/siw/siw_cm.c:223:6: warning: variable rv set but not used [-Wunused-but-set-variable]
+drivers/gpu/drm/i915/display/icl_dsi.c: In function 'gen11_dsi_set_transcoder_timings':
+drivers/gpu/drm/i915/display/icl_dsi.c:768:6: warning:
+ variable 'hfront_porch' set but not used [-Wunused-but-set-variable]
 
-It is not used since commit 6c52fdc244b5("rdma/siw: connection management")
+It is never used and can be removed.
 
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/infiniband/sw/siw/siw_cm.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/i915/display/icl_dsi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/sw/siw/siw_cm.c b/drivers/infiniband/sw/siw/siw_cm.c
-index a7cde98..9ce8a1b 100644
---- a/drivers/infiniband/sw/siw/siw_cm.c
-+++ b/drivers/infiniband/sw/siw/siw_cm.c
-@@ -220,13 +220,12 @@ static void siw_put_work(struct siw_cm_work *work)
- static void siw_cep_set_inuse(struct siw_cep *cep)
- {
- 	unsigned long flags;
--	int rv;
- retry:
- 	spin_lock_irqsave(&cep->lock, flags);
+diff --git a/drivers/gpu/drm/i915/display/icl_dsi.c b/drivers/gpu/drm/i915/display/icl_dsi.c
+index 4d952accfaaa..a42348be0438 100644
+--- a/drivers/gpu/drm/i915/display/icl_dsi.c
++++ b/drivers/gpu/drm/i915/display/icl_dsi.c
+@@ -763,7 +763,7 @@ gen11_dsi_set_transcoder_timings(struct intel_encoder *encoder,
+ 	enum transcoder dsi_trans;
+ 	/* horizontal timings */
+ 	u16 htotal, hactive, hsync_start, hsync_end, hsync_size;
+-	u16 hfront_porch, hback_porch;
++	u16 hback_porch;
+ 	/* vertical timings */
+ 	u16 vtotal, vactive, vsync_start, vsync_end, vsync_shift;
  
- 	if (cep->in_use) {
- 		spin_unlock_irqrestore(&cep->lock, flags);
--		rv = wait_event_interruptible(cep->waitq, !cep->in_use);
-+		wait_event_interruptible(cep->waitq, !cep->in_use);
- 		if (signal_pending(current))
- 			flush_signals(current);
- 		goto retry;
--- 
-2.7.4
+@@ -772,8 +772,6 @@ gen11_dsi_set_transcoder_timings(struct intel_encoder *encoder,
+ 	hsync_start = adjusted_mode->crtc_hsync_start;
+ 	hsync_end = adjusted_mode->crtc_hsync_end;
+ 	hsync_size  = hsync_end - hsync_start;
+-	hfront_porch = (adjusted_mode->crtc_hsync_start -
+-			adjusted_mode->crtc_hdisplay);
+ 	hback_porch = (adjusted_mode->crtc_htotal -
+ 		       adjusted_mode->crtc_hsync_end);
+ 	vactive = adjusted_mode->crtc_vdisplay;
+
+
 

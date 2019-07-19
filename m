@@ -2,89 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 44E8A6E5D8
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jul 2019 14:40:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C75C36EA11
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jul 2019 19:24:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728252AbfGSMj6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 19 Jul 2019 08:39:58 -0400
-Received: from mga07.intel.com ([134.134.136.100]:14690 "EHLO mga07.intel.com"
+        id S1728988AbfGSRXm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 19 Jul 2019 13:23:42 -0400
+Received: from mga07.intel.com ([134.134.136.100]:32702 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728130AbfGSMj6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 19 Jul 2019 08:39:58 -0400
+        id S1728351AbfGSRXl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 19 Jul 2019 13:23:41 -0400
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Jul 2019 05:39:57 -0700
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Jul 2019 10:23:40 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,282,1559545200"; 
-   d="scan'208";a="170126713"
+X-IronPort-AV: E=Sophos;i="5.64,283,1559545200"; 
+   d="scan'208";a="196010773"
 Received: from stinkbox.fi.intel.com (HELO stinkbox) ([10.237.72.174])
-  by fmsmga007.fm.intel.com with SMTP; 19 Jul 2019 05:39:52 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Fri, 19 Jul 2019 15:39:52 +0300
-Date:   Fri, 19 Jul 2019 15:39:52 +0300
+  by fmsmga002.fm.intel.com with SMTP; 19 Jul 2019 10:23:36 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Fri, 19 Jul 2019 20:23:35 +0300
+Date:   Fri, 19 Jul 2019 20:23:35 +0300
 From:   Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
 To:     YueHaibing <yuehaibing@huawei.com>
 Cc:     jani.nikula@linux.intel.com, joonas.lahtinen@linux.intel.com,
         rodrigo.vivi@intel.com, airlied@linux.ie, daniel@ffwll.ch,
-        maarten.lankhorst@linux.intel.com, matthew.d.roper@intel.com,
+        imre.deak@intel.com, madhav.chauhan@intel.com,
+        vandita.kulkarni@intel.com, chris@chris-wilson.co.uk,
         intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH -next] drm/i915/icl: Remove set but not used variable
- 'src_y'
-Message-ID: <20190719123952.GK5942@intel.com>
-References: <20190719024100.64738-1-yuehaibing@huawei.com>
+Subject: Re: [PATCH -next] drm/i915/dsi: remove set but not used variable
+ 'hfront_porch'
+Message-ID: <20190719172335.GT5942@intel.com>
+References: <20190719015136.103988-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190719024100.64738-1-yuehaibing@huawei.com>
+In-Reply-To: <20190719015136.103988-1-yuehaibing@huawei.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jul 19, 2019 at 02:41:00AM +0000, YueHaibing wrote:
+On Fri, Jul 19, 2019 at 01:51:36AM +0000, YueHaibing wrote:
 > Fixes gcc '-Wunused-but-set-variable' warning:
 > 
-> drivers/gpu/drm/i915/display/intel_sprite.c: In function 'g4x_sprite_check_scaling':
-> drivers/gpu/drm/i915/display/intel_sprite.c:1494:13: warning:
->  variable 'src_y' set but not used [-Wunused-but-set-variable]
+> drivers/gpu/drm/i915/display/icl_dsi.c: In function 'gen11_dsi_set_transcoder_timings':
+> drivers/gpu/drm/i915/display/icl_dsi.c:768:6: warning:
+>  variable 'hfront_porch' set but not used [-Wunused-but-set-variable]
+> 
+> It is never used and can be removed.
 > 
 > Reported-by: Hulk Robot <hulkci@huawei.com>
 > Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
 Thanks. Applied to drm-intel-next-queued.
 
-PS. I removed the "/icl" from the subject line because this has nothing
-to do with icelake hardware.
-
 > ---
->  drivers/gpu/drm/i915/display/intel_sprite.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  drivers/gpu/drm/i915/display/icl_dsi.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 > 
-> diff --git a/drivers/gpu/drm/i915/display/intel_sprite.c b/drivers/gpu/drm/i915/display/intel_sprite.c
-> index 34586f29be60..9c3367491f04 100644
-> --- a/drivers/gpu/drm/i915/display/intel_sprite.c
-> +++ b/drivers/gpu/drm/i915/display/intel_sprite.c
-> @@ -1491,7 +1491,7 @@ g4x_sprite_check_scaling(struct intel_crtc_state *crtc_state,
->  	const struct drm_framebuffer *fb = plane_state->base.fb;
->  	const struct drm_rect *src = &plane_state->base.src;
->  	const struct drm_rect *dst = &plane_state->base.dst;
-> -	int src_x, src_y, src_w, src_h, crtc_w, crtc_h;
-> +	int src_x, src_w, src_h, crtc_w, crtc_h;
->  	const struct drm_display_mode *adjusted_mode =
->  		&crtc_state->base.adjusted_mode;
->  	unsigned int cpp = fb->format->cpp[0];
-> @@ -1502,7 +1502,6 @@ g4x_sprite_check_scaling(struct intel_crtc_state *crtc_state,
->  	crtc_h = drm_rect_height(dst);
+> diff --git a/drivers/gpu/drm/i915/display/icl_dsi.c b/drivers/gpu/drm/i915/display/icl_dsi.c
+> index 4d952accfaaa..a42348be0438 100644
+> --- a/drivers/gpu/drm/i915/display/icl_dsi.c
+> +++ b/drivers/gpu/drm/i915/display/icl_dsi.c
+> @@ -763,7 +763,7 @@ gen11_dsi_set_transcoder_timings(struct intel_encoder *encoder,
+>  	enum transcoder dsi_trans;
+>  	/* horizontal timings */
+>  	u16 htotal, hactive, hsync_start, hsync_end, hsync_size;
+> -	u16 hfront_porch, hback_porch;
+> +	u16 hback_porch;
+>  	/* vertical timings */
+>  	u16 vtotal, vactive, vsync_start, vsync_end, vsync_shift;
 >  
->  	src_x = src->x1 >> 16;
-> -	src_y = src->y1 >> 16;
->  	src_w = drm_rect_width(src) >> 16;
->  	src_h = drm_rect_height(src) >> 16;
+> @@ -772,8 +772,6 @@ gen11_dsi_set_transcoder_timings(struct intel_encoder *encoder,
+>  	hsync_start = adjusted_mode->crtc_hsync_start;
+>  	hsync_end = adjusted_mode->crtc_hsync_end;
+>  	hsync_size  = hsync_end - hsync_start;
+> -	hfront_porch = (adjusted_mode->crtc_hsync_start -
+> -			adjusted_mode->crtc_hdisplay);
+>  	hback_porch = (adjusted_mode->crtc_htotal -
+>  		       adjusted_mode->crtc_hsync_end);
+>  	vactive = adjusted_mode->crtc_vdisplay;
 > 
 > 
 

@@ -2,36 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 619506D83D
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jul 2019 03:16:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05C956D85A
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jul 2019 03:24:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726425AbfGSBQf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 18 Jul 2019 21:16:35 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:2285 "EHLO huawei.com"
+        id S1726147AbfGSBYL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 18 Jul 2019 21:24:11 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:2286 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726072AbfGSBQf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 18 Jul 2019 21:16:35 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 022D023981E7AA56A1E2;
-        Fri, 19 Jul 2019 09:16:33 +0800 (CST)
+        id S1726042AbfGSBYL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 18 Jul 2019 21:24:11 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 0AB1B904D98FE21B46D7;
+        Fri, 19 Jul 2019 09:24:09 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 19 Jul 2019 09:16:25 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Jay Cliburn <jcliburn@gmail.com>,
-        Chris Snook <chris.snook@gmail.com>,
-        Oleksij Rempel <o.rempel@pengutronix.de>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <netdev@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH v2] ag71xx: fix return value check in ag71xx_probe()
-Date:   Fri, 19 Jul 2019 01:22:06 +0000
-Message-ID: <20190719012206.100478-1-weiyongjun1@huawei.com>
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 19 Jul 2019 09:24:01 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <bmt@zurich.ibm.com>, <dledford@redhat.com>, <jgg@ziepe.ca>
+CC:     <linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH -next] infiniband: siw: remove set but not used variables 'rv'
+Date:   Fri, 19 Jul 2019 09:29:38 +0800
+Message-ID: <20190719012938.100628-1-maowenan@huawei.com>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190717115225.23047-1-weiyongjun1@huawei.com>
-References: <20190717115225.23047-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
 X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -39,35 +35,37 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, the function of_get_mac_address() returns ERR_PTR()
-and never returns NULL. The NULL test in the return value check should
-be replaced with IS_ERR().
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-Fixes: d51b6ce441d3 ("net: ethernet: add ag71xx driver")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
----
-v1 -> v2: fix subsystem prefix
----
- drivers/net/ethernet/atheros/ag71xx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+drivers/infiniband/sw/siw/siw_cm.c: In function siw_cep_set_inuse:
+drivers/infiniband/sw/siw/siw_cm.c:223:6: warning: variable rv set but not used [-Wunused-but-set-variable]
 
-diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
-index 72a57c6cd254..3088a43e6436 100644
---- a/drivers/net/ethernet/atheros/ag71xx.c
-+++ b/drivers/net/ethernet/atheros/ag71xx.c
-@@ -1732,9 +1732,9 @@ static int ag71xx_probe(struct platform_device *pdev)
- 	ag->stop_desc->next = (u32)ag->stop_desc_dma;
+It is not used since commit 6c52fdc244b5("rdma/siw: connection management")
+
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ drivers/infiniband/sw/siw/siw_cm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/infiniband/sw/siw/siw_cm.c b/drivers/infiniband/sw/siw/siw_cm.c
+index a7cde98..9ce8a1b 100644
+--- a/drivers/infiniband/sw/siw/siw_cm.c
++++ b/drivers/infiniband/sw/siw/siw_cm.c
+@@ -220,13 +220,12 @@ static void siw_put_work(struct siw_cm_work *work)
+ static void siw_cep_set_inuse(struct siw_cep *cep)
+ {
+ 	unsigned long flags;
+-	int rv;
+ retry:
+ 	spin_lock_irqsave(&cep->lock, flags);
  
- 	mac_addr = of_get_mac_address(np);
--	if (mac_addr)
-+	if (!IS_ERR(mac_addr))
- 		memcpy(ndev->dev_addr, mac_addr, ETH_ALEN);
--	if (!mac_addr || !is_valid_ether_addr(ndev->dev_addr)) {
-+	if (IS_ERR(mac_addr) || !is_valid_ether_addr(ndev->dev_addr)) {
- 		netif_err(ag, probe, ndev, "invalid MAC address, using random address\n");
- 		eth_random_addr(ndev->dev_addr);
- 	}
-
-
+ 	if (cep->in_use) {
+ 		spin_unlock_irqrestore(&cep->lock, flags);
+-		rv = wait_event_interruptible(cep->waitq, !cep->in_use);
++		wait_event_interruptible(cep->waitq, !cep->in_use);
+ 		if (signal_pending(current))
+ 			flush_signals(current);
+ 		goto retry;
+-- 
+2.7.4
 

@@ -2,51 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B9EE6D961
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jul 2019 05:36:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F6866E2FF
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jul 2019 10:58:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726243AbfGSDes (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 18 Jul 2019 23:34:48 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:59314 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726055AbfGSDes (ORCPT
+        id S1726112AbfGSI6M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 19 Jul 2019 04:58:12 -0400
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:59250 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726036AbfGSI6M (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 18 Jul 2019 23:34:48 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 0A22F14051852;
-        Thu, 18 Jul 2019 20:34:48 -0700 (PDT)
-Date:   Thu, 18 Jul 2019 20:34:47 -0700 (PDT)
-Message-Id: <20190718.203447.802057574398577206.davem@davemloft.net>
-To:     weiyongjun1@huawei.com
-Cc:     jcliburn@gmail.com, chris.snook@gmail.com, o.rempel@pengutronix.de,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2] ag71xx: fix return value check in ag71xx_probe()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190719012206.100478-1-weiyongjun1@huawei.com>
-References: <20190717115225.23047-1-weiyongjun1@huawei.com>
-        <20190719012206.100478-1-weiyongjun1@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+        Fri, 19 Jul 2019 04:58:12 -0400
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id x6J8vdEj013636;
+        Fri, 19 Jul 2019 03:57:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1563526659;
+        bh=7X+kR445JFm1cYpnohKCnbuAIZMZuiFWVELpywmoSV0=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=A+mO3rlnNAl91B8Nq9UoSTvln9pWGTqdsXa5JfkOK3UjxPnPUq1RLJisCHSxeuTSQ
+         ldVbeh8gYtrPICER+dmG97ryg1rNn54BogFQ+atZ9+OtbtNA21noNcS/y1+O2APNin
+         hwcJ6Z7piMkN2cCFEiYVHbmufC+hAzQFtqsgoFpA=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x6J8vdHm045399
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Fri, 19 Jul 2019 03:57:39 -0500
+Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Fri, 19
+ Jul 2019 03:57:39 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Fri, 19 Jul 2019 03:57:38 -0500
+Received: from [172.24.145.136] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x6J8vZFd089409;
+        Fri, 19 Jul 2019 03:57:36 -0500
+Subject: Re: [PATCH -next] mtd: hyperbus: fix build error about CONFIG_REGMAP
+To:     Mao Wenan <maowenan@huawei.com>, <dwmw2@infradead.org>,
+        <computersforpeace@gmail.com>, <marek.vasut@gmail.com>,
+        <miquel.raynal@bootlin.com>, <richard@nod.at>
+CC:     <kernel-janitors@vger.kernel.org>, <linux-mtd@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20190719010703.63815-1-maowenan@huawei.com>
+From:   Vignesh Raghavendra <vigneshr@ti.com>
+Message-ID: <a4c534c3-4105-08cd-874b-91d82f5a9199@ti.com>
+Date:   Fri, 19 Jul 2019 14:28:16 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20190719010703.63815-1-maowenan@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 18 Jul 2019 20:34:48 -0700 (PDT)
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
-Date: Fri, 19 Jul 2019 01:22:06 +0000
 
-> In case of error, the function of_get_mac_address() returns ERR_PTR()
-> and never returns NULL. The NULL test in the return value check should
-> be replaced with IS_ERR().
+
+On 19/07/19 6:37 AM, Mao Wenan wrote:
+> When CONFIG_MUX_MMIO and CONFIG_HBMC_AM654 are both 'm', there are
+> some building error as below:
 > 
-> Fixes: d51b6ce441d3 ("net: ethernet: add ag71xx driver")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> drivers/mux/mmio.c: In function mux_mmio_probe:
+> drivers/mux/mmio.c:76:20: error: storage size of field isnt known
+>    struct reg_field field;
+>                     ^~~~~
+> drivers/mux/mmio.c:102:15: error: implicit declaration of function devm_regmap_field_alloc; did you mean devm_mux_chip_alloc? [-Werror=implicit-function-declaration]
+>    fields[i] = devm_regmap_field_alloc(dev, regmap, field);
+>                ^~~~~~~~~~~~~~~~~~~~~~~
+>                devm_mux_chip_alloc
+> drivers/mux/mmio.c:76:20: warning: unused variable field [-Wunused-variable]
+>    struct reg_field field;
+>                     ^~~~~
+> cc1: some warnings being treated as errors
+> make[2]: *** [drivers/mux/mmio.o] Error 1
+> make[1]: *** [drivers/mux] Error 2
+> make[1]: *** Waiting for unfinished jobs....
+> make: *** [drivers] Error 2
+> 
+> This because CONFIG_REGMAP is not enable, so change the Kconfig for HBMC_AM654.
 
-Applied.
+Since, hbmc-am654.c does not use regmap APIs directly we don't need to
+select REGMAP here. MUX_MMIO is optional for this driver, therefore I
+have converted that to an imply clause and posted a fix here:
+https://patchwork.ozlabs.org/patch/1133946/
+
+Let me know if that fixes the issue. Thanks for the report!
+
+Regards
+Vignesh
+
+> 
+> Fixes: b07079f1642c("mtd: hyperbus: Add driver for TI's HyperBus memory controller")
+> 
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> ---
+>  drivers/mtd/hyperbus/Kconfig | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/mtd/hyperbus/Kconfig b/drivers/mtd/hyperbus/Kconfig
+> index cff6bbd..f324fa6 100644
+> --- a/drivers/mtd/hyperbus/Kconfig
+> +++ b/drivers/mtd/hyperbus/Kconfig
+> @@ -14,6 +14,8 @@ if MTD_HYPERBUS
+>  
+>  config HBMC_AM654
+>  	tristate "HyperBus controller driver for AM65x SoC"
+> +	select OF
+> +	select REGMAP
+>  	select MULTIPLEXER
+>  	select MUX_MMIO
+>  	help
+> 
+
+-- 
+Regards
+Vignesh

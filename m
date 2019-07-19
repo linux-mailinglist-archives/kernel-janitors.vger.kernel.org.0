@@ -2,34 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1115F6D886
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jul 2019 03:46:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFBE66D917
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jul 2019 04:35:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726135AbfGSBqI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 18 Jul 2019 21:46:08 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:2287 "EHLO huawei.com"
+        id S1726135AbfGSCfa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 18 Jul 2019 22:35:30 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:2682 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726042AbfGSBqI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 18 Jul 2019 21:46:08 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id CF09970995D2006834BB;
-        Fri, 19 Jul 2019 09:46:05 +0800 (CST)
+        id S1726015AbfGSCfa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 18 Jul 2019 22:35:30 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 313D2F73CA5F42628F4B;
+        Fri, 19 Jul 2019 10:35:28 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
  DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 19 Jul 2019 09:45:55 +0800
+ 14.3.439.0; Fri, 19 Jul 2019 10:35:20 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
 To:     <jani.nikula@linux.intel.com>, <joonas.lahtinen@linux.intel.com>,
         <rodrigo.vivi@intel.com>, <airlied@linux.ie>, <daniel@ffwll.ch>,
-        <imre.deak@intel.com>, <madhav.chauhan@intel.com>,
-        <vandita.kulkarni@intel.com>, <chris@chris-wilson.co.uk>,
-        <ville.syrjala@linux.intel.com>
+        <ville.syrjala@linux.intel.com>,
+        <maarten.lankhorst@linux.intel.com>, <matthew.d.roper@intel.com>
 CC:     YueHaibing <yuehaibing@huawei.com>,
         <intel-gfx@lists.freedesktop.org>,
         <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH -next] drm/i915/dsi: remove set but not used variable 'hfront_porch'
-Date:   Fri, 19 Jul 2019 01:51:36 +0000
-Message-ID: <20190719015136.103988-1-yuehaibing@huawei.com>
+Subject: [PATCH -next] drm/i915/icl: Remove set but not used variable 'src_y'
+Date:   Fri, 19 Jul 2019 02:41:00 +0000
+Message-ID: <20190719024100.64738-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -43,40 +42,36 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Fixes gcc '-Wunused-but-set-variable' warning:
 
-drivers/gpu/drm/i915/display/icl_dsi.c: In function 'gen11_dsi_set_transcoder_timings':
-drivers/gpu/drm/i915/display/icl_dsi.c:768:6: warning:
- variable 'hfront_porch' set but not used [-Wunused-but-set-variable]
-
-It is never used and can be removed.
+drivers/gpu/drm/i915/display/intel_sprite.c: In function 'g4x_sprite_check_scaling':
+drivers/gpu/drm/i915/display/intel_sprite.c:1494:13: warning:
+ variable 'src_y' set but not used [-Wunused-but-set-variable]
 
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/gpu/drm/i915/display/icl_dsi.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/i915/display/intel_sprite.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/icl_dsi.c b/drivers/gpu/drm/i915/display/icl_dsi.c
-index 4d952accfaaa..a42348be0438 100644
---- a/drivers/gpu/drm/i915/display/icl_dsi.c
-+++ b/drivers/gpu/drm/i915/display/icl_dsi.c
-@@ -763,7 +763,7 @@ gen11_dsi_set_transcoder_timings(struct intel_encoder *encoder,
- 	enum transcoder dsi_trans;
- 	/* horizontal timings */
- 	u16 htotal, hactive, hsync_start, hsync_end, hsync_size;
--	u16 hfront_porch, hback_porch;
-+	u16 hback_porch;
- 	/* vertical timings */
- 	u16 vtotal, vactive, vsync_start, vsync_end, vsync_shift;
+diff --git a/drivers/gpu/drm/i915/display/intel_sprite.c b/drivers/gpu/drm/i915/display/intel_sprite.c
+index 34586f29be60..9c3367491f04 100644
+--- a/drivers/gpu/drm/i915/display/intel_sprite.c
++++ b/drivers/gpu/drm/i915/display/intel_sprite.c
+@@ -1491,7 +1491,7 @@ g4x_sprite_check_scaling(struct intel_crtc_state *crtc_state,
+ 	const struct drm_framebuffer *fb = plane_state->base.fb;
+ 	const struct drm_rect *src = &plane_state->base.src;
+ 	const struct drm_rect *dst = &plane_state->base.dst;
+-	int src_x, src_y, src_w, src_h, crtc_w, crtc_h;
++	int src_x, src_w, src_h, crtc_w, crtc_h;
+ 	const struct drm_display_mode *adjusted_mode =
+ 		&crtc_state->base.adjusted_mode;
+ 	unsigned int cpp = fb->format->cpp[0];
+@@ -1502,7 +1502,6 @@ g4x_sprite_check_scaling(struct intel_crtc_state *crtc_state,
+ 	crtc_h = drm_rect_height(dst);
  
-@@ -772,8 +772,6 @@ gen11_dsi_set_transcoder_timings(struct intel_encoder *encoder,
- 	hsync_start = adjusted_mode->crtc_hsync_start;
- 	hsync_end = adjusted_mode->crtc_hsync_end;
- 	hsync_size  = hsync_end - hsync_start;
--	hfront_porch = (adjusted_mode->crtc_hsync_start -
--			adjusted_mode->crtc_hdisplay);
- 	hback_porch = (adjusted_mode->crtc_htotal -
- 		       adjusted_mode->crtc_hsync_end);
- 	vactive = adjusted_mode->crtc_vdisplay;
+ 	src_x = src->x1 >> 16;
+-	src_y = src->y1 >> 16;
+ 	src_w = drm_rect_width(src) >> 16;
+ 	src_h = drm_rect_height(src) >> 16;
 
 
 

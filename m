@@ -2,50 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E50E86D74C
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jul 2019 01:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53FD46D818
+	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jul 2019 03:01:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726055AbfGRXdG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 18 Jul 2019 19:33:06 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:57230 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725992AbfGRXdF (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 18 Jul 2019 19:33:05 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 675451528C8C8;
-        Thu, 18 Jul 2019 16:33:05 -0700 (PDT)
-Date:   Thu, 18 Jul 2019 16:33:04 -0700 (PDT)
-Message-Id: <20190718.163304.76416296704116264.davem@davemloft.net>
-To:     weiyongjun1@huawei.com
-Cc:     andrew@lunn.ch, vivien.didelot@gmail.com, f.fainelli@gmail.com,
-        olteanv@gmail.com, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] net: dsa: sja1105: Fix missing unlock on error in
- sk_buff()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190717062956.127446-1-weiyongjun1@huawei.com>
-References: <20190717062956.127446-1-weiyongjun1@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 18 Jul 2019 16:33:05 -0700 (PDT)
+        id S1726147AbfGSBBm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 18 Jul 2019 21:01:42 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:51316 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725992AbfGSBBm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 18 Jul 2019 21:01:42 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 14D4288903822913EF0F;
+        Fri, 19 Jul 2019 09:01:38 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 19 Jul 2019 09:01:29 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <dwmw2@infradead.org>, <computersforpeace@gmail.com>,
+        <marek.vasut@gmail.com>, <miquel.raynal@bootlin.com>,
+        <richard@nod.at>
+CC:     <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH -next] mtd: hyperbus: fix build error about CONFIG_REGMAP
+Date:   Fri, 19 Jul 2019 09:07:03 +0800
+Message-ID: <20190719010703.63815-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
-Date: Wed, 17 Jul 2019 06:29:56 +0000
+When CONFIG_MUX_MMIO and CONFIG_HBMC_AM654 are both 'm', there are
+some building error as below:
 
-> Add the missing unlock before return from function sk_buff()
-> in the error handling case.
-> 
-> Fixes: f3097be21bf1 ("net: dsa: sja1105: Add a state machine for RX timestamping")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+drivers/mux/mmio.c: In function mux_mmio_probe:
+drivers/mux/mmio.c:76:20: error: storage size of field isnt known
+   struct reg_field field;
+                    ^~~~~
+drivers/mux/mmio.c:102:15: error: implicit declaration of function devm_regmap_field_alloc; did you mean devm_mux_chip_alloc? [-Werror=implicit-function-declaration]
+   fields[i] = devm_regmap_field_alloc(dev, regmap, field);
+               ^~~~~~~~~~~~~~~~~~~~~~~
+               devm_mux_chip_alloc
+drivers/mux/mmio.c:76:20: warning: unused variable field [-Wunused-variable]
+   struct reg_field field;
+                    ^~~~~
+cc1: some warnings being treated as errors
+make[2]: *** [drivers/mux/mmio.o] Error 1
+make[1]: *** [drivers/mux] Error 2
+make[1]: *** Waiting for unfinished jobs....
+make: *** [drivers] Error 2
 
-Applied.
+This because CONFIG_REGMAP is not enable, so change the Kconfig for HBMC_AM654.
+
+Fixes: b07079f1642c("mtd: hyperbus: Add driver for TI's HyperBus memory controller")
+
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ drivers/mtd/hyperbus/Kconfig | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/mtd/hyperbus/Kconfig b/drivers/mtd/hyperbus/Kconfig
+index cff6bbd..f324fa6 100644
+--- a/drivers/mtd/hyperbus/Kconfig
++++ b/drivers/mtd/hyperbus/Kconfig
+@@ -14,6 +14,8 @@ if MTD_HYPERBUS
+ 
+ config HBMC_AM654
+ 	tristate "HyperBus controller driver for AM65x SoC"
++	select OF
++	select REGMAP
+ 	select MULTIPLEXER
+ 	select MUX_MMIO
+ 	help
+-- 
+2.7.4
+

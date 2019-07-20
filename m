@@ -2,94 +2,126 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C75C36EA11
-	for <lists+kernel-janitors@lfdr.de>; Fri, 19 Jul 2019 19:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC3BD6EE5E
+	for <lists+kernel-janitors@lfdr.de>; Sat, 20 Jul 2019 10:02:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728988AbfGSRXm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 19 Jul 2019 13:23:42 -0400
-Received: from mga07.intel.com ([134.134.136.100]:32702 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728351AbfGSRXl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 19 Jul 2019 13:23:41 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Jul 2019 10:23:40 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,283,1559545200"; 
-   d="scan'208";a="196010773"
-Received: from stinkbox.fi.intel.com (HELO stinkbox) ([10.237.72.174])
-  by fmsmga002.fm.intel.com with SMTP; 19 Jul 2019 10:23:36 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Fri, 19 Jul 2019 20:23:35 +0300
-Date:   Fri, 19 Jul 2019 20:23:35 +0300
-From:   Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     jani.nikula@linux.intel.com, joonas.lahtinen@linux.intel.com,
-        rodrigo.vivi@intel.com, airlied@linux.ie, daniel@ffwll.ch,
-        imre.deak@intel.com, madhav.chauhan@intel.com,
-        vandita.kulkarni@intel.com, chris@chris-wilson.co.uk,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH -next] drm/i915/dsi: remove set but not used variable
- 'hfront_porch'
-Message-ID: <20190719172335.GT5942@intel.com>
-References: <20190719015136.103988-1-yuehaibing@huawei.com>
+        id S1726842AbfGTICJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 20 Jul 2019 04:02:09 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:10154 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726835AbfGTICJ (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 20 Jul 2019 04:02:09 -0400
+Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x6K7vSop011506
+        for <kernel-janitors@vger.kernel.org>; Sat, 20 Jul 2019 04:02:07 -0400
+Received: from smtp.notes.na.collabserv.com (smtp.notes.na.collabserv.com [192.155.248.67])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2tuw3qc6ky-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <kernel-janitors@vger.kernel.org>; Sat, 20 Jul 2019 04:02:07 -0400
+Received: from localhost
+        by smtp.notes.na.collabserv.com with smtp.notes.na.collabserv.com ESMTP
+        for <kernel-janitors@vger.kernel.org> from <BMT@zurich.ibm.com>;
+        Sat, 20 Jul 2019 08:02:06 -0000
+Received: from us1a3-smtp07.a3.dal06.isc4sb.com (10.146.103.14)
+        by smtp.notes.na.collabserv.com (10.106.227.16) with smtp.notes.na.collabserv.com ESMTP;
+        Sat, 20 Jul 2019 08:02:00 -0000
+Received: from us1a3-mail162.a3.dal06.isc4sb.com ([10.146.71.4])
+          by us1a3-smtp07.a3.dal06.isc4sb.com
+          with ESMTP id 2019072008015996-126596 ;
+          Sat, 20 Jul 2019 08:01:59 +0000 
+In-Reply-To: <20190719012938.100628-1-maowenan@huawei.com>
+Subject: Re: [PATCH -next] infiniband: siw: remove set but not used variables 'rv'
+From:   "Bernard Metzler" <BMT@zurich.ibm.com>
+To:     "Mao Wenan" <maowenan@huawei.com>
+Cc:     <dledford@redhat.com>, <jgg@ziepe.ca>,
+        <linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Date:   Sat, 20 Jul 2019 08:01:59 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190719015136.103988-1-yuehaibing@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Sensitivity: 
+Importance: Normal
+X-Priority: 3 (Normal)
+References: <20190719012938.100628-1-maowenan@huawei.com>
+X-Mailer: IBM iNotes ($HaikuForm 1054) | IBM Domino Build
+ SCN1812108_20180501T0841_FP55 May 22, 2019 at 11:09
+X-LLNOutbound: False
+X-Disclaimed: 775
+X-TNEFEvaluated: 1
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=UTF-8
+x-cbid: 19072008-0327-0000-0000-00000C071D23
+X-IBM-SpamModules-Scores: BY=0; FL=0; FP=0; FZ=0; HX=0; KW=0; PH=0;
+ SC=0.40962; ST=0; TS=0; UL=0; ISC=; MB=0.017273
+X-IBM-SpamModules-Versions: BY=3.00011461; HX=3.00000242; KW=3.00000007;
+ PH=3.00000004; SC=3.00000287; SDB=6.01234777; UDB=6.00650736; IPR=6.01016115;
+ BA=6.00006356; NDR=6.00000001; ZLA=6.00000005; ZF=6.00000009; ZB=6.00000000;
+ ZP=6.00000000; ZH=6.00000000; ZU=6.00000002; MB=3.00027814; XFM=3.00000015;
+ UTC=2019-07-20 08:02:04
+X-IBM-AV-DETECTION: SAVI=unsuspicious REMOTE=unsuspicious XFE=unused
+X-IBM-AV-VERSION: SAVI=2019-07-20 01:42:31 - 6.00010186
+x-cbparentid: 19072008-0328-0000-0000-0000183448A0
+Message-Id: <OF77C0BA7B.17273086-ON0025843D.002C20A5-0025843D.002C20AD@notes.na.collabserv.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-07-20_05:,,
+ signatures=0
+X-Proofpoint-Spam-Reason: safe
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jul 19, 2019 at 01:51:36AM +0000, YueHaibing wrote:
-> Fixes gcc '-Wunused-but-set-variable' warning:
-> 
-> drivers/gpu/drm/i915/display/icl_dsi.c: In function 'gen11_dsi_set_transcoder_timings':
-> drivers/gpu/drm/i915/display/icl_dsi.c:768:6: warning:
->  variable 'hfront_porch' set but not used [-Wunused-but-set-variable]
-> 
-> It is never used and can be removed.
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+-----"Mao Wenan" <maowenan@huawei.com> wrote: -----
 
-Thanks. Applied to drm-intel-next-queued.
+>To: <bmt@zurich.ibm.com>, <dledford@redhat.com>, <jgg@ziepe.ca>
+>From: "Mao Wenan" <maowenan@huawei.com>
+>Date: 07/19/2019 03:24AM
+>Cc: <linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+><kernel-janitors@vger.kernel.org>, "Mao Wenan" <maowenan@huawei.com>
+>Subject: [EXTERNAL] [PATCH -next] infiniband: siw: remove set but not
+>used variables 'rv'
+>
+>Fixes gcc '-Wunused-but-set-variable' warning:
+>
+>drivers/infiniband/sw/siw/siw_cm.c: In function siw_cep_set_inuse:
+>drivers/infiniband/sw/siw/siw_cm.c:223:6: warning: variable rv set
+>but not used [-Wunused-but-set-variable]
+>
+>It is not used since commit 6c52fdc244b5("rdma/siw: connection
+>management")
+>
+>Signed-off-by: Mao Wenan <maowenan@huawei.com>
+>---
+> drivers/infiniband/sw/siw/siw_cm.c | 3 +--
+> 1 file changed, 1 insertion(+), 2 deletions(-)
+>
+>diff --git a/drivers/infiniband/sw/siw/siw_cm.c
+>b/drivers/infiniband/sw/siw/siw_cm.c
+>index a7cde98..9ce8a1b 100644
+>--- a/drivers/infiniband/sw/siw/siw_cm.c
+>+++ b/drivers/infiniband/sw/siw/siw_cm.c
+>@@ -220,13 +220,12 @@ static void siw_put_work(struct siw_cm_work
+>*work)
+> static void siw_cep_set_inuse(struct siw_cep *cep)
+> {
+> 	unsigned long flags;
+>-	int rv;
+> retry:
+> 	spin_lock_irqsave(&cep->lock, flags);
+> 
+> 	if (cep->in_use) {
+> 		spin_unlock_irqrestore(&cep->lock, flags);
+>-		rv = wait_event_interruptible(cep->waitq, !cep->in_use);
+>+		wait_event_interruptible(cep->waitq, !cep->in_use);
+> 		if (signal_pending(current))
+> 			flush_signals(current);
+> 		goto retry;
+>-- 
+>2.7.4
+>
+>
 
-> ---
->  drivers/gpu/drm/i915/display/icl_dsi.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/display/icl_dsi.c b/drivers/gpu/drm/i915/display/icl_dsi.c
-> index 4d952accfaaa..a42348be0438 100644
-> --- a/drivers/gpu/drm/i915/display/icl_dsi.c
-> +++ b/drivers/gpu/drm/i915/display/icl_dsi.c
-> @@ -763,7 +763,7 @@ gen11_dsi_set_transcoder_timings(struct intel_encoder *encoder,
->  	enum transcoder dsi_trans;
->  	/* horizontal timings */
->  	u16 htotal, hactive, hsync_start, hsync_end, hsync_size;
-> -	u16 hfront_porch, hback_porch;
-> +	u16 hback_porch;
->  	/* vertical timings */
->  	u16 vtotal, vactive, vsync_start, vsync_end, vsync_shift;
->  
-> @@ -772,8 +772,6 @@ gen11_dsi_set_transcoder_timings(struct intel_encoder *encoder,
->  	hsync_start = adjusted_mode->crtc_hsync_start;
->  	hsync_end = adjusted_mode->crtc_hsync_end;
->  	hsync_size  = hsync_end - hsync_start;
-> -	hfront_porch = (adjusted_mode->crtc_hsync_start -
-> -			adjusted_mode->crtc_hdisplay);
->  	hback_porch = (adjusted_mode->crtc_htotal -
->  		       adjusted_mode->crtc_hsync_end);
->  	vactive = adjusted_mode->crtc_vdisplay;
-> 
-> 
+Mao, many thanks for finding that. So, yes, 'rv'  shall be removed.
 
--- 
-Ville Syrjälä
-Intel
+Reviewed-by: Bernard Metzler <bmt@zurich.ibm.com>
+

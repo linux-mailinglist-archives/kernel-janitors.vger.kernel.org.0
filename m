@@ -2,31 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59C666F5BC
-	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Jul 2019 23:06:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B50A36F619
+	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Jul 2019 23:37:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726622AbfGUVGJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 21 Jul 2019 17:06:09 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:27197 "EHLO
+        id S1726508AbfGUVgE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 21 Jul 2019 17:36:04 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:23106 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726595AbfGUVGI (ORCPT
+        with ESMTP id S1726305AbfGUVgE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 21 Jul 2019 17:06:08 -0400
+        Sun, 21 Jul 2019 17:36:04 -0400
 Received: from localhost.localdomain ([92.140.204.221])
         by mwinf5d11 with ME
-        id fZ662000A4n7eLC03Z66rk; Sun, 21 Jul 2019 23:06:07 +0200
+        id fZc0200024n7eLC03Zc0MN; Sun, 21 Jul 2019 23:36:02 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 21 Jul 2019 23:06:07 +0200
+X-ME-Date: Sun, 21 Jul 2019 23:36:02 +0200
 X-ME-IP: 92.140.204.221
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     jacek.anaszewski@gmail.com, pavel@ucw.cz, dmurphy@ti.com
-Cc:     linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
+        pmeerw@pmeerw.net, tglx@linutronix.de, alexios.zavras@intel.com,
+        gregkh@linuxfoundation.org, kstewart@linuxfoundation.org
+Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] leds: ktd2692: Fix a typo in the name of a constant
-Date:   Sun, 21 Jul 2019 23:05:39 +0200
-Message-Id: <20190721210539.25669-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] iio: magnetometer: mmc35240: Fix a typo in the name of a constant
+Date:   Sun, 21 Jul 2019 23:35:33 +0200
+Message-Id: <20190721213533.9214-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -35,38 +37,38 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is a typo in KTD2962_MM_MIN_CURR_THRESHOLD_SCALE. 6 and 9 are
-switched in 2962.
+Everything is about mmc35240_ except MMC53240_WAIT_SET_RESET (3 and 5
+switched).
 
-Define and use KTD2692_MM_MIN_CURR_THRESHOLD_SCALE instead.
+This is likely a typo. Define and use MMC35240_WAIT_SET_RESET instead.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/leds/leds-ktd2692.c | 4 ++--
+ drivers/iio/magnetometer/mmc35240.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/leds/leds-ktd2692.c b/drivers/leds/leds-ktd2692.c
-index 45296aaca9da..44db748c570e 100644
---- a/drivers/leds/leds-ktd2692.c
-+++ b/drivers/leds/leds-ktd2692.c
-@@ -22,7 +22,7 @@
- /* Value related the movie mode */
- #define KTD2692_MOVIE_MODE_CURRENT_LEVELS	16
- #define KTD2692_MM_TO_FL_RATIO(x)		((x) / 3)
--#define KTD2962_MM_MIN_CURR_THRESHOLD_SCALE	8
-+#define KTD2692_MM_MIN_CURR_THRESHOLD_SCALE	8
+diff --git a/drivers/iio/magnetometer/mmc35240.c b/drivers/iio/magnetometer/mmc35240.c
+index 7de10281ad9e..425cdd07b4e5 100644
+--- a/drivers/iio/magnetometer/mmc35240.c
++++ b/drivers/iio/magnetometer/mmc35240.c
+@@ -53,7 +53,7 @@
+ #define MMC35240_CTRL1_BW_SHIFT		0
  
- /* Value related the flash mode */
- #define KTD2692_FLASH_MODE_TIMEOUT_LEVELS	8
-@@ -253,7 +253,7 @@ static void ktd2692_setup(struct ktd2692_context *led)
- 	ktd2692_expresswire_reset(led);
- 	gpiod_direction_output(led->aux_gpio, KTD2692_LOW);
+ #define MMC35240_WAIT_CHARGE_PUMP	50000	/* us */
+-#define MMC53240_WAIT_SET_RESET		1000	/* us */
++#define MMC35240_WAIT_SET_RESET		1000	/* us */
  
--	ktd2692_expresswire_write(led, (KTD2962_MM_MIN_CURR_THRESHOLD_SCALE - 1)
-+	ktd2692_expresswire_write(led, (KTD2692_MM_MIN_CURR_THRESHOLD_SCALE - 1)
- 				 | KTD2692_REG_MM_MIN_CURR_THRESHOLD_BASE);
- 	ktd2692_expresswire_write(led, KTD2692_FLASH_MODE_CURR_PERCENT(45)
- 				 | KTD2692_REG_FLASH_CURRENT_BASE);
+ /*
+  * Memsic OTP process code piece is put here for reference:
+@@ -225,7 +225,7 @@ static int mmc35240_init(struct mmc35240_data *data)
+ 	ret = mmc35240_hw_set(data, true);
+ 	if (ret < 0)
+ 		return ret;
+-	usleep_range(MMC53240_WAIT_SET_RESET, MMC53240_WAIT_SET_RESET + 1);
++	usleep_range(MMC35240_WAIT_SET_RESET, MMC35240_WAIT_SET_RESET + 1);
+ 
+ 	ret = mmc35240_hw_set(data, false);
+ 	if (ret < 0)
 -- 
 2.20.1
 

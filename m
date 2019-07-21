@@ -2,64 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C4A26F0E0
-	for <lists+kernel-janitors@lfdr.de>; Sat, 20 Jul 2019 23:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE7F26F270
+	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Jul 2019 11:57:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726166AbfGTV6p (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 20 Jul 2019 17:58:45 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:35674 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725812AbfGTV6p (ORCPT
+        id S1726029AbfGUJ45 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 21 Jul 2019 05:56:57 -0400
+Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:28754 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726011AbfGUJ45 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 20 Jul 2019 17:58:45 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hoxNI-0005dz-ON; Sat, 20 Jul 2019 21:58:40 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Kashyap Desai <kashyap.desai@broadcom.com>,
-        Sumit Saxena <sumit.saxena@broadcom.com>,
-        Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        megaraidlinux.pdl@broadcom.com, linux-scsi@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] scsi: megaraid_sas: fix spelling mistake "megarid_sas" -> "megaraid_sas"
-Date:   Sat, 20 Jul 2019 22:58:40 +0100
-Message-Id: <20190720215840.23831-1-colin.king@canonical.com>
+        Sun, 21 Jul 2019 05:56:57 -0400
+Received: from localhost.localdomain ([92.140.204.221])
+        by mwinf5d33 with ME
+        id fMwr2000B4n7eLC03MwrcU; Sun, 21 Jul 2019 11:56:53 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 21 Jul 2019 11:56:53 +0200
+X-ME-IP: 92.140.204.221
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     dennis@kernel.org, tj@kernel.org, cl@linux.com
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] percpu: Fix a typo
+Date:   Sun, 21 Jul 2019 11:56:33 +0200
+Message-Id: <20190721095633.10979-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+s/perpcu/percpu/
 
-Fix spelling mistake in kernel warning message and replace
-printk with with pr_warn.
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/scsi/megaraid/megaraid_sas_base.c | 2 +-
+ mm/percpu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/megaraid/megaraid_sas_base.c b/drivers/scsi/megaraid/megaraid_sas_base.c
-index b2339d04a700..2590746c81e3 100644
---- a/drivers/scsi/megaraid/megaraid_sas_base.c
-+++ b/drivers/scsi/megaraid/megaraid_sas_base.c
-@@ -8763,7 +8763,7 @@ static int __init megasas_init(void)
- 
- 	if ((event_log_level < MFI_EVT_CLASS_DEBUG) ||
- 	    (event_log_level > MFI_EVT_CLASS_DEAD)) {
--		printk(KERN_WARNING "megarid_sas: provided event log level is out of range, setting it to default 2(CLASS_CRITICAL), permissible range is: -2 to 4\n");
-+		pr_warn("megaraid_sas: provided event log level is out of range, setting it to default 2(CLASS_CRITICAL), permissible range is: -2 to 4\n");
- 		event_log_level = MFI_EVT_CLASS_CRITICAL;
- 	}
- 
+diff --git a/mm/percpu.c b/mm/percpu.c
+index 9821241fdede..febf7c7c888e 100644
+--- a/mm/percpu.c
++++ b/mm/percpu.c
+@@ -2220,7 +2220,7 @@ static void pcpu_dump_alloc_info(const char *lvl,
+  * @base_addr: mapped address
+  *
+  * Initialize the first percpu chunk which contains the kernel static
+- * perpcu area.  This function is to be called from arch percpu area
++ * percpu area.  This function is to be called from arch percpu area
+  * setup path.
+  *
+  * @ai contains all information necessary to initialize the first
 -- 
 2.20.1
 

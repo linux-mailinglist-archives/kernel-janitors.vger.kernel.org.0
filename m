@@ -2,71 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC28D6F4DC
-	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Jul 2019 21:04:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 189E46F5B0
+	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Jul 2019 22:59:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727456AbfGUTEx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 21 Jul 2019 15:04:53 -0400
-Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:21735 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726462AbfGUTEx (ORCPT
+        id S1726415AbfGUU7Z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 21 Jul 2019 16:59:25 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:52544 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725828AbfGUU7Y (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 21 Jul 2019 15:04:53 -0400
-Received: from localhost.localdomain ([92.140.204.221])
-        by mwinf5d45 with ME
-        id fX4n2000F4n7eLC03X4oXd; Sun, 21 Jul 2019 21:04:48 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 21 Jul 2019 21:04:48 +0200
-X-ME-IP: 92.140.204.221
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     rmfrfs@gmail.com, mchehab@kernel.org
-Cc:     linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] media: ov2680: fix a typo in a function name
-Date:   Sun, 21 Jul 2019 21:04:23 +0200
-Message-Id: <20190721190423.9534-1-christophe.jaillet@wanadoo.fr>
+        Sun, 21 Jul 2019 16:59:24 -0400
+Received: from cpc129250-craw9-2-0-cust139.know.cable.virginm.net ([82.43.126.140] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hpIvR-00079E-Q3; Sun, 21 Jul 2019 20:59:21 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
+        linux-ia64@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ia64: tioca: fix spelling mistake in macros CA_APERATURE_{BASE|SIZE}
+Date:   Sun, 21 Jul 2019 21:59:21 +0100
+Message-Id: <20190721205921.9960-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-All functions in this file starts with 'ov2680_', except ov2860_parse_dt().
+From: Colin Ian King <colin.king@canonical.com>
 
-This is likely a typo.
-rename it to 'ov2680_parse_dt()' (6 and 8)
+The two macros CA_APERATURE_BASE and CA_APERATURE_SIZE contain
+a spelling mistake, APERATURE should be APERTURE, so fix these.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/media/i2c/ov2680.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/ia64/include/asm/sn/tioca.h  |  4 ++--
+ arch/ia64/sn/pci/tioca_provider.c | 14 +++++++-------
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index b10bcfabaeeb..c59c9e51c380 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -1023,7 +1023,7 @@ static int ov2680_check_id(struct ov2680_dev *sensor)
- 	return 0;
- }
+diff --git a/arch/ia64/include/asm/sn/tioca.h b/arch/ia64/include/asm/sn/tioca.h
+index 666222d7f0f6..4529fb11c86c 100644
+--- a/arch/ia64/include/asm/sn/tioca.h
++++ b/arch/ia64/include/asm/sn/tioca.h
+@@ -590,7 +590,7 @@ struct tioca {
+ #define CA_AGP_DIRECT_BASE	0x40000000UL	/* 2GB */
+ #define CA_AGP_DIRECT_SIZE	0x40000000UL
  
--static int ov2860_parse_dt(struct ov2680_dev *sensor)
-+static int ov2680_parse_dt(struct ov2680_dev *sensor)
- {
- 	struct device *dev = ov2680_to_dev(sensor);
- 	int ret;
-@@ -1064,7 +1064,7 @@ static int ov2680_probe(struct i2c_client *client)
+-#define CA_APERATURE_BASE	(CA_AGP_MAPPED_BASE)
+-#define CA_APERATURE_SIZE	(CA_AGP_MAPPED_SIZE+CA_PCI32_MAPPED_SIZE)
++#define CA_APERTURE_BASE	(CA_AGP_MAPPED_BASE)
++#define CA_APERTURE_SIZE	(CA_AGP_MAPPED_SIZE+CA_PCI32_MAPPED_SIZE)
  
- 	sensor->i2c_client = client;
+ #endif  /* _ASM_IA64_SN_TIO_TIOCA_H */
+diff --git a/arch/ia64/sn/pci/tioca_provider.c b/arch/ia64/sn/pci/tioca_provider.c
+index a70b11fd57d6..07832f5e8718 100644
+--- a/arch/ia64/sn/pci/tioca_provider.c
++++ b/arch/ia64/sn/pci/tioca_provider.c
+@@ -55,7 +55,7 @@ tioca_gart_init(struct tioca_kernel *tioca_kern)
+ 	 * Validate aperature size
+ 	 */
  
--	ret = ov2860_parse_dt(sensor);
-+	ret = ov2680_parse_dt(sensor);
- 	if (ret < 0)
- 		return -EINVAL;
+-	switch (CA_APERATURE_SIZE >> 20) {
++	switch (CA_APERTURE_SIZE >> 20) {
+ 	case 4:
+ 		ap_reg |= (0x3ff << CA_GART_AP_SIZE_SHFT);	/* 4MB */
+ 		break;
+@@ -90,8 +90,8 @@ tioca_gart_init(struct tioca_kernel *tioca_kern)
+ 		ap_reg |= (0x000 << CA_GART_AP_SIZE_SHFT);	/* 4 GB */
+ 		break;
+ 	default:
+-		printk(KERN_ERR "%s:  Invalid CA_APERATURE_SIZE "
+-		       "0x%lx\n", __func__, (ulong) CA_APERATURE_SIZE);
++		printk(KERN_ERR "%s:  Invalid CA_APERTURE_SIZE "
++		       "0x%lx\n", __func__, (ulong) CA_APERTURE_SIZE);
+ 		return -1;
+ 	}
  
+@@ -106,8 +106,8 @@ tioca_gart_init(struct tioca_kernel *tioca_kern)
+ 		tioca_kern->ca_ap_pagesize = 4096;
+ 	}
+ 
+-	tioca_kern->ca_ap_size = CA_APERATURE_SIZE;
+-	tioca_kern->ca_ap_bus_base = CA_APERATURE_BASE;
++	tioca_kern->ca_ap_size = CA_APERTURE_SIZE;
++	tioca_kern->ca_ap_bus_base = CA_APERTURE_BASE;
+ 	tioca_kern->ca_gart_entries =
+ 	    tioca_kern->ca_ap_size / tioca_kern->ca_ap_pagesize;
+ 
+@@ -141,7 +141,7 @@ tioca_gart_init(struct tioca_kernel *tioca_kern)
+ 	 * Compute PCI/AGP convenience fields 
+ 	 */
+ 
+-	offset = CA_PCI32_MAPPED_BASE - CA_APERATURE_BASE;
++	offset = CA_PCI32_MAPPED_BASE - CA_APERTURE_BASE;
+ 	tioca_kern->ca_pciap_base = CA_PCI32_MAPPED_BASE;
+ 	tioca_kern->ca_pciap_size = CA_PCI32_MAPPED_SIZE;
+ 	tioca_kern->ca_pcigart_start = offset / tioca_kern->ca_ap_pagesize;
+@@ -159,7 +159,7 @@ tioca_gart_init(struct tioca_kernel *tioca_kern)
+ 		return -1;
+ 	}
+ 
+-	offset = CA_AGP_MAPPED_BASE - CA_APERATURE_BASE;
++	offset = CA_AGP_MAPPED_BASE - CA_APERTURE_BASE;
+ 	tioca_kern->ca_gfxap_base = CA_AGP_MAPPED_BASE;
+ 	tioca_kern->ca_gfxap_size = CA_AGP_MAPPED_SIZE;
+ 	tioca_kern->ca_gfxgart_start = offset / tioca_kern->ca_ap_pagesize;
 -- 
 2.20.1
 

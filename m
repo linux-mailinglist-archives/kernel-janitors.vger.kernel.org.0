@@ -2,33 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AE666F41E
-	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Jul 2019 18:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 954CB6F436
+	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Jul 2019 18:52:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726432AbfGUQe0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 21 Jul 2019 12:34:26 -0400
-Received: from smtp01.smtpout.orange.fr ([80.12.242.123]:36633 "EHLO
+        id S1726432AbfGUQwM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 21 Jul 2019 12:52:12 -0400
+Received: from smtp01.smtpout.orange.fr ([80.12.242.123]:32265 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726303AbfGUQe0 (ORCPT
+        with ESMTP id S1726203AbfGUQwL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 21 Jul 2019 12:34:26 -0400
+        Sun, 21 Jul 2019 12:52:11 -0400
 Received: from localhost.localdomain ([92.140.204.221])
         by mwinf5d01 with ME
-        id fUaM2000F4n7eLC03UaN3G; Sun, 21 Jul 2019 18:34:24 +0200
+        id fUs72000e4n7eLC03Us8GN; Sun, 21 Jul 2019 18:52:09 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 21 Jul 2019 18:34:24 +0200
+X-ME-Date: Sun, 21 Jul 2019 18:52:09 +0200
 X-ME-IP: 92.140.204.221
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     rui.zhang@intel.com, edubezval@gmail.com,
-        daniel.lezcano@linaro.org, thierry.reding@gmail.com,
-        jonathanh@nvidia.com, wni@nvidia.com, tiny.windzz@gmail.com
-Cc:     linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+To:     tony.luck@intel.com, fenghua.yu@intel.com, david@redhat.com,
+        tglx@linutronix.de, gregkh@linuxfoundation.org,
+        akpm@linux-foundation.org
+Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] thermal: tegra: Fix a typo
-Date:   Sun, 21 Jul 2019 18:33:58 +0200
-Message-Id: <20190721163358.2377-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ia64: perfmon: Fix a typo
+Date:   Sun, 21 Jul 2019 18:51:44 +0200
+Message-Id: <20190721165144.3152-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -37,26 +37,30 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-s/sochterm/soctherm/
+s/permfon.h/perfmon.h/
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/thermal/tegra/soctherm.c | 2 +-
+The reference to perfmon.h should maybe be just removed because I've found
+no information about the increasing order to respect.
+This is maybe now in another file?
+---
+ arch/ia64/kernel/perfmon.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/tegra/soctherm.c b/drivers/thermal/tegra/soctherm.c
-index fcf70a3728b6..0ff4b22ddca7 100644
---- a/drivers/thermal/tegra/soctherm.c
-+++ b/drivers/thermal/tegra/soctherm.c
-@@ -202,7 +202,7 @@
- /* get dividend from the depth */
- #define THROT_DEPTH_DIVIDEND(depth)	((256 * (100 - (depth)) / 100) - 1)
+diff --git a/arch/ia64/kernel/perfmon.c b/arch/ia64/kernel/perfmon.c
+index 58a6337c0690..22795b420b10 100644
+--- a/arch/ia64/kernel/perfmon.c
++++ b/arch/ia64/kernel/perfmon.c
+@@ -4550,7 +4550,7 @@ pfm_exit_thread(struct task_struct *task)
+ }
  
--/* gk20a nv_therm interface N:3 Mapping. Levels defined in tegra124-sochterm.h
-+/* gk20a nv_therm interface N:3 Mapping. Levels defined in tegra124-soctherm.h
-  * level	vector
-  * NONE		3'b000
-  * LOW		3'b001
+ /*
+- * functions MUST be listed in the increasing order of their index (see permfon.h)
++ * functions MUST be listed in the increasing order of their index (see perfmon.h)
+  */
+ #define PFM_CMD(name, flags, arg_count, arg_type, getsz) { name, #name, flags, arg_count, sizeof(arg_type), getsz }
+ #define PFM_CMD_S(name, flags) { name, #name, flags, 0, 0, NULL }
 -- 
 2.20.1
 

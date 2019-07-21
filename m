@@ -2,73 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B50A36F619
-	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Jul 2019 23:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 316CB6F62E
+	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Jul 2019 23:42:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726508AbfGUVgE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 21 Jul 2019 17:36:04 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:23106 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726305AbfGUVgE (ORCPT
+        id S1726285AbfGUVmo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 21 Jul 2019 17:42:44 -0400
+Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:52819 "EHLO
+        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726106AbfGUVmo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 21 Jul 2019 17:36:04 -0400
-Received: from localhost.localdomain ([92.140.204.221])
-        by mwinf5d11 with ME
-        id fZc0200024n7eLC03Zc0MN; Sun, 21 Jul 2019 23:36:02 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 21 Jul 2019 23:36:02 +0200
-X-ME-IP: 92.140.204.221
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, tglx@linutronix.de, alexios.zavras@intel.com,
-        gregkh@linuxfoundation.org, kstewart@linuxfoundation.org
-Cc:     linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] iio: magnetometer: mmc35240: Fix a typo in the name of a constant
-Date:   Sun, 21 Jul 2019 23:35:33 +0200
-Message-Id: <20190721213533.9214-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        Sun, 21 Jul 2019 17:42:44 -0400
+Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
+        id 74A39803E5; Sun, 21 Jul 2019 23:42:30 +0200 (CEST)
+Date:   Sun, 21 Jul 2019 23:42:40 +0200
+From:   Pavel Machek <pavel@ucw.cz>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        simon@lineageos.org
+Cc:     jacek.anaszewski@gmail.com, dmurphy@ti.com,
+        linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] leds: an30259a: Fix typo
+Message-ID: <20190721214240.GA13062@amd>
+References: <20190721205955.25317-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="/04w6evG8XlLl3ft"
+Content-Disposition: inline
+In-Reply-To: <20190721205955.25317-1-christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Everything is about mmc35240_ except MMC53240_WAIT_SET_RESET (3 and 5
-switched).
 
-This is likely a typo. Define and use MMC35240_WAIT_SET_RESET instead.
+--/04w6evG8XlLl3ft
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/iio/magnetometer/mmc35240.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Hi!
 
-diff --git a/drivers/iio/magnetometer/mmc35240.c b/drivers/iio/magnetometer/mmc35240.c
-index 7de10281ad9e..425cdd07b4e5 100644
---- a/drivers/iio/magnetometer/mmc35240.c
-+++ b/drivers/iio/magnetometer/mmc35240.c
-@@ -53,7 +53,7 @@
- #define MMC35240_CTRL1_BW_SHIFT		0
- 
- #define MMC35240_WAIT_CHARGE_PUMP	50000	/* us */
--#define MMC53240_WAIT_SET_RESET		1000	/* us */
-+#define MMC35240_WAIT_SET_RESET		1000	/* us */
- 
- /*
-  * Memsic OTP process code piece is put here for reference:
-@@ -225,7 +225,7 @@ static int mmc35240_init(struct mmc35240_data *data)
- 	ret = mmc35240_hw_set(data, true);
- 	if (ret < 0)
- 		return ret;
--	usleep_range(MMC53240_WAIT_SET_RESET, MMC53240_WAIT_SET_RESET + 1);
-+	usleep_range(MMC35240_WAIT_SET_RESET, MMC35240_WAIT_SET_RESET + 1);
- 
- 	ret = mmc35240_hw_set(data, false);
- 	if (ret < 0)
--- 
-2.20.1
+> All this file is about an30259a, including the reference to the datasheet
+> at the top of the file.
+>=20
+> So change the 2 places where an32059a is used instead.
+>=20
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
+I see nothing wrong... But address listed as AUTHOR might be worth
+Cc-ing? :-).
+
+Acked-by: Pavel Machek <pavel@ucw.cz>
+								Pavel
+
+> an32059a is another chip from panasonic
+> ---
+>  drivers/leds/leds-an30259a.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/leds/leds-an30259a.c b/drivers/leds/leds-an30259a.c
+> index 1c1f0c8c56f4..37e7c7998972 100644
+> --- a/drivers/leds/leds-an30259a.c
+> +++ b/drivers/leds/leds-an30259a.c
+> @@ -353,7 +353,7 @@ MODULE_DEVICE_TABLE(i2c, an30259a_id);
+> =20
+>  static struct i2c_driver an30259a_driver =3D {
+>  	.driver =3D {
+> -		.name =3D "leds-an32059a",
+> +		.name =3D "leds-an30259a",
+>  		.of_match_table =3D of_match_ptr(an30259a_match_table),
+>  	},
+>  	.probe_new =3D an30259a_probe,
+> @@ -364,5 +364,5 @@ static struct i2c_driver an30259a_driver =3D {
+>  module_i2c_driver(an30259a_driver);
+> =20
+>  MODULE_AUTHOR("Simon Shields <simon@lineageos.org>");
+> -MODULE_DESCRIPTION("AN32059A LED driver");
+> +MODULE_DESCRIPTION("AN30259A LED driver");
+>  MODULE_LICENSE("GPL v2");
+
+--=20
+(english) http://www.livejournal.com/~pavelmachek
+(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
+g.html
+
+--/04w6evG8XlLl3ft
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1
+
+iEYEARECAAYFAl003FAACgkQMOfwapXb+vIhvACfffYPTcg88R+hIjGb2uFOzsEJ
+GHsAn1qv18dNWh75KeM2t+2IxHE1AWat
+=3+zP
+-----END PGP SIGNATURE-----
+
+--/04w6evG8XlLl3ft--

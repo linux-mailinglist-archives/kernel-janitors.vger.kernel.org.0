@@ -2,31 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A26FC6F28E
-	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Jul 2019 12:26:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0C6C6F2A4
+	for <lists+kernel-janitors@lfdr.de>; Sun, 21 Jul 2019 12:38:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726253AbfGUK0V (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 21 Jul 2019 06:26:21 -0400
-Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:22318 "EHLO
+        id S1726187AbfGUKih (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 21 Jul 2019 06:38:37 -0400
+Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:21055 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726020AbfGUK0U (ORCPT
+        with ESMTP id S1726043AbfGUKih (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 21 Jul 2019 06:26:20 -0400
+        Sun, 21 Jul 2019 06:38:37 -0400
 Received: from localhost.localdomain ([92.140.204.221])
         by mwinf5d33 with ME
-        id fNSH2000A4n7eLC03NSHfn; Sun, 21 Jul 2019 12:26:18 +0200
+        id fNeW2000F4n7eLC03NeWau; Sun, 21 Jul 2019 12:38:35 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 21 Jul 2019 12:26:18 +0200
+X-ME-Date: Sun, 21 Jul 2019 12:38:35 +0200
 X-ME-IP: 92.140.204.221
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     perex@perex.cz, tiwai@suse.com, tglx@linutronix.de
-Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
+To:     jon.maloy@ericsson.com, ying.xue@windriver.com, davem@davemloft.net
+Cc:     netdev@vger.kernel.org, tipc-discussion@lists.sourceforge.net,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] ALSA: line6: Fix a typo
-Date:   Sun, 21 Jul 2019 12:25:58 +0200
-Message-Id: <20190721102558.16640-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] tipc: Fix a typo
+Date:   Sun, 21 Jul 2019 12:38:11 +0200
+Message-Id: <20190721103811.29724-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -35,24 +35,30 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-s/Vairax/Variax/
+s/tipc_toprsv_listener_data_ready/tipc_topsrv_listener_data_ready/
+(r and s switched in topsrv)
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- sound/usb/line6/variax.c | 2 +-
+The function name could also be removed from the comment. It does not
+bring any useful information IMHO.
+---
+ net/tipc/topsrv.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/line6/variax.c b/sound/usb/line6/variax.c
-index 0d24c72c155f..ed158f04de80 100644
---- a/sound/usb/line6/variax.c
-+++ b/sound/usb/line6/variax.c
-@@ -244,5 +244,5 @@ static struct usb_driver variax_driver = {
+diff --git a/net/tipc/topsrv.c b/net/tipc/topsrv.c
+index f345662890a6..ca8ac96d22a9 100644
+--- a/net/tipc/topsrv.c
++++ b/net/tipc/topsrv.c
+@@ -476,7 +476,7 @@ static void tipc_topsrv_accept(struct work_struct *work)
+ 	}
+ }
  
- module_usb_driver(variax_driver);
- 
--MODULE_DESCRIPTION("Vairax Workbench USB driver");
-+MODULE_DESCRIPTION("Variax Workbench USB driver");
- MODULE_LICENSE("GPL");
+-/* tipc_toprsv_listener_data_ready - interrupt callback with connection request
++/* tipc_topsrv_listener_data_ready - interrupt callback with connection request
+  * The queued job is launched into tipc_topsrv_accept()
+  */
+ static void tipc_topsrv_listener_data_ready(struct sock *sk)
 -- 
 2.20.1
 

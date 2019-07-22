@@ -2,150 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4461270858
-	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jul 2019 20:22:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCED3708C0
+	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jul 2019 20:37:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731496AbfGVSV5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 22 Jul 2019 14:21:57 -0400
-Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:49944 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726907AbfGVSV5 (ORCPT
+        id S1731383AbfGVSgL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 22 Jul 2019 14:36:11 -0400
+Received: from mail-vk1-f180.google.com ([209.85.221.180]:36417 "EHLO
+        mail-vk1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731300AbfGVSgL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 22 Jul 2019 14:21:57 -0400
-Received: from [192.168.1.41] ([92.140.204.221])
-        by mwinf5d23 with ME
-        id fuMv200054n7eLC03uMv1r; Mon, 22 Jul 2019 20:21:55 +0200
-X-ME-Helo: [192.168.1.41]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 22 Jul 2019 20:21:55 +0200
-X-ME-IP: 92.140.204.221
-Subject: Script to spot some typo based on the file name
-References: <460fd687-474f-8a3e-82f6-269eb5507f96@wanadoo.fr>
-To:     Kernel Janitors <kernel-janitors@vger.kernel.org>
-From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-X-Forwarded-Message-Id: <460fd687-474f-8a3e-82f6-269eb5507f96@wanadoo.fr>
-Message-ID: <4dd55830-6a54-22ee-573a-390d88e9dc6f@wanadoo.fr>
-Date:   Mon, 22 Jul 2019 20:21:53 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Mon, 22 Jul 2019 14:36:11 -0400
+Received: by mail-vk1-f180.google.com with SMTP id b69so8106063vkb.3
+        for <kernel-janitors@vger.kernel.org>; Mon, 22 Jul 2019 11:36:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=AaGq+Qn5ipyvNclhgXPtbHGUf3PKYP2ypbtdsfvuGPE=;
+        b=osk9Sq49PC6jweSqvDPGNpTawDqfETyCe1tAbu9VOkLFzFTsAr+zL99VHezfFVOUWF
+         3YFzTuckiUTd/d0mXDXqH1R9tfxs9b1EljM+F3B0BoKUyUkupKr37Di0RpbFTk3+LnlC
+         pSrnYiutyvFubFi4x0xaJbbIpXT97zAd05k0WFYQ6oHIpMqOpkhI7Yxb/hdOCxZcDBV9
+         dxiYxnYhoJb9leiHgnlMbjMOPnPvG1au8vSgXPvNh74s8sPUxdGJiM/f/r8IVZlCbWKv
+         LMXx07kFL2gb6EnB9xQcZQR7mVet8ltHHkeK2Rr/ge8mbCaCnFpwvcDZsc5hkxe0p7mp
+         k1Rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=AaGq+Qn5ipyvNclhgXPtbHGUf3PKYP2ypbtdsfvuGPE=;
+        b=NSzCtbeOISaVMYmUUs8sVHNNyS5nKyprFfk7dD+bzLXceCvTIHmyomzD9l5JwbHUXn
+         qyEFNMTsiv5BaD71XrBlgzNsENQi+wCYaWWRcr0aKFThMrDLnCPUjx+jkGYSGvNiGC4a
+         kXCu6D+sNcXVWX16yYdyRmHtEwZPfrZoqAf7+wzbC2rC4g/6/52zCy/TOTtOKXZmaCW/
+         txXG4TRH+3g4rFfOJM9hPuBgu3UfefmTe5CE5WUs8aPmUjY4SGqrpvbP30Q0jnI8phE/
+         UJwFMjwrcSLe6lNyRqd+pCr+vwM3MeEncMG8CY1vANCSzKAcv6r5b7LxvTX4pUWyLvul
+         EBxQ==
+X-Gm-Message-State: APjAAAXZCKpocarJ4ST0SBsMWlD2Dhnx357THlJYCQIJUQ5Exf9wwh3T
+        rmPCXA/ql9h3G3cVZKOZDSWaTg==
+X-Google-Smtp-Source: APXvYqzg05DBMl1FiOOEi+BcDj9oMatgFoRzOcxe2TWC1iSrYrMwZsPdQYO2OOGlW8dYgZ2eC5r1aA==
+X-Received: by 2002:a1f:5945:: with SMTP id n66mr26924124vkb.58.1563820570049;
+        Mon, 22 Jul 2019 11:36:10 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-156-34-55-100.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.55.100])
+        by smtp.gmail.com with ESMTPSA id w12sm15578233vso.32.2019.07.22.11.36.09
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 22 Jul 2019 11:36:09 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1hpdAO-00068P-L1; Mon, 22 Jul 2019 15:36:08 -0300
+Date:   Mon, 22 Jul 2019 15:36:08 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     bmt@zurich.ibm.com, dledford@redhat.com,
+        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] infiniband: siw: remove set but not used variables
+ 'rv'
+Message-ID: <20190722183608.GA23553@ziepe.ca>
+References: <20190719012938.100628-1-maowenan@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <460fd687-474f-8a3e-82f6-269eb5507f96@wanadoo.fr>
-Content-Type: multipart/mixed;
- boundary="------------A7EC905C608413FAE751073C"
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190719012938.100628-1-maowenan@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This is a multi-part message in MIME format.
---------------A7EC905C608413FAE751073C
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+On Fri, Jul 19, 2019 at 09:29:38AM +0800, Mao Wenan wrote:
+> Fixes gcc '-Wunused-but-set-variable' warning:
+> 
+> drivers/infiniband/sw/siw/siw_cm.c: In function siw_cep_set_inuse:
+> drivers/infiniband/sw/siw/siw_cm.c:223:6: warning: variable rv set but not used [-Wunused-but-set-variable]
+> 
+> It is not used since commit 6c52fdc244b5("rdma/siw: connection management")
+> 
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> ---
+>  drivers/infiniband/sw/siw/siw_cm.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 
-Hi,
+Applied to for-rc
 
-Attached is a WIP script I've just written which tries to spot typos in 
-a file, based on the filename itself.
-
-Yesterday, I've posted some finding done with this script.
-Today, I share if someone finds it useful, want to improve it or just 
-want to take the idea.
-
-As, I'm not a bash guru, it is neither optimal, nor well written.
-But it seems to work as I expect.
-
-
-The name of a file can be a good source of information to spot typo in 
-the code itself. This can help spot typo in comments or strings, but 
-also wrongly named functions or constant.
-3 checks are implemented. They can be disabled individually.
-
-The filename should sometime be tweaked a bit to only take the part 
-before or after a '-' or a '_'. (some regex patterns are in the script 
-for that, just comment/un-comment)
-
-The 2 last checks generate lot of false positives.
-It can find some few things, but honestly, the semantic should be improved.
-
-
-Just in case s.o. find it useful and want to use it to clean-up a few 
-things.
-
-Best regards
-
-CJ
-
-
-
---------------A7EC905C608413FAE751073C
-Content-Type: text/plain; charset=UTF-8;
- name="script.sh"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment;
- filename="script.sh"
-
-IyEvYmluL2Jhc2gNCg0KIw0KIyBUaGUgbmFtZSBvZiBhIGZpbGUgY2FuIGJlIGEgZ29vZCBz
-b3VyY2Ugb2YgaW5mb3JtYXRpb24gdG8gc3BvdCB0eXBvIGluDQojIHRoZSBjb2RlIGl0c2Vs
-Zi4gVGhpcyBjYW4gaGVscCBzcG90IHR5cG8gaW4gY29tbWVudCBvciBzdHJpbmcsIGJ1dCBh
-bHNvDQojIHdyb25nbHkgbmFtZWQgZnVuY3Rpb25zIG9yIGNvbnN0YW50DQojDQojIFRoaXMg
-c2NyaXB0IGltcGxlbWVudHMgYSBmZXcgJ2dyZXAnIHdpdGggdmFyaWF0aW9ucyBvZiB0aGUg
-ZmlsZW5hbWUNCiMgKGludmVyc2lvbiBvZiAyIGNoYXJzLCBtaXNzaW5nIGNoYXIsIHdyb25n
-IGNoYXIpDQojDQoNCiMgRW5hYmxlL2Rpc2FibGUgZWFjaCB0ZXN0DQpkb19pbnZlcnNpb249
-MTsNCmRvX21pc3Npbmc9MDsNCmRvX3dyb25nPTA7DQoNCg0KZm9yIGYgaW4gJChmaW5kIC4g
-LW5hbWUgJyouYycgLXR5cGUgZik7IGRvDQogICAgIyBlY2hvICAkZjsNCiAgICANCiAgICBw
-YXR0ZXJuPSQoYmFzZW5hbWUgJGYgLmMpDQogICAgI2VjaG8gICItICIgJHBhdHRlcm47DQog
-ICAgDQogICAgIyBUaGlzIGNhbiBiZSB1c2VkIHRvIGV4dHJhY3Qgc3ViLXN0cmluZyBpbiB0
-aGUgZmlsZW5hbWUNCiAgICAjIHBhcnQ9JChlY2hvICRwYXR0ZXJuIHwgcGVybCAtbHBlICdz
-LyguKiktLiovJDEvJykNCiAgICAjIHBhcnQ9JChlY2hvICRwYXR0ZXJuIHwgcGVybCAtbHBl
-ICdzLy4qLSguKikvJDEvJykNCiAgICBwYXJ0PSQoZWNobyAkcGF0dGVybikNCiAgICAjIGVj
-aG8gICItLT4iICRwYXJ0ICIgKCIgJHsjcGFydH0gIikiIDsNCiAgICANCiAgICAjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjDQogICAgIyBDaGVjayBmb3IgY2hhciBpbnZlcnNpb24g
-Iw0KICAgICMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMNCiAgICBmb3IgKCggbj0wOyBu
-PCR7I3BhcnR9LTE7IG4rKyApKTsgZG8NCiAgICAgICAgeD0iJHtwYXJ0OiRuOjF9IjsNCiAg
-ICAgICAgeT0iJHtwYXJ0OiRuKzE6MX0iOw0KICAgICAgICBmaXJzdD0iJHtwYXJ0OjE6MX0i
-Ow0KICAgICAgICAjIGVjaG8gJHggIiAtICIgJHk7DQogICAgICAgIA0KICAgICAgICBpZiAo
-KCRkb19pbnZlcnNpb249PTEpKSAmJiAoKCAkeyNwYXJ0fT41ICkpICYmIFsgIiR4IiAhPSAi
-JHkiIF0gJiYgWyAiJGZpcnN0IiAhPSAiLSIgXTsgdGhlbg0KICAgICAgICAgICAgcGVybT0i
-IjsNCg0KICAgICAgICAgICAgZm9yICgoIGk9MDsgaTxuOyBpKysgKSk7IGRvDQogICAgICAg
-ICAgICAgICAgcGVybT0iJHBlcm0ke3BhcnQ6JGk6MX0iOw0KICAgICAgICAgICAgZG9uZQ0K
-ICAgICAgICAgICAgcGVybT0iJHBlcm0ke3BhcnQ6JG4rMToxfSI7DQogICAgICAgICAgICBw
-ZXJtPSIkcGVybSR7cGFydDokbjoxfSI7DQogICAgICAgICAgICBmb3IgKCggaT1uKzI7IGk8
-JHsjcGFydH07IGkrKyApKTsgZG8NCiAgICAgICAgICAgICAgICBwZXJtPSIkcGVybSR7cGFy
-dDokaToxfSI7DQogICAgICAgICAgICBkb25lDQoNCiAgICAgICAgICAgICMgZWNobyAtZSAk
-cGVybSAiXG4iOw0KDQogICAgICAgICAgICAjIGVjaG8gImdyZXAgJHBlcm0gJGYiOw0KICAg
-ICAgICAgICAgaWYgZ3JlcCAtaSAiJHBlcm0iICIkZiI7IHRoZW4NCiAgICAgICAgICAgICAg
-ICBlY2hvIC1lICJcbiI7DQogICAgICAgICAgICAgICAgZWNobyAiZ3JlcCAtaSAkcGVybSAk
-ZiI7DQogICAgICAgICAgICAgICAgZWNobyAgIiAgSW52ZXJzaW9uIC0tPiIgJHBhcnQgIiAo
-IiAkeyNwYXJ0fSAiKSIgOw0KICAgICAgICAgICAgICAgIGVjaG8gIiMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMiOw0KICAgICAgICAgICAgICAgIGVjaG8gLWUgIlxuIjsNCiAgICAg
-ICAgICAgIGZpDQogICAgICAgIGZpDQogICAgZG9uZQ0KDQogICAgIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMNCiAgICAjIENoZWNrIGZvciBtaXNzaW5nIGNoYXIgIw0KICAgICMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjDQogICAgZm9yICgoIG49MTsgbjwkeyNwYXJ0fS0xOyBu
-KysgKSk7IGRvDQogICAgICAgIA0KICAgICAgICBpZiAoKCRkb19taXNzaW5nPT0xKSkgJiYg
-KCggJHsjcGFydH0+NSApKSAmJiBbICIke3BhcnQ6bjoxfSIgIT0gIl8iIF0gJiYgWyAiJHtw
-YXJ0Om46MX0iICE9ICItIiBdICYmIFsgIiR7cGFydDpuOjF9IiAhPSAiJHtwYXJ0OjA6MX0i
-IF0gJiYgWyAiJHtwYXJ0Om46MX0iICE9ICIke3BhcnQ6JHsjcGFydH0tMToxfSIgXTsgdGhl
-bg0KICAgICAgICAgICAgcGVybT0iJHtwYXJ0OjA6bn0iOw0KICAgICAgICAgICAgcGVybT0i
-JHBlcm0ke3BhcnQ6bisxOiR7I3BhcnR9fSI7DQoNCiAgICAgICAgICAgICMgZWNobyAtZSAk
-cGVybSAiXG4iOw0KDQogICAgICAgICAgICAjIGVjaG8gImdyZXAgJHBlcm0gJGYiOw0KICAg
-ICAgICAgICAgaWYgZ3JlcCAtaSAiJHBlcm0iICIkZiI7IHRoZW4NCiAgICAgICAgICAgICAg
-ICBlY2hvIC1lICJcbiI7DQogICAgICAgICAgICAgICAgZWNobyAiZ3JlcCAtaSAkcGVybSAk
-ZiI7DQogICAgICAgICAgICAgICAgZWNobyAgIiBNaXNzaW5nIC0tPiIgJHBhcnQgIiAoIiAk
-eyNwYXJ0fSAiKSIgOw0KICAgICAgICAgICAgICAgIGVjaG8gIiMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMiOw0KICAgICAgICAgICAgICAgIGVjaG8gLWUgIlxuIjsNCiAgICAgICAg
-ICAgIGZpDQogICAgICAgIGZpDQogICAgZG9uZQ0KDQogICAgIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjDQogICAgIyBDaGVjayBmb3Igd3JvbmcgY2hhciAjDQogICAgIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjDQogICAgZm9yICgoIG49MTsgbjwkeyNwYXJ0fS0xOyBuKysgKSk7IGRv
-DQogICAgICAgIA0KICAgICAgICBpZiAoKCRkb193cm9uZz09MSkpICYmICgoICR7I3BhcnR9
-PjUgKSk7IHRoZW4NCiAgICAgICAgICAgIHBlcm09IiR7cGFydDowOm59IjsNCiAgICAgICAg
-ICAgIHBlcm09IiRwZXJtW14gLV8ke3BhcnQ6bjoxfV0iOw0KICAgICAgICAgICAgcGVybT0i
-JHBlcm0ke3BhcnQ6bisxOiR7I3BhcnR9fSI7DQoNCiAgICAgICAgICAgICMgZWNobyAtZSAk
-cGVybSAiXG4iOw0KDQogICAgICAgICAgICAjIGVjaG8gImdyZXAgJHBlcm0gJGYiOw0KICAg
-ICAgICAgICAgaWYgZ3JlcCAtaSAiJHBlcm0iICIkZiI7IHRoZW4NCiAgICAgICAgICAgICAg
-ICBlY2hvIC1lICJcbiI7DQogICAgICAgICAgICAgICAgZWNobyAiZ3JlcCAtaSAkcGVybSAk
-ZiI7DQogICAgICAgICAgICAgICAgZWNobyAgIiBXcm9uZyAtLT4iICRwYXJ0ICIgKCIgJHsj
-cGFydH0gIikiIDsNCiAgICAgICAgICAgICAgICBlY2hvICIjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIjsNCiAgICAgICAgICAgICAgICBlY2hvIC1lICJcbiI7DQogICAgICAgICAg
-ICBmaQ0KICAgICAgICBmaQ0KICAgIGRvbmUNCg0KZG9uZQ0K
---------------A7EC905C608413FAE751073C--
+Thanks,
+Jason

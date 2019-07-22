@@ -2,65 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC92470C7E
-	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jul 2019 00:24:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C785C70C9B
+	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jul 2019 00:30:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733094AbfGVWY1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 22 Jul 2019 18:24:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38466 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726544AbfGVWY1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 22 Jul 2019 18:24:27 -0400
-Received: from kernel.org (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4980221985;
-        Mon, 22 Jul 2019 22:24:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1563834266;
-        bh=RUAzHw0HpGhBGFpbCBz+OfMJci0eEv0tJXsUiAyM2b4=;
-        h=In-Reply-To:References:Subject:To:Cc:From:Date:From;
-        b=07kCOgSUTdS6inhLNy0uXWAxPcaTixm+GwHsak258pxkb3aHsqvt495qaSZND9jWM
-         +6w2jVAkrag/ewmWIj0rrqBY29HHLqQlLv3Bs59eHQaatcXVMDRt7tjMpaFJaTBraH
-         d+riC4kTN0Uidc088dIa2S4lE1V79WAKBrEqCQjk=
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <a92ca50d-b33e-8779-294c-301535d0f0d5@wanadoo.fr>
-References: <20190701165020.19840-1-colin.king@canonical.com> <20190722212414.6EF8D21900@mail.kernel.org> <d1cd2b10-8fd4-f224-3bcd-5b938f72d249@wanadoo.fr> <20190722215314.9F4F121951@mail.kernel.org> <a92ca50d-b33e-8779-294c-301535d0f0d5@wanadoo.fr>
-Subject: Re: [PATCH][next] clk: Si5341/Si5340: remove redundant assignment to n_den
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Colin King <colin.king@canonical.com>,
-        linux-clk@vger.kernel.org
+        id S1733164AbfGVWah (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 22 Jul 2019 18:30:37 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59625 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727391AbfGVWah (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 22 Jul 2019 18:30:37 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hpgkR-00024f-KX; Mon, 22 Jul 2019 22:25:35 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Inki Dae <inki.dae@samsung.com>,
+        Joonyoung Shim <jy0922.shim@samsung.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, Kukjin Kim <kgene@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-From:   Stephen Boyd <sboyd@kernel.org>
-User-Agent: alot/0.8.1
-Date:   Mon, 22 Jul 2019 15:24:25 -0700
-Message-Id: <20190722222426.4980221985@mail.kernel.org>
+Subject: [PATCH] drm/exynos: fix missing decrement of retry counter
+Date:   Mon, 22 Jul 2019 23:25:35 +0100
+Message-Id: <20190722222535.19114-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Christophe JAILLET (2019-07-22 15:00:24)
->
-> I don't use it explicitly, but the suggestions I get include some git=20
-> history, so I guess that it is on by default.
->=20
-> I was thinking at parsing files to see if MODULE_AUTHOR includes an email.
->=20
+From: Colin Ian King <colin.king@canonical.com>
 
-Ok. Feel free to write a patch. Just know that MODULE_AUTHOR isn't
-always there so it's not a substitute for looking at git history or git
-blame to figure out who wrote the code.
+Currently the retry counter is not being decremented, leading to a
+potential infinite spin if the scalar_reads don't change state.
 
-I suspect it's better to try to work on code and infrastructure to make
-these sorts of patches and questions irrelevant by detecting these
-problems before the code is merged, instead of after, by trawling the
-mailing lists and trying to apply patches and test them for common
-problems and then notifying the people working on the code. I don't have
-unlimited time in my life, so getting patches like this just makes me
-spend more time doing mundane tasks I don't want to do.
+Addresses-Coverity: ("Infinite loop")
+Fixes: 280e54c9f614 ("drm/exynos: scaler: Reset hardware before starting the operation")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/exynos/exynos_drm_scaler.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-TL;DR: Please help automate this sort of stuff!
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_scaler.c b/drivers/gpu/drm/exynos/exynos_drm_scaler.c
+index 9af096479e1c..b24ba948b725 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_scaler.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_scaler.c
+@@ -94,12 +94,12 @@ static inline int scaler_reset(struct scaler_context *scaler)
+ 	scaler_write(SCALER_CFG_SOFT_RESET, SCALER_CFG);
+ 	do {
+ 		cpu_relax();
+-	} while (retry > 1 &&
++	} while (--retry > 1 &&
+ 		 scaler_read(SCALER_CFG) & SCALER_CFG_SOFT_RESET);
+ 	do {
+ 		cpu_relax();
+ 		scaler_write(1, SCALER_INT_EN);
+-	} while (retry > 0 && scaler_read(SCALER_INT_EN) != 1);
++	} while (--retry > 0 && scaler_read(SCALER_INT_EN) != 1);
+ 
+ 	return retry ? 0 : -EIO;
+ }
+-- 
+2.20.1
 

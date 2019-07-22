@@ -2,34 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02E4F70839
-	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jul 2019 20:15:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4461270858
+	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jul 2019 20:22:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731206AbfGVSPI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 22 Jul 2019 14:15:08 -0400
-Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:18879 "EHLO
+        id S1731496AbfGVSV5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 22 Jul 2019 14:21:57 -0400
+Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:49944 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728594AbfGVSPI (ORCPT
+        with ESMTP id S1726907AbfGVSV5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 22 Jul 2019 14:15:08 -0400
+        Mon, 22 Jul 2019 14:21:57 -0400
 Received: from [192.168.1.41] ([92.140.204.221])
         by mwinf5d23 with ME
-        id fuF22000X4n7eLC03uF3Zn; Mon, 22 Jul 2019 20:15:03 +0200
+        id fuMv200054n7eLC03uMv1r; Mon, 22 Jul 2019 20:21:55 +0200
 X-ME-Helo: [192.168.1.41]
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 22 Jul 2019 20:15:03 +0200
+X-ME-Date: Mon, 22 Jul 2019 20:21:55 +0200
 X-ME-IP: 92.140.204.221
-X-Mozilla-News-Host: news://news.gmane.org:119
-To:     Kernel Janitors <kernel-janitors@vger.kernel.org>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Subject: Script to spot some typo based on the file name
-Message-ID: <460fd687-474f-8a3e-82f6-269eb5507f96@wanadoo.fr>
-Date:   Mon, 22 Jul 2019 20:15:01 +0200
+References: <460fd687-474f-8a3e-82f6-269eb5507f96@wanadoo.fr>
+To:     Kernel Janitors <kernel-janitors@vger.kernel.org>
+From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+X-Forwarded-Message-Id: <460fd687-474f-8a3e-82f6-269eb5507f96@wanadoo.fr>
+Message-ID: <4dd55830-6a54-22ee-573a-390d88e9dc6f@wanadoo.fr>
+Date:   Mon, 22 Jul 2019 20:21:53 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <460fd687-474f-8a3e-82f6-269eb5507f96@wanadoo.fr>
 Content-Type: multipart/mixed;
- boundary="------------A8F68BDB9A0462E4AC3DBAA1"
+ boundary="------------A7EC905C608413FAE751073C"
 Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
@@ -37,7 +39,7 @@ List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 This is a multi-part message in MIME format.
---------------A8F68BDB9A0462E4AC3DBAA1
+--------------A7EC905C608413FAE751073C
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
@@ -55,12 +57,12 @@ But it seems to work as I expect.
 
 
 The name of a file can be a good source of information to spot typo in 
-the code itself. This can help spot typo in comment or string, but also 
-# wrongly named functions or constant.
+the code itself. This can help spot typo in comments or strings, but 
+also wrongly named functions or constant.
 3 checks are implemented. They can be disabled individually.
 
 The filename should sometime be tweaked a bit to only take the part 
-before or after a '-' or a '_'. (some regex pattern are in the script 
+before or after a '-' or a '_'. (some regex patterns are in the script 
 for that, just comment/un-comment)
 
 The 2 last checks generate lot of false positives.
@@ -75,7 +77,8 @@ Best regards
 CJ
 
 
---------------A8F68BDB9A0462E4AC3DBAA1
+
+--------------A7EC905C608413FAE751073C
 Content-Type: text/plain; charset=UTF-8;
  name="script.sh"
 Content-Transfer-Encoding: base64
@@ -145,4 +148,4 @@ ZiI7DQogICAgICAgICAgICAgICAgZWNobyAgIiBXcm9uZyAtLT4iICRwYXJ0ICIgKCIgJHsj
 cGFydH0gIikiIDsNCiAgICAgICAgICAgICAgICBlY2hvICIjIyMjIyMjIyMjIyMjIyMjIyMj
 IyMjIyMjIyMjIjsNCiAgICAgICAgICAgICAgICBlY2hvIC1lICJcbiI7DQogICAgICAgICAg
 ICBmaQ0KICAgICAgICBmaQ0KICAgIGRvbmUNCg0KZG9uZQ0K
---------------A8F68BDB9A0462E4AC3DBAA1--
+--------------A7EC905C608413FAE751073C--

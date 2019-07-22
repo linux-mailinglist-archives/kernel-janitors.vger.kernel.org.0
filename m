@@ -2,32 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AC0070B4F
-	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jul 2019 23:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D978270B8F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jul 2019 23:37:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732648AbfGVV1H (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 22 Jul 2019 17:27:07 -0400
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:48139 "EHLO
+        id S1732653AbfGVVhZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 22 Jul 2019 17:37:25 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:54167 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732643AbfGVV1H (ORCPT
+        with ESMTP id S1731485AbfGVVhY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 22 Jul 2019 17:27:07 -0400
+        Mon, 22 Jul 2019 17:37:24 -0400
 Received: from localhost.localdomain ([92.140.204.221])
         by mwinf5d78 with ME
-        id fxT32000D4n7eLC03xT3dn; Mon, 22 Jul 2019 23:27:04 +0200
+        id fxdM200024n7eLC03xdMiE; Mon, 22 Jul 2019 23:37:22 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 22 Jul 2019 23:27:04 +0200
+X-ME-Date: Mon, 22 Jul 2019 23:37:22 +0200
 X-ME-IP: 92.140.204.221
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     bardliao@realtek.com, chiou@realtek.com, lgirdwood@gmail.com,
-        broonie@kernel.org, perex@perex.cz, tiwai@suse.com
-Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+To:     nsekhar@ti.com, bgolaszewski@baylibre.com, linux@armlinux.org.uk
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] ASoC: rt5665: Fix a typo in the name of a function
-Date:   Mon, 22 Jul 2019 23:26:39 +0200
-Message-Id: <20190722212639.26954-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ARM: davinci: dm646x: Fix a typo in the comment
+Date:   Mon, 22 Jul 2019 23:36:57 +0200
+Message-Id: <20190722213657.27175-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -36,44 +35,27 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-All function names start with rt5665_, except 'rt5655_set_verf()'.
-It is likely a typo.
+The driver is dedicated to DM646x. So update the description in the top
+most comment accordingly.
 
-Fix it to be consistent.
+It must have been derived from dm644x.c, but looks DM646 speecific now.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- sound/soc/codecs/rt5665.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/mach-davinci/dm646x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/rt5665.c b/sound/soc/codecs/rt5665.c
-index f2ad3a4c3b7f..897e53d4c40a 100644
---- a/sound/soc/codecs/rt5665.c
-+++ b/sound/soc/codecs/rt5665.c
-@@ -2569,7 +2569,7 @@ static int set_dmic_power(struct snd_soc_dapm_widget *w,
- 	return 0;
- }
- 
--static int rt5655_set_verf(struct snd_soc_dapm_widget *w,
-+static int rt5665_set_verf(struct snd_soc_dapm_widget *w,
- 	struct snd_kcontrol *kcontrol, int event)
- {
- 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
-@@ -2689,11 +2689,11 @@ static const struct snd_soc_dapm_widget rt5665_dapm_widgets[] = {
- 	SND_SOC_DAPM_SUPPLY("Mic Det Power", RT5665_PWR_VOL,
- 		RT5665_PWR_MIC_DET_BIT, 0, NULL, 0),
- 	SND_SOC_DAPM_SUPPLY("Vref1", RT5665_PWR_ANLG_1, RT5665_PWR_VREF1_BIT, 0,
--		rt5655_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
-+		rt5665_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
- 	SND_SOC_DAPM_SUPPLY("Vref2", RT5665_PWR_ANLG_1, RT5665_PWR_VREF2_BIT, 0,
--		rt5655_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
-+		rt5665_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
- 	SND_SOC_DAPM_SUPPLY("Vref3", RT5665_PWR_ANLG_1, RT5665_PWR_VREF3_BIT, 0,
--		rt5655_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
-+		rt5665_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
- 
- 	/* ASRC */
- 	SND_SOC_DAPM_SUPPLY_S("I2S1 ASRC", 1, RT5665_ASRC_1,
+diff --git a/arch/arm/mach-davinci/dm646x.c b/arch/arm/mach-davinci/dm646x.c
+index 62ca952fe161..4c58510e5792 100644
+--- a/arch/arm/mach-davinci/dm646x.c
++++ b/arch/arm/mach-davinci/dm646x.c
+@@ -1,5 +1,5 @@
+ /*
+- * TI DaVinci DM644x chip specific setup
++ * TI DaVinci DM646x chip specific setup
+  *
+  * Author: Kevin Hilman, Deep Root Systems, LLC
+  *
 -- 
 2.20.1
 

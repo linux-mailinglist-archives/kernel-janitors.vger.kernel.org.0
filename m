@@ -2,71 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EDEB70B1E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jul 2019 23:16:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9201470B42
+	for <lists+kernel-janitors@lfdr.de>; Mon, 22 Jul 2019 23:24:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731061AbfGVVP7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 22 Jul 2019 17:15:59 -0400
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:52494 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729697AbfGVVP7 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 22 Jul 2019 17:15:59 -0400
-Received: from localhost.localdomain ([92.140.204.221])
-        by mwinf5d78 with ME
-        id fxFr2000D4n7eLC03xFs2c; Mon, 22 Jul 2019 23:15:57 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 22 Jul 2019 23:15:57 +0200
-X-ME-IP: 92.140.204.221
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     lgirdwood@gmail.com, broonie@kernel.org, tiwai@suse.com,
-        kuninori.morimoto.gx@renesas.com, peter.ujfalusi@ti.com,
-        gregkh@linuxfoundation.org, wang@mentor.com, tglx@linutronix.de
-Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] ASoC: pcm3168a: Fix a typo in the name of a constant
-Date:   Mon, 22 Jul 2019 23:15:28 +0200
-Message-Id: <20190722211528.26600-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        id S1731369AbfGVVYP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 22 Jul 2019 17:24:15 -0400
+Received: from mail.kernel.org ([198.145.29.99]:51050 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730369AbfGVVYP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 22 Jul 2019 17:24:15 -0400
+Received: from kernel.org (unknown [104.132.0.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6EF8D21900;
+        Mon, 22 Jul 2019 21:24:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563830654;
+        bh=Q1SxLd/6lmvU8jCiIlAjSa9MkP+kP6OmwP8tsxTbFSk=;
+        h=In-Reply-To:References:Subject:To:Cc:From:Date:From;
+        b=lvSyT3Iw9UFWvNfwslsgbjCNm3+F54F0oSQEj1HWdxa+xSdk0SpY3A1JWc01XMWgY
+         aj4R3f5Y8GOLY5DoJuyTUnFo441wg5BUZbd/39gGkfGTAhIVQynFqLqiplIFctTZK8
+         G9Hwca4oz7cKrLc7bB+zgOfOL62mlBPBv6Ksc/Fw=
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20190701165020.19840-1-colin.king@canonical.com>
+References: <20190701165020.19840-1-colin.king@canonical.com>
+Subject: Re: [PATCH][next] clk: Si5341/Si5340: remove redundant assignment to n_den
+To:     Colin King <colin.king@canonical.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        linux-clk@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mike Looijmans <mike.looijmans@topic.nl>
+From:   Stephen Boyd <sboyd@kernel.org>
+User-Agent: alot/0.8.1
+Date:   Mon, 22 Jul 2019 14:24:13 -0700
+Message-Id: <20190722212414.6EF8D21900@mail.kernel.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is a typo in PCM1368A_MAX_SYSCLK, it should be PCM3168A_MAX_SYSCLK
-(1 and 3 switched in 3168)
+Please Cc authors of drivers so they can ack/review.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- sound/soc/codecs/pcm3168a.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Adding Mike to take a look.
 
-diff --git a/sound/soc/codecs/pcm3168a.c b/sound/soc/codecs/pcm3168a.c
-index ed0b4317c9ae..844602710eee 100644
---- a/sound/soc/codecs/pcm3168a.c
-+++ b/sound/soc/codecs/pcm3168a.c
-@@ -263,7 +263,7 @@ static unsigned int pcm3168a_scki_ratios[] = {
- #define PCM3168A_NUM_SCKI_RATIOS_DAC	ARRAY_SIZE(pcm3168a_scki_ratios)
- #define PCM3168A_NUM_SCKI_RATIOS_ADC	(ARRAY_SIZE(pcm3168a_scki_ratios) - 2)
- 
--#define PCM1368A_MAX_SYSCLK		36864000
-+#define PCM3168A_MAX_SYSCLK		36864000
- 
- static int pcm3168a_reset(struct pcm3168a_priv *pcm3168a)
- {
-@@ -296,7 +296,7 @@ static int pcm3168a_set_dai_sysclk(struct snd_soc_dai *dai,
- 	struct pcm3168a_priv *pcm3168a = snd_soc_component_get_drvdata(dai->component);
- 	int ret;
- 
--	if (freq > PCM1368A_MAX_SYSCLK)
-+	if (freq > PCM3168A_MAX_SYSCLK)
- 		return -EINVAL;
- 
- 	ret = clk_set_rate(pcm3168a->scki, freq);
--- 
-2.20.1
-
+Quoting Colin King (2019-07-01 09:50:20)
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> The variable n_den is initialized however that value is never read
+> as n_den is re-assigned a little later in the two paths of a
+> following if-statement.  Remove the redundant assignment.
+>=20
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/clk/clk-si5341.c | 1 -
+>  1 file changed, 1 deletion(-)
+>=20
+> diff --git a/drivers/clk/clk-si5341.c b/drivers/clk/clk-si5341.c
+> index 72424eb7e5f8..6e780c2a9e6b 100644
+> --- a/drivers/clk/clk-si5341.c
+> +++ b/drivers/clk/clk-si5341.c
+> @@ -547,7 +547,6 @@ static int si5341_synth_clk_set_rate(struct clk_hw *h=
+w, unsigned long rate,
+>         bool is_integer;
+> =20
+>         n_num =3D synth->data->freq_vco;
+> -       n_den =3D rate;
+> =20
+>         /* see if there's an integer solution */
+>         r =3D do_div(n_num, rate);

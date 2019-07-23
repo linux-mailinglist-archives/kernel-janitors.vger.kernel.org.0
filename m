@@ -2,45 +2,46 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04C5471712
+	by mail.lfdr.de (Postfix) with ESMTP id 744E171713
 	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jul 2019 13:29:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728994AbfGWL3X (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Jul 2019 07:29:23 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:46296 "EHLO
+        id S2387558AbfGWL31 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Jul 2019 07:29:27 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:46442 "EHLO
         heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727643AbfGWL3X (ORCPT
+        with ESMTP id S2387541AbfGWL30 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Jul 2019 07:29:23 -0400
+        Tue, 23 Jul 2019 07:29:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
         Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
         List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=k6vcIEfHRK3aIZYZxABlz1lJXYGEXLTcf2MHrDJp5XM=; b=EMUh3Pn+F83i
-        WdJ4EiR19wxhHfGRS+0JEod4mxjDezXWcD05n3Ux9385o4jdvJC2EiqXXFCIR8dENvxyj+cdBofI9
-        51k5peVOmDXhHmWBu2LF7RRM8D80R4jHKQxMtGGY8G0yakX+fnMPdw6c840CSO8pPFCCp7fujRpHN
-        a9IpY=;
+        List-Archive; bh=uW8mLkBNzzRIUGgBhcROR5IPwDhjQ5ZLJDLiCjkF0r0=; b=o+GutVd3z7jP
+        8thUV9hTXmaYYo0frBFgoO9tBy26F516R0a6nN42ioBP4lyEw1BlhYJpsyurMAFQE6pBngx6pboxK
+        Mb6RjEszP6AWe39zPawJLb/oRuXA5AHMvKgZTW1GoNnc15uDrGZnHjl+C31Zvvv5wbSZx6U1e8pLo
+        52R0c=;
 Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
         by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <broonie@sirena.org.uk>)
-        id 1hpsyl-0003IY-J8; Tue, 23 Jul 2019 11:29:11 +0000
+        id 1hpsyq-0003KX-3p; Tue, 23 Jul 2019 11:29:16 +0000
 Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id E55942742B60; Tue, 23 Jul 2019 12:29:10 +0100 (BST)
+        id 71C2D2742B60; Tue, 23 Jul 2019 12:29:15 +0100 (BST)
 From:   Mark Brown <broonie@kernel.org>
 To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     alsa-devel@alsa-project.org, bardliao@realtek.com,
-        broonie@kernel.org, chiou@realtek.com,
-        kernel-janitors@vger.kernel.org, lgirdwood@gmail.com,
+Cc:     alsa-devel@alsa-project.org, broonie@kernel.org,
+        gregkh@linuxfoundation.org, kernel-janitors@vger.kernel.org,
+        kuninori.morimoto.gx@renesas.com, lgirdwood@gmail.com,
         linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        perex@perex.cz, tiwai@suse.com
-Subject: Applied "ASoC: rt5665: Fix a typo in the name of a function" to the asoc tree
-In-Reply-To: <20190722212639.26954-1-christophe.jaillet@wanadoo.fr>
+        peter.ujfalusi@ti.com, tglx@linutronix.de, tiwai@suse.com,
+        wang@mentor.com
+Subject: Applied "ASoC: pcm3168a: Fix a typo in the name of a constant" to the asoc tree
+In-Reply-To: <20190722211528.26600-1-christophe.jaillet@wanadoo.fr>
 X-Patchwork-Hint: ignore
-Message-Id: <20190723112910.E55942742B60@ypsilon.sirena.org.uk>
-Date:   Tue, 23 Jul 2019 12:29:10 +0100 (BST)
+Message-Id: <20190723112915.71C2D2742B60@ypsilon.sirena.org.uk>
+Date:   Tue, 23 Jul 2019 12:29:15 +0100 (BST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -48,7 +49,7 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 The patch
 
-   ASoC: rt5665: Fix a typo in the name of a function
+   ASoC: pcm3168a: Fix a typo in the name of a constant
 
 has been applied to the asoc tree at
 
@@ -73,51 +74,43 @@ to this mail.
 Thanks,
 Mark
 
-From f90aa354be7bffaec2b440eb1831c429ecb1a5e2 Mon Sep 17 00:00:00 2001
+From f8f85216f8d309daadb37aba8a4b0826783d8747 Mon Sep 17 00:00:00 2001
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Mon, 22 Jul 2019 23:26:39 +0200
-Subject: [PATCH] ASoC: rt5665: Fix a typo in the name of a function
+Date: Mon, 22 Jul 2019 23:15:28 +0200
+Subject: [PATCH] ASoC: pcm3168a: Fix a typo in the name of a constant
 
-All function names start with rt5665_, except 'rt5655_set_verf()'.
-It is likely a typo.
-
-Fix it to be consistent.
+There is a typo in PCM1368A_MAX_SYSCLK, it should be PCM3168A_MAX_SYSCLK
+(1 and 3 switched in 3168)
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/20190722212639.26954-1-christophe.jaillet@wanadoo.fr
+Link: https://lore.kernel.org/r/20190722211528.26600-1-christophe.jaillet@wanadoo.fr
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/soc/codecs/rt5665.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/codecs/pcm3168a.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/rt5665.c b/sound/soc/codecs/rt5665.c
-index c050d84a6916..68299ce26d3e 100644
---- a/sound/soc/codecs/rt5665.c
-+++ b/sound/soc/codecs/rt5665.c
-@@ -2566,7 +2566,7 @@ static int set_dmic_power(struct snd_soc_dapm_widget *w,
- 	return 0;
- }
+diff --git a/sound/soc/codecs/pcm3168a.c b/sound/soc/codecs/pcm3168a.c
+index f1104d7d6426..5d59ce254821 100644
+--- a/sound/soc/codecs/pcm3168a.c
++++ b/sound/soc/codecs/pcm3168a.c
+@@ -263,7 +263,7 @@ static unsigned int pcm3168a_scki_ratios[] = {
+ #define PCM3168A_NUM_SCKI_RATIOS_DAC	ARRAY_SIZE(pcm3168a_scki_ratios)
+ #define PCM3168A_NUM_SCKI_RATIOS_ADC	(ARRAY_SIZE(pcm3168a_scki_ratios) - 2)
  
--static int rt5655_set_verf(struct snd_soc_dapm_widget *w,
-+static int rt5665_set_verf(struct snd_soc_dapm_widget *w,
- 	struct snd_kcontrol *kcontrol, int event)
+-#define PCM1368A_MAX_SYSCLK		36864000
++#define PCM3168A_MAX_SYSCLK		36864000
+ 
+ static int pcm3168a_reset(struct pcm3168a_priv *pcm3168a)
  {
- 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
-@@ -2686,11 +2686,11 @@ static const struct snd_soc_dapm_widget rt5665_dapm_widgets[] = {
- 	SND_SOC_DAPM_SUPPLY("Mic Det Power", RT5665_PWR_VOL,
- 		RT5665_PWR_MIC_DET_BIT, 0, NULL, 0),
- 	SND_SOC_DAPM_SUPPLY("Vref1", RT5665_PWR_ANLG_1, RT5665_PWR_VREF1_BIT, 0,
--		rt5655_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
-+		rt5665_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
- 	SND_SOC_DAPM_SUPPLY("Vref2", RT5665_PWR_ANLG_1, RT5665_PWR_VREF2_BIT, 0,
--		rt5655_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
-+		rt5665_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
- 	SND_SOC_DAPM_SUPPLY("Vref3", RT5665_PWR_ANLG_1, RT5665_PWR_VREF3_BIT, 0,
--		rt5655_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
-+		rt5665_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
+@@ -296,7 +296,7 @@ static int pcm3168a_set_dai_sysclk(struct snd_soc_dai *dai,
+ 	struct pcm3168a_priv *pcm3168a = snd_soc_component_get_drvdata(dai->component);
+ 	int ret;
  
- 	/* ASRC */
- 	SND_SOC_DAPM_SUPPLY_S("I2S1 ASRC", 1, RT5665_ASRC_1,
+-	if (freq > PCM1368A_MAX_SYSCLK)
++	if (freq > PCM3168A_MAX_SYSCLK)
+ 		return -EINVAL;
+ 
+ 	ret = clk_set_rate(pcm3168a->scki, freq);
 -- 
 2.20.1
 

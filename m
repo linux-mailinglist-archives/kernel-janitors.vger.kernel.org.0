@@ -2,28 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3B9671AF2
-	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jul 2019 16:59:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1EAD71B06
+	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jul 2019 17:03:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731691AbfGWO7H (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Jul 2019 10:59:07 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56028 "EHLO
+        id S2388352AbfGWPDR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Jul 2019 11:03:17 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:56209 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730814AbfGWO7H (ORCPT
+        with ESMTP id S1731767AbfGWPDQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Jul 2019 10:59:07 -0400
+        Tue, 23 Jul 2019 11:03:16 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hpwFt-0006lT-EB; Tue, 23 Jul 2019 14:59:05 +0000
+        id 1hpwJu-00078I-HM; Tue, 23 Jul 2019 15:03:14 +0000
 From:   Colin King <colin.king@canonical.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org
+        Jiri Slaby <jslaby@suse.com>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: rtl8723bs: hal: remove redundant assignment to variable n
-Date:   Tue, 23 Jul 2019 15:59:05 +0100
-Message-Id: <20190723145905.13514-1-colin.king@canonical.com>
+Subject: [PATCH] tty/isicom: remove redundant assignment to variable word_count
+Date:   Tue, 23 Jul 2019 16:03:14 +0100
+Message-Id: <20190723150314.14513-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,27 +35,27 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable n is being assigned a value that is never read, the
-assignment is redundant and can be removed.
+The variable word_count is being assigned a value that is never read before
+a return, the assignment is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/staging/rtl8723bs/hal/rtl8723bs_recv.c | 1 -
+ drivers/tty/isicom.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/staging/rtl8723bs/hal/rtl8723bs_recv.c b/drivers/staging/rtl8723bs/hal/rtl8723bs_recv.c
-index e23b39ab16c5..032d01834f3f 100644
---- a/drivers/staging/rtl8723bs/hal/rtl8723bs_recv.c
-+++ b/drivers/staging/rtl8723bs/hal/rtl8723bs_recv.c
-@@ -486,7 +486,6 @@ s32 rtl8723bs_init_recv_priv(struct adapter *padapter)
- 	}
+diff --git a/drivers/tty/isicom.c b/drivers/tty/isicom.c
+index e04a43e89f6b..fc38f96475bf 100644
+--- a/drivers/tty/isicom.c
++++ b/drivers/tty/isicom.c
+@@ -553,7 +553,6 @@ static irqreturn_t isicom_interrupt(int irq, void *dev_id)
  
- 	if (precvpriv->pallocated_recv_buf) {
--		n = NR_RECVBUFF * sizeof(struct recv_buf) + 4;
- 		kfree(precvpriv->pallocated_recv_buf);
- 		precvpriv->pallocated_recv_buf = NULL;
- 	}
+ 	tty = tty_port_tty_get(&port->port);
+ 	if (tty == NULL) {
+-		word_count = byte_count >> 1;
+ 		while (byte_count > 1) {
+ 			inw(base);
+ 			byte_count -= 2;
 -- 
 2.20.1
 

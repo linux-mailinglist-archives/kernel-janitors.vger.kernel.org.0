@@ -2,76 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C785C70C9B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jul 2019 00:30:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04C5471712
+	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jul 2019 13:29:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733164AbfGVWah (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 22 Jul 2019 18:30:37 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59625 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727391AbfGVWah (ORCPT
+        id S1728994AbfGWL3X (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Jul 2019 07:29:23 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:46296 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727643AbfGWL3X (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 22 Jul 2019 18:30:37 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hpgkR-00024f-KX; Mon, 22 Jul 2019 22:25:35 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Inki Dae <inki.dae@samsung.com>,
-        Joonyoung Shim <jy0922.shim@samsung.com>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/exynos: fix missing decrement of retry counter
-Date:   Mon, 22 Jul 2019 23:25:35 +0100
-Message-Id: <20190722222535.19114-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Tue, 23 Jul 2019 07:29:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+        List-Archive; bh=k6vcIEfHRK3aIZYZxABlz1lJXYGEXLTcf2MHrDJp5XM=; b=EMUh3Pn+F83i
+        WdJ4EiR19wxhHfGRS+0JEod4mxjDezXWcD05n3Ux9385o4jdvJC2EiqXXFCIR8dENvxyj+cdBofI9
+        51k5peVOmDXhHmWBu2LF7RRM8D80R4jHKQxMtGGY8G0yakX+fnMPdw6c840CSO8pPFCCp7fujRpHN
+        a9IpY=;
+Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1hpsyl-0003IY-J8; Tue, 23 Jul 2019 11:29:11 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+        id E55942742B60; Tue, 23 Jul 2019 12:29:10 +0100 (BST)
+From:   Mark Brown <broonie@kernel.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     alsa-devel@alsa-project.org, bardliao@realtek.com,
+        broonie@kernel.org, chiou@realtek.com,
+        kernel-janitors@vger.kernel.org, lgirdwood@gmail.com,
+        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        perex@perex.cz, tiwai@suse.com
+Subject: Applied "ASoC: rt5665: Fix a typo in the name of a function" to the asoc tree
+In-Reply-To: <20190722212639.26954-1-christophe.jaillet@wanadoo.fr>
+X-Patchwork-Hint: ignore
+Message-Id: <20190723112910.E55942742B60@ypsilon.sirena.org.uk>
+Date:   Tue, 23 Jul 2019 12:29:10 +0100 (BST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+The patch
 
-Currently the retry counter is not being decremented, leading to a
-potential infinite spin if the scalar_reads don't change state.
+   ASoC: rt5665: Fix a typo in the name of a function
 
-Addresses-Coverity: ("Infinite loop")
-Fixes: 280e54c9f614 ("drm/exynos: scaler: Reset hardware before starting the operation")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+has been applied to the asoc tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.4
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From f90aa354be7bffaec2b440eb1831c429ecb1a5e2 Mon Sep 17 00:00:00 2001
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Mon, 22 Jul 2019 23:26:39 +0200
+Subject: [PATCH] ASoC: rt5665: Fix a typo in the name of a function
+
+All function names start with rt5665_, except 'rt5655_set_verf()'.
+It is likely a typo.
+
+Fix it to be consistent.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/20190722212639.26954-1-christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_scaler.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/rt5665.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_scaler.c b/drivers/gpu/drm/exynos/exynos_drm_scaler.c
-index 9af096479e1c..b24ba948b725 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_scaler.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_scaler.c
-@@ -94,12 +94,12 @@ static inline int scaler_reset(struct scaler_context *scaler)
- 	scaler_write(SCALER_CFG_SOFT_RESET, SCALER_CFG);
- 	do {
- 		cpu_relax();
--	} while (retry > 1 &&
-+	} while (--retry > 1 &&
- 		 scaler_read(SCALER_CFG) & SCALER_CFG_SOFT_RESET);
- 	do {
- 		cpu_relax();
- 		scaler_write(1, SCALER_INT_EN);
--	} while (retry > 0 && scaler_read(SCALER_INT_EN) != 1);
-+	} while (--retry > 0 && scaler_read(SCALER_INT_EN) != 1);
- 
- 	return retry ? 0 : -EIO;
+diff --git a/sound/soc/codecs/rt5665.c b/sound/soc/codecs/rt5665.c
+index c050d84a6916..68299ce26d3e 100644
+--- a/sound/soc/codecs/rt5665.c
++++ b/sound/soc/codecs/rt5665.c
+@@ -2566,7 +2566,7 @@ static int set_dmic_power(struct snd_soc_dapm_widget *w,
+ 	return 0;
  }
+ 
+-static int rt5655_set_verf(struct snd_soc_dapm_widget *w,
++static int rt5665_set_verf(struct snd_soc_dapm_widget *w,
+ 	struct snd_kcontrol *kcontrol, int event)
+ {
+ 	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
+@@ -2686,11 +2686,11 @@ static const struct snd_soc_dapm_widget rt5665_dapm_widgets[] = {
+ 	SND_SOC_DAPM_SUPPLY("Mic Det Power", RT5665_PWR_VOL,
+ 		RT5665_PWR_MIC_DET_BIT, 0, NULL, 0),
+ 	SND_SOC_DAPM_SUPPLY("Vref1", RT5665_PWR_ANLG_1, RT5665_PWR_VREF1_BIT, 0,
+-		rt5655_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
++		rt5665_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
+ 	SND_SOC_DAPM_SUPPLY("Vref2", RT5665_PWR_ANLG_1, RT5665_PWR_VREF2_BIT, 0,
+-		rt5655_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
++		rt5665_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
+ 	SND_SOC_DAPM_SUPPLY("Vref3", RT5665_PWR_ANLG_1, RT5665_PWR_VREF3_BIT, 0,
+-		rt5655_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
++		rt5665_set_verf, SND_SOC_DAPM_PRE_PMU | SND_SOC_DAPM_POST_PMU),
+ 
+ 	/* ASRC */
+ 	SND_SOC_DAPM_SUPPLY_S("I2S1 ASRC", 1, RT5665_ASRC_1,
 -- 
 2.20.1
 

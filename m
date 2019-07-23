@@ -2,82 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C5B3D71F53
-	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jul 2019 20:31:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0209471F87
+	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jul 2019 20:45:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391512AbfGWSbK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Jul 2019 14:31:10 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:43098 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727021AbfGWSbK (ORCPT
+        id S1733092AbfGWSpV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Jul 2019 14:45:21 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:46884 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728243AbfGWSpU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Jul 2019 14:31:10 -0400
-Received: by mail-pg1-f194.google.com with SMTP id f25so19822008pgv.10;
-        Tue, 23 Jul 2019 11:31:10 -0700 (PDT)
+        Tue, 23 Jul 2019 14:45:20 -0400
+Received: by mail-wr1-f65.google.com with SMTP id z1so44229528wru.13;
+        Tue, 23 Jul 2019 11:45:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=5uJhkLXJdGxLJxdwTXXjbtfErmAZdUMl9oepnhVnpJU=;
+        b=KCHVNkndiWJSE0kTr3cYX3OnwDHz9/b3q+v6QwNjzUH61qyGRuSe4P2eo3ZE4NwOrf
+         xfqW2OzYPUKqMNRHbt26vA7ZMjGAJMF92jul6OW7k//Mdxxc3utIM/pjDCYohTfRPrdd
+         1XPzRDlmA7tEd0sNJavA0Ffo5bNDFi8tv8KI8Xl1iDTt/ukbtRQZLX5Nh6+3b+bIxtV+
+         J+9T8sABvI8OXdd/nC3eYbB0h21KU4JPf2Tb5+qzT2rG0lfeDLXYtParESonPFKsHc98
+         Lnun+5anztR5gJaS1lQRGUTgP8y6V3SCqfYdFtDdAjAQa1Vv4LkCoU6VqPVn31WlV+Jq
+         5kUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=46tdGvqvoqxUIPeOgCWCop/dIrP81hhCst66zWIrm18=;
-        b=SDVTRIP1/O4vq28biyYxsADrCl2a61VQk7ivQNBMLIPv0W3YBIWihiV28+y5YSXpIK
-         LMsZkvnJsTD7eYI2nePCEmu0DMmWVz1Innsg4QV6NBKhEKeyqtZ5/qxvt7T3KeM97vBP
-         YJQHXIb3Dift3KIjicfx5QWbVBS5OGu6Vvz2cBW2N9cyMxU3f9fQxwQOKGlgkD4ZA1sZ
-         /fxVrMgS2Mt0BgpDx5opfhgehCGAhXPOPzFeibo/lZzvbjNBqppE1LuC4/8yOysz91dM
-         nlggWGeACuHV2oS4cFUx2y3iihZZikR3twsw3YuOA1Y5w3g3ByQzqgRa0wTA8SQI+RHf
-         Yg6g==
-X-Gm-Message-State: APjAAAXk3M/9HIURQtF6BNDQHvf+sNkNWuhrt1gv3mhSy+WZ3KjKqzbK
-        MokRYbfzBjVDX5NO0hK2Jjg=
-X-Google-Smtp-Source: APXvYqxo1DzIE0Lf6y7298mhooH13TsAceAasGh822+s662eZYiSCxHuKtu/K9AIM0ZUgGMR0qZCOw==
-X-Received: by 2002:a17:90a:d151:: with SMTP id t17mr82706672pjw.60.1563906669597;
-        Tue, 23 Jul 2019 11:31:09 -0700 (PDT)
-Received: from dennisz-mbp ([2620:10d:c091:500::cff2])
-        by smtp.gmail.com with ESMTPSA id r1sm41232037pgv.70.2019.07.23.11.31.08
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 23 Jul 2019 11:31:08 -0700 (PDT)
-Date:   Tue, 23 Jul 2019 14:31:06 -0400
-From:   Dennis Zhou <dennis@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     dennis@kernel.org, tj@kernel.org, cl@linux.com, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] percpu: Fix a typo
-Message-ID: <20190723183106.GA85597@dennisz-mbp>
-References: <20190721095633.10979-1-christophe.jaillet@wanadoo.fr>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=5uJhkLXJdGxLJxdwTXXjbtfErmAZdUMl9oepnhVnpJU=;
+        b=b/ZvO1VOcFzcmMMge+Fx5WC29xnlfMUnmRzq7gHwn5+yOeFMmc45m4A9isiTWXJLJx
+         65pURbzme1fdvN/XxZ9eUh82SrVzQKkwNQG4sBA9e3f2shgSY3Du0BEGaGHUAeYTxRCN
+         LzYmdg/9kdh7TIpDu7FuwVKU53W1VKmVpohDOV0WsI83sxRbn1tuj3jVX25ZfZFH64Bs
+         o76UrP8UeLDbkX3mPcFzglD6+V6BT8t1GWZnEhK3ThrsWdtJ2wY6jtHxkiSxrpRv8Eu7
+         0EeKEBkBMvpbd6GpfQblOPe9d5skYUwJalk2BvXWw8yHFHZ5d+7IOVxA5klgW0YYDGA2
+         RKuw==
+X-Gm-Message-State: APjAAAVqGoiVzZzol4mt4PSKRM/MMdPdDTLAerWp7blAvpugYDRwHkqq
+        lWZP8+MxcwqPmaReR3Lcz4ebHuUKgOBQ8ylzgdw=
+X-Google-Smtp-Source: APXvYqyHjjqtHDgklRtxzyV71CQoAnoB9+E/YFBvxbOAhcaWr0Ba2y8dm7WcuR5DTH12Yf9Afxc8MjOei6MHmqudqBk=
+X-Received: by 2002:adf:f94a:: with SMTP id q10mr59242784wrr.341.1563907518245;
+ Tue, 23 Jul 2019 11:45:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190721095633.10979-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20190723134120.28441-1-colin.king@canonical.com>
+In-Reply-To: <20190723134120.28441-1-colin.king@canonical.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Tue, 23 Jul 2019 14:45:07 -0400
+Message-ID: <CADnq5_PE1rDzqd13MPWJmeK_BUS0EthH=WcZ0wruTy55yarnpw@mail.gmail.com>
+Subject: Re: [PATCH][next] drm/amdgpu: remove redundant assignment to pointer 'ring'
+To:     Colin King <colin.king@canonical.com>
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, Leo Liu <leo.liu@amd.com>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Jul 21, 2019 at 11:56:33AM +0200, Christophe JAILLET wrote:
-> s/perpcu/percpu/
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+On Tue, Jul 23, 2019 at 9:41 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The pointer 'ring' is being assigned a value that is never
+> read, hence the assignment is redundant and can be removed.
+>
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  mm/percpu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/percpu.c b/mm/percpu.c
-> index 9821241fdede..febf7c7c888e 100644
-> --- a/mm/percpu.c
-> +++ b/mm/percpu.c
-> @@ -2220,7 +2220,7 @@ static void pcpu_dump_alloc_info(const char *lvl,
->   * @base_addr: mapped address
->   *
->   * Initialize the first percpu chunk which contains the kernel static
-> - * perpcu area.  This function is to be called from arch percpu area
-> + * percpu area.  This function is to be called from arch percpu area
->   * setup path.
->   *
->   * @ai contains all information necessary to initialize the first
-> -- 
+>  drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c
+> index 93b3500e522b..a2a8ca942f34 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c
+> @@ -1331,7 +1331,6 @@ static int vcn_v1_0_pause_dpg_mode(struct amdgpu_device *adev,
+>                                 WREG32_SOC15(UVD, 0, mmUVD_JRBC_RB_CNTL,
+>                                                         UVD_JRBC_RB_CNTL__RB_RPTR_WR_EN_MASK);
+>
+> -                               ring = &adev->vcn.inst->ring_dec;
+>                                 WREG32_SOC15(UVD, 0, mmUVD_RBC_RB_WPTR,
+>                                                    RREG32_SOC15(UVD, 0, mmUVD_SCRATCH2) & 0x7FFFFFFF);
+>                                 SOC15_WAIT_ON_RREG(UVD, 0, mmUVD_POWER_STATUS,
+
+While we don't use ring here, I think the assignment is useful to
+delineate that we are no longer working with the jpeg ring, but rather
+the decode ring.  The mmUVD_RBC_RB_WPTR register is part of the decode
+ring, not jpeg.  We would normally use the ring->wptr like we do for
+the other rings, but in this particular case, the value happens to be
+shadowed to a scratch register due to the way the dynamic power gating
+works on that ring.
+
+Alex
+
+> --
 > 2.20.1
-> 
-
-Applied to for-5.4 with a slightly more descriptive title.
-
-Thanks,
-Dennis
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

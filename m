@@ -2,58 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0209471F87
-	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jul 2019 20:45:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 308FC71FB1
+	for <lists+kernel-janitors@lfdr.de>; Tue, 23 Jul 2019 20:55:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733092AbfGWSpV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Jul 2019 14:45:21 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:46884 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728243AbfGWSpU (ORCPT
+        id S2391610AbfGWSzZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Jul 2019 14:55:25 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:41727 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726621AbfGWSzZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Jul 2019 14:45:20 -0400
-Received: by mail-wr1-f65.google.com with SMTP id z1so44229528wru.13;
-        Tue, 23 Jul 2019 11:45:18 -0700 (PDT)
+        Tue, 23 Jul 2019 14:55:25 -0400
+Received: by mail-wr1-f66.google.com with SMTP id c2so41081555wrm.8;
+        Tue, 23 Jul 2019 11:55:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=5uJhkLXJdGxLJxdwTXXjbtfErmAZdUMl9oepnhVnpJU=;
-        b=KCHVNkndiWJSE0kTr3cYX3OnwDHz9/b3q+v6QwNjzUH61qyGRuSe4P2eo3ZE4NwOrf
-         xfqW2OzYPUKqMNRHbt26vA7ZMjGAJMF92jul6OW7k//Mdxxc3utIM/pjDCYohTfRPrdd
-         1XPzRDlmA7tEd0sNJavA0Ffo5bNDFi8tv8KI8Xl1iDTt/ukbtRQZLX5Nh6+3b+bIxtV+
-         J+9T8sABvI8OXdd/nC3eYbB0h21KU4JPf2Tb5+qzT2rG0lfeDLXYtParESonPFKsHc98
-         Lnun+5anztR5gJaS1lQRGUTgP8y6V3SCqfYdFtDdAjAQa1Vv4LkCoU6VqPVn31WlV+Jq
-         5kUQ==
+        bh=uofN7ppO5lpu2W/w0X7jwZptyjk30DWo2WCuwRs1qEQ=;
+        b=LJDz0No9XLAJGTv1sXKvOFaNgPg9sv6MM5Lo1bYMmmvVOaeaLUl96lQ0blrnDkMBK2
+         RhByqPJg+ftBThBEDHmQjMQEzCTSVi/YfZxMiYa9JIakqR2YKWPdrrDW6xuiLX/PETf7
+         L/1W7JNelejLi3Q63bJ6h4Dl9GZ93Inv9owOuquzk0WWxDNlzwhkWcEx69ablsLn3k5J
+         2BdHIdqSZsAQvKJK0YWPxoBAs7V7XQdbvNFJI3+HbloI4oM44R6LoCznZVDwxjsNkqEl
+         2HPWMDLWGjg0VrC2cAfFmt2W2YNFeWjo/m1CAJ/0LcQHxJAxg8t9UTEpsoBHpLtnm/IH
+         bg0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=5uJhkLXJdGxLJxdwTXXjbtfErmAZdUMl9oepnhVnpJU=;
-        b=b/ZvO1VOcFzcmMMge+Fx5WC29xnlfMUnmRzq7gHwn5+yOeFMmc45m4A9isiTWXJLJx
-         65pURbzme1fdvN/XxZ9eUh82SrVzQKkwNQG4sBA9e3f2shgSY3Du0BEGaGHUAeYTxRCN
-         LzYmdg/9kdh7TIpDu7FuwVKU53W1VKmVpohDOV0WsI83sxRbn1tuj3jVX25ZfZFH64Bs
-         o76UrP8UeLDbkX3mPcFzglD6+V6BT8t1GWZnEhK3ThrsWdtJ2wY6jtHxkiSxrpRv8Eu7
-         0EeKEBkBMvpbd6GpfQblOPe9d5skYUwJalk2BvXWw8yHFHZ5d+7IOVxA5klgW0YYDGA2
-         RKuw==
-X-Gm-Message-State: APjAAAVqGoiVzZzol4mt4PSKRM/MMdPdDTLAerWp7blAvpugYDRwHkqq
-        lWZP8+MxcwqPmaReR3Lcz4ebHuUKgOBQ8ylzgdw=
-X-Google-Smtp-Source: APXvYqyHjjqtHDgklRtxzyV71CQoAnoB9+E/YFBvxbOAhcaWr0Ba2y8dm7WcuR5DTH12Yf9Afxc8MjOei6MHmqudqBk=
-X-Received: by 2002:adf:f94a:: with SMTP id q10mr59242784wrr.341.1563907518245;
- Tue, 23 Jul 2019 11:45:18 -0700 (PDT)
+        bh=uofN7ppO5lpu2W/w0X7jwZptyjk30DWo2WCuwRs1qEQ=;
+        b=pqWWnxTa9yEofe0DxSzP9yraHYFhQ5Mqun+uSK6admqNTHqTDO35ux7UnDyF1IVYsP
+         VftJd9N8mtcSebQihXh47KWAbUod1PlKzyTUhmr2mKhZSLvgZSSV4JIb5zw0Q/obTvmp
+         GFbzqn2kcLantaFyy0oa1w9gkUEpD5AP7c75eQlJBpd0xYD0gXBFwSquzCcI067WoybI
+         rTMLanVKhB4eT5HEwV3Be5lpb7tdnVIbtuivlObOLb/PTnsH6UUAVKA9zNA0qLxNtRgD
+         P9NE0RSYNCKLmwAWYOz7abWD70osHSs4ZQb9/tJ+x2qW69FOAF5nDajeY+Zl9NGHMr+D
+         cJRw==
+X-Gm-Message-State: APjAAAUR8AknXhMgOpRRrjWxYREuiEnZNa9JKABQMo65/Nu12gfs2KMF
+        2V21qrCgg597LR46uQoewNwvpM+I1Yv7pewPSzGB6A==
+X-Google-Smtp-Source: APXvYqytEF/30ZRLvCDiDRUiLAC7Ki41TP937AiiImWIfRwtcmAZO1g6dOGFW8ThB6MwY+NEc5NDfzimhsYBX1OD/c4=
+X-Received: by 2002:adf:dfc5:: with SMTP id q5mr26863661wrn.142.1563908123361;
+ Tue, 23 Jul 2019 11:55:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190723134120.28441-1-colin.king@canonical.com>
-In-Reply-To: <20190723134120.28441-1-colin.king@canonical.com>
+References: <20190723142312.4013-1-colin.king@canonical.com>
+In-Reply-To: <20190723142312.4013-1-colin.king@canonical.com>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Tue, 23 Jul 2019 14:45:07 -0400
-Message-ID: <CADnq5_PE1rDzqd13MPWJmeK_BUS0EthH=WcZ0wruTy55yarnpw@mail.gmail.com>
-Subject: Re: [PATCH][next] drm/amdgpu: remove redundant assignment to pointer 'ring'
+Date:   Tue, 23 Jul 2019 14:55:12 -0400
+Message-ID: <CADnq5_Ni9T-jkLrv-s-v1VD8J=VQmyz6S43Na52=1sjdB-uJZA@mail.gmail.com>
+Subject: Re: [PATCH][next] drm/amd/display: fix a missing null check on a
+ failed kzalloc
 To:     Colin King <colin.king@canonical.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
+Cc:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
         David Zhou <David1.Zhou@amd.com>,
         David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Leo Liu <leo.liu@amd.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
         amd-gfx list <amd-gfx@lists.freedesktop.org>,
         Maling list - DRI developers 
         <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
@@ -64,42 +67,39 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jul 23, 2019 at 9:41 AM Colin King <colin.king@canonical.com> wrote:
+On Tue, Jul 23, 2019 at 10:23 AM Colin King <colin.king@canonical.com> wrote:
 >
 > From: Colin Ian King <colin.king@canonical.com>
 >
-> The pointer 'ring' is being assigned a value that is never
-> read, hence the assignment is redundant and can be removed.
+> Currently the allocation of config may fail and a null pointer
+> dereference on config can occur.  Fix this by added a null
+> check on a failed allocation of config.
 >
-> Addresses-Coverity: ("Unused value")
+> Addresses-Coverity: ("Dereference null return")
+> Fixes: c2cd9d04ecf0 ("drm/amd/display: Hook up calls to do stereo mux and dig programming to stereo control interface")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c b/drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c
-> index 93b3500e522b..a2a8ca942f34 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/vcn_v1_0.c
-> @@ -1331,7 +1331,6 @@ static int vcn_v1_0_pause_dpg_mode(struct amdgpu_device *adev,
->                                 WREG32_SOC15(UVD, 0, mmUVD_JRBC_RB_CNTL,
->                                                         UVD_JRBC_RB_CNTL__RB_RPTR_WR_EN_MASK);
->
-> -                               ring = &adev->vcn.inst->ring_dec;
->                                 WREG32_SOC15(UVD, 0, mmUVD_RBC_RB_WPTR,
->                                                    RREG32_SOC15(UVD, 0, mmUVD_SCRATCH2) & 0x7FFFFFFF);
->                                 SOC15_WAIT_ON_RREG(UVD, 0, mmUVD_POWER_STATUS,
 
-While we don't use ring here, I think the assignment is useful to
-delineate that we are no longer working with the jpeg ring, but rather
-the decode ring.  The mmUVD_RBC_RB_WPTR register is part of the decode
-ring, not jpeg.  We would normally use the ring->wptr like we do for
-the other rings, but in this particular case, the value happens to be
-shadowed to a scratch register due to the way the dynamic power gating
-works on that ring.
+Applied.  thanks!
 
 Alex
 
+> ---
+>  drivers/gpu/drm/amd/display/dc/core/dc.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+> index 168f4a7dffdf..7cce2baec2af 100644
+> --- a/drivers/gpu/drm/amd/display/dc/core/dc.c
+> +++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+> @@ -1259,6 +1259,8 @@ bool dc_set_generic_gpio_for_stereo(bool enable,
+>         struct gpio_generic_mux_config *config = kzalloc(sizeof(struct gpio_generic_mux_config),
+>                            GFP_KERNEL);
+>
+> +       if (!config)
+> +               return false;
+>         pin_info = dal_gpio_get_generic_pin_info(gpio_service, GPIO_ID_GENERIC, 0);
+>
+>         if (pin_info.mask == 0xFFFFFFFF || pin_info.offset == 0xFFFFFFFF) {
 > --
 > 2.20.1
 >

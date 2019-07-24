@@ -2,87 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EE9F7244D
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 04:17:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 331DC72709
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 06:57:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726769AbfGXCQx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Jul 2019 22:16:53 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:45204 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725821AbfGXCQx (ORCPT
+        id S1726067AbfGXE5M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jul 2019 00:57:12 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:47457 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726023AbfGXE5M (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Jul 2019 22:16:53 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x6O2E4Xm040703;
-        Wed, 24 Jul 2019 02:16:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2018-07-02;
- bh=kX6I6PYSOxMHGHIybK4B01JXbztXP64NVNWd7iSZHLQ=;
- b=uVO+SOoAz+inSRkazNKfa0l3CsmH09O36PM8mMJsPng6vncQJpUpo/d020LyqAQGmNCm
- kWgSoixU1ZnZJZhB8jnAnImjOIE29KSvZt56yArJH8qa4VruAo6LXEpBpxrEkrIybGP1
- YhaCNtc4WNWcpq/opHvQSlZ36KxbSUZX124WiG0zxxIPXoTzV0w9/CgZco/vFbtb/RpC
- VyJtQhnqtZ/XrJbrULmTJRMpMQKXvyyTUatdoj7mC7C/UWzBm3Vy+b/qd3oso5/GP5zD
- HqtrdydNJdBUwrifmw9SULQUC6UfxdUMQOl+p7bDLJOHc56Uxg/lPffgUjZUXEkxOeEq Kw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 2tx61bt7c0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 24 Jul 2019 02:16:48 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x6O2CsXD092257;
-        Wed, 24 Jul 2019 02:16:47 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 2tx60xkj7h-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 24 Jul 2019 02:16:47 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x6O2GjaI011944;
-        Wed, 24 Jul 2019 02:16:46 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 23 Jul 2019 19:16:45 -0700
-To:     Colin King <colin.king@canonical.com>
-Cc:     Kashyap Desai <kashyap.desai@broadcom.com>,
-        Sumit Saxena <sumit.saxena@broadcom.com>,
-        Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        megaraidlinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] scsi: megaraid_sas: fix spelling mistake "megarid_sas" -> "megaraid_sas"
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20190720215840.23831-1-colin.king@canonical.com>
-Date:   Tue, 23 Jul 2019 22:16:43 -0400
-In-Reply-To: <20190720215840.23831-1-colin.king@canonical.com> (Colin King's
-        message of "Sat, 20 Jul 2019 22:58:40 +0100")
-Message-ID: <yq1k1c8qir8.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        Wed, 24 Jul 2019 00:57:12 -0400
+Received: from localhost.localdomain ([92.140.204.221])
+        by mwinf5d09 with ME
+        id gUx6200044n7eLC03Ux6ZL; Wed, 24 Jul 2019 06:57:08 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 24 Jul 2019 06:57:08 +0200
+X-ME-IP: 92.140.204.221
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     laurent.pinchart@ideasonboard.com, mchehab@kernel.org
+Cc:     linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] media: uvcvideo: Fix a typo in UVC_METATADA_BUF_SIZE
+Date:   Wed, 24 Jul 2019 06:56:12 +0200
+Message-Id: <20190724045612.29870-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9327 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=697
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1907240023
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9327 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=766 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1907240023
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+It is likely that it should be UVC_METADATA_BUF_SIZE instead.
+Fix it and use it.
 
-Colin,
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/media/usb/uvc/uvc_metadata.c | 4 ++--
+ drivers/media/usb/uvc/uvc_queue.c    | 2 +-
+ drivers/media/usb/uvc/uvcvideo.h     | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-> Fix spelling mistake in kernel warning message and replace printk with
-> with pr_warn.
-
-Applied to 5.3/scsi-fixes, thanks!
-
+diff --git a/drivers/media/usb/uvc/uvc_metadata.c b/drivers/media/usb/uvc/uvc_metadata.c
+index 99bb71b47117..b6279ad7ac84 100644
+--- a/drivers/media/usb/uvc/uvc_metadata.c
++++ b/drivers/media/usb/uvc/uvc_metadata.c
+@@ -51,7 +51,7 @@ static int uvc_meta_v4l2_get_format(struct file *file, void *fh,
+ 	memset(fmt, 0, sizeof(*fmt));
+ 
+ 	fmt->dataformat = stream->meta.format;
+-	fmt->buffersize = UVC_METATADA_BUF_SIZE;
++	fmt->buffersize = UVC_METADATA_BUF_SIZE;
+ 
+ 	return 0;
+ }
+@@ -72,7 +72,7 @@ static int uvc_meta_v4l2_try_format(struct file *file, void *fh,
+ 
+ 	fmt->dataformat = fmeta == dev->info->meta_format
+ 			? fmeta : V4L2_META_FMT_UVC;
+-	fmt->buffersize = UVC_METATADA_BUF_SIZE;
++	fmt->buffersize = UVC_METADATA_BUF_SIZE;
+ 
+ 	return 0;
+ }
+diff --git a/drivers/media/usb/uvc/uvc_queue.c b/drivers/media/usb/uvc/uvc_queue.c
+index da72577c2998..cd60c6c1749e 100644
+--- a/drivers/media/usb/uvc/uvc_queue.c
++++ b/drivers/media/usb/uvc/uvc_queue.c
+@@ -79,7 +79,7 @@ static int uvc_queue_setup(struct vb2_queue *vq,
+ 
+ 	switch (vq->type) {
+ 	case V4L2_BUF_TYPE_META_CAPTURE:
+-		size = UVC_METATADA_BUF_SIZE;
++		size = UVC_METADATA_BUF_SIZE;
+ 		break;
+ 
+ 	default:
+diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+index c7c1baa90dea..f773dc5d802c 100644
+--- a/drivers/media/usb/uvc/uvcvideo.h
++++ b/drivers/media/usb/uvc/uvcvideo.h
+@@ -491,7 +491,7 @@ struct uvc_stats_stream {
+ 	unsigned int max_sof;		/* Maximum STC.SOF value */
+ };
+ 
+-#define UVC_METATADA_BUF_SIZE 1024
++#define UVC_METADATA_BUF_SIZE 1024
+ 
+ /**
+  * struct uvc_copy_op: Context structure to schedule asynchronous memcpy
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.20.1
+

@@ -2,73 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14624723FC
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 03:49:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B08C17244A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 04:16:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728745AbfGXBs5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Jul 2019 21:48:57 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:2708 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728735AbfGXBs5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Jul 2019 21:48:57 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 206BC30DD72286730F4D;
-        Wed, 24 Jul 2019 09:48:53 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 24 Jul 2019 09:48:47 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Christian Lamparter <chunkeey@googlemail.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-CC:     YueHaibing <yuehaibing@huawei.com>,
-        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH] carl9170: remove set but not used variable 'udev'
-Date:   Wed, 24 Jul 2019 01:54:11 +0000
-Message-ID: <20190724015411.66525-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726408AbfGXCQe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Jul 2019 22:16:34 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:44834 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725821AbfGXCQd (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 23 Jul 2019 22:16:33 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x6O2E7kM040712;
+        Wed, 24 Jul 2019 02:16:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2018-07-02;
+ bh=rUv0YQCGN4Yjy9DAKG3maMFZAVARFAxo8LQNt8Z+J7w=;
+ b=NFEdfk7w1dH9cZgPs5IedVJrxYAD/+64Lgqaag4NgEcGyrmo/CWMiVslFSsRFVi2IlKK
+ 0i3cr+psl+ohN+lZ77lv9rT0J89yzSiHsKeaAzJz7swPcJQVdoWHOM9MRpxASRNQAIrs
+ LzmzNg967Cc2kvqvPQo5Wa7qM2vq4D+SQYLQF0yUSHV1gPWKotKtx1RGqGMY2CRBuT/m
+ +ZtOzIZfwK3lFRfDNr5Y4/Q/66ZIoQVhkeuyofvv9zqkYpbIsvMFs5YW59y2q2Y5Ige3
+ QyJ34SZQ+knuIJB9O5jJoDmZJmo7VWgxb4UGSNYK3lquJsN6T7g2rOR3eYWyR/ua4/Xw xA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2tx61bt7ay-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 24 Jul 2019 02:16:28 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x6O2CssB112236;
+        Wed, 24 Jul 2019 02:16:28 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 2tx60xd0qu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 24 Jul 2019 02:16:27 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x6O2GQ3E002907;
+        Wed, 24 Jul 2019 02:16:26 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 23 Jul 2019 19:16:26 -0700
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     hare@suse.de, jejb@linux.ibm.com, martin.petersen@oracle.com,
+        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] scsi: fcoe: fix a typo
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20190721125039.13268-1-christophe.jaillet@wanadoo.fr>
+Date:   Tue, 23 Jul 2019 22:16:24 -0400
+In-Reply-To: <20190721125039.13268-1-christophe.jaillet@wanadoo.fr>
+        (Christophe JAILLET's message of "Sun, 21 Jul 2019 14:50:39 +0200")
+Message-ID: <yq1o91kqirr.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9327 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=720
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1907240023
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9327 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=786 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1907240023
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
 
-drivers/net/wireless/ath/carl9170/usb.c: In function 'carl9170_usb_disconnect':
-drivers/net/wireless/ath/carl9170/usb.c:1110:21: warning:
- variable 'udev' set but not used [-Wunused-but-set-variable]
+Christophe,
 
-It is not used, so can be removed.
+> #define relative to FCOE CTLR start with FCOE_CTLR, except
+> FCOE_CTRL_SOL_TOV.
+>
+> This is likely a typo and CTRL should be CTLR here as well.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/net/wireless/ath/carl9170/usb.c | 2 --
- 1 file changed, 2 deletions(-)
+Applied to 5.3/scsi-fixes, thanks!
 
-diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
-index 99f1897a775d..486957a04bd1 100644
---- a/drivers/net/wireless/ath/carl9170/usb.c
-+++ b/drivers/net/wireless/ath/carl9170/usb.c
-@@ -1107,12 +1107,10 @@ static int carl9170_usb_probe(struct usb_interface *intf,
- static void carl9170_usb_disconnect(struct usb_interface *intf)
- {
- 	struct ar9170 *ar = usb_get_intfdata(intf);
--	struct usb_device *udev;
- 
- 	if (WARN_ON(!ar))
- 		return;
- 
--	udev = ar->udev;
- 	wait_for_completion(&ar->fw_load_wait);
- 
- 	if (IS_INITIALIZED(ar)) {
-
-
-
+-- 
+Martin K. Petersen	Oracle Linux Engineering

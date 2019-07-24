@@ -2,75 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D7625723BA
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 03:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C901D723D4
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 03:41:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728279AbfGXBc3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Jul 2019 21:32:29 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:2743 "EHLO huawei.com"
+        id S1728430AbfGXBlE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Jul 2019 21:41:04 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:51304 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725837AbfGXBc2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Jul 2019 21:32:28 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id BFCB5AEEA5EBA150532A;
-        Wed, 24 Jul 2019 09:32:26 +0800 (CST)
-Received: from [127.0.0.1] (10.177.96.96) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Wed, 24 Jul 2019
- 09:32:24 +0800
-Subject: Re: [net-next] mwifiex: use eth_broadcast_addr() to assign broadcast
- address
-To:     <amitkarwar@gmail.com>, <nishants@marvell.com>,
-        <gbhat@marvell.com>, <huxinming820@gmail.com>,
-        <kvalo@codeaurora.org>
-References: <20190710072524.65953-1-maowenan@huawei.com>
-CC:     <linux-wireless@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <609fa4ae-7210-7758-c8ff-1b06492356e1@huawei.com>
-Date:   Wed, 24 Jul 2019 09:32:13 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+        id S1728385AbfGXBlE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 23 Jul 2019 21:41:04 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 71246B0D356AE83596C3;
+        Wed, 24 Jul 2019 09:41:00 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 24 Jul 2019 09:40:54 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        "Thomas Zimmermann" <tzimmermann@suse.de>,
+        Sam Ravnborg <sam@ravnborg.org>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] drm/mga: remove set but not used variable 'buf_priv'
+Date:   Wed, 24 Jul 2019 01:46:19 +0000
+Message-ID: <20190724014619.32665-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190710072524.65953-1-maowenan@huawei.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.96.96]
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-gentle ping...
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-On 2019/7/10 15:25, Mao Wenan wrote:
-> This patch is to use eth_broadcast_addr() to assign broadcast address
-> insetad of memcpy().
-> 
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> ---
->  drivers/net/wireless/marvell/mwifiex/tdls.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wireless/marvell/mwifiex/tdls.c
-> index 18e654d..0931304 100644
-> --- a/drivers/net/wireless/marvell/mwifiex/tdls.c
-> +++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
-> @@ -731,7 +731,6 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
->  				    u16 status_code, struct sk_buff *skb)
->  {
->  	struct ieee80211_mgmt *mgmt;
-> -	u8 bc_addr[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
->  	int ret;
->  	u16 capab;
->  	struct ieee80211_ht_cap *ht_cap;
-> @@ -765,7 +764,7 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
->  		memmove(pos + ETH_ALEN, &mgmt->u.action.category,
->  			sizeof(mgmt->u.action.u.tdls_discover_resp));
->  		/* init address 4 */
-> -		memcpy(pos, bc_addr, ETH_ALEN);
-> +		eth_broadcast_addr(pos);
->  
->  		ret = mwifiex_tdls_append_rates_ie(priv, skb);
->  		if (ret) {
-> 
+drivers/gpu/drm/mga/mga_state.c: In function 'mga_dma_iload':
+drivers/gpu/drm/mga/mga_state.c:945:22: warning:
+ variable 'buf_priv' set but not used [-Wunused-but-set-variable]
+
+It is never used, so can be removed.
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/gpu/drm/mga/mga_state.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/mga/mga_state.c b/drivers/gpu/drm/mga/mga_state.c
+index 77a0b006f066..0dec4062e5a2 100644
+--- a/drivers/gpu/drm/mga/mga_state.c
++++ b/drivers/gpu/drm/mga/mga_state.c
+@@ -942,7 +942,6 @@ static int mga_dma_iload(struct drm_device *dev, void *data, struct drm_file *fi
+ 	struct drm_device_dma *dma = dev->dma;
+ 	drm_mga_private_t *dev_priv = dev->dev_private;
+ 	struct drm_buf *buf;
+-	drm_mga_buf_priv_t *buf_priv;
+ 	drm_mga_iload_t *iload = data;
+ 	DRM_DEBUG("\n");
+ 
+@@ -959,7 +958,6 @@ static int mga_dma_iload(struct drm_device *dev, void *data, struct drm_file *fi
+ 		return -EINVAL;
+ 
+ 	buf = dma->buflist[iload->idx];
+-	buf_priv = buf->dev_private;
+ 
+ 	if (mga_verify_iload(dev_priv, iload->dstorg, iload->length)) {
+ 		mga_freelist_put(dev, buf);
+
+
 

@@ -2,151 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3AC7736E1
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 20:46:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2D5B737A5
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 21:18:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727249AbfGXSqc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jul 2019 14:46:32 -0400
-Received: from mout.web.de ([217.72.192.78]:56523 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726029AbfGXSqb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jul 2019 14:46:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1563993960;
-        bh=Kh2yjH9xVI5lHKmo9C9G06aivcEldrX0v5Weq5gRLV8=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=RvATu9OipyVIZ5FlBGyrWg0FPFem2PdFej9lI4elbUMBNfbukEgMRxH4UTSIHsDK9
-         M1K9E5YdoOUwnqDzyqK6wTPSk49sm2/ZDWqV3b88IVTzjkD5xrnOPqL/M04xsbv4bw
-         hRWofsL9Ij9r0JGKrAYo1DCgxawwTOESWu/7V90k=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.51.56]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MHp4r-1hpXKM3FG9-003hP3; Wed, 24
- Jul 2019 20:45:59 +0200
-Subject: Re: [v4 3/3] coccinelle: Add script to check for platform_get_irq()
- excessive prints
-To:     Stephen Boyd <swboyd@chromium.org>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>, cocci@systeme.lip6.fr,
-        kernel-janitors@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Andrzej Hajda <a.hajda@samsung.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Mark Brown <broonie@kernel.org>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Rob Herring <robh@kernel.org>,
-        Russell King <linux@armlinux.org.uk>
-References: <20190723181624.203864-4-swboyd@chromium.org>
- <9b5d8470-dd6e-4358-141f-6b6c40774de1@web.de>
- <5d38a232.1c69fb81.f85f4.67e3@mx.google.com>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
- +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
- mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
- lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
- YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
- GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
- rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
- 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
- jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
- BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
- cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
- Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
- g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
- OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
- CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
- LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
- sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
- kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
- i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
- g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
- q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
- NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
- nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
- 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
- 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
- wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
- riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
- DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
- fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
- 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
- xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
- qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
- Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
- Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
- +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
- hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
- /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
- tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
- qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
- Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
- x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
- pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <3ba98738-00a0-4bee-55ab-36127197fb85@web.de>
-Date:   Wed, 24 Jul 2019 20:45:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <5d38a232.1c69fb81.f85f4.67e3@mx.google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:d3GqKj2OtvfBBvcS+VL5N7Tu7iDTzpClqL/Ad/Wb1VduBqqCrnk
- 3Xt047aibAYwxPjvrjAsUoOuzvwvJ6BUvfG6v1xlMXDPzdtPHUeeKjFb20wJRnNyr1Kj/bf
- GLKFgYIqQlo+kC884B6nCvxIU+z9oWaD6MusrItfj7ICZyX8RNmuBXZMM7ChxSp/Qz4Oii1
- 6UKcQrfnxO0FE1JTf6GqA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:5KAMM1wmBJY=:OTGGWaMhhE3t0/+i5Mkiy9
- M4QQsrrxrAv3sJJ0J2jWb2YimnLhpjAb0Ql/Q+gvKRxEnPt4VEn8+oH8PpWOodOsd0UOHEmcQ
- +3Wv+rJPtTDY1pUihul2YqoNQ4ARdgTxQhFZbkEDBcLVp0Vu6OsYMxG8uMYe2+xrmfEyhgnef
- UIYRGEStlpNdm8l0cGe6Rf6E4H8CJsmIu9ztGU1fv8SG38MuNc9cXCyV6xvUeZQ2bFyF71eC0
- v9hkumgslpIZJKkB2K92zaXVqtL9frem/4ortV53SSI1tkhFbbaeo8SbyBBlvKNkIvEn5ktcg
- nAKCDvxxQ4gwQiTdun87FEbuBDCyrxmeDKIIcsUUPlmMhSytKFfCUyLT0kdd8BGI54I+LnCwT
- 6pk+9IJqwIM/fj/PZYP8eQTkiYL7PezuD6mQwHe5BxIA1mhvKdjOCxcLIkZkabsZJC6sfjNVD
- jUOsVoQUYyUBmuq/Y56ozZZWdrvoz4/3MNaOxXtVaShiRAoq92ZVNnj3B8zNAr3y5BHZHzmnR
- D5fMjHjgWiHHKtBWkYw9/DWK576KgdO4LjZXEB1p5O4nYpycAz5fktmZp8f2zyVLwog/GsJAJ
- gM6mykxryN9PWfVORnt2dUSv/ScF0O+Oa/vD4d6IRvLIP568dGXyle7RLpE6v9lP/5j7ND008
- nyN94fu4EBB7UwmfCpBwssEOftnii6MS/Vpf0+EikbcyN9pqhhbiKKdf92XHq/KCzYFEA+3LL
- Zk2yQS3hEtL2X/OcaRVfxHin7DWlSUEzFcuIWNZH18DvFCbfSdyQDTQrojQK1k9qjbLxkq+q7
- U9iGm40d++8h4FcnlgWiwjM4ZmeRCgiKbkhDOxH7KehcMyvCDkDz3mjm+lYV28ls4bo3bl0vo
- KuKpcICM5oK5SS5AzTJSzmyVBuaBYjgz8/Nykr4Bob9S8ZjODR48SiFsi9FIcbXgtfEO9oiIf
- 5VPcy7c6ivXIQ7npszHUoZA/5+51AGA0wQPpSwoOwDqSu9xcn9ybEcsfJZMMxxnvc/fNfCGMD
- 7msjHLPmaCnZxEUc1aEgjpe6OYP64fXsuZu8XVYFSozpoW3wkaLXPnUxQciSKR7qP5Wyas5D8
- RMMKmwVON2EETkt9qaF2i9dFeCzWj1YPFm4
+        id S1729004AbfGXTSL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jul 2019 15:18:11 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:34716 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728993AbfGXTSK (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 24 Jul 2019 15:18:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+        List-Archive; bh=tTy5/+/M3pVI1lUjGhlSClg1xxdvNbhQX6OC/ZBOaJs=; b=PWr2AHlizcnQ
+        3/MS25b18uecwwYcvHHqvXyrO+t27sRaH8xy3NNUwP+uedjp4vGhAhqdE8TkMt+gma4tgX6bUBcy4
+        6SG0DRJOspB5qjFSm6cKV0fINAqVz3rtitad6nqt1gBwslYUhyrpysI9FI38mZIzMi//N75qviJ4c
+        vO/ek=;
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1hqMlt-0008W1-1t; Wed, 24 Jul 2019 19:17:53 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+        id 8368A27429A0; Wed, 24 Jul 2019 20:17:52 +0100 (BST)
+From:   Mark Brown <broonie@kernel.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     alsa-devel@alsa-project.org, broonie@kernel.org,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        gustavo@embeddedor.com, kernel-janitors@vger.kernel.org,
+        lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, patches@opensource.cirrus.com,
+        perex@perex.cz, tiwai@suse.com
+Subject: Applied "ASoC: wm8955: Fix a typo in 'wm8995_pll_factors()' function name" to the asoc tree
+In-Reply-To: <20190724052632.30476-1-christophe.jaillet@wanadoo.fr>
+X-Patchwork-Hint: ignore
+Message-Id: <20190724191752.8368A27429A0@ypsilon.sirena.org.uk>
+Date:   Wed, 24 Jul 2019 20:17:52 +0100 (BST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> Will further software development considerations become more interestin=
-g
->> also around a contribution like =E2=80=9CCoccinelle: Add a SmPL script =
-for
->> the reconsideration of redundant dev_err() calls=E2=80=9D?
->> https://lore.kernel.org/lkml/2744a3fc-9e67-8113-1dd9-43669e06386a@web.d=
-e/
->> https://lore.kernel.org/patchwork/patch/1095937/
->> https://lkml.org/lkml/2019/7/1/145
->> https://systeme.lip6.fr/pipermail/cocci/2019-July/006071.html
->>
->
-> Did this patch ever get merged?
+The patch
 
-Not yet. - I hope that this addition is still in the usual patch review qu=
-eue.
+   ASoC: wm8955: Fix a typo in 'wm8995_pll_factors()' function name
 
+has been applied to the asoc tree at
 
-> It seems better to amend that patch instead of introduce another one.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.4
 
-Further extensions can become more challenging for this software area.
-How would you like to adjust common implementation details?
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Regards,
-Markus
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From e8758a5ed2783c417be1f5aab5af9fe4be60956f Mon Sep 17 00:00:00 2001
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Wed, 24 Jul 2019 07:26:32 +0200
+Subject: [PATCH] ASoC: wm8955: Fix a typo in 'wm8995_pll_factors()' function
+ name
+
+This should be 'wm8955_pll_factors()' instead.
+Fix it and use it.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20190724052632.30476-1-christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/codecs/wm8955.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/sound/soc/codecs/wm8955.c b/sound/soc/codecs/wm8955.c
+index 66a5f1827aa9..9c7e2892c8cb 100644
+--- a/sound/soc/codecs/wm8955.c
++++ b/sound/soc/codecs/wm8955.c
+@@ -140,7 +140,7 @@ struct pll_factors {
+  * to allow rounding later */
+ #define FIXED_FLL_SIZE ((1 << 22) * 10)
+ 
+-static int wm8995_pll_factors(struct device *dev,
++static int wm8955_pll_factors(struct device *dev,
+ 			      int Fref, int Fout, struct pll_factors *pll)
+ {
+ 	u64 Kpart;
+@@ -279,7 +279,7 @@ static int wm8955_configure_clocking(struct snd_soc_component *component)
+ 
+ 		/* Use the last divider configuration we saw for the
+ 		 * sample rate. */
+-		ret = wm8995_pll_factors(component->dev, wm8955->mclk_rate,
++		ret = wm8955_pll_factors(component->dev, wm8955->mclk_rate,
+ 					 clock_cfgs[sr].mclk, &pll);
+ 		if (ret != 0) {
+ 			dev_err(component->dev,
+-- 
+2.20.1
+

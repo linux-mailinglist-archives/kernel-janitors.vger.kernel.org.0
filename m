@@ -2,78 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46653727B0
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 08:01:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68FAA7282E
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 08:20:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726319AbfGXGBT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jul 2019 02:01:19 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:44928 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725870AbfGXGBT (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jul 2019 02:01:19 -0400
-Received: from localhost.localdomain ([92.140.204.221])
-        by mwinf5d09 with ME
-        id gW1F2000A4n7eLC03W1Gqa; Wed, 24 Jul 2019 08:01:17 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 24 Jul 2019 08:01:17 +0200
-X-ME-IP: 92.140.204.221
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     brian.austin@cirrus.com, Paul.Handrigan@cirrus.com,
-        lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
-        tiwai@suse.com
-Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] ASoC: cs4271: Fix a typo in the CS4171_NR_RATIOS
-Date:   Wed, 24 Jul 2019 08:00:23 +0200
-Message-Id: <20190724060023.31302-1-christophe.jaillet@wanadoo.fr>
+        id S1726148AbfGXGUi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jul 2019 02:20:38 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:48296 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725882AbfGXGUi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 24 Jul 2019 02:20:38 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id A1A274D138ECE27611AD;
+        Wed, 24 Jul 2019 14:20:34 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 24 Jul 2019 14:20:29 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <kvalo@codeaurora.org>, <amitkarwar@gmail.com>,
+        <nishants@marvell.com>, <gbhat@marvell.com>,
+        <huxinming820@gmail.com>
+CC:     <linux-wireless@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH wireless-drivers-next v2] mwifiex: use eth_broadcast_addr() to assign broadcast address
+Date:   Wed, 24 Jul 2019 14:25:45 +0800
+Message-ID: <20190724062545.119041-1-maowenan@huawei.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <878sso0yzx.fsf@kamboji.qca.qualcomm.com>
+References: <878sso0yzx.fsf@kamboji.qca.qualcomm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This should be CS4271_NR_RATIOS.
-Fix it and use it.
+This patch is to use eth_broadcast_addr() to assign broadcast address
+insetad of memcpy().
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
 ---
- sound/soc/codecs/cs4271.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ v1->v2: change subject from net-next to wireless-drivers-next.
+ 
+ drivers/net/wireless/marvell/mwifiex/tdls.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/cs4271.c b/sound/soc/codecs/cs4271.c
-index 1d03a1348162..04b86a51e055 100644
---- a/sound/soc/codecs/cs4271.c
-+++ b/sound/soc/codecs/cs4271.c
-@@ -334,7 +334,7 @@ static struct cs4271_clk_cfg cs4271_clk_tab[] = {
- 	{0, CS4271_MODE1_MODE_4X, 256,  CS4271_MODE1_DIV_2},
- };
+diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wireless/marvell/mwifiex/tdls.c
+index 18e654d..0931304 100644
+--- a/drivers/net/wireless/marvell/mwifiex/tdls.c
++++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
+@@ -731,7 +731,6 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
+ 				    u16 status_code, struct sk_buff *skb)
+ {
+ 	struct ieee80211_mgmt *mgmt;
+-	u8 bc_addr[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+ 	int ret;
+ 	u16 capab;
+ 	struct ieee80211_ht_cap *ht_cap;
+@@ -765,7 +764,7 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
+ 		memmove(pos + ETH_ALEN, &mgmt->u.action.category,
+ 			sizeof(mgmt->u.action.u.tdls_discover_resp));
+ 		/* init address 4 */
+-		memcpy(pos, bc_addr, ETH_ALEN);
++		eth_broadcast_addr(pos);
  
--#define CS4171_NR_RATIOS ARRAY_SIZE(cs4271_clk_tab)
-+#define CS4271_NR_RATIOS ARRAY_SIZE(cs4271_clk_tab)
- 
- static int cs4271_hw_params(struct snd_pcm_substream *substream,
- 			    struct snd_pcm_hw_params *params,
-@@ -383,13 +383,13 @@ static int cs4271_hw_params(struct snd_pcm_substream *substream,
- 		val = CS4271_MODE1_MODE_4X;
- 
- 	ratio = cs4271->mclk / cs4271->rate;
--	for (i = 0; i < CS4171_NR_RATIOS; i++)
-+	for (i = 0; i < CS4271_NR_RATIOS; i++)
- 		if ((cs4271_clk_tab[i].master == cs4271->master) &&
- 		    (cs4271_clk_tab[i].speed_mode == val) &&
- 		    (cs4271_clk_tab[i].ratio == ratio))
- 			break;
- 
--	if (i == CS4171_NR_RATIOS) {
-+	if (i == CS4271_NR_RATIOS) {
- 		dev_err(component->dev, "Invalid sample rate\n");
- 		return -EINVAL;
- 	}
+ 		ret = mwifiex_tdls_append_rates_ie(priv, skb);
+ 		if (ret) {
 -- 
-2.20.1
+2.7.4
 

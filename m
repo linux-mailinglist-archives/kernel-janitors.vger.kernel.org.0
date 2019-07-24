@@ -2,143 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E892372FBA
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 15:19:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EF3E731D2
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 16:38:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728608AbfGXNTR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jul 2019 09:19:17 -0400
-Received: from mout.web.de ([212.227.15.3]:49939 "EHLO mout.web.de"
+        id S1727339AbfGXOiS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jul 2019 10:38:18 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:42356 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727841AbfGXNTQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jul 2019 09:19:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1563974320;
-        bh=RMWJ28ZCfKdNbSYVaUUBJOU66iPoYHkyNH1NYJHPWVs=;
-        h=X-UI-Sender-Class:Cc:References:Subject:From:To:Date:In-Reply-To;
-        b=TRaYNt6cJtnfwUwchVc/7UNWNj0C9a8nN3bSu/TB3ZfZ9dMbOlrwrt7tR5YwM7SZC
-         8Hfa+KKBlYSyY850Cb5eAqKp98jInAwAwoekwHrsqSIbt2bpmbNdA7toW4ValVnIlh
-         vpgtaJ7gq+guVHlWyM4dE6YY13cBEyUmLPlEffLI=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.51.56]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LiUVY-1iOVSO09Ua-00ce0a; Wed, 24
- Jul 2019 15:18:40 +0200
-Cc:     linux-kernel@vger.kernel.org, Andrzej Hajda <a.hajda@samsung.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Mark Brown <broonie@kernel.org>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Rob Herring <robh@kernel.org>,
-        Russell King <linux@armlinux.org.uk>
-References: <20190723181624.203864-4-swboyd@chromium.org>
-Subject: Re: [PATCH v4 3/3] coccinelle: Add script to check for
- platform_get_irq() excessive prints
-From:   Markus Elfring <Markus.Elfring@web.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
- +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
- mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
- lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
- YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
- GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
- rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
- 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
- jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
- BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
- cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
- Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
- g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
- OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
- CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
- LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
- sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
- kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
- i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
- g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
- q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
- NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
- nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
- 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
- 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
- wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
- riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
- DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
- fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
- 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
- xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
- qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
- Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
- Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
- +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
- hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
- /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
- tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
- qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
- Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
- x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
- pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-To:     Stephen Boyd <swboyd@chromium.org>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        kernel-janitors@vger.kernel.org, cocci@systeme.lip6.fr
-Message-ID: <9b5d8470-dd6e-4358-141f-6b6c40774de1@web.de>
-Date:   Wed, 24 Jul 2019 15:18:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1725870AbfGXOiS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 24 Jul 2019 10:38:18 -0400
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 37E6A8E233;
+        Wed, 24 Jul 2019 14:38:18 +0000 (UTC)
+Received: from ovpn-112-51.rdu2.redhat.com (ovpn-112-51.rdu2.redhat.com [10.10.112.51])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A0BE010190A9;
+        Wed, 24 Jul 2019 14:38:16 +0000 (UTC)
+Message-ID: <9153261627a0f84b996e023f1349a2bc06dd03ee.camel@redhat.com>
+Subject: [PATCH v3] libertas: Fix a double free in if_spi_c2h_data()
+From:   Dan Williams <dcbw@redhat.com>
+To:     Kalle Valo <kvalo@codeaurora.org>
+Cc:     Philip Rakity <prakity@yahoo.com>,
+        libertas-dev@lists.infradead.org, kernel-janitors@vger.kernel.org,
+        linux-wireless@vger.kernel.org, Lubomir Rintel <lkundrak@v3.sk>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Allison Randal <allison@lohutok.net>
+Date:   Wed, 24 Jul 2019 09:38:15 -0500
+In-Reply-To: <ee4472e4728becc9713962ba264742cb1f337098.camel@redhat.com>
+References: <20190626100926.GD3242@mwanda>
+         <be491ab35ba46111a1c90cc12b6d5ff6ea3f57e8.camel@redhat.com>
+         <20190626132340.GE28859@kadam>
+         <e679c9f99d6952f82924c71f036e4a196d0e72d4.camel@redhat.com>
+         <ee4472e4728becc9713962ba264742cb1f337098.camel@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
-In-Reply-To: <20190723181624.203864-4-swboyd@chromium.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Lg0bH29JAMS62N1veEu8qnTCsl/1nUFcnBAV+U6fQpeJxpoa4ws
- EIZJK93GCEYRwOSPDa7cx6b5znl7IKq8jAEZCLI5TeNUHCoRfJVm6oQzK9v5E0rus6RcwWa
- PK5hgeUhkL/O1/f7srtKLGtWtejx2qDE0+K5nrbBCks2GYX93THtTB1upIWSjg4my3FeLLg
- EufTGBm9Y+TnJbmsnOuFQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:bKtxc3p1bwE=:5RdzYnSrZ03XG5tuPCxmbm
- Xo2875GdCw792pNdnh9p//QLSjFOzXeKAjxJwlxQBuNd6g233/otcwM/A07bz89LpeDkK4sOF
- s1CZLX9l5VbqqREHAR6uOSYnYNPCxsDREBPvAOiwTD7vYNrGhl4TxoaorY38F8whZS3umhUjx
- rQrYP9bNbtDqzdzWaVYl9JNw9XBqyycoEL83eAaKJfEcgHaI3PmQwRQbMV9KqJNZmRsiRkSKO
- FesM8HN5KEnGY7AnVVAlpq8qaFq2TCbghXrjJYuqAl0GU0QWfMsdlxgpqtJ4uL+t152YHbm9r
- +oFr8tw2CD0ErfzO634OMpTZg8woc+v+mg+SB+YiSrmzTWwZ/yjggfFCRPqDKBaWn+zIkwOdm
- c9CWRhp73iyQIhlhdtf7b+f3fSsJPnlQFO3nZqgGqymIQ1KIxFa1fFieVXG7NlZE2J6q6CHMY
- xDzmHyCNGagShGAD1TWeJbohSsOGgqBDOx6bq407BGCxc+Sou5rhTg8IljQztf9QOsW36KeNI
- J+n4KxPY0qtEppVV+fTjgK5NgnMd+H7252NZLVIAZ7Hj5MH3aCEtgLI2WyPkVdsm0eQQ1Y4K5
- BBNm/GiZpTwjqmjMhFwV/yxgZgaAlyjQu4HYANIYgTCVLM8xPsR/1unsAyvsVrVjWtWm+Sfj4
- 7qmaq2EihliFllJb80LqL7Ts5zvWj+1Ka8Gz7ltxdWW0htV39FGIvtzt4qdUGlliL5vX062M9
- hksEEWPseeFkUDm3NPTm0a0AqVXGC5KAnx23Wmwq91t7H9nlslsvIYt6VXBD2ujthxHqEFXqK
- syFU+ftDlnCY0vtx1DVn1FPtPqsr6//MQxRyhtkK04yKylT0ZuUf2YWxtEGn9G7C60iGeE9fa
- eFjV8jPOFYoCWWPsdRVWzYbOpnTODCm6or+RtFfh5utTolOL+6dDx3nulg7s9ObTqndRH2d5g
- 3bkkh+dMo0KGSsLmlxWgM5WOnVOV/YxxK/SjpQ+K+UHWma47ggphcE88XD4nW9SWTC240b+hs
- zzmWLQ+C+94tCaqcIXUWi8pa9S9eiupYAHghJ8jLBeuPr2k4I8A5Ca6KGBI+W+4gebFCXOSrA
- CHLz9z5EQMlsRXrKwLwkaOr374RvW3VqUTk
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.26]); Wed, 24 Jul 2019 14:38:18 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> +@script:python depends on org@
-> +p1 << r.p1;
-> +@@
-> +
-> +cocci.print_main(p1)
+The lbs_process_rxed_packet() frees the skb.  It didn't originally, but
+we fixed it in commit f54930f36311 ("libertas: don't leak skb on receive
+error").
 
-Will an additional message be helpful at this place?
+Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
+Signed-off-by: Dan Williams <dcbw@redhat.com>
+---
 
+Kalle: sorry about the build error; previous version of the patch before I fixed it.
+Here's the correct one.
 
-Will further software development considerations become more interesting
-also around a contribution like =E2=80=9CCoccinelle: Add a SmPL script for
-the reconsideration of redundant dev_err() calls=E2=80=9D?
-https://lore.kernel.org/lkml/2744a3fc-9e67-8113-1dd9-43669e06386a@web.de/
-https://lore.kernel.org/patchwork/patch/1095937/
-https://lkml.org/lkml/2019/7/1/145
-https://systeme.lip6.fr/pipermail/cocci/2019-July/006071.html
+ drivers/net/wireless/marvell/libertas/if_spi.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-Regards,
-Markus
+diff --git a/drivers/net/wireless/marvell/libertas/if_spi.c b/drivers/net/wireless/marvell/libertas/if_spi.c
+index 27067e79e83fe..d07fe82c557e8 100644
+--- a/drivers/net/wireless/marvell/libertas/if_spi.c
++++ b/drivers/net/wireless/marvell/libertas/if_spi.c
+@@ -766,19 +766,15 @@ static int if_spi_c2h_data(struct if_spi_card *card)
+ 
+ 	/* Read the data from the WLAN module into our skb... */
+ 	err = spu_read(card, IF_SPI_DATA_RDWRPORT_REG, data, ALIGN(len, 4));
+-	if (err)
+-		goto free_skb;
++	if (err) {
++		dev_kfree_skb(skb);
++		goto out;
++	}
+ 
+ 	/* pass the SKB to libertas */
+ 	err = lbs_process_rxed_packet(card->priv, skb);
+-	if (err)
+-		goto free_skb;
++	/* lbs_process_rxed_packet() consumes the skb */
+ 
+-	/* success */
+-	goto out;
+-
+-free_skb:
+-	dev_kfree_skb(skb);
+ out:
+ 	if (err)
+ 		netdev_err(priv->dev, "%s: err=%d\n", __func__, err);
+-- 
+2.20.1
+

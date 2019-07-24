@@ -2,65 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89CD0723B0
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 03:28:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7625723BA
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 03:32:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728248AbfGXB2d (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 23 Jul 2019 21:28:33 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:39324 "EHLO huawei.com"
+        id S1728279AbfGXBc3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 23 Jul 2019 21:32:29 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:2743 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728069AbfGXB2d (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 23 Jul 2019 21:28:33 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id F20A01A3547642C26260;
-        Wed, 24 Jul 2019 09:28:30 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 24 Jul 2019 09:28:23 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     CK Hu <ck.hu@mediatek.com>, Philipp Zabel <p.zabel@pengutronix.de>,
-        "David Airlie" <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        Matthias Brugger <matthias.bgg@gmail.com>
-CC:     YueHaibing <yuehaibing@huawei.com>,
-        <dri-devel@lists.freedesktop.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] drm/mediatek: Remove duplicated include from mtk_drm_drv.c
-Date:   Wed, 24 Jul 2019 01:33:48 +0000
-Message-ID: <20190724013348.153144-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1725837AbfGXBc2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 23 Jul 2019 21:32:28 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id BFCB5AEEA5EBA150532A;
+        Wed, 24 Jul 2019 09:32:26 +0800 (CST)
+Received: from [127.0.0.1] (10.177.96.96) by DGGEMS411-HUB.china.huawei.com
+ (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Wed, 24 Jul 2019
+ 09:32:24 +0800
+Subject: Re: [net-next] mwifiex: use eth_broadcast_addr() to assign broadcast
+ address
+To:     <amitkarwar@gmail.com>, <nishants@marvell.com>,
+        <gbhat@marvell.com>, <huxinming820@gmail.com>,
+        <kvalo@codeaurora.org>
+References: <20190710072524.65953-1-maowenan@huawei.com>
+CC:     <linux-wireless@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+From:   maowenan <maowenan@huawei.com>
+Message-ID: <609fa4ae-7210-7758-c8ff-1b06492356e1@huawei.com>
+Date:   Wed, 24 Jul 2019 09:32:13 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
+In-Reply-To: <20190710072524.65953-1-maowenan@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.96.96]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove duplicated include.
+gentle ping...
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/gpu/drm/mediatek/mtk_drm_drv.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-index 2ee809a6f3dc..e3b64a266dcf 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -23,7 +23,6 @@
- 
- #include "mtk_drm_crtc.h"
- #include "mtk_drm_ddp.h"
--#include "mtk_drm_ddp.h"
- #include "mtk_drm_ddp_comp.h"
- #include "mtk_drm_drv.h"
- #include "mtk_drm_fb.h"
-
-
-
-
+On 2019/7/10 15:25, Mao Wenan wrote:
+> This patch is to use eth_broadcast_addr() to assign broadcast address
+> insetad of memcpy().
+> 
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> ---
+>  drivers/net/wireless/marvell/mwifiex/tdls.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/wireless/marvell/mwifiex/tdls.c b/drivers/net/wireless/marvell/mwifiex/tdls.c
+> index 18e654d..0931304 100644
+> --- a/drivers/net/wireless/marvell/mwifiex/tdls.c
+> +++ b/drivers/net/wireless/marvell/mwifiex/tdls.c
+> @@ -731,7 +731,6 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
+>  				    u16 status_code, struct sk_buff *skb)
+>  {
+>  	struct ieee80211_mgmt *mgmt;
+> -	u8 bc_addr[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+>  	int ret;
+>  	u16 capab;
+>  	struct ieee80211_ht_cap *ht_cap;
+> @@ -765,7 +764,7 @@ mwifiex_construct_tdls_action_frame(struct mwifiex_private *priv,
+>  		memmove(pos + ETH_ALEN, &mgmt->u.action.category,
+>  			sizeof(mgmt->u.action.u.tdls_discover_resp));
+>  		/* init address 4 */
+> -		memcpy(pos, bc_addr, ETH_ALEN);
+> +		eth_broadcast_addr(pos);
+>  
+>  		ret = mwifiex_tdls_append_rates_ie(priv, skb);
+>  		if (ret) {
+> 
 

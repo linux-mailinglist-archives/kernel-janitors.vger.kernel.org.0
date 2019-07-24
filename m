@@ -2,166 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E3C317291F
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 09:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD37272A4B
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 10:39:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725955AbfGXHkd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jul 2019 03:40:33 -0400
-Received: from mx2.suse.de ([195.135.220.15]:54826 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725826AbfGXHkc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jul 2019 03:40:32 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 94042AF35;
-        Wed, 24 Jul 2019 07:40:30 +0000 (UTC)
-Subject: Re: [PATCH -next] drm/mga: remove set but not used variable
- 'buf_priv'
-To:     YueHaibing <yuehaibing@huawei.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Sam Ravnborg <sam@ravnborg.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, Hulk Robot <hulkci@huawei.com>
-References: <20190724014619.32665-1-yuehaibing@huawei.com>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNKFRob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmNvbT7CwJQEEwEIAD4W
- IQRyF/usjOnPY0ShaOVoDcEdUwt6IwUCWznTtgIbAwUJA8JnAAULCQgHAgYVCgkICwIEFgID
- AQIeAQIXgAAKCRBoDcEdUwt6I7D7CACBK42XW+7mCiK8ioXMEy1NzGbXC51RzGea8N83oEJS
- 1KVUtQxrkDxgrW/WLSl/TfqHFsJpdEFOv1XubWbleun3uKPy0e5vZCd5UjZPkeNjnqfCYTDy
- hVVsdOuFbtWDppJyJrThLqr9AgSFmoCNNUt1SVpYEEOLNE6C32BhlnSq21VLC+YXTgO/ZHTa
- YXkq54hHj63jwrcjkBSCkXLh37kHeqnl++GHpN+3R+o3w2OpwHAlvVjdKPT27v1tVkiydsFG
- 65Vd0n3m/ft+IOrGgxQM1C20uqKvsZGB4r3OGR50ekAybO7sjEJJ1Obl4ge/6RRqcvKz4LMb
- tGs85D6tPIeFzsBNBFs50uABCADGJj+DP1fk+UWOWrf4O61HTbC4Vr9QD2K4fUUHnzg2B6zU
- R1BPXqLGG0+lzK8kfYU/F5RjmEcClsIkAaFkg4kzKP14tvY1J5+AV3yNqcdg018HNtiyrSwI
- E0Yz/qm1Ot2NMZ0DdvVBg22IMsiudQ1tx9CH9mtyTbIXgACvl3PW2o9CxiHPE/bohFhwZwh/
- kXYYAE51lhinQ3oFEeQZA3w4OTvxSEspiQR8dg8qJJb+YOAc5IKk6sJmmM7JfFMWSr22satM
- 23oQ3WvJb4RV6HTRTAIEyyZS7g2DhiytgMG60t0qdABG5KXSQW+OKlZRpuWwKWaLh3if/p/u
- 69dvpanbABEBAAHCwHwEGAEIACYWIQRyF/usjOnPY0ShaOVoDcEdUwt6IwUCWznS4AIbDAUJ
- A8JnAAAKCRBoDcEdUwt6I6X3CACJ8D+TpXBCqJE5xwog08+Dp8uBpx0T9n1wE0GQisZruACW
- NofYn8PTX9k4wmegDLwt7YQDdKxQ4+eTfZeLNQqWg6OCftH5Kx7sjWnJ09tOgniVdROzWJ7c
- VJ/i0okazncsJ+nq48UYvRGE1Swh3A4QRIyphWX4OADOBmTFl9ZYNPnh23eaC9WrNvFr7yP7
- iGjMlfEW8l6Lda//EC5VpXVNza0xeae0zFNst2R9pn+bLkihwDLWxOIyifGRxTqNxoS4I1aw
- VhxPSVztPMSpIA/sOr/N/p6JrBLn+gui2K6mP7bGb8hF+szfArYqz3T1rv1VzUWAJf5Wre5U
- iNx9uqqx
-Message-ID: <14af485d-a73f-d6bc-a93b-8d44bb64112a@suse.de>
-Date:   Wed, 24 Jul 2019 09:40:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726065AbfGXIjV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jul 2019 04:39:21 -0400
+Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:57034 "EHLO
+        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725883AbfGXIjV (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 24 Jul 2019 04:39:21 -0400
+Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
+        by mx0a-001ae601.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id x6O8XmpJ020457;
+        Wed, 24 Jul 2019 03:38:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=PODMain02222019;
+ bh=kq12ssq+svftp3GaCiDd/DAWyCN0IaOqRChAjOHdgDY=;
+ b=Cmnujevayfe5Qmqny6wB9tF9BcjpfKA9FbE9wTjBP2tDWYwbkVhKMR1r7Harb/grcH53
+ fk/MZd63Sbas/stidiuv+7LrVbmgRgoT8n/zPdF+N+qlY13bZPR4WKbxjoEyxjMxOPfk
+ 4DXekrBvlSBfDtFfNb7Hw2Jw1Dd6Q1McHe9+clJPxrNHDDgCQTOK6RgUtE5cBY3v9kYL
+ nbohTHedhstZv170oqjBTmCr3GVYtbXQBPX5kfu8kdIOIgJXZr1Taf/o74reXiXLjK+8
+ aHgiBcxFbo2Hg9JH9zo6j6ta4M4TkS12yAUDVKEHsBGiJYrs+R7dXdfJ7mkfV2kMcv86 ZQ== 
+Authentication-Results: ppops.net;
+        spf=fail smtp.mailfrom=ckeepax@opensource.cirrus.com
+Received: from ediex01.ad.cirrus.com ([87.246.76.36])
+        by mx0a-001ae601.pphosted.com with ESMTP id 2tx61s13ax-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Wed, 24 Jul 2019 03:38:16 -0500
+Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Wed, 24 Jul
+ 2019 09:38:14 +0100
+Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
+ (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
+ Transport; Wed, 24 Jul 2019 09:38:14 +0100
+Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
+        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 73DFC45;
+        Wed, 24 Jul 2019 09:38:14 +0100 (BST)
+Date:   Wed, 24 Jul 2019 09:38:14 +0100
+From:   Charles Keepax <ckeepax@opensource.cirrus.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+CC:     <lgirdwood@gmail.com>, <broonie@kernel.org>, <perex@perex.cz>,
+        <tiwai@suse.com>, <gustavo@embeddedor.com>,
+        <patches@opensource.cirrus.com>, <alsa-devel@alsa-project.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] ASoC: wm8955: Fix a typo in 'wm8995_pll_factors()'
+ function name
+Message-ID: <20190724083814.GS54126@ediswmail.ad.cirrus.com>
+References: <20190724052632.30476-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-In-Reply-To: <20190724014619.32665-1-yuehaibing@huawei.com>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="w08pszPqwMWrvXc6cnxtdPDspNYAOpysW"
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20190724052632.30476-1-christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Proofpoint-SPF-Result: fail
+X-Proofpoint-SPF-Record: v=spf1 include:spf-001ae601.pphosted.com include:spf.protection.outlook.com
+ -all
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=845 suspectscore=0
+ lowpriorityscore=0 malwarescore=0 priorityscore=1501 spamscore=0
+ adultscore=0 bulkscore=0 impostorscore=0 phishscore=0 clxscore=1011
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1906280000 definitions=main-1907240096
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---w08pszPqwMWrvXc6cnxtdPDspNYAOpysW
-Content-Type: multipart/mixed; boundary="keAZ2cF4X0e3pWJPZIIcbGIHjjW7RjWlp";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: YueHaibing <yuehaibing@huawei.com>, David Airlie <airlied@linux.ie>,
- Daniel Vetter <daniel@ffwll.ch>, Sam Ravnborg <sam@ravnborg.org>
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, Hulk Robot <hulkci@huawei.com>
-Message-ID: <14af485d-a73f-d6bc-a93b-8d44bb64112a@suse.de>
-Subject: Re: [PATCH -next] drm/mga: remove set but not used variable
- 'buf_priv'
-References: <20190724014619.32665-1-yuehaibing@huawei.com>
-In-Reply-To: <20190724014619.32665-1-yuehaibing@huawei.com>
-
---keAZ2cF4X0e3pWJPZIIcbGIHjjW7RjWlp
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-
-Am 24.07.19 um 03:46 schrieb YueHaibing:
-> Fixes gcc '-Wunused-but-set-variable' warning:
->=20
-> drivers/gpu/drm/mga/mga_state.c: In function 'mga_dma_iload':
-> drivers/gpu/drm/mga/mga_state.c:945:22: warning:
->  variable 'buf_priv' set but not used [-Wunused-but-set-variable]
->=20
-> It is never used, so can be removed.
->=20
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+On Wed, Jul 24, 2019 at 07:26:32AM +0200, Christophe JAILLET wrote:
+> This should be 'wm8955_pll_factors()' instead.
+> Fix it and use it.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > ---
->  drivers/gpu/drm/mga/mga_state.c | 2 --
->  1 file changed, 2 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/mga/mga_state.c b/drivers/gpu/drm/mga/mga_=
-state.c
-> index 77a0b006f066..0dec4062e5a2 100644
-> --- a/drivers/gpu/drm/mga/mga_state.c
-> +++ b/drivers/gpu/drm/mga/mga_state.c
-> @@ -942,7 +942,6 @@ static int mga_dma_iload(struct drm_device *dev, vo=
-id *data, struct drm_file *fi
->  	struct drm_device_dma *dma =3D dev->dma;
->  	drm_mga_private_t *dev_priv =3D dev->dev_private;
->  	struct drm_buf *buf;
-> -	drm_mga_buf_priv_t *buf_priv;
->  	drm_mga_iload_t *iload =3D data;
->  	DRM_DEBUG("\n");
-> =20
-> @@ -959,7 +958,6 @@ static int mga_dma_iload(struct drm_device *dev, vo=
-id *data, struct drm_file *fi
->  		return -EINVAL;
-> =20
->  	buf =3D dma->buflist[iload->idx];
-> -	buf_priv =3D buf->dev_private;
-> =20
->  	if (mga_verify_iload(dev_priv, iload->dstorg, iload->length)) {
->  		mga_freelist_put(dev, buf);
->=20
 
-Thanks!
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-
->=20
->=20
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
->=20
-
---=20
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Linux GmbH, Maxfeldstrasse 5, 90409 Nuernberg, Germany
-GF: Felix Imend=C3=B6rffer, Mary Higgins, Sri Rasiah
-HRB 21284 (AG N=C3=BCrnberg)
-
-
---keAZ2cF4X0e3pWJPZIIcbGIHjjW7RjWlp--
-
---w08pszPqwMWrvXc6cnxtdPDspNYAOpysW
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl04C20ACgkQaA3BHVML
-eiOUewf/Qnu3ijQ7oRow2rPhHQLuyjtcMtyhMV6IHBrlSJ4caVNeUT7WchUEEpgH
-dfrV7e4ozjQoUoRRjIkgmtyF9VIgTaC7f8DUXPaHbdKdFto4eqxHkzq9Qvlahj/L
-yLvA3vqNO2Xqqg4ImipzD5+NdyLb6+XUg3qlqR0Io5qq9/1jgwC1+thVchD3KHT6
-qbFeEF7cwV5+EkZr8Mu8dnu0zNn5pR844LBkTgIEnTHO5IcwDJcxUNabQTvu3hXx
-/WW49SYOwBW+ImQofxlQaegzuoxoF0mfZlaB13tszTP7LQzp4W4zdA2UeZG0zw3r
-sVW38ZbC5iyfbj1ZO/72ezcBH+7w4Q==
-=bbRi
------END PGP SIGNATURE-----
-
---w08pszPqwMWrvXc6cnxtdPDspNYAOpysW--
+Thanks,
+Charles

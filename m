@@ -2,30 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83EC67272D
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 07:08:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA87B7274E
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 07:27:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725945AbfGXFIs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jul 2019 01:08:48 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:26270 "EHLO
+        id S1725944AbfGXF1b (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jul 2019 01:27:31 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:21621 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725870AbfGXFIs (ORCPT
+        with ESMTP id S1725882AbfGXF1a (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jul 2019 01:08:48 -0400
+        Wed, 24 Jul 2019 01:27:30 -0400
 Received: from localhost.localdomain ([92.140.204.221])
         by mwinf5d09 with ME
-        id gV8l200024n7eLC03V8lCw; Wed, 24 Jul 2019 07:08:46 +0200
+        id gVTR2000H4n7eLC03VTRSq; Wed, 24 Jul 2019 07:27:28 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 24 Jul 2019 07:08:46 +0200
+X-ME-Date: Wed, 24 Jul 2019 07:27:28 +0200
 X-ME-IP: 92.140.204.221
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     bsingharora@gmail.com
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+To:     lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
+        tiwai@suse.com, gustavo@embeddedor.com,
+        patches@opensource.cirrus.com
+Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] taskstats: Fix a typo - taskstsats --> taskstats
-Date:   Wed, 24 Jul 2019 07:07:51 +0200
-Message-Id: <20190724050751.30170-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ASoC: wm8955: Fix a typo in 'wm8995_pll_factors()' function name
+Date:   Wed, 24 Jul 2019 07:26:32 +0200
+Message-Id: <20190724052632.30476-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -34,35 +37,36 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is an extra 's' in 'taskstsats', remove it.
+This should be 'wm8955_pll_factors()' instead.
+Fix it and use it.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- kernel/taskstats.c | 4 ++--
+ sound/soc/codecs/wm8955.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/taskstats.c b/kernel/taskstats.c
-index 13a0f2e6ebc2..30578b139d16 100644
---- a/kernel/taskstats.c
-+++ b/kernel/taskstats.c
-@@ -163,7 +163,7 @@ static void fill_stats(struct user_namespace *user_ns,
- 	memset(stats, 0, sizeof(*stats));
- 	/*
- 	 * Each accounting subsystem adds calls to its functions to
--	 * fill in relevant parts of struct taskstsats as follows
-+	 * fill in relevant parts of struct taskstats as follows
- 	 *
- 	 *	per-task-foo(stats, tsk);
- 	 */
-@@ -222,7 +222,7 @@ static int fill_stats_for_tgid(pid_t tgid, struct taskstats *stats)
- 			continue;
- 		/*
- 		 * Accounting subsystem can call its functions here to
--		 * fill in relevant parts of struct taskstsats as follows
-+		 * fill in relevant parts of struct taskstats as follows
- 		 *
- 		 *	per-task-foo(stats, tsk);
- 		 */
+diff --git a/sound/soc/codecs/wm8955.c b/sound/soc/codecs/wm8955.c
+index cd204f79647d..ec82a8fafdf6 100644
+--- a/sound/soc/codecs/wm8955.c
++++ b/sound/soc/codecs/wm8955.c
+@@ -143,7 +143,7 @@ struct pll_factors {
+  * to allow rounding later */
+ #define FIXED_FLL_SIZE ((1 << 22) * 10)
+ 
+-static int wm8995_pll_factors(struct device *dev,
++static int wm8955_pll_factors(struct device *dev,
+ 			      int Fref, int Fout, struct pll_factors *pll)
+ {
+ 	u64 Kpart;
+@@ -282,7 +282,7 @@ static int wm8955_configure_clocking(struct snd_soc_component *component)
+ 
+ 		/* Use the last divider configuration we saw for the
+ 		 * sample rate. */
+-		ret = wm8995_pll_factors(component->dev, wm8955->mclk_rate,
++		ret = wm8955_pll_factors(component->dev, wm8955->mclk_rate,
+ 					 clock_cfgs[sr].mclk, &pll);
+ 		if (ret != 0) {
+ 			dev_err(component->dev,
 -- 
 2.20.1
 

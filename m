@@ -2,154 +2,136 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C3C2872B65
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 11:30:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D93C872C1B
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 12:09:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726585AbfGXJa5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jul 2019 05:30:57 -0400
-Received: from mout.web.de ([212.227.15.4]:45727 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726562AbfGXJa5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jul 2019 05:30:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1563960632;
-        bh=SyheEE4mTCHAKERmFibC4B8V4srPs1I08MSz+S5/dO4=;
-        h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
-        b=gc9Fn+D2o643SKOGsG7FR+3k3BRobz6iRTobFNKD6Yo8vSmk7pM7/Eh8B6+ZLyAdg
-         RqPurAjIbiwQLyiI9h/vMlbGSz4MWJjl2k+pQrEl6FYat96Qo9tUXb2YZCYIkbLS5j
-         B7Zmk88CtdWguiCG2Ebcc+7OwJhajqNuyLUD0LnQ=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.51.56]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LhvUI-1iCtE53FEg-00n8pJ; Wed, 24
- Jul 2019 11:30:31 +0200
-To:     Stephen Boyd <swboyd@chromium.org>, cocci@systeme.lip6.fr,
-        kernel-janitors@vger.kernel.org,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>
-Cc:     Gilles Muller <Gilles.Muller@lip6.fr>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        linux-kernel@vger.kernel.org, Andrzej Hajda <a.hajda@samsung.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-        Russell King <linux@armlinux.org.uk>
-References: <20190723181624.203864-4-swboyd@chromium.org>
-Subject: Re: [PATCH v4 3/3] coccinelle: Add script to check for
- platform_get_irq() excessive prints
-From:   Markus Elfring <Markus.Elfring@web.de>
+        id S1727284AbfGXKJL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jul 2019 06:09:11 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:53441 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727137AbfGXKJK (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 24 Jul 2019 06:09:10 -0400
+Received: by mail-wm1-f67.google.com with SMTP id x15so41257159wmj.3;
+        Wed, 24 Jul 2019 03:09:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=IFe+jDxbDPAMh5mQn2e4hJUl3LINzr9GC6L5Ez1zNn0=;
+        b=i2p/M+LAeRvbUKD/68s1cgVD0YtEqDlKcBKcUOyC/tbJRQUhvvkKqYCfsSTAjPesLz
+         +gQ75RPq4quMzyB3yVhjrtKY8tXRFi9hbTIIwD4XGiSH5i3iP9lo+iYebcQBnKsk+wwc
+         NzGbxf90py4HBCmAMupj0N3ro/zBDn4uQ/wuc3KAWhHqB+fn++YjcO+luLtepCNRjzku
+         Cv3FIUldnZAAFytcBF89rpDJOV6lpOelKVujF2O0sLMDiE/W1/9ps7Ls1X/OSnftLQ+f
+         Z27Ppufku+RgxxEPmbTDUU6nHuTgHG89KUnZJJX7zQffHudGzGBZjP3yxcw9zfFY/UW7
+         4MKA==
+X-Gm-Message-State: APjAAAUKJ6WQhvt1pDQ6ED+w9uC8r0ftCN8ASDcHbinJuq177VAOZU7T
+        i8Ad0lvM9w5WQhgu6xnSSKFtgFYu
+X-Google-Smtp-Source: APXvYqwZZOAkqi9LeSfBkupGAm4lvglO0LKKV1ME5x1F2x4o1JGGT8stdCf+/ZjTACw/PDgrFu+zLQ==
+X-Received: by 2002:a1c:480a:: with SMTP id v10mr73284060wma.120.1563962947927;
+        Wed, 24 Jul 2019 03:09:07 -0700 (PDT)
+Received: from ?IPv6:2a0b:e7c0:0:107::ee2? ([2a0b:e7c0:0:107::ee2])
+        by smtp.gmail.com with ESMTPSA id c7sm39149158wro.70.2019.07.24.03.09.06
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Wed, 24 Jul 2019 03:09:07 -0700 (PDT)
+Subject: Re: [PATCH] tty/isicom: remove redundant assignment to variable
+ word_count
+To:     Colin King <colin.king@canonical.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190723150314.14513-1-colin.king@canonical.com>
+From:   Jiri Slaby <jslaby@suse.com>
 Openpgp: preference=signencrypt
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <c98b8f50-1adf-ea95-a91c-ec451e9fefe2@web.de>
-Date:   Wed, 24 Jul 2019 11:30:16 +0200
+Autocrypt: addr=jslaby@suse.com; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <90da3a1d-ff0f-937b-d212-bb5428486768@suse.com>
+Date:   Wed, 24 Jul 2019 12:09:06 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190723181624.203864-4-swboyd@chromium.org>
+In-Reply-To: <20190723150314.14513-1-colin.king@canonical.com>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-X-Provags-ID: V03:K1:h3uGTxvoka6FJzcsaW1+c+MOCdTgPVPq4eeDSKpeLxNRxNAG99L
- Eskdzrm7XPJQcRB7ghNsxAfij474SiVAVMLc6ilPSenqu+faindFx8b3OhFVVAwuwDHN38d
- S/B0lsKo6GMVUomfAEtCmx9uMAFKG0kjw7bd+2cr+Uc/OGgWxi16f/4jXUcNiZPne3bD5QO
- ZuoQjF5Ercjgg27P1i/GQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:MSSJnV4GNxM=:vC1JGF5Mm0SZsbcWnFAoh8
- hzzHzP9Q0NYzV2opxD+rl4IGEC6aqToLzkPm5ZH86vv/+3AcZPUfLTriyBdAw06P14rMZBS5c
- F/8RC7T/g0wyMylS7w9J8T7ETK3cDebU4CzXza42gZ7rVI1eMa76S05TQ/uTOHlF+EvScDF8Q
- YzWZpHffOt5baJ9uliAW0ZHg4/12gYVsE8fIaaoshLk45obTsRIW/EWr8OG4RPaTJWRvClvzs
- lBgGqkRFZZyLkHlEiVrVuIn32nRSiF7QNzpseW+NnY3SE4P2+/psbKn86rEPC5f8GFlTB/hVl
- XJZ8ACXw6H4I5y/GpTss/fblAjpAU8v7+nq5HwLDzrhsAhR10FiEXe+rJ6PLFfcS85ppqfdPI
- OhgcftEU1E27ZMe0av1g02Q/bXK4YHcWoes5JnSVaB6oyY8vPiU3vX6B0qNSKx3LFUo1mj3K0
- C3ZlzbfXoEggxZD07y6AnnuqfwCSE0GTdRaD7ze+fpb0r+qhyb4rpWkXvU/sZsLqeQW1VqPKu
- Zt1Sy/UHpr+KC7ycvvkqzRKkw03HyWiDOxNFp6m9G01X2u7EsH3NuVVLqXXDaLADO1S3Q1ZlA
- iMCvUz4OIeeavFhD1zRdDMcCcG4EEAep3hDEJXNhsTOsOwb+HJunHkneQZSmTZ8AP0G1v7B9Y
- BeN1GJcFJRzt4awwN9T5Aw24+7X8q2V2mA+217VFk9b1BOfBq1XKBMEmakFNcgA6UwQPmeZ8x
- D7OpffoNyFq7wkUTNDe7NWTcbLZHLb7d7JeU/NJnNyTEJD+GgnrsfKJM035Mo++srq8Mj6/TV
- 04Wkn8BrN8uzYy23y4HpT+2xZbaIt7aDIrmJsa793FcpOmotWcK9lh14ZrKm3umJxiV0GS2+J
- Mff7de65/uRi6W7NgOYz8tMTaCgkxm//4gWrTA6M+W2tVqHYUwr6AScpiTri2a7LBye3oiFRx
- 3WpbaSyzNtnsEBDUbA/nqmbfxLE9eOLGvi+9XK4M45YWs4m7z4ZtpTRADu/WHyqk1xySibS4m
- g2LBENLkOn6K8wlyzf1v1jtr6H/qjqHSI8BvcRq0WaIIew72NdS6REYrTCajU7zeknsCMm1i4
- 6JYos/ryg4irIvlUHqU2L1j3WaGPE/DWyq7
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-I would prefer to concentrate the usage of SmPL disjunctions on changing
-implementation details so that the specification of duplicate code
-can be avoided.
+On 23. 07. 19, 17:03, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable word_count is being assigned a value that is never read before
+> a return, the assignment is redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
+Looks good, it predates git. Maybe the while loop wanted to use
+word_count originally.
+
+Acked-by: Jiri Slaby <jslaby@suse.cz>
+
+> ---
+>  drivers/tty/isicom.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/tty/isicom.c b/drivers/tty/isicom.c
+> index e04a43e89f6b..fc38f96475bf 100644
+> --- a/drivers/tty/isicom.c
+> +++ b/drivers/tty/isicom.c
+> @@ -553,7 +553,6 @@ static irqreturn_t isicom_interrupt(int irq, void *dev_id)
+>  
+>  	tty = tty_port_tty_get(&port->port);
+>  	if (tty == NULL) {
+> -		word_count = byte_count >> 1;
+>  		while (byte_count > 1) {
+>  			inw(base);
+>  			byte_count -= 2;
+> 
 
 
-> +(
-> +platform_get_irq(E, ...)
-> +|
-> +platform_get_irq_byname(E, ...)
-> +);
-
-Function names:
-
-+(platform_get_irq
-+|platform_get_irq_byname
-+)(E, ...);
-
-
-> +if ( \( ret < 0 \| ret <= 0 \) )
-
-Comparison operators:
-
-+if (ret \( < \| <= \) 0)
-
-
-> +if (ret != -EPROBE_DEFER)
-
-Is it appropriate to treat this error code check as optional
-by the shown transformation approach?
-Can this case distinction be omitted?
-
-Regards,
-Markus
+-- 
+js
+suse labs

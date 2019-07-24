@@ -2,74 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A46CB72773
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 07:42:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46653727B0
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 08:01:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726158AbfGXFms (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jul 2019 01:42:48 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:35404 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725917AbfGXFms (ORCPT
+        id S1726319AbfGXGBT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jul 2019 02:01:19 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:44928 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725870AbfGXGBT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jul 2019 01:42:48 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 30C2B60FEE; Wed, 24 Jul 2019 05:42:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1563946967;
-        bh=PYmMgHLnn+uS7jujuUNMhQgsfBPjg7Apw2qRKsODwtw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=S6tdKK/HAbePn7PBt6q3TLMXoswhLLKUnN//11XPgPJOZ4CL7e8jnvJSf4xk1qnAh
-         RGJ9HK1xekEvolSBrIXQe3zFk28oDkYEDff5NdPpUd2B/6ryl56I/Gdu85FPeGAtob
-         LGoQdCRT8/SVdayf0QPy14/8L84KMn6lK+SJziCw=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 2A850601B4;
-        Wed, 24 Jul 2019 05:42:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1563946965;
-        bh=PYmMgHLnn+uS7jujuUNMhQgsfBPjg7Apw2qRKsODwtw=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=Ujzks8hqcut3npyNE+zk6Ir34P/fblLHXvBzASjtwSIfl4bFHzH4Dk/YUsZpmEUkM
-         RiUeL67mlVfrRnC9HrQ3cKXulAXdZE6LfZHOvHroGo8YqlSS+9h85J7mFyLIw23uLP
-         L+VIKQAx8HqkBLvRMPb1ZP8OjwflzakJ35aoE8J4=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 2A850601B4
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     maowenan <maowenan@huawei.com>
-Cc:     <amitkarwar@gmail.com>, <nishants@marvell.com>,
-        <gbhat@marvell.com>, <huxinming820@gmail.com>,
-        <linux-wireless@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: Re: [net-next] mwifiex: use eth_broadcast_addr() to assign broadcast address
-References: <20190710072524.65953-1-maowenan@huawei.com>
-        <609fa4ae-7210-7758-c8ff-1b06492356e1@huawei.com>
-Date:   Wed, 24 Jul 2019 08:42:42 +0300
-In-Reply-To: <609fa4ae-7210-7758-c8ff-1b06492356e1@huawei.com>
-        (maowenan@huawei.com's message of "Wed, 24 Jul 2019 09:32:13 +0800")
-Message-ID: <878sso0yzx.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Wed, 24 Jul 2019 02:01:19 -0400
+Received: from localhost.localdomain ([92.140.204.221])
+        by mwinf5d09 with ME
+        id gW1F2000A4n7eLC03W1Gqa; Wed, 24 Jul 2019 08:01:17 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 24 Jul 2019 08:01:17 +0200
+X-ME-IP: 92.140.204.221
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     brian.austin@cirrus.com, Paul.Handrigan@cirrus.com,
+        lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
+        tiwai@suse.com
+Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ASoC: cs4271: Fix a typo in the CS4171_NR_RATIOS
+Date:   Wed, 24 Jul 2019 08:00:23 +0200
+Message-Id: <20190724060023.31302-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-maowenan <maowenan@huawei.com> writes:
+This should be CS4271_NR_RATIOS.
+Fix it and use it.
 
-> gentle ping...
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ sound/soc/codecs/cs4271.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-I don't apply patches during the merge window, so you just have to wait
-untill I'll open wireless-drivers-next. And this for
-wireless-drivers-next, not net-next.
-
+diff --git a/sound/soc/codecs/cs4271.c b/sound/soc/codecs/cs4271.c
+index 1d03a1348162..04b86a51e055 100644
+--- a/sound/soc/codecs/cs4271.c
++++ b/sound/soc/codecs/cs4271.c
+@@ -334,7 +334,7 @@ static struct cs4271_clk_cfg cs4271_clk_tab[] = {
+ 	{0, CS4271_MODE1_MODE_4X, 256,  CS4271_MODE1_DIV_2},
+ };
+ 
+-#define CS4171_NR_RATIOS ARRAY_SIZE(cs4271_clk_tab)
++#define CS4271_NR_RATIOS ARRAY_SIZE(cs4271_clk_tab)
+ 
+ static int cs4271_hw_params(struct snd_pcm_substream *substream,
+ 			    struct snd_pcm_hw_params *params,
+@@ -383,13 +383,13 @@ static int cs4271_hw_params(struct snd_pcm_substream *substream,
+ 		val = CS4271_MODE1_MODE_4X;
+ 
+ 	ratio = cs4271->mclk / cs4271->rate;
+-	for (i = 0; i < CS4171_NR_RATIOS; i++)
++	for (i = 0; i < CS4271_NR_RATIOS; i++)
+ 		if ((cs4271_clk_tab[i].master == cs4271->master) &&
+ 		    (cs4271_clk_tab[i].speed_mode == val) &&
+ 		    (cs4271_clk_tab[i].ratio == ratio))
+ 			break;
+ 
+-	if (i == CS4171_NR_RATIOS) {
++	if (i == CS4271_NR_RATIOS) {
+ 		dev_err(component->dev, "Invalid sample rate\n");
+ 		return -EINVAL;
+ 	}
 -- 
-Kalle Valo
+2.20.1
+

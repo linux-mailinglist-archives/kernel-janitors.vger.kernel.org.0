@@ -2,117 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2D5B737A5
-	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 21:18:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91725738AF
+	for <lists+kernel-janitors@lfdr.de>; Wed, 24 Jul 2019 21:32:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729004AbfGXTSL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jul 2019 15:18:11 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:34716 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728993AbfGXTSK (ORCPT
+        id S2387598AbfGXTcE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jul 2019 15:32:04 -0400
+Received: from mail-qk1-f195.google.com ([209.85.222.195]:38549 "EHLO
+        mail-qk1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388575AbfGXTcA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jul 2019 15:18:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
-        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
-        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=tTy5/+/M3pVI1lUjGhlSClg1xxdvNbhQX6OC/ZBOaJs=; b=PWr2AHlizcnQ
-        3/MS25b18uecwwYcvHHqvXyrO+t27sRaH8xy3NNUwP+uedjp4vGhAhqdE8TkMt+gma4tgX6bUBcy4
-        6SG0DRJOspB5qjFSm6cKV0fINAqVz3rtitad6nqt1gBwslYUhyrpysI9FI38mZIzMi//N75qviJ4c
-        vO/ek=;
-Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1hqMlt-0008W1-1t; Wed, 24 Jul 2019 19:17:53 +0000
-Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id 8368A27429A0; Wed, 24 Jul 2019 20:17:52 +0100 (BST)
-From:   Mark Brown <broonie@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     alsa-devel@alsa-project.org, broonie@kernel.org,
-        Charles Keepax <ckeepax@opensource.cirrus.com>,
-        gustavo@embeddedor.com, kernel-janitors@vger.kernel.org,
-        lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, patches@opensource.cirrus.com,
-        perex@perex.cz, tiwai@suse.com
-Subject: Applied "ASoC: wm8955: Fix a typo in 'wm8995_pll_factors()' function name" to the asoc tree
-In-Reply-To: <20190724052632.30476-1-christophe.jaillet@wanadoo.fr>
-X-Patchwork-Hint: ignore
-Message-Id: <20190724191752.8368A27429A0@ypsilon.sirena.org.uk>
-Date:   Wed, 24 Jul 2019 20:17:52 +0100 (BST)
+        Wed, 24 Jul 2019 15:32:00 -0400
+Received: by mail-qk1-f195.google.com with SMTP id a27so34654959qkk.5
+        for <kernel-janitors@vger.kernel.org>; Wed, 24 Jul 2019 12:31:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=JInymQc+r2pImT3B/SmMJqhNX9Hf0EsstZD4VE2LjQM=;
+        b=kqZlOYO69x/UMTO3KbfUun+RUej+Y76S6n3UnFY6G3wqJzkvqWxwRxlpmvMwx+lWQp
+         5P9Ndi1/9ULn3zbXOvj43rZB0qedEiDhjIQyLZpqiO5jWvvjUpbuSLTz6gw40pIyuntD
+         cggriFRIBnzO0dFwBsK1LW9AG+oSsbnKRqd9uBFaiBHzjjfM7TJVfClTjmOZ8ugBiuap
+         e+wEr5Hxo0frnDbySkZTeLae0KrjbsyVtLi40YtQfm//ENZepIaOs2io14Ncx3Had2jj
+         BXr+eLZ5gyA77h7uoSpLFR7S/AV7V7Gd6/I2q8XVXeVOcxH6jFEGqEsXWRMTP5SwFtzV
+         786A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=JInymQc+r2pImT3B/SmMJqhNX9Hf0EsstZD4VE2LjQM=;
+        b=p1mxuBpF/j7IdqDq39xeiurjHNa6zJrOrOwzNaDgraDhzw+sQ37slWVBD7nnoQ4off
+         dut9apNYhrYbEfbYZnkxmQZkxZdk9ehFmN5ef6dQO46zbXMTjotZcrnYvaFgguwFgpi+
+         sSPzBvyOQKEJDanQJu8nK1mg5xlPmsQWjKi7rqkRWDRXI132rF2zaoauWoO2wFbjmDl1
+         NjZZ8aajeySsuFGHfUOxp6mXbzkEH+XnFLazoU2TUDzKn1OHpLlnNvLYim+CoAva4YY2
+         tSuCMHIvAExjden3Q6JLz/ws0ZPxXebvbIoIZTXiTeyCclA9s0DbFbluMaV2mSlshrlg
+         TnjQ==
+X-Gm-Message-State: APjAAAW2fMBaoi+TVhfiwNURyJsPVhJB+0/AEquuXxLebKpPg7YVvgTr
+        Pkg5j/UTcQQG8RwcHZrlATpYZg==
+X-Google-Smtp-Source: APXvYqxLDN1MDxYfhjO8ggCE8CbyvO+EWhy5R2UY8hExLnegRMJl96uiWmL/0ruwscoK42+uMywHnw==
+X-Received: by 2002:a37:7604:: with SMTP id r4mr53902933qkc.395.1563996718992;
+        Wed, 24 Jul 2019 12:31:58 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-156-34-55-100.dhcp-dynamic.fibreop.ns.bellaliant.net. [156.34.55.100])
+        by smtp.gmail.com with ESMTPSA id u4sm21157159qkb.16.2019.07.24.12.31.58
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 24 Jul 2019 12:31:58 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1hqMzW-0001jO-03; Wed, 24 Jul 2019 16:31:58 -0300
+Date:   Wed, 24 Jul 2019 16:31:57 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Lijun Ou <oulijun@huawei.com>, Wei Hu <xavier.huwei@huawei.com>,
+        Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2][next] RDMA/hns: fix comparison of unsigned long
+ variable 'end' with less than zero
+Message-ID: <20190724193157.GA6620@ziepe.ca>
+References: <20190531092101.28772-1-colin.king@canonical.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190531092101.28772-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
+On Fri, May 31, 2019 at 10:21:00AM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently the comparison of end with less than zero is always false
+> because end is an unsigned long.  Also, replace checks of end with
+> non-zero with end > 0 as it is possible that the #defined decrement
+> may be changed in the future causing end to step over zero and go
+> negative.
+> 
+> The initialization of end with 0 is also redundant as this value is
+> never read and is later set to HW_SYNC_TIMEOUT_MSECS, so fix this by
+> initializing it with this value to begin with.
+> 
+> Addresses-Coverity: ("Unsigned compared against 0")
+> Fixes: 669cefb654cb ("RDMA/hns: Remove jiffies operation in disable interrupt context")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/infiniband/hw/hns/hns_roce_hem.c   |  4 ++--
+>  drivers/infiniband/hw/hns/hns_roce_hw_v1.c | 12 ++++++------
+>  2 files changed, 8 insertions(+), 8 deletions(-)
 
-   ASoC: wm8955: Fix a typo in 'wm8995_pll_factors()' function name
+Applied to for-next, thanks
 
-has been applied to the asoc tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.4
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From e8758a5ed2783c417be1f5aab5af9fe4be60956f Mon Sep 17 00:00:00 2001
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Wed, 24 Jul 2019 07:26:32 +0200
-Subject: [PATCH] ASoC: wm8955: Fix a typo in 'wm8995_pll_factors()' function
- name
-
-This should be 'wm8955_pll_factors()' instead.
-Fix it and use it.
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20190724052632.30476-1-christophe.jaillet@wanadoo.fr
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- sound/soc/codecs/wm8955.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/sound/soc/codecs/wm8955.c b/sound/soc/codecs/wm8955.c
-index 66a5f1827aa9..9c7e2892c8cb 100644
---- a/sound/soc/codecs/wm8955.c
-+++ b/sound/soc/codecs/wm8955.c
-@@ -140,7 +140,7 @@ struct pll_factors {
-  * to allow rounding later */
- #define FIXED_FLL_SIZE ((1 << 22) * 10)
- 
--static int wm8995_pll_factors(struct device *dev,
-+static int wm8955_pll_factors(struct device *dev,
- 			      int Fref, int Fout, struct pll_factors *pll)
- {
- 	u64 Kpart;
-@@ -279,7 +279,7 @@ static int wm8955_configure_clocking(struct snd_soc_component *component)
- 
- 		/* Use the last divider configuration we saw for the
- 		 * sample rate. */
--		ret = wm8995_pll_factors(component->dev, wm8955->mclk_rate,
-+		ret = wm8955_pll_factors(component->dev, wm8955->mclk_rate,
- 					 clock_cfgs[sr].mclk, &pll);
- 		if (ret != 0) {
- 			dev_err(component->dev,
--- 
-2.20.1
-
+Jason

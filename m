@@ -2,60 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 95A8B74130
-	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Jul 2019 00:02:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C851742EA
+	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Jul 2019 03:40:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729039AbfGXWB5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jul 2019 18:01:57 -0400
-Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:36805 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726240AbfGXWB5 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jul 2019 18:01:57 -0400
-Received: from localhost.localdomain ([92.140.204.221])
-        by mwinf5d44 with ME
-        id gm1q2000P4n7eLC03m1rDF; Thu, 25 Jul 2019 00:01:55 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 25 Jul 2019 00:01:55 +0200
-X-ME-IP: 92.140.204.221
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     davem@davemloft.net
-Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] ide: tx4939ide: Fix the name used in a 'devm_request_mem_region()' call
-Date:   Thu, 25 Jul 2019 00:01:45 +0200
-Message-Id: <20190724220145.17282-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        id S2387855AbfGYBkl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 24 Jul 2019 21:40:41 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:35876 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726808AbfGYBkl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 24 Jul 2019 21:40:41 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 8A9CB1451149D3AC8C95;
+        Thu, 25 Jul 2019 09:40:38 +0800 (CST)
+Received: from [127.0.0.1] (10.133.213.239) by DGGEMS405-HUB.china.huawei.com
+ (10.3.19.205) with Microsoft SMTP Server id 14.3.439.0; Thu, 25 Jul 2019
+ 09:40:30 +0800
+Subject: Re: [PATCH] carl9170: remove set but not used variable 'udev'
+To:     Christian Lamparter <chunkeey@gmail.com>
+References: <20190724015411.66525-1-yuehaibing@huawei.com>
+ <CAAd0S9BvTfRyUVkQzcczyNkU_oeU5hNdK3KVQzLsU21b4JGNTQ@mail.gmail.com>
+CC:     Kalle Valo <kvalo@codeaurora.org>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        Netdev <netdev@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+From:   Yuehaibing <yuehaibing@huawei.com>
+Message-ID: <1cfbfe67-e931-029b-1836-a6b796283c2c@huawei.com>
+Date:   Thu, 25 Jul 2019 09:40:29 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
+In-Reply-To: <CAAd0S9BvTfRyUVkQzcczyNkU_oeU5hNdK3KVQzLsU21b4JGNTQ@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This should be "tx4939ide" instead of "tx4938ide", but here MODNAME is even
-better.
+On 2019/7/25 3:42, Christian Lamparter wrote:
+> On Wed, Jul 24, 2019 at 3:48 AM YueHaibing <yuehaibing@huawei.com> wrote:
+>>
+>> Fixes gcc '-Wunused-but-set-variable' warning:
+>>
+>> drivers/net/wireless/ath/carl9170/usb.c: In function 'carl9170_usb_disconnect':
+>> drivers/net/wireless/ath/carl9170/usb.c:1110:21: warning:
+>>  variable 'udev' set but not used [-Wunused-but-set-variable]
+>>
+>> It is not used, so can be removed.
+>>
+>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+>> ---
+> Isn't this the same patch you sent earlier:
+> 
+> https://patchwork.kernel.org/patch/11027909/
+> 
+>>From what I can tell, it's the same but with an extra [-next], I
+> remember that I've acked that one
+> but your patch now does not have it? Is this an oversight, because I'm
+> the maintainer for this
+> driver. So, in my opinion at least the "ack" should have some value
+> and shouldn't be "ignored".
+> 
+> Look, from what I know, Kalle is not ignoring you, It's just that
+> carl9170 is no longer top priority.
+> So please be patient. As long as its queued in the patchwork it will
+> get considered.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/ide/tx4939ide.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thank you for reminder. I forget the previous patch，and our CI robot
+report it again, So I do it again, sorry for confusion.
 
-diff --git a/drivers/ide/tx4939ide.c b/drivers/ide/tx4939ide.c
-index 88d132edc4e3..079b271dd5a7 100644
---- a/drivers/ide/tx4939ide.c
-+++ b/drivers/ide/tx4939ide.c
-@@ -549,7 +549,7 @@ static int __init tx4939ide_probe(struct platform_device *pdev)
- 		return -ENODEV;
- 
- 	if (!devm_request_mem_region(&pdev->dev, res->start,
--				     resource_size(res), "tx4938ide"))
-+				     resource_size(res), MODNAME))
- 		return -EBUSY;
- 	mapbase = (unsigned long)devm_ioremap(&pdev->dev, res->start,
- 					      resource_size(res));
--- 
-2.20.1
+Just pls drop this and use previous one.
+
+> 
+> Cheers,
+> Christian
+> 
+>>  drivers/net/wireless/ath/carl9170/usb.c | 2 --
+>>  1 file changed, 2 deletions(-)
+>>
+>> diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
+>> index 99f1897a775d..486957a04bd1 100644
+>> --- a/drivers/net/wireless/ath/carl9170/usb.c
+>> +++ b/drivers/net/wireless/ath/carl9170/usb.c
+>> @@ -1107,12 +1107,10 @@ static int carl9170_usb_probe(struct usb_interface *intf,
+>>  static void carl9170_usb_disconnect(struct usb_interface *intf)
+>>  {
+>>         struct ar9170 *ar = usb_get_intfdata(intf);
+>> -       struct usb_device *udev;
+>>
+>>         if (WARN_ON(!ar))
+>>                 return;
+>>
+>> -       udev = ar->udev;
+>>         wait_for_completion(&ar->fw_load_wait);
+>>
+>>         if (IS_INITIALIZED(ar)) {
+>>
+>>
+>>
+> 
+> .
+> 
 

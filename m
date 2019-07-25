@@ -2,62 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 888F97478D
-	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Jul 2019 08:57:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C6D0747F3
+	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Jul 2019 09:16:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728532AbfGYG5H (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 25 Jul 2019 02:57:07 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:56088 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725808AbfGYG5H (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 25 Jul 2019 02:57:07 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 7F2497DB4D3991A9F2E7;
-        Thu, 25 Jul 2019 14:57:04 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 25 Jul 2019 14:56:57 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Wolfgang Grandegger <wg@grandegger.com>,
-        Henning Colliander <henning.colliander@evidente.se>,
-        Marc Kleine-Budde <mkl@pengutronix.de>
-CC:     YueHaibing <yuehaibing@huawei.com>, <linux-can@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH net-next] can: kvaser_pciefd: Remove unused including <linux/version.h>
-Date:   Thu, 25 Jul 2019 07:02:17 +0000
-Message-ID: <20190725070217.3569-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S2387803AbfGYHQj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 25 Jul 2019 03:16:39 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41126 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387722AbfGYHQj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 25 Jul 2019 03:16:39 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8187621734;
+        Thu, 25 Jul 2019 07:16:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1564038998;
+        bh=Twe7T2ksbtZDBiQa7kI9kVZPuxOy4gwdvC5nAZG75H4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=p5Rt+SvwJnjf8AhPSfbDvu5rxBNibDaMh3f0kbsM0xcaYZ0mzb9e8ssJjpsgeuDEW
+         LxSwJIRU0oWiVrKh+HQERxJ06yB9JBDtkhAnsWNe7YU4AMFa1GqNv/TWwKHsztpVT6
+         ipUOuzZHSDbZOxYjjCWDq3VF+3lhtzG7aOvUARUo=
+Date:   Thu, 25 Jul 2019 09:16:35 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     nishadkamdar@gmail.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org,
+        Kernel Janitors <kernel-janitors@vger.kernel.org>
+Subject: Re: [RFC] Staging: fbtft: Typo in
+Message-ID: <20190725071635.GA17271@kroah.com>
+References: <f4881a63-8702-55f2-ed03-cfbc30970083@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f4881a63-8702-55f2-ed03-cfbc30970083@wanadoo.fr>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove including <linux/version.h> that don't need it.
+On Sun, Jul 21, 2019 at 08:54:39PM +0200, Christophe JAILLET wrote:
+> Hi,
+> 
+> looking at the code in 'drivers/staging/fbtft/fb_pcd8544.c', there seems to
+> be some typos.
+> 
+> At the end of the file, we can find:
+> 
+> FBTFT_REGISTER_DRIVER(DRVNAME, "philips,pdc8544", &display);
+> ...
+> MODULE_ALIAS("spi:pdc8544");
+> 
+> 
+> It is likely that the 2 pdc8544 should be pcd8544. (d and c switched)
+> 
+> As I don't know the implication of such a change, I prefer to first report
+> the potential issue, before proposing a patch for it.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/net/can/kvaser_pciefd.c | 1 -
- 1 file changed, 1 deletion(-)
+Submit a patch, that's the best way to discuss it!
 
-diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
-index 3af747cbbde4..952a022b8343 100644
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -7,7 +7,6 @@
-  */
- 
- #include <linux/kernel.h>
--#include <linux/version.h>
- #include <linux/module.h>
- #include <linux/device.h>
- #include <linux/pci.h>
+thanks,
 
-
-
+greg k-h

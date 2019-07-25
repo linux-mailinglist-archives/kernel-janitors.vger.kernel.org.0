@@ -2,133 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB9F7746A2
-	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Jul 2019 07:56:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4167D74782
+	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Jul 2019 08:54:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726143AbfGYF4K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 25 Jul 2019 01:56:10 -0400
-Received: from mout.web.de ([212.227.15.14]:56055 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725800AbfGYF4K (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 25 Jul 2019 01:56:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1564034151;
-        bh=qIfqYg5ZaFnfOhUue2VYR6lf3zMTAhn2eLE3luau+O0=;
-        h=X-UI-Sender-Class:Cc:References:Subject:From:To:Date:In-Reply-To;
-        b=ejGNBi1purUxtX0J6bBXvHhBogkB+hnQZ/7XAGIVj6m7YzICMQpy93I07kAJUXYd3
-         qTtT0c1ZaHl5l6tH43KXVFfEPa/WqHWobFTIA+vGQPoHHZX5HlX/x55p8BXKTnjpUX
-         9ttkpy7A/e+LhloLym9pr30ikwGBCILsebF9s9z8=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.39.22]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0M9XbT-1hgwbg1buJ-00CxKl; Thu, 25
- Jul 2019 07:55:51 +0200
-Cc:     linux-kernel@vger.kernel.org, Andrzej Hajda <a.hajda@samsung.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>,
-        Russell King <linux@armlinux.org.uk>
-References: <20190723181624.203864-2-swboyd@chromium.org>
-Subject: Re: [PATCH v4 1/3] driver core: platform: Add an error message to
- platform_get_irq*()
-From:   Markus Elfring <Markus.Elfring@web.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-To:     Stephen Boyd <swboyd@chromium.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        kernel-janitors@vger.kernel.org
-Message-ID: <84776d98-3612-639a-8721-c0d1c981ec47@web.de>
-Date:   Thu, 25 Jul 2019 07:55:31 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1727645AbfGYGyb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 25 Jul 2019 02:54:31 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:2720 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725808AbfGYGya (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 25 Jul 2019 02:54:30 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 6FD8695990C44C7B4DB0;
+        Thu, 25 Jul 2019 14:54:27 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 25 Jul 2019 14:54:19 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Wolfgang Grandegger <wg@grandegger.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        "Ji-Ze Hong (Peter Hong)" <hpeter@gmail.com>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-can@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] can: sja1000: f81601: remove unused including <linux/version.h>
+Date:   Thu, 25 Jul 2019 06:59:40 +0000
+Message-ID: <20190725065940.2118-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190723181624.203864-2-swboyd@chromium.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:9rsEEacxiQOzdu0iUpu5ZB6O8XobGWLkZHJ+FGSpCBLa0LFGJ4g
- UhtYkuMbFGZ6THZc7P9qKkGri1iWF2A8MxPFEc9LjH8mWi/jlvRt8T0QPqdip8ZqGx35+VM
- WM3ka78ke99uN+IrKSarhyURuOXmquNlvr7BwNGmbNgW50nu29pLRYH8Q0Xv3OCLX/H6dmS
- L00KlGk81EF7OXeVbh20w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Xbnv7LtkRTI=:xk2X0apmGLC+5O1m4097Oy
- 9eWhhLjWP8p1NRfNkO57lOWod6LpuN6HKCkS+hMN4eOhyMQ+ggXf/8lLjxnBDUY6vhemd6FpY
- eZDnvbEAn51dgdBvRfMpUpr0c9IyF4FfNDF1PpZ4y1kIvDzYt5t8F2nDLw0fRa6uyzF36QX8W
- IL7mgnM+nd+7pZ3SOmyZaadJAKxmWnyBUCufZkuTZ+87U6X7kw7VKbjPj3Y9EgbkG29JKeF1a
- I8W0YaoHrXNX4UScAFfUxkLD1qi8pWG9BAIG/459vfZZsO3P+ttIMTwZy6BaoK3TBr2BH/8UF
- 3JymvV0KXuRvnAQmRGGcJ1OaSNiYubafHdQVBPxFu02QbJvBlrzuG5iEB3VDoLCR78R/pkulz
- k2Azg7rglHPUNoLQ4SH0H4mpTRSd760Ra+UWlKlfsWKoL7J1iGe1d/x+EC0Fv6Bx/vxKacXTO
- Rl8Jf8ut1HCrdUZXiZP5ldapZsdakkzHmG+MdUyjkeY3yCdNcpJ1SNif66hEYT5rM7ToWOd6x
- UR+7ak1BFWkj9tUsxt3pRGQw1My9KSFzTi1FKzCcKmP6HQ7yyBBwnlwptwg3Yn2JNrgTsQhw8
- FmCmKm4X+Rnvyu36gRendfE6ebJVZqLllZ7aTgpthlIaFOsHUL3ZIf86DaRgs5qaYbIf3FzSE
- o05arxl+Wl+zeP9T8Bq/KYa/preg3BIsB+q92FPUJHJt/a8mT7rEprrvzLrSmOrbbK08aOYMR
- x4ZkqUs9XT5KSmsYMHyE9SbNHuIpru+QPgyodvyY4C9qkih35/uwUWdmz8sHEuZMtLfHTeBQ1
- 0MbL6s4GboTxEReouW3edgHYhXvkbVzLspibe7bCkRFjM2So0SvJlkdysIMLZQeDezraf752z
- lK/Vzy4ecIn46pamp7/c7tUtF+uTGE2szMgr4SdqEbOZJJz5Ml7tZZWl45BrJpo27eDenjT1Z
- AfFs74fIp+XtLboRt/OdlyYmBptWQ/yYlvteVQKJImbFNY8IagNxRJ8FG4FETbGWqq6ZinIWV
- 7aBrA3XsaT2ENgwCY0N+MZvUQXj/UxtR+GREejjetZUUEo0125yrFfouHTkfW1sNS7mUDtxI0
- IIOnOWAK4RhrghxJm+VbVIFBuSHeu6gDLwp
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-=E2=80=A6
-> +++ b/drivers/base/platform.c
-> @@ -99,12 +99,7 @@ void __iomem *devm_platform_ioremap_resource(struct p=
-latform_device *pdev,
-=E2=80=A6
-> -int platform_get_irq(struct platform_device *dev, unsigned int num)
-> +static int __platform_get_irq(struct platform_device *dev, unsigned int=
- num)
->  {
-=E2=80=A6
-I suggest to avoid the usage of double underscores in such identifiers.
-Will an other function name be more appropriate here?
+Remove including <linux/version.h> that don't need it.
 
-Regards,
-Markus
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/net/can/sja1000/f81601.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/net/can/sja1000/f81601.c b/drivers/net/can/sja1000/f81601.c
+index 362a9d4f44d5..8f25e95814ef 100644
+--- a/drivers/net/can/sja1000/f81601.c
++++ b/drivers/net/can/sja1000/f81601.c
+@@ -14,7 +14,6 @@
+ #include <linux/pci.h>
+ #include <linux/can/dev.h>
+ #include <linux/io.h>
+-#include <linux/version.h>
+ 
+ #include "sja1000.h"
+ 
+
+
+
+
+

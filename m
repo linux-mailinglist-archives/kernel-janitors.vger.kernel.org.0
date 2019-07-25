@@ -2,110 +2,180 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C851742EA
-	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Jul 2019 03:40:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E77C674509
+	for <lists+kernel-janitors@lfdr.de>; Thu, 25 Jul 2019 07:36:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387855AbfGYBkl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 24 Jul 2019 21:40:41 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:35876 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726808AbfGYBkl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 24 Jul 2019 21:40:41 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 8A9CB1451149D3AC8C95;
-        Thu, 25 Jul 2019 09:40:38 +0800 (CST)
-Received: from [127.0.0.1] (10.133.213.239) by DGGEMS405-HUB.china.huawei.com
- (10.3.19.205) with Microsoft SMTP Server id 14.3.439.0; Thu, 25 Jul 2019
- 09:40:30 +0800
-Subject: Re: [PATCH] carl9170: remove set but not used variable 'udev'
-To:     Christian Lamparter <chunkeey@gmail.com>
-References: <20190724015411.66525-1-yuehaibing@huawei.com>
- <CAAd0S9BvTfRyUVkQzcczyNkU_oeU5hNdK3KVQzLsU21b4JGNTQ@mail.gmail.com>
-CC:     Kalle Valo <kvalo@codeaurora.org>,
-        linux-wireless <linux-wireless@vger.kernel.org>,
-        Netdev <netdev@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-From:   Yuehaibing <yuehaibing@huawei.com>
-Message-ID: <1cfbfe67-e931-029b-1836-a6b796283c2c@huawei.com>
-Date:   Thu, 25 Jul 2019 09:40:29 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+        id S2403929AbfGYFg2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 25 Jul 2019 01:36:28 -0400
+Received: from smtp01.smtpout.orange.fr ([80.12.242.123]:36306 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2403886AbfGYFg2 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 25 Jul 2019 01:36:28 -0400
+Received: from localhost.localdomain ([92.140.204.221])
+        by mwinf5d54 with ME
+        id gtcK2000X4n7eLC03tcL7y; Thu, 25 Jul 2019 07:36:23 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 25 Jul 2019 07:36:23 +0200
+X-ME-IP: 92.140.204.221
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     pierre-louis.bossart@linux.intel.com,
+        liam.r.girdwood@linux.intel.com, yang.jie@linux.intel.com,
+        broonie@kernel.org, perex@perex.cz, tiwai@suse.com
+Cc:     alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ASoC: Intel: Fix some acpi vs apci typo in somme comments
+Date:   Thu, 25 Jul 2019 07:35:23 +0200
+Message-Id: <20190725053523.16542-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <CAAd0S9BvTfRyUVkQzcczyNkU_oeU5hNdK3KVQzLsU21b4JGNTQ@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.133.213.239]
-X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2019/7/25 3:42, Christian Lamparter wrote:
-> On Wed, Jul 24, 2019 at 3:48 AM YueHaibing <yuehaibing@huawei.com> wrote:
->>
->> Fixes gcc '-Wunused-but-set-variable' warning:
->>
->> drivers/net/wireless/ath/carl9170/usb.c: In function 'carl9170_usb_disconnect':
->> drivers/net/wireless/ath/carl9170/usb.c:1110:21: warning:
->>  variable 'udev' set but not used [-Wunused-but-set-variable]
->>
->> It is not used, so can be removed.
->>
->> Reported-by: Hulk Robot <hulkci@huawei.com>
->> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
->> ---
-> Isn't this the same patch you sent earlier:
-> 
-> https://patchwork.kernel.org/patch/11027909/
-> 
->>From what I can tell, it's the same but with an extra [-next], I
-> remember that I've acked that one
-> but your patch now does not have it? Is this an oversight, because I'm
-> the maintainer for this
-> driver. So, in my opinion at least the "ack" should have some value
-> and shouldn't be "ignored".
-> 
-> Look, from what I know, Kalle is not ignoring you, It's just that
-> carl9170 is no longer top priority.
-> So please be patient. As long as its queued in the patchwork it will
-> get considered.
+Fix some typo to have the filaname given in a comment match the real name
+of the file.
+Some 'acpi' have erroneously been written 'apci'
 
-Thank you for reminder. I forget the previous patch，and our CI robot
-report it again, So I do it again, sorry for confusion.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ sound/soc/intel/common/soc-acpi-intel-bxt-match.c     | 2 +-
+ sound/soc/intel/common/soc-acpi-intel-byt-match.c     | 2 +-
+ sound/soc/intel/common/soc-acpi-intel-cht-match.c     | 2 +-
+ sound/soc/intel/common/soc-acpi-intel-cnl-match.c     | 2 +-
+ sound/soc/intel/common/soc-acpi-intel-glk-match.c     | 2 +-
+ sound/soc/intel/common/soc-acpi-intel-hda-match.c     | 2 +-
+ sound/soc/intel/common/soc-acpi-intel-hsw-bdw-match.c | 2 +-
+ sound/soc/intel/common/soc-acpi-intel-icl-match.c     | 2 +-
+ sound/soc/intel/common/soc-acpi-intel-kbl-match.c     | 2 +-
+ sound/soc/intel/common/soc-acpi-intel-skl-match.c     | 2 +-
+ 10 files changed, 10 insertions(+), 10 deletions(-)
 
-Just pls drop this and use previous one.
-
-> 
-> Cheers,
-> Christian
-> 
->>  drivers/net/wireless/ath/carl9170/usb.c | 2 --
->>  1 file changed, 2 deletions(-)
->>
->> diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
->> index 99f1897a775d..486957a04bd1 100644
->> --- a/drivers/net/wireless/ath/carl9170/usb.c
->> +++ b/drivers/net/wireless/ath/carl9170/usb.c
->> @@ -1107,12 +1107,10 @@ static int carl9170_usb_probe(struct usb_interface *intf,
->>  static void carl9170_usb_disconnect(struct usb_interface *intf)
->>  {
->>         struct ar9170 *ar = usb_get_intfdata(intf);
->> -       struct usb_device *udev;
->>
->>         if (WARN_ON(!ar))
->>                 return;
->>
->> -       udev = ar->udev;
->>         wait_for_completion(&ar->fw_load_wait);
->>
->>         if (IS_INITIALIZED(ar)) {
->>
->>
->>
-> 
-> .
-> 
+diff --git a/sound/soc/intel/common/soc-acpi-intel-bxt-match.c b/sound/soc/intel/common/soc-acpi-intel-bxt-match.c
+index 229e39586868..4a5adae1d785 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-bxt-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-bxt-match.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * soc-apci-intel-bxt-match.c - tables and support for BXT ACPI enumeration.
++ * soc-acpi-intel-bxt-match.c - tables and support for BXT ACPI enumeration.
+  *
+  * Copyright (c) 2018, Intel Corporation.
+  *
+diff --git a/sound/soc/intel/common/soc-acpi-intel-byt-match.c b/sound/soc/intel/common/soc-acpi-intel-byt-match.c
+index b94b482ac34f..1cc801ba92eb 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-byt-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-byt-match.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * soc-apci-intel-byt-match.c - tables and support for BYT ACPI enumeration.
++ * soc-acpi-intel-byt-match.c - tables and support for BYT ACPI enumeration.
+  *
+  * Copyright (c) 2017, Intel Corporation.
+  */
+diff --git a/sound/soc/intel/common/soc-acpi-intel-cht-match.c b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
+index b7f11f6be1cf..d0fb43c2b9f6 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-cht-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * soc-apci-intel-cht-match.c - tables and support for CHT ACPI enumeration.
++ * soc-acpi-intel-cht-match.c - tables and support for CHT ACPI enumeration.
+  *
+  * Copyright (c) 2017, Intel Corporation.
+  */
+diff --git a/sound/soc/intel/common/soc-acpi-intel-cnl-match.c b/sound/soc/intel/common/soc-acpi-intel-cnl-match.c
+index c36c0aa4f683..771b0ef21051 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-cnl-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-cnl-match.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * soc-apci-intel-cnl-match.c - tables and support for CNL ACPI enumeration.
++ * soc-acpi-intel-cnl-match.c - tables and support for CNL ACPI enumeration.
+  *
+  * Copyright (c) 2018, Intel Corporation.
+  *
+diff --git a/sound/soc/intel/common/soc-acpi-intel-glk-match.c b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
+index 616eb09e78a0..60dea358fa04 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-glk-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * soc-apci-intel-glk-match.c - tables and support for GLK ACPI enumeration.
++ * soc-acpi-intel-glk-match.c - tables and support for GLK ACPI enumeration.
+  *
+  * Copyright (c) 2018, Intel Corporation.
+  *
+diff --git a/sound/soc/intel/common/soc-acpi-intel-hda-match.c b/sound/soc/intel/common/soc-acpi-intel-hda-match.c
+index 68ae43f7b4b2..cc972d2ac691 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-hda-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-hda-match.c
+@@ -2,7 +2,7 @@
+ // Copyright (c) 2018, Intel Corporation.
+ 
+ /*
+- * soc-apci-intel-hda-match.c - tables and support for HDA+ACPI enumeration.
++ * soc-acpi-intel-hda-match.c - tables and support for HDA+ACPI enumeration.
+  *
+  */
+ 
+diff --git a/sound/soc/intel/common/soc-acpi-intel-hsw-bdw-match.c b/sound/soc/intel/common/soc-acpi-intel-hsw-bdw-match.c
+index d27853e7a369..34eb0baaa951 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-hsw-bdw-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-hsw-bdw-match.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ /*
+- * soc-apci-intel-hsw-bdw-match.c - tables and support for ACPI enumeration.
++ * soc-acpi-intel-hsw-bdw-match.c - tables and support for ACPI enumeration.
+  *
+  * Copyright (c) 2017, Intel Corporation.
+  */
+diff --git a/sound/soc/intel/common/soc-acpi-intel-icl-match.c b/sound/soc/intel/common/soc-acpi-intel-icl-match.c
+index 0b430b9b3673..38977669b576 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-icl-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-icl-match.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * soc-apci-intel-icl-match.c - tables and support for ICL ACPI enumeration.
++ * soc-acpi-intel-icl-match.c - tables and support for ICL ACPI enumeration.
+  *
+  * Copyright (c) 2018, Intel Corporation.
+  *
+diff --git a/sound/soc/intel/common/soc-acpi-intel-kbl-match.c b/sound/soc/intel/common/soc-acpi-intel-kbl-match.c
+index 4b331058e807..e200baa11011 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-kbl-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-kbl-match.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * soc-apci-intel-kbl-match.c - tables and support for KBL ACPI enumeration.
++ * soc-acpi-intel-kbl-match.c - tables and support for KBL ACPI enumeration.
+  *
+  * Copyright (c) 2018, Intel Corporation.
+  *
+diff --git a/sound/soc/intel/common/soc-acpi-intel-skl-match.c b/sound/soc/intel/common/soc-acpi-intel-skl-match.c
+index 0c9c0edd35b3..42fa40a8d932 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-skl-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-skl-match.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * soc-apci-intel-skl-match.c - tables and support for SKL ACPI enumeration.
++ * soc-acpi-intel-skl-match.c - tables and support for SKL ACPI enumeration.
+  *
+  * Copyright (c) 2018, Intel Corporation.
+  *
+-- 
+2.20.1
 

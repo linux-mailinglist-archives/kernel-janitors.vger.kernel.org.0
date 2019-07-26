@@ -2,30 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 411E37631D
-	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Jul 2019 12:06:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A56176496
+	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Jul 2019 13:31:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726141AbfGZKGT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 26 Jul 2019 06:06:19 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42843 "EHLO
+        id S1726023AbfGZLbx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 26 Jul 2019 07:31:53 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:44918 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725953AbfGZKGT (ORCPT
+        with ESMTP id S1725903AbfGZLbx (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 26 Jul 2019 06:06:19 -0400
+        Fri, 26 Jul 2019 07:31:53 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hqx79-0000EG-8x; Fri, 26 Jul 2019 10:06:15 +0000
+        id 1hqyRz-0005S7-Dq; Fri, 26 Jul 2019 11:31:51 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+To:     Alexander Shishkin <alexander.shishkin@linux.intel.com>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ipw2x00: remove redundant assignment to err
-Date:   Fri, 26 Jul 2019 11:06:14 +0100
-Message-Id: <20190726100614.6924-1-colin.king@canonical.com>
+Subject: [PATCH][next] intel_th: msu: fix overflow in shift of an unsigned int
+Date:   Fri, 26 Jul 2019 12:31:51 +0100
+Message-Id: <20190726113151.8967-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,29 +34,32 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Variable err is initialized to a value that is never read and it
-is re-assigned later.  The initialization is redundant and can
-be removed.
+The shift of the unsigned int win->nr_blocks by PAGE_SHIFT may
+potentially overflow. Note that the intended return of this shift
+is expected to be a size_t however the shift is being performed as
+an unsigned int.  Fix this by casting win->nr_blocks to a size_t
+before performing the shift.
 
-Addresses-Coverity: ("Unused value")
+Addresses-Coverity: ("Unintentional integer overflow")
+Fixes: 615c164da0eb ("intel_th: msu: Introduce buffer interface")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/wireless/intel/ipw2x00/ipw2100.c | 2 +-
+ drivers/hwtracing/intel_th/msu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-index 75c0c29d81f0..8dfbaff2d1fe 100644
---- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-+++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
-@@ -4413,7 +4413,7 @@ static void ipw2100_kill_works(struct ipw2100_priv *priv)
+diff --git a/drivers/hwtracing/intel_th/msu.c b/drivers/hwtracing/intel_th/msu.c
+index fc9f15f36ad4..4892ac446c01 100644
+--- a/drivers/hwtracing/intel_th/msu.c
++++ b/drivers/hwtracing/intel_th/msu.c
+@@ -327,7 +327,7 @@ static size_t msc_win_total_sz(struct msc_window *win)
+ 		struct msc_block_desc *bdesc = sg_virt(sg);
  
- static int ipw2100_tx_allocate(struct ipw2100_priv *priv)
- {
--	int i, j, err = -EINVAL;
-+	int i, j, err;
- 	void *v;
- 	dma_addr_t p;
+ 		if (msc_block_wrapped(bdesc))
+-			return win->nr_blocks << PAGE_SHIFT;
++			return (size_t)win->nr_blocks << PAGE_SHIFT;
  
+ 		size += msc_total_sz(bdesc);
+ 		if (msc_block_last_written(bdesc))
 -- 
 2.20.1
 

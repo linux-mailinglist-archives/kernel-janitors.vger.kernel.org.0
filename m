@@ -2,61 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 85BAE7651B
-	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Jul 2019 14:04:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6D88765B7
+	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Jul 2019 14:29:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726519AbfGZMEX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 26 Jul 2019 08:04:23 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:45569 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726138AbfGZMEX (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 26 Jul 2019 08:04:23 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hqyxR-0007X3-Da; Fri, 26 Jul 2019 12:04:21 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] intel_th: msu: fix missing allocation failure check on a kstrndup
-Date:   Fri, 26 Jul 2019 13:04:21 +0100
-Message-Id: <20190726120421.9650-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726969AbfGZM3i (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 26 Jul 2019 08:29:38 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:46352 "EHLO fornost.hmeau.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726277AbfGZM3i (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 26 Jul 2019 08:29:38 -0400
+Received: from gondolin.me.apana.org.au ([192.168.0.6] helo=gondolin.hengli.com.au)
+        by fornost.hmeau.com with esmtps (Exim 4.89 #2 (Debian))
+        id 1hqzLd-0003cy-TK; Fri, 26 Jul 2019 22:29:22 +1000
+Received: from herbert by gondolin.hengli.com.au with local (Exim 4.80)
+        (envelope-from <herbert@gondor.apana.org.au>)
+        id 1hqzLW-000254-Pz; Fri, 26 Jul 2019 22:29:14 +1000
+Date:   Fri, 26 Jul 2019 22:29:14 +1000
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Colin King <colin.king@canonical.com>
+Cc:     gilad@benyossef.com, davem@davemloft.net,
+        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] crypto: ccree - fix spelling mistake
+ "configration" -> "configuration"
+Message-ID: <20190726122914.GA7991@gondor.apana.org.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190701130814.14251-1-colin.king@canonical.com>
+Organization: Core
+X-Newsgroups: apana.lists.os.linux.cryptoapi,apana.lists.os.linux.kernel
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Colin King <colin.king@canonical.com> wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a spelling mistake in a dev_err message. Fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+> drivers/crypto/ccree/cc_driver.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
 
-kstrndup can potentially return NULL, so add a null memory check to
-avoid a null pointer reference later on.
-
-Addresses-Coverity: ("Dereference null return")
-Fixes: 615c164da0eb ("intel_th: msu: Introduce buffer interface")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/hwtracing/intel_th/msu.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/hwtracing/intel_th/msu.c b/drivers/hwtracing/intel_th/msu.c
-index 4892ac446c01..dd7e3c304ee5 100644
---- a/drivers/hwtracing/intel_th/msu.c
-+++ b/drivers/hwtracing/intel_th/msu.c
-@@ -1848,6 +1848,8 @@ mode_store(struct device *dev, struct device_attribute *attr, const char *buf,
- 		len = cp - buf;
- 
- 	mode = kstrndup(buf, len, GFP_KERNEL);
-+	if (!mode)
-+		return -ENOMEM;
- 	i = match_string(msc_mode, ARRAY_SIZE(msc_mode), mode);
- 	if (i >= 0)
- 		goto found;
+Patch applied.  Thanks.
 -- 
-2.20.1
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

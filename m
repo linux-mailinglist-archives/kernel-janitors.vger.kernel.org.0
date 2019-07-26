@@ -2,32 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DAAAD765E3
-	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Jul 2019 14:34:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B66676630
+	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Jul 2019 14:48:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727339AbfGZMeB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 26 Jul 2019 08:34:01 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:46418 "EHLO
+        id S1726099AbfGZMsI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 26 Jul 2019 08:48:08 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:46780 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726130AbfGZMeA (ORCPT
+        with ESMTP id S1725903AbfGZMsI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 26 Jul 2019 08:34:00 -0400
+        Fri, 26 Jul 2019 08:48:08 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hqzPb-0000wU-Ef; Fri, 26 Jul 2019 12:33:27 +0000
+        id 1hqzdj-0001u2-FW; Fri, 26 Jul 2019 12:48:03 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org
+To:     Larry Finger <Larry.Finger@lwfinger.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Nishka Dasgupta <nishkadg.linux@gmail.com>,
+        devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ASoC: codec2codec: fix missing return of error return code
-Date:   Fri, 26 Jul 2019 13:33:27 +0100
-Message-Id: <20190726123327.10467-1-colin.king@canonical.com>
+Subject: [PATCH] staging: rtl8188eu: remove redundant assignment to rtstatus
+Date:   Fri, 26 Jul 2019 13:48:03 +0100
+Message-Id: <20190726124803.11349-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
@@ -36,40 +37,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently in function snd_soc_dai_link_event_pre_pmu the error return
-code in variable err is being set but this is not actually being returned,
-the function just returns zero even when there are failures. Fix this by
-returning the error return code.
+Variable rtstatus is initialized to a value that is never read and it
+is re-assigned later. The initialization is redundant and can be
+removed.
 
 Addresses-Coverity: ("Unused value")
-Fixes: 3dcfb397dad2 ("ASoC: codec2codec: deal with params when necessary")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- sound/soc/soc-dapm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/staging/rtl8188eu/hal/rf_cfg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-dapm.c b/sound/soc/soc-dapm.c
-index be9bb05..2d183e2 100644
---- a/sound/soc/soc-dapm.c
-+++ b/sound/soc/soc-dapm.c
-@@ -3776,7 +3776,7 @@ snd_soc_dai_link_event_pre_pmu(struct snd_soc_dapm_widget *w,
- 	struct snd_pcm_hw_params *params = NULL;
- 	const struct snd_soc_pcm_stream *config = NULL;
- 	unsigned int fmt;
--	int ret;
-+	int ret = 0;
+diff --git a/drivers/staging/rtl8188eu/hal/rf_cfg.c b/drivers/staging/rtl8188eu/hal/rf_cfg.c
+index 739e62dc60e3..47b1bf5a6143 100644
+--- a/drivers/staging/rtl8188eu/hal/rf_cfg.c
++++ b/drivers/staging/rtl8188eu/hal/rf_cfg.c
+@@ -222,7 +222,7 @@ bool rtl88eu_phy_rf_config(struct adapter *adapt)
+ {
+ 	struct hal_data_8188e *hal_data = adapt->HalData;
+ 	u32 u4val = 0;
+-	bool rtstatus = true;
++	bool rtstatus;
+ 	struct bb_reg_def *pphyreg;
  
- 	params = kzalloc(sizeof(*params), GFP_KERNEL);
- 	if (!params)
-@@ -3865,7 +3865,7 @@ snd_soc_dai_link_event_pre_pmu(struct snd_soc_dapm_widget *w,
- 
- out:
- 	kfree(params);
--	return 0;
-+	return ret;
- }
- 
- static int snd_soc_dai_link_event(struct snd_soc_dapm_widget *w,
+ 	pphyreg = &hal_data->PHYRegDef[RF90_PATH_A];
 -- 
-2.7.4
+2.20.1
 

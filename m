@@ -2,28 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 34AD1762C4
-	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Jul 2019 11:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 411E37631D
+	for <lists+kernel-janitors@lfdr.de>; Fri, 26 Jul 2019 12:06:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726343AbfGZJqP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 26 Jul 2019 05:46:15 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42258 "EHLO
+        id S1726141AbfGZKGT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 26 Jul 2019 06:06:19 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:42843 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725842AbfGZJqP (ORCPT
+        with ESMTP id S1725953AbfGZKGT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 26 Jul 2019 05:46:15 -0400
+        Fri, 26 Jul 2019 06:06:19 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hqwnk-0007TE-1C; Fri, 26 Jul 2019 09:46:12 +0000
+        id 1hqx79-0000EG-8x; Fri, 26 Jul 2019 10:06:15 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     "David S . Miller" <davem@davemloft.net>,
-        David Ahern <dsahern@gmail.com>, netdev@vger.kernel.org
+To:     Stanislav Yakovlev <stas.yakovlev@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] net: neigh: remove redundant assignment to variable bucket
-Date:   Fri, 26 Jul 2019 10:46:11 +0100
-Message-Id: <20190726094611.3597-1-colin.king@canonical.com>
+Subject: [PATCH] ipw2x00: remove redundant assignment to err
+Date:   Fri, 26 Jul 2019 11:06:14 +0100
+Message-Id: <20190726100614.6924-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,29 +37,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable bucket is being initialized with a value that is never
-read and it is being updated later with a new value in a following
-for-loop. The initialization is redundant and can be removed.
+Variable err is initialized to a value that is never read and it
+is re-assigned later.  The initialization is redundant and can
+be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- net/core/neighbour.c | 2 +-
+ drivers/net/wireless/intel/ipw2x00/ipw2100.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index f79e61c570ea..5480edff0c86 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -3033,7 +3033,7 @@ static struct neighbour *neigh_get_first(struct seq_file *seq)
- 	struct net *net = seq_file_net(seq);
- 	struct neigh_hash_table *nht = state->nht;
- 	struct neighbour *n = NULL;
--	int bucket = state->bucket;
-+	int bucket;
+diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2100.c b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+index 75c0c29d81f0..8dfbaff2d1fe 100644
+--- a/drivers/net/wireless/intel/ipw2x00/ipw2100.c
++++ b/drivers/net/wireless/intel/ipw2x00/ipw2100.c
+@@ -4413,7 +4413,7 @@ static void ipw2100_kill_works(struct ipw2100_priv *priv)
  
- 	state->flags &= ~NEIGH_SEQ_IS_PNEIGH;
- 	for (bucket = 0; bucket < (1 << nht->hash_shift); bucket++) {
+ static int ipw2100_tx_allocate(struct ipw2100_priv *priv)
+ {
+-	int i, j, err = -EINVAL;
++	int i, j, err;
+ 	void *v;
+ 	dma_addr_t p;
+ 
 -- 
 2.20.1
 

@@ -2,97 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B85977A74
-	for <lists+kernel-janitors@lfdr.de>; Sat, 27 Jul 2019 17:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D296177BB8
+	for <lists+kernel-janitors@lfdr.de>; Sat, 27 Jul 2019 22:01:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728993AbfG0P6r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 27 Jul 2019 11:58:47 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:42064 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728968AbfG0P6q (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 27 Jul 2019 11:58:46 -0400
-Received: by mail-pl1-f194.google.com with SMTP id ay6so25900878plb.9;
-        Sat, 27 Jul 2019 08:58:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=N73gVQg6a3C4HgsLaCOq7Hz45GAHNtEV1T91iTCqpnk=;
-        b=L7ewl3AcLbeUFC7eCzjQRdIrUTWRMVKW5HX8M73hOwasMI5rZAP58D8VrsF+tivWmI
-         jKUmxze/cTEXPonmRssoee50rJRKeu0WgX1eHy5njqPo5F/T+h0IZ4fTMUkra1grtNj2
-         nqul8qI/U45GP6C7AbzTFP5q5uJcAqEXHIk7aew0MlXUs6zm/wlxJjsPHm18U7SrseAr
-         Dqvv34ajcidNajkImd5iMk1u0S1JCUiUi+BnEKLtDXaoyPsMoXy2o2vC/2le4oDeCXWm
-         5XojNkr/3rKxynBkSFPNw6jiMdl4mDr6jba494XaR75mVxY5+QnPc7zc6BX1NryrMvdk
-         431Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=N73gVQg6a3C4HgsLaCOq7Hz45GAHNtEV1T91iTCqpnk=;
-        b=W3/8huatS9JMmd9KCjG3FjbKZGzLbznU+MyYf7seTu1PhksX7diRtqSuxk/Sb87eVt
-         CUCKatH6NXomBTy2dUHiTzZDPnc+Ob7nOI5H/R7x87xvoQYciqQnGRHjvN0dNjZfcBal
-         l608/s5+EJC8f5EpBqaefhffus69Hw3ajg2k7kXvejrc0RriFO2daBmwiFk9j2Tx1p71
-         8JXU+gUV8T1Cca79NC9xiZ0RSd9bayLF3vlfcdcy+KHOkV9AWFrw1Xknd/XMMdTskUxs
-         j0SJVuZSNhtJH55MJy9f/SeDyiDVkPnRhjANhyGUWt4KFnlDGWxmTXnQtN0QaDvR1KmS
-         F0LQ==
-X-Gm-Message-State: APjAAAVJ8s4ePBcyejjT+RVREdcoluV5sI/ci/zZwhHM1VBRWq5JDjXA
-        Cnh7lhHXpQLTf5rr+BZLogA=
-X-Google-Smtp-Source: APXvYqw+ZQUom1oi/G4J7dHzt5RJ3zkCqb6hAenYN/wiGCdzeLJyS0z/7VcBbkoAHSYOj6QHYZY22w==
-X-Received: by 2002:a17:902:b905:: with SMTP id bf5mr95127804plb.342.1564243126185;
-        Sat, 27 Jul 2019 08:58:46 -0700 (PDT)
-Received: from host ([183.101.165.196])
-        by smtp.gmail.com with ESMTPSA id a25sm30550564pfo.60.2019.07.27.08.58.44
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 27 Jul 2019 08:58:45 -0700 (PDT)
-Date:   Sun, 28 Jul 2019 00:58:41 +0900
-From:   Joonwon Kang <kjw1627@gmail.com>
-To:     keescook@chromium.org
-Cc:     re.emese@gmail.com, kernel-hardening@lists.openwall.com,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] randstruct: fix a bug in is_pure_ops_struct()
-Message-ID: <20190727155841.GA13586@host>
+        id S2388261AbfG0UBE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 27 Jul 2019 16:01:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:42992 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388203AbfG0UBE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 27 Jul 2019 16:01:04 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6A8622147A;
+        Sat, 27 Jul 2019 20:01:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1564257663;
+        bh=DgDNlm7F27FXgbQd9yjqj5Ay218U2CBBs+IC8mU3nV8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=tVxqXJoYgKqDdbrxcOzfaOLkxjpg/RhOPTZOxQxkuOyUcuOsWjLQa7FCg6xZSUbGt
+         GbuGbfPFgkvB+bTCzhPyCDjzhWCB7PZ3X2TUedpRd1jYl2XsgyHj/wc3kRINwvS9Xo
+         q/uEFENRUv2HraKQcqKcBLj0cZP6fNBrxCm48jR4=
+Date:   Sat, 27 Jul 2019 21:00:56 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        tglx@linutronix.de, alexios.zavras@intel.com,
+        gregkh@linuxfoundation.org, kstewart@linuxfoundation.org,
+        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: magnetometer: mmc35240: Fix a typo in the name of
+ a constant
+Message-ID: <20190727210056.63e7e9d2@archlinux>
+In-Reply-To: <20190721213533.9214-1-christophe.jaillet@wanadoo.fr>
+References: <20190721213533.9214-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Before this, there were false negatives in the case where a struct
-contains other structs which contain only function pointers because
-of unreachable code in is_pure_ops_struct().
+On Sun, 21 Jul 2019 23:35:33 +0200
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-Signed-off-by: Joonwon Kang <kjw1627@gmail.com>
----
- scripts/gcc-plugins/randomize_layout_plugin.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+> Everything is about mmc35240_ except MMC53240_WAIT_SET_RESET (3 and 5
+> switched).
+> 
+> This is likely a typo. Define and use MMC35240_WAIT_SET_RESET instead.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-diff --git a/scripts/gcc-plugins/randomize_layout_plugin.c b/scripts/gcc-plugins/randomize_layout_plugin.c
-index 6d5bbd31db7f..a123282a4fcd 100644
---- a/scripts/gcc-plugins/randomize_layout_plugin.c
-+++ b/scripts/gcc-plugins/randomize_layout_plugin.c
-@@ -443,13 +443,12 @@ static int is_pure_ops_struct(const_tree node)
- 		if (node == fieldtype)
- 			continue;
- 
--		if (!is_fptr(fieldtype))
--			return 0;
--
--		if (code != RECORD_TYPE && code != UNION_TYPE)
--			continue;
-+		if (code == RECORD_TYPE || code == UNION_TYPE) {
-+			if (!is_pure_ops_struct(fieldtype))
-+				return 0;
-+		}
- 
--		if (!is_pure_ops_struct(fieldtype))
-+		if (!is_fptr(fieldtype))
- 			return 0;
- 	}
- 
--- 
-2.17.1
+Applied to the togreg branch of iio.git and pushed out as testing for
+the autobuilders to see what we missed.
+
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/magnetometer/mmc35240.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/magnetometer/mmc35240.c b/drivers/iio/magnetometer/mmc35240.c
+> index 7de10281ad9e..425cdd07b4e5 100644
+> --- a/drivers/iio/magnetometer/mmc35240.c
+> +++ b/drivers/iio/magnetometer/mmc35240.c
+> @@ -53,7 +53,7 @@
+>  #define MMC35240_CTRL1_BW_SHIFT		0
+>  
+>  #define MMC35240_WAIT_CHARGE_PUMP	50000	/* us */
+> -#define MMC53240_WAIT_SET_RESET		1000	/* us */
+> +#define MMC35240_WAIT_SET_RESET		1000	/* us */
+>  
+>  /*
+>   * Memsic OTP process code piece is put here for reference:
+> @@ -225,7 +225,7 @@ static int mmc35240_init(struct mmc35240_data *data)
+>  	ret = mmc35240_hw_set(data, true);
+>  	if (ret < 0)
+>  		return ret;
+> -	usleep_range(MMC53240_WAIT_SET_RESET, MMC53240_WAIT_SET_RESET + 1);
+> +	usleep_range(MMC35240_WAIT_SET_RESET, MMC35240_WAIT_SET_RESET + 1);
+>  
+>  	ret = mmc35240_hw_set(data, false);
+>  	if (ret < 0)
 

@@ -2,86 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF5C377C83
-	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Jul 2019 02:32:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5F5777E79
+	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Jul 2019 09:46:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387653AbfG1Ack (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 27 Jul 2019 20:32:40 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:39372 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726526AbfG1Ack (ORCPT
+        id S1726004AbfG1HqX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 28 Jul 2019 03:46:23 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:36739 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725937AbfG1HqX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 27 Jul 2019 20:32:40 -0400
-Received: by mail-io1-f68.google.com with SMTP id f4so112460767ioh.6;
-        Sat, 27 Jul 2019 17:32:39 -0700 (PDT)
+        Sun, 28 Jul 2019 03:46:23 -0400
+Received: by mail-wm1-f68.google.com with SMTP id g67so46734671wme.1
+        for <kernel-janitors@vger.kernel.org>; Sun, 28 Jul 2019 00:46:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=Gc7hJOMCYYUlzXVlEg8HfUg4RlT7fJ1IyZ9SQFOPTw8=;
-        b=YXULFW/pveoU0GBUoO1Mzyctep1lnmE1Z4Wf46OnNzM+xxG5e9o5FfnUdT+Gr9G+f7
-         pq9X35V3A9MkztVIULlRS8Yj05GrlbJGOjYLnsbaN7u4+8qLyeK2w86zFqa5epwe84lI
-         1NcY9+JJAS/b7/dd9p2YY00BKOoDnVmnVEufxL91/vWLvJDLA5a0lV4604o59og+ajzm
-         eSm4PCh9hIQNqIH4ESGu8PlFugRHK/zJ4qUgBQ/6I8S6S0gdtqaKuJof7OhtdeYL0IUu
-         4JcRuoK+rO/JGSH4JRbXo0Xl+1e1VMuHo0P8t+HFo62SLYkRvfZqtrvSvzqRYqk/z7ep
-         t1bg==
+        d=resnulli-us.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=2/G7IaZ8tiYQkvUjO2OGRQfRiaaHFpZ/Ktl9QzMcAM4=;
+        b=Q5h14Lfr1vWRYHjX5e6phEJRFTeh+7dNc+QdnUBBekSIV3CtR0lIVJ3fd6BRZsIQj3
+         Hh9/qDIlUUekUyF/zlcHYhwJWJ7c6YHQ1hmMWt7IDtGEyyNNpE/Gu0BRooM3DNGaKkAF
+         GQmpZJCrBdT9B8U2g4jYormH1HLmxS58DSCyP4CaFtjxPWSHPwOOulmHdzO+2vOA8qwR
+         A0xhEMeBiyXi1+FHnhqJ2Ox0ZGseYzK6n9gL1eEqE+I7VHdoI/XvjCcwItsawXAwnSeW
+         kxhoz3SVHnlqAS365oB3V4fplD91va1O5hEAdCc6y3mK8ZSdxVoLHQdwCufe8lhY1ZvN
+         fPjw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=Gc7hJOMCYYUlzXVlEg8HfUg4RlT7fJ1IyZ9SQFOPTw8=;
-        b=iiLq77UQ5CFADTQ6BP5MnBFo6fXIkJnRB9CT4/IRvn4VrVeoJ4ny/HKkuuNb555XEq
-         fFzxoBrcljvcQ5JpcZ4RsIMXknuEPhqs0HSIpV4bKt7fHLD5GTVspkSUfJGbWvfflhsW
-         HAMx7mOZWJmkBGX4kRlRwW4Wwd6L5/nHR/MyIECdOyTJCXecqRxg2axUk9Akt3xv6Ljv
-         BG9TN6EubPVh9FUTir2rSJnFLI+neHXupoZlz94d6MgJKbkM+1u/sLjZOYc9lDmemggw
-         LyQSRtWglXYWqxRCpzuFYrSC9bubF9tyiW3G+yl1SheFEE4yDV4VsVY8NxP78QoVI+Nq
-         5F+A==
-X-Gm-Message-State: APjAAAW2yADzHlXlNbgF0bNxzXXu/5T7rG5WDe3S1kL6JQZxH8lV1Day
-        4EQFEDNPBXWtMfqKO1ZlAmzKu6NH
-X-Google-Smtp-Source: APXvYqyUve1fmJNdtxsJteT827jKPt8wK2K5WNM+uZgOMeBe3c+xq5OxBrKVA8dUBOikM8DcpBj1fQ==
-X-Received: by 2002:a5e:a710:: with SMTP id b16mr21019831iod.38.1564273959214;
-        Sat, 27 Jul 2019 17:32:39 -0700 (PDT)
-Received: from ?IPv6:2601:282:800:fd80:8d96:da24:c7b3:3d25? ([2601:282:800:fd80:8d96:da24:c7b3:3d25])
-        by smtp.googlemail.com with ESMTPSA id i23sm40996185ioj.24.2019.07.27.17.32.37
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 27 Jul 2019 17:32:38 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=2/G7IaZ8tiYQkvUjO2OGRQfRiaaHFpZ/Ktl9QzMcAM4=;
+        b=YcDx1h9HQVn18bm7MNbT5paA5lzFAXfzbqGv6lNY/KJMIdKIFqb4rL/2WKUpBJUvHi
+         Cw205SlAlAs3uJZXzXhJSZG67sQKjYjuZcMUEsnTm02cKPV9n6uJ3Gn0Qf9+Vu9DBKtT
+         3NshrQqs5NJxvJqZK2urIR2VxuaXAxlAH8zSyMrRrOQdFI7eUqAuRPwcO1ldCRMbUWIZ
+         7WNjsLcAMSARMIvzkxjMWz2t3amKr6sTcwrASHqB+dZM+RNOcjWobZgWopX3gJmLSlTV
+         a88MRr4cHE+TqW+gKFMuG6q5El/Ty39lkAZXdq8StFTEG7eIYQgxJNDQ8mQoXAGsHHpu
+         RVQA==
+X-Gm-Message-State: APjAAAUVztIgEtj4zL9/lsz4nFRZLWumPRVtvAgzBYF22u+0KrJIDxSD
+        LEYVuuOqalp+8U7TbJ+5jaY=
+X-Google-Smtp-Source: APXvYqyg9ads4NJultwbj5Ts8UfWbNW/kHbokiWQB83owxZnaZwiVsGhlK22m19FExLQ6sHi8BCEBA==
+X-Received: by 2002:a1c:ddc1:: with SMTP id u184mr91017388wmg.158.1564299980967;
+        Sun, 28 Jul 2019 00:46:20 -0700 (PDT)
+Received: from localhost (jirka.pirko.cz. [84.16.102.26])
+        by smtp.gmail.com with ESMTPSA id f1sm39579827wml.28.2019.07.28.00.46.20
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Sun, 28 Jul 2019 00:46:20 -0700 (PDT)
+Date:   Sun, 28 Jul 2019 09:46:19 +0200
+From:   Jiri Pirko <jiri@resnulli.us>
+To:     Colin King <colin.king@canonical.com>
+Cc:     David Ahern <dsahern@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] rocker: fix memory leaks of fib_work on two error return
  paths
-To:     Colin King <colin.king@canonical.com>,
-        Jiri Pirko <jiri@resnulli.us>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-ID: <20190728074619.GA2423@nanopsycho.orion>
 References: <20190727233726.3121-1-colin.king@canonical.com>
-From:   David Ahern <dsahern@gmail.com>
-Message-ID: <d3b8bb71-21d3-97ae-0807-d0300ba44a04@gmail.com>
-Date:   Sat, 27 Jul 2019 18:32:33 -0600
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:52.0)
- Gecko/20100101 Thunderbird/52.9.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20190727233726.3121-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 7/27/19 5:37 PM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently there are two error return paths that leak memory allocated
-> to fib_work. Fix this by kfree'ing fib_work before returning.
-> 
-> Addresses-Coverity: ("Resource leak")
-> Fixes: 19a9d136f198 ("ipv4: Flag fib_info with a fib_nh using IPv6 gateway")
-> Fixes: dbcc4fa718ee ("rocker: Fail attempts to use routes with nexthop objects")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/net/ethernet/rocker/rocker_main.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
+Sun, Jul 28, 2019 at 01:37:26AM CEST, colin.king@canonical.com wrote:
+>From: Colin Ian King <colin.king@canonical.com>
+>
+>Currently there are two error return paths that leak memory allocated
+>to fib_work. Fix this by kfree'ing fib_work before returning.
+>
+>Addresses-Coverity: ("Resource leak")
+>Fixes: 19a9d136f198 ("ipv4: Flag fib_info with a fib_nh using IPv6 gateway")
+>Fixes: dbcc4fa718ee ("rocker: Fail attempts to use routes with nexthop objects")
+>Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Thanks for the patch,
-Reviewed-by: David Ahern <dsahern@gmail.com>
+Acked-by: Jiri Pirko <jiri@mellanox.com>

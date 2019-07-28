@@ -2,30 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9144878092
-	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Jul 2019 19:11:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30105780D5
+	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Jul 2019 20:04:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726105AbfG1RL3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 28 Jul 2019 13:11:29 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:34730 "EHLO
+        id S1726105AbfG1SEK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 28 Jul 2019 14:04:10 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:35168 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726046AbfG1RL3 (ORCPT
+        with ESMTP id S1726046AbfG1SEK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 28 Jul 2019 13:11:29 -0400
+        Sun, 28 Jul 2019 14:04:10 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hrmhh-000484-LW; Sun, 28 Jul 2019 17:11:25 +0000
+        id 1hrnWh-0006ft-NR; Sun, 28 Jul 2019 18:04:07 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+To:     Mike Marshall <hubcap@omnibond.com>,
+        Martin Brandenburg <martin@omnibond.com>,
+        devel@lists.orangefs.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] media: vsp1: fix memory leak of dl on error return path
-Date:   Sun, 28 Jul 2019 18:11:24 +0100
-Message-Id: <20190728171124.14202-1-colin.king@canonical.com>
+Subject: [PATCH] orangefs: remove redundant assignment to err
+Date:   Sun, 28 Jul 2019 19:04:07 +0100
+Message-Id: <20190728180407.15156-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,33 +36,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently when the call vsp1_dl_body_get fails and returns null the
-error return path leaks the allocation of dl. Fix this by kfree'ing
-dl before returning.
+Variable err is initialized to a value that is never read and it
+is re-assigned later.  The initialization is redundant and can
+be removed.
 
-Addresses-Coverity: ("Resource leak")
-Fixes: 5d7936b8e27d ("media: vsp1: Convert display lists to use new body pool")
+Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/media/platform/vsp1/vsp1_dl.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/orangefs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/vsp1/vsp1_dl.c b/drivers/media/platform/vsp1/vsp1_dl.c
-index 104b6f514536..d7b43037e500 100644
---- a/drivers/media/platform/vsp1/vsp1_dl.c
-+++ b/drivers/media/platform/vsp1/vsp1_dl.c
-@@ -557,8 +557,10 @@ static struct vsp1_dl_list *vsp1_dl_list_alloc(struct vsp1_dl_manager *dlm)
+diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c
+index 0c337d8bdaab..efb12197da18 100644
+--- a/fs/orangefs/inode.c
++++ b/fs/orangefs/inode.c
+@@ -940,7 +940,7 @@ int orangefs_setattr(struct dentry *dentry, struct iattr *iattr)
+ int orangefs_getattr(const struct path *path, struct kstat *stat,
+ 		     u32 request_mask, unsigned int flags)
+ {
+-	int ret = -ENOENT;
++	int ret;
+ 	struct inode *inode = path->dentry->d_inode;
  
- 	/* Get a default body for our list. */
- 	dl->body0 = vsp1_dl_body_get(dlm->pool);
--	if (!dl->body0)
-+	if (!dl->body0) {
-+		kfree(dl);
- 		return NULL;
-+	}
- 
- 	header_offset = dl->body0->max_entries * sizeof(*dl->body0->entries);
- 
+ 	gossip_debug(GOSSIP_INODE_DEBUG,
 -- 
 2.20.1
 

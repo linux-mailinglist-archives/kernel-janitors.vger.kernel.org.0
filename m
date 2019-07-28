@@ -2,76 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A66C77EEB
-	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Jul 2019 12:00:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9144878092
+	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Jul 2019 19:11:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726173AbfG1KA2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 28 Jul 2019 06:00:28 -0400
-Received: from mail-lf1-f47.google.com ([209.85.167.47]:41207 "EHLO
-        mail-lf1-f47.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726107AbfG1KA2 (ORCPT
+        id S1726105AbfG1RL3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 28 Jul 2019 13:11:29 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:34730 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726046AbfG1RL3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 28 Jul 2019 06:00:28 -0400
-Received: by mail-lf1-f47.google.com with SMTP id 62so35093852lfa.8
-        for <kernel-janitors@vger.kernel.org>; Sun, 28 Jul 2019 03:00:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=M5pBCLZQz90BrGcUD2I4KEUNjM1YGzNjZn8GbrFYE54=;
-        b=s4gmEPa+MSse8G/JQ3TVW6Wq7NmcNzaUl6/rZymOwbWBLSQqL7jA2FDZWocTsV0eB2
-         wIX0YfUEq2E8JUVl3WCTfiAZmRXRl/gzyDQM84i8T3B92WOTOUhZ21dJk/M97mXx4apw
-         tMYrxvXJibhZCztKD2Rj/8Hc/OfA4YajHY1W9D/D6nTmUsRBnvf2MaiVaaPzPcVu1Br/
-         0wU4J/K+Zxia5WR307Lbl0o6efQ0liqjW6dT/Pi6i2qYtfrZFGOaY8tgEZFBvHpDSJDl
-         8RYHkXfsufIYgIQEnZPcpAk04Q6AQnQfT+plBspfWyZlrAScyYsR6gWGgN+sZVUqv6dj
-         Ug7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=M5pBCLZQz90BrGcUD2I4KEUNjM1YGzNjZn8GbrFYE54=;
-        b=pr0Mh0ltey55Htw0j/SjTb06lwSsLRDFLw7DgZhugRmegEOeOGwfHKFhcHWNGbkoOQ
-         20ru+ot8igZFyhzfTMeXwhGgbVFHpR0h4F8IxdANXp3RQGfQUyppmkBmXv7vfqxOMk+5
-         b3Xc4jF4bvYFuXp/rBLdQA0tvv/GwhihCp6Dnl2dCiWZojQe/rHbwPTC+JN+M4QhDvOS
-         3Jy4ZZJpasXq6qKL/VPYLBg99wUWheGpljh+xVtFXl+LVxJ/CdN1Tm/37zV3XJ1FF+qK
-         dJML89GC2lxyS4Cra/YVP5OZgifLyItrVVr6MaN+sFKGZEhtP09Ti8xa49Qgnq3tamoM
-         BD7w==
-X-Gm-Message-State: APjAAAU5syywf49A1xNyRF2pwlB55YnVpwF/Cbl2bTu4Z09KQ6pG6KMG
-        L7ILvfVPZD60NQphWVm0ZPQF/P+0R7goGFYGH9bQIw==
-X-Google-Smtp-Source: APXvYqxBERF293e15i4oX5SWRbPMOfqKEJuOzLHoaUrl9EoMvgRMl7sq8s8LAW8jZQcqDMBCNmWB002/Dgpd16Pyzww=
-X-Received: by 2002:ac2:5382:: with SMTP id g2mr47219184lfh.92.1564308025871;
- Sun, 28 Jul 2019 03:00:25 -0700 (PDT)
+        Sun, 28 Jul 2019 13:11:29 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hrmhh-000484-LW; Sun, 28 Jul 2019 17:11:25 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] media: vsp1: fix memory leak of dl on error return path
+Date:   Sun, 28 Jul 2019 18:11:24 +0100
+Message-Id: <20190728171124.14202-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20190629123306.12519-1-colin.king@canonical.com>
-In-Reply-To: <20190629123306.12519-1-colin.king@canonical.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sun, 28 Jul 2019 12:00:14 +0200
-Message-ID: <CACRpkdYaVT_j5Ky-nd8_1F0mG3yqBWaQ_ju8g2zSb1O+565ozw@mail.gmail.com>
-Subject: Re: [PATCH][next] gpio: bd70528: remove redundant assignment to
- variable ret
-To:     Colin King <colin.king@canonical.com>
-Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Jun 29, 2019 at 2:33 PM Colin King <colin.king@canonical.com> wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Variable ret is being initialized with a value that is never read
-> and ret is being re-assigned a little later on. The assignment is
-> redundant and hence can be removed.
->
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Currently when the call vsp1_dl_body_get fails and returns null the
+error return path leaks the allocation of dl. Fix this by kfree'ing
+dl before returning.
 
-Patch applied.
+Addresses-Coverity: ("Resource leak")
+Fixes: 5d7936b8e27d ("media: vsp1: Convert display lists to use new body pool")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/media/platform/vsp1/vsp1_dl.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Yours,
-Linus Walleij
+diff --git a/drivers/media/platform/vsp1/vsp1_dl.c b/drivers/media/platform/vsp1/vsp1_dl.c
+index 104b6f514536..d7b43037e500 100644
+--- a/drivers/media/platform/vsp1/vsp1_dl.c
++++ b/drivers/media/platform/vsp1/vsp1_dl.c
+@@ -557,8 +557,10 @@ static struct vsp1_dl_list *vsp1_dl_list_alloc(struct vsp1_dl_manager *dlm)
+ 
+ 	/* Get a default body for our list. */
+ 	dl->body0 = vsp1_dl_body_get(dlm->pool);
+-	if (!dl->body0)
++	if (!dl->body0) {
++		kfree(dl);
+ 		return NULL;
++	}
+ 
+ 	header_offset = dl->body0->max_entries * sizeof(*dl->body0->entries);
+ 
+-- 
+2.20.1
+

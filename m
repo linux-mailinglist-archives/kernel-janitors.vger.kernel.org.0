@@ -2,105 +2,118 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 638A378B7B
-	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Jul 2019 14:14:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C464A78BD9
+	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Jul 2019 14:34:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727432AbfG2MOf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 29 Jul 2019 08:14:35 -0400
-Received: from perceval.ideasonboard.com ([213.167.242.64]:45780 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726972AbfG2MOf (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 29 Jul 2019 08:14:35 -0400
-Received: from [192.168.0.20] (cpc89242-aztw30-2-0-cust488.18-1.cable.virginm.net [86.31.129.233])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id E39CBCC;
-        Mon, 29 Jul 2019 14:14:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1564402473;
-        bh=wCcAv6FM39diFN+jloWxPo/sh6IQxLvyE55J6Ukj43k=;
-        h=Reply-To:Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=EXVYBv5C2Fy1T255ejinqH2w7bZ2KZfQLDogsCIDvvZObjLlX3XBstaONLOl1zwYh
-         +PtIcBcFdTS5Es71PD3z2jJ3HGaKPQIMk2i7OaeoC2UTOMCrrnRZ2JpqrMQ08ch3MA
-         cWrtMeLvUSmXhqe96Xg3cKNn3Jz325jQ1LYgV7SM=
-Reply-To: kieran.bingham+renesas@ideasonboard.com
-Subject: Re: [PATCH] media: vsp1: fix memory leak of dl on error return path
-To:     Colin Ian King <colin.king@canonical.com>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190728171124.14202-1-colin.king@canonical.com>
- <e5c3dede-2c59-4c64-7a8c-f022ee06cbfa@ideasonboard.com>
- <22ff8757-fd79-a279-f55e-fc7c8d204a60@canonical.com>
-From:   Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-Organization: Ideas on Board
-Message-ID: <dd5e9421-9d32-0cad-9411-575569766b2f@ideasonboard.com>
-Date:   Mon, 29 Jul 2019 13:14:30 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1728129AbfG2Men (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 29 Jul 2019 08:34:43 -0400
+Received: from mx01-fr.bfs.de ([193.174.231.67]:42579 "EHLO mx01-fr.bfs.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727625AbfG2Mem (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 29 Jul 2019 08:34:42 -0400
+Received: from mail-fr.bfs.de (mail-fr.bfs.de [10.177.18.200])
+        by mx01-fr.bfs.de (Postfix) with ESMTPS id 270DC20376;
+        Mon, 29 Jul 2019 14:34:36 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1564403676; h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=qqmyrL0xuxOoHnbtajOEKx+rhyikST36MrsY2R3mGJg=;
+        b=Sde8UgRU4cY4OD8Z0LKRI+R8KuJug+f9TGX0uZWPOLwwijft3D1CAPInecQtMS2Qqmqyqx
+        XE23TELsm+v5ZC+2lnXAmpn+XkPJiArueec34b9h9lThtRFFii4zpuWV1hta15n/vrpC48
+        ix3KJgiA6e1PT+ui+GGWnHfkYw4LWGVeOLTThtc2UbnAM6v3hTMuw0ndbYbe7DdyN1Fp+b
+        LYxIbL8LZ5c9DL8RyZ9c/7XEobo2Vuu7UpicQBxTu95Wf7LUptxiDJOTBPiqnm3CW3a82r
+        wavrL5TxBqYbMlfHgzHNII+rqI9sCLsvF/PeT5xAyxU+WLnitxH8NN41qSjeJw==
+Received: from [134.92.181.33] (unknown [134.92.181.33])
+        by mail-fr.bfs.de (Postfix) with ESMTPS id 7AD32BEEBD;
+        Mon, 29 Jul 2019 14:34:35 +0200 (CEST)
+Message-ID: <5D3EE7DB.9070706@bfs.de>
+Date:   Mon, 29 Jul 2019 14:34:35 +0200
+From:   walter harms <wharms@bfs.de>
+Reply-To: wharms@bfs.de
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; de; rv:1.9.1.16) Gecko/20101125 SUSE/3.0.11 Thunderbird/3.0.11
 MIME-Version: 1.0
-In-Reply-To: <22ff8757-fd79-a279-f55e-fc7c8d204a60@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
+To:     Colin King <colin.king@canonical.com>
+CC:     Zhang Rui <rui.zhang@intel.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        linux-pm@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][V2] drivers: thermal: processor_thermal_device: fix missing
+ bitwise-or operators
+References: <20190729120323.15838-1-colin.king@canonical.com>
+In-Reply-To: <20190729120323.15838-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.10
+Authentication-Results: mx01-fr.bfs.de
+X-Spamd-Result: default: False [-3.10 / 7.00];
+         ARC_NA(0.00)[];
+         HAS_REPLYTO(0.00)[wharms@bfs.de];
+         BAYES_HAM(-3.00)[100.00%];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         FREEMAIL_ENVRCPT(0.00)[gmail.com];
+         MIME_GOOD(-0.10)[text/plain];
+         REPLYTO_ADDR_EQ_FROM(0.00)[];
+         DKIM_SIGNED(0.00)[];
+         RCPT_COUNT_SEVEN(0.00)[8];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         RCVD_COUNT_TWO(0.00)[2];
+         MID_RHS_MATCH_FROM(0.00)[];
+         RCVD_TLS_ALL(0.00)[]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 29/07/2019 13:12, Colin Ian King wrote:
-> On 29/07/2019 13:11, Kieran Bingham wrote:
->> Hi Colin,
->>
->> On 28/07/2019 18:11, Colin King wrote:
->>> From: Colin Ian King <colin.king@canonical.com>
->>>
->>> Currently when the call vsp1_dl_body_get fails and returns null the
->>> error return path leaks the allocation of dl. Fix this by kfree'ing
->>> dl before returning.
->>
->> Eeep. This does indeed look to be the case.
->>
->>>
->>> Addresses-Coverity: ("Resource leak")
->>> Fixes: 5d7936b8e27d ("media: vsp1: Convert display lists to use new body pool")
->>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->>
->> Thank you!
+
+
+Am 29.07.2019 14:03, schrieb Colin King:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Thank static analysis :-)
-
-Bah, that's just the hammer - you're the one finding the nails :-D
---
-Kieran
-
-
+> The variable val is having the top 8 bits cleared and then the variable is being
+> re-assinged and setting just the top 8 bits.  I believe the intention was bitwise-or
+> in the top 8 bits.  Fix this by replacing the = operators with &= and |= instead.
 > 
->>
->> Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
->>
->>
->>> ---
->>>  drivers/media/platform/vsp1/vsp1_dl.c | 4 +++-
->>>  1 file changed, 3 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/media/platform/vsp1/vsp1_dl.c b/drivers/media/platform/vsp1/vsp1_dl.c
->>> index 104b6f514536..d7b43037e500 100644
->>> --- a/drivers/media/platform/vsp1/vsp1_dl.c
->>> +++ b/drivers/media/platform/vsp1/vsp1_dl.c
->>> @@ -557,8 +557,10 @@ static struct vsp1_dl_list *vsp1_dl_list_alloc(struct vsp1_dl_manager *dlm)
->>>  
->>>  	/* Get a default body for our list. */
->>>  	dl->body0 = vsp1_dl_body_get(dlm->pool);
->>> -	if (!dl->body0)
->>> +	if (!dl->body0) {
->>> +		kfree(dl);
->>>  		return NULL;
->>> +	}
->>>  
->>>  	header_offset = dl->body0->max_entries * sizeof(*dl->body0->entries);
->>>  
->>>
->>
+> Addresses-Coverity: ("Unused value")
+> Fixes: b0c74b08517e ("drivers: thermal: processor_thermal_device: Export sysfs inteface for TCC offset")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
 > 
+> V2: Add in &= operator missing from V1. Doh.
+> 
+> ---
+>  .../thermal/intel/int340x_thermal/processor_thermal_device.c  | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
+> index 6f6ac6a8e82d..97333fc4be42 100644
+> --- a/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
+> +++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
+> @@ -163,8 +163,8 @@ static int tcc_offset_update(int tcc)
+>  	if (err)
+>  		return err;
+>  
+> -	val = ~GENMASK_ULL(31, 24);
+> -	val = (tcc & 0xff) << 24;
+> +	val &= ~GENMASK_ULL(31, 24);
+> +	val |= (tcc & 0xff) << 24;
+>  
 
+IMHO GENMASK_ULL(31, 24) is a complicated way to say 0xFF000000
+In this special case it would be better to use that (or 0xff<<24).
+
+just my 2 cents,
+
+re,
+ wh
+
+
+>  	err = wrmsrl_safe(MSR_IA32_TEMPERATURE_TARGET, val);
+>  	if (err)

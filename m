@@ -2,29 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30105780D5
-	for <lists+kernel-janitors@lfdr.de>; Sun, 28 Jul 2019 20:04:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B4037899B
+	for <lists+kernel-janitors@lfdr.de>; Mon, 29 Jul 2019 12:29:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726105AbfG1SEK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 28 Jul 2019 14:04:10 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:35168 "EHLO
+        id S1728167AbfG2K3f (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 29 Jul 2019 06:29:35 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53678 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726046AbfG1SEK (ORCPT
+        with ESMTP id S1728030AbfG2K3f (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 28 Jul 2019 14:04:10 -0400
+        Mon, 29 Jul 2019 06:29:35 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hrnWh-0006ft-NR; Sun, 28 Jul 2019 18:04:07 +0000
+        id 1hs2uI-0005Fo-C9; Mon, 29 Jul 2019 10:29:30 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Mike Marshall <hubcap@omnibond.com>,
-        Martin Brandenburg <martin@omnibond.com>,
-        devel@lists.orangefs.org
+To:     Zhang Rui <rui.zhang@intel.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-pm@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] orangefs: remove redundant assignment to err
-Date:   Sun, 28 Jul 2019 19:04:07 +0100
-Message-Id: <20190728180407.15156-1-colin.king@canonical.com>
+Subject: [PATCH][next] drivers: thermal: processor_thermal_device: fix missing bitwise-or operator
+Date:   Mon, 29 Jul 2019 11:29:30 +0100
+Message-Id: <20190729102930.2956-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,29 +39,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Variable err is initialized to a value that is never read and it
-is re-assigned later.  The initialization is redundant and can
-be removed.
+The variable val is having the top 8 bits cleared and then the variable
+is being re-assinged and setting just the top 8 bits.  I believe the
+intention was bitwise-or in the top 8 bits.  Fix this by replacing
+the = operator with |= instead.
 
 Addresses-Coverity: ("Unused value")
+Fixes: b0c74b08517e ("drivers: thermal: processor_thermal_device: Export sysfs inteface for TCC offset")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- fs/orangefs/inode.c | 2 +-
+ .../thermal/intel/int340x_thermal/processor_thermal_device.c    | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/orangefs/inode.c b/fs/orangefs/inode.c
-index 0c337d8bdaab..efb12197da18 100644
---- a/fs/orangefs/inode.c
-+++ b/fs/orangefs/inode.c
-@@ -940,7 +940,7 @@ int orangefs_setattr(struct dentry *dentry, struct iattr *iattr)
- int orangefs_getattr(const struct path *path, struct kstat *stat,
- 		     u32 request_mask, unsigned int flags)
- {
--	int ret = -ENOENT;
-+	int ret;
- 	struct inode *inode = path->dentry->d_inode;
+diff --git a/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c b/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
+index 6f6ac6a8e82d..cb22317911ef 100644
+--- a/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
++++ b/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
+@@ -164,7 +164,7 @@ static int tcc_offset_update(int tcc)
+ 		return err;
  
- 	gossip_debug(GOSSIP_INODE_DEBUG,
+ 	val = ~GENMASK_ULL(31, 24);
+-	val = (tcc & 0xff) << 24;
++	val |= (tcc & 0xff) << 24;
+ 
+ 	err = wrmsrl_safe(MSR_IA32_TEMPERATURE_TARGET, val);
+ 	if (err)
 -- 
 2.20.1
 

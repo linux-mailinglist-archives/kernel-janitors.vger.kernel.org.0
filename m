@@ -2,116 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 08BD47A6AE
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jul 2019 13:12:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C9177A718
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jul 2019 13:37:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726951AbfG3LMl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 30 Jul 2019 07:12:41 -0400
-Received: from mail-eopbgr130075.outbound.protection.outlook.com ([40.107.13.75]:10727
-        "EHLO EUR01-HE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726267AbfG3LMl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 30 Jul 2019 07:12:41 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=dQOlQhIv8p8kocslHiMJmdv/9U2mh+dzmW7ZtqbDuBAmeG8j2zoaqTCE7x9rDlKkT8RqMyxEHPxNy+WkvacUEAjhJrO9OC10H1UEFqdHopfroqz8K1uQips1JOOEohNkcnl6tcaqM3hnz5dZy46H1f+FQbcseb8XkyiX3KQQbFlSrZbL6cC3WSBEZ+RSqVbKV8MofusBdVeq8D89ZuJ+x4OmgPCE0bCSQ/mnob7gGQC9cy9ompFDH64Tg4jepql06ke4ofcCQwZNfH6lPvfhprhAP8HfHxzltqXEorX1aY4TQuqxi3GirEoKBEeJW/FgRy7bWfbR9zb1kF6ypXVhqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3C/xFAnnnvYJ78naSRzS2h/X32Skvt+DiXTgt1NaBHo=;
- b=jLBHdLHyQkZJpz9DDoDCsZFqfcgWdzmqgEALisJIstWRueMey6CRzTEHSI8qmuC7GlnZg1fJMxHosxMx+dQYLb1ypoI4+SgzX76Vb8jif5QgyzfQp9ozWghZrgwn+b50aYUU5lakA9kvzoTTHE5m8Q73IZocAsJ6/caPpxSzye5O2YkhXu/PUH/y2/H/PKZOv4YL52/WQ9ILgSuaG3dEgZgxvzGx7Bn6mgvhceyHzvjTPql0Rs9hIChw4Pt4t5QWuEB60NtyUwMsK7aPvdUUkP8vEZeGFQpv0fv3nYc0M5yLSvkTCf6cE19u7ZAIIShTHMsSSZoYReDe0WbATDlekQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1;spf=pass
- smtp.mailfrom=mellanox.com;dmarc=pass action=none
- header.from=mellanox.com;dkim=pass header.d=mellanox.com;arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3C/xFAnnnvYJ78naSRzS2h/X32Skvt+DiXTgt1NaBHo=;
- b=engVDig3G879Ch+SQHNwwGyec/QvNSZ4y8O4K9cjEGRaqD77HUOh5l52gqooz9HqyOlXN0mmuPB10pxK5UI2TMux/OkMpnpRXMrLhCt9Vd6JzZKPZGQSIhJ3KlbwXgw7Ncxhke3WAZVbxAi47AoLeILD8L8ojbSbqZQABi1AnQQ=
-Received: from DB8PR05MB6044.eurprd05.prod.outlook.com (20.179.10.157) by
- DB8PR05MB5930.eurprd05.prod.outlook.com (20.179.12.27) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2115.15; Tue, 30 Jul 2019 11:12:36 +0000
-Received: from DB8PR05MB6044.eurprd05.prod.outlook.com
- ([fe80::1587:f8a7:2e31:c75e]) by DB8PR05MB6044.eurprd05.prod.outlook.com
- ([fe80::1587:f8a7:2e31:c75e%3]) with mapi id 15.20.2115.005; Tue, 30 Jul 2019
- 11:12:36 +0000
-From:   Petr Machata <petrm@mellanox.com>
-To:     Colin King <colin.king@canonical.com>
-CC:     Jiri Pirko <jiri@mellanox.com>, Ido Schimmel <idosch@mellanox.com>,
+        id S1730568AbfG3LhN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 30 Jul 2019 07:37:13 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:35699 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730430AbfG3LhN (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 30 Jul 2019 07:37:13 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212])
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hsQRJ-0001Dt-RI; Tue, 30 Jul 2019 11:37:09 +0000
+Subject: Re: [PATCH][next] mlxsw: spectrum_ptp: fix duplicated check on
+ orig_egr_types
+To:     Petr Machata <petrm@mellanox.com>
+Cc:     Jiri Pirko <jiri@mellanox.com>, Ido Schimmel <idosch@mellanox.com>,
         "David S . Miller" <davem@davemloft.net>,
         "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
         "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH][next] mlxsw: spectrum_ptp: fix duplicated check on
- orig_egr_types
-Thread-Topic: [PATCH][next] mlxsw: spectrum_ptp: fix duplicated check on
- orig_egr_types
-Thread-Index: AQHVRsCGQQzG+jKZokepZOkvOqeUUqbi/mGAgAADfIA=
-Date:   Tue, 30 Jul 2019 11:12:35 +0000
-Message-ID: <87imrjzsgu.fsf@mellanox.com>
 References: <20190730102114.1506-1-colin.king@canonical.com>
- <87mugvzt1m.fsf@mellanox.com>
-In-Reply-To: <87mugvzt1m.fsf@mellanox.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-clientproxiedby: PR0P264CA0012.FRAP264.PROD.OUTLOOK.COM (2603:10a6:100::24)
- To DB8PR05MB6044.eurprd05.prod.outlook.com (2603:10a6:10:aa::29)
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=petrm@mellanox.com; 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-originating-ip: [78.45.160.211]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 02b62426-364c-4e1d-7680-08d714ded352
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600148)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:DB8PR05MB5930;
-x-ms-traffictypediagnostic: DB8PR05MB5930:
-x-microsoft-antispam-prvs: <DB8PR05MB5930F1AB8D49A98068B71577DBDC0@DB8PR05MB5930.eurprd05.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:6790;
-x-forefront-prvs: 0114FF88F6
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(39860400002)(136003)(396003)(346002)(366004)(376002)(51914003)(43544003)(189003)(199004)(6246003)(86362001)(54906003)(81156014)(66946007)(6916009)(66556008)(64756008)(66446008)(8936002)(6436002)(6486002)(6512007)(53936002)(478600001)(26005)(229853002)(3846002)(6116002)(316002)(186003)(66476007)(99286004)(4744005)(71190400001)(36756003)(25786009)(7736002)(11346002)(446003)(52116002)(2616005)(68736007)(305945005)(476003)(386003)(6506007)(14454004)(5660300002)(8676002)(486006)(66066001)(256004)(4326008)(81166006)(71200400001)(2906002)(102836004)(76176011);DIR:OUT;SFP:1101;SCL:1;SRVR:DB8PR05MB5930;H:DB8PR05MB6044.eurprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: mellanox.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: vgOKyVsW6l6StAsrsDyfH6MjB2IbcV3S6Rj6Bfv8lJdr69GTOZSgTA+ikC/6fJiV2RObvQCJ3QGim9qVLeBA/r76tn1up2XFSerbLg+fKaHKHq6ll03IHTiwQOngekvdBMM6LncDRtkdhSz7Vm0EI0DqNGPZPgm0+k8JbKZJ1B1rhpwxbJAaEb74ndZQQHBfw00UUOoLDk+CpfvvLeJa/bJgfL2yeTSy9VE2dgy4J7N3+NHbuxiGHesOTqRUJKwXLIlzPT/Y+jHS/t78gmYjXrWrplJ2IS58FnTiEkdBxoyJRMsUMHUlJDy+UN2eQ3pkRHpxiOiwdb0FusgGpFHaE+7YCaO3NZ+tnIaFiSWvPYxXjyPj1KXRGDyD0/Zli1p5i5yEWz6ivv1LRAxh5S5WUFZBc979SB/wzHWrkC7AXtU=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ <87mugvzt1m.fsf@mellanox.com> <87imrjzsgu.fsf@mellanox.com>
+From:   Colin Ian King <colin.king@canonical.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
+ mQINBE6TJCgBEACo6nMNvy06zNKj5tiwDsXXS+LhT+LwtEsy9EnraKYXAf2xwazcICSjX06e
+ fanlyhB0figzQO0n/tP7BcfMVNG7n1+DC71mSyRK1ZERcG1523ajvdZOxbBCTvTitYOy3bjs
+ +LXKqeVMhK3mRvdTjjmVpWnWqJ1LL+Hn12ysDVVfkbtuIm2NoaSEC8Ae8LSSyCMecd22d9Pn
+ LR4UeFgrWEkQsqROq6ZDJT9pBLGe1ZS0pVGhkRyBP9GP65oPev39SmfAx9R92SYJygCy0pPv
+ BMWKvEZS/7bpetPNx6l2xu9UvwoeEbpzUvH26PHO3DDAv0ynJugPCoxlGPVf3zcfGQxy3oty
+ dNTWkP6Wh3Q85m+AlifgKZudjZLrO6c+fAw/jFu1UMjNuyhgShtFU7NvEzL3RqzFf9O1qM2m
+ uj83IeFQ1FZ65QAiCdTa3npz1vHc7N4uEQBUxyXgXfCI+A5yDnjHwzU0Y3RYS52TA3nfa08y
+ LGPLTf5wyAREkFYou20vh5vRvPASoXx6auVf1MuxokDShVhxLpryBnlKCobs4voxN54BUO7m
+ zuERXN8kadsxGFzItAyfKYzEiJrpUB1yhm78AecDyiPlMjl99xXk0zs9lcKriaByVUv/NsyJ
+ FQj/kmdxox3XHi9K29kopFszm1tFiDwCFr/xumbZcMY17Yi2bQARAQABtCVDb2xpbiBLaW5n
+ IDxjb2xpbi5raW5nQGNhbm9uaWNhbC5jb20+iQI2BBMBCAAhBQJOkyQoAhsDBQsJCAcDBRUK
+ CQgLBRYCAwEAAh4BAheAAAoJEGjCh9/GqAImsBcP9i6C/qLewfi7iVcOwqF9avfGzOPf7CVr
+ n8CayQnlWQPchmGKk6W2qgnWI2YLIkADh53TS0VeSQ7Tetj8f1gV75eP0Sr/oT/9ovn38QZ2
+ vN8hpZp0GxOUrzkvvPjpH+zdmKSaUsHGp8idfPpZX7XeBO0yojAs669+3BrnBcU5wW45SjSV
+ nfmVj1ZZj3/yBunb+hgNH1QRcm8ZPICpjvSsGFClTdB4xu2AR28eMiL/TTg9k8Gt72mOvhf0
+ fS0/BUwcP8qp1TdgOFyiYpI8CGyzbfwwuGANPSupGaqtIRVf+/KaOdYUM3dx/wFozZb93Kws
+ gXR4z6tyvYCkEg3x0Xl9BoUUyn9Jp5e6FOph2t7TgUvv9dgQOsZ+V9jFJplMhN1HPhuSnkvP
+ 5/PrX8hNOIYuT/o1AC7K5KXQmr6hkkxasjx16PnCPLpbCF5pFwcXc907eQ4+b/42k+7E3fDA
+ Erm9blEPINtt2yG2UeqEkL+qoebjFJxY9d4r8PFbEUWMT+t3+dmhr/62NfZxrB0nTHxDVIia
+ u8xM+23iDRsymnI1w0R78yaa0Eea3+f79QsoRW27Kvu191cU7QdW1eZm05wO8QUvdFagVVdW
+ Zg2DE63Fiin1AkGpaeZG9Dw8HL3pJAJiDe0KOpuq9lndHoGHs3MSa3iyQqpQKzxM6sBXWGfk
+ EkK5Ag0ETpMkKAEQAMX6HP5zSoXRHnwPCIzwz8+inMW7mJ60GmXSNTOCVoqExkopbuUCvinN
+ 4Tg+AnhnBB3R1KTHreFGoz3rcV7fmJeut6CWnBnGBtsaW5Emmh6gZbO5SlcTpl7QDacgIUuT
+ v1pgewVHCcrKiX0zQDJkcK8FeLUcB2PXuJd6sJg39kgsPlI7R0OJCXnvT/VGnd3XPSXXoO4K
+ cr5fcjsZPxn0HdYCvooJGI/Qau+imPHCSPhnX3WY/9q5/WqlY9cQA8tUC+7mgzt2VMjFft1h
+ rp/CVybW6htm+a1d4MS4cndORsWBEetnC6HnQYwuC4bVCOEg9eXMTv88FCzOHnMbE+PxxHzW
+ 3Gzor/QYZGcis+EIiU6hNTwv4F6fFkXfW6611JwfDUQCAHoCxF3B13xr0BH5d2EcbNB6XyQb
+ IGngwDvnTyKHQv34wE+4KtKxxyPBX36Z+xOzOttmiwiFWkFp4c2tQymHAV70dsZTBB5Lq06v
+ 6nJs601Qd6InlpTc2mjd5mRZUZ48/Y7i+vyuNVDXFkwhYDXzFRotO9VJqtXv8iqMtvS4xPPo
+ 2DtJx6qOyDE7gnfmk84IbyDLzlOZ3k0p7jorXEaw0bbPN9dDpw2Sh9TJAUZVssK119DJZXv5
+ 2BSc6c+GtMqkV8nmWdakunN7Qt/JbTcKlbH3HjIyXBy8gXDaEto5ABEBAAGJAh8EGAEIAAkF
+ Ak6TJCgCGwwACgkQaMKH38aoAiZ4lg/+N2mkx5vsBmcsZVd3ys3sIsG18w6RcJZo5SGMxEBj
+ t1UgyIXWI9lzpKCKIxKx0bskmEyMy4tPEDSRfZno/T7p1mU7hsM4owi/ic0aGBKP025Iok9G
+ LKJcooP/A2c9dUV0FmygecRcbIAUaeJ27gotQkiJKbi0cl2gyTRlolKbC3R23K24LUhYfx4h
+ pWj8CHoXEJrOdHO8Y0XH7059xzv5oxnXl2SD1dqA66INnX+vpW4TD2i+eQNPgfkECzKzGj+r
+ KRfhdDZFBJj8/e131Y0t5cu+3Vok1FzBwgQqBnkA7dhBsQm3V0R8JTtMAqJGmyOcL+JCJAca
+ 3Yi81yLyhmYzcRASLvJmoPTsDp2kZOdGr05Dt8aGPRJL33Jm+igfd8EgcDYtG6+F8MCBOult
+ TTAu+QAijRPZv1KhEJXwUSke9HZvzo1tNTlY3h6plBsBufELu0mnqQvHZmfa5Ay99dF+dL1H
+ WNp62+mTeHsX6v9EACH4S+Cw9Q1qJElFEu9/1vFNBmGY2vDv14gU2xEiS2eIvKiYl/b5Y85Q
+ QLOHWV8up73KK5Qq/6bm4BqVd1rKGI9un8kezUQNGBKre2KKs6wquH8oynDP/baoYxEGMXBg
+ GF/qjOC6OY+U7kNUW3N/A7J3M2VdOTLu3hVTzJMZdlMmmsg74azvZDV75dUigqXcwjE=
+Message-ID: <85e79b89-9d48-8aa2-b96f-7d30a5716d59@canonical.com>
+Date:   Tue, 30 Jul 2019 12:37:09 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-X-OriginatorOrg: Mellanox.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 02b62426-364c-4e1d-7680-08d714ded352
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jul 2019 11:12:35.8715
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a652971c-7d2e-4d9b-a6a4-d149256f461b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: petrm@mellanox.com
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR05MB5930
+In-Reply-To: <87imrjzsgu.fsf@mellanox.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-Petr Machata <petrm@mellanox.com> writes:
-
-> Colin King <colin.king@canonical.com> writes:
->
->> From: Colin Ian King <colin.king@canonical.com>
+On 30/07/2019 12:12, Petr Machata wrote:
+> 
+> Petr Machata <petrm@mellanox.com> writes:
+> 
+>> Colin King <colin.king@canonical.com> writes:
 >>
->> Currently there is a duplicated check on orig_egr_types which is
->> redundant, I believe this is a typo and should actually be
->> orig_ing_types || orig_egr_types instead of the expression
->> orig_egr_types || orig_egr_types.  Fix this.
->
-> Good catch, yes, there's a typo. Thanks for the fix!
->
->> Addresses-Coverity: ("Same on both sides")
->> Fixes: c6b36bdd04b5 ("mlxsw: spectrum_ptp: Increase parsing depth when P=
-TP is enabled")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->
-> Reviewed-by: Petr Machata <petrm@mellanox.com>
+>>> From: Colin Ian King <colin.king@canonical.com>
+>>>
+>>> Currently there is a duplicated check on orig_egr_types which is
+>>> redundant, I believe this is a typo and should actually be
+>>> orig_ing_types || orig_egr_types instead of the expression
+>>> orig_egr_types || orig_egr_types.  Fix this.
+>>
+>> Good catch, yes, there's a typo. Thanks for the fix!
+>>
+>>> Addresses-Coverity: ("Same on both sides")
+>>> Fixes: c6b36bdd04b5 ("mlxsw: spectrum_ptp: Increase parsing depth when PTP is enabled")
+>>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>>
+>> Reviewed-by: Petr Machata <petrm@mellanox.com>
+> 
+> I see that there is an identical problem in the code one block further.
+> Can you take care of that as well, please? Or should I do it?
+> 
+I'll sort that out too
 
-I see that there is an identical problem in the code one block further.
-Can you take care of that as well, please? Or should I do it?

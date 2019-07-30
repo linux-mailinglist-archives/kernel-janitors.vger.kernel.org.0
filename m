@@ -2,37 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 953A57A35F
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jul 2019 10:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 586057A4F4
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jul 2019 11:45:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731136AbfG3Itk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 30 Jul 2019 04:49:40 -0400
-Received: from mout.web.de ([212.227.17.11]:45451 "EHLO mout.web.de"
+        id S1731774AbfG3JpC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 30 Jul 2019 05:45:02 -0400
+Received: from mout.web.de ([212.227.17.11]:43495 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728432AbfG3Itk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 30 Jul 2019 04:49:40 -0400
+        id S1727582AbfG3JpB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 30 Jul 2019 05:45:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1564476542;
-        bh=udk/4DiKcVzXKfu8rZxOBGfmVl1dsR4NnNq0mHljcLg=;
+        s=dbaedf251592; t=1564479878;
+        bh=MY54GGbC141du76k5DNyzhowvZ4ieKymVNXH6luDQVs=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=R67zYE6Zv/FsW8uMTVzATrlebMsiCosyd/GuRAirzvSf9yO3V1s+wzgCS2PevCOXc
-         RGPl6glYrp61Hp4xmjsPscxNMRL+0+9n6DrAdyGoa7mf//cLgH/kB13Igyz2eHmTTY
-         wpQK+01iSpTAP1x4lNth0MX0e6aT1L+Tq6G6PGHU=
+        b=bPxfmijnrVSQ/qVxRleJUN1DF2vfAQ26bNSDs7xGlnO71dF5UiLUVVoSJXzAx02TF
+         gH5W78RxtGYEOYRu0uQL5u/9AoUV6YgwtBdtjx2UYspykbYy6DgtwFx6yyC26AGPwI
+         ME9hWQbY77P9tC57BKZAbmsjEeaTwJ31EmQbDH6U=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.243.24.141]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MV4fx-1hrgQa3paH-00YQ4y; Tue, 30
- Jul 2019 10:49:02 +0200
-Subject: Re: [PATCH v5 3/3] coccinelle: Add script to check for
- platform_get_irq() excessive prints
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LilNJ-1iVJns47u1-00cyuH; Tue, 30
+ Jul 2019 11:44:38 +0200
+Subject: Re: [PATCH v5 1/3] driver core: platform: Add an error message to
+ platform_get_irq*()
 To:     Stephen Boyd <swboyd@chromium.org>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        kernel-janitors@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, cocci@systeme.lip6.fr,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh@kernel.org>,
+        kernel-janitors@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
         Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
         Javier Martinez Canillas <javierm@redhat.com>,
         Andrzej Hajda <a.hajda@samsung.com>,
@@ -42,7 +37,7 @@ Cc:     linux-kernel@vger.kernel.org, cocci@systeme.lip6.fr,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>
 References: <20190730053845.126834-1-swboyd@chromium.org>
- <20190730053845.126834-4-swboyd@chromium.org>
+ <20190730053845.126834-2-swboyd@chromium.org>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
@@ -88,139 +83,55 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <7debc03d-0bed-e0d7-a793-089fcc85c9ee@web.de>
-Date:   Tue, 30 Jul 2019 10:49:00 +0200
+Message-ID: <314f06fe-fbc9-c2f5-72bf-657c04cce4b0@web.de>
+Date:   Tue, 30 Jul 2019 11:44:29 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190730053845.126834-4-swboyd@chromium.org>
+In-Reply-To: <20190730053845.126834-2-swboyd@chromium.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:OCF3C0lcfWYjWEDBmfvnDA8RhhJEy91vMb12hxaIrorlbWRJARm
- k6totR05fNL3BcvN8pKBvus3rJ3PixEhWewY8RqxsLtm18CaQvX0hwV5pxt5Pi3/WvuvMbm
- WEBkhGKXh6dCUqu585QfLAMj6uqd0qIdGrseb6dEeJyctQJOSn1vubh0ftCDZm2e0D1EN+/
- zAMO6CTJ+AGhdb4ASzEoA==
+X-Provags-ID: V03:K1:GXxzrWFDRkIgIlgPCpsNHWvg1H+x1iJD1iZGZnDI6XEdgOrC6HW
+ ACnzPbsYyx8CuNQyxlVU649mny8ZpaJ1/HMcInaGsgb3WwJfuYIlRUSCxZvwqjL8dWdiT/S
+ Pz1rxVy484lxXnhSzTZyMOu68VwsjrnUtG+5e3Vpz/hOMtqwIeuKXOH3GL6WwIFmQKrIfDM
+ lboJBq8YPHQIBQPSiVjgg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:buCdTcSCens=:lWBFEtRNfzg3ZAf7voRRLm
- 7orqc/iPa0X4hquPqsqO8hyFsE2qsaxxCVjwjzWr4AGLbqySmL2HoxAbBUHRNR3v36HYo5XcE
- NkG4Kwnz0an0JWRkLTAw/GQrds4MU+9ffh4W/rsOaoRi3JQJ4ZcjWORtl+n86M9CXsUjFLbdI
- TWvEuKx5wXqOrYZw01u/0cQB/jOafImHlYEnnSFDq67B+1Na13731t0+1FN12o0lqg3jM3Z49
- w2kowoyr1J9IkdHrvxpTVa9//ieJpHqrL2ktM8OO5at7CSQX9aFKXWIWt6woPVmmDiWZPo8IS
- 5UdiB2bY0bS3JUttcGpUgO5azKB+AUC8/bWKzkBA4fzk2ObXZDWSt0BH3gdG6yDyVWyO7wX1b
- 30T8bkSzmr7mgIswIKR++ePz3+k7hODILwl1vlE5imZj4wm9DTM1ZE00K8iQXubgfpGIiDmXM
- 7Hbf7D5O0/UFVN3s0dH+tfbiEVmouHdZ4S3EzHUqTMXcoapBky7B4P+sxt/7V0B6B/gU5ZUW7
- UJme3XAxnoZfXbV3C5/NrqnKzRDouMbYKJtjSCeeLh4MbGYKEx+WGScAVzt9u3I69HWIUiGvk
- UdLnOtGkPQQKTLAyWcA/csaUHXkFBc78+lxKalkn2ebKxuGIGPYTUmSU/klZphno+Md0xZqOU
- E4+iPqjwtEqah2bb4eXa0wpP9q4PtQCqBS3ICzHSv+BHArlTvgVEfCITt1RJDiz0ZckParSkG
- w8ZXOgvKmyJEuRJeXDMaZwNDkiAgDoGi61hoG73Wvw85+RyTzFgzkO2n9Kw65CvEU/UyzI2dd
- +6j6UxTd/wOMzB2FwF4joa8AOQ3NBPOQD6qjR3p01d+5uLs8FxQ9ctTRlaYpmINge8IRBG2aC
- uKOsTrkFdsWCKevT4OnrwuPPudREQdSfIEdFoWR5OPmmnOb5MCjf6K9NJE2yUyfC54HPwXt2i
- +VDvSI0uz7NS3JypOz7YFZ+kVirLaSkTpPquSnxr0daf8rWwNXBoWSlsmRkMhqyAb2J6MyCb/
- grfp32QqvRcXgXFvT5I8/Haz+nAf55F8P2PE18HFXXRcteMNMJCl3vuJDtt0vtCk0dyoCBEZR
- nN+RffGHtyMl+fjFBCkhtvRZPmFgmWYoDo0
+X-UI-Out-Filterresults: notjunk:1;V03:K0:V0D0W2HJBto=:qe56jn5ZjC+qAozNfflu0F
+ sfbXSjqc0XLO4m76wJxFlg5rck3QHPy8nr+1ym0EIoqQ/AUKOqJgVuKd88KT4HR1OIgI5k4xt
+ bS8pDnlvIf9DflbXQUsAahk3CLO30l5yEevMsKTk96snr2IB1QIEfMaOuYmfh7pF3CEQ90rg4
+ rcdhw/KJ785XA8jrxrG2qFAbJy8LzwAp2d4DyRjcIRW6iawRGQ99M6zy43F7LXmA9TP23lM2Y
+ SV4Es0kXd70kB20HmglpBD18bD5/jefye95v6yMjz+AwwVC0vsgx+uMnpEVsna2iQCEJsZNbY
+ Z1oSDO80jOSff16yvg0m2IYwa28iiZClbHaYRNiiqtR10xfpFrJGLwPU9B4JTU/3N2aQT5WUW
+ xm17NvjnnlLsG2EJi0iiHbDBRZleW+ps65pZEg9J+oJuVwT80BEVzaSea2lDMyJCfjN8ELbxe
+ cmxfln5qXKkPwc60ALqmPcb3QyzVI3m62+H/u+L/zErDrKKX2E02tmgC/d5GjOsopZ7H5/bnY
+ xX70FoFoGxb2LVUGVS7YNiy4b8ZHI+OPAIjEBrR9tHqqVC8wlVcBwl+a9KtdYcZl0PFuUzIQ9
+ K40uJbheGLueCZIXI+BMER+y576UJjDa7TZzl3gWdJpysi/Z97RP6m1795pCY03ZmWBNPjzdd
+ V9E+4wHWZIQ1gAZMNUMtOc6JRvAZvWnQui6JWBz7Gl3s1GjZhsoJ18reevpLNfFsfq5RGRfvy
+ 5PlejcCkZTMr7lOp3Wt67v0K3xr4PqrbUeTuK/h4+Fzsax7BBevbaULCE1KqmuIPsr/wrt6/3
+ bL65h6kXvEDdhMk/UEbPGz/sm7LmETYfWxSvRB8xSbwzlnnMzIh+4Ho+/5h501A7y8PE4ULwe
+ RNKJrtQhPdiHyK9DTzM4xL9uOM7ify540JnW1FWs1A37LkbITqN35raV5bXv4yFVAJg1fI529
+ 1Os3+hjK4bK4BaTMdiLfDY3JDVAH+AIQ4b7XVUJYEVDxFC6yML78VHdCCv19W+qff1M9Zlip4
+ iiDBfqRomsX574EOS7WLw4nSpUMY3KaBq9YGCneciMARWpZZhF43s2BY3d+T4iCfd6dBSf/o1
+ FBUIetLQpZhBCPRDsUVXNZQBI0U8yEWRru0
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> I'm not sure this will be accepted or not
+=E2=80=A6
+> +++ b/drivers/base/platform.c
+> @@ -99,12 +99,7 @@ void __iomem *devm_platform_ioremap_resource(struct p=
+latform_device *pdev,
+=E2=80=A6
+> -int platform_get_irq(struct platform_device *dev, unsigned int num)
+> +static int __platform_get_irq(struct platform_device *dev, unsigned int=
+ num)
+>  {
+=E2=80=A6
 
-The patch review and corresponding clarification will become more interest=
-ing,
-won't it?
-
-I am missing more constructive feedback to remaining software development =
-concerns.
-https://lore.kernel.org/patchwork/comment/1301194/
-https://lore.kernel.org/lkml/3baa3e3c-c122-e868-55a0-597e279496ac@web.de/
-https://systeme.lip6.fr/pipermail/cocci/2019-July/006143.html
-https://lkml.org/lkml/2019/7/24/886
-
-
-> given that Markus indicates a similar patch was made for other error mes=
-sages
-
-I am also curious how the acceptance will evolve around such change possib=
-ilities.
-Did you get any useful development ideas from this approach?
-
-
-> that this may be able to be merged into.
-
-I find it unlikely that a merge will be useful in this case because of spe=
-cific
-property differences in SmPL specifications.
-But I imagine that improved SmPL script variants will be helpful.
-
-
->  create mode 100644 scripts/coccinelle/api/platform_get_irq.cocci
-
-On which storage locations would we like to agree?
-
-
-> +@depends on context@
-> +expression ret;
-> +struct platform_device *E;
-
-How much does this specification matter for the parameters
-of the mentioned functions (in the SmPL script)?
-Will the selection of function names be sufficient for the discussed
-source code search pattern?
-
-
-> +@@
-> +
-> +ret =3D
-> +(
-> +platform_get_irq
-> +|
-> +platform_get_irq_byname
-> +)(E, ...);
-
-* Would you eventually like to extend the function name selection?
-
-* Will the SmPL ellipsis be appropriate without the metavariable =E2=80=9C=
-E=E2=80=9D?
-
-
-> +if ( ret \( < \| <=3D \) 0 )
-> +{
-> +(
-> +if (ret !=3D -EPROBE_DEFER)
-> +{ ...
-> +*dev_err(...);
-> +... }
-> +|
-> +...
-> +*dev_err(...);
-> +)
-> +...
-> +}
-
-I suggest to reconsider SmPL implementation details once more.
-
-* Case distinction for curly brackets of compound statements
-
-* Application of the SmPL construct =E2=80=9C<+... =E2=80=A6 ...+>=E2=80=
-=9D
-
-
-> +@script:python depends on org@
-> +p1 << r.p1;
-> +@@
-> +
-> +cocci.print_main(p1)
-> +
-> +@script:python depends on report@
-> +p1 << r.p1;
-> +@@
-> +
-> +msg =3D "line %s is redundant because platform_get_irq() already prints=
- an error" % (p1[0].line)
-> +coccilib.report.print_report(p1[0],msg)
-
-Will the message constructions be adjusted?
+I suggest to avoid the usage of double underscores in such identifiers.
+Will an other function name be more appropriate here?
 
 Regards,
 Markus

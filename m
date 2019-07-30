@@ -2,28 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 586057A4F4
-	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jul 2019 11:45:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAB0D7A554
+	for <lists+kernel-janitors@lfdr.de>; Tue, 30 Jul 2019 12:01:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731774AbfG3JpC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 30 Jul 2019 05:45:02 -0400
-Received: from mout.web.de ([212.227.17.11]:43495 "EHLO mout.web.de"
+        id S1731814AbfG3KBF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 30 Jul 2019 06:01:05 -0400
+Received: from mout.web.de ([212.227.17.12]:54015 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727582AbfG3JpB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 30 Jul 2019 05:45:01 -0400
+        id S1727770AbfG3KBD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 30 Jul 2019 06:01:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1564479878;
-        bh=MY54GGbC141du76k5DNyzhowvZ4ieKymVNXH6luDQVs=;
+        s=dbaedf251592; t=1564480844;
+        bh=EtuMB5xC3CZJDxVHY/O5OcOMAYvorEX1VzzjKU1EJ7A=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=bPxfmijnrVSQ/qVxRleJUN1DF2vfAQ26bNSDs7xGlnO71dF5UiLUVVoSJXzAx02TF
-         gH5W78RxtGYEOYRu0uQL5u/9AoUV6YgwtBdtjx2UYspykbYy6DgtwFx6yyC26AGPwI
-         ME9hWQbY77P9tC57BKZAbmsjEeaTwJ31EmQbDH6U=
+        b=Veojztz1Ev8zLpcBloYVB51ppw4eFxGzyJTy6w4TZFrLHOSLzaqBKi64qLWuibKrC
+         XhFq5U0k3qQYte7ZuPQ53RdLoAXW4ozV7bBu7mg0N15fomvNKx7v0W5TrAbB7mNohJ
+         QUPThwCwQtjzdydBAsaJYCLG0V6q3T1aoP4MDiUE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.243.24.141]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LilNJ-1iVJns47u1-00cyuH; Tue, 30
- Jul 2019 11:44:38 +0200
-Subject: Re: [PATCH v5 1/3] driver core: platform: Add an error message to
- platform_get_irq*()
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LsQPU-1iLFUi1yfI-011zeH; Tue, 30
+ Jul 2019 12:00:44 +0200
+Subject: Re: [v5 2/3] treewide: Remove dev_err() usage after
+ platform_get_irq()
 To:     Stephen Boyd <swboyd@chromium.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         kernel-janitors@vger.kernel.org
@@ -37,7 +37,7 @@ Cc:     linux-kernel@vger.kernel.org, Rob Herring <robh@kernel.org>,
         "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
         Andy Shevchenko <andy.shevchenko@gmail.com>
 References: <20190730053845.126834-1-swboyd@chromium.org>
- <20190730053845.126834-2-swboyd@chromium.org>
+ <20190730053845.126834-3-swboyd@chromium.org>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
@@ -83,55 +83,54 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <314f06fe-fbc9-c2f5-72bf-657c04cce4b0@web.de>
-Date:   Tue, 30 Jul 2019 11:44:29 +0200
+Message-ID: <618a7f7c-c4f5-aaf3-a925-4357e9f56236@web.de>
+Date:   Tue, 30 Jul 2019 12:00:40 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190730053845.126834-2-swboyd@chromium.org>
+In-Reply-To: <20190730053845.126834-3-swboyd@chromium.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:GXxzrWFDRkIgIlgPCpsNHWvg1H+x1iJD1iZGZnDI6XEdgOrC6HW
- ACnzPbsYyx8CuNQyxlVU649mny8ZpaJ1/HMcInaGsgb3WwJfuYIlRUSCxZvwqjL8dWdiT/S
- Pz1rxVy484lxXnhSzTZyMOu68VwsjrnUtG+5e3Vpz/hOMtqwIeuKXOH3GL6WwIFmQKrIfDM
- lboJBq8YPHQIBQPSiVjgg==
+X-Provags-ID: V03:K1:iDekILvayeWfwQH7tDfGgp2eHlAVkNOZPgWDWpFODGPlazCtvh+
+ ExoLk81OyA47XW+fvZuV6dQIcxAHh89KbS4fvkXxO+MeIGYLAebDXGNBKSsXdvBPGTvsxuI
+ lapznyt9I4WYlFVgW5n7qPJwfqMP8tMXd3yYepgWIcrx9aQmfZ9QFnXIxv75+PFZbRjMly9
+ 3Atz9CG5Koq+ZtHVmyM1Q==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:V0D0W2HJBto=:qe56jn5ZjC+qAozNfflu0F
- sfbXSjqc0XLO4m76wJxFlg5rck3QHPy8nr+1ym0EIoqQ/AUKOqJgVuKd88KT4HR1OIgI5k4xt
- bS8pDnlvIf9DflbXQUsAahk3CLO30l5yEevMsKTk96snr2IB1QIEfMaOuYmfh7pF3CEQ90rg4
- rcdhw/KJ785XA8jrxrG2qFAbJy8LzwAp2d4DyRjcIRW6iawRGQ99M6zy43F7LXmA9TP23lM2Y
- SV4Es0kXd70kB20HmglpBD18bD5/jefye95v6yMjz+AwwVC0vsgx+uMnpEVsna2iQCEJsZNbY
- Z1oSDO80jOSff16yvg0m2IYwa28iiZClbHaYRNiiqtR10xfpFrJGLwPU9B4JTU/3N2aQT5WUW
- xm17NvjnnlLsG2EJi0iiHbDBRZleW+ps65pZEg9J+oJuVwT80BEVzaSea2lDMyJCfjN8ELbxe
- cmxfln5qXKkPwc60ALqmPcb3QyzVI3m62+H/u+L/zErDrKKX2E02tmgC/d5GjOsopZ7H5/bnY
- xX70FoFoGxb2LVUGVS7YNiy4b8ZHI+OPAIjEBrR9tHqqVC8wlVcBwl+a9KtdYcZl0PFuUzIQ9
- K40uJbheGLueCZIXI+BMER+y576UJjDa7TZzl3gWdJpysi/Z97RP6m1795pCY03ZmWBNPjzdd
- V9E+4wHWZIQ1gAZMNUMtOc6JRvAZvWnQui6JWBz7Gl3s1GjZhsoJ18reevpLNfFsfq5RGRfvy
- 5PlejcCkZTMr7lOp3Wt67v0K3xr4PqrbUeTuK/h4+Fzsax7BBevbaULCE1KqmuIPsr/wrt6/3
- bL65h6kXvEDdhMk/UEbPGz/sm7LmETYfWxSvRB8xSbwzlnnMzIh+4Ho+/5h501A7y8PE4ULwe
- RNKJrtQhPdiHyK9DTzM4xL9uOM7ify540JnW1FWs1A37LkbITqN35raV5bXv4yFVAJg1fI529
- 1Os3+hjK4bK4BaTMdiLfDY3JDVAH+AIQ4b7XVUJYEVDxFC6yML78VHdCCv19W+qff1M9Zlip4
- iiDBfqRomsX574EOS7WLw4nSpUMY3KaBq9YGCneciMARWpZZhF43s2BY3d+T4iCfd6dBSf/o1
- FBUIetLQpZhBCPRDsUVXNZQBI0U8yEWRru0
+X-UI-Out-Filterresults: notjunk:1;V03:K0:kvM6BW7wdh4=:IYolPJ1QzR6V/qcvf4kj7N
+ Wy/yOAxWn060EU8R+yJAYpjao0+UVLym57RYbqKgL5ECGbOwIRJa/XbV8oMTq/mMPn49DE8Sl
+ KLEFiYTKBh6aMzUOw7utmC2yaCs7/zyApxW9Vl5YKPEr9tyF7fE4ZrGtLRr/AL3mmzDv7fk3B
+ aS1Oift2pDBTTDoO4a/IEa1wq01WXaOM+GPPrEJsghWxtc++CBOV6DJXZQqBcLaunxgoMCVJs
+ wcKnB07PEUt+rQ6Sh9H0K7Phcexx+jo6y63I9UzwOc/XGY62gk+nifVXEKQlmVsKfAD2zcxGv
+ RX7GeEhLpPR2cpewz8uYQBHb4xOxHQFSpiZcmQDuPm0EJ1eGYGn2Cr8GeeRLt4A4LfNQk2w6F
+ mMNzIwiS1oBZ9R9vvRjyoaRz7ReVd8lJ5/Cl6JQOYgZDjeIocLaY9AT/HhQq4CJ/s7BlNEEGZ
+ ewGLBFYc3vxBecVqcMScF+jsi+BoQ6vduRwbTT4+Y1eiZK+W0lKVyCZ2qK7fM3/0pSLRL7ao9
+ CkAmDBF7QoxKxcLsLqoBUv5MXUIFndpiCM30jCqopuEHyQKG5b3Cq+RmW+02gsRRxkzXMv+kH
+ 5XvO2WBRWlgoADnJbHZ5BkSyWXX+52CbMdKJA0bq1K1uetdOEitOEzTO8TSEw/r49Aa/Y3ZP7
+ ewDEDUyoXii+k0274XrBgXA1UJsmGVbDEmvnfiJLxaa/Nyw9qZahFj0767WzszbjskFc/nWO3
+ DI5/Pe12yiRGC3A2tpy7LBZWJxO76Shk4GqFMHiLN0JNM9vglPMQQGcjnm30VIyhhBYfichPk
+ AudXmE7oUYR5Dp4/577hwwYbxZ5bIRyb1ctTPSBh8rwwhdnPmlQDJvkkmF/sgYr8DOCAlY6Fn
+ qtOhRWdb+ZbADYuJWdaoEuKVTwbTNYb0nzh5Z+DK7bJMBM7L67TTCBsru0/J3WKkrgAoSBy8B
+ AQ5TpMSnRUtRFzaeH8Qfj3jD3/lDNjrdMiuWgZIgA+6dMSKp8Yow1dGyMg0M6ySWC5dWHhbDN
+ uWUMq4iCAmGc7H9li9W6HVSuCJAgo6s/rWkIQMHnMBqXwIs5qegJ1+EV3ZxSlkdL2RHC74aeS
+ gi7WpnaejFLy+4AqymRPV5IbriyEpJrzXfV
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-=E2=80=A6
-> +++ b/drivers/base/platform.c
-> @@ -99,12 +99,7 @@ void __iomem *devm_platform_ioremap_resource(struct p=
-latform_device *pdev,
-=E2=80=A6
-> -int platform_get_irq(struct platform_device *dev, unsigned int num)
-> +static int __platform_get_irq(struct platform_device *dev, unsigned int=
- num)
->  {
-=E2=80=A6
+> We don't need dev_err() messages when platform_get_irq() fails now that
+> platform_get_irq() prints an error message itself when something goes
+> wrong. Let's remove these prints with a simple semantic patch.
 
-I suggest to avoid the usage of double underscores in such identifiers.
-Will an other function name be more appropriate here?
+Will the current patch review result in adjustments for the SmPL code
+in the commit description?
+
+
+> While we're here, remove braces on if statements that only have one
+> statement (manually).
+
+Would you like to reduce manual change efforts any further for the shown
+source code transformation approach?
 
 Regards,
 Markus

@@ -2,67 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B92687C23C
-	for <lists+kernel-janitors@lfdr.de>; Wed, 31 Jul 2019 14:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FEA37C6B4
+	for <lists+kernel-janitors@lfdr.de>; Wed, 31 Jul 2019 17:34:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729171AbfGaMwB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 31 Jul 2019 08:52:01 -0400
-Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:49208 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729129AbfGaMwB (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 31 Jul 2019 08:52:01 -0400
-Received: from localhost.localdomain ([176.167.121.156])
-        by mwinf5d70 with ME
-        id jQrw2000P3NZnML03QrxTn; Wed, 31 Jul 2019 14:51:59 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 31 Jul 2019 14:51:59 +0200
-X-ME-IP: 176.167.121.156
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     mathias.nyman@intel.com, gregkh@linuxfoundation.org
-Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH 2/2] usb: xhci: dbc: Use GFP_KERNEL instead of GFP_ATOMIC in 'xhci_dbc_alloc_requests()'
-Date:   Wed, 31 Jul 2019 14:52:02 +0200
-Message-Id: <557765ac7a028fa77f0e1ac6148ef2c0904f8ab7.1564577335.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <cover.1564577335.git.christophe.jaillet@wanadoo.fr>
-References: <cover.1564577335.git.christophe.jaillet@wanadoo.fr>
+        id S1727370AbfGaPem convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 31 Jul 2019 11:34:42 -0400
+Received: from mx2.suse.de ([195.135.220.15]:45316 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725209AbfGaPem (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 31 Jul 2019 11:34:42 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id CC5D1AC68;
+        Wed, 31 Jul 2019 15:34:40 +0000 (UTC)
+From:   =?utf-8?Q?Aur=C3=A9lien?= Aptel <aaptel@suse.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        samba-technical@lists.samba.org, Steve French <sfrench@samba.org>,
+        kernel-janitors@vger.kernel.org, linux-cifs@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] cifs: remove redundant assignment to variable rc
+In-Reply-To: <20190731122841.GA1974@kadam>
+References: <20190731090526.27245-1-colin.king@canonical.com> <87r266seg4.fsf@suse.com> <20190731122841.GA1974@kadam>
+Date:   Wed, 31 Jul 2019 17:34:39 +0200
+Message-ID: <87lfwerze8.fsf@suse.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is no need to use GFP_ATOMIC to allocate 'req'. GFP_KERNEL should be
-enough and is already used for another allocation juste a few lines below.
+"Dan Carpenter" <dan.carpenter@oracle.com> writes:
+> You're just turning off GCC's static analysis (and introducing false
+> positives) when you do that.  We have seen bugs caused by this and never
+> seen any bugs prevented by this style.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-I've done my best to check if a spinlock can be hold when reaching this
-code. Apparently it is never the case.
-But double check to be sure that it is not the kmalloc that should use
-GFP_ATOMIC.
----
- drivers/usb/host/xhci-dbgtty.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+You've never seen bugs prevented by initializing uninitialized
+variables? Code can change overtime and I don't think coverity is
+checked as often as it could be, meaning the var could end up being used
+while uninitialized in the future.
 
-diff --git a/drivers/usb/host/xhci-dbgtty.c b/drivers/usb/host/xhci-dbgtty.c
-index 845939f8a0b8..be726c791323 100644
---- a/drivers/usb/host/xhci-dbgtty.c
-+++ b/drivers/usb/host/xhci-dbgtty.c
-@@ -139,7 +139,7 @@ xhci_dbc_alloc_requests(struct dbc_ep *dep, struct list_head *head,
- 	struct dbc_request	*req;
- 
- 	for (i = 0; i < DBC_QUEUE_SIZE; i++) {
--		req = dbc_alloc_request(dep, GFP_ATOMIC);
-+		req = dbc_alloc_request(dep, GFP_KERNEL);
- 		if (!req)
- 			break;
- 
+Anyway I won't die on this hill, merge this if you prefer.
+
+Cheers,
 -- 
-2.20.1
-
+Aurélien Aptel / SUSE Labs Samba Team
+GPG: 1839 CB5F 9F5B FB9B AA97  8C99 03C8 A49B 521B D5D3
+SUSE Linux GmbH, Maxfeldstraße 5, 90409 Nürnberg, Germany
+GF: Felix Imendörffer, Mary Higgins, Sri Rasiah HRB 21284 (AG Nürnberg)

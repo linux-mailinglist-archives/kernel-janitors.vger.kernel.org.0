@@ -2,98 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E2177CB6A
-	for <lists+kernel-janitors@lfdr.de>; Wed, 31 Jul 2019 20:02:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A31A7CD46
+	for <lists+kernel-janitors@lfdr.de>; Wed, 31 Jul 2019 21:58:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726712AbfGaSCA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 31 Jul 2019 14:02:00 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:35660 "EHLO
+        id S1727296AbfGaT6J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 31 Jul 2019 15:58:09 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:44568 "EHLO
         mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726079AbfGaSCA (ORCPT
+        with ESMTP id S1725942AbfGaT6I (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 31 Jul 2019 14:02:00 -0400
-Received: by mail-pl1-f196.google.com with SMTP id w24so30822089plp.2;
-        Wed, 31 Jul 2019 11:02:00 -0700 (PDT)
+        Wed, 31 Jul 2019 15:58:08 -0400
+Received: by mail-pl1-f196.google.com with SMTP id t14so30924781plr.11
+        for <kernel-janitors@vger.kernel.org>; Wed, 31 Jul 2019 12:58:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=chromium.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=oaDZjxG3hf3XfIhJ0wNeSSq3sNs3Jdwm87Y90Lg53os=;
-        b=SKwm/tKUjPhh7Ots6DumW+369InP9Y2lmV1wmGybkCv0R6omOv37Uq47RXnIirIKia
-         opq8eRugeFtK7GjZou9O9XXyWH6xG8wQKJrm8VSBkDjeAeZd7tVNOdiN2FRBMB5v8ZAl
-         wu+t+Jw9he5Id6CUsfAZo1ka5O7jl3A6JQT+Cxb9MRWbSOLDiBIzDKtZEeWLOiMrxS7H
-         J/HZ7dbfGeZZCbYKu/XA+KgO8X9yyU23bzKjgizRsFw9qoY5zELut/2+3baGCSgZjZ+i
-         XkoMqMGJ23aGab01Aws21ufDI6ctzimNBp0sOHAoQfhn71lZvFH6QPjrREDYhCjgE16y
-         jsQg==
+         :content-disposition:in-reply-to;
+        bh=NfIspcnc/2t7LWXrdNE+ubsJCC83+V9yAq4B7B5lNHE=;
+        b=Q4jgwY+JqY8cWP5Ba3AUxsKHoDBJfSroGhiXbMR6OrTJimuIBMapLxpymuNCBbRYxm
+         ncoDEJL5taLB4w3SrlTtacnLIUIGo18Ay/EoIuMP3Iq+TOLJs1WFQHKC2FYJFAYTKqjY
+         XJ9EHmGJnbi6QNDD4KlOHD+Wnl3OqbAoM7DXQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=oaDZjxG3hf3XfIhJ0wNeSSq3sNs3Jdwm87Y90Lg53os=;
-        b=YtviM132S+9I6fy8YeCPnhmDrv0y68hwTwYuZSMVFjb5D/WRSw2DSHNL6GB5HVMAbX
-         NUkFM3I270G3UXuo/RYVcDBLS9FavjyGAIrHlzOHB94BQaOy+K8w18JbLd8cyzW5+OeH
-         nfZxg80ujuEtnMZblygsLn3ZlXl2HeW2b41ZuJCtJHJjcErSwqAbQgAHD5JrWpu03YhV
-         7Yn1MWnsf9l7Dpfrsakqf4x06fvpay4xtVxLvWr6blCei5mPgsv+JGF0EZoVhJcZRiKq
-         JepFTdU5vh8W1hwjBCs/WfvyrvKZGZ57GSqVmEP52cP4wujBa3w0h9MnPiXlLEVlh2sU
-         B03w==
-X-Gm-Message-State: APjAAAUG0LV2R58psdKv4TAkJSKITLQs5XZNAqHLrBaX0OQrnsp1y61w
-        S4Sagvs0KX8u4AreTgwNzMc=
-X-Google-Smtp-Source: APXvYqzzGoe74Mz7GNUOaB6q/Km/WB4j0N1VMsCqKCyLVSFJnrP7Bn9v2TTLduZOyynn180hJB4tgA==
-X-Received: by 2002:a17:902:b497:: with SMTP id y23mr122219821plr.68.1564596119868;
-        Wed, 31 Jul 2019 11:01:59 -0700 (PDT)
-Received: from host ([183.101.165.200])
-        by smtp.gmail.com with ESMTPSA id a1sm19789624pgh.61.2019.07.31.11.01.57
+         :mime-version:content-disposition:in-reply-to;
+        bh=NfIspcnc/2t7LWXrdNE+ubsJCC83+V9yAq4B7B5lNHE=;
+        b=mICYatiTmRjFnYCdjcI5hUN0C5J5IYxz6psN4WOyjzOg8JC/I0MRvpuLUmNlsFxnYk
+         /p9ItMWPthoTJXuTXvmL1DihVXbYUH6LQECQJEy9NKmB3u+oUUB6KyZWoz789KlSjDeC
+         PAeI/7nK8kRXVxTsU3l04nzhCmT+lgHytiJ536UWUfVbwSgd0JfybAWLpboeVQ5Gb0sO
+         Pq4H/QU5Mcf783vsOjIOvRt1NlvkEQI4L3s6jLQTYpDx/aMvN5ufwaegaXAYopf15rx+
+         PFcK4ayB69peSaEslL4XqryPFwNUDq1kdjzRuwK/DwCwBgmEdJjcCiBT6L8stg8un3nX
+         NboA==
+X-Gm-Message-State: APjAAAUbV/fE+6Lv44ggzQbmYS7S/eORs+pN0tUEUt8Ta/VXRMbyINBE
+        2MM9ToLR4XARJTZoJ8AudW+fMA==
+X-Google-Smtp-Source: APXvYqw+WHzdDfbYGy29+WSP8iMiYjFhVylC6I4hxMOf3DMb3RNqGFamdATEt9zqoJx2J75sr60bUA==
+X-Received: by 2002:a17:902:8205:: with SMTP id x5mr123929051pln.279.1564603088343;
+        Wed, 31 Jul 2019 12:58:08 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id v12sm2495362pjk.13.2019.07.31.12.58.07
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 31 Jul 2019 11:01:59 -0700 (PDT)
-Date:   Thu, 1 Aug 2019 03:01:49 +0900
-From:   Joonwon Kang <kjw1627@gmail.com>
-To:     keescook@chromium.org
+        Wed, 31 Jul 2019 12:58:07 -0700 (PDT)
+Date:   Wed, 31 Jul 2019 12:58:06 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Joonwon Kang <kjw1627@gmail.com>
 Cc:     re.emese@gmail.com, kernel-hardening@lists.openwall.com,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         jinb.park7@gmail.com
-Subject: [PATCH 2/2] randstruct: remove dead code in is_pure_ops_struct()
-Message-ID: <281a65cc361512e3dc6c5deffa324f800eb907be.1564595346.git.kjw1627@gmail.com>
+Subject: Re: [PATCH 1/2] randstruct: fix a bug in is_pure_ops_struct()
+Message-ID: <201907311257.8436E997A4@keescook>
 References: <cover.1564595346.git.kjw1627@gmail.com>
+ <2ba5ebfa2c622ece4952b5068b4154213794e5c4.1564595346.git.kjw1627@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cover.1564595346.git.kjw1627@gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <2ba5ebfa2c622ece4952b5068b4154213794e5c4.1564595346.git.kjw1627@gmail.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Recursive declaration for struct which has member of the same struct
-type, for example,
+On Thu, Aug 01, 2019 at 03:01:10AM +0900, Joonwon Kang wrote:
+> Before this, there were false negatives in the case where a struct
+> contains other structs which contain only function pointers because
+> of unreachable code in is_pure_ops_struct().
+> 
+> Signed-off-by: Joonwon Kang <kjw1627@gmail.com>
 
-struct foo {
-    struct foo f;
-    ...
-};
+I've applied this (with some commit log tweaks) and it should be visible
+in linux-next soon. I'll send this on to Linus before -rc3.
 
-is not allowed. So, it is unnecessary to check if a struct has this
-kind of member.
-
-Signed-off-by: Joonwon Kang <kjw1627@gmail.com>
----
- scripts/gcc-plugins/randomize_layout_plugin.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/scripts/gcc-plugins/randomize_layout_plugin.c b/scripts/gcc-plugins/randomize_layout_plugin.c
-index bd29e4e7a524..e14efe23e645 100644
---- a/scripts/gcc-plugins/randomize_layout_plugin.c
-+++ b/scripts/gcc-plugins/randomize_layout_plugin.c
-@@ -440,9 +440,6 @@ static int is_pure_ops_struct(const_tree node)
- 		const_tree fieldtype = get_field_type(field);
- 		enum tree_code code = TREE_CODE(fieldtype);
- 
--		if (node == fieldtype)
--			continue;
--
- 		if (code == RECORD_TYPE || code == UNION_TYPE) {
- 			if (!is_pure_ops_struct(fieldtype))
- 				return 0;
 -- 
-2.17.1
-
+Kees Cook

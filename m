@@ -2,65 +2,49 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 73ED47BDA0
-	for <lists+kernel-janitors@lfdr.de>; Wed, 31 Jul 2019 11:47:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28D957BE06
+	for <lists+kernel-janitors@lfdr.de>; Wed, 31 Jul 2019 12:09:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726982AbfGaJrm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 31 Jul 2019 05:47:42 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:36495 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726605AbfGaJrl (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 31 Jul 2019 05:47:41 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hslCr-0006P6-2g; Wed, 31 Jul 2019 09:47:37 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Larry Finger <Larry.Finger@lwfinger.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Michael Straube <straube.linux@gmail.com>,
-        devel@driverdev.osuosl.org
+        id S1727276AbfGaKJf convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 31 Jul 2019 06:09:35 -0400
+Received: from mx2.suse.de ([195.135.220.15]:57628 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725866AbfGaKJe (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 31 Jul 2019 06:09:34 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 9759CB08C;
+        Wed, 31 Jul 2019 10:09:33 +0000 (UTC)
+From:   =?utf-8?Q?Aur=C3=A9lien?= Aptel <aaptel@suse.com>
+To:     Colin King <colin.king@canonical.com>,
+        samba-technical@lists.samba.org, Steve French <sfrench@samba.org>,
+        linux-cifs@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: rtl8188eu: remove redundant assignment to variable rtstatus
-Date:   Wed, 31 Jul 2019 10:47:36 +0100
-Message-Id: <20190731094736.28637-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+Subject: Re: [PATCH] cifs: remove redundant assignment to variable rc
+In-Reply-To: <20190731090526.27245-1-colin.king@canonical.com>
+References: <20190731090526.27245-1-colin.king@canonical.com>
+Date:   Wed, 31 Jul 2019 12:09:31 +0200
+Message-ID: <87r266seg4.fsf@suse.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Colin King <colin.king@canonical.com> writes:
+> Variable rc is being initialized with a value that is never read
+> and rc is being re-assigned a little later on. The assignment is
+> redundant and hence can be removed.
 
-Variable rtstatus is being initialized with a value that is never read
-and rtstatus is being re-assigned a little later on. The assignment is
-redundant and hence can be removed.  Also, make rtstatus a bool to
-match the function return type.
+I think I would actually rather have rc set to an error by default than
+uninitialized. Just my personal opinion.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/staging/rtl8188eu/hal/bb_cfg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/staging/rtl8188eu/hal/bb_cfg.c b/drivers/staging/rtl8188eu/hal/bb_cfg.c
-index 11e0bb9c67d7..51882858fcf0 100644
---- a/drivers/staging/rtl8188eu/hal/bb_cfg.c
-+++ b/drivers/staging/rtl8188eu/hal/bb_cfg.c
-@@ -653,7 +653,7 @@ static bool config_parafile(struct adapter *adapt)
- 
- bool rtl88eu_phy_bb_config(struct adapter *adapt)
- {
--	int rtstatus = true;
-+	bool rtstatus;
- 	u32 regval;
- 	u8 crystal_cap;
- 
+Cheers,
 -- 
-2.20.1
-
+Aurélien Aptel / SUSE Labs Samba Team
+GPG: 1839 CB5F 9F5B FB9B AA97  8C99 03C8 A49B 521B D5D3
+SUSE Linux GmbH, Maxfeldstraße 5, 90409 Nürnberg, Germany
+GF: Felix Imendörffer, Mary Higgins, Sri Rasiah HRB 21284 (AG Nürnberg)

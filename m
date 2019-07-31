@@ -2,29 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F6ED7D13C
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 00:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10D2F7D186
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 00:50:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728083AbfGaWjY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 31 Jul 2019 18:39:24 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:54979 "EHLO
+        id S1729694AbfGaWtz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 31 Jul 2019 18:49:55 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:55159 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727348AbfGaWjU (ORCPT
+        with ESMTP id S1726755AbfGaWtz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 31 Jul 2019 18:39:20 -0400
+        Wed, 31 Jul 2019 18:49:55 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hsxFd-0000Hh-Ps; Wed, 31 Jul 2019 22:39:17 +0000
+        id 1hsxPq-000199-TB; Wed, 31 Jul 2019 22:49:51 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Bin Liu <b-liu@ti.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org
+To:     Karan Tilak Kumar <kartilak@cisco.com>,
+        Sesidhar Baddela <sebaddel@cisco.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] usb: musb: remove redundant assignment to variable ret
-Date:   Wed, 31 Jul 2019 23:39:17 +0100
-Message-Id: <20190731223917.16532-1-colin.king@canonical.com>
+Subject: [PATCH] scsi: snic: remove redundant assignment to variable ret
+Date:   Wed, 31 Jul 2019 23:49:50 +0100
+Message-Id: <20190731224950.16818-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,29 +38,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Variable ret is being initialized with a value that is never read
-and ret is being re-assigned a little later on. The assignment is
-redundant and hence can be removed.
+Variable ret is being assigned with a value that is never read as
+there is return statement immediately afterwards.  The assignment
+is redundant and hence can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/usb/musb/musb_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/snic/snic_disc.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/usb/musb/musb_core.c b/drivers/usb/musb/musb_core.c
-index 9f5a4819a744..2bc55e0ceace 100644
---- a/drivers/usb/musb/musb_core.c
-+++ b/drivers/usb/musb/musb_core.c
-@@ -1721,7 +1721,7 @@ mode_show(struct device *dev, struct device_attribute *attr, char *buf)
- {
- 	struct musb *musb = dev_to_musb(dev);
- 	unsigned long flags;
--	int ret = -EINVAL;
-+	int ret;
+diff --git a/drivers/scsi/snic/snic_disc.c b/drivers/scsi/snic/snic_disc.c
+index e9ccfb97773f..d89c75991323 100644
+--- a/drivers/scsi/snic/snic_disc.c
++++ b/drivers/scsi/snic/snic_disc.c
+@@ -261,8 +261,6 @@ snic_tgt_create(struct snic *snic, struct snic_tgt_id *tgtid)
+ 	tgt = kzalloc(sizeof(*tgt), GFP_KERNEL);
+ 	if (!tgt) {
+ 		SNIC_HOST_ERR(snic->shost, "Failure to allocate snic_tgt.\n");
+-		ret = -ENOMEM;
+-
+ 		return tgt;
+ 	}
  
- 	spin_lock_irqsave(&musb->lock, flags);
- 	ret = sprintf(buf, "%s\n", usb_otg_state_string(musb->xceiv->otg->state));
 -- 
 2.20.1
 

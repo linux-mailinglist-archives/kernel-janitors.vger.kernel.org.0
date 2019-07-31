@@ -2,132 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 964367C899
-	for <lists+kernel-janitors@lfdr.de>; Wed, 31 Jul 2019 18:26:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F0427CB5A
+	for <lists+kernel-janitors@lfdr.de>; Wed, 31 Jul 2019 20:01:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729389AbfGaQZs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 31 Jul 2019 12:25:48 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:45592 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726231AbfGaQZs (ORCPT
+        id S1727482AbfGaSAk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 31 Jul 2019 14:00:40 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:42331 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726079AbfGaSAk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 31 Jul 2019 12:25:48 -0400
-Received: by mail-pf1-f196.google.com with SMTP id r1so32152122pfq.12;
-        Wed, 31 Jul 2019 09:25:48 -0700 (PDT)
+        Wed, 31 Jul 2019 14:00:40 -0400
+Received: by mail-pg1-f195.google.com with SMTP id t132so32416689pgb.9;
+        Wed, 31 Jul 2019 11:00:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=HfzyoXraaWAQfxsJbxCgGGQbWu65hE2VfQFlsfk64AI=;
-        b=liCpB+jWGUj6AJh/qQp5WSnFQt4+jRBFldNsFR7pAVkiEuDAOXYz3mL542vsI8duy9
-         +J33MzLHkCEtUkrux6BnCfUobDaBB7N7eBbqtanpLBG+YTZb5jMjlCUdtAB0plmrsC0g
-         cbacoMrGglNBmFKHNiRxTzilXSLAF7NdbmEs9VCsBT5bIGVxZlRXWLmgU5Xo5s725SAk
-         i7rVNLKg+ogkL9gCIIDvPiY327B/NwDFS75eZAxZuSksGNsdM3/Pw2XYqdl+7ScYqo1B
-         xlZVmi7W1t3o7srtQSyiGd4+JRtF6QS+1Jbq1LFV7qkyV/w+YET0WXZ+Xq0T7Aybo2Yv
-         92bg==
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=FRx+uLUc3KZyCAuddc+oPKsXnjik76gQN/gmEXW9OR0=;
+        b=gu1U/Sf5wItTquYMTsWGjxOpKbFvX6G8j8vnPQfr8dIrUzAEdFWOp/doTNqUe/yH4x
+         lmj4cyGkaJpkdDym4wZD2eekDodpvCTLSjn2vvUhsgi8UGbrXHzR9IWpTnynB+LzXllJ
+         S1tuqczMFGVaEGAi89Ij8RpOSUdvbEL7NfV5XoeczdLtgevPRi3EC7tIc6ClAecSVO3X
+         YL0zt7IWfXzCa81eFvv6ZUqQsATbv5UMvlXSw8g1m3HbBOIhM7LfgP4a+jknbGdGeGe5
+         5TsQHmX3Xw+/qPV/I7N4NKJwn0TazchFtfm4ob7IrpasKm+NvGl9Co7GmFphAtMCh5aT
+         hnIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=HfzyoXraaWAQfxsJbxCgGGQbWu65hE2VfQFlsfk64AI=;
-        b=KLNkqe/ZumfEPbABiy7pWFsESxoxMA55y0CRcRq0OF3nO5Ygpo36v9yCfajwl6TXH6
-         rICfVRuCBZZdxkrtLQ6qjvyr8vP9ZTJ8TFQq/ihPFEj11JQTfQUi8MGnFlRad+tNxtSv
-         lyOTiHbFze2SZxspbBxV1jhjduwaku8wRLZTuu04d2GvaTrhU22P3Oj5YpBPRarmfo+V
-         PxgWF7xvUvr3K30P0DOQpIRFmHn14leGJQReICtsW0543Mz3MV/YLa7UGIXbEjlncJ8a
-         uL5atPJSPsVJy8P7ZgI0EU7reDh82+ehbw3z9xVoG6rvPclI2YSN9op5eq0vrFNUhqZN
-         8kzw==
-X-Gm-Message-State: APjAAAWxRK55NUfaHsi3H9UyLcvhWlE6+tYSisZaQCYn9Z8EHIVnLDlW
-        15z9pZzADrMcRNEW5xLHYYc=
-X-Google-Smtp-Source: APXvYqyFUsIpvTGwvUqrZXOPYF7Qtnqh9Ca+5hAMUC4yGz8HZaole0+Y4bjNzsEIsKcHmMcrY+3FRg==
-X-Received: by 2002:a63:b10f:: with SMTP id r15mr44689474pgf.230.1564590347688;
-        Wed, 31 Jul 2019 09:25:47 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=FRx+uLUc3KZyCAuddc+oPKsXnjik76gQN/gmEXW9OR0=;
+        b=eIIdW9+se99t7aW0ilxNwzO40hCye53haNaCbdH8dgSgUdOccmFWB8n071wUlyTjVT
+         qS+g9zP2Nd5JYdhtoZFCDrV6xMtzmRrMfD2a0L27iea20qZnQk1+MtSNn2n2eR6cPG6z
+         KVKlOfRcHDGo42wKss9KXoo4BaO+mJ0FiuS+B24NjwNAEW1y3S4YvNrNDRRMjcZAhwlx
+         JvyQnm1P84PREZ7vqvFMmnvLbWmtQWSQIreDv1I5O9cNADx9y0YKdkia8dc2cxyTw5Mb
+         99Z5kENEmiMnvgLNjdyRPT9N4sHA2upZxMEpHmv6/cMRJw160H/WA9vvDFFiIdu4zNPQ
+         8LdA==
+X-Gm-Message-State: APjAAAVWIj/6HIan4xUmNRWQJPKVPeODhpcE2eJoyxryEKmB+HLbaHB8
+        mK9r+zDfD2Z8JJ7m7d7y3r+qYnVn5Dk=
+X-Google-Smtp-Source: APXvYqwZuHT7YK4tM/LtFJdXWvQ1Gru+TpgeeJWZcFRMPf9EjVmIuiH5DPpHS3XrbLf0PXy1ORaxqg==
+X-Received: by 2002:a62:e910:: with SMTP id j16mr50018305pfh.123.1564596039923;
+        Wed, 31 Jul 2019 11:00:39 -0700 (PDT)
 Received: from host ([183.101.165.200])
-        by smtp.gmail.com with ESMTPSA id q1sm80803049pfg.84.2019.07.31.09.25.45
+        by smtp.gmail.com with ESMTPSA id e13sm86252413pff.45.2019.07.31.11.00.37
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 31 Jul 2019 09:25:47 -0700 (PDT)
-Date:   Thu, 1 Aug 2019 01:25:37 +0900
+        Wed, 31 Jul 2019 11:00:39 -0700 (PDT)
+Date:   Thu, 1 Aug 2019 03:00:27 +0900
 From:   Joonwon Kang <kjw1627@gmail.com>
-To:     Kees Cook <keescook@chromium.org>
+To:     keescook@chromium.org
 Cc:     re.emese@gmail.com, kernel-hardening@lists.openwall.com,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         jinb.park7@gmail.com
-Subject: Re: [PATCH] randstruct: fix a bug in is_pure_ops_struct()
-Message-ID: <20190731162537.GA23152@host>
-References: <20190727155841.GA13586@host>
- <201907301008.622218EE5@keescook>
+Subject: [PATCH 0/2] fix is_pure_ops_struct()
+Message-ID: <cover.1564595346.git.kjw1627@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <201907301008.622218EE5@keescook>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jul 30, 2019 at 10:11:19AM -0700, Kees Cook wrote:
-> On Sun, Jul 28, 2019 at 12:58:41AM +0900, Joonwon Kang wrote:
-> > Before this, there were false negatives in the case where a struct
-> > contains other structs which contain only function pointers because
-> > of unreachable code in is_pure_ops_struct().
-> 
-> Ah, very true. Something like:
-> 
-> struct internal {
-> 	void (*callback)(void);
-> };
-> 
-> struct wrapper {
-> 	struct internal foo;
-> 	void (*other_callback)(void);
-> };
-> 
-> would have not been detected as is_pure_ops_struct()?
-> 
-> How did you notice this? (Are there cases of this in the kernel?)
+Hello,
 
-When I compiled kernel with allyesconfig, there seemed to be no such cases,
-but I found the bug just by code review and test.
-However, I would like to slightly modify this patch and add one more patch.
-I will send the patch set soon.
+This series fixes unreachable code bug and removes dead code in
+is_pure_ops_struct().
 
-> 
-> > Signed-off-by: Joonwon Kang <kjw1627@gmail.com>
-> 
-> Applied; thanks!
-> 
-> -Kees
-> 
-> > ---
-> >  scripts/gcc-plugins/randomize_layout_plugin.c | 11 +++++------
-> >  1 file changed, 5 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/scripts/gcc-plugins/randomize_layout_plugin.c b/scripts/gcc-plugins/randomize_layout_plugin.c
-> > index 6d5bbd31db7f..a123282a4fcd 100644
-> > --- a/scripts/gcc-plugins/randomize_layout_plugin.c
-> > +++ b/scripts/gcc-plugins/randomize_layout_plugin.c
-> > @@ -443,13 +443,12 @@ static int is_pure_ops_struct(const_tree node)
-> >  		if (node == fieldtype)
-> >  			continue;
-> >  
-> > -		if (!is_fptr(fieldtype))
-> > -			return 0;
-> > -
-> > -		if (code != RECORD_TYPE && code != UNION_TYPE)
-> > -			continue;
-> > +		if (code == RECORD_TYPE || code == UNION_TYPE) {
-> > +			if (!is_pure_ops_struct(fieldtype))
-> > +				return 0;
-> > +		}
-> >  
-> > -		if (!is_pure_ops_struct(fieldtype))
-> > +		if (!is_fptr(fieldtype))
-> >  			return 0;
-> >  	}
-> >  
-> > -- 
-> > 2.17.1
-> > 
-> 
-> -- 
-> Kees Cook
+Thanks.
+
+Joonwon Kang (2):
+  randstruct: fix a bug in is_pure_ops_struct()
+  randstruct: remove dead code in is_pure_ops_struct()
+
+ scripts/gcc-plugins/randomize_layout_plugin.c | 11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
+
+-- 
+2.17.1
+

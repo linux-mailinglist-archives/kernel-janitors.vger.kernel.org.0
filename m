@@ -2,45 +2,45 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 78DAB7BFDA
+	by mail.lfdr.de (Postfix) with ESMTP id E23287BFDB
 	for <lists+kernel-janitors@lfdr.de>; Wed, 31 Jul 2019 13:33:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727820AbfGaLaC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 31 Jul 2019 07:30:02 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:34320 "EHLO
+        id S2387603AbfGaLaI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 31 Jul 2019 07:30:08 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:34756 "EHLO
         heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726079AbfGaLaB (ORCPT
+        with ESMTP id S2387591AbfGaLaG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 31 Jul 2019 07:30:01 -0400
+        Wed, 31 Jul 2019 07:30:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
         Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
         List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=tz9OrYsm/JIIYaZu0FAWVndUQ54ZCNsvNKCY3ncuXbk=; b=N6PA8EFIsUJy
-        su8vlR6Ru8/5cQYPmUszlmF4msTGe+rAnP2cILm7o76udCBkZ2DDfifaVzOqI4JU/UuGSqxl1T2tu
-        Fd3GuPCgrG22U6TiNyJfeV57tMot4NB7lLYJTqEG8o/VMnpPu0+7AmElzXwzvFi+vy2EwML/skXHM
-        vTnwo=;
+        List-Archive; bh=EuMvAIGvSkhxULaHrIEoiNbtfGrsx8DySGa7iFH7bOg=; b=Sqo0C8Xc5ocS
+        /7GLENBLdPeEqcBb1A5xfC3JtU1fBoNS6/7W0x/uKp0VJdMkfS793SxyDH2W/yMko45ysDTpcQdy5
+        kjG2LaCfX4BreOLL9+/aX4h+qeIoCjoLxK8rKzYnPsKzq8KGYSFo6hzKlxPDImBcxQALDyJ1ycFq8
+        YFsbs=;
 Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
         by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <broonie@sirena.org.uk>)
-        id 1hsmni-0001md-Eh; Wed, 31 Jul 2019 11:29:46 +0000
+        id 1hsmnq-0001qM-2z; Wed, 31 Jul 2019 11:29:54 +0000
 Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id A62C72742CDE; Wed, 31 Jul 2019 12:29:45 +0100 (BST)
+        id 7BAE72742D57; Wed, 31 Jul 2019 12:29:52 +0100 (BST)
 From:   Mark Brown <broonie@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     alsa-devel@alsa-project.org, brian.austin@cirrus.com,
-        broonie@kernel.org, kernel-janitors@vger.kernel.org,
-        lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>, Paul.Handrigan@cirrus.com,
-        perex@perex.cz, tiwai@suse.com
-Subject: Applied "ASoC: cs4271: Fix a typo in the CS4171_NR_RATIOS" to the asoc tree
-In-Reply-To: <20190724060023.31302-1-christophe.jaillet@wanadoo.fr>
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     alsa-devel@alsa-project.org, Jaroslav Kysela <perex@perex.cz>,
+        kernel-janitors@vger.kernel.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Takashi Iwai <tiwai@suse.com>
+Subject: Applied "ASoC: codec2codec: fix missing return of error return code" to the asoc tree
+In-Reply-To: <20190726123327.10467-1-colin.king@canonical.com>
 X-Patchwork-Hint: ignore
-Message-Id: <20190731112945.A62C72742CDE@ypsilon.sirena.org.uk>
-Date:   Wed, 31 Jul 2019 12:29:45 +0100 (BST)
+Message-Id: <20190731112952.7BAE72742D57@ypsilon.sirena.org.uk>
+Date:   Wed, 31 Jul 2019 12:29:52 +0100 (BST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -48,7 +48,7 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 The patch
 
-   ASoC: cs4271: Fix a typo in the CS4171_NR_RATIOS
+   ASoC: codec2codec: fix missing return of error return code
 
 has been applied to the asoc tree at
 
@@ -73,50 +73,47 @@ to this mail.
 Thanks,
 Mark
 
-From 0c03e37af47efcb8600f95f399783c082fcf2f93 Mon Sep 17 00:00:00 2001
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Wed, 24 Jul 2019 08:00:23 +0200
-Subject: [PATCH] ASoC: cs4271: Fix a typo in the CS4171_NR_RATIOS
+From c8415833ec242b9ddf73bf9e1057e12f9b0fcd16 Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Fri, 26 Jul 2019 13:33:27 +0100
+Subject: [PATCH] ASoC: codec2codec: fix missing return of error return code
 
-This should be CS4271_NR_RATIOS.
-Fix it and use it.
+Currently in function snd_soc_dai_link_event_pre_pmu the error return
+code in variable err is being set but this is not actually being returned,
+the function just returns zero even when there are failures. Fix this by
+returning the error return code.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/20190724060023.31302-1-christophe.jaillet@wanadoo.fr
+Addresses-Coverity: ("Unused value")
+Fixes: 3dcfb397dad2 ("ASoC: codec2codec: deal with params when necessary")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Link: https://lore.kernel.org/r/20190726123327.10467-1-colin.king@canonical.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/soc/codecs/cs4271.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/soc-dapm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/cs4271.c b/sound/soc/codecs/cs4271.c
-index 1d03a1348162..04b86a51e055 100644
---- a/sound/soc/codecs/cs4271.c
-+++ b/sound/soc/codecs/cs4271.c
-@@ -334,7 +334,7 @@ static struct cs4271_clk_cfg cs4271_clk_tab[] = {
- 	{0, CS4271_MODE1_MODE_4X, 256,  CS4271_MODE1_DIV_2},
- };
+diff --git a/sound/soc/soc-dapm.c b/sound/soc/soc-dapm.c
+index be9bb05b0165..2d183e2d23de 100644
+--- a/sound/soc/soc-dapm.c
++++ b/sound/soc/soc-dapm.c
+@@ -3776,7 +3776,7 @@ snd_soc_dai_link_event_pre_pmu(struct snd_soc_dapm_widget *w,
+ 	struct snd_pcm_hw_params *params = NULL;
+ 	const struct snd_soc_pcm_stream *config = NULL;
+ 	unsigned int fmt;
+-	int ret;
++	int ret = 0;
  
--#define CS4171_NR_RATIOS ARRAY_SIZE(cs4271_clk_tab)
-+#define CS4271_NR_RATIOS ARRAY_SIZE(cs4271_clk_tab)
+ 	params = kzalloc(sizeof(*params), GFP_KERNEL);
+ 	if (!params)
+@@ -3865,7 +3865,7 @@ snd_soc_dai_link_event_pre_pmu(struct snd_soc_dapm_widget *w,
  
- static int cs4271_hw_params(struct snd_pcm_substream *substream,
- 			    struct snd_pcm_hw_params *params,
-@@ -383,13 +383,13 @@ static int cs4271_hw_params(struct snd_pcm_substream *substream,
- 		val = CS4271_MODE1_MODE_4X;
+ out:
+ 	kfree(params);
+-	return 0;
++	return ret;
+ }
  
- 	ratio = cs4271->mclk / cs4271->rate;
--	for (i = 0; i < CS4171_NR_RATIOS; i++)
-+	for (i = 0; i < CS4271_NR_RATIOS; i++)
- 		if ((cs4271_clk_tab[i].master == cs4271->master) &&
- 		    (cs4271_clk_tab[i].speed_mode == val) &&
- 		    (cs4271_clk_tab[i].ratio == ratio))
- 			break;
- 
--	if (i == CS4171_NR_RATIOS) {
-+	if (i == CS4271_NR_RATIOS) {
- 		dev_err(component->dev, "Invalid sample rate\n");
- 		return -EINVAL;
- 	}
+ static int snd_soc_dai_link_event(struct snd_soc_dapm_widget *w,
 -- 
 2.20.1
 

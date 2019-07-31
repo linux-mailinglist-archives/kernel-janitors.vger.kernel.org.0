@@ -2,32 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A0F67D130
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 00:33:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F6ED7D13C
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 00:39:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727276AbfGaWdD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 31 Jul 2019 18:33:03 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:54925 "EHLO
+        id S1728083AbfGaWjY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 31 Jul 2019 18:39:24 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:54979 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726231AbfGaWdD (ORCPT
+        with ESMTP id S1727348AbfGaWjU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 31 Jul 2019 18:33:03 -0400
+        Wed, 31 Jul 2019 18:39:20 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hsx98-0008H1-UL; Wed, 31 Jul 2019 22:32:35 +0000
+        id 1hsxFd-0000Hh-Ps; Wed, 31 Jul 2019 22:39:17 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jun Nie <jun.nie@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        linux-arm-kernel@lists.infradead.org, alsa-devel@alsa-project.org
+To:     Bin Liu <b-liu@ti.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: zx-tdm: remove redundant assignment to ts_width on error return path
-Date:   Wed, 31 Jul 2019 23:32:34 +0100
-Message-Id: <20190731223234.16153-1-colin.king@canonical.com>
+Subject: [PATCH] usb: musb: remove redundant assignment to variable ret
+Date:   Wed, 31 Jul 2019 23:39:17 +0100
+Message-Id: <20190731223917.16532-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,27 +36,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The value assigned to ts_width is never read on the error return path
-so the assignment is redundant and can be removed.  Remove it.
+Variable ret is being initialized with a value that is never read
+and ret is being re-assigned a little later on. The assignment is
+redundant and hence can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- sound/soc/zte/zx-tdm.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/usb/musb/musb_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/zte/zx-tdm.c b/sound/soc/zte/zx-tdm.c
-index 5e877fe9ba7b..0e5a05b25a77 100644
---- a/sound/soc/zte/zx-tdm.c
-+++ b/sound/soc/zte/zx-tdm.c
-@@ -211,7 +211,6 @@ static int zx_tdm_hw_params(struct snd_pcm_substream *substream,
- 		ts_width = 1;
- 		break;
- 	default:
--		ts_width = 0;
- 		dev_err(socdai->dev, "Unknown data format\n");
- 		return -EINVAL;
- 	}
+diff --git a/drivers/usb/musb/musb_core.c b/drivers/usb/musb/musb_core.c
+index 9f5a4819a744..2bc55e0ceace 100644
+--- a/drivers/usb/musb/musb_core.c
++++ b/drivers/usb/musb/musb_core.c
+@@ -1721,7 +1721,7 @@ mode_show(struct device *dev, struct device_attribute *attr, char *buf)
+ {
+ 	struct musb *musb = dev_to_musb(dev);
+ 	unsigned long flags;
+-	int ret = -EINVAL;
++	int ret;
+ 
+ 	spin_lock_irqsave(&musb->lock, flags);
+ 	ret = sprintf(buf, "%s\n", usb_otg_state_string(musb->xceiv->otg->state));
 -- 
 2.20.1
 

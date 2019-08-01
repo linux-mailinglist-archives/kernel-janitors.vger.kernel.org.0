@@ -2,107 +2,116 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 75BEF7DC50
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 15:11:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E00C7DCB1
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 15:42:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731739AbfHANLT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Aug 2019 09:11:19 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:54772 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731656AbfHANKw (ORCPT
+        id S1727656AbfHANmA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Aug 2019 09:42:00 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:35064 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727299AbfHANmA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Aug 2019 09:10:52 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
-        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
-        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=1XTmM3uejsE/Bu0l2+bTtFtXWG9tBVr4XVnGjE0EpVE=; b=hkvWHyr6Pj2k
-        RQFahO4YtkOwThiLQVpOJBOYw7UDIk+oplNRl/mXz9C/mPmNUcACRB/zkqRk86tyWWtndtJLZHLGU
-        oqniujsOKD6Ce7PZpoc9LL2UeE+/WYtd6QibDoaExLBV1EL7aaJOrsHWI/kd5prYjj41H8IC32nel
-        6aIMs=;
-Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1htAqu-0004im-FJ; Thu, 01 Aug 2019 13:10:40 +0000
-Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id 3CC712742C48; Thu,  1 Aug 2019 14:10:39 +0100 (BST)
-From:   Mark Brown <broonie@kernel.org>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     alsa-devel@alsa-project.org, Jaroslav Kysela <perex@perex.cz>,
-        Jun Nie <jun.nie@linaro.org>, kernel-janitors@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        Mark Brown <broonie@kernel.org>,
-        Shawn Guo <shawnguo@kernel.org>, Takashi Iwai <tiwai@suse.com>
-Subject: Applied "ASoC: zx-tdm: remove redundant assignment to ts_width on error return path" to the asoc tree
-In-Reply-To: <20190731223234.16153-1-colin.king@canonical.com>
-X-Patchwork-Hint: ignore
-Message-Id: <20190801131039.3CC712742C48@ypsilon.sirena.org.uk>
-Date:   Thu,  1 Aug 2019 14:10:39 +0100 (BST)
+        Thu, 1 Aug 2019 09:42:00 -0400
+Received: by mail-pf1-f196.google.com with SMTP id u14so34123742pfn.2;
+        Thu, 01 Aug 2019 06:41:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=e6SUu+1rvN5NRaEyrhAZRkSrDdvDH6KraBIZ1o6M+y4=;
+        b=mAsxTZhtB+USQ2Ez9xEc3x9IB+7NKzCQ0wmUfrBoEVJAW7BDjWvqRdpEs1cumaIi79
+         /oa5PVMlYxeA1xzg+ZLMTkckyChE+hoCFWpibwHS4UiKMaK2serQLY+jQt/XNFF7FnCe
+         g8TAXHr1k4TGv7Dx32ZFJbA+gzrnQK06gwV4hmMG4bOS3km0JZmUxd/QWEZr/3ZZuBon
+         oAw1t/rNPrf6xyQ/XruTB1PrMg21C8s4LOGp91XDYOW3gvPPCJnXqZCwyZTUz3uV6wOd
+         5mkEL+r6C20JAay2Kw5hlkLcFvO51KptZ9WyYnT7jTcfZf3SVzjax7VxW2VMMj/E6KAu
+         UXlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=e6SUu+1rvN5NRaEyrhAZRkSrDdvDH6KraBIZ1o6M+y4=;
+        b=YImO4wsn72KSTYI9yIA/5L+KiVbJa0+achXga/70YaPPg2UaSDartzXNfu8cUA9PqE
+         LVh5UG8H+KBAKEDLO6et2aLu7WJtrEKgUGmnc1JJVtQ8Yp2uGXqP4KZJ8/WrVOYNpmNO
+         y+tGHUpfqO4w/WNeXy/NwViEaASSUN7oZsAsZbanQbprWA2OmN/0jltilWWLPdmamrYa
+         JLGmfbfhPhrOosXo/eg1JG2CButSBmpCS8EI14yzTcyBQOAzbtd+lIJlj9UjrsFf3+gn
+         q5Pj3EqqjGQmgp2GVBhm6S53KcPH3eJwMnkgCbZVmn6yc8tf/WNq8Y1O9CfIJQ0YM7yD
+         871g==
+X-Gm-Message-State: APjAAAVhB0a0coUyVrixhsGmTIkkJWaDFLWwQz5XApFHpooLtI39688x
+        DkxcNiJl48tQCw1inFyHS5o=
+X-Google-Smtp-Source: APXvYqwhPXJVg7ocTv8yFgwqNJVM+vY3pMPSSH6aXTdj0mq5HeKL7QVEMLAYnB/n2hYraWbdUdn2Vg==
+X-Received: by 2002:a63:7205:: with SMTP id n5mr64492235pgc.443.1564666919432;
+        Thu, 01 Aug 2019 06:41:59 -0700 (PDT)
+Received: from host ([183.101.165.200])
+        by smtp.gmail.com with ESMTPSA id m13sm12112869pgn.57.2019.08.01.06.41.56
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 01 Aug 2019 06:41:58 -0700 (PDT)
+Date:   Thu, 1 Aug 2019 22:41:49 +0900
+From:   Joonwon Kang <kjw1627@gmail.com>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     re.emese@gmail.com, kernel-hardening@lists.openwall.com,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        jinb.park7@gmail.com
+Subject: Re: [PATCH 2/2] randstruct: remove dead code in is_pure_ops_struct()
+Message-ID: <20190801134149.GA2149@host>
+References: <cover.1564595346.git.kjw1627@gmail.com>
+ <281a65cc361512e3dc6c5deffa324f800eb907be.1564595346.git.kjw1627@gmail.com>
+ <201907311259.D485EED2B7@keescook>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <201907311259.D485EED2B7@keescook>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
+On Wed, Jul 31, 2019 at 12:59:30PM -0700, Kees Cook wrote:
+> On Thu, Aug 01, 2019 at 03:01:49AM +0900, Joonwon Kang wrote:
+> > Recursive declaration for struct which has member of the same struct
+> > type, for example,
+> > 
+> > struct foo {
+> >     struct foo f;
+> >     ...
+> > };
+> > 
+> > is not allowed. So, it is unnecessary to check if a struct has this
+> > kind of member.
+> 
+> Is that the only case where this loop could happen? Seems also safe to
+> just leave it as-is...
+> 
+> -Kees
 
-   ASoC: zx-tdm: remove redundant assignment to ts_width on error return path
+I think it is pretty obvious that it is the only case. I compiled kernel
+with allyesconfig and the condition never hit even once. However, it will
+also be no problem to just leave it as-is as you mentioned.
 
-has been applied to the asoc tree at
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.4
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From f24e41d3d04f326613d8a7ebecf72c3019826f71 Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king@canonical.com>
-Date: Wed, 31 Jul 2019 23:32:34 +0100
-Subject: [PATCH] ASoC: zx-tdm: remove redundant assignment to ts_width on
- error return path
-
-The value assigned to ts_width is never read on the error return path
-so the assignment is redundant and can be removed.  Remove it.
-
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Link: https://lore.kernel.org/r/20190731223234.16153-1-colin.king@canonical.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- sound/soc/zte/zx-tdm.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/sound/soc/zte/zx-tdm.c b/sound/soc/zte/zx-tdm.c
-index 5e877fe9ba7b..0e5a05b25a77 100644
---- a/sound/soc/zte/zx-tdm.c
-+++ b/sound/soc/zte/zx-tdm.c
-@@ -211,7 +211,6 @@ static int zx_tdm_hw_params(struct snd_pcm_substream *substream,
- 		ts_width = 1;
- 		break;
- 	default:
--		ts_width = 0;
- 		dev_err(socdai->dev, "Unknown data format\n");
- 		return -EINVAL;
- 	}
--- 
-2.20.1
-
+> 
+> > 
+> > Signed-off-by: Joonwon Kang <kjw1627@gmail.com>
+> > ---
+> >  scripts/gcc-plugins/randomize_layout_plugin.c | 3 ---
+> >  1 file changed, 3 deletions(-)
+> > 
+> > diff --git a/scripts/gcc-plugins/randomize_layout_plugin.c b/scripts/gcc-plugins/randomize_layout_plugin.c
+> > index bd29e4e7a524..e14efe23e645 100644
+> > --- a/scripts/gcc-plugins/randomize_layout_plugin.c
+> > +++ b/scripts/gcc-plugins/randomize_layout_plugin.c
+> > @@ -440,9 +440,6 @@ static int is_pure_ops_struct(const_tree node)
+> >  		const_tree fieldtype = get_field_type(field);
+> >  		enum tree_code code = TREE_CODE(fieldtype);
+> >  
+> > -		if (node == fieldtype)
+> > -			continue;
+> > -
+> >  		if (code == RECORD_TYPE || code == UNION_TYPE) {
+> >  			if (!is_pure_ops_struct(fieldtype))
+> >  				return 0;
+> > -- 
+> > 2.17.1
+> > 
+> 
+> -- 
+> Kees Cook

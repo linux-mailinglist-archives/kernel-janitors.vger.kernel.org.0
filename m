@@ -2,68 +2,136 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E7017D9E3
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 13:02:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 977D57DA04
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 13:09:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731397AbfHALB5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Aug 2019 07:01:57 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:44077 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731362AbfHALBt (ORCPT
+        id S1727540AbfHALJ6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Aug 2019 07:09:58 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:51048 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725930AbfHALJ6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Aug 2019 07:01:49 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1ht8q9-0006Mm-Fl; Thu, 01 Aug 2019 11:01:45 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Le Ma <le.ma@amd.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][drm-next] drm/amdgpu: fix unsigned variable instance compared to less than zero
-Date:   Thu,  1 Aug 2019 12:01:45 +0100
-Message-Id: <20190801110145.10803-1-colin.king@canonical.com>
+        Thu, 1 Aug 2019 07:09:58 -0400
+Received: from localhost.localdomain ([176.167.121.156])
+        by mwinf5d09 with ME
+        id jn9q200093NZnML03n9qj6; Thu, 01 Aug 2019 13:09:56 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 01 Aug 2019 13:09:56 +0200
+X-ME-IP: 176.167.121.156
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
+        allison@lohutok.net, tglx@linutronix.de, clg@kaod.org,
+        groug@kaod.org
+Cc:     linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] powerpc/xive: Add some error handling code to 'xive_spapr_init()'
+Date:   Thu,  1 Aug 2019 13:09:56 +0200
+Message-Id: <20190801110956.8517-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+'xive_irq_bitmap_add()' can return -ENOMEM.
+In this case, we should free the memory already allocated and return
+'false' to the caller.
 
-Currenly the error check on variable instance is always false because
-it is a uint32_t type and this is never less than zero. Fix this by
-making it an int type.
+Also add an error path which undoes the 'tima = ioremap(...)'
 
-Addresses-Coverity: ("Unsigned compared against 0")
-Fixes: 7d0e6329dfdc ("drm/amdgpu: update more sdma instances irq support")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+NOT compile tested (I don't have a cross compiler and won't install one).
+So if some correction or improvement are needed, feel free to propose and
+commit it directly.
+---
+ arch/powerpc/sysdev/xive/spapr.c | 36 +++++++++++++++++++++++++-------
+ 1 file changed, 28 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-index a33bd867287e..92257f2bf171 100644
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-@@ -1962,7 +1962,8 @@ static int sdma_v4_0_process_trap_irq(struct amdgpu_device *adev,
- static int sdma_v4_0_process_ras_data_cb(struct amdgpu_device *adev,
- 		struct amdgpu_iv_entry *entry)
- {
--	uint32_t instance, err_source;
-+	uint32_t err_source;
-+	int instance;
+diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
+index 52198131c75e..b3ae0b76c433 100644
+--- a/arch/powerpc/sysdev/xive/spapr.c
++++ b/arch/powerpc/sysdev/xive/spapr.c
+@@ -64,6 +64,17 @@ static int xive_irq_bitmap_add(int base, int count)
+ 	return 0;
+ }
  
- 	instance = sdma_v4_0_irq_id_to_seq(entry->client_id);
- 	if (instance < 0)
++static void xive_irq_bitmap_remove_all(void)
++{
++	struct xive_irq_bitmap *xibm, *tmp;
++
++	list_for_each_entry_safe(xibm, tmp, &xive_irq_bitmaps, list) {
++		list_del(&xibm->list);
++		kfree(xibm->bitmap);
++		kfree(xibm);
++	}
++}
++
+ static int __xive_irq_bitmap_alloc(struct xive_irq_bitmap *xibm)
+ {
+ 	int irq;
+@@ -723,7 +734,7 @@ bool __init xive_spapr_init(void)
+ 	u32 val;
+ 	u32 len;
+ 	const __be32 *reg;
+-	int i;
++	int i, err;
+ 
+ 	if (xive_spapr_disabled())
+ 		return false;
+@@ -748,23 +759,26 @@ bool __init xive_spapr_init(void)
+ 	}
+ 
+ 	if (!xive_get_max_prio(&max_prio))
+-		return false;
++		goto err_unmap;
+ 
+ 	/* Feed the IRQ number allocator with the ranges given in the DT */
+ 	reg = of_get_property(np, "ibm,xive-lisn-ranges", &len);
+ 	if (!reg) {
+ 		pr_err("Failed to read 'ibm,xive-lisn-ranges' property\n");
+-		return false;
++		goto err_unmap;
+ 	}
+ 
+ 	if (len % (2 * sizeof(u32)) != 0) {
+ 		pr_err("invalid 'ibm,xive-lisn-ranges' property\n");
+-		return false;
++		goto err_unmap;
+ 	}
+ 
+-	for (i = 0; i < len / (2 * sizeof(u32)); i++, reg += 2)
+-		xive_irq_bitmap_add(be32_to_cpu(reg[0]),
+-				    be32_to_cpu(reg[1]));
++	for (i = 0; i < len / (2 * sizeof(u32)); i++, reg += 2) {
++		err = xive_irq_bitmap_add(be32_to_cpu(reg[0]),
++					  be32_to_cpu(reg[1]));
++		if (err < 0)
++			goto err_mem_free;
++	}
+ 
+ 	/* Iterate the EQ sizes and pick one */
+ 	of_property_for_each_u32(np, "ibm,xive-eq-sizes", prop, reg, val) {
+@@ -775,8 +789,14 @@ bool __init xive_spapr_init(void)
+ 
+ 	/* Initialize XIVE core with our backend */
+ 	if (!xive_core_init(&xive_spapr_ops, tima, TM_QW1_OS, max_prio))
+-		return false;
++		goto err_mem_free;
+ 
+ 	pr_info("Using %dkB queues\n", 1 << (xive_queue_shift - 10));
+ 	return true;
++
++err_mem_free:
++	xive_irq_bitmap_remove_all();
++err_unmap:
++	iounmap(tima);
++	return false;
+ }
 -- 
 2.20.1
 

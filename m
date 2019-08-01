@@ -2,78 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBAC97DA92
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 13:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75BEF7DC50
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 15:11:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730816AbfHALuH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Aug 2019 07:50:07 -0400
-Received: from 15.mo5.mail-out.ovh.net ([178.33.107.29]:56790 "EHLO
-        15.mo5.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729316AbfHALuG (ORCPT
+        id S1731739AbfHANLT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Aug 2019 09:11:19 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:54772 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731656AbfHANKw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Aug 2019 07:50:06 -0400
-X-Greylist: delayed 4200 seconds by postgrey-1.27 at vger.kernel.org; Thu, 01 Aug 2019 07:50:06 EDT
-Received: from player778.ha.ovh.net (unknown [10.108.35.90])
-        by mo5.mail-out.ovh.net (Postfix) with ESMTP id 7301B248024
-        for <kernel-janitors@vger.kernel.org>; Thu,  1 Aug 2019 11:24:00 +0200 (CEST)
-Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net [82.253.208.248])
-        (Authenticated sender: groug@kaod.org)
-        by player778.ha.ovh.net (Postfix) with ESMTPSA id 17FDD87377A1;
-        Thu,  1 Aug 2019 09:23:49 +0000 (UTC)
-Date:   Thu, 1 Aug 2019 11:23:48 +0200
-From:   Greg Kurz <groug@kaod.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
-        allison@lohutok.net, tglx@linutronix.de, clg@kaod.org,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 1/2] powerpc/xive: Use GFP_KERNEL instead of GFP_ATOMIC
- in 'xive_irq_bitmap_add()'
-Message-ID: <20190801112348.2d1760f3@bahia.lan>
-In-Reply-To: <85d5d247ce753befd6aa63c473f7823de6520ccd.1564647619.git.christophe.jaillet@wanadoo.fr>
-References: <cover.1564647619.git.christophe.jaillet@wanadoo.fr>
-        <85d5d247ce753befd6aa63c473f7823de6520ccd.1564647619.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 12659618553387784475
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrleejgddufecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+        Thu, 1 Aug 2019 09:10:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+        List-Archive; bh=1XTmM3uejsE/Bu0l2+bTtFtXWG9tBVr4XVnGjE0EpVE=; b=hkvWHyr6Pj2k
+        RQFahO4YtkOwThiLQVpOJBOYw7UDIk+oplNRl/mXz9C/mPmNUcACRB/zkqRk86tyWWtndtJLZHLGU
+        oqniujsOKD6Ce7PZpoc9LL2UeE+/WYtd6QibDoaExLBV1EL7aaJOrsHWI/kd5prYjj41H8IC32nel
+        6aIMs=;
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1htAqu-0004im-FJ; Thu, 01 Aug 2019 13:10:40 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+        id 3CC712742C48; Thu,  1 Aug 2019 14:10:39 +0100 (BST)
+From:   Mark Brown <broonie@kernel.org>
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     alsa-devel@alsa-project.org, Jaroslav Kysela <perex@perex.cz>,
+        Jun Nie <jun.nie@linaro.org>, kernel-janitors@vger.kernel.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>,
+        Shawn Guo <shawnguo@kernel.org>, Takashi Iwai <tiwai@suse.com>
+Subject: Applied "ASoC: zx-tdm: remove redundant assignment to ts_width on error return path" to the asoc tree
+In-Reply-To: <20190731223234.16153-1-colin.king@canonical.com>
+X-Patchwork-Hint: ignore
+Message-Id: <20190801131039.3CC712742C48@ypsilon.sirena.org.uk>
+Date:   Thu,  1 Aug 2019 14:10:39 +0100 (BST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu,  1 Aug 2019 10:32:31 +0200
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+The patch
 
-> There is no need to use GFP_ATOMIC here. GFP_KERNEL should be enough.
-> GFP_KERNEL is also already used for another allocation just a few lines
-> below.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
+   ASoC: zx-tdm: remove redundant assignment to ts_width on error return path
 
-Good catch.
+has been applied to the asoc tree at
 
-Reviewed-by: Greg Kurz <groug@kaod.org>
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.4
 
->  arch/powerpc/sysdev/xive/spapr.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
-> index 8ef9cf4ebb1c..b4f5eb9e0f82 100644
-> --- a/arch/powerpc/sysdev/xive/spapr.c
-> +++ b/arch/powerpc/sysdev/xive/spapr.c
-> @@ -45,7 +45,7 @@ static int xive_irq_bitmap_add(int base, int count)
->  {
->  	struct xive_irq_bitmap *xibm;
->  
-> -	xibm = kzalloc(sizeof(*xibm), GFP_ATOMIC);
-> +	xibm = kzalloc(sizeof(*xibm), GFP_KERNEL);
->  	if (!xibm)
->  		return -ENOMEM;
->  
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From f24e41d3d04f326613d8a7ebecf72c3019826f71 Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Wed, 31 Jul 2019 23:32:34 +0100
+Subject: [PATCH] ASoC: zx-tdm: remove redundant assignment to ts_width on
+ error return path
+
+The value assigned to ts_width is never read on the error return path
+so the assignment is redundant and can be removed.  Remove it.
+
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Link: https://lore.kernel.org/r/20190731223234.16153-1-colin.king@canonical.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/zte/zx-tdm.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/sound/soc/zte/zx-tdm.c b/sound/soc/zte/zx-tdm.c
+index 5e877fe9ba7b..0e5a05b25a77 100644
+--- a/sound/soc/zte/zx-tdm.c
++++ b/sound/soc/zte/zx-tdm.c
+@@ -211,7 +211,6 @@ static int zx_tdm_hw_params(struct snd_pcm_substream *substream,
+ 		ts_width = 1;
+ 		break;
+ 	default:
+-		ts_width = 0;
+ 		dev_err(socdai->dev, "Unknown data format\n");
+ 		return -EINVAL;
+ 	}
+-- 
+2.20.1
 

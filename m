@@ -2,32 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E8867D2C8
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 03:22:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA0437D2E5
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 03:33:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726817AbfHABWh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 31 Jul 2019 21:22:37 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3682 "EHLO huawei.com"
+        id S1728704AbfHABdj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 31 Jul 2019 21:33:39 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:51210 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726622AbfHABWh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 31 Jul 2019 21:22:37 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 65EA34DAA86A04A9AAFF;
-        Thu,  1 Aug 2019 09:22:35 +0800 (CST)
+        id S1726594AbfHABdj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 31 Jul 2019 21:33:39 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id DBF2AD35E1504DA908C3;
+        Thu,  1 Aug 2019 09:33:36 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 1 Aug 2019 09:22:26 +0800
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 1 Aug 2019 09:33:27 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Lijun Ou <oulijun@huawei.com>,
-        "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        "Colin Ian King" <colin.king@canonical.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-rdma@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH] RDMA/hns: Fix error return code in hns_roce_v1_rsv_lp_qp()
-Date:   Thu, 1 Aug 2019 01:27:25 +0000
-Message-ID: <20190801012725.150493-1-weiyongjun1@huawei.com>
+To:     Alexander Shishkin <alexander.shishkin@linux.intel.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] intel_th: msu: Fix possible memory leak in mode_store()
+Date:   Thu, 1 Aug 2019 01:38:25 +0000
+Message-ID: <20190801013825.182543-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -39,32 +35,31 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return error code -ENOMEM from the rdma_zalloc_drv_obj() error
-handling case instead of 0, as done elsewhere in this function.
+'mode' is malloced in mode_store() and should be freed before leaving
+from the error handling cases, otherwise it will cause memory leak.
 
-Fixes: e8ac9389f0d7 ("RDMA: Fix allocation failure on pointer pd")
-Fixes: 21a428a019c9 ("RDMA: Handle PD allocations by IB/core")
+Fixes: 615c164da0eb ("intel_th: msu: Introduce buffer interface")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v1.c | 4 +++-
+ drivers/hwtracing/intel_th/msu.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v1.c b/drivers/infiniband/hw/hns/hns_roce_hw_v1.c
-index 70583f82e290..aa8a660ffcda 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v1.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v1.c
-@@ -750,8 +750,10 @@ static int hns_roce_v1_rsv_lp_qp(struct hns_roce_dev *hr_dev)
- 	atomic_set(&free_mr->mr_free_cq->ib_cq.usecnt, 0);
+diff --git a/drivers/hwtracing/intel_th/msu.c b/drivers/hwtracing/intel_th/msu.c
+index fc9f15f36ad4..2e7a04f566d4 100644
+--- a/drivers/hwtracing/intel_th/msu.c
++++ b/drivers/hwtracing/intel_th/msu.c
+@@ -1849,8 +1849,10 @@ mode_store(struct device *dev, struct device_attribute *attr, const char *buf,
  
- 	pd = rdma_zalloc_drv_obj(ibdev, ib_pd);
--	if (!pd)
-+	if (!pd) {
-+		ret = -ENOMEM;
- 		goto alloc_mem_failed;
+ 	mode = kstrndup(buf, len, GFP_KERNEL);
+ 	i = match_string(msc_mode, ARRAY_SIZE(msc_mode), mode);
+-	if (i >= 0)
++	if (i >= 0) {
++		kfree(mode);
+ 		goto found;
 +	}
  
- 	pd->device  = ibdev;
- 	ret = hns_roce_alloc_pd(pd, NULL);
+ 	/* Buffer sinks only work with a usable IRQ */
+ 	if (!msc->do_irq) {
 
 
 

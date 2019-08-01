@@ -2,93 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EB377D9BA
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 12:57:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E7017D9E3
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 13:02:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731258AbfHAK5I (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Aug 2019 06:57:08 -0400
-Received: from 7.mo2.mail-out.ovh.net ([188.165.48.182]:39611 "EHLO
-        7.mo2.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726783AbfHAK5I (ORCPT
+        id S1731397AbfHALB5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Aug 2019 07:01:57 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:44077 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731362AbfHALBt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Aug 2019 06:57:08 -0400
-X-Greylist: delayed 3599 seconds by postgrey-1.27 at vger.kernel.org; Thu, 01 Aug 2019 06:57:06 EDT
-Received: from player778.ha.ovh.net (unknown [10.108.54.172])
-        by mo2.mail-out.ovh.net (Postfix) with ESMTP id 05E141A85B4
-        for <kernel-janitors@vger.kernel.org>; Thu,  1 Aug 2019 11:41:43 +0200 (CEST)
-Received: from kaod.org (lns-bzn-46-82-253-208-248.adsl.proxad.net [82.253.208.248])
-        (Authenticated sender: groug@kaod.org)
-        by player778.ha.ovh.net (Postfix) with ESMTPSA id 5D8AE873BBDD;
-        Thu,  1 Aug 2019 09:41:33 +0000 (UTC)
-Date:   Thu, 1 Aug 2019 11:41:32 +0200
-From:   Greg Kurz <groug@kaod.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
-        allison@lohutok.net, tglx@linutronix.de, clg@kaod.org,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 2/2] powerpc/xive: Add a check for memory allocation
- failure
-Message-ID: <20190801114132.4c1db5be@bahia.lan>
-In-Reply-To: <cc53462734dfeaf15b6bad0e626b483de18656b4.1564647619.git.christophe.jaillet@wanadoo.fr>
-References: <cover.1564647619.git.christophe.jaillet@wanadoo.fr>
-        <cc53462734dfeaf15b6bad0e626b483de18656b4.1564647619.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+        Thu, 1 Aug 2019 07:01:49 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ht8q9-0006Mm-Fl; Thu, 01 Aug 2019 11:01:45 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, Le Ma <le.ma@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][drm-next] drm/amdgpu: fix unsigned variable instance compared to less than zero
+Date:   Thu,  1 Aug 2019 12:01:45 +0100
+Message-Id: <20190801110145.10803-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Ovh-Tracer-Id: 12958826454390118683
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrleejgdduiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu,  1 Aug 2019 10:32:42 +0200
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> The result of this kzalloc is not checked. Add a check and corresponding
-> error handling code.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
+Currenly the error check on variable instance is always false because
+it is a uint32_t type and this is never less than zero. Fix this by
+making it an int type.
 
-Reviewed-by: Greg Kurz <groug@kaod.org>
+Addresses-Coverity: ("Unsigned compared against 0")
+Fixes: 7d0e6329dfdc ("drm/amdgpu: update more sdma instances irq support")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> Note that 'xive_irq_bitmap_add()' failures are not handled in
-> 'xive_spapr_init()'
-> I guess that it is not really an issue. This function is _init, so if a
-> memory allocation occures here, it is likely that the system will
-> already be in bad shape.
-
-Hmm not sure... The allocation could also fail if the "ibm,xive-lisn-ranges"
-property contains an insanely big range, eg. count == 1 << 31. The system isn't
-necessarily in bad shape in this case, but XIVE is definitely unusable and
-we should let a chance to the kernel to switch to XICS in this case.
-
-I guess it is worth adding proper error handling in xive_spapr_init() as well.
-
-> Anyway, the check added here would at least keep the data linked in
-> 'xive_irq_bitmaps' usable.
-> ---
->  arch/powerpc/sysdev/xive/spapr.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
-> index b4f5eb9e0f82..52198131c75e 100644
-> --- a/arch/powerpc/sysdev/xive/spapr.c
-> +++ b/arch/powerpc/sysdev/xive/spapr.c
-> @@ -53,6 +53,10 @@ static int xive_irq_bitmap_add(int base, int count)
->  	xibm->base = base;
->  	xibm->count = count;
->  	xibm->bitmap = kzalloc(xibm->count, GFP_KERNEL);
-> +	if (!xibm->bitmap) {
-> +		kfree(xibm);
-> +		return -ENOMEM;
-> +	}
->  	list_add(&xibm->list, &xive_irq_bitmaps);
->  
->  	pr_info("Using IRQ range [%x-%x]", xibm->base,
+diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
+index a33bd867287e..92257f2bf171 100644
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
+@@ -1962,7 +1962,8 @@ static int sdma_v4_0_process_trap_irq(struct amdgpu_device *adev,
+ static int sdma_v4_0_process_ras_data_cb(struct amdgpu_device *adev,
+ 		struct amdgpu_iv_entry *entry)
+ {
+-	uint32_t instance, err_source;
++	uint32_t err_source;
++	int instance;
+ 
+ 	instance = sdma_v4_0_irq_id_to_seq(entry->client_id);
+ 	if (instance < 0)
+-- 
+2.20.1
 

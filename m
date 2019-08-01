@@ -2,101 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 257487E0AE
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 19:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 284847E2B1
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 20:54:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732267AbfHARAu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Aug 2019 13:00:50 -0400
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:45886 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731376AbfHARAu (ORCPT
+        id S2387603AbfHASxm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Aug 2019 14:53:42 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:33634 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731721AbfHASxl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Aug 2019 13:00:50 -0400
-Received: by mail-pf1-f194.google.com with SMTP id r1so34407518pfq.12;
-        Thu, 01 Aug 2019 10:00:50 -0700 (PDT)
+        Thu, 1 Aug 2019 14:53:41 -0400
+Received: by mail-wm1-f66.google.com with SMTP id h19so4300452wme.0;
+        Thu, 01 Aug 2019 11:53:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=WGPyF/jz2yKuYFU7gzQ1L/LMsgV9YTZ2vw6QCV6Vnss=;
-        b=sGWP0fErmKQgCjE58NXoxmrj6L7FQzRJa9+jCi2n/GxkHB/xpz3L93gva3RvfziNta
-         BPAXRRhRYolWQODuGp6caxy9kqfFS2cRDZlBzVt0w66rKNTU88AUyNASwK103/FeLuGy
-         IvyXPKwbB1SG2ZNkOfIbWBX7EP7B3DOeOZM4NxF6fnJXYBG1ccKIi+YlF86t18TJ3qrG
-         h6huSgunJmOEpK32CV3ruEsJxK+WC9+l9d0HO6Skl5UtdhTHXTya9OWN3RNsJ4yWZK34
-         rP+oWK9LVjAGws1nttGsu+bBMdkccSBGABlbwzpOZaEfTMXQw52/eKVtWfbnz72QJMhv
-         JS7g==
+         :cc;
+        bh=hpA12FK0W1igWSv43IQyfHUTzmV9ZaN2qt5GlMGeIqQ=;
+        b=gtMEStmAFd31BMXpGF4zhD+ld7F8xGcjaP+pHwnSRp0BTfpM66hPkcTHcfrGK5+ilb
+         guxlrrTS/h9fM0PEzKclnfMfzVmMap7CnI1/2O748Q8+IdZXgg4gEvow2mv6KSb7CGUz
+         amwlkNos23xZzdmDGZ320LBlAdq3tKHIQJYxQIc7AWd4/E7Dgl4ZUzfICe6mznxsULma
+         64bFDnyvhmwbgTs+OXW6540nPzO+AS12dyAtFDvZYsJbONlUlttwzucH96ZjQ82pftbp
+         qV7vaKOKnCWX8Tb0wYv6m8g4pDYbfHYMtlci02cuTU/u1iF1eRvLgiPZWGxwhuQp35pZ
+         h00Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=WGPyF/jz2yKuYFU7gzQ1L/LMsgV9YTZ2vw6QCV6Vnss=;
-        b=Mh5o1Lemtw501Ia22oCL2zN/olVuCVbOLHmRE65HOKrdwVaHKZ2Jn8OcecoOIihV2F
-         AD7ASHToKKI8uuNQ74KzP+Xg8u0XHLx+HJ8HYt52pNEnFYnDD5kkKZT1F9aS1cmjEnGa
-         o1RgL/ukX29fz2+PyNNpez3+KCjMe9pzygXMRK3ahEtblDutewFV3df5EiyOaHfq8jCN
-         xd4EzD0n2t3ZfB4QC6AjCqlc0av+jYgvzZOLrHUoaJzEf8qKMqpfaGtml5DaCxxX3LQx
-         KZI32Ya2B2Z4I1N0ul9GdpHLYm5SaJem+tM4VQM4oBdb5eC0uRMlwKWH2w1svfJ/lxwJ
-         HxVw==
-X-Gm-Message-State: APjAAAXPYmHVlztksE8jzFYsbOOyFBqGLB3GIjDp+Y1ScODZfTRRPy0k
-        lQ4n1xMWpJ4Fjo0x/6LlGNd2G63VAB0lR+f6qx4=
-X-Google-Smtp-Source: APXvYqxlnoZ7H66e1GLk8MqU9jRtl8FsWM4cquNdSP23TFAWWxy+fPwsayD6YLTVS7VXcsI01KJ2dq1MjFDDLk6SktI=
-X-Received: by 2002:a17:90a:360c:: with SMTP id s12mr9971211pjb.30.1564678849452;
- Thu, 01 Aug 2019 10:00:49 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=hpA12FK0W1igWSv43IQyfHUTzmV9ZaN2qt5GlMGeIqQ=;
+        b=dQ1BNrQjdnKD0bVELqf5cPXDKQNUZm6qIT4ROADYBam9Y1x7SUsIg4JzFoupKF/lRP
+         1dCTsaghZGOxNwgZoOs24eYxVIPT6l8Jpd17cL2mE2cMLSQmOnWBSy0p3x/GfrJN3kTj
+         BR636ArZvNhsixAsdq4bPp8hVUjUrB/XcWA9qxlZ+2C9N81hAHOaCbaIAdj4X2lF3wFM
+         P0Yd+h15DbWu5iCfZhKTVkgd8WkE1Z9cT+PBs0x8LIJscZClsPQRZDU/FFOdQI9r6A/W
+         utY09gjg8pRCl33/MtCdDhxZDDrd/AaRmIiKI6K5XwMfPBT7cwaJBtBOPw4IHNcck8Xo
+         bYKA==
+X-Gm-Message-State: APjAAAUmHqX+96dw+gyHil4Lme8jdKzo+DFt6VLGH8d6mIq1dUW9NqfT
+        YfmM4tGTtD+Z07h15GH0yMEKqRYkkDsTqE72lQI=
+X-Google-Smtp-Source: APXvYqwxMAW3EGWSfiHH8NVLzKrNiRVg+4h4WutnKjYpl4NniuItwAt2RcjlWjdKHCF+eI1la04rb0LeZj2R+mji6pA=
+X-Received: by 2002:a1c:a1c5:: with SMTP id k188mr168497wme.102.1564685619961;
+ Thu, 01 Aug 2019 11:53:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190731090526.27245-1-colin.king@canonical.com>
- <87r266seg4.fsf@suse.com> <20190731122841.GA1974@kadam> <87lfwerze8.fsf@suse.com>
- <2f562159-8118-f4a5-9e00-c82cf0841fd5@canonical.com>
-In-Reply-To: <2f562159-8118-f4a5-9e00-c82cf0841fd5@canonical.com>
-From:   Steve French <smfrench@gmail.com>
-Date:   Thu, 1 Aug 2019 12:00:37 -0500
-Message-ID: <CAH2r5msukKuhEcbpBfXOrwFEA=fyXQKSL+hDwdOFYX7DNLe8TQ@mail.gmail.com>
-Subject: Re: [PATCH] cifs: remove redundant assignment to variable rc
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     =?UTF-8?Q?Aur=C3=A9lien_Aptel?= <aaptel@suse.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        samba-technical <samba-technical@lists.samba.org>,
-        Steve French <sfrench@samba.org>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>,
-        CIFS <linux-cifs@vger.kernel.org>,
+References: <20190801111541.13627-1-colin.king@canonical.com>
+In-Reply-To: <20190801111541.13627-1-colin.king@canonical.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Thu, 1 Aug 2019 14:53:28 -0400
+Message-ID: <CADnq5_OqLtvBWXJhT9c=kxK3HeXSEDdfYS1N7Dh68kbiiLk5+w@mail.gmail.com>
+Subject: Re: [PATCH][drm-next] drm/amd/powerplay: fix off-by-one upper bounds
+ limit checks
+To:     Colin King <colin.king@canonical.com>
+Cc:     Kevin Wang <kevin1.wang@amd.com>, Rex Zhu <rex.zhu@amd.com>,
+        Evan Quan <evan.quan@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-merged into cifs-2.6.git for-next
+On Thu, Aug 1, 2019 at 7:15 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There are two occurrances of off-by-one upper bound checking of indexes
+> causing potential out-of-bounds array reads. Fix these.
+>
+> Addresses-Coverity: ("Out-of-bounds read")
+> Fixes: cb33363d0e85 ("drm/amd/powerplay: add smu feature name support")
+> Fixes: 6b294793e384 ("drm/amd/powerplay: add smu message name support")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-On Wed, Jul 31, 2019 at 10:54 AM Colin Ian King
-<colin.king@canonical.com> wrote:
->
-> On 31/07/2019 16:34, Aur=C3=A9lien Aptel wrote:
-> > "Dan Carpenter" <dan.carpenter@oracle.com> writes:
-> >> You're just turning off GCC's static analysis (and introducing false
-> >> positives) when you do that.  We have seen bugs caused by this and nev=
-er
-> >> seen any bugs prevented by this style.
-> >
-> > You've never seen bugs prevented by initializing uninitialized
-> > variables? Code can change overtime and I don't think coverity is
-> > checked as often as it could be, meaning the var could end up being use=
-d
-> > while uninitialized in the future.
->
-> gcc/clang should pick up uninitialized vars at compile time. also I run
-> coverity daily on linux-next.
->
-> Colin
->
-> >
-> > Anyway I won't die on this hill, merge this if you prefer.
-> >
-> > Cheers,
-> >
->
+Applied.  thanks!
 
+Alex
 
---=20
-Thanks,
-
-Steve
+> ---
+>  drivers/gpu/drm/amd/powerplay/amdgpu_smu.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c b/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
+> index d029a99e600e..b64113740eb5 100644
+> --- a/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
+> +++ b/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
+> @@ -38,7 +38,7 @@ static const char* __smu_message_names[] = {
+>
+>  const char *smu_get_message_name(struct smu_context *smu, enum smu_message_type type)
+>  {
+> -       if (type < 0 || type > SMU_MSG_MAX_COUNT)
+> +       if (type < 0 || type >= SMU_MSG_MAX_COUNT)
+>                 return "unknown smu message";
+>         return __smu_message_names[type];
+>  }
+> @@ -51,7 +51,7 @@ static const char* __smu_feature_names[] = {
+>
+>  const char *smu_get_feature_name(struct smu_context *smu, enum smu_feature_mask feature)
+>  {
+> -       if (feature < 0 || feature > SMU_FEATURE_COUNT)
+> +       if (feature < 0 || feature >= SMU_FEATURE_COUNT)
+>                 return "unknown smu feature";
+>         return __smu_feature_names[feature];
+>  }
+> --
+> 2.20.1
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

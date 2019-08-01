@@ -2,107 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B80B17E322
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 21:12:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3113A7E333
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 21:16:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388231AbfHATMa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Aug 2019 15:12:30 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:44602 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727899AbfHATMa (ORCPT
+        id S2388565AbfHATQa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Aug 2019 15:16:30 -0400
+Received: from smtprelay0097.hostedemail.com ([216.40.44.97]:55866 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726118AbfHATQa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Aug 2019 15:12:30 -0400
-Received: by mail-wr1-f68.google.com with SMTP id p17so74713026wrf.11;
-        Thu, 01 Aug 2019 12:12:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=29eX/7Ti8XYPdnzI29FfnnfKBQG8Yx8Y8+IXP8UDyjQ=;
-        b=IyYiP0D64J6DV1eYBS943TYBTz8YgAE88T9bDGFQVgMS2JdnLsmgSB3nY/zz4tLmCV
-         bISNAx/148/e0txOpysXy3hWzALkLZ8Gk70I2YfSlIwMW8YQVDTfHNyhDa2FjuvRRBCp
-         0M+XN9hlp8rlRFUiyGrXK/llF6njsT0mqv83BLKi1RfWXq0GyOe8p3oQwonFahspM698
-         E+TM5d8NI+M5voTh5UeWCNnsOS7KFbgvur8iqB8O5E0SiLAwJm/gtzPZ3hauk81Ffl05
-         CdB3fVDmwon7Tu5WkEEXcBWWPhp9zKXiWvQKFjQN709TI8/U/6k7honECL8ZUxsqlcmJ
-         aUHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=29eX/7Ti8XYPdnzI29FfnnfKBQG8Yx8Y8+IXP8UDyjQ=;
-        b=ILpgOEA6G+UsC9Ve47iECvPPx5UBGWR9XlniW2p2nCz8+MriIIOn4hMHHrQNM18sTT
-         RSELcDcoez0vtWbjA4nNrG2oND/8v5fIPtcHgFl28rNiwY7YmquLbdrOPRwOBvUXwVzf
-         5ZsaBW0QPXwXrmLPPS4/2r7CoQ4d+SMdPyhCAM2bKSKznQ1+UKaIUu9wB6r5X0IHEmf8
-         AVrKdMy7akxMkb2V2TsGHoWeXLiYJG+RQQ5ENmn8MUxyiG5xLUBKT3I39sv+CCaqCl8H
-         bvZknvhIfKBSgCLwnKwlUwshVRjg6RSTzgo9ydlcgZ9jSVlcZv1r0bCiyMMAwdIPUaWN
-         E6OA==
-X-Gm-Message-State: APjAAAWO+59NtngUA6GnETc29rol3Pw1ASxLGeWtbjP1ZUD+NSCAJmsm
-        zWNOgENyJl7doyMR4fo0HFW/QcxP7Kw+mTp6Js4=
-X-Google-Smtp-Source: APXvYqz1dtgJsKtH3HyoA320M+YjnfJkgSzjwkowOb7aXNJJczt8kJkwziW03I18NJKTuyBaxgF+2VNOywn1TUuBUTQ=
-X-Received: by 2002:adf:a299:: with SMTP id s25mr134496190wra.74.1564686748120;
- Thu, 01 Aug 2019 12:12:28 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190801110145.10803-1-colin.king@canonical.com>
-In-Reply-To: <20190801110145.10803-1-colin.king@canonical.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Thu, 1 Aug 2019 15:12:16 -0400
-Message-ID: <CADnq5_Oo8AthzgGsRCRaiNqn7skzGCGMZGdMcNo8Et+5Zt12Og@mail.gmail.com>
-Subject: Re: [PATCH][drm-next] drm/amdgpu: fix unsigned variable instance
- compared to less than zero
-To:     Colin King <colin.king@canonical.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        Thu, 1 Aug 2019 15:16:30 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay05.hostedemail.com (Postfix) with ESMTP id C848318029123;
+        Thu,  1 Aug 2019 19:16:28 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::::::::,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1500:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2553:2559:2562:2828:3138:3139:3140:3141:3142:3353:3622:3865:3867:3868:3871:3872:3874:4321:4605:5007:6742:7576:9040:10004:10400:10848:11026:11232:11473:11657:11658:11914:12043:12296:12297:12438:12740:12760:12895:13069:13095:13311:13357:13439:14181:14659:14721:21080:21433:21451:21611:21627:30029:30054:30090:30091,0,RBL:23.242.196.136:@perches.com:.lbl8.mailshell.net-62.8.0.180 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:24,LUA_SUMMARY:none
+X-HE-Tag: ring06_8f6c4551ca725
+X-Filterd-Recvd-Size: 3026
+Received: from XPS-9350.home (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
+        (Authenticated sender: joe@perches.com)
+        by omf11.hostedemail.com (Postfix) with ESMTPA;
+        Thu,  1 Aug 2019 19:16:24 +0000 (UTC)
+Message-ID: <ce8c8a7342282467c3b681fd1b0874817250c16e.camel@perches.com>
+Subject: Re: [PATCH][drm-next] drm/amd/powerplay: fix a few spelling mistakes
+From:   Joe Perches <joe@perches.com>
+To:     Alex Deucher <alexdeucher@gmail.com>,
+        Colin King <colin.king@canonical.com>
+Cc:     Rex Zhu <rex.zhu@amd.com>, Evan Quan <evan.quan@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
         David Zhou <David1.Zhou@amd.com>,
         David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Le Ma <le.ma@amd.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
         amd-gfx list <amd-gfx@lists.freedesktop.org>,
         Maling list - DRI developers 
         <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Date:   Thu, 01 Aug 2019 12:16:23 -0700
+In-Reply-To: <CADnq5_OdBM83zkkgtjwzQ0jqsiDP5wZoMXioGcq4mycX2=Tavw@mail.gmail.com>
+References: <20190801083941.4230-1-colin.king@canonical.com>
+         <CADnq5_OdBM83zkkgtjwzQ0jqsiDP5wZoMXioGcq4mycX2=Tavw@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.30.5-0ubuntu0.18.10.1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Aug 1, 2019 at 7:01 AM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Currenly the error check on variable instance is always false because
-> it is a uint32_t type and this is never less than zero. Fix this by
-> making it an int type.
->
-> Addresses-Coverity: ("Unsigned compared against 0")
-> Fixes: 7d0e6329dfdc ("drm/amdgpu: update more sdma instances irq support")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On Thu, 2019-08-01 at 15:02 -0400, Alex Deucher wrote:
+> Applied.  thanks!
+> 
+> Alex
+> 
+> On Thu, Aug 1, 2019 at 4:39 AM Colin King <colin.king@canonical.com> wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > There are a few spelling mistakes "unknow" -> "unknown" and
+> > "enabeld" -> "enabled". Fix these.
+[]
+> > diff --git a/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c b/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
+[]
+> > @@ -39,7 +39,7 @@ static const char* __smu_message_names[] = {
+> >  const char *smu_get_message_name(struct smu_context *smu, enum smu_message_type type)
+> >  {
+> >         if (type < 0 || type > SMU_MSG_MAX_COUNT)
 
-Applied.  thanks!
+This looks like an off-by-one test against
+SMU_MSG_MAX_COUNT where type
+should be >=
 
-Alex
+> > -               return "unknow smu message";
+> > +               return "unknown smu message";
+> >         return __smu_message_names[type];
+[]
+> > @@ -52,7 +52,7 @@ static const char* __smu_feature_names[] = {
+> >  const char *smu_get_feature_name(struct smu_context *smu, enum smu_feature_mask feature)
+> >  {
+> >         if (feature < 0 || feature > SMU_FEATURE_COUNT)
 
-> ---
->  drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-> index a33bd867287e..92257f2bf171 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
-> @@ -1962,7 +1962,8 @@ static int sdma_v4_0_process_trap_irq(struct amdgpu_device *adev,
->  static int sdma_v4_0_process_ras_data_cb(struct amdgpu_device *adev,
->                 struct amdgpu_iv_entry *entry)
->  {
-> -       uint32_t instance, err_source;
-> +       uint32_t err_source;
-> +       int instance;
->
->         instance = sdma_v4_0_irq_id_to_seq(entry->client_id);
->         if (instance < 0)
-> --
-> 2.20.1
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+here too
+
+> > -               return "unknow smu feature";
+> > +               return "unknown smu feature";
+> >         return __smu_feature_names[feature];
+
+Perhaps instead it should be against ARRAY_SIZE(__smu_<foo>)
+
+Also, the  __SMU_DUMMY_MAP macro is unnecessarily complex.
+
+It might be better to have some direct
+index and name struct like
+
+struct enum_name {
+	int val;
+	const char *name;
+};
+
+And walk that.
+
+Perhaps add a macro like
+
+#define enum_map(e)
+	{.val = e, .name = #e}
+
+

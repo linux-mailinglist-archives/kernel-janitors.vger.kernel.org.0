@@ -2,82 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6C7A7D6A2
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 09:48:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CFFB7D6B3
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 09:55:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731024AbfHAHr7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Aug 2019 03:47:59 -0400
-Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:36463 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727088AbfHAHr7 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Aug 2019 03:47:59 -0400
-Received: from localhost.localdomain ([176.167.121.156])
-        by mwinf5d80 with ME
-        id jjnu200053NZnML03jnu6s; Thu, 01 Aug 2019 09:47:55 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 01 Aug 2019 09:47:55 +0200
-X-ME-IP: 176.167.121.156
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     jikos@kernel.org, benjamin.tissoires@redhat.com
-Cc:     linux-usb@vger.kernel.org, linux-input@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] HID: usbhid: Use GFP_KERNEL instead of GFP_ATOMIC when applicable
-Date:   Thu,  1 Aug 2019 09:47:59 +0200
-Message-Id: <20190801074759.32738-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        id S1730613AbfHAHzF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Aug 2019 03:55:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54334 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730560AbfHAHzE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 1 Aug 2019 03:55:04 -0400
+Received: from localhost (unknown [193.47.165.251])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id DE28C206A2;
+        Thu,  1 Aug 2019 07:55:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1564646103;
+        bh=KChASIecDhD+PbyVwhVkSDnkhE/5LlGZ9yCZy14L2Jk=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=WnFiRJ0C2VWqoCdh3Avr9Kay5ug2tZ9VsgoifMy2FNhaBe4wytEHG1jjtS9h8Nkn9
+         +5fvEFSr9H77vOxS/H+ghYskw7NCPeACkfYGTqD/w93GgI6iLnD4KODupKW7nBHI/s
+         EOKfPkoojY3uVWgrKERFbcrG0AxUB1dZWUC9ZfnA=
+Date:   Thu, 1 Aug 2019 10:54:58 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Lijun Ou <oulijun@huawei.com>,
+        "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Colin Ian King <colin.king@canonical.com>,
+        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] RDMA/hns: Fix error return code in
+ hns_roce_v1_rsv_lp_qp()
+Message-ID: <20190801075458.GF4832@mtr-leonro.mtl.com>
+References: <20190801012725.150493-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190801012725.150493-1-weiyongjun1@huawei.com>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is no need to use GFP_ATOMIC when calling 'usb_alloc_coherent()'
-here. These calls are done from probe functions and using GFP_KERNEL should
-be safe.
-The memory itself is used within some interrupts, but it is not a
-problem, once it has been allocated.
+On Thu, Aug 01, 2019 at 01:27:25AM +0000, Wei Yongjun wrote:
+> Fix to return error code -ENOMEM from the rdma_zalloc_drv_obj() error
+> handling case instead of 0, as done elsewhere in this function.
+>
+> Fixes: e8ac9389f0d7 ("RDMA: Fix allocation failure on pointer pd")
+> Fixes: 21a428a019c9 ("RDMA: Handle PD allocations by IB/core")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  drivers/infiniband/hw/hns/hns_roce_hw_v1.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/hid/usbhid/usbkbd.c   | 4 ++--
- drivers/hid/usbhid/usbmouse.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/hid/usbhid/usbkbd.c b/drivers/hid/usbhid/usbkbd.c
-index d5b7a696a68c..63e8ef8beb45 100644
---- a/drivers/hid/usbhid/usbkbd.c
-+++ b/drivers/hid/usbhid/usbkbd.c
-@@ -239,11 +239,11 @@ static int usb_kbd_alloc_mem(struct usb_device *dev, struct usb_kbd *kbd)
- 		return -1;
- 	if (!(kbd->led = usb_alloc_urb(0, GFP_KERNEL)))
- 		return -1;
--	if (!(kbd->new = usb_alloc_coherent(dev, 8, GFP_ATOMIC, &kbd->new_dma)))
-+	if (!(kbd->new = usb_alloc_coherent(dev, 8, GFP_KERNEL, &kbd->new_dma)))
- 		return -1;
- 	if (!(kbd->cr = kmalloc(sizeof(struct usb_ctrlrequest), GFP_KERNEL)))
- 		return -1;
--	if (!(kbd->leds = usb_alloc_coherent(dev, 1, GFP_ATOMIC, &kbd->leds_dma)))
-+	if (!(kbd->leds = usb_alloc_coherent(dev, 1, GFP_KERNEL, &kbd->leds_dma)))
- 		return -1;
- 
- 	return 0;
-diff --git a/drivers/hid/usbhid/usbmouse.c b/drivers/hid/usbhid/usbmouse.c
-index 073127e65ac1..c89332017d5d 100644
---- a/drivers/hid/usbhid/usbmouse.c
-+++ b/drivers/hid/usbhid/usbmouse.c
-@@ -130,7 +130,7 @@ static int usb_mouse_probe(struct usb_interface *intf, const struct usb_device_i
- 	if (!mouse || !input_dev)
- 		goto fail1;
- 
--	mouse->data = usb_alloc_coherent(dev, 8, GFP_ATOMIC, &mouse->data_dma);
-+	mouse->data = usb_alloc_coherent(dev, 8, GFP_KERNEL, &mouse->data_dma);
- 	if (!mouse->data)
- 		goto fail1;
- 
--- 
-2.20.1
-
+Thanks,
+Reviewed-by: Leon Romanovsky <leonro@mellanox.com>

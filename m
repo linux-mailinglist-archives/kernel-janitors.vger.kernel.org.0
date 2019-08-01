@@ -2,116 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E00C7DCB1
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 15:42:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EF677DCC8
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 15:47:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727656AbfHANmA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Aug 2019 09:42:00 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:35064 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727299AbfHANmA (ORCPT
+        id S1728701AbfHANro (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Aug 2019 09:47:44 -0400
+Received: from wout2-smtp.messagingengine.com ([64.147.123.25]:40981 "EHLO
+        wout2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725930AbfHANrn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Aug 2019 09:42:00 -0400
-Received: by mail-pf1-f196.google.com with SMTP id u14so34123742pfn.2;
-        Thu, 01 Aug 2019 06:41:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=e6SUu+1rvN5NRaEyrhAZRkSrDdvDH6KraBIZ1o6M+y4=;
-        b=mAsxTZhtB+USQ2Ez9xEc3x9IB+7NKzCQ0wmUfrBoEVJAW7BDjWvqRdpEs1cumaIi79
-         /oa5PVMlYxeA1xzg+ZLMTkckyChE+hoCFWpibwHS4UiKMaK2serQLY+jQt/XNFF7FnCe
-         g8TAXHr1k4TGv7Dx32ZFJbA+gzrnQK06gwV4hmMG4bOS3km0JZmUxd/QWEZr/3ZZuBon
-         oAw1t/rNPrf6xyQ/XruTB1PrMg21C8s4LOGp91XDYOW3gvPPCJnXqZCwyZTUz3uV6wOd
-         5mkEL+r6C20JAay2Kw5hlkLcFvO51KptZ9WyYnT7jTcfZf3SVzjax7VxW2VMMj/E6KAu
-         UXlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=e6SUu+1rvN5NRaEyrhAZRkSrDdvDH6KraBIZ1o6M+y4=;
-        b=YImO4wsn72KSTYI9yIA/5L+KiVbJa0+achXga/70YaPPg2UaSDartzXNfu8cUA9PqE
-         LVh5UG8H+KBAKEDLO6et2aLu7WJtrEKgUGmnc1JJVtQ8Yp2uGXqP4KZJ8/WrVOYNpmNO
-         y+tGHUpfqO4w/WNeXy/NwViEaASSUN7oZsAsZbanQbprWA2OmN/0jltilWWLPdmamrYa
-         JLGmfbfhPhrOosXo/eg1JG2CButSBmpCS8EI14yzTcyBQOAzbtd+lIJlj9UjrsFf3+gn
-         q5Pj3EqqjGQmgp2GVBhm6S53KcPH3eJwMnkgCbZVmn6yc8tf/WNq8Y1O9CfIJQ0YM7yD
-         871g==
-X-Gm-Message-State: APjAAAVhB0a0coUyVrixhsGmTIkkJWaDFLWwQz5XApFHpooLtI39688x
-        DkxcNiJl48tQCw1inFyHS5o=
-X-Google-Smtp-Source: APXvYqwhPXJVg7ocTv8yFgwqNJVM+vY3pMPSSH6aXTdj0mq5HeKL7QVEMLAYnB/n2hYraWbdUdn2Vg==
-X-Received: by 2002:a63:7205:: with SMTP id n5mr64492235pgc.443.1564666919432;
-        Thu, 01 Aug 2019 06:41:59 -0700 (PDT)
-Received: from host ([183.101.165.200])
-        by smtp.gmail.com with ESMTPSA id m13sm12112869pgn.57.2019.08.01.06.41.56
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 01 Aug 2019 06:41:58 -0700 (PDT)
-Date:   Thu, 1 Aug 2019 22:41:49 +0900
-From:   Joonwon Kang <kjw1627@gmail.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     re.emese@gmail.com, kernel-hardening@lists.openwall.com,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        jinb.park7@gmail.com
-Subject: Re: [PATCH 2/2] randstruct: remove dead code in is_pure_ops_struct()
-Message-ID: <20190801134149.GA2149@host>
-References: <cover.1564595346.git.kjw1627@gmail.com>
- <281a65cc361512e3dc6c5deffa324f800eb907be.1564595346.git.kjw1627@gmail.com>
- <201907311259.D485EED2B7@keescook>
+        Thu, 1 Aug 2019 09:47:43 -0400
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
+        by mailout.west.internal (Postfix) with ESMTP id 95FA3405;
+        Thu,  1 Aug 2019 09:47:39 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Thu, 01 Aug 2019 09:47:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
+        date:from:to:cc:subject:message-id:references:mime-version
+        :content-type:in-reply-to; s=fm1; bh=HxNgJJg2nhiPwmgNt7+DyzeN6pL
+        3GbnAaqp3b9wUFk4=; b=AAy+jPnO/oVUFq4jUmE3x97NZJYdTPaqtNJUf7nwz4N
+        9AdlhiaxrugfOl9/aL2MZs7a5ojdwqNJBpQH0b0pODxu8assB4upmc3K/8Uaw/7a
+        EDWxkklm5A1xiZPR5HyyMFS6PRSDewL7cuYQk5IQTTKH6XQQJlKoW8uwT/Dm0wkK
+        EQ5Gv3GqAC+FEP+DsPTI/HLHEDcR1yUggE6N/8h2cqoX13iis1jumIbzsuwyVJPC
+        VLXLvL/H8KhCzg+LMPdFoj+QauZKEIoS+sUE5lPmMAkVS9iTgXBsZz7sXnUfSvpb
+        28kUzRNUZ9nYc0sSiLK1x2bugmb3PhtsfbAcZjywTEQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=HxNgJJ
+        g2nhiPwmgNt7+DyzeN6pL3GbnAaqp3b9wUFk4=; b=y/Aa/Y+NgfYU+fo/Tzn4oY
+        /wi9dVZE9Kq3W/nJ+pqxkJu5IfqS4B+Ss6bCd2P6n1rO68+3BU4ECB1Y1mOxeBGv
+        G1pgAwbDcWd3P//lrm+WoCFwdup3S0Olh4DlsR7+AAJkW7NceSFjgmNANP8B1KaM
+        3yigh/KDCmim0/8IrRDrz02gG2T2WOJiiIw3+mqu5VbFVsKeQ63SUY4sc3MPNScK
+        +X66uvIzYK8bMFLgwae6xxq+3hnkX/9uIh5MQJD5xgsmMpviTZsTn8yTwEqAoYLm
+        wa2yo2tdK0/hNU0yhDe+vT6qAZo9t6NA3C50vzohep3sRMjxu9pvFHCnJnxk+CEg
+        ==
+X-ME-Sender: <xms:eu1CXTJ3D6noxacELy3qEukfzFIgpgQrciOUfXwoezAVSAHRNp9I3w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrleejgdeijecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvuffkfhggtggujggfsehttdertddtredvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucfkphepkeefrdekiedrkeelrddutd
+    ejnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhenucev
+    lhhushhtvghrufhiiigvpedt
+X-ME-Proxy: <xmx:eu1CXWtDbL5upCIHa0CnQAqT6PjLHVEBLWCwg2-B7xze5oT-yiVWvA>
+    <xmx:eu1CXSInz_iX1dsHVJz1vpEOr5jvLBIi1WVFzouU_xPVMxqfzrRuhA>
+    <xmx:eu1CXb8DgB6HtttgXY1UTrLzVoyZPCts3AnGf_oV2CBqBtUQco9edg>
+    <xmx:e-1CXfgEu_lo7EqH29CmOZdrWg_bpyYNjEOZrLF1dNJDHiZmpNhlyw>
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        by mail.messagingengine.com (Postfix) with ESMTPA id B456A380079;
+        Thu,  1 Aug 2019 09:47:37 -0400 (EDT)
+Date:   Thu, 1 Aug 2019 15:47:33 +0200
+From:   Greg KH <greg@kroah.com>
+To:     walter harms <wharms@bfs.de>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        jikos@kernel.org, benjamin.tissoires@redhat.com,
+        linux-usb@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] HID: usbhid: Use GFP_KERNEL instead of GFP_ATOMIC when
+ applicable
+Message-ID: <20190801134733.GA24791@kroah.com>
+References: <20190801074759.32738-1-christophe.jaillet@wanadoo.fr>
+ <5D42B98B.40900@bfs.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <201907311259.D485EED2B7@keescook>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <5D42B98B.40900@bfs.de>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jul 31, 2019 at 12:59:30PM -0700, Kees Cook wrote:
-> On Thu, Aug 01, 2019 at 03:01:49AM +0900, Joonwon Kang wrote:
-> > Recursive declaration for struct which has member of the same struct
-> > type, for example,
-> > 
-> > struct foo {
-> >     struct foo f;
-> >     ...
-> > };
-> > 
-> > is not allowed. So, it is unnecessary to check if a struct has this
-> > kind of member.
+On Thu, Aug 01, 2019 at 12:06:03PM +0200, walter harms wrote:
 > 
-> Is that the only case where this loop could happen? Seems also safe to
-> just leave it as-is...
 > 
-> -Kees
-
-I think it is pretty obvious that it is the only case. I compiled kernel
-with allyesconfig and the condition never hit even once. However, it will
-also be no problem to just leave it as-is as you mentioned.
-
-> 
+> Am 01.08.2019 09:47, schrieb Christophe JAILLET:
+> > There is no need to use GFP_ATOMIC when calling 'usb_alloc_coherent()'
+> > here. These calls are done from probe functions and using GFP_KERNEL should
+> > be safe.
+> > The memory itself is used within some interrupts, but it is not a
+> > problem, once it has been allocated.
 > > 
-> > Signed-off-by: Joonwon Kang <kjw1627@gmail.com>
+> > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > > ---
-> >  scripts/gcc-plugins/randomize_layout_plugin.c | 3 ---
-> >  1 file changed, 3 deletions(-)
+> >  drivers/hid/usbhid/usbkbd.c   | 4 ++--
+> >  drivers/hid/usbhid/usbmouse.c | 2 +-
+> >  2 files changed, 3 insertions(+), 3 deletions(-)
 > > 
-> > diff --git a/scripts/gcc-plugins/randomize_layout_plugin.c b/scripts/gcc-plugins/randomize_layout_plugin.c
-> > index bd29e4e7a524..e14efe23e645 100644
-> > --- a/scripts/gcc-plugins/randomize_layout_plugin.c
-> > +++ b/scripts/gcc-plugins/randomize_layout_plugin.c
-> > @@ -440,9 +440,6 @@ static int is_pure_ops_struct(const_tree node)
-> >  		const_tree fieldtype = get_field_type(field);
-> >  		enum tree_code code = TREE_CODE(fieldtype);
+> > diff --git a/drivers/hid/usbhid/usbkbd.c b/drivers/hid/usbhid/usbkbd.c
+> > index d5b7a696a68c..63e8ef8beb45 100644
+> > --- a/drivers/hid/usbhid/usbkbd.c
+> > +++ b/drivers/hid/usbhid/usbkbd.c
+> > @@ -239,11 +239,11 @@ static int usb_kbd_alloc_mem(struct usb_device *dev, struct usb_kbd *kbd)
+> >  		return -1;
+> >  	if (!(kbd->led = usb_alloc_urb(0, GFP_KERNEL)))
+> >  		return -1;
+> > -	if (!(kbd->new = usb_alloc_coherent(dev, 8, GFP_ATOMIC, &kbd->new_dma)))
+> > +	if (!(kbd->new = usb_alloc_coherent(dev, 8, GFP_KERNEL, &kbd->new_dma)))
+> >  		return -1;
+> >  	if (!(kbd->cr = kmalloc(sizeof(struct usb_ctrlrequest), GFP_KERNEL)))
+> >  		return -1;
+> > -	if (!(kbd->leds = usb_alloc_coherent(dev, 1, GFP_ATOMIC, &kbd->leds_dma)))
+> > +	if (!(kbd->leds = usb_alloc_coherent(dev, 1, GFP_KERNEL, &kbd->leds_dma)))
+> >  		return -1;
 > >  
-> > -		if (node == fieldtype)
-> > -			continue;
-> > -
-> >  		if (code == RECORD_TYPE || code == UNION_TYPE) {
-> >  			if (!is_pure_ops_struct(fieldtype))
-> >  				return 0;
-> > -- 
-> > 2.17.1
-> > 
 > 
-> -- 
-> Kees Cook
+> the kernel style is usually:
+>  kbd->new = usb_alloc_coherent(dev, 8, GFP_ATOMIC, &kbd->new_dma);
+>  if (!kbd->new)
+> 	return -1;
+> 
+> 
+> in usbmouse.c this is done, any reason for the change here ?
+
+If you want to be extra-correct, don't return -1, return -ENOMEM.
+
+thanks,
+
+greg k-h

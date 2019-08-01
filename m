@@ -2,90 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C359C7E0A8
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 18:58:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 257487E0AE
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 19:00:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730762AbfHAQ6P (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Aug 2019 12:58:15 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:49530 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725804AbfHAQ6P (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Aug 2019 12:58:15 -0400
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id C56D1C0BA162;
-        Thu,  1 Aug 2019 16:58:14 +0000 (UTC)
-Received: from linux-ws.nc.xsintricity.com (ovpn-112-50.rdu2.redhat.com [10.10.112.50])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 714E7100032A;
-        Thu,  1 Aug 2019 16:58:13 +0000 (UTC)
-Message-ID: <64747a477cca5b066dd9ae8a3f26f69f37207d41.camel@redhat.com>
-Subject: Re: [PATCH] RDMA/hns: Fix error return code in
- hns_roce_v1_rsv_lp_qp()
-From:   Doug Ledford <dledford@redhat.com>
-To:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Lijun Ou <oulijun@huawei.com>,
-        "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Colin Ian King <colin.king@canonical.com>
-Cc:     linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
-Date:   Thu, 01 Aug 2019 12:58:10 -0400
-In-Reply-To: <20190801012725.150493-1-weiyongjun1@huawei.com>
-References: <20190801012725.150493-1-weiyongjun1@huawei.com>
-Organization: Red Hat, Inc.
-Content-Type: multipart/signed; micalg="pgp-sha256";
-        protocol="application/pgp-signature"; boundary="=-S1pTOHu1eOQms7iLaqVT"
-User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
+        id S1732267AbfHARAu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Aug 2019 13:00:50 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:45886 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731376AbfHARAu (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 1 Aug 2019 13:00:50 -0400
+Received: by mail-pf1-f194.google.com with SMTP id r1so34407518pfq.12;
+        Thu, 01 Aug 2019 10:00:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=WGPyF/jz2yKuYFU7gzQ1L/LMsgV9YTZ2vw6QCV6Vnss=;
+        b=sGWP0fErmKQgCjE58NXoxmrj6L7FQzRJa9+jCi2n/GxkHB/xpz3L93gva3RvfziNta
+         BPAXRRhRYolWQODuGp6caxy9kqfFS2cRDZlBzVt0w66rKNTU88AUyNASwK103/FeLuGy
+         IvyXPKwbB1SG2ZNkOfIbWBX7EP7B3DOeOZM4NxF6fnJXYBG1ccKIi+YlF86t18TJ3qrG
+         h6huSgunJmOEpK32CV3ruEsJxK+WC9+l9d0HO6Skl5UtdhTHXTya9OWN3RNsJ4yWZK34
+         rP+oWK9LVjAGws1nttGsu+bBMdkccSBGABlbwzpOZaEfTMXQw52/eKVtWfbnz72QJMhv
+         JS7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=WGPyF/jz2yKuYFU7gzQ1L/LMsgV9YTZ2vw6QCV6Vnss=;
+        b=Mh5o1Lemtw501Ia22oCL2zN/olVuCVbOLHmRE65HOKrdwVaHKZ2Jn8OcecoOIihV2F
+         AD7ASHToKKI8uuNQ74KzP+Xg8u0XHLx+HJ8HYt52pNEnFYnDD5kkKZT1F9aS1cmjEnGa
+         o1RgL/ukX29fz2+PyNNpez3+KCjMe9pzygXMRK3ahEtblDutewFV3df5EiyOaHfq8jCN
+         xd4EzD0n2t3ZfB4QC6AjCqlc0av+jYgvzZOLrHUoaJzEf8qKMqpfaGtml5DaCxxX3LQx
+         KZI32Ya2B2Z4I1N0ul9GdpHLYm5SaJem+tM4VQM4oBdb5eC0uRMlwKWH2w1svfJ/lxwJ
+         HxVw==
+X-Gm-Message-State: APjAAAXPYmHVlztksE8jzFYsbOOyFBqGLB3GIjDp+Y1ScODZfTRRPy0k
+        lQ4n1xMWpJ4Fjo0x/6LlGNd2G63VAB0lR+f6qx4=
+X-Google-Smtp-Source: APXvYqxlnoZ7H66e1GLk8MqU9jRtl8FsWM4cquNdSP23TFAWWxy+fPwsayD6YLTVS7VXcsI01KJ2dq1MjFDDLk6SktI=
+X-Received: by 2002:a17:90a:360c:: with SMTP id s12mr9971211pjb.30.1564678849452;
+ Thu, 01 Aug 2019 10:00:49 -0700 (PDT)
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.32]); Thu, 01 Aug 2019 16:58:14 +0000 (UTC)
+References: <20190731090526.27245-1-colin.king@canonical.com>
+ <87r266seg4.fsf@suse.com> <20190731122841.GA1974@kadam> <87lfwerze8.fsf@suse.com>
+ <2f562159-8118-f4a5-9e00-c82cf0841fd5@canonical.com>
+In-Reply-To: <2f562159-8118-f4a5-9e00-c82cf0841fd5@canonical.com>
+From:   Steve French <smfrench@gmail.com>
+Date:   Thu, 1 Aug 2019 12:00:37 -0500
+Message-ID: <CAH2r5msukKuhEcbpBfXOrwFEA=fyXQKSL+hDwdOFYX7DNLe8TQ@mail.gmail.com>
+Subject: Re: [PATCH] cifs: remove redundant assignment to variable rc
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     =?UTF-8?Q?Aur=C3=A9lien_Aptel?= <aaptel@suse.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        samba-technical <samba-technical@lists.samba.org>,
+        Steve French <sfrench@samba.org>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        CIFS <linux-cifs@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+merged into cifs-2.6.git for-next
 
---=-S1pTOHu1eOQms7iLaqVT
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On Wed, Jul 31, 2019 at 10:54 AM Colin Ian King
+<colin.king@canonical.com> wrote:
+>
+> On 31/07/2019 16:34, Aur=C3=A9lien Aptel wrote:
+> > "Dan Carpenter" <dan.carpenter@oracle.com> writes:
+> >> You're just turning off GCC's static analysis (and introducing false
+> >> positives) when you do that.  We have seen bugs caused by this and nev=
+er
+> >> seen any bugs prevented by this style.
+> >
+> > You've never seen bugs prevented by initializing uninitialized
+> > variables? Code can change overtime and I don't think coverity is
+> > checked as often as it could be, meaning the var could end up being use=
+d
+> > while uninitialized in the future.
+>
+> gcc/clang should pick up uninitialized vars at compile time. also I run
+> coverity daily on linux-next.
+>
+> Colin
+>
+> >
+> > Anyway I won't die on this hill, merge this if you prefer.
+> >
+> > Cheers,
+> >
+>
 
-On Thu, 2019-08-01 at 01:27 +0000, Wei Yongjun wrote:
-> Fix to return error code -ENOMEM from the rdma_zalloc_drv_obj() error
-> handling case instead of 0, as done elsewhere in this function.
->=20
-> Fixes: e8ac9389f0d7 ("RDMA: Fix allocation failure on pointer pd")
-> Fixes: 21a428a019c9 ("RDMA: Handle PD allocations by IB/core")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-
-
-Thanks, applied to for-rc.
 
 --=20
-Doug Ledford <dledford@redhat.com>
-    GPG KeyID: B826A3330E572FDD
-    Fingerprint =3D AE6B 1BDA 122B 23B4 265B  1274 B826 A333 0E57 2FDD
+Thanks,
 
---=-S1pTOHu1eOQms7iLaqVT
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEErmsb2hIrI7QmWxJ0uCajMw5XL90FAl1DGiMACgkQuCajMw5X
-L92COBAAjzK3u3pLoF522VMnvbRpyUySBtHMVzeCEd9AWjnp1eqtNwih97EtniO/
-pqhIpX/x3O7IdlMgsUSUZ8/pYwCcyEpWSLZcmBBtiYgtdDZJ5LffTGgnq95rRnHX
-NP1yPDqnEUQRQsoJYpWl2wx2izB94ml+RWgWuEhO6jIm3dHvquLwQfP1RwjTvvBs
-kgFkU5s3vRnfPD3wyihKx8g9eihdFXiu//JjL+feL53MYd116xQm0/E1hqV3c1ld
-4YwVUf1L3My0HEDkfLqYYt+FqoBB64+8hMXzAXpa10eDAqmsM6Jg/yOsx6YCnhET
-66Fa58vl0geGBTvZE9HmyILq7q/UtaTRErMEHpanUyoXw/JRZb5DRHiRb7qfld6y
-wGt83+R2rN3OOfzwq4ZMNvRCIuXezW2SOgYg2a0zshmB8K2pE4cpGhQQtaapRMJ2
-eMx9Vzze9kXgR5IgxfIJnJY6DoiaEx4gxclXEsaHaYWl7iwCEyTPL5FiInVWNKJi
-bCBjNQDOumeQjlUBvmikxqn6/Ob5LyjBAM5F/lES6u+YZvTiYjGzY1sHWXYAmo+i
-pZ3WKbomSvJm18IEgDNFhgifG+ZkyjycIbAgk4ZkU5oCRj2no5zYLyevnpOxY5n5
-gFu+o+SlVtamLIZJ9Shco/EsPdDFHwNlYwDfdJsKaBtEHc9yumc=
-=XPLG
------END PGP SIGNATURE-----
-
---=-S1pTOHu1eOQms7iLaqVT--
-
+Steve

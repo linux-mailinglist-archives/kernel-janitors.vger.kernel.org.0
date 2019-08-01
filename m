@@ -2,59 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E34D7E2F0
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 21:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B80B17E322
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 21:12:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387966AbfHATCp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Aug 2019 15:02:45 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:33277 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726118AbfHATCo (ORCPT
+        id S2388231AbfHATMa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Aug 2019 15:12:30 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:44602 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727899AbfHATMa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Aug 2019 15:02:44 -0400
-Received: by mail-wm1-f67.google.com with SMTP id h19so4316242wme.0;
-        Thu, 01 Aug 2019 12:02:42 -0700 (PDT)
+        Thu, 1 Aug 2019 15:12:30 -0400
+Received: by mail-wr1-f68.google.com with SMTP id p17so74713026wrf.11;
+        Thu, 01 Aug 2019 12:12:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=/POvTmTfjL31nxmINd6RtTIgV6KXg8CsQfIX6UeNUIA=;
-        b=rcE8EeiR8tECv5Jp3ADVBJoLuCzbgP+eanvLuzFYhYz/P2uJlPRPIa2JcgjPl6ntA6
-         bzpgX3XyrX+Ttzr3kI0thbxr3oAktPgjIXJC/QtgbYuFjIXUb60WzYTqpgb8z5eZ8qcr
-         +mJUwXGEtw0OA9ERd2nfA5Q+qS+Cf8kbRnvD8sEJyXcR4hbcp7C+pdatinbgVFIvtPE7
-         wqNvG7gzcYCTWvQDzmtE07B/sKnGNu1F7y3iJQ9FCqCl417wV9FInMOGQl71BwXNwwBS
-         rgx+m2BLJ41o9aXZUMV3D5zr6ZjKa1hF1VqFal2ytUDDZ959/NSb/bfxC4KM2bv/Z5Hj
-         7+cw==
+        bh=29eX/7Ti8XYPdnzI29FfnnfKBQG8Yx8Y8+IXP8UDyjQ=;
+        b=IyYiP0D64J6DV1eYBS943TYBTz8YgAE88T9bDGFQVgMS2JdnLsmgSB3nY/zz4tLmCV
+         bISNAx/148/e0txOpysXy3hWzALkLZ8Gk70I2YfSlIwMW8YQVDTfHNyhDa2FjuvRRBCp
+         0M+XN9hlp8rlRFUiyGrXK/llF6njsT0mqv83BLKi1RfWXq0GyOe8p3oQwonFahspM698
+         E+TM5d8NI+M5voTh5UeWCNnsOS7KFbgvur8iqB8O5E0SiLAwJm/gtzPZ3hauk81Ffl05
+         CdB3fVDmwon7Tu5WkEEXcBWWPhp9zKXiWvQKFjQN709TI8/U/6k7honECL8ZUxsqlcmJ
+         aUHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=/POvTmTfjL31nxmINd6RtTIgV6KXg8CsQfIX6UeNUIA=;
-        b=ebLji+SWykoFCGc1o2lbldqyZXuk7c7ZGnmRvkGiy8vv8x+AoCZ65mtxiXizCM5a1n
-         7wU+5VqFepGjeSTgQUofmAA5VLGsm4vRlnM2IoqkehyI2yRxFGy/at8oriIXNY3rnKbV
-         vy2xlcaGKrMp4PepXW0vhwea0ExxEbz+ukUJjvY314A+YKhMmvRyVce/Sl81SmCIddnS
-         IesK+yRqseTMoDyGguyNGVDhHyeoFQSTmwMZxh00ufEBjYpsMnu7NCpYMfgN2iRZFgmV
-         NiXr77jTyQRTa9q/SqklqyTalrzMlwMTLT2t/i2KMJmcJczTT20b16n1qeWdYTuBBjnY
-         +Fig==
-X-Gm-Message-State: APjAAAU0qCevRfa0SFBb3jwhwgbBKT5kSXLaP0jwzbCVyqo0MUbaWkXo
-        rHKw0LE5pWZbOm99xJHi0q9gRQ4rn27h3XDhs58=
-X-Google-Smtp-Source: APXvYqxd7txH/0Xqawtlq4/3946FsQXXqi/tgTt2bmCLEn79m8eixcweHvGESH1mFACooCrMoEojNCTRqwePPhfPcIE=
-X-Received: by 2002:a7b:c751:: with SMTP id w17mr175934wmk.127.1564686161830;
- Thu, 01 Aug 2019 12:02:41 -0700 (PDT)
+        bh=29eX/7Ti8XYPdnzI29FfnnfKBQG8Yx8Y8+IXP8UDyjQ=;
+        b=ILpgOEA6G+UsC9Ve47iECvPPx5UBGWR9XlniW2p2nCz8+MriIIOn4hMHHrQNM18sTT
+         RSELcDcoez0vtWbjA4nNrG2oND/8v5fIPtcHgFl28rNiwY7YmquLbdrOPRwOBvUXwVzf
+         5ZsaBW0QPXwXrmLPPS4/2r7CoQ4d+SMdPyhCAM2bKSKznQ1+UKaIUu9wB6r5X0IHEmf8
+         AVrKdMy7akxMkb2V2TsGHoWeXLiYJG+RQQ5ENmn8MUxyiG5xLUBKT3I39sv+CCaqCl8H
+         bvZknvhIfKBSgCLwnKwlUwshVRjg6RSTzgo9ydlcgZ9jSVlcZv1r0bCiyMMAwdIPUaWN
+         E6OA==
+X-Gm-Message-State: APjAAAWO+59NtngUA6GnETc29rol3Pw1ASxLGeWtbjP1ZUD+NSCAJmsm
+        zWNOgENyJl7doyMR4fo0HFW/QcxP7Kw+mTp6Js4=
+X-Google-Smtp-Source: APXvYqz1dtgJsKtH3HyoA320M+YjnfJkgSzjwkowOb7aXNJJczt8kJkwziW03I18NJKTuyBaxgF+2VNOywn1TUuBUTQ=
+X-Received: by 2002:adf:a299:: with SMTP id s25mr134496190wra.74.1564686748120;
+ Thu, 01 Aug 2019 12:12:28 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190801083941.4230-1-colin.king@canonical.com>
-In-Reply-To: <20190801083941.4230-1-colin.king@canonical.com>
+References: <20190801110145.10803-1-colin.king@canonical.com>
+In-Reply-To: <20190801110145.10803-1-colin.king@canonical.com>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Thu, 1 Aug 2019 15:02:30 -0400
-Message-ID: <CADnq5_OdBM83zkkgtjwzQ0jqsiDP5wZoMXioGcq4mycX2=Tavw@mail.gmail.com>
-Subject: Re: [PATCH][drm-next] drm/amd/powerplay: fix a few spelling mistakes
+Date:   Thu, 1 Aug 2019 15:12:16 -0400
+Message-ID: <CADnq5_Oo8AthzgGsRCRaiNqn7skzGCGMZGdMcNo8Et+5Zt12Og@mail.gmail.com>
+Subject: Re: [PATCH][drm-next] drm/amdgpu: fix unsigned variable instance
+ compared to less than zero
 To:     Colin King <colin.king@canonical.com>
-Cc:     Rex Zhu <rex.zhu@amd.com>, Evan Quan <evan.quan@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
         =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
         David Zhou <David1.Zhou@amd.com>,
         David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
+        Daniel Vetter <daniel@ffwll.ch>, Le Ma <le.ma@amd.com>,
         amd-gfx list <amd-gfx@lists.freedesktop.org>,
         Maling list - DRI developers 
         <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
@@ -65,53 +65,40 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Thu, Aug 1, 2019 at 7:01 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> Currenly the error check on variable instance is always false because
+> it is a uint32_t type and this is never less than zero. Fix this by
+> making it an int type.
+>
+> Addresses-Coverity: ("Unsigned compared against 0")
+> Fixes: 7d0e6329dfdc ("drm/amdgpu: update more sdma instances irq support")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
 Applied.  thanks!
 
 Alex
 
-On Thu, Aug 1, 2019 at 4:39 AM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> There are a few spelling mistakes "unknow" -> "unknown" and
-> "enabeld" -> "enabled". Fix these.
->
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/gpu/drm/amd/powerplay/amdgpu_smu.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+>  drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c b/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
-> index 13b2c8a60232..d029a99e600e 100644
-> --- a/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
-> +++ b/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
-> @@ -39,7 +39,7 @@ static const char* __smu_message_names[] = {
->  const char *smu_get_message_name(struct smu_context *smu, enum smu_message_type type)
+> diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
+> index a33bd867287e..92257f2bf171 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/sdma_v4_0.c
+> @@ -1962,7 +1962,8 @@ static int sdma_v4_0_process_trap_irq(struct amdgpu_device *adev,
+>  static int sdma_v4_0_process_ras_data_cb(struct amdgpu_device *adev,
+>                 struct amdgpu_iv_entry *entry)
 >  {
->         if (type < 0 || type > SMU_MSG_MAX_COUNT)
-> -               return "unknow smu message";
-> +               return "unknown smu message";
->         return __smu_message_names[type];
->  }
+> -       uint32_t instance, err_source;
+> +       uint32_t err_source;
+> +       int instance;
 >
-> @@ -52,7 +52,7 @@ static const char* __smu_feature_names[] = {
->  const char *smu_get_feature_name(struct smu_context *smu, enum smu_feature_mask feature)
->  {
->         if (feature < 0 || feature > SMU_FEATURE_COUNT)
-> -               return "unknow smu feature";
-> +               return "unknown smu feature";
->         return __smu_feature_names[feature];
->  }
->
-> @@ -79,7 +79,7 @@ size_t smu_sys_get_pp_feature_mask(struct smu_context *smu, char *buf)
->                                count++,
->                                smu_get_feature_name(smu, i),
->                                feature_index,
-> -                              !!smu_feature_is_enabled(smu, i) ? "enabeld" : "disabled");
-> +                              !!smu_feature_is_enabled(smu, i) ? "enabled" : "disabled");
->         }
->
->  failed:
+>         instance = sdma_v4_0_irq_id_to_seq(entry->client_id);
+>         if (instance < 0)
 > --
 > 2.20.1
 >

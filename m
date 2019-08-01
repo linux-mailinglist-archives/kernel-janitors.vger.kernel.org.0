@@ -2,83 +2,129 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 200037D8AF
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 11:37:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E3147D901
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 12:06:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731235AbfHAJgq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Aug 2019 05:36:46 -0400
-Received: from 4.mo68.mail-out.ovh.net ([46.105.59.63]:33960 "EHLO
-        4.mo68.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731233AbfHAJgq (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Aug 2019 05:36:46 -0400
-Received: from player791.ha.ovh.net (unknown [10.108.54.119])
-        by mo68.mail-out.ovh.net (Postfix) with ESMTP id 452CA13E999
-        for <kernel-janitors@vger.kernel.org>; Thu,  1 Aug 2019 10:58:57 +0200 (CEST)
-Received: from kaod.org (lfbn-1-2240-157.w90-76.abo.wanadoo.fr [90.76.60.157])
-        (Authenticated sender: clg@kaod.org)
-        by player791.ha.ovh.net (Postfix) with ESMTPSA id EAA2686678C9;
-        Thu,  1 Aug 2019 08:58:45 +0000 (UTC)
-Subject: Re: [PATCH 1/2] powerpc/xive: Use GFP_KERNEL instead of GFP_ATOMIC in
- 'xive_irq_bitmap_add()'
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au,
-        allison@lohutok.net, tglx@linutronix.de, groug@kaod.org
-Cc:     linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <cover.1564647619.git.christophe.jaillet@wanadoo.fr>
- <85d5d247ce753befd6aa63c473f7823de6520ccd.1564647619.git.christophe.jaillet@wanadoo.fr>
-From:   =?UTF-8?Q?C=c3=a9dric_Le_Goater?= <clg@kaod.org>
-Message-ID: <669a1566-4048-1d81-f719-45e4ac05758b@kaod.org>
-Date:   Thu, 1 Aug 2019 10:58:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1728276AbfHAKGN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Aug 2019 06:06:13 -0400
+Received: from mx01-fr.bfs.de ([193.174.231.67]:19567 "EHLO mx01-fr.bfs.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725379AbfHAKGN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 1 Aug 2019 06:06:13 -0400
+Received: from mail-fr.bfs.de (mail-fr.bfs.de [10.177.18.200])
+        by mx01-fr.bfs.de (Postfix) with ESMTPS id 609B02035E;
+        Thu,  1 Aug 2019 12:06:05 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1564653965; h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dq2P+/tLnoednMG8zhzVQMUzH/VeX5hFM/9G4yMQw70=;
+        b=B5kLBbIBcuuJ7Me4hRA6QS7biC+bydX+j1MCtN42RX31i4l96jV3gUe2J0jNm0Xu3NlJ8t
+        Cu9ARd5Q9MM1Pm8ZIpqRxBnOXM3BJBH65g6eeeLZd5meQZd0nu7Q/ZsihW9MUvFskcdZRL
+        JayzNzB6180FxxzR+AYV44nBPm1s6KC96bn+snss045nfDYw2468AIB2VxSKPQnfyohoDW
+        WNVNRrBwZpFJ9Klp6JSd9p+T+4A9HtgItNQujd/VXqZNOOaC0FQzCGbdAKOFqHCbq6e53e
+        Zchxsv9Pqqh4peaYxfowuXM2/7ZV6YAVxKzOz65EriJkcX02k00Vj3kTKyo1dg==
+Received: from [134.92.181.33] (unknown [134.92.181.33])
+        by mail-fr.bfs.de (Postfix) with ESMTPS id E1D87BEEBD;
+        Thu,  1 Aug 2019 12:06:04 +0200 (CEST)
+Message-ID: <5D42B98B.40900@bfs.de>
+Date:   Thu, 01 Aug 2019 12:06:03 +0200
+From:   walter harms <wharms@bfs.de>
+Reply-To: wharms@bfs.de
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; de; rv:1.9.1.16) Gecko/20101125 SUSE/3.0.11 Thunderbird/3.0.11
 MIME-Version: 1.0
-In-Reply-To: <85d5d247ce753befd6aa63c473f7823de6520ccd.1564647619.git.christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Ovh-Tracer-Id: 12236561665022528369
-X-VR-SPAMSTATE: OK
-X-VR-SPAMSCORE: -100
-X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgeduvddrleejgddtlecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfqggfjpdevjffgvefmvefgnecuuegrihhlohhuthemucehtddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+CC:     jikos@kernel.org, benjamin.tissoires@redhat.com,
+        linux-usb@vger.kernel.org, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] HID: usbhid: Use GFP_KERNEL instead of GFP_ATOMIC when
+ applicable
+References: <20190801074759.32738-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20190801074759.32738-1-christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.10
+Authentication-Results: mx01-fr.bfs.de
+X-Spamd-Result: default: False [-3.10 / 7.00];
+         ARC_NA(0.00)[];
+         HAS_REPLYTO(0.00)[wharms@bfs.de];
+         BAYES_HAM(-3.00)[100.00%];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         FREEMAIL_ENVRCPT(0.00)[wanadoo.fr];
+         MIME_GOOD(-0.10)[text/plain];
+         REPLYTO_ADDR_EQ_FROM(0.00)[];
+         DKIM_SIGNED(0.00)[];
+         RCPT_COUNT_SEVEN(0.00)[7];
+         FREEMAIL_TO(0.00)[wanadoo.fr];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         RCVD_COUNT_TWO(0.00)[2];
+         MID_RHS_MATCH_FROM(0.00)[];
+         RCVD_TLS_ALL(0.00)[]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 01/08/2019 10:32, Christophe JAILLET wrote:
-> There is no need to use GFP_ATOMIC here. GFP_KERNEL should be enough.
-> GFP_KERNEL is also already used for another allocation just a few lines
-> below.
 
-This is correct.
- 
+
+Am 01.08.2019 09:47, schrieb Christophe JAILLET:
+> There is no need to use GFP_ATOMIC when calling 'usb_alloc_coherent()'
+> here. These calls are done from probe functions and using GFP_KERNEL should
+> be safe.
+> The memory itself is used within some interrupts, but it is not a
+> problem, once it has been allocated.
+> 
 > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-
-
-Reviewed-by: Cédric Le Goater <clg@kaod.org>
-
-Thanks,
-
-C.
-
 > ---
->  arch/powerpc/sysdev/xive/spapr.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/hid/usbhid/usbkbd.c   | 4 ++--
+>  drivers/hid/usbhid/usbmouse.c | 2 +-
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/arch/powerpc/sysdev/xive/spapr.c b/arch/powerpc/sysdev/xive/spapr.c
-> index 8ef9cf4ebb1c..b4f5eb9e0f82 100644
-> --- a/arch/powerpc/sysdev/xive/spapr.c
-> +++ b/arch/powerpc/sysdev/xive/spapr.c
-> @@ -45,7 +45,7 @@ static int xive_irq_bitmap_add(int base, int count)
->  {
->  	struct xive_irq_bitmap *xibm;
+> diff --git a/drivers/hid/usbhid/usbkbd.c b/drivers/hid/usbhid/usbkbd.c
+> index d5b7a696a68c..63e8ef8beb45 100644
+> --- a/drivers/hid/usbhid/usbkbd.c
+> +++ b/drivers/hid/usbhid/usbkbd.c
+> @@ -239,11 +239,11 @@ static int usb_kbd_alloc_mem(struct usb_device *dev, struct usb_kbd *kbd)
+>  		return -1;
+>  	if (!(kbd->led = usb_alloc_urb(0, GFP_KERNEL)))
+>  		return -1;
+> -	if (!(kbd->new = usb_alloc_coherent(dev, 8, GFP_ATOMIC, &kbd->new_dma)))
+> +	if (!(kbd->new = usb_alloc_coherent(dev, 8, GFP_KERNEL, &kbd->new_dma)))
+>  		return -1;
+>  	if (!(kbd->cr = kmalloc(sizeof(struct usb_ctrlrequest), GFP_KERNEL)))
+>  		return -1;
+> -	if (!(kbd->leds = usb_alloc_coherent(dev, 1, GFP_ATOMIC, &kbd->leds_dma)))
+> +	if (!(kbd->leds = usb_alloc_coherent(dev, 1, GFP_KERNEL, &kbd->leds_dma)))
+>  		return -1;
 >  
-> -	xibm = kzalloc(sizeof(*xibm), GFP_ATOMIC);
-> +	xibm = kzalloc(sizeof(*xibm), GFP_KERNEL);
->  	if (!xibm)
->  		return -ENOMEM;
->  
-> 
 
+the kernel style is usually:
+ kbd->new = usb_alloc_coherent(dev, 8, GFP_ATOMIC, &kbd->new_dma);
+ if (!kbd->new)
+	return -1;
+
+
+in usbmouse.c this is done, any reason for the change here ?
+
+re,
+ wh
+
+>  	return 0;
+> diff --git a/drivers/hid/usbhid/usbmouse.c b/drivers/hid/usbhid/usbmouse.c
+> index 073127e65ac1..c89332017d5d 100644
+> --- a/drivers/hid/usbhid/usbmouse.c
+> +++ b/drivers/hid/usbhid/usbmouse.c
+> @@ -130,7 +130,7 @@ static int usb_mouse_probe(struct usb_interface *intf, const struct usb_device_i
+>  	if (!mouse || !input_dev)
+>  		goto fail1;
+>  
+> -	mouse->data = usb_alloc_coherent(dev, 8, GFP_ATOMIC, &mouse->data_dma);
+> +	mouse->data = usb_alloc_coherent(dev, 8, GFP_KERNEL, &mouse->data_dma);
+>  	if (!mouse->data)
+>  		goto fail1;
+>  

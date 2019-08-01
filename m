@@ -2,122 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EF677DCC8
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 15:47:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51EFF7DF3F
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 17:41:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728701AbfHANro (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Aug 2019 09:47:44 -0400
-Received: from wout2-smtp.messagingengine.com ([64.147.123.25]:40981 "EHLO
-        wout2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725930AbfHANrn (ORCPT
+        id S1729195AbfHAPlX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Aug 2019 11:41:23 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:33411 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729198AbfHAPlX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Aug 2019 09:47:43 -0400
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.46])
-        by mailout.west.internal (Postfix) with ESMTP id 95FA3405;
-        Thu,  1 Aug 2019 09:47:39 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Thu, 01 Aug 2019 09:47:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=
-        date:from:to:cc:subject:message-id:references:mime-version
-        :content-type:in-reply-to; s=fm1; bh=HxNgJJg2nhiPwmgNt7+DyzeN6pL
-        3GbnAaqp3b9wUFk4=; b=AAy+jPnO/oVUFq4jUmE3x97NZJYdTPaqtNJUf7nwz4N
-        9AdlhiaxrugfOl9/aL2MZs7a5ojdwqNJBpQH0b0pODxu8assB4upmc3K/8Uaw/7a
-        EDWxkklm5A1xiZPR5HyyMFS6PRSDewL7cuYQk5IQTTKH6XQQJlKoW8uwT/Dm0wkK
-        EQ5Gv3GqAC+FEP+DsPTI/HLHEDcR1yUggE6N/8h2cqoX13iis1jumIbzsuwyVJPC
-        VLXLvL/H8KhCzg+LMPdFoj+QauZKEIoS+sUE5lPmMAkVS9iTgXBsZz7sXnUfSvpb
-        28kUzRNUZ9nYc0sSiLK1x2bugmb3PhtsfbAcZjywTEQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=HxNgJJ
-        g2nhiPwmgNt7+DyzeN6pL3GbnAaqp3b9wUFk4=; b=y/Aa/Y+NgfYU+fo/Tzn4oY
-        /wi9dVZE9Kq3W/nJ+pqxkJu5IfqS4B+Ss6bCd2P6n1rO68+3BU4ECB1Y1mOxeBGv
-        G1pgAwbDcWd3P//lrm+WoCFwdup3S0Olh4DlsR7+AAJkW7NceSFjgmNANP8B1KaM
-        3yigh/KDCmim0/8IrRDrz02gG2T2WOJiiIw3+mqu5VbFVsKeQ63SUY4sc3MPNScK
-        +X66uvIzYK8bMFLgwae6xxq+3hnkX/9uIh5MQJD5xgsmMpviTZsTn8yTwEqAoYLm
-        wa2yo2tdK0/hNU0yhDe+vT6qAZo9t6NA3C50vzohep3sRMjxu9pvFHCnJnxk+CEg
-        ==
-X-ME-Sender: <xms:eu1CXTJ3D6noxacELy3qEukfzFIgpgQrciOUfXwoezAVSAHRNp9I3w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrleejgdeijecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujggfsehttdertddtredvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucfkphepkeefrdekiedrkeelrddutd
-    ejnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhenucev
-    lhhushhtvghrufhiiigvpedt
-X-ME-Proxy: <xmx:eu1CXWtDbL5upCIHa0CnQAqT6PjLHVEBLWCwg2-B7xze5oT-yiVWvA>
-    <xmx:eu1CXSInz_iX1dsHVJz1vpEOr5jvLBIi1WVFzouU_xPVMxqfzrRuhA>
-    <xmx:eu1CXb8DgB6HtttgXY1UTrLzVoyZPCts3AnGf_oV2CBqBtUQco9edg>
-    <xmx:e-1CXfgEu_lo7EqH29CmOZdrWg_bpyYNjEOZrLF1dNJDHiZmpNhlyw>
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        by mail.messagingengine.com (Postfix) with ESMTPA id B456A380079;
-        Thu,  1 Aug 2019 09:47:37 -0400 (EDT)
-Date:   Thu, 1 Aug 2019 15:47:33 +0200
-From:   Greg KH <greg@kroah.com>
-To:     walter harms <wharms@bfs.de>
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        jikos@kernel.org, benjamin.tissoires@redhat.com,
-        linux-usb@vger.kernel.org, linux-input@vger.kernel.org,
+        Thu, 1 Aug 2019 11:41:23 -0400
+Received: by mail-wr1-f66.google.com with SMTP id n9so74213608wru.0;
+        Thu, 01 Aug 2019 08:41:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=references:user-agent:from:to:cc:subject:in-reply-to:date
+         :message-id:mime-version;
+        bh=jhUyBzDhhRLbHQjPsF6ukVTdHMxQiNb4zxJrle7zp/M=;
+        b=Mezss//nhodL4JrggpDB3czwP6/KO9U1cdsNearapnh5rsY3Q0312lvekawydIjS+l
+         4z524nBLrwXY0rQL4q17UfrfsPg66XnooLxxEB1XPFMRLjZl3c3YCPXLe6pTStQc0q7G
+         gzeUPLTjpCPXSKkqcn7DRYkQ/xDNEgyoYPiux/9PIpgNZ9zNGE609e2GdHskBOmwjm7u
+         S+bZoUZ86a+UPh5MVnqMUPaBKkDqrag3GJiuvLoKug6rfzmkizbwf0cL1wJyXepXsFjN
+         QONnvy//Z0w5xOAlnjX6EevG6a0pB8Fo1vKSysj+mKwoFNmZsGxBR790UdpojZ5fDJzF
+         V1pQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:references:user-agent:from:to:cc:subject
+         :in-reply-to:date:message-id:mime-version;
+        bh=jhUyBzDhhRLbHQjPsF6ukVTdHMxQiNb4zxJrle7zp/M=;
+        b=mvmEr4ainS/L4tTUQNN43EadoV7SUp0dH/N4+H9vTAthVTnXYQv66qWBxuj3inrcCY
+         coV8TK9VPNTwlQE41MSEr74giI9olxYMWKpzs9bVI8ykDJUu6OvOdJ/eRlRG3O1esGxa
+         tO7PTncUMidMCJ3FkyjTOzn2VEXlUrItYN5lDONjm1p3kMq54DLMRRLNoYtyF7kE8Vvs
+         eE+uXGpqjrbE/tmDr0VzyN7xeiE6idBgJ3f0MG26NcnfgNvKOx9xgLAril43qF9W7gKC
+         p2UHeo+AjCGX8WVp9Eny4VLdkmczx07yrK0QURZf6bXHQDsPtAcTlFOaHm0cBPr/aM9F
+         uSLQ==
+X-Gm-Message-State: APjAAAXP2wsfj4hshFMkZ/8qYugFuKgw0vX/4mpoPWT9dTy8uPh4Cdg7
+        tuMWicFfPHFWZXgbgVd9R/xKGXU+
+X-Google-Smtp-Source: APXvYqyhkam7gbsDqFPf6gO1/K4hjZZlbghC/kRI59/d3GCm7160AsV4n+bjr+cAtIEzunxazLLaQg==
+X-Received: by 2002:adf:e8d0:: with SMTP id k16mr142024685wrn.31.1564674080463;
+        Thu, 01 Aug 2019 08:41:20 -0700 (PDT)
+Received: from arch-late (a109-49-46-234.cpe.netcabo.pt. [109.49.46.234])
+        by smtp.gmail.com with ESMTPSA id z25sm75348158wmf.38.2019.08.01.08.41.18
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 01 Aug 2019 08:41:19 -0700 (PDT)
+References: <20190721190423.9534-1-christophe.jaillet@wanadoo.fr>
+User-agent: mu4e 1.2.0; emacs 27.0.50
+From:   Rui Miguel Silva <rmfrfs@gmail.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     mchehab@kernel.org, linux-media@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] HID: usbhid: Use GFP_KERNEL instead of GFP_ATOMIC when
- applicable
-Message-ID: <20190801134733.GA24791@kroah.com>
-References: <20190801074759.32738-1-christophe.jaillet@wanadoo.fr>
- <5D42B98B.40900@bfs.de>
+Subject: Re: [PATCH] media: ov2680: fix a typo in a function name
+In-reply-to: <20190721190423.9534-1-christophe.jaillet@wanadoo.fr>
+Date:   Thu, 01 Aug 2019 16:41:13 +0100
+Message-ID: <m336ikc2qu.fsf@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5D42B98B.40900@bfs.de>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Aug 01, 2019 at 12:06:03PM +0200, walter harms wrote:
-> 
-> 
-> Am 01.08.2019 09:47, schrieb Christophe JAILLET:
-> > There is no need to use GFP_ATOMIC when calling 'usb_alloc_coherent()'
-> > here. These calls are done from probe functions and using GFP_KERNEL should
-> > be safe.
-> > The memory itself is used within some interrupts, but it is not a
-> > problem, once it has been allocated.
-> > 
-> > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> > ---
-> >  drivers/hid/usbhid/usbkbd.c   | 4 ++--
-> >  drivers/hid/usbhid/usbmouse.c | 2 +-
-> >  2 files changed, 3 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/hid/usbhid/usbkbd.c b/drivers/hid/usbhid/usbkbd.c
-> > index d5b7a696a68c..63e8ef8beb45 100644
-> > --- a/drivers/hid/usbhid/usbkbd.c
-> > +++ b/drivers/hid/usbhid/usbkbd.c
-> > @@ -239,11 +239,11 @@ static int usb_kbd_alloc_mem(struct usb_device *dev, struct usb_kbd *kbd)
-> >  		return -1;
-> >  	if (!(kbd->led = usb_alloc_urb(0, GFP_KERNEL)))
-> >  		return -1;
-> > -	if (!(kbd->new = usb_alloc_coherent(dev, 8, GFP_ATOMIC, &kbd->new_dma)))
-> > +	if (!(kbd->new = usb_alloc_coherent(dev, 8, GFP_KERNEL, &kbd->new_dma)))
-> >  		return -1;
-> >  	if (!(kbd->cr = kmalloc(sizeof(struct usb_ctrlrequest), GFP_KERNEL)))
-> >  		return -1;
-> > -	if (!(kbd->leds = usb_alloc_coherent(dev, 1, GFP_ATOMIC, &kbd->leds_dma)))
-> > +	if (!(kbd->leds = usb_alloc_coherent(dev, 1, GFP_KERNEL, &kbd->leds_dma)))
-> >  		return -1;
-> >  
-> 
-> the kernel style is usually:
->  kbd->new = usb_alloc_coherent(dev, 8, GFP_ATOMIC, &kbd->new_dma);
->  if (!kbd->new)
-> 	return -1;
-> 
-> 
-> in usbmouse.c this is done, any reason for the change here ?
+Hi Christophe,
+Thanks for the patch.
 
-If you want to be extra-correct, don't return -1, return -ENOMEM.
+On Sun 21 Jul 2019 at 20:04, Christophe JAILLET wrote:
+> All functions in this file starts with 'ov2680_', except ov2860_parse_dt().
+>
+> This is likely a typo.
+>
 
-thanks,
+Yup, weird is to only have one of this. Nice catch.
 
-greg k-h
+> rename it to 'ov2680_parse_dt()' (6 and 8)
+>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>
+
+Reviewed-by: Rui Miguel Silva <rmfrfs@gmail.com>
+
+---
+Cheers,
+	Rui
+
+> ---
+>  drivers/media/i2c/ov2680.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+> index b10bcfabaeeb..c59c9e51c380 100644
+> --- a/drivers/media/i2c/ov2680.c
+> +++ b/drivers/media/i2c/ov2680.c
+> @@ -1023,7 +1023,7 @@ static int ov2680_check_id(struct ov2680_dev *sensor)
+>  	return 0;
+>  }
+>
+> -static int ov2860_parse_dt(struct ov2680_dev *sensor)
+> +static int ov2680_parse_dt(struct ov2680_dev *sensor)
+>  {
+>  	struct device *dev = ov2680_to_dev(sensor);
+>  	int ret;
+> @@ -1064,7 +1064,7 @@ static int ov2680_probe(struct i2c_client *client)
+>
+>  	sensor->i2c_client = client;
+>
+> -	ret = ov2860_parse_dt(sensor);
+> +	ret = ov2680_parse_dt(sensor);
+>  	if (ret < 0)
+>  		return -EINVAL;
+

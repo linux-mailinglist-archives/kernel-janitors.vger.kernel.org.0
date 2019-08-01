@@ -2,65 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 10D2F7D186
-	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 00:50:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E8867D2C8
+	for <lists+kernel-janitors@lfdr.de>; Thu,  1 Aug 2019 03:22:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729694AbfGaWtz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 31 Jul 2019 18:49:55 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:55159 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726755AbfGaWtz (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 31 Jul 2019 18:49:55 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hsxPq-000199-TB; Wed, 31 Jul 2019 22:49:51 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Karan Tilak Kumar <kartilak@cisco.com>,
-        Sesidhar Baddela <sebaddel@cisco.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] scsi: snic: remove redundant assignment to variable ret
-Date:   Wed, 31 Jul 2019 23:49:50 +0100
-Message-Id: <20190731224950.16818-1-colin.king@canonical.com>
+        id S1726817AbfHABWh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 31 Jul 2019 21:22:37 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3682 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726622AbfHABWh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 31 Jul 2019 21:22:37 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 65EA34DAA86A04A9AAFF;
+        Thu,  1 Aug 2019 09:22:35 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 1 Aug 2019 09:22:26 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Lijun Ou <oulijun@huawei.com>,
+        "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        "Colin Ian King" <colin.king@canonical.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-rdma@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH] RDMA/hns: Fix error return code in hns_roce_v1_rsv_lp_qp()
+Date:   Thu, 1 Aug 2019 01:27:25 +0000
+Message-ID: <20190801012725.150493-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Fix to return error code -ENOMEM from the rdma_zalloc_drv_obj() error
+handling case instead of 0, as done elsewhere in this function.
 
-Variable ret is being assigned with a value that is never read as
-there is return statement immediately afterwards.  The assignment
-is redundant and hence can be removed.
-
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Fixes: e8ac9389f0d7 ("RDMA: Fix allocation failure on pointer pd")
+Fixes: 21a428a019c9 ("RDMA: Handle PD allocations by IB/core")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/scsi/snic/snic_disc.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v1.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/snic/snic_disc.c b/drivers/scsi/snic/snic_disc.c
-index e9ccfb97773f..d89c75991323 100644
---- a/drivers/scsi/snic/snic_disc.c
-+++ b/drivers/scsi/snic/snic_disc.c
-@@ -261,8 +261,6 @@ snic_tgt_create(struct snic *snic, struct snic_tgt_id *tgtid)
- 	tgt = kzalloc(sizeof(*tgt), GFP_KERNEL);
- 	if (!tgt) {
- 		SNIC_HOST_ERR(snic->shost, "Failure to allocate snic_tgt.\n");
--		ret = -ENOMEM;
--
- 		return tgt;
- 	}
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v1.c b/drivers/infiniband/hw/hns/hns_roce_hw_v1.c
+index 70583f82e290..aa8a660ffcda 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v1.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v1.c
+@@ -750,8 +750,10 @@ static int hns_roce_v1_rsv_lp_qp(struct hns_roce_dev *hr_dev)
+ 	atomic_set(&free_mr->mr_free_cq->ib_cq.usecnt, 0);
  
--- 
-2.20.1
+ 	pd = rdma_zalloc_drv_obj(ibdev, ib_pd);
+-	if (!pd)
++	if (!pd) {
++		ret = -ENOMEM;
+ 		goto alloc_mem_failed;
++	}
+ 
+ 	pd->device  = ibdev;
+ 	ret = hns_roce_alloc_pd(pd, NULL);
+
+
 

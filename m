@@ -2,30 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F8A77FD25
-	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Aug 2019 17:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 870957FDD6
+	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Aug 2019 17:52:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730217AbfHBPNU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 2 Aug 2019 11:13:20 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:57246 "EHLO
+        id S1732980AbfHBPwW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 2 Aug 2019 11:52:22 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:58130 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730060AbfHBPNU (ORCPT
+        with ESMTP id S1728853AbfHBPwW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 2 Aug 2019 11:13:20 -0400
+        Fri, 2 Aug 2019 11:52:22 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1htZF6-0007Y0-Da; Fri, 02 Aug 2019 15:13:16 +0000
+        id 1htZqr-0002xO-Hi; Fri, 02 Aug 2019 15:52:17 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Saeed Mahameed <saeedm@mellanox.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-rdma@vger.kernel.org
+To:     Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][net-next][V2] net/mlx5: remove self-assignment on esw->dev
-Date:   Fri,  2 Aug 2019 16:13:16 +0100
-Message-Id: <20190802151316.16011-1-colin.king@canonical.com>
+Subject: [PATCH][net-next] ice: fix potential infinite loop
+Date:   Fri,  2 Aug 2019 16:52:17 +0100
+Message-Id: <20190802155217.16996-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,33 +36,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a self assignment of esw->dev to itself, clean this up by
-removing it. Also make dev a const pointer.
+The loop counter of a for-loop is a u8 however this is being compared
+to an int upper bound and this can lead to an infinite loop if the
+upper bound is greater than 255 since the loop counter will wrap back
+to zero. Fix this potential issue by making the loop counter an int.
 
-Addresses-Coverity: ("Self assignment")
-Fixes: 6cedde451399 ("net/mlx5: E-Switch, Verify support QoS element type")
+Addresses-Coverity: ("Infinite loop")
+Fixes: c7aeb4d1b9bf ("ice: Disable VFs until reset is completed")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
-
-V2: make dev const
-
----
- drivers/net/ethernet/mellanox/mlx5/core/eswitch.c | 2 +-
+ drivers/net/ethernet/intel/ice/ice_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-index f4ace5f8e884..de0894b695e3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-@@ -1413,7 +1413,7 @@ static int esw_vport_egress_config(struct mlx5_eswitch *esw,
- 
- static bool element_type_supported(struct mlx5_eswitch *esw, int type)
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index c26e6a102dac..088543d50095 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -488,7 +488,7 @@ static void
+ ice_prepare_for_reset(struct ice_pf *pf)
  {
--	struct mlx5_core_dev *dev = esw->dev = esw->dev;
-+	const struct mlx5_core_dev *dev = esw->dev;
+ 	struct ice_hw *hw = &pf->hw;
+-	u8 i;
++	int i;
  
- 	switch (type) {
- 	case SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR:
+ 	/* already prepared for reset */
+ 	if (test_bit(__ICE_PREPARED_FOR_RESET, pf->state))
 -- 
 2.20.1
 

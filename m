@@ -2,145 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 069A37FF4F
-	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Aug 2019 19:12:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D729802CF
+	for <lists+kernel-janitors@lfdr.de>; Sat,  3 Aug 2019 00:33:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404466AbfHBRM1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 2 Aug 2019 13:12:27 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:60508 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731936AbfHBRM1 (ORCPT
+        id S2392427AbfHBWdS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 2 Aug 2019 18:33:18 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:43821 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726626AbfHBWdS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 2 Aug 2019 13:12:27 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1htb6L-0001F5-Lr; Fri, 02 Aug 2019 17:12:21 +0000
-Subject: Re: [Intel-wired-lan] [PATCH][net-next] ice: fix potential infinite
- loop
-To:     "Allan, Bruce W" <bruce.w.allan@intel.com>,
-        "Kirsher, Jeffrey T" <jeffrey.t.kirsher@intel.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Cc:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20190802155217.16996-1-colin.king@canonical.com>
- <804857E1F29AAC47BF68C404FC60A18401096DB0DF@ORSMSX122.amr.corp.intel.com>
-From:   Colin Ian King <colin.king@canonical.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <3360b179-aaf6-d126-dd40-e1f7e81ac27d@canonical.com>
-Date:   Fri, 2 Aug 2019 18:12:17 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Fri, 2 Aug 2019 18:33:18 -0400
+Received: by mail-lf1-f65.google.com with SMTP id c19so53968429lfm.10
+        for <kernel-janitors@vger.kernel.org>; Fri, 02 Aug 2019 15:33:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=M5Sp+aw1xGfAJw6QQ7rI2FkSiegHLKhpr8F21Ebetbk=;
+        b=agYUxtlAJg6Nuq0Z4pOkV/qkhu5fGOG7yxfzXCPzIr9tvqg2tmo0JrpRc43X4E6hWk
+         kWJXFk93I3bPSGiBuplmcRbTusctRRiqlRp3kPXo8IJvKYlEovKuL8w4iNdnO/52K1Kx
+         IfATW5sW4KgaKC6xVtutGBErt6QG5wMLLFzB6qC0z39b3jaS7rX51eCQLZ1GwUsIKIkg
+         UGThbfIZXsZ4zg9DBLAxJDvk1i8bfkbx4Bwe8wt+BJ713vYmhcz2K2jUZ0BdC6pljKH8
+         mhUFBZgAZhnnyug7Tf1cc7RYN3BwK1yOoobbKIifu8cIu5cKtS5LSt9U9LMp1lwk7FGK
+         eJJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=M5Sp+aw1xGfAJw6QQ7rI2FkSiegHLKhpr8F21Ebetbk=;
+        b=cOhupM5brS/FpEqzETcRgBVCm11m0SwMZnSyip0dUuwrjReGBlzQZIwSklxkI3sCMN
+         mqpIGiy/TU0AQQ7z3eQ24tRj7zgn1sbnTfQastYFxouSm40Np/pGKkXStdrOxJUpfSeM
+         GuUIb0roWdy8Xx/uXFIQU9fM/x3xjhNfzgfLv95qTcvRfeqA6NzNExMIbsukwHJes7s4
+         /S02TK1S1YRM6KJ5bIuLoEAX8JWShyb2ikvgqpSCs7AZovEMlrZGeR57YHv07KeZ498p
+         M26fL0Ot2Tq0qTMAIYyk7LPOdWPDkssS1bM3B3ecX99jidIlFxlk+Cqe9u5Ph3+A1ycR
+         1tTA==
+X-Gm-Message-State: APjAAAUqSxamhEhz2E5LW7hYxAs4ZXQvwRqhLAkNtAHQJuuEYOkblKxf
+        JtGxLwTP8veU4qtPmmV0FCZM6/+0pYaDMOSqzCECYA==
+X-Google-Smtp-Source: APXvYqxzoYu1mREI8w9eHSP7z3qdwPPm93bIZ2yKBLR4oSDfl4Qngc4P+Cg25YKu8pbFy/+hAq+JJriRM0/TyVE7vJg=
+X-Received: by 2002:a19:e006:: with SMTP id x6mr64184291lfg.165.1564785196301;
+ Fri, 02 Aug 2019 15:33:16 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <804857E1F29AAC47BF68C404FC60A18401096DB0DF@ORSMSX122.amr.corp.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20190719032414.85369-1-yuehaibing@huawei.com>
+In-Reply-To: <20190719032414.85369-1-yuehaibing@huawei.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Sat, 3 Aug 2019 00:33:05 +0200
+Message-ID: <CACRpkdbLFj=Oce_L42btBjvXCOJ8y-cyia57UFYH8DW=SZr94A@mail.gmail.com>
+Subject: Re: [PATCH -next] pinctrl: sprd: Fix platform_no_drv_owner.cocci warnings
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     Orson Zhai <orsonzhai@gmail.com>,
+        Baolin Wang <baolin.wang@linaro.org>,
+        Chunyan Zhang <zhang.lyra@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Richard Fontana <rfontana@redhat.com>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 02/08/2019 18:07, Allan, Bruce W wrote:
->> -----Original Message-----
->> From: Intel-wired-lan [mailto:intel-wired-lan-bounces@osuosl.org] On Behalf
->> Of Colin King
->> Sent: Friday, August 02, 2019 8:52 AM
->> To: Kirsher, Jeffrey T <jeffrey.t.kirsher@intel.com>; David S . Miller
->> <davem@davemloft.net>; intel-wired-lan@lists.osuosl.org;
->> netdev@vger.kernel.org
->> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
->> Subject: [Intel-wired-lan] [PATCH][net-next] ice: fix potential infinite loop
->>
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> The loop counter of a for-loop is a u8 however this is being compared
->> to an int upper bound and this can lead to an infinite loop if the
->> upper bound is greater than 255 since the loop counter will wrap back
->> to zero. Fix this potential issue by making the loop counter an int.
->>
->> Addresses-Coverity: ("Infinite loop")
-> 
-> Actually, num_alloc_vfs should probably be a u16 instead of an int since num_alloc_vfs cannot exceed 256.
-> 
-> Which Coverity scan reported this and what options are used in the analysis?
+On Fri, Jul 19, 2019 at 5:18 AM YueHaibing <yuehaibing@huawei.com> wrote:
 
-One that I run in a private coverity scan with scan analysis cranked up
-high on linux-next, so the report is not public.
+> Remove .owner field if calls are used which set it automatically
+> Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
+>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-Colin
+Patch applied.
 
-> 
->> Fixes: c7aeb4d1b9bf ("ice: Disable VFs until reset is completed")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>  drivers/net/ethernet/intel/ice/ice_main.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/ethernet/intel/ice/ice_main.c
->> b/drivers/net/ethernet/intel/ice/ice_main.c
->> index c26e6a102dac..088543d50095 100644
->> --- a/drivers/net/ethernet/intel/ice/ice_main.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_main.c
->> @@ -488,7 +488,7 @@ static void
->>  ice_prepare_for_reset(struct ice_pf *pf)
->>  {
->>  	struct ice_hw *hw = &pf->hw;
->> -	u8 i;
->> +	int i;
->>
->>  	/* already prepared for reset */
->>  	if (test_bit(__ICE_PREPARED_FOR_RESET, pf->state))
->> --
->> 2.20.1
->>
->> _______________________________________________
->> Intel-wired-lan mailing list
->> Intel-wired-lan@osuosl.org
->> https://lists.osuosl.org/mailman/listinfo/intel-wired-lan
-
+Yours,
+Linus Walleij

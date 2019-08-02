@@ -2,35 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 781057E77A
-	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Aug 2019 03:27:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51F777EAB3
+	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Aug 2019 05:32:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730777AbfHBB1D (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Aug 2019 21:27:03 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3697 "EHLO huawei.com"
+        id S1727758AbfHBDcG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 1 Aug 2019 23:32:06 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3699 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727848AbfHBB1D (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Aug 2019 21:27:03 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 6B64A1B966E4DF1DCBEF;
-        Fri,  2 Aug 2019 09:27:01 +0800 (CST)
+        id S1726703AbfHBDcG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 1 Aug 2019 23:32:06 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 6527F679240EDF7CAACF;
+        Fri,  2 Aug 2019 11:32:02 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 2 Aug 2019 09:26:53 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Ioana Radulescu <ruxandra.radulescu@nxp.com>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-kernel@vger.kernel.org>, <devel@driverdev.osuosl.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] staging: fsl-dpaa2/ethsw: Remove useless set memory to zero use memset()
-Date:   Fri, 2 Aug 2019 01:31:49 +0000
-Message-ID: <20190802013149.80952-1-weiyongjun1@huawei.com>
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 2 Aug 2019 11:31:51 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <socketcan@hartkopp.net>, <davem@davemloft.net>,
+        <netdev@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        "Mao Wenan" <maowenan@huawei.com>
+Subject: [PATCH net-next] net: can: Fix compiling warning
+Date:   Fri, 2 Aug 2019 11:36:43 +0800
+Message-ID: <20190802033643.84243-1-maowenan@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
 X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -38,27 +36,46 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The memory return by kzalloc() has already be set to zero, so remove
-useless memset(0).
+There are two warings in net/can, fix them by setting bcm_sock_no_ioctlcmd
+and raw_sock_no_ioctlcmd as static.
 
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+net/can/bcm.c:1683:5: warning: symbol 'bcm_sock_no_ioctlcmd' was not declared. Should it be static?
+net/can/raw.c:840:5: warning: symbol 'raw_sock_no_ioctlcmd' was not declared. Should it be static?
+
+Fixes: 473d924d7d46 ("can: fix ioctl function removal")
+
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
 ---
- drivers/staging/fsl-dpaa2/ethsw/ethsw.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/can/bcm.c | 2 +-
+ net/can/raw.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/fsl-dpaa2/ethsw/ethsw.c b/drivers/staging/fsl-dpaa2/ethsw/ethsw.c
-index 4b94a01513a7..aac98ece2335 100644
---- a/drivers/staging/fsl-dpaa2/ethsw/ethsw.c
-+++ b/drivers/staging/fsl-dpaa2/ethsw/ethsw.c
-@@ -641,8 +641,6 @@ static int port_fdb_dump(struct sk_buff *skb, struct netlink_callback *cb,
- 	if (!dma_mem)
- 		return -ENOMEM;
+diff --git a/net/can/bcm.c b/net/can/bcm.c
+index bf1d0bbecec8..b8a32b4ac368 100644
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -1680,7 +1680,7 @@ static int bcm_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 	return size;
+ }
  
--	memset(dma_mem, 0, fdb_dump_size);
--
- 	fdb_dump_iova = dma_map_single(dev, dma_mem, fdb_dump_size,
- 				       DMA_FROM_DEVICE);
- 	if (dma_mapping_error(dev, fdb_dump_iova)) {
-
-
+-int bcm_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
++static int bcm_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
+ 			 unsigned long arg)
+ {
+ 	/* no ioctls for socket layer -> hand it down to NIC layer */
+diff --git a/net/can/raw.c b/net/can/raw.c
+index da386f1fa815..a01848ff9b12 100644
+--- a/net/can/raw.c
++++ b/net/can/raw.c
+@@ -837,7 +837,7 @@ static int raw_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 	return size;
+ }
+ 
+-int raw_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
++static int raw_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
+ 			 unsigned long arg)
+ {
+ 	/* no ioctls for socket layer -> hand it down to NIC layer */
+-- 
+2.20.1
 

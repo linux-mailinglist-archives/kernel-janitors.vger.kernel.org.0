@@ -2,80 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 51F777EAB3
-	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Aug 2019 05:32:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF7897EB48
+	for <lists+kernel-janitors@lfdr.de>; Fri,  2 Aug 2019 06:23:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727758AbfHBDcG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 1 Aug 2019 23:32:06 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3699 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726703AbfHBDcG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 1 Aug 2019 23:32:06 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 6527F679240EDF7CAACF;
-        Fri,  2 Aug 2019 11:32:02 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 2 Aug 2019 11:31:51 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <socketcan@hartkopp.net>, <davem@davemloft.net>,
-        <netdev@vger.kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        "Mao Wenan" <maowenan@huawei.com>
-Subject: [PATCH net-next] net: can: Fix compiling warning
-Date:   Fri, 2 Aug 2019 11:36:43 +0800
-Message-ID: <20190802033643.84243-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1731490AbfHBEXn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 2 Aug 2019 00:23:43 -0400
+Received: from smtprelay0250.hostedemail.com ([216.40.44.250]:50045 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728157AbfHBEXn (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 2 Aug 2019 00:23:43 -0400
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay03.hostedemail.com (Postfix) with ESMTP id AD9EA837F24D;
+        Fri,  2 Aug 2019 04:23:41 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::,RULES_HIT:41:355:379:973:988:989:1260:1277:1311:1313:1314:1345:1437:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3872:3876:4605:5007:10004:10400:10848:11658:11914:12297:12760:13069:13311:13357:13439:14096:14097:14659:21080:21627:30054,0,RBL:23.242.196.136:@perches.com:.lbl8.mailshell.net-62.8.0.180 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:23,LUA_SUMMARY:none
+X-HE-Tag: plot37_7776b4afd1f61
+X-Filterd-Recvd-Size: 1675
+Received: from XPS-9350.home (cpe-23-242-196-136.socal.res.rr.com [23.242.196.136])
+        (Authenticated sender: joe@perches.com)
+        by omf05.hostedemail.com (Postfix) with ESMTPA;
+        Fri,  2 Aug 2019 04:23:40 +0000 (UTC)
+Message-ID: <7a06b8e9acf87a871642166370ac50ec6c734ce8.camel@perches.com>
+Subject: linux kernel sources: more misspellings/tyops of <foo>iton words
+From:   Joe Perches <joe@perches.com>
+To:     kernel-janitors <kernel-janitors@vger.kernel.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Colin King <colin.king@canonical.com>
+Date:   Thu, 01 Aug 2019 21:23:39 -0700
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.30.5-0ubuntu0.18.10.1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There are two warings in net/can, fix them by setting bcm_sock_no_ioctlcmd
-and raw_sock_no_ioctlcmd as static.
+If any feels like it, here are some more typos from:
 
-net/can/bcm.c:1683:5: warning: symbol 'bcm_sock_no_ioctlcmd' was not declared. Should it be static?
-net/can/raw.c:840:5: warning: symbol 'raw_sock_no_ioctlcmd' was not declared. Should it be static?
+$ git grep -P '\b\w+itons?' | grep -ohP '\b\w+itons?' | sort | uniq -c | sort -rn
+      7 additon
+      6 definitons
+      5 Prediciton
+      5 instruciton
+      4 conditon
+      3 partititon
+      3 notificaiton
+      3 implementaiton
+      3 definiton
+      3 Additon
+      2 veriton
+      2 unconditon
+      2 poriton
+      2 parititon
+      2 initializaiton
+      2 defininitons
+      2 conneciton
+      2 configuraiton
+      1 translaiton
+      1 Transisitons
+      1 traditon
+      1 quesiton
+      1 positon
+      1 posiiton
+      1 partiton
+      1 moniton
+      1 inspeciton
+      1 infomraiton
+      1 implicaitons
+      1 identificaiton
+      1 generaiton
+      1 encrypiton
+      1 destinaiton
+      1 declariton
+      1 confirmaiton
+      1 Configuraiton
+      1 conditons
+      1 calculaiton
+      1 applicaiton
+      1 allocaiton
 
-Fixes: 473d924d7d46 ("can: fix ioctl function removal")
-
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
----
- net/can/bcm.c | 2 +-
- net/can/raw.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/net/can/bcm.c b/net/can/bcm.c
-index bf1d0bbecec8..b8a32b4ac368 100644
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -1680,7 +1680,7 @@ static int bcm_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 	return size;
- }
- 
--int bcm_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
-+static int bcm_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
- 			 unsigned long arg)
- {
- 	/* no ioctls for socket layer -> hand it down to NIC layer */
-diff --git a/net/can/raw.c b/net/can/raw.c
-index da386f1fa815..a01848ff9b12 100644
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -837,7 +837,7 @@ static int raw_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 	return size;
- }
- 
--int raw_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
-+static int raw_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
- 			 unsigned long arg)
- {
- 	/* no ioctls for socket layer -> hand it down to NIC layer */
--- 
-2.20.1
 

@@ -2,35 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9032D818E7
-	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Aug 2019 14:12:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F53881951
+	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Aug 2019 14:31:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728028AbfHEMMA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 5 Aug 2019 08:12:00 -0400
-Received: from mout.web.de ([212.227.17.12]:57253 "EHLO mout.web.de"
+        id S1728144AbfHEMbD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 5 Aug 2019 08:31:03 -0400
+Received: from mout.web.de ([217.72.192.78]:33601 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727349AbfHEMMA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 5 Aug 2019 08:12:00 -0400
+        id S1727349AbfHEMbD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 5 Aug 2019 08:31:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1565007107;
-        bh=DN9auCtedXhVjg71g+2ZUtne4mAwANQeTHFbI2JnUog=;
+        s=dbaedf251592; t=1565008256;
+        bh=tzKShZ2/Dvkrww1urrj29rSoI7Xak7oU4hVwPnF7So8=;
         h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
-        b=qTmcwj2PIJM30D5lMlE0iAel3Iuc3Gd0U+yHH/D0IbszIT7A8Ys6AMY5jHL9rQ0lS
-         at3YxMG0nUauUCsN35QJ76Dn0eA+jFW3B9Hy26mXqq20GmDz5BGyrYUx+9CWwfqvb3
-         qvg6xIJGI+FNaHwXG5Ah7iqfflf017W2z7baB1lg=
+        b=EUpNtT1LFyfKbEUZ11vH9Qk/YMefOSXoXIcQ6qY/y919tkCAMGGiLVQFrX7KQkdHt
+         I1w8HgZDHCIFbU3K8Zxg21V7sSPSOf+80P8bFcJRNPS59FL70wV3bhuEeUR+t8wE0M
+         q6Jl6m8hRcNlUBZYFHIaXXKkiF4klxNKWLwvwcNk=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.163.134]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LZvUH-1ibwLu0e8T-00lmys; Mon, 05
- Aug 2019 14:11:47 +0200
+Received: from [192.168.1.2] ([93.132.163.134]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M1G68-1iAEBM0LlI-00t9zm; Mon, 05
+ Aug 2019 14:30:56 +0200
 To:     Nishka Dasgupta <nishkadg.linux@gmail.com>,
-        Andy Gross <agross@kernel.org>,
-        Kishon Vijay Abraham I <kishon@ti.com>,
-        Vivek Gautam <vivek.gautam@codeaurora.org>,
-        linux-arm-msm@vger.kernel.org
+        Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20190804162420.6005-1-nishkadg.linux@gmail.com>
-Subject: Re: [PATCH] phy: qualcomm: phy-qcom-qmp: Add of_node_put() before
- return
+References: <20190804162023.5673-1-nishkadg.linux@gmail.com>
+Subject: Re: [PATCH] regulator: core: Add of_node_put() before return
 From:   Markus Elfring <Markus.Elfring@web.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
@@ -76,54 +73,63 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <239020d9-ff8a-237d-b52c-bf2423f9609b@web.de>
-Date:   Mon, 5 Aug 2019 14:11:45 +0200
+Message-ID: <127231a4-f181-e172-2262-eb2604cacb0b@web.de>
+Date:   Mon, 5 Aug 2019 14:30:55 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190804162420.6005-1-nishkadg.linux@gmail.com>
+In-Reply-To: <20190804162023.5673-1-nishkadg.linux@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:l5HrBNNs+hVlre9sLU5kguHduTygiitpXMFzs6LEZ9C3DkAZah2
- kJRGoW0XigxBxuNCKgezh7xeJ6RfJ+MS23m65UMa34OSua+1YoZtyKAuL7Q4HA27fSkIjNb
- 6Do0yfRxp5kt09ZFJE8/QNiCEGFqZCaNRHkAmcl/BCCIuYVTUU90HYa1d0odKW0yQIQTsD9
- 1aYnZH/QgqPwMl7req/qw==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:8kabLYinEM8xQO8kHHX3i+qIraeKMHwrh8Og99qJ1m7KAWg4MZ3
+ DTv618bMfp2H1gyP8PTLXnEXowh56aK2WYJY0sz14EnXqLeh3fAbxZcLuJ2TfKViWk68g7+
+ FxfK4wc5+illvU0e0/NtLwNtC+GLINDcIRCrwSGTZuChnmVn8kIpWoAfoZTGjOTIqfOzQUQ
+ gJ5bFzfOufd4EQHryo3Ew==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+eqZ6FNivI0=:c8Be0f21BiZvDKF++97y/a
- qCPgkB5/bEnTqk9zRDk+klz6gR7TgVX8/2ucy99QbvMwfwgs39T2nTBBwzETbLiVfCTz8Y1pT
- 6oNLiLeOBkz+qnjRxIFswC2uJWVDl6E1fyw9bPero4Cs2Po8rYSa4EhLhyxFvI5fyyDW3XUJN
- PSHAIPyjAWM6hfUVhszhMDo7PzVbo9VzyLc+hLa15cUyPKvyRt9sSNksf/h/EQC0xwZAKTcGk
- 8sRFa/rdcUcwGRNLHNyaie3+gEvxESRAPqfhbD8xHV9GNMQ26TTrlx7hOZdS6kDJWGWw8wrsz
- wqJjWQeOu/1aj0PbDc3yrDeEuNpDdBdoB5HXPiir4cBcc069icYu2/S9FEAFlXDr++GTwtH/h
- Gek+7A7jqBtJJnva8nrrT63ngBwdc7Yupytyz8sYE9DRT2whaZUqo66QsCZJJsehUDUbc93+C
- bSk9lrvCHSYER5fxhJomUbM6itbEZ+Pcqkx/WQHpRfv7FWLtBm+C5GfWL7QwsbE2mIN7/nDkB
- +U1sRWNpRDHv5Xf19/9mwgsATGSA1qlq803JZmjIY9i+RPXsCjjIInM7i9lZfzRfCYetR4+fb
- NuG2Ok38oNF88+WjAgWFc68xJ5Q8bMXT+Dsdi3oTcjsCLjFdOAQeYyLwIgCo0bfrVBsWyxaOF
- NM9AgLIaZ7d7hBb42Q40qpuUq805PimonKn+JA43aqm0ildu/VLPzd5IsFboBqBZ7FPC/N28T
- 6NXIZwj2FSSeYT0KzYIiZ3B3Ni6nFLdeAvjBIKElxoAT4YqUZuik/UAvcms4pulyt0EpXnG3C
- Sh9hhmNmK+S9pkmQgEMATPvP/HB9UulNU4+dmmhj09+NgoH0HuBAz+INgRIRBTZjgBICxu1Hd
- ZF3gLvp58gAO6i2dQxQPr0N2rIYlL8Ff/goI3eThn3AREceKQKvZtFH1WrETeS0mQ1RS634k+
- kwTyK5Pjt7HD7c9oVxvGUtmwBu0KUxCJ90DpHoMagr/CI5zByIOqI932YzCne1hMXGyOiI7Ex
- mvpVZxDfzsL4gbZXyR9Yd6sryBfx5OjZo9+8fM1IGlP9QujwpNftT1X+yXojpDN/2PkucQonA
- HbEhM2oTf4HGwHMAGcIdh7erBgzW4zn9VQZ+eRGj5ipCzuCeqiW1sRh3aUAqiVjvWLSh7UujE
- 0MxZc=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1a7Q0J7/lgs=:ZkJWcf3+6AJELJbzqNesIh
+ WvHjhAAoyvRJNtBLTJh+P+PzxnDzgF5/uBd8eJxBeeZ1de1T17BO1hBasMFZlIsHtzBspjeqB
+ KKhgH0guETdYQc1FednIxXLSiPnK7LE0dZhSEd8wKdjwpwHjo0CExABwUHHToh2m3p+8Ztwsv
+ EC0WKG2AnfiZZop1n84AjcXpTBc81rBXsNnbEAyZbipH6e9ne2sw4IV0TgB0k3vAxeMYjcDei
+ 3YqShlr2dGs5CVgwHHWsWFFwDFr+K+Kf9QShKAFBhQNIBz3h81f5SkeTTe/w3Ur3JhKsgRsKm
+ WYcyX1qR5iP5bGsI4xoEvH5bxcPO7RwlJbS6RA5lEkSu36G7be/oM+pUnuVEqg86z42XfiUIr
+ FpAgaYhJNFY6oynyD+pmUXy7NyUSNYOMOO4EZ79nuKuRHlYaInTNelcC8ynOnBY9DyHV9Px7d
+ cZcxdUUvuNXbpXXHr4pmEKJJFKIiAA7cZcjC5U202W+FPHLTcdd0UEusZzgJ6mZzwLjoshnO4
+ ePBilG19XvZpTymzDdF+w2A7sEyW+HgcIH9claVkilDHp49X4SVxkGSp2bu00kJUOVLWi7VqW
+ hchP65mWquMgZVWmYnEyrfFPnLQs3f+LVnThpL/gtRJ+9Q6WlALSxKJtVqkeg8HimfcbhYJgt
+ DJ80KvKp8m9YJPI9OpiNW0pfr82fjdWJfn84DHgJE48YYl6imZBZSLx4y3E92Sd7rjl/XUAAH
+ 4C5eH1U47dpTBXooMoh7c66oP/kOcxfBKF31uKt6v/V97UIBRetQKRgnzp//ORElUYWsC9IOQ
+ ogbgshelniMn/KzVrZk3tQJwA3Zs8JSDm5ROFUGSy0IcwbVWLHKdOoFGb8CFOw8wO39y2O+JR
+ /ScXDfA+w2mkMmaawjXN7bs8ua2P5YpwRd8b45QeYazvKWUI6CPZktzkPL0j4WgE2F7QIDUtn
+ 7z22vRmCbdPoYvs/u609RB2INkP2thl4kldg1wJTgBTV/lN1Ox4ICt76RUMz3WslxggvITRJH
+ vTQPsinw3f6fKoruwDVQbFCO47Y/94CRihSC0FZLthjsqW7kX4pizeNv1L3bJ1UkxwkugiHMq
+ 1Zs6c2AS6OcnCNyke1pOjDGksOwfrZQ4TRLFHoJ94uOGrWUjC3L37sM5SAyBOrlFeO+TzPXEO
+ 2B7l0=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> +++ b/drivers/phy/qualcomm/phy-qcom-qmp.c
-> @@ -2094,6 +2094,7 @@ static int qcom_qmp_phy_probe(struct platform_device *pdev)
->  			dev_err(dev, "failed to create lane%d phy, %d\n",
->  				id, ret);
->  			pm_runtime_disable(dev);
+> +++ b/drivers/regulator/core.c
+> @@ -380,9 +380,12 @@ static struct device_node *of_get_child_regulator(s=
+truct device_node *parent,
+>
+>  		if (!regnode) {
+>  			regnode =3D of_get_child_regulator(child, prop_name);
+> -			if (regnode)
+> +			if (regnode) {
+> +				of_node_put(child);
+>  				return regnode;
+> +			}
+>  		} else {
 > +			of_node_put(child);
->  			return ret;
+>  			return regnode;
 >  		}
+>  	}
 
-I suggest to move a bit of common exception handling code to the end of
+I suggest to move common exception handling code to the end of
 this function implementation.
-Would you like to add a jump target?
+Would you like to add a jump target like =E2=80=9Cput_node=E2=80=9D?
 
 Regards,
 Markus

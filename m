@@ -2,78 +2,50 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B24E81FBB
-	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Aug 2019 17:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F02A823FD
+	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Aug 2019 19:28:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729347AbfHEPEf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 5 Aug 2019 11:04:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36864 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728885AbfHEPEf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 5 Aug 2019 11:04:35 -0400
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net [24.9.64.241])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 00229206C1;
-        Mon,  5 Aug 2019 15:04:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1565017474;
-        bh=jk/fAuuZog76dawO1BTh9K0DlnzSAGQ/c9oCIJD/ZPM=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=R3Lcx7HD1+L5K3lEv5JxQMQ0kwnWMlx/g+powkUUnYk+RNJfhjm+v4RENBwq9W0hU
-         lIhpLOFRtxOM2EL/9rakrQieKoonxyZDyX9CzLtVtHXM7P3cwdr0CijHpNDP0qfRvu
-         yyJTaB++ptpZIikwCieSVadNlhOptUS/A1tOtbfA=
+        id S1729631AbfHER2N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 5 Aug 2019 13:28:13 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:59560 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729496AbfHER2N (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 5 Aug 2019 13:28:13 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 5F24515407F16;
+        Mon,  5 Aug 2019 10:28:12 -0700 (PDT)
+Date:   Mon, 05 Aug 2019 10:28:11 -0700 (PDT)
+Message-Id: <20190805.102811.142667979127203692.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     shuah@kernel.org, netdev@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 Subject: Re: [PATCH]][next] selftests: nettest: fix spelling mistake:
  "potocol" -> "protocol"
-To:     Colin King <colin.king@canonical.com>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-kselftest@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        shuah <shuah@kernel.org>
-References: <20190805105211.27229-1-colin.king@canonical.com>
-From:   shuah <shuah@kernel.org>
-Message-ID: <75376116-74e5-83ea-2bf8-837b10ff5439@kernel.org>
-Date:   Mon, 5 Aug 2019 09:04:14 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
+From:   David Miller <davem@davemloft.net>
 In-Reply-To: <20190805105211.27229-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+References: <20190805105211.27229-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 05 Aug 2019 10:28:12 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 8/5/19 4:52 AM, Colin King wrote:
+From: Colin King <colin.king@canonical.com>
+Date: Mon,  5 Aug 2019 11:52:11 +0100
+
 > From: Colin Ian King <colin.king@canonical.com>
 > 
 > There is a spelling mistake in an error messgae. Fix it.
 > 
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->   tools/testing/selftests/net/nettest.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/net/nettest.c b/tools/testing/selftests/net/nettest.c
-> index 9278f8460d75..83515e5ea4dc 100644
-> --- a/tools/testing/selftests/net/nettest.c
-> +++ b/tools/testing/selftests/net/nettest.c
-> @@ -1627,7 +1627,7 @@ int main(int argc, char *argv[])
->   				args.protocol = pe->p_proto;
->   			} else {
->   				if (str_to_uint(optarg, 0, 0xffff, &tmp) != 0) {
-> -					fprintf(stderr, "Invalid potocol\n");
-> +					fprintf(stderr, "Invalid protocol\n");
->   					return 1;
->   				}
->   				args.protocol = tmp;
-> 
 
-Assuming this will go through net tree
-
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-
-thanks,
--- Shuah
+Applied to net-next.

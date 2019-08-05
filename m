@@ -2,76 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D1878170D
-	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Aug 2019 12:29:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E866C8173F
+	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Aug 2019 12:41:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728281AbfHEK3p (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 5 Aug 2019 06:29:45 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:60608 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727357AbfHEK3p (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 5 Aug 2019 06:29:45 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1huaFI-0006WD-Vn; Mon, 05 Aug 2019 10:29:41 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Rex Zhu <rex.zhu@amd.com>, Evan Quan <evan.quan@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][drm-next] drm/amd/powerplay: remove redundant duplicated return check
-Date:   Mon,  5 Aug 2019 11:29:40 +0100
-Message-Id: <20190805102940.26024-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728015AbfHEKlk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 5 Aug 2019 06:41:40 -0400
+Received: from mga04.intel.com ([192.55.52.120]:24042 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727158AbfHEKlk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 5 Aug 2019 06:41:40 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Aug 2019 03:41:39 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,349,1559545200"; 
+   d="scan'208";a="325280133"
+Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.164]) ([10.237.72.164])
+  by orsmga004.jf.intel.com with ESMTP; 05 Aug 2019 03:41:37 -0700
+Subject: Re: [PATCH 0/2] usb: xhci: dbc: 2 smalll fixes for
+ 'xhci_dbc_alloc_requests()'
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        mathias.nyman@intel.com, gregkh@linuxfoundation.org
+Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <cover.1564577335.git.christophe.jaillet@wanadoo.fr>
+From:   Mathias Nyman <mathias.nyman@linux.intel.com>
+Message-ID: <32129b2c-e447-9e80-90df-e99f74308bcc@linux.intel.com>
+Date:   Mon, 5 Aug 2019 13:43:32 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1564577335.git.christophe.jaillet@wanadoo.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 31.7.2019 15.51, Christophe JAILLET wrote:
+> 
+> 
+> Christophe JAILLET (2):
+>    usb: xhci: dbc: Simplify error handling in 'xhci_dbc_alloc_requests()'
+>    usb: xhci: dbc: Use GFP_KERNEL instead of GFP_ATOMIC in
+>      'xhci_dbc_alloc_requests()'
+> 
+>   drivers/usb/host/xhci-dbgtty.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
 
-The check on ret is duplicated in two places, it is redundant code.
-Remove it.
+Thanks, adding to queue
 
-Addresses-Coverity: ("Logically dead code")
-Fixes: b94afb61cdae ("drm/amd/powerplay: honor hw limit on fetching metrics data for navi10")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/amd/powerplay/navi10_ppt.c | 4 ----
- 1 file changed, 4 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/powerplay/navi10_ppt.c b/drivers/gpu/drm/amd/powerplay/navi10_ppt.c
-index d62c2784b102..b272c8dc8f79 100644
---- a/drivers/gpu/drm/amd/powerplay/navi10_ppt.c
-+++ b/drivers/gpu/drm/amd/powerplay/navi10_ppt.c
-@@ -941,8 +941,6 @@ static int navi10_get_gpu_power(struct smu_context *smu, uint32_t *value)
- 	ret = navi10_get_metrics_table(smu, &metrics);
- 	if (ret)
- 		return ret;
--	if (ret)
--		return ret;
- 
- 	*value = metrics.AverageSocketPower << 8;
- 
-@@ -1001,8 +999,6 @@ static int navi10_get_fan_speed_rpm(struct smu_context *smu,
- 	ret = navi10_get_metrics_table(smu, &metrics);
- 	if (ret)
- 		return ret;
--	if (ret)
--		return ret;
- 
- 	*speed = metrics.CurrFanSpeed;
- 
--- 
-2.20.1
-
+-Mathias

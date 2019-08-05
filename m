@@ -2,97 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A147E806EF
-	for <lists+kernel-janitors@lfdr.de>; Sat,  3 Aug 2019 17:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA5F780FEE
+	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Aug 2019 03:14:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727859AbfHCPCt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 3 Aug 2019 11:02:49 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:36531 "EHLO
-        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727854AbfHCPCt (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 3 Aug 2019 11:02:49 -0400
-Received: by mail-io1-f65.google.com with SMTP id o9so55109541iom.3;
-        Sat, 03 Aug 2019 08:02:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Fo/kv+brWQ1flp7Vdkb8WoUBvAMa5Whd0L9OkVELuTQ=;
-        b=PMPGtK8UFs07wgyVwxnfAQyx3EFb0wXBwNBqjDExProlToHDrO8vJ1hKOZY4+mtnY6
-         EK1ULx/2yyTfRyW9lgo5KJwuJInKH2ClW5dsywvBbP+XNueqGOhItEYmxJNtP/DihL3j
-         elV0Eh6W7RGnsfDsdt6UEcjakmGtslXbd3KiADHYYA+eGl2ne/yQJn0fJtvRFYrAysdc
-         iJuLr3jxvoTZdXNjRUq60+UxbKic/xv1cG+Ph0uhlKsk45vC/7P8RTm/CmUkgMX+9qVS
-         7pgB+Hi9W/JvahVts2rVeUCj3cf4QrWmrZt4Do/UV3DFbVDMZwwP5SO9eMKY8ZSUkb+t
-         yq8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Fo/kv+brWQ1flp7Vdkb8WoUBvAMa5Whd0L9OkVELuTQ=;
-        b=Erh04UxC24116R9oFA/aP+VpEpTOVqY/aSFHC0qQLuqSyGK0P3Z0b1b6oLUOWYU81D
-         0wK1PLucb5pM6hiVon+lSeYLLAbvRIc7VA6i27kE/7Xw2z3ZNxbhRp6D+hTAdTt3kshX
-         aTd87x2dYl6PQXmZnPWMWp0pLxoVK6Hp7/jemE82+O/+1shVdvyNh6y5oB1qgnWvwZaH
-         Cl/+U7pSabiWVHS38kabH1FH32nN54L1/rOJJhWvHULXzrHWvWn1Gy9QrGrFcecMT3tk
-         9xzD0qnkH9LuxDICS5ZVOxHMXnJWvepXPZbWjhHZAlfbDRMl47umVzRIMT923rb+/qIo
-         BKAg==
-X-Gm-Message-State: APjAAAW17REctFgznjxIqvuznV1dbubB2BU0hYl+g6hM0BgXs070ylD1
-        Hu+XjGKdXj3RCjKHLKEKXBQlNGzZvkzWX34V5MJntY/g
-X-Google-Smtp-Source: APXvYqxcf3eS9deQHUBrGtW7fFUKmTKrSFL7EwRO762escS+44kEsee8qFfmBQ4ZGsZsDRuvdb/3GYwhCE5lb9mohnE=
-X-Received: by 2002:a5d:968b:: with SMTP id m11mr84322526ion.16.1564844567923;
- Sat, 03 Aug 2019 08:02:47 -0700 (PDT)
+        id S1726795AbfHEBOF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 4 Aug 2019 21:14:05 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:59232 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726666AbfHEBOF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 4 Aug 2019 21:14:05 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 3A090BDDD9243CAA8F73;
+        Mon,  5 Aug 2019 09:14:02 +0800 (CST)
+Received: from [127.0.0.1] (10.177.96.96) by DGGEMS402-HUB.china.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0; Mon, 5 Aug 2019
+ 09:14:01 +0800
+Subject: Re: [PATCH net-next] net: can: Fix compiling warning
+To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
+        <socketcan@hartkopp.net>, <davem@davemloft.net>,
+        <netdev@vger.kernel.org>
+References: <20190802033643.84243-1-maowenan@huawei.com>
+ <133b3357-e0a4-64c8-40b7-02d386e12cef@cogentembedded.com>
+CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+From:   maowenan <maowenan@huawei.com>
+Message-ID: <1d9e329a-eafc-6c32-ee2a-df3b15231a2a@huawei.com>
+Date:   Mon, 5 Aug 2019 09:13:59 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-References: <20190802151316.16011-1-colin.king@canonical.com>
-In-Reply-To: <20190802151316.16011-1-colin.king@canonical.com>
-From:   Parav Pandit <pandit.parav@gmail.com>
-Date:   Sat, 3 Aug 2019 20:32:37 +0530
-Message-ID: <CAG53R5VvSwYYVhSLpLpGyrPt6emLy_YCDBPjzWSng9EpVcQDoQ@mail.gmail.com>
-Subject: Re: [PATCH][net-next][V2] net/mlx5: remove self-assignment on esw->dev
-To:     Colin King <colin.king@canonical.com>
-Cc:     Saeed Mahameed <saeedm@mellanox.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-rdma <linux-rdma@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <133b3357-e0a4-64c8-40b7-02d386e12cef@cogentembedded.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.96.96]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Aug 3, 2019 at 7:54 PM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> There is a self assignment of esw->dev to itself, clean this up by
-> removing it. Also make dev a const pointer.
->
-> Addresses-Coverity: ("Self assignment")
-> Fixes: 6cedde451399 ("net/mlx5: E-Switch, Verify support QoS element type")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->
-> V2: make dev const
->
-> ---
->  drivers/net/ethernet/mellanox/mlx5/core/eswitch.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-> index f4ace5f8e884..de0894b695e3 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch.c
-> @@ -1413,7 +1413,7 @@ static int esw_vport_egress_config(struct mlx5_eswitch *esw,
->
->  static bool element_type_supported(struct mlx5_eswitch *esw, int type)
->  {
-> -       struct mlx5_core_dev *dev = esw->dev = esw->dev;
-> +       const struct mlx5_core_dev *dev = esw->dev;
->
->         switch (type) {
->         case SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR:
-> --
-> 2.20.1
->
-Reviewed-by: Parav Pandit <parav@mellanox.com>
+
+
+On 2019/8/2 16:59, Sergei Shtylyov wrote:
+> Hello!
+> 
+> On 02.08.2019 6:36, Mao Wenan wrote:
+> 
+>> There are two warings in net/can, fix them by setting bcm_sock_no_ioctlcmd
+> 
+>    Warnings. :-)
+
+Thanks, I will send v2.
+
+> 
+>> and raw_sock_no_ioctlcmd as static.
+>>
+>> net/can/bcm.c:1683:5: warning: symbol 'bcm_sock_no_ioctlcmd' was not declared. Should it be static?
+>> net/can/raw.c:840:5: warning: symbol 'raw_sock_no_ioctlcmd' was not declared. Should it be static?
+>>
+>> Fixes: 473d924d7d46 ("can: fix ioctl function removal")
+>>
+>> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> [...]
+> 
+> MBR, Sergei
+> 
+> 
+

@@ -2,50 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F02A823FD
-	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Aug 2019 19:28:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A7D582404
+	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Aug 2019 19:30:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729631AbfHER2N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 5 Aug 2019 13:28:13 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:59560 "EHLO
+        id S1729198AbfHERaD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 5 Aug 2019 13:30:03 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:59576 "EHLO
         shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729496AbfHER2N (ORCPT
+        with ESMTP id S1726847AbfHERaD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 5 Aug 2019 13:28:13 -0400
+        Mon, 5 Aug 2019 13:30:03 -0400
 Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 5F24515407F16;
-        Mon,  5 Aug 2019 10:28:12 -0700 (PDT)
-Date:   Mon, 05 Aug 2019 10:28:11 -0700 (PDT)
-Message-Id: <20190805.102811.142667979127203692.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     shuah@kernel.org, netdev@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH]][next] selftests: nettest: fix spelling mistake:
- "potocol" -> "protocol"
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 23CE5154080F5;
+        Mon,  5 Aug 2019 10:30:03 -0700 (PDT)
+Date:   Mon, 05 Aug 2019 10:30:02 -0700 (PDT)
+Message-Id: <20190805.103002.641507066504156536.davem@davemloft.net>
+To:     maowenan@huawei.com
+Cc:     socketcan@hartkopp.net, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net-next v3] net: can: Fix compiling warnings for two
+ functions
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190805105211.27229-1-colin.king@canonical.com>
-References: <20190805105211.27229-1-colin.king@canonical.com>
+In-Reply-To: <20190805115744.112440-1-maowenan@huawei.com>
+References: <6fd68e9b-a8ae-4e5e-9b23-c099b5ca9aa4@web.de>
+        <20190805115744.112440-1-maowenan@huawei.com>
 X-Mailer: Mew version 6.8 on Emacs 26.1
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 05 Aug 2019 10:28:12 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 05 Aug 2019 10:30:03 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Mon,  5 Aug 2019 11:52:11 +0100
+From: Mao Wenan <maowenan@huawei.com>
+Date: Mon, 5 Aug 2019 19:57:44 +0800
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in an error messgae. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> @@ -1680,7 +1680,7 @@ static int bcm_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
+>  	return size;
+>  }
+>  
+> -int bcm_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
+> +static int bcm_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
+>  			 unsigned long arg)
 
-Applied to net-next.
+The alignment of the second line here needs to be adjusted, it must start
+precisely at the first column after the openning parenthesis of the first
+line.
+
+Same for the other change in this patch.

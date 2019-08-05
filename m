@@ -2,52 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03F0481965
-	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Aug 2019 14:36:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B24E81FBB
+	for <lists+kernel-janitors@lfdr.de>; Mon,  5 Aug 2019 17:04:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728144AbfHEMgR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 5 Aug 2019 08:36:17 -0400
-Received: from mx2.suse.de ([195.135.220.15]:51780 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726315AbfHEMgR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 5 Aug 2019 08:36:17 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id E5DB6AC8C;
-        Mon,  5 Aug 2019 12:36:15 +0000 (UTC)
-Received: by ds.suse.cz (Postfix, from userid 10065)
-        id B24F0DABC7; Mon,  5 Aug 2019 14:36:47 +0200 (CEST)
-Date:   Mon, 5 Aug 2019 14:36:47 +0200
-From:   David Sterba <dsterba@suse.cz>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][btrfs-next] btrfs: fix spelling mistake "aliged" ->
- "aligned"
-Message-ID: <20190805123647.GZ28208@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-Mail-Followup-To: dsterba@suse.cz, Colin King <colin.king@canonical.com>,
-        Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190805104732.26738-1-colin.king@canonical.com>
+        id S1729347AbfHEPEf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 5 Aug 2019 11:04:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36864 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728885AbfHEPEf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 5 Aug 2019 11:04:35 -0400
+Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net [24.9.64.241])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 00229206C1;
+        Mon,  5 Aug 2019 15:04:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1565017474;
+        bh=jk/fAuuZog76dawO1BTh9K0DlnzSAGQ/c9oCIJD/ZPM=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=R3Lcx7HD1+L5K3lEv5JxQMQ0kwnWMlx/g+powkUUnYk+RNJfhjm+v4RENBwq9W0hU
+         lIhpLOFRtxOM2EL/9rakrQieKoonxyZDyX9CzLtVtHXM7P3cwdr0CijHpNDP0qfRvu
+         yyJTaB++ptpZIikwCieSVadNlhOptUS/A1tOtbfA=
+Subject: Re: [PATCH]][next] selftests: nettest: fix spelling mistake:
+ "potocol" -> "protocol"
+To:     Colin King <colin.king@canonical.com>,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-kselftest@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        shuah <shuah@kernel.org>
+References: <20190805105211.27229-1-colin.king@canonical.com>
+From:   shuah <shuah@kernel.org>
+Message-ID: <75376116-74e5-83ea-2bf8-837b10ff5439@kernel.org>
+Date:   Mon, 5 Aug 2019 09:04:14 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190805104732.26738-1-colin.king@canonical.com>
-User-Agent: Mutt/1.5.23.1 (2014-03-12)
+In-Reply-To: <20190805105211.27229-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Aug 05, 2019 at 11:47:32AM +0100, Colin King wrote:
+On 8/5/19 4:52 AM, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> There is a spelling mistake in an extent_err error message. Fix it.
+> There is a spelling mistake in an error messgae. Fix it.
 > 
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>   tools/testing/selftests/net/nettest.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/net/nettest.c b/tools/testing/selftests/net/nettest.c
+> index 9278f8460d75..83515e5ea4dc 100644
+> --- a/tools/testing/selftests/net/nettest.c
+> +++ b/tools/testing/selftests/net/nettest.c
+> @@ -1627,7 +1627,7 @@ int main(int argc, char *argv[])
+>   				args.protocol = pe->p_proto;
+>   			} else {
+>   				if (str_to_uint(optarg, 0, 0xffff, &tmp) != 0) {
+> -					fprintf(stderr, "Invalid potocol\n");
+> +					fprintf(stderr, "Invalid protocol\n");
+>   					return 1;
+>   				}
+>   				args.protocol = tmp;
+> 
 
-Thanks, I've folded the fix to the patch ("btrfs: tree-checker: Add
-EXTENT_ITEM and METADATA_ITEM check").
+Assuming this will go through net tree
+
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+
+thanks,
+-- Shuah

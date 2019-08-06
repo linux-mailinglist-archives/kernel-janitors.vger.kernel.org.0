@@ -2,63 +2,49 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8512837CF
-	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Aug 2019 19:24:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE78A838A7
+	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Aug 2019 20:34:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732357AbfHFRYa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 6 Aug 2019 13:24:30 -0400
-Received: from ms.lwn.net ([45.79.88.28]:45064 "EHLO ms.lwn.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729161AbfHFRYa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 6 Aug 2019 13:24:30 -0400
-Received: from lwn.net (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id B1B26728;
-        Tue,  6 Aug 2019 17:24:29 +0000 (UTC)
-Date:   Tue, 6 Aug 2019 11:24:28 -0600
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Henrik Rydberg <rydberg@bitmath.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        linux-input@vger.kernel.org, linux-doc@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Input: docs: fix spelling mistake "potocol" ->
- "protocol"
-Message-ID: <20190806112428.3ab5d604@lwn.net>
-In-Reply-To: <20190805104951.26947-1-colin.king@canonical.com>
-References: <20190805104951.26947-1-colin.king@canonical.com>
-Organization: LWN.net
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
+        id S1732956AbfHFSei (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 6 Aug 2019 14:34:38 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:47784 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728879AbfHFSeh (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 6 Aug 2019 14:34:37 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 03E6B152488D1;
+        Tue,  6 Aug 2019 11:34:36 -0700 (PDT)
+Date:   Tue, 06 Aug 2019 11:34:36 -0700 (PDT)
+Message-Id: <20190806.113436.87450273064586797.davem@davemloft.net>
+To:     christophe.jaillet@wanadoo.fr
+Cc:     vishal@chelsio.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] net: cxgb3_main: Fix a resource leak in a error path
+ in 'init_one()'
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190806085512.11729-1-christophe.jaillet@wanadoo.fr>
+References: <20190806085512.11729-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 06 Aug 2019 11:34:37 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon,  5 Aug 2019 11:49:51 +0100
-Colin King <colin.king@canonical.com> wrote:
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Tue,  6 Aug 2019 10:55:12 +0200
 
-> There is a minor spelling mistake in the documentation, fix it.
+> A call to 'kfree_skb()' is missing in the error handling path of
+> 'init_one()'.
+> This is already present in 'remove_one()' but is missing here.
 > 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  Documentation/input/multi-touch-protocol.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/input/multi-touch-protocol.rst b/Documentation/input/multi-touch-protocol.rst
-> index 6be70342e709..307fe22d9668 100644
-> --- a/Documentation/input/multi-touch-protocol.rst
-> +++ b/Documentation/input/multi-touch-protocol.rst
-> @@ -23,7 +23,7 @@ devices capable of tracking identifiable contacts (type B), the protocol
->  describes how to send updates for individual contacts via event slots.
->  
->  .. note::
-> -   MT potocol type A is obsolete, all kernel drivers have been
-> +   MT protocol type A is obsolete, all kernel drivers have been
->     converted to use type B.
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Applied, thanks.
-
-jon
+Looks good, applied, thanks.

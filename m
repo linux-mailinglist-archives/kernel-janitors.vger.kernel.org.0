@@ -2,78 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 07B04833C4
-	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Aug 2019 16:17:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72C3983413
+	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Aug 2019 16:36:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732943AbfHFORf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 6 Aug 2019 10:17:35 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:50476 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732878AbfHFORf (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 6 Aug 2019 10:17:35 -0400
-Received: from localhost.localdomain ([90.33.211.207])
-        by mwinf5d41 with ME
-        id lqHT2000N4V2DRm03qHTd8; Tue, 06 Aug 2019 16:17:32 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 06 Aug 2019 16:17:32 +0200
-X-ME-IP: 90.33.211.207
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     tglx@linutronix.de, gregkh@linuxfoundation.org,
-        colin.king@canonical.com, davem@davemloft.net, allison@lohutok.net
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] nfc: st-nci: Fix an incorrect skb_buff size in 'st_nci_i2c_read()'
-Date:   Tue,  6 Aug 2019 16:16:40 +0200
-Message-Id: <20190806141640.13197-1-christophe.jaillet@wanadoo.fr>
+        id S1733031AbfHFOgY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 6 Aug 2019 10:36:24 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:39340 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1731783AbfHFOgY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 6 Aug 2019 10:36:24 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id DA590CFB332690251CE8;
+        Tue,  6 Aug 2019 22:36:17 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 6 Aug 2019 22:36:07 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <socketcan@hartkopp.net>, <davem@davemloft.net>,
+        <netdev@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        "Mao Wenan" <maowenan@huawei.com>
+Subject: [PATCH net-next v5] net: can: Fix sparse warnings for two functions
+Date:   Tue, 6 Aug 2019 22:40:43 +0800
+Message-ID: <20190806144043.187422-1-maowenan@huawei.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <d928a635-accd-2a8f-1829-5d7da551a8e8@web.de>
+References: <d928a635-accd-2a8f-1829-5d7da551a8e8@web.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In 'st_nci_i2c_read()', we allocate a sk_buff with a size of
-ST_NCI_I2C_MIN_SIZE + len.
+There are two warnings in net/can, fix them by setting
+bcm_sock_no_ioctlcmd and raw_sock_no_ioctlcmd as static.
 
-However, later on, we first 'skb_reserve()' ST_NCI_I2C_MIN_SIZE bytes, then
-we 'skb_put()' ST_NCI_I2C_MIN_SIZE bytes.
-Finally, if 'len' is not 0, we 'skb_put()' 'len' bytes.
+net/can/bcm.c:1683:5: warning: symbol 'bcm_sock_no_ioctlcmd' was not declared. Should it be static?
+net/can/raw.c:840:5: warning: symbol 'raw_sock_no_ioctlcmd' was not declared. Should it be static?
 
-So we use ST_NCI_I2C_MIN_SIZE*2 + len bytes.
-
-This is incorrect and should already panic. I guess that it does not occur
-because of extra memory allocated because of some rounding.
-
-Fix it and allocate enough room for the 'skb_reserve()' and the 'skb_put()'
-calls.
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Fixes: 473d924d7d46 ("can: fix ioctl function removal")
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
 ---
-This patch is LIKELY INCORRECT. So think twice to what is the correct
-solution before applying it.
-Maybe the skb_reserve should be axed or some other sizes are incorrect.
-There seems to be an issue, that's all I can say.
----
- drivers/nfc/st-nci/i2c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ v2: change patch description typo error, 'warings' to 'warnings'.
+ v3: change subject of patch.
+ v4: change the alignment of two functions. 
+ v5: change subject of patch.
+ net/can/bcm.c | 4 ++--
+ net/can/raw.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nfc/st-nci/i2c.c b/drivers/nfc/st-nci/i2c.c
-index 55d600cd3861..12e0425131c8 100644
---- a/drivers/nfc/st-nci/i2c.c
-+++ b/drivers/nfc/st-nci/i2c.c
-@@ -126,7 +126,7 @@ static int st_nci_i2c_read(struct st_nci_i2c_phy *phy,
- 		return -EBADMSG;
- 	}
+diff --git a/net/can/bcm.c b/net/can/bcm.c
+index bf1d0bbecec8..eb1d28b8c46a 100644
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -1680,8 +1680,8 @@ static int bcm_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 	return size;
+ }
  
--	*skb = alloc_skb(ST_NCI_I2C_MIN_SIZE + len, GFP_KERNEL);
-+	*skb = alloc_skb(ST_NCI_I2C_MIN_SIZE * 2 + len, GFP_KERNEL);
- 	if (*skb == NULL)
- 		return -ENOMEM;
+-int bcm_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
+-			 unsigned long arg)
++static int bcm_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
++				unsigned long arg)
+ {
+ 	/* no ioctls for socket layer -> hand it down to NIC layer */
+ 	return -ENOIOCTLCMD;
+diff --git a/net/can/raw.c b/net/can/raw.c
+index da386f1fa815..a30aaecd9327 100644
+--- a/net/can/raw.c
++++ b/net/can/raw.c
+@@ -837,8 +837,8 @@ static int raw_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
+ 	return size;
+ }
  
+-int raw_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
+-			 unsigned long arg)
++static int raw_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
++				unsigned long arg)
+ {
+ 	/* no ioctls for socket layer -> hand it down to NIC layer */
+ 	return -ENOIOCTLCMD;
 -- 
 2.20.1
 

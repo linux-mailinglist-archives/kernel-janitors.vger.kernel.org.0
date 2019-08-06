@@ -2,90 +2,126 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72C3983413
-	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Aug 2019 16:36:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C966483733
+	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Aug 2019 18:42:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733031AbfHFOgY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 6 Aug 2019 10:36:24 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:39340 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731783AbfHFOgY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 6 Aug 2019 10:36:24 -0400
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id DA590CFB332690251CE8;
-        Tue,  6 Aug 2019 22:36:17 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.439.0; Tue, 6 Aug 2019 22:36:07 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <socketcan@hartkopp.net>, <davem@davemloft.net>,
-        <netdev@vger.kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        "Mao Wenan" <maowenan@huawei.com>
-Subject: [PATCH net-next v5] net: can: Fix sparse warnings for two functions
-Date:   Tue, 6 Aug 2019 22:40:43 +0800
-Message-ID: <20190806144043.187422-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <d928a635-accd-2a8f-1829-5d7da551a8e8@web.de>
-References: <d928a635-accd-2a8f-1829-5d7da551a8e8@web.de>
+        id S1732917AbfHFQmR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 6 Aug 2019 12:42:17 -0400
+Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.24]:26683 "EHLO
+        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732048AbfHFQmR (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 6 Aug 2019 12:42:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1565109732;
+        s=strato-dkim-0002; d=hartkopp.net;
+        h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=KJ/hU+j/ewD+T3jhdhw81CeIOchxwYxcu7jDq+0evYc=;
+        b=EWEQt0a3YmaP3YyjkblXoNj3lrfFCSJWLTd2aCDYSFxKJREXbnfoKWbzGabdRmXFqC
+        +hTkuV0p3zxofX9Dm5CNyVvwTxmo7UXvMEzuLRjGGLy9b0yY3RiZ6s9Qd1+ItvtgmIHc
+        +leSIWOj++VVD5FU6CNm9n6QRCtihSbRaZWAebrPug9MIj+b5/aaMG4s0n4ytI0apIO7
+        zLBahmoGybPy0q95xJp/BAHrOZ3nqjupcdDGSWDmKotDe7eXxzWMz5tXk9eQMjd9WSq/
+        p1mEcpQVhLUXnLbqkJTkl0/KYv/u+uMqcJUFUO2RPKeqiPAHIVnx+tc4RbWtpjwlt6jh
+        5ArA==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjG14FZxedJy6qgO1o3PMaViOoLMJU8h5l0ix"
+X-RZG-CLASS-ID: mo00
+Received: from [192.168.1.177]
+        by smtp.strato.de (RZmta 44.24 DYNA|AUTH)
+        with ESMTPSA id k05d3bv76GfoJR9
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Tue, 6 Aug 2019 18:41:50 +0200 (CEST)
+Subject: Re: [PATCH net-next] net: can: Fix compiling warning
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Mao Wenan <maowenan@huawei.com>, davem@davemloft.net,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20190802033643.84243-1-maowenan@huawei.com>
+ <0050efdb-af9f-49b9-8d83-f574b3d46a2e@hartkopp.net>
+ <20190806135231.GJ1974@kadam>
+From:   Oliver Hartkopp <socketcan@hartkopp.net>
+Message-ID: <6e1c5aa0-8ed3-eec3-a34d-867ea8f54e9d@hartkopp.net>
+Date:   Tue, 6 Aug 2019 18:41:44 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20190806135231.GJ1974@kadam>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There are two warnings in net/can, fix them by setting
-bcm_sock_no_ioctlcmd and raw_sock_no_ioctlcmd as static.
+Hello Dan,
 
-net/can/bcm.c:1683:5: warning: symbol 'bcm_sock_no_ioctlcmd' was not declared. Should it be static?
-net/can/raw.c:840:5: warning: symbol 'raw_sock_no_ioctlcmd' was not declared. Should it be static?
+On 06/08/2019 15.52, Dan Carpenter wrote:
+> On Fri, Aug 02, 2019 at 10:10:20AM +0200, Oliver Hartkopp wrote:
 
-Fixes: 473d924d7d46 ("can: fix ioctl function removal")
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
----
- v2: change patch description typo error, 'warings' to 'warnings'.
- v3: change subject of patch.
- v4: change the alignment of two functions. 
- v5: change subject of patch.
- net/can/bcm.c | 4 ++--
- net/can/raw.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+>> Btw. what kind of compiler/make switches are you using so that I can see
+>> these warnings myself the next time?
+> 
+> These are Sparse warnings, not from GCC.
 
-diff --git a/net/can/bcm.c b/net/can/bcm.c
-index bf1d0bbecec8..eb1d28b8c46a 100644
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -1680,8 +1680,8 @@ static int bcm_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 	return size;
- }
- 
--int bcm_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
--			 unsigned long arg)
-+static int bcm_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
-+				unsigned long arg)
- {
- 	/* no ioctls for socket layer -> hand it down to NIC layer */
- 	return -ENOIOCTLCMD;
-diff --git a/net/can/raw.c b/net/can/raw.c
-index da386f1fa815..a30aaecd9327 100644
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -837,8 +837,8 @@ static int raw_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 	return size;
- }
- 
--int raw_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
--			 unsigned long arg)
-+static int raw_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
-+				unsigned long arg)
- {
- 	/* no ioctls for socket layer -> hand it down to NIC layer */
- 	return -ENOIOCTLCMD;
--- 
-2.20.1
+I compiled the code (the original version), but I do not get that 
+"Should it be static?" warning:
 
+user@box:~/net-next$ make C=1
+   CALL    scripts/checksyscalls.sh
+   CALL    scripts/atomic/check-atomics.sh
+   DESCEND  objtool
+   CHK     include/generated/compile.h
+   CHECK   net/can/af_can.c
+./include/linux/sched.h:609:43: error: bad integer constant expression
+./include/linux/sched.h:609:73: error: invalid named zero-width bitfield 
+`value'
+./include/linux/sched.h:610:43: error: bad integer constant expression
+./include/linux/sched.h:610:67: error: invalid named zero-width bitfield 
+`bucket_id'
+   CC [M]  net/can/af_can.o
+   CHECK   net/can/proc.c
+./include/linux/sched.h:609:43: error: bad integer constant expression
+./include/linux/sched.h:609:73: error: invalid named zero-width bitfield 
+`value'
+./include/linux/sched.h:610:43: error: bad integer constant expression
+./include/linux/sched.h:610:67: error: invalid named zero-width bitfield 
+`bucket_id'
+   CC [M]  net/can/proc.o
+   LD [M]  net/can/can.o
+   CHECK   net/can/raw.c
+./include/linux/sched.h:609:43: error: bad integer constant expression
+./include/linux/sched.h:609:73: error: invalid named zero-width bitfield 
+`value'
+./include/linux/sched.h:610:43: error: bad integer constant expression
+./include/linux/sched.h:610:67: error: invalid named zero-width bitfield 
+`bucket_id'
+   CC [M]  net/can/raw.o
+   LD [M]  net/can/can-raw.o
+   CHECK   net/can/bcm.c
+./include/linux/sched.h:609:43: error: bad integer constant expression
+./include/linux/sched.h:609:73: error: invalid named zero-width bitfield 
+`value'
+./include/linux/sched.h:610:43: error: bad integer constant expression
+./include/linux/sched.h:610:67: error: invalid named zero-width bitfield 
+`bucket_id'
+   CC [M]  net/can/bcm.o
+   LD [M]  net/can/can-bcm.o
+   CHECK   net/can/gw.c
+./include/linux/sched.h:609:43: error: bad integer constant expression
+./include/linux/sched.h:609:73: error: invalid named zero-width bitfield 
+`value'
+./include/linux/sched.h:610:43: error: bad integer constant expression
+./include/linux/sched.h:610:67: error: invalid named zero-width bitfield 
+`bucket_id'
+   CC [M]  net/can/gw.o
+   LD [M]  net/can/can-gw.o
+Kernel: arch/x86/boot/bzImage is ready  (#2)
+
+I've seen that warning at different other code - but not in bcm.c & raw.c
+
+I downloaded & compiled the latest sparse source. But still no "static" 
+warning. Any idea?
+
+Best regards,
+Oliver

@@ -2,88 +2,131 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 52B8D82939
-	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Aug 2019 03:32:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B43C382BE6
+	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Aug 2019 08:43:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731256AbfHFBce (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 5 Aug 2019 21:32:34 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:44310 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728870AbfHFBce (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 5 Aug 2019 21:32:34 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 9B9D2F8EFE862C0A34B;
-        Tue,  6 Aug 2019 09:32:32 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.439.0; Tue, 6 Aug 2019 09:32:26 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <davem@davemloft.net>, <socketcan@hartkopp.net>
-CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, <maowenan@huawei.com>
-Subject: [PATCH net-next v4] net: can: Fix compiling warnings for two functions
-Date:   Tue, 6 Aug 2019 09:37:01 +0800
-Message-ID: <20190806013701.71159-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190805.103002.641507066504156536.davem@davemloft.net>
-References: <20190805.103002.641507066504156536.davem@davemloft.net>
+        id S1731813AbfHFGno (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 6 Aug 2019 02:43:44 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:32768 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731711AbfHFGnn (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 6 Aug 2019 02:43:43 -0400
+Received: by mail-lj1-f195.google.com with SMTP id h10so9837130ljg.0
+        for <kernel-janitors@vger.kernel.org>; Mon, 05 Aug 2019 23:43:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kvaser.com; s=google;
+        h=subject:from:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=hKyUtqDHtetJkLV3jMIveDdhagNqHGpzvo96Zvqjl28=;
+        b=CYCdukrcsKKKgreNJjTSM/mpb+ucHiuFBbevNpKYUBiZs0fGY0tVo0g82uSCCLVTbU
+         kpbgsPTPVLd10O+3qRq7b2Vr1JNzX1LIGbuBImeE+Zmbf9v3qbAIovUcsL7ALT567yad
+         ciGuw5wsW6qdjBtXV1BPtFO3h7uoO/0HtuQQ6+3+fN585B5aXxzX6h93z5ll3Qi9+jXB
+         46jR73Di1XG/jmXhrZvUs4e829xtCN7ZARdEIpJJdbGfl2hy9TfdITrr6uy3goXspiJC
+         WUSVHpmlPwMzl7S+uhKuwNgFg24U45pHw+QDO34QT01J6Y4fqrrq64I5s+86GKmakEZW
+         Ihtg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=hKyUtqDHtetJkLV3jMIveDdhagNqHGpzvo96Zvqjl28=;
+        b=XmZBMAu3XNCJNSg+9o28KcKKFrhK9sOiL5h1OOyphePr0gS/e5DxHlXUpLh2ypdBoE
+         QUG3Pw+XRNop4WAfTGVBzqA5vI8JghctvqjB0hrbi2QKnWScsQHEfTGSA9gu/LbuJo4c
+         O9kDHUz2cv/4uaL2MPZbfrELOBsqHTq2zSxazry/PC6VB/LpP3ERoKA72hLakmj2yLfJ
+         lg7+mhSM78rSTvAIMTEpCy1iQi03IuzSY2e1iVBZd2YMLi7qgbBteUolBwyYP27dquwD
+         W1JRIqKS6Z+usJ6sSZTbuueK2VeCKJgFoBwCA6a+u6ETjZpdLyMe6CGzEmb9WFUgcOK7
+         sStA==
+X-Gm-Message-State: APjAAAWb7A+xAz1hPSqdGP4Bd+E7yLdVGAe9GqjQL8EN7/XdnP4VTgVo
+        cdOh08Qj074eeg+RIIuoNF4Teg==
+X-Google-Smtp-Source: APXvYqy0C/qgCK5G/UP4WQiN5MTcVzVENfczCszLtm5KZ6GA07ZUwwZO+5qHn4xqR+5mqvBgBf086w==
+X-Received: by 2002:a2e:720b:: with SMTP id n11mr900649ljc.213.1565073821354;
+        Mon, 05 Aug 2019 23:43:41 -0700 (PDT)
+Received: from [10.0.3.110] (rota.kvaser.com. [195.22.86.90])
+        by smtp.gmail.com with ESMTPSA id q1sm17622475ljb.87.2019.08.05.23.43.40
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 05 Aug 2019 23:43:40 -0700 (PDT)
+Subject: Re: [PATCH][next] can: kvaser_pciefd: remove redundant negative check
+ on trigger
+From:   Christer Beskow <chbe@kvaser.com>
+To:     Marc Kleine-Budde <mkl@pengutronix.de>,
+        Colin King <colin.king@canonical.com>,
+        Wolfgang Grandegger <wg@grandegger.com>,
+        linux-can@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org,
+        Henning Colliander <henning.colliander@evidente.se>,
+        walter harms <wharms@bfs.de>
+References: <20190725112509.1075-1-colin.king@canonical.com>
+ <954ea3c6-3a2d-ee4e-c4c8-a49358d569b6@pengutronix.de>
+ <34bd981c-0bc1-6eba-9663-f8e8ced2f72e@pengutronix.de>
+ <db550f33-fac6-5e2b-c623-3587976e2d51@kvaser.com>
+Message-ID: <c45f56e6-9448-7023-8eca-703cb1c5050e@kvaser.com>
+Date:   Tue, 6 Aug 2019 08:43:40 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+In-Reply-To: <db550f33-fac6-5e2b-c623-3587976e2d51@kvaser.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: sv
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There are two warnings in net/can, fix them by setting
-bcm_sock_no_ioctlcmd and raw_sock_no_ioctlcmd as static.
 
-net/can/bcm.c:1683:5: warning: symbol 'bcm_sock_no_ioctlcmd' was not declared. Should it be static?
-net/can/raw.c:840:5: warning: symbol 'raw_sock_no_ioctlcmd' was not declared. Should it be static?
+Den 2019-08-05 kl. 09:21, skrev Christer Beskow:
+> On 2019-08-02 14:12,  Marc Kleine-Budde wrote:
+>> On 8/2/19 2:07 PM, Marc Kleine-Budde wrote:
+>>> Adding the Author(s) to Cc.
+>>>
+>>> On 7/25/19 1:25 PM, Colin King wrote:
+>>>> From: Colin Ian King <colin.king@canonical.com>
+>>>>
+>>>> The check to see if trigger is less than zero is always false, trigger
+>>>> is always in the range 0..255.  Hence the check is redundant and can
+>>>> be removed.
+>>>>
+>>>> Addresses-Coverity: ("Logically dead code")
+>>>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>>>> ---
+>>>>   drivers/net/can/kvaser_pciefd.c | 3 ---
+>>>>   1 file changed, 3 deletions(-)
+>>>>
+>>>> diff --git a/drivers/net/can/kvaser_pciefd.c 
+>>>> b/drivers/net/can/kvaser_pciefd.c
+>>>> index 3af747cbbde4..68e00aad0810 100644
+>>>> --- a/drivers/net/can/kvaser_pciefd.c
+>>>> +++ b/drivers/net/can/kvaser_pciefd.c
+>>>> @@ -652,9 +652,6 @@ static void kvaser_pciefd_pwm_stop(struct 
+>>>> kvaser_pciefd_can *can)
+>>>>       top = (pwm_ctrl >> KVASER_PCIEFD_KCAN_PWM_TOP_SHIFT) & 0xff;
+>>>>         trigger = (100 * top + 50) / 100;
+>> As Walter pointed out the above code makes no sense in the first place.
+>>
+>>>> -    if (trigger < 0)
+>>>> -        trigger = 0;
+>>>> -
+>> Can someone have a deeper look at this code section and decide what to
+>> do with this finding.
+>
+> I will look at this at once and come back with a patch later today.
+>
+>>>>       pwm_ctrl = trigger & 0xff;
+>>>>       pwm_ctrl |= (top & 0xff) << KVASER_PCIEFD_KCAN_PWM_TOP_SHIFT;
+>>>>       iowrite32(pwm_ctrl, can->reg_base + KVASER_PCIEFD_KCAN_PWM_REG);
+>>>>
+To set the duty cycle to zero (i.e. pwm_stop), the trigger value shall 
+be equal to the top value.
 
-Fixes: 473d924d7d46 ("can: fix ioctl function removal")
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
----
- v1->v2: change patch description typo error, 'warings' to 'warnings'.
- v2->v3: change subject of patch.
- v3->v4: change the alignment of two functions. 
- net/can/bcm.c | 4 ++--
- net/can/raw.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+This is achieved by reading the value of the top bit field from the pwm 
+register and then writing back this value to the trigger and top bit 
+fields.
 
-diff --git a/net/can/bcm.c b/net/can/bcm.c
-index bf1d0bbecec8..eb1d28b8c46a 100644
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -1680,8 +1680,8 @@ static int bcm_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 	return size;
- }
- 
--int bcm_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
--			 unsigned long arg)
-+static int bcm_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
-+				unsigned long arg)
- {
- 	/* no ioctls for socket layer -> hand it down to NIC layer */
- 	return -ENOIOCTLCMD;
-diff --git a/net/can/raw.c b/net/can/raw.c
-index da386f1fa815..a30aaecd9327 100644
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -837,8 +837,8 @@ static int raw_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
- 	return size;
- }
- 
--int raw_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
--			 unsigned long arg)
-+static int raw_sock_no_ioctlcmd(struct socket *sock, unsigned int cmd,
-+				unsigned long arg)
- {
- 	/* no ioctls for socket layer -> hand it down to NIC layer */
- 	return -ENOIOCTLCMD;
--- 
-2.20.1
+The current code is, as you all pointed out, a bit cumbersome. I will 
+send a new patch in a new thread.
+
+regards
+
+Christer
 

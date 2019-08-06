@@ -2,97 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B21083354
-	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Aug 2019 15:53:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07B04833C4
+	for <lists+kernel-janitors@lfdr.de>; Tue,  6 Aug 2019 16:17:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728259AbfHFNw7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 6 Aug 2019 09:52:59 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:45816 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726373AbfHFNw7 (ORCPT
+        id S1732943AbfHFORf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 6 Aug 2019 10:17:35 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:50476 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732878AbfHFORf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 6 Aug 2019 09:52:59 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x76DXxiQ085313;
-        Tue, 6 Aug 2019 13:52:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2018-07-02;
- bh=sLQXqKTfAC+DgapIOljC6Hu1hP2ySZexluDwG30necU=;
- b=Y3/5lTgAcSA0tHehdiqZfTT/zElI6h13BR1el/tcfM3XvSzIdBxTUfuYzsKQdv5cR10w
- HPN9S/En9zGsUfiK5q6K3joBnoZqF+agISIJ9PJtKn6DIzvIbegohGn49/Wvxsb9LTEn
- kDCFZkr9HirBEOLGrVgUrBbZj3IBSgn49GxjSyquXuhEUtRhwmL3e8Gke9UgFb2+qhXB
- M//7k5//R6mAdXr75wYmh+GJJ+Q/LvU7znw8NbBcIL7abZ5WrNVFyviM45eoZFegixMC
- SP2MLi8QVEGyu35JbqhQUNHnmn/s8NNRmBoOZC9ASSGL9jgHd8UyQ6kMyefdqth5opVd Xw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 2u51ptxcjy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 06 Aug 2019 13:52:40 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x76DXGId106595;
-        Tue, 6 Aug 2019 13:52:39 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2u75bvh3w9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 06 Aug 2019 13:52:39 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x76DqcuC017738;
-        Tue, 6 Aug 2019 13:52:38 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 06 Aug 2019 06:52:37 -0700
-Date:   Tue, 6 Aug 2019 16:52:31 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Oliver Hartkopp <socketcan@hartkopp.net>
-Cc:     Mao Wenan <maowenan@huawei.com>, davem@davemloft.net,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next] net: can: Fix compiling warning
-Message-ID: <20190806135231.GJ1974@kadam>
-References: <20190802033643.84243-1-maowenan@huawei.com>
- <0050efdb-af9f-49b9-8d83-f574b3d46a2e@hartkopp.net>
+        Tue, 6 Aug 2019 10:17:35 -0400
+Received: from localhost.localdomain ([90.33.211.207])
+        by mwinf5d41 with ME
+        id lqHT2000N4V2DRm03qHTd8; Tue, 06 Aug 2019 16:17:32 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Tue, 06 Aug 2019 16:17:32 +0200
+X-ME-IP: 90.33.211.207
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     tglx@linutronix.de, gregkh@linuxfoundation.org,
+        colin.king@canonical.com, davem@davemloft.net, allison@lohutok.net
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] nfc: st-nci: Fix an incorrect skb_buff size in 'st_nci_i2c_read()'
+Date:   Tue,  6 Aug 2019 16:16:40 +0200
+Message-Id: <20190806141640.13197-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0050efdb-af9f-49b9-8d83-f574b3d46a2e@hartkopp.net>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9340 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=843
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1908060138
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9340 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=891 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908060138
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Aug 02, 2019 at 10:10:20AM +0200, Oliver Hartkopp wrote:
-> On 02/08/2019 05.36, Mao Wenan wrote:
-> > There are two warings in net/can, fix them by setting bcm_sock_no_ioctlcmd
-> > and raw_sock_no_ioctlcmd as static.
-> > 
-> > net/can/bcm.c:1683:5: warning: symbol 'bcm_sock_no_ioctlcmd' was not declared. Should it be static?
-> > net/can/raw.c:840:5: warning: symbol 'raw_sock_no_ioctlcmd' was not declared. Should it be static?
-> > 
-> > Fixes: 473d924d7d46 ("can: fix ioctl function removal")
-> > 
-> > Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> 
-> Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-> 
-> Thanks Mao!
-> 
-> Btw. what kind of compiler/make switches are you using so that I can see
-> these warnings myself the next time?
+In 'st_nci_i2c_read()', we allocate a sk_buff with a size of
+ST_NCI_I2C_MIN_SIZE + len.
 
-These are Sparse warnings, not from GCC.
+However, later on, we first 'skb_reserve()' ST_NCI_I2C_MIN_SIZE bytes, then
+we 'skb_put()' ST_NCI_I2C_MIN_SIZE bytes.
+Finally, if 'len' is not 0, we 'skb_put()' 'len' bytes.
 
-regards,
-dan carpenter
+So we use ST_NCI_I2C_MIN_SIZE*2 + len bytes.
+
+This is incorrect and should already panic. I guess that it does not occur
+because of extra memory allocated because of some rounding.
+
+Fix it and allocate enough room for the 'skb_reserve()' and the 'skb_put()'
+calls.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+This patch is LIKELY INCORRECT. So think twice to what is the correct
+solution before applying it.
+Maybe the skb_reserve should be axed or some other sizes are incorrect.
+There seems to be an issue, that's all I can say.
+---
+ drivers/nfc/st-nci/i2c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/nfc/st-nci/i2c.c b/drivers/nfc/st-nci/i2c.c
+index 55d600cd3861..12e0425131c8 100644
+--- a/drivers/nfc/st-nci/i2c.c
++++ b/drivers/nfc/st-nci/i2c.c
+@@ -126,7 +126,7 @@ static int st_nci_i2c_read(struct st_nci_i2c_phy *phy,
+ 		return -EBADMSG;
+ 	}
+ 
+-	*skb = alloc_skb(ST_NCI_I2C_MIN_SIZE + len, GFP_KERNEL);
++	*skb = alloc_skb(ST_NCI_I2C_MIN_SIZE * 2 + len, GFP_KERNEL);
+ 	if (*skb == NULL)
+ 		return -ENOMEM;
+ 
+-- 
+2.20.1
 

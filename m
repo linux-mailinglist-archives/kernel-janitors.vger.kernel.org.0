@@ -2,56 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CC1F84D73
-	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Aug 2019 15:35:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E8B598504A
+	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Aug 2019 17:51:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388250AbfHGNfV convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 7 Aug 2019 09:35:21 -0400
-Received: from mail.fireflyinternet.com ([109.228.58.192]:52916 "EHLO
-        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2388232AbfHGNfV (ORCPT
+        id S2388811AbfHGPvg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 7 Aug 2019 11:51:36 -0400
+Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:57155 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388757AbfHGPvg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 7 Aug 2019 09:35:21 -0400
-X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
-Received: from localhost (unverified [78.156.65.138]) 
-        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 17918905-1500050 
-        for multiple; Wed, 07 Aug 2019 14:35:16 +0100
-Content-Type: text/plain; charset="utf-8"
+        Wed, 7 Aug 2019 11:51:36 -0400
+Received: from localhost.localdomain ([86.218.179.140])
+        by mwinf5d35 with ME
+        id mFrR20003328hQe03FrRek; Wed, 07 Aug 2019 17:51:33 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 07 Aug 2019 17:51:33 +0200
+X-ME-IP: 86.218.179.140
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     atul.gupta@chelsio.com, herbert@gondor.apana.org.au,
+        zhongjiang@huawei.com, ganeshgr@chelsio.com, davem@davemloft.net,
+        tglx@linutronix.de, bigeasy@linutronix.de
+Cc:     linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] crypto: chtls - use 'skb_put_zero()' instead of re-implementing it
+Date:   Wed,  7 Aug 2019 17:40:14 +0200
+Message-Id: <20190807154014.22548-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>
-From:   Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <156518113518.6198.15252656122354479322@skylake-alporthouse-com>
-Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org
-References: <20190807122832.GA10517@mwanda>
- <156518113518.6198.15252656122354479322@skylake-alporthouse-com>
-Message-ID: <156518491397.6198.14048305337074834151@skylake-alporthouse-com>
-User-Agent: alot/0.6
-Subject: Re: [PATCH] drm/i915: Fix some NULL vs IS_ERR() conditions
-Date:   Wed, 07 Aug 2019 14:35:13 +0100
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Chris Wilson (2019-08-07 13:32:15)
-> Quoting Dan Carpenter (2019-08-07 13:28:32)
-> > There were several places which check for NULL when they should have
-> > been checking for IS_ERR().
-> > 
-> > Fixes: d8af05ff38ae ("drm/i915: Allow sharing the idle-barrier from other kernel requests")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> 
-> Oops,
-> Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+'skb_put()+memset()' is equivalent to 'skb_put_zero()'
+Use the latter because it is less verbose and it hides the internals of the
+sk_buff structure.
 
-And pushed, ta.
--Chris
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/crypto/chelsio/chtls/chtls_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/crypto/chelsio/chtls/chtls_main.c b/drivers/crypto/chelsio/chtls/chtls_main.c
+index 635bb4b447fb..830b238da77e 100644
+--- a/drivers/crypto/chelsio/chtls/chtls_main.c
++++ b/drivers/crypto/chelsio/chtls/chtls_main.c
+@@ -218,9 +218,8 @@ static int chtls_get_skb(struct chtls_dev *cdev)
+ 	if (!cdev->askb)
+ 		return -ENOMEM;
+ 
+-	skb_put(cdev->askb, sizeof(struct tcphdr));
++	skb_put_zero(cdev->askb, sizeof(struct tcphdr));
+ 	skb_reset_transport_header(cdev->askb);
+-	memset(cdev->askb->data, 0, cdev->askb->len);
+ 	return 0;
+ }
+ 
+-- 
+2.20.1
+

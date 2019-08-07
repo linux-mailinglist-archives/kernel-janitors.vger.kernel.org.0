@@ -2,67 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D121684BB8
-	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Aug 2019 14:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DC5984BD8
+	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Aug 2019 14:43:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727171AbfHGMfi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 7 Aug 2019 08:35:38 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:40553 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728235AbfHGMfe (ORCPT
+        id S1729722AbfHGMnA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 7 Aug 2019 08:43:00 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:46752 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727171AbfHGMnA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 7 Aug 2019 08:35:34 -0400
-Received: by mail-ot1-f65.google.com with SMTP id l15so46305408oth.7;
-        Wed, 07 Aug 2019 05:35:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=JZuZZafG9InRZg3sJah2SsLACCwnR/QLsffrqIQ7qL0=;
-        b=glORLVbYNymQGAs3xP0KTC+NCDkOT1lxa/Tg/4OpDl26lLqhmoSdG5rG9V3OEQyxNa
-         yXFnPuNy6AWAL46d+3oqCPuOBdI1amlFJG9rC5FJqOPneFt+kpvM5h7aHqkjGXeh4WDu
-         9dDatCOn8xre84uStfHjyPOuxaDyPHkauwGc27TwGbdXuH5LXG9hlfxv/5NCGfMLNtIX
-         cUIJj3BIVzo0goNUabxInYbqPN/ryf7PYKVD//RNAGKHHwZJDEDxc50yxUg3SfXYFM2t
-         FlcA6x5rx9AY1sXvW958b3lAN39XIQVACJ0K+kA1njsgVCDXYscYZDx5agcpILlW+WY2
-         T30A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=JZuZZafG9InRZg3sJah2SsLACCwnR/QLsffrqIQ7qL0=;
-        b=OKSqIM3PNGPW5wympclP+S+e3FhH4kLTrXOomKomWokMuqOaKHEQkRqEMcfqZwXnfI
-         4WQQiR/yE/U3ry6JoZGXw0modh6gyc48GNblHdznsI/16ppx6BkGfcNRJ5arQHfzMqjp
-         dfzcZuicAP5Y2EgP4x1DhTFhuz8Vkz/EWkKwF+HU4v3+ksbKqayDfwJbLpz41RGXZybX
-         JeyvRusSOn57GrQURquxd3xpgZhrQg3VylzcgUOe9M9IW2/UZiPC2ltc2Yjn/J/LO9MV
-         Ra+GT9rZvpuKO9LSRtiWzvZOhjlGHxJuZPTjNiWh/oZOPJphuJvdxOfg33/PtuP1cGHd
-         TH/Q==
-X-Gm-Message-State: APjAAAWXJ9GeORiAXOchugKT1ICGt3F/krPRc+NeEyZ1/DZRsNJeDYcG
-        Dj8IOyVKHQzGg9DDn4Wudt/StqhR
-X-Google-Smtp-Source: APXvYqwP1RK8Zqg9ji5PjaAzKucKfNeMU+zgSW+ITvubMhN8EPG91EFKUnjM4+9DDCkInCzknGuqoQ==
-X-Received: by 2002:a05:6830:11d4:: with SMTP id v20mr7171768otq.121.1565181333422;
-        Wed, 07 Aug 2019 05:35:33 -0700 (PDT)
-Received: from JosephdeMacBook-Pro.local ([205.204.117.7])
-        by smtp.gmail.com with ESMTPSA id m21sm28662136otl.70.2019.08.07.05.35.30
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 07 Aug 2019 05:35:32 -0700 (PDT)
+        Wed, 7 Aug 2019 08:43:00 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212])
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hvLHO-0006up-AB; Wed, 07 Aug 2019 12:42:58 +0000
 Subject: Re: [PATCH][ocfs2-next] ocfs2: ensure ret is set to zero before
  returning
-To:     Colin King <colin.king@canonical.com>,
-        Mark Fasheh <mark@fasheh.com>,
+To:     Joseph Qi <jiangqi903@gmail.com>, Mark Fasheh <mark@fasheh.com>,
         Joel Becker <jlbec@evilplan.org>,
         Joseph Qi <joseph.qi@linux.alibaba.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         ocfs2-devel@oss.oracle.com
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20190807121929.28918-1-colin.king@canonical.com>
-From:   Joseph Qi <jiangqi903@gmail.com>
-Message-ID: <fb3d7441-93ea-b619-52fc-00da950c9201@gmail.com>
-Date:   Wed, 7 Aug 2019 20:35:26 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:60.0)
- Gecko/20100101 Thunderbird/60.8.0
+ <fb3d7441-93ea-b619-52fc-00da950c9201@gmail.com>
+From:   Colin Ian King <colin.king@canonical.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
+ mQINBE6TJCgBEACo6nMNvy06zNKj5tiwDsXXS+LhT+LwtEsy9EnraKYXAf2xwazcICSjX06e
+ fanlyhB0figzQO0n/tP7BcfMVNG7n1+DC71mSyRK1ZERcG1523ajvdZOxbBCTvTitYOy3bjs
+ +LXKqeVMhK3mRvdTjjmVpWnWqJ1LL+Hn12ysDVVfkbtuIm2NoaSEC8Ae8LSSyCMecd22d9Pn
+ LR4UeFgrWEkQsqROq6ZDJT9pBLGe1ZS0pVGhkRyBP9GP65oPev39SmfAx9R92SYJygCy0pPv
+ BMWKvEZS/7bpetPNx6l2xu9UvwoeEbpzUvH26PHO3DDAv0ynJugPCoxlGPVf3zcfGQxy3oty
+ dNTWkP6Wh3Q85m+AlifgKZudjZLrO6c+fAw/jFu1UMjNuyhgShtFU7NvEzL3RqzFf9O1qM2m
+ uj83IeFQ1FZ65QAiCdTa3npz1vHc7N4uEQBUxyXgXfCI+A5yDnjHwzU0Y3RYS52TA3nfa08y
+ LGPLTf5wyAREkFYou20vh5vRvPASoXx6auVf1MuxokDShVhxLpryBnlKCobs4voxN54BUO7m
+ zuERXN8kadsxGFzItAyfKYzEiJrpUB1yhm78AecDyiPlMjl99xXk0zs9lcKriaByVUv/NsyJ
+ FQj/kmdxox3XHi9K29kopFszm1tFiDwCFr/xumbZcMY17Yi2bQARAQABtCVDb2xpbiBLaW5n
+ IDxjb2xpbi5raW5nQGNhbm9uaWNhbC5jb20+iQI2BBMBCAAhBQJOkyQoAhsDBQsJCAcDBRUK
+ CQgLBRYCAwEAAh4BAheAAAoJEGjCh9/GqAImsBcP9i6C/qLewfi7iVcOwqF9avfGzOPf7CVr
+ n8CayQnlWQPchmGKk6W2qgnWI2YLIkADh53TS0VeSQ7Tetj8f1gV75eP0Sr/oT/9ovn38QZ2
+ vN8hpZp0GxOUrzkvvPjpH+zdmKSaUsHGp8idfPpZX7XeBO0yojAs669+3BrnBcU5wW45SjSV
+ nfmVj1ZZj3/yBunb+hgNH1QRcm8ZPICpjvSsGFClTdB4xu2AR28eMiL/TTg9k8Gt72mOvhf0
+ fS0/BUwcP8qp1TdgOFyiYpI8CGyzbfwwuGANPSupGaqtIRVf+/KaOdYUM3dx/wFozZb93Kws
+ gXR4z6tyvYCkEg3x0Xl9BoUUyn9Jp5e6FOph2t7TgUvv9dgQOsZ+V9jFJplMhN1HPhuSnkvP
+ 5/PrX8hNOIYuT/o1AC7K5KXQmr6hkkxasjx16PnCPLpbCF5pFwcXc907eQ4+b/42k+7E3fDA
+ Erm9blEPINtt2yG2UeqEkL+qoebjFJxY9d4r8PFbEUWMT+t3+dmhr/62NfZxrB0nTHxDVIia
+ u8xM+23iDRsymnI1w0R78yaa0Eea3+f79QsoRW27Kvu191cU7QdW1eZm05wO8QUvdFagVVdW
+ Zg2DE63Fiin1AkGpaeZG9Dw8HL3pJAJiDe0KOpuq9lndHoGHs3MSa3iyQqpQKzxM6sBXWGfk
+ EkK5Ag0ETpMkKAEQAMX6HP5zSoXRHnwPCIzwz8+inMW7mJ60GmXSNTOCVoqExkopbuUCvinN
+ 4Tg+AnhnBB3R1KTHreFGoz3rcV7fmJeut6CWnBnGBtsaW5Emmh6gZbO5SlcTpl7QDacgIUuT
+ v1pgewVHCcrKiX0zQDJkcK8FeLUcB2PXuJd6sJg39kgsPlI7R0OJCXnvT/VGnd3XPSXXoO4K
+ cr5fcjsZPxn0HdYCvooJGI/Qau+imPHCSPhnX3WY/9q5/WqlY9cQA8tUC+7mgzt2VMjFft1h
+ rp/CVybW6htm+a1d4MS4cndORsWBEetnC6HnQYwuC4bVCOEg9eXMTv88FCzOHnMbE+PxxHzW
+ 3Gzor/QYZGcis+EIiU6hNTwv4F6fFkXfW6611JwfDUQCAHoCxF3B13xr0BH5d2EcbNB6XyQb
+ IGngwDvnTyKHQv34wE+4KtKxxyPBX36Z+xOzOttmiwiFWkFp4c2tQymHAV70dsZTBB5Lq06v
+ 6nJs601Qd6InlpTc2mjd5mRZUZ48/Y7i+vyuNVDXFkwhYDXzFRotO9VJqtXv8iqMtvS4xPPo
+ 2DtJx6qOyDE7gnfmk84IbyDLzlOZ3k0p7jorXEaw0bbPN9dDpw2Sh9TJAUZVssK119DJZXv5
+ 2BSc6c+GtMqkV8nmWdakunN7Qt/JbTcKlbH3HjIyXBy8gXDaEto5ABEBAAGJAh8EGAEIAAkF
+ Ak6TJCgCGwwACgkQaMKH38aoAiZ4lg/+N2mkx5vsBmcsZVd3ys3sIsG18w6RcJZo5SGMxEBj
+ t1UgyIXWI9lzpKCKIxKx0bskmEyMy4tPEDSRfZno/T7p1mU7hsM4owi/ic0aGBKP025Iok9G
+ LKJcooP/A2c9dUV0FmygecRcbIAUaeJ27gotQkiJKbi0cl2gyTRlolKbC3R23K24LUhYfx4h
+ pWj8CHoXEJrOdHO8Y0XH7059xzv5oxnXl2SD1dqA66INnX+vpW4TD2i+eQNPgfkECzKzGj+r
+ KRfhdDZFBJj8/e131Y0t5cu+3Vok1FzBwgQqBnkA7dhBsQm3V0R8JTtMAqJGmyOcL+JCJAca
+ 3Yi81yLyhmYzcRASLvJmoPTsDp2kZOdGr05Dt8aGPRJL33Jm+igfd8EgcDYtG6+F8MCBOult
+ TTAu+QAijRPZv1KhEJXwUSke9HZvzo1tNTlY3h6plBsBufELu0mnqQvHZmfa5Ay99dF+dL1H
+ WNp62+mTeHsX6v9EACH4S+Cw9Q1qJElFEu9/1vFNBmGY2vDv14gU2xEiS2eIvKiYl/b5Y85Q
+ QLOHWV8up73KK5Qq/6bm4BqVd1rKGI9un8kezUQNGBKre2KKs6wquH8oynDP/baoYxEGMXBg
+ GF/qjOC6OY+U7kNUW3N/A7J3M2VdOTLu3hVTzJMZdlMmmsg74azvZDV75dUigqXcwjE=
+Message-ID: <bf4d059a-94fc-d8cf-78c7-8606644185a5@canonical.com>
+Date:   Wed, 7 Aug 2019 13:42:57 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190807121929.28918-1-colin.king@canonical.com>
+In-Reply-To: <fb3d7441-93ea-b619-52fc-00da950c9201@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -71,46 +85,55 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On 19/8/7 20:19, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On 07/08/2019 13:35, Joseph Qi wrote:
 > 
-> A previous commit introduced a regression where variable ret was
-> originally being set from the return from a call to function
-> dlm_create_debugfs_subroot and this set was removed. Currently
-> ret is now uninitialized if no alloction errors are found which
-> may end up with a bogus check on ret < 0 on the 'leave:' return
-> path.  Fix this by setting ret to zero on a successful execution
-> path.
+> 
+> On 19/8/7 20:19, Colin King wrote:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> A previous commit introduced a regression where variable ret was
+>> originally being set from the return from a call to function
+>> dlm_create_debugfs_subroot and this set was removed. Currently
+>> ret is now uninitialized if no alloction errors are found which
+>> may end up with a bogus check on ret < 0 on the 'leave:' return
+>> path.  Fix this by setting ret to zero on a successful execution
+>> path.
+> 
+> Good catch.
+> Or shall we just initialize 'ret' at first?
 
-Good catch.
-Or shall we just initialize 'ret' at first?
+Initialized ret first may not catch subsequent coding errors where error
+returns paths have not initialized ret, so my preference is when it is
+required and not before.
 
 > 
-> Addresses-Coverity: ("Uninitialzed scalar variable")
+>>
+>> Addresses-Coverity: ("Uninitialzed scalar variable")
 
-Typo here. 
-
-Thanks,
-Joseph
-
-> Fixes: cba322160ef0 ("ocfs2: further debugfs cleanups")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  fs/ocfs2/dlm/dlmdomain.c | 1 +
->  1 file changed, 1 insertion(+)
+Can this be fixed up when applied rather sending a V2?
 > 
-> diff --git a/fs/ocfs2/dlm/dlmdomain.c b/fs/ocfs2/dlm/dlmdomain.c
-> index 5c4218d66dd2..ee6f459f9770 100644
-> --- a/fs/ocfs2/dlm/dlmdomain.c
-> +++ b/fs/ocfs2/dlm/dlmdomain.c
-> @@ -2052,6 +2052,7 @@ static struct dlm_ctxt *dlm_alloc_ctxt(const char *domain,
->  	mlog(0, "context init: refcount %u\n",
->  		  kref_read(&dlm->dlm_refs));
->  
-> +	ret = 0;
->  leave:
->  	if (ret < 0 && dlm) {
->  		if (dlm->master_hash)
+> Typo here. 
 > 
+> Thanks,
+> Joseph
+> 
+>> Fixes: cba322160ef0 ("ocfs2: further debugfs cleanups")
+>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>> ---
+>>  fs/ocfs2/dlm/dlmdomain.c | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/fs/ocfs2/dlm/dlmdomain.c b/fs/ocfs2/dlm/dlmdomain.c
+>> index 5c4218d66dd2..ee6f459f9770 100644
+>> --- a/fs/ocfs2/dlm/dlmdomain.c
+>> +++ b/fs/ocfs2/dlm/dlmdomain.c
+>> @@ -2052,6 +2052,7 @@ static struct dlm_ctxt *dlm_alloc_ctxt(const char *domain,
+>>  	mlog(0, "context init: refcount %u\n",
+>>  		  kref_read(&dlm->dlm_refs));
+>>  
+>> +	ret = 0;
+>>  leave:
+>>  	if (ret < 0 && dlm) {
+>>  		if (dlm->master_hash)
+>>
+

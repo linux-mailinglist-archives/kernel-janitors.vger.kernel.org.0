@@ -2,101 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E18C3847D6
-	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Aug 2019 10:46:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B71D384A15
+	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Aug 2019 12:51:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387637AbfHGIqB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 7 Aug 2019 04:46:01 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:42486 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387452AbfHGIqB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 7 Aug 2019 04:46:01 -0400
-Received: from zn.tnic (p200300EC2F0D5000E5DBE4FCCFA1B2C9.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:5000:e5db:e4fc:cfa1:b2c9])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 685841EC090E;
-        Wed,  7 Aug 2019 10:45:59 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1565167559;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=7bkTN/F57Ckbh6FRBfVDlrj4muQsV+izdGSF2OhAXvM=;
-        b=aXrtZnRDMAHncqTsuM2Z5bE+1W7GPXLW+FWKp5/KerQYQuusr5+ZTbS08B6Xdfu1yxJqX4
-        LZTlTGUz9Za+8o71LTA5z2AkfPLWK88vMQyyAZatWNcH2wN1lUOVZjpiejIQlBt2cu/PH/
-        7W7Wi50AIGchAWK6Y/VeNZ2qrTMMWxw=
-Date:   Wed, 7 Aug 2019 10:46:43 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Thor Thayer <thor.thayer@linux.intel.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        James Morse <james.morse@arm.com>, linux-edac@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] EDAC/altera: Silence an endian warning
-Message-ID: <20190807084643.GA18207@zn.tnic>
-References: <20190624134717.GA1754@mwanda>
- <2baa5124-f0b0-a33e-256b-6a17867862c9@linux.intel.com>
+        id S1726873AbfHGKvO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 7 Aug 2019 06:51:14 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:59694 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726418AbfHGKvO (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 7 Aug 2019 06:51:14 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x77AmwP2126290;
+        Wed, 7 Aug 2019 10:50:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2018-07-02;
+ bh=E62+7VTE7UonCrlCnPHNWi4RPE8HkU4TSMt2nyRommM=;
+ b=xlFdWUxH2bW6rVoJdPVh8EmDH2mfU1vnFm9PJAVMX1GY1g4vFfaS2bTEvO9EPcxA9Qh9
+ LykHvi6D8SLCJCiPlWRB7HTLjRRXHqMqLYzusGmGc8zFybMied62OZBr8n8h0RiiU0HE
+ 7zTdmCsIddY8AYKUk8c/JzBjZFAIT2DroZKIES13ewnsxyOJLLTwJsjZOOTwYKDwFb6H
+ U+LZf2RU4u9REcByD2U1cwKC3QKp8V0f0ZkeXH5iw6VU0iojWSZY8bvczok3ho4l23sz
+ ui/KZ0bRAetVvRKcsFqYQNbeJYcEUXkflyZQDMukDaI166KHs0B2ZyEvXytNwFasIJtr oA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2u52wrbhm5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 07 Aug 2019 10:50:53 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x77Alums162550;
+        Wed, 7 Aug 2019 10:50:52 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 2u75bwaw44-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 07 Aug 2019 10:50:52 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x77AooQk002351;
+        Wed, 7 Aug 2019 10:50:51 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 07 Aug 2019 03:50:50 -0700
+Date:   Wed, 7 Aug 2019 13:50:42 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Oliver Hartkopp <socketcan@hartkopp.net>,
+        Patrick Bellasi <patrick.bellasi@arm.com>,
+        linux-sparse@vger.kernel.org
+Cc:     Mao Wenan <maowenan@huawei.com>, davem@davemloft.net,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, Ingo Molnar <mingo@kernel.org>
+Subject: Re: [PATCH net-next] net: can: Fix compiling warning
+Message-ID: <20190807105042.GK1974@kadam>
+References: <20190802033643.84243-1-maowenan@huawei.com>
+ <0050efdb-af9f-49b9-8d83-f574b3d46a2e@hartkopp.net>
+ <20190806135231.GJ1974@kadam>
+ <6e1c5aa0-8ed3-eec3-a34d-867ea8f54e9d@hartkopp.net>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2baa5124-f0b0-a33e-256b-6a17867862c9@linux.intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <6e1c5aa0-8ed3-eec3-a34d-867ea8f54e9d@hartkopp.net>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9341 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=969
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1908070120
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9341 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908070120
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jun 24, 2019 at 03:27:55PM -0500, Thor Thayer wrote:
-> Hi Dan,
+On Tue, Aug 06, 2019 at 06:41:44PM +0200, Oliver Hartkopp wrote:
+> I compiled the code (the original version), but I do not get that "Should it
+> be static?" warning:
 > 
-> On 6/24/19 8:47 AM, Dan Carpenter wrote:
-> > Smatch complains that we're casting a u32 pointer to unsigned long.
-> > 
-> >      drivers/edac/altera_edac.c:1878 altr_edac_a10_irq_handler()
-> >      warn: passing casted pointer '&irq_status' to 'find_first_bit()'
-> > 
-> > This code wouldn't work on a 64 bit big endian system because we would
-> > read past the end of &irq_status.
-> > 
-> > Fixes: 13ab8448d2c9 ("EDAC, altera: Add ECC Manager IRQ controller support")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> > Static analysis obviously and I don't know this subsystem at all.
-> > Probably we're never going to run this on a 64 bit big endian system...
-> > Feel free to ignore this if you want.
-> > 
-> >   drivers/edac/altera_edac.c | 4 +++-
-> >   1 file changed, 3 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/edac/altera_edac.c b/drivers/edac/altera_edac.c
-> > index c2e693e34d43..bf024ec0116c 100644
-> > --- a/drivers/edac/altera_edac.c
-> > +++ b/drivers/edac/altera_edac.c
-> > @@ -1866,6 +1866,7 @@ static void altr_edac_a10_irq_handler(struct irq_desc *desc)
-> >   	struct altr_arria10_edac *edac = irq_desc_get_handler_data(desc);
-> >   	struct irq_chip *chip = irq_desc_get_chip(desc);
-> >   	int irq = irq_desc_get_irq(desc);
-> > +	unsigned long bits;
-> >   	dberr = (irq == edac->db_irq) ? 1 : 0;
-> >   	sm_offset = dberr ? A10_SYSMGR_ECC_INTSTAT_DERR_OFST :
-> > @@ -1875,7 +1876,8 @@ static void altr_edac_a10_irq_handler(struct irq_desc *desc)
-> >   	regmap_read(edac->ecc_mgr_map, sm_offset, &irq_status);
-> > -	for_each_set_bit(bit, (unsigned long *)&irq_status, 32) {
-> > +	bits = irq_status;
-> > +	for_each_set_bit(bit, &bits, 32) {
-> >   		irq = irq_linear_revmap(edac->domain, dberr * 32 + bit);
-> >   		if (irq)
-> >   			generic_handle_irq(irq);
-> > 
-> You are correct that we shouldn't use this on a 64 bit machine but this is a
-> good fix. Thank you!
-> 
-> Reviewed-by: Thor Thayer <thor.thayer@linux.intel.com>
+> user@box:~/net-next$ make C=1
+>   CALL    scripts/checksyscalls.sh
+>   CALL    scripts/atomic/check-atomics.sh
+>   DESCEND  objtool
+>   CHK     include/generated/compile.h
+>   CHECK   net/can/af_can.c
+> ./include/linux/sched.h:609:43: error: bad integer constant expression
+> ./include/linux/sched.h:609:73: error: invalid named zero-width bitfield
+> `value'
+> ./include/linux/sched.h:610:43: error: bad integer constant expression
+> ./include/linux/sched.h:610:67: error: invalid named zero-width bitfield
+> `bucket_id'
+>   CC [M]  net/can/af_can.o
 
-Applied, thanks.
+The sched.h errors suppress Sparse warnings so it's broken/useless now.
+The code looks like this:
 
--- 
-Regards/Gruss,
-    Boris.
+include/linux/sched.h
+   613  struct uclamp_se {
+   614          unsigned int value              : bits_per(SCHED_CAPACITY_SCALE);
+   615          unsigned int bucket_id          : bits_per(UCLAMP_BUCKETS);
+   616          unsigned int active             : 1;
+   617          unsigned int user_defined       : 1;
+   618  };
 
-Good mailing practices for 400: avoid top-posting and trim the reply.
+bits_per() is zero and Sparse doesn't like zero sized bitfields.
+
+regards,
+dan carpenter

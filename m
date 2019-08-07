@@ -2,94 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C488984BAE
-	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Aug 2019 14:33:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D121684BB8
+	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Aug 2019 14:35:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729714AbfHGMc7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 7 Aug 2019 08:32:59 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:52084 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726773AbfHGMc7 (ORCPT
+        id S1727171AbfHGMfi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 7 Aug 2019 08:35:38 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:40553 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728235AbfHGMfe (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 7 Aug 2019 08:32:59 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x77CJ2Et192116;
-        Wed, 7 Aug 2019 12:32:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2018-07-02;
- bh=HvdkhpeV6ChARIQ3KEKeh0eWt36K9KxTGBvSbwOCBLw=;
- b=DyjzVjZXOECQr39cSLVd+BPTEqwoAwoIYzPDNsRFeMhUnhRdeFL3cUx9zHU6XugSFJO/
- 7G8uGKqQDcIy1Gw0dw2ziYulMTgAeetHrFhSUrp8/3KLvOujitDR2esE7CymAZKpgqyz
- /BX0c/iG6wRUgQSDXLyfT8u3Fo8C9sIFqtxT5iV+rnZUhqjvLOcGMX1KYaIUQ21DMOHU
- hUt/CDM06n1OqL1CEokwgwLafKmCAU1bZwm7AoHnybYMpD8OWjV4v6J0ihe/tMEFl6fm
- L5xyv6ry2ZMM4LenauGEYKkgzraGFM7MM0Lq001ypZj0I6lBbQ0YpMboAxvwJs9itO/g yA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 2u51pu449t-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 07 Aug 2019 12:32:45 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x77CHtqR178935;
-        Wed, 7 Aug 2019 12:32:44 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 2u7577waky-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 07 Aug 2019 12:32:44 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x77CWhxU004595;
-        Wed, 7 Aug 2019 12:32:43 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 07 Aug 2019 05:32:42 -0700
-Date:   Wed, 7 Aug 2019 15:32:36 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Leon Romanovsky <leon@kernel.org>,
-        Yishai Hadas <yishaih@mellanox.com>
-Cc:     Doug Ledford <dledford@redhat.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] IB/mlx5: Check the correct variable in error handling code
-Message-ID: <20190807123236.GA11452@mwanda>
+        Wed, 7 Aug 2019 08:35:34 -0400
+Received: by mail-ot1-f65.google.com with SMTP id l15so46305408oth.7;
+        Wed, 07 Aug 2019 05:35:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=JZuZZafG9InRZg3sJah2SsLACCwnR/QLsffrqIQ7qL0=;
+        b=glORLVbYNymQGAs3xP0KTC+NCDkOT1lxa/Tg/4OpDl26lLqhmoSdG5rG9V3OEQyxNa
+         yXFnPuNy6AWAL46d+3oqCPuOBdI1amlFJG9rC5FJqOPneFt+kpvM5h7aHqkjGXeh4WDu
+         9dDatCOn8xre84uStfHjyPOuxaDyPHkauwGc27TwGbdXuH5LXG9hlfxv/5NCGfMLNtIX
+         cUIJj3BIVzo0goNUabxInYbqPN/ryf7PYKVD//RNAGKHHwZJDEDxc50yxUg3SfXYFM2t
+         FlcA6x5rx9AY1sXvW958b3lAN39XIQVACJ0K+kA1njsgVCDXYscYZDx5agcpILlW+WY2
+         T30A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=JZuZZafG9InRZg3sJah2SsLACCwnR/QLsffrqIQ7qL0=;
+        b=OKSqIM3PNGPW5wympclP+S+e3FhH4kLTrXOomKomWokMuqOaKHEQkRqEMcfqZwXnfI
+         4WQQiR/yE/U3ry6JoZGXw0modh6gyc48GNblHdznsI/16ppx6BkGfcNRJ5arQHfzMqjp
+         dfzcZuicAP5Y2EgP4x1DhTFhuz8Vkz/EWkKwF+HU4v3+ksbKqayDfwJbLpz41RGXZybX
+         JeyvRusSOn57GrQURquxd3xpgZhrQg3VylzcgUOe9M9IW2/UZiPC2ltc2Yjn/J/LO9MV
+         Ra+GT9rZvpuKO9LSRtiWzvZOhjlGHxJuZPTjNiWh/oZOPJphuJvdxOfg33/PtuP1cGHd
+         TH/Q==
+X-Gm-Message-State: APjAAAWXJ9GeORiAXOchugKT1ICGt3F/krPRc+NeEyZ1/DZRsNJeDYcG
+        Dj8IOyVKHQzGg9DDn4Wudt/StqhR
+X-Google-Smtp-Source: APXvYqwP1RK8Zqg9ji5PjaAzKucKfNeMU+zgSW+ITvubMhN8EPG91EFKUnjM4+9DDCkInCzknGuqoQ==
+X-Received: by 2002:a05:6830:11d4:: with SMTP id v20mr7171768otq.121.1565181333422;
+        Wed, 07 Aug 2019 05:35:33 -0700 (PDT)
+Received: from JosephdeMacBook-Pro.local ([205.204.117.7])
+        by smtp.gmail.com with ESMTPSA id m21sm28662136otl.70.2019.08.07.05.35.30
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 07 Aug 2019 05:35:32 -0700 (PDT)
+Subject: Re: [PATCH][ocfs2-next] ocfs2: ensure ret is set to zero before
+ returning
+To:     Colin King <colin.king@canonical.com>,
+        Mark Fasheh <mark@fasheh.com>,
+        Joel Becker <jlbec@evilplan.org>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        ocfs2-devel@oss.oracle.com
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190807121929.28918-1-colin.king@canonical.com>
+From:   Joseph Qi <jiangqi903@gmail.com>
+Message-ID: <fb3d7441-93ea-b619-52fc-00da950c9201@gmail.com>
+Date:   Wed, 7 Aug 2019 20:35:26 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:60.0)
+ Gecko/20100101 Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9341 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1908070137
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9341 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908070137
+In-Reply-To: <20190807121929.28918-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The code accidentally checks "event_sub" instead of "event_sub->eventfd".
 
-Fixes: 759738537142 ("IB/mlx5: Enable subscription for device events over DEVX")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/infiniband/hw/mlx5/devx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/devx.c b/drivers/infiniband/hw/mlx5/devx.c
-index fd577ffd7864..e24df414fd47 100644
---- a/drivers/infiniband/hw/mlx5/devx.c
-+++ b/drivers/infiniband/hw/mlx5/devx.c
-@@ -2041,7 +2041,7 @@ static int UVERBS_HANDLER(MLX5_IB_METHOD_DEVX_SUBSCRIBE_EVENT)(
- 			event_sub->eventfd =
- 				eventfd_ctx_fdget(redirect_fd);
- 
--			if (IS_ERR(event_sub)) {
-+			if (IS_ERR(event_sub->eventfd)) {
- 				err = PTR_ERR(event_sub->eventfd);
- 				event_sub->eventfd = NULL;
- 				goto err;
--- 
-2.20.1
+On 19/8/7 20:19, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> A previous commit introduced a regression where variable ret was
+> originally being set from the return from a call to function
+> dlm_create_debugfs_subroot and this set was removed. Currently
+> ret is now uninitialized if no alloction errors are found which
+> may end up with a bogus check on ret < 0 on the 'leave:' return
+> path.  Fix this by setting ret to zero on a successful execution
+> path.
 
+Good catch.
+Or shall we just initialize 'ret' at first?
+
+> 
+> Addresses-Coverity: ("Uninitialzed scalar variable")
+
+Typo here. 
+
+Thanks,
+Joseph
+
+> Fixes: cba322160ef0 ("ocfs2: further debugfs cleanups")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  fs/ocfs2/dlm/dlmdomain.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/fs/ocfs2/dlm/dlmdomain.c b/fs/ocfs2/dlm/dlmdomain.c
+> index 5c4218d66dd2..ee6f459f9770 100644
+> --- a/fs/ocfs2/dlm/dlmdomain.c
+> +++ b/fs/ocfs2/dlm/dlmdomain.c
+> @@ -2052,6 +2052,7 @@ static struct dlm_ctxt *dlm_alloc_ctxt(const char *domain,
+>  	mlog(0, "context init: refcount %u\n",
+>  		  kref_read(&dlm->dlm_refs));
+>  
+> +	ret = 0;
+>  leave:
+>  	if (ret < 0 && dlm) {
+>  		if (dlm->master_hash)
+> 

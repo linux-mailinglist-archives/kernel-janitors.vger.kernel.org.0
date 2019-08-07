@@ -2,102 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98908844BE
-	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Aug 2019 08:45:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E18C3847D6
+	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Aug 2019 10:46:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727114AbfHGGpN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 7 Aug 2019 02:45:13 -0400
-Received: from mail-pl1-f196.google.com ([209.85.214.196]:34109 "EHLO
-        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727074AbfHGGpN (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 7 Aug 2019 02:45:13 -0400
-Received: by mail-pl1-f196.google.com with SMTP id i2so39241447plt.1
-        for <kernel-janitors@vger.kernel.org>; Tue, 06 Aug 2019 23:45:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=CdLMdQs77H7q7Rq2wkhxXRQ+8UWJlMaRb3upsqZ7Sdo=;
-        b=SiAQfUqjlfFhnpJ/aiiBbpttxqd+ElFAQ2jLMiJWw1CK7OaWHvfPVVo8xTnVfnqO5n
-         VPqr7FMg+jewdzjeXHchHJdocsBuVD3s7JgU5oBf6sRlrX+rlaja5P460LkECuoiLfvp
-         Jrj4oDZ6vlTTCQLew7cix7sQcLaUjMzBb8/3Tk04zQh7aPzogHaQVDJHtMPDEGS6gOOn
-         SnqZW3tnd4J/FfksKdEskh1toJpfXlwnRy9AhH6Q5qIkPwUJjNYSVxuyVN/Lxt1drAn2
-         nLwGokkYmZRW9y5mPyRUdHK+zuxE02J4hOGFff4TykU0s42fmsYhKJgFhIYt2mGAg10q
-         4ehA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=CdLMdQs77H7q7Rq2wkhxXRQ+8UWJlMaRb3upsqZ7Sdo=;
-        b=THTUJMOqMf38/jwxMvbJyt5+eo7F9pwuvRE7ylUT8bGQU8DirHK5Ahcaiy4Hvol74o
-         N0pH3aDDY2ApHpAFc3PGyI5YPiJZjQ7s0sU8wAaixrfpfxAS1fb/h66KrXyZkJVOFTgN
-         LGyIV6gjCB52QbqIeQJbBk6d927ETxr+rg4FYmEs6mJbc8NKKgscLk/Rr6F9bJrZ8Fik
-         PwMJnQPmb07mOib2L0rPekqItrjX7CL9Iedb5uVmYi/hGokJgYqKgs8Dfah3ZudqWZQf
-         5OM1xyPji8b4gJaYcGQc0hSVZRTkB+VFTlct2rJHAAlLWz99KwUqJQKtREABIhhotaDl
-         pJeA==
-X-Gm-Message-State: APjAAAXb06LsGvtWwpxsRcrkt8zcdQrybrPOCl7EG/LrHOpLhqs3uWmh
-        +glaD6qd06VvbqkUti35R5nFQ4nktoE=
-X-Google-Smtp-Source: APXvYqwWtL2V/FMBAor8U+S42IBOAUWMbGYvY2K3OKGlltXwE6PjxYTU2fLTNPsUaHw6i/rYJPoLkA==
-X-Received: by 2002:a62:2a4d:: with SMTP id q74mr7838996pfq.86.1565160312706;
-        Tue, 06 Aug 2019 23:45:12 -0700 (PDT)
-Received: from FINLAND.cbr.squiz.net.au (220-245-33-70.static.tpgi.com.au. [220.245.33.70])
-        by smtp.gmail.com with ESMTPSA id y22sm104846552pfo.39.2019.08.06.23.45.11
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Tue, 06 Aug 2019 23:45:12 -0700 (PDT)
-From:   Adam Zerella <adam.zerella@gmail.com>
-To:     kernel-janitors@vger.kernel.org
-Cc:     Adam Zerella <adam.zerella@gmail.com>
-Subject: [PATCH] pcmcia/i82092: Refactored dprintk macro for pr_debug.
-Date:   Tue,  6 Aug 2019 23:04:47 +1000
-Message-Id: <20190806130445.3785-1-adam.zerella@gmail.com>
-X-Mailer: git-send-email 2.20.1
+        id S2387637AbfHGIqB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 7 Aug 2019 04:46:01 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:42486 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387452AbfHGIqB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 7 Aug 2019 04:46:01 -0400
+Received: from zn.tnic (p200300EC2F0D5000E5DBE4FCCFA1B2C9.dip0.t-ipconnect.de [IPv6:2003:ec:2f0d:5000:e5db:e4fc:cfa1:b2c9])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 685841EC090E;
+        Wed,  7 Aug 2019 10:45:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1565167559;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=7bkTN/F57Ckbh6FRBfVDlrj4muQsV+izdGSF2OhAXvM=;
+        b=aXrtZnRDMAHncqTsuM2Z5bE+1W7GPXLW+FWKp5/KerQYQuusr5+ZTbS08B6Xdfu1yxJqX4
+        LZTlTGUz9Za+8o71LTA5z2AkfPLWK88vMQyyAZatWNcH2wN1lUOVZjpiejIQlBt2cu/PH/
+        7W7Wi50AIGchAWK6Y/VeNZ2qrTMMWxw=
+Date:   Wed, 7 Aug 2019 10:46:43 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Thor Thayer <thor.thayer@linux.intel.com>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        James Morse <james.morse@arm.com>, linux-edac@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] EDAC/altera: Silence an endian warning
+Message-ID: <20190807084643.GA18207@zn.tnic>
+References: <20190624134717.GA1754@mwanda>
+ <2baa5124-f0b0-a33e-256b-6a17867862c9@linux.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <2baa5124-f0b0-a33e-256b-6a17867862c9@linux.intel.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-As pointed out in https://kernelnewbies.org/KernelJanitors/Todo
-this patch replaces the outdated macro of DPRINTK for pr_debug
+On Mon, Jun 24, 2019 at 03:27:55PM -0500, Thor Thayer wrote:
+> Hi Dan,
+> 
+> On 6/24/19 8:47 AM, Dan Carpenter wrote:
+> > Smatch complains that we're casting a u32 pointer to unsigned long.
+> > 
+> >      drivers/edac/altera_edac.c:1878 altr_edac_a10_irq_handler()
+> >      warn: passing casted pointer '&irq_status' to 'find_first_bit()'
+> > 
+> > This code wouldn't work on a 64 bit big endian system because we would
+> > read past the end of &irq_status.
+> > 
+> > Fixes: 13ab8448d2c9 ("EDAC, altera: Add ECC Manager IRQ controller support")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> > Static analysis obviously and I don't know this subsystem at all.
+> > Probably we're never going to run this on a 64 bit big endian system...
+> > Feel free to ignore this if you want.
+> > 
+> >   drivers/edac/altera_edac.c | 4 +++-
+> >   1 file changed, 3 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/edac/altera_edac.c b/drivers/edac/altera_edac.c
+> > index c2e693e34d43..bf024ec0116c 100644
+> > --- a/drivers/edac/altera_edac.c
+> > +++ b/drivers/edac/altera_edac.c
+> > @@ -1866,6 +1866,7 @@ static void altr_edac_a10_irq_handler(struct irq_desc *desc)
+> >   	struct altr_arria10_edac *edac = irq_desc_get_handler_data(desc);
+> >   	struct irq_chip *chip = irq_desc_get_chip(desc);
+> >   	int irq = irq_desc_get_irq(desc);
+> > +	unsigned long bits;
+> >   	dberr = (irq == edac->db_irq) ? 1 : 0;
+> >   	sm_offset = dberr ? A10_SYSMGR_ECC_INTSTAT_DERR_OFST :
+> > @@ -1875,7 +1876,8 @@ static void altr_edac_a10_irq_handler(struct irq_desc *desc)
+> >   	regmap_read(edac->ecc_mgr_map, sm_offset, &irq_status);
+> > -	for_each_set_bit(bit, (unsigned long *)&irq_status, 32) {
+> > +	bits = irq_status;
+> > +	for_each_set_bit(bit, &bits, 32) {
+> >   		irq = irq_linear_revmap(edac->domain, dberr * 32 + bit);
+> >   		if (irq)
+> >   			generic_handle_irq(irq);
+> > 
+> You are correct that we shouldn't use this on a 64 bit machine but this is a
+> good fix. Thank you!
+> 
+> Reviewed-by: Thor Thayer <thor.thayer@linux.intel.com>
 
-E: example patch (Testing to see if this format and type of fix is welcome)
-To: Dominik Brodowski <linux@dominikbrodowski.net>
-To: Thomas Gleixner <tglx@linutronix.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Adam Zerella <adam.zerella@gmail.com>
-To: linux-kernel@vger.kernel.org
-Signed-off-by: Adam Zerella <adam.zerella@gmail.com>
----
- drivers/pcmcia/i82092.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Applied, thanks.
 
-diff --git a/drivers/pcmcia/i82092.c b/drivers/pcmcia/i82092.c
-index ec54a2aa5cb8..e1929520c20e 100644
---- a/drivers/pcmcia/i82092.c
-+++ b/drivers/pcmcia/i82092.c
-@@ -117,9 +117,9 @@ static int i82092aa_pci_probe(struct pci_dev *dev, const struct pci_device_id *i
- 		
- 		if (card_present(i)) {
- 			sockets[i].card_state = 3;
--			dprintk(KERN_DEBUG "i82092aa: slot %i is occupied\n",i);
-+			pr_debug("i82092aa: slot %i is occupied\n", i);
- 		} else {
--			dprintk(KERN_DEBUG "i82092aa: slot %i is vacant\n",i);
-+			pr_debug("i82092aa: slot %i is vacant\n", i);
- 		}
- 	}
- 		
-@@ -128,7 +128,7 @@ static int i82092aa_pci_probe(struct pci_dev *dev, const struct pci_device_id *i
- 	pci_write_config_byte(dev, 0x50, configbyte); /* PCI Interrupt Routing Register */
- 
- 	/* Register the interrupt handler */
--	dprintk(KERN_DEBUG "Requesting interrupt %i \n",dev->irq);
-+	pr_debug("Requesting interrupt %i\n", dev->irq);
- 	if ((ret = request_irq(dev->irq, i82092aa_interrupt, IRQF_SHARED, "i82092aa", i82092aa_interrupt))) {
- 		printk(KERN_ERR "i82092aa: Failed to register IRQ %d, aborting\n", dev->irq);
- 		goto err_out_free_res;
 -- 
-2.20.1
+Regards/Gruss,
+    Boris.
 
+Good mailing practices for 400: avoid top-posting and trim the reply.

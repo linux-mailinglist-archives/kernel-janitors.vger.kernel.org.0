@@ -2,57 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1CE884C9C
-	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Aug 2019 15:15:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CC1F84D73
+	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Aug 2019 15:35:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388038AbfHGNPj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 7 Aug 2019 09:15:39 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41496 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387970AbfHGNPj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 7 Aug 2019 09:15:39 -0400
-Received: from localhost (unknown [77.137.115.125])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D945321E6B;
-        Wed,  7 Aug 2019 13:15:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1565183738;
-        bh=aEjS/VHN8i62TUZAJGcza/68NxDbFLH01XgoBEeMQ6M=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=KEvMO6WG6KoWA3pSIHnfMVQhLejzbVv7GrZAV7N4u+JdhV4nOTJ95L9r62N+MOmhf
-         HCa6OpXX49Tk+QMwbbtLnj5Pry3GD5caUHFZsqsSWFfWd5UO/2A0bQzEgTsZYPUZ0H
-         b7xE81xDtEBP7VdkWeZYwG2+bAXdmQmFWjADXgII=
-Date:   Wed, 7 Aug 2019 16:15:34 +0300
-From:   Leon Romanovsky <leon@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Yishai Hadas <yishaih@mellanox.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] IB/mlx5: Check the correct variable in error handling
- code
-Message-ID: <20190807131534.GG32366@mtr-leonro.mtl.com>
-References: <20190807123236.GA11452@mwanda>
+        id S2388250AbfHGNfV convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 7 Aug 2019 09:35:21 -0400
+Received: from mail.fireflyinternet.com ([109.228.58.192]:52916 "EHLO
+        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2388232AbfHGNfV (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 7 Aug 2019 09:35:21 -0400
+X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
+Received: from localhost (unverified [78.156.65.138]) 
+        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 17918905-1500050 
+        for multiple; Wed, 07 Aug 2019 14:35:16 +0100
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190807123236.GA11452@mwanda>
-User-Agent: Mutt/1.12.0 (2019-05-25)
+Content-Transfer-Encoding: 8BIT
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Jani Nikula <jani.nikula@linux.intel.com>
+From:   Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <156518113518.6198.15252656122354479322@skylake-alporthouse-com>
+Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kernel-janitors@vger.kernel.org
+References: <20190807122832.GA10517@mwanda>
+ <156518113518.6198.15252656122354479322@skylake-alporthouse-com>
+Message-ID: <156518491397.6198.14048305337074834151@skylake-alporthouse-com>
+User-Agent: alot/0.6
+Subject: Re: [PATCH] drm/i915: Fix some NULL vs IS_ERR() conditions
+Date:   Wed, 07 Aug 2019 14:35:13 +0100
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Aug 07, 2019 at 03:32:36PM +0300, Dan Carpenter wrote:
-> The code accidentally checks "event_sub" instead of "event_sub->eventfd".
->
-> Fixes: 759738537142 ("IB/mlx5: Enable subscription for device events over DEVX")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/infiniband/hw/mlx5/devx.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
+Quoting Chris Wilson (2019-08-07 13:32:15)
+> Quoting Dan Carpenter (2019-08-07 13:28:32)
+> > There were several places which check for NULL when they should have
+> > been checking for IS_ERR().
+> > 
+> > Fixes: d8af05ff38ae ("drm/i915: Allow sharing the idle-barrier from other kernel requests")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> 
+> Oops,
+> Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
 
-Thanks,
-Acked-by: Leon Romanovsky <leonro@mellanox.com>
+And pushed, ta.
+-Chris

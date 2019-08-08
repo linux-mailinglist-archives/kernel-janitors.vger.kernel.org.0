@@ -2,106 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B178866B0
-	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Aug 2019 18:10:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69F8E86B8F
+	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Aug 2019 22:33:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404120AbfHHQKB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 8 Aug 2019 12:10:01 -0400
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:39599 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732662AbfHHQKB (ORCPT
+        id S2404766AbfHHUdz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 8 Aug 2019 16:33:55 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:59050 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389974AbfHHUdy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 8 Aug 2019 12:10:01 -0400
-Received: by mail-pl1-f193.google.com with SMTP id b7so43789923pls.6;
-        Thu, 08 Aug 2019 09:10:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=akVDmQLmyHVu/cQZFdUEQUlBMCsxiv2Zb1QwNgfTWp0=;
-        b=pvcFYY1Od9wReDUvHuU8dmSpig5/HjS1DYUd9dxkg8D21MWHGHWIqw+16Ce4JkZbxx
-         gBS9D1Tk8YZRyJbRl6J5wuteVd96GPqFNBoWzNtCDrBwEYTeYjRWcHu6gTRjKQj4gOc9
-         cOUycclyocPZLYfOw6j7GvYD4yJ0IrD4JtJfQ8GMhOw9BBDcNYVjmW8GvSuyJgQ8RZv+
-         /HJzN3Fe8VfDHQygWOGIe7NaxoExcqqDXs3aCn89Brou1gceCZmXrii+flx01ahASWzG
-         w81fdGupsOx3VVT6KbxY1s1ZMNmBe9WjxoVKpDT4ZABQOk0rVvdmgKvIyCgAVWtiIfc+
-         pb+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=akVDmQLmyHVu/cQZFdUEQUlBMCsxiv2Zb1QwNgfTWp0=;
-        b=ngKDj6DrQVJlCY6hdejY4i3I6xW3VRLBd2pN1mf/Ayg3EUJvTl9IzoMvnHNKZZLg2H
-         uSjHqYg1Sr3WFuG5RWkkgnYKsvo7owUGw66eBFKVAQJAM6zMYAgc5T6CtGH8EXMpMxF8
-         1T3dCLhqitFzI/Wx/070Zu8b7GsTgmZEWvYk1GNF7CQ9f2UatxngxowT7/+Wz7KVXkGq
-         +5uK30j2S+ypxYsIxBU1VbMLHVQZVdP9cUDTcqsR8i0YL2CGgSBdov2rheP2IJoDSGfR
-         r0Z4nIpJp1EN89+huTuAu8zLWnJ1a+NgwKErLgo6LYACSFjZiCy5I3TRo5litaR97MOv
-         f9vA==
-X-Gm-Message-State: APjAAAXipt4VF5MJyu3ymnD19+Hvh932L2Oy1pDRixOA8UA9VhH6HJgh
-        +W9JukHR5iO3npBh52l1bM4=
-X-Google-Smtp-Source: APXvYqzto2FY24twGWc6FKcHSuYLjATrFTxhX5jDOiNLzoC7sG+UZke5aXwynrLm9PvF9kqjrWjWWg==
-X-Received: by 2002:a17:902:5985:: with SMTP id p5mr14295703pli.177.1565280600398;
-        Thu, 08 Aug 2019 09:10:00 -0700 (PDT)
-Received: from [192.168.1.70] (c-73-231-235-122.hsd1.ca.comcast.net. [73.231.235.122])
-        by smtp.gmail.com with ESMTPSA id g2sm115493792pfb.95.2019.08.08.09.09.59
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 08 Aug 2019 09:09:59 -0700 (PDT)
-Subject: Re: [PATCH] of/platform: Clean up a return type in of_link_property()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Saravana Kannan <saravanak@google.com>
-Cc:     Anton Vorontsov <anton@enomsg.org>,
-        Colin Cross <ccross@android.com>,
-        Tony Luck <tony.luck@intel.com>, devicetree@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20190808103207.GA30506@mwanda>
-From:   Frank Rowand <frowand.list@gmail.com>
-Message-ID: <b5afe4e9-db49-f50c-eb03-5d300a72e88b@gmail.com>
-Date:   Thu, 8 Aug 2019 09:09:58 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <20190808103207.GA30506@mwanda>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Thu, 8 Aug 2019 16:33:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+        List-Archive; bh=3voCnN8Of2ynwHx3MJQutd/Kh6zmjomsglAokxWqF50=; b=kBASezOYADPm
+        QYgTaKLM+so3/xAdMW2ssjpVM3exxEVTIEbGJZC6PIti3jaAJ1SLT6bEXMe2CxsGrBgeZ4opj6IDx
+        UC2Mb1op+Uuw7FGCqhv90naiG3X7Wa8TgCTxNwY+NrhNj1g0aF1WTMBMRdXnDDgE4VQ2kRsW4pyw2
+        IQCF4=;
+Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.co.uk>)
+        id 1hvp6c-00042n-4T; Thu, 08 Aug 2019 20:33:50 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+        id 8CD7D2742B42; Thu,  8 Aug 2019 21:33:49 +0100 (BST)
+From:   Mark Brown <broonie@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Eric Jeong <eric.jeong.opensource@diasemi.com>,
+        kernel-janitors@vger.kernel.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Support Opensource <support.opensource@diasemi.com>
+Subject: Applied "regulator: slg51000: Fix a couple NULL vs IS_ERR() checks" to the regulator tree
+In-Reply-To: <20190808103335.GD30506@mwanda>
+X-Patchwork-Hint: ignore
+Message-Id: <20190808203349.8CD7D2742B42@ypsilon.sirena.org.uk>
+Date:   Thu,  8 Aug 2019 21:33:49 +0100 (BST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 8/8/19 3:32 AM, Dan Carpenter wrote:
-> This function is supposed to return zero on success and negative
-> error codes on failure but currently it returns true on failure.  The
-> caller only checks for zero and non-zero so this mixup doesn't cause any
-> runtime issues.
-> 
-> Fixes: 690ff7881b26 ("of/platform: Add functional dependency link from DT bindings")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/of/platform.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> index 21838226d68a..86fb8ab8c012 100644
-> --- a/drivers/of/platform.c
-> +++ b/drivers/of/platform.c
-> @@ -625,7 +625,7 @@ static const struct supplier_bindings bindings[] = {
->  	{ },
->  };
->  
-> -static bool of_link_property(struct device *dev, struct device_node *con_np,
-> +static int of_link_property(struct device *dev, struct device_node *con_np,
->  			     const char *prop)
->  {
->  	struct device_node *phandle;
-> 
+The patch
 
-Hi Dan,
+   regulator: slg51000: Fix a couple NULL vs IS_ERR() checks
 
+has been applied to the regulator tree at
 
-Thanks for catching this.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-5.3
 
-Another patch was submitted to fix this just before your patch.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
--Frank
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From 7352e72a513fd2757b2fda695a349d86faa4c94e Mon Sep 17 00:00:00 2001
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Date: Thu, 8 Aug 2019 13:33:35 +0300
+Subject: [PATCH] regulator: slg51000: Fix a couple NULL vs IS_ERR() checks
+
+The devm_gpiod_get_from_of_node() function never returns NULL, it
+returns error pointers on error.
+
+Fixes: a867bde3dd03 ("regulator: slg51000: add slg51000 regulator driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Link: https://lore.kernel.org/r/20190808103335.GD30506@mwanda
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/regulator/slg51000-regulator.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/regulator/slg51000-regulator.c b/drivers/regulator/slg51000-regulator.c
+index 04b732991d69..4d859fef55e6 100644
+--- a/drivers/regulator/slg51000-regulator.c
++++ b/drivers/regulator/slg51000-regulator.c
+@@ -205,7 +205,7 @@ static int slg51000_of_parse_cb(struct device_node *np,
+ 	ena_gpiod = devm_gpiod_get_from_of_node(chip->dev, np,
+ 						"enable-gpios", 0,
+ 						gflags, "gpio-en-ldo");
+-	if (ena_gpiod) {
++	if (!IS_ERR(ena_gpiod)) {
+ 		config->ena_gpiod = ena_gpiod;
+ 		devm_gpiod_unhinge(chip->dev, config->ena_gpiod);
+ 	}
+@@ -459,7 +459,7 @@ static int slg51000_i2c_probe(struct i2c_client *client,
+ 					       GPIOD_OUT_HIGH
+ 					       | GPIOD_FLAGS_BIT_NONEXCLUSIVE,
+ 					       "slg51000-cs");
+-	if (cs_gpiod) {
++	if (!IS_ERR(cs_gpiod)) {
+ 		dev_info(dev, "Found chip selector property\n");
+ 		chip->cs_gpiod = cs_gpiod;
+ 	}
+-- 
+2.20.1
+

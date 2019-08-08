@@ -2,56 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A6E48551E
-	for <lists+kernel-janitors@lfdr.de>; Wed,  7 Aug 2019 23:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70E608576C
+	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Aug 2019 03:09:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730284AbfHGVXn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 7 Aug 2019 17:23:43 -0400
-Received: from mail.kernel.org ([198.145.29.99]:36678 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388496AbfHGVXn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 7 Aug 2019 17:23:43 -0400
-Received: from kernel.org (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id ABD8921743;
-        Wed,  7 Aug 2019 21:23:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1565213022;
-        bh=grO+DVwLrFzvyLQYKg15Nx4cEFnP98gsoGYaAZVXCNE=;
-        h=In-Reply-To:References:Cc:From:Subject:To:Date:From;
-        b=HyDHtsGXL7qFR5SHG5nRm31lPdR5tAbu0p7NddSzjlOnRyE7zT6ZyMv2KzD6jzKed
-         wQ3AR2FAdiefQOUVhDCuOhH7JB2/zdKozYht+ePkhjbUGEzxSRyQ931W0+ymXlEB4m
-         jeH/RMq/OXuyirasbX5na8iMfgKXnRlj5fSD4Jew=
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20190701165020.19840-1-colin.king@canonical.com>
-References: <20190701165020.19840-1-colin.king@canonical.com>
+        id S2389547AbfHHBIw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 7 Aug 2019 21:08:52 -0400
+Received: from out30-42.freemail.mail.aliyun.com ([115.124.30.42]:51591 "EHLO
+        out30-42.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730467AbfHHBIt (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 7 Aug 2019 21:08:49 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04423;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0TYvZ9x9_1565226526;
+Received: from JosephdeMacBook-Pro.local(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0TYvZ9x9_1565226526)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Thu, 08 Aug 2019 09:08:47 +0800
+Subject: Re: [PATCH][ocfs2-next] ocfs2: ensure ret is set to zero before
+ returning
+To:     Colin Ian King <colin.king@canonical.com>,
+        Joseph Qi <jiangqi903@gmail.com>,
+        Mark Fasheh <mark@fasheh.com>,
+        Joel Becker <jlbec@evilplan.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        ocfs2-devel@oss.oracle.com,
+        Andrew Morton <akpm@linux-foundation.org>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-From:   Stephen Boyd <sboyd@kernel.org>
-Subject: Re: [PATCH][next] clk: Si5341/Si5340: remove redundant assignment to n_den
-To:     Colin King <colin.king@canonical.com>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-clk@vger.kernel.org
-User-Agent: alot/0.8.1
-Date:   Wed, 07 Aug 2019 14:23:41 -0700
-Message-Id: <20190807212342.ABD8921743@mail.kernel.org>
+References: <20190807121929.28918-1-colin.king@canonical.com>
+ <fb3d7441-93ea-b619-52fc-00da950c9201@gmail.com>
+ <bf4d059a-94fc-d8cf-78c7-8606644185a5@canonical.com>
+From:   Joseph Qi <joseph.qi@linux.alibaba.com>
+Message-ID: <0cee7ca9-8704-171a-ec82-ee6c16e3381b@linux.alibaba.com>
+Date:   Thu, 8 Aug 2019 09:08:46 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:60.0)
+ Gecko/20100101 Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <bf4d059a-94fc-d8cf-78c7-8606644185a5@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Colin King (2019-07-01 09:50:20)
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> The variable n_den is initialized however that value is never read
-> as n_den is re-assigned a little later in the two paths of a
-> following if-statement.  Remove the redundant assignment.
->=20
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
 
-Applied to clk-next
 
+On 19/8/7 20:42, Colin Ian King wrote:
+> On 07/08/2019 13:35, Joseph Qi wrote:
+>>
+>>
+>> On 19/8/7 20:19, Colin King wrote:
+>>> From: Colin Ian King <colin.king@canonical.com>
+>>>
+>>> A previous commit introduced a regression where variable ret was
+>>> originally being set from the return from a call to function
+>>> dlm_create_debugfs_subroot and this set was removed. Currently
+>>> ret is now uninitialized if no alloction errors are found which
+>>> may end up with a bogus check on ret < 0 on the 'leave:' return
+>>> path.  Fix this by setting ret to zero on a successful execution
+>>> path.
+>>
+>> Good catch.
+>> Or shall we just initialize 'ret' at first?
+> 
+> Initialized ret first may not catch subsequent coding errors where error
+> returns paths have not initialized ret, so my preference is when it is
+> required and not before.
+> 
+Okay, looks good to me.
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+
+>>
+>>>
+>>> Addresses-Coverity: ("Uninitialzed scalar variable")
+> 
+> Can this be fixed up when applied rather sending a V2?
+>>
+Currently ocfs2 patches are maintained in Andrew's mm tree.
+So it depends on Andrew.
+
+Thanks,
+Joseph

@@ -2,59 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 723778651E
-	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Aug 2019 17:05:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B178866B0
+	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Aug 2019 18:10:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732344AbfHHPF1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 8 Aug 2019 11:05:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42750 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728289AbfHHPF1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 8 Aug 2019 11:05:27 -0400
-Received: from kernel.org (unknown [104.132.0.74])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9F2A1217D7;
-        Thu,  8 Aug 2019 15:05:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1565276726;
-        bh=fOS2h4GWI90AxufiprYZK3XN8pFdskKCIW7fKG4FeUI=;
-        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-        b=VFMP51oCHDQdJoMYVsEVFhcHHo+wLWULdRccvSA78T9Lq4peRuwjjfseVgNaYxWAD
-         KwFhyXc8R4nuoQ8mbh661ihCJ/mNEKqK9lAiUQUbqB+9dhnMMVC1aYNdUCrONTeU26
-         bodgB479vAHOHDZvEHGgojYCWYdojpP/EH55ibS0=
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <5961554a-6416-48ea-44e2-d8e3c7576af0@web.de>
-References: <5961554a-6416-48ea-44e2-d8e3c7576af0@web.de>
-Subject: Re: [PATCH] clk: Use seq_puts() in possible_parent_show()
-From:   Stephen Boyd <sboyd@kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
+        id S2404120AbfHHQKB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 8 Aug 2019 12:10:01 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:39599 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732662AbfHHQKB (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 8 Aug 2019 12:10:01 -0400
+Received: by mail-pl1-f193.google.com with SMTP id b7so43789923pls.6;
+        Thu, 08 Aug 2019 09:10:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=akVDmQLmyHVu/cQZFdUEQUlBMCsxiv2Zb1QwNgfTWp0=;
+        b=pvcFYY1Od9wReDUvHuU8dmSpig5/HjS1DYUd9dxkg8D21MWHGHWIqw+16Ce4JkZbxx
+         gBS9D1Tk8YZRyJbRl6J5wuteVd96GPqFNBoWzNtCDrBwEYTeYjRWcHu6gTRjKQj4gOc9
+         cOUycclyocPZLYfOw6j7GvYD4yJ0IrD4JtJfQ8GMhOw9BBDcNYVjmW8GvSuyJgQ8RZv+
+         /HJzN3Fe8VfDHQygWOGIe7NaxoExcqqDXs3aCn89Brou1gceCZmXrii+flx01ahASWzG
+         w81fdGupsOx3VVT6KbxY1s1ZMNmBe9WjxoVKpDT4ZABQOk0rVvdmgKvIyCgAVWtiIfc+
+         pb+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=akVDmQLmyHVu/cQZFdUEQUlBMCsxiv2Zb1QwNgfTWp0=;
+        b=ngKDj6DrQVJlCY6hdejY4i3I6xW3VRLBd2pN1mf/Ayg3EUJvTl9IzoMvnHNKZZLg2H
+         uSjHqYg1Sr3WFuG5RWkkgnYKsvo7owUGw66eBFKVAQJAM6zMYAgc5T6CtGH8EXMpMxF8
+         1T3dCLhqitFzI/Wx/070Zu8b7GsTgmZEWvYk1GNF7CQ9f2UatxngxowT7/+Wz7KVXkGq
+         +5uK30j2S+ypxYsIxBU1VbMLHVQZVdP9cUDTcqsR8i0YL2CGgSBdov2rheP2IJoDSGfR
+         r0Z4nIpJp1EN89+huTuAu8zLWnJ1a+NgwKErLgo6LYACSFjZiCy5I3TRo5litaR97MOv
+         f9vA==
+X-Gm-Message-State: APjAAAXipt4VF5MJyu3ymnD19+Hvh932L2Oy1pDRixOA8UA9VhH6HJgh
+        +W9JukHR5iO3npBh52l1bM4=
+X-Google-Smtp-Source: APXvYqzto2FY24twGWc6FKcHSuYLjATrFTxhX5jDOiNLzoC7sG+UZke5aXwynrLm9PvF9kqjrWjWWg==
+X-Received: by 2002:a17:902:5985:: with SMTP id p5mr14295703pli.177.1565280600398;
+        Thu, 08 Aug 2019 09:10:00 -0700 (PDT)
+Received: from [192.168.1.70] (c-73-231-235-122.hsd1.ca.comcast.net. [73.231.235.122])
+        by smtp.gmail.com with ESMTPSA id g2sm115493792pfb.95.2019.08.08.09.09.59
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 08 Aug 2019 09:09:59 -0700 (PDT)
+Subject: Re: [PATCH] of/platform: Clean up a return type in of_link_property()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Saravana Kannan <saravanak@google.com>
+Cc:     Anton Vorontsov <anton@enomsg.org>,
+        Colin Cross <ccross@android.com>,
+        Tony Luck <tony.luck@intel.com>, devicetree@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        Michael Turquette <mturquette@baylibre.com>,
-        linux-clk@vger.kernel.org
-User-Agent: alot/0.8.1
-Date:   Thu, 08 Aug 2019 08:05:25 -0700
-Message-Id: <20190808150526.9F2A1217D7@mail.kernel.org>
+References: <20190808103207.GA30506@mwanda>
+From:   Frank Rowand <frowand.list@gmail.com>
+Message-ID: <b5afe4e9-db49-f50c-eb03-5d300a72e88b@gmail.com>
+Date:   Thu, 8 Aug 2019 09:09:58 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20190808103207.GA30506@mwanda>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Markus Elfring (2019-07-01 13:24:37)
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Mon, 1 Jul 2019 22:20:40 +0200
->=20
-> A string which did not contain a data format specification should be put
-> into a sequence. Thus use the corresponding function =E2=80=9Cseq_puts=E2=
-=80=9D.
->=20
-> This issue was detected by using the Coccinelle software.
->=20
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+On 8/8/19 3:32 AM, Dan Carpenter wrote:
+> This function is supposed to return zero on success and negative
+> error codes on failure but currently it returns true on failure.  The
+> caller only checks for zero and non-zero so this mixup doesn't cause any
+> runtime issues.
+> 
+> Fixes: 690ff7881b26 ("of/platform: Add functional dependency link from DT bindings")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
+>  drivers/of/platform.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> index 21838226d68a..86fb8ab8c012 100644
+> --- a/drivers/of/platform.c
+> +++ b/drivers/of/platform.c
+> @@ -625,7 +625,7 @@ static const struct supplier_bindings bindings[] = {
+>  	{ },
+>  };
+>  
+> -static bool of_link_property(struct device *dev, struct device_node *con_np,
+> +static int of_link_property(struct device *dev, struct device_node *con_np,
+>  			     const char *prop)
+>  {
+>  	struct device_node *phandle;
+> 
 
-Applied to clk-next
+Hi Dan,
 
+
+Thanks for catching this.
+
+Another patch was submitted to fix this just before your patch.
+
+-Frank

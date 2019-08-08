@@ -2,59 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A545860B3
-	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Aug 2019 13:17:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D0DE860CE
+	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Aug 2019 13:26:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731622AbfHHLRZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 8 Aug 2019 07:17:25 -0400
-Received: from mail.kernel.org ([198.145.29.99]:45044 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730722AbfHHLRZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 8 Aug 2019 07:17:25 -0400
-Received: from localhost.localdomain (ool-18bba523.dyn.optonline.net [24.187.165.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AB459216C8;
-        Thu,  8 Aug 2019 11:17:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1565263044;
-        bh=EgmzTvbmBPtgyJmYpImp81JbvFmYHBfzw7jbIIcUCDI=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=okDjrn1P8Gj8H4K5zBGi+k4oVfmwUO2LCPYquP2801qQ22GoIsWryj5FZmEKRS88q
-         lpCPRbLxHDbeAT+1ccqMJXswwIDg4OsH/vV/pFv5q4ciTAUbHK7pNsAL7mmC/2NMOV
-         qjJPuRCnwyAWXNmdX5bHA0opjXIHoN5HUOna1qjE=
-Message-ID: <1565263042.4220.25.camel@kernel.org>
-Subject: Re: [PATCH] ima: Fix a use after free in ima_read_modsig()
-From:   Mimi Zohar <zohar@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Thiago Jung Bauermann <bauerman@linux.ibm.com>
-Cc:     Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Date:   Thu, 08 Aug 2019 07:17:22 -0400
-In-Reply-To: <20190808103310.GC30506@mwanda>
-References: <20190808103310.GC30506@mwanda>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.20.5 (3.20.5-1.fc24) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S2389756AbfHHLYi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 8 Aug 2019 07:24:38 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:38772 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726055AbfHHLYi (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 8 Aug 2019 07:24:38 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=yKx8HsTXj6XZn7iuc5HaQ9+PLFIorUNJbAQDDn/PTbM=; b=GkE76/rc4ycXvInL4Me2TzEqw
+        GA1SKEhp5DfbC++bG7w75tp03iNDvOdMKxKzp1+NQVCT6XUCOxupeJbTSkL5afuVuf/wRpmTvcG0C
+        yv7ec8pybFHRywHINtMVhCtzdiCaCpkOPemRfW6gihGnUgX4u7ipgbmn47uLp03Tdt85OI2iTLLMH
+        WziEPXadw73/dswli1nXBDiGFM3+ykcFaJvmTfHOkC00pTzl+CjH9h3UdmItO0+kaON63aBV7YPIl
+        9fVYnzXQtxedzX1jtEebPtaebuV1fiwSX+TCLV2pD+9hBzyblTUy62h0Qwa2P6ssr1yrY5lexxfzM
+        WJYYOGBnw==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat Linux))
+        id 1hvgX5-0004JR-62; Thu, 08 Aug 2019 11:24:35 +0000
+Date:   Thu, 8 Aug 2019 04:24:35 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Jesse Brandeburg <jesse.brandeburg@intel.com>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        mark.einon@gmail.com, davem@davemloft.net, f.fainelli@gmail.com,
+        andrew@lunn.ch, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] net: ethernet: et131x: Use GFP_KERNEL instead of
+ GFP_ATOMIC when allocating tx_ring->tcb_ring
+Message-ID: <20190808112435.GF5482@bombadil.infradead.org>
+References: <20190731073842.16948-1-christophe.jaillet@wanadoo.fr>
+ <20190807222346.00002ba7@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190807222346.00002ba7@intel.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 2019-08-08 at 13:33 +0300, Dan Carpenter wrote:
-> This code frees "hdr" and then dereferences it on the next line to get
-> the error code.
+On Wed, Aug 07, 2019 at 10:23:46PM -0700, Jesse Brandeburg wrote:
+> On Wed, 31 Jul 2019 09:38:42 +0200
+> Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 > 
-> Fixes: 39b07096364a ("ima: Implement support for module-style appended signatures")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > There is no good reason to use GFP_ATOMIC here. Other memory allocations
+> > are performed with GFP_KERNEL (see other 'dma_alloc_coherent()' below and
+> > 'kzalloc()' in 'et131x_rx_dma_memory_alloc()')
+> > 
+> > Use GFP_KERNEL which should be enough.
+> > 
+> > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> 
+> Sure, but generally I'd say GFP_ATOMIC is ok if you're in an init path
+> and you can afford to have the allocation thread sleep while memory is
+> being found by the kernel.
 
-Thanks, Dan.  Julia already reported this.  Thiago posted a patch last
-night.  Just getting to it now.  Can I add your Reviewed-by or Tested-
-by?
-
-Mimi
+That's not what GFP_ATOMIC means.  GFP_ATOMIC _will not_ sleep.  GFP_KERNEL
+will.

@@ -2,36 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 74A65859BD
-	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Aug 2019 07:23:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B34ED859C9
+	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Aug 2019 07:31:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726187AbfHHFXs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 8 Aug 2019 01:23:48 -0400
-Received: from mga01.intel.com ([192.55.52.88]:61961 "EHLO mga01.intel.com"
+        id S1730903AbfHHF3q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 8 Aug 2019 01:29:46 -0400
+Received: from mga03.intel.com ([134.134.136.65]:2630 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725806AbfHHFXr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 8 Aug 2019 01:23:47 -0400
+        id S1730857AbfHHF3p (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 8 Aug 2019 01:29:45 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Aug 2019 22:23:47 -0700
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Aug 2019 22:29:45 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.64,360,1559545200"; 
-   d="scan'208";a="374729200"
+   d="scan'208";a="374730250"
 Received: from jbrandeb-mobl2.amr.corp.intel.com (HELO localhost) ([10.254.39.134])
-  by fmsmga006.fm.intel.com with ESMTP; 07 Aug 2019 22:23:47 -0700
-Date:   Wed, 7 Aug 2019 22:23:46 -0700
+  by fmsmga006.fm.intel.com with ESMTP; 07 Aug 2019 22:29:44 -0700
+Date:   Wed, 7 Aug 2019 22:29:43 -0700
 From:   Jesse Brandeburg <jesse.brandeburg@intel.com>
 To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     <mark.einon@gmail.com>, <davem@davemloft.net>,
-        <willy@infradead.org>, <f.fainelli@gmail.com>, <andrew@lunn.ch>,
-        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, jesse.brandeburg@intel.com
-Subject: Re: [PATCH] net: ethernet: et131x: Use GFP_KERNEL instead of
- GFP_ATOMIC when allocating tx_ring->tcb_ring
-Message-ID: <20190807222346.00002ba7@intel.com>
-In-Reply-To: <20190731073842.16948-1-christophe.jaillet@wanadoo.fr>
-References: <20190731073842.16948-1-christophe.jaillet@wanadoo.fr>
+Cc:     <jcliburn@gmail.com>, <davem@davemloft.net>,
+        <chris.snook@gmail.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        jesse.brandeburg@intel.com
+Subject: Re: [PATCH 1/2] net: ag71xx: Slighly simplify code in
+ 'ag71xx_rings_init()'
+Message-ID: <20190807222943.0000718b@intel.com>
+In-Reply-To: <08fbcfe0f913644fe538656221a15790a1a83f1d.1564560130.git.christophe.jaillet@wanadoo.fr>
+References: <cover.1564560130.git.christophe.jaillet@wanadoo.fr>
+        <08fbcfe0f913644fe538656221a15790a1a83f1d.1564560130.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: Claws Mail 3.12.0 (GTK+ 2.24.28; i686-w64-mingw32)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -41,19 +42,15 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 31 Jul 2019 09:38:42 +0200
+On Wed, 31 Jul 2019 10:06:38 +0200
 Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
 
-> There is no good reason to use GFP_ATOMIC here. Other memory allocations
-> are performed with GFP_KERNEL (see other 'dma_alloc_coherent()' below and
-> 'kzalloc()' in 'et131x_rx_dma_memory_alloc()')
+> A few lines above, we have:
+>    tx_size = BIT(tx->order);
 > 
-> Use GFP_KERNEL which should be enough.
+> So use 'tx_size' directly to be consistent with the way 'rx->descs_cpu' and
+> 'rx->descs_dma' are computed below.
 > 
 > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-
-Sure, but generally I'd say GFP_ATOMIC is ok if you're in an init path
-and you can afford to have the allocation thread sleep while memory is
-being found by the kernel.
 
 Reviewed-by: Jesse Brandeburg <jesse.brandeburg@intel.com>

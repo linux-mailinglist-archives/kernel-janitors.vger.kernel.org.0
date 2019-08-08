@@ -2,83 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70E608576C
-	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Aug 2019 03:09:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 151228580B
+	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Aug 2019 04:16:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389547AbfHHBIw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 7 Aug 2019 21:08:52 -0400
-Received: from out30-42.freemail.mail.aliyun.com ([115.124.30.42]:51591 "EHLO
-        out30-42.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730467AbfHHBIt (ORCPT
+        id S2387536AbfHHCQv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 7 Aug 2019 22:16:51 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:51136 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727230AbfHHCQv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 7 Aug 2019 21:08:49 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04423;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=9;SR=0;TI=SMTPD_---0TYvZ9x9_1565226526;
-Received: from JosephdeMacBook-Pro.local(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0TYvZ9x9_1565226526)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Thu, 08 Aug 2019 09:08:47 +0800
-Subject: Re: [PATCH][ocfs2-next] ocfs2: ensure ret is set to zero before
- returning
-To:     Colin Ian King <colin.king@canonical.com>,
-        Joseph Qi <jiangqi903@gmail.com>,
-        Mark Fasheh <mark@fasheh.com>,
-        Joel Becker <jlbec@evilplan.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        ocfs2-devel@oss.oracle.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190807121929.28918-1-colin.king@canonical.com>
- <fb3d7441-93ea-b619-52fc-00da950c9201@gmail.com>
- <bf4d059a-94fc-d8cf-78c7-8606644185a5@canonical.com>
-From:   Joseph Qi <joseph.qi@linux.alibaba.com>
-Message-ID: <0cee7ca9-8704-171a-ec82-ee6c16e3381b@linux.alibaba.com>
-Date:   Thu, 8 Aug 2019 09:08:46 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:60.0)
- Gecko/20100101 Thunderbird/60.8.0
+        Wed, 7 Aug 2019 22:16:51 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x782E9DI156691;
+        Thu, 8 Aug 2019 02:16:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2018-07-02;
+ bh=gSFX7C7laNkAuh/KpAxHJ7SaNxF6mJAaI1qL2c5sLMk=;
+ b=m3Fzm81q860KvdZ+5gUMpO4lGjGEDVs4UTkdCG4bFGyV324E0/Ja6152hqytC27Xvx+m
+ WVPEEqLxs/BbQiNjg0PfMRtyGcBea2SL0cq6W1oRtPDm+VDCXBhcjF+Jxhq/AH5O74u7
+ hfdr8DGKXfLJC7DKDpftr2ydiclB+qEI6sLMj93nSRYD7cJrSezBUYpLzLiORVUeE7de
+ dxATYTMtnwFRGXd9OQQkKTQGrvOiPWoBxDwp7I73sVUnIdSzHEKVU1V1k6PASNY2/vO1
+ NjeFgnA+T4mw5JPKgORhTIhe/4iNd7KFwN2pbOvTztSyMb8He0xfp2upgozYjhJCr1Ss ag== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 2u527pykuk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 08 Aug 2019 02:16:46 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x782D17F022671;
+        Thu, 8 Aug 2019 02:16:46 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 2u763jjqav-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 08 Aug 2019 02:16:45 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x782Gipq015007;
+        Thu, 8 Aug 2019 02:16:44 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 07 Aug 2019 19:16:43 -0700
+To:     Colin King <colin.king@canonical.com>
+Cc:     Jack Wang <jinpu.wang@cloud.ionos.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] scsi: pm80xx: remove redundant assignments to variable rc
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20190731222214.15720-1-colin.king@canonical.com>
+Date:   Wed, 07 Aug 2019 22:16:41 -0400
+In-Reply-To: <20190731222214.15720-1-colin.king@canonical.com> (Colin King's
+        message of "Wed, 31 Jul 2019 23:22:14 +0100")
+Message-ID: <yq17e7ocsfq.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-In-Reply-To: <bf4d059a-94fc-d8cf-78c7-8606644185a5@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9342 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=920
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1908080021
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9342 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=977 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908080021
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
+Colin,
 
-On 19/8/7 20:42, Colin Ian King wrote:
-> On 07/08/2019 13:35, Joseph Qi wrote:
->>
->>
->> On 19/8/7 20:19, Colin King wrote:
->>> From: Colin Ian King <colin.king@canonical.com>
->>>
->>> A previous commit introduced a regression where variable ret was
->>> originally being set from the return from a call to function
->>> dlm_create_debugfs_subroot and this set was removed. Currently
->>> ret is now uninitialized if no alloction errors are found which
->>> may end up with a bogus check on ret < 0 on the 'leave:' return
->>> path.  Fix this by setting ret to zero on a successful execution
->>> path.
->>
->> Good catch.
->> Or shall we just initialize 'ret' at first?
-> 
-> Initialized ret first may not catch subsequent coding errors where error
-> returns paths have not initialized ret, so my preference is when it is
-> required and not before.
-> 
-Okay, looks good to me.
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+> There are several occasions where variable rc is being initialized
+> with a value that is never read and error is being re-assigned a
+> little later on.  Clean up the code by removing rc entirely and
+> just returning the return value from the call to pm8001_issue_ssp_tmf
 
->>
->>>
->>> Addresses-Coverity: ("Uninitialzed scalar variable")
-> 
-> Can this be fixed up when applied rather sending a V2?
->>
-Currently ocfs2 patches are maintained in Andrew's mm tree.
-So it depends on Andrew.
+Applied to 5.4/scsi-queue. Thanks!
 
-Thanks,
-Joseph
+-- 
+Martin K. Petersen	Oracle Linux Engineering

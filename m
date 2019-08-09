@@ -2,115 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69F8E86B8F
-	for <lists+kernel-janitors@lfdr.de>; Thu,  8 Aug 2019 22:33:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEBBB86F0C
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Aug 2019 03:02:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404766AbfHHUdz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 8 Aug 2019 16:33:55 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:59050 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389974AbfHHUdy (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 8 Aug 2019 16:33:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
-        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
-        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=3voCnN8Of2ynwHx3MJQutd/Kh6zmjomsglAokxWqF50=; b=kBASezOYADPm
-        QYgTaKLM+so3/xAdMW2ssjpVM3exxEVTIEbGJZC6PIti3jaAJ1SLT6bEXMe2CxsGrBgeZ4opj6IDx
-        UC2Mb1op+Uuw7FGCqhv90naiG3X7Wa8TgCTxNwY+NrhNj1g0aF1WTMBMRdXnDDgE4VQ2kRsW4pyw2
-        IQCF4=;
-Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <broonie@sirena.co.uk>)
-        id 1hvp6c-00042n-4T; Thu, 08 Aug 2019 20:33:50 +0000
-Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id 8CD7D2742B42; Thu,  8 Aug 2019 21:33:49 +0100 (BST)
-From:   Mark Brown <broonie@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Eric Jeong <eric.jeong.opensource@diasemi.com>,
-        kernel-janitors@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Support Opensource <support.opensource@diasemi.com>
-Subject: Applied "regulator: slg51000: Fix a couple NULL vs IS_ERR() checks" to the regulator tree
-In-Reply-To: <20190808103335.GD30506@mwanda>
-X-Patchwork-Hint: ignore
-Message-Id: <20190808203349.8CD7D2742B42@ypsilon.sirena.org.uk>
-Date:   Thu,  8 Aug 2019 21:33:49 +0100 (BST)
+        id S2405051AbfHIBCn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 8 Aug 2019 21:02:43 -0400
+Received: from mga11.intel.com ([192.55.52.93]:56680 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725785AbfHIBCn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 8 Aug 2019 21:02:43 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 08 Aug 2019 18:02:43 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,363,1559545200"; 
+   d="asc'?scan'208";a="258892297"
+Received: from zhen-hp.sh.intel.com (HELO zhen-hp) ([10.239.13.116])
+  by orsmga001.jf.intel.com with ESMTP; 08 Aug 2019 18:02:40 -0700
+Date:   Fri, 9 Aug 2019 08:58:40 +0800
+From:   Zhenyu Wang <zhenyuw@linux.intel.com>
+To:     Chris Wilson <chris@chris-wilson.co.uk>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Xiong Zhang <xiong.y.zhang@intel.com>,
+        Zhenyu Wang <zhenyuw@linux.intel.com>,
+        David Airlie <airlied@linux.ie>,
+        intel-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        intel-gvt-dev@lists.freedesktop.org,
+        Zhi Wang <zhi.a.wang@intel.com>
+Subject: Re: [PATCH] drm/i915: Use after free in error path in
+ intel_vgpu_create_workload()
+Message-ID: <20190809005840.GA7032@zhen-hp.sh.intel.com>
+Reply-To: Zhenyu Wang <zhenyuw@linux.intel.com>
+References: <20190808103236.GB30506@mwanda>
+ <156526106102.20411.17520131390381233492@skylake-alporthouse-com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="FCuugMFkClbJLl1L"
+Content-Disposition: inline
+In-Reply-To: <156526106102.20411.17520131390381233492@skylake-alporthouse-com>
+User-Agent: Mutt/1.10.0 (2018-05-17)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
 
-   regulator: slg51000: Fix a couple NULL vs IS_ERR() checks
+--FCuugMFkClbJLl1L
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-has been applied to the regulator tree at
+On 2019.08.08 11:44:21 +0100, Chris Wilson wrote:
+> Quoting Dan Carpenter (2019-08-08 11:32:36)
+> > We can't free "workload" until after the printk or it's a use after
+> > free.
+> >=20
+> > Fixes: 2089a76ade90 ("drm/i915/gvt: Checking workload's gma earlier")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+>=20
+> That's the simpler patch,
+> Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-5.3
+Thanks a lot, will queue this up.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+--=20
+Open Source Technology Center, Intel ltd.
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+$gpg --keyserver wwwkeys.pgp.net --recv-keys 4D781827
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+--FCuugMFkClbJLl1L
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+-----BEGIN PGP SIGNATURE-----
 
-Thanks,
-Mark
+iF0EARECAB0WIQTXuabgHDW6LPt9CICxBBozTXgYJwUCXUzFQAAKCRCxBBozTXgY
+J5EAAJkBRaKvljSknayoIbjCoWwSQK+1XgCeKPC2dx9VcLD8Sd9OLXGHqHyWtS8=
+=O1aB
+-----END PGP SIGNATURE-----
 
-From 7352e72a513fd2757b2fda695a349d86faa4c94e Mon Sep 17 00:00:00 2001
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Thu, 8 Aug 2019 13:33:35 +0300
-Subject: [PATCH] regulator: slg51000: Fix a couple NULL vs IS_ERR() checks
-
-The devm_gpiod_get_from_of_node() function never returns NULL, it
-returns error pointers on error.
-
-Fixes: a867bde3dd03 ("regulator: slg51000: add slg51000 regulator driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Link: https://lore.kernel.org/r/20190808103335.GD30506@mwanda
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/regulator/slg51000-regulator.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/regulator/slg51000-regulator.c b/drivers/regulator/slg51000-regulator.c
-index 04b732991d69..4d859fef55e6 100644
---- a/drivers/regulator/slg51000-regulator.c
-+++ b/drivers/regulator/slg51000-regulator.c
-@@ -205,7 +205,7 @@ static int slg51000_of_parse_cb(struct device_node *np,
- 	ena_gpiod = devm_gpiod_get_from_of_node(chip->dev, np,
- 						"enable-gpios", 0,
- 						gflags, "gpio-en-ldo");
--	if (ena_gpiod) {
-+	if (!IS_ERR(ena_gpiod)) {
- 		config->ena_gpiod = ena_gpiod;
- 		devm_gpiod_unhinge(chip->dev, config->ena_gpiod);
- 	}
-@@ -459,7 +459,7 @@ static int slg51000_i2c_probe(struct i2c_client *client,
- 					       GPIOD_OUT_HIGH
- 					       | GPIOD_FLAGS_BIT_NONEXCLUSIVE,
- 					       "slg51000-cs");
--	if (cs_gpiod) {
-+	if (!IS_ERR(cs_gpiod)) {
- 		dev_info(dev, "Found chip selector property\n");
- 		chip->cs_gpiod = cs_gpiod;
- 	}
--- 
-2.20.1
-
+--FCuugMFkClbJLl1L--

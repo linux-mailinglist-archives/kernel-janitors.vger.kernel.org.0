@@ -2,73 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DEDF387E68
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Aug 2019 17:47:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 745BC88072
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Aug 2019 18:45:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436813AbfHIPrQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Aug 2019 11:47:16 -0400
-Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:39674 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2436808AbfHIPrQ (ORCPT
+        id S2407116AbfHIQps (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Aug 2019 12:45:48 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:36110 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406412AbfHIQps (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Aug 2019 11:47:16 -0400
-Received: from localhost.localdomain ([92.140.207.10])
-        by mwinf5d35 with ME
-        id n3nC2000S0Dzhgk033nCfu; Fri, 09 Aug 2019 17:47:14 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 09 Aug 2019 17:47:14 +0200
-X-ME-IP: 92.140.207.10
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     harry.wentland@amd.com, sunpeng.li@amd.com,
-        alexander.deucher@amd.com, christian.koenig@amd.com,
-        David1.Zhou@amd.com, airlied@linux.ie, daniel@ffwll.ch,
-        nicholas.kazlauskas@amd.com, David.Francis@amd.com,
-        mario.kleiner.de@gmail.com, Bhawanpreet.Lakha@amd.com,
-        Anthony.Koo@amd.com
-Cc:     amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] drm/amd/display: Fix a typo - amdpgu_dm --> amdgpu_dm
-Date:   Fri,  9 Aug 2019 17:46:16 +0200
-Message-Id: <20190809154616.25479-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        Fri, 9 Aug 2019 12:45:48 -0400
+Received: by mail-pl1-f194.google.com with SMTP id k8so45196805plt.3;
+        Fri, 09 Aug 2019 09:45:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=fC+iWISyIRlxP292OZH7zhhrRFIGkbHzKrFLem5U1lY=;
+        b=oAF16IevzBmL62Db1ftInsD9CLosBzDAv6rOEQD6wm0JR07KcQ0nm3AKN/itNFTK9K
+         ZAucyqnzy7OC0OENgbB4zRzYJ+YkytSc5SOyH23AGTLiL8Uuqk+7vh37bgu886MXjA9U
+         ZAcZ6SggTXeYwqTUP1kXlXkFoyY1J8Y2NhAezuGNfNobDN9Kyp1T8JPoet7SQAkF+491
+         T0c6LSMYq/vgj8R9BF18KqToJeKh0i6cnRs/WglBCJ9MehPr7mAbmzgxIf43MjLGwlmK
+         OSslpqj4aAT6d/FxDuWxR4B1gNnFUGu4Z98T6hXdNGDkO4KUpQf3tos2ZRZb0nYgBKur
+         /iSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=fC+iWISyIRlxP292OZH7zhhrRFIGkbHzKrFLem5U1lY=;
+        b=HWzz4vpFPvohlZFK3v6BlKTMcOkc2jmDZPQRGTtoO1imWIsrVKVCPDOWJjk84KBfiJ
+         tiw6BMtxvan9Vaa3qbh0fdXxmLO/Y1z7XMF7ZSziTwtlpUKMfEkc/gGknJQoOPHExlYU
+         0n+A+oCeBNvUN0LlbxfBQ3Lli0cznF9SMK5A2VF4NDfx7CoPkEczqj3TwOV6l4fZtDZi
+         dfohokaJ4EbdKSmAPofRaUmWgTJTnYdbtrSPsHqORJQ70mPtYIAm24z2/e6j7pmifWNO
+         N6YH/jlxMrd+UOBiKpFFYLiFZlp7dpKaM9/LzhbiIlOUTPyKkGdWrtmYCAtbA+Rv2ri8
+         QfaA==
+X-Gm-Message-State: APjAAAX7EpR1GPbq6Bf51R838uYjemu2eDEWza/QWx/IAXT/rwRxOqMR
+        MBikrizB8ozfzWXSHdeMRZo=
+X-Google-Smtp-Source: APXvYqxwsoHu7zSgLhchshilKocyRaYoyNg1d/GhuABSgIm8BHJyzpulwft+131qAKPDwvn5pF5zOw==
+X-Received: by 2002:a17:902:7686:: with SMTP id m6mr19955746pll.239.1565369146822;
+        Fri, 09 Aug 2019 09:45:46 -0700 (PDT)
+Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
+        by smtp.gmail.com with ESMTPSA id i3sm105240142pfo.138.2019.08.09.09.45.46
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Fri, 09 Aug 2019 09:45:46 -0700 (PDT)
+Date:   Fri, 9 Aug 2019 09:45:44 -0700
+From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     benjamin.tissoires@redhat.com, grawity@gmail.com, dev@pp3345.net,
+        lyude@redhat.com, teika@gmx.com, linux-input@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] Input: synaptics - Fix a typo - synpatics --> synaptics
+Message-ID: <20190809164544.GM178933@dtor-ws>
+References: <20190809150814.24793-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190809150814.24793-1-christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This should be 'amdgpu_dm', not 'amdpgu_dm'
+On Fri, Aug 09, 2019 at 05:08:14PM +0200, Christophe JAILLET wrote:
+> This should be 'synaptics', not 'synpatics'
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Applied, thank you.
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 332ac9d985f2..1ccd0e4d459f 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -836,7 +836,7 @@ static void s3_handle_mst(struct drm_device *dev, bool suspend)
- 
- /**
-  * dm_hw_init() - Initialize DC device
-- * @handle: The base driver device containing the amdpgu_dm device.
-+ * @handle: The base driver device containing the amdgpu_dm device.
-  *
-  * Initialize the &struct amdgpu_display_manager device. This involves calling
-  * the initializers of each DM component, then populating the struct with them.
-@@ -866,7 +866,7 @@ static int dm_hw_init(void *handle)
- 
- /**
-  * dm_hw_fini() - Teardown DC device
-- * @handle: The base driver device containing the amdpgu_dm device.
-+ * @handle: The base driver device containing the amdgpu_dm device.
-  *
-  * Teardown components within &struct amdgpu_display_manager that require
-  * cleanup. This involves cleaning up the DRM device, DC, and any modules that
+> ---
+>  drivers/input/mouse/synaptics.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/input/mouse/synaptics.c b/drivers/input/mouse/synaptics.c
+> index b6da0c1267e3..bbd799c7b058 100644
+> --- a/drivers/input/mouse/synaptics.c
+> +++ b/drivers/input/mouse/synaptics.c
+> @@ -191,7 +191,7 @@ static const char * const forcepad_pnp_ids[] = {
+>  };
+>  
+>  /*
+> - * Send a command to the synpatics touchpad by special commands
+> + * Send a command to the synaptics touchpad by special commands
+>   */
+>  static int synaptics_send_cmd(struct psmouse *psmouse, u8 cmd, u8 *param)
+>  {
+> -- 
+> 2.20.1
+> 
+
 -- 
-2.20.1
-
+Dmitry

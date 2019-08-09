@@ -2,57 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2068A88222
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Aug 2019 20:17:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF8AF88341
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Aug 2019 21:29:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406849AbfHISRf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Aug 2019 14:17:35 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:41056 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726440AbfHISRf (ORCPT
+        id S1726311AbfHIT3M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Aug 2019 15:29:12 -0400
+Received: from iolanthe.rowland.org ([192.131.102.54]:55448 "HELO
+        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S1726185AbfHIT3L (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Aug 2019 14:17:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=Ml+u8yDNnJwbZxXnTPYLCdyaPo9+Hy67Rp3YV4keyc8=; b=pp3TclQjfSki7ddzzzNjASr3G
-        GRd3rBPoMlFVX863gg7sBFrn9L25y19+wdosfDlMoty125IpEgEwpG1zvO00VHRXOnClW3sESsI6r
-        uy1FTUpYOqwnTDC0MRvWe65liPigljt4a+V/JDtB58rANp9bgKm3URSN1eLXuqXQE8ByHtOd/0aI8
-        WvwyzqcOxRqZKhetkGKUzbPfGoX2ZsqLdiloSuYGs/bnS4bDbaVns7Ppag11MdqjKP+48va3ez+G5
-        +XPERsTtxYpBk1UoNXO5RCOxIff/t+YW9UekL1THLl9OLACsqnYOomSFDmlP05GmYx55Fgrbi6tl7
-        38lXJtvlw==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat Linux))
-        id 1hw9SH-0002hr-Lr; Fri, 09 Aug 2019 18:17:33 +0000
-Date:   Fri, 9 Aug 2019 11:17:33 -0700
-From:   Matthew Wilcox <willy@infradead.org>
+        Fri, 9 Aug 2019 15:29:11 -0400
+Received: (qmail 5241 invoked by uid 2102); 9 Aug 2019 15:29:08 -0400
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 9 Aug 2019 15:29:08 -0400
+Date:   Fri, 9 Aug 2019 15:29:08 -0400 (EDT)
+From:   Alan Stern <stern@rowland.harvard.edu>
+X-X-Sender: stern@iolanthe.rowland.org
 To:     Colin King <colin.king@canonical.com>
-Cc:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] scsi: sym53c8xx_2: remove redundant assignment to retv
-Message-ID: <20190809181733.GQ5482@bombadil.infradead.org>
-References: <20190809175932.10197-1-colin.king@canonical.com>
+cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <linux-usb@vger.kernel.org>,
+        <usb-storage@lists.one-eyed-alien.net>,
+        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] USB: storage: isd200: remove redundant assignment to
+ variable sendToTransport
+In-Reply-To: <20190809173314.4623-1-colin.king@canonical.com>
+Message-ID: <Pine.LNX.4.44L0.1908091528040.1630-100000@iolanthe.rowland.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190809175932.10197-1-colin.king@canonical.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Aug 09, 2019 at 06:59:32PM +0100, Colin King wrote:
-> Variable retv is initialized to a value that is never read and it
-> is re-assigned later. The initialization is redundant and can be
-> removed.
+On Fri, 9 Aug 2019, Colin King wrote:
 
-Acked-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable sendToTransport is being initialized with a value that is
+> never read and is being re-assigned a little later on. The assignment
+> is redundant and hence can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
 
-Seems like a bit of a pointless class of warnings, given that gcc now
-initialises all locals.  But I'm happy for James or Martin to pick it up.
+Of what use is that tag to general kernel developers?
+
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/usb/storage/isd200.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/storage/isd200.c b/drivers/usb/storage/isd200.c
+> index 2b474d60b4db..28e1128d53a4 100644
+> --- a/drivers/usb/storage/isd200.c
+> +++ b/drivers/usb/storage/isd200.c
+> @@ -1511,7 +1511,7 @@ static int isd200_Initialization(struct us_data *us)
+>  
+>  static void isd200_ata_command(struct scsi_cmnd *srb, struct us_data *us)
+>  {
+> -	int sendToTransport = 1, orig_bufflen;
+> +	int sendToTransport, orig_bufflen;
+>  	union ata_cdb ataCdb;
+>  
+>  	/* Make sure driver was initialized */
+
+Otherwise:
+
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+
+Alan Stern
 

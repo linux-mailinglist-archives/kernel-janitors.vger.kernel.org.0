@@ -2,31 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2027E87D91
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Aug 2019 17:03:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0F0587DBD
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Aug 2019 17:09:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407236AbfHIPDQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Aug 2019 11:03:16 -0400
-Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:43736 "EHLO
+        id S2407220AbfHIPJO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Aug 2019 11:09:14 -0400
+Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:36557 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726463AbfHIPDP (ORCPT
+        with ESMTP id S1726463AbfHIPJO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Aug 2019 11:03:15 -0400
+        Fri, 9 Aug 2019 11:09:14 -0400
 Received: from localhost.localdomain ([92.140.207.10])
         by mwinf5d35 with ME
-        id n33C200010Dzhgk0333Crb; Fri, 09 Aug 2019 17:03:13 +0200
+        id n39B2000F0Dzhgk0339BST; Fri, 09 Aug 2019 17:09:12 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 09 Aug 2019 17:03:13 +0200
+X-ME-Date: Fri, 09 Aug 2019 17:09:12 +0200
 X-ME-IP: 92.140.207.10
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     jejb@linux.ibm.com, martin.petersen@oracle.com
-Cc:     linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     dmitry.torokhov@gmail.com, benjamin.tissoires@redhat.com,
+        grawity@gmail.com, dev@pp3345.net, lyude@redhat.com, teika@gmx.com
+Cc:     linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] scsi: pmcraid: Fix a typo - pcmraid --> pmcraid
-Date:   Fri,  9 Aug 2019 17:02:14 +0200
-Message-Id: <20190809150214.24454-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] Input: synaptics - Fix a typo - synpatics --> synaptics
+Date:   Fri,  9 Aug 2019 17:08:14 +0200
+Message-Id: <20190809150814.24793-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -35,26 +36,26 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This should be 'pmcraid', not 'pcmraid'
+This should be 'synaptics', not 'synpatics'
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/scsi/pmcraid.c | 2 +-
+ drivers/input/mouse/synaptics.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/pmcraid.c b/drivers/scsi/pmcraid.c
-index ca22526aff7f..a052e2450efb 100644
---- a/drivers/scsi/pmcraid.c
-+++ b/drivers/scsi/pmcraid.c
-@@ -5841,7 +5841,7 @@ static int pmcraid_probe(struct pci_dev *pdev,
- }
+diff --git a/drivers/input/mouse/synaptics.c b/drivers/input/mouse/synaptics.c
+index b6da0c1267e3..bbd799c7b058 100644
+--- a/drivers/input/mouse/synaptics.c
++++ b/drivers/input/mouse/synaptics.c
+@@ -191,7 +191,7 @@ static const char * const forcepad_pnp_ids[] = {
+ };
  
  /*
-- * PCI driver structure of pcmraid driver
-+ * PCI driver structure of pmcraid driver
+- * Send a command to the synpatics touchpad by special commands
++ * Send a command to the synaptics touchpad by special commands
   */
- static struct pci_driver pmcraid_driver = {
- 	.name = PMCRAID_DRIVER_NAME,
+ static int synaptics_send_cmd(struct psmouse *psmouse, u8 cmd, u8 *param)
+ {
 -- 
 2.20.1
 

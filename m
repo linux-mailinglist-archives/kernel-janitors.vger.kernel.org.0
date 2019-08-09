@@ -2,95 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 745BC88072
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Aug 2019 18:45:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8332E880B7
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Aug 2019 19:03:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407116AbfHIQps (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Aug 2019 12:45:48 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:36110 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406412AbfHIQps (ORCPT
+        id S2436963AbfHIRDH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Aug 2019 13:03:07 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:38875 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2436932AbfHIRDH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Aug 2019 12:45:48 -0400
-Received: by mail-pl1-f194.google.com with SMTP id k8so45196805plt.3;
-        Fri, 09 Aug 2019 09:45:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=fC+iWISyIRlxP292OZH7zhhrRFIGkbHzKrFLem5U1lY=;
-        b=oAF16IevzBmL62Db1ftInsD9CLosBzDAv6rOEQD6wm0JR07KcQ0nm3AKN/itNFTK9K
-         ZAucyqnzy7OC0OENgbB4zRzYJ+YkytSc5SOyH23AGTLiL8Uuqk+7vh37bgu886MXjA9U
-         ZAcZ6SggTXeYwqTUP1kXlXkFoyY1J8Y2NhAezuGNfNobDN9Kyp1T8JPoet7SQAkF+491
-         T0c6LSMYq/vgj8R9BF18KqToJeKh0i6cnRs/WglBCJ9MehPr7mAbmzgxIf43MjLGwlmK
-         OSslpqj4aAT6d/FxDuWxR4B1gNnFUGu4Z98T6hXdNGDkO4KUpQf3tos2ZRZb0nYgBKur
-         /iSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=fC+iWISyIRlxP292OZH7zhhrRFIGkbHzKrFLem5U1lY=;
-        b=HWzz4vpFPvohlZFK3v6BlKTMcOkc2jmDZPQRGTtoO1imWIsrVKVCPDOWJjk84KBfiJ
-         tiw6BMtxvan9Vaa3qbh0fdXxmLO/Y1z7XMF7ZSziTwtlpUKMfEkc/gGknJQoOPHExlYU
-         0n+A+oCeBNvUN0LlbxfBQ3Lli0cznF9SMK5A2VF4NDfx7CoPkEczqj3TwOV6l4fZtDZi
-         dfohokaJ4EbdKSmAPofRaUmWgTJTnYdbtrSPsHqORJQ70mPtYIAm24z2/e6j7pmifWNO
-         N6YH/jlxMrd+UOBiKpFFYLiFZlp7dpKaM9/LzhbiIlOUTPyKkGdWrtmYCAtbA+Rv2ri8
-         QfaA==
-X-Gm-Message-State: APjAAAX7EpR1GPbq6Bf51R838uYjemu2eDEWza/QWx/IAXT/rwRxOqMR
-        MBikrizB8ozfzWXSHdeMRZo=
-X-Google-Smtp-Source: APXvYqxwsoHu7zSgLhchshilKocyRaYoyNg1d/GhuABSgIm8BHJyzpulwft+131qAKPDwvn5pF5zOw==
-X-Received: by 2002:a17:902:7686:: with SMTP id m6mr19955746pll.239.1565369146822;
-        Fri, 09 Aug 2019 09:45:46 -0700 (PDT)
-Received: from dtor-ws ([2620:15c:202:201:3adc:b08c:7acc:b325])
-        by smtp.gmail.com with ESMTPSA id i3sm105240142pfo.138.2019.08.09.09.45.46
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 09 Aug 2019 09:45:46 -0700 (PDT)
-Date:   Fri, 9 Aug 2019 09:45:44 -0700
-From:   Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     benjamin.tissoires@redhat.com, grawity@gmail.com, dev@pp3345.net,
-        lyude@redhat.com, teika@gmx.com, linux-input@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] Input: synaptics - Fix a typo - synpatics --> synaptics
-Message-ID: <20190809164544.GM178933@dtor-ws>
-References: <20190809150814.24793-1-christophe.jaillet@wanadoo.fr>
+        Fri, 9 Aug 2019 13:03:07 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hw8I7-0006uW-LD; Fri, 09 Aug 2019 17:02:59 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     David Howells <dhowells@redhat.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-afs@lists.infradead.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][net-next] rxrpc: fix uninitialized return value in variable err
+Date:   Fri,  9 Aug 2019 18:02:59 +0100
+Message-Id: <20190809170259.29859-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190809150814.24793-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Aug 09, 2019 at 05:08:14PM +0200, Christophe JAILLET wrote:
-> This should be 'synaptics', not 'synpatics'
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied, thank you.
+An earlier commit removed the setting of err to -ENOMEM so currently
+the skb_shinfo(skb)->nr_frags > 16 check returns with an uninitialized
+bogus return code.  Fix this by setting err to -ENOMEM to restore
+the original behaviour.
 
-> ---
->  drivers/input/mouse/synaptics.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/input/mouse/synaptics.c b/drivers/input/mouse/synaptics.c
-> index b6da0c1267e3..bbd799c7b058 100644
-> --- a/drivers/input/mouse/synaptics.c
-> +++ b/drivers/input/mouse/synaptics.c
-> @@ -191,7 +191,7 @@ static const char * const forcepad_pnp_ids[] = {
->  };
->  
->  /*
-> - * Send a command to the synpatics touchpad by special commands
-> + * Send a command to the synaptics touchpad by special commands
->   */
->  static int synaptics_send_cmd(struct psmouse *psmouse, u8 cmd, u8 *param)
->  {
-> -- 
-> 2.20.1
-> 
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: b214b2d8f277 ("rxrpc: Don't use skb_cow_data() in rxkad")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ net/rxrpc/rxkad.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
+diff --git a/net/rxrpc/rxkad.c b/net/rxrpc/rxkad.c
+index 8b4cddd8b673..c810a7c43b0f 100644
+--- a/net/rxrpc/rxkad.c
++++ b/net/rxrpc/rxkad.c
+@@ -248,8 +248,10 @@ static int rxkad_secure_packet_encrypt(const struct rxrpc_call *call,
+ 	crypto_skcipher_encrypt(req);
+ 
+ 	/* we want to encrypt the skbuff in-place */
+-	if (skb_shinfo(skb)->nr_frags > 16)
++	if (skb_shinfo(skb)->nr_frags > 16) {
++		err = -ENOMEM;
+ 		goto out;
++	}
+ 
+ 	len = data_size + call->conn->size_align - 1;
+ 	len &= ~(call->conn->size_align - 1);
 -- 
-Dmitry
+2.20.1
+

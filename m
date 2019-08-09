@@ -2,125 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DC9A87CC3
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Aug 2019 16:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2731587CCB
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Aug 2019 16:36:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726219AbfHIO3m convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Aug 2019 10:29:42 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:26290 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726037AbfHIO3m (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Aug 2019 10:29:42 -0400
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x79ETfuw074516
-        for <kernel-janitors@vger.kernel.org>; Fri, 9 Aug 2019 10:29:41 -0400
-Received: from smtp.notes.na.collabserv.com (smtp.notes.na.collabserv.com [158.85.210.103])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2u97yq7hp4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <kernel-janitors@vger.kernel.org>; Fri, 09 Aug 2019 10:29:41 -0400
-Received: from localhost
-        by smtp.notes.na.collabserv.com with smtp.notes.na.collabserv.com ESMTP
-        for <kernel-janitors@vger.kernel.org> from <BMT@zurich.ibm.com>;
-        Fri, 9 Aug 2019 14:28:56 -0000
-Received: from us1b3-smtp05.a3dr.sjc01.isc4sb.com (10.122.203.183)
-        by smtp.notes.na.collabserv.com (10.122.47.39) with smtp.notes.na.collabserv.com ESMTP;
-        Fri, 9 Aug 2019 14:28:51 -0000
-Received: from us1b3-mail162.a3dr.sjc03.isc4sb.com ([10.160.174.187])
-          by us1b3-smtp05.a3dr.sjc01.isc4sb.com
-          with ESMTP id 2019080914285108-486498 ;
-          Fri, 9 Aug 2019 14:28:51 +0000 
-In-Reply-To: <20190809140904.GB3552@mwanda>
-Subject: Re: [PATCH v2] RDMA/siw: Fix a memory leak in siw_init_cpulist()
-From:   "Bernard Metzler" <BMT@zurich.ibm.com>
-To:     "Dan Carpenter" <dan.carpenter@oracle.com>
-Cc:     "Doug Ledford" <dledford@redhat.com>,
-        "Jason Gunthorpe" <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Date:   Fri, 9 Aug 2019 14:28:50 +0000
+        id S2406048AbfHIOgJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Aug 2019 10:36:09 -0400
+Received: from mx2.suse.de ([195.135.220.15]:59166 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726157AbfHIOgJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 9 Aug 2019 10:36:09 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 5E0A4AC31;
+        Fri,  9 Aug 2019 14:36:07 +0000 (UTC)
+Subject: Re: [PATCH] Btrfs: Fix an assert statement in __btrfs_map_block()
+To:     Dan Carpenter <dan.carpenter@oracle.com>, Chris Mason <clm@fb.com>
+Cc:     David Sterba <dsterba@suse.com>,
+        Josef Bacik <josef@toxicpanda.com>,
+        kernel-janitors@vger.kernel.org, linux-btrfs@vger.kernel.org
+References: <20190809140739.GA3552@mwanda>
+From:   Nikolay Borisov <nborisov@suse.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=nborisov@suse.com; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <ea7d34b5-2870-8805-99b9-762d2fe23c3a@suse.com>
+Date:   Fri, 9 Aug 2019 17:36:05 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Sensitivity: 
-Importance: Normal
-X-Priority: 3 (Normal)
-References: <20190809140904.GB3552@mwanda>
-X-Mailer: IBM iNotes ($HaikuForm 1054) | IBM Domino Build
- SCN1812108_20180501T0841_FP55 May 22, 2019 at 11:09
-X-KeepSent: D09B6B8D:A208B8E7-00258451:004F8BA4;
- type=4; name=$KeepSent
-X-LLNOutbound: False
-X-Disclaimed: 44107
-X-TNEFEvaluated: 1
-Content-Transfer-Encoding: 8BIT
-Content-Type: text/plain; charset=UTF-8
-x-cbid: 19080914-9547-0000-0000-0000001F5D87
-X-IBM-SpamModules-Scores: BY=0; FL=0; FP=0; FZ=0; HX=0; KW=0; PH=0;
- SC=0.399202; ST=0; TS=0; UL=0; ISC=; MB=0.000000
-X-IBM-SpamModules-Versions: BY=3.00011574; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000287; SDB=6.01244350; UDB=6.00656494; IPR=6.01025832;
- MB=3.00028107; MTD=3.00000008; XFM=3.00000015; UTC=2019-08-09 14:28:54
-X-IBM-AV-DETECTION: SAVI=unsuspicious REMOTE=unsuspicious XFE=unused
-X-IBM-AV-VERSION: SAVI=2019-08-09 09:48:12 - 6.00010264
-x-cbparentid: 19080914-9548-0000-0000-0000003568AA
-Message-Id: <OFD09B6B8D.A208B8E7-ON00258451.004F8BA4-00258451.004F8BAA@notes.na.collabserv.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-09_04:,,
- signatures=0
-X-Proofpoint-Spam-Reason: safe
+In-Reply-To: <20190809140739.GA3552@mwanda>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
------"Dan Carpenter" <dan.carpenter@oracle.com> wrote: -----
 
->To: "Bernard Metzler" <bmt@zurich.ibm.com>
->From: "Dan Carpenter" <dan.carpenter@oracle.com>
->Date: 08/09/2019 04:09PM
->Cc: "Doug Ledford" <dledford@redhat.com>, "Jason Gunthorpe"
-><jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
->kernel-janitors@vger.kernel.org
->Subject: [EXTERNAL] [PATCH v2] RDMA/siw: Fix a memory leak in
->siw_init_cpulist()
->
->The error handling code doesn't free siw_cpu_info.tx_valid_cpus[0].
->The
->first iteration through the loop is a no-op so this is sort of an off
->by one bug.  Also Bernard pointed out that we can remove the NULL
->assignment and simplify the code a bit.
->
->Fixes: bdcf26bf9b3a ("rdma/siw: network and RDMA core interface")
->Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
->Reviewed-by: Bernard Metzler <bmt@zurich.ibm.com>
->---
->v2:  Remove the NULL assignment like Bernard Metzler pointed out.
->
-> drivers/infiniband/sw/siw/siw_main.c | 4 +---
-> 1 file changed, 1 insertion(+), 3 deletions(-)
->
->diff --git a/drivers/infiniband/sw/siw/siw_main.c
->b/drivers/infiniband/sw/siw/siw_main.c
->index d0f140daf659..05a92f997f60 100644
->--- a/drivers/infiniband/sw/siw/siw_main.c
->+++ b/drivers/infiniband/sw/siw/siw_main.c
->@@ -160,10 +160,8 @@ static int siw_init_cpulist(void)
+
+On 9.08.19 г. 17:07 ч., Dan Carpenter wrote:
+> The btrfs_get_chunk_map() never returns NULL, it returns error pointers.
 > 
-> out_err:
-> 	siw_cpu_info.num_nodes = 0;
->-	while (i) {
->+	while (--i >= 0)
-> 		kfree(siw_cpu_info.tx_valid_cpus[i]);
->-		siw_cpu_info.tx_valid_cpus[i--] = NULL;
->-	}
-> 	kfree(siw_cpu_info.tx_valid_cpus);
-> 	siw_cpu_info.tx_valid_cpus = NULL;
+> Fixes: 89b798ad1b42 ("btrfs: Use btrfs_get_io_geometry appropriately")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+Reviewed-by: Nikolay Borisov <nborisov@suse.com>
+
+> ---
+>  fs/btrfs/volumes.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
->-- 
->2.20.1
->
->
-
-Dan, many thanks for finding and fixing this!
-
-
-Reviewed-by: Bernard Metzler <bmt@zurich.ibm.com>
-
+> diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+> index 6edd1d57e530..e69d135c7d3c 100644
+> --- a/fs/btrfs/volumes.c
+> +++ b/fs/btrfs/volumes.c
+> @@ -5818,7 +5818,7 @@ static int __btrfs_map_block(struct btrfs_fs_info *fs_info,
+>  		return ret;
+>  
+>  	em = btrfs_get_chunk_map(fs_info, logical, *length);
+> -	ASSERT(em);
+> +	ASSERT(!IS_ERR(em));
+>  	map = em->map_lookup;
+>  
+>  	*length = geom.len;
+> 

@@ -2,131 +2,177 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EAAF8834E
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Aug 2019 21:32:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F8DF883B3
+	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Aug 2019 22:13:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726125AbfHITcj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Aug 2019 15:32:39 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:41827 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725805AbfHITcj (ORCPT
+        id S1726729AbfHIUNR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 9 Aug 2019 16:13:17 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:57848 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726722AbfHIUNR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Aug 2019 15:32:39 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hwAcv-0000mF-EQ; Fri, 09 Aug 2019 19:32:37 +0000
-To:     Alan Stern <stern@rowland.harvard.edu>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <Pine.LNX.4.44L0.1908091528040.1630-100000@iolanthe.rowland.org>
-From:   Colin Ian King <colin.king@canonical.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Subject: Re: [PATCH] USB: storage: isd200: remove redundant assignment to
- variable sendToTransport
-Message-ID: <b68ee52d-f6d6-c626-3ed7-9b590fb1ed1b@canonical.com>
-Date:   Fri, 9 Aug 2019 20:32:36 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Fri, 9 Aug 2019 16:13:17 -0400
+Received: from localhost.localdomain ([92.140.207.10])
+        by mwinf5d28 with ME
+        id n8DA2000G0Dzhgk038DAPq; Fri, 09 Aug 2019 22:13:14 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 09 Aug 2019 22:13:14 +0200
+X-ME-IP: 92.140.207.10
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     harry.wentland@amd.com, sunpeng.li@amd.com,
+        alexander.deucher@amd.com, christian.koenig@amd.com,
+        David1.Zhou@amd.com, airlied@linux.ie, daniel@ffwll.ch
+Cc:     amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] drm/amd/display: Fix a typo - dce_aduio_mask --> dce_audio_mask
+Date:   Fri,  9 Aug 2019 22:12:19 +0200
+Message-Id: <20190809201219.629-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <Pine.LNX.4.44L0.1908091528040.1630-100000@iolanthe.rowland.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 09/08/2019 20:29, Alan Stern wrote:
-> On Fri, 9 Aug 2019, Colin King wrote:
-> 
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> The variable sendToTransport is being initialized with a value that is
->> never read and is being re-assigned a little later on. The assignment
->> is redundant and hence can be removed.
->>
->> Addresses-Coverity: ("Unused value")
-> 
-> Of what use is that tag to general kernel developers?
+This should be 'dce_audio_mask', not 'dce_aduio_mask'.
 
-This is being informally used so that we can track which bugs are
-getting found with specific static analysis tools.  The public coverity
-bug reports also have a CID# number.  I'm working on range of coverity
-builds (different build configs) that are not public because I can crank
-multiple builds per day to find issues.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/gpu/drm/amd/display/dc/dce/dce_audio.c          | 2 +-
+ drivers/gpu/drm/amd/display/dc/dce/dce_audio.h          | 6 +++---
+ drivers/gpu/drm/amd/display/dc/dce100/dce100_resource.c | 2 +-
+ drivers/gpu/drm/amd/display/dc/dce110/dce110_resource.c | 2 +-
+ drivers/gpu/drm/amd/display/dc/dce112/dce112_resource.c | 2 +-
+ drivers/gpu/drm/amd/display/dc/dce120/dce120_resource.c | 2 +-
+ drivers/gpu/drm/amd/display/dc/dce80/dce80_resource.c   | 2 +-
+ drivers/gpu/drm/amd/display/dc/dcn10/dcn10_resource.c   | 2 +-
+ 8 files changed, 10 insertions(+), 10 deletions(-)
 
-Colin
-
-> 
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>  drivers/usb/storage/isd200.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/usb/storage/isd200.c b/drivers/usb/storage/isd200.c
->> index 2b474d60b4db..28e1128d53a4 100644
->> --- a/drivers/usb/storage/isd200.c
->> +++ b/drivers/usb/storage/isd200.c
->> @@ -1511,7 +1511,7 @@ static int isd200_Initialization(struct us_data *us)
->>  
->>  static void isd200_ata_command(struct scsi_cmnd *srb, struct us_data *us)
->>  {
->> -	int sendToTransport = 1, orig_bufflen;
->> +	int sendToTransport, orig_bufflen;
->>  	union ata_cdb ataCdb;
->>  
->>  	/* Make sure driver was initialized */
-> 
-> Otherwise:
-> 
-> Acked-by: Alan Stern <stern@rowland.harvard.edu>
-> 
-> Alan Stern
-> 
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_audio.c b/drivers/gpu/drm/amd/display/dc/dce/dce_audio.c
+index 549704998f84..1e88c5f46be7 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_audio.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_audio.c
+@@ -937,7 +937,7 @@ struct audio *dce_audio_create(
+ 		unsigned int inst,
+ 		const struct dce_audio_registers *reg,
+ 		const struct dce_audio_shift *shifts,
+-		const struct dce_aduio_mask *masks
++		const struct dce_audio_mask *masks
+ 		)
+ {
+ 	struct dce_audio *audio = kzalloc(sizeof(*audio), GFP_KERNEL);
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_audio.h b/drivers/gpu/drm/amd/display/dc/dce/dce_audio.h
+index a0d5724aab31..1392fab0860b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_audio.h
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_audio.h
+@@ -101,7 +101,7 @@ struct dce_audio_shift {
+ 	uint32_t DCCG_AUDIO_DTO1_USE_512FBR_DTO;
+ };
+ 
+-struct dce_aduio_mask {
++struct dce_audio_mask {
+ 	uint32_t AZALIA_ENDPOINT_REG_INDEX;
+ 	uint32_t AZALIA_ENDPOINT_REG_DATA;
+ 
+@@ -125,7 +125,7 @@ struct dce_audio {
+ 	struct audio base;
+ 	const struct dce_audio_registers *regs;
+ 	const struct dce_audio_shift *shifts;
+-	const struct dce_aduio_mask *masks;
++	const struct dce_audio_mask *masks;
+ };
+ 
+ struct audio *dce_audio_create(
+@@ -133,7 +133,7 @@ struct audio *dce_audio_create(
+ 		unsigned int inst,
+ 		const struct dce_audio_registers *reg,
+ 		const struct dce_audio_shift *shifts,
+-		const struct dce_aduio_mask *masks);
++		const struct dce_audio_mask *masks);
+ 
+ void dce_aud_destroy(struct audio **audio);
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/dce100/dce100_resource.c b/drivers/gpu/drm/amd/display/dc/dce100/dce100_resource.c
+index 6248c8455314..81116286b15b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce100/dce100_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dce100/dce100_resource.c
+@@ -304,7 +304,7 @@ static const struct dce_audio_shift audio_shift = {
+ 		AUD_COMMON_MASK_SH_LIST(__SHIFT)
+ };
+ 
+-static const struct dce_aduio_mask audio_mask = {
++static const struct dce_audio_mask audio_mask = {
+ 		AUD_COMMON_MASK_SH_LIST(_MASK)
+ };
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/dce110/dce110_resource.c b/drivers/gpu/drm/amd/display/dc/dce110/dce110_resource.c
+index 764329264c3b..765e26454a18 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce110/dce110_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dce110/dce110_resource.c
+@@ -331,7 +331,7 @@ static const struct dce_audio_shift audio_shift = {
+ 		AUD_COMMON_MASK_SH_LIST(__SHIFT)
+ };
+ 
+-static const struct dce_aduio_mask audio_mask = {
++static const struct dce_audio_mask audio_mask = {
+ 		AUD_COMMON_MASK_SH_LIST(_MASK)
+ };
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/dce112/dce112_resource.c b/drivers/gpu/drm/amd/display/dc/dce112/dce112_resource.c
+index c6136e0ed1a4..3ac4c7e73050 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce112/dce112_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dce112/dce112_resource.c
+@@ -337,7 +337,7 @@ static const struct dce_audio_shift audio_shift = {
+ 		AUD_COMMON_MASK_SH_LIST(__SHIFT)
+ };
+ 
+-static const struct dce_aduio_mask audio_mask = {
++static const struct dce_audio_mask audio_mask = {
+ 		AUD_COMMON_MASK_SH_LIST(_MASK)
+ };
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/dce120/dce120_resource.c b/drivers/gpu/drm/amd/display/dc/dce120/dce120_resource.c
+index 54be7ab370df..9a922cd39cf2 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce120/dce120_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dce120/dce120_resource.c
+@@ -352,7 +352,7 @@ static const struct dce_audio_shift audio_shift = {
+ 		DCE120_AUD_COMMON_MASK_SH_LIST(__SHIFT)
+ };
+ 
+-static const struct dce_aduio_mask audio_mask = {
++static const struct dce_audio_mask audio_mask = {
+ 		DCE120_AUD_COMMON_MASK_SH_LIST(_MASK)
+ };
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/dce80/dce80_resource.c b/drivers/gpu/drm/amd/display/dc/dce80/dce80_resource.c
+index 860a524ebcfa..2a1ce9ecc66e 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce80/dce80_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dce80/dce80_resource.c
+@@ -322,7 +322,7 @@ static const struct dce_audio_shift audio_shift = {
+ 		AUD_COMMON_MASK_SH_LIST(__SHIFT)
+ };
+ 
+-static const struct dce_aduio_mask audio_mask = {
++static const struct dce_audio_mask audio_mask = {
+ 		AUD_COMMON_MASK_SH_LIST(_MASK)
+ };
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_resource.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_resource.c
+index 1a20461c2937..1c5835975935 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_resource.c
+@@ -270,7 +270,7 @@ static const struct dce_audio_shift audio_shift = {
+ 		DCE120_AUD_COMMON_MASK_SH_LIST(__SHIFT)
+ };
+ 
+-static const struct dce_aduio_mask audio_mask = {
++static const struct dce_audio_mask audio_mask = {
+ 		DCE120_AUD_COMMON_MASK_SH_LIST(_MASK)
+ };
+ 
+-- 
+2.20.1
 

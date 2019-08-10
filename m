@@ -2,177 +2,46 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F8DF883B3
-	for <lists+kernel-janitors@lfdr.de>; Fri,  9 Aug 2019 22:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20B1588AB6
+	for <lists+kernel-janitors@lfdr.de>; Sat, 10 Aug 2019 12:20:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726729AbfHIUNR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 9 Aug 2019 16:13:17 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:57848 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726722AbfHIUNR (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 9 Aug 2019 16:13:17 -0400
-Received: from localhost.localdomain ([92.140.207.10])
-        by mwinf5d28 with ME
-        id n8DA2000G0Dzhgk038DAPq; Fri, 09 Aug 2019 22:13:14 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 09 Aug 2019 22:13:14 +0200
-X-ME-IP: 92.140.207.10
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     harry.wentland@amd.com, sunpeng.li@amd.com,
-        alexander.deucher@amd.com, christian.koenig@amd.com,
-        David1.Zhou@amd.com, airlied@linux.ie, daniel@ffwll.ch
-Cc:     amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] drm/amd/display: Fix a typo - dce_aduio_mask --> dce_audio_mask
-Date:   Fri,  9 Aug 2019 22:12:19 +0200
-Message-Id: <20190809201219.629-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1726204AbfHJKUe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 10 Aug 2019 06:20:34 -0400
+Received: from ozlabs.org ([203.11.71.1]:41045 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726147AbfHJKUd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 10 Aug 2019 06:20:33 -0400
+Received: by ozlabs.org (Postfix, from userid 1034)
+        id 465J5q1gVcz9sNf; Sat, 10 Aug 2019 20:20:31 +1000 (AEST)
+X-powerpc-patch-notification: thanks
+X-powerpc-patch-commit: 2705ec100b46390851542fa97e920cc21ffaac4f
+In-Reply-To: <85d5d247ce753befd6aa63c473f7823de6520ccd.1564647619.git.christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        benh@kernel.crashing.org, paulus@samba.org, allison@lohutok.net,
+        tglx@linutronix.de, clg@kaod.org, groug@kaod.org
+From:   Michael Ellerman <patch-notifications@ellerman.id.au>
+Cc:     kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] powerpc/xive: Use GFP_KERNEL instead of GFP_ATOMIC in 'xive_irq_bitmap_add()'
+Message-Id: <465J5q1gVcz9sNf@ozlabs.org>
+Date:   Sat, 10 Aug 2019 20:20:31 +1000 (AEST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This should be 'dce_audio_mask', not 'dce_aduio_mask'.
+On Thu, 2019-08-01 at 08:32:31 UTC, Christophe JAILLET wrote:
+> There is no need to use GFP_ATOMIC here. GFP_KERNEL should be enough.
+> GFP_KERNEL is also already used for another allocation just a few lines
+> below.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Reviewed-by: Cédric Le Goater <clg@kaod.org>
+> Reviewed-by: Greg Kurz <groug@kaod.org>
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/gpu/drm/amd/display/dc/dce/dce_audio.c          | 2 +-
- drivers/gpu/drm/amd/display/dc/dce/dce_audio.h          | 6 +++---
- drivers/gpu/drm/amd/display/dc/dce100/dce100_resource.c | 2 +-
- drivers/gpu/drm/amd/display/dc/dce110/dce110_resource.c | 2 +-
- drivers/gpu/drm/amd/display/dc/dce112/dce112_resource.c | 2 +-
- drivers/gpu/drm/amd/display/dc/dce120/dce120_resource.c | 2 +-
- drivers/gpu/drm/amd/display/dc/dce80/dce80_resource.c   | 2 +-
- drivers/gpu/drm/amd/display/dc/dcn10/dcn10_resource.c   | 2 +-
- 8 files changed, 10 insertions(+), 10 deletions(-)
+Series applied to powerpc next, thanks.
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_audio.c b/drivers/gpu/drm/amd/display/dc/dce/dce_audio.c
-index 549704998f84..1e88c5f46be7 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_audio.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_audio.c
-@@ -937,7 +937,7 @@ struct audio *dce_audio_create(
- 		unsigned int inst,
- 		const struct dce_audio_registers *reg,
- 		const struct dce_audio_shift *shifts,
--		const struct dce_aduio_mask *masks
-+		const struct dce_audio_mask *masks
- 		)
- {
- 	struct dce_audio *audio = kzalloc(sizeof(*audio), GFP_KERNEL);
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_audio.h b/drivers/gpu/drm/amd/display/dc/dce/dce_audio.h
-index a0d5724aab31..1392fab0860b 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_audio.h
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_audio.h
-@@ -101,7 +101,7 @@ struct dce_audio_shift {
- 	uint32_t DCCG_AUDIO_DTO1_USE_512FBR_DTO;
- };
- 
--struct dce_aduio_mask {
-+struct dce_audio_mask {
- 	uint32_t AZALIA_ENDPOINT_REG_INDEX;
- 	uint32_t AZALIA_ENDPOINT_REG_DATA;
- 
-@@ -125,7 +125,7 @@ struct dce_audio {
- 	struct audio base;
- 	const struct dce_audio_registers *regs;
- 	const struct dce_audio_shift *shifts;
--	const struct dce_aduio_mask *masks;
-+	const struct dce_audio_mask *masks;
- };
- 
- struct audio *dce_audio_create(
-@@ -133,7 +133,7 @@ struct audio *dce_audio_create(
- 		unsigned int inst,
- 		const struct dce_audio_registers *reg,
- 		const struct dce_audio_shift *shifts,
--		const struct dce_aduio_mask *masks);
-+		const struct dce_audio_mask *masks);
- 
- void dce_aud_destroy(struct audio **audio);
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce100/dce100_resource.c b/drivers/gpu/drm/amd/display/dc/dce100/dce100_resource.c
-index 6248c8455314..81116286b15b 100644
---- a/drivers/gpu/drm/amd/display/dc/dce100/dce100_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce100/dce100_resource.c
-@@ -304,7 +304,7 @@ static const struct dce_audio_shift audio_shift = {
- 		AUD_COMMON_MASK_SH_LIST(__SHIFT)
- };
- 
--static const struct dce_aduio_mask audio_mask = {
-+static const struct dce_audio_mask audio_mask = {
- 		AUD_COMMON_MASK_SH_LIST(_MASK)
- };
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce110/dce110_resource.c b/drivers/gpu/drm/amd/display/dc/dce110/dce110_resource.c
-index 764329264c3b..765e26454a18 100644
---- a/drivers/gpu/drm/amd/display/dc/dce110/dce110_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce110/dce110_resource.c
-@@ -331,7 +331,7 @@ static const struct dce_audio_shift audio_shift = {
- 		AUD_COMMON_MASK_SH_LIST(__SHIFT)
- };
- 
--static const struct dce_aduio_mask audio_mask = {
-+static const struct dce_audio_mask audio_mask = {
- 		AUD_COMMON_MASK_SH_LIST(_MASK)
- };
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce112/dce112_resource.c b/drivers/gpu/drm/amd/display/dc/dce112/dce112_resource.c
-index c6136e0ed1a4..3ac4c7e73050 100644
---- a/drivers/gpu/drm/amd/display/dc/dce112/dce112_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce112/dce112_resource.c
-@@ -337,7 +337,7 @@ static const struct dce_audio_shift audio_shift = {
- 		AUD_COMMON_MASK_SH_LIST(__SHIFT)
- };
- 
--static const struct dce_aduio_mask audio_mask = {
-+static const struct dce_audio_mask audio_mask = {
- 		AUD_COMMON_MASK_SH_LIST(_MASK)
- };
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce120/dce120_resource.c b/drivers/gpu/drm/amd/display/dc/dce120/dce120_resource.c
-index 54be7ab370df..9a922cd39cf2 100644
---- a/drivers/gpu/drm/amd/display/dc/dce120/dce120_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce120/dce120_resource.c
-@@ -352,7 +352,7 @@ static const struct dce_audio_shift audio_shift = {
- 		DCE120_AUD_COMMON_MASK_SH_LIST(__SHIFT)
- };
- 
--static const struct dce_aduio_mask audio_mask = {
-+static const struct dce_audio_mask audio_mask = {
- 		DCE120_AUD_COMMON_MASK_SH_LIST(_MASK)
- };
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce80/dce80_resource.c b/drivers/gpu/drm/amd/display/dc/dce80/dce80_resource.c
-index 860a524ebcfa..2a1ce9ecc66e 100644
---- a/drivers/gpu/drm/amd/display/dc/dce80/dce80_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce80/dce80_resource.c
-@@ -322,7 +322,7 @@ static const struct dce_audio_shift audio_shift = {
- 		AUD_COMMON_MASK_SH_LIST(__SHIFT)
- };
- 
--static const struct dce_aduio_mask audio_mask = {
-+static const struct dce_audio_mask audio_mask = {
- 		AUD_COMMON_MASK_SH_LIST(_MASK)
- };
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_resource.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_resource.c
-index 1a20461c2937..1c5835975935 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_resource.c
-@@ -270,7 +270,7 @@ static const struct dce_audio_shift audio_shift = {
- 		DCE120_AUD_COMMON_MASK_SH_LIST(__SHIFT)
- };
- 
--static const struct dce_aduio_mask audio_mask = {
-+static const struct dce_audio_mask audio_mask = {
- 		DCE120_AUD_COMMON_MASK_SH_LIST(_MASK)
- };
- 
--- 
-2.20.1
+https://git.kernel.org/powerpc/c/2705ec100b46390851542fa97e920cc21ffaac4f
 
+cheers

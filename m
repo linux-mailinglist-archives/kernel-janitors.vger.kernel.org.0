@@ -2,46 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 20B1588AB6
-	for <lists+kernel-janitors@lfdr.de>; Sat, 10 Aug 2019 12:20:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA7A08912B
+	for <lists+kernel-janitors@lfdr.de>; Sun, 11 Aug 2019 11:57:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726204AbfHJKUe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 10 Aug 2019 06:20:34 -0400
-Received: from ozlabs.org ([203.11.71.1]:41045 "EHLO ozlabs.org"
+        id S1726496AbfHKJ5B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 11 Aug 2019 05:57:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43674 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726147AbfHJKUd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 10 Aug 2019 06:20:33 -0400
-Received: by ozlabs.org (Postfix, from userid 1034)
-        id 465J5q1gVcz9sNf; Sat, 10 Aug 2019 20:20:31 +1000 (AEST)
-X-powerpc-patch-notification: thanks
-X-powerpc-patch-commit: 2705ec100b46390851542fa97e920cc21ffaac4f
-In-Reply-To: <85d5d247ce753befd6aa63c473f7823de6520ccd.1564647619.git.christophe.jaillet@wanadoo.fr>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        benh@kernel.crashing.org, paulus@samba.org, allison@lohutok.net,
-        tglx@linutronix.de, clg@kaod.org, groug@kaod.org
-From:   Michael Ellerman <patch-notifications@ellerman.id.au>
-Cc:     kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] powerpc/xive: Use GFP_KERNEL instead of GFP_ATOMIC in 'xive_irq_bitmap_add()'
-Message-Id: <465J5q1gVcz9sNf@ozlabs.org>
-Date:   Sat, 10 Aug 2019 20:20:31 +1000 (AEST)
+        id S1726179AbfHKJ5B (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 11 Aug 2019 05:57:01 -0400
+Received: from localhost (unknown [193.47.165.251])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 26AB52084D;
+        Sun, 11 Aug 2019 09:56:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1565517420;
+        bh=lC2U5/AN/rqY2NHA7ESDuFpo++nq91VTbEYCfazjs7c=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=dCfVx/bsCytfW4OGKddurPa/3HNJWBUTGdqA5uXD2N3OAcjr5d06pHuUVSV/cWaou
+         L4MlXD7UCYGDV8qmkrB1oH9dShS4nxPJxSpE2QA6Nb5NV9n4yWxO4thLTjHu5A8C0M
+         JvLbeQl+V4wtLwUlH+Otb5OgszveKaUI5vsUvKsw=
+Date:   Sun, 11 Aug 2019 12:56:57 +0300
+From:   Leon Romanovsky <leon@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Doug Ledford <dledford@redhat.com>,
+        Mark Zhang <markz@mellanox.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Parav Pandit <parav@mellanox.com>,
+        Majd Dibbiny <majd@mellanox.com>,
+        Steve Wise <swise@opengridcomputing.com>,
+        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] RDMA/core: Fix error code in stat_get_doit_qp()
+Message-ID: <20190811095657.GG28049@mtr-leonro.mtl.com>
+References: <20190809101311.GA17867@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190809101311.GA17867@mwanda>
+User-Agent: Mutt/1.12.0 (2019-05-25)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 2019-08-01 at 08:32:31 UTC, Christophe JAILLET wrote:
-> There is no need to use GFP_ATOMIC here. GFP_KERNEL should be enough.
-> GFP_KERNEL is also already used for another allocation just a few lines
-> below.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> Reviewed-by: Cédric Le Goater <clg@kaod.org>
-> Reviewed-by: Greg Kurz <groug@kaod.org>
+On Fri, Aug 09, 2019 at 01:13:19PM +0300, Dan Carpenter wrote:
+> We need to set the error codes on these paths.  Currently the only
+> possible error code is -EMSGSIZE so that's what the patch uses.
+>
+> Fixes: 83c2c1fcbd08 ("RDMA/nldev: Allow get counter mode through RDMA netlink")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/infiniband/core/nldev.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+>
 
-Series applied to powerpc next, thanks.
-
-https://git.kernel.org/powerpc/c/2705ec100b46390851542fa97e920cc21ffaac4f
-
-cheers
+Thanks,
+Reviewed-by: Leon Romanovsky <leonro@mellanox.com>

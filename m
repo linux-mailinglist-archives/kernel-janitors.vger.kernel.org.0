@@ -2,88 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B373E896FC
-	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Aug 2019 07:48:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 080DB897F7
+	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Aug 2019 09:38:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726608AbfHLFsP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 12 Aug 2019 01:48:15 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:4658 "EHLO huawei.com"
+        id S1727071AbfHLHi1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 12 Aug 2019 03:38:27 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:45114 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725901AbfHLFsO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 12 Aug 2019 01:48:14 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id DBBA81890D9B4B653AE7;
-        Mon, 12 Aug 2019 13:48:06 +0800 (CST)
-Received: from [127.0.0.1] (10.177.96.96) by DGGEMS405-HUB.china.huawei.com
- (10.3.19.205) with Microsoft SMTP Server id 14.3.439.0; Mon, 12 Aug 2019
- 13:48:04 +0800
-Subject: Re: [PATCH net-next] net: can: Fix compiling warning
-To:     Oliver Hartkopp <socketcan@hartkopp.net>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-References: <20190802033643.84243-1-maowenan@huawei.com>
- <0050efdb-af9f-49b9-8d83-f574b3d46a2e@hartkopp.net>
- <20190806135231.GJ1974@kadam>
- <6e1c5aa0-8ed3-eec3-a34d-867ea8f54e9d@hartkopp.net>
-CC:     <davem@davemloft.net>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <5018f6ca-53b5-c712-a012-a0fcda5c10c2@huawei.com>
-Date:   Mon, 12 Aug 2019 13:48:03 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+        id S1726304AbfHLHi1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 12 Aug 2019 03:38:27 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id C6624B928CFFF8E18AE1;
+        Mon, 12 Aug 2019 15:38:24 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.439.0; Mon, 12 Aug 2019 15:38:14 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <dan.j.williams@intel.com>, <dmaengine@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        "Mao Wenan" <maowenan@huawei.com>
+Subject: [PATCH linux-next] drivers: dma: Fix sparse warning for mux_configure32
+Date:   Mon, 12 Aug 2019 15:42:05 +0800
+Message-ID: <20190812074205.96759-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <6e1c5aa0-8ed3-eec3-a34d-867ea8f54e9d@hartkopp.net>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.96.96]
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+There is one sparse warning in drivers/dma/fsl-edma-common.c,
+fix it by setting mux_configure32() as static.
 
-
-On 2019/8/7 0:41, Oliver Hartkopp wrote:
-> Hello Dan,
-> 
-> On 06/08/2019 15.52, Dan Carpenter wrote:
->> On Fri, Aug 02, 2019 at 10:10:20AM +0200, Oliver Hartkopp wrote:
-> 
->>> Btw. what kind of compiler/make switches are you using so that I can see
->>> these warnings myself the next time?
->>
->> These are Sparse warnings, not from GCC.
-> 
-> I compiled the code (the original version), but I do not get that "Should it be static?" warning:
-
-Hello Oliver,
-
-here are my steps for net/can/bcm.c,
 make allmodconfig ARCH=mips CROSS_COMPILE=mips-linux-gnu-
-make C=2 net/can/bcm.o ARCH=mips CROSS_COMPILE=mips-linux-gnu-
+make C=2 drivers/dma/fsl-edma-common.o ARCH=mips CROSS_COMPILE=mips-linux-gnu-
+drivers/dma/fsl-edma-common.c:93:6: warning: symbol 'mux_configure32' was not declared. Should it be static?
 
-  CHECK   scripts/mod/empty.c
-  CALL    scripts/checksyscalls.sh
-<stdin>:1511:2: warning: #warning syscall clone3 not implemented [-Wcpp]
-  CALL    scripts/atomic/check-atomics.sh
-  CHECK   net/can/bcm.c
-./include/linux/slab.h:672:13: error: undefined identifier '__builtin_mul_overflow'
-./include/linux/slab.h:672:13: error: not a function <noident>
-./include/linux/slab.h:672:13: error: not a function <noident>
-net/can/bcm.c:1683:5: warning: symbol 'bcm_sock_no_ioctlcmd' was not declared. Should it be static?
-./include/linux/slab.h:672:13: warning: call with no type!
-  CC [M]  net/can/bcm.o
+Fixes: 232a7f18cf8ec ("dmaengine: fsl-edma: add i.mx7ulp edma2 version support")
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ drivers/dma/fsl-edma-common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-for net/can/raw.c,
-make allmodconfig ARCH=mips CROSS_COMPILE=mips-linux-gnu-
-make C=2 net/can/raw.o ARCH=mips CROSS_COMPILE=mips-linux-gnu-
-
-  CHECK   scripts/mod/empty.c
-  CALL    scripts/checksyscalls.sh
-<stdin>:1511:2: warning: #warning syscall clone3 not implemented [-Wcpp]
-  CALL    scripts/atomic/check-atomics.sh
-  CHECK   net/can/raw.c
-net/can/raw.c:840:5: warning: symbol 'raw_sock_no_ioctlcmd' was not declared. Should it be static?
-  CC [M]  net/can/raw.o
+diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+index 6d6d8a4..7dbf7df 100644
+--- a/drivers/dma/fsl-edma-common.c
++++ b/drivers/dma/fsl-edma-common.c
+@@ -90,8 +90,8 @@ static void mux_configure8(struct fsl_edma_chan *fsl_chan, void __iomem *addr,
+ 	iowrite8(val8, addr + off);
+ }
+ 
+-void mux_configure32(struct fsl_edma_chan *fsl_chan, void __iomem *addr,
+-		     u32 off, u32 slot, bool enable)
++static void mux_configure32(struct fsl_edma_chan *fsl_chan, void __iomem *addr,
++			    u32 off, u32 slot, bool enable)
+ {
+ 	u32 val;
+ 
+-- 
+2.7.4
 

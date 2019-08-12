@@ -2,61 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B69089C77
-	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Aug 2019 13:15:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FB4E89D84
+	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Aug 2019 14:05:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728054AbfHLLPg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 12 Aug 2019 07:15:36 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:39476 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727995AbfHLLPg (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 12 Aug 2019 07:15:36 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hx8IP-0002cp-9I; Mon, 12 Aug 2019 11:15:25 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Zhou Wang <wangzhou1@hisilicon.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-crypto@vger.kernel.or
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][crypto-next] crypto: hisilicon: fix spelling mistake "HZIP_COMSUMED_BYTE" -> "HZIP_CONSUMED_BYTE"
-Date:   Mon, 12 Aug 2019 12:15:25 +0100
-Message-Id: <20190812111525.574-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728216AbfHLMFR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 12 Aug 2019 08:05:17 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:54674 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726631AbfHLMFR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 12 Aug 2019 08:05:17 -0400
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id E91B781F25;
+        Mon, 12 Aug 2019 12:05:16 +0000 (UTC)
+Received: from warthog.procyon.org.uk (ovpn-120-255.rdu2.redhat.com [10.10.120.255])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 6CABF67658;
+        Mon, 12 Aug 2019 12:05:15 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+        Kingdom.
+        Registered in England and Wales under Company Registration No. 3798903
+From:   David Howells <dhowells@redhat.com>
+In-Reply-To: <20190809170259.29859-1-colin.king@canonical.com>
+References: <20190809170259.29859-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     dhowells@redhat.com, "David S . Miller" <davem@davemloft.net>,
+        linux-afs@lists.infradead.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][net-next] rxrpc: fix uninitialized return value in variable err
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <17307.1565611514.1@warthog.procyon.org.uk>
+Date:   Mon, 12 Aug 2019 13:05:14 +0100
+Message-ID: <17308.1565611514@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.27]); Mon, 12 Aug 2019 12:05:17 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Colin King <colin.king@canonical.com> wrote:
 
-There is a spelling mistake in the hzip_dfx_regs array, fix this.
+> Fixes: b214b2d8f277 ("rxrpc: Don't use skb_cow_data() in rxkad")
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/crypto/hisilicon/zip/zip_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This isn't in net or net-next and has been superseded in any case.
 
-diff --git a/drivers/crypto/hisilicon/zip/zip_main.c b/drivers/crypto/hisilicon/zip/zip_main.c
-index 6e0ca75585d4..00ecae387fdd 100644
---- a/drivers/crypto/hisilicon/zip/zip_main.c
-+++ b/drivers/crypto/hisilicon/zip/zip_main.c
-@@ -206,7 +206,7 @@ static struct debugfs_reg32 hzip_dfx_regs[] = {
- 	{"HZIP_AVG_DELAY                 ",  0x28ull},
- 	{"HZIP_MEM_VISIBLE_DATA          ",  0x30ull},
- 	{"HZIP_MEM_VISIBLE_ADDR          ",  0x34ull},
--	{"HZIP_COMSUMED_BYTE             ",  0x38ull},
-+	{"HZIP_CONSUMED_BYTE             ",  0x38ull},
- 	{"HZIP_PRODUCED_BYTE             ",  0x40ull},
- 	{"HZIP_COMP_INF                  ",  0x70ull},
- 	{"HZIP_PRE_OUT                   ",  0x78ull},
--- 
-2.20.1
+You can find it still in my afs-next branch, but the replacement in
+rxrpc-fixes is fixed differently.
 
+David

@@ -2,87 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A9BDB8986A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Aug 2019 10:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06B0B89878
+	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Aug 2019 10:11:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726943AbfHLIFL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 12 Aug 2019 04:05:11 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:51027 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726834AbfHLIFK (ORCPT
+        id S1726996AbfHLIL3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 12 Aug 2019 04:11:29 -0400
+Received: from mo4-p00-ob.smtp.rzone.de ([85.215.255.20]:34028 "EHLO
+        mo4-p00-ob.smtp.rzone.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726937AbfHLIL3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 12 Aug 2019 04:05:10 -0400
-Received: by mail-wm1-f67.google.com with SMTP id v15so11277562wml.0
-        for <kernel-janitors@vger.kernel.org>; Mon, 12 Aug 2019 01:05:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=ufGKwBzHzNSFgdcOablNE0vz1Z8KtfQ2TuFP4lhH54s=;
-        b=OY9w3Qb2FPL1d33M1cJQ78ypsj3wJgGSSLa58LntOr6i8+Y/csGOZbC4Ker6pqyPs2
-         mDavytQZlhhFhYAVgAjmMWni2VyzsDAx5zM+gi0AwjXuxGATwlfNCG4Ky9P0UNf8vpdJ
-         KzQdyR7xciH9PyWU15yjV6Hk7icax2SIkpEvzxgQ3SNr78oaiNIPf8ywfJaBcMp/A9Ks
-         Hba2yrD6v3GPn3Uxu+GHDXDrZ64Yp8ZwL4+CnvsWoXAYegzGZTJa872+hxrBlCaT4qrw
-         8wI3Ln5V9zkazaJs5Fc/iZRNFAsiZ/oOh1PrtjstePthVp1CFTDR7x3a0WTj4WuOwcpu
-         WbYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=ufGKwBzHzNSFgdcOablNE0vz1Z8KtfQ2TuFP4lhH54s=;
-        b=rGBhh8/bktGJve5Q0rNLcX9tBeXDWZnOPRzSQUOcrX6cRTgUgEQ7Bi/ttnyQvzEko1
-         Zr9mZmSjp0t0BuZrQiRGao+0mHNW3wZ0bJgFCG4YQrZ+AtLBM3taWf68Ntw4ZwV/ScWs
-         40A2LRsQ0JSD2kSZSJfUWqouwuxVNVghxv7kLpBVXDwza/i3q2WsdJ6bO+7RqMsxH8Ad
-         gk1AnWrSvZkI8Pe0oTNQTTT3+Nq0Km1oYQY73C4Cqlh5FikAsoLEyosp7hjzOHKkF004
-         BfOeSZt77hmCcNDf+Kxx+AaCyduE9gE0Cpd5tfGTmHV6vN+Jv4pBcjFWpyRa5ZhncZtE
-         NTWg==
-X-Gm-Message-State: APjAAAVgVf+wfquDx/LqL+QmSjopHmUDEB74NhKm6uqtZZ+IFCLKtY/X
-        9QbQHstBQor6RtYXV3WnZR8yEw==
-X-Google-Smtp-Source: APXvYqz6EhFotsYU49z2I1UAbp0US62x0A/jBhKf/LnRcG4G8QeOE3aQJV2P+8AsQawnjG/Y2744Aw==
-X-Received: by 2002:a05:600c:d9:: with SMTP id u25mr3152884wmm.26.1565597108741;
-        Mon, 12 Aug 2019 01:05:08 -0700 (PDT)
-Received: from dell ([2.27.35.255])
-        by smtp.gmail.com with ESMTPSA id a142sm10918918wme.2.2019.08.12.01.05.07
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 12 Aug 2019 01:05:08 -0700 (PDT)
-Date:   Mon, 12 Aug 2019 09:05:06 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     daniel.thompson@linaro.org, jingoohan1@gmail.com,
-        b.zolnierkie@samsung.com, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Mon, 12 Aug 2019 04:11:29 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1565597484;
+        s=strato-dkim-0002; d=hartkopp.net;
+        h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:
+        X-RZG-CLASS-ID:X-RZG-AUTH:From:Subject:Sender;
+        bh=RU3R2vspY7GTQ1mcMFwuYxxGqCDNqI+3qpXRunlvHZ4=;
+        b=B62EmVF4UdL4HZwQAkHKT/mYf2+rB+hRb0hDVlNDKkg6RrdNJ7coJreVBOkx0agqG4
+        nhbeH9vkhZD+25BZ4Myy4lAN0vfKhQ5kFfvQi/DFHTWYONpHB1aV2DovH9e2WBPNAoO1
+        xR3Z22C7vYOlZ3h/MN6rfVFiOjWv9wOLRLBD4Ff5Yin2gtCSMi9j3f8x6eBZGzXpe8qE
+        3YJsLGncf1jjzJuKH9Xd0yii3w1pvlqIY4pcxiKiQywZjIa/oJNB19yepAviwHMp30Q1
+        MtVNGEvAXIvNYI3uAfVNlIOmgOLZRqFMRg2OUo1yf9bowt7R5SWGXKQblXDQsZKg9Z05
+        oybA==
+X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjG14FZxedJy6qgO1o3PMaViOoLMGXsh5kU/E"
+X-RZG-CLASS-ID: mo00
+Received: from [192.168.40.177]
+        by smtp.strato.de (RZmta 44.24 DYNA|AUTH)
+        with ESMTPSA id k05d3bv7C8BGX8A
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (curve secp521r1 with 521 ECDH bits, eq. 15360 bits RSA))
+        (Client did not present a certificate);
+        Mon, 12 Aug 2019 10:11:16 +0200 (CEST)
+Subject: Re: [PATCH net-next] net: can: Fix compiling warning
+To:     maowenan <maowenan@huawei.com>
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] backlight: lms283gf05: Fix a typo in the description
- passed to 'devm_gpio_request_one()'
-Message-ID: <20190812080506.GH4594@dell>
-References: <20190724213828.16916-1-christophe.jaillet@wanadoo.fr>
+References: <20190802033643.84243-1-maowenan@huawei.com>
+ <0050efdb-af9f-49b9-8d83-f574b3d46a2e@hartkopp.net>
+ <20190806135231.GJ1974@kadam>
+ <6e1c5aa0-8ed3-eec3-a34d-867ea8f54e9d@hartkopp.net>
+ <5018f6ca-53b5-c712-a012-a0fcda5c10c2@huawei.com>
+From:   Oliver Hartkopp <socketcan@hartkopp.net>
+Message-ID: <04055e63-c2c0-78e3-1b24-47be08976750@hartkopp.net>
+Date:   Mon, 12 Aug 2019 10:11:11 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190724213828.16916-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <5018f6ca-53b5-c712-a012-a0fcda5c10c2@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 24 Jul 2019, Christophe JAILLET wrote:
+On 12/08/2019 07.48, maowenan wrote:
+> On 2019/8/7 0:41, Oliver Hartkopp wrote:
 
-> The description passed to 'devm_gpio_request_one()' should be related to
-> LMS283GF05, not LMS285GF05.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->  drivers/video/backlight/lms283gf05.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>> I compiled the code (the original version), but I do not get that "Should it be static?" warning:
 
-Applied, thanks.
+> here are my steps for net/can/bcm.c,
+> make allmodconfig ARCH=mips CROSS_COMPILE=mips-linux-gnu-
+> make C=2 net/can/bcm.o ARCH=mips CROSS_COMPILE=mips-linux-gnu-
 
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+There were some sparse _errors_ in my setup that hide that "static" 
+warning. I will use sparse by default now.
+
+Many thanks,
+Oliver
+

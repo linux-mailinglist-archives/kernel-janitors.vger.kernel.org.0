@@ -2,72 +2,135 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E0B589F2E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Aug 2019 15:07:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6729D8A195
+	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Aug 2019 16:53:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728821AbfHLNHE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 12 Aug 2019 09:07:04 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:58690 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726458AbfHLNHD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 12 Aug 2019 09:07:03 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id F079DCBBE20D890C1DCE;
-        Mon, 12 Aug 2019 21:07:01 +0800 (CST)
-Received: from [127.0.0.1] (10.63.139.185) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Mon, 12 Aug 2019
- 21:06:59 +0800
-Subject: Re: [PATCH][crypto-next] crypto: hisilicon: fix spelling mistake
- "HZIP_COMSUMED_BYTE" -> "HZIP_CONSUMED_BYTE"
-To:     Colin King <colin.king@canonical.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        <linux-crypto@vger.kernel.or>
-References: <20190812111525.574-1-colin.king@canonical.com>
-CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-From:   Zhou Wang <wangzhou1@hisilicon.com>
-Message-ID: <5D516472.4000905@hisilicon.com>
-Date:   Mon, 12 Aug 2019 21:06:58 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
+        id S1726948AbfHLOxl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 12 Aug 2019 10:53:41 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:53926 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726734AbfHLOxk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 12 Aug 2019 10:53:40 -0400
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 6F4E2C004F52;
+        Mon, 12 Aug 2019 14:53:40 +0000 (UTC)
+Received: from linux-ws.nc.xsintricity.com (ovpn-112-57.rdu2.redhat.com [10.10.112.57])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 78B701001B17;
+        Mon, 12 Aug 2019 14:53:39 +0000 (UTC)
+Message-ID: <35d646ab61f2b81b382c8638c0d43ab2188d8c2b.camel@redhat.com>
+Subject: Re: [PATCH v2] RDMA/siw: Fix a memory leak in siw_init_cpulist()
+From:   Doug Ledford <dledford@redhat.com>
+To:     Bernard Metzler <BMT@zurich.ibm.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Date:   Mon, 12 Aug 2019 10:53:36 -0400
+In-Reply-To: <OFD09B6B8D.A208B8E7-ON00258451.004F8BA4-00258451.004F8BAA@notes.na.collabserv.com>
+References: <20190809140904.GB3552@mwanda>
+         <OFD09B6B8D.A208B8E7-ON00258451.004F8BA4-00258451.004F8BAA@notes.na.collabserv.com>
+Organization: Red Hat, Inc.
+Content-Type: multipart/signed; micalg="pgp-sha256";
+        protocol="application/pgp-signature"; boundary="=-SpeExsd2MzbZ9zFIrpNk"
+User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
 MIME-Version: 1.0
-In-Reply-To: <20190812111525.574-1-colin.king@canonical.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.63.139.185]
-X-CFilter-Loop: Reflected
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.32]); Mon, 12 Aug 2019 14:53:40 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2019/8/12 19:15, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in the hzip_dfx_regs array, fix this.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/crypto/hisilicon/zip/zip_main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/crypto/hisilicon/zip/zip_main.c b/drivers/crypto/hisilicon/zip/zip_main.c
-> index 6e0ca75585d4..00ecae387fdd 100644
-> --- a/drivers/crypto/hisilicon/zip/zip_main.c
-> +++ b/drivers/crypto/hisilicon/zip/zip_main.c
-> @@ -206,7 +206,7 @@ static struct debugfs_reg32 hzip_dfx_regs[] = {
->  	{"HZIP_AVG_DELAY                 ",  0x28ull},
->  	{"HZIP_MEM_VISIBLE_DATA          ",  0x30ull},
->  	{"HZIP_MEM_VISIBLE_ADDR          ",  0x34ull},
-> -	{"HZIP_COMSUMED_BYTE             ",  0x38ull},
-> +	{"HZIP_CONSUMED_BYTE             ",  0x38ull},
 
-Yes, thanks.
+--=-SpeExsd2MzbZ9zFIrpNk
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Zhou
+On Fri, 2019-08-09 at 14:28 +0000, Bernard Metzler wrote:
+> -----"Dan Carpenter" <dan.carpenter@oracle.com> wrote: -----
+>=20
+> > To: "Bernard Metzler" <bmt@zurich.ibm.com>
+> > From: "Dan Carpenter" <dan.carpenter@oracle.com>
+> > Date: 08/09/2019 04:09PM
+> > Cc: "Doug Ledford" <dledford@redhat.com>, "Jason Gunthorpe"
+> > <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
+> > kernel-janitors@vger.kernel.org
+> > Subject: [EXTERNAL] [PATCH v2] RDMA/siw: Fix a memory leak in
+> > siw_init_cpulist()
+> >=20
+> > The error handling code doesn't free siw_cpu_info.tx_valid_cpus[0].
+> > The
+> > first iteration through the loop is a no-op so this is sort of an
+> > off
+> > by one bug.  Also Bernard pointed out that we can remove the NULL
+> > assignment and simplify the code a bit.
+> >=20
+> > Fixes: bdcf26bf9b3a ("rdma/siw: network and RDMA core interface")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > Reviewed-by: Bernard Metzler <bmt@zurich.ibm.com>
+> > ---
+> > v2:  Remove the NULL assignment like Bernard Metzler pointed out.
+> >=20
+> > drivers/infiniband/sw/siw/siw_main.c | 4 +---
+> > 1 file changed, 1 insertion(+), 3 deletions(-)
+> >=20
+> > diff --git a/drivers/infiniband/sw/siw/siw_main.c
+> > b/drivers/infiniband/sw/siw/siw_main.c
+> > index d0f140daf659..05a92f997f60 100644
+> > --- a/drivers/infiniband/sw/siw/siw_main.c
+> > +++ b/drivers/infiniband/sw/siw/siw_main.c
+> > @@ -160,10 +160,8 @@ static int siw_init_cpulist(void)
+> >=20
+> > out_err:
+> > 	siw_cpu_info.num_nodes =3D 0;
+> > -	while (i) {
+> > +	while (--i >=3D 0)
+> > 		kfree(siw_cpu_info.tx_valid_cpus[i]);
+> > -		siw_cpu_info.tx_valid_cpus[i--] =3D NULL;
+> > -	}
+> > 	kfree(siw_cpu_info.tx_valid_cpus);
+> > 	siw_cpu_info.tx_valid_cpus =3D NULL;
+> >=20
+> > --=20
+> > 2.20.1
+> >=20
+> >=20
+>=20
+> Dan, many thanks for finding and fixing this!
+>=20
+>=20
+> Reviewed-by: Bernard Metzler <bmt@zurich.ibm.com>
+>=20
 
->  	{"HZIP_PRODUCED_BYTE             ",  0x40ull},
->  	{"HZIP_COMP_INF                  ",  0x70ull},
->  	{"HZIP_PRE_OUT                   ",  0x78ull},
-> 
+Thanks, applied to for-rc.
+
+--=20
+Doug Ledford <dledford@redhat.com>
+    GPG KeyID: B826A3330E572FDD
+    Fingerprint =3D AE6B 1BDA 122B 23B4 265B  1274 B826 A333 0E57 2FDD
+
+--=-SpeExsd2MzbZ9zFIrpNk
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEErmsb2hIrI7QmWxJ0uCajMw5XL90FAl1RfXAACgkQuCajMw5X
+L926jA//YZib3qjLhR93l5NEdFZEj+Uvb3EW6bRhnEPSn8xCOoneAbcftGU4uUog
+6F+eICxZ9/9JwZ2zXFhbVCJlYaIHAMIJfgUSge/oI0rFV3EYPuABP0Wg6K0fKs03
+KkXoNXNLcWTGZ4KiYPd3YFX3RSyEvH3U5DSvt8RtSlg4X/FWhpUj4TYk/BHDtkfl
+gR7zgfpDPRtG61DaUVM/um/olZPVDcPDb6ag0e9ncrk/fRqWNS2G19yRicQbXuUH
+9QUWIDZ1TKgPbVuqTYAmYHeFc/k8IYRzsj20P2tI1RWO2Ael2JszYqCfBY5AMKVc
+ZDXupZaeZvv2UpGu4gZnpbG+3lUndN0iBHkBjWNkE0u+qjaWaHZ7CPjIH17YIhoJ
+IWF9QuXAwTcAvKH4eHU1HnAJmL3JSAYDi8Gn5kUawVHqEaw1qcD/+84/nYj8ctCn
+MIRZQRHeuY1/2bOIG9TQ8xp3i8E+0bKe0BLsvzci8Hg72ui3j1kFAeoR1mfunkWX
++rxpv403VHCYNS+E5phVJHMBtLh2WfPptUhiPOVM/Y02lcQuN8MTbpV6FmZmKxs2
+0h0OpW7By+yiIJR2QjEoBHvR3Pkj7q3dufta/wa3Vd4xhLGV+B5SONFTvUbfp0g+
+kCNaBl3/dceva942VlwDy6ZFfQi07p7FcIq0eJQQL11ytAaUuno=
+=bqUy
+-----END PGP SIGNATURE-----
+
+--=-SpeExsd2MzbZ9zFIrpNk--
 

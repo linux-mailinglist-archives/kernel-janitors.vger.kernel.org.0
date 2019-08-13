@@ -2,30 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C451B8BB7F
-	for <lists+kernel-janitors@lfdr.de>; Tue, 13 Aug 2019 16:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B55718C019
+	for <lists+kernel-janitors@lfdr.de>; Tue, 13 Aug 2019 20:01:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729306AbfHMO2X (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 13 Aug 2019 10:28:23 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:57512 "EHLO
+        id S1728170AbfHMSBR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 13 Aug 2019 14:01:17 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:38953 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727768AbfHMO2X (ORCPT
+        with ESMTP id S1726363AbfHMSBR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 13 Aug 2019 10:28:23 -0400
+        Tue, 13 Aug 2019 14:01:17 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hxXmc-0001H7-F2; Tue, 13 Aug 2019 14:28:18 +0000
+        id 1hxb6f-0007FU-U5; Tue, 13 Aug 2019 18:01:14 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Alexander Aring <alex.aring@gmail.com>,
-        Stefan Schmidt <stefan@datenfreihafen.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wpan@vger.kernel.org, netdev@vger.kernel.org
+To:     Jianyun Li <jyli@marvell.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] net: ieee802154: remove redundant assignment to rc
-Date:   Tue, 13 Aug 2019 15:28:18 +0100
-Message-Id: <20190813142818.15022-1-colin.king@canonical.com>
+Subject: [PATCH] scsi: mvumi: fix 32 bit shift of a u32 value
+Date:   Tue, 13 Aug 2019 19:01:13 +0100
+Message-Id: <20190813180113.14245-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,28 +37,32 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Variable rc is initialized to a value that is never read and it is
-re-assigned later. The initialization is redundant and can be removed.
+Currently the top 32 bits of a 64 bit address is being calculated
+by shifting a u32 twice by 16 bits and then being cast into a 64
+bit address.  Shifting a u32 twice by 16 bits always ends up with
+a zero.  Fix this by casting the u32 to a 64 bit address first
+and then shifting it 32 bits.
 
-Addresses-Coverity: ("Unused value")
+Addresses-Coverity: ("Operands don't affect result")
+Fixes: f0c568a478f0 ("[SCSI] mvumi: Add Marvell UMI driver")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- net/ieee802154/socket.c | 2 +-
+ drivers/scsi/mvumi.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ieee802154/socket.c b/net/ieee802154/socket.c
-index dacbd58e1799..badc5cfe4dc6 100644
---- a/net/ieee802154/socket.c
-+++ b/net/ieee802154/socket.c
-@@ -1092,7 +1092,7 @@ static struct packet_type ieee802154_packet_type = {
+diff --git a/drivers/scsi/mvumi.c b/drivers/scsi/mvumi.c
+index 8906aceda4c4..62df69f1e71e 100644
+--- a/drivers/scsi/mvumi.c
++++ b/drivers/scsi/mvumi.c
+@@ -296,7 +296,7 @@ static void mvumi_delete_internal_cmd(struct mvumi_hba *mhba,
+ 			sgd_getsz(mhba, m_sg, size);
  
- static int __init af_ieee802154_init(void)
- {
--	int rc = -EINVAL;
-+	int rc;
+ 			phy_addr = (dma_addr_t) m_sg->baseaddr_l |
+-				(dma_addr_t) ((m_sg->baseaddr_h << 16) << 16);
++				   (dma_addr_t) m_sg->baseaddr_h << 32;
  
- 	rc = proto_register(&ieee802154_raw_prot, 1);
- 	if (rc)
+ 			dma_free_coherent(&mhba->pdev->dev, size, cmd->data_buf,
+ 								phy_addr);
 -- 
 2.20.1
 

@@ -2,28 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D981F8BB07
-	for <lists+kernel-janitors@lfdr.de>; Tue, 13 Aug 2019 16:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C451B8BB7F
+	for <lists+kernel-janitors@lfdr.de>; Tue, 13 Aug 2019 16:28:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729426AbfHMOCA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 13 Aug 2019 10:02:00 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56163 "EHLO
+        id S1729306AbfHMO2X (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 13 Aug 2019 10:28:23 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:57512 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729384AbfHMOCA (ORCPT
+        with ESMTP id S1727768AbfHMO2X (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 13 Aug 2019 10:02:00 -0400
+        Tue, 13 Aug 2019 10:28:23 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hxXN2-0007nU-8v; Tue, 13 Aug 2019 14:01:52 +0000
+        id 1hxXmc-0001H7-F2; Tue, 13 Aug 2019 14:28:18 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-        alsa-devel@alsa-project.org
+To:     Alexander Aring <alex.aring@gmail.com>,
+        Stefan Schmidt <stefan@datenfreihafen.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wpan@vger.kernel.org, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ALSA: sb: remove redundant assignment to variable result
-Date:   Tue, 13 Aug 2019 15:01:51 +0100
-Message-Id: <20190813140151.9865-1-colin.king@canonical.com>
+Subject: [PATCH] net: ieee802154: remove redundant assignment to rc
+Date:   Tue, 13 Aug 2019 15:28:18 +0100
+Message-Id: <20190813142818.15022-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,28 +37,28 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Variable result is initialized to a value that is never read and it is
+Variable rc is initialized to a value that is never read and it is
 re-assigned later. The initialization is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- sound/isa/sb/sb_common.c | 2 +-
+ net/ieee802154/socket.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/isa/sb/sb_common.c b/sound/isa/sb/sb_common.c
-index 162338f1b68a..ff031d670400 100644
---- a/sound/isa/sb/sb_common.c
-+++ b/sound/isa/sb/sb_common.c
-@@ -80,7 +80,7 @@ int snd_sbdsp_reset(struct snd_sb *chip)
+diff --git a/net/ieee802154/socket.c b/net/ieee802154/socket.c
+index dacbd58e1799..badc5cfe4dc6 100644
+--- a/net/ieee802154/socket.c
++++ b/net/ieee802154/socket.c
+@@ -1092,7 +1092,7 @@ static struct packet_type ieee802154_packet_type = {
  
- static int snd_sbdsp_version(struct snd_sb * chip)
+ static int __init af_ieee802154_init(void)
  {
--	unsigned int result = -ENODEV;
-+	unsigned int result;
+-	int rc = -EINVAL;
++	int rc;
  
- 	snd_sbdsp_command(chip, SB_DSP_GET_VERSION);
- 	result = (short) snd_sbdsp_get_byte(chip) << 8;
+ 	rc = proto_register(&ieee802154_raw_prot, 1);
+ 	if (rc)
 -- 
 2.20.1
 

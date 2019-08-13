@@ -2,61 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE2B88A872
-	for <lists+kernel-janitors@lfdr.de>; Mon, 12 Aug 2019 22:36:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB4768AC85
+	for <lists+kernel-janitors@lfdr.de>; Tue, 13 Aug 2019 03:57:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726573AbfHLUgM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 12 Aug 2019 16:36:12 -0400
-Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:37696 "EHLO
-        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726527AbfHLUgM (ORCPT
+        id S1726558AbfHMB5g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 12 Aug 2019 21:57:36 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:36584 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726236AbfHMB5g (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 12 Aug 2019 16:36:12 -0400
-Received: from callcc.thunk.org (guestnat-104-133-9-109.corp.google.com [104.133.9.109] (may be forged))
-        (authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id x7CKa5qs030319
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 12 Aug 2019 16:36:07 -0400
-Received: by callcc.thunk.org (Postfix, from userid 15806)
-        id 6715F4218EF; Mon, 12 Aug 2019 16:36:05 -0400 (EDT)
-Date:   Mon, 12 Aug 2019 16:36:05 -0400
-From:   "Theodore Y. Ts'o" <tytso@mit.edu>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Andreas Dilger <adilger.kernel@dilger.ca>,
-        linux-ext4@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ext4: set error return correctly when
- ext4_htree_store_dirent fails
-Message-ID: <20190812203605.GC28705@mit.edu>
-Mail-Followup-To: "Theodore Y. Ts'o" <tytso@mit.edu>,
-        Colin King <colin.king@canonical.com>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        linux-ext4@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20190805224419.24639-1-colin.king@canonical.com>
+        Mon, 12 Aug 2019 21:57:36 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7D1rf0r009204;
+        Tue, 13 Aug 2019 01:57:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=6JS/Ruy8i1YKO9bWmxOKhb5y+/jkyvZ6KokgXOpJ2YU=;
+ b=kUHYayAg9bmM0iJuLtMDP+ajfmS1RmtqVEo1VpZQCZ8l7doKaDHusQ0u9N6AjbYL9SqD
+ j2w52M7uK7/e7dfb51ItN2zdV+pTXY4rIXWfGf91Ab7YBz2uH70z4xVRSIlotorajRsj
+ 3zx9/z+sC/INF8TtXSpdG8BmzcDHaJPmnyn+RsK1+px5ExtFudGUjd7vw5HGYN7Qi4nj
+ pZWiCZj2NmliY1HGRO2ygcPXOQQ3ZN0Uu20jN5nsnAMO2ax1ty+POgCZKypFeOvMsyuK
+ rbwpvBNtxZHrmKfRbC9aol0h2Uh7DAO1NOWOvzt0aZ5h4PCiUXmwPUA0FpU4XVOqH50g iw== 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2018-07-02;
+ bh=6JS/Ruy8i1YKO9bWmxOKhb5y+/jkyvZ6KokgXOpJ2YU=;
+ b=VjC4vIhAt8ZRCSydDWUj7jdQ3FIpoLiYY+EWgABcgryCJHpBtnFRZdr4Q5I30Ir7c8X5
+ byY2OC4opGvpn4YDF2RzhkKCWskZe5NAz00+MXQPRNdA4+s+zgy/VK2A7rEd9AfZKB0K
+ Qs15ERkHqfTCXg/ZVlVNZIWZa600sct92aHJIDLtHCo+ilZdc3BV5R50hl8PDRVGfUtT
+ 2pH2EV93JlDai35Ls0Qk5bG8sgyrm9c9izzBEGqaoMGXp41hqADbAP0o5+ldMAJsCtDq
+ +lbq+2IXiGoMmx6KgqzQSUdqeOIcn9GI6kMqznsudGVGjW8d3I1gCuNqOWFkrX9Arb6H Tg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 2u9nbtb38q-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 13 Aug 2019 01:57:32 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7D1rxas085608;
+        Tue, 13 Aug 2019 01:57:32 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 2u9k1vwcgk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 13 Aug 2019 01:57:32 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7D1vTlH024766;
+        Tue, 13 Aug 2019 01:57:29 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 12 Aug 2019 18:57:29 -0700
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     jejb@linux.ibm.com, martin.petersen@oracle.com,
+        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] scsi: pmcraid: Fix a typo - pcmraid --> pmcraid
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20190809150214.24454-1-christophe.jaillet@wanadoo.fr>
+Date:   Mon, 12 Aug 2019 21:57:27 -0400
+In-Reply-To: <20190809150214.24454-1-christophe.jaillet@wanadoo.fr>
+        (Christophe JAILLET's message of "Fri, 9 Aug 2019 17:02:14 +0200")
+Message-ID: <yq18srx969k.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190805224419.24639-1-colin.king@canonical.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9347 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=854
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1908130018
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9347 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=907 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908130018
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Aug 05, 2019 at 11:44:19PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently when the call to ext4_htree_store_dirent fails the error return
-> variable 'ret' is is not being set to the error code and variable count is
-> instead, hence the error code is not being returned.  Fix this by assigning
-> ret to the error return code.
-> 
-> Addresses-Coverity: ("Unused value")
-> Fixes: 8af0f0822797 ("ext4: fix readdir error in the case of inline_data+dir_index")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Applied, thanks.
+Christophe,
 
-					- Ted
+> This should be 'pmcraid', not 'pcmraid'
+
+Applied to 5.4/scsi-queue. Thanks!
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

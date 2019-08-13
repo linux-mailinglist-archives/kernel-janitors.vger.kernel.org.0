@@ -2,67 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B55718C019
-	for <lists+kernel-janitors@lfdr.de>; Tue, 13 Aug 2019 20:01:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFACB8C4D0
+	for <lists+kernel-janitors@lfdr.de>; Wed, 14 Aug 2019 01:35:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728170AbfHMSBR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 13 Aug 2019 14:01:17 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:38953 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726363AbfHMSBR (ORCPT
+        id S1726373AbfHMXfB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 13 Aug 2019 19:35:01 -0400
+Received: from proxima.lasnet.de ([78.47.171.185]:45164 "EHLO
+        proxima.lasnet.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725903AbfHMXfA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 13 Aug 2019 14:01:17 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hxb6f-0007FU-U5; Tue, 13 Aug 2019 18:01:14 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jianyun Li <jyli@marvell.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org
+        Tue, 13 Aug 2019 19:35:00 -0400
+X-Greylist: delayed 416 seconds by postgrey-1.27 at vger.kernel.org; Tue, 13 Aug 2019 19:35:00 EDT
+Received: from localhost.localdomain (unknown [5.148.42.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: stefan@datenfreihafen.org)
+        by proxima.lasnet.de (Postfix) with ESMTPSA id 77AC9CB70F;
+        Wed, 14 Aug 2019 01:28:03 +0200 (CEST)
+Subject: Re: [PATCH] net: ieee802154: remove redundant assignment to rc
+To:     Colin King <colin.king@canonical.com>,
+        Alexander Aring <alex.aring@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wpan@vger.kernel.org, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] scsi: mvumi: fix 32 bit shift of a u32 value
-Date:   Tue, 13 Aug 2019 19:01:13 +0100
-Message-Id: <20190813180113.14245-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+References: <20190813142818.15022-1-colin.king@canonical.com>
+From:   Stefan Schmidt <stefan@datenfreihafen.org>
+Message-ID: <a3262e25-209d-209d-59fc-a09511fb9280@datenfreihafen.org>
+Date:   Wed, 14 Aug 2019 01:28:02 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190813142818.15022-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hello.
 
-Currently the top 32 bits of a 64 bit address is being calculated
-by shifting a u32 twice by 16 bits and then being cast into a 64
-bit address.  Shifting a u32 twice by 16 bits always ends up with
-a zero.  Fix this by casting the u32 to a 64 bit address first
-and then shifting it 32 bits.
+On 13.08.19 16:28, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Variable rc is initialized to a value that is never read and it is
+> re-assigned later. The initialization is redundant and can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  net/ieee802154/socket.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/ieee802154/socket.c b/net/ieee802154/socket.c
+> index dacbd58e1799..badc5cfe4dc6 100644
+> --- a/net/ieee802154/socket.c
+> +++ b/net/ieee802154/socket.c
+> @@ -1092,7 +1092,7 @@ static struct packet_type ieee802154_packet_type = {
+>  
+>  static int __init af_ieee802154_init(void)
+>  {
+> -	int rc = -EINVAL;
+> +	int rc;
+>  
+>  	rc = proto_register(&ieee802154_raw_prot, 1);
+>  	if (rc)
+> 
 
-Addresses-Coverity: ("Operands don't affect result")
-Fixes: f0c568a478f0 ("[SCSI] mvumi: Add Marvell UMI driver")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/scsi/mvumi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mvumi.c b/drivers/scsi/mvumi.c
-index 8906aceda4c4..62df69f1e71e 100644
---- a/drivers/scsi/mvumi.c
-+++ b/drivers/scsi/mvumi.c
-@@ -296,7 +296,7 @@ static void mvumi_delete_internal_cmd(struct mvumi_hba *mhba,
- 			sgd_getsz(mhba, m_sg, size);
- 
- 			phy_addr = (dma_addr_t) m_sg->baseaddr_l |
--				(dma_addr_t) ((m_sg->baseaddr_h << 16) << 16);
-+				   (dma_addr_t) m_sg->baseaddr_h << 32;
- 
- 			dma_free_coherent(&mhba->pdev->dev, size, cmd->data_buf,
- 								phy_addr);
--- 
-2.20.1
+This patch has been applied to the wpan tree and will be
+part of the next pull request to net. Thanks!
 
+regards
+Stefan Schmidt

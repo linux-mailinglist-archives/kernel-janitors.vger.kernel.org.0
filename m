@@ -2,94 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A1C58AC88
-	for <lists+kernel-janitors@lfdr.de>; Tue, 13 Aug 2019 03:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BD2C8ADF7
+	for <lists+kernel-janitors@lfdr.de>; Tue, 13 Aug 2019 06:44:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726549AbfHMB6z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 12 Aug 2019 21:58:55 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:47206 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726236AbfHMB6y (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 12 Aug 2019 21:58:54 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7D1waQJ025607;
-        Tue, 13 Aug 2019 01:58:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2019-08-05;
- bh=ITMIjDVLpzTQCfGpvQLSc02vOee/pkcmzHm9KD5wTqE=;
- b=PQsQDzHjR2xEFcqrD63iqGn7ZYLgIq7EscGNgOtbuUfp1I+ThBLmTcDESb1GFBpdz4LV
- uUpJF4WLA9a+A9sPo//PyYJYhJiguAkdk/nAwcEJE55dEcofB/W579cup54fhbTeGmk2
- DHFWenEg6p62HB/UcCAPJ5q8bHPlw2r/Q8p3fy/a5BSxkxEUI95WW7a/S9Z/YXYAuK/I
- uiESxPNJOElsjdPppSaGuj17FmV4EyGFgjOiYKd2RGhmWCktILQjM/tgmg8NUx5J4Q7G
- rxZy1Ob5pDmi0M/ud2QQ8pTE9vDpXy2Im7oKYcGs8E6ffZ9NR59F50EhbIBUeICAS88E FQ== 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2018-07-02;
- bh=ITMIjDVLpzTQCfGpvQLSc02vOee/pkcmzHm9KD5wTqE=;
- b=Rak3Swn5tAk4XJ1HFUEgV6mSI385EnHLCIrVhp7pZ7QIG3vcyneW19l5FY8ZCRJMKGLl
- etqt07Ba5tdDNLKCQV3Pj4w9nCfRS1zE8WaVaG/1FkHbgM9YH23Nj7g/BTnu0Hj45VDH
- OJnvWu+9J3/9n/pvoOCUN/jNXSG/dzgOZ7bt2cL+SWaOW0sl+ClExjYdmX3h90GPdI9P
- doEO/oykWP/1yN/RDPzlVljrMLNG0/yHvuX2Xwqwd3d33yiWIzM4JZ2DQs0ByOELKkW0
- okFIbPkTOqIUtGa5U1NqY1RirJoCqGLFUnnKJUMDpzY7pxkAsOYYlA2fpbSdigxiDgUE OA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 2u9pjqayrs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 13 Aug 2019 01:58:38 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7D1w0pw174503;
-        Tue, 13 Aug 2019 01:58:37 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 2u9m0asmx0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 13 Aug 2019 01:58:37 +0000
-Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7D1wZRG025178;
-        Tue, 13 Aug 2019 01:58:35 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 12 Aug 2019 18:58:35 -0700
-To:     Colin King <colin.king@canonical.com>
-Cc:     Matthew Wilcox <willy@infradead.org>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] scsi: sym53c8xx_2: remove redundant assignment to retv
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20190809175932.10197-1-colin.king@canonical.com>
-Date:   Mon, 12 Aug 2019 21:58:33 -0400
-In-Reply-To: <20190809175932.10197-1-colin.king@canonical.com> (Colin King's
-        message of "Fri, 9 Aug 2019 18:59:32 +0100")
-Message-ID: <yq14l2l967q.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        id S1726712AbfHMEok (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 13 Aug 2019 00:44:40 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59312 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725781AbfHMEok (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 13 Aug 2019 00:44:40 -0400
+Received: from localhost (unknown [106.201.103.22])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7B4412063F;
+        Tue, 13 Aug 2019 04:44:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1565671479;
+        bh=SpfUN57SJ7lgvjo3JXsVpHsmNRBqwd9iNm1bTWA2dBc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Mz0bbGaBsgvLWWy35YepM+f5dhcj7me+fQd4N51wJm9lz5d+um7ezxDjsDe5361j2
+         /Kg05/kvodmBq5uKqLp3U/6IR69z31Ky5oa4l+utMIK5KpAO5+qyiCncEInOggXQVz
+         SRfO35xvOYBl8lBsY/OSlS38SbPABv7euo+HBwAU=
+Date:   Tue, 13 Aug 2019 10:13:27 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     dan.j.williams@intel.com, dmaengine@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH linux-next] drivers: dma: Fix sparse warning for
+ mux_configure32
+Message-ID: <20190813044327.GR12733@vkoul-mobl.Dlink>
+References: <20190812074205.96759-1-maowenan@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9347 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=919
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1908130019
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9347 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=986 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908130019
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190812074205.96759-1-maowenan@huawei.com>
+User-Agent: Mutt/1.11.3 (2019-02-01)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On 12-08-19, 15:42, Mao Wenan wrote:
 
-Colin,
+Patch title is incorrect, it should mention the changes in patch, for
+example make mux_configure32 static
 
-> Variable retv is initialized to a value that is never read and it is
-> re-assigned later. The initialization is redundant and can be removed.
+Do read up on Documentation/process/submitting-patches.rst again!
 
-Applied to 5.4/scsi-queue, thanks!
+> There is one sparse warning in drivers/dma/fsl-edma-common.c,
+
+It will help to explain the warning before the fix
+
+> fix it by setting mux_configure32() as static.
+> 
+> make allmodconfig ARCH=mips CROSS_COMPILE=mips-linux-gnu-
+> make C=2 drivers/dma/fsl-edma-common.o ARCH=mips CROSS_COMPILE=mips-linux-gnu-
+
+Make cmds are not relevant for the log
+
+> drivers/dma/fsl-edma-common.c:93:6: warning: symbol 'mux_configure32' was not declared. Should it be static?
+
+This one is and should be retained
+
+> 
+> Fixes: 232a7f18cf8ec ("dmaengine: fsl-edma: add i.mx7ulp edma2 version support")
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> ---
+>  drivers/dma/fsl-edma-common.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
+> index 6d6d8a4..7dbf7df 100644
+> --- a/drivers/dma/fsl-edma-common.c
+> +++ b/drivers/dma/fsl-edma-common.c
+> @@ -90,8 +90,8 @@ static void mux_configure8(struct fsl_edma_chan *fsl_chan, void __iomem *addr,
+>  	iowrite8(val8, addr + off);
+>  }
+>  
+> -void mux_configure32(struct fsl_edma_chan *fsl_chan, void __iomem *addr,
+> -		     u32 off, u32 slot, bool enable)
+> +static void mux_configure32(struct fsl_edma_chan *fsl_chan, void __iomem *addr,
+
+just change this to static
+
+> +			    u32 off, u32 slot, bool enable)
+
+and dont change anything else.
+
+If you feel to change this, propose a new patch for this line explaining
+why this should be changed
+
+>  {
+>  	u32 val;
+>  
+> -- 
+> 2.7.4
 
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+~Vinod

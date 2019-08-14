@@ -2,75 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 316288CA7B
-	for <lists+kernel-janitors@lfdr.de>; Wed, 14 Aug 2019 06:44:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 140608CC70
+	for <lists+kernel-janitors@lfdr.de>; Wed, 14 Aug 2019 09:17:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726631AbfHNEoL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 14 Aug 2019 00:44:11 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:4256 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725262AbfHNEoL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 14 Aug 2019 00:44:11 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 5C997CF11AF697350998;
-        Wed, 14 Aug 2019 12:44:05 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 14 Aug 2019 12:43:59 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Rob Herring <robh@kernel.org>,
-        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] drm/panfrost: Fix missing unlock on error in panfrost_mmu_map_fault_addr()
-Date:   Wed, 14 Aug 2019 04:48:14 +0000
-Message-ID: <20190814044814.102294-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727567AbfHNHRX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 14 Aug 2019 03:17:23 -0400
+Received: from mx01-fr.bfs.de ([193.174.231.67]:55417 "EHLO mx01-fr.bfs.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727411AbfHNHRW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 14 Aug 2019 03:17:22 -0400
+Received: from mail-fr.bfs.de (mail-fr.bfs.de [10.177.18.200])
+        by mx01-fr.bfs.de (Postfix) with ESMTPS id 32B4520312;
+        Wed, 14 Aug 2019 09:17:16 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1565767036; h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=d9f3IQNuntXUeBa86V9VEU7wfXhvezEJu6Lae7htCko=;
+        b=dXqiGs9486bwMh1fs9txCTkgc44sKj2bU9b6y/sKB5+jJjve1jX5HXdpwq8PlF4MnsrJnn
+        p5wvNgz8a1guRtA2pKjbG5p1FLZof/N/YwxGd0fXoyRZtjtg+j9BZGhFl9z7BohLxPe3qe
+        Q0WNMeolwm2Y0qYxMHiKONMOdxXf5b7KychsLtTGKTwv5Ic+XSVqUMb9/Zga8KlQSv4CRL
+        84/Qbi8cdHW2b9vgSl/3uDPgwcQgLJQl5ZMqA/jch4vkzoMAVM/ukpPGF4VbugTRBtvnVy
+        oHFrObczs1suGAOY+X+PP6HAusS+o9jmfernWXFySNbzZnzOQnZ0qQ68OjOBlw==
+Received: from [134.92.181.33] (unknown [134.92.181.33])
+        by mail-fr.bfs.de (Postfix) with ESMTPS id D3442BEEBD;
+        Wed, 14 Aug 2019 09:17:15 +0200 (CEST)
+Message-ID: <5D53B57B.3000905@bfs.de>
+Date:   Wed, 14 Aug 2019 09:17:15 +0200
+From:   walter harms <wharms@bfs.de>
+Reply-To: wharms@bfs.de
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; de; rv:1.9.1.16) Gecko/20101125 SUSE/3.0.11 Thunderbird/3.0.11
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+To:     Colin King <colin.king@canonical.com>
+CC:     Jianyun Li <jyli@marvell.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] scsi: mvumi: fix 32 bit shift of a u32 value
+References: <20190813180113.14245-1-colin.king@canonical.com>
+In-Reply-To: <20190813180113.14245-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.10
+Authentication-Results: mx01-fr.bfs.de
+X-Spamd-Result: default: False [-3.10 / 7.00];
+         ARC_NA(0.00)[];
+         HAS_REPLYTO(0.00)[wharms@bfs.de];
+         BAYES_HAM(-3.00)[100.00%];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         MIME_GOOD(-0.10)[text/plain];
+         REPLYTO_ADDR_EQ_FROM(0.00)[];
+         DKIM_SIGNED(0.00)[];
+         RCPT_COUNT_SEVEN(0.00)[7];
+         NEURAL_HAM(-0.00)[-0.999,0];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         RCVD_COUNT_TWO(0.00)[2];
+         MID_RHS_MATCH_FROM(0.00)[];
+         RCVD_TLS_ALL(0.00)[]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Add the missing unlock before return from function panfrost_mmu_map_fault_addr()
-in the error handling case.
-
-Fixes: 187d2929206e ("drm/panfrost: Add support for GPU heap allocations")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/gpu/drm/panfrost/panfrost_mmu.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/panfrost/panfrost_mmu.c b/drivers/gpu/drm/panfrost/panfrost_mmu.c
-index 2ed411f09d80..06f1a563e940 100644
---- a/drivers/gpu/drm/panfrost/panfrost_mmu.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_mmu.c
-@@ -327,14 +327,17 @@ int panfrost_mmu_map_fault_addr(struct panfrost_device *pfdev, int as, u64 addr)
- 	if (!bo->base.pages) {
- 		bo->sgts = kvmalloc_array(bo->base.base.size / SZ_2M,
- 				     sizeof(struct sg_table), GFP_KERNEL | __GFP_ZERO);
--		if (!bo->sgts)
-+		if (!bo->sgts) {
-+			mutex_unlock(&bo->base.pages_lock);
- 			return -ENOMEM;
-+		}
- 
- 		pages = kvmalloc_array(bo->base.base.size >> PAGE_SHIFT,
- 				       sizeof(struct page *), GFP_KERNEL | __GFP_ZERO);
- 		if (!pages) {
- 			kfree(bo->sgts);
- 			bo->sgts = NULL;
-+			mutex_unlock(&bo->base.pages_lock);
- 			return -ENOMEM;
- 		}
- 		bo->base.pages = pages;
 
 
+Am 13.08.2019 20:01, schrieb Colin King:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently the top 32 bits of a 64 bit address is being calculated
+> by shifting a u32 twice by 16 bits and then being cast into a 64
+> bit address.  Shifting a u32 twice by 16 bits always ends up with
+> a zero.  Fix this by casting the u32 to a 64 bit address first
+> and then shifting it 32 bits.
+> 
+> Addresses-Coverity: ("Operands don't affect result")
+> Fixes: f0c568a478f0 ("[SCSI] mvumi: Add Marvell UMI driver")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/scsi/mvumi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/scsi/mvumi.c b/drivers/scsi/mvumi.c
+> index 8906aceda4c4..62df69f1e71e 100644
+> --- a/drivers/scsi/mvumi.c
+> +++ b/drivers/scsi/mvumi.c
+> @@ -296,7 +296,7 @@ static void mvumi_delete_internal_cmd(struct mvumi_hba *mhba,
+>  			sgd_getsz(mhba, m_sg, size);
+>  
+>  			phy_addr = (dma_addr_t) m_sg->baseaddr_l |
+> -				(dma_addr_t) ((m_sg->baseaddr_h << 16) << 16);
+> +				   (dma_addr_t) m_sg->baseaddr_h << 32;
+>  
 
+All the casts make it hard to read, i would propose an alternativ version:
+phy_addr = m_sg->baseaddr_h;
+phy_addr <<= 32;
+phy_addr |= m_sg->baseaddr_l;
+
+JM2C and totaly untested.
+
+re,
+ wh
+
+>  			dma_free_coherent(&mhba->pdev->dev, size, cmd->data_buf,
+>  								phy_addr);

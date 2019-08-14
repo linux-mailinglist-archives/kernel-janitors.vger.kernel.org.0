@@ -2,104 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A17F78C9A6
-	for <lists+kernel-janitors@lfdr.de>; Wed, 14 Aug 2019 04:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 316288CA7B
+	for <lists+kernel-janitors@lfdr.de>; Wed, 14 Aug 2019 06:44:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727630AbfHNCkZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 13 Aug 2019 22:40:25 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:4254 "EHLO huawei.com"
+        id S1726631AbfHNEoL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 14 Aug 2019 00:44:11 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:4256 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727182AbfHNCkX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 13 Aug 2019 22:40:23 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 71FB0567C5C78BC6698F;
-        Wed, 14 Aug 2019 10:40:20 +0800 (CST)
-Received: from [127.0.0.1] (10.177.96.96) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Wed, 14 Aug 2019
- 10:40:15 +0800
-Subject: Re: [PATCH linux-next] drivers: dma: Fix sparse warning for
- mux_configure32
-To:     Vinod Koul <vkoul@kernel.org>
-References: <20190812074205.96759-1-maowenan@huawei.com>
- <20190813044327.GR12733@vkoul-mobl.Dlink>
-CC:     <dan.j.williams@intel.com>, <dmaengine@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <0a29e584-2385-9e7c-8d13-3ba47d3bf81c@huawei.com>
-Date:   Wed, 14 Aug 2019 10:40:14 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+        id S1725262AbfHNEoL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 14 Aug 2019 00:44:11 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 5C997CF11AF697350998;
+        Wed, 14 Aug 2019 12:44:05 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 14 Aug 2019 12:43:59 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Rob Herring <robh@kernel.org>,
+        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] drm/panfrost: Fix missing unlock on error in panfrost_mmu_map_fault_addr()
+Date:   Wed, 14 Aug 2019 04:48:14 +0000
+Message-ID: <20190814044814.102294-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190813044327.GR12733@vkoul-mobl.Dlink>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.96.96]
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Add the missing unlock before return from function panfrost_mmu_map_fault_addr()
+in the error handling case.
+
+Fixes: 187d2929206e ("drm/panfrost: Add support for GPU heap allocations")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/gpu/drm/panfrost/panfrost_mmu.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/panfrost/panfrost_mmu.c b/drivers/gpu/drm/panfrost/panfrost_mmu.c
+index 2ed411f09d80..06f1a563e940 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_mmu.c
++++ b/drivers/gpu/drm/panfrost/panfrost_mmu.c
+@@ -327,14 +327,17 @@ int panfrost_mmu_map_fault_addr(struct panfrost_device *pfdev, int as, u64 addr)
+ 	if (!bo->base.pages) {
+ 		bo->sgts = kvmalloc_array(bo->base.base.size / SZ_2M,
+ 				     sizeof(struct sg_table), GFP_KERNEL | __GFP_ZERO);
+-		if (!bo->sgts)
++		if (!bo->sgts) {
++			mutex_unlock(&bo->base.pages_lock);
+ 			return -ENOMEM;
++		}
+ 
+ 		pages = kvmalloc_array(bo->base.base.size >> PAGE_SHIFT,
+ 				       sizeof(struct page *), GFP_KERNEL | __GFP_ZERO);
+ 		if (!pages) {
+ 			kfree(bo->sgts);
+ 			bo->sgts = NULL;
++			mutex_unlock(&bo->base.pages_lock);
+ 			return -ENOMEM;
+ 		}
+ 		bo->base.pages = pages;
 
 
-On 2019/8/13 12:43, Vinod Koul wrote:
-> On 12-08-19, 15:42, Mao Wenan wrote:
-> 
-> Patch title is incorrect, it should mention the changes in patch, for
-> example make mux_configure32 static
-> 
-> Do read up on Documentation/process/submitting-patches.rst again!
-> 
->> There is one sparse warning in drivers/dma/fsl-edma-common.c,
-> 
-> It will help to explain the warning before the fix
-> 
->> fix it by setting mux_configure32() as static.
->>
->> make allmodconfig ARCH=mips CROSS_COMPILE=mips-linux-gnu-
->> make C=2 drivers/dma/fsl-edma-common.o ARCH=mips CROSS_COMPILE=mips-linux-gnu-
-> 
-> Make cmds are not relevant for the log
-> 
->> drivers/dma/fsl-edma-common.c:93:6: warning: symbol 'mux_configure32' was not declared. Should it be static?
-> 
-> This one is and should be retained
-> 
->>
->> Fixes: 232a7f18cf8ec ("dmaengine: fsl-edma: add i.mx7ulp edma2 version support")
->> Signed-off-by: Mao Wenan <maowenan@huawei.com>
->> ---
->>  drivers/dma/fsl-edma-common.c | 4 ++--
->>  1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/dma/fsl-edma-common.c b/drivers/dma/fsl-edma-common.c
->> index 6d6d8a4..7dbf7df 100644
->> --- a/drivers/dma/fsl-edma-common.c
->> +++ b/drivers/dma/fsl-edma-common.c
->> @@ -90,8 +90,8 @@ static void mux_configure8(struct fsl_edma_chan *fsl_chan, void __iomem *addr,
->>  	iowrite8(val8, addr + off);
->>  }
->>  
->> -void mux_configure32(struct fsl_edma_chan *fsl_chan, void __iomem *addr,
->> -		     u32 off, u32 slot, bool enable)
->> +static void mux_configure32(struct fsl_edma_chan *fsl_chan, void __iomem *addr,
-> 
-> just change this to static
-> 
->> +			    u32 off, u32 slot, bool enable)
-> 
-> and dont change anything else.
-> 
-> If you feel to change this, propose a new patch for this line explaining
-> why this should be changed
-
-thanks, I will send v2.
-
-> 
->>  {
->>  	u32 val;
->>  
->> -- 
->> 2.7.4
-> 
 

@@ -2,48 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 782578CE06
-	for <lists+kernel-janitors@lfdr.de>; Wed, 14 Aug 2019 10:13:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E8C98D133
+	for <lists+kernel-janitors@lfdr.de>; Wed, 14 Aug 2019 12:47:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727698AbfHNINI convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 14 Aug 2019 04:13:08 -0400
-Received: from slot0.abamarket.ga ([178.156.202.135]:45085 "EHLO
-        slot0.abamarket.ga" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726383AbfHNINH (ORCPT
+        id S1726909AbfHNKrQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 14 Aug 2019 06:47:16 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:35240 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726121AbfHNKrQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 14 Aug 2019 04:13:07 -0400
-X-Greylist: delayed 699 seconds by postgrey-1.27 at vger.kernel.org; Wed, 14 Aug 2019 04:13:06 EDT
-Content-Type: text/plain; charset="iso-8859-1"
+        Wed, 14 Aug 2019 06:47:16 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7EAiScZ106080;
+        Wed, 14 Aug 2019 10:47:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=eKra3x3RanWfd2QP38dZBJ+NM2qqte9TkMuz8A9fS+Y=;
+ b=APnOxSlUsUU9UaMv9BSgc+qHqpPWqYH1d2pJXgHkv+gxkVELZMwOp4KR027rQ18i5ewG
+ NyDXixkmOrQE7PXZFToDDloAocUP0CyQx31NJdZYgNP11hxxf1nqROG/i7/jZ7FdLwqA
+ u45zNPO16Gs0LDjozamI43Dgg8TudvC0VClQ3btHTuervN4XEh8wAQbX8l27CQL6wsgS
+ hH38y3srbG4cKkxjm4aILF2TaPEea/pJu79v8jVKDcPDjxOsoGmgI4DDa2jVCp4tCFls
+ 1MoMFW94qH52Sqs4lOjEWaJFxzW+8NHabZvFhH4KWhrctnEbUcn4M5ZtUAtYEWynulJE YA== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 2u9pjqkvge-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 14 Aug 2019 10:47:09 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7EAkiad096175;
+        Wed, 14 Aug 2019 10:47:08 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 2ubwqt2j0v-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 14 Aug 2019 10:47:05 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7EAkoOP025838;
+        Wed, 14 Aug 2019 10:46:50 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 14 Aug 2019 03:46:49 -0700
+Date:   Wed, 14 Aug 2019 13:46:42 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Yan-Hsuan Chuang <yhchuang@realtek.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] rtw88: Fix an error message
+Message-ID: <20190814104642.GA14268@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: PLEASE CONFIRM PURCHASE ORDER
-To:     Recipients <mscarolynsmtih@gmail.com>
-From:   "Mr NARESH KUMAR" <mscarolynsmtih@gmail.com>
-Date:   Wed, 14 Aug 2019 15:51:40 +0800
-Reply-To: saiapex09@outlook.com
-Message-ID: <0.0.3.447.1D55274D37F9416.0@slot0.abamarket.ga>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9348 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1908140111
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9348 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908140111
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Could you please confirm if your recieved our purchase order last week.
+The WARN_ON() macro takes a condition, not a warning message.  I've
+changed this to use WARN() instead.
 
-If no please confirm let me resend it to you.
+Fixes: 4136214f7c46 ("rtw88: add BT co-existence support")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/realtek/rtw88/coex.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
+index 4577fceddc5e..13701ec40302 100644
+--- a/drivers/net/wireless/realtek/rtw88/coex.c
++++ b/drivers/net/wireless/realtek/rtw88/coex.c
+@@ -1059,7 +1059,7 @@ static void rtw_coex_set_ant_path(struct rtw_dev *rtwdev, bool force, u8 phase)
+ 		pos_type = COEX_SWITCH_TO_WLG_BT;
+ 		break;
+ 	default:
+-		WARN_ON("unknown phase when setting antenna path\n");
++		WARN(1, "unknown phase when setting antenna path\n");
+ 		return;
+ 	}
+ 
+-- 
+2.20.1
 
-
-
-NARESH KUMAR
-
-Executive Purchase Saiapextrading Ltd
-
-Dubai, KSA.
-
-(T/F): +96-2667-264 777 / 778
-
-(Mo): +96 94284 02803
-
-Website - http://www.saiapexgeneraltrading.com

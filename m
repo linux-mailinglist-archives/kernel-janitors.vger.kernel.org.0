@@ -2,89 +2,49 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D19218EBB9
-	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Aug 2019 14:41:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDC398EB9F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Aug 2019 14:36:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731691AbfHOMls (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 15 Aug 2019 08:41:48 -0400
-Received: from smtp85.ord1d.emailsrvr.com ([184.106.54.85]:41090 "EHLO
-        smtp85.ord1d.emailsrvr.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1731217AbfHOMls (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 15 Aug 2019 08:41:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-        s=20190130-41we5z8j; t=1565872455;
-        bh=hGpCaA/D00Yczz11TX8jM5ILlUq2mYkAlz4nIzKqTdY=;
-        h=Subject:To:From:Date:From;
-        b=UYfnMEJKphn9631j7Bja//vrYjr1SmVhK43enCNfvn2eyGxsvzvEeISqo7jq1FzBE
-         sxwf1fcLN9xsSMqrGG64uv9gpUhADmkD2XF4BDi5ZLWC7eyeE+ptoM50QkdQwxZAf+
-         BoyvlHbc5xkFb6i3wca2OangIJwHMVJAE6kPVsf0=
-X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp19.relay.ord1d.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 260466021A;
-        Thu, 15 Aug 2019 08:34:13 -0400 (EDT)
-X-Sender-Id: abbotti@mev.co.uk
-Received: from [10.0.0.173] (remote.quintadena.com [81.133.34.160])
-        (using TLSv1.2 with cipher AES128-SHA)
-        by 0.0.0.0:465 (trex/5.7.12);
-        Thu, 15 Aug 2019 08:34:14 -0400
-Subject: Re: [PATCH] staging: comedi: usbduxsigma: remove redundant assignment
- to variable fx2delay
-To:     Colin King <colin.king@canonical.com>,
-        H Hartley Sweeten <hsweeten@visionengravers.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190815105314.5756-1-colin.king@canonical.com>
-From:   Ian Abbott <abbotti@mev.co.uk>
-Organization: MEV Ltd.
-Message-ID: <7d0f8510-9c54-ab4b-c963-e99348efdfd0@mev.co.uk>
-Date:   Thu, 15 Aug 2019 13:34:12 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1731030AbfHOMgp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 15 Aug 2019 08:36:45 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58924 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725977AbfHOMgp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 15 Aug 2019 08:36:45 -0400
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5E3ED2083B;
+        Thu, 15 Aug 2019 12:36:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1565872604;
+        bh=2wI3jmd78SLhKRK87BQjM2motI1weTlW8uLgnGnTkVU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=s4t/cNjfF6MX+6sqQCd83+JleHuuR07ITxS+/tBCy31knXaaOtQ8qsTCKs1m0SsPE
+         TNCJlhSOkdHCcUvxpDN2EGcSiVRgVskKxZJrfonBDlusX83Xal/fW9+/YezEWugIf6
+         v9BHCvnUsrz/IFEWnZ53WCuuoael6iNV2LfeQiA8=
+Date:   Thu, 15 Aug 2019 14:36:42 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Alan Stern <stern@rowland.harvard.edu>, linux-usb@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] usb: host: ohci-pxa27x: Fix and & vs | typo
+Message-ID: <20190815123642.GA29583@kroah.com>
+References: <20180223123300.GA1062@mwanda>
+ <20190814140414.GU1974@kadam>
 MIME-Version: 1.0
-In-Reply-To: <20190815105314.5756-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190814140414.GU1974@kadam>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 15/08/2019 11:53, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Variable fx2delay is being initialized with a value that is never read
-> and fx2delay is being re-assigned a little later on. The assignment is
-> redundant and hence can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->   drivers/staging/comedi/drivers/usbduxsigma.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/comedi/drivers/usbduxsigma.c b/drivers/staging/comedi/drivers/usbduxsigma.c
-> index 3cc40d2544be..54d7605e909f 100644
-> --- a/drivers/staging/comedi/drivers/usbduxsigma.c
-> +++ b/drivers/staging/comedi/drivers/usbduxsigma.c
-> @@ -1074,7 +1074,7 @@ static int usbduxsigma_pwm_period(struct comedi_device *dev,
->   				  unsigned int period)
->   {
->   	struct usbduxsigma_private *devpriv = dev->private;
-> -	int fx2delay = 255;
-> +	int fx2delay;
->   
->   	if (period < MIN_PWM_PERIOD)
->   		return -EAGAIN;
-> 
+On Wed, Aug 14, 2019 at 05:04:14PM +0300, Dan Carpenter wrote:
+> I was looking at this code again today and I'm still convinced this
+> patch is correct.  Should I resend?
 
-Looks fine, thanks!
+Please resend, it's not in my queue anywhere :(
 
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-
--- 
--=( Ian Abbott <abbotti@mev.co.uk> || Web: www.mev.co.uk )=-
--=( MEV Ltd. is a company registered in England & Wales. )=-
--=( Registered number: 02862268.  Registered address:    )=-
--=( 15 West Park Road, Bramhall, STOCKPORT, SK7 3JZ, UK. )=-

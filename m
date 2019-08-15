@@ -2,111 +2,116 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1C538F18F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Aug 2019 19:06:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C62F98F1C8
+	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Aug 2019 19:15:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731029AbfHORGT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 15 Aug 2019 13:06:19 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:41972 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729157AbfHORGT (ORCPT
+        id S1731946AbfHOROz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 15 Aug 2019 13:14:55 -0400
+Received: from mail-ed1-f97.google.com ([209.85.208.97]:44664 "EHLO
+        mail-ed1-f97.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731800AbfHOROh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 15 Aug 2019 13:06:19 -0400
-Received: by mail-qk1-f194.google.com with SMTP id g17so2370981qkk.8;
-        Thu, 15 Aug 2019 10:06:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4N9MtH/WdRi43/ziOEzMDfGNy3m5GNX/ZdJvM/Fbxqw=;
-        b=CeSNajaHYbJHumzokzP6HZNN1rxoBs08JYStzZCWJHiYBy/rjtYBmMuLEG4s0Wr27s
-         bjaNsLxm1lN3526MdAeh6fKTmAn6zrxWWlWi6lGAdFtaeVo+PxKF2e0dRf+AavqLtayj
-         0eIc3k2umw6zU6Xi/+Aha+4b2SZHAC/og/bZGQCBUCv4oBdqKpnMSjqKd4fM9kC/o3wI
-         j+MP105USswGKSX5Z/qzUxOqlG3eQTBcMlmxnju0/8NIZcyO/9rh9FbW8OeAR59jIZkt
-         e9icjtgCJ1LfBXmULz26PvzTrupkC9gBDBkfBI0Xye+CcPe31CJztoMaIusvhOIf5hkV
-         rjNQ==
+        Thu, 15 Aug 2019 13:14:37 -0400
+Received: by mail-ed1-f97.google.com with SMTP id a21so2680805edt.11
+        for <kernel-janitors@vger.kernel.org>; Thu, 15 Aug 2019 10:14:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4N9MtH/WdRi43/ziOEzMDfGNy3m5GNX/ZdJvM/Fbxqw=;
-        b=XH36wfv3F7BjC8ESauYtd9M4XZKMskh/brW4+GGG0EfQupia/HvtliJLMoPmvsCs/t
-         PHeMrCNCjfGqA7c/pm1olOaX0YkD7ns9dR9ZF6TGmd6oo9wDLSBds01MR9CIhXXFz/V9
-         bvC/tWQPfwngxXuB/C9Z9PMi1Bhz6WtXGRCdP8j6thilnEkhyQL02fKdlz6k1rufWkl8
-         S660rJuPTwlKUMFGRzQMJgzLykBKPkZAQrQH2knylxxSTdHe+Rvi5cMaQtk35yKraWop
-         qo+oGpgiQ4veX9Q2gH76xCDNfID0qNPQWLKzbDxMwqZHeeEA6rewawqbqtt9iS+z8iUO
-         K1Ng==
-X-Gm-Message-State: APjAAAW8vzX7s71HBZ1zXFKiUQ6AMtsuaEg7WG5B1QPOGIyjA+QxAWC6
-        G8gEeEYRmoPFCSotGzQpWK4ZKRcWy2pd83KCuMY=
-X-Google-Smtp-Source: APXvYqzmtLBc/bRpSaWadCZ/ja0P8I4aHKSuJ4fE7ULSbQyfdKl9xgoD10QFKxfjiFI3dzuSA137hRS8d5tsH9MnCrg=
-X-Received: by 2002:a05:620a:745:: with SMTP id i5mr4944922qki.39.1565888778036;
- Thu, 15 Aug 2019 10:06:18 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190815142432.101401-1-weiyongjun1@huawei.com>
-In-Reply-To: <20190815142432.101401-1-weiyongjun1@huawei.com>
-From:   Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date:   Thu, 15 Aug 2019 10:06:07 -0700
-Message-ID: <CAEf4Bzb8JMnLXVpgF3PcZbZz8zRCX6HNWbsnfJkankjqX3rzRg@mail.gmail.com>
-Subject: Re: [PATCH -next] btf: fix return value check in btf_vmlinux_init()
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>,
-        Networking <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:message-id:date;
+        bh=2tOdgRw7bHfBUMRr5A78wZooift8kR44FLxZ2fHFoq4=;
+        b=de2k5LDVMVVMjJy4rkD5h/+AJUfG1UHKF74GiJMMu8R3K9bawcRwBO3gWM5eTolrCU
+         YmP2TExnvWqjXEIOeUrCWQBn8KAl9Umzuj0MqGtxJQqe3V8N4Y3AY1RSCvH7eZAZA+4j
+         OA03g5aq0cPbP0XEATzpcpCAMs4xlle1uX3OKqQaTd8pVNzzhyC7ucOp28Je7DOqyMIl
+         2IaHAj4yHZNx3k1kDoIjjOqNlVJuSFleDEY6Jjy9I970/rSZQqwYf1qpYSQpN/sU+A3J
+         gLdWMSvtx6zTU0T3zu9Zo8vQRR03wWf3c7tSZ1VWDTMZtgLeqI9sXF0NTzUBy2dLS9eb
+         WkhQ==
+X-Gm-Message-State: APjAAAUtHTZy8/9FuI8/IY/4FScX5m20BRd62F8XCorL2QkydBu/SwWK
+        Nz/RnCmQJzhuSkN1OrqLaIRI1OgF/bBvgAwh0OOtgJvFj56ch/f69NKRmsFrASHeuQ==
+X-Google-Smtp-Source: APXvYqxFD14tT+W/wcwosNR4mJq7LHL6hBkxp8vUHcz2et2BdUwg/HEyBFE8UDSLNuhEWf01rrv+4zglTLjl
+X-Received: by 2002:aa7:dc5a:: with SMTP id g26mr6664165edu.62.1565889275802;
+        Thu, 15 Aug 2019 10:14:35 -0700 (PDT)
+Received: from heliosphere.sirena.org.uk (heliosphere.sirena.org.uk. [2a01:7e01::f03c:91ff:fed4:a3b6])
+        by smtp-relay.gmail.com with ESMTPS id u22sm54883edi.2.2019.08.15.10.14.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Aug 2019 10:14:35 -0700 (PDT)
+X-Relaying-Domain: sirena.org.uk
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.co.uk>)
+        id 1hyJKd-00052v-CB; Thu, 15 Aug 2019 17:14:35 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+        id DD14E2742BD6; Thu, 15 Aug 2019 18:14:34 +0100 (BST)
+From:   Mark Brown <broonie@kernel.org>
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     kernel-janitors@vger.kernel.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>
+Subject: Applied "regulator: max8660: remove redundant assignment of variable ret" to the regulator tree
+In-Reply-To: <20190813133114.14931-1-colin.king@canonical.com>
+X-Patchwork-Hint: ignore
+Message-Id: <20190815171434.DD14E2742BD6@ypsilon.sirena.org.uk>
+Date:   Thu, 15 Aug 2019 18:14:34 +0100 (BST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Aug 15, 2019 at 7:21 AM Wei Yongjun <weiyongjun1@huawei.com> wrote:
->
-> In case of error, the function kobject_create_and_add() returns NULL
-> pointer not ERR_PTR(). The IS_ERR() test in the return value check
-> should be replaced with NULL test.
->
-> Fixes: 341dfcf8d78e ("btf: expose BTF info through sysfs")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
+The patch
 
+   regulator: max8660: remove redundant assignment of variable ret
 
-Argh... Thanks for the fix! Fix the comment below addressed:
+has been applied to the regulator tree at
 
-Acked-by: Andrii Nakryiko <andriin@fb.com>
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-5.4
 
->  kernel/bpf/sysfs_btf.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
->
-> diff --git a/kernel/bpf/sysfs_btf.c b/kernel/bpf/sysfs_btf.c
-> index 4659349fc795..be5557deb958 100644
-> --- a/kernel/bpf/sysfs_btf.c
-> +++ b/kernel/bpf/sysfs_btf.c
-> @@ -30,16 +30,13 @@ static struct kobject *btf_kobj;
->
->  static int __init btf_vmlinux_init(void)
->  {
-> -       int err;
-> -
->         if (!_binary__btf_vmlinux_bin_start)
->                 return 0;
->
->         btf_kobj = kobject_create_and_add("btf", kernel_kobj);
-> -       if (IS_ERR(btf_kobj)) {
-> -               err = PTR_ERR(btf_kobj);
-> +       if (!btf_kobj) {
->                 btf_kobj = NULL;
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-This is now not necessary, please drop (and don't forget to remove {}
-for this single-line if afterwards).
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> -               return err;
-> +               return -ENOMEM;
->         }
->
->         bin_attr_btf_vmlinux.size = _binary__btf_vmlinux_bin_end -
->
->
->
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From 9e127fab67e3ec4451696da0c7872fd291b9372b Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Tue, 13 Aug 2019 14:31:14 +0100
+Subject: [PATCH] regulator: max8660: remove redundant assignment of variable
+ ret
+
+Variable ret is initialized to a value that is never read before
+a return statement and hence can be removed. Remove it.
+
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Link: https://lore.kernel.org/r/20190813133114.14931-1-colin.king@canonical.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/regulator/max8660.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/regulator/max8660.c b/drivers/regulator/max8660.c
+index 4bca54446287..347043a5a9a7 100644
+--- a/drivers/regulator/max8660.c
++++ b/drivers/regulator/max8660.c
+@@ -485,7 +485,6 @@ static int max8660_probe(struct i2c_client *client,
+ 		rdev = devm_regulator_register(&client->dev,
+ 						  &max8660_reg[id], &config);
+ 		if (IS_ERR(rdev)) {
+-			ret = PTR_ERR(rdev);
+ 			dev_err(&client->dev, "failed to register %s\n",
+ 				max8660_reg[id].name);
+ 			return PTR_ERR(rdev);
+-- 
+2.20.1
+

@@ -2,67 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D00E88E44D
-	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Aug 2019 07:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1620D8E5AE
+	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Aug 2019 09:43:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726633AbfHOFBY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 15 Aug 2019 01:01:24 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:57034 "EHLO fornost.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725681AbfHOFBY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 15 Aug 2019 01:01:24 -0400
-Received: from gondolin.me.apana.org.au ([192.168.0.6] helo=gondolin.hengli.com.au)
-        by fornost.hmeau.com with esmtps (Exim 4.89 #2 (Debian))
-        id 1hy7se-0004zi-KL; Thu, 15 Aug 2019 15:00:56 +1000
-Received: from herbert by gondolin.hengli.com.au with local (Exim 4.80)
-        (envelope-from <herbert@gondor.apana.org.au>)
-        id 1hy7sY-0006Te-Id; Thu, 15 Aug 2019 15:00:50 +1000
-Date:   Thu, 15 Aug 2019 15:00:50 +1000
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     atul.gupta@chelsio.com, zhongjiang@huawei.com,
-        ganeshgr@chelsio.com, davem@davemloft.net, tglx@linutronix.de,
-        bigeasy@linutronix.de, linux-crypto@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] crypto: chtls - use 'skb_put_zero()' instead of
- re-implementing it
-Message-ID: <20190815050050.GA24863@gondor.apana.org.au>
-References: <20190807154014.22548-1-christophe.jaillet@wanadoo.fr>
+        id S1730451AbfHOHnr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 15 Aug 2019 03:43:47 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:34947 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726008AbfHOHnr (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 15 Aug 2019 03:43:47 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hyAQ7-0001ax-LF; Thu, 15 Aug 2019 07:43:39 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Martyn Welch <martyn.welch@collabora.com>,
+        Sergei M <fizik1@yandex.com>, linux-iio@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][iio-next] iio: light: noa1305: fix missing break in a switch statement
+Date:   Thu, 15 Aug 2019 08:43:39 +0100
+Message-Id: <20190815074339.32380-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190807154014.22548-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Aug 07, 2019 at 05:40:14PM +0200, Christophe JAILLET wrote:
-> 'skb_put()+memset()' is equivalent to 'skb_put_zero()'
-> Use the latter because it is less verbose and it hides the internals of the
-> sk_buff structure.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->  drivers/crypto/chelsio/chtls/chtls_main.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/crypto/chelsio/chtls/chtls_main.c b/drivers/crypto/chelsio/chtls/chtls_main.c
-> index 635bb4b447fb..830b238da77e 100644
-> --- a/drivers/crypto/chelsio/chtls/chtls_main.c
-> +++ b/drivers/crypto/chelsio/chtls/chtls_main.c
-> @@ -218,9 +218,8 @@ static int chtls_get_skb(struct chtls_dev *cdev)
->  	if (!cdev->askb)
->  		return -ENOMEM;
->  
-> -	skb_put(cdev->askb, sizeof(struct tcphdr));
-> +	skb_put_zero(cdev->askb, sizeof(struct tcphdr));
->  	skb_reset_transport_header(cdev->askb);
-> -	memset(cdev->askb->data, 0, cdev->askb->len);
+From: Colin Ian King <colin.king@canonical.com>
 
-These two are NOT equivalent.
+There is a missing break for the NOA1305_INTEGR_TIME_400MS case,
+fix it by adding it in.
+
+Addresses-Coverity: ("Missing break in switch")
+Fixes: 741172d18e8a ("iio: light: noa1305: Add support for NOA1305")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/iio/light/noa1305.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/iio/light/noa1305.c b/drivers/iio/light/noa1305.c
+index 7b859ae1044d..5ebfbc52f541 100644
+--- a/drivers/iio/light/noa1305.c
++++ b/drivers/iio/light/noa1305.c
+@@ -85,6 +85,7 @@ static int noa1305_scale(struct noa1305_priv *priv, int *val, int *val2)
+ 	case NOA1305_INTEGR_TIME_400MS:
+ 		*val = 100;
+ 		*val2 = 77 * 4;
++		break;
+ 	case NOA1305_INTEGR_TIME_200MS:
+ 		*val = 100;
+ 		*val2 = 77 * 2;
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.20.1
+

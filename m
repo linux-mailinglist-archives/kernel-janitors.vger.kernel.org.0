@@ -2,68 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46B9A8EAE6
-	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Aug 2019 13:59:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D19218EBB9
+	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Aug 2019 14:41:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729996AbfHOL6x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 15 Aug 2019 07:58:53 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42070 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726109AbfHOL6x (ORCPT
+        id S1731691AbfHOMls (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 15 Aug 2019 08:41:48 -0400
+Received: from smtp85.ord1d.emailsrvr.com ([184.106.54.85]:41090 "EHLO
+        smtp85.ord1d.emailsrvr.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1731217AbfHOMls (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 15 Aug 2019 07:58:53 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hyEP0-0007rQ-Rv; Thu, 15 Aug 2019 11:58:46 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org
+        Thu, 15 Aug 2019 08:41:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+        s=20190130-41we5z8j; t=1565872455;
+        bh=hGpCaA/D00Yczz11TX8jM5ILlUq2mYkAlz4nIzKqTdY=;
+        h=Subject:To:From:Date:From;
+        b=UYfnMEJKphn9631j7Bja//vrYjr1SmVhK43enCNfvn2eyGxsvzvEeISqo7jq1FzBE
+         sxwf1fcLN9xsSMqrGG64uv9gpUhADmkD2XF4BDi5ZLWC7eyeE+ptoM50QkdQwxZAf+
+         BoyvlHbc5xkFb6i3wca2OangIJwHMVJAE6kPVsf0=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp19.relay.ord1d.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 260466021A;
+        Thu, 15 Aug 2019 08:34:13 -0400 (EDT)
+X-Sender-Id: abbotti@mev.co.uk
+Received: from [10.0.0.173] (remote.quintadena.com [81.133.34.160])
+        (using TLSv1.2 with cipher AES128-SHA)
+        by 0.0.0.0:465 (trex/5.7.12);
+        Thu, 15 Aug 2019 08:34:14 -0400
+Subject: Re: [PATCH] staging: comedi: usbduxsigma: remove redundant assignment
+ to variable fx2delay
+To:     Colin King <colin.king@canonical.com>,
+        H Hartley Sweeten <hsweeten@visionengravers.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: dac: ad5380: fix incorrect assignment to val
-Date:   Thu, 15 Aug 2019 12:58:46 +0100
-Message-Id: <20190815115846.21800-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+References: <20190815105314.5756-1-colin.king@canonical.com>
+From:   Ian Abbott <abbotti@mev.co.uk>
+Organization: MEV Ltd.
+Message-ID: <7d0f8510-9c54-ab4b-c963-e99348efdfd0@mev.co.uk>
+Date:   Thu, 15 Aug 2019 13:34:12 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190815105314.5756-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 15/08/2019 11:53, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Variable fx2delay is being initialized with a value that is never read
+> and fx2delay is being re-assigned a little later on. The assignment is
+> redundant and hence can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>   drivers/staging/comedi/drivers/usbduxsigma.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/comedi/drivers/usbduxsigma.c b/drivers/staging/comedi/drivers/usbduxsigma.c
+> index 3cc40d2544be..54d7605e909f 100644
+> --- a/drivers/staging/comedi/drivers/usbduxsigma.c
+> +++ b/drivers/staging/comedi/drivers/usbduxsigma.c
+> @@ -1074,7 +1074,7 @@ static int usbduxsigma_pwm_period(struct comedi_device *dev,
+>   				  unsigned int period)
+>   {
+>   	struct usbduxsigma_private *devpriv = dev->private;
+> -	int fx2delay = 255;
+> +	int fx2delay;
+>   
+>   	if (period < MIN_PWM_PERIOD)
+>   		return -EAGAIN;
+> 
 
-Currently the pointer val is being incorrectly incremented
-instead of the value pointed to by val. Fix this by adding
-in the missing * indirection operator.
+Looks fine, thanks!
 
-Addresses-Coverity: ("Unused value")
-Fixes: c03f2c536818 ("staging:iio:dac: Add AD5380 driver")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/iio/dac/ad5380.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
 
-diff --git a/drivers/iio/dac/ad5380.c b/drivers/iio/dac/ad5380.c
-index 4335214800d2..2ebe08326048 100644
---- a/drivers/iio/dac/ad5380.c
-+++ b/drivers/iio/dac/ad5380.c
-@@ -220,7 +220,7 @@ static int ad5380_read_raw(struct iio_dev *indio_dev,
- 		if (ret)
- 			return ret;
- 		*val >>= chan->scan_type.shift;
--		val -= (1 << chan->scan_type.realbits) / 2;
-+		*val -= (1 << chan->scan_type.realbits) / 2;
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = 2 * st->vref;
 -- 
-2.20.1
-
+-=( Ian Abbott <abbotti@mev.co.uk> || Web: www.mev.co.uk )=-
+-=( MEV Ltd. is a company registered in England & Wales. )=-
+-=( Registered number: 02862268.  Registered address:    )=-
+-=( 15 West Park Road, Bramhall, STOCKPORT, SK7 3JZ, UK. )=-

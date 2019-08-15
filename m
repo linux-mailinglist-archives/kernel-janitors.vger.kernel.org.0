@@ -2,64 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C5CB98E94F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Aug 2019 12:53:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90E788EA6E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Aug 2019 13:36:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731246AbfHOKxT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 15 Aug 2019 06:53:19 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:39113 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731079AbfHOKxT (ORCPT
+        id S1731410AbfHOLgL convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 15 Aug 2019 07:36:11 -0400
+Received: from coyote.holtmann.net ([212.227.132.17]:36366 "EHLO
+        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726008AbfHOLgL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 15 Aug 2019 06:53:19 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hyDNa-0000sQ-R6; Thu, 15 Aug 2019 10:53:14 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Ian Abbott <abbotti@mev.co.uk>,
-        H Hartley Sweeten <hsweeten@visionengravers.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: comedi: usbduxsigma: remove redundant assignment to variable fx2delay
-Date:   Thu, 15 Aug 2019 11:53:14 +0100
-Message-Id: <20190815105314.5756-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Thu, 15 Aug 2019 07:36:11 -0400
+Received: from marcel-macbook.fritz.box (p4FEFC580.dip0.t-ipconnect.de [79.239.197.128])
+        by mail.holtmann.org (Postfix) with ESMTPSA id 5739ACED16;
+        Thu, 15 Aug 2019 13:44:52 +0200 (CEST)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: [PATCH] Bluetooth: hci_qca: Use kfree_skb() instead of kfree()
+From:   Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <20190815083416.GF27238@mwanda>
+Date:   Thu, 15 Aug 2019 13:36:09 +0200
+Cc:     Matthias Kaehlcke <mka@chromium.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        linux-bluetooth@vger.kernel.org, kernel-janitors@vger.kernel.org
+Content-Transfer-Encoding: 8BIT
+Message-Id: <5B79868C-9C65-46AE-8BD7-D476EA389FD0@holtmann.org>
+References: <20190815083416.GF27238@mwanda>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+X-Mailer: Apple Mail (2.3445.104.11)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hi Dan,
 
-Variable fx2delay is being initialized with a value that is never read
-and fx2delay is being re-assigned a little later on. The assignment is
-redundant and hence can be removed.
+> sk_buff structs need to be freed with kfree_skb().
+> 
+> Fixes: 2faa3f15fa2f ("Bluetooth: hci_qca: wcn3990: Drop baudrate change vendor event")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> drivers/bluetooth/hci_qca.c | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/staging/comedi/drivers/usbduxsigma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+patch has been applied to bluetooth-next tree.
 
-diff --git a/drivers/staging/comedi/drivers/usbduxsigma.c b/drivers/staging/comedi/drivers/usbduxsigma.c
-index 3cc40d2544be..54d7605e909f 100644
---- a/drivers/staging/comedi/drivers/usbduxsigma.c
-+++ b/drivers/staging/comedi/drivers/usbduxsigma.c
-@@ -1074,7 +1074,7 @@ static int usbduxsigma_pwm_period(struct comedi_device *dev,
- 				  unsigned int period)
- {
- 	struct usbduxsigma_private *devpriv = dev->private;
--	int fx2delay = 255;
-+	int fx2delay;
- 
- 	if (period < MIN_PWM_PERIOD)
- 		return -EAGAIN;
--- 
-2.20.1
+Regards
+
+Marcel
 

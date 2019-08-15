@@ -2,88 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2628A8E29B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Aug 2019 04:13:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D00E88E44D
+	for <lists+kernel-janitors@lfdr.de>; Thu, 15 Aug 2019 07:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728660AbfHOCNn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 14 Aug 2019 22:13:43 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:55310 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725895AbfHOCNm (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 14 Aug 2019 22:13:42 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7F29jmk089665;
-        Thu, 15 Aug 2019 02:13:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2019-08-05;
- bh=1Lq/4W95GWvlW5TQd4bZ+yDCZ0W1oEysiFI+C3DWvqk=;
- b=GNXALDc163oQLCQJRmyqdSQRaqvWHnd6PwZAqM/MsFAWwequunBXggqPQ/pC66/R4Mnk
- vWy5priHjRG/I2Z7Wop02wGo6LjKkS409KU/u6zDnZQpFjhbRo+wzug7dQo0vgOzlRWz
- FtmzHXFDS2N3emjL75hr+toRwrx9AtW/9C29S+TiEl1W/IrLI1bmIoCTsWvSoIkEjKcm
- VQT4ozabvxRzEpKGIaXe7Rtf/DYahL+XKmo8yWYa+7oT98zIDzRz0K5ZreifU3iiEGRA
- QyaIBhcPogiUhm6hjJZD4ykQYY5zh6yJloty/z/+rrXU8/n4rHgvvCRFOMy/j8sWCXvn VA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2u9nbtr9e2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 15 Aug 2019 02:13:37 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7F2DalT178710;
-        Thu, 15 Aug 2019 02:13:37 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 2ucmwj52yk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 15 Aug 2019 02:13:36 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x7F2CuYF019400;
-        Thu, 15 Aug 2019 02:12:56 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 14 Aug 2019 19:12:52 -0700
-To:     Colin King <colin.king@canonical.com>
-Cc:     Satish Kharat <satishkh@cisco.com>,
-        Sesidhar Baddela <sebaddel@cisco.com>,
-        Karan Tilak Kumar <kartilak@cisco.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] scsi: fnic: remove redundant assignment of variable rc
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20190813132349.8720-1-colin.king@canonical.com>
-Date:   Wed, 14 Aug 2019 22:12:50 -0400
-In-Reply-To: <20190813132349.8720-1-colin.king@canonical.com> (Colin King's
-        message of "Tue, 13 Aug 2019 14:23:49 +0100")
-Message-ID: <yq14l2j2n31.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+        id S1726633AbfHOFBY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 15 Aug 2019 01:01:24 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:57034 "EHLO fornost.hmeau.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725681AbfHOFBY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 15 Aug 2019 01:01:24 -0400
+Received: from gondolin.me.apana.org.au ([192.168.0.6] helo=gondolin.hengli.com.au)
+        by fornost.hmeau.com with esmtps (Exim 4.89 #2 (Debian))
+        id 1hy7se-0004zi-KL; Thu, 15 Aug 2019 15:00:56 +1000
+Received: from herbert by gondolin.hengli.com.au with local (Exim 4.80)
+        (envelope-from <herbert@gondor.apana.org.au>)
+        id 1hy7sY-0006Te-Id; Thu, 15 Aug 2019 15:00:50 +1000
+Date:   Thu, 15 Aug 2019 15:00:50 +1000
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     atul.gupta@chelsio.com, zhongjiang@huawei.com,
+        ganeshgr@chelsio.com, davem@davemloft.net, tglx@linutronix.de,
+        bigeasy@linutronix.de, linux-crypto@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] crypto: chtls - use 'skb_put_zero()' instead of
+ re-implementing it
+Message-ID: <20190815050050.GA24863@gondor.apana.org.au>
+References: <20190807154014.22548-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9349 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=873
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1908150022
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9349 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=943 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908150022
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190807154014.22548-1-christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Wed, Aug 07, 2019 at 05:40:14PM +0200, Christophe JAILLET wrote:
+> 'skb_put()+memset()' is equivalent to 'skb_put_zero()'
+> Use the latter because it is less verbose and it hides the internals of the
+> sk_buff structure.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  drivers/crypto/chelsio/chtls/chtls_main.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/crypto/chelsio/chtls/chtls_main.c b/drivers/crypto/chelsio/chtls/chtls_main.c
+> index 635bb4b447fb..830b238da77e 100644
+> --- a/drivers/crypto/chelsio/chtls/chtls_main.c
+> +++ b/drivers/crypto/chelsio/chtls/chtls_main.c
+> @@ -218,9 +218,8 @@ static int chtls_get_skb(struct chtls_dev *cdev)
+>  	if (!cdev->askb)
+>  		return -ENOMEM;
+>  
+> -	skb_put(cdev->askb, sizeof(struct tcphdr));
+> +	skb_put_zero(cdev->askb, sizeof(struct tcphdr));
+>  	skb_reset_transport_header(cdev->askb);
+> -	memset(cdev->askb->data, 0, cdev->askb->len);
 
-Colin,
-
-> Variable ret is initialized to a value that is never read and it is
-> re-assigned later and immediatetly returns. Clean up the code by
-> removing rc and just returning 0.
-
-Applied to 5.4/scsi-queue. Thanks!
-
+These two are NOT equivalent.
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

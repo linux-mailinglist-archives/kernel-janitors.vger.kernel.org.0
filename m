@@ -2,31 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CD6D90AD9
-	for <lists+kernel-janitors@lfdr.de>; Sat, 17 Aug 2019 00:22:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3099790B1D
+	for <lists+kernel-janitors@lfdr.de>; Sat, 17 Aug 2019 00:41:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727760AbfHPWV5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 16 Aug 2019 18:21:57 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:38035 "EHLO
+        id S1727885AbfHPWlI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 16 Aug 2019 18:41:08 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:38226 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727726AbfHPWV5 (ORCPT
+        with ESMTP id S1727660AbfHPWlI (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 16 Aug 2019 18:21:57 -0400
+        Fri, 16 Aug 2019 18:41:08 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1hykbY-0002Yt-Bx; Fri, 16 Aug 2019 22:21:52 +0000
+        id 1hykuA-0003WU-PO; Fri, 16 Aug 2019 22:41:06 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Pankaj Dubey <pankaj.dubey@samsung.com>,
-        Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org
+To:     =?UTF-8?q?Marek=20Beh=C3=BAn?= <marek.behun@nic.cz>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] soc: samsung: exynos-chipid: fix memory leak
-Date:   Fri, 16 Aug 2019 23:21:51 +0100
-Message-Id: <20190816222151.11098-1-colin.king@canonical.com>
+Subject: [PATCH][next] bus: moxtet: fix unsigned comparison to less than zero
+Date:   Fri, 16 Aug 2019 23:41:06 +0100
+Message-Id: <20190816224106.11583-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -38,55 +34,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently when the call to product_id_to_soc_id fails there
-is a memory leak of soc_dev_attr->revision and soc_dev_attr
-on the error return path.  Fix this by adding a common error
-return path that frees there obects and use this for two
-error return paths.
+Currently the size_t variable res is being checked for
+an error failure however the unsigned variable is never
+less than zero so this test is always false. Fix this by
+making variable res ssize_t
 
-Addresses-Coverity: ("Resource leak")
-Fixes: 3253b7b7cd44 ("soc: samsung: Add exynos chipid driver support")
+Addresses-Coverity: ("Unsigned compared against 0")
+Fixes: 5bc7f990cd98 ("bus: Add support for Moxtet bus")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/soc/samsung/exynos-chipid.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/bus/moxtet.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/samsung/exynos-chipid.c b/drivers/soc/samsung/exynos-chipid.c
-index 006a95feb618..4e194a97c0fa 100644
---- a/drivers/soc/samsung/exynos-chipid.c
-+++ b/drivers/soc/samsung/exynos-chipid.c
-@@ -81,15 +81,15 @@ int __init exynos_chipid_early_init(void)
- 	soc_dev_attr->soc_id = product_id_to_soc_id(product_id);
- 	if (!soc_dev_attr->soc_id) {
- 		pr_err("Unknown SoC\n");
--		return -ENODEV;
-+		ret = -ENODEV;
-+		goto err;
- 	}
+diff --git a/drivers/bus/moxtet.c b/drivers/bus/moxtet.c
+index 1ee4570e7e17..288a9e4c6c7b 100644
+--- a/drivers/bus/moxtet.c
++++ b/drivers/bus/moxtet.c
+@@ -514,7 +514,7 @@ static ssize_t output_write(struct file *file, const char __user *buf,
+ 	struct moxtet *moxtet = file->private_data;
+ 	u8 bin[TURRIS_MOX_MAX_MODULES];
+ 	u8 hex[sizeof(bin) * 2 + 1];
+-	size_t res;
++	ssize_t res;
+ 	loff_t dummy = 0;
+ 	int err, i;
  
- 	/* please note that the actual registration will be deferred */
- 	soc_dev = soc_device_register(soc_dev_attr);
- 	if (IS_ERR(soc_dev)) {
--		kfree(soc_dev_attr->revision);
--		kfree(soc_dev_attr);
--		return PTR_ERR(soc_dev);
-+		ret = PTR_ERR(soc_dev);
-+		goto err;
- 	}
- 
- 	/* it is too early to use dev_info() here (soc_dev is NULL) */
-@@ -97,5 +97,11 @@ int __init exynos_chipid_early_init(void)
- 		soc_dev_attr->soc_id, product_id, revision);
- 
- 	return 0;
-+
-+err:
-+	kfree(soc_dev_attr->revision);
-+	kfree(soc_dev_attr);
-+	return ret;
- }
-+
- early_initcall(exynos_chipid_early_init);
 -- 
 2.20.1
 

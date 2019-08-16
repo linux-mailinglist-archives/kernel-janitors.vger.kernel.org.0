@@ -2,94 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 67795900E2
-	for <lists+kernel-janitors@lfdr.de>; Fri, 16 Aug 2019 13:41:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABA2F90AC2
+	for <lists+kernel-janitors@lfdr.de>; Sat, 17 Aug 2019 00:10:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727085AbfHPLlj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 16 Aug 2019 07:41:39 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:48398 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726981AbfHPLlj (ORCPT
+        id S1727734AbfHPWKQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 16 Aug 2019 18:10:16 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:37915 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727726AbfHPWKQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 16 Aug 2019 07:41:39 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7GBdHFC109671;
-        Fri, 16 Aug 2019 11:41:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=r8qWLddZAoSzpyOp5YvkQkPWLLMeYfRi5A/J7tky61E=;
- b=JafrYcQ6KvtOmpYnwuIoxFd472Hdr98eWLAdahLyCAuc7sdygNzzsWiZAvfE+0XPwqyh
- 85diFhSwSLDhmSwNk/gD3U9fR3sNsYDFTdQ0Yk0iEJ6PyYA5AsbbbgrzmaWJsdm6yoMX
- ahZlOhCDylknxjJ6Ic+GPPfW5+NH3nWwsikMTOnppCQGcmHUFiBSWsRlNev4sEwaEhaT
- eWUo1Ieu1Jlwm9xOkp/uEFyUhcR7XLFyPfBzcVcPl9IOkG4HLqUNZvWhcvkUE5pOFJW6
- AxhgUo2gatcqcnc2JC0xy42oaA8XIuHfFlvNkH05ZeLSmW8AH8ZTWEXI+q7XKsV0z8Pm ug== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 2u9nbu0235-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 16 Aug 2019 11:41:17 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7GBcYos001756;
-        Fri, 16 Aug 2019 11:39:17 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 2udgqg1qyg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 16 Aug 2019 11:39:17 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7GBdFeW006950;
-        Fri, 16 Aug 2019 11:39:15 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 16 Aug 2019 04:39:14 -0700
-Date:   Fri, 16 Aug 2019 14:39:07 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Lijun Ou <oulijun@huawei.com>
-Cc:     "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] RDMA/hns: Fix some white space check_mtu_validate()
-Message-ID: <20190816113907.GA30799@mwanda>
+        Fri, 16 Aug 2019 18:10:16 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1hykQF-0001vO-C2; Fri, 16 Aug 2019 22:10:11 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][drm-next] drm/amd/display: fix a potential null pointer dereference
+Date:   Fri, 16 Aug 2019 23:10:11 +0100
+Message-Id: <20190816221011.10750-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9350 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1908160123
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9350 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908160123
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This line was indented a bit too far.
+From: Colin Ian King <colin.king@canonical.com>
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Currently the pointer init_data is dereferenced on the assignment
+of fw_info before init_data is sanity checked to see if it is null.
+Fix te potential null pointer dereference on init_data by only
+performing dereference after it is null checked.
+
+Addresses-Coverity: ("Dereference before null check")
+Fixes: 9adc8050bf3c ("drm/amd/display: make firmware info only load once during dc_bios create")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/infiniband/hw/hns/hns_roce_qp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
-index b729f8ef90a2..f972127edbf6 100644
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -1080,7 +1080,7 @@ static int check_mtu_validate(struct hns_roce_dev *hr_dev,
- 	int p;
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c b/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c
+index bee81bf288be..926954c804a6 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c
+@@ -1235,7 +1235,7 @@ static bool calc_pll_max_vco_construct(
+ 			struct calc_pll_clock_source_init_data *init_data)
+ {
+ 	uint32_t i;
+-	struct dc_firmware_info *fw_info = &init_data->bp->fw_info;
++	struct dc_firmware_info *fw_info;
+ 	if (calc_pll_cs == NULL ||
+ 			init_data == NULL ||
+ 			init_data->bp == NULL)
+@@ -1244,6 +1244,7 @@ static bool calc_pll_max_vco_construct(
+ 	if (init_data->bp->fw_info_valid)
+ 		return false;
  
- 	p = attr_mask & IB_QP_PORT ? (attr->port_num - 1) : hr_qp->port;
--	    active_mtu = iboe_get_mtu(hr_dev->iboe.netdevs[p]->mtu);
-+	active_mtu = iboe_get_mtu(hr_dev->iboe.netdevs[p]->mtu);
- 
- 	if ((hr_dev->caps.max_mtu >= IB_MTU_2048 &&
- 	    attr->path_mtu > hr_dev->caps.max_mtu) ||
++	fw_info = &init_data->bp->fw_info;
+ 	calc_pll_cs->ctx = init_data->ctx;
+ 	calc_pll_cs->ref_freq_khz = fw_info->pll_info.crystal_frequency;
+ 	calc_pll_cs->min_vco_khz =
 -- 
 2.20.1
 

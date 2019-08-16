@@ -2,80 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 227658F918
-	for <lists+kernel-janitors@lfdr.de>; Fri, 16 Aug 2019 04:37:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E97958FA61
+	for <lists+kernel-janitors@lfdr.de>; Fri, 16 Aug 2019 07:24:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726800AbfHPCgq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 15 Aug 2019 22:36:46 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:50418 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726652AbfHPCgq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 15 Aug 2019 22:36:46 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id DEC0FDF054EDA62492E1;
-        Fri, 16 Aug 2019 10:36:41 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 16 Aug 2019 10:36:35 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Alexei Starovoitov <ast@kernel.org>,
+        id S1726487AbfHPFYr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 16 Aug 2019 01:24:47 -0400
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:34090 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726141AbfHPFYq (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 16 Aug 2019 01:24:46 -0400
+Received: by mail-lf1-f66.google.com with SMTP id b29so3242610lfq.1;
+        Thu, 15 Aug 2019 22:24:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=rpfB3Q5jcM+4sbz0QcY5vnHo3c0rHRb/VWMYMI6DOqw=;
+        b=O9aQa6vXGh2JKZ24LO62tv8KbvE4fTqMX9XH6D43Rb8tNNl+oQffVUylgUyoFxV6iK
+         wRDllUngoU8SZ5L241dO79srqiUQfHd7B3kF9WDgdAq9r1b8/bQKtK5TKmjB+5pICfjb
+         nUULr2chxztm8lG2h1jcq9NhgiVBJwUUfkvnsY+Lyn8vixlxOlQLTBNidLFWD0qvlOc/
+         /vnDY8kfViPf1MhDSzvKou3Xx/A+MmT5UG8fT95l1zaRgj64hh86sLUlzgn6j58FWBYn
+         DhitkqsF8nyJwkWi3QUICn2c1+ErEzlvlmXTkW3hJUz7bVqKws7jrheXHqKZOrmRVc72
+         r4lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=rpfB3Q5jcM+4sbz0QcY5vnHo3c0rHRb/VWMYMI6DOqw=;
+        b=gfZbjI9KjNlFqfKLliXHle1bQowkjOgNQRdeTkeRIE4kRYrDoqab3fMHInEQ3Z/mnV
+         80NYdHy2RUdpJFjtJeXLrYdRaKsQIJHEBwvii3pva+ojy+q99BhAcV0aEdMDf4VuNHL8
+         nHx6TsUlZyF00+RT2+4wS/IpOva+Udlgli1td8X7ezZdF6I+1XX0Btgzhk/lfxz0ghlf
+         TaWSkZTzZenXzJxMq4Nte3Y56vQxe+PsPM38rNaH1Wfi3Dpr2BOlCcXLnQuMmKE6BXNl
+         hPXZRG8UqrJyIyaZP6bDjdrU/wK15rHz4Suw7oofUiuflWVoHbldNmWHbr31MnLRrDnm
+         VsvQ==
+X-Gm-Message-State: APjAAAVMyUhzAPGcbGhXLtbXWIVkLaQDmnd41428CQA8nQSCw2pGEpFr
+        x38G/c/AwTl7hiMxsZrSOQfB2aSL74oBvmjN/lM=
+X-Google-Smtp-Source: APXvYqzn5i/+XEV2n+C529s0+kZBTANKIa5O2lpzrVhd6ZBs+0aYkWQrlmxhSKaa3+GkHOpVNGLsPqrjrWTygNCsqYg=
+X-Received: by 2002:a19:ca4b:: with SMTP id h11mr3994625lfj.162.1565933084391;
+ Thu, 15 Aug 2019 22:24:44 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190815142432.101401-1-weiyongjun1@huawei.com> <20190816024044.139761-1-weiyongjun1@huawei.com>
+In-Reply-To: <20190816024044.139761-1-weiyongjun1@huawei.com>
+From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date:   Thu, 15 Aug 2019 22:24:33 -0700
+Message-ID: <CAADnVQK_NTZVXosgLDBg-in+HBDaK5d24heaR0HSkEw2L0g=6w@mail.gmail.com>
+Subject: Re: [PATCH -next v2] btf: fix return value check in btf_vmlinux_init()
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Alexei Starovoitov <ast@kernel.org>,
         Daniel Borkmann <daniel@iogearbox.net>,
         Martin KaFai Lau <kafai@fb.com>,
         Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <netdev@vger.kernel.org>,
-        <bpf@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next v2] btf: fix return value check in btf_vmlinux_init()
-Date:   Fri, 16 Aug 2019 02:40:44 +0000
-Message-ID: <20190816024044.139761-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190815142432.101401-1-weiyongjun1@huawei.com>
-References: <20190815142432.101401-1-weiyongjun1@huawei.com>
-MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+        Andrii Nakryiko <andriin@fb.com>,
+        Network Development <netdev@vger.kernel.org>,
+        bpf <bpf@vger.kernel.org>, kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, the function kobject_create_and_add() returns NULL
-pointer not ERR_PTR(). The IS_ERR() test in the return value check
-should be replaced with NULL test.
+On Thu, Aug 15, 2019 at 7:36 PM Wei Yongjun <weiyongjun1@huawei.com> wrote:
+>
+> In case of error, the function kobject_create_and_add() returns NULL
+> pointer not ERR_PTR(). The IS_ERR() test in the return value check
+> should be replaced with NULL test.
+>
+> Fixes: 341dfcf8d78e ("btf: expose BTF info through sysfs")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> Acked-by: Andrii Nakryiko <andriin@fb.com>
 
-Fixes: 341dfcf8d78e ("btf: expose BTF info through sysfs")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-Acked-by: Andrii Nakryiko <andriin@fb.com>
----
- kernel/bpf/sysfs_btf.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+Applied. Thanks.
 
-diff --git a/kernel/bpf/sysfs_btf.c b/kernel/bpf/sysfs_btf.c
-index 4659349fc795..7ae5dddd1fe6 100644
---- a/kernel/bpf/sysfs_btf.c
-+++ b/kernel/bpf/sysfs_btf.c
-@@ -30,17 +30,12 @@ static struct kobject *btf_kobj;
- 
- static int __init btf_vmlinux_init(void)
- {
--	int err;
--
- 	if (!_binary__btf_vmlinux_bin_start)
- 		return 0;
- 
- 	btf_kobj = kobject_create_and_add("btf", kernel_kobj);
--	if (IS_ERR(btf_kobj)) {
--		err = PTR_ERR(btf_kobj);
--		btf_kobj = NULL;
--		return err;
--	}
-+	if (!btf_kobj)
-+		return -ENOMEM;
- 
- 	bin_attr_btf_vmlinux.size = _binary__btf_vmlinux_bin_end -
- 				    _binary__btf_vmlinux_bin_start;
-
-
-
+Please spell out [PATCH v2 bpf-next] in the subject next time.

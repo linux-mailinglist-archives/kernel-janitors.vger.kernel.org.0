@@ -2,92 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 50BEA8FDD4
-	for <lists+kernel-janitors@lfdr.de>; Fri, 16 Aug 2019 10:31:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67795900E2
+	for <lists+kernel-janitors@lfdr.de>; Fri, 16 Aug 2019 13:41:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726822AbfHPIbW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 16 Aug 2019 04:31:22 -0400
-Received: from foss.arm.com ([217.140.110.172]:53428 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726819AbfHPIbW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 16 Aug 2019 04:31:22 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8992528;
-        Fri, 16 Aug 2019 01:31:21 -0700 (PDT)
-Received: from [10.1.196.133] (e112269-lin.cambridge.arm.com [10.1.196.133])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7CCE73F718;
-        Fri, 16 Aug 2019 01:31:20 -0700 (PDT)
-Subject: Re: [PATCH -next] drm/panfrost: Fix missing unlock on error in
- panfrost_mmu_map_fault_addr()
-To:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Rob Herring <robh@kernel.org>,
-        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org
-References: <20190814044814.102294-1-weiyongjun1@huawei.com>
-From:   Steven Price <steven.price@arm.com>
-Message-ID: <ee7063ab-6dd9-0854-3b25-0617d194bfec@arm.com>
-Date:   Fri, 16 Aug 2019 09:31:19 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1727085AbfHPLlj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 16 Aug 2019 07:41:39 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:48398 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726981AbfHPLlj (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 16 Aug 2019 07:41:39 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7GBdHFC109671;
+        Fri, 16 Aug 2019 11:41:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=r8qWLddZAoSzpyOp5YvkQkPWLLMeYfRi5A/J7tky61E=;
+ b=JafrYcQ6KvtOmpYnwuIoxFd472Hdr98eWLAdahLyCAuc7sdygNzzsWiZAvfE+0XPwqyh
+ 85diFhSwSLDhmSwNk/gD3U9fR3sNsYDFTdQ0Yk0iEJ6PyYA5AsbbbgrzmaWJsdm6yoMX
+ ahZlOhCDylknxjJ6Ic+GPPfW5+NH3nWwsikMTOnppCQGcmHUFiBSWsRlNev4sEwaEhaT
+ eWUo1Ieu1Jlwm9xOkp/uEFyUhcR7XLFyPfBzcVcPl9IOkG4HLqUNZvWhcvkUE5pOFJW6
+ AxhgUo2gatcqcnc2JC0xy42oaA8XIuHfFlvNkH05ZeLSmW8AH8ZTWEXI+q7XKsV0z8Pm ug== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 2u9nbu0235-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 16 Aug 2019 11:41:17 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7GBcYos001756;
+        Fri, 16 Aug 2019 11:39:17 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 2udgqg1qyg-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 16 Aug 2019 11:39:17 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7GBdFeW006950;
+        Fri, 16 Aug 2019 11:39:15 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 16 Aug 2019 04:39:14 -0700
+Date:   Fri, 16 Aug 2019 14:39:07 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Lijun Ou <oulijun@huawei.com>
+Cc:     "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, linux-rdma@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] RDMA/hns: Fix some white space check_mtu_validate()
+Message-ID: <20190816113907.GA30799@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20190814044814.102294-1-weiyongjun1@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9350 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1908160123
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9350 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908160123
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 14/08/2019 05:48, Wei Yongjun wrote:
-> Add the missing unlock before return from function panfrost_mmu_map_fault_addr()
-> in the error handling case.
-> 
-> Fixes: 187d2929206e ("drm/panfrost: Add support for GPU heap allocations")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+This line was indented a bit too far.
 
-Well spotted.
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/infiniband/hw/hns/hns_roce_qp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Steven Price <steven.price@arm.com>
-
-Steve
-
-> ---
->  drivers/gpu/drm/panfrost/panfrost_mmu.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/panfrost/panfrost_mmu.c b/drivers/gpu/drm/panfrost/panfrost_mmu.c
-> index 2ed411f09d80..06f1a563e940 100644
-> --- a/drivers/gpu/drm/panfrost/panfrost_mmu.c
-> +++ b/drivers/gpu/drm/panfrost/panfrost_mmu.c
-> @@ -327,14 +327,17 @@ int panfrost_mmu_map_fault_addr(struct panfrost_device *pfdev, int as, u64 addr)
->  	if (!bo->base.pages) {
->  		bo->sgts = kvmalloc_array(bo->base.base.size / SZ_2M,
->  				     sizeof(struct sg_table), GFP_KERNEL | __GFP_ZERO);
-> -		if (!bo->sgts)
-> +		if (!bo->sgts) {
-> +			mutex_unlock(&bo->base.pages_lock);
->  			return -ENOMEM;
-> +		}
->  
->  		pages = kvmalloc_array(bo->base.base.size >> PAGE_SHIFT,
->  				       sizeof(struct page *), GFP_KERNEL | __GFP_ZERO);
->  		if (!pages) {
->  			kfree(bo->sgts);
->  			bo->sgts = NULL;
-> +			mutex_unlock(&bo->base.pages_lock);
->  			return -ENOMEM;
->  		}
->  		bo->base.pages = pages;
-> 
-> 
-> 
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
-> 
+diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
+index b729f8ef90a2..f972127edbf6 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_qp.c
++++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
+@@ -1080,7 +1080,7 @@ static int check_mtu_validate(struct hns_roce_dev *hr_dev,
+ 	int p;
+ 
+ 	p = attr_mask & IB_QP_PORT ? (attr->port_num - 1) : hr_qp->port;
+-	    active_mtu = iboe_get_mtu(hr_dev->iboe.netdevs[p]->mtu);
++	active_mtu = iboe_get_mtu(hr_dev->iboe.netdevs[p]->mtu);
+ 
+ 	if ((hr_dev->caps.max_mtu >= IB_MTU_2048 &&
+ 	    attr->path_mtu > hr_dev->caps.max_mtu) ||
+-- 
+2.20.1
 

@@ -2,82 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DDE1E90BB3
-	for <lists+kernel-janitors@lfdr.de>; Sat, 17 Aug 2019 02:13:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66A1390D71
+	for <lists+kernel-janitors@lfdr.de>; Sat, 17 Aug 2019 08:52:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726470AbfHQANw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 16 Aug 2019 20:13:52 -0400
-Received: from mail.nic.cz ([217.31.204.67]:36010 "EHLO mail.nic.cz"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725911AbfHQANw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 16 Aug 2019 20:13:52 -0400
-X-Greylist: delayed 554 seconds by postgrey-1.27 at vger.kernel.org; Fri, 16 Aug 2019 20:13:51 EDT
-Received: from localhost (unknown [172.20.6.135])
-        by mail.nic.cz (Postfix) with ESMTPSA id 09E4D140C8A;
-        Sat, 17 Aug 2019 02:04:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nic.cz; s=default;
-        t=1566000275; bh=o3hrlRW5CjoVs+pdk8G3E3sTG4fodRvbVKqZjz8Y5g4=;
-        h=Date:From:To;
-        b=ZGp4MnmTDMXnO8kS2M1/ODPbtfZRPlSY8ceZr9X7/zUoeS4pSCUH+T9p0qqE0Xot2
-         wVlBdQWIvSqc2CCyzVxzYtYLK7R8fkViMheVJ83lgylLqWZWIig7msb8ciQ3mgoi1J
-         HlPbGtY9F9UBCKtBPrtWhrjQdIoGGWD+/hccD6nw=
-Date:   Sat, 17 Aug 2019 02:04:34 +0200
-From:   Marek Behun <marek.behun@nic.cz>
+        id S1726067AbfHQGwO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 17 Aug 2019 02:52:14 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:47474 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725832AbfHQGwO (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 17 Aug 2019 02:52:14 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7H6mtdD048231;
+        Sat, 17 Aug 2019 06:52:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=sNBRZOs5LKC7xx0kA1ScFH42yymHCWiRh5XDdeQ+kxE=;
+ b=D7TXpxzOWLogWmGrKsF/Tjx82bGLPIjsAr60TBoJoMSQcuQqs6VI3vVbhmKJ6FqtVoPl
+ nvsDGTT4PjwCyhii8qaktPAonzV/fp8zKFbHDMBngppsr9ZOpbJPv78/mn+1ZqbFYK7Y
+ bHVhL6D63srVJs+4jgYOoqiX114mbcju8qNLcY3hlQAW8zC5pcPtW9VkDR3V1ps1FDD9
+ H8dIvKAAAe9gPQ/g/SR4gjFl9HMfrU8IGOHgPlqcXAzOdPa1fMMS+BtOrX5rD49N3Duf
+ GU3XFJJvyi154ANpOtrUmNInHc6GOlhwIVFNyZEcxqOfG3uM/pqkxTkW4IvdsSHt9dR5 ww== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2ue9hp0hd6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 17 Aug 2019 06:52:04 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7H6nFi3153042;
+        Sat, 17 Aug 2019 06:52:04 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2ue9dsm3um-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 17 Aug 2019 06:52:04 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x7H6pvHW029889;
+        Sat, 17 Aug 2019 06:51:58 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 16 Aug 2019 23:51:57 -0700
+Date:   Sat, 17 Aug 2019 09:51:46 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
 To:     Colin King <colin.king@canonical.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] bus: moxtet: fix unsigned comparison to less than
- zero
-Message-ID: <20190817020434.4ef2dc5f@nic.cz>
-In-Reply-To: <20190816224106.11583-1-colin.king@canonical.com>
-References: <20190816224106.11583-1-colin.king@canonical.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Cc:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][drm-next] drm/amd/display: fix a potential null pointer
+ dereference
+Message-ID: <20190817065146.GA4451@kadam>
+References: <20190816221011.10750-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.100.3 at mail.nic.cz
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-1.0 required=5.0 tests=ALL_TRUSTED,SHORTCIRCUIT
-        shortcircuit=ham autolearn=disabled version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.nic.cz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190816221011.10750-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9351 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1908170073
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9351 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908170073
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 16 Aug 2019 23:41:06 +0100
-Colin King <colin.king@canonical.com> wrote:
-
+On Fri, Aug 16, 2019 at 11:10:11PM +0100, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> Currently the size_t variable res is being checked for
-> an error failure however the unsigned variable is never
-> less than zero so this test is always false. Fix this by
-> making variable res ssize_t
+> Currently the pointer init_data is dereferenced on the assignment
+> of fw_info before init_data is sanity checked to see if it is null.
+> Fix te potential null pointer dereference on init_data by only
+> performing dereference after it is null checked.
 > 
-> Addresses-Coverity: ("Unsigned compared against 0")
-> Fixes: 5bc7f990cd98 ("bus: Add support for Moxtet bus")
+> Addresses-Coverity: ("Dereference before null check")
+> Fixes: 9adc8050bf3c ("drm/amd/display: make firmware info only load once during dc_bios create")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/bus/moxtet.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/bus/moxtet.c b/drivers/bus/moxtet.c
-> index 1ee4570e7e17..288a9e4c6c7b 100644
-> --- a/drivers/bus/moxtet.c
-> +++ b/drivers/bus/moxtet.c
-> @@ -514,7 +514,7 @@ static ssize_t output_write(struct file *file, const char __user *buf,
->  	struct moxtet *moxtet = file->private_data;
->  	u8 bin[TURRIS_MOX_MAX_MODULES];
->  	u8 hex[sizeof(bin) * 2 + 1];
-> -	size_t res;
-> +	ssize_t res;
->  	loff_t dummy = 0;
->  	int err, i;
->  
+> diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c b/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c
+> index bee81bf288be..926954c804a6 100644
+> --- a/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c
+> +++ b/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c
+> @@ -1235,7 +1235,7 @@ static bool calc_pll_max_vco_construct(
+>  			struct calc_pll_clock_source_init_data *init_data)
+>  {
+>  	uint32_t i;
+> -	struct dc_firmware_info *fw_info = &init_data->bp->fw_info;
+> +	struct dc_firmware_info *fw_info;
+>  	if (calc_pll_cs == NULL ||
+>  			init_data == NULL ||
+>  			init_data->bp == NULL)
 
-Hi Colin,
-thanks. Should I just Ack this, or do I need to send patch to the
-developer who commited my patches?
-Thanks.
+init_data can't be NULL.  I'm mostly pointing this out because that NULL
+check is written so higgledy-piggledy.  At first I thought this was
+staging code so I was planning to ignore the patch.  :P
 
-Marek
+regards,
+dan carpenter
+

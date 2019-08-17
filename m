@@ -2,64 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A6C891068
-	for <lists+kernel-janitors@lfdr.de>; Sat, 17 Aug 2019 14:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A980F910F1
+	for <lists+kernel-janitors@lfdr.de>; Sat, 17 Aug 2019 16:55:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726004AbfHQMVa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 17 Aug 2019 08:21:30 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50156 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725889AbfHQMVa (ORCPT
+        id S1726013AbfHQOzV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 17 Aug 2019 10:55:21 -0400
+Received: from asavdk3.altibox.net ([109.247.116.14]:53422 "EHLO
+        asavdk3.altibox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725832AbfHQOzV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 17 Aug 2019 08:21:30 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1hyxi1-00056o-6K; Sat, 17 Aug 2019 12:21:25 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
+        Sat, 17 Aug 2019 10:55:21 -0400
+Received: from ravnborg.org (unknown [158.248.194.18])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by asavdk3.altibox.net (Postfix) with ESMTPS id A89712001F;
+        Sat, 17 Aug 2019 16:55:17 +0200 (CEST)
+Date:   Sat, 17 Aug 2019 16:55:16 +0200
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Colin King <colin.king@canonical.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org
-Subject: [PATCH][drm-next] drm/panel: remove redundant assignment to val
-Date:   Sat, 17 Aug 2019 13:21:24 +0100
-Message-Id: <20190817122124.29650-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH][drm-next] drm/panel: remove redundant assignment to val
+Message-ID: <20190817145516.GA11584@ravnborg.org>
+References: <20190817122124.29650-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190817122124.29650-1-colin.king@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-CMAE-Score: 0
+X-CMAE-Analysis: v=2.3 cv=dqr19Wo4 c=1 sm=1 tr=0
+        a=UWs3HLbX/2nnQ3s7vZ42gw==:117 a=UWs3HLbX/2nnQ3s7vZ42gw==:17
+        a=jpOVt7BSZ2e4Z31A5e1TngXxSK0=:19 a=kj9zAlcOel0A:10 a=DfNHnWVPAAAA:8
+        a=SIPzu5pdF0Keq8NkGp0A:9 a=CjuIK1q_8ugA:10 a=rjTVMONInIDnV1a_A2c_:22
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Sat, Aug 17, 2019 at 01:21:24PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Variable val is initialized to a value in a for-loop that is
+> never read and hence it is redundant. Remove it.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Variable val is initialized to a value in a for-loop that is
-never read and hence it is redundant. Remove it.
+Thanks. Applied and pushed to drm-misc-next.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/panel/panel-tpo-td043mtea1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+	Sam
 
-diff --git a/drivers/gpu/drm/panel/panel-tpo-td043mtea1.c b/drivers/gpu/drm/panel/panel-tpo-td043mtea1.c
-index 3b4f30c0fdae..84370562910f 100644
---- a/drivers/gpu/drm/panel/panel-tpo-td043mtea1.c
-+++ b/drivers/gpu/drm/panel/panel-tpo-td043mtea1.c
-@@ -116,7 +116,7 @@ static void td043mtea1_write_gamma(struct td043mtea1_panel *lcd)
- 	td043mtea1_write(lcd, 0x13, val);
- 
- 	/* gamma bits [7:0] */
--	for (val = i = 0; i < 12; i++)
-+	for (i = 0; i < 12; i++)
- 		td043mtea1_write(lcd, 0x14 + i, gamma[i] & 0xff);
- }
- 
--- 
-2.20.1
-
+> ---
+>  drivers/gpu/drm/panel/panel-tpo-td043mtea1.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/panel/panel-tpo-td043mtea1.c b/drivers/gpu/drm/panel/panel-tpo-td043mtea1.c
+> index 3b4f30c0fdae..84370562910f 100644
+> --- a/drivers/gpu/drm/panel/panel-tpo-td043mtea1.c
+> +++ b/drivers/gpu/drm/panel/panel-tpo-td043mtea1.c
+> @@ -116,7 +116,7 @@ static void td043mtea1_write_gamma(struct td043mtea1_panel *lcd)
+>  	td043mtea1_write(lcd, 0x13, val);
+>  
+>  	/* gamma bits [7:0] */
+> -	for (val = i = 0; i < 12; i++)
+> +	for (i = 0; i < 12; i++)
+>  		td043mtea1_write(lcd, 0x14 + i, gamma[i] & 0xff);
+>  }
+>  
+> -- 
+> 2.20.1

@@ -2,63 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E309910F8
-	for <lists+kernel-janitors@lfdr.de>; Sat, 17 Aug 2019 16:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43F2D913E1
+	for <lists+kernel-janitors@lfdr.de>; Sun, 18 Aug 2019 03:09:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726067AbfHQO6I (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 17 Aug 2019 10:58:08 -0400
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:43007 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725929AbfHQO6H (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 17 Aug 2019 10:58:07 -0400
-Received: by mail-pg1-f195.google.com with SMTP id p3so4410237pgb.9;
-        Sat, 17 Aug 2019 07:58:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=dnuNHe9aubRcZm/ceJk/Dq78R3sCq8agIg9M5WopPt8=;
-        b=bVaPltO2r6SQqjVw0w0JXMwp2Y1P80xyi4uzOQR5poeTriQi0s/ZeYNnc80+57agnU
-         MtJuMLFU7aj2Oc7S4B1KItW3HoG3AZny3oiKA9wspjwNhbpTsHHG3t7ea9UgLS7wZWha
-         4i7yOIvDemrocfNbGt5E4AeV0fxHxKQNw6CV7FO2yWAbxUUQtVcJW0dgtUruks8WwMBx
-         AnUjgN4d4jDe+cg52x0MXIlN4TdbftIBi7LA65vga4EIAy00fvui1lVVp4WkSoUoJGY9
-         loq/fqjQ9P3NoINx/GjZbS6QB4kEphWYkJUUjP4rpzx35kRKZ9EW9OryTSSAN+8nYSgx
-         TkRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=dnuNHe9aubRcZm/ceJk/Dq78R3sCq8agIg9M5WopPt8=;
-        b=daN7ZHxxMCdo3eofV0AIz6cvv9WVM4Z/Ifo40Rt6OA/I+y7zh50T9Lxsk84Vk7UqEt
-         CK5aE4GeVKWQeB7ig0OAsfnDpbtW1TTT/2axRpVraI11YaLesKpuECVOEPvzOcO22BVX
-         NYBYG38PwdszBARIw3WsoE2oKcbzDXv8YDoCzhaYfJTBRvoj4RwWSfAhdXrskmfdqEGz
-         MeC5KHs1+OQ5mKi84HJCXIObyPldnHnz0Wi7rKPqGF6vV9ipMaFD7wj5hCQd3/Qhxjrb
-         x1vEq7MwdyzhQGDFd+DoWAgwuDULWzP8DHmk0I+gRTLqyVbyk9OPCzQiHC7ytZvnRoEk
-         B1Rw==
-X-Gm-Message-State: APjAAAVUUD+n/ndCTRBpmGxXxZNja7l7v/ONEp+6TVOCft/Q6l1RhBHa
-        s6uWVRLYLrR5Hccuva5vTXcJiw7UWkk=
-X-Google-Smtp-Source: APXvYqwP07iMq6zKJEIXYh8NBNC6LQJ9ieCaNG4Vfmvdw0ekTWVBQGmTqfGS5oLnZ3dxbKmYKo+gmg==
-X-Received: by 2002:a62:7912:: with SMTP id u18mr16793996pfc.254.1566053886918;
-        Sat, 17 Aug 2019 07:58:06 -0700 (PDT)
-Received: from localhost.localdomain ([106.51.107.242])
-        by smtp.gmail.com with ESMTPSA id g1sm9079805pgg.27.2019.08.17.07.58.03
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
-        Sat, 17 Aug 2019 07:58:06 -0700 (PDT)
-From:   Rishi Gupta <gupt21@gmail.com>
-To:     joe@perches.com
-Cc:     kernel-janitors@vger.kernel.org, sboyd@kernel.org,
-        mturquette@baylibre.com, linux-clk@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Rishi Gupta <gupt21@gmail.com>
-Subject: Re: [PATCH] clk: Remove extraneous 'for' word in comments
-Date:   Sat, 17 Aug 2019 20:27:55 +0530
-Message-Id: <1566053875-32322-1-git-send-email-gupt21@gmail.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <74b4a00b524cf8dd11631692dee65ccbba34b8cb.camel@perches.com>
-References: <74b4a00b524cf8dd11631692dee65ccbba34b8cb.camel@perches.com>
+        id S1726229AbfHRBJG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 17 Aug 2019 21:09:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44208 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726045AbfHRBJG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 17 Aug 2019 21:09:06 -0400
+Received: from kernel.org (unknown [104.132.0.74])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7AD602173B;
+        Sun, 18 Aug 2019 01:09:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1566090545;
+        bh=Gny4MLZZ9bZM2VYBs8tyCdlHjZFdA6Zs+YnYy3dWizE=;
+        h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
+        b=exy5BUiieoRCm4uBC4S1otUruByz5I7M1BWU9W33cGX8QKhxY/RUwMT6YKZwt2dwk
+         9IHi/wtGtj1yZtYG5N4R4tmP1cJvvVazdxqiMyDJKliEKhydR/jwF52Qtwvo9Qd/5J
+         iygb4J10zAHLyRrGe4cpsmmEYFOsRVNplVp+ROfc=
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20190815074848.195806-1-maowenan@huawei.com>
+References: <20190815074848.195806-1-maowenan@huawei.com>
+Subject: Re: [PATCH linux-next] qcom: qcs404: remove COMPILE_TEST from CONFIG_INTERCONNECT_QCOM_QCS404
+From:   Stephen Boyd <sboyd@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Mao Wenan <maowenan@huawei.com>
+To:     Mao Wenan <maowenan@huawei.com>, agross@kernel.org,
+        georgi.djakov@linaro.org, linux-arm-msm@vger.kernel.org,
+        linux-pm@vger.kernel.org
+User-Agent: alot/0.8.1
+Date:   Sat, 17 Aug 2019 18:09:04 -0700
+Message-Id: <20190818010905.7AD602173B@mail.kernel.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Thanks Joe for higlighting this. I am going
-to send patches for them as well soon.
+Quoting Mao Wenan (2019-08-15 00:48:48)
+> There is one compilation error when CONFIG_INTERCONNECT_QCOM_QCS404=3Dy a=
+nd
+> CONFIG_INTERCONNECT_QCOM_SMD_RPM=3Dy, as well as CONFIG_COMPILE_TEST=3Dy,
+> but CONFIG_QCOM_SMD_RPM is not set, logs as below:
+>=20
+> drivers/interconnect/qcom/smd-rpm.o: In function `qcom_icc_rpm_smd_send':
+> smd-rpm.c:(.text+0xe4): undefined reference to `qcom_rpm_smd_write'
+> Makefile:1071: recipe for target 'vmlinux' failed
+> make: *** [vmlinux] Error 1
+>=20
+> This is because
+> INTERCONNECT_QCOM_QCS404 depends on QCOM_SMD_RPM || COMPILE_TEST.
+> Here CONFIG_COMPILE_TEST=3Dy, so CONFIG_INTERCONNECT_QCOM_SMD_RPM
+> is selected. If CONFIG_QCOM_SMD_RPM is not set, then
+> qcom_rpm_smd_write() is not defined, and compilation error happen.
+> Fix this by removing COMPILE_TEST from CONFIG_INTERCONNECT_QCOM_QCS404.
+
+Can you fix the actual problem with compile testing this driver vs. just
+removing the possibility to compile test. Otherwise it gives up on
+the spirit of the idea of COMPILE_TEST.
+

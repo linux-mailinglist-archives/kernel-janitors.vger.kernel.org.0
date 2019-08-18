@@ -2,64 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BEE6E9179B
-	for <lists+kernel-janitors@lfdr.de>; Sun, 18 Aug 2019 18:00:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF0299184A
+	for <lists+kernel-janitors@lfdr.de>; Sun, 18 Aug 2019 19:14:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726743AbfHRQAG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 18 Aug 2019 12:00:06 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:18668 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725786AbfHRQAG (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 18 Aug 2019 12:00:06 -0400
-Received: from localhost.localdomain ([92.140.207.10])
-        by mwinf5d11 with ME
-        id qfzz2000v0Dzhgk03g00Jq; Sun, 18 Aug 2019 18:00:04 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 18 Aug 2019 18:00:04 +0200
-X-ME-IP: 92.140.207.10
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     alexander.deucher@amd.com, christian.koenig@amd.com,
-        David1.Zhou@amd.com, airlied@linux.ie, daniel@ffwll.ch,
-        xiaojie.yuan@amd.com, Hawking.Zhang@amd.com, Jack.Xiao@amd.com
-Cc:     amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] drm/amdgpu: Fix a typo in the include header guard of 'navi12_ip_offset.h'
-Date:   Sun, 18 Aug 2019 17:59:57 +0200
-Message-Id: <20190818155957.4029-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        id S1726608AbfHRROw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 18 Aug 2019 13:14:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38094 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725786AbfHRROw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 18 Aug 2019 13:14:52 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 50E4C206C1;
+        Sun, 18 Aug 2019 17:14:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1566148491;
+        bh=Yw8c9+3onw1UpC97BP+SV018SH390YF//JmW4tbD1Zo=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=IOwEz44goAFmho5oejHFacREn70pemE6Baf6rLSLSCO+0l0iM9khqgMRSsUx5EtoF
+         diQlZl9YDeS6YOo58G2lJov/7XtWDc938szJfyb3NFkXjEDk/NiZdeE8Fd89ZR7+z0
+         xBro/KwxcyCV+CagcvNpR4cwnb1lEJQUj9n1+RUs=
+Date:   Sun, 18 Aug 2019 18:14:44 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Martyn Welch <martyn.welch@collabora.com>,
+        Sergei M <fizik1@yandex.com>, linux-iio@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][iio-next] iio: light: noa1305: fix missing break in a
+ switch statement
+Message-ID: <20190818181444.55fc35b3@archlinux>
+In-Reply-To: <20190815074339.32380-1-colin.king@canonical.com>
+References: <20190815074339.32380-1-colin.king@canonical.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'_navi10_ip_offset_HEADER' is already used in 'navi10_ip_offset.h', so use
-'_navi12_ip_offset_HEADER' instead here.
+On Thu, 15 Aug 2019 08:43:39 +0100
+Colin King <colin.king@canonical.com> wrote:
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/gpu/drm/amd/include/navi12_ip_offset.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a missing break for the NOA1305_INTEGR_TIME_400MS case,
+> fix it by adding it in.
+> 
+> Addresses-Coverity: ("Missing break in switch")
+> Fixes: 741172d18e8a ("iio: light: noa1305: Add support for NOA1305")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Hi Colin
 
-diff --git a/drivers/gpu/drm/amd/include/navi12_ip_offset.h b/drivers/gpu/drm/amd/include/navi12_ip_offset.h
-index 229e8fddfcc1..6c2cc6296c06 100644
---- a/drivers/gpu/drm/amd/include/navi12_ip_offset.h
-+++ b/drivers/gpu/drm/amd/include/navi12_ip_offset.h
-@@ -18,8 +18,8 @@
-  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-  */
--#ifndef _navi10_ip_offset_HEADER
--#define _navi10_ip_offset_HEADER
-+#ifndef _navi12_ip_offset_HEADER
-+#define _navi12_ip_offset_HEADER
- 
- #define MAX_INSTANCE                                       7
- #define MAX_SEGMENT                                        5
--- 
-2.20.1
+Fix already on it's way in.  Was also caught by 0-day.
+
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/light/noa1305.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/iio/light/noa1305.c b/drivers/iio/light/noa1305.c
+> index 7b859ae1044d..5ebfbc52f541 100644
+> --- a/drivers/iio/light/noa1305.c
+> +++ b/drivers/iio/light/noa1305.c
+> @@ -85,6 +85,7 @@ static int noa1305_scale(struct noa1305_priv *priv, int *val, int *val2)
+>  	case NOA1305_INTEGR_TIME_400MS:
+>  		*val = 100;
+>  		*val2 = 77 * 4;
+> +		break;
+>  	case NOA1305_INTEGR_TIME_200MS:
+>  		*val = 100;
+>  		*val2 = 77 * 2;
 

@@ -2,32 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 49AC991770
-	for <lists+kernel-janitors@lfdr.de>; Sun, 18 Aug 2019 17:06:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEE169178C
+	for <lists+kernel-janitors@lfdr.de>; Sun, 18 Aug 2019 17:51:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726739AbfHRPGQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 18 Aug 2019 11:06:16 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:32161 "EHLO
+        id S1726478AbfHRPv3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 18 Aug 2019 11:51:29 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:29525 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726247AbfHRPGQ (ORCPT
+        with ESMTP id S1726097AbfHRPv3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 18 Aug 2019 11:06:16 -0400
+        Sun, 18 Aug 2019 11:51:29 -0400
 Received: from localhost.localdomain ([92.140.207.10])
         by mwinf5d11 with ME
-        id qf6B2000T0Dzhgk03f6Ber; Sun, 18 Aug 2019 17:06:14 +0200
+        id qfrR2000c0Dzhgk03frSjN; Sun, 18 Aug 2019 17:51:27 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 18 Aug 2019 17:06:14 +0200
+X-ME-Date: Sun, 18 Aug 2019 17:51:27 +0200
 X-ME-IP: 92.140.207.10
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Larry.Finger@lwfinger.net, florian.c.schilhabel@googlemail.com,
-        gregkh@linuxfoundation.org, straube.linux@gmail.com
-Cc:     devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+To:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org
+Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] staging: rtl8712: Improve naming of include hearder guards
-Date:   Sun, 18 Aug 2019 17:06:09 +0200
-Message-Id: <20190818150609.3376-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] MIPS: Octeon: Fix a typo in #define OCTOEN_SERIAL_LEN
+Date:   Sun, 18 Aug 2019 17:51:24 +0200
+Message-Id: <20190818155124.3750-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -36,57 +35,36 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Choose a better name for the include hearder guard used in rtl871x_io.h.
-'_IO_H_' is to generic and does not match the comment after the #endif.
-Use '_RTL871X_IO_H_' instead.
-
-Also make the comments in the #endif /* XXX */ match the name used in
-#ifndef.
+It should be OCTEON_SERIAL_LEN.
+Update the #define and use it accordingly
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
-__RTL871X_RF_H_ could have been turned into _RTL871X_RF_H_ (one leading
-'_' removed) but there does not seem to be a clear logic in the way the
-header guards are named in this directory. So leave it as-is in order to
-limit the diff.
----
- drivers/staging/rtl8712/rtl871x_io.h | 7 +++----
- drivers/staging/rtl8712/rtl871x_rf.h | 3 +--
- 2 files changed, 4 insertions(+), 6 deletions(-)
+ arch/mips/include/asm/octeon/octeon.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/rtl8712/rtl871x_io.h b/drivers/staging/rtl8712/rtl871x_io.h
-index 28941423b7ed..c20dd5a6bbd1 100644
---- a/drivers/staging/rtl8712/rtl871x_io.h
-+++ b/drivers/staging/rtl8712/rtl871x_io.h
-@@ -11,8 +11,8 @@
-  * Larry Finger <Larry.Finger@lwfinger.net>
-  *
-  ******************************************************************************/
--#ifndef _IO_H_
--#define _IO_H_
-+#ifndef _RTL871X_IO_H_
-+#define _RTL871X_IO_H_
+diff --git a/arch/mips/include/asm/octeon/octeon.h b/arch/mips/include/asm/octeon/octeon.h
+index 60481502826a..a2e2876357ce 100644
+--- a/arch/mips/include/asm/octeon/octeon.h
++++ b/arch/mips/include/asm/octeon/octeon.h
+@@ -51,7 +51,7 @@ extern void octeon_setup_delays(void);
+ extern void octeon_io_clk_delay(unsigned long);
  
- #include "osdep_service.h"
- #include "osdep_intf.h"
-@@ -234,5 +234,4 @@ void r8712_write_port(struct _adapter *adapter, u32 addr, u32 cnt, u8 *pmem);
- uint r8712_alloc_io_queue(struct _adapter *adapter);
- void r8712_free_io_queue(struct _adapter *adapter);
+ #define OCTEON_ARGV_MAX_ARGS	64
+-#define OCTOEN_SERIAL_LEN	20
++#define OCTEON_SERIAL_LEN	20
  
--#endif	/*_RTL8711_IO_H_*/
--
-+#endif	/*_RTL871X_IO_H_*/
-diff --git a/drivers/staging/rtl8712/rtl871x_rf.h b/drivers/staging/rtl8712/rtl871x_rf.h
-index cc54453cd424..7d98921a48fa 100644
---- a/drivers/staging/rtl8712/rtl871x_rf.h
-+++ b/drivers/staging/rtl8712/rtl871x_rf.h
-@@ -52,5 +52,4 @@ enum {
- 	RTL8712_RFC_2T2R = 0x22
- };
- 
--#endif /*_RTL8711_RF_H_*/
--
-+#endif /*__RTL871X_RF_H_*/
+ struct octeon_boot_descriptor {
+ #ifdef __BIG_ENDIAN_BITFIELD
+@@ -102,7 +102,7 @@ struct octeon_boot_descriptor {
+ 	uint16_t chip_type;
+ 	uint8_t chip_rev_major;
+ 	uint8_t chip_rev_minor;
+-	char board_serial_number[OCTOEN_SERIAL_LEN];
++	char board_serial_number[OCTEON_SERIAL_LEN];
+ 	uint8_t mac_addr_base[6];
+ 	uint8_t mac_addr_count;
+ 	uint64_t cvmx_desc_vaddr;
 -- 
 2.20.1
 

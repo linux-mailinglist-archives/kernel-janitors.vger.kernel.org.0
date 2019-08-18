@@ -2,41 +2,44 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF0299184A
-	for <lists+kernel-janitors@lfdr.de>; Sun, 18 Aug 2019 19:14:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34E2691885
+	for <lists+kernel-janitors@lfdr.de>; Sun, 18 Aug 2019 19:56:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726608AbfHRROw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 18 Aug 2019 13:14:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38094 "EHLO mail.kernel.org"
+        id S1726925AbfHRRzu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 18 Aug 2019 13:55:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48682 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725786AbfHRROw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 18 Aug 2019 13:14:52 -0400
+        id S1726747AbfHRRzu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 18 Aug 2019 13:55:50 -0400
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 50E4C206C1;
-        Sun, 18 Aug 2019 17:14:49 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4B6C220B7C;
+        Sun, 18 Aug 2019 17:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566148491;
-        bh=Yw8c9+3onw1UpC97BP+SV018SH390YF//JmW4tbD1Zo=;
+        s=default; t=1566150949;
+        bh=81ed9RBM09C9vmEgmyh5QD5J7tn2TnHkzuCZiVnKQNw=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=IOwEz44goAFmho5oejHFacREn70pemE6Baf6rLSLSCO+0l0iM9khqgMRSsUx5EtoF
-         diQlZl9YDeS6YOo58G2lJov/7XtWDc938szJfyb3NFkXjEDk/NiZdeE8Fd89ZR7+z0
-         xBro/KwxcyCV+CagcvNpR4cwnb1lEJQUj9n1+RUs=
-Date:   Sun, 18 Aug 2019 18:14:44 +0100
+        b=baXrZ81Nj/oC6AstnQfLU4ymhv9m478hZqX7mJHqFJ8Q1UzpdggNWlQaRpitHULuU
+         riLpw5ycrtPNQnUjXpubYNkzquyVSISXhZAD66pgMg+Pt/vEt5sC/0eac7P256n+qc
+         IA4+d5q4eNMTnVWWtIQ5TXzFIOmSjpCR44Uin3YU=
+Date:   Sun, 18 Aug 2019 18:55:44 +0100
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        Martyn Welch <martyn.welch@collabora.com>,
-        Sergei M <fizik1@yandex.com>, linux-iio@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][iio-next] iio: light: noa1305: fix missing break in a
- switch statement
-Message-ID: <20190818181444.55fc35b3@archlinux>
-In-Reply-To: <20190815074339.32380-1-colin.king@canonical.com>
-References: <20190815074339.32380-1-colin.king@canonical.com>
+To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+Cc:     "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "colin.king@canonical.com" <colin.king@canonical.com>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: dac: ad5380: fix incorrect assignment to val
+Message-ID: <20190818185544.66c32add@archlinux>
+In-Reply-To: <876a4d5190828619f75365863cc6bf2cfea4ffea.camel@analog.com>
+References: <20190815115846.21800-1-colin.king@canonical.com>
+        <876a4d5190828619f75365863cc6bf2cfea4ffea.camel@analog.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,39 +49,45 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 15 Aug 2019 08:43:39 +0100
-Colin King <colin.king@canonical.com> wrote:
+On Fri, 16 Aug 2019 06:16:26 +0000
+"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
 
-> From: Colin Ian King <colin.king@canonical.com>
+> On Thu, 2019-08-15 at 12:58 +0100, Colin King wrote:
+> > [External]
+> >   
 > 
-> There is a missing break for the NOA1305_INTEGR_TIME_400MS case,
-> fix it by adding it in.
-> 
-> Addresses-Coverity: ("Missing break in switch")
-> Fixes: 741172d18e8a ("iio: light: noa1305: Add support for NOA1305")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Hi Colin
-
-Fix already on it's way in.  Was also caught by 0-day.
+> Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+Applied to the fixes-togreg branch of iio.git.
 
 Thanks,
 
 Jonathan
 
-> ---
->  drivers/iio/light/noa1305.c | 1 +
->  1 file changed, 1 insertion(+)
 > 
-> diff --git a/drivers/iio/light/noa1305.c b/drivers/iio/light/noa1305.c
-> index 7b859ae1044d..5ebfbc52f541 100644
-> --- a/drivers/iio/light/noa1305.c
-> +++ b/drivers/iio/light/noa1305.c
-> @@ -85,6 +85,7 @@ static int noa1305_scale(struct noa1305_priv *priv, int *val, int *val2)
->  	case NOA1305_INTEGR_TIME_400MS:
->  		*val = 100;
->  		*val2 = 77 * 4;
-> +		break;
->  	case NOA1305_INTEGR_TIME_200MS:
->  		*val = 100;
->  		*val2 = 77 * 2;
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > Currently the pointer val is being incorrectly incremented
+> > instead of the value pointed to by val. Fix this by adding
+> > in the missing * indirection operator.
+> > 
+> > Addresses-Coverity: ("Unused value")
+> > Fixes: c03f2c536818 ("staging:iio:dac: Add AD5380 driver")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > ---
+> >  drivers/iio/dac/ad5380.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/dac/ad5380.c b/drivers/iio/dac/ad5380.c
+> > index 4335214800d2..2ebe08326048 100644
+> > --- a/drivers/iio/dac/ad5380.c
+> > +++ b/drivers/iio/dac/ad5380.c
+> > @@ -220,7 +220,7 @@ static int ad5380_read_raw(struct iio_dev *indio_dev,
+> >  		if (ret)
+> >  			return ret;
+> >  		*val >>= chan->scan_type.shift;
+> > -		val -= (1 << chan->scan_type.realbits) / 2;
+> > +		*val -= (1 << chan->scan_type.realbits) / 2;
+> >  		return IIO_VAL_INT;
+> >  	case IIO_CHAN_INFO_SCALE:
+> >  		*val = 2 * st->vref;  
 

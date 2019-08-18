@@ -2,31 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BEE169178C
-	for <lists+kernel-janitors@lfdr.de>; Sun, 18 Aug 2019 17:51:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEE6E9179B
+	for <lists+kernel-janitors@lfdr.de>; Sun, 18 Aug 2019 18:00:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726478AbfHRPv3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 18 Aug 2019 11:51:29 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:29525 "EHLO
+        id S1726743AbfHRQAG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 18 Aug 2019 12:00:06 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:18668 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726097AbfHRPv3 (ORCPT
+        with ESMTP id S1725786AbfHRQAG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 18 Aug 2019 11:51:29 -0400
+        Sun, 18 Aug 2019 12:00:06 -0400
 Received: from localhost.localdomain ([92.140.207.10])
         by mwinf5d11 with ME
-        id qfrR2000c0Dzhgk03frSjN; Sun, 18 Aug 2019 17:51:27 +0200
+        id qfzz2000v0Dzhgk03g00Jq; Sun, 18 Aug 2019 18:00:04 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 18 Aug 2019 17:51:27 +0200
+X-ME-Date: Sun, 18 Aug 2019 18:00:04 +0200
 X-ME-IP: 92.140.207.10
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     ralf@linux-mips.org, paul.burton@mips.com, jhogan@kernel.org
-Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
+To:     alexander.deucher@amd.com, christian.koenig@amd.com,
+        David1.Zhou@amd.com, airlied@linux.ie, daniel@ffwll.ch,
+        xiaojie.yuan@amd.com, Hawking.Zhang@amd.com, Jack.Xiao@amd.com
+Cc:     amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] MIPS: Octeon: Fix a typo in #define OCTOEN_SERIAL_LEN
-Date:   Sun, 18 Aug 2019 17:51:24 +0200
-Message-Id: <20190818155124.3750-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] drm/amdgpu: Fix a typo in the include header guard of 'navi12_ip_offset.h'
+Date:   Sun, 18 Aug 2019 17:59:57 +0200
+Message-Id: <20190818155957.4029-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -35,36 +37,29 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-It should be OCTEON_SERIAL_LEN.
-Update the #define and use it accordingly
+'_navi10_ip_offset_HEADER' is already used in 'navi10_ip_offset.h', so use
+'_navi12_ip_offset_HEADER' instead here.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- arch/mips/include/asm/octeon/octeon.h | 4 ++--
+ drivers/gpu/drm/amd/include/navi12_ip_offset.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/include/asm/octeon/octeon.h b/arch/mips/include/asm/octeon/octeon.h
-index 60481502826a..a2e2876357ce 100644
---- a/arch/mips/include/asm/octeon/octeon.h
-+++ b/arch/mips/include/asm/octeon/octeon.h
-@@ -51,7 +51,7 @@ extern void octeon_setup_delays(void);
- extern void octeon_io_clk_delay(unsigned long);
+diff --git a/drivers/gpu/drm/amd/include/navi12_ip_offset.h b/drivers/gpu/drm/amd/include/navi12_ip_offset.h
+index 229e8fddfcc1..6c2cc6296c06 100644
+--- a/drivers/gpu/drm/amd/include/navi12_ip_offset.h
++++ b/drivers/gpu/drm/amd/include/navi12_ip_offset.h
+@@ -18,8 +18,8 @@
+  * AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+  */
+-#ifndef _navi10_ip_offset_HEADER
+-#define _navi10_ip_offset_HEADER
++#ifndef _navi12_ip_offset_HEADER
++#define _navi12_ip_offset_HEADER
  
- #define OCTEON_ARGV_MAX_ARGS	64
--#define OCTOEN_SERIAL_LEN	20
-+#define OCTEON_SERIAL_LEN	20
- 
- struct octeon_boot_descriptor {
- #ifdef __BIG_ENDIAN_BITFIELD
-@@ -102,7 +102,7 @@ struct octeon_boot_descriptor {
- 	uint16_t chip_type;
- 	uint8_t chip_rev_major;
- 	uint8_t chip_rev_minor;
--	char board_serial_number[OCTOEN_SERIAL_LEN];
-+	char board_serial_number[OCTEON_SERIAL_LEN];
- 	uint8_t mac_addr_base[6];
- 	uint8_t mac_addr_count;
- 	uint64_t cvmx_desc_vaddr;
+ #define MAX_INSTANCE                                       7
+ #define MAX_SEGMENT                                        5
 -- 
 2.20.1
 

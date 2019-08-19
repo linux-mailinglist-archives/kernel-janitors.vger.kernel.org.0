@@ -2,61 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D50D91C5C
-	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Aug 2019 07:18:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29E9191CE9
+	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Aug 2019 08:13:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726149AbfHSFSm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 19 Aug 2019 01:18:42 -0400
-Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:19815 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725871AbfHSFSl (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 19 Aug 2019 01:18:41 -0400
-Received: from localhost.localdomain ([92.140.207.10])
-        by mwinf5d86 with ME
-        id qtJc200090Dzhgk03tJcua; Mon, 19 Aug 2019 07:18:39 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 19 Aug 2019 07:18:39 +0200
-X-ME-IP: 92.140.207.10
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     herbert@gondor.apana.org.au, davem@davemloft.net
-Cc:     linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] crypto: picoxcell - Fix the name of the module in the description of CRYPTO_DEV_PICOXCELL
-Date:   Mon, 19 Aug 2019 07:18:33 +0200
-Message-Id: <20190819051833.6622-1-christophe.jaillet@wanadoo.fr>
+        id S1726464AbfHSGNt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 19 Aug 2019 02:13:49 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:47856 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725946AbfHSGNt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 19 Aug 2019 02:13:49 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id B9C35382D04232DAEC32;
+        Mon, 19 Aug 2019 14:13:44 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.439.0; Mon, 19 Aug 2019 14:13:34 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Lucas Stach <l.stach@pengutronix.de>,
+        Russell King <linux+etnaviv@armlinux.org.uk>,
+        Christian Gmeiner <christian.gmeiner@gmail.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <etnaviv@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] drm/etnaviv: fix missing unlock on error in etnaviv_iommuv1_context_alloc()
+Date:   Mon, 19 Aug 2019 06:17:33 +0000
+Message-ID: <20190819061733.50023-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The help section says that the module will be called 'pipcoxcell_crypto'.
-This is likely a typo.
-Use 'picoxcell_crypto' instead
+Add the missing unlock before return from function etnaviv_iommuv1_context_alloc()
+in the error handling case.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Fixes: 27b67278e007 ("drm/etnaviv: rework MMU handling")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/crypto/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/etnaviv/etnaviv_iommu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/Kconfig b/drivers/crypto/Kconfig
-index b8c50871f11b..2305416c2393 100644
---- a/drivers/crypto/Kconfig
-+++ b/drivers/crypto/Kconfig
-@@ -393,7 +393,7 @@ config CRYPTO_DEV_PICOXCELL
- 	  Picochip picoXcell SoC devices. Select this for IPSEC ESP offload
- 	  and for 3gpp Layer 2 ciphering support.
+diff --git a/drivers/gpu/drm/etnaviv/etnaviv_iommu.c b/drivers/gpu/drm/etnaviv/etnaviv_iommu.c
+index aac8dbf3ea56..1a7c89a67bea 100644
+--- a/drivers/gpu/drm/etnaviv/etnaviv_iommu.c
++++ b/drivers/gpu/drm/etnaviv/etnaviv_iommu.c
+@@ -140,8 +140,10 @@ etnaviv_iommuv1_context_alloc(struct etnaviv_iommu_global *global)
+ 	}
  
--	  Saying m here will build a module named pipcoxcell_crypto.
-+	  Saying m here will build a module named picoxcell_crypto.
+ 	v1_context = kzalloc(sizeof(*v1_context), GFP_KERNEL);
+-	if (!v1_context)
++	if (!v1_context) {
++		mutex_unlock(&global->lock);
+ 		return NULL;
++	}
  
- config CRYPTO_DEV_SAHARA
- 	tristate "Support for SAHARA crypto accelerator"
--- 
-2.20.1
+ 	v1_context->pgtable_cpu = dma_alloc_wc(global->dev, PT_SIZE,
+ 					       &v1_context->pgtable_dma,
+
+
 

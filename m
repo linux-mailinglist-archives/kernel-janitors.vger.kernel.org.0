@@ -2,88 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3091591929
-	for <lists+kernel-janitors@lfdr.de>; Sun, 18 Aug 2019 21:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88CB491ABD
+	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Aug 2019 03:31:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727039AbfHRTH4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 18 Aug 2019 15:07:56 -0400
-Received: from atrey.karlin.mff.cuni.cz ([195.113.26.193]:45454 "EHLO
-        atrey.karlin.mff.cuni.cz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726950AbfHRTH4 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 18 Aug 2019 15:07:56 -0400
-Received: by atrey.karlin.mff.cuni.cz (Postfix, from userid 512)
-        id 3023F81452; Sun, 18 Aug 2019 21:07:41 +0200 (CEST)
-Date:   Sun, 18 Aug 2019 21:07:53 +0200
-From:   Pavel Machek <pavel@ucw.cz>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Dan Murphy <dmurphy@ti.com>, linux-leds@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] leds: trigger: timer: remove redundant assignment to ret
-Message-ID: <20190818190753.GA1093@amd>
-References: <20190818190004.15833-1-colin.king@canonical.com>
+        id S1726162AbfHSBb0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 18 Aug 2019 21:31:26 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:4726 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726028AbfHSBb0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 18 Aug 2019 21:31:26 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id F2A1D6AA8E8F112455E8;
+        Mon, 19 Aug 2019 09:31:23 +0800 (CST)
+Received: from [127.0.0.1] (10.177.96.96) by DGGEMS409-HUB.china.huawei.com
+ (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Mon, 19 Aug 2019
+ 09:31:18 +0800
+Subject: Re: [PATCH linux-next] qcom: qcs404: remove COMPILE_TEST from
+ CONFIG_INTERCONNECT_QCOM_QCS404
+To:     Stephen Boyd <sboyd@kernel.org>, <agross@kernel.org>,
+        <georgi.djakov@linaro.org>, <linux-arm-msm@vger.kernel.org>,
+        <linux-pm@vger.kernel.org>
+References: <20190815074848.195806-1-maowenan@huawei.com>
+ <20190818010905.7AD602173B@mail.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+From:   maowenan <maowenan@huawei.com>
+Message-ID: <314f2762-f3a8-a645-c6b4-511f687fb731@huawei.com>
+Date:   Mon, 19 Aug 2019 09:31:14 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="vkogqOf2sHV7VnPd"
-Content-Disposition: inline
-In-Reply-To: <20190818190004.15833-1-colin.king@canonical.com>
-User-Agent: Mutt/1.5.23 (2014-03-12)
+In-Reply-To: <20190818010905.7AD602173B@mail.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.96.96]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
---vkogqOf2sHV7VnPd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On Sun 2019-08-18 20:00:03, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->=20
-> Variable ret is initialized to a value that is never read and it
-> is re-assigned later. The initialization is redundant and can be
-> removed.
+On 2019/8/18 9:09, Stephen Boyd wrote:
+> Quoting Mao Wenan (2019-08-15 00:48:48)
+>> There is one compilation error when CONFIG_INTERCONNECT_QCOM_QCS404=y and
+>> CONFIG_INTERCONNECT_QCOM_SMD_RPM=y, as well as CONFIG_COMPILE_TEST=y,
+>> but CONFIG_QCOM_SMD_RPM is not set, logs as below:
+>>
+>> drivers/interconnect/qcom/smd-rpm.o: In function `qcom_icc_rpm_smd_send':
+>> smd-rpm.c:(.text+0xe4): undefined reference to `qcom_rpm_smd_write'
+>> Makefile:1071: recipe for target 'vmlinux' failed
+>> make: *** [vmlinux] Error 1
+>>
+>> This is because
+>> INTERCONNECT_QCOM_QCS404 depends on QCOM_SMD_RPM || COMPILE_TEST.
+>> Here CONFIG_COMPILE_TEST=y, so CONFIG_INTERCONNECT_QCOM_SMD_RPM
+>> is selected. If CONFIG_QCOM_SMD_RPM is not set, then
+>> qcom_rpm_smd_write() is not defined, and compilation error happen.
+>> Fix this by removing COMPILE_TEST from CONFIG_INTERCONNECT_QCOM_QCS404.
+> 
+> Can you fix the actual problem with compile testing this driver vs. just
+> removing the possibility to compile test. Otherwise it gives up on
+> the spirit of the idea of COMPILE_TEST.
 
-Yes, it can. But it is not buggy or exceptionaly ugly.
+yes, I have already tried to move COMPILE_TEST to INTERCONNECT_QCOM,
 
-> diff --git a/drivers/leds/trigger/ledtrig-timer.c b/drivers/leds/trigger/=
-ledtrig-timer.c
-> index 34a68604c46c..b4688d1d9d2b 100644
-> --- a/drivers/leds/trigger/ledtrig-timer.c
-> +++ b/drivers/leds/trigger/ledtrig-timer.c
-> @@ -28,7 +28,7 @@ static ssize_t led_delay_on_store(struct device *dev,
->  {
->  	struct led_classdev *led_cdev =3D led_trigger_get_led(dev);
->  	unsigned long state;
-> -	ssize_t ret =3D -EINVAL;
-> +	ssize_t ret;
-> =20
->  	ret =3D kstrtoul(buf, 10, &state);
->  	if (ret)
 
-Make it ssizr_t ret =3D kstrtoul() and I may agree it is a cleanup...
+ config INTERCONNECT_QCOM
+        bool "Qualcomm Network-on-Chip interconnect drivers"
+-       depends on ARCH_QCOM
++       depends on ARCH_QCOM || COMPILE_TEST
+        help
+          Support for Qualcomm's Network-on-Chip interconnect hardware.
 
-Best regards,
-									Pavel
+> 
+> 
+> .
+> 
 
---=20
-(english) http://www.livejournal.com/~pavelmachek
-(cesky, pictures) http://atrey.karlin.mff.cuni.cz/~pavel/picture/horses/blo=
-g.html
-
---vkogqOf2sHV7VnPd
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
-
------BEGIN PGP SIGNATURE-----
-Version: GnuPG v1
-
-iEYEARECAAYFAl1ZogkACgkQMOfwapXb+vJi6gCgiHOeyae6/Zq/og/YqsyD6Tgf
-7r0AoIaNRD+K8OeIqL5cDXleOm/m5H97
-=w4eN
------END PGP SIGNATURE-----
-
---vkogqOf2sHV7VnPd--

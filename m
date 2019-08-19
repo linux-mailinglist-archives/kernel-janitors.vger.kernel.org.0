@@ -2,31 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 51AF691C39
-	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Aug 2019 07:04:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D50D91C5C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Aug 2019 07:18:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726149AbfHSFEd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 19 Aug 2019 01:04:33 -0400
-Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:54113 "EHLO
+        id S1726149AbfHSFSm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 19 Aug 2019 01:18:42 -0400
+Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:19815 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725871AbfHSFEd (ORCPT
+        with ESMTP id S1725871AbfHSFSl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 19 Aug 2019 01:04:33 -0400
+        Mon, 19 Aug 2019 01:18:41 -0400
 Received: from localhost.localdomain ([92.140.207.10])
         by mwinf5d86 with ME
-        id qt4W2000V0Dzhgk03t4WdF; Mon, 19 Aug 2019 07:04:31 +0200
+        id qtJc200090Dzhgk03tJcua; Mon, 19 Aug 2019 07:18:39 +0200
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 19 Aug 2019 07:04:31 +0200
+X-ME-Date: Mon, 19 Aug 2019 07:18:39 +0200
 X-ME-IP: 92.140.207.10
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     3chas3@gmail.com
-Cc:     linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+To:     herbert@gondor.apana.org.au, davem@davemloft.net
+Cc:     linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] Kconfig: Fix the reference to the IDT77105 Phy driver in the description of ATM_NICSTAR_USE_IDT77105
-Date:   Mon, 19 Aug 2019 07:04:25 +0200
-Message-Id: <20190819050425.6119-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] crypto: picoxcell - Fix the name of the module in the description of CRYPTO_DEV_PICOXCELL
+Date:   Mon, 19 Aug 2019 07:18:33 +0200
+Message-Id: <20190819051833.6622-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -35,26 +35,28 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This should be IDT77105, not IDT77015.
+The help section says that the module will be called 'pipcoxcell_crypto'.
+This is likely a typo.
+Use 'picoxcell_crypto' instead
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/atm/Kconfig | 2 +-
+ drivers/crypto/Kconfig | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/atm/Kconfig b/drivers/atm/Kconfig
-index 2e2efa577437..8c37294f1d1e 100644
---- a/drivers/atm/Kconfig
-+++ b/drivers/atm/Kconfig
-@@ -200,7 +200,7 @@ config ATM_NICSTAR_USE_SUNI
- 	  make the card work).
+diff --git a/drivers/crypto/Kconfig b/drivers/crypto/Kconfig
+index b8c50871f11b..2305416c2393 100644
+--- a/drivers/crypto/Kconfig
++++ b/drivers/crypto/Kconfig
+@@ -393,7 +393,7 @@ config CRYPTO_DEV_PICOXCELL
+ 	  Picochip picoXcell SoC devices. Select this for IPSEC ESP offload
+ 	  and for 3gpp Layer 2 ciphering support.
  
- config ATM_NICSTAR_USE_IDT77105
--	bool "Use IDT77015 PHY driver (25Mbps)"
-+	bool "Use IDT77105 PHY driver (25Mbps)"
- 	depends on ATM_NICSTAR
- 	help
- 	  Support for the PHYsical layer chip in ForeRunner LE25 cards. In
+-	  Saying m here will build a module named pipcoxcell_crypto.
++	  Saying m here will build a module named picoxcell_crypto.
+ 
+ config CRYPTO_DEV_SAHARA
+ 	tristate "Support for SAHARA crypto accelerator"
 -- 
 2.20.1
 

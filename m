@@ -2,106 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AEDC691D28
-	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Aug 2019 08:32:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 571B091D6C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Aug 2019 08:58:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726669AbfHSGcw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 19 Aug 2019 02:32:52 -0400
-Received: from mga12.intel.com ([192.55.52.136]:51118 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725308AbfHSGcw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 19 Aug 2019 02:32:52 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Aug 2019 23:32:52 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,403,1559545200"; 
-   d="scan'208";a="202150762"
-Received: from rzhang-dell-9360.sh.intel.com ([10.239.198.73])
-  by fmsmga004.fm.intel.com with ESMTP; 18 Aug 2019 23:32:50 -0700
-Message-ID: <95dce698e7790dac7178e950a6a9dde71d231cae.camel@intel.com>
-Subject: Re: [PATCH][V2] drivers: thermal: processor_thermal_device: fix
- missing bitwise-or operators
-From:   Zhang Rui <rui.zhang@intel.com>
-To:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Colin King <colin.king@canonical.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        linux-pm@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Mon, 19 Aug 2019 14:32:43 +0800
-In-Reply-To: <42db46c33466a12221e0968e82c4c4ee17b0341d.camel@linux.intel.com>
-References: <20190729120323.15838-1-colin.king@canonical.com>
-         <42db46c33466a12221e0968e82c4c4ee17b0341d.camel@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+        id S1726768AbfHSG6R (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 19 Aug 2019 02:58:17 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:45967 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726677AbfHSG6R (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 19 Aug 2019 02:58:17 -0400
+Received: by mail-pf1-f194.google.com with SMTP id w26so598301pfq.12
+        for <kernel-janitors@vger.kernel.org>; Sun, 18 Aug 2019 23:58:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=HvtA+GBfwHC8fvnaQIIJLLxWYh1rn1153XxRWvxFdUs=;
+        b=P3rK6cja54D8TRyXeXPYfTuuwH5EeJR6miORU5/Kef4uXdnOfRpQE6kC2Vx8+smA4u
+         zhar+VQMpglRiotAhkMB5M6KLLM+0mIcJIGWxk+xdbnP8w8kZmTVVYAAEVJpYsFH4jtD
+         GcIzCPRcMWH3f5JHBPgNaFkRg0DUXIIuLamFhbKMg2HiPLPUN2rb9+rFSzJXp75fbLHx
+         Gv5bk4ZdFoEHuwr7EyUSc1p5UoLLng6CzOQUp179nmdihHBt/hSIhTsB20Rr9tr8LbQ7
+         ENeyGHfHo79eaE6efoimOa+FG1sYtV34yLMiZfJuhpSvgmufUDZJYCoVey+cMjxlmOCU
+         w4jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=HvtA+GBfwHC8fvnaQIIJLLxWYh1rn1153XxRWvxFdUs=;
+        b=FD/0dU7rdMN4hHFUeW6gwHz4WsEzA0JJMIXrlJxXgM0E8+0DQUbxnbRorPJAdM/0aj
+         pTLrO5L4Kn/kz2jdSViFIL7DTnTjQ/dHhsHT4F2GrJweZb2RDdIFioPA+6bIjjdzdPNB
+         dw3T3j31rp3onmuhzvTM0NhdnvuNaKhP/j5d5Y3dyFgYdmgHEveiKjUpsV2MAZGzb22/
+         aCVev6FPwHt3AWSVzIDRVvj4kFYsnXJrOI6o39AWuV2YwHzKiOSKtMv7uxXAYXFukTOg
+         07zdhgUlY5Mo80BbNV1xF2xnPJYZLHeXhlyRctXq02eXwZiK8Es4Fo90g83ovunluPLo
+         uERQ==
+X-Gm-Message-State: APjAAAV9BMN2yI2j1e3lVd3oEtCjoTsZXbHTRTVS432/66dVHOnBJRfz
+        8A60EDv4QrMdDHjDY0M1+FreLg==
+X-Google-Smtp-Source: APXvYqwmUeKAoNB6rJXK3rhuM5Ub/Wsz5p7XsyHuL0fBQNYaNS4bX0+QSzbe0jQR1GcmLgMOHn1YaA==
+X-Received: by 2002:a62:e910:: with SMTP id j16mr23217505pfh.123.1566197896522;
+        Sun, 18 Aug 2019 23:58:16 -0700 (PDT)
+Received: from localhost ([122.172.76.219])
+        by smtp.gmail.com with ESMTPSA id f14sm15662246pfn.53.2019.08.18.23.58.15
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 18 Aug 2019 23:58:15 -0700 (PDT)
+Date:   Mon, 19 Aug 2019 12:28:14 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "Rafael J . Wysocki" <rjw@rjwysocki.net>, linux-pm@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] cpufreq: remove redundant assignment to ret
+Message-ID: <20190819065814.333kowws4mpw3qfx@vireshk-i7>
+References: <20190813122121.28160-1-colin.king@canonical.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190813122121.28160-1-colin.king@canonical.com>
+User-Agent: NeoMutt/20180716-391-311a52
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 2019-07-29 at 14:09 -0700, Srinivas Pandruvada wrote:
-> On Mon, 2019-07-29 at 13:03 +0100, Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> > 
-> > The variable val is having the top 8 bits cleared and then the
-> > variable is being
-> > re-assinged and setting just the top 8 bits.  I believe the
-> > intention
-> > was bitwise-or
-> > in the top 8 bits.  Fix this by replacing the = operators with &=
-> > and
-> > > = instead.
-> > 
-> > Addresses-Coverity: ("Unused value")
-> > Fixes: b0c74b08517e ("drivers: thermal: processor_thermal_device:
-> > Export sysfs inteface for TCC offset")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On 13-08-19, 13:21, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com
-> >
-
-Hi, Colin,
-
-thanks for the fix, as b0c74b08517e ("drivers: thermal:
-processor_thermal_device: Export sysfs inteface for TCC offset") has
-not been shipped in upstream yet, I will fold this fix into the
-original patch directly.
-
-thanks,
-rui
+> Variable ret is initialized to a value that is never read and it is
+> re-assigned later. The initialization is redundant and can be removed.
 > 
-> > ---
-> > 
-> > V2: Add in &= operator missing from V1. Doh.
-> > 
-> > ---
-> >  .../thermal/intel/int340x_thermal/processor_thermal_device.c  | 4
-> > ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git
-> > a/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
-> > b/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
-> > index 6f6ac6a8e82d..97333fc4be42 100644
-> > ---
-> > a/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
-> > +++
-> > b/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
-> > @@ -163,8 +163,8 @@ static int tcc_offset_update(int tcc)
-> >  	if (err)
-> >  		return err;
-> >  
-> > -	val = ~GENMASK_ULL(31, 24);
-> > -	val = (tcc & 0xff) << 24;
-> > +	val &= ~GENMASK_ULL(31, 24);
-> > +	val |= (tcc & 0xff) << 24;
-> >  
-> >  	err = wrmsrl_safe(MSR_IA32_TEMPERATURE_TARGET, val);
-> >  	if (err)
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/cpufreq/cpufreq.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> 
+> diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+> index c28ebf2810f1..26d82e0a2de5 100644
+> --- a/drivers/cpufreq/cpufreq.c
+> +++ b/drivers/cpufreq/cpufreq.c
+> @@ -2140,7 +2140,7 @@ int cpufreq_driver_target(struct cpufreq_policy *policy,
+>  			  unsigned int target_freq,
+>  			  unsigned int relation)
+>  {
+> -	int ret = -EINVAL;
+> +	int ret;
+>  
+>  	down_write(&policy->rwsem);
+>  
 
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+
+-- 
+viresh

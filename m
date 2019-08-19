@@ -2,69 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 29E9191CE9
-	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Aug 2019 08:13:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEDC691D28
+	for <lists+kernel-janitors@lfdr.de>; Mon, 19 Aug 2019 08:32:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726464AbfHSGNt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 19 Aug 2019 02:13:49 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:47856 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725946AbfHSGNt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 19 Aug 2019 02:13:49 -0400
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id B9C35382D04232DAEC32;
-        Mon, 19 Aug 2019 14:13:44 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 19 Aug 2019 14:13:34 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Lucas Stach <l.stach@pengutronix.de>,
-        Russell King <linux+etnaviv@armlinux.org.uk>,
-        Christian Gmeiner <christian.gmeiner@gmail.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <etnaviv@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] drm/etnaviv: fix missing unlock on error in etnaviv_iommuv1_context_alloc()
-Date:   Mon, 19 Aug 2019 06:17:33 +0000
-Message-ID: <20190819061733.50023-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+        id S1726669AbfHSGcw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 19 Aug 2019 02:32:52 -0400
+Received: from mga12.intel.com ([192.55.52.136]:51118 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725308AbfHSGcw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 19 Aug 2019 02:32:52 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Aug 2019 23:32:52 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,403,1559545200"; 
+   d="scan'208";a="202150762"
+Received: from rzhang-dell-9360.sh.intel.com ([10.239.198.73])
+  by fmsmga004.fm.intel.com with ESMTP; 18 Aug 2019 23:32:50 -0700
+Message-ID: <95dce698e7790dac7178e950a6a9dde71d231cae.camel@intel.com>
+Subject: Re: [PATCH][V2] drivers: thermal: processor_thermal_device: fix
+ missing bitwise-or operators
+From:   Zhang Rui <rui.zhang@intel.com>
+To:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Colin King <colin.king@canonical.com>,
+        Eduardo Valentin <edubezval@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        linux-pm@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Mon, 19 Aug 2019 14:32:43 +0800
+In-Reply-To: <42db46c33466a12221e0968e82c4c4ee17b0341d.camel@linux.intel.com>
+References: <20190729120323.15838-1-colin.king@canonical.com>
+         <42db46c33466a12221e0968e82c4c4ee17b0341d.camel@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Add the missing unlock before return from function etnaviv_iommuv1_context_alloc()
-in the error handling case.
+On Mon, 2019-07-29 at 14:09 -0700, Srinivas Pandruvada wrote:
+> On Mon, 2019-07-29 at 13:03 +0100, Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > The variable val is having the top 8 bits cleared and then the
+> > variable is being
+> > re-assinged and setting just the top 8 bits.  I believe the
+> > intention
+> > was bitwise-or
+> > in the top 8 bits.  Fix this by replacing the = operators with &=
+> > and
+> > > = instead.
+> > 
+> > Addresses-Coverity: ("Unused value")
+> > Fixes: b0c74b08517e ("drivers: thermal: processor_thermal_device:
+> > Export sysfs inteface for TCC offset")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> 
+> Reviewed-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com
+> >
 
-Fixes: 27b67278e007 ("drm/etnaviv: rework MMU handling")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/gpu/drm/etnaviv/etnaviv_iommu.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Hi, Colin,
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_iommu.c b/drivers/gpu/drm/etnaviv/etnaviv_iommu.c
-index aac8dbf3ea56..1a7c89a67bea 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_iommu.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_iommu.c
-@@ -140,8 +140,10 @@ etnaviv_iommuv1_context_alloc(struct etnaviv_iommu_global *global)
- 	}
- 
- 	v1_context = kzalloc(sizeof(*v1_context), GFP_KERNEL);
--	if (!v1_context)
-+	if (!v1_context) {
-+		mutex_unlock(&global->lock);
- 		return NULL;
-+	}
- 
- 	v1_context->pgtable_cpu = dma_alloc_wc(global->dev, PT_SIZE,
- 					       &v1_context->pgtable_dma,
+thanks for the fix, as b0c74b08517e ("drivers: thermal:
+processor_thermal_device: Export sysfs inteface for TCC offset") has
+not been shipped in upstream yet, I will fold this fix into the
+original patch directly.
 
-
+thanks,
+rui
+> 
+> > ---
+> > 
+> > V2: Add in &= operator missing from V1. Doh.
+> > 
+> > ---
+> >  .../thermal/intel/int340x_thermal/processor_thermal_device.c  | 4
+> > ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git
+> > a/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
+> > b/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
+> > index 6f6ac6a8e82d..97333fc4be42 100644
+> > ---
+> > a/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
+> > +++
+> > b/drivers/thermal/intel/int340x_thermal/processor_thermal_device.c
+> > @@ -163,8 +163,8 @@ static int tcc_offset_update(int tcc)
+> >  	if (err)
+> >  		return err;
+> >  
+> > -	val = ~GENMASK_ULL(31, 24);
+> > -	val = (tcc & 0xff) << 24;
+> > +	val &= ~GENMASK_ULL(31, 24);
+> > +	val |= (tcc & 0xff) << 24;
+> >  
+> >  	err = wrmsrl_safe(MSR_IA32_TEMPERATURE_TARGET, val);
+> >  	if (err)
+> 
+> 
 

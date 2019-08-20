@@ -2,66 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3ABC295DA1
-	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Aug 2019 13:42:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDF2195DB2
+	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Aug 2019 13:47:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729773AbfHTLmS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 20 Aug 2019 07:42:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46226 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729771AbfHTLmS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 20 Aug 2019 07:42:18 -0400
-Received: from localhost (unknown [106.201.62.126])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 201E2214DA;
-        Tue, 20 Aug 2019 11:42:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1566301337;
-        bh=3hAXI1PeAZZhCXXrvlgihDZlqD2jxXKi7DAm5+kp95Y=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gbFe5xweEkT3MMN6vCPPCTh8ym/rWhrbBLG9rD8I171gzZJb5ZmYNes5gc8lT25tk
-         Tvir7XBjTp6KKVBNvlpOE/7H9rX5ivMjeT3OqudnnlAiUSHPa/ocEWCEX4gpABt0BW
-         VpS1+7wFKq2foBbwXcaxiZzBumupmjvpTdH7e64g=
-Date:   Tue, 20 Aug 2019 17:11:05 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Mao Wenan <maowenan@huawei.com>
-Cc:     dan.j.williams@intel.com, dmaengine@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2 linux-next 0/2] change mux_configure32() to static
-Message-ID: <20190820114105.GW12733@vkoul-mobl.Dlink>
-References: <20190814072105.144107-1-maowenan@huawei.com>
+        id S1729672AbfHTLrG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 20 Aug 2019 07:47:06 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:5163 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728283AbfHTLrG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 20 Aug 2019 07:47:06 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id EE6B24BCADEC9E5725BD;
+        Tue, 20 Aug 2019 19:47:01 +0800 (CST)
+Received: from [127.0.0.1] (10.133.213.239) by DGGEMS405-HUB.china.huawei.com
+ (10.3.19.205) with Microsoft SMTP Server id 14.3.439.0; Tue, 20 Aug 2019
+ 19:46:57 +0800
+Subject: Re: [PATCH -next] bpf: Use PTR_ERR_OR_ZERO in xsk_map_inc()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@gmail.com>
+References: <20190820013652.147041-1-yuehaibing@huawei.com>
+ <93fafdab-8fb3-0f2b-8f36-0cf297db3cd9@intel.com>
+ <20190820085547.GE4451@kadam>
+ <CAJ+HfNhRf+=yN6eOOZ1zp8=VicT-k6nHLO6r+f__O5X3M+N=ug@mail.gmail.com>
+ <20190820094444.GA3964@kadam>
+CC:     =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+        "Karlsson, Magnus" <magnus.karlsson@intel.com>,
+        Jonathan Lemon <jonathan.lemon@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        "Daniel Borkmann" <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Netdev <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+From:   Yuehaibing <yuehaibing@huawei.com>
+Message-ID: <e98df2e2-6b57-6c1c-e80e-732434b177ad@huawei.com>
+Date:   Tue, 20 Aug 2019 19:46:56 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190814072105.144107-1-maowenan@huawei.com>
-User-Agent: Mutt/1.11.3 (2019-02-01)
+In-Reply-To: <20190820094444.GA3964@kadam>
+Content-Type: text/plain; charset="windows-1252"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 14-08-19, 15:21, Mao Wenan wrote:
-> First patch is to make mux_configure32() static to avoid sparse warning,
-> the second patch is to chage alignment of two functions.
-
-The subsystem name is "dmaengine" please use that in future, I have
-fixed that and applied
-
-> v2: change subject from "drivers: dma: Fix sparse warning for mux_configure32"
-> to "drivers: dma: make mux_configure32 static", and cleanup the log. And add 
-> one patch to change alignment of two functions. 
+On 2019/8/20 17:44, Dan Carpenter wrote:
+> On Tue, Aug 20, 2019 at 11:25:29AM +0200, Björn Töpel wrote:
+>> On Tue, 20 Aug 2019 at 10:59, Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>>>
+>>> On Tue, Aug 20, 2019 at 09:28:26AM +0200, Björn Töpel wrote:
+>>>> For future patches: Prefix AF_XDP socket work with "xsk:" and use "PATCH
+>>>> bpf-next" to let the developers know what tree you're aiming for.
+>>>
+>>> There are over 300 trees in linux-next.  It impossible to try remember
+>>> everyone's trees.  No one else has this requirement.
+>>>
+>>
+>> Net/bpf are different, and I wanted to point that out to lessen the
+>> burden for the maintainers. It's documented in:
+>>
+>> Documentation/bpf/bpf_devel_QA.rst.
+>> Documentation/networking/netdev-FAQ.rst
 > 
-> Mao Wenan (2):
->   drivers: dma: make mux_configure32 static
->   drivers: dma: change alignment of mux_configure32 and
->     fsl_edma_chan_mux
+> Ah...  I hadn't realized that BPF patches were confusing to Dave.
 > 
->  drivers/dma/fsl-edma-common.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> I actually do keep track of net and net-next.  I do quite a bit of extra
+> stuff for netdev patches.  So what about if we used [PATCH] for bpf and
+> [PATCH net] and [PATCH net-next] for networking?
 > 
-> -- 
-> 2.20.1
+> I will do that.
 
--- 
-~Vinod
+bpf-next is a good choice.
+
+> 
+> regards,
+> dan carpenter
+> 
+> .
+> 
+

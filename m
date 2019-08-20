@@ -2,54 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5532E963C4
-	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Aug 2019 17:09:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4092C963EB
+	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Aug 2019 17:15:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728682AbfHTPJX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 20 Aug 2019 11:09:23 -0400
-Received: from www62.your-server.de ([213.133.104.62]:40612 "EHLO
-        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725983AbfHTPJW (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 20 Aug 2019 11:09:22 -0400
-Received: from sslproxy05.your-server.de ([78.46.172.2])
-        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1i05l1-000053-LE; Tue, 20 Aug 2019 17:09:11 +0200
-Received: from [178.197.249.40] (helo=pc-63.home)
-        by sslproxy05.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1i05l1-0007zV-Ew; Tue, 20 Aug 2019 17:09:11 +0200
-Subject: Re: [PATCH -next] bpf: Use PTR_ERR_OR_ZERO in xsk_map_inc()
-To:     YueHaibing <yuehaibing@huawei.com>, bjorn.topel@intel.com,
-        magnus.karlsson@intel.com, jonathan.lemon@gmail.com,
-        ast@kernel.org, kafai@fb.com, songliubraving@fb.com, yhs@fb.com,
-        john.fastabend@gmail.com
-Cc:     netdev@vger.kernel.org, bpf@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20190820013652.147041-1-yuehaibing@huawei.com>
-From:   Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <9f7d6eba-7676-9f3e-5bf1-33fa0bb621a2@iogearbox.net>
-Date:   Tue, 20 Aug 2019 17:09:10 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        id S1730130AbfHTPPz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 20 Aug 2019 11:15:55 -0400
+Received: from fieldses.org ([173.255.197.46]:40282 "EHLO fieldses.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728277AbfHTPPz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 20 Aug 2019 11:15:55 -0400
+Received: by fieldses.org (Postfix, from userid 2815)
+        id C2A631C20; Tue, 20 Aug 2019 11:15:54 -0400 (EDT)
+Date:   Tue, 20 Aug 2019 11:15:54 -0400
+From:   "J . Bruce Fields" <bfields@fieldses.org>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     Jeff Layton <jeff.layton@primarydata.com>,
+        Weston Andros Adamson <dros@primarydata.com>,
+        Richard Sharpe <richard.sharpe@primarydata.com>,
+        Trond Myklebust <trond.myklebust@primarydata.com>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        linux-nfs@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next] nfsd: remove duplicated include from filecache.c
+Message-ID: <20190820151554.GA7026@fieldses.org>
+References: <20190820013243.129865-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <20190820013652.147041-1-yuehaibing@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.100.3/25547/Tue Aug 20 10:27:49 2019)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190820013243.129865-1-yuehaibing@huawei.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 8/20/19 3:36 AM, YueHaibing wrote:
-> Use PTR_ERR_OR_ZERO rather than if(IS_ERR(...)) + PTR_ERR
+Thanks, applied.--b.
+
+On Tue, Aug 20, 2019 at 01:32:43AM +0000, YueHaibing wrote:
+> Remove duplicated include.
 > 
 > Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-
-Applied, thanks!
+> ---
+>  fs/nfsd/filecache.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+> index 4759fdc8a07e..07939f4834e8 100644
+> --- a/fs/nfsd/filecache.c
+> +++ b/fs/nfsd/filecache.c
+> @@ -6,7 +6,6 @@
+>  
+>  #include <linux/hash.h>
+>  #include <linux/slab.h>
+> -#include <linux/hash.h>
+>  #include <linux/file.h>
+>  #include <linux/sched.h>
+>  #include <linux/list_lru.h>
+> 
+> 

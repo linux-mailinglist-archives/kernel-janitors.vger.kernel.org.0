@@ -2,99 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B7FE95AB8
-	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Aug 2019 11:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F34C95AED
+	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Aug 2019 11:26:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729420AbfHTJL6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 20 Aug 2019 05:11:58 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:43260 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728771AbfHTJL6 (ORCPT
+        id S1729333AbfHTJZm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 20 Aug 2019 05:25:42 -0400
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:42487 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728414AbfHTJZm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 20 Aug 2019 05:11:58 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7K998QY113686;
-        Tue, 20 Aug 2019 09:11:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2019-08-05; bh=ziI5IPFFuH8/BD0ZL+nvh8R9brI3qWSeYX+UCPMiMps=;
- b=JOowmwSVZ3im0gon8jWryuwjAP6cHSJdHuvF4Wy0Pog9mJIqj2ljseBPlo+ezZtbz58V
- zJBhfKOp1e1p5+taN/BS5QPQMWpUUVBprgIe55gHKn7MxuxPF8PvciDAxykEkoUFNaVn
- MyBlwOiw95AKggdIjU1oeum60TZhNm8tX5aUFnrAj+I14v40JmTa3jyfZXksNnjiR8dI
- ET97JzBk6TeD6OaVCT7j+sQhGmehBA2u8SLgZrnCJK+0AjSH7A3f0/VPwv4pGXkgjKIG
- XkiFPsYd49snNHzPkjQjO2kh230cxHaRR2JIOai4EwoghINURaQCYvXR7kC0k66u1GYa nQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 2uea7qmygk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 20 Aug 2019 09:11:53 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7K98eEn075603;
-        Tue, 20 Aug 2019 09:11:52 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 2ug1g90626-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 20 Aug 2019 09:11:52 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x7K9BpSp015498;
-        Tue, 20 Aug 2019 09:11:52 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 20 Aug 2019 02:11:51 -0700
-Date:   Tue, 20 Aug 2019 12:11:44 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Catherine Sullivan <csully@google.com>
-Cc:     Sagi Shahar <sagis@google.com>, Jon Olson <jonolson@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Willem de Bruijn <willemb@google.com>,
-        Luigi Rizzo <lrizzo@google.com>,
-        Chuhong Yuan <hslester96@gmail.com>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH v2 net] gve: Copy and paste bug in gve_get_stats()
-Message-ID: <20190820090739.GB1845@kadam>
+        Tue, 20 Aug 2019 05:25:42 -0400
+Received: by mail-qk1-f193.google.com with SMTP id 201so3899730qkm.9;
+        Tue, 20 Aug 2019 02:25:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=/gsH+dfEW5u9I/gchzYd4l4FC9dGn13yx8QcZtSkqj8=;
+        b=ZONOz5cXxmNkjNnhlbKqH9kBQdaM3XxHWfzVwm3y2enBWKCved7YkmcIX6VB2gW8cS
+         qHn1mtRNPD5CmXiy2sG+7+oSLHMtZq0hUPnrVdsljuGRy10pvjl0nzcY+bpavVz3e1v2
+         3DoSE/KY3ZHzFvDKl2xtGSzi71CprS77bp6tH04T7IVtXkJZHdj9SJ3EyOZgAjW6Epxu
+         1S8IAx/5MgHHN4VFJw7HUtBmXvm0uTWSlXbCmKohsgvICXduVuGVGnW3yfUdfh579VMg
+         AMAYKi7Kx11uNtBG+anC/5VzL14vE+aALGHUOMZh6uo2dUNmE5IDH3dLrZrUFwm2CFe/
+         zyRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=/gsH+dfEW5u9I/gchzYd4l4FC9dGn13yx8QcZtSkqj8=;
+        b=bPFdVcAJjPLZl2GrBWkf4dIFZsLcBSUUYXXzUBhxU6HIr7jL+bmeJSN/MeK6BKa+Yd
+         BHOq40WbF9prCNC3NTNEytQXn8uF6Es2hoXJabqXe/ZABfWXXLhyXftyKPoFObSBlFZn
+         rCskJ5h2EfZXGjI9lYnuPFvqGrvXopsaOmpjOf9qAiktQHJ/BY2C478rgpoEZx/dmPHq
+         pVuD/J2LW/e/WwUmhsfRhnfHd7uTfwrcMkebPI8QytX1rHhZ0/jAF7XTV86ivWmDJ7AM
+         ncwdV3w8OeL/ONQEU1RLnt49MZJsOGua6q+vncliD7IxzW4IDnLvdmDVwfaJ0lS7zqnl
+         em+Q==
+X-Gm-Message-State: APjAAAVtjcj9wLaoOgPQm2HHB61I024MNxLug9LFVMAl0SVvEAyW2Y9D
+        WQW/vuLhtTheX8Kk4WraxFYwUtEbGqi4XNplLxs=
+X-Google-Smtp-Source: APXvYqxVZTjLcHNjKfCuSkuqeezUOfy5FYqZW3hb8OKOls13r24TSyVDWvsrLzcl7Ok+FNKCtplTt87BSR5Ti8Dpct0=
+X-Received: by 2002:a37:640e:: with SMTP id y14mr24615884qkb.333.1566293141010;
+ Tue, 20 Aug 2019 02:25:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190820090053.GA24410@mwanda>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9354 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1908200097
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9354 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908200097
+References: <20190820013652.147041-1-yuehaibing@huawei.com>
+ <93fafdab-8fb3-0f2b-8f36-0cf297db3cd9@intel.com> <20190820085547.GE4451@kadam>
+In-Reply-To: <20190820085547.GE4451@kadam>
+From:   =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@gmail.com>
+Date:   Tue, 20 Aug 2019 11:25:29 +0200
+Message-ID: <CAJ+HfNhRf+=yN6eOOZ1zp8=VicT-k6nHLO6r+f__O5X3M+N=ug@mail.gmail.com>
+Subject: Re: [PATCH -next] bpf: Use PTR_ERR_OR_ZERO in xsk_map_inc()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn.topel@intel.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        "Karlsson, Magnus" <magnus.karlsson@intel.com>,
+        Jonathan Lemon <jonathan.lemon@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Netdev <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is a copy and paste error so we have "rx" where "tx" was intended
-in the priv->tx[] array.
+On Tue, 20 Aug 2019 at 10:59, Dan Carpenter <dan.carpenter@oracle.com> wrot=
+e:
+>
+> On Tue, Aug 20, 2019 at 09:28:26AM +0200, Bj=C3=B6rn T=C3=B6pel wrote:
+> > For future patches: Prefix AF_XDP socket work with "xsk:" and use "PATC=
+H
+> > bpf-next" to let the developers know what tree you're aiming for.
+>
+> There are over 300 trees in linux-next.  It impossible to try remember
+> everyone's trees.  No one else has this requirement.
+>
 
-Fixes: f5cedc84a30d ("gve: Add transmit and receive support")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-v2: fix a typo in the subject: buy -> bug (Thanks Walter Harms)
+Net/bpf are different, and I wanted to point that out to lessen the
+burden for the maintainers. It's documented in:
 
- drivers/net/ethernet/google/gve/gve_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Documentation/bpf/bpf_devel_QA.rst.
+Documentation/networking/netdev-FAQ.rst
 
-diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
-index 497298752381..aca95f64bde8 100644
---- a/drivers/net/ethernet/google/gve/gve_main.c
-+++ b/drivers/net/ethernet/google/gve/gve_main.c
-@@ -50,7 +50,7 @@ static void gve_get_stats(struct net_device *dev, struct rtnl_link_stats64 *s)
- 				  u64_stats_fetch_begin(&priv->tx[ring].statss);
- 				s->tx_packets += priv->tx[ring].pkt_done;
- 				s->tx_bytes += priv->tx[ring].bytes_done;
--			} while (u64_stats_fetch_retry(&priv->rx[ring].statss,
-+			} while (u64_stats_fetch_retry(&priv->tx[ring].statss,
- 						       start));
- 		}
- 	}
--- 
-2.20.1
+> Maybe add it as an option to get_maintainer.pl --tree <hash> then that
+> would be very easy.
+>
+
+Yes, improved tooling would help.
+
+
+Cheers,
+Bj=C3=B6rn
+
+> regards,
+> dan carpenter
+>

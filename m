@@ -2,69 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5132E95DCE
-	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Aug 2019 13:51:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F225B95EF0
+	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Aug 2019 14:38:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729847AbfHTLts (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 20 Aug 2019 07:49:48 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:4733 "EHLO huawei.com"
+        id S1730155AbfHTMgh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 20 Aug 2019 08:36:37 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:4734 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728283AbfHTLts (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 20 Aug 2019 07:49:48 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id D0C39179BBA873435022;
-        Tue, 20 Aug 2019 19:49:43 +0800 (CST)
-Received: from [127.0.0.1] (10.177.96.96) by DGGEMS411-HUB.china.huawei.com
- (10.3.19.211) with Microsoft SMTP Server id 14.3.439.0; Tue, 20 Aug 2019
- 19:49:40 +0800
-Subject: Re: [PATCH v2 linux-next 0/2] change mux_configure32() to static
-To:     Vinod Koul <vkoul@kernel.org>
-References: <20190814072105.144107-1-maowenan@huawei.com>
- <20190820114105.GW12733@vkoul-mobl.Dlink>
-CC:     <dan.j.williams@intel.com>, <dmaengine@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <bdd606cb-535f-c153-d51f-4571db2d23dc@huawei.com>
-Date:   Tue, 20 Aug 2019 19:48:48 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
+        id S1730042AbfHTMgf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 20 Aug 2019 08:36:35 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 657D8505C93C0B5FABDC;
+        Tue, 20 Aug 2019 20:36:31 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 20 Aug 2019 20:36:24 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <gregkh@linuxfoundation.org>, <jslaby@suse.com>,
+        <linux-serial@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        "Mao Wenan" <maowenan@huawei.com>
+Subject: [PATCH linux-next] tty: serial: add dependence for CONFIG_SERIAL_FSL_LINFLEXUART
+Date:   Tue, 20 Aug 2019 20:40:15 +0800
+Message-ID: <20190820124015.28409-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190820114105.GW12733@vkoul-mobl.Dlink>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.96.96]
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+When CONFIG_SERIAL_FSL_LINFLEXUART=y and CONFIG_PRINTK is not set,
+one compilation error is found as below:
+drivers/tty/serial/fsl_linflexuart.c: In function linflex_earlycon_putchar:
+drivers/tty/serial/fsl_linflexuart.c:608:31: error: CONFIG_LOG_BUF_SHIFT undeclared
+(first use in this function); did you mean CONFIG_ISA_BUS_API?
+  if (earlycon_buf.len >= 1 << CONFIG_LOG_BUF_SHIFT)
+                               ^~~~~~~~~~~~~~~~~~~~
+                               CONFIG_ISA_BUS_API
+This because CONFIG_LOG_BUF_SHIFT is depended on CONFIG_PRINTK, fix this
+by adding dependence for CONFIG_SERIAL_FSL_LINFLEXUART.
 
+Fixes: b953815b819b ("tty: serial: Add linflexuart driver for S32V234")
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ drivers/tty/serial/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-On 2019/8/20 19:41, Vinod Koul wrote:
-> On 14-08-19, 15:21, Mao Wenan wrote:
->> First patch is to make mux_configure32() static to avoid sparse warning,
->> the second patch is to chage alignment of two functions.
-> 
-> The subsystem name is "dmaengine" please use that in future, I have
-> fixed that and applied
-
-Okay, thanks.
-
-> 
->> v2: change subject from "drivers: dma: Fix sparse warning for mux_configure32"
->> to "drivers: dma: make mux_configure32 static", and cleanup the log. And add 
->> one patch to change alignment of two functions. 
->>
->> Mao Wenan (2):
->>   drivers: dma: make mux_configure32 static
->>   drivers: dma: change alignment of mux_configure32 and
->>     fsl_edma_chan_mux
->>
->>  drivers/dma/fsl-edma-common.c | 6 +++---
->>  1 file changed, 3 insertions(+), 3 deletions(-)
->>
->> -- 
->> 2.20.1
-> 
+diff --git a/drivers/tty/serial/Kconfig b/drivers/tty/serial/Kconfig
+index d9caf3242b25..4789b5d62f63 100644
+--- a/drivers/tty/serial/Kconfig
++++ b/drivers/tty/serial/Kconfig
+@@ -1392,6 +1392,7 @@ config SERIAL_FSL_LPUART_CONSOLE
+ 
+ config SERIAL_FSL_LINFLEXUART
+ 	tristate "Freescale linflexuart serial port support"
++	depends on PRINTK
+ 	select SERIAL_CORE
+ 	help
+ 	  Support for the on-chip linflexuart on some Freescale SOCs.
+-- 
+2.20.1
 

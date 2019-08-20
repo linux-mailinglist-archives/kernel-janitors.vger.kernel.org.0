@@ -2,48 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FB329530A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Aug 2019 03:16:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FE1C95364
+	for <lists+kernel-janitors@lfdr.de>; Tue, 20 Aug 2019 03:29:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728772AbfHTBPd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 19 Aug 2019 21:15:33 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:39126 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728615AbfHTBPd (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 19 Aug 2019 21:15:33 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 5DBC214B4DFE0;
-        Mon, 19 Aug 2019 18:15:32 -0700 (PDT)
-Date:   Mon, 19 Aug 2019 18:15:31 -0700 (PDT)
-Message-Id: <20190819.181531.755596030105916368.davem@davemloft.net>
-To:     christophe.jaillet@wanadoo.fr
-Cc:     3chas3@gmail.com, linux-atm-general@lists.sourceforge.net,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] Kconfig: Fix the reference to the IDT77105 Phy driver
- in the description of ATM_NICSTAR_USE_IDT77105
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190819050425.6119-1-christophe.jaillet@wanadoo.fr>
-References: <20190819050425.6119-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 19 Aug 2019 18:15:32 -0700 (PDT)
+        id S1728910AbfHTB3G (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 19 Aug 2019 21:29:06 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:5160 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728734AbfHTB3F (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 19 Aug 2019 21:29:05 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 508F9CBD5AA2E501DB37;
+        Tue, 20 Aug 2019 09:29:00 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 20 Aug 2019 09:28:52 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     "J . Bruce Fields" <bfields@fieldses.org>,
+        Jeff Layton <jeff.layton@primarydata.com>,
+        Weston Andros Adamson <dros@primarydata.com>,
+        Richard Sharpe <richard.sharpe@primarydata.com>,
+        Trond Myklebust <trond.myklebust@primarydata.com>,
+        Chuck Lever <chuck.lever@oracle.com>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-nfs@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH -next] nfsd: remove duplicated include from filecache.c
+Date:   Tue, 20 Aug 2019 01:32:43 +0000
+Message-ID: <20190820013243.129865-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Mon, 19 Aug 2019 07:04:25 +0200
+Remove duplicated include.
 
-> This should be IDT77105, not IDT77015.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ fs/nfsd/filecache.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Applied.
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index 4759fdc8a07e..07939f4834e8 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -6,7 +6,6 @@
+ 
+ #include <linux/hash.h>
+ #include <linux/slab.h>
+-#include <linux/hash.h>
+ #include <linux/file.h>
+ #include <linux/sched.h>
+ #include <linux/list_lru.h>
+
+
+

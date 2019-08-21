@@ -2,43 +2,39 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD09F98493
-	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Aug 2019 21:36:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6404798503
+	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Aug 2019 22:02:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730551AbfHUTc7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 21 Aug 2019 15:32:59 -0400
-Received: from mout.web.de ([217.72.192.78]:56811 "EHLO mout.web.de"
+        id S1730167AbfHUUAr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 21 Aug 2019 16:00:47 -0400
+Received: from mout.web.de ([212.227.17.11]:36649 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729847AbfHUTas (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 21 Aug 2019 15:30:48 -0400
+        id S1728231AbfHUUAr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 21 Aug 2019 16:00:47 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1566415815;
-        bh=3lpmHRFKH7F6csdOCSSofXDaB6xUBXTTVPtUFzk3mTQ=;
+        s=dbaedf251592; t=1566417621;
+        bh=UhJ5i7TA1V0uuPUEJy3RpLR3oAsEV5c3daK+sRLgryc=;
         h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=Q+kKxxvSwaDq2hNsdqqQrOm0qV1rsKFBiQ7a1GulpVT2UVzmbzl7oh3lKHKkt6M9z
-         E6d3O3w/XwSZErQI3NY7EW7gG7i9JmKCNISmfMyhtvU4gYX5PIdoLGLeHzenYBi61N
-         cwZsSLQzkC8FCf9M28INRuUM3S7LCZEMxN7mzz7k=
+        b=Uk8PJJPceFLQVrrW11QgDdA7pZbQcmr1waaerb+4a20Ee4cHWaIh6BPUaEkxmMjHB
+         eLWXDBT8M9F8ZBEq6P2i4D0/wmWpWua1OcQvo1Dyj17dw+K0TwyapajyANjVu/OYBC
+         VHQT1NVJ8/eyPn6JTX8/MFrcDTk1d9RCKBOnDROM=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([78.48.9.44]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MFc1h-1i3Z7j3v5p-00Ef3a; Wed, 21
- Aug 2019 21:30:15 +0200
-To:     linux-can@vger.kernel.org, netdev@vger.kernel.org,
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lr2dj-1iVTk60KkV-00egv3; Wed, 21
+ Aug 2019 22:00:21 +0200
+To:     linux-hams@vger.kernel.org, netdev@vger.kernel.org,
         Allison Randal <allison@lohutok.net>,
         "David S. Miller" <davem@davemloft.net>,
-        Enrico Weigelt <lkml@metux.net>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        Sean Nyekjaer <sean@geanix.com>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Richard Fontana <rfontana@redhat.com>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Weitao Hou <houweitaoo@gmail.com>,
-        Wolfgang Grandegger <wg@grandegger.com>
+        Thomas Sailer <t.sailer@alumni.ethz.ch>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: =?UTF-8?Q?=5bPATCH=5d_can=3a_Delete_unnecessary_checks_before_the_m?=
- =?UTF-8?B?YWNybyBjYWxsIOKAnGRldl9rZnJlZV9za2LigJ0=?=
+Subject: =?UTF-8?Q?=5bPATCH=5d_hamradio=3a_Delete_unnecessary_checks_before_?=
+ =?UTF-8?B?dGhlIG1hY3JvIGNhbGwg4oCcZGV2X2tmcmVlX3NrYuKAnQ==?=
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -83,44 +79,44 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <27674907-fd2a-7f0c-84fd-d8b5124739a9@web.de>
-Date:   Wed, 21 Aug 2019 21:30:11 +0200
+Message-ID: <61fc7b82-dbc0-93e4-bf43-9856eb4c6688@web.de>
+Date:   Wed, 21 Aug 2019 22:00:16 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:3UUCaBDFFXjC3jkkiegfpEDT3e0kV/rF33z4mztvCPFs1e+I4pH
- zE8g62+GO6s/2u/BI4gYuH9TCH3+5p+Dx3QormIx/6A8L4RBX8L5Z7vvvuMPXZN72tXg8mr
- r9cN2+Bsoy2dtsuafeNJ/xmo9CCpg6dTQWouoQYc3OXtPMPU0OeJ3kq5tG+I47JVIzuCys+
- 6uiya24Xc8uHJnkoi82yQ==
+X-Provags-ID: V03:K1:C5op8ec1ZG6f10wzneSxJYJOWijCKZevj2CyHL3ZNPOKGNKH9n2
+ xQAKyQ79n0/m0cnjLjVhVgTEFhf1xynQLpK9FRx+Ek1aNAV/42kvpPe+Mtbjc5qmll1kUrp
+ yb02DDmnc9AzagCHLymkvcXf2Umsa1XU1lbhTC1F7zZg98qkRTdrpYIFLpT9znmAprH26hv
+ JoCO577L86mOpjX2fdD9g==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:mABiV/a9xtY=:gyp8l8IKQUYwASclxPRe5P
- CUhnE9HbmTH6u7c7VY6vQbal2VQKbfh9lBTQo6pB4ekLGFDQrCTG1p4Q1BFRhKGXdVQc8ZsAL
- BySH2RUwLNKhv39T7nMGa/Wvuju71HwZgn/qNQgiV4liV0Dfntf0XuZ1JykeqASgFGXzurcJD
- vmd/DbQQaVBm9y3LxWYGbDdBl3/eFV/TZs0QCmkTNtg6LX6BxZLzMsDqCkRa5Ly0++C9b+3Un
- WxpvT1s+ZOCTZ0MHa5/VHecliRKqYSRFKokrJt+yaT+MF25i8QuTI8HbtRbYe2CzpOJkpNIIT
- TpaH5NpAQWPvU6YhiWnhtagTyjglB5K2jfPAXcAhAjy9bqAQ0duFVepHIx9FWnMH6boID1WXz
- L5pSaRqa4jL6pr4upr2BDs2dDleRqvO/SYbq1VryW6XIg486L8pO2Pgt7ory4N5lN64sRkyMY
- yXUUvGByATsTEHIYQS5UX61ReJ9Hho+iSOf377Yn7KEY4i+ycXvQFcesMJD+PREcOQN/f4z3V
- H9zWkdJ/rYB7Q5NdegrMDGhrxfe1sNT3YGaK/JApHWNJXmUBPhOswm4OqnLaMioVX3RqH+4hD
- nvhF7J/4yTkCP5zZ7uaSmpN1XFDlX6Qsl11rrcaHo6BIKBEX6dlsLFmFmAuByrbs51gSLLWiN
- omPPXpNGccAboqcOUc8+n3qpxiPPKFdBgzzFtOVAMoMVb2QIwibKC8Z/de5EOQV7eYOOXpJVE
- IjjaXGGDAe8tq1w/JBCICAQnxYZHRtvP/dgFCQjol4OsinzryAOXN3ayuLiS9nilpwQdTWRnN
- M/2KL0mkyTyHQtVy6G4+yth8+4x2yb9mKACakfpdVtsg1zuS0UEuxBsHMiC2REKZK/soASgHk
- Zp0+p6UoNXMSBS9soIuC53Eg5jQ1fFQDaDYip4uimylmQ6sIjCu9VL75Qdd1NAQXl9699GZ3H
- Vt1++gPq4TZjLwfbCM/V0mLINvMeoK1vyo7eyB4g0G4+VKlqhC5xfUiTLod+PBbTPcJXmOo0W
- KlW1b49m7PoZsz6YZwp13M57WfYwrTcMFBak/ajqfy9ugcnEKAAeetHBQ2dMpNWS61nCPzz5Q
- Yn4m0KNZdGtfsS/On2aojRkO08/vcGy5mxX6hAErOZGV+0q8/zKXT9aohsLdDzjBSPE3yiqRn
- 43d5g=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:4+phC+F1Jmo=:0Ag5hNhC1LhU3cJoxwsR7n
+ QCg2Ljhxudp7Y47tQ2fLs58W/k16LPUyrPL3DL8zXohxeLdygEt1+Mst4p+iqOLLsMG1Q8dBV
+ QEo+XDOo9NMHI89nBH3/+grHPKNTZPR39P1/nbXR4g2kNN8b8BX86Oj2YT3kRYoB9upIL1JNP
+ njFYjAz/0f1Vu6q8KHddWW+FRySapY8azNlh5MLYQSUa+wKAh3kLu/RoheSS98+UuWFhs5K1O
+ 5lcgat0lNzwBl7Vytj7Eku5LokNxLkmPKihqSrAgAq2gMP2U+lVXOzFxqr5MTJhcnaVVh2sMe
+ pn+1yiKbgTG70lk4+VepL+4MYMJvErIuS0ljZrWu3+5EoHC9z3uHHzNM777MARqBMpIgzE6vm
+ 6GcWXWrubPzhF4+2xDzJ2EsB3SQGB5TYWzc7mPWuYCy/HMg23ECKTgmuZmoQVx2TMF1FHZDFq
+ Wdh4IuA7mYK9GnzM5tFqvqRgj5ozph89ZtW9PzrM6zKu5HddmiSVQzIOoyvIqDtqTQCwytelW
+ sCAYi9y2VgpCcvlSYBnvOcsz1RbxhhzO7nTZk4jsnV3Z1MnI2+tQaVbMmcpIVvfMrcP29F+dQ
+ xJJKoTTwIGzSqePN4MEo44j91+xLb2ITVoW8iJM7AoVb0pb19AOmVm31DqT2IiqcNGgTR/UQU
+ 6Nb3fV/Aeytt71hB+M4rtcYy8BU761PG2U1moqojKNPbfgMdi3OiKlyFwXu3+hHDKK6fvlvX+
+ 9teCoZnUTa75HAsOCUSTnxTHaqP6q/OoBVnq4+oyDr3KJROuMhFmR1hT1BZViwxncVRDA84YQ
+ 7P/3GrKfsYKPyMG80nBEZr0u+irLEQ+n51AesV9P+nIKvhrBXyDQf/Gcao0P+LMofcxHyHoqx
+ HrPprs56m7FtQjPwtmaJnBtClgYCao9cc4vBAdcfxMXPwlDa/9f7iK7BfnShTz6uJQx1u+O6m
+ 52Z6QOrKcUL/XnJ2O7Lxc4MXsVodBVhzBu3EnSZZD88H9oKgkXKbJjUt5PLnBsgQOdRCmrfSS
+ crHQVAU+eg/ydJYI0A7UNxepZcmvW1b3rCiyAhE+DLqcdSHJph5knVfwEozIQZp+CURRHg5iQ
+ CADIMznYhLw46xmVOwf8jNN9mYnZcY+hrQ/Sw9mV9coWHkejNOe32UZB/dn7VNoRdHx8cKT4s
+ i/ArtGYJwadFMjcjNiVkUnQUGoAzeEjw0vzGVdVNQsoMQFaQ==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 21 Aug 2019 21:16:15 +0200
+Date: Wed, 21 Aug 2019 21:48:46 +0200
 
 The dev_kfree_skb() function performs also input parameter validation.
 Thus the test around the shown calls is not needed.
@@ -129,38 +125,40 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/net/can/spi/hi311x.c  | 3 +--
- drivers/net/can/spi/mcp251x.c | 3 +--
+ drivers/net/hamradio/baycom_epp.c | 3 +--
+ drivers/net/hamradio/hdlcdrv.c    | 3 +--
  2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
-index 03a711c3221b..7c7c7e78214c 100644
-=2D-- a/drivers/net/can/spi/hi311x.c
-+++ b/drivers/net/can/spi/hi311x.c
-@@ -184,8 +184,7 @@ static void hi3110_clean(struct net_device *net)
+diff --git a/drivers/net/hamradio/baycom_epp.c b/drivers/net/hamradio/bayc=
+om_epp.c
+index 9303aeb2595f..4476491b58f9 100644
+=2D-- a/drivers/net/hamradio/baycom_epp.c
++++ b/drivers/net/hamradio/baycom_epp.c
+@@ -961,8 +961,7 @@ static int epp_close(struct net_device *dev)
+ 	parport_write_control(pp, 0); /* reset the adapter */
+         parport_release(bc->pdev);
+         parport_unregister_device(bc->pdev);
+-	if (bc->skb)
+-		dev_kfree_skb(bc->skb);
++	dev_kfree_skb(bc->skb);
+ 	bc->skb =3D NULL;
+ 	printk(KERN_INFO "%s: close epp at iobase 0x%lx irq %u\n",
+ 	       bc_drvname, dev->base_addr, dev->irq);
+diff --git a/drivers/net/hamradio/hdlcdrv.c b/drivers/net/hamradio/hdlcdrv=
+.c
+index c6f83e0df0a3..df495b5595f5 100644
+=2D-- a/drivers/net/hamradio/hdlcdrv.c
++++ b/drivers/net/hamradio/hdlcdrv.c
+@@ -475,8 +475,7 @@ static int hdlcdrv_close(struct net_device *dev)
 
- 	if (priv->tx_skb || priv->tx_len)
- 		net->stats.tx_errors++;
--	if (priv->tx_skb)
--		dev_kfree_skb(priv->tx_skb);
-+	dev_kfree_skb(priv->tx_skb);
- 	if (priv->tx_len)
- 		can_free_echo_skb(priv->net, 0);
- 	priv->tx_skb =3D NULL;
-diff --git a/drivers/net/can/spi/mcp251x.c b/drivers/net/can/spi/mcp251x.c
-index 12358f06d194..1c496d2adb45 100644
-=2D-- a/drivers/net/can/spi/mcp251x.c
-+++ b/drivers/net/can/spi/mcp251x.c
-@@ -274,8 +274,7 @@ static void mcp251x_clean(struct net_device *net)
-
- 	if (priv->tx_skb || priv->tx_len)
- 		net->stats.tx_errors++;
--	if (priv->tx_skb)
--		dev_kfree_skb(priv->tx_skb);
-+	dev_kfree_skb(priv->tx_skb);
- 	if (priv->tx_len)
- 		can_free_echo_skb(priv->net, 0);
- 	priv->tx_skb =3D NULL;
+ 	if (s->ops && s->ops->close)
+ 		i =3D s->ops->close(dev);
+-	if (s->skb)
+-		dev_kfree_skb(s->skb);
++	dev_kfree_skb(s->skb);
+ 	s->skb =3D NULL;
+ 	s->opened =3D 0;
+ 	return i;
 =2D-
 2.23.0
 

@@ -2,45 +2,45 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E74C9730B
-	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Aug 2019 09:10:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 955D797312
+	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Aug 2019 09:11:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727504AbfHUHKN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 21 Aug 2019 03:10:13 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:40370 "EHLO
+        id S1727469AbfHUHLj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 21 Aug 2019 03:11:39 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:42480 "EHLO
         userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727206AbfHUHKN (ORCPT
+        with ESMTP id S1726953AbfHUHLj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 21 Aug 2019 03:10:13 -0400
+        Wed, 21 Aug 2019 03:11:39 -0400
 Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7L791VL056530;
-        Wed, 21 Aug 2019 07:10:06 GMT
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7L79J2u056994;
+        Wed, 21 Aug 2019 07:11:32 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2019-08-05; bh=en2vKBGfxU9xNd7R+KnkNsD7JrLQKyLTZlqk0KmNiiA=;
- b=QhIkl/oqzvCI2Hc12/tXiOOVcrwTrAXizgkEkxdeCX3F4q7qHu4zRpGpcwi6EWHZz5Mc
- XxJJoKuFUnI93TwRoZKbZEF2Q1Edk1xOOfBX7wSroWA8rIc/TQ+9lAN7kq4vK8qCXXky
- MjWo15njAU0B5cf3awzBFkSF73jYrtSl8x4kHiFChESgyhW89jS5CiVOu2r7hN/s1BO7
- Vw4s5qzvxzHKZebEXefdFstJTaNnOaUxE5nrnxAKX0xJPFB9cgKD8iG3/jv8A+JBKHZA
- DYT3X4R4+jXq1c3paowQ+K6g8PM31/4J2+aUdY5O2Oa9uA+WRLwL1tHxdTRPzZG09u2s 3w== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 2ue90tkhcj-1
+ s=corp-2019-08-05; bh=PeEYBjRkrZrJgUlTahPbCoreypkCDfbVuOOIwHgF/4Q=;
+ b=i06/gsNJRNPbkEmrwV10HUGnXLN+rk7Dx1sGF860r5/YaJZuUJtMaYEr0x3O4/C9z9hr
+ a/Jr4eAA2Tp3yt1Awgn+mNUsp2BunUIeOzGmSdv1P9V7mmSJA5U7bLhCO4t2rk1lgE/9
+ g3m42HhoIExyjdk/vvpxsA0CgaDyX7yDy/o5C2OL1/lJEH2OB/jyusVH52B7q4WWGt5p
+ 8BpJ4dEo+kNTW7pbMSls+d+2/prICn0hnmofBYi97D39WvfSfUjFV50di9AUDIwnULtZ
+ tt95NzyBDB/Dr0go4vKNjlyG2F2CLqhMB2cVZvoG/ITNH+fXqv9NAXqstVWun4Hv1BP2 1g== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 2ue90tkhpq-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 21 Aug 2019 07:10:06 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7L78hXh115021;
-        Wed, 21 Aug 2019 07:10:06 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 2ug269nf38-1
+        Wed, 21 Aug 2019 07:11:32 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7L77uju185152;
+        Wed, 21 Aug 2019 07:11:31 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 2ug1ga8px0-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 21 Aug 2019 07:10:06 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x7L7A1vw023745;
-        Wed, 21 Aug 2019 07:10:01 GMT
+        Wed, 21 Aug 2019 07:11:31 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7L7BT0N027931;
+        Wed, 21 Aug 2019 07:11:30 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 21 Aug 2019 00:10:00 -0700
-Date:   Wed, 21 Aug 2019 10:09:53 +0300
+        with ESMTP ; Wed, 21 Aug 2019 00:11:29 -0700
+Date:   Wed, 21 Aug 2019 10:11:22 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
 To:     Derek Kiernan <derek.kiernan@xilinx.com>,
         Dragan Cvetic <dragan.cvetic@xilinx.com>
@@ -49,9 +49,9 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         Michal Simek <michal.simek@xilinx.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH 3/4] misc: xilinx_sdfec: Prevent a divide by zero in
- xsdfec_reg0_write()
-Message-ID: <20190821070953.GC26957@mwanda>
+Subject: [PATCH 4/4] misc: xilinx_sdfec: Prevent integer overflow in
+ xsdfec_table_write()
+Message-ID: <20190821071122.GD26957@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -74,31 +74,30 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "psize" value comes from the user so we need to verify that it's
-non-zero before we check if "n % psize" or it will crash.
+The checking here needs to handle integer overflows because "offset" and
+"len" come from the user.
 
 Fixes: 20ec628e8007 ("misc: xilinx_sdfec: Add ability to configure LDPC")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-The parentheses in this condition are a no-op.  They're just confusing.
-Perhaps something else was intended?
-
- drivers/misc/xilinx_sdfec.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/misc/xilinx_sdfec.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/misc/xilinx_sdfec.c b/drivers/misc/xilinx_sdfec.c
-index 813b82c59360..3fc53d20abf3 100644
+index 3fc53d20abf3..0bf3bcc8e1ef 100644
 --- a/drivers/misc/xilinx_sdfec.c
 +++ b/drivers/misc/xilinx_sdfec.c
-@@ -460,7 +460,7 @@ static int xsdfec_reg0_write(struct xsdfec_dev *xsdfec, u32 n, u32 k, u32 psize,
- {
- 	u32 wdata;
- 
--	if (n < XSDFEC_REG0_N_MIN || n > XSDFEC_REG0_N_MAX ||
-+	if (n < XSDFEC_REG0_N_MIN || n > XSDFEC_REG0_N_MAX || psize == 0 ||
- 	    (n > XSDFEC_REG0_N_MUL_P * psize) || n <= k || ((n % psize) != 0)) {
- 		dev_dbg(xsdfec->dev, "N value is not in range");
+@@ -611,7 +611,9 @@ static int xsdfec_table_write(struct xsdfec_dev *xsdfec, u32 offset,
+ 	 * Writes that go beyond the length of
+ 	 * Shared Scale(SC) table should fail
+ 	 */
+-	if ((XSDFEC_REG_WIDTH_JUMP * (offset + len)) > depth) {
++	if (offset > depth / XSDFEC_REG_WIDTH_JUMP ||
++	    len > depth / XSDFEC_REG_WIDTH_JUMP ||
++	    offset + len > depth / XSDFEC_REG_WIDTH_JUMP) {
+ 		dev_dbg(xsdfec->dev, "Write exceeds SC table length");
  		return -EINVAL;
+ 	}
 -- 
 2.20.1
 

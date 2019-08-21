@@ -2,39 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6404798503
-	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Aug 2019 22:02:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D6449858E
+	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Aug 2019 22:24:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730167AbfHUUAr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 21 Aug 2019 16:00:47 -0400
-Received: from mout.web.de ([212.227.17.11]:36649 "EHLO mout.web.de"
+        id S1728969AbfHUUYb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 21 Aug 2019 16:24:31 -0400
+Received: from mout.web.de ([212.227.17.12]:47619 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728231AbfHUUAr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 21 Aug 2019 16:00:47 -0400
+        id S1727014AbfHUUYb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 21 Aug 2019 16:24:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1566417621;
-        bh=UhJ5i7TA1V0uuPUEJy3RpLR3oAsEV5c3daK+sRLgryc=;
+        s=dbaedf251592; t=1566419058;
+        bh=VNQY+ZmbCZzJoVAMnbzoqAo320qHdd8HBCfC8P3oEsQ=;
         h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=Uk8PJJPceFLQVrrW11QgDdA7pZbQcmr1waaerb+4a20Ee4cHWaIh6BPUaEkxmMjHB
-         eLWXDBT8M9F8ZBEq6P2i4D0/wmWpWua1OcQvo1Dyj17dw+K0TwyapajyANjVu/OYBC
-         VHQT1NVJ8/eyPn6JTX8/MFrcDTk1d9RCKBOnDROM=
+        b=aR2HO5vCArAroXgeUrYAEDof3jwPLQ4+GRPz0nZmtBfU0GaZ4h4s+R1B9KawBDImi
+         JAVXQ/qkgEZavUhye5m+Tn0+zlwJY0j7+ilR+RDLqRZoYJQMGBwX4wnAwcQpUzIqCv
+         SycrrTogtL9XbPiWcKJErVy5v165vDXpdnU8f5fU=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([78.48.9.44]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lr2dj-1iVTk60KkV-00egv3; Wed, 21
- Aug 2019 22:00:21 +0200
-To:     linux-hams@vger.kernel.org, netdev@vger.kernel.org,
-        Allison Randal <allison@lohutok.net>,
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LpwB1-1iUOWM3bTL-00fnHN; Wed, 21
+ Aug 2019 22:24:18 +0200
+To:     linux-usb@vger.kernel.org, netdev@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Kate Stewart <kstewart@linuxfoundation.org>,
-        Richard Fontana <rfontana@redhat.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Thomas Sailer <t.sailer@alumni.ethz.ch>
+        Petko Manolov <petkan@nucleusys.com>,
+        Steve Winslow <swinslow@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: =?UTF-8?Q?=5bPATCH=5d_hamradio=3a_Delete_unnecessary_checks_before_?=
- =?UTF-8?B?dGhlIG1hY3JvIGNhbGwg4oCcZGV2X2tmcmVlX3NrYuKAnQ==?=
+Subject: =?UTF-8?Q?=5bPATCH=5d_net=3a_usb=3a_Delete_unnecessary_checks_befor?=
+ =?UTF-8?B?ZSB0aGUgbWFjcm8gY2FsbCDigJxkZXZfa2ZyZWVfc2ti4oCd?=
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -79,44 +78,44 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <61fc7b82-dbc0-93e4-bf43-9856eb4c6688@web.de>
-Date:   Wed, 21 Aug 2019 22:00:16 +0200
+Message-ID: <425214be-355b-92c0-bc74-1d0ea899290f@web.de>
+Date:   Wed, 21 Aug 2019 22:24:16 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:C5op8ec1ZG6f10wzneSxJYJOWijCKZevj2CyHL3ZNPOKGNKH9n2
- xQAKyQ79n0/m0cnjLjVhVgTEFhf1xynQLpK9FRx+Ek1aNAV/42kvpPe+Mtbjc5qmll1kUrp
- yb02DDmnc9AzagCHLymkvcXf2Umsa1XU1lbhTC1F7zZg98qkRTdrpYIFLpT9znmAprH26hv
- JoCO577L86mOpjX2fdD9g==
+X-Provags-ID: V03:K1:jFIJT+Q1Ibe/eal+vXdIE/RL9fhDs5LiS/YB/LPMcccmxCIaowF
+ AymYymTWKvlURv0OvC4wVcSuchgR/fli/uf9UxivYf+etVEEY23eE/XhfxuqpGpuY+r94mz
+ FG+c/3Egw+pwS98nVplYVkIah2HPQbFwgqSLLfMyWlHOyTrWhIMjMFQI2CpYdlGiBqsCUgB
+ deisjnDMiH0p3ZIkdsDyw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:4+phC+F1Jmo=:0Ag5hNhC1LhU3cJoxwsR7n
- QCg2Ljhxudp7Y47tQ2fLs58W/k16LPUyrPL3DL8zXohxeLdygEt1+Mst4p+iqOLLsMG1Q8dBV
- QEo+XDOo9NMHI89nBH3/+grHPKNTZPR39P1/nbXR4g2kNN8b8BX86Oj2YT3kRYoB9upIL1JNP
- njFYjAz/0f1Vu6q8KHddWW+FRySapY8azNlh5MLYQSUa+wKAh3kLu/RoheSS98+UuWFhs5K1O
- 5lcgat0lNzwBl7Vytj7Eku5LokNxLkmPKihqSrAgAq2gMP2U+lVXOzFxqr5MTJhcnaVVh2sMe
- pn+1yiKbgTG70lk4+VepL+4MYMJvErIuS0ljZrWu3+5EoHC9z3uHHzNM777MARqBMpIgzE6vm
- 6GcWXWrubPzhF4+2xDzJ2EsB3SQGB5TYWzc7mPWuYCy/HMg23ECKTgmuZmoQVx2TMF1FHZDFq
- Wdh4IuA7mYK9GnzM5tFqvqRgj5ozph89ZtW9PzrM6zKu5HddmiSVQzIOoyvIqDtqTQCwytelW
- sCAYi9y2VgpCcvlSYBnvOcsz1RbxhhzO7nTZk4jsnV3Z1MnI2+tQaVbMmcpIVvfMrcP29F+dQ
- xJJKoTTwIGzSqePN4MEo44j91+xLb2ITVoW8iJM7AoVb0pb19AOmVm31DqT2IiqcNGgTR/UQU
- 6Nb3fV/Aeytt71hB+M4rtcYy8BU761PG2U1moqojKNPbfgMdi3OiKlyFwXu3+hHDKK6fvlvX+
- 9teCoZnUTa75HAsOCUSTnxTHaqP6q/OoBVnq4+oyDr3KJROuMhFmR1hT1BZViwxncVRDA84YQ
- 7P/3GrKfsYKPyMG80nBEZr0u+irLEQ+n51AesV9P+nIKvhrBXyDQf/Gcao0P+LMofcxHyHoqx
- HrPprs56m7FtQjPwtmaJnBtClgYCao9cc4vBAdcfxMXPwlDa/9f7iK7BfnShTz6uJQx1u+O6m
- 52Z6QOrKcUL/XnJ2O7Lxc4MXsVodBVhzBu3EnSZZD88H9oKgkXKbJjUt5PLnBsgQOdRCmrfSS
- crHQVAU+eg/ydJYI0A7UNxepZcmvW1b3rCiyAhE+DLqcdSHJph5knVfwEozIQZp+CURRHg5iQ
- CADIMznYhLw46xmVOwf8jNN9mYnZcY+hrQ/Sw9mV9coWHkejNOe32UZB/dn7VNoRdHx8cKT4s
- i/ArtGYJwadFMjcjNiVkUnQUGoAzeEjw0vzGVdVNQsoMQFaQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:HzLO6KbUB5U=:YUaWhZVedtxrKGftc9oH9Z
+ nwa1ox3jY/BFfqc3mv2JaFEgsFaUOiCRUKAzBaNR54MyqAgfPFiN/rgXzujtTtpleVlluON41
+ sOgqQGStfpFOq+VzRxWSbnCkOt++8tts6wFlc00KD+qFlvwRMJ2WYcLQmJhvFI5wyvFbpDESi
+ fFioWzIb4BH3CzMBJVd2gMYDr4bVitbVATXos3sKremDeOl5yQe2XD22lCEnGoFXDTx4XoKwl
+ XzrLUO/TBYgaQjo9znDBNKA3kx4D0M2KgW22mdlPMF4rw0eUGjwfTJPtMTtoB8L5MTVEv6aM4
+ x2dElgdDmq/BQBEkdLgBnnn+hT7XcUvRybe75xpHX50WyXPmtVpXU4TVbPRnBV3ox2hk+1PYS
+ YBmATmMmqbkdEtoMBZXK+yaKny4Hb0CMFYH0slMqy3KrjfKxa3sG86wL3URSmhp6zbXDb+3jL
+ uunRB2heRx1qwBilNkSP8o3E4HLGn3s0WBoLq+nBJ8oggz0RKiAlJ/4aO0RuBru8AHrMiaU7j
+ uPobMsKlmaz/1uouvsfmSIlpWGOlvk7Se0efDjCx3XWnikGOL4wkG/n+uygsTR+c7vdwMeh2n
+ Rba7gqs8aGhNEBvL0IQgELIllOAyn1DdS6zHDg3qnjUYEJ+9SNCh+5fU2dn3hhpPmSPsaOHe/
+ L77nG+vbXyLJGh/Vs5vYqiu1HVVPAGawu3HcSOV0O5a79MxaBqLwm4mIplWYEhH9jqh28uVNv
+ R2u7vhJ+1BzxV9U+mSXe3j92rjASQMgt56dJTrZSTyegUysP9TQ07jNAW/SfAsJCWXABEVJm0
+ J4KNleb8J8PiBFxN/UtAZv0IwSaEFPU64ftGlQ5R2sfHo4uIS+BQzIQiyHkOnOQ01Cu8XRZf3
+ F2PmdCf1NE89PrtZhQ1DY89yqGVBjZFqUGsaDpPMDqpQ/4CLdFZ0edcPLDFbqW8wZBeWokkna
+ l/LZXx1O/SNUnU6GnFIWeaj+fNX3QLV+fRErdUWbu/ptWoXowGYmX7EaITGbsvx1nnbUoMcKQ
+ 6vtEgVou/2y5L16jl0ku4B/ho8ina24hPb7Ge57Jec3LNukpggEk25PZOodOL296ADe7W5cLE
+ EfIfyDPecG4Ne6aE490WzagseNgnQ+5aXpjSssrCQJuD9K0+hgEdmeTry2v1XNAaRGFOr2gAn
+ LNSHA=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 21 Aug 2019 21:48:46 +0200
+Date: Wed, 21 Aug 2019 22:16:02 +0200
 
 The dev_kfree_skb() function performs also input parameter validation.
 Thus the test around the shown calls is not needed.
@@ -125,40 +124,51 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/net/hamradio/baycom_epp.c | 3 +--
- drivers/net/hamradio/hdlcdrv.c    | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/usb/lg-vl600.c | 4 +---
+ drivers/net/usb/rtl8150.c  | 6 ++----
+ 2 files changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/hamradio/baycom_epp.c b/drivers/net/hamradio/bayc=
-om_epp.c
-index 9303aeb2595f..4476491b58f9 100644
-=2D-- a/drivers/net/hamradio/baycom_epp.c
-+++ b/drivers/net/hamradio/baycom_epp.c
-@@ -961,8 +961,7 @@ static int epp_close(struct net_device *dev)
- 	parport_write_control(pp, 0); /* reset the adapter */
-         parport_release(bc->pdev);
-         parport_unregister_device(bc->pdev);
--	if (bc->skb)
--		dev_kfree_skb(bc->skb);
-+	dev_kfree_skb(bc->skb);
- 	bc->skb =3D NULL;
- 	printk(KERN_INFO "%s: close epp at iobase 0x%lx irq %u\n",
- 	       bc_drvname, dev->base_addr, dev->irq);
-diff --git a/drivers/net/hamradio/hdlcdrv.c b/drivers/net/hamradio/hdlcdrv=
-.c
-index c6f83e0df0a3..df495b5595f5 100644
-=2D-- a/drivers/net/hamradio/hdlcdrv.c
-+++ b/drivers/net/hamradio/hdlcdrv.c
-@@ -475,8 +475,7 @@ static int hdlcdrv_close(struct net_device *dev)
+diff --git a/drivers/net/usb/lg-vl600.c b/drivers/net/usb/lg-vl600.c
+index 6c2b3e368efe..217a2d8fa47b 100644
+=2D-- a/drivers/net/usb/lg-vl600.c
++++ b/drivers/net/usb/lg-vl600.c
+@@ -87,9 +87,7 @@ static void vl600_unbind(struct usbnet *dev, struct usb_=
+interface *intf)
+ {
+ 	struct vl600_state *s =3D dev->driver_priv;
 
- 	if (s->ops && s->ops->close)
- 		i =3D s->ops->close(dev);
--	if (s->skb)
--		dev_kfree_skb(s->skb);
-+	dev_kfree_skb(s->skb);
- 	s->skb =3D NULL;
- 	s->opened =3D 0;
- 	return i;
+-	if (s->current_rx_buf)
+-		dev_kfree_skb(s->current_rx_buf);
+-
++	dev_kfree_skb(s->current_rx_buf);
+ 	kfree(s);
+
+ 	return usbnet_cdc_unbind(dev, intf);
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index 98f33e270af1..13e51ccf0214 100644
+=2D-- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -586,8 +586,7 @@ static void free_skb_pool(rtl8150_t *dev)
+ 	int i;
+
+ 	for (i =3D 0; i < RX_SKB_POOL_SIZE; i++)
+-		if (dev->rx_skb_pool[i])
+-			dev_kfree_skb(dev->rx_skb_pool[i]);
++		dev_kfree_skb(dev->rx_skb_pool[i]);
+ }
+
+ static void rx_fixup(unsigned long data)
+@@ -946,8 +945,7 @@ static void rtl8150_disconnect(struct usb_interface *i=
+ntf)
+ 		unlink_all_urbs(dev);
+ 		free_all_urbs(dev);
+ 		free_skb_pool(dev);
+-		if (dev->rx_skb)
+-			dev_kfree_skb(dev->rx_skb);
++		dev_kfree_skb(dev->rx_skb);
+ 		kfree(dev->intr_buff);
+ 		free_netdev(dev->netdev);
+ 	}
 =2D-
 2.23.0
 

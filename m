@@ -2,39 +2,43 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5126D9837B
-	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Aug 2019 20:47:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD09F98493
+	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Aug 2019 21:36:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728782AbfHUSpo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 21 Aug 2019 14:45:44 -0400
-Received: from mout.web.de ([217.72.192.78]:35403 "EHLO mout.web.de"
+        id S1730551AbfHUTc7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 21 Aug 2019 15:32:59 -0400
+Received: from mout.web.de ([217.72.192.78]:56811 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728062AbfHUSpo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 21 Aug 2019 14:45:44 -0400
+        id S1729847AbfHUTas (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 21 Aug 2019 15:30:48 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1566413112;
-        bh=Eokj4/dGveTY43m2jdkJoZSE3kMn9PBFEqOcaiphGUM=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=jutwR2eiz2109XM8V3rCnhid4vnGN6tiNemZlrlGaQk/3LXtp+LOtLX7xT22Ebc3Y
-         NzCFOeTaWPAAQA07usj5LYV64t+60SbsUAbItdTqjUcueTbtloKVxZmvbv36sEE6MY
-         d7lT1xuXvfoV+84WR7ne+Q2oAudlJ3alV34aPfxs=
+        s=dbaedf251592; t=1566415815;
+        bh=3lpmHRFKH7F6csdOCSSofXDaB6xUBXTTVPtUFzk3mTQ=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=Q+kKxxvSwaDq2hNsdqqQrOm0qV1rsKFBiQ7a1GulpVT2UVzmbzl7oh3lKHKkt6M9z
+         E6d3O3w/XwSZErQI3NY7EW7gG7i9JmKCNISmfMyhtvU4gYX5PIdoLGLeHzenYBi61N
+         cwZsSLQzkC8FCf9M28INRuUM3S7LCZEMxN7mzz7k=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([78.48.9.44]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M9XUJ-1i6KcZ1cND-00D02j; Wed, 21
- Aug 2019 20:45:12 +0200
-To:     netdev@vger.kernel.org, Alexios Zavras <alexios.zavras@intel.com>,
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MFc1h-1i3Z7j3v5p-00Ef3a; Wed, 21
+ Aug 2019 21:30:15 +0200
+To:     linux-can@vger.kernel.org, netdev@vger.kernel.org,
         Allison Randal <allison@lohutok.net>,
-        Armijn Hemel <armijn@tjaldur.nl>,
-        Arnd Bergmann <arnd@arndb.de>,
         "David S. Miller" <davem@davemloft.net>,
-        Fuqian Huang <huangfq.daxian@gmail.com>,
+        Enrico Weigelt <lkml@metux.net>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        Kangjie Lu <kjlu@umn.edu>, Karsten Keil <isdn@linux-pingi.de>,
-        Thomas Gleixner <tglx@linutronix.de>
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Lukas Wunner <lukas@wunner.de>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Sean Nyekjaer <sean@geanix.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Weitao Hou <houweitaoo@gmail.com>,
+        Wolfgang Grandegger <wg@grandegger.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: =?UTF-8?Q?=5bPATCH=5d_mISDN=3a_Delete_unnecessary_checks_before_the?=
- =?UTF-8?B?IG1hY3JvIGNhbGwg4oCcZGV2X2tmcmVlX3NrYuKAnQ==?=
+Subject: =?UTF-8?Q?=5bPATCH=5d_can=3a_Delete_unnecessary_checks_before_the_m?=
+ =?UTF-8?B?YWNybyBjYWxsIOKAnGRldl9rZnJlZV9za2LigJ0=?=
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -79,46 +83,44 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Message-ID: <689e51d5-9a43-45a4-5d33-75a34eba928a@web.de>
-Date:   Wed, 21 Aug 2019 20:45:09 +0200
+Message-ID: <27674907-fd2a-7f0c-84fd-d8b5124739a9@web.de>
+Date:   Wed, 21 Aug 2019 21:30:11 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:tfdwBbPeOWePy27r9PwGdU/kLMoC3bUX8xhhCbRIdhXGahPB0zo
- vMnMaiFtA63rO08Zph4PUaAyrRO3urn+8dt3+mZu4EzI96xTKRpCw5enexlJPCSijDNT9Zn
- Kl4yTeWAPlv9NguJr8qpehigosRFxIF1gOq0WIuV+kHWPtg5Dn7464KvSnTSgG/OlPhTMuZ
- 5kRFQuITC5a4/kyLxmUDA==
+X-Provags-ID: V03:K1:3UUCaBDFFXjC3jkkiegfpEDT3e0kV/rF33z4mztvCPFs1e+I4pH
+ zE8g62+GO6s/2u/BI4gYuH9TCH3+5p+Dx3QormIx/6A8L4RBX8L5Z7vvvuMPXZN72tXg8mr
+ r9cN2+Bsoy2dtsuafeNJ/xmo9CCpg6dTQWouoQYc3OXtPMPU0OeJ3kq5tG+I47JVIzuCys+
+ 6uiya24Xc8uHJnkoi82yQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:v9JPFSz4oDU=:HaemPJ8cg82mByc7200lAV
- XBCAvpfhGT+OQj/P0SlBW9bA1o7J/rPfRecyVxXzHtJnxf1dI1DQWlgys2+gvUGx/XkLLEUSG
- BGco5sbANVUK1cvEET3rOnf4GqOOmdmVJGF2kcyjyznKvJtZvMzNTsyW7pRyVjFwkrTz8vdFS
- kyl4FuhyGRcGHLonJetTHuFkMk6wsezRf7fEirf0v2miR/+hlLuL1s+Htgkb0tAWGpmFb+mud
- 2+uj2HAOIOd1h7/VUTpe4pCZ1wjjHTL2Ek8AMrfN/IW7oITuD7xixgAA8YuuVKhd0buCpp4E8
- ACEY8lSi+Pf9/QBEYZWAr7MjI9zAn5ZqwkTaQ0R57eJ4jaa5I4MlPTmp2JGZKcXL89FYgO05x
- Nlu0dZNeHdW21s8pIYS+/TanRCtrMNl8dr3vRYPrLFxQRKTGrA0S26Tp8nXuxISKnBwa4kY5P
- fwoR5THacvtjVL3r21RGzBpH+8UeCGWiYu8PFmxPmlAnDmd4kyKrI4g2h3j2KprMd+kDhdU2/
- sQz89wOsYgdAEmAtzY6RoX6u6eMPYXitqbW175UHUDrTSFKsEP6sqZePpZOX3T01NV2dkUV7S
- YznwprNG7XvpSydrUnbLU2VwIt7IYhB7LcJ2xzKZq4M+osYV+VteyblvXOW4Fe2ufIAm9+JtI
- QvZ3WUBNIkFPb1/UNTxAFB2/bI2gVnX8jOSzhwaBpE0d9dAcBl2AazVnJCsvi2vJvtjBL+mFE
- DAYRr3+yYNPTe9vhpsqS68MfJ3XlfmqbKzJPzImniDGlCuLLBVejqH/5/li37ybX/n9gJRm3h
- gM2074i2nPJemOK+rO3kGUlhiHAhLUJZde+pATQgHF5a+oXzN+lsvf4DOPNTEldFozs4FhHVT
- zMO4AgAtXtG4OFT1azxlYjswrqfahhSmlgiZAIDBJzaUDdlYXxrzsKs1ip2ndRSQFd7NKdpB0
- JuUvVXkeM5jak3VoRf5RraqWaSJbTliZu0UrfnTxfWkduyZo4zEAFa1svLAsJlVuOEQKS4VDY
- mH4L6dGFFeQDErZ7BU0h8OlSfQh8RaLTgnILwX8hFmB33RTTMQL6x+lQXEKGHiBEKv4gRZKsJ
- 4qkohW4eW/uzxIyShRSDDP+UYLQrVdmgqHDTHMgpSE89RawVqcViIqFHKfoSflwYCc2010lyx
- /V0TQ=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:mABiV/a9xtY=:gyp8l8IKQUYwASclxPRe5P
+ CUhnE9HbmTH6u7c7VY6vQbal2VQKbfh9lBTQo6pB4ekLGFDQrCTG1p4Q1BFRhKGXdVQc8ZsAL
+ BySH2RUwLNKhv39T7nMGa/Wvuju71HwZgn/qNQgiV4liV0Dfntf0XuZ1JykeqASgFGXzurcJD
+ vmd/DbQQaVBm9y3LxWYGbDdBl3/eFV/TZs0QCmkTNtg6LX6BxZLzMsDqCkRa5Ly0++C9b+3Un
+ WxpvT1s+ZOCTZ0MHa5/VHecliRKqYSRFKokrJt+yaT+MF25i8QuTI8HbtRbYe2CzpOJkpNIIT
+ TpaH5NpAQWPvU6YhiWnhtagTyjglB5K2jfPAXcAhAjy9bqAQ0duFVepHIx9FWnMH6boID1WXz
+ L5pSaRqa4jL6pr4upr2BDs2dDleRqvO/SYbq1VryW6XIg486L8pO2Pgt7ory4N5lN64sRkyMY
+ yXUUvGByATsTEHIYQS5UX61ReJ9Hho+iSOf377Yn7KEY4i+ycXvQFcesMJD+PREcOQN/f4z3V
+ H9zWkdJ/rYB7Q5NdegrMDGhrxfe1sNT3YGaK/JApHWNJXmUBPhOswm4OqnLaMioVX3RqH+4hD
+ nvhF7J/4yTkCP5zZ7uaSmpN1XFDlX6Qsl11rrcaHo6BIKBEX6dlsLFmFmAuByrbs51gSLLWiN
+ omPPXpNGccAboqcOUc8+n3qpxiPPKFdBgzzFtOVAMoMVb2QIwibKC8Z/de5EOQV7eYOOXpJVE
+ IjjaXGGDAe8tq1w/JBCICAQnxYZHRtvP/dgFCQjol4OsinzryAOXN3ayuLiS9nilpwQdTWRnN
+ M/2KL0mkyTyHQtVy6G4+yth8+4x2yb9mKACakfpdVtsg1zuS0UEuxBsHMiC2REKZK/soASgHk
+ Zp0+p6UoNXMSBS9soIuC53Eg5jQ1fFQDaDYip4uimylmQ6sIjCu9VL75Qdd1NAQXl9699GZ3H
+ Vt1++gPq4TZjLwfbCM/V0mLINvMeoK1vyo7eyB4g0G4+VKlqhC5xfUiTLod+PBbTPcJXmOo0W
+ KlW1b49m7PoZsz6YZwp13M57WfYwrTcMFBak/ajqfy9ugcnEKAAeetHBQ2dMpNWS61nCPzz5Q
+ Yn4m0KNZdGtfsS/On2aojRkO08/vcGy5mxX6hAErOZGV+0q8/zKXT9aohsLdDzjBSPE3yiqRn
+ 43d5g=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 21 Aug 2019 20:10:56 +0200
+Date: Wed, 21 Aug 2019 21:16:15 +0200
 
 The dev_kfree_skb() function performs also input parameter validation.
 Thus the test around the shown calls is not needed.
@@ -127,264 +129,38 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/isdn/hardware/mISDN/avmfritz.c  |  3 +--
- drivers/isdn/hardware/mISDN/hfcpci.c    |  6 ++----
- drivers/isdn/hardware/mISDN/mISDNipac.c | 12 ++++--------
- drivers/isdn/hardware/mISDN/mISDNisar.c |  3 +--
- drivers/isdn/hardware/mISDN/netjet.c    |  3 +--
- drivers/isdn/hardware/mISDN/w6692.c     |  9 +++------
- drivers/isdn/mISDN/l1oip_core.c         |  3 +--
- drivers/isdn/mISDN/layer2.c             |  9 +++------
- drivers/isdn/mISDN/stack.c              |  6 ++----
- drivers/isdn/mISDN/tei.c                |  6 ++----
- 10 files changed, 20 insertions(+), 40 deletions(-)
+ drivers/net/can/spi/hi311x.c  | 3 +--
+ drivers/net/can/spi/mcp251x.c | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/isdn/hardware/mISDN/avmfritz.c b/drivers/isdn/hardwar=
-e/mISDN/avmfritz.c
-index 81f2b183acc8..1137dd152b5c 100644
-=2D-- a/drivers/isdn/hardware/mISDN/avmfritz.c
-+++ b/drivers/isdn/hardware/mISDN/avmfritz.c
-@@ -509,8 +509,7 @@ HDLC_irq_xpr(struct bchannel *bch)
- 	if (bch->tx_skb && bch->tx_idx < bch->tx_skb->len) {
- 		hdlc_fill_fifo(bch);
- 	} else {
--		if (bch->tx_skb)
--			dev_kfree_skb(bch->tx_skb);
-+		dev_kfree_skb(bch->tx_skb);
- 		if (get_next_bframe(bch)) {
- 			hdlc_fill_fifo(bch);
- 			test_and_clear_bit(FLG_TX_EMPTY, &bch->Flags);
-diff --git a/drivers/isdn/hardware/mISDN/hfcpci.c b/drivers/isdn/hardware/=
-mISDN/hfcpci.c
-index 4a069582fc6b..2330a7d24267 100644
-=2D-- a/drivers/isdn/hardware/mISDN/hfcpci.c
-+++ b/drivers/isdn/hardware/mISDN/hfcpci.c
-@@ -1119,8 +1119,7 @@ tx_birq(struct bchannel *bch)
- 	if (bch->tx_skb && bch->tx_idx < bch->tx_skb->len)
- 		hfcpci_fill_fifo(bch);
- 	else {
--		if (bch->tx_skb)
--			dev_kfree_skb(bch->tx_skb);
-+		dev_kfree_skb(bch->tx_skb);
- 		if (get_next_bframe(bch))
- 			hfcpci_fill_fifo(bch);
- 	}
-@@ -1132,8 +1131,7 @@ tx_dirq(struct dchannel *dch)
- 	if (dch->tx_skb && dch->tx_idx < dch->tx_skb->len)
- 		hfcpci_fill_dfifo(dch->hw);
- 	else {
--		if (dch->tx_skb)
--			dev_kfree_skb(dch->tx_skb);
-+		dev_kfree_skb(dch->tx_skb);
- 		if (get_next_dframe(dch))
- 			hfcpci_fill_dfifo(dch->hw);
- 	}
-diff --git a/drivers/isdn/hardware/mISDN/mISDNipac.c b/drivers/isdn/hardwa=
-re/mISDN/mISDNipac.c
-index f915399d75ca..bca880213e91 100644
-=2D-- a/drivers/isdn/hardware/mISDN/mISDNipac.c
-+++ b/drivers/isdn/hardware/mISDN/mISDNipac.c
-@@ -190,8 +190,7 @@ isac_rme_irq(struct isac_hw *isac)
- #endif
- 		}
- 		WriteISAC(isac, ISAC_CMDR, 0x80);
--		if (isac->dch.rx_skb)
--			dev_kfree_skb(isac->dch.rx_skb);
-+		dev_kfree_skb(isac->dch.rx_skb);
- 		isac->dch.rx_skb =3D NULL;
- 	} else {
- 		count =3D ReadISAC(isac, ISAC_RBCL) & 0x1f;
-@@ -210,8 +209,7 @@ isac_xpr_irq(struct isac_hw *isac)
- 	if (isac->dch.tx_skb && isac->dch.tx_idx < isac->dch.tx_skb->len) {
- 		isac_fill_fifo(isac);
- 	} else {
--		if (isac->dch.tx_skb)
--			dev_kfree_skb(isac->dch.tx_skb);
-+		dev_kfree_skb(isac->dch.tx_skb);
- 		if (get_next_dframe(&isac->dch))
- 			isac_fill_fifo(isac);
- 	}
-@@ -464,8 +462,7 @@ isacsx_rme_irq(struct isac_hw *isac)
- 			isac->dch.err_crc++;
- #endif
- 		WriteISAC(isac, ISACX_CMDRD, ISACX_CMDRD_RMC);
--		if (isac->dch.rx_skb)
--			dev_kfree_skb(isac->dch.rx_skb);
-+		dev_kfree_skb(isac->dch.rx_skb);
- 		isac->dch.rx_skb =3D NULL;
- 	} else {
- 		count =3D ReadISAC(isac, ISACX_RBCLD) & 0x1f;
-@@ -1012,8 +1009,7 @@ hscx_xpr(struct hscx_hw *hx)
- 	if (hx->bch.tx_skb && hx->bch.tx_idx < hx->bch.tx_skb->len) {
- 		hscx_fill_fifo(hx);
- 	} else {
--		if (hx->bch.tx_skb)
--			dev_kfree_skb(hx->bch.tx_skb);
-+		dev_kfree_skb(hx->bch.tx_skb);
- 		if (get_next_bframe(&hx->bch)) {
- 			hscx_fill_fifo(hx);
- 			test_and_clear_bit(FLG_TX_EMPTY, &hx->bch.Flags);
-diff --git a/drivers/isdn/hardware/mISDN/mISDNisar.c b/drivers/isdn/hardwa=
-re/mISDN/mISDNisar.c
-index fd5c52f37802..4a3e748a1c26 100644
-=2D-- a/drivers/isdn/hardware/mISDN/mISDNisar.c
-+++ b/drivers/isdn/hardware/mISDN/mISDNisar.c
-@@ -690,8 +690,7 @@ send_next(struct isar_ch *ch)
- 			}
- 		}
- 	}
--	if (ch->bch.tx_skb)
--		dev_kfree_skb(ch->bch.tx_skb);
-+	dev_kfree_skb(ch->bch.tx_skb);
- 	if (get_next_bframe(&ch->bch)) {
- 		isar_fill_fifo(ch);
- 		test_and_clear_bit(FLG_TX_EMPTY, &ch->bch.Flags);
-diff --git a/drivers/isdn/hardware/mISDN/netjet.c b/drivers/isdn/hardware/=
-mISDN/netjet.c
-index 4e30affd1a7c..61caa7e50b9a 100644
-=2D-- a/drivers/isdn/hardware/mISDN/netjet.c
-+++ b/drivers/isdn/hardware/mISDN/netjet.c
-@@ -605,8 +605,7 @@ bc_next_frame(struct tiger_ch *bc)
- 	if (bc->bch.tx_skb && bc->bch.tx_idx < bc->bch.tx_skb->len) {
- 		fill_dma(bc);
- 	} else {
--		if (bc->bch.tx_skb)
--			dev_kfree_skb(bc->bch.tx_skb);
-+		dev_kfree_skb(bc->bch.tx_skb);
- 		if (get_next_bframe(&bc->bch)) {
- 			fill_dma(bc);
- 			test_and_clear_bit(FLG_TX_EMPTY, &bc->bch.Flags);
-diff --git a/drivers/isdn/hardware/mISDN/w6692.c b/drivers/isdn/hardware/m=
-ISDN/w6692.c
-index 2402608dc98d..bad55fdacd36 100644
-=2D-- a/drivers/isdn/hardware/mISDN/w6692.c
-+++ b/drivers/isdn/hardware/mISDN/w6692.c
-@@ -356,8 +356,7 @@ handle_rxD(struct w6692_hw *card) {
- 			card->dch.err_rx++;
- #endif
- 		}
--		if (card->dch.rx_skb)
--			dev_kfree_skb(card->dch.rx_skb);
-+		dev_kfree_skb(card->dch.rx_skb);
- 		card->dch.rx_skb =3D NULL;
- 		WriteW6692(card, W_D_CMDR, W_D_CMDR_RACK | W_D_CMDR_RRST);
- 	} else {
-@@ -376,8 +375,7 @@ handle_txD(struct w6692_hw *card) {
- 	if (card->dch.tx_skb && card->dch.tx_idx < card->dch.tx_skb->len) {
- 		W6692_fill_Dfifo(card);
- 	} else {
--		if (card->dch.tx_skb)
--			dev_kfree_skb(card->dch.tx_skb);
-+		dev_kfree_skb(card->dch.tx_skb);
- 		if (get_next_dframe(&card->dch))
- 			W6692_fill_Dfifo(card);
- 	}
-@@ -636,8 +634,7 @@ send_next(struct w6692_ch *wch)
- 	if (wch->bch.tx_skb && wch->bch.tx_idx < wch->bch.tx_skb->len) {
- 		W6692_fill_Bfifo(wch);
- 	} else {
--		if (wch->bch.tx_skb)
--			dev_kfree_skb(wch->bch.tx_skb);
-+		dev_kfree_skb(wch->bch.tx_skb);
- 		if (get_next_bframe(&wch->bch)) {
- 			W6692_fill_Bfifo(wch);
- 			test_and_clear_bit(FLG_TX_EMPTY, &wch->bch.Flags);
-diff --git a/drivers/isdn/mISDN/l1oip_core.c b/drivers/isdn/mISDN/l1oip_co=
-re.c
-index 447f241467bd..b57dcb834594 100644
-=2D-- a/drivers/isdn/mISDN/l1oip_core.c
-+++ b/drivers/isdn/mISDN/l1oip_core.c
-@@ -1254,8 +1254,7 @@ release_card(struct l1oip *hc)
- 			mISDN_freebchannel(hc->chan[ch].bch);
- 			kfree(hc->chan[ch].bch);
- #ifdef REORDER_DEBUG
--			if (hc->chan[ch].disorder_skb)
--				dev_kfree_skb(hc->chan[ch].disorder_skb);
-+			dev_kfree_skb(hc->chan[ch].disorder_skb);
- #endif
- 		}
- 	}
-diff --git a/drivers/isdn/mISDN/layer2.c b/drivers/isdn/mISDN/layer2.c
-index 68a481516729..5bf7fcb282c4 100644
-=2D-- a/drivers/isdn/mISDN/layer2.c
-+++ b/drivers/isdn/mISDN/layer2.c
-@@ -900,8 +900,7 @@ l2_disconnect(struct FsmInst *fi, int event, void *arg=
-)
- 	send_uframe(l2, NULL, DISC | 0x10, CMD);
- 	mISDN_FsmDelTimer(&l2->t203, 1);
- 	restart_t200(l2, 2);
--	if (skb)
--		dev_kfree_skb(skb);
-+	dev_kfree_skb(skb);
- }
+diff --git a/drivers/net/can/spi/hi311x.c b/drivers/net/can/spi/hi311x.c
+index 03a711c3221b..7c7c7e78214c 100644
+=2D-- a/drivers/net/can/spi/hi311x.c
++++ b/drivers/net/can/spi/hi311x.c
+@@ -184,8 +184,7 @@ static void hi3110_clean(struct net_device *net)
 
- static void
-@@ -1722,8 +1721,7 @@ l2_set_own_busy(struct FsmInst *fi, int event, void =
-*arg)
- 		enquiry_cr(l2, RNR, RSP, 0);
- 		test_and_clear_bit(FLG_ACK_PEND, &l2->flag);
- 	}
--	if (skb)
--		dev_kfree_skb(skb);
-+	dev_kfree_skb(skb);
- }
+ 	if (priv->tx_skb || priv->tx_len)
+ 		net->stats.tx_errors++;
+-	if (priv->tx_skb)
+-		dev_kfree_skb(priv->tx_skb);
++	dev_kfree_skb(priv->tx_skb);
+ 	if (priv->tx_len)
+ 		can_free_echo_skb(priv->net, 0);
+ 	priv->tx_skb =3D NULL;
+diff --git a/drivers/net/can/spi/mcp251x.c b/drivers/net/can/spi/mcp251x.c
+index 12358f06d194..1c496d2adb45 100644
+=2D-- a/drivers/net/can/spi/mcp251x.c
++++ b/drivers/net/can/spi/mcp251x.c
+@@ -274,8 +274,7 @@ static void mcp251x_clean(struct net_device *net)
 
- static void
-@@ -1736,8 +1734,7 @@ l2_clear_own_busy(struct FsmInst *fi, int event, voi=
-d *arg)
- 		enquiry_cr(l2, RR, RSP, 0);
- 		test_and_clear_bit(FLG_ACK_PEND, &l2->flag);
- 	}
--	if (skb)
--		dev_kfree_skb(skb);
-+	dev_kfree_skb(skb);
- }
-
- static void
-diff --git a/drivers/isdn/mISDN/stack.c b/drivers/isdn/mISDN/stack.c
-index fa2237e7bcf8..27aa32914425 100644
-=2D-- a/drivers/isdn/mISDN/stack.c
-+++ b/drivers/isdn/mISDN/stack.c
-@@ -75,8 +75,7 @@ send_socklist(struct mISDN_sock_list *sl, struct sk_buff=
- *skb)
- 			cskb =3D NULL;
- 	}
- 	read_unlock(&sl->lock);
--	if (cskb)
--		dev_kfree_skb(cskb);
-+	dev_kfree_skb(cskb);
- }
-
- static void
-@@ -134,8 +133,7 @@ send_layer2(struct mISDNstack *st, struct sk_buff *skb=
-)
- 	}
- out:
- 	mutex_unlock(&st->lmutex);
--	if (skb)
--		dev_kfree_skb(skb);
-+	dev_kfree_skb(skb);
- }
-
- static inline int
-diff --git a/drivers/isdn/mISDN/tei.c b/drivers/isdn/mISDN/tei.c
-index a4fa594e1caf..59d28cb19738 100644
-=2D-- a/drivers/isdn/mISDN/tei.c
-+++ b/drivers/isdn/mISDN/tei.c
-@@ -1328,10 +1328,8 @@ mgr_bcast(struct mISDNchannel *ch, struct sk_buff *=
-skb)
- 	}
- out:
- 	read_unlock_irqrestore(&mgr->lock, flags);
--	if (cskb)
--		dev_kfree_skb(cskb);
--	if (skb)
--		dev_kfree_skb(skb);
-+	dev_kfree_skb(cskb);
-+	dev_kfree_skb(skb);
- 	return 0;
- }
-
+ 	if (priv->tx_skb || priv->tx_len)
+ 		net->stats.tx_errors++;
+-	if (priv->tx_skb)
+-		dev_kfree_skb(priv->tx_skb);
++	dev_kfree_skb(priv->tx_skb);
+ 	if (priv->tx_len)
+ 		can_free_echo_skb(priv->net, 0);
+ 	priv->tx_skb =3D NULL;
 =2D-
 2.23.0
 

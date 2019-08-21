@@ -2,147 +2,116 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24F6D979B9
-	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Aug 2019 14:43:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BAD6979C3
+	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Aug 2019 14:43:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728535AbfHUMko (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 21 Aug 2019 08:40:44 -0400
-Received: from mout.web.de ([212.227.15.14]:37623 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726484AbfHUMkn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 21 Aug 2019 08:40:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1566391239;
-        bh=j13ik0r9D3GxR/mCVO6BCOcAiygxrC3H4cfMTpAAChg=;
-        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=LGwDntPUxCpMC1LzBKSeCJduhhkw/eah7b+e5XA6+MhZ081mKSQOrtF/VTt5ynVMz
-         2V3bcphiiIVQTV96qfE3nHie0KCSd/n+ecDjyXIqoJoX6Fo4/X9kH2xn98J6tcMgzZ
-         LzeUKz7L+ZmN8XHBY98no+ajXjEV3y3M85krIPSQ=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.48.9.44]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MNcHy-1huL7726Go-007BvI; Wed, 21
- Aug 2019 14:40:39 +0200
-To:     devel@driverdev.osuosl.org,
-        Branden Bonaby <brandonbonaby94@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Himadri Pandya <himadri18.07@gmail.com>,
-        Nishka Dasgupta <nishkadg.linux@gmail.com>,
-        Tim Collier <osdevtc@gmail.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: =?UTF-8?Q?=5bPATCH=5d_staging/wlan-ng/hfa384x=3a_Delete_an_unnecess?=
- =?UTF-8?Q?ary_check_before_the_macro_call_=e2=80=9cdev=5fkfree=5fskb?=
- =?UTF-8?B?4oCd?=
-Openpgp: preference=signencrypt
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <81d89576-512e-2374-2708-0d22400a37a3@web.de>
-Date:   Wed, 21 Aug 2019 14:40:38 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1727464AbfHUMnn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 21 Aug 2019 08:43:43 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:40646 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726371AbfHUMnn (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 21 Aug 2019 08:43:43 -0400
+Received: by mail-wm1-f68.google.com with SMTP id c5so1791744wmb.5;
+        Wed, 21 Aug 2019 05:43:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=lRUmeZkZP/Okav86pMnI5msjxJq756sD1Md11UkW10Q=;
+        b=M/U8Rn5H/vzvj9u02bNKbrAwSEgzepOgy7KpgvdjpIn7rtTnns5etUIDKaLzODa3XO
+         H3mTzzhS/AQPXnyn8m3yVyqM6SXnA6PJjqEoQl205pufGlZA9cOvfe1jWTawuVdDkVzg
+         HNPk4oL3Uw55LAUdH28PhpvTp1cBrpsoz+bGi2+9DPdUoX0TeuUgAVgtZAqj3NxBOF0X
+         SnZNo90gytM83lNdnoVHFs/cyqSJI/tcsnfmNiMXvG132HuBReJ34N/TUubgj6JPthA3
+         HlN04lsscJSM62VO0+YEeZDfC+AvS0JDGWBxQnizEbxwARgChSCpDuyc9Qy1qIlvXmzI
+         fx7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=lRUmeZkZP/Okav86pMnI5msjxJq756sD1Md11UkW10Q=;
+        b=YzJ/4U+V2AV2KJ8/fWkvoTq4D0aGQbbfyFnk4/OI6e5wx96fSw0Ah5iwrVzl+6mee6
+         DbK7Y28CxBt31vzicUYA0M0fUpc5Z62NpYfVQL714dBXmalpgc0OESXYP0SoVPqOD4YL
+         4eqqZ/8dOHAagHQeGzW0eSdMRR/YMQBHt2WRsJGwjXtZzsR9IBll6iWJR9brFPXSmGwP
+         qQhYabwGQT061aBpSbHpVBlsbOBTNo/JeEwA7J9mc4HQOGCstoZmW2opQi+xfDsr5mEb
+         yY8natNWjBSqHAnpMW7RVzyQyPVrrpvkCviIPcuStG6br9JVrlUrOka3K1dhK5Qu5Sxn
+         0g/A==
+X-Gm-Message-State: APjAAAXC8xd/MOVGJnRqQ7hpEbwO3MaLrnSzVKhaWx3Odm9rUmUkoe4q
+        EYSVFgLMJUC5afKxktAHIvs=
+X-Google-Smtp-Source: APXvYqwaq1Yy4wokzmvl6Eg9zpUcD3xgJLsczGSFflfUptDZe2PuC0S6zpYoPCC69O2e8WFtVnwZSQ==
+X-Received: by 2002:a1c:1a56:: with SMTP id a83mr5974279wma.44.1566391420467;
+        Wed, 21 Aug 2019 05:43:40 -0700 (PDT)
+Received: from localhost (pD9E51890.dip0.t-ipconnect.de. [217.229.24.144])
+        by smtp.gmail.com with ESMTPSA id g7sm4842135wme.17.2019.08.21.05.43.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Aug 2019 05:43:39 -0700 (PDT)
+Date:   Wed, 21 Aug 2019 14:43:37 +0200
+From:   Thierry Reding <thierry.reding@gmail.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Vidya Sagar <vidyas@nvidia.com>,
+        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        linux-pci@vger.kernel.org, linux-tegra@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] PCI: tegra: tegra194: fix phy_count less than zero
+ check
+Message-ID: <20190821124337.GB21839@ulmo>
+References: <20190821120123.14223-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Khr3WUzQjhOsIUOYqYf9Wl5vqN2OW/JZvszBYvvyKWx/XYdNoWB
- sK9b4A7o27NSAqPaSh+YekogEaaZsT0AKEH/LataRvVRd/9V+1+GhPlxZDMXZrfvf45Cmv5
- pZ7pNPBtXLM9yCjB9wm5oJvLkpgkkldfxPkrmW0YxJE3WuIYmWN7o/lSLdhXS8OTe9Xmjfu
- 5KXkiwN0X+utW4G7bHg6g==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:urfMUckZqPE=:n+1FnxQOMqEwl7xYjwXKGq
- ezoEg04kcprkeMZnLg08sppDQcuqDIfaJF5kY3NEMcMtXgDoxOYZXXLtF7T7P95Z1M+Vu7BZM
- dmrX7I38hY1DwPA7sg1AL7XRIm6iTYfAuoSjCmqrM+Rzqc8/GrXzsQOt3EvHHo6TQTMYwUAtV
- aWT/C0PWUJTxsHzRNQzEwdKmyOVAtAbkFPiK77ONmNA1uWUGMAOXkQwrc936fFOhTevpP3KCk
- +CKVnplTs/yLFlHAuMurlJc9xHmpYkVWS0SRcsXdMcZ6BhqJwRqkzgau+jzXFdvbaqC29iXPU
- vL/34ISAFYUfB7Xwj39Obsi9OBOs3lIi/xo8McnrLXCfitTWMmCBZG/G8RYdh8zXpKLKiJ9zh
- nVnhIfV+u2sNP1iE5eCZTDojeLOAcG5gECSM1dta2MQFg84ujtPAP30kvLUHDE710wpfULGEN
- lODibzOQwvR9A4dnnVKJwbd/WiDX+4tAtr3PWUCLcyh16Tla8C8vbpJ404lfG8CeZRsyqRCk3
- MSjz68eAdUwWXpHvP6d/reS8VA8wj0Z7eroT6WBp3d5Pt0kYrQyXjfN6gXVzJWTwEGdy0NWEG
- qW5sHpdd/l6bHzlzWyD+PJJG6ebcP+RQelRdJZ1v2wTBMZCJIW5jOKqdcIrnjzOCY8kuUOqM5
- XezPGGRxD0dW0OsPxyA/Jjew3w7zwykUi0OUIMSWbNgTrqvBt6jB/+cy0UExkGXhEG7gFJFo0
- jitB4mw8KB91AVDxWWPaAmIRGiRBp1aUIRO4CBwD638gxCClRDHvHPyDFEfNcDWKLMpMbX5fR
- ZMkpOZln/CvUgnQkzwPhACBXG0v+hyFnpgS5z12fsg6Q4ZCAoXlbm4VOEoC1jyHAbtwj3ibeZ
- r53HtLA0C1IiDkvb3KEmYGKQGBxDpmK98+9u70dLLGel0KkpuoDXiQHW94S/DP2qp2ePkxm+D
- /+v/VJGpXWpA9zE2lU9UW7sagWI3jErYNxrdQTKJsRzIQtALsiC1y8WRIrJfmPTq+VFlT8bxJ
- JFgvxy5qINZnWigwhQ8BbX1knjhqdiImRAtcD6Y5Tlguyc+Zin4O7oYz1fe5THWZfD7Dn35kv
- z/N6PV9hUBxCA7WuMuZ9PjOnjLaUL5rprNzzK1GaLjyH36A7cs+jrNWvjCa8DStogtUN4CFQE
- /jzG8=
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="6sX45UoQRIJXqkqR"
+Content-Disposition: inline
+In-Reply-To: <20190821120123.14223-1-colin.king@canonical.com>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 21 Aug 2019 14:30:30 +0200
 
-The dev_kfree_skb() function performs also input parameter validation.
-Thus the test around the call is not needed.
+--6sX45UoQRIJXqkqR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This issue was detected by using the Coccinelle software.
+On Wed, Aug 21, 2019 at 01:01:23PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> The check for pcie->phy_count < 0 is always false because phy_count
+> is an unsigned int and can never be less than zero. Fix this by
+> assigning ret to the return from of_property_count_strings and
+> checking if this is less than zero instead.
+>=20
+> Addresses-Coverity: ("Dead code")
+> Fixes: 6404441c8e13 ("PCI: tegra: Add Tegra194 PCIe support")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/pci/controller/dwc/pcie-tegra194.c | 9 +++++----
+>  1 file changed, 5 insertions(+), 4 deletions(-)
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- drivers/staging/wlan-ng/hfa384x_usb.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Good catch!
 
-diff --git a/drivers/staging/wlan-ng/hfa384x_usb.c b/drivers/staging/wlan-=
-ng/hfa384x_usb.c
-index 28d372a0663a..54f631c4155a 100644
-=2D-- a/drivers/staging/wlan-ng/hfa384x_usb.c
-+++ b/drivers/staging/wlan-ng/hfa384x_usb.c
-@@ -3070,9 +3070,7 @@ static void hfa384x_usbin_callback(struct urb *urb)
- 	}			/* switch */
+Acked-by: Thierry Reding <treding@nvidia.com>
 
- exit:
--
--	if (skb)
--		dev_kfree_skb(skb);
-+	dev_kfree_skb(skb);
- }
+--6sX45UoQRIJXqkqR
+Content-Type: application/pgp-signature; name="signature.asc"
 
- /*----------------------------------------------------------------
-=2D-
-2.23.0
+-----BEGIN PGP SIGNATURE-----
 
+iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAl1dPHIACgkQ3SOs138+
+s6Ho9xAAwUKuZi8iVfSdVTIm8t3Z0hjhCUBry2XL8mKbnYiq3Bb7U6+PwonQ34xY
+EEY29C7cEjDhFWugnN1kS5unXAYdPZRu1VC6E89/rBkFOLogQcBBl4X1b/ziGEkC
+zq3J5xkmakn/8O2vxvvEFFkYmXYdBZaEIG8kIg/by6ONb5wwIv/jzdIuhDhAAVSl
+SikW0Gz2uDXiNev7cNnEFOgbGeAix9Y6w4nfAELuYn4kRLKul11avGyRf/t02FwB
+vkyW5D3iyGTe5eJ9dANXIDVxUZhk8dy04X+rbs4q6Y+O3IYOE6dJ9K/8U9v2a6WM
+U0uBDfrwsuDwOEyviarkQhaTin+51wbdx9dv7cgIaELb66pm6wq08IYKORPBe2J/
+YAQxxlzjwlcLUZ2eHv1XH4Ra5mxdK3wWwO31WHB9/gIMsQgRhVF8aywjewYesJje
+6AQcE7WvPcw3quTEiln1muXbJRDJY0zxBGDMdhB90x0n/60afHPwSNvlIzTJtQ6u
+jHbKgfw1/ay4A9TY3O8KW8AdVWZLP/5qKQF4uvjapwNRWBHKwHQ7DFJGD/aUTWrz
+EZL06MO809iUSFjS63LJo+oLhWs+g7gvzH4NSZchHJsuT86rS8qUQH8P9z2dLYlO
+/PmMNaOcASfxYT2vMskY9xKO6Dq7PV7SFNe2DKRQpsRQj4swqN8=
+=JGRC
+-----END PGP SIGNATURE-----
+
+--6sX45UoQRIJXqkqR--

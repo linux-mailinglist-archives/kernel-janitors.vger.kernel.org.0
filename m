@@ -2,39 +2,39 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AB692981B7
-	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Aug 2019 19:48:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5126D9837B
+	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Aug 2019 20:47:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728849AbfHURre (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 21 Aug 2019 13:47:34 -0400
-Received: from mout.web.de ([212.227.15.4]:46117 "EHLO mout.web.de"
+        id S1728782AbfHUSpo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 21 Aug 2019 14:45:44 -0400
+Received: from mout.web.de ([217.72.192.78]:35403 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727683AbfHURre (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 21 Aug 2019 13:47:34 -0400
+        id S1728062AbfHUSpo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 21 Aug 2019 14:45:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1566409631;
-        bh=ZFDz5Uwxh5xJpbrXcIitmO9awwymC/HkpqKW4+5ZQ0Q=;
-        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=G1y/OSgjuh29TtHgCXx6i0i6d6mDd57sSfoiTQAZb/+z64bzTAEKhLSmppF9RawcK
-         2crvPhqMy3gzKHlr/fZ3Uftf950GZ9tA+SmyPm14VvParUVuVe477/P3tTmDP+DkPQ
-         /1Se97k+XuoABATjnxvYH8RxZ3deRDl7wxKgWqYg=
+        s=dbaedf251592; t=1566413112;
+        bh=Eokj4/dGveTY43m2jdkJoZSE3kMn9PBFEqOcaiphGUM=;
+        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+        b=jutwR2eiz2109XM8V3rCnhid4vnGN6tiNemZlrlGaQk/3LXtp+LOtLX7xT22Ebc3Y
+         NzCFOeTaWPAAQA07usj5LYV64t+60SbsUAbItdTqjUcueTbtloKVxZmvbv36sEE6MY
+         d7lT1xuXvfoV+84WR7ne+Q2oAudlJ3alV34aPfxs=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.48.9.44]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0M9GHu-1i6aZt28TO-00CfPa; Wed, 21
- Aug 2019 19:47:11 +0200
-To:     linux-rdma@vger.kernel.org, Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Parav Pandit <parav@mellanox.com>,
-        Steve Wise <swise@opengridcomputing.com>,
-        Tatyana Nikolova <Tatyana.E.Nikolova@intel.com>,
-        YueHaibing <yuehaibing@huawei.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+Received: from [192.168.1.2] ([78.48.9.44]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M9XUJ-1i6KcZ1cND-00D02j; Wed, 21
+ Aug 2019 20:45:12 +0200
+To:     netdev@vger.kernel.org, Alexios Zavras <alexios.zavras@intel.com>,
+        Allison Randal <allison@lohutok.net>,
+        Armijn Hemel <armijn@tjaldur.nl>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Fuqian Huang <huangfq.daxian@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Kangjie Lu <kjlu@umn.edu>, Karsten Keil <isdn@linux-pingi.de>,
+        Thomas Gleixner <tglx@linutronix.de>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: =?UTF-8?Q?=5bPATCH=5d_RDMA/iwpm=3a_Delete_unnecessary_checks_before?=
- =?UTF-8?B?IHRoZSBtYWNybyBjYWxsIOKAnGRldl9rZnJlZV9za2LigJ0=?=
+Subject: =?UTF-8?Q?=5bPATCH=5d_mISDN=3a_Delete_unnecessary_checks_before_the?=
+ =?UTF-8?B?IG1hY3JvIGNhbGwg4oCcZGV2X2tmcmVlX3NrYuKAnQ==?=
 Openpgp: preference=signencrypt
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -79,44 +79,46 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <16df4c50-1f61-d7c4-3fc8-3073666d281d@web.de>
-Date:   Wed, 21 Aug 2019 19:47:08 +0200
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Message-ID: <689e51d5-9a43-45a4-5d33-75a34eba928a@web.de>
+Date:   Wed, 21 Aug 2019 20:45:09 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:L6Ea/W8ve94X5vE4KMZPOVjjkD229CqsQL9fnPwPv+3LtnWC3Bo
- DUPxc6A/d7bM7atRIRs9bnTalQC0i8eLWydJNrmw8WGkTzjnZ2We0R2LeiJ2sN6oDZHBIdC
- ry8QbomXsRecWUwRVbPtP81H6f18q4EvBVNBDDpF8v6kzHgtEvDAvZZsxHyd5LYJ+cUUVIz
- fHoX9eQg2BKkFU4YhNBNw==
+X-Provags-ID: V03:K1:tfdwBbPeOWePy27r9PwGdU/kLMoC3bUX8xhhCbRIdhXGahPB0zo
+ vMnMaiFtA63rO08Zph4PUaAyrRO3urn+8dt3+mZu4EzI96xTKRpCw5enexlJPCSijDNT9Zn
+ Kl4yTeWAPlv9NguJr8qpehigosRFxIF1gOq0WIuV+kHWPtg5Dn7464KvSnTSgG/OlPhTMuZ
+ 5kRFQuITC5a4/kyLxmUDA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:gr2900Rzoi8=:RKnXqCiWm1OesEhtWrhpFZ
- geTFvX4x6sznHNcl9RvkmJp9wmH+olxXCGXYiORhQy1rdlRW1b8qc3Wl7gpJtnE0EHePw5pri
- iIejT5yLxgIKrWpwdVvp+75rVbNZ809L9atScMJZNV+XeOBU8T2ObGE9cgvYALz+1Von3bIsQ
- KDimBtyNTH1qsML2WbVZCgcJvYz1lvDkVXv1nfqAfblzcspZkTa9blXNfzjq/IXspJ3l2YmJr
- Uyfwq1bIHgZyyl5iiUKp6HBfKr6zKNEBOgyCEySzvwMDxWMvfrO7Zr15lPYceoPBmdHxiAKhE
- H0Qfeql/VJPqGijAmmMhA8GEfuO2L+VlZr2vK17sUL4feBOIPRujiDpc2ucSwiciiOWwUXSdR
- yvNRS3IcX2XStvYdz8fDboeNs03dU2+pQqzK5pX4S8HbAyLfslmvtM5tZDS+7V/pn45cuu83b
- FD0xC71z4jJuJ01vsaxWYb04Vikrk51cc3A8ZQwtVl4Mr8hh3M3UFmh4QjI8OV57CezhX0lOL
- 4XWYfaoiQ55JhK5cOjYgpVIjo8IcoSfW59iAZfNmEGkEncynsR9aGeeqr+SXA3TE/N80b2PqI
- buVE50rRkwR5ooJ/CRHVYs0GOW0CndIaWTgjyurnwfSuKdI7UCDdlmJJ3klUR667iZmuXpYn8
- laWtpPZ++fIUxJdfA6BrKpYOYmFBJw3AF1LZrHSH9OOmxeTB26dCBqJIzf1yJsjxyxKJG8eKd
- jj67xPav+FIMIPBoFSDLEHaWoQtjZr+ibbzz1AB5qWNhvvSOWuJ/V9OBx2TQH1VSdHGmwdnB1
- h8ercM6/oidl/OOQX6bEn+hg8TpOT+xpjrEcuAvIp4f3AXjACJFvmepYM6IqWmae0FYQgyaOV
- O2+MZkgPKvNWq87YKDvDpantsDbBxUAFYSHzwVLbtZsle1bUdHGUwjEAj0+sM633tPIojguNQ
- OcLqoqI5WxUHyZv3DbCoJIQ/3XTVCkxslMElU+IOZ+z/7rI84YfT6lbXJSO0bn2KcBWjpKpLc
- pFpju9mJpFKOkaNLURxQzrJfRZl7fninkBGHcUK1jJd4DXQiGRG2kU5TgjJY6vlm8xXyYfJ9Y
- il7X4Fy/UJe+7PamlCRdsx180rrCuEV4EJl8UhrzJWViwOVH5PScsczDBWPwlB085Za7+QFhz
- MXMCk=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:v9JPFSz4oDU=:HaemPJ8cg82mByc7200lAV
+ XBCAvpfhGT+OQj/P0SlBW9bA1o7J/rPfRecyVxXzHtJnxf1dI1DQWlgys2+gvUGx/XkLLEUSG
+ BGco5sbANVUK1cvEET3rOnf4GqOOmdmVJGF2kcyjyznKvJtZvMzNTsyW7pRyVjFwkrTz8vdFS
+ kyl4FuhyGRcGHLonJetTHuFkMk6wsezRf7fEirf0v2miR/+hlLuL1s+Htgkb0tAWGpmFb+mud
+ 2+uj2HAOIOd1h7/VUTpe4pCZ1wjjHTL2Ek8AMrfN/IW7oITuD7xixgAA8YuuVKhd0buCpp4E8
+ ACEY8lSi+Pf9/QBEYZWAr7MjI9zAn5ZqwkTaQ0R57eJ4jaa5I4MlPTmp2JGZKcXL89FYgO05x
+ Nlu0dZNeHdW21s8pIYS+/TanRCtrMNl8dr3vRYPrLFxQRKTGrA0S26Tp8nXuxISKnBwa4kY5P
+ fwoR5THacvtjVL3r21RGzBpH+8UeCGWiYu8PFmxPmlAnDmd4kyKrI4g2h3j2KprMd+kDhdU2/
+ sQz89wOsYgdAEmAtzY6RoX6u6eMPYXitqbW175UHUDrTSFKsEP6sqZePpZOX3T01NV2dkUV7S
+ YznwprNG7XvpSydrUnbLU2VwIt7IYhB7LcJ2xzKZq4M+osYV+VteyblvXOW4Fe2ufIAm9+JtI
+ QvZ3WUBNIkFPb1/UNTxAFB2/bI2gVnX8jOSzhwaBpE0d9dAcBl2AazVnJCsvi2vJvtjBL+mFE
+ DAYRr3+yYNPTe9vhpsqS68MfJ3XlfmqbKzJPzImniDGlCuLLBVejqH/5/li37ybX/n9gJRm3h
+ gM2074i2nPJemOK+rO3kGUlhiHAhLUJZde+pATQgHF5a+oXzN+lsvf4DOPNTEldFozs4FhHVT
+ zMO4AgAtXtG4OFT1azxlYjswrqfahhSmlgiZAIDBJzaUDdlYXxrzsKs1ip2ndRSQFd7NKdpB0
+ JuUvVXkeM5jak3VoRf5RraqWaSJbTliZu0UrfnTxfWkduyZo4zEAFa1svLAsJlVuOEQKS4VDY
+ mH4L6dGFFeQDErZ7BU0h8OlSfQh8RaLTgnILwX8hFmB33RTTMQL6x+lQXEKGHiBEKv4gRZKsJ
+ 4qkohW4eW/uzxIyShRSDDP+UYLQrVdmgqHDTHMgpSE89RawVqcViIqFHKfoSflwYCc2010lyx
+ /V0TQ=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 21 Aug 2019 19:30:09 +0200
+Date: Wed, 21 Aug 2019 20:10:56 +0200
 
 The dev_kfree_skb() function performs also input parameter validation.
 Thus the test around the shown calls is not needed.
@@ -125,84 +127,264 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/infiniband/core/iwpm_msg.c  | 9 +++------
- drivers/infiniband/core/iwpm_util.c | 9 +++------
- 2 files changed, 6 insertions(+), 12 deletions(-)
+ drivers/isdn/hardware/mISDN/avmfritz.c  |  3 +--
+ drivers/isdn/hardware/mISDN/hfcpci.c    |  6 ++----
+ drivers/isdn/hardware/mISDN/mISDNipac.c | 12 ++++--------
+ drivers/isdn/hardware/mISDN/mISDNisar.c |  3 +--
+ drivers/isdn/hardware/mISDN/netjet.c    |  3 +--
+ drivers/isdn/hardware/mISDN/w6692.c     |  9 +++------
+ drivers/isdn/mISDN/l1oip_core.c         |  3 +--
+ drivers/isdn/mISDN/layer2.c             |  9 +++------
+ drivers/isdn/mISDN/stack.c              |  6 ++----
+ drivers/isdn/mISDN/tei.c                |  6 ++----
+ 10 files changed, 20 insertions(+), 40 deletions(-)
 
-diff --git a/drivers/infiniband/core/iwpm_msg.c b/drivers/infiniband/core/=
-iwpm_msg.c
-index f1a873d4e842..46686990a827 100644
-=2D-- a/drivers/infiniband/core/iwpm_msg.c
-+++ b/drivers/infiniband/core/iwpm_msg.c
-@@ -124,8 +124,7 @@ int iwpm_register_pid(struct iwpm_dev_data *pm_msg, u8=
- nl_client)
- 	return ret;
- pid_query_error:
- 	pr_info("%s: %s (client =3D %d)\n", __func__, err_str, nl_client);
--	if (skb)
--		dev_kfree_skb(skb);
-+	dev_kfree_skb(skb);
- 	if (nlmsg_request)
- 		iwpm_free_nlmsg_request(&nlmsg_request->kref);
- 	return ret;
-@@ -214,8 +213,7 @@ int iwpm_add_mapping(struct iwpm_sa_data *pm_msg, u8 n=
-l_client)
- add_mapping_error:
- 	pr_info("%s: %s (client =3D %d)\n", __func__, err_str, nl_client);
- add_mapping_error_nowarn:
--	if (skb)
--		dev_kfree_skb(skb);
-+	dev_kfree_skb(skb);
- 	if (nlmsg_request)
- 		iwpm_free_nlmsg_request(&nlmsg_request->kref);
- 	return ret;
-@@ -308,8 +306,7 @@ int iwpm_add_and_query_mapping(struct iwpm_sa_data *pm=
-_msg, u8 nl_client)
- query_mapping_error:
- 	pr_info("%s: %s (client =3D %d)\n", __func__, err_str, nl_client);
- query_mapping_error_nowarn:
--	if (skb)
--		dev_kfree_skb(skb);
-+	dev_kfree_skb(skb);
- 	if (nlmsg_request)
- 		iwpm_free_nlmsg_request(&nlmsg_request->kref);
- 	return ret;
-diff --git a/drivers/infiniband/core/iwpm_util.c b/drivers/infiniband/core=
-/iwpm_util.c
-index c7ad3499228c..13495b43dbc1 100644
-=2D-- a/drivers/infiniband/core/iwpm_util.c
-+++ b/drivers/infiniband/core/iwpm_util.c
-@@ -655,8 +655,7 @@ static int send_mapinfo_num(u32 mapping_num, u8 nl_cli=
-ent, int iwpm_pid)
- 	return 0;
- mapinfo_num_error:
- 	pr_info("%s: %s\n", __func__, err_str);
--	if (skb)
--		dev_kfree_skb(skb);
-+	dev_kfree_skb(skb);
- 	return ret;
- }
-
-@@ -778,8 +777,7 @@ int iwpm_send_mapinfo(u8 nl_client, int iwpm_pid)
- send_mapping_info_exit:
- 	if (ret) {
- 		pr_warn("%s: %s (ret =3D %d)\n", __func__, err_str, ret);
--		if (skb)
--			dev_kfree_skb(skb);
-+		dev_kfree_skb(skb);
- 		return ret;
+diff --git a/drivers/isdn/hardware/mISDN/avmfritz.c b/drivers/isdn/hardwar=
+e/mISDN/avmfritz.c
+index 81f2b183acc8..1137dd152b5c 100644
+=2D-- a/drivers/isdn/hardware/mISDN/avmfritz.c
++++ b/drivers/isdn/hardware/mISDN/avmfritz.c
+@@ -509,8 +509,7 @@ HDLC_irq_xpr(struct bchannel *bch)
+ 	if (bch->tx_skb && bch->tx_idx < bch->tx_skb->len) {
+ 		hdlc_fill_fifo(bch);
+ 	} else {
+-		if (bch->tx_skb)
+-			dev_kfree_skb(bch->tx_skb);
++		dev_kfree_skb(bch->tx_skb);
+ 		if (get_next_bframe(bch)) {
+ 			hdlc_fill_fifo(bch);
+ 			test_and_clear_bit(FLG_TX_EMPTY, &bch->Flags);
+diff --git a/drivers/isdn/hardware/mISDN/hfcpci.c b/drivers/isdn/hardware/=
+mISDN/hfcpci.c
+index 4a069582fc6b..2330a7d24267 100644
+=2D-- a/drivers/isdn/hardware/mISDN/hfcpci.c
++++ b/drivers/isdn/hardware/mISDN/hfcpci.c
+@@ -1119,8 +1119,7 @@ tx_birq(struct bchannel *bch)
+ 	if (bch->tx_skb && bch->tx_idx < bch->tx_skb->len)
+ 		hfcpci_fill_fifo(bch);
+ 	else {
+-		if (bch->tx_skb)
+-			dev_kfree_skb(bch->tx_skb);
++		dev_kfree_skb(bch->tx_skb);
+ 		if (get_next_bframe(bch))
+ 			hfcpci_fill_fifo(bch);
  	}
- 	send_nlmsg_done(skb, nl_client, iwpm_pid);
-@@ -834,7 +832,6 @@ int iwpm_send_hello(u8 nl_client, int iwpm_pid, u16 ab=
-i_version)
- 	return 0;
- hello_num_error:
- 	pr_info("%s: %s\n", __func__, err_str);
+@@ -1132,8 +1131,7 @@ tx_dirq(struct dchannel *dch)
+ 	if (dch->tx_skb && dch->tx_idx < dch->tx_skb->len)
+ 		hfcpci_fill_dfifo(dch->hw);
+ 	else {
+-		if (dch->tx_skb)
+-			dev_kfree_skb(dch->tx_skb);
++		dev_kfree_skb(dch->tx_skb);
+ 		if (get_next_dframe(dch))
+ 			hfcpci_fill_dfifo(dch->hw);
+ 	}
+diff --git a/drivers/isdn/hardware/mISDN/mISDNipac.c b/drivers/isdn/hardwa=
+re/mISDN/mISDNipac.c
+index f915399d75ca..bca880213e91 100644
+=2D-- a/drivers/isdn/hardware/mISDN/mISDNipac.c
++++ b/drivers/isdn/hardware/mISDN/mISDNipac.c
+@@ -190,8 +190,7 @@ isac_rme_irq(struct isac_hw *isac)
+ #endif
+ 		}
+ 		WriteISAC(isac, ISAC_CMDR, 0x80);
+-		if (isac->dch.rx_skb)
+-			dev_kfree_skb(isac->dch.rx_skb);
++		dev_kfree_skb(isac->dch.rx_skb);
+ 		isac->dch.rx_skb =3D NULL;
+ 	} else {
+ 		count =3D ReadISAC(isac, ISAC_RBCL) & 0x1f;
+@@ -210,8 +209,7 @@ isac_xpr_irq(struct isac_hw *isac)
+ 	if (isac->dch.tx_skb && isac->dch.tx_idx < isac->dch.tx_skb->len) {
+ 		isac_fill_fifo(isac);
+ 	} else {
+-		if (isac->dch.tx_skb)
+-			dev_kfree_skb(isac->dch.tx_skb);
++		dev_kfree_skb(isac->dch.tx_skb);
+ 		if (get_next_dframe(&isac->dch))
+ 			isac_fill_fifo(isac);
+ 	}
+@@ -464,8 +462,7 @@ isacsx_rme_irq(struct isac_hw *isac)
+ 			isac->dch.err_crc++;
+ #endif
+ 		WriteISAC(isac, ISACX_CMDRD, ISACX_CMDRD_RMC);
+-		if (isac->dch.rx_skb)
+-			dev_kfree_skb(isac->dch.rx_skb);
++		dev_kfree_skb(isac->dch.rx_skb);
+ 		isac->dch.rx_skb =3D NULL;
+ 	} else {
+ 		count =3D ReadISAC(isac, ISACX_RBCLD) & 0x1f;
+@@ -1012,8 +1009,7 @@ hscx_xpr(struct hscx_hw *hx)
+ 	if (hx->bch.tx_skb && hx->bch.tx_idx < hx->bch.tx_skb->len) {
+ 		hscx_fill_fifo(hx);
+ 	} else {
+-		if (hx->bch.tx_skb)
+-			dev_kfree_skb(hx->bch.tx_skb);
++		dev_kfree_skb(hx->bch.tx_skb);
+ 		if (get_next_bframe(&hx->bch)) {
+ 			hscx_fill_fifo(hx);
+ 			test_and_clear_bit(FLG_TX_EMPTY, &hx->bch.Flags);
+diff --git a/drivers/isdn/hardware/mISDN/mISDNisar.c b/drivers/isdn/hardwa=
+re/mISDN/mISDNisar.c
+index fd5c52f37802..4a3e748a1c26 100644
+=2D-- a/drivers/isdn/hardware/mISDN/mISDNisar.c
++++ b/drivers/isdn/hardware/mISDN/mISDNisar.c
+@@ -690,8 +690,7 @@ send_next(struct isar_ch *ch)
+ 			}
+ 		}
+ 	}
+-	if (ch->bch.tx_skb)
+-		dev_kfree_skb(ch->bch.tx_skb);
++	dev_kfree_skb(ch->bch.tx_skb);
+ 	if (get_next_bframe(&ch->bch)) {
+ 		isar_fill_fifo(ch);
+ 		test_and_clear_bit(FLG_TX_EMPTY, &ch->bch.Flags);
+diff --git a/drivers/isdn/hardware/mISDN/netjet.c b/drivers/isdn/hardware/=
+mISDN/netjet.c
+index 4e30affd1a7c..61caa7e50b9a 100644
+=2D-- a/drivers/isdn/hardware/mISDN/netjet.c
++++ b/drivers/isdn/hardware/mISDN/netjet.c
+@@ -605,8 +605,7 @@ bc_next_frame(struct tiger_ch *bc)
+ 	if (bc->bch.tx_skb && bc->bch.tx_idx < bc->bch.tx_skb->len) {
+ 		fill_dma(bc);
+ 	} else {
+-		if (bc->bch.tx_skb)
+-			dev_kfree_skb(bc->bch.tx_skb);
++		dev_kfree_skb(bc->bch.tx_skb);
+ 		if (get_next_bframe(&bc->bch)) {
+ 			fill_dma(bc);
+ 			test_and_clear_bit(FLG_TX_EMPTY, &bc->bch.Flags);
+diff --git a/drivers/isdn/hardware/mISDN/w6692.c b/drivers/isdn/hardware/m=
+ISDN/w6692.c
+index 2402608dc98d..bad55fdacd36 100644
+=2D-- a/drivers/isdn/hardware/mISDN/w6692.c
++++ b/drivers/isdn/hardware/mISDN/w6692.c
+@@ -356,8 +356,7 @@ handle_rxD(struct w6692_hw *card) {
+ 			card->dch.err_rx++;
+ #endif
+ 		}
+-		if (card->dch.rx_skb)
+-			dev_kfree_skb(card->dch.rx_skb);
++		dev_kfree_skb(card->dch.rx_skb);
+ 		card->dch.rx_skb =3D NULL;
+ 		WriteW6692(card, W_D_CMDR, W_D_CMDR_RACK | W_D_CMDR_RRST);
+ 	} else {
+@@ -376,8 +375,7 @@ handle_txD(struct w6692_hw *card) {
+ 	if (card->dch.tx_skb && card->dch.tx_idx < card->dch.tx_skb->len) {
+ 		W6692_fill_Dfifo(card);
+ 	} else {
+-		if (card->dch.tx_skb)
+-			dev_kfree_skb(card->dch.tx_skb);
++		dev_kfree_skb(card->dch.tx_skb);
+ 		if (get_next_dframe(&card->dch))
+ 			W6692_fill_Dfifo(card);
+ 	}
+@@ -636,8 +634,7 @@ send_next(struct w6692_ch *wch)
+ 	if (wch->bch.tx_skb && wch->bch.tx_idx < wch->bch.tx_skb->len) {
+ 		W6692_fill_Bfifo(wch);
+ 	} else {
+-		if (wch->bch.tx_skb)
+-			dev_kfree_skb(wch->bch.tx_skb);
++		dev_kfree_skb(wch->bch.tx_skb);
+ 		if (get_next_bframe(&wch->bch)) {
+ 			W6692_fill_Bfifo(wch);
+ 			test_and_clear_bit(FLG_TX_EMPTY, &wch->bch.Flags);
+diff --git a/drivers/isdn/mISDN/l1oip_core.c b/drivers/isdn/mISDN/l1oip_co=
+re.c
+index 447f241467bd..b57dcb834594 100644
+=2D-- a/drivers/isdn/mISDN/l1oip_core.c
++++ b/drivers/isdn/mISDN/l1oip_core.c
+@@ -1254,8 +1254,7 @@ release_card(struct l1oip *hc)
+ 			mISDN_freebchannel(hc->chan[ch].bch);
+ 			kfree(hc->chan[ch].bch);
+ #ifdef REORDER_DEBUG
+-			if (hc->chan[ch].disorder_skb)
+-				dev_kfree_skb(hc->chan[ch].disorder_skb);
++			dev_kfree_skb(hc->chan[ch].disorder_skb);
+ #endif
+ 		}
+ 	}
+diff --git a/drivers/isdn/mISDN/layer2.c b/drivers/isdn/mISDN/layer2.c
+index 68a481516729..5bf7fcb282c4 100644
+=2D-- a/drivers/isdn/mISDN/layer2.c
++++ b/drivers/isdn/mISDN/layer2.c
+@@ -900,8 +900,7 @@ l2_disconnect(struct FsmInst *fi, int event, void *arg=
+)
+ 	send_uframe(l2, NULL, DISC | 0x10, CMD);
+ 	mISDN_FsmDelTimer(&l2->t203, 1);
+ 	restart_t200(l2, 2);
 -	if (skb)
 -		dev_kfree_skb(skb);
 +	dev_kfree_skb(skb);
- 	return ret;
  }
+
+ static void
+@@ -1722,8 +1721,7 @@ l2_set_own_busy(struct FsmInst *fi, int event, void =
+*arg)
+ 		enquiry_cr(l2, RNR, RSP, 0);
+ 		test_and_clear_bit(FLG_ACK_PEND, &l2->flag);
+ 	}
+-	if (skb)
+-		dev_kfree_skb(skb);
++	dev_kfree_skb(skb);
+ }
+
+ static void
+@@ -1736,8 +1734,7 @@ l2_clear_own_busy(struct FsmInst *fi, int event, voi=
+d *arg)
+ 		enquiry_cr(l2, RR, RSP, 0);
+ 		test_and_clear_bit(FLG_ACK_PEND, &l2->flag);
+ 	}
+-	if (skb)
+-		dev_kfree_skb(skb);
++	dev_kfree_skb(skb);
+ }
+
+ static void
+diff --git a/drivers/isdn/mISDN/stack.c b/drivers/isdn/mISDN/stack.c
+index fa2237e7bcf8..27aa32914425 100644
+=2D-- a/drivers/isdn/mISDN/stack.c
++++ b/drivers/isdn/mISDN/stack.c
+@@ -75,8 +75,7 @@ send_socklist(struct mISDN_sock_list *sl, struct sk_buff=
+ *skb)
+ 			cskb =3D NULL;
+ 	}
+ 	read_unlock(&sl->lock);
+-	if (cskb)
+-		dev_kfree_skb(cskb);
++	dev_kfree_skb(cskb);
+ }
+
+ static void
+@@ -134,8 +133,7 @@ send_layer2(struct mISDNstack *st, struct sk_buff *skb=
+)
+ 	}
+ out:
+ 	mutex_unlock(&st->lmutex);
+-	if (skb)
+-		dev_kfree_skb(skb);
++	dev_kfree_skb(skb);
+ }
+
+ static inline int
+diff --git a/drivers/isdn/mISDN/tei.c b/drivers/isdn/mISDN/tei.c
+index a4fa594e1caf..59d28cb19738 100644
+=2D-- a/drivers/isdn/mISDN/tei.c
++++ b/drivers/isdn/mISDN/tei.c
+@@ -1328,10 +1328,8 @@ mgr_bcast(struct mISDNchannel *ch, struct sk_buff *=
+skb)
+ 	}
+ out:
+ 	read_unlock_irqrestore(&mgr->lock, flags);
+-	if (cskb)
+-		dev_kfree_skb(cskb);
+-	if (skb)
+-		dev_kfree_skb(skb);
++	dev_kfree_skb(cskb);
++	dev_kfree_skb(skb);
+ 	return 0;
+ }
+
 =2D-
 2.23.0
 

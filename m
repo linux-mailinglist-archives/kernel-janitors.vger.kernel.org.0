@@ -2,102 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 955D797312
-	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Aug 2019 09:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4577497325
+	for <lists+kernel-janitors@lfdr.de>; Wed, 21 Aug 2019 09:14:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727469AbfHUHLj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 21 Aug 2019 03:11:39 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:42480 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726953AbfHUHLj (ORCPT
+        id S1727814AbfHUHOO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 21 Aug 2019 03:14:14 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:44934 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727504AbfHUHOO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 21 Aug 2019 03:11:39 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7L79J2u056994;
-        Wed, 21 Aug 2019 07:11:32 GMT
+        Wed, 21 Aug 2019 03:14:14 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7L7DiYf087377;
+        Wed, 21 Aug 2019 07:14:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2019-08-05; bh=PeEYBjRkrZrJgUlTahPbCoreypkCDfbVuOOIwHgF/4Q=;
- b=i06/gsNJRNPbkEmrwV10HUGnXLN+rk7Dx1sGF860r5/YaJZuUJtMaYEr0x3O4/C9z9hr
- a/Jr4eAA2Tp3yt1Awgn+mNUsp2BunUIeOzGmSdv1P9V7mmSJA5U7bLhCO4t2rk1lgE/9
- g3m42HhoIExyjdk/vvpxsA0CgaDyX7yDy/o5C2OL1/lJEH2OB/jyusVH52B7q4WWGt5p
- 8BpJ4dEo+kNTW7pbMSls+d+2/prICn0hnmofBYi97D39WvfSfUjFV50di9AUDIwnULtZ
- tt95NzyBDB/Dr0go4vKNjlyG2F2CLqhMB2cVZvoG/ITNH+fXqv9NAXqstVWun4Hv1BP2 1g== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2ue90tkhpq-1
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=2P4kNV5f2bdRIjdmMi0NVT3ayqfEeBJ0buEu0sEHelA=;
+ b=hOJj2K/7bj8BlIDAFJp6J7fBEtTE+nqLHKwTNcuUtz86WpBSM+zqRcEpa5Y+P/EWDnnQ
+ RIzBFeYdrUC3gC5lpm7UewwTkgVom/ERg9mjqb/Y91AgwDMhgLRteL77SEQI6xkqtYMf
+ hPWSDs7roAsiSMh4n4wHG91ZeqFP8HxYcIrPyi1WqDeNkYBZGEALWsLe7SqtzJfSwaln
+ Bu6NloHak4NreE8LL2ti9GICN1YW3PAjvmSorPUr5kiJVv6uXcAjndcu1XeIbFYPuZM5
+ eZDNhcqXn7kUeoXRBGwPm57wqyf4BZ0c8Q3MeS28BZvptyHadGvJXULTvSm3METlHs/N jA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2ue9hpkbe3-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 21 Aug 2019 07:11:32 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7L77uju185152;
-        Wed, 21 Aug 2019 07:11:31 GMT
+        Wed, 21 Aug 2019 07:14:11 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7L7DACq166327;
+        Wed, 21 Aug 2019 07:14:11 GMT
 Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2ug1ga8px0-1
+        by aserp3020.oracle.com with ESMTP id 2ugj7pk00t-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 21 Aug 2019 07:11:31 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7L7BT0N027931;
-        Wed, 21 Aug 2019 07:11:30 GMT
+        Wed, 21 Aug 2019 07:14:11 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7L7EA2Z029385;
+        Wed, 21 Aug 2019 07:14:10 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 21 Aug 2019 00:11:29 -0700
-Date:   Wed, 21 Aug 2019 10:11:22 +0300
+        with ESMTP ; Wed, 21 Aug 2019 00:14:09 -0700
+Date:   Wed, 21 Aug 2019 10:14:03 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Derek Kiernan <derek.kiernan@xilinx.com>,
-        Dragan Cvetic <dragan.cvetic@xilinx.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Michal Simek <michal.simek@xilinx.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH 4/4] misc: xilinx_sdfec: Prevent integer overflow in
- xsdfec_table_write()
-Message-ID: <20190821071122.GD26957@mwanda>
+To:     Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc:     platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH] tools/power: intel-speed-select:  Fix a read overflow in
+ isst_set_tdp_level_msr()
+Message-ID: <20190821071403.GG26957@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190821070606.GA26957@mwanda>
 X-Mailer: git-send-email haha only kidding
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9355 signatures=668684
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
  phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1908210077
+ engine=8.0.1-1906280000 definitions=main-1908210078
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9355 signatures=668684
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908210077
+ definitions=main-1908210078
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The checking here needs to handle integer overflows because "offset" and
-"len" come from the user.
+The isst_send_msr_command() function will read 8 bytes but we are
+passing an address to an int (4 bytes) so it results in a read overflow.
 
-Fixes: 20ec628e8007 ("misc: xilinx_sdfec: Add ability to configure LDPC")
+Fixes: 3fb4f7cd472c ("tools/power/x86: A tool to validate Intel Speed Select commands")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/misc/xilinx_sdfec.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ tools/power/x86/intel-speed-select/isst-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/misc/xilinx_sdfec.c b/drivers/misc/xilinx_sdfec.c
-index 3fc53d20abf3..0bf3bcc8e1ef 100644
---- a/drivers/misc/xilinx_sdfec.c
-+++ b/drivers/misc/xilinx_sdfec.c
-@@ -611,7 +611,9 @@ static int xsdfec_table_write(struct xsdfec_dev *xsdfec, u32 offset,
- 	 * Writes that go beyond the length of
- 	 * Shared Scale(SC) table should fail
- 	 */
--	if ((XSDFEC_REG_WIDTH_JUMP * (offset + len)) > depth) {
-+	if (offset > depth / XSDFEC_REG_WIDTH_JUMP ||
-+	    len > depth / XSDFEC_REG_WIDTH_JUMP ||
-+	    offset + len > depth / XSDFEC_REG_WIDTH_JUMP) {
- 		dev_dbg(xsdfec->dev, "Write exceeds SC table length");
- 		return -EINVAL;
- 	}
+diff --git a/tools/power/x86/intel-speed-select/isst-core.c b/tools/power/x86/intel-speed-select/isst-core.c
+index 8de4ac39a008..f724322856ed 100644
+--- a/tools/power/x86/intel-speed-select/isst-core.c
++++ b/tools/power/x86/intel-speed-select/isst-core.c
+@@ -190,6 +190,7 @@ int isst_get_get_trl(int cpu, int level, int avx_level, int *trl)
+ 
+ int isst_set_tdp_level_msr(int cpu, int tdp_level)
+ {
++	unsigned long long level = tdp_level;
+ 	int ret;
+ 
+ 	debug_printf("cpu: tdp_level via MSR %d\n", cpu, tdp_level);
+@@ -202,8 +203,7 @@ int isst_set_tdp_level_msr(int cpu, int tdp_level)
+ 	if (tdp_level > 2)
+ 		return -1; /* invalid value */
+ 
+-	ret = isst_send_msr_command(cpu, 0x64b, 1,
+-				    (unsigned long long *)&tdp_level);
++	ret = isst_send_msr_command(cpu, 0x64b, 1, &level);
+ 	if (ret)
+ 		return ret;
+ 
 -- 
 2.20.1
 

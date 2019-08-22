@@ -2,35 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B43198B5F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 08:27:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E12B898B68
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 08:30:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731689AbfHVG06 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 02:26:58 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:47390 "EHLO huawei.com"
+        id S1731724AbfHVGa3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 02:30:29 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:5188 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729284AbfHVG05 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 02:26:57 -0400
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 28306DB23BC640D10BF3;
-        Thu, 22 Aug 2019 14:26:49 +0800 (CST)
+        id S1731704AbfHVGa3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 22 Aug 2019 02:30:29 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 992F78137E4BCBF7F2E6;
+        Thu, 22 Aug 2019 14:30:26 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 22 Aug 2019 14:26:42 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <nbd@openwrt.org>, <john@phrozen.org>, <sean.wang@mediatek.com>,
-        <nelson.chang@mediatek.com>, <davem@davemloft.net>,
-        <matthias.bgg@gmail.com>
-CC:     <netdev@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH -next] net: mediatek: remove set but not used variable 'status'
-Date:   Thu, 22 Aug 2019 14:30:26 +0800
-Message-ID: <20190822063026.70044-1-maowenan@huawei.com>
+ DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 22 Aug 2019 14:30:18 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        "Lorenzo Pieralisi" <lorenzo.pieralisi@arm.com>,
+        Vidya Sagar <vidyas@nvidia.com>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-kernel@vger.kernel.org>,
+        <linux-tegra@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] phy: tegra: Use PTR_ERR_OR_ZERO in tegra_p2u_probe()
+Date:   Thu, 22 Aug 2019 06:34:07 +0000
+Message-ID: <20190822063407.71148-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
 X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -38,30 +39,31 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
-drivers/net/ethernet/mediatek/mtk_eth_soc.c: In function mtk_handle_irq:
-drivers/net/ethernet/mediatek/mtk_eth_soc.c:1951:6: warning: variable status set but not used [-Wunused-but-set-variable]
+Use PTR_ERR_OR_ZERO rather than if(IS_ERR(...)) + PTR_ERR
 
-It is not used since commit 296c9120752b ("net: ethernet: mediatek: Add MT7628/88 SoC support")
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/phy/tegra/phy-tegra194-p2u.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 8ddbb8d..bb7d623 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -1948,9 +1948,7 @@ static irqreturn_t mtk_handle_irq_tx(int irq, void *_eth)
- static irqreturn_t mtk_handle_irq(int irq, void *_eth)
- {
- 	struct mtk_eth *eth = _eth;
--	u32 status;
+diff --git a/drivers/phy/tegra/phy-tegra194-p2u.c b/drivers/phy/tegra/phy-tegra194-p2u.c
+index 7042bed9feaa..42394d27f4cb 100644
+--- a/drivers/phy/tegra/phy-tegra194-p2u.c
++++ b/drivers/phy/tegra/phy-tegra194-p2u.c
+@@ -92,10 +92,7 @@ static int tegra_p2u_probe(struct platform_device *pdev)
+ 	phy_set_drvdata(generic_phy, phy);
  
--	status = mtk_r32(eth, MTK_PDMA_INT_STATUS);
- 	if (mtk_r32(eth, MTK_PDMA_INT_MASK) & MTK_RX_DONE_INT) {
- 		if (mtk_r32(eth, MTK_PDMA_INT_STATUS) & MTK_RX_DONE_INT)
- 			mtk_handle_irq_rx(irq, _eth);
--- 
-2.7.4
+ 	phy_provider = devm_of_phy_provider_register(dev, of_phy_simple_xlate);
+-	if (IS_ERR(phy_provider))
+-		return PTR_ERR(phy_provider);
+-
+-	return 0;
++	return PTR_ERR_OR_ZERO(phy_provider);
+ }
+ 
+ static const struct of_device_id tegra_p2u_id_table[] = {
+
+
+
+
 

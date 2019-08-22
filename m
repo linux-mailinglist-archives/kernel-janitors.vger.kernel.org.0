@@ -2,61 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 656EC9A282
-	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Aug 2019 00:00:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C60239A3B4
+	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Aug 2019 01:23:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404487AbfHVWAa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 18:00:30 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50197 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404199AbfHVWAa (ORCPT
+        id S2391061AbfHVXXI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 19:23:08 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:50498 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2394345AbfHVXXG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 18:00:30 -0400
-Received: from cpc129250-craw9-2-0-cust139.know.cable.virginm.net ([82.43.126.140] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1i0v85-0005ow-Si; Thu, 22 Aug 2019 22:00:25 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Stanislav Yakovlev <stas.yakovlev@gmail.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ipw2x00: fix spelling mistake "initializationg" -> "initialization"
-Date:   Thu, 22 Aug 2019 23:00:25 +0100
-Message-Id: <20190822220025.5690-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Thu, 22 Aug 2019 19:23:06 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 84EF61539D836;
+        Thu, 22 Aug 2019 16:23:04 -0700 (PDT)
+Date:   Thu, 22 Aug 2019 16:23:04 -0700 (PDT)
+Message-Id: <20190822.162304.1167740070295559909.davem@davemloft.net>
+To:     Markus.Elfring@web.de
+Cc:     netdev@vger.kernel.org, alexios.zavras@intel.com,
+        allison@lohutok.net, armijn@tjaldur.nl, arnd@arndb.de,
+        huangfq.daxian@gmail.com, gregkh@linuxfoundation.org,
+        hkallweit1@gmail.com, kjlu@umn.edu, isdn@linux-pingi.de,
+        tglx@linutronix.de, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] mISDN: Delete unnecessary checks before the macro call
+ =?iso-2022-jp?B?GyRCIUgbKEJkZXZfa2ZyZWVfc2tiGyRCIUkbKEI=?=
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <689e51d5-9a43-45a4-5d33-75a34eba928a@web.de>
+References: <689e51d5-9a43-45a4-5d33-75a34eba928a@web.de>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 22 Aug 2019 16:23:05 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Markus Elfring <Markus.Elfring@web.de>
+Date: Wed, 21 Aug 2019 20:45:09 +0200
 
-There is a spelling mistake in an IPW_DEBUG_INFO message. Fix it.
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Wed, 21 Aug 2019 20:10:56 +0200
+> 
+> The dev_kfree_skb() function performs also input parameter validation.
+> Thus the test around the shown calls is not needed.
+> 
+> This issue was detected by using the Coccinelle software.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/intel/ipw2x00/ipw2200.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/intel/ipw2x00/ipw2200.c b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-index fa55d2ccbfab..ed0f06532d5e 100644
---- a/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-+++ b/drivers/net/wireless/intel/ipw2x00/ipw2200.c
-@@ -2721,7 +2721,7 @@ static void ipw_eeprom_init_sram(struct ipw_priv *priv)
- 		/* Do not load eeprom data on fatal error or suspend */
- 		ipw_write32(priv, IPW_EEPROM_LOAD_DISABLE, 0);
- 	} else {
--		IPW_DEBUG_INFO("Enabling FW initializationg of SRAM\n");
-+		IPW_DEBUG_INFO("Enabling FW initialization of SRAM\n");
- 
- 		/* Load eeprom data on fatal error or suspend */
- 		ipw_write32(priv, IPW_EEPROM_LOAD_DISABLE, 1);
--- 
-2.20.1
-
+Applied.

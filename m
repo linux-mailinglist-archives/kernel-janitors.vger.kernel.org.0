@@ -2,80 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA3399999C
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 18:55:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A7F399DFB
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 19:47:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732661AbfHVQzP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 12:55:15 -0400
-Received: from s3.sipsolutions.net ([144.76.43.62]:36666 "EHLO
-        sipsolutions.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728080AbfHVQzP (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 12:55:15 -0400
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <johannes@sipsolutions.net>)
-        id 1i0qMh-0003xQ-PO; Thu, 22 Aug 2019 18:55:12 +0200
-Message-ID: <fe3e6a33692a07d15287800749b688e796c43f9a.camel@sipsolutions.net>
-Subject: Re: [PATCH] bcma: fix incorrect update of BCMA_CORE_PCI_MDIO_DATA
-From:   Johannes Berg <johannes@sipsolutions.net>
+        id S2393120AbfHVRqn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 13:46:43 -0400
+Received: from mail-eopbgr760089.outbound.protection.outlook.com ([40.107.76.89]:34198
+        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2389333AbfHVRqm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 22 Aug 2019 13:46:42 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=doa8mFEOXXTu2eBDGc8GMCl5aKHD4TEQHqm5DYVQytYhRQW/kd2yIzZQxNnLIqMw41I1mJMrGNR0UERx9fFFpxJOcYNEKMdHGcPOZ6NuAqN/9ZIlzNdEXziQhknTI0j8N+kqjYCZtiE03+Dp8lSAzbfvePXzktJtHPevmn6YpjzUYfv7V8Ikl2oA+vQp1bdvaJFepramr1XnJtRNQexpZjHSBF2z/NOtv8okUB2IMbMKkBBDAMRdmZLMldVVdncZavD4RAXgQTey9W8eIE54URna1aTnRKCvwJl+jU5ZRJYGKJEWoVYl+mDJFV82gazGf0x3y2vJtN7r3TejHuSp1A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zUK30UwzVfHljYQyXvmnFcFhPo0kD61tDWawQOrlqfw=;
+ b=ZOqntH1u90GyDIPEU75a3zZ7iQuZPHbAgf6C5HgEnW07NaPojMmXycKu4fGc5BUesZ8DWPQXCYj242tx23xN6dJBMMvaO9nKqwEBWaQQy07Bp8WSF+nZJwQDOny3QyFUnnUZ/ANoYIY4a1diWC0R+DcW2qOtEmfP2L61BpgrL2LnggV70niIuGa2Udnn1Cr8VVeLsQ5PTJaJW6xM/IMnKILyr+j7smLzTnR8h2g4c8TAMCVaNHxUqEdCMys549rd4t40RhYMfM9w80+PztXXwqsaS5T33GmsP0jq6k9Q+BEU0Paz/7CRDfOU+7fMID+KezxJudI9RmReHR5+oB8LCw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
+ dkim=pass header.d=xilinx.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zUK30UwzVfHljYQyXvmnFcFhPo0kD61tDWawQOrlqfw=;
+ b=sOQ8LTGhf7Sqavj90klmUiYcgPiNH5mbgRchtrSvu0XBltc1cTJbceVjnUTGUNYVu9JO+NCJF5wCRPpkl5ptLDXWCdDKzehBajAToTpfaRuoQUHS9s0ZGy6SxTpedx9XmXsGbbKvCyC7eUTVuHuWuYlH+3vBdqqhFmPRDhY4wzQ=
+Received: from CH2PR02MB6359.namprd02.prod.outlook.com (52.132.231.93) by
+ CH2PR02MB6789.namprd02.prod.outlook.com (20.180.17.142) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2178.16; Thu, 22 Aug 2019 17:46:38 +0000
+Received: from CH2PR02MB6359.namprd02.prod.outlook.com
+ ([fe80::5c58:16c0:d226:4c96]) by CH2PR02MB6359.namprd02.prod.outlook.com
+ ([fe80::5c58:16c0:d226:4c96%2]) with mapi id 15.20.2178.020; Thu, 22 Aug 2019
+ 17:46:37 +0000
+From:   Dragan Cvetic <draganc@xilinx.com>
 To:     Colin King <colin.king@canonical.com>,
-        Hauke Mehrtens <hauke@hauke-m.de>,
-        =?UTF-8?Q?Rafa=C5=82_Mi=C5=82ecki?= <zajec5@gmail.com>,
-        linux-wireless@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Thu, 22 Aug 2019 18:55:07 +0200
-In-Reply-To: <20190822133524.6274-1-colin.king@canonical.com> (sfid-20190822_153601_850332_39AACB50)
-References: <20190822133524.6274-1-colin.king@canonical.com>
-         (sfid-20190822_153601_850332_39AACB50)
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Derek Kiernan <dkiernan@xilinx.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Michal Simek <michals@xilinx.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH][next] misc: xilinx_sdfec: fix spelling mistake: "Schdule"
+ -> "Schedule"
+Thread-Topic: [PATCH][next] misc: xilinx_sdfec: fix spelling mistake:
+ "Schdule" -> "Schedule"
+Thread-Index: AQHVVnJP4VcE2hpVHUK1v1iNBAmG8KcHdetw
+Date:   Thu, 22 Aug 2019 17:46:37 +0000
+Message-ID: <CH2PR02MB635948C20B17ED85455EBE06CBA50@CH2PR02MB6359.namprd02.prod.outlook.com>
+References: <20190819094137.390-1-colin.king@canonical.com>
+In-Reply-To: <20190819094137.390-1-colin.king@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=draganc@xilinx.com; 
+x-originating-ip: [149.199.80.133]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: adab16dc-e1fa-4594-453c-08d72728ae71
+x-ms-office365-filtering-ht: Tenant
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600166)(711020)(4605104)(1401327)(4618075)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328)(7193020);SRVR:CH2PR02MB6789;
+x-ms-traffictypediagnostic: CH2PR02MB6789:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <CH2PR02MB6789CA4D05A5230057A05873CBA50@CH2PR02MB6789.namprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:3044;
+x-forefront-prvs: 01371B902F
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(366004)(346002)(39840400004)(376002)(396003)(136003)(13464003)(189003)(199004)(2906002)(316002)(229853002)(66476007)(76116006)(76176011)(66946007)(54906003)(305945005)(74316002)(478600001)(99286004)(110136005)(64756008)(66446008)(66556008)(55016002)(9686003)(6436002)(71200400001)(71190400001)(7736002)(7696005)(14444005)(3846002)(486006)(6116002)(66066001)(33656002)(53936002)(52536014)(5660300002)(14454004)(11346002)(446003)(53546011)(6246003)(8936002)(6506007)(81166006)(81156014)(26005)(8676002)(25786009)(186003)(102836004)(86362001)(4326008)(256004)(476003)(2501003);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR02MB6789;H:CH2PR02MB6359.namprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: xilinx.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam-message-info: UTsoc5jSyL/8viEq6rlvcvp5hkfG/Ts6DnteM2Sdt0Q1yQBGKIMM0QJXkUxQLam2ii7G/xyB+sR/USV19Av1TF9FhahwZiuYcwtfrJd/b7mqquVRIiA0yruUGn4eGUbJt2Tfu4514NcWrBwG5Ve63nV+Ktyrwjf5wzPsfpK8yOsDvKL9V/pdp7pXU7tdKTRusSjr+iZqoXWAUpi7PqdTffqctm3/oCpZqRpyeUXoOYeg+Spoink812cIM8V1BXftV5qu/kcg4/5xHULCQB2os1/5uuBebhpdPjWgmRGzHv5S+9MalGVRFdZ+uOtHzJMv3iW6aGv/tVemGHt4muKhRl9XyPXQDnb+AcoAk8MVsD9o/+8rmJoyeQun8FJasKBkoDA7a00iL129/4mMnwaRl1xsOThy3v4Ka1W4PI9AUBE=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: adab16dc-e1fa-4594-453c-08d72728ae71
+X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Aug 2019 17:46:37.3789
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: tr+bfPqEx5j0SQ5ne1RVTeQW+iqgnYADnchG5BxZEYWK2/xED8l3q81sxQrJ5uyPCM3KUiBoA37i5fok5imZ1A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR02MB6789
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 2019-08-22 at 14:35 +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> An earlier commit re-worked the setting of the bitmask and is now
-> assigning v with some bit flags rather than bitwise or-ing them
-> into v, consequently the earlier bit-settings of v are being lost.
-> Fix this by replacing an assignment with the bitwise or instead.
-> 
-> Addresses-Coverity: ("Unused value")
-> Fixes: 2be25cac8402 ("bcma: add constants for PCI and use them")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/bcma/driver_pci.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/bcma/driver_pci.c b/drivers/bcma/driver_pci.c
-> index f499a469e66d..d219ee947c07 100644
-> --- a/drivers/bcma/driver_pci.c
-> +++ b/drivers/bcma/driver_pci.c
-> @@ -78,7 +78,7 @@ static u16 bcma_pcie_mdio_read(struct bcma_drv_pci *pc, u16 device, u8 address)
->  		v |= (address << BCMA_CORE_PCI_MDIODATA_REGADDR_SHF_OLD);
->  	}
->  
-> -	v = BCMA_CORE_PCI_MDIODATA_START;
-> +	v |= BCMA_CORE_PCI_MDIODATA_START;
-
-The same bug/issue is in bcma_pcie_mdio_write() btw.
-
-It *seems* correct to me - otherwise the "address" parameter to the
-function is entirely unused, which can't really be right.
-
-There are only two code paths that ever get here:
- * bcma_pcicore_serdes_workaround
- * bcma_core_pci_power_save
-
-The register at 0 is BCMA_CORE_PCI_CTL, which only has a few bits so
-even bad values written there by accident might not hurt much ...
-
-So it seems possible that it was just always broken.
-
-johannes
-
+SGkgQ29saW4sDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQ29saW4g
+S2luZyBbbWFpbHRvOmNvbGluLmtpbmdAY2Fub25pY2FsLmNvbV0NCj4gU2VudDogTW9uZGF5IDE5
+IEF1Z3VzdCAyMDE5IDEwOjQyDQo+IFRvOiBEZXJlayBLaWVybmFuIDxka2llcm5hbkB4aWxpbngu
+Y29tPjsgRHJhZ2FuIEN2ZXRpYyA8ZHJhZ2FuY0B4aWxpbnguY29tPjsgQXJuZCBCZXJnbWFubiA8
+YXJuZEBhcm5kYi5kZT47IEdyZWcgS3JvYWgtDQo+IEhhcnRtYW4gPGdyZWdraEBsaW51eGZvdW5k
+YXRpb24ub3JnPjsgTWljaGFsIFNpbWVrIDxtaWNoYWxzQHhpbGlueC5jb20+OyBsaW51eC1hcm0t
+a2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcNCj4gQ2M6IGtlcm5lbC1qYW5pdG9yc0B2Z2VyLmtl
+cm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogW1BBVENI
+XVtuZXh0XSBtaXNjOiB4aWxpbnhfc2RmZWM6IGZpeCBzcGVsbGluZyBtaXN0YWtlOiAiU2NoZHVs
+ZSIgLT4gIlNjaGVkdWxlIg0KPiANCj4gRnJvbTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdA
+Y2Fub25pY2FsLmNvbT4NCj4gDQo+IFRoZXJlIGlzIGEgc3BlbGxpbmcgbWlzdGFrZSBpbiBhIGRl
+dl9kYmcgbWVzc2FnZSwgZml4IGl0Lg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQ29saW4gSWFuIEtp
+bmcgPGNvbGluLmtpbmdAY2Fub25pY2FsLmNvbT4NCj4gLS0tDQo+ICBkcml2ZXJzL21pc2MveGls
+aW54X3NkZmVjLmMgfCAyICstDQo+ICAxIGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEg
+ZGVsZXRpb24oLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL21pc2MveGlsaW54X3NkZmVj
+LmMgYi9kcml2ZXJzL21pc2MveGlsaW54X3NkZmVjLmMNCj4gaW5kZXggOTEyZTkzOWRlYzYyLi5i
+MjVjNThlZTYxOGMgMTAwNjQ0DQo+IC0tLSBhL2RyaXZlcnMvbWlzYy94aWxpbnhfc2RmZWMuYw0K
+PiArKysgYi9kcml2ZXJzL21pc2MveGlsaW54X3NkZmVjLmMNCj4gQEAgLTU1Myw3ICs1NTMsNyBA
+QCBzdGF0aWMgaW50IHhzZGZlY19yZWcyX3dyaXRlKHN0cnVjdCB4c2RmZWNfZGV2ICp4c2RmZWMs
+IHUzMiBubGF5ZXJzLCB1MzIgbm1xYywNCj4gIAkJIFhTREZFQ19SRUcyX05PX0ZJTkFMX1BBUklU
+WV9NQVNLKTsNCj4gIAlpZiAobWF4X3NjaGVkdWxlICYNCj4gIAkgICAgfihYU0RGRUNfUkVHMl9N
+QVhfU0NIRURVTEVfTUFTSyA+PiBYU0RGRUNfUkVHMl9NQVhfU0NIRURVTEVfTFNCKSkNCj4gLQkJ
+ZGV2X2RiZyh4c2RmZWMtPmRldiwgIk1heCBTY2hkdWxlIGV4Y2VlZHMgMiBiaXRzIik7DQo+ICsJ
+CWRldl9kYmcoeHNkZmVjLT5kZXYsICJNYXggU2NoZWR1bGUgZXhjZWVkcyAyIGJpdHMiKTsNCj4g
+IAltYXhfc2NoZWR1bGUgPSAoKG1heF9zY2hlZHVsZSA8PCBYU0RGRUNfUkVHMl9NQVhfU0NIRURV
+TEVfTFNCKSAmDQo+ICAJCQlYU0RGRUNfUkVHMl9NQVhfU0NIRURVTEVfTUFTSyk7DQo+IA0KPiAt
+LQ0KPiAyLjIwLjENCg0KUmV2aWV3ZWQtYnk6IERyYWdhbiBDdmV0aWMgPGRyYWdhbi5jdmV0aWNA
+eGlsaW54LmNvbT4NCg0KVGhhbmtzLA0KRHJhZ2FuDQo=

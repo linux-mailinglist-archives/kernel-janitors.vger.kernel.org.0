@@ -2,121 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D88949A182
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 22:57:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A58389A1D4
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 23:12:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393328AbfHVUzX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 16:55:23 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:41813 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387699AbfHVUzW (ORCPT
+        id S2389777AbfHVVMb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 17:12:31 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:46496 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729718AbfHVVMb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 16:55:22 -0400
-Received: by mail-wr1-f65.google.com with SMTP id j16so6651614wrr.8;
-        Thu, 22 Aug 2019 13:55:20 -0700 (PDT)
+        Thu, 22 Aug 2019 17:12:31 -0400
+Received: by mail-qt1-f195.google.com with SMTP id j15so9259154qtl.13;
+        Thu, 22 Aug 2019 14:12:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=lRbOPMDoE31doaBIKEM0yAs5zAE0Z+co7+P/zE3Deug=;
-        b=dO6MkOLxdmPBc2RukZgga6fitB1oKcUHjkESVv57DByDxL25n69RQk4e6ArwcNptMo
-         BQMKdYnlmRCIfaXGHfP2KR4XuUusE5UWlJfnYev1V9jvenGPRvN6RuYIHkHNVp4TrkN3
-         fW3m5IwOZ2nTnJnHsxIdTVVYLGfPPaOv0o3QVWapwr3wnLH/An0YUzwLdkSo5ipGvL0p
-         fluLI7i3+Ic48hP2ab92zS0fDrXNGrLDAnGdW3dRQEBQUbfBTCB+7bskuXrvTVQNS1gG
-         KmauVkh5+ZN4913GAY2dz+U19ZDgfBQScjsC6Pob55UroJBZxP+L8HYWVqG/Avm3RoPe
-         5xfQ==
+        bh=orPyMCzXeHsYXHUl5miKDkVoD0ryzkBoiARAwCBXnx0=;
+        b=AnjVGBlLdnEch8CV/RolTNuqf/mXbgnvEhoD1RyozoQ+TLSXEFbbgGhKiKIb49NZNS
+         QvxnXb2JQDURKL7H/ZoGJiFYJpKz2k8E3FQwn1CP/SPyGothGlTsG0/iMgLrM4NtVQf3
+         fqgaBonqDMjvcwW2WL5SwlqWOOJjpfBm34EiX8WAI9g9gxg+GxvqWfulpmabb7N+JgSb
+         Wl+4tUiJhEFARMQ2w6VPQO/bBg9BKvB9BUNM/E4ie/R+4r3pOrte/AWOdU/VxcA8WgSb
+         iw3WW1yUkrBCFnTLntYMUUYLnzDBF5adjfAduDm1ihOFtxK8ve7WoxFCAziAtEKrAHho
+         x1DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=lRbOPMDoE31doaBIKEM0yAs5zAE0Z+co7+P/zE3Deug=;
-        b=Iams6K/UMyVa+xUBd+1c94LGBQX8dI4d08MFg7e5HXVKB18h0Xr9C/lOGJKBldt0s1
-         6599z7W7WKOUICGzYxaRX2buniEqnNn7X47lBfzdSzeIYLaqqAdGc4xw+kPWuoUUIU7H
-         xVemgrYqXzoodXsMMJKdd9qGg9uyla6pPPyjoY88fs4IWAgaVWZTNMLttg4P6b9MmED5
-         Vsp0Q8DNZxm2EAQQU2aeLX93jhlrkh3k5f1JCGoFUP4dekLyIh/qI47XqNmcxyffH3BH
-         H+GUNdWIi46S10tltDy5Kii8N08Je23bYfC/EPYuAh/1jmNjT/yH3rkeTguQZ2ZqBTnz
-         Zv1Q==
-X-Gm-Message-State: APjAAAVMgJraHWiNi9F4KbpkXQ8YEeZ+rYAw9PXqcg3k4vNGGK2Gi80U
-        kaPbi9P1rWEq367COGxamUhbEqsjHsjCnH4/fmM=
-X-Google-Smtp-Source: APXvYqxVuoG2YDL4c/4HLpmJucH4dmayX1vJ+tnYQOJyQWDNhMAnVIhulJpruEcIK1jr/0JSHbj+9O4UGbAaXMDgUJg=
-X-Received: by 2002:a5d:4ecb:: with SMTP id s11mr866410wrv.323.1566507320236;
- Thu, 22 Aug 2019 13:55:20 -0700 (PDT)
+        bh=orPyMCzXeHsYXHUl5miKDkVoD0ryzkBoiARAwCBXnx0=;
+        b=roJaqHlhqgyIFJmhJo9weKw78oD3/6dcvl9TRgBMuSf7oKGxqpa+XI7759lgG9WgX+
+         cRNsOTEvPLlQBExmER2LRxpg3nrrasx+g3m20AIR8eAGRmTK9hSDQkXJbLToIV81w6nd
+         U/ec+cZF33qcgMWQ8sX46Im1VU/ndARwy4SsCoi6qw1Pu2x0I+Ykjni3O0isIYY98SS/
+         76qwYjfcjKb1Y1R9IB78MqTimte+GBCqXpYegwyyZy94Ek4+k6p4aIYdEpEqiwvtvqcR
+         6z4qCy8qvRqzZJsd2e/ufCYTIlH6vTGF1cI8LD2o9g0oi1vqzpSB6URa+NkWk0QydBy1
+         CKlw==
+X-Gm-Message-State: APjAAAVOgJpS3aPo/RsIUoI8nvs4r3PIVGh+xHyJUYed0BUgdod4oULL
+        BQRGCkpSApTuI6Hr5hzvcba0hyJn8ZrjGDC9neE=
+X-Google-Smtp-Source: APXvYqzMFLCPqn5KnYlmfFhNmCYf6KvXFa0b/WlFjyeUyS9HCqJVnGOB7dqCmpNt/BJ1XqUWYUx1k9MRj7k7WGfzxwM=
+X-Received: by 2002:a05:6214:13a1:: with SMTP id h1mr1319454qvz.190.1566508349936;
+ Thu, 22 Aug 2019 14:12:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190816221011.10750-1-colin.king@canonical.com> <5981f677-3347-1450-f787-853e97496bd4@amd.com>
-In-Reply-To: <5981f677-3347-1450-f787-853e97496bd4@amd.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Thu, 22 Aug 2019 16:55:08 -0400
-Message-ID: <CADnq5_M-7LQ1HAiV5-jzYZENRNqzRm939AyvVarDpWJEJZDNqw@mail.gmail.com>
-Subject: Re: [PATCH][drm-next] drm/amd/display: fix a potential null pointer dereference
-To:     Harry Wentland <hwentlan@amd.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        "Wentland, Harry" <Harry.Wentland@amd.com>,
-        "Li, Sun peng (Leo)" <Sunpeng.Li@amd.com>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <25ca9c48-1ac9-daa1-8472-0a53e4beed6a@web.de>
+In-Reply-To: <25ca9c48-1ac9-daa1-8472-0a53e4beed6a@web.de>
+From:   Song Liu <liu.song.a23@gmail.com>
+Date:   Thu, 22 Aug 2019 14:12:19 -0700
+Message-ID: <CAPhsuW5c7xn9hW70C3BV3GqysEzScJfpw11yRSMx39T5+Hxd5Q@mail.gmail.com>
+Subject: =?UTF-8?Q?Re=3A_=5BPATCH=5D_net=2Fipv4=2Ftcp=5Fbpf=3A_Delete_an_unnecessary_?=
+        =?UTF-8?Q?check_before_the_function_call_=E2=80=9Cconsume=5Fskb=E2=80=9D?=
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Networking <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Hideaki Yoshifuji <yoshfuji@linux-ipv6.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Aug 22, 2019 at 3:21 PM Harry Wentland <hwentlan@amd.com> wrote:
+On Thu, Aug 22, 2019 at 10:19 AM Markus Elfring <Markus.Elfring@web.de> wrote:
 >
-> On 2019-08-16 6:10 p.m., Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> >
-> > Currently the pointer init_data is dereferenced on the assignment
-> > of fw_info before init_data is sanity checked to see if it is null.
-> > Fix te potential null pointer dereference on init_data by only
-> > performing dereference after it is null checked.
-> >
-> > Addresses-Coverity: ("Dereference before null check")
-> > Fixes: 9adc8050bf3c ("drm/amd/display: make firmware info only load once during dc_bios create")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Thu, 22 Aug 2019 18:20:42 +0200
 >
-> Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+> The consume_skb() function performs also input parameter validation.
+> Thus the test around the call is not needed.
 >
+> This issue was detected by using the Coccinelle software.
+>
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-Applied.  Thanks!
-
-Alex
-
-> Harry
->
-> > ---
-> >  drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c b/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c
-> > index bee81bf288be..926954c804a6 100644
-> > --- a/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c
-> > +++ b/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c
-> > @@ -1235,7 +1235,7 @@ static bool calc_pll_max_vco_construct(
-> >                       struct calc_pll_clock_source_init_data *init_data)
-> >  {
-> >       uint32_t i;
-> > -     struct dc_firmware_info *fw_info = &init_data->bp->fw_info;
-> > +     struct dc_firmware_info *fw_info;
-> >       if (calc_pll_cs == NULL ||
-> >                       init_data == NULL ||
-> >                       init_data->bp == NULL)
-> > @@ -1244,6 +1244,7 @@ static bool calc_pll_max_vco_construct(
-> >       if (init_data->bp->fw_info_valid)
-> >               return false;
-> >
-> > +     fw_info = &init_data->bp->fw_info;
-> >       calc_pll_cs->ctx = init_data->ctx;
-> >       calc_pll_cs->ref_freq_khz = fw_info->pll_info.crystal_frequency;
-> >       calc_pll_cs->min_vco_khz =
-> >
-> _______________________________________________
-> amd-gfx mailing list
-> amd-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/amd-gfx
+Acked-by: Song Liu <songliubraving@fb.com>

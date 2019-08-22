@@ -2,105 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C95D9A172
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 22:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D88949A182
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 22:57:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389614AbfHVUvk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 16:51:40 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:33356 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388241AbfHVUvk (ORCPT
+        id S2393328AbfHVUzX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 16:55:23 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:41813 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387699AbfHVUzW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 16:51:40 -0400
-Received: by mail-wr1-f68.google.com with SMTP id u16so6680237wrr.0;
-        Thu, 22 Aug 2019 13:51:38 -0700 (PDT)
+        Thu, 22 Aug 2019 16:55:22 -0400
+Received: by mail-wr1-f65.google.com with SMTP id j16so6651614wrr.8;
+        Thu, 22 Aug 2019 13:55:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ypNP1kJ2eEs/EAi1HZN+8+beflxZCGBjmUyy7v7X9eU=;
-        b=ca5Ppa+MCF+DQvu+mF0mpSgCn71cKIzPoQZ5XK9eLTa9ftfSOoVXJ4IRJ1y2KXDmSi
-         W37s+l8yo6mHXHNeyfFeDe6oEiTziOsHIn3Fmp/JUPf0nmIrAww7zGz2dHfFl/0EX3np
-         AuAg6RRJF8jYaa/u5FxmEEm+PjLZZ1uZKZSpufY+8sBx4Kq8PPyi41cLrghGbvHX/BHY
-         aSlzKPde/+kFRKNpM+qU4jiVTNoOEqvltua+C5XQ2CqRC/qpW85AvtRz9jH7bNDgeLZP
-         OxncTcVaUh5dvOeBGgQI+CS3hvHcekZtYze60cOI1TqgTsaoZRVgpuVJ6scw316FSqn+
-         GEdQ==
+        bh=lRbOPMDoE31doaBIKEM0yAs5zAE0Z+co7+P/zE3Deug=;
+        b=dO6MkOLxdmPBc2RukZgga6fitB1oKcUHjkESVv57DByDxL25n69RQk4e6ArwcNptMo
+         BQMKdYnlmRCIfaXGHfP2KR4XuUusE5UWlJfnYev1V9jvenGPRvN6RuYIHkHNVp4TrkN3
+         fW3m5IwOZ2nTnJnHsxIdTVVYLGfPPaOv0o3QVWapwr3wnLH/An0YUzwLdkSo5ipGvL0p
+         fluLI7i3+Ic48hP2ab92zS0fDrXNGrLDAnGdW3dRQEBQUbfBTCB+7bskuXrvTVQNS1gG
+         KmauVkh5+ZN4913GAY2dz+U19ZDgfBQScjsC6Pob55UroJBZxP+L8HYWVqG/Avm3RoPe
+         5xfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ypNP1kJ2eEs/EAi1HZN+8+beflxZCGBjmUyy7v7X9eU=;
-        b=XHGOmaz/Ms7zS23u14POo/co6qnwXnVKhX98wuYoBVULiejeNWycZT69DkohoTur7z
-         zYpd61rhdHlQ1S9C+T4kOH2c+HLyZGiF9YVpJXd0n3bqI7pcSarXZiYhviOnTGv9QGA9
-         uZJQiyAY1JeT3JWNRPARJmiy/yDR8BpD0an4SRLwZWmWepmKPlsx+mYSoDao1iEozHLV
-         eYFk7LPQkVmsGC723vvEqQeJyUzxrBN2zJZeygqj8zqaIakA8GiSnKU3c7I2wWxjjRWZ
-         G6cxkz0xb0G4kovsut/MkeopE34iNvH7l3/wZaoAxU79meZWRhlm5lbL2IGZ/Z8lqaxx
-         msSw==
-X-Gm-Message-State: APjAAAXoZootLu+XGtv+honTyI1mnaFqpnA9YvpsvtrqFdS7ihcyIlhB
-        vYGL17J0Aik6VUSUfbG+kOeIestLh/VPGJFlovdf0IXJ
-X-Google-Smtp-Source: APXvYqwLkyCSFex31CA1uzOruakJcFqOEcFr8tq/u+g1hcxkFaEl4VVU+6teCA/XPl3+hxCo8Rhhmx/xfcNfVAFXFR4=
-X-Received: by 2002:a5d:6ccd:: with SMTP id c13mr1006134wrc.4.1566507098156;
- Thu, 22 Aug 2019 13:51:38 -0700 (PDT)
+        bh=lRbOPMDoE31doaBIKEM0yAs5zAE0Z+co7+P/zE3Deug=;
+        b=Iams6K/UMyVa+xUBd+1c94LGBQX8dI4d08MFg7e5HXVKB18h0Xr9C/lOGJKBldt0s1
+         6599z7W7WKOUICGzYxaRX2buniEqnNn7X47lBfzdSzeIYLaqqAdGc4xw+kPWuoUUIU7H
+         xVemgrYqXzoodXsMMJKdd9qGg9uyla6pPPyjoY88fs4IWAgaVWZTNMLttg4P6b9MmED5
+         Vsp0Q8DNZxm2EAQQU2aeLX93jhlrkh3k5f1JCGoFUP4dekLyIh/qI47XqNmcxyffH3BH
+         H+GUNdWIi46S10tltDy5Kii8N08Je23bYfC/EPYuAh/1jmNjT/yH3rkeTguQZ2ZqBTnz
+         Zv1Q==
+X-Gm-Message-State: APjAAAVMgJraHWiNi9F4KbpkXQ8YEeZ+rYAw9PXqcg3k4vNGGK2Gi80U
+        kaPbi9P1rWEq367COGxamUhbEqsjHsjCnH4/fmM=
+X-Google-Smtp-Source: APXvYqxVuoG2YDL4c/4HLpmJucH4dmayX1vJ+tnYQOJyQWDNhMAnVIhulJpruEcIK1jr/0JSHbj+9O4UGbAaXMDgUJg=
+X-Received: by 2002:a5d:4ecb:: with SMTP id s11mr866410wrv.323.1566507320236;
+ Thu, 22 Aug 2019 13:55:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190822130948.32195-1-colin.king@canonical.com>
-In-Reply-To: <20190822130948.32195-1-colin.king@canonical.com>
+References: <20190816221011.10750-1-colin.king@canonical.com> <5981f677-3347-1450-f787-853e97496bd4@amd.com>
+In-Reply-To: <5981f677-3347-1450-f787-853e97496bd4@amd.com>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Thu, 22 Aug 2019 16:51:25 -0400
-Message-ID: <CADnq5_O=V0_MNenTdxFsprmrGQiwMQNDFFkzYH-ZWw11VaMYmA@mail.gmail.com>
-Subject: Re: [PATCH] drm/amdgpu/powerplay: remove redundant assignment to
- variable baco_state
-To:     Colin King <colin.king@canonical.com>
-Cc:     Rex Zhu <rex.zhu@amd.com>, Evan Quan <evan.quan@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
+Date:   Thu, 22 Aug 2019 16:55:08 -0400
+Message-ID: <CADnq5_M-7LQ1HAiV5-jzYZENRNqzRm939AyvVarDpWJEJZDNqw@mail.gmail.com>
+Subject: Re: [PATCH][drm-next] drm/amd/display: fix a potential null pointer dereference
+To:     Harry Wentland <hwentlan@amd.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        "Wentland, Harry" <Harry.Wentland@amd.com>,
+        "Li, Sun peng (Leo)" <Sunpeng.Li@amd.com>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Koenig, Christian" <Christian.Koenig@amd.com>,
+        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Aug 22, 2019 at 9:09 AM Colin King <colin.king@canonical.com> wrote:
+On Thu, Aug 22, 2019 at 3:21 PM Harry Wentland <hwentlan@amd.com> wrote:
 >
-> From: Colin Ian King <colin.king@canonical.com>
+> On 2019-08-16 6:10 p.m., Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> >
+> > Currently the pointer init_data is dereferenced on the assignment
+> > of fw_info before init_data is sanity checked to see if it is null.
+> > Fix te potential null pointer dereference on init_data by only
+> > performing dereference after it is null checked.
+> >
+> > Addresses-Coverity: ("Dereference before null check")
+> > Fixes: 9adc8050bf3c ("drm/amd/display: make firmware info only load once during dc_bios create")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 >
-> Variable baco_state is initialized to a value that is never read and it is
-> re-assigned later. The initialization is redundant and can be removed.
+> Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 >
-> Addresses-Coverity: ("Unused Value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
 Applied.  Thanks!
 
 Alex
 
-> ---
->  drivers/gpu/drm/amd/powerplay/smu_v11_0.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Harry
 >
-> diff --git a/drivers/gpu/drm/amd/powerplay/smu_v11_0.c b/drivers/gpu/drm/amd/powerplay/smu_v11_0.c
-> index 89749b1d2019..a4aba8576900 100644
-> --- a/drivers/gpu/drm/amd/powerplay/smu_v11_0.c
-> +++ b/drivers/gpu/drm/amd/powerplay/smu_v11_0.c
-> @@ -1656,7 +1656,7 @@ static bool smu_v11_0_baco_is_support(struct smu_context *smu)
->  static enum smu_baco_state smu_v11_0_baco_get_state(struct smu_context *smu)
->  {
->         struct smu_baco_context *smu_baco = &smu->smu_baco;
-> -       enum smu_baco_state baco_state = SMU_BACO_STATE_EXIT;
-> +       enum smu_baco_state baco_state;
->
->         mutex_lock(&smu_baco->mutex);
->         baco_state = smu_baco->state;
-> --
-> 2.20.1
->
+> > ---
+> >  drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c b/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c
+> > index bee81bf288be..926954c804a6 100644
+> > --- a/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c
+> > +++ b/drivers/gpu/drm/amd/display/dc/dce/dce_clock_source.c
+> > @@ -1235,7 +1235,7 @@ static bool calc_pll_max_vco_construct(
+> >                       struct calc_pll_clock_source_init_data *init_data)
+> >  {
+> >       uint32_t i;
+> > -     struct dc_firmware_info *fw_info = &init_data->bp->fw_info;
+> > +     struct dc_firmware_info *fw_info;
+> >       if (calc_pll_cs == NULL ||
+> >                       init_data == NULL ||
+> >                       init_data->bp == NULL)
+> > @@ -1244,6 +1244,7 @@ static bool calc_pll_max_vco_construct(
+> >       if (init_data->bp->fw_info_valid)
+> >               return false;
+> >
+> > +     fw_info = &init_data->bp->fw_info;
+> >       calc_pll_cs->ctx = init_data->ctx;
+> >       calc_pll_cs->ref_freq_khz = fw_info->pll_info.crystal_frequency;
+> >       calc_pll_cs->min_vco_khz =
+> >
 > _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+> amd-gfx mailing list
+> amd-gfx@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/amd-gfx

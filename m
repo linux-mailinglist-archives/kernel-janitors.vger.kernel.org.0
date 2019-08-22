@@ -2,39 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72C2C98BA6
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 08:51:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4E0698C0E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 09:02:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729450AbfHVGtO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 02:49:14 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:43448 "EHLO huawei.com"
+        id S1732003AbfHVHC0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 03:02:26 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:53336 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727553AbfHVGtO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 02:49:14 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 67FFFAA4886793855108;
-        Thu, 22 Aug 2019 14:49:10 +0800 (CST)
+        id S1731985AbfHVHC0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 22 Aug 2019 03:02:26 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id DBFF3A7227D4AE8C8C53;
+        Thu, 22 Aug 2019 15:02:22 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 22 Aug 2019 14:49:03 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        "Maxime Ripard" <mripard@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
-        Marcus Cooper <codekipper@gmail.com>,
-        Vasily Khoruzhick <anarsoul@gmail.com>
-CC:     YueHaibing <yuehaibing@huawei.com>, <alsa-devel@alsa-project.org>,
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 22 Aug 2019 15:02:12 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <balbi@kernel.org>, <gregkh@linuxfoundation.org>, <vz@mleia.com>,
+        <slemieux.tyco@gmail.com>, <linux-usb@vger.kernel.org>,
         <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] ASoC: sun4i-i2s: Use PTR_ERR_OR_ZERO in sun4i_i2s_init_regmap_fields()
-Date:   Thu, 22 Aug 2019 06:52:52 +0000
-Message-ID: <20190822065252.74028-1-yuehaibing@huawei.com>
+        <linux-kernel@vger.kernel.org>
+CC:     <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH -next] usb: udc: lpc32xx: remove set but not used 3 variables
+Date:   Thu, 22 Aug 2019 15:05:57 +0800
+Message-ID: <20190822070557.74874-1-maowenan@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -42,31 +37,78 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Use PTR_ERR_OR_ZERO rather than if(IS_ERR(...)) + PTR_ERR
+Fixes gcc '-Wunused-but-set-variable' warning:
+drivers/usb/gadget/udc/lpc32xx_udc.c: In function ‘udc_protocol_cmd_r’:
+drivers/usb/gadget/udc/lpc32xx_udc.c:744:6: warning: variable ‘tmp’ set but not used [-Wunused-but-set-variable]
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+drivers/usb/gadget/udc/lpc32xx_udc.c: In function ‘udc_handle_dma_ep’:
+drivers/usb/gadget/udc/lpc32xx_udc.c:1994:14: warning: variable ‘epstatus’ set but not used [-Wunused-but-set-variable]
+
+drivers/usb/gadget/udc/lpc32xx_udc.c: In function ‘udc_handle_ep0_setup’:
+drivers/usb/gadget/udc/lpc32xx_udc.c:2200:22: warning: variable ‘wLength’ set but not used [-Wunused-but-set-variable]
+
+It is not used since commit 90fccb529d24 ("usb: gadget: Gadget directory cleanup - group UDC drivers")
+
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
 ---
- sound/soc/sunxi/sun4i-i2s.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/usb/gadget/udc/lpc32xx_udc.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/sound/soc/sunxi/sun4i-i2s.c b/sound/soc/sunxi/sun4i-i2s.c
-index 9e691baee1e8..2071c54265f3 100644
---- a/sound/soc/sunxi/sun4i-i2s.c
-+++ b/sound/soc/sunxi/sun4i-i2s.c
-@@ -1095,10 +1095,7 @@ static int sun4i_i2s_init_regmap_fields(struct device *dev,
- 	i2s->field_fmt_sr =
- 			devm_regmap_field_alloc(dev, i2s->regmap,
- 						i2s->variant->field_fmt_sr);
--	if (IS_ERR(i2s->field_fmt_sr))
--		return PTR_ERR(i2s->field_fmt_sr);
--
--	return 0;
-+	return PTR_ERR_OR_ZERO(i2s->field_fmt_sr);
- }
+diff --git a/drivers/usb/gadget/udc/lpc32xx_udc.c b/drivers/usb/gadget/udc/lpc32xx_udc.c
+index 606c8bc..b3e073f 100644
+--- a/drivers/usb/gadget/udc/lpc32xx_udc.c
++++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
+@@ -741,7 +741,6 @@ static inline void udc_protocol_cmd_data_w(struct lpc32xx_udc *udc, u32 cmd,
+  * response data */
+ static u32 udc_protocol_cmd_r(struct lpc32xx_udc *udc, u32 cmd)
+ {
+-	u32 tmp;
+ 	int to = 1000;
  
- static int sun4i_i2s_probe(struct platform_device *pdev)
-
-
-
-
+ 	/* Write a command and read data from the protocol engine */
+@@ -751,7 +750,6 @@ static u32 udc_protocol_cmd_r(struct lpc32xx_udc *udc, u32 cmd)
+ 	/* Write command code */
+ 	udc_protocol_cmd_w(udc, cmd);
+ 
+-	tmp = readl(USBD_DEVINTST(udc->udp_baseaddr));
+ 	while ((!(readl(USBD_DEVINTST(udc->udp_baseaddr)) & USBD_CDFULL))
+ 	       && (to > 0))
+ 		to--;
+@@ -1991,7 +1989,7 @@ void udc_handle_eps(struct lpc32xx_udc *udc, struct lpc32xx_ep *ep)
+ /* DMA end of transfer completion */
+ static void udc_handle_dma_ep(struct lpc32xx_udc *udc, struct lpc32xx_ep *ep)
+ {
+-	u32 status, epstatus;
++	u32 status;
+ 	struct lpc32xx_request *req;
+ 	struct lpc32xx_usbd_dd_gad *dd;
+ 
+@@ -2085,7 +2083,7 @@ static void udc_handle_dma_ep(struct lpc32xx_udc *udc, struct lpc32xx_ep *ep)
+ 		if (udc_clearep_getsts(udc, ep->hwep_num) & EP_SEL_F) {
+ 			udc_clearep_getsts(udc, ep->hwep_num);
+ 			uda_enable_hwepint(udc, ep->hwep_num);
+-			epstatus = udc_clearep_getsts(udc, ep->hwep_num);
++			udc_clearep_getsts(udc, ep->hwep_num);
+ 
+ 			/* Let the EP interrupt handle the ZLP */
+ 			return;
+@@ -2197,7 +2195,7 @@ static void udc_handle_ep0_setup(struct lpc32xx_udc *udc)
+ 	struct lpc32xx_ep *ep, *ep0 = &udc->ep[0];
+ 	struct usb_ctrlrequest ctrlpkt;
+ 	int i, bytes;
+-	u16 wIndex, wValue, wLength, reqtype, req, tmp;
++	u16 wIndex, wValue, reqtype, req, tmp;
+ 
+ 	/* Nuke previous transfers */
+ 	nuke(ep0, -EPROTO);
+@@ -2213,7 +2211,6 @@ static void udc_handle_ep0_setup(struct lpc32xx_udc *udc)
+ 	/* Native endianness */
+ 	wIndex = le16_to_cpu(ctrlpkt.wIndex);
+ 	wValue = le16_to_cpu(ctrlpkt.wValue);
+-	wLength = le16_to_cpu(ctrlpkt.wLength);
+ 	reqtype = le16_to_cpu(ctrlpkt.bRequestType);
+ 
+ 	/* Set direction of EP0 */
+-- 
+2.7.4
 

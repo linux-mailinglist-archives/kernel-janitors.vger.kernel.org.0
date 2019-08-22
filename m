@@ -2,91 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F093298B57
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 08:24:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B43198B5F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 08:27:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731657AbfHVGX0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 02:23:26 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:33368 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731098AbfHVGX0 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 02:23:26 -0400
-Received: by mail-pg1-f196.google.com with SMTP id n190so2933301pgn.0;
-        Wed, 21 Aug 2019 23:23:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=CjmFFn8T4mzBuFjitRp7RHPNL4LmUIeCq1YFn9vP/g8=;
-        b=QEGZiwC7PSpT28dJZ3fuiwQkE1MeAaFFXllRO2uS5DfgLvh3/FvXeIY8ycRsnEi7BP
-         AQNrazwXFFilJiBwLE4Ky/0/sroiOAnMVWPxSIFL0ut+R+jKuqF/SUYUeQ871N2+08Ey
-         qDC9Ecyuabc15K33WD1LI3XDwk86AHsoxlUtP5hAG7oUcaZRP33ZvcqKx9BARjXCt7iU
-         BDI8FIOuSJsfSKP8nqhTlAMTPhGgzqC7so1s+zxuPjXunz9u+1m6d9St+qOXQ7/IUscw
-         rNPpNa6F/jsNs9hpU4sDnYD30cfplht66IfY2JCUy9BfkXctMDpD2zUfy2drbDKk7fnm
-         zaZA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=CjmFFn8T4mzBuFjitRp7RHPNL4LmUIeCq1YFn9vP/g8=;
-        b=DCGSeu9dU/GzKu22Mdih/TnRHBIicBoJKoH4mAZCUhlDwd6NIQUmDTVMLnollizZxb
-         lsCV4cUrURU3Vn/5zE/g2Fx2jugP7YRZSLygTsoPubQDExZlRoeukhTVs2bN4frW846F
-         nmaR7J0O7RI7z2hQMtfLmCB0okOdENWV8+xMNqmbgwUesM2b9KsOAht/DW+aNq6Bacqq
-         3gVURcdJTf4mjy0a971H0ErjOYL8k3FZkn3dvPwW6lQ1YplL8tWYRRCQspUq3EGdprHQ
-         nnzKP7fEnIWM/DGO2G+5xkUYIJugXPhnr0nXAox44AEykWF759OgUwf1ch5ubUvT3EPH
-         VFaw==
-X-Gm-Message-State: APjAAAXfxpqpbhsf1Czmwnn4eBot0DQ6g9tCmKu38HpShCY8Lu7fOwGR
-        leM3RnRruygooDX+lzE3b8g=
-X-Google-Smtp-Source: APXvYqxqwtKEpKPumsqvkHiy9cX5AXzad66+0qTPgdR4eANJvlZhZ/oekh/WwciHXrrpsQk1ODTj6g==
-X-Received: by 2002:a17:90a:b115:: with SMTP id z21mr3747216pjq.79.1566455005334;
-        Wed, 21 Aug 2019 23:23:25 -0700 (PDT)
-Received: from LGEARND20B15 ([27.122.242.75])
-        by smtp.gmail.com with ESMTPSA id y14sm54159373pfq.85.2019.08.21.23.23.23
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 21 Aug 2019 23:23:24 -0700 (PDT)
-Date:   Thu, 22 Aug 2019 15:23:20 +0900
-From:   Austin Kim <austindh.kim@gmail.com>
-To:     darrick.wong@oracle.com
-Cc:     linux-xfs@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, austindh.kim@gmail.com
-Subject: [PATCH] xfs: Use BUG_ON rather than BUG() to remove unreachable code
-Message-ID: <20190822062320.GA35267@LGEARND20B15>
+        id S1731689AbfHVG06 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 02:26:58 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:47390 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729284AbfHVG05 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 22 Aug 2019 02:26:57 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 28306DB23BC640D10BF3;
+        Thu, 22 Aug 2019 14:26:49 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 22 Aug 2019 14:26:42 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <nbd@openwrt.org>, <john@phrozen.org>, <sean.wang@mediatek.com>,
+        <nelson.chang@mediatek.com>, <davem@davemloft.net>,
+        <matthias.bgg@gmail.com>
+CC:     <netdev@vger.kernel.org>, <linux-mediatek@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH -next] net: mediatek: remove set but not used variable 'status'
+Date:   Thu, 22 Aug 2019 14:30:26 +0800
+Message-ID: <20190822063026.70044-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Code after BUG is unreachable since system would be crashed
-after the call to BUG is made.
-So change BUG_ON instead of BUG() to remove unreachable code.
----
- fs/xfs/xfs_mount.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+Fixes gcc '-Wunused-but-set-variable' warning:
+drivers/net/ethernet/mediatek/mtk_eth_soc.c: In function mtk_handle_irq:
+drivers/net/ethernet/mediatek/mtk_eth_soc.c:1951:6: warning: variable status set but not used [-Wunused-but-set-variable]
 
-diff --git a/fs/xfs/xfs_mount.c b/fs/xfs/xfs_mount.c
-index 322da69..a681808 100644
---- a/fs/xfs/xfs_mount.c
-+++ b/fs/xfs/xfs_mount.c
-@@ -213,13 +213,7 @@ xfs_initialize_perag(
- 			goto out_hash_destroy;
+It is not used since commit 296c9120752b ("net: ethernet: mediatek: Add MT7628/88 SoC support")
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 8ddbb8d..bb7d623 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -1948,9 +1948,7 @@ static irqreturn_t mtk_handle_irq_tx(int irq, void *_eth)
+ static irqreturn_t mtk_handle_irq(int irq, void *_eth)
+ {
+ 	struct mtk_eth *eth = _eth;
+-	u32 status;
  
- 		spin_lock(&mp->m_perag_lock);
--		if (radix_tree_insert(&mp->m_perag_tree, index, pag)) {
--			BUG();
--			spin_unlock(&mp->m_perag_lock);
--			radix_tree_preload_end();
--			error = -EEXIST;
--			goto out_hash_destroy;
--		}
-+		BUG_ON(radix_tree_insert(&mp->m_perag_tree, index, pag));
- 		spin_unlock(&mp->m_perag_lock);
- 		radix_tree_preload_end();
- 		/* first new pag is fully initialized */
+-	status = mtk_r32(eth, MTK_PDMA_INT_STATUS);
+ 	if (mtk_r32(eth, MTK_PDMA_INT_MASK) & MTK_RX_DONE_INT) {
+ 		if (mtk_r32(eth, MTK_PDMA_INT_STATUS) & MTK_RX_DONE_INT)
+ 			mtk_handle_irq_rx(irq, _eth);
 -- 
-2.6.2
+2.7.4
 

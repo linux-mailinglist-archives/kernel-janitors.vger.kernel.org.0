@@ -2,28 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 042B69A264
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 23:53:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEECA9A274
+	for <lists+kernel-janitors@lfdr.de>; Fri, 23 Aug 2019 00:00:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390003AbfHVVxR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 17:53:17 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50050 "EHLO
+        id S2393710AbfHVV4z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 17:56:55 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50094 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388259AbfHVVxR (ORCPT
+        with ESMTP id S2393707AbfHVV4z (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 17:53:17 -0400
+        Thu, 22 Aug 2019 17:56:55 -0400
 Received: from cpc129250-craw9-2-0-cust139.know.cable.virginm.net ([82.43.126.140] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1i0v17-0005AS-Si; Thu, 22 Aug 2019 21:53:13 +0000
+        id 1i0v4d-0005Tg-Du; Thu, 22 Aug 2019 21:56:51 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Anton Altaparmakov <anton@tuxera.com>,
-        linux-ntfs-dev@lists.sourceforge.net
+To:     qla2xxx-upstream@qlogic.com,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ntfs: mft: fix spelling mistake "initiailized" -> "initialized"
-Date:   Thu, 22 Aug 2019 22:53:13 +0100
-Message-Id: <20190822215313.5080-1-colin.king@canonical.com>
+Subject: [PATCH] scsi: qla2xxx: fix spelling mistake "initializatin" -> "initialization"
+Date:   Thu, 22 Aug 2019 22:56:51 +0100
+Message-Id: <20190822215651.5403-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,26 +37,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in a ntfs_debug message, fix it.
+There is a spelling mistake in a ql_log message. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- fs/ntfs/mft.c | 2 +-
+ drivers/scsi/qla2xxx/qla_nx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ntfs/mft.c b/fs/ntfs/mft.c
-index 20c841a906f2..218984422f49 100644
---- a/fs/ntfs/mft.c
-+++ b/fs/ntfs/mft.c
-@@ -1580,7 +1580,7 @@ static int ntfs_mft_bitmap_extend_initialized_nolock(ntfs_volume *vol)
- 	ATTR_RECORD *a;
- 	int ret;
+diff --git a/drivers/scsi/qla2xxx/qla_nx.c b/drivers/scsi/qla2xxx/qla_nx.c
+index 372355bfcbb6..65a675906188 100644
+--- a/drivers/scsi/qla2xxx/qla_nx.c
++++ b/drivers/scsi/qla2xxx/qla_nx.c
+@@ -1977,7 +1977,7 @@ qla82xx_check_rcvpeg_state(struct qla_hw_data *ha)
+ 	} while (--retries);
  
--	ntfs_debug("Extending mft bitmap initiailized (and data) size.");
-+	ntfs_debug("Extending mft bitmap initialized (and data) size.");
- 	mft_ni = NTFS_I(vol->mft_ino);
- 	mftbmp_vi = vol->mftbmp_ino;
- 	mftbmp_ni = NTFS_I(mftbmp_vi);
+ 	ql_log(ql_log_fatal, vha, 0x00ac,
+-	    "Rcv Peg initializatin failed: 0x%x.\n", val);
++	    "Rcv Peg initialization failed: 0x%x.\n", val);
+ 	read_lock(&ha->hw_lock);
+ 	qla82xx_wr_32(ha, CRB_RCVPEG_STATE, PHAN_INITIALIZE_FAILED);
+ 	read_unlock(&ha->hw_lock);
 -- 
 2.20.1
 

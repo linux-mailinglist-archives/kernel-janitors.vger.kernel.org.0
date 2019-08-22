@@ -2,103 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6702B98FE7
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 11:45:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 420FB9900B
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 11:54:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731785AbfHVJm4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 05:42:56 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:50128 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728605AbfHVJm4 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 05:42:56 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7M9cuWC174990;
-        Thu, 22 Aug 2019 09:42:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2019-08-05;
- bh=Y9bMgARPGU88z2keUtc9vVajrhlqLg5p7Ob6lbtfaH4=;
- b=fKfkZzeQQ5pDEfNugWBqk8woVbJ8ZT046tF6x5P13kVLRyairtMT5xH4d+Jy2Ha71KCj
- 7mi0VJw3qGMXBpQ0AUWp2V4ghKbg0CrYPV1Z3ChZwNnDqVUIE5kBufAgwjhxos31bX34
- NP6EFgOXlJ8WnADV6eU2a77ZzqH8D0tYcCuK/slmadbQghJ/LoLuPSDogmwB1P2UYWcc
- oU8VETir2Ppg/ZLk9FCuINgAQxT++7ysm1ItIaZE335yHspQyKAw/QpqdvjbIXDRKIKH
- tkecL11BhMRSX6ogw28Fn5e3N+YKlpL6jSCD5TtwKOv126qL6TQ2vVEn9U6Q+mJRMDdP 1A== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 2uea7r49pb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 22 Aug 2019 09:42:17 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7M9chPE005796;
-        Thu, 22 Aug 2019 09:42:16 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 2ugj7qx1v7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 22 Aug 2019 09:42:16 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x7M9g3Ec000602;
-        Thu, 22 Aug 2019 09:42:04 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 22 Aug 2019 02:42:02 -0700
-Date:   Thu, 22 Aug 2019 12:41:52 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Kadlecsik =?iso-8859-1?Q?J=F3zsef?= <kadlec@blackhole.kfki.hu>
-Cc:     Pablo Neira Ayuso <pablo@netfilter.org>,
-        Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        Florent Fourcot <florent.fourcot@wifirst.fr>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Allison Randal <allison@lohutok.net>,
-        Aditya Pakki <pakki001@umn.edu>, Qian Cai <cai@gmx.us>,
-        Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Stefano Brivio <sbrivio@redhat.com>,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] netfilter: ipset: Fix an error code in
- ip_set_sockfn_get()
-Message-ID: <20190822094152.GJ3964@kadam>
-References: <20190821071830.GI26957@mwanda>
- <alpine.DEB.2.20.1908221109390.11879@blackhole.kfki.hu>
+        id S1732205AbfHVJyH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 05:54:07 -0400
+Received: from foss.arm.com ([217.140.110.172]:42730 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729797AbfHVJyG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 22 Aug 2019 05:54:06 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E723C15A2;
+        Thu, 22 Aug 2019 02:54:05 -0700 (PDT)
+Received: from e121166-lin.cambridge.arm.com (unknown [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C79093F246;
+        Thu, 22 Aug 2019 02:54:04 -0700 (PDT)
+Date:   Thu, 22 Aug 2019 10:54:00 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Vidya Sagar <vidyas@nvidia.com>, linux-pci@vger.kernel.org,
+        linux-tegra@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] PCI: tegra: Fix the error return code in
+ tegra_pcie_dw_probe()
+Message-ID: <20190822095400.GA22716@e121166-lin.cambridge.arm.com>
+References: <20190822020352.35412-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <alpine.DEB.2.20.1908221109390.11879@blackhole.kfki.hu>
+In-Reply-To: <20190822020352.35412-1-weiyongjun1@huawei.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9355 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=881
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1908220105
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9355 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=941 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908220105
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Aug 22, 2019 at 11:11:56AM +0200, Kadlecsik József wrote:
-> Hi Dan,
+On Thu, Aug 22, 2019 at 02:03:52AM +0000, Wei Yongjun wrote:
+> Fix the error return code in tegra_pcie_dw_probe() by using error code
+> instead of PTR_ERR(NULL) which is always 0.
 > 
-> On Wed, 21 Aug 2019, Dan Carpenter wrote:
-> 
-> > The copy_to_user() function returns the number of bytes remaining to be
-> > copied.  In this code, that positive return is checked at the end of the
-> > function and we return zero/success.  What we should do instead is
-> > return -EFAULT.
-> 
-> Yes, you are right. There's another usage of copy_to_user() in this 
-> function, could you fix it as well?
-> 
+> Fixes: 6404441c8e13 ("PCI: tegra: Add Tegra194 PCIe support")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  drivers/pci/controller/dwc/pcie-tegra194.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 
-Yes, of course.  Thanks for the review.
+Squashed in the original commit and re-pushed out my pci/tegra branch,
+thank you.
 
-regards,
-dan carpenter
+Lorenzo
 
+> diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
+> index fc0dbeb31d78..678a6b51c7aa 100644
+> --- a/drivers/pci/controller/dwc/pcie-tegra194.c
+> +++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+> @@ -1384,7 +1384,7 @@ static int tegra_pcie_dw_probe(struct platform_device *pdev)
+>  						      "appl");
+>  	if (!pcie->appl_res) {
+>  		dev_err(dev, "Failed to find \"appl\" region\n");
+> -		return PTR_ERR(pcie->appl_res);
+> +		return -ENODEV;
+>  	}
+>  
+>  	pcie->appl_base = devm_ioremap_resource(dev, pcie->appl_res);
+> @@ -1400,7 +1400,7 @@ static int tegra_pcie_dw_probe(struct platform_device *pdev)
+>  
+>  	phys = devm_kcalloc(dev, pcie->phy_count, sizeof(*phys), GFP_KERNEL);
+>  	if (!phys)
+> -		return PTR_ERR(phys);
+> +		return -ENOMEM;
+>  
+>  	for (i = 0; i < pcie->phy_count; i++) {
+>  		name = kasprintf(GFP_KERNEL, "p2u-%u", i);
+> @@ -1422,7 +1422,7 @@ static int tegra_pcie_dw_probe(struct platform_device *pdev)
+>  	dbi_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dbi");
+>  	if (!dbi_res) {
+>  		dev_err(dev, "Failed to find \"dbi\" region\n");
+> -		return PTR_ERR(dbi_res);
+> +		return -ENODEV;
+>  	}
+>  	pcie->dbi_res = dbi_res;
+>  
+> @@ -1437,7 +1437,7 @@ static int tegra_pcie_dw_probe(struct platform_device *pdev)
+>  						   "atu_dma");
+>  	if (!atu_dma_res) {
+>  		dev_err(dev, "Failed to find \"atu_dma\" region\n");
+> -		return PTR_ERR(atu_dma_res);
+> +		return -ENODEV;
+>  	}
+>  	pcie->atu_dma_res = atu_dma_res;
+> 
+> 
+> 

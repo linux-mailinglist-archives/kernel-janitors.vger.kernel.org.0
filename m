@@ -2,70 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15B4698D6C
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 10:18:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7E7C98DAA
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 10:30:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730905AbfHVISk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 04:18:40 -0400
-Received: from mail-eopbgr730052.outbound.protection.outlook.com ([40.107.73.52]:43936
-        "EHLO NAM05-DM3-obe.outbound.protection.outlook.com"
+        id S1732348AbfHVI1k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 04:27:40 -0400
+Received: from mail-eopbgr720071.outbound.protection.outlook.com ([40.107.72.71]:55632
+        "EHLO NAM05-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726262AbfHVISk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 04:18:40 -0400
+        id S1732346AbfHVI1j (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 22 Aug 2019 04:27:39 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=RvfFWfDffnNCBi0lBiH7yTwroALkSLJGHbfd6C5sFhLcIPICf1Q+poHMbfKRsDSs8iLCGmczPPmmuD3veUnScIn1XLjYbphtfZrSNN45yhOele98Ul8iZ5ijN+lCRDAIFCJ5aNeIS4KPWlvgy8Gw+dWIBK3Gb7aYTmmbEfEx99r7imjzWsYObgOhi+Jhx1nVaCf7MSjZB4G2F+LfPyQZVTGauK7wpWaz62dgrYmuVUy1kqzzwUCD47tdZ2ljk4ZAbcGs9S5cM2ObNO5LCJ8uatvNmZs85CeHCdZQDWlTQn1XVid+EyiSEe6JTu6Pf8JY9GnZvx1f5gcHmh6sQtc7tQ==
+ b=EXfTr132TZ0D0FdInuWws2a4RIiQ3Pq5vkDD5um7MeT4+knvRm9wRbZIIAp07AeiOmIn1q+zBxy+EmA9U7poTagkwaAALiWH28lL7WXrujJjpwiqPcblb2WKPnEfbPJEfJOP7k9efuuoB67sM8WxIv6AvqA0IBAsP4hNDEdClySa9s3wSEC3kjNNBRsYdV1Z7y4G3bQ6x0xfpEt7BFEbJjCpzZEtY+OjWG80BtpZhL7ulrZfEc3n5Aj83JicT8VSmt9OK77svAkl14Jd1RzpBCfaT9tyvENxm2M7xoXNy35i8DZl6TFMlp56ijIlLaRiHrBs4tdP52SPRMZTHG5hJg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bu7vELTQk1IhUwoDgNE5WLS9pb1I08Z8jEelGuKSKgg=;
- b=Jey7y3RHwIuoc3iicZqynlynMmPp0MDjyD7bQ+4aXFIJYVisAQbOXEu0F4gM2Ywo1SwyVBe7iZXFS9iWzZxjKaBUwLbscq6INoBrA/Iwf3+1cZ5lIkpZaXdWrhvmatuarutmnyO97pRLOMf7WsoJ6n8JC4Bl4+XoSKRwAuKAGjVw2c3+Fx/DQi5olh6YccIzk/OD5CMny9sB6ApnNLrzmjnLkP04DGSG+lKgWI3LRqP3Q+ApMGCT9LeP/WVRshA/sXrjPZ/8dviVsRqkzK5DYGgunVhR8XOmrYgzVQoJb7BTHgvAq1iXXou1YYA0G96LuBM2J2HnnWEHhbdHpfRXVw==
+ bh=fcOgSEHbhWyj1ZoJs6Im8xbZNuXWELSDYSvabHCDzLg=;
+ b=oa3GJwXNjJ3PIi84JHU63jCH1wPKN4736UYyox2QQGZb+5dnbpYoFotmLGj30tU9PVmnNK6Ky4KIQ+EFZCfVcYZhvAg8pzwmKDQWj1PzCxTfU50d258ONIOd0Wp8iZDUtUUtc9isSQrRtRG0CKH3wSJy1823QRQN14OXUrLjz1N2dZSZOAnWM4EIn5HgRTvZgykXEtMGQarNUOjR4poPaNihB+6Ug/0wLkS2FGbAKvSznOXWzFZP4d24PpnfYSQsbiL9QQsZ8jzHpQfKdDcA+VZ2vKs3Bn0f4T33OuLUwypcAFaTXhcB7cUi/Z3yqNRXhGeCDHt0TsBEXP2K35pg2A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 149.199.60.100) smtp.rcpttodomain=oracle.com smtp.mailfrom=xilinx.com;
+ 149.199.60.83) smtp.rcpttodomain=oracle.com smtp.mailfrom=xilinx.com;
  dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
  not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bu7vELTQk1IhUwoDgNE5WLS9pb1I08Z8jEelGuKSKgg=;
- b=ppDED/UsXSIl0LFbbyMUGQ/1t2Utdd2dVg0WVgouJqR74EqtNSit1mXHjsJEN4gWLubtf4sxRrTb5svanxRWa7Gs/6xIyuaPUWwh8SXIfYBQwVDYrynSDbioAq8dfHAZ+GhTMHSuWrR2b/IWsJsHJnQ4OJjqJYaTaAVvOetJBd8=
-Received: from BL0PR02CA0053.namprd02.prod.outlook.com (2603:10b6:207:3d::30)
- by DM6PR02MB4043.namprd02.prod.outlook.com (2603:10b6:5:9f::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2178.16; Thu, 22 Aug
- 2019 08:18:34 +0000
-Received: from CY1NAM02FT057.eop-nam02.prod.protection.outlook.com
- (2a01:111:f400:7e45::207) by BL0PR02CA0053.outlook.office365.com
- (2603:10b6:207:3d::30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2178.16 via Frontend
- Transport; Thu, 22 Aug 2019 08:18:33 +0000
-Authentication-Results: spf=pass (sender IP is 149.199.60.100)
+ bh=fcOgSEHbhWyj1ZoJs6Im8xbZNuXWELSDYSvabHCDzLg=;
+ b=RUtygxMJvb0MJ3FDIovpq5SiHjUScioWzHzmDDrS1NweAUnOtTN7MAgs0M9GOOlLteGvdyYOZZVgrH4qA9jsuvk1S4oKd9R+WM0mWIshhTnoygS8S8is0t1WfNHlfW843gjt9K61KLw6Ub2FfY1OgLtuXdZuhgv9fb5E9tQ6+4A=
+Received: from BL0PR02CA0070.namprd02.prod.outlook.com (52.132.27.47) by
+ DM6PR02MB5306.namprd02.prod.outlook.com (20.176.116.159) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2178.16; Thu, 22 Aug 2019 08:27:35 +0000
+Received: from BL2NAM02FT021.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e46::206) by BL0PR02CA0070.outlook.office365.com
+ (2603:10b6:207:3d::47) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2178.18 via Frontend
+ Transport; Thu, 22 Aug 2019 08:27:35 +0000
+Authentication-Results: spf=pass (sender IP is 149.199.60.83)
  smtp.mailfrom=xilinx.com; oracle.com; dkim=none (message not signed)
  header.d=none;oracle.com; dmarc=bestguesspass action=none
  header.from=xilinx.com;
 Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
- 149.199.60.100 as permitted sender) receiver=protection.outlook.com;
- client-ip=149.199.60.100; helo=xsj-pvapsmtpgw02;
-Received: from xsj-pvapsmtpgw02 (149.199.60.100) by
- CY1NAM02FT057.mail.protection.outlook.com (10.152.75.110) with Microsoft SMTP
- Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2178.16
- via Frontend Transport; Thu, 22 Aug 2019 08:18:33 +0000
-Received: from unknown-38-66.xilinx.com ([149.199.38.66]:49208 helo=xsj-pvapsmtp01)
-        by xsj-pvapsmtpgw02 with esmtp (Exim 4.63)
+ 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
+ client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
+Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
+ BL2NAM02FT021.mail.protection.outlook.com (10.152.77.158) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2199.13
+ via Frontend Transport; Thu, 22 Aug 2019 08:27:34 +0000
+Received: from unknown-38-66.xilinx.com ([149.199.38.66] helo=xsj-pvapsmtp01)
+        by xsj-pvapsmtpgw01 with esmtp (Exim 4.63)
         (envelope-from <michal.simek@xilinx.com>)
-        id 1i0iIi-0008Et-Jd; Thu, 22 Aug 2019 01:18:32 -0700
+        id 1i0iRS-0004yQ-8j; Thu, 22 Aug 2019 01:27:34 -0700
 Received: from [127.0.0.1] (helo=localhost)
         by xsj-pvapsmtp01 with smtp (Exim 4.63)
         (envelope-from <michal.simek@xilinx.com>)
-        id 1i0iId-0003tT-Gd; Thu, 22 Aug 2019 01:18:27 -0700
-Received: from xsj-pvapsmtp01 (smtp-fallback.xilinx.com [149.199.38.66] (may be forged))
-        by xsj-smtp-dlp1.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id x7M8IM6j005211;
-        Thu, 22 Aug 2019 01:18:22 -0700
+        id 1i0iRN-0006lk-5Q; Thu, 22 Aug 2019 01:27:29 -0700
+Received: from xsj-pvapsmtp01 (xsj-mail.xilinx.com [149.199.38.66])
+        by xsj-smtp-dlp2.xlnx.xilinx.com (8.13.8/8.13.1) with ESMTP id x7M8RNBS020312;
+        Thu, 22 Aug 2019 01:27:23 -0700
 Received: from [172.30.17.116]
         by xsj-pvapsmtp01 with esmtp (Exim 4.63)
         (envelope-from <michals@xilinx.com>)
-        id 1i0iIY-0003sv-Hz; Thu, 22 Aug 2019 01:18:22 -0700
-Subject: Re: [PATCH 3/4] misc: xilinx_sdfec: Prevent a divide by zero in
- xsdfec_reg0_write()
+        id 1i0iRG-0006hj-Ol; Thu, 22 Aug 2019 01:27:22 -0700
+Subject: Re: [PATCH 4/4] misc: xilinx_sdfec: Prevent integer overflow in
+ xsdfec_table_write()
 To:     Dan Carpenter <dan.carpenter@oracle.com>,
         Derek Kiernan <derek.kiernan@xilinx.com>,
         Dragan Cvetic <dragan.cvetic@xilinx.com>
@@ -74,14 +73,14 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         Michal Simek <michal.simek@xilinx.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-References: <20190821070953.GC26957@mwanda>
+References: <20190821071122.GD26957@mwanda>
 From:   Michal Simek <michal.simek@xilinx.com>
-Message-ID: <022ae855-828a-9a0e-18fd-73f8c1424dc9@xilinx.com>
-Date:   Thu, 22 Aug 2019 10:18:20 +0200
+Message-ID: <ef4d7882-db4a-589a-2aa5-2e329e80fa45@xilinx.com>
+Date:   Thu, 22 Aug 2019 10:27:17 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190821070953.GC26957@mwanda>
+In-Reply-To: <20190821071122.GD26957@mwanda>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -90,56 +89,55 @@ X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
 X-TM-AS-User-Approved-Sender: Yes;Yes
 X-EOPAttributedMessage: 0
 X-MS-Office365-Filtering-HT: Tenant
-X-Forefront-Antispam-Report: CIP:149.199.60.100;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(4636009)(39860400002)(396003)(346002)(376002)(136003)(2980300002)(199004)(189003)(44832011)(81166006)(230700001)(54906003)(58126008)(110136005)(2616005)(106002)(52146003)(486006)(476003)(446003)(11346002)(126002)(23676004)(316002)(31686004)(2486003)(14444005)(4326008)(6246003)(305945005)(76176011)(70586007)(70206006)(26005)(356004)(186003)(426003)(336012)(65956001)(8936002)(50466002)(36756003)(65806001)(5660300002)(47776003)(8676002)(2906002)(6636002)(81156014)(36386004)(478600001)(229853002)(9786002)(31696002)(42866002)(5001870100001);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR02MB4043;H:xsj-pvapsmtpgw02;FPR:;SPF:Pass;LANG:en;PTR:unknown-60-100.xilinx.com,xapps1.xilinx.com;A:1;MX:1;
+X-Forefront-Antispam-Report: CIP:149.199.60.83;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(4636009)(396003)(376002)(136003)(39860400002)(346002)(2980300002)(199004)(189003)(36756003)(50466002)(478600001)(36386004)(76176011)(126002)(426003)(486006)(44832011)(476003)(2616005)(11346002)(336012)(26005)(186003)(446003)(31686004)(23676004)(2486003)(52146003)(9786002)(8936002)(81166006)(81156014)(6246003)(8676002)(6636002)(229853002)(356004)(6666004)(31696002)(4326008)(14444005)(5660300002)(47776003)(65806001)(65956001)(58126008)(2906002)(54906003)(106002)(316002)(70586007)(230700001)(110136005)(70206006)(305945005);DIR:OUT;SFP:1101;SCL:1;SRVR:DM6PR02MB5306;H:xsj-pvapsmtpgw01;FPR:;SPF:Pass;LANG:en;PTR:unknown-60-83.xilinx.com;A:1;MX:1;
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 6e189d19-f43b-46d8-6a1d-08d726d952cf
-X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600166)(711020)(4605104)(4709080)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328);SRVR:DM6PR02MB4043;
-X-MS-TrafficTypeDiagnostic: DM6PR02MB4043:
-X-Microsoft-Antispam-PRVS: <DM6PR02MB40435B2B219E7801A18179C1C6A50@DM6PR02MB4043.namprd02.prod.outlook.com>
+X-MS-Office365-Filtering-Correlation-Id: 892bd4aa-01ac-45eb-a7ae-08d726da958f
+X-Microsoft-Antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(5600166)(711020)(4605104)(4709080)(1401327)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(2017052603328);SRVR:DM6PR02MB5306;
+X-MS-TrafficTypeDiagnostic: DM6PR02MB5306:
+X-Microsoft-Antispam-PRVS: <DM6PR02MB5306FD9FE69878257591ADE0C6A50@DM6PR02MB5306.namprd02.prod.outlook.com>
 X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-MS-Oob-TLC-OOBClassifiers: OLM:3631;
 X-Forefront-PRVS: 01371B902F
 X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Message-Info: rFk4518t+alt3y4/uVTD+W4Fb0IIuMXZ0l1dQDYbFRWKZEK6/Y0sMisnbZJJPddDwZk6krIhcwsIDL+c0hBVS47pr5APPYgTNTx7X03x2dqzEMNxjhWXwHqevzky4JisQrDBJSEs3LZ9i9jCZY8BVHXPp4b9hyAZBnhNvgoPSqOJ1J9ue4UGNN0JgCrPmY+Iyq94jC6/rvx6ts7N1xN2IgGOXN7dd09smz+LYhx+clD+uIuayZEmf7gCGjFR26ojJjLphSqYBykx7fq2hkAw6XYmGNw94E+KSF8+L027C5svXCcAXGHzlD8TJ4E1ybFD59vTj/z5nS/kbZsHpyclHOQgBAvI+rUZL+k3JvlytxZop27UWz33YyPEOx/Rtym9EKTR2Hw+D/9xBwltKjVagIsio9xToqXS6fBIdIROs1I=
+X-Microsoft-Antispam-Message-Info: KZv3ZO6cRYb5v6R0UaKOHA4bR5pzEY11Hv/kEQEfyzTekXGI6/jAeVb+UjopNi8WuGeSX1aHD1zZDL0MsYcHD3giU7d+9A5HcoCaL99bPICuKzeQDEbEktQEb9PAU1Heite/g4yBSz25pyYJ5kspF9JyMe9t0dxCO0ccqT4E7Ej5HHZ7Fr1vDPFp3bBEhdfRJYQQnoniELVO55SQJD8QP0dUhM56xCvI/m2XMO/v45j5zrBL45/jUQ/fIlizcBqlpyVhUkgkWtdDPQKaUK+ciYwdw3dC+xeKGcFD3dUXM+MVhXF5U+M2B9JOWKfnFsFZbpsWJb008qkTXNM4zKMIwuoliZiN7ci9q7qYGM/SP/HuV7pcI8ujFj7uLqhJlzdMAT2hhlN3SzRLXkIwlPpVmlR+J/7TK8aTx42zkXyYCdI=
 X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2019 08:18:33.1514
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2019 08:27:34.8411
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6e189d19-f43b-46d8-6a1d-08d726d952cf
+X-MS-Exchange-CrossTenant-Network-Message-Id: 892bd4aa-01ac-45eb-a7ae-08d726da958f
 X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.100];Helo=[xsj-pvapsmtpgw02]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB4043
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB5306
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 21. 08. 19 9:09, Dan Carpenter wrote:
-> The "psize" value comes from the user so we need to verify that it's
-> non-zero before we check if "n % psize" or it will crash.
+On 21. 08. 19 9:11, Dan Carpenter wrote:
+> The checking here needs to handle integer overflows because "offset" and
+> "len" come from the user.
 > 
 > Fixes: 20ec628e8007 ("misc: xilinx_sdfec: Add ability to configure LDPC")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
-> The parentheses in this condition are a no-op.  They're just confusing.
-> Perhaps something else was intended?
-> 
->  drivers/misc/xilinx_sdfec.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/misc/xilinx_sdfec.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
 > diff --git a/drivers/misc/xilinx_sdfec.c b/drivers/misc/xilinx_sdfec.c
-> index 813b82c59360..3fc53d20abf3 100644
+> index 3fc53d20abf3..0bf3bcc8e1ef 100644
 > --- a/drivers/misc/xilinx_sdfec.c
 > +++ b/drivers/misc/xilinx_sdfec.c
-> @@ -460,7 +460,7 @@ static int xsdfec_reg0_write(struct xsdfec_dev *xsdfec, u32 n, u32 k, u32 psize,
->  {
->  	u32 wdata;
->  
-> -	if (n < XSDFEC_REG0_N_MIN || n > XSDFEC_REG0_N_MAX ||
-> +	if (n < XSDFEC_REG0_N_MIN || n > XSDFEC_REG0_N_MAX || psize == 0 ||
->  	    (n > XSDFEC_REG0_N_MUL_P * psize) || n <= k || ((n % psize) != 0)) {
->  		dev_dbg(xsdfec->dev, "N value is not in range");
+> @@ -611,7 +611,9 @@ static int xsdfec_table_write(struct xsdfec_dev *xsdfec, u32 offset,
+>  	 * Writes that go beyond the length of
+>  	 * Shared Scale(SC) table should fail
+>  	 */
+> -	if ((XSDFEC_REG_WIDTH_JUMP * (offset + len)) > depth) {
+> +	if (offset > depth / XSDFEC_REG_WIDTH_JUMP ||
+> +	    len > depth / XSDFEC_REG_WIDTH_JUMP ||
+> +	    offset + len > depth / XSDFEC_REG_WIDTH_JUMP) {
+>  		dev_dbg(xsdfec->dev, "Write exceeds SC table length");
 >  		return -EINVAL;
+>  	}
 > 
 
 Reviewed-by: Michal Simek <michal.simek@xilinx.com>

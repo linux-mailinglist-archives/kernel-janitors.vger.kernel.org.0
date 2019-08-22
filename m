@@ -2,29 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B82C98B6D
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 08:31:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0DDC98BA2
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 08:50:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730124AbfHVGbl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 02:31:41 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:52366 "EHLO huawei.com"
+        id S1730760AbfHVGsp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 02:48:45 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:5189 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725710AbfHVGbl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 02:31:41 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id AA1FC32C661A14A7954D;
-        Thu, 22 Aug 2019 14:31:36 +0800 (CST)
+        id S1729942AbfHVGsp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 22 Aug 2019 02:48:45 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 7299B4B329C9C06D80F1;
+        Thu, 22 Aug 2019 14:48:40 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 22 Aug 2019 14:31:28 +0800
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 22 Aug 2019 14:48:30 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     "David S . Miller" <davem@davemloft.net>,
-        YueHaibing <yuehaibing@huawei.com>
-CC:     <netdev@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH net-next] cirrus: cs89x0: remove set but not used variable 'lp'
-Date:   Thu, 22 Aug 2019 06:35:17 +0000
-Message-ID: <20190822063517.71231-1-yuehaibing@huawei.com>
+To:     Saeed Mahameed <saeedm@mellanox.com>,
+        Leon Romanovsky <leon@kernel.org>, <davem@davemloft.net>
+CC:     YueHaibing <yuehaibing@huawei.com>, <netdev@vger.kernel.org>,
+        <linux-rdma@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH net-next] net/mlx5e: Use PTR_ERR_OR_ZERO in mlx5e_tc_add_nic_flow()
+Date:   Thu, 22 Aug 2019 06:52:19 +0000
+Message-ID: <20190822065219.73945-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -36,41 +37,29 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+Use PTR_ERR_OR_ZERO rather than if(IS_ERR(...)) + PTR_ERR
 
-drivers/net/ethernet/cirrus/cs89x0.c: In function 'cs89x0_platform_probe':
-drivers/net/ethernet/cirrus/cs89x0.c:1847:20: warning:
- variable 'lp' set but not used [-Wunused-but-set-variable]
-
-It is not used since commit 6751edeb8700 ("cirrus: cs89x0: Use
-managed interfaces")
-
-Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/net/ethernet/cirrus/cs89x0.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/cirrus/cs89x0.c b/drivers/net/ethernet/cirrus/cs89x0.c
-index 2d30972df06b..c9aebcde403a 100644
---- a/drivers/net/ethernet/cirrus/cs89x0.c
-+++ b/drivers/net/ethernet/cirrus/cs89x0.c
-@@ -1844,15 +1844,12 @@ cleanup_module(void)
- static int __init cs89x0_platform_probe(struct platform_device *pdev)
- {
- 	struct net_device *dev = alloc_etherdev(sizeof(struct net_local));
--	struct net_local *lp;
- 	void __iomem *virt_addr;
- 	int err;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+index 3917834b48ff..9d38c9e88f76 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+@@ -985,10 +985,7 @@ mlx5e_tc_add_nic_flow(struct mlx5e_priv *priv,
+ 					    &flow_act, dest, dest_ix);
+ 	mutex_unlock(&priv->fs.tc.t_lock);
  
- 	if (!dev)
- 		return -ENOMEM;
- 
--	lp = netdev_priv(dev);
+-	if (IS_ERR(flow->rule[0]))
+-		return PTR_ERR(flow->rule[0]);
 -
- 	dev->irq = platform_get_irq(pdev, 0);
- 	if (dev->irq <= 0) {
- 		dev_warn(&dev->dev, "interrupt resource missing\n");
+-	return 0;
++	return PTR_ERR_OR_ZERO(flow->rule[0]);
+ }
+ 
+ static void mlx5e_tc_del_nic_flow(struct mlx5e_priv *priv,
 
 
 

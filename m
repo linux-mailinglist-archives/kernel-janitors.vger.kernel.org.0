@@ -2,138 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4513B98F20
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 11:19:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 612A798F34
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 11:21:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733159AbfHVJTG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 05:19:06 -0400
-Received: from mail-wr1-f43.google.com ([209.85.221.43]:46779 "EHLO
-        mail-wr1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733153AbfHVJTF (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 05:19:05 -0400
-Received: by mail-wr1-f43.google.com with SMTP id z1so4663233wru.13
-        for <kernel-janitors@vger.kernel.org>; Thu, 22 Aug 2019 02:19:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=8fMTG6N2j/TMUB2P1ujx2DtHjddT/TmmdRfnCuZ9XY0=;
-        b=T2pMI6y+G8IKrsK8J/v9Hw6Ze7VNU1QAegTQBtAa7YoAqIMV7jl4rsOxqLr2uKv+7E
-         qU8OpzWDLx9aa2GeALCMNY10DH8xUmpEvSQpL0ayo6EJseiHy6wUP019c/nCCacrOqhB
-         QB+3d2H2f0vEl7LtOw9XPlAwhFizRTqjD3JcaH9+n+VKUvYDS9r4fRpDwq0+iXaszL13
-         J3sknRZdTSR9IJXI8txUWEFdl9+uB5tH3eqzTb0H6t3MUJTXPo1J+pZxj4+FMYBI1PHv
-         B9TvUD/P3C3CaL5RpMtkMMjLBIWW2hdg5F7iwFp/hNbtITgX9r32GojgJ+PW0XbAEkM3
-         Pdcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=8fMTG6N2j/TMUB2P1ujx2DtHjddT/TmmdRfnCuZ9XY0=;
-        b=PSO1niBAM/8nj5h6XlFcPxdMRgDo+bX3l4M6YZxwOeBxWL/c0S6URNRaeVaGJUur75
-         ru5Zz+6c2ZsPZN9A+OX6zJT80EetxXGY710vS7E0OQ2gpzAJllWv67gOMGQhJUyT3JI+
-         0trLZ20IvCIvk7NVeCN7c3aiqdz+Cez14m/jMcJucYx8XWYBpwFNx/Ixswow43hYjaUS
-         BDZEShF34PONEC7fkyW0GiLBNENnSWlqMlwpetde5khFhFQRmO1MW5bDzCshydL+YAYZ
-         PcMSq1VR5+o9XsjBhLNtbFG44UD2JWNBtLSr5/Pn9Cal86EO1654WRhwhDpmCWkwzdAT
-         uovA==
-X-Gm-Message-State: APjAAAWXkJSAQ3wHISbwq0GG9jLRR8Y/N5Yqr/j8OHP+G9uMZJktVF0J
-        VqXOTjUF8uHu25jO+eoUdQpKgg==
-X-Google-Smtp-Source: APXvYqzPaTB9as2RdUevNC/gvIlaqvXJBR28ZGeYWGl/cnFEEuvQi+58LrWHZHhwnpFu/CiJ7AkAEg==
-X-Received: by 2002:a5d:4101:: with SMTP id l1mr4986587wrp.202.1566465543440;
-        Thu, 22 Aug 2019 02:19:03 -0700 (PDT)
-Received: from google.com ([2a00:79e0:d:210:e8f7:125b:61e9:733d])
-        by smtp.gmail.com with ESMTPSA id 4sm46118162wro.78.2019.08.22.02.19.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Aug 2019 02:19:02 -0700 (PDT)
-Date:   Thu, 22 Aug 2019 10:18:58 +0100
-From:   Matthias Maennich <maennich@google.com>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        Martijn Coenen <maco@android.com>, cocci@systeme.lip6.fr,
-        kernel-janitors@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-modules@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-usb@vger.kernel.org,
-        kernel-team@android.com, usb-storage@lists.one-eyed-alien.net,
-        x86@kernel.org, Alan Stern <stern@rowland.harvard.edu>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-        Jessica Yu <jeyu@kernel.org>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        id S1733179AbfHVJUt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 05:20:49 -0400
+Received: from smtp-out.kfki.hu ([148.6.0.48]:33207 "EHLO smtp-out.kfki.hu"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725799AbfHVJUt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 22 Aug 2019 05:20:49 -0400
+X-Greylist: delayed 527 seconds by postgrey-1.27 at vger.kernel.org; Thu, 22 Aug 2019 05:20:48 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by smtp2.kfki.hu (Postfix) with ESMTP id 16691CC010B;
+        Thu, 22 Aug 2019 11:12:00 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        blackhole.kfki.hu; h=mime-version:user-agent:references
+        :message-id:in-reply-to:from:from:date:date:received:received
+        :received; s=20151130; t=1566465117; x=1568279518; bh=jbRmKNfADC
+        RLyLz60GpWjHYifY1zElMiJFfvn5gEdew=; b=PgVBt2LsuCRH7cvkILaMJ0r65o
+        ED80sfPU72NloBR27k+GgFVscXJO4rnMCOVtFZhYtVzKm7jLEBlFF0ithTdxcHAA
+        rlrBqw+oSuDLE8dwQYUqFLDeRcRpvOtmrUSh9e0XMpNlVlj3kL63LXRDhOFIpbtI
+        yUGwS+0OmAHXSJn7I=
+X-Virus-Scanned: Debian amavisd-new at smtp2.kfki.hu
+Received: from smtp2.kfki.hu ([127.0.0.1])
+        by localhost (smtp2.kfki.hu [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP; Thu, 22 Aug 2019 11:11:57 +0200 (CEST)
+Received: from blackhole.kfki.hu (blackhole.kfki.hu [148.6.240.2])
+        by smtp2.kfki.hu (Postfix) with ESMTP id 0F0C2CC010A;
+        Thu, 22 Aug 2019 11:11:56 +0200 (CEST)
+Received: by blackhole.kfki.hu (Postfix, from userid 1000)
+        id 9C47020DD8; Thu, 22 Aug 2019 11:11:56 +0200 (CEST)
+Date:   Thu, 22 Aug 2019 11:11:56 +0200 (CEST)
+From:   =?UTF-8?Q?Kadlecsik_J=C3=B3zsef?= <kadlec@blackhole.kfki.hu>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+cc:     Pablo Neira Ayuso <pablo@netfilter.org>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
+        Florent Fourcot <florent.fourcot@wifirst.fr>,
         Kate Stewart <kstewart@linuxfoundation.org>,
-        Lucas De Marchi <lucas.de.marchi@gmail.com>,
-        Martijn Coenen <maco@google.com>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Ferre <nicolas.ferre@microchip.com>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Oliver Neukum <oneukum@suse.com>,
-        Philippe Ombredanne <pombredanne@nexb.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Sandeep Patil <sspatil@google.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [v2 08/10] scripts: Coccinelle script for namespace dependencies
-Message-ID: <20190822091858.GA60652@google.com>
-References: <20190813121733.52480-9-maennich@google.com>
- <1c4420f4-361c-7358-49d9-87d8a51f7920@web.de>
+        Allison Randal <allison@lohutok.net>,
+        Aditya Pakki <pakki001@umn.edu>, Qian Cai <cai@gmx.us>,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Stefano Brivio <sbrivio@redhat.com>,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] netfilter: ipset: Fix an error code in
+ ip_set_sockfn_get()
+In-Reply-To: <20190821071830.GI26957@mwanda>
+Message-ID: <alpine.DEB.2.20.1908221109390.11879@blackhole.kfki.hu>
+References: <20190821071830.GI26957@mwanda>
+User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1c4420f4-361c-7358-49d9-87d8a51f7920@web.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Aug 15, 2019 at 03:50:38PM +0200, Markus Elfring wrote:
->> +generate_deps_for_ns() {
->> +    $SPATCH --very-quiet --in-place --sp-file \
->> +	    $srctree/scripts/coccinelle/misc/add_namespace.cocci -D ns=$1 $2
->> +}
->
->* Where will the variable “srctree” be set for the file “scripts/nsdeps”?
->
+Hi Dan,
 
-$srctree is defined by kbuild in the toplevel Makefile.
+On Wed, 21 Aug 2019, Dan Carpenter wrote:
 
->* Would you like to support a separate build directory for desired adjustments?
->
+> The copy_to_user() function returns the number of bytes remaining to be
+> copied.  In this code, that positive return is checked at the end of the
+> function and we return zero/success.  What we should do instead is
+> return -EFAULT.
 
-No, as the purpose of this script is to directly patch the kernel
-sources where applicable.
+Yes, you are right. There's another usage of copy_to_user() in this 
+function, could you fix it as well?
 
->* How do you think about to check error handling around such commands?
->
->
+Best regards,
+Jozsef
+ 
+> Fixes: a7b4f989a629 ("netfilter: ipset: IP set core support")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  net/netfilter/ipset/ip_set_core.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+> index e64d5f9a89dd..15b8d4318207 100644
+> --- a/net/netfilter/ipset/ip_set_core.c
+> +++ b/net/netfilter/ipset/ip_set_core.c
+> @@ -2129,7 +2129,8 @@ ip_set_sockfn_get(struct sock *sk, int optval, void __user *user, int *len)
+>  	}	/* end of switch(op) */
+>  
+>  copy:
+> -	ret = copy_to_user(user, data, copylen);
+> +	if (copy_to_user(user, data, copylen))
+> +		ret = -EFAULT;
+>  
+>  done:
+>  	vfree(data);
+> -- 
+> 2.20.1
+> 
+> 
 
-spatch emits a descriptive message on error. I will add a 'set
--e' to the script so that it aborts on errors.
-
->> +generate_deps() {
->…
->> +        for source_file in $mod_source_files; do
->> +            sed '/MODULE_IMPORT_NS/Q' $source_file > ${source_file}.tmp
->…
->
->I suggest to assign the name for the temporary file to a variable
->which should be used by subsequent commands.
-
-I somehow don't agree that this is an improvement to the code as the
-variable would likely be something like ${source_file_tmp}. Sticking to
-${source_file}.tmp does express the intent of a temporary file next to
-the original source file and the reader of the code does not need to
-reason about the value of ${source_file_tmp}.
-
-Cheers,
-Matthias
+-
+E-mail  : kadlec@blackhole.kfki.hu, kadlecsik.jozsef@wigner.mta.hu
+PGP key : http://www.kfki.hu/~kadlec/pgp_public_key.txt
+Address : Wigner Research Centre for Physics, Hungarian Academy of Sciences
+          H-1525 Budapest 114, POB. 49, Hungary

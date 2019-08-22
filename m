@@ -2,28 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D2A1B99786
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 16:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C926399799
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 17:02:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388981AbfHVO6s (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 10:58:48 -0400
-Received: from mout.web.de ([212.227.17.11]:37869 "EHLO mout.web.de"
+        id S2389112AbfHVPA4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 11:00:56 -0400
+Received: from mout.web.de ([212.227.17.12]:43209 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729922AbfHVO6s (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 10:58:48 -0400
+        id S1725886AbfHVPA4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 22 Aug 2019 11:00:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1566485580;
-        bh=laNrLcoKOC6PZfIKvLc6tR9UiABDlygov3ZDtuLoQQI=;
+        s=dbaedf251592; t=1566485699;
+        bh=eQcMl+avN3kIGGjB3h5pSL5Jp/iss5fD7c3NsD0te/A=;
         h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=DWcwa5mLl5fSG10ckxJkhEo6B9jwpIlCp/gG1in27OpFLRJfg05pB7vL0rkN+4XKQ
-         v2yrIEbcEbMM6aP8q3//3OQ45/yY5bvB0tL72zd7X5ssFxqBT/ye8AP+PNrY/cgdmK
-         sdF2YBwy/nwMRsiznJQs5vdXFNHJGzrYiVkXUk0A=
+        b=DeGTzMvsX/JvLHOCiLwrrjeocg8CgDi1Zh08eA0JaVL72hh0DJ0nfkJi+v4JHjASv
+         3prpr62k4w4DgZpww8iSVqC0CB3CbDoxrAQMKTV54pvI+evPrykGdJ6Qa4t8lt/YGa
+         P22aG1OP6EEL+1OWGttmcQThXULSuEJI5BHtaJ/U=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.181.43]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MK1s1-1hzz6v1mLt-001ToU; Thu, 22
- Aug 2019 16:53:00 +0200
-Subject: =?UTF-8?Q?=5bPATCH_1/2=5d_ipc/mqueue=3a_Delete_an_unnecessary_check?=
- =?UTF-8?B?IGJlZm9yZSB0aGUgbWFjcm8gY2FsbCDigJxkZXZfa2ZyZWVfc2ti4oCd?=
+Received: from [192.168.1.2] ([78.49.181.43]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M4ZTk-1iAeD83J6q-00yeHS; Thu, 22
+ Aug 2019 16:54:58 +0200
+Subject: [PATCH 2/2] ipc/mqueue: Improve exception handling in do_mq_notify()
 From:   Markus Elfring <Markus.Elfring@web.de>
 To:     kernel-janitors@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
         Andrew Morton <akpm@linux-foundation.org>,
@@ -78,8 +77,8 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <07477187-63e5-cc80-34c1-32dd16b38e12@web.de>
-Date:   Thu, 22 Aug 2019 16:52:55 +0200
+Message-ID: <592ef10e-0b69-72d0-9789-fc48f638fdfd@web.de>
+Date:   Thu, 22 Aug 2019 16:54:53 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
@@ -87,58 +86,109 @@ In-Reply-To: <6e9378d1-3b9b-e138-53f6-bc5683ac8b8c@web.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Ksz9lXlJzzprN4y/6kTggolQWTokRX2QsM0w5W/uuh0PUbOaLVn
- uNB5O5yrOFPJFMNVIMFRPLsDe9xjomG/1Z514oeUTy0At0a1CqkJlzFKHCWkA1cAofpirvd
- uIiinS6LnDk8383z87n0+OmrfYGU9l9Zsh9NCLh4RMXWv+1jHG3byKG9moVHXyQRIP2Zk+9
- A15mfmsCc1z9LrrIlMF+Q==
+X-Provags-ID: V03:K1:nihP1aXNcItu2XmdTNy2sYhpRwgN6spV+s1mfBOGQqQ6ee7b1v+
+ g7UHRlM6M/g4QG5Aen/rExoklC7oU0A4UDGCqqlSHwrtxFmz0MULnswpoIJEnwy+md8WQAc
+ jIT8lx3jAUc+n3JnYNvlzy/+qEMOd3K4Ip/4ffK+AMXSxXm+4fqSw+nV12iOY715Lo2srKH
+ SGwjF1DjPgsEZZZY6/UGQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Yc+tx7ueFS0=:c3RHU8gAZ14TkvPlbHBTPp
- GzD/Ek9Un+z7nAO01SUI8PCuVbHWpS8iaznppDRmQYsKJORFiYum0z9ZEs8BLVm1zZh+NAH7u
- A+SS4hdZHyUYpu8nzX85Jo1A9l18m/H+K7iwZCVcCZrZqermHPKXOYgUQaZgsAsgJTsJNxq4D
- QG0LlYeQQaf5vBsmfBrmU4/1IGdrLd/vJMA7PVTJhqy9BpBvyY75Vx/Ua8jRNtYQwbTSNkOXB
- E+fNcIm8GqPLiEjgVJQ+nkBmdYbr1aB3yCi7KeGVc0Ktjbrje8jQu9We1dtfLQJV2RtwUPUiH
- WoqlcBbz07Snm+FilysPzloQrTKCzFZ95v4D20BN7vOpu84ZFuNglSGhS6C9Qotco4xGfsBL5
- SNiVhCRLMZhOAMfuwMr9n28m4KM9n6UrSsHn/0TiIVZQNS08SizXzJ3hJV8atbZJ2C1XLnpqP
- 9R/hYtyr0lvg3jpToOaVDuI36BzQG7hYLGv000uwbNW4DndsKUuc7+zOpWD6zpAYgmLkHdlMK
- 6TUAoR2KA6+GvLBSDB3iWA45DrF1x/xehdb2Fs5yfBXnborUka3SrP6ETOW+/mVUd/PMvkJVA
- nbybZgo5rkvryqqF7llU7liVCoDUQKuL0YTtsSNQZKZDzrqQLKte6OTeod4hsz6FETOiqOwYD
- iSTcreJZdSiTJP5DiSvKYf/sqhwd7nRpwqCzdmkWdik5tnBM+G0jr0iHHsdcdGTMSz9X223MR
- MS5U6o5aGvA0aap94lFSfvPbovmdiTx/LY626M+1iLp0TECcYvq9/qRdYe4vUvLNfHG942lRT
- 8BMSYSA6spMRQ1Z/25Df3oSigzZnhpyslhRNXl5QHnzUpbXAXrT+epQGnzhGON04Aft5fPO5K
- VVH9tAjX+VXRUEifeDWSXXWomvWoVWq2NUYvoBlNR8dRrCj54uro0s/fwFkPZVfVwhdQaZtgE
- 4q4ngJyVi68l42NM3kajP7Qc1MKDyjJ7yR8LukGyJKelQwycdO02pEQNDinp88H7b2oXlZm3a
- ikznf5q5gv2tIlde8qsoFEUYc38RkRGPpP66zArXfcuq6f9rInaVR8J5n+ahKH7ZgRunWLqf6
- UcroG0Q37+LyV2hGqbtYONseW+o4Y8F/k8L6bnlR+Msr5k6jVL/oOunQ2dNDSsqw3mPj+zhdB
- s3I8nKAVlsquQdswlFw1C5C5TvuwH0gMliQv8D0Duufmz6iQ==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:jpFVYdL4I0c=:OYor+BDZoYyK8cDVBopyUk
+ kxHeMe+5g/bP4NJz4B1ZLYNlCKEluHJyxGtI8L9VybEME9zjwB46i8IV7mN/H7VGGX9wcW+wC
+ 73d3WuitvYHNPCUmn4YPRcjRNlFJJAAqUXwz/ZLhkAMUIGjsPwJDZgeE4zz8steQPQCYvJcat
+ WzA7oTshh4uaDXuFL/YMpuc/KX3VvHTQ16eEB9X5G3ph/VEdtsMrXNRj41OX5THkFDxpEIpk/
+ kw+hUaHNcvZqOE9F9VvGbOW8BFH+s0brO0fYROhHH1kjBUQtdA2yjzrhmXVAG6s8HUhbnpyyk
+ 9q1l5TbzTHyZ3S4+LuUn+0S4R8Y59eG0BtdvTksDHXSrbFGvt6ZTMiJozp/EsZaBFc2VL0NK6
+ 2gfocTxTI1rqegFZhnYhBKE1s/gWvX8r/t0N5kayvgXH1enSn6LaVFiMWn047FWgxmbfY7MRL
+ W54muRI9GGzdn6ri6zi9PsAX5pTSek+KWHPh9f1WgLziQYNBZdieSNR4k6phOU3dszLcAngqE
+ tqsiLDjzUWgHZ/OOyAAF/3432G2Yd+r9HMD7i7KQ98fdvAwkJZhr0NvJhcJlRN+HFmygusWqN
+ oH2FzKxLNRaX/LlRxqhWS9GDeDw2yX9o8g9kUEyKDXJ9em0IopU8+c0NdaviSVJzkSSvzz7K+
+ NKyhi7dkREsmutgGbjn3sx0l0QGdVNRLVjNfwRs0UXzRUW2A4CO/SVJrGd44ssXfyN7dLKc9s
+ s4RH6EOQDz2sWaFCNWkg6I8ioRK3ZNkKW0n3aPrhg6k3MEzjm7cmEznyAWzyF+V1AGZmdeY1G
+ vAXDfXwaiXQTqfpb7AVkZJfZQBbTfHGkKuZeYpbxfKf72zk7fxdsk6WyT4DPy3DdJvsDrHGQt
+ AbimASSIs7//sQoAmfY/B9ir50PA6ddMz56gKpHXGy8IG5HQ7WhmpDnWjzIV1jVdKGjvPijEr
+ +SdMyxryz3N3hoJ7i+h95iipYYP7bRLWjGDhIdfacOqMsml6bCnji/fobaN4YvYAzUPNey647
+ 9mp3IWvtZpGZw6/e/ECnBSVcjgWQQlMDmUwtta9mvyQZCE5pjy00lPdRuXinGv4m1RWRFsQ9T
+ aSCDFUt9GabfepvFbZV/q1grQQmC7/a/vAUgrvQMg/74LhurHKk9msTY+RAgUh5c2a5lAzx0o
+ IvjYI=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Thu, 22 Aug 2019 14:07:57 +0200
+Date: Thu, 22 Aug 2019 16:21:17 +0200
 
-The dev_kfree_skb() function performs also input parameter validation.
-Thus the test around the call is not needed.
+Null pointers were assigned to local variables in a few cases
+as exception handling. The jump target =E2=80=9Cout=E2=80=9D was used wher=
+e no meaningful
+data processing actions should eventually be performed by branches of
+an if statement then.
+Use an additional jump target for calling dev_kfree_skb() directly.
 
-This issue was detected by using the Coccinelle software.
+Return also directly after error conditions were detected when no extra
+clean-up is needed by this function implementation.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- ipc/mqueue.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ ipc/mqueue.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
 diff --git a/ipc/mqueue.c b/ipc/mqueue.c
-index 7a5a8edc3de3..494ab78863f4 100644
+index 494ab78863f4..ad6c475eb370 100644
 =2D-- a/ipc/mqueue.c
 +++ b/ipc/mqueue.c
-@@ -1334,7 +1334,7 @@ static int do_mq_notify(mqd_t mqdes, const struct si=
+@@ -1241,15 +1241,14 @@ static int do_mq_notify(mqd_t mqdes, const struct =
+sigevent *notification)
+
+ 			/* create the notify skb */
+ 			nc =3D alloc_skb(NOTIFY_COOKIE_LEN, GFP_KERNEL);
+-			if (!nc) {
+-				ret =3D -ENOMEM;
+-				goto out;
+-			}
++			if (!nc)
++				return -ENOMEM;
++
+ 			if (copy_from_user(nc->data,
+ 					notification->sigev_value.sival_ptr,
+ 					NOTIFY_COOKIE_LEN)) {
+ 				ret =3D -EFAULT;
+-				goto out;
++				goto free_skb;
+ 			}
+
+ 			/* TODO: add a header? */
+@@ -1265,8 +1264,7 @@ static int do_mq_notify(mqd_t mqdes, const struct si=
 gevent *notification)
- out:
+ 			fdput(f);
+ 			if (IS_ERR(sock)) {
+ 				ret =3D PTR_ERR(sock);
+-				sock =3D NULL;
+-				goto out;
++				goto free_skb;
+ 			}
+
+ 			timeo =3D MAX_SCHEDULE_TIMEOUT;
+@@ -1275,11 +1273,8 @@ static int do_mq_notify(mqd_t mqdes, const struct s=
+igevent *notification)
+ 				sock =3D NULL;
+ 				goto retry;
+ 			}
+-			if (ret) {
+-				sock =3D NULL;
+-				nc =3D NULL;
+-				goto out;
+-			}
++			if (ret)
++				return ret;
+ 		}
+ 	}
+
+@@ -1335,6 +1330,7 @@ static int do_mq_notify(mqd_t mqdes, const struct si=
+gevent *notification)
  	if (sock)
  		netlink_detachskb(sock, nc);
--	else if (nc)
-+	else
+ 	else
++free_skb:
  		dev_kfree_skb(nc);
 
  	return ret;

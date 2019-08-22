@@ -2,76 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 81BB49A1DB
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 23:13:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 164879A1E1
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 23:15:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389990AbfHVVNW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 17:13:22 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:44119 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729718AbfHVVNW (ORCPT
+        id S2388017AbfHVVP3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 17:15:29 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:33930 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732447AbfHVVP3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 17:13:22 -0400
-Received: by mail-qt1-f194.google.com with SMTP id 44so9284286qtg.11;
-        Thu, 22 Aug 2019 14:13:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=tVYGZF98cbwCuEnSEO1Hots0hv8R+WSge8zW0ooPbuk=;
-        b=O8leEuBYlqsOe/lClx0gekw2F1TuK5mIxCus51wwMx1g0I4yslglKjMsVWwhuis/R2
-         xJMkzHGBxGbvSRol1pOgOSxokHmAPmcbghciCuP00mBQxH+wGx7WpjanUSyVWm8PmLdV
-         xBjyd/J3cindAzLQJosmkpaI4erGlBzGELqic9Y/h3slZgHd9wQIqnEFpNZnph2Zb0lW
-         GnZ0zokq71rhJkwSdWfQ5iPkJ+4BDrklRBJG+QQ+VPWPz8HHJWCX/I6XTbvpGbpUpVNd
-         9nAKzfhvVosDtl3swmpYHHjXAMsFGES6cS/dQLjrnS/xXezmoW8z/axMpJZKsHEuppnt
-         Nvow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=tVYGZF98cbwCuEnSEO1Hots0hv8R+WSge8zW0ooPbuk=;
-        b=fmxoB1DbPO4UslUStIGXCeWD8z9kjb6aWnMZUFW0rGuOHHtnl0X3FtV1ane85yb2F9
-         Gflt4YKtvpjO0cWYcDt5Vk9cef1KTaraQscngo4DQiyLuMp08pE2l8Jb7qqXdSFa4YDj
-         T619QPOaWz8h4Qpo8d+cNauoFbhagQUbe53TgkG7tE4Xvo8TVNzz3ieYiwSTZIUz9Tsg
-         oTL6jt4YaJNG79Yw2J6pIyLWm5hnt2e0ykB2HnaqSon7QIT+MhE8vC4+EAyvLUKTGRgv
-         w+e64h2PcTTwGW2EwTWK7+cF003vfMd6P9idz4llIv3BmWIAZIPCJrLOvFaaFGRhb1n0
-         dttw==
-X-Gm-Message-State: APjAAAXvy+atzf16Zk7k2G4avjb7dIeqdCFhW9KfJt17euiKmu6oYJkt
-        c0L/P/N5cMgRKfp96Wh/CtcHxnuIvHdRnn2tzW4=
-X-Google-Smtp-Source: APXvYqzabskoAr859ElJLB/1NTl9lcAlIyr0pZ6JF+n8KfqYiXfinYi4g1g8nmSaWxuXRxu+M4uvCzB5uOEvEw1AWps=
-X-Received: by 2002:ac8:358e:: with SMTP id k14mr1675089qtb.83.1566508400887;
- Thu, 22 Aug 2019 14:13:20 -0700 (PDT)
+        Thu, 22 Aug 2019 17:15:29 -0400
+Received: from localhost.localdomain ([90.126.160.115])
+        by mwinf5d10 with ME
+        id sMFM200022Vh0YS03MFMFh; Thu, 22 Aug 2019 23:15:27 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 22 Aug 2019 23:15:27 +0200
+X-ME-IP: 90.126.160.115
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     linus.walleij@linaro.org, airlied@linux.ie, daniel@ffwll.ch
+Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] drm/mcde: Fix an error handling path in 'mcde_probe()'
+Date:   Thu, 22 Aug 2019 23:15:18 +0200
+Message-Id: <20190822211518.5578-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <2755f638-7846-91f2-74f4-61031f3e34c8@web.de>
-In-Reply-To: <2755f638-7846-91f2-74f4-61031f3e34c8@web.de>
-From:   Song Liu <liu.song.a23@gmail.com>
-Date:   Thu, 22 Aug 2019 14:13:10 -0700
-Message-ID: <CAPhsuW4aH_kPc5NnWXQp5jgdvOZjq+eDWpUQGBgyZ9USEA6LKA@mail.gmail.com>
-Subject: =?UTF-8?Q?Re=3A_=5BPATCH=5D_net=2Fcore=2Fskmsg=3A_Delete_an_unnecessary_ch?=
-        =?UTF-8?Q?eck_before_the_function_call_=E2=80=9Cconsume=5Fskb=E2=80=9D?=
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Networking <netdev@vger.kernel.org>, bpf <bpf@vger.kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        John Fastabend <john.fastabend@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Aug 22, 2019 at 10:18 AM Markus Elfring <Markus.Elfring@web.de> wrote:
->
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Thu, 22 Aug 2019 18:00:40 +0200
->
-> The consume_skb() function performs also input parameter validation.
-> Thus the test around the call is not needed.
->
-> This issue was detected by using the Coccinelle software.
->
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+If we don't find any matching components, we should go through the error
+handling path, in order to free some resources.
 
-Acked-by: Song Liu <songliubraving@fb.com>
+Fixes: ca5be902a87d ("drm/mcde: Fix uninitialized variable")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/gpu/drm/mcde/mcde_drv.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/mcde/mcde_drv.c b/drivers/gpu/drm/mcde/mcde_drv.c
+index 9a09eba53182..5649887d2b90 100644
+--- a/drivers/gpu/drm/mcde/mcde_drv.c
++++ b/drivers/gpu/drm/mcde/mcde_drv.c
+@@ -484,7 +484,8 @@ static int mcde_probe(struct platform_device *pdev)
+ 	}
+ 	if (!match) {
+ 		dev_err(dev, "no matching components\n");
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto clk_disable;
+ 	}
+ 	if (IS_ERR(match)) {
+ 		dev_err(dev, "could not create component match\n");
+-- 
+2.20.1
+

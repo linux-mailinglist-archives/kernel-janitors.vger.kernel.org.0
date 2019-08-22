@@ -2,64 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CED0598980
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 04:37:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D487798989
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 04:41:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727843AbfHVChk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 21 Aug 2019 22:37:40 -0400
-Received: from mail-wm1-f51.google.com ([209.85.128.51]:35511 "EHLO
-        mail-wm1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727038AbfHVChk (ORCPT
+        id S1729902AbfHVCkf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 21 Aug 2019 22:40:35 -0400
+Received: from mail-wr1-f43.google.com ([209.85.221.43]:34338 "EHLO
+        mail-wr1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729253AbfHVCke (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 21 Aug 2019 22:37:40 -0400
-Received: by mail-wm1-f51.google.com with SMTP id l2so4124916wmg.0;
-        Wed, 21 Aug 2019 19:37:38 -0700 (PDT)
+        Wed, 21 Aug 2019 22:40:34 -0400
+Received: by mail-wr1-f43.google.com with SMTP id s18so3889447wrn.1;
+        Wed, 21 Aug 2019 19:40:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=FnJXlWkYTImrZ648hhe3Q+F34mtsiF3thL6otpcC1pg=;
-        b=ZTSUneOsoNDwJqBUVGQ6y9p4QAVbDXIEigOZHHNRzQV9YZnmv/Ap2WPnFoeiaigESJ
-         Io/dRVe538Au1IGYFxmVwAjEpNpX+04la9qaHRAlVK3TL9tArl2Ah20M/2n3TqgrqRNq
-         FCHEu7ZyQEdL/zQkG+ZhdVoUmVQsQGyRS3yvwCjh9kmTDGzaZrHX78+wsFuWTvZ2/3UV
-         ihouujRlDyZ/HOcJLhj2Ckp0YAUCQFiRecSoqZ+uHjamfSO9/UmPp9dQH+s9FlCLpZgX
-         cncAl6xgVZUo4AWg5bjaRdyzGC5s36x1F4G+aOPzyLyEJebMd2HNMThGZNCMzuEPtQ/O
-         wD3Q==
+        bh=2CWiDloBanvTA4UPTrbF7OF6nI8ojFqUh/DcikOnd90=;
+        b=hIlXKeAXDt479x2EtwiJlj0FTnsca6lNlIOXGAfSwL5ia4/UiWbEPVWq4VF5t6Q3co
+         5oAZw7cYTLrkFM1ok9F4Ao7545uOmmgZeQL0xg92DsUDwvq6n7eCwAKfjBt5W0CCjhsJ
+         1cOQNexM7Untgwq+JuQrNpVoWVyjvSoETv4oYeGu4Q/n4zA8yFcTa7Bv/23kXeBaQe35
+         FF/pbYQBXNUzBQPYZ61EeNSDe3TYTS/aKLggd44Bh9+YnPzLcnWqIww06/ldSsX5CRyx
+         oHCKgaXAn1jC1PAXbqTUW5xeB0OjCt779yJRadGxrXuJlXIY6w2X3Rk3+vyiwlaiytjG
+         /Dng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=FnJXlWkYTImrZ648hhe3Q+F34mtsiF3thL6otpcC1pg=;
-        b=EJbpoy5K+D6RL1HsBi3jz68VJJwId3o6SxPkEruhPXIjBd9Rd9eqJwwlTjm+I3SLp5
-         IL+D1dL/HRv3z8q2+gg/5150u61Xi1aXGLunseCsVl+V9UpmnoQq3yjgTq/EGx0aFmZ5
-         roKvNgImoIUvWGysJmMUFmyk6VuENVHCAJfasx+a4j/kdKg8+fex9eAENftFIaWeCz3h
-         ob9iAP4jCUOZq9o/lVHCwFH/SeYqoEjlEIObZUq4wG8l8ydrFM5u+FqAD+W9ZSMisRpn
-         z4WaDqcWF2jvH/kg72bvBu2ROSdkKxfCOX8QygBNGiOfAoVPjIlbn4N8uMTYXyZlOuy6
-         PE5w==
-X-Gm-Message-State: APjAAAUBDj3saDucpGnRItTs0WV24A0+96yTAAQaxz0Und/S9+bteB03
-        c7cBYPwn8nD5wY/56azdslqVnRgzeR9zQfAP1qnoHw==
-X-Google-Smtp-Source: APXvYqzLSen9+2Ns3bu+kBmfqQDECPwm5ebLUwETew2hhJHQ3IVaaPRqtbUBq/phve0FdPRxGU4Ya23E6UtBJf+eykI=
-X-Received: by 2002:a1c:1d42:: with SMTP id d63mr3018156wmd.34.1566441458066;
- Wed, 21 Aug 2019 19:37:38 -0700 (PDT)
+        bh=2CWiDloBanvTA4UPTrbF7OF6nI8ojFqUh/DcikOnd90=;
+        b=MwLTiaNdKLRua9QwQf4ZIrwI8qcunIcY2tlzCxvnatO0hse0EuMXATuAUHO15fykKi
+         WzsmoJ7whJtWc/PdxjXcRk1pGhXwF0V5zG77+TeWsQ1jE8wEOc+krsngLZRGyuRoshS6
+         07yUWzu5dmSTuCnY1aD1WZdnlofoTC5gWOKnHMvDye3jvXQKCI75My5et5j6hq7FWEvX
+         HmjAHYzdnphVRbRWqXvuvvLnqLpyslPDcHrkGnqJjFXYuYkoH0hSzft6JwRKRclKD8m/
+         0Al/F1J9B+wEX2pVpXG+7eKLl+tj9xzxfXLq/M0/5B6FxJF2Sww28Lp1uTq0o7mrSYJI
+         tFJA==
+X-Gm-Message-State: APjAAAVdYpG0VgwoE6GZWJu15IJhQTMk8SgYYRW/2GRpQauv/KNjfcdp
+        mHAHWLxAb4uJZYaxH0p5Ii9Ot74ScUyUjCUk+ME=
+X-Google-Smtp-Source: APXvYqzr2GWzF1+u7N2L7j/1p/Kp0hGUUMxfJH3ERizmHnob1SxP5PVPzIQ/k6UYs7jVVpTLtHB1EyIafZRgw0MVXaM=
+X-Received: by 2002:adf:dfc5:: with SMTP id q5mr4708309wrn.142.1566441632459;
+ Wed, 21 Aug 2019 19:40:32 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190627075350.86800-1-yuehaibing@huawei.com>
-In-Reply-To: <20190627075350.86800-1-yuehaibing@huawei.com>
+References: <20190710015720.107326-1-yuehaibing@huawei.com>
+In-Reply-To: <20190710015720.107326-1-yuehaibing@huawei.com>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Wed, 21 Aug 2019 22:37:26 -0400
-Message-ID: <CADnq5_PE3r+4ZrUmc7o0_ah4wZpBi5jhR-yBHA_F+9gzX7Os5Q@mail.gmail.com>
-Subject: Re: [PATCH -next] drm/amdgpu: remove set but not used variable 'psp_enabled'
+Date:   Wed, 21 Aug 2019 22:40:20 -0400
+Message-ID: <CADnq5_OFd8N1PpBXwr5mC0=SvZsKx7QUPqavLDEJ+d43hOO4Ng@mail.gmail.com>
+Subject: Re: [PATCH -next] drm/amdgpu: remove duplicated include from gfx_v9_0.c
 To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     "Deucher, Alexander" <alexander.deucher@amd.com>,
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
         Christian Koenig <christian.koenig@amd.com>,
         Chunming Zhou <David1.Zhou@amd.com>,
         Dave Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "Wentland, Harry" <harry.wentland@amd.com>,
-        tiancyin <tianci.yin@amd.com>, Tao Zhou <tao.zhou1@amd.com>,
-        Leo Liu <leo.liu@amd.com>, Huang Rui <ray.huang@amd.com>,
-        Jack Xiao <Jack.Xiao@amd.com>,
-        Hawking Zhang <Hawking.Zhang@amd.com>,
-        Kenneth Feng <kenneth.feng@amd.com>,
+        Daniel Vetter <daniel@ffwll.ch>, Feifei Xu <Feifei.Xu@amd.com>,
+        Likun Gao <Likun.Gao@amd.com>, James Zhu <James.Zhu@amd.com>,
+        "S, Shirish" <shirish.s@amd.com>, "Quan, Evan" <evan.quan@amd.com>,
+        Huang Rui <ray.huang@amd.com>, Rex Zhu <Rex.Zhu@amd.com>,
         kernel-janitors@vger.kernel.org,
         Maling list - DRI developers 
         <dri-devel@lists.freedesktop.org>,
@@ -71,49 +68,33 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Applied.  thanks!
+Applied. thanks!
 
 Alex
 
-On Thu, Jun 27, 2019 at 10:29 AM YueHaibing <yuehaibing@huawei.com> wrote:
+On Tue, Jul 9, 2019 at 11:03 PM YueHaibing <yuehaibing@huawei.com> wrote:
 >
-> Fixes gcc '-Wunused-but-set-variable' warning:
->
-> drivers/gpu/drm/amd/amdgpu/nv.c: In function 'nv_common_early_init':
-> drivers/gpu/drm/amd/amdgpu/nv.c:471:7: warning:
->  variable 'psp_enabled' set but not used [-Wunused-but-set-variable]
->
-> It's not used since inroduction in
-> commit c6b6a42175f5 ("drm/amdgpu: add navi10 common ip block (v3)")
+> Remove duplicated include.
 >
 > Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 > ---
->  drivers/gpu/drm/amd/amdgpu/nv.c | 5 -----
->  1 file changed, 5 deletions(-)
+>  drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c | 1 -
+>  1 file changed, 1 deletion(-)
 >
-> diff --git a/drivers/gpu/drm/amd/amdgpu/nv.c b/drivers/gpu/drm/amd/amdgpu/nv.c
-> index af20ffb55c54..8b9fa3db8daa 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/nv.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/nv.c
-> @@ -468,7 +468,6 @@ static const struct amdgpu_asic_funcs nv_asic_funcs =
+> diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+> index 5ba332376710..822f45161240 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+> @@ -39,7 +39,6 @@
+>  #include "vega10_enum.h"
+>  #include "hdp/hdp_4_0_offset.h"
 >
->  static int nv_common_early_init(void *handle)
->  {
-> -       bool psp_enabled = false;
->         struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+> -#include "soc15.h"
+>  #include "soc15_common.h"
+>  #include "clearstate_gfx9.h"
+>  #include "v9_structs.h"
 >
->         adev->smc_rreg = NULL;
-> @@ -485,10 +484,6 @@ static int nv_common_early_init(void *handle)
 >
->         adev->asic_funcs = &nv_asic_funcs;
->
-> -       if (amdgpu_device_ip_get_ip_block(adev, AMD_IP_BLOCK_TYPE_PSP) &&
-> -           (amdgpu_ip_block_mask & (1 << AMD_IP_BLOCK_TYPE_PSP)))
-> -               psp_enabled = true;
-> -
->         adev->rev_id = nv_get_rev_id(adev);
->         adev->external_rev_id = 0xff;
->         switch (adev->asic_type) {
 >
 >
 >

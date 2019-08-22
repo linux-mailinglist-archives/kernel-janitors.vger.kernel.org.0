@@ -2,54 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2207F9A0AC
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 22:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 61B349A160
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 22:45:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732949AbfHVUC7 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 16:02:59 -0400
-Received: from mail.physics.pub.ro ([141.85.216.3]:45092 "EHLO
-        physics1.physics.pub.ro" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731739AbfHVUC7 (ORCPT
+        id S2393308AbfHVUpr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 16:45:47 -0400
+Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:45098 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389641AbfHVUpq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 16:02:59 -0400
-X-Greylist: delayed 26092 seconds by postgrey-1.27 at vger.kernel.org; Thu, 22 Aug 2019 16:02:58 EDT
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by physics1.physics.pub.ro (Postfix) with ESMTP id 5D472E398A6;
-        Thu, 22 Aug 2019 13:54:52 +0300 (EEST)
-X-Virus-Scanned: amavisd-new at physics.pub.ro
-Received: from physics1.physics.pub.ro ([127.0.0.1])
-        by localhost (physics1.physics.pub.ro [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id lsdSfiF3MIfU; Thu, 22 Aug 2019 13:54:52 +0300 (EEST)
-Received: from [10.51.176.174] (unknown [105.4.6.61])
-        by physics1.physics.pub.ro (Postfix) with ESMTPSA id A5E3FE3CAC5;
-        Thu, 22 Aug 2019 13:54:42 +0300 (EEST)
-Content-Type: text/plain; charset="utf-8"
+        Thu, 22 Aug 2019 16:45:46 -0400
+Received: from localhost.localdomain ([90.126.162.2])
+        by mwinf5d27 with ME
+        id sLlh2000303Qemq03LlhAA; Thu, 22 Aug 2019 22:45:42 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Thu, 22 Aug 2019 22:45:42 +0200
+X-ME-IP: 90.126.162.2
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     linus.walleij@linaro.org, bgolaszewski@baylibre.com
+Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] gpio: ftgpio: Fix an error handling path in 'ftgpio_gpio_probe()'
+Date:   Thu, 22 Aug 2019 22:45:38 +0200
+Message-Id: <20190822204538.4791-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
-To:     Recipients <niculae-tiberiu.puscas@physics.pub.ro>
-From:   ''Tayeb Souami'' <niculae-tiberiu.puscas@physics.pub.ro>
-Date:   Thu, 22 Aug 2019 12:54:38 +0200
-Reply-To: Tayebsouam.spende@gmail.com
-Message-Id: <20190822105442.A5E3FE3CAC5@physics1.physics.pub.ro>
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Lieber Freund,
+If 'devm_kcalloc()' fails, we should go through the error handling path,
+should some clean-up be needed.
 
-Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite unten.
+Fixes: 42d9fc7176eb ("gpio: ftgpio: Pass irqchip when adding gpiochip")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/gpio/gpio-ftgpio010.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
+diff --git a/drivers/gpio/gpio-ftgpio010.c b/drivers/gpio/gpio-ftgpio010.c
+index 250e71f3e688..1478259102be 100644
+--- a/drivers/gpio/gpio-ftgpio010.c
++++ b/drivers/gpio/gpio-ftgpio010.c
+@@ -290,8 +290,10 @@ static int ftgpio_gpio_probe(struct platform_device *pdev)
+ 	girq->num_parents = 1;
+ 	girq->parents = devm_kcalloc(dev, 1, sizeof(*girq->parents),
+ 				     GFP_KERNEL);
+-	if (!girq->parents)
+-		return -ENOMEM;
++	if (!girq->parents) {
++		ret = -ENOMEM;
++		goto dis_clk;
++	}
+ 	girq->default_type = IRQ_TYPE_NONE;
+ 	girq->handler = handle_bad_irq;
+ 	girq->parents[0] = irq;
+-- 
+2.20.1
 
-Das ist dein Spendencode: [TS530342018]
-
-Antworten Sie mit dem SPENDE-CODE an diese E-Mail:Tayebsouam.spende@gmail.com
-
-Ich hoffe, Sie und Ihre Familie glücklich zu machen.
-
-Grüße
-Herr Tayeb Souami

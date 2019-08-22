@@ -2,103 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D487798989
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 04:41:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CA1898A06
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 05:51:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729902AbfHVCkf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 21 Aug 2019 22:40:35 -0400
-Received: from mail-wr1-f43.google.com ([209.85.221.43]:34338 "EHLO
-        mail-wr1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729253AbfHVCke (ORCPT
+        id S1728788AbfHVDvA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 21 Aug 2019 23:51:00 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:37880 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727894AbfHVDu7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 21 Aug 2019 22:40:34 -0400
-Received: by mail-wr1-f43.google.com with SMTP id s18so3889447wrn.1;
-        Wed, 21 Aug 2019 19:40:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=2CWiDloBanvTA4UPTrbF7OF6nI8ojFqUh/DcikOnd90=;
-        b=hIlXKeAXDt479x2EtwiJlj0FTnsca6lNlIOXGAfSwL5ia4/UiWbEPVWq4VF5t6Q3co
-         5oAZw7cYTLrkFM1ok9F4Ao7545uOmmgZeQL0xg92DsUDwvq6n7eCwAKfjBt5W0CCjhsJ
-         1cOQNexM7Untgwq+JuQrNpVoWVyjvSoETv4oYeGu4Q/n4zA8yFcTa7Bv/23kXeBaQe35
-         FF/pbYQBXNUzBQPYZ61EeNSDe3TYTS/aKLggd44Bh9+YnPzLcnWqIww06/ldSsX5CRyx
-         oHCKgaXAn1jC1PAXbqTUW5xeB0OjCt779yJRadGxrXuJlXIY6w2X3Rk3+vyiwlaiytjG
-         /Dng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=2CWiDloBanvTA4UPTrbF7OF6nI8ojFqUh/DcikOnd90=;
-        b=MwLTiaNdKLRua9QwQf4ZIrwI8qcunIcY2tlzCxvnatO0hse0EuMXATuAUHO15fykKi
-         WzsmoJ7whJtWc/PdxjXcRk1pGhXwF0V5zG77+TeWsQ1jE8wEOc+krsngLZRGyuRoshS6
-         07yUWzu5dmSTuCnY1aD1WZdnlofoTC5gWOKnHMvDye3jvXQKCI75My5et5j6hq7FWEvX
-         HmjAHYzdnphVRbRWqXvuvvLnqLpyslPDcHrkGnqJjFXYuYkoH0hSzft6JwRKRclKD8m/
-         0Al/F1J9B+wEX2pVpXG+7eKLl+tj9xzxfXLq/M0/5B6FxJF2Sww28Lp1uTq0o7mrSYJI
-         tFJA==
-X-Gm-Message-State: APjAAAVdYpG0VgwoE6GZWJu15IJhQTMk8SgYYRW/2GRpQauv/KNjfcdp
-        mHAHWLxAb4uJZYaxH0p5Ii9Ot74ScUyUjCUk+ME=
-X-Google-Smtp-Source: APXvYqzr2GWzF1+u7N2L7j/1p/Kp0hGUUMxfJH3ERizmHnob1SxP5PVPzIQ/k6UYs7jVVpTLtHB1EyIafZRgw0MVXaM=
-X-Received: by 2002:adf:dfc5:: with SMTP id q5mr4708309wrn.142.1566441632459;
- Wed, 21 Aug 2019 19:40:32 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190710015720.107326-1-yuehaibing@huawei.com>
-In-Reply-To: <20190710015720.107326-1-yuehaibing@huawei.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Wed, 21 Aug 2019 22:40:20 -0400
-Message-ID: <CADnq5_OFd8N1PpBXwr5mC0=SvZsKx7QUPqavLDEJ+d43hOO4Ng@mail.gmail.com>
-Subject: Re: [PATCH -next] drm/amdgpu: remove duplicated include from gfx_v9_0.c
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Chunming Zhou <David1.Zhou@amd.com>,
-        Dave Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, Feifei Xu <Feifei.Xu@amd.com>,
-        Likun Gao <Likun.Gao@amd.com>, James Zhu <James.Zhu@amd.com>,
-        "S, Shirish" <shirish.s@amd.com>, "Quan, Evan" <evan.quan@amd.com>,
-        Huang Rui <ray.huang@amd.com>, Rex Zhu <Rex.Zhu@amd.com>,
-        kernel-janitors@vger.kernel.org,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Wed, 21 Aug 2019 23:50:59 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id F25CB15214D9F;
+        Wed, 21 Aug 2019 20:50:58 -0700 (PDT)
+Date:   Wed, 21 Aug 2019 20:50:58 -0700 (PDT)
+Message-Id: <20190821.205058.7560855985510600.davem@davemloft.net>
+To:     dan.carpenter@oracle.com
+Cc:     csully@google.com, sagis@google.com, jonolson@google.com,
+        willemb@google.com, lrizzo@google.com, hslester96@gmail.com,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2 net] gve: Copy and paste bug in gve_get_stats()
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190820090739.GB1845@kadam>
+References: <20190820090053.GA24410@mwanda>
+        <20190820090739.GB1845@kadam>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 21 Aug 2019 20:50:59 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Applied. thanks!
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Date: Tue, 20 Aug 2019 12:11:44 +0300
 
-Alex
-
-On Tue, Jul 9, 2019 at 11:03 PM YueHaibing <yuehaibing@huawei.com> wrote:
->
-> Remove duplicated include.
->
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> There is a copy and paste error so we have "rx" where "tx" was intended
+> in the priv->tx[] array.
+> 
+> Fixes: f5cedc84a30d ("gve: Add transmit and receive support")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-> index 5ba332376710..822f45161240 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-> @@ -39,7 +39,6 @@
->  #include "vega10_enum.h"
->  #include "hdp/hdp_4_0_offset.h"
->
-> -#include "soc15.h"
->  #include "soc15_common.h"
->  #include "clearstate_gfx9.h"
->  #include "v9_structs.h"
->
->
->
->
->
-> _______________________________________________
-> amd-gfx mailing list
-> amd-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/amd-gfx
+> v2: fix a typo in the subject: buy -> bug (Thanks Walter Harms)
+
+Applied, thanks.

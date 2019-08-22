@@ -2,65 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 61B349A160
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 22:45:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C95D9A172
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 22:51:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393308AbfHVUpr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 16:45:47 -0400
-Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:45098 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389641AbfHVUpq (ORCPT
+        id S2389614AbfHVUvk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 16:51:40 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:33356 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388241AbfHVUvk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 16:45:46 -0400
-Received: from localhost.localdomain ([90.126.162.2])
-        by mwinf5d27 with ME
-        id sLlh2000303Qemq03LlhAA; Thu, 22 Aug 2019 22:45:42 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 22 Aug 2019 22:45:42 +0200
-X-ME-IP: 90.126.162.2
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     linus.walleij@linaro.org, bgolaszewski@baylibre.com
-Cc:     linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] gpio: ftgpio: Fix an error handling path in 'ftgpio_gpio_probe()'
-Date:   Thu, 22 Aug 2019 22:45:38 +0200
-Message-Id: <20190822204538.4791-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        Thu, 22 Aug 2019 16:51:40 -0400
+Received: by mail-wr1-f68.google.com with SMTP id u16so6680237wrr.0;
+        Thu, 22 Aug 2019 13:51:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ypNP1kJ2eEs/EAi1HZN+8+beflxZCGBjmUyy7v7X9eU=;
+        b=ca5Ppa+MCF+DQvu+mF0mpSgCn71cKIzPoQZ5XK9eLTa9ftfSOoVXJ4IRJ1y2KXDmSi
+         W37s+l8yo6mHXHNeyfFeDe6oEiTziOsHIn3Fmp/JUPf0nmIrAww7zGz2dHfFl/0EX3np
+         AuAg6RRJF8jYaa/u5FxmEEm+PjLZZ1uZKZSpufY+8sBx4Kq8PPyi41cLrghGbvHX/BHY
+         aSlzKPde/+kFRKNpM+qU4jiVTNoOEqvltua+C5XQ2CqRC/qpW85AvtRz9jH7bNDgeLZP
+         OxncTcVaUh5dvOeBGgQI+CS3hvHcekZtYze60cOI1TqgTsaoZRVgpuVJ6scw316FSqn+
+         GEdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ypNP1kJ2eEs/EAi1HZN+8+beflxZCGBjmUyy7v7X9eU=;
+        b=XHGOmaz/Ms7zS23u14POo/co6qnwXnVKhX98wuYoBVULiejeNWycZT69DkohoTur7z
+         zYpd61rhdHlQ1S9C+T4kOH2c+HLyZGiF9YVpJXd0n3bqI7pcSarXZiYhviOnTGv9QGA9
+         uZJQiyAY1JeT3JWNRPARJmiy/yDR8BpD0an4SRLwZWmWepmKPlsx+mYSoDao1iEozHLV
+         eYFk7LPQkVmsGC723vvEqQeJyUzxrBN2zJZeygqj8zqaIakA8GiSnKU3c7I2wWxjjRWZ
+         G6cxkz0xb0G4kovsut/MkeopE34iNvH7l3/wZaoAxU79meZWRhlm5lbL2IGZ/Z8lqaxx
+         msSw==
+X-Gm-Message-State: APjAAAXoZootLu+XGtv+honTyI1mnaFqpnA9YvpsvtrqFdS7ihcyIlhB
+        vYGL17J0Aik6VUSUfbG+kOeIestLh/VPGJFlovdf0IXJ
+X-Google-Smtp-Source: APXvYqwLkyCSFex31CA1uzOruakJcFqOEcFr8tq/u+g1hcxkFaEl4VVU+6teCA/XPl3+hxCo8Rhhmx/xfcNfVAFXFR4=
+X-Received: by 2002:a5d:6ccd:: with SMTP id c13mr1006134wrc.4.1566507098156;
+ Thu, 22 Aug 2019 13:51:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20190822130948.32195-1-colin.king@canonical.com>
+In-Reply-To: <20190822130948.32195-1-colin.king@canonical.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Thu, 22 Aug 2019 16:51:25 -0400
+Message-ID: <CADnq5_O=V0_MNenTdxFsprmrGQiwMQNDFFkzYH-ZWw11VaMYmA@mail.gmail.com>
+Subject: Re: [PATCH] drm/amdgpu/powerplay: remove redundant assignment to
+ variable baco_state
+To:     Colin King <colin.king@canonical.com>
+Cc:     Rex Zhu <rex.zhu@amd.com>, Evan Quan <evan.quan@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If 'devm_kcalloc()' fails, we should go through the error handling path,
-should some clean-up be needed.
+On Thu, Aug 22, 2019 at 9:09 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> Variable baco_state is initialized to a value that is never read and it is
+> re-assigned later. The initialization is redundant and can be removed.
+>
+> Addresses-Coverity: ("Unused Value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Fixes: 42d9fc7176eb ("gpio: ftgpio: Pass irqchip when adding gpiochip")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/gpio/gpio-ftgpio010.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Applied.  Thanks!
 
-diff --git a/drivers/gpio/gpio-ftgpio010.c b/drivers/gpio/gpio-ftgpio010.c
-index 250e71f3e688..1478259102be 100644
---- a/drivers/gpio/gpio-ftgpio010.c
-+++ b/drivers/gpio/gpio-ftgpio010.c
-@@ -290,8 +290,10 @@ static int ftgpio_gpio_probe(struct platform_device *pdev)
- 	girq->num_parents = 1;
- 	girq->parents = devm_kcalloc(dev, 1, sizeof(*girq->parents),
- 				     GFP_KERNEL);
--	if (!girq->parents)
--		return -ENOMEM;
-+	if (!girq->parents) {
-+		ret = -ENOMEM;
-+		goto dis_clk;
-+	}
- 	girq->default_type = IRQ_TYPE_NONE;
- 	girq->handler = handle_bad_irq;
- 	girq->parents[0] = irq;
--- 
-2.20.1
+Alex
 
+> ---
+>  drivers/gpu/drm/amd/powerplay/smu_v11_0.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/amd/powerplay/smu_v11_0.c b/drivers/gpu/drm/amd/powerplay/smu_v11_0.c
+> index 89749b1d2019..a4aba8576900 100644
+> --- a/drivers/gpu/drm/amd/powerplay/smu_v11_0.c
+> +++ b/drivers/gpu/drm/amd/powerplay/smu_v11_0.c
+> @@ -1656,7 +1656,7 @@ static bool smu_v11_0_baco_is_support(struct smu_context *smu)
+>  static enum smu_baco_state smu_v11_0_baco_get_state(struct smu_context *smu)
+>  {
+>         struct smu_baco_context *smu_baco = &smu->smu_baco;
+> -       enum smu_baco_state baco_state = SMU_BACO_STATE_EXIT;
+> +       enum smu_baco_state baco_state;
+>
+>         mutex_lock(&smu_baco->mutex);
+>         baco_state = smu_baco->state;
+> --
+> 2.20.1
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

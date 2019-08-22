@@ -2,91 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DA299892E
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 04:00:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CED0598980
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 04:37:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729096AbfHVCAU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 21 Aug 2019 22:00:20 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:5184 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727617AbfHVCAT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 21 Aug 2019 22:00:19 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 3422818BE44A25F8E403;
-        Thu, 22 Aug 2019 10:00:10 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 22 Aug 2019 10:00:03 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        "Jonathan Hunter" <jonathanh@nvidia.com>,
-        Vidya Sagar <vidyas@nvidia.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-pci@vger.kernel.org>,
-        <linux-tegra@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] PCI: tegra: Fix the error return code in tegra_pcie_dw_probe()
-Date:   Thu, 22 Aug 2019 02:03:52 +0000
-Message-ID: <20190822020352.35412-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727843AbfHVChk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 21 Aug 2019 22:37:40 -0400
+Received: from mail-wm1-f51.google.com ([209.85.128.51]:35511 "EHLO
+        mail-wm1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727038AbfHVChk (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 21 Aug 2019 22:37:40 -0400
+Received: by mail-wm1-f51.google.com with SMTP id l2so4124916wmg.0;
+        Wed, 21 Aug 2019 19:37:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=FnJXlWkYTImrZ648hhe3Q+F34mtsiF3thL6otpcC1pg=;
+        b=ZTSUneOsoNDwJqBUVGQ6y9p4QAVbDXIEigOZHHNRzQV9YZnmv/Ap2WPnFoeiaigESJ
+         Io/dRVe538Au1IGYFxmVwAjEpNpX+04la9qaHRAlVK3TL9tArl2Ah20M/2n3TqgrqRNq
+         FCHEu7ZyQEdL/zQkG+ZhdVoUmVQsQGyRS3yvwCjh9kmTDGzaZrHX78+wsFuWTvZ2/3UV
+         ihouujRlDyZ/HOcJLhj2Ckp0YAUCQFiRecSoqZ+uHjamfSO9/UmPp9dQH+s9FlCLpZgX
+         cncAl6xgVZUo4AWg5bjaRdyzGC5s36x1F4G+aOPzyLyEJebMd2HNMThGZNCMzuEPtQ/O
+         wD3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=FnJXlWkYTImrZ648hhe3Q+F34mtsiF3thL6otpcC1pg=;
+        b=EJbpoy5K+D6RL1HsBi3jz68VJJwId3o6SxPkEruhPXIjBd9Rd9eqJwwlTjm+I3SLp5
+         IL+D1dL/HRv3z8q2+gg/5150u61Xi1aXGLunseCsVl+V9UpmnoQq3yjgTq/EGx0aFmZ5
+         roKvNgImoIUvWGysJmMUFmyk6VuENVHCAJfasx+a4j/kdKg8+fex9eAENftFIaWeCz3h
+         ob9iAP4jCUOZq9o/lVHCwFH/SeYqoEjlEIObZUq4wG8l8ydrFM5u+FqAD+W9ZSMisRpn
+         z4WaDqcWF2jvH/kg72bvBu2ROSdkKxfCOX8QygBNGiOfAoVPjIlbn4N8uMTYXyZlOuy6
+         PE5w==
+X-Gm-Message-State: APjAAAUBDj3saDucpGnRItTs0WV24A0+96yTAAQaxz0Und/S9+bteB03
+        c7cBYPwn8nD5wY/56azdslqVnRgzeR9zQfAP1qnoHw==
+X-Google-Smtp-Source: APXvYqzLSen9+2Ns3bu+kBmfqQDECPwm5ebLUwETew2hhJHQ3IVaaPRqtbUBq/phve0FdPRxGU4Ya23E6UtBJf+eykI=
+X-Received: by 2002:a1c:1d42:: with SMTP id d63mr3018156wmd.34.1566441458066;
+ Wed, 21 Aug 2019 19:37:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+References: <20190627075350.86800-1-yuehaibing@huawei.com>
+In-Reply-To: <20190627075350.86800-1-yuehaibing@huawei.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Wed, 21 Aug 2019 22:37:26 -0400
+Message-ID: <CADnq5_PE3r+4ZrUmc7o0_ah4wZpBi5jhR-yBHA_F+9gzX7Os5Q@mail.gmail.com>
+Subject: Re: [PATCH -next] drm/amdgpu: remove set but not used variable 'psp_enabled'
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     "Deucher, Alexander" <alexander.deucher@amd.com>,
+        Christian Koenig <christian.koenig@amd.com>,
+        Chunming Zhou <David1.Zhou@amd.com>,
+        Dave Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        "Wentland, Harry" <harry.wentland@amd.com>,
+        tiancyin <tianci.yin@amd.com>, Tao Zhou <tao.zhou1@amd.com>,
+        Leo Liu <leo.liu@amd.com>, Huang Rui <ray.huang@amd.com>,
+        Jack Xiao <Jack.Xiao@amd.com>,
+        Hawking Zhang <Hawking.Zhang@amd.com>,
+        Kenneth Feng <kenneth.feng@amd.com>,
+        kernel-janitors@vger.kernel.org,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix the error return code in tegra_pcie_dw_probe() by using error code
-instead of PTR_ERR(NULL) which is always 0.
+Applied.  thanks!
 
-Fixes: 6404441c8e13 ("PCI: tegra: Add Tegra194 PCIe support")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/pci/controller/dwc/pcie-tegra194.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Alex
 
-diff --git a/drivers/pci/controller/dwc/pcie-tegra194.c b/drivers/pci/controller/dwc/pcie-tegra194.c
-index fc0dbeb31d78..678a6b51c7aa 100644
---- a/drivers/pci/controller/dwc/pcie-tegra194.c
-+++ b/drivers/pci/controller/dwc/pcie-tegra194.c
-@@ -1384,7 +1384,7 @@ static int tegra_pcie_dw_probe(struct platform_device *pdev)
- 						      "appl");
- 	if (!pcie->appl_res) {
- 		dev_err(dev, "Failed to find \"appl\" region\n");
--		return PTR_ERR(pcie->appl_res);
-+		return -ENODEV;
- 	}
- 
- 	pcie->appl_base = devm_ioremap_resource(dev, pcie->appl_res);
-@@ -1400,7 +1400,7 @@ static int tegra_pcie_dw_probe(struct platform_device *pdev)
- 
- 	phys = devm_kcalloc(dev, pcie->phy_count, sizeof(*phys), GFP_KERNEL);
- 	if (!phys)
--		return PTR_ERR(phys);
-+		return -ENOMEM;
- 
- 	for (i = 0; i < pcie->phy_count; i++) {
- 		name = kasprintf(GFP_KERNEL, "p2u-%u", i);
-@@ -1422,7 +1422,7 @@ static int tegra_pcie_dw_probe(struct platform_device *pdev)
- 	dbi_res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "dbi");
- 	if (!dbi_res) {
- 		dev_err(dev, "Failed to find \"dbi\" region\n");
--		return PTR_ERR(dbi_res);
-+		return -ENODEV;
- 	}
- 	pcie->dbi_res = dbi_res;
- 
-@@ -1437,7 +1437,7 @@ static int tegra_pcie_dw_probe(struct platform_device *pdev)
- 						   "atu_dma");
- 	if (!atu_dma_res) {
- 		dev_err(dev, "Failed to find \"atu_dma\" region\n");
--		return PTR_ERR(atu_dma_res);
-+		return -ENODEV;
- 	}
- 	pcie->atu_dma_res = atu_dma_res;
-
-
-
+On Thu, Jun 27, 2019 at 10:29 AM YueHaibing <yuehaibing@huawei.com> wrote:
+>
+> Fixes gcc '-Wunused-but-set-variable' warning:
+>
+> drivers/gpu/drm/amd/amdgpu/nv.c: In function 'nv_common_early_init':
+> drivers/gpu/drm/amd/amdgpu/nv.c:471:7: warning:
+>  variable 'psp_enabled' set but not used [-Wunused-but-set-variable]
+>
+> It's not used since inroduction in
+> commit c6b6a42175f5 ("drm/amdgpu: add navi10 common ip block (v3)")
+>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> ---
+>  drivers/gpu/drm/amd/amdgpu/nv.c | 5 -----
+>  1 file changed, 5 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/nv.c b/drivers/gpu/drm/amd/amdgpu/nv.c
+> index af20ffb55c54..8b9fa3db8daa 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/nv.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/nv.c
+> @@ -468,7 +468,6 @@ static const struct amdgpu_asic_funcs nv_asic_funcs =
+>
+>  static int nv_common_early_init(void *handle)
+>  {
+> -       bool psp_enabled = false;
+>         struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+>
+>         adev->smc_rreg = NULL;
+> @@ -485,10 +484,6 @@ static int nv_common_early_init(void *handle)
+>
+>         adev->asic_funcs = &nv_asic_funcs;
+>
+> -       if (amdgpu_device_ip_get_ip_block(adev, AMD_IP_BLOCK_TYPE_PSP) &&
+> -           (amdgpu_ip_block_mask & (1 << AMD_IP_BLOCK_TYPE_PSP)))
+> -               psp_enabled = true;
+> -
+>         adev->rev_id = nv_get_rev_id(adev);
+>         adev->external_rev_id = 0xff;
+>         switch (adev->asic_type) {
+>
+>
+>
+> _______________________________________________
+> amd-gfx mailing list
+> amd-gfx@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/amd-gfx

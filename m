@@ -2,113 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4E0698C0E
-	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 09:02:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1025C98D1D
+	for <lists+kernel-janitors@lfdr.de>; Thu, 22 Aug 2019 10:13:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732003AbfHVHC0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 22 Aug 2019 03:02:26 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:53336 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731985AbfHVHC0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 22 Aug 2019 03:02:26 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id DBFF3A7227D4AE8C8C53;
-        Thu, 22 Aug 2019 15:02:22 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 22 Aug 2019 15:02:12 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <balbi@kernel.org>, <gregkh@linuxfoundation.org>, <vz@mleia.com>,
-        <slemieux.tyco@gmail.com>, <linux-usb@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH -next] usb: udc: lpc32xx: remove set but not used 3 variables
-Date:   Thu, 22 Aug 2019 15:05:57 +0800
-Message-ID: <20190822070557.74874-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1732115AbfHVIM1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 22 Aug 2019 04:12:27 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:59400 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732043AbfHVIM1 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 22 Aug 2019 04:12:27 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7M89D3w092228;
+        Thu, 22 Aug 2019 08:12:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=s6KN7n7wkiNHTz781fv1oKcr9eZQGtOISMDsPqy3ymQ=;
+ b=ANhJW+v28SWzBNlNfDsbjycGnBonf7D7p/r/wJWQ1wvnMwnYCy5OCHIjxogBEY0+P6KR
+ IlCOFKI2PBPstULr+daaouDQDz5JdrdpnaJtkiMOV+O06OSWLj5jjHXyS+p9d9JyirEC
+ JAKK0U7BYTcL5891CU6dXOTExay5CsWRjyUoExGPKFR0EzFCRso/xg3rXnpaUsOxsNkl
+ UXCtUuT/ontlARDj4qNGQApzlnHP9BW3/9SWwg8XIrcKkrZTGs/pFvG2T2rnBpePdtxe
+ Sq9oWmpv5pn35QBWO7cjbycwdhpHKEE/d6S5S40MEeNoJac5zTqrk0qiYAukSvz93c+p dQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 2ue9hpuhvs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 22 Aug 2019 08:12:02 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7M88dgY148864;
+        Thu, 22 Aug 2019 08:12:01 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 2uh83pqfy5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 22 Aug 2019 08:12:01 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7M8C0Ii007220;
+        Thu, 22 Aug 2019 08:12:00 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 22 Aug 2019 08:11:59 +0000
+Date:   Thu, 22 Aug 2019 11:11:53 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Austin Kim <austindh.kim@gmail.com>
+Cc:     darrick.wong@oracle.com, linux-xfs@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] xfs: Use BUG_ON rather than BUG() to remove unreachable
+ code
+Message-ID: <20190822081153.GG4451@kadam>
+References: <20190822062320.GA35267@LGEARND20B15>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190822062320.GA35267@LGEARND20B15>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9355 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=844
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1908220089
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9355 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=915 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908220089
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
-drivers/usb/gadget/udc/lpc32xx_udc.c: In function ‘udc_protocol_cmd_r’:
-drivers/usb/gadget/udc/lpc32xx_udc.c:744:6: warning: variable ‘tmp’ set but not used [-Wunused-but-set-variable]
+Depending on the config BUG() might be a no-op.  Outside of filesystems
+everyone ignores that and crashes ungracefully, but in filesystems they
+don't want to risk corrupting your files.
 
-drivers/usb/gadget/udc/lpc32xx_udc.c: In function ‘udc_handle_dma_ep’:
-drivers/usb/gadget/udc/lpc32xx_udc.c:1994:14: warning: variable ‘epstatus’ set but not used [-Wunused-but-set-variable]
-
-drivers/usb/gadget/udc/lpc32xx_udc.c: In function ‘udc_handle_ep0_setup’:
-drivers/usb/gadget/udc/lpc32xx_udc.c:2200:22: warning: variable ‘wLength’ set but not used [-Wunused-but-set-variable]
-
-It is not used since commit 90fccb529d24 ("usb: gadget: Gadget directory cleanup - group UDC drivers")
-
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
----
- drivers/usb/gadget/udc/lpc32xx_udc.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/usb/gadget/udc/lpc32xx_udc.c b/drivers/usb/gadget/udc/lpc32xx_udc.c
-index 606c8bc..b3e073f 100644
---- a/drivers/usb/gadget/udc/lpc32xx_udc.c
-+++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
-@@ -741,7 +741,6 @@ static inline void udc_protocol_cmd_data_w(struct lpc32xx_udc *udc, u32 cmd,
-  * response data */
- static u32 udc_protocol_cmd_r(struct lpc32xx_udc *udc, u32 cmd)
- {
--	u32 tmp;
- 	int to = 1000;
- 
- 	/* Write a command and read data from the protocol engine */
-@@ -751,7 +750,6 @@ static u32 udc_protocol_cmd_r(struct lpc32xx_udc *udc, u32 cmd)
- 	/* Write command code */
- 	udc_protocol_cmd_w(udc, cmd);
- 
--	tmp = readl(USBD_DEVINTST(udc->udp_baseaddr));
- 	while ((!(readl(USBD_DEVINTST(udc->udp_baseaddr)) & USBD_CDFULL))
- 	       && (to > 0))
- 		to--;
-@@ -1991,7 +1989,7 @@ void udc_handle_eps(struct lpc32xx_udc *udc, struct lpc32xx_ep *ep)
- /* DMA end of transfer completion */
- static void udc_handle_dma_ep(struct lpc32xx_udc *udc, struct lpc32xx_ep *ep)
- {
--	u32 status, epstatus;
-+	u32 status;
- 	struct lpc32xx_request *req;
- 	struct lpc32xx_usbd_dd_gad *dd;
- 
-@@ -2085,7 +2083,7 @@ static void udc_handle_dma_ep(struct lpc32xx_udc *udc, struct lpc32xx_ep *ep)
- 		if (udc_clearep_getsts(udc, ep->hwep_num) & EP_SEL_F) {
- 			udc_clearep_getsts(udc, ep->hwep_num);
- 			uda_enable_hwepint(udc, ep->hwep_num);
--			epstatus = udc_clearep_getsts(udc, ep->hwep_num);
-+			udc_clearep_getsts(udc, ep->hwep_num);
- 
- 			/* Let the EP interrupt handle the ZLP */
- 			return;
-@@ -2197,7 +2195,7 @@ static void udc_handle_ep0_setup(struct lpc32xx_udc *udc)
- 	struct lpc32xx_ep *ep, *ep0 = &udc->ep[0];
- 	struct usb_ctrlrequest ctrlpkt;
- 	int i, bytes;
--	u16 wIndex, wValue, wLength, reqtype, req, tmp;
-+	u16 wIndex, wValue, reqtype, req, tmp;
- 
- 	/* Nuke previous transfers */
- 	nuke(ep0, -EPROTO);
-@@ -2213,7 +2211,6 @@ static void udc_handle_ep0_setup(struct lpc32xx_udc *udc)
- 	/* Native endianness */
- 	wIndex = le16_to_cpu(ctrlpkt.wIndex);
- 	wValue = le16_to_cpu(ctrlpkt.wValue);
--	wLength = le16_to_cpu(ctrlpkt.wLength);
- 	reqtype = le16_to_cpu(ctrlpkt.bRequestType);
- 
- 	/* Set direction of EP0 */
--- 
-2.7.4
+regards,
+dan carpenter
 

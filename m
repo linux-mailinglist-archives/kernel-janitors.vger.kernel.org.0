@@ -2,85 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 17DC89BD1E
-	for <lists+kernel-janitors@lfdr.de>; Sat, 24 Aug 2019 12:46:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 012DE9BE50
+	for <lists+kernel-janitors@lfdr.de>; Sat, 24 Aug 2019 16:52:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727586AbfHXKqq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 24 Aug 2019 06:46:46 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:38428 "EHLO
+        id S1727619AbfHXOwo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 24 Aug 2019 10:52:44 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:50920 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725616AbfHXKqq (ORCPT
+        with ESMTP id S1727440AbfHXOwo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 24 Aug 2019 06:46:46 -0400
+        Sat, 24 Aug 2019 10:52:44 -0400
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7OAhg6A001982;
-        Sat, 24 Aug 2019 10:46:37 GMT
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7OEoOdN153917;
+        Sat, 24 Aug 2019 14:52:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=6Xe8d4/Qc67NKEUdvz915wuZpclJkk7CNF5g6iXqF5Q=;
- b=TxxVAkKor0C492SSz9eUNsWgdO7WiVZGpqc89E/qjzLXRT8C6XdsdwM44hfIBf1ZHX2l
- YTZ1MILMW6ZdZqRQUfkD7TIQnZAbB9q3QvhpwLf6w6njntnO27Z9Uicat2KZNBB3EWMu
- KBorrXzmbqdZuMIaZDfJxRVhvwIdRh5+AuQ5L5NYIaUY+A+BgjaHH7yIb++pH1/7MxAZ
- iC+ETyIB2NFoaignvx86k4a5Jk6oMaKhts9NcK8ktGkOGDIZmzcytPMIeMGLUPjaY4sf
- AK+5UiJLCIieMGFrDmD8fQt1NtHneSZoG9ybEkhaCRtcyjcLDEmkCpPDUd/HFgRzolZd BQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 2ujw6yrwb0-1
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2019-08-05; bh=9gEBh5hBjKJ+MOqY3FTrvGUSrzu+006X4b+ShrMVEis=;
+ b=sTFBVQu3Tk5F3ONJTtcrR+wbb9r6J0ufR9kT/6tEZXlK/WXn6XhaUqpgE94CAX6twakK
+ kUQWbveej5Y/JZdoC4MAgNtj5BuGGIcdHLbf7N0tqomMF2/0Pvhgf1kQBN8SvnxqGY/U
+ Y1DsxjcAqvyAUiOVCs0TkNmaeSuOJaMuVn1mNRqt/lccsqkjkwF8Q2DdHj4RdebMyBSS
+ GDShxXMela4EaK91zuT714Fl4r/MWuw+geKyCXxg3xXG3XcS7bi0bXxykPh2NBGvdBqP
+ oJ2oX/I6Jg5p/qk+ut6IM/csaSuhXUUxsEgHdUnFBq8/qiZYwsr6PKOPmIrkiGQcOOVA +w== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 2ujw6ysase-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 24 Aug 2019 10:46:36 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7OAhXrv145624;
-        Sat, 24 Aug 2019 10:46:36 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 2ujw6t78pu-1
+        Sat, 24 Aug 2019 14:52:11 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7OEm8Me154446;
+        Sat, 24 Aug 2019 14:50:10 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 2ujw6ak81k-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 24 Aug 2019 10:46:36 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7OAkUYd007167;
-        Sat, 24 Aug 2019 10:46:30 GMT
-Received: from kadam (/41.57.98.10)
+        Sat, 24 Aug 2019 14:50:10 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x7OEo311030765;
+        Sat, 24 Aug 2019 14:50:03 GMT
+Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 24 Aug 2019 03:46:29 -0700
-Date:   Sat, 24 Aug 2019 13:46:20 +0300
+        with ESMTP ; Sat, 24 Aug 2019 07:50:03 -0700
+Date:   Sat, 24 Aug 2019 17:49:55 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Quentin Deslandes <quentin.deslandes@itdev.co.uk>
-Cc:     Markus Elfring <Markus.Elfring@web.de>,
-        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+To:     Pablo Neira Ayuso <pablo@netfilter.org>,
+        Jozsef Kadlecsik <kadlec@netfilter.org>
+Cc:     Florian Westphal <fw@strlen.de>,
+        Florent Fourcot <florent.fourcot@wifirst.fr>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        Forest Bond <forest@alittletooquiet.net>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] staging: vt6656: Use common error handling code in
- vnt_alloc_bufs()
-Message-ID: <20190824104620.GC23408@kadam>
-References: <91e8a9b7-e79d-dafc-10b8-dd79eb59eff9@web.de>
- <20190823145540.GA2536@qd-ubuntu>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Aditya Pakki <pakki001@umn.edu>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Stefano Brivio <sbrivio@redhat.com>,
+        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH v2] netfilter: ipset: Fix an error code in ip_set_sockfn_get()
+Message-ID: <20190824144955.GA5337@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190823145540.GA2536@qd-ubuntu>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9358 signatures=668684
+In-Reply-To: <alpine.DEB.2.20.1908221109390.11879@blackhole.kfki.hu>
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9359 signatures=668684
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=943
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1908240119
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9358 signatures=668684
+ engine=8.0.1-1906280000 definitions=main-1908240163
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9359 signatures=668684
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908240120
+ definitions=main-1908240163
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The original code is fine.
+The copy_to_user() function returns the number of bytes remaining to be
+copied.  In this code, that positive return is checked at the end of the
+function and we return zero/success.  What we should do instead is
+return -EFAULT.
 
-There was no chance we were going to apply the patch so there is no need
-for any discussion.  I don't know why Markus sent it when he knows.
+Fixes: a7b4f989a629 ("netfilter: ipset: IP set core support")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+v2: I missed the other instance of this issue
 
-regards,
-dan carpenter
+ net/netfilter/ipset/ip_set_core.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
+index e64d5f9a89dd..e7288eab7512 100644
+--- a/net/netfilter/ipset/ip_set_core.c
++++ b/net/netfilter/ipset/ip_set_core.c
+@@ -2069,8 +2069,9 @@ ip_set_sockfn_get(struct sock *sk, int optval, void __user *user, int *len)
+ 		}
+ 
+ 		req_version->version = IPSET_PROTOCOL;
+-		ret = copy_to_user(user, req_version,
+-				   sizeof(struct ip_set_req_version));
++		if (copy_to_user(user, req_version,
++				 sizeof(struct ip_set_req_version)))
++			ret = -EFAULT;
+ 		goto done;
+ 	}
+ 	case IP_SET_OP_GET_BYNAME: {
+@@ -2129,7 +2130,8 @@ ip_set_sockfn_get(struct sock *sk, int optval, void __user *user, int *len)
+ 	}	/* end of switch(op) */
+ 
+ copy:
+-	ret = copy_to_user(user, data, copylen);
++	if (copy_to_user(user, data, copylen))
++		ret = -EFAULT;
+ 
+ done:
+ 	vfree(data);
+-- 
+2.11.0
 

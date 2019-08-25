@@ -2,115 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ED0A9C405
-	for <lists+kernel-janitors@lfdr.de>; Sun, 25 Aug 2019 15:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFE1E9C563
+	for <lists+kernel-janitors@lfdr.de>; Sun, 25 Aug 2019 20:09:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727280AbfHYNgS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 25 Aug 2019 09:36:18 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:53686 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726182AbfHYNgR (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 25 Aug 2019 09:36:17 -0400
-Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x7PDVwGG114513
-        for <kernel-janitors@vger.kernel.org>; Sun, 25 Aug 2019 09:36:16 -0400
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2ukjasn3s1-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <kernel-janitors@vger.kernel.org>; Sun, 25 Aug 2019 09:36:16 -0400
-Received: from localhost
-        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <kernel-janitors@vger.kernel.org> from <jwi@linux.ibm.com>;
-        Sun, 25 Aug 2019 14:36:14 +0100
-Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
-        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Sun, 25 Aug 2019 14:36:12 +0100
-Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
-        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x7PDaBKf27590724
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sun, 25 Aug 2019 13:36:11 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 0177E42041;
-        Sun, 25 Aug 2019 13:36:11 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 48B944203F;
-        Sun, 25 Aug 2019 13:36:09 +0000 (GMT)
-Received: from [9.145.165.177] (unknown [9.145.165.177])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Sun, 25 Aug 2019 13:36:09 +0000 (GMT)
-Subject: =?UTF-8?Q?Re=3a_=5bPATCH=5d_s390/ctcm=3a_Delete_unnecessary_checks_?=
- =?UTF-8?B?YmVmb3JlIHRoZSBtYWNybyBjYWxsIOKAnGRldl9rZnJlZV9za2LigJ0=?=
-To:     Markus Elfring <Markus.Elfring@web.de>, linux-s390@vger.kernel.org,
-        =?UTF-8?Q?Christian_Borntr=c3=a4ger?= <borntraeger@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Ursula Braun <ubraun@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-References: <84733436-46d1-8f43-780e-7b3ab9f2a0ae@web.de>
-From:   Julian Wiedmann <jwi@linux.ibm.com>
-Date:   Sun, 25 Aug 2019 21:36:08 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1728833AbfHYSJX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 25 Aug 2019 14:09:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47938 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728648AbfHYSJW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 25 Aug 2019 14:09:22 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B02ED206E0;
+        Sun, 25 Aug 2019 18:09:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1566756561;
+        bh=hbQkd9m6IseZzFq6Etn1PdspQTSTv6FY/5gFLDiTlMk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=EEgRQ8vfNcONRYkA+3GtdVpKn3DBiATITm7qKEoVvzKASzMxy2D+7JHGmO3Vv6UXW
+         SAByMHTB3/HxY3R64+Igw/ybTKmYRe5QxlBb7JzMjjfDN3v5UYBMEH44jT+QBbJJ6r
+         sNlAY+y/gv+Zf/F0laXlq0KVBU9itHVz9uXXY8DE=
+Date:   Sun, 25 Aug 2019 19:09:16 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
+        ak@it-klinger.de, robh@kernel.org, songqiang1304521@gmail.com,
+        tglx@linutronix.de, linux-iio@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] Kconfig: Fix the reference to the RFD77402 ToF sensor
+ in the 'help' section
+Message-ID: <20190825190916.7ca6e750@archlinux>
+In-Reply-To: <20190819044827.5259-1-christophe.jaillet@wanadoo.fr>
+References: <20190819044827.5259-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <84733436-46d1-8f43-780e-7b3ab9f2a0ae@web.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-x-cbid: 19082513-0008-0000-0000-0000030D2BED
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19082513-0009-0000-0000-00004A2B6186
-Message-Id: <9b655bf1-8565-d768-04ee-bc286a7e9efe@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-08-25_09:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=2 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1906280000 definitions=main-1908250153
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 22.08.19 17:04, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Thu, 22 Aug 2019 10:55:33 +0200
+On Mon, 19 Aug 2019 06:48:27 +0200
+Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+
+> This should be RFD77402, not RFD77420.
 > 
-> The dev_kfree_skb() function performs also input parameter validation.
-> Thus the test around the shown calls is not needed.
-> 
-> This issue was detected by using the Coccinelle software.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > ---
+> Not sure that the Kconfig prefix is correct. I have choosen it because of
+> commit 21cf20a84a ("Kconfig: change configuration of srf04 ultrasonic iio sensor")
 
-Applied, thanks.
+Applied thanks.  I left the prefix alone, though it's a bit unusual.
 
->  drivers/s390/net/ctcm_main.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+Thanks,
+
+Jonathan
+> ---
+>  drivers/iio/proximity/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/s390/net/ctcm_main.c b/drivers/s390/net/ctcm_main.c
-> index f63c5c871d3d..90025d1923d2 100644
-> --- a/drivers/s390/net/ctcm_main.c
-> +++ b/drivers/s390/net/ctcm_main.c
-> @@ -1074,10 +1074,8 @@ static void ctcm_free_netdevice(struct net_device *dev)
->  		if (grp) {
->  			if (grp->fsm)
->  				kfree_fsm(grp->fsm);
-> -			if (grp->xid_skb)
-> -				dev_kfree_skb(grp->xid_skb);
-> -			if (grp->rcvd_xid_skb)
-> -				dev_kfree_skb(grp->rcvd_xid_skb);
-> +			dev_kfree_skb(grp->xid_skb);
-> +			dev_kfree_skb(grp->rcvd_xid_skb);
->  			tasklet_kill(&grp->mpc_tasklet2);
->  			kfree(grp);
->  			priv->mpcg = NULL;
-> --
-> 2.23.0
-> 
+> diff --git a/drivers/iio/proximity/Kconfig b/drivers/iio/proximity/Kconfig
+> index 6b5cce6f1a7b..d53601447da4 100644
+> --- a/drivers/iio/proximity/Kconfig
+> +++ b/drivers/iio/proximity/Kconfig
+> @@ -62,7 +62,7 @@ config RFD77402
+>  	tristate "RFD77402 ToF sensor"
+>  	depends on I2C
+>  	help
+> -	  Say Y to build a driver for the RFD77420 Time-of-Flight (distance)
+> +	  Say Y to build a driver for the RFD77402 Time-of-Flight (distance)
+>  	  sensor module with I2C interface.
+>  
+>  	  To compile this driver as a module, choose M here: the
 

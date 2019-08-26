@@ -2,103 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DE859D277
-	for <lists+kernel-janitors@lfdr.de>; Mon, 26 Aug 2019 17:17:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1F6A9D3DD
+	for <lists+kernel-janitors@lfdr.de>; Mon, 26 Aug 2019 18:20:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732940AbfHZPRK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 26 Aug 2019 11:17:10 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:37690 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732922AbfHZPRJ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 26 Aug 2019 11:17:09 -0400
-Received: by mail-wr1-f68.google.com with SMTP id z11so15733779wrt.4;
-        Mon, 26 Aug 2019 08:17:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3OhNJIqCWkzD4aj6/1vV0aKfa5mah5B+lSn+3N0mtEc=;
-        b=XN8fZPAJwzZ2tOPrFDwaQgVLLZv8Hh04gHCnCm6uzqsmUtX2SdvirNciE6EaARm07N
-         JbwlxbVgQpmO07WidCup5FAlEu6d2kZ1dQhW/sFuxHzJj9UB3IgE+m35NRevPgThK1nB
-         LQlyoyKMt5jwIus7qrYOlO9skf+B+mJDoB8fJ22gdqqXn1CAw+sUUD4g1izvtmEdm3sh
-         NCC2nzoHUezK+Ufm47IbjyNL2ZZ9eI4HEhoAcHnddHeVy9/TY+RMsOgjgymGjbS2zo3R
-         +BxAGlvmFPaiqGyVQhvojHWVpCs6X3f4rzpZI826c31leEYKD8Q3WfNV/nBNV43fK/Rb
-         CAyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3OhNJIqCWkzD4aj6/1vV0aKfa5mah5B+lSn+3N0mtEc=;
-        b=DEY4DyAQSNoSioyaAYmf8A4PSqzK3x9tsvIBoLaF5bcSJo11yVzt/BjJN+SnenNL3G
-         zzRammTV/5GKeG4aJcEqAE3DzFDOOrmMrWPTAPeuXZ21dDKNa8xHwm00FNWUS+9d52sM
-         OWmjYMsERNvSBJ14xdR+BsWdnnNC8+IEgMlDEKLQ4mOW3jI0Hl0c1dF20BnpaUVI/zeX
-         djLi1EV2Q92m2/ryY9mDgN6/h2T4S7Dw2ipFvZ3I4A573GsBv8FxztBW8zuUNSZaSDLY
-         ifxetzLbL44X0OubyrXR0KIJREBSm/H50mboPbQGGUwsK92vSBm+j6ljwqdOdGOmtGOk
-         R+vw==
-X-Gm-Message-State: APjAAAUBgQAh1crKYl32u8stN70UAV3Sy13Y6x2cb3Yf36eovaiqdir1
-        l6HcGU+Ty3lk48/fDjlhx/uMfdRL0pQ5I9CujRPWPA==
-X-Google-Smtp-Source: APXvYqwu18NgSTZSGLc4mSMOMPegj7LnF3fT8AUKAC5AsFC3IwjtVYQCbU1apNw68rAgvTWINNfUrROfz2oa8RZWo6o=
-X-Received: by 2002:a5d:4f91:: with SMTP id d17mr22795931wru.74.1566832627935;
- Mon, 26 Aug 2019 08:17:07 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190826132012.GB6840@mwanda>
-In-Reply-To: <20190826132012.GB6840@mwanda>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Mon, 26 Aug 2019 11:16:55 -0400
-Message-ID: <CADnq5_PEFyHP7cOxZOYroGx+Hf1qSuSg+7DUiAakZMc1GcWbsQ@mail.gmail.com>
-Subject: Re: [PATCH] drm/amd/powerplay: Fix an off by one in navi10_get_smu_msg_index()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        "David (ChunMing) Zhou" <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Kevin Wang <kevin1.wang@amd.com>,
-        kernel-janitors@vger.kernel.org,
+        id S1732753AbfHZQUy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 26 Aug 2019 12:20:54 -0400
+Received: from muru.com ([72.249.23.125]:58696 "EHLO muru.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730327AbfHZQUx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 26 Aug 2019 12:20:53 -0400
+Received: from atomide.com (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 2F6C080AA;
+        Mon, 26 Aug 2019 16:21:22 +0000 (UTC)
+Date:   Mon, 26 Aug 2019 09:20:50 -0700
+From:   Tony Lindgren <tony@atomide.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Kishore Kadiyala <kishore.kadiyala@ti.com>,
+        Russell King <linux@armlinux.org.uk>,
         LKML <linux-kernel@vger.kernel.org>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Huang Rui <ray.huang@amd.com>, Daniel Vetter <daniel@ffwll.ch>,
-        Evan Quan <evan.quan@amd.com>,
-        Kenneth Feng <kenneth.feng@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+        kernel-janitors@vger.kernel.org, Balaji T K <balajitk@ti.com>,
+        Benoit Cousson <b-cousson@ti.com>,
+        Paul Walmsley <paul@pwsan.com>
+Subject: Re: [PATCH] ARM: OMAP2+: Delete an unnecessary kfree() call in
+ omap_hsmmc_pdata_init()
+Message-ID: <20190826162050.GX52127@atomide.com>
+References: <69025c8c-8d84-6686-138b-cde59467b802@web.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <69025c8c-8d84-6686-138b-cde59467b802@web.de>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Aug 26, 2019 at 9:20 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> The navi10_message_map[] array has SMU_MSG_MAX_COUNT elements so the ">"
-> has to be changed to ">=" to prevent reading one element beyond the end
-> of the array.
->
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+* Markus Elfring <Markus.Elfring@web.de> [190826 06:31]:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Mon, 26 Aug 2019 15:05:31 +0200
+> 
+> A null pointer would be passed to a call of the function "kfree" directly
+> after a call of the function "kzalloc" failed at one place.
+> Remove this superfluous function call.
+> 
+> This issue was detected by using the Coccinelle software.
 
-Applied.  thanks!
+Applying into omap-for-v5.4/soc thanks.
 
-Alex
-
-> ---
->  drivers/gpu/drm/amd/powerplay/navi10_ppt.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/amd/powerplay/navi10_ppt.c b/drivers/gpu/drm/amd/powerplay/navi10_ppt.c
-> index d7e25f5113f1..fbecd25f150f 100644
-> --- a/drivers/gpu/drm/amd/powerplay/navi10_ppt.c
-> +++ b/drivers/gpu/drm/amd/powerplay/navi10_ppt.c
-> @@ -213,7 +213,7 @@ static int navi10_get_smu_msg_index(struct smu_context *smc, uint32_t index)
->  {
->         struct smu_11_0_cmn2aisc_mapping mapping;
->
-> -       if (index > SMU_MSG_MAX_COUNT)
-> +       if (index >= SMU_MSG_MAX_COUNT)
->                 return -EINVAL;
->
->         mapping = navi10_message_map[index];
-> --
-> 2.20.1
->
-> _______________________________________________
-> amd-gfx mailing list
-> amd-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/amd-gfx
+Tony

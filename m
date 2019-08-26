@@ -2,59 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2934B9C720
-	for <lists+kernel-janitors@lfdr.de>; Mon, 26 Aug 2019 04:06:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF10F9C758
+	for <lists+kernel-janitors@lfdr.de>; Mon, 26 Aug 2019 04:45:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729106AbfHZCGs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 25 Aug 2019 22:06:48 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:57746 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726552AbfHZCGs (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 25 Aug 2019 22:06:48 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 3B3FA14C36B36;
-        Sun, 25 Aug 2019 19:06:47 -0700 (PDT)
-Date:   Sun, 25 Aug 2019 19:06:43 -0700 (PDT)
-Message-Id: <20190825.190643.573913079872386152.davem@davemloft.net>
-To:     maowenan@huawei.com
-Cc:     nbd@openwrt.org, john@phrozen.org, sean.wang@mediatek.com,
-        nelson.chang@mediatek.com, matthias.bgg@gmail.com,
-        kernel-janitors@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 -next] net: mediatek: remove set but not used
- variable 'status'
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190826013118.22720-1-maowenan@huawei.com>
-References: <20190824.142158.1506174328495468705.davem@davemloft.net>
-        <20190826013118.22720-1-maowenan@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sun, 25 Aug 2019 19:06:47 -0700 (PDT)
+        id S1729268AbfHZCpv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 25 Aug 2019 22:45:51 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:5655 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729263AbfHZCpv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 25 Aug 2019 22:45:51 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id A42AA55E33B4801E62BB;
+        Mon, 26 Aug 2019 10:45:48 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.439.0; Mon, 26 Aug 2019 10:45:38 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     "David S . Miller" <davem@davemloft.net>,
+        YueHaibing <yuehaibing@huawei.com>
+CC:     <netdev@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH v2 net-next] cirrus: cs89x0: remove set but not used variable 'lp'
+Date:   Mon, 26 Aug 2019 02:49:15 +0000
+Message-ID: <20190826024915.67642-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190822063517.71231-1-yuehaibing@huawei.com>
+References: <20190822063517.71231-1-yuehaibing@huawei.com>
+MIME-Version: 1.0
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Mao Wenan <maowenan@huawei.com>
-Date: Mon, 26 Aug 2019 09:31:18 +0800
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-> Fixes gcc '-Wunused-but-set-variable' warning:
-> drivers/net/ethernet/mediatek/mtk_eth_soc.c: In function mtk_handle_irq:
-> drivers/net/ethernet/mediatek/mtk_eth_soc.c:1951:6: warning: variable status set but not used [-Wunused-but-set-variable]
-> 
-> Fixes: 296c9120752b ("net: ethernet: mediatek: Add MT7628/88 SoC support")
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+drivers/net/ethernet/cirrus/cs89x0.c: In function 'cs89x0_platform_probe':
+drivers/net/ethernet/cirrus/cs89x0.c:1847:20: warning:
+ variable 'lp' set but not used [-Wunused-but-set-variable]
 
-Are you sure the register isn't being read in order to make some
-hardware side effect happen?
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Fixes: 6751edeb8700 ("cirrus: cs89x0: Use managed interfaces")
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+v2: add Fixes tag
+---
+ drivers/net/ethernet/cirrus/cs89x0.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Have you tested this on effected hardware?
+diff --git a/drivers/net/ethernet/cirrus/cs89x0.c b/drivers/net/ethernet/cirrus/cs89x0.c
+index 2d30972df06b..c9aebcde403a 100644
+--- a/drivers/net/ethernet/cirrus/cs89x0.c
++++ b/drivers/net/ethernet/cirrus/cs89x0.c
+@@ -1844,15 +1844,12 @@ cleanup_module(void)
+ static int __init cs89x0_platform_probe(struct platform_device *pdev)
+ {
+ 	struct net_device *dev = alloc_etherdev(sizeof(struct net_local));
+-	struct net_local *lp;
+ 	void __iomem *virt_addr;
+ 	int err;
+ 
+ 	if (!dev)
+ 		return -ENOMEM;
+ 
+-	lp = netdev_priv(dev);
+-
+ 	dev->irq = platform_get_irq(pdev, 0);
+ 	if (dev->irq <= 0) {
+ 		dev_warn(&dev->dev, "interrupt resource missing\n");
 
-I'm not applying this without definitive answers to these questions.
+
+

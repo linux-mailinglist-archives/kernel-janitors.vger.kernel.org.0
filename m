@@ -2,52 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C1F6A9D3DD
-	for <lists+kernel-janitors@lfdr.de>; Mon, 26 Aug 2019 18:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 931329D636
+	for <lists+kernel-janitors@lfdr.de>; Mon, 26 Aug 2019 21:03:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732753AbfHZQUy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 26 Aug 2019 12:20:54 -0400
-Received: from muru.com ([72.249.23.125]:58696 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730327AbfHZQUx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 26 Aug 2019 12:20:53 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id 2F6C080AA;
-        Mon, 26 Aug 2019 16:21:22 +0000 (UTC)
-Date:   Mon, 26 Aug 2019 09:20:50 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Kishore Kadiyala <kishore.kadiyala@ti.com>,
-        Russell King <linux@armlinux.org.uk>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, Balaji T K <balajitk@ti.com>,
-        Benoit Cousson <b-cousson@ti.com>,
-        Paul Walmsley <paul@pwsan.com>
-Subject: Re: [PATCH] ARM: OMAP2+: Delete an unnecessary kfree() call in
- omap_hsmmc_pdata_init()
-Message-ID: <20190826162050.GX52127@atomide.com>
-References: <69025c8c-8d84-6686-138b-cde59467b802@web.de>
+        id S1732711AbfHZTDH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 26 Aug 2019 15:03:07 -0400
+Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:45962 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727226AbfHZTDH (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 26 Aug 2019 15:03:07 -0400
+Received: from localhost.localdomain ([93.22.133.61])
+        by mwinf5d87 with ME
+        id tv32200091KePP903v333z; Mon, 26 Aug 2019 21:03:04 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 26 Aug 2019 21:03:04 +0200
+X-ME-IP: 93.22.133.61
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     ajk@comnets.uni-bremen.de, davem@davemloft.net
+Cc:     linux-hams@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] net/hamradio/6pack: Fix the size of a sk_buff used in 'sp_bump()'
+Date:   Mon, 26 Aug 2019 21:02:09 +0200
+Message-Id: <20190826190209.16795-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <69025c8c-8d84-6686-138b-cde59467b802@web.de>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-* Markus Elfring <Markus.Elfring@web.de> [190826 06:31]:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Mon, 26 Aug 2019 15:05:31 +0200
-> 
-> A null pointer would be passed to a call of the function "kfree" directly
-> after a call of the function "kzalloc" failed at one place.
-> Remove this superfluous function call.
-> 
-> This issue was detected by using the Coccinelle software.
+We 'allocate' 'count' bytes here. In fact, 'dev_alloc_skb' already add some
+extra space for padding, so a bit more is allocated.
 
-Applying into omap-for-v5.4/soc thanks.
+However, we use 1 byte for the KISS command, then copy 'count' bytes, so
+count+1 bytes.
 
-Tony
+Explicitly allocate and use 1 more byte to be safe.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+This patch should be safe, be however may no be the correct way to fix the
+"buffer overflow". Maybe, the allocated size is correct and we should have:
+   memcpy(ptr, sp->cooked_buf + 1, count - 1);
+or
+   memcpy(ptr, sp->cooked_buf + 1, count - 1sp->rcount);
+
+I've not dig deep enough to understand the link betwwen 'rcount' and
+how 'cooked_buf' is used.
+---
+ drivers/net/hamradio/6pack.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/net/hamradio/6pack.c b/drivers/net/hamradio/6pack.c
+index 331c16d30d5d..23281aeeb222 100644
+--- a/drivers/net/hamradio/6pack.c
++++ b/drivers/net/hamradio/6pack.c
+@@ -344,10 +344,10 @@ static void sp_bump(struct sixpack *sp, char cmd)
+ 
+ 	sp->dev->stats.rx_bytes += count;
+ 
+-	if ((skb = dev_alloc_skb(count)) == NULL)
++	if ((skb = dev_alloc_skb(count + 1)) == NULL)
+ 		goto out_mem;
+ 
+-	ptr = skb_put(skb, count);
++	ptr = skb_put(skb, count + 1);
+ 	*ptr++ = cmd;	/* KISS command */
+ 
+ 	memcpy(ptr, sp->cooked_buf + 1, count);
+-- 
+2.20.1
+

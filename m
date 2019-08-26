@@ -2,73 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EF7D49D733
-	for <lists+kernel-janitors@lfdr.de>; Mon, 26 Aug 2019 22:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 213699DA08
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 01:37:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732031AbfHZUH4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 26 Aug 2019 16:07:56 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:34768 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730217AbfHZUH4 (ORCPT
+        id S1726596AbfHZXg7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 26 Aug 2019 19:36:59 -0400
+Received: from out1-smtp.messagingengine.com ([66.111.4.25]:46221 "EHLO
+        out1-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726487AbfHZXg7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 26 Aug 2019 16:07:56 -0400
-Received: by mail-lj1-f194.google.com with SMTP id x18so16310514ljh.1
-        for <kernel-janitors@vger.kernel.org>; Mon, 26 Aug 2019 13:07:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=c92BjnNVgfZLXIOhyylGapSRsNCPw3Ef4tEA7baXWu4=;
-        b=hwDOYcszyJaq1djxoAsdgpjbWsdRoqL2rImR8JYo1xsvaWTITMH1YxHFoOBwvqOrCl
-         j/0Tu9nOLnidmXQ5JMdF5eCalrFwl0Wmma+QSb6T0rB6zcHnw/wys2fLX/R6tPBvjyND
-         6OzpjAFOpH+p05WdCN+87pcKOvokk8AXb5B46UwNKSmu3smjEu+Hjm42BhXKsPmlXe/E
-         mFuB572S+TVAYHaFvRHQjhwCf/1LikKsk/z2zlT13bZJ3HgaeFp7ORZAlUUBs3qZhu/n
-         GJGutHBCfkjfRMKTG1ec4OeOGZ/nfPtICyw7rH1EYnqedHkCizIBj9RlYF+yUEsuRflI
-         brDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=c92BjnNVgfZLXIOhyylGapSRsNCPw3Ef4tEA7baXWu4=;
-        b=syygIGe9TQH5ok5OEkBarihAcMTEtXXKoRFcvtFGtzB5cx9eqo0HITsBUoP4eG7ZC3
-         n4dQ/OmOw6x+DV7dpftidry2FKqp16z4J2oxXcBQx7C0hFUnF46LJV+iGCRfb8igMspD
-         VXhM61MTM8SUD+xg7Vd046hMHZFVHLyKDSiwZjSYPk3necS+936ver4OPnXZjIXaJ6Ef
-         hZ4PQDDe4MslUlB9hzbQblJy+TtnGnu+g+6TWHPz0yphmwg3RJvSA/f+qP9lRdtcEx0b
-         U8qbgmQDFUADSixQ6DD3GO832KjVKSYQ6M2lVIIZZobxv5QrHF+HieK50vre1aVkbTIx
-         iDBA==
-X-Gm-Message-State: APjAAAX2SWvbBRNfkkVouXaoPagXpiO9nwlRlTj+c0WWzjxs9Rz+aja0
-        KpWmoPInv2TKM5C83sfDE9Ws49TxzwPjlK3yHztrOw==
-X-Google-Smtp-Source: APXvYqwdVacdkkTIiNc4ej4zpP7wnFPalWn8AKBHdtMHls322lhjb0Nzh2G0ic8+a/WiIiu09L5/nD3J/b59IQOVLBA=
-X-Received: by 2002:a2e:781a:: with SMTP id t26mr4564513ljc.28.1566850073876;
- Mon, 26 Aug 2019 13:07:53 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190822211518.5578-1-christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20190822211518.5578-1-christophe.jaillet@wanadoo.fr>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Mon, 26 Aug 2019 22:07:42 +0200
-Message-ID: <CACRpkdb0CuPVby066zjqLX1rRuc6KDL7jvt3KaCpEWgEFvp+Mg@mail.gmail.com>
-Subject: Re: [PATCH] drm/mcde: Fix an error handling path in 'mcde_probe()'
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     Dave Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        "open list:DRM PANEL DRIVERS" <dri-devel@lists.freedesktop.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Mon, 26 Aug 2019 19:36:59 -0400
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id 33D8E21D25;
+        Mon, 26 Aug 2019 19:36:58 -0400 (EDT)
+Received: from imap2 ([10.202.2.52])
+  by compute4.internal (MEProxy); Mon, 26 Aug 2019 19:36:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=
+        mime-version:message-id:in-reply-to:references:date:from:to:cc
+        :subject:content-type; s=fm3; bh=wixTDJAQbjY/Vhzqeg4T1GumEprOkBk
+        N/oC2LEVkCv4=; b=PAbrqX9B8koWzYVJHtqz0pMLPyeyPx4LDW6R86bfbm2tDgI
+        8Ytorq10xVp3FU9/kCCeD4uHlcxHO68LG7bWdSuEDzBAWKNQVAsBVoYqC3qOxNVn
+        1kDNkrl+aINL/oeLFipUO590mawo5SXiRKS7kXEu8+tUGkV0MdB1WkDlgILjS/WT
+        XeyOffwLJ0YyWpeMdtFVzTQJaxgABEIMtzISgxTrr0PhyV3V2kHK+GwKaUflyXeF
+        g6u8OWQCn32uEICm44xDtJgR7MgOXA1zQIxcOMoO2EQNHcuLsKnb5LV3fnzZ98q7
+        Vy9eVTQgCpeZFeYko3Pf54ZG6b2hMKguh+6QchQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; bh=wixTDJ
+        AQbjY/Vhzqeg4T1GumEprOkBkN/oC2LEVkCv4=; b=HDDSyOKngXZbkHXmFgvbQe
+        FD8fS4uguq8G+lP1l18m+FzQ92yq/qe2r01oAZJrl7vAePmniV2yN9JgdX/gIeD0
+        aY38FutFDXejMBUl/z3HRs5JrrrJVLx5L2eH5m6aoKY3vp/R24fzNp+8WDM1frpM
+        3ogrIvSoq9GrPo+6yZEuUdg8i7NzNunTNJNcjYN9hLd38RCxvBivsNyW4XAz8/Zu
+        z93qALwF1K+LSTuP+/KEXtiiuTGQqCPk5GcVplcfSceCIy/o0EptNT/GcPZvZ1kN
+        kXn/Kr8hnuvUrBly1sgg1qij4cSdqyg2I/JwaYWffCV/kWEQ+wURmcejSr6gQEbA
+        ==
+X-ME-Sender: <xms:GG1kXQ5D7mvyUHzjBokdQs4dTqgCuZjWam5BGykLec7vvvcx5B080w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduvddrudehhedgvdeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvffutgesthdtredtreerjeenucfhrhhomhepfdetnhgu
+    rhgvficulfgvfhhfvghrhidfuceorghnughrvgifsegrjhdrihgurdgruheqnecurfgrrh
+    grmhepmhgrihhlfhhrohhmpegrnhgurhgvfiesrghjrdhiugdrrghunecuvehluhhsthgv
+    rhfuihiivgeptd
+X-ME-Proxy: <xmx:GG1kXUVNImv6Gofm_nM9OW946oVf_CuldymEbwxsvyfzsV6mJGOxEQ>
+    <xmx:GG1kXdLF142R19ES50NeD_RzadR7Wg5AhhX12x75rQdBEm4W7PGp5g>
+    <xmx:GG1kXUTXGDHv1NFe9Cu14mPcsMpa5wb8gnRIO0fMO-jc2CajPlMKig>
+    <xmx:Gm1kXedKe0BHGFlFqZnx-d49jziKU13sk_W_B72cbh1vt4v0U_5-Ug>
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id AF0E0E00A3; Mon, 26 Aug 2019 19:36:56 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.1.6-916-g49fca03-fmstable-20190821v7
+Mime-Version: 1.0
+Message-Id: <629128e7-cc91-412f-8946-668fac2eb3b9@www.fastmail.com>
+In-Reply-To: <20190826130343.GA23584@kadam>
+References: <20190826120013.183435-1-weiyongjun1@huawei.com>
+ <20190826130343.GA23584@kadam>
+Date:   Tue, 27 Aug 2019 09:07:17 +0930
+From:   "Andrew Jeffery" <andrew@aj.id.au>
+To:     "Dan Carpenter" <dan.carpenter@oracle.com>,
+        "Wei Yongjun" <weiyongjun1@huawei.com>
+Cc:     "Adrian Hunter" <adrian.hunter@intel.com>,
+        "Ulf Hansson" <ulf.hansson@linaro.org>,
+        "Joel Stanley" <joel@jms.id.au>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, kernel-janitors@vger.kernel.org
+Subject: =?UTF-8?Q?Re:_[PATCH_-next]_mmc:_aspeed:_Fix_return_value_check_in_aspee?=
+ =?UTF-8?Q?d=5Fsdc=5Fprobe()?=
+Content-Type: text/plain
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Aug 22, 2019 at 11:15 PM Christophe JAILLET
-<christophe.jaillet@wanadoo.fr> wrote:
 
-> If we don't find any matching components, we should go through the error
-> handling path, in order to free some resources.
->
-> Fixes: ca5be902a87d ("drm/mcde: Fix uninitialized variable")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Patch applied!
+On Mon, 26 Aug 2019, at 22:34, Dan Carpenter wrote:
+> > Fixes: 09eed7fffd33 ("mmc: Add support for the ASPEED SD controller")
+>                         ^^^^
+> When we're adding new files, could we use the prefix for the new driver
+> instead of just the subsystem?  "mmc: aspeed: Add new driver"?
+> Otherwise it's tricky to know what people want for the driver.
 
-Yours,
-Linus Walleij
+I don't have any issue with the request, but I don't understand this last
+bit. What do you mean by "it's tricky to know what people want for the
+driver"?
+
+Andrew

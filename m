@@ -2,72 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 111EB9CFF9
-	for <lists+kernel-janitors@lfdr.de>; Mon, 26 Aug 2019 15:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64CCA9D00C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 26 Aug 2019 15:06:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727253AbfHZNBy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 26 Aug 2019 09:01:54 -0400
-Received: from smtp.domeneshop.no ([194.63.252.55]:60360 "EHLO
-        smtp.domeneshop.no" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726593AbfHZNBy (ORCPT
+        id S1731142AbfHZNGu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 26 Aug 2019 09:06:50 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:53232 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727692AbfHZNGt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 26 Aug 2019 09:01:54 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=tronnes.org; s=ds201810;
-        h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject; bh=H3jtYoxQ3XbExd4HXxnlQvVgu8Q+804xJ3Zv6QomKsc=;
-        b=QcPt9n10uj1n1YO1WbjMh9PgJkNhqP834sq4Y+F1CcoMwuV3L1/USnK95lBTe/rYf9AfQ6ICYnr5E9Zp8bZijzp6A6F4/92fmKGaBw+SJ7jtFwSD3JYXpkEmt9M4SKQ9FPib8x9ZjTotjBUn3O0GGqJAL4Pprfk1Dn4iAgQkbmFvWmkwvoFQ/KIMI46fNSyF0gXSRV0ytrNsRephR8hKeHNUGwdjBINyMtKFll8qtWVlTtPp1sRdEu60y4Goh3RAzT5A8RtTqf/P4rMzhcK/mDPxRhhsb0OSO8pRLwxowa4uIuLkYnDVNVaGoBrJIh3IGBAkNyYLiRmJTe6E4KcHsQ==;
-Received: from 211.81-166-168.customer.lyse.net ([81.166.168.211]:57660 helo=[192.168.10.173])
-        by smtp.domeneshop.no with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.84_2)
-        (envelope-from <noralf@tronnes.org>)
-        id 1i2Ed5-0003H5-Vb; Mon, 26 Aug 2019 15:01:51 +0200
-Subject: Re: [PATCH] drm/tinydrm: fix a loop in debugfs code
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc:     Maxime Ripard <mripard@kernel.org>, Sean Paul <sean@poorly.run>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-References: <20190821072456.GJ26957@mwanda>
-From:   =?UTF-8?Q?Noralf_Tr=c3=b8nnes?= <noralf@tronnes.org>
-Message-ID: <9718fea0-49f0-34d4-b1fc-f69e99b7a690@tronnes.org>
-Date:   Mon, 26 Aug 2019 15:01:46 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Mon, 26 Aug 2019 09:06:49 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7QD4BNI089364;
+        Mon, 26 Aug 2019 13:04:22 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=vJnEs/zVB+9mS41wRVHEaFY5nc+m3Axz/YoiQ2okbtI=;
+ b=VRHBnQudsig8Q5m9ZDhcs/dKeMXUikug+wfXXpZuj8XzIYHUR7QZV7KcdlFbHep6i8Dw
+ Cp9h5qptKM8jLJ/V6tMGij4q2WpRO0jhUNNrUPum5Sz+sz55PTuy+znsSDS5gL4GZXKj
+ V/+NTrqoaPO+PwF/cSim6/Q1bjJ5CgNx0JDEFnhNcDw3ZrRONmyO/zuJerRUWlaGHWrU
+ B071FxmRqImNAxsxR9aj/kN0FzMVYGu/Wbc9pFFjelr6KEWLHzu8rY4KqcgGQ/czQvdm
+ llyzjznMReoPW+Bq3sGbu8C5puWsXu+shjSzLxSyfj9mAN7wW9qtBp9pUckgsCD8EzNO IA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 2ujw718x0c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 26 Aug 2019 13:04:22 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7QD49P3095525;
+        Mon, 26 Aug 2019 13:04:22 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 2ujw6htgtp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 26 Aug 2019 13:04:22 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7QD3tS1016179;
+        Mon, 26 Aug 2019 13:03:55 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 26 Aug 2019 06:03:54 -0700
+Date:   Mon, 26 Aug 2019 16:03:44 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Joel Stanley <joel@jms.id.au>,
+        Andrew Jeffery <andrew@aj.id.au>, linux-mmc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] mmc: aspeed: Fix return value check in
+ aspeed_sdc_probe()
+Message-ID: <20190826130343.GA23584@kadam>
+References: <20190826120013.183435-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <20190821072456.GJ26957@mwanda>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190826120013.183435-1-weiyongjun1@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9360 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1908260142
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9360 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908260142
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+> Fixes: 09eed7fffd33 ("mmc: Add support for the ASPEED SD controller")
+                        ^^^^
+When we're adding new files, could we use the prefix for the new driver
+instead of just the subsystem?  "mmc: aspeed: Add new driver"?
+Otherwise it's tricky to know what people want for the driver.
 
+I just wrote this same patch and I swear I would have sent my patch
+earlier but I spent hours thinking about the patch prefix and then the
+census people came to the house and delayed me even more.
 
-Den 21.08.2019 09.24, skrev Dan Carpenter:
-> This code will likely crash if we try to do a zero byte write.  The code
-> looks like this:
-> 
->         /* strip trailing whitespace */
->         for (i = count - 1; i > 0; i--)
->                 if (isspace(buf[i]))
-> 			...
-> 
-> We're writing zero bytes so count = 0.  You would think that "count - 1"
-> would be negative one, but because "i" is unsigned it is a large
-> positive numer instead.  The "i > 0" condition is true and the "buf[i]"
-> access will be out of bounds.
-> 
-> The fix is to make "i" signed and now everything works as expected.  The
-> upper bound of "count" is capped in __kernel_write() at MAX_RW_COUNT so
-> we don't have to worry about it being higher than INT_MAX.
-> 
-> Fixes: 02dd95fe3169 ("drm/tinydrm: Add MIPI DBI support")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
+regards,
+dan carpenter
 
-Thanks Dan, applied to drm-misc-next with adjusted title:
--drm/tinydrm: fix a loop in debugfs code
-+drm/mipi-dbi: fix a loop in debugfs code
-
-Noralf.

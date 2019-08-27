@@ -2,94 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D6E4A9E64B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 13:01:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60F679E699
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 13:15:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728447AbfH0LB5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Aug 2019 07:01:57 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:48498 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726125AbfH0LB4 (ORCPT
+        id S1728965AbfH0LPa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Aug 2019 07:15:30 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:33240 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726125AbfH0LP3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Aug 2019 07:01:56 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7RAxB9n055070;
-        Tue, 27 Aug 2019 11:01:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=yEhxFVIGypYEpWwhL2BtlFYIjglXC32QG6ybcE2v5Xo=;
- b=fBtzmVOmT7DEV2vCBMnIhk3byKiis6f8fWzIQ6uNGyVweGHP+VPDvYVUSHXMG9rQ6teN
- BDu94qvDZ4HHhIoOVLt7r8TTM23Z5hFDqQT9MifJQDVybb68RoRPbEHzzn3u5LEXt7qw
- xOlaygX2bIULlj4ajKOkVLEXizTxkP/JCt3kbYcPAp1Tvk3u1+CuO1VMK7CRPRK71dKp
- Cef8iBjOrvcrh1RGhD1kmczL5ZD+Tcmq86Sl9H8zvEO2aVqYY16ddhn3pBdi3sDQhybY
- 7hPGzYtWriY4rCb7YDCdUervDTOpgXRQCLzwp3o6Uw5PF2+IE1JF+CyMKku+YvTcyIe8 SQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 2un36a011q-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 27 Aug 2019 11:01:28 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7RAw9P9080018;
-        Tue, 27 Aug 2019 10:59:28 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 2umj2yhtgy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 27 Aug 2019 10:59:28 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7RAxNln022225;
-        Tue, 27 Aug 2019 10:59:23 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 27 Aug 2019 03:59:23 -0700
-Date:   Tue, 27 Aug 2019 13:59:17 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Steve French <sfrench@samba.org>,
-        Ronnie Sahlberg <lsahlber@redhat.com>
-Cc:     linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] cifs: Use kzfree() to zero out the password
-Message-ID: <20190827105917.GA23038@mwanda>
+        Tue, 27 Aug 2019 07:15:29 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i2ZRg-0000jN-0Q; Tue, 27 Aug 2019 11:15:28 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] media: dvb: redundant assignment to variable tmp
+Date:   Tue, 27 Aug 2019 12:15:27 +0100
+Message-Id: <20190827111527.26337-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9361 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1908270125
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9361 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1908270125
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-It's safer to zero out the password so that it can never be disclosed.
+From: Colin Ian King <colin.king@canonical.com>
 
-Fixes: 0c219f5799c7 ("cifs: set domainName when a domain-key is used in multiuser")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Variable tmp is being assigned a value that is never read and tmp
+is being re-assigned a little later on. The assignment is redundant
+and hence can be removed.
+
+Addresses-Coverity: ("Ununsed value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- fs/cifs/connect.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/dvb-frontends/sp8870.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
-index e6cc5c4b0f19..642bbb5bee3a 100644
---- a/fs/cifs/connect.c
-+++ b/fs/cifs/connect.c
-@@ -3101,7 +3101,7 @@ cifs_set_cifscreds(struct smb_vol *vol, struct cifs_ses *ses)
- 			rc = -ENOMEM;
- 			kfree(vol->username);
- 			vol->username = NULL;
--			kfree(vol->password);
-+			kzfree(vol->password);
- 			vol->password = NULL;
- 			goto out_key_put;
- 		}
+diff --git a/drivers/media/dvb-frontends/sp8870.c b/drivers/media/dvb-frontends/sp8870.c
+index 655db8272268..f6793c9c2dc3 100644
+--- a/drivers/media/dvb-frontends/sp8870.c
++++ b/drivers/media/dvb-frontends/sp8870.c
+@@ -378,8 +378,6 @@ static int sp8870_read_ber (struct dvb_frontend* fe, u32 * ber)
+ 	if (ret < 0)
+ 		return -EIO;
+ 
+-	tmp = ret & 0x3F;
+-
+ 	ret = sp8870_readreg(state, 0xC07);
+ 	if (ret < 0)
+ 		return -EIO;
 -- 
 2.20.1
 

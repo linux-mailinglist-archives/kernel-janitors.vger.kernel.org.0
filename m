@@ -2,107 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE0769E4F7
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 11:55:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7C409E54D
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 12:04:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729171AbfH0JzD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Aug 2019 05:55:03 -0400
-Received: from mail-eopbgr1410092.outbound.protection.outlook.com ([40.107.141.92]:6073
-        "EHLO JPN01-OS2-obe.outbound.protection.outlook.com"
+        id S1729766AbfH0KEb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Aug 2019 06:04:31 -0400
+Received: from mail-eopbgr690124.outbound.protection.outlook.com ([40.107.69.124]:23515
+        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728806AbfH0JzD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Aug 2019 05:55:03 -0400
+        id S1725805AbfH0KEa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 27 Aug 2019 06:04:30 -0400
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YSMdTn9Td1ky/cgEWPV3PP2wKemM+3+SPnyUpkug7mJeVVKe6UK8Qq3YbEPWVXj4cM5D2fDQ5x3NcpBkZlK9O/bRJcQuw3Zm7tfIYVAVo74Yi/WZZnnt4oaGFC9U6JwqNlHF/50g9ngHIUxDyHqQpHvwMNPkDypS6eqCODQ7xr/7ogyJLTnieWNTSVsQoc7RCc8gJT+NVi9W2rm71H7wXUVSJB7hT9cRCwby25pqRC8tzc6jMlbCFh61tZDPBtrSfUJXTXVOx6XGWsnXKio35+CkrpSPseO1YE38pRPPHZnGPNr8VBrZLl06cbq3tzTqqus2IGMiPbSWiFMmkV3yGQ==
+ b=SeA1GCq723vx2j1lxThwkniul86eBTvwNTy/iUQWnMMzydzEBCgfS4AoMqFKXetkYeRNL758n8pix+cyl66bltYaax5stdrsoJyyZQfSNmXMgYZhPECND2VpOHlfyAMpIGl+88izG+apAPnilDoOyRSmYiJ90PY+A/8y8d8gZG2cb4e5jMNbE6QvTM2BPCuW1YjEQhc3lPsbUIk1JJOH2eeQb2DzD4BtbVWHBvFwy/FlVZFsEzX24B9El6SCIZpZph0i3+NCGjgADm4YhLz0763LFedYv3VSEyzOzlm9cLbNx4Ct61E/4DxeEvUndbRgfUM/5eExieQN4QDnSFhKMQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GAnHJkPmIEkZXOFppTtxYHaRfVwRvkcxMfixMYt0w5A=;
- b=bUIaEzX4yqCK+z5+eoj3/8yqMoIU4rfU/0VMrinz5HTCx6JPaEJ+QQHJdFqxlva4POgXK7tiKPzqUPu2G70IIW/H6m6gv8RZXRG9mu9kdo+DMIil42oAJilvZvMfdGOwRzlGI5XEFNNjXdKpHtfSpm3ZkbBh4RC0Dxvxi4UD9W/O94isnn2YgGFmL6t8vPpMgZTzsrruiGdc7H3aoM9YbkMQ9XBrLTzMcmKcshLQvE/gxw1jqCwV+9brzWfP1oNII2I3/7lECQPQBP3b7NOQrvjqXUOYJTdIzXY5j5C46nrKhAP7gFwRkM0VYM327wPZw/ZHDtF44Gd1mDwyO1cv4g==
+ bh=WyYcJt30vIEhUKL86UG4/KYM+tcxU8JXS/dlbYT25QY=;
+ b=UcJE+MmWdXvi3M+/F9uJ+idcg7AW6kn5JEYJlSEE7ca+f+QnWzGjHQ/S8oBhZwDAPdV+s2ugCFqhqEiwXb2mc3/Ddph+5/evCEMQFEA3neIQKtSpB98kXsPRHY3lACuX8XcoXd21R1lWX8yTOIbODLKrcb7WR0nEJR1vMW+RL6o63pn2Iv+WzOlfb1lVx5vM9biisjYMR6qSmM7cb19nH0NyMmF0UBiP/nSzq7uEjuTjZGH5S1jNE0bfIY+CV1k5vEne3fQH3mHosb9dVCTidgNTe19HNchJaVG2WClNNKw/ornoEHYOw//VRh8koYUnGzUF+hFApbhoTsN1pZepUg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
- dkim=pass header.d=renesas.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=renesasgroup.onmicrosoft.com; s=selector2-renesasgroup-onmicrosoft-com;
+ smtp.mailfrom=wavecomp.com; dmarc=pass action=none header.from=mips.com;
+ dkim=pass header.d=mips.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wavecomp.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GAnHJkPmIEkZXOFppTtxYHaRfVwRvkcxMfixMYt0w5A=;
- b=Otv12T5xaNkvLtwWqliGerzXjXEYGdFjxawwbFry6MqJxWNwCvhyq6yEAdp+kC7xAtxLkM9NXgVKs0y2f9oUBRJfAJIDdXR0od29e2jD8aCJzpIHCVejttiDK8gEK6h+RpZkE+PN2sKdNrVBGFAbIyQjqA6jmojLR9h9IRx8xXg=
-Received: from TYAPR01MB4544.jpnprd01.prod.outlook.com (20.179.175.203) by
- TYAPR01MB2912.jpnprd01.prod.outlook.com (20.177.103.10) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2199.21; Tue, 27 Aug 2019 09:55:00 +0000
-Received: from TYAPR01MB4544.jpnprd01.prod.outlook.com
- ([fe80::6564:f61f:f179:facf]) by TYAPR01MB4544.jpnprd01.prod.outlook.com
- ([fe80::6564:f61f:f179:facf%5]) with mapi id 15.20.2199.021; Tue, 27 Aug 2019
- 09:55:00 +0000
-From:   Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>
-CC:     Linus Walleij <linus.walleij@linaro.org>,
-        "linux-renesas-soc@vger.kernel.org" 
-        <linux-renesas-soc@vger.kernel.org>,
-        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: RE: [PATCH] pinctrl: sh-pfc: Unlock on error in sh_pfc_func_set_mux()
-Thread-Topic: [PATCH] pinctrl: sh-pfc: Unlock on error in
- sh_pfc_func_set_mux()
-Thread-Index: AQHVXLtgisE+/mhVkkyLWyOD2zng+KcOwRUg
-Date:   Tue, 27 Aug 2019 09:54:59 +0000
-Message-ID: <TYAPR01MB454438EC8C4F01FB5F0B24F0D8A00@TYAPR01MB4544.jpnprd01.prod.outlook.com>
-References: <20190827093927.GB8443@mwanda>
-In-Reply-To: <20190827093927.GB8443@mwanda>
-Accept-Language: ja-JP, en-US
-Content-Language: ja-JP
+ bh=WyYcJt30vIEhUKL86UG4/KYM+tcxU8JXS/dlbYT25QY=;
+ b=uoErz5sCGk86MQLTf5eLBX1INGlNrYl3u0bBMB4I7AwvnUXvQUt1MNqKNahz4EOlzIKrrGrLzuGDukBBEJCDKs3GZzve+WqoeDnyo+EgCosCnWLiRs5hb6TBThEaMt1U0kC4QhjCRv1ZfrDYOauFvuuXxITd2CRVCvbDuX6m1O0=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.172.60.12) by
+ MWHPR2201MB1536.namprd22.prod.outlook.com (10.174.170.161) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2199.19; Tue, 27 Aug 2019 10:04:23 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::f9e8:5e8c:7194:fad3]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::f9e8:5e8c:7194:fad3%11]) with mapi id 15.20.2199.021; Tue, 27 Aug
+ 2019 10:04:23 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     YueHaibing <yuehaibing@huawei.com>
+CC:     Ralf Baechle <ralf@linux-mips.org>,
+        Paul Burton <pburton@wavecomp.com>,
+        James Hogan <jhogan@kernel.org>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Michal Hocko <mhocko@suse.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        YueHaibing <yuehaibing@huawei.com>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: [PATCH -next] MIPS: Octeon: remove duplicated include from
+  dma-octeon.c
+Thread-Topic: [PATCH -next] MIPS: Octeon: remove duplicated include from
+  dma-octeon.c
+Thread-Index: AQHVXL7MPNdVTCGbT02z68VZO84++g==
+Date:   Tue, 27 Aug 2019 10:04:21 +0000
+Message-ID: <MWHPR2201MB1277BA013BC2E677E1924887C1A00@MWHPR2201MB1277.namprd22.prod.outlook.com>
+References: <20190827072334.96670-1-yuehaibing@huawei.com>
+In-Reply-To: <20190827072334.96670-1-yuehaibing@huawei.com>
+Accept-Language: en-US
+Content-Language: en-US
 X-MS-Has-Attach: 
 X-MS-TNEF-Correlator: 
+x-clientproxiedby: LNXP265CA0072.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:5d::36) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:18::12)
 authentication-results: spf=none (sender IP is )
- smtp.mailfrom=yoshihiro.shimoda.uh@renesas.com; 
-x-originating-ip: [150.249.235.54]
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [94.118.89.251]
 x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 4899bfa7-7a3c-42c2-af87-08d72ad4a008
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:TYAPR01MB2912;
-x-ms-traffictypediagnostic: TYAPR01MB2912:
-x-microsoft-antispam-prvs: <TYAPR01MB2912A1C13C28664C92ECD1DED8A00@TYAPR01MB2912.jpnprd01.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
+x-ms-office365-filtering-correlation-id: f0918c6f-c4fb-47e5-cec8-08d72ad5ee75
+x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:MWHPR2201MB1536;
+x-ms-traffictypediagnostic: MWHPR2201MB1536:
+x-ms-exchange-purlcount: 1
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <MWHPR2201MB153618E9D9B5B8F009034BF6C1A00@MWHPR2201MB1536.namprd22.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:1850;
 x-forefront-prvs: 0142F22657
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(396003)(346002)(39860400002)(366004)(376002)(136003)(189003)(199004)(4744005)(305945005)(66066001)(66946007)(66556008)(66476007)(76116006)(446003)(256004)(66446008)(476003)(486006)(11346002)(99286004)(26005)(76176011)(186003)(64756008)(102836004)(6506007)(7696005)(71190400001)(71200400001)(74316002)(33656002)(316002)(3846002)(5660300002)(25786009)(9686003)(8676002)(8936002)(110136005)(54906003)(86362001)(229853002)(7736002)(2906002)(4326008)(6436002)(6246003)(6116002)(81156014)(81166006)(478600001)(14454004)(53936002)(55016002)(52536014);DIR:OUT;SFP:1102;SCL:1;SRVR:TYAPR01MB2912;H:TYAPR01MB4544.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: renesas.com does not designate
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(136003)(376002)(39850400004)(396003)(346002)(189003)(199004)(6436002)(76176011)(6916009)(81156014)(99286004)(7736002)(64756008)(5660300002)(81166006)(54906003)(66556008)(52536014)(66446008)(478600001)(66476007)(71190400001)(71200400001)(486006)(52116002)(476003)(66946007)(4744005)(8676002)(33656002)(256004)(316002)(44832011)(6116002)(3846002)(74316002)(966005)(25786009)(7696005)(53936002)(4326008)(386003)(42882007)(186003)(2906002)(6306002)(14454004)(66066001)(229853002)(6246003)(9686003)(11346002)(446003)(6506007)(8936002)(305945005)(7416002)(55016002)(102836004)(26005);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1536;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
  permitted sender hosts)
 x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: InzLyIPolrN75KHQ2a5Cy5uEIfUxiUIaGdXxDPDGWDX1AxIVMzLvqfBy0iBf9d9+MhpDw/4E8ouNiBcZiEsqMpxSI16f/HhBikxuepbx7Ejm0OlMqaq9+SytcdItdXNb8KgM2QWDO/LmhprstOgA6CCsRJMq0kBNKZF94th/VU9Eb+ulN1F7074i6XvEB65FubGmngUUhFUF0SXzg4ZtYlkDXQUYpAYsgl2rPhLCooW30wE9ZnxcsctmyZS1BNMiKgXUYUx7d8QcO0QymMqKakBRlXnoDZlPGxvNZMnwIA6zOTjMnkA852GUdtQWWy0iCnKlLV+/AAVGKnIGV4PbMY59bqorzpAw85uvIXqv6R3o1tfgdZaNCnmw+4F0mFfxoN/JiN+Vvr7R0vp2BWA9X+lzAj6v+YyijQF+cExZw5A=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
+x-microsoft-antispam-message-info: 2df5tpuNsccrQVaED4qInwkbVI1DessqYNnKpIHDhDA6TnhAcLj/V6XQMlOZBAVSYm9wojYLI06zh+PlszdSPOXUXQBVmQvcyC4FUumhBHnX5nMQoTRCWKCu7mj+LBO+FTjT299rQcWj4tGnH3V8T3C+Ts+XT1jSwPwfaJuk8tJVbqnBSS90dXKGJs9LCmizbjCE4Te50W9ufN5Rs6SGPkJSacBC+xMb4Py0A+NUNnz/Tjn06fsG/iIoWhtjF99VxF8oHVDEofa3f/iN7LzAIJULbFO2bRUWGGq8QLyzQstxZYtmCmzAnYW2cIeCWu7mjFNJ1dufdXXrk008E3u43TxrI3jTE3rI0p5XT49o3lS6w1UKUBM97FQ5EN2ZFhpZM3zG28ixGCn89hB1/c8F6wqkOFSN8rkABza7MoOA7o0=
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-X-OriginatorOrg: renesas.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4899bfa7-7a3c-42c2-af87-08d72ad4a008
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Aug 2019 09:55:00.1312
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f0918c6f-c4fb-47e5-cec8-08d72ad5ee75
+X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Aug 2019 10:04:22.3728
  (UTC)
 X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
 X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: TU5eHA/DkkOzPry6mRt+kQ0YhuEbEsT45qxbXisP8OzZ0lN44l0elGEFOJcoc2XQTnN17GMZVSLwwMFvlFCz6HLglOR0NNk0c1Mr3YYM6YY3SmFQX9WecHTB+kbGrSuW
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYAPR01MB2912
+X-MS-Exchange-CrossTenant-userprincipalname: JvASwCGnnYok2WaaNst4oj2DuSQX0dVZOW88f/Fv8snPaBIFBUhhdhv3NtqKhiWS5JgRPo0jvxV0Z1xmLNxlaw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1536
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
+Hello,
 
-> From: Dan Carpenter, Sent: Tuesday, August 27, 2019 6:39 PM
+YueHaibing wrote:
+> Remove duplicated include.
+
+Applied to mips-next.
+
+> commit 00f3e689518b
+> https://git.kernel.org/mips/c/00f3e689518b
 >=20
-> We need to unlock and enable IRQs before we return on this error path.
->=20
-> Fixes: 8a0cc47ccc7c ("pinctrl: sh-pfc: Rollback to mux if required when t=
-he gpio is freed")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> Signed-off-by: Paul Burton <paul.burton@mips.com>
 
-Thank you for the patch!
+Thanks,
+    Paul
 
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-
-Best regards,
-Yoshihiro Shimoda
-
+[ This message was auto-generated; if you believe anything is incorrect
+  then please email paul.burton@mips.com to report it. ]

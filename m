@@ -2,93 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1179D9E4D2
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 11:50:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA2A59E4DE
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 11:51:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729838AbfH0JuM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Aug 2019 05:50:12 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:40758 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729523AbfH0JuL (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Aug 2019 05:50:11 -0400
-Received: by mail-oi1-f193.google.com with SMTP id h21so14454869oie.7;
-        Tue, 27 Aug 2019 02:50:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=V3LUrjKhgN4bmIHyy5FlNQA9pDelgHX6YO7hszfV1ZA=;
-        b=YHqsgJ+mCyV6PxKjiKUrqoOlZhr57NL0uhiGLncxpVsUlSMs+McYw4qZRivzJFP2d8
-         aU5361OM2fUiaYnK+DzwxJ1oHi+LjpjaSZmXP+SAfJkW9vE7CxD62m0lWOZnbevWtWAU
-         WPf9yjnipgKzIYNqDI1tMRMbKgCnwhvz/czyDMPiJGWLJMKFIQGMoY3J9ggRzKxLFcFe
-         LOTvfVcTuNHATG50SXY9WNviJwrZwcdho9VDfHmesgGOxgB01vsaRSnNFLRk4jtMyVG+
-         nUVBmZpsFuYxIdrdsa19dEUcZZoK+cT8qO6dBYaFUCJWAX4iREVg9bTbyXuLBE1F/mos
-         1VXw==
-X-Gm-Message-State: APjAAAXSz64/3EI/7RSv2AKxOpMRVLhUlv5LrWrjPbMRIv0ul0Rfd8Vt
-        a3LQbaBjUBRldQ063ptfISjEPrGCA3vzdK4YZWs=
-X-Google-Smtp-Source: APXvYqwogXVloc6dwa2jr7apkDADeM3j8lAESRuN0CRKXZTw2r8dyppswLMDsXZTnVBXjRCQwasyokiNUbcLksAhDHk=
-X-Received: by 2002:aca:b154:: with SMTP id a81mr14778184oif.148.1566899410643;
- Tue, 27 Aug 2019 02:50:10 -0700 (PDT)
+        id S1728808AbfH0Jvh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Aug 2019 05:51:37 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:39248 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726278AbfH0Jvg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 27 Aug 2019 05:51:36 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id CB11264F9331295C534B;
+        Tue, 27 Aug 2019 17:51:34 +0800 (CST)
+Received: from [127.0.0.1] (10.177.96.96) by DGGEMS413-HUB.china.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Tue, 27 Aug 2019
+ 17:51:32 +0800
+Subject: Re: [PATCH -next] net: mlx5: Kconfig: Fix MLX5_CORE_EN dependencies
+To:     <wharms@bfs.de>
+References: <20190827031251.98881-1-maowenan@huawei.com>
+ <5D64DABF.4010601@bfs.de>
+CC:     <saeedm@mellanox.com>, <leon@kernel.org>, <davem@davemloft.net>,
+        <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+From:   maowenan <maowenan@huawei.com>
+Message-ID: <092f56bf-3e94-a3b6-926c-da33ba26ee37@huawei.com>
+Date:   Tue, 27 Aug 2019 17:51:31 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-References: <20190827093927.GB8443@mwanda>
-In-Reply-To: <20190827093927.GB8443@mwanda>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 27 Aug 2019 11:49:59 +0200
-Message-ID: <CAMuHMdWEXPWhtx12PZwk+6CC_KQm2APmhkZzpobesN5EASaLng@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: sh-pfc: Unlock on error in sh_pfc_func_set_mux()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <5D64DABF.4010601@bfs.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.96.96]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Aug 27, 2019 at 11:39 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> We need to unlock and enable IRQs before we return on this error path.
 
-Wow, how could we have missed that?!?
-Thanks!
 
-> Fixes: 8a0cc47ccc7c ("pinctrl: sh-pfc: Rollback to mux if required when the gpio is freed")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+On 2019/8/27 15:24, walter harms wrote:
+> 
+> 
+> Am 27.08.2019 05:12, schrieb Mao Wenan:
+>> When MLX5_CORE_EN=y and PCI_HYPERV_INTERFACE is not set, below errors are found:
+>> drivers/net/ethernet/mellanox/mlx5/core/en_main.o: In function `mlx5e_nic_enable':
+>> en_main.c:(.text+0xb649): undefined reference to `mlx5e_hv_vhca_stats_create'
+>> drivers/net/ethernet/mellanox/mlx5/core/en_main.o: In function `mlx5e_nic_disable':
+>> en_main.c:(.text+0xb8c4): undefined reference to `mlx5e_hv_vhca_stats_destroy'
+>>
+>> This because CONFIG_PCI_HYPERV_INTERFACE is newly introduced by 'commit 348dd93e40c1
+>> ("PCI: hv: Add a Hyper-V PCI interface driver for software backchannel interface"),
+>> Fix this by making MLX5_CORE_EN imply PCI_HYPERV_INTERFACE.
+>>
+>> Fixes: cef35af34d6d ("net/mlx5e: Add mlx5e HV VHCA stats agent")
+>> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+>> ---
+>>  drivers/net/ethernet/mellanox/mlx5/core/Kconfig | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/Kconfig b/drivers/net/ethernet/mellanox/mlx5/core/Kconfig
+>> index 37fef8c..a6a70ce 100644
+>> --- a/drivers/net/ethernet/mellanox/mlx5/core/Kconfig
+>> +++ b/drivers/net/ethernet/mellanox/mlx5/core/Kconfig
+>> @@ -35,6 +35,7 @@ config MLX5_CORE_EN
+>>  	depends on IPV6=y || IPV6=n || MLX5_CORE=m
+> 
+> OT but ...
+> is that IPV6 needed at all ? can there be something else that yes or no ?
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+If I set IPV6=m, errors are found as below:
+drivers/net/ethernet/mellanox/mlx5/core/main.o: In function `mlx5_unload':
+main.c:(.text+0x275): undefined reference to `mlx5_hv_vhca_cleanup'
+drivers/net/ethernet/mellanox/mlx5/core/main.o: In function `mlx5_cleanup_once':
+main.c:(.text+0x2e8): undefined reference to `mlx5_hv_vhca_destroy'
+drivers/net/ethernet/mellanox/mlx5/core/main.o: In function `mlx5_load_one':
+main.c:(.text+0x23c1): undefined reference to `mlx5_hv_vhca_create'
+main.c:(.text+0x248f): undefined reference to `mlx5_hv_vhca_init'
+main.c:(.text+0x25e0): undefined reference to `mlx5_hv_vhca_cleanup
+> 
+> re,
+>  wh
+> 
+>>  	select PAGE_POOL
+>>  	select DIMLIB
+>> +	imply PCI_HYPERV_INTERFACE
+>>  	default n
+>>  	---help---
+>>  	  Ethernet support in Mellanox Technologies ConnectX-4 NIC.
+> 
+> .
+> 
 
-Linus: As we're already past rc6, I don't plan to send another pull
-       request for v5.4.
-       Hence can you please take this one directly?
-       Thanks!
-
-> --- a/drivers/pinctrl/sh-pfc/pinctrl.c
-> +++ b/drivers/pinctrl/sh-pfc/pinctrl.c
-> @@ -361,8 +361,10 @@ static int sh_pfc_func_set_mux(struct pinctrl_dev *pctldev, unsigned selector,
->                  * This driver cannot manage both gpio and mux when the gpio
->                  * pin is already enabled. So, this function fails.
->                  */
-> -               if (cfg->gpio_enabled)
-> -                       return -EBUSY;
-> +               if (cfg->gpio_enabled) {
-> +                       ret = -EBUSY;
-> +                       goto done;
-> +               }
->
->                 ret = sh_pfc_config_mux(pfc, grp->mux[i], PINMUX_TYPE_FUNCTION);
->                 if (ret < 0)
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

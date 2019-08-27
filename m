@@ -2,27 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CCAC79E26D
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 10:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EB599E2A6
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 10:28:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730456AbfH0I1B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Aug 2019 04:27:01 -0400
-Received: from mout.web.de ([212.227.17.11]:43343 "EHLO mout.web.de"
+        id S1730135AbfH0I2h (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Aug 2019 04:28:37 -0400
+Received: from mout.web.de ([212.227.17.11]:39659 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730435AbfH0I1A (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Aug 2019 04:27:00 -0400
+        id S1729326AbfH0I2c (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 27 Aug 2019 04:28:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1566894408;
-        bh=Q3RzmFGlafLwrZMdhMfy6OReR7/knZfbcIt381IISEQ=;
+        s=dbaedf251592; t=1566894499;
+        bh=Kijz/kNQrJoEsdqYzBMm40EhNGYcSH4U5H2MUF6P01U=;
         h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=rPQK7y466tE3EHkeQh1Yx1fj+gG2ziBYhMKN51NGfyc6eaeJFmQEOX8nsCbCDXPQK
-         vlErZKK+6xK41jTQUWVV9H0AgFci/6H+f1sFrQcSlXAFzOzCg5giFZZ6jvEcQr7Hqr
-         o7GizH7lB1NQMhImKJ6ih1MSOcWIt4m/J0IcIJv8=
+        b=B6EgE8HGEjgJJWdg0vDO+HSISOEqLvngIMwVMwpqoynQn+BRzqhHQsBOs0lPjtyFq
+         kQuOkHDvAeaRi9df1yyz0TI1XbspBN4utIeO/2z0SLmfSqSspSTyYVfbxjyXlaILP8
+         ik55bKC/68R8ol5L/83IyB23l7qFHL6vemzqX8YI=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.143.232]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LkyIj-1ialdK33pt-00anjT; Tue, 27
- Aug 2019 10:26:47 +0200
-Subject: [PATCH 1/2] powerpc/82xx: Delete an unnecessary of_node_put() call in
+Received: from [192.168.1.2] ([93.135.143.232]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Ltnmz-1iAGVq2oLN-0117Zr; Tue, 27
+ Aug 2019 10:28:19 +0200
+Subject: [PATCH 2/2] powerpc/82xx: Use common error handling code in
  pq2ads_pci_init_irq()
 From:   Markus Elfring <Markus.Elfring@web.de>
 To:     linuxppc-dev@lists.ozlabs.org,
@@ -80,8 +80,8 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <9c060a41-438b-6fb8-d549-37c72fae4898@web.de>
-Date:   Tue, 27 Aug 2019 10:26:43 +0200
+Message-ID: <1a4bafee-562f-5eb4-d2bd-34704f8c5ab3@web.de>
+Date:   Tue, 27 Aug 2019 10:28:18 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
@@ -89,64 +89,89 @@ In-Reply-To: <6dc7d70e-8a40-46ab-897b-d2eaf9a87d77@web.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:GSUID08LZurS7CQHIu10OnBtmTflRlh+77SCgRUzkqFza7LvP3P
- l6NdK9cjnWOYY4NtA9h2c5Lo9ghp6rGbB3eby/PaNOj5DCxi09EgmvKxuiLVvXvPo1WYReg
- LaQJ933/gQYL+QctiYNtCMKvgeTggzu3I3HRhjSQ4FN57apMcpAd3jXa0ORVM0wZnGGpVL9
- HdyX5XRR3MGF5pCHJYvTQ==
+X-Provags-ID: V03:K1:gK7A+dxt3fKGGpm2M9nJ9fvVY/qb+NE7oESdQhsqt33simYig0U
+ IOgihCH6cngODXnxWog/jvQrwp3bW4mjk4e9ClqHj8p61aqmMqH6Thpxi4nV7rbqpP3i9/b
+ Ve5pwUYOYjJFawKhDfHJ41AAB0gcfyCz/cu04O/Zex9ib+ACC396ukX57NB199W9s8mZj9i
+ KyKrAETJLhWjDjPf5bJ/A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:6n+zhB3LMis=:slif90W6VPvdv128QXAjSb
- fSDe2jaVXJm2AW+O8Sr4kaBUNMxcuc1OXYm6uL2dRUm/Q6t6tAIgWxn8N0W4zfcFb/b/xVDTH
- tIK/Rm39HFnFuK17mhAuIcVqin/mcFk0irGWTTT31GG2FZcb+toKqP6iQku+D0383hiPlKWr2
- XOIxnlPG/FX0iF6KV6WbW5CJbE4NVNrMNaUXUCT8Kymfxvbf26CeLm+56CEEJ9c7Ep0SNdYDb
- Fxz77K6RfuOhqOo2KvYn6spXGLG6hZfRLgB/OVtdh3xRUlvvIzEVtXRNIGdZz9+dTuzYNXuuZ
- OS6S8eAUPS84IH/9MJKiMiy2c+GrNPsWYcM9Q3SBvT2gW9hLT60pyPFZzLZ5HYGtW7fUViOOh
- DLr/s9Qu5vUoyOwP9F+V7KM4Tc9kq/t6gXrUaT/jdZCGC6+un5qteaXnvuISiEHjvDbWg2fY/
- kxBz2Zxj8if5vfdLlg7Aa6rmJFVyptn6OSi3Iqu7dQzJGPnniLMhoYsDbTuLzGI+sJMGM8koI
- 5cznIeupDTeMjKnhGRyILT6Ef2PusMBQtDtWHRn9czNBuwedoZ1Imr9o6d9B1+QOli0e/vJpG
- Zbceg5VI8MTGWsMVPeHlxQ6SlgVhCA9Oyk7PzkijXWEc1Ak0ijYVUMtKHvZ3J0OPLAajIjyFf
- 13xr96tg8ywKYtGkDuyzzQc+KCRGKimZgxyV5DeYdry1M5Q171uIqqZVFUEe4HJPl7WliNuGI
- G1Ae7Gb35is5BIY8xvWoFWwedEnzSGWF0J9j8qXX98OVvm2xwSBn+A/8Ai2CJbygTAxAQTvEI
- u8lKoQd58p5tvHMFt5H5S6mh0LiggSNE4FgX23zULEXYlZyi1aj+WhwcURPG2vpxTWHKvNQyV
- /Gegs+LyL1/7ImLgfh1kvTFN6xbzgKpr7GRsjYOcgFr4RSLHx/PSGYFf+vU6Wt4lWaa4UAgrd
- 8u7yOyRV75Rs66cpLuC1dDpazCl5c0GAJ7Th2yyWqcx0cn9zi2K+gj5WSWm76WcAYQcDXCLPt
- 23d6fiOC+TyNL7J6xatlJTEADpC6Dq+FKvY1rQtJveYNDE5giBTEyHWVG1zn/uw7B11uxAsC+
- bQJZXSonHfWsyeZb9m6TK6VM/7irl398uG16AVpDR6tYF6SPLAXZ1EHn4wgF/+Xr217df5MYU
- SOqqKQyltAM+EA/Cp39NUm+mKUt9gyjmb182wdbl2BEVOMpA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:M6SUmBwiPnI=:sE/qtOGlc5iIVChoe0kaEE
+ r33rWoQ5yqOVUeXZ83LDoNrw8IOeZQ5zJ4k52bqBuux9p2Jfrqs4ysivWxLTw15zfrX2DkiGR
+ IbD36DZNsaH/AvNPO/xaU6CR/jrzdmwMCN1g4KhDGoAlrWKe7AM3So/76ZpF+EZOOJ6LADd1n
+ w/JmBBY3YLB3KyDNf6B0ekirIUUhCHS8TVTOXVXhHGdFElebvi6zJP93bvJGhtalIzpGhBUpb
+ p75VqLcTKjv7S8peYWkqpX4ULuXPqjql4wuOr/Pvby4K1HAreqWnG4T6uqwW93pVpTfsoaQA7
+ Gmkg+BOToAoSN9kXvZ5txtWkElBQYgv6qKmuTyu0L8ESPO40PcvKeDO6fnSswfqaLalr+bhRA
+ B5TGXOdK1z6pw1rtEiJDt2YtWdvFxAPpEB6JXAK92vEX37VNMeUu1vbJGz7qLHYGkWwA4ltVH
+ NewvQQ5MMTwrNLU3skr/EqANKMu7qEJryY/PCEenDA3EMS6pilRK8brRvJxqSmjNkK2Zf2LH9
+ o5DDcqLcySNBzGkZPqCoPIIrJtnuOuH9meYRaqIOtWBRHguq7RZpGBgxAg7dHtUXAkyEyOJAC
+ ZsFCqd/kuIQ4pcSW3GOCt10r+oVd4uI1AuhUKwR8fS93rlOVXMXftbExHOp2QHzyBtVCNfyMA
+ oghgBhCRzWlGYM6tqRuxoDAcJIVfSL+Zxm6/kpGUmfaDwwl9suqf8r3C086BNw3N9b1eMvBvf
+ SAp3i0ROA5OKN7iWIGK3jZ7O/UzMjIP/xGq9MmHVx+M+yzDnQBjLI4tha8sLMmLUW7/KmdaqV
+ 5xxMN0Os5G5n30MyFC8HQDz76jxqCO4httlVJB82csF3o2P7EgKM6k9Vt41Jtn8oCAZGGY5RI
+ Jf28qY7B0zaUh0qlR7Xh3JfvgxCkHnJS+YPAs0solOZAEsq22USE+rf7TnFHlGc0r/SYUb4Ts
+ 7DwXpVnphDYztbCFy6T250OPYwHf0M6NMGDsfp9yVMw4EJQjKnfiAMIVJ4L1uXJ04+F9ZGV4o
+ 5iftZiH84qFgtXTUwMeuOTXKm5Lxf6b5552ml0aqHYowKE+Ja/sCg+KAKn68bcG1yaUAxoIyD
+ eAvHNbzHUwZUazYA9iPXPnOjvlkISCr401gZ1/FMxRjQkoXWh43+OYvyXcFv2E/G8z6DasQF1
+ nKAY9jO7wELMmSmSdEBraUmHZURvFVGJD9joYJEwNSldz4/A==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 27 Aug 2019 08:44:20 +0200
+Date: Tue, 27 Aug 2019 09:19:32 +0200
 
-A null pointer would be passed to a call of the function =E2=80=9Cof_node_=
-put=E2=80=9D
-immediately after a call of the function =E2=80=9Cof_find_compatible_node=
-=E2=80=9D failed
-at one place.
-Remove this superfluous function call.
+Adjust jump targets so that a bit of exception handling can be better
+reused at the end of this function.
 
 This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- arch/powerpc/platforms/82xx/pq2ads-pci-pic.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/powerpc/platforms/82xx/pq2ads-pci-pic.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/arch/powerpc/platforms/82xx/pq2ads-pci-pic.c b/arch/powerpc/p=
 latforms/82xx/pq2ads-pci-pic.c
-index 096cc0d59fd8..6cc054db7043 100644
+index 6cc054db7043..f82f75a6085c 100644
 =2D-- a/arch/powerpc/platforms/82xx/pq2ads-pci-pic.c
 +++ b/arch/powerpc/platforms/82xx/pq2ads-pci-pic.c
-@@ -123,7 +123,6 @@ int __init pq2ads_pci_init_irq(void)
- 	np =3D of_find_compatible_node(NULL, NULL, "fsl,pq2ads-pci-pic");
- 	if (!np) {
- 		printk(KERN_ERR "No pci pic node in device tree.\n");
+@@ -129,13 +129,11 @@ int __init pq2ads_pci_init_irq(void)
+ 	irq =3D irq_of_parse_and_map(np, 0);
+ 	if (!irq) {
+ 		printk(KERN_ERR "No interrupt in pci pic node.\n");
 -		of_node_put(np);
- 		goto out;
+-		goto out;
++		goto out_put_node;
  	}
 
+ 	priv =3D kzalloc(sizeof(*priv), GFP_KERNEL);
+ 	if (!priv) {
+-		of_node_put(np);
+ 		ret =3D -ENOMEM;
+ 		goto out_unmap_irq;
+ 	}
+@@ -160,17 +158,17 @@ int __init pq2ads_pci_init_irq(void)
+ 	priv->host =3D host;
+ 	irq_set_handler_data(irq, priv);
+ 	irq_set_chained_handler(irq, pq2ads_pci_irq_demux);
+-
+-	of_node_put(np);
+-	return 0;
++	ret =3D 0;
++	goto out_put_node;
+
+ out_unmap_regs:
+ 	iounmap(priv->regs);
+ out_free_kmalloc:
+ 	kfree(priv);
+-	of_node_put(np);
+ out_unmap_irq:
+ 	irq_dispose_mapping(irq);
++out_put_node:
++	of_node_put(np);
+ out:
+ 	return ret;
+ }
 =2D-
 2.23.0
 

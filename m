@@ -2,119 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFF979F23C
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 20:21:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B90609F3A5
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 21:59:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730104AbfH0SVi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Aug 2019 14:21:38 -0400
-Received: from smtp-out.kfki.hu ([148.6.0.46]:49301 "EHLO smtp-out.kfki.hu"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727064AbfH0SVh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Aug 2019 14:21:37 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by smtp1.kfki.hu (Postfix) with ESMTP id DE28D3C80105;
-        Tue, 27 Aug 2019 20:21:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        blackhole.kfki.hu; h=mime-version:user-agent:references
-        :message-id:in-reply-to:from:from:date:date:received:received
-        :received; s=20151130; t=1566930091; x=1568744492; bh=d0QYWJwAUo
-        ZjJHspnjU92An5niFYJC0GKb2AR5wQObg=; b=Sg6GVqh4OvCTexsWh0y6FdgivR
-        sEPXNHKlbg27jG2AEs3dEfF+e49pu0pZ09f0X6yHjYkqZZwHToBIWU2RSBsf3vXi
-        jLYQ4zpIlog3B5OcXbywNbLQpTfk+p4UL72lcE2arT6U5AFlKpkj+mXo24xhWsEu
-        ifGkdD+pBBGU34zWw=
-X-Virus-Scanned: Debian amavisd-new at smtp1.kfki.hu
-Received: from smtp1.kfki.hu ([127.0.0.1])
-        by localhost (smtp1.kfki.hu [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP; Tue, 27 Aug 2019 20:21:31 +0200 (CEST)
-Received: from blackhole.kfki.hu (blackhole.szhk.kfki.hu [148.6.240.2])
-        by smtp1.kfki.hu (Postfix) with ESMTP id 468BD3C80104;
-        Tue, 27 Aug 2019 20:21:30 +0200 (CEST)
-Received: by blackhole.kfki.hu (Postfix, from userid 1000)
-        id E43B621F21; Tue, 27 Aug 2019 20:21:29 +0200 (CEST)
-Date:   Tue, 27 Aug 2019 20:21:29 +0200 (CEST)
-From:   =?UTF-8?Q?Kadlecsik_J=C3=B3zsef?= <kadlec@blackhole.kfki.hu>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-cc:     Pablo Neira Ayuso <pablo@netfilter.org>,
-        Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        Florent Fourcot <florent.fourcot@wifirst.fr>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        Aditya Pakki <pakki001@umn.edu>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Stefano Brivio <sbrivio@redhat.com>,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2] netfilter: ipset: Fix an error code in
- ip_set_sockfn_get()
-In-Reply-To: <20190824144955.GA5337@mwanda>
-Message-ID: <alpine.DEB.2.20.1908272020470.11996@blackhole.kfki.hu>
-References: <20190824144955.GA5337@mwanda>
-User-Agent: Alpine 2.20 (DEB 67 2015-01-07)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        id S1731330AbfH0T61 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Aug 2019 15:58:27 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:48464 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729626AbfH0T61 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 27 Aug 2019 15:58:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+        List-Archive; bh=/qq4Y8bgfDjBd2xqdj5sv4QiznVJqZN+/Lozc9RwR5E=; b=Gi5oISGCh/oI
+        GprUbjlaXZCFLLFg3JuKxdywxtf2lz0E+PAPGdj5+XYYsGcpby6yklfPwo+7FTKup4v5Frq+F3amv
+        NvaHu33EeoBiAqGJ8GJabWTQ9GReaFRnEArhUucuNK687AWeHqjjAjwbzOmWMex6I2nOgoLYDxOHn
+        QJnoY=;
+Received: from 188.28.18.107.threembb.co.uk ([188.28.18.107] helo=fitzroy.sirena.org.uk)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1i2hbY-0001CW-U0; Tue, 27 Aug 2019 19:58:13 +0000
+Received: by fitzroy.sirena.org.uk (Postfix, from userid 1000)
+        id 6AED8D02CEA; Tue, 27 Aug 2019 20:58:10 +0100 (BST)
+From:   Mark Brown <broonie@kernel.org>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     alsa-devel@alsa-project.org, Daniel Baluta <daniel.baluta@nxp.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        kernel-janitors@vger.kernel.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, Pengutronix@sirena.org.uk,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>, Takashi Iwai <tiwai@suse.com>
+Subject: Applied "ASoC: SOF: imx8: Fix return value check in imx8_probe()" to the asoc tree
+In-Reply-To: <20190826120003.183279-1-weiyongjun1@huawei.com>
+X-Patchwork-Hint: ignore
+Message-Id: <20190827195810.6AED8D02CEA@fitzroy.sirena.org.uk>
+Date:   Tue, 27 Aug 2019 20:58:10 +0100 (BST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+The patch
 
-Hi Dan,
+   ASoC: SOF: imx8: Fix return value check in imx8_probe()
 
-On Sat, 24 Aug 2019, Dan Carpenter wrote:
+has been applied to the asoc tree at
 
-> The copy_to_user() function returns the number of bytes remaining to be
-> copied.  In this code, that positive return is checked at the end of the
-> function and we return zero/success.  What we should do instead is
-> return -EFAULT.
-> 
-> Fixes: a7b4f989a629 ("netfilter: ipset: IP set core support")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
-> v2: I missed the other instance of this issue
-> 
->  net/netfilter/ipset/ip_set_core.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.4
 
-Patch is applied in the ipset git tree, thanks!
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-Best regards,
-Jozsef
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-> diff --git a/net/netfilter/ipset/ip_set_core.c b/net/netfilter/ipset/ip_set_core.c
-> index e64d5f9a89dd..e7288eab7512 100644
-> --- a/net/netfilter/ipset/ip_set_core.c
-> +++ b/net/netfilter/ipset/ip_set_core.c
-> @@ -2069,8 +2069,9 @@ ip_set_sockfn_get(struct sock *sk, int optval, void __user *user, int *len)
->  		}
->  
->  		req_version->version = IPSET_PROTOCOL;
-> -		ret = copy_to_user(user, req_version,
-> -				   sizeof(struct ip_set_req_version));
-> +		if (copy_to_user(user, req_version,
-> +				 sizeof(struct ip_set_req_version)))
-> +			ret = -EFAULT;
->  		goto done;
->  	}
->  	case IP_SET_OP_GET_BYNAME: {
-> @@ -2129,7 +2130,8 @@ ip_set_sockfn_get(struct sock *sk, int optval, void __user *user, int *len)
->  	}	/* end of switch(op) */
->  
->  copy:
-> -	ret = copy_to_user(user, data, copylen);
-> +	if (copy_to_user(user, data, copylen))
-> +		ret = -EFAULT;
->  
->  done:
->  	vfree(data);
-> -- 
-> 2.11.0
-> 
-> 
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
--
-E-mail  : kadlec@blackhole.kfki.hu, kadlecsik.jozsef@wigner.mta.hu
-PGP key : http://www.kfki.hu/~kadlec/pgp_public_key.txt
-Address : Wigner Research Centre for Physics, Hungarian Academy of Sciences
-          H-1525 Budapest 114, POB. 49, Hungary
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From 393151c211006cc5ac6af26ecd9982dd916a8104 Mon Sep 17 00:00:00 2001
+From: Wei Yongjun <weiyongjun1@huawei.com>
+Date: Mon, 26 Aug 2019 12:00:03 +0000
+Subject: [PATCH] ASoC: SOF: imx8: Fix return value check in imx8_probe()
+
+In case of error, the function devm_ioremap_wc() returns NULL pointer
+not ERR_PTR(). The IS_ERR() test in the return value check should be
+replaced with NULL test.
+
+Fixes: 202acc565a1f ("ASoC: SOF: imx: Add i.MX8 HW support")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+Link: https://lore.kernel.org/r/20190826120003.183279-1-weiyongjun1@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/sof/imx/imx8.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/sound/soc/sof/imx/imx8.c b/sound/soc/sof/imx/imx8.c
+index 640472491037..c9d849ced54a 100644
+--- a/sound/soc/sof/imx/imx8.c
++++ b/sound/soc/sof/imx/imx8.c
+@@ -296,10 +296,10 @@ static int imx8_probe(struct snd_sof_dev *sdev)
+ 	sdev->bar[SOF_FW_BLK_TYPE_SRAM] = devm_ioremap_wc(sdev->dev, res.start,
+ 							  res.end - res.start +
+ 							  1);
+-	if (IS_ERR(sdev->bar[SOF_FW_BLK_TYPE_SRAM])) {
++	if (!sdev->bar[SOF_FW_BLK_TYPE_SRAM]) {
+ 		dev_err(sdev->dev, "failed to ioremap mem 0x%x size 0x%x\n",
+ 			base, size);
+-		ret = PTR_ERR(sdev->bar[SOF_FW_BLK_TYPE_SRAM]);
++		ret = -ENOMEM;
+ 		goto exit_pdev_unregister;
+ 	}
+ 	sdev->mailbox_bar = SOF_FW_BLK_TYPE_SRAM;
+-- 
+2.20.1
+

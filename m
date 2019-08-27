@@ -2,176 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EB599E2A6
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 10:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C11849E32D
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 10:52:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730135AbfH0I2h (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Aug 2019 04:28:37 -0400
-Received: from mout.web.de ([212.227.17.11]:39659 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729326AbfH0I2c (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Aug 2019 04:28:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1566894499;
-        bh=Kijz/kNQrJoEsdqYzBMm40EhNGYcSH4U5H2MUF6P01U=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=B6EgE8HGEjgJJWdg0vDO+HSISOEqLvngIMwVMwpqoynQn+BRzqhHQsBOs0lPjtyFq
-         kQuOkHDvAeaRi9df1yyz0TI1XbspBN4utIeO/2z0SLmfSqSspSTyYVfbxjyXlaILP8
-         ik55bKC/68R8ol5L/83IyB23l7qFHL6vemzqX8YI=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.143.232]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0Ltnmz-1iAGVq2oLN-0117Zr; Tue, 27
- Aug 2019 10:28:19 +0200
-Subject: [PATCH 2/2] powerpc/82xx: Use common error handling code in
- pq2ads_pci_init_irq()
-From:   Markus Elfring <Markus.Elfring@web.de>
-To:     linuxppc-dev@lists.ozlabs.org,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Enrico Weigelt <lkml@metux.net>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-References: <6dc7d70e-8a40-46ab-897b-d2eaf9a87d77@web.de>
-Openpgp: preference=signencrypt
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <1a4bafee-562f-5eb4-d2bd-34704f8c5ab3@web.de>
-Date:   Tue, 27 Aug 2019 10:28:18 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726955AbfH0Iwj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Aug 2019 04:52:39 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:45388 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725912AbfH0Iwi (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 27 Aug 2019 04:52:38 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7R8mnou135868;
+        Tue, 27 Aug 2019 08:52:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=bSF9FeAxhVkI0MFxm9TIMwM291/MWgLqiQOkLqwX08Q=;
+ b=SSk9TDHSCp1vks7AFi3QbmwLTPNS0c5g7ELEd9Xo2jIdO7Jy6j7EtL9OLC4kq6M5I1bf
+ 3YDc9CrFi9Wi1pSJ1bq23p6yoEKimlUaTEgK8j0dyrKdhLGS7uGNP1c3qkV3h+wh8vq3
+ qpn23OS3w/bOJrq2N1S7l8+OUCSMxbam9YuNUiDxT6ER1aOR1NMrfJhOmNpTbuD9KG6E
+ 4BZURKtOR5kEOLgiDSFdA7tsqctFXZxHmRZXdlLN0ejSml52g5jTXZAoJdRdP0U5wwEE
+ K3Z8zijiFH9EH444Iqqr0rHLNcBr97Qr3ckb+PKihvmh7vrIEKLS6i51mZb23TaWgGuY yQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 2umyvt0vcw-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 27 Aug 2019 08:52:34 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7R8gTDn144206;
+        Tue, 27 Aug 2019 08:47:33 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 2umj281576-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 27 Aug 2019 08:47:33 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7R8lWhs032722;
+        Tue, 27 Aug 2019 08:47:32 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 27 Aug 2019 01:47:32 -0700
+Date:   Tue, 27 Aug 2019 11:47:25 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     "Theodore Ts'o" <tytso@mit.edu>, Eric Whitney <enwlinux@gmail.com>
+Cc:     Andreas Dilger <adilger.kernel@dilger.ca>,
+        linux-ext4@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] ext4: tidy up white space in count_rsvd()
+Message-ID: <20190827084725.GA22301@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <6dc7d70e-8a40-46ab-897b-d2eaf9a87d77@web.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:gK7A+dxt3fKGGpm2M9nJ9fvVY/qb+NE7oESdQhsqt33simYig0U
- IOgihCH6cngODXnxWog/jvQrwp3bW4mjk4e9ClqHj8p61aqmMqH6Thpxi4nV7rbqpP3i9/b
- Ve5pwUYOYjJFawKhDfHJ41AAB0gcfyCz/cu04O/Zex9ib+ACC396ukX57NB199W9s8mZj9i
- KyKrAETJLhWjDjPf5bJ/A==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:M6SUmBwiPnI=:sE/qtOGlc5iIVChoe0kaEE
- r33rWoQ5yqOVUeXZ83LDoNrw8IOeZQ5zJ4k52bqBuux9p2Jfrqs4ysivWxLTw15zfrX2DkiGR
- IbD36DZNsaH/AvNPO/xaU6CR/jrzdmwMCN1g4KhDGoAlrWKe7AM3So/76ZpF+EZOOJ6LADd1n
- w/JmBBY3YLB3KyDNf6B0ekirIUUhCHS8TVTOXVXhHGdFElebvi6zJP93bvJGhtalIzpGhBUpb
- p75VqLcTKjv7S8peYWkqpX4ULuXPqjql4wuOr/Pvby4K1HAreqWnG4T6uqwW93pVpTfsoaQA7
- Gmkg+BOToAoSN9kXvZ5txtWkElBQYgv6qKmuTyu0L8ESPO40PcvKeDO6fnSswfqaLalr+bhRA
- B5TGXOdK1z6pw1rtEiJDt2YtWdvFxAPpEB6JXAK92vEX37VNMeUu1vbJGz7qLHYGkWwA4ltVH
- NewvQQ5MMTwrNLU3skr/EqANKMu7qEJryY/PCEenDA3EMS6pilRK8brRvJxqSmjNkK2Zf2LH9
- o5DDcqLcySNBzGkZPqCoPIIrJtnuOuH9meYRaqIOtWBRHguq7RZpGBgxAg7dHtUXAkyEyOJAC
- ZsFCqd/kuIQ4pcSW3GOCt10r+oVd4uI1AuhUKwR8fS93rlOVXMXftbExHOp2QHzyBtVCNfyMA
- oghgBhCRzWlGYM6tqRuxoDAcJIVfSL+Zxm6/kpGUmfaDwwl9suqf8r3C086BNw3N9b1eMvBvf
- SAp3i0ROA5OKN7iWIGK3jZ7O/UzMjIP/xGq9MmHVx+M+yzDnQBjLI4tha8sLMmLUW7/KmdaqV
- 5xxMN0Os5G5n30MyFC8HQDz76jxqCO4httlVJB82csF3o2P7EgKM6k9Vt41Jtn8oCAZGGY5RI
- Jf28qY7B0zaUh0qlR7Xh3JfvgxCkHnJS+YPAs0solOZAEsq22USE+rf7TnFHlGc0r/SYUb4Ts
- 7DwXpVnphDYztbCFy6T250OPYwHf0M6NMGDsfp9yVMw4EJQjKnfiAMIVJ4L1uXJ04+F9ZGV4o
- 5iftZiH84qFgtXTUwMeuOTXKm5Lxf6b5552ml0aqHYowKE+Ja/sCg+KAKn68bcG1yaUAxoIyD
- eAvHNbzHUwZUazYA9iPXPnOjvlkISCr401gZ1/FMxRjQkoXWh43+OYvyXcFv2E/G8z6DasQF1
- nKAY9jO7wELMmSmSdEBraUmHZURvFVGJD9joYJEwNSldz4/A==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9361 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1908270098
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9361 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908270099
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 27 Aug 2019 09:19:32 +0200
+This line was indented one tab too far.
 
-Adjust jump targets so that a bit of exception handling can be better
-reused at the end of this function.
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ fs/ext4/extents_status.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This issue was detected by using the Coccinelle software.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- arch/powerpc/platforms/82xx/pq2ads-pci-pic.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
-
-diff --git a/arch/powerpc/platforms/82xx/pq2ads-pci-pic.c b/arch/powerpc/p=
-latforms/82xx/pq2ads-pci-pic.c
-index 6cc054db7043..f82f75a6085c 100644
-=2D-- a/arch/powerpc/platforms/82xx/pq2ads-pci-pic.c
-+++ b/arch/powerpc/platforms/82xx/pq2ads-pci-pic.c
-@@ -129,13 +129,11 @@ int __init pq2ads_pci_init_irq(void)
- 	irq =3D irq_of_parse_and_map(np, 0);
- 	if (!irq) {
- 		printk(KERN_ERR "No interrupt in pci pic node.\n");
--		of_node_put(np);
--		goto out;
-+		goto out_put_node;
+diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+index dc28a9642452..f17e3f521a17 100644
+--- a/fs/ext4/extents_status.c
++++ b/fs/ext4/extents_status.c
+@@ -1089,7 +1089,7 @@ static void count_rsvd(struct inode *inode, ext4_lblk_t lblk, long len,
+ 	 */
+ 	if ((i + sbi->s_cluster_ratio - 1) <= end) {
+ 		nclu = (end - i + 1) >> sbi->s_cluster_bits;
+-			rc->ndelonly += nclu;
++		rc->ndelonly += nclu;
+ 		i += nclu << sbi->s_cluster_bits;
  	}
-
- 	priv =3D kzalloc(sizeof(*priv), GFP_KERNEL);
- 	if (!priv) {
--		of_node_put(np);
- 		ret =3D -ENOMEM;
- 		goto out_unmap_irq;
- 	}
-@@ -160,17 +158,17 @@ int __init pq2ads_pci_init_irq(void)
- 	priv->host =3D host;
- 	irq_set_handler_data(irq, priv);
- 	irq_set_chained_handler(irq, pq2ads_pci_irq_demux);
--
--	of_node_put(np);
--	return 0;
-+	ret =3D 0;
-+	goto out_put_node;
-
- out_unmap_regs:
- 	iounmap(priv->regs);
- out_free_kmalloc:
- 	kfree(priv);
--	of_node_put(np);
- out_unmap_irq:
- 	irq_dispose_mapping(irq);
-+out_put_node:
-+	of_node_put(np);
- out:
- 	return ret;
- }
-=2D-
-2.23.0
+ 
+-- 
+2.20.1
 

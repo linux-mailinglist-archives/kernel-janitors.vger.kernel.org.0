@@ -2,99 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 33B2B9E87C
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 14:57:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEAC59E8CC
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 15:12:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729166AbfH0M5s (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Aug 2019 08:57:48 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:41296 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726278AbfH0M5s (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Aug 2019 08:57:48 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id A1D90A53E12960B49B43;
-        Tue, 27 Aug 2019 20:57:44 +0800 (CST)
-Received: from localhost (10.47.86.181) by DGGEMS409-HUB.china.huawei.com
- (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Tue, 27 Aug 2019
- 20:57:35 +0800
-Date:   Tue, 27 Aug 2019 13:57:22 +0100
-From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     Mao Wenan <maowenan@huawei.com>
-CC:     <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
-        <wangzhou1@hisilicon.com>, <liguozhu@hisilicon.com>,
-        <john.garry@huawei.com>, <linux-crypto@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH -next] crypto: hisilicon: select CRYPTO_LIB_DES while
- compiling SEC driver
-Message-ID: <20190827135722.00000e6a@huawei.com>
-In-Reply-To: <20190826115914.182700-1-maowenan@huawei.com>
-References: <20190826115914.182700-1-maowenan@huawei.com>
-Organization: Huawei
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1726952AbfH0NMp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Aug 2019 09:12:45 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:54436 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725920AbfH0NMp (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 27 Aug 2019 09:12:45 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7RD9CAZ001945;
+        Tue, 27 Aug 2019 13:12:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=ASUUUkYHWUhwFKzNS2t3x+k/4UsOO6plVu7exCkK5XU=;
+ b=MPLf+vxxOSe561irWHaSHSyCBYCGV8jpbtY0kHQ/vYVoT9nwJa1pIoMwKod4LgVOkvXh
+ etEcI++34RwpM/Fj7kR2LEtjRZk1P0MRZN4JulOvdVulL+MLOViEAicllqIgO37Mcfri
+ kj5HC2v6F5ppcF1hW+0IfC9HMRgaG6HUnLvE6qXnvljivORFrATxcFogyobn7JPQxILo
+ RwXIhzaX0kSMIMoa7ltyW+Peizl29tUfi8V9RugEs6a64GQfexR91qFOYXYyaMOodxOa
+ Zz9JWtNgbx7hbkB+z7mYYe2VBJW9ubHe3ZRFVh5AuR2cYMC+DckQbPh4dJ+zuQK3Dl7B Rw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 2un4n9ra2g-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 27 Aug 2019 13:12:41 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7RD98T9051233;
+        Tue, 27 Aug 2019 13:10:41 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 2umhu8qtpm-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 27 Aug 2019 13:10:40 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x7RDAevg015866;
+        Tue, 27 Aug 2019 13:10:40 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 27 Aug 2019 06:10:39 -0700
+Date:   Tue, 27 Aug 2019 16:10:33 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] media: dvb: redundant assignment to variable tmp
+Message-ID: <20190827131033.GD23584@kadam>
+References: <20190827111527.26337-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.47.86.181]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190827111527.26337-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9361 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1908270142
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9361 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908270142
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 26 Aug 2019 19:59:14 +0800
-Mao Wenan <maowenan@huawei.com> wrote:
-
-> When CRYPTO_DEV_HISI_SEC=y, below compilation error is found after 
-> 'commit 894b68d8be4b ("crypto: hisilicon/des - switch to new verification routines")':
+On Tue, Aug 27, 2019 at 12:15:27PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> drivers/crypto/hisilicon/sec/sec_algs.o: In function `sec_alg_skcipher_setkey_des_cbc':
-> sec_algs.c:(.text+0x11f0): undefined reference to `des_expand_key'
-> drivers/crypto/hisilicon/sec/sec_algs.o: In function `sec_alg_skcipher_setkey_des_ecb':
-> sec_algs.c:(.text+0x1390): undefined reference to `des_expand_key'
-> make: *** [vmlinux] Error 1
+> Variable tmp is being assigned a value that is never read and tmp
+> is being re-assigned a little later on. The assignment is redundant
+> and hence can be removed.
 > 
-> This because DES library has been moved to lib/crypto in this commit 
-> '04007b0e6cbb ("crypto: des - split off DES library from generic DES cipher driver")'.
-> Fix this by selecting CRYPTO_LIB_DES in CRYPTO_DEV_HISI_SEC.
-> 
-> Fixes: 915e4e8413da ("crypto: hisilicon - SEC security accelerator driver")
-> Fixes: 04007b0e6cbb ("crypto: des - split off DES library from generic DES cipher driver")
-> Fixes: 894b68d8be4b ("crypto: hisilicon/des - switch to new verification routines")
-> 
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
-
-Ah. It's that that third one that really introduced the dependency so possibly
-only that one should be listed with a fixes tag.  However the right fix
-at that point was to select CRYPTO_DES which then changed to CRYPTO_LIB_DES
-only after the second patch.
-
-It's not a fix for the first patch so that should probably not be there.
-
-Otherwise, looks correct to me.
-
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-
-thanks,
-
-Jonathan
-
-
-
+> Addresses-Coverity: ("Ununsed value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/crypto/hisilicon/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
+>  drivers/media/dvb-frontends/sp8870.c | 2 --
+>  1 file changed, 2 deletions(-)
 > 
-> diff --git a/drivers/crypto/hisilicon/Kconfig b/drivers/crypto/hisilicon/Kconfig
-> index fa8aa06..ebaf91e 100644
-> --- a/drivers/crypto/hisilicon/Kconfig
-> +++ b/drivers/crypto/hisilicon/Kconfig
-> @@ -4,6 +4,7 @@ config CRYPTO_DEV_HISI_SEC
->  	tristate "Support for Hisilicon SEC crypto block cipher accelerator"
->  	select CRYPTO_BLKCIPHER
->  	select CRYPTO_ALGAPI
-> +	select CRYPTO_LIB_DES
->  	select SG_SPLIT
->  	depends on ARM64 || COMPILE_TEST
->  	depends on HAS_IOMEM
+> diff --git a/drivers/media/dvb-frontends/sp8870.c b/drivers/media/dvb-frontends/sp8870.c
+> index 655db8272268..f6793c9c2dc3 100644
+> --- a/drivers/media/dvb-frontends/sp8870.c
+> +++ b/drivers/media/dvb-frontends/sp8870.c
+> @@ -378,8 +378,6 @@ static int sp8870_read_ber (struct dvb_frontend* fe, u32 * ber)
+>  	if (ret < 0)
+>  		return -EIO;
+>  
+> -	tmp = ret & 0x3F;
+> -
 
+This is pre git code.  It's not clear if the tmp is supposed to be used
+or if we can remove the sp8870_readreg() call also...  The problem is
+that we're disabling the warning without necessarily writing the best
+fix.  It's better to leave the warning there until we are more sure of
+the correct fix.  The warning has useful information and it's not
+hurting anyone.
+
+regards,
+dan carpenter
 

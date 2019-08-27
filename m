@@ -2,71 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EA3BD9E6E6
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 13:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8930C9E6F1
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 13:42:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728694AbfH0LhF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Aug 2019 07:37:05 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:46752 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725912AbfH0LhE (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Aug 2019 07:37:04 -0400
-Received: by mail-oi1-f193.google.com with SMTP id t24so14619914oij.13;
-        Tue, 27 Aug 2019 04:37:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Ve3KoreqHyIFhgPpO/maecjJwdpD6AOQYGYNWVJFvNI=;
-        b=MvFgxQgE64SzoHTIS33X4w1T65dFAco/IF2kQtreLLDmunBJVRvyUSE3Svjr3+Q2OY
-         ktJ7wv0jTZW/hUWqGHzZYoQn2ToeE6JrGtMAtVgY3vSzHXw1ywnA8WHAHJpKd0biZTaD
-         gaafrQTU+jfFw25ZfNNRKAVrRrSAsuJJwDxb00z64BAgNGcs2X4VMCBIC0v2Y04SVQd4
-         9jf953eBeu5HqBVR6qAzotiOMiQpUGYFyd7R5k3gM9RYvw8cIMg3HANPSNh746D10Myy
-         f0VtlLTFLkWt8IvjCV87PRKbLPeobutOzIa00AKRHi5T9rJOS2nEgC9zLuZIhWyN7hpj
-         eRVg==
-X-Gm-Message-State: APjAAAWZbQAn23LlNYfOXnBR+1v86oheAyAnDfXIlNHwb59ayOwa73KI
-        TjFISQem5D/zx7J3c4/NtJQP//oEEp1MTCNZKRg=
-X-Google-Smtp-Source: APXvYqxQsjIWXGY79HjcrhPPZ1+TAFdwFWYz+QnSRaD8HlD35xql501usH13b51lFYYHjes4m1fIzOreotml9zoYlWU=
-X-Received: by 2002:a54:478d:: with SMTP id o13mr15848747oic.54.1566905823555;
- Tue, 27 Aug 2019 04:37:03 -0700 (PDT)
+        id S1727784AbfH0Lmz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Aug 2019 07:42:55 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:5223 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725912AbfH0Lmz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 27 Aug 2019 07:42:55 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 308CF158C85466B87F03;
+        Tue, 27 Aug 2019 19:42:52 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 27 Aug 2019 19:42:42 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-serial@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] tty: serial: linflexuart: Use DEFINE_SPINLOCK() for spinlock
+Date:   Tue, 27 Aug 2019 11:46:14 +0000
+Message-ID: <20190827114614.102037-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20190827113527.99831-1-weiyongjun1@huawei.com>
-In-Reply-To: <20190827113527.99831-1-weiyongjun1@huawei.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 27 Aug 2019 13:36:52 +0200
-Message-ID: <CAMuHMdUobaBZOZjVY7=rvJq=NCqsX6aQwbT9f81HM45wbTjNaA@mail.gmail.com>
-Subject: Re: [PATCH -next] pinctrl: sh-pfc: Fix missing unlock on error in sh_pfc_func_set_mux()
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Aug 27, 2019 at 1:32 PM Wei Yongjun <weiyongjun1@huawei.com> wrote:
-> Add the missing unlock before return from function sh_pfc_func_set_mux()
-> in the error handling case.
->
-> Fixes: 8a0cc47ccc7c ("pinctrl: sh-pfc: Rollback to mux if required when the gpio is freed")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+spinlock can be initialized automatically with DEFINE_SPINLOCK()
+rather than explicitly calling spin_lock_init().
 
-Thanks, but this is a duplicate of
-https://lore.kernel.org/linux-gpio/20190827093927.GB8443@mwanda/
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/tty/serial/fsl_linflexuart.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-Gr{oetje,eeting}s,
+diff --git a/drivers/tty/serial/fsl_linflexuart.c b/drivers/tty/serial/fsl_linflexuart.c
+index 26b9601a0952..8aea7822b731 100644
+--- a/drivers/tty/serial/fsl_linflexuart.c
++++ b/drivers/tty/serial/fsl_linflexuart.c
+@@ -136,7 +136,7 @@ MODULE_DEVICE_TABLE(of, linflex_dt_ids);
+ #ifdef CONFIG_SERIAL_FSL_LINFLEXUART_CONSOLE
+ static struct uart_port *earlycon_port;
+ static bool linflex_earlycon_same_instance;
+-static spinlock_t init_lock;
++static DEFINE_SPINLOCK(init_lock);
+ static bool during_init;
+ 
+ static struct {
+@@ -922,10 +922,6 @@ static int __init linflex_serial_init(void)
+ 	if (ret)
+ 		uart_unregister_driver(&linflex_reg);
+ 
+-#ifdef CONFIG_SERIAL_FSL_LINFLEXUART_CONSOLE
+-	spin_lock_init(&init_lock);
+-#endif
+-
+ 	return ret;
+ }
 
-                        Geert
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds

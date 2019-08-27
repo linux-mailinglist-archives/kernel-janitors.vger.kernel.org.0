@@ -2,95 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CEFC9EF49
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 17:46:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 057249F021
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 18:27:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728670AbfH0Pqx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Aug 2019 11:46:53 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:33713 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726574AbfH0Pqx (ORCPT
+        id S1729941AbfH0Q1W (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Aug 2019 12:27:22 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:39695 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726678AbfH0Q1W (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Aug 2019 11:46:53 -0400
-Received: by mail-io1-f66.google.com with SMTP id z3so47467623iog.0;
-        Tue, 27 Aug 2019 08:46:53 -0700 (PDT)
+        Tue, 27 Aug 2019 12:27:22 -0400
+Received: by mail-qt1-f195.google.com with SMTP id l9so21876843qtu.6
+        for <kernel-janitors@vger.kernel.org>; Tue, 27 Aug 2019 09:27:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=jn4Zk1YEfNuZWrJiBEF7aJIJ61Ws8t1i4se+p36owVI=;
-        b=LUZyKDlayR4pWIMzcszOZAyIVoE7X18xbsQ+g2Mbjg54iDvxggsn/nScfmZH84Ig5k
-         OMoAX46BmbHtN9Aw/LXurfgimGCtFUvUAfTJnTVUpWf2s6lK7kMdmW1Yzy2r/6xqnfbf
-         lNle6zklHGr76QK3r4/L87XCwM9nSB0T+fn7BUMzNPleWNE0P2B0WxmpNvfpFoOZXw5+
-         Qr3sqimdNjt1vtd0guKpiZynJu1vn8tnVOZf21KpzaDbLdAkhP6mJt7sSr7dE4gjk8Xu
-         D+4ADz5j8uvQekaMK+q758BxZFueKmLLXQ6bW/BiMd1MMty2G0UH7fJ1Tziir3xFGEml
-         9NVw==
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=lnAKsbXKD7RPlntdvWmMqnSDlV/9SfNV6+qNsMZx1qE=;
+        b=FbgrV/dT3r1z1Rc57v9Qf+uj6Yns4EqBXIbLCnGw2bWmIq8rDwdBygEV2vnaYu0kPu
+         gfjJuVB87hlqL7AXxQ9lTnxt+WHCCjh+Fcx2Ys6z6roLWd6N8yhxDPMKePNid5e8HLGG
+         wBYtUi7fCu2yPOMpuQrWZKjxxhfIJIu/ht1MQGH1GkIwqMNAjAkW5xIESun2SaF3e3oo
+         WZI9UbHjUVJT3l4FQWfBXyJGLIfyGy6K8l/rcedBmDY/PHebj023FKWikA6L0zspjfUp
+         92uKjwF/iSv2DfwwWX6kguce7dZXL6D3Nmx7vewGCXFNTlAR4t5yAf5tLPeexcBEb1TJ
+         cdAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=jn4Zk1YEfNuZWrJiBEF7aJIJ61Ws8t1i4se+p36owVI=;
-        b=W1wKnkgAH4kb+PNxjKD6koZRmtJx812ObL2nT0nAs9QzACxPUhAJ7uMwFtq3Rqb5gX
-         7mbfgMbswAczhzIY8Xm9kwonabY7GzA5JjHabgIaqmkwbWyNW4vriy/AmMpcolQHbK8h
-         GDyQOZlDom3AjjzOSh18ui+8zn83bUvXnENFBuGchNNxuyd0ZgVi08BJMTtxvUDWWueO
-         dmR3CjtN9v12Qg9t1KOQUkbQUCHhGVuau7K5ukYyrg3ryKPFfegqpJw7qd1Dx/osi3mW
-         /pJ1w6+iUpKil7Xi8pHSbcOQGuP6K24G3/qk+MxchrcMbIfDEpRJKGWEi4BDaGY0px7n
-         YxrQ==
-X-Gm-Message-State: APjAAAXmqrqG3HE9bVkrHeJljeCJ+KcvfpOpmZpgMH+vwq8NCXUDtq0u
-        MaRbyLFNNzFLCaQwvMN1n+kP3RFhKa+6YW9SGBM=
-X-Google-Smtp-Source: APXvYqx79sSUk/Xxv5sBSR6GSI6Ao9kCciCfu5cTEkuGnr/Oly4C7LhXQyHQ+p4iI6jh4z0WFt2dk87f7/twPzLOUfY=
-X-Received: by 2002:a02:ce49:: with SMTP id y9mr24372245jar.63.1566920812306;
- Tue, 27 Aug 2019 08:46:52 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=lnAKsbXKD7RPlntdvWmMqnSDlV/9SfNV6+qNsMZx1qE=;
+        b=sX5fDHhLKKfArIKHx6ghObeAGwShXRExuR426bVTVxl33j/bnylNqiK5y4UYlIOxwG
+         pqSW1EV8NkYQm/txhcFSzo2odR4lePzyHR9ID3OCmzILdRVs27fM8I7cgpmCqPmfxYwA
+         aBID6VRHi7apvUG8JZPDeTB3f70OHqknJUz5zePeQdACtQAabZpbEeGBeSTJaxUsoKyP
+         45f/vqF3yqAeLGQY8MN+3y3vyTTtOlxLSgK32KsneFSqwARFP+e1IMx4sPNQIKtIV1ow
+         S1OlimuWsyW/9qBiPlUX54FZqGPQI02LR2SH+z27DBDm7tG8SBkYvHj8JfF1nEVjUrKn
+         OHXw==
+X-Gm-Message-State: APjAAAXrWdjGcMxIbR9AHEaMR3vezw7wiwP5WWVJ3phCBhRyA4RMu2O6
+        1xWolrWVpm8OtQtxFmGB9h/9VA==
+X-Google-Smtp-Source: APXvYqyql8bxQV0/FB90h23PfUVjOUoxcX1fJUbzxMYDmwzWfOkMnMIARbD6dEDr2H7L/c0ocCf7Bg==
+X-Received: by 2002:a0c:9bc9:: with SMTP id g9mr20446108qvf.240.1566923241047;
+        Tue, 27 Aug 2019 09:27:21 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-167-216-168.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.216.168])
+        by smtp.gmail.com with ESMTPSA id g8sm8649956qti.79.2019.08.27.09.27.20
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 27 Aug 2019 09:27:20 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1i2eJU-00052e-2w; Tue, 27 Aug 2019 13:27:20 -0300
+Date:   Tue, 27 Aug 2019 13:27:20 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-rdma@vger.kernel.org, Doug Ledford <dledford@redhat.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Parav Pandit <parav@mellanox.com>,
+        Steve Wise <swise@opengridcomputing.com>,
+        Tatyana Nikolova <Tatyana.E.Nikolova@intel.com>,
+        YueHaibing <yuehaibing@huawei.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] RDMA/iwpm: Delete =?utf-8?Q?un?=
+ =?utf-8?Q?necessary_checks_before_the_macro_call_=E2=80=9Cdev=5Fkfree=5Fs?=
+ =?utf-8?B?a2LigJ0=?=
+Message-ID: <20190827162720.GA19357@ziepe.ca>
+References: <16df4c50-1f61-d7c4-3fc8-3073666d281d@web.de>
 MIME-Version: 1.0
-References: <20190827105917.GA23038@mwanda>
-In-Reply-To: <20190827105917.GA23038@mwanda>
-From:   Steve French <smfrench@gmail.com>
-Date:   Tue, 27 Aug 2019 10:46:41 -0500
-Message-ID: <CAH2r5mtNVwt-Dp8YVvbVHbYEpUAG_bw=aqJqWdB1Wb-hY1e=NQ@mail.gmail.com>
-Subject: Re: [PATCH] cifs: Use kzfree() to zero out the password
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Steve French <sfrench@samba.org>,
-        Ronnie Sahlberg <lsahlber@redhat.com>,
-        CIFS <linux-cifs@vger.kernel.org>,
-        samba-technical <samba-technical@lists.samba.org>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <16df4c50-1f61-d7c4-3fc8-3073666d281d@web.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-merged into cifs-2.6.git for-next
-
-On Tue, Aug 27, 2019 at 6:02 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> It's safer to zero out the password so that it can never be disclosed.
->
-> Fixes: 0c219f5799c7 ("cifs: set domainName when a domain-key is used in multiuser")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+On Wed, Aug 21, 2019 at 07:47:08PM +0200, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Wed, 21 Aug 2019 19:30:09 +0200
+> 
+> The dev_kfree_skb() function performs also input parameter validation.
+> Thus the test around the shown calls is not needed.
+> 
+> This issue was detected by using the Coccinelle software.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 > ---
->  fs/cifs/connect.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/fs/cifs/connect.c b/fs/cifs/connect.c
-> index e6cc5c4b0f19..642bbb5bee3a 100644
-> --- a/fs/cifs/connect.c
-> +++ b/fs/cifs/connect.c
-> @@ -3101,7 +3101,7 @@ cifs_set_cifscreds(struct smb_vol *vol, struct cifs_ses *ses)
->                         rc = -ENOMEM;
->                         kfree(vol->username);
->                         vol->username = NULL;
-> -                       kfree(vol->password);
-> +                       kzfree(vol->password);
->                         vol->password = NULL;
->                         goto out_key_put;
->                 }
-> --
-> 2.20.1
->
+>  drivers/infiniband/core/iwpm_msg.c  | 9 +++------
+>  drivers/infiniband/core/iwpm_util.c | 9 +++------
+>  2 files changed, 6 insertions(+), 12 deletions(-)
 
+Applied to for-next, thanks
 
--- 
-Thanks,
-
-Steve
+Jason

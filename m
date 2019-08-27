@@ -2,110 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 095919F3DB
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 22:14:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 569EA9F493
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 22:54:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731213AbfH0UOu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Aug 2019 16:14:50 -0400
-Received: from mail-eopbgr50063.outbound.protection.outlook.com ([40.107.5.63]:7628
-        "EHLO EUR03-VE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726871AbfH0UOu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Aug 2019 16:14:50 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=nN96/cFYF3uKSLDXeCsZBYkDaS8M+IeZ2epWi4KStdU3nKrXEAD2t11sQfw+LscuT1GPocrJE2AeK26PTdGs02CFgu0AY28g4KCe0nKzPHFiuZOItrEPodZJ5+pi8+q6O9sSM/xBPse4W2vHqMDhrGjftD1mlEaPHJnckI3zIqFGXzY4YDufvuUOpFvp1QAET6WwpyY0ZHjb/exRXwrhundcw4ugEz2UwJol+0msBtNAlm/PsAdQdg9U3OdKXzUw3hhr5Q/+2kLttIm32ZeeuUewhjZ78gnNwJJ42muAFm6fow1tAk3XjCobHZKN0Tbw5JZagucdJGr6nqsL7ZNzCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gAs/2mUpXc3whqps2scs0H1qqUKhOGvBX0E+gjUjvOE=;
- b=BUUdvIsjn0RLvJGhE8k4IKtzniSUGIgAW+VdVxsFKeTJ2sF+kVLPCsSyUIbxq6x1mIlu4Is9egirpKe6tCgrW+lvha9maQpRyGLAtCPEq0aGXE3GYgeE+Ff/wNPYXqX4It1BN+2aUjF6pobFDCCLPSZrRZUdOXGThvL28zNll01U00j3K65gpJYZqYE6Z08mVSWZhUsG4PXSKOWzirYCk7GQx22iMQZGvh1vM5jWAot3Y6OsP1PjIqNiph6sUvpkgN56GUiqYEwq7Yms3EgrEONCvk0IRdEfV3/PReD7VMwQaxfNZ8jA5AwM9RLjFrHpAPfO+nd5GjpsJ526ISgwcw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
- dkim=pass header.d=mellanox.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=gAs/2mUpXc3whqps2scs0H1qqUKhOGvBX0E+gjUjvOE=;
- b=AyRqnr379rgfzA30QHqNMev2MCiKGv5ZN8fShQlyp8zm3GHCIMR3UECnlYuTScIY6dtql3wuIt82/0N8n78s42iL2fdzcrOZwsmMvaPQQsCKg6qwZYTfT1qSOuXIXz7TZyaeXGpywmAG8grgeBTvONuZXqf3YlK2uZV65wpFnNI=
-Received: from VI1PR0501MB2765.eurprd05.prod.outlook.com (10.172.11.140) by
- VI1PR0501MB2398.eurprd05.prod.outlook.com (10.168.136.137) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2199.19; Tue, 27 Aug 2019 20:14:43 +0000
-Received: from VI1PR0501MB2765.eurprd05.prod.outlook.com
- ([fe80::5cab:4f5c:d7ed:5e27]) by VI1PR0501MB2765.eurprd05.prod.outlook.com
- ([fe80::5cab:4f5c:d7ed:5e27%6]) with mapi id 15.20.2199.021; Tue, 27 Aug 2019
- 20:14:43 +0000
-From:   Saeed Mahameed <saeedm@mellanox.com>
-To:     "davem@davemloft.net" <davem@davemloft.net>,
-        "maowenan@huawei.com" <maowenan@huawei.com>,
-        "leon@kernel.org" <leon@kernel.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH -next] net: mlx5: Kconfig: Fix MLX5_CORE_EN dependencies
-Thread-Topic: [PATCH -next] net: mlx5: Kconfig: Fix MLX5_CORE_EN dependencies
-Thread-Index: AQHVXITcCNibTH++QEWLgS4IcRgEMqcPbxSA
-Date:   Tue, 27 Aug 2019 20:14:43 +0000
-Message-ID: <715dbd69f4e06afa26aa0a500d37a4dd0638befb.camel@mellanox.com>
-References: <20190827031251.98881-1-maowenan@huawei.com>
-In-Reply-To: <20190827031251.98881-1-maowenan@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.32.4 (3.32.4-1.fc30) 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=saeedm@mellanox.com; 
-x-originating-ip: [209.116.155.178]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 0071553f-4e2e-4083-6dbf-08d72b2b32ef
-x-ms-office365-filtering-ht: Tenant
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(4618075)(2017052603328)(7193020);SRVR:VI1PR0501MB2398;
-x-ms-traffictypediagnostic: VI1PR0501MB2398:
-x-microsoft-antispam-prvs: <VI1PR0501MB23984E3F3A62000F5E6DEF60BEA00@VI1PR0501MB2398.eurprd05.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:117;
-x-forefront-prvs: 0142F22657
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(376002)(366004)(39860400002)(346002)(136003)(396003)(189003)(199004)(478600001)(4326008)(58126008)(76116006)(91956017)(8936002)(256004)(186003)(76176011)(2501003)(476003)(102836004)(6486002)(66066001)(305945005)(6512007)(446003)(6246003)(2201001)(2906002)(6436002)(8676002)(66556008)(110136005)(26005)(66446008)(6116002)(64756008)(66476007)(66946007)(316002)(7736002)(54906003)(81156014)(25786009)(81166006)(71190400001)(86362001)(71200400001)(486006)(3846002)(118296001)(6506007)(14454004)(5660300002)(2616005)(99286004)(11346002)(229853002)(36756003)(53936002);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR0501MB2398;H:VI1PR0501MB2765.eurprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: mellanox.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: QoXLeG3Dl3Di5AfmfF96sibM0vqq6N0+P9nM/SA4eHbKpmAHsnKQzQjqisrHK5PWrmiZakfQp8Ydv8AyKJFNMEucpqSJnGdafetGx3w1Y9EengC3/54r+HR/Lo7AnpQcVuaft8RbUaDf0yD07A37BazYVAgFlCKSZo4d5w8ovnyD2RMWglF9UhdYZzEuHoGEhAlpgPDOJ2wq5c48yYgZ8rlTtPgj7k71CqlcWo32aMhGxXlK/nMyO8d/NjBhh1n6KZAPt3x5zX9QYqZjgcs+tndOwbFb8yh7o8ZMQ56ztd1djVLqNVSK7zw4DS3Mm7N1gBI3pfsQLGTc1Ca8FIN19ZAE04qReUYPTpT1oxWXaokxeF3yOVSm8dqBbwcj1wYvJSkVBCWo3zuRSBxsVimfqVxtAHp4WjkIdYLfdgTi4e0=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B898B99C561CA1428B3B353BF6964A90@eurprd05.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S1729903AbfH0Uys (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Aug 2019 16:54:48 -0400
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:35985 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726675AbfH0Uys (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 27 Aug 2019 16:54:48 -0400
+Received: by mail-qt1-f196.google.com with SMTP id z4so496871qtc.3;
+        Tue, 27 Aug 2019 13:54:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=KWbFURB61/lWAVFSnEsUC28SV9DvkqEr5tllt6yvTiY=;
+        b=OZ6xFV/SEt92Ly6JN/1OKdHAGx7HvxRDHWW+T5X83Kxk6NiMQ4SWxgdae0ZPhc8zgi
+         4pCJO5rrmixT5YUdplTZifYcQgohc2JijaA3xkN01ZJYbg6GZqFWtLbbWNT7FN3xJXSK
+         V22MtiA0yg4epbWt6GQIWRxPl+zeYxmO6Wf6ODZf9rMomZAxY24aO1Zd16jYU5AUZrJp
+         A8Y7SYYX5W01uN4DeLiWnAVnkNxpx6y37O2iVxkrZyKLPJ9Nuh7iGaFIyGgG7eLYnAMf
+         EQa0MRj19D1PPtTkWLiG4fgcx+y5Swm4MdVTyW2gRVgBNeEj13/5Mq8UWQUrVJI1tl9X
+         uBCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=KWbFURB61/lWAVFSnEsUC28SV9DvkqEr5tllt6yvTiY=;
+        b=QxxzQVWfsmvF0Tf5TkDbEoTm2FfqkJYSSLt4B1eIw7GYzVfbIwJ8H624bKXxX4R8AD
+         ET2h+B30+W7q9okEjyCHnkpKvupP2ODQ3bFmgQpF8WOwlkcWs7rO+/xJBEwh88t4yQRd
+         Y8xPtUxUSwY9GJTTe26QtBn8pGdy18vDiDuemv6TK69tFeiXKfl30+En3rk3TEyUkNmk
+         nG0RxxRKwtja3MSFkpm50uN/yD6xThckbL+W9UQHVA8RZdzfdNbkiI7DjJfEfeFeRo9q
+         PT4ZSkqzxDHAWJAT7XyF8qVjFjdWSqsTmmk/WmpETKKVXhZs9Lh7OLqZHdD847+M9RhY
+         aVzA==
+X-Gm-Message-State: APjAAAU0biaJCHkjCsfarg/Fmzcg/UyMxeO83gOq4wdUoY7JS0uH1ZJJ
+        Bi1EGOw/TRfbTaI8VmgGWno=
+X-Google-Smtp-Source: APXvYqzysEHZCwbe6uzTwLs8CI6Fhv6YgJbv6827n6K7nE9WtDfokwg3gau0xYJ+chkpDyXbvVNOPw==
+X-Received: by 2002:ac8:6146:: with SMTP id d6mr937546qtm.36.1566939287696;
+        Tue, 27 Aug 2019 13:54:47 -0700 (PDT)
+Received: from rocky (63-235-172-154.dia.static.qwest.net. [63.235.172.154])
+        by smtp.gmail.com with ESMTPSA id i8sm278952qkm.46.2019.08.27.13.54.47
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 27 Aug 2019 13:54:47 -0700 (PDT)
+From:   Eric Whitney <enwlinux@gmail.com>
+X-Google-Original-From: Eric Whitney <enw.linux@gmail.com>
+Date:   Tue, 27 Aug 2019 16:54:45 -0400
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Theodore Ts'o <tytso@mit.edu>, Eric Whitney <enwlinux@gmail.com>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        linux-ext4@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] ext4: tidy up white space in count_rsvd()
+Message-ID: <20190827205445.3gtjyktwitgnbzx4@rocky>
+References: <20190827084725.GA22301@mwanda>
 MIME-Version: 1.0
-X-OriginatorOrg: Mellanox.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0071553f-4e2e-4083-6dbf-08d72b2b32ef
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Aug 2019 20:14:43.3055
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a652971c-7d2e-4d9b-a6a4-d149256f461b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /Lm9+pODrUKe8/BcUMAd9dMAP724A2TV+xjP3jzj76EyJfcxwlwdHQs8ygiXV1s8LoA/ndZFDioQBWnbHcYQyA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0501MB2398
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190827084725.GA22301@mwanda>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-T24gVHVlLCAyMDE5LTA4LTI3IGF0IDExOjEyICswODAwLCBNYW8gV2VuYW4gd3JvdGU6DQo+IFdo
-ZW4gTUxYNV9DT1JFX0VOPXkgYW5kIFBDSV9IWVBFUlZfSU5URVJGQUNFIGlzIG5vdCBzZXQsIGJl
-bG93IGVycm9ycw0KPiBhcmUgZm91bmQ6DQo+IGRyaXZlcnMvbmV0L2V0aGVybmV0L21lbGxhbm94
-L21seDUvY29yZS9lbl9tYWluLm86IEluIGZ1bmN0aW9uDQo+IGBtbHg1ZV9uaWNfZW5hYmxlJzoN
-Cj4gZW5fbWFpbi5jOigudGV4dCsweGI2NDkpOiB1bmRlZmluZWQgcmVmZXJlbmNlIHRvDQo+IGBt
-bHg1ZV9odl92aGNhX3N0YXRzX2NyZWF0ZScNCj4gZHJpdmVycy9uZXQvZXRoZXJuZXQvbWVsbGFu
-b3gvbWx4NS9jb3JlL2VuX21haW4ubzogSW4gZnVuY3Rpb24NCj4gYG1seDVlX25pY19kaXNhYmxl
-JzoNCj4gZW5fbWFpbi5jOigudGV4dCsweGI4YzQpOiB1bmRlZmluZWQgcmVmZXJlbmNlIHRvDQo+
-IGBtbHg1ZV9odl92aGNhX3N0YXRzX2Rlc3Ryb3knDQo+IA0KPiBUaGlzIGJlY2F1c2UgQ09ORklH
-X1BDSV9IWVBFUlZfSU5URVJGQUNFIGlzIG5ld2x5IGludHJvZHVjZWQgYnkNCj4gJ2NvbW1pdCAz
-NDhkZDkzZTQwYzENCj4gKCJQQ0k6IGh2OiBBZGQgYSBIeXBlci1WIFBDSSBpbnRlcmZhY2UgZHJp
-dmVyIGZvciBzb2Z0d2FyZQ0KPiBiYWNrY2hhbm5lbCBpbnRlcmZhY2UiKSwNCj4gRml4IHRoaXMg
-YnkgbWFraW5nIE1MWDVfQ09SRV9FTiBpbXBseSBQQ0lfSFlQRVJWX0lOVEVSRkFDRS4NCj4gDQoN
-CmxldCdzIG5vdCBpbXBseSBhbnl0aGluZy4uIA0KbWx4NWVfaHZfdmhjYV8qIHNob3VsZCBhbHJl
-YWR5IGhhdmUgc3R1YnMgIGluIA0KbWx4NS9jb3JlL2VuL2h2X3ZoY2Ffc3RhdC5oIHdoZW4gUENJ
-X0hZUEVSVl9JTlRFUkZBQ0UgaXMgb2ZmL3VuZGVmICENCg0KSSBKdXN0IHRyaWVkOg0KDQokIC4v
-c2NyaXB0cy9jb25maWcgLXMgUENJX0hZUEVSVl9JTlRFUkZBQ0UNCiQgLi9zY3JpcHRzL2NvbmZp
-ZyAtcyBNTFg1X0NPUkUNCiQgLi9zY3JpcHRzL2NvbmZpZyAtcyBNTFg1X0NPUkVfRU4NCnVuZGVm
-DQp5DQp5DQoNCiQgbWFrZQ0KDQpBbmQgYnVpbGQgcGFzc2VkIGp1c3QgZmluZS4NCg0KDQo=
+* Dan Carpenter <dan.carpenter@oracle.com>:
+> This line was indented one tab too far.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+Good catch, thanks.  You can add:
+
+Reviewed-by: Eric Whitney <enwlinux@gmail.com>
+
+> ---
+>  fs/ext4/extents_status.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/ext4/extents_status.c b/fs/ext4/extents_status.c
+> index dc28a9642452..f17e3f521a17 100644
+> --- a/fs/ext4/extents_status.c
+> +++ b/fs/ext4/extents_status.c
+> @@ -1089,7 +1089,7 @@ static void count_rsvd(struct inode *inode, ext4_lblk_t lblk, long len,
+>  	 */
+>  	if ((i + sbi->s_cluster_ratio - 1) <= end) {
+>  		nclu = (end - i + 1) >> sbi->s_cluster_bits;
+> -			rc->ndelonly += nclu;
+> +		rc->ndelonly += nclu;
+>  		i += nclu << sbi->s_cluster_bits;
+>  	}
+>  
+> -- 
+> 2.20.1
+> 

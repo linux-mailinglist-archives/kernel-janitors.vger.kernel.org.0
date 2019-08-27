@@ -2,79 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 157DF9E95F
-	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 15:31:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E03F19E9A7
+	for <lists+kernel-janitors@lfdr.de>; Tue, 27 Aug 2019 15:39:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729128AbfH0Nb2 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Aug 2019 09:31:28 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:41214 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725811AbfH0Nb1 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Aug 2019 09:31:27 -0400
-Received: by mail-oi1-f193.google.com with SMTP id p127so6314458oic.8;
-        Tue, 27 Aug 2019 06:31:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=fbrpcnaW6FeusXGWHy/FZL17iPbB9NJ4oGcjQCYCxAc=;
-        b=RakY2sD09NKfmQRgIm5vkJ6AD90XUEMiPdtphaWnbaz6kuZ3msa/zniJWSblqmLsm5
-         CQ3Y7FMIUUeJzESZRJh/pFXN4rTDrlwoAbnnl57RxoOVuVncCOmdBqk6IUl/CGsPRZCu
-         oJaAqu5b+ZDsotlFFj+MkoJ+CoOm2rmAAi/xJ2y/M09Vf2Z1eqYqGdL/KIb21ApzZw+A
-         Yl77l8BgxFvCtpGdgbIRu6xdqecBfeu0lnDsyEOOvmqKZGJVArUEEEMfgUTaWpQ7/GBP
-         eJ7i/HXnPHbqC3YpD6QqLM+5yBbyzbt0iNXH/LpI3hSJ0sDx/ufas+isaYWCUp6qWWYo
-         lS3Q==
-X-Gm-Message-State: APjAAAVj+fSpW5P2a1T99jfa7B7Gc+jZv5pNccHfjsnii1pnerxS0MQ9
-        ydQnbBAAhPTNtL/LiBfbyXJUIYAxkAc1kYtWEcc=
-X-Google-Smtp-Source: APXvYqzZzbXU+RqScZH8H98sHGPvNyaTmnwaD9hadGmeyRCrAgllptmivlqOHf5SeYogP/M2CHNeVInHgpGlCSPZLcY=
-X-Received: by 2002:aca:f4ca:: with SMTP id s193mr15420301oih.131.1566912686716;
- Tue, 27 Aug 2019 06:31:26 -0700 (PDT)
+        id S1729159AbfH0Njq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 27 Aug 2019 09:39:46 -0400
+Received: from mga03.intel.com ([134.134.136.65]:20250 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726065AbfH0Njq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 27 Aug 2019 09:39:46 -0400
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 27 Aug 2019 06:39:46 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,437,1559545200"; 
+   d="scan'208";a="174551436"
+Received: from sjchrist-coffee.jf.intel.com (HELO linux.intel.com) ([10.54.74.41])
+  by orsmga008.jf.intel.com with ESMTP; 27 Aug 2019 06:39:45 -0700
+Date:   Tue, 27 Aug 2019 06:39:45 -0700
+From:   Sean Christopherson <sean.j.christopherson@intel.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Radim =?utf-8?B?S3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        kvm@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] x86: KVM: svm: Fix a check in nested_svm_vmrun()
+Message-ID: <20190827133945.GA27459@linux.intel.com>
+References: <20190827093852.GA8443@mwanda>
 MIME-Version: 1.0
-References: <e66b822b-026b-29cc-e461-6334aafd1d30@web.de>
-In-Reply-To: <e66b822b-026b-29cc-e461-6334aafd1d30@web.de>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 27 Aug 2019 15:31:15 +0200
-Message-ID: <CAMuHMdVCcHn1YHFhehkvNV29s5jCDDsDWBOkVcWmf1XBPRdfYg@mail.gmail.com>
-Subject: Re: [PATCH] clk: renesas: mstp: Delete an unnecessary kfree() call in cpg_mstp_clocks_init()
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-clk <linux-clk@vger.kernel.org>,
-        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190827093852.GA8443@mwanda>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Aug 27, 2019 at 3:27 PM Markus Elfring <Markus.Elfring@web.de> wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Tue, 27 Aug 2019 15:22:12 +0200
->
-> A null pointer would be passed to a call of the function “kfree”
-> directly after a call of the function “kzalloc” failed at one place.
-> Remove this superfluous function call.
->
-> This issue was detected by using the Coccinelle software.
->
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+On Tue, Aug 27, 2019 at 12:38:52PM +0300, Dan Carpenter wrote:
+> We refactored this code a bit and accidentally deleted the "-" character
+> from "-EINVAL".  The kvm_vcpu_map() function never returns positive
+> EINVAL.
+> 
+> Fixes: c8e16b78c614 ("x86: KVM: svm: eliminate hardcoded RIP advancement from vmrun_interception()")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
 
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-i.e. will queue in clk-renesas-for-v5.5.
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Reviewed-by: Sean Christopherson <sean.j.christopherson@intel.com>

@@ -2,54 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6604A9F8E6
-	for <lists+kernel-janitors@lfdr.de>; Wed, 28 Aug 2019 05:48:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F303D9F97C
+	for <lists+kernel-janitors@lfdr.de>; Wed, 28 Aug 2019 06:40:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726436AbfH1DsX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 27 Aug 2019 23:48:23 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:54394 "EHLO
+        id S1726146AbfH1Ejy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 28 Aug 2019 00:39:54 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:54764 "EHLO
         shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726178AbfH1DsW (ORCPT
+        with ESMTP id S1725827AbfH1Ejy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 27 Aug 2019 23:48:22 -0400
+        Wed, 28 Aug 2019 00:39:54 -0400
 Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 09F09153BA50F;
-        Tue, 27 Aug 2019 20:48:22 -0700 (PDT)
-Date:   Tue, 27 Aug 2019 20:48:21 -0700 (PDT)
-Message-Id: <20190827.204821.340435873815704705.davem@davemloft.net>
-To:     maowenan@huawei.com
-Cc:     nbd@openwrt.org, john@phrozen.org, sean.wang@mediatek.com,
-        nelson.chang@mediatek.com, matthias.bgg@gmail.com,
-        kernel-janitors@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 -next] net: mediatek: remove set but not used
- variable 'status'
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id EF680153C23C6;
+        Tue, 27 Aug 2019 21:39:53 -0700 (PDT)
+Date:   Tue, 27 Aug 2019 21:39:53 -0700 (PDT)
+Message-Id: <20190827.213953.102911550129423796.davem@davemloft.net>
+To:     christophe.jaillet@wanadoo.fr
+Cc:     ajk@comnets.uni-bremen.de, linux-hams@vger.kernel.org,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] net/hamradio/6pack: Fix the size of a sk_buff used in
+ 'sp_bump()'
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190826013118.22720-1-maowenan@huawei.com>
-References: <20190824.142158.1506174328495468705.davem@davemloft.net>
-        <20190826013118.22720-1-maowenan@huawei.com>
+In-Reply-To: <20190826190209.16795-1-christophe.jaillet@wanadoo.fr>
+References: <20190826190209.16795-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: Mew version 6.8 on Emacs 26.1
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 27 Aug 2019 20:48:22 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 27 Aug 2019 21:39:54 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Mao Wenan <maowenan@huawei.com>
-Date: Mon, 26 Aug 2019 09:31:18 +0800
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Mon, 26 Aug 2019 21:02:09 +0200
 
-> Fixes gcc '-Wunused-but-set-variable' warning:
-> drivers/net/ethernet/mediatek/mtk_eth_soc.c: In function mtk_handle_irq:
-> drivers/net/ethernet/mediatek/mtk_eth_soc.c:1951:6: warning: variable status set but not used [-Wunused-but-set-variable]
+> We 'allocate' 'count' bytes here. In fact, 'dev_alloc_skb' already add some
+> extra space for padding, so a bit more is allocated.
 > 
-> Fixes: 296c9120752b ("net: ethernet: mediatek: Add MT7628/88 SoC support")
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> However, we use 1 byte for the KISS command, then copy 'count' bytes, so
+> count+1 bytes.
+> 
+> Explicitly allocate and use 1 more byte to be safe.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> This patch should be safe, be however may no be the correct way to fix the
+> "buffer overflow". Maybe, the allocated size is correct and we should have:
+>    memcpy(ptr, sp->cooked_buf + 1, count - 1);
+> or
+>    memcpy(ptr, sp->cooked_buf + 1, count - 1sp->rcount);
+> 
+> I've not dig deep enough to understand the link betwwen 'rcount' and
+> how 'cooked_buf' is used.
 
-Applied to net-next.
+I'm trying to figure out how this code works too.
+
+Why are they skipping over the first byte?  Is that to avoid the
+command byte?  Yes, then using sp->rcount as the memcpy length makes
+sense.
+
+Why is the caller subtracting 2 from the RX buffer count when
+calculating sp->rcount?  This makes the situation even more confusing.
+

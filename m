@@ -2,28 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72283A0E1B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Aug 2019 01:15:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB483A0E77
+	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Aug 2019 02:00:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727007AbfH1XOy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 28 Aug 2019 19:14:54 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:57671 "EHLO
+        id S1726948AbfH2AAJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 28 Aug 2019 20:00:09 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:58253 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726926AbfH1XOy (ORCPT
+        with ESMTP id S1726825AbfH2AAJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 28 Aug 2019 19:14:54 -0400
-Received: from cpc129250-craw9-2-0-cust139.know.cable.virginm.net ([82.43.126.140] helo=localhost)
+        Wed, 28 Aug 2019 20:00:09 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1i379O-0000SZ-K7; Wed, 28 Aug 2019 23:14:50 +0000
+        id 1i37rD-00059z-4t; Thu, 29 Aug 2019 00:00:07 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Michael Grzeschik <m.grzeschik@pengutronix.de>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+To:     Steve French <sfrench@samba.org>, linux-cifs@vger.kernel.org,
+        samba-technical@lists.samba.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][V2] arcnet: capmode: remove redundant assignment to pointer pkt
-Date:   Thu, 29 Aug 2019 00:14:50 +0100
-Message-Id: <20190828231450.22424-1-colin.king@canonical.com>
+Subject: [PATCH][cifs-next] cifs: ensure variable rc is initialized at the after_open label
+Date:   Thu, 29 Aug 2019 01:00:06 +0100
+Message-Id: <20190829000006.24187-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,33 +35,32 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Pointer pkt is being initialized with a value that is never read
-and pkt is being re-assigned a little later on. The assignment is
-redundant and hence can be removed.
+A previous fix added a jump to after_open which now leaves variable
+rc in a uninitialized state. A couple of the cases in the following
+switch statement do not set variable rc, hence the error check on rc
+at the end of the switch statement is reading a garbage value in rc
+for those specific cases. Fix this by initializing rc to zero before
+the switch statement.
 
-Addresses-Coverity: ("Ununsed value")
+Fixes: 955a9c5b39379 ("cifs: create a helper to find a writeable handle by path name")
+Addresses-Coverity: ("Uninitialized scalar variable")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
+ fs/cifs/smb2inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-V2: fix typo in patch description, pkg -> pkt
-
----
- drivers/net/arcnet/capmode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/arcnet/capmode.c b/drivers/net/arcnet/capmode.c
-index b780be6f41ff..c09b567845e1 100644
---- a/drivers/net/arcnet/capmode.c
-+++ b/drivers/net/arcnet/capmode.c
-@@ -44,7 +44,7 @@ static void rx(struct net_device *dev, int bufnum,
- {
- 	struct arcnet_local *lp = netdev_priv(dev);
- 	struct sk_buff *skb;
--	struct archdr *pkt = pkthdr;
-+	struct archdr *pkt;
- 	char *pktbuf, *pkthdrbuf;
- 	int ofs;
+diff --git a/fs/cifs/smb2inode.c b/fs/cifs/smb2inode.c
+index 70342bcd89b4..939fc7b2234c 100644
+--- a/fs/cifs/smb2inode.c
++++ b/fs/cifs/smb2inode.c
+@@ -116,6 +116,7 @@ smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
+ 	smb2_set_next_command(tcon, &rqst[num_rqst]);
+  after_open:
+ 	num_rqst++;
++	rc = 0;
  
+ 	/* Operation */
+ 	switch (command) {
 -- 
 2.20.1
 

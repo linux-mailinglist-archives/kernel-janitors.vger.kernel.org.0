@@ -2,114 +2,127 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40215A1030
-	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Aug 2019 06:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA326A1A0C
+	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Aug 2019 14:29:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725847AbfH2EJt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 29 Aug 2019 00:09:49 -0400
-Received: from mail-io1-f51.google.com ([209.85.166.51]:34717 "EHLO
-        mail-io1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725821AbfH2EJs (ORCPT
+        id S1727063AbfH2M3Y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 29 Aug 2019 08:29:24 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:38782 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727034AbfH2M3Y (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 29 Aug 2019 00:09:48 -0400
-Received: by mail-io1-f51.google.com with SMTP id s21so4202420ioa.1;
-        Wed, 28 Aug 2019 21:09:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=YU1YHjbF48DNiDGJ/sscFH+VTiFvXEQv14JcR6j+IMU=;
-        b=bTpepsNJjZwXWh3JW5H4Ce7efx57U0QBAypMjHr2aJhmxYvbZ4l9uUtc6UMlNwMCVJ
-         rLlM8Vuv3UZLoMQqhxPfSciTslDnYspvytfvb/vz8K2fmL1kCztbZVNCT5neQNLSfNkp
-         qWBHRHtafx3W65LeuqM2KbWB2E3HPtZsAI/KMVTjkBAIPdQN7XKEbIKijAU6vjg9Fuaf
-         bp0Pn17+wxMtNr9KWvB+NPLxdLh1yE9mQhv4Mb2tA8gukZv0oRe5fsDjlDKE4B8fJ/bJ
-         XqKYm9LeOOGfR66D2NLd8hFML4RtuW4fzzWLP6+mCHpTLLGaGIuz1+mGmeSk0/c85frc
-         andQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=YU1YHjbF48DNiDGJ/sscFH+VTiFvXEQv14JcR6j+IMU=;
-        b=eLAWz4fngJKjXbzazP5gCM8VvF4EOgaYMVzeKIxzNq3Gmjy3DB9de0+MVvkbylZcZB
-         IbzxcF9KkR/kv7QvWIE5wpzZjBffGk0jT2G0EZlS8c/AJ25SYjEdFYrUZadmbLTKv4gr
-         W6D8zJBlJfcO4nYCDiRXqqgmYOz/ziPY7cqWvEjZmERlBcHCGWH8SRDto3E1FYXr6YHH
-         gt+QkFBEvEYuqQQS12qD+HM3iK0kH6efe8ikmMWZ9Yoqowy/moNqvuquMpcF1mYpqlOc
-         fh88KQhxtTgIFDfg2czYfrtzUDaHYcv2mzx8xENxhvIb7WkbQVhl6c3IaBd+UUaazVPT
-         hp/g==
-X-Gm-Message-State: APjAAAUoQN0OwQ3c9taNIq1aCuB8P7/pRey86aF+JXdrykNCeATsn+xV
-        lH3JGR/zSYzBuByXp9V5D8hq//JvI+B6FteAGNaBTg==
-X-Google-Smtp-Source: APXvYqwjBWoTXise9Yyur+0EvpWqlBurQEVkTw/X47GmfjP60IPzgICVqLLRTVW8GZeXgC76n+oVDlvxAVlDDLuFDis=
-X-Received: by 2002:a5e:da48:: with SMTP id o8mr8716584iop.252.1567051787467;
- Wed, 28 Aug 2019 21:09:47 -0700 (PDT)
+        Thu, 29 Aug 2019 08:29:24 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7TCTDlM006209;
+        Thu, 29 Aug 2019 12:29:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=ZwaW5u32DIdchmsLgCGFR9Gv4QDILMv0PoINBiFI9gU=;
+ b=pRKUe+NHAsjffKU34frQv42lohqc8NrwjAz6T6ZytXK8jCRqu5CwkGnWFjdraLAefTNF
+ RdUBUtq78+eY9xR0/IqDqTCSn7GCNk5trIJVDYH4O2Lts0fAwhhkz6zuk/4t5jLNFZD1
+ Pqi/M2C1D6iKH3Qv1SkC3ZUQexUwNYzp+gQD93ldOQbApAcIJr7u4Zdykf7XcSIxaYmO
+ CDvksh67QgylAF/nqqyj9bnDhJfwx5OMVYjkziwULCFMSeF5OzBlC1D2TwO7F0yongJE
+ 5qm9Wi8FDimfk50bHV49lqcGGWoRQ1qovB6W/1SByrz7NHuhQlBdJSgNWXtpvj2bfFlB nw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 2upem8g1xp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 29 Aug 2019 12:29:17 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x7TCSDue032045;
+        Thu, 29 Aug 2019 12:29:17 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 2unvtyvw2r-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 29 Aug 2019 12:29:17 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x7TCSmIj005841;
+        Thu, 29 Aug 2019 12:28:48 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 29 Aug 2019 05:28:47 -0700
+Date:   Thu, 29 Aug 2019 15:28:39 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Rui Miguel Silva <rmfrfs@gmail.com>
+Cc:     Johan Hovold <johan@kernel.org>, Alex Elder <elder@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        greybus-dev@lists.linaro.org, devel@driverdev.osuosl.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] staging: greybus: light: fix a couple double frees
+Message-ID: <20190829122839.GA20116@mwanda>
 MIME-Version: 1.0
-References: <20190829000006.24187-1-colin.king@canonical.com> <CAH2r5mtSSwS7_E2WkS3Lsk02BEf_UwZ4H9oCEFTSf94U=4Cm9Q@mail.gmail.com>
-In-Reply-To: <CAH2r5mtSSwS7_E2WkS3Lsk02BEf_UwZ4H9oCEFTSf94U=4Cm9Q@mail.gmail.com>
-From:   ronnie sahlberg <ronniesahlberg@gmail.com>
-Date:   Thu, 29 Aug 2019 14:09:35 +1000
-Message-ID: <CAN05THSTwX_a7hry4EpD86EEr7NaZ75XUhDKpr_Dgwqqt+rBuw@mail.gmail.com>
-Subject: Re: [PATCH][cifs-next] cifs: ensure variable rc is initialized at the
- after_open label
-To:     Steve French <smfrench@gmail.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        Steve French <sfrench@samba.org>,
-        CIFS <linux-cifs@vger.kernel.org>,
-        samba-technical <samba-technical@lists.samba.org>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9363 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1908290137
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9363 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1908290137
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Aug 29, 2019 at 2:00 PM Steve French <smfrench@gmail.com> wrote:
->
-> Merged into cifs-2.6.git for-next
->
-> Ronnie,
-> You ok with merging this as a distinct patch?
+The problem is in gb_lights_request_handler().  If we get a request to
+change the config then we release the light with gb_lights_light_release()
+and re-allocated it.  However, if the allocation fails part way through
+then we call gb_lights_light_release() again.  This can lead to a couple
+different double frees where we haven't cleared out the original values:
 
-Sure thing.
-Thanks for the fix Colin.
+	gb_lights_light_v4l2_unregister(light);
+	...
+	kfree(light->channels);
+	kfree(light->name);
 
+I also made a small change to how we set "light->channels_count = 0;".
+The original code handled this part fine and did not cause a use after
+free but it was sort of complicated to read.
 
->
-> On Wed, Aug 28, 2019 at 7:02 PM Colin King <colin.king@canonical.com> wrote:
-> >
-> > From: Colin Ian King <colin.king@canonical.com>
-> >
-> > A previous fix added a jump to after_open which now leaves variable
-> > rc in a uninitialized state. A couple of the cases in the following
-> > switch statement do not set variable rc, hence the error check on rc
-> > at the end of the switch statement is reading a garbage value in rc
-> > for those specific cases. Fix this by initializing rc to zero before
-> > the switch statement.
-> >
-> > Fixes: 955a9c5b39379 ("cifs: create a helper to find a writeable handle by path name")
-> > Addresses-Coverity: ("Uninitialized scalar variable")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > ---
-> >  fs/cifs/smb2inode.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/fs/cifs/smb2inode.c b/fs/cifs/smb2inode.c
-> > index 70342bcd89b4..939fc7b2234c 100644
-> > --- a/fs/cifs/smb2inode.c
-> > +++ b/fs/cifs/smb2inode.c
-> > @@ -116,6 +116,7 @@ smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
-> >         smb2_set_next_command(tcon, &rqst[num_rqst]);
-> >   after_open:
-> >         num_rqst++;
-> > +       rc = 0;
-> >
-> >         /* Operation */
-> >         switch (command) {
-> > --
-> > 2.20.1
-> >
->
->
-> --
-> Thanks,
->
-> Steve
+Fixes: 2870b52bae4c ("greybus: lights: add lights implementation")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/staging/greybus/light.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/staging/greybus/light.c b/drivers/staging/greybus/light.c
+index 010ae1e9c7fb..40680eaf3974 100644
+--- a/drivers/staging/greybus/light.c
++++ b/drivers/staging/greybus/light.c
+@@ -1098,21 +1098,21 @@ static void gb_lights_channel_release(struct gb_channel *channel)
+ static void gb_lights_light_release(struct gb_light *light)
+ {
+ 	int i;
+-	int count;
+ 
+ 	light->ready = false;
+ 
+-	count = light->channels_count;
+-
+ 	if (light->has_flash)
+ 		gb_lights_light_v4l2_unregister(light);
++	light->has_flash = false;
+ 
+-	for (i = 0; i < count; i++) {
++	for (i = 0; i < light->channels_count; i++)
+ 		gb_lights_channel_release(&light->channels[i]);
+-		light->channels_count--;
+-	}
++	light->channels_count = 0;
++
+ 	kfree(light->channels);
++	light->channels = NULL;
+ 	kfree(light->name);
++	light->name = NULL;
+ }
+ 
+ static void gb_lights_release(struct gb_lights *glights)
+-- 
+2.20.1
+

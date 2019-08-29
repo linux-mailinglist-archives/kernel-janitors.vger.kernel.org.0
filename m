@@ -2,70 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E99CA0ED8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Aug 2019 03:19:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F023A0FD7
+	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Aug 2019 05:13:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726330AbfH2BT0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 28 Aug 2019 21:19:26 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:5684 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726079AbfH2BT0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 28 Aug 2019 21:19:26 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 56502D4257AF612B3DC8;
-        Thu, 29 Aug 2019 09:19:24 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 29 Aug 2019 09:19:15 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Steve Longerbeam <slongerbeam@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>
-CC:     YueHaibing <yuehaibing@huawei.com>, <linux-media@vger.kernel.org>,
-        <devel@driverdev.osuosl.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] media: imx: remove unused including <linux/version.h>
-Date:   Thu, 29 Aug 2019 01:22:41 +0000
-Message-ID: <20190829012241.133597-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727144AbfH2DN0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 28 Aug 2019 23:13:26 -0400
+Received: from mail-wm1-f44.google.com ([209.85.128.44]:53013 "EHLO
+        mail-wm1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726330AbfH2DN0 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 28 Aug 2019 23:13:26 -0400
+Received: by mail-wm1-f44.google.com with SMTP id t17so2082965wmi.2;
+        Wed, 28 Aug 2019 20:13:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zezlNocF3MTF6BR+07qgHXs9JkH6PuU5IAluxDhYuf0=;
+        b=gP8dYidy6sTxKhqbX6Hag7AsPbUqaqbdPyR8nBQ+dJK7hwcey8ONy8Lk/O9Fwn9VmO
+         NAnVvt+itRbHfo+G5AYGxhWLXvvzydIuxHFH6gH2xfSilIc4jg/78NjqzP5tV8OenADc
+         pcMxxt0oUxwwxeguxQBCbHvqnmoxwd0IHuM8v1lyn2YHoEaJADJwOSxw1K+N+7SuHJhR
+         IHMD5qf/Vq1NGRQ6M0F69iDpzFRo/B9RvT8edUJHiN4Jl/4pGovfJDy2zbGWxvEDF5Zp
+         xzhe4BK8IfifWBadWvz25GKKShj1k6hZsxS7q+T98BTIwsViVCSP8u6cUwX4JYpNWo3E
+         Vj3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zezlNocF3MTF6BR+07qgHXs9JkH6PuU5IAluxDhYuf0=;
+        b=Bl7/93QfemEDtR10FTJZERlhLdMWK7e+qfPBO0oBuwcCjK+KSD62B29E7lV1TGk3Lv
+         Wnosn7HBnpN0YtBCG0OJNX/zdpGpWzLG8mD33bdhqm/GRzrIURZujWbaIE5diE9hFJFF
+         0jbjvVHBFcfFDjhr1Qk7S7y4hdf4zHwCHXTg/SJ0nicRZ5Pg8ECGMuGalv00NfhjEiUL
+         F81ASKPpFvH1GfmqZatW1wDjl54TMrBEQtB4ZdPRyn8DLNqQLg0NOQI4gN4xEk5oZB/d
+         DPZMxHEUKROinX1A15cerq3tw4sMtBQrO0NGlmZKGzTzMX0Kp2VvBAdOC9zJk+ut7TYz
+         u4Qw==
+X-Gm-Message-State: APjAAAXTuusieXCjnDLAZVYGV7E63H/bPMCDmmbg7WRwV6Glg4Y9zl3A
+        glp+VNQbD/iamvpae0gbzB0JNDcu1UYGY+NcgChC7Q==
+X-Google-Smtp-Source: APXvYqy1Wk4FCFLjZuvmFsT8usAlkbYWe3LC2XmffZ9uj5OxcZ059EYoAXO1ngbUz2qX1LH6CpuYTtOdR4mGQzVV0Ko=
+X-Received: by 2002:a05:600c:352:: with SMTP id u18mr8316756wmd.141.1567048403406;
+ Wed, 28 Aug 2019 20:13:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+References: <20190829005156.26354-1-colin.king@canonical.com>
+In-Reply-To: <20190829005156.26354-1-colin.king@canonical.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Wed, 28 Aug 2019 23:13:11 -0400
+Message-ID: <CADnq5_MrZuX4AXTv=w+7U4=Nw_6ugzErHBxXY3hhvY4-3jxGvQ@mail.gmail.com>
+Subject: Re: [PATCH][drm-next] drm/amdgpu: fix spelling mistake "jumpimng" -> "jumping"
+To:     Colin King <colin.king@canonical.com>
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove including <linux/version.h> that don't need it.
+Applied.  Thanks!
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/staging/media/imx/imx-media-csc-scaler.c | 1 -
- 1 file changed, 1 deletion(-)
+Alex
 
-diff --git a/drivers/staging/media/imx/imx-media-csc-scaler.c b/drivers/staging/media/imx/imx-media-csc-scaler.c
-index de599af59ffc..2b635ebf62d6 100644
---- a/drivers/staging/media/imx/imx-media-csc-scaler.c
-+++ b/drivers/staging/media/imx/imx-media-csc-scaler.c
-@@ -8,7 +8,6 @@
- #include <linux/module.h>
- #include <linux/delay.h>
- #include <linux/fs.h>
--#include <linux/version.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
- #include <video/imx-ipu-v3.h>
-
-
-
-
-
+On Wed, Aug 28, 2019 at 8:52 PM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There is a spelling mistake in a DRM_DEBUG_DRIVER debug message.
+> Fix it.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
+> index 86110e6095cc..8a32b5c93778 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
+> @@ -257,7 +257,7 @@ static uint32_t __correct_eeprom_dest_address(uint32_t curr_address)
+>          * https://www.st.com/resource/en/datasheet/m24m02-dr.pdf sec. 5.1.2
+>          */
+>         if ((curr_address & EEPROM_ADDR_MSB_MASK) != (next_address & EEPROM_ADDR_MSB_MASK)) {
+> -               DRM_DEBUG_DRIVER("Reached end of EEPROM memory page, jumpimng to next: %lx",
+> +               DRM_DEBUG_DRIVER("Reached end of EEPROM memory page, jumping to next: %lx",
+>                                 (next_address & EEPROM_ADDR_MSB_MASK));
+>
+>                 return  (next_address & EEPROM_ADDR_MSB_MASK);
+> --
+> 2.20.1
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

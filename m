@@ -2,61 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F023A0FD7
-	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Aug 2019 05:13:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37134A101F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 29 Aug 2019 06:00:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727144AbfH2DN0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 28 Aug 2019 23:13:26 -0400
-Received: from mail-wm1-f44.google.com ([209.85.128.44]:53013 "EHLO
-        mail-wm1-f44.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726330AbfH2DN0 (ORCPT
+        id S1725823AbfH2EAK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 29 Aug 2019 00:00:10 -0400
+Received: from mail-io1-f53.google.com ([209.85.166.53]:37031 "EHLO
+        mail-io1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725730AbfH2EAJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 28 Aug 2019 23:13:26 -0400
-Received: by mail-wm1-f44.google.com with SMTP id t17so2082965wmi.2;
-        Wed, 28 Aug 2019 20:13:24 -0700 (PDT)
+        Thu, 29 Aug 2019 00:00:09 -0400
+Received: by mail-io1-f53.google.com with SMTP id q12so4116749iog.4;
+        Wed, 28 Aug 2019 21:00:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=zezlNocF3MTF6BR+07qgHXs9JkH6PuU5IAluxDhYuf0=;
-        b=gP8dYidy6sTxKhqbX6Hag7AsPbUqaqbdPyR8nBQ+dJK7hwcey8ONy8Lk/O9Fwn9VmO
-         NAnVvt+itRbHfo+G5AYGxhWLXvvzydIuxHFH6gH2xfSilIc4jg/78NjqzP5tV8OenADc
-         pcMxxt0oUxwwxeguxQBCbHvqnmoxwd0IHuM8v1lyn2YHoEaJADJwOSxw1K+N+7SuHJhR
-         IHMD5qf/Vq1NGRQ6M0F69iDpzFRo/B9RvT8edUJHiN4Jl/4pGovfJDy2zbGWxvEDF5Zp
-         xzhe4BK8IfifWBadWvz25GKKShj1k6hZsxS7q+T98BTIwsViVCSP8u6cUwX4JYpNWo3E
-         Vj3g==
+        bh=NWVOfHDaPa1JXjahrXr3gtA9w996ssiG4UTUIisw4iM=;
+        b=XSb6pIY/kPb5cGGMWENjAA1EtiWDclpcTZ85OE17tION/EyvWZoEs2hgBvSOP9Zknu
+         XTvJf+YfQjrKB8MxGCzom2HDIgAmbkLK7o2uTtQIjZOw1O8TiG080WXFA4U4i8Q2lI2s
+         nAIQ6wkwPQJGo+4D2JeEos/IKqel6DVy+To05kc5At+UmWm6AtnFs1Ycr0xF6+7O/I9i
+         sPedDi2fvM+Yo/C3QeLuKlvEBpOKNAcNe9R4Sml9Bb9Y1eFUFLYeQyeAsKSyDmCyMV2U
+         3uQ6RGst2vs4/IKmiVamTZ49T7xEsaMYAOdAucqmukmLWoJJLoD5dz6IVRwFzws+nFD6
+         ECcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=zezlNocF3MTF6BR+07qgHXs9JkH6PuU5IAluxDhYuf0=;
-        b=Bl7/93QfemEDtR10FTJZERlhLdMWK7e+qfPBO0oBuwcCjK+KSD62B29E7lV1TGk3Lv
-         Wnosn7HBnpN0YtBCG0OJNX/zdpGpWzLG8mD33bdhqm/GRzrIURZujWbaIE5diE9hFJFF
-         0jbjvVHBFcfFDjhr1Qk7S7y4hdf4zHwCHXTg/SJ0nicRZ5Pg8ECGMuGalv00NfhjEiUL
-         F81ASKPpFvH1GfmqZatW1wDjl54TMrBEQtB4ZdPRyn8DLNqQLg0NOQI4gN4xEk5oZB/d
-         DPZMxHEUKROinX1A15cerq3tw4sMtBQrO0NGlmZKGzTzMX0Kp2VvBAdOC9zJk+ut7TYz
-         u4Qw==
-X-Gm-Message-State: APjAAAXTuusieXCjnDLAZVYGV7E63H/bPMCDmmbg7WRwV6Glg4Y9zl3A
-        glp+VNQbD/iamvpae0gbzB0JNDcu1UYGY+NcgChC7Q==
-X-Google-Smtp-Source: APXvYqy1Wk4FCFLjZuvmFsT8usAlkbYWe3LC2XmffZ9uj5OxcZ059EYoAXO1ngbUz2qX1LH6CpuYTtOdR4mGQzVV0Ko=
-X-Received: by 2002:a05:600c:352:: with SMTP id u18mr8316756wmd.141.1567048403406;
- Wed, 28 Aug 2019 20:13:23 -0700 (PDT)
+        bh=NWVOfHDaPa1JXjahrXr3gtA9w996ssiG4UTUIisw4iM=;
+        b=GnBA0Qpb8o7XxJ2PP/qiPkeYC9RjRJuq7CS9Y1U+/Iw42yPK+g/PvfoCrTaDh2M8xS
+         pfTsyI2TN0pamz9yBnEQr9nECBY2Kjtf8vPna9n7vt/qBb9g4aYF4yC9zanfwOrnZ0Xp
+         bLIzIUkQY2GDKgZxwgwFxyC5ZQSCtDfdyMpEUXjC/KIwytpzV8vZvzQ1QxK+tNAh+A7l
+         YBdG4CXSV802CHsr6uDJIfnr9JbgI34fL6XSSPeJnm12N0iz7k1ZwGL/GXQotmd8JP0K
+         KomP8n0l2w74ulOi2tmDbXbIez0PpIKpv1K9ms4i2yaZpdxocW48vgNNGeq8OO6O4HG+
+         MK/g==
+X-Gm-Message-State: APjAAAWCwypQv1pMKZdcF3SrZQGx1FMY9Ccvg2ap+asod0yiqDSyMNIs
+        mp6r9XXF5knohf/t5gpmBzofN4dnqIRmXK66ytk=
+X-Google-Smtp-Source: APXvYqx4PCsxUhe81DE2v6/NTP2dSpI/V5FBpW5yhwLopIpzKy0MMytemfSlADC62e3LkF2ZrfAYFBfAZWLbhcKRdCg=
+X-Received: by 2002:a02:390c:: with SMTP id l12mr8164554jaa.76.1567051208512;
+ Wed, 28 Aug 2019 21:00:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190829005156.26354-1-colin.king@canonical.com>
-In-Reply-To: <20190829005156.26354-1-colin.king@canonical.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Wed, 28 Aug 2019 23:13:11 -0400
-Message-ID: <CADnq5_MrZuX4AXTv=w+7U4=Nw_6ugzErHBxXY3hhvY4-3jxGvQ@mail.gmail.com>
-Subject: Re: [PATCH][drm-next] drm/amdgpu: fix spelling mistake "jumpimng" -> "jumping"
-To:     Colin King <colin.king@canonical.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+References: <20190829000006.24187-1-colin.king@canonical.com>
+In-Reply-To: <20190829000006.24187-1-colin.king@canonical.com>
+From:   Steve French <smfrench@gmail.com>
+Date:   Wed, 28 Aug 2019 22:59:57 -0500
+Message-ID: <CAH2r5mtSSwS7_E2WkS3Lsk02BEf_UwZ4H9oCEFTSf94U=4Cm9Q@mail.gmail.com>
+Subject: Re: [PATCH][cifs-next] cifs: ensure variable rc is initialized at the
+ after_open label
+To:     Colin King <colin.king@canonical.com>,
+        ronnie sahlberg <ronniesahlberg@gmail.com>
+Cc:     Steve French <sfrench@samba.org>,
+        CIFS <linux-cifs@vger.kernel.org>,
+        samba-technical <samba-technical@lists.samba.org>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -64,39 +62,47 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Applied.  Thanks!
+Merged into cifs-2.6.git for-next
 
-Alex
+Ronnie,
+You ok with merging this as a distinct patch?
 
-On Wed, Aug 28, 2019 at 8:52 PM Colin King <colin.king@canonical.com> wrote:
+On Wed, Aug 28, 2019 at 7:02 PM Colin King <colin.king@canonical.com> wrote:
 >
 > From: Colin Ian King <colin.king@canonical.com>
 >
-> There is a spelling mistake in a DRM_DEBUG_DRIVER debug message.
-> Fix it.
+> A previous fix added a jump to after_open which now leaves variable
+> rc in a uninitialized state. A couple of the cases in the following
+> switch statement do not set variable rc, hence the error check on rc
+> at the end of the switch statement is reading a garbage value in rc
+> for those specific cases. Fix this by initializing rc to zero before
+> the switch statement.
 >
+> Fixes: 955a9c5b39379 ("cifs: create a helper to find a writeable handle by path name")
+> Addresses-Coverity: ("Uninitialized scalar variable")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  fs/cifs/smb2inode.c | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-> index 86110e6095cc..8a32b5c93778 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ras_eeprom.c
-> @@ -257,7 +257,7 @@ static uint32_t __correct_eeprom_dest_address(uint32_t curr_address)
->          * https://www.st.com/resource/en/datasheet/m24m02-dr.pdf sec. 5.1.2
->          */
->         if ((curr_address & EEPROM_ADDR_MSB_MASK) != (next_address & EEPROM_ADDR_MSB_MASK)) {
-> -               DRM_DEBUG_DRIVER("Reached end of EEPROM memory page, jumpimng to next: %lx",
-> +               DRM_DEBUG_DRIVER("Reached end of EEPROM memory page, jumping to next: %lx",
->                                 (next_address & EEPROM_ADDR_MSB_MASK));
+> diff --git a/fs/cifs/smb2inode.c b/fs/cifs/smb2inode.c
+> index 70342bcd89b4..939fc7b2234c 100644
+> --- a/fs/cifs/smb2inode.c
+> +++ b/fs/cifs/smb2inode.c
+> @@ -116,6 +116,7 @@ smb2_compound_op(const unsigned int xid, struct cifs_tcon *tcon,
+>         smb2_set_next_command(tcon, &rqst[num_rqst]);
+>   after_open:
+>         num_rqst++;
+> +       rc = 0;
 >
->                 return  (next_address & EEPROM_ADDR_MSB_MASK);
+>         /* Operation */
+>         switch (command) {
 > --
 > 2.20.1
 >
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+
+
+-- 
+Thanks,
+
+Steve

@@ -2,29 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97632A3D8C
-	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Aug 2019 20:15:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 202F1A3DE2
+	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Aug 2019 20:46:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727992AbfH3SP2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 30 Aug 2019 14:15:28 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:37009 "EHLO
+        id S1727994AbfH3Sqs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 30 Aug 2019 14:46:48 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:37592 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727935AbfH3SP2 (ORCPT
+        with ESMTP id S1727304AbfH3Sqs (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 30 Aug 2019 14:15:28 -0400
+        Fri, 30 Aug 2019 14:46:48 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1i3lQi-0001db-9R; Fri, 30 Aug 2019 18:15:24 +0000
+        id 1i3lv2-0003hq-O6; Fri, 30 Aug 2019 18:46:44 +0000
 From:   Colin King <colin.king@canonical.com>
 To:     Valdis Kletnieks <valdis.kletnieks@vt.edu>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: exfat: remove redundant goto
-Date:   Fri, 30 Aug 2019 19:15:23 +0100
-Message-Id: <20190830181523.13356-1-colin.king@canonical.com>
+Subject: [PATCH] staging: exfat: fix uninitialized variable ret
+Date:   Fri, 30 Aug 2019 19:46:44 +0100
+Message-Id: <20190830184644.15590-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,31 +36,30 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The goto after a return is never executed, so it is redundant and can
-be removed.
+Currently there are error return paths in ffsReadFile that
+exit via lable err_out that return and uninitialized error
+return in variable ret. Fix this by initializing ret to zero.
 
-Addresses-Coverity: ("Structurally dead code")
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: c48c9f7ff32b ("staging: exfat: add exfat filesystem code to staging")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/staging/exfat/exfat_super.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/staging/exfat/exfat_super.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/staging/exfat/exfat_super.c b/drivers/staging/exfat/exfat_super.c
-index 5b5c2ca8c9aa..5b3c4dfe0ecc 100644
+index 5b3c4dfe0ecc..6939aa4f25ee 100644
 --- a/drivers/staging/exfat/exfat_super.c
 +++ b/drivers/staging/exfat/exfat_super.c
-@@ -663,10 +663,8 @@ static int ffsLookupFile(struct inode *inode, char *path, struct file_id_t *fid)
- 	/* search the file name for directories */
- 	dentry = p_fs->fs_func->find_dir_entry(sb, &dir, &uni_name, num_entries,
- 					       &dos_name, TYPE_ALL);
--	if (dentry < -1) {
-+	if (dentry < -1)
- 		return FFS_NOTFOUND;
--		goto out;
--	}
- 
- 	fid->dir.dir = dir.dir;
- 	fid->dir.size = dir.size;
+@@ -771,7 +771,7 @@ static int ffsReadFile(struct inode *inode, struct file_id_t *fid, void *buffer,
+ {
+ 	s32 offset, sec_offset, clu_offset;
+ 	u32 clu;
+-	int ret;
++	int ret = 0;
+ 	sector_t LogSector;
+ 	u64 oneblkread, read_bytes;
+ 	struct buffer_head *tmp_bh = NULL;
 -- 
 2.20.1
 

@@ -2,27 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E5F9A3535
-	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Aug 2019 12:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAD47A3583
+	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Aug 2019 13:16:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727751AbfH3KtS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 30 Aug 2019 06:49:18 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:49749 "EHLO
+        id S1727603AbfH3LQ3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 30 Aug 2019 07:16:29 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50481 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726902AbfH3KtS (ORCPT
+        with ESMTP id S1726969AbfH3LQ3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 30 Aug 2019 06:49:18 -0400
+        Fri, 30 Aug 2019 07:16:29 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1i3eSv-0008Tr-6K; Fri, 30 Aug 2019 10:49:13 +0000
+        id 1i3etB-0003Ew-A2; Fri, 30 Aug 2019 11:16:21 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     David Howells <dhowells@redhat.com>, linux-afs@lists.infradead.org
+To:     Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        ocfs2-devel@oss.oracle.com
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] afs: use BIT_ULL for shifting to fix integer overflow
-Date:   Fri, 30 Aug 2019 11:49:12 +0100
-Message-Id: <20190830104912.1090-1-colin.king@canonical.com>
+Subject: [PATCH] ocfs2: remove deadcode on variable tmp_oh check
+Date:   Fri, 30 Aug 2019 12:16:21 +0100
+Message-Id: <20190830111621.8929-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -34,48 +36,30 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The expression 1 << nr_slots is evaluated with 32 bit integer arithmetic
-and can overflow before it is widened. Instead, use BIT_ULL to avoid
-overflow.
+At the end of cfs2_inode_lock_tracker tmp_oh is true because an
+earlier check on tmp_oh being false returns out of the function.
+Since tmp_oh is true, the function will always return 1 so remove
+the redundant check and return of 0.
 
-Addresses-Coverity: ("Unintentional integer overflow")
-Fixes: 63a4681ff39c ("afs: Locally edit directory data for mkdir/create/unlink/...")
+Addresses-Coverity: ("Logically dead code")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- fs/afs/dir_edit.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/ocfs2/dlmglue.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/afs/dir_edit.c b/fs/afs/dir_edit.c
-index d4fbe5f85f1b..f360119923aa 100644
---- a/fs/afs/dir_edit.c
-+++ b/fs/afs/dir_edit.c
-@@ -36,7 +36,7 @@ static int afs_find_contig_bits(union afs_xdr_dir_block *block, unsigned int nr_
- 	bitmap |= (u64)block->hdr.bitmap[7] << 7 * 8;
- 	bitmap >>= 1; /* The first entry is metadata */
- 	bit = 1;
--	mask = (1 << nr_slots) - 1;
-+	mask = BIT_ULL(nr_slots) - 1;
+diff --git a/fs/ocfs2/dlmglue.c b/fs/ocfs2/dlmglue.c
+index ad594fef2ab0..ff0cf851c9e6 100644
+--- a/fs/ocfs2/dlmglue.c
++++ b/fs/ocfs2/dlmglue.c
+@@ -2712,7 +2712,7 @@ int ocfs2_inode_lock_tracker(struct inode *inode,
+ 			return status;
+ 		}
+ 	}
+-	return tmp_oh ? 1 : 0;
++	return 1;
+ }
  
- 	do {
- 		if (sizeof(unsigned long) == 8)
-@@ -70,7 +70,7 @@ static void afs_set_contig_bits(union afs_xdr_dir_block *block,
- {
- 	u64 mask, before, after;
- 
--	mask = (1 << nr_slots) - 1;
-+	mask = BIT_ULL(nr_slots) - 1;
- 	mask <<= bit;
- 
- 	before = *(u64 *)block->hdr.bitmap;
-@@ -95,7 +95,7 @@ static void afs_clear_contig_bits(union afs_xdr_dir_block *block,
- {
- 	u64 mask, before, after;
- 
--	mask = (1 << nr_slots) - 1;
-+	mask = BIT_ULL(nr_slots) - 1;
- 	mask <<= bit;
- 
- 	before = *(u64 *)block->hdr.bitmap;
+ void ocfs2_inode_unlock_tracker(struct inode *inode,
 -- 
 2.20.1
 

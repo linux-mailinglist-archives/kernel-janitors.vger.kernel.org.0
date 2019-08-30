@@ -2,64 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 202F1A3DE2
-	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Aug 2019 20:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECBCEA3E71
+	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Aug 2019 21:32:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727994AbfH3Sqs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 30 Aug 2019 14:46:48 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:37592 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727304AbfH3Sqs (ORCPT
+        id S1728191AbfH3Tcf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 30 Aug 2019 15:32:35 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:40514 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728180AbfH3Tcf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 30 Aug 2019 14:46:48 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1i3lv2-0003hq-O6; Fri, 30 Aug 2019 18:46:44 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Valdis Kletnieks <valdis.kletnieks@vt.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: exfat: fix uninitialized variable ret
-Date:   Fri, 30 Aug 2019 19:46:44 +0100
-Message-Id: <20190830184644.15590-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Fri, 30 Aug 2019 15:32:35 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 79143154F93C5;
+        Fri, 30 Aug 2019 12:32:34 -0700 (PDT)
+Date:   Fri, 30 Aug 2019 12:32:31 -0700 (PDT)
+Message-Id: <20190830.123231.792067088434189707.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     inaky.perez-gonzalez@intel.com, linux-wimax@intel.com,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][V2] wimax/i2400m: remove debug containing bogus
+ calculation of index
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190830090711.15300-1-colin.king@canonical.com>
+References: <20190830090711.15300-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 30 Aug 2019 12:32:34 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Colin King <colin.king@canonical.com>
+Date: Fri, 30 Aug 2019 10:07:11 +0100
 
-Currently there are error return paths in ffsReadFile that
-exit via lable err_out that return and uninitialized error
-return in variable ret. Fix this by initializing ret to zero.
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The subtraction of the two pointers is automatically scaled by the
+> size of the size of the object the pointers point to, so the division
+> by sizeof(*i2400m->barker) is incorrect.  This has been broken since
+> day one of the driver and is only debug, so remove the debug completely.
+> 
+> Also move && in condition to clean up a checkpatch warning.
+> 
+> Addresses-Coverity: ("Extra sizeof expression")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+> 
+> V2: completely remove debug, clean up checkpatch warning, change subject line
 
-Addresses-Coverity: ("Uninitialized scalar variable")
-Fixes: c48c9f7ff32b ("staging: exfat: add exfat filesystem code to staging")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/staging/exfat/exfat_super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/staging/exfat/exfat_super.c b/drivers/staging/exfat/exfat_super.c
-index 5b3c4dfe0ecc..6939aa4f25ee 100644
---- a/drivers/staging/exfat/exfat_super.c
-+++ b/drivers/staging/exfat/exfat_super.c
-@@ -771,7 +771,7 @@ static int ffsReadFile(struct inode *inode, struct file_id_t *fid, void *buffer,
- {
- 	s32 offset, sec_offset, clu_offset;
- 	u32 clu;
--	int ret;
-+	int ret = 0;
- 	sector_t LogSector;
- 	u64 oneblkread, read_bytes;
- 	struct buffer_head *tmp_bh = NULL;
--- 
-2.20.1
-
+Applied to net-next, thanks Colin.

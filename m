@@ -2,67 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CC01AA323A
-	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Aug 2019 10:25:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50260A3369
+	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Aug 2019 11:09:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727242AbfH3IZ2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 30 Aug 2019 04:25:28 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:59702 "EHLO fornost.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726325AbfH3IZ1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 30 Aug 2019 04:25:27 -0400
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
-        by fornost.hmeau.com with smtp (Exim 4.89 #2 (Debian))
-        id 1i3cDe-0005jc-1a; Fri, 30 Aug 2019 18:25:19 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 30 Aug 2019 18:25:16 +1000
-Date:   Fri, 30 Aug 2019 18:25:16 +1000
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Mao Wenan <maowenan@huawei.com>
-Cc:     davem@davemloft.net, jonathan.cameron@huawei.com,
-        wangzhou1@hisilicon.com, liguozhu@hisilicon.com,
-        john.garry@huawei.com, linux-crypto@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2 -next] crypto: hisilicon: select CRYPTO_LIB_DES while
- compiling SEC driver
-Message-ID: <20190830082516.GJ8033@gondor.apana.org.au>
-References: <affd8de1-ae35-a1d0-534a-d9cdfac90de8@huawei.com>
- <20190828080740.43244-1-maowenan@huawei.com>
+        id S1727753AbfH3JJR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 30 Aug 2019 05:09:17 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:47291 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726653AbfH3JJQ (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 30 Aug 2019 05:09:16 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i3csC-0003NG-1k; Fri, 30 Aug 2019 09:07:12 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Inaky Perez-Gonzalez <inaky.perez-gonzalez@intel.com>,
+        linux-wimax@intel.com, "David S . Miller" <davem@davemloft.net>,
+        netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][V2] wimax/i2400m: remove debug containing bogus calculation of index
+Date:   Fri, 30 Aug 2019 10:07:11 +0100
+Message-Id: <20190830090711.15300-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190828080740.43244-1-maowenan@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Aug 28, 2019 at 04:07:40PM +0800, Mao Wenan wrote:
-> When CRYPTO_DEV_HISI_SEC=y, below compilation error is found after 
-> 'commit 894b68d8be4b ("crypto: hisilicon/des - switch to new verification routines")':
-> 
-> drivers/crypto/hisilicon/sec/sec_algs.o: In function `sec_alg_skcipher_setkey_des_cbc':
-> sec_algs.c:(.text+0x11f0): undefined reference to `des_expand_key'
-> drivers/crypto/hisilicon/sec/sec_algs.o: In function `sec_alg_skcipher_setkey_des_ecb':
-> sec_algs.c:(.text+0x1390): undefined reference to `des_expand_key'
-> make: *** [vmlinux] Error 1
-> 
-> This because DES library has been moved to lib/crypto in this commit 
-> '04007b0e6cbb ("crypto: des - split off DES library from generic DES cipher driver")'.
-> Fix this by selecting CRYPTO_LIB_DES in CRYPTO_DEV_HISI_SEC.
-> 
-> Fixes: 04007b0e6cbb ("crypto: des - split off DES library from generic DES cipher driver")
-> Fixes: 894b68d8be4b ("crypto: hisilicon/des - switch to new verification routines")
-> 
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  v2: remove fix tag 915e4e8413da ("crypto: hisilicon - SEC security accelerator driver") 
->  drivers/crypto/hisilicon/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
+From: Colin Ian King <colin.king@canonical.com>
 
-Patch applied.  Thanks.
+The subtraction of the two pointers is automatically scaled by the
+size of the size of the object the pointers point to, so the division
+by sizeof(*i2400m->barker) is incorrect.  This has been broken since
+day one of the driver and is only debug, so remove the debug completely.
+
+Also move && in condition to clean up a checkpatch warning.
+
+Addresses-Coverity: ("Extra sizeof expression")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+
+V2: completely remove debug, clean up checkpatch warning, change subject line
+
+---
+ drivers/net/wimax/i2400m/fw.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/net/wimax/i2400m/fw.c b/drivers/net/wimax/i2400m/fw.c
+index 489cba9b284d..6c9a41bff2e0 100644
+--- a/drivers/net/wimax/i2400m/fw.c
++++ b/drivers/net/wimax/i2400m/fw.c
+@@ -397,14 +397,9 @@ int i2400m_is_boot_barker(struct i2400m *i2400m,
+ 
+ 	/* Short circuit if we have already discovered the barker
+ 	 * associated with the device. */
+-	if (i2400m->barker
+-	    && !memcmp(buf, i2400m->barker, sizeof(i2400m->barker->data))) {
+-		unsigned index = (i2400m->barker - i2400m_barker_db)
+-			/ sizeof(*i2400m->barker);
+-		d_printf(2, dev, "boot barker cache-confirmed #%u/%08x\n",
+-			 index, le32_to_cpu(i2400m->barker->data[0]));
++	if (i2400m->barker &&
++	    !memcmp(buf, i2400m->barker, sizeof(i2400m->barker->data)))
+ 		return 0;
+-	}
+ 
+ 	for (i = 0; i < i2400m_barker_db_used; i++) {
+ 		barker = &i2400m_barker_db[i];
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.20.1
+

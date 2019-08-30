@@ -2,47 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF605A31F1
-	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Aug 2019 10:14:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC01AA323A
+	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Aug 2019 10:25:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727294AbfH3IOA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 30 Aug 2019 04:14:00 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:59576 "EHLO fornost.hmeau.com"
+        id S1727242AbfH3IZ2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 30 Aug 2019 04:25:28 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:59702 "EHLO fornost.hmeau.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727043AbfH3IN7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 30 Aug 2019 04:13:59 -0400
+        id S1726325AbfH3IZ1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 30 Aug 2019 04:25:27 -0400
 Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
         by fornost.hmeau.com with smtp (Exim 4.89 #2 (Debian))
-        id 1i3c2b-000477-Aa; Fri, 30 Aug 2019 18:13:54 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 30 Aug 2019 18:13:50 +1000
-Date:   Fri, 30 Aug 2019 18:13:50 +1000
+        id 1i3cDe-0005jc-1a; Fri, 30 Aug 2019 18:25:19 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 30 Aug 2019 18:25:16 +1000
+Date:   Fri, 30 Aug 2019 18:25:16 +1000
 From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     davem@davemloft.net, linux-crypto@vger.kernel.org,
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     davem@davemloft.net, jonathan.cameron@huawei.com,
+        wangzhou1@hisilicon.com, liguozhu@hisilicon.com,
+        john.garry@huawei.com, linux-crypto@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] crypto: picoxcell - Fix the name of the module in the
- description of CRYPTO_DEV_PICOXCELL
-Message-ID: <20190830081350.GA7573@gondor.apana.org.au>
-References: <20190819051833.6622-1-christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH v2 -next] crypto: hisilicon: select CRYPTO_LIB_DES while
+ compiling SEC driver
+Message-ID: <20190830082516.GJ8033@gondor.apana.org.au>
+References: <affd8de1-ae35-a1d0-534a-d9cdfac90de8@huawei.com>
+ <20190828080740.43244-1-maowenan@huawei.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190819051833.6622-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20190828080740.43244-1-maowenan@huawei.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Aug 19, 2019 at 07:18:33AM +0200, Christophe JAILLET wrote:
-> The help section says that the module will be called 'pipcoxcell_crypto'.
-> This is likely a typo.
-> Use 'picoxcell_crypto' instead
+On Wed, Aug 28, 2019 at 04:07:40PM +0800, Mao Wenan wrote:
+> When CRYPTO_DEV_HISI_SEC=y, below compilation error is found after 
+> 'commit 894b68d8be4b ("crypto: hisilicon/des - switch to new verification routines")':
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> drivers/crypto/hisilicon/sec/sec_algs.o: In function `sec_alg_skcipher_setkey_des_cbc':
+> sec_algs.c:(.text+0x11f0): undefined reference to `des_expand_key'
+> drivers/crypto/hisilicon/sec/sec_algs.o: In function `sec_alg_skcipher_setkey_des_ecb':
+> sec_algs.c:(.text+0x1390): undefined reference to `des_expand_key'
+> make: *** [vmlinux] Error 1
+> 
+> This because DES library has been moved to lib/crypto in this commit 
+> '04007b0e6cbb ("crypto: des - split off DES library from generic DES cipher driver")'.
+> Fix this by selecting CRYPTO_LIB_DES in CRYPTO_DEV_HISI_SEC.
+> 
+> Fixes: 04007b0e6cbb ("crypto: des - split off DES library from generic DES cipher driver")
+> Fixes: 894b68d8be4b ("crypto: hisilicon/des - switch to new verification routines")
+> 
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->  drivers/crypto/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  v2: remove fix tag 915e4e8413da ("crypto: hisilicon - SEC security accelerator driver") 
+>  drivers/crypto/hisilicon/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 
 Patch applied.  Thanks.
 -- 

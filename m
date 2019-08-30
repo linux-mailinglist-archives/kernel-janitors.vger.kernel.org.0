@@ -2,100 +2,50 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7842DA31E8
-	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Aug 2019 10:10:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF605A31F1
+	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Aug 2019 10:14:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726978AbfH3IKt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 30 Aug 2019 04:10:49 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:45846 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726486AbfH3IKt (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 30 Aug 2019 04:10:49 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1i3bzb-0004jm-CD; Fri, 30 Aug 2019 08:10:47 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: rts5208: remove redundant sd30_mode checks
-Date:   Fri, 30 Aug 2019 09:10:47 +0100
-Message-Id: <20190830081047.13630-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727294AbfH3IOA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 30 Aug 2019 04:14:00 -0400
+Received: from helcar.hmeau.com ([216.24.177.18]:59576 "EHLO fornost.hmeau.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727043AbfH3IN7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 30 Aug 2019 04:13:59 -0400
+Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
+        by fornost.hmeau.com with smtp (Exim 4.89 #2 (Debian))
+        id 1i3c2b-000477-Aa; Fri, 30 Aug 2019 18:13:54 +1000
+Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 30 Aug 2019 18:13:50 +1000
+Date:   Fri, 30 Aug 2019 18:13:50 +1000
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     davem@davemloft.net, linux-crypto@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] crypto: picoxcell - Fix the name of the module in the
+ description of CRYPTO_DEV_PICOXCELL
+Message-ID: <20190830081350.GA7573@gondor.apana.org.au>
+References: <20190819051833.6622-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190819051833.6622-1-christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Mon, Aug 19, 2019 at 07:18:33AM +0200, Christophe JAILLET wrote:
+> The help section says that the module will be called 'pipcoxcell_crypto'.
+> This is likely a typo.
+> Use 'picoxcell_crypto' instead
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  drivers/crypto/Kconfig | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-There are two hunks of code that check if sd30_mode is true however
-an earlier check in an outer code block on sd30_mode being false means
-that sd30_mode can never be true at these points so these checks are
-redundant.  Remove the dead code.
-
-Addresses-Coverity: ("Logically dead code")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/staging/rts5208/sd.c | 28 ++++++++++------------------
- 1 file changed, 10 insertions(+), 18 deletions(-)
-
-diff --git a/drivers/staging/rts5208/sd.c b/drivers/staging/rts5208/sd.c
-index a06045344301..25c31496757e 100644
---- a/drivers/staging/rts5208/sd.c
-+++ b/drivers/staging/rts5208/sd.c
-@@ -2573,17 +2573,13 @@ static int reset_sd(struct rtsx_chip *chip)
- 			retval = sd_sdr_tuning(chip);
- 
- 		if (retval != STATUS_SUCCESS) {
--			if (sd20_mode) {
-+			retval = sd_init_power(chip);
-+			if (retval != STATUS_SUCCESS)
- 				goto status_fail;
--			} else {
--				retval = sd_init_power(chip);
--				if (retval != STATUS_SUCCESS)
--					goto status_fail;
- 
--				try_sdio = false;
--				sd20_mode = true;
--				goto switch_fail;
--			}
-+			try_sdio = false;
-+			sd20_mode = true;
-+			goto switch_fail;
- 		}
- 
- 		sd_send_cmd_get_rsp(chip, SEND_STATUS, sd_card->sd_addr,
-@@ -2598,17 +2594,13 @@ static int reset_sd(struct rtsx_chip *chip)
- 		if (read_lba0) {
- 			retval = sd_read_lba0(chip);
- 			if (retval != STATUS_SUCCESS) {
--				if (sd20_mode) {
-+				retval = sd_init_power(chip);
-+				if (retval != STATUS_SUCCESS)
- 					goto status_fail;
--				} else {
--					retval = sd_init_power(chip);
--					if (retval != STATUS_SUCCESS)
--						goto status_fail;
- 
--					try_sdio = false;
--					sd20_mode = true;
--					goto switch_fail;
--				}
-+				try_sdio = false;
-+				sd20_mode = true;
-+				goto switch_fail;
- 			}
- 		}
- 	}
+Patch applied.  Thanks.
 -- 
-2.20.1
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

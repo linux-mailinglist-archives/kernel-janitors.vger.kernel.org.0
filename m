@@ -2,29 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E556EA3D3C
-	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Aug 2019 19:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97632A3D8C
+	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Aug 2019 20:15:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727991AbfH3Ru4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 30 Aug 2019 13:50:56 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:36603 "EHLO
+        id S1727992AbfH3SP2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 30 Aug 2019 14:15:28 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:37009 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727434AbfH3Ruz (ORCPT
+        with ESMTP id S1727935AbfH3SP2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 30 Aug 2019 13:50:55 -0400
+        Fri, 30 Aug 2019 14:15:28 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1i3l2w-0008Qk-Mu; Fri, 30 Aug 2019 17:50:50 +0000
+        id 1i3lQi-0001db-9R; Fri, 30 Aug 2019 18:15:24 +0000
 From:   Colin King <colin.king@canonical.com>
 To:     Valdis Kletnieks <valdis.kletnieks@vt.edu>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: exfat: check for null return from call to FAT_getblk
-Date:   Fri, 30 Aug 2019 18:50:50 +0100
-Message-Id: <20190830175050.12706-1-colin.king@canonical.com>
+Subject: [PATCH] staging: exfat: remove redundant goto
+Date:   Fri, 30 Aug 2019 19:15:23 +0100
+Message-Id: <20190830181523.13356-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,30 +36,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-A call to FAT_getblk is missing a null return check which can
-lead to a null pointer dereference.  Fix this by adding a null
-check to match all the other FAT_getblk return sanity checks.
+The goto after a return is never executed, so it is redundant and can
+be removed.
 
-Addresses-Coverity: ("Dereference null return")
-Fixes: c48c9f7ff32b ("staging: exfat: add exfat filesystem code to staging")
+Addresses-Coverity: ("Structurally dead code")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/staging/exfat/exfat_cache.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/staging/exfat/exfat_super.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/staging/exfat/exfat_cache.c b/drivers/staging/exfat/exfat_cache.c
-index f05d692c2b1e..1565ce65d39f 100644
---- a/drivers/staging/exfat/exfat_cache.c
-+++ b/drivers/staging/exfat/exfat_cache.c
-@@ -369,6 +369,8 @@ static s32 __FAT_write(struct super_block *sb, u32 loc, u32 content)
- 				FAT_modify(sb, sec);
+diff --git a/drivers/staging/exfat/exfat_super.c b/drivers/staging/exfat/exfat_super.c
+index 5b5c2ca8c9aa..5b3c4dfe0ecc 100644
+--- a/drivers/staging/exfat/exfat_super.c
++++ b/drivers/staging/exfat/exfat_super.c
+@@ -663,10 +663,8 @@ static int ffsLookupFile(struct inode *inode, char *path, struct file_id_t *fid)
+ 	/* search the file name for directories */
+ 	dentry = p_fs->fs_func->find_dir_entry(sb, &dir, &uni_name, num_entries,
+ 					       &dos_name, TYPE_ALL);
+-	if (dentry < -1) {
++	if (dentry < -1)
+ 		return FFS_NOTFOUND;
+-		goto out;
+-	}
  
- 				fat_sector = FAT_getblk(sb, ++sec);
-+				if (!fat_sector)
-+					return -1;
- 				fat_sector[0] = (u8)((fat_sector[0] & 0xF0) |
- 						     (content >> 8));
- 			} else {
+ 	fid->dir.dir = dir.dir;
+ 	fid->dir.size = dir.size;
 -- 
 2.20.1
 

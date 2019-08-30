@@ -2,59 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ECBCEA3E71
-	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Aug 2019 21:32:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81236A3EEB
+	for <lists+kernel-janitors@lfdr.de>; Fri, 30 Aug 2019 22:23:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728191AbfH3Tcf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 30 Aug 2019 15:32:35 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:40514 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728180AbfH3Tcf (ORCPT
+        id S1728216AbfH3UXh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 30 Aug 2019 16:23:37 -0400
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:22321 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728042AbfH3UXg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 30 Aug 2019 15:32:35 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 79143154F93C5;
-        Fri, 30 Aug 2019 12:32:34 -0700 (PDT)
-Date:   Fri, 30 Aug 2019 12:32:31 -0700 (PDT)
-Message-Id: <20190830.123231.792067088434189707.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     inaky.perez-gonzalez@intel.com, linux-wimax@intel.com,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][V2] wimax/i2400m: remove debug containing bogus
- calculation of index
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190830090711.15300-1-colin.king@canonical.com>
-References: <20190830090711.15300-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 30 Aug 2019 12:32:34 -0700 (PDT)
+        Fri, 30 Aug 2019 16:23:36 -0400
+Received: from localhost.localdomain ([90.126.97.183])
+        by mwinf5d57 with ME
+        id vYPF200053xPcdm03YPRdx; Fri, 30 Aug 2019 22:23:34 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 30 Aug 2019 22:23:34 +0200
+X-ME-IP: 90.126.97.183
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     yangbo.lu@nxp.com, claudiu.manoil@nxp.com, davem@davemloft.net
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] enetc: Add missing call to 'pci_free_irq_vectors()' in probe and remove functions
+Date:   Fri, 30 Aug 2019 22:23:12 +0200
+Message-Id: <20190830202312.21287-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Fri, 30 Aug 2019 10:07:11 +0100
+Call to 'pci_free_irq_vectors()' are missing both in the error handling
+path of the probe function, and in the remove function.
+Add them.
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The subtraction of the two pointers is automatically scaled by the
-> size of the size of the object the pointers point to, so the division
-> by sizeof(*i2400m->barker) is incorrect.  This has been broken since
-> day one of the driver and is only debug, so remove the debug completely.
-> 
-> Also move && in condition to clean up a checkpatch warning.
-> 
-> Addresses-Coverity: ("Extra sizeof expression")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
-> 
-> V2: completely remove debug, clean up checkpatch warning, change subject line
+Fixes: 19971f5ea0ab ("enetc: add PTP clock driver")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/net/ethernet/freescale/enetc/enetc_ptp.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Applied to net-next, thanks Colin.
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ptp.c b/drivers/net/ethernet/freescale/enetc/enetc_ptp.c
+index 2fd2586e42bf..bc594892507a 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_ptp.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_ptp.c
+@@ -82,7 +82,7 @@ static int enetc_ptp_probe(struct pci_dev *pdev,
+ 	n = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_MSIX);
+ 	if (n != 1) {
+ 		err = -EPERM;
+-		goto err_irq;
++		goto err_irq_vectors;
+ 	}
+ 
+ 	ptp_qoriq->irq = pci_irq_vector(pdev, 0);
+@@ -107,6 +107,8 @@ static int enetc_ptp_probe(struct pci_dev *pdev,
+ err_no_clock:
+ 	free_irq(ptp_qoriq->irq, ptp_qoriq);
+ err_irq:
++	pci_free_irq_vectors(pdev);
++err_irq_vectors:
+ 	iounmap(base);
+ err_ioremap:
+ 	kfree(ptp_qoriq);
+@@ -125,6 +127,7 @@ static void enetc_ptp_remove(struct pci_dev *pdev)
+ 
+ 	enetc_phc_index = -1;
+ 	ptp_qoriq_free(ptp_qoriq);
++	pci_free_irq_vectors(pdev);
+ 	kfree(ptp_qoriq);
+ 
+ 	pci_release_mem_regions(pdev);
+-- 
+2.20.1
+

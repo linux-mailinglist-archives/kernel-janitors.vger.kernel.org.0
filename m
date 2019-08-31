@@ -2,65 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B25DBA42D3
-	for <lists+kernel-janitors@lfdr.de>; Sat, 31 Aug 2019 08:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C8E9A42F4
+	for <lists+kernel-janitors@lfdr.de>; Sat, 31 Aug 2019 08:58:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726516AbfHaGnF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 31 Aug 2019 02:43:05 -0400
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:32044 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725899AbfHaGnF (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 31 Aug 2019 02:43:05 -0400
-Received: from localhost.localdomain ([90.126.97.183])
-        by mwinf5d55 with ME
-        id vij1200023xPcdm03ij1Hg; Sat, 31 Aug 2019 08:43:02 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 31 Aug 2019 08:43:02 +0200
-X-ME-IP: 90.126.97.183
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     ek5.chimenti@gmail.com, mchehab@kernel.org
-Cc:     linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] media: seco-cec: Add a missing 'release_region()' in an error handling path
-Date:   Sat, 31 Aug 2019 08:42:58 +0200
-Message-Id: <20190831064258.916-1-christophe.jaillet@wanadoo.fr>
+        id S1726135AbfHaG6h (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 31 Aug 2019 02:58:37 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:50750 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725903AbfHaG6h (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 31 Aug 2019 02:58:37 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 43B8B21F62B63874339A;
+        Sat, 31 Aug 2019 14:58:35 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.439.0; Sat, 31 Aug 2019 14:58:28 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Bjorn Helgaas <bhelgaas@google.com>,
+        Logan Gunthorpe <logang@deltatee.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-pci@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] PCI: Use GFP_ATOMIC under spin lock
+Date:   Sat, 31 Aug 2019 07:01:47 +0000
+Message-ID: <20190831070147.25607-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-At the beginning of the probe function, we have a call to
-'request_muxed_region(BRA_SMB_BASE_ADDR, 7, "CEC00001")()'
+A spin lock is taken here so we should use GFP_ATOMIC.
 
-A corresponding 'release_region()' is performed in the remove function but
-is lacking in the error handling path.
-
-Add it.
-
-Fixes: b03c2fb97adc ("media: add SECO cec driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Fixes: 41b5ef225daa ("PCI: Clean up resource_alignment parameter to not require static buffer")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/media/platform/seco-cec/seco-cec.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pci/pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/seco-cec/seco-cec.c b/drivers/media/platform/seco-cec/seco-cec.c
-index 9cd60fe1867c..a86b6e8f9196 100644
---- a/drivers/media/platform/seco-cec/seco-cec.c
-+++ b/drivers/media/platform/seco-cec/seco-cec.c
-@@ -675,6 +675,7 @@ static int secocec_probe(struct platform_device *pdev)
- err_delete_adapter:
- 	cec_delete_adapter(secocec->cec_adap);
- err:
-+	release_region(BRA_SMB_BASE_ADDR, 7);
- 	dev_err(dev, "%s device probe failed\n", dev_name(dev));
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 484e35349565..0b5fc6736f3f 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -6148,7 +6148,7 @@ static ssize_t resource_alignment_store(struct bus_type *bus,
+ 	spin_lock(&resource_alignment_lock);
  
- 	return ret;
--- 
-2.20.1
+ 	kfree(resource_alignment_param);
+-	resource_alignment_param = kstrndup(buf, count, GFP_KERNEL);
++	resource_alignment_param = kstrndup(buf, count, GFP_ATOMIC);
+ 
+ 	spin_unlock(&resource_alignment_lock);
+
+
 

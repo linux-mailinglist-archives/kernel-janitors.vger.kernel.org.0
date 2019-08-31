@@ -2,31 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DCC06A4314
-	for <lists+kernel-janitors@lfdr.de>; Sat, 31 Aug 2019 09:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1077AA431E
+	for <lists+kernel-janitors@lfdr.de>; Sat, 31 Aug 2019 09:39:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726402AbfHaH37 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 31 Aug 2019 03:29:59 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50224 "EHLO
+        id S1726102AbfHaHjK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 31 Aug 2019 03:39:10 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50284 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725903AbfHaH37 (ORCPT
+        with ESMTP id S1725899AbfHaHjK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 31 Aug 2019 03:29:59 -0400
+        Sat, 31 Aug 2019 03:39:10 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1i3xpW-0000PW-R9; Sat, 31 Aug 2019 07:29:50 +0000
+        id 1i3xyR-0000sR-QR; Sat, 31 Aug 2019 07:39:03 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Huazhong Tan <tanhuazhong@huawei.com>,
-        Zhongzhu Liu <liuzhongzhu@huawei.com>, netdev@vger.kernel.org
+To:     Don Brace <don.brace@microsemi.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        esc.storagedev@microsemi.com, linux-scsi@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] net: hns3: remove redundant assignment to pointer reg_info
-Date:   Sat, 31 Aug 2019 08:29:49 +0100
-Message-Id: <20190831072949.7505-1-colin.king@canonical.com>
+Subject: [PATCH][smartpqi-next] scsi: smartpqi: clean up indentation of a statement
+Date:   Sat, 31 Aug 2019 08:39:03 +0100
+Message-Id: <20190831073903.7834-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -38,29 +37,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Pointer reg_info is being initialized with a value that is never read and
-is being re-assigned a little later on. The assignment is redundant
-and hence can be removed.
+There is a statement that is indented one level too deeply, remove
+the tab, re-join broken line and remove some empty lines.
 
-Addresses-Coverity: ("Unused value")
+Addresses-Coverity: ("Indentation does not match nesting")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/smartpqi/smartpqi_init.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-index 1debe37fe735..1c6b501fb7ca 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-@@ -279,7 +279,7 @@ static void hclge_dbg_dump_dcb(struct hclge_dev *hdev, const char *cmd_buf)
- 
- static void hclge_dbg_dump_reg_cmd(struct hclge_dev *hdev, const char *cmd_buf)
- {
--	struct hclge_dbg_reg_type_info *reg_info = &hclge_dbg_reg_info[0];
-+	struct hclge_dbg_reg_type_info *reg_info;
- 	bool has_dump = false;
- 	int i;
- 
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index ea5409bebf57..652d48224942 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -2175,10 +2175,7 @@ static int pqi_update_scsi_devices(struct pqi_ctrl_info *ctrl_info)
+ 					device->aio_handle =
+ 						phys_lun_ext_entry->aio_handle;
+ 			}
+-
+-				pqi_get_physical_disk_info(ctrl_info,
+-					device, id_phys);
+-
++			pqi_get_physical_disk_info(ctrl_info, device, id_phys);
+ 		} else {
+ 			memcpy(device->volume_id, log_lun_ext_entry->volume_id,
+ 				sizeof(device->volume_id));
 -- 
 2.20.1
 

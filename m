@@ -2,84 +2,116 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CECD5A43DC
-	for <lists+kernel-janitors@lfdr.de>; Sat, 31 Aug 2019 12:00:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C329A4409
+	for <lists+kernel-janitors@lfdr.de>; Sat, 31 Aug 2019 12:30:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727177AbfHaKAg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 31 Aug 2019 06:00:36 -0400
-Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:58863 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726613AbfHaKAg (ORCPT
+        id S1727342AbfHaKa2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 31 Aug 2019 06:30:28 -0400
+Received: from outbound.smtp.vt.edu ([198.82.183.121]:43168 "EHLO
+        omr1.cc.vt.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726296AbfHaKa1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 31 Aug 2019 06:00:36 -0400
-Received: from localhost.localdomain ([90.126.97.183])
-        by mwinf5d13 with ME
-        id vm0V2000c3xPcdm03m0WGA; Sat, 31 Aug 2019 12:00:33 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 31 Aug 2019 12:00:33 +0200
-X-ME-IP: 90.126.97.183
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     b.zolnierkie@samsung.com, lkundrak@v3.sk, yuehaibing@huawei.com
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] pxa168fb: Fix the function used to release some memory in an error handling path
-Date:   Sat, 31 Aug 2019 12:00:24 +0200
-Message-Id: <20190831100024.3248-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Sat, 31 Aug 2019 06:30:27 -0400
+Received: from mr5.cc.vt.edu (mr5.cc.vt.edu [IPv6:2607:b400:92:8400:0:72:232:758b])
+        by omr1.cc.vt.edu (8.14.4/8.14.4) with ESMTP id x7VAUQVQ004503
+        for <kernel-janitors@vger.kernel.org>; Sat, 31 Aug 2019 06:30:26 -0400
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com [209.85.222.198])
+        by mr5.cc.vt.edu (8.14.7/8.14.7) with ESMTP id x7VAULqT030784
+        for <kernel-janitors@vger.kernel.org>; Sat, 31 Aug 2019 06:30:26 -0400
+Received: by mail-qk1-f198.google.com with SMTP id f14so10056104qkm.15
+        for <kernel-janitors@vger.kernel.org>; Sat, 31 Aug 2019 03:30:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:from:to:cc:subject:in-reply-to:references
+         :mime-version:content-transfer-encoding:date:message-id;
+        bh=yS6lJBR0z5pXlUbR3vjtDfvuZ/ch4JHNsJdpqfM7yNY=;
+        b=LpfQ6dshjSY/InRljdvvegKOGZ6KJB2NLidRpjD9cN/p8U7V42qjljPqBgqGrH9iQW
+         VRAP7kePnGaO6LouKuc/IoXmhPZhM0gJhvWBX/WKd//FkpcMlNbXuyiqGmPdq1ig9IJ+
+         bU3mxuyKp4OcLlyp9E17m+f8W3RZaV6x+iUDtMXIBFqa9Xcx29zH3KY6ZgDHish5DHHs
+         /M0qPOP6y+5t0PzHnhpZCSor1vsZIKTg4B3mWZWgJp1l0NGKXJT1tqoWAHX/FWpyZeW2
+         u+3y+b8hHr6WPBD9hoz79xAlucH5eD/Bug4r7jwsGKImUGvgWO88JYUcR/OCa+zJP2kX
+         cD0A==
+X-Gm-Message-State: APjAAAVPiDCsPQH0848U4xZXfztzgbvTp/m3CiHZJXHVde7p64hW7vT5
+        L9vDDZn+lhGQRpmyh1zy9QYudCgp5wOPFuZMijB6iCMS7BrS1R+6lGUQ1Z/Em6ab46erXq9ALLq
+        edZ0V6/lSp/rX9kp2SqwauparBEgUYcwQUu0yzLE=
+X-Received: by 2002:a05:620a:1125:: with SMTP id p5mr4061531qkk.210.1567247421049;
+        Sat, 31 Aug 2019 03:30:21 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqxuInrftSS9yb0sn0s1xQsaIUrlAnhCycOjV4outISe323Mo9dV6f7RRjcoGpIH/0dZSLvqtw==
+X-Received: by 2002:a05:620a:1125:: with SMTP id p5mr4061511qkk.210.1567247420798;
+        Sat, 31 Aug 2019 03:30:20 -0700 (PDT)
+Received: from turing-police ([2601:5c0:c001:4340::ba0])
+        by smtp.gmail.com with ESMTPSA id s17sm1979613qkm.54.2019.08.31.03.30.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Aug 2019 03:30:19 -0700 (PDT)
+From:   "Valdis Kl=?utf-8?Q?=c4=93?=tnieks" <valdis.kletnieks@vt.edu>
+X-Google-Original-From: "Valdis Kl=?utf-8?Q?=c4=93?=tnieks" <Valdis.Kletnieks@vt.edu>
+X-Mailer: exmh version 2.9.0 11/07/2018 with nmh-1.7+dev
+To:     Colin King <colin.king@canonical.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: exfat: remove redundant goto
+In-Reply-To: <20190830181523.13356-1-colin.king@canonical.com>
+References: <20190830181523.13356-1-colin.king@canonical.com>
+Mime-Version: 1.0
+Content-Type: multipart/signed; boundary="==_Exmh_1567247418_4251P";
+         micalg=pgp-sha1; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 7bit
+Date:   Sat, 31 Aug 2019 06:30:18 -0400
+Message-ID: <295459.1567247418@turing-police>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In the probe function, some resources are allocated using 'dma_alloc_wc()',
-they should be released with 'dma_free_wc()', not 'dma_free_coherent()'.
+--==_Exmh_1567247418_4251P
+Content-Type: text/plain; charset=us-ascii
 
-We already use 'dma_free_wc()' in the remove function, but not in the
-error handling path of the probe function.
+On Fri, 30 Aug 2019 19:15:23 +0100, Colin King said:
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The goto after a return is never executed, so it is redundant and can
+> be removed.
+>
+> Addresses-Coverity: ("Structurally dead code")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Also, remove a useless 'PAGE_ALIGN()'. 'info->fix.smem_len' is already
-PAGE_ALIGNed.
+Good catch....
 
-Fixes: 638772c7553f ("fb: add support of LCD display controller on pxa168/910 (base layer)")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-The change about PAGE_ALIGN should probably be part of a separate commit.
-However, git history for this driver is really quiet. If you think it
-REALLY deserves a separate patch, either split it by yourself or axe this
-part of the patch. I won't bother resubmitting for this lonely cleanup.
-Hoping for your understanding.
----
- drivers/video/fbdev/pxa168fb.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> -	if (dentry < -1) {
+> +	if (dentry < -1)
+>  		return FFS_NOTFOUND;
+> -		goto out;
+> -	}
 
-diff --git a/drivers/video/fbdev/pxa168fb.c b/drivers/video/fbdev/pxa168fb.c
-index 1410f476e135..1fc50fc0694b 100644
---- a/drivers/video/fbdev/pxa168fb.c
-+++ b/drivers/video/fbdev/pxa168fb.c
-@@ -766,8 +766,8 @@ static int pxa168fb_probe(struct platform_device *pdev)
- failed_free_clk:
- 	clk_disable_unprepare(fbi->clk);
- failed_free_fbmem:
--	dma_free_coherent(fbi->dev, info->fix.smem_len,
--			info->screen_base, fbi->fb_start_dma);
-+	dma_free_wc(fbi->dev, info->fix.smem_len,
-+		    info->screen_base, fbi->fb_start_dma);
- failed_free_info:
- 	kfree(info);
- 
-@@ -801,7 +801,7 @@ static int pxa168fb_remove(struct platform_device *pdev)
- 
- 	irq = platform_get_irq(pdev, 0);
- 
--	dma_free_wc(fbi->dev, PAGE_ALIGN(info->fix.smem_len),
-+	dma_free_wc(fbi->dev, info->fix.smem_len,
- 		    info->screen_base, info->fix.smem_start);
- 
- 	clk_disable_unprepare(fbi->clk);
--- 
-2.20.1
+But the wrong fix. The code *used* to have returns like this all over the
+place, but that meant it returns with a lock held - whoops.  The *other* 287 or
+so places I changed to 'ret = FFS_yaddayadda',  followed by a 'goto out' but I
+apparently missed one.
 
+And thanks a bunch for feeding it to Coverity :)
+
+
+
+--==_Exmh_1567247418_4251P
+Content-Type: application/pgp-signature
+
+-----BEGIN PGP SIGNATURE-----
+Comment: Exmh version 2.9.0 11/07/2018
+
+iQIVAwUBXWpMOQdmEQWDXROgAQIm0w//aPU0Rv6gMxB2mP0p2L7LaEtmwIdoEwD9
+ntgSn8am4fv/Zi99Y7BOBzCw5/KAyV8qo0V5LzIt4seIgXCa+I/gd12ngxmfRt1B
+0HAjQQQZl5TX5l2gnAzTIlUasA6mnxkb27/9x+qSUZRwoCRSliQC4wsaNzHbDO0y
+iSNdDeiRz9hqSHtim2p7OJG2DSMTzrahN5BYD58a78/ocgOGjokb4v1nSHkU2zIS
++3C1AhCU9K6o9RedPZ3aoLELlWfwXa6EWgtiMsNC28ay/b0LkJBiA8XelQkdlfmE
+mXq+g51uNim/ZT5m2YZWx6znD/SjGbwBgmftA/oawZuw4REpvAHVihULK5SGVwNn
+ClPsmzGIzLvlDeAE3NKnyMAZZ5/Ip49aLxjViJMAPKFhTOHpI8mKJFYjKja8DF/c
+Bu16fZqvbm7Ux50iljUwc94NEVw1QDefd8PkTc3UgwInv54xpUvb5pckweHWe8bj
+FANfoJKJWmYy2aDIHyww9Yj5obKJLazQTISnUZrpgP8b2HlvFolaLC/669sLd36v
+Rdvz/nNh5bUL5vA8nojDQ+mSYMEy5zi38hRQdGnM45IW1K+GOquDRRTl3w82DNRF
+TfuiZym2//hGZFaPD/tZuGLwmWcxN+5gvn6U5IPwaBHnDwYf4GgHmqh0G0PaOg5W
+v4SY1xOsplg=
+=O42f
+-----END PGP SIGNATURE-----
+
+--==_Exmh_1567247418_4251P--

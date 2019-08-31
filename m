@@ -2,56 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4110EA433D
-	for <lists+kernel-janitors@lfdr.de>; Sat, 31 Aug 2019 10:19:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CECD5A43DC
+	for <lists+kernel-janitors@lfdr.de>; Sat, 31 Aug 2019 12:00:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726287AbfHaITD convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 31 Aug 2019 04:19:03 -0400
-Received: from mx2.suse.de ([195.135.220.15]:51642 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726116AbfHaITD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 31 Aug 2019 04:19:03 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 81E3EAEF8;
-        Sat, 31 Aug 2019 08:19:01 +0000 (UTC)
-Date:   Sat, 31 Aug 2019 10:19:00 +0200
-From:   Thomas Bogendoerfer <tbogendoerfer@suse.de>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     davem@davemloft.net, yuehaibing@huawei.com, tglx@linutronix.de,
-        gregkh@linuxfoundation.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] net: seeq: Fix the function used to release some memory
- in an error handling path
-Message-Id: <20190831101900.c3f8881c1bbebf870eed9c68@suse.de>
-In-Reply-To: <20190831071751.1479-1-christophe.jaillet@wanadoo.fr>
-References: <20190831071751.1479-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-suse-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
+        id S1727177AbfHaKAg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 31 Aug 2019 06:00:36 -0400
+Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:58863 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726613AbfHaKAg (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 31 Aug 2019 06:00:36 -0400
+Received: from localhost.localdomain ([90.126.97.183])
+        by mwinf5d13 with ME
+        id vm0V2000c3xPcdm03m0WGA; Sat, 31 Aug 2019 12:00:33 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 31 Aug 2019 12:00:33 +0200
+X-ME-IP: 90.126.97.183
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     b.zolnierkie@samsung.com, lkundrak@v3.sk, yuehaibing@huawei.com
+Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] pxa168fb: Fix the function used to release some memory in an error handling path
+Date:   Sat, 31 Aug 2019 12:00:24 +0200
+Message-Id: <20190831100024.3248-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 31 Aug 2019 09:17:51 +0200
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+In the probe function, some resources are allocated using 'dma_alloc_wc()',
+they should be released with 'dma_free_wc()', not 'dma_free_coherent()'.
 
-> In commit 99cd149efe82 ("sgiseeq: replace use of dma_cache_wback_inv"),
-> a call to 'get_zeroed_page()' has been turned into a call to
-> 'dma_alloc_coherent()'. Only the remove function has been updated to turn
-> the corresponding 'free_page()' into 'dma_free_attrs()'.
-> The error hndling path of the probe function has not been updated.
+We already use 'dma_free_wc()' in the remove function, but not in the
+error handling path of the probe function.
 
-Looks good.
+Also, remove a useless 'PAGE_ALIGN()'. 'info->fix.smem_len' is already
+PAGE_ALIGNed.
 
-Reviewed-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Fixes: 638772c7553f ("fb: add support of LCD display controller on pxa168/910 (base layer)")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+The change about PAGE_ALIGN should probably be part of a separate commit.
+However, git history for this driver is really quiet. If you think it
+REALLY deserves a separate patch, either split it by yourself or axe this
+part of the patch. I won't bother resubmitting for this lonely cleanup.
+Hoping for your understanding.
+---
+ drivers/video/fbdev/pxa168fb.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Thomas.
-
+diff --git a/drivers/video/fbdev/pxa168fb.c b/drivers/video/fbdev/pxa168fb.c
+index 1410f476e135..1fc50fc0694b 100644
+--- a/drivers/video/fbdev/pxa168fb.c
++++ b/drivers/video/fbdev/pxa168fb.c
+@@ -766,8 +766,8 @@ static int pxa168fb_probe(struct platform_device *pdev)
+ failed_free_clk:
+ 	clk_disable_unprepare(fbi->clk);
+ failed_free_fbmem:
+-	dma_free_coherent(fbi->dev, info->fix.smem_len,
+-			info->screen_base, fbi->fb_start_dma);
++	dma_free_wc(fbi->dev, info->fix.smem_len,
++		    info->screen_base, fbi->fb_start_dma);
+ failed_free_info:
+ 	kfree(info);
+ 
+@@ -801,7 +801,7 @@ static int pxa168fb_remove(struct platform_device *pdev)
+ 
+ 	irq = platform_get_irq(pdev, 0);
+ 
+-	dma_free_wc(fbi->dev, PAGE_ALIGN(info->fix.smem_len),
++	dma_free_wc(fbi->dev, info->fix.smem_len,
+ 		    info->screen_base, info->fix.smem_start);
+ 
+ 	clk_disable_unprepare(fbi->clk);
 -- 
-SUSE Software Solutions Germany GmbH
-HRB 247165 (AG München)
-Geschäftsführer: Felix Imendörffer
+2.20.1
+

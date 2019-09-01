@@ -2,103 +2,50 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E6C5A45FC
-	for <lists+kernel-janitors@lfdr.de>; Sat, 31 Aug 2019 21:37:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84AA7A47F5
+	for <lists+kernel-janitors@lfdr.de>; Sun,  1 Sep 2019 08:53:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728497AbfHaThN convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 31 Aug 2019 15:37:13 -0400
-Received: from mga01.intel.com ([192.55.52.88]:47493 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728481AbfHaThN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 31 Aug 2019 15:37:13 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Aug 2019 12:37:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,451,1559545200"; 
-   d="scan'208";a="193677253"
-Received: from fmsmsx107.amr.corp.intel.com ([10.18.124.205])
-  by orsmga002.jf.intel.com with ESMTP; 31 Aug 2019 12:37:11 -0700
-Received: from FMSMSX110.amr.corp.intel.com (10.18.116.10) by
- fmsmsx107.amr.corp.intel.com (10.18.124.205) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Sat, 31 Aug 2019 12:37:11 -0700
-Received: from hasmsx114.ger.corp.intel.com (10.184.198.65) by
- fmsmsx110.amr.corp.intel.com (10.18.116.10) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Sat, 31 Aug 2019 12:37:11 -0700
-Received: from hasmsx108.ger.corp.intel.com ([169.254.9.203]) by
- HASMSX114.ger.corp.intel.com ([169.254.14.15]) with mapi id 14.03.0439.000;
- Sat, 31 Aug 2019 22:37:08 +0300
-From:   "Winkler, Tomas" <tomas.winkler@intel.com>
-To:     YueHaibing <yuehaibing@huawei.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Pedro Sousa <pedrom.sousa@synopsys.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Subhash Jadavani <subhashj@codeaurora.org>
-CC:     "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: RE: [PATCH -next] scsi: ufs: Use kmemdup in
- ufshcd_read_string_desc()
-Thread-Topic: [PATCH -next] scsi: ufs: Use kmemdup in
- ufshcd_read_string_desc()
-Thread-Index: AQHVX/llv2uTA5dhSUimOZqnT0VJc6cVpp5g
-Date:   Sat, 31 Aug 2019 19:37:07 +0000
-Message-ID: <5B8DA87D05A7694D9FA63FD143655C1B9DCA9308@hasmsx108.ger.corp.intel.com>
-References: <20190831124424.18642-1-yuehaibing@huawei.com>
-In-Reply-To: <20190831124424.18642-1-yuehaibing@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ctpclassification: CTP_NT
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiY2U5NTBmYzAtYjVjYS00NDNmLWIzYjctNTRkNDU3MjI3MzJlIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiTlExUzdqYXVJN3pFXC9JemFkN3k5NDFUQjlTdHlHQ01RZmNuQTFSc1NtK28zM1dXejNWVWh0ektvTXI2K2dYREIifQ==
-dlp-product: dlpe-windows
-dlp-version: 11.2.0.6
-dlp-reaction: no-action
-x-originating-ip: [10.184.70.10]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
-MIME-Version: 1.0
+        id S1728763AbfIAGxf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 1 Sep 2019 02:53:35 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:34682 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728693AbfIAGxf (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 1 Sep 2019 02:53:35 -0400
+Received: from localhost (unknown [IPv6:2601:601:9f80:35cd::d71])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 9585514F51DF3;
+        Sat, 31 Aug 2019 23:53:34 -0700 (PDT)
+Date:   Sat, 31 Aug 2019 23:53:34 -0700 (PDT)
+Message-Id: <20190831.235334.383882811136027003.davem@davemloft.net>
+To:     christophe.jaillet@wanadoo.fr
+Cc:     yangbo.lu@nxp.com, claudiu.manoil@nxp.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] enetc: Add missing call to 'pci_free_irq_vectors()' in
+ probe and remove functions
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190830202312.21287-1-christophe.jaillet@wanadoo.fr>
+References: <20190830202312.21287-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Sat, 31 Aug 2019 23:53:34 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Fri, 30 Aug 2019 22:23:12 +0200
 
+> Call to 'pci_free_irq_vectors()' are missing both in the error handling
+> path of the probe function, and in the remove function.
+> Add them.
+> 
+> Fixes: 19971f5ea0ab ("enetc: add PTP clock driver")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-> Use kmemdup rather than duplicating its implementation
-> 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-LGTM, ACK.
-Tomas
- 
-> ---
->  drivers/scsi/ufs/ufshcd.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/scsi/ufs/ufshcd.c b/drivers/scsi/ufs/ufshcd.c index
-> acf298da054c..6d5e2f5d8468 100644
-> --- a/drivers/scsi/ufs/ufshcd.c
-> +++ b/drivers/scsi/ufs/ufshcd.c
-> @@ -3309,12 +3309,11 @@ int ufshcd_read_string_desc(struct ufs_hba *hba,
-> u8 desc_index,
->  		str[ret++] = '\0';
-> 
->  	} else {
-> -		str = kzalloc(uc_str->len, GFP_KERNEL);
-> +		str = kmemdup(uc_str, uc_str->len, GFP_KERNEL);
->  		if (!str) {
->  			ret = -ENOMEM;
->  			goto out;
->  		}
-> -		memcpy(str, uc_str, uc_str->len);
->  		ret = uc_str->len;
->  	}
->  out:
-> 
-> 
-
+Applied, thanks.

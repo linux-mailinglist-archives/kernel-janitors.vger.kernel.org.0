@@ -2,58 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0D3DA4B53
-	for <lists+kernel-janitors@lfdr.de>; Sun,  1 Sep 2019 21:13:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2F9CA4D3C
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Sep 2019 04:06:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729255AbfIATNV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 1 Sep 2019 15:13:21 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:46972 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728930AbfIATNV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 1 Sep 2019 15:13:21 -0400
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id CF182C057F31;
-        Sun,  1 Sep 2019 19:13:20 +0000 (UTC)
-Received: from localhost (ovpn-112-7.rdu2.redhat.com [10.10.112.7])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id B6A9460BF4;
-        Sun,  1 Sep 2019 19:13:17 +0000 (UTC)
-Date:   Sun, 01 Sep 2019 12:13:16 -0700 (PDT)
-Message-Id: <20190901.121316.444864364160353651.davem@redhat.com>
-To:     yuehaibing@huawei.com
-Cc:     yisen.zhuang@huawei.com, salil.mehta@huawei.com,
-        linyunsheng@huawei.com, liuzhongzhu@huawei.com,
-        huangguangbin2@huawei.com, lipeng321@huawei.com,
-        tanhuazhong@huawei.com, shenjian15@huawei.com,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        hulkci@huawei.com
-Subject: Re: [PATCH net-next] net: hns3: remove set but not used variable
- 'qos'
-From:   David Miller <davem@redhat.com>
-In-Reply-To: <20190831122911.181336-1-yuehaibing@huawei.com>
-References: <20190831122911.181336-1-yuehaibing@huawei.com>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+        id S1729047AbfIBCGp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 1 Sep 2019 22:06:45 -0400
+Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133]:60508 "EHLO
+        out30-133.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727517AbfIBCGp (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 1 Sep 2019 22:06:45 -0400
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01f04391;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0Tb34iG4_1567390001;
+Received: from JosephdeMacBook-Pro.local(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0Tb34iG4_1567390001)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Mon, 02 Sep 2019 10:06:42 +0800
+Subject: Re: [PATCH] ocfs2: remove deadcode on variable tmp_oh check
+To:     Colin King <colin.king@canonical.com>,
+        Mark Fasheh <mark@fasheh.com>,
+        Joel Becker <jlbec@evilplan.org>, ocfs2-devel@oss.oracle.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190830111621.8929-1-colin.king@canonical.com>
+From:   Joseph Qi <joseph.qi@linux.alibaba.com>
+Message-ID: <37278619-3d48-4287-28d2-c5bc5af1d90f@linux.alibaba.com>
+Date:   Mon, 2 Sep 2019 10:06:41 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:60.0)
+ Gecko/20100101 Thunderbird/60.8.0
+MIME-Version: 1.0
+In-Reply-To: <20190830111621.8929-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.32]); Sun, 01 Sep 2019 19:13:20 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
-Date: Sat, 31 Aug 2019 12:29:11 +0000
 
-> Fixes gcc '-Wunused-but-set-variable' warning:
-> 
-> drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c: In function 'hclge_restore_vlan_table':
-> drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c:8016:18: warning:
->  variable 'qos' set but not used [-Wunused-but-set-variable]
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Fixes: 70a214903da9 ("net: hns3: reduce the parameters of some functions")
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-Applied.
+On 19/8/30 19:16, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> At the end of cfs2_inode_lock_tracker tmp_oh is true because an
+
+s/cfs2_inode_lock_tracker/ocfs2_inode_lock_tracker/
+BTW, could you please correct the following description of this
+function as well?
+"return == -1 if this lock attempt will cause an upgrade which is forbidden."
+In fact, it returns -EINVAL.
+
+Thanks,
+Joseph
+
+> earlier check on tmp_oh being false returns out of the function.
+> Since tmp_oh is true, the function will always return 1 so remove
+> the redundant check and return of 0.
+> 
+> Addresses-Coverity: ("Logically dead code")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  fs/ocfs2/dlmglue.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/ocfs2/dlmglue.c b/fs/ocfs2/dlmglue.c
+> index ad594fef2ab0..ff0cf851c9e6 100644
+> --- a/fs/ocfs2/dlmglue.c
+> +++ b/fs/ocfs2/dlmglue.c
+> @@ -2712,7 +2712,7 @@ int ocfs2_inode_lock_tracker(struct inode *inode,
+>  			return status;
+>  		}
+>  	}
+> -	return tmp_oh ? 1 : 0;
+> +	return 1;
+>  }
+>  
+>  void ocfs2_inode_unlock_tracker(struct inode *inode,
+> 

@@ -2,113 +2,148 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB9A0A5C96
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Sep 2019 21:14:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F16BBA5CCB
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Sep 2019 21:42:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727102AbfIBTNu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 2 Sep 2019 15:13:50 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40570 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726997AbfIBTNu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 2 Sep 2019 15:13:50 -0400
-Received: from earth.universe (unknown [185.62.205.105])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 9592A21883;
-        Mon,  2 Sep 2019 19:13:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567451629;
-        bh=OizYxl3lrt9deG3h25f+ho99EA+PCZgsWV1P937PEE4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PZ2bX9gdspHW3XE7y1Ovfj8rUdQ7ToRn7IltaFJwLuQo/R8DPE6C4PnUi7OX6Q4Ch
-         PJeTF8HrgXGDbFTcAJgn9hXpzgb08x7MwRAEJnt+0Em/yl5GHuEEtOyJE/LLiZLbCH
-         m/KBdnAnBQIRaZSQkufgo2QPo1GeqowCUxc4uTrU=
-Received: by earth.universe (Postfix, from userid 1000)
-        id 5E8D13C0B7F; Mon,  2 Sep 2019 21:13:47 +0200 (CEST)
-Date:   Mon, 2 Sep 2019 21:13:47 +0200
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Pali =?utf-8?B?Um9ow6Fy?= <pali.rohar@gmail.com>,
-        linux-pm@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] power: supply: isp1704: remove redundant assignment to
- variable ret
-Message-ID: <20190902191347.thcbxwo2vm32hozz@earth.universe>
-References: <20190705093612.21925-1-colin.king@canonical.com>
+        id S1727187AbfIBTmq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Sep 2019 15:42:46 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:44707 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726947AbfIBTmq (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 2 Sep 2019 15:42:46 -0400
+Received: by mail-io1-f66.google.com with SMTP id j4so30941846iog.11;
+        Mon, 02 Sep 2019 12:42:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=QnCqjttPsD9VOItZgQKR8PHxubyIWfecxGB1z85kRaA=;
+        b=drk3pFKrwK38hMeRXxVG2/nOt7S70Pfl9vl3UrDB/SaQoNBjlHvB0wWXFsN+vGsWPL
+         8lXwNSZhUfDAWlfNVUnhJv+pfSH9ZgqRoBfr1Kcc+BBYYDcuN2p65XDjF538ynOkczuK
+         wRFtpxcgV1311tVqcH3hbqFBDIXln5wgwCjlbZFTNBNubr8ISIcFOJlOZwSs+d+mHpQ+
+         cXrlhW+3yaMM4aqB4guKpTKEUawxMOsiDKUvFDGsiEL9+HGqB3c3muIkkPF3LxiQSZL/
+         xmBNYgivufdorFGF+XdUVNhY/sMGsiaWwl0tHBewkKDTfPWu6mkl0VOPS5CgQE7ynN6B
+         G2AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QnCqjttPsD9VOItZgQKR8PHxubyIWfecxGB1z85kRaA=;
+        b=XTm571X7XphS82r6u6kerEvfNV6IjSNDHCuN+1oiStyoFXTB5a4JbUjHFrpHB9kbEf
+         9xGY5LjGgttRUfuRJxgnuFFqEPDy+kv/Vw4ZL8XFWiDxJd5X7sfE00SKFAszyHT5Pd/S
+         NCTV2/Fs8w4YeXusguxw9S2ROiAPOG5IOGtOCrqr50q/dN77SKNvk+xcDEHSapempY1Z
+         Pc3XGB1VDCf70fNn6pFOo7KfSx2KWUM65ni7I7sQz4oQhkWYhuW6z23hujJmzqjNj/eY
+         ALSFkKdB8vKInrrA+FAm6NiDgAoOy/IN5eNdVmuI5iFMav9egQ10UJAk8xh9BFA8IRPQ
+         XcMg==
+X-Gm-Message-State: APjAAAWgMVZPBrwc3KTk5MMkIfoiI3lkMqFEkNzjZYGLZe9xlB8Fem4s
+        P4rLEC78jxRkdi3FSNUTXUAL5/qgGllOCMWU/OMkakIFPFw=
+X-Google-Smtp-Source: APXvYqz0ig3Ou3gySoBUVnZyPjYLAcAupHpExck2qSURcqM7IatpW8/XwvrGxI/vgiYJ8fO0ibOunmPv31vCfW2Exhs=
+X-Received: by 2002:a5d:9c4c:: with SMTP id 12mr15389478iof.5.1567453365705;
+ Mon, 02 Sep 2019 12:42:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="kuxj64xjg5hlbeip"
-Content-Disposition: inline
-In-Reply-To: <20190705093612.21925-1-colin.king@canonical.com>
-User-Agent: NeoMutt/20180716
+References: <20190902151059.22088-1-colin.king@canonical.com>
+In-Reply-To: <20190902151059.22088-1-colin.king@canonical.com>
+From:   Steve French <smfrench@gmail.com>
+Date:   Mon, 2 Sep 2019 14:42:34 -0500
+Message-ID: <CAH2r5mv_Fv_k8h=-i8-bBrgBU3ghCVM3W=KyLrL=LrrCiT=vOQ@mail.gmail.com>
+Subject: Re: [PATCH][V2][cifs-next] cifs: fix dereference on ses before it is
+ null checked
+To:     Colin King <colin.king@canonical.com>
+Cc:     Steve French <sfrench@samba.org>,
+        CIFS <linux-cifs@vger.kernel.org>,
+        samba-technical <samba-technical@lists.samba.org>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Tentatively merged into cifs-2.6.git pending additional testing
 
---kuxj64xjg5hlbeip
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Kicked off buildbot with rc7+patches in cifs for-next
 
-Hi,
+See http://smb3-test-rhel-75.southcentralus.cloudapp.azure.com/#/builders/2/builds/247
 
-On Fri, Jul 05, 2019 at 10:36:12AM +0100, Colin King wrote:
+On Mon, Sep 2, 2019 at 10:33 AM Colin King <colin.king@canonical.com> wrote:
+>
 > From: Colin Ian King <colin.king@canonical.com>
->=20
-> The variable ret is being assigned with a value that is never
-> read and it is being updated later with a new value. The
-> assignment is redundant and can be removed.
->=20
-> Addresses-Coverity: ("Unused value")
+>
+> The assignment of pointer server dereferences pointer ses, however,
+> this dereference occurs before ses is null checked and hence we
+> have a potential null pointer dereference.  Fix this by only
+> dereferencing ses after it has been null checked.
+>
+> Addresses-Coverity: ("Dereference before null check")
+> Fixes: 2808c6639104 ("cifs: add new debugging macro cifs_server_dbg")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
-
-Thanks, queued.
-
--- Sebastian
-
->  drivers/power/supply/isp1704_charger.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/power/supply/isp1704_charger.c b/drivers/power/suppl=
-y/isp1704_charger.c
-> index b48cb7aba97b..4812ac1ff2df 100644
-> --- a/drivers/power/supply/isp1704_charger.c
-> +++ b/drivers/power/supply/isp1704_charger.c
-> @@ -342,7 +342,7 @@ static inline int isp1704_test_ulpi(struct isp1704_ch=
-arger *isp)
->  	int vendor;
->  	int product;
->  	int i;
-> -	int ret =3D -ENODEV;
-> +	int ret;
-> =20
->  	/* Test ULPI interface */
->  	ret =3D isp1704_write(isp, ULPI_SCRATCH, 0xaa);
-> --=20
+>  fs/cifs/smb2pdu.c   | 11 ++++++++---
+>  fs/cifs/transport.c |  3 ++-
+>  2 files changed, 10 insertions(+), 4 deletions(-)
+>
+> diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
+> index dbc6ef50dd45..0e92983de0b7 100644
+> --- a/fs/cifs/smb2pdu.c
+> +++ b/fs/cifs/smb2pdu.c
+> @@ -2759,8 +2759,10 @@ SMB2_ioctl(const unsigned int xid, struct cifs_tcon *tcon, u64 persistent_fid,
+>         else
+>                 return -EIO;
+>
+> +       if (!ses)
+> +               return -EIO;
+>         server = ses->server;
+> -       if (!ses || !(server))
+> +       if (!server)
+>                 return -EIO;
+>
+>         if (smb3_encryption_required(tcon))
+> @@ -3058,13 +3060,16 @@ query_info(const unsigned int xid, struct cifs_tcon *tcon,
+>         int rc = 0;
+>         int resp_buftype = CIFS_NO_BUFFER;
+>         struct cifs_ses *ses = tcon->ses;
+> -       struct TCP_Server_Info *server = ses->server;
+> +       struct TCP_Server_Info *server;
+>         int flags = 0;
+>         bool allocated = false;
+>
+>         cifs_dbg(FYI, "Query Info\n");
+>
+> -       if (!ses || !(server))
+> +       if (!ses)
+> +               return -EIO;
+> +       server = ses->server;
+> +       if (!server)
+>                 return -EIO;
+>
+>         if (smb3_encryption_required(tcon))
+> diff --git a/fs/cifs/transport.c b/fs/cifs/transport.c
+> index 0d60bd2f4dca..a90bd4d75b4d 100644
+> --- a/fs/cifs/transport.c
+> +++ b/fs/cifs/transport.c
+> @@ -1242,12 +1242,13 @@ SendReceive(const unsigned int xid, struct cifs_ses *ses,
+>         struct kvec iov = { .iov_base = in_buf, .iov_len = len };
+>         struct smb_rqst rqst = { .rq_iov = &iov, .rq_nvec = 1 };
+>         struct cifs_credits credits = { .value = 1, .instance = 0 };
+> -       struct TCP_Server_Info *server = ses->server;
+> +       struct TCP_Server_Info *server;
+>
+>         if (ses == NULL) {
+>                 cifs_dbg(VFS, "Null smb session\n");
+>                 return -EIO;
+>         }
+> +       server = ses->server;
+>         if (server == NULL) {
+>                 cifs_dbg(VFS, "Null tcp session\n");
+>                 return -EIO;
+> --
 > 2.20.1
->=20
+>
 
---kuxj64xjg5hlbeip
-Content-Type: application/pgp-signature; name="signature.asc"
 
------BEGIN PGP SIGNATURE-----
+-- 
+Thanks,
 
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl1taesACgkQ2O7X88g7
-+pq+wg//cBEGbqz/V0ogRccgqe9hAgyqMIC1Q3A8ThtdLESA24kd5zqxL3j2/k7A
-+fr7UPFlqouOuDzMzoQpiplSTsKX+PNnneXAVbbUAvcoEQGq6SB9bCbNKrZWJTgj
-6R5Fh6p6ErzCjXIf5+NufZd9Gw8iT2ExnGrcCjocFdKgAQ9VtUE2YFPffnJKhMCK
-iG3ovEQgZUUWDsxzdGGZtpRb0UwVK6AxtQHufMveozIwau8kqMw7ZiIkWrPa7zNx
-9i8zIOBVVsPAhkeCeZ/kLgGXYwagnRzOdG3qTVMExf8EpJbNVr/XL06dPJ8INpnm
-2j2y/bavvMteCWgynOt4h4n08cbLGDUuHvqypRmUw42Qm1jc5FPjofSjRy86tiYM
-cx8Q7Yy0fedYHIJTgP5zzvTRPPi3DRlB0A97T3ZhzYW+ntQaiUqHC+QGzOBoDeuu
-OtUhoZ9CfyA4x0jMBIT+R953P1U5wfYdpown1F3tqZ5rlK/0FHOQWhZ4PjVA7VsM
-5AfkhCfm6Bc6gj8OeU1E7MAAN6SSG6lGVOeE3ITPqRebQ1zUlF3sVgruTEBpmHhF
-Wke/WNM7hpsVyiATycD0gKhka5t9r2uynO3Acc9s88k85pqFobBrjoSakYUVmw5R
-BUlSnNB6XDV0qiRRZhKyEe2zhcWvHWCfDog/kOx072j1s6WWY3o=
-=Y1QI
------END PGP SIGNATURE-----
-
---kuxj64xjg5hlbeip--
+Steve

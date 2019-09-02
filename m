@@ -2,79 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2F9CA4D3C
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Sep 2019 04:06:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73AFEA503C
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Sep 2019 09:50:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729047AbfIBCGp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 1 Sep 2019 22:06:45 -0400
-Received: from out30-133.freemail.mail.aliyun.com ([115.124.30.133]:60508 "EHLO
-        out30-133.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727517AbfIBCGp (ORCPT
+        id S1729865AbfIBHuM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Sep 2019 03:50:12 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:48480 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725839AbfIBHuM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 1 Sep 2019 22:06:45 -0400
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01f04391;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0Tb34iG4_1567390001;
-Received: from JosephdeMacBook-Pro.local(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0Tb34iG4_1567390001)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Mon, 02 Sep 2019 10:06:42 +0800
-Subject: Re: [PATCH] ocfs2: remove deadcode on variable tmp_oh check
-To:     Colin King <colin.king@canonical.com>,
-        Mark Fasheh <mark@fasheh.com>,
-        Joel Becker <jlbec@evilplan.org>, ocfs2-devel@oss.oracle.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190830111621.8929-1-colin.king@canonical.com>
-From:   Joseph Qi <joseph.qi@linux.alibaba.com>
-Message-ID: <37278619-3d48-4287-28d2-c5bc5af1d90f@linux.alibaba.com>
-Date:   Mon, 2 Sep 2019 10:06:41 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:60.0)
- Gecko/20100101 Thunderbird/60.8.0
+        Mon, 2 Sep 2019 03:50:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=NLbPkO1nBLjxjJMJLtjjfjvIrKkFYiad08Wtr6KwkSw=; b=QTN11fqUWCWaQ1Qfvv9fmTkeg
+        f4Du4MFrH1JeBL/lYO4ZmvejNdqey6NA3y5cyyRlcge584lMTs3yBaKzq33D5bbzOugM4K9b2N1Lo
+        m25L2EcK6DZtpdpqBmXVzn7xsRsLu51Ikl+6Xf9MMGg3cy7oF+OcIWJfCEIGH1vF5U6Nmag8Jwh2m
+        Av5PwuPKTVGxS8fhTUztEdPofUkT3UYw5jibpCXaJJ6AaHv5BM1wnu7XQ4pfeXkUWsuCIJHB32jYo
+        14YZcDEu6aRqCPSkafuqSYr8vyo9rnjOViyAFQhSPj9fQsY8RRe2ddJpXeKtpNQPI9oRC3cPCc9k7
+        YoZc6ErOA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat Linux))
+        id 1i4h6E-0005zw-La; Mon, 02 Sep 2019 07:50:06 +0000
+Date:   Mon, 2 Sep 2019 00:50:06 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     Bjorn Helgaas <bhelgaas@google.com>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] PCI: Use GFP_ATOMIC in resource_alignment_store()
+Message-ID: <20190902075006.GB754@infradead.org>
+References: <20190831124932.18759-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <20190830111621.8929-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190831124932.18759-1-yuehaibing@huawei.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On 19/8/30 19:16, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Sat, Aug 31, 2019 at 12:49:32PM +0000, YueHaibing wrote:
+> When allocating memory, the GFP_KERNEL cannot be used during the
+> spin_lock period. It may cause scheduling when holding spin_lock.
 > 
-> At the end of cfs2_inode_lock_tracker tmp_oh is true because an
-
-s/cfs2_inode_lock_tracker/ocfs2_inode_lock_tracker/
-BTW, could you please correct the following description of this
-function as well?
-"return == -1 if this lock attempt will cause an upgrade which is forbidden."
-In fact, it returns -EINVAL.
-
-Thanks,
-Joseph
-
-> earlier check on tmp_oh being false returns out of the function.
-> Since tmp_oh is true, the function will always return 1 so remove
-> the redundant check and return of 0.
-> 
-> Addresses-Coverity: ("Logically dead code")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Fixes: f13755318675 ("PCI: Move pci_[get|set]_resource_alignment_param() into their callers")
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 > ---
->  fs/ocfs2/dlmglue.c | 2 +-
+>  drivers/pci/pci.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/fs/ocfs2/dlmglue.c b/fs/ocfs2/dlmglue.c
-> index ad594fef2ab0..ff0cf851c9e6 100644
-> --- a/fs/ocfs2/dlmglue.c
-> +++ b/fs/ocfs2/dlmglue.c
-> @@ -2712,7 +2712,7 @@ int ocfs2_inode_lock_tracker(struct inode *inode,
->  			return status;
->  		}
->  	}
-> -	return tmp_oh ? 1 : 0;
-> +	return 1;
->  }
+> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+> index 484e35349565..0b5fc6736f3f 100644
+> --- a/drivers/pci/pci.c
+> +++ b/drivers/pci/pci.c
+> @@ -6148,7 +6148,7 @@ static ssize_t resource_alignment_store(struct bus_type *bus,
+>  	spin_lock(&resource_alignment_lock);
 >  
->  void ocfs2_inode_unlock_tracker(struct inode *inode,
-> 
+>  	kfree(resource_alignment_param);
+> -	resource_alignment_param = kstrndup(buf, count, GFP_KERNEL);
+> +	resource_alignment_param = kstrndup(buf, count, GFP_ATOMIC);
+>  
+>  	spin_unlock(&resource_alignment_lock);
+
+Why not move the allocation outside the lock? Something like this
+seems much more sensible:
+
+
+diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
+index 484e35349565..fe205829f676 100644
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -6145,14 +6145,16 @@ static ssize_t resource_alignment_show(struct bus_type *bus, char *buf)
+ static ssize_t resource_alignment_store(struct bus_type *bus,
+ 					const char *buf, size_t count)
+ {
+-	spin_lock(&resource_alignment_lock);
++	char *param = kstrndup(buf, count, GFP_KERNEL);
+ 
+-	kfree(resource_alignment_param);
+-	resource_alignment_param = kstrndup(buf, count, GFP_KERNEL);
++	if (!param)
++		return -ENOMEM;
+ 
++	spin_lock(&resource_alignment_lock);
++	kfree(resource_alignment_param);
++	resource_alignment_param = param;
+ 	spin_unlock(&resource_alignment_lock);
+-
+-	return resource_alignment_param ? count : -ENOMEM;
++	return count;
+ }
+ 
+ static BUS_ATTR_RW(resource_alignment);

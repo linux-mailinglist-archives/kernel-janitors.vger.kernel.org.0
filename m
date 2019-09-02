@@ -2,43 +2,44 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05548A5C7A
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Sep 2019 21:03:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB9A0A5C96
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Sep 2019 21:14:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727018AbfIBTDN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 2 Sep 2019 15:03:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35824 "EHLO mail.kernel.org"
+        id S1727102AbfIBTNu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Sep 2019 15:13:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40570 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726773AbfIBTDN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 2 Sep 2019 15:03:13 -0400
+        id S1726997AbfIBTNu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 2 Sep 2019 15:13:50 -0400
 Received: from earth.universe (unknown [185.62.205.105])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0FCAF21883;
-        Mon,  2 Sep 2019 19:03:12 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 9592A21883;
+        Mon,  2 Sep 2019 19:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567450992;
-        bh=AWHxitr0Uqz89QQHhmQrpQCAfo/5quYPk/oro2ST544=;
+        s=default; t=1567451629;
+        bh=OizYxl3lrt9deG3h25f+ho99EA+PCZgsWV1P937PEE4=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VdztqFnanBJ+cfAc0ZvtQvOHoJv2wyldc2LIgPq0RJoaP+hKu8STi0QWt5wZskbEW
-         qNDLzm8ld0+lleK8yX5hziJ/rS4EDp05uB66fJIJnnf6+LVQY8SEvCCwFBnZ9dNdTz
-         9gdPhw2MoB5qAfMm6rG97SCnUlnBegKA0FiHCpBs=
+        b=PZ2bX9gdspHW3XE7y1Ovfj8rUdQ7ToRn7IltaFJwLuQo/R8DPE6C4PnUi7OX6Q4Ch
+         PJeTF8HrgXGDbFTcAJgn9hXpzgb08x7MwRAEJnt+0Em/yl5GHuEEtOyJE/LLiZLbCH
+         m/KBdnAnBQIRaZSQkufgo2QPo1GeqowCUxc4uTrU=
 Received: by earth.universe (Postfix, from userid 1000)
-        id A84963C0B7F; Mon,  2 Sep 2019 21:03:09 +0200 (CEST)
-Date:   Mon, 2 Sep 2019 21:03:09 +0200
+        id 5E8D13C0B7F; Mon,  2 Sep 2019 21:13:47 +0200 (CEST)
+Date:   Mon, 2 Sep 2019 21:13:47 +0200
 From:   Sebastian Reichel <sre@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] power: supply: max17042_battery: Fix a typo in function
- names
-Message-ID: <20190902190309.yshdhrswhemdf7yb@earth.universe>
-References: <20190721160328.24660-1-christophe.jaillet@wanadoo.fr>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Pali =?utf-8?B?Um9ow6Fy?= <pali.rohar@gmail.com>,
+        linux-pm@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] power: supply: isp1704: remove redundant assignment to
+ variable ret
+Message-ID: <20190902191347.thcbxwo2vm32hozz@earth.universe>
+References: <20190705093612.21925-1-colin.king@canonical.com>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="geki2nibjgyihtcm"
+        protocol="application/pgp-signature"; boundary="kuxj64xjg5hlbeip"
 Content-Disposition: inline
-In-Reply-To: <20190721160328.24660-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20190705093612.21925-1-colin.king@canonical.com>
 User-Agent: NeoMutt/20180716
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
@@ -46,95 +47,68 @@ List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
---geki2nibjgyihtcm
+--kuxj64xjg5hlbeip
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi,
 
-On Sun, Jul 21, 2019 at 06:03:28PM +0200, Christophe JAILLET wrote:
-> It is likely that 'max10742_[un]lock_model()' functions should be
-> 'max17042_[un]lock_model()'
-> (0 and 7 switched in 10742)
+On Fri, Jul 05, 2019 at 10:36:12AM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 >=20
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> The variable ret is being assigned with a value that is never
+> read and it is being updated later with a new value. The
+> assignment is redundant and can be removed.
+>=20
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
 
 Thanks, queued.
 
 -- Sebastian
 
->  drivers/power/supply/max17042_battery.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  drivers/power/supply/isp1704_charger.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >=20
-> diff --git a/drivers/power/supply/max17042_battery.c b/drivers/power/supp=
-ly/max17042_battery.c
-> index 581c6bd23388..da3904822929 100644
-> --- a/drivers/power/supply/max17042_battery.c
-> +++ b/drivers/power/supply/max17042_battery.c
-> @@ -511,7 +511,7 @@ static inline void max17042_override_por(struct regma=
-p *map,
->  		regmap_write(map, reg, value);
->  }
+> diff --git a/drivers/power/supply/isp1704_charger.c b/drivers/power/suppl=
+y/isp1704_charger.c
+> index b48cb7aba97b..4812ac1ff2df 100644
+> --- a/drivers/power/supply/isp1704_charger.c
+> +++ b/drivers/power/supply/isp1704_charger.c
+> @@ -342,7 +342,7 @@ static inline int isp1704_test_ulpi(struct isp1704_ch=
+arger *isp)
+>  	int vendor;
+>  	int product;
+>  	int i;
+> -	int ret =3D -ENODEV;
+> +	int ret;
 > =20
-> -static inline void max10742_unlock_model(struct max17042_chip *chip)
-> +static inline void max17042_unlock_model(struct max17042_chip *chip)
->  {
->  	struct regmap *map =3D chip->regmap;
-> =20
-> @@ -519,7 +519,7 @@ static inline void max10742_unlock_model(struct max17=
-042_chip *chip)
->  	regmap_write(map, MAX17042_MLOCKReg2, MODEL_UNLOCK2);
->  }
-> =20
-> -static inline void max10742_lock_model(struct max17042_chip *chip)
-> +static inline void max17042_lock_model(struct max17042_chip *chip)
->  {
->  	struct regmap *map =3D chip->regmap;
-> =20
-> @@ -577,7 +577,7 @@ static int max17042_init_model(struct max17042_chip *=
-chip)
->  	if (!temp_data)
->  		return -ENOMEM;
-> =20
-> -	max10742_unlock_model(chip);
-> +	max17042_unlock_model(chip);
->  	max17042_write_model_data(chip, MAX17042_MODELChrTbl,
->  				table_size);
->  	max17042_read_model_data(chip, MAX17042_MODELChrTbl, temp_data,
-> @@ -589,7 +589,7 @@ static int max17042_init_model(struct max17042_chip *=
-chip)
->  		temp_data,
->  		table_size);
-> =20
-> -	max10742_lock_model(chip);
-> +	max17042_lock_model(chip);
->  	kfree(temp_data);
-> =20
->  	return ret;
+>  	/* Test ULPI interface */
+>  	ret =3D isp1704_write(isp, ULPI_SCRATCH, 0xaa);
 > --=20
 > 2.20.1
 >=20
 
---geki2nibjgyihtcm
+--kuxj64xjg5hlbeip
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl1tZ20ACgkQ2O7X88g7
-+priMg//R7FBlaET+kgtJlE1Iw8yaVuXLYkOfpjDXo4asEFbs5SPxrD4VyTWAXTs
-McaDNnlAmVs5kinXneVN8LMYdU6MstWi0a3eV/5JYxGGMkvf9eBMOsqFvP6JOcsG
-bypNfnKdLbuhaxC5ZjHLRK/D3b9oZ6nSBqBZjHvRQt4lIeqmTyNw/z0XaHqLhVHU
-/eI6Y+FSx+v1agf+ycRfCOoIP95ZEEsxeBZLhe+aBlnUjD9WzmU4VZwmTM0PkmZt
-Xq6xvkp6WezD4QihyOx911i08KHSMuxBQu6kd5eXQW+T0IdcIDQpbp8WD7pzOjrY
-Gz9xE9f7T3kEjm4FRlBbGZe92X7GVpltqW/qOoeD1y87JbPAHNlLWkjv55KgysLK
-yfnB+mbSetnlZ/lBnmLaeQnyzNJowykvqveQYJO4t+iO4dEFmplTAFS9syZcTicF
-g0fAJWY4W9DZSLLQEG+f1PlxyaCwvabQpOTeQsHuPAc6FnA9ChxWePnoho9Y72Kk
-GNx50V4/KS3A5agpyQ0JwfY9Jz48sZ0wHz6gEnccNeobzoxGYLgOJjDwLw1EtRv9
-ACr3y/SbzjltKqjC5PgYHCfRESlCTXV7Ngt5Q1ZErvqH5ZeBnZwAhzV9hqY1shTc
-07x8g4NyCMzsq07FOSbNqRZgvk6vEXk+gmNohoLLSlXlt916Bss=
-=QS8p
+iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl1taesACgkQ2O7X88g7
++pq+wg//cBEGbqz/V0ogRccgqe9hAgyqMIC1Q3A8ThtdLESA24kd5zqxL3j2/k7A
++fr7UPFlqouOuDzMzoQpiplSTsKX+PNnneXAVbbUAvcoEQGq6SB9bCbNKrZWJTgj
+6R5Fh6p6ErzCjXIf5+NufZd9Gw8iT2ExnGrcCjocFdKgAQ9VtUE2YFPffnJKhMCK
+iG3ovEQgZUUWDsxzdGGZtpRb0UwVK6AxtQHufMveozIwau8kqMw7ZiIkWrPa7zNx
+9i8zIOBVVsPAhkeCeZ/kLgGXYwagnRzOdG3qTVMExf8EpJbNVr/XL06dPJ8INpnm
+2j2y/bavvMteCWgynOt4h4n08cbLGDUuHvqypRmUw42Qm1jc5FPjofSjRy86tiYM
+cx8Q7Yy0fedYHIJTgP5zzvTRPPi3DRlB0A97T3ZhzYW+ntQaiUqHC+QGzOBoDeuu
+OtUhoZ9CfyA4x0jMBIT+R953P1U5wfYdpown1F3tqZ5rlK/0FHOQWhZ4PjVA7VsM
+5AfkhCfm6Bc6gj8OeU1E7MAAN6SSG6lGVOeE3ITPqRebQ1zUlF3sVgruTEBpmHhF
+Wke/WNM7hpsVyiATycD0gKhka5t9r2uynO3Acc9s88k85pqFobBrjoSakYUVmw5R
+BUlSnNB6XDV0qiRRZhKyEe2zhcWvHWCfDog/kOx072j1s6WWY3o=
+=Y1QI
 -----END PGP SIGNATURE-----
 
---geki2nibjgyihtcm--
+--kuxj64xjg5hlbeip--

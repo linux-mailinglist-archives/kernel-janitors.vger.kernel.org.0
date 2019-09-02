@@ -2,30 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 35FC2A5C3E
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Sep 2019 20:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AF56A5C57
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Sep 2019 20:43:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726830AbfIBS0m (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 2 Sep 2019 14:26:42 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:45759 "EHLO
+        id S1726887AbfIBSnj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Sep 2019 14:43:39 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:45894 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726448AbfIBS0l (ORCPT
+        with ESMTP id S1726805AbfIBSnj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 2 Sep 2019 14:26:41 -0400
+        Mon, 2 Sep 2019 14:43:39 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1i4r2D-0007rt-Qw; Mon, 02 Sep 2019 18:26:37 +0000
+        id 1i4rIc-0000PM-Os; Mon, 02 Sep 2019 18:43:34 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jamal Hadi Salim <jhs@mojatatu.com>,
-        Cong Wang <xiyou.wangcong@gmail.com>,
-        Jiri Pirko <jiri@resnulli.us>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Pawel Laszczak <pawell@cadence.com>,
+        Felipe Balbi <felipe.balbi@linux.intel.com>,
+        linux-usb@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] net/sched: cbs: remove redundant assignment to variable port_rate
-Date:   Mon,  2 Sep 2019 19:26:37 +0100
-Message-Id: <20190902182637.22167-1-colin.king@canonical.com>
+Subject: [PATCH][next] usb: cdns3: remove redundant assignment to ret on error exit path
+Date:   Mon,  2 Sep 2019 19:43:34 +0100
+Message-Id: <20190902184334.27406-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,29 +37,33 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Variable port_rate is being initialized with a value that is never read
-and is being re-assigned a little later on. The assignment is redundant
-and hence can be removed.
+In the case where an allocation fails for priv_ep ret is
+assigned -ENOMEM and the code exits via the exit path 'err'.
+The exit path returns -ENOMEM without using variable ret, so
+the assingment is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- net/sched/sch_cbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/cdns3/gadget.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/sched/sch_cbs.c b/net/sched/sch_cbs.c
-index 810645b5c086..93b58fde99b7 100644
---- a/net/sched/sch_cbs.c
-+++ b/net/sched/sch_cbs.c
-@@ -299,7 +299,7 @@ static void cbs_set_port_rate(struct net_device *dev, struct cbs_sched_data *q)
- {
- 	struct ethtool_link_ksettings ecmd;
- 	int speed = SPEED_10;
--	int port_rate = -1;
-+	int port_rate;
- 	int err;
+diff --git a/drivers/usb/cdns3/gadget.c b/drivers/usb/cdns3/gadget.c
+index 0eb3022838d6..de0e14a4fb9f 100644
+--- a/drivers/usb/cdns3/gadget.c
++++ b/drivers/usb/cdns3/gadget.c
+@@ -2447,10 +2447,8 @@ static int cdns3_init_eps(struct cdns3_device *priv_dev)
  
- 	err = __ethtool_get_link_ksettings(dev, &ecmd);
+ 		priv_ep = devm_kzalloc(priv_dev->dev, sizeof(*priv_ep),
+ 				       GFP_KERNEL);
+-		if (!priv_ep) {
+-			ret = -ENOMEM;
++		if (!priv_ep)
+ 			goto err;
+-		}
+ 
+ 		/* set parent of endpoint object */
+ 		priv_ep->cdns3_dev = priv_dev;
 -- 
 2.20.1
 

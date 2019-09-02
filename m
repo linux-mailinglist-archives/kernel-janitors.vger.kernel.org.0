@@ -2,29 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5BD4A59BC
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Sep 2019 16:50:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2618A5A0B
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Sep 2019 17:03:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731584AbfIBOul (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 2 Sep 2019 10:50:41 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:41457 "EHLO
+        id S1731737AbfIBPBz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Sep 2019 11:01:55 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:41766 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726916AbfIBOuk (ORCPT
+        with ESMTP id S1730234AbfIBPBy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 2 Sep 2019 10:50:40 -0400
+        Mon, 2 Sep 2019 11:01:54 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1i4nf9-0007oF-W5; Mon, 02 Sep 2019 14:50:36 +0000
+        id 1i4nq4-00007n-OK; Mon, 02 Sep 2019 15:01:52 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Felipe Balbi <felipe.balbi@linux.intel.com>,
-        Pawel Laszczak <pawell@cadence.com>, linux-usb@vger.kernel.org
+To:     Steve French <sfrench@samba.org>, linux-cifs@vger.kernel.org,
+        samba-technical@lists.samba.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][usb-next] usb: cdns3: fix missing assignment of ret before error check on ret
-Date:   Mon,  2 Sep 2019 15:50:35 +0100
-Message-Id: <20190902145035.18200-1-colin.king@canonical.com>
+Subject: [PATCH][cifs-next] cifs: fix dereference on ses before it is null checked
+Date:   Mon,  2 Sep 2019 16:01:52 +0100
+Message-Id: <20190902150152.21550-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,43 +35,37 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently the check on a non-zero return code in ret is false because
-ret has been initialized to zero.  I believe that ret should be assigned
-to the return from the call to readl_poll_timeout_atomic before the
-check on ret.  Since ret is being re-assinged the original initialization
-of ret to zero can be removed.
+The assignment of pointer server dereferences pointer ses, however,
+this dereference occurs before ses is null checked and hence we
+have a potential null pointer dereference.  Fix this by only
+dereferencing ses after it has been null checked.
 
-Addresses-Coverity: ("'Constant' variable guards dead code")
-Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Addresses-Coverity: ("Dereference before null check")
+Fixes: 2808c6639104 ("cifs: add new debugging macro cifs_server_dbg")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/usb/cdns3/gadget.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/cifs/transport.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/cdns3/gadget.c b/drivers/usb/cdns3/gadget.c
-index 3094ad65ffc9..0eb3022838d6 100644
---- a/drivers/usb/cdns3/gadget.c
-+++ b/drivers/usb/cdns3/gadget.c
-@@ -2154,7 +2154,7 @@ int __cdns3_gadget_ep_clear_halt(struct cdns3_endpoint *priv_ep)
- {
- 	struct cdns3_device *priv_dev = priv_ep->cdns3_dev;
- 	struct usb_request *request;
--	int ret = 0;
-+	int ret;
- 	int val;
+diff --git a/fs/cifs/transport.c b/fs/cifs/transport.c
+index 0d60bd2f4dca..a90bd4d75b4d 100644
+--- a/fs/cifs/transport.c
++++ b/fs/cifs/transport.c
+@@ -1242,12 +1242,13 @@ SendReceive(const unsigned int xid, struct cifs_ses *ses,
+ 	struct kvec iov = { .iov_base = in_buf, .iov_len = len };
+ 	struct smb_rqst rqst = { .rq_iov = &iov, .rq_nvec = 1 };
+ 	struct cifs_credits credits = { .value = 1, .instance = 0 };
+-	struct TCP_Server_Info *server = ses->server;
++	struct TCP_Server_Info *server;
  
- 	trace_cdns3_halt(priv_ep, 0, 0);
-@@ -2162,8 +2162,8 @@ int __cdns3_gadget_ep_clear_halt(struct cdns3_endpoint *priv_ep)
- 	writel(EP_CMD_CSTALL | EP_CMD_EPRST, &priv_dev->regs->ep_cmd);
- 
- 	/* wait for EPRST cleared */
--	readl_poll_timeout_atomic(&priv_dev->regs->ep_cmd, val,
--				  !(val & EP_CMD_EPRST), 1, 100);
-+	ret = readl_poll_timeout_atomic(&priv_dev->regs->ep_cmd, val,
-+					!(val & EP_CMD_EPRST), 1, 100);
- 	if (ret)
- 		return -EINVAL;
- 
+ 	if (ses == NULL) {
+ 		cifs_dbg(VFS, "Null smb session\n");
+ 		return -EIO;
+ 	}
++	server = ses->server;
+ 	if (server == NULL) {
+ 		cifs_dbg(VFS, "Null tcp session\n");
+ 		return -EIO;
 -- 
 2.20.1
 

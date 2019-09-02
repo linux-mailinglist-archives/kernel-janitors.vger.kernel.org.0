@@ -2,93 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F2F7A5BCE
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Sep 2019 19:25:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35FC2A5C3E
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Sep 2019 20:26:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726518AbfIBRZV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 2 Sep 2019 13:25:21 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:38772 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726275AbfIBRZV (ORCPT
+        id S1726830AbfIBS0m (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Sep 2019 14:26:42 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:45759 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726448AbfIBS0l (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 2 Sep 2019 13:25:21 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x82HOR9j088218;
-        Mon, 2 Sep 2019 17:24:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=fmTa8ZJ+SpahbLpNUsoBShdI9z6YSJAcyCJtq9AvlCg=;
- b=R7NIOFxMI7LzSKrF2YaT7Ca1PFMA545bwN0lghCjyhDEG3+VNBFg4Jg2fNqqnY5BSHI+
- xBkysFYOeBxoBJsHDWKBZCBcbeFLHGWqAQ2WT+qSQs7o+CiRcchyd7t7Wr5yu0A8sq9L
- Jey36Wn7gQIMQ/51UOHhTiIiyuPXzi2QLv1p5+FNe2uZJfrg2Bk5cGztxcMCyzDymaUX
- PyTJC+cuZfesdYAxh/X/AZvhjyaWUl7Pj7usZWWhzGTECbB7gwz8nGfO4jYaWsrbxRFw
- RsQOV9ARQ6+QHihfYIk5y/FR4pU1F9tkUafAR1NNVTfB4XruX3Kb9fG0o5UAminDQdfK JA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 2us70ar36m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 02 Sep 2019 17:24:59 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x82HO5FQ086201;
-        Mon, 2 Sep 2019 17:24:59 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 2us4wcmhsp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 02 Sep 2019 17:24:59 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x82HOvFD019686;
-        Mon, 2 Sep 2019 17:24:57 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 02 Sep 2019 10:24:56 -0700
-Date:   Mon, 2 Sep 2019 20:24:50 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc:     Andy Shevchenko <andy@infradead.org>,
-        Corentin Chary <corentin.chary@gmail.com>,
-        Darren Hart <dvhart@infradead.org>,
-        acpi4asus-user <acpi4asus-user@lists.sourceforge.net>,
-        Platform Driver <platform-driver-x86@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] platform/x86: asus-wmi: Fix condition in
- charge_threshold_store()
-Message-ID: <20190902172450.GA3093@kadam>
-References: <20190902143850.GA607@mwanda>
- <CAHp75Vf=8L8fk0a=9auX5RboF8yCnfmz3JH9OGT7yAV3ZX1ybw@mail.gmail.com>
+        Mon, 2 Sep 2019 14:26:41 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i4r2D-0007rt-Qw; Mon, 02 Sep 2019 18:26:37 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jamal Hadi Salim <jhs@mojatatu.com>,
+        Cong Wang <xiyou.wangcong@gmail.com>,
+        Jiri Pirko <jiri@resnulli.us>,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] net/sched: cbs: remove redundant assignment to variable port_rate
+Date:   Mon,  2 Sep 2019 19:26:37 +0100
+Message-Id: <20190902182637.22167-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHp75Vf=8L8fk0a=9auX5RboF8yCnfmz3JH9OGT7yAV3ZX1ybw@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9368 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1909020196
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9368 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1909020196
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Sep 02, 2019 at 06:12:07PM +0300, Andy Shevchenko wrote:
-> On Mon, Sep 2, 2019 at 5:41 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> >
-> > This error handling is reversed so we return early.
-> >
-> 
-> I will squash to the original commit since it's not yet upstream.
-> 
-> Are you okay with this?
-> 
+From: Colin Ian King <colin.king@canonical.com>
 
-Sure.  That's fine.
+Variable port_rate is being initialized with a value that is never read
+and is being re-assigned a little later on. The assignment is redundant
+and hence can be removed.
 
-regards,
-dan carpenter
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ net/sched/sch_cbs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/sched/sch_cbs.c b/net/sched/sch_cbs.c
+index 810645b5c086..93b58fde99b7 100644
+--- a/net/sched/sch_cbs.c
++++ b/net/sched/sch_cbs.c
+@@ -299,7 +299,7 @@ static void cbs_set_port_rate(struct net_device *dev, struct cbs_sched_data *q)
+ {
+ 	struct ethtool_link_ksettings ecmd;
+ 	int speed = SPEED_10;
+-	int port_rate = -1;
++	int port_rate;
+ 	int err;
+ 
+ 	err = __ethtool_get_link_ksettings(dev, &ecmd);
+-- 
+2.20.1
 

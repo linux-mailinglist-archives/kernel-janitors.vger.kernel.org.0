@@ -2,101 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CCEDA5291
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Sep 2019 11:11:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E59FA52DF
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Sep 2019 11:35:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730952AbfIBJLE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 2 Sep 2019 05:11:04 -0400
-Received: from shell.v3.sk ([90.176.6.54]:41884 "EHLO shell.v3.sk"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730015AbfIBJLE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 2 Sep 2019 05:11:04 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra.v3.sk (Postfix) with ESMTP id EDC08CE718;
-        Mon,  2 Sep 2019 11:11:00 +0200 (CEST)
-Received: from shell.v3.sk ([127.0.0.1])
-        by localhost (zimbra.v3.sk [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id OkqU5dSpAxIO; Mon,  2 Sep 2019 11:10:55 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra.v3.sk (Postfix) with ESMTP id B94ADD8CED;
-        Mon,  2 Sep 2019 11:10:54 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at zimbra.v3.sk
-Received: from shell.v3.sk ([127.0.0.1])
-        by localhost (zimbra.v3.sk [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id FVUC0wSz7RId; Mon,  2 Sep 2019 11:10:53 +0200 (CEST)
-Received: from belphegor (nat-pool-brq-t.redhat.com [213.175.37.10])
-        by zimbra.v3.sk (Postfix) with ESMTPSA id 91A20CE718;
-        Mon,  2 Sep 2019 11:10:52 +0200 (CEST)
-Message-ID: <ca0213fd439a2b569e0d3bdb000712ee62ff4836.camel@v3.sk>
-Subject: Re: [PATCH] pxa168fb: Fix the function used to release some memory
- in an error handling path
-From:   Lubomir Rintel <lkundrak@v3.sk>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        b.zolnierkie@samsung.com, yuehaibing@huawei.com
-Cc:     dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Date:   Mon, 02 Sep 2019 11:10:46 +0200
-In-Reply-To: <20190831100024.3248-1-christophe.jaillet@wanadoo.fr>
-References: <20190831100024.3248-1-christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
+        id S1731128AbfIBJep (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Sep 2019 05:34:45 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:33634 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729882AbfIBJep (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 2 Sep 2019 05:34:45 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i4ijL-0006Rq-1A; Mon, 02 Sep 2019 09:34:35 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        ocfs2-devel@oss.oracle.com
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][V2] ocfs2: remove deadcode on variable tmp_oh check
+Date:   Mon,  2 Sep 2019 10:34:34 +0100
+Message-Id: <20190902093434.27739-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 2019-08-31 at 12:00 +0200, Christophe JAILLET wrote:
-> In the probe function, some resources are allocated using 'dma_alloc_wc()',
-> they should be released with 'dma_free_wc()', not 'dma_free_coherent()'.
-> 
-> We already use 'dma_free_wc()' in the remove function, but not in the
-> error handling path of the probe function.
-> 
-> Also, remove a useless 'PAGE_ALIGN()'. 'info->fix.smem_len' is already
-> PAGE_ALIGNed.
-> 
-> Fixes: 638772c7553f ("fb: add support of LCD display controller on pxa168/910 (base layer)")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Colin Ian King <colin.king@canonical.com>
 
-Reviewed-by: Lubomir Rintel <lkundrak@v3.sk>
+At the end of ocfs2_inode_lock_tracker tmp_oh is true because an
+earlier check on tmp_oh being false returns out of the function.
+Since tmp_oh is true, the function will always return 1 so remove
+the redundant check and return of 0.
 
-Thanks,
-Lubo
+Also update description in comment, return -EINVAL and not -1.
 
-> ---
-> The change about PAGE_ALIGN should probably be part of a separate commit.
-> However, git history for this driver is really quiet. If you think it
-> REALLY deserves a separate patch, either split it by yourself or axe this
-> part of the patch. I won't bother resubmitting for this lonely cleanup.
-> Hoping for your understanding.
-> ---
->  drivers/video/fbdev/pxa168fb.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/video/fbdev/pxa168fb.c b/drivers/video/fbdev/pxa168fb.c
-> index 1410f476e135..1fc50fc0694b 100644
-> --- a/drivers/video/fbdev/pxa168fb.c
-> +++ b/drivers/video/fbdev/pxa168fb.c
-> @@ -766,8 +766,8 @@ static int pxa168fb_probe(struct platform_device *pdev)
->  failed_free_clk:
->  	clk_disable_unprepare(fbi->clk);
->  failed_free_fbmem:
-> -	dma_free_coherent(fbi->dev, info->fix.smem_len,
-> -			info->screen_base, fbi->fb_start_dma);
-> +	dma_free_wc(fbi->dev, info->fix.smem_len,
-> +		    info->screen_base, fbi->fb_start_dma);
->  failed_free_info:
->  	kfree(info);
->  
-> @@ -801,7 +801,7 @@ static int pxa168fb_remove(struct platform_device *pdev)
->  
->  	irq = platform_get_irq(pdev, 0);
->  
-> -	dma_free_wc(fbi->dev, PAGE_ALIGN(info->fix.smem_len),
-> +	dma_free_wc(fbi->dev, info->fix.smem_len,
->  		    info->screen_base, info->fix.smem_start);
->  
->  	clk_disable_unprepare(fbi->clk);
+Addresses-Coverity: ("Logically dead code")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+
+V2: Fix typo of function name in description.
+    Update description in comment as noted by Joseph Qi
+
+---
+ fs/ocfs2/dlmglue.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/fs/ocfs2/dlmglue.c b/fs/ocfs2/dlmglue.c
+index ad594fef2ab0..640eee2bb903 100644
+--- a/fs/ocfs2/dlmglue.c
++++ b/fs/ocfs2/dlmglue.c
+@@ -2626,7 +2626,8 @@ void ocfs2_inode_unlock(struct inode *inode,
+  *
+  * return < 0 on error, return == 0 if there's no lock holder on the stack
+  * before this call, return == 1 if this call would be a recursive locking.
+- * return == -1 if this lock attempt will cause an upgrade which is forbidden.
++ * return == -EINVAL if this lock attempt will cause an upgrade which is
++ * forbidden.
+  *
+  * When taking lock levels into account,we face some different situations.
+  *
+@@ -2712,7 +2713,7 @@ int ocfs2_inode_lock_tracker(struct inode *inode,
+ 			return status;
+ 		}
+ 	}
+-	return tmp_oh ? 1 : 0;
++	return 1;
+ }
+ 
+ void ocfs2_inode_unlock_tracker(struct inode *inode,
+-- 
+2.20.1
 

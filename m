@@ -2,37 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E264A6ACD
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 16:07:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36747A6B2C
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 16:21:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728122AbfICOHQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Sep 2019 10:07:16 -0400
-Received: from mout.web.de ([212.227.17.11]:36333 "EHLO mout.web.de"
+        id S1729419AbfICOUz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Sep 2019 10:20:55 -0400
+Received: from mout.web.de ([212.227.17.11]:40273 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727107AbfICOHQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Sep 2019 10:07:16 -0400
+        id S1729137AbfICOUz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 3 Sep 2019 10:20:55 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1567519613;
-        bh=q4RXe1YLletHihYnQuICVb68/R49CnEC2KcEeoctzSU=;
+        s=dbaedf251592; t=1567520444;
+        bh=vMgAzBXUWskQTecRcuVXqAK+gjDpq21bPltTH0WE3wk=;
         h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=gTFYfUG30s9aynamovIpT5m/SCgcPKhOD6DgDClJD0zQguCAP0Kysb3M1TSenU6zK
-         HA2L/aY961ezFflz+BcnUMkE7LeC80a0GqJofNpFsjnh1c4UqNnA124O3QovLbyOMd
-         Z04NPjNQ1AI+b/PUnh0cCQrJg9y3kxn2aNFoHSP0=
+        b=fC1oVZvEWv3nQ3lMjV2GfDu7pzJfKRimmvc/pvavAk45RDjSLrIzWsSLverB/AgBM
+         REktN3nbH98jahG46oyagHSJIdLvUVrs3gs+E5UI81MKz8M+sWdLpWCOsh3+wSU39H
+         MNK71aeMReNY6PXKV5zn5SicosL3oHerj8a1wryc=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.133.43]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LlFLm-1icq783jao-00b5Xg; Tue, 03
- Sep 2019 16:06:53 +0200
-To:     kernel-janitors@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jeff Layton <jlayton@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Matthew Wilcox <willy@infradead.org>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>
+Received: from [192.168.1.2] ([93.133.133.43]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MbQKW-1hmNpv439g-00Ii7G; Tue, 03
+ Sep 2019 16:20:44 +0200
+To:     linux-ntfs-dev@lists.sourceforge.net,
+        Anton Altaparmakov <anton@tuxera.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] isofs: Delete unnecessary checks before brelse()
+Subject: [PATCH] ntfs: Delete unnecessary checks before brelse()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -76,44 +71,44 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <0ab9272b-fce5-1fa3-6625-898afd1b9b8f@web.de>
-Date:   Tue, 3 Sep 2019 16:06:49 +0200
+Message-ID: <43a59c6a-3635-1fab-1945-292d637663c9@web.de>
+Date:   Tue, 3 Sep 2019 16:20:42 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:mZFPA8xNdmdRQrCtkeLeq+av0oFkjw3A4TyBktBF21FLlq4dwqr
- 6CAKpQ+u3fm/YZGQf0jt1PmpMAvhkmKEUxULw7g+iFwZQ3fJN6G96AxEAB/WjKG03od/d3f
- LE0unixsxTgdkWyJtTxMzbdRE6MoMgF8NDf3u1rIyLTAwte8QjXHb/37gPh+amfObCegz9/
- cXeumNSUVeM6rOCtxaleg==
+X-Provags-ID: V03:K1:ztnoEwB7aMfeVUajX7qUfS9p3bmeZ+tI6B5JJX3RDPEb+rx6u+e
+ AhF0Nmvk8ckkG0Q7m1ou9EBafIyIc/fDLaZHj+dQrcISogiH4Y7ZDSxK6wN/yRgRMn7S895
+ 2kly7v5wiPInx6nwBoJjJRnr14EGgm0f7TFdNdBFf5tUwQh2vrOxh7LaQqVkT4Q9DgSgpkr
+ MCLp1Y2CUuWabv3RfAmJw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:lXg4Xvl78jo=:YG1LsogW42romWu+eHYiRi
- B0qt+xem4EwJ2iZ/oFEYTRYyIzV9pSVGTm4vpErK8lPsXpnm5P54LnwNfQ8ggK4V/vWk44d3K
- 5DRVaNuM93kFyvwoo5jBKULW89aFHo858vFIKKYjrzpa4KRS5Mdrage7dZV4azHAsGvzNjeAU
- OnGHLcJmKYeUZykk6fg+aGvKKbhqCZV/XFjjQ7PaeHt3G9g0DW8ZNpdMTziBlkWD48gB5URVo
- sCCNQnR4Jogw8YR6drTkcqP7jI5OVAkyPfsj23fOHOvBz+YYBnitNsrhJ+yzm/oWSrdo+9Iuj
- eVGFz0cy5MYBqGKjuV6Bu1U/Comzk9AiXgIfITpQkO+vkOQUkz+07bMCuDNJera2rj7wFNVaF
- fzyLp5ycNIA+QCSKbfO+mngl3d6OegvJ1ZMw91uuAqzPF+Jtyp7gpfjh2SiiiBxmyNKf/OZZo
- M9g9VYXymDJQdgzNKhbcZWB8WznF1ckUYHA5zSaIhpgD16ShfaP1aAbNSVgDvi/1soJoaPt5n
- Em10hY3f9dJWXspBy9Ylpv3JY127DWUa3x/z3ZTelEUVY4tQ3419u4nQ+zLpVWigTX3M9bOaL
- hLFrd1nN/xIrOz2e2syWutM+B//eQnwDAG3UW0sqT3fh/lCuItRsmUqAr/UIiZSzmpr5jqiXf
- eRSQpzO4j4vSaS4IwHnr3gosJi1aOykXxDveeWzpAsW0r2wVRkX8yGXEKoammwmopaw3A9Bxn
- 4tkLndW50qnutFB3GwfrLaI64jDVY9uGFpqUzX3nCmDY3mwazEoRdHJ2G5PlH2vIBj05NjesU
- HGCxZYZE2C4SrFHTcQBsxs11hNtJTWNaUEvjr+OKjs1dojok5YGJzM7SAegW5146ToEclS6KQ
- v9yQyIH7tFE8Iniz0O7T9ums3YQI2keJouFeGs8vkrHM2nXP7H9qhgqFZfAKV5PiLekgDIvdx
- R9umbLiuabXk+z9ClE5BMLZMVyLkI72IhIrxc+Rty6o4qFf+B/QDwHKkvytyW8duYyCi6zcB4
- 8ZmsFoAEAp1oPITQpsRC8h5PLHOkklw9E9JO5f71vlstpzuo1lwhjJGBaQtyUSjZXeWAdJ1ew
- D2J0MY8AY3L90D49m5V4cKLcuX/Qw0C2QfN6SeUvhgYL4Wp0Zt4ZqEx4LR0gu4oHTjGvIRr4p
- 62hoLvXqPa1Mw3jKgaKPhTjdKXcfnG0edRj0zOyiYTNJ+iiA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1SMwqbzjxTU=:VdhFO7S5YgunW7J5HVQzoe
+ liyI15Kc45OF7p1O9Ne3rmQbQTR1LOP2GzATySlYk83qxhMRhJOR6ehj8qwf2DNBrYWFae72A
+ kfGUB3scE/e1N2zt+8HED9EvXI6hQjC6wTN9QNRTuC/dPvL22WN9Hd6265FUlDS2fJQyBfhg0
+ WvMGXjnjlHF/CuPbP2jsPX/IOJbLgBc3HWf9T2O/vxBJMX+ek2Db0+j8A4cNDaudQvNZRbwUV
+ B6yybjJvYhdIpI6lspkERMmYnKi6JoOCKZH3PXMTmYKlf7eyy9+fjUtPORk8NlKqP8LyWKVIo
+ MlN+1xGTSqKgtt8gffd33RonoP+0F6rVFRHo/ZLAsBA08tvaAT5vIT5LA9YwzUov+bNr3FLhu
+ ggweaHDP9jW59xtTtUodg/5Y6oxUfiUZm2bSAq+CVv8kMpNTPWCB2L5P2tcNRDnjcjfDm4UyA
+ OyjQ2Sc6ho2X+vJUfw6wNf7Dyje6y7AWVFZlN9uZDB6XM4koZtP9RBzbzRlzH3g8D3R/cu+A2
+ ms/a5Hfwod0zRBWiBDtMDTFaKR/ls6CRPzWGmwzqKN9d1iBp6v4tc+muN4bRf2vt/vEPbEHdt
+ VgjKdL0+EhNwnqS1kIXDK7NrSjwV2fQEoWqfwu/UAn4QeENNEaZcvXh+2DDA9wAMm6ZQEpksV
+ /kNGjpReHmQCYqPlI9c99U/CN/QjaEY/Eq1iM9Irypsgv+0cUCH49gyBY7VT1GTyRn1Lrjq/a
+ 6K8FhoTjQMrlH1jAqPR+6TCnDi304awOZkd00n6ODqtYiLhQIm4u0ZEeIH5+coNQuDVKidHGj
+ RJj8doEBB5iZ+h8ATRoJVfdDdUXJt/oAzuIgZRQM0ErLOB7iRUUNLbaeiohugfzUUKuZNiSUA
+ qdxF4gI80+67O+CvaAsBeSjvwrdk8rWMYocL0k/YFZDA+icpIq4GUp4jyv6gGvgfan3h9f9RQ
+ M1ReG9B82NPrivORCJWkk2RNLPRxJySIBxlasmgDSB9ijgCO0Loy5yxW8TEUSyww89Hj7WZoH
+ PUQb9rpHZ+i0uFyYj2z6jeV82AfLk/37epwrJ9QJvWgUMdvcGrYdVr7+uQ46LDqZnvtogr/Y9
+ TFCTwWM7x3MdHFgHHHaRVWetpr6eJ+HtL5ZPjdiHvjJAzkDjXZpZEpCVfwA+IaxClGrJe82WO
+ E9vMb7OsmI7ROjuVZu7HILYjT2S/npvdaOHcxVIYSNoeKoLA==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 3 Sep 2019 15:51:17 +0200
+Date: Tue, 3 Sep 2019 16:18:07 +0200
 
 The brelse() function tests whether its argument is NULL
 and then returns immediately.
@@ -123,73 +118,35 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- fs/isofs/dir.c    | 3 +--
- fs/isofs/export.c | 3 +--
- fs/isofs/inode.c  | 9 +++------
- 3 files changed, 5 insertions(+), 10 deletions(-)
+ fs/ntfs/super.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/fs/isofs/dir.c b/fs/isofs/dir.c
-index f0fe641893a5..8e6a09de15b7 100644
-=2D-- a/fs/isofs/dir.c
-+++ b/fs/isofs/dir.c
-@@ -237,8 +237,7 @@ static int do_isofs_readdir(struct inode *inode, struc=
-t file *file,
-
- 		continue;
- 	}
--	if (bh)
--		brelse(bh);
-+	brelse(bh);
- 	return 0;
- }
-
-diff --git a/fs/isofs/export.c b/fs/isofs/export.c
-index 35768a63fb1d..11bf964f4886 100644
-=2D-- a/fs/isofs/export.c
-+++ b/fs/isofs/export.c
-@@ -102,8 +102,7 @@ static struct dentry *isofs_export_get_parent(struct d=
-entry *child)
- 	rv =3D d_obtain_alias(isofs_iget(child_inode->i_sb, parent_block,
- 				     parent_offset));
-  out:
--	if (bh)
--		brelse(bh);
-+	brelse(bh);
- 	return rv;
- }
-
-diff --git a/fs/isofs/inode.c b/fs/isofs/inode.c
-index 62c0462dc89f..05b6f6078d9b 100644
-=2D-- a/fs/isofs/inode.c
-+++ b/fs/isofs/inode.c
-@@ -1284,13 +1284,11 @@ static int isofs_read_level3_size(struct inode *in=
-ode)
- 	} while (more_entries);
- out:
- 	kfree(tmpde);
--	if (bh)
--		brelse(bh);
-+	brelse(bh);
- 	return 0;
-
- out_nomem:
--	if (bh)
--		brelse(bh);
-+	brelse(bh);
- 	return -ENOMEM;
-
- out_noread:
-@@ -1491,8 +1489,7 @@ static int isofs_read_inode(struct inode *inode, int=
- relocated)
- 	ret =3D 0;
- out:
- 	kfree(tmpde);
--	if (bh)
--		brelse(bh);
-+	brelse(bh);
- 	return ret;
-
- out_badread:
+diff --git a/fs/ntfs/super.c b/fs/ntfs/super.c
+index 29621d40f448..f0ed1a3e5c7e 100644
+=2D-- a/fs/ntfs/super.c
++++ b/fs/ntfs/super.c
+@@ -676,8 +676,7 @@ static struct buffer_head *read_ntfs_boot_sector(struc=
+t super_block *sb,
+ 	} else if (!silent)
+ 		ntfs_error(sb, read_err_str, "primary");
+ 	if (!(NTFS_SB(sb)->on_errors & ON_ERRORS_RECOVER)) {
+-		if (bh_primary)
+-			brelse(bh_primary);
++		brelse(bh_primary);
+ 		if (!silent)
+ 			ntfs_error(sb, "Mount option errors=3Drecover not used. "
+ 					"Aborting without trying to recover.");
+@@ -703,8 +702,7 @@ static struct buffer_head *read_ntfs_boot_sector(struc=
+t super_block *sb,
+ 	} else if (!silent)
+ 		ntfs_error(sb, read_err_str, "backup");
+ 	/* We failed. Cleanup and return. */
+-	if (bh_primary)
+-		brelse(bh_primary);
++	brelse(bh_primary);
+ 	return NULL;
+ hotfix_primary_boot_sector:
+ 	if (bh_primary) {
 =2D-
 2.23.0
 

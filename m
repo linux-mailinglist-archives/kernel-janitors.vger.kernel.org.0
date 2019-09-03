@@ -2,112 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 02AFCA6D47
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 17:51:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B79B0A715D
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 19:06:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729764AbfICPvJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Sep 2019 11:51:09 -0400
-Received: from ale.deltatee.com ([207.54.116.67]:60760 "EHLO ale.deltatee.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729117AbfICPvJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Sep 2019 11:51:09 -0400
-Received: from guinness.priv.deltatee.com ([172.16.1.162])
-        by ale.deltatee.com with esmtp (Exim 4.89)
-        (envelope-from <logang@deltatee.com>)
-        id 1i5B5H-0006fG-8O; Tue, 03 Sep 2019 09:51:08 -0600
-To:     Christoph Hellwig <hch@infradead.org>,
-        YueHaibing <yuehaibing@huawei.com>
-Cc:     Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20190831124932.18759-1-yuehaibing@huawei.com>
- <20190902075006.GB754@infradead.org>
-From:   Logan Gunthorpe <logang@deltatee.com>
-Message-ID: <9d2094f7-eb71-4975-eb9b-166a1483afa0@deltatee.com>
-Date:   Tue, 3 Sep 2019 09:51:05 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1730068AbfICRGl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Sep 2019 13:06:41 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53947 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725782AbfICRGl (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 3 Sep 2019 13:06:41 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i5CGN-0005kb-Az; Tue, 03 Sep 2019 17:06:39 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] media: cx231xx: remove redundant assignment to variable status
+Date:   Tue,  3 Sep 2019 18:06:39 +0100
+Message-Id: <20190903170639.13849-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190902075006.GB754@infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-CA
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 172.16.1.162
-X-SA-Exim-Rcpt-To: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, bhelgaas@google.com, yuehaibing@huawei.com, hch@infradead.org
-X-SA-Exim-Mail-From: logang@deltatee.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
-X-Spam-Level: 
-X-Spam-Status: No, score=-8.7 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        GREYLIST_ISWHITE,MYRULES_FREE autolearn=ham autolearn_force=no
-        version=3.4.2
-Subject: Re: [PATCH -next] PCI: Use GFP_ATOMIC in resource_alignment_store()
-X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
+Variable status is being initialized with a value that is never read
+and is being re-assigned a later on. The assignment is redundant and
+hence can be removed.
 
-On 2019-09-02 1:50 a.m., Christoph Hellwig wrote:
-> On Sat, Aug 31, 2019 at 12:49:32PM +0000, YueHaibing wrote:
->> When allocating memory, the GFP_KERNEL cannot be used during the
->> spin_lock period. It may cause scheduling when holding spin_lock.
->>
->> Fixes: f13755318675 ("PCI: Move pci_[get|set]_resource_alignment_param() into their callers")
->> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
->> ---
->>  drivers/pci/pci.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
->> index 484e35349565..0b5fc6736f3f 100644
->> --- a/drivers/pci/pci.c
->> +++ b/drivers/pci/pci.c
->> @@ -6148,7 +6148,7 @@ static ssize_t resource_alignment_store(struct bus_type *bus,
->>  	spin_lock(&resource_alignment_lock);
->>  
->>  	kfree(resource_alignment_param);
->> -	resource_alignment_param = kstrndup(buf, count, GFP_KERNEL);
->> +	resource_alignment_param = kstrndup(buf, count, GFP_ATOMIC);
->>  
->>  	spin_unlock(&resource_alignment_lock);
-> 
-> Why not move the allocation outside the lock? Something like this
-> seems much more sensible:
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/media/usb/cx231xx/cx231xx-avcore.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yes, that seems like a good way to do it. Bjorn, can you squash
-Christoph's patch or do you want me to resend a new one?
+diff --git a/drivers/media/usb/cx231xx/cx231xx-avcore.c b/drivers/media/usb/cx231xx/cx231xx-avcore.c
+index d417b5fe4093..0974965e848f 100644
+--- a/drivers/media/usb/cx231xx/cx231xx-avcore.c
++++ b/drivers/media/usb/cx231xx/cx231xx-avcore.c
+@@ -1240,7 +1240,7 @@ int cx231xx_init_ctrl_pin_status(struct cx231xx *dev)
+ int cx231xx_set_agc_analog_digital_mux_select(struct cx231xx *dev,
+ 					      u8 analog_or_digital)
+ {
+-	int status = 0;
++	int status;
+ 
+ 	/* first set the direction to output */
+ 	status = cx231xx_set_gpio_direction(dev,
+-- 
+2.20.1
 
-Thanks,
-
-Logan
-
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index 484e35349565..fe205829f676 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -6145,14 +6145,16 @@ static ssize_t resource_alignment_show(struct bus_type *bus, char *buf)
->  static ssize_t resource_alignment_store(struct bus_type *bus,
->  					const char *buf, size_t count)
->  {
-> -	spin_lock(&resource_alignment_lock);
-> +	char *param = kstrndup(buf, count, GFP_KERNEL);
->  
-> -	kfree(resource_alignment_param);
-> -	resource_alignment_param = kstrndup(buf, count, GFP_KERNEL);
-> +	if (!param)
-> +		return -ENOMEM;
->  
-> +	spin_lock(&resource_alignment_lock);
-> +	kfree(resource_alignment_param);
-> +	resource_alignment_param = param;
->  	spin_unlock(&resource_alignment_lock);
-> -
-> -	return resource_alignment_param ? count : -ENOMEM;
-> +	return count;
->  }
->  
->  static BUS_ATTR_RW(resource_alignment);
-> 

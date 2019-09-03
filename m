@@ -2,31 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B58BA72E7
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 20:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EA4FA737F
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 21:16:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726585AbfICS4R (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Sep 2019 14:56:17 -0400
-Received: from mout.web.de ([212.227.17.12]:35861 "EHLO mout.web.de"
+        id S1726663AbfICTQG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Sep 2019 15:16:06 -0400
+Received: from mout.web.de ([212.227.17.11]:57555 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726405AbfICS4R (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Sep 2019 14:56:17 -0400
+        id S1726090AbfICTQG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 3 Sep 2019 15:16:06 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1567536966;
-        bh=1GA2J9m9mybjuD/wxFfCLvlV0J082nH7JNrhi5iBmYY=;
+        s=dbaedf251592; t=1567538159;
+        bh=zzrEATD+1BmU9PsscIqSYQZeK8WIT7N6zHjK6UVPtDM=;
         h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=MdTKBUY1OUsK90er/NvlMnFfC1s9sVyz5YuMKEzUbDM87smtg9fASJ9bts6lTs7GI
-         Lv3CJCs+2GSppTYfZo10LGgYSbwhrCmM08aGsDFOVTdN7zFA/QUX9l1n3q+H7YQlMg
-         kNtX0sFNs4MlCxSCMS9TI7ZZje+s2Fv/0iKEQxCw=
+        b=nju9EEZETWY99eLf1p+9rtRrG+2vRBloianG8Ocq3ESJAceOfR5KsbYrQpe0GtSPP
+         /Hn3rHqaJMP0I8IizxaVA2o7Z+cKygMqEaH049KiP1kmSEPGTUgYUpI4zgvVmVqqxv
+         0TU9NNxpiNE0durkzL99DoSiOVvZqIgNGa4BXLxg=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.133.133.43]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MHp4r-1i2CdP0XhV-003hTo; Tue, 03
- Sep 2019 20:56:06 +0200
-To:     kernel-janitors@vger.kernel.org,
-        Christoph Hellwig <hch@infradead.org>
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LgpNC-1iYBq51k8M-00oFmN; Tue, 03
+ Sep 2019 21:15:59 +0200
+To:     kernel-janitors@vger.kernel.org, Jan Kara <jack@suse.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] fs/sysv: Delete unnecessary checks before brelse()
+Subject: [PATCH] fs-udf: Delete an unnecessary check before brelse()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -70,94 +69,72 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <e5739a6d-cecd-5e76-df30-d74554681fd1@web.de>
-Date:   Tue, 3 Sep 2019 20:56:05 +0200
+Message-ID: <a254c1d1-0109-ab51-c67a-edc5c1c4b4cd@web.de>
+Date:   Tue, 3 Sep 2019 21:15:58 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:QNsdaFtEpANTCjcvNxlIY7CnI8zy+ZVBvH/d+X45fcfoXGu/NXQ
- IxNUTltQW09f4LEOyV+rPzuTvvybaU7Ba9g6e1HrZhaNqZV1cKaw6hxnTonIE9kFF02WEpL
- +jWUCJK32fs2mivw9LNmrzefKK42oh6Tr2R7rlG2L1tJl8iwl6BT4Wqbtj639S99hfaAg2v
- Oq+O7Ra8jm/TTFy7Ok/bw==
+X-Provags-ID: V03:K1:FrWCpTqEp8JSv8hpv4MGgz+kV5tmJtQwdjH5cdo6ZUA5ZC7kOnr
+ nwqdZ0V46WzTz74i3HBggJvcENuusqnWNIhxmkzAjx8O/YsCg1Cf9ZE9fs75DUxdXluicEJ
+ LWWXeplH1b3xAb84e5lLImSXYgp2rN2UxmdzjBvshlFTZiudQ0W9Dq0PcL0YldSGbqMHf+l
+ BQVVRq0hMnKCix/eXEm4w==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:HX7DGUkQ+uQ=:7NRwHF45HIkxisULxOUc1v
- 9vRhYq8Ti/OsxIuHERFWns6K4L72rLKJBmwKeCyANGEDCUCFdMyYwbaYXU1vRj1GDznzNYrZH
- 9xVwKBmnazqZepfcUDdILP5291PEfG7+9p6kWI8jQHXeqkRaS58cEZess43GpLTNbOYOJ2Ep4
- CQnnmjnbiJu1O68stC5MiUD2qLEzp5e2xPF52Ojw68TxBFEt6i+51dTWbZVHPPQt0oXg5jo3O
- aABbuWUn0x75SrsPtr6mZshGfwShl7wMFMB6wCEiyRem/vamVr0kZhUq8BsdagJZnhwTT+L0M
- COvJGssuQ/wrDUQzHs7qhOPmoaibtz0MRZ3761URssLxK/LN9l1FdJz9LTJkW+txGerTt89o/
- ip6asUNOCsPuxAiDENF6o5gRtavIKPhQW02yGgMJF5OQutPA6BA3vx5BOiuYdSwc4KRhjIVLA
- LdsqA2o00lVxL2UdfCFzG9DUb4Ept5OH4BRj+ai0qtFEjk+pI7fstFQclwDFIC3diSsVkBrLN
- hAy2h9wuPjOHhRZHdxIj34YUFgIw6qqMFCK+HQAGmAYZAZCXuCXxfefnDqSqLi88rwY+MDaBF
- 73FyqRkTYI1CL2Ovzq+4UnNNwvOKC+3i0YbpvfHIlmKQvKl6vC6SljUIg1n7gT3c1a7A19vEZ
- fkLBTvjdtFTMABhd5AK6P+udlZZ+OOpJSEuBDQ7OZ2McyKNJDhyJ0sn2fnVxujTdRfMVSHZbj
- KQPsIu4JHt4HT0UjG5ZguNKa6RqWICrjDhu/pe71HU/F1Yjcoa73OjJuU1r6Ta09TMWNHp7at
- UfeEGQE5DWWXKKy3XK9q2Pm8xkmK/KZBncKRWatr0QkYG4lsbPL8B/wSbPI/KrJh/hT9clmdI
- ZMajkzm3FA7bG29J6QHzVDFJ+jYNzABhJ5WtfGEQ96hekRe3LkjjQ3bvcCbMfkvYA11yYnUMT
- ZNb4QYoZbZkbL2wDTKUkvWIW3DnLmCsKASteNbmxVONyM334FBaiqHW3E3Xk29didnRisu23T
- 5/CTUH9+evEX+POy8SO5dLPLmJwSy7HbyEcI7u+BSPMQsPALBolOwKfRvVwFAFUA1QJLH77fS
- +J6ZUQS5ggOLZydfHglzsmTZoCEdwf4fqExXsgPLq/a4IEStwfNM7NQkyw09wP//SPb+Zsn5S
- 28l0PVfHZ9U/7M21vB4RWaTVkq72M3Ke1VHAWv690weJq+Gg==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:h4g9ClBbIXE=:NuNq4MHu4rRIj4K4nhfKBO
+ bCwQmabwkc1zg1tkA7gq6O/vUD2cr06thCzrAtGkeT27ytOcPWeLH604xX++9lpUyEiJe1AG3
+ oAaPcdg1NITKDdUwBFuivGymLIlWKKbF+CBnAv7TSUALs5Ec95FnWSvROxcbeqYjSWP7SHo2I
+ c876y/cUO9BQH2f1xyP2JDAo852toaG0fHEyfCPYhQHn8RfLd+7wmC1+MjVTuzqKx4pTvM8CO
+ 32nJfAXWq4sa1boCK0MG3FXQPY5kPdwPgRRmvx9rGqopVaaq5yN64Pn32e5B4DMQmldVsIvyi
+ jI/YeWB0G1yem7KLwzZzrqzFdxX3KLJ6AcWnuXpy8NwH7kfXscrj0Nsq4CLgXNxrh+aQ6RPcs
+ omwZRKwn6dBFsDJrmeNlyx7/PkI/B1RfEj9DzZgJG0sYNkHf0vHqQdMzVlB5vaAXRdz+Laaoo
+ hPgDmZ+/5SDerizSqIMb0Km7RFhhJNhX1PAT509DjonIuesH0MTKAr76WIkq5qNCbxkV+s5wN
+ GcBCWP4Z1I83pqyWURpuQ70AsGQT6MQU1kGDZau9dP7Z0I+Op8ldW+8rx5BNCPNwzDOGocJbO
+ Uddv0KtN1oqaKVm/KeXZ/rX/BkgLmT/xefgZsiXEA86heUeTFJnZ6dlxsaLs0uHAFdK5PNa//
+ 23d7av2dwhQds6uElPRtpL1/nLhzEwCNsQP8Gmofa4UVDuVCe644VslNoZBW69jQlDbS4F+aB
+ uQpZi+8ZCnPXMXmoYrM54G4YC28YHUD8t16WXUpgH/25gtqhqQyYYP8Az6b5npUHl/A/MWcJR
+ q+Z1YMpbEfLsL2/pYbbvGW11ViF57OVG74fIgjFe99kuqh74mm19cN/fQc4dQ54bOCZcYe6tC
+ wGRtjPLQqyXzBHfxvxiGJZzn5zS1bkS0mAegK/mebWIrKJGClSUDvyFiydeAHRXrhWMzK6eyq
+ RCC+tRYuxSJRcbxq9OH8PI2l3mKifwIHBkIETtUYYwzuErxTqiFmfUQthjZ3I5xnKOml4daKb
+ +k6GGyEoCHn0E2NIlxRs9+q8OWBLNBqP86M0wPgqg1MQC3Gki4xTIAycfS851SCr2A0GJ1Uz2
+ GcZcscr+tXdsY1fBwXA/AEUwtBiJAzj17gA1Y0/TfNePIvZeDJArAO4pXH7GLJL7u9Mfdy55/
+ NgvoCXJhkrvAtu/BH2UUBYku5+wnEUTy4xgaXrtauXzRmaP+ObfM5aydgHFsNly7MZjheTxal
+ +3mlWhcFtc9D9lRm4
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 3 Sep 2019 20:52:07 +0200
+Date: Tue, 3 Sep 2019 21:12:09 +0200
 
 The brelse() function tests whether its argument is NULL
 and then returns immediately.
-Thus the tests around the shown calls are not needed.
+Thus the test around the call is not needed.
 
 This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- fs/sysv/balloc.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ fs/udf/super.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/sysv/balloc.c b/fs/sysv/balloc.c
-index 0e69dbdf7277..dd7fdc728ba7 100644
-=2D-- a/fs/sysv/balloc.c
-+++ b/fs/sysv/balloc.c
-@@ -195,8 +195,7 @@ unsigned long sysv_count_free_blocks(struct super_bloc=
-k * sb)
- 			break;
+diff --git a/fs/udf/super.c b/fs/udf/super.c
+index 56da1e1680ea..0cd0be642a2f 100644
+=2D-- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -273,8 +273,7 @@ static void udf_sb_free_bitmap(struct udf_bitmap *bitm=
+ap)
+ 	int nr_groups =3D bitmap->s_nr_groups;
 
- 		block =3D fs32_to_cpu(sbi, zone);
--		if (bh)
--			brelse(bh);
-+		brelse(bh);
+ 	for (i =3D 0; i < nr_groups; i++)
+-		if (bitmap->s_block_bitmap[i])
+-			brelse(bitmap->s_block_bitmap[i]);
++		brelse(bitmap->s_block_bitmap[i]);
 
- 		if (block < sbi->s_firstdatazone || block >=3D sbi->s_nzones)
- 			goto Einval;
-@@ -207,8 +206,7 @@ unsigned long sysv_count_free_blocks(struct super_bloc=
-k * sb)
- 		n =3D fs16_to_cpu(sbi, *(__fs16*)bh->b_data);
- 		blocks =3D get_chunk(sb, bh);
- 	}
--	if (bh)
--		brelse(bh);
-+	brelse(bh);
- 	if (count !=3D sb_count)
- 		goto Ecount;
- done:
-@@ -224,8 +222,7 @@ unsigned long sysv_count_free_blocks(struct super_bloc=
-k * sb)
- 	goto trust_sb;
- E2big:
- 	printk("sysv_count_free_blocks: >flc_size entries in free-list block\n")=
-;
--	if (bh)
--		brelse(bh);
-+	brelse(bh);
- trust_sb:
- 	count =3D sb_count;
- 	goto done;
+ 	kvfree(bitmap);
+ }
 =2D-
 2.23.0
 

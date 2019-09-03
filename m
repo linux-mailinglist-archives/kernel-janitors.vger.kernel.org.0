@@ -2,31 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CCAE1A68CE
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 14:44:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A11F7A6929
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 15:00:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729128AbfICMoR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Sep 2019 08:44:17 -0400
-Received: from mout.web.de ([212.227.17.12]:59177 "EHLO mout.web.de"
+        id S1729088AbfICNAX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Sep 2019 09:00:23 -0400
+Received: from mout.web.de ([212.227.17.12]:59201 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728996AbfICMoR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Sep 2019 08:44:17 -0400
+        id S1728865AbfICNAW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 3 Sep 2019 09:00:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1567514650;
-        bh=OB42t441CkjUlM1xTY9OGP06693iK0948hcgi9EiEaI=;
+        s=dbaedf251592; t=1567515614;
+        bh=TACTq/7Sh2DvF7fuE38uHW8xjRw9dstZVOuHVc/RdWE=;
         h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=piNmEVL1DWo/PMf5GIczGhNf0CJqcg8I50t6Sc8YLLKwEFeRrUGF6jPArwPAOPmvp
-         8pVrwi4hbiiwhjF8meDrwiFKEYIyI8qIqD/nlPHxyMb5bALS5bddLi4R3laNjDq5Ux
-         pE5V+DqdlzJf8XApYOxc+O3VVlNS4SmzsJfr9f2A=
+        b=cwcZsKZOeGJmNLAuYpwMqdXSzxeq1C7lr3E8SekM2paXCsGGiGdbANX6u/eqpiTY9
+         PKZH6vsJLn5kbTi3Zhh6rf5V22zMWLfGm1L7LFsIV7bVgZo9ikrAOWUE3WNOx5ot+t
+         7xzcDOHU4MItAfss/7483ztRJWXgazGIVYvy8Xbg=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.133.43]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MEVhF-1hynZo3b7B-00Fk6p; Tue, 03
- Sep 2019 14:44:09 +0200
-To:     linux-ext4@vger.kernel.org, Jan Kara <jack@suse.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+Received: from [192.168.1.2] ([93.133.133.43]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MHY1o-1i1qcs04Wy-003Okn; Tue, 03
+ Sep 2019 15:00:14 +0200
+To:     kernel-janitors@vger.kernel.org,
+        Ogawa Hirofumi <hirofumi@mail.parknet.co.jp>
+Cc:     LKML <linux-kernel@vger.kernel.org>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] ext2: Delete an unnecessary check before brelse()
+Subject: [PATCH] fat: Delete an unnecessary check before brelse()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -70,44 +70,44 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <51dea296-2207-ebc0-bac3-13f3e5c3b235@web.de>
-Date:   Tue, 3 Sep 2019 14:44:08 +0200
+Message-ID: <cfff3b81-fb5d-af26-7b5e-724266509045@web.de>
+Date:   Tue, 3 Sep 2019 15:00:11 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:fDKb4hhNMYZ9p7iiL29GGAMRQGX7LPMidSNO+OnTKZ78fOm7c6J
- BFisXkPeKxMsK37Ku8FRDkpbsPvtUV/gfS05RjhPaHadUTHkfS1RdjYf2kAe5pehUXYY8N2
- sbnFXk7D8AQcYWDMsN7sF6upjqh5VMmWwdy0XRusMVOlgL+dH9ndq6/5/KE55/nVTkolY9J
- IBrF1kj+0beDEtnNUMKgQ==
+X-Provags-ID: V03:K1:jOe2WCQLf1U8ptMwO58KaHweDBDQAwUhPPNh8BGjGvr6xP4so55
+ TI/zxzDnmZ12T7KStp+lk6qqca2WbO9Frn2Jf7UHGOJWGr7upW+6XPtV58LwlD2Yw1pz2pk
+ 9aWLoH/dBBW7AmV1Jt/s587VN2GGhnJp56qrJHC6BSEzmY7/Qk7K2186nCzZ4mktxsM1CKP
+ 2GU0yZC/bn5GKfCuOXUKA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:1WAao00adBI=:5FDVXGdCEhCxWD/GZiDAbj
- qlo/6vlG2hkOkp30I9oWBPMrMfm2Ips+u0YbLNbCcux4zyLTVUVek44zn+cgAsZBRjcxMGkyY
- hJkKF+4K3aVqP2swznTj0kpHRHlEM4YGoorQLTiQKCiVONgS+Uz2J2HlwwME18amYaRe/rFKX
- tbvdpWBQDBtqzCmqY8IRRdMbV2cfFlVmv1bRUYxLQVxioVUd2Ud2xcpXa/zHAX+6+gT0dVfQV
- qjQWwmAq0PJNrRNWljT6Z9AezCKpDUe2k/MbUt6E5bPzGlYbE0bzFrqGbdT81s9rCRyziyUEu
- 7HGVJplqTQDknsCmCsPvroUZ97dUG7j7dfNtpIhvfrnIwFnC9+JowTwK/LtOm3hlXu0QkUQER
- LbPWWgMxdXO6j66SIzxFgMgEGNv43gLVuplmku8jArAje/zZc3tQZ0i0qdGA3n2CDk9VQArQE
- AD2Tn9gJ1p3CXMKUO8pZg0xok6riffIj9kCqTGvhn9HXzxHve/ENIWKBI7a3JamHzI8I23EmD
- LVemdo+HsNnMHOvzKuK36wlSYpq/rx4ki9vqFzM/iZNpgi+pMnQyaqSu6O0/F+KpBf99D7138
- xcvvzHgzWS5ILUr4jXMXqGqx8SKXNELUAGZJ0zPFhgMyMUd0qe536ZlvTNVPhG4e2WKEK1WS2
- 6zp5qpAOyN3YX8t0BJQph1NUIS8JDqyeSJBEDCbLKA7Nckr3axvxzVvCnxIy8YuZW0dn79nwq
- FciJYy2ArTQfFdsvr938css8RBzCh2TsoXDuujPr9opnzWA0kwCLDGnqpmdaqdydwuHVShH/I
- igLAHTZu5G0FNkG2y9XjehMw9oodp5mq0tgNBtMChBSAXxZLVXzSm6tXW19ohPK+LnzZRa/0G
- RHMvBvcUC/wMEpGOiBW8QBb9ii1xubjt9G0PfbqTtJygLCMj7a9IrpddILBCOJixxAZ7soGRe
- liJXOU4J7XTWkmtzo0Zm+IeUJBlLV1fe8IDqsV6TliB75zq5dCHynPaxp4aKobZxUQiQnx5lr
- goaJrxGgs5XgAvEbGDa8FRzt+JztnkLG00jpK6jt98GE4+C2W/LxnWA2l0wD9t93msqaVNTIt
- L7X9cU1ctck3xl05fZ7jeQXCZIJ3DWlJIsqpU11te5ahUTn7INMjBxqy9XngE3Ay7uf14mzov
- KNJMgUdCWlO41DQbLRxHED/yKnEwZvkarahU/9wCu3Q28lyA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:gi9UswCkrqc=:ot7nqrx0CRTJgNTkcFpXhT
+ QfNjI/rxQiMj4wE2st0bS176PbAux4C/EIKG+Pz74x72JrAW7AFimZwL7bsbYVirfBHmLw0k/
+ OySYs8dIcyUcBQcq26xbcvAIIS6S8oZyBRYrMjwUpC8iR2xFTs/mNvgDFlP/04bBTzyhMZHw5
+ TUI2wIzxMJ1P5pzaJFqJT+43+jT+UXUctOO7/rEtjCvTrVS5vEM4I36K04IC/VrbnY2ypMrfn
+ LJd3MmPzjQMdV83FJSZP+mH6aFeORv48/JGwySAdVo7sfjE377qIt09dbQnwCuRPvdgQmtEu5
+ szk+ixgoeNXd0d6RZtJ8sI7W+/uLrKzjjOcPzShmDQaBhVGMgX1Wwj85u00IKL5eiItM7dqgy
+ rw73UpjUV1NY/FdiMTysBYccaWWPanmzc2SVLjS46vk3xZN/+E2h4vXGa8xjEj9Pc8UK5/Ue1
+ lHKAW834BLKVc4mqpf7BS4pxolj7kopWOJF5D1diW8/zNBWi/owZ5L2AeVVMfsSYPqVyzmo9x
+ iEp4ckFjzWAL31ERTvPHbPFBcSugOLiNdISCIU5AtlcqbSROMCD0qzX4WmYbF3VILSECUn9F0
+ a5V728KlZCEN1ECTsQ6eMPbwjCH5t41QhE3LV1MgA8a0JDejM4JP0o4tAntdKTvMKc7fnsAu8
+ 8zIb3fihDwvsdAFSkDX7WJyoiqBNWqySe7y+JDvloQMzNXzSAJdwdxl6+KiHlm+DMjHj+x1bv
+ cy4eaJJY4GHwBTtA51V+eI3mkpFVu7Qv/OxTlqATfYm0G2G9WrLk3wDSUv0ZKR5i6p6g0MbIG
+ si1xd5wigax7yKVakk+oeaEWfMKTYvzFqHUH15jMbPvyEtO/LW3uY5Bb3fKdf3uMgp6jfeMVE
+ o2zT09k3B/Q3qkXflJFJiKIZJuzgJFzaz91qO64u6SntDDyqs0+DhBAfl23XD2j/9sXPAhfcf
+ iE8LK+FQ+oJoo1rGByeFgOqpmJei5BQa2QJwGSzWv9XFs9zAsK9CigiFOtAnFnXuClUAHHBEw
+ HpEjDhtDqDGSyC8RxrnY9I7T0CM0+UJhTZF6J6h2xmzdrIUsnO7x5jtJEW3nL2JqSFRq0nVfR
+ m08pkwfgmtZkIS0BGGqvTyL2+jHochRlppaxSMBpsTcdmthUtRfbGKTAL0yOT2tQzSCyp/wjH
+ EFv2g9jRoXmA5nZL9NIFG5nLBcadXHr414vBezBAKqbQvG/w==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 3 Sep 2019 14:40:18 +0200
+Date: Tue, 3 Sep 2019 14:56:16 +0200
 
 The brelse() function tests whether its argument is NULL
 and then returns immediately.
@@ -117,23 +117,25 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- fs/ext2/super.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/fat/dir.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/ext2/super.c b/fs/ext2/super.c
-index baa36c6fb71e..30c630d73f0f 100644
-=2D-- a/fs/ext2/super.c
-+++ b/fs/ext2/super.c
-@@ -162,8 +162,7 @@ static void ext2_put_super (struct super_block * sb)
- 	}
- 	db_count =3D sbi->s_gdb_count;
- 	for (i =3D 0; i < db_count; i++)
--		if (sbi->s_group_desc[i])
--			brelse (sbi->s_group_desc[i]);
-+		brelse(sbi->s_group_desc[i]);
- 	kfree(sbi->s_group_desc);
- 	kfree(sbi->s_debts);
- 	percpu_counter_destroy(&sbi->s_freeblocks_counter);
+diff --git a/fs/fat/dir.c b/fs/fat/dir.c
+index 1bda2ab6745b..f4bc87a3c98d 100644
+=2D-- a/fs/fat/dir.c
++++ b/fs/fat/dir.c
+@@ -88,9 +88,7 @@ static int fat__get_entry(struct inode *dir, loff_t *pos=
+,
+ 	int err, offset;
+
+ next:
+-	if (*bh)
+-		brelse(*bh);
+-
++	brelse(*bh);
+ 	*bh =3D NULL;
+ 	iblock =3D *pos >> sb->s_blocksize_bits;
+ 	err =3D fat_bmap(dir, iblock, &phys, &mapped_blocks, 0, false);
 =2D-
 2.23.0
 

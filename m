@@ -2,99 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B7E5A71BE
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 19:35:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 80239A7217
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 20:00:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729854AbfICRfS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Sep 2019 13:35:18 -0400
-Received: from mail.alarsen.net ([144.76.18.233]:56558 "EHLO mail.alarsen.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729751AbfICRfS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Sep 2019 13:35:18 -0400
-X-Greylist: delayed 471 seconds by postgrey-1.27 at vger.kernel.org; Tue, 03 Sep 2019 13:35:17 EDT
-Received: from oscar.alarsen.net (unknown [IPv6:2001:470:1f0b:246:4c62:a11:a1a:c92c])
-        by joe.alarsen.net (Postfix) with ESMTPS id DF8FC2B80D96;
-        Tue,  3 Sep 2019 19:27:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alarsen.net; s=joe;
-        t=1567531644; bh=NUJqd5fW3jGPSjQIN+tCQrdb0lPcXg5plbk8kV1a8jU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N9qYdaUr+eCwCArE/7xlDbkAAll2iGrwJfxw9/Sa56FVlWlEHEllCh4HsbJVa8pLk
-         d5KMAbgyIgdgjjArQKFBgxqJjikAs2dsCz515boughNo+Boi5mRZr7cmsI2o9FUyXw
-         uR06MxZe96kSiJWvXLynrubiU8eu61460MujfJbs=
-Received: from oscar.localnet (localhost [IPv6:::1])
-        by oscar.alarsen.net (Postfix) with ESMTP id 3811B27C0D59;
-        Tue,  3 Sep 2019 19:27:22 +0200 (CEST)
-From:   Anders Larsen <al@alarsen.net>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     kernel-janitors@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jeff Layton <jlayton@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] fs/qnx: Delete unnecessary checks before brelse()
-Date:   Tue, 03 Sep 2019 19:27:22 +0200
-Message-ID: <21774224.cEpxz9ejUk@alarsen.net>
-In-Reply-To: <056c8b8e-abaa-8856-4953-118d14048ddc@web.de>
-References: <056c8b8e-abaa-8856-4953-118d14048ddc@web.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+        id S1730156AbfICSAc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Sep 2019 14:00:32 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:40984 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725782AbfICSAb (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 3 Sep 2019 14:00:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+        List-Archive; bh=RdLH2ZTiN6IpQfecfpyPUnYCdkx66hXjm5Z+KctwrOE=; b=Yb0GmWkfxlH+
+        08aWfPNAxiEc1Xclj+N6nFLFCMYn9xLgVgfh41dK8JctgI/kzMfDFQOiKX0F0YRkcdrQpA/fpH67/
+        F/9PBHpPx72hUZCsJQKYNUqr6srA5Uax5sICnbGuAXtzwpiL8RR5Rh0Qa/Hz66hfObkxZr2xpnuw3
+        0azrc=;
+Received: from ypsilon.sirena.org.uk ([2001:470:1f1d:6b5::7])
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.co.uk>)
+        id 1i5D6N-0000zj-V6; Tue, 03 Sep 2019 18:00:24 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+        id 769DA2740A97; Tue,  3 Sep 2019 19:00:23 +0100 (BST)
+From:   Mark Brown <broonie@kernel.org>
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     Avi Fishman <avifishman70@gmail.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Nancy Yuen <yuenn@google.com>, openbmc@lists.ozlabs.org,
+        Patrick Venture <venture@google.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>
+Subject: Applied "spi: npcm-fiu: fix spelling mistake "frequancy" -> "frequency"" to the spi tree
+In-Reply-To: <20190903122812.3986-1-colin.king@canonical.com>
+X-Patchwork-Hint: ignore
+Message-Id: <20190903180023.769DA2740A97@ypsilon.sirena.org.uk>
+Date:   Tue,  3 Sep 2019 19:00:23 +0100 (BST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tuesday, 2019-09-03 19:20 Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Tue, 3 Sep 2019 19:15:09 +0200
-> 
-> The brelse() function tests whether its argument is NULL
-> and then returns immediately.
-> Thus the tests around the shown calls are not needed.
-> 
-> This issue was detected by using the Coccinelle software.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
->  fs/qnx4/inode.c | 3 +--
->  fs/qnx6/inode.c | 6 ++----
->  2 files changed, 3 insertions(+), 6 deletions(-)
-> 
-> diff --git a/fs/qnx4/inode.c b/fs/qnx4/inode.c
-> index e8da1cde87b9..018a4c657f7c 100644
-> --- a/fs/qnx4/inode.c
-> +++ b/fs/qnx4/inode.c
-> @@ -118,8 +118,7 @@ unsigned long qnx4_block_map( struct inode *inode, long iblock )
->  				bh = NULL;
->  			}
->  		}
-> -		if ( bh )
-> -			brelse( bh );
-> +		brelse(bh);
->  	}
-> 
->  	QNX4DEBUG((KERN_INFO "qnx4: mapping block %ld of inode %ld = %ld\n",iblock,inode->i_ino,block));
-> diff --git a/fs/qnx6/inode.c b/fs/qnx6/inode.c
-> index 345db56c98fd..083170541add 100644
-> --- a/fs/qnx6/inode.c
-> +++ b/fs/qnx6/inode.c
-> @@ -472,10 +472,8 @@ static int qnx6_fill_super(struct super_block *s, void *data, int silent)
->  out1:
->  	iput(sbi->inodes);
->  out:
-> -	if (bh1)
-> -		brelse(bh1);
-> -	if (bh2)
-> -		brelse(bh2);
-> +	brelse(bh1);
-> +	brelse(bh2);
->  outnobh:
->  	kfree(qs);
->  	s->s_fs_info = NULL;
+The patch
 
-Acked-by: Anders Larsen <al@alarsen.net>
+   spi: npcm-fiu: fix spelling mistake "frequancy" -> "frequency"
 
+has been applied to the spi tree at
 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.4
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From 0d6fccc1b6fbaf9c24e71efbbe9c3826a7b6a03d Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Tue, 3 Sep 2019 13:28:12 +0100
+Subject: [PATCH] spi: npcm-fiu: fix spelling mistake "frequancy" ->
+ "frequency"
+
+There is a spelling mistake in a dev_warning message. Fix it. Also
+break line to clear up checkpatch warning.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Link: https://lore.kernel.org/r/20190903122812.3986-1-colin.king@canonical.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/spi/spi-npcm-fiu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/spi/spi-npcm-fiu.c b/drivers/spi/spi-npcm-fiu.c
+index 3ea1ec68147e..d9e2f58b104b 100644
+--- a/drivers/spi/spi-npcm-fiu.c
++++ b/drivers/spi/spi-npcm-fiu.c
+@@ -544,7 +544,8 @@ static int npcm_fiu_exec_op(struct spi_mem *mem, const struct spi_mem_op *op)
+ 	if (fiu->clkrate != chip->clkrate) {
+ 		ret = clk_set_rate(fiu->clk, chip->clkrate);
+ 		if (ret < 0)
+-			dev_warn(fiu->dev, "Failed setting %lu frequancy, stay at %lu frequancy\n", chip->clkrate, fiu->clkrate);
++			dev_warn(fiu->dev, "Failed setting %lu frequency, stay at %lu frequency\n",
++				 chip->clkrate, fiu->clkrate);
+ 		else
+ 			fiu->clkrate = chip->clkrate;
+ 	}
+-- 
+2.20.1
 

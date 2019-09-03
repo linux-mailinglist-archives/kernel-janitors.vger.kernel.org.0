@@ -2,86 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDE37A6A43
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 15:44:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68B3BA6A99
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 15:59:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729362AbfICNoV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Sep 2019 09:44:21 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:55046 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728854AbfICNoV (ORCPT
+        id S1728538AbfICN7o (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Sep 2019 09:59:44 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:44934 "EHLO
+        mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727667AbfICN7o (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Sep 2019 09:44:21 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 6A8D9608FF; Tue,  3 Sep 2019 13:44:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567518260;
-        bh=S87jAdIzNJ4HJS3B9OrtK4jGRfZUJGaxJeLtOQb91mQ=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Rj3jWCV9W2rtqmJW/rgg9ZrCunRclUAtqk40oYfOg/2218FudtqQypWGYLCoz7NYF
-         VVKIJcWY4wMGeNuDUmsOrHozH1bm1RaW6SAmgE+uyXtgrDo73h+vTrfa6AK4xjH635
-         PsJClmtm8EMcivC3KuKmxzE6rsCDPL1HAggSmb5U=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B72D060592;
-        Tue,  3 Sep 2019 13:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567518259;
-        bh=S87jAdIzNJ4HJS3B9OrtK4jGRfZUJGaxJeLtOQb91mQ=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=hgBpb1HgXrKmujql76Xuq3Pp1dqWDkpNs1e9aiihdaXjALsugTkDO5wpShGRKL4Ij
-         Nr7W/qVo9kGZGnDU8n2/W0AAZbEgKm/gCkBhmzRxX93zYbUfYZPY1xhFaUQRSzILrn
-         NbfSfLSqrmLFFIlw/HMX3KmvKyLPd4C+GwF3LDpM=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B72D060592
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Tue, 3 Sep 2019 09:59:44 -0400
+Received: by mail-io1-f65.google.com with SMTP id j4so36043060iog.11;
+        Tue, 03 Sep 2019 06:59:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Fkc3NbV4KLcHpupnkwi91JCZufWPPBN8nwlwGPYz5U0=;
+        b=hlZ5Iq8IekbOZ5frDYLbC92pJuKfl/9nrnhzzKNsgZhPBMKliHoBUASq+XADHK9kZT
+         quuTIb3uEvySd875fwZc7GX6M+B6uU3nERJesZUKJ9lbmo/7OuZ8PV9AEQJSYifLIzxx
+         r2NWp8tI/Z7z8gWicTHXzgw/HVq5JWDpOVroutvLja8NbkD6wy1k7ImWxwVRGnFY2Ysu
+         IDKA1jGJ9rhAwhFd9cLSKZwnJ6klOLPpBR6Z0LcCk+PXW5fydsUXdRgXUi+TuSmYtBlU
+         vZrDgDAct7dSv5zGE/rexqgjuykBuv0RWuFgjcvuZhIizz8i6BdWLLSE7qpVB30jv6se
+         mSxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Fkc3NbV4KLcHpupnkwi91JCZufWPPBN8nwlwGPYz5U0=;
+        b=esDRmsHhNM4B1B8m9Ri0AC9tgUdZUID0fVEz+Ec8wFnaayleov5QCMdb8vOyFEvvPV
+         pFCA+n7aoUcaKXeWb/sKX3NbVWEO/+9t5QbJ+eTG7JG3L6uxronTkxd2MKmC7kzmBkUn
+         ISPGIP0hL769HvWQ6jDVFUV3IwAodmd6Bj/pYcdygELvnzpqcGR3U6IrZ41+GSjuyVhw
+         FgV/fRbtIADFyURS8JFrgm+9YPwNx7he7LLD+OEm9m2t3dSrBrL14JsR9e4qGZA7RBl3
+         QXbVjMFjL5kLieZ9LhjdZ9B/VpUM26kQ1eU08kW/raoFnMlV3I5bsx714EfFGOnBcB7r
+         lhNQ==
+X-Gm-Message-State: APjAAAXF+g9BO0Ugw+MJWHqE4Q05dhXlEmXg0NopZ7xGEDJbmrmXjzNU
+        wDLbXlKsbump/FyDr2hKA8zk1faKpV269Io8yVM=
+X-Google-Smtp-Source: APXvYqzw7+jvpz8yv2X5/p/w9/P8Ik9jQh87gtjyc6p7KrTm/agaGZhUysFspQiZp0XruPM+yms04XOtalCSRyVTiGw=
+X-Received: by 2002:a5e:9314:: with SMTP id k20mr2845608iom.245.1567519183559;
+ Tue, 03 Sep 2019 06:59:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][V2] bcma: fix incorrect update of BCMA_CORE_PCI_MDIO_DATA
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190827081620.20998-1-colin.king@canonical.com>
-References: <20190827081620.20998-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Hauke Mehrtens <hauke@hauke-m.de>,
-        =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190903134420.6A8D9608FF@smtp.codeaurora.org>
-Date:   Tue,  3 Sep 2019 13:44:19 +0000 (UTC)
+References: <9250af4a-993c-e86e-678c-acbd59b0861a@web.de>
+In-Reply-To: <9250af4a-993c-e86e-678c-acbd59b0861a@web.de>
+From:   =?UTF-8?Q?Andreas_Gr=C3=BCnbacher?= <andreas.gruenbacher@gmail.com>
+Date:   Tue, 3 Sep 2019 15:59:32 +0200
+Message-ID: <CAHpGcMKEFaZBRNnt1edrvBMS6VUXs5hMdQ2BdNBE3ssgkmDoww@mail.gmail.com>
+Subject: Re: [PATCH] gfs2: Delete an unnecessary check before brelse()
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     cluster-devel <cluster-devel@redhat.com>,
+        Andreas Gruenbacher <agruenba@redhat.com>,
+        Bob Peterson <rpeterso@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+Am Di., 3. Sept. 2019 um 15:21 Uhr schrieb Markus Elfring
+<Markus.Elfring@web.de>:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Tue, 3 Sep 2019 15:10:05 +0200
+>
+> The brelse() function tests whether its argument is NULL
+> and then returns immediately.
+> Thus the test around the call is not needed.
+>
+> This issue was detected by using the Coccinelle software.
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> An earlier commit re-worked the setting of the bitmask and is now
-> assigning v with some bit flags rather than bitwise or-ing them
-> into v, consequently the earlier bit-settings of v are being lost.
-> Fix this by replacing an assignment with the bitwise or instead.
-> 
-> Addresses-Coverity: ("Unused value")
-> Fixes: 2be25cac8402 ("bcma: add constants for PCI and use them")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Thanks. The same applies to brelse() in gfs2_dir_no_add (which Coccinelle
+apparently missed), so let me fix that as well.
 
-Patch applied to wireless-drivers-next.git, thanks.
-
-420c20be08a4 bcma: fix incorrect update of BCMA_CORE_PCI_MDIO_DATA
-
--- 
-https://patchwork.kernel.org/patch/11116317/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Andreas

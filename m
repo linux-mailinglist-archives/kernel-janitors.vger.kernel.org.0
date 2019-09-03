@@ -2,25 +2,25 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B5B2A69EE
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 15:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 547B7A69F8
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 15:36:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729015AbfICNf2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Sep 2019 09:35:28 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:48240 "EHLO
+        id S1729090AbfICNg1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Sep 2019 09:36:27 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:48834 "EHLO
         smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728094AbfICNf2 (ORCPT
+        with ESMTP id S1727941AbfICNg1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Sep 2019 09:35:28 -0400
+        Tue, 3 Sep 2019 09:36:27 -0400
 Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 9C703602CA; Tue,  3 Sep 2019 13:35:27 +0000 (UTC)
+        id DD0A3605A2; Tue,  3 Sep 2019 13:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567517727;
-        bh=Pmi6kQUMCrBKjf5WgQmoGmW6Qy0WBA7AmvZFx1TxLWk=;
+        s=default; t=1567517785;
+        bh=T4+qthdIa+JdtJ1JZNw78DDAC6sdnSeXsq52RWos8i8=;
         h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=HfXfWVqL323NpATbM8hIEYrKGu5GAfMs0pMCzPzRgYyxxQgm3ibKDDAxDPUUFXLca
-         gxVY6KRwrkO8Smi6eUi4c4+7ipeshxIP4Hj037CokIPCsXZ+Pl2FAexyXbVvdvMaA+
-         i1pcbqvSR4/BGLxBMvLkrhaUF2LPn16BIsS94uQU=
+        b=eu4SuX4XJTg98x2tGFMxG20wx4cFDttZSQzpbJg3b6Wn1pO346QTjqcrRO3rxZxjJ
+         KUYy1H6vDhwFTMKl0B4xb+w+mEmMtbryFE88MC7ogW7bf+f5yHdmFPpt1cYRe74B2z
+         rybsJ5EqkOjXuBHzp4eS6OSoZAUib3VzPelsncUA=
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         pdx-caf-mail.web.codeaurora.org
 X-Spam-Level: 
@@ -31,50 +31,56 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3A889602CA;
-        Tue,  3 Sep 2019 13:35:26 +0000 (UTC)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CB942602CA;
+        Tue,  3 Sep 2019 13:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567517727;
-        bh=Pmi6kQUMCrBKjf5WgQmoGmW6Qy0WBA7AmvZFx1TxLWk=;
+        s=default; t=1567517785;
+        bh=T4+qthdIa+JdtJ1JZNw78DDAC6sdnSeXsq52RWos8i8=;
         h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=QvRHFeLJWus8KVZVDHnA2L8EJeYwGjxZCjdinOiMEBRVJpfj5draVhmOoe2DhKHF1
-         6EImIWVPOG8aDrqf7c5rE6e4Ri9J8Lti0MSBEKbgEMW7aZ+LSEqBt6jtVfp7wmYFR6
-         DpkCvw9tb0FS8vmZ/744hsovoZWN7IYvxRmkqK0Q=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3A889602CA
+        b=n4N6oMCI7ZAh48ltOR5O3mymXNlUO4JcKKK99is1xAel8K0RsIq0Mrj8yLzJLlctL
+         gr79ARrs4bsck8Od+R9MUGVVnLj3WhaC/HwYmQDERP7t4fOGClJUggt0H4bnpZwlcL
+         JLPn0o7Fm41sqbVjRi0Q1rqaTvhu3NZvjQHeQhwQ=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CB942602CA
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] rtw88: Fix an error message
+Subject: Re: [PATCH] rtw88: remove redundant assignment to pointer
+ debugfs_topdir
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190814104642.GA14268@mwanda>
-References: <20190814104642.GA14268@mwanda>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
+In-Reply-To: <20190822113728.25494-1-colin.king@canonical.com>
+References: <20190822113728.25494-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
 Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190903133527.9C703602CA@smtp.codeaurora.org>
-Date:   Tue,  3 Sep 2019 13:35:27 +0000 (UTC)
+Message-Id: <20190903133625.DD0A3605A2@smtp.codeaurora.org>
+Date:   Tue,  3 Sep 2019 13:36:25 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+Colin King <colin.king@canonical.com> wrote:
 
-> The WARN_ON() macro takes a condition, not a warning message.  I've
-> changed this to use WARN() instead.
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Fixes: 4136214f7c46 ("rtw88: add BT co-existence support")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Pointer debugfs_topdir is initialized to a value that is never read
+> and it is re-assigned later. The initialization is redundant and can
+> be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
 Patch applied to wireless-drivers-next.git, thanks.
 
-52929cad3293 rtw88: Fix an error message
+9f7d65fb3935 rtw88: remove redundant assignment to pointer debugfs_topdir
 
 -- 
-https://patchwork.kernel.org/patch/11093733/
+https://patchwork.kernel.org/patch/11109159/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

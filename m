@@ -2,32 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 85E5BA689C
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 14:29:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCAE1A68CE
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 14:44:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728994AbfICM3K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Sep 2019 08:29:10 -0400
-Received: from mout.web.de ([217.72.192.78]:41083 "EHLO mout.web.de"
+        id S1729128AbfICMoR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Sep 2019 08:44:17 -0400
+Received: from mout.web.de ([212.227.17.12]:59177 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728288AbfICM3J (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Sep 2019 08:29:09 -0400
+        id S1728996AbfICMoR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 3 Sep 2019 08:44:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1567513742;
-        bh=y2nCAjLsqH+/IXyuFBbt7GyPuAFQotExBGJT1ob3De8=;
+        s=dbaedf251592; t=1567514650;
+        bh=OB42t441CkjUlM1xTY9OGP06693iK0948hcgi9EiEaI=;
         h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=EkdxYR6jd/ks01EgjhP+5qv1LKPb22071kr4TmafKue3e3532gtJP/bgJc/HkQd26
-         7ZVOv/IkImjTT9i1OTsvW5N7ZJ04f1neNndaQOASTgEJj/KaoLJ4TgPecCHyfgn+fm
-         kydQyVpNu2Svx8BcaABoCIHxD4byqfQ8Q7Z5pwBY=
+        b=piNmEVL1DWo/PMf5GIczGhNf0CJqcg8I50t6Sc8YLLKwEFeRrUGF6jPArwPAOPmvp
+         8pVrwi4hbiiwhjF8meDrwiFKEYIyI8qIqD/nlPHxyMb5bALS5bddLi4R3laNjDq5Ux
+         pE5V+DqdlzJf8XApYOxc+O3VVlNS4SmzsJfr9f2A=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.133.43]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LqDQS-1iiqOz3d0C-00drSB; Tue, 03
- Sep 2019 14:29:02 +0200
-To:     kernel-janitors@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>
+Received: from [192.168.1.2] ([93.133.133.43]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MEVhF-1hynZo3b7B-00Fk6p; Tue, 03
+ Sep 2019 14:44:09 +0200
+To:     linux-ext4@vger.kernel.org, Jan Kara <jack@suse.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] efs: Delete unnecessary checks before brelse()
+Subject: [PATCH] ext2: Delete an unnecessary check before brelse()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -71,104 +70,70 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <8fcea3ac-469f-a84b-e4d2-347f047307f8@web.de>
-Date:   Tue, 3 Sep 2019 14:29:00 +0200
+Message-ID: <51dea296-2207-ebc0-bac3-13f3e5c3b235@web.de>
+Date:   Tue, 3 Sep 2019 14:44:08 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:mkJf4icPGGu4cXc3P8YCKrD9X/5lFFX8/10Zu0bwlguxg9YurBG
- iJEtrQqaFr92yYFD6pv1VqWDz0fMhb/HjJQF9GmNXp9ParBG8oTqL25DSshK90VcODGosga
- XaZVhY1gBkcBlo5lvjg2pJoI8lAGyZuY84C9C/ADltFJCA3PRpSlpTmDxhGy780liqtcAV1
- GX1IzBDxU+aDDTUyqPLkQ==
+X-Provags-ID: V03:K1:fDKb4hhNMYZ9p7iiL29GGAMRQGX7LPMidSNO+OnTKZ78fOm7c6J
+ BFisXkPeKxMsK37Ku8FRDkpbsPvtUV/gfS05RjhPaHadUTHkfS1RdjYf2kAe5pehUXYY8N2
+ sbnFXk7D8AQcYWDMsN7sF6upjqh5VMmWwdy0XRusMVOlgL+dH9ndq6/5/KE55/nVTkolY9J
+ IBrF1kj+0beDEtnNUMKgQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:n5BTdjf5Yko=:RZuWevuKG0yqx+aNVz1nA0
- nB8JYSAt0tUdoYhQpgxrl7dzMDlR8XFxuh8IGHLFcMuJxAjTuSJd0XAMlXaKs4CewkG4opxo+
- toC52bihW15DHGVZN5CDDpV0c4SgCdlckfueNYpaA8LoVLL2AZ5HP8DQdRNFI+2Bd9JYkEkuq
- /QWwI3yj8wqFiRnrC9ImDJHd42BdF6O0C2jkfKfh+/MdQhWqEHGxsTXEgg3pE8188S/FUUxoP
- k/dPS4AjGALXV28N4TGuzw3eeOg6jJ2LMxyn9evyRed3DGzCQrGXPfv9PEgoMiaLmlV5inuE7
- NK5uskQdFIdk/kvBJcZAH1GuCR3Jnc28igdjBl9JNj5M6XtrrGu8UgOh7POOfSJpTmFsBjuh/
- pP8bhrZDQ2qjzRu6cq5r6w5CB8Qufsu93fFaX5GjcTlCW5l3L178oUr3Z3SXsJLDI7f1iqOj+
- 4Im2+TRT1fX895mNkRVsUeA0BT2eu2Yn22lsie/vG2XINPVrdSY9ZGUiGZslP1ovMD36m7+R9
- SwtpPx3/q5h+njtfC3YqNdCRnAwiJagpetPlQi9/8sZizi5KP+t4QMtTGNeEYEHEThghdcQiJ
- 325gW9bKI3JcPMFQGmSQ5h/JYtHfiR8ipkJcUe/U/r0cTglXvQTxLKekArdwgr3uPIH5p0uCi
- uwDHj3j0E058aJRYBGSbgbq0oaT5ASZ/p+DfgL964k4girybeQMv6yT9xIqXmT6TolIeQYXhH
- SVpvfeO2lJkzYh/JeUEt4wNQGtSq7+9LviCf3SeDwB/5rt2RyChcZm5obXTN+RY9Kv73yLZQ1
- WnY3YY2ZQYW7OET9TBw+QOtDuzW1kZFPEfR5r2N/lTd5oSTs7Ax96pAj9Qb3ii7331u+nYRVM
- NPCclTw1sFKwyykGm3BaljAb81zYoszlzT3bbK8IGvtenWmnP0ne9RJY8FyEXkHZp4x4g/zmH
- o9728iPABfojSQPfxBLFgM7Y/gXYDEqVfL/8gQmNlwgYzUsQOcOi3jl9Sl7FiGoGcfnjYftZ7
- KQbXubiJSOqAKaV37ulab4OZCoGIGBJX3UQqu/p6yuguETH34jxIPSRFcwYCBghF5djNuSYUS
- V6slfFSLgR91jo4pcjHqEVMiqMUykeKRCAm3uK6c1NCNnMxfjCwBkcZVEYyEsIpTIM3I1+1ks
- yPuRMu0AFzMtzHBygeXDZqwZS/vtS1rpg916LTW5A67t7Vpw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:1WAao00adBI=:5FDVXGdCEhCxWD/GZiDAbj
+ qlo/6vlG2hkOkp30I9oWBPMrMfm2Ips+u0YbLNbCcux4zyLTVUVek44zn+cgAsZBRjcxMGkyY
+ hJkKF+4K3aVqP2swznTj0kpHRHlEM4YGoorQLTiQKCiVONgS+Uz2J2HlwwME18amYaRe/rFKX
+ tbvdpWBQDBtqzCmqY8IRRdMbV2cfFlVmv1bRUYxLQVxioVUd2Ud2xcpXa/zHAX+6+gT0dVfQV
+ qjQWwmAq0PJNrRNWljT6Z9AezCKpDUe2k/MbUt6E5bPzGlYbE0bzFrqGbdT81s9rCRyziyUEu
+ 7HGVJplqTQDknsCmCsPvroUZ97dUG7j7dfNtpIhvfrnIwFnC9+JowTwK/LtOm3hlXu0QkUQER
+ LbPWWgMxdXO6j66SIzxFgMgEGNv43gLVuplmku8jArAje/zZc3tQZ0i0qdGA3n2CDk9VQArQE
+ AD2Tn9gJ1p3CXMKUO8pZg0xok6riffIj9kCqTGvhn9HXzxHve/ENIWKBI7a3JamHzI8I23EmD
+ LVemdo+HsNnMHOvzKuK36wlSYpq/rx4ki9vqFzM/iZNpgi+pMnQyaqSu6O0/F+KpBf99D7138
+ xcvvzHgzWS5ILUr4jXMXqGqx8SKXNELUAGZJ0zPFhgMyMUd0qe536ZlvTNVPhG4e2WKEK1WS2
+ 6zp5qpAOyN3YX8t0BJQph1NUIS8JDqyeSJBEDCbLKA7Nckr3axvxzVvCnxIy8YuZW0dn79nwq
+ FciJYy2ArTQfFdsvr938css8RBzCh2TsoXDuujPr9opnzWA0kwCLDGnqpmdaqdydwuHVShH/I
+ igLAHTZu5G0FNkG2y9XjehMw9oodp5mq0tgNBtMChBSAXxZLVXzSm6tXW19ohPK+LnzZRa/0G
+ RHMvBvcUC/wMEpGOiBW8QBb9ii1xubjt9G0PfbqTtJygLCMj7a9IrpddILBCOJixxAZ7soGRe
+ liJXOU4J7XTWkmtzo0Zm+IeUJBlLV1fe8IDqsV6TliB75zq5dCHynPaxp4aKobZxUQiQnx5lr
+ goaJrxGgs5XgAvEbGDa8FRzt+JztnkLG00jpK6jt98GE4+C2W/LxnWA2l0wD9t93msqaVNTIt
+ L7X9cU1ctck3xl05fZ7jeQXCZIJ3DWlJIsqpU11te5ahUTn7INMjBxqy9XngE3Ay7uf14mzov
+ KNJMgUdCWlO41DQbLRxHED/yKnEwZvkarahU/9wCu3Q28lyA==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 3 Sep 2019 14:24:38 +0200
+Date: Tue, 3 Sep 2019 14:40:18 +0200
 
 The brelse() function tests whether its argument is NULL
 and then returns immediately.
-Thus the tests around the shown calls are not needed.
+Thus the test around the call is not needed.
 
 This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- fs/efs/inode.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ fs/ext2/super.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/efs/inode.c b/fs/efs/inode.c
-index 89e73a6f0d36..176061d107ed 100644
-=2D-- a/fs/efs/inode.c
-+++ b/fs/efs/inode.c
-@@ -262,7 +262,7 @@ efs_block_t efs_map_block(struct inode *inode, efs_blo=
-ck_t block) {
- 			/* should never happen */
- 			pr_err("couldn't find direct extent for indirect extent %d (block %u)\=
-n",
- 			       cur, block);
--			if (bh) brelse(bh);
-+			brelse(bh);
- 			return 0;
- 		}
-
-@@ -274,8 +274,7 @@ efs_block_t efs_map_block(struct inode *inode, efs_blo=
-ck_t block) {
- 			(EFS_BLOCKSIZE / sizeof(efs_extent));
-
- 		if (first || lastblock !=3D iblock) {
--			if (bh) brelse(bh);
--
-+			brelse(bh);
- 			bh =3D sb_bread(inode->i_sb, iblock);
- 			if (!bh) {
- 				pr_err("%s() failed at block %d\n",
-@@ -295,17 +294,17 @@ efs_block_t efs_map_block(struct inode *inode, efs_b=
-lock_t block) {
- 		if (ext.cooked.ex_magic !=3D 0) {
- 			pr_err("extent %d has bad magic number in block %d\n",
- 			       cur, iblock);
--			if (bh) brelse(bh);
-+			brelse(bh);
- 			return 0;
- 		}
-
- 		if ((result =3D efs_extent_check(&ext, block, sb))) {
--			if (bh) brelse(bh);
-+			brelse(bh);
- 			in->lastextent =3D cur;
- 			return result;
- 		}
+diff --git a/fs/ext2/super.c b/fs/ext2/super.c
+index baa36c6fb71e..30c630d73f0f 100644
+=2D-- a/fs/ext2/super.c
++++ b/fs/ext2/super.c
+@@ -162,8 +162,7 @@ static void ext2_put_super (struct super_block * sb)
  	}
--	if (bh) brelse(bh);
-+	brelse(bh);
- 	pr_err("%s() failed to map block %u (indir)\n", __func__, block);
- 	return 0;
- }
+ 	db_count =3D sbi->s_gdb_count;
+ 	for (i =3D 0; i < db_count; i++)
+-		if (sbi->s_group_desc[i])
+-			brelse (sbi->s_group_desc[i]);
++		brelse(sbi->s_group_desc[i]);
+ 	kfree(sbi->s_group_desc);
+ 	kfree(sbi->s_debts);
+ 	percpu_counter_destroy(&sbi->s_freeblocks_counter);
 =2D-
 2.23.0
 

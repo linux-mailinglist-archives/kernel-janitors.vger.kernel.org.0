@@ -2,95 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 03E13A609B
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 07:32:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FFA4A630A
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 09:48:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726683AbfICFbx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Sep 2019 01:31:53 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:36735 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725886AbfICFbx (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Sep 2019 01:31:53 -0400
-Received: by mail-wm1-f68.google.com with SMTP id p13so16609296wmh.1;
-        Mon, 02 Sep 2019 22:31:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=sdTc5Col9gW6RO/wUIFLd9Ir0j2e9yKZwNZmVQ90wII=;
-        b=R4T6GqueH4Qho03y99R1OJ7lpN3EOzwGjqO/Hxlf6NWmhobqQLXz+aM5ybWMA8M3eM
-         MqTf5odZCddxCDu1/xag4JzYqF9qv3MU8Lho/1PNMONq5/6Jz3/3/i866qPMBGTNcuNi
-         0rmClZhaHdp+b+fhVo6AvHoSN+6ZoP3W2IrWeWZmFuMyPohn1SS9tVn9pZzRHVz/kwGy
-         MBOOGRfkl1N2xbCWnkg9I5Gy4flUaM6OXhbCo7ytsZHY4cgqWI42h+mtvw27O8tUWuC2
-         djwv1S6aq5WORUYcBE1Ce0spF2k69eg0yHyJ6gDYMOc4/VhL4lj7BrFwh1YHfKo5Mhyy
-         eZ2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=sdTc5Col9gW6RO/wUIFLd9Ir0j2e9yKZwNZmVQ90wII=;
-        b=hBHlV6ehrh3KQDA418g70kEOgg1E6v5tfk/EXlYOSUGywXlQqCrEM9W3McaFx8gMTm
-         Hll98JSh7YK4e4SEeG2V1eMjiGJ94p5IgeGpUE/CNGVehm/jPch2j4Gv6rZsUGKhdh2q
-         auodHOesP7CIUiakCjkVhRFjmEYRBvlSgbTORAdGMFw0Kzo0SChMW6s8hfDkTPkhW3PI
-         ZDIjvVld7I72k2zFSZH+V4s+FLR3SsxvNDbNT2HsVsWYeIQvBoPTezB03bozzg6ke2MQ
-         4NSqnN1sMfVS4cVpbcgUA1QEfmsx1U7PJborolQhrBMk+vqeQ8G4n/XYsoKT5da44Q6K
-         JauQ==
-X-Gm-Message-State: APjAAAURmXVxHQqP11jrTU3UUGNxoP+kzdR30nWeLD01+NsDStHwrxzw
-        cDj1C9yIuvmsV1wwRYgEUCVxrdU869E=
-X-Google-Smtp-Source: APXvYqzU0OzUqhyCh6F+DEeckS/Al/RvOuCOKRjN0LgPq6DjX3hdGdbPVeuCGGT5w3R+/B3EKct7hQ==
-X-Received: by 2002:a1c:a796:: with SMTP id q144mr32071273wme.15.1567488711366;
-        Mon, 02 Sep 2019 22:31:51 -0700 (PDT)
-Received: from archlinux-threadripper ([2a01:4f8:222:2f1b::2])
-        by smtp.gmail.com with ESMTPSA id n14sm57733246wra.75.2019.09.02.22.31.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Sep 2019 22:31:50 -0700 (PDT)
-Date:   Mon, 2 Sep 2019 22:31:49 -0700
-From:   Nathan Chancellor <natechancellor@gmail.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Valdis Kletnieks <valdis.kletnieks@vt.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: exfat: fix uninitialized variable ret
-Message-ID: <20190903053149.GA56440@archlinux-threadripper>
-References: <20190830184644.15590-1-colin.king@canonical.com>
+        id S1727078AbfICHsz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Sep 2019 03:48:55 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:44200 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726740AbfICHsz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 3 Sep 2019 03:48:55 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 1F225A00C5412BCCE3C0
+        for <kernel-janitors@vger.kernel.org>; Tue,  3 Sep 2019 15:48:53 +0800 (CST)
+Received: from [127.0.0.1] (10.133.213.239) by DGGEMS402-HUB.china.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0; Tue, 3 Sep 2019
+ 15:48:48 +0800
+Subject: Re: [PATCH -next] scsi: smartpqi: remove set but not used variable
+ 'ctrl_info'
+To:     <wharms@bfs.de>
+References: <20190831130348.20552-1-yuehaibing@huawei.com>
+ <5D6BC1D3.7040605@bfs.de>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+From:   Yuehaibing <yuehaibing@huawei.com>
+Message-ID: <56925735-5fff-9de3-e5db-db088e830461@huawei.com>
+Date:   Tue, 3 Sep 2019 15:48:47 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190830184644.15590-1-colin.king@canonical.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <5D6BC1D3.7040605@bfs.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Aug 30, 2019 at 07:46:44PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On 2019/9/1 21:04, walter harms wrote:
 > 
-> Currently there are error return paths in ffsReadFile that
-> exit via lable err_out that return and uninitialized error
-> return in variable ret. Fix this by initializing ret to zero.
 > 
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Fixes: c48c9f7ff32b ("staging: exfat: add exfat filesystem code to staging")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Am 31.08.2019 15:03, schrieb YueHaibing:
+>> Fixes gcc '-Wunused-but-set-variable' warning:
+>>
+>> drivers/scsi/smartpqi/smartpqi_init.c: In function 'pqi_driver_version_show':
+>> drivers/scsi/smartpqi/smartpqi_init.c:6164:24: warning:
+>>  variable 'ctrl_info' set but not used [-Wunused-but-set-variable]
+>>
+>> commit 6d90615f1346 ("scsi: smartpqi: add sysfs entries") add it but never
+>> use, so remove it also variable 'shost'
+>>
+>> Reported-by: Hulk Robot <hulkci@huawei.com>
+>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+>> ---
+>>  drivers/scsi/smartpqi/smartpqi_init.c | 6 ------
+>>  1 file changed, 6 deletions(-)
+>>
+>> diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+>> index ea5409bebf57..b9e7dabee1e5 100644
+>> --- a/drivers/scsi/smartpqi/smartpqi_init.c
+>> +++ b/drivers/scsi/smartpqi/smartpqi_init.c
+>> @@ -6160,12 +6160,6 @@ static ssize_t pqi_firmware_version_show(struct device *dev,
+>>  static ssize_t pqi_driver_version_show(struct device *dev,
+>>  	struct device_attribute *attr, char *buffer)
+>>  {
+>> -	struct Scsi_Host *shost;
+>> -	struct pqi_ctrl_info *ctrl_info;
+>> -
+>> -	shost = class_to_shost(dev);
+>> -	ctrl_info = shost_to_hba(shost);
+>> -
+>>  	return snprintf(buffer, PAGE_SIZE,
+>>  		"%s\n", DRIVER_VERSION BUILD_TIMESTAMP);
+>>  }
+>>
+> 
+> so, only snprintf() is left. That begs an other question:
+> Is that function need at all or can it be replaced with snprintf() ?
 
-Clang also warns about this:
+No, pqi_driver_version_show is used as below:
 
-drivers/staging/exfat/exfat_super.c:885:6: warning: variable 'ret' is used uninitialized whenever 'if' condition is false [-Wsometimes-uninitialized]
-        if (p_fs->dev_ejected)
-            ^~~~~~~~~~~~~~~~~
-drivers/staging/exfat/exfat_super.c:892:9: note: uninitialized use occurs here
-        return ret;
-               ^~~
-drivers/staging/exfat/exfat_super.c:885:2: note: remove the 'if' if its condition is always true
-        if (p_fs->dev_ejected)
-        ^~~~~~~~~~~~~~~~~~~~~~
-drivers/staging/exfat/exfat_super.c:776:9: note: initialize the variable 'ret' to silence this warning
-        int ret;
-               ^
-                = 0
-1 warning generated.
+static DEVICE_ATTR(driver_version, 0444, pqi_driver_version_show, NULL);
 
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+so seems it cannot be removed.
+
+> 
+> re,
+>  wh
+> 
+> 
+> 
+

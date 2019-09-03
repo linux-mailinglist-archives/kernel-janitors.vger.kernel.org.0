@@ -2,34 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DBC9A72AD
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 20:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B58BA72E7
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 20:56:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726177AbfICSm0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Sep 2019 14:42:26 -0400
-Received: from mout.web.de ([212.227.17.12]:41877 "EHLO mout.web.de"
+        id S1726585AbfICS4R (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Sep 2019 14:56:17 -0400
+Received: from mout.web.de ([212.227.17.12]:35861 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726090AbfICSmZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Sep 2019 14:42:25 -0400
+        id S1726405AbfICS4R (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 3 Sep 2019 14:56:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1567536134;
-        bh=3IcwgWfePYuRvZdhAhTPFnsEeC4pHahDVAulfsv8+/s=;
+        s=dbaedf251592; t=1567536966;
+        bh=1GA2J9m9mybjuD/wxFfCLvlV0J082nH7JNrhi5iBmYY=;
         h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=WcjriP/9xdtN+GN4rVegSIynHSBCV0p8sPR6eapV3Mlv6QC95g2fyjFtQEfYyFFWz
-         SnQxwVZqqVQui/8sW3f+ZLQjdl8SqNtheyyleZwLxyihFsddVKXAVxhxkRmwyMJEQ3
-         XNs3hvKmR8QSanJYIaXjGjI03HwwC3uER8IXFSI0=
+        b=MdTKBUY1OUsK90er/NvlMnFfC1s9sVyz5YuMKEzUbDM87smtg9fASJ9bts6lTs7GI
+         Lv3CJCs+2GSppTYfZo10LGgYSbwhrCmM08aGsDFOVTdN7zFA/QUX9l1n3q+H7YQlMg
+         kNtX0sFNs4MlCxSCMS9TI7ZZje+s2Fv/0iKEQxCw=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.133.43]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M7KN0-1iPTxw1sCU-00x0fh; Tue, 03
- Sep 2019 20:42:14 +0200
-To:     reiserfs-devel@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
-        "Darrick J. Wong" <darrick.wong@oracle.com>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        Jeff Layton <jlayton@kernel.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+Received: from [192.168.1.2] ([93.133.133.43]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MHp4r-1i2CdP0XhV-003hTo; Tue, 03
+ Sep 2019 20:56:06 +0200
+To:     kernel-janitors@vger.kernel.org,
+        Christoph Hellwig <hch@infradead.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] reiserfs: Delete an unnecessary check before brelse()
+Subject: [PATCH] fs/sysv: Delete unnecessary checks before brelse()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -73,71 +70,94 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <b3b79aaf-279b-4f5a-b9ee-3a38b74da98e@web.de>
-Date:   Tue, 3 Sep 2019 20:42:11 +0200
+Message-ID: <e5739a6d-cecd-5e76-df30-d74554681fd1@web.de>
+Date:   Tue, 3 Sep 2019 20:56:05 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:FgPz5Y25Kl9Ov+158itoVTDquuBdr4ympyzcpvUNQ4spL4AlCIx
- BG5qoczVG+wURrQcLsE7+eNXxsHergrUCNmiidU6oL0Z9I+hOGBUec0vFimQTmr14UfoWq2
- bg3S28/CYStye1RfD65q+/iYG/cmSZlUQIEnSBN303VNBJOC7GyYncWlRlbednRT409T5mg
- 5FHj6SyfArd4XFSeKQOnQ==
+X-Provags-ID: V03:K1:QNsdaFtEpANTCjcvNxlIY7CnI8zy+ZVBvH/d+X45fcfoXGu/NXQ
+ IxNUTltQW09f4LEOyV+rPzuTvvybaU7Ba9g6e1HrZhaNqZV1cKaw6hxnTonIE9kFF02WEpL
+ +jWUCJK32fs2mivw9LNmrzefKK42oh6Tr2R7rlG2L1tJl8iwl6BT4Wqbtj639S99hfaAg2v
+ Oq+O7Ra8jm/TTFy7Ok/bw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+GrEmTzxDqY=:sKrY3r/LaEsNnh2ho5BYdX
- /jSkeANyW8SfGxl+9FziAmBcU9BXF8p9PBHwB8TjDeWZF/gcEab+x5XHoYTQ/CJoQsv0WVRL7
- +gMEjO8oBjS61JoCn8O1c6e9TZPrCJKXNox8YHxmo9u7O0cEjW+MJw+PgRZ9ym9TGkbMnCMP1
- CeS6qwVhPQ64ADQXqMhL2Yq7Z9nUvsPw7ZdmhM2fJyTWKy9z2e1RIpDCpgq4Vg8MPzezFIHd0
- k34G11NBl0XlW5bAxyWDqp1Qq9hCc3xns8lOLK0zI8IPkXWbsoj11AFrm60bIiiKmlue3h+iy
- lt3dq3To3McvPxR7iRDMaXS2Bg3VydCgHSaSoj2XguRqBe73uPn57zbJgKMYgxlnac+Y/XbSB
- d3mPsdkhUiH/Uk9YELCfX/eV9o86FkNIY3Xug0N5dBc5rb+esP27TODbRswU3P3P+vnVxG7Mj
- JW1BLl4/nSh9378S0YMuij8v3E2rnoVmFhz+t/PvVoLlriayIiJnfBl9z8a64t/zOn15/pE5B
- J88YpWh8lXvWYU/+73B5KWJ841dmYxp2RMxcAr9GWDw4NqxyXaBmIEOLT/cCWVclyMx5B5ezv
- USG3FD9Vrkr+RcsTGcK5thAai1vmXgn9EY+7WRSCwbpLtZdmiZbZEnheqj7r/8MdYIPUqOFzV
- ceHUxyQ0iRcdYQ3+DYYjbhnud5H8mdSVBwvxoi85nRp5q6vzO9B11Xe2AhlIqpYsA+MO/DgDQ
- wf6IHtF1HXxqHcYuNQQfJTnN7L8aVpGzQcBSxGuTA3bHjsa64XHfJ1fsdnGSP9ydncRZ5pvif
- d9sL46+hqqp9RvWixyCC84v5qzdyu3O+e4oWKphyq/0GQ55GtjeX+/KcGh3aL80/+h0iwM9YK
- hmmIFOMedmxlbo7JPov5iixNWd9zVhPA0js3u3cs6abMBbpcPVQxhZVlq8HT2bbgDTbk4mx4M
- obtRlICgUdgr+uWHZ/e4ROrJEszySK8h5VwvadF0RP3vU6NISI2L1S6Le2URUk1LkoNnNUMIp
- VtfDyaH+H0aehGao4q32C7vCIueKQPGusN1Lr6KDWYvDf9/KFgNrDyAk3q2RI1UOEyEBIBmHJ
- pBMTBCRh96dDyybzJtkesbZZbilkUo8OuUstxBMKUmAuHvDizetJzJz6yjcz1/6+a7VOQ2N1O
- O59QvDLIgMWRQi2YqTLiwcJ6A5eWMXGbZhZzJ4nibl4iHCZA==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:HX7DGUkQ+uQ=:7NRwHF45HIkxisULxOUc1v
+ 9vRhYq8Ti/OsxIuHERFWns6K4L72rLKJBmwKeCyANGEDCUCFdMyYwbaYXU1vRj1GDznzNYrZH
+ 9xVwKBmnazqZepfcUDdILP5291PEfG7+9p6kWI8jQHXeqkRaS58cEZess43GpLTNbOYOJ2Ep4
+ CQnnmjnbiJu1O68stC5MiUD2qLEzp5e2xPF52Ojw68TxBFEt6i+51dTWbZVHPPQt0oXg5jo3O
+ aABbuWUn0x75SrsPtr6mZshGfwShl7wMFMB6wCEiyRem/vamVr0kZhUq8BsdagJZnhwTT+L0M
+ COvJGssuQ/wrDUQzHs7qhOPmoaibtz0MRZ3761URssLxK/LN9l1FdJz9LTJkW+txGerTt89o/
+ ip6asUNOCsPuxAiDENF6o5gRtavIKPhQW02yGgMJF5OQutPA6BA3vx5BOiuYdSwc4KRhjIVLA
+ LdsqA2o00lVxL2UdfCFzG9DUb4Ept5OH4BRj+ai0qtFEjk+pI7fstFQclwDFIC3diSsVkBrLN
+ hAy2h9wuPjOHhRZHdxIj34YUFgIw6qqMFCK+HQAGmAYZAZCXuCXxfefnDqSqLi88rwY+MDaBF
+ 73FyqRkTYI1CL2Ovzq+4UnNNwvOKC+3i0YbpvfHIlmKQvKl6vC6SljUIg1n7gT3c1a7A19vEZ
+ fkLBTvjdtFTMABhd5AK6P+udlZZ+OOpJSEuBDQ7OZ2McyKNJDhyJ0sn2fnVxujTdRfMVSHZbj
+ KQPsIu4JHt4HT0UjG5ZguNKa6RqWICrjDhu/pe71HU/F1Yjcoa73OjJuU1r6Ta09TMWNHp7at
+ UfeEGQE5DWWXKKy3XK9q2Pm8xkmK/KZBncKRWatr0QkYG4lsbPL8B/wSbPI/KrJh/hT9clmdI
+ ZMajkzm3FA7bG29J6QHzVDFJ+jYNzABhJ5WtfGEQ96hekRe3LkjjQ3bvcCbMfkvYA11yYnUMT
+ ZNb4QYoZbZkbL2wDTKUkvWIW3DnLmCsKASteNbmxVONyM334FBaiqHW3E3Xk29didnRisu23T
+ 5/CTUH9+evEX+POy8SO5dLPLmJwSy7HbyEcI7u+BSPMQsPALBolOwKfRvVwFAFUA1QJLH77fS
+ +J6ZUQS5ggOLZydfHglzsmTZoCEdwf4fqExXsgPLq/a4IEStwfNM7NQkyw09wP//SPb+Zsn5S
+ 28l0PVfHZ9U/7M21vB4RWaTVkq72M3Ke1VHAWv690weJq+Gg==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 3 Sep 2019 20:00:16 +0200
+Date: Tue, 3 Sep 2019 20:52:07 +0200
 
 The brelse() function tests whether its argument is NULL
 and then returns immediately.
-Thus the test around the call is not needed.
+Thus the tests around the shown calls are not needed.
 
 This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- fs/reiserfs/super.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/sysv/balloc.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/fs/reiserfs/super.c b/fs/reiserfs/super.c
-index d69b4ac0ae2f..b412ef9a24a6 100644
-=2D-- a/fs/reiserfs/super.c
-+++ b/fs/reiserfs/super.c
-@@ -2229,8 +2229,7 @@ static int reiserfs_fill_super(struct super_block *s=
-, void *data, int silent)
- 	reiserfs_cancel_old_flush(s);
+diff --git a/fs/sysv/balloc.c b/fs/sysv/balloc.c
+index 0e69dbdf7277..dd7fdc728ba7 100644
+=2D-- a/fs/sysv/balloc.c
++++ b/fs/sysv/balloc.c
+@@ -195,8 +195,7 @@ unsigned long sysv_count_free_blocks(struct super_bloc=
+k * sb)
+ 			break;
 
- 	reiserfs_free_bitmap_cache(s);
--	if (SB_BUFFER_WITH_SB(s))
--		brelse(SB_BUFFER_WITH_SB(s));
-+	brelse(SB_BUFFER_WITH_SB(s));
- #ifdef CONFIG_QUOTA
- 	{
- 		int j;
+ 		block =3D fs32_to_cpu(sbi, zone);
+-		if (bh)
+-			brelse(bh);
++		brelse(bh);
+
+ 		if (block < sbi->s_firstdatazone || block >=3D sbi->s_nzones)
+ 			goto Einval;
+@@ -207,8 +206,7 @@ unsigned long sysv_count_free_blocks(struct super_bloc=
+k * sb)
+ 		n =3D fs16_to_cpu(sbi, *(__fs16*)bh->b_data);
+ 		blocks =3D get_chunk(sb, bh);
+ 	}
+-	if (bh)
+-		brelse(bh);
++	brelse(bh);
+ 	if (count !=3D sb_count)
+ 		goto Ecount;
+ done:
+@@ -224,8 +222,7 @@ unsigned long sysv_count_free_blocks(struct super_bloc=
+k * sb)
+ 	goto trust_sb;
+ E2big:
+ 	printk("sysv_count_free_blocks: >flc_size entries in free-list block\n")=
+;
+-	if (bh)
+-		brelse(bh);
++	brelse(bh);
+ trust_sb:
+ 	count =3D sb_count;
+ 	goto done;
 =2D-
 2.23.0
 

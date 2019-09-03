@@ -2,32 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BC593A6B2A
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 16:21:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC3B3A6BB4
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 16:41:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729053AbfICOU5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Sep 2019 10:20:57 -0400
-Received: from mout.web.de ([217.72.192.78]:51171 "EHLO mout.web.de"
+        id S1728854AbfICOlZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Sep 2019 10:41:25 -0400
+Received: from mout.web.de ([217.72.192.78]:45557 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729036AbfICOU4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Sep 2019 10:20:56 -0400
+        id S1725782AbfICOlY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 3 Sep 2019 10:41:24 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1567520444;
-        bh=vMgAzBXUWskQTecRcuVXqAK+gjDpq21bPltTH0WE3wk=;
+        s=dbaedf251592; t=1567521657;
+        bh=o+0MJJwjuQymdqHVXaUS6CftMqoiocFuw6zNIehbpuA=;
         h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=LLzyiz+MMSl5cCqMEnzYAW/NWXCMP6xyZV1AtYa+Etj2NDgUdRV+8o8PIcYyMkfpn
-         2B9GdROulxOh5t/TQXb1UqzkSgKFwjaBiVyj9yqVnSLcnPOtdjKOetasPaxByM/iZf
-         /GmqRwoMWlclAn0WBWBmJOKqOCENBGMwXGUAHk6g=
+        b=pqooISqpvFxAyPC9SR1KWZsOe7R5fYrVGqNZKU1OWqzvQYw5ZqJVVb/rQZ/nXDHLS
+         iClwM80laM9hrNFZ4UqHxnj69xB03waqj/UqaMu/KZd2YwQS4MxfhmbXmvXPKqqDI3
+         owbKo5TPL/6uFJJwDSfW7vzOkf8YoEbKjBHmUOuU=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.133.133.43]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MgwZQ-1hrs0h3yYy-00M3cJ; Tue, 03
- Sep 2019 16:20:44 +0200
-To:     linux-ntfs-dev@lists.sourceforge.net,
-        Anton Altaparmakov <anton@tuxera.com>
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lg01f-1iXYdm1gXT-00peq0; Tue, 03
+ Sep 2019 16:40:57 +0200
+To:     ocfs2-devel@oss.oracle.com, Joel Becker <jlbec@evilplan.org>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        Mark Fasheh <mark@fasheh.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+        kernel-janitors@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jia-Ju Bai <baijiaju1990@gmail.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] ntfs: Delete unnecessary checks before brelse()
+Subject: [PATCH] ocfs2: Delete unnecessary checks before brelse()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -71,44 +75,44 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <9d047687-af84-4688-c025-13103cc22a52@web.de>
-Date:   Tue, 3 Sep 2019 16:20:43 +0200
+Message-ID: <55cde320-394b-f985-56ce-1a2abea782aa@web.de>
+Date:   Tue, 3 Sep 2019 16:40:53 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:0jR0GS55GaFdFydxT9bQ63zyKh3AOSnu2BwcrtffX82rI2Nh+rd
- E1lvLYUJPtSUvdq56al/VyGkMSEP8fbHSQN0lzMuf3BvECj4VXYZgCgUaYUBTJ539pVJG6K
- rCYI84xyfu95ue3XHspWwGLE0PZfN1azwBZu244b2XEjvp8sUtRzLDnN9Z6uZl8UdwjVBpA
- /kYbBFBZ96+ogN7SMp6MQ==
+X-Provags-ID: V03:K1:f05WVogZNitrvu2zhBbX9dFOs26N8jtmzTvLYveGOnlbDlg+lmk
+ WdpnJysyvxiKwAgPi2cItiE4VnOCELl0b81g5+d5qtEv8c798Gi57mG7tEciq4+upoEPCBw
+ CCh2eRsJGDIl7PPHxUFegxEG1ZHF9XvvMGi32Ka/YjwaESpd/WR1oGGVjipEoh0dmD01kRo
+ 8zdH6azmyRuv+fU1r04cw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Z2QhvI6IXS8=:KyHeoZ6CAd/47a/5c1uDE0
- timjntSTdr+cwCFyHvlfw6Gof2E0HIC4TGOj9zdVb5fmshfzWB/lcN6MiYbXP7pygy8CUoTZ3
- ljWPxyTcZrRxQK90SK/FWxlNARmpe/VWliaHLYsFAL2k//XU3usNQwgeJmKdOMU+2TVHmwmJu
- 3rLzzw8Dk3NFPUT+gVXtcr3i1qofi4Kt325/k1BuAm12fYxnQNV9HglX7ksGJ9G4MMgVKfVDV
- GVruJEEdHRR3Mxut0Pt2FuiATnqJMrW5yXyUMFqYC6vmh2w/pu1HvZq5n6nyeQCOTWfZK9w2H
- 0Oz2pdxq/Fnmfvo/kC8ziu+jxdyOQVqkhIMADEZIgbE/3NODJRX7dV16ldnTQcOOdaJ1RlNsQ
- 60jSHw5lYCFOZ0f9LS4B1XezVK/AYSgbDGX+DkVRQlGLBsudOf/gr3ED2fzkAlCJj8856omdx
- ngr8boWgOdp2QzjHMN3sA4zxGouO+rSCrxGX3gVUsg7lvI1AzIZ6xtCol4LVALBaf3w7KopHo
- Y3Uru0pOsJm8aA1H0aRbBET64bW/W+qt2cyYb7SB/cKEY5Fw1WX6CxM3ehZ9SUP4/XZVCws9W
- l37Ckr1i4jr9pALFWVDqAckCc3uXzv3uSUmp3HyEN2dMjj3arURpS7n04kDzdlWAWJ/+qKu8A
- VPdPQJH/fMB95+AYQ8mDvBa2X+RvPqhokxYgdoenhycX/Kun0+CNOq7QOnsPlLDlsvlbwIJTZ
- DJG6O6t7UQWD9FnHp+9r6cl7Lkfac5di0/aqsEs5eC3eg1RIN+gTBuOknq7RdwyieGSVfbzzf
- lZmZ4o0qN52UePPhFR466ukU9T9Oa0WeTo269NgGhOitYnn+d0P+3G2TKeQW6cpnVls5Jwt0s
- rlcpgOgiazojDG7xlvvBsuwXQhnfrVyUIQxNgpa/hW+Pb/rlVyi9I7k7MlinWEwQfL4EVvtqY
- jtv9pw7/htR8ILu6yH+sSvbk6Uq5MANDqVyo9DE82u3vHzijPK4LJ6eqq/cajPdB9VvqgFqEh
- TZJMdsl0ph2bIa/i/po/j8K535vRiZ6WgUUuubsSYQJgCl3Yp+keurd74kXzGOTaRhmuFwJnC
- kWnMEe6y1ccfpi70q3KumQnMF91ikYub6rYfznPUOOv4KqKXcARr4pkzsbKb2G/vTOD/cd+7l
- MKdqauOZIWHZrmryH5JKxNkKXwlFHRevjv+rjVs2C97YL02w==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:4MAEzsAITdw=:FmCcmM0E0IdbJeZBVmvW5M
+ HfnXulkZUCh8NIgK9tPgDeoxddD7fqfFU10jzvtQbY6zh5oi7Y2NFpL55Bi+LEAIGuLRRtk+4
+ Cpr8KOZCWUIhowFNcX5DexEclcxXBOxTACMpas2naLZjqxRkCnAfPVjPtDXPuQ5SlLgurIRLq
+ 7G8EAE8Y1IZd5RQrmCmITrqWeVWIfMv3Fu4VW5XabCTfSNlnXs08V43wmXyJFPy9fzZHBWSoZ
+ 8h6FyUNWViSo2K/RkCTrMnGKeuJiXHnZTUClYQ7gUyEPi8B+YdMPUU10U/uCb7KLqU/Xe1nD2
+ eNpZ0WJOO+hA2u43RXSvj+VVbcddk7cfnunqEhA26ujO7nO1Hu3i1dIbtdZTvWWdyoqxh6s32
+ 8sgqDosMSYMC481T3A8RTUq8PTH7D/BggL5nuQqfDw+3paVPa9woiaA8EZ+77mYJLRrfOg1Pm
+ qtQAskShcqAAAgCnADEzgCaYEJ+l3nFl5RcEmVStRVoWpfwMSJSIHpYxz11RWzSJbdEIgBfRT
+ B94UscO8oOydXYed/+6++Jqt3LsM+nP39k50+ImH83EMz30sPsNp/Rnpg84oZvViGYss92rQ9
+ 72OqkXGdXPk8tEEQNXiFW1Gfai6um9rQvLpWE6xj5H+O6tY2/h7zAxkhm7cNEhjxLnQN4DI8i
+ dEKO3r+jlYi9ha5ZKT7xH2AKfPujRdEYKhbbUw2i5mojRBjCDhhSEQ2/B4+7p6JwAgjVGEksz
+ BveN4BYy93k+oRkOg6finmV6T+StQs+6hGOvcqDI/2agaKPUuo1zPo9+bzmwTPsvnL2uXxx4A
+ 0meO6nE2P909tAZi7bUDxyBZ4p+xhq+RpuDUdtkOlG89Xb6GuN+UO3SqJd6CY3YslLXt//vUu
+ ah4roYXAc6r20aZmFlK1U3daaZDqSDSPehuzWNEIOBwpmcqMtTwCk3Zm/jzoNaIXuo/9JyCMJ
+ Jv3KdwlV8r5RxNK0msZUaOyfrv+S1kcyRPq7ZmZQ5Z8D6MLaJDirb7UHuaPr9pXEVuwImHC0O
+ OBrFzsZk+bT/e3fXnLtFYMbOMKY1hAlL5Dp2ZDgmcPMk8b6uLAL9noCX9aIEqazsFHsvvP60E
+ CQMVhv9LA8iIvTwasjCNB+98faJrqgNRkvieyxVVindj4oUhe4JOHiCouicIKiq5ui50j8QwG
+ rTMajwtCso+UDDodlor322t62B0DL2rEez12qyiMS2Ixk4Iw==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 3 Sep 2019 16:18:07 +0200
+Date: Tue, 3 Sep 2019 16:33:32 +0200
 
 The brelse() function tests whether its argument is NULL
 and then returns immediately.
@@ -118,35 +122,51 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- fs/ntfs/super.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/ocfs2/dlmglue.c    | 7 ++-----
+ fs/ocfs2/extent_map.c | 3 +--
+ 2 files changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/fs/ntfs/super.c b/fs/ntfs/super.c
-index 29621d40f448..f0ed1a3e5c7e 100644
-=2D-- a/fs/ntfs/super.c
-+++ b/fs/ntfs/super.c
-@@ -676,8 +676,7 @@ static struct buffer_head *read_ntfs_boot_sector(struc=
-t super_block *sb,
- 	} else if (!silent)
- 		ntfs_error(sb, read_err_str, "primary");
- 	if (!(NTFS_SB(sb)->on_errors & ON_ERRORS_RECOVER)) {
--		if (bh_primary)
--			brelse(bh_primary);
-+		brelse(bh_primary);
- 		if (!silent)
- 			ntfs_error(sb, "Mount option errors=3Drecover not used. "
- 					"Aborting without trying to recover.");
-@@ -703,8 +702,7 @@ static struct buffer_head *read_ntfs_boot_sector(struc=
-t super_block *sb,
- 	} else if (!silent)
- 		ntfs_error(sb, read_err_str, "backup");
- 	/* We failed. Cleanup and return. */
--	if (bh_primary)
--		brelse(bh_primary);
-+	brelse(bh_primary);
- 	return NULL;
- hotfix_primary_boot_sector:
- 	if (bh_primary) {
+diff --git a/fs/ocfs2/dlmglue.c b/fs/ocfs2/dlmglue.c
+index ad594fef2ab0..6e774c5ea13b 100644
+=2D-- a/fs/ocfs2/dlmglue.c
++++ b/fs/ocfs2/dlmglue.c
+@@ -2508,9 +2508,7 @@ int ocfs2_inode_lock_full_nested(struct inode *inode=
+,
+ 			ocfs2_inode_unlock(inode, ex);
+ 	}
+
+-	if (local_bh)
+-		brelse(local_bh);
+-
++	brelse(local_bh);
+ 	return status;
+ }
+
+@@ -2593,8 +2591,7 @@ int ocfs2_inode_lock_atime(struct inode *inode,
+ 		*level =3D 1;
+ 		if (ocfs2_should_update_atime(inode, vfsmnt))
+ 			ocfs2_update_inode_atime(inode, bh);
+-		if (bh)
+-			brelse(bh);
++		brelse(bh);
+ 	} else
+ 		*level =3D 0;
+
+diff --git a/fs/ocfs2/extent_map.c b/fs/ocfs2/extent_map.c
+index e66a249fe07c..e3e2d1b2af51 100644
+=2D-- a/fs/ocfs2/extent_map.c
++++ b/fs/ocfs2/extent_map.c
+@@ -590,8 +590,7 @@ int ocfs2_xattr_get_clusters(struct inode *inode, u32 =
+v_cluster,
+ 			*extent_flags =3D rec->e_flags;
+ 	}
+ out:
+-	if (eb_bh)
+-		brelse(eb_bh);
++	brelse(eb_bh);
+ 	return ret;
+ }
+
 =2D-
 2.23.0
 

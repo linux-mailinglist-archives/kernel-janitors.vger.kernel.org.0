@@ -2,87 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05C05A7B2D
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 08:08:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B99AA7CB1
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 09:23:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728598AbfIDGIC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Sep 2019 02:08:02 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:52384 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726045AbfIDGIC (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Sep 2019 02:08:02 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 1FDD460863; Wed,  4 Sep 2019 06:08:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567577281;
-        bh=A5jxgUwpEQdGcpUrgTBp7J90qN5hLJxxlg5AJOlfIYw=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=ju3nP+nIT9JobGjhVXro7zxQqFIoHkfT8P4bqRjXNxhT0Y7jf0NjypR7XAHW3iiGI
-         6Yz2HqV+Rs3j/TNc97UnPPuWTWE/m8vqCcvnBthzm1KEOKmrrJNhVi5uIT9Q4IDt90
-         RAsIk3CUngOz79pfMtr5TXv2MlCo87CFtdX08S1U=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AF42860863;
-        Wed,  4 Sep 2019 06:07:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1567577280;
-        bh=A5jxgUwpEQdGcpUrgTBp7J90qN5hLJxxlg5AJOlfIYw=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=hqY0g/pwJZmTrVTa0oArHt2OE2P5q67htDxuWaCEFNvxPrHloIRDCsXKzPWXMwMGG
-         RHF8+MZOHnOz1mfm+m2KlIng0yxrhaC13uJJMGllfbOR2Xt3/StASgTx49JyiDuuQI
-         ljE4Y+5Hk4BsdOB1wrvO1C4P4YN9za+ryH6bH3s4=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AF42860863
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] wil6210: Delete an unnecessary kfree() call in
- wil_tid_ampdu_rx_alloc()
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <b9620e49-618d-b392-6456-17de5807df75@web.de>
-References: <b9620e49-618d-b392-6456-17de5807df75@web.de>
+        id S1728966AbfIDHXf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Sep 2019 03:23:35 -0400
+Received: from mx2.suse.de ([195.135.220.15]:34176 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728209AbfIDHXf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 4 Sep 2019 03:23:35 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id AF44BB6B9;
+        Wed,  4 Sep 2019 07:23:33 +0000 (UTC)
+Received: by quack2.suse.cz (Postfix, from userid 1000)
+        id 4783E1E37A2; Wed,  4 Sep 2019 09:23:33 +0200 (CEST)
+Date:   Wed, 4 Sep 2019 09:23:33 +0200
+From:   Jan Kara <jack@suse.cz>
 To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        wil6210@qti.qualcomm.com, "David S. Miller" <davem@davemloft.net>,
-        Maya Erez <merez@codeaurora.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190904060801.1FDD460863@smtp.codeaurora.org>
-Date:   Wed,  4 Sep 2019 06:08:01 +0000 (UTC)
+Cc:     Jan Kara <jack@suse.com>, linux-ext4@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ext2: Delete an unnecessary check before brelse()
+Message-ID: <20190904072333.GB8225@quack2.suse.cz>
+References: <51dea296-2207-ebc0-bac3-13f3e5c3b235@web.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <51dea296-2207-ebc0-bac3-13f3e5c3b235@web.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Markus Elfring <Markus.Elfring@web.de> wrote:
-
-> A null pointer would be passed to a call of the function “kfree”
-> directly after a call of the function “kcalloc” failed at one place.
-> Remove this superfluous function call.
+On Tue 03-09-19 14:44:08, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Tue, 3 Sep 2019 14:40:18 +0200
+> 
+> The brelse() function tests whether its argument is NULL
+> and then returns immediately.
+> Thus the test around the call is not needed.
 > 
 > This issue was detected by using the Coccinelle software.
 > 
 > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> Reviewed-by: Maya Erez <merez@codeaurora.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Patch applied to ath-next branch of ath.git, thanks.
+Thanks. Added to my tree.
 
-d20b1e6c8307 wil6210: Delete an unnecessary kfree() call in wil_tid_ampdu_rx_alloc()
+								Honza
 
+> ---
+>  fs/ext2/super.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/fs/ext2/super.c b/fs/ext2/super.c
+> index baa36c6fb71e..30c630d73f0f 100644
+> --- a/fs/ext2/super.c
+> +++ b/fs/ext2/super.c
+> @@ -162,8 +162,7 @@ static void ext2_put_super (struct super_block * sb)
+>  	}
+>  	db_count = sbi->s_gdb_count;
+>  	for (i = 0; i < db_count; i++)
+> -		if (sbi->s_group_desc[i])
+> -			brelse (sbi->s_group_desc[i]);
+> +		brelse(sbi->s_group_desc[i]);
+>  	kfree(sbi->s_group_desc);
+>  	kfree(sbi->s_debts);
+>  	percpu_counter_destroy(&sbi->s_freeblocks_counter);
+> --
+> 2.23.0
+> 
+> 
 -- 
-https://patchwork.kernel.org/patch/11117119/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR

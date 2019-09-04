@@ -2,139 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41139A8DE9
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 21:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CBAAA921C
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 21:40:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731626AbfIDRvv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Sep 2019 13:51:51 -0400
-Received: from mout.web.de ([212.227.15.14]:50521 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730495AbfIDRvv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Sep 2019 13:51:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1567619438;
-        bh=G25W7RRLJRgtXAsMRLwlickAdb7OyjUJ/3Iap6/WNqw=;
-        h=X-UI-Sender-Class:Cc:References:Subject:From:To:Date:In-Reply-To;
-        b=iJj9rIm7eePcfzdFbl34IXfGKSrL4W9OTrjK7kwQU+Th9jn2bhLqk7fzB2ckihwux
-         Sa9yXB1NM8iBeS7iKon/klTlV0AIWvJm88e4zm/qPxsP7LGYkWo+BJNuRQ8PItX6+v
-         Aay7M3aVu+KyAJAkyahQ/LO88Af8KXqFpqZW5CIA=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.100.89]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MLg8p-1i4kLW3tHX-000sUZ; Wed, 04
- Sep 2019 19:50:38 +0200
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <1567491305-18320-1-git-send-email-zhongjiang@huawei.com>
-Subject: Re: drm/amdgpu: remove the redundant null check
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-To:     zhong jiang <zhongjiang@huawei.com>,
-        Chunming Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org
-Message-ID: <62b33279-9ca9-5970-5336-a8511ce54197@web.de>
-Date:   Wed, 4 Sep 2019 19:50:35 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.0
+        id S2387773AbfIDSzu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Sep 2019 14:55:50 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:45538 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387735AbfIDSzu (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 4 Sep 2019 14:55:50 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x84ItN8f056173;
+        Wed, 4 Sep 2019 18:55:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type : in-reply-to;
+ s=corp-2019-08-05; bh=mPi6nO703By+X80rHKGWRdzW+XBHf89rfMGiRteKjEQ=;
+ b=m9oJvPqBN9hxgtRUeQ2t91oqn7RJ0kjkqXsRE8iprSaSC0bXMFySr4qxRnszfr9LmXhV
+ LECf5d9VqSYPTbGu9MNtFhZe60l8I/tWOgYJXInmqjxENNURXy6DG7BiV4lOclz2Tukh
+ h6f60ws2Y7pkbSuueOkQ4z8FZ4+IQZDilaL6KxFiWuII29ByGnnIXiKnEcxIHecDzs/4
+ kIETbZG72btaZScZj7kzIRclANeD236LDqo7ak8dROgP0bH5R9Vm2aUr9enwjm+mS3Sl
+ YYVreNFDngVYOdS8uZwDQNMDVNIxx5FV3J/lPgoBup9JK7HC4WtuUdDXMlYOmKdlEK3y gw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2utjvt010w-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 04 Sep 2019 18:55:23 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x84IrR9v114298;
+        Wed, 4 Sep 2019 18:55:19 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 2ut1hnxvbn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 04 Sep 2019 18:55:19 +0000
+Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x84ItFOC029349;
+        Wed, 4 Sep 2019 18:55:15 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 04 Sep 2019 11:55:14 -0700
+Date:   Wed, 4 Sep 2019 21:55:07 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Thierry Reding <thierry.reding@gmail.com>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Cc:     Sam Ravnborg <sam@ravnborg.org>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH v2] drm: panel-lvds: Potential Oops in probe error handling
+Message-ID: <20190904185507.GA3634@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <1567491305-18320-1-git-send-email-zhongjiang@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:J8L0lGxBrBNRQg97k+vO1uJZR0MohxQSAxwmBWvxNaOgt60XxLG
- AAUjYpmRE0Ga3uzJGOcO1Px25yjaGgIDtSyHaVRvW5pXkdDBRaWxv2S/2KpVtf1aI5OIsG4
- dzwrxkdHcwbXeYZTARkGxIMJHiqdmGO9/fWivhVzigQyNyO2RxiCN8xTVq79FExbuhFr8Ik
- 0qCkRykkCe7K/TND9dUKA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:eM6TKP9RiSs=:iJnFXG1JRyXG6cNWofX/9r
- Pb+85q2/5fAsQ6EiARB+edrQ0uWoX+zmQxczJSu0ADjhCXcF8XQ7WnABh126lOUE0vAuTUsWK
- eIlUK+/MRDqhEZ1b+4nsPIS01Fh9viACklGXh12uU2BDRgIQJ8/w7TO9NyJt3O12rwwWJ7rSf
- GWYw7S1Dz9STQ0IKdDlP11l3ot3GP52FtJ7pqwyD1/Dyuq0DUSSsXAEjKISmo7or5FrnPJ+NG
- yUtHrPK6JthQB5otrnel1LsMUkQY+1x63H9oPk0jTzl7C2bt4ZEQKMU1x0YNGmD1LzkM66XfB
- U52U6L5Ye7yCnLszqvaieasN4xfq2AW0kYRsL/gHb5q1hcteyOLsAUNas6eRR11+unYfxeyj3
- wCdpk/6V7aljJvppdwXcnUGOW6/aqCGeBSNZFB/cI6aPxNQxppR/1Xjk2pQpCHNNXY6nNVK0Z
- z2BRL2JGZn7wbCGErtpBXodnyvi6E3SxWANknmzmLoWt63zLGj+0gfHpWVqlp49IehUV5RkxI
- sJm+Zyiq+Xn0frdALHLWiKtT4CL683jlq0dIQVARrqvx4YFY0L8oTI9JbbqW7BcMa8lIYrxO6
- 0GIUELW9/apvySua59d7BqOA6TUF17j1iOQEf3gYgVeqQCyifQZVItjqmGBKNvH2EKofyxMxp
- dFl/e6Hp+0Ro3Yv8IPm5tFHdXaIyxrCFx37wrXuKNIwDI6lHsHzvPL8JpyupjZmmfB5KHBaeQ
- UK1MEeQl9U3q6+NQ11oiJjVQR+DnX9MI+nN8XOBOaf3mOxIJpNpvl/5OgDPRLhB7gsAnoAMAK
- KSfUzBNcJlCAKoQ/nVKaEmrQNYH9WE/JUcUfbLfe1akd+j/cgPPL4YaY4KR3SxikKgML8WgHB
- RV6cjnDLgDu9xEreEeOVWuX2RDjUR7TJPJT9XtG7rZRB0ktG8PqHxz3a55e9RfBEcj9nFzl9E
- UwfrHKN9ylnJaoHZpls2bpO00uqSyL+MRIckfRuSivSYUmcAq9UXJVzPZ27dE9xiRVoYMvF/g
- IBChRh8kqwKXLKMHFdNr/aw0IMyJQUXf8d4Och1HMlaw6UvWnNwoDglJ0LVnhy2fF1JQXMl9+
- TDrwhVEKIJTvouL8CZ31rBXrnP2ovIQhA7tB0S9Qt0S94ZyEfku6C/azgEObyb+mfBJl8UDhN
- mRsjrIAXwd4+i7kE8yBxXtumtJl8BqaLIsShHpCCOLtcd9Oj+utDHpWcKWYdbhAZV+yZhZBne
- tVPZWo0gIYje0zm+S
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190904115057.GC4811@pendragon.ideasonboard.com>
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9370 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1909040189
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9370 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1909040189
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> debugfs_remove and kfree has taken the null check in account.
-> hence it is unnecessary to check it. Just remove the condition.
+The "lvds->backlight" pointer could be NULL in situations were
+of_parse_phandle() returns NULL.  Also it's slightly cleaner to use
+backlight_put() which already has a check for NULL built in.
 
-How do you think about a wording like the following?
+Fixes: 7c9dff5bd643 ("drm: panels: Add LVDS panel driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+v2: Use backlight_put().  Thanks, Laurent!
 
-  The functions =E2=80=9Cdebugfs_remove=E2=80=9D and =E2=80=9Ckfree=E2=80=
-=9D tolerate the passing
-  of null pointers. Hence it is unnecessary to check such arguments
-  around the calls. Thus remove the extra condition check at two places.
+ drivers/gpu/drm/panel/panel-lvds.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/drivers/gpu/drm/panel/panel-lvds.c b/drivers/gpu/drm/panel/panel-lvds.c
+index ad47cc95459e..05e8885db7ed 100644
+--- a/drivers/gpu/drm/panel/panel-lvds.c
++++ b/drivers/gpu/drm/panel/panel-lvds.c
+@@ -272,7 +272,7 @@ static int panel_lvds_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ error:
+-	put_device(&lvds->backlight->dev);
++	backlight_put(lvds->backlight);
+ 	return ret;
+ }
+ 
+-- 
+2.20.1
 
-> No functional change.
-
-I find this information questionable while it is partly reasonable
-according to the shown software refactoring.
-
-Can a subject like =E2=80=9C[PATCH] drm/amdgpu: Remove two redundant
-null pointer checks=E2=80=9D be nicer here?
-
-
-Were any source code analysis tools involved for finding
-these update candidates?
-
-Regards,
-Markus

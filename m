@@ -2,43 +2,42 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B99AA7CB1
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 09:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 264D5A7D05
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 09:48:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728966AbfIDHXf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Sep 2019 03:23:35 -0400
-Received: from mx2.suse.de ([195.135.220.15]:34176 "EHLO mx1.suse.de"
+        id S1728717AbfIDHsc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Sep 2019 03:48:32 -0400
+Received: from mx2.suse.de ([195.135.220.15]:46328 "EHLO mx1.suse.de"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728209AbfIDHXf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Sep 2019 03:23:35 -0400
+        id S1727787AbfIDHsc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 4 Sep 2019 03:48:32 -0400
 X-Virus-Scanned: by amavisd-new at test-mx.suse.de
 Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id AF44BB6B9;
-        Wed,  4 Sep 2019 07:23:33 +0000 (UTC)
+        by mx1.suse.de (Postfix) with ESMTP id E7216B67C;
+        Wed,  4 Sep 2019 07:48:30 +0000 (UTC)
 Received: by quack2.suse.cz (Postfix, from userid 1000)
-        id 4783E1E37A2; Wed,  4 Sep 2019 09:23:33 +0200 (CEST)
-Date:   Wed, 4 Sep 2019 09:23:33 +0200
+        id 793BC1E37A2; Wed,  4 Sep 2019 09:48:30 +0200 (CEST)
+Date:   Wed, 4 Sep 2019 09:48:30 +0200
 From:   Jan Kara <jack@suse.cz>
 To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Jan Kara <jack@suse.com>, linux-ext4@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
+Cc:     Jan Kara <jack@suse.com>, kernel-janitors@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ext2: Delete an unnecessary check before brelse()
-Message-ID: <20190904072333.GB8225@quack2.suse.cz>
-References: <51dea296-2207-ebc0-bac3-13f3e5c3b235@web.de>
+Subject: Re: [PATCH] fs-udf: Delete an unnecessary check before brelse()
+Message-ID: <20190904074830.GD8225@quack2.suse.cz>
+References: <a254c1d1-0109-ab51-c67a-edc5c1c4b4cd@web.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <51dea296-2207-ebc0-bac3-13f3e5c3b235@web.de>
+In-Reply-To: <a254c1d1-0109-ab51-c67a-edc5c1c4b4cd@web.de>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue 03-09-19 14:44:08, Markus Elfring wrote:
+On Tue 03-09-19 21:15:58, Markus Elfring wrote:
 > From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Tue, 3 Sep 2019 14:40:18 +0200
+> Date: Tue, 3 Sep 2019 21:12:09 +0200
 > 
 > The brelse() function tests whether its argument is NULL
 > and then returns immediately.
@@ -48,28 +47,28 @@ On Tue 03-09-19 14:44:08, Markus Elfring wrote:
 > 
 > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-Thanks. Added to my tree.
+Thanks for the patch. Added to my tree.
 
 								Honza
 
 > ---
->  fs/ext2/super.c | 3 +--
+>  fs/udf/super.c | 3 +--
 >  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> diff --git a/fs/ext2/super.c b/fs/ext2/super.c
-> index baa36c6fb71e..30c630d73f0f 100644
-> --- a/fs/ext2/super.c
-> +++ b/fs/ext2/super.c
-> @@ -162,8 +162,7 @@ static void ext2_put_super (struct super_block * sb)
->  	}
->  	db_count = sbi->s_gdb_count;
->  	for (i = 0; i < db_count; i++)
-> -		if (sbi->s_group_desc[i])
-> -			brelse (sbi->s_group_desc[i]);
-> +		brelse(sbi->s_group_desc[i]);
->  	kfree(sbi->s_group_desc);
->  	kfree(sbi->s_debts);
->  	percpu_counter_destroy(&sbi->s_freeblocks_counter);
+> diff --git a/fs/udf/super.c b/fs/udf/super.c
+> index 56da1e1680ea..0cd0be642a2f 100644
+> --- a/fs/udf/super.c
+> +++ b/fs/udf/super.c
+> @@ -273,8 +273,7 @@ static void udf_sb_free_bitmap(struct udf_bitmap *bitmap)
+>  	int nr_groups = bitmap->s_nr_groups;
+> 
+>  	for (i = 0; i < nr_groups; i++)
+> -		if (bitmap->s_block_bitmap[i])
+> -			brelse(bitmap->s_block_bitmap[i]);
+> +		brelse(bitmap->s_block_bitmap[i]);
+> 
+>  	kvfree(bitmap);
+>  }
 > --
 > 2.23.0
 > 

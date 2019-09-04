@@ -2,43 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C843DA8D8B
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 21:32:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41139A8DE9
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 21:32:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731812AbfIDRMK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Sep 2019 13:12:10 -0400
-Received: from mout.web.de ([212.227.15.4]:36961 "EHLO mout.web.de"
+        id S1731626AbfIDRvv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Sep 2019 13:51:51 -0400
+Received: from mout.web.de ([212.227.15.14]:50521 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731456AbfIDRMK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Sep 2019 13:12:10 -0400
+        id S1730495AbfIDRvv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 4 Sep 2019 13:51:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1567617098;
-        bh=8FYBlMNDa4QYgsP1spn0LFhetvVOppJuogo1VyWwUo4=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=ov4XHsiB3hMhvYSxUtDOft97TLnObg04hWJw5qxWsa8g4KMAPT+g59/DQPImIuH6U
-         /0VqsocaxGem/ZZKRogeCYE6WTurYxn4AKwn3HbfDBl6g+EQJR/PZL/EqWIWxoz2xp
-         LblC4emPTILkam5RmwQ/m9uPN1+RI+WKldvwDJNE=
+        s=dbaedf251592; t=1567619438;
+        bh=G25W7RRLJRgtXAsMRLwlickAdb7OyjUJ/3Iap6/WNqw=;
+        h=X-UI-Sender-Class:Cc:References:Subject:From:To:Date:In-Reply-To;
+        b=iJj9rIm7eePcfzdFbl34IXfGKSrL4W9OTrjK7kwQU+Th9jn2bhLqk7fzB2ckihwux
+         Sa9yXB1NM8iBeS7iKon/klTlV0AIWvJm88e4zm/qPxsP7LGYkWo+BJNuRQ8PItX6+v
+         Aay7M3aVu+KyAJAkyahQ/LO88Af8KXqFpqZW5CIA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.100.89]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MDByG-1hxp3u0YNY-00GafH; Wed, 04
- Sep 2019 19:11:38 +0200
-Subject: Re: drm/amdgpu: Delete an unnecessary check before two function calls
+Received: from [192.168.1.2] ([78.49.100.89]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MLg8p-1i4kLW3tHX-000sUZ; Wed, 04
+ Sep 2019 19:50:38 +0200
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <1567491305-18320-1-git-send-email-zhongjiang@huawei.com>
+Subject: Re: drm/amdgpu: remove the redundant null check
 From:   Markus Elfring <Markus.Elfring@web.de>
-To:     amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Chunming Zhou <David1.Zhou@amd.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Hawking Zhang <Hawking.Zhang@amd.com>,
-        Jack Xiao <Jack.Xiao@amd.com>,
-        Kevin Wang <Kevin1.Wang@amd.com>,
-        Tom St Denis <tom.stdenis@amd.com>,
-        Wang Xiayang <xywang.sjtu@sjtu.edu.cn>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-References: <a3739125-5fa8-cadb-d2b8-8a9f12e9bacd@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -82,58 +69,72 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <ef57fbc1-8c67-c6ae-42b8-0de76df7cea3@web.de>
-Date:   Wed, 4 Sep 2019 19:11:33 +0200
+To:     zhong jiang <zhongjiang@huawei.com>,
+        Chunming Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org
+Message-ID: <62b33279-9ca9-5970-5336-a8511ce54197@web.de>
+Date:   Wed, 4 Sep 2019 19:50:35 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.0
 MIME-Version: 1.0
-In-Reply-To: <a3739125-5fa8-cadb-d2b8-8a9f12e9bacd@web.de>
+In-Reply-To: <1567491305-18320-1-git-send-email-zhongjiang@huawei.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ZLeBkHBr0q8jZES0PP9vBzsioYA+llirF1PkWN6y5UMtFezSU2w
- HgB0h+917mYE4zlr5XhyodWdIsDaVEp2j1SrejmFdj5b6nO32jnWWfnLz2HCH1mio8JeMDH
- TKjn4QGJ8I7Qgkv8Bhr2+ntYCDL5RIZCK0A0Wjt2rR8AfQAXalrub0LmB0SqPixUKOlwN3d
- xBOIPXPVs74Y+INDqb2cg==
+X-Provags-ID: V03:K1:J8L0lGxBrBNRQg97k+vO1uJZR0MohxQSAxwmBWvxNaOgt60XxLG
+ AAUjYpmRE0Ga3uzJGOcO1Px25yjaGgIDtSyHaVRvW5pXkdDBRaWxv2S/2KpVtf1aI5OIsG4
+ dzwrxkdHcwbXeYZTARkGxIMJHiqdmGO9/fWivhVzigQyNyO2RxiCN8xTVq79FExbuhFr8Ik
+ 0qCkRykkCe7K/TND9dUKA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:sWbJhIOyBiU=:FYC4UUvU+ss+XcEqxiXYgR
- lOui+4bFpaI9DOcnB73MjeFafN0OExxjfYlr86y9pkuLqfwDo4zB20BRTVlERyN2LU56ieqB4
- rmNSFELRvVvuE6IvlL1o6THtek4SXHAMmt0DkPDX6GHv4IUyuu9ml93EcZmwCx2J+r1tBE5w2
- qsNbDVVPSOjHhtP/Yb1mvxF5A1TOENy00Og7P6w597L2qHZYSbvAPfGzdiJvjCjV+onHEQTtT
- YFKCRf0PFmdd16s+ubfj6/h//FXe0c41BE/ethA6py4cUET4y+bNEQmK+q2stlJpTiLf1wvqz
- oX1iV6fSR/ztGNZYB0uMOBvU/AwZLjRCAurfR4hhuQHa3/S+cqzgoDOwr6VSUydRfV+lwndj1
- bjuuzlmGn3uQjpDJDj33qVjXMI9oBE+zRTZzOjgye8ZNualFElOwv3u1tvA22Ph3qT5rVCzzp
- fJMzUU0KNAzk11Yoauyx0rxqP1LC1rkSNIh63O/dHpXctkEf7bUhmqG8GXv0NwsczOLB/RlnN
- +BhTYMg/gzyF+Tx8kdVzBgok2I9xL5K637prF/k7EroA5poKQg/C5iGr5cxcSzJM7lsCfatDR
- 5j0jJ5E9Iufhp72LtOJmh4+/3Zlu/yX+isfMp1BwAHGo3W9BraqoSIatSAMaVL3vd1CK1rwaI
- IzhKPrPUIXe9aWtXGoFx5cCOVsfQjd6AMb/A1GjPrFKQKtT41BTDms6E099lM4ylK9npSU/OL
- e1hEzE5n9CtABfw9eDyFY4TTNoi5DeRr9XOiqinC3jzGH5u1pTjikC6/rlKJW2wfzdlGCTojx
- 1LYMVTsoDjgOeSsIrKOZDFF2beg6lwUlzXvV2gGa1vTgnl8E8shgghlZbUeV8l27zVihW4V8L
- 7luqEODPEG/3tYESdXPdurcHGwMRsB6gYgOsUeGjxUq05/VMCB5v0ZPHqXULcLwwqAmnMMkDe
- ZXvWDzCleulqOnqrHStitWwz8PFK1mM5BvTs1mfRg8UEoAAGs/SIX7MzHZzH+C2Y29lUQeinL
- F2SZmpNvgfPR/2TTve6yPy+Np+shGfN+gqZTe1SKHKuE17P3PRAiu219zS3SSmpKQ25gD0qDK
- HtrduvmIxLWbVIi6kMlzxAr+KbiD/HOEcsm2XDJXUSp6QKRtZzIHoiZmDftifjOpWnW9dVUgL
- vlLwirqvyvbHtOhNe2diWIJEAdcR1UJqAefAyDmavWbN9V4c2rq2X1a8C3ZRqIZrGrDhxB6wm
- rKj3tldt3emUSikrp
+X-UI-Out-Filterresults: notjunk:1;V03:K0:eM6TKP9RiSs=:iJnFXG1JRyXG6cNWofX/9r
+ Pb+85q2/5fAsQ6EiARB+edrQ0uWoX+zmQxczJSu0ADjhCXcF8XQ7WnABh126lOUE0vAuTUsWK
+ eIlUK+/MRDqhEZ1b+4nsPIS01Fh9viACklGXh12uU2BDRgIQJ8/w7TO9NyJt3O12rwwWJ7rSf
+ GWYw7S1Dz9STQ0IKdDlP11l3ot3GP52FtJ7pqwyD1/Dyuq0DUSSsXAEjKISmo7or5FrnPJ+NG
+ yUtHrPK6JthQB5otrnel1LsMUkQY+1x63H9oPk0jTzl7C2bt4ZEQKMU1x0YNGmD1LzkM66XfB
+ U52U6L5Ye7yCnLszqvaieasN4xfq2AW0kYRsL/gHb5q1hcteyOLsAUNas6eRR11+unYfxeyj3
+ wCdpk/6V7aljJvppdwXcnUGOW6/aqCGeBSNZFB/cI6aPxNQxppR/1Xjk2pQpCHNNXY6nNVK0Z
+ z2BRL2JGZn7wbCGErtpBXodnyvi6E3SxWANknmzmLoWt63zLGj+0gfHpWVqlp49IehUV5RkxI
+ sJm+Zyiq+Xn0frdALHLWiKtT4CL683jlq0dIQVARrqvx4YFY0L8oTI9JbbqW7BcMa8lIYrxO6
+ 0GIUELW9/apvySua59d7BqOA6TUF17j1iOQEf3gYgVeqQCyifQZVItjqmGBKNvH2EKofyxMxp
+ dFl/e6Hp+0Ro3Yv8IPm5tFHdXaIyxrCFx37wrXuKNIwDI6lHsHzvPL8JpyupjZmmfB5KHBaeQ
+ UK1MEeQl9U3q6+NQ11oiJjVQR+DnX9MI+nN8XOBOaf3mOxIJpNpvl/5OgDPRLhB7gsAnoAMAK
+ KSfUzBNcJlCAKoQ/nVKaEmrQNYH9WE/JUcUfbLfe1akd+j/cgPPL4YaY4KR3SxikKgML8WgHB
+ RV6cjnDLgDu9xEreEeOVWuX2RDjUR7TJPJT9XtG7rZRB0ktG8PqHxz3a55e9RfBEcj9nFzl9E
+ UwfrHKN9ylnJaoHZpls2bpO00uqSyL+MRIckfRuSivSYUmcAq9UXJVzPZ27dE9xiRVoYMvF/g
+ IBChRh8kqwKXLKMHFdNr/aw0IMyJQUXf8d4Och1HMlaw6UvWnNwoDglJ0LVnhy2fF1JQXMl9+
+ TDrwhVEKIJTvouL8CZ31rBXrnP2ovIQhA7tB0S9Qt0S94ZyEfku6C/azgEObyb+mfBJl8UDhN
+ mRsjrIAXwd4+i7kE8yBxXtumtJl8BqaLIsShHpCCOLtcd9Oj+utDHpWcKWYdbhAZV+yZhZBne
+ tVPZWo0gIYje0zm+S
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> The functions =E2=80=9Cdebugfs_remove=E2=80=9D and =E2=80=9Ckfree=E2=80=
-=9D test whether their argument
-> is NULL and then return immediately.
-> Thus the tests around the shown calls are not needed.
->
-> This issue was detected by using the Coccinelle software.
+> debugfs_remove and kfree has taken the null check in account.
+> hence it is unnecessary to check it. Just remove the condition.
 
-I suggest to take another look at a similar patch.
+How do you think about a wording like the following?
 
-drm/amdgpu: remove the redundant null check
-https://lkml.org/lkml/2019/9/3/59
-https://lore.kernel.org/patchwork/patch/1123118/
-https://lore.kernel.org/r/1567491305-18320-1-git-send-email-zhongjiang@hua=
-wei.com/
+  The functions =E2=80=9Cdebugfs_remove=E2=80=9D and =E2=80=9Ckfree=E2=80=
+=9D tolerate the passing
+  of null pointers. Hence it is unnecessary to check such arguments
+  around the calls. Thus remove the extra condition check at two places.
+
+
+> No functional change.
+
+I find this information questionable while it is partly reasonable
+according to the shown software refactoring.
+
+Can a subject like =E2=80=9C[PATCH] drm/amdgpu: Remove two redundant
+null pointer checks=E2=80=9D be nicer here?
+
+
+Were any source code analysis tools involved for finding
+these update candidates?
 
 Regards,
 Markus

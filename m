@@ -2,68 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F4B6A8D31
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 21:31:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C0ADA8D36
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 21:31:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731647AbfIDQfv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Sep 2019 12:35:51 -0400
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:44251 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731520AbfIDQfv (ORCPT
+        id S1731893AbfIDQgy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Sep 2019 12:36:54 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:39184 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731520AbfIDQgy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Sep 2019 12:35:51 -0400
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1i5YFz-0006OD-Td; Wed, 04 Sep 2019 18:35:43 +0200
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1i5YFy-0007xr-QH; Wed, 04 Sep 2019 18:35:42 +0200
-Date:   Wed, 4 Sep 2019 18:35:42 +0200
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Palmer Dabbelt <palmer@sifive.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        linux-pwm@vger.kernel.org, linux-riscv@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] pwm: sifive: Remove redundant dev_err call in
- pwm_sifive_probe()
-Message-ID: <20190904163542.me5q4hlzaf3pdnmx@pengutronix.de>
-References: <20190904111836.122616-1-weiyongjun1@huawei.com>
+        Wed, 4 Sep 2019 12:36:54 -0400
+Received: by mail-ot1-f66.google.com with SMTP id n7so13844032otk.6;
+        Wed, 04 Sep 2019 09:36:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=9VcLNSQo/FpdNp3KI0MMID9sL1HTgtVBFdNj0rcgjWQ=;
+        b=OSJ8FAFn7PHtQnI6r5/8bF6vcGMsBLIq2P1OEk9r1Cby0dXAi0TRm/YXbZ1WElFTSM
+         OwxDHhlBX8TsCy12cYtdufDLUX6/fxQHGqsuTv03rEf+R2Zw2mvJD+ifztkzcAexyFJK
+         xOeSf0cM+k20diCmK/WAiN8eDj1HV3GZQk5eHxrdw3eQfBAp1IHECv3cmB7rSqAAQOrB
+         IZgRVwTZT9SHWPUlEZiXn6NsjP211pqbSkIKPBN2hG73Iq/S2f/oTgUCVe9iYkXjbVjl
+         Dmx9CoeErSplTi/ZYZ93aEYLYwYUxwuA4GOtTSNZWAnJoHLRoMbH3dOWaPQANTDCyfI+
+         YiVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9VcLNSQo/FpdNp3KI0MMID9sL1HTgtVBFdNj0rcgjWQ=;
+        b=XknCuE9hr+h8cM9jAS5D2sLXsHwW9jip5VIDoS3PVYsO54aYFr34SxEtSjiRprJAtn
+         biLWT6iOWZICjamr/TtH9no66mm9I8CxxjqYL9U1KI906oZ8hS2SyUEz5NzGzwEwvaN/
+         T27uLJ0oLKK848Axafq3cvFXFJmiqjOblgIv5cHAOh+23PPGw0LbXze0+p6pbxCUT67V
+         54gttYMzxMBlaWs6wSUII26I8oufui9cSDqYh2opszr2Vm5AcaxMoEhpYCXUR11twWJG
+         z7w5cqgL0lZRygwQDlhuEBa5nU8Ck2fpfZuFXwsn0irpyuGUckqwTB0cClJrgmryFels
+         AFrw==
+X-Gm-Message-State: APjAAAXLV/e4wObSHOLjMqEU8ZgLMTgDxCUqubRWjJ49Yfeh85IWKmjX
+        R6pjzWgLuT/R3thEiixPEZM6eZ+hVxuFvTB/tV7XxpAw
+X-Google-Smtp-Source: APXvYqxVwdwlZkT1M7Z+FTlrgM/3cXgKH32gOCFlO1BhA8Z5xZViduosC/Nigzkht2IeSZZMalE9o+m1sgYNm/UGDhM=
+X-Received: by 2002:a05:6830:1e5a:: with SMTP id e26mr7631053otj.96.1567615012911;
+ Wed, 04 Sep 2019 09:36:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190904111836.122616-1-weiyongjun1@huawei.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
+References: <20190904114014.124099-1-weiyongjun1@huawei.com>
+In-Reply-To: <20190904114014.124099-1-weiyongjun1@huawei.com>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Wed, 4 Sep 2019 18:36:41 +0200
+Message-ID: <CAFBinCBo2Mf_7jXiNLoP7+t+TGVA9PmM9zT+Ni+1=q6OH1cU6A@mail.gmail.com>
+Subject: Re: [PATCH -next] phy: lantiq: vrx200-pcie: fix error return code in ltq_vrx200_pcie_phy_power_on()
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Kishon Vijay Abraham I <kishon@ti.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
-
-On Wed, Sep 04, 2019 at 11:18:36AM +0000, Wei Yongjun wrote:
-> There is a error message within devm_ioremap_resource
-> already, so remove the dev_err call to avoid redundant
-> error message.
-> 
+On Wed, Sep 4, 2019 at 1:23 PM Wei Yongjun <weiyongjun1@huawei.com> wrote:
+>
+> Fix to return a negative error code from the error handling
+> case instead of 0, as done elsewhere in this function.
+>
+> Fixes: e52a632195bf ("phy: lantiq: vrx200-pcie: add a driver for the Lantiq VRX200 PCIe PHY")
 > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-that's right
-
-Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-
-Thanks
-Uwe
-
--- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+thank you for spotting and fixing this issue!

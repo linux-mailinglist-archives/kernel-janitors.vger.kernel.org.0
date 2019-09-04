@@ -2,139 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1339A73AB
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Sep 2019 21:30:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BA9DA7B1F
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 08:05:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726177AbfICTae (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Sep 2019 15:30:34 -0400
-Received: from mout.web.de ([217.72.192.78]:56445 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725953AbfICTae (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Sep 2019 15:30:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1567539032;
-        bh=4T5ny1AS1GJwZchXT6ocqT0k9xc1p63z1kQ3jTt1dBQ=;
-        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=EUR+SG8iElxs9PXN60LFs0C3OMVgK0asX5EwMwAPs9UEqk6NQ+zHa/HrYhVti5EFd
-         CKNamc/VH/pXNexkEGb7vDSpHkbIQCS3YymY2OuECbIYDVTUO0nAPtwRov3OJvnXh4
-         hBQYOvaGn8i+q8QxDIswk0XfLf63IFMs8LmJBUnE=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.133.43]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lh6UN-1iYSat0KUZ-00oYkS; Tue, 03
- Sep 2019 21:30:32 +0200
-To:     kernel-janitors@vger.kernel.org,
-        Evgeniy Dushistov <dushistov@mail.ru>
-Cc:     LKML <linux-kernel@vger.kernel.org>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] ufs: Delete an unnecessary check before brelse()
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <d57685d8-d0ce-4a53-177f-a98d116d2981@web.de>
-Date:   Tue, 3 Sep 2019 21:30:31 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.0
+        id S1727881AbfIDGFq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Sep 2019 02:05:46 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:51536 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726004AbfIDGFp (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 4 Sep 2019 02:05:45 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id C65D96115D; Wed,  4 Sep 2019 06:05:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567577144;
+        bh=aShqyN0Qd6KXTO9xyxybPT3f0jnGflZlYOUa5dN9MtI=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=STRjU44NdPfHLvhvJf59rfO2e+otP8z8kz7owHCPYKbhNJD6kNnp2DrfGWorpSh1t
+         I1JiwOMCTQBW98xr/+B/SExCmicLYymGmvUS6Nk8XZWy5+GcT/VJP37gyEtPoXOtrd
+         W6yLQol5a4whNtPxMs2CZmDuDnDRQYlhs6UOsD0Q=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 3BFF160863;
+        Wed,  4 Sep 2019 06:05:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1567577144;
+        bh=aShqyN0Qd6KXTO9xyxybPT3f0jnGflZlYOUa5dN9MtI=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=W9orP2b1CDYEo1ik0R2sfFMCtfiUjF4z+YuTqKHcozs+wahtDFaobbukAxKr3uHWu
+         wHcl/fCHKSkMxy39qXSlncnhtPFbWu54g5NvLTJbrgIHb0gaMeSc6cXPSSXQ2eJ5ok
+         kddufNvugFu6k6heCmNPZBF5Wos26rzTvyuy6uW8=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3BFF160863
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:yrlEPxGj2xKjYWxLkpKXeE8NbVCD6VV8dE/T2QQXTiLSjspp5dN
- y7Beq+4QzUCYvAz4Wi3WmTQ3hgqzBR0JK2K7mSe1OeX3XayLP7BiMokcSUwu3ftMnkX9ofc
- RankEHryYFG9vhgWAy1Pg3gyEmUiHYOzXazFaeNxe33+HFGwvGhhbqYk1714w6XTHSKUkZm
- c2TT0rUwZmpEfUDslCFyg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:cO36QQGygiU=:cQjy2KXybhpur1pWBRMC+j
- fAruuji/pDGgyxZj5jJmII3nLNuhYGdVtSUVtZkMwwM3oM3p3rXqytZuBTXkZ/K0rLESmZwy7
- v/t+3cL21gpKw9Wh8hyILHa8gcjzrOkqUpOCSZBlYn45edxhI63dKlKPQDLdxOxk7/tHCqajc
- Fyc00gYhx9OeSL2LYUdCs3r29OAlvE6p7DvTolrvvdWar4tbJlmMuUKcPaXclu5vmziMIT9Dm
- E9I12V8lWnpYlpGcacpJ1iBSM5PZzrUTdg1FMo4gMPN20ZkFQOrvdIy/6hxg1Xdq670oTuVM3
- L15UGVI1alO576jiOX7PCC0rIPAJxeMFWFhDLXO8AYOkjwId199nDy5nRTgIyiCW9rQD6C7t9
- tVQGxpipFpZiLlEekBGsvjBbdmLarhr64igCYFTRAMJo4z0gbeiibmC9Uznnh2dgTCojDEaOt
- Ijl57Hd4sgPrgDD1+gMSQRDmrtGD0Aymfh6V9HaVpL07WOWBYYMgwnpr5SJdxCKt01NkiWaVh
- 7pIZ6op4NBp+riXjopjWeqKW2KMdCGZOF5O+gw9AyjVD/j3U7QRSFpyL2A3hGlNwDOEiE+TvI
- HKupd52hg0FnCBMvFH90F5k7tYoWOhQqI1xhU2lx3aFAZLC/dAYyjFoV8lKvAuyzTqfDOLh9P
- x9h+PDwrHFkO3oC7opuyfMHCLSDwPqJRVmsaWyKVTLbS4l19FOX7gwnnl5sWyPczRgIDvgv/Y
- P9YKa8QZkDcK46Y4kzpKKl9eniInK5VTnKoFmd9VTg+Gw1zM6ojJZYkUP+aZwO42bZgw122Xw
- rUaDKgxpHaBK/F45LxtqXV7RtXHPfKv63Ly8FhnV4+z1VZK0+NCucR4DS6G1shTnyPP3r/oh3
- 8fXnnGMb4aOKpTY0dO6IvBxXbaUtNc2H8AOO/RcgWskfmhbPZPtMAYnNsr9KicAYebx+ekZRu
- beWG06HHke9dR1OTH6s6yKn4KTSpvUp/WjmKK3t7qOrDbKs/5WDZKtUCwxdE+YxwlP4Lry+NM
- 8qtNNrZxWEzgk6KU82lpH/sFbCfa41INH3f4IE813RXMZu3uuEs1hZURxkQPPf7hpn1f6Nmx/
- IJ/UxsuZCCnKH7cCYP+UY26+GwEMfWF4soKrddMdd3G5ncsFJs3X8jXnyY9Ho5B7+LItboc/N
- H+NUqLyOVQ/8fZ0XIq8qsth7qyNytAEKZiBgTMBIsSIDKu8A==
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH][next] wil6210: fix wil_cid_valid with negative cid values
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190702144026.13013-1-colin.king@canonical.com>
+References: <20190702144026.13013-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Maya Erez <merez@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190904060544.C65D96115D@smtp.codeaurora.org>
+Date:   Wed,  4 Sep 2019 06:05:44 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 3 Sep 2019 21:27:55 +0200
+Colin King <colin.king@canonical.com> wrote:
 
-The brelse() function tests whether its argument is NULL
-and then returns immediately.
-Thus the test around the call is not needed.
+> There are several occasions where a negative cid value is passed
+> into wil_cid_valid and this is converted into a u8 causing the
+> range check of cid >= 0 to always succeed.  Fix this by making
+> the cid argument an int to handle any -ve error value of cid.
+> 
+> An example of this behaviour is in wil_cfg80211_dump_station,
+> where cid is assigned -ENOENT if the call to wil_find_cid_by_idx
+> fails, and this -ve value is passed to wil_cid_valid.  I believe
+> that the conversion of -ENOENT to the u8 value 254 which is
+> greater than wil->max_assoc_sta causes wil_find_cid_by_idx to
+> currently work fine, but I think is by luck and not the
+> intended behaviour.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Reviewed-by: Maya Erez <merez@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-This issue was detected by using the Coccinelle software.
+Patch applied to ath-next branch of ath.git, thanks.
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- fs/ufs/super.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+23bb9f692b66 wil6210: fix wil_cid_valid with negative cid values
 
-diff --git a/fs/ufs/super.c b/fs/ufs/super.c
-index 1da0be667409..20799faa307a 100644
-=2D-- a/fs/ufs/super.c
-+++ b/fs/ufs/super.c
-@@ -574,8 +574,7 @@ static int ufs_read_cylinder_structures(struct super_b=
-lock *sb)
- 	kfree (base);
- 	if (sbi->s_ucg) {
- 		for (i =3D 0; i < uspi->s_ncg; i++)
--			if (sbi->s_ucg[i])
--				brelse (sbi->s_ucg[i]);
-+			brelse(sbi->s_ucg[i]);
- 		kfree (sbi->s_ucg);
- 		for (i =3D 0; i < UFS_MAX_GROUP_LOADED; i++)
- 			kfree (sbi->s_ucpi[i]);
-=2D-
-2.23.0
+-- 
+https://patchwork.kernel.org/patch/11027989/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

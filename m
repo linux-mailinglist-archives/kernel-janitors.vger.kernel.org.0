@@ -2,102 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CBAAA921C
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 21:40:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D095A9251
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 21:41:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387773AbfIDSzu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Sep 2019 14:55:50 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:45538 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387735AbfIDSzu (ORCPT
+        id S1730785AbfIDT3T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Sep 2019 15:29:19 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:37129 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730584AbfIDT3T (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Sep 2019 14:55:50 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x84ItN8f056173;
-        Wed, 4 Sep 2019 18:55:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2019-08-05; bh=mPi6nO703By+X80rHKGWRdzW+XBHf89rfMGiRteKjEQ=;
- b=m9oJvPqBN9hxgtRUeQ2t91oqn7RJ0kjkqXsRE8iprSaSC0bXMFySr4qxRnszfr9LmXhV
- LECf5d9VqSYPTbGu9MNtFhZe60l8I/tWOgYJXInmqjxENNURXy6DG7BiV4lOclz2Tukh
- h6f60ws2Y7pkbSuueOkQ4z8FZ4+IQZDilaL6KxFiWuII29ByGnnIXiKnEcxIHecDzs/4
- kIETbZG72btaZScZj7kzIRclANeD236LDqo7ak8dROgP0bH5R9Vm2aUr9enwjm+mS3Sl
- YYVreNFDngVYOdS8uZwDQNMDVNIxx5FV3J/lPgoBup9JK7HC4WtuUdDXMlYOmKdlEK3y gw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 2utjvt010w-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 04 Sep 2019 18:55:23 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x84IrR9v114298;
-        Wed, 4 Sep 2019 18:55:19 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 2ut1hnxvbn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 04 Sep 2019 18:55:19 +0000
-Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x84ItFOC029349;
-        Wed, 4 Sep 2019 18:55:15 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 04 Sep 2019 11:55:14 -0700
-Date:   Wed, 4 Sep 2019 21:55:07 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Cc:     Sam Ravnborg <sam@ravnborg.org>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] drm: panel-lvds: Potential Oops in probe error handling
-Message-ID: <20190904185507.GA3634@mwanda>
+        Wed, 4 Sep 2019 15:29:19 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i5axv-0002Yt-5v; Wed, 04 Sep 2019 19:29:15 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Maor Gottlieb <maorg@mellanox.com>,
+        Saeed Mahameed <saeedm@mellanox.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] net/mlx5: fix missing assignment of variable err
+Date:   Wed,  4 Sep 2019 20:29:14 +0100
+Message-Id: <20190904192914.19684-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190904115057.GC4811@pendragon.ideasonboard.com>
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9370 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1909040189
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9370 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1909040189
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "lvds->backlight" pointer could be NULL in situations were
-of_parse_phandle() returns NULL.  Also it's slightly cleaner to use
-backlight_put() which already has a check for NULL built in.
+From: Colin Ian King <colin.king@canonical.com>
 
-Fixes: 7c9dff5bd643 ("drm: panels: Add LVDS panel driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+The error return from a call to mlx5_flow_namespace_set_peer is not
+being assigned to variable err and hence the error check following
+the call is currently not working.  Fix this by assigning ret as
+intended.
+
+Addresses-Coverity: ("Logically dead code")
+Fixes: 8463daf17e80 ("net/mlx5: Add support to use SMFS in switchdev mode")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
-v2: Use backlight_put().  Thanks, Laurent!
-
- drivers/gpu/drm/panel/panel-lvds.c | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-lvds.c b/drivers/gpu/drm/panel/panel-lvds.c
-index ad47cc95459e..05e8885db7ed 100644
---- a/drivers/gpu/drm/panel/panel-lvds.c
-+++ b/drivers/gpu/drm/panel/panel-lvds.c
-@@ -272,7 +272,7 @@ static int panel_lvds_probe(struct platform_device *pdev)
- 	return 0;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+index afa623b15a38..00d71db15f22 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -1651,7 +1651,7 @@ static int mlx5_esw_offloads_set_ns_peer(struct mlx5_eswitch *esw,
+ 		if (err)
+ 			return err;
  
- error:
--	put_device(&lvds->backlight->dev);
-+	backlight_put(lvds->backlight);
- 	return ret;
- }
- 
+-		mlx5_flow_namespace_set_peer(peer_ns, ns);
++		err = mlx5_flow_namespace_set_peer(peer_ns, ns);
+ 		if (err) {
+ 			mlx5_flow_namespace_set_peer(ns, NULL);
+ 			return err;
 -- 
 2.20.1
 

@@ -2,77 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 264D5A7D05
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 09:48:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E729CA7D6F
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 10:15:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728717AbfIDHsc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Sep 2019 03:48:32 -0400
-Received: from mx2.suse.de ([195.135.220.15]:46328 "EHLO mx1.suse.de"
+        id S1728999AbfIDIP0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Sep 2019 04:15:26 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:37600 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727787AbfIDHsc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Sep 2019 03:48:32 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id E7216B67C;
-        Wed,  4 Sep 2019 07:48:30 +0000 (UTC)
-Received: by quack2.suse.cz (Postfix, from userid 1000)
-        id 793BC1E37A2; Wed,  4 Sep 2019 09:48:30 +0200 (CEST)
-Date:   Wed, 4 Sep 2019 09:48:30 +0200
-From:   Jan Kara <jack@suse.cz>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Jan Kara <jack@suse.com>, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] fs-udf: Delete an unnecessary check before brelse()
-Message-ID: <20190904074830.GD8225@quack2.suse.cz>
-References: <a254c1d1-0109-ab51-c67a-edc5c1c4b4cd@web.de>
+        id S1725267AbfIDIP0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 4 Sep 2019 04:15:26 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 45B61153C0B3115A301A;
+        Wed,  4 Sep 2019 16:15:24 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 4 Sep 2019 16:15:17 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Cornelia Huck <cohuck@redhat.com>,
+        Eric Farman <farman@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>,
+        Sebastian Ott <sebott@linux.ibm.com>,
+        Peter Oberparleiter <oberpar@linux.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        "Christian Borntraeger" <borntraeger@de.ibm.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-s390@vger.kernel.org>,
+        <kvm@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] vfio-ccw: fix error return code in vfio_ccw_sch_init()
+Date:   Wed, 4 Sep 2019 08:33:15 +0000
+Message-ID: <20190904083315.105600-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a254c1d1-0109-ab51-c67a-edc5c1c4b4cd@web.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue 03-09-19 21:15:58, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Tue, 3 Sep 2019 21:12:09 +0200
-> 
-> The brelse() function tests whether its argument is NULL
-> and then returns immediately.
-> Thus the test around the call is not needed.
-> 
-> This issue was detected by using the Coccinelle software.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Fix to return negative error code -ENOMEM from the memory alloc failed
+error handling case instead of 0, as done elsewhere in this function.
 
-Thanks for the patch. Added to my tree.
+Fixes: 60e05d1cf087 ("vfio-ccw: add some logging")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/s390/cio/vfio_ccw_drv.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-								Honza
+diff --git a/drivers/s390/cio/vfio_ccw_drv.c b/drivers/s390/cio/vfio_ccw_drv.c
+index 45e792f6afd0..e401a3d0aa57 100644
+--- a/drivers/s390/cio/vfio_ccw_drv.c
++++ b/drivers/s390/cio/vfio_ccw_drv.c
+@@ -317,15 +317,19 @@ static int __init vfio_ccw_sch_init(void)
+ 					sizeof(struct ccw_io_region), 0,
+ 					SLAB_ACCOUNT, 0,
+ 					sizeof(struct ccw_io_region), NULL);
+-	if (!vfio_ccw_io_region)
++	if (!vfio_ccw_io_region) {
++		ret = -ENOMEM;
+ 		goto out_err;
++	}
+ 
+ 	vfio_ccw_cmd_region = kmem_cache_create_usercopy("vfio_ccw_cmd_region",
+ 					sizeof(struct ccw_cmd_region), 0,
+ 					SLAB_ACCOUNT, 0,
+ 					sizeof(struct ccw_cmd_region), NULL);
+-	if (!vfio_ccw_cmd_region)
++	if (!vfio_ccw_cmd_region) {
++		ret = -ENOMEM;
+ 		goto out_err;
++	}
+ 
+ 	isc_register(VFIO_CCW_ISC);
+ 	ret = css_driver_register(&vfio_ccw_sch_driver);
 
-> ---
->  fs/udf/super.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/fs/udf/super.c b/fs/udf/super.c
-> index 56da1e1680ea..0cd0be642a2f 100644
-> --- a/fs/udf/super.c
-> +++ b/fs/udf/super.c
-> @@ -273,8 +273,7 @@ static void udf_sb_free_bitmap(struct udf_bitmap *bitmap)
->  	int nr_groups = bitmap->s_nr_groups;
-> 
->  	for (i = 0; i < nr_groups; i++)
-> -		if (bitmap->s_block_bitmap[i])
-> -			brelse(bitmap->s_block_bitmap[i]);
-> +		brelse(bitmap->s_block_bitmap[i]);
-> 
->  	kvfree(bitmap);
->  }
-> --
-> 2.23.0
-> 
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+
+

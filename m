@@ -2,30 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE03FA8841
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 21:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C631DA8819
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 21:21:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730675AbfIDOCC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Sep 2019 10:02:02 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:6657 "EHLO huawei.com"
+        id S1731083AbfIDOBM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Sep 2019 10:01:12 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:54924 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730943AbfIDOAu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Sep 2019 10:00:50 -0400
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 281942AAC537CF76FDC0;
-        Wed,  4 Sep 2019 22:00:47 +0800 (CST)
+        id S1730405AbfIDOBK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 4 Sep 2019 10:01:10 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 89AB9864175A505DC28B;
+        Wed,  4 Sep 2019 22:01:08 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 4 Sep 2019 22:00:37 +0800
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 4 Sep 2019 22:01:00 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Bamvor Jian Zhang <bamv2005@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-gpio@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH] gpio: mockup: add missing single_release()
-Date:   Wed, 4 Sep 2019 14:18:34 +0000
-Message-ID: <20190904141834.195294-1-weiyongjun1@huawei.com>
+To:     Ben Skeggs <bskeggs@redhat.com>, David Airlie <airlied@linux.ie>,
+        "Daniel Vetter" <daniel@ffwll.ch>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <dri-devel@lists.freedesktop.org>, <nouveau@lists.freedesktop.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH] drm/nouveau: add missing single_release()
+Date:   Wed, 4 Sep 2019 14:18:57 +0000
+Message-ID: <20190904141857.196103-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -38,26 +38,28 @@ List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 When using single_open() for opening, single_release() should be
-used instead of seq_release(), otherwise there is a memory leak.
+used, otherwise there is a memory leak.
 
-Fixes: 2a9e27408e12 ("gpio: mockup: rework debugfs interface")
+This is detected by Coccinelle semantic patch.
+
+Fixes: 6e9fc177399f ("drm/nouveau/debugfs: add copy of sysfs pstate interface ported to debugfs")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/gpio/gpio-mockup.c | 1 +
+ drivers/gpu/drm/nouveau/nouveau_debugfs.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpio/gpio-mockup.c b/drivers/gpio/gpio-mockup.c
-index f1a9c0544e3f..213aedc97dc2 100644
---- a/drivers/gpio/gpio-mockup.c
-+++ b/drivers/gpio/gpio-mockup.c
-@@ -309,6 +309,7 @@ static const struct file_operations gpio_mockup_debugfs_ops = {
- 	.read = gpio_mockup_debugfs_read,
- 	.write = gpio_mockup_debugfs_write,
- 	.llseek = no_llseek,
+diff --git a/drivers/gpu/drm/nouveau/nouveau_debugfs.c b/drivers/gpu/drm/nouveau/nouveau_debugfs.c
+index 7dfbbbc1beea..35695f493271 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_debugfs.c
++++ b/drivers/gpu/drm/nouveau/nouveau_debugfs.c
+@@ -202,6 +202,7 @@ static const struct file_operations nouveau_pstate_fops = {
+ 	.open = nouveau_debugfs_pstate_open,
+ 	.read = seq_read,
+ 	.write = nouveau_debugfs_pstate_set,
 +	.release = single_release,
  };
  
- static void gpio_mockup_debugfs_setup(struct device *dev,
+ static struct drm_info_list nouveau_debugfs_list[] = {
 
 
 

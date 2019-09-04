@@ -2,61 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55E14A7F42
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 11:24:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C355A7FF0
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Sep 2019 12:04:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729093AbfIDJY2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Sep 2019 05:24:28 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:6638 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727387AbfIDJY1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Sep 2019 05:24:27 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 168A0551EB4C7E8EE852;
-        Wed,  4 Sep 2019 17:24:25 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 4 Sep 2019 17:24:17 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <tsbogend@alpha.franken.de>, <davem@davemloft.net>
-CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH net] net: sonic: remove dev_kfree_skb before return NETDEV_TX_BUSY
-Date:   Wed, 4 Sep 2019 17:42:11 +0800
-Message-ID: <20190904094211.117454-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727348AbfIDKEh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Sep 2019 06:04:37 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:53828 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725938AbfIDKEh (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 4 Sep 2019 06:04:37 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x84A47Wh123230;
+        Wed, 4 Sep 2019 10:04:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=jbhkDb5OQlgB05nFnu/BmVaX6e8czF1EQGjdDkFSZP8=;
+ b=ENhma2y03GJUM5mJ2u/MnUMFpxu4jS2IF7iCAaXGR/gr4SW3xgwgjftOLzMtgWhzfm3r
+ CNo4y1PNf1zbVqaEbEqvNDf+nl8ewFdlDajEPKOvF6GGYZfWCNLH9aLgQgny+EJbfOGb
+ LikfSBkP0Gfw5Ed3qrQAQTOoMkDimtdoUvAh7+yna9JxMG1zfCECcvOv+VhHAIYdgDS6
+ Pl0ULFgBMY2G3X0PYqHGlLvZM68HRRnkLmOMfW4IfPLEXoUUndAE1rJhdUy4dIScsY8i
+ s7MIMZrkaS09U8YpWUWyoPqdFpfnRXqrQFpRrHxuXKORHceKfwz0V6exTZIgvLP9jSbc KQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 2utb5yr0af-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 04 Sep 2019 10:04:34 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x849waTT063919;
+        Wed, 4 Sep 2019 09:59:18 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 2usu52sqey-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 04 Sep 2019 09:59:18 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x849xEH2031350;
+        Wed, 4 Sep 2019 09:59:14 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 04 Sep 2019 02:59:14 -0700
+Date:   Wed, 4 Sep 2019 12:59:08 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Valdis Kletnieks <valdis.kletnieks@vt.edu>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] staging: exfat: Fix two missing unlocks on error paths
+Message-ID: <20190904095908.GA7007@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9369 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1909040099
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9369 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1909040100
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-When dma_map_single is failed to map buffer, skb can't be freed
-before sonic driver return to stack with NETDEV_TX_BUSY, because
-this skb may be requeued to qdisc, it might trigger use-after-free.
+These two error paths need to unlock before we can return.
 
-Fixes: d9fb9f384292 ("*sonic/natsemi/ns83829: Move the National Semi-conductor drivers")
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/ethernet/natsemi/sonic.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/staging/exfat/exfat_super.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/natsemi/sonic.c b/drivers/net/ethernet/natsemi/sonic.c
-index d0a01e8f000a..248a8f22a33b 100644
---- a/drivers/net/ethernet/natsemi/sonic.c
-+++ b/drivers/net/ethernet/natsemi/sonic.c
-@@ -233,7 +233,6 @@ static int sonic_send_packet(struct sk_buff *skb, struct net_device *dev)
- 	laddr = dma_map_single(lp->device, skb->data, length, DMA_TO_DEVICE);
- 	if (!laddr) {
- 		printk(KERN_ERR "%s: failed to map tx DMA buffer.\n", dev->name);
--		dev_kfree_skb(skb);
- 		return NETDEV_TX_BUSY;
+diff --git a/drivers/staging/exfat/exfat_super.c b/drivers/staging/exfat/exfat_super.c
+index 5b5c2ca8c9aa..87e66e385e88 100644
+--- a/drivers/staging/exfat/exfat_super.c
++++ b/drivers/staging/exfat/exfat_super.c
+@@ -664,7 +670,7 @@ static int ffsLookupFile(struct inode *inode, char *path, struct file_id_t *fid)
+ 	dentry = p_fs->fs_func->find_dir_entry(sb, &dir, &uni_name, num_entries,
+ 					       &dos_name, TYPE_ALL);
+ 	if (dentry < -1) {
+-		return FFS_NOTFOUND;
++		ret = FFS_NOTFOUND;
+ 		goto out;
  	}
  
+@@ -1199,8 +1205,10 @@ static int ffsTruncateFile(struct inode *inode, u64 old_size, u64 new_size)
+ 		} else {
+ 			while (num_clusters > 0) {
+ 				last_clu = clu.dir;
+-				if (FAT_read(sb, clu.dir, &clu.dir) == -1)
+-					return FFS_MEDIAERR;
++				if (FAT_read(sb, clu.dir, &clu.dir) == -1) {
++					ret = FFS_MEDIAERR;
++					goto out;
++				}
+ 				num_clusters--;
+ 			}
+ 		}
 -- 
 2.20.1
 

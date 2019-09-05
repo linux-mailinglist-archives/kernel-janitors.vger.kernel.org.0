@@ -2,31 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72E89AA56E
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Sep 2019 16:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB710AA591
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Sep 2019 16:16:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727498AbfIEOJW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Sep 2019 10:09:22 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:35746 "EHLO
+        id S1731694AbfIEOP6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Sep 2019 10:15:58 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:35991 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727914AbfIEOJW (ORCPT
+        with ESMTP id S1729157AbfIEOP6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Sep 2019 10:09:22 -0400
+        Thu, 5 Sep 2019 10:15:58 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1i5sRr-0001aJ-Mw; Thu, 05 Sep 2019 14:09:19 +0000
+        id 1i5sYF-0002ES-FE; Thu, 05 Sep 2019 14:15:55 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com, linux-gpio@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] pinctrl: bcm: remove redundant assignment to pointer log
-Date:   Thu,  5 Sep 2019 15:09:19 +0100
-Message-Id: <20190905140919.29283-1-colin.king@canonical.com>
+Subject: [PATCH] staging: rtl8723bs: hal: remove redundant assignment to variable n
+Date:   Thu,  5 Sep 2019 15:15:55 +0100
+Message-Id: <20190905141555.31582-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -38,28 +35,27 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The pointer log is being initialized with a value that is never read
-and is being re-assigned a little later on. The assignment is
-redundant and hence can be removed.
+The variable n is being assigned a value that is never read, the
+assignment is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/pinctrl/bcm/pinctrl-cygnus-mux.c | 1 -
+ drivers/staging/rtl8723bs/hal/rtl8723bs_recv.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/pinctrl/bcm/pinctrl-cygnus-mux.c b/drivers/pinctrl/bcm/pinctrl-cygnus-mux.c
-index 44df35942a43..dcab2204c60c 100644
---- a/drivers/pinctrl/bcm/pinctrl-cygnus-mux.c
-+++ b/drivers/pinctrl/bcm/pinctrl-cygnus-mux.c
-@@ -923,7 +923,6 @@ static int cygnus_mux_log_init(struct cygnus_pinctrl *pinctrl)
- 	if (!pinctrl->mux_log)
- 		return -ENOMEM;
+diff --git a/drivers/staging/rtl8723bs/hal/rtl8723bs_recv.c b/drivers/staging/rtl8723bs/hal/rtl8723bs_recv.c
+index 032d01834f3f..adfc96d24150 100644
+--- a/drivers/staging/rtl8723bs/hal/rtl8723bs_recv.c
++++ b/drivers/staging/rtl8723bs/hal/rtl8723bs_recv.c
+@@ -525,7 +525,6 @@ void rtl8723bs_free_recv_priv(struct adapter *padapter)
+ 	}
  
--	log = pinctrl->mux_log;
- 	for (i = 0; i < CYGNUS_NUM_IOMUX_REGS; i++) {
- 		for (j = 0; j < CYGNUS_NUM_MUX_PER_REG; j++) {
- 			log = &pinctrl->mux_log[i * CYGNUS_NUM_MUX_PER_REG
+ 	if (precvpriv->pallocated_recv_buf) {
+-		n = NR_RECVBUFF * sizeof(struct recv_buf) + 4;
+ 		kfree(precvpriv->pallocated_recv_buf);
+ 		precvpriv->pallocated_recv_buf = NULL;
+ 	}
 -- 
 2.20.1
 

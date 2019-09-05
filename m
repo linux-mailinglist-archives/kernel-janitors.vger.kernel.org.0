@@ -2,59 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B477A9879
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Sep 2019 04:41:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CC18A9881
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Sep 2019 04:43:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730219AbfIEClA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Sep 2019 22:41:00 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:53932 "EHLO huawei.com"
+        id S1730219AbfIECnC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Sep 2019 22:43:02 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:6215 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727162AbfIEClA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Sep 2019 22:41:00 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id B0203874C53B39768FF9;
-        Thu,  5 Sep 2019 10:40:58 +0800 (CST)
-Received: from [127.0.0.1] (10.177.29.68) by DGGEMS409-HUB.china.huawei.com
- (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Thu, 5 Sep 2019
- 10:40:56 +0800
-Message-ID: <5D7075B7.3080400@huawei.com>
-Date:   Thu, 5 Sep 2019 10:40:55 +0800
-From:   zhong jiang <zhongjiang@huawei.com>
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:12.0) Gecko/20120428 Thunderbird/12.0.1
+        id S1727156AbfIECnC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 4 Sep 2019 22:43:02 -0400
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id B8A9C1DB3F159A7D5A6F;
+        Thu,  5 Sep 2019 10:43:00 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 5 Sep 2019 10:42:51 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Valdis Kletnieks <valdis.kletnieks@vt.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     YueHaibing <yuehaibing@huawei.com>, <devel@driverdev.osuosl.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] staging: exfat: Use kmemdup in exfat_symlink()
+Date:   Thu, 5 Sep 2019 03:00:47 +0000
+Message-ID: <20190905030047.88401-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-To:     Markus Elfring <Markus.Elfring@web.de>
-CC:     Anna Schumaker <anna.schumaker@netapp.com>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        <linux-nfs@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: Re: NFS: remove the redundant check when kfree an object in nfs_netns_client_release
-References: <1567490688-17872-1-git-send-email-zhongjiang@huawei.com> <ee684073-bd3e-9a1c-4d38-702f55affba4@web.de>
-In-Reply-To: <ee684073-bd3e-9a1c-4d38-702f55affba4@web.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.29.68]
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2019/9/4 23:11, Markus Elfring wrote:
->> kfree has taken the null check in account.
-> I suggest to take another look at a similar patch.
-How to fast find out the similar patch. Search the key word doesn't work well.
+Use kmemdup rather than duplicating its implementation
 
-Thanks,
-zhong jiang
-> NFS: fix ifnullfree.cocci warnings
-> https://lkml.org/lkml/2019/7/7/73
-> https://lore.kernel.org/patchwork/patch/1098005/
-> https://lore.kernel.org/r/alpine.DEB.2.21.1907071844310.2521@hadrien/
->
-> Regards,
-> Markus
->
-> .
->
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/staging/exfat/exfat_super.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/staging/exfat/exfat_super.c b/drivers/staging/exfat/exfat_super.c
+index 5b5c2ca8c9aa..05fdecc3e9ea 100644
+--- a/drivers/staging/exfat/exfat_super.c
++++ b/drivers/staging/exfat/exfat_super.c
+@@ -2696,12 +2696,11 @@ static int exfat_symlink(struct inode *dir, struct dentry *dentry,
+ 	inode->i_mtime = inode->i_atime = inode->i_ctime = current_time(inode);
+ 	/* timestamp is already written, so mark_inode_dirty() is unneeded. */
+ 
+-	EXFAT_I(inode)->target = kmalloc(len+1, GFP_KERNEL);
++	EXFAT_I(inode)->target = kmemdup(target, len + 1, GFP_KERNEL);
+ 	if (!EXFAT_I(inode)->target) {
+ 		err = -ENOMEM;
+ 		goto out;
+ 	}
+-	memcpy(EXFAT_I(inode)->target, target, len+1);
+ 
+ 	dentry->d_time = GET_IVERSION(dentry->d_parent->d_inode);
+ 	d_instantiate(dentry, inode);
+
 
 

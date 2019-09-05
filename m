@@ -2,137 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A66BAA20B
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Sep 2019 13:55:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0957DAA2AA
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Sep 2019 14:06:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732206AbfIELzN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Sep 2019 07:55:13 -0400
-Received: from mail-eopbgr740088.outbound.protection.outlook.com ([40.107.74.88]:59664
-        "EHLO NAM01-BN3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725921AbfIELzN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Sep 2019 07:55:13 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eqx1UV76iK5o9g+kCHLnT2wgpyqs4LPnIX/CVlhzuvem/lDss87dtXDXuF8cGv72yn/dePwc7qPo0Tr7sU2+emp2vwCpXh8OZa47nomgjih+2VmDHztQIXFqzE5+2mK5KIJf9lCBiXYofK1LNCsVvGnHGD4DOR+UYOqb5bvqK5YgK3/uHkHtJnjhMnKvN/PSA3m3uBQqaZLLS+8g0x9X/Prbm06WjttZQXj8A6jXOBcUBOkKJ2vPiLp7CE3aCu7Oi82V9LpQ+iKsy5QrmukbMI/7GIyfGmMl4wHyWn+f93v7EZM346o9qR7waCybq2EOCVOAgzl17gUaDwlanlnyOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OZEp0HFQ6BLNzJ436lZ+H1Aohse7hxCKIhcVEoPc5QE=;
- b=hegd4fwAs46uX6NVin7aHfqiyDBWEzUyGQnc61dkQK0kMgkSftHUlbtJ70fHfmnkNM3Cwogj6GFOeQzSN/MB0IjP6aL645tPG6+8CZUmUmPdMyEusiSSwxg5C4ngFqPdwfwuzZcCogVyn8lEn7/jzd45FS7uj+L4FkxfU8VQKQ6ykKpVcb9FdRG9ENohygPb1HeZoJ1CgCtkzEDoGbt+bAB6NX8I/4rqGvhNt+OiWxMadd0t6yGn5Tjw6/4KfsQdZyEN+yMxb1u0LZj6ocIzvndSnLySqXnDgGzlCd1IeCRZpnT0cPGXtTOTH1cUWwruU3wS/O8cYujHSnfogblYAQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=vmware.com; dmarc=pass action=none header.from=vmware.com;
- dkim=pass header.d=vmware.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vmware.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OZEp0HFQ6BLNzJ436lZ+H1Aohse7hxCKIhcVEoPc5QE=;
- b=0gu0zwfz/ZNiaDKMIKglnRs0VXnfLGTOEpoHAhggPx1hAAb7ZDtiZPHvSCgLz6KA1acetExh7JHnf8jzT3OeRe8T7j0a+63/jHRTEnJ6Eg087UVwzeetInQVw2ghk5rT6cJ4dUbiGBi2NfTO0q4k8hZZfHGrIWZCP03PnZ6r0uM=
-Received: from MN2PR05MB6141.namprd05.prod.outlook.com (20.178.241.217) by
- MN2PR05MB6143.namprd05.prod.outlook.com (20.178.244.96) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2241.4; Thu, 5 Sep 2019 11:54:47 +0000
-Received: from MN2PR05MB6141.namprd05.prod.outlook.com
- ([fe80::9861:5501:d72f:d977]) by MN2PR05MB6141.namprd05.prod.outlook.com
- ([fe80::9861:5501:d72f:d977%2]) with mapi id 15.20.2241.014; Thu, 5 Sep 2019
- 11:54:46 +0000
-From:   Thomas Hellstrom <thellstrom@vmware.com>
-To:     "colin.king@canonical.com" <colin.king@canonical.com>,
-        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>,
-        Linux-graphics-maintainer <Linux-graphics-maintainer@vmware.com>
-CC:     "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "airlied@linux.ie" <airlied@linux.ie>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH] drm/vmwgfx: Fix double free in vmw_recv_msg()
-Thread-Topic: [PATCH] drm/vmwgfx: Fix double free in vmw_recv_msg()
-Thread-Index: AQHVU0PQkTqRNIUlckSPpJbkwjPDv6b74yUAgCE3voA=
-Date:   Thu, 5 Sep 2019 11:54:46 +0000
-Message-ID: <830c68e5591dd197e098028227148106739e5591.camel@vmware.com>
-References: <20190815083050.GC27238@mwanda>
-         <08f19935-97fe-4c8b-ca7b-707586ed89a1@canonical.com>
-In-Reply-To: <08f19935-97fe-4c8b-ca7b-707586ed89a1@canonical.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=thellstrom@vmware.com; 
-x-originating-ip: [155.4.205.35]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 9a3bb59c-dfd1-4728-063b-08d731f7d961
-x-microsoft-antispam: BCL:0;PCL:0;RULEID:(2390118)(7020095)(4652040)(8989299)(4534185)(4627221)(201703031133081)(201702281549075)(8990200)(5600166)(711020)(4605104)(1401327)(2017052603328)(7193020);SRVR:MN2PR05MB6143;
-x-ms-traffictypediagnostic: MN2PR05MB6143:|MN2PR05MB6143:
-x-ld-processed: b39138ca-3cee-4b4a-a4d6-cd83d9dd62f0,ExtAddr
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MN2PR05MB6143A59F49C682BBD08CFC12A1BB0@MN2PR05MB6143.namprd05.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:8273;
-x-forefront-prvs: 015114592F
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(39860400002)(376002)(396003)(366004)(136003)(346002)(199004)(189003)(26005)(118296001)(81156014)(6116002)(71190400001)(71200400001)(8676002)(316002)(102836004)(81166006)(478600001)(86362001)(3846002)(25786009)(6506007)(256004)(66066001)(76116006)(91956017)(6636002)(2906002)(66476007)(476003)(66946007)(53546011)(11346002)(6512007)(66556008)(14454004)(446003)(64756008)(6436002)(66446008)(4326008)(6486002)(186003)(2501003)(54906003)(229853002)(6246003)(5660300002)(8936002)(36756003)(305945005)(486006)(110136005)(2616005)(7736002)(99286004)(53936002)(76176011);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR05MB6143;H:MN2PR05MB6141.namprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: vmware.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam-message-info: YMmoPIADNER+DnpYiA/yfsI9A7PK8YeCQUKtum2fmOzeWRpFNWXdmi3KX+kiY4bBV2zr0BTU7Ai0q5Fr47EwELGobeiS4RpiJN6dOrnKkj7gSBLqoTLdLb2y+f2C/me7nZfCjtdikK3VoERROAIkkpMinrV9qlIyVgqok+G9SOBacvQ2gYtwIOyC2UDFMgfyUG4g0Lz1L69cdDMGYudXvIqNs1BA9HGFMSKMGXAb2bpDM9o2bRTOg/sDcgEhpUXlnsNoXbVgsTnUbkZmnkpEg+Hq0104zMxUwNKoHeUmg5ZMInccHU+hfHJOdZs1Ib8B2O2x0QSPFX2MHuoFBIcUF6XTw54wVNQlBmA5tXHUYlXyKzR3XUwvpNYtD8qPQdRo1ZRID8I0rslFxEbbWuuGvlRSu+I0/HvtLf00HJoNzbg=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <AA51AFC9B7C36441B8DE00A3BA11FC96@namprd05.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S2387970AbfIEMGi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Sep 2019 08:06:38 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:35481 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387444AbfIEMGi (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 5 Sep 2019 08:06:38 -0400
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1i5qWy-00005L-6N; Thu, 05 Sep 2019 14:06:28 +0200
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1i5qWw-0004PO-P9; Thu, 05 Sep 2019 14:06:26 +0200
+Date:   Thu, 5 Sep 2019 14:06:26 +0200
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
+        linux-leds@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] led: triggers: Fix NULL dereference in led_trigger_set()
+ error handling
+Message-ID: <20190905120626.hyegecmy6hf5lvhj@pengutronix.de>
+References: <20190905095728.GA26005@mwanda>
 MIME-Version: 1.0
-X-OriginatorOrg: vmware.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a3bb59c-dfd1-4728-063b-08d731f7d961
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Sep 2019 11:54:46.8792
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b39138ca-3cee-4b4a-a4d6-cd83d9dd62f0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: JLlUxf/DLovRQg1HZnUdFFF7vvknZtOq7EWUVNMM85TCQ0OZ9mzPyDEg9P90/vgaZQdC/y+sxRGjgKlpba+2pA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR05MB6143
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190905095728.GA26005@mwanda>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-T24gVGh1LCAyMDE5LTA4LTE1IGF0IDA5OjM4ICswMTAwLCBDb2xpbiBJYW4gS2luZyB3cm90ZToN
-Cj4gT24gMTUvMDgvMjAxOSAwOTozMCwgRGFuIENhcnBlbnRlciB3cm90ZToNCj4gPiBXZSByZWNl
-bnRseSBhZGRlZCBhIGtmcmVlKCkgYWZ0ZXIgdGhlIGVuZCBvZiB0aGUgbG9vcDoNCj4gPiANCj4g
-PiAJaWYgKHJldHJpZXMgPT0gUkVUUklFUykgew0KPiA+IAkJa2ZyZWUocmVwbHkpOw0KPiA+IAkJ
-cmV0dXJuIC1FSU5WQUw7DQo+ID4gCX0NCj4gPiANCj4gPiBUaGVyZSBhcmUgdHdvIHByb2JsZW1z
-LiAgRmlyc3QgdGhlIHRlc3QgaXMgd3JvbmcgYW5kIGJlY2F1c2UNCj4gPiByZXRyaWVzDQo+ID4g
-ZXF1YWxzIFJFVFJJRVMgaWYgd2Ugc3VjY2VlZCBvbiB0aGUgbGFzdCBpdGVyYXRpb24gdGhyb3Vn
-aCB0aGUNCj4gPiBsb29wLg0KPiA+IFNlY29uZCBpZiB3ZSBmYWlsIG9uIHRoZSBsYXN0IGl0ZXJh
-dGlvbiB0aHJvdWdoIHRoZSBsb29wIHRoZW4gdGhlDQo+ID4ga2ZyZWUNCj4gPiBpcyBhIGRvdWJs
-ZSBmcmVlLg0KPiA+IA0KPiA+IFdoZW4geW91J3JlIHJlYWRpbmcgdGhpcyBjb2RlLCBwbGVhc2Ug
-bm90ZSB0aGUgYnJlYWsgc3RhdGVtZW50IGF0DQo+ID4gdGhlDQo+ID4gZW5kIG9mIHRoZSB3aGls
-ZSBsb29wLiAgVGhpcyBwYXRjaCBjaGFuZ2VzIHRoZSBsb29wIHNvIHRoYXQgaWYgaXQncw0KPiA+
-IG5vdA0KPiA+IHN1Y2Nlc3NmdWwgdGhlbiAicmVwbHkiIGlzIE5VTEwgYW5kIHdlIGNhbiB0ZXN0
-IGZvciB0aGF0IGFmdGVyd2FyZC4NCj4gPiANCj4gPiBGaXhlczogNmI3YzNiODZmMGI2ICgiZHJt
-L3Ztd2dmeDogZml4IG1lbW9yeSBsZWFrIHdoZW4gdG9vIG1hbnkNCj4gPiByZXRyaWVzIGhhdmUg
-b2NjdXJyZWQiKQ0KPiA+IFNpZ25lZC1vZmYtYnk6IERhbiBDYXJwZW50ZXIgPGRhbi5jYXJwZW50
-ZXJAb3JhY2xlLmNvbT4NCj4gPiAtLS0NCj4gPiAgZHJpdmVycy9ncHUvZHJtL3Ztd2dmeC92bXdn
-ZnhfbXNnLmMgfCA4ICsrKy0tLS0tDQo+ID4gIDEgZmlsZSBjaGFuZ2VkLCAzIGluc2VydGlvbnMo
-KyksIDUgZGVsZXRpb25zKC0pDQo+ID4gDQo+ID4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvZ3B1L2Ry
-bS92bXdnZngvdm13Z2Z4X21zZy5jDQo+ID4gYi9kcml2ZXJzL2dwdS9kcm0vdm13Z2Z4L3Ztd2dm
-eF9tc2cuYw0KPiA+IGluZGV4IDU5ZTlkMDVhYjkyOC4uMGFmMDQ4ZDFhODE1IDEwMDY0NA0KPiA+
-IC0tLSBhL2RyaXZlcnMvZ3B1L2RybS92bXdnZngvdm13Z2Z4X21zZy5jDQo+ID4gKysrIGIvZHJp
-dmVycy9ncHUvZHJtL3Ztd2dmeC92bXdnZnhfbXNnLmMNCj4gPiBAQCAtMzUzLDcgKzM1Myw3IEBA
-IHN0YXRpYyBpbnQgdm13X3JlY3ZfbXNnKHN0cnVjdCBycGNfY2hhbm5lbA0KPiA+ICpjaGFubmVs
-LCB2b2lkICoqbXNnLA0KPiA+ICAJCQkJICAgICAhIShISUdIX1dPUkQoZWN4KSAmDQo+ID4gTUVT
-U0FHRV9TVEFUVVNfSEIpKTsNCj4gPiAgCQlpZiAoKEhJR0hfV09SRChlYngpICYgTUVTU0FHRV9T
-VEFUVVNfU1VDQ0VTUykgPT0gMCkgew0KPiA+ICAJCQlrZnJlZShyZXBseSk7DQo+ID4gLQ0KPiA+
-ICsJCQlyZXBseSA9IE5VTEw7DQo+ID4gIAkJCWlmICgoSElHSF9XT1JEKGVieCkgJiBNRVNTQUdF
-X1NUQVRVU19DUFQpICE9IDApDQo+ID4gew0KPiA+ICAJCQkJLyogQSBjaGVja3BvaW50IG9jY3Vy
-cmVkLiBSZXRyeS4gKi8NCj4gPiAgCQkJCWNvbnRpbnVlOw0KPiA+IEBAIC0zNzcsNyArMzc3LDcg
-QEAgc3RhdGljIGludCB2bXdfcmVjdl9tc2coc3RydWN0IHJwY19jaGFubmVsDQo+ID4gKmNoYW5u
-ZWwsIHZvaWQgKiptc2csDQo+ID4gIA0KPiA+ICAJCWlmICgoSElHSF9XT1JEKGVjeCkgJiBNRVNT
-QUdFX1NUQVRVU19TVUNDRVNTKSA9PSAwKSB7DQo+ID4gIAkJCWtmcmVlKHJlcGx5KTsNCj4gPiAt
-DQo+ID4gKwkJCXJlcGx5ID0gTlVMTDsNCj4gPiAgCQkJaWYgKChISUdIX1dPUkQoZWN4KSAmIE1F
-U1NBR0VfU1RBVFVTX0NQVCkgIT0gMCkNCj4gPiB7DQo+ID4gIAkJCQkvKiBBIGNoZWNrcG9pbnQg
-b2NjdXJyZWQuIFJldHJ5LiAqLw0KPiA+ICAJCQkJY29udGludWU7DQo+ID4gQEAgLTM4OSwxMCAr
-Mzg5LDggQEAgc3RhdGljIGludCB2bXdfcmVjdl9tc2coc3RydWN0IHJwY19jaGFubmVsDQo+ID4g
-KmNoYW5uZWwsIHZvaWQgKiptc2csDQo+ID4gIAkJYnJlYWs7DQo+ID4gIAl9DQo+ID4gIA0KPiA+
-IC0JaWYgKHJldHJpZXMgPT0gUkVUUklFUykgew0KPiA+IC0JCWtmcmVlKHJlcGx5KTsNCj4gPiAr
-CWlmICghcmVwbHkpDQo+ID4gIAkJcmV0dXJuIC1FSU5WQUw7DQo+ID4gLQl9DQo+ID4gIA0KPiA+
-ICAJKm1zZ19sZW4gPSByZXBseV9sZW47DQo+ID4gIAkqbXNnICAgICA9IHJlcGx5Ow0KPiA+IA0K
-PiANCj4gRGFuLCBUaGFua3MgZm9yIGZpeGluZyB1cCBteSBtaXN0YWtlLg0KDQpUaGFua3MsIERh
-bi4gU29ycnkgZm9yIHRoZSBsYXRlIHJlcGx5LiANClJldmlld2VkLWJ5OiBUaG9tYXMgSGVsbHN0
-csO2bSA8dGhlbGxzdHJvbUB2bXdhcmUuY29tPg0KV2lsbCBwdXNoIHRoaXMgdG8gZml4ZXMuDQoN
-Ci9UaG9tYXMNCg0K
+Hello,
+
+On Thu, Sep 05, 2019 at 12:57:28PM +0300, Dan Carpenter wrote:
+> The problem is we set "led_cdev->trigger = NULL;" and then dereference
+> it when we call write_lock_irqsave():
+> 
+> 	write_lock_irqsave(&led_cdev->trigger->leddev_list_lock, flags);
+>                             ^^^^^^^^^^^^^^^^^
+> 
+> Fixes: 2282e125a406 ("leds: triggers: let struct led_trigger::activate() return an error code")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+Obviously right. Thanks for catching.
+
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+
+Did you find this at runtime or by using some static checker?
+
+Best regards
+Uwe
+
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |

@@ -2,28 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58E5AAA727
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Sep 2019 17:22:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78BDAAA7A8
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Sep 2019 17:48:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388135AbfIEPWa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Sep 2019 11:22:30 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:38739 "EHLO
+        id S1732522AbfIEPse (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Sep 2019 11:48:34 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:39309 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388057AbfIEPWa (ORCPT
+        with ESMTP id S1731471AbfIEPsd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Sep 2019 11:22:30 -0400
+        Thu, 5 Sep 2019 11:48:33 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1i5tad-0007qi-Pw; Thu, 05 Sep 2019 15:22:27 +0000
+        id 1i5tzm-0001bB-Ea; Thu, 05 Sep 2019 15:48:26 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org
+To:     Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+        alsa-devel@alsa-project.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][V2] staging: rtl8723bs: hal: remove redundant variable n
-Date:   Thu,  5 Sep 2019 16:22:27 +0100
-Message-Id: <20190905152227.4610-1-colin.king@canonical.com>
+Subject: [PATCH] ALSA: hda/hdmi: remove redundant assignment to variable pcm_idx
+Date:   Thu,  5 Sep 2019 16:48:26 +0100
+Message-Id: <20190905154826.5916-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,55 +35,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable n is being assigned a value that is never read inside
-an if statement block, the assignment is redundant and can be removed.
-With this removed, n is only being used for a constant loop bounds
-check, so replace n with that value instead and remove n completely.
+Variable pcm_idx is being initialized with a value that is never read
+and is being re-assigned immediately afterwards. The assignment is
+redundant and hence can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
 ---
+ sound/pci/hda/patch_hdmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-V2: remove the variable n completely, thanks to Dan Carpenter for
-    spotting this.
-
----
- drivers/staging/rtl8723bs/hal/rtl8723bs_recv.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/staging/rtl8723bs/hal/rtl8723bs_recv.c b/drivers/staging/rtl8723bs/hal/rtl8723bs_recv.c
-index 032d01834f3f..0f3301091258 100644
---- a/drivers/staging/rtl8723bs/hal/rtl8723bs_recv.c
-+++ b/drivers/staging/rtl8723bs/hal/rtl8723bs_recv.c
-@@ -502,7 +502,7 @@ s32 rtl8723bs_init_recv_priv(struct adapter *padapter)
-  */
- void rtl8723bs_free_recv_priv(struct adapter *padapter)
- {
--	u32 i, n;
-+	u32 i;
- 	struct recv_priv *precvpriv;
- 	struct recv_buf *precvbuf;
+diff --git a/sound/pci/hda/patch_hdmi.c b/sound/pci/hda/patch_hdmi.c
+index 83b8b9d27711..bca5de78e9ad 100644
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -1440,7 +1440,7 @@ static bool update_eld(struct hda_codec *codec,
+ 	struct hdmi_spec *spec = codec->spec;
+ 	bool old_eld_valid = pin_eld->eld_valid;
+ 	bool eld_changed;
+-	int pcm_idx = -1;
++	int pcm_idx;
  
-@@ -514,9 +514,8 @@ void rtl8723bs_free_recv_priv(struct adapter *padapter)
- 	/* 3 2. free all recv buffers */
- 	precvbuf = (struct recv_buf *)precvpriv->precv_buf;
- 	if (precvbuf) {
--		n = NR_RECVBUFF;
- 		precvpriv->free_recv_buf_queue_cnt = 0;
--		for (i = 0; i < n ; i++) {
-+		for (i = 0; i < NR_RECVBUFF; i++) {
- 			list_del_init(&precvbuf->list);
- 			rtw_os_recvbuf_resource_free(padapter, precvbuf);
- 			precvbuf++;
-@@ -525,7 +524,6 @@ void rtl8723bs_free_recv_priv(struct adapter *padapter)
- 	}
- 
- 	if (precvpriv->pallocated_recv_buf) {
--		n = NR_RECVBUFF * sizeof(struct recv_buf) + 4;
- 		kfree(precvpriv->pallocated_recv_buf);
- 		precvpriv->pallocated_recv_buf = NULL;
- 	}
+ 	/* for monitor disconnection, save pcm_idx firstly */
+ 	pcm_idx = per_pin->pcm_idx;
 -- 
 2.20.1
 

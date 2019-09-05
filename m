@@ -2,58 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AACF9AA80A
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Sep 2019 18:12:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7FE0AA8C8
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Sep 2019 18:21:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730150AbfIEQMl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Sep 2019 12:12:41 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:35754 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727014AbfIEQMl (ORCPT
+        id S1729825AbfIEQUv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Sep 2019 12:20:51 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:40276 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726263AbfIEQUv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Sep 2019 12:12:41 -0400
-Received: by mail-ot1-f65.google.com with SMTP id 100so2772514otn.2;
-        Thu, 05 Sep 2019 09:12:41 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=n9/mVvbc+FJD5lFAC39ToEnsu4tlFlkzdP2wms0HhJ0=;
-        b=onWw6K0qzayij/5pbblJ4nS4cT8GAekxkmlqWH+GC9tldwKaQzI05hkGxYOj120pR3
-         h7wtWPa3CpxfL3J1/uFjC4m1WhMjqiV9MS76HHYE7hwx9dcyEuLhN/cTi2LVWhqF5wVf
-         t/b5rd3hDbEa30k//cIen12m3qvWabSRntTGpr3b5MNKS6g6bUbwTclXu1uPeKYPqROJ
-         Lk2EQi06wkKRVEIOyZ80qJGv4dZhqZ+d7pIUPAEbCdjyZNA3Ybd6RwVsCyyxwuHHqQME
-         UTErUJhsmb1sRoNtmFz/SRoPOErdZQU20dJkzWDZfoND6GSTmZTGDhPlrVGxYlQP3vTb
-         OhKA==
-X-Gm-Message-State: APjAAAXo3m1cxVtgGK3zjFRXZfv015rc9CDz0sscOvIU5IOCBYX5S/pl
-        c2ovH3dskn2PGqvclb4g5ODZNtVl
-X-Google-Smtp-Source: APXvYqzRcb8W/oZq18yF/qsn+UkujlrvsEZn46ppLsm0+TIemu1nunO3GijvRMpn59nJIjSofzxQZg==
-X-Received: by 2002:a9d:7a83:: with SMTP id l3mr2122370otn.359.1567699960205;
-        Thu, 05 Sep 2019 09:12:40 -0700 (PDT)
-Received: from ?IPv6:2600:1700:65a0:78e0:514:7862:1503:8e4d? ([2600:1700:65a0:78e0:514:7862:1503:8e4d])
-        by smtp.gmail.com with ESMTPSA id 5sm595489ois.15.2019.09.05.09.12.38
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 05 Sep 2019 09:12:39 -0700 (PDT)
-Subject: Re: [PATCH] nvme: tcp: remove redundant assignment to variable ret
-To:     Colin King <colin.king@canonical.com>,
-        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Christoph Hellwig <hch@lst.de>, linux-nvme@lists.infradead.org
+        Thu, 5 Sep 2019 12:20:51 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i5uV7-0004Fz-BA; Thu, 05 Sep 2019 16:20:49 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <zajec5@gmail.com>,
+        linux-wireless@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190905143435.2864-1-colin.king@canonical.com>
-From:   Sagi Grimberg <sagi@grimberg.me>
-Message-ID: <2aa4f13f-7d24-ee59-ac6b-ed3dc30d3da3@grimberg.me>
-Date:   Thu, 5 Sep 2019 09:12:34 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+Subject: [PATCH] bcma: make arrays pwr_info_offset and sprom_sizes static const, shrinks object size
+Date:   Thu,  5 Sep 2019 17:20:49 +0100
+Message-Id: <20190905162049.14333-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190905143435.2864-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Applied to nvme-5.4
+From: Colin Ian King <colin.king@canonical.com>
+
+Arrays pwr_info_offset and sprom_sizes can be make static const rather
+than populating them on the stack. Shrinks object size by 236 bytes.
+
+Before:
+   text	   data	    bss	    dec	    hex	filename
+  11300	   1320	     64	  12684	   318c	drivers/bcma/sprom.o
+
+After:
+   text	   data	    bss	    dec	    hex	filename
+  10904	   1480	     64	  12448	   30a0	drivers/bcma/sprom.o
+
+(gcc version 9.2.1, amd64)
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/bcma/sprom.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/bcma/sprom.c b/drivers/bcma/sprom.c
+index 206edd3ba668..bd2c923a6586 100644
+--- a/drivers/bcma/sprom.c
++++ b/drivers/bcma/sprom.c
+@@ -222,7 +222,7 @@ static void bcma_sprom_extract_r8(struct bcma_bus *bus, const u16 *sprom)
+ {
+ 	u16 v, o;
+ 	int i;
+-	u16 pwr_info_offset[] = {
++	static const u16 pwr_info_offset[] = {
+ 		SSB_SROM8_PWR_INFO_CORE0, SSB_SROM8_PWR_INFO_CORE1,
+ 		SSB_SROM8_PWR_INFO_CORE2, SSB_SROM8_PWR_INFO_CORE3
+ 	};
+@@ -578,9 +578,11 @@ int bcma_sprom_get(struct bcma_bus *bus)
+ {
+ 	u16 offset = BCMA_CC_SPROM;
+ 	u16 *sprom;
+-	size_t sprom_sizes[] = { SSB_SPROMSIZE_WORDS_R4,
+-				 SSB_SPROMSIZE_WORDS_R10,
+-				 SSB_SPROMSIZE_WORDS_R11, };
++	static const size_t sprom_sizes[] = {
++		SSB_SPROMSIZE_WORDS_R4,
++		SSB_SPROMSIZE_WORDS_R10,
++		SSB_SPROMSIZE_WORDS_R11,
++	};
+ 	int i, err = 0;
+ 
+ 	if (!bus->drv_cc.core)
+-- 
+2.20.1
+

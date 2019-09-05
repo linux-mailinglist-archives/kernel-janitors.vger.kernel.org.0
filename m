@@ -2,108 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3543BAA528
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Sep 2019 15:57:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 204F2AA550
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Sep 2019 16:01:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730967AbfIEN5g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Sep 2019 09:57:36 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:54976 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730739AbfIEN5g (ORCPT
+        id S2387739AbfIEOBj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Sep 2019 10:01:39 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:35577 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726968AbfIEOBj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Sep 2019 09:57:36 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x85DsiJZ006461;
-        Thu, 5 Sep 2019 13:57:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=LgsLEuYSSuSxdyB1142Y9m/yvZ92hSXbjFvXb1lpSpg=;
- b=sIzrX7fgd+ZF3vbce1v1COWb+vs33vP0XRYr/dGsRRCqV0/8UedCgjS0u+VKM+qjzG9g
- Frd0nmwg7r/aIbjdN42agTUhgdRxJDPhgGuLHUp0xNJNPurYjElPyb2JoKH34lfYZ1bS
- ebtGK1RkXk0u4x9bDpo7V3EWUxxr30H/jrvKCwbr45fttKYG+8jFXe3RvPeIJ6u1Wsc9
- MXgqyym3svgEiOh2y6OH0FljRjFZicXu7EiEzmnVbLWggufOuqz/UQ55cSlm/Ne73mZY
- 9ekBF+p3q5/SbpVmezJWE/vdyaBjgPQnXujGLLljmMLovczoP1e5CjHooPrsHfuRETwr aQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 2uu3ks02am-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 05 Sep 2019 13:57:29 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x85DbeTl025204;
-        Thu, 5 Sep 2019 13:52:27 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 2utpmb8crd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 05 Sep 2019 13:52:27 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x85DqQTc029430;
-        Thu, 5 Sep 2019 13:52:26 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 05 Sep 2019 06:52:26 -0700
-Date:   Thu, 5 Sep 2019 16:52:19 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Elie Morisse <syniurge@gmail.com>
-Cc:     Nehal Shah <nehal-bakulchandra.shah@amd.com>,
-        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-        linux-i2c@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Oleh Kravchenko <oleg@kaa.org.ua>
-Subject: [PATCH] i2c: i2c-amd-mp2-pci: Fix Oops in amd_mp2_pci_init() error
- handling
-Message-ID: <20190905135219.GA29629@mwanda>
+        Thu, 5 Sep 2019 10:01:39 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i5sKO-00010M-1m; Thu, 05 Sep 2019 14:01:36 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Bryan Whitehead <bryan.whitehead@microchip.com>,
+        Microchip Linux Driver Support <UNGLinuxDriver@microchip.com>,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] lan743x: remove redundant assignment to variable rx_process_result
+Date:   Thu,  5 Sep 2019 15:01:35 +0100
+Message-Id: <20190905140135.26951-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9370 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1909050134
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9370 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1909050135
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The problem is that we dereference "privdata->pci_dev" when we print
-the error messages in amd_mp2_pci_init():
+From: Colin Ian King <colin.king@canonical.com>
 
-	dev_err(ndev_dev(privdata), "Failed to enable MP2 PCI device\n");
-                ^^^^^^^^^^^^^^^^^
+The variable rx_process_result is being initialized with a value that
+is never read and is being re-assigned immediately afterwards. The
+assignment is redundant, so replace it with the return from function
+lan743x_rx_process_packet.
 
-Fixes: 529766e0a011 ("i2c: Add drivers for the AMD PCIe MP2 I2C controller")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/i2c/busses/i2c-amd-mp2-pci.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/microchip/lan743x_main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-amd-mp2-pci.c b/drivers/i2c/busses/i2c-amd-mp2-pci.c
-index 5e4800d72e00..6bbc89d0bb27 100644
---- a/drivers/i2c/busses/i2c-amd-mp2-pci.c
-+++ b/drivers/i2c/busses/i2c-amd-mp2-pci.c
-@@ -349,13 +349,13 @@ static int amd_mp2_pci_probe(struct pci_dev *pci_dev,
- 	if (!privdata)
- 		return -ENOMEM;
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index 15a8be6bad27..a43140f7b5eb 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -2172,9 +2172,8 @@ static int lan743x_rx_napi_poll(struct napi_struct *napi, int weight)
+ 	}
+ 	count = 0;
+ 	while (count < weight) {
+-		int rx_process_result = -1;
++		int rx_process_result = lan743x_rx_process_packet(rx);
  
-+	mutex_init(&privdata->c2p_lock);
-+	privdata->pci_dev = pci_dev;
-+
- 	rc = amd_mp2_pci_init(privdata, pci_dev);
- 	if (rc)
- 		return rc;
- 
--	mutex_init(&privdata->c2p_lock);
--	privdata->pci_dev = pci_dev;
--
- 	pm_runtime_set_autosuspend_delay(&pci_dev->dev, 1000);
- 	pm_runtime_use_autosuspend(&pci_dev->dev);
- 	pm_runtime_put_autosuspend(&pci_dev->dev);
+-		rx_process_result = lan743x_rx_process_packet(rx);
+ 		if (rx_process_result == RX_PROCESS_RESULT_PACKET_RECEIVED) {
+ 			count++;
+ 		} else if (rx_process_result ==
 -- 
 2.20.1
 

@@ -2,70 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFAA2AB4BF
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 11:17:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B1AAAB501
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 11:36:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404084AbfIFJRW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 05:17:22 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59987 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728356AbfIFJRW (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 05:17:22 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1i6AMp-0002s2-OD; Fri, 06 Sep 2019 09:17:19 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jaehoon Chung <jh80.chung@samsung.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mmc: dw_mmc: hi3798cv200: make array degrees static const, makes object smaller
-Date:   Fri,  6 Sep 2019 10:17:19 +0100
-Message-Id: <20190906091719.24886-1-colin.king@canonical.com>
+        id S2404173AbfIFJga (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 05:36:30 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:41532 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2390186AbfIFJga (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 6 Sep 2019 05:36:30 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 870DF8D43FB526BC1932;
+        Fri,  6 Sep 2019 17:36:28 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 6 Sep 2019 17:36:18 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Shannon Nelson <snelson@pensando.io>,
+        Pensando Drivers <drivers@pensando.io>,
+        "David S . Miller" <davem@davemloft.net>
+CC:     YueHaibing <yuehaibing@huawei.com>, <netdev@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] ionic: Remove unused including <linux/version.h>
+Date:   Fri, 6 Sep 2019 09:54:09 +0000
+Message-ID: <20190906095410.107596-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Remove including <linux/version.h> that don't need it.
 
-Don't populate the array degrees on the stack but instead make it
-static const. Makes the object code smaller by 46 bytes.
-
-Before:
-   text	   data	    bss	    dec	    hex	filename
-   5356	   1560	      0	   6916	   1b04	dw_mmc-hi3798cv200.o
-
-After:
-   text	   data	    bss	    dec	    hex	filename
-   5214	   1656	      0	   6870	   1ad6	dw_mmc-hi3798cv200.o
-
-(gcc version 9.2.1, amd64)
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/mmc/host/dw_mmc-hi3798cv200.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/pensando/ionic/ionic_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/mmc/host/dw_mmc-hi3798cv200.c b/drivers/mmc/host/dw_mmc-hi3798cv200.c
-index bc51cef47c47..83e1bad0a008 100644
---- a/drivers/mmc/host/dw_mmc-hi3798cv200.c
-+++ b/drivers/mmc/host/dw_mmc-hi3798cv200.c
-@@ -66,7 +66,7 @@ static void dw_mci_hi3798cv200_set_ios(struct dw_mci *host, struct mmc_ios *ios)
- static int dw_mci_hi3798cv200_execute_tuning(struct dw_mci_slot *slot,
- 					     u32 opcode)
- {
--	int degrees[] = { 0, 45, 90, 135, 180, 225, 270, 315 };
-+	static const int degrees[] = { 0, 45, 90, 135, 180, 225, 270, 315 };
- 	struct dw_mci *host = slot->host;
- 	struct hi3798cv200_priv *priv = host->priv;
- 	int raise_point = -1, fall_point = -1;
--- 
-2.20.1
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+index 5ec67f3f1853..15e432386b35 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+@@ -2,7 +2,6 @@
+ /* Copyright(c) 2017 - 2019 Pensando Systems, Inc */
+ 
+ #include <linux/module.h>
+-#include <linux/version.h>
+ #include <linux/netdevice.h>
+ #include <linux/utsname.h>
+
+
 

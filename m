@@ -2,69 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E7CEABAE2
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 16:30:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1B2CABB4F
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 16:48:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392880AbfIFOaQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 10:30:16 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:46547 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390975AbfIFOaQ (ORCPT
+        id S2394563AbfIFOr4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 10:47:56 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:32950 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2394559AbfIFOrz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 10:30:16 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1i6FFc-0005RF-IG; Fri, 06 Sep 2019 14:30:12 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Hugh Dickins <hughd@google.com>, linux-mm@kvack.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mm/shmem.c: make array 'values' static const, makes object smaller
-Date:   Fri,  6 Sep 2019 15:30:12 +0100
-Message-Id: <20190906143012.28698-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Fri, 6 Sep 2019 10:47:55 -0400
+Received: from localhost (unknown [88.214.184.128])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id D24F115355C4A;
+        Fri,  6 Sep 2019 07:47:53 -0700 (PDT)
+Date:   Fri, 06 Sep 2019 16:47:52 +0200 (CEST)
+Message-Id: <20190906.164752.2021789297971211632.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] lan743x: remove redundant assignment to variable
+ rx_process_result
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190905140135.26951-1-colin.king@canonical.com>
+References: <20190905140135.26951-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.2
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 06 Sep 2019 07:47:55 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Colin King <colin.king@canonical.com>
+Date: Thu,  5 Sep 2019 15:01:35 +0100
 
-Don't populate the array 'values' on the stack but instead make it
-static const. Makes the object code smaller by 111 bytes.
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable rx_process_result is being initialized with a value that
+> is never read and is being re-assigned immediately afterwards. The
+> assignment is redundant, so replace it with the return from function
+> lan743x_rx_process_packet.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Before:
-   text	   data	    bss	    dec	    hex	filename
- 108612	  11169	    512	 120293	  1d5e5	mm/shmem.o
-
-After:
-   text	   data	    bss	    dec	    hex	filename
- 108437	  11233	    512	 120182	  1d576	mm/shmem.o
-
-(gcc version 9.2.1, amd64)
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- mm/shmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 77d2df011c0e..30e1de87bdca 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3934,7 +3934,7 @@ int __init shmem_init(void)
- static ssize_t shmem_enabled_show(struct kobject *kobj,
- 		struct kobj_attribute *attr, char *buf)
- {
--	int values[] = {
-+	static const int values[] = {
- 		SHMEM_HUGE_ALWAYS,
- 		SHMEM_HUGE_WITHIN_SIZE,
- 		SHMEM_HUGE_ADVISE,
--- 
-2.20.1
-
+Applied to net-next, thanks.

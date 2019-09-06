@@ -2,54 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D713AB8D9
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 15:05:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E63AAB8DC
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 15:06:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403816AbfIFNF2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 09:05:28 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:59858 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387851AbfIFNF2 (ORCPT
+        id S2390797AbfIFNGf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 09:06:35 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:42823 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732510AbfIFNGf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 09:05:28 -0400
-Received: from localhost (unknown [88.214.184.128])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 7A4E9152F5C9F;
-        Fri,  6 Sep 2019 06:05:26 -0700 (PDT)
-Date:   Fri, 06 Sep 2019 15:05:24 +0200 (CEST)
-Message-Id: <20190906.150524.1245097015817848153.davem@davemloft.net>
-To:     maowenan@huawei.com
-Cc:     eric.dumazet@gmail.com, tsbogend@alpha.franken.de,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2 net] net: sonic: return NETDEV_TX_OK if failed to
- map buffer
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190905015712.107173-1-maowenan@huawei.com>
-References: <960c7d1f-6e80-84fb-8d7a-9c5692605500@huawei.com>
-        <20190905015712.107173-1-maowenan@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 26.2
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 06 Sep 2019 06:05:27 -0700 (PDT)
+        Fri, 6 Sep 2019 09:06:35 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i6Dwe-0006wv-Lj; Fri, 06 Sep 2019 13:06:32 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Milo Kim <milo.kim@ti.com>, Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] regulator: lp8788-ldo: make array en_mask static const, makes object smaller
+Date:   Fri,  6 Sep 2019 14:06:32 +0100
+Message-Id: <20190906130632.6709-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Mao Wenan <maowenan@huawei.com>
-Date: Thu, 5 Sep 2019 09:57:12 +0800
+From: Colin Ian King <colin.king@canonical.com>
 
-> NETDEV_TX_BUSY really should only be used by drivers that call
-> netif_tx_stop_queue() at the wrong moment. If dma_map_single() is
-> failed to map tx DMA buffer, it might trigger an infinite loop.
-> This patch use NETDEV_TX_OK instead of NETDEV_TX_BUSY, and change
-> printk to pr_err_ratelimited.
-> 
-> Fixes: d9fb9f384292 ("*sonic/natsemi/ns83829: Move the National Semi-conductor drivers")
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+Don't populate the array en_mask on the stack but instead make it
+static const. Makes the object code smaller by 87 bytes.
 
-Applied.
+Before:
+   text	   data	    bss	    dec	    hex	filename
+  12967	   3408	      0	  16375	   3ff7	drivers/regulator/lp8788-ldo.o
+
+After:
+   text	   data	    bss	    dec	    hex	filename
+  12816	   3472	      0	  16288	   3fa0	drivers/regulator/lp8788-ldo.o
+
+(gcc version 9.2.1, amd64)
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/regulator/lp8788-ldo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/regulator/lp8788-ldo.c b/drivers/regulator/lp8788-ldo.c
+index 1b00f3638996..00e9bb92c326 100644
+--- a/drivers/regulator/lp8788-ldo.c
++++ b/drivers/regulator/lp8788-ldo.c
+@@ -464,7 +464,7 @@ static int lp8788_config_ldo_enable_mode(struct platform_device *pdev,
+ {
+ 	struct lp8788 *lp = ldo->lp;
+ 	enum lp8788_ext_ldo_en_id enable_id;
+-	u8 en_mask[] = {
++	static const u8 en_mask[] = {
+ 		[EN_ALDO1]   = LP8788_EN_SEL_ALDO1_M,
+ 		[EN_ALDO234] = LP8788_EN_SEL_ALDO234_M,
+ 		[EN_ALDO5]   = LP8788_EN_SEL_ALDO5_M,
+-- 
+2.20.1
+

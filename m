@@ -2,77 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5976AB7FF
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 14:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74F75AB81A
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 14:25:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391989AbfIFMTg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 08:19:36 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:40133 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732863AbfIFMTg (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 08:19:36 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1i6DD4-0002Bw-N2; Fri, 06 Sep 2019 12:19:26 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Felix Fietkau <nbd@nbd.name>,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] mt76: mt76x0e: make array mt76x0_chan_map static const, makes object smaller
-Date:   Fri,  6 Sep 2019 13:19:26 +0100
-Message-Id: <20190906121926.24080-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S2391645AbfIFMZX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 08:25:23 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:57302 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1731928AbfIFMZX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 6 Sep 2019 08:25:23 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 3DFD49630CBDFC79E2B7;
+        Fri,  6 Sep 2019 20:25:21 +0800 (CST)
+Received: from localhost (10.133.213.239) by DGGEMS405-HUB.china.huawei.com
+ (10.3.19.205) with Microsoft SMTP Server id 14.3.439.0; Fri, 6 Sep 2019
+ 20:25:10 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <herbert@gondor.apana.org.au>, <davem@davemloft.net>
+CC:     <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>,
+        YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH -next] crypto: essiv - Remove unnecessary NULL checks
+Date:   Fri, 6 Sep 2019 20:25:02 +0800
+Message-ID: <20190906122502.27236-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+NULL check before kfree is not needed.
+Generated-by: scripts/coccinelle/free/ifnullfree.cocci
 
-Don't populate the array mt76x0_chan_map on the stack but instead make it
-static const. Makes the object code smaller by 80 bytes.
-
-Before:
-   text	   data	    bss	    dec	    hex	filename
-   7685	   1192	      0	   8877	   22ad	mediatek/mt76/mt76x0/eeprom.o
-
-After:
-   text	   data	    bss	    dec	    hex	filename
-   7541	   1256	      0	   8797	   225d	mediatek/mt76/mt76x0/eeprom.o
-
-(gcc version 9.2.1, amd64)
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/essiv.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
-index 9d4426f6905f..96368fac4228 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
-@@ -212,7 +212,7 @@ void mt76x0_get_tx_power_per_rate(struct mt76x02_dev *dev,
- void mt76x0_get_power_info(struct mt76x02_dev *dev,
- 			   struct ieee80211_channel *chan, s8 *tp)
- {
--	struct mt76x0_chan_map {
-+	static const struct mt76x0_chan_map {
- 		u8 chan;
- 		u8 offset;
- 	} chan_map[] = {
+diff --git a/crypto/essiv.c b/crypto/essiv.c
+index a8befc8..3d3f9d7 100644
+--- a/crypto/essiv.c
++++ b/crypto/essiv.c
+@@ -188,8 +188,7 @@ static void essiv_aead_done(struct crypto_async_request *areq, int err)
+ 	struct aead_request *req = areq->data;
+ 	struct essiv_aead_request_ctx *rctx = aead_request_ctx(req);
+ 
+-	if (rctx->assoc)
+-		kfree(rctx->assoc);
++	kfree(rctx->assoc);
+ 	aead_request_complete(req, err);
+ }
+ 
 -- 
-2.20.1
+2.7.4
+
 

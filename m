@@ -2,28 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E63AAB8DC
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 15:06:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FF0FAB964
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 15:38:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390797AbfIFNGf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 09:06:35 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42823 "EHLO
+        id S2390366AbfIFNiR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 09:38:17 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:43751 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732510AbfIFNGf (ORCPT
+        with ESMTP id S2389779AbfIFNiR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 09:06:35 -0400
+        Fri, 6 Sep 2019 09:38:17 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1i6Dwe-0006wv-Lj; Fri, 06 Sep 2019 13:06:32 +0000
+        id 1i6ERI-000166-RF; Fri, 06 Sep 2019 13:38:12 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Milo Kim <milo.kim@ti.com>, Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>
+To:     Eric Van Hensbergen <ericvh@gmail.com>,
+        Latchesar Ionkov <lucho@ionkov.net>,
+        Dominique Martinet <asmadeus@codewreck.org>,
+        v9fs-developer@lists.sourceforge.net
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] regulator: lp8788-ldo: make array en_mask static const, makes object smaller
-Date:   Fri,  6 Sep 2019 14:06:32 +0100
-Message-Id: <20190906130632.6709-1-colin.king@canonical.com>
+Subject: [PATCH] 9p: make two arrays static const, makes object smaller
+Date:   Fri,  6 Sep 2019 14:38:12 +0100
+Message-Id: <20190906133812.17196-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,37 +37,46 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Don't populate the array en_mask on the stack but instead make it
-static const. Makes the object code smaller by 87 bytes.
+Don't populate the arrays on the stack but instead make them
+static const. Makes the object code smaller by 386 bytes.
 
 Before:
    text	   data	    bss	    dec	    hex	filename
-  12967	   3408	      0	  16375	   3ff7	drivers/regulator/lp8788-ldo.o
+  17443	   2076	      0	  19519	   4c3f	fs/9p/vfs_inode_dotl.o
 
 After:
    text	   data	    bss	    dec	    hex	filename
-  12816	   3472	      0	  16288	   3fa0	drivers/regulator/lp8788-ldo.o
+  16897	   2236	      0	  19133	   4abd	fs/9p/vfs_inode_dotl.o
 
 (gcc version 9.2.1, amd64)
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/regulator/lp8788-ldo.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/9p/vfs_inode_dotl.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/regulator/lp8788-ldo.c b/drivers/regulator/lp8788-ldo.c
-index 1b00f3638996..00e9bb92c326 100644
---- a/drivers/regulator/lp8788-ldo.c
-+++ b/drivers/regulator/lp8788-ldo.c
-@@ -464,7 +464,7 @@ static int lp8788_config_ldo_enable_mode(struct platform_device *pdev,
+diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
+index 60328b21c5fb..961d8d0fa905 100644
+--- a/fs/9p/vfs_inode_dotl.c
++++ b/fs/9p/vfs_inode_dotl.c
+@@ -167,7 +167,7 @@ static int v9fs_mapped_dotl_flags(int flags)
  {
- 	struct lp8788 *lp = ldo->lp;
- 	enum lp8788_ext_ldo_en_id enable_id;
--	u8 en_mask[] = {
-+	static const u8 en_mask[] = {
- 		[EN_ALDO1]   = LP8788_EN_SEL_ALDO1_M,
- 		[EN_ALDO234] = LP8788_EN_SEL_ALDO234_M,
- 		[EN_ALDO5]   = LP8788_EN_SEL_ALDO5_M,
+ 	int i;
+ 	int rflags = 0;
+-	struct dotl_openflag_map dotl_oflag_map[] = {
++	static const struct dotl_openflag_map dotl_oflag_map[] = {
+ 		{ O_CREAT,	P9_DOTL_CREATE },
+ 		{ O_EXCL,	P9_DOTL_EXCL },
+ 		{ O_NOCTTY,	P9_DOTL_NOCTTY },
+@@ -512,7 +512,7 @@ static int v9fs_mapped_iattr_valid(int iattr_valid)
+ {
+ 	int i;
+ 	int p9_iattr_valid = 0;
+-	struct dotl_iattr_map dotl_iattr_map[] = {
++	static const struct dotl_iattr_map dotl_iattr_map[] = {
+ 		{ ATTR_MODE,		P9_ATTR_MODE },
+ 		{ ATTR_UID,		P9_ATTR_UID },
+ 		{ ATTR_GID,		P9_ATTR_GID },
 -- 
 2.20.1
 

@@ -2,70 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5FFDABA15
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 15:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47CF5ABA64
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 16:11:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393830AbfIFN6J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 09:58:09 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:45101 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728978AbfIFN6J (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 09:58:09 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1i6EkZ-0002vX-Dc; Fri, 06 Sep 2019 13:58:07 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Gabriel Krisman Bertazi <krisman@collabora.com>,
-        linux-fsdevel@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] unicode: make array 'token' static const, makes object smaller
-Date:   Fri,  6 Sep 2019 14:58:07 +0100
-Message-Id: <20190906135807.23152-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S2404578AbfIFOLs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 10:11:48 -0400
+Received: from nautica.notk.org ([91.121.71.147]:42732 "EHLO nautica.notk.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387591AbfIFOLs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 6 Sep 2019 10:11:48 -0400
+X-Greylist: delayed 586 seconds by postgrey-1.27 at vger.kernel.org; Fri, 06 Sep 2019 10:11:47 EDT
+Received: by nautica.notk.org (Postfix, from userid 1001)
+        id 74656C009; Fri,  6 Sep 2019 16:02:00 +0200 (CEST)
+Date:   Fri, 6 Sep 2019 16:01:45 +0200
+From:   Dominique Martinet <asmadeus@codewreck.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Eric Van Hensbergen <ericvh@gmail.com>,
+        Latchesar Ionkov <lucho@ionkov.net>,
+        v9fs-developer@lists.sourceforge.net,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] 9p: make two arrays static const, makes object smaller
+Message-ID: <20190906140145.GA16910@nautica>
+References: <20190906133812.17196-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190906133812.17196-1-colin.king@canonical.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Colin King wrote on Fri, Sep 06, 2019:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Don't populate the arrays on the stack but instead make them
+> static const. Makes the object code smaller by 386 bytes.
+> 
+> Before:
+>    text	   data	    bss	    dec	    hex	filename
+>   17443	   2076	      0	  19519	   4c3f	fs/9p/vfs_inode_dotl.o
+> 
+> After:
+>    text	   data	    bss	    dec	    hex	filename
+>   16897	   2236	      0	  19133	   4abd	fs/9p/vfs_inode_dotl.o
+> 
+> (gcc version 9.2.1, amd64)
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Don't populate the array 'token' on the stack but instead make it
-static const. Makes the object code smaller by 234 bytes.
+Fine with me, I'll pick it up for the next cycle.
 
-Before:
-   text	   data	    bss	    dec	    hex	filename
-   5371	    272	      0	   5643	   160b	fs/unicode/utf8-core.o
+There are a couple of static structs in net/9p that aren't const (but
+could be); I guess the static is all that matters here?
+(I'll try to go through and make the rest const when I have time
+though, no harm there)
 
-After:
-   text	   data	    bss	    dec	    hex	filename
-   5041	    368	      0	   5409	   1521	fs/unicode/utf8-core.o
-
-(gcc version 9.2.1, amd64)
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- fs/unicode/utf8-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/unicode/utf8-core.c b/fs/unicode/utf8-core.c
-index 71ca4d047d65..2a878b739115 100644
---- a/fs/unicode/utf8-core.c
-+++ b/fs/unicode/utf8-core.c
-@@ -154,7 +154,7 @@ static int utf8_parse_version(const char *version, unsigned int *maj,
- {
- 	substring_t args[3];
- 	char version_string[12];
--	const struct match_token token[] = {
-+	static const struct match_token token[] = {
- 		{1, "%d.%d.%d"},
- 		{0, NULL}
- 	};
+Thanks,
 -- 
-2.20.1
-
+Dominique

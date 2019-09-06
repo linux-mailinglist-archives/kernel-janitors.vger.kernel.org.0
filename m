@@ -2,79 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C94CBABEFC
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 19:50:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD966ABF00
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 19:50:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2395246AbfIFRuY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 13:50:24 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:55647 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726953AbfIFRuX (ORCPT
+        id S2395294AbfIFRum (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 13:50:42 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:34997 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2395292AbfIFRul (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 13:50:23 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1i6INJ-0006Sb-Qj; Fri, 06 Sep 2019 17:50:21 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Fri, 6 Sep 2019 13:50:41 -0400
+Received: by mail-oi1-f195.google.com with SMTP id a127so5664902oii.2;
+        Fri, 06 Sep 2019 10:50:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=F4XFpZ/Ntp6JNNqwWcwMDQ9RkygXrkeY+nz32s4dwlI=;
+        b=a2lXYmPyCS4UA3sQ/bVxed9DPzu2SlgOjrFzOX4oEzGwjRtl+jVYZt6AjXGy07rY29
+         24SeCgfuTyObZ50ZEOgxXU3gG6tUn6H4IVDoTClIE+Iw9fK2pvvQnoIfi3cVo1w/HlLM
+         oxltd0ZVJUkncdo4JwomxUQA4leGpMW7mOd0bk1e8BvBDKPBY+dps8bkRhnCLoKHXjcp
+         3JgnO54Au8u+2LWvy753N44LAAU0SSK5584KCAhPu9DIH/BGQult7vs/ODi6xQnAsPxV
+         IQQc2dTxYlYZawB7hEzyyLD9RE9s1ay6pOfMo/0hkoiXozlSqCY+X/uZ9pW+Ro56aZjq
+         UXog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=F4XFpZ/Ntp6JNNqwWcwMDQ9RkygXrkeY+nz32s4dwlI=;
+        b=OueTTH4yiKDZcyktLWFnxuS9YsI5Rri/dm0Le3z/6F9nC9QzRYFK4ljqVM/zRvE0Pa
+         BxXYBOgc1OA+0gv500An1Kk+DbOxZCTtartEGKK/BzvaYh2D3VwTNFTuAPRuQQPKvGlj
+         DDUUtCpzplMTnV02N+BkRp78AYhHmQ/gTYxt7DAcTRpN2DfF/zzr/BTOBmyzE/4KbAtV
+         3Ccq8x2ktv7+I2Q89nWLKjxXKHs4k/ZW6aBMelhJHG1Z5KaHxwwiBr6+sZU8b/YJgR6V
+         +bRz/mO2qJShTkXVn1QSZs0QJr+BPqKSV3arUHVqx/XlyUgENipZLAtTbkXjK/zLgkNP
+         rQew==
+X-Gm-Message-State: APjAAAXqWhDOQeVDSO0Ssbf+kpblmVSZmj/oHAG2lHqr84hPKmoasFjQ
+        76z/sgvndfBLnFLYpsTGlF7AToy3
+X-Google-Smtp-Source: APXvYqxzox6qJNPz7yEiqg0BiF3uTnaUtCGgjyVmQFBVlRPiRvwAQoEaZjVsB/vZH88rAZLKA1LVyg==
+X-Received: by 2002:a54:4f11:: with SMTP id e17mr7643443oiy.46.1567792240430;
+        Fri, 06 Sep 2019 10:50:40 -0700 (PDT)
+Received: from [192.168.1.156] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id i47sm2453711ota.1.2019.09.06.10.50.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 06 Sep 2019 10:50:40 -0700 (PDT)
+Subject: Re: [PATCH] staging: rtl8188eu: make two arrays static const, makes
+ object smaller
+To:     Colin King <colin.king@canonical.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: rtl8723bs: core: make array op_class static const, makes object smaller
-Date:   Fri,  6 Sep 2019 18:50:21 +0100
-Message-Id: <20190906175021.25103-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+References: <20190906173949.21860-1-colin.king@canonical.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <9f1e1550-2a75-abc3-4d87-a0c1d1ae1ccb@lwfinger.net>
+Date:   Fri, 6 Sep 2019 12:50:39 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190906173949.21860-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 9/6/19 12:39 PM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Don't populate two arrays on the stack but instead make them
+> static const. Makes the object code smaller by 49 bytes.
+> 
+> Before:
+>     text	   data	    bss	    dec	    hex	filename
+>    26821	   5616	      0	  32437	   7eb5	rtl8188eu/core/rtw_ieee80211.o
+> 
+> After:
+>     text	   data	    bss	    dec	    hex	filename
+>    26612	   5776	      0	  32388	   7e84	rtl8188eu/core/rtw_ieee80211.o
+> 
+> (gcc version 9.2.1, amd64)
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
 
-Don't populate the array op_class on the stack but instead make it
-static const. Makes the object code smaller by 64 bytes.
+Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-Before:
-   text	   data	    bss	    dec	    hex	filename
-  93553	   7944	   5056	 106553	  1a039	rtl8723bs/core/rtw_mlme_ext.o
+Thanks,
 
-After:
-   text	   data	    bss	    dec	    hex	filename
-  93425	   8008	   5056	 106489	  19ff9	rtl8723bs/core/rtw_mlme_ext.o
-
-(gcc version 9.2.1, amd64)
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/staging/rtl8723bs/core/rtw_mlme_ext.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-index 2128886c9924..814b7a6bf4ea 100644
---- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-@@ -344,7 +344,7 @@ static void init_channel_list(struct adapter *padapter, RT_CHANNEL_INFO *channel
- 							  struct p2p_channels *channel_list)
- {
- 
--	struct p2p_oper_class_map op_class[] = {
-+	static const struct p2p_oper_class_map op_class[] = {
- 		{ IEEE80211G,  81,   1,  13,  1, BW20 },
- 		{ IEEE80211G,  82,  14,  14,  1, BW20 },
- 		{ IEEE80211A, 115,  36,  48,  4, BW20 },
-@@ -363,7 +363,7 @@ static void init_channel_list(struct adapter *padapter, RT_CHANNEL_INFO *channel
- 
- 	for (op = 0; op_class[op].op_class; op++) {
- 		u8 ch;
--		struct p2p_oper_class_map *o = &op_class[op];
-+		const struct p2p_oper_class_map *o = &op_class[op];
- 		struct p2p_reg_class *reg = NULL;
- 
- 		for (ch = o->min_chan; ch <= o->max_chan; ch += o->inc) {
--- 
-2.20.1
-
+Larry

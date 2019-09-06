@@ -2,81 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FF0FAB964
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 15:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9241DAB9B1
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 15:48:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390366AbfIFNiR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 09:38:17 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:43751 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389779AbfIFNiR (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 09:38:17 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1i6ERI-000166-RF; Fri, 06 Sep 2019 13:38:12 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Eric Van Hensbergen <ericvh@gmail.com>,
-        Latchesar Ionkov <lucho@ionkov.net>,
-        Dominique Martinet <asmadeus@codewreck.org>,
-        v9fs-developer@lists.sourceforge.net
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] 9p: make two arrays static const, makes object smaller
-Date:   Fri,  6 Sep 2019 14:38:12 +0100
-Message-Id: <20190906133812.17196-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S2404556AbfIFNsj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 09:48:39 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:42472 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727031AbfIFNsj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 6 Sep 2019 09:48:39 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 6E9F1C240AAF7362C57F;
+        Fri,  6 Sep 2019 21:48:36 +0800 (CST)
+Received: from localhost (10.133.213.239) by DGGEMS405-HUB.china.huawei.com
+ (10.3.19.205) with Microsoft SMTP Server id 14.3.439.0; Fri, 6 Sep 2019
+ 21:48:28 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     <Eugeniy.Paltsev@synopsys.com>, <linus.walleij@linaro.org>,
+        <bgolaszewski@baylibre.com>
+CC:     <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>,
+        YueHaibing <yuehaibing@huawei.com>
+Subject: [PATCH -next] gpio: creg-snps: use devm_platform_ioremap_resource() to simplify code
+Date:   Fri, 6 Sep 2019 21:10:32 +0800
+Message-ID: <20190906131032.22148-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.10.2.windows.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Use devm_platform_ioremap_resource() to simplify the code a bit.
+This is detected by coccinelle.
 
-Don't populate the arrays on the stack but instead make them
-static const. Makes the object code smaller by 386 bytes.
-
-Before:
-   text	   data	    bss	    dec	    hex	filename
-  17443	   2076	      0	  19519	   4c3f	fs/9p/vfs_inode_dotl.o
-
-After:
-   text	   data	    bss	    dec	    hex	filename
-  16897	   2236	      0	  19133	   4abd	fs/9p/vfs_inode_dotl.o
-
-(gcc version 9.2.1, amd64)
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- fs/9p/vfs_inode_dotl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpio/gpio-creg-snps.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/9p/vfs_inode_dotl.c b/fs/9p/vfs_inode_dotl.c
-index 60328b21c5fb..961d8d0fa905 100644
---- a/fs/9p/vfs_inode_dotl.c
-+++ b/fs/9p/vfs_inode_dotl.c
-@@ -167,7 +167,7 @@ static int v9fs_mapped_dotl_flags(int flags)
- {
- 	int i;
- 	int rflags = 0;
--	struct dotl_openflag_map dotl_oflag_map[] = {
-+	static const struct dotl_openflag_map dotl_oflag_map[] = {
- 		{ O_CREAT,	P9_DOTL_CREATE },
- 		{ O_EXCL,	P9_DOTL_EXCL },
- 		{ O_NOCTTY,	P9_DOTL_NOCTTY },
-@@ -512,7 +512,7 @@ static int v9fs_mapped_iattr_valid(int iattr_valid)
- {
- 	int i;
- 	int p9_iattr_valid = 0;
--	struct dotl_iattr_map dotl_iattr_map[] = {
-+	static const struct dotl_iattr_map dotl_iattr_map[] = {
- 		{ ATTR_MODE,		P9_ATTR_MODE },
- 		{ ATTR_UID,		P9_ATTR_UID },
- 		{ ATTR_GID,		P9_ATTR_GID },
+diff --git a/drivers/gpio/gpio-creg-snps.c b/drivers/gpio/gpio-creg-snps.c
+index 8cbc94d..ff19a8a 100644
+--- a/drivers/gpio/gpio-creg-snps.c
++++ b/drivers/gpio/gpio-creg-snps.c
+@@ -137,7 +137,6 @@ static int creg_gpio_probe(struct platform_device *pdev)
+ 	const struct of_device_id *match;
+ 	struct device *dev = &pdev->dev;
+ 	struct creg_gpio *hcg;
+-	struct resource *mem;
+ 	u32 ngpios;
+ 	int ret;
+ 
+@@ -145,8 +144,7 @@ static int creg_gpio_probe(struct platform_device *pdev)
+ 	if (!hcg)
+ 		return -ENOMEM;
+ 
+-	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	hcg->regs = devm_ioremap_resource(dev, mem);
++	hcg->regs = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(hcg->regs))
+ 		return PTR_ERR(hcg->regs);
+ 
 -- 
-2.20.1
+2.7.4
+
 

@@ -2,29 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C620EAB76B
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 13:54:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5976AB7FF
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 14:19:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391234AbfIFLxw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 07:53:52 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:38883 "EHLO
+        id S2391989AbfIFMTg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 08:19:36 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:40133 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727381AbfIFLxw (ORCPT
+        with ESMTP id S1732863AbfIFMTg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 07:53:52 -0400
+        Fri, 6 Sep 2019 08:19:36 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1i6CoG-0007oJ-PY; Fri, 06 Sep 2019 11:53:48 +0000
+        id 1i6DD4-0002Bw-N2; Fri, 06 Sep 2019 12:19:26 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Tariq Toukan <tariqt@mellanox.com>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
-        linux-rdma@vger.kernel.org
+To:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] net/mlx4_en: ethtool: make array modes static const, makes object smaller
-Date:   Fri,  6 Sep 2019 12:53:48 +0100
-Message-Id: <20190906115348.16621-1-colin.king@canonical.com>
+Subject: [PATCH] mt76: mt76x0e: make array mt76x0_chan_map static const, makes object smaller
+Date:   Fri,  6 Sep 2019 13:19:26 +0100
+Message-Id: <20190906121926.24080-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,37 +42,37 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Don't populate the array modes on the stack but instead make it
-static const. Makes the object code smaller by 303 bytes.
+Don't populate the array mt76x0_chan_map on the stack but instead make it
+static const. Makes the object code smaller by 80 bytes.
 
 Before:
    text	   data	    bss	    dec	    hex	filename
-  51240	   5008	   1312	  57560	   e0d8 mellanox/mlx4/en_ethtool.o
+   7685	   1192	      0	   8877	   22ad	mediatek/mt76/mt76x0/eeprom.o
 
 After:
    text	   data	    bss	    dec	    hex	filename
-  50937	   5008	   1312	  57257	   dfa9	mellanox/mlx4/en_ethtool.o
+   7541	   1256	      0	   8797	   225d	mediatek/mt76/mt76x0/eeprom.o
 
 (gcc version 9.2.1, amd64)
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/ethernet/mellanox/mlx4/en_ethtool.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-index 94c59939a8cf..d8313e2ee600 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-@@ -639,7 +639,7 @@ static unsigned long *ptys2ethtool_link_mode(struct ptys2ethtool_config *cfg,
- #define MLX4_BUILD_PTYS2ETHTOOL_CONFIG(reg_, speed_, ...)		\
- 	({								\
- 		struct ptys2ethtool_config *cfg;			\
--		const unsigned int modes[] = { __VA_ARGS__ };		\
-+		static const unsigned int modes[] = { __VA_ARGS__ };	\
- 		unsigned int i;						\
- 		cfg = &ptys2ethtool_map[reg_];				\
- 		cfg->speed = speed_;					\
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c b/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
+index 9d4426f6905f..96368fac4228 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x0/eeprom.c
+@@ -212,7 +212,7 @@ void mt76x0_get_tx_power_per_rate(struct mt76x02_dev *dev,
+ void mt76x0_get_power_info(struct mt76x02_dev *dev,
+ 			   struct ieee80211_channel *chan, s8 *tp)
+ {
+-	struct mt76x0_chan_map {
++	static const struct mt76x0_chan_map {
+ 		u8 chan;
+ 		u8 offset;
+ 	} chan_map[] = {
 -- 
 2.20.1
 

@@ -2,28 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DBFBAB479
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 10:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFAA2AB4BF
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 11:17:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392788AbfIFI6m (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 04:58:42 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59518 "EHLO
+        id S2404084AbfIFJRW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 05:17:22 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59987 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730412AbfIFI6l (ORCPT
+        with ESMTP id S1728356AbfIFJRW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 04:58:41 -0400
+        Fri, 6 Sep 2019 05:17:22 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1i6A4l-0001EK-CW; Fri, 06 Sep 2019 08:58:39 +0000
+        id 1i6AMp-0002s2-OD; Fri, 06 Sep 2019 09:17:19 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org
+To:     Jaehoon Chung <jh80.chung@samsung.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] media: em28xx: make various arrays static const, makes object smaller
-Date:   Fri,  6 Sep 2019 09:58:39 +0100
-Message-Id: <20190906085839.24344-1-colin.king@canonical.com>
+Subject: [PATCH] mmc: dw_mmc: hi3798cv200: make array degrees static const, makes object smaller
+Date:   Fri,  6 Sep 2019 10:17:19 +0100
+Message-Id: <20190906091719.24886-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,156 +35,37 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Don't populate the arrays on the stack but instead make them
-static const. Makes the object code smaller by 767 bytes.
+Don't populate the array degrees on the stack but instead make it
+static const. Makes the object code smaller by 46 bytes.
 
 Before:
    text	   data	    bss	    dec	    hex	filename
-  41567	  15088	    192	  56847	   de0f	em28xx/em28xx-dvb.o
+   5356	   1560	      0	   6916	   1b04	dw_mmc-hi3798cv200.o
 
 After:
    text	   data	    bss	    dec	    hex	filename
-  39872	  16016	    192	  56080	   db10	em28xx/em28xx-dvb.o
+   5214	   1656	      0	   6870	   1ad6	dw_mmc-hi3798cv200.o
 
 (gcc version 9.2.1, amd64)
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/media/usb/em28xx/em28xx-dvb.c | 30 +++++++++++++--------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ drivers/mmc/host/dw_mmc-hi3798cv200.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/usb/em28xx/em28xx-dvb.c b/drivers/media/usb/em28xx/em28xx-dvb.c
-index a73faf12f7e4..0ab6c493bc74 100644
---- a/drivers/media/usb/em28xx/em28xx-dvb.c
-+++ b/drivers/media/usb/em28xx/em28xx-dvb.c
-@@ -471,13 +471,13 @@ static void hauppauge_hvr930c_init(struct em28xx *dev)
+diff --git a/drivers/mmc/host/dw_mmc-hi3798cv200.c b/drivers/mmc/host/dw_mmc-hi3798cv200.c
+index bc51cef47c47..83e1bad0a008 100644
+--- a/drivers/mmc/host/dw_mmc-hi3798cv200.c
++++ b/drivers/mmc/host/dw_mmc-hi3798cv200.c
+@@ -66,7 +66,7 @@ static void dw_mci_hi3798cv200_set_ios(struct dw_mci *host, struct mmc_ios *ios)
+ static int dw_mci_hi3798cv200_execute_tuning(struct dw_mci_slot *slot,
+ 					     u32 opcode)
  {
- 	int i;
- 
--	struct em28xx_reg_seq hauppauge_hvr930c_init[] = {
-+	static const struct em28xx_reg_seq hauppauge_hvr930c_init[] = {
- 		{EM2874_R80_GPIO_P0_CTRL,	0xff,	0xff,	0x65},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xfb,	0xff,	0x32},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xff,	0xff,	0xb8},
- 		{	-1,			-1,	-1,	-1},
- 	};
--	struct em28xx_reg_seq hauppauge_hvr930c_end[] = {
-+	static const struct em28xx_reg_seq hauppauge_hvr930c_end[] = {
- 		{EM2874_R80_GPIO_P0_CTRL,	0xef,	0xff,	0x01},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xaf,	0xff,	0x65},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xef,	0xff,	0x76},
-@@ -493,7 +493,7 @@ static void hauppauge_hvr930c_init(struct em28xx *dev)
- 		{	-1,			-1,	-1,	-1},
- 	};
- 
--	struct {
-+	static const struct {
- 		unsigned char r[4];
- 		int len;
- 	} regs[] = {
-@@ -537,20 +537,20 @@ static void hauppauge_hvr930c_init(struct em28xx *dev)
- static void terratec_h5_init(struct em28xx *dev)
- {
- 	int i;
--	struct em28xx_reg_seq terratec_h5_init[] = {
-+	static const struct em28xx_reg_seq terratec_h5_init[] = {
- 		{EM2820_R08_GPIO_CTRL,		0xff,	0xff,	10},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xf6,	0xff,	100},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xf2,	0xff,	50},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xf6,	0xff,	100},
- 		{	-1,			-1,	-1,	-1},
- 	};
--	struct em28xx_reg_seq terratec_h5_end[] = {
-+	static const struct em28xx_reg_seq terratec_h5_end[] = {
- 		{EM2874_R80_GPIO_P0_CTRL,	0xe6,	0xff,	100},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xa6,	0xff,	50},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xe6,	0xff,	100},
- 		{	-1,			-1,	-1,	-1},
- 	};
--	struct {
-+	static const struct {
- 		unsigned char r[4];
- 		int len;
- 	} regs[] = {
-@@ -594,14 +594,14 @@ static void terratec_htc_stick_init(struct em28xx *dev)
- 	 * 0xe6: unknown (does not affect DVB-T).
- 	 * 0xb6: unknown (does not affect DVB-T).
- 	 */
--	struct em28xx_reg_seq terratec_htc_stick_init[] = {
-+	static const struct em28xx_reg_seq terratec_htc_stick_init[] = {
- 		{EM2820_R08_GPIO_CTRL,		0xff,	0xff,	10},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xf6,	0xff,	100},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xe6,	0xff,	50},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xf6,	0xff,	100},
- 		{	-1,			-1,	-1,	-1},
- 	};
--	struct em28xx_reg_seq terratec_htc_stick_end[] = {
-+	static const struct em28xx_reg_seq terratec_htc_stick_end[] = {
- 		{EM2874_R80_GPIO_P0_CTRL,	0xb6,	0xff,	100},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xf6,	0xff,	50},
- 		{	-1,			-1,	-1,	-1},
-@@ -611,7 +611,7 @@ static void terratec_htc_stick_init(struct em28xx *dev)
- 	 * Init the analog decoder (not yet supported), but
- 	 * it's probably still a good idea.
- 	 */
--	struct {
-+	static const struct {
- 		unsigned char r[4];
- 		int len;
- 	} regs[] = {
-@@ -642,14 +642,14 @@ static void terratec_htc_usb_xs_init(struct em28xx *dev)
- {
- 	int i;
- 
--	struct em28xx_reg_seq terratec_htc_usb_xs_init[] = {
-+	static const struct em28xx_reg_seq terratec_htc_usb_xs_init[] = {
- 		{EM2820_R08_GPIO_CTRL,		0xff,	0xff,	10},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xb2,	0xff,	100},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xb2,	0xff,	50},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xb6,	0xff,	100},
- 		{	-1,			-1,	-1,	-1},
- 	};
--	struct em28xx_reg_seq terratec_htc_usb_xs_end[] = {
-+	static const struct em28xx_reg_seq terratec_htc_usb_xs_end[] = {
- 		{EM2874_R80_GPIO_P0_CTRL,	0xa6,	0xff,	100},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xa6,	0xff,	50},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xe6,	0xff,	100},
-@@ -660,7 +660,7 @@ static void terratec_htc_usb_xs_init(struct em28xx *dev)
- 	 * Init the analog decoder (not yet supported), but
- 	 * it's probably still a good idea.
- 	 */
--	struct {
-+	static const struct {
- 		unsigned char r[4];
- 		int len;
- 	} regs[] = {
-@@ -704,7 +704,7 @@ static void pctv_520e_init(struct em28xx *dev)
- 	 * digital demodulator and tuner are routed via AVF4910B.
- 	 */
- 	int i;
--	struct {
-+	static const struct {
- 		unsigned char r[4];
- 		int len;
- 	} regs[] = {
-@@ -800,7 +800,7 @@ static int em28xx_mt352_terratec_xs_init(struct dvb_frontend *fe)
- static void px_bcud_init(struct em28xx *dev)
- {
- 	int i;
--	struct {
-+	static const struct {
- 		unsigned char r[4];
- 		int len;
- 	} regs1[] = {
-@@ -818,7 +818,7 @@ static void px_bcud_init(struct em28xx *dev)
- 		{{ 0x85, 0x7a }, 2},
- 		{{ 0x87, 0x04 }, 2},
- 	};
--	static struct em28xx_reg_seq gpio[] = {
-+	static const struct em28xx_reg_seq gpio[] = {
- 		{EM28XX_R06_I2C_CLK,		0x40,	0xff,	300},
- 		{EM2874_R80_GPIO_P0_CTRL,	0xfd,	0xff,	60},
- 		{EM28XX_R15_RGAIN,		0x20,	0xff,	0},
+-	int degrees[] = { 0, 45, 90, 135, 180, 225, 270, 315 };
++	static const int degrees[] = { 0, 45, 90, 135, 180, 225, 270, 315 };
+ 	struct dw_mci *host = slot->host;
+ 	struct hi3798cv200_priv *priv = host->priv;
+ 	int raise_point = -1, fall_point = -1;
 -- 
 2.20.1
 

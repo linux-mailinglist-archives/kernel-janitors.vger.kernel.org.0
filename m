@@ -2,59 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B1AAAB501
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 11:36:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 127D7AB708
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 13:19:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404173AbfIFJga (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 05:36:30 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:41532 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2390186AbfIFJga (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 05:36:30 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 870DF8D43FB526BC1932;
-        Fri,  6 Sep 2019 17:36:28 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 6 Sep 2019 17:36:18 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Shannon Nelson <snelson@pensando.io>,
-        Pensando Drivers <drivers@pensando.io>,
-        "David S . Miller" <davem@davemloft.net>
-CC:     YueHaibing <yuehaibing@huawei.com>, <netdev@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net-next] ionic: Remove unused including <linux/version.h>
-Date:   Fri, 6 Sep 2019 09:54:09 +0000
-Message-ID: <20190906095410.107596-1-yuehaibing@huawei.com>
+        id S1730443AbfIFLTq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 07:19:46 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:37425 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726073AbfIFLTq (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 6 Sep 2019 07:19:46 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i6CHI-0005FY-0W; Fri, 06 Sep 2019 11:19:44 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Sathya Perla <sathya.perla@broadcom.com>,
+        Ajit Khaparde <ajit.khaparde@broadcom.com>,
+        Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>,
+        Somnath Kotur <somnath.kotur@broadcom.com>,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] be2net: make two arrays static const, makes object smaller
+Date:   Fri,  6 Sep 2019 12:19:43 +0100
+Message-Id: <20190906111943.5285-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove including <linux/version.h> that don't need it.
+From: Colin Ian King <colin.king@canonical.com>
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Don't populate the arrays on the stack but instead make them
+static const. Makes the object code smaller by 281 bytes.
+
+Before:
+   text	   data	    bss	    dec	    hex	filename
+  87553	   5672	      0	  93225	  16c29	benet/be_cmds.o
+
+After:
+   text	   data	    bss	    dec	    hex	filename
+  87112	   5832	      0	  92944	  16b10	benet/be_cmds.o
+
+(gcc version 9.2.1, amd64)
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_main.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/emulex/benet/be_cmds.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
-index 5ec67f3f1853..15e432386b35 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
-@@ -2,7 +2,6 @@
- /* Copyright(c) 2017 - 2019 Pensando Systems, Inc */
+diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
+index 323976c811e9..701c12c9e033 100644
+--- a/drivers/net/ethernet/emulex/benet/be_cmds.c
++++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
+@@ -2756,7 +2756,7 @@ static int be_flash_BEx(struct be_adapter *adapter,
+ 	bool crc_match;
+ 	const u8 *p;
  
- #include <linux/module.h>
--#include <linux/version.h>
- #include <linux/netdevice.h>
- #include <linux/utsname.h>
-
-
+-	struct flash_comp gen3_flash_types[] = {
++	static const struct flash_comp gen3_flash_types[] = {
+ 		{ BE3_ISCSI_PRIMARY_IMAGE_START, OPTYPE_ISCSI_ACTIVE,
+ 			BE3_COMP_MAX_SIZE, IMAGE_FIRMWARE_ISCSI},
+ 		{ BE3_REDBOOT_START, OPTYPE_REDBOOT,
+@@ -2779,7 +2779,7 @@ static int be_flash_BEx(struct be_adapter *adapter,
+ 			BE3_PHY_FW_COMP_MAX_SIZE, IMAGE_FIRMWARE_PHY}
+ 	};
+ 
+-	struct flash_comp gen2_flash_types[] = {
++	static const struct flash_comp gen2_flash_types[] = {
+ 		{ BE2_ISCSI_PRIMARY_IMAGE_START, OPTYPE_ISCSI_ACTIVE,
+ 			BE2_COMP_MAX_SIZE, IMAGE_FIRMWARE_ISCSI},
+ 		{ BE2_REDBOOT_START, OPTYPE_REDBOOT,
+-- 
+2.20.1
 

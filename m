@@ -2,69 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A4092AB85A
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 14:49:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D713AB8D9
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 15:05:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404723AbfIFMtq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 08:49:46 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42302 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404473AbfIFMtq (ORCPT
+        id S2403816AbfIFNF2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 09:05:28 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:59858 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387851AbfIFNF2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 08:49:46 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1i6DgO-0005cj-Gt; Fri, 06 Sep 2019 12:49:44 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Kishon Vijay Abraham I <kishon@ti.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] phy: xgene: make array serdes_reg static const, makes object smaller
-Date:   Fri,  6 Sep 2019 13:49:44 +0100
-Message-Id: <20190906124944.1574-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Fri, 6 Sep 2019 09:05:28 -0400
+Received: from localhost (unknown [88.214.184.128])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 7A4E9152F5C9F;
+        Fri,  6 Sep 2019 06:05:26 -0700 (PDT)
+Date:   Fri, 06 Sep 2019 15:05:24 +0200 (CEST)
+Message-Id: <20190906.150524.1245097015817848153.davem@davemloft.net>
+To:     maowenan@huawei.com
+Cc:     eric.dumazet@gmail.com, tsbogend@alpha.franken.de,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2 net] net: sonic: return NETDEV_TX_OK if failed to
+ map buffer
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190905015712.107173-1-maowenan@huawei.com>
+References: <960c7d1f-6e80-84fb-8d7a-9c5692605500@huawei.com>
+        <20190905015712.107173-1-maowenan@huawei.com>
+X-Mailer: Mew version 6.8 on Emacs 26.2
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 06 Sep 2019 06:05:27 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Mao Wenan <maowenan@huawei.com>
+Date: Thu, 5 Sep 2019 09:57:12 +0800
 
-Don't populate the array serdes_reg on the stack but instead make it
-static const. Makes the object code smaller by 228 bytes.
+> NETDEV_TX_BUSY really should only be used by drivers that call
+> netif_tx_stop_queue() at the wrong moment. If dma_map_single() is
+> failed to map tx DMA buffer, it might trigger an infinite loop.
+> This patch use NETDEV_TX_OK instead of NETDEV_TX_BUSY, and change
+> printk to pr_err_ratelimited.
+> 
+> Fixes: d9fb9f384292 ("*sonic/natsemi/ns83829: Move the National Semi-conductor drivers")
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
 
-Before:
-   text	   data	    bss	    dec	    hex	filename
-  23875	   6232	     64	  30171	   75db	drivers/phy/phy-xgene.o
-
-After:
-   text	   data	    bss	    dec	    hex	filename
-  23551	   6328	     64	  29943	   74f7	drivers/phy/phy-xgene.o
-
-(gcc version 9.2.1, amd64)
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/phy/phy-xgene.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/phy/phy-xgene.c b/drivers/phy/phy-xgene.c
-index 3c9189473407..7a33ec12f71b 100644
---- a/drivers/phy/phy-xgene.c
-+++ b/drivers/phy/phy-xgene.c
-@@ -1342,7 +1342,7 @@ static int xgene_phy_hw_initialize(struct xgene_phy_ctx *ctx,
- static void xgene_phy_force_lat_summer_cal(struct xgene_phy_ctx *ctx, int lane)
- {
- 	int i;
--	struct {
-+	static const struct {
- 		u32 reg;
- 		u32 val;
- 	} serdes_reg[] = {
--- 
-2.20.1
-
+Applied.

@@ -2,27 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E6B3ABCC2
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 17:41:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70BCCABD73
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 18:14:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391494AbfIFPkz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 11:40:55 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50329 "EHLO
+        id S1729022AbfIFQOa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 12:14:30 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:52063 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731817AbfIFPkz (ORCPT
+        with ESMTP id S1726012AbfIFQOa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 11:40:55 -0400
+        Fri, 6 Sep 2019 12:14:30 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
         (Exim 4.76)
         (envelope-from <colin.king@canonical.com>)
-        id 1i6GM1-00042X-PR; Fri, 06 Sep 2019 15:40:53 +0000
+        id 1i6Gs8-0006ps-DW; Fri, 06 Sep 2019 16:14:04 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Michael Buesch <m@bues.ch>, linux-wireless@vger.kernel.org
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ssb: make array pwr_info_offset static const, makes object smaller
-Date:   Fri,  6 Sep 2019 16:40:53 +0100
-Message-Id: <20190906154053.32218-1-colin.king@canonical.com>
+Subject: [PATCH] ASoC: codecs: ad193x: make two arrays static const, makes object smaller
+Date:   Fri,  6 Sep 2019 17:14:04 +0100
+Message-Id: <20190906161404.1440-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -34,37 +38,46 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Don't populate the array pwr_info_offset on the stack but instead make it
-static const. Makes the object code smaller by 207 bytes.
+Don't populate the arrays on the stack but instead make them
+static const. Makes the object code smaller by 37 bytes.
 
 Before:
    text	   data	    bss	    dec	    hex	filename
-  26066	   3000	     64	  29130	   71ca	drivers/ssb/pci.o
+  16253	   7200	      0	  23453	   5b9d	sound/soc/codecs/ad193x.o
 
 After:
    text	   data	    bss	    dec	    hex	filename
-  25763	   3096	     64	  28923	   70fb	drivers/ssb/pci.o
+  16056	   7360	      0	  23416	   5b78	sound/soc/codecs/ad193x.o
 
 (gcc version 9.2.1, amd64)
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/ssb/pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/ad193x.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ssb/pci.c b/drivers/ssb/pci.c
-index da2d2ab8104d..7c3ae52f2b15 100644
---- a/drivers/ssb/pci.c
-+++ b/drivers/ssb/pci.c
-@@ -595,7 +595,7 @@ static void sprom_extract_r8(struct ssb_sprom *out, const u16 *in)
+diff --git a/sound/soc/codecs/ad193x.c b/sound/soc/codecs/ad193x.c
+index fb04c9379b71..980e024a5720 100644
+--- a/sound/soc/codecs/ad193x.c
++++ b/sound/soc/codecs/ad193x.c
+@@ -416,7 +416,7 @@ static struct snd_soc_dai_driver ad193x_no_adc_dai = {
+ /* codec register values to set after reset */
+ static void ad193x_reg_default_init(struct ad193x_priv *ad193x)
  {
- 	int i;
- 	u16 o;
--	u16 pwr_info_offset[] = {
-+	static const u16 pwr_info_offset[] = {
- 		SSB_SROM8_PWR_INFO_CORE0, SSB_SROM8_PWR_INFO_CORE1,
- 		SSB_SROM8_PWR_INFO_CORE2, SSB_SROM8_PWR_INFO_CORE3
+-	const struct reg_sequence reg_init[] = {
++	static const struct reg_sequence reg_init[] = {
+ 		{  0, 0x99 },	/* PLL_CLK_CTRL0: pll input: mclki/xi 12.288Mhz */
+ 		{  1, 0x04 },	/* PLL_CLK_CTRL1: no on-chip Vref */
+ 		{  2, 0x40 },	/* DAC_CTRL0: TDM mode */
+@@ -432,7 +432,7 @@ static void ad193x_reg_default_init(struct ad193x_priv *ad193x)
+ 		{ 12, 0x00 },	/* DAC_L4_VOL: no attenuation */
+ 		{ 13, 0x00 },	/* DAC_R4_VOL: no attenuation */
  	};
+-	const struct reg_sequence reg_adc_init[] = {
++	static const struct reg_sequence reg_adc_init[] = {
+ 		{ 14, 0x03 },	/* ADC_CTRL0: high-pass filter enable */
+ 		{ 15, 0x43 },	/* ADC_CTRL1: sata delay=1, adc aux mode */
+ 		{ 16, 0x00 },	/* ADC_CTRL2: reset */
 -- 
 2.20.1
 

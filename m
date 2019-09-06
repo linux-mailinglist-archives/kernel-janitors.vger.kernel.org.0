@@ -2,73 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CAA7AABF25
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 20:11:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9633FABF36
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 20:13:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391341AbfIFSLR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 14:11:17 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56276 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387514AbfIFSLR (ORCPT
+        id S2391910AbfIFSNu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 14:13:50 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:35867 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731928AbfIFSNu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 14:11:17 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
-        (Exim 4.76)
-        (envelope-from <colin.king@canonical.com>)
-        id 1i6IhW-0007zm-Uk; Fri, 06 Sep 2019 18:11:15 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] fbdev: matrox: make array wtst_xlat static const, makes object smaller
-Date:   Fri,  6 Sep 2019 19:11:14 +0100
-Message-Id: <20190906181114.31414-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Fri, 6 Sep 2019 14:13:50 -0400
+Received: by mail-oi1-f195.google.com with SMTP id k20so5713550oih.3;
+        Fri, 06 Sep 2019 11:13:49 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=xLmL42CiB+Tx4ipPu1XCKAf8GsimAkZztJFd7tUoIPo=;
+        b=odx6tKRiTIxCeZgS1pbi33M6OnQQPIahFTUqt+iMQHEHzjcujlgPKnx156XnAC/IgN
+         8Od7sezhyMBRU4+8iCfwkEjPtuQN17GUTOYaXqVh/ONBHiMPZ1Dx/cT2B8PAsfEs3I6j
+         cDyvheUV/vbNopT7qfx2JCh/wSZUwZkqjG/hdfPjVUMXOsqbfvSsSesTzfYz0Wvzm7It
+         QpWiwLVfzIMHS+jfJ/dXeUKTqDez/FDuhvPHty9jVWpzd7/LaRk8GbyFrQHDm1HgsleR
+         5FmSLIQFKQSRYSaD9Xeh2W/yc+uILnOMco5tKg2oH7tVKxldhHMN0+BA0dl8qUEmFlAe
+         m9fA==
+X-Gm-Message-State: APjAAAXBjhj4YrHrR09ovHpbB2urxenjmG+nWNqF95ZBvN7dHB4M66bK
+        zQPru/EQt6wdb/c0lfOE8ps=
+X-Google-Smtp-Source: APXvYqzBApLRYJOobIsaIXCt07zmjmoFFv2h+YoAKcXu9gQ4pb8WJq42X9wSEm3uXoLfOiTbR2v4Vw==
+X-Received: by 2002:aca:4f46:: with SMTP id d67mr7832976oib.102.1567793629327;
+        Fri, 06 Sep 2019 11:13:49 -0700 (PDT)
+Received: from ?IPv6:2600:1700:65a0:78e0:514:7862:1503:8e4d? ([2600:1700:65a0:78e0:514:7862:1503:8e4d])
+        by smtp.gmail.com with ESMTPSA id u7sm1862820otk.20.2019.09.06.11.13.48
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 06 Sep 2019 11:13:48 -0700 (PDT)
+Subject: Re: [PATCH] nvmet: Use PTR_ERR_OR_ZERO() in nvmet_init_discovery()
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        linux-nvme@lists.infradead.org, Christoph Hellwig <hch@lst.de>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        YueHaibing <yuehaibing@huawei.com>,
+        zhong jiang <zhongjiang@huawei.com>
+References: <b35ec629-f75f-2eee-1db1-98874f486258@web.de>
+From:   Sagi Grimberg <sagi@grimberg.me>
+Message-ID: <655dc338-b7c9-cd01-1b3e-59fe34c87f6a@grimberg.me>
+Date:   Fri, 6 Sep 2019 11:13:47 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <b35ec629-f75f-2eee-1db1-98874f486258@web.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
 
-Don't populate the array wtst_xlat on the stack but instead make it
-static const. Makes the object code smaller by 89 bytes.
-
-Before:
-   text	   data	    bss	    dec	    hex	filename
-  14347	    840	      0	  15187	   3b53	fbdev/matrox/matroxfb_misc.o
-
-After:
-   text	   data	    bss	    dec	    hex	filename
-  14162	    936	      0	  15098	   3afa	fbdev/matrox/matroxfb_misc.o
-
-(gcc version 9.2.1, amd64)
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/video/fbdev/matrox/matroxfb_misc.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/video/fbdev/matrox/matroxfb_misc.c b/drivers/video/fbdev/matrox/matroxfb_misc.c
-index c7aaca12805e..feb0977c82eb 100644
---- a/drivers/video/fbdev/matrox/matroxfb_misc.c
-+++ b/drivers/video/fbdev/matrox/matroxfb_misc.c
-@@ -673,7 +673,10 @@ static int parse_pins5(struct matrox_fb_info *minfo,
- 	if (bd->pins[115] & 4) {
- 		minfo->values.reg.mctlwtst_core = minfo->values.reg.mctlwtst;
- 	} else {
--		u_int32_t wtst_xlat[] = { 0, 1, 5, 6, 7, 5, 2, 3 };
-+		static const u_int32_t wtst_xlat[] = {
-+			0, 1, 5, 6, 7, 5, 2, 3
-+		};
-+
- 		minfo->values.reg.mctlwtst_core = (minfo->values.reg.mctlwtst & ~7) |
- 						  wtst_xlat[minfo->values.reg.mctlwtst & 7];
- 	}
--- 
-2.20.1
-
+applied to nvme-5.4

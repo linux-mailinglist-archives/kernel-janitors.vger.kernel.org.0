@@ -2,91 +2,189 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 657EBAB41A
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 10:36:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DBFBAB479
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 10:58:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388937AbfIFIgn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 04:36:43 -0400
-Received: from mx1.riseup.net ([198.252.153.129]:57618 "EHLO mx1.riseup.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731558AbfIFIgm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 04:36:42 -0400
-Received: from bell.riseup.net (bell-pn.riseup.net [10.0.1.178])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
-        (Client CN "*.riseup.net", Issuer "COMODO RSA Domain Validation Secure Server CA" (verified OK))
-        by mx1.riseup.net (Postfix) with ESMTPS id BAF271B907E;
-        Fri,  6 Sep 2019 01:36:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=riseup.net; s=squak;
-        t=1567759002; bh=t2FNPIm7ART7GYpOXq8+Fiq6Qxz4MxImK4pOdQlNSk0=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=Go6qhkBYDYS5NS6YQH/3ezUzrU7ics+MBhu8UJ+yRmGzJHV3EeZlp3bZUMIXK+xS/
-         2lAMpWK9TckHrreBksac/lMKZzroSQEgxAc2tE8y14hT8jLFfNSRzmPPb2f/2wfqxF
-         PYwzX7QAGRGT5oFtWMfxBAvXvV49CxANrnRd/XDk=
-X-Riseup-User-ID: 472C8FB7E389D6F309DD4195B318043043BED3C6AD0CB0F48E7975FBE1A38AE7
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-         by bell.riseup.net (Postfix) with ESMTPSA id B670A222CF0;
-        Fri,  6 Sep 2019 01:36:39 -0700 (PDT)
-Subject: Re: [PATCH] netfilter: nf_tables: Fix an Oops in nf_tables_updobj()
- error handling
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>
-Cc:     Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
-        kernel-janitors@vger.kernel.org
-References: <20190906081808.GA8281@mwanda>
-From:   Fernando Fernandez Mancera <ffmancera@riseup.net>
-Openpgp: preference=signencrypt
-Message-ID: <efae8f44-224e-9337-64cf-47fd67ba2950@riseup.net>
-Date:   Fri, 6 Sep 2019 10:36:49 +0200
+        id S2392788AbfIFI6m (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 04:58:42 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59518 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730412AbfIFI6l (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 6 Sep 2019 04:58:41 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i6A4l-0001EK-CW; Fri, 06 Sep 2019 08:58:39 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] media: em28xx: make various arrays static const, makes object smaller
+Date:   Fri,  6 Sep 2019 09:58:39 +0100
+Message-Id: <20190906085839.24344-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190906081808.GA8281@mwanda>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US-large
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Oh sorry, I missed that. Thanks!
+From: Colin Ian King <colin.king@canonical.com>
 
-Acked-by: Fernando Fernandez Mancera <ffmancera@riseup.net>
+Don't populate the arrays on the stack but instead make them
+static const. Makes the object code smaller by 767 bytes.
 
-On 9/6/19 10:18 AM, Dan Carpenter wrote:
-> The "newobj" is an error pointer so we can't pass it to kfree().  It
-> doesn't need to be freed so we can remove that and I also renamed the
-> error label.
-> 
-> Fixes: d62d0ba97b58 ("netfilter: nf_tables: Introduce stateful object update operation")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  net/netfilter/nf_tables_api.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-> index cf767bc58e18..6f66898d63b4 100644
-> --- a/net/netfilter/nf_tables_api.c
-> +++ b/net/netfilter/nf_tables_api.c
-> @@ -5148,7 +5148,7 @@ static int nf_tables_updobj(const struct nft_ctx *ctx,
->  	newobj = nft_obj_init(ctx, type, attr);
->  	if (IS_ERR(newobj)) {
->  		err = PTR_ERR(newobj);
-> -		goto err1;
-> +		goto err_free_trans;
->  	}
->  
->  	nft_trans_obj(trans) = obj;
-> @@ -5157,9 +5157,9 @@ static int nf_tables_updobj(const struct nft_ctx *ctx,
->  	list_add_tail(&trans->list, &ctx->net->nft.commit_list);
->  
->  	return 0;
-> -err1:
-> +
-> +err_free_trans:
->  	kfree(trans);
-> -	kfree(newobj);
->  	return err;
->  }
->  
-> 
+Before:
+   text	   data	    bss	    dec	    hex	filename
+  41567	  15088	    192	  56847	   de0f	em28xx/em28xx-dvb.o
+
+After:
+   text	   data	    bss	    dec	    hex	filename
+  39872	  16016	    192	  56080	   db10	em28xx/em28xx-dvb.o
+
+(gcc version 9.2.1, amd64)
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/media/usb/em28xx/em28xx-dvb.c | 30 +++++++++++++--------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/drivers/media/usb/em28xx/em28xx-dvb.c b/drivers/media/usb/em28xx/em28xx-dvb.c
+index a73faf12f7e4..0ab6c493bc74 100644
+--- a/drivers/media/usb/em28xx/em28xx-dvb.c
++++ b/drivers/media/usb/em28xx/em28xx-dvb.c
+@@ -471,13 +471,13 @@ static void hauppauge_hvr930c_init(struct em28xx *dev)
+ {
+ 	int i;
+ 
+-	struct em28xx_reg_seq hauppauge_hvr930c_init[] = {
++	static const struct em28xx_reg_seq hauppauge_hvr930c_init[] = {
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xff,	0xff,	0x65},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xfb,	0xff,	0x32},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xff,	0xff,	0xb8},
+ 		{	-1,			-1,	-1,	-1},
+ 	};
+-	struct em28xx_reg_seq hauppauge_hvr930c_end[] = {
++	static const struct em28xx_reg_seq hauppauge_hvr930c_end[] = {
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xef,	0xff,	0x01},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xaf,	0xff,	0x65},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xef,	0xff,	0x76},
+@@ -493,7 +493,7 @@ static void hauppauge_hvr930c_init(struct em28xx *dev)
+ 		{	-1,			-1,	-1,	-1},
+ 	};
+ 
+-	struct {
++	static const struct {
+ 		unsigned char r[4];
+ 		int len;
+ 	} regs[] = {
+@@ -537,20 +537,20 @@ static void hauppauge_hvr930c_init(struct em28xx *dev)
+ static void terratec_h5_init(struct em28xx *dev)
+ {
+ 	int i;
+-	struct em28xx_reg_seq terratec_h5_init[] = {
++	static const struct em28xx_reg_seq terratec_h5_init[] = {
+ 		{EM2820_R08_GPIO_CTRL,		0xff,	0xff,	10},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xf6,	0xff,	100},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xf2,	0xff,	50},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xf6,	0xff,	100},
+ 		{	-1,			-1,	-1,	-1},
+ 	};
+-	struct em28xx_reg_seq terratec_h5_end[] = {
++	static const struct em28xx_reg_seq terratec_h5_end[] = {
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xe6,	0xff,	100},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xa6,	0xff,	50},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xe6,	0xff,	100},
+ 		{	-1,			-1,	-1,	-1},
+ 	};
+-	struct {
++	static const struct {
+ 		unsigned char r[4];
+ 		int len;
+ 	} regs[] = {
+@@ -594,14 +594,14 @@ static void terratec_htc_stick_init(struct em28xx *dev)
+ 	 * 0xe6: unknown (does not affect DVB-T).
+ 	 * 0xb6: unknown (does not affect DVB-T).
+ 	 */
+-	struct em28xx_reg_seq terratec_htc_stick_init[] = {
++	static const struct em28xx_reg_seq terratec_htc_stick_init[] = {
+ 		{EM2820_R08_GPIO_CTRL,		0xff,	0xff,	10},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xf6,	0xff,	100},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xe6,	0xff,	50},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xf6,	0xff,	100},
+ 		{	-1,			-1,	-1,	-1},
+ 	};
+-	struct em28xx_reg_seq terratec_htc_stick_end[] = {
++	static const struct em28xx_reg_seq terratec_htc_stick_end[] = {
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xb6,	0xff,	100},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xf6,	0xff,	50},
+ 		{	-1,			-1,	-1,	-1},
+@@ -611,7 +611,7 @@ static void terratec_htc_stick_init(struct em28xx *dev)
+ 	 * Init the analog decoder (not yet supported), but
+ 	 * it's probably still a good idea.
+ 	 */
+-	struct {
++	static const struct {
+ 		unsigned char r[4];
+ 		int len;
+ 	} regs[] = {
+@@ -642,14 +642,14 @@ static void terratec_htc_usb_xs_init(struct em28xx *dev)
+ {
+ 	int i;
+ 
+-	struct em28xx_reg_seq terratec_htc_usb_xs_init[] = {
++	static const struct em28xx_reg_seq terratec_htc_usb_xs_init[] = {
+ 		{EM2820_R08_GPIO_CTRL,		0xff,	0xff,	10},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xb2,	0xff,	100},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xb2,	0xff,	50},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xb6,	0xff,	100},
+ 		{	-1,			-1,	-1,	-1},
+ 	};
+-	struct em28xx_reg_seq terratec_htc_usb_xs_end[] = {
++	static const struct em28xx_reg_seq terratec_htc_usb_xs_end[] = {
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xa6,	0xff,	100},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xa6,	0xff,	50},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xe6,	0xff,	100},
+@@ -660,7 +660,7 @@ static void terratec_htc_usb_xs_init(struct em28xx *dev)
+ 	 * Init the analog decoder (not yet supported), but
+ 	 * it's probably still a good idea.
+ 	 */
+-	struct {
++	static const struct {
+ 		unsigned char r[4];
+ 		int len;
+ 	} regs[] = {
+@@ -704,7 +704,7 @@ static void pctv_520e_init(struct em28xx *dev)
+ 	 * digital demodulator and tuner are routed via AVF4910B.
+ 	 */
+ 	int i;
+-	struct {
++	static const struct {
+ 		unsigned char r[4];
+ 		int len;
+ 	} regs[] = {
+@@ -800,7 +800,7 @@ static int em28xx_mt352_terratec_xs_init(struct dvb_frontend *fe)
+ static void px_bcud_init(struct em28xx *dev)
+ {
+ 	int i;
+-	struct {
++	static const struct {
+ 		unsigned char r[4];
+ 		int len;
+ 	} regs1[] = {
+@@ -818,7 +818,7 @@ static void px_bcud_init(struct em28xx *dev)
+ 		{{ 0x85, 0x7a }, 2},
+ 		{{ 0x87, 0x04 }, 2},
+ 	};
+-	static struct em28xx_reg_seq gpio[] = {
++	static const struct em28xx_reg_seq gpio[] = {
+ 		{EM28XX_R06_I2C_CLK,		0x40,	0xff,	300},
+ 		{EM2874_R80_GPIO_P0_CTRL,	0xfd,	0xff,	60},
+ 		{EM28XX_R15_RGAIN,		0x20,	0xff,	0},
+-- 
+2.20.1
+

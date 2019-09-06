@@ -2,71 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9241DAB9B1
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 15:48:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5FFDABA15
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 15:58:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404556AbfIFNsj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 09:48:39 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:42472 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727031AbfIFNsj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 09:48:39 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 6E9F1C240AAF7362C57F;
-        Fri,  6 Sep 2019 21:48:36 +0800 (CST)
-Received: from localhost (10.133.213.239) by DGGEMS405-HUB.china.huawei.com
- (10.3.19.205) with Microsoft SMTP Server id 14.3.439.0; Fri, 6 Sep 2019
- 21:48:28 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     <Eugeniy.Paltsev@synopsys.com>, <linus.walleij@linaro.org>,
-        <bgolaszewski@baylibre.com>
-CC:     <linux-gpio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>,
-        YueHaibing <yuehaibing@huawei.com>
-Subject: [PATCH -next] gpio: creg-snps: use devm_platform_ioremap_resource() to simplify code
-Date:   Fri, 6 Sep 2019 21:10:32 +0800
-Message-ID: <20190906131032.22148-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.10.2.windows.1
+        id S2393830AbfIFN6J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 09:58:09 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:45101 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728978AbfIFN6J (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 6 Sep 2019 09:58:09 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i6EkZ-0002vX-Dc; Fri, 06 Sep 2019 13:58:07 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Gabriel Krisman Bertazi <krisman@collabora.com>,
+        linux-fsdevel@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] unicode: make array 'token' static const, makes object smaller
+Date:   Fri,  6 Sep 2019 14:58:07 +0100
+Message-Id: <20190906135807.23152-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.133.213.239]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Use devm_platform_ioremap_resource() to simplify the code a bit.
-This is detected by coccinelle.
+From: Colin Ian King <colin.king@canonical.com>
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Don't populate the array 'token' on the stack but instead make it
+static const. Makes the object code smaller by 234 bytes.
+
+Before:
+   text	   data	    bss	    dec	    hex	filename
+   5371	    272	      0	   5643	   160b	fs/unicode/utf8-core.o
+
+After:
+   text	   data	    bss	    dec	    hex	filename
+   5041	    368	      0	   5409	   1521	fs/unicode/utf8-core.o
+
+(gcc version 9.2.1, amd64)
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpio/gpio-creg-snps.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/unicode/utf8-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-creg-snps.c b/drivers/gpio/gpio-creg-snps.c
-index 8cbc94d..ff19a8a 100644
---- a/drivers/gpio/gpio-creg-snps.c
-+++ b/drivers/gpio/gpio-creg-snps.c
-@@ -137,7 +137,6 @@ static int creg_gpio_probe(struct platform_device *pdev)
- 	const struct of_device_id *match;
- 	struct device *dev = &pdev->dev;
- 	struct creg_gpio *hcg;
--	struct resource *mem;
- 	u32 ngpios;
- 	int ret;
- 
-@@ -145,8 +144,7 @@ static int creg_gpio_probe(struct platform_device *pdev)
- 	if (!hcg)
- 		return -ENOMEM;
- 
--	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	hcg->regs = devm_ioremap_resource(dev, mem);
-+	hcg->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(hcg->regs))
- 		return PTR_ERR(hcg->regs);
- 
+diff --git a/fs/unicode/utf8-core.c b/fs/unicode/utf8-core.c
+index 71ca4d047d65..2a878b739115 100644
+--- a/fs/unicode/utf8-core.c
++++ b/fs/unicode/utf8-core.c
+@@ -154,7 +154,7 @@ static int utf8_parse_version(const char *version, unsigned int *maj,
+ {
+ 	substring_t args[3];
+ 	char version_string[12];
+-	const struct match_token token[] = {
++	static const struct match_token token[] = {
+ 		{1, "%d.%d.%d"},
+ 		{0, NULL}
+ 	};
 -- 
-2.7.4
-
+2.20.1
 

@@ -2,54 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B1B2CABB4F
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 16:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5DCEABBC6
+	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 17:08:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394563AbfIFOr4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 10:47:56 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:32950 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2394559AbfIFOrz (ORCPT
+        id S2405700AbfIFPI2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 11:08:28 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:48601 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726908AbfIFPI2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 10:47:55 -0400
-Received: from localhost (unknown [88.214.184.128])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id D24F115355C4A;
-        Fri,  6 Sep 2019 07:47:53 -0700 (PDT)
-Date:   Fri, 06 Sep 2019 16:47:52 +0200 (CEST)
-Message-Id: <20190906.164752.2021789297971211632.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     bryan.whitehead@microchip.com, UNGLinuxDriver@microchip.com,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] lan743x: remove redundant assignment to variable
- rx_process_result
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190905140135.26951-1-colin.king@canonical.com>
-References: <20190905140135.26951-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.2
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 06 Sep 2019 07:47:55 -0700 (PDT)
+        Fri, 6 Sep 2019 11:08:28 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i6FqZ-0001Eg-V9; Fri, 06 Sep 2019 15:08:24 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Rui Miguel Silva <rmfrfs@gmail.com>,
+        Steve Longerbeam <slongerbeam@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
+        linux-arm-kernel@lists.infradead.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] media: imx7-mipi-csis: make array 'registers' static const, makes object smaller
+Date:   Fri,  6 Sep 2019 16:08:23 +0100
+Message-Id: <20190906150823.30859-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Thu,  5 Sep 2019 15:01:35 +0100
+From: Colin Ian King <colin.king@canonical.com>
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable rx_process_result is being initialized with a value that
-> is never read and is being re-assigned immediately afterwards. The
-> assignment is redundant, so replace it with the return from function
-> lan743x_rx_process_packet.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Don't populate the array 'registers' on the stack but instead make it
+static const. Makes the object code smaller by 10 bytes.
 
-Applied to net-next, thanks.
+Before:
+   text	   data	    bss	    dec	    hex	filename
+  20138	   5196	    128	  25462	   6376	staging/media/imx/imx7-mipi-csis.o
+
+After:
+   text	   data	    bss	    dec	    hex	filename
+  20032	   5292	    128	  25452	   636c	staging/media/imx/imx7-mipi-csis.o
+
+(gcc version 9.2.1, amd64)
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/staging/media/imx/imx7-mipi-csis.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/staging/media/imx/imx7-mipi-csis.c b/drivers/staging/media/imx/imx7-mipi-csis.c
+index 73d8354e618c..f8a97b7e2535 100644
+--- a/drivers/staging/media/imx/imx7-mipi-csis.c
++++ b/drivers/staging/media/imx/imx7-mipi-csis.c
+@@ -293,7 +293,7 @@ static int mipi_csis_dump_regs(struct csi_state *state)
+ 	struct device *dev = &state->pdev->dev;
+ 	unsigned int i;
+ 	u32 cfg;
+-	struct {
++	static const struct {
+ 		u32 offset;
+ 		const char * const name;
+ 	} registers[] = {
+-- 
+2.20.1
+

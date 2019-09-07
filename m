@@ -2,106 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 464D3AC3EF
-	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Sep 2019 03:35:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 672C3AC52E
+	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Sep 2019 09:38:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406423AbfIGBfy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 21:35:54 -0400
-Received: from mail-vs1-f68.google.com ([209.85.217.68]:46757 "EHLO
-        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406417AbfIGBfx (ORCPT
+        id S2405013AbfIGHh6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 7 Sep 2019 03:37:58 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:40313 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404974AbfIGHh5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 21:35:53 -0400
-Received: by mail-vs1-f68.google.com with SMTP id z14so5259292vsz.13
-        for <kernel-janitors@vger.kernel.org>; Fri, 06 Sep 2019 18:35:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=C+0rVi6PzTMFYTcbcIBgVtgcdKuod3fbgGTlJ3s1Cbc=;
-        b=aAqX8GF3NxJfYWTz+7NIDPLIjo0XP9/JZPono8ypSM0neNSMZHUmzdkq2Se7OJFOh9
-         PoY/oOktOwroaWpUhvkh/0lVCpOy0KJOLjA7Oi/nzaXZuFlZGZbL/4747zKBrwwhtzas
-         gG/MLSk0D7meYg6rv72yzT1Ye0iKhsbuA3x7qNKl17C/ShWvLceuPesYJRB24JI3yF/d
-         RlQ1pN3llWGMGktA9M5mcCV2mXYnONq4mktjFBILLKDKqhDlfm3tts6F97UbE+dOxwKG
-         stLn6T4VogMt45OE5RvOA2uSkgh1bK36Tx1Z5lO8sum/OTUS4kxFqGu49PNKiFyRTNrp
-         8fGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=C+0rVi6PzTMFYTcbcIBgVtgcdKuod3fbgGTlJ3s1Cbc=;
-        b=I6VNyl3aF1nlbvQVvxs/+y0zXiJJj855vZBgculZ39rjmQ/3Imcqu0jL6oi6TEZzoT
-         15pPwJFqw/hF/Yw83sF55Ff81Oi60lohcBfApSylXLz3KfNKJFUn9rXTs0ozq5RSE6l1
-         A3692w2/x9CQZQTyr1S5Kt3OFKdcMbgMA4sw4O/AO2NHoO8yttlPQ0VVEqCaFE7RW89L
-         3AvuxbDwkwE9uA/s9FKUmuGtMgGZ7alxcPWFK9LmYtAkgYBwyjxBsKgw4uFc83zPtxYi
-         Mf4OYCel3lXe6azH6+Vqvwvuuo1vE88im1NVxPm63SxE6t3NVxvor6Nc8dTZOZdLfjQr
-         iUgQ==
-X-Gm-Message-State: APjAAAWkmpyBLwUWueR/i/IioudVo3Uj4qdHvxZjS28UkdTYTJK1wUKU
-        ZesqwMkhHO4ll+36/pQEC6dqFmZs5Kr2pnbezoY=
-X-Google-Smtp-Source: APXvYqyTtP/aHSfYAfmSrs7MWIe/GTCmIy0j5/fOPaIGMbEKnvKQPW7B/2OIkBGdOM/ShGwFA2jh7u3jozMFI6xv0E8=
-X-Received: by 2002:a05:6102:15a:: with SMTP id a26mr6991278vsr.143.1567820152517;
- Fri, 06 Sep 2019 18:35:52 -0700 (PDT)
+        Sat, 7 Sep 2019 03:37:57 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_256_CBC_SHA1:32)
+        (Exim 4.76)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i6VHZ-0005mc-Mc; Sat, 07 Sep 2019 07:37:17 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Bard Liao <bardliao@realtek.com>,
+        Oder Chiou <oder_chiou@realtek.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ASoC: rt1011: make array pd static const, makes object smaller
+Date:   Sat,  7 Sep 2019 08:37:17 +0100
+Message-Id: <20190907073717.21632-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Received: by 2002:a1f:c545:0:0:0:0:0 with HTTP; Fri, 6 Sep 2019 18:35:52 -0700 (PDT)
-Reply-To: waltonalice41@gmail.com
-From:   Alice Walton <saraharmony501@gmail.com>
-Date:   Sat, 7 Sep 2019 02:35:52 +0100
-Message-ID: <CAHoQAbVi2eUJHHAx8-i6uv=tXXkdZbDQj+bGXrd4foXr+8goAQ@mail.gmail.com>
-Subject: Please forgive me
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-My Dearest,
+From: Colin Ian King <colin.king@canonical.com>
 
-Please forgive me for stressing you with my predicaments as I know
-that this letter may come to you as a big surprise.
+Don't populate the array pd on the stack but instead make it
+static const. Makes the object code smaller by 100 bytes.
 
-Actually, I came across your E-mail from my personal search afterward
-I decided to email you directly believing that you will be honest to
-fulfil my final wish before anything happens to me. Meanwhile, I am
-Madam Alice Walton, 71 years old childless widow from France but i
-reside and doing Gold mining business in Africa before i fall sick.
+Before:
+   text	   data	    bss	    dec	    hex	filename
+  51463	  13016	    128	  64607	   fc5f	sound/soc/codecs/rt1011.o
 
-I am suffering from Adenocarcinoma Cancer of the lungs for the past 8
-years and from all indication my condition is really deteriorating as
-my doctors have confirmed and courageously advised me that I may not
-live beyond 3 weeks from now for the reason that my tumor has reached
-a critical stage which has defiled all forms of medical treatment.
+After:
+   text	   data	    bss	    dec	    hex	filename
+  51299	  13080	    128	  64507	   fbfb	sound/soc/codecs/rt1011.o
 
-Since my days are numbered, I=E2=80=99ve decided willingly to fulfil my
-long-time vow to donate to the less privileges the sum of($18.5
-million dollars) I deposited in my offshore account over 7 years now
-because I have tried to handle this project by myself but I have seen
-that my health could not allow me to do so anymore.
+(gcc version 9.2.1, amd64)
 
-My promise to God includes building of well-equipped charity
-foundation/hospital and a technical school for the orphans and less
-privileges.
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ sound/soc/codecs/rt1011.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Since i am not capable to handle this again myself due to my critical
-health condition,please i need your consent to help me receive my
-money from the bank and use it to do this divine works of God in your
-country in my name so that my soul can be at rest if anything happens
-to me.
+diff --git a/sound/soc/codecs/rt1011.c b/sound/soc/codecs/rt1011.c
+index f9235764ad32..be1e276e3631 100644
+--- a/sound/soc/codecs/rt1011.c
++++ b/sound/soc/codecs/rt1011.c
+@@ -1519,7 +1519,8 @@ static const struct snd_soc_dapm_route rt1011_dapm_routes[] = {
+ 
+ static int rt1011_get_clk_info(int sclk, int rate)
+ {
+-	int i, pd[] = {1, 2, 3, 4, 6, 8, 12, 16};
++	int i;
++	static const int pd[] = {1, 2, 3, 4, 6, 8, 12, 16};
+ 
+ 	if (sclk <= 0 || rate <= 0)
+ 		return -EINVAL;
+-- 
+2.20.1
 
-If you will be honest, kind and willing to assist me handle this
-charity project as I=E2=80=99ve mentioned here, I will like you to provide =
-me
-your personal data like,
-
-(1) Your full name:
-(2) country:
-(3) Occupation:
-(4) phone number:
-(5) Age:
-
-Let me have this data so that i can link you up with my bank as my
-representative and receiver of the funds now that i am still alive.
-
-Warmest Regards!
-Mrs. Alice Walton

@@ -2,150 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ED87AC093
-	for <lists+kernel-janitors@lfdr.de>; Fri,  6 Sep 2019 21:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 464D3AC3EF
+	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Sep 2019 03:35:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393309AbfIFTaq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 6 Sep 2019 15:30:46 -0400
-Received: from foss.arm.com ([217.140.110.172]:60564 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730615AbfIFTap (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 6 Sep 2019 15:30:45 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EC7CD28;
-        Fri,  6 Sep 2019 12:30:42 -0700 (PDT)
-Received: from localhost (unknown [10.37.6.20])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3C5EB3F718;
-        Fri,  6 Sep 2019 12:30:42 -0700 (PDT)
-Date:   Fri, 6 Sep 2019 20:30:40 +0100
-From:   Andrew Murray <andrew.murray@arm.com>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org,
-        linux-amlogic@lists.infradead.org,
-        Binghui Wang <wangbinghui@hisilicon.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Jingoo Han <jingoohan1@gmail.com>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Kukjin Kim <kgene@kernel.org>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Yue Wang <yue.wang@Amlogic.com>,
-        Xiaowei Song <songxiaowei@hisilicon.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        zhong jiang <zhongjiang@huawei.com>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] PCI: dwc: Use PTR_ERR_OR_ZERO() in five functions
-Message-ID: <20190906193040.GG9720@e119886-lin.cambridge.arm.com>
-References: <95c9dfae-af81-82ad-e989-1fdf5f29808e@web.de>
+        id S2406423AbfIGBfy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 6 Sep 2019 21:35:54 -0400
+Received: from mail-vs1-f68.google.com ([209.85.217.68]:46757 "EHLO
+        mail-vs1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2406417AbfIGBfx (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 6 Sep 2019 21:35:53 -0400
+Received: by mail-vs1-f68.google.com with SMTP id z14so5259292vsz.13
+        for <kernel-janitors@vger.kernel.org>; Fri, 06 Sep 2019 18:35:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=C+0rVi6PzTMFYTcbcIBgVtgcdKuod3fbgGTlJ3s1Cbc=;
+        b=aAqX8GF3NxJfYWTz+7NIDPLIjo0XP9/JZPono8ypSM0neNSMZHUmzdkq2Se7OJFOh9
+         PoY/oOktOwroaWpUhvkh/0lVCpOy0KJOLjA7Oi/nzaXZuFlZGZbL/4747zKBrwwhtzas
+         gG/MLSk0D7meYg6rv72yzT1Ye0iKhsbuA3x7qNKl17C/ShWvLceuPesYJRB24JI3yF/d
+         RlQ1pN3llWGMGktA9M5mcCV2mXYnONq4mktjFBILLKDKqhDlfm3tts6F97UbE+dOxwKG
+         stLn6T4VogMt45OE5RvOA2uSkgh1bK36Tx1Z5lO8sum/OTUS4kxFqGu49PNKiFyRTNrp
+         8fGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=C+0rVi6PzTMFYTcbcIBgVtgcdKuod3fbgGTlJ3s1Cbc=;
+        b=I6VNyl3aF1nlbvQVvxs/+y0zXiJJj855vZBgculZ39rjmQ/3Imcqu0jL6oi6TEZzoT
+         15pPwJFqw/hF/Yw83sF55Ff81Oi60lohcBfApSylXLz3KfNKJFUn9rXTs0ozq5RSE6l1
+         A3692w2/x9CQZQTyr1S5Kt3OFKdcMbgMA4sw4O/AO2NHoO8yttlPQ0VVEqCaFE7RW89L
+         3AvuxbDwkwE9uA/s9FKUmuGtMgGZ7alxcPWFK9LmYtAkgYBwyjxBsKgw4uFc83zPtxYi
+         Mf4OYCel3lXe6azH6+Vqvwvuuo1vE88im1NVxPm63SxE6t3NVxvor6Nc8dTZOZdLfjQr
+         iUgQ==
+X-Gm-Message-State: APjAAAWkmpyBLwUWueR/i/IioudVo3Uj4qdHvxZjS28UkdTYTJK1wUKU
+        ZesqwMkhHO4ll+36/pQEC6dqFmZs5Kr2pnbezoY=
+X-Google-Smtp-Source: APXvYqyTtP/aHSfYAfmSrs7MWIe/GTCmIy0j5/fOPaIGMbEKnvKQPW7B/2OIkBGdOM/ShGwFA2jh7u3jozMFI6xv0E8=
+X-Received: by 2002:a05:6102:15a:: with SMTP id a26mr6991278vsr.143.1567820152517;
+ Fri, 06 Sep 2019 18:35:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <95c9dfae-af81-82ad-e989-1fdf5f29808e@web.de>
-User-Agent: Mutt/1.10.1+81 (426a6c1) (2018-08-26)
+Received: by 2002:a1f:c545:0:0:0:0:0 with HTTP; Fri, 6 Sep 2019 18:35:52 -0700 (PDT)
+Reply-To: waltonalice41@gmail.com
+From:   Alice Walton <saraharmony501@gmail.com>
+Date:   Sat, 7 Sep 2019 02:35:52 +0100
+Message-ID: <CAHoQAbVi2eUJHHAx8-i6uv=tXXkdZbDQj+bGXrd4foXr+8goAQ@mail.gmail.com>
+Subject: Please forgive me
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Sep 06, 2019 at 08:50:07PM +0200, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Fri, 6 Sep 2019 20:40:06 +0200
-> 
-> Simplify these function implementations by using a known function.
-> 
-> Generated by: scripts/coccinelle/api/ptr_ret.cocci
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+My Dearest,
 
-Thanks for this, looks good to me:
+Please forgive me for stressing you with my predicaments as I know
+that this letter may come to you as a big surprise.
 
-Reviewed-by: Andrew Murray <andrew.murray@arm.com>
+Actually, I came across your E-mail from my personal search afterward
+I decided to email you directly believing that you will be honest to
+fulfil my final wish before anything happens to me. Meanwhile, I am
+Madam Alice Walton, 71 years old childless widow from France but i
+reside and doing Gold mining business in Africa before i fall sick.
 
-> ---
->  drivers/pci/controller/dwc/pci-exynos.c |  5 +----
->  drivers/pci/controller/dwc/pci-meson.c  | 10 ++--------
->  drivers/pci/controller/dwc/pcie-kirin.c | 10 ++--------
->  3 files changed, 5 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pci-exynos.c b/drivers/pci/controller/dwc/pci-exynos.c
-> index cee5f2f590e2..b6ab1cc5d895 100644
-> --- a/drivers/pci/controller/dwc/pci-exynos.c
-> +++ b/drivers/pci/controller/dwc/pci-exynos.c
-> @@ -92,10 +92,7 @@ static int exynos5440_pcie_get_mem_resources(struct platform_device *pdev,
-> 
->  	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
->  	ep->mem_res->elbi_base = devm_ioremap_resource(dev, res);
-> -	if (IS_ERR(ep->mem_res->elbi_base))
-> -		return PTR_ERR(ep->mem_res->elbi_base);
-> -
-> -	return 0;
-> +	return PTR_ERR_OR_ZERO(ep->mem_res->elbi_base);
->  }
-> 
->  static int exynos5440_pcie_get_clk_resources(struct exynos_pcie *ep)
-> diff --git a/drivers/pci/controller/dwc/pci-meson.c b/drivers/pci/controller/dwc/pci-meson.c
-> index e35e9eaa50ee..713059918002 100644
-> --- a/drivers/pci/controller/dwc/pci-meson.c
-> +++ b/drivers/pci/controller/dwc/pci-meson.c
-> @@ -182,10 +182,7 @@ static int meson_pcie_get_mems(struct platform_device *pdev,
-> 
->  	/* Meson SoC has two PCI controllers use same phy register*/
->  	mp->mem_res.phy_base = meson_pcie_get_mem_shared(pdev, mp, "phy");
-> -	if (IS_ERR(mp->mem_res.phy_base))
-> -		return PTR_ERR(mp->mem_res.phy_base);
-> -
-> -	return 0;
-> +	return PTR_ERR_OR_ZERO(mp->mem_res.phy_base);
->  }
-> 
->  static void meson_pcie_power_on(struct meson_pcie *mp)
-> @@ -259,10 +256,7 @@ static int meson_pcie_probe_clocks(struct meson_pcie *mp)
->  		return PTR_ERR(res->general_clk);
-> 
->  	res->clk = meson_pcie_probe_clock(dev, "pcie", 0);
-> -	if (IS_ERR(res->clk))
-> -		return PTR_ERR(res->clk);
-> -
-> -	return 0;
-> +	return PTR_ERR_OR_ZERO(res->clk);
->  }
-> 
->  static inline void meson_elb_writel(struct meson_pcie *mp, u32 val, u32 reg)
-> diff --git a/drivers/pci/controller/dwc/pcie-kirin.c b/drivers/pci/controller/dwc/pcie-kirin.c
-> index c19617a912bd..75b1f1dde747 100644
-> --- a/drivers/pci/controller/dwc/pcie-kirin.c
-> +++ b/drivers/pci/controller/dwc/pcie-kirin.c
-> @@ -138,10 +138,7 @@ static long kirin_pcie_get_clk(struct kirin_pcie *kirin_pcie,
->  		return PTR_ERR(kirin_pcie->apb_sys_clk);
-> 
->  	kirin_pcie->pcie_aclk = devm_clk_get(dev, "pcie_aclk");
-> -	if (IS_ERR(kirin_pcie->pcie_aclk))
-> -		return PTR_ERR(kirin_pcie->pcie_aclk);
-> -
-> -	return 0;
-> +	return PTR_ERR_OR_ZERO(kirin_pcie->pcie_aclk);
->  }
-> 
->  static long kirin_pcie_get_resource(struct kirin_pcie *kirin_pcie,
-> @@ -174,10 +171,7 @@ static long kirin_pcie_get_resource(struct kirin_pcie *kirin_pcie,
-> 
->  	kirin_pcie->sysctrl =
->  		syscon_regmap_lookup_by_compatible("hisilicon,hi3660-sctrl");
-> -	if (IS_ERR(kirin_pcie->sysctrl))
-> -		return PTR_ERR(kirin_pcie->sysctrl);
-> -
-> -	return 0;
-> +	return PTR_ERR_OR_ZERO(kirin_pcie->sysctrl);
->  }
-> 
->  static int kirin_pcie_phy_init(struct kirin_pcie *kirin_pcie)
-> --
-> 2.23.0
-> 
-> 
-> _______________________________________________
-> linux-arm-kernel mailing list
-> linux-arm-kernel@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+I am suffering from Adenocarcinoma Cancer of the lungs for the past 8
+years and from all indication my condition is really deteriorating as
+my doctors have confirmed and courageously advised me that I may not
+live beyond 3 weeks from now for the reason that my tumor has reached
+a critical stage which has defiled all forms of medical treatment.
+
+Since my days are numbered, I=E2=80=99ve decided willingly to fulfil my
+long-time vow to donate to the less privileges the sum of($18.5
+million dollars) I deposited in my offshore account over 7 years now
+because I have tried to handle this project by myself but I have seen
+that my health could not allow me to do so anymore.
+
+My promise to God includes building of well-equipped charity
+foundation/hospital and a technical school for the orphans and less
+privileges.
+
+Since i am not capable to handle this again myself due to my critical
+health condition,please i need your consent to help me receive my
+money from the bank and use it to do this divine works of God in your
+country in my name so that my soul can be at rest if anything happens
+to me.
+
+If you will be honest, kind and willing to assist me handle this
+charity project as I=E2=80=99ve mentioned here, I will like you to provide =
+me
+your personal data like,
+
+(1) Your full name:
+(2) country:
+(3) Occupation:
+(4) phone number:
+(5) Age:
+
+Let me have this data so that i can link you up with my bank as my
+representative and receiver of the funds now that i am still alive.
+
+Warmest Regards!
+Mrs. Alice Walton

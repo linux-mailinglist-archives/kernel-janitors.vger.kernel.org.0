@@ -2,37 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB3F8AC64C
-	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Sep 2019 13:23:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 305F3AC683
+	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Sep 2019 13:55:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390347AbfIGLXi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 7 Sep 2019 07:23:38 -0400
-Received: from mout.web.de ([212.227.17.12]:59913 "EHLO mout.web.de"
+        id S2392214AbfIGLz2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 7 Sep 2019 07:55:28 -0400
+Received: from mout.web.de ([212.227.17.12]:45147 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726027AbfIGLXh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 7 Sep 2019 07:23:37 -0400
+        id S1726027AbfIGLz2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 7 Sep 2019 07:55:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1567855404;
-        bh=OeWlcpalDQjrfwI6M+xwT1McNzIZ+jJtAaTvHonzDrA=;
+        s=dbaedf251592; t=1567857323;
+        bh=uCBhPrOjyBKadbfdXhZIgALigPb6thWyt6L0OnaNf6o=;
         h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=kd4hk2eeVBJJzYD4wChh+VB3LfXyg78RI/AKif/o5WxiW0USwBuF6PuC3yid3x6JR
-         OwKdAm/Im912eeOBfAiIZY+nQX728atY/Q9C7KkMTirnKzusCIBBg8M66nutfZkt4k
-         n5f9O5BTTzUUC2tpXzNNIS0JwkjFb/1Sgfv+KBfg=
+        b=ONs/Eqc8vJ4EH6vTyiZs9cFSQ1VcaFYZZuDAaPSrWbhgGlS7IYdJ1ledwp7DEDIVr
+         WE186PEd+BrHeIS3IQKd1W+YTN3jjNX0Ul//YNX5i1HsnMjFbZVWgtBKsVcKaLjEQ4
+         AaeV71ljxg8WU+IAahgk5M6FTpnp6cP/MFClSAMo=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.243.16.142]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MVLj0-1hebpK2gG6-00Yfka; Sat, 07
- Sep 2019 13:23:24 +0200
-To:     linux-arm-kernel@lists.infradead.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Liviu Dudau <liviu.dudau@arm.com>,
-        Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sudeep Holla <sudeep.holla@arm.com>
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MF3nL-1hukfR3sIV-00GJIc; Sat, 07
+ Sep 2019 13:55:23 +0200
+To:     linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] regulator: vexpress: Use PTR_ERR_OR_ZERO() in
- vexpress_regulator_probe()
+Subject: [PATCH] spi-gpio: Use PTR_ERR_OR_ZERO() in spi_gpio_request()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -76,45 +70,45 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <1123a2ab-48f9-f41f-cabb-9b45310cb77e@web.de>
-Date:   Sat, 7 Sep 2019 13:23:08 +0200
+Message-ID: <b2dd074a-1693-3aea-42b4-da1f5ec155c4@web.de>
+Date:   Sat, 7 Sep 2019 13:55:22 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ZMEw6cUa6AZoS9zgK+mtTZnQzj1H3X2Ly4A+90A6QurN9wPrvkg
- K03O7UJAjEGyYZJn/C8yeqigsX66+ZwN6kUEdIxk6DlGqSWIiPQGh+LNUdX1xNwRaagyhGg
- DVy64zt4jnQEJ2ayLtgZFwdhZqWvMZUMtgFpxMHG6k4wZd+tOXgvWeB6q8Xj37iXo9iMB9Q
- j55RT7i4476fhB4mskOjg==
+X-Provags-ID: V03:K1:Vol/cHTZVAcZ9iV8Ta9uaMh49++iaihMT5bs/zlSgl0Mbd2sX+8
+ whcF7OIJVwr6EkJo81cwT2Z4cQDxecDk9iIgm9kE76m7Gqig2WYRLDoCqRNO5Da4OfXe9rD
+ nZn8vVhuO9Tfgr6xJbGRTZCpyl9Vo0MUSlOJNAFxx08m1E+aM5yz4m9IwvcSO5ZMGoZSwcz
+ AHFc+th+SzRnvkEOVW/PQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:v35Wp4ofvpY=:b8XWymEJqHKenzerBa2lJz
- 63FRsvzOtJ7Rl3oBlO5SJp5biHGAjozV3SY0k0e1wBpmdqhdKT27E3DDpql3ulKnYfZTpoTfI
- EiyRnfa/5+YUtE0aL/FYR6DKDrSwuZnGVljntx182ytKOMQE66AhM+qjiJBc2kDxXLuLDuFvZ
- wXKj3UP8HeqwsTMYzNDeVMkezjpEb4DTFreAO9I9cgzKF9OHYRGV8rHnQ0849IvrtBa+b9OfN
- P3YZak86bJoCgIkYlvlCxyeuOTKRS4juU9tteBQP4paSpy3XItFItX1vLJjLXVrGr1nSo9oDF
- MRIcgFFmxkWtSwub8FCeW9qs3YJ7HqZ9giWMGD0jTJ2wLLHbPLm/g8mXu6Vv2vVoHyTdbRhZK
- PFa8+fwF1sLQfvL6nKV4bCqNR+Qr1VIhQnrpxYhEMpHlOn4Fh5UK90k4sdLdlK98WZglpARdg
- mDXEkvCIywuvWSDdGLST5Mx+KdITve8mkbvuiBSEDEACX7eOF1jQUQoEekAcX1NGgVey0gjG7
- 97qDKTihe4t+l6dKvZOvq/Kh2bSdhbnE0564e0fA4JwB/WB/KClfcqeHm0x7zy4DhuFk8RuSd
- 783/ujgy0OSPXbB4Y74siLLbkpdlsWsM7qlopkhL3LnVKkttwrSgcrFRyUfwhYGpq+bQn7sy9
- VKHUYnl6JINmDEoTvPCPxkWrRL2++8smkGdsJhFOrHRMMvjPiafr+YpxIJIEnQJPALxZdVk/O
- bDdfywsNnq6ZlksQCYwkQHIs0011EywCJS+Dk8JMkJM/p8C5tkcNy0EgfKXM+hRnYSdGTQ+c0
- 3cPpDPLYMfLDY6tyD5nNJjpRh7YQdHMx3gNkTyeEpX9gY0v8XcqgNBwWJCJ5mzU92BoACYpLP
- x0oeMAYECzKtgZLC8Rb3wnevd+jUyB4OEtKtgihhpHVnWmgNEZywbSM+Rrnbr4Jb1R98FMRaW
- /ZuWL4JXGFx1Lwm9Nsv/Zr4LBppxP6hru4ik4I98OKoXj7Yc0zy0faG2ImC5su5E1zABGVSsq
- 0PNZ6rkttQ1V+QcOuauqeS1Q+ArU4SCGFXLlddB/WADTAk/zdwT0Xr7W3EFLmRWfM64gOyPwW
- L68h6OprbQTmZzerE99uEuQvlIPxSxJuPG/LoXM0cYj8UEsT7XdGL9CWTGl6uCCsuRqx+hRrP
- ygkBLH85Biqdaw58+JTZmXROxPWP7No4FE+fC73zmg7LjVRnpudRWjfPljTUs4BQIM3PIWDgC
- OlgTYgOgCgFVOnIG9
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ae8NsPK3tBk=:kca7CW0oDqiIH5pbPmy6bn
+ AZd0NQ+5Un6rkZrcxnSATJhN9gRSdOXL+d7xL4m/VqIP856xxzpmaFtM0eFV1T1NywX2SBNU8
+ vQ4kTCrqokyrNn9dRxId8d1qAM2WsgclxPOJhfTpcFPBmzbdUG+R5yCRfHApfpiPV9Z1AxMIy
+ ps2KILPUPWgBVPgISSfh20AW9szaoxAbpsmWDmzujEGDczLgvvCa1pbFcCyUVbRA23I09KMbn
+ A4MkbrerR5spiIwSpPXGA0DfN13ZiDQmJ755Fswnj258B4CMPv/M6x+9ctiTeZ8mbOMYFqJuC
+ zHI3IkPeyWbniV6Nvp8LdB5bfjGeoFx763OiFN7r6lNqagoi3iMXfKrkOmZ2Ze/2j1uMyiOAe
+ e088q2hOy4RjpMCs4JW3I6Q+k4/gDzY/keNnVvQOFkSBabSbumPqR2R6x3IbyEivzdEschH2v
+ O6OYYqyzONfG2lzT3NM1WnG7ti33a71GQcV4gNEEOiLj570TKGgddCDk6wAVdhGmjrolfgT/Y
+ qRmKfzx41+RO0iNmxtl4+ncJsLKjF0JQln3vhSEQfagt0qlN71V5/ySUFzDw3u4IRduoAaW3V
+ /StHYW+Ivsh/jEzKHZgT+6/ZF1+ryfj35cPylegXRk5nO7HqaXcT+NAICNV9dGL/1HEJqMUYt
+ 9ZEy47PwjLN/+y/lYGTKcGpA5IJAzBK+ytG/i7BvxIPvxLidz2Ixj1bGGTmGPE9ADo9QrDnu7
+ 9k8U3m1MK3LMaajVS1TQsyVGYFu8zXDPvsJ9SseAaWPCH6aCbvFe4e3JVggQOZdhZ95yNZgdF
+ V0rsK2SFe1f1gOZ3KGwMQc3ZbQDIV4gdtLZZtp+tjwtBG6HBKxchn9r9ulNuYU/q/oMlWDnNe
+ oMLNltc3uwW6UlIPhPf6ZhcJHTkz9WTHdrxymW/Bt6wigRigo6IjUdCgyi8pusuX6jmubRFxW
+ /g2lFcga5dfYIGoZAwqQGt9EnGsBwn2gDjihC13UwNInR19GRqVr4hoh9qyLDRgzCizwh3TWZ
+ cdj0KV0tO9lhH8Jq4TUjUkzhyXOeZS0uk4FybI0wgF9SXDbPzWjZ/k4BBsct+T33skKas8Oix
+ x9NBXePUt7XiLM0isjfqfJPw88Cr4ZaQunsc3TW8O2JB+n+WxaeD1E+IdZQ0+mX2i/RhUYjJK
+ Y0F4s2GX/H1PQ3l9RvzfsHcQR3QXH7wd69TM/JfsWSpH8BN19tKmXXid6A31JDghVyj6cNv5Z
+ qCKjBIWy+u+5tJHt0
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 7 Sep 2019 13:07:22 +0200
+Date: Sat, 7 Sep 2019 13:51:16 +0200
 
 Simplify this function implementation by using a known function.
 
@@ -122,27 +116,26 @@ Generated by: scripts/coccinelle/api/ptr_ret.cocci
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/regulator/vexpress-regulator.c | 5 +----
+ drivers/spi/spi-gpio.c | 5 +----
  1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/regulator/vexpress-regulator.c b/drivers/regulator/ve=
-xpress-regulator.c
-index 1235f46e633e..5d39663efcaa 100644
-=2D-- a/drivers/regulator/vexpress-regulator.c
-+++ b/drivers/regulator/vexpress-regulator.c
-@@ -75,10 +75,7 @@ static int vexpress_regulator_probe(struct platform_dev=
-ice *pdev)
- 	config.of_node =3D pdev->dev.of_node;
+diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
+index 9eb82150666e..1d3e23ec20a6 100644
+=2D-- a/drivers/spi/spi-gpio.c
++++ b/drivers/spi/spi-gpio.c
+@@ -290,10 +290,7 @@ static int spi_gpio_request(struct device *dev, struc=
+t spi_gpio *spi_gpio)
+ 		return PTR_ERR(spi_gpio->miso);
 
- 	rdev =3D devm_regulator_register(&pdev->dev, desc, &config);
--	if (IS_ERR(rdev))
--		return PTR_ERR(rdev);
+ 	spi_gpio->sck =3D devm_gpiod_get(dev, "sck", GPIOD_OUT_LOW);
+-	if (IS_ERR(spi_gpio->sck))
+-		return PTR_ERR(spi_gpio->sck);
 -
 -	return 0;
-+	return PTR_ERR_OR_ZERO(rdev);
++	return PTR_ERR_OR_ZERO(spi_gpio->sck);
  }
 
- static const struct of_device_id vexpress_regulator_of_match[] =3D {
+ #ifdef CONFIG_OF
 =2D-
 2.23.0
 

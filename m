@@ -2,89 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 88A5FACC09
-	for <lists+kernel-janitors@lfdr.de>; Sun,  8 Sep 2019 12:28:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9289ACC78
+	for <lists+kernel-janitors@lfdr.de>; Sun,  8 Sep 2019 13:38:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728309AbfIHK2I (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 8 Sep 2019 06:28:08 -0400
-Received: from mail.parknet.co.jp ([210.171.160.6]:41996 "EHLO
-        mail.parknet.co.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727018AbfIHK2I (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 8 Sep 2019 06:28:08 -0400
-X-Greylist: delayed 338 seconds by postgrey-1.27 at vger.kernel.org; Sun, 08 Sep 2019 06:28:08 EDT
-Received: from ibmpc.myhome.or.jp (server.parknet.ne.jp [210.171.168.39])
-        by mail.parknet.co.jp (Postfix) with ESMTPSA id DFE0E15CBF0;
-        Sun,  8 Sep 2019 19:22:29 +0900 (JST)
-Received: from devron.myhome.or.jp (foobar@devron.myhome.or.jp [192.168.0.3])
-        by ibmpc.myhome.or.jp (8.15.2/8.15.2/Debian-14) with ESMTPS id x88AMSGl022374
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-        Sun, 8 Sep 2019 19:22:29 +0900
-Received: from devron.myhome.or.jp (foobar@localhost [127.0.0.1])
-        by devron.myhome.or.jp (8.15.2/8.15.2/Debian-14) with ESMTPS id x88AMS95011910
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-        Sun, 8 Sep 2019 19:22:28 +0900
-Received: (from hirofumi@localhost)
-        by devron.myhome.or.jp (8.15.2/8.15.2/Submit) id x88AMRmx011907;
-        Sun, 8 Sep 2019 19:22:27 +0900
-From:   OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Markus Elfring <Markus.Elfring@web.de>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] fat: Delete an unnecessary check before brelse()
-References: <cfff3b81-fb5d-af26-7b5e-724266509045@web.de>
-Date:   Sun, 08 Sep 2019 19:22:27 +0900
-In-Reply-To: <cfff3b81-fb5d-af26-7b5e-724266509045@web.de> (Markus Elfring's
-        message of "Tue, 3 Sep 2019 15:00:11 +0200")
-Message-ID: <87r24rxf30.fsf@mail.parknet.co.jp>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.0.50 (gnu/linux)
+        id S1728896AbfIHLi2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 8 Sep 2019 07:38:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60304 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728862AbfIHLi2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 8 Sep 2019 07:38:28 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2425F206BB;
+        Sun,  8 Sep 2019 11:38:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1567942707;
+        bh=UACYLLIPEn9E879/MO6pj3oCzTpjS5SHXEfvpF4kCcQ=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=dz8/tv8jmzNACaTmoUNcwEVWgFEMWMHLuKrsh+nRlp8xeajjZK5KC0Y0egznEe4hL
+         sIJyD23LVIPiRyzXHhTxJiJR7FxmpHyCXpMggqZRxQ/Fdgiyh+J9//iW0yvdHDgRoj
+         K7H17FVcIImzTgHqVxX7w2/3OI1YFKCr3OpXigZ0=
+Date:   Sun, 8 Sep 2019 12:38:22 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Kevin Tsai <ktsai@capellamicro.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: light: cm36651: redundant assignment to variable
+ ret
+Message-ID: <20190908123822.7a17b7cc@archlinux>
+In-Reply-To: <20190901152749.12916-1-colin.king@canonical.com>
+References: <20190901152749.12916-1-colin.king@canonical.com>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Markus Elfring <Markus.Elfring@web.de> writes:
+On Sun,  1 Sep 2019 16:27:49 +0100
+Colin King <colin.king@canonical.com> wrote:
 
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Tue, 3 Sep 2019 14:56:16 +0200
->
-> The brelse() function tests whether its argument is NULL
-> and then returns immediately.
-> Thus the test around the call is not needed.
->
-> This issue was detected by using the Coccinelle software.
->
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Variable ret is being assigned a value that is never read and
+> is being re-assigned a little later on. The assignment is redundant
+> and hence can be removed.
+> 
+> Addresses-Coverity: ("Ununsed value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Acked-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+Applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to do not much with it.
 
-Thanks.
+Thanks,
+
+Jonathan
 
 > ---
->  fs/fat/dir.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
->
-> diff --git a/fs/fat/dir.c b/fs/fat/dir.c
-> index 1bda2ab6745b..f4bc87a3c98d 100644
-> --- a/fs/fat/dir.c
-> +++ b/fs/fat/dir.c
-> @@ -88,9 +88,7 @@ static int fat__get_entry(struct inode *dir, loff_t *pos,
->  	int err, offset;
->
->  next:
-> -	if (*bh)
-> -		brelse(*bh);
-> -
-> +	brelse(*bh);
->  	*bh = NULL;
->  	iblock = *pos >> sb->s_blocksize_bits;
->  	err = fat_bmap(dir, iblock, &phys, &mapped_blocks, 0, false);
-> --
-> 2.23.0
->
+>  drivers/iio/light/cm36651.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/light/cm36651.c b/drivers/iio/light/cm36651.c
+> index 1019d625adb1..90e38fcc974b 100644
+> --- a/drivers/iio/light/cm36651.c
+> +++ b/drivers/iio/light/cm36651.c
+> @@ -532,7 +532,7 @@ static int cm36651_write_prox_event_config(struct iio_dev *indio_dev,
+>  					int state)
+>  {
+>  	struct cm36651_data *cm36651 = iio_priv(indio_dev);
+> -	int cmd, ret = -EINVAL;
+> +	int cmd, ret;
+>  
+>  	mutex_lock(&cm36651->lock);
+>  
 
--- 
-OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>

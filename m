@@ -2,88 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 559ECAC93E
-	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Sep 2019 22:40:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C007FACBD9
+	for <lists+kernel-janitors@lfdr.de>; Sun,  8 Sep 2019 11:46:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405152AbfIGUkb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 7 Sep 2019 16:40:31 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:52370 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727307AbfIGUkb (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 7 Sep 2019 16:40:31 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x87Kd5wq111270;
-        Sat, 7 Sep 2019 20:40:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2019-08-05;
- bh=olvhehjxhdJO3R8+a/tqq0z8BONXBW8GY6wTkeV7v8M=;
- b=nQgEi5IKNFXNv2lE/HCGzt3C+f8dxjfD6FHQWpXwVyMkMVft5lNdbaejPP2fHbM81z3l
- uVGtaOyQTSWwlAnhBmaIik1WzdLPgnnC+7v5FaewsUdzHy8tx2Adywaedi2+uWyA7uMn
- 4utTxcr2B97MuUfPttxed0jDx9zA7d22uLCZ4lguieZN28+XC9TftK2jZsev3/UbuQxE
- YlpncCqf0WGuuhEfgj/1W0uSuXQRUCL51bzj/Q7R/Ah8NxOItWZANsdo2l1LhSWa2x2O
- FkLBgmMAX2khHSCRdN87zWpz50NKkjjKJ+68c0JHeCtsVVEq1UEmMJMK797m6S+MO9YR ZQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 2uvkpfr08v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 07 Sep 2019 20:40:17 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x87Kd1f6093459;
-        Sat, 7 Sep 2019 20:40:16 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 2uve9b7v2d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 07 Sep 2019 20:40:16 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x87KeDkK012427;
-        Sat, 7 Sep 2019 20:40:13 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 07 Sep 2019 13:40:13 -0700
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Alim Akhtar <alim.akhtar@samsung.com>,
-        Avri Altman <avri.altman@wdc.com>,
-        Pedro Sousa <pedrom.sousa@synopsys.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Tomas Winkler <tomas.winkler@intel.com>,
-        Subhash Jadavani <subhashj@codeaurora.org>,
-        <linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH -next] scsi: ufs: Use kmemdup in ufshcd_read_string_desc()
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20190831124424.18642-1-yuehaibing@huawei.com>
-Date:   Sat, 07 Sep 2019 16:40:10 -0400
-In-Reply-To: <20190831124424.18642-1-yuehaibing@huawei.com>
-        (yuehaibing@huawei.com's message of "Sat, 31 Aug 2019 12:44:24 +0000")
-Message-ID: <yq18sqzkfh1.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9373 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=744
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1909070225
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9373 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=828 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1909070225
+        id S1727993AbfIHJq2 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 8 Sep 2019 05:46:28 -0400
+Received: from smtp.220.in.ua ([89.184.67.205]:39244 "EHLO smtp.220.in.ua"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727207AbfIHJq2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 8 Sep 2019 05:46:28 -0400
+Received: from oleh.kravchenko.mbp13.lan (unknown [95.67.115.55])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by smtp.220.in.ua (Postfix) with ESMTPSA id B3CCE1A2027F;
+        Sun,  8 Sep 2019 12:46:26 +0300 (EEST)
+Content-Type: text/plain;
+        charset=utf-8
+Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
+Subject: Re: [PATCH] led: triggers: Fix NULL dereference in led_trigger_set()
+ error handling
+From:   Oleh Kravchenko <oleg@kaa.org.ua>
+In-Reply-To: <20190905133233.GF3093@kadam>
+Date:   Sun, 8 Sep 2019 12:46:21 +0300
+Cc:     =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
+        linux-leds@vger.kernel.org, kernel-janitors@vger.kernel.org
+Content-Transfer-Encoding: 8BIT
+Message-Id: <351E367B-8964-4A4D-A4CF-94EDE3B3B2FA@kaa.org.ua>
+References: <20190905095728.GA26005@mwanda>
+ <20190905120626.hyegecmy6hf5lvhj@pengutronix.de>
+ <BC1CA967-2B9F-44A4-A1A9-FD9C6E874991@kaa.org.ua>
+ <20190905133233.GF3093@kadam>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+X-Mailer: Apple Mail (2.3445.104.11)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hello Dan,
 
-YueHaibing,
+> 5 вер. 2019 р. о 4:32 пп Dan Carpenter <dan.carpenter@oracle.com> написав(ла):
+> 
+> On Thu, Sep 05, 2019 at 03:23:21PM +0300, Oleh Kravchenko wrote:
+>> Let me summarize the chronology of the last activities below:
+>> 1. I have sent the patch for the bugs that I have found by static analyzer at PVS-Studio
+>>    Date: Wed, 4 Sep 2019 00:18:19 +0300
+>>    https://www.spinics.net/lists/linux-leds/msg13181.html
+>> 
+>> 2. At 5 Sep 2019 12:57:19 +0300 Time Dan Cartpen has sent the patch with the same proposal
+>> 3. Uwe Kleine-König started to discuss his results of review by asking Dan on how he was found it.
+>> 
+>> Would you mine if you will keep me as a Original author of this patch based on fact 1?
+> 
+> Heh.
+> 
+> No, I didn't steal your patch.  :P  I am the author of the Smatch static
+> analysis tool and mostly fix things found by Smatch.  I don't use other
+> static analysis tools except to do a final QC of my patches.
+> 
 
-> Use kmemdup rather than duplicating its implementation
+Thanks!
+I didn’t know this tool. Will take a look on it.
 
-Applied to 5.4/scsi-queue. Thanks!
+By the way, you can use PVS-Studio freely
+https://www.viva64.com/en/b/0600/
+They provide free license for open source projects.
+
+> It's super common for people to send duplicate fixes when it's based on
+> static analysis.  Most of the static analysis people hang out on
+> kernel-janitors so we don't send duplicate patches.  For a while people
+> were getting annoyed by all the duplicates but now they accept it as
+> their punishment for introducing a bug in the first place.
+> 
+
+No problem.
+We all doing good things!
+
+> Anyway, the rule for kernel development is that normally the first
+> person's patch goes in, so we will take your patch.
+> 
+
+I think next time you will take a look at mail list before sending patches ;-)
+
+> regards,
+> dan carpenter
+> 
+
+P.S.:
+resent because was in non plain-text format. 
 
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+Best regards,
+Oleh Kravchenko
+

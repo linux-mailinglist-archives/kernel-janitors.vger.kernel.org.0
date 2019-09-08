@@ -2,99 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C007FACBD9
-	for <lists+kernel-janitors@lfdr.de>; Sun,  8 Sep 2019 11:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 88A5FACC09
+	for <lists+kernel-janitors@lfdr.de>; Sun,  8 Sep 2019 12:28:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727993AbfIHJq2 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 8 Sep 2019 05:46:28 -0400
-Received: from smtp.220.in.ua ([89.184.67.205]:39244 "EHLO smtp.220.in.ua"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727207AbfIHJq2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 8 Sep 2019 05:46:28 -0400
-Received: from oleh.kravchenko.mbp13.lan (unknown [95.67.115.55])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by smtp.220.in.ua (Postfix) with ESMTPSA id B3CCE1A2027F;
-        Sun,  8 Sep 2019 12:46:26 +0300 (EEST)
-Content-Type: text/plain;
-        charset=utf-8
-Mime-Version: 1.0 (Mac OS X Mail 12.4 \(3445.104.11\))
-Subject: Re: [PATCH] led: triggers: Fix NULL dereference in led_trigger_set()
- error handling
-From:   Oleh Kravchenko <oleg@kaa.org.ua>
-In-Reply-To: <20190905133233.GF3093@kadam>
-Date:   Sun, 8 Sep 2019 12:46:21 +0300
-Cc:     =?utf-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-        Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        linux-leds@vger.kernel.org, kernel-janitors@vger.kernel.org
-Content-Transfer-Encoding: 8BIT
-Message-Id: <351E367B-8964-4A4D-A4CF-94EDE3B3B2FA@kaa.org.ua>
-References: <20190905095728.GA26005@mwanda>
- <20190905120626.hyegecmy6hf5lvhj@pengutronix.de>
- <BC1CA967-2B9F-44A4-A1A9-FD9C6E874991@kaa.org.ua>
- <20190905133233.GF3093@kadam>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-X-Mailer: Apple Mail (2.3445.104.11)
+        id S1728309AbfIHK2I (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 8 Sep 2019 06:28:08 -0400
+Received: from mail.parknet.co.jp ([210.171.160.6]:41996 "EHLO
+        mail.parknet.co.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727018AbfIHK2I (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 8 Sep 2019 06:28:08 -0400
+X-Greylist: delayed 338 seconds by postgrey-1.27 at vger.kernel.org; Sun, 08 Sep 2019 06:28:08 EDT
+Received: from ibmpc.myhome.or.jp (server.parknet.ne.jp [210.171.168.39])
+        by mail.parknet.co.jp (Postfix) with ESMTPSA id DFE0E15CBF0;
+        Sun,  8 Sep 2019 19:22:29 +0900 (JST)
+Received: from devron.myhome.or.jp (foobar@devron.myhome.or.jp [192.168.0.3])
+        by ibmpc.myhome.or.jp (8.15.2/8.15.2/Debian-14) with ESMTPS id x88AMSGl022374
+        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+        Sun, 8 Sep 2019 19:22:29 +0900
+Received: from devron.myhome.or.jp (foobar@localhost [127.0.0.1])
+        by devron.myhome.or.jp (8.15.2/8.15.2/Debian-14) with ESMTPS id x88AMS95011910
+        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+        Sun, 8 Sep 2019 19:22:28 +0900
+Received: (from hirofumi@localhost)
+        by devron.myhome.or.jp (8.15.2/8.15.2/Submit) id x88AMRmx011907;
+        Sun, 8 Sep 2019 19:22:27 +0900
+From:   OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Markus Elfring <Markus.Elfring@web.de>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] fat: Delete an unnecessary check before brelse()
+References: <cfff3b81-fb5d-af26-7b5e-724266509045@web.de>
+Date:   Sun, 08 Sep 2019 19:22:27 +0900
+In-Reply-To: <cfff3b81-fb5d-af26-7b5e-724266509045@web.de> (Markus Elfring's
+        message of "Tue, 3 Sep 2019 15:00:11 +0200")
+Message-ID: <87r24rxf30.fsf@mail.parknet.co.jp>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.0.50 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello Dan,
+Markus Elfring <Markus.Elfring@web.de> writes:
 
-> 5 вер. 2019 р. о 4:32 пп Dan Carpenter <dan.carpenter@oracle.com> написав(ла):
-> 
-> On Thu, Sep 05, 2019 at 03:23:21PM +0300, Oleh Kravchenko wrote:
->> Let me summarize the chronology of the last activities below:
->> 1. I have sent the patch for the bugs that I have found by static analyzer at PVS-Studio
->>    Date: Wed, 4 Sep 2019 00:18:19 +0300
->>    https://www.spinics.net/lists/linux-leds/msg13181.html
->> 
->> 2. At 5 Sep 2019 12:57:19 +0300 Time Dan Cartpen has sent the patch with the same proposal
->> 3. Uwe Kleine-König started to discuss his results of review by asking Dan on how he was found it.
->> 
->> Would you mine if you will keep me as a Original author of this patch based on fact 1?
-> 
-> Heh.
-> 
-> No, I didn't steal your patch.  :P  I am the author of the Smatch static
-> analysis tool and mostly fix things found by Smatch.  I don't use other
-> static analysis tools except to do a final QC of my patches.
-> 
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Tue, 3 Sep 2019 14:56:16 +0200
+>
+> The brelse() function tests whether its argument is NULL
+> and then returns immediately.
+> Thus the test around the call is not needed.
+>
+> This issue was detected by using the Coccinelle software.
+>
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-Thanks!
-I didn’t know this tool. Will take a look on it.
+Acked-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
 
-By the way, you can use PVS-Studio freely
-https://www.viva64.com/en/b/0600/
-They provide free license for open source projects.
+Thanks.
 
-> It's super common for people to send duplicate fixes when it's based on
-> static analysis.  Most of the static analysis people hang out on
-> kernel-janitors so we don't send duplicate patches.  For a while people
-> were getting annoyed by all the duplicates but now they accept it as
-> their punishment for introducing a bug in the first place.
-> 
-
-No problem.
-We all doing good things!
-
-> Anyway, the rule for kernel development is that normally the first
-> person's patch goes in, so we will take your patch.
-> 
-
-I think next time you will take a look at mail list before sending patches ;-)
-
-> regards,
-> dan carpenter
-> 
-
-P.S.:
-resent because was in non plain-text format. 
+> ---
+>  fs/fat/dir.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> diff --git a/fs/fat/dir.c b/fs/fat/dir.c
+> index 1bda2ab6745b..f4bc87a3c98d 100644
+> --- a/fs/fat/dir.c
+> +++ b/fs/fat/dir.c
+> @@ -88,9 +88,7 @@ static int fat__get_entry(struct inode *dir, loff_t *pos,
+>  	int err, offset;
+>
+>  next:
+> -	if (*bh)
+> -		brelse(*bh);
+> -
+> +	brelse(*bh);
+>  	*bh = NULL;
+>  	iblock = *pos >> sb->s_blocksize_bits;
+>  	err = fat_bmap(dir, iblock, &phys, &mapped_blocks, 0, false);
+> --
+> 2.23.0
+>
 
 -- 
-Best regards,
-Oleh Kravchenko
-
+OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>

@@ -2,89 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 86987ADF00
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Sep 2019 20:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F281ADFE1
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Sep 2019 22:19:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729035AbfIISdk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Sep 2019 14:33:40 -0400
-Received: from bues.ch ([80.190.117.144]:35222 "EHLO bues.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727014AbfIISdk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Sep 2019 14:33:40 -0400
-X-Greylist: delayed 2442 seconds by postgrey-1.27 at vger.kernel.org; Mon, 09 Sep 2019 14:33:38 EDT
-Received: by bues.ch with esmtpsa (Exim 4.92)
-        (envelope-from <m@bues.ch>)
-        id 1i7NqP-0005NC-Vv; Mon, 09 Sep 2019 19:52:54 +0200
-Date:   Mon, 9 Sep 2019 19:53:12 +0200
-From:   Michael =?UTF-8?B?QsO8c2No?= <m@bues.ch>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Colin King <colin.king@canonical.com>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ssb: make array pwr_info_offset static const, makes
- object smaller
-Message-ID: <20190909195312.1873c0f7@wiggum>
-In-Reply-To: <20190906154053.32218-1-colin.king@canonical.com>
-References: <20190906154053.32218-1-colin.king@canonical.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S2405989AbfIIUT3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Sep 2019 16:19:29 -0400
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:50157 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732979AbfIIUT2 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 9 Sep 2019 16:19:28 -0400
+Received: from localhost.localdomain ([90.126.97.183])
+        by mwinf5d12 with ME
+        id zYKM2000H3xPcdm03YKMxP; Mon, 09 Sep 2019 22:19:24 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 09 Sep 2019 22:19:24 +0200
+X-ME-IP: 90.126.97.183
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     will@kernel.org, robin.murphy@arm.com, joro@8bytes.org
+Cc:     linux-arm-kernel@lists.infradead.org,
+        iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] iommu/io-pgtable: Move some initialization data to .init.rodata
+Date:   Mon,  9 Sep 2019 22:19:19 +0200
+Message-Id: <20190909201919.5841-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/Gh5rJFI_YvQsdaAQbg3kPxs";
- protocol="application/pgp-signature"; micalg=pgp-sha512
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
---Sig_/Gh5rJFI_YvQsdaAQbg3kPxs
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+The memory used by '__init' functions can be freed once the initialization
+phase has been performed.
 
-On Fri,  6 Sep 2019 16:40:53 +0100
-Colin King <colin.king@canonical.com> wrote:
+Mark some 'static const' array defined and used within some '__init'
+functions as '__initconst', so that the corresponding data can also be
+discarded.
 
-> diff --git a/drivers/ssb/pci.c b/drivers/ssb/pci.c
-> index da2d2ab8104d..7c3ae52f2b15 100644
-> --- a/drivers/ssb/pci.c
-> +++ b/drivers/ssb/pci.c
-> @@ -595,7 +595,7 @@ static void sprom_extract_r8(struct ssb_sprom *out, c=
-onst u16 *in)
->  {
->  	int i;
->  	u16 o;
-> -	u16 pwr_info_offset[] =3D {
-> +	static const u16 pwr_info_offset[] =3D {
->  		SSB_SROM8_PWR_INFO_CORE0, SSB_SROM8_PWR_INFO_CORE1,
->  		SSB_SROM8_PWR_INFO_CORE2, SSB_SROM8_PWR_INFO_CORE3
->  	};
+Without '__initconst', the data are put in the .rodata section.
+With the qualifier, they are put in the .init.rodata section.
 
-Thanks for your contribution. This change makes sense.
+With gcc 8.3.0, the following changes have been measured:
 
-Kalle, can you please take it?
+Without '__initconst':
+   section      size
+  .rodata       00000720
+  .init.rodata  00000018
 
-Acked-by: Michael B=C3=BCsch <m@bues.ch>
+With '__initconst':
+   section      size
+  .rodata       00000660
+  .init.rodata  00000058
 
---=20
-Michael
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Adding __initconst "within" a function is not in line with kernel/include/init.h
+which states that:
+ * Don't forget to initialize data not at file scope, i.e. within a function,
+ * as gcc otherwise puts the data into the bss section and not into the init
+ * section.
+However, having the array within the function or out-side the function
+seems to have no impact in the generated code and in the section used.
+According to my test, both put the data in .init.rodata.
 
---Sig_/Gh5rJFI_YvQsdaAQbg3kPxs
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+Maybe the comment is outdated or related to some older vesion of gcc.
+---
+ drivers/iommu/io-pgtable-arm.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/drivers/iommu/io-pgtable-arm.c b/drivers/iommu/io-pgtable-arm.c
+index 161a7d56264d..24076f0560c6 100644
+--- a/drivers/iommu/io-pgtable-arm.c
++++ b/drivers/iommu/io-pgtable-arm.c
+@@ -1109,7 +1109,7 @@ static void __init arm_lpae_dump_ops(struct io_pgtable_ops *ops)
+ 
+ static int __init arm_lpae_run_tests(struct io_pgtable_cfg *cfg)
+ {
+-	static const enum io_pgtable_fmt fmts[] = {
++	static const enum io_pgtable_fmt fmts[] __initconst = {
+ 		ARM_64_LPAE_S1,
+ 		ARM_64_LPAE_S2,
+ 	};
+@@ -1208,13 +1208,13 @@ static int __init arm_lpae_run_tests(struct io_pgtable_cfg *cfg)
+ 
+ static int __init arm_lpae_do_selftests(void)
+ {
+-	static const unsigned long pgsize[] = {
++	static const unsigned long pgsize[] __initconst = {
+ 		SZ_4K | SZ_2M | SZ_1G,
+ 		SZ_16K | SZ_32M,
+ 		SZ_64K | SZ_512M,
+ 	};
+ 
+-	static const unsigned int ias[] = {
++	static const unsigned int ias[] __initconst = {
+ 		32, 36, 40, 42, 44, 48,
+ 	};
+ 
+-- 
+2.20.1
 
-iQIzBAEBCgAdFiEEihRzkKVZOnT2ipsS9TK+HZCNiw4FAl12kYgACgkQ9TK+HZCN
-iw4dkg//RkZq55Col2WsmizgjsdDYipwL9loeVjtw64YjtT2ZVcwSzQfooPf253D
-BKLbB6AbBNc3oniPuicHJZGxNX5ppfO6teIcHvzd1gtlNIDyRRU+dFA4DoqskKlK
-9n7JWAWmXxLhpw8121mQmtV5MYbHJRR6fhemrDJPtKRwJLfcZSLF5ENUu3VCifw2
-/G5PqA7Lsu7llxd6Cl5uz3fD4wX3o9LRaVsF/QZvmGoV6FdqUgf/cRGXtOGYzCQ4
-2DVxrykaS8VTWqvbJQ1LIlDv1u2cGxIWlvAlI3t40CCR6md914C9abWj+o48wDPd
-DE/kCQeJy6uHqcc3yYTp888a4tnWnsAovNySHNwefvRCbcU3q5fKbluX5Zth9r1u
-6JqQoAglH3wNUaUJ1nXuASWz9l7J9IkJakzHZzzxy1cQ5uvZXeP5T1FPbrlKOSJX
-cvICP9T79dtDR9XmjRd5jKLpXCHNO0ZVgo6PfxoRJtxD60cwLtKMKlNjP+9Hto23
-sKnQ6wuEhIluxun1x4pb73+8WLzL8f9u9nlh/HVSvnh39QlarMUMAbWXAH/J182J
-O/65KfRCcUkoBxMIvwtnCckj08NmrHrS5DVIp2YaMbzjlLpKvFSCxf+65pB2CREt
-EeG3/vOb9ElEjrJdWXy+BB4rOCLoxk4Ks07DZXbrq0FJPjg5DbI=
-=/ENb
------END PGP SIGNATURE-----
-
---Sig_/Gh5rJFI_YvQsdaAQbg3kPxs--

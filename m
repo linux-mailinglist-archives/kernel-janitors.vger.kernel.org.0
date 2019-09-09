@@ -2,47 +2,44 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5044CAD65A
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Sep 2019 12:07:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A86DBAD66A
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Sep 2019 12:08:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390270AbfIIKHa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Sep 2019 06:07:30 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:56186 "EHLO
+        id S1729687AbfIIKIB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Sep 2019 06:08:01 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:56124 "EHLO
         heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390246AbfIIKH3 (ORCPT
+        with ESMTP id S2390204AbfIIKH0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Sep 2019 06:07:29 -0400
+        Mon, 9 Sep 2019 06:07:26 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
         Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
         List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=yTK2raRocXmY1SVYBroK1A3JaVMioGcvQYa4SdbdL8k=; b=S5snUQH5yVyC
-        iub7lySHUfCpO7ZlHP7JorXwWyCPV/iJZESBtKcqjrReAjxZ7alvFMcF4d77OaARw3jxI7IIlZ/Bf
-        uxnyrDY8BM+Awf0jmUCty/MX2yumrprbhF8xp2PhQjZO8AP9qZH6H2mzfyR2tt6LCDIylBacyNh75
-        NlThQ=;
+        List-Archive; bh=7w2LNq0l01blkf8Ovxz57vph2tfWB91hAoQ/F6ph7eU=; b=TsNquHlerb4i
+        uZmGHimJ9xuqN1MjJBI5Byyj2RozKhiZnG0VQXsDJx5d9G5C8Uhdopl5YxBSAiEdOIckgXWFosGPI
+        w1rr2v4lYTlJ8RShwh8ZclKRTnlq1GomakQszRtgWUpiINMi4eUiyherUDNg12B9OUYZlt74goMBh
+        DpNpY=;
 Received: from [148.69.85.38] (helo=fitzroy.sirena.org.uk)
         by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <broonie@sirena.org.uk>)
-        id 1i7GZp-0001rj-KO; Mon, 09 Sep 2019 10:07:17 +0000
+        id 1i7GZv-0001tn-AF; Mon, 09 Sep 2019 10:07:23 +0000
 Received: by fitzroy.sirena.org.uk (Postfix, from userid 1000)
-        id 089F0D02D52; Mon,  9 Sep 2019 11:07:17 +0100 (BST)
+        id B5A28D02D1F; Mon,  9 Sep 2019 11:07:22 +0100 (BST)
 From:   Mark Brown <broonie@kernel.org>
 To:     Colin Ian King <colin.king@canonical.com>
-Cc:     alsa-devel@alsa-project.org, Bard Liao <bardliao@realtek.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        kernel-janitors@vger.kernel.org,
+Cc:     kernel-janitors@vger.kernel.org,
         Liam Girdwood <lgirdwood@gmail.com>,
         linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Oder Chiou <oder_chiou@realtek.com>,
-        Takashi Iwai <tiwai@suse.com>
-Subject: Applied "ASoC: rt1011: make array pd static const, makes object smaller" to the asoc tree
-In-Reply-To: <20190907073717.21632-1-colin.king@canonical.com>
+        Milo Kim <milo.kim@ti.com>
+Subject: Applied "regulator: lp8788-ldo: make array en_mask static const, makes object smaller" to the regulator tree
+In-Reply-To: <20190906130632.6709-1-colin.king@canonical.com>
 X-Patchwork-Hint: ignore
-Message-Id: <20190909100717.089F0D02D52@fitzroy.sirena.org.uk>
-Date:   Mon,  9 Sep 2019 11:07:17 +0100 (BST)
+Message-Id: <20190909100722.B5A28D02D1F@fitzroy.sirena.org.uk>
+Date:   Mon,  9 Sep 2019 11:07:22 +0100 (BST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -50,11 +47,11 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 The patch
 
-   ASoC: rt1011: make array pd static const, makes object smaller
+   regulator: lp8788-ldo: make array en_mask static const, makes object smaller
 
-has been applied to the asoc tree at
+has been applied to the regulator tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.4
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-5.4
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -75,46 +72,45 @@ to this mail.
 Thanks,
 Mark
 
-From 2b70d5776e8b173e3b36a2ef63d94428c6a80e1f Mon Sep 17 00:00:00 2001
+From 6cbe29c92311ea6ef67a7eac2bc089357412973b Mon Sep 17 00:00:00 2001
 From: Colin Ian King <colin.king@canonical.com>
-Date: Sat, 7 Sep 2019 08:37:17 +0100
-Subject: [PATCH] ASoC: rt1011: make array pd static const, makes object
- smaller
+Date: Fri, 6 Sep 2019 14:06:32 +0100
+Subject: [PATCH] regulator: lp8788-ldo: make array en_mask static const, makes
+ object smaller
 
-Don't populate the array pd on the stack but instead make it
-static const. Makes the object code smaller by 100 bytes.
+Don't populate the array en_mask on the stack but instead make it
+static const. Makes the object code smaller by 87 bytes.
 
 Before:
    text	   data	    bss	    dec	    hex	filename
-  51463	  13016	    128	  64607	   fc5f	sound/soc/codecs/rt1011.o
+  12967	   3408	      0	  16375	   3ff7	drivers/regulator/lp8788-ldo.o
 
 After:
    text	   data	    bss	    dec	    hex	filename
-  51299	  13080	    128	  64507	   fbfb	sound/soc/codecs/rt1011.o
+  12816	   3472	      0	  16288	   3fa0	drivers/regulator/lp8788-ldo.o
 
 (gcc version 9.2.1, amd64)
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Link: https://lore.kernel.org/r/20190907073717.21632-1-colin.king@canonical.com
+Link: https://lore.kernel.org/r/20190906130632.6709-1-colin.king@canonical.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/soc/codecs/rt1011.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/regulator/lp8788-ldo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/rt1011.c b/sound/soc/codecs/rt1011.c
-index fa34565a3938..a92a0bacd812 100644
---- a/sound/soc/codecs/rt1011.c
-+++ b/sound/soc/codecs/rt1011.c
-@@ -1519,7 +1519,8 @@ static const struct snd_soc_dapm_route rt1011_dapm_routes[] = {
- 
- static int rt1011_get_clk_info(int sclk, int rate)
+diff --git a/drivers/regulator/lp8788-ldo.c b/drivers/regulator/lp8788-ldo.c
+index 1b00f3638996..00e9bb92c326 100644
+--- a/drivers/regulator/lp8788-ldo.c
++++ b/drivers/regulator/lp8788-ldo.c
+@@ -464,7 +464,7 @@ static int lp8788_config_ldo_enable_mode(struct platform_device *pdev,
  {
--	int i, pd[] = {1, 2, 3, 4, 6, 8, 12, 16};
-+	int i;
-+	static const int pd[] = {1, 2, 3, 4, 6, 8, 12, 16};
- 
- 	if (sclk <= 0 || rate <= 0)
- 		return -EINVAL;
+ 	struct lp8788 *lp = ldo->lp;
+ 	enum lp8788_ext_ldo_en_id enable_id;
+-	u8 en_mask[] = {
++	static const u8 en_mask[] = {
+ 		[EN_ALDO1]   = LP8788_EN_SEL_ALDO1_M,
+ 		[EN_ALDO234] = LP8788_EN_SEL_ALDO234_M,
+ 		[EN_ALDO5]   = LP8788_EN_SEL_ALDO5_M,
 -- 
 2.20.1
 

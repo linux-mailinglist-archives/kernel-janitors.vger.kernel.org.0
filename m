@@ -2,107 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F281ADFE1
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Sep 2019 22:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C673AE023
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Sep 2019 23:03:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405989AbfIIUT3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Sep 2019 16:19:29 -0400
-Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:50157 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732979AbfIIUT2 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Sep 2019 16:19:28 -0400
-Received: from localhost.localdomain ([90.126.97.183])
-        by mwinf5d12 with ME
-        id zYKM2000H3xPcdm03YKMxP; Mon, 09 Sep 2019 22:19:24 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 09 Sep 2019 22:19:24 +0200
-X-ME-IP: 90.126.97.183
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     will@kernel.org, robin.murphy@arm.com, joro@8bytes.org
-Cc:     linux-arm-kernel@lists.infradead.org,
-        iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] iommu/io-pgtable: Move some initialization data to .init.rodata
-Date:   Mon,  9 Sep 2019 22:19:19 +0200
-Message-Id: <20190909201919.5841-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        id S1730709AbfIIVDi convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Sep 2019 17:03:38 -0400
+Received: from mga18.intel.com ([134.134.136.126]:65505 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726804AbfIIVDi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 9 Sep 2019 17:03:38 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Sep 2019 14:03:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,487,1559545200"; 
+   d="scan'208";a="335709631"
+Received: from fmsmsx107.amr.corp.intel.com ([10.18.124.205])
+  by orsmga004.jf.intel.com with ESMTP; 09 Sep 2019 14:03:37 -0700
+Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
+ fmsmsx107.amr.corp.intel.com (10.18.124.205) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Mon, 9 Sep 2019 14:03:37 -0700
+Received: from fmsmsx602.amr.corp.intel.com (10.18.126.82) by
+ fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Mon, 9 Sep 2019 14:03:36 -0700
+Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82]) by
+ fmsmsx602.amr.corp.intel.com ([10.18.126.82]) with mapi id 15.01.1713.004;
+ Mon, 9 Sep 2019 14:03:36 -0700
+From:   "Bowers, AndrewX" <andrewx.bowers@intel.com>
+To:     "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [Intel-wired-lan] [PATCH] net/ixgbevf: make array api static
+ const, makes object smaller
+Thread-Topic: [Intel-wired-lan] [PATCH] net/ixgbevf: make array api static
+ const, makes object smaller
+Thread-Index: AQHVZKcBj9oTUZjOq0CbJrIU78N3iacj2qGw
+Date:   Mon, 9 Sep 2019 21:03:36 +0000
+Message-ID: <22d993817a224209b9ac37013d1d8c54@intel.com>
+References: <20190906113356.9985-1-colin.king@canonical.com>
+In-Reply-To: <20190906113356.9985-1-colin.king@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+x-ctpclassification: CTP_NT
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiNGE4NWFlYWMtMzQzOC00MGYxLTkyYTAtMThlOGVhYjlmYTUzIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiVTlpeEdFcGpXN0M4T2dUdGF6WlJjbW03UDNaR3MrXC9IRGdXZUJYcm1aNkFkUHk4OWFldXMwR1AwWWJKMUs0XC8wIn0=
+dlp-reaction: no-action
+dlp-version: 11.0.400.15
+x-originating-ip: [10.22.254.132]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The memory used by '__init' functions can be freed once the initialization
-phase has been performed.
+> -----Original Message-----
+> From: Intel-wired-lan [mailto:intel-wired-lan-bounces@osuosl.org] On
+> Behalf Of Colin King
+> Sent: Friday, September 6, 2019 4:34 AM
+> To: Kirsher, Jeffrey T <jeffrey.t.kirsher@intel.com>; David S . Miller
+> <davem@davemloft.net>; intel-wired-lan@lists.osuosl.org;
+> netdev@vger.kernel.org
+> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: [Intel-wired-lan] [PATCH] net/ixgbevf: make array api static const,
+> makes object smaller
+> 
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Don't populate the array api on the stack but instead make it static const.
+> Makes the object code smaller by 58 bytes.
+> 
+> Before:
+>    text	   data	    bss	    dec	    hex	filename
+>   82969	   9763	    256	  92988	  16b3c	ixgbevf/ixgbevf_main.o
+> 
+> After:
+>    text	   data	    bss	    dec	    hex	filename
+>   82815	   9859	    256	  92930	  16b02	ixgbevf/ixgbevf_main.o
+> 
+> (gcc version 9.2.1, amd64)
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c | 14 ++++++++------
+>  1 file changed, 8 insertions(+), 6 deletions(-)
 
-Mark some 'static const' array defined and used within some '__init'
-functions as '__initconst', so that the corresponding data can also be
-discarded.
+Tested-by: Andrew Bowers <andrewx.bowers@intel.com>
 
-Without '__initconst', the data are put in the .rodata section.
-With the qualifier, they are put in the .init.rodata section.
-
-With gcc 8.3.0, the following changes have been measured:
-
-Without '__initconst':
-   section      size
-  .rodata       00000720
-  .init.rodata  00000018
-
-With '__initconst':
-   section      size
-  .rodata       00000660
-  .init.rodata  00000058
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Adding __initconst "within" a function is not in line with kernel/include/init.h
-which states that:
- * Don't forget to initialize data not at file scope, i.e. within a function,
- * as gcc otherwise puts the data into the bss section and not into the init
- * section.
-However, having the array within the function or out-side the function
-seems to have no impact in the generated code and in the section used.
-According to my test, both put the data in .init.rodata.
-
-Maybe the comment is outdated or related to some older vesion of gcc.
----
- drivers/iommu/io-pgtable-arm.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/iommu/io-pgtable-arm.c b/drivers/iommu/io-pgtable-arm.c
-index 161a7d56264d..24076f0560c6 100644
---- a/drivers/iommu/io-pgtable-arm.c
-+++ b/drivers/iommu/io-pgtable-arm.c
-@@ -1109,7 +1109,7 @@ static void __init arm_lpae_dump_ops(struct io_pgtable_ops *ops)
- 
- static int __init arm_lpae_run_tests(struct io_pgtable_cfg *cfg)
- {
--	static const enum io_pgtable_fmt fmts[] = {
-+	static const enum io_pgtable_fmt fmts[] __initconst = {
- 		ARM_64_LPAE_S1,
- 		ARM_64_LPAE_S2,
- 	};
-@@ -1208,13 +1208,13 @@ static int __init arm_lpae_run_tests(struct io_pgtable_cfg *cfg)
- 
- static int __init arm_lpae_do_selftests(void)
- {
--	static const unsigned long pgsize[] = {
-+	static const unsigned long pgsize[] __initconst = {
- 		SZ_4K | SZ_2M | SZ_1G,
- 		SZ_16K | SZ_32M,
- 		SZ_64K | SZ_512M,
- 	};
- 
--	static const unsigned int ias[] = {
-+	static const unsigned int ias[] __initconst = {
- 		32, 36, 40, 42, 44, 48,
- 	};
- 
--- 
-2.20.1
 

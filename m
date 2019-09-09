@@ -2,106 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42A34AD46E
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Sep 2019 10:08:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40038AD636
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Sep 2019 11:59:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388621AbfIIIIv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Sep 2019 04:08:51 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:40281 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725875AbfIIIIv (ORCPT
+        id S2388935AbfIIJ64 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Sep 2019 05:58:56 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:34614 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728206AbfIIJ64 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Sep 2019 04:08:51 -0400
-Received: by mail-ot1-f65.google.com with SMTP id y39so11604914ota.7
-        for <kernel-janitors@vger.kernel.org>; Mon, 09 Sep 2019 01:08:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=gJqsNk537Ee698eaMI/WoUOzxOSMBJRuyaZH39TduDU=;
-        b=tV4CHDh5/x14CjSLzPXNjSrr+KO5ZwGNjsO+eJCUJDD55ojKGrvIW0WwrwhhnPM/Uc
-         M9W7qCVu2FfrQezi90405Ev7XmnTRT0jU/Srfeta7Em2TjWMZ5+DVbFQ5mY5CsF9MkgO
-         8sZCeSi/jr3WgU3CfycmGdJJuxo/BZIHDR07YGaybbOf/DbBMrK1qgSuMT1ha8gxzcmm
-         n9LV0Nf+cK21w/c5ljuBJYA0pSdgQDFuuVP6lVRnqZb3GeQRJjNVdgurG6XLX14Ydf/E
-         xN+Sda6Fh9zifoRjwGCOsgckLP23ivlvAt51xQ+fWcrSyqbWnRPl1/QBQNWMnJZ9xWmW
-         TLHA==
+        Mon, 9 Sep 2019 05:58:56 -0400
+Received: by mail-ot1-f67.google.com with SMTP id z26so2597572oto.1;
+        Mon, 09 Sep 2019 02:58:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=gJqsNk537Ee698eaMI/WoUOzxOSMBJRuyaZH39TduDU=;
-        b=iA1+zyrTpbDsyzEkBopAjn1zOiDwspOQGx5BECMXCib5H+xNoiZ+ZfznJSPtitDDGi
-         lmSB6yNqJhiV5pFWfR/joZ0sps/uN+ygW1oZJdIJ1ajuGdZHC8i95zfHIe5tztZtTh1x
-         2abNmj1t9kteVVqGcf9fKsC/AslriEf7TCUzJRaOm1ID9JkRWLoW2m1/fStVOCRA0ny4
-         /vXTUSXE8djMq4XSa1o+UatTr55asTt+Xdbc4WM8ukwDzkmbxHc6sy/J+Cw9raDIUUsf
-         raI5h/ynej8704A7C9nhMumEu0aIiPEnKXUTFSNE2cm6WGGFNOfaW2jsszHiP5y2jmn4
-         u+aQ==
-X-Gm-Message-State: APjAAAWONRsfy/IPC+vjR2seqQp4AWQ+hI07mkhMlxrR1o4hN9ugzNwI
-        Ketv5IDI1f8xeV1+ZMz/8N0dgXczu0jeLv5PsxtceA==
-X-Google-Smtp-Source: APXvYqxE+jEqaxY/ZswNBiISMkKeCPo7b4iQVVMhabwK63I4ZoYPjGGjobrNUVzpsqIa33svZwabA4fI7Ba4C4w6eBQ=
-X-Received: by 2002:a9d:5a06:: with SMTP id v6mr17519979oth.250.1568016530212;
- Mon, 09 Sep 2019 01:08:50 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=hlpDfZePYVovMOgYxyTZv3r/AVbPjpMO1Fr6zFVJef8=;
+        b=iAi2ciUkl4AceL7TC9mhev1QELpqVMbC4VeRkwyWU3hTv3DW3/+eHJYPnHseHQ9bBP
+         yAnBkuxxu2LeZjWKdH0bBi/EVZchtTT0/VQfZqXgiqM/PmdzUnD3L6TLYE1USsqp4XjR
+         l4cbB0nTJrECy8cvsKqbR/NsX9RrAUSwq44sQD4CO7sqmD1eyw8RChmq4gPZ2Pz76Tbe
+         VVmAeX9U2K34jmdhjDdO+VooTifrlIDo5CGrSFDsrxL4WuRub1it0zhhK/ZRR/yId2UA
+         RVKh9v5cK/PiuGay8sbShRUdo9VBh/d91xRGvXIM2DiNDoBTX791xPpIl+U/2nbrnBkg
+         qPrA==
+X-Gm-Message-State: APjAAAXJbIdIjwsq333o6OxHn+FcFOCd346CBks7x+YV2N9AzsYxaRLU
+        4V3Fd18enJ4xvKviKaWU+FocVxun0WEx+oadexkomw==
+X-Google-Smtp-Source: APXvYqxnbUay5PiRGlAk1ZYomVlAdiyOVo02nv/J8yNZnhIS1OWHceNsLa/CuscQP9WJ+Ear0a9O2Nxlub7TP0r2NBo=
+X-Received: by 2002:a9d:2cc:: with SMTP id 70mr18636821otl.145.1568023135226;
+ Mon, 09 Sep 2019 02:58:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190904141834.195294-1-weiyongjun1@huawei.com> <CAMpxmJWJr0uBCs_oGX+h1uFmQ2f7Axo1iqtD6rzwgT-bbZdD6g@mail.gmail.com>
-In-Reply-To: <CAMpxmJWJr0uBCs_oGX+h1uFmQ2f7Axo1iqtD6rzwgT-bbZdD6g@mail.gmail.com>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Mon, 9 Sep 2019 10:08:39 +0200
-Message-ID: <CAMpxmJVyYVd-B=6x2sNk3Qa1TTsOHju7TKAG=_8h3Bo1zXxDzw@mail.gmail.com>
-Subject: Re: [PATCH] gpio: mockup: add missing single_release()
-To:     Linus Walleij <linus.walleij@linaro.org>
-Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Bamvor Jian Zhang <bamv2005@gmail.com>,
-        linux-gpio <linux-gpio@vger.kernel.org>,
+References: <b2dd074a-1693-3aea-42b4-da1f5ec155c4@web.de>
+In-Reply-To: <b2dd074a-1693-3aea-42b4-da1f5ec155c4@web.de>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 9 Sep 2019 11:58:44 +0200
+Message-ID: <CAMuHMdWkPFBphjKQf686LgW6ZE35MYM3A3TmUaY-PJYajSwuyw@mail.gmail.com>
+Subject: Re: [PATCH] spi-gpio: Use PTR_ERR_OR_ZERO() in spi_gpio_request()
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-spi <linux-spi@vger.kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-=C5=9Br., 4 wrz 2019 o 16:54 Bartosz Golaszewski
-<bgolaszewski@baylibre.com> napisa=C5=82(a):
+On Sun, Sep 8, 2019 at 2:46 PM Markus Elfring <Markus.Elfring@web.de> wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Sat, 7 Sep 2019 13:51:16 +0200
 >
-> =C5=9Br., 4 wrz 2019 o 16:00 Wei Yongjun <weiyongjun1@huawei.com> napisa=
-=C5=82(a):
-> >
-> > When using single_open() for opening, single_release() should be
-> > used instead of seq_release(), otherwise there is a memory leak.
-> >
-> > Fixes: 2a9e27408e12 ("gpio: mockup: rework debugfs interface")
-> > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> > ---
-> >  drivers/gpio/gpio-mockup.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/drivers/gpio/gpio-mockup.c b/drivers/gpio/gpio-mockup.c
-> > index f1a9c0544e3f..213aedc97dc2 100644
-> > --- a/drivers/gpio/gpio-mockup.c
-> > +++ b/drivers/gpio/gpio-mockup.c
-> > @@ -309,6 +309,7 @@ static const struct file_operations gpio_mockup_deb=
-ugfs_ops =3D {
-> >         .read =3D gpio_mockup_debugfs_read,
-> >         .write =3D gpio_mockup_debugfs_write,
-> >         .llseek =3D no_llseek,
-> > +       .release =3D single_release,
-> >  };
-> >
-> >  static void gpio_mockup_debugfs_setup(struct device *dev,
-> >
-> >
-> >
+> Simplify this function implementation by using a known function.
 >
-> Good catch!
+> Generated by: scripts/coccinelle/api/ptr_ret.cocci
 >
-> Reviewed-by: Bartosz Golaszewski <bgolaszewski@baylibre.com>
->
-> Linus: can you pick it up for your last pull-requests with fixes for v5.3=
-?
->
-> Bart
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-Nevermind - I applied it to my tree and will send it with two other
-fixes in a PR.
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Bart
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

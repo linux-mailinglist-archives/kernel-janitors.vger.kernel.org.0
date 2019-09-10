@@ -2,59 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DAF5AE487
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Sep 2019 09:17:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16E20AE582
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Sep 2019 10:29:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726654AbfIJHRE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 10 Sep 2019 03:17:04 -0400
-Received: from charlotte.tuxdriver.com ([70.61.120.58]:54594 "EHLO
-        smtp.tuxdriver.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726192AbfIJHRE (ORCPT
+        id S1727479AbfIJI3j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 Sep 2019 04:29:39 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:53184 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727058AbfIJI3j (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 10 Sep 2019 03:17:04 -0400
-Received: from [88.214.186.143] (helo=localhost)
-        by smtp.tuxdriver.com with esmtpsa (TLSv1:AES256-SHA:256)
-        (Exim 4.63)
-        (envelope-from <nhorman@tuxdriver.com>)
-        id 1i7aOW-00041e-Rg; Tue, 10 Sep 2019 03:16:59 -0400
-Date:   Tue, 10 Sep 2019 03:16:49 -0400
-From:   Neil Horman <nhorman@tuxdriver.com>
-To:     Mao Wenan <maowenan@huawei.com>
-Cc:     vyasevich@gmail.com, marcelo.leitner@gmail.com,
-        davem@davemloft.net, linux-sctp@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net 0/2] fix memory leak for sctp_do_bind
-Message-ID: <20190910071649.GB31884@localhost.localdomain>
-References: <20190910071343.18808-1-maowenan@huawei.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190910071343.18808-1-maowenan@huawei.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-Spam-Score: -2.9 (--)
-X-Spam-Status: No
+        Tue, 10 Sep 2019 04:29:39 -0400
+Received: from localhost (unknown [148.69.85.38])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id D8EB9154B29E5;
+        Tue, 10 Sep 2019 01:29:37 -0700 (PDT)
+Date:   Tue, 10 Sep 2019 10:29:36 +0200 (CEST)
+Message-Id: <20190910.102936.1648930911852673896.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     tariqt@mellanox.com, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net/mlx4_en: ethtool: make array modes static const,
+ makes object smaller
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20190906115348.16621-1-colin.king@canonical.com>
+References: <20190906115348.16621-1-colin.king@canonical.com>
+X-Mailer: Mew version 6.8 on Emacs 26.2
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 10 Sep 2019 01:29:39 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Sep 10, 2019 at 03:13:41PM +0800, Mao Wenan wrote:
-> First patch is to do cleanup, remove redundant assignment,
-> second patch is to fix memory leak for sctp_do_bind if failed
-> to bind address.
-> 
-> Mao Wenan (2):
->   sctp: remove redundant assignment when call sctp_get_port_local
->   sctp: destroy bucket if failed to bind addr
-> 
->  net/sctp/socket.c | 13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
-> 
-> -- 
-> 2.20.1
-> 
-> 
-Series
-Acked-by: Neil Horman <nhorman@tuxdriver.com>
+From: Colin King <colin.king@canonical.com>
+Date: Fri,  6 Sep 2019 12:53:48 +0100
 
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Don't populate the array modes on the stack but instead make it
+> static const. Makes the object code smaller by 303 bytes.
+> 
+> Before:
+>    text	   data	    bss	    dec	    hex	filename
+>   51240	   5008	   1312	  57560	   e0d8 mellanox/mlx4/en_ethtool.o
+> 
+> After:
+>    text	   data	    bss	    dec	    hex	filename
+>   50937	   5008	   1312	  57257	   dfa9	mellanox/mlx4/en_ethtool.o
+> 
+> (gcc version 9.2.1, amd64)
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
+Applied to net-next.

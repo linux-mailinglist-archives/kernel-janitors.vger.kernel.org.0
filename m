@@ -2,62 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 530CDAE2CE
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Sep 2019 06:17:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F047CAE411
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Sep 2019 08:56:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390161AbfIJERG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 10 Sep 2019 00:17:06 -0400
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:52293 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729495AbfIJERG (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 10 Sep 2019 00:17:06 -0400
-Received: from localhost.localdomain ([90.126.97.183])
-        by mwinf5d81 with ME
-        id zgH32000R3xPcdm03gH4Xg; Tue, 10 Sep 2019 06:17:04 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 10 Sep 2019 06:17:04 +0200
-X-ME-IP: 90.126.97.183
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     manivannan.sadhasivam@linaro.org, gregkh@linuxfoundation.org,
-        jslaby@suse.com
-Cc:     linux-serial@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-unisoc@lists.infradead.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] tty: serial: rda: Fix the link time qualifier of 'rda_uart_exit()'
-Date:   Tue, 10 Sep 2019 06:17:02 +0200
-Message-Id: <20190910041702.7357-1-christophe.jaillet@wanadoo.fr>
+        id S2406490AbfIJG40 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 Sep 2019 02:56:26 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:2200 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1731204AbfIJG4X (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 10 Sep 2019 02:56:23 -0400
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id D8911453BED5E90F01BD;
+        Tue, 10 Sep 2019 14:56:18 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 10 Sep 2019 14:56:08 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <vyasevich@gmail.com>, <nhorman@tuxdriver.com>,
+        <marcelo.leitner@gmail.com>, <davem@davemloft.net>
+CC:     <linux-sctp@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH net 0/2] fix memory leak for sctp_do_bind
+Date:   Tue, 10 Sep 2019 15:13:41 +0800
+Message-ID: <20190910071343.18808-1-maowenan@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'exit' functions should be marked as __exit, not __init.
+First patch is to do cleanup, remove redundant assignment,
+second patch is to fix memory leak for sctp_do_bind if failed
+to bind address.
 
-Fixes: c10b13325ced ("tty: serial: Add RDA8810PL UART driver")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/tty/serial/rda-uart.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Mao Wenan (2):
+  sctp: remove redundant assignment when call sctp_get_port_local
+  sctp: destroy bucket if failed to bind addr
 
-diff --git a/drivers/tty/serial/rda-uart.c b/drivers/tty/serial/rda-uart.c
-index c1b0d7662ef9..ff9a27d48bca 100644
---- a/drivers/tty/serial/rda-uart.c
-+++ b/drivers/tty/serial/rda-uart.c
-@@ -815,7 +815,7 @@ static int __init rda_uart_init(void)
- 	return ret;
- }
- 
--static void __init rda_uart_exit(void)
-+static void __exit rda_uart_exit(void)
- {
- 	platform_driver_unregister(&rda_uart_platform_driver);
- 	uart_unregister_driver(&rda_uart_driver);
+ net/sctp/socket.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
+
 -- 
 2.20.1
 

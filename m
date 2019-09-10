@@ -2,107 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A5BA0AEBC6
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Sep 2019 15:42:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17AB3AF017
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Sep 2019 19:02:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731464AbfIJNm5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 10 Sep 2019 09:42:57 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:57806 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729662AbfIJNm5 (ORCPT
+        id S2436925AbfIJRCg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 Sep 2019 13:02:36 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:34288 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2436869AbfIJRCg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 10 Sep 2019 09:42:57 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8ADdMpt142058;
-        Tue, 10 Sep 2019 13:42:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2019-08-05; bh=7V+VdFIn8y25ib8MlIvJJ80pwNpoFE00wXWasKQu7qo=;
- b=Nd8j00KHKMmI5YnGcSmqFX6RLB4GjVZO6Dq/p9+Ki85VBDq7kHytkTczaEyPQdFf9XGA
- ZcjhwgeBjSOxNUgZQHOHJut+yjpetp7pDzO9BqZmIzEM+bwma6j43tONSe5lFE6uVrY6
- 9LFWNHuL3tzTDkHg05giNh6ub8ciVHzSEJLNMge5e4rEgTOYfOGpj9HARQRMBllyvMl4
- RrPBQBCK45uHo+kheM4cb4Azcf71eLruTJfO9YXmasUm1vOYmT4EVfLkCKbW8f0DjXV5
- XJRyzIaFz8xpkL7jDioYEiKwmgSyPHP5zPsmQDlmIfhKR2IAHC84zaes2XNgvn1BCxNw pA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 2uw1m8uh3w-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 10 Sep 2019 13:42:52 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8ADc2fB166795;
-        Tue, 10 Sep 2019 13:42:51 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 2uwpjvu2e0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 10 Sep 2019 13:42:51 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x8ADgnOS013774;
-        Tue, 10 Sep 2019 13:42:49 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 10 Sep 2019 06:42:49 -0700
-Date:   Tue, 10 Sep 2019 16:42:42 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Elie Morisse <syniurge@gmail.com>
-Cc:     Nehal Shah <nehal-bakulchandra.shah@amd.com>,
-        Shyam Sundar S K <shyam-sundar.s-k@amd.com>,
-        linux-i2c@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] i2c: i2c-amd-mp2-pci: Fix Oops in amd_mp2_pci_init()
- error handling
-Message-ID: <20190910134242.GA6620@mwanda>
+        Tue, 10 Sep 2019 13:02:36 -0400
+Received: by mail-io1-f68.google.com with SMTP id k13so23961740ioj.1
+        for <kernel-janitors@vger.kernel.org>; Tue, 10 Sep 2019 10:02:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kudzu-us.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=yHtCrm1vpXjKX4N1mnKNL5adU51DyAdSJlvxQv4V/NA=;
+        b=jyrVkq/p5eQw4U+Mv8R/PTxlwrcoanUBD8qToBzvsm7AsDl6twYT9p4XWSZqJDNJ5p
+         3VKo9ciCZHcmDF6KsWFpou1Ua10XLcrP1Lp0lYi5VwMKg9cf+5CHWorgM+lESrxz2jNl
+         Q2vFyKqMjsqOEu06rZLI4vLvl9zU55j+RNlEkJf4oec3Qu8wgz95GMGcXoPOXgEmyQE+
+         ovx2uST1e/+ZPGFjUZ72npKnofo3cQ/dj0PFpjC50V9PbhP8Xi3gfea+Swci9+6xPFUR
+         Y/sC1rQpfHyWlpjKA5BDYVbt45e198hyp1rkKgkfQhot2HX0Z33FVRBIVG0qc3gP3Fxz
+         v/xw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=yHtCrm1vpXjKX4N1mnKNL5adU51DyAdSJlvxQv4V/NA=;
+        b=d/c44Qml4jZPzEK8GrqORk7ad4or6aa6cL3dg1BXjDwA8anJJEgnSqoObnktJbE4DJ
+         5CfVhxoHv8mh9RoIttyoLB4G8ydzEDayY1IVy0LjVYDGR48MFx3iwwivtbNOlAJslpZV
+         GT/V5K0DHW3SxZMl0xAqrsEE0fQL2n0ThGczr3nBca3qNz/ofV+qEw/L3Ahr8HYt8dfB
+         FMZUTcn8IKqrKAr7SkYVDc54EtxtNwbFqvNXVsQ795UBhedsb4PqIBdh3uJM/vSKhEdw
+         JB+PUznjEFNUGHvLj6sM/GLUuLJn3EUwoU6yDnxuvOkZid0IfcBZFwTUtbgh6Nf+7pFc
+         y63w==
+X-Gm-Message-State: APjAAAVEFW8xRMkrhWoqkbRNkT7Glpy8GbYhCm62grqP54gqgDx4X1QZ
+        6axD7b1xIVQKO+A8/U657u9pjwImeaDnv8AgWl2dm5b92CIemzYj
+X-Google-Smtp-Source: APXvYqyrjjhYX1ifjAiN3g+ZP7Erd1VsBjPued7BNbEEL3rXO5YRWzGhAKzH27PO0NALlFJOKcpub1H1J61YN4gV0KI=
+X-Received: by 2002:a6b:ac85:: with SMTP id v127mr4880488ioe.97.1568134955308;
+ Tue, 10 Sep 2019 10:02:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAC_JBqofuyRiSmK0mFqVLaY=5k9MYmjGaVmggx2dn_YjN8VOmw@mail.gmail.com>
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9375 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1909100134
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9375 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1909100134
+References: <20190818185349.15275-1-colin.king@canonical.com>
+In-Reply-To: <20190818185349.15275-1-colin.king@canonical.com>
+From:   Jon Mason <jdmason@kudzu.us>
+Date:   Tue, 10 Sep 2019 18:02:27 +0100
+Message-ID: <CAPoiz9z-e_oK2urbkWcoa2qqybAFbR54SR7gGzU1EA19zrxc=A@mail.gmail.com>
+Subject: Re: [PATCH] NTB: ntb_transport: remove redundant assignment to rc
+To:     Colin King <colin.king@canonical.com>
+Cc:     Dave Jiang <dave.jiang@intel.com>, Allen Hubbe <allenbh@gmail.com>,
+        linux-ntb <linux-ntb@googlegroups.com>,
+        kernel-janitors@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The problem is that we dereference "privdata->pci_dev" when we print
-the error messages in amd_mp2_pci_init():
+On Sun, Aug 18, 2019 at 7:53 PM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> Variable rc is initialized to a value that is never read and it
+> is re-assigned later. The initialization is redundant and can be
+> removed.
 
-	dev_err(ndev_dev(privdata), "Failed to enable MP2 PCI device\n");
-		^^^^^^^^^^^^^^^^^
+Applied to ntb-next, thanks
 
-Fixes: 529766e0a011 ("i2c: Add drivers for the AMD PCIe MP2 I2C controller")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-v2: style change
-
- drivers/i2c/busses/i2c-amd-mp2-pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/i2c/busses/i2c-amd-mp2-pci.c b/drivers/i2c/busses/i2c-amd-mp2-pci.c
-index 5e4800d72e00..cd3fd5ee5f65 100644
---- a/drivers/i2c/busses/i2c-amd-mp2-pci.c
-+++ b/drivers/i2c/busses/i2c-amd-mp2-pci.c
-@@ -349,12 +349,12 @@ static int amd_mp2_pci_probe(struct pci_dev *pci_dev,
- 	if (!privdata)
- 		return -ENOMEM;
- 
-+	privdata->pci_dev = pci_dev;
- 	rc = amd_mp2_pci_init(privdata, pci_dev);
- 	if (rc)
- 		return rc;
- 
- 	mutex_init(&privdata->c2p_lock);
--	privdata->pci_dev = pci_dev;
- 
- 	pm_runtime_set_autosuspend_delay(&pci_dev->dev, 1000);
- 	pm_runtime_use_autosuspend(&pci_dev->dev);
--- 
-2.20.1
-
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/ntb/ntb_transport.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/ntb/ntb_transport.c b/drivers/ntb/ntb_transport.c
+> index 40c90ca10729..00a5d5764993 100644
+> --- a/drivers/ntb/ntb_transport.c
+> +++ b/drivers/ntb/ntb_transport.c
+> @@ -292,7 +292,7 @@ static int ntb_transport_bus_match(struct device *dev,
+>  static int ntb_transport_bus_probe(struct device *dev)
+>  {
+>         const struct ntb_transport_client *client;
+> -       int rc = -EINVAL;
+> +       int rc;
+>
+>         get_device(dev);
+>
+> --
+> 2.20.1
+>

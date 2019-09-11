@@ -2,112 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46355AF1D7
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Sep 2019 21:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 439B6AF3E7
+	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Sep 2019 03:19:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728707AbfIJTXS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 10 Sep 2019 15:23:18 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:49178 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727131AbfIJTXS (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 10 Sep 2019 15:23:18 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8AJIZMQ048968;
-        Tue, 10 Sep 2019 19:22:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=tksQD2Rpoes/XpADezB0hnxBUleozwtCafj604Oeb2A=;
- b=i2Zg7YwKCPWc5PIladBSkin1Ogyg6IVzqSySgL5xkhhEogQ28xOAjXET4JGka2Axh3Cj
- yug91VriQG4y04rrou4BHZJeT36/JBVNhoP+PSW4v8wbseAOkmVo9H1x+NvX0v7JhN6N
- NMsFTla22NwVDD9qBj1Q4egeMW9OUhURIVW7yXx8XbRQuFZTlFjNoV78KLH0XJ008Djj
- qrHlrqq+iN4LKyzqkTgLo75DWRSB1E/W0R+fa0Yh5+YdBpC48o2LL5DBQnO2PuuvA8v5
- NVEsj/9O/mFLjBeghCcRE428WiadbEua6X5YDL5UFLD4u/UcjKtm+AXji17XFVzKB9aq yg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 2uw1jkdkr8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 10 Sep 2019 19:22:21 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8AJIF7X067086;
-        Tue, 10 Sep 2019 19:22:20 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 2uwqku4nex-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 10 Sep 2019 19:22:20 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x8AJMIRK026489;
-        Tue, 10 Sep 2019 19:22:18 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 10 Sep 2019 12:22:18 -0700
-Date:   Tue, 10 Sep 2019 22:22:08 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Mao Wenan <maowenan@huawei.com>
-Cc:     vyasevich@gmail.com, nhorman@tuxdriver.com,
-        marcelo.leitner@gmail.com, davem@davemloft.net,
-        linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net 1/2] sctp: remove redundant assignment when call
- sctp_get_port_local
-Message-ID: <20190910192207.GE20699@kadam>
-References: <20190910071343.18808-1-maowenan@huawei.com>
- <20190910071343.18808-2-maowenan@huawei.com>
- <20190910185710.GF15977@kadam>
+        id S1726581AbfIKBTC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 Sep 2019 21:19:02 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:43384 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726043AbfIKBTC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 10 Sep 2019 21:19:02 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id A34B2D290D4AACE16FC9;
+        Wed, 11 Sep 2019 09:18:59 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 11 Sep 2019 09:18:52 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <tsbogend@alpha.franken.de>, <davem@davemloft.net>
+CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH v2 net] net: sonic: replace dev_kfree_skb in sonic_send_packet
+Date:   Wed, 11 Sep 2019 09:36:23 +0800
+Message-ID: <20190911013623.36897-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <a48a6690-eeb4-91d2-bed8-439d14b63e2f@cogentembedded.com>
+References: <a48a6690-eeb4-91d2-bed8-439d14b63e2f@cogentembedded.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190910185710.GF15977@kadam>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9376 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1909100181
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9376 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1909100181
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Sep 10, 2019 at 09:57:10PM +0300, Dan Carpenter wrote:
-> On Tue, Sep 10, 2019 at 03:13:42PM +0800, Mao Wenan wrote:
-> > There are more parentheses in if clause when call sctp_get_port_local
-> > in sctp_do_bind, and redundant assignment to 'ret'. This patch is to
-> > do cleanup.
-> > 
-> > Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> > ---
-> >  net/sctp/socket.c | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> > 
-> > diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-> > index 9d1f83b10c0a..766b68b55ebe 100644
-> > --- a/net/sctp/socket.c
-> > +++ b/net/sctp/socket.c
-> > @@ -399,9 +399,8 @@ static int sctp_do_bind(struct sock *sk, union sctp_addr *addr, int len)
-> >  	 * detection.
-> >  	 */
-> >  	addr->v4.sin_port = htons(snum);
-> > -	if ((ret = sctp_get_port_local(sk, addr))) {
-> > +	if (sctp_get_port_local(sk, addr))
-> >  		return -EADDRINUSE;
-> 
-> sctp_get_port_local() returns a long which is either 0,1 or a pointer
-> casted to long.  It's not documented what it means and neither of the
-> callers use the return since commit 62208f12451f ("net: sctp: simplify
-> sctp_get_port").
+sonic_send_packet will be processed in irq or non-irq 
+context, so it would better use dev_kfree_skb_any
+instead of dev_kfree_skb.
 
-Actually it was commit 4e54064e0a13 ("sctp: Allow only 1 listening
-socket with SO_REUSEADDR") from 11 years ago.  That patch fixed a bug,
-because before the code assumed that a pointer casted to an int was the
-same as a pointer casted to a long.
+Fixes: d9fb9f384292 ("*sonic/natsemi/ns83829: Move the National Semi-conductor drivers")
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ v2: change 'none irq' to 'non-irq'.
+ drivers/net/ethernet/natsemi/sonic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-regards,
-dan carpenter
+diff --git a/drivers/net/ethernet/natsemi/sonic.c b/drivers/net/ethernet/natsemi/sonic.c
+index 18fd62fbfb64..b339125b2f09 100644
+--- a/drivers/net/ethernet/natsemi/sonic.c
++++ b/drivers/net/ethernet/natsemi/sonic.c
+@@ -233,7 +233,7 @@ static int sonic_send_packet(struct sk_buff *skb, struct net_device *dev)
+ 	laddr = dma_map_single(lp->device, skb->data, length, DMA_TO_DEVICE);
+ 	if (!laddr) {
+ 		pr_err_ratelimited("%s: failed to map tx DMA buffer.\n", dev->name);
+-		dev_kfree_skb(skb);
++		dev_kfree_skb_any(skb);
+ 		return NETDEV_TX_OK;
+ 	}
+ 
+-- 
+2.20.1
 

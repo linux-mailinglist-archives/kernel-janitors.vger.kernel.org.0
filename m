@@ -2,135 +2,114 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB11AAFEEF
-	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Sep 2019 16:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00395AFF2C
+	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Sep 2019 16:51:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728354AbfIKOj3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 11 Sep 2019 10:39:29 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:40022 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728032AbfIKOj2 (ORCPT
+        id S1727656AbfIKOv7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 11 Sep 2019 10:51:59 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:57702 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727599AbfIKOv7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 11 Sep 2019 10:39:28 -0400
-Received: by mail-qk1-f194.google.com with SMTP id y144so12962517qkb.7;
-        Wed, 11 Sep 2019 07:39:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=TwN6OrjdKt+44ku7KhvZUr2O4KlJSVZ8kmhB6V+j7N8=;
-        b=t12WokXoJJ4K4NUUnEOf7/c8b7WRfEQ6bn7vsO5yCVsQ9XAK4VVGkp9+O8v1rgippv
-         3E0ddwd9nqFUG00UzxFS30O6gPjS9LBm10a+Zm8ipspUkj7Oc5oFkw2uOfPp24PR7tuF
-         oOQY2CtT5G7ia1Sm/h4yz1/MZPIGGeHe6ArOVTBZryVmnIuUpLD7szxh+2ec/T4e3Mw1
-         OoujYt5HBky2ouplU++zanDJ6CrUhhX3FY30dAT9fysCmK0kFyQLucIUvxqCtf0rZ9Hp
-         PXtaD8GdMfehs9dCLuz7cfVqU/wqp/xdGjB+L9hPmo58yIpvgobuCwLCTTLpG7ZmcGEt
-         hBrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=TwN6OrjdKt+44ku7KhvZUr2O4KlJSVZ8kmhB6V+j7N8=;
-        b=oD9UVBQNGsBRuWh9nxOOdsuudHkFIsqtdKbU7s9JpL5Ll/o9+KqoQsWtf+ZbzXIcRs
-         YYmGWNq+95dg1k3neJ0ALN5lcxhlPLiU2sMz8+PAyFgJ8KzpT0avvKyIYAyY2YIvo9iR
-         mrKz6L5ID4n4sGfwvVu5M0BY4zCtgANTyb0xrlsvyMCnhhMFCA97RQ3OXjx92z5oymbP
-         0DUu5FZ+Lmps1TOPM53uN/HAkIgKD8ipIiQPF88FGKdFKHV0/dMBMgruhdwW1fUVvj6W
-         ogq95YBJxJujRK41eIXx87r0/qo5bDnfA7qNFK21HL3IS0bRTOYlGiVWXnqs0nwf02G+
-         hM7w==
-X-Gm-Message-State: APjAAAW3fmiq3RiMiomH/47BGWQQU7JNPPjytvW81UUz+tAbWtYzQZSc
-        49CpNh3UfRr6ELLEKmOKYRg=
-X-Google-Smtp-Source: APXvYqzDyV+SgjNA5WEUzBQAIMOWaP+tdcQzaGUX0YOJ8JPSKoUht7TpayG/vdBITmUBUICF0Fd/pA==
-X-Received: by 2002:ae9:e00a:: with SMTP id m10mr37294490qkk.167.1568212766886;
-        Wed, 11 Sep 2019 07:39:26 -0700 (PDT)
-Received: from localhost.localdomain ([177.220.172.89])
-        by smtp.gmail.com with ESMTPSA id d45sm12194380qtc.70.2019.09.11.07.39.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Sep 2019 07:39:25 -0700 (PDT)
-Received: by localhost.localdomain (Postfix, from userid 1000)
-        id 75378C4A64; Wed, 11 Sep 2019 11:39:23 -0300 (-03)
-Date:   Wed, 11 Sep 2019 11:39:23 -0300
-From:   Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     maowenan <maowenan@huawei.com>, vyasevich@gmail.com,
-        nhorman@tuxdriver.com, davem@davemloft.net,
-        linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net 1/2] sctp: remove redundant assignment when call
- sctp_get_port_local
-Message-ID: <20190911143923.GE3499@localhost.localdomain>
-References: <20190910071343.18808-1-maowenan@huawei.com>
- <20190910071343.18808-2-maowenan@huawei.com>
- <20190910185710.GF15977@kadam>
- <20190910192207.GE20699@kadam>
- <53556c87-a351-4314-cbd9-49a39d0b41aa@huawei.com>
- <20190911083038.GF20699@kadam>
- <20190911143008.GD3499@localhost.localdomain>
+        Wed, 11 Sep 2019 10:51:59 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8BEi0YN161669;
+        Wed, 11 Sep 2019 14:51:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=GALjjsQ4XuYbTbMKG4BUnACZ78xWL+7Db4FVG5RO2+k=;
+ b=U0v+kCO3frbL4CXrNOLTwy2buzmL0rI1kd9rn4/GnGpuRAXLmxRVcw9t6z0hvwOnIPuF
+ khPYVpp2Qe5miSZXn8z4lXHttKdts51XbQL6Cqq5pSnuLgTwXdlbDYxxdwYDQvyG2Fto
+ GQHHZDZ+vxoWVXDizobo9cpByxp8NqS0w4aOGd3smYY2FknSZnmGsDRUwYsuYe97uXh+
+ PZiKNMhkHRQlWWHCOBdNzDC0EHm7l4SjYRHrui2t/mxfXyVSSjxgbFQU1I8OphBvUAMq
+ oq+Gf5iBsLoR39U6uzaO33wWwJ4dvt3YxFI46Ppw2APE7e5F5q2DFhVvzBFVUFk9ded4 Fg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2uw1jyakas-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 11 Sep 2019 14:51:32 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8BEhja2115834;
+        Wed, 11 Sep 2019 14:51:31 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 2uxk0tach8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 11 Sep 2019 14:51:31 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x8BEkOxI002956;
+        Wed, 11 Sep 2019 14:46:24 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 11 Sep 2019 07:46:23 -0700
+Date:   Wed, 11 Sep 2019 17:46:12 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
+Cc:     Stefan Wahren <wahrenst@gmx.net>, devel@driverdev.osuosl.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        kernel-janitors@vger.kernel.org,
+        Tobias =?iso-8859-1?Q?B=FCttner?= <tobias.buettner@fau.de>,
+        Eric Anholt <eric@anholt.net>,
+        linux-rpi-kernel@lists.infradead.org,
+        Dominic Braun <inf.braun@fau.de>
+Subject: Re: [PATCH] staging: vhciq_core: replace snprintf with scnprintf
+Message-ID: <20190911144312.GL15977@kadam>
+References: <20190911135112.GA5569@SARKAR>
+ <7bf3c74d-e690-1ef1-dd74-ac98667e42ef@i2se.com>
+ <20190911142543.GA9873@SARKAR>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190911143008.GD3499@localhost.localdomain>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <20190911142543.GA9873@SARKAR>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9377 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1909110138
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9377 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1909110138
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Sep 11, 2019 at 11:30:08AM -0300, Marcelo Ricardo Leitner wrote:
-> On Wed, Sep 11, 2019 at 11:30:38AM +0300, Dan Carpenter wrote:
-> > On Wed, Sep 11, 2019 at 09:30:47AM +0800, maowenan wrote:
-> > > 
-> > > 
-> > > On 2019/9/11 3:22, Dan Carpenter wrote:
-> > > > On Tue, Sep 10, 2019 at 09:57:10PM +0300, Dan Carpenter wrote:
-> > > >> On Tue, Sep 10, 2019 at 03:13:42PM +0800, Mao Wenan wrote:
-> > > >>> There are more parentheses in if clause when call sctp_get_port_local
-> > > >>> in sctp_do_bind, and redundant assignment to 'ret'. This patch is to
-> > > >>> do cleanup.
-> > > >>>
-> > > >>> Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> > > >>> ---
-> > > >>>  net/sctp/socket.c | 3 +--
-> > > >>>  1 file changed, 1 insertion(+), 2 deletions(-)
-> > > >>>
-> > > >>> diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-> > > >>> index 9d1f83b10c0a..766b68b55ebe 100644
-> > > >>> --- a/net/sctp/socket.c
-> > > >>> +++ b/net/sctp/socket.c
-> > > >>> @@ -399,9 +399,8 @@ static int sctp_do_bind(struct sock *sk, union sctp_addr *addr, int len)
-> > > >>>  	 * detection.
-> > > >>>  	 */
-> > > >>>  	addr->v4.sin_port = htons(snum);
-> > > >>> -	if ((ret = sctp_get_port_local(sk, addr))) {
-> > > >>> +	if (sctp_get_port_local(sk, addr))
-> > > >>>  		return -EADDRINUSE;
-> > > >>
-> > > >> sctp_get_port_local() returns a long which is either 0,1 or a pointer
-> > > >> casted to long.  It's not documented what it means and neither of the
-> > > >> callers use the return since commit 62208f12451f ("net: sctp: simplify
-> > > >> sctp_get_port").
-> > > > 
-> > > > Actually it was commit 4e54064e0a13 ("sctp: Allow only 1 listening
-> > > > socket with SO_REUSEADDR") from 11 years ago.  That patch fixed a bug,
-> > > > because before the code assumed that a pointer casted to an int was the
-> > > > same as a pointer casted to a long.
-> > > 
-> > > commit 4e54064e0a13 treated non-zero return value as unexpected, so the current
-> > > cleanup is ok?
+On Wed, Sep 11, 2019 at 07:55:43PM +0530, Rohit Sarkar wrote:
+> On Wed, Sep 11, 2019 at 04:17:25PM +0200, Stefan Wahren wrote:
+> > Hi Rohit,
 > > 
-> > Yeah.  It's fine, I was just confused why we weren't preserving the
-> > error code and then I saw that we didn't return errors at all and got
-> > confused.
+> > On 11.09.19 15:51, Rohit Sarkar wrote:
+> > > When the number of bytes to be printed exceeds the limit snprintf
+> > > returns the number of bytes that would have been printed (if there was
+> > > no truncation). This might cause issues, hence use scnprintf which
+> > > returns the actual number of bytes printed to buffer always
+> > >
+> > > Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
+> > thanks for your patch. Did you test your change on the Raspberry Pi?
 > 
-> But please lets seize the moment and do the change Dean suggested.
+> Hey Stefan,
+> No I haven't done so as I thought this is a generic change?
+> Will that be necessary?
 
-*Dan*, sorry.
+No.  It's not required.  The patch is easy to audit and clearly
+harmless.
 
-> This was the last place saving this return value somewhere. It makes
-> sense to cleanup sctp_get_port_local() now and remove that masked
-> pointer return.
-> 
-> Then you may also cleanup:
-> socket.c:       return !!sctp_get_port_local(sk, &addr);
-> as it will be a direct map.
-> 
->   Marcelo
-> 
+The question would be does it actually fix a bug?  I looked at it and
+some of the strings are definitely a bit long.  The longest one I saw
+was:
+	"  Slots: %d available (%d data), %d recyclable, %d stalls (%d data)",
+	123456789 123456789 123456789 123456789 123456789 123456789 123456789
+
+If you get a lot of stalls, then that looks like it could lead to a
+read overflow (an information leak).  Either way this does make the
+code a bit easier to audit so it seems like a nice cleanup.  Next time
+though, I really would prefer if you put this sort analysis in your
+commit message so I can just glance over it.  (I'm lazy).
+
+Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+regards,
+dan carpenter

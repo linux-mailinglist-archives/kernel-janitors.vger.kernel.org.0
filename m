@@ -2,60 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76B98B0057
-	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Sep 2019 17:40:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1506B00C1
+	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Sep 2019 18:02:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728637AbfIKPju (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 11 Sep 2019 11:39:50 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:34291 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728412AbfIKPju (ORCPT
+        id S1728894AbfIKQCw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 11 Sep 2019 12:02:52 -0400
+Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:54688 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728800AbfIKQCw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 11 Sep 2019 11:39:50 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1i84ih-0007gj-Fc; Wed, 11 Sep 2019 15:39:47 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Andy Gross <agross@kernel.org>, Rob Herring <robh+dt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] bus: qcom: fix spelling mistake "ambigous" -> "ambiguous"
-Date:   Wed, 11 Sep 2019 16:39:47 +0100
-Message-Id: <20190911153947.10203-1-colin.king@canonical.com>
+        Wed, 11 Sep 2019 12:02:52 -0400
+Received: from localhost.localdomain ([90.126.97.183])
+        by mwinf5d90 with ME
+        id 0G2h2100b3xPcdm03G2i0h; Wed, 11 Sep 2019 18:02:49 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 11 Sep 2019 18:02:49 +0200
+X-ME-IP: 90.126.97.183
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     davem@davemloft.net, vyasevich@gmail.com, nhorman@tuxdriver.com,
+        marcelo.leitner@gmail.com
+Cc:     linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] sctp: Fix the link time qualifier of 'sctp_ctrlsock_exit()'
+Date:   Wed, 11 Sep 2019 18:02:39 +0200
+Message-Id: <20190911160239.10734-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+The '.exit' functions from 'pernet_operations' structure should be marked
+as __net_exit, not __net_init.
 
-There is a spelling mistake on the documentation. Fix it.
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Fixes: 8e2d61e0aed2 ("sctp: fix race on protocol/netns initialization")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- Documentation/devicetree/bindings/bus/qcom,ebi2.txt | 2 +-
+ net/sctp/protocol.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/bus/qcom,ebi2.txt b/Documentation/devicetree/bindings/bus/qcom,ebi2.txt
-index 5a7d567f6833..5058aa2c63b2 100644
---- a/Documentation/devicetree/bindings/bus/qcom,ebi2.txt
-+++ b/Documentation/devicetree/bindings/bus/qcom,ebi2.txt
-@@ -71,7 +71,7 @@ Optional subnodes:
+diff --git a/net/sctp/protocol.c b/net/sctp/protocol.c
+index 2d47adcb4cbe..53746ffeeca3 100644
+--- a/net/sctp/protocol.c
++++ b/net/sctp/protocol.c
+@@ -1336,7 +1336,7 @@ static int __net_init sctp_ctrlsock_init(struct net *net)
+ 	return status;
+ }
  
- The following optional properties are properties that can be tagged onto
- any device subnode. We are assuming that there can be only ONE device per
--chipselect subnode, else the properties will become ambigous.
-+chipselect subnode, else the properties will become ambiguous.
- 
- Optional properties arrays for SLOW chip selects:
- - qcom,xmem-recovery-cycles: recovery cycles is the time the memory continues to
+-static void __net_init sctp_ctrlsock_exit(struct net *net)
++static void __net_exit sctp_ctrlsock_exit(struct net *net)
+ {
+ 	/* Free the control endpoint.  */
+ 	inet_ctl_sock_destroy(net->sctp.ctl_sock);
 -- 
 2.20.1
 

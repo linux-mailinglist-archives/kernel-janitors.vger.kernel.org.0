@@ -2,48 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00395AFF2C
-	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Sep 2019 16:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32997AFF74
+	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Sep 2019 17:03:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727656AbfIKOv7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 11 Sep 2019 10:51:59 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:57702 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727599AbfIKOv7 (ORCPT
+        id S1727599AbfIKPDG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 11 Sep 2019 11:03:06 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:39879 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726762AbfIKPDG (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 11 Sep 2019 10:51:59 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8BEi0YN161669;
-        Wed, 11 Sep 2019 14:51:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=GALjjsQ4XuYbTbMKG4BUnACZ78xWL+7Db4FVG5RO2+k=;
- b=U0v+kCO3frbL4CXrNOLTwy2buzmL0rI1kd9rn4/GnGpuRAXLmxRVcw9t6z0hvwOnIPuF
- khPYVpp2Qe5miSZXn8z4lXHttKdts51XbQL6Cqq5pSnuLgTwXdlbDYxxdwYDQvyG2Fto
- GQHHZDZ+vxoWVXDizobo9cpByxp8NqS0w4aOGd3smYY2FknSZnmGsDRUwYsuYe97uXh+
- PZiKNMhkHRQlWWHCOBdNzDC0EHm7l4SjYRHrui2t/mxfXyVSSjxgbFQU1I8OphBvUAMq
- oq+Gf5iBsLoR39U6uzaO33wWwJ4dvt3YxFI46Ppw2APE7e5F5q2DFhVvzBFVUFk9ded4 Fg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 2uw1jyakas-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 11 Sep 2019 14:51:32 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8BEhja2115834;
-        Wed, 11 Sep 2019 14:51:31 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 2uxk0tach8-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 11 Sep 2019 14:51:31 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x8BEkOxI002956;
-        Wed, 11 Sep 2019 14:46:24 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 11 Sep 2019 07:46:23 -0700
-Date:   Wed, 11 Sep 2019 17:46:12 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
+        Wed, 11 Sep 2019 11:03:06 -0400
+Received: by mail-pl1-f194.google.com with SMTP id bd8so10264565plb.6
+        for <kernel-janitors@vger.kernel.org>; Wed, 11 Sep 2019 08:03:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=d5/f69PU6WyAFI1qX9x9zilSuMPIBTYp7Aohz5P1zyE=;
+        b=gG9oG4X6t6Mz6yTDo04xFkWf20EXHrv09t20/LH+aSTzrh2RTw+QSzwYppTHh/+iGr
+         Xy3YKvNKV7lEtA8kVH00D0UqYTRP3q7UXUqGKtAqbp5+V+Ol5vglGzAkD6SdPRg6TEz8
+         fAvO6N4Pz98rdBLVIlE63Pp79dtfoIMtgibcRylcAIO4eYNTWqxjWNwjzdmqYIue3w5H
+         xXSQmYDJ3eRrJLWtftS6E2cn2mkOoNkJgam+8KNmTWWFY2RK+wekb8zPTnID9S69M3u9
+         m9o8lhy3T9RKfd2gbUZ6R9z2h7AM8nABVyGJ/4AlWeGVG7pcjaxJgQ3YrEwRTy8f0gbj
+         2Gvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=d5/f69PU6WyAFI1qX9x9zilSuMPIBTYp7Aohz5P1zyE=;
+        b=H9WOUgpbbfyzW+WUguW7B9jateV3Dt6uqQdlRSx+OQf1J07/Y4dUkNP1gYiXIbP7PJ
+         HL5AKecEh16k+0za28G5AtinyID2E0eCZt0RzE/lhfmlqhqAKY/wMzAKD5JBn+lYZXzC
+         fqiDYGpE/59ngW/L/KCeyas7y1lCnAj4IfsJaAhkzDXKjIzSUTx73e9eDAe1uY73lv5J
+         XvLYF59lNo1PDkt23ELvSauTnBEFHLoG3sd2oTHv/2ZlsVDAgDbM0AiCrgvhvBvAzIp9
+         XKJ9C92Bv0sLVsHBJ/VQ0RrlYRYiz3b57QH8OBKI4HavHCmH516H8K5wbmTtUy0LJ5Of
+         Xx/A==
+X-Gm-Message-State: APjAAAXEjHvwNhEmv8EJ5xWhOfnCRPaynpXOGUv1ZZ/fxmQbT07i4FbC
+        3d//So15q6mbfAzDEJbA/iI=
+X-Google-Smtp-Source: APXvYqwAK3KLPcDsX3lbhfke/SAhZz2AVDZWn4jmFCZs0QExQGndexzB+79XY51SCLMPaunSN7zKbA==
+X-Received: by 2002:a17:902:9d90:: with SMTP id c16mr26190254plq.12.1568214185878;
+        Wed, 11 Sep 2019 08:03:05 -0700 (PDT)
+Received: from SARKAR ([1.186.0.68])
+        by smtp.gmail.com with ESMTPSA id v10sm2771364pjk.23.2019.09.11.08.03.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Sep 2019 08:03:05 -0700 (PDT)
+Date:   Wed, 11 Sep 2019 20:33:00 +0530
+From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
 Cc:     Stefan Wahren <wahrenst@gmx.net>, devel@driverdev.osuosl.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         kernel-janitors@vger.kernel.org,
@@ -52,64 +56,67 @@ Cc:     Stefan Wahren <wahrenst@gmx.net>, devel@driverdev.osuosl.org,
         linux-rpi-kernel@lists.infradead.org,
         Dominic Braun <inf.braun@fau.de>
 Subject: Re: [PATCH] staging: vhciq_core: replace snprintf with scnprintf
-Message-ID: <20190911144312.GL15977@kadam>
+Message-ID: <20190911150300.GA12027@SARKAR>
 References: <20190911135112.GA5569@SARKAR>
  <7bf3c74d-e690-1ef1-dd74-ac98667e42ef@i2se.com>
  <20190911142543.GA9873@SARKAR>
+ <20190911144312.GL15977@kadam>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190911142543.GA9873@SARKAR>
+In-Reply-To: <20190911144312.GL15977@kadam>
 User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9377 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1906280000 definitions=main-1909110138
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9377 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
- definitions=main-1909110138
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Sep 11, 2019 at 07:55:43PM +0530, Rohit Sarkar wrote:
-> On Wed, Sep 11, 2019 at 04:17:25PM +0200, Stefan Wahren wrote:
-> > Hi Rohit,
+On Wed, Sep 11, 2019 at 05:46:12PM +0300, Dan Carpenter wrote:
+> On Wed, Sep 11, 2019 at 07:55:43PM +0530, Rohit Sarkar wrote:
+> > On Wed, Sep 11, 2019 at 04:17:25PM +0200, Stefan Wahren wrote:
+> > > Hi Rohit,
+> > > 
+> > > On 11.09.19 15:51, Rohit Sarkar wrote:
+> > > > When the number of bytes to be printed exceeds the limit snprintf
+> > > > returns the number of bytes that would have been printed (if there was
+> > > > no truncation). This might cause issues, hence use scnprintf which
+> > > > returns the actual number of bytes printed to buffer always
+> > > >
+> > > > Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
+> > > thanks for your patch. Did you test your change on the Raspberry Pi?
 > > 
-> > On 11.09.19 15:51, Rohit Sarkar wrote:
-> > > When the number of bytes to be printed exceeds the limit snprintf
-> > > returns the number of bytes that would have been printed (if there was
-> > > no truncation). This might cause issues, hence use scnprintf which
-> > > returns the actual number of bytes printed to buffer always
-> > >
-> > > Signed-off-by: Rohit Sarkar <rohitsarkar5398@gmail.com>
-> > thanks for your patch. Did you test your change on the Raspberry Pi?
+> > Hey Stefan,
+> > No I haven't done so as I thought this is a generic change?
+> > Will that be necessary?
 > 
-> Hey Stefan,
-> No I haven't done so as I thought this is a generic change?
-> Will that be necessary?
+> No.  It's not required.  The patch is easy to audit and clearly
+> harmless.
+> 
+> The question would be does it actually fix a bug?  I looked at it and
+> some of the strings are definitely a bit long.  The longest one I saw
+> was:
+> 	"  Slots: %d available (%d data), %d recyclable, %d stalls (%d data)",
+> 	123456789 123456789 123456789 123456789 123456789 123456789 123456789
+> 
+> If you get a lot of stalls, then that looks like it could lead to a
+> read overflow (an information leak).  Either way this does make the
+> code a bit easier to audit so it seems like a nice cleanup.  Next time
+> though, I really would prefer if you put this sort analysis in your
+> commit message so I can just glance over it.  (I'm lazy).
+> 
+> Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
+> 
+> regards,
+> dan carpenter
 
-No.  It's not required.  The patch is easy to audit and clearly
-harmless.
+Hey Dan,
+Thanks for reviewing this :)
+I will make sure to add some analysis the next time I do a clean up like
+this.
 
-The question would be does it actually fix a bug?  I looked at it and
-some of the strings are definitely a bit long.  The longest one I saw
-was:
-	"  Slots: %d available (%d data), %d recyclable, %d stalls (%d data)",
-	123456789 123456789 123456789 123456789 123456789 123456789 123456789
-
-If you get a lot of stalls, then that looks like it could lead to a
-read overflow (an information leak).  Either way this does make the
-code a bit easier to audit so it seems like a nice cleanup.  Next time
-though, I really would prefer if you put this sort analysis in your
-commit message so I can just glance over it.  (I'm lazy).
-
-Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-regards,
-dan carpenter
+There are a lot of usages of "snprintf" throughout the staging
+directory (315 to be exact)
+Would it be worthwhile to find ones that may cause an information leak
+and replace them with "scnprintf"?
+Thanks,
+Rohit

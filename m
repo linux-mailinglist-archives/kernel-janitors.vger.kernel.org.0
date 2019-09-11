@@ -2,76 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DABBCB018C
-	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Sep 2019 18:24:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9EDEB029E
+	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Sep 2019 19:25:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728937AbfIKQYE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 11 Sep 2019 12:24:04 -0400
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:38143 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728878AbfIKQYE (ORCPT
+        id S1729203AbfIKRY7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 11 Sep 2019 13:24:59 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:52756 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728897AbfIKRY7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 11 Sep 2019 12:24:04 -0400
-Received: by mail-qt1-f195.google.com with SMTP id b2so25966870qtq.5;
-        Wed, 11 Sep 2019 09:24:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=bnfqvKEw5aP7UOEOx3W9CaWGunUzL+uqs10GsHrVCfw=;
-        b=NZwPECIkWJiT0fSn6+EXIFAJjvPXWFANy47Z7/MYkI02KbGTvRm6cQO4BMCfTXp/fi
-         WnJsb19mf0JCzWKwvFLtpjZfyo3kOylT4miFCP/jblS1V9OHR5dy9Hu8ieAMlWTC6IR/
-         1SJsZxTAowJCFmHI0Vn67zovAr1oC63WVsqe0RVBprZ5N7ToQcFkmfBdIoRdQPxCifUv
-         2dC2NkXdBqxqWmTMzg0b2zwNdkkYOpeV03ITq3pvlCVD4Js9dd3Fb2nZBNIFs2IdFfmK
-         F0KIN+utoFzEEypmv/aoXrabLJjn4FXndwkWffXkjoSsB+sxQSoizkNHlFlwj0L5/FR4
-         Hqlg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=bnfqvKEw5aP7UOEOx3W9CaWGunUzL+uqs10GsHrVCfw=;
-        b=rvZxhhrsBCwbhh3Sw7ZPkbSGW2xMF9MeDAcmVF55HfrNYsoytZUbqO4mj1h65SfQ5+
-         2KDjAUi2eoaHdD/i7yezRNf0EqhQv1lqk61dA1OX9wRNa3KZAeBqS6TMgRUoaH2UBOQV
-         NOCSUlnDBXSq+a19c3vZUJohaw8NJ27jyVs2Ym2i1IHgCdWlr5MMiKmwxKLBc9BDoNn5
-         g610snLSwNQFMepr9gyaoM/lM36ah9iO2m8Naqz8f1MLfuzrnaf1BmItD/VEWfkBa9DI
-         zZuFFHu+bPaa3V9Om06tDZ4/o12WotwCDedwuF4x+uQz1wygQLtc/LqGeeYlazHaV02P
-         BtDQ==
-X-Gm-Message-State: APjAAAWtDgI5+Kzk06fsTubSCYtuzV5SOReun1tU0r8oied2LfuoTUgY
-        KX/3Bp2C+4hOs7N5uMLUSVo=
-X-Google-Smtp-Source: APXvYqyOrMgmZtG9BR8En0nRXNNcI5IdgfImVx8JhPlqNuKJolWpipdRHV24z/lyq2y5BlMOuSsJIg==
-X-Received: by 2002:ac8:2e58:: with SMTP id s24mr31750641qta.52.1568219043497;
-        Wed, 11 Sep 2019 09:24:03 -0700 (PDT)
-Received: from localhost.localdomain ([2001:1284:f016:e600:cd79:21fe:b069:7c04])
-        by smtp.gmail.com with ESMTPSA id b192sm10268684qkg.39.2019.09.11.09.24.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Sep 2019 09:24:01 -0700 (PDT)
-Received: by localhost.localdomain (Postfix, from userid 1000)
-        id 8B566C4A64; Wed, 11 Sep 2019 13:23:59 -0300 (-03)
-Date:   Wed, 11 Sep 2019 13:23:59 -0300
-From:   Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     davem@davemloft.net, vyasevich@gmail.com, nhorman@tuxdriver.com,
-        linux-sctp@vger.kernel.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] sctp: Fix the link time qualifier of
- 'sctp_ctrlsock_exit()'
-Message-ID: <20190911162359.GJ3431@localhost.localdomain>
-References: <20190911160239.10734-1-christophe.jaillet@wanadoo.fr>
+        Wed, 11 Sep 2019 13:24:59 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8BHNx0G181328;
+        Wed, 11 Sep 2019 17:24:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=VWik13ipRm/Hq5xXs2BO/ZA9+psKkHTYcDciUtPvFGk=;
+ b=FOlnkmNMYpZSJciKOEf8UOquN/Ieu7QWq/eYhP/64U5tZ9Iu+grNzpsOT+coBCCeEZh4
+ CGQL8IGXTgfhYUfzN3MpgDhpsFtXT4YctwTm7oeWfyp0cJBkyFjHgfovfGYKR7Z9TFBD
+ djSYrBNLrxdO2XrVOKKo+rWTeSiQXOzu4r5W7MlQJK+k++D0P/ChjuwX3+V4ZhQVylPA
+ nCKRY4EmjYj4J+yAIL1vl0F92EGefDDHq7q8jliqgpCgQZ2/HPeSkoaYnbymHTZKC1Mb
+ G5CRwH0arIsyUxrnH8l10geCt9CHrGPSNz81dxE6+Dx6BVrtc/Wa+GlST4njo5Htqxzh 4g== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2uw1m93nwb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 11 Sep 2019 17:24:34 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8BHOL9V006379;
+        Wed, 11 Sep 2019 17:24:33 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 2uxk0tfbpr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 11 Sep 2019 17:24:33 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x8BHOTtE032582;
+        Wed, 11 Sep 2019 17:24:30 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 11 Sep 2019 10:24:29 -0700
+Date:   Wed, 11 Sep 2019 20:24:22 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
+Cc:     Stefan Wahren <wahrenst@gmx.net>, devel@driverdev.osuosl.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        kernel-janitors@vger.kernel.org,
+        Tobias =?iso-8859-1?Q?B=FCttner?= <tobias.buettner@fau.de>,
+        Eric Anholt <eric@anholt.net>,
+        linux-rpi-kernel@lists.infradead.org,
+        Dominic Braun <inf.braun@fau.de>
+Subject: Re: [PATCH] staging: vhciq_core: replace snprintf with scnprintf
+Message-ID: <20190911172422.GK20699@kadam>
+References: <20190911135112.GA5569@SARKAR>
+ <7bf3c74d-e690-1ef1-dd74-ac98667e42ef@i2se.com>
+ <20190911142543.GA9873@SARKAR>
+ <20190911144312.GL15977@kadam>
+ <20190911150300.GA12027@SARKAR>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190911160239.10734-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <20190911150300.GA12027@SARKAR>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9377 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=693
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1906280000 definitions=main-1909110160
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9377 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=763 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1906280000
+ definitions=main-1909110160
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Sep 11, 2019 at 06:02:39PM +0200, Christophe JAILLET wrote:
-> The '.exit' functions from 'pernet_operations' structure should be marked
-> as __net_exit, not __net_init.
-> 
-> Fixes: 8e2d61e0aed2 ("sctp: fix race on protocol/netns initialization")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+On Wed, Sep 11, 2019 at 08:33:00PM +0530, Rohit Sarkar wrote:
+> There are a lot of usages of "snprintf" throughout the staging
+> directory (315 to be exact)
+> Would it be worthwhile to find ones that may cause an information leak
+> and replace them with "scnprintf"?
 
-Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+A lot of times it's really easy to see that the uses are safe, so
+snprintf() is fine in that case.  If it's not obviously safe then change
+it.
+
+regards,
+dan carpenter
+

@@ -2,53 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1343B0CC6
-	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Sep 2019 12:22:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD30BB0E5B
+	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Sep 2019 13:56:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730936AbfILKVo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 12 Sep 2019 06:21:44 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:55488 "EHLO
+        id S1731499AbfILL4o (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 12 Sep 2019 07:56:44 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:56716 "EHLO
         shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730470AbfILKVn (ORCPT
+        with ESMTP id S1731283AbfILL4o (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 12 Sep 2019 06:21:43 -0400
+        Thu, 12 Sep 2019 07:56:44 -0400
 Received: from localhost (unknown [148.69.85.38])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 48418120477BA;
-        Thu, 12 Sep 2019 03:21:42 -0700 (PDT)
-Date:   Thu, 12 Sep 2019 12:21:40 +0200 (CEST)
-Message-Id: <20190912.122140.1024775651317943407.davem@davemloft.net>
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id B8B63147F7621;
+        Thu, 12 Sep 2019 04:56:42 -0700 (PDT)
+Date:   Thu, 12 Sep 2019 13:56:40 +0200 (CEST)
+Message-Id: <20190912.135640.688251444357964226.davem@davemloft.net>
 To:     christophe.jaillet@wanadoo.fr
-Cc:     kuznet@ms2.inr.ac.ru, yoshfuji@linux-ipv6.org,
+Cc:     vyasevich@gmail.com, nhorman@tuxdriver.com,
+        marcelo.leitner@gmail.com, linux-sctp@vger.kernel.org,
         netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] ipv6: Fix the link time qualifier of
- 'ping_v6_proc_exit_net()'
+Subject: Re: [PATCH] sctp: Fix the link time qualifier of
+ 'sctp_ctrlsock_exit()'
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190910112959.9222-1-christophe.jaillet@wanadoo.fr>
-References: <20190910112959.9222-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20190911160239.10734-1-christophe.jaillet@wanadoo.fr>
+References: <20190911160239.10734-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: Mew version 6.8 on Emacs 26.2
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 12 Sep 2019 03:21:43 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 12 Sep 2019 04:56:44 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Tue, 10 Sep 2019 13:29:59 +0200
+Date: Wed, 11 Sep 2019 18:02:39 +0200
 
 > The '.exit' functions from 'pernet_operations' structure should be marked
 > as __net_exit, not __net_init.
 > 
-> Fixes: d862e5461423 ("net: ipv6: Implement /proc/net/icmp6.")
+> Fixes: 8e2d61e0aed2 ("sctp: fix race on protocol/netns initialization")
 > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> Untested, but using __net_exit looks consistent with other
-> pernet_operations.exit use case.
 
-Looks good, applied.
+Applied and queued up for -stable.

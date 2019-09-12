@@ -2,51 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD30BB0E5B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Sep 2019 13:56:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABCCBB0E6F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Sep 2019 14:01:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731499AbfILL4o (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 12 Sep 2019 07:56:44 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:56716 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731283AbfILL4o (ORCPT
+        id S1731507AbfILMBR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 12 Sep 2019 08:01:17 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:42028 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731439AbfILMBR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 12 Sep 2019 07:56:44 -0400
-Received: from localhost (unknown [148.69.85.38])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id B8B63147F7621;
-        Thu, 12 Sep 2019 04:56:42 -0700 (PDT)
-Date:   Thu, 12 Sep 2019 13:56:40 +0200 (CEST)
-Message-Id: <20190912.135640.688251444357964226.davem@davemloft.net>
-To:     christophe.jaillet@wanadoo.fr
-Cc:     vyasevich@gmail.com, nhorman@tuxdriver.com,
-        marcelo.leitner@gmail.com, linux-sctp@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Thu, 12 Sep 2019 08:01:17 -0400
+Received: by mail-lf1-f65.google.com with SMTP id c195so4241460lfg.9
+        for <kernel-janitors@vger.kernel.org>; Thu, 12 Sep 2019 05:01:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/+KUaKRozmj9MhbNeHfmxbGBvkbW3cvd5G+N9N9TBXM=;
+        b=GKv1qDnJSNRxPyoVA5mhBQU/+djHCITs/mJgu5UnUu/V/BNM4EkaJxhPIoQiXPK/6/
+         lzdLo397iX1mgkC5aSm7IL420wqfqyVnaCzdcEtSmsZW+iH2325tS3398AJve7mRdaO6
+         JJjRd5w0yJ6BZz60dwRQ/Ec9BkmgWDYRo9beV/fX8pxWTMw4Chp8RAWzA+5+Ln/9hWOz
+         A9A+LBNXviLTBak+0NnUkGKNfaeNfpsaf5/MBd3d8DfGT+bZh0icEpth2XIdJONnM9zW
+         7gyYH+X5olhxuE+AniDlfUtPXF86f++QHrAMjmcK9NyTdnAH0Go252exevHp2OhXVzH3
+         /Vbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/+KUaKRozmj9MhbNeHfmxbGBvkbW3cvd5G+N9N9TBXM=;
+        b=bas4lGa4MbQL388+bxrSYJfxNTPbeLhs1mvLQaLGbUr3b9vguxoz2ofvzF49z79vsD
+         R30UfvX00sYpnK9pu4vKuvddHxNOrSQQOrxtwj3eSbKtsc0E/bm7WIyi36tQUCeIU+tw
+         ChOqO8dPkH1ybZ+ZAFmzhz/pcI7bX4EVO0KbUMKQCSpLJfxxFgx95AdXTiOdq6V+jCju
+         RvvkUmBONbTLNa5T5vq+9gMEg1o6S+IEMjmuugFcYeZ80rdEbMzb43EVsV0/v6hO7ANp
+         l1OVAn9RveRCEZlnu+ByP0j7q9TfHpYdba0gxaWPTRJPC6s+FV8eCCicvOKScsvy03Pt
+         doVw==
+X-Gm-Message-State: APjAAAV81vcwjHhrCot0DOMELlvjF4uOyZlyg0QR9VBHZpbaoVGcmook
+        viqbiOSw07n4k/BuUN1iqBxISln6uDOepqNHD82w8g==
+X-Google-Smtp-Source: APXvYqz7TmCb0iFOGja4A3HJL4YEW41PboaxDwufY4ujKzw1ClTCCkOCVi7WXFPfX/pILiG588HXmotxuzPvBcWEELg=
+X-Received: by 2002:a19:117:: with SMTP id 23mr27924292lfb.115.1568289675144;
+ Thu, 12 Sep 2019 05:01:15 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190827093927.GB8443@mwanda>
+In-Reply-To: <20190827093927.GB8443@mwanda>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 12 Sep 2019 13:01:03 +0100
+Message-ID: <CACRpkdbG0bz40U8qFSvi6ds-8XiUSX+yj1uC4XynyAfJWfantA@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: sh-pfc: Unlock on error in sh_pfc_func_set_mux()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] sctp: Fix the link time qualifier of
- 'sctp_ctrlsock_exit()'
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190911160239.10734-1-christophe.jaillet@wanadoo.fr>
-References: <20190911160239.10734-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: Mew version 6.8 on Emacs 26.2
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 12 Sep 2019 04:56:44 -0700 (PDT)
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Wed, 11 Sep 2019 18:02:39 +0200
+On Tue, Aug 27, 2019 at 10:39 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-> The '.exit' functions from 'pernet_operations' structure should be marked
-> as __net_exit, not __net_init.
-> 
-> Fixes: 8e2d61e0aed2 ("sctp: fix race on protocol/netns initialization")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> We need to unlock and enable IRQs before we return on this error path.
+>
+> Fixes: 8a0cc47ccc7c ("pinctrl: sh-pfc: Rollback to mux if required when the gpio is freed")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Applied and queued up for -stable.
+Applied for v5.4 with the ACKs.
+
+Yours,
+Linus Walleij

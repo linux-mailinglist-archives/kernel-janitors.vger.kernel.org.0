@@ -2,97 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4768EB0741
-	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Sep 2019 05:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B6B4B0955
+	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Sep 2019 09:19:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729771AbfILDpG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 11 Sep 2019 23:45:06 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:2267 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727873AbfILDpF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 11 Sep 2019 23:45:05 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id D6A97EC9127A2D852B99;
-        Thu, 12 Sep 2019 11:45:03 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 12 Sep 2019 11:44:53 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <vyasevich@gmail.com>, <nhorman@tuxdriver.com>,
-        <marcelo.leitner@gmail.com>, <davem@davemloft.net>
-CC:     <linux-sctp@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Mao Wenan <maowenan@huawei.com>, Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH v2 net 3/3] sctp: destroy bucket if failed to bind addr
-Date:   Thu, 12 Sep 2019 12:02:19 +0800
-Message-ID: <20190912040219.67517-4-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190912040219.67517-1-maowenan@huawei.com>
-References: <7a450679-40ca-8a84-4cba-7a16f22ea3c0@huawei.com>
- <20190912040219.67517-1-maowenan@huawei.com>
+        id S1725972AbfILHTR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 12 Sep 2019 03:19:17 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:60076 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729813AbfILHTQ (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 12 Sep 2019 03:19:16 -0400
+Received: from pps.filterd (m0098394.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x8C7HcRC116931
+        for <kernel-janitors@vger.kernel.org>; Thu, 12 Sep 2019 03:19:15 -0400
+Received: from e06smtp01.uk.ibm.com (e06smtp01.uk.ibm.com [195.75.94.97])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2uyfn9k9pd-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <kernel-janitors@vger.kernel.org>; Thu, 12 Sep 2019 03:19:15 -0400
+Received: from localhost
+        by e06smtp01.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <kernel-janitors@vger.kernel.org> from <ubraun@linux.ibm.com>;
+        Thu, 12 Sep 2019 08:19:13 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+        by e06smtp01.uk.ibm.com (192.168.101.131) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Thu, 12 Sep 2019 08:19:10 +0100
+Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x8C7J8cs47054952
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 12 Sep 2019 07:19:08 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 5ECDC42042;
+        Thu, 12 Sep 2019 07:19:08 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 1C3C44203F;
+        Thu, 12 Sep 2019 07:19:08 +0000 (GMT)
+Received: from oc5311105230.ibm.com (unknown [9.152.224.222])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Thu, 12 Sep 2019 07:19:08 +0000 (GMT)
+Subject: Re: [PATCH] s390/qeth: fix spelling mistake "alocpool" -> "allocpool"
+To:     Colin King <colin.king@canonical.com>, linux-s390@vger.kernel.org
+Cc:     Julian Wiedmann <jwi@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Heiko Carstens <heiko.carstens@de.ibm.com>
+References: <20190911153500.30836-1-colin.king@canonical.com>
+From:   Ursula Braun <ubraun@linux.ibm.com>
+Openpgp: preference=signencrypt
+Date:   Thu, 12 Sep 2019 09:19:07 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+In-Reply-To: <20190911153500.30836-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19091207-4275-0000-0000-00000364C5E7
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19091207-4276-0000-0000-000038771F8C
+Message-Id: <de37e3a5-faad-44ae-32b2-d7c6c5d3732d@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-09-12_02:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1906280000 definitions=main-1909120078
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is one memory leak bug report:
-BUG: memory leak
-unreferenced object 0xffff8881dc4c5ec0 (size 40):
-  comm "syz-executor.0", pid 5673, jiffies 4298198457 (age 27.578s)
-  hex dump (first 32 bytes):
-    02 00 00 00 81 88 ff ff 00 00 00 00 00 00 00 00  ................
-    f8 63 3d c1 81 88 ff ff 00 00 00 00 00 00 00 00  .c=.............
-  backtrace:
-    [<0000000072006339>] sctp_get_port_local+0x2a1/0xa00 [sctp]
-    [<00000000c7b379ec>] sctp_do_bind+0x176/0x2c0 [sctp]
-    [<000000005be274a2>] sctp_bind+0x5a/0x80 [sctp]
-    [<00000000b66b4044>] inet6_bind+0x59/0xd0 [ipv6]
-    [<00000000c68c7f42>] __sys_bind+0x120/0x1f0 net/socket.c:1647
-    [<000000004513635b>] __do_sys_bind net/socket.c:1658 [inline]
-    [<000000004513635b>] __se_sys_bind net/socket.c:1656 [inline]
-    [<000000004513635b>] __x64_sys_bind+0x3e/0x50 net/socket.c:1656
-    [<0000000061f2501e>] do_syscall_64+0x72/0x2e0 arch/x86/entry/common.c:296
-    [<0000000003d1e05e>] entry_SYSCALL_64_after_hwframe+0x49/0xbe
 
-This is because in sctp_do_bind, if sctp_get_port_local is to
-create hash bucket successfully, and sctp_add_bind_addr failed
-to bind address, e.g return -ENOMEM, so memory leak found, it
-needs to destroy allocated bucket.
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
-Acked-by: Neil Horman <nhorman@tuxdriver.com>
----
- net/sctp/socket.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+On 9/11/19 5:35 PM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a spelling mistake in QETH_CARD_TEXT text. Fix it.
+> 
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 2f810078c91d..69ec3b796197 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -412,11 +412,13 @@ static int sctp_do_bind(struct sock *sk, union sctp_addr *addr, int len)
- 	ret = sctp_add_bind_addr(bp, addr, af->sockaddr_len,
- 				 SCTP_ADDR_SRC, GFP_ATOMIC);
- 
--	/* Copy back into socket for getsockname() use. */
--	if (!ret) {
--		inet_sk(sk)->inet_sport = htons(inet_sk(sk)->inet_num);
--		sp->pf->to_sk_saddr(addr, sk);
-+	if (ret) {
-+		sctp_put_port(sk);
-+		return ret;
- 	}
-+	/* Copy back into socket for getsockname() use. */
-+	inet_sk(sk)->inet_sport = htons(inet_sk(sk)->inet_num);
-+	sp->pf->to_sk_saddr(addr, sk);
- 
- 	return ret;
- }
--- 
-2.20.1
+This spelling mistake is intended, because this qeth trace area is defined for
+8 byte length entries. We try to make the entries as speaking as possible - even
+at cost of spelling mistakes.
+
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/s390/net/qeth_core_main.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/s390/net/qeth_core_main.c b/drivers/s390/net/qeth_core_main.c
+> index a7868c8133ee..ab96b22db3fe 100644
+> --- a/drivers/s390/net/qeth_core_main.c
+> +++ b/drivers/s390/net/qeth_core_main.c
+> @@ -218,7 +218,7 @@ static int qeth_alloc_buffer_pool(struct qeth_card *card)
+>  	void *ptr;
+>  	int i, j;
+>  
+> -	QETH_CARD_TEXT(card, 5, "alocpool");
+> +	QETH_CARD_TEXT(card, 5, "allocpool");
+>  	for (i = 0; i < card->qdio.init_pool.buf_count; ++i) {
+>  		pool_entry = kzalloc(sizeof(*pool_entry), GFP_KERNEL);
+>  		if (!pool_entry) {
+> 
 

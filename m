@@ -2,92 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 09E19B21D6
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Sep 2019 16:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22836B21E0
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Sep 2019 16:25:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730372AbfIMOXh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Sep 2019 10:23:37 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:42734 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727405AbfIMOXg (ORCPT
+        id S1730498AbfIMOYo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Sep 2019 10:24:44 -0400
+Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:18653
+        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725536AbfIMOYo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Sep 2019 10:23:36 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id C25DF607F1; Fri, 13 Sep 2019 14:23:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568384615;
-        bh=zWlfvzD0O5IBrdDw1HOpbbjEiZ8kkIkXWCZbeIhl/U4=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=O47+liZeya1C/CrzL3K0ZaidYHOi8U2XU3wG5qYYrObcm11hxJFNkbpwa57lAE8Ca
-         A0MXwPjqKr5OhilBSJli5w6f7KaIwRRrPePDXGJI+a3Hwhl5BySuigqFs2gZ7gLrYY
-         CAHNQN5cU6Gurvyh9Nw3KHgFLS2/a0beqBA867AQ=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id CD91760769;
-        Fri, 13 Sep 2019 14:23:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568384615;
-        bh=zWlfvzD0O5IBrdDw1HOpbbjEiZ8kkIkXWCZbeIhl/U4=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=Jlm9fbzUEHDDsoJtyC+3fOOBQnXB+kCtUffKNOvsyx92KQUaNZvB4Y2VNDH04JH3z
-         EQNrpyMWG0smO65fC5ilEsp/0bnE8ZnLvLhOJi6XZ3CCk/gY3nFHHDUUWNobInUsjo
-         Lt33+tknuOdlMn8VyhL+ZV9Zi7P2q61Ix6Mj50Bo=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CD91760769
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Fri, 13 Sep 2019 10:24:44 -0400
+X-IronPort-AV: E=Sophos;i="5.64,501,1559512800"; 
+   d="scan'208";a="319324023"
+Received: from portablejulia.rsr.lip6.fr ([132.227.76.63])
+  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Sep 2019 16:24:36 +0200
+Date:   Fri, 13 Sep 2019 16:24:37 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@lip6.fr>
+X-X-Sender: julia@hadrien
+To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
+cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        kernel-janitors@vger.kernel.org, kernelnewbies@kernelnewbies.org
+Subject: Re: Queries of an aspiring kernel developer
+In-Reply-To: <20190913141935.GA309@SARKAR>
+Message-ID: <alpine.DEB.2.21.1909131623300.2767@hadrien>
+References: <20190912142517.GA22751@SARKAR> <20190913132310.GQ20699@kadam> <20190913141935.GA309@SARKAR>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] ssb: make array pwr_info_offset static const,
- makes object smaller
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190906154053.32218-1-colin.king@canonical.com>
-References: <20190906154053.32218-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Michael Buesch <m@bues.ch>, linux-wireless@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190913142335.C25DF607F1@smtp.codeaurora.org>
-Date:   Fri, 13 Sep 2019 14:23:35 +0000 (UTC)
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Don't populate the array pwr_info_offset on the stack but instead make it
-> static const. Makes the object code smaller by 207 bytes.
-> 
-> Before:
->    text	   data	    bss	    dec	    hex	filename
->   26066	   3000	     64	  29130	   71ca	drivers/ssb/pci.o
-> 
-> After:
->    text	   data	    bss	    dec	    hex	filename
->   25763	   3096	     64	  28923	   70fb	drivers/ssb/pci.o
-> 
-> (gcc version 9.2.1, amd64)
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Acked-by: Michael Büsch <m@bues.ch>
 
-Patch applied to wireless-drivers-next.git, thanks.
+On Fri, 13 Sep 2019, Rohit Sarkar wrote:
 
-d3bb26868105 ssb: make array pwr_info_offset static const, makes object smaller
+> On Fri, Sep 13, 2019 at 04:23:10PM +0300, Dan Carpenter wrote:
+> > On Thu, Sep 12, 2019 at 07:55:17PM +0530, Rohit Sarkar wrote:
+> > > Hi Dan,
+> > > First things first, I know that sending private emails is frowned upon
+> > > but I was unsure if this would belong in the list.
+> >
+> > This does belong on the list.  Especially the kernel-janitor list.
+>
+> Added kernel-janitors and kernel-newbies to the thread.
+> > > Secondly I will keep
+> > > this as short as possible. (I know you are lazy :) )
+> > >
+> > > I have been interested in kernel development for a long time and want to
+> > > contribute to the community while learning and having fun.
+> > > Till now I have sent some minor patches:
+> > > [1]: Fixes typo
+> > > [2]: Checkpatch fix
+> > > [3]: Replaces snprintf with scnprintf
+> > >
+> > > I now would like to work on something that is not too trivial (like a
+> > > typo/checkpatch fix) and not too complex. I am finding it difficult to
+> > > come up with something substantial to work on.
+> >
+> > The various intern project probably have ideas.  Julia Lawall may know.
+> >
+> Sure, will get in touch with her.
+>
+> > > It would really help me if you could point me in a direction where I could
+> > > focus my efforts on.
+> >
+> > What I always tell people is to pick a small driver from staging.  The
+> > iio drivers are pretty small.  Just try to fix it as much as possible.
+> > Read it and re-read it and patch it and patch it.  As you go you will
+> > learn more until you are the expert of that driver.  Try to get it
+> > moved out of staging.
+>
+> This sounds nice. Would this require any external hardware for testing?
+> > regards,
+> > dan carpenter
+> Thanks a lot for taking the time to reply.
 
--- 
-https://patchwork.kernel.org/patch/11135599/
+Dan's suggestions are fine.  You may want to take a fairly recent driver
+from staging (to check using git log) to be sure that the work has not
+already been done by others.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+julia

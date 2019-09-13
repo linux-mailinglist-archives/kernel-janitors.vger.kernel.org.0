@@ -2,55 +2,123 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00D23B2672
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Sep 2019 22:07:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB7A5B26A6
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Sep 2019 22:29:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388252AbfIMUG7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Sep 2019 16:06:59 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:48710 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730185AbfIMUG7 (ORCPT
+        id S2388982AbfIMU3N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Sep 2019 16:29:13 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:54447 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387637AbfIMU3N (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Sep 2019 16:06:59 -0400
-Received: from localhost (93-63-141-166.ip28.fastwebnet.it [93.63.141.166])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id ED4C41539B17F;
-        Fri, 13 Sep 2019 13:06:56 -0700 (PDT)
-Date:   Fri, 13 Sep 2019 21:06:55 +0100 (WEST)
-Message-Id: <20190913.210655.1982553055937864765.davem@davemloft.net>
-To:     maowenan@huawei.com
-Cc:     vyasevich@gmail.com, nhorman@tuxdriver.com,
-        marcelo.leitner@gmail.com, linux-sctp@vger.kernel.org,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2 net 0/3] fix memory leak for sctp_do_bind
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190912040219.67517-1-maowenan@huawei.com>
-References: <7a450679-40ca-8a84-4cba-7a16f22ea3c0@huawei.com>
-        <20190912040219.67517-1-maowenan@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 26.2
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 13 Sep 2019 13:06:58 -0700 (PDT)
+        Fri, 13 Sep 2019 16:29:13 -0400
+Received: by mail-wm1-f68.google.com with SMTP id p7so3999722wmp.4;
+        Fri, 13 Sep 2019 13:29:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BwnRj7PJq/SSAsVSbXgfwpYXCFA29Cu8FrdaeblUNaY=;
+        b=Tm/zd6+los5t4+AELALzP5pfwfBhKBcHKteH6R/c7Nu9nPt0meOqPrYNxlxwSnxldc
+         sj4rLEyShvwUzwCkJC8uiAvJYmhXxAFFH8heSHfKGyC1Z0WwGjmM0uw8C13rR4/IwESW
+         1S+3IqfjoUInrqRbKw2wBdZeI612npcV0eHqk4T5jvuO3Bhf6QZ93PoYwCNvBvQM0yiU
+         6vWJR7tzUAWPHSCn/BL4N2+qloDw8QwFzUMV61hEQv8L5b/bwxSz6kuHbXi51RLhc7Dg
+         wm3prHOgOPxDYLDOEed+r7O2bZvpnM4NayliF+z5N2VIgA3uRTAbTGBhGBPjZ7IuPGwb
+         dHog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BwnRj7PJq/SSAsVSbXgfwpYXCFA29Cu8FrdaeblUNaY=;
+        b=QLcLvVKRxSIfPvYPXVCQtFZ0gxl+MTPCqym8+FY/jBwyFf6NTE2jWJJQMfP2NG9euQ
+         rq2kkAFvqoFxJbqeTrKGYuXs6fzxwWkWmpHUU72i0zwQurO6c2dSomslfHrclWHwxRK9
+         dmsjaVbc1KDcyKS12a9ObHdxedX2gC6x5nIc1dMQ8f54y4R3JV9yIsm3vhB+qxQOzaPE
+         adsnIhf5kEwlvIXBr2fWiXPJzmyVumQ32AihNofA93F1VOR53w6Kxjpk7/Q4e2oBETJ0
+         +E48o2ZmBhtBi+hkc0aW0nZyC/8LZjpyIfCSHUr7BDyZV+10pJWmr7iNMOHQXsakifmj
+         Ra9A==
+X-Gm-Message-State: APjAAAVL5Yb7xKxNgv/jLKGM5YT4d+c918j/24MvcOj6novtCb0p/sCU
+        9r+RA1g8d6PfQiWlBFkEaD64W/ypR+gWake3QOIQGw==
+X-Google-Smtp-Source: APXvYqybKucIudJAu7egTjDbJuVeu1SDruW9ZLV4m+SqmtqqxTpYMT8KJGaBUCDH4rcNUxo1IB45fuUuDiTa66dDaY0=
+X-Received: by 2002:a1c:ca0f:: with SMTP id a15mr4832349wmg.102.1568406551112;
+ Fri, 13 Sep 2019 13:29:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190913080248.28695-1-colin.king@canonical.com>
+In-Reply-To: <20190913080248.28695-1-colin.king@canonical.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Fri, 13 Sep 2019 16:28:58 -0400
+Message-ID: <CADnq5_P+G9bRLvFAZht+LzjwmquO5guAHFAeWFO2DTi-mTasTw@mail.gmail.com>
+Subject: Re: [PATCH] drm/amd/display: rename variable eanble -> enable
+To:     Colin King <colin.king@canonical.com>
+Cc:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Mao Wenan <maowenan@huawei.com>
-Date: Thu, 12 Sep 2019 12:02:16 +0800
+On Fri, Sep 13, 2019 at 4:02 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There is a spelling mistake in the variable name eanble,
+> rename it to enable.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-> First two patches are to do cleanup, remove redundant assignment,
-> and change return type of sctp_get_port_local.
-> Third patch is to fix memory leak for sctp_do_bind if failed
-> to bind address.
-> 
+Applied.  thanks!
+
+Alex
+
 > ---
->  v2: add one patch to change return type of sctp_get_port_local.
-
-Series applied with Fixes: tag removed from patch #1.
-
-Thanks.
+>  drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c b/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c
+> index 1488ffddf4e3..5944524faab9 100644
+> --- a/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c
+> +++ b/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c
+> @@ -606,11 +606,11 @@ static void dce_mi_allocate_dmif(
+>         }
+>
+>         if (dce_mi->wa.single_head_rdreq_dmif_limit) {
+> -               uint32_t eanble =  (total_stream_num > 1) ? 0 :
+> +               uint32_t enable =  (total_stream_num > 1) ? 0 :
+>                                 dce_mi->wa.single_head_rdreq_dmif_limit;
+>
+>                 REG_UPDATE(MC_HUB_RDREQ_DMIF_LIMIT,
+> -                               ENABLE, eanble);
+> +                               ENABLE, enable);
+>         }
+>  }
+>
+> @@ -636,11 +636,11 @@ static void dce_mi_free_dmif(
+>                         10, 3500);
+>
+>         if (dce_mi->wa.single_head_rdreq_dmif_limit) {
+> -               uint32_t eanble =  (total_stream_num > 1) ? 0 :
+> +               uint32_t enable =  (total_stream_num > 1) ? 0 :
+>                                 dce_mi->wa.single_head_rdreq_dmif_limit;
+>
+>                 REG_UPDATE(MC_HUB_RDREQ_DMIF_LIMIT,
+> -                               ENABLE, eanble);
+> +                               ENABLE, enable);
+>         }
+>  }
+>
+> --
+> 2.20.1
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

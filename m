@@ -2,79 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 841D0B21F1
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Sep 2019 16:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EECE8B24AA
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Sep 2019 19:38:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730563AbfIMO3W (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Sep 2019 10:29:22 -0400
-Received: from mail-pg1-f182.google.com ([209.85.215.182]:44481 "EHLO
-        mail-pg1-f182.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726558AbfIMO3V (ORCPT
+        id S2388030AbfIMRi3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Sep 2019 13:38:29 -0400
+Received: from mail-pl1-f180.google.com ([209.85.214.180]:46161 "EHLO
+        mail-pl1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387815AbfIMRi3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Sep 2019 10:29:21 -0400
-Received: by mail-pg1-f182.google.com with SMTP id i18so15330662pgl.11
-        for <kernel-janitors@vger.kernel.org>; Fri, 13 Sep 2019 07:29:21 -0700 (PDT)
+        Fri, 13 Sep 2019 13:38:29 -0400
+Received: by mail-pl1-f180.google.com with SMTP id t1so13529351plq.13;
+        Fri, 13 Sep 2019 10:38:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=9EHPf8eizXh8fYus8AQqvm80tDa6xLcvnLBw84dQuJA=;
-        b=PoAEK4vqKJxUHpnXXMSHaLH24OCj+B5JfRp5jNSSwIfu1qXaYq8rZ2n7VCSSQnLABJ
-         jHxprKaPDNOH/sys82wgrqnVdB3CEk90Er6VfcYPabcu5Qm+v4gOMHPNoJYp8DJzWAIX
-         dGSdcyQXt3035ZAvzpAHWg77ZK578EVrcEv33xSPR7HXqqcVKd7NecfBND36I9yOqBYx
-         UlpCz9fewGLGVzIt2z6E/0D5nIgrFYoqFflSQEmMd0nRao/pFFnbYFAtrkvWZ1kOvKmR
-         MgN3TlyU7ozK6dJV5WctBW4MNc0J0YWXzd4GG0lnET9VtZPKCVp1TQN8ZDVHqQRxXxrj
-         UTXQ==
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=qYty8ZGSHfzoRsuWFqeVeH4Tw+tK1EF9L4qW5sJv1kg=;
+        b=ZJsalVS3PbT4TGOv/TU3bYbbTujSQP8G/n3auGHrjOxqjcXY5K+rtZuI+ycCQMllFK
+         odZJOlwh4cdfVcCRGd9HBh/CVSB2ULTh9WtEYp/H0aaLkFkgrgktGUZy0maz9fjUmGOy
+         dIFCJ1ymMSfzDbLNoEEoSkQRjnF4vwNUY+RQ/DRU5UXMxpwfD6ooF0QOAnorTJRdR/zg
+         WXCIUIiiApvtmOMX1a+GHXx3Dec9T+GW3BAE6ATeaDBgHuowUOS9yP4VoV5cGhcAolA6
+         vjp5RbS/pbaHmhPfl8pN2J7msGXoNsaQi8lZ4PScDmDk2A47SH6sRzpiIUGeisNNrR5P
+         R8yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=9EHPf8eizXh8fYus8AQqvm80tDa6xLcvnLBw84dQuJA=;
-        b=XOocYvYBxvZXvaeblPQSdD5vTvEF3su/YV7FidMRK4S6W44Jm2QGPb8oJxKPM30aqw
-         qMTr5TRr/SVM08FLRJ/T5iLuDpTWoSaFLg/OR+ab0DGFLHwokbaAMnGYOJ9DUDjYZKvG
-         W1sk79yfnsqMSuIESHOQHI2MqXQ7krNQDQVx0mC2nF4UodY5UX0dUJG4TQZRoXe++aHS
-         UoRzeBcSHQXc/XUMaiOLa/IK6P3hwKmooYk2xQlZRgtKdTCthjlNQT7BzatCrd/YFf73
-         klPN6LySGXMNebxQxZZ2lo73a6OR8WR+aX5HKhKZKuQSoNAzhfnBS5q4QDu1xU2cgEcm
-         IHHQ==
-X-Gm-Message-State: APjAAAVSfpVccFs+ZFxcIMK8YPSPrEY8FZLNv19Z6ISVeBYayPYfb3QD
-        N2wl3hQXl+qXTofavzBLlKg=
-X-Google-Smtp-Source: APXvYqzC2LhaPYK6wwwqTFfur5CG6AAbsVbsrN16sOEiQC7OoPbIOqe+st2AJT3eR7K3lVy5e4WR3A==
-X-Received: by 2002:a17:90a:c587:: with SMTP id l7mr5372720pjt.25.1568384960904;
-        Fri, 13 Sep 2019 07:29:20 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=qYty8ZGSHfzoRsuWFqeVeH4Tw+tK1EF9L4qW5sJv1kg=;
+        b=HYz+kkYaIe1sZAT3h7+67S9OfiefYSUPYyK32FHkqpw7jOcDE2+Y9B9cv5wuJusGp1
+         XnwUQTWbS/G5xXYa8Ef/GIgdwOR2fi8jU7s547NbsnPlWNsBZb6N+tHXI1WqefXISspT
+         fXWCoDLGb3U8mgdB6giUG4SMFUfh4WD6nd79wpZPHtz4RJxmsGis8HdhfawS3Uc9iF6h
+         ooJxhVimuadW40W/LPo87CVkhX20KBREg0wbDZUPHz0EfS2G3BmYqwo4A+4DsfAxgf9i
+         izEdDTiMb8UBeWSHfIBzYCJEZenOCjQ6/ZMr4jmFKUOtvkHYfoopE/8TdeSbJbNWjH5X
+         Ss+g==
+X-Gm-Message-State: APjAAAV+/jvWN7MvK6oan9d3DuxDrxLkjvbsg7WByftcbZZzOkEtYxO+
+        IbDGSNRqnkQhARWGWsPWQZnwvDz3hF8=
+X-Google-Smtp-Source: APXvYqwRYQhH5FW/K5a8S1dflvdM8MwW2jPjeqjLgSdjSWZ2S1c7o2E1O4ahJ/KPFuT80nemLUXixQ==
+X-Received: by 2002:a17:902:ac8d:: with SMTP id h13mr48671899plr.273.1568396306306;
+        Fri, 13 Sep 2019 10:38:26 -0700 (PDT)
 Received: from SARKAR ([1.186.12.73])
-        by smtp.gmail.com with ESMTPSA id c128sm18857248pfc.166.2019.09.13.07.29.19
+        by smtp.gmail.com with ESMTPSA id 62sm27015940pfg.164.2019.09.13.10.38.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2019 07:29:20 -0700 (PDT)
-Date:   Fri, 13 Sep 2019 19:59:16 +0530
+        Fri, 13 Sep 2019 10:38:25 -0700 (PDT)
+Date:   Fri, 13 Sep 2019 23:08:21 +0530
 From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
-To:     Julia Lawall <julia.lawall@lip6.fr>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        kernel-janitors@vger.kernel.org, kernelnewbies@kernelnewbies.org
-Subject: Re: Queries of an aspiring kernel developer
-Message-ID: <20190913142916.GB309@SARKAR>
-References: <20190912142517.GA22751@SARKAR>
- <20190913132310.GQ20699@kadam>
- <20190913141935.GA309@SARKAR>
- <alpine.DEB.2.21.1909131623300.2767@hadrien>
+To:     linux-newbie@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org
+Subject: Problems during compiling in kernel modules
+Message-ID: <20190913173821.GA5986@SARKAR>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.21.1909131623300.2767@hadrien>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Sep 13, 2019 at 04:24:37PM +0200, Julia Lawall wrote:
-> 
-> Dan's suggestions are fine.  You may want to take a fairly recent driver
-> from staging (to check using git log) to be sure that the work has not
-> already been done by others.
-> 
-> julia
+Hi,
+I was trying to compile a particular folder in my kernel tree.
 
-Sure, thanks julia.
+AFAIK the way to do this is:
+`make drivers/staging/iio/` from the kernel base directory.
 
-regards,
+This gives me the following output:
+`
+  CALL    scripts/checksyscalls.sh
+  CALL    scripts/atomic/check-atomics.sh
+  DESCEND  objtool
+`
+
+No object files are generated.
+I feel like I am missing something.
+
+Thanks,
 Rohit

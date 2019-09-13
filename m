@@ -2,61 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9168CB193F
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Sep 2019 09:57:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BCACB194B
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Sep 2019 10:02:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729071AbfIMH5O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Sep 2019 03:57:14 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47316 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725446AbfIMH5O (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Sep 2019 03:57:14 -0400
-Received: from localhost (lfbn-1-10718-76.w90-89.abo.wanadoo.fr [90.89.68.76])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 367AD20830;
-        Fri, 13 Sep 2019 07:57:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568361433;
-        bh=p7cjNFjW8pPTHEfP9s6WMR26sSINsqGMJq16WsR6ntc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=U3AyRFzEsTvHtIKhjb/IKQmhEmEBxOk2DXyK+R6MoAP/b2aWL+H/cCPH4YNMEvdLF
-         kymz08dFHy2WgNzTqemgeLLiMsWxp/O7K3Syj3WPNXr0NcjjrybFLRGBUN77X1qusf
-         BjnIuPP7ToNd697XuTWyomufq3xuieJPqnvXdCpU=
-Date:   Fri, 13 Sep 2019 09:57:09 +0200
-From:   Maxime Ripard <mripard@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     mchehab@kernel.org, linux-media@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] media: v4l: cadence: Fix how unsued lanes are handled in
- 'csi2rx_start()'
-Message-ID: <20190913075709.t35ggip624tybd6l@localhost.localdomain>
-References: <20190912204450.17625-1-christophe.jaillet@wanadoo.fr>
+        id S1729027AbfIMICy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Sep 2019 04:02:54 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:47983 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727997AbfIMICx (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 13 Sep 2019 04:02:53 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1i8gXY-0004uO-Ub; Fri, 13 Sep 2019 08:02:49 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/amd/display: rename variable eanble -> enable
+Date:   Fri, 13 Sep 2019 09:02:48 +0100
+Message-Id: <20190913080248.28695-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190912204450.17625-1-christophe.jaillet@wanadoo.fr>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Christophe,
+From: Colin Ian King <colin.king@canonical.com>
 
-On Thu, Sep 12, 2019 at 10:44:50PM +0200, Christophe JAILLET wrote:
-> The 2nd parameter of 'find_first_zero_bit()' is a number of bits, not of
-> bytes. So use 'BITS_PER_LONG' instead of 'sizeof(lanes_used)'.
-> 
-> Fixes: 1fc3b37f34f6 ("media: v4l: cadence: Add Cadence MIPI-CSI2 RX driver")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> This patch is purely speculative. Using BITS_PER_LONG looks logical to me,
-> but I'm not 100% sure that it is what is expected here. 'csi2rx->max_lanes'
-> could also be a good candidate.
+There is a spelling mistake in the variable name eanble,
+rename it to enable.
 
-Yeah, csi2rx->max_lanes would make more sense in that context. Could
-you resend a new version?
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Thanks!
-Maxime
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c b/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c
+index 1488ffddf4e3..5944524faab9 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c
+@@ -606,11 +606,11 @@ static void dce_mi_allocate_dmif(
+ 	}
+ 
+ 	if (dce_mi->wa.single_head_rdreq_dmif_limit) {
+-		uint32_t eanble =  (total_stream_num > 1) ? 0 :
++		uint32_t enable =  (total_stream_num > 1) ? 0 :
+ 				dce_mi->wa.single_head_rdreq_dmif_limit;
+ 
+ 		REG_UPDATE(MC_HUB_RDREQ_DMIF_LIMIT,
+-				ENABLE, eanble);
++				ENABLE, enable);
+ 	}
+ }
+ 
+@@ -636,11 +636,11 @@ static void dce_mi_free_dmif(
+ 			10, 3500);
+ 
+ 	if (dce_mi->wa.single_head_rdreq_dmif_limit) {
+-		uint32_t eanble =  (total_stream_num > 1) ? 0 :
++		uint32_t enable =  (total_stream_num > 1) ? 0 :
+ 				dce_mi->wa.single_head_rdreq_dmif_limit;
+ 
+ 		REG_UPDATE(MC_HUB_RDREQ_DMIF_LIMIT,
+-				ENABLE, eanble);
++				ENABLE, enable);
+ 	}
+ }
+ 
+-- 
+2.20.1
+

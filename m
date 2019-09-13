@@ -2,107 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C02AB21B8
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Sep 2019 16:19:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09E19B21D6
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Sep 2019 16:23:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387977AbfIMOTm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Sep 2019 10:19:42 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:43864 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387693AbfIMOTm (ORCPT
+        id S1730372AbfIMOXh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Sep 2019 10:23:37 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:42734 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727405AbfIMOXg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Sep 2019 10:19:42 -0400
-Received: by mail-pl1-f194.google.com with SMTP id 4so13300576pld.10
-        for <kernel-janitors@vger.kernel.org>; Fri, 13 Sep 2019 07:19:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=gnSzZp3FjaQTG+oAyna9aH/N38uYMw8V989iNhUz2ow=;
-        b=SgOcdWGvvobPVg19eLYSqeHsUm+duk2IV06bJHY1iI8tplUwKQGATFpXq/AJMmMFg7
-         fI5blZthSSXvciETwCsHQNZLrfe06m7lbcdSjK6BWyHPTRo9UDqxMxhPdYzRzVP9PtBe
-         CxAAkrcdP4bn9cgnF6iNmPHyJ6fdVm/a/8wsGPiohKjQ5URUR83IvlqcFzXE3/YMneAZ
-         u6Kn4GxnRs4eEpxlws66F1D3Lns8wfk33/6WmdYHMazw6xj8RuRa9Qu1KQFQrZl0IudN
-         M6sQqJ9qUh1nFg+SwMWB0qy9AGjXufF3Pegunj5dKJmM3ynzznrfsvnrs4Ig5tBE++8r
-         FrdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=gnSzZp3FjaQTG+oAyna9aH/N38uYMw8V989iNhUz2ow=;
-        b=RW3aYUq1GwcMHNGoDGoinRhHatDkfs3zUFQg0KDVpekpHJB0lO1ltA4LG33q/QD2HZ
-         uFjnqmua06IdwTbFwX9VnxfOsmIJbaPWzNJqzoYRMYkfNEXIKnMMk/nYHIlAP0UdVihG
-         d0q164yCcpnVh0Jfn2osebm6SCUEpXVrZd9snBCnnLf/jqIMM5bmzFYQIRh5x9ctNoYd
-         wNzQbdfWD3mMnxoz+sdoGWUMm09ynrzW2t2x347bOrlCv/qGhT8td0p4rZSBdjJLrOPI
-         2LltlZ1oObubEmu9zzJ0+OFmItwXCjmOX6ILmLJ13S41ZTmTQI/DO+yPj81aH7QIjGWf
-         qCOA==
-X-Gm-Message-State: APjAAAXi+4uAitM7axqJ/Z2Dpe+X8zk0CzZqGcnUoIVOofCVV5qYLsL+
-        cQ7pD7i7CqE8F6TrlGn1SF4=
-X-Google-Smtp-Source: APXvYqxk+32mdB6olsyPCQ91cJKq+4hqp+6qMQrMCNFb5t49r7lfv3K5V6XQePMULHJ4Jh0MDwUzvg==
-X-Received: by 2002:a17:902:b288:: with SMTP id u8mr8260306plr.127.1568384381158;
-        Fri, 13 Sep 2019 07:19:41 -0700 (PDT)
-Received: from SARKAR ([1.186.12.73])
-        by smtp.gmail.com with ESMTPSA id n66sm47178256pfn.90.2019.09.13.07.19.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2019 07:19:40 -0700 (PDT)
-Date:   Fri, 13 Sep 2019 19:49:35 +0530
-From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     kernel-janitors@vger.kernel.org, kernelnewbies@kernelnewbies.org
-Subject: Re: Queries of an aspiring kernel developer
-Message-ID: <20190913141935.GA309@SARKAR>
-References: <20190912142517.GA22751@SARKAR>
- <20190913132310.GQ20699@kadam>
+        Fri, 13 Sep 2019 10:23:36 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id C25DF607F1; Fri, 13 Sep 2019 14:23:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568384615;
+        bh=zWlfvzD0O5IBrdDw1HOpbbjEiZ8kkIkXWCZbeIhl/U4=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=O47+liZeya1C/CrzL3K0ZaidYHOi8U2XU3wG5qYYrObcm11hxJFNkbpwa57lAE8Ca
+         A0MXwPjqKr5OhilBSJli5w6f7KaIwRRrPePDXGJI+a3Hwhl5BySuigqFs2gZ7gLrYY
+         CAHNQN5cU6Gurvyh9Nw3KHgFLS2/a0beqBA867AQ=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CD91760769;
+        Fri, 13 Sep 2019 14:23:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568384615;
+        bh=zWlfvzD0O5IBrdDw1HOpbbjEiZ8kkIkXWCZbeIhl/U4=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=Jlm9fbzUEHDDsoJtyC+3fOOBQnXB+kCtUffKNOvsyx92KQUaNZvB4Y2VNDH04JH3z
+         EQNrpyMWG0smO65fC5ilEsp/0bnE8ZnLvLhOJi6XZ3CCk/gY3nFHHDUUWNobInUsjo
+         Lt33+tknuOdlMn8VyhL+ZV9Zi7P2q61Ix6Mj50Bo=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CD91760769
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190913132310.GQ20699@kadam>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] ssb: make array pwr_info_offset static const,
+ makes object smaller
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20190906154053.32218-1-colin.king@canonical.com>
+References: <20190906154053.32218-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Michael Buesch <m@bues.ch>, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20190913142335.C25DF607F1@smtp.codeaurora.org>
+Date:   Fri, 13 Sep 2019 14:23:35 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Sep 13, 2019 at 04:23:10PM +0300, Dan Carpenter wrote:
-> On Thu, Sep 12, 2019 at 07:55:17PM +0530, Rohit Sarkar wrote:
-> > Hi Dan,
-> > First things first, I know that sending private emails is frowned upon
-> > but I was unsure if this would belong in the list.
-> 
-> This does belong on the list.  Especially the kernel-janitor list.
+Colin King <colin.king@canonical.com> wrote:
 
-Added kernel-janitors and kernel-newbies to the thread.
-> > Secondly I will keep
-> > this as short as possible. (I know you are lazy :) )
-> > 
-> > I have been interested in kernel development for a long time and want to
-> > contribute to the community while learning and having fun.
-> > Till now I have sent some minor patches:
-> > [1]: Fixes typo
-> > [2]: Checkpatch fix
-> > [3]: Replaces snprintf with scnprintf
-> > 
-> > I now would like to work on something that is not too trivial (like a
-> > typo/checkpatch fix) and not too complex. I am finding it difficult to
-> > come up with something substantial to work on.
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> The various intern project probably have ideas.  Julia Lawall may know.
+> Don't populate the array pwr_info_offset on the stack but instead make it
+> static const. Makes the object code smaller by 207 bytes.
 > 
-Sure, will get in touch with her.
-
-> > It would really help me if you could point me in a direction where I could
-> > focus my efforts on.
+> Before:
+>    text	   data	    bss	    dec	    hex	filename
+>   26066	   3000	     64	  29130	   71ca	drivers/ssb/pci.o
 > 
-> What I always tell people is to pick a small driver from staging.  The
-> iio drivers are pretty small.  Just try to fix it as much as possible.
-> Read it and re-read it and patch it and patch it.  As you go you will
-> learn more until you are the expert of that driver.  Try to get it
-> moved out of staging.
+> After:
+>    text	   data	    bss	    dec	    hex	filename
+>   25763	   3096	     64	  28923	   70fb	drivers/ssb/pci.o
+> 
+> (gcc version 9.2.1, amd64)
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Acked-by: Michael Büsch <m@bues.ch>
 
-This sounds nice. Would this require any external hardware for testing? 
-> regards,
-> dan carpenter
-Thanks a lot for taking the time to reply.
+Patch applied to wireless-drivers-next.git, thanks.
 
-Regards,
-Rohit Sarkar
+d3bb26868105 ssb: make array pwr_info_offset static const, makes object smaller
+
+-- 
+https://patchwork.kernel.org/patch/11135599/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+

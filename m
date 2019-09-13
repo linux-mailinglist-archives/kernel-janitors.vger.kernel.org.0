@@ -2,92 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B352B2153
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Sep 2019 15:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C02AB21B8
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Sep 2019 16:19:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391730AbfIMNpH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Sep 2019 09:45:07 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:60338 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388489AbfIMNpH (ORCPT
+        id S2387977AbfIMOTm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Sep 2019 10:19:42 -0400
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:43864 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387693AbfIMOTm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Sep 2019 09:45:07 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id E0AC7601C3; Fri, 13 Sep 2019 13:45:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568382305;
-        bh=ADAqA+whk9w0uC3vat1A4dogJzHi6GhWR1q6R+KlqbE=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Mv5EQRF+2icBxLcVdL3hWvzuWSHJUKX+icoHEpcFsKEz/gmkaugUuGDrsDqBlKpAo
-         MW+1ryZavunSzj4lrVRVx2he/5kgpASn8ixy494tJCbLJ7SaZmNa9b/64FCUrTRTHd
-         udqTs7uXADwX/SNo3+je8RIGTfD+no7olbmpxh1o=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id BBEAE602C3;
-        Fri, 13 Sep 2019 13:45:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568382304;
-        bh=ADAqA+whk9w0uC3vat1A4dogJzHi6GhWR1q6R+KlqbE=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=lO449eYqECj0tX0nxq5RHUcGQnAzKv/NnU8sxJd8dSMbVeJUqfyJKqg9+VBWXJOSV
-         LwKMs7jNPhJHf0DdZfYWxp1pjmcTMHhSZCbblwgHKfD+E1LysD8xqBIwiamySYeY6n
-         TvHZ+7/qqUz2PEKqlWLsxQiDy44Yz34J4SsqF+fc=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BBEAE602C3
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Fri, 13 Sep 2019 10:19:42 -0400
+Received: by mail-pl1-f194.google.com with SMTP id 4so13300576pld.10
+        for <kernel-janitors@vger.kernel.org>; Fri, 13 Sep 2019 07:19:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=gnSzZp3FjaQTG+oAyna9aH/N38uYMw8V989iNhUz2ow=;
+        b=SgOcdWGvvobPVg19eLYSqeHsUm+duk2IV06bJHY1iI8tplUwKQGATFpXq/AJMmMFg7
+         fI5blZthSSXvciETwCsHQNZLrfe06m7lbcdSjK6BWyHPTRo9UDqxMxhPdYzRzVP9PtBe
+         CxAAkrcdP4bn9cgnF6iNmPHyJ6fdVm/a/8wsGPiohKjQ5URUR83IvlqcFzXE3/YMneAZ
+         u6Kn4GxnRs4eEpxlws66F1D3Lns8wfk33/6WmdYHMazw6xj8RuRa9Qu1KQFQrZl0IudN
+         M6sQqJ9qUh1nFg+SwMWB0qy9AGjXufF3Pegunj5dKJmM3ynzznrfsvnrs4Ig5tBE++8r
+         FrdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=gnSzZp3FjaQTG+oAyna9aH/N38uYMw8V989iNhUz2ow=;
+        b=RW3aYUq1GwcMHNGoDGoinRhHatDkfs3zUFQg0KDVpekpHJB0lO1ltA4LG33q/QD2HZ
+         uFjnqmua06IdwTbFwX9VnxfOsmIJbaPWzNJqzoYRMYkfNEXIKnMMk/nYHIlAP0UdVihG
+         d0q164yCcpnVh0Jfn2osebm6SCUEpXVrZd9snBCnnLf/jqIMM5bmzFYQIRh5x9ctNoYd
+         wNzQbdfWD3mMnxoz+sdoGWUMm09ynrzW2t2x347bOrlCv/qGhT8td0p4rZSBdjJLrOPI
+         2LltlZ1oObubEmu9zzJ0+OFmItwXCjmOX6ILmLJ13S41ZTmTQI/DO+yPj81aH7QIjGWf
+         qCOA==
+X-Gm-Message-State: APjAAAXi+4uAitM7axqJ/Z2Dpe+X8zk0CzZqGcnUoIVOofCVV5qYLsL+
+        cQ7pD7i7CqE8F6TrlGn1SF4=
+X-Google-Smtp-Source: APXvYqxk+32mdB6olsyPCQ91cJKq+4hqp+6qMQrMCNFb5t49r7lfv3K5V6XQePMULHJ4Jh0MDwUzvg==
+X-Received: by 2002:a17:902:b288:: with SMTP id u8mr8260306plr.127.1568384381158;
+        Fri, 13 Sep 2019 07:19:41 -0700 (PDT)
+Received: from SARKAR ([1.186.12.73])
+        by smtp.gmail.com with ESMTPSA id n66sm47178256pfn.90.2019.09.13.07.19.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Sep 2019 07:19:40 -0700 (PDT)
+Date:   Fri, 13 Sep 2019 19:49:35 +0530
+From:   Rohit Sarkar <rohitsarkar5398@gmail.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     kernel-janitors@vger.kernel.org, kernelnewbies@kernelnewbies.org
+Subject: Re: Queries of an aspiring kernel developer
+Message-ID: <20190913141935.GA309@SARKAR>
+References: <20190912142517.GA22751@SARKAR>
+ <20190913132310.GQ20699@kadam>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] bcma: make arrays pwr_info_offset and sprom_sizes static
- const, shrinks object size
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190905162049.14333-1-colin.king@canonical.com>
-References: <20190905162049.14333-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     =?utf-8?b?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190913134505.E0AC7601C3@smtp.codeaurora.org>
-Date:   Fri, 13 Sep 2019 13:45:05 +0000 (UTC)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190913132310.GQ20699@kadam>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
-
-> From: Colin Ian King <colin.king@canonical.com>
+On Fri, Sep 13, 2019 at 04:23:10PM +0300, Dan Carpenter wrote:
+> On Thu, Sep 12, 2019 at 07:55:17PM +0530, Rohit Sarkar wrote:
+> > Hi Dan,
+> > First things first, I know that sending private emails is frowned upon
+> > but I was unsure if this would belong in the list.
 > 
-> Arrays pwr_info_offset and sprom_sizes can be make static const rather
-> than populating them on the stack. Shrinks object size by 236 bytes.
+> This does belong on the list.  Especially the kernel-janitor list.
+
+Added kernel-janitors and kernel-newbies to the thread.
+> > Secondly I will keep
+> > this as short as possible. (I know you are lazy :) )
+> > 
+> > I have been interested in kernel development for a long time and want to
+> > contribute to the community while learning and having fun.
+> > Till now I have sent some minor patches:
+> > [1]: Fixes typo
+> > [2]: Checkpatch fix
+> > [3]: Replaces snprintf with scnprintf
+> > 
+> > I now would like to work on something that is not too trivial (like a
+> > typo/checkpatch fix) and not too complex. I am finding it difficult to
+> > come up with something substantial to work on.
 > 
-> Before:
->    text	   data	    bss	    dec	    hex	filename
->   11300	   1320	     64	  12684	   318c	drivers/bcma/sprom.o
+> The various intern project probably have ideas.  Julia Lawall may know.
 > 
-> After:
->    text	   data	    bss	    dec	    hex	filename
->   10904	   1480	     64	  12448	   30a0	drivers/bcma/sprom.o
+Sure, will get in touch with her.
+
+> > It would really help me if you could point me in a direction where I could
+> > focus my efforts on.
 > 
-> (gcc version 9.2.1, amd64)
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> What I always tell people is to pick a small driver from staging.  The
+> iio drivers are pretty small.  Just try to fix it as much as possible.
+> Read it and re-read it and patch it and patch it.  As you go you will
+> learn more until you are the expert of that driver.  Try to get it
+> moved out of staging.
 
-Patch applied to wireless-drivers-next.git, thanks.
+This sounds nice. Would this require any external hardware for testing? 
+> regards,
+> dan carpenter
+Thanks a lot for taking the time to reply.
 
-c57391f41572 bcma: make arrays pwr_info_offset and sprom_sizes static const, shrinks object size
-
--- 
-https://patchwork.kernel.org/patch/11133647/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Regards,
+Rohit Sarkar

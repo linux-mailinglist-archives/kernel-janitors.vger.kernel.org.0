@@ -2,61 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16F11B1919
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Sep 2019 09:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9168CB193F
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Sep 2019 09:57:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728746AbfIMHnp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Sep 2019 03:43:45 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:47589 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728252AbfIMHnp (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Sep 2019 03:43:45 -0400
-Received: from [82.43.126.140] (helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1i8gF3-0003Jj-62; Fri, 13 Sep 2019 07:43:41 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ath10k: fix spelling mistake "eanble" -> "enable"
-Date:   Fri, 13 Sep 2019 08:43:39 +0100
-Message-Id: <20190913074339.27280-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1729071AbfIMH5O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Sep 2019 03:57:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47316 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725446AbfIMH5O (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 13 Sep 2019 03:57:14 -0400
+Received: from localhost (lfbn-1-10718-76.w90-89.abo.wanadoo.fr [90.89.68.76])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 367AD20830;
+        Fri, 13 Sep 2019 07:57:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568361433;
+        bh=p7cjNFjW8pPTHEfP9s6WMR26sSINsqGMJq16WsR6ntc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=U3AyRFzEsTvHtIKhjb/IKQmhEmEBxOk2DXyK+R6MoAP/b2aWL+H/cCPH4YNMEvdLF
+         kymz08dFHy2WgNzTqemgeLLiMsWxp/O7K3Syj3WPNXr0NcjjrybFLRGBUN77X1qusf
+         BjnIuPP7ToNd697XuTWyomufq3xuieJPqnvXdCpU=
+Date:   Fri, 13 Sep 2019 09:57:09 +0200
+From:   Maxime Ripard <mripard@kernel.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     mchehab@kernel.org, linux-media@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] media: v4l: cadence: Fix how unsued lanes are handled in
+ 'csi2rx_start()'
+Message-ID: <20190913075709.t35ggip624tybd6l@localhost.localdomain>
+References: <20190912204450.17625-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190912204450.17625-1-christophe.jaillet@wanadoo.fr>
+User-Agent: NeoMutt/20180716
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hi Christophe,
 
-There is a spelling mistake in a ath10k_warn warning message. Fix it.
+On Thu, Sep 12, 2019 at 10:44:50PM +0200, Christophe JAILLET wrote:
+> The 2nd parameter of 'find_first_zero_bit()' is a number of bits, not of
+> bytes. So use 'BITS_PER_LONG' instead of 'sizeof(lanes_used)'.
+> 
+> Fixes: 1fc3b37f34f6 ("media: v4l: cadence: Add Cadence MIPI-CSI2 RX driver")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> This patch is purely speculative. Using BITS_PER_LONG looks logical to me,
+> but I'm not 100% sure that it is what is expected here. 'csi2rx->max_lanes'
+> could also be a good candidate.
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/ath/ath10k/mac.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Yeah, csi2rx->max_lanes would make more sense in that context. Could
+you resend a new version?
 
-diff --git a/drivers/net/wireless/ath/ath10k/mac.c b/drivers/net/wireless/ath/ath10k/mac.c
-index 12dad659bf68..a3d612f5f652 100644
---- a/drivers/net/wireless/ath/ath10k/mac.c
-+++ b/drivers/net/wireless/ath/ath10k/mac.c
-@@ -7418,7 +7418,7 @@ static bool ath10k_mac_set_vht_bitrate_mask_fixup(struct ath10k *ar,
- 	err = ath10k_wmi_peer_set_param(ar, arvif->vdev_id, sta->addr,
- 					WMI_PEER_PARAM_FIXED_RATE, rate);
- 	if (err)
--		ath10k_warn(ar, "failed to eanble STA %pM peer fixed rate: %d\n",
-+		ath10k_warn(ar, "failed to enable STA %pM peer fixed rate: %d\n",
- 			    sta->addr, err);
- 
- 	return true;
--- 
-2.20.1
-
+Thanks!
+Maxime

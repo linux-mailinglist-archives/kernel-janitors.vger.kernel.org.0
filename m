@@ -2,121 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BB7A5B26A6
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Sep 2019 22:29:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D477CB2704
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Sep 2019 23:05:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388982AbfIMU3N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Sep 2019 16:29:13 -0400
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:54447 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387637AbfIMU3N (ORCPT
+        id S1731160AbfIMVFN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Sep 2019 17:05:13 -0400
+Received: from mail-wm1-f48.google.com ([209.85.128.48]:37263 "EHLO
+        mail-wm1-f48.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726558AbfIMVFN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Sep 2019 16:29:13 -0400
-Received: by mail-wm1-f68.google.com with SMTP id p7so3999722wmp.4;
-        Fri, 13 Sep 2019 13:29:11 -0700 (PDT)
+        Fri, 13 Sep 2019 17:05:13 -0400
+Received: by mail-wm1-f48.google.com with SMTP id r195so4145102wme.2;
+        Fri, 13 Sep 2019 14:05:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BwnRj7PJq/SSAsVSbXgfwpYXCFA29Cu8FrdaeblUNaY=;
-        b=Tm/zd6+los5t4+AELALzP5pfwfBhKBcHKteH6R/c7Nu9nPt0meOqPrYNxlxwSnxldc
-         sj4rLEyShvwUzwCkJC8uiAvJYmhXxAFFH8heSHfKGyC1Z0WwGjmM0uw8C13rR4/IwESW
-         1S+3IqfjoUInrqRbKw2wBdZeI612npcV0eHqk4T5jvuO3Bhf6QZ93PoYwCNvBvQM0yiU
-         6vWJR7tzUAWPHSCn/BL4N2+qloDw8QwFzUMV61hEQv8L5b/bwxSz6kuHbXi51RLhc7Dg
-         wm3prHOgOPxDYLDOEed+r7O2bZvpnM4NayliF+z5N2VIgA3uRTAbTGBhGBPjZ7IuPGwb
-         dHog==
+         :cc:content-transfer-encoding;
+        bh=2DisDR/cJhM64R78LUA1TAvaEYUe5ftHQT+Ynd0imlo=;
+        b=BWwJ61TxX2jZxRKjKsHdxAuRqSXMAKi+BP5djX6lCCI4CTx3viCbHzwg7gvLT9gg+V
+         zoP8AL7WvxuKN0W/7l+VlyNCMWUC2d9K+3Od3V/XUmnC8d6+7J7XbQx/WS9UWTtcxfoR
+         ozVGPUT1esSZiJWobCSapv6x38//BorJXk0qkg7WCowdeblf3Kvs+1SzodHmSKhcVbkY
+         3LdUtdOSmqUt4TOLtB/qEPhM9Kx+LL6MsXBD0TE1Xcv2iJeVIMwRbDQRPvdCyi0hx5gN
+         ysXTZQYaqCUR+pkU1z20wkCWmMxbH5CMTrtKhPyZOSqdAcDxdu082jLHAj5dAlJbv7P4
+         4HbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BwnRj7PJq/SSAsVSbXgfwpYXCFA29Cu8FrdaeblUNaY=;
-        b=QLcLvVKRxSIfPvYPXVCQtFZ0gxl+MTPCqym8+FY/jBwyFf6NTE2jWJJQMfP2NG9euQ
-         rq2kkAFvqoFxJbqeTrKGYuXs6fzxwWkWmpHUU72i0zwQurO6c2dSomslfHrclWHwxRK9
-         dmsjaVbc1KDcyKS12a9ObHdxedX2gC6x5nIc1dMQ8f54y4R3JV9yIsm3vhB+qxQOzaPE
-         adsnIhf5kEwlvIXBr2fWiXPJzmyVumQ32AihNofA93F1VOR53w6Kxjpk7/Q4e2oBETJ0
-         +E48o2ZmBhtBi+hkc0aW0nZyC/8LZjpyIfCSHUr7BDyZV+10pJWmr7iNMOHQXsakifmj
-         Ra9A==
-X-Gm-Message-State: APjAAAVL5Yb7xKxNgv/jLKGM5YT4d+c918j/24MvcOj6novtCb0p/sCU
-        9r+RA1g8d6PfQiWlBFkEaD64W/ypR+gWake3QOIQGw==
-X-Google-Smtp-Source: APXvYqybKucIudJAu7egTjDbJuVeu1SDruW9ZLV4m+SqmtqqxTpYMT8KJGaBUCDH4rcNUxo1IB45fuUuDiTa66dDaY0=
-X-Received: by 2002:a1c:ca0f:: with SMTP id a15mr4832349wmg.102.1568406551112;
- Fri, 13 Sep 2019 13:29:11 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=2DisDR/cJhM64R78LUA1TAvaEYUe5ftHQT+Ynd0imlo=;
+        b=Y4oEStd/3Bx6G9cuhaYEW659x+8JU0qkxn21pKlaU7QfIY8opNvSpqSEGJuMF4b4xa
+         owgLk3aQHVG9YtR+95S0q8BNC4hojkBYFvViYFxDcASAUL18JlAUmUVCwaXADYb3f3wh
+         lwkVCZqKxEMLRUQvGZ+TcOcSZ6cdhyyhIHubrLA5fat36ejw980WWWTeqOmh/ZaTG/VI
+         R3DyfcZ09it52ur5h2NzEvi0N5OL13zDNtHqIHLJUod3Au46hnXzrB4H6JVXUl92DEHW
+         O9Atr+dxLs0bUFqfKMtSzCluHoYtLf/czZZroczwmUmJEXDzexxKLlg6H1AemNJgqKV8
+         vcgg==
+X-Gm-Message-State: APjAAAVpeuS3WE3hjNa16US41qmJGW+zDDvbk5lYRrznG100GGd8c/H7
+        2YQPG24L7M8xFRHa2b8hwjVQ/XRgv8GtU4fGZeM=
+X-Google-Smtp-Source: APXvYqzhhFfWlU3Qj+SLVwzrpNt0iJ1xPnhsEhUTCLbHzdPUlu+CvxRWW4hZ7r1L+sNOPXRvDPP5AXJ5MV+Q/BQE7MM=
+X-Received: by 2002:a05:600c:2308:: with SMTP id 8mr5184148wmo.67.1568408711053;
+ Fri, 13 Sep 2019 14:05:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190913080248.28695-1-colin.king@canonical.com>
-In-Reply-To: <20190913080248.28695-1-colin.king@canonical.com>
+References: <1567491305-18320-1-git-send-email-zhongjiang@huawei.com>
+ <62b33279-9ca9-5970-5336-a8511ce54197@web.de> <5D70A196.3020106@huawei.com>
+ <dd351754-cb3a-b19a-64e1-f2f583c2a23a@web.de> <5D70CB7A.8040307@huawei.com>
+In-Reply-To: <5D70CB7A.8040307@huawei.com>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Fri, 13 Sep 2019 16:28:58 -0400
-Message-ID: <CADnq5_P+G9bRLvFAZht+LzjwmquO5guAHFAeWFO2DTi-mTasTw@mail.gmail.com>
-Subject: Re: [PATCH] drm/amd/display: rename variable eanble -> enable
-To:     Colin King <colin.king@canonical.com>
-Cc:     Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+Date:   Fri, 13 Sep 2019 17:04:59 -0400
+Message-ID: <CADnq5_MH5HnfihRTBRHnSWRzDj5nu_8w0TWf82-999nKCa4wDQ@mail.gmail.com>
+Subject: Re: drm/amdgpu: remove the redundant null check
+To:     zhong jiang <zhongjiang@huawei.com>
+Cc:     Markus Elfring <Markus.Elfring@web.de>,
+        kernel-janitors@vger.kernel.org,
         Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        <dri-devel@lists.freedesktop.org>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
         LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Sep 13, 2019 at 4:02 AM Colin King <colin.king@canonical.com> wrote:
+On Fri, Sep 6, 2019 at 3:01 AM zhong jiang <zhongjiang@huawei.com> wrote:
 >
-> From: Colin Ian King <colin.king@canonical.com>
->
-> There is a spelling mistake in the variable name eanble,
-> rename it to enable.
->
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> On 2019/9/5 16:38, Markus Elfring wrote:
+> >>> Were any source code analysis tools involved for finding
+> >>> these update candidates?
+> >> With the help of Coccinelle. You can find out some example in scripts/=
+coccinelle/.
+> > Thanks for such background information.
+> > Was the script =E2=80=9Cifnullfree.cocci=E2=80=9D applied here?
+> Yep
+> > Will it be helpful to add attribution for such tools
+> > to any more descriptions in your patches?
+> Sometimes, I will add the description in my patches. Not always.
 
-Applied.  thanks!
+Applied with some minor tweaks to the commit message.
+
+Thanks!
 
 Alex
 
-> ---
->  drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
 >
-> diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c b/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c
-> index 1488ffddf4e3..5944524faab9 100644
-> --- a/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c
-> +++ b/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c
-> @@ -606,11 +606,11 @@ static void dce_mi_allocate_dmif(
->         }
+> Thanks,
+> zhong jiang
+> > Regards,
+> > Markus
+> >
+> > .
+> >
 >
->         if (dce_mi->wa.single_head_rdreq_dmif_limit) {
-> -               uint32_t eanble =  (total_stream_num > 1) ? 0 :
-> +               uint32_t enable =  (total_stream_num > 1) ? 0 :
->                                 dce_mi->wa.single_head_rdreq_dmif_limit;
->
->                 REG_UPDATE(MC_HUB_RDREQ_DMIF_LIMIT,
-> -                               ENABLE, eanble);
-> +                               ENABLE, enable);
->         }
->  }
->
-> @@ -636,11 +636,11 @@ static void dce_mi_free_dmif(
->                         10, 3500);
->
->         if (dce_mi->wa.single_head_rdreq_dmif_limit) {
-> -               uint32_t eanble =  (total_stream_num > 1) ? 0 :
-> +               uint32_t enable =  (total_stream_num > 1) ? 0 :
->                                 dce_mi->wa.single_head_rdreq_dmif_limit;
->
->                 REG_UPDATE(MC_HUB_RDREQ_DMIF_LIMIT,
-> -                               ENABLE, eanble);
-> +                               ENABLE, enable);
->         }
->  }
->
-> --
-> 2.20.1
 >
 > _______________________________________________
 > dri-devel mailing list

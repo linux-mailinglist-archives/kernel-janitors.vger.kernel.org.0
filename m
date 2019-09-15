@@ -2,75 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D3D1B306C
-	for <lists+kernel-janitors@lfdr.de>; Sun, 15 Sep 2019 16:05:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83935B31B5
+	for <lists+kernel-janitors@lfdr.de>; Sun, 15 Sep 2019 21:32:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727975AbfIOOFQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 15 Sep 2019 10:05:16 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:58434 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726146AbfIOOFQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 15 Sep 2019 10:05:16 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id B66F8ED16131DCAC250C;
-        Sun, 15 Sep 2019 22:05:13 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.439.0; Sun, 15 Sep 2019 22:05:05 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <valentina.manea.m@gmail.com>, <shuah@kernel.org>,
-        <gregkh@linuxfoundation.org>
-CC:     <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH v2] usbip: vhci_hcd indicate failed message
-Date:   Sun, 15 Sep 2019 22:22:23 +0800
-Message-ID: <20190915142223.158404-1-maowenan@huawei.com>
+        id S1727469AbfIOTcU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 15 Sep 2019 15:32:20 -0400
+Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:54329 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727219AbfIOTcU (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 15 Sep 2019 15:32:20 -0400
+Received: from localhost.localdomain ([93.23.196.41])
+        by mwinf5d03 with ME
+        id 1vYD210030u43at03vYDkN; Sun, 15 Sep 2019 21:32:16 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 15 Sep 2019 21:32:16 +0200
+X-ME-IP: 93.23.196.41
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     arend.vanspriel@broadcom.com, franky.lin@broadcom.com,
+        hante.meuleman@broadcom.com, chi-hsien.lin@cypress.com,
+        wright.feng@cypress.com, kvalo@codeaurora.org, davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] brcmsmac: remove a useless test
+Date:   Sun, 15 Sep 2019 21:32:10 +0200
+Message-Id: <20190915193210.27357-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <5D7E3D1A.5070906@bfs.de>
-References: <5D7E3D1A.5070906@bfs.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If the return value of vhci_init_attr_group and
-sysfs_create_group is non-zero, which mean they failed
-to init attr_group and create sysfs group, so it would
-better add 'failed' message to indicate that.
-This patch also change pr_err to dev_err to trace which
-device is failed.
+'pih' is known to be non-NULL at this point, so the test can be removed.
 
-Fixes: 0775a9cbc694 ("usbip: vhci extension: modifications to vhci driver")
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- v2: change pr_err to dev_err.
- drivers/usb/usbip/vhci_hcd.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/usb/usbip/vhci_hcd.c b/drivers/usb/usbip/vhci_hcd.c
-index 000ab7225717..bea28ec846ee 100644
---- a/drivers/usb/usbip/vhci_hcd.c
-+++ b/drivers/usb/usbip/vhci_hcd.c
-@@ -1185,12 +1185,12 @@ static int vhci_start(struct usb_hcd *hcd)
- 	if (id == 0 && usb_hcd_is_primary_hcd(hcd)) {
- 		err = vhci_init_attr_group();
- 		if (err) {
--			pr_err("init attr group\n");
-+			dev_err(hcd_dev(hcd), "init attr group failed\n");
- 			return err;
- 		}
- 		err = sysfs_create_group(&hcd_dev(hcd)->kobj, &vhci_attr_group);
- 		if (err) {
--			pr_err("create sysfs files\n");
-+			dev_err(hcd_dev(hcd), "create sysfs files failed\n");
- 			vhci_finish_attr_group();
- 			return err;
- 		}
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+index 080e829da9b3..6bb34a12a94b 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/main.c
+@@ -1816,8 +1816,7 @@ void brcms_b_phy_reset(struct brcms_hardware *wlc_hw)
+ 	udelay(2);
+ 	brcms_b_core_phy_clk(wlc_hw, ON);
+ 
+-	if (pih)
+-		wlc_phy_anacore(pih, ON);
++	wlc_phy_anacore(pih, ON);
+ }
+ 
+ /* switch to and initialize new band */
 -- 
 2.20.1
 

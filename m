@@ -2,71 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 43D53B2BD6
-	for <lists+kernel-janitors@lfdr.de>; Sat, 14 Sep 2019 17:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56966B2DEB
+	for <lists+kernel-janitors@lfdr.de>; Sun, 15 Sep 2019 05:26:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726677AbfINPXI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 14 Sep 2019 11:23:08 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:60620 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725920AbfINPXI (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 14 Sep 2019 11:23:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=QeS3aSLBDbtOqUsJfdzyrqBh1JWu32OM9gL7ixNGo6s=; b=C2MzGcdwlrUizS+r2nwmeKMlb
-        Wc0C59b4VGQaslqc1Ad7h+6B9GanGZHUsmqcH0/f4ZkNCTaHYVXPkosCYbIzVRBuA/F/hvHs6IVzb
-        8g8nSvvUnU2CYBX/OqG1e360Q3aNeAfR620irmIFguRs2UjOzq2mPPXcX1Fb8h7oBdCaPcW0AAMBk
-        GbOQlkdxFMxsnrjuGUHz47mHvEaMloMbIQeYxMCn53mGXI6EONTQ070GnkVHjCAYhjHi/6owdjJ4c
-        bbWx1Jpku+ZJEbfLiuGW+HqLo462J/otqT+zEbC5h7b+Omg6Mh06D6LCdiirztWYcgRDGOd9sxdhY
-        ei1tq0uPw==;
-Received: from c-73-157-219-8.hsd1.or.comcast.net ([73.157.219.8] helo=[10.0.0.252])
-        by bombadil.infradead.org with esmtpsa (Exim 4.92.2 #3 (Red Hat Linux))
-        id 1i99tD-0001Hp-Uf; Sat, 14 Sep 2019 15:23:07 +0000
-Subject: Re: Problems during compiling in kernel modules
-To:     Rohit Sarkar <rohitsarkar5398@gmail.com>
-Cc:     linux-newbie@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-iio@vger.kernel.org
-References: <20190913173821.GA5986@SARKAR> <20190913180103.GB5986@SARKAR>
- <ff4b5c99-086b-4456-fb2b-643a6caefcee@infradead.org>
- <20190914063136.GA23166@SARKAR>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <cffb789d-1464-c194-bfc4-bc05a5ac9db7@infradead.org>
-Date:   Sat, 14 Sep 2019 08:23:07 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S1726960AbfIOD0Y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 14 Sep 2019 23:26:24 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:2219 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725943AbfIOD0X (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 14 Sep 2019 23:26:23 -0400
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 0B86862CC76848BE9217;
+        Sun, 15 Sep 2019 11:26:21 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.439.0; Sun, 15 Sep 2019 11:26:13 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <valentina.manea.m@gmail.com>, <shuah@kernel.org>,
+        <gregkh@linuxfoundation.org>
+CC:     <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH] usbip: vhci_hcd indicate failed message
+Date:   Sun, 15 Sep 2019 11:43:32 +0800
+Message-ID: <20190915034332.21168-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190914063136.GA23166@SARKAR>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 9/13/19 11:31 PM, Rohit Sarkar wrote:
-> On Fri, Sep 13, 2019 at 03:36:03PM -0700, Randy Dunlap wrote:
->> Hi,
->> It works for me.  Do you have a kernel .config file?
->> Does it set/enable CONFIG_IIO and some/any/all drivers in drivers/iio/accel/ ?
->>
->> If you don't have a kernel .config file, I don't expect it to work.
->> -- 
->> ~Randy
-> 
-> Hey Randy,
-> I do have a .config file but no it does not set "CONFIG_IIO".
-> The weird thing is when I built the kernel initially the object files
-> for drivers/iio/accel/ were generated. 
-> That's strange right?
+If the return value of vhci_init_attr_group and
+sysfs_create_group is non-zero, which mean they failed
+to init attr_group and create sysfs group, so it would
+better add 'failed' message to indicate that.
 
-Sounds like you now have a different .config file and that the earlier
-.config file did enable CONFIG_IIO.
+Fixes: 0775a9cbc694 ("usbip: vhci extension: modifications to vhci driver")
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ drivers/usb/usbip/vhci_hcd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/usb/usbip/vhci_hcd.c b/drivers/usb/usbip/vhci_hcd.c
+index 000ab7225717..dd54c95d2498 100644
+--- a/drivers/usb/usbip/vhci_hcd.c
++++ b/drivers/usb/usbip/vhci_hcd.c
+@@ -1185,12 +1185,12 @@ static int vhci_start(struct usb_hcd *hcd)
+ 	if (id == 0 && usb_hcd_is_primary_hcd(hcd)) {
+ 		err = vhci_init_attr_group();
+ 		if (err) {
+-			pr_err("init attr group\n");
++			pr_err("init attr group failed\n");
+ 			return err;
+ 		}
+ 		err = sysfs_create_group(&hcd_dev(hcd)->kobj, &vhci_attr_group);
+ 		if (err) {
+-			pr_err("create sysfs files\n");
++			pr_err("create sysfs failed\n");
+ 			vhci_finish_attr_group();
+ 			return err;
+ 		}
 -- 
-~Randy
+2.20.1
+

@@ -2,64 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E834AB31CA
-	for <lists+kernel-janitors@lfdr.de>; Sun, 15 Sep 2019 21:41:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 510A8B3295
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Sep 2019 01:12:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727173AbfIOTlW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 15 Sep 2019 15:41:22 -0400
-Received: from smtp02.smtpout.orange.fr ([80.12.242.124]:47937 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726747AbfIOTlW (ORCPT
+        id S1728560AbfIOXMQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 15 Sep 2019 19:12:16 -0400
+Received: from violet.fr.zoreil.com ([92.243.8.30]:45552 "EHLO
+        violet.fr.zoreil.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728438AbfIOXMQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 15 Sep 2019 15:41:22 -0400
-Received: from localhost.localdomain ([93.23.196.41])
-        by mwinf5d03 with ME
-        id 1vhJ210060u43at03vhJXW; Sun, 15 Sep 2019 21:41:20 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 15 Sep 2019 21:41:20 +0200
-X-ME-IP: 93.23.196.41
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     linus.walleij@linaro.org, airlied@linux.ie, daniel@ffwll.ch
-Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] drm/mcde: Fix some resource leak in an error path in 'mcde_probe()'
-Date:   Sun, 15 Sep 2019 21:41:14 +0200
-Message-Id: <20190915194114.27658-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        Sun, 15 Sep 2019 19:12:16 -0400
+X-Greylist: delayed 325 seconds by postgrey-1.27 at vger.kernel.org; Sun, 15 Sep 2019 19:12:15 EDT
+Received: from violet.fr.zoreil.com (localhost [127.0.0.1])
+        by violet.fr.zoreil.com (8.14.9/8.14.9) with ESMTP id x8FN6fx3007397;
+        Mon, 16 Sep 2019 01:06:41 +0200
+Received: (from romieu@localhost)
+        by violet.fr.zoreil.com (8.14.9/8.14.5/Submit) id x8FN6e0i007396;
+        Mon, 16 Sep 2019 01:06:40 +0200
+Date:   Mon, 16 Sep 2019 01:06:40 +0200
+From:   Francois Romieu <romieu@fr.zoreil.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] net/wan: dscc4: remove broken dscc4 driver
+Message-ID: <20190915230640.GA7382@electric-eye.fr.zoreil.com>
+References: <20190913132817.GA13179@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190913132817.GA13179@mwanda>
+X-Organisation: Land of Sunshine Inc.
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-All error handling paths before and after this one go to the
-'clk_disable' label in order to free some resources.
+Dan Carpenter <dan.carpenter@oracle.com> :
+> Using static analysis, I discovered that the "dpriv->pci_priv->pdev"
+> pointer is always NULL.  This pointer was supposed to be initialized
+> during probe and is essential for the driver to work.  It would be easy
+> to add a "ppriv->pdev = pdev;" to dscc4_found1() but this driver has
+> been broken since before we started using git and no one has complained
+> so probably we should just remove it.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-So the same here.
+Acked-by: Francois Romieu <romieu@fr.zoreil.com>
 
-Fixes: ca5be902a87d ("drm/mcde: Fix uninitialized variable")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/gpu/drm/mcde/mcde_drv.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/mcde/mcde_drv.c b/drivers/gpu/drm/mcde/mcde_drv.c
-index 9a09eba53182..5649887d2b90 100644
---- a/drivers/gpu/drm/mcde/mcde_drv.c
-+++ b/drivers/gpu/drm/mcde/mcde_drv.c
-@@ -484,7 +484,8 @@ static int mcde_probe(struct platform_device *pdev)
- 	}
- 	if (!match) {
- 		dev_err(dev, "no matching components\n");
--		return -ENODEV;
-+		ret = -ENODEV;
-+		goto clk_disable;
- 	}
- 	if (IS_ERR(match)) {
- 		dev_err(dev, "could not create component match\n");
 -- 
-2.20.1
-
+Ueimor

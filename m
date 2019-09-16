@@ -2,39 +2,39 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E689B4116
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Sep 2019 21:24:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E6E4B4144
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Sep 2019 21:43:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391034AbfIPTYj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 16 Sep 2019 15:24:39 -0400
-Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:40889 "EHLO
+        id S2388319AbfIPTnu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Sep 2019 15:43:50 -0400
+Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:56597 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728005AbfIPTYg (ORCPT
+        with ESMTP id S2388240AbfIPTnu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 16 Sep 2019 15:24:36 -0400
+        Mon, 16 Sep 2019 15:43:50 -0400
 Received: from [192.168.1.41] ([90.126.97.183])
         by mwinf5d90 with ME
-        id 2KQU210063xPcdm03KQWVm; Mon, 16 Sep 2019 21:24:33 +0200
+        id 2Kjj2100R3xPcdm03Kjj1q; Mon, 16 Sep 2019 21:43:47 +0200
 X-ME-Helo: [192.168.1.41]
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 16 Sep 2019 21:24:33 +0200
+X-ME-Date: Mon, 16 Sep 2019 21:43:47 +0200
 X-ME-IP: 90.126.97.183
-Subject: Re: [PATCH] media: v4l: cadence: Fix how unsued lanes are handled in
- 'csi2rx_start()'
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Maxime Ripard <mripard@kernel.org>
-Cc:     mchehab@kernel.org, linux-media@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20190912204450.17625-1-christophe.jaillet@wanadoo.fr>
- <20190913075709.t35ggip624tybd6l@localhost.localdomain>
- <20190916062846.GD18977@kadam>
+Subject: Re: [PATCH] iommu/arm-smmu: Axe a useless test in
+ 'arm_smmu_master_alloc_smes()'
+To:     Robin Murphy <robin.murphy@arm.com>, will@kernel.org,
+        joro@8bytes.org
+Cc:     linux-arm-kernel@lists.infradead.org,
+        iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20190915193401.27426-1-christophe.jaillet@wanadoo.fr>
+ <de9ee628-9efb-3078-590c-6852be61c7d2@arm.com>
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <f67787da-dc1c-3e05-c1e2-e8737641dfd0@wanadoo.fr>
-Date:   Mon, 16 Sep 2019 21:24:26 +0200
+Message-ID: <5babe7b3-07ba-cb07-82b0-4105d8e8b4fc@wanadoo.fr>
+Date:   Mon, 16 Sep 2019 21:43:43 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
  Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20190916062846.GD18977@kadam>
+In-Reply-To: <de9ee628-9efb-3078-590c-6852be61c7d2@arm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Content-Language: fr
@@ -43,57 +43,49 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 16/09/2019 à 08:28, Dan Carpenter a écrit :
-> On Fri, Sep 13, 2019 at 09:57:09AM +0200, Maxime Ripard wrote:
->> Hi Christophe,
+Le 16/09/2019 à 12:46, Robin Murphy a écrit :
+> On 15/09/2019 20:34, Christophe JAILLET wrote:
+>> 'ommu_group_get_for_dev()' never returns NULL, so this test can be 
+>> removed.
+>
+> Nit: typo in the function name.
+>
+> Otherwise, there definitely used to be some path where a NULL return 
+> could leak out, so I would have had that in mind at the time I wrote 
+> this, but apparently I never noticed that that had already been 
+> cleaned up by the time this got merged.
+>
+Hi,
+
+Maybe fixed by 72dcac633475 ("iommu: Warn once when device_group 
+callback returns NULL")
+
+
+CJ
+
+> Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+>
+> Thanks,
+> Robin.
+>
+>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>> ---
+>>   drivers/iommu/arm-smmu.c | 2 --
+>>   1 file changed, 2 deletions(-)
 >>
->> On Thu, Sep 12, 2019 at 10:44:50PM +0200, Christophe JAILLET wrote:
->>> The 2nd parameter of 'find_first_zero_bit()' is a number of bits, not of
->>> bytes. So use 'BITS_PER_LONG' instead of 'sizeof(lanes_used)'.
->>>
->>> Fixes: 1fc3b37f34f6 ("media: v4l: cadence: Add Cadence MIPI-CSI2 RX driver")
->>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->>> ---
->>> This patch is purely speculative. Using BITS_PER_LONG looks logical to me,
->>> but I'm not 100% sure that it is what is expected here. 'csi2rx->max_lanes'
->>> could also be a good candidate.
->> Yeah, csi2rx->max_lanes would make more sense in that context. Could
->> you resend a new version?
-> This is sort of unrelated, but for Smatch purposes the csi2rx->max_lanes
-> comes from the firmware in csi2rx_parse_dt() and it could be any u8
-> value.
-
-Hi Dan,
-
-not sure to follow you.
-
-csi2rx_probe()
-   --> csi2rx_get_resources()
-      -->  ...
-           dev_cfg = readl(csi2rx->base + CSI2RX_DEVICE_CFG_REG);
-           ...
-           csi2rx->max_lanes = dev_cfg & 7;
-           if (csi2rx->max_lanes > CSI2RX_LANES_MAX) {
-              dev_err(&pdev->dev, "Invalid number of lanes: %u\n",
-                      csi2rx->max_lanes);
-              return -EINVAL;
-           }
-
-So I guess, that we can trust max_lanes because of the 'if (... > 
-CSI2RX_LANES_MAX)' check.
-
-Did I miss something?
-
-
-> I sort of wish that people would write code which was known to be
-> correct just from reading the kernel code, without looking at the
-> firmware...  I guess I could mark v4l2_fwnode_endpoint_parse() as always
-> giving us valid data, but that still wouldn't tell us what the valid
-> data is.  It's hard to know the right answer from a static analysis
-> point of view.
->
-> regards,
-> dan carpenter
->
+>> diff --git a/drivers/iommu/arm-smmu.c b/drivers/iommu/arm-smmu.c
+>> index c3ef0cc8f764..6fae8cdbe985 100644
+>> --- a/drivers/iommu/arm-smmu.c
+>> +++ b/drivers/iommu/arm-smmu.c
+>> @@ -1038,8 +1038,6 @@ static int arm_smmu_master_alloc_smes(struct 
+>> device *dev)
+>>       }
+>>         group = iommu_group_get_for_dev(dev);
+>> -    if (!group)
+>> -        group = ERR_PTR(-ENOMEM);
+>>       if (IS_ERR(group)) {
+>>           ret = PTR_ERR(group);
+>>           goto out_err;
+>>
 >
 

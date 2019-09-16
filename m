@@ -2,51 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 012ACB351C
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Sep 2019 09:07:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4356B3564
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Sep 2019 09:15:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725912AbfIPHHo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 16 Sep 2019 03:07:44 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:44252 "EHLO
+        id S1727786AbfIPHPe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Sep 2019 03:15:34 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:44402 "EHLO
         shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725847AbfIPHHn (ORCPT
+        with ESMTP id S1726667AbfIPHPe (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 16 Sep 2019 03:07:43 -0400
+        Mon, 16 Sep 2019 03:15:34 -0400
 Received: from localhost (unknown [85.119.46.8])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 33CF615163DE1;
-        Mon, 16 Sep 2019 00:07:41 -0700 (PDT)
-Date:   Mon, 16 Sep 2019 09:07:40 +0200 (CEST)
-Message-Id: <20190916.090740.552365470207565763.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     aelior@marvell.com, GR-everest-linux-l2@marvell.com,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] qed: fix spelling mistake "fullill" -> "fulfill"
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 8F82715163DC1;
+        Mon, 16 Sep 2019 00:15:32 -0700 (PDT)
+Date:   Mon, 16 Sep 2019 09:15:31 +0200 (CEST)
+Message-Id: <20190916.091531.804053772243575655.davem@davemloft.net>
+To:     dan.carpenter@oracle.com
+Cc:     romieu@fr.zoreil.com, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] net/wan: dscc4: remove broken dscc4 driver
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190913090759.3490-1-colin.king@canonical.com>
-References: <20190913090759.3490-1-colin.king@canonical.com>
+In-Reply-To: <20190913132817.GA13179@mwanda>
+References: <20190913132817.GA13179@mwanda>
 X-Mailer: Mew version 6.8 on Emacs 26.2
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 16 Sep 2019 00:07:43 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 16 Sep 2019 00:15:33 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Fri, 13 Sep 2019 10:07:59 +0100
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Date: Fri, 13 Sep 2019 16:28:17 +0300
 
-> From: Colin Ian King <colin.king@canonical.com>
+> Using static analysis, I discovered that the "dpriv->pci_priv->pdev"
+> pointer is always NULL.  This pointer was supposed to be initialized
+> during probe and is essential for the driver to work.  It would be easy
+> to add a "ppriv->pdev = pdev;" to dscc4_found1() but this driver has
+> been broken since before we started using git and no one has complained
+> so probably we should just remove it.
 > 
-> There is a spelling mistake in a DP_VERBOSE debug message. Fix it.
-> (Using American English spelling as this is the most common way
-> to spell this in the kernel).
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Applied to net-next
+Applied to net-next.

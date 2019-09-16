@@ -2,89 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C6D4B3E0C
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Sep 2019 17:47:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E689B4116
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Sep 2019 21:24:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729744AbfIPPrY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 16 Sep 2019 11:47:24 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39846 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728527AbfIPPrX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 16 Sep 2019 11:47:23 -0400
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net [24.9.64.241])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3C7442184D;
-        Mon, 16 Sep 2019 15:47:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568648842;
-        bh=MYm2zxY/xoEKbCW9H6wOf0Sfh5t3xNGKEsSQnRVcsH4=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=cHVGaHv8YCgHi6cn3H1obmAuK37C+VZAuzPfpZqRh/R2HzsdTvXNvw6UQgOGQNcFc
-         RdSu+9uWR0SWTdHM3gJ2XzEH/Zqqtct1rT3EfNH9QKQG66p++TLOIa7oMsxa2Q2ART
-         VARaL6FPeFZYCokDO2JDHvCt/rrArX2AwOpDxw7w=
-Subject: Re: [PATCH v3] usbip: vhci_hcd indicate failed message
-To:     Mao Wenan <maowenan@huawei.com>, valentina.manea.m@gmail.com,
-        gregkh@linuxfoundation.org
-Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, shuah <shuah@kernel.org>
-References: <2743ad5b-9348-bd2b-4763-a2a199e6edad@kernel.org>
- <20190916150921.152977-1-maowenan@huawei.com>
-From:   shuah <shuah@kernel.org>
-Message-ID: <fb06edbf-e599-ada5-916d-405382cb6f6f@kernel.org>
-Date:   Mon, 16 Sep 2019 09:47:21 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S2391034AbfIPTYj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Sep 2019 15:24:39 -0400
+Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:40889 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728005AbfIPTYg (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 16 Sep 2019 15:24:36 -0400
+Received: from [192.168.1.41] ([90.126.97.183])
+        by mwinf5d90 with ME
+        id 2KQU210063xPcdm03KQWVm; Mon, 16 Sep 2019 21:24:33 +0200
+X-ME-Helo: [192.168.1.41]
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Mon, 16 Sep 2019 21:24:33 +0200
+X-ME-IP: 90.126.97.183
+Subject: Re: [PATCH] media: v4l: cadence: Fix how unsued lanes are handled in
+ 'csi2rx_start()'
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Maxime Ripard <mripard@kernel.org>
+Cc:     mchehab@kernel.org, linux-media@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20190912204450.17625-1-christophe.jaillet@wanadoo.fr>
+ <20190913075709.t35ggip624tybd6l@localhost.localdomain>
+ <20190916062846.GD18977@kadam>
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-ID: <f67787da-dc1c-3e05-c1e2-e8737641dfd0@wanadoo.fr>
+Date:   Mon, 16 Sep 2019 21:24:26 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20190916150921.152977-1-maowenan@huawei.com>
+In-Reply-To: <20190916062846.GD18977@kadam>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Language: fr
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 9/16/19 9:09 AM, Mao Wenan wrote:
-> If the return value of vhci_init_attr_group and
-> sysfs_create_group is non-zero, which mean they failed
-> to init attr_group and create sysfs group, so it would
-> better add 'failed' message to indicate that.
-> This patch also change pr_err to dev_err to trace which
-> device is failed.
-> 
-> Fixes: 0775a9cbc694 ("usbip: vhci extension: modifications to vhci driver")
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> ---
->   v2: change pr_err to dev_err.
->   v3: add error code in failed messages.
->   drivers/usb/usbip/vhci_hcd.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/usb/usbip/vhci_hcd.c b/drivers/usb/usbip/vhci_hcd.c
-> index 000ab7225717..144507751eae 100644
-> --- a/drivers/usb/usbip/vhci_hcd.c
-> +++ b/drivers/usb/usbip/vhci_hcd.c
-> @@ -1185,12 +1185,12 @@ static int vhci_start(struct usb_hcd *hcd)
->   	if (id == 0 && usb_hcd_is_primary_hcd(hcd)) {
->   		err = vhci_init_attr_group();
->   		if (err) {
-> -			pr_err("init attr group\n");
-> +			dev_err(hcd_dev(hcd), "init attr group failed, err = %d\n", err);
->   			return err;
->   		}
->   		err = sysfs_create_group(&hcd_dev(hcd)->kobj, &vhci_attr_group);
->   		if (err) {
-> -			pr_err("create sysfs files\n");
-> +			dev_err(hcd_dev(hcd), "create sysfs files failed, err = %d\n", err);
->   			vhci_finish_attr_group();
->   			return err;
->   		}
-> 
+Le 16/09/2019 à 08:28, Dan Carpenter a écrit :
+> On Fri, Sep 13, 2019 at 09:57:09AM +0200, Maxime Ripard wrote:
+>> Hi Christophe,
+>>
+>> On Thu, Sep 12, 2019 at 10:44:50PM +0200, Christophe JAILLET wrote:
+>>> The 2nd parameter of 'find_first_zero_bit()' is a number of bits, not of
+>>> bytes. So use 'BITS_PER_LONG' instead of 'sizeof(lanes_used)'.
+>>>
+>>> Fixes: 1fc3b37f34f6 ("media: v4l: cadence: Add Cadence MIPI-CSI2 RX driver")
+>>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>>> ---
+>>> This patch is purely speculative. Using BITS_PER_LONG looks logical to me,
+>>> but I'm not 100% sure that it is what is expected here. 'csi2rx->max_lanes'
+>>> could also be a good candidate.
+>> Yeah, csi2rx->max_lanes would make more sense in that context. Could
+>> you resend a new version?
+> This is sort of unrelated, but for Smatch purposes the csi2rx->max_lanes
+> comes from the firmware in csi2rx_parse_dt() and it could be any u8
+> value.
 
-Looks good to me.
+Hi Dan,
 
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+not sure to follow you.
 
-thanks,
--- Shuah
+csi2rx_probe()
+   --> csi2rx_get_resources()
+      -->  ...
+           dev_cfg = readl(csi2rx->base + CSI2RX_DEVICE_CFG_REG);
+           ...
+           csi2rx->max_lanes = dev_cfg & 7;
+           if (csi2rx->max_lanes > CSI2RX_LANES_MAX) {
+              dev_err(&pdev->dev, "Invalid number of lanes: %u\n",
+                      csi2rx->max_lanes);
+              return -EINVAL;
+           }
+
+So I guess, that we can trust max_lanes because of the 'if (... > 
+CSI2RX_LANES_MAX)' check.
+
+Did I miss something?
+
+
+> I sort of wish that people would write code which was known to be
+> correct just from reading the kernel code, without looking at the
+> firmware...  I guess I could mark v4l2_fwnode_endpoint_parse() as always
+> giving us valid data, but that still wouldn't tell us what the valid
+> data is.  It's hard to know the right answer from a static analysis
+> point of view.
+>
+> regards,
+> dan carpenter
+>
+>
+

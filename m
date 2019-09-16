@@ -2,91 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66FCAB3B26
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Sep 2019 15:18:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2080B3C02
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Sep 2019 16:00:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733090AbfIPNSr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 16 Sep 2019 09:18:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46028 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727999AbfIPNSq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 16 Sep 2019 09:18:46 -0400
-Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net [24.9.64.241])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 91FE821670;
-        Mon, 16 Sep 2019 13:18:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1568639926;
-        bh=yEKQ2EzNebjen4C4J2ejh9i+DO97eD4kjLJii31E0sQ=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=RXANIDI1sBFbF1f8K1T6U1H4McDlCVNenhffJ4BaAqis+MrU2Rf93FYYiiUQfdeI8
-         i5l6lIkoCbZuX17Tzm1gjNmLNzwA+3/hITc6uTmIFAYV0p4MV2Fo0TLmfwB1lL0L53
-         oC6H5CFlGokiBZDPVEKxzrGL5r6LP8obuT6jV9+c=
-Subject: Re: [PATCH v2] usbip: vhci_hcd indicate failed message
-To:     Mao Wenan <maowenan@huawei.com>, valentina.manea.m@gmail.com,
-        gregkh@linuxfoundation.org
-Cc:     linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, shuah <shuah@kernel.org>
-References: <5D7E3D1A.5070906@bfs.de>
- <20190915142223.158404-1-maowenan@huawei.com>
-From:   shuah <shuah@kernel.org>
-Message-ID: <2743ad5b-9348-bd2b-4763-a2a199e6edad@kernel.org>
-Date:   Mon, 16 Sep 2019 07:18:30 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        id S2388254AbfIPOAt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Sep 2019 10:00:49 -0400
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:34299 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388202AbfIPOAt (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 16 Sep 2019 10:00:49 -0400
+Received: by mail-qk1-f193.google.com with SMTP id q203so58879qke.1
+        for <kernel-janitors@vger.kernel.org>; Mon, 16 Sep 2019 07:00:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=0fqYDlxr0N5uVIkkaGGnEEYiGH2WIRzI/5NcWh0y3w0=;
+        b=L/2doCf0astVHUJLnwTi6wtOwayW2zOox9g4ymEojf7QWssFRtvD/Pw/LXP/pHMM2a
+         qi/IK76Z5NEMGbVOzfUcNqoF8tVBFEvKvfzeKYudMEGqpk4uSUzWVMDIW6pR0T4Lqgpw
+         z73SeLDbtyzQ9QGMR8sc3NkLGN8TJI4KC++oOAZ2TGe5SfZDujfncgWD2Ws6mmaYDvfB
+         fBzuuOK+v+thMVPpcFsCxyJhcJdguY+le2GxBggAaYLYl2o867oHKsXW58UbuVXGNysf
+         1SgO8V2745rN/m2MgyGeDlq57bHlNu49Yciww4zaGDUW4aGuVYJ1Bw2NGA1LL2Ft8huJ
+         u4zw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=0fqYDlxr0N5uVIkkaGGnEEYiGH2WIRzI/5NcWh0y3w0=;
+        b=QXIZW3f587HmUXb72KTuTHEs3UGJEzJLUS4bACW4oCjduLol4ARi4MZjPKRLSMc+jQ
+         Bq+68wdLWbWvBaSHlHjSDnMd7FgvbEp6ehIQAeHefTEjUV7U3Jm4NdUQl+VinWKtsRHJ
+         opKjVuXV/uQNNUH8hDEvHv7Lv+C1I6af1VWWUjXrhKw+50mvYEuNGe8vUnDvwDzxb5kX
+         bu5RfSK6jLwwlMSydI9u9f/B9hl54e7MbacmAamZBJPMwFLrK4so+7414EtAJniqEyP+
+         OmnccyNBsCenXUvRYsFlMrzDv5sUiXZ/ooQc8Co1YmGu/LiTO0pKXOD68ZrMz0Pz7ZSM
+         6bTQ==
+X-Gm-Message-State: APjAAAV0UfQSYueD/6FDBW4AhjllruClGSlRmObIGZPxGhgSTSCZZXr5
+        78iirmaVwrElL0NEOPDlqy9bAw==
+X-Google-Smtp-Source: APXvYqxxB3zBTqNVBTFNdr7OQD6ICS1BkiBLFKIZmh86Es3HLPuJb96ZUnqJM48IjKPlU5hha4ShGg==
+X-Received: by 2002:a37:a3d0:: with SMTP id m199mr51483qke.492.1568642448678;
+        Mon, 16 Sep 2019 07:00:48 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-167-223-10.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.167.223.10])
+        by smtp.gmail.com with ESMTPSA id b130sm18702024qkc.100.2019.09.16.07.00.48
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 16 Sep 2019 07:00:48 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1i9rYd-0001b8-Kn; Mon, 16 Sep 2019 11:00:47 -0300
+Date:   Mon, 16 Sep 2019 11:00:47 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Selvin Xavier <selvin.xavier@broadcom.com>,
+        Devesh Sharma <devesh.sharma@broadcom.com>,
+        Somnath Kotur <somnath.kotur@broadcom.com>,
+        Sriharsha Basavapatna <sriharsha.basavapatna@broadcom.com>,
+        Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] RDMA/bnxt_re: fix spelling mistake "missin_resp" ->
+ "missing_resp"
+Message-ID: <20190916140047.GA6108@ziepe.ca>
+References: <20190911092856.11146-1-colin.king@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <20190915142223.158404-1-maowenan@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190911092856.11146-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 9/15/19 8:22 AM, Mao Wenan wrote:
-> If the return value of vhci_init_attr_group and
-> sysfs_create_group is non-zero, which mean they failed
-> to init attr_group and create sysfs group, so it would
-> better add 'failed' message to indicate that.
-> This patch also change pr_err to dev_err to trace which
-> device is failed.
+On Wed, Sep 11, 2019 at 10:28:56AM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Fixes: 0775a9cbc694 ("usbip: vhci extension: modifications to vhci driver")
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> There is a spelling mistake in a literal string, fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->   v2: change pr_err to dev_err.
->   drivers/usb/usbip/vhci_hcd.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/usb/usbip/vhci_hcd.c b/drivers/usb/usbip/vhci_hcd.c
-> index 000ab7225717..bea28ec846ee 100644
-> --- a/drivers/usb/usbip/vhci_hcd.c
-> +++ b/drivers/usb/usbip/vhci_hcd.c
-> @@ -1185,12 +1185,12 @@ static int vhci_start(struct usb_hcd *hcd)
->   	if (id == 0 && usb_hcd_is_primary_hcd(hcd)) {
->   		err = vhci_init_attr_group();
->   		if (err) {
-> -			pr_err("init attr group\n");
-> +			dev_err(hcd_dev(hcd), "init attr group failed\n");
+>  drivers/infiniband/hw/bnxt_re/hw_counters.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Why not include err information in the message. Helps figure out why
-it failed.
+Applied to for-next, thanks
 
->   			return err;
->   		}
->   		err = sysfs_create_group(&hcd_dev(hcd)->kobj, &vhci_attr_group);
->   		if (err) {
-> -			pr_err("create sysfs files\n");
-> +			dev_err(hcd_dev(hcd), "create sysfs files failed\n");
->   			vhci_finish_attr_group();
->   			return err;
->   		}
-> 
-
-Why not include err information in the message. Helps figure out why
-it failed.
-
-thanks,
--- Shuah
+Jason

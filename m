@@ -2,65 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66069B41D2
-	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Sep 2019 22:29:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BE28B4772
+	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Sep 2019 08:24:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403793AbfIPU3l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 16 Sep 2019 16:29:41 -0400
-Received: from smtp11.smtpout.orange.fr ([80.12.242.133]:39137 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730518AbfIPU3l (ORCPT
+        id S2391528AbfIQGYJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 17 Sep 2019 02:24:09 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:50230 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387513AbfIQGYJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 16 Sep 2019 16:29:41 -0400
-Received: from localhost.localdomain ([90.126.97.183])
-        by mwinf5d90 with ME
-        id 2LVe2100A3xPcdm03LVfSU; Mon, 16 Sep 2019 22:29:39 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Mon, 16 Sep 2019 22:29:39 +0200
-X-ME-IP: 90.126.97.183
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     agross@kernel.org, robdclark@gmail.com, joro@8bytes.org
-Cc:     linux-arm-msm@vger.kernel.org, iommu@lists.linux-foundation.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] iommu/qcom: Simplify a test in 'qcom_iommu_add_device()'
-Date:   Mon, 16 Sep 2019 22:29:36 +0200
-Message-Id: <20190916202936.30403-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        Tue, 17 Sep 2019 02:24:09 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8H68oE1043186;
+        Tue, 17 Sep 2019 06:23:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=ti8kV861haif+pRAUvcjHzhe05Mja+Gm0/hXqEjFlNw=;
+ b=f3/9RxbBx9owThv6grbvwaj1WAykn1QuyWKIkw2L3i4IlzPkYT2iz6oD/VQ9qsSciT6Q
+ si8XjoIap/5FOlkRTAgSPzzlpE2MLVD1szfuNoFS0JAm5puhGta6oGT3t6ahEco5EuEt
+ NmLI2QiilznYfYpqc15yVdI9KuQEfmLme30Lj4+ZxX4Uzuiyrl151D03xBoZZYV49vcY
+ My9JwO2ClYSfufN2sOPw7HJgxrehSqWTmOjwLo1DoeWgE9/hiuf3arOmx9VXWq2W/LML
+ X2HBFI22Q3bXDm0LNZd4k+KIuRvdnmSDQTVP1X4g19Yd2A3thzC15PslIkD6bohf4IOh 3A== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2v2bx2v6b4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 17 Sep 2019 06:23:55 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8H6Nolf036289;
+        Tue, 17 Sep 2019 06:23:54 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 2v2jjsp5uf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 17 Sep 2019 06:23:52 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x8H6NKpR032319;
+        Tue, 17 Sep 2019 06:23:20 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 16 Sep 2019 23:23:20 -0700
+Date:   Tue, 17 Sep 2019 09:23:12 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     agross@kernel.org, robdclark@gmail.com, joro@8bytes.org,
+        linux-arm-msm@vger.kernel.org, iommu@lists.linux-foundation.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iommu/qcom: Simplify a test in 'qcom_iommu_add_device()'
+Message-ID: <20190917062312.GF18977@kadam>
+References: <20190916202936.30403-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190916202936.30403-1-christophe.jaillet@wanadoo.fr>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9382 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=971
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1909170070
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9382 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1909170069
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'iommu_group_get_for_dev()' never returns NULL, so this test can be
-simplified a bit.
+On Mon, Sep 16, 2019 at 10:29:36PM +0200, Christophe JAILLET wrote:
+> 'iommu_group_get_for_dev()' never returns NULL, so this test can be
+> simplified a bit.
+> 
 
-This way, the test is consistent with all other calls to
-'iommu_group_get_for_dev()'.
+It used to until commit 72dcac633475 ("iommu: Warn once when device_group
+callback returns NULL").
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/iommu/qcom_iommu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-diff --git a/drivers/iommu/qcom_iommu.c b/drivers/iommu/qcom_iommu.c
-index c31e7bc4ccbe..3d99ec868892 100644
---- a/drivers/iommu/qcom_iommu.c
-+++ b/drivers/iommu/qcom_iommu.c
-@@ -539,8 +539,8 @@ static int qcom_iommu_add_device(struct device *dev)
- 	}
- 
- 	group = iommu_group_get_for_dev(dev);
--	if (IS_ERR_OR_NULL(group))
--		return PTR_ERR_OR_ZERO(group);
-+	if (IS_ERR(group))
-+		return PTR_ERR(group);
- 
- 	iommu_group_put(group);
- 	iommu_device_link(&qcom_iommu->iommu, dev);
--- 
-2.20.1
+regards,
+dan carpenter
 

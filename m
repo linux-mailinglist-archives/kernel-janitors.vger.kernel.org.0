@@ -2,99 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C10CB4871
-	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Sep 2019 09:43:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0D89B4C63
+	for <lists+kernel-janitors@lfdr.de>; Tue, 17 Sep 2019 12:58:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392684AbfIQHnD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 17 Sep 2019 03:43:03 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:47038 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727509AbfIQHnD (ORCPT
+        id S1726693AbfIQK6Q convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 17 Sep 2019 06:58:16 -0400
+Received: from mail.11d03.mspz7.gob.ec ([190.214.23.250]:47314 "EHLO
+        mail.11d03.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726335AbfIQK6P (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 17 Sep 2019 03:43:03 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 4572360364; Tue, 17 Sep 2019 07:43:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568706182;
-        bh=vflV/8MMUN3Fj/OMShwNHZxsSTZi/do+H3s3t7BdeP8=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=Q4OW6MDHpew+SuW/p6UDqocnDIkVaaXrUo0gQDSaMUhVsKhusa1ztu5olN50QPt+s
-         JpUQrGLrHIEkEU9Ou5MB78rTkLpspUr0FpBX3WPNoKUxcSMj43HK/DmbKjj2b2P3tb
-         NnBG+xZPsGTIqBbreD3l4ihFR3FI/5elStoVS8YI=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
-        version=3.4.0
-Received: from [10.204.79.15] (blr-c-bdr-fw-01_globalnat_allzones-outside.qualcomm.com [103.229.19.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: mojha@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id E95DB60364;
-        Tue, 17 Sep 2019 07:42:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1568706179;
-        bh=vflV/8MMUN3Fj/OMShwNHZxsSTZi/do+H3s3t7BdeP8=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=gJdYUhqH0FxSW6fKZD91RDWB/hEsuQx9H7JJThCDB6Y5T6Iaabs3bdGHBJgTY//nL
-         il0UEn0O+1pdQ5u6eSZp4V2b9AFaNxlc5d2tgEZ98B48lMSo1v4JKu8mTIzbs22YdE
-         dXz+4AZqtO7pbCV2hsjfDqBINvyQJHOQ32tyqy4I=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E95DB60364
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=mojha@codeaurora.org
-Subject: Re: [PATCH] perf test: fix spelling mistake "allos" -> "allocate"
-To:     Colin King <colin.king@canonical.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190911152148.17031-1-colin.king@canonical.com>
-From:   Mukesh Ojha <mojha@codeaurora.org>
-Message-ID: <2b525705-317a-29a7-9fda-ca7896c8c038@codeaurora.org>
-Date:   Tue, 17 Sep 2019 13:12:46 +0530
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Tue, 17 Sep 2019 06:58:15 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTP id 4504C405AAFA1;
+        Mon, 16 Sep 2019 23:48:37 -0500 (-05)
+Received: from mail.11d03.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d03.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 6tS3uKc8D9qx; Mon, 16 Sep 2019 23:48:36 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTP id 46914405AABD0;
+        Mon, 16 Sep 2019 23:48:35 -0500 (-05)
+X-Virus-Scanned: amavisd-new at 11d03.mspz7.gob.ec
+Received: from mail.11d03.mspz7.gob.ec ([127.0.0.1])
+        by localhost (mail.11d03.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id wT4N4ryQUvQm; Mon, 16 Sep 2019 23:48:35 -0500 (-05)
+Received: from [10.33.79.142] (unknown [105.4.0.133])
+        by mail.11d03.mspz7.gob.ec (Postfix) with ESMTPSA id 12260405AABD6;
+        Mon, 16 Sep 2019 23:48:24 -0500 (-05)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-In-Reply-To: <20190911152148.17031-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: =?utf-8?q?Wohlt=C3=A4tigkeitsspende_von_2=2E000=2E000_Millionen_Euro?=
+To:     Recipients <vicenta.sinche@11d03.mspz7.gob.ec>
+From:   ''Tayeb souami'' <vicenta.sinche@11d03.mspz7.gob.ec>
+Date:   Tue, 17 Sep 2019 06:48:14 +0200
+Reply-To: Tayebsouam.spende@gmail.com
+Message-Id: <20190917044825.12260405AABD6@mail.11d03.mspz7.gob.ec>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Lieber Freund,
 
-On 9/11/2019 8:51 PM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->
-> There is a spelling mistake in a TEST_ASSERT_VAL message. Fix it.
->
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Ich bin Herr Tayeb Souami, New Jersey, Vereinigte Staaten von Amerika, der Mega-Gewinner von $ 315million In Mega Millions Jackpot, spende ich an 5 zufällige Personen, wenn Sie diese E-Mail erhalten, dann wurde Ihre E-Mail nach einem Spinball ausgewählt.Ich habe den größten Teil meines Vermögens auf eine Reihe von Wohltätigkeitsorganisationen und Organisationen verteilt.Ich habe mich freiwillig dazu entschieden, die Summe von € 2.000.000,00 an Sie als eine der ausgewählten 5 zu spenden, um meine Gewinne zu überprüfen, sehen Sie bitte meine You Tube Seite unten.
 
-Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
+UHR MICH HIER: https://www.youtube.com/watch?v=Z6ui8ZDQ6Ks
 
-Thanks,
-Mukesh
+Das ist dein Spendencode: [TS530342018]
 
-> ---
->   tools/perf/tests/event_update.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/tools/perf/tests/event_update.c b/tools/perf/tests/event_update.c
-> index cac4290e233a..7f0868a31a7f 100644
-> --- a/tools/perf/tests/event_update.c
-> +++ b/tools/perf/tests/event_update.c
-> @@ -92,7 +92,7 @@ int test__event_update(struct test *test __maybe_unused, int subtest __maybe_unu
->   
->   	evsel = perf_evlist__first(evlist);
->   
-> -	TEST_ASSERT_VAL("failed to allos ids",
-> +	TEST_ASSERT_VAL("failed to allocate ids",
->   			!perf_evsel__alloc_id(evsel, 1, 1));
->   
->   	perf_evlist__id_add(evlist, evsel, 0, 0, 123);
+Antworten Sie mit dem SPENDE-CODE an diese 
+
+E-Mail:Tayebsouam.spende@gmail.com
+
+Ich hoffe, Sie und Ihre Familie glücklich zu machen.
+
+Grüße
+Herr Tayeb Souami

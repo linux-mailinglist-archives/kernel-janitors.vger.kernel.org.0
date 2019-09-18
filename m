@@ -2,34 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E9862B6275
-	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 13:49:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9DDEB62D6
+	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 14:10:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728712AbfIRLsw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Sep 2019 07:48:52 -0400
-Received: from mout.web.de ([212.227.15.3]:41157 "EHLO mout.web.de"
+        id S1730796AbfIRMKl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Sep 2019 08:10:41 -0400
+Received: from mout.web.de ([212.227.15.3]:54007 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726958AbfIRLsv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Sep 2019 07:48:51 -0400
+        id S1730734AbfIRMKk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 18 Sep 2019 08:10:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1568807329;
-        bh=p1sodnQQNFGB+IFUcKDOaPnHqgy6zKaWm7jiny+0/Fc=;
-        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=UTcwYRCO05FmGASoOhKPjfVW+qwngQP9k20mLLAS1T1qsQ6eyfA0G+7KObbvBBd+I
-         hsvy77tNbUuFrF5nEimXxoeoN8IDsfpg4vM8MusBjjUMs7+T+ySruZSQKN2uGrrHSw
-         4zCUmRLN6XyvzxkQDEyEXSQGNB0vvGp0PKrrkQxU=
+        s=dbaedf251592; t=1568808622;
+        bh=gV92216Xq6eVj771htUYtf8kVuhstFgMMf1Gv//Wpj4=;
+        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+        b=hxlLMrJHyUAz0bKMPalEywe8SFhZovSvFxLFi6fyB4UrBaPF375B4G+7aM9WydlMA
+         94Cu2h2PzNgk3zYZH+gaKZ5u0eA3O41ISkBnDoorFQ8DmerQntRrCcXm2R025vNB6b
+         Z4g/mtsgdnUmQ8Q9+ZLPXuZzC7e3G8wjhTixne/U=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.244.2.101]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LrbHJ-1i5Z5J3SyD-013Pcx; Wed, 18
- Sep 2019 13:48:48 +0200
-To:     kernel-janitors@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Himanshu Jha <himanshujha199640@gmail.com>
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MP047-1iFlJy3dln-006LrO; Wed, 18
+ Sep 2019 14:10:22 +0200
+To:     kernel-janitors@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Peng Hao <peng.hao2@zte.com.cn>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] mfd: ipaq-micro: Use devm_platform_ioremap_resource() in
- micro_probe()
+Subject: [PATCH] misc/pvpanic: Use devm_platform_ioremap_resource() in
+ pvpanic_mmio_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -73,45 +71,48 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <d9990bcc-2daa-67ad-4de5-7a849668d038@web.de>
-Date:   Wed, 18 Sep 2019 13:48:47 +0200
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Himanshu Jha <himanshujha199640@gmail.com>
+Message-ID: <e0ce24fe-ff3c-cbbb-4a56-4e529ebbe8d0@web.de>
+Date:   Wed, 18 Sep 2019 14:10:18 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:EPloDjtzgZyFtbAiu2eDmpbVUU6aj0TjVRuDz8gFz84FXyKfp0T
- AWSlsu96HcXxe2xlyMxrN6OO4euIuGjd3LHMgbTCdPiQKZLYmT6PyTkGyQCa8Y2Es4Sd6pG
- Whx/NOnGMiqdLlNsKnoXMquMkFKycooQMWD3GHFeKMrLvybKNZ47dOk7KI9v8Z7SrbAMc0y
- W5/DnGGcw+oARb0vs4ADw==
+X-Provags-ID: V03:K1:fhMEE37LPi7vtrhRc3vQ75ZpXtYgxoq8wPkGHnadzwYMH86hXAj
+ /P7z5+VQZEpbDckcYyJ/5Ub4wqkXVLPnRJ4PxOP0+A20skJm4ap9cIWv2V7i4YXzTRxDiGB
+ 0BVmOlesqYnRspayuIqiQ42uLVRKhCY3g0mV15RcdrvpvbyuztnDO/QUs5cGlLVnw1oXItA
+ NA7rA1XqXetVTtQBobdbg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:AUsuCzp4Pro=:4L9AEWJX0QSFDTq59WD/P2
- 6ewyZUy9wrMnbmxoWv1vaAYjDNx2k1KP4YUuGaxp/LtoZmQEap6YugsRf46i7U/CmVAjbhWom
- N4F946d99qxzkmO9hsDJXynXT77GJTUtBvWEnLfqmHeP9WtOw1DPIanAbCy8KzcVxOXaBGjQQ
- 46F41MTYCrNF3dwCyy66RnJwPSAtYzYxi0HGCYR/C46OhudayMn7Eq9cLEK2TAsh21N6BRhZ0
- Q7EpvkVrqxB75C4bfyC+3lN9TtyCiilr4eIwtft+PmEhC/NEZQupaxmB42qiuk6DyipcYXKAZ
- CGgZMYpY0c54zV8RA72DJ+87wAAEgZfhE3X8W1hfIvAh4N4YwNDf4hecjmGwK5yo25oGHBhvr
- LgpK2LB+rneyMAWIEneQ5FoZj0A5SRTIdlfM4dyeeRh7yinWd3duXB9O++j5JYXCvXnh+9o4M
- OMfkWs1sQ6tAzzhnBYkxQsN7h/cDNwthkBIfPLL7C23ZFPSpTJFoWVqCjqmfLeIjkyI99pBqL
- bgo27iXcrZtbgceTYh9vEuahCzB/89vxKpj0QDVdjyHT5ljnrfEluwYFCBcPbFRvgO0h7VzvZ
- 5oXCvYX9OtbVhhb0VdPXKdYmKdZlmFgy5QgC53ykNiClv1hgDXpSXA2ti07EYrPA5oWwoIAa/
- /zD3lTjz4+MGum3nbZIcjbg2eehF3hAl70nOaf5sUsC+xeihvTM6tRbLz5u4fyvzJxJrifZrP
- Ok3NDVCfid5FjC7Oc0epmqJfGnjxyJu//+clxRNa/wnWUrGN5aByGRSUv66dm5YeBlUin4ucP
- zF8U61MNKc3vdFktS3KiRE4b90vwmkQ5ydxOd+I6k3bv+sJ5lgLFiapshaP1HF58yDwkfR2L5
- CEd58gzSJxKvy76r76ourNU62BzI5+PnoEhNdkICuwdfJ8F/TfYqhQe+X9s0AD6M9fjkPjDDy
- aVoHn3m2wl/s1P1xKG9IbN5T2ThDOrtyOjeL/MM5m4Y38TvpQ07hnwzRYETpEBGsdtyWa4LDO
- 2/OU4vcAqad3YqnmJOHTXiZ6vAi2bFVBxSEL/oMtdYs+wmmVq+sJe8IAXL0RXxPK59q7ODgBp
- Zujf0M5BCDHq6AMlfVCIUX3eSwf+EksuDrtf/71dE4Gr/ZPAOnL5RmRlS4FsS/LeJnD1BrAzh
- l6YUmbaGjS0G94zu6fazQSJ+YraCiqCPCSnBz4VQwXImKs61hIGx8mc6uM3j4WG5BLRKgszoB
- QrAMxFS8XUpc1yC7Cs2l2B29PeqpA5Zcj+/3a44m7tzvRnAGMcRnS96PKvDw=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:/31WlIHjdcs=:R11A8UQQBNkdWJlvA7WqrG
+ cIXReSJTo0w/Df79VY+kbPLSQO9Kl1+FRAirlpf3Q/aXeMSiI7KONi4Qn/pRppY9vH77Nq/B6
+ TaaaWIki2HGqcsorXRDixorvjfC94U6YOXJXKow7gLKJ93B4+gb6chPjB/hcewdr4IuwDuTgQ
+ 1hXtcJUCSenDqBs53dx/luN1xxshjzapT/G52+xEFN2CS3gUKBNCEmacD212GIh0MQR6N6gJi
+ c9YjiK+Fvk5EDouu3ZNPblSUwzTaV5vAOQXME12rNOm2K8f20D+PsZ0AIWiJtdvcKfLgdKhiu
+ XLQPZD0vNEqTccTj4ABgSA/8VtphAcIaO7WOobRqzM7msnDXPidYOmWKTYd/c1j6Tjf0oMK5a
+ 2vsDb/hX8cowDvEK7Dy+8aTYJTrMUYJGjPpQ2hKrRdoLOXJ/MHW//8tkSjX44SfD2WhKAwG4y
+ GzlR9hb4yfSPZjkko+rXwKWGVxWarPdmeOfxyqVvGBxhDezSQ7DmduVwWUOTMHGAGSkfQMnXb
+ 5A2qt0PnTVZ1Kl25bXNzcjH7j9ofUULjIBIdI50OIfGuz5NbtI8bWqQ7jVsLeiJNorUGnFNbY
+ 6eL0S0g81GGn4u98DDa9O5Of+3pwkHakh7yXJ/AaVdQulEan3zqeGtVfWkExfRXaNpqHRo64G
+ GTBbf1u0GmYJ+6MOxXoYMp4OgB4KW5tC3kAY1HCmPaCnwtdXZbCUZDUaqrrd2lmF+UTdBp5tU
+ PAoRAmHKB4TJPQK0FFVxJHFxmMtraNWtYvsAvUxvwPP6Uon2+AqbJbHT7HsudTC7apzww/4GF
+ BI73QGAJhPpTbBR/NNP3wOPtnpGYLRLUAX8HAnaGw71XxtfV4mqOaEexP3XxEDVTXO7PeY7aA
+ SiOgwFHbHp0TNOaGgko3icWZCfhpCfT0oRSxHkPQ3f4K4biv9kZz7fXlsUCjICeXlmMk4K+Ln
+ A2wQ/q76DFK+QSIxRFTtM6XipipVnwaT7XHjzVq+Smb9Cdwn0pa61yvFPnlXUqOmVJOhoKA+X
+ XNUsxXDeTsStx9tmbVbgToRulyd7At1GiaGEBbjYry2zBd6GulJ6wQ9pdkBYVPsyT5PMwELaH
+ qxDs7+DX0HqUGOU0iyOerqFag+JNPzfULCvHbPQvTBVsNkHsu0WT/fFBxhMmQoolhML9xbFvA
+ 5on8csGzUXXbmuy0WUA08Or+5uJd5Tl/7vqYDisZLczjxxFbuPge213JPVHz3lxEOXfIU/wnx
+ Jl0X5rI9WAXv1JIOf0YFZLfkEvlVRYgQT7uZsEGP3U39LRdJDjJi7Fenan08=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 18 Sep 2019 13:40:30 +0200
+Date: Wed, 18 Sep 2019 14:00:13 +0200
 
 Simplify this function implementation by using a known wrapper function.
 
@@ -119,26 +120,27 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/mfd/ipaq-micro.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/misc/pvpanic.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/mfd/ipaq-micro.c b/drivers/mfd/ipaq-micro.c
-index a1d9be82734d..e92eeeb67a98 100644
-=2D-- a/drivers/mfd/ipaq-micro.c
-+++ b/drivers/mfd/ipaq-micro.c
-@@ -396,11 +396,7 @@ static int __init micro_probe(struct platform_device =
-*pdev)
- 	if (IS_ERR(micro->base))
- 		return PTR_ERR(micro->base);
+diff --git a/drivers/misc/pvpanic.c b/drivers/misc/pvpanic.c
+index 95ff7c5a1dfb..74bcdd171558 100644
+=2D-- a/drivers/misc/pvpanic.c
++++ b/drivers/misc/pvpanic.c
+@@ -137,13 +137,7 @@ static void pvpanic_unregister_acpi_driver(void) {}
 
--	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 1);
--	if (!res)
+ static int pvpanic_mmio_probe(struct platform_device *pdev)
+ {
+-	struct resource *mem;
+-
+-	mem =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!mem)
 -		return -EINVAL;
 -
--	micro->sdlc =3D devm_ioremap_resource(&pdev->dev, res);
-+	micro->sdlc =3D devm_platform_ioremap_resource(pdev, 1);
- 	if (IS_ERR(micro->sdlc))
- 		return PTR_ERR(micro->sdlc);
+-	base =3D devm_ioremap_resource(&pdev->dev, mem);
++	base =3D devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(base))
+ 		return PTR_ERR(base);
 
 =2D-
 2.23.0

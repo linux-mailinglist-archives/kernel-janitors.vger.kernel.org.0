@@ -2,158 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26DF9B638C
-	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 14:51:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E83EB6413
+	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 15:09:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727819AbfIRMvS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Sep 2019 08:51:18 -0400
-Received: from mout.web.de ([212.227.15.4]:41939 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727435AbfIRMvS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Sep 2019 08:51:18 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1568811033;
-        bh=+WNwiFMaUtoRg1qtUawk8yXifdh05q8CsZK/xHuAYvs=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=V5Sq+c4mZ5hs1MKd1QsJbV2YpsvshTWDqAGZMMzF82lR9H4gpOTGgB6OtapEIZCha
-         CdpzMH5hVybPW4UpTfOY39rWro7zdbRzCJ0RUEo2PowVg/SzIn9oBWJ+LLA4ZC49fj
-         QyOORi8p9JtPrcp4/b/P9jobsCExOmwIcwEWA204=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.2.101]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MWirL-1ihL7K2Ckt-00XvqU; Wed, 18
- Sep 2019 14:50:33 +0200
-To:     linux-mtd@lists.infradead.org,
-        Allison Randal <allison@lohutok.net>,
-        Armijn Hemel <armijn@tjaldur.nl>,
-        Brian Norris <computersforpeace@gmail.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Lee Jones <lee.jones@linaro.org>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vignesh Raghavendra <vigneshr@ti.com>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] mtd: st_spi_fsm: Use devm_platform_ioremap_resource() in
- stfsm_probe()
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Himanshu Jha <himanshujha199640@gmail.com>
-Message-ID: <e1d32aa4-7c82-64e0-b7c4-33c94d9a2769@web.de>
-Date:   Wed, 18 Sep 2019 14:50:27 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+        id S1731547AbfIRNI5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Sep 2019 09:08:57 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:39962 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729261AbfIRNI5 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 18 Sep 2019 09:08:57 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 1ABCD6155D; Wed, 18 Sep 2019 13:08:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568812137;
+        bh=Xlm9buTwkjGMeOAaB1iCCifyWmGXMZvazAeI3ceUL+U=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=FZQShb2KcdByFxaca4AVvz7XWHjldvgGlJlQzoh8flyuU74TrUd7yCsv6eR3teZR8
+         Wjze0C+teQYY8fqNlMRPIvgnaJJhLDuMlx1fLgyZwIgVJ+el2clRsdkz3yC3tC2JpA
+         OyaRaQMaqitXo5SJcCUjS9+dXoUxFkeHi+zy/KOY=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id F129F614DC;
+        Wed, 18 Sep 2019 13:08:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1568812136;
+        bh=Xlm9buTwkjGMeOAaB1iCCifyWmGXMZvazAeI3ceUL+U=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=ET8E4D+xHsJ5/aDa1J5+s0ESTYpL0JpbVSbrOQsbAvaQihdaGD18ntRHyCmOq6y29
+         UyK39hb8V64zMYu05Nx8wF+P20TxsoGiavH3XA7lr83pJ2/8egpH1RtSaEjlJ5t0R0
+         jVbwPwSgzIlRRPeD+hjQSSW81/J7ASldW4mD/6LM=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org F129F614DC
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     <johannes.berg@intel.com>, <emmanuel.grumbach@intel.com>,
+        <luciano.coelho@intel.com>, <linuxwifi@intel.com>,
+        <davem@davemloft.net>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH net] iwlwifi: add dependency of THERMAL with IWLMVM
+References: <20190918122815.155657-1-maowenan@huawei.com>
+Date:   Wed, 18 Sep 2019 16:08:51 +0300
+In-Reply-To: <20190918122815.155657-1-maowenan@huawei.com> (Mao Wenan's
+        message of "Wed, 18 Sep 2019 20:28:15 +0800")
+Message-ID: <875zlpbvks.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:BqxkGe90vJASEheSmEFOrRVq5Qgo2ALbZg+pjS0GL9yQayyJC3r
- NJs7O3+WrIHhdemC11+aowrF1vMfEhwH9TVXoEsgBeNEc5O3JKi/cjBDsNepp3i8Ta4k4mu
- 37F9ScdXJD/1zunnNL6Nhbu2BdpDkSk+rM9wYDfw367qYu9Z0eYzOjKbrtxWYieIybuTZSs
- A237HI6KS9eG46i1SDDLA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:phUl5+idfpk=:Ezg+HJnYP1hEKPWLoTTzzi
- NQBidcUX+tm9yPMzFFDCetRz0UTjuVgKBn4WEDMcQb5kX1T5TTRf2QiuzmHb+HOB77YH33f8T
- RY+pIB1zvTeAzhbK8hXrNSrCgiqOmiNx8q6bzdgL6CuJR4wfBTS6hzoJfukZx2YUoUBkHibWO
- HFcxLZlb4kyw6N96OvVKuyQd3z4p5riy06FV16l2F8OCJzfl9wrT3tE19ms5DAXkCp1mX8CA8
- VN34iK5yGyGLgSSV5V2eWZmc+WRtRFdxVEh2ssK0kT2/zI7OX62WivkElcm8B91Y0V6gxOmDj
- PAWcH/yhvMhnauKWniP4ZkXYXwjxcAfr4H12noog8n2BZdJxNJDYUvq+MvlSCyO0yrsCBEuPw
- lNWVX0GhrNoHRgiLKTdhXzHn5JiKxIyrO1+rAh8mPyfLSQAy/Iyj8QqAqxZ9MiSym7BePdMGI
- HEoZ5oKygKqqEtlrNqcVN11rCdLYKCWRThuXgOKLeJI2h/uYLr56Pdf0P1NnicN8KvBcWszzc
- c3g6MMPemVCQNEllDdRD11Ehrn7UpMIVHE3b3D297N3erAwClQK038+L5amNFLBZlTV63i4ns
- AmN+QjDOoSZcpmbn8pW5PaxNlZox8NnSJK0Xq4OIMVbu1/+6MEv4FcNhQ7LzPJJPsQhJbyJXx
- /lsrNV8ST4IHNM5X85xoaJs9k49Qmdu7VwzFbLp4VRnp6IbFd9ITAS7sD4mXVEckUupL+z5g5
- DwgxZC3sM9KTUefxarvHB6KWS4Q5t4NeXUkyPSBJ5BHPkXpkRb/Hbkne2mQ2BcK162ZvvV0H3
- na7vs8TRGtI1m16vTZcfEc5NdM/0CMHOFpDfVsGWXFmyUS0IZjPuosOkh6i9Xws+eruXj+7lm
- i+CfjDw1sKwzeDwqivgPtQ+HewoSzgjDtbD97hhuqZhQYyrB8AewFKAg7Z53L9V7LBHatNbQW
- oCZjongnKuy82MhzYI68HZL1qCw49Bb4lsdsZPOjqRrRQ946HR7U/8E5+kP/r34kazUaRKJ91
- kT041dIcSBzYOZnnnrk8PDZPLM6w50KAYpgk1gdFFd/d23WyLfsa4hM1UQ6luDluK0x8/2nWh
- O0BmBRxt8Un9QvoEcfaCTDUohH75zm54smdxxntBonWofvsbIN7UJwd5meeZbCuka4Pk4hRcu
- J6AYaGKiWousUOHCnfCAdru0dFzRQ51AxQTnHywa+Ruw5oto3V25f5c+4OETw3kw2FR/00boy
- e7Vit5xLX4fVi16h9tR9wTL8XpohSIWGZItlsaUn5Yfq5VBPhzzNuBZjnQJg=
+Content-Type: text/plain
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 18 Sep 2019 14:37:34 +0200
+Mao Wenan <maowenan@huawei.com> writes:
 
-Simplify this function implementation by using a known wrapper function.
+> If CONFIG_IWLMVM=y, CONFIG_THERMAL=n, below error can be found:
+> drivers/net/wireless/intel/iwlwifi/mvm/fw.o: In function `iwl_mvm_up':
+> fw.c:(.text+0x2c26): undefined reference to `iwl_mvm_send_temp_report_ths_cmd'
+> make: *** [vmlinux] Error 1
+>
+> After commit 242d9c8b9a93 ("iwlwifi: mvm: use FW thermal
+> monitoring regardless of CONFIG_THERMAL"), iwl_mvm_up()
+> calls iwl_mvm_send_temp_report_ths_cmd(), but this function
+> is under CONFIG_THERMAL, which is depended on CONFIG_THERMAL.
+>
+> Fixes: 242d9c8b9a93 ("iwlwifi: mvm: use FW thermal monitoring regardless of CONFIG_THERMAL")
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
 
-This issue was detected by using the Coccinelle software.
+Luca, should I apply this directly to wireless-drivers?
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- drivers/mtd/devices/st_spi_fsm.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
-
-diff --git a/drivers/mtd/devices/st_spi_fsm.c b/drivers/mtd/devices/st_spi=
-_fsm.c
-index f4d1667daaf9..5bd1c44ae529 100644
-=2D-- a/drivers/mtd/devices/st_spi_fsm.c
-+++ b/drivers/mtd/devices/st_spi_fsm.c
-@@ -2034,13 +2034,7 @@ static int stfsm_probe(struct platform_device *pdev=
-)
-
- 	platform_set_drvdata(pdev, fsm);
-
--	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res) {
--		dev_err(&pdev->dev, "Resource not found\n");
--		return -ENODEV;
--	}
--
--	fsm->base =3D devm_ioremap_resource(&pdev->dev, res);
-+	fsm->base =3D devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(fsm->base)) {
- 		dev_err(&pdev->dev,
- 			"Failed to reserve memory region %pR\n", res);
-=2D-
-2.23.0
-
+-- 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

@@ -2,37 +2,41 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AFA7AB6338
-	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 14:28:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 26DF9B638C
+	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 14:51:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728378AbfIRM2q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Sep 2019 08:28:46 -0400
-Received: from mout.web.de ([212.227.15.4]:37371 "EHLO mout.web.de"
+        id S1727819AbfIRMvS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Sep 2019 08:51:18 -0400
+Received: from mout.web.de ([212.227.15.4]:41939 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725902AbfIRM2q (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Sep 2019 08:28:46 -0400
+        id S1727435AbfIRMvS (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 18 Sep 2019 08:51:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1568809719;
-        bh=wuV3PsgL4Q/zL6yMThKk604Y/MBD3bAO7nU5CWeKQ60=;
-        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=EywlomUJx/ELKGZPyjLtfDPOwmYdJWvYQFeUvliT80p3JPLiY8JMAKde2ycJubQHF
-         rlxO5hfMyBOMAcrC2jIT5hP+l6wR6qLHW/1/jW0f5taQAzJf3EMe0yPbYFLHveaVYI
-         msDMMmoLKvcLw43San/tSoKHyG7RWjhTC2NweacY=
+        s=dbaedf251592; t=1568811033;
+        bh=+WNwiFMaUtoRg1qtUawk8yXifdh05q8CsZK/xHuAYvs=;
+        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+        b=V5Sq+c4mZ5hs1MKd1QsJbV2YpsvshTWDqAGZMMzF82lR9H4gpOTGgB6OtapEIZCha
+         CdpzMH5hVybPW4UpTfOY39rWro7zdbRzCJ0RUEo2PowVg/SzIn9oBWJ+LLA4ZC49fj
+         QyOORi8p9JtPrcp4/b/P9jobsCExOmwIcwEWA204=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.2.101]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MEVQ1-1iQENq1l6H-00FjCz; Wed, 18
- Sep 2019 14:28:39 +0200
-To:     linux-mmc@vger.kernel.org, David Daney <david.daney@cavium.com>,
-        Jan Glauber <jglauber@cavium.com>,
-        "Steven J. Hill" <Steven.Hill@cavium.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Himanshu Jha <himanshujha199640@gmail.com>
+Received: from [192.168.1.2] ([2.244.2.101]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MWirL-1ihL7K2Ckt-00XvqU; Wed, 18
+ Sep 2019 14:50:33 +0200
+To:     linux-mtd@lists.infradead.org,
+        Allison Randal <allison@lohutok.net>,
+        Armijn Hemel <armijn@tjaldur.nl>,
+        Brian Norris <computersforpeace@gmail.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Richard Weinberger <richard@nod.at>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] mmc: cavium-octeon: Use devm_platform_ioremap_resource() in
- octeon_mmc_probe()
+Subject: [PATCH] mtd: st_spi_fsm: Use devm_platform_ioremap_resource() in
+ stfsm_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -76,45 +80,49 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <4ad4cdb5-3623-4416-d3d2-b3c048a42139@web.de>
-Date:   Wed, 18 Sep 2019 14:28:38 +0200
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Himanshu Jha <himanshujha199640@gmail.com>
+Message-ID: <e1d32aa4-7c82-64e0-b7c4-33c94d9a2769@web.de>
+Date:   Wed, 18 Sep 2019 14:50:27 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:S3XUzB7O291lbOL5MJquw8tiEGRFFwcrUS6z1R7+qd/5HJsFiUz
- bMT82XRFhoTLloH98O+YT9gTBkhsnBK23L2BtLk4eC29vzulNr+mh5Tj86SXPDqOACLbaGU
- kynKy6G9zUFakynJ2uYDf6/3Pt1i2u4lDWTmAP2kwZ4Fm8qcfPAWWAC9UCyYpF8xHeYKUjf
- glD8ONAxYc9Zj5ic3rMbA==
+X-Provags-ID: V03:K1:BqxkGe90vJASEheSmEFOrRVq5Qgo2ALbZg+pjS0GL9yQayyJC3r
+ NJs7O3+WrIHhdemC11+aowrF1vMfEhwH9TVXoEsgBeNEc5O3JKi/cjBDsNepp3i8Ta4k4mu
+ 37F9ScdXJD/1zunnNL6Nhbu2BdpDkSk+rM9wYDfw367qYu9Z0eYzOjKbrtxWYieIybuTZSs
+ A237HI6KS9eG46i1SDDLA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:kzIqa/7qGuw=:rIIQAw6p2J2AU+M1JWKsku
- R+i6kpEHoP3Guc4g4iPqwSSb/DfA1Va994myK2BpDtlwUF62CKBCCHvoEzpjKXrozyh0EEgCG
- 4IakWmABUaOxx6FJjP2vlvJidk031LkhkGBFuMBbJMw6fqKUmbFJkVjRHIomocuAoxyH/nI5/
- qOmauIHI9Yq5BaUhKC0ec9i0blWkzD+M8VDlVmwNXVH251T1EX+OZiFGKPRS6oascDvjsPlxd
- HraTn+N3t1hHP6fAkMKxDpufzFOTq0o4SsMDl0Utk86Nx75SwbPTwt3rp5K/uyeSPX4xGLC6C
- 98Q+zsa5AGjQfq7x7HXEhUdGYz4L85I8wsqwUes0w2qPPVaLpXmA769MToHKqn+d6fp/Ht/By
- N02pmBPTIiQNtvX1+iVcoA/eItEDTTujxDnCGmqPaYFFi6IXGhERaYAQGAM9HtjZcVeu0TAgt
- 7qpMELT3CV+KLzEYqNix7NwQAN031CJnZiTClmM/Q2EZxdgmRoZDw0yudJVtwnLM/rPzg5P0u
- n/zlHW/+IjICcTXXA0RPof0alSBF/ASoJT+0Wy04any2XCdaA19zsQ+Z6J3sCU2OB3zMFtYds
- x8VmLMWW4fODfH9oQJk12qBA64c13n9KXvv0na6gsIkfuHMsVNnT0Dn46YEeNGGaEbrOLhRxV
- XEU3OygjG0fs+dBKheAXoKKHNWzH524VBjXDmnLf68fUrVikLWiunzuUBHSKT+V/AYB6wJGay
- Vgy96OQDmoWuKVjT2VL44mPYp4GdvAGiEaD5tEhIbxtgE4XbnZYj0kZz1n5vtyu5d17RffF8H
- JjeK84nuxKZ7RWA3HMyVNWUO18PA2AdoC1WO7ai+9AGxvYSeoJL7er7Fvr1E3sBvOXLO4xZnu
- vcGgMBSQpKrzeMDQDjZISpfB1NHfL+P8noXonH1zUcUxqBpXxBWT1nH5ReVkc+P58m6UEoOgG
- ZgzoMRAGOzwcx7Q9gYTVSWYWtNO5mnXk3za926ccb42UJFmHNRzD5x1JVp5kEQf5RP007Fw0u
- Z6hs2V+f6AjPuZxfXYLdW/oz1TkzhBrw81BOW2Xre1Dzg+m4PNxTuT3peeIivqqis0EG75I3I
- nLNkjKHlEiJ3Q3ZKdOVV6zC1DRKO9ViBd/0FKampVCmd4DbXiCbyuYe/kcexrv4nOL0/yVFRX
- cmLEEWDojtKH4c/MXX3Q7a5vzgfh6DoeuMHCv3wdmvw+UWbKrUJTpWa8NMchtq54wWJWKk5AE
- ICKDl8r42zPhrMnpOakJZza90Xz1wXujsLWRS2iIH+HvbIS4AxgC8vtEXY2A=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:phUl5+idfpk=:Ezg+HJnYP1hEKPWLoTTzzi
+ NQBidcUX+tm9yPMzFFDCetRz0UTjuVgKBn4WEDMcQb5kX1T5TTRf2QiuzmHb+HOB77YH33f8T
+ RY+pIB1zvTeAzhbK8hXrNSrCgiqOmiNx8q6bzdgL6CuJR4wfBTS6hzoJfukZx2YUoUBkHibWO
+ HFcxLZlb4kyw6N96OvVKuyQd3z4p5riy06FV16l2F8OCJzfl9wrT3tE19ms5DAXkCp1mX8CA8
+ VN34iK5yGyGLgSSV5V2eWZmc+WRtRFdxVEh2ssK0kT2/zI7OX62WivkElcm8B91Y0V6gxOmDj
+ PAWcH/yhvMhnauKWniP4ZkXYXwjxcAfr4H12noog8n2BZdJxNJDYUvq+MvlSCyO0yrsCBEuPw
+ lNWVX0GhrNoHRgiLKTdhXzHn5JiKxIyrO1+rAh8mPyfLSQAy/Iyj8QqAqxZ9MiSym7BePdMGI
+ HEoZ5oKygKqqEtlrNqcVN11rCdLYKCWRThuXgOKLeJI2h/uYLr56Pdf0P1NnicN8KvBcWszzc
+ c3g6MMPemVCQNEllDdRD11Ehrn7UpMIVHE3b3D297N3erAwClQK038+L5amNFLBZlTV63i4ns
+ AmN+QjDOoSZcpmbn8pW5PaxNlZox8NnSJK0Xq4OIMVbu1/+6MEv4FcNhQ7LzPJJPsQhJbyJXx
+ /lsrNV8ST4IHNM5X85xoaJs9k49Qmdu7VwzFbLp4VRnp6IbFd9ITAS7sD4mXVEckUupL+z5g5
+ DwgxZC3sM9KTUefxarvHB6KWS4Q5t4NeXUkyPSBJ5BHPkXpkRb/Hbkne2mQ2BcK162ZvvV0H3
+ na7vs8TRGtI1m16vTZcfEc5NdM/0CMHOFpDfVsGWXFmyUS0IZjPuosOkh6i9Xws+eruXj+7lm
+ i+CfjDw1sKwzeDwqivgPtQ+HewoSzgjDtbD97hhuqZhQYyrB8AewFKAg7Z53L9V7LBHatNbQW
+ oCZjongnKuy82MhzYI68HZL1qCw49Bb4lsdsZPOjqRrRQ946HR7U/8E5+kP/r34kazUaRKJ91
+ kT041dIcSBzYOZnnnrk8PDZPLM6w50KAYpgk1gdFFd/d23WyLfsa4hM1UQ6luDluK0x8/2nWh
+ O0BmBRxt8Un9QvoEcfaCTDUohH75zm54smdxxntBonWofvsbIN7UJwd5meeZbCuka4Pk4hRcu
+ J6AYaGKiWousUOHCnfCAdru0dFzRQ51AxQTnHywa+Ruw5oto3V25f5c+4OETw3kw2FR/00boy
+ e7Vit5xLX4fVi16h9tR9wTL8XpohSIWGZItlsaUn5Yfq5VBPhzzNuBZjnQJg=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 18 Sep 2019 14:20:34 +0200
+Date: Wed, 18 Sep 2019 14:37:34 +0200
 
 Simplify this function implementation by using a known wrapper function.
 
@@ -122,50 +130,30 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/mmc/host/cavium-octeon.c | 15 ++-------------
- 1 file changed, 2 insertions(+), 13 deletions(-)
+ drivers/mtd/devices/st_spi_fsm.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/mmc/host/cavium-octeon.c b/drivers/mmc/host/cavium-oc=
-teon.c
-index 22aded1065ae..916746c6c2c7 100644
-=2D-- a/drivers/mmc/host/cavium-octeon.c
-+++ b/drivers/mmc/host/cavium-octeon.c
-@@ -148,7 +148,6 @@ static int octeon_mmc_probe(struct platform_device *pd=
-ev)
- {
- 	struct device_node *cn, *node =3D pdev->dev.of_node;
- 	struct cvm_mmc_host *host;
--	struct resource	*res;
- 	void __iomem *base;
- 	int mmc_irq[9];
- 	int i, ret =3D 0;
-@@ -205,23 +204,13 @@ static int octeon_mmc_probe(struct platform_device *=
-pdev)
+diff --git a/drivers/mtd/devices/st_spi_fsm.c b/drivers/mtd/devices/st_spi=
+_fsm.c
+index f4d1667daaf9..5bd1c44ae529 100644
+=2D-- a/drivers/mtd/devices/st_spi_fsm.c
++++ b/drivers/mtd/devices/st_spi_fsm.c
+@@ -2034,13 +2034,7 @@ static int stfsm_probe(struct platform_device *pdev=
+)
 
- 	host->last_slot =3D -1;
+ 	platform_set_drvdata(pdev, fsm);
 
 -	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
 -	if (!res) {
--		dev_err(&pdev->dev, "Platform resource[0] is missing\n");
--		return -ENXIO;
+-		dev_err(&pdev->dev, "Resource not found\n");
+-		return -ENODEV;
 -	}
--	base =3D devm_ioremap_resource(&pdev->dev, res);
-+	base =3D devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(base))
- 		return PTR_ERR(base);
- 	host->base =3D (void __iomem *)base;
- 	host->reg_off =3D 0;
-
--	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 1);
--	if (!res) {
--		dev_err(&pdev->dev, "Platform resource[1] is missing\n");
--		return -EINVAL;
--	}
--	base =3D devm_ioremap_resource(&pdev->dev, res);
-+	base =3D devm_platform_ioremap_resource(pdev, 1);
- 	if (IS_ERR(base))
- 		return PTR_ERR(base);
- 	host->dma_base =3D (void __iomem *)base;
+-
+-	fsm->base =3D devm_ioremap_resource(&pdev->dev, res);
++	fsm->base =3D devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(fsm->base)) {
+ 		dev_err(&pdev->dev,
+ 			"Failed to reserve memory region %pR\n", res);
 =2D-
 2.23.0
 

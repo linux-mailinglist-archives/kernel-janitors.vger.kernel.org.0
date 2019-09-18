@@ -2,109 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EEF72B6AD8
-	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 20:50:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF13CB6B41
+	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 20:57:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387650AbfIRSuF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Sep 2019 14:50:05 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:42038 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387634AbfIRSuF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Sep 2019 14:50:05 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id F38D480F6D;
-        Wed, 18 Sep 2019 18:50:04 +0000 (UTC)
-Received: from x1.home (ovpn-118-102.phx2.redhat.com [10.3.118.102])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A0D8319C5B;
-        Wed, 18 Sep 2019 18:49:59 +0000 (UTC)
-Date:   Wed, 18 Sep 2019 12:49:59 -0600
-From:   Alex Williamson <alex.williamson@redhat.com>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     kwankhede@nvidia.com, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Gerd Hoffmann <kraxel@redhat.com>
-Subject: Re: [PATCH] sample: vfio mdev display - Fix a missing error code in
- an error handling path
-Message-ID: <20190918124959.2741993f@x1.home>
-In-Reply-To: <20190916202240.30189-1-christophe.jaillet@wanadoo.fr>
-References: <20190916202240.30189-1-christophe.jaillet@wanadoo.fr>
-Organization: Red Hat
+        id S2388918AbfIRS5m (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Sep 2019 14:57:42 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:42168 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387693AbfIRS5m (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 18 Sep 2019 14:57:42 -0400
+Received: by mail-wr1-f66.google.com with SMTP id n14so494381wrw.9;
+        Wed, 18 Sep 2019 11:57:39 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=GJ3R8XhnecOsiy6g/x7C0Epa5BrgApmxuvPwK+dFs18=;
+        b=aKSnuTCrCjyTSPixc7HKskoy8t4QkDnUKmZHXm/ogfhRkac3YPQbwLAD9pr1QdaK7F
+         YIFs7q2EBZnx2jIN6qb3lNI2K1Rprien83OUYHBOBRfpM1EF4Bimu+Md41ZJ6wzdaKbl
+         XUa4I5TkoNeHSGOUlx/T4TQsH0qFXlCB4wYoPUlCA1T/PhJHihaAq2oOTYdqLYqEh0VJ
+         J/XxBkUAcbeIzu5tcWiLQbSUzK+F1nHeeeVtjqS0pFcHdTQmCD1SHCD1CM/pcuad70Oh
+         0LlFbR5r1+CBD+WXrzkAynXcK6T9ywR+couCrQV1EPEa79Puyu1MS8iIVOFMit6nj/LF
+         DBIA==
+X-Gm-Message-State: APjAAAXGy38ahFb6BV99dg1VFZu1/LNppubpde2mayCQACJgotIOF8gv
+        6JjJiOpma5VP4EZB+UiPhtI=
+X-Google-Smtp-Source: APXvYqxCZ8ybmcDduSjrnyaRtnNA3U3N4PBgLW8JuqHbZ7QUON1Zenp0iU3fty+pz/Nwx6fAtGOOVA==
+X-Received: by 2002:a05:6000:1002:: with SMTP id a2mr4017924wrx.272.1568833058449;
+        Wed, 18 Sep 2019 11:57:38 -0700 (PDT)
+Received: from kozik-lap ([194.230.155.145])
+        by smtp.googlemail.com with ESMTPSA id g73sm4743264wme.10.2019.09.18.11.57.34
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 18 Sep 2019 11:57:35 -0700 (PDT)
+Date:   Wed, 18 Sep 2019 20:57:32 +0200
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Lukasz Luba <l.luba@partner.samsung.com>,
+        Kukjin Kim <kgene@kernel.org>, linux-pm@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] memory: exynos5422: fix spelling mistake "counld"
+ -> "could"
+Message-ID: <20190918185732.GC8463@kozik-lap>
+References: <20190916091249.31950-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.27]); Wed, 18 Sep 2019 18:50:05 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190916091249.31950-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 16 Sep 2019 22:22:40 +0200
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
-
-> 'ret' is known to be 0 at this point. So explicitly set it to -ENOMEM if
-> 'framebuffer_alloc()' fails.
+On Mon, Sep 16, 2019 at 10:12:49AM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> There is a spelling mistake in a dev_err message. Fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  samples/vfio-mdev/mdpy-fb.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/samples/vfio-mdev/mdpy-fb.c b/samples/vfio-mdev/mdpy-fb.c
-> index 2719bb259653..6fe0187f47a2 100644
-> --- a/samples/vfio-mdev/mdpy-fb.c
-> +++ b/samples/vfio-mdev/mdpy-fb.c
-> @@ -131,8 +131,10 @@ static int mdpy_fb_probe(struct pci_dev *pdev,
->  		 width, height);
->  
->  	info = framebuffer_alloc(sizeof(struct mdpy_fb_par), &pdev->dev);
-> -	if (!info)
-> +	if (!info) {
-> +		ret = -ENOMEM;
->  		goto err_release_regions;
-> +	}
->  	pci_set_drvdata(pdev, info);
->  	par = info->par;
->  
+>  drivers/memory/samsung/exynos5422-dmc.c | 2 +-
 
-I think you're only scratching the surface here, this looks more
-complete to me:
+Thanks, applied.
 
-diff --git a/samples/vfio-mdev/mdpy-fb.c b/samples/vfio-mdev/mdpy-fb.c
-index 2719bb259653..a760e130bd0d 100644
---- a/samples/vfio-mdev/mdpy-fb.c
-+++ b/samples/vfio-mdev/mdpy-fb.c
-@@ -117,22 +117,27 @@ static int mdpy_fb_probe(struct pci_dev *pdev,
- 	if (format != DRM_FORMAT_XRGB8888) {
- 		pci_err(pdev, "format mismatch (0x%x != 0x%x)\n",
- 			format, DRM_FORMAT_XRGB8888);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto err_release_regions;
- 	}
- 	if (width < 100	 || width > 10000) {
- 		pci_err(pdev, "width (%d) out of range\n", width);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto err_release_regions;
- 	}
- 	if (height < 100 || height > 10000) {
- 		pci_err(pdev, "height (%d) out of range\n", height);
--		return -EINVAL;
-+		ret = -EINVAL;
-+		goto err_release_regions;
- 	}
- 	pci_info(pdev, "mdpy found: %dx%d framebuffer\n",
- 		 width, height);
- 
- 	info = framebuffer_alloc(sizeof(struct mdpy_fb_par), &pdev->dev);
--	if (!info)
-+	if (!info) {
-+		ret = -ENOMEM;
- 		goto err_release_regions;
-+	}
- 	pci_set_drvdata(pdev, info);
- 	par = info->par;
- 
+Best regards,
+Krzysztof
+

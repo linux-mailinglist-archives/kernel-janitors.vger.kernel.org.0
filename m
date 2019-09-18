@@ -2,37 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED0ECB6BC9
-	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 21:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F07B0B6CE2
+	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 21:43:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730099AbfIRTND (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Sep 2019 15:13:03 -0400
-Received: from mout.web.de ([212.227.15.14]:45325 "EHLO mout.web.de"
+        id S1731709AbfIRTnl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Sep 2019 15:43:41 -0400
+Received: from mout.web.de ([212.227.15.14]:47617 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729969AbfIRTND (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Sep 2019 15:13:03 -0400
+        id S1731705AbfIRTnk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 18 Sep 2019 15:43:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1568833969;
-        bh=ogt9xHXFw1a+zq5NrbLOn0ST9esi03Gf1tHNKap0bkE=;
+        s=dbaedf251592; t=1568835802;
+        bh=E0svCMJ1DK/Q5hYX654ALNgjGijno+n7obX1zo/Eot0=;
         h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=R6y7VpnxqnYgl3e/CqVmCy+GHtWhZZM8Dle7nYITDUsG4V+kmkdtcfsUVcgSa+tKp
-         Te16WGeTLYf8bxExJpERj/QZy1lznC0++8tFc7nh9TnavyMKg99K1RE8WmhsKPjpN9
-         dw0jdMySDznwamAami++hWRMrhy8YnCEAXG5tRTI=
+        b=TXtlgF2sIiEP9EdcwA9dItnursi/fygmE5W35g7UFJBpbSK5zV7gcMtpoaKX4jGZk
+         y1xacTqBazxWkLzltRj/GkUaflvciGXjmqh9JXqNa8pw2q9J+GcLOYErVZXQqudvqw
+         /+1JnUOOLMPyXmaDHeGUc1c9Sa889ts6tslwT2Jo=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.2.101]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lxf5f-1i8BRq2XIh-017GfH; Wed, 18
- Sep 2019 21:12:49 +0200
-To:     devel@driverdev.osuosl.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        =?UTF-8?Q?Antti_Ker=c3=a4nen?= <detegr@gmail.com>,
-        Emanuel Bennici <benniciemanuel78@gmail.com>,
+Received: from [192.168.1.2] ([2.244.2.101]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Mcnuz-1iScLg3B4r-00Huj3; Wed, 18
+ Sep 2019 21:43:21 +0200
+To:     linux-pm@vger.kernel.org, Allison Randal <allison@lohutok.net>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Eduardo Valentin <edubezval@gmail.com>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Neil Brown <neil@brown.name>,
-        Sergio Paracuellos <sergio.paracuellos@gmail.com>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Zhang Rui <rui.zhang@intel.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] staging: mt7621-pci-phy: Use devm_platform_ioremap_resource()
- in mt7621_pci_phy_probe()
+Subject: [PATCH] thermal: st: Use devm_platform_ioremap_resource() in
+ st_mmap_regmap_init()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -80,45 +79,45 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         Himanshu Jha <himanshujha199640@gmail.com>
-Message-ID: <1c16a43c-3a01-8a86-02b0-1941ab7321dd@web.de>
-Date:   Wed, 18 Sep 2019 21:12:48 +0200
+Message-ID: <27c67867-d39e-a5c1-12aa-a1e6ba6e7c32@web.de>
+Date:   Wed, 18 Sep 2019 21:43:19 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:1/wIn/kDSDvJmbntwINsBITOVGmevk5sOOoUngXuqdzXlRllaU6
- 9kYGcNz/mN7aHHbyK9W1PPHf9ADDXilu/y2DSW3rnanjDfkui7zdiyBVOscuFg5dNC1EZar
- wV7Lm5M9Qs/GBbmS14LroF+hiAKnBUgSSSwnpHDFRSMDx96bEFBPbUuB9xLrGiMOZlyEDlH
- u8gE0vCkoFIKP32iIv/VQ==
+X-Provags-ID: V03:K1:Fggeegn92OE1SbN4Q1lG9tzVWLlY/yEyMREpZZ7UtXIxBuG6ofK
+ PGGm2j9mgNOs6l5M2Q0oyVr6rKly+1LgJ1/pOfDwTXYmIHJLb3aDhVZNpa8EcyQI+Iqz5qn
+ d2yOh+SNA9KHiMROA4KWhY60qXgeX5QRV9msZnM9Kd+lo/0d0ubHmUV2wE5jBqYxpIdrBfM
+ g9tRKTWpj8QIVSU3ng5Qg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Y87RE7ZsE+8=:DWYXh+uuxNuGAKEvohXJin
- APYgKdIonjjEmZP1edW0Vyyez3VJFgJCj5jpHSMIfPg6L+/J6KgNlPUY3RZTwNke7iXTuqxLl
- 5Fv7JElYW+NGdmafvZL5UxqUFrZgduQqmsjY3GgXaXmKepFR+tcy6S1wQ4U1j8y5BOEKfxAS7
- c2owyGU7NXl2GBiYTi9KKpDUeR88K0d2vBnpDtae+MgShaV5SY6plkXiSWK+160azuoM5mIJ+
- yQ7d1KubbZo+c0yHKGkQbJ3dihMWqip2hPrYAZu72LxK6zYPgaA6wZam0MlY6ZBlP756zhhle
- jKxY75mcO3PcwAk8hsSXznNrwSxcmA9X2Nw3PmyU7F2m6RDqogNlV7e9YRSzvSsLPyV1x05JN
- 9n5U4ohVAw5UnsCXR0jXoQz+vH4GAGLTSICn5lUA6TE6l7Nthg9ZsjKFVKHpgmSsJ1TANbDfy
- VcYLzk1g9SOddaHaL/OcGsueGCxNF1MDIFvLtiwTM18DhAuaefk/9SyqfSCD4PTHzSaEIXIO3
- Y3sZ5IK7w75JAaGaTTfhnAjNZiEyzj6eD5eVUl5h3t1e4RfBUXkcfO/c/SHg/7Kk25Gkc7iXI
- YFAGn3F+BXwdYI2vUmEbmHjq4HW9oJ+wxjOLjK28AZ5QczfoAc6hVQTrT/6NtMY1yO+/xhcW7
- JvlZYiwJYcptipN+NJax/b+PbVDbFmBC8DY8+jd+7nDIHwBVQQzFjezAZ11WXUPJn9eUTA/8o
- EXDNpOGC2WQPina5MELrJlBt5tMiXxsneYK30KSfQrG3IRFc2cMRkZmiQaxhdGfZ5duYvMXHb
- xxJzjfTcKHYjdtVHPZkkruuzWUL0YiurTrqqHUR48LHdT4T/uDmAxRzW7jNizEvlcRlaRKkiQ
- AV1gseJ9uG17qr+789ObxUaZOfD+07WGNJYavMQVpZG3nRKsDhCudRIBY8qDOLwmoJnaGCt3V
- BR4P9PJBchvQaURybK5Inaz0p3lZqQRDk/qUZLx6X4m1z6ysWHyqO4u8rn5JKAqY7/k6V7Vmo
- iGAbwyJtuQEJ/Ra4hAmafoUYtWw0wd3w1XcxbgJB17Axs7XTWgTK+TPKF81pxg7hZp1/g9Eft
- kP3Sjh6sE+kc9TdffSxFtBsH2pfLRi2I9esw/8gXzVgQyFkQw28flg+SwUPPBmtlmYN2/JujV
- 2T/oBnD0uoIcslOzfNRMVTdfVAnkwlWfWqQYVtoXdPC3LcTCaqzjlZ6Xhq40+s/h7gHgAqwcF
- s9mdk0uDYSGvmygSi9QnYvP+dfkp3inNJmjNSq5s/ONahtzyVjpBUxIPSF9A=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:owLeBtYLVX4=:jaFv51TcnigLxwRRuLckSn
+ iPoFzriSFNOkxK4Q/PLHevAC3G3n7RM68HmgF6cDc9wG1zUz4ymTbMPYRlVCLA8py5YGrRDxb
+ 5FUgNEtThKoG1J05vGgA6E+HtVYUfrFO7RPgm+2+xBESCGCwcXPHez+wn8ETa+TliCdLqx3sR
+ VxNP1eJ9PznyDVAlQPxn/AOUb0gus8DZi/mgJQrU7ngh3ygOnqAlyV2GLnahNQxGoTa5LD9Hs
+ dWNdowVc3/S4gYlxtfj+8BnEGUFAfQsv6+uQkGUNd7Jp3ONkMOdNc+rCuraSjo3UEm8pTJlRX
+ WWhdQuXk3sFl+QWsn761NsMxnl/Aq3PxzX0/kxSPBcso9neKGWbmkpd3ezqiURcMSsiI2eqDS
+ fl0HPmKJNgXzxFcKF/hCPdg4OTiAjyuaOlZ0VK3o9MxFnwN/AE3x1A5iHDBlrEqWE5pBZ+xCI
+ td8oYWiyIXfBY6PPd71wHPO5Mwgq+nMED9/Reu8HSfPPbFR7SrI7QKDv0QuJPAoTxh+61Hlnk
+ FGZ895xnLAq5tYrZdhd4h7LIRyqre0IfiyellaWVEerOJ9oSaKpniA4BKP6EMcTf49i1VhE+T
+ f134UWYTdu3sHBp3ugBSrH0SmzaUUtS1TM3oIvWKW6axRO44E6NLeQeab9FCZTa/g7VhuSt7x
+ 7INY3FhvNw9kW4Q2l8L8KHQ13I+P0O2f28l+3aorm61o7vLX6/8yHm+ACw8yvCUxroVqwqbmt
+ wvNa1Sk+so5ejYCZ4JEGgydc4G1o9jh4xk1nSuVOvabzChPayO/lmK5YaR8B3h0/KA7BXAytf
+ g4GRJiE8pLOOaKD+6vCYq5qPnGPR5ourbiyfT9IUNEYYmVzLVN/sfA5ujREKK+FVALynsFPXk
+ 2tZPHjh1hq/3DUDpMq21UZpbMBUzpdDwYbKiFI77gCdDy0MSgEckjK19GUPfU8Gvc2xqJvpVZ
+ iIkhYize4R7cYK6ib3SK3juaGVA8TBqV1AeuleHTwpw1QtAu7b1+90uiByOqcfpWewUO7VYmE
+ zE9FJYSxWKmeXlQa31/l8GL4O9dCm91jiYgXSUSawPEkDnL5rCQi6W65GiIt0M+Z1WIZDcCDS
+ JkWqNUjp+sn3hO+XaZxUy4+wWAHgp9RYokFlVB+Z6ziRc63jvoBVkeO5wSkUAExQE8F4+OfMh
+ xtlNk5at/MuUfoKlSd5VQdai0vC1ZqvbkS0iDIm8Djh7aMTrYnHrfO/6nCSwyQ6IrZRt3M1iU
+ 9hrYVbt+yvIjmzIDKwYq7qmVOA4cV7/rHd9qE3cRoEsib9SJL8BjK9O+4cn0=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 18 Sep 2019 21:01:32 +0200
+Date: Wed, 18 Sep 2019 21:32:14 +0200
 
 Simplify this function implementation by using a known wrapper function.
 
@@ -126,40 +125,32 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/staging/mt7621-pci-phy/pci-mt7621-phy.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ drivers/thermal/st/st_thermal_memmap.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/staging/mt7621-pci-phy/pci-mt7621-phy.c b/drivers/sta=
-ging/mt7621-pci-phy/pci-mt7621-phy.c
-index d2a07f145143..6ca4a33d13c3 100644
-=2D-- a/drivers/staging/mt7621-pci-phy/pci-mt7621-phy.c
-+++ b/drivers/staging/mt7621-pci-phy/pci-mt7621-phy.c
-@@ -324,7 +324,6 @@ static int mt7621_pci_phy_probe(struct platform_device=
- *pdev)
- 	const struct soc_device_attribute *attr;
- 	struct phy_provider *provider;
- 	struct mt7621_pci_phy *phy;
+diff --git a/drivers/thermal/st/st_thermal_memmap.c b/drivers/thermal/st/s=
+t_thermal_memmap.c
+index a824b78dabf8..d8ff46abd8eb 100644
+=2D-- a/drivers/thermal/st/st_thermal_memmap.c
++++ b/drivers/thermal/st/st_thermal_memmap.c
+@@ -121,15 +121,8 @@ static int st_mmap_regmap_init(struct st_thermal_sens=
+or *sensor)
+ {
+ 	struct device *dev =3D sensor->dev;
+ 	struct platform_device *pdev =3D to_platform_device(dev);
 -	struct resource *res;
- 	int port;
- 	void __iomem *port_base;
 
-@@ -344,14 +343,7 @@ static int mt7621_pci_phy_probe(struct platform_devic=
-e *pdev)
-
- 	phy->dev =3D dev;
- 	platform_set_drvdata(pdev, phy);
--
 -	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
 -	if (!res) {
--		dev_err(dev, "failed to get address resource\n");
--		return -ENXIO;
+-		dev_err(dev, "no memory resources defined\n");
+-		return -ENODEV;
 -	}
 -
--	port_base =3D devm_ioremap_resource(dev, res);
-+	port_base =3D devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(port_base)) {
- 		dev_err(dev, "failed to remap phy regs\n");
- 		return PTR_ERR(port_base);
+-	sensor->mmio_base =3D devm_ioremap_resource(dev, res);
++	sensor->mmio_base =3D devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(sensor->mmio_base)) {
+ 		dev_err(dev, "failed to remap IO\n");
+ 		return PTR_ERR(sensor->mmio_base);
 =2D-
 2.23.0
 

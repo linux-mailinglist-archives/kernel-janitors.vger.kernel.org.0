@@ -2,31 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 519E5B5D64
-	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 08:34:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 280DFB5DE8
+	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 09:20:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727987AbfIRGec (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Sep 2019 02:34:32 -0400
-Received: from mout.web.de ([212.227.15.4]:60979 "EHLO mout.web.de"
+        id S1727358AbfIRHUF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Sep 2019 03:20:05 -0400
+Received: from mout.web.de ([212.227.15.4]:43519 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726958AbfIRGec (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Sep 2019 02:34:32 -0400
+        id S1726077AbfIRHUE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 18 Sep 2019 03:20:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1568788466;
-        bh=+u7c7TT9Zf+nAgiI4yUa02U+TxcnNQVi2HJ06bgenYE=;
+        s=dbaedf251592; t=1568791161;
+        bh=mZHVM8uPGDHs/8eftxOEninmY5yjMFztwfgfbXzFL/0=;
         h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=il0rh9EQKbR4HDNq/CMRuPH+dIqLUwEIbFlN+aUoAZ1mMxMUP2fFC6jWPlOSVmSMi
-         ljuNraCBUq5POSNqPdqPu9nUnVXQkgGnY3t1FmkcDHEoB1c0N8xRdF/Y0eBmUNvb65
-         AsiEfCQ6wWDizFAmoQSeNnxoLwVva9I9nSV3xM/Y=
+        b=clwgV87rSvVCe4yBu+Jge0mozWO5w7oV8oHj8hQNjaanjIWt6MSUQNdDT35ls+YL9
+         jH0gr017PY9a/sJufEx0wIwQLZrGHFWJtJiQ0PN3UHONt7foo/S0QGckA3v1tlcG+O
+         1NqfhoZVMLt6X/toBlkmmqJ+6N79lpHxCcRM6ZvE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.244.2.101]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LkyXt-1hbxXb2wi5-00ajeq; Wed, 18
- Sep 2019 08:34:26 +0200
-To:     linux-ide@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        Linus Walleij <linus.walleij@linaro.org>
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MJCAc-1iDE4B0BSM-002ldM; Wed, 18
+ Sep 2019 09:19:21 +0200
+To:     linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        bcm-kernel-feedback-list@broadcom.com,
+        Arnd Bergmann <arnd@arndb.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Matt Mackall <mpm@selenic.com>, Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] sata_gemini: Use devm_platform_ioremap_resource() in
- gemini_sata_probe()
+Subject: [PATCH] hwrng: iproc-rng200 - Use devm_platform_ioremap_resource() in
+ iproc_rng200_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -74,45 +80,45 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         Himanshu Jha <himanshujha199640@gmail.com>
-Message-ID: <b17404cd-294f-fe2f-e8a3-2218a0dae14f@web.de>
-Date:   Wed, 18 Sep 2019 08:34:25 +0200
+Message-ID: <0ecb0679-0558-6cbe-af2f-6ee9122a4a7e@web.de>
+Date:   Wed, 18 Sep 2019 09:19:18 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:hQsU0CnUuX0BQDrXUB/Q+ew1vCfmaIjy+6y4d9ii/dsw+dTu6q/
- tbKvvfDAnpDX5TAX2AC36/c+Lz2dxp4C9BgZFx6GCz+ucGq+XsH9Kpu+odP4bjzea9sMxzs
- cc0nxuHj5q48QROq/9exqBVgxLs9n6C9INN3YGkphT2h+GNVXE5LEJi341brwvJano/4qzN
- phWf4f/TIV7nHFvgS/t4A==
+X-Provags-ID: V03:K1:zG8nKyPeoG1/iJ+5zOtkf9tAVKXpcEu5K+KWWYLMFoZOYR7Ez8v
+ N4j65B4sScGyu9JK7VDecxkHLIGUT+tL8ZB+LBkZTotbsvc5r0j9QXZg0RCfnrg8Z6QmjAD
+ QmJt38QtOFg6zcDjAvB04EjzxH2s+05nFXcHsnomSsoLTWcIkDv0fuPrzSG9uhb4Waf3ev5
+ TJ08bLOVXuwYw/B/365Bw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:qAHPMo4W4BA=:oslW7GY+dmefJZ/sdhFwvj
- xmGkGMKgQuVXpYVhIdQSSlnrNOcj7GBhzwMXYt2kH5JJFp/su5VDgX7bBAwN8cP1l8P6ZXyoy
- MHNdMrQ7BlihrehJZ6YY3r/LlXE0lFIh7pnpPDwQSJAj25K7ALOlr3l9t5pYntBUrSVxn4wMR
- 5xLM1KusAQhDxMxZuCzhwCQBEbqNCsZN3zPz+usEeQRDuFLiOXm6/1Wr9KNREHPLmcCiLp8Nn
- oY6ZSs4MeOHP0Osqbf7fEmB+XFW9MzmJ74RqFCEoFYYqq1WdYGf3Mic89eZqO4uVQCBqpaFMi
- Y+/8KEmV+B7tzzVNOzzsGD4ni/P9gfp0T1G87KvEtecu4I9SezZg6LOuhZrtXFDolf7cQmua3
- PkYlJJvTWWG6n69YJknhrPwELUE3lZG/TYJRssnivuDKkB5Jk3KeZwh8K0Z4B9C2ajczmgGDg
- vYmRUKHKJf1Li8HVgD44X49m6IJiOj6Myq+YZdqpmgdOrw6SB+mL8vVI2WDDeAZkOzelyq0EX
- IQSISTgLpzFjOO050nUmO2dcs367qPmljFxQWHRUOVMitlQXdtnS4w0UwjNhSMhZZubDJvZ7v
- 8wck3Upx4QOptKdRZ3oQRVkgRmzEdrxIGKxPrnfgYUcMjWkYZduWjSkXGHi+kSJ0bULGxn+YJ
- GTbODcRNUZ9lEQ+yDy1DySttSPIFOKOxCwAS+cZU8Wr+Rs6FNf/z3dd3+PVir+7KbPuO+HaxC
- iQ6+/oTGcCCJIb5N+lU58WG3DHKxUZULo6hE4Opa0/0rjYVR57vmlKdXjLmrM8b1c3HUFQGV+
- o9rs+pv85sRekyj0vUrZUnT1zJNvRtXtUcxW1lJvA8gU+IfNYafAXBdnXUQXVsbYnth9PchZc
- 3LMT+luqyBVnkA9UR4VAi34K+CID4Wwfudxdx9lP1KNSqE6yUdFiosAPeiSax4bqME36pYWLo
- /cW0nZ0i7a753po/o39pN3oBH3Vu4cIvqFfuyIxWkPX3OsBAutNLq9bZl5gJrMRPsILVJ1tfJ
- kLWS1CX6STC8Te4ol+vWMJa0yxmPOnz5ynD1b/VKh6RYtkIzu54J3OCSxb4y/7F70U9Hzrolt
- iOedIlnQsrIzJs635JLuOHLZ1h8p1CxLxb8xnZau7V/umcvAaLiWoJfyyWZC901KGEs03tZou
- Pna88XcCLq8jqmbAVJuZUuVQs7AbQ/Aoqo25Gf+OB+9KEEmi+TY5SROMnbgZhJtBYSBvUoTVn
- OV2Id4E7ccfWpfYW4Rma2cYIJWzMB92tWqiSq8/65qXOcKZ8SAsCnnUtp6Js=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:knI0/qaWLC4=:N8e0l9Ha1V57NqnYsDncV8
+ RAEs8wW1kF4fj8UeQQojzpV1ea+OIXrWgJ7yWUM7uK8dTbzLLbd4tiM3bxaHZNMy2zSRvBcXe
+ 504dxKZJMvj3D+I4s9R5dv8BPqD+kslPL652e75ZPSPEO3UEsx7JEugauzzh7a1oQkLEGRM0E
+ qBdnQ/g8fJMAGoneYVD/oD3WMmsN+8p/4nzU/tirwRRFeZ64OPJHkqALoILiIFX/RgscmtSZh
+ ds1ExTBdPfujtUHrZ5aReWyY3A9qOobH/c6Gif5Cj1z4mT3DxhevrT99OCO1Sb/3hwGHmTFjj
+ wyp2bWz1I4KSqp3EQZAKtywiv+iNfOuRt7/ZH52hXnODC/WEy7Qe+qjUYjs/0qVrZu9xVG4+M
+ D1wq7ENrA6AA2OxROwHh+RO20NOhUZv/H0Yn6F7tmR3VGP5P573cvSe54332xBDt0SkUx/sH3
+ PT1JL0yKr2ofdkIujyqle9U11VHZkNNPyVHlSymilNRlW0EYXDZtw3tC3jQeLqavLPHHyVx1N
+ U94CbAI12TrIp/bJbTzWsqlNWgG2dGNjPibDewJ+R9JG9IRsA0pLb1FlZuE0xN69BQegInj0R
+ TxqHc+dsUSnLF6qrBRqb2rDMD/qRilTxUSwawIm1c+MGxPmB6nYzsCtrVdeZKaKSO5NXBYts5
+ ghGH3PYhtM4fat3fkSLaZoLkw5MgNfrpA2WfohDoHPHeOL+onF1oT4zou/z0ftAJDJG5cx43l
+ mZxa4bs2Kq5M28A2bsD3Ap7m7oD3MHeOfQnjxcAMBGIHOrQ73QmS8b5lTIXX+ESc0jE0yhjVy
+ wbUrSTwS5hjMShAWahVaUl6m5ORpbp2v38RYRxoD7FPQ0eKREAnj9xHbuSd7use90n24pDbFM
+ oZ0x5M21ZIylUrK/MmMzVewaMBOL6gtziW/nwU+CqiTDuyWXvNiD39GTPtpc2Z0WQjXZjH17H
+ 9MFLisgz9DpR9cLxAHiq6pf/BHI6Mh+tOUCi5iHJL0icUCaRUdl9BngADvnaaEuPFmcl17DrX
+ 9ZLyc1Q5T9sZ2UEy+Sg9AaqSfqkKpZQcqQcMV3EQDKz98h4QQYYjh9ivAN1HZYRfLkB5crjkQ
+ 2iElmVmRwrlE6f/qII76HDznnAlJcoqDDiCWMCghas0xS0g1XcqSlAtsIsgrlkCtyFYLWr9PI
+ bW7sdCh8Wl9y9xtoQzY3XWg9e7hdYvYu14qon39FzeX7meMzhDz5pMLG0bQJJEcCROUN64xbL
+ 1XeTBCCKPUlhf9G5YoDeIesK1JSa2OnjtpobswWzfUSipr05PwQZyD8F5DyQ=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 18 Sep 2019 08:28:09 +0200
+Date: Wed, 18 Sep 2019 09:09:22 +0200
 
 Simplify this function implementation by using a known wrapper function.
 
@@ -120,38 +126,38 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/ata/sata_gemini.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/char/hw_random/iproc-rng200.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/ata/sata_gemini.c b/drivers/ata/sata_gemini.c
-index f793564f3d78..61a34cad90c1 100644
-=2D-- a/drivers/ata/sata_gemini.c
-+++ b/drivers/ata/sata_gemini.c
-@@ -318,7 +318,6 @@ static int gemini_sata_probe(struct platform_device *p=
-dev)
- 	struct device_node *np =3D dev->of_node;
- 	struct sata_gemini *sg;
- 	struct regmap *map;
+diff --git a/drivers/char/hw_random/iproc-rng200.c b/drivers/char/hw_rando=
+m/iproc-rng200.c
+index 92be1c0ab99f..899ff25f4f28 100644
+=2D-- a/drivers/char/hw_random/iproc-rng200.c
++++ b/drivers/char/hw_random/iproc-rng200.c
+@@ -181,7 +181,6 @@ static void iproc_rng200_cleanup(struct hwrng *rng)
+ static int iproc_rng200_probe(struct platform_device *pdev)
+ {
+ 	struct iproc_rng200_dev *priv;
 -	struct resource *res;
- 	enum gemini_muxmode muxmode;
- 	u32 gmode;
- 	u32 gmask;
-@@ -328,12 +327,7 @@ static int gemini_sata_probe(struct platform_device *=
-pdev)
- 	if (!sg)
- 		return -ENOMEM;
- 	sg->dev =3D dev;
--
--	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res)
--		return -ENODEV;
--
--	sg->base =3D devm_ioremap_resource(dev, res);
-+	sg->base =3D devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(sg->base))
- 		return PTR_ERR(sg->base);
+ 	struct device *dev =3D &pdev->dev;
+ 	int ret;
 
+@@ -190,13 +189,7 @@ static int iproc_rng200_probe(struct platform_device =
+*pdev)
+ 		return -ENOMEM;
+
+ 	/* Map peripheral */
+-	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res) {
+-		dev_err(dev, "failed to get rng resources\n");
+-		return -EINVAL;
+-	}
+-
+-	priv->base =3D devm_ioremap_resource(dev, res);
++	priv->base =3D devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(priv->base)) {
+ 		dev_err(dev, "failed to remap rng regs\n");
+ 		return PTR_ERR(priv->base);
 =2D-
 2.23.0
-
 

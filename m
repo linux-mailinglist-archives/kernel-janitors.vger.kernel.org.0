@@ -2,37 +2,40 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 280DFB5DE8
-	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 09:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AC3FB5E3D
+	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 09:44:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727358AbfIRHUF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Sep 2019 03:20:05 -0400
-Received: from mout.web.de ([212.227.15.4]:43519 "EHLO mout.web.de"
+        id S1727487AbfIRHoc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Sep 2019 03:44:32 -0400
+Received: from mout.web.de ([212.227.15.4]:60187 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726077AbfIRHUE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Sep 2019 03:20:04 -0400
+        id S1726156AbfIRHoc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 18 Sep 2019 03:44:32 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1568791161;
-        bh=mZHVM8uPGDHs/8eftxOEninmY5yjMFztwfgfbXzFL/0=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=clwgV87rSvVCe4yBu+Jge0mozWO5w7oV8oHj8hQNjaanjIWt6MSUQNdDT35ls+YL9
-         jH0gr017PY9a/sJufEx0wIwQLZrGHFWJtJiQ0PN3UHONt7foo/S0QGckA3v1tlcG+O
-         1NqfhoZVMLt6X/toBlkmmqJ+6N79lpHxCcRM6ZvE=
+        s=dbaedf251592; t=1568792649;
+        bh=caFlKgqR6Wv8ag8+Edy0U8SPuU2/zu9u+4Af/rVsdRw=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=NFE7W9eWEbAMy8LL8+dsY0qApCZuqaTgX1tVY6r/iKo2e37EV4PXmxdSNLM5xW2jI
+         8LXpQbz0fIK3xTC9KmJxaSmcWnrFCz1nOfL/pH+3eW3kGzPy1YEojModg52Goyn6JY
+         9Q0F4qbSSEuD76M6Lk/yBLmAktIPKvbUoBMCFjnc=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.2.101]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MJCAc-1iDE4B0BSM-002ldM; Wed, 18
- Sep 2019 09:19:21 +0200
+Received: from [192.168.1.2] ([2.244.2.101]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M9ome-1iLSzp32To-00B4Os; Wed, 18
+ Sep 2019 09:44:09 +0200
 To:     linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        Arnd Bergmann <arnd@arndb.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+        linux-mediatek@lists.infradead.org, Arnd Bergmann <arnd@arndb.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Herbert Xu <herbert@gondor.apana.org.au>,
-        Matt Mackall <mpm@selenic.com>, Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>
+        Matt Mackall <mpm@selenic.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Sean Wang <sean.wang@mediatek.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Himanshu Jha <himanshujha199640@gmail.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] hwrng: iproc-rng200 - Use devm_platform_ioremap_resource() in
- iproc_rng200_probe()
+Subject: [PATCH] hwrng: mediatek: Use devm_platform_ioremap_resource() in
+ mtk_rng_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -76,49 +79,45 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Himanshu Jha <himanshujha199640@gmail.com>
-Message-ID: <0ecb0679-0558-6cbe-af2f-6ee9122a4a7e@web.de>
-Date:   Wed, 18 Sep 2019 09:19:18 +0200
+Message-ID: <e6e03822-c68f-55ea-3a65-ee2a44f50e8c@web.de>
+Date:   Wed, 18 Sep 2019 09:44:06 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:zG8nKyPeoG1/iJ+5zOtkf9tAVKXpcEu5K+KWWYLMFoZOYR7Ez8v
- N4j65B4sScGyu9JK7VDecxkHLIGUT+tL8ZB+LBkZTotbsvc5r0j9QXZg0RCfnrg8Z6QmjAD
- QmJt38QtOFg6zcDjAvB04EjzxH2s+05nFXcHsnomSsoLTWcIkDv0fuPrzSG9uhb4Waf3ev5
- TJ08bLOVXuwYw/B/365Bw==
+X-Provags-ID: V03:K1:TVr6y4BRlKjPTWQx2XV0ctmQfukyEOFSyasBxHm0cPqp4kGnbCx
+ 3CTyjRCtl/6XgA40ZC7LZQ0Is9PIZuyInCqJxyMiWbGqx2QXFXanTkT54S76bZBjy5Th9V+
+ /Ezib46AKGIJ8/WBIh63P0mCPgdLj1+YheoQgt8F4wrwiOJVRTsQe6s+UwxXUqwYcdsg7bo
+ jgdIUcnh2iCJzwsOmnk4A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:knI0/qaWLC4=:N8e0l9Ha1V57NqnYsDncV8
- RAEs8wW1kF4fj8UeQQojzpV1ea+OIXrWgJ7yWUM7uK8dTbzLLbd4tiM3bxaHZNMy2zSRvBcXe
- 504dxKZJMvj3D+I4s9R5dv8BPqD+kslPL652e75ZPSPEO3UEsx7JEugauzzh7a1oQkLEGRM0E
- qBdnQ/g8fJMAGoneYVD/oD3WMmsN+8p/4nzU/tirwRRFeZ64OPJHkqALoILiIFX/RgscmtSZh
- ds1ExTBdPfujtUHrZ5aReWyY3A9qOobH/c6Gif5Cj1z4mT3DxhevrT99OCO1Sb/3hwGHmTFjj
- wyp2bWz1I4KSqp3EQZAKtywiv+iNfOuRt7/ZH52hXnODC/WEy7Qe+qjUYjs/0qVrZu9xVG4+M
- D1wq7ENrA6AA2OxROwHh+RO20NOhUZv/H0Yn6F7tmR3VGP5P573cvSe54332xBDt0SkUx/sH3
- PT1JL0yKr2ofdkIujyqle9U11VHZkNNPyVHlSymilNRlW0EYXDZtw3tC3jQeLqavLPHHyVx1N
- U94CbAI12TrIp/bJbTzWsqlNWgG2dGNjPibDewJ+R9JG9IRsA0pLb1FlZuE0xN69BQegInj0R
- TxqHc+dsUSnLF6qrBRqb2rDMD/qRilTxUSwawIm1c+MGxPmB6nYzsCtrVdeZKaKSO5NXBYts5
- ghGH3PYhtM4fat3fkSLaZoLkw5MgNfrpA2WfohDoHPHeOL+onF1oT4zou/z0ftAJDJG5cx43l
- mZxa4bs2Kq5M28A2bsD3Ap7m7oD3MHeOfQnjxcAMBGIHOrQ73QmS8b5lTIXX+ESc0jE0yhjVy
- wbUrSTwS5hjMShAWahVaUl6m5ORpbp2v38RYRxoD7FPQ0eKREAnj9xHbuSd7use90n24pDbFM
- oZ0x5M21ZIylUrK/MmMzVewaMBOL6gtziW/nwU+CqiTDuyWXvNiD39GTPtpc2Z0WQjXZjH17H
- 9MFLisgz9DpR9cLxAHiq6pf/BHI6Mh+tOUCi5iHJL0icUCaRUdl9BngADvnaaEuPFmcl17DrX
- 9ZLyc1Q5T9sZ2UEy+Sg9AaqSfqkKpZQcqQcMV3EQDKz98h4QQYYjh9ivAN1HZYRfLkB5crjkQ
- 2iElmVmRwrlE6f/qII76HDznnAlJcoqDDiCWMCghas0xS0g1XcqSlAtsIsgrlkCtyFYLWr9PI
- bW7sdCh8Wl9y9xtoQzY3XWg9e7hdYvYu14qon39FzeX7meMzhDz5pMLG0bQJJEcCROUN64xbL
- 1XeTBCCKPUlhf9G5YoDeIesK1JSa2OnjtpobswWzfUSipr05PwQZyD8F5DyQ=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:rhlOwn4khUE=:Cs3LDjWNfGQIwK9jjg8Tb5
+ 0CByEG0g1DNdKHXAntaVmaokfVKhSfQzWKow4JQbsQGKVDT4WShzgmsaDPEH5Ft/++z9rS+ab
+ ifdO2Rj2qm4TSquSfaVPaWIUrq7w4itO88Figd3MkLpu1yeTavHqp1902+SkAlOxJLtojeCZ3
+ 5x+PlANKBDDe+L3Y6ykjt1p3VolIoVczFxGNDUwu4DwYekdXJJ0GUj1IKZllihiBEc50wN1E5
+ lZD6kgteK74dUNJeEJ8GKu+bS4PqmDu8ipdWYrcIXu7uh1A39RxxPbVhtG2oLB1YSstRGj5r5
+ ubi33y7rko9XOzhlWyNBFc1ycU6Q0UpdRB6TP04lqI3TIpxKI+wYa/qjqI/AMTc6I4dNNHW/O
+ Wh/QKYlaDB0IycRVRBwxQv9ZjQTgnMmEUm6v+d7NGP4NnynsHa2Eg2nCo1wkaZnfzHSj9Wj6F
+ Z9/AOtEjdGRwl8mD5Yi5A7Fd8F3DgLgU6RDYDFdoPQlkdA55dm9+Zyi5yLWtiSrEfF8bbjG6q
+ 8AQVFJ90svuGjZd3X07GM+/H4JD5mZgXT/ZAL37h4wWs10Z/ZY+rbyVXJk9S1qD9/BqmmEXqC
+ 6fdSwxUYjcqaz2ewVyZ4vCcWh1Gsv73Me45kcKCgQd0gYuKwL5+A2XodN3x0OcqFXli9oJngi
+ jwO4CkO5wXPbz/+Hy/PeEuJpSfVzJmCrcmZQeklk8zOHcO2JzJ5GFgMqwd3Paf1hCqRMTXJhm
+ 5789Imgo4WAQzboqg3r+BRocwrvbK2LMe2taMWcWdWo1mb3tjTb1t/fpXpShEo7XL7rJmbGuf
+ NqqO/yba605V0ldFr+NQjkcYbMOreAAoETL5JVbF8tH2I3ClVexDfEE/9U3ZSTtlMTGBt+REI
+ 2/ZykXANYGmCOdhpxkktW6sLO/0bfh5DwlcsgRIdjUm4Kxa9DATBufqF7q8mqsXECynqzZmq7
+ jnuMuyz5XgC5BD2XGrxrxLPPYsdXwOwvN5xVNsEJrpd7fLmh9GQQ5jRaN90KEPChkMOc12zPB
+ Tan2S1OgeVXvIDt/6PejXFkli7GkDKpxSOolScaJwMzr6gT1Y5WndGodRAgkFzFHBW0xGykoJ
+ rYdJTuSdKfqgBnQEegRa53Vnetn5Om9Hem+bRmFtFXX1oYP/2XDi/g7v5nKs81ASrHdumQ0rX
+ b3hPJDixQLdgreMC2nbXiPZ86T9JnLCnWaTJ3g8rKNwSuekDNXKZdMOnRveHxyMyYB/AyHYXL
+ SJZ6tr7r5q7MlteDllmsWB1ePDRG8FBF80hbi65kWbCQB3bxbMUpwoVSOjuA=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 18 Sep 2019 09:09:22 +0200
+Date: Wed, 18 Sep 2019 09:34:11 +0200
 
 Simplify this function implementation by using a known wrapper function.
 
@@ -126,38 +125,41 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/char/hw_random/iproc-rng200.c | 9 +--------
+ drivers/char/hw_random/mtk-rng.c | 9 +--------
  1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/char/hw_random/iproc-rng200.c b/drivers/char/hw_rando=
-m/iproc-rng200.c
-index 92be1c0ab99f..899ff25f4f28 100644
-=2D-- a/drivers/char/hw_random/iproc-rng200.c
-+++ b/drivers/char/hw_random/iproc-rng200.c
-@@ -181,7 +181,6 @@ static void iproc_rng200_cleanup(struct hwrng *rng)
- static int iproc_rng200_probe(struct platform_device *pdev)
+diff --git a/drivers/char/hw_random/mtk-rng.c b/drivers/char/hw_random/mtk=
+-rng.c
+index e649be5a5f13..8ad7b515a51b 100644
+=2D-- a/drivers/char/hw_random/mtk-rng.c
++++ b/drivers/char/hw_random/mtk-rng.c
+@@ -105,16 +105,9 @@ static int mtk_rng_read(struct hwrng *rng, void *buf,=
+ size_t max, bool wait)
+
+ static int mtk_rng_probe(struct platform_device *pdev)
  {
- 	struct iproc_rng200_dev *priv;
 -	struct resource *res;
- 	struct device *dev =3D &pdev->dev;
  	int ret;
+ 	struct mtk_rng *priv;
 
-@@ -190,13 +189,7 @@ static int iproc_rng200_probe(struct platform_device =
-*pdev)
- 		return -ENOMEM;
-
- 	/* Map peripheral */
 -	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
 -	if (!res) {
--		dev_err(dev, "failed to get rng resources\n");
--		return -EINVAL;
+-		dev_err(&pdev->dev, "no iomem resource\n");
+-		return -ENXIO;
 -	}
 -
--	priv->base =3D devm_ioremap_resource(dev, res);
+ 	priv =3D devm_kzalloc(&pdev->dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
+@@ -135,7 +128,7 @@ static int mtk_rng_probe(struct platform_device *pdev)
+ 		return ret;
+ 	}
+
+-	priv->base =3D devm_ioremap_resource(&pdev->dev, res);
 +	priv->base =3D devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(priv->base)) {
- 		dev_err(dev, "failed to remap rng regs\n");
+ 	if (IS_ERR(priv->base))
  		return PTR_ERR(priv->base);
+
 =2D-
 2.23.0
 

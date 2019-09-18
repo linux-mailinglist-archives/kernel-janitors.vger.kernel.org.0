@@ -2,165 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F372B6D58
-	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 22:13:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F1FAB6F8E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2019 01:09:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391155AbfIRUNN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Sep 2019 16:13:13 -0400
-Received: from mout.web.de ([212.227.15.3]:50099 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2391137AbfIRUNM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Sep 2019 16:13:12 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1568837565;
-        bh=Mp/Sp993s+Pq9hGkpPGsUTRxMV/puPWC2MnlUBBr208=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=McTxWX1al/lp/s/v4ZQeZASdwV2S3pUkuqwKYg3vfs58ism6GECaUM07JPZXvSokO
-         6F1PIaw5TTmxdIDlGFT3vHOkmSkzaynlNnjjh9SSJ9FgefBX3V6rn2H6Eauj74jbsj
-         haBUQyeFlYEoPq/LgoqYOdfjsA+x6gRBvojCF9/4=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.2.101]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Mef0K-1iYxQT1ytU-00OGMb; Wed, 18
- Sep 2019 22:12:45 +0200
-To:     linux-serial@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        bcm-kernel-feedback-list@broadcom.com,
-        Eric Anholt <eric@anholt.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>,
-        Martin Sperl <kernel@martin.sperl.org>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        Stefan Wahren <wahrenst@gmx.net>,
-        Stephen Boyd <swboyd@chromium.org>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] serial: bcm2835: Use devm_platform_ioremap_resource() in
- bcm2835aux_serial_probe()
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Himanshu Jha <himanshujha199640@gmail.com>
-Message-ID: <fcb34c72-89c7-9993-fc0a-ba3a61708bec@web.de>
-Date:   Wed, 18 Sep 2019 22:12:40 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+        id S1729897AbfIRXJv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Sep 2019 19:09:51 -0400
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:38926 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727305AbfIRXJu (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 18 Sep 2019 19:09:50 -0400
+Received: by mail-qt1-f196.google.com with SMTP id n7so1854318qtb.6;
+        Wed, 18 Sep 2019 16:09:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=hz4UyQFQQPdm3I3IaFrX5aQr9o00Q9icQuCD8MrFVjc=;
+        b=SaI6+MhpZo2TQOqMr4CX7OLC1FoRkBWepZh6Gn1mv2/9iaO6KbNUEUEvWzqaW0yISC
+         Q+y3pmRLmVnL9KYjb7qr+4IvBJWyu1JDEZC0hQFtOMmsYQc4lLNrQOurFl825muj7Nfo
+         2ry/OXNV0DDcZXROENefWf797DmXDL5o+WA7gTqx/KYS9umSgqfFY59IjghmNBQz9ZMY
+         UjLDrwl1/1g6+s3kdbTAd48vaK+e5cI8p2F/XtyBaPsqIlK09L17bbfZslk3uFDFMt3e
+         a1hDhMXVAWEW0ILUz/3PiMqZEgvc1v8zo8KeZmbDrFmOrp216d0DZ8N/OoM4fZDYSlQ+
+         NC5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=hz4UyQFQQPdm3I3IaFrX5aQr9o00Q9icQuCD8MrFVjc=;
+        b=ubmTDy5mA/kkp7i0MdShAPipZteN+t42goZKPcjroHytwtG4n1A1HonJW+wM06U+LH
+         P1Y8NjGqcFSDsxoKvLBchpj0ni0D5W+SfLy+dXVfA124J+OvPctWnvNP+46BwVEGalZ3
+         jvpwAQgFf5Bs37JEZxjLCyhn6+zjurIH5esn1o/cWKNhC87xkWEd2P967NTQwqrYfm2K
+         M8tfTqXlW8FPXozExLyL8TiAlQkK16sHjZ5TTGC3hw5xbtecc6m2vLZQYX/RPstgO0Zd
+         9AU7Cl4N+Kbf9KaZW4QjDi7O1Kxjv5dBHjKBy8W5YYEclT3Rgov2KTQLY9F1oK0+MKyE
+         2lAw==
+X-Gm-Message-State: APjAAAViaHPRXIsWTrTWJgvFs5IQBw+PYt6XeVTxjguQVV7Im+w5hgCI
+        LibF6jOlv7nEcZRLJ0LSpQM=
+X-Google-Smtp-Source: APXvYqxlR12/zWo/yohy/gyLi7jXYrHJxeMjCE2vyfmZJQOHn7BgcIHNE5FCp2rGwq6Sgma/DNHnLg==
+X-Received: by 2002:aed:2da4:: with SMTP id i33mr268824qtd.320.1568848189820;
+        Wed, 18 Sep 2019 16:09:49 -0700 (PDT)
+Received: from quaco.ghostprotocols.net ([179.97.35.50])
+        by smtp.gmail.com with ESMTPSA id p11sm2996020qkj.124.2019.09.18.16.09.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Sep 2019 16:09:49 -0700 (PDT)
+From:   Arnaldo Carvalho de Melo <arnaldo.melo@gmail.com>
+X-Google-Original-From: Arnaldo Carvalho de Melo <acme@kernel.org>
+Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
+        id 334CE40340; Wed, 18 Sep 2019 20:09:47 -0300 (-03)
+Date:   Wed, 18 Sep 2019 20:09:47 -0300
+To:     Mukesh Ojha <mojha@codeaurora.org>
+Cc:     Colin King <colin.king@canonical.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] perf test: fix spelling mistake "allos" -> "allocate"
+Message-ID: <20190918230947.GD32051@kernel.org>
+References: <20190911152148.17031-1-colin.king@canonical.com>
+ <2b525705-317a-29a7-9fda-ca7896c8c038@codeaurora.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Uc/+VrkchqSRfhOA5ddy0dBO+fZXjPD4PJMt88+y188b9L0lizJ
- agNnt9ZTudVLpAOAYtZYeBVq0olzLlcRR4Pm+OBMD0C7vBMc739NthmGujNynfRhXiAbYKA
- auyoYOFRTId4JAyIu3CYumv8mSByvtR5pSlamV0Dzn9+2i56rFUKbKvldQL13TkptAKKZCS
- NxBe8SEdvesR/ovk2Hhtg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:7iO9rjYmu+M=:JBqVrv39cTFySguKp38A5c
- hE5Wh9L/pb/2vLlAEM5Vszf0f8lPh9LO23KT8XFk4eEwUjHr3CD/CDSExY7iFpIsk+wuIpu0M
- 3TWVDvhLC38ngsN8mybiIZOHC/Fgj/6gN+NpRFj4h/m6ETwECGMpbY484ah8hhWYi0ZV8eeA3
- oJNa1XI7PhUKbqcfMD5sPuEgHTznZwKSRcqP/4UlwHub/N5ELEgvfYO1pwBFSsvNayAWFgCug
- 8eHAPu5y+Kk6LTGs9Wrjt912KBpsYHhYjzYye5+5FG9R6ACy8cegZzujf8gDSE0tUk9BvNkmV
- UWwcGydFsuvTel5AWAIVCN8uMwGqZaxA7dtRaEfBycqO6E2akgwfT/lfBeWYL7I4it+eCVsAn
- N94abohs2GlQTgOEqRtUpyxjmVomtf0hLDw0R9paGuyz/wPc0ReZrMEJKjPB1lCoamx/CApcI
- baSKIEElcpgtswhrnPe2EEPn/wGq8aB0g+s3OwL6mjAJEll9JO65HC2e05Ytlyvt/NLiivs4/
- 31HMa6SvF53YNxRkYn7c/7QMwFy9gFRjfXUJ1ektZ7fBjs2FrT+qUoAudoERlOfYMAjD1GTgc
- nA8X3JmVR7bYzDrJaDDmgEmJ6J43orKNcP8bJbS4rqVGdN15Ykh5dgBuJdR0W3N0LO6iwb5rj
- Gnz6rT0wN0h1dOaQRm/1/duJyU2XgLKgKFJnQ+DAQsTjiJ18/Mvp3vTHy1KYGHgrSMiiiOIjP
- 6haEZUmZsSUB6I6o322GEVIfNDUqjGL4e9Q59kZxkwmfzh4WBg+bUULjnqRXg2Zxu+CPviuaf
- hmXRDft6SzxWEJgMHJTYKBbVytv4sSX5l7T5cZTIKyGjizIARHM8c0PQVLCYY6SI5tGce/DR1
- LBrupDlfmFs8ToB1bWmFTACnijZtPSbT2Sb0+twW6XS8R8hBVWD7/2xKp1oFFBgmYthcqLPJD
- +nJB4H6yS9m5uMaUnxnDpVjB/jwK13Gt38JK7YsS8I76mLQnPbhSt19vvqtHHqD4wzbtF0zWR
- i+HOxW3jsNssHTeugDe2ou2DGGimctXzjT+F02COtqgOHuZVkLi1Zn1aKbskrohAOjIFW+Dyx
- oPdva6F8jNyGxdMzGCtPnOcawy47ZokOgk2oYL7zgP9yctG9wy43djOoQAyUfKgYHzF++CAGo
- D32A/hDwJY5oFajzQ8MqbcxBiz2rfA7XBSMN0SmBfZROMH8GU3Mk1HaAXV9ewNx0+/KULLyUg
- 5yuvr0w4SPxPwamELrldzjKSqBvUwgvW4s+LvSnqlvcvfM6WNqM5WzwzDHQk=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2b525705-317a-29a7-9fda-ca7896c8c038@codeaurora.org>
+X-Url:  http://acmel.wordpress.com
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 18 Sep 2019 22:00:14 +0200
+Em Tue, Sep 17, 2019 at 01:12:46PM +0530, Mukesh Ojha escreveu:
+> 
+> On 9/11/2019 8:51 PM, Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > There is a spelling mistake in a TEST_ASSERT_VAL message. Fix it.
+> > 
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> 
+> Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
 
-Simplify this function implementation by using a known wrapper function.
+Thanks, applied.
+ 
+> Thanks,
+> Mukesh
+> 
+> > ---
+> >   tools/perf/tests/event_update.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/tools/perf/tests/event_update.c b/tools/perf/tests/event_update.c
+> > index cac4290e233a..7f0868a31a7f 100644
+> > --- a/tools/perf/tests/event_update.c
+> > +++ b/tools/perf/tests/event_update.c
+> > @@ -92,7 +92,7 @@ int test__event_update(struct test *test __maybe_unused, int subtest __maybe_unu
+> >   	evsel = perf_evlist__first(evlist);
+> > -	TEST_ASSERT_VAL("failed to allos ids",
+> > +	TEST_ASSERT_VAL("failed to allocate ids",
+> >   			!perf_evsel__alloc_id(evsel, 1, 1));
+> >   	perf_evlist__id_add(evlist, evsel, 0, 0, 123);
 
-This issue was detected by using the Coccinelle software.
+-- 
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- drivers/tty/serial/8250/8250_bcm2835aux.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
-
-diff --git a/drivers/tty/serial/8250/8250_bcm2835aux.c b/drivers/tty/seria=
-l/8250/8250_bcm2835aux.c
-index 8ce700c1a7fc..e2c9d19fc8e9 100644
-=2D-- a/drivers/tty/serial/8250/8250_bcm2835aux.c
-+++ b/drivers/tty/serial/8250/8250_bcm2835aux.c
-@@ -25,7 +25,6 @@ struct bcm2835aux_data {
- static int bcm2835aux_serial_probe(struct platform_device *pdev)
- {
- 	struct bcm2835aux_data *data;
--	struct resource *res;
- 	int ret;
-
- 	/* allocate the custom structure */
-@@ -61,12 +60,7 @@ static int bcm2835aux_serial_probe(struct platform_devi=
-ce *pdev)
- 	data->uart.port.irq =3D ret;
-
- 	/* map the main registers */
--	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res) {
--		dev_err(&pdev->dev, "memory resource not found");
--		return -EINVAL;
--	}
--	data->uart.port.membase =3D devm_ioremap_resource(&pdev->dev, res);
-+	data->uart.port.membase =3D devm_platform_ioremap_resource(pdev, 0);
- 	ret =3D PTR_ERR_OR_ZERO(data->uart.port.membase);
- 	if (ret)
- 		return ret;
-=2D-
-2.23.0
-
+- Arnaldo

@@ -2,34 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 57640B623D
-	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 13:27:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9862B6275
+	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Sep 2019 13:49:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730120AbfIRL1A (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Sep 2019 07:27:00 -0400
-Received: from mout.web.de ([212.227.15.3]:43057 "EHLO mout.web.de"
+        id S1728712AbfIRLsw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Sep 2019 07:48:52 -0400
+Received: from mout.web.de ([212.227.15.3]:41157 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726958AbfIRL1A (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Sep 2019 07:27:00 -0400
+        id S1726958AbfIRLsv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 18 Sep 2019 07:48:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1568806004;
-        bh=ccPGSznJXqKALFiMkzuktevQiVyS3c/9JLO26vPrRTE=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=f8vjlKb5UdWOWZCWAFWz6DnJ0TcKRdWJ6cwH2ww/UPoq2Rn/VWPiO+dgZqY5QDS72
-         9alz06bpVdRPlVpG6FMiq1XrZD+n1cVPwEWvLNZ54/nc+Nx533XNZ/GKuJG36LnbiM
-         exa7KG3wRoLAvQ2jwLsHDiai8D7lHSivaZQqYMoI=
+        s=dbaedf251592; t=1568807329;
+        bh=p1sodnQQNFGB+IFUcKDOaPnHqgy6zKaWm7jiny+0/Fc=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=UTcwYRCO05FmGASoOhKPjfVW+qwngQP9k20mLLAS1T1qsQ6eyfA0G+7KObbvBBd+I
+         hsvy77tNbUuFrF5nEimXxoeoN8IDsfpg4vM8MusBjjUMs7+T+ySruZSQKN2uGrrHSw
+         4zCUmRLN6XyvzxkQDEyEXSQGNB0vvGp0PKrrkQxU=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.2.101]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MXBh7-1ignvV1UCT-00WBqW; Wed, 18
- Sep 2019 13:26:44 +0200
-To:     kernel-janitors@vger.kernel.org,
-        Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Scott Wood <scottwood@freescale.com>,
-        Thomas Gleixner <tglx@linutronix.de>
+Received: from [192.168.1.2] ([2.244.2.101]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LrbHJ-1i5Z5J3SyD-013Pcx; Wed, 18
+ Sep 2019 13:48:48 +0200
+To:     kernel-janitors@vger.kernel.org, Lee Jones <lee.jones@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Himanshu Jha <himanshujha199640@gmail.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] memory/fsl-corenet-cf: Use devm_platform_ioremap_resource()
- in ccf_probe()
+Subject: [PATCH] mfd: ipaq-micro: Use devm_platform_ioremap_resource() in
+ micro_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -73,48 +73,45 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Himanshu Jha <himanshujha199640@gmail.com>
-Message-ID: <d4e42383-a462-f5d8-4277-c20775c7352c@web.de>
-Date:   Wed, 18 Sep 2019 13:26:43 +0200
+Message-ID: <d9990bcc-2daa-67ad-4de5-7a849668d038@web.de>
+Date:   Wed, 18 Sep 2019 13:48:47 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:U8FML0Y8m9kGfUF3l0IMwGNyg+wp/ZQuNFAEcYB0/9UQWMnEjKM
- SEw4zv/WzZ6HlgSgaUR64JXZvYCfWxjPsH4zgQ4sRpokw8ZyTTfDCVO9mptG2UkHAz3BMG/
- AEts8avb5zuOaJgzFRw/zUwXsLK3WGMzdDUwpUZEdwPfCYkyTXSf8ZMScV5wdS8iEdoXvKM
- Bm4qZSQoh9LMaMwybJwyA==
+X-Provags-ID: V03:K1:EPloDjtzgZyFtbAiu2eDmpbVUU6aj0TjVRuDz8gFz84FXyKfp0T
+ AWSlsu96HcXxe2xlyMxrN6OO4euIuGjd3LHMgbTCdPiQKZLYmT6PyTkGyQCa8Y2Es4Sd6pG
+ Whx/NOnGMiqdLlNsKnoXMquMkFKycooQMWD3GHFeKMrLvybKNZ47dOk7KI9v8Z7SrbAMc0y
+ W5/DnGGcw+oARb0vs4ADw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:xcjnxRHllCE=:g6i9lumiytyAsetFRlWlTw
- kDAXevm154bTwESuLjX1NTyyhYLfgc5qboJShTGO6h4WMWZU+N/DvWxM9ZB80N00AA40PLclQ
- 83Smol+mAXddOjhxlKx6mRWbZVY3jH1HJXdjZB9201dMziM4UnmCK8sXsF79MDo+pTJLnrXx3
- 6z4P06QBxaw/pZmtorf0g4gM9OmCh2TQ83459tqIxGOVuy82m2KWNmTRPkiLRWLN0l76EaPfy
- y/Q5a7GW8dw3YAd8ARhM0izJkS6yKliJj01oNj787ovdYLjLhtTPKtnVtkxqD1643g4KzNKA6
- qv/ask7Pes5xhNJaGeGbwnK9yqHMX4CMkKCCPk6oEJ5IwCZ6G4l54FXcwkfueloc+W7RHI1tJ
- TFq11L5C6K7A14zvdQ8W+qniHUXtEUXvomAFZadQhX/OoS1T1y7RgNOyf6sJL7w9MZk2jP/zZ
- cLdFqgD5EQ0RsZ+Yx8NaY01xcMrBKl5zmdd+qfjCwjoaYVSqLKBQcZ0kwBaxEigJ9QhOyYAhj
- Ibkt+IOAN3dufxQb7qjoxESCx9TbsHKancIXTirFso5uXkCZ2o0+VAnzLrOX23sRg6u8PnSX/
- /iBZ7E1G0YvfYEP/+JxipR84gznreWgZ4JTG1FTACSexAIrZF4wMrwKOorOvF+25GVbk2a9oI
- VrXhHIpJk5xAQmkaCY+4sn7Qn8SU/yUaFti0YQ62P7NtlBL6nh0YDEMV5NSzJRnxR166fUBSD
- EcEWH5CYyNG+2cpu6+0B79AyReN+fEIUW132/vveT2ULSuG2qfjNpvgaTLFOF6yP3SbISgmU5
- tbjQo2Wy0A4YRmLFm8NI/X5LNy6zJ0a8ZvM2Ail/GHOZVIiUaSYnBi/QOzZhFLTSZKcsYodXq
- DYG+ne8+b7u03Yr5A9SJaziURSYfk0jmypE4f1j2ZRa1Whvnj3DAmwKhjfJ3rCojucK8omS1V
- BTP2RKJhOe6B7Jk7j923OvPTOBS7PWJiha4CbmUJw18JC4Mih/UsVG2Q5wpEtNfkHDa2OjPCl
- m1/pHkrJsd1ywoqzMyWjLGBzaUqXVGb3Mp68fMcgm1ZLKO7DMgF2zkIzC4F9D56CQwnS3Lxk6
- g5LPoMuB7KsaY8sBn8Gp0fpv25VIOU0Y8w6e9F3kSew3EEbDeKImkQAqltxEjZ8KqLRlCDMMH
- FQXpIsaS93dUowj1b9w+uZP/G8616MVxtAvk/qvmiYIC9Q/C58KsebFW/MfdJMoNk0S6a9MBW
- vTHZashMiHoy54zTzjCSeNCRK8LQ2qq3sI6tRTvuop0ncv8Xxo+v5fdMFNnA=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:AUsuCzp4Pro=:4L9AEWJX0QSFDTq59WD/P2
+ 6ewyZUy9wrMnbmxoWv1vaAYjDNx2k1KP4YUuGaxp/LtoZmQEap6YugsRf46i7U/CmVAjbhWom
+ N4F946d99qxzkmO9hsDJXynXT77GJTUtBvWEnLfqmHeP9WtOw1DPIanAbCy8KzcVxOXaBGjQQ
+ 46F41MTYCrNF3dwCyy66RnJwPSAtYzYxi0HGCYR/C46OhudayMn7Eq9cLEK2TAsh21N6BRhZ0
+ Q7EpvkVrqxB75C4bfyC+3lN9TtyCiilr4eIwtft+PmEhC/NEZQupaxmB42qiuk6DyipcYXKAZ
+ CGgZMYpY0c54zV8RA72DJ+87wAAEgZfhE3X8W1hfIvAh4N4YwNDf4hecjmGwK5yo25oGHBhvr
+ LgpK2LB+rneyMAWIEneQ5FoZj0A5SRTIdlfM4dyeeRh7yinWd3duXB9O++j5JYXCvXnh+9o4M
+ OMfkWs1sQ6tAzzhnBYkxQsN7h/cDNwthkBIfPLL7C23ZFPSpTJFoWVqCjqmfLeIjkyI99pBqL
+ bgo27iXcrZtbgceTYh9vEuahCzB/89vxKpj0QDVdjyHT5ljnrfEluwYFCBcPbFRvgO0h7VzvZ
+ 5oXCvYX9OtbVhhb0VdPXKdYmKdZlmFgy5QgC53ykNiClv1hgDXpSXA2ti07EYrPA5oWwoIAa/
+ /zD3lTjz4+MGum3nbZIcjbg2eehF3hAl70nOaf5sUsC+xeihvTM6tRbLz5u4fyvzJxJrifZrP
+ Ok3NDVCfid5FjC7Oc0epmqJfGnjxyJu//+clxRNa/wnWUrGN5aByGRSUv66dm5YeBlUin4ucP
+ zF8U61MNKc3vdFktS3KiRE4b90vwmkQ5ydxOd+I6k3bv+sJ5lgLFiapshaP1HF58yDwkfR2L5
+ CEd58gzSJxKvy76r76ourNU62BzI5+PnoEhNdkICuwdfJ8F/TfYqhQe+X9s0AD6M9fjkPjDDy
+ aVoHn3m2wl/s1P1xKG9IbN5T2ThDOrtyOjeL/MM5m4Y38TvpQ07hnwzRYETpEBGsdtyWa4LDO
+ 2/OU4vcAqad3YqnmJOHTXiZ6vAi2bFVBxSEL/oMtdYs+wmmVq+sJe8IAXL0RXxPK59q7ODgBp
+ Zujf0M5BCDHq6AMlfVCIUX3eSwf+EksuDrtf/71dE4Gr/ZPAOnL5RmRlS4FsS/LeJnD1BrAzh
+ l6YUmbaGjS0G94zu6fazQSJ+YraCiqCPCSnBz4VQwXImKs61hIGx8mc6uM3j4WG5BLRKgszoB
+ QrAMxFS8XUpc1yC7Cs2l2B29PeqpA5Zcj+/3a44m7tzvRnAGMcRnS96PKvDw=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Wed, 18 Sep 2019 13:14:46 +0200
+Date: Wed, 18 Sep 2019 13:40:30 +0200
 
 Simplify this function implementation by using a known wrapper function.
 
@@ -122,37 +119,27 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/memory/fsl-corenet-cf.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/mfd/ipaq-micro.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/memory/fsl-corenet-cf.c b/drivers/memory/fsl-corenet-=
-cf.c
-index 0b0ed72016da..f2fdc3c82ff7 100644
-=2D-- a/drivers/memory/fsl-corenet-cf.c
-+++ b/drivers/memory/fsl-corenet-cf.c
-@@ -172,7 +172,6 @@ static irqreturn_t ccf_irq(int irq, void *dev_id)
- static int ccf_probe(struct platform_device *pdev)
- {
- 	struct ccf_private *ccf;
--	struct resource *r;
- 	const struct of_device_id *match;
- 	u32 errinten;
- 	int ret, irq;
-@@ -185,13 +184,7 @@ static int ccf_probe(struct platform_device *pdev)
- 	if (!ccf)
- 		return -ENOMEM;
+diff --git a/drivers/mfd/ipaq-micro.c b/drivers/mfd/ipaq-micro.c
+index a1d9be82734d..e92eeeb67a98 100644
+=2D-- a/drivers/mfd/ipaq-micro.c
++++ b/drivers/mfd/ipaq-micro.c
+@@ -396,11 +396,7 @@ static int __init micro_probe(struct platform_device =
+*pdev)
+ 	if (IS_ERR(micro->base))
+ 		return PTR_ERR(micro->base);
 
--	r =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!r) {
--		dev_err(&pdev->dev, "%s: no mem resource\n", __func__);
--		return -ENXIO;
--	}
+-	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 1);
+-	if (!res)
+-		return -EINVAL;
 -
--	ccf->regs =3D devm_ioremap_resource(&pdev->dev, r);
-+	ccf->regs =3D devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(ccf->regs)) {
- 		dev_err(&pdev->dev, "%s: can't map mem resource\n", __func__);
- 		return PTR_ERR(ccf->regs);
+-	micro->sdlc =3D devm_ioremap_resource(&pdev->dev, res);
++	micro->sdlc =3D devm_platform_ioremap_resource(pdev, 1);
+ 	if (IS_ERR(micro->sdlc))
+ 		return PTR_ERR(micro->sdlc);
+
 =2D-
 2.23.0
 

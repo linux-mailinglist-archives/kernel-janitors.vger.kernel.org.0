@@ -2,119 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD708B7224
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2019 06:20:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C0CAB7325
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2019 08:25:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729210AbfISEUv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Sep 2019 00:20:51 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:45345 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728850AbfISEUv (ORCPT
+        id S2387946AbfISGZf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Sep 2019 02:25:35 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:40371 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387468AbfISGZf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Sep 2019 00:20:51 -0400
-Received: by mail-ot1-f67.google.com with SMTP id 41so1845283oti.12;
-        Wed, 18 Sep 2019 21:20:50 -0700 (PDT)
+        Thu, 19 Sep 2019 02:25:35 -0400
+Received: by mail-ed1-f65.google.com with SMTP id v38so2091229edm.7;
+        Wed, 18 Sep 2019 23:25:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=j6ktaKerA6qNCNUVOJpqP9XS7SoRgjTBYtdJRVNyhcw=;
-        b=B5ZuP2QirBOxP8R4Vuk7t6QPgJAudPXy3O8bZJY+rcApaDVAU+jgjaU9a1iluML0DJ
-         3qAi/Gww7GqOOou2O1sYCeFnsWz5mKYSrbCsdVhWdJ5cpO29uBNTWp7wIOZIlHVLEtvy
-         klTgBbplg4XmhPpFOIM0us0oSVRyUOaHlum3QlZ1iM2mHWzGZvHVMWiJUMXv8Qjdsxfc
-         v+N8xVfUHouGPsbNQePXKRLwRmCRFVSdLKkvntP2TZsa3CSHyRbEBhfeB6gVSH52yi8V
-         PrgXhQlB2flQV6fz+YY3NY+e2glt88lyUd2qwncGUCTiySGRTEoNwVn4Qvf7h4MG5cIy
-         sC7A==
+        bh=S/WyB4Tpel1GrWYeNWYAfgXloXn7pKmm9y9Bb7H6LV4=;
+        b=cRfye87FPU+e4SZKUDwKUGB/xc5Y0V42ErhTBXH1lfLFad5X81iwkAEAcJiUbQkWE4
+         kOHgcA7DnUXzcrN92MQbAaSolCYJs8t94d1eWTs8V2fE1l/NMzhcMN7wh76fpcSiAU+8
+         n2tckXxWP7oRquemvr/mcw6jhW4toMfcDZfQfoaE8qSgIPZW2XpEajSSWRxMq8JX7BGB
+         n8sxbzfm0d/9VLnL93eQ/8fXHDiqRI2lk/jolv1xOA+IZ5lkXNRzDbAKOOjd6Yl5PpJY
+         nioxvTL8APpiRYqDme/VXgxB1khOKNJk4W3BNvw9pfZ5zzFF4lak1icNaOKOMvOdgZx0
+         Md3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=j6ktaKerA6qNCNUVOJpqP9XS7SoRgjTBYtdJRVNyhcw=;
-        b=J6zRe0hOHSigbGeNivZ6TnaSCRaJLEmecM8eNanojdhv2aLbOE+A1bPx5T7rD/QW2J
-         OEL5ITj3639VCvUqbb9IQhzobccEs4cuu5bsqZq4o2QDPwT5JeB4G9vGvZtHEsydrar8
-         88w3euk090+LIhXQvDX4O+Bud990jZ4SEsEU85BtOAJ2a7aXmSCqGgUkKUxnrzswBz00
-         XqPiYwTmylFkSh69tf12norUISysv9Nt6wJ/bIWTdipW1O6R2Lxqsk3ECn/eJEnPKcRf
-         iDDm0Ex3Tse8ubp1T9axz6JkMIdFOOsW9d0tyy/eh9PsL2LVq9InBDE4mg+D+iZ5XrhG
-         cTLQ==
-X-Gm-Message-State: APjAAAU3PxfTdZjPjE1ku9rXqHnepNL/OEwk/ZFHabRrOlwGFhRaeQ6D
-        TyWcrrxlVP6snUZg/MKTbkK1ZfgLaWHgWSa/kjWXCSHR
-X-Google-Smtp-Source: APXvYqxjyCXBVLXbbc37aFrdNvvbQpskLVO+apNEFZ3ayPK48X288HghyPp33qNmLTr3e8fC29soNN0avIt7kWpkVFQ=
-X-Received: by 2002:a05:6830:1f0f:: with SMTP id u15mr5581667otg.34.1568866850204;
- Wed, 18 Sep 2019 21:20:50 -0700 (PDT)
+        bh=S/WyB4Tpel1GrWYeNWYAfgXloXn7pKmm9y9Bb7H6LV4=;
+        b=rAox6GABW1JLT5IM9RUuq5sk5hBTTUEFSvit6X9Io02ZngpfL5sttmO57RdRUgeu2r
+         p0SrRX2reHa5Kd3LKhKA4zTciCJ0uqcchG7pPQrUb4swdfuDN000LJqkO2hOTsuTOw3N
+         PVdTn0UUeHuy2w59FuVXvvmqy9yeKl9l5vKAA+HfpfgCoPLa0yB6x4JV68Aw69gkVFCP
+         cLC+V/Hhfs+Ufkyb3LvL5I25GZIsBsrexxfw3xE23WSKsQ2T08PkdOoZl8UyRzgIA+Fg
+         Kz4cbxkOVDyGYA69ybjEIU12GlH68VN2m0Ho+tFROfBOYKEzJt3ge6b5lxBQR+Zy4AVx
+         8v3A==
+X-Gm-Message-State: APjAAAXRXvcDjaQvn8iB/QsZRHFzt+qXC1YWbl8VfSA73rErevuAoqm9
+        0zTJcGBHgxIaa2kaU2BJJaG2z4zOGcMY8z3ZB3rI9g==
+X-Google-Smtp-Source: APXvYqx88dInn36xM937T9Viz2kB510FhkQcsRnIG1Q+fdbQflufzSanL39M0wFu8j8RG1EUvn89yzUcVWST1l1bVhk=
+X-Received: by 2002:a50:d552:: with SMTP id f18mr14653706edj.36.1568874333270;
+ Wed, 18 Sep 2019 23:25:33 -0700 (PDT)
 MIME-Version: 1.0
-References: <1c16a43c-3a01-8a86-02b0-1941ab7321dd@web.de>
-In-Reply-To: <1c16a43c-3a01-8a86-02b0-1941ab7321dd@web.de>
-From:   Sergio Paracuellos <sergio.paracuellos@gmail.com>
-Date:   Thu, 19 Sep 2019 06:20:39 +0200
-Message-ID: <CAMhs-H9q16kGOse9pMbj3O9hoOO5de_wa9VRi_HcPo0_GbTw1g@mail.gmail.com>
-Subject: Re: [PATCH] staging: mt7621-pci-phy: Use devm_platform_ioremap_resource()
- in mt7621_pci_phy_probe()
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     devel@driverdev.osuosl.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        =?UTF-8?Q?Antti_Ker=C3=A4nen?= <detegr@gmail.com>,
-        Emanuel Bennici <benniciemanuel78@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Neil Brown <neil@brown.name>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Himanshu Jha <himanshujha199640@gmail.com>
+References: <20190919063819.164826-1-maowenan@huawei.com>
+In-Reply-To: <20190919063819.164826-1-maowenan@huawei.com>
+From:   Vladimir Oltean <olteanv@gmail.com>
+Date:   Thu, 19 Sep 2019 09:25:21 +0300
+Message-ID: <CA+h21hqjrt2qcCAFosOC61QcsiHS1TYaR6u=SjMMFH8W+ZZYug@mail.gmail.com>
+Subject: Re: [PATCH net] net: dsa: sja1105: Add dependency for NET_DSA_SJA1105_TAS
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        lkml <linux-kernel@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>, kernel-janitors@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Markus,
-
-Thanks for the patch. It looks good to me.
-
-On Wed, Sep 18, 2019 at 9:12 PM Markus Elfring <Markus.Elfring@web.de> wrote:
+On Thu, 19 Sep 2019 at 09:22, Mao Wenan <maowenan@huawei.com> wrote:
 >
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Wed, 18 Sep 2019 21:01:32 +0200
+> If CONFIG_NET_DSA_SJA1105_TAS=y and CONFIG_NET_SCH_TAPRIO=n,
+> below error can be found:
+> drivers/net/dsa/sja1105/sja1105_tas.o: In function `sja1105_setup_tc_taprio':
+> sja1105_tas.c:(.text+0x318): undefined reference to `taprio_offload_free'
+> sja1105_tas.c:(.text+0x590): undefined reference to `taprio_offload_get'
+> drivers/net/dsa/sja1105/sja1105_tas.o: In function `sja1105_tas_teardown':
+> sja1105_tas.c:(.text+0x610): undefined reference to `taprio_offload_free'
+> make: *** [vmlinux] Error 1
 >
-> Simplify this function implementation by using a known wrapper function.
+> sja1105_tas needs tc-taprio, so this patch add the dependency for it.
 >
-> This issue was detected by using the Coccinelle software.
->
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> Fixes: 317ab5b86c8e ("net: dsa: sja1105: Configure the Time-Aware Scheduler via tc-taprio offload")
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
 > ---
->  drivers/staging/mt7621-pci-phy/pci-mt7621-phy.c | 10 +---------
->  1 file changed, 1 insertion(+), 9 deletions(-)
+
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+
+>  drivers/net/dsa/sja1105/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/drivers/staging/mt7621-pci-phy/pci-mt7621-phy.c b/drivers/staging/mt7621-pci-phy/pci-mt7621-phy.c
-> index d2a07f145143..6ca4a33d13c3 100644
-> --- a/drivers/staging/mt7621-pci-phy/pci-mt7621-phy.c
-> +++ b/drivers/staging/mt7621-pci-phy/pci-mt7621-phy.c
-> @@ -324,7 +324,6 @@ static int mt7621_pci_phy_probe(struct platform_device *pdev)
->         const struct soc_device_attribute *attr;
->         struct phy_provider *provider;
->         struct mt7621_pci_phy *phy;
-> -       struct resource *res;
->         int port;
->         void __iomem *port_base;
->
-> @@ -344,14 +343,7 @@ static int mt7621_pci_phy_probe(struct platform_device *pdev)
->
->         phy->dev = dev;
->         platform_set_drvdata(pdev, phy);
-> -
-> -       res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -       if (!res) {
-> -               dev_err(dev, "failed to get address resource\n");
-> -               return -ENXIO;
-> -       }
-> -
-> -       port_base = devm_ioremap_resource(dev, res);
-> +       port_base = devm_platform_ioremap_resource(pdev, 0);
->         if (IS_ERR(port_base)) {
->                 dev_err(dev, "failed to remap phy regs\n");
->                 return PTR_ERR(port_base);
+> diff --git a/drivers/net/dsa/sja1105/Kconfig b/drivers/net/dsa/sja1105/Kconfig
+> index 55424f3..f40b248 100644
+> --- a/drivers/net/dsa/sja1105/Kconfig
+> +++ b/drivers/net/dsa/sja1105/Kconfig
+> @@ -27,6 +27,7 @@ config NET_DSA_SJA1105_PTP
+>  config NET_DSA_SJA1105_TAS
+>         bool "Support for the Time-Aware Scheduler on NXP SJA1105"
+>         depends on NET_DSA_SJA1105
+> +       depends on NET_SCH_TAPRIO
+>         help
+>           This enables support for the TTEthernet-based egress scheduling
+>           engine in the SJA1105 DSA driver, which is controlled using a
 > --
-> 2.23.0
+> 2.7.4
 >
 
-Reviewed-by: Sergio Paracuellos <sergio.paracuellos@gmail.com>
+Thanks!
+-Vladimir

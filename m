@@ -2,108 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F1FAB6F8E
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2019 01:09:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E115BB703A
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2019 02:54:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729897AbfIRXJv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Sep 2019 19:09:51 -0400
-Received: from mail-qt1-f196.google.com ([209.85.160.196]:38926 "EHLO
-        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727305AbfIRXJu (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Sep 2019 19:09:50 -0400
-Received: by mail-qt1-f196.google.com with SMTP id n7so1854318qtb.6;
-        Wed, 18 Sep 2019 16:09:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=hz4UyQFQQPdm3I3IaFrX5aQr9o00Q9icQuCD8MrFVjc=;
-        b=SaI6+MhpZo2TQOqMr4CX7OLC1FoRkBWepZh6Gn1mv2/9iaO6KbNUEUEvWzqaW0yISC
-         Q+y3pmRLmVnL9KYjb7qr+4IvBJWyu1JDEZC0hQFtOMmsYQc4lLNrQOurFl825muj7Nfo
-         2ry/OXNV0DDcZXROENefWf797DmXDL5o+WA7gTqx/KYS9umSgqfFY59IjghmNBQz9ZMY
-         UjLDrwl1/1g6+s3kdbTAd48vaK+e5cI8p2F/XtyBaPsqIlK09L17bbfZslk3uFDFMt3e
-         a1hDhMXVAWEW0ILUz/3PiMqZEgvc1v8zo8KeZmbDrFmOrp216d0DZ8N/OoM4fZDYSlQ+
-         NC5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=hz4UyQFQQPdm3I3IaFrX5aQr9o00Q9icQuCD8MrFVjc=;
-        b=ubmTDy5mA/kkp7i0MdShAPipZteN+t42goZKPcjroHytwtG4n1A1HonJW+wM06U+LH
-         P1Y8NjGqcFSDsxoKvLBchpj0ni0D5W+SfLy+dXVfA124J+OvPctWnvNP+46BwVEGalZ3
-         jvpwAQgFf5Bs37JEZxjLCyhn6+zjurIH5esn1o/cWKNhC87xkWEd2P967NTQwqrYfm2K
-         M8tfTqXlW8FPXozExLyL8TiAlQkK16sHjZ5TTGC3hw5xbtecc6m2vLZQYX/RPstgO0Zd
-         9AU7Cl4N+Kbf9KaZW4QjDi7O1Kxjv5dBHjKBy8W5YYEclT3Rgov2KTQLY9F1oK0+MKyE
-         2lAw==
-X-Gm-Message-State: APjAAAViaHPRXIsWTrTWJgvFs5IQBw+PYt6XeVTxjguQVV7Im+w5hgCI
-        LibF6jOlv7nEcZRLJ0LSpQM=
-X-Google-Smtp-Source: APXvYqxlR12/zWo/yohy/gyLi7jXYrHJxeMjCE2vyfmZJQOHn7BgcIHNE5FCp2rGwq6Sgma/DNHnLg==
-X-Received: by 2002:aed:2da4:: with SMTP id i33mr268824qtd.320.1568848189820;
-        Wed, 18 Sep 2019 16:09:49 -0700 (PDT)
-Received: from quaco.ghostprotocols.net ([179.97.35.50])
-        by smtp.gmail.com with ESMTPSA id p11sm2996020qkj.124.2019.09.18.16.09.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Sep 2019 16:09:49 -0700 (PDT)
-From:   Arnaldo Carvalho de Melo <arnaldo.melo@gmail.com>
-X-Google-Original-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-Received: by quaco.ghostprotocols.net (Postfix, from userid 1000)
-        id 334CE40340; Wed, 18 Sep 2019 20:09:47 -0300 (-03)
-Date:   Wed, 18 Sep 2019 20:09:47 -0300
-To:     Mukesh Ojha <mojha@codeaurora.org>
-Cc:     Colin King <colin.king@canonical.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] perf test: fix spelling mistake "allos" -> "allocate"
-Message-ID: <20190918230947.GD32051@kernel.org>
-References: <20190911152148.17031-1-colin.king@canonical.com>
- <2b525705-317a-29a7-9fda-ca7896c8c038@codeaurora.org>
+        id S1730848AbfISAyo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Sep 2019 20:54:44 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:2675 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730468AbfISAyn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 18 Sep 2019 20:54:43 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 6A79855AE3D9879AC3D2;
+        Thu, 19 Sep 2019 08:54:42 +0800 (CST)
+Received: from [10.134.22.195] (10.134.22.195) by smtp.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server (TLS) id 14.3.439.0; Thu, 19 Sep
+ 2019 08:54:36 +0800
+Subject: Re: [PATCH -next] erofs: fix return value check in
+ erofs_read_superblock()
+To:     Wei Yongjun <weiyongjun1@huawei.com>, Gao Xiang <xiang@kernel.org>,
+        "Chao Yu" <chao@kernel.org>, Gao Xiang <gaoxiang25@huawei.com>
+CC:     <linux-erofs@lists.ozlabs.org>, <kernel-janitors@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+References: <20190918083033.47780-1-weiyongjun1@huawei.com>
+From:   Chao Yu <yuchao0@huawei.com>
+Message-ID: <9c607274-7897-14c6-5211-a992ea25a992@huawei.com>
+Date:   Thu, 19 Sep 2019 08:54:21 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2b525705-317a-29a7-9fda-ca7896c8c038@codeaurora.org>
-X-Url:  http://acmel.wordpress.com
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <20190918083033.47780-1-weiyongjun1@huawei.com>
+Content-Type: text/plain; charset="windows-1252"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.134.22.195]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Em Tue, Sep 17, 2019 at 01:12:46PM +0530, Mukesh Ojha escreveu:
+On 2019/9/18 16:30, Wei Yongjun wrote:
+> In case of error, the function read_mapping_page() returns
+> ERR_PTR() not NULL. The NULL test in the return value check
+> should be replaced with IS_ERR().
 > 
-> On 9/11/2019 8:51 PM, Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> > 
-> > There is a spelling mistake in a TEST_ASSERT_VAL message. Fix it.
-> > 
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> 
-> Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
+> Fixes: fe7c2423570d ("erofs: use read_mapping_page instead of sb_bread")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 
-Thanks, applied.
- 
-> Thanks,
-> Mukesh
-> 
-> > ---
-> >   tools/perf/tests/event_update.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/tools/perf/tests/event_update.c b/tools/perf/tests/event_update.c
-> > index cac4290e233a..7f0868a31a7f 100644
-> > --- a/tools/perf/tests/event_update.c
-> > +++ b/tools/perf/tests/event_update.c
-> > @@ -92,7 +92,7 @@ int test__event_update(struct test *test __maybe_unused, int subtest __maybe_unu
-> >   	evsel = perf_evlist__first(evlist);
-> > -	TEST_ASSERT_VAL("failed to allos ids",
-> > +	TEST_ASSERT_VAL("failed to allocate ids",
-> >   			!perf_evsel__alloc_id(evsel, 1, 1));
-> >   	perf_evlist__id_add(evlist, evsel, 0, 0, 123);
+Reviewed-by: Chao Yu <yuchao0@huawei.com>
 
--- 
-
-- Arnaldo
+Thanks,

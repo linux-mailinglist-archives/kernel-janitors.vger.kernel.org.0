@@ -2,69 +2,151 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48C64B731F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2019 08:21:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8C06B73F6
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2019 09:22:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387774AbfISGVY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Sep 2019 02:21:24 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:2681 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728230AbfISGVY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Sep 2019 02:21:24 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 0E1C4D25D45C7A3AE125;
-        Thu, 19 Sep 2019 14:21:22 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 19 Sep 2019 14:21:13 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <olteanv@gmail.com>, <andrew@lunn.ch>, <vivien.didelot@gmail.com>,
-        <f.fainelli@gmail.com>, <davem@davemloft.net>
-CC:     <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH net] net: dsa: sja1105: Add dependency for NET_DSA_SJA1105_TAS
-Date:   Thu, 19 Sep 2019 14:38:19 +0800
-Message-ID: <20190919063819.164826-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1731960AbfISHWU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Sep 2019 03:22:20 -0400
+Received: from mout.web.de ([212.227.15.4]:34853 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731332AbfISHWT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 19 Sep 2019 03:22:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1568877726;
+        bh=7dGKxNg1lmQXT8lGJndJckUV18hrnw5+dgPKGe14doo=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=GrB3IVz9qeQ0vqLDL2UfhQAe1dGg1NiTY8gLPwxVNC4RMWGb+8w7CGSf3+I3ZFX9O
+         WoMuHcxloi5ftp3c0UB/UJaBUJyKhi9+BngqQ52+srUDbLQRoA94UJFZrtb6dyGKpq
+         eN3i4cUY0qIFzREJuzhZBIHfiAyUY6JDBhKZe13k=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.132.191.36]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MD8RQ-1iRJpq39Tg-00GX4M; Thu, 19
+ Sep 2019 09:22:06 +0200
+Subject: Re: Coccinelle: api: add devm_platform_ioremap_resource script
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        kernel-janitors@vger.kernel.org, Coccinelle <cocci@systeme.lip6.fr>
+Cc:     Julia Lawall <julia.lawall@lip6.fr>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Enrico Weigelt <lkml@metux.net>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Nicolas Palix <nicolas.palix@imag.fr>
+References: <alpine.DEB.2.21.1907061538580.2523@hadrien>
+ <de953581-7ae6-952c-3922-3d5b25f48e17@web.de>
+ <CAK7LNAT0kxA53k894sfRXOjcbyjj_mmY60JbKy5Lhi2qHJcC9g@mail.gmail.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <2cacd712-a8b8-6471-a9b4-23ba54434c02@web.de>
+Date:   Thu, 19 Sep 2019 09:21:57 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+In-Reply-To: <CAK7LNAT0kxA53k894sfRXOjcbyjj_mmY60JbKy5Lhi2qHJcC9g@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:0LmJoyNAlb/AJ85ryhxw17ZkpmIe5sWs1JjSRHJRh3ikTTvsHs6
+ jI9Kwx8lvB+A8UHQJALEKRKl1XeXjclQ3Rbe4lEt8DMyaRfQfvMA1IJ9E5vDGyZimkuSrMl
+ Bl3AJOP6m25zPdYHpZrokbT/fS++ZyQG1xy+Hj5FIlTNF0KExfKVKKJOh8vz+XYAql9yiKM
+ lRnZDKF279I8WVLkYEIdQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:9yA0HZ7SvJU=:Sjj9PEzIyzwPbg8xxTZI7J
+ fTnxdJ+BczECGuQtdYvUl7lsLzoUt2KciMRzyUB28jC8xhYBUqc0dVxf3tP29HSB9OYIJc2Or
+ b5nwTcyETFia+aH+Tapcr5mAQ0A1OcVmEL/F2CPPc/Csm/lXWnq5gQPj42A5NmaOnDcW/Qb6+
+ SZkANfZYYl3+Oe9vs5ZRZQkxOliPUL6uoL9NsONL1nQ1nLH7Cnf7pEnlIpZfr4yL5lCqHISb7
+ akdMuWCZACuz/XeQ/NJvJuP8f94cPdaVuas1sS9VKwKX0n3RzB0PRx+b1RTb4dbSiegBzkI1l
+ wmewjM3krsWIYcP/8S7Hejf7BeN5XnjBaV7jk+CMhjIzwTsNbRuBEODrDZFIyMWfd58ZJgaDf
+ opMhEjvC/dOn0ZN5ZCDecXzXssWOydfvRcpdJ2K9X6n10JIZZlHw4XKrDliwpi2q5GbIrmOtA
+ z50sGI7mwY0XPgCUYXPt9FKs/hkvJaS/rTcbCCMeRbUhU3UOhXC4CAIA4lxPNL/wzYfpvbmgb
+ Nw88mspl+Km0ya6622b5iTR536zterU6ypYet2NvKAaQFydiaYGEtmpa8NF6LFOEM/vAgIL41
+ YPzeGIi+fTsJaqyZ7m2AO9NRvNlrf4QHOKfEfYg4/Toaf1a5rf9mBpaNBtGiMyuVCQURR2VDZ
+ C2RBEMbEGBREpG1GNnRkJGy50l9nWYW/jjiYpBKJVfRAMbjpSY0cQLo6FJE9Vwhyv2+DI5QdI
+ m+E4HUrbI5ym1fpt9epPRs4pqlNQXlVUWErTptO07Ouz1shqORcMbC/hsp4DhrL8/GpCeMeRr
+ 1r2JByEw8x27TvDIJ85+q3XWsTbbMblXt8Z7kQ1ad3KNAF6OFjEnQZnoJoyf6AOMnpMJTj/t7
+ hUCqV1BC2SrLiEwWLtyPQ5oAew/fyjks3L1nV78ylH/vvJrOtakFnWo/b5q31zFTdldSkGdLj
+ WjkhoP1ltL54mvmaPCEFXDJYOdIuGiaD7KZX+hPVuyTljdHb+W/W1qn1YT/nU/ZywPqaSM5J5
+ IV7vFuTj/17msK0Gzbq5N/0jiJO4TiAeWGsx/YB4vES5cgZLk8NYcMMiUEa4IcobEkls9X8rI
+ k3STZmXEy16wpXO1FFG7LHiJfNlOc9RutOyW3kUoTszNL8r1n8sspnreU2Snh7ztOs7ahl0Mp
+ N6TRnlF9dgE7zGdPjIpAvp99nw5POQjGPgkhA4NT2EWJpZcnyA+1XJOuOvQlIEXddkXvkeZIN
+ ywlMaplF/E0CMay1kEU3FKm4NbClRtKiBpjP0rFnvv0+g0S2248g4jmipKL4=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If CONFIG_NET_DSA_SJA1105_TAS=y and CONFIG_NET_SCH_TAPRIO=n,
-below error can be found:
-drivers/net/dsa/sja1105/sja1105_tas.o: In function `sja1105_setup_tc_taprio':
-sja1105_tas.c:(.text+0x318): undefined reference to `taprio_offload_free'
-sja1105_tas.c:(.text+0x590): undefined reference to `taprio_offload_get'
-drivers/net/dsa/sja1105/sja1105_tas.o: In function `sja1105_tas_teardown':
-sja1105_tas.c:(.text+0x610): undefined reference to `taprio_offload_free'
-make: *** [vmlinux] Error 1
+> OK, for this refactoring to happen,
+> the second argument should be IORESOURCE_MEM
+> instead of generic 'arg2'.
 
-sja1105_tas needs tc-taprio, so this patch add the dependency for it.
+A corresponding adjustment was committed on 2019-07-17.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/=
+scripts/coccinelle/api/devm_platform_ioremap_resource.cocci?id=3Dd09778d16=
+e20bc4f1f4971cc9a9fd7ff6ba898ff
 
-Fixes: 317ab5b86c8e ("net: dsa: sja1105: Configure the Time-Aware Scheduler via tc-taprio offload")
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
----
- drivers/net/dsa/sja1105/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+I constructed another variant of a script for the semantic patch language
+based on this contribution.
+I tried out to delete a bit of exception handling code after a call
+of the function =E2=80=9Cplatform_get_resource=E2=80=9D.
+Yesterday I sent a selection of patches from this transformation approach.
+(An analysis based on =E2=80=9CLinux next-20190916=E2=80=9D pointed 56 sou=
+rce files
+as update candidates out.)
 
-diff --git a/drivers/net/dsa/sja1105/Kconfig b/drivers/net/dsa/sja1105/Kconfig
-index 55424f3..f40b248 100644
---- a/drivers/net/dsa/sja1105/Kconfig
-+++ b/drivers/net/dsa/sja1105/Kconfig
-@@ -27,6 +27,7 @@ config NET_DSA_SJA1105_PTP
- config NET_DSA_SJA1105_TAS
- 	bool "Support for the Time-Aware Scheduler on NXP SJA1105"
- 	depends on NET_DSA_SJA1105
-+	depends on NET_SCH_TAPRIO
- 	help
- 	  This enables support for the TTEthernet-based egress scheduling
- 	  engine in the SJA1105 DSA driver, which is controlled using a
--- 
-2.7.4
+Will it be useful to integrate such a case distinction into
+the SmPL script directory?
 
+
+The analysis based on the committed SmPL script pointed 657 source files
+as update candidates out.
+So there are further opportunities for collateral software evolution.
+Can it become easier to check how many update suggestions are already
+in corresponding patch review queues?
+
+Regards,
+Markus

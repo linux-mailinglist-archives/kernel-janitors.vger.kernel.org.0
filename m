@@ -2,46 +2,46 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D938B78DE
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2019 14:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85E93B7922
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2019 14:16:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390099AbfISMFX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Sep 2019 08:05:23 -0400
-Received: from mout.web.de ([212.227.15.14]:52741 "EHLO mout.web.de"
+        id S2388780AbfISMQw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Sep 2019 08:16:52 -0400
+Received: from mout.web.de ([212.227.15.4]:41661 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390086AbfISMFX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Sep 2019 08:05:23 -0400
+        id S2388585AbfISMQv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 19 Sep 2019 08:16:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1568894681;
-        bh=XqLwPBm6k/DOpsT2zClkkvly20Eiqu43FoeN6TCgwUc=;
+        s=dbaedf251592; t=1568895381;
+        bh=CJpu+3benbeqrz8hYMxDJfQ5BQ0/dqDtI/1/aYNreUs=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=gDRsNW/uEXN/4DlsHCf+oMM2eyLNzD/TsD2qbWZet6tjPrbMu3/AoR3sxxoUMVbej
-         5Vfc9LBamlGV7LZhoSCo+ifVPFVx2tna8nXDY5FmnDgGnF9cNv3AeiVIvsNWsZ/UMx
-         BZy1QLL9tos5DfuUqXNqdjXRdPutBYzfNKDMeY7k=
+        b=g/6JT22Gw75KQqErQlGOO8oQppwTrs8wcisA9M2d4+V0K0rvBKPK5ox2fGt1+DPiX
+         WrR7W/YoUUiUC0i7+8/I9FA1h4tyz1Q2eZKHfLmR7LxTgExK3AyUlkf5YwbULw1Xpv
+         cpdTA5w77HnQyqD4OFRewEJG/i1kjblpwy4/fUYg=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.132.191.36]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MTdS4-1ibDT71Io4-00QOy2; Thu, 19
- Sep 2019 14:04:41 +0200
-Subject: [PATCH v2] mtd: st_spi_fsm: Use devm_platform_ioremap_resource() in
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LmQS2-1hbJck3yVe-00Zzkz; Thu, 19
+ Sep 2019 14:16:21 +0200
+Subject: Re: mtd: st_spi_fsm: Use devm_platform_ioremap_resource() in
  stfsm_probe()
 To:     Miquel Raynal <miquel.raynal@bootlin.com>,
-        Allison Randal <allison@lohutok.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-mtd@lists.infradead.org, kernel-janitors@vger.kernel.org
+Cc:     Allison Randal <allison@lohutok.net>,
         Armijn Hemel <armijn@tjaldur.nl>,
         Brian Norris <computersforpeace@gmail.com>,
         David Woodhouse <dwmw2@infradead.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Lee Jones <lee.jones@linaro.org>,
         Marek Vasut <marek.vasut@gmail.com>,
         Richard Weinberger <richard@nod.at>,
         Thomas Gleixner <tglx@linutronix.de>,
         Vignesh Raghavendra <vigneshr@ti.com>,
-        linux-mtd@lists.infradead.org
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
         Bartosz Golaszewski <bgolaszewski@baylibre.com>,
         Himanshu Jha <himanshujha199640@gmail.com>
 References: <e1d32aa4-7c82-64e0-b7c4-33c94d9a2769@web.de>
- <20190919111014.6c569cf3@xps13>
+ <20190919111014.6c569cf3@xps13> <20190919112937.GA3072241@kroah.com>
+ <20190919133506.6e46601f@xps13>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -86,101 +86,47 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <eec0774d-135b-2b19-2595-7a126341c77c@web.de>
-Date:   Thu, 19 Sep 2019 14:04:30 +0200
+Message-ID: <4b467bab-db44-da99-b1fd-0b6cc4ac9547@web.de>
+Date:   Thu, 19 Sep 2019 14:16:17 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
-In-Reply-To: <20190919111014.6c569cf3@xps13>
+In-Reply-To: <20190919133506.6e46601f@xps13>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:8McC+dHy4ZYmY1ktDGalc03+f442zOOtOaZUsfXrlCEwuCNDLtg
- X+8nunAIjpv6B/X1Xs+gmYT3Y+S1eS3t84HPDdzivx6nC27PBHEGzaomV6AWeA1Oop0M8V8
- 8+hF7jJLRuJ0VKnjKti59q1Q9xLI5cwhkvk6N5vcVVX7lBEN0GquOx/FuprF3BY1sspgWXS
- U1+2DK0CFOyNvnD3v4ClQ==
+X-Provags-ID: V03:K1:/ZxRwPOJYgPd6c2XChuGjk8bjZgKCqWJylAGWIKvBGlNpIKzDYQ
+ VviCdRZM4gZFfDCjT8QP/YfWrsemt5UQlWscOVDWYFH1vXEtIGbpjtfoVvUvIm1Sk6V1GM2
+ UrkIxS+sstncgL/0yrQexpl3iAd5fo27LqbOCI5Njzeg4+Xg6k+h5ZovySQekuVYCNpCY61
+ /V986lbEsfvBLE5r72ZRw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:q/ZJdiLLJ/I=:qDgNi9Xsqi6lvpzTK1J4NX
- /Xw29BNwG+IQv58y/VSSP+EFNCWRej0KVce/KwLELjHIzaL0vkyFmnyrPYjHjcibkrpPwpGyD
- RC3U3K8EgKw67ABgkgRD28Nh0arjVtciS5LpEBgYMYe7ZX1ig3QJtNhsaxBqnu6nZUpejTOib
- WQsljvWM+zjeS95UQvOlGG320ufpZ0YXO4CNPjpex9EHg5tOObPEV72QoB184Jg8hYVVETt4a
- CUkDWFbu/YQB9KrGCMLD3yVrksPNPuOM3yeV/Eklk45y4X2stLHEmyN7ipQm6/o7Bo/O/J9Mg
- DOyx1ncfk6vy1P+2TwC2mHnV6/HmYjcnf6iKZlcbrORI7EDqsnMF3pEqwG7fnbV7V3vYoINt6
- b4srWcmfbiyCQz/0+rmAwfjEWCzHq1dwe31fllOIukds8HkJslwNhlMnsymcWQdKd2tS4yy+D
- ABQ2q4b7HehX5sP8RNUGK8kAvKc7iPlv9ly2z2ylZsyhimiengfdcxaEsFs4m9+feZOdj52Yl
- 7ByQz1zwxyEoJ+YnKl0ZORK4CiHuhgTvlQpqr8nnc4J3wge/SyV8c9C7Vpi/zi+YBgXp+7OTN
- yf68XF6ysKwwga5XXDvoXfe5VgF0Ldvq+zGutbT16K9ovtl6igCyeEiqJUkb11N3ZfzeOHyDp
- oHwcxmn5pmn3Z+qA+erLIEf8SQz2us+0PfWKU9THoHluWUgPJJYQOdUnHZhy6n07ATf7j3EWT
- YgZvKapJ+SVIMpNkzL0RFQmRBPY6WSi2J0QDNn8LrLugtF/5ze9BspOK2TA1RZ0jarghmERV2
- CqRQJ8XWfNjYveOVIjNgJZrx2UvBSTqiyP5IwqM6JzPRFc3mHFSbTDsVudEi73SgfGkrZlBR+
- K584HoA/VTvIMAihq2Ijuq4q5MfJ2ndK08hFjMHwpI0e+kaq5D/jGnH2M/lOnIxYart5jAaLX
- oOtqViuFXcBhhRGOVcJjkaTAF3BJAKt+6GbB5n1ZwHMpGEIUEV74Bzz13sSYW8zdNWYAzlseu
- 61310DFBVoFD2Tz3aUymi9PsSH9vsKhtCfNxSTtDMV9ISrk18NfqBeLuCTWrBkvg7jDOkh1kf
- qiVErU6A1ntJ0XOAG+0gNmpVo4gaUIsPCfQRBi+dz+WOCTOyG9OUoCAE6p+koqv+MjKDxABvo
- 5jpgRostS0t4nldr7ULMcnT6Xee2SmN9erNb40QCXqvslxIF3JjkP5PDrNzaQNlb7yAZMVO05
- 3mYaJZFj2bIbb5vPqJOBm2qliI+ENSjIFk/vZWSRoaUKREBipDR+Wp9Q0ZIo=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:KNjLGHLEwGU=:e+1cD+EzYCMfnkui2JZevV
+ pZzD921wunY0MbdQM3F8A9CIQIazBkCaAZGK9ZZ01alnVjiv4/RG+FEWPlFQqgFAcSxrznbF0
+ PV8RkR6UWKG0IEvlbdABCSCEb49Rtng7n8Qwl9KT2jia9d4x+fvaaX5X9ZwuFtNCHoXVqVGkg
+ 4GV2gaspACB70qSdtJRtb3NhaEeSrd1bn8/FR2Uf7mIipd11cVCynXf1T/QKnEf/1X1eAKp9h
+ lT8u5hz6Tm75v7H6oRC0qf2kIcUsUsZ/7faon5VIiuF/yO6u8iDKeE2hbkZ4hab/kdBvs+XGZ
+ /KftBo4U9WweGqOsbu+s15vC4fDF+JWCWV3Y4w59+98Lfborwzci80N9gvsR/myE0cjE2Qsth
+ FpkI9c18BxW/hNYO+IjyEb1fI6qCvuy5NHvUIQMrF4DUJ8eoy5Qaovt7GbAk55uGM2CBHvDXJ
+ HLaKr8XI/uK7CnmwZpKBvGc7wiNrX95BXMSv5XlfAWR3a/UT6unqJURkEslc1RmNZ0tKuTfFW
+ H2kKlsG2IW39AI5dMuuHahnUhcd+TeYpsWqDYzlSlzYdX6HfFgq2AexfMRZk+en1LRFzbj8BI
+ o1MN5DHTz5Q7BLPAQR0zkJcIMojfU0Vd04fhyKlj62wCyeH2d4QvEBlICF7qxO22LCbG1CrPr
+ gGyA1076IRN0UNPZj03eGi/TXyYX43JlH8MsI9RkRcnMDFT1DQtlnt0nI0vssip5vugcnuELo
+ vfU8QNnWeNttBhlZrdz6DL0SOo6nthllyurf2D6N2Lr57TR1o6GFXqOL22iNG1rPU7EBUgKwB
+ gB4YYJKUkms/OIV6ActnYxTYeYedOJFxMoIBevvRwhs2UgPY0wml2Des9xNFgsdOfzgbyUfrs
+ KfaklCu6xojaFFy+UK+GFAYRMEzBR5X9lj/Qf4VLlFgvD5AirwzfnR9ekqyTxevVfLR+3ICdL
+ WD7l8sqn/WvfmOkT2u5LOGc0sGqXcNKzXiB/NyJeP8tw46kkNCQx6KQ7u3XPDOmI349fk3FlK
+ glhWKG4Y1VMLbEM6fDQIY3tDGckTUVuca3iesNLJf4aIjoY/2lB5p45LtHLU8+m2dnKBQ82Ws
+ SXix87Z/VdVW8Wrl8p25s7dCGzA9wIokGoc8qIhgh3iLQ6NJ9P3D5NgMFs8Ff6fHWdM7t8NXG
+ NqGCrpPAw+VdOFktNS1dEchw/5CRAfJVFjGvJv+refavp7hndgoJ+K+PbpnN52NuIpeO7qb70
+ vTtHaNZrmUd4RCVHxoWJtBZ+OqTp7P00nEuZ5L0r+SsoU5D0YGK8KaLY11/w=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Thu, 19 Sep 2019 13:30:51 +0200
+> Oh right... Sure, I'll ignore it/him as well.
 
-Simplify this function implementation by using a known wrapper function.
-* Thus reduce also a bit of exception handling code.
-* Delete the local variable =E2=80=9Cres=E2=80=9D.
+I hope that you will still care for further possible software improvements
+because of presented transformation results around collateral evolution.
 
-This issue was detected by using the Coccinelle software.
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
-
-v2:
-Further changes were requested by Miquel Raynal.
-https://lore.kernel.org/r/20190919111014.6c569cf3@xps13/
-
-* An error message was adjusted another bit.
-* A variable was removed.
-
-
- drivers/mtd/devices/st_spi_fsm.c | 13 ++-----------
- 1 file changed, 2 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/mtd/devices/st_spi_fsm.c b/drivers/mtd/devices/st_spi=
-_fsm.c
-index f4d1667daaf9..ce18198301d5 100644
-=2D-- a/drivers/mtd/devices/st_spi_fsm.c
-+++ b/drivers/mtd/devices/st_spi_fsm.c
-@@ -2017,7 +2017,6 @@ static int stfsm_probe(struct platform_device *pdev)
- {
- 	struct device_node *np =3D pdev->dev.of_node;
- 	struct flash_info *info;
--	struct resource *res;
- 	struct stfsm *fsm;
- 	int ret;
-
-@@ -2033,17 +2032,9 @@ static int stfsm_probe(struct platform_device *pdev=
-)
- 	fsm->dev =3D &pdev->dev;
-
- 	platform_set_drvdata(pdev, fsm);
--
--	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res) {
--		dev_err(&pdev->dev, "Resource not found\n");
--		return -ENODEV;
--	}
--
--	fsm->base =3D devm_ioremap_resource(&pdev->dev, res);
-+	fsm->base =3D devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(fsm->base)) {
--		dev_err(&pdev->dev,
--			"Failed to reserve memory region %pR\n", res);
-+		dev_err(&pdev->dev, "Failed to reserve memory region\n");
- 		return PTR_ERR(fsm->base);
- 	}
-
-=2D-
-2.23.0
-
+Regards,
+Markus

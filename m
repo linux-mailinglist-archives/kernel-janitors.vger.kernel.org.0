@@ -2,38 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63499B7B58
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2019 15:57:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5982FB7CE4
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2019 16:33:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732090AbfISN5i (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Sep 2019 09:57:38 -0400
-Received: from mout.web.de ([212.227.15.4]:51675 "EHLO mout.web.de"
+        id S2388872AbfISOdj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Sep 2019 10:33:39 -0400
+Received: from mout.web.de ([212.227.15.4]:47237 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727642AbfISN5i (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Sep 2019 09:57:38 -0400
+        id S1727273AbfISOdj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 19 Sep 2019 10:33:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1568901419;
-        bh=2itNaQy+sSJmv7IRFrgbQVOCGiABDW1aTMQwerda4Ho=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=j3Ukc1hyBl+sj7qOjIoMpGLxE32dB++axrHRW614ZXkE7SayBfou536TFyFKb00SQ
-         36C5ofQJhq7jhSTojs6+mBhwJJCC3gHnpgf7qgI86L4u2OtXaG/i562jFyewNO/9t/
-         EyJ3rEIJ2xzIo+EtrowIinY0X6qyw+It/VqYrJJI=
+        s=dbaedf251592; t=1568903607;
+        bh=KlVZn4jdldjRZHie3WxJ1mEWUSWaQHuHR7KqEx5FTCI=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=IiWKGESFMor/ZlzngA16YSQUR7ru02g9YzIATlqARt4hWciy9Z7xVMVZ32TTF8dSG
+         h3/5LVF0aKN4bSGHD3xyZ3eOgORdsiQwmiqLmrYrYyTA9i85grgehNfw1jhn5d1Vdh
+         x/3rf4Nx7HbEQg9tu/c/LOCsA5o18lfGtXCxPJOE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.132.191.36]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0McFgl-1iStie0G07-00Jalj; Thu, 19
- Sep 2019 15:56:59 +0200
-To:     linux-usb@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Arnd Bergmann <arnd@arndb.de>, Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Vladimir Zapolskiy <vz@mleia.com>,
-        Wei Yongjun <weiyongjun1@huawei.com>
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LtX9Q-1i3EEk3lwq-010wBx; Thu, 19
+ Sep 2019 16:33:27 +0200
+To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Himanshu Jha <himanshujha199640@gmail.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] usb: gadget: udc: lpc32xx: Use
- devm_platform_ioremap_resource() in lpc32xx_udc_probe()
+Subject: [PATCH] video: ocfb: Use devm_platform_ioremap_resource() in
+ ocfb_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -77,49 +74,45 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Himanshu Jha <himanshujha199640@gmail.com>
-Message-ID: <6671a08a-fb20-f15e-5dbd-8b6b710e0ef9@web.de>
-Date:   Thu, 19 Sep 2019 15:56:56 +0200
+Message-ID: <61b75aa6-ff92-e0ed-53f2-50a95d93d1f6@web.de>
+Date:   Thu, 19 Sep 2019 16:33:25 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:EwaVOO2O/6UCooJydUvagzMuaCL7LXccGb10TPm0rB8mt6OXn3Z
- oHiuBc/IH4SluhKLR8NN0B7YR18T3/zG2bw2QWQ58+3WaxtWpJ2GCvUvPCazbAjxvLwNsde
- Ss8zTpmitBV9ARsXa3p4/U8K1gDbkYlCC0qxYL7s4Ih69a/ThQ3/7qxQMeQ8r7ZJg5Uzf/S
- tTUKTB+vMoHSmLZqVlBZQ==
+X-Provags-ID: V03:K1:HWCoQy7xwCffpBW0QWKAATOSMz1+twSQxpS9BC5xkiG9J68cyZq
+ SxMl/SPFZ3Vzy3r0yi3Siq7pHz3n9FB0b2RbKJQRXpXue7dhxTKTlq+p9MVcFSR1hdoDgZQ
+ +bSQE9zlugsjsieLXZ89w7u1EoBXJDAuDOqlkh70cQ6MI8wSUmElIDN/BkxYQGHL0kXOq2Q
+ NUKQmp121GYhQI9vBTPTA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:t4gytpA5OsI=:XDaN0S3/D9dLDXnd560fpe
- gwmPoNGF07dsIq1UEj+eDDoHV65kRfLGx2lemSwpADFpvoTEbxFVqaDyucBUYMULwbXbAdACV
- tGpTzluQ7y6esAObxfTP9rJGxxv/Byi2Eu8DrNfzrWFnqhtJbLk/kGE4PF2M9k7nkSNfeCVCO
- Zn47dLVi+/cBY6sUBs5i4e4h7qb6tZPMCQdmry97x5Y5Raaypb57LMYU/2op7uSWlnO3Bs7Dk
- W7bmfzuutAYcFGed+mTBQvY8F+ZszVULlIaiPDl343WCyKRuUkyW4dcodRydHGGo/RjDcGlfs
- GaUSkJ+E4RLkkgM5HfWy5+gBzOrUMphRMUe6s/DvVEM1I+cvn5XSXDw2JJyWBxeEmyJKic17I
- Q4v8RTXkhsV4sUZT7SauKp25uTLs/4yvmCfHR05hIrDf7kA6Y/jhXH8uHTRX5DCNQSEdNoM+Z
- KsLFvjcQWezCInDm3Sb4vJwiFeo6OOHNP6OKg4WoGEpVyXjta4cWfH0EHZ6/8kSxOno2ofKr/
- XkgMaQhLJXuagh4SQ3VGnCP7OKTtiu9/tNapzpnfc4GoyUVQHjja8NVo13878oXPMTyKr2VCi
- xE7NQGFNQsYnQOL8BCjzauWaUm48bcCjK3fWPm8q2Ot64SU7D2O/MIlQSIWCRBPYKtLQlhHAa
- 9+Tvs9oIEeKm9Ww9+8RNchQnG6XILtBvdYBZjFB6g3l0SiD9Eeko2xKkaEF2V5b6T0zZ+bdnJ
- tk6puhjWOwJRSe8urnPq8Z+arvbpqCbji7v8kpQ3gwijwrwJqqiWdxKyi+bM6ddSY1S7wU9ab
- rpUYfbrNNM0ydCa9f4dX2/a/iBzOdRv2ir6zFY5kVKnqcZk7wKgzrvrvjFagqAS/bs3smHpO0
- utSHQZNbmOYk/ZAo+UB299y2ROvvQLwMr88x2ZsUUyJ/Xx1XmwLmgo9MmA8bM9g03USxA9P3h
- b9UnlCOuHyKGoRuUDS68U6Ds3fRWrpdZq+0nlwB4HJ8eF7m8V2UfX52sZc0sxVTfvL5k9/Lg9
- WvmPAVkdYAaSCv9ikwcseGnHg5ikqOcLqY6iEHJ6UQ+XtBVwhcmyErcolrKtxPGxE7da+UKTw
- 0w6i9vf51sYqA2G5uwV+Em1jZrMn4rlDrRIZWgoP97ZLA0uJ7HleKozrbNKyMT6sq/PDtLNTZ
- Nek/k7KZxWdJqvzvJNqdlDrKBeSL+yldAM5kzNVEjLFsMaGwYCl27cq94Hj3QLcOPxrrCeEGn
- x88lAbzqOFb79Dxo6h4k0LyftDy/o8TLvl0PVslMLbeSN9Bv74cOWlonQd1M=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:HxDsb8263r0=:oSFR2BWoc5DgIAI8Sdp9Fq
+ c/cFKK+Wit8lPcZ0g8mdbkRl7H1uedDHPi/4kyDKv/yKccD+qHtjdlVUn6R/gCRdt4moFATvg
+ RcBUf/qfTAxNK7E1L7r5Bmm8HsLpm3FRRG17ys066aA14jzMkYnqcpbcwNk/UU0Jmx/tdjBWS
+ vLj1doIcePrnLUE7fCkZCrpIKLkD7/zP7GblHr4WMKZO7D+mj4YjN40OLPrYec6zrzf39EaIu
+ ta0DqCDxLZ/tAhpSvT3Ues41RkxpIlWYSotKY7/H6riSWPhTt4jLFqFsn5awwWk76cX8t+518
+ HTjRYbW18z+vivUvaqcEqPvrdK4qZiDvWaqkS+c+lGTQiVsqxCQrShFjMbXGMTZef9LAlIyWc
+ s97/dB9/SJLifhczA3K2Rf8FB35eTmsOrpmWj8LOnvNgmDVQOLEfTq1rKK+4bTWSEvL0Va1CD
+ 7TEp9+KI4THbs6ZzFvldRiDkrHjmx0bmuKz3WHKZotpumFtAyLaoWQCsIDbPeUZqL98xnfsKA
+ 4hBaIam5Ivutpbm4H9yp4/+DZ3THoxe03YgbgDiL12fwlCcQ14eWi0P4iAKEkxoHGhrskA91b
+ 1JQdWA/t3RXJQJNcBXkIjvdvwUnkoGxPSRbeo+2McYCJiz2JoBRyroVr0AUGgyezkDvcpVtoa
+ qHQpQqcAiWCXwwNcqtmR2kpsfHj5UsqPrB4f3S3ieIPZ4AOWohu/eA9JhU1lHhc/KAf7DIYgq
+ dpDbA8VkLLtyCEMCGj7qf7gTgVSTxBug5mQ+hi+BBUK/2ROFNCpWxD+t57Wv+RntKMM0sjljt
+ LV0dbq/D9xzJT53irzjCI/R/WiOTgO/F0wwcWJpAyTkr2uHZKrmBGLyQHhf7kIvo6xSSTBcPu
+ BFTKmXWwWWs30+0yEjQyqHfoeHMED6yl4+TaJ+wvFUsIoRYWalAHcH5BJlHTkPfIA8AgSmCjb
+ gSUqQmT69j4fjATcR+/2cm3T/vVtXHCncgSONO32giRyyTNQoA63opzsnQVgyfk9PAS88TB8p
+ GioYLPDRr7ScEDnmeDPfGe5yVrt83cWR1Wm1DFwJA3e2CrIl7kIKLvc1Fk4bTD4RV3EtfdSUQ
+ ckQjJwE7Q+1xB49sSnB70csWPItMzXZqXwQsiPp+4Apx+0buK9zDdB2oLdruV5cmlwWvvsiI5
+ SglczD/K3ZfLSs8avxerAEit6sZE+VsrruewGvqw1G09hAFsUO+golXbzRlBHicmzIh25UjQf
+ MTBxioOZAZVst6yCbfumLvae+hvT8BuzPZSwuA70xgATlt+6xfzD9JZ1czaQ=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Thu, 19 Sep 2019 15:47:24 +0200
+Date: Thu, 19 Sep 2019 16:26:56 +0200
 
 Simplify this function implementation by using a known wrapper function.
 
@@ -127,44 +120,36 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/usb/gadget/udc/lpc32xx_udc.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/video/fbdev/ocfb.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/usb/gadget/udc/lpc32xx_udc.c b/drivers/usb/gadget/udc=
-/lpc32xx_udc.c
-index b3e073fb88c6..0ed3fd8c6610 100644
-=2D-- a/drivers/usb/gadget/udc/lpc32xx_udc.c
-+++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
-@@ -3000,7 +3000,6 @@ static int lpc32xx_udc_probe(struct platform_device =
-*pdev)
- 	struct device *dev =3D &pdev->dev;
- 	struct lpc32xx_udc *udc;
- 	int retval, i;
+diff --git a/drivers/video/fbdev/ocfb.c b/drivers/video/fbdev/ocfb.c
+index a970edc2a6f8..be308b4dc91d 100644
+=2D-- a/drivers/video/fbdev/ocfb.c
++++ b/drivers/video/fbdev/ocfb.c
+@@ -297,7 +297,6 @@ static int ocfb_probe(struct platform_device *pdev)
+ {
+ 	int ret =3D 0;
+ 	struct ocfb_dev *fbdev;
 -	struct resource *res;
- 	dma_addr_t dma_handle;
- 	struct device_node *isp1301_node;
+ 	int fbsize;
 
-@@ -3048,9 +3047,6 @@ static int lpc32xx_udc_probe(struct platform_device =
-*pdev)
- 	 *  IORESOURCE_IRQ, USB device interrupt number
- 	 *  IORESOURCE_IRQ, USB transceiver interrupt number
- 	 */
+ 	fbdev =3D devm_kzalloc(&pdev->dev, sizeof(*fbdev), GFP_KERNEL);
+@@ -319,13 +318,7 @@ static int ocfb_probe(struct platform_device *pdev)
+ 	ocfb_init_var(fbdev);
+ 	ocfb_init_fix(fbdev);
+
+-	/* Request I/O resource */
 -	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res)
+-	if (!res) {
+-		dev_err(&pdev->dev, "I/O resource request failed\n");
 -		return -ENXIO;
+-	}
+-	fbdev->regs =3D devm_ioremap_resource(&pdev->dev, res);
++	fbdev->regs =3D devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(fbdev->regs))
+ 		return PTR_ERR(fbdev->regs);
 
- 	spin_lock_init(&udc->lock);
-
-@@ -3061,7 +3057,7 @@ static int lpc32xx_udc_probe(struct platform_device =
-*pdev)
- 			return udc->udp_irq[i];
- 	}
-
--	udc->udp_baseaddr =3D devm_ioremap_resource(dev, res);
-+	udc->udp_baseaddr =3D devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(udc->udp_baseaddr)) {
- 		dev_err(udc->dev, "IO map failure\n");
- 		return PTR_ERR(udc->udp_baseaddr);
 =2D-
 2.23.0
 

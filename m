@@ -2,40 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD587B7E56
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2019 17:39:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ED67B80A0
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2019 20:17:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389908AbfISPjY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Sep 2019 11:39:24 -0400
-Received: from mout.web.de ([212.227.15.4]:55565 "EHLO mout.web.de"
+        id S1732116AbfISSRm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Sep 2019 14:17:42 -0400
+Received: from mout.web.de ([212.227.15.14]:58675 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389863AbfISPjX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Sep 2019 11:39:23 -0400
+        id S2389923AbfISSRm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 19 Sep 2019 14:17:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1568907490;
-        bh=IvBezhGQNiVEUo9qyo82nKP7FH2Z2z0jWTFLjJm5VIk=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=rzPV+WDKiUFdwpv148DBXjvKT8eHCnpSQwH5BvvB3mL8xIIauPW68PNGJ2Y/Gdt9R
-         2Vverci+osFi/62rbFEEdLspPboV/qokX4u2+gQzTP0gKF8t+0K2JTTctKCX6vdjk8
-         Q2kynhJ9JaFQ975Tzc46sORW8FUPxgR9OITHDvwQ=
+        s=dbaedf251592; t=1568917055;
+        bh=Mn7H6xHac7+YgWw5ExZQ7NpTTpj1wObuTz0x0wOxj2Q=;
+        h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
+        b=EH1vmojaA3Mu1SvLHPR1Ot/MQjBuxSUqKgVN2AVrGHxWTghyE+e8IJYIq5ZtWXhkX
+         Qjts9BZ6AmyBj6n65Gd7ioOua/nFm+MpIawOSbI2vH4IV0AAFu240BZk9ILbGpaJdn
+         p1Gax/KiYfLKjRCF31IcT8N8wgNx5V5KXCViotQ4=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.191.36]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Le8Ca-1hs8MA0yNw-00pveZ; Thu, 19
- Sep 2019 17:38:10 +0200
-To:     alsa-devel@alsa-project.org, linux-arm-kernel@lists.infradead.org,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Maruthi Srinivas Bayyavarapu 
-        <maruthi.srinivas.bayyavarapu@xilinx.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Stephen Boyd <swboyd@chromium.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Takashi Iwai <tiwai@suse.com>
+Received: from [192.168.1.2] ([93.132.191.36]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lc8n7-1hlKsU2PcT-00jYXi; Thu, 19
+ Sep 2019 20:17:35 +0200
+To:     Nishka Dasgupta <nishkadg.linux@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Hans de Goede <hdegoede@redhat.com>,
+        linux-ide@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20190815060014.2191-1-nishkadg.linux@gmail.com>
+Subject: Re: [PATCH] ata: libahci_platform: Add of_node_put() before loop exit
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] ASoC: xlnx: Use devm_platform_ioremap_resource() in
- xlnx_formatter_pcm_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -79,87 +73,64 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Message-ID: <8f7cf483-6ab3-d00f-5606-863e9f5b31fc@web.de>
-Date:   Thu, 19 Sep 2019 17:38:04 +0200
+Message-ID: <c61069af-29c0-449a-a07f-c89c5a5535fa@web.de>
+Date:   Thu, 19 Sep 2019 20:17:34 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
+In-Reply-To: <20190815060014.2191-1-nishkadg.linux@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:MQDQt/fh9Ra2BCCpPad/vocCOHbSct9IWDxnRW4ip1FQecY3c5G
- ccw3osppvm8ukIOgtk1IsOLOfiBvK4ocu9o5OitLNLbckVKcUb8Zno6i8GcsXVhFuyupYua
- ra4WHQN6EtawAJmwTK7oYCJolti+/sqJRciMQIws6PJMA2gu/AknFQj/+gJEomO3J/2MtI/
- VF+n4kOIxj1FP7ukngS6g==
+X-Provags-ID: V03:K1:nzKw3wyZsubFjlljoNomFG4WACDEUOfE0pZ5d82fQgTkMxPisve
+ N48RqhZy5dh4NUIG/Txi5F4M83FzyxGQ1UmUXZpYe9WfUxJSHXG5MkNUYxb3crKZDv+L+wo
+ 2gHoe/gp/YObShqOXbh5I3dQPbVHpgAvkgLRV8pZs+zO/e69N1xgXBtaF068TIgVtJyDJKh
+ oNcSayVpLN3umSWziN+rg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Kcb0vyePgeQ=:SQL3/RfT/YiXK+gG8Bv1Gp
- chNnGaBiNDF8+vw2QoU/MfWhWzcP/57HYt8+0ZxqH3q8Zkuvx4o362zOm2z9RddMnvxKWb8sj
- x6l5+DiqFZ/Yx30UAKUc7z4VBgqPEBS72Xc2Pgin3MYtzq0dL+VRnNAmIzejbscIBegP6MrMq
- UenW6NGHuKyGzlteU9PrOl4U+hbvvfm0DhCL4skhAztfjFLggVaRVIXFpOs+wZYCy6rBRxshI
- sCnjmrvHGrh9fJ+lPBwymnAIompVHzKkIyKkwe7Ty4jJ/DvP6xQ4JWnGsOXWBd8Mx0xUA6M3c
- jrK/hoUb5QZDIPzThNg+Oy4uslxjGEfhsBD0jhMkdmJJ4Xm4UtgZdG74akRdOFgZM8pOUnvko
- tiiVi15poaSiM8nfHmWHPQp26EguRXYuxlSRmuBQdMt7umbM9U7pbGMHTxUyYcl1tagVtCHqM
- XnpBTMvFS2RXuyzUbDuQNtZNzjDdGN2lGqkxA76aBLjUA12reaQrx7ROruhfO9iOh1GvWoVFu
- w4sChcNJ+mVtQ4SJpuRBd+sLBElLUO8kmCqru2RiDRcyMxF6O2sFR3OnQ9CC7m7KUMILD9IOq
- 2gLx0ceQTp6Bk4uIPxN00zfIookS2opDfZ8qwQvCMFyh2uR40aFofzyrhv4d/x4I5aqKP4LWM
- a8h/ZNKKQwmnnwBqQwVYk1iK6JFdGC/V+G6Y3inM9BmA0nxverZbPwZgKjR0i7+UFPPraE53X
- 9cMOdwE9Ca+YESwBplIGHC+Ui7ELhfZF5ka+gvhBY7d7Xo91azw5a9f2wvuxe9WvTskfu7c/f
- qIU5i5e6UUWQmC9ZR03at6HFInSTjOhm/MR+24vC4Cx/v/nZWsEJQ+4zo+pLYG/rPPnNX87f5
- 24dnCsOjjpHRqS2oWWIYuuU2ZorUJEmu3YTBqY4TmeOhiAzwU6R17RvI4x53DZFpV1mbo+8he
- CpAJozXWtxPBhjxdvAYBr5qe9n/tnXyPtNAXY72IpK0XxqO+Ko9Q5oIC6ANytksafcqPblEaq
- iQ4rTOL1b4TFrRrsbUUxlDxmOYnTxrAbvNKHztcLs8wRAzoiEy5nQoLPDf/9y6h0c+w3n5fbl
- n5hVCUMqvWhUzHmzNLm5JIG966truZ13ikSszfPmaSq52SAxPjigbKqaERXZMQc390PNAHzA+
- U7LS09l4AuYa1fTWIBiWsydCM4cs1/NOiK/PsXiKwNnR2A7GgaT55u8XLiBn1r5yWunqVUTZc
- Rbgtsayl0WjqoA+znbcG0qTEC/iXBqkTN/6HztWCoIcT5FsQ48ntX4jakVAc=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:E9+fhUT11VA=:aZWTWHgIDupJsEg6T54BOf
+ jj4ty5ysJSrCGCqRYASBI5T9zxYCEys+aaHERFWuaTalq+FtePuV8P7LQ53QtK9dtinUO7BJT
+ I26Rqc0PgJ4VpYUn5tdecvj2OrIAp45RUjrNsyDiNV2yYChYzy+eHlBKBsu6TAT+I22IpLW1e
+ GjtSBuPLBTInUw5i5wGLKrUe+HPkZj30oc9Ar+MPd/KJHsvhEi2czbTEncjZJFNAl3wuqPGGk
+ Rl8I+IdJuPUkGZV2OZHzXHZ2xWAIl905roEC69+woF1Xx4COZCgjMLwJwDmHBc+RK1zgCn1YL
+ mk1lYmxHDxozz7S6wp4nvU3JWMqMZMqpnPLEHNqvdj5RAtJzI1S9N70cUPK/AVzfmitM5i1jH
+ IBqxu5G3bvvFOqZE4bHKWpRYdH2E3P+yIudUbvGLkLe0K86ywiKX/QpdbvMsNVBtioBhJP9pK
+ bM+bVVGXcKpLaVsqIz/vip9BJ9jMBaX8dMg+mXWkcMSKtpcRjflf9QQigJ0uDV6B3/Pg5oz+I
+ dtrBobtLZ8IerMYsZDUbco+FDLItoFuJJ6n2943LzoH92zsJXBVon9Y/z0geUXZto9PwTMPHC
+ Q0KQjaHqTDsnqpzUwR5jZBa51T/eqB/8UHTUNdLy5VrkbmVII5PpvvNZ+RtO8jZoR5qCuP56P
+ J+/5n8Tft7pTAKL/mgAsO37Ay9FIhCSzgGsIIR+o+v9pneTGbBc4OYLf7auKwiDz3cojQwTaz
+ UudOt/GCup0T/3Rl9l+UvN2++h4PcbajbGeRMaK1r0s7vvHp7VcqVGgyYwyHLxqe6nO8ENYcQ
+ pgMtPj8tgIIweBb+E9t7wghzutykqAcPwe5ZP8ghLT3ImCGrk+Zc61hq5aD/5+wKid8G8Y5yk
+ ALMawDGQPvYG7VLow1OQV3+pVPg1Sk3Fs/v98DReC/OBiokA7l+YW8Dw+0k+9bqaoqVYKbOqw
+ tHkPS/qt4PuaacZ1FIRKtFSzkBpQLPezHDPZwfHRRzym+R6HeyfK/Qc/e/jcEyPbcc0FNqd/z
+ LIep0wC2J7aF7ITMSQKUJYSbOH+D/XeM0acwEXcBNgsiISdZhLLIzvIgBCamZny5WqIBRUJID
+ nRC9iXpCZYNpHZiczbDzPw18gauUDjl7MQwFf0pMjGR2hg2gec8yQ386V2SI12fBzdfNi5eRb
+ UEie80jKIme+VkEFOUXY7/1PtKl6TN9uE13WrLL7jbGRdM2+Kizy6xNBHRrMQ+nU48Q02gxh2
+ NW9TKBKH4XaUllIkCUvKIbGsL2X2+iVAzujKNSQcNUuIO6fgaTSVJ/JgfS5M=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Thu, 19 Sep 2019 17:27:57 +0200
+> +++ b/drivers/ata/libahci_platform.c
+> @@ -497,6 +497,7 @@ struct ahci_host_priv *ahci_platform_get_resources(s=
+truct platform_device *pdev,
+>
+>  			if (of_property_read_u32(child, "reg", &port)) {
+>  				rc =3D -EINVAL;
+> +				of_node_put(child);
+>  				goto err_out;
+>  			}
 
-Simplify this function implementation by using a known wrapper function.
+I suggest to move the added function call to another jump target.
 
-This issue was detected by using the Coccinelle software.
+-				goto err_out;
++				goto err_put_node;
+ 	=E2=80=A6
++err_put_node:
+ 	of_node_put(child);
+ err_out:
+ 	=E2=80=A6
 
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
- sound/soc/xilinx/xlnx_formatter_pcm.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/sound/soc/xilinx/xlnx_formatter_pcm.c b/sound/soc/xilinx/xlnx=
-_formatter_pcm.c
-index 48970efe7838..fb652e73abeb 100644
-=2D-- a/sound/soc/xilinx/xlnx_formatter_pcm.c
-+++ b/sound/soc/xilinx/xlnx_formatter_pcm.c
-@@ -564,7 +564,6 @@ static int xlnx_formatter_pcm_probe(struct platform_de=
-vice *pdev)
- 	int ret;
- 	u32 val;
- 	struct xlnx_pcm_drv_data *aud_drv_data;
--	struct resource *res;
- 	struct device *dev =3D &pdev->dev;
-
- 	aud_drv_data =3D devm_kzalloc(dev, sizeof(*aud_drv_data), GFP_KERNEL);
-@@ -584,13 +583,7 @@ static int xlnx_formatter_pcm_probe(struct platform_d=
-evice *pdev)
- 		return ret;
- 	}
-
--	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res) {
--		dev_err(dev, "audio formatter node:addr to resource failed\n");
--		ret =3D -ENXIO;
--		goto clk_err;
--	}
--	aud_drv_data->mmio =3D devm_ioremap_resource(dev, res);
-+	aud_drv_data->mmio =3D devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(aud_drv_data->mmio)) {
- 		dev_err(dev, "audio formatter ioremap failed\n");
- 		ret =3D PTR_ERR(aud_drv_data->mmio);
-=2D-
-2.23.0
-
+Regards,
+Markus

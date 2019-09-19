@@ -2,40 +2,40 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C7AD2B7D70
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2019 17:02:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD587B7E56
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Sep 2019 17:39:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390853AbfISPBn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Sep 2019 11:01:43 -0400
-Received: from mout.web.de ([212.227.15.4]:41845 "EHLO mout.web.de"
+        id S2389908AbfISPjY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Sep 2019 11:39:24 -0400
+Received: from mout.web.de ([212.227.15.4]:55565 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388350AbfISPBn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Sep 2019 11:01:43 -0400
+        id S2389863AbfISPjX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 19 Sep 2019 11:39:23 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1568905268;
-        bh=u2ovSWunxy9woIqBvZsHHuYvMbTrtREDqeUgpPJUF+Q=;
-        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=k6Yx1GPosRG5DH4dGC24VKIBHqJ9oV7UJjavEdRO9oq00replubxs7LFvDVuheqvr
-         CNRRZrUNzsIpesEmE8IywRevk/KoPJrKsDkOMTdYfJSRj4QQaVs6g7iNylbg8h5PUR
-         cBAjg2WO4ztYJ/ob/1ZU1cadrf7s8nHu0JIK1n5A=
+        s=dbaedf251592; t=1568907490;
+        bh=IvBezhGQNiVEUo9qyo82nKP7FH2Z2z0jWTFLjJm5VIk=;
+        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+        b=rzPV+WDKiUFdwpv148DBXjvKT8eHCnpSQwH5BvvB3mL8xIIauPW68PNGJ2Y/Gdt9R
+         2Vverci+osFi/62rbFEEdLspPboV/qokX4u2+gQzTP0gKF8t+0K2JTTctKCX6vdjk8
+         Q2kynhJ9JaFQ975Tzc46sORW8FUPxgR9OITHDvwQ=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.191.36]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0M8hhT-1hwrLz2DVj-00wFZO; Thu, 19
- Sep 2019 17:01:08 +0200
-To:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Daniel Mack <daniel@zonque.org>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        YueHaibing <yuehaibing@huawei.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Himanshu Jha <himanshujha199640@gmail.com>
+Received: from [192.168.1.2] ([93.132.191.36]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Le8Ca-1hs8MA0yNw-00pveZ; Thu, 19
+ Sep 2019 17:38:10 +0200
+To:     alsa-devel@alsa-project.org, linux-arm-kernel@lists.infradead.org,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Maruthi Srinivas Bayyavarapu 
+        <maruthi.srinivas.bayyavarapu@xilinx.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Stephen Boyd <swboyd@chromium.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Takashi Iwai <tiwai@suse.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] video: pxafb: Use devm_platform_ioremap_resource() in
- pxafb_probe()
+Subject: [PATCH] ASoC: xlnx: Use devm_platform_ioremap_resource() in
+ xlnx_formatter_pcm_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -79,45 +79,47 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <a1b804b1-43c2-327a-d6d1-df49aebec680@web.de>
-Date:   Thu, 19 Sep 2019 17:01:06 +0200
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Message-ID: <8f7cf483-6ab3-d00f-5606-863e9f5b31fc@web.de>
+Date:   Thu, 19 Sep 2019 17:38:04 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:GrKDkEUMXLoBldX1avxLfVJzh5A9CLC6e6YKXbC8kO+UVNS6N5F
- dyesIWm1P8pt1HihyBzR8SS+eY2PERRnhMkL4VV0XKIqGe+HFZGwtmfFvuktbP6pi/7nEOm
- MUXbuJ0VeVmZhrzrKkmk1hv5evmQnhE7QRbHYYLiyMaEXsvI91Sd6bXgCMcB4+LyKlWsS7h
- IiTHKiM1JYwiNd0fZWHoQ==
+X-Provags-ID: V03:K1:MQDQt/fh9Ra2BCCpPad/vocCOHbSct9IWDxnRW4ip1FQecY3c5G
+ ccw3osppvm8ukIOgtk1IsOLOfiBvK4ocu9o5OitLNLbckVKcUb8Zno6i8GcsXVhFuyupYua
+ ra4WHQN6EtawAJmwTK7oYCJolti+/sqJRciMQIws6PJMA2gu/AknFQj/+gJEomO3J/2MtI/
+ VF+n4kOIxj1FP7ukngS6g==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:B8nBfBYkohA=:oRm+2mcW0XSB725MmbvJws
- Q0q/udRo19sSg24j0CXCEufY7FDLq3wkJnSEyMyq0xgQMjhpI+T2RzJGKJDBiqnlZ/jmjvpa4
- QsziN78u7/3S3bydWNtpyyudUUGv9RA3c2c4aIi62qM3bh8vj9/o/r2xLrLlV7TmzABEkKlc2
- d1l3tqJFLZJ0x4pvgVH05VJ0ZrSIlTUCrKWOW3UCwq9f/oFCl8dOTvkeG4M14klNg6z6Pcy5C
- BeU07A7HQAmKDN5EbGu+OUF3sAnvfxad7OLM9nMjV5tX63MXiuSeAI8tQSFE8Dp9/JmExi+PW
- zU3iUQYTAcTZM/jmQgsxZYw+fvofkscd01MGhV7xNOlw97J/0BUeJ/IgrQNC8RJwI6yeG9mcZ
- cdl2A0RM4Xtue883N9ZzD4HZLOT0PwuyUiSLldG2MRQnpOrVqVxb47Jr1dWYfT6k96EducUCu
- z1m9j2TV+gtGe9EgIlconbITPRiHUWBIDIoN5RNWTN5vWRZVlqeLZojI5AP4pH2xBGEuKm4Jd
- jvjz90AbRsb9SWdOtgV3LXNJoulz1QD9yDfR1DJDLktWA54MGdpYDh8iLYIkAp+O3yrjCGU19
- hfl1lAMv32xGkhsEova5aFPDf7/ZJOkHeHbc4DhbrpxBSVfC6P7JofQbt+DenHtMOkW+gsR5C
- WoiMz5sZGXlDYwTM8/kOPk+RZeq83BHBv76jT2abatL1y8MkNGlyUjTLc1yOfuX2zDOPJNoJJ
- 6hK9UUFPDPUj3hO/6VPvaI6+wPstYWQAO3+bspQZ+gT+dRPZs1W+zWTndMdUNE+BJMRy/sMRR
- JdGUNW9qQlELKx7r5YON4AdfofuRUDqqDJhbm1fh7+5s/e+RelH1LgJode8e6q7z9RtTrxwUV
- YVeitXO72xKJt+wY944aM0LjW+jJ/Cv8WgxQv375DffX/8dwd2D2PfgGQvafQkv2F1MlObFMe
- yMys5pVUDf30OSnmhZwRWHzifXWhkAiU1+0KZbuqrSV2ECuM2m8rxEbsVQeu3uex62FyqEez9
- +OeS8WEm/gXQ1rHb1+ZVy181CeVNPcAelRn2KOXmKmp3Hun/Jim05hBVrBuB4aY1x4bzkhYTN
- wvRA2uhgo+KdrbAN3keae+dJ/s/UqTIpUGOLLzOWXB48jtLAFUXVPwG/+bsRb05Se4AgfjQpN
- 867sE1Gc1TEnLePPkLkRlGxiMlFrENtieFPD2+FnRBZBDVb2PstG1m7HHvE1jyuNSQnDN6rKd
- BdpxBuiOcz5lx0qiYppU7zYfg29wAuo9RlFznOisNQ680y9FjfhCmUPvMLIU=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Kcb0vyePgeQ=:SQL3/RfT/YiXK+gG8Bv1Gp
+ chNnGaBiNDF8+vw2QoU/MfWhWzcP/57HYt8+0ZxqH3q8Zkuvx4o362zOm2z9RddMnvxKWb8sj
+ x6l5+DiqFZ/Yx30UAKUc7z4VBgqPEBS72Xc2Pgin3MYtzq0dL+VRnNAmIzejbscIBegP6MrMq
+ UenW6NGHuKyGzlteU9PrOl4U+hbvvfm0DhCL4skhAztfjFLggVaRVIXFpOs+wZYCy6rBRxshI
+ sCnjmrvHGrh9fJ+lPBwymnAIompVHzKkIyKkwe7Ty4jJ/DvP6xQ4JWnGsOXWBd8Mx0xUA6M3c
+ jrK/hoUb5QZDIPzThNg+Oy4uslxjGEfhsBD0jhMkdmJJ4Xm4UtgZdG74akRdOFgZM8pOUnvko
+ tiiVi15poaSiM8nfHmWHPQp26EguRXYuxlSRmuBQdMt7umbM9U7pbGMHTxUyYcl1tagVtCHqM
+ XnpBTMvFS2RXuyzUbDuQNtZNzjDdGN2lGqkxA76aBLjUA12reaQrx7ROruhfO9iOh1GvWoVFu
+ w4sChcNJ+mVtQ4SJpuRBd+sLBElLUO8kmCqru2RiDRcyMxF6O2sFR3OnQ9CC7m7KUMILD9IOq
+ 2gLx0ceQTp6Bk4uIPxN00zfIookS2opDfZ8qwQvCMFyh2uR40aFofzyrhv4d/x4I5aqKP4LWM
+ a8h/ZNKKQwmnnwBqQwVYk1iK6JFdGC/V+G6Y3inM9BmA0nxverZbPwZgKjR0i7+UFPPraE53X
+ 9cMOdwE9Ca+YESwBplIGHC+Ui7ELhfZF5ka+gvhBY7d7Xo91azw5a9f2wvuxe9WvTskfu7c/f
+ qIU5i5e6UUWQmC9ZR03at6HFInSTjOhm/MR+24vC4Cx/v/nZWsEJQ+4zo+pLYG/rPPnNX87f5
+ 24dnCsOjjpHRqS2oWWIYuuU2ZorUJEmu3YTBqY4TmeOhiAzwU6R17RvI4x53DZFpV1mbo+8he
+ CpAJozXWtxPBhjxdvAYBr5qe9n/tnXyPtNAXY72IpK0XxqO+Ko9Q5oIC6ANytksafcqPblEaq
+ iQ4rTOL1b4TFrRrsbUUxlDxmOYnTxrAbvNKHztcLs8wRAzoiEy5nQoLPDf/9y6h0c+w3n5fbl
+ n5hVCUMqvWhUzHmzNLm5JIG966truZ13ikSszfPmaSq52SAxPjigbKqaERXZMQc390PNAHzA+
+ U7LS09l4AuYa1fTWIBiWsydCM4cs1/NOiK/PsXiKwNnR2A7GgaT55u8XLiBn1r5yWunqVUTZc
+ Rbgtsayl0WjqoA+znbcG0qTEC/iXBqkTN/6HztWCoIcT5FsQ48ntX4jakVAc=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Thu, 19 Sep 2019 16:51:38 +0200
+Date: Thu, 19 Sep 2019 17:27:57 +0200
 
 Simplify this function implementation by using a known wrapper function.
 
@@ -125,37 +127,39 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/video/fbdev/pxafb.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ sound/soc/xilinx/xlnx_formatter_pcm.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
-index f70c9f79622e..237f8f436fdb 100644
-=2D-- a/drivers/video/fbdev/pxafb.c
-+++ b/drivers/video/fbdev/pxafb.c
-@@ -2237,7 +2237,6 @@ static int pxafb_probe(struct platform_device *dev)
- {
- 	struct pxafb_info *fbi;
- 	struct pxafb_mach_info *inf, *pdata;
--	struct resource *r;
- 	int i, irq, ret;
+diff --git a/sound/soc/xilinx/xlnx_formatter_pcm.c b/sound/soc/xilinx/xlnx=
+_formatter_pcm.c
+index 48970efe7838..fb652e73abeb 100644
+=2D-- a/sound/soc/xilinx/xlnx_formatter_pcm.c
++++ b/sound/soc/xilinx/xlnx_formatter_pcm.c
+@@ -564,7 +564,6 @@ static int xlnx_formatter_pcm_probe(struct platform_de=
+vice *pdev)
+ 	int ret;
+ 	u32 val;
+ 	struct xlnx_pcm_drv_data *aud_drv_data;
+-	struct resource *res;
+ 	struct device *dev =3D &pdev->dev;
 
- 	dev_dbg(&dev->dev, "pxafb_probe\n");
-@@ -2303,14 +2302,7 @@ static int pxafb_probe(struct platform_device *dev)
- 		fbi->lcd_supply =3D NULL;
+ 	aud_drv_data =3D devm_kzalloc(dev, sizeof(*aud_drv_data), GFP_KERNEL);
+@@ -584,13 +583,7 @@ static int xlnx_formatter_pcm_probe(struct platform_d=
+evice *pdev)
+ 		return ret;
  	}
 
--	r =3D platform_get_resource(dev, IORESOURCE_MEM, 0);
--	if (r =3D=3D NULL) {
--		dev_err(&dev->dev, "no I/O memory resource defined\n");
--		ret =3D -ENODEV;
--		goto failed;
+-	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res) {
+-		dev_err(dev, "audio formatter node:addr to resource failed\n");
+-		ret =3D -ENXIO;
+-		goto clk_err;
 -	}
--
--	fbi->mmio_base =3D devm_ioremap_resource(&dev->dev, r);
-+	fbi->mmio_base =3D devm_platform_ioremap_resource(dev, 0);
- 	if (IS_ERR(fbi->mmio_base)) {
- 		dev_err(&dev->dev, "failed to get I/O memory\n");
- 		ret =3D -EBUSY;
+-	aud_drv_data->mmio =3D devm_ioremap_resource(dev, res);
++	aud_drv_data->mmio =3D devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(aud_drv_data->mmio)) {
+ 		dev_err(dev, "audio formatter ioremap failed\n");
+ 		ret =3D PTR_ERR(aud_drv_data->mmio);
 =2D-
 2.23.0
 

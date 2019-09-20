@@ -2,62 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FABBB95D3
-	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Sep 2019 18:37:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE098B96C2
+	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Sep 2019 19:51:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404906AbfITQhC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 20 Sep 2019 12:37:02 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:43216 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387398AbfITQhC (ORCPT
+        id S2405020AbfITRv0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 20 Sep 2019 13:51:26 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:33551 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404970AbfITRv0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 20 Sep 2019 12:37:02 -0400
-Received: by mail-pl1-f195.google.com with SMTP id 4so3427105pld.10;
-        Fri, 20 Sep 2019 09:37:01 -0700 (PDT)
+        Fri, 20 Sep 2019 13:51:26 -0400
+Received: by mail-pl1-f193.google.com with SMTP id d22so2207979pls.0;
+        Fri, 20 Sep 2019 10:51:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=subject:to:cc:references:from:openpgp:autocrypt:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=kytUK243BodpWOmoCyeWZE1vUiqSLShY8MCbaHpZmRQ=;
-        b=ubHo9GaCWjHiHlskt24MjtWJi81e35GkBfWZVwG2O0ygovoKeNNP6qCCG1EOUt8D2v
-         OP7JjYFvLU12hNvzeP6dwQe3ewpN+wZcNIgR/H+g136cSMSjZZgbYEqiQFxEl3g8U8n3
-         a8icDjCjAeKOPXtkn+ZnOmpI4r/dUlXBJowMyj0TlnS7ArqE41iw5z0Umbc9AC+W5VH7
-         13nAWlg+1LATmrPt8GLA8PXA12dh4jryDnN9tOf8TKevua5P7V2kwHG4bPPZGxNO6r97
-         lOFzUQJ4o7fwLdTXQl6X/gubRas4n3gjF5IpiB8KTtP7GKATzGaRazotuaxDCgOrvy1F
-         jiWQ==
+        bh=3CrXeC4LhwNob4cmLLTWLe1VRgX4UE5/WFGL96oHNLk=;
+        b=TrQNrlHGD2A6CG6toILqFSZ+vNbuGpDD/qERbwPB8t5QRwLcdiplvDxV4lzNQLRwET
+         47GVkU+rIxZ9EoekBlMcThpKURaResIfGQC7CIHckq/I+DhHlbSjCPfLqJWv7509wMLD
+         c2K201WjGbH7tD8rbzS+3jkRH7QLjwB5usBxfzkOR3mFRcCM0mTgQU7BbVKutJHral3a
+         +tDjEEKGmSAhXO3deGZjqlp14chLHoTiE36Htisrl3l+WFjUoXUja14QfYZ3j5076rI2
+         swIOFK9yQFsA1cuNQK3Im0puhGz5lmWUokedz6jQzr1e8Co/QTvbU5kbHhTahllNE+08
+         xTLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:openpgp:autocrypt
          :message-id:date:user-agent:mime-version:in-reply-to
          :content-language:content-transfer-encoding;
-        bh=kytUK243BodpWOmoCyeWZE1vUiqSLShY8MCbaHpZmRQ=;
-        b=LLJfhwyKUt+t41r68ag0yrmqrYvbfDAVlS66tLEaxLMt/m7uuUlVgpFzcOrzW7m6hA
-         9QteLGQofSx3J6bUtO58sZe0clhmUPdOki3EQelZXUg7OYNkPpSiiLSSmtrH0Oz20pMa
-         EOf3S6fgnycmmXr5pNah4se8rzsP+0MepcWXWa9n4XWbJAvlAp1lueaz+Exe3qWNSXwb
-         rW6Q2IRti5TnpxgMnjxqgdebH3d54u4GlFOEAoqmi2iyFazkrePOabNXR5ZRPOHFc9Vz
-         odVwD2WIOU2GJmtYyPf9nSW+HLkWnnw7qdhVtxl+HfJwEN5lNN+Olo1L4OYpUd2RMXxl
-         5KWw==
-X-Gm-Message-State: APjAAAXAYBolj0ImuqKsTcyCaApLoGmujEaQlS7+7siEeAQBkLTPHdw4
-        S+re3UO0GhRjEybeDFkkuhQUpEBrQLg=
-X-Google-Smtp-Source: APXvYqwGh98V0uzQ6kMneUn8Qbt11F4Efx4ZfFXFMj4i3I44luTpdfNkgKelLBkujdLlrWpytdKSOw==
-X-Received: by 2002:a17:902:b94a:: with SMTP id h10mr16639638pls.165.1568997420999;
-        Fri, 20 Sep 2019 09:37:00 -0700 (PDT)
+        bh=3CrXeC4LhwNob4cmLLTWLe1VRgX4UE5/WFGL96oHNLk=;
+        b=nXTZuHDxvdH0K3zNzzDpDc0ZxfffSaFBGzD0EN6iniC6O/zKaWZzZFRUJXwp0HnQuS
+         Y4edOK1Q4fAit7JLThrSX48A3/qN6dnalghT8Y7lQx/Vcx4oUI9nw+sqvOgO+SpGUOCp
+         v2C2vA75P31ecWoBgulM85b+p2Ua22/HIuiaydn5V2kHoEz6HrsT/qkNcCXCEuk4W62a
+         l/BUiazaPt1zE5CYhUdnj0xPAcW/sBuejhlDX5vCWURvhuwn6g07qCk0sr102kNij5to
+         qAcelZepfggB2Tt2x4a/0bq+WcK1mhpweUGpqLDWY538DZ5YdmQ4beCNjRr1cTMFI0Gp
+         mucQ==
+X-Gm-Message-State: APjAAAVDA6jly+XSBcjpR9CRuYdBAx6/3jvTwb+2UsuN9hnFJ/nMwuYv
+        069tJEu/u0hmTroma9j9+8I=
+X-Google-Smtp-Source: APXvYqzk73FAfuUXnbLbApgqtdj/qWIfb3TIp7RRMyrJcUHPLOSc3v7s5M1snaWsK4U+Ym9vSNWe1A==
+X-Received: by 2002:a17:902:b617:: with SMTP id b23mr17802447pls.184.1569001883457;
+        Fri, 20 Sep 2019 10:51:23 -0700 (PDT)
 Received: from [10.67.50.53] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id a17sm2762849pfi.178.2019.09.20.09.36.59
+        by smtp.googlemail.com with ESMTPSA id c128sm2840117pfc.166.2019.09.20.10.51.21
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 20 Sep 2019 09:37:00 -0700 (PDT)
-Subject: Re: [0/2] net: dsa: vsc73xx: Adjustments for vsc73xx_platform_probe()
+        Fri, 20 Sep 2019 10:51:22 -0700 (PDT)
+Subject: Re: [PATCH] serial: bcm2835: Use devm_platform_ioremap_resource() in
+ bcm2835aux_serial_probe()
 To:     Markus Elfring <Markus.Elfring@web.de>,
-        Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Pawel Dembicki <paweldembicki@gmail.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        linux-serial@vger.kernel.org, linux-rpi-kernel@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        bcm-kernel-feedback-list@broadcom.com,
+        Eric Anholt <eric@anholt.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>,
+        Martin Sperl <kernel@martin.sperl.org>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        Stefan Wahren <wahrenst@gmx.net>,
+        Stephen Boyd <swboyd@chromium.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-References: <98fee5f4-1e45-a0c6-2a38-9201b201c6eb@web.de>
- <20190920150924.GG3530@lunn.ch> <4a220bc4-0340-d54a-70bd-7bea62257b81@web.de>
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Himanshu Jha <himanshujha199640@gmail.com>
+References: <fcb34c72-89c7-9993-fc0a-ba3a61708bec@web.de>
 From:   Florian Fainelli <f.fainelli@gmail.com>
 Openpgp: preference=signencrypt
 Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
@@ -114,12 +123,12 @@ Autocrypt: addr=f.fainelli@gmail.com; prefer-encrypt=mutual; keydata=
  caxTGgc5zzQHeX67eMzrGomG3ZnIxmd1sAbgvJUDaD2GrYlulfwGWwWyTNbWRvMighVdPkSF
  6XFgQaosWxkV0OELLy2N485YrTr2Uq64VKyxpncLh50e2RnyAJ9Za0Dx0yyp44iD1OvHtkEI
  M5kY0ACeNhCZJvZ5g4C2Lc9fcTHu8jxmEkI=
-Message-ID: <5d068275-796d-7d76-ba33-6eb03fb1d7cc@gmail.com>
-Date:   Fri, 20 Sep 2019 09:36:57 -0700
+Message-ID: <b874901f-8dc2-e0ec-b2da-26b37e75ec26@gmail.com>
+Date:   Fri, 20 Sep 2019 10:51:20 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <4a220bc4-0340-d54a-70bd-7bea62257b81@web.de>
+In-Reply-To: <fcb34c72-89c7-9993-fc0a-ba3a61708bec@web.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -128,29 +137,16 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 9/20/19 8:30 AM, Markus Elfring wrote:
->> netdev is closed at the moment for patch.
+On 9/18/19 1:12 PM, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Wed, 18 Sep 2019 22:00:14 +0200
 > 
-> I wonder about this information.
-
-This is covered here:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/networking/netdev-FAQ.rst#n40
-
-and you can skip the reading and check this URL:
-
-http://vger.kernel.org/~davem/net-next.html
-
+> Simplify this function implementation by using a known wrapper function.
 > 
+> This issue was detected by using the Coccinelle software.
 > 
->> Please repost once it reopens, in about 2 weeks time.
-> 
-> I hope that the presented change possibilities can be integrated
-> in the near future also without a repetition of this small patch series.
-> https://lore.kernel.org/patchwork/project/lkml/list/?series=411271
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-You will have to resend it, and unless a bug fix comes in, which would
-be the only reason for your changes not to be "current" anymore, then it
-should apply as-is and you should be fine.
+Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
 -- 
 Florian

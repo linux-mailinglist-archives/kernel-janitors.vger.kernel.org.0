@@ -2,128 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DBDCDB9405
-	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Sep 2019 17:31:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51ECEB9550
+	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Sep 2019 18:22:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403926AbfITPbD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 20 Sep 2019 11:31:03 -0400
-Received: from mout.web.de ([212.227.17.11]:39517 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2403864AbfITPbC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 20 Sep 2019 11:31:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1568993452;
-        bh=5b/mPa3MrRD8fSpiMfl28l8+pTOGRpoWPGBs5L7KgIQ=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=KyG6ORLd8Z01/37KxUXUw63lAIirTT0/fJTsVhTz4Yco08SlVE8oSh2DPKf/jUNgC
-         XjfzsOLLLHKBuPNs3FxKLFLxbuNvUbHEbdDT9hZKfKe0p4GSLHE94n6Zj9wZ95GIka
-         O0TYyL3TstmievFJR2H+OIa8R6S1Y0g1SY3/jxCY=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.117.22]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M25B9-1hwZCp1Sl1-00u53h; Fri, 20
- Sep 2019 17:30:52 +0200
-Subject: Re: [0/2] net: dsa: vsc73xx: Adjustments for vsc73xx_platform_probe()
-To:     Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Pawel Dembicki <paweldembicki@gmail.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
+        id S2405043AbfITQVW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 20 Sep 2019 12:21:22 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:52886 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405006AbfITQVV (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 20 Sep 2019 12:21:21 -0400
+Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tip-bot2@linutronix.de>)
+        id 1iBLeT-00040h-PV; Fri, 20 Sep 2019 18:20:57 +0200
+Received: from [127.0.1.1] (localhost [IPv6:::1])
+        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 382C41C0E2A;
+        Fri, 20 Sep 2019 18:20:57 +0200 (CEST)
+Date:   Fri, 20 Sep 2019 16:20:57 -0000
+From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf test: Fix spelling mistake "allos" -> "allocate"
+Cc:     Colin King <colin.king@canonical.com>,
+        Mukesh Ojha <mojha@codeaurora.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-References: <98fee5f4-1e45-a0c6-2a38-9201b201c6eb@web.de>
- <20190920150924.GG3530@lunn.ch>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <4a220bc4-0340-d54a-70bd-7bea62257b81@web.de>
-Date:   Fri, 20 Sep 2019 17:30:40 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>, Borislav Petkov <bp@alien8.de>,
+        linux-kernel@vger.kernel.org
+In-Reply-To: <20190911152148.17031-1-colin.king@canonical.com>
+References: <20190911152148.17031-1-colin.king@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <20190920150924.GG3530@lunn.ch>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-X-Provags-ID: V03:K1:dLCDi7o9FQk8G4jX0Laahb9Yw9uCMao11Khxl20wnlXNhdJ3idi
- zKEEZeJaBG39wk0q8wr7hrGSSW3Tezx4Cea4imnDg4XjcD5xqHFyQWeSBi0pnOH+RtYGrXx
- 3CNBXFv/3g6N/9ALlpX0MggUguL1nbLOW0Ro2HwSIXkEtKMoegKj9zIpFMR13Kzk3Fe8Uf8
- CaRByq/JY+hOQf/pjWnQw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:IUuB6xYZo2k=:xk6QFX/T84fN3V4mH70GEZ
- 9tQ//BSVr0dh17UKAJZJcKlPh43EHmuQXvo3wH5J21j95af8npGKyTq5ahhlx6nNf0Fj67RD2
- i3plv7cu2/mWp0XtkArhPwJzoZEIuXdq3O3RiTCdJY9Y78zzmdI8BL1VhplZvP6TRP+SEazEy
- z7S+tOox3QJK6qoSrVIGUIvwdj7xkxyvxy60aldAARK1NwE+jSTTaxWI4A57IQ4QxlIuCefxi
- geWDc59NGx+BQirMsaDOKvbuhXUslYfhvoYVgDw48FkYWw9vO2TNwENYZTA4Lwy1lxXF+KFgl
- 0zDeTDGlnvz+LS6wcW5TNiTYorFNh5ITmJdqt+g5JZWVWAlSFRzTCDliaLOzyxbq03TCiw2h/
- YoZY72EqG9iKH6iVOKk6nNHZLUBwFEQuPDDO/nB3L2gGVBbC4pTjrsTF3fIkvdzG1glBnRIkv
- ZN0TLPC/rVctGt9dCuYUIdYkySqBHMbts+bGln56WhpGQR8myD+Ul0x7y+zsErhENMrRF9kVA
- GkBA8uBK7Fq3ISrLgq/LLhsMQmfrs/AtM0yWMBVlFXW2HIoqszrQ1V2CzykNc6u2t0VjJvzV6
- Q85AonYmm9Lp3JpOkHIYdxzv/qMUsk+nprUbQaA+uTieEgZ5HSNTAT1VLzSastpmChfFVrSbh
- dsp3X5649SNuHrnJi6sF+IL3lmUTgXW/JI1hnjxPr7x9D3Sx3c49M1/NgHpuzZZNeom7YWVPU
- mKjCHnx8fag1uy7TKNZ4yDb7Pu+dzXXMe/roRbKwNJh7uALbXnvAUy64mRHmUZZw7XhckBmAn
- SkCZNtH7gx42PMzkSA+KbEpAsfW/f5UtnguZL0UvuDYCL0M1XHjVOo6BQpsp4gmVu1WI6m5jp
- pTsaLvJzJlCqKPJ9h7YTMqgoAQdSnbRcjyqbeSMmQJQ1cnVuHkkR8F+9uYKsa+QWzg0kOlWAT
- 07j4YMJJZznX0t42KcjHVLbkikrsu1+J8grwciYo6JVv/9DYYtTEAL0YlY6O4NlZ3mTazP5xB
- 6PJBAQCg6GCHa4bV+Say1sU6iiJlrKWCswCrOLmHFqFlmKHmoCEe4JZ9DLbhWIoOvg0KkifuB
- D4u58ETUPsiDvgTGqxQRRLG1LjeNtit6q4nagxoziHu6aQpAA4ZLKD3H7wLoytgdQrsTPTZ6l
- NCMDZO/7qTYjAgoK6VfOoHBs97Z8XFiIfldYAgvoCkfFBGJzeEOuHwfodLMzXugz3pUN0D4bC
- 8RZqbX/KVwryGUzExuZxFCBygMZFtjx7zPOGfuaTmnL2UWeMWTGawqeS2W+A=
+Message-ID: <156899645716.24167.3109929081723398408.tip-bot2@tip-bot2>
+X-Mailer: tip-git-log-daemon
+Robot-ID: <tip-bot2.linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> netdev is closed at the moment for patch.
+The following commit has been merged into the perf/urgent branch of tip:
 
-I wonder about this information.
+Commit-ID:     ce095c9ac293d1683f9fedb214811727dff0d508
+Gitweb:        https://git.kernel.org/tip/ce095c9ac293d1683f9fedb214811727dff0d508
+Author:        Colin Ian King <colin.king@canonical.com>
+AuthorDate:    Wed, 11 Sep 2019 16:21:48 +01:00
+Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
+CommitterDate: Fri, 20 Sep 2019 10:28:26 -03:00
 
+perf test: Fix spelling mistake "allos" -> "allocate"
 
-> Please repost once it reopens, in about 2 weeks time.
+There is a spelling mistake in a TEST_ASSERT_VAL message. Fix it.
 
-I hope that the presented change possibilities can be integrated
-in the near future also without a repetition of this small patch series.
-https://lore.kernel.org/patchwork/project/lkml/list/?series=411271
+Signed-off-by: Colin King <colin.king@canonical.com>
+Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: kernel-janitors@vger.kernel.org
+Link: http://lore.kernel.org/lkml/20190911152148.17031-1-colin.king@canonical.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+---
+ tools/perf/tests/event_update.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Regards,
-Markus
+diff --git a/tools/perf/tests/event_update.c b/tools/perf/tests/event_update.c
+index 4bb772e..0497d90 100644
+--- a/tools/perf/tests/event_update.c
++++ b/tools/perf/tests/event_update.c
+@@ -94,7 +94,7 @@ int test__event_update(struct test *test __maybe_unused, int subtest __maybe_unu
+ 
+ 	evsel = perf_evlist__first(evlist);
+ 
+-	TEST_ASSERT_VAL("failed to allos ids",
++	TEST_ASSERT_VAL("failed to allocate ids",
+ 			!perf_evsel__alloc_id(evsel, 1, 1));
+ 
+ 	perf_evlist__id_add(evlist, evsel, 0, 0, 123);

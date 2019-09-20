@@ -2,78 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BD44EB9099
-	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Sep 2019 15:25:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0797AB90C7
+	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Sep 2019 15:38:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727569AbfITNZ1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 20 Sep 2019 09:25:27 -0400
-Received: from foss.arm.com ([217.140.110.172]:44720 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726794AbfITNZ1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 20 Sep 2019 09:25:27 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EA67F1570;
-        Fri, 20 Sep 2019 06:25:26 -0700 (PDT)
-Received: from [10.1.197.57] (e110467-lin.cambridge.arm.com [10.1.197.57])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 68BB93F67D;
-        Fri, 20 Sep 2019 06:25:23 -0700 (PDT)
-Subject: Re: [PATCH] mt7601u: phy: simplify zero check on val
-To:     Colin King <colin.king@canonical.com>,
-        Jakub Kicinski <kubakici@wp.pl>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20190920125414.15507-1-colin.king@canonical.com>
-From:   Robin Murphy <robin.murphy@arm.com>
-Message-ID: <2f9ab78a-ea76-0b60-375a-9a22cd2ff0f5@arm.com>
-Date:   Fri, 20 Sep 2019 14:25:21 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1728040AbfITNif (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 20 Sep 2019 09:38:35 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:43919 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726835AbfITNif (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 20 Sep 2019 09:38:35 -0400
+Received: by mail-oi1-f196.google.com with SMTP id t84so1747081oih.10;
+        Fri, 20 Sep 2019 06:38:35 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=U7SYpu/IKv9A1L7ri1/PD+Qii7rDc6Mb4V84bwV3zu8=;
+        b=IQ2015M21qbQ/joqpih/7/DGCCTUk8tjWX8s788VR1LRCdYD+r6/maw+BtyX62fXzF
+         HM9Uk9b6KxFmfBPrdiV0OXrYiBrC7qD+juoaeyKUqTUvzRtIs+T2dYmeyW4wcJJd7VLy
+         ywfFV2arFEuclpjG3gdnl2rKh0NNu0jHRenWCONr2u67Ux7zrAQQ0tWCO5TYa/g5wL5R
+         StGNmo6z1aMCzT9aQAKS7P4K4ymKfFKufGdFc3YzVVf4jA+LGLRHa6Aidu/7ZFe91Mi7
+         gEHSvQO06OoXU7N9/p5xlgvY2zrR7mw9HHm8ic/Razgh3bIjdaZxlJRrxzTs5cCE3fzS
+         PI0g==
+X-Gm-Message-State: APjAAAWES4mGnX+4OJhQbBuMbxd2LtIGixP9/kJ+gcs3WIzKCbG6Lzi5
+        KugJ9b7K+QS1Yj3Vlv4y38mexxe9binlA2q3f6g=
+X-Google-Smtp-Source: APXvYqw67ydlVXFpRTDwDbvUAIeUNKLYEQkD97I8eV/GUwXmYJHJyeTNAxbYLZDN4ARUAYp+5lhdOdt3kja0FCIfhP8=
+X-Received: by 2002:aca:f305:: with SMTP id r5mr2816182oih.131.1568986714503;
+ Fri, 20 Sep 2019 06:38:34 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20190920125414.15507-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+References: <d80a685a-c3de-b9c9-ad32-e1da9308c393@web.de>
+In-Reply-To: <d80a685a-c3de-b9c9-ad32-e1da9308c393@web.de>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 20 Sep 2019 15:38:22 +0200
+Message-ID: <CAMuHMdVD4ktoacaqWSRxGehmO3ULrcFXCSTQ=JaxrUWhCTw-Lg@mail.gmail.com>
+Subject: Re: [PATCH] media: platform: Use devm_platform_ioremap_resource() in
+ two functions
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Linux Media Mailing List <linux-media@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-mediatek@lists.infradead.org,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        Andrew-CT Chen <andrew-ct.chen@mediatek.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        =?UTF-8?Q?Niklas_S=C3=B6derlund?= <niklas.soderlund@ragnatech.se>,
+        Tiffany Lin <tiffany.lin@mediatek.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Himanshu Jha <himanshujha199640@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 20/09/2019 13:54, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently the zero check on val to break out of a loop
-> is a little obscure.  Replace the val is zero and break check
-> with a loop while value is non-zero.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->   drivers/net/wireless/mediatek/mt7601u/phy.c | 4 +---
->   1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/wireless/mediatek/mt7601u/phy.c b/drivers/net/wireless/mediatek/mt7601u/phy.c
-> index 06f5702ab4bd..4e0e473caae1 100644
-> --- a/drivers/net/wireless/mediatek/mt7601u/phy.c
-> +++ b/drivers/net/wireless/mediatek/mt7601u/phy.c
-> @@ -213,9 +213,7 @@ int mt7601u_wait_bbp_ready(struct mt7601u_dev *dev)
->   
->   	do {
->   		val = mt7601u_bbp_rr(dev, MT_BBP_REG_VERSION);
-> -		if (val && ~val)
-> -			break;
+On Wed, Sep 18, 2019 at 11:30 AM Markus Elfring <Markus.Elfring@web.de> wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Wed, 18 Sep 2019 11:20:48 +0200
+>
+> Simplify these function implementations by using a known wrapper function.
+>
+> This issue was detected by using the Coccinelle software.
+>
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-AFAICS, this effectively implements "while (val == 0 || val == 0xff)", 
-which is not at all equivalent to "while(val)"... :/
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-Robin.
+Gr{oetje,eeting}s,
 
-> -	} while (--i);
-> +	} while (val && --i);
->   
->   	if (!i) {
->   		dev_err(dev->dev, "Error: BBP is not ready\n");
-> 
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

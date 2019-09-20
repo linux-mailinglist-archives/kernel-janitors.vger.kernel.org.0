@@ -2,45 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C48DDB91A8
-	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Sep 2019 16:24:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E079B91F9
+	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Sep 2019 16:29:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387959AbfITOYr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 20 Sep 2019 10:24:47 -0400
-Received: from muru.com ([72.249.23.125]:34008 "EHLO muru.com"
+        id S2389676AbfITO1O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 20 Sep 2019 10:27:14 -0400
+Received: from mail.kernel.org ([198.145.29.99]:40188 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387938AbfITOYr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 20 Sep 2019 10:24:47 -0400
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id B502E80AA;
-        Fri, 20 Sep 2019 14:25:18 +0000 (UTC)
-Date:   Fri, 20 Sep 2019 07:24:44 -0700
-From:   Tony Lindgren <tony@atomide.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>,
-        YueHaibing <yuehaibing@huawei.com>, Nishanth Menon <nm@ti.com>,
-        Tero Kristo <t-kristo@ti.com>, linux-gpio@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] pinctl: ti: iodelay: fix error checking on
- pinctrl_count_index_with_args call
-Message-ID: <20190920142444.GP5610@atomide.com>
-References: <20190920122030.14340-1-colin.king@canonical.com>
+        id S2389636AbfITO1M (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 20 Sep 2019 10:27:12 -0400
+Received: from quaco.ghostprotocols.net (unknown [179.97.35.50])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B614A2080F;
+        Fri, 20 Sep 2019 14:27:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1568989631;
+        bh=3J5wac/rahe28jHoGn9pmTv4WzTqKg0kU8cqewNX+5Y=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=KBNwxBAh9WJshZJAM/G/EJUeYDuLc8U20duLM0GBYIONZNZXJGtY0W0eGiLorwWUP
+         iHH+uA/h3+kr00fsSUSUQwknIYTE79sC5cR0g1MUbB5CQJU3gNqmp2XJqFRocBD0v9
+         iL8pvaJM+L1yJn9zHLl1C6AbMNHH3VQDxjkjpldg=
+From:   Arnaldo Carvalho de Melo <acme@kernel.org>
+To:     Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     Jiri Olsa <jolsa@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
+        Clark Williams <williams@redhat.com>,
+        linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+        Colin Ian King <colin.king@canonical.com>,
+        Mukesh Ojha <mojha@codeaurora.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        kernel-janitors@vger.kernel.org,
+        Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 28/31] perf test: Fix spelling mistake "allos" -> "allocate"
+Date:   Fri, 20 Sep 2019 11:25:39 -0300
+Message-Id: <20190920142542.12047-29-acme@kernel.org>
+X-Mailer: git-send-email 2.21.0
+In-Reply-To: <20190920142542.12047-1-acme@kernel.org>
+References: <20190920142542.12047-1-acme@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190920122030.14340-1-colin.king@canonical.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-* Colin King <colin.king@canonical.com> [190920 12:21]:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The call to pinctrl_count_index_with_args checks for a -EINVAL return
-> however this function calls pinctrl_get_list_and_count and this can
-> return -ENOENT. Rather than check for a specific error, fix this by
-> checking for any error return to catch the -ENOENT case.
+From: Colin Ian King <colin.king@canonical.com>
 
-Acked-by: Tony Lindgren <tony@atomide.com>
+There is a spelling mistake in a TEST_ASSERT_VAL message. Fix it.
+
+Signed-off-by: Colin King <colin.king@canonical.com>
+Reviewed-by: Mukesh Ojha <mojha@codeaurora.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Jiri Olsa <jolsa@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: kernel-janitors@vger.kernel.org
+Link: http://lore.kernel.org/lkml/20190911152148.17031-1-colin.king@canonical.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+---
+ tools/perf/tests/event_update.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/perf/tests/event_update.c b/tools/perf/tests/event_update.c
+index 4bb772e2b73d..0497d900ced2 100644
+--- a/tools/perf/tests/event_update.c
++++ b/tools/perf/tests/event_update.c
+@@ -94,7 +94,7 @@ int test__event_update(struct test *test __maybe_unused, int subtest __maybe_unu
+ 
+ 	evsel = perf_evlist__first(evlist);
+ 
+-	TEST_ASSERT_VAL("failed to allos ids",
++	TEST_ASSERT_VAL("failed to allocate ids",
+ 			!perf_evsel__alloc_id(evsel, 1, 1));
+ 
+ 	perf_evlist__id_add(evlist, evsel, 0, 0, 123);
+-- 
+2.21.0
+

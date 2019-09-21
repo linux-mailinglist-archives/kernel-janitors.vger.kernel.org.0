@@ -2,37 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42C32B9F0D
-	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Sep 2019 19:03:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BFCBB9F3C
+	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Sep 2019 19:51:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407819AbfIURDQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 21 Sep 2019 13:03:16 -0400
-Received: from mout.web.de ([212.227.17.12]:59193 "EHLO mout.web.de"
+        id S1726717AbfIURu4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 21 Sep 2019 13:50:56 -0400
+Received: from mout.web.de ([212.227.17.12]:36665 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2406192AbfIURDP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 21 Sep 2019 13:03:15 -0400
+        id S1726413AbfIURu4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 21 Sep 2019 13:50:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569085374;
-        bh=zQJSoK5O046vNw0Xn8o1QL7Tl7TkCkMseqOpAr0NV20=;
+        s=dbaedf251592; t=1569088248;
+        bh=01KhcEVaovNKmDRrNUSUWrG8wAUPK/XdKwsrTNvk9ms=;
         h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=YgeiR8JMJ3VwxfXHlp33Ssyn/IWwy1MEQEWzNvJDbO6BqFxFNvz++EQ1XMTh6T4IN
-         q6SrmI6fHIm1e57LS2gUEgEgw61iPtErKnGDpwIMZ8OO4mj5HdcP0jK8gMHEIhpLMH
-         o5XYS51BeZEG+smcxXXc8lL/7QVtIA7qRM2EHRDE=
+        b=UKDOi1Tpf/HhZEQ0L5SXzwOHi95W7PbtOLyqDSZB4pPzhlbIHvZqeCF6dORMUSTfU
+         koBA3263OTcdakvhfqihKVfVaGv1sEbjUmtIfovINY8KyTINBN/sYfDkSpoxeU7WN0
+         hs97EMWtAo2kKyjHyee/6iQ0B2RYkkPXQB7OgZDE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.64.44]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LmuAa-1hi9Ba0s7I-00h3e0; Sat, 21
- Sep 2019 19:02:54 +0200
-To:     linux-edac@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
-        James Morse <james.morse@arm.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Robert Richter <rrichter@marvell.com>,
-        Shravan Kumar Ramani <sramani@mellanox.com>,
-        Tony Luck <tony.luck@intel.com>
+Received: from [192.168.1.2] ([2.244.64.44]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MGRZc-1iOung2DfU-00DCpg; Sat, 21
+ Sep 2019 19:50:48 +0200
+To:     dri-devel@lists.freedesktop.org,
+        Brian Starkey <brian.starkey@arm.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        "James (Qian) Wang" <james.qian.wang@arm.com>,
+        Liviu Dudau <liviu.dudau@arm.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] EDAC: BlueField: Use devm_platform_ioremap_resource() in
- bluefield_edac_mc_probe()
+Subject: [PATCH] drm/komeda: Use devm_platform_ioremap_resource() in
+ komeda_dev_create()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -76,45 +76,45 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <cda92ed6-feb8-87a0-1477-1f784e3dc576@web.de>
-Date:   Sat, 21 Sep 2019 19:02:52 +0200
+Message-ID: <64a6ea39-3e4b-2ebe-74f7-98720e581e3e@web.de>
+Date:   Sat, 21 Sep 2019 19:50:46 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:k4e1oxOdJsiHEJTtoEf3M5AoZG8D3xOl99OQZI086pgCSny64Jn
- wXHlVyg+G+8GMrGlgeXRQMZNF8rL2sistSOPtIuKQb4MEUCq7aFzs7FJYe8HAaJygZvNQAC
- Jq8d6YuKe8UcQl+VYiEFz7fhUJfwdZt4qmyHvNLsuxOSlBE1pifGFHOrVdxO760g4g7HjJi
- 01REofvxOGfS2A7KS4wpg==
+X-Provags-ID: V03:K1:2k8y4xw3Rgii+T8PbvI0l1DR68+jfybpTh5FEijYJB5QA/bos8d
+ KmNtOmDSHS+KBdrwFvMy+GHZkqcOnMhJG5PbdWxN/ctyAWf5m5b86PVQLDOaWf4/GOeOs0Y
+ sFl+eNcvece36uDfAAxFAiHW5+YNGBb4rGASUMrBUZz+GUL17Ugw8aCpqd79VT80lSHv4pa
+ PVyZ6wFB0f4ulJEtZXZJw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:p9gDb9qbVZg=:xAQJAVdzhWWbIul1i+Tujk
- b703L7FI0XyiKDLfAlvztTmsokZXFFXq3AGg+VGROfXMMPaoJjtT8moXx31wjigahZevuv6TC
- HsrkvuXss9qGQq2tc8CoVXW5lk9dPgfLSRXe6lrFjxqHLTyfmjD+i4nsvrtlZ9bJ+3KcUAXcM
- TX50IGBK7QOApVnfJ/StBl63f9Zz0W661zWzeo84uF65dvYeOLamMxn/+EAkfC9GQ+Es8d78w
- 6WxjwBFFZmIQ58vpgk4EzwvQ6Hgs15YyNSGgXHeIkqkSI4vR0+NnofeOm+yoruc/O6hqIdFub
- EWmrKK3Hn4r0GWpKXtIyw+cK0R/RiygaiITR9fuhOpxhjpnmHkZPLXjDhsMG0EKXRbOe5gxeo
- 7B/MMeKUO8CTjsEJSpzjKW1sIwmAurXn003LrojMPU9pyEVF5bKjQK4BR2RqNI5nhZg07OuZE
- pHjq9j2A/C8BVKskg0W9AfD78WK3xG3sP3p0pDyXPues3ydmvsfEAxZxbNqCM87Dl+pT6nf7Z
- 5mmRCi0Eb/6VvoGLFGQDdsJd1VOVFp5DBT6CbUhMGuWqaeVi1QzBQKzPffASPms1A7q/vANKy
- Ncg0dwUWs+WtIKsNVlumgqbTFdzDcM6xchugfGOZXRvFK4KR/f8fgCkyET6duQ7/xGJy8ag1D
- jZe71pO1oaXcaCRpoKGH0jTtbCpyKfKa/d5ARMxGlpbDFYSDf5SIv+rl7S0IS++sMPcS6e3pm
- qcwL1445N0pgooLEyToaOz1AbLoIWaUCwQsDP6YRwONxk1IAgpKPc24X9Wxr68qfZzlwa+AKp
- EaKOMOcUVknqRdm0crwNyn1cWHObhv389O2XxkPPsGXbKNAeMAOvOG2IwcYySzIiAvyHaO1wL
- icxAbz2hkebFrUwswJ1RLDYjmqYT97FpBVaGuDrAyG6pNxheHOS6PxqLyyZ0k/NN2s+CGBxk4
- nwwUi8DYApA5Lluqe0v61XMeRVG0BEYZsgvC5g7LNvMh5IyHd/oRqQzVkq9aph+MKdeZ0FXMK
- lDY+3F3mWKHYgBhAuv5CyAyZTiF3e/l5JDTpmanvaKYo+mS5+G2sU/TNUoqxeylC2EUgaczyY
- h31tKv5f4m+BMZvOQzeK3g/IaBTE0sA9GT7eb/F3dHw9gQGKJRxUkWZfqFqYlFK9VkUW4cyP6
- PIaTXN1uGMkczlqG93hM/x0etM4ghVKNwiHaEd8wz/uyPiV7NGZKs3Vaw7OHEESfPO5JvHzaC
- dPFe8KB6CgUQKswcv7ut9fYhOYtFboRb2GzpjqPMP+CcPjE6qVdn8vd0/px4=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:F8BFKyOmTXE=:SZ+WPYuykf61gJqSMPeAcp
+ g+lJF5ChYf+0Xs7CZwmi+HAtMflXZS6ynzBLC+CZsWK3sfrLPKKyhm+H9HBwz6rj/NW/WFrf6
+ NOGaQK+ANKCkc09PgPxTnnM4n8YHwulIyg5TyiNYyMwFaQ3COGOi+xLjzP2TamhJ9dxtc33vK
+ RCdoGKWJKrN5R95aLH8YyNDdSHhtTwMn+LJeWsAFsUBxU7dE/xe8CRsMBJoWrO3LNMKMVviRl
+ M7RoWWgumiQJjak/Ag76vWOnw8TVYG1dvGOFZMq5suo2R65OqqryfDy7bPZDOaGAUFquxgyRP
+ afk7BKwqayPTMQqDFCsfG7mlwUr6+DngvKjw3wC4qVW7DU3SsDimgoWfgDPbaWtwYi0bA7XCi
+ xjXV4DfyVRMUU9iZrRiCEIYWnldT4uel/pBcs5jYcYczIu6FkmqXgQealCbpu78i77Zmivqao
+ EwU7DmmOXg0i0lyQEecKe8qBuuMhgi+Hk9/MOKo81e17MgyAFrjtufB5N/JlOCcevgryn89Ig
+ YQQsjQPdSFJ106ZPfuGfuvOMhchdvNw01HuHqMzQJ9BVdvqYg0WWEr7MP/4hXkFrAs94JwFVs
+ 024YfmcXel11NKnkIYa0lv2snNE72JYDwDA9EpmJz5HtFwFXlS1dAHbcTlD9sYMK9ckmb1imN
+ QwbwgqtJzLxUGRe/i1L+u2Hn34RPpoHkEPhgGJ1M+rnvAms3ozsqhIt448NnrXWjddp/KjKzo
+ HFwTQipGjshvaXfrkkup0FRV3nohqra241Tc9ylpCSdMIn+OqHR30BdGw62u/cqK/CzZT7/Ly
+ odyFlRTvYQZhiBI889E4jIbYkA3MSVc62hIeA1v2oruN0LeAG/3tTme3j6pXnZsxe3wn31GQ/
+ dJqWbmBxdHTbxeiIPkV0giVjLX27GcA73axCANkkaE7IrYSqNhLnw0okADCmiBRiNUBhogufp
+ fjGl98v70Tg83uxW0uXaCStnVxHkOTSbIOuHBtK89LNva2PbafO+b70Y1sAvawfbNy56uL0pW
+ dz+kbb5r0xbTaxHXnj44xaujvCIIZyYNSsK/ut9VLp+EaI6r4cnQbAGdwfrLHOKkKYhkiycml
+ oLUgAsnwxbRVtorXX6NXw3iT4Jlv6yE2IyFPQzkRz0Y+4TRoIxMPWoJ5+WBj77VIH+DTpqYDO
+ V0lxPfXpxhLGW1zmNwWouw7fprQ/q/y/jWqZHanhPF4+nspMSfLiGl5K3SbgUVQZEOcObUYIx
+ NwMLPsmls2XSvpiEzGpOv0659fXEylFeiUt4JvMIT5btllcdUgwN6lyBbeX8=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 21 Sep 2019 18:56:54 +0200
+Date: Sat, 21 Sep 2019 19:43:51 +0200
 
 Simplify this function implementation by using a known wrapper function.
 
@@ -122,44 +122,45 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/edac/bluefield_edac.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/gpu/drm/arm/display/komeda/komeda_dev.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/edac/bluefield_edac.c b/drivers/edac/bluefield_edac.c
-index e4736eb37bfb..0d09add30460 100644
-=2D-- a/drivers/edac/bluefield_edac.c
-+++ b/drivers/edac/bluefield_edac.c
-@@ -245,7 +245,6 @@ static int bluefield_edac_mc_probe(struct platform_dev=
-ice *pdev)
- 	struct device *dev =3D &pdev->dev;
- 	struct edac_mc_layer layers[1];
- 	struct mem_ctl_info *mci;
--	struct resource *emi_res;
- 	unsigned int mc_idx, dimm_count;
- 	int rc, ret;
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_dev.c b/drivers/gpu=
+/drm/arm/display/komeda/komeda_dev.c
+index ca64a129c594..a387d923962e 100644
+=2D-- a/drivers/gpu/drm/arm/display/komeda/komeda_dev.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_dev.c
+@@ -172,19 +172,12 @@ struct komeda_dev *komeda_dev_create(struct device *=
+dev)
+ 	struct platform_device *pdev =3D to_platform_device(dev);
+ 	const struct komeda_product_data *product;
+ 	struct komeda_dev *mdev;
+-	struct resource *io_res;
+ 	int err =3D 0;
 
-@@ -266,10 +265,6 @@ static int bluefield_edac_mc_probe(struct platform_de=
-vice *pdev)
- 		return -EINVAL;
- 	}
+ 	product =3D of_device_get_match_data(dev);
+ 	if (!product)
+ 		return ERR_PTR(-ENODEV);
 
--	emi_res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!emi_res)
--		return -EINVAL;
+-	io_res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!io_res) {
+-		DRM_ERROR("No registers defined.\n");
+-		return ERR_PTR(-ENODEV);
+-	}
 -
- 	layers[0].type =3D EDAC_MC_LAYER_SLOT;
- 	layers[0].size =3D dimm_count;
- 	layers[0].is_virt_csrow =3D true;
-@@ -281,7 +276,7 @@ static int bluefield_edac_mc_probe(struct platform_dev=
-ice *pdev)
- 	priv =3D mci->pvt_info;
+ 	mdev =3D devm_kzalloc(dev, sizeof(*mdev), GFP_KERNEL);
+ 	if (!mdev)
+ 		return ERR_PTR(-ENOMEM);
+@@ -192,7 +185,7 @@ struct komeda_dev *komeda_dev_create(struct device *de=
+v)
+ 	mutex_init(&mdev->lock);
 
- 	priv->dimm_per_mc =3D dimm_count;
--	priv->emi_base =3D devm_ioremap_resource(dev, emi_res);
-+	priv->emi_base =3D devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(priv->emi_base)) {
- 		dev_err(dev, "failed to map EMI IO resource\n");
- 		ret =3D PTR_ERR(priv->emi_base);
+ 	mdev->dev =3D dev;
+-	mdev->reg_base =3D devm_ioremap_resource(dev, io_res);
++	mdev->reg_base =3D devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(mdev->reg_base)) {
+ 		DRM_ERROR("Map register space failed.\n");
+ 		err =3D PTR_ERR(mdev->reg_base);
 =2D-
 2.23.0
 

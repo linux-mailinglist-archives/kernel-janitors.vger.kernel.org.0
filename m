@@ -2,74 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F109EB9C93
-	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Sep 2019 08:17:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35B8EB9C9C
+	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Sep 2019 08:32:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404765AbfIUGRt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 21 Sep 2019 02:17:49 -0400
-Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:28444 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731001AbfIUGRt (ORCPT
+        id S1731052AbfIUGbh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 21 Sep 2019 02:31:37 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:43330 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729346AbfIUGbg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 21 Sep 2019 02:17:49 -0400
-Received: from localhost.localdomain ([93.22.38.188])
-        by mwinf5d68 with ME
-        id 46Hj2100d43Zwrh036HkQu; Sat, 21 Sep 2019 08:17:45 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 21 Sep 2019 08:17:45 +0200
-X-ME-IP: 93.22.38.188
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     khc@pm.waw.pl, davem@davemloft.net
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] hdlc: Simplify code in 'pvc_xmit()'
-Date:   Sat, 21 Sep 2019 08:17:38 +0200
-Message-Id: <20190921061738.25326-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        Sat, 21 Sep 2019 02:31:36 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 9FF666141B; Sat, 21 Sep 2019 06:31:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569047495;
+        bh=UsEhXiedwH1UXYLIVXKJ1e8J9VKVYvtraBikkOmIXEU=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=ZoXfQOXzQo0tDsKnfyrdqo4KNbhUq2wlMgz1ZXoXAHHaTdes+m86tt4/IFvDXuUUX
+         JzksHc+ffwGqWaDNWeWP2CtDMzgZ0s4ocSOwXpgXfF+gtvYUMEVJaSeiCKFa14yEE+
+         fh9rwlVXVyjQ2zzl8cFTYwZabcXwLg6CjIO09iNs=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.7 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,SPF_NONE autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from x230.qca.qualcomm.com (37-136-106-186.rev.dnainternet.fi [37.136.106.186])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 6AA4E607DE;
+        Sat, 21 Sep 2019 06:31:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569047495;
+        bh=UsEhXiedwH1UXYLIVXKJ1e8J9VKVYvtraBikkOmIXEU=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=ZoXfQOXzQo0tDsKnfyrdqo4KNbhUq2wlMgz1ZXoXAHHaTdes+m86tt4/IFvDXuUUX
+         JzksHc+ffwGqWaDNWeWP2CtDMzgZ0s4ocSOwXpgXfF+gtvYUMEVJaSeiCKFa14yEE+
+         fh9rwlVXVyjQ2zzl8cFTYwZabcXwLg6CjIO09iNs=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 6AA4E607DE
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Maya Erez <merez@codeaurora.org>,
+        Dedy Lansky <dlansky@codeaurora.org>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] wil6210: use after free in wil_netif_rx_any()
+References: <20190921060145.GD18726@mwanda>
+Date:   Sat, 21 Sep 2019 09:31:30 +0300
+In-Reply-To: <20190921060145.GD18726@mwanda> (Dan Carpenter's message of "Sat,
+        21 Sep 2019 09:01:45 +0300")
+Message-ID: <87lfuib1od.fsf@codeaurora.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Use __skb_pad instead of rewriting it, this saves some LoC.
+Dan Carpenter <dan.carpenter@oracle.com> writes:
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Compile tested only.
----
- drivers/net/wan/hdlc_fr.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+> The debug code dereferences "skb" to print "skb->len" so we have to
+> print the message before we free "skb".
+>
+> Fixes: f99fe49ff372 ("wil6210: add wil_netif_rx() helper function")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-diff --git a/drivers/net/wan/hdlc_fr.c b/drivers/net/wan/hdlc_fr.c
-index 9acad651ea1f..30f20b667c8b 100644
---- a/drivers/net/wan/hdlc_fr.c
-+++ b/drivers/net/wan/hdlc_fr.c
-@@ -414,16 +414,12 @@ static netdev_tx_t pvc_xmit(struct sk_buff *skb, struct net_device *dev)
- 		if (dev->type == ARPHRD_ETHER) {
- 			int pad = ETH_ZLEN - skb->len;
- 			if (pad > 0) { /* Pad the frame with zeros */
--				int len = skb->len;
--				if (skb_tailroom(skb) < pad)
--					if (pskb_expand_head(skb, 0, pad,
--							     GFP_ATOMIC)) {
--						dev->stats.tx_dropped++;
--						dev_kfree_skb(skb);
--						return NETDEV_TX_OK;
--					}
-+				if (__skb_pad(skb, pad, false) < 0) {
-+					dev->stats.tx_dropped++;
-+					dev_kfree_skb(skb);
-+					return NETDEV_TX_OK;
-+				}
- 				skb_put(skb, pad);
--				memset(skb->data + len, 0, pad);
- 			}
- 			skb->protocol = cpu_to_be16(ETH_P_802_3);
- 		}
+As this is a regression starting from v5.4-rc1, I'll queue this to v5.4.
+
 -- 
-2.20.1
-
+Kalle Valo

@@ -2,37 +2,43 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BFCBB9F3C
-	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Sep 2019 19:51:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05FF6B9F60
+	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Sep 2019 20:21:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726717AbfIURu4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 21 Sep 2019 13:50:56 -0400
-Received: from mout.web.de ([212.227.17.12]:36665 "EHLO mout.web.de"
+        id S1731798AbfIUSVD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 21 Sep 2019 14:21:03 -0400
+Received: from mout.web.de ([212.227.17.11]:53419 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726413AbfIURu4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 21 Sep 2019 13:50:56 -0400
+        id S1727776AbfIUSVC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 21 Sep 2019 14:21:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569088248;
-        bh=01KhcEVaovNKmDRrNUSUWrG8wAUPK/XdKwsrTNvk9ms=;
-        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=UKDOi1Tpf/HhZEQ0L5SXzwOHi95W7PbtOLyqDSZB4pPzhlbIHvZqeCF6dORMUSTfU
-         koBA3263OTcdakvhfqihKVfVaGv1sEbjUmtIfovINY8KyTINBN/sYfDkSpoxeU7WN0
-         hs97EMWtAo2kKyjHyee/6iQ0B2RYkkPXQB7OgZDE=
+        s=dbaedf251592; t=1569090026;
+        bh=JbHXXipkDs96r6sC02uR3t1qJZ+VGIW8Ril0kxJ0PzY=;
+        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+        b=ZW3oouM1CrAGJuOPrNyHS9MFGdNV0IPOac4UxXC3tp9PWb41uLH31nfS8wp0WNLQX
+         vZTttsTfsVwNjuDe+nl8HwcAWUqsNAPKIETBhoZmiZvoeEdf3BBzSjsrOchFVbWQ+2
+         Zbo7DWPiFgdoHsAmXCHkbFbzw2BJdpTy+omWHXG8=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.244.64.44]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MGRZc-1iOung2DfU-00DCpg; Sat, 21
- Sep 2019 19:50:48 +0200
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MAvGa-1iJPUT36k0-009v4y; Sat, 21
+ Sep 2019 20:20:25 +0200
 To:     dri-devel@lists.freedesktop.org,
-        Brian Starkey <brian.starkey@arm.com>,
+        Andrzej Hajda <a.hajda@samsung.com>,
         Daniel Vetter <daniel@ffwll.ch>,
         David Airlie <airlied@linux.ie>,
-        "James (Qian) Wang" <james.qian.wang@arm.com>,
-        Liviu Dudau <liviu.dudau@arm.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+        =?UTF-8?Q?Heiko_St=c3=bcbner?= <heiko@sntech.de>,
+        Jernej Skrabec <jernej.skrabec@siol.net>,
+        Jonas Karlman <jonas@kwiboo.se>,
+        Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+        Matt Redfearn <matt.redfearn@thinci.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Nickey Yang <nickey.yang@rock-chips.com>,
+        Philippe Cornu <philippe.cornu@st.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        =?UTF-8?Q?Yannick_Fertr=c3=a9?= <yannick.fertre@st.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] drm/komeda: Use devm_platform_ioremap_resource() in
- komeda_dev_create()
+Subject: [PATCH] drm/bridge/synopsys: dsi: Use
+ devm_platform_ioremap_resource() in __dw_mipi_dsi_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -76,45 +82,47 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <64a6ea39-3e4b-2ebe-74f7-98720e581e3e@web.de>
-Date:   Sat, 21 Sep 2019 19:50:46 +0200
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Message-ID: <e0d7b7d7-3e89-8b3f-04ed-0b14806e66f7@web.de>
+Date:   Sat, 21 Sep 2019 20:20:20 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:2k8y4xw3Rgii+T8PbvI0l1DR68+jfybpTh5FEijYJB5QA/bos8d
- KmNtOmDSHS+KBdrwFvMy+GHZkqcOnMhJG5PbdWxN/ctyAWf5m5b86PVQLDOaWf4/GOeOs0Y
- sFl+eNcvece36uDfAAxFAiHW5+YNGBb4rGASUMrBUZz+GUL17Ugw8aCpqd79VT80lSHv4pa
- PVyZ6wFB0f4ulJEtZXZJw==
+X-Provags-ID: V03:K1:/X5KSMYfk/y84AhbFArCNipUfcIqSR5iWevq/uIhXNqC3wOtX/m
+ GNs5JyUPr25PmxwhO6/pi2z+47h1ZiD01UqE1/gd/idvfZp4svdI/0bTRbewif2ZYOa7q0Z
+ mjD5As+bci/qG/FyAlfwbjxdYbIXXfDDKZqMFtCiAXp9OrHeMZZ/SwXfSBXYzZ28Lfakyuz
+ QKz8exAhD7iTKsVysQCBg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:F8BFKyOmTXE=:SZ+WPYuykf61gJqSMPeAcp
- g+lJF5ChYf+0Xs7CZwmi+HAtMflXZS6ynzBLC+CZsWK3sfrLPKKyhm+H9HBwz6rj/NW/WFrf6
- NOGaQK+ANKCkc09PgPxTnnM4n8YHwulIyg5TyiNYyMwFaQ3COGOi+xLjzP2TamhJ9dxtc33vK
- RCdoGKWJKrN5R95aLH8YyNDdSHhtTwMn+LJeWsAFsUBxU7dE/xe8CRsMBJoWrO3LNMKMVviRl
- M7RoWWgumiQJjak/Ag76vWOnw8TVYG1dvGOFZMq5suo2R65OqqryfDy7bPZDOaGAUFquxgyRP
- afk7BKwqayPTMQqDFCsfG7mlwUr6+DngvKjw3wC4qVW7DU3SsDimgoWfgDPbaWtwYi0bA7XCi
- xjXV4DfyVRMUU9iZrRiCEIYWnldT4uel/pBcs5jYcYczIu6FkmqXgQealCbpu78i77Zmivqao
- EwU7DmmOXg0i0lyQEecKe8qBuuMhgi+Hk9/MOKo81e17MgyAFrjtufB5N/JlOCcevgryn89Ig
- YQQsjQPdSFJ106ZPfuGfuvOMhchdvNw01HuHqMzQJ9BVdvqYg0WWEr7MP/4hXkFrAs94JwFVs
- 024YfmcXel11NKnkIYa0lv2snNE72JYDwDA9EpmJz5HtFwFXlS1dAHbcTlD9sYMK9ckmb1imN
- QwbwgqtJzLxUGRe/i1L+u2Hn34RPpoHkEPhgGJ1M+rnvAms3ozsqhIt448NnrXWjddp/KjKzo
- HFwTQipGjshvaXfrkkup0FRV3nohqra241Tc9ylpCSdMIn+OqHR30BdGw62u/cqK/CzZT7/Ly
- odyFlRTvYQZhiBI889E4jIbYkA3MSVc62hIeA1v2oruN0LeAG/3tTme3j6pXnZsxe3wn31GQ/
- dJqWbmBxdHTbxeiIPkV0giVjLX27GcA73axCANkkaE7IrYSqNhLnw0okADCmiBRiNUBhogufp
- fjGl98v70Tg83uxW0uXaCStnVxHkOTSbIOuHBtK89LNva2PbafO+b70Y1sAvawfbNy56uL0pW
- dz+kbb5r0xbTaxHXnj44xaujvCIIZyYNSsK/ut9VLp+EaI6r4cnQbAGdwfrLHOKkKYhkiycml
- oLUgAsnwxbRVtorXX6NXw3iT4Jlv6yE2IyFPQzkRz0Y+4TRoIxMPWoJ5+WBj77VIH+DTpqYDO
- V0lxPfXpxhLGW1zmNwWouw7fprQ/q/y/jWqZHanhPF4+nspMSfLiGl5K3SbgUVQZEOcObUYIx
- NwMLPsmls2XSvpiEzGpOv0659fXEylFeiUt4JvMIT5btllcdUgwN6lyBbeX8=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:teElU5MMyxs=:W/i7Ym1W9SHfwEjXpO4QQg
+ /MTSSib2zlx2KV96suXxIoWwYpUCs666C8W4IyYtNtros1AhbXmgd3nIc7LfijulzB6RNMR65
+ +ihjgSOHcsQg8SVv6IHEM1cevUvc64b2QBzN9kqq5m3Vxdji9+Ct3/TY2fNYqw+2edVsq0di9
+ ra6ehb1Kyl4MJzNZ0DIgv/UbcMNMAM0Y/rmrtUDIWi7l4X6SHyC8n6x0exVKdOXZ7e3bOSqWU
+ PxYbODMhd3rvT9aBP+Yr5bDkzkhmRY2cG9pZzsuUfn5oQDx44LCLJIkngY1Wx+zr28BpXssKF
+ UDEivMCG7cv+DgIQ6UfZsaS4EImAjHFQcCPvtKGH9qhRfKntK2LOEgohfnvrTLtAncnSuxqwn
+ jZqBwkFzDm8E5zpqBcP3h6GkkBILJnNk8WnMjg4DksOWA0wJKaJwF9tHiR51IvUxxtpH5MMiC
+ GUAyB10jq3x65IukJn/UA2sN4Zy6SDa3DiN5H5OxEeqDfKfNPi5spZj7CNrqIzdYLCfuANjfJ
+ qPLnMFj/7LzQJZA48MD4kOTxGCrv1phtfxIbtA/iSFyqJe7+MXx6YEhSaf/UJzZ/OA3PEpJ9i
+ Xl09otpZgugMqBFAkimp0BtpTVhfgMqRt4Fzuzgaiw5FJilWsWCIyfSg2dOR+fyLkYP5v1x2q
+ BZz3KZX2aUHJgBnU38+8V1mvdwwRJreDyhrQ3d1xYiEQ6mzXtfn27LAeojMrSIP8LRHdjBwpd
+ L+D3bQCuGUP0O7+Vv6T6DW1KyhPsL2H3a1yNXQa6LgFkq/OV70iQ1CA2x4BU5JoEf2dne+2Gl
+ 1379uWnFh2Bv0k5Iirp6fntlfWk7+/WZBOPgThOhvwZV35LxpnIIXg2ZDY6eZ+XnrczuB8pNI
+ NZMpWFzUVz/me/7eWy/RGy3xjjZbblCSCh+fiKrRjgfxtaR3aK/n19E6N6RcLL1D6AQ7MVxoJ
+ op/47SoTe1LKeg56EOADgTShjwmvL1++9LkN+elzMUD4QE8IDKgu1Di+wHS+OBWYc8+XH/04T
+ Rd3t4fueWJyoyr8OhFHthVhMLIX7oEgzzH8CarmG8bsLIwjHU5Iawp4cTkUYyy8C379XM9JNw
+ PmULOrExJMV7t0DxF+apR15atBrZx86iLxIPEjIq19/bEqeafcLzPHvZBY8wb2Iah95z+7pEJ
+ G16MKEukDvZUhfebtlEAsRdinqC83+1fOKM6MwL8h0d3jPCL6rHKNCCrMj/WlzyByx5gtZyoa
+ ISPDYQFOGIsGQ6N8zLZNSawka79dasf9BLjhvGdyvA29tbA40J8U5z+x4Yvw=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 21 Sep 2019 19:43:51 +0200
+Date: Sat, 21 Sep 2019 20:04:08 +0200
 
 Simplify this function implementation by using a known wrapper function.
 
@@ -122,45 +130,35 @@ This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/gpu/drm/arm/display/komeda/komeda_dev.c | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_dev.c b/drivers/gpu=
-/drm/arm/display/komeda/komeda_dev.c
-index ca64a129c594..a387d923962e 100644
-=2D-- a/drivers/gpu/drm/arm/display/komeda/komeda_dev.c
-+++ b/drivers/gpu/drm/arm/display/komeda/komeda_dev.c
-@@ -172,19 +172,12 @@ struct komeda_dev *komeda_dev_create(struct device *=
-dev)
- 	struct platform_device *pdev =3D to_platform_device(dev);
- 	const struct komeda_product_data *product;
- 	struct komeda_dev *mdev;
--	struct resource *io_res;
- 	int err =3D 0;
+diff --git a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c b/drivers/gpu/d=
+rm/bridge/synopsys/dw-mipi-dsi.c
+index 675442bfc1bd..6ada149af9ef 100644
+=2D-- a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
++++ b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
+@@ -981,7 +981,6 @@ __dw_mipi_dsi_probe(struct platform_device *pdev,
+ 	struct device *dev =3D &pdev->dev;
+ 	struct reset_control *apb_rst;
+ 	struct dw_mipi_dsi *dsi;
+-	struct resource *res;
+ 	int ret;
 
- 	product =3D of_device_get_match_data(dev);
- 	if (!product)
- 		return ERR_PTR(-ENODEV);
+ 	dsi =3D devm_kzalloc(dev, sizeof(*dsi), GFP_KERNEL);
+@@ -997,11 +996,7 @@ __dw_mipi_dsi_probe(struct platform_device *pdev,
+ 	}
 
--	io_res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!io_res) {
--		DRM_ERROR("No registers defined.\n");
--		return ERR_PTR(-ENODEV);
--	}
+ 	if (!plat_data->base) {
+-		res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-		if (!res)
+-			return ERR_PTR(-ENODEV);
 -
- 	mdev =3D devm_kzalloc(dev, sizeof(*mdev), GFP_KERNEL);
- 	if (!mdev)
- 		return ERR_PTR(-ENOMEM);
-@@ -192,7 +185,7 @@ struct komeda_dev *komeda_dev_create(struct device *de=
-v)
- 	mutex_init(&mdev->lock);
+-		dsi->base =3D devm_ioremap_resource(dev, res);
++		dsi->base =3D devm_platform_ioremap_resource(pdev, 0);
+ 		if (IS_ERR(dsi->base))
+ 			return ERR_PTR(-ENODEV);
 
- 	mdev->dev =3D dev;
--	mdev->reg_base =3D devm_ioremap_resource(dev, io_res);
-+	mdev->reg_base =3D devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(mdev->reg_base)) {
- 		DRM_ERROR("Map register space failed.\n");
- 		err =3D PTR_ERR(mdev->reg_base);
 =2D-
 2.23.0
 

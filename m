@@ -2,64 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E3B82B9C84
-	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Sep 2019 08:01:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1709DB9C85
+	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Sep 2019 08:02:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730877AbfIUGBQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 21 Sep 2019 02:01:16 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:36662 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726451AbfIUGBQ (ORCPT
+        id S1730960AbfIUGB6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 21 Sep 2019 02:01:58 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:38206 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726451AbfIUGB6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 21 Sep 2019 02:01:16 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8L5x1mW117678;
-        Sat, 21 Sep 2019 06:01:08 GMT
+        Sat, 21 Sep 2019 02:01:58 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8L5xXW1070980;
+        Sat, 21 Sep 2019 06:01:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=ZyiwSeEGzds6Tayem+cozqIaU30foXBbsBlsKJ9fHw0=;
- b=eW+EhBn+BEhUPgrgyvzI7wE9dZfU3w1caOYfiTy0GkXQ+ucIjuoaql3/19/i6WbK0XCE
- NeJX8fNd9+YijuIOE8n8kWY/Mzd4iyJbDtA7YvTUH2gU7rSKEn6Yzx0yrbq3lr794PpY
- tJkNps340b3Zuv6xrvJiuE+rL88Bd2HrdgE94OCQPfpVLHoqrSjg07fU4r9Oc698JgCa
- +S4KRicMM+3vGM3kpyiO6ARbM/b9RpgEuESqIH4BJN5Sho5fVqruZwbQRMsuQLG9q3Iw
- G+htzVeW//feDvYIovIJiCixcBK66lHHMUSIIQwv0I4venpdYBCcCbBJ7cuUnZvCbfJs hA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 2v5cgqg4v7-1
+ bh=KrLWCrL39L3KzKDyRZJFxW428Ske5D6YnhVp0I3al+c=;
+ b=r69DMaVgor6ohn/WxIkkem1lzr+TQSqvQbTVSWg+uWQdtQUZ0ehRj45CmG17P8Uvaztr
+ /A7rxpRJxTvIuRKmaxzmLKBRmV8DzNvwnyvdkhuS5/SWjv15r0DRX9ib6Zp2NvG/129q
+ 6bHPUg1gIBdOL+I0rtRgSq14Vj9FDmybgx0O/cNuRf5UHncTVvSqVP/yJgXgtAXU4qY1
+ cFD6iI3LhJ66m4LVqRG8fluk67d1+Ac/e4f0V4rG9XxFRdtQ6nNOIITdd1dIVnnEFfqH
+ GHmDET7GSiIB8d7kF1dNoeRWo3gOi8OX4mxOY9mr0xyZvhGljgE0rXcc6iMYJE64j0Yk ag== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2v5btpg6qp-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 21 Sep 2019 06:01:07 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8L5wk14100503;
-        Sat, 21 Sep 2019 06:01:07 GMT
+        Sat, 21 Sep 2019 06:01:53 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8L5vuBV179428;
+        Sat, 21 Sep 2019 06:01:53 GMT
 Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 2v590eapem-1
+        by aserp3020.oracle.com with ESMTP id 2v5bpbycqw-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 21 Sep 2019 06:01:07 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x8L615GK016658;
-        Sat, 21 Sep 2019 06:01:05 GMT
+        Sat, 21 Sep 2019 06:01:53 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x8L61p8b017123;
+        Sat, 21 Sep 2019 06:01:52 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 20 Sep 2019 23:01:04 -0700
-Date:   Sat, 21 Sep 2019 09:00:59 +0300
+        with ESMTP ; Fri, 20 Sep 2019 23:01:51 -0700
+Date:   Sat, 21 Sep 2019 09:01:45 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Marek Behun <marek.behun@nic.cz>, Arnd Bergmann <arnd@arndb.de>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] firmware: turris-mox-rwtm: small white space cleanup
-Message-ID: <20190921060059.GC18726@mwanda>
+To:     Maya Erez <merez@codeaurora.org>,
+        Dedy Lansky <dlansky@codeaurora.org>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        wil6210@qti.qualcomm.com, kernel-janitors@vger.kernel.org
+Subject: [PATCH] wil6210: use after free in wil_netif_rx_any()
+Message-ID: <20190921060145.GD18726@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9386 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=755
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.0.1-1908290000 definitions=main-1909210065
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9386 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=835 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
  definitions=main-1909210066
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -67,35 +69,32 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This patch deletes a stray tab.
+The debug code dereferences "skb" to print "skb->len" so we have to
+print the message before we free "skb".
 
+Fixes: f99fe49ff372 ("wil6210: add wil_netif_rx() helper function")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-I don't use Fixes tags for whitespace but the commit that added this
-driver was commit 389711b37493 ("firmware: Add Turris Mox rWTM firmware
-driver").  When we're adding a driver, it really helps if we use the
-prefix that the driver will have.  So instead of "firmware:" it would be
-"firmware: turris-mox-rwtm:" or whatever...
-
-Presumably everyone will copy whatever I choose so this only really
-affects me.
-
- drivers/firmware/turris-mox-rwtm.c | 2 +-
+ drivers/net/wireless/ath/wil6210/txrx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/turris-mox-rwtm.c b/drivers/firmware/turris-mox-rwtm.c
-index 72be58960e54..e27f68437b56 100644
---- a/drivers/firmware/turris-mox-rwtm.c
-+++ b/drivers/firmware/turris-mox-rwtm.c
-@@ -197,7 +197,7 @@ static int mox_get_board_info(struct mox_rwtm *rwtm)
- 		rwtm->serial_number = reply->status[1];
- 		rwtm->serial_number <<= 32;
- 		rwtm->serial_number |= reply->status[0];
--			rwtm->board_version = reply->status[2];
-+		rwtm->board_version = reply->status[2];
- 		rwtm->ram_size = reply->status[3];
- 		reply_to_mac_addr(rwtm->mac_address1, reply->status[4],
- 				  reply->status[5]);
+diff --git a/drivers/net/wireless/ath/wil6210/txrx.c b/drivers/net/wireless/ath/wil6210/txrx.c
+index cb13652491ad..598c1fba9dac 100644
+--- a/drivers/net/wireless/ath/wil6210/txrx.c
++++ b/drivers/net/wireless/ath/wil6210/txrx.c
+@@ -1012,11 +1012,11 @@ void wil_netif_rx_any(struct sk_buff *skb, struct net_device *ndev)
+ 	skb_orphan(skb);
+ 
+ 	if (security && (wil->txrx_ops.rx_crypto_check(wil, skb) != 0)) {
++		wil_dbg_txrx(wil, "Rx drop %d bytes\n", skb->len);
+ 		dev_kfree_skb(skb);
+ 		ndev->stats.rx_dropped++;
+ 		stats->rx_replay++;
+ 		stats->rx_dropped++;
+-		wil_dbg_txrx(wil, "Rx drop %d bytes\n", skb->len);
+ 		return;
+ 	}
+ 
 -- 
 2.20.1
 

@@ -2,42 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69A4FB9CDF
-	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Sep 2019 09:13:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC025B9D3D
+	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Sep 2019 12:01:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730054AbfIUHNG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 21 Sep 2019 03:13:06 -0400
-Received: from mout.web.de ([212.227.15.3]:35391 "EHLO mout.web.de"
+        id S2405739AbfIUKBE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 21 Sep 2019 06:01:04 -0400
+Received: from mout.web.de ([217.72.192.78]:59627 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727600AbfIUHNF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 21 Sep 2019 03:13:05 -0400
+        id S2405440AbfIUKBE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 21 Sep 2019 06:01:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569049974;
-        bh=AxWoEWnEVeK4mlVorc58mK18SmNuE7t6dMUDR4t2Ugo=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=K6GAPcqRrmM9f9Wnh0IMXHWi4Pm6DtiGYutS753sbiLpUIeq3MUQL+PcImaXD/ad+
-         sMOgh7UDMZcUxE+LJ73sHD5imr171qWW+EqRFn2cNYwSDTZPn64/LaVjt495xHaCRc
-         d1a9lsIfs2hnZBIHwiT2qFWerDkDfgdrYUmlwKC4=
+        s=dbaedf251592; t=1569060054;
+        bh=9om8hD/kLaf9e9fQUs6omNYsjXudzvqtIiKV5m1awsY=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=EZ5XJ0OVva5N4xddt9Ox+uofQUZw+jafS918t7wQPFSWdh/bznObMAPipk03KjwSU
+         tFkYEqcaa8gaZ/gfeVQnAVklnxcp+s0os4H7Rl8qjEnb30a2+UUFIbqrZnK8qxoldC
+         /7+xlAH/QrhdrxmOd8LyeWna0etzWVddTy2IJp+E=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.64.44]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MRlJB-1idqrH1jyr-00Ss8s; Sat, 21
- Sep 2019 09:12:54 +0200
-Subject: Re: [0/2] net: dsa: vsc73xx: Adjustments for vsc73xx_platform_probe()
-To:     Jakub Kicinski <jakub.kicinski@netronome.com>,
-        netdev@vger.kernel.org
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Pawel Dembicki <paweldembicki@gmail.com>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-References: <98fee5f4-1e45-a0c6-2a38-9201b201c6eb@web.de>
- <20190920150924.GG3530@lunn.ch> <4a220bc4-0340-d54a-70bd-7bea62257b81@web.de>
- <5d068275-796d-7d76-ba33-6eb03fb1d7cc@gmail.com>
- <20190920151230.0d290654@cakuba.netronome.com>
+Received: from [192.168.1.2] ([2.244.64.44]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LilNJ-1hd6rI3brx-00cxvm; Sat, 21
+ Sep 2019 12:00:53 +0200
+To:     linux-rtc@vger.kernel.org, Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Biwen Li <biwen.li@nxp.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] rtc: fsl-ftm-alarm: Use devm_platform_ioremap_resource() in
+ ftm_rtc_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -81,60 +73,84 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <a5e3f8e6-bdb9-c5fb-2435-81a545cad121@web.de>
-Date:   Sat, 21 Sep 2019 09:12:44 +0200
+Message-ID: <4552ef52-f218-93b1-6dfa-668d137676f8@web.de>
+Date:   Sat, 21 Sep 2019 12:00:52 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
-In-Reply-To: <20190920151230.0d290654@cakuba.netronome.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Afi8ioQs/EFRlfmlRK18fcK9DIxMplbIMPT1dV/oJmzRHiPl3Un
- qjjxmpcsN2WcsRUE9aHQpHQkBYs8bjjCH8hXs0d7YmfCfGBGimOuuiE8MsjgeDWdbY53Pbv
- 1bjfJWbfXb2u2fZirfA2rh8ZrRr0mwYwtzyBHmhLogTyU7KVMQwkGAfOoIEvzcced8lwV1j
- r8wr6LRaSuVJvuUxBFxiw==
+X-Provags-ID: V03:K1:PdS6VDi89nQ5MEz616+aD8BLYHe8fFIFFttx8Q1QfI/O1vGuHJ/
+ stDZ13wS8Kf6tTtIcRB8rpHjD1N+oua420FVjfOKbccUv498P8vc6AFzxfjJc19qeU7XqG1
+ 8yj68XIMfbL0Mb60u/pzMqzpomX+tHpFQcrFNtfrsNX5K0Ti1liCEwp1LNqB0Dk2XZoOhI0
+ DoqhWWiFB0qiBdABqJm9g==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:wQqkgLRr5Ao=:1pdlg8Hd2erh3S6mYNYR6A
- UfCZO9xo8aLzlwm2NGjWjd40tg9/8Eaf9SsnpfWQKOj9VSLW3an52mHgfCU6pcOdMa9hLMzS4
- Q4SVsumMGH4RkAM+Uz60IDFClTZ7fYSa46KkWVv7yeELE3Xiq+mxjONO59KfXEd/n6AFO0rxO
- 12F+oBFgNDKCVX5zOWOOU9C35A0l78G1ZhsFxDjLLVj2sQx+nlGgVgdtSdyFcgwiFxz+Kt0Ft
- zU8lRZgtCUql6iXYXt8OLkS3V+xk36gcAbqCPqBk+FaK8KKsv1RsF1ku69qVu+Z2CMaNzCrUb
- PfvT4QrNV5hxMOYF3hNZBWw4SOTkRu5+34tSutTxUa+ZrsR70+I4opNNPXGS66Dixwukt8DDl
- ly7tealSnZc3edrL9yFPGttB+hRhf0TA/WQ53gZBp8Ve1aAVrhHOeiuZlvTUlhYkyu0v1RbEM
- kE83G9GTe5uBw367YX/9CpGW9Y4m55Oy84QJszTnY8XA1GQHyIosqYznXfuWKBxFl2ZJ/DZpu
- Jy+3v7paJNobKINtdKnchdjyGrD5PiJ1/nOB4ZzoVANs+KhzVqSKxbAKll9BuVqu6+5Lbfwvi
- FzqXO/SzWNBw58JMCVUETz3XXOTlHJxXib2rxTPQ+VRZz4WRtMLPRLhJlEjMDyUIBzuk03aLF
- K5K3OPQ5y+8UrSDNhnkYeGg0yPvFhWFnVE84fLYIL+dds88Epes/KNQk3K3K2FBmKwADUJ8Hc
- nyPFmZfbLE0Fpykx1ND3ivbu+gIyTNIyx9aLr2gKbUR4GqAW5WV9MhbA2vRTDCdmgMjFgkFs9
- TxPnc+mPFcOxRKlY9Zpudp4PAWS2bIkqFX8sigblOKobCCAL+I5B9DzOYPOPUazCKy0uauOJH
- Bh20OQgVIu8Sh9FJbCbD0eZNhvrhQ1lH0BsOPuZEFuWxXDUXS95RsQNYcBLjfeRksUhC1TpBh
- pp9rbIXG2p9w1pzi/HZmYJ4WfRp8c4jJDlb8K0n1tZ+GbDjeW9rGadaoNLyWgET28xXAiF1DK
- X8ZrzuEB312n90w0alxvl37Tzp5cqA3UJSKUbGdZFDu8gEpsaoFRfKYpDUSun6YSbMVOTYdpc
- qE8kxfKeY4nXku4GMMSOVLr9jnyGW3zuZytqJknRzPAus52deNOZalDy/NcxpNHDt7+vGSbBZ
- e+deimnGjXhERlsfGNsiudaPZGYJumOQcSO5E2myBfobt0e4SFTrHIPN5YxNE99RS82hTNdSW
- elw0ff6RZ9d98Gj5VmoCDZmbOsUQGZAuJKFRWhUtrB5S4zHaMMpYF7vThYaA=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:MVTIGAREZiM=:yZXRK+m9tX1/qFF2DIp1du
+ z7+IADNwTWEHEEHESJz9ZrCtxecvnS6o1qLLxx75laDVRHhjPDR0lwThuOAc+9BmA0IY6EzOu
+ kZaouoaTQWBtuhf5123va1ixRzMCvVr6K8STObVub0IdbEBHugl4pozrj1r84yAC+4bhrtZYr
+ CYFc539Zd3NteFJ1qifqDI6FVWqLye4iW90+zZBDLvEnD1mO6p/CyaQhJziSSD+V8N5sXTGo9
+ HfEB9lUnOQ/Y+Og02RHUeS3GyXKSJQnAQrDdewpqovbSgxMiVa94OUTXCkv0YHl0X5bF0XRO5
+ JFJFL20xqMzpr3FUsi0l7sScIh5x2i6PRc0RFdY8UAH9tKy75JyZPKH9ui0yzquxmQWQQtqKG
+ 3pTCwOalgXemerM1sMsatdiC8ZAEGOS9G7o6zoUceKah1OpktIFzUnU48ZBG3eMVAH4YvaSUi
+ +9RkTcsQFiAKInSsZdPs3VHeu2wwImkGA+aTloI1hYeaIczj9PUe+Cp0fhUV5jNcb+Q81crlE
+ 3R74fxtMkvvHi2XMI81SZ0HRX5mADAMbCIisB3RdPROXwafz5dklgCNVuljt5kVziC5fpdVAQ
+ RfHfYah58O6KDlzUAUT7sXod9WeMDJuUhNLytxrmhkqdQ7pEdw29XaaklnMP7T+RG63N/c0Zs
+ xZqPMQU6yyVBFHDUTH8nJQoCnh3h1+RZz2ZWTs9boO631dSnuNTFpykM+/ZSNgPXBEo7bIjEw
+ WPTge+x59lH6p8RwN10n+Nf1hoOhxrrKbOc4YfWmL5/oAqipeAE9kaJbEzx4rFkEhRRP9aKla
+ a2kvPs+ZpCgxPoaLiZ84KN0OPbOLtWX0Im7MsbaGjgZenkuB1Xha2hII7ncOsqk+1JqZ24Tca
+ vGQI1IiOHJIAmeFS7nRuURNdxHNLQUFvXPxVNxB6E3REQDBDQbqEFeCrwQCB/F91mmR064/8G
+ EZsqE2GGFLbqOg5GXuxAdMJeLW7iCJgvzNfErOX5boZuO+vAx680BSXwMzprhGFreJB3LoU7Y
+ 3WWzo4dc8yIylUbUnvcRxSp1qeFHw1c7LwZNGrcMCijZ/VOIqS/u4zI/5+6B2/NlM/PXPMk+8
+ ibd8iUEC6o3uUDXClqwO1hm8Ws2AfGbfxRQSupX+RHYkdwiT7B3ao+dK73EZGBOv+2dflWVsV
+ hO2U+VehsQJqDAEwNEnM3c70Y6hhIrCYP4bmD05jg9UB/ZzZhvKNxSFynOP5XVZZQUvd+TCRS
+ dwpts4k8nOCIuUD7/f+pL5x2RWDdPFDlbbLh+G6ctrNeqbaFtP4L21vtVAoE=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Indeed, looks like we have a mix of clean ups of varying clarity here.
-> I will just drop all, including the devm_platform_ioremap_resource()
-> conversion patches from patchwork for now.
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Sat, 21 Sep 2019 11:49:01 +0200
 
-I would prefer an other patch management in this case.
+Simplify this function implementation by using a known wrapper function.
 
+This issue was detected by using the Coccinelle software.
 
-> Markus, please repost them all once net-next opens.
-> Sorry for inconvenience.
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ drivers/rtc/rtc-fsl-ftm-alarm.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-I would find it nicer if presented change possibilities can be
-automatically reconsidered on demand after each closed period.
-https://patchwork.ozlabs.org/project/netdev/list/?submitter=3D76334&state=
-=3D*
-https://patchwork.ozlabs.org/project/netdev/list/?submitter=3D65077&state=
-=3D*&archive=3Dboth
+diff --git a/drivers/rtc/rtc-fsl-ftm-alarm.c b/drivers/rtc/rtc-fsl-ftm-ala=
+rm.c
+index 8df2075af9a2..b83f7afa8311 100644
+=2D-- a/drivers/rtc/rtc-fsl-ftm-alarm.c
++++ b/drivers/rtc/rtc-fsl-ftm-alarm.c
+@@ -248,7 +248,6 @@ static const struct rtc_class_ops ftm_rtc_ops =3D {
+ static int ftm_rtc_probe(struct platform_device *pdev)
+ {
+ 	struct device_node *np =3D pdev->dev.of_node;
+-	struct resource *r;
+ 	int irq;
+ 	int ret;
+ 	struct ftm_rtc *rtc;
+@@ -265,13 +264,7 @@ static int ftm_rtc_probe(struct platform_device *pdev=
+)
+ 	if (IS_ERR(rtc->rtc_dev))
+ 		return PTR_ERR(rtc->rtc_dev);
 
-Regards,
-Markus
+-	r =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!r) {
+-		dev_err(&pdev->dev, "cannot get resource for rtc\n");
+-		return -ENODEV;
+-	}
+-
+-	rtc->base =3D devm_ioremap_resource(&pdev->dev, r);
++	rtc->base =3D devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(rtc->base)) {
+ 		dev_err(&pdev->dev, "cannot ioremap resource for rtc\n");
+ 		return PTR_ERR(rtc->base);
+=2D-
+2.23.0
+

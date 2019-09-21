@@ -2,31 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 019A6B9E19
-	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Sep 2019 15:40:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C910B9EC9
+	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Sep 2019 17:58:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394215AbfIUNkp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 21 Sep 2019 09:40:45 -0400
-Received: from mout.web.de ([212.227.17.11]:45101 "EHLO mout.web.de"
+        id S2407699AbfIUP6H (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 21 Sep 2019 11:58:07 -0400
+Received: from mout.web.de ([212.227.17.12]:41219 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2394165AbfIUNko (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 21 Sep 2019 09:40:44 -0400
+        id S2407694AbfIUP6H (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 21 Sep 2019 11:58:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569073239;
-        bh=n8hG64qo0b1FTqu8LVo1QtX1Ic9Wgl5C3AZxhcpCf6U=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=pHAVdobHXNhAIMUi1UzmKCFv864gtGFazqK65vx7lAvMiGx6UFulMSDEs8aGUUI74
-         C+bAivYYIBz+sLKHYGwjqwjBKRdISqNEqLBlEg70387RPDO3NDR5qakAy4hm0a1H7h
-         O0qADRwzVS8sUm07Oo+sCOu2vfhQAAOb+CFMqALo=
+        s=dbaedf251592; t=1569081453;
+        bh=NZyRZj6JCdK9cYIuWW8SPhSraVsjvvD3EVx+CjQ5DxY=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=N5WXFSjqurDZFcTP0VCqYQh0xa8RrAiG9OXhEvJBLmbEIB+cKBu5DsGRDZnyo0sIB
+         5Iemqc4BwxFcjgAFTUSA+KzbRH7JtNifVdVuKHVxwNz7vKIhpJygIcsNSy5jEdyem0
+         IiJccWlkh0fBX5HP8YHYTVNtNff2q48J+9q8AF/I=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.64.44]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LilJB-1hdyyA0D1R-00cuuF; Sat, 21
- Sep 2019 15:40:39 +0200
-To:     linux-spi@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Max Filippov <jcmvbkbc@gmail.com>
+Received: from [192.168.1.2] ([2.244.64.44]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MhDkj-1iXva82BPd-00MO8t; Sat, 21
+ Sep 2019 17:57:33 +0200
+To:     linux-edac@vger.kernel.org, Borislav Petkov <bp@alien8.de>,
+        James Morse <james.morse@arm.com>,
+        =?UTF-8?Q?Jan_L=c3=bcbbe?= <jlu@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Robert Richter <rrichter@marvell.com>,
+        Tony Luck <tony.luck@intel.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] spi: xtensa-xtfpga: Use devm_platform_ioremap_resource() in
- xtfpga_spi_probe()
+Subject: [PATCH] EDAC: Armada XP: Use devm_platform_ioremap_resource() in two
+ functions
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -70,88 +76,97 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Message-ID: <178bb78e-714f-645f-d819-5732870c4272@web.de>
-Date:   Sat, 21 Sep 2019 15:40:38 +0200
+Message-ID: <3cf2076e-6394-4997-613d-cbf5b6dbee1e@web.de>
+Date:   Sat, 21 Sep 2019 17:57:24 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:q9fUZ1U9yec7EIOvmhZTHcJuoy3N8lqdynht22stsooOhVB9O6Z
- Nq4VGKa/GQfkbb6h76H5iYZKrdp5nMBmTE4X48M10qESevv2bqdeGaHNPwtjHEOZj7RanTS
- 9PLo+KqTwqNxBrZrtfn2fTL4c1prFqLowI8hTzZxh+8XyrPjpCYr/Eit1oYMxTlZXa2kVGF
- W4XUFGNIpi1bgYjcpDO7w==
+X-Provags-ID: V03:K1:V4KDaKpDGJk2tbrl0dbKCmeVsyRvg/r19joKrX82qZyw87ThdXd
+ 9leklZJLv0qVvuYtC+oN6rJ1F2lJSDWfMhVOdyeJf0+43zTyG3/zOkR6HuZZ5mJ3q0aFI1s
+ LKYGhXuTWdWo+dKPmNIZAfqfWex+M795dmrsLi9bp1mt/uljwuCttDJJzDmUAV+I6jYv9cE
+ BeYT122F6JW0O186lGjAQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:SRNDSBcUT2I=:L1dx8VSnXNHHpYSgcznlDH
- 5KK5ALjsRvcCIrI6sB9xvKhBgt13gjO0PZp5xP9J30zuoKWzYCNvW+1dlC8ZxgHETDdbVAkyb
- LaLwxNonH39R0BIcBitpK+wObJ0dlYi+497XZqky01OCt7QQhnVl+jvQj4IHnZfsy/a5sJuP3
- KPtb0MZMf4cuC7mAe/SCQrmgWZjNK7lhtcUBHU8iQ47XLtNOFTquJehenz4wjX7cXf39hvKuK
- TifM5+SDNAGzztNzqdqoFejFi8MRtOOUnmrS4XbtQQjBJfUKWMk/E1mKR0mS02Z3H+Z3RonyQ
- 2yapTmrMaxATRPpwzfp+p+uCFf//DnIHAQFUEv/d5R3wHHeSfMUeF5ZRqX1yAKdnLmEptZt1Q
- 5JKo8Sx8fdotjMt49GQi5MxtqU9RJ5b981MUxdxQB9YsxQnv2z/NTOvzCR4zesPURdGS+Y1QS
- hJDIZJgJOp7/NHbceGKkh6K1xYlfd8xLycr7irQme08FpjQiHaK97g+GYgh8aFOUUVgWqGW1j
- 2vMZ6jTAkXwgX9zgQg1ukpXQ+dx8FkDKbQYqyDq4mdRsiTsjRJGEEPIiKMjurgvWvghPLNWYS
- fSUSF5028k4fC4B7MhOHl9LCf9qVab+26bd5q+b5jVk8wqPcpK/ZHdMRnkxRKutrfpR4Kt1Gy
- /R4HfAce5d37l+pXmuzACLzSFpB0kgRsCiMUTzX9+EFjlt6GB0jKal8zr4fHShrdZ9dJL8Ikc
- 0Jha1k6N/njV9SZkDKby/KwBWQWMU4gD37IhJtntzirmWJTd4d9+1C3FrQCYCIS+dO8yxOg00
- ZC+9bKqdcFK3iuFhVIf1WEd8DglkHc1Ms33EHAh81ipwjv1mfvjQV9Hw5fyo3rdho9YSbRUAd
- 2QU0X3z0c1LLLZDJipIIbhbA4pgfkApeTd0X4ocWsneXBPTfNcKLIApaahx743YL4YNgohzpd
- EYaB1pKkz3m2ZXK+SiTHLJ1QkQA19ES7UgjsXpeJi2FB5xKABln7sE9BzsaAUZmTM3t92YeLz
- Kk3flQ+f3N0OPem7FnzqxL8eR20KcFqW9J2c+l+d09woZQLo2Ata6dOsXsjMUH2fddHw3wFhb
- fHG1sXiG57msQeYhgqFyUfnLdZBwK65E3JmQfx41horiAqlAgvsbh7uyaEeZvic3U/icYd/dq
- PrRMjtMwMlL/imV0gsXJoHXN40A9Xywfp9tZN1kAnoI9x0xCDL3/0ckUe3wYifok9nRZJw39R
- G0hKFEJEGgQFPlozDxoa4ej2SQ+K/eBRkLAOWAr/E3bFRjXn81WSKnW+W4Io=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:fbTWqCFNNP8=:RBI9qB/tKa80ZHVGvCt8Se
+ 9C6FUbfqovalnxKNASSBYDty9GGlGQbVv7f2E31GgvyhLXkse8Zg/aSjBEO0hyGssNQXLQTi0
+ fUIJiruyGcYYeYJD/yq5HjCwjkUd9J/AhIK84QruK93YKOEqUYc1AULDxgEgcy7rUCyxnWnWJ
+ 82stuqQhVWsXTWKHBIyizOfGp2A3tm+/UH0A5mc/lhfd/cmDNhrK7HFDgeasAVUjwwZr+Xweb
+ /p+mVhDswsFGH4+jSrHtVu3Mrx9SGQlGvLEGnLL5U/wpfEP04tiWVF5Pewucw3fi4ChBTVar5
+ bYLi1zImlI/7ZmevIR8zrHPdgcvR/KCHukJ0YLmV1DEcT/st29xcXDXs10EPnz9r6m92jzo36
+ 7H8lProU5Xl/sc281vYniINMS+PjFSFVJ8Z4HOBGZZjxH96v1EixD0ZBI+LG3PAeVe35Q2zDt
+ /An56NGlTIOFeYvqQ+5Q/0foxTIzXaY877P6Yi9PrFKVmu/DEAj8AZj4kPKe7B94uvIvcsn+j
+ 7oVbFpsAowXxBMsF64MaIis7XnzlUvvyW4AO3EyDQ43IuBNQEvg8Fx6VPmRduQQjXgAIbWB8Q
+ UiIGTp2EJtwojnO1yS1cKIc0W+7GhqY6tcp0rb99yMwJnFeauFVh0kf1czx9OTmPK38qTsHjB
+ iQDt3ydEtCp4sFcJGl48Y2wXlvf5qSWjfQq4t/X7PtFUHBHHGp4aSUUX91BCzmUsH5LubMJYj
+ r4WbEdl1eCrJ0aadzn+beQPkwhKUdY8twWGhXU3mmIp3x/s/h/9c5B8UT5ibIV8ln+S5PVEFC
+ ZqNeI1pEgo+TEJge5PkoAwGuFTE3BHo55BdBckt16CgEWP0Jn1Mh9fLlkvd8IYqQ3ZQ0ubK3C
+ 8x0d+ExfmzGTZyWHmzic63GBuucsCqY+j+h9HbgpFABT+3w/j40oONmXPPB0GS9TtGuel/P71
+ G29S2ksMUPhoYWyYfqEQ+sUEJRRlRGy/7SdEbtsJW3/WlkjT5rRqtOqmJp0uTv4YKQ6FASWWl
+ eSBHMOhIHLj4yz3d0MQ9rawabHSHApLmFsrzoBqRapYU0VD+6yDtPMuexAWLJIiOB48Mcz34o
+ wf5xCRL/KQEugE1uXPz7oFiPegsT7j8Qs8WWuA8k61BwYe1UHlaD21W9WND8n+z2JXfWk1oc1
+ Y4V55QOC8L95jWue1QeKqwD09eNAqEF+xirG+YuSvyCOJsLKnm3q1tfRHzpvc/anbVFOv93p6
+ W/j7FPAY5YzeAv71PEfZM7Qd3EIVxlpI4ljRP7EXntRtbKu5ptK5FlyEfc7U=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 21 Sep 2019 15:35:08 +0200
+Date: Sat, 21 Sep 2019 17:50:17 +0200
 
-Simplify this function implementation by using a known wrapper function.
+Simplify these function implementations by using a known function.
 
 This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/spi/spi-xtensa-xtfpga.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ drivers/edac/armada_xp_edac.c | 18 ++----------------
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/spi/spi-xtensa-xtfpga.c b/drivers/spi/spi-xtensa-xtfp=
-ga.c
-index 86516eb1e143..fc2b5eb7d614 100644
-=2D-- a/drivers/spi/spi-xtensa-xtfpga.c
-+++ b/drivers/spi/spi-xtensa-xtfpga.c
-@@ -80,7 +80,6 @@ static void xtfpga_spi_chipselect(struct spi_device *spi=
-, int is_on)
- static int xtfpga_spi_probe(struct platform_device *pdev)
- {
- 	struct xtfpga_spi *xspi;
--	struct resource *mem;
- 	int ret;
- 	struct spi_master *master;
+diff --git a/drivers/edac/armada_xp_edac.c b/drivers/edac/armada_xp_edac.c
+index 7f227bdcbc84..096d8de3893e 100644
+=2D-- a/drivers/edac/armada_xp_edac.c
++++ b/drivers/edac/armada_xp_edac.c
+@@ -286,17 +286,10 @@ static int axp_mc_probe(struct platform_device *pdev=
+)
+ 	struct edac_mc_layer layers[1];
+ 	const struct of_device_id *id;
+ 	struct mem_ctl_info *mci;
+-	struct resource *r;
+ 	void __iomem *base;
+ 	uint32_t config;
 
-@@ -97,14 +96,7 @@ static int xtfpga_spi_probe(struct platform_device *pde=
-v)
- 	xspi->bitbang.master =3D master;
- 	xspi->bitbang.chipselect =3D xtfpga_spi_chipselect;
- 	xspi->bitbang.txrx_word[SPI_MODE_0] =3D xtfpga_spi_txrx_word;
--
--	mem =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!mem) {
--		dev_err(&pdev->dev, "No memory resource\n");
--		ret =3D -ENODEV;
--		goto err;
+-	r =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!r) {
+-		dev_err(&pdev->dev, "Unable to get mem resource\n");
+-		return -ENODEV;
 -	}
--	xspi->regs =3D devm_ioremap_resource(&pdev->dev, mem);
-+	xspi->regs =3D devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(xspi->regs)) {
- 		ret =3D PTR_ERR(xspi->regs);
- 		goto err;
+-
+-	base =3D devm_ioremap_resource(&pdev->dev, r);
++	base =3D devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(base)) {
+ 		dev_err(&pdev->dev, "Unable to map regs\n");
+ 		return PTR_ERR(base);
+@@ -516,15 +509,8 @@ static int aurora_l2_probe(struct platform_device *pd=
+ev)
+ 	const struct of_device_id *id;
+ 	uint32_t l2x0_aux_ctrl;
+ 	void __iomem *base;
+-	struct resource *r;
+-
+-	r =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!r) {
+-		dev_err(&pdev->dev, "Unable to get mem resource\n");
+-		return -ENODEV;
+-	}
+
+-	base =3D devm_ioremap_resource(&pdev->dev, r);
++	base =3D devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(base)) {
+ 		dev_err(&pdev->dev, "Unable to map regs\n");
+ 		return PTR_ERR(base);
 =2D-
 2.23.0
 

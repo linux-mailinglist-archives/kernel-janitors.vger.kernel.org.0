@@ -2,104 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A6A0BA8BD
-	for <lists+kernel-janitors@lfdr.de>; Sun, 22 Sep 2019 21:50:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E319BABC7
+	for <lists+kernel-janitors@lfdr.de>; Sun, 22 Sep 2019 23:08:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393892AbfIVTHl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 22 Sep 2019 15:07:41 -0400
-Received: from mail.kernel.org ([198.145.29.99]:35442 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2406200AbfIVTAA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 22 Sep 2019 15:00:00 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 70080208C2;
-        Sun, 22 Sep 2019 18:59:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178799;
-        bh=wHqDZJIituYx9y3q6KEtPRBcqok4mbWdkHwToUoZq6o=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cRXS3kW65pUP4PltOT60DGy2nS7VaEEOdWJI682ItN7BZzE2sURa1oIy6qOps2nIV
-         ovsJC/ySCNAzNN41eDDUQgU4uXxtiDBHquEDs6KXG9zW01bM9XnHF9sBQONCqn1dCD
-         9hMdjosG3EWpBwFf4yyAsEQrJNfyGX8UdDxWZN4E=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Borislav Petkov <bp@suse.de>,
-        Thor Thayer <thor.thayer@linux.intel.com>,
-        James Morse <james.morse@arm.com>,
-        kernel-janitors@vger.kernel.org,
-        linux-edac <linux-edac@vger.kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.9 19/60] EDAC/altera: Use the proper type for the IRQ status bits
-Date:   Sun, 22 Sep 2019 14:58:52 -0400
-Message-Id: <20190922185934.4305-19-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922185934.4305-1-sashal@kernel.org>
-References: <20190922185934.4305-1-sashal@kernel.org>
+        id S2392634AbfIVVIF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 22 Sep 2019 17:08:05 -0400
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:41761 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388916AbfIVVIF (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 22 Sep 2019 17:08:05 -0400
+Received: by mail-pg1-f195.google.com with SMTP id s1so5642154pgv.8
+        for <kernel-janitors@vger.kernel.org>; Sun, 22 Sep 2019 14:08:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=netronome-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :organization:mime-version:content-transfer-encoding;
+        bh=N02DuWV6Ls3abVLlI8h6X8K21ukMEFlJkO/0aLsDK0s=;
+        b=LbRVKPEYYOO6psE0Yw77Hs/lDLbvbwH8YrMPHyagr9mucUEr8xFECka9eq2nyTNqDj
+         a01yizLfeFS4nTPCHzjwVPFNOChkR8WPwpuz83J2MC5xiB5b2DOSHWMlIuH7lUOjQVh6
+         z1W45WY0YU4bYw3QLcti59jEjmLmgof1zWm8FEgvA12KWoVeJO+xw4jKEhK2U67gf98x
+         aREdIF8OzVfEb4hQRkRH1LAwKHRwskSZcaieRFNpofR3iAG9G6hCD4z4jyuc7OnS08es
+         XsE4V/hOPFetMFiq7GLLhuaojYQPvel27pFMUIV8fZsgqpU/95X6LqqeO8tgkRGNoIMf
+         CR0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:organization:mime-version:content-transfer-encoding;
+        bh=N02DuWV6Ls3abVLlI8h6X8K21ukMEFlJkO/0aLsDK0s=;
+        b=JZMB7IFIJgYlaxB1NlcdALCBkbyqWgkuqMg0DC0Eh272LNPN2pkQiibKAEyfXtetfJ
+         nJ/A9USvGszyW4YwJ66MuAtfwcQYl8qXbO0Nq7Q8UO36S1zD65oQYOaFu6aeACZ44SGq
+         1SK/0DzP1UWOFoULmaCqygO2QpI/lWj+BTbNsu/e29xm1R+tmbp7ejMW3mLVYHCyaxHq
+         IY/JH4XuqeWcOLZLSSY1ANshuP5ba6Ncwt1QMmlN0ca5H6ZsCg+kUWzVBqHazZ13Cki6
+         m80yemSDQm9CCko+mnczOqeK4GQvQI3Wd9RbnNBR2cuoLddlGpJU2EwoWO2LDc9IM+1w
+         kB3w==
+X-Gm-Message-State: APjAAAWm9pWkgccuZzRrmvvG6/iEI/FdA1ELPbZHj9iWTQ6Dwb9Ztx3w
+        kwlZrzy/BnrFQLfIYtrzPcKArA==
+X-Google-Smtp-Source: APXvYqyx2Ki6Glce3kMT9uI6N/7jpfRnMKxmuPdQQpvOkPKiHMkHWfeObbmKV3AUCYAztvbIE7B33g==
+X-Received: by 2002:a62:3687:: with SMTP id d129mr30557925pfa.199.1569186484473;
+        Sun, 22 Sep 2019 14:08:04 -0700 (PDT)
+Received: from cakuba.netronome.com (c-73-202-202-92.hsd1.ca.comcast.net. [73.202.202.92])
+        by smtp.gmail.com with ESMTPSA id k95sm9971958pje.10.2019.09.22.14.08.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Sep 2019 14:08:04 -0700 (PDT)
+Date:   Sun, 22 Sep 2019 14:08:00 -0700
+From:   Jakub Kicinski <jakub.kicinski@netronome.com>
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     <netanel@amazon.com>, <saeedb@amazon.com>, <zorik@amazon.com>,
+        <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH v2 net] net: ena: Select DIMLIB for ENA_ETHERNET
+Message-ID: <20190922140800.6b1ed695@cakuba.netronome.com>
+In-Reply-To: <20190922053808.117965-1-maowenan@huawei.com>
+References: <20190921200741.1c3289e8@cakuba.netronome.com>
+        <20190922053808.117965-1-maowenan@huawei.com>
+Organization: Netronome Systems, Ltd.
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
+On Sun, 22 Sep 2019 13:38:08 +0800, Mao Wenan wrote:
+> If CONFIG_ENA_ETHERNET=y and CONFIG_DIMLIB=n,
+> below erros can be found:
+> drivers/net/ethernet/amazon/ena/ena_netdev.o: In function `ena_dim_work':
+> ena_netdev.c:(.text+0x21cc): undefined reference to `net_dim_get_rx_moderation'
+> ena_netdev.c:(.text+0x21cc): relocation truncated to
+> fit: R_AARCH64_CALL26 against undefined symbol `net_dim_get_rx_moderation'
+> drivers/net/ethernet/amazon/ena/ena_netdev.o: In function `ena_io_poll':
+> ena_netdev.c:(.text+0x7bd4): undefined reference to `net_dim'
+> ena_netdev.c:(.text+0x7bd4): relocation truncated to fit:
+> R_AARCH64_CALL26 against undefined symbol `net_dim'
+> 
+> After commit 282faf61a053 ("net: ena: switch to dim algorithm for rx adaptive
+> interrupt moderation"), it introduces dim algorithm, which configured by CONFIG_DIMLIB.
+> So, this patch is to select DIMLIB for ENA_ETHERNET.
+> 
+> Fixes: 282faf61a053 ("net: ena: switch to dim algorithm for rx adaptive interrupt moderation")
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
 
-[ Upstream commit 8faa1cf6ed82f33009f63986c3776cc48af1b7b2 ]
-
-Smatch complains about the cast of a u32 pointer to unsigned long:
-
-  drivers/edac/altera_edac.c:1878 altr_edac_a10_irq_handler()
-  warn: passing casted pointer '&irq_status' to 'find_first_bit()'
-
-This code wouldn't work on a 64 bit big endian system because it would
-read past the end of &irq_status.
-
- [ bp: massage. ]
-
-Fixes: 13ab8448d2c9 ("EDAC, altera: Add ECC Manager IRQ controller support")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Borislav Petkov <bp@suse.de>
-Reviewed-by: Thor Thayer <thor.thayer@linux.intel.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: kernel-janitors@vger.kernel.org
-Cc: linux-edac <linux-edac@vger.kernel.org>
-Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Link: https://lkml.kernel.org/r/20190624134717.GA1754@mwanda
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/edac/altera_edac.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/edac/altera_edac.c b/drivers/edac/altera_edac.c
-index b0bd0f64d8f21..6037efa94c9ba 100644
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1651,6 +1651,7 @@ static void altr_edac_a10_irq_handler(struct irq_desc *desc)
- 	struct altr_arria10_edac *edac = irq_desc_get_handler_data(desc);
- 	struct irq_chip *chip = irq_desc_get_chip(desc);
- 	int irq = irq_desc_get_irq(desc);
-+	unsigned long bits;
- 
- 	dberr = (irq == edac->db_irq) ? 1 : 0;
- 	sm_offset = dberr ? A10_SYSMGR_ECC_INTSTAT_DERR_OFST :
-@@ -1660,7 +1661,8 @@ static void altr_edac_a10_irq_handler(struct irq_desc *desc)
- 
- 	regmap_read(edac->ecc_mgr_map, sm_offset, &irq_status);
- 
--	for_each_set_bit(bit, (unsigned long *)&irq_status, 32) {
-+	bits = irq_status;
-+	for_each_set_bit(bit, &bits, 32) {
- 		irq = irq_linear_revmap(edac->domain, dberr * 32 + bit);
- 		if (irq)
- 			generic_handle_irq(irq);
--- 
-2.20.1
-
+Applied, thank you!

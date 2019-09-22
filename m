@@ -2,76 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 26EEFBA12A
-	for <lists+kernel-janitors@lfdr.de>; Sun, 22 Sep 2019 07:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C90DBA15E
+	for <lists+kernel-janitors@lfdr.de>; Sun, 22 Sep 2019 09:41:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727519AbfIVFWO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 22 Sep 2019 01:22:14 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:49470 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727501AbfIVFWO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 22 Sep 2019 01:22:14 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 07A87247729FEC1F7A8F;
-        Sun, 22 Sep 2019 13:22:08 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.439.0; Sun, 22 Sep 2019 13:21:59 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <netanel@amazon.com>, <saeedb@amazon.com>, <zorik@amazon.com>,
-        <davem@davemloft.net>
-CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH v2 net] net: ena: Select DIMLIB for ENA_ETHERNET
-Date:   Sun, 22 Sep 2019 13:38:08 +0800
-Message-ID: <20190922053808.117965-1-maowenan@huawei.com>
+        id S1727750AbfIVHlh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 22 Sep 2019 03:41:37 -0400
+Received: from smtp09.smtpout.orange.fr ([80.12.242.131]:29376 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727705AbfIVHlh (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 22 Sep 2019 03:41:37 -0400
+Received: from localhost.localdomain ([93.22.150.25])
+        by mwinf5d85 with ME
+        id 4XhW210060Z7Li503XhWTo; Sun, 22 Sep 2019 09:41:32 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 22 Sep 2019 09:41:32 +0200
+X-ME-IP: 93.22.150.25
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     mchehab@kernel.org, hverkuil-cisco@xs4all.nl, tglx@linutronix.de,
+        gregkh@linuxfoundation.org, kstewart@linuxfoundation.org
+Cc:     linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] [media] cx88: Fix some error handling path in 'cx8800_initdev()'
+Date:   Sun, 22 Sep 2019 09:41:23 +0200
+Message-Id: <20190922074123.29124-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190921200741.1c3289e8@cakuba.netronome.com>
-References: <20190921200741.1c3289e8@cakuba.netronome.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If CONFIG_ENA_ETHERNET=y and CONFIG_DIMLIB=n,
-below erros can be found:
-drivers/net/ethernet/amazon/ena/ena_netdev.o: In function `ena_dim_work':
-ena_netdev.c:(.text+0x21cc): undefined reference to `net_dim_get_rx_moderation'
-ena_netdev.c:(.text+0x21cc): relocation truncated to
-fit: R_AARCH64_CALL26 against undefined symbol `net_dim_get_rx_moderation'
-drivers/net/ethernet/amazon/ena/ena_netdev.o: In function `ena_io_poll':
-ena_netdev.c:(.text+0x7bd4): undefined reference to `net_dim'
-ena_netdev.c:(.text+0x7bd4): relocation truncated to fit:
-R_AARCH64_CALL26 against undefined symbol `net_dim'
+A call to 'pci_disable_device()' is missing in the error handling path.
+In some cases, a call to 'free_irq()' may also be missing.
 
-After commit 282faf61a053 ("net: ena: switch to dim algorithm for rx adaptive
-interrupt moderation"), it introduces dim algorithm, which configured by CONFIG_DIMLIB.
-So, this patch is to select DIMLIB for ENA_ETHERNET.
+Reorder the error handling path, add some new labels and fix the 2 issues
+mentionned above.
 
-Fixes: 282faf61a053 ("net: ena: switch to dim algorithm for rx adaptive interrupt moderation")
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
+This way, the error handling path in more in line with 'cx8800_finidev()'
+(i.e. the remove function)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- v2: change subject of patch, use the "select" keyword instead of "depends".
- drivers/net/ethernet/amazon/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+It is likely that this is still incomplete, but at least it should be
+better :)
+---
+ drivers/media/pci/cx88/cx88-video.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/amazon/Kconfig b/drivers/net/ethernet/amazon/Kconfig
-index 69ca99d8ac26..cca72a75f551 100644
---- a/drivers/net/ethernet/amazon/Kconfig
-+++ b/drivers/net/ethernet/amazon/Kconfig
-@@ -19,6 +19,7 @@ if NET_VENDOR_AMAZON
- config ENA_ETHERNET
- 	tristate "Elastic Network Adapter (ENA) support"
- 	depends on PCI_MSI && !CPU_BIG_ENDIAN
-+	select DIMLIB
- 	---help---
- 	  This driver supports Elastic Network Adapter (ENA)"
+diff --git a/drivers/media/pci/cx88/cx88-video.c b/drivers/media/pci/cx88/cx88-video.c
+index dcc0f02aeb70..b8abcd550604 100644
+--- a/drivers/media/pci/cx88/cx88-video.c
++++ b/drivers/media/pci/cx88/cx88-video.c
+@@ -1277,7 +1277,7 @@ static int cx8800_initdev(struct pci_dev *pci_dev,
+ 	core = cx88_core_get(dev->pci);
+ 	if (!core) {
+ 		err = -EINVAL;
+-		goto fail_free;
++		goto fail_disable;
+ 	}
+ 	dev->core = core;
  
+@@ -1323,7 +1323,7 @@ static int cx8800_initdev(struct pci_dev *pci_dev,
+ 				       cc->step, cc->default_value);
+ 		if (!vc) {
+ 			err = core->audio_hdl.error;
+-			goto fail_core;
++			goto fail_irq;
+ 		}
+ 		vc->priv = (void *)cc;
+ 	}
+@@ -1337,7 +1337,7 @@ static int cx8800_initdev(struct pci_dev *pci_dev,
+ 				       cc->step, cc->default_value);
+ 		if (!vc) {
+ 			err = core->video_hdl.error;
+-			goto fail_core;
++			goto fail_irq;
+ 		}
+ 		vc->priv = (void *)cc;
+ 		if (vc->id == V4L2_CID_CHROMA_AGC)
+@@ -1509,11 +1509,14 @@ static int cx8800_initdev(struct pci_dev *pci_dev,
+ 
+ fail_unreg:
+ 	cx8800_unregister_video(dev);
+-	free_irq(pci_dev->irq, dev);
+ 	mutex_unlock(&core->lock);
++fail_irq:
++	free_irq(pci_dev->irq, dev);
+ fail_core:
+ 	core->v4ldev = NULL;
+ 	cx88_core_put(core, dev->pci);
++fail_disable:
++	pci_disable_device(pci_dev);
+ fail_free:
+ 	kfree(dev);
+ 	return err;
 -- 
 2.20.1
 

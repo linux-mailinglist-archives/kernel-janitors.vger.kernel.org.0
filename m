@@ -2,117 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6C25BA2F4
-	for <lists+kernel-janitors@lfdr.de>; Sun, 22 Sep 2019 17:08:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5360BA39E
+	for <lists+kernel-janitors@lfdr.de>; Sun, 22 Sep 2019 20:21:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387453AbfIVPIB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 22 Sep 2019 11:08:01 -0400
-Received: from mout.web.de ([212.227.17.12]:49963 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728211AbfIVPIB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 22 Sep 2019 11:08:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569164875;
-        bh=/tLF8FNd+5kmvda8nqiASXRcjfYhY59Qr9QPeVtm7Yk=;
-        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=FHEzZUbE9BT1BiV2mklFHfH6Qc8q7n/mNtHv9AVksispNM514AAIpKURAoNeNMzzI
-         gDWziUbOUgePIPndN8STFJyhSvN2eYvd6NEPp9fQq4uLGZODw9cG6N7PXhRLvTgp/Y
-         BTpAeDfyS+uQ1bHVAf9K35ev1ihLeTvF7hCpTY8w=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.8.78]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LZeVM-1hmdoV13ds-00lXHa; Sun, 22
- Sep 2019 17:07:55 +0200
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20190815060014.2191-1-nishkadg.linux@gmail.com>
-Subject: Re: [PATCH] ata: libahci_platform: Add of_node_put() before loop exit
-To:     Nishka Dasgupta <nishkadg.linux@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        Hans de Goede <hdegoede@redhat.com>,
-        linux-ide@vger.kernel.org
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <ac53316a-7856-fdad-d982-5e80305be9d2@web.de>
-Date:   Sun, 22 Sep 2019 17:07:54 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+        id S2388382AbfIVSV2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 22 Sep 2019 14:21:28 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:35381 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388240AbfIVSV2 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 22 Sep 2019 14:21:28 -0400
+Received: by mail-pf1-f194.google.com with SMTP id 205so7616577pfw.2
+        for <kernel-janitors@vger.kernel.org>; Sun, 22 Sep 2019 11:21:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pensando.io; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=xbjhe9p7ihX/LhWFDLHIoBHjGYW3pvzMntXfhITxjEM=;
+        b=txE2yt0Rmf5IlC2Zs/dwezsK13nRZqMERzjkCdLKfMjva1GAVIMx5iDFHV8T9AhYRO
+         sHRYpZiqNFseq33Ggkbb2zXK4Flf5wz37bFOlBqqeADlKKXCcBlGCFGHYipK7KmsAumH
+         QvGH9tZRPElRBHZ6jsW/7qm3+B9qOtLL9O9eivBrI5G4dXepvHWBw9wIOVtA4vTbugWH
+         FQ31p4xsGxAqISiWsXyKN50vyZ6P06fUuDqA767pndUvOBSJH997Dj64icJHvZ6zqNqK
+         Z6afrWj2ELoGLkUxnPCXTZGRWFGZaKUzwg3Ydx5+onA4ZKhrmQUu8EhhHX1ei1EHv0gM
+         PyqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=xbjhe9p7ihX/LhWFDLHIoBHjGYW3pvzMntXfhITxjEM=;
+        b=ZIgTVX1rqkBu9jdBYGB4K+0OBMqJ8pWOAmNae6dwzRBY1zjrVGkWJeq2Ja5WXfVHBv
+         cN1fsoiCjhzCuhQGpB7BxL88hx2x0qe4wMII5+twFIA23PYHGOGap/B6P4yxxQUfTkhA
+         Y9l6PYBY9TeHFrwj1qpHSE1UMZfbgNnPEmB/gY1mNTzow0oBvrh6bNH4jaWd/BBzXxrn
+         XycNp04iJ7wJQbG0Vdx2KJ4ZyAdH3KKptgN/3hCIPnpnErDHutJm+cWUPzhRQC6nO5Fm
+         5yMIGyYhor9C/N5nXyEE/ExAZu3BC6M/PcOM17H5JG11tWZJFTvwXdD5xkk795zX+PNw
+         1hyg==
+X-Gm-Message-State: APjAAAVg4Xk8/lM/9Kr2i38bWayrXZROSooCLIvbFtz5fnhEwnFRj++6
+        3LhIJ1FArCWo3mhSR2M2uMxqNuWn/3kV3Q==
+X-Google-Smtp-Source: APXvYqxr2+93cit3nFL6iFGEpSqCkYBinAEKMovpu/+XMMDoZVqJzqP5lfj9tWIk4jRh8MPMlqlUYA==
+X-Received: by 2002:a05:6a00:8c:: with SMTP id c12mr28584631pfj.200.1569176486014;
+        Sun, 22 Sep 2019 11:21:26 -0700 (PDT)
+Received: from Shannons-MacBook-Pro.local (static-50-53-47-17.bvtn.or.frontiernet.net. [50.53.47.17])
+        by smtp.gmail.com with ESMTPSA id x68sm11509436pfd.183.2019.09.22.11.21.24
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 22 Sep 2019 11:21:25 -0700 (PDT)
+Subject: Re: [PATCH net] ionic: Fix an error code in ionic_lif_alloc()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Pensando Drivers <drivers@pensando.io>,
+        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20190921055926.GA18726@mwanda>
+From:   Shannon Nelson <snelson@pensando.io>
+Message-ID: <d878a0d8-7458-0a7d-3bf9-8a8a06e5d6a9@pensando.io>
+Date:   Sun, 22 Sep 2019 11:21:24 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
+ Gecko/20100101 Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20190815060014.2191-1-nishkadg.linux@gmail.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20190921055926.GA18726@mwanda>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:QGWuVhgsrTwQtbMJvkcPYLOzikF4K9VLIABRRISa0iSUnkrbX8A
- jYzgnyKsK5saHIhzle0TXebDfDQQU7fNMNQJ05W9jdwm5cq+XKqnCI/I/klCUKVD2aRDcej
- Pa1DEoLNWCXHYMlaRNOZyVuePcrTpEimuiE4jjVGi6StcMzgYvgzLjJItUhDbjovczTT8y2
- j7LeW9AC6FbSJPe/hg6rQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:HeexO2ggeQ0=:JxhmIxpQ1w+vlKGsBYZLRo
- Q+tmEHqkezEghj4ZlGv0z9gsqg9hp4WcwiVtJq3ZvjAPBG8lCZsgcPYrB1kRA0iU3nKjhvBZn
- wJT5lH7ZpHBp+9dTNeiEoNocc9eu/iCJh+k47gXhQA7wJ4oGEMEDcEvhoaVWvaZB5I9GhRUVF
- pPB8c8xPP6bo92F8+WZw4Sxf+V+dua4+j3yJcp8fyoIY2Mfpat1bVtojvcU8nofBDtwZ/wP+R
- Or1clhLAjDPwRM0SLT/xrX0WiGS8zje+JQ9bWwgGG+IOs1SV6Msyunxedp+tadwCv/169YWut
- xGr9liIwLdm3ziJlT649EabqQZaOKnjj+Y3T1MCCM40Qxc4YuSeZ75XriTeq1SIBy3b/b1iRl
- 2Sam5E/a80Wy9MNYsWbF3bbWRwZ1ch71y3F187hSd07tEa3SxKmG0wNhIsIEGqQET/AbDpQ5l
- grj02wGyk8Wui/USWhAGfKkLDPKROUN0X5ss4m4FzHPulRGQy8zjvgtrR1TyN2wWvqAFWG37K
- z8snJmIhrgbSzYMrJqvmc9buR8TDjLh7kqy3Q0kI+/eA/9gtpKa2YetI+dYyJznhikAJK0PHD
- 6LaAm6igZaLC1SprJ5r0wXyCXoEHykF22kvbX/0aQfIKrQnR0TJ4uizbq+MCpjxEPtS3wzqS7
- HP/7N0iGTLt+Zj+Bf7obr03YCxJGrtEPHwZroXsMWEYvVGQL7+8XpmNIqqOBnsE2lmAsaNUsq
- L2xWR/csPeF8Kqd3TDFG5/pB4/mmuyJ9g6kjcpVyo4LRo88gnaY0l+HCojKJghz1qnqJqM8Cl
- wGOjZbcdN9rxL3o64CxeusORn1uq1yF86qLzet9gP2yQxwtw+Ns7TUIajzMyRwIiom7hhiiqp
- O4iNFZG8HNzX53cslmnQm5uHlXBePlqlVDlEhuDQ1t/WHZya+VDXyHRzz6vhBZWQ9TS7GCrvc
- UrlHbzilDuNe0fRu9TMi8SxEp+mpsODBpd/6LocGblY8Rr5fJjNmjLk36dsbJdNOn+52o2+lw
- yrJARmtPrVBQdfkhODgor6+I6ycGo/Tpwe6QgFmCS5LXkjJLgqLzZ7g+sm7ziWDLaFl/tkN20
- FmnVmoklBHwqVN+2D8T3/BstT0yexLzDn5HJLaAGEUFtYZEG5n47vG4joMcXZReDBth5JqET4
- KbBpPhjKljDjKAO8WBqPewwbo8HqgfPeKzSnvfknjFeSYqDI4B/H1YRO305FETprVNz2TyViI
- rH7FzhcGbJr/bHVl+xTmwk/nI6ketenEbB7I5RvihBxU1630+PE53Kw93j7A=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-How do you think about to add the tag =E2=80=9CFixes=E2=80=9D for this sof=
-tware correction?
+On 9/20/19 10:59 PM, Dan Carpenter wrote:
+> We need to set the error code on this path.  Otherwise it probably
+> results in a NULL dereference down the line.
+>
+> Fixes: aa3198819bea ("ionic: Add RSS support")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>   drivers/net/ethernet/pensando/ionic/ionic_lif.c | 1 +
+>   1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+> index db7c82742828..72107a0627a9 100644
+> --- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+> +++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
+> @@ -1704,6 +1704,7 @@ static struct ionic_lif *ionic_lif_alloc(struct ionic *ionic, unsigned int index
+>   					      GFP_KERNEL);
+>   
+>   	if (!lif->rss_ind_tbl) {
+> +		err = -ENOMEM;
+>   		dev_err(dev, "Failed to allocate rss indirection table, aborting\n");
+>   		goto err_out_free_qcqs;
+>   	}
 
-Regards,
-Markus
+Thanks, Dan.
+
+Acked-by: Shannon Nelson <snelson@pensando.io>
+
+

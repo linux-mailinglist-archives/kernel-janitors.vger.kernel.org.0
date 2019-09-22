@@ -2,27 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12B9CBAA98
-	for <lists+kernel-janitors@lfdr.de>; Sun, 22 Sep 2019 21:54:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37703BA93D
+	for <lists+kernel-janitors@lfdr.de>; Sun, 22 Sep 2019 21:51:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731637AbfIVT21 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 22 Sep 2019 15:28:27 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48070 "EHLO mail.kernel.org"
+        id S2392022AbfIVTMy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 22 Sep 2019 15:12:54 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60484 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404533AbfIVSuq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:50:46 -0400
+        id S2438672AbfIVS5w (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 22 Sep 2019 14:57:52 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 94C76214AF;
-        Sun, 22 Sep 2019 18:50:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 99F5D208C2;
+        Sun, 22 Sep 2019 18:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178245;
-        bh=PAolAwDXSt+ysTH+9yNnx2oXETE5pOv1wJqyLHv1WTc=;
+        s=default; t=1569178671;
+        bh=N9/Rg1+PUsp0y7YSgg+0BkRpyqmK9meFIu4cSaUzWUw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xYPssyJQBNGz3+1HkJffhekzMR11yuEvNANIvJv/rY0PSC+UHyuQfjjo6tlqnQtXN
-         58Kdm2zBG+7bPLamX0ov4yFsNPRnqbtGRLwbQhNJJsiRVnGBhemnJDs7x2NAjx4MZT
-         GJ0f2QbM/CfBsIUXJ5GFjEBNP5WJeijl0EjcSioI=
+        b=ZZxewaEh2l+5Og/yI5IU/z7bE1onHTZq13OKAUE7BYyOT721xHVvxQF4pHeEno3o7
+         2K/gnROIxYMPPBaPsWT4omg5/SMrTgMxz8Nxydbv1YHVZc0E068YF3XnUjZpVLHTni
+         rG+06okSzJf2ZKzz4ptSQhLZ30YMYPg6zWJXGGec=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
@@ -34,12 +34,12 @@ Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Tony Luck <tony.luck@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.2 039/185] EDAC/altera: Use the proper type for the IRQ status bits
-Date:   Sun, 22 Sep 2019 14:46:57 -0400
-Message-Id: <20190922184924.32534-39-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 22/89] EDAC/altera: Use the proper type for the IRQ status bits
+Date:   Sun, 22 Sep 2019 14:56:10 -0400
+Message-Id: <20190922185717.3412-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922184924.32534-1-sashal@kernel.org>
-References: <20190922184924.32534-1-sashal@kernel.org>
+In-Reply-To: <20190922185717.3412-1-sashal@kernel.org>
+References: <20190922185717.3412-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -79,10 +79,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/edac/altera_edac.c b/drivers/edac/altera_edac.c
-index 8816f74a22b4a..2d12b94eccda2 100644
+index 38983f56ad0dd..d92090b127de7 100644
 --- a/drivers/edac/altera_edac.c
 +++ b/drivers/edac/altera_edac.c
-@@ -1829,6 +1829,7 @@ static void altr_edac_a10_irq_handler(struct irq_desc *desc)
+@@ -1646,6 +1646,7 @@ static void altr_edac_a10_irq_handler(struct irq_desc *desc)
  	struct altr_arria10_edac *edac = irq_desc_get_handler_data(desc);
  	struct irq_chip *chip = irq_desc_get_chip(desc);
  	int irq = irq_desc_get_irq(desc);
@@ -90,7 +90,7 @@ index 8816f74a22b4a..2d12b94eccda2 100644
  
  	dberr = (irq == edac->db_irq) ? 1 : 0;
  	sm_offset = dberr ? A10_SYSMGR_ECC_INTSTAT_DERR_OFST :
-@@ -1838,7 +1839,8 @@ static void altr_edac_a10_irq_handler(struct irq_desc *desc)
+@@ -1655,7 +1656,8 @@ static void altr_edac_a10_irq_handler(struct irq_desc *desc)
  
  	regmap_read(edac->ecc_mgr_map, sm_offset, &irq_status);
  

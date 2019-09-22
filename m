@@ -2,35 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C598DBA2A7
-	for <lists+kernel-janitors@lfdr.de>; Sun, 22 Sep 2019 14:37:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF315BA2D2
+	for <lists+kernel-janitors@lfdr.de>; Sun, 22 Sep 2019 15:56:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728958AbfIVMhp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 22 Sep 2019 08:37:45 -0400
-Received: from mout.web.de ([217.72.192.78]:50941 "EHLO mout.web.de"
+        id S1728977AbfIVN4B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 22 Sep 2019 09:56:01 -0400
+Received: from mout.web.de ([212.227.17.11]:42999 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728920AbfIVMhp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 22 Sep 2019 08:37:45 -0400
+        id S1728613AbfIVN4B (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 22 Sep 2019 09:56:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569155843;
-        bh=ZoL9rSRGY/hMR5+RyJQUdt0h2EOtukOtB+LPCYWzxKg=;
-        h=X-UI-Sender-Class:To:From:Subject:Date;
-        b=awYcnYuntF244h8HPK1yiYcZ20b3UVlusPYc7qekqUfjgxjTqQwt06n23g2JEi7R2
-         cD7M/sSKGT948+AzQMWyaLw1SGkMEETpmkk+ZGkeMP/BjCppJGM9XYKRP7LFlezlCs
-         NO4a+6PXp79tFiLbZ0UryRQ+EfoGHfloqTQLEFBc=
+        s=dbaedf251592; t=1569160554;
+        bh=lX6emF+xjsAZLDbG4WIHkDXFQUJXQ8PmDva8OKKoGb0=;
+        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+        b=EQBxSWAn87+ihu55I+DwdCCJabdPCkKa7/rtFwYntS2bdA5N215Rd3F+CUzNh93xn
+         s7wpI/UrPx86Lt5dRBfcvyW8a6fltYUJzRHR+03VwRabvXs2iE9CV8eyTRaEK/K0BH
+         dO68ehF/hi7DI6pLdpXwIWGsIOoLG2KUtlAF8B+A=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.244.8.78]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MMEzJ-1iHFmg1Ej7-0080pg; Sun, 22
- Sep 2019 14:37:23 +0200
-To:     dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Dan Williams <dan.j.williams@intel.com>,
-        Jun Nie <jun.nie@linaro.org>, Shawn Guo <shawnguo@kernel.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Ljrq1-1hetNb32u9-00brWF; Sun, 22
+ Sep 2019 15:55:54 +0200
+To:     linux-ide@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Nishka Dasgupta <nishkadg.linux@gmail.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] dmaengine: zx: Use devm_platform_ioremap_resource() in
- zx_dma_probe()
+Subject: [PATCH] ata: libahci_platform: Use common error handling code in
+ ahci_platform_get_resources()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -74,80 +71,107 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <85de79fa-1ca5-a1e5-0296-9e8a2066f134@web.de>
-Date:   Sun, 22 Sep 2019 14:37:13 +0200
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Message-ID: <6ca97aeb-0892-ed0e-a149-b25848adf324@web.de>
+Date:   Sun, 22 Sep 2019 15:55:53 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:LOEoO3e1HjDq2nqUHuxvqMDK/yYBX6Gy7vCJgGLOF5eZQqZ7WZC
- tpZZ/1BrkoqC4rDc8oB9h7LGQk4Xn8WE+xH1QB0JAc2elmhjcI7DQBc8dMCfbGfiq3LSDST
- 1ike6eJUP7xbwDBJw5eSnkM1SG9uHHKdYATFC8kQjdJ+/J+PK6v/VuBbzanUiVp78O9QQ4x
- +++7PliC8atxMbqhWAoMA==
+X-Provags-ID: V03:K1:/4/JbLOSCKw/9J5S3k0+ovryNiywB5oTV3LWxinMqTowLGWW6XW
+ B8LTFsJLYcpDGuJJbUXzveI9a7bmWaGI3PkVoQiTfljJwQQp06ea+OYzSncxC/jy3RkIz5s
+ Rk/D5O78s1176Eu6V25fAZoxhlAOEkghSG1q1z8i78Z49xwa7CrRBo5JsMpf8cFcko511sW
+ ON8roMuYhsyRdb6lD2Xrw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:YFGd7ygc9dM=:B9Ui2zdMXQaZPy/wrce6xK
- f22ZfLDXG50YlIeVA+6XQd46HMfu/B94JtwC5DoqlGFeFamGDojoZ0WCFd2w6cTZ8aw6hg+1r
- KKa97UfeJCWk6vi9dl6lNpAqh1osMoT56psvn+9I3hMIc7eW2IIokfsEZb3SbswBZYEfdZ+SY
- jvlc2ArA1YqpmmvsQp1Zj9CNLTXwue9Q9wKFxszpZ5p0HgN+BRinh9AIJCe94qLRJ6sypEUfn
- KJ9ppCmjAUcwKFj+DwQBNEHaABM9Tq1hWFbinc9W6S/QGT0f8byOJ9AFj6OwZvFNOykhPnl2N
- g7u41CTxlKtqAfnxFDi7mYvsEPtIQ+5WMocDoIJ0lgBVjM1HQgoxjzMBmFB0skSMsVXVJreCJ
- JTmuHDhrGGk8bmaiQ9/7qY8GjOim0AvumSC/NUS6DjNgClu0OS9ovwGZKqUwZWnfqMOFeEBpn
- ya3TsTY6th/r9/ZRLe3YuPHsNndmH3Y5Dt4J/zDxw7QkwcDUP+5RxFJcM1JX/7YFGL3DmKwYv
- hti0jKjn0wLqfC4sE3dEnUat3ESctlfXCg70mXcX/X3WZePQDKq54BIsPfucw35/zPFU1yJXz
- tO+vb7c+xcIvvwfKkCr/D92lOGS2M3pSHiTpmPjZz4uKOjKhJOs1PCXnB+70DiQMpmmJbaj2O
- zGWjmmAqF2lkWwrNYXZp+JWcJV3SIAouUB+Dpvq6Ojp7rbVGvW8jlcUfmY5xzTOsm+diBBk0d
- LndMLvmCw5gfO2QeMkieEsh1qZ+MZ1IuSj8Hulx+de0cAGHpbcBZCn7UJ1a3uVN47B2NMtmnN
- CGZmTXXYcMVUt6C+RhUmR5NPuKE7zNpyoZUjLrFrPNvg3eKl26Nh8xKpkpuEFyxvcGFXh9BYw
- f/C+EG5pg7ipYnZ4Z1dx14iI+AMUc1attF1RkRuVUYIRhypJqofU9TMCvXwlJk5xaDLjtgD1R
- MBleTNKYgMW46gBRDvjtUHRx5sPPibq9HS4XrewzwVoW7BRSdxoMgqFLeiLM3hiT/WhM6ODTi
- D2tc5iMrh0BzBNoSlL7ONtfuuBFG2QrpFhh8hvgawsrdl9i9fdHge3xNLvjJSIpUM7wJ0bM7C
- Qe1rO4t3D4LX284zNOf9NFUX2XMivbzfXo9UhAhKX+h2X5j3oshp1HCDhDhh+HBV55I4ZnlS0
- 2TQ+bgiSB5v6D08y7v5JaTUpplJEBjFToBqKMuCsFqLRWwVxyjLmFxwQm5/TQsqJq09YuH0Z3
- JmOlY1qxzUUpBFN5xZ67fTeUPCWjkAe4bWYOwbpQUB5LJwA++XbQVtjSoy/g=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:uKkoYPDikFg=:8N06mFnT4RnyiF0j/pyk7t
+ 8Zfh+bLyizrjFV4QeXkIcxQSciTgu4VJkiqBj/gTHpDr7IjetdLkLMankVMLETda0KR+MjrKR
+ g/RvimeJiopDsExTyiF8/Gk/cC+Noxob8nMRMnBg3I7o3gXSQmQdMkJa35RqgAKAeal31pqvG
+ fVEpAKK8nepG8xGpievF/jlrggrlgBR++lyqIvRgKh2MoFxdk6K7s35Hi+8GG+zBApzb4HCSx
+ W5XpVOw75ylx200awJ99l248ISTr0oiTIsVVZI+MvRPsM/sZtbV1P6NaSTrYsqMn0B4dxY7vY
+ cUecoxlSLcbEw5xhwDMoyqcfheCSxB7MPkMF9TX51cY+74JxBH2DQHciKuEgEuHkVMPcnMsOu
+ Cklidz33On/rvqhb6BdO1JJSu/JELMjeEu4KPiiMY0kStlMb/p96FsdU9G4ScYkyNWXYUnp3T
+ 91+F71LNv/0DY8wOWnReanL8BR7XA9ATIPZawMncZpY77+LZgdmNSvfbJdhrhfL5FW2hBdE45
+ vCGh67Q7n1uGk0T8aPd1vdLzKG29axytWfeuVClzwu13iWEvjdgQZikuPwqu71EoHc5QNj5Jc
+ xDC/b5P4poscnIrEbJiihb1ur6UNypQ9kz8t1dFEiu/xhJjgmuw0g0bZjxKF0IEXVQtu8SHVq
+ FEzVeOCNXu4HJyoFeVc+YSf28Ij+Djlp0gs23x/iwXGN6cxNukdTi6QXeULvgmGzhpgdKEivv
+ txdoHRiNfMlfHmqJskRki2lZajvOdmBYhnacCRAq0ie+NcLu6mq8CfyiwTdf6QfvwtIuNQ3OR
+ S4JNXEtTuA5J7wrc6G4WF+IrPuuljeJ9kVWoyLdSLzvnotTIxdt90AOVAOoZDbfweNVZVj9PE
+ Q5mg7rLefch45+FfaKVreRxzUCvMxAKCeavWSZ84LSBjFdQU1qpGHVDq7JAxJURRRkhd0wH8M
+ cwnn122pzOScmRPgr+5BU8+Ar8TErUTcHsi9ow/WYISVAGa+c2DvHhJ58tZrDzdqRmb0DfD36
+ 4mgUb5dm/5Uq66fpz1/Xt53N9ChTnMaKUUuRBxInZ9NPRzJa7Xph+GOEz8opIfF5PfZAzVd5z
+ VwfEtc15NOPo9/XzPOUSvzp7Jm1bHYQIEG1kHzHxSDwpBPnOu595QnhIjtjgb4U/mndZztdwK
+ ZiG//J02iX434NY2xdk31jRvMexxtCnQN99/BdglQUzAwP8ghXHQZQwuyoijJ+NX1YJftOfDz
+ MiSezxLtd51k92H9GUvPPS1DoyJdWFEivR7bkrnocybzlyQIDeG+ksW62+X8=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sun, 22 Sep 2019 14:32:12 +0200
+Date: Sun, 22 Sep 2019 15:42:46 +0200
 
-Simplify this function implementation by using a known wrapper function.
-
-This issue was detected by using the Coccinelle software.
+Convert the call of the function =E2=80=9Cof_node_put=E2=80=9D to another =
+jump target
+so that it can be better reused at three places in this function.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/dma/zx_dma.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/ata/libahci_platform.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/dma/zx_dma.c b/drivers/dma/zx_dma.c
-index 9f4436f7c914..6b457e683e70 100644
-=2D-- a/drivers/dma/zx_dma.c
-+++ b/drivers/dma/zx_dma.c
-@@ -754,18 +754,13 @@ static struct dma_chan *zx_of_dma_simple_xlate(struc=
-t of_phandle_args *dma_spec,
- static int zx_dma_probe(struct platform_device *op)
- {
- 	struct zx_dma_dev *d;
--	struct resource *iores;
- 	int i, ret =3D 0;
+diff --git a/drivers/ata/libahci_platform.c b/drivers/ata/libahci_platform=
+.c
+index e742780950de..7b2e364f3bd5 100644
+=2D-- a/drivers/ata/libahci_platform.c
++++ b/drivers/ata/libahci_platform.c
+@@ -497,8 +497,7 @@ struct ahci_host_priv *ahci_platform_get_resources(str=
+uct platform_device *pdev,
 
--	iores =3D platform_get_resource(op, IORESOURCE_MEM, 0);
--	if (!iores)
--		return -EINVAL;
--
- 	d =3D devm_kzalloc(&op->dev, sizeof(*d), GFP_KERNEL);
- 	if (!d)
- 		return -ENOMEM;
+ 			if (of_property_read_u32(child, "reg", &port)) {
+ 				rc =3D -EINVAL;
+-				of_node_put(child);
+-				goto err_out;
++				goto err_put_node;
+ 			}
 
--	d->base =3D devm_ioremap_resource(&op->dev, iores);
-+	d->base =3D devm_platform_ioremap_resource(op, 0);
- 	if (IS_ERR(d->base))
- 		return PTR_ERR(d->base);
+ 			if (port >=3D hpriv->nports) {
+@@ -515,18 +514,14 @@ struct ahci_host_priv *ahci_platform_get_resources(s=
+truct platform_device *pdev,
+ 			if (port_dev) {
+ 				rc =3D ahci_platform_get_regulator(hpriv, port,
+ 								&port_dev->dev);
+-				if (rc =3D=3D -EPROBE_DEFER) {
+-					of_node_put(child);
+-					goto err_out;
+-				}
++				if (rc =3D=3D -EPROBE_DEFER)
++					goto err_put_node;
+ 			}
+ #endif
 
+ 			rc =3D ahci_platform_get_phy(hpriv, port, dev, child);
+-			if (rc) {
+-				of_node_put(child);
+-				goto err_out;
+-			}
++			if (rc)
++				goto err_put_node;
+
+ 			enabled_ports++;
+ 		}
+@@ -558,6 +553,8 @@ struct ahci_host_priv *ahci_platform_get_resources(str=
+uct platform_device *pdev,
+ 	devres_remove_group(dev, NULL);
+ 	return hpriv;
+
++err_put_node:
++	of_node_put(child);
+ err_out:
+ 	devres_release_group(dev, NULL);
+ 	return ERR_PTR(rc);
 =2D-
 2.23.0
 

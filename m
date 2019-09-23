@@ -2,96 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0FC7BB5BB
-	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Sep 2019 15:48:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5FC1BB693
+	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Sep 2019 16:22:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405243AbfIWNsb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 23 Sep 2019 09:48:31 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:2770 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725782AbfIWNsa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 23 Sep 2019 09:48:30 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 0410E57D6B7700CD05A3;
-        Mon, 23 Sep 2019 21:48:29 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 23 Sep 2019 21:48:20 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>
-CC:     YueHaibing <yuehaibing@huawei.com>,
-        <linux-bluetooth@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-Subject: [PATCH net] Bluetooth: SMP: remove set but not used variable 'smp'
-Date:   Mon, 23 Sep 2019 14:05:16 +0000
-Message-ID: <20190923140516.166241-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S2407559AbfIWOW2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 Sep 2019 10:22:28 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:40722 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405915AbfIWOW1 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 23 Sep 2019 10:22:27 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8NEJCZE111282;
+        Mon, 23 Sep 2019 14:21:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=ijA5URtv/98vHuAZIGyZ6iuoFF4Fyn/jEc22CmlTEdM=;
+ b=NXa4V1GZRACyU93DDdoCr11+k0CdEOiuckcdwo8czwRjYcwhkGkAgGq2fP/TkCXV4+E5
+ K/9Klh+oa9OPyZo3clbzVcl2UStzv4mRxtp0SFca0jcIOIzO+0F22ZEgqOAa+CaozuGF
+ Tx7jVP1EYC3sxEQvGd0STjaeD7dR4VCqdCvSJPwHZrsvyf7tClONkVD8UM3zwJMByrtz
+ UT6k4hzU57Fsb5TzFSdexrU0xL0BsC9cMpQWf4rY8/0Ok9zXmlBWfPZCSO+d9Sn+BngR
+ l/8aLHn3wztAIrqtyc7/sPtfl72EYnhUlX1JCRlb4krkrxCUwVfYdjuMwxA+1NMkFZU/ CQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2v5b9tf9gx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 23 Sep 2019 14:21:55 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8NEJDrK129050;
+        Mon, 23 Sep 2019 14:19:54 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2v5bpgfa06-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 23 Sep 2019 14:19:53 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x8NEIj3W006948;
+        Mon, 23 Sep 2019 14:18:45 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 23 Sep 2019 07:18:44 -0700
+Date:   Mon, 23 Sep 2019 17:18:36 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Keith Busch <kbusch@kernel.org>, Christoph Hellwig <hch@lst.de>
+Cc:     Jens Axboe <axboe@fb.com>, Sagi Grimberg <sagi@grimberg.me>,
+        linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] nvme: fix an error code in nvme_init_subsystem()
+Message-ID: <20190923141836.GA31251@mwanda>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9389 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1909230140
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9389 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1909230140
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+"ret" should be a negative error code here, but it's either success or
+possibly uninitialized.
 
-net/bluetooth/smp.c: In function 'smp_irk_matches':
-net/bluetooth/smp.c:505:18: warning:
- variable 'smp' set but not used [-Wunused-but-set-variable]
-
-net/bluetooth/smp.c: In function 'smp_generate_rpa':
-net/bluetooth/smp.c:526:18: warning:
- variable 'smp' set but not used [-Wunused-but-set-variable]
-
-It is not used since commit 28a220aac596 ("bluetooth: switch
-to AES library")
-
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Fixes: 32fd90c40768 ("nvme: change locking for the per-subsystem controller list")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- net/bluetooth/smp.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/nvme/host/core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/smp.c b/net/bluetooth/smp.c
-index 26e8cfad22b8..6b42be4b5861 100644
---- a/net/bluetooth/smp.c
-+++ b/net/bluetooth/smp.c
-@@ -502,15 +502,12 @@ bool smp_irk_matches(struct hci_dev *hdev, const u8 irk[16],
- 		     const bdaddr_t *bdaddr)
- {
- 	struct l2cap_chan *chan = hdev->smp_data;
--	struct smp_dev *smp;
- 	u8 hash[3];
- 	int err;
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 63b37d08ac98..f6acbff3e3bc 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -2540,8 +2540,9 @@ static int nvme_init_subsystem(struct nvme_ctrl *ctrl, struct nvme_id_ctrl *id)
+ 		list_add_tail(&subsys->entry, &nvme_subsystems);
+ 	}
  
- 	if (!chan || !chan->data)
- 		return false;
- 
--	smp = chan->data;
--
- 	BT_DBG("RPA %pMR IRK %*phN", bdaddr, 16, irk);
- 
- 	err = smp_ah(irk, &bdaddr->b[3], hash);
-@@ -523,14 +520,11 @@ bool smp_irk_matches(struct hci_dev *hdev, const u8 irk[16],
- int smp_generate_rpa(struct hci_dev *hdev, const u8 irk[16], bdaddr_t *rpa)
- {
- 	struct l2cap_chan *chan = hdev->smp_data;
--	struct smp_dev *smp;
- 	int err;
- 
- 	if (!chan || !chan->data)
- 		return -EOPNOTSUPP;
- 
--	smp = chan->data;
--
- 	get_random_bytes(&rpa->b[3], 3);
- 
- 	rpa->b[5] &= 0x3f;	/* Clear two most significant bits */
-
-
+-	if (sysfs_create_link(&subsys->dev.kobj, &ctrl->device->kobj,
+-			dev_name(ctrl->device))) {
++	ret = sysfs_create_link(&subsys->dev.kobj, &ctrl->device->kobj,
++				dev_name(ctrl->device));
++	if (ret) {
+ 		dev_err(ctrl->device,
+ 			"failed to create sysfs link from subsystem.\n");
+ 		goto out_put_subsystem;
+-- 
+2.20.1
 

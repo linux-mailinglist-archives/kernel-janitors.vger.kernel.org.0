@@ -2,82 +2,157 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B6FEBAF50
-	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Sep 2019 10:25:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B7DA3BB0F3
+	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Sep 2019 11:07:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406774AbfIWIZM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 23 Sep 2019 04:25:12 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:53086 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2406076AbfIWIZM (ORCPT
+        id S1727989AbfIWJHq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 Sep 2019 05:07:46 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:34280 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726089AbfIWJHn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 23 Sep 2019 04:25:12 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 4088660850; Mon, 23 Sep 2019 08:25:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569227111;
-        bh=WOFRHwq7H+xLOuFoB5NSwTtl8vKLqopZli8GexNDdAg=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=jefdjzggo1SuHyUOqv5y/m6CCjHi7L9q3YXcxvsEl3p3zAp/ib+Q5Y6uwHvoBmPdE
-         sCqnlzlKavjH6mwyEvtT0J/Ne9BKDx4wIl7l3PZr15x40POFM5tbR445QkWH8+LMpA
-         cKUQHN1C3FAZL/GnM3NASSzuic5SuAny6ja1fTQU=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8D73C60850;
-        Mon, 23 Sep 2019 08:25:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569227110;
-        bh=WOFRHwq7H+xLOuFoB5NSwTtl8vKLqopZli8GexNDdAg=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=ZEUFMhZTZofECZ+NjFNcRCX33MNFX7u+h5sr5xTlGF7oCdrSlgjW7hssDpm0GNXbh
-         WHhbH4Hw7IfDjt0r6012c3MR9Na8Y+ChLA6bOq7sIRhp81jySN2lFaE810OWN4vJ/7
-         ndayYPXUE6zXfrCEiEF6iwKibTicvoWZDP6bum+s=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8D73C60850
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Mon, 23 Sep 2019 05:07:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1569229662;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=T8T8RjJYcGGqEc0WFaCwZbXoPKLFlizfkrKrigbsteU=;
+        b=PJ5JO5M8r2zK0d+m2CRrEJ5zWlHAtuE0gYdY6n1GNzB5qTrXUzUMp0EmM7NSkgGwHAQPtx
+        /R0E0iPhchgITwyuSugrqx2/geBkpsh3Nhfy+ODs+zBpQf/sDsC3gKE7GufpJ4JutHmcm+
+        YTxz487GjSg1ywkgfidFb0goo7bt9mo=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-222-Ln7r2X_cP16QFrW_iTTDAA-1; Mon, 23 Sep 2019 05:07:41 -0400
+Received: by mail-ed1-f71.google.com with SMTP id h3so3640526edd.7
+        for <kernel-janitors@vger.kernel.org>; Mon, 23 Sep 2019 02:07:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=z5+JUdEcNbNbYnUHKbmarfCuTHHHOe0SmXNsWUScQrU=;
+        b=sBpkSg1IcrLVDCaxSppmTKbV91WovU1/Q3XurQ5bhLxtNgj3asHRWEL/BwhC0ci6+6
+         627nZwIaGEL8B5uFbKAya8U4skMpIfXYhoellwFSU3RthcI3rhyOSjiPxLqMN2u3MyTE
+         /eftlDD4qTOU7sBSAkV2X1/pw8IS10aqhNJsLN91RrZriDJxE7CpRd52FctOCzmESJLS
+         PbC9oMOYMhnbZv7s+wkvBwjmk1LyANESKGOUOd4jarVRQO4o0nIZaFijkw665p8N3FqX
+         6SYgenbmd6JSlWX55LkjJH0VpAM9EINvkSZCy8T6R2c+7mrMmPDhkHOkAxL4rI6M3eLD
+         LcqQ==
+X-Gm-Message-State: APjAAAVNHMX3vA8EuyvneaGMm94GWQPXww7mSSLuIHkuoMEkgwOo6dCV
+        AaR5VJWGsPISTczfvQ7rcgq+cJNMfLd3S6UqEWbHhMA7b6snRtrYDdgJisueC7DpVmEZLaotlU+
+        iwv4gX83WGpUgogvPW3l+6CdJJTdZ
+X-Received: by 2002:a50:fc0c:: with SMTP id i12mr34693070edr.82.1569229659514;
+        Mon, 23 Sep 2019 02:07:39 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqyCzq+l6MJPGlCUee90zOAQDFcFCUx0OtBxlJM4Nzjg7r/Nu6TdCyo4uiEsmUp7Cb5ztI+lUw==
+X-Received: by 2002:a50:fc0c:: with SMTP id i12mr34693051edr.82.1569229659394;
+        Mon, 23 Sep 2019 02:07:39 -0700 (PDT)
+Received: from shalem.localdomain (84-106-84-65.cable.dynamic.v4.ziggo.nl. [84.106.84.65])
+        by smtp.gmail.com with ESMTPSA id s16sm2244451edd.39.2019.09.23.02.07.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Sep 2019 02:07:38 -0700 (PDT)
+Subject: Re: [PATCH] ata: libahci_platform: Use common error handling code in
+ ahci_platform_get_resources()
+To:     Markus Elfring <Markus.Elfring@web.de>, linux-ide@vger.kernel.org,
+        Jens Axboe <axboe@kernel.dk>,
+        Nishka Dasgupta <nishkadg.linux@gmail.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+References: <6ca97aeb-0892-ed0e-a149-b25848adf324@web.de>
+From:   Hans de Goede <hdegoede@redhat.com>
+Message-ID: <7463a1d5-e76f-99a6-5a1e-f9477da3c1da@redhat.com>
+Date:   Mon, 23 Sep 2019 11:07:38 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] ath: fix various spelling mistakes
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190702123904.8786-1-colin.king@canonical.com>
-References: <20190702123904.8786-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Maya Erez <merez@codeaurora.org>, ath10k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        wil6210@qti.qualcomm.com, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190923082511.4088660850@smtp.codeaurora.org>
-Date:   Mon, 23 Sep 2019 08:25:11 +0000 (UTC)
+In-Reply-To: <6ca97aeb-0892-ed0e-a149-b25848adf324@web.de>
+Content-Language: en-US
+X-MC-Unique: Ln7r2X_cP16QFrW_iTTDAA-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+Hi,
 
-> There are a bunch of spelling mistakes in two ath drivers, fix
-> these.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+On 22-09-2019 15:55, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Sun, 22 Sep 2019 15:42:46 +0200
+>=20
+> Convert the call of the function =E2=80=9Cof_node_put=E2=80=9D to another=
+ jump target
+> so that it can be better reused at three places in this function.
+>=20
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-Patch applied to ath-next branch of ath.git, thanks.
+Patch looks good to me:
 
-80ce8ca7a647 ath: fix various spelling mistakes
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
 
--- 
-https://patchwork.kernel.org/patch/11027799/
+Regards,
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Hans
+
+
+
+> ---
+>   drivers/ata/libahci_platform.c | 17 +++++++----------
+>   1 file changed, 7 insertions(+), 10 deletions(-)
+>=20
+> diff --git a/drivers/ata/libahci_platform.c b/drivers/ata/libahci_platfor=
+m.c
+> index e742780950de..7b2e364f3bd5 100644
+> --- a/drivers/ata/libahci_platform.c
+> +++ b/drivers/ata/libahci_platform.c
+> @@ -497,8 +497,7 @@ struct ahci_host_priv *ahci_platform_get_resources(st=
+ruct platform_device *pdev,
+>=20
+>   =09=09=09if (of_property_read_u32(child, "reg", &port)) {
+>   =09=09=09=09rc =3D -EINVAL;
+> -=09=09=09=09of_node_put(child);
+> -=09=09=09=09goto err_out;
+> +=09=09=09=09goto err_put_node;
+>   =09=09=09}
+>=20
+>   =09=09=09if (port >=3D hpriv->nports) {
+> @@ -515,18 +514,14 @@ struct ahci_host_priv *ahci_platform_get_resources(=
+struct platform_device *pdev,
+>   =09=09=09if (port_dev) {
+>   =09=09=09=09rc =3D ahci_platform_get_regulator(hpriv, port,
+>   =09=09=09=09=09=09=09=09&port_dev->dev);
+> -=09=09=09=09if (rc =3D=3D -EPROBE_DEFER) {
+> -=09=09=09=09=09of_node_put(child);
+> -=09=09=09=09=09goto err_out;
+> -=09=09=09=09}
+> +=09=09=09=09if (rc =3D=3D -EPROBE_DEFER)
+> +=09=09=09=09=09goto err_put_node;
+>   =09=09=09}
+>   #endif
+>=20
+>   =09=09=09rc =3D ahci_platform_get_phy(hpriv, port, dev, child);
+> -=09=09=09if (rc) {
+> -=09=09=09=09of_node_put(child);
+> -=09=09=09=09goto err_out;
+> -=09=09=09}
+> +=09=09=09if (rc)
+> +=09=09=09=09goto err_put_node;
+>=20
+>   =09=09=09enabled_ports++;
+>   =09=09}
+> @@ -558,6 +553,8 @@ struct ahci_host_priv *ahci_platform_get_resources(st=
+ruct platform_device *pdev,
+>   =09devres_remove_group(dev, NULL);
+>   =09return hpriv;
+>=20
+> +err_put_node:
+> +=09of_node_put(child);
+>   err_out:
+>   =09devres_release_group(dev, NULL);
+>   =09return ERR_PTR(rc);
+> --
+> 2.23.0
+>=20
 

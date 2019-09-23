@@ -2,52 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5FC1BB693
-	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Sep 2019 16:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B9DBBB6A1
+	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Sep 2019 16:24:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407559AbfIWOW2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 23 Sep 2019 10:22:28 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:40722 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405915AbfIWOW1 (ORCPT
+        id S2437841AbfIWOY2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 Sep 2019 10:24:28 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:54834 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2437634AbfIWOY2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 23 Sep 2019 10:22:27 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8NEJCZE111282;
-        Mon, 23 Sep 2019 14:21:55 GMT
+        Mon, 23 Sep 2019 10:24:28 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8NEIjsH060919;
+        Mon, 23 Sep 2019 14:23:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=ijA5URtv/98vHuAZIGyZ6iuoFF4Fyn/jEc22CmlTEdM=;
- b=NXa4V1GZRACyU93DDdoCr11+k0CdEOiuckcdwo8czwRjYcwhkGkAgGq2fP/TkCXV4+E5
- K/9Klh+oa9OPyZo3clbzVcl2UStzv4mRxtp0SFca0jcIOIzO+0F22ZEgqOAa+CaozuGF
- Tx7jVP1EYC3sxEQvGd0STjaeD7dR4VCqdCvSJPwHZrsvyf7tClONkVD8UM3zwJMByrtz
- UT6k4hzU57Fsb5TzFSdexrU0xL0BsC9cMpQWf4rY8/0Ok9zXmlBWfPZCSO+d9Sn+BngR
- l/8aLHn3wztAIrqtyc7/sPtfl72EYnhUlX1JCRlb4krkrxCUwVfYdjuMwxA+1NMkFZU/ CQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 2v5b9tf9gx-1
+ bh=Y1OboCrFjSM9iPGT/Aql2YTs9KFBvySeFqWFymUnyyo=;
+ b=E2jh9CrE+2CTE2r7Sz20vQev+hWSAh2vCRWIya6U/RvgIrH0rLLsKxnZw1Hh2Xi+NlPI
+ RWmm1o1TNzOHNQyAb9GtqyXaE9cosUHTnVmEjVVQ1dIfMNNi+tVbldp4EhtoyvJHzHSY
+ Y9ioaa7u1yiJxaNHT3+9+humxzDY7PbQcHi3hUR3fibP3ahLMvlTCmnsxxtEW+tPvE4h
+ 0M3RlBKT18fDN939/6G3AutaDKXc3lWuSGF2ClYPOcD3fMrdTsmOXMvCuFCKZcZYTr8/
+ PYZjk6jXHUpH2CIprd5z3PZ7nr7TvCH5sj4IkCro1M6dvuPkO2I7jYEXVZgFhwdMyY7v Ew== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 2v5btpqa26-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 23 Sep 2019 14:21:55 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8NEJDrK129050;
-        Mon, 23 Sep 2019 14:19:54 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 2v5bpgfa06-1
+        Mon, 23 Sep 2019 14:23:11 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8NEJESC076593;
+        Mon, 23 Sep 2019 14:23:10 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2v6acvkp5w-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 23 Sep 2019 14:19:53 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x8NEIj3W006948;
-        Mon, 23 Sep 2019 14:18:45 GMT
+        Mon, 23 Sep 2019 14:23:10 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x8NEN5G3005746;
+        Mon, 23 Sep 2019 14:23:05 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 23 Sep 2019 07:18:44 -0700
-Date:   Mon, 23 Sep 2019 17:18:36 +0300
+        with ESMTP ; Mon, 23 Sep 2019 07:23:04 -0700
+Date:   Mon, 23 Sep 2019 17:22:57 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Keith Busch <kbusch@kernel.org>, Christoph Hellwig <hch@lst.de>
-Cc:     Jens Axboe <axboe@fb.com>, Sagi Grimberg <sagi@grimberg.me>,
-        linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
+Cc:     Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, alsa-devel@alsa-project.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] nvme: fix an error code in nvme_init_subsystem()
-Message-ID: <20190923141836.GA31251@mwanda>
+Subject: [PATCH] ASoC: soc-component: fix a couple missing error assignments
+Message-ID: <20190923142257.GB31251@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -69,31 +70,38 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-"ret" should be a negative error code here, but it's either success or
-possibly uninitialized.
+There were a couple places where the return value wasn't assigned so the
+error handling wouldn't trigger.
 
-Fixes: 32fd90c40768 ("nvme: change locking for the per-subsystem controller list")
+Fixes: 5c0769af4caf ("ASoC: soc-dai: add snd_soc_dai_bespoke_trigger()")
+Fixes: 95aef3553384 ("ASoC: soc-dai: add snd_soc_dai_trigger()")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/nvme/host/core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ sound/soc/soc-pcm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 63b37d08ac98..f6acbff3e3bc 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -2540,8 +2540,9 @@ static int nvme_init_subsystem(struct nvme_ctrl *ctrl, struct nvme_id_ctrl *id)
- 		list_add_tail(&subsys->entry, &nvme_subsystems);
+diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
+index e163dde5eab1..a1b99ac57d9e 100644
+--- a/sound/soc/soc-pcm.c
++++ b/sound/soc/soc-pcm.c
+@@ -1070,7 +1070,7 @@ static int soc_pcm_trigger(struct snd_pcm_substream *substream, int cmd)
+ 			return ret;
  	}
  
--	if (sysfs_create_link(&subsys->dev.kobj, &ctrl->device->kobj,
--			dev_name(ctrl->device))) {
-+	ret = sysfs_create_link(&subsys->dev.kobj, &ctrl->device->kobj,
-+				dev_name(ctrl->device));
-+	if (ret) {
- 		dev_err(ctrl->device,
- 			"failed to create sysfs link from subsystem.\n");
- 		goto out_put_subsystem;
+-	snd_soc_dai_trigger(cpu_dai, substream, cmd);
++	ret = snd_soc_dai_trigger(cpu_dai, substream, cmd);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -1097,7 +1097,7 @@ static int soc_pcm_bespoke_trigger(struct snd_pcm_substream *substream,
+ 			return ret;
+ 	}
+ 
+-	snd_soc_dai_bespoke_trigger(cpu_dai, substream, cmd);
++	ret = snd_soc_dai_bespoke_trigger(cpu_dai, substream, cmd);
+ 	if (ret < 0)
+ 		return ret;
+ 
 -- 
 2.20.1
 

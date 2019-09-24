@@ -2,85 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0385BBCB4B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Sep 2019 17:25:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09F80BD2B5
+	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Sep 2019 21:33:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389245AbfIXPZq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 24 Sep 2019 11:25:46 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:54468 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728107AbfIXPZp (ORCPT
+        id S2392198AbfIXTcz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 24 Sep 2019 15:32:55 -0400
+Received: from outils.crapouillou.net ([89.234.176.41]:50500 "EHLO
+        crapouillou.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388207AbfIXTcz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 24 Sep 2019 11:25:45 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8OF6Aus154431;
-        Tue, 24 Sep 2019 15:25:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=4zi/+s7I/onEAaUL73Ae/9HlAMiuZOtfhgCHOYa+uWg=;
- b=l9Sht2BczUSR3//LsOrLp2Ajz6BBQCS34ui0VyPatKqISKnfr3y1PzHv03Kz2ERGWf1u
- 8wc131OAzpFChz13aSk+4/rYxoL9P8AsqL4NWG5SHlKGc4ySnzjNuRFABqAZ6Jm78MwI
- GB/rRwpTMSSXQZmNcLeqZoxsvo8faF31aZl+yF8YUzViFcrgI6UMh3dvARQQoekWEusC
- 2wJ3zSw/XPgU7SQHVLZavQ8/RISV8GHe8Fw7oE0qYqLJkbpRn1yIgoAZvzsY+zTg3Mxe
- inUZnTpq+AG+LzBVTBR/o/cMXXUbNWgwb5OZHiDCUHfjMGz6jhiQtaewoZwWbaLzZwmR iA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2v5b9tpwpa-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 24 Sep 2019 15:25:34 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8OF6nBL082340;
-        Tue, 24 Sep 2019 15:25:33 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 2v6yvkqgam-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 24 Sep 2019 15:25:33 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x8OFPSTa029998;
-        Tue, 24 Sep 2019 15:25:29 GMT
-Received: from kadam (/102.167.217.97)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 24 Sep 2019 08:25:27 -0700
-Date:   Tue, 24 Sep 2019 18:25:15 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Connor Kuehl <connor.kuehl@canonical.com>
-Cc:     Larry.Finger@lwfinger.net, gregkh@linuxfoundation.org,
-        straube.linux@gmail.com, devel@driverdev.osuosl.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: NACK: [PATCH] staging: rtl8188eu: remove dead code in do-while
- conditional step
-Message-ID: <20190924152515.GD29696@kadam>
-References: <20190923194806.25347-1-connor.kuehl@canonical.com>
- <52e473f0-6b92-9504-b86e-a73a0d82617f@canonical.com>
+        Tue, 24 Sep 2019 15:32:55 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+        s=mail; t=1569353572; h=from:from:sender:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=KlcrFKHqRHEWTZwgwOrmjPoSAcprqpYblaKBY9ljXVE=;
+        b=jW0lrNqJ9kfs3VLCQGkvbq0bjx2lK5xC4x7irzyPUAKayRIgQdwstRK5YwCHoHCVh/yN22
+        KzC25U3qxCJg6MTPZyi2E1r2I3kSKh/DarsAfhK7LNaJjRqTvGGBkCeOJ6FAh6ZIiMtNSJ
+        TBC49rH918ZFJ0rEjFkUaLSDhZbwB0o=
+Date:   Tue, 24 Sep 2019 21:32:32 +0200
+From:   Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH] dmaengine: jz4780: Use devm_platform_ioremap_resource()
+ in jz4780_dma_probe()
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     dmaengine@vger.kernel.org, Dan Williams <dan.j.williams@intel.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Alex Smith <alex.smith@imgtec.com>
+Message-Id: <1569353552.1911.0@crapouillou.net>
+In-Reply-To: <5dd19f28-349a-4957-ea3a-6aebbd7c97e2@web.de>
+References: <5dd19f28-349a-4957-ea3a-6aebbd7c97e2@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <52e473f0-6b92-9504-b86e-a73a0d82617f@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9390 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=582
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1909240145
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9390 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=684 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1909240145
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This email is fine, but I just want to make sure that you don't think
-it's required.  We all assumed that you would send a v2.  I sort of hate
-the word NACK as well because it sounds like shouting or ducks and those
-are my two pet peeves.
+Hi Markus,
 
-Sometimes  people send a v2 patch without any replies to the original
-email and we apply the v1 patch that's the only thing to avoid.
 
-regards,
-dan carpenter
+Le dim. 22 sept. 2019 =E0 11:25, Markus Elfring <Markus.Elfring@web.de>=20
+a =E9crit :
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Sun, 22 Sep 2019 11:18:27 +0200
+>=20
+> Simplify this function implementation a bit by using
+> a known wrapper function.
+>=20
+> This issue was detected by using the Coccinelle software.
+>=20
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+
+Looks good to me.
+
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+
+
+> ---
+>  drivers/dma/dma-jz4780.c | 8 +-------
+>  1 file changed, 1 insertion(+), 7 deletions(-)
+>=20
+> diff --git a/drivers/dma/dma-jz4780.c b/drivers/dma/dma-jz4780.c
+> index cafb1cc065bb..f42b3ef8e036 100644
+> --- a/drivers/dma/dma-jz4780.c
+> +++ b/drivers/dma/dma-jz4780.c
+> @@ -858,13 +858,7 @@ static int jz4780_dma_probe(struct=20
+> platform_device *pdev)
+>  	jzdma->soc_data =3D soc_data;
+>  	platform_set_drvdata(pdev, jzdma);
+>=20
+> -	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	if (!res) {
+> -		dev_err(dev, "failed to get I/O memory\n");
+> -		return -EINVAL;
+> -	}
+> -
+> -	jzdma->chn_base =3D devm_ioremap_resource(dev, res);
+> +	jzdma->chn_base =3D devm_platform_ioremap_resource(pdev, 0);
+>  	if (IS_ERR(jzdma->chn_base))
+>  		return PTR_ERR(jzdma->chn_base);
+>=20
+> --
+> 2.23.0
+>=20
+
+=
 

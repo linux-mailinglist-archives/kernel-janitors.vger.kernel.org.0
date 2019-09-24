@@ -2,165 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AE3A7BCA38
-	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Sep 2019 16:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0385BBCB4B
+	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Sep 2019 17:25:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2441353AbfIXO2z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 24 Sep 2019 10:28:55 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:55164 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389555AbfIXO2y (ORCPT
+        id S2389245AbfIXPZq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 24 Sep 2019 11:25:46 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:54468 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728107AbfIXPZp (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 24 Sep 2019 10:28:54 -0400
-Received: from mail-pl1-f197.google.com ([209.85.214.197])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <connor.kuehl@canonical.com>)
-        id 1iCloD-00021l-Bn
-        for kernel-janitors@vger.kernel.org; Tue, 24 Sep 2019 14:28:53 +0000
-Received: by mail-pl1-f197.google.com with SMTP id k9so1232030pls.13
-        for <kernel-janitors@vger.kernel.org>; Tue, 24 Sep 2019 07:28:53 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=5YkNuEOOhfnHxAM0RhiQZB+Aq9qlq6ccg1LuS0lMLf0=;
-        b=p2D9iqfoUXkq+UeGK9y5dZ25pxXeQXTYSO7TLhOfsnZVzEk2ha2x5cI5xX/ecAUnVS
-         b8qeTYU2MTyyBNDmLsB9Z5zkniPQ3k91GuUad7i+0yYd2fmhFXkhADvlOXFc7eBO6cvT
-         Qly0otyAV/l6bDaCP0KIMpp92KXEZFkh6awdl+7CW2jY+slDBf4cZ9nLp3UIxMrCEEkf
-         fbUh42Cak8kA+VPyaG9rgE3Zr+Y2MFUXGmSE3XUOIqtDYICZiar+dp8Whr+KSQqYNazj
-         9ly6WKXSGrkBI+whCf4d5nWRJFvTUO8Bze/mtzV+I7Zn9ZnxxBu4w6rOyzZ5qnpbJ662
-         gIig==
-X-Gm-Message-State: APjAAAULmUYIelPOzPQEvn7Wf9jbPNk19h3w34P73R/l6/B9rFDeu8Pg
-        X+lYCSSPdkYvA7d4EFzLnQr+BmtFEO/HeI9YeoX++E7AWdK/6azZ1MHBgyr9QYNAzpp3sXhjg6g
-        jViWJh3uH9HnCFEVemi7i+/ltPJ2I5U6++0cPeYcDRcZaPw==
-X-Received: by 2002:a62:f244:: with SMTP id y4mr3837261pfl.2.1569335331988;
-        Tue, 24 Sep 2019 07:28:51 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqzzLi9oMclWpMESAA1tm9M09vstATTbyIZMUv+NYjlAT8Bd3t7W6yLfNh3/LXVbQ5DOkTnItw==
-X-Received: by 2002:a62:f244:: with SMTP id y4mr3837240pfl.2.1569335331782;
-        Tue, 24 Sep 2019 07:28:51 -0700 (PDT)
-Received: from localhost.localdomain (c-71-63-131-226.hsd1.or.comcast.net. [71.63.131.226])
-        by smtp.gmail.com with ESMTPSA id 74sm1848668pfy.78.2019.09.24.07.28.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Sep 2019 07:28:51 -0700 (PDT)
-From:   Connor Kuehl <connor.kuehl@canonical.com>
-To:     Larry.Finger@lwfinger.net, gregkh@linuxfoundation.org,
+        Tue, 24 Sep 2019 11:25:45 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8OF6Aus154431;
+        Tue, 24 Sep 2019 15:25:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=4zi/+s7I/onEAaUL73Ae/9HlAMiuZOtfhgCHOYa+uWg=;
+ b=l9Sht2BczUSR3//LsOrLp2Ajz6BBQCS34ui0VyPatKqISKnfr3y1PzHv03Kz2ERGWf1u
+ 8wc131OAzpFChz13aSk+4/rYxoL9P8AsqL4NWG5SHlKGc4ySnzjNuRFABqAZ6Jm78MwI
+ GB/rRwpTMSSXQZmNcLeqZoxsvo8faF31aZl+yF8YUzViFcrgI6UMh3dvARQQoekWEusC
+ 2wJ3zSw/XPgU7SQHVLZavQ8/RISV8GHe8Fw7oE0qYqLJkbpRn1yIgoAZvzsY+zTg3Mxe
+ inUZnTpq+AG+LzBVTBR/o/cMXXUbNWgwb5OZHiDCUHfjMGz6jhiQtaewoZwWbaLzZwmR iA== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 2v5b9tpwpa-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 24 Sep 2019 15:25:34 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8OF6nBL082340;
+        Tue, 24 Sep 2019 15:25:33 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 2v6yvkqgam-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 24 Sep 2019 15:25:33 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x8OFPSTa029998;
+        Tue, 24 Sep 2019 15:25:29 GMT
+Received: from kadam (/102.167.217.97)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 24 Sep 2019 08:25:27 -0700
+Date:   Tue, 24 Sep 2019 18:25:15 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Connor Kuehl <connor.kuehl@canonical.com>
+Cc:     Larry.Finger@lwfinger.net, gregkh@linuxfoundation.org,
         straube.linux@gmail.com, devel@driverdev.osuosl.org,
-        dan.carpenter@oracle.com
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] staging: rtl8188eu: remove dead code/vestigial do..while loop
-Date:   Tue, 24 Sep 2019 07:28:19 -0700
-Message-Id: <20190924142819.5243-1-connor.kuehl@canonical.com>
-X-Mailer: git-send-email 2.17.1
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: NACK: [PATCH] staging: rtl8188eu: remove dead code in do-while
+ conditional step
+Message-ID: <20190924152515.GD29696@kadam>
+References: <20190923194806.25347-1-connor.kuehl@canonical.com>
+ <52e473f0-6b92-9504-b86e-a73a0d82617f@canonical.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <52e473f0-6b92-9504-b86e-a73a0d82617f@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9390 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=582
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1909240145
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9390 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=684 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1909240145
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The local variable 'bcmd_down' is always set to true almost immediately
-before the do-while's condition is checked. As a result, !bcmd_down
-evaluates to false which short circuits the logical AND operator meaning
-that the second operand is never reached and is therefore dead code.
+This email is fine, but I just want to make sure that you don't think
+it's required.  We all assumed that you would send a v2.  I sort of hate
+the word NACK as well because it sounds like shouting or ducks and those
+are my two pet peeves.
 
-Furthermore, the do..while loop may be removed since it will always only
-execute once because 'bcmd_down' is always set to true, so the
-!bcmd_down evaluates to false and the loop exits immediately after the
-first pass.
+Sometimes  people send a v2 patch without any replies to the original
+email and we apply the v1 patch that's the only thing to avoid.
 
-Fix this by removing the loop and its condition variables 'bcmd_down'
-and 'retry_cnts'
-
-While we're in there, also fix some checkpatch.pl suggestions regarding
-spaces around arithmetic operators like '+'
-
-Addresses-Coverity: ("Logically dead code")
-
-Signed-off-by: Connor Kuehl <connor.kuehl@canonical.com>
----
-v1 -> v2:
- - remove the loop and its condition variable bcmd_down
- - address some non-invasive checkpatch.pl suggestions as a result of
-   deleting the loop
-
- drivers/staging/rtl8188eu/hal/rtl8188e_cmd.c | 55 +++++++++-----------
- 1 file changed, 24 insertions(+), 31 deletions(-)
-
-diff --git a/drivers/staging/rtl8188eu/hal/rtl8188e_cmd.c b/drivers/staging/rtl8188eu/hal/rtl8188e_cmd.c
-index 47352f210c0b..7646167a0b36 100644
---- a/drivers/staging/rtl8188eu/hal/rtl8188e_cmd.c
-+++ b/drivers/staging/rtl8188eu/hal/rtl8188e_cmd.c
-@@ -47,8 +47,6 @@ static u8 _is_fw_read_cmd_down(struct adapter *adapt, u8 msgbox_num)
- ******************************************/
- static s32 FillH2CCmd_88E(struct adapter *adapt, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
- {
--	u8 bcmd_down = false;
--	s32 retry_cnts = 100;
- 	u8 h2c_box_num;
- 	u32 msgbox_addr;
- 	u32 msgbox_ex_addr;
-@@ -71,39 +69,34 @@ static s32 FillH2CCmd_88E(struct adapter *adapt, u8 ElementID, u32 CmdLen, u8 *p
- 		goto exit;
- 
- 	/* pay attention to if  race condition happened in  H2C cmd setting. */
--	do {
--		h2c_box_num = adapt->HalData->LastHMEBoxNum;
--
--		if (!_is_fw_read_cmd_down(adapt, h2c_box_num)) {
--			DBG_88E(" fw read cmd failed...\n");
--			goto exit;
--		}
--
--		*(u8 *)(&h2c_cmd) = ElementID;
--
--		if (CmdLen <= 3) {
--			memcpy((u8 *)(&h2c_cmd)+1, pCmdBuffer, CmdLen);
--		} else {
--			memcpy((u8 *)(&h2c_cmd)+1, pCmdBuffer, 3);
--			ext_cmd_len = CmdLen-3;
--			memcpy((u8 *)(&h2c_cmd_ex), pCmdBuffer+3, ext_cmd_len);
-+	h2c_box_num = adapt->HalData->LastHMEBoxNum;
- 
--			/* Write Ext command */
--			msgbox_ex_addr = REG_HMEBOX_EXT_0 + (h2c_box_num * RTL88E_EX_MESSAGE_BOX_SIZE);
--			for (cmd_idx = 0; cmd_idx < ext_cmd_len; cmd_idx++)
--				usb_write8(adapt, msgbox_ex_addr+cmd_idx, *((u8 *)(&h2c_cmd_ex)+cmd_idx));
--		}
--		/*  Write command */
--		msgbox_addr = REG_HMEBOX_0 + (h2c_box_num * RTL88E_MESSAGE_BOX_SIZE);
--		for (cmd_idx = 0; cmd_idx < RTL88E_MESSAGE_BOX_SIZE; cmd_idx++)
--			usb_write8(adapt, msgbox_addr+cmd_idx, *((u8 *)(&h2c_cmd)+cmd_idx));
-+	if (!_is_fw_read_cmd_down(adapt, h2c_box_num)) {
-+		DBG_88E(" fw read cmd failed...\n");
-+		goto exit;
-+	}
- 
--		bcmd_down = true;
-+	*(u8 *)(&h2c_cmd) = ElementID;
- 
--		adapt->HalData->LastHMEBoxNum =
--			(h2c_box_num+1) % RTL88E_MAX_H2C_BOX_NUMS;
-+	if (CmdLen <= 3) {
-+		memcpy((u8 *)(&h2c_cmd) + 1, pCmdBuffer, CmdLen);
-+	} else {
-+		memcpy((u8 *)(&h2c_cmd) + 1, pCmdBuffer, 3);
-+		ext_cmd_len = CmdLen - 3;
-+		memcpy((u8 *)(&h2c_cmd_ex), pCmdBuffer + 3, ext_cmd_len);
-+
-+		/* Write Ext command */
-+		msgbox_ex_addr = REG_HMEBOX_EXT_0 + (h2c_box_num * RTL88E_EX_MESSAGE_BOX_SIZE);
-+		for (cmd_idx = 0; cmd_idx < ext_cmd_len; cmd_idx++)
-+			usb_write8(adapt, msgbox_ex_addr + cmd_idx, *((u8 *)(&h2c_cmd_ex) + cmd_idx));
-+	}
-+	/*  Write command */
-+	msgbox_addr = REG_HMEBOX_0 + (h2c_box_num * RTL88E_MESSAGE_BOX_SIZE);
-+	for (cmd_idx = 0; cmd_idx < RTL88E_MESSAGE_BOX_SIZE; cmd_idx++)
-+		usb_write8(adapt, msgbox_addr + cmd_idx, *((u8 *)(&h2c_cmd) + cmd_idx));
- 
--	} while ((!bcmd_down) && (retry_cnts--));
-+	adapt->HalData->LastHMEBoxNum =
-+		(h2c_box_num + 1) % RTL88E_MAX_H2C_BOX_NUMS;
- 
- 	ret = _SUCCESS;
- 
--- 
-2.17.1
+regards,
+dan carpenter
 

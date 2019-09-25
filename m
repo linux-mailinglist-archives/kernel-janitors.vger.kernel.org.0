@@ -2,29 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D9952BDCDD
-	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Sep 2019 13:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EF25BDD0C
+	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Sep 2019 13:26:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730227AbfIYLTI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 25 Sep 2019 07:19:08 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:34608 "EHLO
+        id S2404511AbfIYL0e (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Sep 2019 07:26:34 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:34983 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727194AbfIYLTI (ORCPT
+        with ESMTP id S2404460AbfIYL0e (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 25 Sep 2019 07:19:08 -0400
+        Wed, 25 Sep 2019 07:26:34 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iD5K4-0002o1-OT; Wed, 25 Sep 2019 11:19:04 +0000
+        id 1iD5R7-0003O3-Ue; Wed, 25 Sep 2019 11:26:22 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jiri Kosina <jikos@kernel.org>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        linux-input@vger.kernel.org
+To:     Olivier Moysan <olivier.moysan@st.com>,
+        Arnaud Pouliquen <arnaud.pouliquen@st.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        alsa-devel@alsa-project.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] HID: alps: clean up indentation issue
-Date:   Wed, 25 Sep 2019 12:19:04 +0100
-Message-Id: <20190925111904.8900-1-colin.king@canonical.com>
+Subject: [PATCH] ASoC: stm32: sai: clean up indentation issue
+Date:   Wed, 25 Sep 2019 12:26:21 +0100
+Message-Id: <20190925112621.9312-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,27 +44,27 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is an if statement that is indented one level too deeply,
+There is a statement that is indented one level too deeply,
 remove the extraneous tab.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/hid/hid-alps.c | 2 +-
+ sound/soc/stm/stm32_sai.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-alps.c b/drivers/hid/hid-alps.c
-index ae79a7c66737..280f1962914b 100644
---- a/drivers/hid/hid-alps.c
-+++ b/drivers/hid/hid-alps.c
-@@ -525,7 +525,7 @@ static int u1_init(struct hid_device *hdev, struct alps_dev *pri_data)
- 
- 	ret = u1_read_write_register(hdev, ADDRESS_U1_NUM_SENS_Y,
- 			&sen_line_num_y, 0, true);
--		if (ret < 0) {
-+	if (ret < 0) {
- 		dev_err(&hdev->dev, "failed U1_NUM_SENS_Y (%d)\n", ret);
- 		goto exit;
+diff --git a/sound/soc/stm/stm32_sai.c b/sound/soc/stm/stm32_sai.c
+index ef4273361d0d..e20267504b16 100644
+--- a/sound/soc/stm/stm32_sai.c
++++ b/sound/soc/stm/stm32_sai.c
+@@ -100,7 +100,7 @@ static int stm32_sai_sync_conf_provider(struct stm32_sai_data *sai, int synco)
+ 		dev_err(&sai->pdev->dev, "%pOFn%s already set as sync provider\n",
+ 			sai->pdev->dev.of_node,
+ 			prev_synco == STM_SAI_SYNC_OUT_A ? "A" : "B");
+-			stm32_sai_pclk_disable(&sai->pdev->dev);
++		stm32_sai_pclk_disable(&sai->pdev->dev);
+ 		return -EINVAL;
  	}
+ 
 -- 
 2.20.1
 

@@ -2,32 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1D42BDCC0
-	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Sep 2019 13:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 082F8BDCCB
+	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Sep 2019 13:13:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404315AbfIYLKd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 25 Sep 2019 07:10:33 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:34126 "EHLO
+        id S2404407AbfIYLN1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Sep 2019 07:13:27 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:34335 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727829AbfIYLKd (ORCPT
+        with ESMTP id S1727829AbfIYLN1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 25 Sep 2019 07:10:33 -0400
+        Wed, 25 Sep 2019 07:13:27 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iD5Bf-0001zl-SC; Wed, 25 Sep 2019 11:10:23 +0000
+        id 1iD5Eb-0002IY-UT; Wed, 25 Sep 2019 11:13:26 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-        alsa-devel@alsa-project.org
+To:     Marek Behun <marek.behun@nic.cz>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: wcd9335: clean up indentation issue
-Date:   Wed, 25 Sep 2019 12:10:23 +0100
-Message-Id: <20190925111023.7771-1-colin.king@canonical.com>
+Subject: [PATCH] firmware: turris-mox-rwtm: clean up indentation issue
+Date:   Wed, 25 Sep 2019 12:13:25 +0100
+Message-Id: <20190925111325.8311-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,35 +34,27 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is an if statement that is indented one level too deeply,
-remove the extraneous tabs.
+There is a statement that is indented one level too deeply,
+remove the extraneous tab.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- sound/soc/codecs/wcd9335.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/firmware/turris-mox-rwtm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/wcd9335.c b/sound/soc/codecs/wcd9335.c
-index f318403133e9..f11ffa28683b 100644
---- a/sound/soc/codecs/wcd9335.c
-+++ b/sound/soc/codecs/wcd9335.c
-@@ -2837,11 +2837,11 @@ static int wcd9335_codec_enable_dec(struct snd_soc_dapm_widget *w,
- 				   TX_HPF_CUT_OFF_FREQ_MASK) >> 5;
- 		snd_soc_component_update_bits(comp, tx_vol_ctl_reg, 0x10, 0x10);
- 		snd_soc_component_update_bits(comp, dec_cfg_reg, 0x08, 0x00);
--			if (hpf_coff_freq != CF_MIN_3DB_150HZ) {
--				snd_soc_component_update_bits(comp, dec_cfg_reg,
--						    TX_HPF_CUT_OFF_FREQ_MASK,
--						    hpf_coff_freq << 5);
--			}
-+		if (hpf_coff_freq != CF_MIN_3DB_150HZ) {
-+			snd_soc_component_update_bits(comp, dec_cfg_reg,
-+						      TX_HPF_CUT_OFF_FREQ_MASK,
-+						      hpf_coff_freq << 5);
-+		}
- 		break;
- 	case SND_SOC_DAPM_POST_PMD:
- 		snd_soc_component_update_bits(comp, tx_vol_ctl_reg, 0x10, 0x00);
+diff --git a/drivers/firmware/turris-mox-rwtm.c b/drivers/firmware/turris-mox-rwtm.c
+index 72be58960e54..e27f68437b56 100644
+--- a/drivers/firmware/turris-mox-rwtm.c
++++ b/drivers/firmware/turris-mox-rwtm.c
+@@ -197,7 +197,7 @@ static int mox_get_board_info(struct mox_rwtm *rwtm)
+ 		rwtm->serial_number = reply->status[1];
+ 		rwtm->serial_number <<= 32;
+ 		rwtm->serial_number |= reply->status[0];
+-			rwtm->board_version = reply->status[2];
++		rwtm->board_version = reply->status[2];
+ 		rwtm->ram_size = reply->status[3];
+ 		reply_to_mac_addr(rwtm->mac_address1, reply->status[4],
+ 				  reply->status[5]);
 -- 
 2.20.1
 

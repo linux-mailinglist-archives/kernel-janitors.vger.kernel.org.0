@@ -2,55 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 28BAABDCA7
-	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Sep 2019 13:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A912BDCAC
+	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Sep 2019 13:05:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403861AbfIYLFS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 25 Sep 2019 07:05:18 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:54724 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390976AbfIYLFR (ORCPT
+        id S2404225AbfIYLFl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Sep 2019 07:05:41 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:42038 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729602AbfIYLFl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 25 Sep 2019 07:05:17 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8PB4NGc047373;
-        Wed, 25 Sep 2019 11:05:00 GMT
+        Wed, 25 Sep 2019 07:05:41 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8PB4P3O095194;
+        Wed, 25 Sep 2019 11:05:34 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=MBMgZ0BS4GRCuOFPNrcE79XIjxoS+eByZyMuxfQnsGk=;
- b=VK0mZPInewqOcxbZggvFObtAINDPeWqISMGMsIHkIMgsDH/dTmYyFXICUIxnNxq4Njsa
- jMeAvn21tvh+uvbuz9qnxXsGCuMl5DErzM0Anqp8OFXRtO/906OFdfIEik/0bo1bTLp6
- 3tOtCPmKH2V0OXhT2NB5ACQ6K6cMC7wNWdevlv/kuchbGe1p6jf0O1Bbelj/TQtoslsU
- RgFln2ZoPgwTiX8Vpt8rXNfiI+hX2OKlCnHUrFb7kPwzS2wVWFcdQhxZRntRuoQo9fH+
- Ka+kTS94+zAb7fzsrtRuiJzDwes02r89g7qbBKE9KxJlwp5IdfQC9iCzljpoHN+TYQgY GQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 2v5btq3wvr-1
+ bh=rjh6Y0aAFSEq231KNNfsjDwz8c/kE2zCEgm+a2ktHJI=;
+ b=f09KFQbUzWGWqiJq04FdHL+01NNu3/FF1VnCC1EzvNO+nyZLat0I2EzNR6CiXqlgRzms
+ bMRaGIp+QYycppcD20GegmwB6a3P32nPRcjVdsfmiTq2KqGrcOprHenkLVUFCiI2ugvR
+ FjpCKMCq4yULTEEMms4eyuOky1oxwlBelvMuy6FcptI7VtBHnH6Z6LZRi8K4xRqufTRh
+ F9I+gl/crM3wqWjTf29te6sfkw6aC9EITWqv0cLAtnDZdjKV+/1iRpTIrBeCiGuhQMkB
+ jt8+tNET66V3Of9kLFbrbC/nE/Gp7K3ankxWmN4/rqP+9z5pkCW42DmgqSxJLKUUAPLb PA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2v5b9tuw9h-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 25 Sep 2019 11:05:00 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8PB439H145908;
-        Wed, 25 Sep 2019 11:04:59 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2v82tjpmwc-1
+        Wed, 25 Sep 2019 11:05:34 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8PB42vC049926;
+        Wed, 25 Sep 2019 11:05:33 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 2v7vnxskf2-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 25 Sep 2019 11:04:59 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x8PB4ujr010709;
-        Wed, 25 Sep 2019 11:04:56 GMT
+        Wed, 25 Sep 2019 11:05:33 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x8PB5V4G023777;
+        Wed, 25 Sep 2019 11:05:32 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 25 Sep 2019 04:04:56 -0700
-Date:   Wed, 25 Sep 2019 14:04:49 +0300
+        with ESMTP ; Wed, 25 Sep 2019 04:05:31 -0700
+Date:   Wed, 25 Sep 2019 14:05:24 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc:     tglx@linutronix.de, Enrico Weigelt <info@metux.net>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+To:     "David S. Miller" <davem@davemloft.net>,
+        Moritz Fischer <mdf@kernel.org>
+Cc:     Andrew Lunn <andrew@lunn.ch>, Alex Williams <alex.williams@ni.com>,
+        Luis Chamberlain <mcgrof@kernel.org>, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] mm, vmpressure: Fix a signedness bug in
- vmpressure_register_event()
-Message-ID: <20190925110449.GO3264@mwanda>
+Subject: [PATCH net] net: nixge: Fix a signedness bug in nixge_probe()
+Message-ID: <20190925110524.GP3264@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -72,49 +70,28 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "mode" and "level" variables are enums and in this context GCC will
-treat them as unsigned ints so the error handling is never triggered.
+The "priv->phy_mode" is an enum and in this context GCC will treat it
+as an unsigned int so it can never be less than zero.
 
-I also removed the bogus initializer because it isn't required any more
-and it's sort of confusing.
-
-Fixes: 3cadfa2b9497 ("mm/vmpressure.c: convert to use match_string() helper")
+Fixes: 492caffa8a1a ("net: ethernet: nixge: Add support for National Instruments XGE netdev")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- mm/vmpressure.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/ni/nixge.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/mm/vmpressure.c b/mm/vmpressure.c
-index f3b50811497a..fe077500cf20 100644
---- a/mm/vmpressure.c
-+++ b/mm/vmpressure.c
-@@ -362,7 +362,7 @@ int vmpressure_register_event(struct mem_cgroup *memcg,
- 	struct vmpressure *vmpr = memcg_to_vmpressure(memcg);
- 	struct vmpressure_event *ev;
- 	enum vmpressure_modes mode = VMPRESSURE_NO_PASSTHROUGH;
--	enum vmpressure_levels level = -1;
-+	enum vmpressure_levels level;
- 	char *spec, *spec_orig;
- 	char *token;
- 	int ret = 0;
-@@ -376,7 +376,7 @@ int vmpressure_register_event(struct mem_cgroup *memcg,
- 	/* Find required level */
- 	token = strsep(&spec, ",");
- 	level = match_string(vmpressure_str_levels, VMPRESSURE_NUM_LEVELS, token);
--	if (level < 0) {
-+	if ((int)level < 0) {
- 		ret = level;
- 		goto out;
+diff --git a/drivers/net/ethernet/ni/nixge.c b/drivers/net/ethernet/ni/nixge.c
+index 0b384f97d2fd..2761f3a3ae50 100644
+--- a/drivers/net/ethernet/ni/nixge.c
++++ b/drivers/net/ethernet/ni/nixge.c
+@@ -1347,7 +1347,7 @@ static int nixge_probe(struct platform_device *pdev)
  	}
-@@ -385,7 +385,7 @@ int vmpressure_register_event(struct mem_cgroup *memcg,
- 	token = strsep(&spec, ",");
- 	if (token) {
- 		mode = match_string(vmpressure_str_modes, VMPRESSURE_NUM_MODES, token);
--		if (mode < 0) {
-+		if ((int)mode < 0) {
- 			ret = mode;
- 			goto out;
- 		}
+ 
+ 	priv->phy_mode = of_get_phy_mode(pdev->dev.of_node);
+-	if (priv->phy_mode < 0) {
++	if ((int)priv->phy_mode < 0) {
+ 		netdev_err(ndev, "not find \"phy-mode\" property\n");
+ 		err = -EINVAL;
+ 		goto unregister_mdio;
 -- 
 2.20.1
 

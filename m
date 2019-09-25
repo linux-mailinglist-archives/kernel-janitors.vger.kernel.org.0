@@ -2,32 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C3A0CBDB5C
-	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Sep 2019 11:46:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B8CBBDB6F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Sep 2019 11:51:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727812AbfIYJqU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 25 Sep 2019 05:46:20 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:58059 "EHLO
+        id S1729907AbfIYJv3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Sep 2019 05:51:29 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:58220 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726421AbfIYJqU (ORCPT
+        with ESMTP id S1726363AbfIYJv3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 25 Sep 2019 05:46:20 -0400
+        Wed, 25 Sep 2019 05:51:29 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iD3rl-0003NL-SF; Wed, 25 Sep 2019 09:45:45 +0000
+        id 1iD3xG-0003pi-Gv; Wed, 25 Sep 2019 09:51:26 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-        alsa-devel@alsa-project.org
+To:     Fabrice Gasnier <fabrice.gasnier@st.com>,
+        William Breathitt Gray <vilhelm.gray@gmail.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: amd: acp3x: clean up indentation issue
-Date:   Wed, 25 Sep 2019 10:45:45 +0100
-Message-Id: <20190925094545.19941-1-colin.king@canonical.com>
+Subject: [PATCH] counter: stm32: clean up indentation issue
+Date:   Wed, 25 Sep 2019 10:51:26 +0100
+Message-Id: <20190925095126.20219-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,27 +40,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a statement that is indented one level too deeply,
-remove the extraneous tab.
+There is an if statement that is indented one level too deeply,
+remove the extraneous tabs.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- sound/soc/amd/raven/acp3x-pcm-dma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/counter/stm32-timer-cnt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/amd/raven/acp3x-pcm-dma.c b/sound/soc/amd/raven/acp3x-pcm-dma.c
-index bc4dfafdfcd1..ea57088d50ce 100644
---- a/sound/soc/amd/raven/acp3x-pcm-dma.c
-+++ b/sound/soc/amd/raven/acp3x-pcm-dma.c
-@@ -631,7 +631,7 @@ static int acp3x_audio_probe(struct platform_device *pdev)
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	if (!res) {
- 		dev_err(&pdev->dev, "IORESOURCE_IRQ FAILED\n");
--			return -ENODEV;
-+		return -ENODEV;
- 	}
+diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
+index 644ba18a72ad..613dcccf79e1 100644
+--- a/drivers/counter/stm32-timer-cnt.c
++++ b/drivers/counter/stm32-timer-cnt.c
+@@ -219,8 +219,8 @@ static ssize_t stm32_count_enable_write(struct counter_device *counter,
  
- 	adata = devm_kzalloc(&pdev->dev, sizeof(*adata), GFP_KERNEL);
+ 	if (enable) {
+ 		regmap_read(priv->regmap, TIM_CR1, &cr1);
+-			if (!(cr1 & TIM_CR1_CEN))
+-				clk_enable(priv->clk);
++		if (!(cr1 & TIM_CR1_CEN))
++			clk_enable(priv->clk);
+ 
+ 		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
+ 				   TIM_CR1_CEN);
 -- 
 2.20.1
 

@@ -2,56 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 664AABDC8C
-	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Sep 2019 13:00:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6F6EBDC92
+	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Sep 2019 13:01:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403781AbfIYLAX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 25 Sep 2019 07:00:23 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:33038 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390611AbfIYLAX (ORCPT
+        id S2403798AbfIYLBc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Sep 2019 07:01:32 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:37462 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390478AbfIYLBb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 25 Sep 2019 07:00:23 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8PAsJCX084519;
-        Wed, 25 Sep 2019 11:00:17 GMT
+        Wed, 25 Sep 2019 07:01:31 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8PAsJ3J087136;
+        Wed, 25 Sep 2019 11:01:18 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=JlYPfVEI1m9TVlmBmEumCGhGjRSxJ5NEbZHZwmv7OTU=;
- b=HJsKYhf6F/aCP19RmFtTPu2DebP+tKssA5NErnrewY1+slVWAeoz3xmO3MOVkm5b+B5e
- WZ61Pv8ewaqVMO0KxONetQgnwK3M1eGWGQFi/wqROKZtsEQXLoTt2ruoR7xhfPPdR3+C
- cNfvK2MB1ImLQBNit3YJWdVa1UKOY8/zmHSGzwR9FXBWtL68yCAJ3wGocLvA7qUunIEu
- 6eykNp8hjbLE0fio68HacXE1wxO1LRYqLAKqTZ1DVI1wR2rx20eLkuK4pecPE4nKDlhW
- Fk42xZ0FDTA62xFCkR3JWksoRN7i5//8xB+deg/6X4SFzcX1imjbV4ppzZMd2wo5IVQR rA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 2v5cgr3thd-1
+ bh=w6XAuF/qcTj8cDqYC4cfHG6Vdy4EsYsV65lu58h90F0=;
+ b=AebTbWJCGZNNDdraBA50pdnHEUsukU3Qbh4gXU+N4wbWDwXAqP4V6i52AETufF34/VlI
+ gpuJFXeR2YQqQBttefqut93lY0Z4MM/FXYSADqRtCRqUY8RJtYNVvu8dRTtmFZgdhCxJ
+ toDh0VvUTS+5X6NTxa98cAAelEGETWRZJLdFiPR8Nnt5LLT50KQj2lsDS+9GkZH0q7eu
+ uA4aMT3yw5sSjyHeEeuG8Maakf++oMEC3cpGCcD+f3EBTBGB6LWqGYc273OmoDwYBx4v
+ IQv9DvwdSZf5ek2RCKrL6RlmDnOd78P3pg3HFhO6T9in6UkuV3QE4oMPgRF3WqfH3U+u EA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2v5b9tuvmk-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 25 Sep 2019 11:00:17 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8PAwm7Y034236;
-        Wed, 25 Sep 2019 11:00:16 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 2v7vnxsare-1
+        Wed, 25 Sep 2019 11:01:18 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8PAx40S131861;
+        Wed, 25 Sep 2019 11:01:17 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 2v82tjpg5h-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 25 Sep 2019 11:00:16 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x8PB0FKR007981;
-        Wed, 25 Sep 2019 11:00:15 GMT
+        Wed, 25 Sep 2019 11:01:17 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x8PB18pt029392;
+        Wed, 25 Sep 2019 11:01:10 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 25 Sep 2019 04:00:15 -0700
-Date:   Wed, 25 Sep 2019 14:00:08 +0300
+        with ESMTP ; Wed, 25 Sep 2019 04:01:08 -0700
+Date:   Wed, 25 Sep 2019 14:01:00 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>
-Cc:     Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Keith Busch <keith.busch@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>, linux-nvdimm@lists.01.org,
+To:     Andrew Lunn <andrew@lunn.ch>, Dongpo Li <lidongpo@hisilicon.com>
+Cc:     Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>, netdev@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] libnvdimm/namespace: Fix a signedness bug in
- __holder_class_store()
-Message-ID: <20190925110008.GK3264@mwanda>
+Subject: [PATCH net] of: mdio: Fix a signedness bug in
+ of_phy_get_and_connect()
+Message-ID: <20190925110100.GL3264@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -73,28 +73,28 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "ndns->claim_class" variable is an enum but in this case GCC will
-treat it as an unsigned int so the error handling is never triggered.
+The "iface" variable is an enum and in this context GCC treats it as
+an unsigned int so the error handling is never triggered.
 
-Fixes: 14e494542636 ("libnvdimm, btt: BTT updates for UEFI 2.7 format")
+Fixes: b78624125304 ("of_mdio: Abstract a general interface for phy connect")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/nvdimm/namespace_devs.c | 2 +-
+ drivers/of/of_mdio.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
-index cca0a3ba1d2c..669985527716 100644
---- a/drivers/nvdimm/namespace_devs.c
-+++ b/drivers/nvdimm/namespace_devs.c
-@@ -1529,7 +1529,7 @@ static ssize_t __holder_class_store(struct device *dev, const char *buf)
- 		return -EINVAL;
+diff --git a/drivers/of/of_mdio.c b/drivers/of/of_mdio.c
+index 000b95787df1..bd6129db6417 100644
+--- a/drivers/of/of_mdio.c
++++ b/drivers/of/of_mdio.c
+@@ -362,7 +362,7 @@ struct phy_device *of_phy_get_and_connect(struct net_device *dev,
+ 	int ret;
  
- 	/* btt_claim_class() could've returned an error */
--	if (ndns->claim_class < 0)
-+	if ((int)ndns->claim_class < 0)
- 		return ndns->claim_class;
- 
- 	return 0;
+ 	iface = of_get_phy_mode(np);
+-	if (iface < 0)
++	if ((int)iface < 0)
+ 		return NULL;
+ 	if (of_phy_is_fixed_link(np)) {
+ 		ret = of_phy_register_fixed_link(np);
 -- 
 2.20.1
 

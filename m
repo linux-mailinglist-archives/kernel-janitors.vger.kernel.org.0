@@ -2,51 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C451BDC8A
-	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Sep 2019 13:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 664AABDC8C
+	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Sep 2019 13:00:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403767AbfIYLAC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 25 Sep 2019 07:00:02 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:48494 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390611AbfIYLAC (ORCPT
+        id S2403781AbfIYLAX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Sep 2019 07:00:23 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:33038 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390611AbfIYLAX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 25 Sep 2019 07:00:02 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8PAsSwm039681;
-        Wed, 25 Sep 2019 10:59:52 GMT
+        Wed, 25 Sep 2019 07:00:23 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8PAsJCX084519;
+        Wed, 25 Sep 2019 11:00:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=pw+m52Dw3fR68sPSFV1DM9suPWwDDCArrqQx6Je7DL4=;
- b=WXIYtU+5nASD6o2SrArZSyqgCQz+KRFFxLNEUtrOb+SqJyqGAPwWQpVcMviiiKcsWCQ1
- 5tJDtS9xr0SBiGuckr36x4DxgbCx6m7xHz7IuvoHPcn4foEgAJ9l10kiswf9uQfwBMGH
- R3J+drpDxiPZxIxeJfyZRqzlhioSAr1cT2rA1wAe8FadW0MzPabSmfkTHMEduyDomHx5
- kePy1GgPbLweWrWzmHbgnWgyZ/o082dGEVuM8jyBZP10KGEz5VpGGdEMo6rD5umHR96N
- 3E2tdn0dWVEKz9Ffr5Jby4pIT6488AVYcECBPr7G2ovKhfoyzNMn6o20J8f+4E2viy6P jQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 2v5btq3w15-1
+ bh=JlYPfVEI1m9TVlmBmEumCGhGjRSxJ5NEbZHZwmv7OTU=;
+ b=HJsKYhf6F/aCP19RmFtTPu2DebP+tKssA5NErnrewY1+slVWAeoz3xmO3MOVkm5b+B5e
+ WZ61Pv8ewaqVMO0KxONetQgnwK3M1eGWGQFi/wqROKZtsEQXLoTt2ruoR7xhfPPdR3+C
+ cNfvK2MB1ImLQBNit3YJWdVa1UKOY8/zmHSGzwR9FXBWtL68yCAJ3wGocLvA7qUunIEu
+ 6eykNp8hjbLE0fio68HacXE1wxO1LRYqLAKqTZ1DVI1wR2rx20eLkuK4pecPE4nKDlhW
+ Fk42xZ0FDTA62xFCkR3JWksoRN7i5//8xB+deg/6X4SFzcX1imjbV4ppzZMd2wo5IVQR rA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 2v5cgr3thd-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 25 Sep 2019 10:59:52 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8PAxAn6147971;
-        Wed, 25 Sep 2019 10:59:52 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 2v829uuuva-1
+        Wed, 25 Sep 2019 11:00:17 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8PAwm7Y034236;
+        Wed, 25 Sep 2019 11:00:16 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 2v7vnxsare-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 25 Sep 2019 10:59:51 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x8PAxn0T019966;
-        Wed, 25 Sep 2019 10:59:50 GMT
+        Wed, 25 Sep 2019 11:00:16 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x8PB0FKR007981;
+        Wed, 25 Sep 2019 11:00:15 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 25 Sep 2019 03:59:49 -0700
-Date:   Wed, 25 Sep 2019 13:59:43 +0300
+        with ESMTP ; Wed, 25 Sep 2019 04:00:15 -0700
+Date:   Wed, 25 Sep 2019 14:00:08 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Solomon Peachy <pizza@shaftnet.org>
-Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+To:     Dan Williams <dan.j.williams@intel.com>,
+        Vishal Verma <vishal.l.verma@intel.com>
+Cc:     Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Keith Busch <keith.busch@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>, linux-nvdimm@lists.01.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] cw1200: Fix a signedness bug in cw1200_load_firmware()
-Message-ID: <20190925105943.GJ3264@mwanda>
+Subject: [PATCH] libnvdimm/namespace: Fix a signedness bug in
+ __holder_class_store()
+Message-ID: <20190925110008.GK3264@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -68,28 +73,28 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "priv->hw_type" is an enum and in this context GCC will treat it
-as an unsigned int so the error handling will never trigger.
+The "ndns->claim_class" variable is an enum but in this case GCC will
+treat it as an unsigned int so the error handling is never triggered.
 
-Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+Fixes: 14e494542636 ("libnvdimm, btt: BTT updates for UEFI 2.7 format")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/wireless/st/cw1200/fwio.c | 2 +-
+ drivers/nvdimm/namespace_devs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/st/cw1200/fwio.c b/drivers/net/wireless/st/cw1200/fwio.c
-index 6574e78e05ea..da767c33dfbb 100644
---- a/drivers/net/wireless/st/cw1200/fwio.c
-+++ b/drivers/net/wireless/st/cw1200/fwio.c
-@@ -321,7 +321,7 @@ int cw1200_load_firmware(struct cw1200_common *priv)
- 	}
+diff --git a/drivers/nvdimm/namespace_devs.c b/drivers/nvdimm/namespace_devs.c
+index cca0a3ba1d2c..669985527716 100644
+--- a/drivers/nvdimm/namespace_devs.c
++++ b/drivers/nvdimm/namespace_devs.c
+@@ -1529,7 +1529,7 @@ static ssize_t __holder_class_store(struct device *dev, const char *buf)
+ 		return -EINVAL;
  
- 	priv->hw_type = cw1200_get_hw_type(val32, &major_revision);
--	if (priv->hw_type < 0) {
-+	if ((int)priv->hw_type < 0) {
- 		pr_err("Can't deduce hardware type.\n");
- 		ret = -ENOTSUPP;
- 		goto out;
+ 	/* btt_claim_class() could've returned an error */
+-	if (ndns->claim_class < 0)
++	if ((int)ndns->claim_class < 0)
+ 		return ndns->claim_class;
+ 
+ 	return 0;
 -- 
 2.20.1
 

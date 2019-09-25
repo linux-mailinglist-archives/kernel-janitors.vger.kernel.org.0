@@ -2,81 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6295CBD828
-	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Sep 2019 08:12:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43766BD847
+	for <lists+kernel-janitors@lfdr.de>; Wed, 25 Sep 2019 08:25:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404666AbfIYGMy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 25 Sep 2019 02:12:54 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:41336 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404606AbfIYGMy (ORCPT
+        id S2411861AbfIYGZi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Sep 2019 02:25:38 -0400
+Received: from proxima.lasnet.de ([78.47.171.185]:47358 "EHLO
+        proxima.lasnet.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2404570AbfIYGZi (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 25 Sep 2019 02:12:54 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 8F93560E73; Wed, 25 Sep 2019 06:12:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569391973;
-        bh=uYHSBx1k83QXHX/8PikNbwZgJt2w0Odf8Mt2PJ5HL1E=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=cQap2bZgdAyV+QgvMJ5PUajCsl91dTQGd0AOTaKrDViQ/XHm2TWOm4dk9os57DhQm
-         BbC9JGf8s5XuZpJSBHxGx9qbqIPK5x7z5WamEb/7C9TljQEpWXzs9JK/qB6/a2e32s
-         nrk8CODqTDvBGmQjq3o490cCs2knEZLuJeoPDL1s=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        Wed, 25 Sep 2019 02:25:38 -0400
+Received: from localhost.localdomain (p200300E9D742D21B26FCBF88D1F65952.dip0.t-ipconnect.de [IPv6:2003:e9:d742:d21b:26fc:bf88:d1f6:5952])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id B878660A00;
-        Wed, 25 Sep 2019 06:12:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1569391973;
-        bh=uYHSBx1k83QXHX/8PikNbwZgJt2w0Odf8Mt2PJ5HL1E=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=mCSGNO2Pw9B71D3N1AjT1g1/jdViaAkkeV0xW1dVYcvEalTF7w310PVMHk83HQFnM
-         1HdVhCq2PMugxYJx/m5mNuc9moiKgjrKj112TOa/ZeTFK06PyUkci5zJ4cKzbjPuNB
-         quQeGhLh9OfCg5Hx7VHsRtrWBNlgk/wj0F+1oi9o=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B878660A00
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wil6210: use after free in wil_netif_rx_any()
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20190921060145.GD18726@mwanda>
-References: <20190921060145.GD18726@mwanda>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Maya Erez <merez@codeaurora.org>,
-        Dedy Lansky <dlansky@codeaurora.org>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
+        (Authenticated sender: stefan@datenfreihafen.org)
+        by proxima.lasnet.de (Postfix) with ESMTPSA id 4C630C1B1A;
+        Wed, 25 Sep 2019 08:25:35 +0200 (CEST)
+Subject: Re: [PATCH] ieee802154: mcr20a: simplify a bit
+ 'mcr20a_handle_rx_read_buf_complete()'
+To:     Xue Liu <liuxuenetmail@gmail.com>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        "alex. aring" <alex.aring@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wpan - ML <linux-wpan@vger.kernel.org>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20190925061253.8F93560E73@smtp.codeaurora.org>
-Date:   Wed, 25 Sep 2019 06:12:53 +0000 (UTC)
+References: <20190920194533.5886-1-christophe.jaillet@wanadoo.fr>
+ <388f335a-a9ae-7230-1713-a1ecb682fecf@datenfreihafen.org>
+ <CAJuUDwtWJgo7PHJR4kBpQ9mGamTMEaPZBNOZcL3mWFwwZ-zOmw@mail.gmail.com>
+From:   Stefan Schmidt <stefan@datenfreihafen.org>
+Message-ID: <7d131e76-d487-ead3-1780-6a9a7d7877a4@datenfreihafen.org>
+Date:   Wed, 25 Sep 2019 08:25:35 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
+MIME-Version: 1.0
+In-Reply-To: <CAJuUDwtWJgo7PHJR4kBpQ9mGamTMEaPZBNOZcL3mWFwwZ-zOmw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+Hello.
 
-> The debug code dereferences "skb" to print "skb->len" so we have to
-> print the message before we free "skb".
+On 24.09.19 23:40, Xue Liu wrote:
+> On Sat, 21 Sep 2019 at 13:52, Stefan Schmidt <stefan@datenfreihafen.org> wrote:
+>>
+>> Hello Xue.
+>>
+>> On 20.09.19 21:45, Christophe JAILLET wrote:
+>>> Use a 'skb_put_data()' variant instead of rewritting it.
+>>> The __skb_put_data variant is safe here. It is obvious that the skb can
+>>> not overflow. It has just been allocated a few lines above with the same
+>>> 'len'.
+>>>
+>>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>>> ---
+>>>   drivers/net/ieee802154/mcr20a.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/net/ieee802154/mcr20a.c b/drivers/net/ieee802154/mcr20a.c
+>>> index 17f2300e63ee..8dc04e2590b1 100644
+>>> --- a/drivers/net/ieee802154/mcr20a.c
+>>> +++ b/drivers/net/ieee802154/mcr20a.c
+>>> @@ -800,7 +800,7 @@ mcr20a_handle_rx_read_buf_complete(void *context)
+>>>        if (!skb)
+>>>                return;
+>>>
+>>> -     memcpy(skb_put(skb, len), lp->rx_buf, len);
+>>> +     __skb_put_data(skb, lp->rx_buf, len);
+>>>        ieee802154_rx_irqsafe(lp->hw, skb, lp->rx_lqi[0]);
+>>>
+>>>        print_hex_dump_debug("mcr20a rx: ", DUMP_PREFIX_OFFSET, 16, 1,
+>>>
+>>
+>> Could you please review and ACK this? If you are happy I will take it
+>> through my tree.
+>>
+>> regards
+>> Stefan Schmidt
 > 
-> Fixes: f99fe49ff372 ("wil6210: add wil_netif_rx() helper function")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> Acked-by: Xue Liu <liuxuenetmail@gmail.com>
 
-Patch applied to wireless-drivers.git, thanks.
 
-2b481835cf4e wil6210: use after free in wil_netif_rx_any()
+This patch has been applied to the wpan tree and will be
+part of the next pull request to net. Thanks!
 
--- 
-https://patchwork.kernel.org/patch/11155359/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+regards
+Stefan Schmidt

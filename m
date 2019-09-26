@@ -2,79 +2,181 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DBA5EBF7EF
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 19:51:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF3C7BF7F6
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 19:53:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727924AbfIZRvd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Sep 2019 13:51:33 -0400
-Received: from mail-ot1-f68.google.com ([209.85.210.68]:34358 "EHLO
+        id S1727835AbfIZRxQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Sep 2019 13:53:16 -0400
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:40872 "EHLO
         mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727917AbfIZRvd (ORCPT
+        with ESMTP id S1727502AbfIZRxP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Sep 2019 13:51:33 -0400
-Received: by mail-ot1-f68.google.com with SMTP id m19so2814531otp.1;
-        Thu, 26 Sep 2019 10:51:32 -0700 (PDT)
+        Thu, 26 Sep 2019 13:53:15 -0400
+Received: by mail-ot1-f68.google.com with SMTP id y39so2780548ota.7;
+        Thu, 26 Sep 2019 10:53:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RRBo1U1wJBMBsFedfuu4Oad4gF7xZhsuM6ZSQHPH+qM=;
-        b=OnNRSW3XB6s5ucJQXxJXQsBRy1JldMeRW0F4MSDi7HvaLt3VVeS/2XZvGG78q+LmV3
-         zI9U4AbwyAfrGneczOJdor/0MrNlSs3XnhKqZudTp7yX0kD5F29H8LYIHfASWTwjj2QY
-         i8rv3TqVE6d7qztHTLIUU+pBwVryPrZqexCbJjYFAXhbD73xnHdBKkA2rmGHQ1xH8S9Q
-         hESqdAoIP2vBU5qoxbKk8hunfYJAJdooKHZ5PrE/6/teyMN+6kZz7MDkul1xXF757bko
-         SiBzKOPSimTW9QAOn6Q+wFJDYd5x7/TAcU05GEowkzM8+Y8Z28iHSlmA5KA7HibUmb1K
-         wWAw==
+        d=gmail.com; s=20161025;
+        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=l4hVPvXuA1yUfCTMAa2qM1WXIm4IGNEgGvOx69kn5iQ=;
+        b=R+pwT6b5a5j4MI1LUBnBz+75gDMAVK7FAbaw4LQgbnbk3qbI8f7fNZYdiX8kaiXozr
+         APqQI9wPwrOWmh5TBuBPtQiyZQSh8/w8k00TrD/+uEhJIhyZxrsWB1BkTN42hrKMEQqS
+         V07EM/H827soR7Evyna+E7IwEg6lc80tPOe7ds0CLNk9PTaBR34vzkHGNgRAWoWIGopN
+         oFVyZoyByZL2y3yGqMUTcKkc+iozoEQl1ynqgKJwQhZ1isuHVT3MvlzjCNtV40VPFfo2
+         n52tH3k47fv8tR7u5grfe1yrgoIgtRe5VW7Y4wxpc/KEOmyyhdk16wIZTaR8vBxgRNHl
+         j4Rg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RRBo1U1wJBMBsFedfuu4Oad4gF7xZhsuM6ZSQHPH+qM=;
-        b=Naq1aOiOwMO+0owbZSn9kNUveOMhwKBsWzR//jJCP2mW7IhxxAanO3s8m+W7rjAYa8
-         vzxrCsOz+uAB3BelXA7GPA/DrzVC5HbLqCzyo7ocNRA63jjPkFLdKoE8S+EuyxkZJgpq
-         HkgrcGGSG8tkbk1us9vz4XuBxmJpiISDGryaeamEEjKNwAH3Sry0f61nakkJ/qvBBS82
-         +ID53QaZKVssjRnBv5TVX2ihJeZT5oB5+NmJeBH/6L9cnDcniDTQq34LZGYF6CtsOYP7
-         2z3pjeNJWZWtuZNEQo/w0HGvIA7ePM3vMC6gLbXdESXuAcpW8yPQFOpnwuDSpgY2lLiZ
-         ntMw==
-X-Gm-Message-State: APjAAAWTIV49EPK2S0nCwBkzegzEZ0U8AcTK9VgihXXNUwdxlA4+Y8y4
-        jlFtWy6iZdy8G+fW5Yo9nZ6L5awbkGdqzdKGca0=
-X-Google-Smtp-Source: APXvYqwp9A2tjKQPnay8aqFF0fAxzgQxMo9Y09YF2RKzK274POwhGNUxLAVYH1NJYrKPlKizQ1rGrVEl6PEuFg+SeXU=
-X-Received: by 2002:a9d:760d:: with SMTP id k13mr3342916otl.96.1569520291787;
- Thu, 26 Sep 2019 10:51:31 -0700 (PDT)
+        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
+         :date:user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=l4hVPvXuA1yUfCTMAa2qM1WXIm4IGNEgGvOx69kn5iQ=;
+        b=Vyv/L7CsQIDOCaYKNXR/dfXdvG9qojog2218JMeSWGmE45cwOGv/1vGDlaQZwQVL+J
+         GnLfdc3tZT20zc3seHac8M61rNTr+i4/p9C/PahJCT8P3Diny+5MywBLfoMklZdaY95N
+         AF7elvxz9fQgR6JAeFWEBozzVVjRR9t+s9fCItoF13aO54y/j+wdgKBMaKnRioP+nDm3
+         osFHcYDe0qC6eidv06IeHPzmJAcizBp8/o/omdeVAAoSv6nsHricrrVaSImTFAMIqt/y
+         PFY4qmD+RyFkLQ6PICIZ2aC5unxxWPfNvy36bInz+iUaA/okivf1HV+8xc9O2vnHGVMT
+         qUkQ==
+X-Gm-Message-State: APjAAAVFWhOqg+wVxYKEoL1q74cieKfOsaDkVa9aOIA8aFofi1l46UdH
+        //nCdTdDogwXw1gfpA2V2B0oLS8G
+X-Google-Smtp-Source: APXvYqyGGz+8L/6FHfyVFOKmPZvgQvzYKIeL1mfG62VHuz4RAlTKBD+Sm4duhnF/eEGxdihGtHTNUQ==
+X-Received: by 2002:a05:6830:1c5:: with SMTP id r5mr3603353ota.325.1569520394453;
+        Thu, 26 Sep 2019 10:53:14 -0700 (PDT)
+Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
+        by smtp.gmail.com with ESMTPSA id x6sm891889ote.69.2019.09.26.10.53.13
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 26 Sep 2019 10:53:14 -0700 (PDT)
+Subject: Re: [PATCH v2] staging: rtl8188eu: remove dead code/vestigial
+ do..while loop
+To:     Connor Kuehl <connor.kuehl@canonical.com>,
+        gregkh@linuxfoundation.org, straube.linux@gmail.com,
+        devel@driverdev.osuosl.org, dan.carpenter@oracle.com
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20190924142819.5243-1-connor.kuehl@canonical.com>
+From:   Larry Finger <Larry.Finger@lwfinger.net>
+Message-ID: <2f275661-5945-9e27-95a4-a82584756f2e@lwfinger.net>
+Date:   Thu, 26 Sep 2019 12:53:13 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-References: <20190925105822.GH3264@mwanda>
-In-Reply-To: <20190925105822.GH3264@mwanda>
-From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date:   Thu, 26 Sep 2019 19:51:20 +0200
-Message-ID: <CAFBinCDZRkJJa_PnM5aAzG=pZkf15jB2gLDRkCqA5BwHMvM+Mg@mail.gmail.com>
-Subject: Re: [PATCH net] net: stmmac: dwmac-meson8b: Fix signedness bug in probe
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        kernel-janitors@vger.kernel.org, linux-amlogic@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20190924142819.5243-1-connor.kuehl@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-+Cc linux-amlogic mailing list
+On 9/24/19 9:28 AM, Connor Kuehl wrote:
+> The local variable 'bcmd_down' is always set to true almost immediately
+> before the do-while's condition is checked. As a result, !bcmd_down
+> evaluates to false which short circuits the logical AND operator meaning
+> that the second operand is never reached and is therefore dead code.
+> 
+> Furthermore, the do..while loop may be removed since it will always only
+> execute once because 'bcmd_down' is always set to true, so the
+> !bcmd_down evaluates to false and the loop exits immediately after the
+> first pass.
+> 
+> Fix this by removing the loop and its condition variables 'bcmd_down'
+> and 'retry_cnts'
+> 
+> While we're in there, also fix some checkpatch.pl suggestions regarding
+> spaces around arithmetic operators like '+'
+> 
+> Addresses-Coverity: ("Logically dead code")
+> 
+> Signed-off-by: Connor Kuehl <connor.kuehl@canonical.com>
+> ---
+> v1 -> v2:
+>   - remove the loop and its condition variable bcmd_down
+>   - address some non-invasive checkpatch.pl suggestions as a result of
+>     deleting the loop
+> 
+>   drivers/staging/rtl8188eu/hal/rtl8188e_cmd.c | 55 +++++++++-----------
+>   1 file changed, 24 insertions(+), 31 deletions(-)
+> 
+> diff --git a/drivers/staging/rtl8188eu/hal/rtl8188e_cmd.c b/drivers/staging/rtl8188eu/hal/rtl8188e_cmd.c
+> index 47352f210c0b..7646167a0b36 100644
+> --- a/drivers/staging/rtl8188eu/hal/rtl8188e_cmd.c
+> +++ b/drivers/staging/rtl8188eu/hal/rtl8188e_cmd.c
+> @@ -47,8 +47,6 @@ static u8 _is_fw_read_cmd_down(struct adapter *adapt, u8 msgbox_num)
+>   ******************************************/
+>   static s32 FillH2CCmd_88E(struct adapter *adapt, u8 ElementID, u32 CmdLen, u8 *pCmdBuffer)
+>   {
+> -	u8 bcmd_down = false;
+> -	s32 retry_cnts = 100;
+>   	u8 h2c_box_num;
+>   	u32 msgbox_addr;
+>   	u32 msgbox_ex_addr;
+> @@ -71,39 +69,34 @@ static s32 FillH2CCmd_88E(struct adapter *adapt, u8 ElementID, u32 CmdLen, u8 *p
+>   		goto exit;
+>   
+>   	/* pay attention to if  race condition happened in  H2C cmd setting. */
+> -	do {
+> -		h2c_box_num = adapt->HalData->LastHMEBoxNum;
+> -
+> -		if (!_is_fw_read_cmd_down(adapt, h2c_box_num)) {
+> -			DBG_88E(" fw read cmd failed...\n");
+> -			goto exit;
+> -		}
+> -
+> -		*(u8 *)(&h2c_cmd) = ElementID;
+> -
+> -		if (CmdLen <= 3) {
+> -			memcpy((u8 *)(&h2c_cmd)+1, pCmdBuffer, CmdLen);
+> -		} else {
+> -			memcpy((u8 *)(&h2c_cmd)+1, pCmdBuffer, 3);
+> -			ext_cmd_len = CmdLen-3;
+> -			memcpy((u8 *)(&h2c_cmd_ex), pCmdBuffer+3, ext_cmd_len);
+> +	h2c_box_num = adapt->HalData->LastHMEBoxNum;
+>   
+> -			/* Write Ext command */
+> -			msgbox_ex_addr = REG_HMEBOX_EXT_0 + (h2c_box_num * RTL88E_EX_MESSAGE_BOX_SIZE);
+> -			for (cmd_idx = 0; cmd_idx < ext_cmd_len; cmd_idx++)
+> -				usb_write8(adapt, msgbox_ex_addr+cmd_idx, *((u8 *)(&h2c_cmd_ex)+cmd_idx));
+> -		}
+> -		/*  Write command */
+> -		msgbox_addr = REG_HMEBOX_0 + (h2c_box_num * RTL88E_MESSAGE_BOX_SIZE);
+> -		for (cmd_idx = 0; cmd_idx < RTL88E_MESSAGE_BOX_SIZE; cmd_idx++)
+> -			usb_write8(adapt, msgbox_addr+cmd_idx, *((u8 *)(&h2c_cmd)+cmd_idx));
+> +	if (!_is_fw_read_cmd_down(adapt, h2c_box_num)) {
+> +		DBG_88E(" fw read cmd failed...\n");
+> +		goto exit;
+> +	}
+>   
+> -		bcmd_down = true;
+> +	*(u8 *)(&h2c_cmd) = ElementID;
+>   
+> -		adapt->HalData->LastHMEBoxNum =
+> -			(h2c_box_num+1) % RTL88E_MAX_H2C_BOX_NUMS;
+> +	if (CmdLen <= 3) {
+> +		memcpy((u8 *)(&h2c_cmd) + 1, pCmdBuffer, CmdLen);
+> +	} else {
+> +		memcpy((u8 *)(&h2c_cmd) + 1, pCmdBuffer, 3);
+> +		ext_cmd_len = CmdLen - 3;
+> +		memcpy((u8 *)(&h2c_cmd_ex), pCmdBuffer + 3, ext_cmd_len);
+> +
+> +		/* Write Ext command */
+> +		msgbox_ex_addr = REG_HMEBOX_EXT_0 + (h2c_box_num * RTL88E_EX_MESSAGE_BOX_SIZE);
+> +		for (cmd_idx = 0; cmd_idx < ext_cmd_len; cmd_idx++)
+> +			usb_write8(adapt, msgbox_ex_addr + cmd_idx, *((u8 *)(&h2c_cmd_ex) + cmd_idx));
+> +	}
+> +	/*  Write command */
+> +	msgbox_addr = REG_HMEBOX_0 + (h2c_box_num * RTL88E_MESSAGE_BOX_SIZE);
+> +	for (cmd_idx = 0; cmd_idx < RTL88E_MESSAGE_BOX_SIZE; cmd_idx++)
+> +		usb_write8(adapt, msgbox_addr + cmd_idx, *((u8 *)(&h2c_cmd) + cmd_idx));
+>   
+> -	} while ((!bcmd_down) && (retry_cnts--));
+> +	adapt->HalData->LastHMEBoxNum =
+> +		(h2c_box_num + 1) % RTL88E_MAX_H2C_BOX_NUMS;
+>   
+>   	ret = _SUCCESS;
 
-On Wed, Sep 25, 2019 at 12:59 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> The "dwmac->phy_mode" is an enum and in this context GCC treats it as
-> an unsigned int so the error handling is never triggered.
->
-> Fixes: 566e82516253 ("net: stmmac: add a glue driver for the Amlogic Meson 8b / GXBB DWMAC")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
 
-thank you for catching and fixing this!
+Thanks,
 
+Larry
 
-Martin

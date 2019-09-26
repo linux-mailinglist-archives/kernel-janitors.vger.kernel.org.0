@@ -2,132 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 37FEEBF5E6
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 17:29:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49FB9BF667
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 18:05:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727249AbfIZP3Y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Sep 2019 11:29:24 -0400
-Received: from mout.web.de ([212.227.15.4]:45227 "EHLO mout.web.de"
+        id S1727349AbfIZQF2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Sep 2019 12:05:28 -0400
+Received: from mga12.intel.com ([192.55.52.136]:52397 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726845AbfIZP3Y (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Sep 2019 11:29:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569511753;
-        bh=z3a2zT3Fyaevm06leJAon5Y5SGGHkjpRtvTfdrw6efk=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=Ha5fSblRqiAyG+IN2pdg8zuHlLaeEF8BS1UYHfyO+5HpQFXPOh3YX2iL5j60rEwVm
-         G13PVxLOl9rYQ1j2KZRG5vp5r0AgloRo9PLi870lwNhJDo5EiIVzx/wzdT+UDJpJb6
-         lfzoP9H4PUnDWDjM3Q6rPiTiSSYRGNnm2oxr9a3s=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.81.241]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MP047-1iHci61aZL-006PjL; Thu, 26
- Sep 2019 17:29:13 +0200
-Subject: Re: [1/2] net/phy/mdio-mscc-miim: Use
- devm_platform_ioremap_resource() in mscc_miim_probe()
-To:     Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org
-Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-References: <189ccfc3-d5a6-79fd-29b8-1f7140e9639a@web.de>
- <506889a6-4148-89f9-302e-4be069595bb4@web.de> <20190920190908.GH3530@lunn.ch>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <121e75c5-4d45-9df2-a471-6997a1fb3218@web.de>
-Date:   Thu, 26 Sep 2019 17:29:02 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
-MIME-Version: 1.0
-In-Reply-To: <20190920190908.GH3530@lunn.ch>
-Content-Type: text/plain; charset=utf-8
+        id S1726984AbfIZQF2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 26 Sep 2019 12:05:28 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Sep 2019 09:05:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,552,1559545200"; 
+   d="scan'208";a="219449975"
+Received: from fmsmsx105.amr.corp.intel.com ([10.18.124.203])
+  by fmsmga002.fm.intel.com with ESMTP; 26 Sep 2019 09:05:27 -0700
+Received: from fmsmsx115.amr.corp.intel.com (10.18.116.19) by
+ FMSMSX105.amr.corp.intel.com (10.18.124.203) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 26 Sep 2019 09:05:27 -0700
+Received: from crsmsx152.amr.corp.intel.com (172.18.7.35) by
+ fmsmsx115.amr.corp.intel.com (10.18.116.19) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Thu, 26 Sep 2019 09:05:27 -0700
+Received: from crsmsx101.amr.corp.intel.com ([169.254.1.249]) by
+ CRSMSX152.amr.corp.intel.com ([169.254.5.223]) with mapi id 14.03.0439.000;
+ Thu, 26 Sep 2019 10:05:24 -0600
+From:   "Weiny, Ira" <ira.weiny@intel.com>
+To:     Johannes Thumshirn <jthumshirn@suse.de>,
+        "Verma, Vishal L" <vishal.l.verma@intel.com>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
+Subject: RE: [PATCH] bnvdimm/namsepace: Don't set claim_class on error
+Thread-Topic: [PATCH] bnvdimm/namsepace: Don't set claim_class on error
+Thread-Index: AQHVc8ygy0t9taFML0a+mKhnV0JE/Kc9HU2A//+OToCAAUO0AIAAMVwQ
+Date:   Thu, 26 Sep 2019 16:05:24 +0000
+Message-ID: <2807E5FD2F6FDA4886F6618EAC48510E89924636@CRSMSX101.amr.corp.intel.com>
+References: <20190925181056.11097-1-ira.weiny@intel.com>
+ <ff7ff4f5b4289d189a7c347591a5c35876ea804f.camel@intel.com>
+ <20190925184939.GA11669@iweiny-DESK2.sc.intel.com>
+ <fe170e53-92d1-eca8-d419-1a4210cb7313@suse.de>
+In-Reply-To: <fe170e53-92d1-eca8-d419-1a4210cb7313@suse.de>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:V8JTcGGBM3baN+wenwNNCBW7Mas/rhq1A0Ja+RzGKVnjPbUQ2Gk
- pgQosy8Cio3nIzTAS1OMsVOyXTyedJNK5Ps93D0eh6A3vHdgpI9fy3GdfwDD+hZBrOhKDkI
- cZ1CQ/ETy/AAURvWKMXvgluUCFoLl9ED6TJWUU4DKCHhnIauXEPn5WCQ3WIyNeFOVQ3qAC1
- 6OmnK1xuW5NXnUf8F9wFg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:YLztFb1NFno=:olrVmny85Nhik+A+du79xX
- Ch8mzZFFJUEMVanlyslfmlMJEAA/tE0wZxqT5kv0W4NX4UMQxDAHBv30lzEYk6eLGZUk+94W4
- QDe4IZ1luORy0YnGLnC5a+RGiFrWtfWOS13gLbOL+7hsHTwU+/4KX6gX2Xf/uFSnitng2sGct
- Ohqgb2SH0S2JL1CAQMz/rhi/MtDoK5zOGTnsOxbc7J/TtmixPqNJK1isVKObqrFl9/tRRYf0P
- bEaqW7XGqHosbtnPFmJe2WN7vOhnLHzEW8IE6O9cUm4ppp+HQ+Kaeer3VpypL6cTHKRB0YoXu
- iDUq96sKIhSTu2mnQ9QY4Kt+E4aLthtdDsDIQmfWuSmJBIkJiXjUMFbTGD5AoQU6JZLztYOCM
- DRoBm0zo6zA3Y6sv5SnXaabeOllnSM7Ru8yQLOCiYxFvLXDjhSE2tPYEUzqwtKudz3OP+ssPz
- fp2TQkBM1mSjEi3hcSRK0cGxxR7KIVkZo+U/BQBOoHUiG2IDAE+OLPN6g36ToiYOM+4uh6f5u
- oT65OVuI2C/sQkiBAb/1lv8l6BHFG4lnr44QVLZShYXx81+pG60gck2eBPuXqlBitJ43nZBGJ
- 8XW13oCIp6gPnHhmrCGk+Io6QB5C1QxX+NBB56tUCVNowBIJsfar3e67cSw/+4dXIhn/j1eK4
- ZzIw9wL1a21TmgpETq/QKytvZcvNk2RYhYraxc+eO4hEJ2B5ceWq4+UJCT15wYevMpeOG7LFt
- MfoK8y8Wpt7M28yAb4runXY32w/URsb4eEI3KubUO5pz1hozhmfFY/XxzUlH8+LvaTj+xVbXw
- pjlGQqCwwmozaihQKCc8CnDpywqfkSxvX9L49RY9B1/3lC9qAQ7qkJakoUNP9aGwfJZEA73Mp
- Zpi99ZvVA+hDmwRqb9Ai8dY2g2LV7CrQpCFbjJex1Hq0z/c0zyJ59QQNuHGIAk2TpVe7lzBmj
- WsO0KX+IGe1gT14B7h7XFJ5hTqST/BwtqlSrwuxwFurt2ZCo2btUr6y+gQ47ohYvGfTAuC8uy
- 6sur7NfMAd665lU27O+H0arpSfGghBvr/J7mjXjnsPgzxA+plrUH2u4+OOg2ZR1RsRr49XmEA
- TlURyyKr+d8labsVdz34zOgKtwlMdJiqny1jKKNvwIK3gq+TYDZK+TFnHBsdA0nwibPuw7wDa
- LrqEgycSP5IQqBWv7WarzJCHl7JvXOSrMsZp0OZs6VxQCUA1IunkLZwEgC8RZ31wvXbpkVF7Y
- PBIx6XGNl7FTiHesnFChS9Q0i/eT4ECiiIwib4Nc9eYG9QuHYcGImYg9pHGc=
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiNmJmYzc1MWYtZWE2NC00MmRiLWI0NWQtOWRlZTMzNDI1Y2VlIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoidzE4RUtjK3FvbGZrTnVndUwwUEppWTc0ZXJcL0FUUXVFd3pWQmpxNmtmRTFNVFA2elBSU24ybXJcL2lzRDh3V1dTIn0=
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [172.18.205.10]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> Simplify this function implementation by using a known wrapper function=
-.
-=E2=80=A6
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-
-Does this feedback indicate also an agreement for the detail
-if the mapping of internal phy registers would be a required operation?
-(Would such a resource allocation eventually be optional?)
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
-ivers/net/phy/mdio-mscc-miim.c?id=3Df41def397161053eb0d3ed6861ef65985efbf2=
-93#n145
-https://elixir.bootlin.com/linux/v5.3.1/source/drivers/net/phy/mdio-mscc-m=
-iim.c#L145
-
-Regards,
-Markus
+PiBPbiAyNS8wOS8yMDE5IDIwOjQ5LCBJcmEgV2Vpbnkgd3JvdGU6DQo+ID4+Pg0KPiA+Pj4gU2ln
+bmVkLW9mZi1ieTogSXJhIFdlaW55IDxpcmEud2VpbnlAaW50ZWwuY29tPg0KPiA+Pj4gLS0tDQo+
+ID4+PiAgZHJpdmVycy9udmRpbW0vbmFtZXNwYWNlX2RldnMuYyB8IDE5ICsrKysrKysrKy0tLS0t
+LS0tLS0NCj4gPj4+ICAxIGZpbGUgY2hhbmdlZCwgOSBpbnNlcnRpb25zKCspLCAxMCBkZWxldGlv
+bnMoLSkNCj4gPj4NCj4gPj4gT25lIG1pbm9yIG5pdCBiZWxvdywgYnV0IG90aGVyd2lzZSBpdCBs
+b29rcyBnb29kIHRvIG1lOg0KPiA+PiBSZXZpZXdlZC1ieTogVmlzaGFsIFZlcm1hIDx2aXNoYWwu
+bC52ZXJtYUBpbnRlbC5jb20+DQo+IA0KPiBBbm90aGVyIG1pbm9yIG5pdCwgdGhlIFN1YmplY3Qg
+c2F5czoNCj4gImJudmRpbW0vbmFtc2VwYWNlOiBEb24ndCBzZXQgY2xhaW1fY2xhc3Mgb24gZXJy
+b3IiDQo+IA0KPiBhLmsuYSBtaXNzaW5nIHRoZSAnbGknIHBhcnQgb2YgbGlibnZkaW1tDQoNClll
+YS4uLiAgSSB3YXMganVzdCBydXNoaW5nLiAgVjMgaGFzIHRoaXMgZml4Lg0KDQpUaGFua3MsDQpJ
+cmENCg0KPiANCj4gLS0NCj4gSm9oYW5uZXMgVGh1bXNoaXJuICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgIFNVU0UgTGFicyBGaWxlc3lzdGVtcw0KPiBqdGh1bXNoaXJuQHN1c2UuZGUgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICs0OSA5MTEgNzQwNTMgNjg5DQo+IFNVU0UgU29mdHdh
+cmUgU29sdXRpb25zIEdlcm1hbnkgR21iSA0KPiBNYXhmZWxkc3RyLiA1DQo+IDkwNDA5IE7DvHJu
+YmVyZw0KPiBHZXJtYW55DQo+IChIUkIgMjQ3MTY1LCBBRyBNw7xuY2hlbikNCj4gS2V5IGZpbmdl
+cnByaW50ID0gRUMzOCA5Q0FCIEMyQzQgRjI1RCA4NjAwIEQwRDAgMDM5MyA5NjlEIDJENzYgMDg1
+MA0K

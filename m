@@ -2,114 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC5CCBF362
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 14:53:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90DECBF3EF
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 15:19:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726317AbfIZMxQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Sep 2019 08:53:16 -0400
-Received: from mail-pl1-f194.google.com ([209.85.214.194]:42689 "EHLO
-        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725768AbfIZMxQ (ORCPT
+        id S1726798AbfIZNS6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Sep 2019 09:18:58 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:51854 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726332AbfIZNS6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Sep 2019 08:53:16 -0400
-Received: by mail-pl1-f194.google.com with SMTP id e5so1034911pls.9;
-        Thu, 26 Sep 2019 05:53:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=TZOZE+f2hac3gdmfNW1xLrjqhpR8KNKRDn13kJ7v7JE=;
-        b=UPLq14wS1rKlTb/sbQmaLf+w1Mm+f9YUBoRADz9PLBcs8c95uE4SkQ+nV3zdtyA28K
-         1Pg3B4tF2ezpCEfp2WK5vm54tktvdNi/RkW0fGtpxE4DFahUZgGd0NaCbgP2UkVQTtsD
-         g9SKAFz/0gP/XAUJWTNbnoN0jSz1jJ5TdmWJxJC0tH33r7rc8PRWwDtow4+lEH1BxZ/g
-         /+K1an4xAWI+rM567nakdbBt00YiHK7a7HCmGWEbmctRJY68QryAnwdJmuKC9aHRMyK+
-         +3n5CTSkjryWoM6JE6rTRc7NwyRis/6TzZlnroxfLK9f+j4Q7o7CU7l2QU2kGpfxyHmp
-         rdaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=TZOZE+f2hac3gdmfNW1xLrjqhpR8KNKRDn13kJ7v7JE=;
-        b=SPg1B+7azjoROqVZu7t2Kjww2cCv5Rdr8NuiTQWcyHLMM/etKR2E7rz8VsJ+ok81fm
-         ZABghKqfH5STuyfEUkfZ17K6j1rhFQgbTMpB4R2Kmjq2sUTID7ohniGHGil1upB7bFIs
-         J7EFYlCxbij9wh/ePCtBOifpWqbf2zEFboV36sAQkT79WkEZ8eC3Wb/lfG8byRn0tfHz
-         5Lsu2v5okyGiicrsJ2q2jyEI7bcb4ceLvaj1jTg1mrKVq4oFy8KP60SPAmr8VIRqGdaM
-         fHrBztc97dISgTCy1HL6o8xwkoIFWVQFdLgsoK3uWqs9ku1Dqjujp0llHKv7LHs0AzI6
-         2JyQ==
-X-Gm-Message-State: APjAAAUGvh6+bmWQ/bfXP3pGFAOa4zRh8TW+MVmem1eVv7UXOgyviCKb
-        2pOdzuOptQDOwiUYDSmzr/g=
-X-Google-Smtp-Source: APXvYqwBuxHuJpQ7R68t4YE8dpJpMHAmfzrPXx4/EaIC4upBpwuXzYcnfmLXprAIpiVJtH+KCRl36g==
-X-Received: by 2002:a17:902:b20a:: with SMTP id t10mr3704897plr.277.1569502393574;
-        Thu, 26 Sep 2019 05:53:13 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id k184sm4325854pge.57.2019.09.26.05.53.11
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 26 Sep 2019 05:53:12 -0700 (PDT)
-Date:   Thu, 26 Sep 2019 05:53:10 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] usb: typec: tcpm: Fix a signedness bug in
- tcpm_fw_get_caps()
-Message-ID: <20190926125310.GA9967@roeck-us.net>
-References: <20190925110219.GN3264@mwanda>
+        Thu, 26 Sep 2019 09:18:58 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8QDE9HW020149;
+        Thu, 26 Sep 2019 13:18:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=5JHjfX/ClfVQeV1xv35C0i2HfLD5Mcn+A2KlqPYkbdM=;
+ b=ZH365Uagnno+L42TFiGn0s/sd3cK/xTPKhSiVbsvtSxo2J7Z0IGYOpakHb/xhVSnCo7G
+ Wv+qBnhwM/Zm/gFdS3YXnewtvF/P5tC7C6+n4Tk9kyNK07OGTrRlnIP4sMJYJcB1BV8t
+ rELpqGpPoed5NGqAQf2TK9XqnwsT2RU/8Bv0ChMH++rg+FNjOxttQjxM1+5iY6KNOaam
+ XVMcn0lYWmuhA8AVqChFZLuA1L5+ANlHBLQCi/PlMpduhZ85t3sAUaRyvzwQ3ujgYIun
+ j+T9lTE6yA9OIDLs92vBcxpzEW/tcJvD3AHGMi3OMk9SXY8mN8Mpr4j7eKewufpWrtQN CQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 2v5b9u3q7q-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 26 Sep 2019 13:18:34 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8QDIOlO134358;
+        Thu, 26 Sep 2019 13:18:34 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 2v8rvt7a4a-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 26 Sep 2019 13:18:34 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x8QDIKdF032457;
+        Thu, 26 Sep 2019 13:18:21 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 26 Sep 2019 06:18:20 -0700
+Date:   Thu, 26 Sep 2019 16:18:11 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     "Alvaro G. M" <alvaro.gamez@hazent.com>
+Cc:     Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>
+Subject: Re: [PATCH net] net: axienet: fix a signedness bug in probe
+Message-ID: <20190926131811.GG29696@kadam>
+References: <20190925105911.GI3264@mwanda>
+ <20190925110542.GA21923@salem.gmr.ssr.upm.es>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190925110219.GN3264@mwanda>
+In-Reply-To: <20190925110542.GA21923@salem.gmr.ssr.upm.es>
 User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9391 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1909260125
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9391 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1909260125
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Sep 25, 2019 at 02:02:19PM +0300, Dan Carpenter wrote:
-> The "port->typec_caps.data" and "port->typec_caps.type" variables are
-> enums and in this context GCC will treat them as an unsigned int so they
-> can never be less than zero.
+On Wed, Sep 25, 2019 at 01:05:43PM +0200, Alvaro G. M wrote:
+> Hi, Dan
 > 
-> Fixes: ae8a2ca8a221 ("usb: typec: Group all TCPCI/TCPM code together")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> On Wed, Sep 25, 2019 at 01:59:11PM +0300, Dan Carpenter wrote:
+> > The "lp->phy_mode" is an enum but in this context GCC treats it as an
+> > unsigned int so the error handling is never triggered.
+> > 
+> >  		lp->phy_mode = of_get_phy_mode(pdev->dev.of_node);
+> > -		if (lp->phy_mode < 0) {
+> > +		if ((int)lp->phy_mode < 0) {
 > 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 96562744101c..d3b63e000ae2 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -4410,7 +4410,7 @@ static int tcpm_fw_get_caps(struct tcpm_port *port,
->  	ret = fwnode_property_read_string(fwnode, "data-role", &cap_str);
->  	if (ret == 0) {
->  		port->typec_caps.data = typec_find_port_data_role(cap_str);
-> -		if (port->typec_caps.data < 0)
-> +		if ((int)port->typec_caps.data < 0)
->  			return -EINVAL;
-
-Doesn't that also cause a warning about overwriting error return codes ?
-I would prefer something like
-
-		ret = typec_find_port_data_role(cap_str);
-		if (ret < 0)
-			return ret;
-		port->typec_caps.data = ret;
-
-Guenter
-
->  	}
->  
-> @@ -4419,7 +4419,7 @@ static int tcpm_fw_get_caps(struct tcpm_port *port,
->  		return ret;
->  
->  	port->typec_caps.type = typec_find_port_power_role(cap_str);
-> -	if (port->typec_caps.type < 0)
-> +	if ((int)port->typec_caps.type < 0)
->  		return -EINVAL;
->  	port->port_type = port->typec_caps.type;
->  
-> -- 
-> 2.20.1
+> This (almost) exact code appears in a lot of different drivers too,
+> so maybe it'd be nice to review them all and apply the same cast if needed?
 > 
+
+This is a new warning in Smatch.  I did send patches for the whole
+kernel.  We won't get these bugs in the future because people run Smatch
+on the kernel and will find the bugs.  All the bugs were from 2017 or
+later which suggests that someone cleared these out two years ago but
+soon the 0-day bot will warn about issues so they will get fixed
+quicker.
+
+I'm sort of out of it today...
+
+The get_phy_mode() function seem like they lend themselves to creating
+these bugs.  The ->phy_mode variables tend to be declared in the driver
+so it would require quite a few patches to make them all int and I'm not
+sure that's more beautiful.  Andrew Lunn's idea to update the API would
+probably be a good idea.
+
+I'm going back to bed for now and I'll think about this some more.
+
+regards,
+dan carpenter

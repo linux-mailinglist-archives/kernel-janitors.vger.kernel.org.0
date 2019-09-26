@@ -2,83 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70BC6BEAD6
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 05:18:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8FD4BEBF5
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 08:28:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733216AbfIZDSJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 25 Sep 2019 23:18:09 -0400
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:38248 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733200AbfIZDSJ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 25 Sep 2019 23:18:09 -0400
-Received: by mail-pg1-f194.google.com with SMTP id x10so651621pgi.5;
-        Wed, 25 Sep 2019 20:18:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=/e01aipRWHPH7X0tss/E5RuVEwEXJJ206Sxj1NvR6mo=;
-        b=i6us6Pmj3kI9zdy2DYLFPekTIdHNvPoZghPOTg64by8XXWLfR7xlZDZqYQGFNKsZMy
-         GEKBUNpV+SDbJvEsBRgfTpQXgBeKmwf5qZVN8xFjAJrYwMrijzEKoXD26aesEpGQwzl1
-         5EUaB6AAp2nVwRHi1+68b/dA81dsOCuo1fVSTBmvbEN6QQ7fwJKIFXXjUjvugxfQ3iDX
-         +Yjxd6IieZZ+u5DeLPIu5oInzWK81hR/sErRtU4ZVhAtmw624IIfwS6gZWaBTbRh5KTh
-         CFaghoGUIMDrmbYsje72y1J+aZuW1yXWSda/Pdurc3ZC2KgXqQpzHvV6bp3gZ5kmlskI
-         C6pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=/e01aipRWHPH7X0tss/E5RuVEwEXJJ206Sxj1NvR6mo=;
-        b=bp8Mcg8EIN5CR1L3bPe+x2mA1qeNxLJrIyGjrEMOTl08uyImsZ8cSN3/t+tSryos7z
-         aILgn7jdzDZF6RAbt/SIipa/2FKbUPWZfZ3q61Hx5EuDls4yh3LtYaq21f68IXDUDCi0
-         roTnRaZvC7lmtMsp5kfXCyU2Sum1oJrfGTNp/9ceDyvJNs0zPb1DeY9qUGn9PBT0kgz3
-         pEauJNWvOCxuyyx+yU9deSE4Tnfwb37fudIM0/qjC8BZOec/wBrOAuAE6fALT/EZlh6y
-         Nc+su5tdCMiD6FwM72P90SAkqSDoJvqKArsYB89F03t6P79Kfh5fnKULQogG+/+eiWBw
-         bQTA==
-X-Gm-Message-State: APjAAAVBWOpxAITN8H/LJqf3Hs5cqxSAbhSnmVf6dx5Buq9DNQEyvNYP
-        qCIHRYvRRs8ta+8EEvMUZhNmfuRW
-X-Google-Smtp-Source: APXvYqwIl1HA42M4pxILH2MueMe16Kg8BIZOkv+wNehRZAFzCMbM3304ZmeqwJEZCeq39jqryCcBIA==
-X-Received: by 2002:aa7:870a:: with SMTP id b10mr1182400pfo.5.1569467887898;
-        Wed, 25 Sep 2019 20:18:07 -0700 (PDT)
-Received: from [10.230.28.130] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id b20sm488058pff.158.2019.09.25.20.18.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Sep 2019 20:18:07 -0700 (PDT)
-Subject: Re: [PATCH net] net: broadcom/bcmsysport: Fix signedness in
- bcm_sysport_probe()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Florian Fainelli <f.fainelli@gmail.com>
-Cc:     "David S. Miller" <davem@davemloft.net>,
-        bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org,
+        id S2390194AbfIZG2e (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Sep 2019 02:28:34 -0400
+Received: from mx.socionext.com ([202.248.49.38]:23233 "EHLO mx.socionext.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388934AbfIZG2e (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 26 Sep 2019 02:28:34 -0400
+Received: from unknown (HELO kinkan-ex.css.socionext.com) ([172.31.9.52])
+  by mx.socionext.com with ESMTP; 26 Sep 2019 15:28:33 +0900
+Received: from mail.mfilter.local (m-filter-2 [10.213.24.62])
+        by kinkan-ex.css.socionext.com (Postfix) with ESMTP id 5C50B18020B;
+        Thu, 26 Sep 2019 15:28:33 +0900 (JST)
+Received: from 172.31.9.53 (172.31.9.53) by m-FILTER with ESMTP; Thu, 26 Sep 2019 15:28:33 +0900
+Received: from yuzu.css.socionext.com (yuzu [172.31.8.45])
+        by iyokan.css.socionext.com (Postfix) with ESMTP id E87914035C;
+        Thu, 26 Sep 2019 15:28:32 +0900 (JST)
+Received: from [127.0.0.1] (unknown [10.213.132.48])
+        by yuzu.css.socionext.com (Postfix) with ESMTP id CF4841204B3;
+        Thu, 26 Sep 2019 15:28:32 +0900 (JST)
+Date:   Thu, 26 Sep 2019 15:28:32 +0900
+From:   Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Subject: Re: [PATCH net] net: socionext: Fix a signedness bug in ave_probe()
+Cc:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-References: <20190925105604.GD3264@mwanda>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-Message-ID: <2424620c-7e8f-43ad-498f-966f26dc7e9f@gmail.com>
-Date:   Wed, 25 Sep 2019 20:18:05 -0700
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+In-Reply-To: <20190925105750.GG3264@mwanda>
+References: <20190925105750.GG3264@mwanda>
+Message-Id: <20190926152831.DDD6.4A936039@socionext.com>
 MIME-Version: 1.0
-In-Reply-To: <20190925105604.GD3264@mwanda>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-Mailer: Becky! ver. 2.70 [ja]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hi Dan,
 
+Thank you for pointing out.
+I've confirmed that this error handling works well with your patch.
 
-On 9/25/2019 3:56 AM, Dan Carpenter wrote:
-> The "priv->phy_interface" variable is an enum and in this context GCC
-> will treat it as unsigned so the error handling will never be
-> triggered.
+Reviewed-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+
+Thank you,
+
+On Wed, 25 Sep 2019 13:57:50 +0300 <dan.carpenter@oracle.com> wrote:
+
+> The "phy_mode" variable is an enum and in this context GCC treats it as
+> an unsigned int so the error handling is never triggered.
 > 
-> Fixes: 80105befdb4b ("net: systemport: add Broadcom SYSTEMPORT Ethernet MAC driver")
+> Fixes: 4c270b55a5af ("net: ethernet: socionext: add AVE ethernet driver")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/net/ethernet/socionext/sni_ave.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/socionext/sni_ave.c b/drivers/net/ethernet/socionext/sni_ave.c
+> index 10d0c3e478ab..d047a53f34f2 100644
+> --- a/drivers/net/ethernet/socionext/sni_ave.c
+> +++ b/drivers/net/ethernet/socionext/sni_ave.c
+> @@ -1566,7 +1566,7 @@ static int ave_probe(struct platform_device *pdev)
+>  
+>  	np = dev->of_node;
+>  	phy_mode = of_get_phy_mode(np);
+> -	if (phy_mode < 0) {
+> +	if ((int)phy_mode < 0) {
+>  		dev_err(dev, "phy-mode not found\n");
+>  		return -EINVAL;
+>  	}
+> -- 
+> 2.20.1
 
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
--- 
-Florian
+---
+Best Regards,
+Kunihiko Hayashi
+
+

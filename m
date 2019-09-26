@@ -2,56 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB99CBED20
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 10:13:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21917BED2E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 10:14:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729515AbfIZIMz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Sep 2019 04:12:55 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:56624 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729394AbfIZIMy (ORCPT
+        id S1729596AbfIZIOj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Sep 2019 04:14:39 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:37126 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725883AbfIZIOi (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Sep 2019 04:12:54 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8Q8938N143494;
-        Thu, 26 Sep 2019 08:12:33 GMT
+        Thu, 26 Sep 2019 04:14:38 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8Q8EMNj095953;
+        Thu, 26 Sep 2019 08:14:35 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=nHvD6qHssEaWW5ffwT7IOeDd0XSJWsWGV8kA52kIHrk=;
- b=X+6L0T5yKArXU+XgMIh6S/Ef5GWy0+GxT9A+BIZF0CWZgR9PVFxu4ahv1rSVai5ikMRt
- pC5WYg6XkvW3+LnayJUdDtlVt6nfmKmSNoUypBMT8G0eeGkGMWFBSnIkYzM0Q8JeedKd
- FyCv2+GQ4zM6TLAVzORNllrpSiErDoOwp4e5tev0pcCd3jj9YNH0GQoMfH5B1dBzYEOt
- DzQr7bjHr7S/svIjg+wBJGg+FIl8FT05FEFw6Z/BREF78worz1oO7COlwZJWhOo1xKaR
- CANjezhPQqAVhBhxImZOYQnd2N0M2biUIFZWlv1XKVys8KcLOLTWpIKbezYYTUybmMBD Gg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 2v5b9u20m6-1
+ bh=YDRRpVAtUWoOxNUyo4YRN1dH81wF4V8OciFyOM/bsSc=;
+ b=KKTeV+/j14MDSdEkpTJ/hZYSgcx0pcAf0UfV7cef+vW8nQfVg2di0XL69sZfOoRPtse5
+ Kh5DErxoBhAXXWUnwZZIWnLhaeGqg7WevuDWzOMTJsL0gy6YWIgGvgoX7GvJSU2d3wJE
+ 2GQNzCGcy5B+DX4e/sdHW8QFOmshI27/7wqJ5j+4ZHXmQPubXV9AOkPH7GeVDyOtXJ7C
+ Mquxjf2fp4sNUF9XUL5wNCpjWWkJT3V+U8P26Q2yBAh87SiCGQU05jkWHV0kNq5Nbcg7
+ SJmglC8HVYdsLMIkBHCrEqwMQ9pqU9zi5grHgLSutLhVfNMVdzgUhEAe2mORwLkS4T9Z og== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 2v5btqa041-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 26 Sep 2019 08:12:33 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8Q88pAd052677;
-        Thu, 26 Sep 2019 08:10:33 GMT
+        Thu, 26 Sep 2019 08:14:35 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8Q88fFR130879;
+        Thu, 26 Sep 2019 08:14:35 GMT
 Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 2v7vp0rcaf-1
+        by aserp3030.oracle.com with ESMTP id 2v82tmp2ck-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 26 Sep 2019 08:10:33 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x8Q8AQhI020500;
-        Thu, 26 Sep 2019 08:10:26 GMT
+        Thu, 26 Sep 2019 08:14:34 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x8Q8EY9u022413;
+        Thu, 26 Sep 2019 08:14:34 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 26 Sep 2019 01:10:25 -0700
-Date:   Thu, 26 Sep 2019 11:10:18 +0300
+        with ESMTP ; Thu, 26 Sep 2019 01:14:33 -0700
+Date:   Thu, 26 Sep 2019 11:14:26 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Lars-Peter Clausen <lars@metafoo.de>
-Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
-        Stefan Popa <stefan.popa@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     Ray Jui <rjui@broadcom.com>,
+        Yendapally Reddy Dhananjaya Reddy 
+        <yendapally.reddy@broadcom.com>
+Cc:     Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] iio: imu: adis16480: clean up a condition
-Message-ID: <20190926081016.GA2332@mwanda>
+Subject: [PATCH] ns2: Fix off by one bugs in ns2_pinmux_enable()
+Message-ID: <20190926081426.GB2332@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -59,7 +59,7 @@ X-Mailer: git-send-email haha only kidding
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9391 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=955
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.0.1-1908290000 definitions=main-1909260080
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9391 signatures=668685
@@ -67,34 +67,38 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=150
  suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1909260080
+ definitions=main-1909260081
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "t" variable is unsigned so it can't be less than zero.  We really
-are just trying to prevent divide by zero bugs so just checking against
-zero is sufficient.
+The pinctrl->functions[] array has pinctrl->num_functions elements and
+the pinctrl->groups[] array is the same way.  These are set in
+ns2_pinmux_probe().  So the > comparisons should be >= so that we don't
+read one element beyond the end of the array.
 
+Fixes: b5aa1006e4a9 ("pinctrl: ns2: add pinmux driver support for Broadcom NS2 SoC")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/iio/imu/adis16480.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/bcm/pinctrl-ns2-mux.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/imu/adis16480.c b/drivers/iio/imu/adis16480.c
-index b99d73887c9f..e144e567675d 100644
---- a/drivers/iio/imu/adis16480.c
-+++ b/drivers/iio/imu/adis16480.c
-@@ -318,7 +318,7 @@ static int adis16480_set_freq(struct iio_dev *indio_dev, int val, int val2)
- 	unsigned int t, reg;
+diff --git a/drivers/pinctrl/bcm/pinctrl-ns2-mux.c b/drivers/pinctrl/bcm/pinctrl-ns2-mux.c
+index 2bf6af7df7d9..9fabc451550e 100644
+--- a/drivers/pinctrl/bcm/pinctrl-ns2-mux.c
++++ b/drivers/pinctrl/bcm/pinctrl-ns2-mux.c
+@@ -640,8 +640,8 @@ static int ns2_pinmux_enable(struct pinctrl_dev *pctrl_dev,
+ 	const struct ns2_pin_function *func;
+ 	const struct ns2_pin_group *grp;
  
- 	t =  val * 1000 + val2 / 1000;
--	if (t <= 0)
-+	if (t == 0)
+-	if (grp_select > pinctrl->num_groups ||
+-		func_select > pinctrl->num_functions)
++	if (grp_select >= pinctrl->num_groups ||
++		func_select >= pinctrl->num_functions)
  		return -EINVAL;
  
- 	/*
+ 	func = &pinctrl->functions[func_select];
 -- 
 2.20.1
 

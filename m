@@ -2,80 +2,147 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 49FB9BF667
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 18:05:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DE73BF66F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 18:08:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727349AbfIZQF2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Sep 2019 12:05:28 -0400
-Received: from mga12.intel.com ([192.55.52.136]:52397 "EHLO mga12.intel.com"
+        id S1727359AbfIZQIX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Sep 2019 12:08:23 -0400
+Received: from mout.web.de ([212.227.15.14]:44547 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726984AbfIZQF2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Sep 2019 12:05:28 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Sep 2019 09:05:28 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,552,1559545200"; 
-   d="scan'208";a="219449975"
-Received: from fmsmsx105.amr.corp.intel.com ([10.18.124.203])
-  by fmsmga002.fm.intel.com with ESMTP; 26 Sep 2019 09:05:27 -0700
-Received: from fmsmsx115.amr.corp.intel.com (10.18.116.19) by
- FMSMSX105.amr.corp.intel.com (10.18.124.203) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Thu, 26 Sep 2019 09:05:27 -0700
-Received: from crsmsx152.amr.corp.intel.com (172.18.7.35) by
- fmsmsx115.amr.corp.intel.com (10.18.116.19) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Thu, 26 Sep 2019 09:05:27 -0700
-Received: from crsmsx101.amr.corp.intel.com ([169.254.1.249]) by
- CRSMSX152.amr.corp.intel.com ([169.254.5.223]) with mapi id 14.03.0439.000;
- Thu, 26 Sep 2019 10:05:24 -0600
-From:   "Weiny, Ira" <ira.weiny@intel.com>
-To:     Johannes Thumshirn <jthumshirn@suse.de>,
-        "Verma, Vishal L" <vishal.l.verma@intel.com>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-nvdimm@lists.01.org" <linux-nvdimm@lists.01.org>
-Subject: RE: [PATCH] bnvdimm/namsepace: Don't set claim_class on error
-Thread-Topic: [PATCH] bnvdimm/namsepace: Don't set claim_class on error
-Thread-Index: AQHVc8ygy0t9taFML0a+mKhnV0JE/Kc9HU2A//+OToCAAUO0AIAAMVwQ
-Date:   Thu, 26 Sep 2019 16:05:24 +0000
-Message-ID: <2807E5FD2F6FDA4886F6618EAC48510E89924636@CRSMSX101.amr.corp.intel.com>
-References: <20190925181056.11097-1-ira.weiny@intel.com>
- <ff7ff4f5b4289d189a7c347591a5c35876ea804f.camel@intel.com>
- <20190925184939.GA11669@iweiny-DESK2.sc.intel.com>
- <fe170e53-92d1-eca8-d419-1a4210cb7313@suse.de>
-In-Reply-To: <fe170e53-92d1-eca8-d419-1a4210cb7313@suse.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiNmJmYzc1MWYtZWE2NC00MmRiLWI0NWQtOWRlZTMzNDI1Y2VlIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoidzE4RUtjK3FvbGZrTnVndUwwUEppWTc0ZXJcL0FUUXVFd3pWQmpxNmtmRTFNVFA2elBSU24ybXJcL2lzRDh3V1dTIn0=
-x-ctpclassification: CTP_NT
-dlp-product: dlpe-windows
-dlp-version: 11.2.0.6
-dlp-reaction: no-action
-x-originating-ip: [172.18.205.10]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1726029AbfIZQIX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 26 Sep 2019 12:08:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1569514098;
+        bh=YNKXwJ4v4t56S8Yf9jkX6NW8l6qjopora7e1Mr3YlIA=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=PTUqsJNCQlSEE1dUnqVeTz5a12WOuNhj0+koppPEPxYIOupaLvt3eAkImmBFgilMn
+         Ph6jlN20GzqRged1LQxNEFbOBO/ROBBJ3SNCMVk/RcQm43pJCGxUOukZthipwlbslu
+         pl+1o3rxGH0Lu12R/D2Q+jTrkJmMiiVJ5dHiKGCA=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.135.81.241]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LiUF2-1hatmI16tg-00ceg8; Thu, 26
+ Sep 2019 18:08:18 +0200
+To:     bcm-kernel-feedback-list@broadcom.com,
+        Al Cooper <alcooperx@gmail.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+From:   Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] phy-brcm-usb: Use devm_platform_ioremap_resource() in
+ brcm_usb_phy_probe()
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <88679e6a-6701-7d30-d52e-5e970af4de04@web.de>
+Date:   Thu, 26 Sep 2019 18:08:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ByQ1b5OIGZCUFr8no3mtz1BppgbF//TMZe3c3Y7b0lI+sResh11
+ 7W/Peo9SopIQZcVYquBEZm8Ask1EKIkTPnBMAQSL+o3MoFeyOc8zpUw0QLRP4cPkRixcQMN
+ 4XuuKOiZyCUU5xyu7pL59dhpjC/KJ2wwu0wk1AqEoENsB5doPXg1L+v+kqfz0RtXfQN0Mqm
+ O71xYfy/L2qcPX+pqpQFQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:UqCZHgwFRtc=:e7js8cA05H2c9z+egKElqH
+ FMlLJwrSiw6HJvGnWwK6aEI8GPgdCyP1+4fHXtOCkLDRzUiSKgoF6ClC7whR2kqew/T26wMKd
+ RbCouvKbzrA2P0hkSw2H/jA6CF+WbTisqsGLKB1a5Y8ajvBkX89mXzPice//mE8OCCBCxhTL6
+ ffapH+zlKln/KLvBz6CTMMny0sJAqSleq1XrzrPFTvQDONyGEdkJ/4iFuaqqlmDGj7LRp18l3
+ vtLXL62TnFh4R/4HtWuBfzyBKhEq9nyzgJdu0B/XPE6pOcGBvLno+1+tlvjx8BMji7usXJJtB
+ U2s+j+zxNFtTj1prvkXwfQvEQOQitwkTf1qXIZABwBcb6R5p/A8jMw29/f9O1wv979wjScxQF
+ srcUVNlGm0xuZZMf3kc/CfG6Csputs+cAwszXSUKUIdpIjOfRJzDVU4GG1+l2N7nOBDL73MLC
+ rgXEUG+yJfUNBuHxMzsnCOdSNTAfmeu9bYYBSINtk/XftjcoJi44njDznzmvVWdlx6j2EAz66
+ XK+ntGZHU6D+mGlPEpusEwaQdjwhjcKewz9U45GTEsR4bM3E8XV+V1aI5MnewS6L5Jxfzmwu/
+ /VSC7Xc/b7b0Qp9NOWTtlrzcctZuHGjPZMo6m77EdmirY+gtFixOj8+5V4F0N9ngGbSEa0mmf
+ ZC5I1zhc2DATgOpD5jHgiB7P9FE8zZRo/qbyzh+oIUv7+xrGVpBFDhniVm0f3qXbYjbmz0aKV
+ mAm/mq/MgLTU8xMWCmJeUpgcleFhBTi8zM83YE+MzS49ILmeKKhEEe7+1C++DhFOp8n+KOl5q
+ 9PGzym4RSSlLEJ2wOxS1ZI65atIrz2Nvaf5b5NTQedEWISvkgo2njO/DfL+WT65HKnev9CBz4
+ F7d/7ZE+yO9ptcT85TLHAP2XZutic7EnnDlxDhtdO7nWbwaVxFqokglZT7gJAd1TiVTU5i705
+ Gj2Nxr2KPfara86qsSdzza+xdOnFhRycRiUpCcvWTtIF8uvUt2fSdmV6urHKBT48J99HV6SmY
+ nNfUr9mF0TELXRQEYG2+Tr3/MmqKCAMu4ftyhRwU08Ao0YRnXCODigcCSAoccJWUV0wVsco8Y
+ nd97xrGeacq1L8ukol4Y61Cj/EazQ8ru2SojY6Hj/KYOAStMCDaPFzS29q3Uu4vcUH5fZUAHJ
+ VXtVc2xYMxOAogTedX9nAOOc/hvgYEakwtTGpckHwoXlOhkuRCi3KUgeHvgVRAtzwgh1+5kp7
+ gu/uq4/r8aYgkQWZiV6Gadryg6GS/qi6G8e0IP2eTKCWE41CdWtFgQI0Vla4=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-PiBPbiAyNS8wOS8yMDE5IDIwOjQ5LCBJcmEgV2Vpbnkgd3JvdGU6DQo+ID4+Pg0KPiA+Pj4gU2ln
-bmVkLW9mZi1ieTogSXJhIFdlaW55IDxpcmEud2VpbnlAaW50ZWwuY29tPg0KPiA+Pj4gLS0tDQo+
-ID4+PiAgZHJpdmVycy9udmRpbW0vbmFtZXNwYWNlX2RldnMuYyB8IDE5ICsrKysrKysrKy0tLS0t
-LS0tLS0NCj4gPj4+ICAxIGZpbGUgY2hhbmdlZCwgOSBpbnNlcnRpb25zKCspLCAxMCBkZWxldGlv
-bnMoLSkNCj4gPj4NCj4gPj4gT25lIG1pbm9yIG5pdCBiZWxvdywgYnV0IG90aGVyd2lzZSBpdCBs
-b29rcyBnb29kIHRvIG1lOg0KPiA+PiBSZXZpZXdlZC1ieTogVmlzaGFsIFZlcm1hIDx2aXNoYWwu
-bC52ZXJtYUBpbnRlbC5jb20+DQo+IA0KPiBBbm90aGVyIG1pbm9yIG5pdCwgdGhlIFN1YmplY3Qg
-c2F5czoNCj4gImJudmRpbW0vbmFtc2VwYWNlOiBEb24ndCBzZXQgY2xhaW1fY2xhc3Mgb24gZXJy
-b3IiDQo+IA0KPiBhLmsuYSBtaXNzaW5nIHRoZSAnbGknIHBhcnQgb2YgbGlibnZkaW1tDQoNClll
-YS4uLiAgSSB3YXMganVzdCBydXNoaW5nLiAgVjMgaGFzIHRoaXMgZml4Lg0KDQpUaGFua3MsDQpJ
-cmENCg0KPiANCj4gLS0NCj4gSm9oYW5uZXMgVGh1bXNoaXJuICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIFNVU0UgTGFicyBGaWxlc3lzdGVtcw0KPiBqdGh1bXNoaXJuQHN1c2UuZGUgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICs0OSA5MTEgNzQwNTMgNjg5DQo+IFNVU0UgU29mdHdh
-cmUgU29sdXRpb25zIEdlcm1hbnkgR21iSA0KPiBNYXhmZWxkc3RyLiA1DQo+IDkwNDA5IE7DvHJu
-YmVyZw0KPiBHZXJtYW55DQo+IChIUkIgMjQ3MTY1LCBBRyBNw7xuY2hlbikNCj4gS2V5IGZpbmdl
-cnByaW50ID0gRUMzOCA5Q0FCIEMyQzQgRjI1RCA4NjAwIEQwRDAgMDM5MyA5NjlEIDJENzYgMDg1
-MA0K
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Thu, 26 Sep 2019 18:00:14 +0200
+
+Simplify this function implementation a bit by using
+a known wrapper function.
+
+This issue was detected by using the Coccinelle software.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ drivers/phy/broadcom/phy-brcm-usb.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/drivers/phy/broadcom/phy-brcm-usb.c b/drivers/phy/broadcom/ph=
+y-brcm-usb.c
+index f5c1f2983a1d..2a0a8bd2b056 100644
+=2D-- a/drivers/phy/broadcom/phy-brcm-usb.c
++++ b/drivers/phy/broadcom/phy-brcm-usb.c
+@@ -298,12 +298,7 @@ static int brcm_usb_phy_probe(struct platform_device =
+*pdev)
+ 	brcm_usb_set_family_map(&priv->ini);
+ 	dev_dbg(dev, "Best mapping table is for %s\n",
+ 		priv->ini.family_name);
+-	res =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res) {
+-		dev_err(dev, "can't get USB_CTRL base address\n");
+-		return -EINVAL;
+-	}
+-	priv->ini.ctrl_regs =3D devm_ioremap_resource(dev, res);
++	priv->ini.ctrl_regs =3D devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(priv->ini.ctrl_regs)) {
+ 		dev_err(dev, "can't map CTRL register space\n");
+ 		return -EINVAL;
+=2D-
+2.23.0
+

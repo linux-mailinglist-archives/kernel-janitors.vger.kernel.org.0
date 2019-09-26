@@ -2,64 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C2EEDBE954
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 02:05:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70BC6BEAD6
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 05:18:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387560AbfIZAFn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 25 Sep 2019 20:05:43 -0400
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:39224 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387449AbfIZAFn (ORCPT
+        id S1733216AbfIZDSJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 25 Sep 2019 23:18:09 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:38248 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1733200AbfIZDSJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 25 Sep 2019 20:05:43 -0400
-Received: by mail-ot1-f65.google.com with SMTP id s22so409792otr.6;
-        Wed, 25 Sep 2019 17:05:42 -0700 (PDT)
+        Wed, 25 Sep 2019 23:18:09 -0400
+Received: by mail-pg1-f194.google.com with SMTP id x10so651621pgi.5;
+        Wed, 25 Sep 2019 20:18:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=sender:subject:to:cc:references:from:message-id:date:user-agent
+        h=subject:to:cc:references:from:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=cLDBlYUmNrPQrO4eVaMtvr6RX8X34auEyuZMhH4LAik=;
-        b=UmBs2pc/Zvu6RyHaZ3E3Zph8I97+mpbFMmp0wAhC4XuCt4lrQ4CMSlnMa6oz/VbC0w
-         808hdIHq6Qsn3oszdBYWWUIfr8yRYW35NT3/jAFdJKdtx2SDDuB2SGwltamMntDJaqgT
-         lUkScSAQYQ+UsLYh8jaFzomkjdgDsKSWWYwlumew6E6ewzbOY1hnBAkKLEBVz/zPMNwI
-         anizYEtGwTNmWvPPi8bPqhrtY8Xqup607P5kgu3SeWpl3G/blyzHnQAAbrBhk0+dYqGt
-         oAI09pf7ovdOf2mjr6Uevr3SuEY2sVfi1dyefPoERqKTkxBJGTmAKLAWxk821fz7MQdl
-         FsXA==
+        bh=/e01aipRWHPH7X0tss/E5RuVEwEXJJ206Sxj1NvR6mo=;
+        b=i6us6Pmj3kI9zdy2DYLFPekTIdHNvPoZghPOTg64by8XXWLfR7xlZDZqYQGFNKsZMy
+         GEKBUNpV+SDbJvEsBRgfTpQXgBeKmwf5qZVN8xFjAJrYwMrijzEKoXD26aesEpGQwzl1
+         5EUaB6AAp2nVwRHi1+68b/dA81dsOCuo1fVSTBmvbEN6QQ7fwJKIFXXjUjvugxfQ3iDX
+         +Yjxd6IieZZ+u5DeLPIu5oInzWK81hR/sErRtU4ZVhAtmw624IIfwS6gZWaBTbRh5KTh
+         CFaghoGUIMDrmbYsje72y1J+aZuW1yXWSda/Pdurc3ZC2KgXqQpzHvV6bp3gZ5kmlskI
+         C6pA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:subject:to:cc:references:from:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=cLDBlYUmNrPQrO4eVaMtvr6RX8X34auEyuZMhH4LAik=;
-        b=gdmwII3o28y+4mDuVrtJh6BY6C2/b4u7b3AjdttE7mP0eun8E+9tJMitKeg/r5YEPf
-         AP20AQBFzR7tmwfV/cBPfDXS70Wpo/c+xk0Aue7/pCha+N3XuBQnuDD99n6675jG74aW
-         pQNAL79WjKeHogZX9nvY8BWTtZW/N9cJvTzfnq+aZkE7/sQcOJk4k9ol5Dd47y4riImF
-         c5iM8xhIlrRE+MGqUE9TQAtVWldak8DrkjbPJ2FS3E+cd3qHN1gmzgweuJMGjpQo59ls
-         7M8SB/n4IsZgeGudQAz7JM9sd1TLBF0/5ocmf9pBEy0f4uJgS27RBSsZZhNMFP0wADR4
-         pdnQ==
-X-Gm-Message-State: APjAAAWyD4BQY6JVslOMC1U8Msn+AUcpIu4ZXGj1NRyPp9bGjX+cgxJF
-        OmdJvr6Yp+E7W2Mxob/s3x68sI1X
-X-Google-Smtp-Source: APXvYqzKvmb5CmGQHuVV4hwjbageKrnNRU1k6G4PjsXBsHySHIWs6PSbzG/elNsMEYgii2B8aTgxQg==
-X-Received: by 2002:a05:6830:4a5:: with SMTP id l5mr553245otd.150.1569456342282;
-        Wed, 25 Sep 2019 17:05:42 -0700 (PDT)
-Received: from [192.168.1.112] (cpe-24-31-245-230.kc.res.rr.com. [24.31.245.230])
-        by smtp.gmail.com with ESMTPSA id k34sm108144otk.51.2019.09.25.17.05.40
+        bh=/e01aipRWHPH7X0tss/E5RuVEwEXJJ206Sxj1NvR6mo=;
+        b=bp8Mcg8EIN5CR1L3bPe+x2mA1qeNxLJrIyGjrEMOTl08uyImsZ8cSN3/t+tSryos7z
+         aILgn7jdzDZF6RAbt/SIipa/2FKbUPWZfZ3q61Hx5EuDls4yh3LtYaq21f68IXDUDCi0
+         roTnRaZvC7lmtMsp5kfXCyU2Sum1oJrfGTNp/9ceDyvJNs0zPb1DeY9qUGn9PBT0kgz3
+         pEauJNWvOCxuyyx+yU9deSE4Tnfwb37fudIM0/qjC8BZOec/wBrOAuAE6fALT/EZlh6y
+         Nc+su5tdCMiD6FwM72P90SAkqSDoJvqKArsYB89F03t6P79Kfh5fnKULQogG+/+eiWBw
+         bQTA==
+X-Gm-Message-State: APjAAAVBWOpxAITN8H/LJqf3Hs5cqxSAbhSnmVf6dx5Buq9DNQEyvNYP
+        qCIHRYvRRs8ta+8EEvMUZhNmfuRW
+X-Google-Smtp-Source: APXvYqwIl1HA42M4pxILH2MueMe16Kg8BIZOkv+wNehRZAFzCMbM3304ZmeqwJEZCeq39jqryCcBIA==
+X-Received: by 2002:aa7:870a:: with SMTP id b10mr1182400pfo.5.1569467887898;
+        Wed, 25 Sep 2019 20:18:07 -0700 (PDT)
+Received: from [10.230.28.130] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id b20sm488058pff.158.2019.09.25.20.18.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Sep 2019 17:05:41 -0700 (PDT)
-Subject: Re: [PATCH] staging: rtl8188eu: fix possible null dereference
-To:     Connor Kuehl <connor.kuehl@canonical.com>,
-        gregkh@linuxfoundation.org, straube.linux@gmail.com,
-        devel@driverdev.osuosl.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20190925213215.25082-1-connor.kuehl@canonical.com>
-From:   Larry Finger <Larry.Finger@lwfinger.net>
-Message-ID: <b725820f-525c-519b-4474-476abf004985@lwfinger.net>
-Date:   Wed, 25 Sep 2019 19:05:40 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+        Wed, 25 Sep 2019 20:18:07 -0700 (PDT)
+Subject: Re: [PATCH net] net: broadcom/bcmsysport: Fix signedness in
+ bcm_sysport_probe()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Florian Fainelli <f.fainelli@gmail.com>
+Cc:     "David S. Miller" <davem@davemloft.net>,
+        bcm-kernel-feedback-list@broadcom.com, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20190925105604.GD3264@mwanda>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Message-ID: <2424620c-7e8f-43ad-498f-966f26dc7e9f@gmail.com>
+Date:   Wed, 25 Sep 2019 20:18:05 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <20190925213215.25082-1-connor.kuehl@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <20190925105604.GD3264@mwanda>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -67,39 +69,16 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 9/25/19 4:32 PM, Connor Kuehl wrote:
-> Inside a nested 'else' block at the beginning of this function is a
-> call that assigns 'psta' to the return value of 'rtw_get_stainfo()'.
-> If 'rtw_get_stainfo()' returns NULL and the flow of control reaches
-> the 'else if' where 'psta' is dereferenced, then we will dereference
-> a NULL pointer.
-> 
-> Fix this by checking if 'psta' is not NULL before reading its
-> 'psta->qos_option' data member.
-> 
-> Addresses-Coverity: ("Dereference null return value")
-> 
-> Signed-off-by: Connor Kuehl <connor.kuehl@canonical.com>
-> ---
->   drivers/staging/rtl8188eu/core/rtw_xmit.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/rtl8188eu/core/rtw_xmit.c b/drivers/staging/rtl8188eu/core/rtw_xmit.c
-> index 952f2ab51347..bf8877cbe9b6 100644
-> --- a/drivers/staging/rtl8188eu/core/rtw_xmit.c
-> +++ b/drivers/staging/rtl8188eu/core/rtw_xmit.c
-> @@ -784,7 +784,7 @@ s32 rtw_make_wlanhdr(struct adapter *padapter, u8 *hdr, struct pkt_attrib *pattr
->   			memcpy(pwlanhdr->addr2, pattrib->src, ETH_ALEN);
->   			memcpy(pwlanhdr->addr3, get_bssid(pmlmepriv), ETH_ALEN);
->   
-> -			if (psta->qos_option)
-> +			if (psta && psta->qos_option)
->   				qos_option = true;
->   		} else {
->   			RT_TRACE(_module_rtl871x_xmit_c_, _drv_err_, ("fw_state:%x is not allowed to xmit frame\n", get_fwstate(pmlmepriv)));
-> 
 
-This change is a good one, but why not get the same fix at line 779?
 
-Larry
+On 9/25/2019 3:56 AM, Dan Carpenter wrote:
+> The "priv->phy_interface" variable is an enum and in this context GCC
+> will treat it as unsigned so the error handling will never be
+> triggered.
+> 
+> Fixes: 80105befdb4b ("net: systemport: add Broadcom SYSTEMPORT Ethernet MAC driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
+Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+-- 
+Florian

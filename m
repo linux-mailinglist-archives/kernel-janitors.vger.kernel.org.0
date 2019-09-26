@@ -2,100 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA749BF2C3
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 14:18:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D9BDBF2E8
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 14:26:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726033AbfIZMR5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Sep 2019 08:17:57 -0400
-Received: from smtp-fw-6002.amazon.com ([52.95.49.90]:16532 "EHLO
-        smtp-fw-6002.amazon.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725768AbfIZMR5 (ORCPT
+        id S1726380AbfIZM0g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Sep 2019 08:26:36 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:36875 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726004AbfIZM0g (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Sep 2019 08:17:57 -0400
+        Thu, 26 Sep 2019 08:26:36 -0400
+Received: by mail-wr1-f67.google.com with SMTP id i1so2534735wro.4
+        for <kernel-janitors@vger.kernel.org>; Thu, 26 Sep 2019 05:26:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1569500276; x=1601036276;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=My9iW0ZYZXMJ01JS7LXIoYyI2Pxn/CJO9L+IqUSg2aY=;
-  b=gcSB2dB3rM/7rHcTGHUuJN6DYFdUSLe9mdUwRu/aBiupgmzxXIvbFe4y
-   SDQbPyvzFrXzsN90eEYAAa5TG7xSk5sUcQ+7TaOwNwDhudqkZ+G6YJ4wY
-   ORxcmAHSuVk65EWWpZQWrmMRa3hW9tYmSRZFdjBoyJFnTtpWI7uORydU3
-   Y=;
-X-IronPort-AV: E=Sophos;i="5.64,551,1559520000"; 
-   d="scan'208";a="423773963"
-Received: from iad6-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-1e-a70de69e.us-east-1.amazon.com) ([10.124.125.6])
-  by smtp-border-fw-out-6002.iad6.amazon.com with ESMTP; 26 Sep 2019 12:17:54 +0000
-Received: from EX13MTAUEA001.ant.amazon.com (iad55-ws-svc-p15-lb9-vlan2.iad.amazon.com [10.40.159.162])
-        by email-inbound-relay-1e-a70de69e.us-east-1.amazon.com (Postfix) with ESMTPS id C9A7AA2461;
-        Thu, 26 Sep 2019 12:17:53 +0000 (UTC)
-Received: from EX13D10EUA001.ant.amazon.com (10.43.165.242) by
- EX13MTAUEA001.ant.amazon.com (10.43.61.82) with Microsoft SMTP Server (TLS)
- id 15.0.1367.3; Thu, 26 Sep 2019 12:17:52 +0000
-Received: from EX13D22EUA004.ant.amazon.com (10.43.165.129) by
- EX13D10EUA001.ant.amazon.com (10.43.165.242) with Microsoft SMTP Server (TLS)
- id 15.0.1367.3; Thu, 26 Sep 2019 12:17:51 +0000
-Received: from EX13D22EUA004.ant.amazon.com ([10.43.165.129]) by
- EX13D22EUA004.ant.amazon.com ([10.43.165.129]) with mapi id 15.00.1367.000;
- Thu, 26 Sep 2019 12:17:51 +0000
-From:   "Kiyanovski, Arthur" <akiyano@amazon.com>
-To:     Colin King <colin.king@canonical.com>,
-        "Belgazal, Netanel" <netanel@amazon.com>,
-        "Bshara, Saeed" <saeedb@amazon.com>,
-        "Machulsky, Zorik" <zorik@amazon.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Jubran, Samih" <sameehj@amazon.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] net: ena: clean up indentation issue
-Thread-Topic: [PATCH] net: ena: clean up indentation issue
-Thread-Index: AQHVdFzcGzusACwMIUKNmXCucf2dHqc93yZA
-Date:   Thu, 26 Sep 2019 12:17:22 +0000
-Deferred-Delivery: Thu, 26 Sep 2019 12:16:52 +0000
-Message-ID: <4ed1ded9cc7f40e496f02007e05b61eb@EX13D22EUA004.ant.amazon.com>
-References: <20190926112252.21498-1-colin.king@canonical.com>
-In-Reply-To: <20190926112252.21498-1-colin.king@canonical.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.43.166.48]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=p32y5pL62PU7Yf9iy/plIVHUc6YiHXgm7LNnsJBfWag=;
+        b=QOUNhFqApk0JZioGtQSmqcw6DrLAybbq5zyIfy4vZUVbIk0srAk//b2mD0SDPpM8uJ
+         891LzBY3eRJHYK4y5wWOZeWbZqRs20mepTSFNoIae3EMzwh4/3LdP/SEcrGfU6sAQb/8
+         0L5o4W5RCKH/MeSm2qXQXeKbS6FjhFCheOaLlXJkI3KPTYzsagKWNhqO0Y/9VnQDIGOu
+         8X+NXogpXrd2GPzJWHPCdqHKrug9a73PnieO6i8eo/Z66MaWiwCwvxuj0bZQq2R1J0Ag
+         8OJF4cvEQGNIbJyh06yT4xAWUQMM/rej6F3HP8azXufHyMzuY7mbvOGC3E+3IP/FKxkb
+         QoVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=p32y5pL62PU7Yf9iy/plIVHUc6YiHXgm7LNnsJBfWag=;
+        b=lZRTTeEoSpMVpQUGQEpn57357fsWCYYlqQ2i7KlIcMjKx/n96IHJKWnu58tVAGdFz/
+         Qy2N22ntAGtCWTb9vUQSN7BLg2zqEAIVXuogvbysIoJzQnoU68SluTiwMjsbW5Nup0cO
+         iUMGI9mtvnLT3k8gL1Jyv2WzlDb12tvjiRhQ0iwF4chdHHkLGxyDA59yQXgI7hFYacJ2
+         SFSRsqxDP0yL6TtAazkkrEAtUqCXVccSY59R1TEzse7jSDBd0ub5CD/2UQBlpOK4GDbE
+         Ar4XkL7TUslBdpVp+mNgOQfBTpcKq/qAe4Y4hjz0baJpod7qKAgX3FzuvJrq0cRK48bT
+         27tQ==
+X-Gm-Message-State: APjAAAXgcUB0fVDNJDmvT9TmR51AfQEqyU8O4m/BtYHh+SMAZtJSnGn5
+        9Bg0doTdA84S9wCeLQCmpXqAmw==
+X-Google-Smtp-Source: APXvYqzBATD7joVjL92vZMpqjqZNavOQPERuLrMeZb/ll/M9FujdM09hbbVOjMLwThqwb9vquE5C1g==
+X-Received: by 2002:a05:6000:108c:: with SMTP id y12mr1628248wrw.238.1569500792496;
+        Thu, 26 Sep 2019 05:26:32 -0700 (PDT)
+Received: from [192.168.1.145] ([65.39.69.237])
+        by smtp.gmail.com with ESMTPSA id e17sm1932014wma.15.2019.09.26.05.26.31
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 26 Sep 2019 05:26:31 -0700 (PDT)
+Subject: Re: [PATCH][next] io_uring: ensure variable ret is initialized to
+ zero
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190926095012.31826-1-colin.king@canonical.com>
+ <3aa821ea-3041-fb56-2458-ec643963c511@kernel.dk>
+ <20190926113329.GE27389@kadam>
+ <04262621-68fd-a4bb-ab0c-83954c03fbb0@kernel.dk>
+ <2de0eb45-3abc-3ccd-f3d3-346d899ba50d@rasmusvillemoes.dk>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <b9754557-38a5-052b-f42d-6ba9d7acfed2@kernel.dk>
+Date:   Thu, 26 Sep 2019 14:26:31 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
+In-Reply-To: <2de0eb45-3abc-3ccd-f3d3-346d899ba50d@rasmusvillemoes.dk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBDb2xpbiBLaW5nIDxjb2xpbi5r
-aW5nQGNhbm9uaWNhbC5jb20+DQo+IFNlbnQ6IFRodXJzZGF5LCBTZXB0ZW1iZXIgMjYsIDIwMTkg
-MjoyMyBQTQ0KPiBUbzogQmVsZ2F6YWwsIE5ldGFuZWwgPG5ldGFuZWxAYW1hem9uLmNvbT47IEJz
-aGFyYSwgU2FlZWQNCj4gPHNhZWVkYkBhbWF6b24uY29tPjsgTWFjaHVsc2t5LCBab3JpayA8em9y
-aWtAYW1hem9uLmNvbT47IERhdmlkIFMgLg0KPiBNaWxsZXIgPGRhdmVtQGRhdmVtbG9mdC5uZXQ+
-OyBLaXlhbm92c2tpLCBBcnRodXIgPGFraXlhbm9AYW1hem9uLmNvbT47DQo+IEp1YnJhbiwgU2Ft
-aWggPHNhbWVlaGpAYW1hem9uLmNvbT47IG5ldGRldkB2Z2VyLmtlcm5lbC5vcmcNCj4gQ2M6IGtl
-cm5lbC1qYW5pdG9yc0B2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5v
-cmcNCj4gU3ViamVjdDogW1BBVENIXSBuZXQ6IGVuYTogY2xlYW4gdXAgaW5kZW50YXRpb24gaXNz
-dWUNCj4gDQo+IEZyb206IENvbGluIElhbiBLaW5nIDxjb2xpbi5raW5nQGNhbm9uaWNhbC5jb20+
-DQo+IA0KPiBUaGVyZSBtZW1zZXQgaXMgaW5kZW50ZWQgaW5jb3JyZWN0bHksIHJlbW92ZSB0aGUg
-ZXh0cmFuZW91cyB0YWJzLg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQ29saW4gSWFuIEtpbmcgPGNv
-bGluLmtpbmdAY2Fub25pY2FsLmNvbT4NCj4gLS0tDQo+ICBkcml2ZXJzL25ldC9ldGhlcm5ldC9h
-bWF6b24vZW5hL2VuYV9ldGhfY29tLmMgfCA0ICsrLS0NCj4gIDEgZmlsZSBjaGFuZ2VkLCAyIGlu
-c2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9u
-ZXQvZXRoZXJuZXQvYW1hem9uL2VuYS9lbmFfZXRoX2NvbS5jDQo+IGIvZHJpdmVycy9uZXQvZXRo
-ZXJuZXQvYW1hem9uL2VuYS9lbmFfZXRoX2NvbS5jDQo+IGluZGV4IDM4MDQ2YmYwZmY0NC4uMjg0
-NWFjMjc3NzI0IDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL25ldC9ldGhlcm5ldC9hbWF6b24vZW5h
-L2VuYV9ldGhfY29tLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvYW1hem9uL2VuYS9l
-bmFfZXRoX2NvbS5jDQo+IEBAIC0yMTEsOCArMjExLDggQEAgc3RhdGljIGludCBlbmFfY29tX3Nx
-X3VwZGF0ZV9sbHFfdGFpbChzdHJ1Y3QNCj4gZW5hX2NvbV9pb19zcSAqaW9fc3EpDQo+IA0KPiAg
-CQlwa3RfY3RybC0+Y3Vycl9ib3VuY2VfYnVmID0NCj4gIAkJCWVuYV9jb21fZ2V0X25leHRfYm91
-bmNlX2J1ZmZlcigmaW9fc3EtDQo+ID5ib3VuY2VfYnVmX2N0cmwpOw0KPiAtCQkJbWVtc2V0KGlv
-X3NxLT5sbHFfYnVmX2N0cmwuY3Vycl9ib3VuY2VfYnVmLA0KPiAtCQkJICAgICAgIDB4MCwgbGxx
-X2luZm8tPmRlc2NfbGlzdF9lbnRyeV9zaXplKTsNCj4gKwkJbWVtc2V0KGlvX3NxLT5sbHFfYnVm
-X2N0cmwuY3Vycl9ib3VuY2VfYnVmLA0KPiArCQkgICAgICAgMHgwLCBsbHFfaW5mby0+ZGVzY19s
-aXN0X2VudHJ5X3NpemUpOw0KPiANCj4gIAkJcGt0X2N0cmwtPmlkeCA9IDA7DQo+ICAJCWlmICh1
-bmxpa2VseShsbHFfaW5mby0+ZGVzY19zdHJpZGVfY3RybCA9PQ0KPiBFTkFfQURNSU5fU0lOR0xF
-X0RFU0NfUEVSX0VOVFJZKSkNCj4gLS0NCj4gMi4yMC4xDQoNCkxHVE0gVGhhbmtzISANCg==
+On 9/26/19 2:14 PM, Rasmus Villemoes wrote:
+> On 26/09/2019 13.42, Jens Axboe wrote:
+>> On 9/26/19 1:33 PM, Dan Carpenter wrote:
+>>> On Thu, Sep 26, 2019 at 11:56:30AM +0200, Jens Axboe wrote:
+>>>> On 9/26/19 11:50 AM, Colin King wrote:
+>>>>> From: Colin Ian King <colin.king@canonical.com>
+>>>>>
+>>>>> In the case where sig is NULL the error variable ret is not initialized
+>>>>> and may contain a garbage value on the final checks to see if ret is
+>>>>> -ERESTARTSYS.  Best to initialize ret to zero before the do loop to
+>>>>> ensure the ret does not accidentially contain -ERESTARTSYS before the
+>>>>> loop.
+>>>>
+>>>> Oops, weird it didn't complain. I've folded in this fix, as that commit
+>>>> isn't upstream yet. Thanks!
+>>>
+>>> There is a bug in GCC where at certain optimization levels, instead of
+>>> complaining, it initializes it to zero.
+>>
+>> That's awfully nice of it ;-)
+>>
+>> Tried with -O0 and still didn't complain for me.
+>>
+>> $ gcc --version
+>> gcc (Ubuntu 9.1.0-2ubuntu2~18.04) 9.1.0
+>>
+>> Tried gcc 5/6/7/8 as well. Might have to go look at what code it's
+>> generating.
+>>
+> 
+> I think it's essentially the same as
+> https://lore.kernel.org/lkml/CAHk-=whP-9yPAWuJDwA6+rQ-9owuYZgmrMA9AqO3EGJVefe8vg@mail.gmail.com/
+> (thread "tmpfs: fix uninitialized return value in shmem_link").
+
+I think you're right, it's the same pattern. If I kill the:
+
+if (ret)
+	return ret;
+
+inside the if (sig) branch, then gcc does show the warning as it should.
+
+-- 
+Jens Axboe
+

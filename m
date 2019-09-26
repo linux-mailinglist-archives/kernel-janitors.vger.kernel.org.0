@@ -2,100 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 890DCBF575
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 17:03:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53CC4BF5D4
+	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Sep 2019 17:24:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726359AbfIZPDX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Sep 2019 11:03:23 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:36409 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725813AbfIZPDX (ORCPT
+        id S1727270AbfIZPYo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Sep 2019 11:24:44 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:59564 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726845AbfIZPYn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Sep 2019 11:03:23 -0400
-Received: from mail-pf1-f198.google.com ([209.85.210.198])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <connor.kuehl@canonical.com>)
-        id 1iDVIf-0007Xh-04
-        for kernel-janitors@vger.kernel.org; Thu, 26 Sep 2019 15:03:21 +0000
-Received: by mail-pf1-f198.google.com with SMTP id t65so1925033pfd.14
-        for <kernel-janitors@vger.kernel.org>; Thu, 26 Sep 2019 08:03:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=FVKRXmx8SRBsU+0IWvQgA4/r5KeBrIiQqcBDYIkxnNs=;
-        b=PF8vhBrkS/XW5igURDeaMlslR6vZVgMq1jl8p7w5lhhhn7n97dYofbTbmai5qRkTrM
-         y9mHGE6Of7x/xlWAAECLQyZSUTQxLMb8TaVzCXAxAC+FELunBhjCDbhPwLzFg2Z3m/Ib
-         rArved27nt5SlJmUPsQ33fSE3HtCHkljoB0O4Cj5NEdxdQdlQq0baEB/jRe7gctc1Iqs
-         MLZ7E7GMzjHXIVAUbMcT9ZEPzA/driN97j6aKuWPz4PyNP/BzuwETLJk4BPH+GH6/BeX
-         DptmhsAk0Ml5eVKGViF81DmoL1yCmoPIGimG8O8MozZU2LTyyO3O89LZ5RRmpgdRfgZl
-         7Cxg==
-X-Gm-Message-State: APjAAAWNzfdKK86fays1SVHKX+zfQPimyfwWfPAwMATkVs1C5rLPsZ45
-        F7qCLui6vJ+y2jmiEONUyjEtYJSstfy0uKmhaJdTEdkTqfFOVFFQ4wKf2lt8ZArgM1j2mY7USb/
-        xG2GtLs9HaNB1W3hvqT/nwWYFtewMEy2uQku5jW+0Zz0w7A==
-X-Received: by 2002:a63:205:: with SMTP id 5mr3768382pgc.77.1569510199728;
-        Thu, 26 Sep 2019 08:03:19 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqwGYVioB4IbG1XfNiYKe+o084bQp5nriB3OlDVYJz5tA7ZRgTZbV6cYI1c8SsKqVdfHhAab3g==
-X-Received: by 2002:a63:205:: with SMTP id 5mr3768358pgc.77.1569510199466;
-        Thu, 26 Sep 2019 08:03:19 -0700 (PDT)
-Received: from canonical.lan (c-24-20-45-88.hsd1.or.comcast.net. [24.20.45.88])
-        by smtp.gmail.com with ESMTPSA id 4sm2174992pja.29.2019.09.26.08.03.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Sep 2019 08:03:18 -0700 (PDT)
-From:   Connor Kuehl <connor.kuehl@canonical.com>
-To:     Larry.Finger@lwfinger.net, gregkh@linuxfoundation.org,
-        straube.linux@gmail.com, devel@driverdev.osuosl.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] staging: rtl8188eu: fix possible null dereference
-Date:   Thu, 26 Sep 2019 08:03:17 -0700
-Message-Id: <20190926150317.5894-1-connor.kuehl@canonical.com>
-X-Mailer: git-send-email 2.17.1
+        Thu, 26 Sep 2019 11:24:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+        List-Archive; bh=E727gRyNX9kxA81FhcRZtHXMEwd8teBeba4q7vIju5Y=; b=NSe5s2xVJDCv
+        UTEy2da6R96Nh0QdEnUkmXAPBlkkKkyEUTDmJQxpjKLXxbbiBe9AFovgnKJC+2PG+62ZWNJRlAaZs
+        vPqp5CRt25N/+NrqJX6MaC3fbAREH4x/cDZJwxMrvvgHIeg3dUnL7UuYEZkYg3iZKo6GqTx0/PKST
+        fZna0=;
+Received: from [12.157.10.118] (helo=fitzroy.sirena.org.uk)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1iDVcp-0003vC-Ni; Thu, 26 Sep 2019 15:24:11 +0000
+Received: by fitzroy.sirena.org.uk (Postfix, from userid 1000)
+        id 14838D02CFF; Thu, 26 Sep 2019 16:24:10 +0100 (BST)
+From:   Mark Brown <broonie@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     alsa-devel@alsa-project.org, Jaroslav Kysela <perex@perex.cz>,
+        kernel-janitors@vger.kernel.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Takashi Iwai <tiwai@suse.com>
+Subject: Applied "ASoC: topology: Fix a signedness bug in soc_tplg_dapm_widget_create()" to the asoc tree
+In-Reply-To: <20190925110624.GR3264@mwanda>
+X-Patchwork-Hint: ignore
+Message-Id: <20190926152410.14838D02CFF@fitzroy.sirena.org.uk>
+Date:   Thu, 26 Sep 2019 16:24:10 +0100 (BST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Inside a nested 'else' block at the beginning of this function is a
-call that assigns 'psta' to the return value of 'rtw_get_stainfo()'.
-If 'rtw_get_stainfo()' returns NULL and the flow of control reaches
-the 'else if' where 'psta' is dereferenced, then we will dereference
-a NULL pointer.
+The patch
 
-Fix this by checking if 'psta' is not NULL before reading its
-'psta->qos_option' data member.
+   ASoC: topology: Fix a signedness bug in soc_tplg_dapm_widget_create()
 
-Addresses-Coverity: ("Dereference null return value")
+has been applied to the asoc tree at
 
-Signed-off-by: Connor Kuehl <connor.kuehl@canonical.com>
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.4
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From 752c938a5c14b8cbf0ed3ffbfa637fb166255c3f Mon Sep 17 00:00:00 2001
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Date: Wed, 25 Sep 2019 14:06:24 +0300
+Subject: [PATCH] ASoC: topology: Fix a signedness bug in
+ soc_tplg_dapm_widget_create()
+
+The "template.id" variable is an enum and in this context GCC will
+treat it as an unsigned int so it can never be less than zero.
+
+Fixes: 8a9782346dcc ("ASoC: topology: Add topology core")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Link: https://lore.kernel.org/r/20190925110624.GR3264@mwanda
+Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
-v1 -> v2:
-  - Add the same null check to line 779
+ sound/soc/soc-topology.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/staging/rtl8188eu/core/rtw_xmit.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/staging/rtl8188eu/core/rtw_xmit.c b/drivers/staging/rtl8188eu/core/rtw_xmit.c
-index 952f2ab51347..c37591657bac 100644
---- a/drivers/staging/rtl8188eu/core/rtw_xmit.c
-+++ b/drivers/staging/rtl8188eu/core/rtw_xmit.c
-@@ -776,7 +776,7 @@ s32 rtw_make_wlanhdr(struct adapter *padapter, u8 *hdr, struct pkt_attrib *pattr
- 			memcpy(pwlanhdr->addr2, get_bssid(pmlmepriv), ETH_ALEN);
- 			memcpy(pwlanhdr->addr3, pattrib->src, ETH_ALEN);
+diff --git a/sound/soc/soc-topology.c b/sound/soc/soc-topology.c
+index b8690715abb5..c25939c5611b 100644
+--- a/sound/soc/soc-topology.c
++++ b/sound/soc/soc-topology.c
+@@ -1588,7 +1588,7 @@ static int soc_tplg_dapm_widget_create(struct soc_tplg *tplg,
  
--			if (psta->qos_option)
-+			if (psta && psta->qos_option)
- 				qos_option = true;
- 		} else if (check_fwstate(pmlmepriv, WIFI_ADHOC_STATE) ||
- 			   check_fwstate(pmlmepriv, WIFI_ADHOC_MASTER_STATE)) {
-@@ -784,7 +784,7 @@ s32 rtw_make_wlanhdr(struct adapter *padapter, u8 *hdr, struct pkt_attrib *pattr
- 			memcpy(pwlanhdr->addr2, pattrib->src, ETH_ALEN);
- 			memcpy(pwlanhdr->addr3, get_bssid(pmlmepriv), ETH_ALEN);
+ 	/* map user to kernel widget ID */
+ 	template.id = get_widget_id(le32_to_cpu(w->id));
+-	if (template.id < 0)
++	if ((int)template.id < 0)
+ 		return template.id;
  
--			if (psta->qos_option)
-+			if (psta && psta->qos_option)
- 				qos_option = true;
- 		} else {
- 			RT_TRACE(_module_rtl871x_xmit_c_, _drv_err_, ("fw_state:%x is not allowed to xmit frame\n", get_fwstate(pmlmepriv)));
+ 	/* strings are allocated here, but used and freed by the widget */
 -- 
-2.17.1
+2.20.1
 

@@ -2,53 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C834C0108
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 10:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF91DC017B
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 10:50:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726473AbfI0IWL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Sep 2019 04:22:11 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:57204 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726136AbfI0IWK (ORCPT
+        id S1726027AbfI0Iue (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Sep 2019 04:50:34 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:60111 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725890AbfI0Iue (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Sep 2019 04:22:10 -0400
-Received: from localhost (unknown [65.39.69.237])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 8244314DEA15A;
-        Fri, 27 Sep 2019 01:22:08 -0700 (PDT)
-Date:   Fri, 27 Sep 2019 10:22:06 +0200 (CEST)
-Message-Id: <20190927.102206.1720435175604577653.davem@davemloft.net>
-To:     dan.carpenter@oracle.com
-Cc:     peppe.cavallaro@st.com, mathieu@codeaurora.org,
-        alexandre.torgue@st.com, joabreu@synopsys.com,
-        mcoquelin.stm32@gmail.com, netdev@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] net: ethernet: stmmac: Fix signedness bug in
- ipq806x_gmac_of_parse()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190925110554.GQ3264@mwanda>
-References: <20190925110554.GQ3264@mwanda>
-X-Mailer: Mew version 6.8 on Emacs 26.2
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 27 Sep 2019 01:22:10 -0700 (PDT)
+        Fri, 27 Sep 2019 04:50:34 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iDlxP-0004Dx-T9; Fri, 27 Sep 2019 08:50:31 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] USB: gadget: udc: clean up an indentation issue
+Date:   Fri, 27 Sep 2019 09:50:31 +0100
+Message-Id: <20190927085031.14739-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Wed, 25 Sep 2019 14:05:54 +0300
+From: Colin Ian King <colin.king@canonical.com>
 
-> The "gmac->phy_mode" variable is an enum and in this context GCC will
-> treat it as an unsigned int so the error handling will never be
-> triggered.
-> 
-> Fixes: b1c17215d718 ("stmmac: add ipq806x glue layer")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+There is a statement that is indented too deeply, remove
+the extraneous tabs.
 
-Applied.
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/usb/gadget/udc/bdc/bdc_udc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/usb/gadget/udc/bdc/bdc_udc.c b/drivers/usb/gadget/udc/bdc/bdc_udc.c
+index 7bfd58c846f7..248426a3e88a 100644
+--- a/drivers/usb/gadget/udc/bdc/bdc_udc.c
++++ b/drivers/usb/gadget/udc/bdc/bdc_udc.c
+@@ -195,7 +195,7 @@ static void handle_link_state_change(struct bdc *bdc, u32 uspc)
+ 		break;
+ 	case BDC_LINK_STATE_U0:
+ 		if (bdc->devstatus & REMOTE_WAKEUP_ISSUED) {
+-					bdc->devstatus &= ~REMOTE_WAKEUP_ISSUED;
++			bdc->devstatus &= ~REMOTE_WAKEUP_ISSUED;
+ 			if (bdc->gadget.speed == USB_SPEED_SUPER) {
+ 				bdc_function_wake_fh(bdc, 0);
+ 				bdc->devstatus |= FUNC_WAKE_ISSUED;
+-- 
+2.20.1
+

@@ -2,30 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F6DBC0222
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 11:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF09EC0232
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 11:24:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726483AbfI0JUD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Sep 2019 05:20:03 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:33344 "EHLO
+        id S1726163AbfI0JYF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Sep 2019 05:24:05 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:33553 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726178AbfI0JUD (ORCPT
+        with ESMTP id S1725890AbfI0JYF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Sep 2019 05:20:03 -0400
+        Fri, 27 Sep 2019 05:24:05 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iDmPx-0006fE-0U; Fri, 27 Sep 2019 09:20:01 +0000
+        id 1iDmTp-0006yv-73; Fri, 27 Sep 2019 09:24:01 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Valentina Manea <valentina.manea.m@gmail.com>,
-        Shuah Khan <shuah@kernel.org>,
+To:     Forest Bond <forest@alittletooquiet.net>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org
+        Quentin Deslandes <quentin.deslandes@itdev.co.uk>,
+        devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] usbip: clean up an indentation issue
-Date:   Fri, 27 Sep 2019 10:20:00 +0100
-Message-Id: <20190927092000.19373-1-colin.king@canonical.com>
+Subject: [PATCH] staging: vt6656: clean up an indentation issue
+Date:   Fri, 27 Sep 2019 10:24:00 +0100
+Message-Id: <20190927092400.20213-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,25 +37,32 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a return statement that is indented incorrectly, fix this.
+There is a block of code that is indented incorrectly, add in the
+missing tabs.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/usb/usbip/stub_tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/vt6656/main_usb.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/usbip/stub_tx.c b/drivers/usb/usbip/stub_tx.c
-index 36010a82b359..b1c2f6781cb3 100644
---- a/drivers/usb/usbip/stub_tx.c
-+++ b/drivers/usb/usbip/stub_tx.c
-@@ -291,7 +291,7 @@ static int stub_send_ret_submit(struct stub_device *sdev)
- 				kfree(iov);
- 				usbip_event_add(&sdev->ud,
- 						SDEV_EVENT_ERROR_TCP);
--			   return -1;
-+				return -1;
- 			}
+diff --git a/drivers/staging/vt6656/main_usb.c b/drivers/staging/vt6656/main_usb.c
+index 856ba97aec4f..3478a10f8025 100644
+--- a/drivers/staging/vt6656/main_usb.c
++++ b/drivers/staging/vt6656/main_usb.c
+@@ -249,10 +249,10 @@ static int vnt_init_registers(struct vnt_private *priv)
+ 		} else {
+ 			priv->tx_antenna_mode = ANT_B;
+ 
+-		if (priv->tx_rx_ant_inv)
+-			priv->rx_antenna_mode = ANT_A;
+-		else
+-			priv->rx_antenna_mode = ANT_B;
++			if (priv->tx_rx_ant_inv)
++				priv->rx_antenna_mode = ANT_A;
++			else
++				priv->rx_antenna_mode = ANT_B;
  		}
+ 	}
  
 -- 
 2.20.1

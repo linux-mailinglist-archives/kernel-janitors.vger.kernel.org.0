@@ -2,52 +2,49 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5917AC0099
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 10:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2341C009C
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 10:04:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726523AbfI0IEL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Sep 2019 04:04:11 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:57008 "EHLO
+        id S1726767AbfI0IEP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Sep 2019 04:04:15 -0400
+Received: from shards.monkeyblade.net ([23.128.96.9]:57022 "EHLO
         shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725804AbfI0IEL (ORCPT
+        with ESMTP id S1725804AbfI0IEP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Sep 2019 04:04:11 -0400
+        Fri, 27 Sep 2019 04:04:15 -0400
 Received: from localhost (unknown [65.39.69.237])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id C377014DD99F2;
-        Fri, 27 Sep 2019 01:04:07 -0700 (PDT)
-Date:   Fri, 27 Sep 2019 10:04:05 +0200 (CEST)
-Message-Id: <20190927.100405.1303962323198385596.davem@davemloft.net>
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 0200E14DD9E5A;
+        Fri, 27 Sep 2019 01:04:13 -0700 (PDT)
+Date:   Fri, 27 Sep 2019 10:04:12 +0200 (CEST)
+Message-Id: <20190927.100412.283048791655860337.davem@davemloft.net>
 To:     dan.carpenter@oracle.com
-Cc:     jaswinder.singh@linaro.org, ilias.apalodimas@linaro.org,
-        ast@kernel.org, daniel@iogearbox.net, jakub.kicinski@netronome.com,
-        hawk@kernel.org, john.fastabend@gmail.com, kafai@fb.com,
-        songliubraving@fb.com, yhs@fb.com, netdev@vger.kernel.org,
-        bpf@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] net: netsec: Fix signedness bug in netsec_probe()
+Cc:     claudiu.manoil@nxp.com, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net] enetc: Fix a signedness bug in enetc_of_get_phy()
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190925105638.GE3264@mwanda>
-References: <20190925105638.GE3264@mwanda>
+In-Reply-To: <20190925105714.GF3264@mwanda>
+References: <20190925105714.GF3264@mwanda>
 X-Mailer: Mew version 6.8 on Emacs 26.2
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 27 Sep 2019 01:04:10 -0700 (PDT)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 27 Sep 2019 01:04:14 -0700 (PDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Wed, 25 Sep 2019 13:56:38 +0300
+Date: Wed, 25 Sep 2019 13:57:14 +0300
 
-> The "priv->phy_interface" variable is an enum and in this context GCC
-> will treat it as an unsigned int so the error handling is never
-> triggered.
+> The "priv->if_mode" is type phy_interface_t which is an enum.  In this
+> context GCC will treat the enum as an unsigned int so this error
+> handling is never triggered.
 > 
-> Fixes: 533dd11a12f6 ("net: socionext: Add Synquacer NetSec driver")
+> Fixes: d4fd0404c1c9 ("enetc: Introduce basic PF and VF ENETC ethernet drivers")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
 Applied.

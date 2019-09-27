@@ -2,49 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC242C0BD3
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 20:58:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8B8AC0D27
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 23:18:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727046AbfI0S6v (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Sep 2019 14:58:51 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:35596 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726294AbfI0S6v (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Sep 2019 14:58:51 -0400
-Received: from localhost (231-157-167-83.reverse.alphalink.fr [83.167.157.231])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 212D1153F437B;
-        Fri, 27 Sep 2019 11:58:49 -0700 (PDT)
-Date:   Fri, 27 Sep 2019 20:58:48 +0200 (CEST)
-Message-Id: <20190927.205848.1064731628947090039.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: tap: clean up an indentation issue
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190927094039.23370-1-colin.king@canonical.com>
-References: <20190927094039.23370-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.2
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 27 Sep 2019 11:58:50 -0700 (PDT)
+        id S1727837AbfI0VSD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Sep 2019 17:18:03 -0400
+Received: from verein.lst.de ([213.95.11.211]:47724 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725306AbfI0VSD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 27 Sep 2019 17:18:03 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 706A168B05; Fri, 27 Sep 2019 23:17:59 +0200 (CEST)
+Date:   Fri, 27 Sep 2019 23:17:59 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Keith Busch <kbusch@kernel.org>, Christoph Hellwig <hch@lst.de>,
+        Jens Axboe <axboe@fb.com>, Sagi Grimberg <sagi@grimberg.me>,
+        linux-nvme@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] nvme: fix an error code in nvme_init_subsystem()
+Message-ID: <20190927211758.GB16819@lst.de>
+References: <20190923141836.GA31251@mwanda>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190923141836.GA31251@mwanda>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Fri, 27 Sep 2019 10:40:39 +0100
+Looks good,
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a statement that is indented too deeply, remove
-> the extraneous tab.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Applied.
+Reviewed-by: Christoph Hellwig <hch@lst.de>

@@ -2,35 +2,40 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3238FC0848
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 17:05:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1DB7C0881
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 17:25:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727319AbfI0PFI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Sep 2019 11:05:08 -0400
-Received: from mout.web.de ([212.227.15.4]:45979 "EHLO mout.web.de"
+        id S1727585AbfI0PZj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Sep 2019 11:25:39 -0400
+Received: from mout.web.de ([212.227.15.3]:39841 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727120AbfI0PFI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Sep 2019 11:05:08 -0400
+        id S1727076AbfI0PZi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 27 Sep 2019 11:25:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569596687;
-        bh=7OQDDfbSFacyo7PngsnLCG3ZXjNdxSRA7tH3Dzz4XK0=;
+        s=dbaedf251592; t=1569597901;
+        bh=fsPHriY23wbnZVDJpnwWGxaKR2DwyQgmEUkE1GQ7D/M=;
         h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=UWVArCmDua/OYVrTPe/0/vlE5UXAMn/xDkBDfuL7IUyRg9s8U1XIESr4YC8k3kzlP
-         UImA7chO16c1ks/3knpDLl7W1fg/7Qb7Ee8pS6Rkznf2h7K36Kt8K6CubrYHGo9OVb
-         ChWrk0AaKp/eeHcpZtdR+WoAUuKehEekq13WcLcA=
+        b=ZlwG63J8Qi/ew0ULlmrQigkvS2N2DzVlOv7ZhE1cJmtUuzwIfgZ2HgLscBPvQLOg1
+         kAMr1dkQqlNB3nRLW4zAR9SnsBI9t/I6QIlhamn+K7k47L+aIQFFDcbSTTJXuflDZ5
+         yaHHG+N0AKOmWhXeBUTRNJwpJoPjyvZFi+rR4f44=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.133.191.8]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Ls9F9-1i1fdo2uH1-013uC5; Fri, 27
- Sep 2019 17:04:47 +0200
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LnBPR-1hgCK81DUj-00hLTo; Fri, 27
+ Sep 2019 17:25:01 +0200
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen A McCamant <smccaman@umn.edu>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jeffrey Kirsher <jeffrey.t.kirsher@intel.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Richard Weinberger <richard@nod.at>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Marek Vasut <marek.vasut@gmail.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Brian Norris <computersforpeace@gmail.com>,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20190925154831.19044-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] i40e: prevent memory leak in i40e_setup_macvlans
+References: <20190925154302.17708-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] mtd: onenand: prevent memory leak in onenand_scan
 To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
+        linux-mtd@lists.infradead.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,60 +80,51 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <8d7d8cf4-c016-d22c-c2cc-dc71ea407cb4@web.de>
-Date:   Fri, 27 Sep 2019 17:04:45 +0200
+Message-ID: <0b12fc29-d93c-ef02-cc5c-85057bfe6197@web.de>
+Date:   Fri, 27 Sep 2019 17:24:57 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <20190925154831.19044-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20190925154302.17708-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:kMweqxyk1Sd+3Q3V4q/NBQ39VnZP6siyyu6Jc1f0n+g2dKaq9NZ
- g8oYD/c9IDPiCaxNfQ4LLlyFNdI54HN1qwzplSuMv/B6xacuUijdaSsYg+Xy8YUzndrlT5y
- qEKuXnSGzSeer07BoYybT7Yxhl3BzCmEYkp4xC4elmauHI8NsgtYVJm7ivP9Esz9aIp7NcW
- ljlat6B1TLlZoDH/5kobQ==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:MK2cn2pKle2egEcpGaDu/9UIU54vWqUAoddMMlGjXMAsW1KFeuB
+ B1z6bl8TJXZ/qLo+yX6qsBY2Hwz8UYjyC5YBrFwTq3Aar/YEtllu8vPY/UitGb8WVV50IHk
+ DTp2jKr8Zq3alNBmLEAP66yqws0LxeGr3IrALppbwYu6EV3PWDBEzwwk9HHM/4ovL1zKC4d
+ hdNY5bTlO/xsfStWLtREQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:BCQ/OYQARfA=:9UOg6doqeiWZVuGRqkohDL
- u1SitWRTl7sRVaAGbce6qAlmugJDq2SwIc/tKYQa6HK/UDHAr5p8K12gJz/4LLxTyBZ68IkmP
- IyUyDBZaBhCBKMVW/4mL1A0CWqRMGThwpaFK5NQh+C8oU+c1brlbzRwOMjEEUQXW+MRbNNB5t
- gCej+eetnA/zxnxc/3sKev2o9h0cs3xfeHFd0dgN8heh2TT1ai8zWOhGt5nSEY9qIBY6l4tl0
- pvplNhfTbo2n8ohxrgYGW8mkeMzoGMBtrzkTAom9MEo9Wqt/CgLA1YUgcXX5k2TSyxnTym8px
- KyiaTsD7Hzta7rUAc7MIsYOqtLm3dQfP+qHqO2Jrj9QqdImkMBzf945wXfYqtk2ZfWH99vj9p
- g1i+jO2SDXPTleWJx4owQUnaSp3xrDdN+z3AxkfOaUH+2twxqLiowxzNcfIuJiYkovgSA1pon
- +dpHng2pdBKwQt3UhqV+TzctKh+6kuernVO+mdwGh2bb9gjPJKLjKA4RKDidEgtLe6kyo5i9e
- 5gJ199NFPBqapS8xZX03SK+npP5QOTMymCuJcNkmLRDm2FXrGAaXmZduDQqVyXQ0ER62qlshu
- ANN2wzSGezblcyToAv/Ut+oIL4w998RvPiwZp/20W06WHiPJpI6uXQzPc87qzhjwTCBKkfJ/U
- UbJQcWxQpErDNJwMKoDN82jdJG2qEGN5c8eNl7exxNHVaPDA+wtUefAMbIdtIQ4CV4ZdJ4e9E
- 1vf1/sbpFJXDjP7pymzAT/5NEpMJbhevnsOex4FX+6ul/aZVmGrNm2ekRcbT/UH/roKNYk3/x
- 9cr1Q3LFcx6s226bn6Dhf/OJhEH64oZF/gVZjH90E1ZXrMSZxyeI0gxtoEX/k/zff9GT51+7I
- 7HXKg0HsQ/IZTc3mQ9vXJhd1fJywaoro73NrFK+WLl+m/fWZSd8sm0JDaRAB7KzjBm/HQ2OfV
- YTAGAGSy1k+mw25Gie8yseaUyxRbRAARR9f8S0cf59HP/cCGJI23jEvo6FP7fWs22yVOTtwCt
- 2fnNZffh4L3IZ/5GhwW74vYm6fh0+isBjWbFNH17JmOTnteHDXBO/2u1XL6coZKgxRF1lig88
- kd/JBaGVlR5bPHIbl3TpuECEViAFYeErbg4VDXW4+8DM5ywzsW/1YG0bGc8800BjTA4h9BfZo
- 782biWfpE3VF85DMDPJHCixYuJaUGvIxI49EMW3tJ57pTYwnZq+eZecahYe8GsEJmxhkvZhIa
- 2N27+HgGT8r0gviOY7dgcqvOlH9lit7AQ7YoM7XGCrK4lH7cQk5FoFrr7P00=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:rzhIW7LOGXg=:RKl6F7am3YBt7DMPsMXmKC
+ eVbvu+YHjOS3KrLjbn7fqmNxN86ttqC7sRxQ89DatSNloDGmrWEEl7o9qh16293248nm1q06C
+ cvRhCZvSv+40TSjoTuEAxCXxySRqEgGJpfhZuucecJ0uu31L7hcKL96NfLOootW3BVdZ63MXB
+ RtuP62MU7DPWkWhfUWDv4aT7w2Ga1+W2P57FEx0Ryp8jJfMNLf3aQMZypqOovJ1I7Clz6/mDx
+ 9s0IBbGIsUGKcCiI9L4e9es9F2TEXO/JbR+k1SzHwjAFw/tmVIlH09jc1bMHD/t6PAzR/SuwW
+ rPkr5dKDWdJsbO7cYtJiJngFDMerc4GIIVcWZs5P+BZjaGS1d2SwrVhPA+HfEYqAT2c/sKZTX
+ UMSp+Zzw2Gv2sM9fhRpLiN+66oaQgTl4NStO2ynS0Kd9R5XkhBgp9YpopcyMfHM+b1NR8G3nX
+ vU4PNzCfkIiuq/nsRE1SICTUMvBpEgjae/Spnl28QeF7wNV0z9lg32YIZ56Wz8ORntXe2DJzf
+ LTVsw2NwEU1pa9Kf4G5ofym7U0BZS6KlFJsyhHZO94vtJkIipTDCoAXJqsENVa/4aUwKkkWQg
+ GrMWP9J99hvmuqQ3SUYsG+aNhuIGXKogXcEJDUVIFjz80NM/YtqPg3RfblU3ZY+zvkMCjuOdH
+ 3s9NMM50vjhOlkg5mAAsS+UhViRHM1ET/D9Um21b5apWkVXzx/JnP9zRKU0OSJVxFdqwTtLM2
+ 7snkmSLuTDbO9lymizM60OHHrq0x4homT6b3A5opf4sTtM4/3fTKueZqkYWMz5pSBV53MYOwY
+ RAk2xhvTXnQzA7wxLC2YhKF0eFivzqqN+BeoSe9o+5Gp9QjkKEXildQmgz0lj9+jpk7aBdV0z
+ gPBFndabj620CGAOJxwwxs6wlUDBX4JNT6KAXQkcynYVlQT48HK7V2LN0aU34wMIMUxgrElNm
+ rp5kTO3V/YINuXDVtjdwJyGDiZB7ObiBSS11lrq2dH04S/qxO8NVOMxQPP1bGC4PvnMryL8BM
+ 6owXvmuQ1QXJtZ2GtL89dm5108gPpK8rvLf0PG/J8UfPOavgV/Q5VUyrtz9DxLJcxbysnpV1V
+ 1pa0JtGkyK9wVS5Cfon7LW/cv/ShSUdq5Vq53ctsfsHALzHgzEBeMD7YuSR30fzmeX4s1izv/
+ NOjvQI/Iqbz7Pjud37heHwS3V9tF68VluyIk0eCsxml5ceV0WQ9Nots1iCF4qMDnduBKbIMzp
+ 0cCFNam8PYJxE7K52xQwhKCrRj89QCWk9WHdAeMcFYcOmjlzclEQXA+CyFAo=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> In i40e_setup_macvlans if i40e_setup_channel fails the allocated memory
-> for ch should be released.
+> In onenand_scan if scan_bbt fails the allocated buffers should be releas=
+ed.
 
-I suggest to improve also this change description.
+Will an other change description be more appropriate?
 
 
-> +++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-> @@ -7168,6 +7168,7 @@ static int i40e_setup_macvlans(struct i40e_vsi *vsi, u16 macvlan_cnt, u16 qcnt,
->  		ch->num_queue_pairs = qcnt;
->  		if (!i40e_setup_channel(pf, vsi, ch)) {
->  			ret = -EINVAL;
-> +			kfree(ch);
->  			goto err_free;
->  		}
->  		ch->parent_vsi = vsi;
-
-Can it matter to perform the added function call before the error code assignment?
+How do you think about to add the tag =E2=80=9CFixes=E2=80=9D here?
 
 Regards,
 Markus

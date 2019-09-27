@@ -2,35 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2EDAC0626
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 15:17:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFED2C0685
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 15:42:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727427AbfI0NPX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Sep 2019 09:15:23 -0400
-Received: from mout.web.de ([212.227.15.4]:38389 "EHLO mout.web.de"
+        id S1727213AbfI0Nko (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Sep 2019 09:40:44 -0400
+Received: from mout.web.de ([212.227.15.4]:35825 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727376AbfI0NPW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Sep 2019 09:15:22 -0400
+        id S1726540AbfI0Nko (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 27 Sep 2019 09:40:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569590108;
-        bh=77LlS4dssunQjdsq0f1LknYiQqkHDEPQzLkskhHSDyg=;
-        h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
-        b=KCGDieftIA0oVt/RDKgSoTMzao3B7rAHThu3zW87ao36zLEMezBdrmNLTj2XofU+/
-         0v2JOWqfzckPOqw/nkUxFhbhU4aJoa708rKO+Yhm6aEyqLimhSXhAW0SPr0oymcwuz
-         KJULyD8AR/35F2m+9Gyd1tSBOskmPSVsmWLSY/OA=
+        s=dbaedf251592; t=1569591622;
+        bh=3bKu3XKjBorE1hHURqVppVHhwNs947LzWK/VrwyKmcw=;
+        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+        b=IEzEKaX9VKoVEVlsYmUH14f62Gr22AV07ohdh5LSb4zyo8KPuVXz782qDXVtiw/IY
+         y+6r/88BUjAChtTw/X95M6j6qtBM4SMRpanL2ff1hQ2TI8ZKX7ueemK2LYhU26fBZF
+         1WDDA125DBc7tWvR9b55GogqNw/F24gEzjWP09v4=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.191.8]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LnSKE-1hfL8s1m3i-00hbxm; Fri, 27
- Sep 2019 15:15:08 +0200
-To:     Paul Moore <paul@paul-moore.com>,
-        Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-security-module@vger.kernel.org, netdev@vger.kernel.org
+Received: from [192.168.1.2] ([93.133.191.8]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lu5BO-1i3dxr3p94-011QOZ; Fri, 27
+ Sep 2019 15:40:22 +0200
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Stephen A McCamant <smccaman@umn.edu>,
-        "David S. Miller" <davem@davemloft.net>
-References: <CAHC9VhR+4pZObDz7kG+rxnox2ph4z_wpZdyOL=WmdnRvdQNH9A@mail.gmail.com>
-Subject: Re: genetlink: prevent memory leak in netlbl_unlabel_defconf
+        Al Viro <viro@zeniv.linux.org.uk>,
+        "David S. Miller" <davem@davemloft.net>,
+        Samuel Mendoza-Jonas <sam@mendozajonas.com>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20190927031501.GF22969@cs-dulles.cs.umn.edu>
+Subject: Re: net/ncsi: prevent memory leak in ncsi_rsp_handler_gc
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>, netdev@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,51 +75,61 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <c490685a-c7d6-5c95-5bf4-ed71f3c60cb6@web.de>
-Date:   Fri, 27 Sep 2019 15:15:06 +0200
+Message-ID: <2bee11b1-b6f9-8d5f-1e94-5ce9d2381d9a@web.de>
+Date:   Fri, 27 Sep 2019 15:40:17 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <CAHC9VhR+4pZObDz7kG+rxnox2ph4z_wpZdyOL=WmdnRvdQNH9A@mail.gmail.com>
+In-Reply-To: <20190927031501.GF22969@cs-dulles.cs.umn.edu>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:rjJKQfBm9V5MbGJysp5lHeJ/MAt7se96rJzW4qvj/ZsuJblz24o
- LZDmhOPv4CQDyOOo/4gyDYqNm4Z1NFIqRpW2I6SqE9YlqX0mXzCtYPciMJF1SAfXGON3fRX
- i943t9/SUZTW+tPhyqtZ9HMT3ipRkcsa/yEl8Mq6Jnk3G1IzZlbEv5GazNUGqWGe89rgcFm
- NGLvvHGH4Y0207mWz8MkQ==
+X-Provags-ID: V03:K1:y8wqielA7V+z/RhutSA5HTWx5Mhq4kD+x1oZNbLYL+/wJOMvUeF
+ hsV4xRw55V0JS+2bEQxTInv6kyXFlv374xLnEjxjLzDTD7uM4OMyZ+jrZd+pUFGlqT7A5iz
+ FUC37yQihaTTdt/d7xQCXKxOUJquB5IbzRo8iD26iu5EcPN7frqc/MJsyahPEWsjzQwrwZl
+ VOgDv+J0V72dhphxjzR5w==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:o+CJJ5F4WQ4=:I0dAVsJcWpFwoSvsImSEj3
- gLBfrADCxSttv7bU8vzswnSFRtcFOgTJkY5A87mn7g/2aPXvO0KFMVsl+ewRlSbQSRLp10sC9
- av0cIh6POV04/slLQ1BpRHG1wJIq2epj7jsDt59nIJsrGS66QRIqQzaZC1DtcaaFi8qUWQ2TW
- 2PrImgFVfqp9osEqzJImnMgxC7ceA2hM1vHh8pM5pAmpeJrYaKH0UjBRpn6XXgajlEOATWXLd
- BuXpqxPlb/ziaLtt7Pu0Qs2c9wXCQO7ZOx/xl87azI+Ff5F8jMtYkvyhUosZ3T6uBXBGACntV
- APyp69YKwInn5QsH4p1+voPwZf8+SD4jkGeG6v5OztMqVLWcY2sUKpR/5lzIbrwEy/m1XifjA
- cd1hUix0+JG3ZftEe+sZLS55Bi0wAI4M1YwR7cNOkBXjlZ2C8OinSM8jXW+wqcHavMc81bky9
- AQ/WEANaFRpiYugcoEFVbXIKsXoNA9xdh1I34nKJzYBy7kP/TyTA8oAX9A1q2SCqOWUtzW6VB
- ZoOTCuVBdPZ6fM2Ub2WiZ23WJogqID8ghL6Wnjr4F7FNlKdRLCHOb9GBxoCG+omlTNwUc3Uza
- UJy05A5CG7XODDMpofPooNVe1Q6+V1cWdzgNj5+PFmku4+9DLbjG8zGd11xL6PpE8AZs7rS9c
- eu2xJZXVzJjTVWVqF5LvPIlZxnvMBVnHjbyi+S1neNFOQtDnyeNT/ogwZZZWYU7C1odHDne33
- zLQlBOQnBoExJ+2kZZZdNhe9IWxAFb7mL3OuDdSs8g7e+uvmmw3Lj/7af262UJrnpYUya4hEG
- MlIFiz3GcSxdTrFDLLHLIHQP0qC1UG42Y1XM8V+w/0NAzWdZ46vPSw8rdPz97B2sZs/5mgjc/
- lOsatG2KntyZZJtI73bsY5rpFrT3JxggxgZB7JICYUJnWGj6lUu9piRGCTZAILFv0dfCK4LEz
- pC+yh6xpmb2UcJnzBeSynHCiYD7V2H3uWar9YCfTQi1yXJF/zywwwXURoJiqm1JSK5FrxLOLx
- ALTy/FUmoqCBCVsIV/iJNt1yQExOaHInsWl8Br5U7wqoroxV1YLDfoxNQiMyPAAS+P3i8gqP5
- 0rjiarFfYQAD7Q6AouXQZH22FWxQQgjiOSAky4KetyWPfA/zqlQevNUrUzMAYRzqn5pOrFi70
- BO17g+PatdZ6+qW1typuu43jz4tGF2ljuRXSsJ/HeGv9p/zZXlQFyujzuQqrQxsREVamGbgLO
- 1+vPCHgu5582fkk/5wNZbGhhsLP2rOD8xeFHmbXLlGa/xjDNRkdtFSsjvQG8=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:jmAEJVSXSkU=:K6OZyOKH2sH2FJUvqQpYFW
+ dRH+UBAfRf8lRF2na7F8b31cnE7FGwNhZYnsK357WNxksKgwSBQ3uA2daqz0BEa0CxP46qaHU
+ t9888GTtyY0VE1l8eYUQD0xQtjbSFi+DTUGSSofUXyU+FOHayNydrhSebr2nuPFRnlV1fu41Q
+ a/bpaYF4VrQguW6/kIQP5F5twe4WI90tVe8zfq1JaJNe1QTuH/J5tcR/wll2+LGOxFGoHLYn0
+ MFmnLRcaylQjZprJbf8kWAFRNr46gFUtGFKjxN7IwyK6JjRC7xkXpjX9mznrcMQsL2r4aVYgR
+ ITIQSf3a9OjnoagEYUN+2a5biRY92tYazinWZNSQ550V9g0cjryWrpLIfgrkCRkBFASoiHYKR
+ dGMTnz63DYS8lN+jqRIHzTXgniTkJG6VNkaPaahr8SD2XDa708AI6vE88gDAUOBv1VcNKg3kS
+ aTsqXwsoVtS8afd+8OtUx6d4MAeSPJZIrejScn9psVzxX3h1FGI8eloSRPHi5g8dTcAz/ZUDu
+ UcKdvmwjR3LVb/65jYv64OUOYLj47zqK6zasYKXeZBOAiLeNN3LopApyvrAHd90J9NkdoaecI
+ 1Pa+Xd4YnIhpeF4Msyb2gbL7v5WEiapaKacewxdoMj9BFMMML28/lOgIRUEiKFB5qX4rk6seJ
+ d814+EXrpHUevB2Q6+MODPXIxv4VVMbOrPkq5YjFXb09TAAPJWfOGGNHjgCCTQLIB+i387iF3
+ rUP2Bdm2Xj7j5tQCy9twnqwy5AkUlmGUW+jBH1nhUlvsQzOA0lx9fSBLhFKhWBkG2J5q2JcW+
+ 6UKyRwOccUYCD7YQ3MTJQPZIDqrGJ1+ULzia1zYPoM2q9PjnE8vLOjOr6lvItjpVPrIv42eWR
+ pc68PvX4ZoywRtknyXn91Um/Bnvyj1kO6uxZ05vd+n+zvR0cqs3zMQzLYYpFEbxpFBQYOJYvB
+ kjN8+F+zWbCp4BgeFo2C65itWtLg6d6zeTD8/dORO6tUGmj31eeMAPc6p/ypqbLQ60mnBxzE5
+ FwAipkJuh7KOEIOWLz3d1td1bAuGJh4wnN8UC8e1kGZ+S5MqwfPoOY5YFfrQMg+WT8rJSjX7K
+ neS43yApTP3/O+yT7R4uCE7g4yyQcY1Q9IWiGe1B/aGAOjbF0UYANwzJ6xYggQ8rVYvwRfrXU
+ ycavDNdXBlgRtvH7S3uFobat2lznB+nTzXHw/Xm986rQ1X3ew1ARIIHZV9hrOtCB6UAPO/+Ml
+ bRCLlLrc7vZZ8X0z+iKJ+OO9d5XGgJq/FA1jduMgalP0EcfT1fPTfd0FDpGhvfnm4WN63asFW
+ vvdaoj1FctQeYJyp7iGFjHBgY8wPmaYMdiiA+yrzD5Q7ra1yDhyo6GXxhxFbE4ca4yKHI0PDZ
+ H8RA9MUlQkv/h18zFbTRG7IFxgOJOA5sGzqdSCR60HZa7ZU0A/C6aZxAdRo0JMGZAeYTPRcyL
+ +SE5zUO9kHvh4MsBdXu8PtGavRK/sL6qsSEylKDBYKKg99kcIG5+yeESd2gKkcYRLvUkZEsGt
+ bp7ohMw6KABm54i9sNjB5NYfanpyvedDVsQF7Zu4oKK+T
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> > In netlbl_unlabel_defconf if netlbl_domhsh_add_default fails the
-> > allocated entry should be released.
+> > > In ncsi_rsp_handler_gc if allocation for nc->vlan_filter.vids fails =
+the
+> > > allocated memory for nc->mac_filter.addrs should be released.
 =E2=80=A6
-> That said, netlbl_unlabel_defconf() *should* clean up here just on
-> principal if nothing else.
+> The problem is that just by traversing the code using tools
+> like ctags or elixir I couldn't find any caller to ncsi_rsp_handler_gc
+> that handles such errnos.
 
-How do you think about to add the tag =E2=80=9CFixes=E2=80=9D then?
+Would you like to collaborate with higher level source code analysis tools=
+?
+
+
+How do you think about to add the tag =E2=80=9CFixes=E2=80=9D here?
 
 Regards,
 Markus

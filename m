@@ -2,112 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7542FC078B
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 16:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43167C07F4
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 16:51:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727689AbfI0O2n (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Sep 2019 10:28:43 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:49234 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727079AbfI0O2n (ORCPT
+        id S1727861AbfI0OtI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Sep 2019 10:49:08 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:45580 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727079AbfI0OtH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Sep 2019 10:28:43 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8REOIZF190898;
-        Fri, 27 Sep 2019 14:27:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=Rz1WKelrhXx/CX8CfO1Ki+c8gnklPMpb9zMgJPDFb08=;
- b=fkktZQXAnJ5jRf9NfvPe73M8qlAx3rnCqZhbmta/wD/sexw4ILyBAHwrID5c9OMu3POJ
- G2/nsxeGCnBAu2ExYHdtETIwNVnqGFagyeochWDiGTBQcq0xr6ILDHMrCgoIbZ943lI+
- 0fw1YGQXNwI/J5UnKbwMZCofKL7OsowuGxep9hSW1YFXKc6lo2S8+PDPej5l9refK4rb
- nJ7hywdJGSl6ErksGW5YpA9C926H5GsrVR7X3fxAd4wQIVf5lIe87iXU2hiK7aTj1ehe
- lpkUFzVNa499m7gO2UvezmYdedHRxDuLYiwQYlcyb9nIl/JErP1xMiksycZlPDeFjMcL Og== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 2v5btqjm9u-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 27 Sep 2019 14:27:49 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8RENX6P019009;
-        Fri, 27 Sep 2019 14:27:48 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 2v9m3f0adv-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 27 Sep 2019 14:27:48 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x8RERi3U019336;
-        Fri, 27 Sep 2019 14:27:45 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 27 Sep 2019 07:27:44 -0700
-Date:   Fri, 27 Sep 2019 17:27:36 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ASoC: amd: acp3x: clean up an indentation issue
-Message-ID: <20190927142552.GH27389@kadam>
-References: <20190927103858.631-1-colin.king@canonical.com>
- <729ae953-b78a-9452-e8b3-3583a21a1295@canonical.com>
+        Fri, 27 Sep 2019 10:49:07 -0400
+Received: by mail-lj1-f195.google.com with SMTP id q64so2745744ljb.12
+        for <kernel-janitors@vger.kernel.org>; Fri, 27 Sep 2019 07:49:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=KY62cZcmvsX3xM03mBE6HBbDYvpNvwvQeq59nLOyZl0=;
+        b=UL3FcFE2NfXwtjvIvldZ2MUHIneNoq+mJEDmSgWEOp1dFr4eIlKaEqUNo+C3YqExFG
+         mV39oyx+CARY2Od6aZhcw0xcNCszg5/Q3S+h7ceTavOyGJif5F+TDzGJfY15EoWKVtvv
+         +eNRqBqk5d655UGD36nFXLsuwmoMmc/PkD048FcYSe0eksgJAssGG0k1HQP8uA1DKysm
+         NepqPDU7b4JBqK8O0OnE56UKcCbC0y2Hbh8R9CU+73UeGD7CFQvTn7K9wRy5N3iE431p
+         9Z6fexvTVsiZbqocbA0BOPVkySpbQ1yku2nvPHOXnsgPFJ5P7Uva3wrozBj2yu1Ci55H
+         DC4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=KY62cZcmvsX3xM03mBE6HBbDYvpNvwvQeq59nLOyZl0=;
+        b=FrKQf1fvFuVekYOnIGKcLL4ZH/nbzNoclZQjFxKZcllWuOociyAmku8DBv23/Ph9+j
+         e7+D7XZpJIYNr3N3b33zShw3tsZR/S2f/9Bdzi0nOiPvu43VwATUcTV+cIr48oiv77XY
+         6HpU6lCw3SxGZG5iIcNTuHjNVLkVoquT5z4CwHFvpBwMa7qhDF2WqucJplFlfJs2mL5Y
+         CnRpFC1gw5FVDfFzm1+6mXYrAIUdIKxosryu9eA1VNYsv9t4p/mXzL/fHKStRpS54pWL
+         nNsRZAj8hbP/snAHTdd+W04TDCuYWAznuReHTHYzsdj/Yez6j24ibE8v+tdNSfulxy12
+         f7RQ==
+X-Gm-Message-State: APjAAAVNGgaHPce+VgoDdXMxKgfsyLudT91GixirxkO1r3yFj8jpSKjF
+        PexpUrQoqxslic8yE/OIAQgcUx4Iwjnu3YuMsijf
+X-Google-Smtp-Source: APXvYqwkLzs8wOmvCMGAVfW9UfG3yFSgEhQJ4PJF36b0OQ8ayRelEpR7nbkBPFNaMcT8MMXULnm3ONsYWWGQxckK3Pg=
+X-Received: by 2002:a2e:890c:: with SMTP id d12mr3273555lji.85.1569595745451;
+ Fri, 27 Sep 2019 07:49:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <729ae953-b78a-9452-e8b3-3583a21a1295@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9393 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1909270134
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9393 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1909270134
+References: <CAHC9VhR+4pZObDz7kG+rxnox2ph4z_wpZdyOL=WmdnRvdQNH9A@mail.gmail.com>
+ <c490685a-c7d6-5c95-5bf4-ed71f3c60cb6@web.de>
+In-Reply-To: <c490685a-c7d6-5c95-5bf4-ed71f3c60cb6@web.de>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Fri, 27 Sep 2019 10:48:54 -0400
+Message-ID: <CAHC9VhRk8Gc_Yexrjz5uif+Vj7d+b=uMUytbrmbm2Yv+zoM05w@mail.gmail.com>
+Subject: Re: genetlink: prevent memory leak in netlbl_unlabel_defconf
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        linux-security-module@vger.kernel.org, netdev@vger.kernel.org,
+        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Stephen A McCamant <smccaman@umn.edu>,
+        "David S. Miller" <davem@davemloft.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Sep 27, 2019 at 11:43:31AM +0100, Colin Ian King wrote:
-> On 27/09/2019 11:38, Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> > 
-> > There is a return statement that is indented too deeply, remove
-> > the extraneous tab.
-> > 
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > ---
-> >  sound/soc/amd/raven/acp3x-pcm-dma.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/sound/soc/amd/raven/acp3x-pcm-dma.c b/sound/soc/amd/raven/acp3x-pcm-dma.c
-> > index bc4dfafdfcd1..ea57088d50ce 100644
-> > --- a/sound/soc/amd/raven/acp3x-pcm-dma.c
-> > +++ b/sound/soc/amd/raven/acp3x-pcm-dma.c
-> > @@ -631,7 +631,7 @@ static int acp3x_audio_probe(struct platform_device *pdev)
-> >  	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> >  	if (!res) {
-> >  		dev_err(&pdev->dev, "IORESOURCE_IRQ FAILED\n");
-> > -			return -ENODEV;
-> > +		return -ENODEV;
-> >  	}
-> >  
-> >  	adata = devm_kzalloc(&pdev->dev, sizeof(*adata), GFP_KERNEL);
-> > 
-> Oops, I've sent this fix before. ignore. apologies.
+On Fri, Sep 27, 2019 at 9:15 AM Markus Elfring <Markus.Elfring@web.de> wrot=
+e:
+>
+> > > In netlbl_unlabel_defconf if netlbl_domhsh_add_default fails the
+> > > allocated entry should be released.
+> =E2=80=A6
+> > That said, netlbl_unlabel_defconf() *should* clean up here just on
+> > principal if nothing else.
+>
+> How do you think about to add the tag =E2=80=9CFixes=E2=80=9D then?
 
-Haha.  I used to do this all the time.  Now my QC script searches my
-outbox.  I still send duplicates sometimes if I'm travelling and forget
-to copy my outbox over.
+From what I've seen the "Fixes" tag is typically used by people who
+are backporting patches, e.g. the -stable folks, to help decide what
+they need to backport.  As I mentioned in my previous email this
+missing free doesn't actually manifest itself as a practical leak on
+any of the existing kernels so there isn't a need to backport this
+patch.  For that reason I would probably skip the "Fixes" metadata
+here, but I don't feel strongly enough about it to object if others
+want it.  FWIW, I play things very conservatively when talking about
+backporting patches to stable kernels; if it doesn't fix a serious
+user-visible bug it shouldn't be backported IMHO.
 
-regards,
-dan carpenter
+This patch is more of a conceptual fix than a practical fix.  Not that
+there is anything wrong with this patch, I just think it isn't as
+critical as most people would think from reading "memory leak" in the
+subject line.  Yes, there is a memory leak, but the kernel panics soon
+after so it's a bit moot.  Further, even if the panic was somehow
+skipped (?) the memory leak only happens once during boot; the failed
+initialization is undoubtedly going to be far more damaging to the
+system than a few lost bytes of memory.
 
+--=20
+paul moore
+www.paul-moore.com

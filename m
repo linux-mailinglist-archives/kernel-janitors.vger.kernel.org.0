@@ -2,26 +2,26 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69D26C0700
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 16:08:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3871EC0760
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 16:27:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727668AbfI0OG4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Sep 2019 10:06:56 -0400
-Received: from mout.web.de ([212.227.15.4]:60281 "EHLO mout.web.de"
+        id S1727894AbfI0O0o (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Sep 2019 10:26:44 -0400
+Received: from mout.web.de ([212.227.15.4]:36607 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726163AbfI0OGz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Sep 2019 10:06:55 -0400
+        id S1727859AbfI0O0o (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 27 Sep 2019 10:26:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569593202;
-        bh=nv4VE+Hbl85HkmHRkfiuhBbAYfzLvV9VGG8OPZN4w70=;
+        s=dbaedf251592; t=1569594390;
+        bh=tn9PVg9E/PLEvgmiwwqgXnvlHelynp+BqoPiHXcL2SU=;
         h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=PYa6H1N9q2C1vvlXyP199nW+PdFcGJHhSg29sTX3w+Hi+8GJpQ5F4nvC9MZ18VdGT
-         P4wHzhHsdgCQYY6NmBhJOp7xoWoMxdnKz2dwphIz3uZBtoi6TujwHHAWaZ7iMpU19u
-         QMYGBWsGo1yd+GSHH6PmnTcov1BM6LDWdu9rrsUk=
+        b=YgsDhm59dKhKQFr9VUp8nA2ABSk9zlGnq6I8T6IygMz9VhSub5qSfRhnPBi00p4R8
+         S9zgQL1vGg0ZCmF+cHxCU4wZG0zax1EaRA85Yv/YLfKCZRxYk4jeIAzbySK/Fq2weo
+         nDklWKToFpnQXJk/F7/EsHHwfSW2zQV8Lolk+KsQ=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.133.191.8]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lwq0e-1i7U6s26jA-016T4r; Fri, 27
- Sep 2019 16:06:42 +0200
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LpwMZ-1hhntp0cX1-00fg63; Fri, 27
+ Sep 2019 16:26:30 +0200
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen A McCamant <smccaman@umn.edu>,
         "David S. Miller" <davem@davemloft.net>,
@@ -31,9 +31,9 @@ Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         <pieter.jansenvanvuuren@netronome.com>,
         Simon Horman <simon.horman@netronome.com>,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20190925190512.3404-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] nfp: flower: fix memory leak in
- nfp_flower_spawn_vnic_reprs
+References: <20190925182405.31287-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] nfp: flower: prevent memory leak in
+ nfp_flower_spawn_phy_reprs
 To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
         Jakub Kicinski <jakub.kicinski@netronome.com>,
         netdev@vger.kernel.org, oss-drivers@netronome.com
@@ -81,46 +81,53 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <e20e4ea4-72c8-2e2e-1745-309fc6f6a57c@web.de>
-Date:   Fri, 27 Sep 2019 16:06:40 +0200
+Message-ID: <95ee54a0-a5ff-a9f0-0d87-471e0f1f790c@web.de>
+Date:   Fri, 27 Sep 2019 16:26:28 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <20190925190512.3404-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20190925182405.31287-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:87XX0FAUxgZ3ci/9ivhTH7PpNtdW6DCt86TFjJz9H4rtXgXyzLb
- q+NpTfs4SNUz9t1hB3bX/M+YDAWOirKFC1N+76qOYpHUymJWT/9aY9Rlh2Rmbolh/xFMwgC
- EHKVnxmOKBSwZb0n2lxZGGjRvpPhjJQrMrwyxTFdNJkyYhIXyXRoRwxryev54i05XDGIHs8
- PfVZzjgmwoLZvg7DVjPYQ==
+X-Provags-ID: V03:K1:ft+zKUE+sK3aNCGLB5RhDOFVPiCMUg/6fPQMt+VV2vC3V4knNZj
+ zQ15PFAHai252MmMsBIbyPOi3m8EWx57pgrHO0lXSu9UW9SLHPsxRLxwkQp7op5kP0cF/1h
+ BkUTrfbv0wek2Lhc5bw2bmPrhtOlhV+RJpd4YVghBt3A6yKnrQAbkv4UjWplvstmPkOXzsA
+ ZccEoYT+nvxbooygis9xQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:gWcPJBtUSk8=:L65XnfIzm37/GoIgcGRJqo
- VDN54wQ/DiUytb+vz7ee3Q31WLf97SAt34EEN16oaCYyhUVUsxlX6jQADU1aRF/1xn8XwNEBx
- ePXO314VNOFu3tNKg8NhAlEdsEvyl/Ja9i6l1uLth3sVJnrlFXKeH36jW+OA2ViGlxKSCBSyw
- gm4EQy3xbxb/WALA9Hyg61/kTpY0P6rQ+4tY/p672RpCU6L24340eoOLcM0demFGrWkS8t9C9
- S5OjUWUZQde1hYD7fj7t08zJ2oY4HsPtsPlLKj5ZArquhQb2UZbhYjpPdtDjalpHNRkvheDb1
- u87lzH4VdqqWc1kW84QQS1q6xOchZkDBj0g5sFud2ZLkcAa3DDL4FtpfmEybmO8nD/71bYyVK
- 9BPIR+Hqiu6SqdyqN9LU2eGsJ3Mp97oxYxTJXxNOAewRxw719/EIY7tyhIvOMreuyQGDn0IUF
- CmkNgyxrFv5LKrugcf/ZnX9CEGqaLau9zzWEwX+eFsP34MAHC8N0uYJj/xKCZYHJpWoHMO+w2
- acDQ0IGRUDlWfNTA0GAEcxgs/l5PCVNSc2uVhzSA5Zp1Dr0M5afjUiKgMUVT9opb0M+cIvL9p
- lMvlatGcmsOGB8n7DnKx9xq6h90VmAubJuh33zmS8KkyYXm9SgMsMiMB5hwPUYnQAWG4SocbJ
- HIiuPVH3v7ie0S6y5ncBREixp+0GCMUOAEjH+nFA0vaXLyouaVKeuEqctNYuo2ldoqgi0uhA7
- MHmM7QACyxZrb1cuEQuR9NZdAK4dd9xJ3mt93JRgfdPNKRWqYNkzOA99X3H94aayGCJkWVBCe
- P8XRZKJx9Sii4vgCzlJUOkR56Z3/36Z284FBSIYIt91HL6CIz4miswB6Zre3aAxwLLeIj3rmn
- zG9SIv4mAQuSOU4C1ybNMMGHsHWrSq/sGo+9HQVtzptd37nf0C1dYsROsGEltPykpTlqCc/gC
- T95Bd6VcbTcIygtmXlDeP2HIbh/g6f+0Nb3fKR/y+kQIPCW9od+joP6gO8QlV61l+HEF+qoOd
- xF1II0gdiqa8dmobJ7orfIvgtUue7GcogPmvovnM3tcb/pCZaKX3cEnbV/dkGAMUvcmOeG31d
- 1f6jp0hyjN+oSE7DIIXhbXnofsv6YJ6IWSEeLFrJwmaMVb4qfbU5Mivpx7dW8IMw00vemKxDq
- lJkx/1utYea9peBbLIEj414SmW6SnMLgZ4jdKk8RysBjqHhZsu+M0INz4pi6Qhp7MXjdqBY7Z
- tNEeD9X3thZLFEGWej9NXk0sTKaZ4wQiwt+as0+N40LUwzKQcRJU+tXdyjRE=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Piojxsa/rho=:xgrVQyOodkPmvqUNXG8FY2
+ SIhjE0mSyhkBmzbUdZ3/Ugy+XtkqluRY3IlQoOas+gUn9oN19W3YMdFjluYSabW/e8nVbY5W/
+ 68FuzO720GcmMSStt3qWTqGp24NKGJvWi8K/6lOTcQ0HuMXeHyLkW0/fJfmKOe1/KTdSkNHIo
+ 5f8T4a++NqYN18wnsX4QRP7HJy+tU0szkMrWk8iKaZ6FlH+IRW7nkZiSzhRc3F5Qli44Dx75r
+ 1ybwHwmI8NMA67m6QKYTIICG+qIp6kieRqaFE9w1A3N6KxInpX1kDjLTWKibaLFXZqsRCrfkD
+ ty/R8Q83YQrjLrIA8SZCsc14Ke/Vw20H/VOB3uhJByjKMRpO6Yj3HHrsbmi1sHddmi6Tnv2Wn
+ i+jxoTQvEgTX/eIjOziqDx2LVEjDML56Hdq+1Y+p6bZYkrgJYjIUB2yLCSrvvEjrCpI01jA0Y
+ k9VoFkFNUZX5hzTmauFxS2p75iuEbBzcWk3RwO6R2KbTCzExML8Exi0KEJ/bmnMtOWyJdBIBr
+ 5KNPVYCPXPT9xhkM77xEEIr3egF+LjIE2IHAMRlRSTEiuHULbR00+ga5V2WWT0TFbHi9QCr9J
+ +6JA59hMtxxpbc8bVXX5WPoVvOuAApzMHw5DEs5hf69Q2Z/V2N6c4Z8W2yLD7JPMaMBdNN3zA
+ 8GAftTnR69f8fRSPIEoGZFTQgjKfshdVum7vb/NYOv5A1cvieQH13NLyMgcYh8fBZDu79IZm8
+ a3WmPvWOk/8MSl4gbKarX8DQg8EKkCMGeKdvmhcrFwYovdfURhYFyciUTjEriDQDMvY26ZKi7
+ WH3oJnErubdNvu9vJo1MZsNHJCaZhPA1srhbAH2iWTDpczvVrIRoCdIpwBTRLUUHcwVQKNPJb
+ MFrZnlMg6ojDbvNmUUZt4FU+9BQD+18dQSngYNN1jMiKAzG62/DsvW2lEFvgTqtHP+/g7efW9
+ Zmy1ZrtdNDGpE9liHTr6L6+47fKToPJUsgBoQu16y6FQenvmM+iXiJ1LJkYnA7QkeVF7aQbki
+ HZMAA4cLO7H0c6hUWQwGmGSGnDSxW/WGcuasZtesPxT8DgK3NSK0gBig4fY9FCFdmfYRmuN5P
+ xAFD4kZVQi6sBCA0BziIMP/XBQGci4RAsd9xYD88/pgjWTVdvHNASa0Oe2T61TtGusPQWiYfa
+ 2XjQVz3FCQp8oTOVt2HPRsUew2VPTWy0MMLCyauKnEw4BuyO6xDC3GF3sE4jKHWHLiIv1f2k2
+ Ok53WoL+CRVphS3XptQn3x86T4jwegy60cQHmI22jHkCVxj45gWCWLyb1prA=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> @@ -433,6 +435,7 @@ nfp_flower_spawn_vnic_reprs(struct nfp_app *app,
+> In nfp_flower_spawn_phy_reprs, in the for loop over eth_tbl if any of
+> intermediate allocations or initializations fail memory is leaked.
+> requiered releases are added.
+
+I suggest to improve also this change description.
+
+
+> @@ -542,6 +545,7 @@ nfp_flower_spawn_phy_reprs(struct nfp_app *app, struct nfp_flower_priv *priv)
 >  		err = nfp_repr_init(app, repr,
->  				    port_id, port, priv->nn->dp.netdev);
+>  				    cmsg_port_id, port, priv->nn->dp.netdev);
 >  		if (err) {
 > +			kfree(repr_priv);
 >  			nfp_port_free(port);
@@ -128,7 +135,7 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 >  			goto err_reprs_clean;
 
 How do you think about to move common exception handling code
-to the end of this function implementation by using another jump target?
+to the end of this function implementation by adding jump targets?
 
 Regards,
 Markus

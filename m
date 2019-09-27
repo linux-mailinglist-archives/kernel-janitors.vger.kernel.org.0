@@ -2,30 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF09EC0232
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 11:24:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F3ADC028D
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 11:41:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726163AbfI0JYF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Sep 2019 05:24:05 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:33553 "EHLO
+        id S1726163AbfI0Jko (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Sep 2019 05:40:44 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:34057 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725890AbfI0JYF (ORCPT
+        with ESMTP id S1726030AbfI0Jko (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Sep 2019 05:24:05 -0400
+        Fri, 27 Sep 2019 05:40:44 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iDmTp-0006yv-73; Fri, 27 Sep 2019 09:24:01 +0000
+        id 1iDmjv-00087L-Ro; Fri, 27 Sep 2019 09:40:39 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Forest Bond <forest@alittletooquiet.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Quentin Deslandes <quentin.deslandes@itdev.co.uk>,
-        devel@driverdev.osuosl.org
+To:     "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: vt6656: clean up an indentation issue
-Date:   Fri, 27 Sep 2019 10:24:00 +0100
-Message-Id: <20190927092400.20213-1-colin.king@canonical.com>
+Subject: [PATCH] net: tap: clean up an indentation issue
+Date:   Fri, 27 Sep 2019 10:40:39 +0100
+Message-Id: <20190927094039.23370-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,33 +34,27 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a block of code that is indented incorrectly, add in the
-missing tabs.
+There is a statement that is indented too deeply, remove
+the extraneous tab.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/staging/vt6656/main_usb.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/tap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/vt6656/main_usb.c b/drivers/staging/vt6656/main_usb.c
-index 856ba97aec4f..3478a10f8025 100644
---- a/drivers/staging/vt6656/main_usb.c
-+++ b/drivers/staging/vt6656/main_usb.c
-@@ -249,10 +249,10 @@ static int vnt_init_registers(struct vnt_private *priv)
- 		} else {
- 			priv->tx_antenna_mode = ANT_B;
- 
--		if (priv->tx_rx_ant_inv)
--			priv->rx_antenna_mode = ANT_A;
--		else
--			priv->rx_antenna_mode = ANT_B;
-+			if (priv->tx_rx_ant_inv)
-+				priv->rx_antenna_mode = ANT_A;
-+			else
-+				priv->rx_antenna_mode = ANT_B;
- 		}
- 	}
- 
+diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+index bcdfb0d88753..a6d63665ad03 100644
+--- a/drivers/net/tap.c
++++ b/drivers/net/tap.c
+@@ -1190,7 +1190,7 @@ static int tap_get_user_xdp(struct tap_queue *q, struct xdp_buff *xdp)
+ 	kfree_skb(skb);
+ err:
+ 	rcu_read_lock();
+-		tap = rcu_dereference(q->tap);
++	tap = rcu_dereference(q->tap);
+ 	if (tap && tap->count_tx_dropped)
+ 		tap->count_tx_dropped(tap);
+ 	rcu_read_unlock();
 -- 
 2.20.1
 

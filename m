@@ -2,140 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3871EC0760
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 16:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7542FC078B
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Sep 2019 16:30:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727894AbfI0O0o (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 27 Sep 2019 10:26:44 -0400
-Received: from mout.web.de ([212.227.15.4]:36607 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727859AbfI0O0o (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 27 Sep 2019 10:26:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569594390;
-        bh=tn9PVg9E/PLEvgmiwwqgXnvlHelynp+BqoPiHXcL2SU=;
-        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=YgsDhm59dKhKQFr9VUp8nA2ABSk9zlGnq6I8T6IygMz9VhSub5qSfRhnPBi00p4R8
-         S9zgQL1vGg0ZCmF+cHxCU4wZG0zax1EaRA85Yv/YLfKCZRxYk4jeIAzbySK/Fq2weo
-         nDklWKToFpnQXJk/F7/EsHHwfSW2zQV8Lolk+KsQ=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.191.8]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LpwMZ-1hhntp0cX1-00fg63; Fri, 27
- Sep 2019 16:26:30 +0200
-Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen A McCamant <smccaman@umn.edu>,
-        "David S. Miller" <davem@davemloft.net>,
-        Frederik Lotter <frederik.lotter@netronome.com>,
-        John Hurley <john.hurley@netronome.com>,
-        Pieter Jansen van Vuuren 
-        <pieter.jansenvanvuuren@netronome.com>,
-        Simon Horman <simon.horman@netronome.com>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20190925182405.31287-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] nfp: flower: prevent memory leak in
- nfp_flower_spawn_phy_reprs
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        Jakub Kicinski <jakub.kicinski@netronome.com>,
-        netdev@vger.kernel.org, oss-drivers@netronome.com
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
- +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
- mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
- lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
- YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
- GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
- rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
- 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
- jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
- BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
- cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
- Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
- g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
- OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
- CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
- LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
- sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
- kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
- i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
- g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
- q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
- NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
- nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
- 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
- 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
- wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
- riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
- DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
- fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
- 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
- xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
- qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
- Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
- Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
- +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
- hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
- /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
- tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
- qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
- Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
- x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
- pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <95ee54a0-a5ff-a9f0-0d87-471e0f1f790c@web.de>
-Date:   Fri, 27 Sep 2019 16:26:28 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        id S1727689AbfI0O2n (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Sep 2019 10:28:43 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:49234 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727079AbfI0O2n (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 27 Sep 2019 10:28:43 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8REOIZF190898;
+        Fri, 27 Sep 2019 14:27:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=Rz1WKelrhXx/CX8CfO1Ki+c8gnklPMpb9zMgJPDFb08=;
+ b=fkktZQXAnJ5jRf9NfvPe73M8qlAx3rnCqZhbmta/wD/sexw4ILyBAHwrID5c9OMu3POJ
+ G2/nsxeGCnBAu2ExYHdtETIwNVnqGFagyeochWDiGTBQcq0xr6ILDHMrCgoIbZ943lI+
+ 0fw1YGQXNwI/J5UnKbwMZCofKL7OsowuGxep9hSW1YFXKc6lo2S8+PDPej5l9refK4rb
+ nJ7hywdJGSl6ErksGW5YpA9C926H5GsrVR7X3fxAd4wQIVf5lIe87iXU2hiK7aTj1ehe
+ lpkUFzVNa499m7gO2UvezmYdedHRxDuLYiwQYlcyb9nIl/JErP1xMiksycZlPDeFjMcL Og== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2v5btqjm9u-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 27 Sep 2019 14:27:49 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x8RENX6P019009;
+        Fri, 27 Sep 2019 14:27:48 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 2v9m3f0adv-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 27 Sep 2019 14:27:48 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x8RERi3U019336;
+        Fri, 27 Sep 2019 14:27:45 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 27 Sep 2019 07:27:44 -0700
+Date:   Fri, 27 Sep 2019 17:27:36 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+        alsa-devel@alsa-project.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ASoC: amd: acp3x: clean up an indentation issue
+Message-ID: <20190927142552.GH27389@kadam>
+References: <20190927103858.631-1-colin.king@canonical.com>
+ <729ae953-b78a-9452-e8b3-3583a21a1295@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <20190925182405.31287-1-navid.emamdoost@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-X-Provags-ID: V03:K1:ft+zKUE+sK3aNCGLB5RhDOFVPiCMUg/6fPQMt+VV2vC3V4knNZj
- zQ15PFAHai252MmMsBIbyPOi3m8EWx57pgrHO0lXSu9UW9SLHPsxRLxwkQp7op5kP0cF/1h
- BkUTrfbv0wek2Lhc5bw2bmPrhtOlhV+RJpd4YVghBt3A6yKnrQAbkv4UjWplvstmPkOXzsA
- ZccEoYT+nvxbooygis9xQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Piojxsa/rho=:xgrVQyOodkPmvqUNXG8FY2
- SIhjE0mSyhkBmzbUdZ3/Ugy+XtkqluRY3IlQoOas+gUn9oN19W3YMdFjluYSabW/e8nVbY5W/
- 68FuzO720GcmMSStt3qWTqGp24NKGJvWi8K/6lOTcQ0HuMXeHyLkW0/fJfmKOe1/KTdSkNHIo
- 5f8T4a++NqYN18wnsX4QRP7HJy+tU0szkMrWk8iKaZ6FlH+IRW7nkZiSzhRc3F5Qli44Dx75r
- 1ybwHwmI8NMA67m6QKYTIICG+qIp6kieRqaFE9w1A3N6KxInpX1kDjLTWKibaLFXZqsRCrfkD
- ty/R8Q83YQrjLrIA8SZCsc14Ke/Vw20H/VOB3uhJByjKMRpO6Yj3HHrsbmi1sHddmi6Tnv2Wn
- i+jxoTQvEgTX/eIjOziqDx2LVEjDML56Hdq+1Y+p6bZYkrgJYjIUB2yLCSrvvEjrCpI01jA0Y
- k9VoFkFNUZX5hzTmauFxS2p75iuEbBzcWk3RwO6R2KbTCzExML8Exi0KEJ/bmnMtOWyJdBIBr
- 5KNPVYCPXPT9xhkM77xEEIr3egF+LjIE2IHAMRlRSTEiuHULbR00+ga5V2WWT0TFbHi9QCr9J
- +6JA59hMtxxpbc8bVXX5WPoVvOuAApzMHw5DEs5hf69Q2Z/V2N6c4Z8W2yLD7JPMaMBdNN3zA
- 8GAftTnR69f8fRSPIEoGZFTQgjKfshdVum7vb/NYOv5A1cvieQH13NLyMgcYh8fBZDu79IZm8
- a3WmPvWOk/8MSl4gbKarX8DQg8EKkCMGeKdvmhcrFwYovdfURhYFyciUTjEriDQDMvY26ZKi7
- WH3oJnErubdNvu9vJo1MZsNHJCaZhPA1srhbAH2iWTDpczvVrIRoCdIpwBTRLUUHcwVQKNPJb
- MFrZnlMg6ojDbvNmUUZt4FU+9BQD+18dQSngYNN1jMiKAzG62/DsvW2lEFvgTqtHP+/g7efW9
- Zmy1ZrtdNDGpE9liHTr6L6+47fKToPJUsgBoQu16y6FQenvmM+iXiJ1LJkYnA7QkeVF7aQbki
- HZMAA4cLO7H0c6hUWQwGmGSGnDSxW/WGcuasZtesPxT8DgK3NSK0gBig4fY9FCFdmfYRmuN5P
- xAFD4kZVQi6sBCA0BziIMP/XBQGci4RAsd9xYD88/pgjWTVdvHNASa0Oe2T61TtGusPQWiYfa
- 2XjQVz3FCQp8oTOVt2HPRsUew2VPTWy0MMLCyauKnEw4BuyO6xDC3GF3sE4jKHWHLiIv1f2k2
- Ok53WoL+CRVphS3XptQn3x86T4jwegy60cQHmI22jHkCVxj45gWCWLyb1prA=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <729ae953-b78a-9452-e8b3-3583a21a1295@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9393 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1909270134
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9393 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1909270134
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> In nfp_flower_spawn_phy_reprs, in the for loop over eth_tbl if any of
-> intermediate allocations or initializations fail memory is leaked.
-> requiered releases are added.
+On Fri, Sep 27, 2019 at 11:43:31AM +0100, Colin Ian King wrote:
+> On 27/09/2019 11:38, Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > There is a return statement that is indented too deeply, remove
+> > the extraneous tab.
+> > 
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > ---
+> >  sound/soc/amd/raven/acp3x-pcm-dma.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/sound/soc/amd/raven/acp3x-pcm-dma.c b/sound/soc/amd/raven/acp3x-pcm-dma.c
+> > index bc4dfafdfcd1..ea57088d50ce 100644
+> > --- a/sound/soc/amd/raven/acp3x-pcm-dma.c
+> > +++ b/sound/soc/amd/raven/acp3x-pcm-dma.c
+> > @@ -631,7 +631,7 @@ static int acp3x_audio_probe(struct platform_device *pdev)
+> >  	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> >  	if (!res) {
+> >  		dev_err(&pdev->dev, "IORESOURCE_IRQ FAILED\n");
+> > -			return -ENODEV;
+> > +		return -ENODEV;
+> >  	}
+> >  
+> >  	adata = devm_kzalloc(&pdev->dev, sizeof(*adata), GFP_KERNEL);
+> > 
+> Oops, I've sent this fix before. ignore. apologies.
 
-I suggest to improve also this change description.
+Haha.  I used to do this all the time.  Now my QC script searches my
+outbox.  I still send duplicates sometimes if I'm travelling and forget
+to copy my outbox over.
 
+regards,
+dan carpenter
 
-> @@ -542,6 +545,7 @@ nfp_flower_spawn_phy_reprs(struct nfp_app *app, struct nfp_flower_priv *priv)
->  		err = nfp_repr_init(app, repr,
->  				    cmsg_port_id, port, priv->nn->dp.netdev);
->  		if (err) {
-> +			kfree(repr_priv);
->  			nfp_port_free(port);
->  			nfp_repr_free(repr);
->  			goto err_reprs_clean;
-
-How do you think about to move common exception handling code
-to the end of this function implementation by adding jump targets?
-
-Regards,
-Markus

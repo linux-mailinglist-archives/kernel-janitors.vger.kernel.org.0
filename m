@@ -2,31 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DCE77C1239
-	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Sep 2019 23:24:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECE8EC1246
+	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Sep 2019 23:47:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728655AbfI1VX7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 28 Sep 2019 17:23:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42056 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726581AbfI1VX7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 28 Sep 2019 17:23:59 -0400
-Received: from localhost.localdomain (c-73-231-172-41.hsd1.ca.comcast.net [73.231.172.41])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AFAEC2082F;
-        Sat, 28 Sep 2019 21:23:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569705837;
-        bh=IL2VVcFyxpeEUNpyOhzjpMAkldnUFCjDXmLJjSwk0b4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=wLdl2VGnUe1bttx+zoWYTFG0bVC3xiy9wTHUhXVGdxu0oGh+c2V1lcRZUegpXKI4O
-         bDk12tLvcuBPRlRc+QaY9NVwiuEUXyWwrjig3MiTd2pzE1GZdfzJTxAKehjSZOqBTf
-         G9t6No8G87XcrxeJ2aBKM9W7gl2v6Wr2VIa1YDGY=
-Date:   Sat, 28 Sep 2019 14:23:56 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S1728747AbfI1VrS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 28 Sep 2019 17:47:18 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:45998 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726581AbfI1VrS (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 28 Sep 2019 17:47:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=mS/WPmBvHmCvj9LjwYuwySkMwkJdIDR8uWJJT1v85Tw=; b=JI+T+tHy6rTt1mdzgwGOmKKEs
+        PymbdU108IKyAkfNxlhutuKqr8cbiDtDtxbJw1VjmNJOTx9ok9ee2CCpnBkgrn57q2yhbAfYOMm/0
+        5WL1oo4a1Hn2JbklNoa6V4Y5UyBAtwS26p1vOhP+6IGden8CVhlu0IHAc9A/6woZl707YpUV0LHUz
+        sjAVlUQcCsq3T/A+OlQ4fhW9oeYa7xF6jyEZyFchcj4Yqy6y6c5yqfP0lutD/w+1Uglz+0SOEj9rh
+        +bZ8eqyFQkKPCGe7x67dRzgZpaApitQ9ci0Orv/g++BY6JytSd1BqEh1pVBrfWqltpiCDkBWLPEKE
+        S0XRUDKtw==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92.2 #3 (Red Hat Linux))
+        id 1iEKYQ-0001pU-Bp; Sat, 28 Sep 2019 21:47:02 +0000
+Date:   Sat, 28 Sep 2019 14:47:02 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         tglx@linutronix.de, Enrico Weigelt <info@metux.net>,
         Kate Stewart <kstewart@linuxfoundation.org>,
@@ -34,62 +38,34 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         kernel-janitors@vger.kernel.org
 Subject: Re: [PATCH] mm, vmpressure: Fix a signedness bug in
  vmpressure_register_event()
-Message-Id: <20190928142356.932cff0ad6c17f4a18edc80f@linux-foundation.org>
-In-Reply-To: <20190925110449.GO3264@mwanda>
+Message-ID: <20190928214702.GA30382@bombadil.infradead.org>
 References: <20190925110449.GO3264@mwanda>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+ <20190928142356.932cff0ad6c17f4a18edc80f@linux-foundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190928142356.932cff0ad6c17f4a18edc80f@linux-foundation.org>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 25 Sep 2019 14:04:49 +0300 Dan Carpenter <dan.carpenter@oracle.com> wrote:
+On Sat, Sep 28, 2019 at 02:23:56PM -0700, Andrew Morton wrote:
+> How about doing it this way?  Only copy the int to the enum once we
+> know it's within range?
 
-> The "mode" and "level" variables are enums and in this context GCC will
-> treat them as unsigned ints so the error handling is never triggered.
-> 
-> I also removed the bogus initializer because it isn't required any more
-> and it's sort of confusing.
-> 
+This will return a positive integer on success instead of 0.  We need:
 
-A bit picky of me, but it's an eyesore to assign an int to an enum,
-then compare the casted enum to an int then copy the enum back to an
-int.
+ 	mutex_unlock(&vmpr->events_lock);
++	ret = 0;
+ out:
 
-How about doing it this way?  Only copy the int to the enum once we
-know it's within range?
+with that,
 
---- a/mm/vmpressure.c~mm-vmpressure-fix-a-signedness-bug-in-vmpressure_register_event-fix
-+++ a/mm/vmpressure.c
-@@ -375,20 +375,18 @@ int vmpressure_register_event(struct mem
- 
- 	/* Find required level */
- 	token = strsep(&spec, ",");
--	level = match_string(vmpressure_str_levels, VMPRESSURE_NUM_LEVELS, token);
--	if ((int)level < 0) {
--		ret = level;
-+	ret = match_string(vmpressure_str_levels, VMPRESSURE_NUM_LEVELS, token);
-+	if (ret < 0)
- 		goto out;
--	}
-+	level = ret;
- 
- 	/* Find optional mode */
- 	token = strsep(&spec, ",");
- 	if (token) {
--		mode = match_string(vmpressure_str_modes, VMPRESSURE_NUM_MODES, token);
--		if ((int)mode < 0) {
--			ret = mode;
-+		ret = match_string(vmpressure_str_modes, VMPRESSURE_NUM_MODES, token);
-+		if (ret < 0)
- 			goto out;
--		}
-+		mode = ret;
- 	}
- 
- 	ev = kzalloc(sizeof(*ev), GFP_KERNEL);
-_
+Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
+How about further adding ...
+
++ * Return: 0 on success, -ENOMEM on memory failure or -EINVAL if @args could
++ * not be parsed.

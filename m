@@ -2,34 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C666C1B69
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Sep 2019 08:25:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8B00C1BC9
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Sep 2019 08:56:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729728AbfI3GYp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 30 Sep 2019 02:24:45 -0400
-Received: from mout.web.de ([212.227.17.11]:56799 "EHLO mout.web.de"
+        id S1729371AbfI3Gzc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 30 Sep 2019 02:55:32 -0400
+Received: from mout.web.de ([217.72.192.78]:38605 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729521AbfI3GYp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 30 Sep 2019 02:24:45 -0400
+        id S1726121AbfI3Gzb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 30 Sep 2019 02:55:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569824676;
-        bh=4xDHwP7GsaokFa+ZzSb3wiClSs/ehrdmvXIwdvXgQMk=;
+        s=dbaedf251592; t=1569826522;
+        bh=+3E/INNc/nZJwNdJLcPAZwGiWdqqBKAEARv1mFvBn1w=;
         h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=qfWp2Cif9eRZsJ98M+/gO1Pocp0aBtxmZlXCWInmCEc3/V4PKhPI7b7WEyZ+QZplC
-         5ysVJBBxO7OZ8DPEdwwLgnDVsJq2ZkQQ20VpCXRXw3FkZlepZHFSOo4tovDuzv2Lcf
-         FSOjkaNCx+B+prAGUTw1KAvBitZpX/+KgWvFqafA=
+        b=XBHLn+Q2bUoxfl6m7U8LwOAaoereWzFuqLX9CRAIWP61PQob0/EOO1eCU/sarsR5m
+         3q99D103nW0/VfOGeo6sNUQmbQ+Dl5d6wsb49q+WS65+NhJ8wY01hMH9ztMyddYo0W
+         xqdJGQIRjE1rbE9TQdxi3n5E5yN3n57zu4VOcDcA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.97.105]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MI5ze-1iIerd3d6M-003tF6; Mon, 30
- Sep 2019 08:24:35 +0200
+Received: from [192.168.1.2] ([2.244.97.105]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LeLKb-1hmuMW3DRN-00qC1P; Mon, 30
+ Sep 2019 08:55:21 +0200
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
-        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20190930033928.32312-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] spi: gpio: prevent memory leak in spi_gpio_probe
+        Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20190930024147.25243-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] usb: dwc3: pci: prevent memory leak in dwc3_pci_probe
 To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-spi@vger.kernel.org
+        linux-usb@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -74,48 +75,51 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <dcd26f62-e384-bf6d-2e7d-63c0d0f7da11@web.de>
-Date:   Mon, 30 Sep 2019 08:24:34 +0200
+Message-ID: <5f21ff8b-0cd2-5442-7d8b-f31b0f5dcdfe@web.de>
+Date:   Mon, 30 Sep 2019 08:55:20 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <20190930033928.32312-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20190930024147.25243-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:HAOB9u7KRH3bxo+pLm7aJonGq6dLn3NKqjQyBqXs4e4Jn4ptihC
- o72UISO8k53NizGPMPx2QOz3cCtMVvGN9PCpJjMXZdlIjuKVKoDhkO0MvI4q2Jrl2NkQZAf
- t7VpYFCdOxhxenwxLDZMwwfO3kCBVva/Os3qW+WRcxyLh262p5fZJPwbDVnM+H6WF2dBtWZ
- T6pAiMdJF5ywE9neE034Q==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:P+OGt6N+0QX9QcBfG9fpEPvI1r1TbI5LAftzqB3RikkON4+3hkS
+ iHxzeaEga9e8WcwDnSbg5UWeXww+sQqLdQFByYcAWXhRYpWAgj8cfawXTh6JeqpNuSlae6+
+ dvIhInTTKHsPbDhctwBKRDUKZ8ADFVy7hrIdVJUhKbrLhTIi9s4gxeWo+M7gDRt2OQ0RdCL
+ gN0RMTcPMBRZ7Su3WiWmA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:tXbA7AauVAI=:q0N4RZbEOloFkIoiRvDZTz
- L8bq8+r9j5/HBYMJ6DzRoDuAdF7Q30gOlHvhKteGxWXh1LeXU5FEzYS+7j6fnZoSB1HysunX7
- oLkkBuPfV8UZk3TdWD9ZdYGQ+2I9H/z7Jb7WBOtAlcFJXm/13r/BbvoM4tugxpDGOxTzXvPP5
- YiaLrzhVY5R7ZYf3ziBULgylJJzZ9HuKg1iSMoAxCJokiIAtwDllfcPUzfseRQtH62iNufyHr
- PWsurRg7ThBwWHyr9q26ugWHpaO82H6ZRlHjkhT0PGk4w3q1wXW6rzVwQ5qm9Ittehl99sxwl
- USpJh7U/kXuR6Wow6Lzn8AQiRP7suku52iNZddgw9Q6ii70Q4rJuqFb3ovwl2XUwTDyhiuHep
- jQYzQq7pyZTqTNI6rzQj2/NPM7NcsFs+PmuXFDhokVMiwQi1p0Wb/pLPAAZwq1vXEJy60Pv1W
- TsXKwWKqXRHLx4gxIaaWprCq6YfAw77sJy+ItSGKmJTe2U7+Nou7zjmi4WvRxcuemPe7oRoTm
- gjXpGWTlAxc9+swFMhoDUw2w5TxTNf5QI31EEd56ZUc3xOroq+ob2vY59iQVuQ/WhC9AnFCaK
- EAkEQfBr3oxJmvGjewvcpZWNNuM2L3dUjMkeQgR+NUkZ+j3WwCMqnN7rXdbdOIahWkEODwTJe
- GSG17iYNGhMZQ5ZBfZTWA8EM3MLey55CdzBurP0fvJLsmGbmBntheU6mCyTbEBUMGFvSrHSJ5
- aMwpE3OZWvxwDCU6evnAVf6h3Ib8prNeV0cS0SZ/spcewdBrcgPGlsBVdJyV7aFiQsuPlhaRl
- YejSqQg5hf9vQ//GCPWXJ3RsaXR8WgQ5UQrSg3yvLLEfhypAUF2tDkOeMa8gMbDjCWjsL4Hfc
- lUuRNWpfflp5X3ri1rNlTZxsITGgAAJ/D8byzjn0uNcoXRXcxoB5H+zq4twUFA/6MKy/9g/4C
- u9bMRFtHhTqTyXUlYvkobOJOg6W4npwAhKOVMvrE6K1Lu2EAmrBOSmT/GiiVndXK7ckmI8prO
- QxSy+hI6L5FPUwZC5J7+h9S46z97ivqsEgfbUVtBaU51Zos74qhLE+VD0Hajd1pltFR7rRuKu
- 0Lz66qDY1I7zkrp5if5GCJHZwIuHIGRyKNkrCysKsUlbeDG6siA6ADdmerWZg47Jo57pqsNWM
- z5LcPqvtGm6Bx5hN00/4DOsLi8udF6Gxn3Ildou2AyMD/LfG9muB+e5fkEDmO5bV9FlGM3cYU
- ulROj7UPZb/F5BcUHZZLIO3v5UGimPnskDWAnIHAnDa5GvPpfNW9Ypt6VlYw=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:r0EUch90hOQ=:JnE1MHNSBzIR4Lal1H6hxy
+ j3Nm8AmAByGr2mLdox8fHm6r1gdl2rsd6jgtsoM91cnaP4zPR+OQmlAolGFOGscENGcRAXum5
+ 6xzhOIgd5oAD7LM10t6O1GHi6lQcPsRZwuN+4eFie12pb5JeFJIyAUL4YJ9RcXi8X80nPo4vj
+ FyoWA34OVANMKXgGHb8l8htmoM5l4BWGVLfGqsRuYOru3CgAQd7EtTw+dlwI+cvpRyma1HuEe
+ hY88+ICF7ZNN4qsO0EepJW+Sx0IXu4HdO3MgJR/8mDF//bcuVHMiXINwE9NNtEM7ehqcEDedl
+ Vx6F75U3Axbh2hnGIWPetTwzN9OZPZ8AbbN1VEQqzTytWRPDdp7XoHij2JKNcwloTkp+lg8+J
+ 9d8Q99LiwSrzA8mz6+AayFFE8LmwGDlCwFp+5pa5OmSJsQTu9V1aVJbA3yOmsEqJjwZjiuUrL
+ VMapsvzeJ1IZoXbTk9KPExPOQryzcA66ek9WgF/ZCg+Y/XqiW8qKCMQKFcgCc0MTu3GEp8TCb
+ 8yUReYbMbS1Ti4MLm0gff+0G/6PMFI0vllUCGvGFGopiKS0Oh6jvsddMaRmeDE1hd0VQWN3Oh
+ 2uzYBEjA8ubYZOV2xTEkNWpyOZohUxRIATpBENJmgY4SWm0xoqBwfLjqvEgUcDXDMoEDtDgkT
+ dp9cYeikHDB75C3qEz4FlCOnjT8jitaVBe9PCJnJOJZ5CK7dcL7UclKjwTtrpGCHZUqvGRXp+
+ vW2AsqmJjCYewsOOHlF7mraBbQEgsz3zDwckkfm7WJpYotIjpRi/XtDYzD1M6qgIrKGgSo+c7
+ yACKW+L/7XAgIamcpR7QVOPLDDq5nT6P/uvl3XeGcD8lwJx8bbuXu914s479fIzsOg/EArJUM
+ PNj0NDd4AfVyevetHXQCQdaRJ+q57nrQY9Ks20TWtHqdQ5cbtvYBsleHOj/bmaxWKH46w3FNy
+ Xu/tr0Px9pWb8IBnJbRUuUkucZOIwS3oKba0HOAzdPmZCsJczE7yQkQrdVHotoanaRMhb1Fwp
+ 7Y1At0BouoY5V9qu0JlT+wquAn5omSisxwMwBmobVlmlLMKJmFBHVHtxvb8YlVHsgNcbtsE+z
+ RpxHVQvQ72GRgSh2y0PAH0MqWe/moIIOXjJ9FKiJTLe0WclwCqWDeeN2fR1G7i7nK61BO7ELs
+ 1sLu39xK7kDrTX/fpOCl+qCXDqNHC1QAbnrjUJ36k9e+yCtbB1wA9ZSJRca4DrdaWK/Sy+RQT
+ mWulbDeR4pZPijGb2/JoB1zX5/cctRzLsoObhXmuEqgV0jm621OykmYmQKB4=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-* Please avoid typos in the commit message.
+> =E2=80=A6 This commit replaces return with the goto.
 
-* I would prefer an other wording for the change description.
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=97f9a3c4eee55b0178b518ae7114a6a53372913d#n151
-
+How do you think about to omit the wording =E2=80=9CThis commit=E2=80=9D f=
+rom your change descriptions?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3D97f9a3c4eee55b0178b518ae71=
+14a6a53372913d#n151
 
 Regards,
 Markus

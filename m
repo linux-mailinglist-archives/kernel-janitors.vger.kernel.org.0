@@ -2,40 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9238EC1B3B
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Sep 2019 08:04:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C666C1B69
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Sep 2019 08:25:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729650AbfI3GD5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 30 Sep 2019 02:03:57 -0400
-Received: from mout.web.de ([212.227.17.11]:46801 "EHLO mout.web.de"
+        id S1729728AbfI3GYp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 30 Sep 2019 02:24:45 -0400
+Received: from mout.web.de ([212.227.17.11]:56799 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729640AbfI3GD5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 30 Sep 2019 02:03:57 -0400
+        id S1729521AbfI3GYp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 30 Sep 2019 02:24:45 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569823383;
-        bh=HGG0I96NkETQYQwgStUjCsGhYSZLyQy3fD3AGR7Me50=;
-        h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
-        b=E/FDxgKHjd5LVpckg52gwMrScZmaD0CMN3jvojBijVsWdyk+K5W9f4us4bE62b2Sk
-         IThJoblQ+dnHKpPB7jwV0i4ZeDwcHl4BYuXbcSnkaLFOrZTSnqnt/ySTkJmcuD/OuK
-         sg1rfDs9nKZwCgxpkbWLnKGqx9QQC7O3ysvrr29I=
+        s=dbaedf251592; t=1569824676;
+        bh=4xDHwP7GsaokFa+ZzSb3wiClSs/ehrdmvXIwdvXgQMk=;
+        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+        b=qfWp2Cif9eRZsJ98M+/gO1Pocp0aBtxmZlXCWInmCEc3/V4PKhPI7b7WEyZ+QZplC
+         5ysVJBBxO7OZ8DPEdwwLgnDVsJq2ZkQQ20VpCXRXw3FkZlepZHFSOo4tovDuzv2Lcf
+         FSOjkaNCx+B+prAGUTw1KAvBitZpX/+KgWvFqafA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.244.97.105]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LtWsC-1i75Wt0B2y-010urk; Mon, 30
- Sep 2019 08:03:03 +0200
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-fsdevel@vger.kernel.org
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MI5ze-1iIerd3d6M-003tF6; Mon, 30
+ Sep 2019 08:24:35 +0200
+Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        David Sterba <dsterba@suse.com>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Kees Cook <keescook@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-References: <20190930032200.30474-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] fs: affs: fix a memory leak in affs_remount
+        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20190930033928.32312-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] spi: gpio: prevent memory leak in spi_gpio_probe
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        linux-spi@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -80,39 +74,38 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <ec7d3fdb-445b-7f4e-d6e6-77c6ae9a5732@web.de>
-Date:   Mon, 30 Sep 2019 08:02:53 +0200
+Message-ID: <dcd26f62-e384-bf6d-2e7d-63c0d0f7da11@web.de>
+Date:   Mon, 30 Sep 2019 08:24:34 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <20190930032200.30474-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20190930033928.32312-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:y4UBRBpT6eO7hvyCvrgBdFi65xYTnuce0lYLy1JDMNcGQqrVF0C
- ZVzeTHs7ODMHhMLoN8wkHR7kZSmlV44aL9/B5TdIW0YZ9yvWgaD4SNPOBFjNGa/FokI3faK
- CTaHd8qsMUl2aDmQ3l0xVRK8BKiVraVUrtU+H5mrJOHzohrrCHj47R63y3ZVOpQ/RBde3zY
- PgN2wD+W7TMZ2ScqzDs6Q==
+X-Provags-ID: V03:K1:HAOB9u7KRH3bxo+pLm7aJonGq6dLn3NKqjQyBqXs4e4Jn4ptihC
+ o72UISO8k53NizGPMPx2QOz3cCtMVvGN9PCpJjMXZdlIjuKVKoDhkO0MvI4q2Jrl2NkQZAf
+ t7VpYFCdOxhxenwxLDZMwwfO3kCBVva/Os3qW+WRcxyLh262p5fZJPwbDVnM+H6WF2dBtWZ
+ T6pAiMdJF5ywE9neE034Q==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:xdPGvWMEzLw=:DOsFF20mdzcuGlAduEu7Pi
- Fc3pBlr8H90fS45fNcVJsZYEHRp1+toc+fIgWHrgtrcdz12cMmH2LZjw8+Dl650oN1JLWh42q
- IJNUtkLOuyfOR5HvjViyiZrz9CWqbQLEKsQ0EWLS9Fsra2q1hlj9VX0feiNvs+mj3bC2QPs6w
- Lmxfn8GtH2ievPOP94/CUK8SW5HxpfT2HeKbvKwyiga15WiSjn4vIG4HdebeRhRjC7eFheKHd
- GhK8pfQMdGDVBLgs4aWib6TnNxD5GSG0PxYErd6YBOXzybZswzILKGpYqTYvpr+pMNX7b2QCk
- fkKzPIrFdXTn94r4NlipxdlCTeVXacqZcPUN1ebqAqcMo8Hj/fMQQod+IhO1lX/haEw6rR60u
- Qtnp5TCjITpnuNxL+aUYIEuAlwlRltxSd0+Nh4zIikr6DPfpj+Q5+9Mium2ItW+p7riIY2o8Y
- kuSExYsUy/bSQGMHlgVZ9cjDbquGYh4pZjYicEotsfUOWHan4Q4HiKAjRDHV0L+atXvprkCpk
- pLMd40y3dlGrZkxlJZxsuqM3kmvoKG93pNHJGmIF5pRrPabCsHvNjQNaUNaI3CQyt09DZGDaF
- K7ECsvPcqeJCAtWReIJls7oS+Dk/r+wFIm8sd3XmOyUeIuVciyB5gfyjIHSCoZnkhjsNiWQeA
- 0M/Z9cSFMK8396Fz4qqqpSHP3eqdk/zZsfsUZHkMYlxLYgzpEFNmfzmFF/4+sMWPzD2Qthecd
- iQfTDZIbWMZb02k6IF8PEucC+vVObxw4LML2jxAR5cwTfxoZo/N+n3X/LgytA6HTz4mF9N+m7
- LD2DdoqkZn8YK4tpa60e1oGtfYDoZ0sTqKE9Kk7QVyfxDX3FaqhOU1mpyCTy0ocBrSBMN2nHC
- ze6Ul+OuERMmuszjeML8Dsj81Zfg1Njo5pDZWBum8V8DjFCau2pifUlk9S87jTlQXF08l58XC
- S4TrrgE0DmjRAyMEpCrEOGBieD4JQCxPAuIek9z0uZPdop1Wcbm2Z5zBbHnjvJVn/VTWGEEKd
- keUzwc2X1YuvOvhaswnZgrqUKhcpot0+H0cKVzOnqNlwAVzTdWoj3Yvn/Sjp3CRfL9FE1L41L
- egwqDOrfov98Teu3iPIsfTY9Q89VphjQML6DgS6AQsTsvbhWS5Jltuv4GWvgTaGGTWeC9DyHu
- mTZGkQdW/jM7LR5LZn9o1jA8wb0VU41eN+Q29I7jfDgzJihhemBgQn5TaNifbjOKPoIJTZkUI
- OCcU4PMgU7IxjS6xqNsP3weNwOFJ5IRtK2wtb11awONOiXX9kEyZmpPd/QfQ=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:tXbA7AauVAI=:q0N4RZbEOloFkIoiRvDZTz
+ L8bq8+r9j5/HBYMJ6DzRoDuAdF7Q30gOlHvhKteGxWXh1LeXU5FEzYS+7j6fnZoSB1HysunX7
+ oLkkBuPfV8UZk3TdWD9ZdYGQ+2I9H/z7Jb7WBOtAlcFJXm/13r/BbvoM4tugxpDGOxTzXvPP5
+ YiaLrzhVY5R7ZYf3ziBULgylJJzZ9HuKg1iSMoAxCJokiIAtwDllfcPUzfseRQtH62iNufyHr
+ PWsurRg7ThBwWHyr9q26ugWHpaO82H6ZRlHjkhT0PGk4w3q1wXW6rzVwQ5qm9Ittehl99sxwl
+ USpJh7U/kXuR6Wow6Lzn8AQiRP7suku52iNZddgw9Q6ii70Q4rJuqFb3ovwl2XUwTDyhiuHep
+ jQYzQq7pyZTqTNI6rzQj2/NPM7NcsFs+PmuXFDhokVMiwQi1p0Wb/pLPAAZwq1vXEJy60Pv1W
+ TsXKwWKqXRHLx4gxIaaWprCq6YfAw77sJy+ItSGKmJTe2U7+Nou7zjmi4WvRxcuemPe7oRoTm
+ gjXpGWTlAxc9+swFMhoDUw2w5TxTNf5QI31EEd56ZUc3xOroq+ob2vY59iQVuQ/WhC9AnFCaK
+ EAkEQfBr3oxJmvGjewvcpZWNNuM2L3dUjMkeQgR+NUkZ+j3WwCMqnN7rXdbdOIahWkEODwTJe
+ GSG17iYNGhMZQ5ZBfZTWA8EM3MLey55CdzBurP0fvJLsmGbmBntheU6mCyTbEBUMGFvSrHSJ5
+ aMwpE3OZWvxwDCU6evnAVf6h3Ib8prNeV0cS0SZ/spcewdBrcgPGlsBVdJyV7aFiQsuPlhaRl
+ YejSqQg5hf9vQ//GCPWXJ3RsaXR8WgQ5UQrSg3yvLLEfhypAUF2tDkOeMa8gMbDjCWjsL4Hfc
+ lUuRNWpfflp5X3ri1rNlTZxsITGgAAJ/D8byzjn0uNcoXRXcxoB5H+zq4twUFA/6MKy/9g/4C
+ u9bMRFtHhTqTyXUlYvkobOJOg6W4npwAhKOVMvrE6K1Lu2EAmrBOSmT/GiiVndXK7ckmI8prO
+ QxSy+hI6L5FPUwZC5J7+h9S46z97ivqsEgfbUVtBaU51Zos74qhLE+VD0Hajd1pltFR7rRuKu
+ 0Lz66qDY1I7zkrp5if5GCJHZwIuHIGRyKNkrCysKsUlbeDG6siA6ADdmerWZg47Jo57pqsNWM
+ z5LcPqvtGm6Bx5hN00/4DOsLi8udF6Gxn3Ildou2AyMD/LfG9muB+e5fkEDmO5bV9FlGM3cYU
+ ulROj7UPZb/F5BcUHZZLIO3v5UGimPnskDWAnIHAnDa5GvPpfNW9Ypt6VlYw=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -121,19 +114,8 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 * Please avoid typos in the commit message.
 
 * I would prefer an other wording for the change description.
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-Documentation/process/submitting-patches.rst?id=3D97f9a3c4eee55b0178b518ae=
-7114a6a53372913d#n151
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=97f9a3c4eee55b0178b518ae7114a6a53372913d#n151
 
-
-> But this is not actually used later!
-
-Can this information trigger the deletion of questionable source code
-instead of adding a missing function call =E2=80=9Ckfree(new_opts)=E2=80=
-=9D?
-
-
-How do you think about to add the tag =E2=80=9CFixes=E2=80=9D?
 
 Regards,
 Markus

@@ -2,35 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8B00C1BC9
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Sep 2019 08:56:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51CB7C1BFB
+	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Sep 2019 09:16:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729371AbfI3Gzc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 30 Sep 2019 02:55:32 -0400
-Received: from mout.web.de ([217.72.192.78]:38605 "EHLO mout.web.de"
+        id S1729680AbfI3HQi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 30 Sep 2019 03:16:38 -0400
+Received: from mout.web.de ([212.227.17.11]:36777 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726121AbfI3Gzb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 30 Sep 2019 02:55:31 -0400
+        id S1729232AbfI3HQi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 30 Sep 2019 03:16:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569826522;
-        bh=+3E/INNc/nZJwNdJLcPAZwGiWdqqBKAEARv1mFvBn1w=;
+        s=dbaedf251592; t=1569827791;
+        bh=gbMOVn8Fn770a2SHIGdp8mDBqRMkfvq1IBv/5EGkKTw=;
         h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=XBHLn+Q2bUoxfl6m7U8LwOAaoereWzFuqLX9CRAIWP61PQob0/EOO1eCU/sarsR5m
-         3q99D103nW0/VfOGeo6sNUQmbQ+Dl5d6wsb49q+WS65+NhJ8wY01hMH9ztMyddYo0W
-         xqdJGQIRjE1rbE9TQdxi3n5E5yN3n57zu4VOcDcA=
+        b=gpQp/i7JtZhG2At0h3YidtTwMYUP3sKmfBpCCIvpnL6M8Obx4KsNfbMiP7IcaV0wZ
+         0KS74MERJU79ZZpsn5fueTBeLGvudk9o7fXbf9d38h5Cm0D5E7eYXslAybtn1XPLfb
+         Y+QGonh9m2TW4yddSl9wJ6s+CjmcaGduTT3ol9AE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.244.97.105]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LeLKb-1hmuMW3DRN-00qC1P; Mon, 30
- Sep 2019 08:55:21 +0200
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MPYB3-1iAB5i2BCD-004mVD; Mon, 30
+ Sep 2019 09:16:31 +0200
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
-        Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20190930024147.25243-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] usb: dwc3: pci: prevent memory leak in dwc3_pci_probe
+        Matias Bjorling <mb@lightnvm.io>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20190930023415.24171-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] lightnvm: prevent memory leak in nvm_bb_chunk_sense
 To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-usb@vger.kernel.org
+        linux-block@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,51 +74,53 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <5f21ff8b-0cd2-5442-7d8b-f31b0f5dcdfe@web.de>
-Date:   Mon, 30 Sep 2019 08:55:20 +0200
+Message-ID: <d44a6dca-006e-5bcc-64b4-2b62cf9a9769@web.de>
+Date:   Mon, 30 Sep 2019 09:16:30 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <20190930024147.25243-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20190930023415.24171-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:P+OGt6N+0QX9QcBfG9fpEPvI1r1TbI5LAftzqB3RikkON4+3hkS
- iHxzeaEga9e8WcwDnSbg5UWeXww+sQqLdQFByYcAWXhRYpWAgj8cfawXTh6JeqpNuSlae6+
- dvIhInTTKHsPbDhctwBKRDUKZ8ADFVy7hrIdVJUhKbrLhTIi9s4gxeWo+M7gDRt2OQ0RdCL
- gN0RMTcPMBRZ7Su3WiWmA==
+X-Provags-ID: V03:K1:/BiU2QFsDIz7Z6Efh886OtMBZ/zWPmQ1Lm4VSlF3Em0WcRxdrGv
+ AHGP7N3VkVcCV7RkHksWdrJLVy3Y7g3z+cnZpCwZybt/XWpvf9tmASR1ndDIFifwMeVgu3K
+ 9sFB+1uV5t1qvok61HCZO8adqu02UR/AqsORjw7RTR7EnILVKqLcfKpApi2MSr7um73PJCq
+ 1/JGMCkBBl7YUdED2pmOQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:r0EUch90hOQ=:JnE1MHNSBzIR4Lal1H6hxy
- j3Nm8AmAByGr2mLdox8fHm6r1gdl2rsd6jgtsoM91cnaP4zPR+OQmlAolGFOGscENGcRAXum5
- 6xzhOIgd5oAD7LM10t6O1GHi6lQcPsRZwuN+4eFie12pb5JeFJIyAUL4YJ9RcXi8X80nPo4vj
- FyoWA34OVANMKXgGHb8l8htmoM5l4BWGVLfGqsRuYOru3CgAQd7EtTw+dlwI+cvpRyma1HuEe
- hY88+ICF7ZNN4qsO0EepJW+Sx0IXu4HdO3MgJR/8mDF//bcuVHMiXINwE9NNtEM7ehqcEDedl
- Vx6F75U3Axbh2hnGIWPetTwzN9OZPZ8AbbN1VEQqzTytWRPDdp7XoHij2JKNcwloTkp+lg8+J
- 9d8Q99LiwSrzA8mz6+AayFFE8LmwGDlCwFp+5pa5OmSJsQTu9V1aVJbA3yOmsEqJjwZjiuUrL
- VMapsvzeJ1IZoXbTk9KPExPOQryzcA66ek9WgF/ZCg+Y/XqiW8qKCMQKFcgCc0MTu3GEp8TCb
- 8yUReYbMbS1Ti4MLm0gff+0G/6PMFI0vllUCGvGFGopiKS0Oh6jvsddMaRmeDE1hd0VQWN3Oh
- 2uzYBEjA8ubYZOV2xTEkNWpyOZohUxRIATpBENJmgY4SWm0xoqBwfLjqvEgUcDXDMoEDtDgkT
- dp9cYeikHDB75C3qEz4FlCOnjT8jitaVBe9PCJnJOJZ5CK7dcL7UclKjwTtrpGCHZUqvGRXp+
- vW2AsqmJjCYewsOOHlF7mraBbQEgsz3zDwckkfm7WJpYotIjpRi/XtDYzD1M6qgIrKGgSo+c7
- yACKW+L/7XAgIamcpR7QVOPLDDq5nT6P/uvl3XeGcD8lwJx8bbuXu914s479fIzsOg/EArJUM
- PNj0NDd4AfVyevetHXQCQdaRJ+q57nrQY9Ks20TWtHqdQ5cbtvYBsleHOj/bmaxWKH46w3FNy
- Xu/tr0Px9pWb8IBnJbRUuUkucZOIwS3oKba0HOAzdPmZCsJczE7yQkQrdVHotoanaRMhb1Fwp
- 7Y1At0BouoY5V9qu0JlT+wquAn5omSisxwMwBmobVlmlLMKJmFBHVHtxvb8YlVHsgNcbtsE+z
- RpxHVQvQ72GRgSh2y0PAH0MqWe/moIIOXjJ9FKiJTLe0WclwCqWDeeN2fR1G7i7nK61BO7ELs
- 1sLu39xK7kDrTX/fpOCl+qCXDqNHC1QAbnrjUJ36k9e+yCtbB1wA9ZSJRca4DrdaWK/Sy+RQT
- mWulbDeR4pZPijGb2/JoB1zX5/cctRzLsoObhXmuEqgV0jm621OykmYmQKB4=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:FnKkHmUXkZU=:nDkQm5BUAKEvNB7iq/Q74L
+ +7YYKPEoZsuTRBt4aWO5gJXrs6S0uzs5wRasg32AbndC7pqvSO3FlC8xPCwokHiEeg+HvJHxE
+ 3WTnrUjOGfr4UzgI/E6rlfAAjSH8vQIB8g9O9kKoQwQvPBc8SY9LsWI5Jx8ZNUP1CC/70SvNB
+ /83BYGmdBZNiIDLJxSt0fMCsWsrGhgBYXX0V+0IGS51lfs2J4sBKMinWTrbFI95C3TyOVycij
+ UlxvyEgykpMf6qdXeS9Oh0KdFvVMeKOry0n9tzLrxj9gX0MEZHwJLG1QQAf1j8Kf+TPgcHeIc
+ yd7A1+G+e5PrEVG7zldpGNAIn5A1EY/ZShgRlmGXwFJIFz+0IRjKV31BouqwUoiKzchmDT7kQ
+ UA4zmC/e8LABRfrGolg4Y13xKyni9AwRxv2GwJf4n/r1IVyltQBET46uV2Yuk/I9jxaaFTpYG
+ BXeThpLcH77XJjeIQUlfMZWN23rnxhaCBfmM1KNVfITek6TUo1sIVyniwKXXSr+YoN7f1tZxp
+ CsbNRFFavRtfvIS8KoqugwNupOVJVJjEsG9DwkeK7ljvAt4oMuNwHMr1UvVsNvZ9i2av0b8Ey
+ ujrILQCJDejS0rryxxvM9nFCfErQR5QRILfpvUMhv03W3axjREsj/6Hj+g6VmEcwDy7vVdE/v
+ +rJOjLNm8RTH5hbrDZ0A+Fwryt/ZufsbLmhy+ZXInppZKj1rwbFqg9J0krfM9ECrKtvfikikj
+ bL/1UA1ROkHdn+ikHbSgFuWAfjHgIB7B+OlJWFZS4WsuwQAM6psbTbbugO/2C8uFkZatt1LEC
+ 26GxZaJJhhnLttNDInX8B0zWYc1p3CkbGiN6cnMYZBAnCdBmKKZgGIZrffSBM/GW9Ml+W4pBB
+ POdE9b/El/gtaSbT7sUlDsNQARpNGdVuENu9gz33WR++XzzMdIIC9m3yiD4Zz3eL61gp6citv
+ B63nOxNC5r7jjp/V2ByrAXZ2eJnRXjLUnzJUXFdQF/+edhSOK2Wmfp9vgTF7jH2uEnDhO3Mpo
+ aPoeqD/P3lN4gd9yNBDTF9Gp2JQ7UkAaKC9+Nj0nFbrksbfAytg5USvx98stZU7fkRAS79syc
+ ygz4G+JivRlWYxlzuws/16AEHkVXoHCMpzTVYrGsPpMZHdRPkcrYOUf2c3rCLKacMNRTvQeNk
+ 79+IdVQmop0z+bhaTz+GKjWfG28x7YOLIPIt8lwSfQozbePWOcbXLigFdXmXtT71IefwiwAH+
+ cXeQvnFXv9B7tUXTiaaAZ/Yy/vY8gKPZYqSKvL7jV27O/CgNOjejpBNyFdIw=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> =E2=80=A6 This commit replaces return with the goto.
+> To fix this issue I moved the __free_page call before error check.
 
-How do you think about to omit the wording =E2=80=9CThis commit=E2=80=9D f=
-rom your change descriptions?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?id=3D97f9a3c4eee55b0178b518ae71=
-14a6a53372913d#n151
+Would the wording =E2=80=9CMove the __free_page() call before the error ch=
+eck.=E2=80=9D
+be more succinct for the change description?
+
+Can the following code variant be applied at the end of this function?
+
+ 	return ret ? ret : rqd.error;
 
 Regards,
 Markus

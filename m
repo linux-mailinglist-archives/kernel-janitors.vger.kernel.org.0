@@ -2,44 +2,45 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24559C3314
-	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Oct 2019 13:44:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF51EC3311
+	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Oct 2019 13:44:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387773AbfJALmD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 1 Oct 2019 07:42:03 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:41042 "EHLO
+        id S2387764AbfJALlz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 1 Oct 2019 07:41:55 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:41208 "EHLO
         heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387606AbfJALlJ (ORCPT
+        with ESMTP id S2387636AbfJALlM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 1 Oct 2019 07:41:09 -0400
+        Tue, 1 Oct 2019 07:41:12 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
         Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
         List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=t5quOLTmLgJSTTvC1obcfZ2uC+grOuMX9vfWHkSc+cI=; b=pJk9GhdXqRRd
-        IMQ75CJDtyq3Lmmr7/gLZjw7SjnI5+/THZ83bTnm9euB/HSpS5IBBJ98IM4FLLInUb5fuvHe4D6E1
-        6PRnHjuODYqPBtaRIHlgVet1EbNA0cEp+FshaGYPrMdw1YH2UzLwFN0NJ9kMqle2hbkgfbX2APmUZ
-        YOr+E=;
+        List-Archive; bh=yaTBvOc4ub9EBgFT0t4N5VA/W6AvqgGon1ddgd0Obko=; b=asOmVkcdJioS
+        gwHRains2VilIGctACLH36Kwc3Q+tnLzkeg5IUKwlCN2sYyF9wwtqNX0lbrEiqDhI2loS/KSvxxYG
+        2nZdX2IfAvhp+m4CW/p3IClasB4s/BSSrYEVlujiYCGrPGsszbSrwMV5Jm8qdBagCN/+pd7DcBNMo
+        HcYhU=;
 Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
         by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <broonie@sirena.co.uk>)
-        id 1iFGWg-0004Ya-78; Tue, 01 Oct 2019 11:41:06 +0000
+        id 1iFGWg-0004Yo-Vi; Tue, 01 Oct 2019 11:41:07 +0000
 Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id AF4BB2742A30; Tue,  1 Oct 2019 12:41:05 +0100 (BST)
+        id 6CD7D2742A30; Tue,  1 Oct 2019 12:41:06 +0100 (BST)
 From:   Mark Brown <broonie@kernel.org>
 To:     Markus Elfring <elfring@users.sourceforge.net>
-Cc:     kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org,
+Cc:     Daniel Schwierzeck <daniel.schwierzeck@gmail.com>,
+        Hauke Mehrtens <hauke@hauke-m.de>,
+        kernel-janitors@vger.kernel.org, linux-spi@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>,
-        Mark Brown <broonie@kernel.org>,
-        Max Filippov <jcmvbkbc@gmail.com>
-Subject: Applied "spi: xtensa-xtfpga: Use devm_platform_ioremap_resource() in xtfpga_spi_probe()" to the spi tree
-In-Reply-To: <178bb78e-714f-645f-d819-5732870c4272@web.de>
+        Mark Brown <broonie@kernel.org>
+Subject: Applied "spi: lantiq-ssc: Use devm_platform_ioremap_resource() in lantiq_ssc_probe()" to the spi tree
+In-Reply-To: <230495a7-b754-bc6a-05e0-059a6b6c643d@web.de>
 X-Patchwork-Hint: ignore
-Message-Id: <20191001114105.AF4BB2742A30@ypsilon.sirena.org.uk>
-Date:   Tue,  1 Oct 2019 12:41:05 +0100 (BST)
+Message-Id: <20191001114106.6CD7D2742A30@ypsilon.sirena.org.uk>
+Date:   Tue,  1 Oct 2019 12:41:06 +0100 (BST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -47,7 +48,7 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 The patch
 
-   spi: xtensa-xtfpga: Use devm_platform_ioremap_resource() in xtfpga_spi_probe()
+   spi: lantiq-ssc: Use devm_platform_ioremap_resource() in lantiq_ssc_probe()
 
 has been applied to the spi tree at
 
@@ -72,51 +73,58 @@ to this mail.
 Thanks,
 Mark
 
-From 3f049e7df22e563b04fd576bdc37e6b3e2c7a996 Mon Sep 17 00:00:00 2001
+From 22262695f46b68659ba98a12e275df388c74968c Mon Sep 17 00:00:00 2001
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 21 Sep 2019 15:35:08 +0200
-Subject: [PATCH] spi: xtensa-xtfpga: Use devm_platform_ioremap_resource() in
- xtfpga_spi_probe()
+Date: Sat, 21 Sep 2019 14:16:49 +0200
+Subject: [PATCH] spi: lantiq-ssc: Use devm_platform_ioremap_resource() in
+ lantiq_ssc_probe()
 
 Simplify this function implementation by using a known wrapper function.
 
 This issue was detected by using the Coccinelle software.
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Link: https://lore.kernel.org/r/178bb78e-714f-645f-d819-5732870c4272@web.de
+Link: https://lore.kernel.org/r/230495a7-b754-bc6a-05e0-059a6b6c643d@web.de
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- drivers/spi/spi-xtensa-xtfpga.c | 10 +---------
+ drivers/spi/spi-lantiq-ssc.c | 10 +---------
  1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-xtensa-xtfpga.c b/drivers/spi/spi-xtensa-xtfpga.c
-index 86516eb1e143..fc2b5eb7d614 100644
---- a/drivers/spi/spi-xtensa-xtfpga.c
-+++ b/drivers/spi/spi-xtensa-xtfpga.c
-@@ -80,7 +80,6 @@ static void xtfpga_spi_chipselect(struct spi_device *spi, int is_on)
- static int xtfpga_spi_probe(struct platform_device *pdev)
+diff --git a/drivers/spi/spi-lantiq-ssc.c b/drivers/spi/spi-lantiq-ssc.c
+index 9dfe8b04e688..1fd7ee53d451 100644
+--- a/drivers/spi/spi-lantiq-ssc.c
++++ b/drivers/spi/spi-lantiq-ssc.c
+@@ -797,7 +797,6 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
  {
- 	struct xtfpga_spi *xspi;
--	struct resource *mem;
- 	int ret;
+ 	struct device *dev = &pdev->dev;
  	struct spi_master *master;
+-	struct resource *res;
+ 	struct lantiq_ssc_spi *spi;
+ 	const struct lantiq_ssc_hwcfg *hwcfg;
+ 	const struct of_device_id *match;
+@@ -812,12 +811,6 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
+ 	}
+ 	hwcfg = match->data;
  
-@@ -97,14 +96,7 @@ static int xtfpga_spi_probe(struct platform_device *pdev)
- 	xspi->bitbang.master = master;
- 	xspi->bitbang.chipselect = xtfpga_spi_chipselect;
- 	xspi->bitbang.txrx_word[SPI_MODE_0] = xtfpga_spi_txrx_word;
--
--	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!mem) {
--		dev_err(&pdev->dev, "No memory resource\n");
--		ret = -ENODEV;
--		goto err;
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res) {
+-		dev_err(dev, "failed to get resources\n");
+-		return -ENXIO;
 -	}
--	xspi->regs = devm_ioremap_resource(&pdev->dev, mem);
-+	xspi->regs = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(xspi->regs)) {
- 		ret = PTR_ERR(xspi->regs);
- 		goto err;
+-
+ 	rx_irq = platform_get_irq_byname(pdev, LTQ_SPI_RX_IRQ_NAME);
+ 	if (rx_irq < 0)
+ 		return -ENXIO;
+@@ -839,8 +832,7 @@ static int lantiq_ssc_probe(struct platform_device *pdev)
+ 	spi->dev = dev;
+ 	spi->hwcfg = hwcfg;
+ 	platform_set_drvdata(pdev, spi);
+-
+-	spi->regbase = devm_ioremap_resource(dev, res);
++	spi->regbase = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(spi->regbase)) {
+ 		err = PTR_ERR(spi->regbase);
+ 		goto err_master_put;
 -- 
 2.20.1
 

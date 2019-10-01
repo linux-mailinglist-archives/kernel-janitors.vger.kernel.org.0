@@ -2,99 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBAD4C27A8
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Sep 2019 23:02:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C68CC2BF1
+	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Oct 2019 04:36:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731050AbfI3VCI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 30 Sep 2019 17:02:08 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:34516 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726504AbfI3VCI (ORCPT
+        id S1729356AbfJACgT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 30 Sep 2019 22:36:19 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:50902 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726157AbfJACgT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 30 Sep 2019 17:02:08 -0400
-Received: by mail-io1-f68.google.com with SMTP id q1so42146530ion.1;
-        Mon, 30 Sep 2019 14:02:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=QID0cXkDC0BLzvC7FuY4xqFhqxUaDG93KA1HjGWVRXo=;
-        b=ntj8348gujOTmuFADRO1GV31lND4EsLCcz7M/3IOCfDQ2Rsd7yd9l3ft9xUJYv2+Os
-         SUDiAaUmZl2mQ3Sf2OfxfDaH5FpBtALUTi8Ach7ECOhSpArMITikuaG1ePWPKXRiaW0E
-         ggGt6uuTp4AR637HvRe5HXgz4q6MVm4EJU4B9mYzatq0zk5ZxkCjsPiNm7pPsE7783Mw
-         +VdofVnoj0VhUt4Qf2M2QUIxJs5Za/KRy03sz6wNRLjBjdYrfVWbLOTP/7vt2Z6ubvOX
-         QR00ulbLQA8Hq1h9LbevAc+jNVa5UhM8RZKOrufNEUWZJnWvLO5I9WE/VKXaPba3fWE2
-         6GXA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=QID0cXkDC0BLzvC7FuY4xqFhqxUaDG93KA1HjGWVRXo=;
-        b=cAuTBclivpd4Xp6ioB9RD5FFOUTTf/qgmE4jE4dDqOJ2DcoB5ZQ3ki5YKYWRwDWo3k
-         CU4azPBYHQ5YID1iRP2mlDOrpidTo+MI+vnYVL2VpfgCaxqX/uk/+NTpJoOSN7zgzyKY
-         TRzrjVnhF6BQ3CAkc4vz+0QH8xdltMoaurvm8TMonMDnw/QX+NghuuPI0BSGDquM9kmc
-         8Xg3ftFyQqKNtFo7M6wihD/s/+6s4oWtGAfYoo1h6joNG+iNtHUtsDtw8eJfEhvZH93w
-         KYYiBFhWrGJD3LYN2wa6HdTMuJCXJ06REJtPMk59n1WkckitVR71tkFGoLQAvTJujh+m
-         AJoA==
-X-Gm-Message-State: APjAAAXr/mK0OPkp0W3MwgHKMGRTaHwc1Gp180zjsklGz9pM0DiFyoeK
-        IPWusKWGtov/2513AjXm1Neh3xA+uS/14tm+R04=
-X-Google-Smtp-Source: APXvYqzS0f8N/FieGtG3rTSPNh7QsFdEKePLZRUnyEQsF7wLUfUQlddL2fv5FSx+xQeb0uvdhImlu+/YmpGMfh4eHgM=
-X-Received: by 2002:a6b:c9d7:: with SMTP id z206mr6395754iof.172.1569877326927;
- Mon, 30 Sep 2019 14:02:06 -0700 (PDT)
+        Mon, 30 Sep 2019 22:36:19 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x912Xnp5107725;
+        Tue, 1 Oct 2019 02:36:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=+8BohGo8spCCx2JGUPuixv6pVPcf7Pp1L5q0MTkEvD0=;
+ b=nHi4m5P++mluzBEV9w/hb6dGEIXzy0MO9hBAyV8Nl20fklwndt8vaQGHVv4xVwQIvF9O
+ esE30Dkv79vQzRwxpEUosI/W3bCs16Pzg4Ke9VcC/5A8AfGf9s6EGVI0LXpS5l3eyBgK
+ bJKvao2lIb+8O6Vs9+QwLHSmc+iN9SfpRpGWcbB26N1vX6bofGIXBDCE4fSQ4yGux5Jb
+ 79yf2rsHLd5+SnynLsDRZyjLDL5d/IeyPCOOXbrEy5deTx4M+n1ybtIq1tOlRDB2ieF6
+ u3EhJZr95EYx/DTFbLp6yL/8Wuq9N2hSAmYHFEmDAPBIPn1RdQsyi3FwFy7Pl6dQx/xQ Rg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2va05rjrak-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 01 Oct 2019 02:36:12 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x912XjJR021505;
+        Tue, 1 Oct 2019 02:36:12 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3020.oracle.com with ESMTP id 2vbnqbusa7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 01 Oct 2019 02:36:12 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x912aAUG023464;
+        Tue, 1 Oct 2019 02:36:10 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 30 Sep 2019 19:36:09 -0700
+To:     Colin King <colin.king@canonical.com>
+Cc:     Don Brace <don.brace@microsemi.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        esc.storagedev@microsemi.com, linux-scsi@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][smartpqi-next] scsi: smartpqi: clean up indentation of a statement
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20190831073903.7834-1-colin.king@canonical.com>
+Date:   Mon, 30 Sep 2019 22:36:07 -0400
+In-Reply-To: <20190831073903.7834-1-colin.king@canonical.com> (Colin King's
+        message of "Sat, 31 Aug 2019 08:39:03 +0100")
+Message-ID: <yq1r23xyyy0.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-References: <20190930032200.30474-1-navid.emamdoost@gmail.com> <ec7d3fdb-445b-7f4e-d6e6-77c6ae9a5732@web.de>
-In-Reply-To: <ec7d3fdb-445b-7f4e-d6e6-77c6ae9a5732@web.de>
-From:   Navid Emamdoost <navid.emamdoost@gmail.com>
-Date:   Mon, 30 Sep 2019 16:01:55 -0500
-Message-ID: <CAEkB2EQwfCZk9e=MKx-U0g_e9Dgjr_RV0n6JrVaxwUP5Z=cY+w@mail.gmail.com>
-Subject: Re: [PATCH] fs: affs: fix a memory leak in affs_remount
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-fsdevel@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        David Sterba <dsterba@suse.com>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        Kees Cook <keescook@chromium.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9396 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=750
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910010025
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9396 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=848 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910010025
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixed the issues in v2.
 
-Thanks,
-Navid.
+Colin,
 
-On Mon, Sep 30, 2019 at 1:03 AM Markus Elfring <Markus.Elfring@web.de> wrot=
-e:
->
-> * Please avoid typos in the commit message.
->
-> * I would prefer an other wording for the change description.
->   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/Documentation/process/submitting-patches.rst?id=3D97f9a3c4eee55b0178b518ae=
-7114a6a53372913d#n151
->
->
-> > But this is not actually used later!
->
-> Can this information trigger the deletion of questionable source code
-> instead of adding a missing function call =E2=80=9Ckfree(new_opts)=E2=80=
-=9D?
->
->
-> How do you think about to add the tag =E2=80=9CFixes=E2=80=9D?
->
-> Regards,
-> Markus
+> There is a statement that is indented one level too deeply, remove the
+> tab, re-join broken line and remove some empty lines.
 
+Applied to 5.5/scsi-queue. Thanks!
 
-
---=20
-Navid.
+-- 
+Martin K. Petersen	Oracle Linux Engineering

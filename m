@@ -2,47 +2,47 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 54D66C3326
-	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Oct 2019 13:44:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DE2DC32F9
+	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Oct 2019 13:44:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733155AbfJALmr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 1 Oct 2019 07:42:47 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:40542 "EHLO
+        id S2387673AbfJALlQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 1 Oct 2019 07:41:16 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:41282 "EHLO
         heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387465AbfJALk6 (ORCPT
+        with ESMTP id S2387650AbfJALlP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 1 Oct 2019 07:40:58 -0400
+        Tue, 1 Oct 2019 07:41:15 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
         Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
         Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
         Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
         List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=ZGl+hCx9u/66B7tvLuoBxNOYAm3sNLNizym3DyA34fs=; b=hGjRKc5zycsW
-        CPYR6e2IPZO68ULxAdUEptle9zMo6ktB6gTeZN86uQWLQ4iVEKZEigYGKtttEjR7sSsQKLZ/KP22R
-        7ZyAUeZCqjf7oMOM/yuNvXGODmDMdVJqWWQ36VEJcL+V/JqscXWamMcrPTdbZOi3CfdTUZQ9iUSVy
-        W19ro=;
+        List-Archive; bh=z6hLIza3q6cYchvVHYiHKN/ZHrei8SPlYx9ockTASYE=; b=m96scqtLNyc6
+        h7zycSmfCjk8HcAr5pjagGXNgf3F26sVMHXmBbFWwr+7GRl4aFIMGM3zuhSQyFMdNY0gLQVl3qn4B
+        +nq26LmeHKsoxfSx908CLa6DAOK+AdVxbXx9lHUWQC1AnJ/KFoLZt0sXyp6c87LEFTAGZv8ixZjy2
+        9Mp8o=;
 Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
         by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
         (envelope-from <broonie@sirena.co.uk>)
-        id 1iFGWO-0004T4-8k; Tue, 01 Oct 2019 11:40:48 +0000
+        id 1iFGWg-0004Yg-FL; Tue, 01 Oct 2019 11:41:06 +0000
 Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id AA2AA2742A10; Tue,  1 Oct 2019 12:40:47 +0100 (BST)
+        id EAA1C27429C0; Tue,  1 Oct 2019 12:41:05 +0100 (BST)
 From:   Mark Brown <broonie@kernel.org>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     alsa-devel@alsa-project.org, Bard Liao <bardliao@realtek.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        kernel-janitors@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Oder Chiou <oder_chiou@realtek.com>,
-        Takashi Iwai <tiwai@suse.com>
-Subject: Applied "ASoC: rt5663: clean up indentation issues" to the asoc tree
-In-Reply-To: <20190925100330.20695-1-colin.king@canonical.com>
+To:     Markus Elfring <elfring@users.sourceforge.net>
+Cc:     kernel-janitors@vger.kernel.org,
+        Leilk Liu <leilk.liu@mediatek.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, linux-spi@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>
+Subject: Applied "spi: mediatek: Use devm_platform_ioremap_resource() in mtk_spi_slave_probe()" to the spi tree
+In-Reply-To: <225b76ca-a367-4bef-d8ce-42c7af9242a5@web.de>
 X-Patchwork-Hint: ignore
-Message-Id: <20191001114047.AA2AA2742A10@ypsilon.sirena.org.uk>
-Date:   Tue,  1 Oct 2019 12:40:47 +0100 (BST)
+Message-Id: <20191001114105.EAA1C27429C0@ypsilon.sirena.org.uk>
+Date:   Tue,  1 Oct 2019 12:41:05 +0100 (BST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -50,11 +50,11 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 The patch
 
-   ASoC: rt5663: clean up indentation issues
+   spi: mediatek: Use devm_platform_ioremap_resource() in mtk_spi_slave_probe()
 
-has been applied to the asoc tree at
+has been applied to the spi tree at
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.5
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-5.5
 
 All being well this means that it will be integrated into the linux-next
 tree (usually sometime in the next 24 hours) and sent to Linus during
@@ -75,43 +75,54 @@ to this mail.
 Thanks,
 Mark
 
-From bd1468f252e85280b71a069a2255842d78133cc4 Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king@canonical.com>
-Date: Wed, 25 Sep 2019 11:03:30 +0100
-Subject: [PATCH] ASoC: rt5663: clean up indentation issues
+From 6cdcb5d394413d906773f1ae2efaa86485d6d6e1 Mon Sep 17 00:00:00 2001
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Sat, 21 Sep 2019 15:12:33 +0200
+Subject: [PATCH] spi: mediatek: Use devm_platform_ioremap_resource() in
+ mtk_spi_slave_probe()
 
-There are two break statements that are indented one level too deeply,
-remove the extraneous tabs.
+Simplify this function implementation by using a known wrapper function.
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Link: https://lore.kernel.org/r/20190925100330.20695-1-colin.king@canonical.com
+This issue was detected by using the Coccinelle software.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Link: https://lore.kernel.org/r/225b76ca-a367-4bef-d8ce-42c7af9242a5@web.de
 Signed-off-by: Mark Brown <broonie@kernel.org>
 ---
- sound/soc/codecs/rt5663.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-slave-mt27xx.c | 12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/sound/soc/codecs/rt5663.c b/sound/soc/codecs/rt5663.c
-index 2943692f66ed..e6c1ec6c426e 100644
---- a/sound/soc/codecs/rt5663.c
-+++ b/sound/soc/codecs/rt5663.c
-@@ -3644,7 +3644,7 @@ static int rt5663_i2c_probe(struct i2c_client *i2c,
- 		regmap_update_bits(rt5663->regmap, RT5663_PWR_ANLG_1,
- 			RT5663_LDO1_DVO_MASK | RT5663_AMP_HP_MASK,
- 			RT5663_LDO1_DVO_0_9V | RT5663_AMP_HP_3X);
--			break;
-+		break;
- 	case CODEC_VER_0:
- 		regmap_update_bits(rt5663->regmap, RT5663_DIG_MISC,
- 			RT5663_DIG_GATE_CTRL_MASK, RT5663_DIG_GATE_CTRL_EN);
-@@ -3663,7 +3663,7 @@ static int rt5663_i2c_probe(struct i2c_client *i2c,
- 		regmap_update_bits(rt5663->regmap, RT5663_TDM_2,
- 			RT5663_DATA_SWAP_ADCDAT1_MASK,
- 			RT5663_DATA_SWAP_ADCDAT1_LL);
--			break;
-+		break;
- 	default:
- 		dev_err(&i2c->dev, "%s:Unknown codec type\n", __func__);
- 	}
+diff --git a/drivers/spi/spi-slave-mt27xx.c b/drivers/spi/spi-slave-mt27xx.c
+index 61bc43b0fe57..44edaa360405 100644
+--- a/drivers/spi/spi-slave-mt27xx.c
++++ b/drivers/spi/spi-slave-mt27xx.c
+@@ -368,7 +368,6 @@ static int mtk_spi_slave_probe(struct platform_device *pdev)
+ {
+ 	struct spi_controller *ctlr;
+ 	struct mtk_spi_slave *mdata;
+-	struct resource *res;
+ 	int irq, ret;
+ 
+ 	ctlr = spi_alloc_slave(&pdev->dev, sizeof(*mdata));
+@@ -392,17 +391,8 @@ static int mtk_spi_slave_probe(struct platform_device *pdev)
+ 	platform_set_drvdata(pdev, ctlr);
+ 
+ 	init_completion(&mdata->xfer_done);
+-
+-	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res) {
+-		ret = -ENODEV;
+-		dev_err(&pdev->dev, "failed to determine base address\n");
+-		goto err_put_ctlr;
+-	}
+-
+ 	mdata->dev = &pdev->dev;
+-
+-	mdata->base = devm_ioremap_resource(&pdev->dev, res);
++	mdata->base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(mdata->base)) {
+ 		ret = PTR_ERR(mdata->base);
+ 		goto err_put_ctlr;
 -- 
 2.20.1
 

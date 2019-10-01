@@ -2,100 +2,138 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A7BBCC33C1
-	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Oct 2019 14:04:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67473C353E
+	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Oct 2019 15:12:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387563AbfJAMEb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 1 Oct 2019 08:04:31 -0400
-Received: from mga05.intel.com ([192.55.52.43]:16422 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387477AbfJAMEb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 1 Oct 2019 08:04:31 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 01 Oct 2019 05:04:23 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,571,1559545200"; 
-   d="scan'208";a="205051376"
-Received: from kuha.fi.intel.com ([10.237.72.53])
-  by fmsmga001.fm.intel.com with SMTP; 01 Oct 2019 05:04:21 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 01 Oct 2019 15:04:20 +0300
-Date:   Tue, 1 Oct 2019 15:04:20 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Guenter Roeck <linux@roeck-us.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2] usb: typec: tcpm: usb: typec: tcpm: Fix a signedness
- bug in tcpm_fw_get_caps()
-Message-ID: <20191001120420.GA26399@kuha.fi.intel.com>
-References: <20190926125310.GA9967@roeck-us.net>
- <20191001120117.GA23528@mwanda>
+        id S1726954AbfJANMT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 1 Oct 2019 09:12:19 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:36522 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726326AbfJANMT (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 1 Oct 2019 09:12:19 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x91D8xJT033466;
+        Tue, 1 Oct 2019 13:12:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=kq5CKLXi/ptDXUTgrZI7EdqafVde7HbEbJ1WmPDhKSE=;
+ b=H3z8CfhT++nA/qKbRVoauYuj4emUi5UzAHmHmcBxdmdlkIJxN/bJe5ti5eUHDlkbZTwL
+ MuZdRzO7MjFEI0lGMuzsy9vlz5I8rrcC3vd8WGkM8L816oTU1nhm8Rg77GLfgqceW+Jk
+ HGwObGmY+19spo0p6a3Uq55JyXC7q+zVcWJXNqZUHCXEg7GiUBS5gRm/TmXxZxo9zZ7Q
+ QS0Fz9EUevk4H8kbrzq8Ua3hrIbkYY9pXgGeCaCzfHt0LPVp6Li2aVfXCwbN51FlvfAR
+ IUwkGAybxjzaxdD46NV23y1oAAb9ZOlI39F7PnvMHxUxaofS853cmahYohMg8LdVW9BE Jw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 2va05rnn5t-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 01 Oct 2019 13:12:12 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x91D96V1156536;
+        Tue, 1 Oct 2019 13:12:11 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 2vbqd0ubw9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 01 Oct 2019 13:12:11 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x91DC6sv019624;
+        Tue, 1 Oct 2019 13:12:08 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 01 Oct 2019 06:12:06 -0700
+Date:   Tue, 1 Oct 2019 16:11:22 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Connor Kuehl <connor.kuehl@canonical.com>
+Cc:     Larry.Finger@lwfinger.net, gregkh@linuxfoundation.org,
+        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: rtl8188eu: fix null dereference when kzalloc
+ fails
+Message-ID: <20191001131122.GC22609@kadam>
+References: <20190927214415.899-1-connor.kuehl@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191001120117.GA23528@mwanda>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <20190927214415.899-1-connor.kuehl@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9396 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910010119
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9396 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910010119
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Oct 01, 2019 at 03:01:17PM +0300, Dan Carpenter wrote:
-> The "port->typec_caps.data" and "port->typec_caps.type" variables are
-> enums and in this context GCC will treat them as an unsigned int so they
-> can never be less than zero.
+On Fri, Sep 27, 2019 at 02:44:15PM -0700, Connor Kuehl wrote:
+> If kzalloc() returns NULL, the error path doesn't stop the flow of
+> control from entering rtw_hal_read_chip_version() which dereferences the
+> null pointer. Fix this by adding a 'goto' to the error path to more
+> gracefully handle the issue and avoid proceeding with initialization
+> steps that we're no longer prepared to handle.
 > 
-> Fixes: ae8a2ca8a221 ("usb: typec: Group all TCPCI/TCPM code together")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-Looks OK to me.
-
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-
+> Also update the debug message to be more consistent with the other debug
+> messages in this function.
+> 
+> Addresses-Coverity: ("Dereference after null check")
+> 
+> Signed-off-by: Connor Kuehl <connor.kuehl@canonical.com>
 > ---
-> v2: preserve the error code
+>  drivers/staging/rtl8188eu/os_dep/usb_intf.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 > 
->  drivers/usb/typec/tcpm/tcpm.c | 14 ++++++++------
->  1 file changed, 8 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 96562744101c..5f61d9977a15 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -4409,18 +4409,20 @@ static int tcpm_fw_get_caps(struct tcpm_port *port,
->  	/* USB data support is optional */
->  	ret = fwnode_property_read_string(fwnode, "data-role", &cap_str);
->  	if (ret == 0) {
-> -		port->typec_caps.data = typec_find_port_data_role(cap_str);
-> -		if (port->typec_caps.data < 0)
-> -			return -EINVAL;
-> +		ret = typec_find_port_data_role(cap_str);
-> +		if (ret < 0)
-> +			return ret;
-> +		port->typec_caps.data = ret;
+> diff --git a/drivers/staging/rtl8188eu/os_dep/usb_intf.c b/drivers/staging/rtl8188eu/os_dep/usb_intf.c
+> index 664d93a7f90d..4fac9dca798e 100644
+> --- a/drivers/staging/rtl8188eu/os_dep/usb_intf.c
+> +++ b/drivers/staging/rtl8188eu/os_dep/usb_intf.c
+> @@ -348,8 +348,10 @@ static struct adapter *rtw_usb_if1_init(struct dvobj_priv *dvobj,
 >  	}
 >  
->  	ret = fwnode_property_read_string(fwnode, "power-role", &cap_str);
->  	if (ret < 0)
->  		return ret;
->  
-> -	port->typec_caps.type = typec_find_port_power_role(cap_str);
-> -	if (port->typec_caps.type < 0)
-> -		return -EINVAL;
-> +	ret = typec_find_port_power_role(cap_str);
-> +	if (ret < 0)
-> +		return ret;
-> +	port->typec_caps.type = ret;
->  	port->port_type = port->typec_caps.type;
->  
->  	if (port->port_type == TYPEC_PORT_SNK)
-> -- 
-> 2.20.1
 
-thanks,
+There is another one earlier in the function as well.
 
--- 
-heikki
+drivers/staging/rtl8188eu/os_dep/usb_intf.c
+   336  
+   337          pnetdev = rtw_init_netdev(padapter);
+   338          if (!pnetdev)
+   339                  goto free_adapter;
+   340          SET_NETDEV_DEV(pnetdev, dvobj_to_dev(dvobj));
+   341          padapter = rtw_netdev_priv(pnetdev);
+   342  
+   343          if (padapter->registrypriv.monitor_enable) {
+   344                  pmondev = rtl88eu_mon_init();
+   345                  if (!pmondev)
+   346                          netdev_warn(pnetdev, "Failed to initialize monitor interface");
+
+goto free_adapter.
+
+   347                  padapter->pmondev = pmondev;
+   348          }
+   349  
+   350          padapter->HalData = kzalloc(sizeof(struct hal_data_8188e), GFP_KERNEL);
+   351          if (!padapter->HalData)
+   352                  DBG_88E("cant not alloc memory for HAL DATA\n");
+   353  
+
+>  	padapter->HalData = kzalloc(sizeof(struct hal_data_8188e), GFP_KERNEL);
+> -	if (!padapter->HalData)
+> -		DBG_88E("cant not alloc memory for HAL DATA\n");
+> +	if (!padapter->HalData) {
+> +		DBG_88E("Failed to allocate memory for HAL data\n");
+
+Remove this debug printk.
+
+> +		goto free_adapter;
+> +	}
+
+
+regards,
+dan carpenter
+

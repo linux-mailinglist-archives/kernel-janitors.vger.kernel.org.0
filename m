@@ -2,44 +2,41 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92D52C3772
-	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Oct 2019 16:31:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCF43C392A
+	for <lists+kernel-janitors@lfdr.de>; Tue,  1 Oct 2019 17:34:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389038AbfJAOb0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 1 Oct 2019 10:31:26 -0400
-Received: from mout.web.de ([212.227.17.11]:56479 "EHLO mout.web.de"
+        id S2388916AbfJAPeX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 1 Oct 2019 11:34:23 -0400
+Received: from mout.web.de ([212.227.17.11]:53777 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727051AbfJAObZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 1 Oct 2019 10:31:25 -0400
+        id S1727236AbfJAPeW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 1 Oct 2019 11:34:22 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569940263;
-        bh=dtzR+oKkbzZP6BrJC/+YNC1/yA9TF0iE4T8O+gCBJtA=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=FFbpvQcJlcjnFtSoYp+gsWoaIWOpRX6Gzam0xwIbsXjjDHXqKL3vh75qFm3uAC3bH
-         LxaQYaMuOMxYS0TCvnGSTNb1nYqYXmPvHdZvp26CGYGmbv8djzAyUrnmX/oFYYkVgQ
-         ojSfisackmmjxA+qPAXSAgm+0eMVvmva7MZbHg7o=
+        s=dbaedf251592; t=1569944030;
+        bh=9HXEykuWNUVAsJUWBSQTDK1o1l6WAA2Mg1kowcwpGZ4=;
+        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+        b=ezKp9xMqqbDPet/e4W/1bc2kZi5UMGrAVXHo7fueXfXvGoKTPNy7ZJ4F21KW8DRxe
+         5OaGKPi6eW7duMb1rJlBKZq3B45tmUko+a4QTS9B7obOLFnHQ/Sa3gbhLEIx8Yhpev
+         4jDEG0L8GAStAzPsV34z101UzTX9ObUdjOz5e6ic=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.133.188.160]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MAdx1-1iPSBR3DXH-00BvTx; Tue, 01
- Oct 2019 16:31:02 +0200
-Subject: [PATCH v2] Coccinelle: Add a SmPL script for the reconsideration of
- specific combinations of assignment and return statements
-From:   Markus Elfring <Markus.Elfring@web.de>
-To:     Julia Lawall <julia.lawall@lip6.fr>,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        kernel-janitors@vger.kernel.org,
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LgpVS-1hlATb4A2o-00oFtv; Tue, 01
+ Oct 2019 17:33:50 +0200
+Cc:     linux-kernel@vger.kernel.org,
         Gilles Muller <Gilles.Muller@lip6.fr>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jessica Yu <jeyu@kernel.org>,
+        Martijn Coenen <maco@android.com>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
         Michal Marek <michal.lkml@markovi.net>,
         Nicolas Palix <nicolas.palix@imag.fr>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        Allison Randal <allison@lohutok.net>,
-        Enrico Weigelt <lkml@metux.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kate Stewart <kstewart@linuxfoundation.org>
-References: <e07ce253-8a13-0f90-3ee0-79c1a0e78b38@web.de>
- <alpine.DEB.2.21.1909231058380.2283@hadrien>
- <4977fb04-cc29-3861-0aaf-cd93a0b0b1c7@web.de>
+References: <20191001125742.GD90796@google.com>
+Subject: Re: [Cocci] [RFC] scripts: Fix coccicheck failed
+To:     Matthias Maennich <maennich@google.com>,
+        Yue Haibing <yuehaibing@huawei.com>,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        kernel-janitors@vger.kernel.org
+From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -83,150 +80,67 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <c45c4435-581b-d137-255c-c21db7ccef78@web.de>
-Date:   Tue, 1 Oct 2019 16:30:53 +0200
+Message-ID: <15b52ec6-1cb4-f419-351a-07241cdb8674@web.de>
+Date:   Tue, 1 Oct 2019 17:33:47 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <4977fb04-cc29-3861-0aaf-cd93a0b0b1c7@web.de>
+In-Reply-To: <20191001125742.GD90796@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:sXvqV/w8lYbgy3hmdk2HMwLK90Y/rnxI9w6yo/hr7Vo76WhXAs1
- 6CxR3yim9pBq42Cg5mpw7KDdjSzwJfs4DKlQC7bFFHqaefFgaiQf74DPaO6t56RmAKKFGu8
- RFCvGWt9I94A8bCVo9hQyHmUXjFFCAzNIYrtxCjwYyrDbbPATtxhaAiZoN6EEwYbKnwqktV
- Zss8vhieVJavkSbGB+A4Q==
+X-Provags-ID: V03:K1:GepFRLFllb+Ct4JtITS1wHh/sRQuKbLTrXNKcJYaZcueL8tbEIG
+ Lr5IeATdKtkKoq3p1XgjvTpibMaGd9HiLQkVWhhT1Dn8LLWdklxCieTXRdVfj5iwp4Gxsyt
+ dT65bIRyQzun2V4jMRxAvGdQgJLX8AK9t9xufoyePH35JMkZbSAV1TJ5/KOdLLoPr+velMu
+ 4dX3ZYvRLtkmLEp8HcQuw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:6H1CuU5c6wY=:a+rnoUwzhnsVGixprpxtKY
- TP2JTCpWZKtLPiykqp8OP5UHi3qsohtnditkvHg+u5LTFQuR3AOWkU8uT3ngdnroa3FHZSaUm
- yPej2qQetF2f1+g2MqceuP6RsefjWzsPV6MbfTCUSv9YRIlVpsk+kITpmXiwpU3GBXVTp5wPc
- yVfaQt4JFN6RtDnapc5a2RBrqev3o/OVTHEdnfdOzgH4DY9ggnZ00BJGhyZ5yQc5KmMc0g8Qh
- YyhDPGZsYtu0ZBJorOFCZV3fzXqxnYmq22LbP+LU2yms7y1ag+db5l6bjTqsSen8+uKHJyP5Y
- dV+Fj6rSISei+/Y+rQ9eQ4jVmVPdLEyvHpZSvNId1lxGJVppx+MnWsmcOh8yCFbXXxSawPJ0s
- DTCMlVg2l8PWOCV3qc7w14Lu3kOvheLL0enoWdSMR1N+bHQFmXnlhipBndYn7hlapeWcy+Uni
- s8lZlO9qQ1r1s0lw1gY0hHBIvRvPEdXLzMyTl8zfoJt5mKRU6OXYG0j5sA/xTzj+xkh8JNeFr
- rCOamlkmvbyG6kqo3n6shMrbAnYu2nHQeRn3/kEID4sme1Zor61BwA/caFR6yY3EdaNnKz7Uc
- oD3C/Dmk9bod971nhUwpzDBrC/ybZrcxzstlJ+xo+9SrreQh4/0KRmgYNA88548reXN1x0Vgz
- 5plpA5BT1Hw0rRMEi+JXfwxhFHe7ZAnAfxSTL6ieZJ0IIeHe6XkEF3v77+YPUmzoIXGkp80LA
- 5c8YeJ3XiAMLf9LJmGdP2A5EtJ3IxTX44NJR+h6Ox00x+oQVXwJ7fUlJ6Wi6wNeDV8AORSqzR
- I0ZJlufdpnUeLqoNS09nGpIXvSz9e36BRICTcGIoLLNcPh4bwC6U0iVgs7RMWFkrGf6Q05J2m
- kpWTMNGFT5JE5jWCXMyveqfuHyj7QA7d+fhOyoeyIdZDJzX1HTgTg36eHxHQeWTDQHAfJ6pnQ
- SxCVjaTAqIHCdXDJZhdnvlMaA6qC+vNn9VZ3R96jWFbf/9H+YJZW+vBautTIOpw6P02+zdnfv
- Fz/6eX1V/BTdNray9hxq98rrCz15Pu92wc/lwukU/HdxhosNSEbp/0XnF6+97BTXxdds8tZI5
- BYebSfoHjUjR9U0mtGAzVxUgYbBpT3kGHE7emRzS+LLWVD+4fE0PM5HeFTH50rXeBL1EhCFzx
- 3Zra5okSWy6mc/jNzF6k9zdCrnDA5MSYV8b+xyPhzpbH9BE3/fmMINeQmHOsMd676KU/QjZTJ
- Z1lsvNhlG1bKujsVKvgqV43S+MPtAuCx3f+hiRdsrtEBqYzDuO0hWdtLqGWU=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:tRN22yKu0x4=:aV6vMeHVwg7gL8JCvjUZiR
+ qehG5U838fq3BqaFyJqXKAPR2Ad5oPlKiuMQIwQNQwt4587votAQ1H6ctsOzfAmWDyyj/g6Bt
+ 7lGWApF9ycNfvoWrrMUMlTZOE1PG2Z4dyUCI9c7JtZ7P2BRdeyMacXzndssC60icxn28cmAYg
+ Ok0QRz6SmhK1ca5HQlrY1EVrLan5G8PnwtkpZFnrTCJclve4V74kVVAeHm5Rp6t3fYQxsVtlN
+ +5S54sQm13u8o9KR3YfbDS1iCwkG6LnxazF8ayytZmWpFu9A09J1Q43r6hAvxs9d8aLPgcVbC
+ hkiPg7DAOOWotlRjwG43qi8vhsz3VObZSg4nu5kLQjsebWlvXYFEVPztp/wyVHnP9iITwzXWm
+ FmG4NT6MTivZtosVv94HessO9lJuUhAMHJ8eUn6UNTgBQDwDkg7K5KooUAnElpPCCdmQYcGc7
+ Vj4qiuj54m1Pj+uwT23i4UX//T0u2fISiJBi3pK9L2xpaLQmTBoFj/HN0m79NYPfIApw44ZUD
+ TxbTm9odEGn5BlTBwDOnObHTPFeAkATRNdlgNLAcqwFTgsB8v5v+z8shgEXeXstLiA3luU1o3
+ 2ouJ5JxRrd2JHYuh2n8wfRli1+fVX0/Sawqv5hh/sZ0FxaBOlDg71BYN7YWHWuWbVib7IQaUx
+ 5u1hvFwx3cU4AGRyMhNKLRUSFZe39e/bD854yb4EoY3Ulqj9wwLqsEhDOQEUhooFzmllkbR8+
+ VOOCjq8tWL5J1Nch5WPidjwPXyfhE976BC0I8fk4HPevg2gxk6U7E7sFqI3oV3Out7tVyJnrj
+ 3y0myNl5L6G/le5lmVb19QBTUf9osMVQGV2TSrJ+RCZ9KB94MuWCOKvxyRme7xLhUrP07EM7T
+ HxWN5+MGG8+BXU0K0vi0q423p1gfOCewtsSlLNX/fxTVeFkq7RHbwGLMC6ZghxtmbuTtyMAjO
+ 926h2V+QxJc1qZwLDAzA3fbDMYEJBOJp2tS0VRkIgl5OmrJ0nEc5dLt5pQbDIV15rUxCOgQ5h
+ IoBwJGewG5i/lOSRC4qbEle288uGdcmYOG53mKK0u0rvSbLdg4IXyV4Dkbq77guO4FYt3kouT
+ qLHZE4fG163LfK5/UjzD5Cp1FRcaGUaC42UkwEt2VPFuRNUGzE+2rQn8LMarwTjvaMVAKgyF0
+ TtcP/iO+w+uaAJoqmcqhjUdRYIhGN12usBoWhTk9BqYUDjLx/0x2/bC5OnRg89/PqTrQnynId
+ k1RW9npXLZhIpOqdx1SyPWb+FrYDIJ1mcuyfQcd43BAZ23S3TKJjglfG9+mo=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 1 Oct 2019 15:50:10 +0200
+> >+virtual report
+> >+
+> > @has_ns_import@
+> > declarer name MODULE_IMPORT_NS;
+> > identifier virtual.ns;
+> >
+> >Adding virtual report make the coccicheck go ahead smoothly.
 
-Values from expressions were occasionally assigned to local variables
-before they will be returned by the subsequent statement.
-Such expressions can be directly specified in the return statement instead=
-.
-
-Adjust affected source code by the means of the semantic patch language
-(Coccinelle software).
-
-Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-=2D--
-
-v2:
-* Application of the SmPL construct =E2=80=9C<+... =E2=80=A6 ...+>=E2=80=
-=9D
-* Addition of a hint for the supported coccicheck operation modes
+Such an adjustment might be an interesting solution.
 
 
- .../coccinelle/misc/move_code_to_return.cocci | 73 +++++++++++++++++++
- 1 file changed, 73 insertions(+)
- create mode 100644 scripts/coccinelle/misc/move_code_to_return.cocci
+> Thanks for reporting and following up with this issue. I certainly did
+> not expect all scripts in scripts/coccinelle to be automatically called
+> by coccicheck
 
-diff --git a/scripts/coccinelle/misc/move_code_to_return.cocci b/scripts/c=
-occinelle/misc/move_code_to_return.cocci
-new file mode 100644
-index 000000000000..22ce7c9d0fd2
-=2D-- /dev/null
-+++ b/scripts/coccinelle/misc/move_code_to_return.cocci
-@@ -0,0 +1,73 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/// Return expressions directly instead of assigning them to
-+/// local variables immediately before affected statements.
-+//
-+// Keywords: return statements variable assignments coding style
-+// Confidence: Medium
-+
-+virtual patch
-+virtual report
-+
-+@replacement1 depends on patch@
-+expression x;
-+identifier f, rc;
-+local idexpression lrc;
-+type rt;
-+@@
-+ rt f(...)
-+ {
-+ <+...
-+ if (...)
-+-{
-+-lrc@rc =3D x;
-+ return
-+-       rc
-++       x
-+ ;
-+-}
-+ ...+>
-+ }
-+
-+@replacement2 depends on patch@
-+expression x;
-+identifier f, rc;
-+local idexpression lrc;
-+type rt;
-+@@
-+ rt f(...)
-+ {
-+ <+...
-+-lrc@rc =3D x;
-+ return
-+-       rc
-++       x
-+ ;
-+ ...+>
-+ }
-+
-+@deletion2 depends on patch@
-+identifier replacement2.f, replacement2.rc;
-+type replacement2.rt, t;
-+@@
-+ rt f(...)
-+ {
-+ ... when any
-+-t rc;
-+ ... when !=3D rc
-+ }
-+
-+@deletion1 depends on patch@
-+identifier replacement1.f, replacement1.rc;
-+type replacement1.rt, t;
-+@@
-+ rt f(...)
-+ {
-+ ... when any
-+-t rc;
-+ ... when !=3D rc
-+ }
-+
-+@script:python info depends on report@
-+@@
-+import sys
-+sys.stderr.write("INFO: Unfortunately, specific software limitations have=
- got the consequence that only the operation mode =E2=80=9Cpatch=E2=80=9D =
-can be supported by this SmPL script so far as expected.\n")
-=2D-
-2.23.0
+Did you (or any other contributor) test the collaboration of the added
+small SmPL file with the known call interface?
 
+
+> and I still think scripts/coccinelle is the right location
+> for add_namespace.cocci.
+
+I got additional software development ideas around this view in the meantime.
+Would you like to take any other collateral evolution better into account?
+
+Regards,
+Markus

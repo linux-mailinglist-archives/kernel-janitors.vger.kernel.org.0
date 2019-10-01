@@ -2,158 +2,181 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 52A6DC472B
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Oct 2019 07:48:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58D8EC47AF
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Oct 2019 08:19:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727273AbfJBFsC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Oct 2019 01:48:02 -0400
-Received: from mout.web.de ([212.227.15.3]:57845 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726266AbfJBFsC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Oct 2019 01:48:02 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569995260;
-        bh=kryjEbVOjgPm/+T4JDkUXLGlaj6VWpM3aqTFuOHF088=;
-        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=dE7nCCoA8xG2Mmy2CK2Ggu5tt0SAvfSE/mOuuAX3X8WLmDdBdKzC++5k/3YoaUKS3
-         aFc6pCBg3LDIx0QGMaXOIPdOc/Rd+8QerJiht45fAmSuO1RIwKJSiCP123HBKJnXsh
-         3+E7Z7970yPJeXRQg9NgRF7pjDGWRANhEzuVyIxM=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.73.205]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0M89fV-1hu0Dq3Rxp-00vcqo; Wed, 02
- Oct 2019 07:47:40 +0200
-Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Sam Ravnborg <sam@ravnborg.org>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20191002034612.26607-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH v4] drm/amdgpu: fix multiple memory leaks in acp_hw_init
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Chunming Zhou <David1.Zhou@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
- +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
- mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
- lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
- YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
- GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
- rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
- 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
- jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
- BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
- cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
- Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
- g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
- OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
- CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
- LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
- sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
- kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
- i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
- g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
- q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
- NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
- nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
- 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
- 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
- wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
- riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
- DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
- fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
- 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
- xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
- qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
- Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
- Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
- +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
- hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
- /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
- tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
- qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
- Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
- x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
- pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <c03a8983-3f83-0596-96fa-a1a9312e82f8@web.de>
-Date:   Wed, 2 Oct 2019 07:47:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        id S1727498AbfJBGSZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Oct 2019 02:18:25 -0400
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:55517 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726965AbfJBGSY (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 2 Oct 2019 02:18:24 -0400
+Received: from gallifrey.ext.pengutronix.de ([2001:67c:670:201:5054:ff:fe8d:eefb] helo=bjornoya.blackshift.org)
+        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <mkl@pengutronix.de>)
+        id 1iFXxs-0007P4-NB; Wed, 02 Oct 2019 08:18:20 +0200
+Received: from [IPv6:2a03:f580:87bc:d400:8d54:a7be:bff4:2a07] (unknown [IPv6:2a03:f580:87bc:d400:8d54:a7be:bff4:2a07])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits)
+         client-signature RSA-PSS (4096 bits))
+        (Client CN "mkl@blackshift.org", Issuer "StartCom Class 1 Client CA" (not verified))
+        (Authenticated sender: mkl@blackshift.org)
+        by smtp.blackshift.org (Postfix) with ESMTPSA id BED0E45E748;
+        Wed,  2 Oct 2019 06:18:15 +0000 (UTC)
+Subject: Re: [PATCH][next] can: fix resource leak of skb on error return paths
+To:     Colin King <colin.king@canonical.com>,
+        Robin van der Gracht <robin@protonic.nl>,
+        Oleksij Rempel <linux@rempel-privat.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Oliver Hartkopp <socketcan@hartkopp.net>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-can@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190918101156.24370-1-colin.king@canonical.com>
+From:   Marc Kleine-Budde <mkl@pengutronix.de>
+Openpgp: preference=signencrypt
+Autocrypt: addr=mkl@pengutronix.de; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <720cf73f-8df0-6cee-33bd-41aa8b72dd8d@pengutronix.de>
+Date:   Tue, 1 Oct 2019 22:04:10 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191002034612.26607-1-navid.emamdoost@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ab6excF9+5PpxL1WVTUjh/hNozNGZpLDzmA6yRMO8NCOc1RuHgJ
- puM3unXcxoESutHWF02Cj+luDoaLlDrro1ILb021cZWUBi01by+uHcncDEgr1xYBKFL4WCM
- IyGhIh9ZfihR+KD9nLMiHeYpEYFf6IdOLHuFb8rgzavaedrNE82cheE4ts50oaOl/Lg4eWf
- UsqbJj79PHAyUsyVbqA5Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:qgltnkPiLAs=:I5Kh+48FQWvUHzcJuFbUyU
- ha9g7p/3i4+7vE0s2oNkHW/Bqxuty8rsakiNldmNeXxjgpLfJ/QLvSp4bDrLJrVwASqMT70HJ
- rrlIftNLDd2xwdqc3GROltXYVg75EWwieMIDJHL1Y7iemg9CHZw3ID/NTyP4Ib+7Y89Rb9FQ5
- 9FMJbHlo7q5AXQiaWTCErDLZieukqVJCbR0wTy1Y6cdEYhTYQ78DYYloK0ZqHLSG2oi0cYlhe
- U6W3BvCv+p3G4Oi/bmJ+wxMPuwKR4r4p22632Lu2WcP8YK54zTVdQstE0nhWNijLgyRBIB440
- BTTKvkXUfdOsGTbrZhyFIZKbu84hhR7shPIYTYLeJrhx4kAXW7VtT6DJkRWFj3J4CsmbecBG+
- FTtnss//t8vZT/YXLBbEcXKSUhjvooX3h0LrPC1qhBe4M0WlLSzmE5TB9HjTaff311qZqoynb
- dqnHlr9O2fgCe7PFnfxUncN5nT3kRjrLeUhNnnvTC2c+oO6BZ/42knParD7Xw5WU/x9Zs8Dl2
- 4rS/76B34+Vu5DOpvFFLneoDxYCAyfa3btX6LNqeaEAz6Np74avqh1NqMVgfjAfdo3e3ohjui
- U7OfS5veXpnMbLFyaI/aM+d1H6Jr8T05B3gWYzG72KZ9nx0nZBT9FkG2gRA8/egcA2A3hEZ5q
- xkz55XdJzr+KU4mVwZs6JWECKSG+YvaG6Qd3u9KEG7JlQ2I2RJsqNAYGSV7sSXE8jBGNal9o7
- ScWfd2FavnAjEFlzPFa6O73AfVL5T5VoqtM6Pk2fvN5OnxLT7oFengGNECZ5Jvkion9rCORz+
- 34kqmFC+kvSCH4zkm2NpRK7IrAec+GjMhGpfPkWV4TZk9A54xbgq2O1ePb6iJbH6V+1zg9Kmf
- 2VbRk6vigVSLomrEipvj0PEyWxSrG84umoCndEQlECmYT88z+beHQqmeih/1Ubu0EWt7HZNkQ
- AeTX0AXHc/ON8+1GNbOtER9rbfPhDql0kEPl3GEOOYQrzJuaLUCXHf8BmeV+rMG+doWJA+/Gl
- s9s28OU2ctA9ORXsRqQ8YTG0nkfVQ2u/586ARrhAQRZYygDcIkUM3RpdJSprQ0izy6hjWEpI6
- uNp2BnJ+QxOoFq8tmbX27syEAF0RUERo+ii4e45c7fcXtxchgwUeCl5OWhLlMIqxeyq+tPnxq
- zYHOIvDWk5ktFmGeI13buicks8x9h0ZU4ADgG+V6Rqnb0xTEaN/CmnmNm/+uGd7YGQcwPNmWC
- sQccV/21VHrj+SYaN/fi8t7Z9tur3pv5V/0E8AocfOh2ELkoAp2jSWlzDFTY=
+In-Reply-To: <20190918101156.24370-1-colin.king@canonical.com>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+ protocol="application/pgp-signature";
+ boundary="CTyUqY7dF4NYv8qQMfCoH5TKwo74Fmcw4"
+X-SA-Exim-Connect-IP: 2001:67c:670:201:5054:ff:fe8d:eefb
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> ---
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--CTyUqY7dF4NYv8qQMfCoH5TKwo74Fmcw4
+Content-Type: multipart/mixed; boundary="iTitcsbzqupLWeTCytjwOQ2RGKHJiXriV";
+ protected-headers="v1"
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Colin King <colin.king@canonical.com>,
+ Robin van der Gracht <robin@protonic.nl>,
+ Oleksij Rempel <linux@rempel-privat.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Oliver Hartkopp <socketcan@hartkopp.net>,
+ "David S . Miller" <davem@davemloft.net>, linux-can@vger.kernel.org,
+ netdev@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Message-ID: <720cf73f-8df0-6cee-33bd-41aa8b72dd8d@pengutronix.de>
+Subject: Re: [PATCH][next] can: fix resource leak of skb on error return paths
+References: <20190918101156.24370-1-colin.king@canonical.com>
+In-Reply-To: <20190918101156.24370-1-colin.king@canonical.com>
 
-Why did you omit the patch change log at this place?
+--iTitcsbzqupLWeTCytjwOQ2RGKHJiXriV
+Content-Type: text/plain; charset=utf-8
+Content-Language: de-DE
+Content-Transfer-Encoding: quoted-printable
+
+On 9/18/19 12:11 PM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> Currently the error return paths do not free skb and this results
+> in a memory leak. Fix this by freeing them before the return.
+>=20
+> Addresses-Coverity: ("Resource leak")
+> Fixes: 9d71dd0c7009 ("can: add support of SAE J1939 protocol")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
+Added to can.
+
+tnx.
+Marc
+
+--=20
+Pengutronix e.K.                  | Marc Kleine-Budde           |
+Industrial Linux Solutions        | Phone: +49-231-2826-924     |
+Vertretung West/Dortmund          | Fax:   +49-5121-206917-5555 |
+Amtsgericht Hildesheim, HRA 2686  | http://www.pengutronix.de   |
 
 
->  drivers/gpu/drm/amd/amdgpu/amdgpu_acp.c | 34 ++++++++++++++++---------
+--iTitcsbzqupLWeTCytjwOQ2RGKHJiXriV--
 
+--CTyUqY7dF4NYv8qQMfCoH5TKwo74Fmcw4
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
 
-> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acp.c
-> @@ -189,7 +189,7 @@ static int acp_hw_init(void *handle)
-=E2=80=A6
-> +	struct i2s_platform_data *i2s_pdata =3D NULL;
-=E2=80=A6
+-----BEGIN PGP SIGNATURE-----
 
-I propose to reconsider this update suggestion once more.
+iQEzBAEBCgAdFiEEmvEkXzgOfc881GuFWsYho5HknSAFAl2TsToACgkQWsYho5Hk
+nSDMAQgAmSfPZWyQfnRGyicy3zeAXVdnUuYYS+3L81Gh7rpek12D4bHy9KAepag7
+M+FhBQySmrmYNu+dx3j8OzszIcSF0ad+JWU06ZarPaHQAuCX6Q8y/FJ3gPyy6VJv
+pa8xV6Nq1SbklDsdeeaXBZmQvMeoXAafDJlfIvZ7Wx9oKn8aoUcL7meAOIZoeGwc
+Ttpx2tjnWNYTtz+lG+3p20aV7WqSGKUXWERhjZ/AUSyADFfViA+1a+3ytO0ynWSm
+QFAxmu+2kNpiYwoPG8qaZQ0gJv1IRdiURoNz3Lik+MwGJsBWn4Z0nzUtrfxJuNJi
+M1B/Uwwfhs10MCWZc8ynWHRLcFO+iQ==
+=sDnQ
+-----END PGP SIGNATURE-----
 
-
-> @@ -393,6 +396,13 @@ static int acp_hw_init(void *handle)
->  	val &=3D ~ACP_SOFT_RESET__SoftResetAud_MASK;
->  	cgs_write_register(adev->acp.cgs_device, mmACP_SOFT_RESET, val);
->  	return 0;
-> +
-> +failure:
-> +	kfree(i2s_pdata);
-> +	kfree(adev->acp.acp_res);
-> +	kfree(adev->acp.acp_cell);
-> +	kfree(adev->acp.acp_genpd);
-> +	return r;
->  }
->
->  /**
-
-Are you going to follow a known programming guideline?
-https://wiki.sei.cmu.edu/confluence/display/c/MEM12-C.+Consider+using+a+go=
-to+chain+when+leaving+a+function+on+error+when+using+and+releasing+resourc=
-es#MEM12-C.Considerusingagotochainwhenleavingafunctiononerrorwhenusingandr=
-eleasingresources-CompliantSolution%28copy_process%28%29fromLinuxkernel%29
-
-Regards,
-Markus
+--CTyUqY7dF4NYv8qQMfCoH5TKwo74Fmcw4--

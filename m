@@ -2,87 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B1215C4426
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Oct 2019 01:09:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7930C46A8
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Oct 2019 06:35:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728773AbfJAXJH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 1 Oct 2019 19:09:07 -0400
-Received: from mail-qk1-f193.google.com ([209.85.222.193]:43776 "EHLO
-        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726430AbfJAXJG (ORCPT
+        id S1726921AbfJBEfJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Oct 2019 00:35:09 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:48448 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725851AbfJBEfJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 1 Oct 2019 19:09:06 -0400
-Received: by mail-qk1-f193.google.com with SMTP id h126so13001651qke.10;
-        Tue, 01 Oct 2019 16:09:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=LOpFVMgw/qyGlxcI8Ot6QminlgTrtT6okvp/hgnhkDE=;
-        b=srIIQM6lmikHi1kLgqPsjGOnQLDuuTZllABnnsS00Nk4bz2NSCo/WFqnCqNJsyt2EU
-         VfUFyTWHyqwlf7PBgs2rbjmFORP7rBEsvmYBIuF/NRU5tdWWmqUGw5ViBpRVKe0e3w93
-         6yd+oXjNp4Y4sD81hWgCzkAItXNa/nABtGbxUmhrjdQK241NAGnn3D1kU0INq017Y42d
-         A5uWz024Pzzwfa9ikhMsxyssgrV4+tsWguJgQHlc7fdY9eI5D8flzJ+YfUniJHkqhUVl
-         ZxBqG+gH+6DkGx9mHNLKRTeL/XviIRQO2RyvF77X8tZI2UT5KB6PUhdr9h1knucWj4lT
-         /JaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=LOpFVMgw/qyGlxcI8Ot6QminlgTrtT6okvp/hgnhkDE=;
-        b=fwzyErtwWU1lDxwJicVNjKzBRPAFnIS4IIUz1F1CIm0n+l99IzXneAzyZhJQSCz/kH
-         5Zc7t4Mj6+D1q6twuNkeLqOnfLZiBYZa2XylPrRCrzrAwyt13kt/rxBNpdf0ZJhvXTbp
-         ouKNfdcZUuGYJc4E8vZeok/y91My/crUGUVaUEAE9ad96uY+t2h/I9jeA012ZiwAMqQC
-         4u6llrg3aq1HpLd7/ddAHgFfCerR9sOgTgkKLhrl7JAFZskammErBMDqYZYllzoy1olk
-         cRnAiT8P4URohGKM6mGUe3eIwrRJo/U8E0KSNesY9TNJWD3SfF+Pvf1XJmO60NNreIwG
-         K9ng==
-X-Gm-Message-State: APjAAAWfDoVk+yEljKMhKZCJ2wj+DcDx0fH5cJn0xzAr3Xv8gbU/MGvV
-        KmP+fpblg7PoRthWTlvG9NnHM2mQvJlQmn8uznhdNw==
-X-Google-Smtp-Source: APXvYqz9ihuKKqAYfL1D9QzH13QTSw/XJVfGELkzG5iXUUJswEgcgv+2HeEv3vVOnqK+8P+H80QaW3x38cZ1a/OP448=
-X-Received: by 2002:ae9:dec2:: with SMTP id s185mr703551qkf.203.1569971345545;
- Tue, 01 Oct 2019 16:09:05 -0700 (PDT)
+        Wed, 2 Oct 2019 00:35:09 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 7A7B0602F2; Wed,  2 Oct 2019 04:35:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569990908;
+        bh=7ndceZwGJGZn3+blsNwlshv01/yOiU20bu96GYOS07w=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=OvuY6lAU+fgPRvlQPcJStaJu+eIYAHcLtyUJZCEUTGO90I3/7MGNyfyOhiYKPL1Xi
+         AL9aWgVs2AzXqUHnAqcq6VPWk2F+cSn1LOGgKZUO4L8CUsRXfNKpxgJCwnWi0f10T+
+         yV/i1CLRcEvXReyK/7gcvYAvPMMWFaD0emV5DXwg=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 293CB608CE;
+        Wed,  2 Oct 2019 04:35:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1569990908;
+        bh=7ndceZwGJGZn3+blsNwlshv01/yOiU20bu96GYOS07w=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=k/+0w9NtRnFLmySoQZbPxcsXea0+RRF+grQEWfY+8lGF7d7wPCW6XK/5kVOOMPfdw
+         oyatZ0iLMIvbv0Q9AAO9KfrIzE9Q/+Ib7QjwqSep/PrmsHw1e5/6gYWoQK+XjYSWZW
+         5uW/fCODnQbdYv69einf3wmfpc6fd7ikyTR0Swuc=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 293CB608CE
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20190921060031.GB18726@mwanda>
-In-Reply-To: <20190921060031.GB18726@mwanda>
-From:   Song Liu <liu.song.a23@gmail.com>
-Date:   Tue, 1 Oct 2019 16:08:54 -0700
-Message-ID: <CAPhsuW7zfwX2GPEhXV_X5F7zKi-NvT0vmP-bCc9qYjmFwSJwFg@mail.gmail.com>
-Subject: Re: [PATCH] md/raid0: Fix an error message in raid0_make_request()
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH v2] cw1200: Fix a signedness bug in cw1200_load_firmware()
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191001114501.GA6550@mwanda>
+References: <20191001114501.GA6550@mwanda>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     NeilBrown <neilb@suse.de>, linux-raid <linux-raid@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Cc:     Solomon Peachy <pizza@shaftnet.org>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191002043508.7A7B0602F2@smtp.codeaurora.org>
+Date:   Wed,  2 Oct 2019 04:35:08 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Sep 20, 2019 at 11:00 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> The first argument to WARN() is supposed to be a condition.  The
-> original code will just print the mdname() instead of the full warning
-> message.
->
-> Fixes: c84a1372df92 ("md/raid0: avoid RAID0 data corruption due to layout confusion.")
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
+
+> The "priv->hw_type" is an enum and in this context GCC will treat it
+> as an unsigned int so the error handling will never trigger.
+> 
+> Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/md/raid0.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/md/raid0.c b/drivers/md/raid0.c
-> index f61693e59684..3956ea502f97 100644
-> --- a/drivers/md/raid0.c
-> +++ b/drivers/md/raid0.c
-> @@ -615,7 +615,7 @@ static bool raid0_make_request(struct mddev *mddev, struct bio *bio)
->                 tmp_dev = map_sector(mddev, zone, sector, &sector);
->                 break;
->         default:
-> -               WARN("md/raid0:%s: Invalid layout\n", mdname(mddev));
-> +               WARN(1, "md/raid0:%s: Invalid layout\n", mdname(mddev));
->                 bio_io_error(bio);
->                 return true;
 
-Applied. Thanks for the fix!
+Patch applied to wireless-drivers-next.git, thanks.
 
-Song
+4a50d454502f cw1200: Fix a signedness bug in cw1200_load_firmware()
+
+-- 
+https://patchwork.kernel.org/patch/11168561/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+

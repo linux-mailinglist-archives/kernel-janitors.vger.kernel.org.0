@@ -2,135 +2,200 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14BD2C8A45
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Oct 2019 15:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98BC3C8A70
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Oct 2019 16:05:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727591AbfJBNxU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Oct 2019 09:53:20 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:46488 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726775AbfJBNxT (ORCPT
+        id S1726669AbfJBOFU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Oct 2019 10:05:20 -0400
+Received: from mail-qk1-f194.google.com ([209.85.222.194]:43905 "EHLO
+        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726087AbfJBOFU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Oct 2019 09:53:19 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iFf49-0006Qf-GX; Wed, 02 Oct 2019 13:53:17 +0000
-Subject: Re: [PATCH] net: stmmac: xgmac: add missing parentheses to fix
- precendence error
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191002110849.13405-1-colin.king@canonical.com>
- <20191002133356.GP22609@kadam> <20191002134238.GP29696@kadam>
-From:   Colin Ian King <colin.king@canonical.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <a995eee6-5b26-f9a9-4d6a-5533da050a3b@canonical.com>
-Date:   Wed, 2 Oct 2019 14:53:17 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Wed, 2 Oct 2019 10:05:20 -0400
+Received: by mail-qk1-f194.google.com with SMTP id h126so15061649qke.10;
+        Wed, 02 Oct 2019 07:05:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
+         :user-agent;
+        bh=MPq5XvWYyG+QTyn+vm0iUraemW1tBZKA+C2/b10gM9A=;
+        b=prwhLR9SfxtMz/sDh0Fm4R8ehuNjWiOg/6PaoDg1gmyjWdulJrzUCrY5oM4uE7pQ9W
+         6LM6oZTz5er6MeMwkCmjC98No3bJrF+R61Ng97aAUaCQZ19rwQjVwHoslpgHCBNkorNb
+         PBLsY48zcPUwpEYM5I7KU4jWJ05joBTFbdkQui3dn/9kU4O8sPFS8zxlVtKlWkaQzwYZ
+         JexBoraBbkaPAd6bQOo7NDLVZVDlhD1WY+ZBKKOUE0fbi/q3yk52fqiXnL/AxCV66jsx
+         CDQ7o9L7M9aTfzu4/NRWOhg1FTU568XSn2+GYW1vzkuey1OlEQsKyPobB7wMc7Pqi8kj
+         qxvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
+         :content-disposition:user-agent;
+        bh=MPq5XvWYyG+QTyn+vm0iUraemW1tBZKA+C2/b10gM9A=;
+        b=gM5XvsfxXb8s61OaGJ9nBXWPpAEVX3uKgEUfVRBdnhHDu+qUdDHCl7DMstg3xovS17
+         Ns6g3nbzQVeHfgxonmidmjl7wljWRJH7pZFbuHVp+fRL/qK2ggnFQqJD0GBP/18rag4Y
+         eaF5txsh4GVlsgA9clgFUoVdlwB6mVUxrJ3U/SUyh+ksVOP3xbJGfJ+vy82zvP9kmiEG
+         A4njNyaTLyfjWD1dnILaSIJnPUHf2JvDySZY+gwpWuWOL2/aWEbbJJXId4O0TAsYIB5e
+         5Ce1SU3iAqVan1vpwpUXkO2UhTGpEmii+AeFndbnFk6hOEuwG5UI+Gky/Yk5zeav5S7S
+         9ezw==
+X-Gm-Message-State: APjAAAUe2r6OHlu8X6HN1swAZdfAn22WhLQlwq5ZYmImKwqIELK403iW
+        Mt49+p1mKMG5eM1m9R3yUWYDrcRe1fGH9g==
+X-Google-Smtp-Source: APXvYqzOQ3sxj3tGzqUztNfd/ZTnqw3nHag6A7wTgTBddqa0WtrmSAtpghMC4A4zzCPVUzk3fte8yw==
+X-Received: by 2002:a37:642:: with SMTP id 63mr3861495qkg.29.1570025118685;
+        Wed, 02 Oct 2019 07:05:18 -0700 (PDT)
+Received: from smtp.gmail.com ([132.205.230.13])
+        by smtp.gmail.com with ESMTPSA id m125sm10075076qkd.3.2019.10.02.07.05.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Oct 2019 07:05:17 -0700 (PDT)
+Date:   Wed, 2 Oct 2019 11:05:16 -0300
+From:   Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+To:     Keith Packard <keithp@keithp.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Maxime Ripard <maxime.ripard@bootlin.com>,
+        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
+        Pekka Paalanen <pekka.paalanen@collabora.com>
+Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, intel-gfx@lists.freedesktop.org
+Subject: [PATCH V6] drm/drm_vblank: Change EINVAL by the correct errno
+Message-ID: <20191002140516.adeyj3htylimmlmg@smtp.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20191002134238.GP29696@kadam>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="rl7p723dixcepzft"
+Content-Disposition: inline
+User-Agent: NeoMutt/20180716
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 02/10/2019 14:42, Dan Carpenter wrote:
-> On Wed, Oct 02, 2019 at 04:33:57PM +0300, Dan Carpenter wrote:
->> On Wed, Oct 02, 2019 at 12:08:49PM +0100, Colin King wrote:
->>> From: Colin Ian King <colin.king@canonical.com>
->>>
->>> The expression !(hw_cap & XGMAC_HWFEAT_RAVSEL) >> 10 is always zero, so
->>> the masking operation is incorrect. Fix this by adding the missing
->>> parentheses to correctly bind the negate operator on the entire expression.
->>>
->>> Addresses-Coverity: ("Operands don't affect result")
->>> Fixes: c2b69474d63b ("net: stmmac: xgmac: Correct RAVSEL field interpretation")
->>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->>> ---
->>>  drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
->>> index 965cbe3e6f51..2e814aa64a5c 100644
->>> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
->>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
->>> @@ -369,7 +369,7 @@ static void dwxgmac2_get_hw_feature(void __iomem *ioaddr,
->>>  	dma_cap->eee = (hw_cap & XGMAC_HWFEAT_EEESEL) >> 13;
->>>  	dma_cap->atime_stamp = (hw_cap & XGMAC_HWFEAT_TSSEL) >> 12;
->>>  	dma_cap->av = (hw_cap & XGMAC_HWFEAT_AVSEL) >> 11;
->>> -	dma_cap->av &= !(hw_cap & XGMAC_HWFEAT_RAVSEL) >> 10;
->>> +	dma_cap->av &= !((hw_cap & XGMAC_HWFEAT_RAVSEL) >> 10);
->>
->> There is no point to the shift at all.
-> 
-> Sorry I meant to say it should be a bitwise NOT, right?  I was just
-> looking at some other dma_cap stuff that did this same thing...  I can't
-> find it now...
 
-In drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c it is being used like
-a boolean and not a bitmask'd value:
+--rl7p723dixcepzft
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-        if (!priv->dma_cap.av)
+For historical reasons, the function drm_wait_vblank_ioctl always return
+-EINVAL if something gets wrong. This scenario limits the flexibility
+for the userspace to make detailed verification of any problem and take
+some action. In particular, the validation of =E2=80=9Cif (!dev->irq_enable=
+d)=E2=80=9D
+in the drm_wait_vblank_ioctl is responsible for checking if the driver
+support vblank or not. If the driver does not support VBlank, the
+function drm_wait_vblank_ioctl returns EINVAL, which does not represent
+the real issue; this patch changes this behavior by return EOPNOTSUPP.
+Additionally, drm_crtc_get_sequence_ioctl and
+drm_crtc_queue_sequence_ioctl, also returns EINVAL if vblank is not
+supported; this patch also changes the return value to EOPNOTSUPP in
+these functions. Lastly, these functions are invoked by libdrm, which is
+used by many compositors; because of this, it is important to check if
+this change breaks any compositor. In this sense, the following projects
+were examined:
 
-so the original logic is to do boolean flag merging rather than bit-wise
-logic.
+* Drm-hwcomposer
+* Kwin
+* Sway
+* Wlroots
+* Wayland
+* Weston
+* Mutter
+* Xorg (67 different drivers)
 
-> 
-> regards,
-> dan carpenter
-> 
+For each repository the verification happened in three steps:
 
+* Update the main branch
+* Look for any occurrence of "drmCrtcQueueSequence",
+  "drmCrtcGetSequence", and "drmWaitVBlank" with the command git grep -n
+  "STRING".
+* Look in the git history of the project with the command
+git log -S<STRING>
+
+None of the above projects validate the use of EINVAL when using
+drmWaitVBlank(), which make safe, at least for these projects, to change
+the return values. On the other hand, mesa and xserver project uses
+drmCrtcQueueSequence() and drmCrtcGetSequence(); this change is harmless
+for both projects.
+
+Change since V5 (Pekka Paalanen):
+ - Check if the change also affects Mutter
+
+Change since V4 (Daniel):
+ - Also return EOPNOTSUPP in drm_crtc_[get|queue]_sequence_ioctl
+
+Change since V3:
+ - Return EINVAL for _DRM_VBLANK_SIGNAL (Daniel)
+
+Change since V2:
+ Daniel Vetter and Chris Wilson
+ - Replace ENOTTY by EOPNOTSUPP
+ - Return EINVAL if the parameters are wrong
+
+Cc: Keith Packard <keithp@keithp.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
+Cc: Chris Wilson <chris@chris-wilson.co.uk>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
+Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
+---
+ drivers/gpu/drm/drm_vblank.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
+index 9c6899758bc9..71cf2633ac58 100644
+--- a/drivers/gpu/drm/drm_vblank.c
++++ b/drivers/gpu/drm/drm_vblank.c
+@@ -1610,7 +1610,7 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, voi=
+d *data,
+ 	unsigned int flags, pipe, high_pipe;
+=20
+ 	if (!dev->irq_enabled)
+-		return -EINVAL;
++		return -EOPNOTSUPP;
+=20
+ 	if (vblwait->request.type & _DRM_VBLANK_SIGNAL)
+ 		return -EINVAL;
+@@ -1876,7 +1876,7 @@ int drm_crtc_get_sequence_ioctl(struct drm_device *de=
+v, void *data,
+ 		return -EOPNOTSUPP;
+=20
+ 	if (!dev->irq_enabled)
+-		return -EINVAL;
++		return -EOPNOTSUPP;
+=20
+ 	crtc =3D drm_crtc_find(dev, file_priv, get_seq->crtc_id);
+ 	if (!crtc)
+@@ -1934,7 +1934,7 @@ int drm_crtc_queue_sequence_ioctl(struct drm_device *=
+dev, void *data,
+ 		return -EOPNOTSUPP;
+=20
+ 	if (!dev->irq_enabled)
+-		return -EINVAL;
++		return -EOPNOTSUPP;
+=20
+ 	crtc =3D drm_crtc_find(dev, file_priv, queue_seq->crtc_id);
+ 	if (!crtc)
+--=20
+2.23.0
+
+--rl7p723dixcepzft
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAl2UrpsACgkQWJzP/com
+vP9Bgw/7B/I5MWK+6MLQD5y+0VUQythB5k6k9wovD2C56y3E0D5IOxknr7iX5xTb
+nNCZCFN8Ks4Zd3lhBRxcHMbetf+CwhvaWSRBhpxfptOSCeJK18WKADoULmTfgii3
+DUeQsN5Ohr79ftYn89vb8TrsoGnAYXFFaCtlfT6IE7iUYw8kAAgIKJ5ngexvwMlt
+MNvluV1MJVaE6kEet73dUbcW25kCwksR+tuSk1GK5w5F1reX6n3m8FAkdMSdVyPU
+DcRHEv3q3D7d3jCGmFfj16MiqxQFBhyN7rjk36kZxNysfLm/mzyfxTl7LiCkUDkI
+jmfZvIww+HHuU3I9D/4yORqfcuGNVHwVdT0IgzYx+RdpOmYej7SlhW2Nur/oP0Du
+vKbyKtoXFGQ2tBAAWVEyPeLeVYUgO3Yczn7qHbbnQflnDGCLhof3V64CtvXjzvCK
+vMrrwTqC8lDF7l9Fm84AFX1whua8+pU7xS99NNyPzmXMLkT37kgDaAHUBzrCKoHM
+mwilQUmgiDLw7n8HTmCYkomWIGK4G3sMii/df4vqQoOEeyYjG3CrzGuXYzNBYamy
+bXqpI2jQUy/hYLg2l9/vgVAvBatIeWEcGsej/+NhssUB4vTMlA1YUqwobJUnnA6e
+5PsyKjJus9M5WJDCfJSfn+DSYUpA2+t/MRWwiS0xZGCl4ebAc90=
+=nh5K
+-----END PGP SIGNATURE-----
+
+--rl7p723dixcepzft--

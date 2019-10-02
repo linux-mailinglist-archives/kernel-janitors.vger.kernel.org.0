@@ -2,200 +2,138 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98BC3C8A70
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Oct 2019 16:05:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D75C3C8A94
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Oct 2019 16:08:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726669AbfJBOFU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Oct 2019 10:05:20 -0400
-Received: from mail-qk1-f194.google.com ([209.85.222.194]:43905 "EHLO
-        mail-qk1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726087AbfJBOFU (ORCPT
+        id S1726574AbfJBOIN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Oct 2019 10:08:13 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:53772 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726200AbfJBOIN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Oct 2019 10:05:20 -0400
-Received: by mail-qk1-f194.google.com with SMTP id h126so15061649qke.10;
-        Wed, 02 Oct 2019 07:05:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:mime-version:content-disposition
-         :user-agent;
-        bh=MPq5XvWYyG+QTyn+vm0iUraemW1tBZKA+C2/b10gM9A=;
-        b=prwhLR9SfxtMz/sDh0Fm4R8ehuNjWiOg/6PaoDg1gmyjWdulJrzUCrY5oM4uE7pQ9W
-         6LM6oZTz5er6MeMwkCmjC98No3bJrF+R61Ng97aAUaCQZ19rwQjVwHoslpgHCBNkorNb
-         PBLsY48zcPUwpEYM5I7KU4jWJ05joBTFbdkQui3dn/9kU4O8sPFS8zxlVtKlWkaQzwYZ
-         JexBoraBbkaPAd6bQOo7NDLVZVDlhD1WY+ZBKKOUE0fbi/q3yk52fqiXnL/AxCV66jsx
-         CDQ7o9L7M9aTfzu4/NRWOhg1FTU568XSn2+GYW1vzkuey1OlEQsKyPobB7wMc7Pqi8kj
-         qxvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=MPq5XvWYyG+QTyn+vm0iUraemW1tBZKA+C2/b10gM9A=;
-        b=gM5XvsfxXb8s61OaGJ9nBXWPpAEVX3uKgEUfVRBdnhHDu+qUdDHCl7DMstg3xovS17
-         Ns6g3nbzQVeHfgxonmidmjl7wljWRJH7pZFbuHVp+fRL/qK2ggnFQqJD0GBP/18rag4Y
-         eaF5txsh4GVlsgA9clgFUoVdlwB6mVUxrJ3U/SUyh+ksVOP3xbJGfJ+vy82zvP9kmiEG
-         A4njNyaTLyfjWD1dnILaSIJnPUHf2JvDySZY+gwpWuWOL2/aWEbbJJXId4O0TAsYIB5e
-         5Ce1SU3iAqVan1vpwpUXkO2UhTGpEmii+AeFndbnFk6hOEuwG5UI+Gky/Yk5zeav5S7S
-         9ezw==
-X-Gm-Message-State: APjAAAUe2r6OHlu8X6HN1swAZdfAn22WhLQlwq5ZYmImKwqIELK403iW
-        Mt49+p1mKMG5eM1m9R3yUWYDrcRe1fGH9g==
-X-Google-Smtp-Source: APXvYqzOQ3sxj3tGzqUztNfd/ZTnqw3nHag6A7wTgTBddqa0WtrmSAtpghMC4A4zzCPVUzk3fte8yw==
-X-Received: by 2002:a37:642:: with SMTP id 63mr3861495qkg.29.1570025118685;
-        Wed, 02 Oct 2019 07:05:18 -0700 (PDT)
-Received: from smtp.gmail.com ([132.205.230.13])
-        by smtp.gmail.com with ESMTPSA id m125sm10075076qkd.3.2019.10.02.07.05.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2019 07:05:17 -0700 (PDT)
-Date:   Wed, 2 Oct 2019 11:05:16 -0300
-From:   Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
-To:     Keith Packard <keithp@keithp.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Maxime Ripard <maxime.ripard@bootlin.com>,
-        Sean Paul <sean@poorly.run>, David Airlie <airlied@linux.ie>,
-        Pekka Paalanen <pekka.paalanen@collabora.com>
-Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, intel-gfx@lists.freedesktop.org
-Subject: [PATCH V6] drm/drm_vblank: Change EINVAL by the correct errno
-Message-ID: <20191002140516.adeyj3htylimmlmg@smtp.gmail.com>
+        Wed, 2 Oct 2019 10:08:13 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x92E3uep070461;
+        Wed, 2 Oct 2019 14:07:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=+FGGI5TvFktU0/JRb3dnLjz/7hh1wncwHFnR3J2FD1U=;
+ b=YMj7eUT/xa6f248L9zN5raJaaIPi2upRO7Tba4zBrhB/FFYYDkLKPeAcFy5TFSfP5k9I
+ 1TmW52eOj6+7BwliM/xSp+aXKkD9Aw8fOFaJQV7NEYzXst+1zeAP0vEdAKLSu90leQQr
+ Ax38400CmkNxEGa3batH2Nvg7Ye3yBx1oVsfqbK75h5gN8BXYyvdPJimVWUXhgBDzAJX
+ 6DAEn+5GvMsY51gaBich2d7ikokUg6Umcvq2MrHBJrGhMLi52DIvpgACn/6+7omszspn
+ A6FoQP/JZkDXPVa+b9YpiKu4IwnWPi+XIZdJ5387AKPtoX42DwvVV9jwP9XLrNXmKxv+ EQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2va05rw3pu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 02 Oct 2019 14:07:53 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x92E3SKB024837;
+        Wed, 2 Oct 2019 14:07:53 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 2vc9dkju5d-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 02 Oct 2019 14:07:53 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x92E7pgg001505;
+        Wed, 2 Oct 2019 14:07:51 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 02 Oct 2019 07:07:50 -0700
+Date:   Wed, 2 Oct 2019 17:07:33 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net: stmmac: xgmac: add missing parentheses to fix
+ precendence error
+Message-ID: <20191002140733.GQ29696@kadam>
+References: <20191002110849.13405-1-colin.king@canonical.com>
+ <20191002133356.GP22609@kadam>
+ <20191002134238.GP29696@kadam>
+ <a995eee6-5b26-f9a9-4d6a-5533da050a3b@canonical.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="rl7p723dixcepzft"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: NeoMutt/20180716
+In-Reply-To: <a995eee6-5b26-f9a9-4d6a-5533da050a3b@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9397 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910020136
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9397 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910020136
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Wed, Oct 02, 2019 at 02:53:17PM +0100, Colin Ian King wrote:
+> On 02/10/2019 14:42, Dan Carpenter wrote:
+> > On Wed, Oct 02, 2019 at 04:33:57PM +0300, Dan Carpenter wrote:
+> >> On Wed, Oct 02, 2019 at 12:08:49PM +0100, Colin King wrote:
+> >>> From: Colin Ian King <colin.king@canonical.com>
+> >>>
+> >>> The expression !(hw_cap & XGMAC_HWFEAT_RAVSEL) >> 10 is always zero, so
+> >>> the masking operation is incorrect. Fix this by adding the missing
+> >>> parentheses to correctly bind the negate operator on the entire expression.
+> >>>
+> >>> Addresses-Coverity: ("Operands don't affect result")
+> >>> Fixes: c2b69474d63b ("net: stmmac: xgmac: Correct RAVSEL field interpretation")
+> >>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> >>> ---
+> >>>  drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c | 2 +-
+> >>>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+> >>> index 965cbe3e6f51..2e814aa64a5c 100644
+> >>> --- a/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+> >>> +++ b/drivers/net/ethernet/stmicro/stmmac/dwxgmac2_dma.c
+> >>> @@ -369,7 +369,7 @@ static void dwxgmac2_get_hw_feature(void __iomem *ioaddr,
+> >>>  	dma_cap->eee = (hw_cap & XGMAC_HWFEAT_EEESEL) >> 13;
+> >>>  	dma_cap->atime_stamp = (hw_cap & XGMAC_HWFEAT_TSSEL) >> 12;
+> >>>  	dma_cap->av = (hw_cap & XGMAC_HWFEAT_AVSEL) >> 11;
+> >>> -	dma_cap->av &= !(hw_cap & XGMAC_HWFEAT_RAVSEL) >> 10;
+> >>> +	dma_cap->av &= !((hw_cap & XGMAC_HWFEAT_RAVSEL) >> 10);
+> >>
+> >> There is no point to the shift at all.
+> > 
+> > Sorry I meant to say it should be a bitwise NOT, right?  I was just
+> > looking at some other dma_cap stuff that did this same thing...  I can't
+> > find it now...
+> 
+> In drivers/net/ethernet/stmicro/stmmac/stmmac_tc.c it is being used like
+> a boolean and not a bitmask'd value:
+> 
+>         if (!priv->dma_cap.av)
+> 
+> so the original logic is to do boolean flag merging rather than bit-wise
+> logic.
 
---rl7p723dixcepzft
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Oh yeah.  Thanks.  This code is hard to read.
 
-For historical reasons, the function drm_wait_vblank_ioctl always return
--EINVAL if something gets wrong. This scenario limits the flexibility
-for the userspace to make detailed verification of any problem and take
-some action. In particular, the validation of =E2=80=9Cif (!dev->irq_enable=
-d)=E2=80=9D
-in the drm_wait_vblank_ioctl is responsible for checking if the driver
-support vblank or not. If the driver does not support VBlank, the
-function drm_wait_vblank_ioctl returns EINVAL, which does not represent
-the real issue; this patch changes this behavior by return EOPNOTSUPP.
-Additionally, drm_crtc_get_sequence_ioctl and
-drm_crtc_queue_sequence_ioctl, also returns EINVAL if vblank is not
-supported; this patch also changes the return value to EOPNOTSUPP in
-these functions. Lastly, these functions are invoked by libdrm, which is
-used by many compositors; because of this, it is important to check if
-this change breaks any compositor. In this sense, the following projects
-were examined:
+It would be better to just write it like this:
 
-* Drm-hwcomposer
-* Kwin
-* Sway
-* Wlroots
-* Wayland
-* Weston
-* Mutter
-* Xorg (67 different drivers)
+	if (hw_cap & XGMAC_HWFEAT_AVSEL) && !(hw_cap & XGMAC_HWFEAT_RAVSEL)
+		dma_cap->av = true;
+	else
+		dma_cap->av = false;
 
-For each repository the verification happened in three steps:
+All these very shifts are concise but they introduce bugs like this one
+you have found.
 
-* Update the main branch
-* Look for any occurrence of "drmCrtcQueueSequence",
-  "drmCrtcGetSequence", and "drmWaitVBlank" with the command git grep -n
-  "STRING".
-* Look in the git history of the project with the command
-git log -S<STRING>
+regards,
+dan carpenter
 
-None of the above projects validate the use of EINVAL when using
-drmWaitVBlank(), which make safe, at least for these projects, to change
-the return values. On the other hand, mesa and xserver project uses
-drmCrtcQueueSequence() and drmCrtcGetSequence(); this change is harmless
-for both projects.
-
-Change since V5 (Pekka Paalanen):
- - Check if the change also affects Mutter
-
-Change since V4 (Daniel):
- - Also return EOPNOTSUPP in drm_crtc_[get|queue]_sequence_ioctl
-
-Change since V3:
- - Return EINVAL for _DRM_VBLANK_SIGNAL (Daniel)
-
-Change since V2:
- Daniel Vetter and Chris Wilson
- - Replace ENOTTY by EOPNOTSUPP
- - Return EINVAL if the parameters are wrong
-
-Cc: Keith Packard <keithp@keithp.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Ville Syrj=C3=A4l=C3=A4 <ville.syrjala@linux.intel.com>
-Cc: Chris Wilson <chris@chris-wilson.co.uk>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
-Signed-off-by: Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>
----
- drivers/gpu/drm/drm_vblank.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/gpu/drm/drm_vblank.c b/drivers/gpu/drm/drm_vblank.c
-index 9c6899758bc9..71cf2633ac58 100644
---- a/drivers/gpu/drm/drm_vblank.c
-+++ b/drivers/gpu/drm/drm_vblank.c
-@@ -1610,7 +1610,7 @@ int drm_wait_vblank_ioctl(struct drm_device *dev, voi=
-d *data,
- 	unsigned int flags, pipe, high_pipe;
-=20
- 	if (!dev->irq_enabled)
--		return -EINVAL;
-+		return -EOPNOTSUPP;
-=20
- 	if (vblwait->request.type & _DRM_VBLANK_SIGNAL)
- 		return -EINVAL;
-@@ -1876,7 +1876,7 @@ int drm_crtc_get_sequence_ioctl(struct drm_device *de=
-v, void *data,
- 		return -EOPNOTSUPP;
-=20
- 	if (!dev->irq_enabled)
--		return -EINVAL;
-+		return -EOPNOTSUPP;
-=20
- 	crtc =3D drm_crtc_find(dev, file_priv, get_seq->crtc_id);
- 	if (!crtc)
-@@ -1934,7 +1934,7 @@ int drm_crtc_queue_sequence_ioctl(struct drm_device *=
-dev, void *data,
- 		return -EOPNOTSUPP;
-=20
- 	if (!dev->irq_enabled)
--		return -EINVAL;
-+		return -EOPNOTSUPP;
-=20
- 	crtc =3D drm_crtc_find(dev, file_priv, queue_seq->crtc_id);
- 	if (!crtc)
---=20
-2.23.0
-
---rl7p723dixcepzft
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE4tZ+ii1mjMCMQbfkWJzP/comvP8FAl2UrpsACgkQWJzP/com
-vP9Bgw/7B/I5MWK+6MLQD5y+0VUQythB5k6k9wovD2C56y3E0D5IOxknr7iX5xTb
-nNCZCFN8Ks4Zd3lhBRxcHMbetf+CwhvaWSRBhpxfptOSCeJK18WKADoULmTfgii3
-DUeQsN5Ohr79ftYn89vb8TrsoGnAYXFFaCtlfT6IE7iUYw8kAAgIKJ5ngexvwMlt
-MNvluV1MJVaE6kEet73dUbcW25kCwksR+tuSk1GK5w5F1reX6n3m8FAkdMSdVyPU
-DcRHEv3q3D7d3jCGmFfj16MiqxQFBhyN7rjk36kZxNysfLm/mzyfxTl7LiCkUDkI
-jmfZvIww+HHuU3I9D/4yORqfcuGNVHwVdT0IgzYx+RdpOmYej7SlhW2Nur/oP0Du
-vKbyKtoXFGQ2tBAAWVEyPeLeVYUgO3Yczn7qHbbnQflnDGCLhof3V64CtvXjzvCK
-vMrrwTqC8lDF7l9Fm84AFX1whua8+pU7xS99NNyPzmXMLkT37kgDaAHUBzrCKoHM
-mwilQUmgiDLw7n8HTmCYkomWIGK4G3sMii/df4vqQoOEeyYjG3CrzGuXYzNBYamy
-bXqpI2jQUy/hYLg2l9/vgVAvBatIeWEcGsej/+NhssUB4vTMlA1YUqwobJUnnA6e
-5PsyKjJus9M5WJDCfJSfn+DSYUpA2+t/MRWwiS0xZGCl4ebAc90=
-=nh5K
------END PGP SIGNATURE-----
-
---rl7p723dixcepzft--

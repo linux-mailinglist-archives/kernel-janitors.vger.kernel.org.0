@@ -2,103 +2,118 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D8E6C92C0
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Oct 2019 22:06:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5F94C9482
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Oct 2019 00:54:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726978AbfJBUG6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Oct 2019 16:06:58 -0400
-Received: from mail-pg1-f193.google.com ([209.85.215.193]:33934 "EHLO
-        mail-pg1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726597AbfJBUG5 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Oct 2019 16:06:57 -0400
-Received: by mail-pg1-f193.google.com with SMTP id y35so209475pgl.1
-        for <kernel-janitors@vger.kernel.org>; Wed, 02 Oct 2019 13:06:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=j7Oj9/NMOxxlIgyK+rsgtpkeEf8Sqt/NUKWjxaLjPJg=;
-        b=cHRFCtRp3DATBrikB2f0LyWMSc83/gSCADBiAFa1Soi99gYQUDknOBH4kygMKEsecc
-         6YAxpO8sFAQciMNcrj7gajbPZlQ5cg/uTOU+EfGdO5XKdL1oC9JT5K0o/pmeq3YFuZgv
-         ch0tgm7SgDkNk7LnIy2NaX0hZ6cH+3u8MQNJE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=j7Oj9/NMOxxlIgyK+rsgtpkeEf8Sqt/NUKWjxaLjPJg=;
-        b=jknL7yfBGpzMpcMKnkh5qVdHTY9xtHyvi8x5wWJRW0ItOzGw86h2Cs24moZFijveS6
-         kJMABdzINocE1nHtp8sCvqMPn8c7AC/UDpO2kPamxgcxq5Rd4nPWXS/mSR1lPhdHInD5
-         Ekn6KBSYTnrb0+C91CMjoYBgJJvjzE9pzX1wivyWqQOLYY4T0paXlLfi179TOjxNjql7
-         v1y9kH18GG64sAgmhUxJePVDV5zcYcDXiPyU5LT4c42bawtbaWp6OY8l2Rx7MCyHMO4L
-         gEAOo7k2npaibpBVOExs4E35T9joLG6y9gEJo0y/e+gizCFxv3FZGh3CdopHBDMdl3m8
-         gC5Q==
-X-Gm-Message-State: APjAAAVJ5eq7oHf9M5kivcQw5oIV5womQg2RasLwlHV9oOcRl24bYa7B
-        vr1Q1n9Ek7Rwvj9ZnaWu0fziIz9nEVf6CHD4n36l5c/5P9mXSe9vecGfYUMDSOCDjNa/DD9sKbe
-        M8UCt10CDzEv5x2Y6La2vooUN+osr/0TgnY4SyrkUFVosaojh0fAD4dIbLT21D2WDc1CC7LcT83
-        R3C0FuNyGjV1zp
-X-Google-Smtp-Source: APXvYqyu6n7HoKtW73I6bmR7b9yCXCzVyoPrRrWKJvExM8umAgR+ZD3X1S/OKEevg5PH5Sxrj6XJDQ==
-X-Received: by 2002:a65:6709:: with SMTP id u9mr5780827pgf.59.1570046816188;
-        Wed, 02 Oct 2019 13:06:56 -0700 (PDT)
-Received: from [10.136.13.65] ([192.19.228.250])
-        by smtp.gmail.com with ESMTPSA id x11sm8343937pja.3.2019.10.02.13.06.53
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 02 Oct 2019 13:06:55 -0700 (PDT)
-Subject: Re: [PATCH] ns2: Fix off by one bugs in ns2_pinmux_enable()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Yendapally Reddy Dhananjaya Reddy 
-        <yendapally.reddy@broadcom.com>
-Cc:     Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20190926081426.GB2332@mwanda>
-From:   Scott Branden <scott.branden@broadcom.com>
-Message-ID: <98717865-0417-96d7-58f3-84f6394a1bf3@broadcom.com>
-Date:   Wed, 2 Oct 2019 13:06:52 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
-MIME-Version: 1.0
-In-Reply-To: <20190926081426.GB2332@mwanda>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
+        id S1727501AbfJBWyM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Oct 2019 18:54:12 -0400
+Received: from mail-eopbgr770123.outbound.protection.outlook.com ([40.107.77.123]:24449
+        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727103AbfJBWyM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 2 Oct 2019 18:54:12 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=La8ohh3aiuUsGkwSOsRslvxQSus8+ZQKm4ErMbzXBu9aDCyvmpai6dK5lIXbcusIvmta2F4X3PSD0LzFnnH+PpHU1p2Qcb3o88Fr/r2RJSWrnM/XeJkobQ5MKAIxP+Qzt7062iaEuG5eIz9gQ0OQUnWBKhAL3ggcjJdo28jlWlsDItrBDHc41u46xB83jWgBvptzXTpsFcqWkkWwV/hDxHQhVcSbywmx2T7Z9kzXLNfSJXX+jirWXmnmvrqsgbAJaXLSgriS9td7qbP5zU7ans+EP15XocANBg76amcvg4RrFx4eX/4aTOCX1tqx8cjfbdnD/pgJrB8aLC0Vlhx8Wg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6V2N83kZKCIZC2CN25Jx+KR2Jf+p6eNWOJ8Y3yeXYRY=;
+ b=MnBCagLm2NRGwxdPHRHUKGA06m0gXYg2JRqhUDivm0rSvyH2str9xLqmY3YMFL05cuiwoIA4g39xcn/2R4sx8TmcNCeYsnvOW50GRdxJDpPjwB6EQyvY+x8Fy2KvpOnoy51IZtdGxeyFUkRdskiXZTII9nJrCVm0yuqIVhB+ysNjSpZBfAlELhZyrZd+Aq/kwCiS32iBtJ5Or8ml3xbCY6C0qOzkX+TS9RBvVkjGSZcz7xqoV5xFPG+lyGglBDatRuf8/lLtuUogAF4xVQwDp0LtqoEC/pNtaU/BOscny42jgIHe0aaP8Mr9oGJO+he+HgwX61PIRGhx8Bk1jBYZ8w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=wavecomp.com; dmarc=pass action=none header.from=mips.com;
+ dkim=pass header.d=mips.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wavecomp.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6V2N83kZKCIZC2CN25Jx+KR2Jf+p6eNWOJ8Y3yeXYRY=;
+ b=gx9OfJIi+ncIDWitVkmWUQ9st+N/U9a+ZR3Ys4ZbVo2MWlw+CoXK0kzXu9FaEYXXGbNR2bb8dn/90/FFie989Cn7L0CrKMivyF/7spjFgn9F4vZyR3Jp3lapsLXyQPdtUexkCp+2ZlJZUm069bxJ/u3crignpOoNszqeRklVfpw=
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com (10.172.60.12) by
+ MWHPR2201MB1406.namprd22.prod.outlook.com (10.172.62.150) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2305.20; Wed, 2 Oct 2019 22:54:09 +0000
+Received: from MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::498b:c2cd:e816:1481]) by MWHPR2201MB1277.namprd22.prod.outlook.com
+ ([fe80::498b:c2cd:e816:1481%2]) with mapi id 15.20.2305.023; Wed, 2 Oct 2019
+ 22:54:09 +0000
+From:   Paul Burton <paul.burton@mips.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+CC:     "chenhc@lemote.com" <chenhc@lemote.com>,
+        "ralf@linux-mips.org" <ralf@linux-mips.org>,
+        Paul Burton <pburton@wavecomp.com>,
+        "jhogan@kernel.org" <jhogan@kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>
+Subject: Re: [PATCH] mips: Loongson: Fix the link time qualifier of
+  'serial_exit()'
+Thread-Topic: [PATCH] mips: Loongson: Fix the link time qualifier of
+  'serial_exit()'
+Thread-Index: AQHVeXRMpnqlZcTRMkWlftBxb59DFA==
+Date:   Wed, 2 Oct 2019 22:54:08 +0000
+Message-ID: <MWHPR2201MB12775BCFABEBAC5426879C41C19C0@MWHPR2201MB1277.namprd22.prod.outlook.com>
+References: <20190910035907.6430-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20190910035907.6430-1-christophe.jaillet@wanadoo.fr>
+Accept-Language: en-US
 Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-clientproxiedby: BYAPR02CA0036.namprd02.prod.outlook.com
+ (2603:10b6:a02:ee::49) To MWHPR2201MB1277.namprd22.prod.outlook.com
+ (2603:10b6:301:18::12)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=pburton@wavecomp.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-originating-ip: [12.94.197.246]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: bf0b02c2-cea0-4707-7c0e-08d7478b6f0e
+x-ms-traffictypediagnostic: MWHPR2201MB1406:
+x-ms-exchange-purlcount: 1
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <MWHPR2201MB1406856DDB38FE128234E3A0C19C0@MWHPR2201MB1406.namprd22.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:3173;
+x-forefront-prvs: 0178184651
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(346002)(396003)(39840400004)(376002)(366004)(136003)(189003)(199004)(14454004)(5660300002)(305945005)(74316002)(229853002)(4744005)(476003)(66446008)(64756008)(66556008)(66066001)(33656002)(6246003)(44832011)(76176011)(7696005)(52116002)(478600001)(25786009)(2906002)(6116002)(3846002)(966005)(4326008)(42882007)(52536014)(486006)(55016002)(6306002)(6916009)(446003)(6436002)(9686003)(11346002)(71200400001)(186003)(8936002)(7736002)(316002)(8676002)(71190400001)(81166006)(256004)(81156014)(54906003)(386003)(6506007)(66946007)(66476007)(102836004)(99286004)(26005);DIR:OUT;SFP:1102;SCL:1;SRVR:MWHPR2201MB1406;H:MWHPR2201MB1277.namprd22.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: wavecomp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: np42fj1kMcv9To8cJuw7/sm6JyDtCCUK7uE4as4OidGR0IxbfWXy8L1ppL4Fdp2hss81aKSnMO6Px4QBybe/BShqAHHJa/EE4RV+gTFZX2Xyiv6N3vdg6GOZer+4OYGZlRE1jEBH7QUafTxqer8TRCO7RTQXrk5gRfL0ofCQ1PWgrJ12kCs0T0Cu4IOcspGLv+jgo7n7RiaFIjWjlTpb6zX4R5i3lL/LfM3MMU8PybS6O2t0Pulw8qbZUHh9pzGduiMRwf1E1CQjzujELum4c6LlDmKtx8qH0RWKZSSK8llcuGknMAWjPE/rdG58E8Ib4bafJGyANhBKlmReN/qgtnYQHlAGn7aa27/sCg6hed4aVZe/3zz0bJIKcN+uPYYbgdmXBcJ2k4nZgwxWrltDBH9vzPSNlxUqdAyJTH+fBSebaToOd/aznuX2Yu5GEQ07+6CXo8Ey2JGSvKx5dkNUiA==
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: mips.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: bf0b02c2-cea0-4707-7c0e-08d7478b6f0e
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Oct 2019 22:54:09.3187
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 463607d3-1db3-40a0-8a29-970c56230104
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: UnRUpI93BQTUP10p4apBKivHi6QmwS40Sf7IXDeV8AGjGxxFK5D1Xp9WkkPx7mY1GfrtOe6+uVGJ8hm6rkdaBg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR2201MB1406
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-thanks for fix.
+Hello,
 
-On 2019-09-26 1:14 a.m., Dan Carpenter wrote:
-> The pinctrl->functions[] array has pinctrl->num_functions elements and
-> the pinctrl->groups[] array is the same way.  These are set in
-> ns2_pinmux_probe().  So the > comparisons should be >= so that we don't
-> read one element beyond the end of the array.
->
-> Fixes: b5aa1006e4a9 ("pinctrl: ns2: add pinmux driver support for Broadcom NS2 SoC")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Acked-by: Scott Branden <scott.branden@broadcom.com>
-> ---
->   drivers/pinctrl/bcm/pinctrl-ns2-mux.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/pinctrl/bcm/pinctrl-ns2-mux.c b/drivers/pinctrl/bcm/pinctrl-ns2-mux.c
-> index 2bf6af7df7d9..9fabc451550e 100644
-> --- a/drivers/pinctrl/bcm/pinctrl-ns2-mux.c
-> +++ b/drivers/pinctrl/bcm/pinctrl-ns2-mux.c
-> @@ -640,8 +640,8 @@ static int ns2_pinmux_enable(struct pinctrl_dev *pctrl_dev,
->   	const struct ns2_pin_function *func;
->   	const struct ns2_pin_group *grp;
->   
-> -	if (grp_select > pinctrl->num_groups ||
-> -		func_select > pinctrl->num_functions)
-> +	if (grp_select >= pinctrl->num_groups ||
-> +		func_select >= pinctrl->num_functions)
->   		return -EINVAL;
->   
->   	func = &pinctrl->functions[func_select];
+Christophe JAILLET wrote:
+> 'exit' functions should be marked as __exit, not __init.
 
+Applied to mips-fixes.
+
+> commit 25b69a889b63
+> https://git.kernel.org/mips/c/25b69a889b63
+>=20
+> Fixes: 85cc028817ef ("mips: make loongsoon serial driver explicitly modul=
+ar")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Signed-off-by: Paul Burton <paul.burton@mips.com>
+
+Thanks,
+    Paul
+
+[ This message was auto-generated; if you believe anything is incorrect
+  then please email paul.burton@mips.com to report it. ]

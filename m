@@ -2,37 +2,44 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AEADC46D6
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Oct 2019 07:08:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0A63C46DD
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Oct 2019 07:10:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726529AbfJBFIE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Oct 2019 01:08:04 -0400
-Received: from mout.web.de ([212.227.15.14]:41291 "EHLO mout.web.de"
+        id S1726761AbfJBFKP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Oct 2019 01:10:15 -0400
+Received: from mout.web.de ([212.227.15.3]:49933 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726326AbfJBFID (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Oct 2019 01:08:03 -0400
+        id S1725942AbfJBFKO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 2 Oct 2019 01:10:14 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569992872;
+        s=dbaedf251592; t=1569992982;
         bh=kEfl/Iv1CCzaybc5hroeM7fCim74t5N0mvhbCmJZhh4=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=Lov1/5+ayi7kQPFuWY5cE4KjQ8MhpzX1DZikCVg6PiUhB8EQRpDbMDEYwL2PkVSoW
-         Jh5bI6niJk3MoViRPvArofzgj69NVOf2ntz9NuZDEEBzwH7vMpprJoPiNnO8t+HiHP
-         iTQqgBpKYHtM+Cs+a6ZaQoEKefQsYfVdVURMBoGc=
+        b=c6Eaq4dGph0GZ/0fGzCqtYvUDgn79Ds29dpAhILOUn4ZpiYVUP7VpS/xhzLvH5tXh
+         eaRfSka82OYYoBVX8e697FzZjv5GUCnfpvc38orz44Ahrq9C3eBrlheRVJxD+5mS/T
+         KEQSHfGWLpnjLjaKWYGcUcdR7D0vmnhtXLbMWJ6o=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.73.205]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0M95ET-1iPgOr0vcL-00CPyu; Wed, 02
- Oct 2019 07:07:52 +0200
-Subject: Re: [v2] spi: gpio: prevent memory leak in spi_gpio_probe
+Received: from [192.168.1.2] ([93.135.73.205]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LtWsu-1i5o7004ii-010xoE; Wed, 02
+ Oct 2019 07:09:42 +0200
+Subject: Re: [v2] fs: affs: fix a memory leak in affs_remount
 To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-spi@vger.kernel.org
-Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>,
-        Mark Brown <broonie@kernel.org>,
+        linux-fsdevel@vger.kernel.org
+Cc:     Navid Emamdoost <emamd001@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        David Sterba <dsterba@suse.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Deepa Dinamani <deepa.kernel@gmail.com>,
+        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
         LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
-References: <20190930205241.5483-1-navid.emamdoost@gmail.com>
- <6b55e753-5797-2bdc-fae6-f575a0ef8186@web.de>
- <CAEkB2ES3-gotqS9184izf0fKOigFaFUetBiqekmYJPBgPWbSBQ@mail.gmail.com>
+References: <ec7d3fdb-445b-7f4e-d6e6-77c6ae9a5732@web.de>
+ <20190930210114.6557-1-navid.emamdoost@gmail.com>
+ <44ad775e-3b6f-4cbc-ba6f-455ff7191c58@web.de>
+ <CAEkB2ERMqs=xbt4H-1ro0zAQryoQUH=N5iJop-CKbSOo_mTk3w@mail.gmail.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -77,38 +84,38 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <2a5f9775-6cff-4246-435f-9908bfe5b07b@web.de>
-Date:   Wed, 2 Oct 2019 07:07:43 +0200
+Message-ID: <8cbd4afc-86ce-4023-febc-e617225d2cbe@web.de>
+Date:   Wed, 2 Oct 2019 07:09:39 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <CAEkB2ES3-gotqS9184izf0fKOigFaFUetBiqekmYJPBgPWbSBQ@mail.gmail.com>
+In-Reply-To: <CAEkB2ERMqs=xbt4H-1ro0zAQryoQUH=N5iJop-CKbSOo_mTk3w@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:EepWscPPqkjTYuRxcpWY7vKWJ9nzH5HBEwCxViXdbhWrtPO1p4A
- Uge/5TWXgiuusXVMduOojmqfGkfOFUWioiXpQHpbl4ws/sA4nxMaFx1gMVkM4llUAESg9qp
- +wgunckd94u8xSliNvlxr2zx1UPMA8jMyvdCph4mUlbM7JmzsbpQXV+mEQ0RR2l6EDC/Zkd
- SN4fMV6kBO6O5Vyrb8X6w==
+X-Provags-ID: V03:K1:SH9bXmHoM2t8W61xxfhNfBxJZf7ZQdex+AyWJe9M05DjfHYbOcq
+ oThEi1EVw8FiQysEDDfgKABcSUUPOaRShI3rIxTlTItWseVl8ZLFgBLQE9bA3xoJ9z0D1o3
+ rsE/Lbqpl3zOvtYwxfBytk2BekQhJVMlQhhbJJK/UyS9pHDThtQtcabcceiiocDYLqD/DIY
+ etFYSCi/ZAwCH9/FJOZ9A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:75gnEgzxpmY=:H2apDDInJJ8KscY6JK6aWY
- G4BjTe81GQb6HTySg+/2SYQ6h4pfJE3K/KmQviAmJyn6avUw+uRS1xEv+G4T+7IB3dk7QPhwC
- FPJcxAppq/tBrwXZ6Ij0o9w5+Qy4saEykcchlMRi28HfKNiNmdVlEdCc0CB8MlIxHmiy6+LtR
- bfWUFTSuPMYTrcuOrE0Zg7bv653VFOWaE2OifTz7h1BhGr3Tp3bXOx+TLPzXF8T0sYX0+oUPA
- iiu6VGEbkhdj3t0qqMAxDXoVSJClcZIzuiTBtixdcuU0KFcfvuCQjH0ElIrhb3Lu2TOme+RoX
- sqqMdVYU2bti/GzzmDsFPzQe1Y609ArYxRiySxcueXj9pLDwj09MEXE0QGykmIFCo//FF8c38
- ztdfB62plPZ8ubbGGvpKcLiXFCS46KA7xSKjSd1IGs9oXuQYhPFmCYrNWyqJhEMXmapTYVGmk
- 848sez2u0H4OGh4gQ3N06uR8s6Vcr+B8onrcFPkPJe4BrfGRUq+p53+h9/Sqk97KRoW7chv1M
- +dIyg0b1Nqz5LNn7SA+STNgQXi1WApFEAxQxGNStUXMpBzR8gztDKfW4mNLfwcG/LWchEBiGX
- Kp1NQWuorLt+b48HbFoXHNYGJcXB8eQkpXizbsZ/dMMo1+nSCWtrZJ8tiFYy0EcG5NYpYWPtz
- XRS+a+ih1/ZHomZjhy8ZQirMA0uOqBPtysv/CHEg+qKBtxDoFuOqcMj5hGCtOk7Lgra9C0r/8
- ECtldX53Ya+qM1cc/hfJps9GRBdaJHslfrf94oSH0yEVcLbWdiWwy/foPhs7PGG7SzRyJV12W
- OhXV70FE/vXE7HNdFWZ2cEpj6Ga9mXEWAjn39Vskzx8RTzrgZPJkQLwXrREacbySfW1xAyTfc
- J6Ir14a46uIG2cO+BxbYDJqPgJcvu5mRzbNSSjEmmPHJVznuUMOYB/sbm0jdh7ZClTFua74ON
- yxKxhnaoSEuprQRn7boSRsx0VEkWcoRVbHKa92OvExCZikosecJQinHOi5KKn8hJ6q9xq2urO
- m1ctYsyM8y2GV/SS3BmJP0fOhvffRoeFlfHnxfvFetD3zxMfGeq97jUadErNara+HZ4CCyS8r
- todNU+Wep3/fkME9lap6/pj0KDRkoVMFGUw8wkvzIntZA6b+gInrhPCfy/qvTpZifrW+RzO7O
- y2gHZ4FeBzCHCsMzBwD+ne8OIG8LVMH4uoxWrCcLFo/OWoHFzK/YE7QC2z557fIoe4Edkw3ZZ
- dd7bnuQsyZOEgHe8sEapnS8zWfJRHZZAUsL+5tlYfG0VgUCuNTle2pgZHxgE=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:LwbZQyr0ln4=:tStxlpIG9X2biGfiBuzMww
+ DJrmttCqhnWUeS1lfEtxXRzB4ioe65E+rrzaFv0S3XQLbzmnt17JmGaCjT2fpMZsCEysQGVaz
+ jDLNiEM0VehU73H60qSAmhuo7buWznc+nNusoo8Dc6Oc2HpLzMFqiXp6Lcj2Q/yqpeF8eW3rv
+ zknMPL3QIA5NoXzhZmVvsM5Dx3I8NjB09tYUJCkvjeO49zdiQLofwM1JlkWPsdOp7xDqBwNJs
+ CoqRwZwVHQ0zzu32CA/jgxNhJIjUN6c6rejM46zsnYEA/2d/gJHTemHf56BWjLPU5UOBEIroQ
+ gdO8bVJj6aEyXdtLYueMYNg0TDh3D4cXBNJjf4owk2MxPnsWea9cITD0P1/t4i3vZVv4vqIBK
+ YTCAC6Q4AT9ipS5HjGsXXPKCrODRYwc6vZAywu8N7eI1GoyqQbEA2Q1F7gJgTC5P38/p106+q
+ OijzjNpp157s4RfeBIA+YEmozJecCAL3UxCsdthWyCSPArC5QqycH2RMnR0j9TDuh80uxi2F6
+ es6LkqaNB3d+9pm1GgIECNhEC5lJu1ycHLURE3sbmhchA6vFOtclK017u/0TAgelM9jVm78E/
+ v/pOTMg+Qdp3h9CObmtRwSzoPkRqgBXSEs9gf8WI0WLpMBXyc6qesYoQxSODf5LA8/qMdfd5a
+ rlafovwpCAgv1jjDOnnV8fMbM1gxxcyqD6EuPQhxq8ssSz7+9IoJ6CwY3Bz0KTJSRnn1SSjjf
+ +A8XXwfwgFrLE4iLdfaBWljncq6dwCKMQL971WNMyYpmtjeyGzPFH/G9h3W679wq6ZlEVcSRs
+ AzIA7fmVYrrpTj1j0wfZ+Ezh73VduzZv7jw58nt5/AmVoExyQeH5m9+0q8wVlL5/2DijEgu7+
+ gCiHW0b9slctpuggomYRrcKU3x5ydcJyRqc6jOHZOdOB7bp+n+e3lgwEzlAwV+QTuqtgrgTXe
+ uH1cStFNt0h1u8pHlcG0TJZ1Zxujnmu5asN8n4P0UF2grMlHtJA0PcaI+wtgqIrR/gdomG/G8
+ fOPqYRFIj+oZbhWPHnDI2P5Y3ed3dO3xlnKjm756jbJCMzCF5z4+kEjdrkHD5wszfr2bqIvTO
+ lKVurdXT+77Dp9TgmIWUK87f2C1rqQ4d0PFPlWq7sHRGbUBzqcchqMHt05+HXrMDc8hBX8J1/
+ 3iPTE/VIof0caSsHFEsK2uwtwi8T+4m6fnzX+uVRnhx+Hmjv3ZZdujwYxzJtyk7IrtAU2y8nW
+ OeGJQXm4iWO3s/v3Z5z5Xdh/DFe/ahyqFMDdLjGwBJNb7CYJwLiCR0wPtoxI=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>

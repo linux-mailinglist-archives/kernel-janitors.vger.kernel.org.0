@@ -2,44 +2,39 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED403C46D9
-	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Oct 2019 07:10:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52A6DC472B
+	for <lists+kernel-janitors@lfdr.de>; Wed,  2 Oct 2019 07:48:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726852AbfJBFKP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 2 Oct 2019 01:10:15 -0400
-Received: from mout.web.de ([212.227.15.4]:37287 "EHLO mout.web.de"
+        id S1727273AbfJBFsC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 2 Oct 2019 01:48:02 -0400
+Received: from mout.web.de ([212.227.15.3]:57845 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726326AbfJBFKP (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 2 Oct 2019 01:10:15 -0400
+        id S1726266AbfJBFsC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 2 Oct 2019 01:48:02 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1569992982;
-        bh=kEfl/Iv1CCzaybc5hroeM7fCim74t5N0mvhbCmJZhh4=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=c6Eaq4dGph0GZ/0fGzCqtYvUDgn79Ds29dpAhILOUn4ZpiYVUP7VpS/xhzLvH5tXh
-         eaRfSka82OYYoBVX8e697FzZjv5GUCnfpvc38orz44Ahrq9C3eBrlheRVJxD+5mS/T
-         KEQSHfGWLpnjLjaKWYGcUcdR7D0vmnhtXLbMWJ6o=
+        s=dbaedf251592; t=1569995260;
+        bh=kryjEbVOjgPm/+T4JDkUXLGlaj6VWpM3aqTFuOHF088=;
+        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+        b=dE7nCCoA8xG2Mmy2CK2Ggu5tt0SAvfSE/mOuuAX3X8WLmDdBdKzC++5k/3YoaUKS3
+         aFc6pCBg3LDIx0QGMaXOIPdOc/Rd+8QerJiht45fAmSuO1RIwKJSiCP123HBKJnXsh
+         3+E7Z7970yPJeXRQg9NgRF7pjDGWRANhEzuVyIxM=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.73.205]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LdVty-1hpmrc05Eg-00igcm; Wed, 02
- Oct 2019 07:09:42 +0200
-Subject: Re: [v2] fs: affs: fix a memory leak in affs_remount
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-fsdevel@vger.kernel.org
-Cc:     Navid Emamdoost <emamd001@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        David Sterba <dsterba@suse.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Deepa Dinamani <deepa.kernel@gmail.com>,
-        "Gustavo A. R. Silva" <gustavo@embeddedor.com>,
-        LKML <linux-kernel@vger.kernel.org>,
+Received: from [192.168.1.2] ([93.135.73.205]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M89fV-1hu0Dq3Rxp-00vcqo; Wed, 02
+ Oct 2019 07:47:40 +0200
+Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Sam Ravnborg <sam@ravnborg.org>, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-References: <ec7d3fdb-445b-7f4e-d6e6-77c6ae9a5732@web.de>
- <20190930210114.6557-1-navid.emamdoost@gmail.com>
- <44ad775e-3b6f-4cbc-ba6f-455ff7191c58@web.de>
- <CAEkB2ERMqs=xbt4H-1ro0zAQryoQUH=N5iJop-CKbSOo_mTk3w@mail.gmail.com>
+References: <20191002034612.26607-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH v4] drm/amdgpu: fix multiple memory leaks in acp_hw_init
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        Chunming Zhou <David1.Zhou@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -84,50 +79,81 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <98ab1248-dd45-6dbe-50d4-58529f46a4e6@web.de>
-Date:   Wed, 2 Oct 2019 07:09:39 +0200
+Message-ID: <c03a8983-3f83-0596-96fa-a1a9312e82f8@web.de>
+Date:   Wed, 2 Oct 2019 07:47:37 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <CAEkB2ERMqs=xbt4H-1ro0zAQryoQUH=N5iJop-CKbSOo_mTk3w@mail.gmail.com>
+In-Reply-To: <20191002034612.26607-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:Vojh5b2RlM4zxoK2LQANV+bJtxid2Xj/Bw8Nz5Aax5bW7HimgRM
- 0mLcTNbLpFWLX617q2J46EdzA95Hd3jc9XtyuGTwp9joAcNYALFRC0LD8gwUa4wfPnXUtFm
- fz2/AIS3jpwOx8ctqn18U0DUg5qQY5aNW8xWOJfDtCDn5KWFFXP8QnIg5O1eB4MNmq1aaWs
- 5u9rjbqTYoD/pStguNhWQ==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ab6excF9+5PpxL1WVTUjh/hNozNGZpLDzmA6yRMO8NCOc1RuHgJ
+ puM3unXcxoESutHWF02Cj+luDoaLlDrro1ILb021cZWUBi01by+uHcncDEgr1xYBKFL4WCM
+ IyGhIh9ZfihR+KD9nLMiHeYpEYFf6IdOLHuFb8rgzavaedrNE82cheE4ts50oaOl/Lg4eWf
+ UsqbJj79PHAyUsyVbqA5Q==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Q29j8DspghI=:s3eRxf4ONBSMjYhYQiujwQ
- W1NyOnOEGNojA046pL60w1XtzoUk9mIKfWfQDne4JQwCTSSw9UeWCRAmeGLCTQbW5irN1bn0Y
- Fsd2zRyfhwqLUKzrC4qg6o7ojc3XBvjvXMAPzS4TJQtjbpIZNcH+YpW5HvAheVkTS+MrJYUIO
- Ji98VaRSOvrfJqe9puj0mM73ojmBSzy63e8iz9VIlg5r1VdzypyOiJB85v9Mkcwq6f8pkUxct
- AwVkHj3S2+t+LC4W9sgbsXy1TSwTVot9Y5rxgxGwQh/TRMDHSLIsnnd98IDG1fgvbHULRbiFV
- IhhzBEQSm7NY+1mmUKHmRx2hOXjj0aw0+Howhv9VeWXL6oZzP2pOlL9QxKlK/zsHOsH5HUM6i
- MEviysIFz6rIQT4crc9eOA3YkdCcROfVH9SnVsLZFxZ3aedrdQAyhHjXJhvGHWAR+DpBTZd4o
- ektQGQE16DeVtMrqP7JA0ndn7r41CYYgt1c9mkFtfKf/uBhBBQ+en5811Yg2eLsxhOF1Zprwp
- QoCs9tv2z+xF+DosIRRpr7HCby/yFGpFi3JFI9YBoas+pPXYRXFEQLfXbVGsMu5NxNnu3g1hz
- NbxgrmsSAgjz7Ucce5JqewKYU7KRJceFUsCK+36sbHKG02KqoB+s1sZg1LcgHus69fEswMKhr
- YV86OWnENwG/ExeeNOdt6B9L7tJ9dhoBpeWp1CA6617KM6NPzsxwzmbP8J46Ech/pXizxMGQ0
- tm9zZARhQcetKulbx9XO8Z5FYc7a3tRGY2sOqrDtDrveAlxjEEn6gnTEB4LCqahLfkFDVgTgI
- a9/lZkKLXOiQ8hzABQXbsMznWC2zH3gvxYRXGyrBlKFZDZqtJ2tLSu8SXRU1MGzGeOGncX5fc
- Dd3a/ItRv6VY8d3wZVtE0W0K8NXCYaIm1fVA4R76qzsVR6SP2xrCFMfzESinLhxXE0HPw+3s/
- ATj+eVCEeEx3yhTkbOBjMGXAoEe4WRWcl2+khphbhoUdUpB0WSVZ8coHqSuAd38YQFJ+edADa
- GmPTp8zEwe3EdrnXItDqphv8rcy8qjPeC10SHW3OGAQhQUOPoA14FvPce8LmEVUqFvJJVDhrx
- HCa5uEGb9vfs8AwqPSxCZkvpQYyDybolIaca9kG7NrMBHkIdEo1MqIP/Ps89vwX6WebmJ+BzN
- A3k5fdjQjeK8lEBgBZe68OPmq5AK2grbegcHQXUQOyU6DJhYQ7QXNmzrMoV6CLhodsU1aj69M
- VYL85ONIFGURYiD6CRREej6pMrASupEbbwSmEMasFE9EY2Ds5Vi9b9d+wrTk=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:qgltnkPiLAs=:I5Kh+48FQWvUHzcJuFbUyU
+ ha9g7p/3i4+7vE0s2oNkHW/Bqxuty8rsakiNldmNeXxjgpLfJ/QLvSp4bDrLJrVwASqMT70HJ
+ rrlIftNLDd2xwdqc3GROltXYVg75EWwieMIDJHL1Y7iemg9CHZw3ID/NTyP4Ib+7Y89Rb9FQ5
+ 9FMJbHlo7q5AXQiaWTCErDLZieukqVJCbR0wTy1Y6cdEYhTYQ78DYYloK0ZqHLSG2oi0cYlhe
+ U6W3BvCv+p3G4Oi/bmJ+wxMPuwKR4r4p22632Lu2WcP8YK54zTVdQstE0nhWNijLgyRBIB440
+ BTTKvkXUfdOsGTbrZhyFIZKbu84hhR7shPIYTYLeJrhx4kAXW7VtT6DJkRWFj3J4CsmbecBG+
+ FTtnss//t8vZT/YXLBbEcXKSUhjvooX3h0LrPC1qhBe4M0WlLSzmE5TB9HjTaff311qZqoynb
+ dqnHlr9O2fgCe7PFnfxUncN5nT3kRjrLeUhNnnvTC2c+oO6BZ/42knParD7Xw5WU/x9Zs8Dl2
+ 4rS/76B34+Vu5DOpvFFLneoDxYCAyfa3btX6LNqeaEAz6Np74avqh1NqMVgfjAfdo3e3ohjui
+ U7OfS5veXpnMbLFyaI/aM+d1H6Jr8T05B3gWYzG72KZ9nx0nZBT9FkG2gRA8/egcA2A3hEZ5q
+ xkz55XdJzr+KU4mVwZs6JWECKSG+YvaG6Qd3u9KEG7JlQ2I2RJsqNAYGSV7sSXE8jBGNal9o7
+ ScWfd2FavnAjEFlzPFa6O73AfVL5T5VoqtM6Pk2fvN5OnxLT7oFengGNECZ5Jvkion9rCORz+
+ 34kqmFC+kvSCH4zkm2NpRK7IrAec+GjMhGpfPkWV4TZk9A54xbgq2O1ePb6iJbH6V+1zg9Kmf
+ 2VbRk6vigVSLomrEipvj0PEyWxSrG84umoCndEQlECmYT88z+beHQqmeih/1Ubu0EWt7HZNkQ
+ AeTX0AXHc/ON8+1GNbOtER9rbfPhDql0kEPl3GEOOYQrzJuaLUCXHf8BmeV+rMG+doWJA+/Gl
+ s9s28OU2ctA9ORXsRqQ8YTG0nkfVQ2u/586ARrhAQRZYygDcIkUM3RpdJSprQ0izy6hjWEpI6
+ uNp2BnJ+QxOoFq8tmbX27syEAF0RUERo+ii4e45c7fcXtxchgwUeCl5OWhLlMIqxeyq+tPnxq
+ zYHOIvDWk5ktFmGeI13buicks8x9h0ZU4ADgG+V6Rqnb0xTEaN/CmnmNm/+uGd7YGQcwPNmWC
+ sQccV/21VHrj+SYaN/fi8t7Z9tur3pv5V/0E8AocfOh2ELkoAp2jSWlzDFTY=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Hi Markus, thanks for your suggestions for improving the quality of
-> the patch. At the moment I prefer first get a confirmation from
-> contributors about the leak and then work on any possible improvements
-> for the patch.
+> ---
 
-Please fix this patch as soon as possible if you care for the correctness
-of the provided information.
+Why did you omit the patch change log at this place?
+
+
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_acp.c | 34 ++++++++++++++++---------
+
+
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_acp.c
+> @@ -189,7 +189,7 @@ static int acp_hw_init(void *handle)
+=E2=80=A6
+> +	struct i2s_platform_data *i2s_pdata =3D NULL;
+=E2=80=A6
+
+I propose to reconsider this update suggestion once more.
+
+
+> @@ -393,6 +396,13 @@ static int acp_hw_init(void *handle)
+>  	val &=3D ~ACP_SOFT_RESET__SoftResetAud_MASK;
+>  	cgs_write_register(adev->acp.cgs_device, mmACP_SOFT_RESET, val);
+>  	return 0;
+> +
+> +failure:
+> +	kfree(i2s_pdata);
+> +	kfree(adev->acp.acp_res);
+> +	kfree(adev->acp.acp_cell);
+> +	kfree(adev->acp.acp_genpd);
+> +	return r;
+>  }
+>
+>  /**
+
+Are you going to follow a known programming guideline?
+https://wiki.sei.cmu.edu/confluence/display/c/MEM12-C.+Consider+using+a+go=
+to+chain+when+leaving+a+function+on+error+when+using+and+releasing+resourc=
+es#MEM12-C.Considerusingagotochainwhenleavingafunctiononerrorwhenusingandr=
+eleasingresources-CompliantSolution%28copy_process%28%29fromLinuxkernel%29
 
 Regards,
 Markus

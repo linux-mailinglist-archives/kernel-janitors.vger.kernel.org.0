@@ -2,21 +2,21 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 050E5CB167
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Oct 2019 23:41:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0382CCB189
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Oct 2019 23:52:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389528AbfJCVkz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Oct 2019 17:40:55 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:58807 "EHLO
+        id S1728095AbfJCVwb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Oct 2019 17:52:31 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59031 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389497AbfJCVkz (ORCPT
+        with ESMTP id S1726002AbfJCVwb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Oct 2019 17:40:55 -0400
+        Thu, 3 Oct 2019 17:52:31 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iG8qA-00071M-5a; Thu, 03 Oct 2019 21:40:50 +0000
+        id 1iG91P-0000qg-D8; Thu, 03 Oct 2019 21:52:27 +0000
 From:   Colin King <colin.king@canonical.com>
 To:     Alex Deucher <alexander.deucher@amd.com>,
         =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
@@ -25,9 +25,9 @@ To:     Alex Deucher <alexander.deucher@amd.com>,
         Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
         dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/amdgpu: remove redundant variable r and redundant return statement
-Date:   Thu,  3 Oct 2019 22:40:49 +0100
-Message-Id: <20191003214049.23067-1-colin.king@canonical.com>
+Subject: [PATCH][next] drm/amdgpu: fix uninitialized variable pasid_mapping_needed
+Date:   Thu,  3 Oct 2019 22:52:27 +0100
+Message-Id: <20191003215227.23540-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,36 +39,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a return statement that is not reachable and a variable that
-is not used.  Remove them.
+The boolean variable pasid_mapping_needed is not initialized and
+there are code paths that do not assign it any value before it is
+is read later.  Fix this by initializing pasid_mapping_needed to
+false.
 
-Addresses-Coverity: ("Structurally dead code")
-Fixes: de7b45babd9b ("drm/amdgpu: cleanup creating BOs at fixed location (v2)")
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: 6817bf283b2b ("drm/amdgpu: grab the id mgr lock while accessing passid_mapping")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-index 481e4c381083..814159f15633 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-@@ -1636,7 +1636,6 @@ static void amdgpu_ttm_fw_reserve_vram_fini(struct amdgpu_device *adev)
- static int amdgpu_ttm_fw_reserve_vram_init(struct amdgpu_device *adev)
- {
- 	uint64_t vram_size = adev->gmc.visible_vram_size;
--	int r;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+index a2c797e34a29..be10e4b9a94d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -1055,7 +1055,7 @@ int amdgpu_vm_flush(struct amdgpu_ring *ring, struct amdgpu_job *job,
+ 		id->oa_size != job->oa_size);
+ 	bool vm_flush_needed = job->vm_needs_flush;
+ 	struct dma_fence *fence = NULL;
+-	bool pasid_mapping_needed;
++	bool pasid_mapping_needed = false;
+ 	unsigned patch_offset = 0;
+ 	int r;
  
- 	adev->fw_vram_usage.va = NULL;
- 	adev->fw_vram_usage.reserved_bo = NULL;
-@@ -1651,7 +1650,6 @@ static int amdgpu_ttm_fw_reserve_vram_init(struct amdgpu_device *adev)
- 					  AMDGPU_GEM_DOMAIN_VRAM,
- 					  &adev->fw_vram_usage.reserved_bo,
- 					  &adev->fw_vram_usage.va);
--	return r;
- }
- 
- /**
 -- 
 2.20.1
 

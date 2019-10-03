@@ -2,78 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 88241C9B92
-	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Oct 2019 12:05:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03B16C9B9B
+	for <lists+kernel-janitors@lfdr.de>; Thu,  3 Oct 2019 12:05:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729831AbfJCKCY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 3 Oct 2019 06:02:24 -0400
-Received: from mail-ua1-f68.google.com ([209.85.222.68]:35545 "EHLO
-        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727548AbfJCKCY (ORCPT
+        id S1728486AbfJCKCi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 3 Oct 2019 06:02:38 -0400
+Received: from mail-vs1-f66.google.com ([209.85.217.66]:36405 "EHLO
+        mail-vs1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726772AbfJCKCh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 3 Oct 2019 06:02:24 -0400
-Received: by mail-ua1-f68.google.com with SMTP id n63so702877uan.2
-        for <kernel-janitors@vger.kernel.org>; Thu, 03 Oct 2019 03:02:23 -0700 (PDT)
+        Thu, 3 Oct 2019 06:02:37 -0400
+Received: by mail-vs1-f66.google.com with SMTP id v19so1294968vsv.3
+        for <kernel-janitors@vger.kernel.org>; Thu, 03 Oct 2019 03:02:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=GOSpNy+f7VfEti+UMkQ6EpXD+06Um2caF49vqJkGTIU=;
-        b=mNFS4WZ5+nNrYnXE1BleojBJ2+Rbdf9JROYEgt4+yTQ6sosZS+zXZ7jEQyr/21qOHo
-         ZRca6pstZgoYwO9BQ0/ncegqwZbZUFaHeWkGiKx0arLsP5XWU3VfktsAcQBwl/+2OTM2
-         T9fEF6txKviVOAZgqdT5cgh+OjZ1LTAVTWFvUUx3k/hAo3IVDbE644ZWgpBEWNJabXCm
-         HmdLWMsm8FfT24M62fOYITbUDCYADpoBUhUrotqLgKqJ0MRVD4cY3KDvWH863ehV1Iow
-         Qs0qP+hrlw6y63wOaXkYg+NNKTxg1wjNZojN4iHAc4C9OB9alV/dPJaeEnxrYlm+L9fj
-         AWFQ==
+        bh=U9Fa4yuZV+yNNVmG4y4IONb8CE9OdpsQv913KmzPPVk=;
+        b=wamW/PGz7QxYKC7aex34HmgrUbYwUNZfadON3You+egcMNTVG/fiz0r7aPlf+38BKn
+         Z40KY8z6Eu3hRdvxxqTGKTbirVr4SeB3dXFMYFxq/s801AD3IZVP3buAQ3EUDGgu6cXE
+         jwrG1fnr6rKXOZFP6v2Ri35YC8DPzGc1XhfjckKVWATxeUPJ+Gb1c0Z9vvE7Izyw3wue
+         5mhjcMOawOnHvZZXpm7Dqw7oX2D87MXm0zpkYOjxjC6ACuVPX03tH1P+fYDF5LvoI+Te
+         0LTiRpJQ8ch5C3f70Mb3Obh5b9XrxQpk609wjCXElliJnKUfEDcv73/Zkxg5dGWVlYqY
+         UTnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=GOSpNy+f7VfEti+UMkQ6EpXD+06Um2caF49vqJkGTIU=;
-        b=F57JbMS/7w7CnrWKExB2Xq6/S2gHdLmUmTiSpE1bHWDFkVN23gDPMIC7by6Cd1nu0N
-         m/ahRwg1W/UKkIIBZCgnO4AbJHygGeVIW+OE/TnYC/yGbfKyCfTrcu53WK/0fpnDfuKv
-         LF7Q8GZrD6u9Us6MOIBV7z5GQpHCW9bBs9MgK1QA5Pidihbcv7hBZ1AN5RZAEVi2U6Ce
-         C6lCvqNKoLYspLQFHyOjkNIoOzg9nOs3p8V3DrD8peKYy9lek2ZxObQqQJpVndZN8ZLT
-         GcTDHR9s4PQ9ytwKBT1mC8Wa+PpSqOKNg5UrNT/7nv9IM61THQRMnbZ4nhryGjbI+QtY
-         JR5w==
-X-Gm-Message-State: APjAAAWR0L4jHfCzGmsgxzpyoP4YOYzCH3AE77EPgpoYjDv9qSbTeL/0
-        bweHwGIzDyTvOrdR3QUHH9MrDgOHG8h5qDe2J5qyFQ==
-X-Google-Smtp-Source: APXvYqy1kKchXz+oPn0n/cgFca4K27JNgGB2h8SdeZvE8qZywL3z2hE+b/iLMb85HvQngCIZt5pFcC7UNWQtn0HAkug=
-X-Received: by 2002:a9f:24c4:: with SMTP id 62mr4434046uar.104.1570096943050;
- Thu, 03 Oct 2019 03:02:23 -0700 (PDT)
+        bh=U9Fa4yuZV+yNNVmG4y4IONb8CE9OdpsQv913KmzPPVk=;
+        b=kxkzrjv3PuELr0xqQkkIOA9fY50vIJgj4BFyh4EzRs8Ts+zmVhDnRCO5ovqZMUxgJ6
+         +ZM1WDHgZubJ3P+doFUsM4nBCaqtyMgCvudvC3MB3gXtlZ34agwzHMcwYoWhg3YM8+Qr
+         Ukf573Tm/WI0mhoPztCZJKjn99EyOszpY0dUiuDIjErJ4knEsTdSy/aQMuNoIcrUoZZq
+         RyOwy+UG3xsHMTPbgpQtQ88iZRg6qQkN6oRWLurDUCHBU1UuE19FOawlgZIBP9E8E8YU
+         HsT+TCOtTq90Yf4HDbTp00F7uVZKaFyMAOlZQIW3d8mpbdmO0GBFJ1sp5LAis/pCDI3t
+         QKMQ==
+X-Gm-Message-State: APjAAAVxUV07TmktQrg1yMgeQSWCoYNmppREUvKPWZsaKYkPvKuwn7CU
+        2PB2uNpkesrPmGirFGZAxa6eKqVApWZxqrHEPeY6+g==
+X-Google-Smtp-Source: APXvYqy07bQ30ZUxjsJZ7LLIEWlQogU+k8LuBf1/tloHW/fGz2UWLfvIktmGW9rTnJ7PADa6qd1ashL7c+YzgHy+//Y=
+X-Received: by 2002:a67:fc5a:: with SMTP id p26mr4509364vsq.200.1570096955793;
+ Thu, 03 Oct 2019 03:02:35 -0700 (PDT)
 MIME-Version: 1.0
-References: <4ad4cdb5-3623-4416-d3d2-b3c048a42139@web.de>
-In-Reply-To: <4ad4cdb5-3623-4416-d3d2-b3c048a42139@web.de>
+References: <20190922114700.10563-1-colin.king@canonical.com>
+In-Reply-To: <20190922114700.10563-1-colin.king@canonical.com>
 From:   Ulf Hansson <ulf.hansson@linaro.org>
-Date:   Thu, 3 Oct 2019 12:01:47 +0200
-Message-ID: <CAPDyKFpHdOGqSTDd95m=NjcE+vkW_p=61UFFegJ9QX8j3UdB0g@mail.gmail.com>
-Subject: Re: [PATCH] mmc: cavium-octeon: Use devm_platform_ioremap_resource()
- in octeon_mmc_probe()
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
-        David Daney <david.daney@cavium.com>,
-        Jan Glauber <jglauber@cavium.com>,
-        "Steven J. Hill" <Steven.Hill@cavium.com>,
-        LKML <linux-kernel@vger.kernel.org>,
+Date:   Thu, 3 Oct 2019 12:01:57 +0200
+Message-ID: <CAPDyKFqnzLNQXwAn2j821LM8EkW4yagDd8Tp4BaFFy-rFMhs8Q@mail.gmail.com>
+Subject: Re: [PATCH] memstick: jmb38x_ms: clean up indentation issue
+To:     Colin King <colin.king@canonical.com>
+Cc:     Maxim Levitsky <maximlevitsky@gmail.com>,
+        Alex Dubov <oakad@yahoo.com>,
+        "linux-mmc@vger.kernel.org" <linux-mmc@vger.kernel.org>,
         kernel-janitors@vger.kernel.org,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Himanshu Jha <himanshujha199640@gmail.com>
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 18 Sep 2019 at 14:28, Markus Elfring <Markus.Elfring@web.de> wrote:
+On Sun, 22 Sep 2019 at 13:47, Colin King <colin.king@canonical.com> wrote:
 >
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Wed, 18 Sep 2019 14:20:34 +0200
+> From: Colin Ian King <colin.king@canonical.com>
 >
-> Simplify this function implementation by using a known wrapper function.
+> There is a hunk of code that is indented one level too deep, fix
+> this by removing the extraneous tabs.
 >
-> This issue was detected by using the Coccinelle software.
->
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
 Applied for next, thanks!
 
@@ -82,47 +76,33 @@ Uffe
 
 
 > ---
->  drivers/mmc/host/cavium-octeon.c | 15 ++-------------
->  1 file changed, 2 insertions(+), 13 deletions(-)
+>  drivers/memstick/host/jmb38x_ms.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
 >
-> diff --git a/drivers/mmc/host/cavium-octeon.c b/drivers/mmc/host/cavium-octeon.c
-> index 22aded1065ae..916746c6c2c7 100644
-> --- a/drivers/mmc/host/cavium-octeon.c
-> +++ b/drivers/mmc/host/cavium-octeon.c
-> @@ -148,7 +148,6 @@ static int octeon_mmc_probe(struct platform_device *pdev)
->  {
->         struct device_node *cn, *node = pdev->dev.of_node;
->         struct cvm_mmc_host *host;
-> -       struct resource *res;
->         void __iomem *base;
->         int mmc_irq[9];
->         int i, ret = 0;
-> @@ -205,23 +204,13 @@ static int octeon_mmc_probe(struct platform_device *pdev)
+> diff --git a/drivers/memstick/host/jmb38x_ms.c b/drivers/memstick/host/jmb38x_ms.c
+> index 32747425297d..3394164a7968 100644
+> --- a/drivers/memstick/host/jmb38x_ms.c
+> +++ b/drivers/memstick/host/jmb38x_ms.c
+> @@ -433,13 +433,13 @@ static int jmb38x_ms_issue_cmd(struct memstick_host *msh)
+>                 writel(((1 << 16) & BLOCK_COUNT_MASK)
+>                        | (data_len & BLOCK_SIZE_MASK),
+>                        host->addr + BLOCK);
+> -                       t_val = readl(host->addr + INT_STATUS_ENABLE);
+> -                       t_val |= host->req->data_dir == READ
+> -                                ? INT_STATUS_FIFO_RRDY
+> -                                : INT_STATUS_FIFO_WRDY;
+> +               t_val = readl(host->addr + INT_STATUS_ENABLE);
+> +               t_val |= host->req->data_dir == READ
+> +                        ? INT_STATUS_FIFO_RRDY
+> +                        : INT_STATUS_FIFO_WRDY;
 >
->         host->last_slot = -1;
->
-> -       res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -       if (!res) {
-> -               dev_err(&pdev->dev, "Platform resource[0] is missing\n");
-> -               return -ENXIO;
-> -       }
-> -       base = devm_ioremap_resource(&pdev->dev, res);
-> +       base = devm_platform_ioremap_resource(pdev, 0);
->         if (IS_ERR(base))
->                 return PTR_ERR(base);
->         host->base = (void __iomem *)base;
->         host->reg_off = 0;
->
-> -       res = platform_get_resource(pdev, IORESOURCE_MEM, 1);
-> -       if (!res) {
-> -               dev_err(&pdev->dev, "Platform resource[1] is missing\n");
-> -               return -EINVAL;
-> -       }
-> -       base = devm_ioremap_resource(&pdev->dev, res);
-> +       base = devm_platform_ioremap_resource(pdev, 1);
->         if (IS_ERR(base))
->                 return PTR_ERR(base);
->         host->dma_base = (void __iomem *)base;
+> -                       writel(t_val, host->addr + INT_STATUS_ENABLE);
+> -                       writel(t_val, host->addr + INT_SIGNAL_ENABLE);
+> +               writel(t_val, host->addr + INT_STATUS_ENABLE);
+> +               writel(t_val, host->addr + INT_SIGNAL_ENABLE);
+>         } else {
+>                 cmd &= ~(TPC_DATA_SEL | 0xf);
+>                 host->cmd_flags |= REG_DATA;
 > --
-> 2.23.0
+> 2.20.1
 >

@@ -2,85 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F2C3CBC1D
-	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 15:46:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E7A3CBCB2
+	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 16:09:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388794AbfJDNqn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 4 Oct 2019 09:46:43 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:50854 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388733AbfJDNqm (ORCPT
+        id S2388824AbfJDOJP convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 4 Oct 2019 10:09:15 -0400
+Received: from mail.fireflyinternet.com ([109.228.58.192]:64145 "EHLO
+        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2387917AbfJDOJP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 4 Oct 2019 09:46:42 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id 62F9D61A37; Fri,  4 Oct 2019 13:46:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1570196801;
-        bh=7z8K8z1kVtW4QRmy9LQUNBsQnTcmL+HKDaKSTRVrlrk=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=jN7pYUj2OrIhhdjp/i8GP2SYmK6REE/SkjCzJwZvh4FlUWwxB14XZpz9n/ulXpeue
-         ikaeeDigxkc9pO0IXRR1GXLLbY1moi0FKgATgM8OSxxGvDockGl4qbS+VTY+x9+Owr
-         08eOjd2JjsNQZvTfLFkKPYplzOXGP5hpWB6I9lbU=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 40FD2613A8;
-        Fri,  4 Oct 2019 13:46:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1570196800;
-        bh=7z8K8z1kVtW4QRmy9LQUNBsQnTcmL+HKDaKSTRVrlrk=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=ViTfqnTxmBIMf4p1Hx277E8BubfHs+nBxCPzvrE/JNSgJ1JjSfbBjO+SzAWFQpDWw
-         NMi5PtAtTJw96KeSqS0vcM8BKX82vv3jiQ542DUG6ovIS6xMyT6P6IfNWdFefh0iOO
-         7gKaeeclOdMMHzX/S8JIFNdXaEeMeAGqlqB+a/gE=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 40FD2613A8
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+        Fri, 4 Oct 2019 10:09:15 -0400
+X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
+Received: from localhost (unverified [78.156.65.138]) 
+        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 18724475-1500050 
+        for multiple; Fri, 04 Oct 2019 15:08:59 +0100
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] libertas: remove redundant assignment to variable ret
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191002101517.10836-1-colin.king@canonical.com>
-References: <20191002101517.10836-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191004134641.62F9D61A37@smtp.codeaurora.org>
-Date:   Fri,  4 Oct 2019 13:46:41 +0000 (UTC)
+Content-Transfer-Encoding: 8BIT
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        David Airlie <airlied@linux.ie>
+From:   Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20191004102251.GC823@mwanda>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Sam Ravnborg <sam@ravnborg.org>,
+        Emil Velikov <emil.velikov@collabora.com>
+References: <20191004102251.GC823@mwanda>
+Message-ID: <157019813720.18712.6286079822254824652@skylake-alporthouse-com>
+User-Agent: alot/0.6
+Subject: Re: [PATCH] drm/i810: Prevent underflow in ioctl
+Date:   Fri, 04 Oct 2019 15:08:57 +0100
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
-
-> From: Colin Ian King <colin.king@canonical.com>
+Quoting Dan Carpenter (2019-10-04 11:22:51)
+> The "used" variables here come from the user in the ioctl and it can be
+> negative.  It could result in an out of bounds write.
 > 
-> The variable ret is being assigned a value that is never read and is
-> being re-assigned a little later on. The assignment is redundant and hence
-> can be removed.
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/gpu/drm/i810/i810_dma.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
+> diff --git a/drivers/gpu/drm/i810/i810_dma.c b/drivers/gpu/drm/i810/i810_dma.c
+> index 2a77823b8e9a..e66c38332df4 100644
+> --- a/drivers/gpu/drm/i810/i810_dma.c
+> +++ b/drivers/gpu/drm/i810/i810_dma.c
+> @@ -728,7 +728,7 @@ static void i810_dma_dispatch_vertex(struct drm_device *dev,
+>         if (nbox > I810_NR_SAREA_CLIPRECTS)
+>                 nbox = I810_NR_SAREA_CLIPRECTS;
+>  
+> -       if (used > 4 * 1024)
+> +       if (used < 0 || used > 4 * 1024)
+>                 used = 0;
 
-Patch applied to wireless-drivers-next.git, thanks.
+Yes, as passed to the GPU instruction, negative used is invalid.
 
-60b5b49f6a6e libertas: remove redundant assignment to variable ret
+Then it is used as an offset into a memblock, where a negative offset
+would be very bad.
 
--- 
-https://patchwork.kernel.org/patch/11170731/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+-Chris

@@ -2,72 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 51B8DCC368
-	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 21:11:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D41EFCC386
+	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 21:27:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730579AbfJDTLj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 4 Oct 2019 15:11:39 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:41768 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730323AbfJDTLi (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 4 Oct 2019 15:11:38 -0400
-Received: by mail-lj1-f196.google.com with SMTP id f5so7570212ljg.8
-        for <kernel-janitors@vger.kernel.org>; Fri, 04 Oct 2019 12:11:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=usuFISMqci9f735wNqIFTbIm+6Oe9vY9sfRcppqbt5s=;
-        b=HvnR1KR73qda6vY/C+pVxksN+VkAF79ybdTbYLgp2BPfIBTG3X5fPcL8CE/yRW+uYB
-         JcVyzvlgJ6a7Zo3IibEn8NznBc491IMUS7uRPQ2Xi9AskMnPYjzHlY0I24qeDxgvE2FD
-         a7sfDNkFfsbRQKT7Hkd/KJRDBgEOAcZaJc/qhjwn9HaGcxj1w9Cn4mZuNq3oSqE/XsII
-         YTdyE6x1+6JuJjv1gs9xZgr0HuM6VueBCMuQ71OTx2p9m5jrN/ipjmDSP9DBbbMOMvSB
-         2NYml5bEyyVkbiMwCNW4mMYiZ5Bz0QF6bjm/SnC1T8JED+3Ikj77qK6j4BTtzgYdniIo
-         h81g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=usuFISMqci9f735wNqIFTbIm+6Oe9vY9sfRcppqbt5s=;
-        b=AHcI6Fi+W/Lyjfkqb1eN0E2qvTUihanM+5QK8+s0VQaoAz6AmkeVbrqGYBF7hOBYqu
-         wH9LoAkYXzjRtcUdZSKrgDj8mmYAQyaB4V02BwkhKVzJPjbi5h+vrzgnH2tL1ReC78VD
-         wuwUvv37hLm0btfUhlXiUOhP3XsJSbj2FezDavNYq+MKwfHJ+XnMGOMfy+NCDa0AZhZt
-         LuIHgJiNjA7bsTjb6J2PugqfswytygkWoX8zYhMk4OrRlX+7iIh2QsQjjORPosLG03Dj
-         exvXJSmPLKqeeqvUoG/BLQ4Q+iiMgU3l7OqX1oX0wIZ9mvFN73VjyvZfmyMdNxoV2lnq
-         XcgQ==
-X-Gm-Message-State: APjAAAVZlsLxoL0vLoCqxp9tgWL69Gi7sZp2yV7CH5OBmOFwppADdZPZ
-        d4eQ92NCooNc0K7tmjU+xASr+R6/wMmBu0UnzdI=
-X-Google-Smtp-Source: APXvYqxneftEXtgdp62+HuPpOF3H0Ge3/BzgCLs+OMAlvJEqXQGw4KdTusSyG/LNSfeR/H5ALp5GlFHQBbsKFNhd5wY=
-X-Received: by 2002:a2e:2953:: with SMTP id u80mr10372271lje.233.1570216296619;
- Fri, 04 Oct 2019 12:11:36 -0700 (PDT)
+        id S1730196AbfJDT1X (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 4 Oct 2019 15:27:23 -0400
+Received: from foss.arm.com ([217.140.110.172]:53228 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725932AbfJDT1W (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 4 Oct 2019 15:27:22 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1D72F15AB;
+        Fri,  4 Oct 2019 12:27:22 -0700 (PDT)
+Received: from e110455-lin.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EEACE3F534;
+        Fri,  4 Oct 2019 12:27:21 -0700 (PDT)
+Received: by e110455-lin.cambridge.arm.com (Postfix, from userid 1000)
+        id 90F28682570; Fri,  4 Oct 2019 20:27:20 +0100 (BST)
+Date:   Fri, 4 Oct 2019 20:27:20 +0100
+From:   Liviu Dudau <liviu.dudau@arm.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     James Wang <james.qian.wang@arm.com>,
+        Brian Starkey <brian.starkey@arm.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] drm/komeda: remove redundant assignment to pointer
+ disable_done
+Message-ID: <20191004192720.7eiqdvsm2yv62svg@e110455-lin.cambridge.arm.com>
+References: <20191004162156.325-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6504:1175:0:0:0:0 with HTTP; Fri, 4 Oct 2019 12:11:35
- -0700 (PDT)
-Reply-To: helenpatrrick@gmail.com
-From:   Angel Helen <isslamicbank@gmail.com>
-Date:   Fri, 4 Oct 2019 19:11:35 +0000
-Message-ID: <CABU49e=m5HNGJpwvNO_mW5jcwDtgW+5F4a+BVr03n1jFqfBEXA@mail.gmail.com>
-Subject: HELLO PLEASE CAN I SPEAK WITH YOU?
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191004162156.325-1-colin.king@canonical.com>
+User-Agent: NeoMutt/20180716
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello dear,
-My name is Miss Helen i am a humble sincere single girl looking for
-true love, and a partner to assist me transfer my late father money,
-an amount of, (Four Million Two Hundred Thousand US Dollars) to your
-country for investment. I will give you 40% after the transfer, while
-the remaining amount will be invest in your country in your names,
-with 50% equal profits sharing.
+On Fri, Oct 04, 2019 at 05:21:56PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The pointer disable_done is being initialized with a value that
+> is never read and is being re-assigned a little later on. The
+> assignment is redundant and hence can be removed.
 
-Send me your pictures with brief introductions about your self's, so
-that i will give you further details and procedure.
+Not really true, isn't it? The re-assignment is done under the condition that
+crtc->state->active is true. disable_done will be used regardless after the if
+block, so we can't skip this initialisation.
 
-Message me to my email: helenpatrrick@gmail.com
+Not sure why Coverity flags this, but I would NAK this patch.
 
-I awaits your answer today.
-God bless you.
-Miss Helen.
+Best regards,
+Liviu
+
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/gpu/drm/arm/display/komeda/komeda_crtc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c b/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c
+> index 75263d8cd0bd..9beeda04818b 100644
+> --- a/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c
+> +++ b/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c
+> @@ -296,7 +296,7 @@ komeda_crtc_atomic_disable(struct drm_crtc *crtc,
+>  	struct komeda_crtc_state *old_st = to_kcrtc_st(old);
+>  	struct komeda_pipeline *master = kcrtc->master;
+>  	struct komeda_pipeline *slave  = kcrtc->slave;
+> -	struct completion *disable_done = &crtc->state->commit->flip_done;
+> +	struct completion *disable_done;
+>  	bool needs_phase2 = false;
+>  
+>  	DRM_DEBUG_ATOMIC("CRTC%d_DISABLE: active_pipes: 0x%x, affected: 0x%x\n",
+> -- 
+> 2.20.1
+> 
+
+-- 
+====================
+| I would like to |
+| fix the world,  |
+| but they're not |
+| giving me the   |
+ \ source code!  /
+  ---------------
+    ¯\_(ツ)_/¯

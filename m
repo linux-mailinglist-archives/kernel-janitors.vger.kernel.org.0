@@ -2,65 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D5F1CBFFA
-	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 18:02:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85B49CC00C
+	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 18:05:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390196AbfJDQCc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 4 Oct 2019 12:02:32 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:52970 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389131AbfJDQCc (ORCPT
+        id S2390293AbfJDQFD convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 4 Oct 2019 12:05:03 -0400
+Received: from mail.fireflyinternet.com ([109.228.58.192]:58938 "EHLO
+        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2390027AbfJDQFD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 4 Oct 2019 12:02:32 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iGQ2F-0005CI-A4; Fri, 04 Oct 2019 16:02:27 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ath10k: fix null dereference on pointer crash_data
-Date:   Fri,  4 Oct 2019 17:02:27 +0100
-Message-Id: <20191004160227.31577-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
+        Fri, 4 Oct 2019 12:05:03 -0400
+X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
+Received: from localhost (unverified [78.156.65.138]) 
+        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 18726097-1500050 
+        for multiple; Fri, 04 Oct 2019 17:04:48 +0100
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        David Airlie <airlied@linux.ie>
+From:   Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <157019813720.18712.6286079822254824652@skylake-alporthouse-com>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Sam Ravnborg <sam@ravnborg.org>,
+        Emil Velikov <emil.velikov@collabora.com>
+References: <20191004102251.GC823@mwanda>
+ <157019813720.18712.6286079822254824652@skylake-alporthouse-com>
+Message-ID: <157020508581.18712.9108329337994387428@skylake-alporthouse-com>
+User-Agent: alot/0.6
+Subject: Re: [PATCH] drm/i810: Prevent underflow in ioctl
+Date:   Fri, 04 Oct 2019 17:04:45 +0100
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Quoting Chris Wilson (2019-10-04 15:08:57)
+> Quoting Dan Carpenter (2019-10-04 11:22:51)
+> > The "used" variables here come from the user in the ioctl and it can be
+> > negative.  It could result in an out of bounds write.
+> > 
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> >  drivers/gpu/drm/i810/i810_dma.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/gpu/drm/i810/i810_dma.c b/drivers/gpu/drm/i810/i810_dma.c
+> > index 2a77823b8e9a..e66c38332df4 100644
+> > --- a/drivers/gpu/drm/i810/i810_dma.c
+> > +++ b/drivers/gpu/drm/i810/i810_dma.c
+> > @@ -728,7 +728,7 @@ static void i810_dma_dispatch_vertex(struct drm_device *dev,
+> >         if (nbox > I810_NR_SAREA_CLIPRECTS)
+> >                 nbox = I810_NR_SAREA_CLIPRECTS;
+> >  
+> > -       if (used > 4 * 1024)
+> > +       if (used < 0 || used > 4 * 1024)
+> >                 used = 0;
+> 
+> Yes, as passed to the GPU instruction, negative used is invalid.
+> 
+> Then it is used as an offset into a memblock, where a negative offset
+> would be very bad.
+> 
+> Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
 
-Currently when pointer crash_data is null the present null check
-will also check that crash_data->ramdump_buf is null and will cause
-a null pointer dereference on crash_data. Fix this by using the ||
-operator instead of &&.
-
-Fixes: 3f14b73c3843 ("ath10k: Enable MSA region dump support for WCN3990")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/ath/ath10k/snoc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index cd22c8654aa9..16177497bba7 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -1400,7 +1400,7 @@ static void ath10k_msa_dump_memory(struct ath10k *ar,
- 	size_t buf_len;
- 	u8 *buf;
- 
--	if (!crash_data && !crash_data->ramdump_buf)
-+	if (!crash_data || !crash_data->ramdump_buf)
- 		return;
- 
- 	mem_layout = ath10k_coredump_get_mem_layout(ar);
--- 
-2.20.1
-
+Applied to drm-misc-next with cc'ed stable.
+-Chris

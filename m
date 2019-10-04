@@ -2,104 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 95819CB825
-	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 12:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68DA7CB9E5
+	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 14:07:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730227AbfJDKXW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 4 Oct 2019 06:23:22 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:41324 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730173AbfJDKXW (ORCPT
+        id S1730009AbfJDMH4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 4 Oct 2019 08:07:56 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:39483 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726002AbfJDMH4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 4 Oct 2019 06:23:22 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x94AMe8G034304;
-        Fri, 4 Oct 2019 10:23:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=swaVTqtr5y/z7JmmgDSDknFRcupEJeXLjsqarFMdI80=;
- b=I2h95FJdtEletzPZq92JHCKmVl+FDkvM6O9nEcDf40oGqhJ2ezdPN6bYpgfpsdVzanEI
- V6SO63YwFPsqby03b82MXXxKnjXJg08K/uIebEknmWcbdniauEtWzxZnI+HqeTryGGD1
- YX4cHdDyNsh2P5lcoEjL8tXLAtWA3PeaifTgxi6Dx4so+twknPI5rsM+mTt2VSMGY2cW
- J4HrElj+tUVY7EdfFTWQTJzZJIwXqRCf50HpQwzRdNSbuDNA7w94jSsB0AbgghjMBvZ/
- EVGI8I04gi9tPm+8qUwttaz8TAMxou3EUg2B/NzLyPDUzmHCr2pbZpAHre3b1Z4EJIG7 Tw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 2va05sa90e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 04 Oct 2019 10:23:08 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x94AIftW045278;
-        Fri, 4 Oct 2019 10:23:08 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 2vdt3pdguf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 04 Oct 2019 10:23:07 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x94AN0ET030028;
-        Fri, 4 Oct 2019 10:23:02 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 04 Oct 2019 03:23:00 -0700
-Date:   Fri, 4 Oct 2019 13:22:51 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     David Airlie <airlied@linux.ie>
-Cc:     Daniel Vetter <daniel@ffwll.ch>, Sam Ravnborg <sam@ravnborg.org>,
-        Emil Velikov <emil.velikov@collabora.com>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] drm/i810: Prevent underflow in ioctl
-Message-ID: <20191004102251.GC823@mwanda>
+        Fri, 4 Oct 2019 08:07:56 -0400
+Received: by mail-wr1-f67.google.com with SMTP id r3so6891652wrj.6
+        for <kernel-janitors@vger.kernel.org>; Fri, 04 Oct 2019 05:07:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=BdW+9Mux8Xy3MFNcNVfipPeeVfXEPHbL3cQVSS7KHjY=;
+        b=CgDYWAICIsHL1H1yTpwOivNqlAyZsHKmwy+hBjEnEqq+8rajvn6WIgUEpXj0i4HiBq
+         Q9REVH061gdwNTqIa7BvzdnfKmjxR2OZw2+nqk5hjxWGpJ9pQHijyJlK83AtZKkVUqEm
+         +lB8Prfjliu2SaqdPvR3LUuUrTvGcUlEeQ0m6zSC7ArwxfJc/46z6A3wseROn6VSu8Sh
+         q+J7a+IZWpg73E8mzN4oqQUlTbfGl97n97NrogJ//FQpPtVsVYjm77gXHqClnpA6+7MK
+         gQyl2Pt1yCL/8qa+M6uGKwo17BP5F+R8swQrVctY2jbGGx+1w14CeuHGrwyQEp4GOTeY
+         /sDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=BdW+9Mux8Xy3MFNcNVfipPeeVfXEPHbL3cQVSS7KHjY=;
+        b=JOxE3MTUuKsQJ2NjtJs1ns9Jx+LDOXpGxqRvcpCEdRxzdWKSV70NwwallL7VWVB0bx
+         FnS2UWJuNjG7QCD/ELv/Q79Fvh5Lyx6d2A41Ro567gxCUuHUtwfrq5/R+n2ebYYn4aVj
+         u7uU5A7wjI1EegfSsRAsMH1siBhiWiJpwgAHU6Y1U7jGdkE57fEMfppHsnEZzUSKQHO2
+         komcsOnczaM0hKzdFuCRHmyKC60LSd9u5jLH9K96n5ah9ebanBRA43KNSOOgo4XRhVFF
+         RHcuSa5L2AxqM8MeCXRkJ38vmRde7A1HOnvYq8yVaHvsYYbxXFT75A6962PiPLxfqNvQ
+         OwEg==
+X-Gm-Message-State: APjAAAUGF5JIfHgHwRwuw5ZVe5Xq0tO/55cmOSn0SgVe5xF2l0LqqtS3
+        JOZ7FUoMRKWVdPi3U+Qwiwhx68a87FQ=
+X-Google-Smtp-Source: APXvYqyioV8godBqg5bZXDirA4WwtlIfhtI9Pg1jFdtyfEaWskHwFUhjh01Z4lPL0cpf538Gp/SBrw==
+X-Received: by 2002:a05:6000:162e:: with SMTP id v14mr11816375wrb.112.1570190874325;
+        Fri, 04 Oct 2019 05:07:54 -0700 (PDT)
+Received: from dell ([2.27.167.122])
+        by smtp.gmail.com with ESMTPSA id c4sm7746423wru.31.2019.10.04.05.07.53
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 04 Oct 2019 05:07:53 -0700 (PDT)
+Date:   Fri, 4 Oct 2019 13:07:52 +0100
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     kernel-janitors@vger.kernel.org,
+        Linus Walleij <linus.walleij@linaro.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Himanshu Jha <himanshujha199640@gmail.com>
+Subject: Re: [PATCH] mfd: ipaq-micro: Use devm_platform_ioremap_resource() in
+ micro_probe()
+Message-ID: <20191004120752.GD18429@dell>
+References: <d9990bcc-2daa-67ad-4de5-7a849668d038@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9399 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910040096
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9399 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910040096
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d9990bcc-2daa-67ad-4de5-7a849668d038@web.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "used" variables here come from the user in the ioctl and it can be
-negative.  It could result in an out of bounds write.
+On Wed, 18 Sep 2019, Markus Elfring wrote:
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/gpu/drm/i810/i810_dma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Wed, 18 Sep 2019 13:40:30 +0200
+> 
+> Simplify this function implementation by using a known wrapper function.
+> 
+> This issue was detected by using the Coccinelle software.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> ---
+>  drivers/mfd/ipaq-micro.c | 6 +-----
+>  1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/i810/i810_dma.c b/drivers/gpu/drm/i810/i810_dma.c
-index 2a77823b8e9a..e66c38332df4 100644
---- a/drivers/gpu/drm/i810/i810_dma.c
-+++ b/drivers/gpu/drm/i810/i810_dma.c
-@@ -728,7 +728,7 @@ static void i810_dma_dispatch_vertex(struct drm_device *dev,
- 	if (nbox > I810_NR_SAREA_CLIPRECTS)
- 		nbox = I810_NR_SAREA_CLIPRECTS;
- 
--	if (used > 4 * 1024)
-+	if (used < 0 || used > 4 * 1024)
- 		used = 0;
- 
- 	if (sarea_priv->dirty)
-@@ -1048,7 +1048,7 @@ static void i810_dma_dispatch_mc(struct drm_device *dev, struct drm_buf *buf, in
- 	if (u != I810_BUF_CLIENT)
- 		DRM_DEBUG("MC found buffer that isn't mine!\n");
- 
--	if (used > 4 * 1024)
-+	if (used < 0 || used > 4 * 1024)
- 		used = 0;
- 
- 	sarea_priv->dirty = 0x7f;
+Applied, thanks.
+
 -- 
-2.20.1
-
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

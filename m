@@ -2,52 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BA201CBAF7
-	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 14:55:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25A85CBB03
+	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 14:57:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387835AbfJDMzK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 4 Oct 2019 08:55:10 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:37665 "EHLO
+        id S2387976AbfJDM5k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 4 Oct 2019 08:57:40 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:40410 "EHLO
         mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387719AbfJDMzK (ORCPT
+        with ESMTP id S2387440AbfJDM5k (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 4 Oct 2019 08:55:10 -0400
-Received: by mail-wr1-f66.google.com with SMTP id p14so6126249wro.4;
-        Fri, 04 Oct 2019 05:55:09 -0700 (PDT)
+        Fri, 4 Oct 2019 08:57:40 -0400
+Received: by mail-wr1-f66.google.com with SMTP id l3so7066683wru.7;
+        Fri, 04 Oct 2019 05:57:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=2rHqJdypJd0DpptSQAbAu2oMkWuEe9MsrDHs1Du//rI=;
-        b=DF2MWzbsC2Asi2Gnr/CI21X/qnFP61GWEpwl80XUDTqhGXB3+BBplFMPT4dot2tOIm
-         q5t0tMLcz1Dt63c8PrE2Rr/8ssAedbneXDyT2lJIygz7thJx5RlzF28sHYXnmKGTOW8f
-         bjnGXnADMzKVQoPypEnRN+quaksn3a7zIUXA+l6F+ranNKFgsSO5HZE7VcTpC4C8aKCp
-         gm9mh706njzMqOuwPln/yMdaTPOi4BjQRX6L70POXRoFlVBQNwsikPN7k6LGD4IL7Cpp
-         5Q2WBuxSF9atJWf9kPL8hyu7KgXjVn88gv7Jl9QZ/Z7G7VIOEsCFcprbnz62ZdRE/2VY
-         XczA==
+        bh=XS9aaZMpGytggDjroiubtOG48XIjudiIkkyqLu//BAo=;
+        b=CfZutqK2eyhMj4QYH5dAeTwCvDuMu78hH8sOobkZWo8qm2svsb/q3QV1/JgEXFDxGI
+         IfMzm9/TKepsFaqC+XIMnMc53GndMFWcvcRVpn9GIrAE2Vigoe9F3HgbfiiI0GmjToSr
+         QYwHPu4pKKmB2Yy44qgzJ/vVp4fhAjRDPHcDCNqAiEpjErKrRnuWiGmOMMuYUC63Gcms
+         Eo0vKKBjllg2yG3BisOSgS/iyJ4SL5O32xzSyMNOfRq+GCR60760jAHQHjLKIlqVfGkT
+         xpax/gUZeX1CBKAxoKUvnTx18iR6xS6JeVhl3BzeYiqqO9KCiRKlmdztxNZ1uV2ucsFo
+         pHbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=2rHqJdypJd0DpptSQAbAu2oMkWuEe9MsrDHs1Du//rI=;
-        b=EDq53koPxEnRjG0Cy21iXqkNLXtR+XEZ3NN2XQo1F09NFS9lL4uw7C0Kufkl1RT/gb
-         MjZzxPf+cz4BRXF9f2rxkIO9+uNwKvdGO3neHsGJ8kwwQZdEjEIgEQLc4r9rkSXpls+F
-         ORPH/AJ9O39wj27xZUGAHySfkC5ZUlTkmHasLV6BSjbOwjgkN8nXvbT1PzX3ShxgCOjq
-         nHttpZu4rbPfdBwuLoQEfCoKBZwpCv7jUABkENJmpAkvot1RBXVz1rjemdy1cSKTeZ7M
-         PiF3TUb7PgbRkRDtLDyxh29iE9owU4ed/CENe/uRm3+sF5CgrhJ52g73X8X/yshLQtLP
-         ho5Q==
-X-Gm-Message-State: APjAAAVtmAZJ7d1+6ULJkGOCujGMAXmjxU/qpwt40NpzznpWaruAD9lW
-        n+FXpOKr0WOIw/yaQdtcOhg8OXSpyEgLix4sYrw=
-X-Google-Smtp-Source: APXvYqy8KM1R+jii8lv+15rBGuFP7KVh7Nffpmw4utZFyRG9g8ITym8TZa9ET9jU8+LLfiQFulKpd6tg50WCki56Mg4=
-X-Received: by 2002:adf:e951:: with SMTP id m17mr11364492wrn.154.1570193708775;
- Fri, 04 Oct 2019 05:55:08 -0700 (PDT)
+        bh=XS9aaZMpGytggDjroiubtOG48XIjudiIkkyqLu//BAo=;
+        b=TNKag1jqVCCvRDnJ7O7H6/rY7IToTx+uhzJ6kKBZXb3Qgw7hZagQl/aNfxWiRK2Nx3
+         j7UF4OWLW7by/m7uYPykW0eUhErR1l3OE2zW4rpBaRnwCc/iLKwR8L370RzR5jYblKf+
+         YaWJLgIefthvpbyg1WjQwcih/pM+0Eto4O0lou851KQUptGAfqXRdMUEBT8NSXYZ8rUp
+         Gt/XJfiTYvwFGBTmp+/Ai0fFTsubFOv8cJHPrw1TbcRwn4x+Iu4NxPppbe2b5ms0exDV
+         Z1hAerQjV8rTPccs5HtdBZSi11ENEFRRFzw9V/hUjamEojSPYGtf1EbgB1TyaOiItJNQ
+         k6hw==
+X-Gm-Message-State: APjAAAWIvFGFj9voSLVWf0iYgcM89dBtSd3DxlCl8fQp6+4Yh17qgOm6
+        zwe0MRttQwws0/K9KPz3Ibelfbv0MiuaeiI8ag4=
+X-Google-Smtp-Source: APXvYqw7a5NYS3b3BeLyQBXREKlOHjBFTJXthurPJdQ7nhyePsMLRV3NcpO1oI+myJ7I+eZ/HhBO3tS0mQBjuPunC0g=
+X-Received: by 2002:adf:d08b:: with SMTP id y11mr12064059wrh.50.1570193857802;
+ Fri, 04 Oct 2019 05:57:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191003215227.23540-1-colin.king@canonical.com> <55116b72-4e15-7efe-09a6-283a7090966a@amd.com>
-In-Reply-To: <55116b72-4e15-7efe-09a6-283a7090966a@amd.com>
+References: <20191003214049.23067-1-colin.king@canonical.com> <70c50fec-7ab7-3ac9-3f49-d5f2651554e4@amd.com>
+In-Reply-To: <70c50fec-7ab7-3ac9-3f49-d5f2651554e4@amd.com>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Fri, 4 Oct 2019 08:54:56 -0400
-Message-ID: <CADnq5_N-tdCJ_LUwunwmrj88vAPBbCLD2uwDTBGzB0XJWdak2g@mail.gmail.com>
-Subject: Re: [PATCH][next] drm/amdgpu: fix uninitialized variable pasid_mapping_needed
+Date:   Fri, 4 Oct 2019 08:57:25 -0400
+Message-ID: <CADnq5_N6WP=gDE=Yqv6CqKs13LkUJzFx9C6YmiU1ua_MSg_uiw@mail.gmail.com>
+Subject: Re: [PATCH][next] drm/amdgpu: remove redundant variable r and
+ redundant return statement
 To:     "Koenig, Christian" <Christian.Koenig@amd.com>
 Cc:     Colin King <colin.king@canonical.com>,
         "Deucher, Alexander" <Alexander.Deucher@amd.com>,
@@ -65,48 +66,56 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Oct 4, 2019 at 3:28 AM Koenig, Christian
+On Fri, Oct 4, 2019 at 3:29 AM Koenig, Christian
 <Christian.Koenig@amd.com> wrote:
 >
-> Am 03.10.19 um 23:52 schrieb Colin King:
+> Am 03.10.19 um 23:40 schrieb Colin King:
 > > From: Colin Ian King <colin.king@canonical.com>
 > >
-> > The boolean variable pasid_mapping_needed is not initialized and
-> > there are code paths that do not assign it any value before it is
-> > is read later.  Fix this by initializing pasid_mapping_needed to
-> > false.
+> > There is a return statement that is not reachable and a variable that
+> > is not used.  Remove them.
 > >
-> > Addresses-Coverity: ("Uninitialized scalar variable")
-> > Fixes: 6817bf283b2b ("drm/amdgpu: grab the id mgr lock while accessing =
-passid_mapping")
+> > Addresses-Coverity: ("Structurally dead code")
+> > Fixes: de7b45babd9b ("drm/amdgpu: cleanup creating BOs at fixed locatio=
+n (v2)")
 > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 >
 > Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
->
 
-Applied.  thanks!
+Applied.  Thanks!
 
 Alex
 
+>
 > > ---
-> >   drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >   drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 2 --
+> >   1 file changed, 2 deletions(-)
 > >
-> > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/a=
-md/amdgpu/amdgpu_vm.c
-> > index a2c797e34a29..be10e4b9a94d 100644
-> > --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-> > +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-> > @@ -1055,7 +1055,7 @@ int amdgpu_vm_flush(struct amdgpu_ring *ring, str=
-uct amdgpu_job *job,
-> >               id->oa_size !=3D job->oa_size);
-> >       bool vm_flush_needed =3D job->vm_needs_flush;
-> >       struct dma_fence *fence =3D NULL;
-> > -     bool pasid_mapping_needed;
-> > +     bool pasid_mapping_needed =3D false;
-> >       unsigned patch_offset =3D 0;
-> >       int r;
+> > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/=
+amd/amdgpu/amdgpu_ttm.c
+> > index 481e4c381083..814159f15633 100644
+> > --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+> > +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
+> > @@ -1636,7 +1636,6 @@ static void amdgpu_ttm_fw_reserve_vram_fini(struc=
+t amdgpu_device *adev)
+> >   static int amdgpu_ttm_fw_reserve_vram_init(struct amdgpu_device *adev=
+)
+> >   {
+> >       uint64_t vram_size =3D adev->gmc.visible_vram_size;
+> > -     int r;
 > >
+> >       adev->fw_vram_usage.va =3D NULL;
+> >       adev->fw_vram_usage.reserved_bo =3D NULL;
+> > @@ -1651,7 +1650,6 @@ static int amdgpu_ttm_fw_reserve_vram_init(struct=
+ amdgpu_device *adev)
+> >                                         AMDGPU_GEM_DOMAIN_VRAM,
+> >                                         &adev->fw_vram_usage.reserved_b=
+o,
+> >                                         &adev->fw_vram_usage.va);
+> > -     return r;
+> >   }
+> >
+> >   /**
 >
 > _______________________________________________
 > dri-devel mailing list

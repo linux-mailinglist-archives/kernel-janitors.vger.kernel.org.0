@@ -2,70 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 85B49CC00C
-	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 18:05:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28537CC064
+	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 18:22:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390293AbfJDQFD convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 4 Oct 2019 12:05:03 -0400
-Received: from mail.fireflyinternet.com ([109.228.58.192]:58938 "EHLO
-        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2390027AbfJDQFD (ORCPT
+        id S2390266AbfJDQWA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 4 Oct 2019 12:22:00 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:53603 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390164AbfJDQV7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 4 Oct 2019 12:05:03 -0400
-X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
-Received: from localhost (unverified [78.156.65.138]) 
-        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 18726097-1500050 
-        for multiple; Fri, 04 Oct 2019 17:04:48 +0100
-Content-Type: text/plain; charset="utf-8"
+        Fri, 4 Oct 2019 12:21:59 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iGQL7-0007LQ-13; Fri, 04 Oct 2019 16:21:57 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     James Wang <james.qian.wang@arm.com>,
+        Liviu Dudau <liviu.dudau@arm.com>,
+        Brian Starkey <brian.starkey@arm.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/komeda: remove redundant assignment to pointer disable_done
+Date:   Fri,  4 Oct 2019 17:21:56 +0100
+Message-Id: <20191004162156.325-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        David Airlie <airlied@linux.ie>
-From:   Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <157019813720.18712.6286079822254824652@skylake-alporthouse-com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, Sam Ravnborg <sam@ravnborg.org>,
-        Emil Velikov <emil.velikov@collabora.com>
-References: <20191004102251.GC823@mwanda>
- <157019813720.18712.6286079822254824652@skylake-alporthouse-com>
-Message-ID: <157020508581.18712.9108329337994387428@skylake-alporthouse-com>
-User-Agent: alot/0.6
-Subject: Re: [PATCH] drm/i810: Prevent underflow in ioctl
-Date:   Fri, 04 Oct 2019 17:04:45 +0100
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Chris Wilson (2019-10-04 15:08:57)
-> Quoting Dan Carpenter (2019-10-04 11:22:51)
-> > The "used" variables here come from the user in the ioctl and it can be
-> > negative.  It could result in an out of bounds write.
-> > 
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> >  drivers/gpu/drm/i810/i810_dma.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/gpu/drm/i810/i810_dma.c b/drivers/gpu/drm/i810/i810_dma.c
-> > index 2a77823b8e9a..e66c38332df4 100644
-> > --- a/drivers/gpu/drm/i810/i810_dma.c
-> > +++ b/drivers/gpu/drm/i810/i810_dma.c
-> > @@ -728,7 +728,7 @@ static void i810_dma_dispatch_vertex(struct drm_device *dev,
-> >         if (nbox > I810_NR_SAREA_CLIPRECTS)
-> >                 nbox = I810_NR_SAREA_CLIPRECTS;
-> >  
-> > -       if (used > 4 * 1024)
-> > +       if (used < 0 || used > 4 * 1024)
-> >                 used = 0;
-> 
-> Yes, as passed to the GPU instruction, negative used is invalid.
-> 
-> Then it is used as an offset into a memblock, where a negative offset
-> would be very bad.
-> 
-> Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied to drm-misc-next with cc'ed stable.
--Chris
+The pointer disable_done is being initialized with a value that
+is never read and is being re-assigned a little later on. The
+assignment is redundant and hence can be removed.
+
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/arm/display/komeda/komeda_crtc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c b/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c
+index 75263d8cd0bd..9beeda04818b 100644
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_crtc.c
+@@ -296,7 +296,7 @@ komeda_crtc_atomic_disable(struct drm_crtc *crtc,
+ 	struct komeda_crtc_state *old_st = to_kcrtc_st(old);
+ 	struct komeda_pipeline *master = kcrtc->master;
+ 	struct komeda_pipeline *slave  = kcrtc->slave;
+-	struct completion *disable_done = &crtc->state->commit->flip_done;
++	struct completion *disable_done;
+ 	bool needs_phase2 = false;
+ 
+ 	DRM_DEBUG_ATOMIC("CRTC%d_DISABLE: active_pipes: 0x%x, affected: 0x%x\n",
+-- 
+2.20.1
+

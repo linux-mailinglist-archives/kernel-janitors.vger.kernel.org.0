@@ -2,92 +2,113 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68DA7CB9E5
-	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 14:07:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA201CBAF7
+	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 14:55:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730009AbfJDMH4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 4 Oct 2019 08:07:56 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:39483 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726002AbfJDMH4 (ORCPT
+        id S2387835AbfJDMzK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 4 Oct 2019 08:55:10 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:37665 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387719AbfJDMzK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 4 Oct 2019 08:07:56 -0400
-Received: by mail-wr1-f67.google.com with SMTP id r3so6891652wrj.6
-        for <kernel-janitors@vger.kernel.org>; Fri, 04 Oct 2019 05:07:55 -0700 (PDT)
+        Fri, 4 Oct 2019 08:55:10 -0400
+Received: by mail-wr1-f66.google.com with SMTP id p14so6126249wro.4;
+        Fri, 04 Oct 2019 05:55:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to
-         :user-agent;
-        bh=BdW+9Mux8Xy3MFNcNVfipPeeVfXEPHbL3cQVSS7KHjY=;
-        b=CgDYWAICIsHL1H1yTpwOivNqlAyZsHKmwy+hBjEnEqq+8rajvn6WIgUEpXj0i4HiBq
-         Q9REVH061gdwNTqIa7BvzdnfKmjxR2OZw2+nqk5hjxWGpJ9pQHijyJlK83AtZKkVUqEm
-         +lB8Prfjliu2SaqdPvR3LUuUrTvGcUlEeQ0m6zSC7ArwxfJc/46z6A3wseROn6VSu8Sh
-         q+J7a+IZWpg73E8mzN4oqQUlTbfGl97n97NrogJ//FQpPtVsVYjm77gXHqClnpA6+7MK
-         gQyl2Pt1yCL/8qa+M6uGKwo17BP5F+R8swQrVctY2jbGGx+1w14CeuHGrwyQEp4GOTeY
-         /sDw==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=2rHqJdypJd0DpptSQAbAu2oMkWuEe9MsrDHs1Du//rI=;
+        b=DF2MWzbsC2Asi2Gnr/CI21X/qnFP61GWEpwl80XUDTqhGXB3+BBplFMPT4dot2tOIm
+         q5t0tMLcz1Dt63c8PrE2Rr/8ssAedbneXDyT2lJIygz7thJx5RlzF28sHYXnmKGTOW8f
+         bjnGXnADMzKVQoPypEnRN+quaksn3a7zIUXA+l6F+ranNKFgsSO5HZE7VcTpC4C8aKCp
+         gm9mh706njzMqOuwPln/yMdaTPOi4BjQRX6L70POXRoFlVBQNwsikPN7k6LGD4IL7Cpp
+         5Q2WBuxSF9atJWf9kPL8hyu7KgXjVn88gv7Jl9QZ/Z7G7VIOEsCFcprbnz62ZdRE/2VY
+         XczA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to:user-agent;
-        bh=BdW+9Mux8Xy3MFNcNVfipPeeVfXEPHbL3cQVSS7KHjY=;
-        b=JOxE3MTUuKsQJ2NjtJs1ns9Jx+LDOXpGxqRvcpCEdRxzdWKSV70NwwallL7VWVB0bx
-         FnS2UWJuNjG7QCD/ELv/Q79Fvh5Lyx6d2A41Ro567gxCUuHUtwfrq5/R+n2ebYYn4aVj
-         u7uU5A7wjI1EegfSsRAsMH1siBhiWiJpwgAHU6Y1U7jGdkE57fEMfppHsnEZzUSKQHO2
-         komcsOnczaM0hKzdFuCRHmyKC60LSd9u5jLH9K96n5ah9ebanBRA43KNSOOgo4XRhVFF
-         RHcuSa5L2AxqM8MeCXRkJ38vmRde7A1HOnvYq8yVaHvsYYbxXFT75A6962PiPLxfqNvQ
-         OwEg==
-X-Gm-Message-State: APjAAAUGF5JIfHgHwRwuw5ZVe5Xq0tO/55cmOSn0SgVe5xF2l0LqqtS3
-        JOZ7FUoMRKWVdPi3U+Qwiwhx68a87FQ=
-X-Google-Smtp-Source: APXvYqyioV8godBqg5bZXDirA4WwtlIfhtI9Pg1jFdtyfEaWskHwFUhjh01Z4lPL0cpf538Gp/SBrw==
-X-Received: by 2002:a05:6000:162e:: with SMTP id v14mr11816375wrb.112.1570190874325;
-        Fri, 04 Oct 2019 05:07:54 -0700 (PDT)
-Received: from dell ([2.27.167.122])
-        by smtp.gmail.com with ESMTPSA id c4sm7746423wru.31.2019.10.04.05.07.53
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 04 Oct 2019 05:07:53 -0700 (PDT)
-Date:   Fri, 4 Oct 2019 13:07:52 +0100
-From:   Lee Jones <lee.jones@linaro.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     kernel-janitors@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Himanshu Jha <himanshujha199640@gmail.com>
-Subject: Re: [PATCH] mfd: ipaq-micro: Use devm_platform_ioremap_resource() in
- micro_probe()
-Message-ID: <20191004120752.GD18429@dell>
-References: <d9990bcc-2daa-67ad-4de5-7a849668d038@web.de>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=2rHqJdypJd0DpptSQAbAu2oMkWuEe9MsrDHs1Du//rI=;
+        b=EDq53koPxEnRjG0Cy21iXqkNLXtR+XEZ3NN2XQo1F09NFS9lL4uw7C0Kufkl1RT/gb
+         MjZzxPf+cz4BRXF9f2rxkIO9+uNwKvdGO3neHsGJ8kwwQZdEjEIgEQLc4r9rkSXpls+F
+         ORPH/AJ9O39wj27xZUGAHySfkC5ZUlTkmHasLV6BSjbOwjgkN8nXvbT1PzX3ShxgCOjq
+         nHttpZu4rbPfdBwuLoQEfCoKBZwpCv7jUABkENJmpAkvot1RBXVz1rjemdy1cSKTeZ7M
+         PiF3TUb7PgbRkRDtLDyxh29iE9owU4ed/CENe/uRm3+sF5CgrhJ52g73X8X/yshLQtLP
+         ho5Q==
+X-Gm-Message-State: APjAAAVtmAZJ7d1+6ULJkGOCujGMAXmjxU/qpwt40NpzznpWaruAD9lW
+        n+FXpOKr0WOIw/yaQdtcOhg8OXSpyEgLix4sYrw=
+X-Google-Smtp-Source: APXvYqy8KM1R+jii8lv+15rBGuFP7KVh7Nffpmw4utZFyRG9g8ITym8TZa9ET9jU8+LLfiQFulKpd6tg50WCki56Mg4=
+X-Received: by 2002:adf:e951:: with SMTP id m17mr11364492wrn.154.1570193708775;
+ Fri, 04 Oct 2019 05:55:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d9990bcc-2daa-67ad-4de5-7a849668d038@web.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <20191003215227.23540-1-colin.king@canonical.com> <55116b72-4e15-7efe-09a6-283a7090966a@amd.com>
+In-Reply-To: <55116b72-4e15-7efe-09a6-283a7090966a@amd.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Fri, 4 Oct 2019 08:54:56 -0400
+Message-ID: <CADnq5_N-tdCJ_LUwunwmrj88vAPBbCLD2uwDTBGzB0XJWdak2g@mail.gmail.com>
+Subject: Re: [PATCH][next] drm/amdgpu: fix uninitialized variable pasid_mapping_needed
+To:     "Koenig, Christian" <Christian.Koenig@amd.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 18 Sep 2019, Markus Elfring wrote:
+On Fri, Oct 4, 2019 at 3:28 AM Koenig, Christian
+<Christian.Koenig@amd.com> wrote:
+>
+> Am 03.10.19 um 23:52 schrieb Colin King:
+> > From: Colin Ian King <colin.king@canonical.com>
+> >
+> > The boolean variable pasid_mapping_needed is not initialized and
+> > there are code paths that do not assign it any value before it is
+> > is read later.  Fix this by initializing pasid_mapping_needed to
+> > false.
+> >
+> > Addresses-Coverity: ("Uninitialized scalar variable")
+> > Fixes: 6817bf283b2b ("drm/amdgpu: grab the id mgr lock while accessing =
+passid_mapping")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>
+> Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
+>
 
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Wed, 18 Sep 2019 13:40:30 +0200
-> 
-> Simplify this function implementation by using a known wrapper function.
-> 
-> This issue was detected by using the Coccinelle software.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
->  drivers/mfd/ipaq-micro.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
+Applied.  thanks!
 
-Applied, thanks.
+Alex
 
--- 
-Lee Jones [李琼斯]
-Linaro Services Technical Lead
-Linaro.org │ Open source software for ARM SoCs
-Follow Linaro: Facebook | Twitter | Blog
+> > ---
+> >   drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/a=
+md/amdgpu/amdgpu_vm.c
+> > index a2c797e34a29..be10e4b9a94d 100644
+> > --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+> > +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+> > @@ -1055,7 +1055,7 @@ int amdgpu_vm_flush(struct amdgpu_ring *ring, str=
+uct amdgpu_job *job,
+> >               id->oa_size !=3D job->oa_size);
+> >       bool vm_flush_needed =3D job->vm_needs_flush;
+> >       struct dma_fence *fence =3D NULL;
+> > -     bool pasid_mapping_needed;
+> > +     bool pasid_mapping_needed =3D false;
+> >       unsigned patch_offset =3D 0;
+> >       int r;
+> >
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

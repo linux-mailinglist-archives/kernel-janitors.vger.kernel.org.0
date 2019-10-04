@@ -2,122 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 25A85CBB03
-	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 14:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F2C3CBC1D
+	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 15:46:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387976AbfJDM5k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 4 Oct 2019 08:57:40 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:40410 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387440AbfJDM5k (ORCPT
+        id S2388794AbfJDNqn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 4 Oct 2019 09:46:43 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:50854 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388733AbfJDNqm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 4 Oct 2019 08:57:40 -0400
-Received: by mail-wr1-f66.google.com with SMTP id l3so7066683wru.7;
-        Fri, 04 Oct 2019 05:57:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=XS9aaZMpGytggDjroiubtOG48XIjudiIkkyqLu//BAo=;
-        b=CfZutqK2eyhMj4QYH5dAeTwCvDuMu78hH8sOobkZWo8qm2svsb/q3QV1/JgEXFDxGI
-         IfMzm9/TKepsFaqC+XIMnMc53GndMFWcvcRVpn9GIrAE2Vigoe9F3HgbfiiI0GmjToSr
-         QYwHPu4pKKmB2Yy44qgzJ/vVp4fhAjRDPHcDCNqAiEpjErKrRnuWiGmOMMuYUC63Gcms
-         Eo0vKKBjllg2yG3BisOSgS/iyJ4SL5O32xzSyMNOfRq+GCR60760jAHQHjLKIlqVfGkT
-         xpax/gUZeX1CBKAxoKUvnTx18iR6xS6JeVhl3BzeYiqqO9KCiRKlmdztxNZ1uV2ucsFo
-         pHbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=XS9aaZMpGytggDjroiubtOG48XIjudiIkkyqLu//BAo=;
-        b=TNKag1jqVCCvRDnJ7O7H6/rY7IToTx+uhzJ6kKBZXb3Qgw7hZagQl/aNfxWiRK2Nx3
-         j7UF4OWLW7by/m7uYPykW0eUhErR1l3OE2zW4rpBaRnwCc/iLKwR8L370RzR5jYblKf+
-         YaWJLgIefthvpbyg1WjQwcih/pM+0Eto4O0lou851KQUptGAfqXRdMUEBT8NSXYZ8rUp
-         Gt/XJfiTYvwFGBTmp+/Ai0fFTsubFOv8cJHPrw1TbcRwn4x+Iu4NxPppbe2b5ms0exDV
-         Z1hAerQjV8rTPccs5HtdBZSi11ENEFRRFzw9V/hUjamEojSPYGtf1EbgB1TyaOiItJNQ
-         k6hw==
-X-Gm-Message-State: APjAAAWIvFGFj9voSLVWf0iYgcM89dBtSd3DxlCl8fQp6+4Yh17qgOm6
-        zwe0MRttQwws0/K9KPz3Ibelfbv0MiuaeiI8ag4=
-X-Google-Smtp-Source: APXvYqw7a5NYS3b3BeLyQBXREKlOHjBFTJXthurPJdQ7nhyePsMLRV3NcpO1oI+myJ7I+eZ/HhBO3tS0mQBjuPunC0g=
-X-Received: by 2002:adf:d08b:: with SMTP id y11mr12064059wrh.50.1570193857802;
- Fri, 04 Oct 2019 05:57:37 -0700 (PDT)
+        Fri, 4 Oct 2019 09:46:42 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 62F9D61A37; Fri,  4 Oct 2019 13:46:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570196801;
+        bh=7z8K8z1kVtW4QRmy9LQUNBsQnTcmL+HKDaKSTRVrlrk=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=jN7pYUj2OrIhhdjp/i8GP2SYmK6REE/SkjCzJwZvh4FlUWwxB14XZpz9n/ulXpeue
+         ikaeeDigxkc9pO0IXRR1GXLLbY1moi0FKgATgM8OSxxGvDockGl4qbS+VTY+x9+Owr
+         08eOjd2JjsNQZvTfLFkKPYplzOXGP5hpWB6I9lbU=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 40FD2613A8;
+        Fri,  4 Oct 2019 13:46:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570196800;
+        bh=7z8K8z1kVtW4QRmy9LQUNBsQnTcmL+HKDaKSTRVrlrk=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=ViTfqnTxmBIMf4p1Hx277E8BubfHs+nBxCPzvrE/JNSgJ1JjSfbBjO+SzAWFQpDWw
+         NMi5PtAtTJw96KeSqS0vcM8BKX82vv3jiQ542DUG6ovIS6xMyT6P6IfNWdFefh0iOO
+         7gKaeeclOdMMHzX/S8JIFNdXaEeMeAGqlqB+a/gE=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 40FD2613A8
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20191003214049.23067-1-colin.king@canonical.com> <70c50fec-7ab7-3ac9-3f49-d5f2651554e4@amd.com>
-In-Reply-To: <70c50fec-7ab7-3ac9-3f49-d5f2651554e4@amd.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Fri, 4 Oct 2019 08:57:25 -0400
-Message-ID: <CADnq5_N6WP=gDE=Yqv6CqKs13LkUJzFx9C6YmiU1ua_MSg_uiw@mail.gmail.com>
-Subject: Re: [PATCH][next] drm/amdgpu: remove redundant variable r and
- redundant return statement
-To:     "Koenig, Christian" <Christian.Koenig@amd.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] libertas: remove redundant assignment to variable ret
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191002101517.10836-1-colin.king@canonical.com>
+References: <20191002101517.10836-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191004134641.62F9D61A37@smtp.codeaurora.org>
+Date:   Fri,  4 Oct 2019 13:46:41 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Oct 4, 2019 at 3:29 AM Koenig, Christian
-<Christian.Koenig@amd.com> wrote:
->
-> Am 03.10.19 um 23:40 schrieb Colin King:
-> > From: Colin Ian King <colin.king@canonical.com>
-> >
-> > There is a return statement that is not reachable and a variable that
-> > is not used.  Remove them.
-> >
-> > Addresses-Coverity: ("Structurally dead code")
-> > Fixes: de7b45babd9b ("drm/amdgpu: cleanup creating BOs at fixed locatio=
-n (v2)")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
->
-> Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
+Colin King <colin.king@canonical.com> wrote:
 
-Applied.  Thanks!
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable ret is being assigned a value that is never read and is
+> being re-assigned a little later on. The assignment is redundant and hence
+> can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Reviewed-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Alex
+Patch applied to wireless-drivers-next.git, thanks.
 
->
-> > ---
-> >   drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c | 2 --
-> >   1 file changed, 2 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c b/drivers/gpu/drm/=
-amd/amdgpu/amdgpu_ttm.c
-> > index 481e4c381083..814159f15633 100644
-> > --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-> > +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ttm.c
-> > @@ -1636,7 +1636,6 @@ static void amdgpu_ttm_fw_reserve_vram_fini(struc=
-t amdgpu_device *adev)
-> >   static int amdgpu_ttm_fw_reserve_vram_init(struct amdgpu_device *adev=
-)
-> >   {
-> >       uint64_t vram_size =3D adev->gmc.visible_vram_size;
-> > -     int r;
-> >
-> >       adev->fw_vram_usage.va =3D NULL;
-> >       adev->fw_vram_usage.reserved_bo =3D NULL;
-> > @@ -1651,7 +1650,6 @@ static int amdgpu_ttm_fw_reserve_vram_init(struct=
- amdgpu_device *adev)
-> >                                         AMDGPU_GEM_DOMAIN_VRAM,
-> >                                         &adev->fw_vram_usage.reserved_b=
-o,
-> >                                         &adev->fw_vram_usage.va);
-> > -     return r;
-> >   }
-> >
-> >   /**
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+60b5b49f6a6e libertas: remove redundant assignment to variable ret
+
+-- 
+https://patchwork.kernel.org/patch/11170731/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+

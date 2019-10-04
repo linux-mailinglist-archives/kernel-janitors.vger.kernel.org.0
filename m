@@ -2,52 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CEF99CBFA4
-	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 17:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D5F1CBFFA
+	for <lists+kernel-janitors@lfdr.de>; Fri,  4 Oct 2019 18:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390068AbfJDPpo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 4 Oct 2019 11:45:44 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:42666 "EHLO fornost.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389807AbfJDPpo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 4 Oct 2019 11:45:44 -0400
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
-        by fornost.hmeau.com with smtp (Exim 4.89 #2 (Debian))
-        id 1iGPlA-0001Sq-Nh; Sat, 05 Oct 2019 01:44:49 +1000
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Sat, 05 Oct 2019 01:44:46 +1000
-Date:   Sat, 5 Oct 2019 01:44:46 +1000
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     atul.gupta@chelsio.com, davem@davemloft.net,
-        akpm@linux-foundation.org, willy@infradead.org,
-        kirill.shutemov@linux.intel.com, kstewart@linuxfoundation.org,
-        yuehaibing@huawei.com, tglx@linutronix.de,
-        linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] crypto: chtls - simplify a bit 'create_flowc_wr_skb()'
-Message-ID: <20191004154445.GY5148@gondor.apana.org.au>
-References: <20190919200428.2664-1-christophe.jaillet@wanadoo.fr>
+        id S2390196AbfJDQCc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 4 Oct 2019 12:02:32 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:52970 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389131AbfJDQCc (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 4 Oct 2019 12:02:32 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iGQ2F-0005CI-A4; Fri, 04 Oct 2019 16:02:27 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] ath10k: fix null dereference on pointer crash_data
+Date:   Fri,  4 Oct 2019 17:02:27 +0100
+Message-Id: <20191004160227.31577-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190919200428.2664-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Sep 19, 2019 at 10:04:28PM +0200, Christophe JAILLET wrote:
-> Use '__skb_put_data()' instead of rewritting it.
-> This improves readability.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->  drivers/crypto/chelsio/chtls/chtls_io.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+From: Colin Ian King <colin.king@canonical.com>
 
-Patch applied.  Thanks.
+Currently when pointer crash_data is null the present null check
+will also check that crash_data->ramdump_buf is null and will cause
+a null pointer dereference on crash_data. Fix this by using the ||
+operator instead of &&.
+
+Fixes: 3f14b73c3843 ("ath10k: Enable MSA region dump support for WCN3990")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/ath/ath10k/snoc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index cd22c8654aa9..16177497bba7 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -1400,7 +1400,7 @@ static void ath10k_msa_dump_memory(struct ath10k *ar,
+ 	size_t buf_len;
+ 	u8 *buf;
+ 
+-	if (!crash_data && !crash_data->ramdump_buf)
++	if (!crash_data || !crash_data->ramdump_buf)
+ 		return;
+ 
+ 	mem_layout = ath10k_coredump_get_mem_layout(ar);
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.20.1
+

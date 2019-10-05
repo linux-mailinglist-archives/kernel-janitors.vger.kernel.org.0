@@ -2,78 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AA81CC5B5
-	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 00:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CDFFCC6CF
+	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 02:02:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731461AbfJDWO2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 4 Oct 2019 18:14:28 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:38049 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730131AbfJDWO1 (ORCPT
+        id S1729193AbfJEACg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 4 Oct 2019 20:02:36 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:42812 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727647AbfJEACg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 4 Oct 2019 18:14:27 -0400
-Received: by mail-lf1-f68.google.com with SMTP id u28so5493756lfc.5
-        for <kernel-janitors@vger.kernel.org>; Fri, 04 Oct 2019 15:14:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=S8mPVffMcLGte/wHbtTKmdFyoHNnsyDaHZetmGYETyI=;
-        b=qbrJI1nS7K2Rd321FJnk6g/mCczAUiwrknzRclj4Ij1aTcpmviFEYrfD0bKA/tr6F+
-         92kQ3oj4e6DANBZ1g4S+Z2SaNunY0/B0+WMh6sjxkeKvdI9ZL7BYHLqC+xf6ahRkbkHC
-         Y4kOqhN6PadJfxjDZY2BVnZSbJ6q8Zk5/1eDJZ60H8AvaTlzhRXkd6WBMfkyCJIZCF4I
-         sj0HLAoUoAmgwfy1odnZQalxEUZnfZUZotctVciJcG0IYdkDAAUUDVPPEA0+lVOqk08s
-         nHpbsoTlSwvca3bjTfZox6FD74uthGrjxcHRB9+ACZ7D6Re8IuqZy0lyim9cAug6FoMg
-         nZrg==
+        Fri, 4 Oct 2019 20:02:36 -0400
+Received: by mail-wr1-f65.google.com with SMTP id n14so8988090wrw.9;
+        Fri, 04 Oct 2019 17:02:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=S8mPVffMcLGte/wHbtTKmdFyoHNnsyDaHZetmGYETyI=;
-        b=S6ed41M1JA9mc9eXaKfXifcuGywtPcaasY3hTlxjeykofuo7htnQJBJqmyng+xwN5T
-         lmx57AQjw84+cyVQRgW6rhkS/kl4MWgxE3Nmnt8PVdKWigqFVsFPGDERfqV5VQOnpSrI
-         NB6lpyXSe8Q4QpqIqfsX72Z7plYtmXaGoHWOaZWvyWJ47Lcq9DuoG9R+odiuhL+b8DdD
-         PZdF81/jVMDTDur4tpH+Nu7qg0pvZrvXx2wUcRe05SbGCsBq5nSYAFXyIp5imXWTWCO5
-         ghmF8sqTf1wyMlTlHt2Ywnww6k12hPaixxKUpHmgvMh0l6wsRoMswc/tTsTiFJLuziwo
-         81Qw==
-X-Gm-Message-State: APjAAAU9emDRiZtA/ur79toYfDly7oINGHp+z8QR0NVp9YDlpZ6iL8TB
-        ZKAEQ2hpLD9z5aSnne8IqTz9t1rlXtZHLdSgn9XzDg==
-X-Google-Smtp-Source: APXvYqw6p3u0Nbk4EtKVZWVGxvJpwkNNralIapsPdyvTLc9k8feinsifqMxclwSQkxsfBTi9SQax5JQ1oEWvQP3L9ng=
-X-Received: by 2002:a19:14f:: with SMTP id 76mr9883809lfb.92.1570227265893;
- Fri, 04 Oct 2019 15:14:25 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=nJY323ptNq5iteV7TuRcRazZgxFU0ETiSK6yIFchgJ0=;
+        b=VZr2087ZtAgUL/eAsRWo/9uk9V9gfkFXGOmFzrsM6GeAMly6jKG8cFjpmGh/+ar2Fq
+         ROL9iyZAeXRCZnsD6Cmu9RsQvcQ47Vg7KyQpr5XJoOAovvfqiz3PI2YKw5lFN4U6PLnZ
+         LGdsUc3Bw+NvWkMGJVUAWC3fH4cIe2uTqtZVz+8HYa5sbVwC+kYSjwzB8ZT49nlviVtL
+         XDo64npQeWgxk67pmt2q+awfYCzq74lmMOuv6zFWCj9CmnS9H6kRq5Z2ce/jnOaTZ5ro
+         v7iBLcqBFqAQcHqeKKmwxJH7gCHrLBYROc/Gi+/O2OAqlazbqTjaeLjNwF1DFcSsnzxk
+         7BGQ==
+X-Gm-Message-State: APjAAAWwP5p5qhZU4ENnaItgQp7cFnVp0Ad6rj5+cR9HryeRZntR0lBv
+        XOCiW9f9VPPbwRFaATkHaCmVKvGT
+X-Google-Smtp-Source: APXvYqywzxXdSMIcTUOp2QhVjpd6bCxB+ayx1RxNoyn2judgDukJITAS5OAEsB61xQ+0L5JjfhjuKA==
+X-Received: by 2002:adf:eec5:: with SMTP id a5mr9287812wrp.191.1570233752675;
+        Fri, 04 Oct 2019 17:02:32 -0700 (PDT)
+Received: from ?IPv6:2600:1700:65a0:78e0:514:7862:1503:8e4d? ([2600:1700:65a0:78e0:514:7862:1503:8e4d])
+        by smtp.gmail.com with ESMTPSA id a4sm6583334wmm.10.2019.10.04.17.02.30
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 04 Oct 2019 17:02:32 -0700 (PDT)
+Subject: Re: [PATCH] nvme: fix uninitialized return of ret when
+ sysfs_create_link fails
+To:     Colin King <colin.king@canonical.com>,
+        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
+        Christoph Hellwig <hch@lst.de>, linux-nvme@lists.infradead.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20191002124328.17264-1-colin.king@canonical.com>
+From:   Sagi Grimberg <sagi@grimberg.me>
+Message-ID: <17e3dc55-6e6e-a4e8-f082-4b57144467af@grimberg.me>
+Date:   Fri, 4 Oct 2019 17:02:29 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-References: <20190926081426.GB2332@mwanda>
-In-Reply-To: <20190926081426.GB2332@mwanda>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Sat, 5 Oct 2019 00:14:14 +0200
-Message-ID: <CACRpkdY6f5MX16cJL--D3O=_4us=vXEF6vWfRpd+ju8T_JsE0Q@mail.gmail.com>
-Subject: Re: [PATCH] ns2: Fix off by one bugs in ns2_pinmux_enable()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Ray Jui <rjui@broadcom.com>,
-        Yendapally Reddy Dhananjaya Reddy 
-        <yendapally.reddy@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20191002124328.17264-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Sep 26, 2019 at 10:14 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+This was already fixed and merged (by Dan)
 
-> The pinctrl->functions[] array has pinctrl->num_functions elements and
-> the pinctrl->groups[] array is the same way.  These are set in
-> ns2_pinmux_probe().  So the > comparisons should be >= so that we don't
-> read one element beyond the end of the array.
->
-> Fixes: b5aa1006e4a9 ("pinctrl: ns2: add pinmux driver support for Broadcom NS2 SoC")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-Patch applied with Scott's ACK.
-
-Yours,
-Linus Walleij
+On 10/2/19 5:43 AM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently when the call to sysfs_create_link fails the error exit
+> path returns an uninitialized value in variable ret. Fix this by
+> returning the error code returned from the failed call to
+> sysfs_create_link.
+> 
+> Addresses-Coverity: ("Uninitialized scalar variable")
+> Fixes: 32fd90c40768 ("nvme: change locking for the per-subsystem controller list")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>   drivers/nvme/host/core.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+> index 63b37d08ac98..f6acbff3e3bc 100644
+> --- a/drivers/nvme/host/core.c
+> +++ b/drivers/nvme/host/core.c
+> @@ -2540,8 +2540,9 @@ static int nvme_init_subsystem(struct nvme_ctrl *ctrl, struct nvme_id_ctrl *id)
+>   		list_add_tail(&subsys->entry, &nvme_subsystems);
+>   	}
+>   
+> -	if (sysfs_create_link(&subsys->dev.kobj, &ctrl->device->kobj,
+> -			dev_name(ctrl->device))) {
+> +	ret = sysfs_create_link(&subsys->dev.kobj, &ctrl->device->kobj,
+> +				dev_name(ctrl->device));
+> +	if (ret) {
+>   		dev_err(ctrl->device,
+>   			"failed to create sysfs link from subsystem.\n");
+>   		goto out_put_subsystem;
+> 

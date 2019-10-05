@@ -2,40 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18E95CCA3A
-	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 16:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB581CCA81
+	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 16:34:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726753AbfJEOEs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 5 Oct 2019 10:04:48 -0400
-Received: from mout.web.de ([212.227.15.4]:60395 "EHLO mout.web.de"
+        id S1727983AbfJEOeU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 5 Oct 2019 10:34:20 -0400
+Received: from mout.web.de ([212.227.15.4]:33407 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725963AbfJEOEs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 5 Oct 2019 10:04:48 -0400
+        id S1726076AbfJEOeU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 5 Oct 2019 10:34:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1570284251;
-        bh=yU952EgA76+1w3jlwz/sumRdXN+HoC5Bxy+AmRv95+o=;
+        s=dbaedf251592; t=1570286051;
+        bh=WYm0ExzD4+g3J7ilVn+RO3bGcQYT/EY8d2+B0IWoDqM=;
         h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=o19EcgekqyfW5/C7YiaUIjG6oxyd9XdP3J5V9tczIzoak+qHxYFMxaP079FSFVaGb
-         vyK2zY1Lx/sh3hoWh9K8HXl8h666Kxvx0juon7/nVmpE+Ah7+dmB0ISgSKGmumDG0i
-         TlvZaOQba2m2t22Jlunt6/cqIRe/GGOEvdiVzBRE=
+        b=MC5D54vbF5C8aK+YQIPhkTgstEKKXFfTndUA78vRxnM08ojw+a9saiEdq/pnr3w+X
+         X0xw7daHMiAmhbEHEDVttnH1t1DqOpvw8xA3w/EPJT2HQVkxWMHkoGETFWArPTOPBW
+         U16fEc5VEddvZBEcEXxYOAB7y5Za6SVs4dYiXfzM=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.178.111]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lcgp5-1hs6ph3jbL-00k5uy; Sat, 05
- Oct 2019 16:04:11 +0200
+Received: from [192.168.1.2] ([93.135.178.111]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LnjAt-1hclMD3gGl-00hvWz; Sat, 05
+ Oct 2019 16:34:11 +0200
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
-        Brian Norris <computersforpeace@gmail.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Marek Vasut <marek.vasut@gmail.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Richard Weinberger <richard@nod.at>,
-        Vignesh Raghavendra <vigneshr@ti.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191004171909.6378-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH v2] mtd: onenand: prevent memory leak in onenand_scan
+        Frank Rowand <frowand.list@gmail.com>,
+        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20191004185847.14074-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] of: unittest: fix memory leak in unittest_data_add
 To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-mtd@lists.infradead.org
+        devicetree@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -80,75 +75,58 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <d136f119-d408-0c20-c554-818d13dc48df@web.de>
-Date:   Sat, 5 Oct 2019 16:04:03 +0200
+Message-ID: <50421413-f535-a608-fa7d-1b337eeb95e5@web.de>
+Date:   Sat, 5 Oct 2019 16:34:09 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <20191004171909.6378-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20191004185847.14074-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:FkskqHrQv+ChCOFRBvXSqr/LIQNCCcSFDX0jYWFMitIhRKRX9kX
- GoDxQAOYmvt1mg/yOdd2OSQR59MjF1fI7AWsEZC2YJ3U2Vkg6rhEXqzfk4UXfQrg28qcJ1o
- nihrO+OSeNrQeOubwOL7Q0uagHc9X3Y9hyLU9ql3U4ufczlDe2fxxOgXohWV9SupDcJU+CZ
- qiknTVuuq6F2k6ldeIN7w==
+X-Provags-ID: V03:K1:uWtDbOaA3hU8XByNb1OgenmgIB0O3bj9fSjvvEH8SyypMYLLvzc
+ jJOBQ7KO8ISe5uPO2GNyuOwHnyWOfhsuWN3thgB7Xi1rfG1e8bb39P7pz03IJ+et/3wuLgj
+ +8bLRGxK/tff7uGbsCsOk5kd4S2ZEvw/NM0bh8fxCe25jCmwgCpmEgVU9kPtGYEN6WOH3cA
+ gKpVWnaivHXeQTqJtqB6w==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:/9QwR6ExVMU=:/deUgzO9xlTfD3I/KeeQax
- h3XU4t0S2Yemc8r2kfmQVi31hpf8fAMF+lCJ7YXHFEIAtKDQF7qasKoClzCRnalY40XvpS5ur
- bsHu9O20/JzRvKJr/xRzkJG3HtUmpnLyRxmSkm13bl7sOBVQuliNSKBs/wnYHAzLMQLuGJTnR
- XYcxCSvx6swOsKFDLQc0IUx4NlUb0Ath6j/rTV+HZJglk16lYYo6bwbUTiWokpWcgYlAM877a
- 8YT2Hb3XB1aGgEp0qFNe6prYstYbJd/p6y+g7JTV6h76C06kqBC9XPOSoDGJRyrvUgIyGGg8J
- qdCpzuSm8FQ8SFB3LlxrhAUL7VIyurBl5JZ6hkKV3JyyvMTfd/pGAihnTkj/79c8fuzS5uAph
- 2+vMnbBalZBHCg4AZu5BskRG6erbFGfZcn+/+9r/vM2woGGiI+JTKBxrlQ8k0vs50pU1+viIB
- TB8SUwiCLIJAEp2Y0qHTqRFJk+W9uoEVho0VTZ7Ts9IkTonzl7cWNfuvsCyB78WMmgrdASKFo
- NjSj/1KxkzE81HCG1THwe3mrMxIRSO/fVy+QfqGy1Tcad3UUYw6mNsVVKEXHVEESkfPubKVhu
- z1P+/d25Vc0MF2yi1BDII63pazYr1+l0od6JVshlLWzMem80Son0SglDlNz63NPa6OzuvI7UT
- 4CFhObQbZSbNqJlMCBBq/KC5omuePXEyrbSYFMWY2/j9C4a3VT9KkByfMlAq4PmKomMQlHhLW
- ep9qWnZ5hcHBe7CSh2CjMeDcqTD5+AMm22vVXNh1dlhFSpX0l8wKz3iTUlVaYYu2mkRFk4Emd
- ckwMPkFWJ9KPwFcUkJRykoKCejlDWxLl162ifjEeybAxaqjMopeIOIPAMARgNVorGbuZFQhcQ
- ECdppQ5ZwILLOkABM7glvtzhXl3h/Z7bMa/80HCk6xD5Xv+gu1i+G+qAVT49jRPcsgWTjydyI
- hst22IE41aQgO1degSmwGNyRByP1/M/WT6VaS0BZ//e2NjTziQfQGL9QvGj5Y5tICmToBX1d4
- gDKBUXKSHsHkcqmHUIemf7azWmkE4RSSYmGbhEayjImaGODv3tddgpnOwOn6iH3w8NlH00i1e
- F6Ldq/gyCyoni3hBFH4RfM9V1VEZQjBZMHcSGc/2yaFEfFeDyHYL+bnE0XGRL8AMDomkv7Fop
- o4cXttqRBTPrBHt0t1jWofEv0FpNO34HXMN7KwyG77lvHOuiCX2xtB8w8R8QZpZJV4N/5TlYi
- UbBQznSsC9AaZycgJ2exDc/1dSblAmfNMEq/2TI6iEx9DFaJUDMTZspFLE3g=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:jpEBJYn+/CI=:0EOzG0iHQS7oCj9PHLwAHQ
+ 32oNCw9PhiicIwniw7HKC+gl4V0IscT1uk9yJ7E+eBnAKEj/XSuu3oCipcF0Jp5JC0vp+aikP
+ tRD/E4CWm9iGKs1gV5g2JSzNura8tISunrWWa60YxqH8XDJgJFRF2dAXKsR0MJwuREVNP7KfP
+ /+tl0PRY1K3stXZZaFoJklCcO0OWJZlWPFPXipN0Fno523NvCrK1ur4f00G5Cbonl5hHuZfui
+ HWwjouppjhdz1Zzbalxmx7Yo7tZC32/GxkMb9gCmsbuOWRXURwlM66ADccaGQ+YHPXRXrzP8u
+ Jlyfj01Ro5CY8EgTcUh7nkExkI+zj7wVBKxMYXbYRceLKKf9CCc53U1cACSN4w2TtHmw90Cjd
+ Rc44RvEuCH4LH45mUyJrv6vctHFDzKcCoS4klaYksOTMUH3kHvtUO+7jI2YY9+1Z3Zew367nq
+ F9i64gWFcqSoB9oflNSFO/Zrcjm+O5x4PXn1ZXsbh2ehJj862h9gzEMZiStHw7XK+NKYHv5A9
+ l+JOOPk9tmxEjux5i0NHJwxGx1EyzHUdDeZb/MBHMH5RNncNToTg0RCWbGxIld1KBEmhk7Y5q
+ 7qqUF8WClwFJVA8yK/omrJCBz6jlnERcg1TCBSWe2k3MtB8OyDYPaYVFktb77LIA7Hzvbapxi
+ X2COgkFDEiMKMuQc9iqA8K0R2SEd4+7F4G8IvcdnR6bwjTQmd4s4FMnRDeLxO3t8Fbg1a9Fla
+ 2TQgMkDd8RsMLEhoH7Uswn79AIvZyDZUObF6v/1mvsVcJhCcCYQUCtN+w/nSP902jYykAEE6s
+ UoAAhGFgNaeHHrY7+pPECs67C6WjxBNdkKBRuHFNH6/pTJr/8e74KR2HF64xybWrKOf1ZrNVk
+ ao+GDMQ7M3BZvx5zZlIpAcMoMfKI/z6sL329ArYpzYRHtFhqvyfd2FI2WcrZN5M192Lca7Btb
+ M6/37idx3pOkoJ7pRao6ak3qeyvA740eo8zRN1RuvPgPUcf1bk21mdSuPM8PSO59kObSwuwht
+ 4Id5ZR+hcYfALWIPMZUbdhWf9YSHU0qabYNqDtg0GaGyxB8hY/9ITbOcNOeLx66gCIVlgqy8D
+ /LJnZoSm095A8l4nuaiCNvCORNFg4/79HNsu3GojkMnpc/HO/bPC3gsRLE84lWLPj+gUHm2Fx
+ Us2DD5ePQpoaMHK3V7KcAt5cUsAEJtn8u8+sN6fgLwEDBLN4u9FE62c4faYlygtr7tZLOFU+A
+ YM3TsTlDekduJ9LnyomXo389hYwW6Q74cswW5gpz+W3yDLk6alUBmFKCbYiQ=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> In onenand_scan if scan_bbt fails the allocated buffers for oob_buf,
-> verify_buf, and page_buf should be released.
+> In unittest_data_add, a copy buffer is created via kmemdup. This buffer
+> is leaked if of_fdt_unflatten_tree fails. The release for the
+> unittest_data buffer is added.
 
 Can a wording like the following be nicer for the change description?
 
-  Release the memory for the buffers =E2=80=9Coob_buf=E2=80=9D, =E2=80=9Cv=
-erify_buf=E2=80=9D and =E2=80=9Cpage_buf=E2=80=9D
-  after a call of the function =E2=80=9Cscan_bbt=E2=80=9D failed in the im=
-plementation
-  of the function =E2=80=9Conenand_scan=E2=80=9D.
-
-
-> Fixes: 5988af231978 ("mtd: Flex-OneNAND support")
-=E2=80=A6
-> ---
-> Changes in v2:
-=E2=80=A6
-> for the hint).
-
-Did you take another review comment into account for this patch change log=
-?
-
-
-> ---
-
-Please replace the delimiter at this place by a blank line in subsequent m=
-essages.
-
-
->  drivers/mtd/nand/onenand/onenand_base.c | 8 +++++++-
-=E2=80=A6
+  The buffer =E2=80=9C__dtb_testcases_begin=E2=80=9D will be duplicated to=
+ the local
+  variable =E2=80=9Cunittest_data=E2=80=9D. Release the corresponding memo=
+ry
+  after a call of the function =E2=80=9Cof_fdt_unflatten_tree=E2=80=9D fai=
+led
+  in the implementation of the function =E2=80=9Cunittest_data_add=E2=80=
+=9D.
 
 
 Regards,

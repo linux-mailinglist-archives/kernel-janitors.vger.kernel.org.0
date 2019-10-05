@@ -2,70 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB247CC9A3
-	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 13:32:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AB9CCC9ED
+	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 14:26:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728088AbfJELcX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 5 Oct 2019 07:32:23 -0400
-Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:43543 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727940AbfJELcX (ORCPT
+        id S1727788AbfJEM0L (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 5 Oct 2019 08:26:11 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:35359 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726198AbfJEM0L (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 5 Oct 2019 07:32:23 -0400
-Received: from localhost.localdomain ([93.22.148.54])
-        by mwinf5d13 with ME
-        id 9nYA2100U1AfE5H03nYBUv; Sat, 05 Oct 2019 13:32:21 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 05 Oct 2019 13:32:21 +0200
-X-ME-IP: 93.22.148.54
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     harry.wentland@amd.com, sunpeng.li@amd.com,
-        alexander.deucher@amd.com, christian.koenig@amd.com,
-        David1.Zhou@amd.com, airlied@linux.ie, daniel@ffwll.ch
-Cc:     amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] drm/amd/display: Fix typo in some comments
-Date:   Sat,  5 Oct 2019 13:32:05 +0200
-Message-Id: <20191005113205.14601-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        Sat, 5 Oct 2019 08:26:11 -0400
+X-IronPort-AV: E=Sophos;i="5.67,260,1566856800"; 
+   d="scan'208";a="404856155"
+Received: from 81-65-53-202.rev.numericable.fr (HELO hadrien) ([81.65.53.202])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Oct 2019 14:26:09 +0200
+Date:   Sat, 5 Oct 2019 14:26:08 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@lip6.fr>
+X-X-Sender: jll@hadrien
+To:     Markus Elfring <Markus.Elfring@web.de>
+cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        cocci@systeme.lip6.fr, kernel-janitors@vger.kernel.org,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jessica Yu <jeyu@kernel.org>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        Martijn Coenen <maco@android.com>,
+        =?ISO-8859-15?Q?Matthias_M=E4nnich?= <maennich@google.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Yue Haibing <yuehaibing@huawei.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [Cocci] [RFC] scripts: Fix coccicheck failed
+In-Reply-To: <21684307-d05c-1856-c849-95436aedeb86@web.de>
+Message-ID: <alpine.DEB.2.21.1910051425050.2653@hadrien>
+References: <CAK7LNAS2K6i+s2A_xTyRq730M6_=tyjtfwHAnEHF37_nrJa4Eg@mail.gmail.com> <21684307-d05c-1856-c849-95436aedeb86@web.de>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/mixed; boundary="8323329-1481532127-1570278369=:2653"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-p and g are switched in 'amdpgu_dm'
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+--8323329-1481532127-1570278369=:2653
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 92932d521d7f..b9c2e1a930ab 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1043,7 +1043,7 @@ static void s3_handle_mst(struct drm_device *dev, bool suspend)
- 
- /**
-  * dm_hw_init() - Initialize DC device
-- * @handle: The base driver device containing the amdpgu_dm device.
-+ * @handle: The base driver device containing the amdgpu_dm device.
-  *
-  * Initialize the &struct amdgpu_display_manager device. This involves calling
-  * the initializers of each DM component, then populating the struct with them.
-@@ -1073,7 +1073,7 @@ static int dm_hw_init(void *handle)
- 
- /**
-  * dm_hw_fini() - Teardown DC device
-- * @handle: The base driver device containing the amdpgu_dm device.
-+ * @handle: The base driver device containing the amdgpu_dm device.
-  *
-  * Teardown components within &struct amdgpu_display_manager that require
-  * cleanup. This involves cleaning up the DRM device, DC, and any modules that
--- 
-2.20.1
 
+
+On Sat, 5 Oct 2019, Markus Elfring wrote:
+
+> > You gave Acked-by to the one-liner fix "virtual report",
+>
+> It was (temporarily?) accepted to use the script “add_namespace.cocci”
+> without such a type of SmPL variable.
+>
+>
+> > and I am happy to apply it to my tree.
+>
+> Would you like to take the change possibility into account
+> that the coccicheck system configuration should be adapted instead?
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/scripts/coccicheck?id=4ea655343ce4180fe9b2c7ec8cb8ef9884a47901#n257
+
+I prefer the one line change for now.  If more issues arise one can see
+what is more desirable at a larger scale.
+
+julia
+
+>
+> Regards,
+> Markus
+>
+--8323329-1481532127-1570278369=:2653--

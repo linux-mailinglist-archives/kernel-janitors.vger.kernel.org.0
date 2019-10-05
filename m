@@ -2,35 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EB581CCA81
-	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 16:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97484CCAB1
+	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 17:03:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727983AbfJEOeU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 5 Oct 2019 10:34:20 -0400
-Received: from mout.web.de ([212.227.15.4]:33407 "EHLO mout.web.de"
+        id S1726086AbfJEPDb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 5 Oct 2019 11:03:31 -0400
+Received: from mout.web.de ([212.227.15.14]:58527 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726076AbfJEOeU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 5 Oct 2019 10:34:20 -0400
+        id S1725963AbfJEPDb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 5 Oct 2019 11:03:31 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1570286051;
-        bh=WYm0ExzD4+g3J7ilVn+RO3bGcQYT/EY8d2+B0IWoDqM=;
-        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=MC5D54vbF5C8aK+YQIPhkTgstEKKXFfTndUA78vRxnM08ojw+a9saiEdq/pnr3w+X
-         X0xw7daHMiAmhbEHEDVttnH1t1DqOpvw8xA3w/EPJT2HQVkxWMHkoGETFWArPTOPBW
-         U16fEc5VEddvZBEcEXxYOAB7y5Za6SVs4dYiXfzM=
+        s=dbaedf251592; t=1570287780;
+        bh=nyYdbbFOVLBA5h5OHeTnZ5r7BtCXWWl3ElrsogOlzbQ=;
+        h=X-UI-Sender-Class:Cc:References:Subject:From:To:Date:In-Reply-To;
+        b=RAfjfK9t44dJR/c5J4bUNNHHA26rArZPFJX6zJbr8WrVZCC10OY08rSAfEn2pRe1r
+         /9JDHc3+ukRDBQtA1SfAXDBdGDaBkWj5KoAFEyQSAjsAmEhynca877yiOW1d0carTU
+         /mGmmVtYpmttuWY+GZ90NNGvcozM8RMqBa/Clc4E=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.178.111]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LnjAt-1hclMD3gGl-00hvWz; Sat, 05
- Oct 2019 16:34:11 +0200
+Received: from [192.168.1.2] ([93.135.178.111]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MD8VY-1iK1lo0u9k-00GdCf; Sat, 05
+ Oct 2019 17:03:00 +0200
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
-        Frank Rowand <frowand.list@gmail.com>,
-        Rob Herring <robh+dt@kernel.org>, linux-kernel@vger.kernel.org,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Fabio Estevam <festevam@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-References: <20191004185847.14074-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] of: unittest: fix memory leak in unittest_data_add
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        devicetree@vger.kernel.org
+References: <20191004190938.15353-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] drm/imx: fix memory leak in imx_pd_bind
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,58 +77,81 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <50421413-f535-a608-fa7d-1b337eeb95e5@web.de>
-Date:   Sat, 5 Oct 2019 16:34:09 +0200
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        dri-devel@lists.freedesktop.org,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        kernel@pengutronix.de
+Message-ID: <027fde47-86b3-35c8-85e6-ea7c191e772c@web.de>
+Date:   Sat, 5 Oct 2019 17:02:58 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <20191004185847.14074-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20191004190938.15353-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:uWtDbOaA3hU8XByNb1OgenmgIB0O3bj9fSjvvEH8SyypMYLLvzc
- jJOBQ7KO8ISe5uPO2GNyuOwHnyWOfhsuWN3thgB7Xi1rfG1e8bb39P7pz03IJ+et/3wuLgj
- +8bLRGxK/tff7uGbsCsOk5kd4S2ZEvw/NM0bh8fxCe25jCmwgCpmEgVU9kPtGYEN6WOH3cA
- gKpVWnaivHXeQTqJtqB6w==
+X-Provags-ID: V03:K1:E1C7ZXn0sIkuGIHReU9/lVIcTt8hBkdC/Bp3sJ6tSh/0LrccdmX
+ qJh3VHjQ04ml8iPbpXidujfenImPDZMGyw54HaqR+tZcWLGdpy20u/1KqQgLb4AX4VQU08O
+ TCK4heuknQGbY+FUp9PP6m1+hQWg5yXIRKSe5m7LSdZegj7/Lc7lYeRnoTsxyBPFgbgY3EX
+ 34LLIjDb00xkaAdTfn75g==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:jpEBJYn+/CI=:0EOzG0iHQS7oCj9PHLwAHQ
- 32oNCw9PhiicIwniw7HKC+gl4V0IscT1uk9yJ7E+eBnAKEj/XSuu3oCipcF0Jp5JC0vp+aikP
- tRD/E4CWm9iGKs1gV5g2JSzNura8tISunrWWa60YxqH8XDJgJFRF2dAXKsR0MJwuREVNP7KfP
- /+tl0PRY1K3stXZZaFoJklCcO0OWJZlWPFPXipN0Fno523NvCrK1ur4f00G5Cbonl5hHuZfui
- HWwjouppjhdz1Zzbalxmx7Yo7tZC32/GxkMb9gCmsbuOWRXURwlM66ADccaGQ+YHPXRXrzP8u
- Jlyfj01Ro5CY8EgTcUh7nkExkI+zj7wVBKxMYXbYRceLKKf9CCc53U1cACSN4w2TtHmw90Cjd
- Rc44RvEuCH4LH45mUyJrv6vctHFDzKcCoS4klaYksOTMUH3kHvtUO+7jI2YY9+1Z3Zew367nq
- F9i64gWFcqSoB9oflNSFO/Zrcjm+O5x4PXn1ZXsbh2ehJj862h9gzEMZiStHw7XK+NKYHv5A9
- l+JOOPk9tmxEjux5i0NHJwxGx1EyzHUdDeZb/MBHMH5RNncNToTg0RCWbGxIld1KBEmhk7Y5q
- 7qqUF8WClwFJVA8yK/omrJCBz6jlnERcg1TCBSWe2k3MtB8OyDYPaYVFktb77LIA7Hzvbapxi
- X2COgkFDEiMKMuQc9iqA8K0R2SEd4+7F4G8IvcdnR6bwjTQmd4s4FMnRDeLxO3t8Fbg1a9Fla
- 2TQgMkDd8RsMLEhoH7Uswn79AIvZyDZUObF6v/1mvsVcJhCcCYQUCtN+w/nSP902jYykAEE6s
- UoAAhGFgNaeHHrY7+pPECs67C6WjxBNdkKBRuHFNH6/pTJr/8e74KR2HF64xybWrKOf1ZrNVk
- ao+GDMQ7M3BZvx5zZlIpAcMoMfKI/z6sL329ArYpzYRHtFhqvyfd2FI2WcrZN5M192Lca7Btb
- M6/37idx3pOkoJ7pRao6ak3qeyvA740eo8zRN1RuvPgPUcf1bk21mdSuPM8PSO59kObSwuwht
- 4Id5ZR+hcYfALWIPMZUbdhWf9YSHU0qabYNqDtg0GaGyxB8hY/9ITbOcNOeLx66gCIVlgqy8D
- /LJnZoSm095A8l4nuaiCNvCORNFg4/79HNsu3GojkMnpc/HO/bPC3gsRLE84lWLPj+gUHm2Fx
- Us2DD5ePQpoaMHK3V7KcAt5cUsAEJtn8u8+sN6fgLwEDBLN4u9FE62c4faYlygtr7tZLOFU+A
- YM3TsTlDekduJ9LnyomXo389hYwW6Q74cswW5gpz+W3yDLk6alUBmFKCbYiQ=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:LFzJ8fXGnDk=:elS2SnD1Bvlba4od2uwKrA
+ K3zsanE8KpP/p7AnoMZccjRdWYN9F/OeeTITObKjUDg2mg4tIQvB6/d80HrlGvGHrossyiG+g
+ EbpAWw101HOLqQKDSVdZ8zrYbSBWl8tB/v/ksWtD9Ou0pwIpyRmFc9dWihoEVC8UQRGo24RYZ
+ pApz3h/B9TEtlb5IFSt6XzI7G7eEzDcCM+ETf06oJlGUMoWHb9j+1rRyjFvg9CT3NXQMy2L68
+ CjHE0knGu4RLzfywKavfK29HD+5MOU3OMY6Da7L3lYZxqhR/OqpahTJW9x11nKzrg4HAGBJ8A
+ 5feIJEsEzsuZnzWCVm/mtvgVMNCjI772JiiJX9gH5awSonjtKXWlIL1IDCXUydm4wq+ossqRU
+ xuBFW3Be197ruE8o0PpyYLSQrj+HSJRru0OpELTz/WeQFOLBQ9CiWUkpSutXySRhLh5gc8HmR
+ DN4ZWV0F+SBz0zid5YirEQBJRYFlteZ9NdzILc9LwvzEMu770iimdS5OsabNcc2c1/mhBsniw
+ 3mo0DgN7ax39n38hIm3NRh3D4FmEyS9QqS8rot/mGXXBFrXS0hpHw1JqiuhcR9OcVqmFiFo1b
+ i8SjHqJ/bT/HsnMh3219kYzax2EbLJMwKGacvbFB7aqNVr8Jtd07wptHRMyoGP1VHGZFvbcKR
+ 4zY/WjtI+AAjFHXiR5PzlLSFQuGSXJZhFvgi2lA7nhEc1qksrKGDTTikuqsPWORUGZT2SV4Wu
+ rvBRpojj79tk+P9Mqof9fop/H3RIkVUysKEKPbx/vPz5bdbPCof4HKQaMEr9Q9Wf7nlyBVMcz
+ 9SPHcvn13QIHpJqABIYHZoVXMvA7cWUOMYtEzad4ZCMg6Swyh3RZIlj861MS9n9TW4n5LNV5y
+ 8jkSb0+7jPyoUJWVTURUbfkODQjFeK9+pCkzlLPBo0eTzRgefN9iisbtGgvE2Z3Go1Cu9WLQ/
+ Zawc8uPYKeaHgI2o4gan963xxDh47q8ejXpDKtLjkwIzQM55NvANoFvknfZwpC+Qflj263Hxa
+ kH2Uv6FVgecWsPCVNYO1kKNisCytVbfeTDxCWAM/sP2WIbWA9gilJnnF1tuxKtaR1CLWzn9aB
+ mL+4gVAwUP97e2SuwaPh43wm8yclzpfIWFyQUhCcRskWU7R0YSZ+2Xymk8n2/nH5pKIX0Dn2E
+ f0n9PndR3jJVdlvF6gT8M9X2Kc0OnLRv0ntil6Z/oVqpmm5zylplUi4/Aw9ov7rgOyDYT/GDz
+ CgMCEnamLAqycsgeaA7gGFWb6gwwvXMYeBQjCcqEknJSXM2DKWS94jaMsULY=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> In unittest_data_add, a copy buffer is created via kmemdup. This buffer
-> is leaked if of_fdt_unflatten_tree fails. The release for the
-> unittest_data buffer is added.
+> In imx_pd_bind, the duplicated memory for imxpd->edid via kmemdup should
+> be released in drm_of_find_panel_or_bridge or imx_pd_register fail.
 
-Can a wording like the following be nicer for the change description?
+Please improve this change description.
 
-  The buffer =E2=80=9C__dtb_testcases_begin=E2=80=9D will be duplicated to=
- the local
-  variable =E2=80=9Cunittest_data=E2=80=9D. Release the corresponding memo=
-ry
-  after a call of the function =E2=80=9Cof_fdt_unflatten_tree=E2=80=9D fai=
-led
-  in the implementation of the function =E2=80=9Cunittest_data_add=E2=80=
-=9D.
+
+> +++ b/drivers/gpu/drm/imx/parallel-display.c
+> @@ -227,14 +227,18 @@ static int imx_pd_bind(struct device *dev, struct =
+device *master, void *data)
+>
+>  	/* port@1 is the output port */
+>  	ret =3D drm_of_find_panel_or_bridge(np, 1, 0, &imxpd->panel, &imxpd->b=
+ridge);
+> -	if (ret && ret !=3D -ENODEV)
+> +	if (ret && ret !=3D -ENODEV) {
+> +		kfree(imxpd->edid);
+>  		return ret;
+> +	}
+>
+>  	imxpd->dev =3D dev;
+
+Please use a jump target here instead of adding duplicate source code
+for the completion of exception handling.
+
+ 	if (ret && ret !=3D -ENODEV)
+-		return ret;
++		goto free_edid;
+
+=E2=80=A6
+
++free_edid:
++ 	kfree(imxpd->edid);
++ 	return ret;
 
 
 Regards,

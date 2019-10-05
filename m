@@ -2,36 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 118D1CCAF9
-	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 18:09:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2015CCCB24
+	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 18:30:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729067AbfJEQJE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 5 Oct 2019 12:09:04 -0400
-Received: from mout.web.de ([212.227.15.4]:44659 "EHLO mout.web.de"
+        id S2387431AbfJEQa3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 5 Oct 2019 12:30:29 -0400
+Received: from mout.web.de ([212.227.15.3]:44017 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726636AbfJEQJD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 5 Oct 2019 12:09:03 -0400
+        id S1725826AbfJEQa2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 5 Oct 2019 12:30:28 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1570291719;
-        bh=1+fXZSHTAhxOAIXnw/ROPSDqcFHC4nZKNKs7zywpgbw=;
-        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=flr7/PuDfOcNNQENkxkN0UmJ88ssgmZkxi2s9hudyCKH1wV1O4ReLQrDadW73lTFO
-         +mBOUk1TVW4c+11yGQwgrToaIYtJc2saAsvd6l+0OGIWuMEWWQUbWRxDZbrOEXUuR+
-         dznhjE4Nt4hwbgMqpNK/F8bGatLreyIPMAvEMJIQ=
+        s=dbaedf251592; t=1570293015;
+        bh=87n4kg+fR+Y1+xpvz5fyxHKWdJH95A9k7Flf6LNmjFA=;
+        h=X-UI-Sender-Class:Cc:References:Subject:From:To:Date:In-Reply-To;
+        b=WcqjNGqQ58sU8s7B26E2HZ3ve4t/m06v966JI5yt1NzHIoywdmwyv8nJU4RG84bwn
+         mRZR0qfDhgte3NYESA445K6/pzVi+ovSpRpEsv6Rn9z+VLVFPQI1QYocEWvY2uwrA/
+         RghGu0X1JLNmaZvr6gTsBMU4nlrOEPrpea1E5R9o=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.178.111]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MPaxV-1iCg0l3e6L-004h4O; Sat, 05
- Oct 2019 18:08:39 +0200
+Received: from [192.168.1.2] ([93.135.178.111]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MAvVk-1iQiZv1nUa-009vyC; Sat, 05
+ Oct 2019 18:30:15 +0200
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
+        Forest Bond <forest@alittletooquiet.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Madhumitha Prabakaran <madhumithabiw@gmail.com>,
+        Malcolm Priestley <tvboxspy@gmail.com>,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20191004195315.21168-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] rtlwifi: fix memory leak in rtl_usb_probe
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+References: <20191004200319.22394-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] staging: vt6655: Fix memory leak in vt6655_probe
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,54 +76,50 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <037d04e8-4651-a657-6be6-b1eca072bb81@web.de>
-Date:   Sat, 5 Oct 2019 18:08:36 +0200
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        devel@driverdev.osuosl.org
+Message-ID: <1d0ba4c6-99ed-e2c9-48a2-ce34b0042876@web.de>
+Date:   Sat, 5 Oct 2019 18:30:13 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <20191004195315.21168-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20191004200319.22394-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:PTXTyKlngoYizrVOmtkzORQ0kDz2UE5brHu1fjldv0jOV26NHPl
- qQU+vI2CNCQMcOVI+Q+SfQUbZzDwIgst3alsBn1CTgO6VD1RSnY+Tzs9T28ceINS5zP7S7A
- JrLrZhzEaZN3akDTc0m9ti/BLoC0hkptqPViB+Dr0SUZUW75I6ivDNsrm2W3Ym0Z6oNR20d
- KguwijeJ5+Z8fIO9MAljw==
+X-Provags-ID: V03:K1:zd5wPEFaPYD2QW+eeMyABcG/UY6DUrEzSELFjAfB1cCB4lcdG/+
+ 7ttLI3kbeQAJkl7tx9//AF9mZdL5A+V2p3vzckE1CRaDzash0xR9Ap3oJT/EZkZ9MhgCirH
+ hRUStdXxeuc+9FA/wsM0Qw6RLdjQTSrGevZ63A1a6H2XYks6AK6LULp4myvq+seevKcfFdl
+ YvbRp1TmBi3NaUl4FHhYA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:05ZT3l++kVo=:Z369oQmBzxGgyJcD2+xEmp
- GHp+xqATYB0iHOw6UntDmO9Zgnj9dyzUG9hFRYKTzkJqjAufGn6kL7blyLMz9CFKrJm9qwids
- va7ASA191ssgDhvqNkqKg7SsvaRkXNERUKc+y3D0WSrnUpfXCjtFUtTs+O8d0uxkF7w9DMCuP
- cLGdBJkelieHbLxgJKLWQh2zgxxb4PPS41jejof1uby+RGA3NQVxKAas8uQSkyhhDf8kqAKI3
- 5ics2Z4mXsPZX6gnvJMKHMq/YHoczMA1UyQm3M4OFVwsqFawSJ02V4xshtrYm9+Pj+ZgTW9mu
- 7pFxSlL3sMGlKTBe+CcrhLmxRQ7ik/sjLShL4B9JjHVYyWO0zYJsosRv3h/3bMSnS8Q8L3yAs
- AVsCDvlGoEAcfsEm6SO1FJgPOo4+HlBp/ctcJ+lOJH4DwIxKB6Jp6KmUGyk+kto4TZDJozol0
- +hPwBfEkOSM0L1+uqPV1AqnIMfz+ZkTFfu0+Yz6Byr7pTzfmoiNO2FxrLwQiHTIzH8s3CqpvC
- P9AcPE9JsjhlPkCJs2vNP7NXnQs7E957ZR5ab5hIdcrPZjjoWvM31GV2oWbmXFHE8IJOVUt0F
- dxLQqgLJIhUyAsBOWhhiJXf2AEm6E6R0IHMa7LFHxtF+6GM8C1ds60byBFHBQUcsOanCMs1Mu
- 4mWez5lztW08yPVaZEln2yV/NyOgJPkHRB57Bx/DneRK4SFrZCwvbU9miz6PsRxugsLvIU4Ry
- m9RzGCIRZvQ56Pi75AAvB0IP5XxdjzUTSlZblQKH4HJMSreTKkhAMAuCQIeVBhmmb5YAHzfoK
- V9T7yxqc3wINTT/YDvfOcRqFA6hgd1UJ/MXTxuWI+gSAReESG7SpOYBIlDbvZAnuhcueZaAyg
- T6rdbU/NqaBBIy+ct3NafaYsGbQyULJA4w2Ztw1XDP8Roc23zI9gFrtHCxbONWt4FvbxVFt5S
- tjTGKK6dumuFHhpuKuBUiuiPf0+L21gn36+LPL0BNY4SYVCTamrzn4NKw16l2irA6iBVeCtnB
- gJGJaPtaQTNUvjojs8jy2eLDoiul2T6+gVeY5k2CNDMYDM0CErOzOyvOtBKXSI4UYJHQdqtui
- sf7N7S4gZy2a2chJ7mZNZOwlXovi0xoAMkcs8Zb3M6TFFjPbjh1DMxBnXFfRGK053XKBdQA5L
- /lfYwVnpGzaOhd0CXHdzOaO+t0g5J9HybVG78XlowmSoNQlAvbqkGMPZd/k1DZlqIWGLtRRS7
- EsbPu+hbot9gRETO44Ek7HE86axs/h7c/8F20sqb4QKX05185b5mpsmSC/c0=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:L/LNEIeoKxk=:H5RziFHM248eXRXAyi+437
+ 6syRz/mPgRdHCZhNnbiIlkCI8fACKrG1TScrKVYEeEodphajxx2cVP6G5zX6bnnzN0s+84tyX
+ CB0R1nFAdNn9ri/ACVCYcbgRxe3X+JxAdBYYLE2Tqospm1jKgF5zYjxS3q8xsdE7c68TWqN0l
+ Wlxj43TVzWuDdRmgpQOV3yPiWIXeR+bcRqsRsIbajFenMVGocGv6KTIVIdtwTedzy47BWfos+
+ RSdVt8dsD/QQhzgKrEoOo4dxMBmOXpubC82BXLA0Hv0DesY1C3xXOD6u2ui8wKAXxClV2OdMh
+ /+DtkqVeX2BTu7ZRjQML9uONFwn/zqlge4X0rqELk8VnokQWKCYC2HDbgYtdgkTZe8AyZDMxK
+ 7HT/gkwsL/kxkVYhpqqrkUiNw8pfLiecfSXsSpDCI+VQAYKGdWFpyqgk3By+wtAnL1IYrh04u
+ HcXxwE69gLMOM+DNqKfkoUxoYg6P5GkVUrkfQtfGelWX8ViIUV/LbMeb+Zlp8Dc+3+OirJLoj
+ wwBI1QBp7EkbWDV+spK0/F5uqAtjG8GrTgNgTdR1jcVCov/1qXnWBRWnomwuysZlFshhLE/JG
+ q654arTN+rbVuLfU4Yy8E3bquJJFAorlq1vsi85EiBpoOxQAC/v2P0+CQmIQlx+II7y+6KPjq
+ rZtRjxxTkHbBehugmQWxmHeNGkUMI86MicIIE66lkFPl6BiMnZZzd8t9HQ6GxQ2DsqaKIJrIW
+ eWy7buKVtLtFuyCcAL6s+fBN7q2I/VzrD1IJvb87fFPnExqSxY8+NTxDHoVE/3gGqDc4sNxUF
+ +Uf/2HPGMHC3pjZyBwc5MbBVvy4EyQ72GWs9LCsomBkFiNSkxiwNgT8Z43Uih7ynuDJNNK1s5
+ eZcqT6hzgkAiM35Vt5efyxuWh/vesx10ozBAwx0oXWhDItQBrQyCT3AQyNxq1/q7HEgi7d3l8
+ APA0oQAtp1WDasJPlvJoYIrTmBG6VrEDtrMSJBqQghKPxVGahszaB+BC7UnRsbVX0YtwNAjJl
+ ERUPfmlNJdlI5QlZUiecgZ3PGEnqncSb5ECQzkD+GMzBC3lWUxqgEzJCUSdE+O/FJnq/Ka/7k
+ a1P0dd/77acfjlYvNk2Zf56Cs4mVlxx7i/q00tVY6dWw07bF9rSZgbi2B4MJOZ4Q7XlnojDi0
+ MlZz7L+BBB2hmYFebXJexQeAc8V04LtWTsj4PVzMgMOY6h+v5LgnWoaAepAeNbfQuAd/vp5Eg
+ ZoyNQ8Y9ihWcXezUPQyR3m0KHikM9iKPLRDpOkz0UJlS90L9SAT8d0BtAaFE=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> In rtl_usb_probe, a new hw is allocated via ieee80211_alloc_hw(). This
-> allocation should be released in case of allocation failure for
-> rtlpriv->usb_data.
->
-> Fixes: a7959c1394d4 ("rtlwifi: Preallocate USB read buffers and eliminate kalloc in read routine")
+> In vt6655_probe, if vnt_init() fails the cleanup code needs to be called
+> like other error handling cases. The call to device_free_info() is
+> added.
 
-Which event did trigger the sending of this patch variant
-after a similar change was integrated already?
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=3f93616951138a598d930dcaec40f2bfd9ce43bb
-https://lore.kernel.org/lkml/20191001092047.71E8460A30@smtp.codeaurora.org/
-https://lore.kernel.org/patchwork/comment/1331936/
+Please improve this change description.
 
 Regards,
 Markus

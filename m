@@ -2,58 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0C84CCC57
-	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 20:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A1BDCCC6A
+	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 21:01:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388117AbfJESki (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 5 Oct 2019 14:40:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41424 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387791AbfJESki (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 5 Oct 2019 14:40:38 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A3478222CA;
-        Sat,  5 Oct 2019 18:40:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570300838;
-        bh=RWuY0RSvkUj2zaP9FkesiWE2O7HQPq1rvX2ddcue8vk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GuDQBTf27tJ/syv9eY4jSxOcMtKfYqkusdHd0rK27nz/xQvJbJ0PKX5ktBzm9RAwY
-         +60XGaBoNV66J2AKN5x/aokPrI+lzXEpNe6Jf0M5DsyuSLJGXS+FHra9LbCqE3EPYT
-         0NCtMa+xZZWjnpRhaqWQodNHEn/NUGr5xqOTJ8oE=
-Date:   Sat, 5 Oct 2019 20:40:35 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org,
-        Malcolm Priestley <tvboxspy@gmail.com>,
-        Kangjie Lu <kjlu@umn.edu>, linux-kernel@vger.kernel.org,
-        Madhumitha Prabakaran <madhumithabiw@gmail.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Navid Emamdoost <emamd001@umn.edu>,
-        Forest Bond <forest@alittletooquiet.net>,
-        Stephen McCamant <smccaman@umn.edu>
-Subject: Re: [PATCH] staging: vt6655: Fix memory leak in vt6655_probe
-Message-ID: <20191005184035.GA2062613@kroah.com>
-References: <20191004200319.22394-1-navid.emamdoost@gmail.com>
- <1d0ba4c6-99ed-e2c9-48a2-ce34b0042876@web.de>
+        id S1729395AbfJETAg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 5 Oct 2019 15:00:36 -0400
+Received: from mail-io1-f67.google.com ([209.85.166.67]:39305 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729253AbfJETAg (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 5 Oct 2019 15:00:36 -0400
+Received: by mail-io1-f67.google.com with SMTP id a1so20540426ioc.6;
+        Sat, 05 Oct 2019 12:00:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Pzgds363sVjt6tTHjuT41LayOC3pwj5qUHdeZopvI60=;
+        b=ui+99W7V8mYFpZSjc7PrqXXPh/ZCrcNkygLinlWYrtBHXo+7eqZJC4gWIuDu60/Lfv
+         1tcn/3cip9ePEQESnqt5s9iyPCRm9GGn2CqlQUgo3jQpTVXEc7YdjILr0fKbk5dDpiMx
+         AlMP7k8vNV4s70WyuH6DEqD0bLoTGC6/P3WmPwXWOYOZnVr2w/T8/cbmpn4G3C92p/As
+         MMfV+gjBhQiYXR4xRQfHlKVSlLRksrvOQdGpp5ag7YxdMBRNt7ypb2AYiso6BR6A9Bbe
+         u5ddDtaVRigcswS+EzRuVfbMf5aPCV7uu1jxJt3GCYCbmY6nsAXR7DJj1qWC9HI+i31X
+         xW4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Pzgds363sVjt6tTHjuT41LayOC3pwj5qUHdeZopvI60=;
+        b=tf5aux5MDLE2r0L//6ZSPs6nxjPD8Ebo40J6xv45NMe5tGijNtr7w4ttC8gN+78sHz
+         prA5TeqbALr847m/xlMRwyVbkUiC4cvpzJRwXQsDqIvqBXt/+hGyjrB64a0xjg8SpFux
+         R6ozIp0bBo8EVxPPCFuWzghbE7QkD+j9Lftk6w7BgjGj46teOXMREIQkZPlCHJ9yE2j7
+         3l7flQINrd8l4v3g4m60vjMpIi9SZZp3X1QdyB+qO5NvkX1CYUrT2BRQfIBq69vVCr+v
+         bSjnPFwD0SHdX5cEa35pE8dwDHDsZR0A26d8mFMlK21rfX24GYTb2/hkW8zrwDJPYuKd
+         YuXg==
+X-Gm-Message-State: APjAAAW859R0Gr6ntOpld/SLPpenHUkh8TdtnzyxrrUuX3Zs5fztYCUj
+        BCUAJfcRbKjliwg9V5Z5ScQsuVpYEhxaI8DM9gI=
+X-Google-Smtp-Source: APXvYqwM96alpXRdELBUa41V98MXAHJuLW5QCNnGTNtIreMr90WPqYbBaStyDzTrxEQ/tpThispyvpWKRwYCJVLmvqs=
+X-Received: by 2002:a92:ced0:: with SMTP id z16mr21939458ilq.172.1570302035209;
+ Sat, 05 Oct 2019 12:00:35 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1d0ba4c6-99ed-e2c9-48a2-ce34b0042876@web.de>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+References: <20191004195315.21168-1-navid.emamdoost@gmail.com> <037d04e8-4651-a657-6be6-b1eca072bb81@web.de>
+In-Reply-To: <037d04e8-4651-a657-6be6-b1eca072bb81@web.de>
+From:   Navid Emamdoost <navid.emamdoost@gmail.com>
+Date:   Sat, 5 Oct 2019 14:00:24 -0500
+Message-ID: <CAEkB2ERipLQRV3CsZ6L3EV0jXtS0HMc8yM6g5sNqJG0NThBsmw@mail.gmail.com>
+Subject: Re: [PATCH] rtlwifi: fix memory leak in rtl_usb_probe
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
+        "David S. Miller" <davem@davemloft.net>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Oct 05, 2019 at 06:30:13PM +0200, Markus Elfring wrote:
-> > In vt6655_probe, if vnt_init() fails the cleanup code needs to be called
-> > like other error handling cases. The call to device_free_info() is
-> > added.
-> 
-> Please improve this change description.
+Oh! It's duplicate, thanks for catching that.
 
-It is fine as-is, please do not confuse people.
+On Sat, Oct 5, 2019 at 11:08 AM Markus Elfring <Markus.Elfring@web.de> wrote:
+>
+> > In rtl_usb_probe, a new hw is allocated via ieee80211_alloc_hw(). This
+> > allocation should be released in case of allocation failure for
+> > rtlpriv->usb_data.
+> >
+> > Fixes: a7959c1394d4 ("rtlwifi: Preallocate USB read buffers and eliminate kalloc in read routine")
+>
+> Which event did trigger the sending of this patch variant
+> after a similar change was integrated already?
+> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=3f93616951138a598d930dcaec40f2bfd9ce43bb
+> https://lore.kernel.org/lkml/20191001092047.71E8460A30@smtp.codeaurora.org/
+> https://lore.kernel.org/patchwork/comment/1331936/
+>
+> Regards,
+> Markus
+
+
+
+-- 
+Navid.

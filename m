@@ -2,92 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CDFFCC6CF
-	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 02:02:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08D06CC820
+	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 07:25:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729193AbfJEACg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 4 Oct 2019 20:02:36 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:42812 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727647AbfJEACg (ORCPT
+        id S1726053AbfJEFY5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 5 Oct 2019 01:24:57 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:42156 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725773AbfJEFY4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 4 Oct 2019 20:02:36 -0400
-Received: by mail-wr1-f65.google.com with SMTP id n14so8988090wrw.9;
-        Fri, 04 Oct 2019 17:02:33 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=nJY323ptNq5iteV7TuRcRazZgxFU0ETiSK6yIFchgJ0=;
-        b=VZr2087ZtAgUL/eAsRWo/9uk9V9gfkFXGOmFzrsM6GeAMly6jKG8cFjpmGh/+ar2Fq
-         ROL9iyZAeXRCZnsD6Cmu9RsQvcQ47Vg7KyQpr5XJoOAovvfqiz3PI2YKw5lFN4U6PLnZ
-         LGdsUc3Bw+NvWkMGJVUAWC3fH4cIe2uTqtZVz+8HYa5sbVwC+kYSjwzB8ZT49nlviVtL
-         XDo64npQeWgxk67pmt2q+awfYCzq74lmMOuv6zFWCj9CmnS9H6kRq5Z2ce/jnOaTZ5ro
-         v7iBLcqBFqAQcHqeKKmwxJH7gCHrLBYROc/Gi+/O2OAqlazbqTjaeLjNwF1DFcSsnzxk
-         7BGQ==
-X-Gm-Message-State: APjAAAWwP5p5qhZU4ENnaItgQp7cFnVp0Ad6rj5+cR9HryeRZntR0lBv
-        XOCiW9f9VPPbwRFaATkHaCmVKvGT
-X-Google-Smtp-Source: APXvYqywzxXdSMIcTUOp2QhVjpd6bCxB+ayx1RxNoyn2judgDukJITAS5OAEsB61xQ+0L5JjfhjuKA==
-X-Received: by 2002:adf:eec5:: with SMTP id a5mr9287812wrp.191.1570233752675;
-        Fri, 04 Oct 2019 17:02:32 -0700 (PDT)
-Received: from ?IPv6:2600:1700:65a0:78e0:514:7862:1503:8e4d? ([2600:1700:65a0:78e0:514:7862:1503:8e4d])
-        by smtp.gmail.com with ESMTPSA id a4sm6583334wmm.10.2019.10.04.17.02.30
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 04 Oct 2019 17:02:32 -0700 (PDT)
-Subject: Re: [PATCH] nvme: fix uninitialized return of ret when
- sysfs_create_link fails
-To:     Colin King <colin.king@canonical.com>,
-        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@fb.com>,
-        Christoph Hellwig <hch@lst.de>, linux-nvme@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191002124328.17264-1-colin.king@canonical.com>
-From:   Sagi Grimberg <sagi@grimberg.me>
-Message-ID: <17e3dc55-6e6e-a4e8-f082-4b57144467af@grimberg.me>
-Date:   Fri, 4 Oct 2019 17:02:29 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+        Sat, 5 Oct 2019 01:24:56 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x955OT3t118128;
+        Sat, 5 Oct 2019 05:24:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=MHLJ+v2FrwvIQqoJEE93jo71MnucBzuVQQK/GeAiIyI=;
+ b=Ue2H6Cq82olsWjvH2AUAP3xoP5U8JmjAtcPVtyQ7UH8XU1PQLcqaDvro4w0oKLAuzHzr
+ Fv3tkLzSWj6oi3xGkqNoi6chyLeq+gN6aOy2GzSX9jH3XdS/N5cIBzD4K8hWSot4FZJa
+ yro5j5oZWCtkio1kpk8Yv30wl0u2K9W56bacdTQQvOYnqhRj1KmZNxbjgFBZEDQLx8nm
+ 9OArFb9GGWNjz2Crp1pg9dMt5xRXYGHtNa8IPDuwPqsowiSsZI84Xn7pZ7JYJ7QcZ29G
+ WuvUTkX6fvWE3olqjepLWZvlZHdCywoMu+ywjZruXEqHJnvG88+UvxN+jrAAq0hEFp2l gQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 2vejku0dee-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 05 Oct 2019 05:24:29 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x955OMg2185985;
+        Sat, 5 Oct 2019 05:24:29 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 2vegagre0s-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 05 Oct 2019 05:24:29 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x955NjMx021940;
+        Sat, 5 Oct 2019 05:23:46 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 04 Oct 2019 22:23:45 -0700
+Date:   Sat, 5 Oct 2019 08:23:37 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Doug Ledford <dledford@redhat.com>,
+        Potnuri Bharat Teja <bharat@chelsio.com>,
+        Matan Barak <matanb@mellanox.com>
+Cc:     Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+        Shamir Rabinovitch <shamir.rabinovitch@oracle.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Michael Guralnik <michaelgur@mellanox.com>,
+        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] uverbs: prevent potential underflow
+Message-ID: <20191005052337.GA20129@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <20191002124328.17264-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9400 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910050048
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9400 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910050049
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This was already fixed and merged (by Dan)
+The issue is in drivers/infiniband/core/uverbs_std_types_cq.c in the
+UVERBS_HANDLER(UVERBS_METHOD_CQ_CREATE) function.  We check that:
 
-On 10/2/19 5:43 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently when the call to sysfs_create_link fails the error exit
-> path returns an uninitialized value in variable ret. Fix this by
-> returning the error code returned from the failed call to
-> sysfs_create_link.
-> 
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Fixes: 32fd90c40768 ("nvme: change locking for the per-subsystem controller list")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->   drivers/nvme/host/core.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-> index 63b37d08ac98..f6acbff3e3bc 100644
-> --- a/drivers/nvme/host/core.c
-> +++ b/drivers/nvme/host/core.c
-> @@ -2540,8 +2540,9 @@ static int nvme_init_subsystem(struct nvme_ctrl *ctrl, struct nvme_id_ctrl *id)
->   		list_add_tail(&subsys->entry, &nvme_subsystems);
->   	}
->   
-> -	if (sysfs_create_link(&subsys->dev.kobj, &ctrl->device->kobj,
-> -			dev_name(ctrl->device))) {
-> +	ret = sysfs_create_link(&subsys->dev.kobj, &ctrl->device->kobj,
-> +				dev_name(ctrl->device));
-> +	if (ret) {
->   		dev_err(ctrl->device,
->   			"failed to create sysfs link from subsystem.\n");
->   		goto out_put_subsystem;
-> 
+	if (attr.comp_vector >= attrs->ufile->device->num_comp_vectors) {
+
+But we don't check that "attr.comp_vector" whether negative.  It
+could potentially lead to an array underflow.  My concern would be where
+cq->vector is used in the create_cq() function from the cxgb4 driver.
+
+Fixes: 9ee79fce3642 ("IB/core: Add completion queue (cq) object actions")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/infiniband/core/uverbs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/infiniband/core/uverbs.h b/drivers/infiniband/core/uverbs.h
+index 1e5aeb39f774..63f7f7db5902 100644
+--- a/drivers/infiniband/core/uverbs.h
++++ b/drivers/infiniband/core/uverbs.h
+@@ -98,7 +98,7 @@ ib_uverbs_init_udata_buf_or_null(struct ib_udata *udata,
+ 
+ struct ib_uverbs_device {
+ 	atomic_t				refcount;
+-	int					num_comp_vectors;
++	u32					num_comp_vectors;
+ 	struct completion			comp;
+ 	struct device				dev;
+ 	/* First group for device attributes, NULL terminated array */
+-- 
+2.20.1
+

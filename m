@@ -2,108 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F332CCBAD
-	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 19:30:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FDA6CCBBF
+	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 19:44:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727795AbfJERa1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 5 Oct 2019 13:30:27 -0400
-Received: from mail-yb1-f194.google.com ([209.85.219.194]:37157 "EHLO
-        mail-yb1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725826AbfJERa1 (ORCPT
+        id S1729035AbfJERoJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 5 Oct 2019 13:44:09 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:42370 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728245AbfJERoJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 5 Oct 2019 13:30:27 -0400
-Received: by mail-yb1-f194.google.com with SMTP id z125so3235338ybc.4;
-        Sat, 05 Oct 2019 10:30:26 -0700 (PDT)
+        Sat, 5 Oct 2019 13:44:09 -0400
+Received: by mail-ed1-f67.google.com with SMTP id y91so8782113ede.9
+        for <kernel-janitors@vger.kernel.org>; Sat, 05 Oct 2019 10:44:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=SFxd5AapzSICM/6Xgqhe/u9Vw5QC679Bx+c0QdN9hnI=;
-        b=C4StFwvN+lCG1jC5GtRTymuZCkTXZueajmp5oKh8q2nS/QR4Y2Oo9mBbom6a6lMX/v
-         f60G7QcnH8JR/KGokgFN2ry3x3ceJqyt0nyeTAkLqQ7SsSWqzosmkiLWW2dB85RQWaUZ
-         84ubNkcrNehQ4E0ryRIKFRdhvYl+I1a/sJrA/gvfYI/XHD28QUBdpd3oOhyXrN43bQK5
-         q5eNY46ePlOob7dDWUIctgZzkEKPabn+3FopVzptgyXTYfM8jYbTjnBHttfjXTT6iDQk
-         zucn3Ajq0P4wByuR6wWzOPHXuIzhE1ag6cVKPVQBA1dLhD2+UnXqTF4K7mG2A79O+zOM
-         ziPA==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=JdxTjZHOYunTMtiHW4RMA9FUy7l6bYMn8x9aB5OphDw=;
+        b=LMx8C+jJeH2w/5SsY2ElmcSA+yjmlKD86Pr3EWELBHQE+lDQwGj/UyfccQsHBNQXba
+         lAn1M+LadfsEH1MO0NU8QwIv4gFZS/qsuOG1bL/CPZPDwkmqNRQDVLAx2x1joXLYzrL5
+         uTK9CfdItfklG9wVCXs0KnHPVaEUMThKgQcNy+o/0I/b0arKsL5CKliUIsHdRgO7pC68
+         9NLd7FB0MqT/uYOB8UxQTluhayB+7axzk1iAD7mjYv5sBkQGPOfgFRkXGHxXA9k2r/kt
+         O5/7LWmJTAMHBsj4P+F/ZK0GiuKb9NdNFoLfSO92dbk/p9+DvjegckTxa7iCRdvp3jZ7
+         ivuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=SFxd5AapzSICM/6Xgqhe/u9Vw5QC679Bx+c0QdN9hnI=;
-        b=J7BlL7nMIjw+3RN71fvDqaEh4cU1FkNodsC/HTY8ifcmh8fZPkiySvaCE6vdaVe0v4
-         e/H+m1C8dxCL14QCMk/WdrLdNLXN7kvBuSUHsPUFkM4M+jp4EWezaOzMzMvpIbDq4vty
-         fVG2Ks/rNdRnsPUTDXrg2f1QuPZot7LEByrThkgKlZogf0uRLtGm8F1b0ps5n2GFfkoQ
-         bTXw1AJKFkgvM9nZgi2vJTaH5nQcvgzvbVnIMO6SYlM/Y0ZLzMRfdoYRp1cnd/mnGY0S
-         oGDMqq1kgjAthy6UYcp+fzYUQS2gzVcVCYbQMM3eZi38GEg95jopHpBjYKvE1lOItA3h
-         VrUw==
-X-Gm-Message-State: APjAAAU1ZK0BVN82X3o+jD1ZCP082pCoyZgqTk9eiRN8YJ7T2TJcUU8S
-        6T9zzyHnT17vjndq4voANOY=
-X-Google-Smtp-Source: APXvYqzmQLtqtYywZioGiUcaIwSMLMNOrMMcyq48VNb2gTooHR+RghLWiW32nmaFQGBN3NvDc+DJ6Q==
-X-Received: by 2002:a25:7701:: with SMTP id s1mr6210156ybc.286.1570296625972;
-        Sat, 05 Oct 2019 10:30:25 -0700 (PDT)
-Received: from icarus (072-189-084-142.res.spectrum.com. [72.189.84.142])
-        by smtp.gmail.com with ESMTPSA id 12sm2546780ywu.59.2019.10.05.10.30.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 05 Oct 2019 10:30:25 -0700 (PDT)
-Date:   Sat, 5 Oct 2019 13:30:04 -0400
-From:   William Breathitt Gray <vilhelm.gray@gmail.com>
-To:     Colin King <colin.king@canonical.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Fabrice Gasnier <fabrice.gasnier@st.com>
-Cc:     Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        linux-iio@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
-        linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] counter: stm32: clean up indentation issue
-Message-ID: <20191005173004.GA7431@icarus>
-References: <20190925095126.20219-1-colin.king@canonical.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=JdxTjZHOYunTMtiHW4RMA9FUy7l6bYMn8x9aB5OphDw=;
+        b=X5Es0oQtc5YJu1dVe4sCFwwqXLv8IdcjreqL64mh+Wa0rSt1cZBbqC1vmbmu8RC7O7
+         DyuYXdEnDtvaDwmIxWELCh6j4/uxUzz9hvmxOqFuawUXi8lDNJLSgt3UN+oA3+TIBDMS
+         fOxDu0k73U104L0GFxo11dqDGvaKFaO0h0zxJL1+wUPhQGePceFMcuihqsOjfgHZdFST
+         IYYEgizOCpj74yUGOOUg8AdBrrhed8S3CQkRYQRtBrTqEjolJnC5eKsbjhLnLMh0bq+I
+         GibLONF93zKcY/49BB9Io9DW1/1v2FbeQYkOCvSBjUOm2rn99ZycWAG4Nkg3Nzndlk7X
+         OcGQ==
+X-Gm-Message-State: APjAAAUHukubl99HbimanAX4jkjpDwHeRXOfY7w8CNHTDXwJ2qnEX9me
+        toN6Md9MQnkGzrjrenn6zMDVMCLwVwERgmlEpe4=
+X-Google-Smtp-Source: APXvYqyAcWwfCodN+moKXU51DiZemfc4/CQnddNRKq25tyhs08dwQNFDFiBt8ugm80/GXvNfvM4i9EHxeZETD1kyluM=
+X-Received: by 2002:a17:907:211c:: with SMTP id qn28mr17538301ejb.244.1570297446386;
+ Sat, 05 Oct 2019 10:44:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190925095126.20219-1-colin.king@canonical.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Received: by 2002:a50:b850:0:0:0:0:0 with HTTP; Sat, 5 Oct 2019 10:44:05 -0700 (PDT)
+Reply-To: walmart.b100263@gmail.com
+From:   "DR.Mike Benz" <eco.bank1204@gmail.com>
+Date:   Sat, 5 Oct 2019 18:44:05 +0100
+Message-ID: <CAOE+jAALK37sQDc81dr2a5xeBRKYePHre7UydVaqGOVjtM94iw@mail.gmail.com>
+Subject: Happy to inform you, CONTACT WALMART TRANSFER To pick up $8000.00
+ sent to you this morning.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Sep 25, 2019 at 10:51:26AM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is an if statement that is indented one level too deeply,
-> remove the extraneous tabs.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/counter/stm32-timer-cnt.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
-> index 644ba18a72ad..613dcccf79e1 100644
-> --- a/drivers/counter/stm32-timer-cnt.c
-> +++ b/drivers/counter/stm32-timer-cnt.c
-> @@ -219,8 +219,8 @@ static ssize_t stm32_count_enable_write(struct counter_device *counter,
->  
->  	if (enable) {
->  		regmap_read(priv->regmap, TIM_CR1, &cr1);
-> -			if (!(cr1 & TIM_CR1_CEN))
-> -				clk_enable(priv->clk);
-> +		if (!(cr1 & TIM_CR1_CEN))
-> +			clk_enable(priv->clk);
->  
->  		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
->  				   TIM_CR1_CEN);
-> -- 
-> 2.20.1
+Attn Dear Beneficiary.
+Happy to inform you, CONTACT WALMART TRANSFER To pick up $8000.00 sent
+to you this morning.
 
-Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+I have deposited your payment funds $2.500,000MillionUS Dollars
+With Walmart international money transfers.
+Receive the Money with Walmart | MoneyGram service.
+Walmart partners with MoneyGram to allow customers
+easily receive money transfers abroad,
+Contact Walmart international money transfers office -Benin
+Receive your approval payment funds $10.500,000MillionUS Dollars
+HERE IS WALMART CONTACT INFORMATIONS.
+Contact person. Mrs. Mary Anderson,Dir. Walmart transfers-Benin
+Email: walmart.b100263@gmail.com
+Telephone. +229 68823234
+Text Her on this international phone line. (256) 284-4886
 
-Fabrice,
-
-I noticed the TIM_CR1_CEN check is happening before the
-regmap_update_bits call for the enable path, while the disable path does
-the check after. Is this logic is correct.
-
-William Breathitt Gray
+Ask Mrs. Mary Anderson,Dir. Walmart transfers-Benin to send the transfer
+as i instructed.
+we agreed to keep sending the transfer to you $8000.00 daily.
+Until you received your total payment $10.500,000 from the office
+Once again,
+make sure you contact Mrs. Mary Anderson,Dir. Walmart transfers-Benin
+today including your infos.
+(1) Your  Full Name==============
+(2) house address=============
+(3) Your Phone Numbers=============
+Urgent to receive your transfer now without any further delay.
+Finally, Send your first payment transfer fees to Walmart office on
+below address
+Receiver's Name====== ALAN UDE
+Country=====BENIN
+City=======COTONOU
+AMOUNT =====$58.00 only. Your first payment $8000.00 transfer fee.
+Question======God
+Answer=========Creator
+Thanks
+DR.Mike Benz

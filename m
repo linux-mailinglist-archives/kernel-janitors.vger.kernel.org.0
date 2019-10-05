@@ -2,36 +2,40 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2015CCCB24
-	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 18:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DC95CCB75
+	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 18:48:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387431AbfJEQa3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 5 Oct 2019 12:30:29 -0400
-Received: from mout.web.de ([212.227.15.3]:44017 "EHLO mout.web.de"
+        id S2387479AbfJEQsk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 5 Oct 2019 12:48:40 -0400
+Received: from mout.web.de ([212.227.15.4]:58843 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725826AbfJEQa2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 5 Oct 2019 12:30:28 -0400
+        id S1725826AbfJEQsk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 5 Oct 2019 12:48:40 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1570293015;
-        bh=87n4kg+fR+Y1+xpvz5fyxHKWdJH95A9k7Flf6LNmjFA=;
-        h=X-UI-Sender-Class:Cc:References:Subject:From:To:Date:In-Reply-To;
-        b=WcqjNGqQ58sU8s7B26E2HZ3ve4t/m06v966JI5yt1NzHIoywdmwyv8nJU4RG84bwn
-         mRZR0qfDhgte3NYESA445K6/pzVi+ovSpRpEsv6Rn9z+VLVFPQI1QYocEWvY2uwrA/
-         RghGu0X1JLNmaZvr6gTsBMU4nlrOEPrpea1E5R9o=
+        s=dbaedf251592; t=1570294103;
+        bh=4qFUPO9sA/yWcKHS0hB5s2sv3vbiaz+inyvgXC+9GqY=;
+        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+        b=dNqajf4seyfblS0GaU4vd7UpDxaFHWj8Q31GqiZTAAR0kPakmwbMIWo0gQR1h9oZZ
+         7HJcDw5QhNlpCB/rW66myfCLo1Ctc4uddmNZuDFyfpnmmHWd8DT43m3g4tObd908Zb
+         4I2Ozofl7uhL6bDzgsZl5oQExWxMP2shIjn5//Q0=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.135.178.111]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MAvVk-1iQiZv1nUa-009vyC; Sat, 05
- Oct 2019 18:30:15 +0200
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M0R25-1hy9ql2vGP-00uaCt; Sat, 05
+ Oct 2019 18:48:22 +0200
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
-        Forest Bond <forest@alittletooquiet.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Madhumitha Prabakaran <madhumithabiw@gmail.com>,
-        Malcolm Priestley <tvboxspy@gmail.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Ganapathi Bhat <gbhat@marvell.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Nishant Sarmukadam <nishants@marvell.com>,
+        Xinming Hu <huxinming820@gmail.com>,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20191004200319.22394-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] staging: vt6655: Fix memory leak in vt6655_probe
+References: <20191004200853.23353-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] mwifiex: pcie: Fix memory leak in
+ mwifiex_pcie_alloc_cmdrsp_buf
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,50 +80,48 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        devel@driverdev.osuosl.org
-Message-ID: <1d0ba4c6-99ed-e2c9-48a2-ce34b0042876@web.de>
-Date:   Sat, 5 Oct 2019 18:30:13 +0200
+Message-ID: <7d8314a8-2f92-112b-fffd-83a47044a015@web.de>
+Date:   Sat, 5 Oct 2019 18:48:20 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <20191004200319.22394-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20191004200853.23353-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:zd5wPEFaPYD2QW+eeMyABcG/UY6DUrEzSELFjAfB1cCB4lcdG/+
- 7ttLI3kbeQAJkl7tx9//AF9mZdL5A+V2p3vzckE1CRaDzash0xR9Ap3oJT/EZkZ9MhgCirH
- hRUStdXxeuc+9FA/wsM0Qw6RLdjQTSrGevZ63A1a6H2XYks6AK6LULp4myvq+seevKcfFdl
- YvbRp1TmBi3NaUl4FHhYA==
+X-Provags-ID: V03:K1:9EBG+gpJatT+eCDnMM/cq3BjNhAWwOZMk4egakQttSe0qGxW6P9
+ HGLPe3bTNV6pS4/Mtij+nVvh0J3IHIMgLGKJlRW2SqktTnF1zUTXFuAhoRbqwpXEkj7btVp
+ vdU19Q/Bt+glAvbF2C5Sq8xGk16SgkqKs4qTh21FLn07of7Usrus1BO23mL1SC6ntGdMAd0
+ eC8ygAJKUY7+LrdDPYMZw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:L/LNEIeoKxk=:H5RziFHM248eXRXAyi+437
- 6syRz/mPgRdHCZhNnbiIlkCI8fACKrG1TScrKVYEeEodphajxx2cVP6G5zX6bnnzN0s+84tyX
- CB0R1nFAdNn9ri/ACVCYcbgRxe3X+JxAdBYYLE2Tqospm1jKgF5zYjxS3q8xsdE7c68TWqN0l
- Wlxj43TVzWuDdRmgpQOV3yPiWIXeR+bcRqsRsIbajFenMVGocGv6KTIVIdtwTedzy47BWfos+
- RSdVt8dsD/QQhzgKrEoOo4dxMBmOXpubC82BXLA0Hv0DesY1C3xXOD6u2ui8wKAXxClV2OdMh
- /+DtkqVeX2BTu7ZRjQML9uONFwn/zqlge4X0rqELk8VnokQWKCYC2HDbgYtdgkTZe8AyZDMxK
- 7HT/gkwsL/kxkVYhpqqrkUiNw8pfLiecfSXsSpDCI+VQAYKGdWFpyqgk3By+wtAnL1IYrh04u
- HcXxwE69gLMOM+DNqKfkoUxoYg6P5GkVUrkfQtfGelWX8ViIUV/LbMeb+Zlp8Dc+3+OirJLoj
- wwBI1QBp7EkbWDV+spK0/F5uqAtjG8GrTgNgTdR1jcVCov/1qXnWBRWnomwuysZlFshhLE/JG
- q654arTN+rbVuLfU4Yy8E3bquJJFAorlq1vsi85EiBpoOxQAC/v2P0+CQmIQlx+II7y+6KPjq
- rZtRjxxTkHbBehugmQWxmHeNGkUMI86MicIIE66lkFPl6BiMnZZzd8t9HQ6GxQ2DsqaKIJrIW
- eWy7buKVtLtFuyCcAL6s+fBN7q2I/VzrD1IJvb87fFPnExqSxY8+NTxDHoVE/3gGqDc4sNxUF
- +Uf/2HPGMHC3pjZyBwc5MbBVvy4EyQ72GWs9LCsomBkFiNSkxiwNgT8Z43Uih7ynuDJNNK1s5
- eZcqT6hzgkAiM35Vt5efyxuWh/vesx10ozBAwx0oXWhDItQBrQyCT3AQyNxq1/q7HEgi7d3l8
- APA0oQAtp1WDasJPlvJoYIrTmBG6VrEDtrMSJBqQghKPxVGahszaB+BC7UnRsbVX0YtwNAjJl
- ERUPfmlNJdlI5QlZUiecgZ3PGEnqncSb5ECQzkD+GMzBC3lWUxqgEzJCUSdE+O/FJnq/Ka/7k
- a1P0dd/77acfjlYvNk2Zf56Cs4mVlxx7i/q00tVY6dWw07bF9rSZgbi2B4MJOZ4Q7XlnojDi0
- MlZz7L+BBB2hmYFebXJexQeAc8V04LtWTsj4PVzMgMOY6h+v5LgnWoaAepAeNbfQuAd/vp5Eg
- ZoyNQ8Y9ihWcXezUPQyR3m0KHikM9iKPLRDpOkz0UJlS90L9SAT8d0BtAaFE=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:sm+gVJWBLVI=:pZ6rwBb5cmfNSeF9XAhINx
+ k8cEAgZRqmdyT4rZSanttNSllzIw1yUsreIAiOaqOHf/A4Uj5j2XqhewnW0zZI6S9IQ4zb0VC
+ BvHk3PfgYmVOMYdUhuuhByXk3Lqp+SK1/u7S7t4r296pyqZo+bLnuALZiWQj4KRLFXDnxOYWV
+ JHdSs1jxnRrEqDYdMHDoiAffBiG9oBLTYUC8QSQ+0R4OPSaADTlDt3RcWpMawQ1eTGOTYuM4v
+ HrDkId7QOZ3w71sndBGrHJ2kw2yyx8yq0hkrOaFuOt0WhP5nb3Df1IYb4BLgIdSukwtVmBWAR
+ XLEcAi/4GqNM+OedAog9q9apsn25UU4ibBLjiZG55aMDcYfgIwQ8hnPbFE4lXFRpmK+O47tKp
+ BVN1+vICyWqRzxsoOu6+zEzDE9u7DquApd2hvKFDTBIptjb28jcBogd3ClhvKwxwTylvmF3/J
+ dEoNg+w+LEmjS295ir/3Ht+iBTrOV7kBSx4VvGQUw+Cgl+0lopAFNj4o2phKNzdjEzCDwk+Ub
+ r2JhjGa9bhm58vx386tuUSH5nnmJYkm3azWkxrARkWtrW4dfwWdDWa6/Cj3PJQKAIck3rkvGO
+ Ek6TjzGNqM2J3enXERQuibV3ceWKQZIHaoVzNsbt37ogs7yK3bmjOeBCAsfzDKkb6wQAEvdcf
+ 95zvabmp47NbeQoctBXVh2uuRIw46mIFnDtj0of6ZJghkMB+rKiDd8Gu0bA7SdxqsZTqbvTzY
+ bOT5nk3SpLyui5uRgkw3HAZAy4NFHL0Wfj0TQB07b96luMWX0hvE4JxZ9Dv487OoUGocnr1Xg
+ QZYnUxHIPx5buzCqhtfnMswxuVIlH5/IZZQf21PpZsobIjjmnfA2gRKrW46txmlN7xJASsTho
+ uxEUSZpHyCqV7pHh7Mtl1FB4V3qBmEr7ASV9R4OytrWQ7bnXULWVVVjKVsubpFcMfvkYK+VSg
+ ZnWR86nytDE/M4WbTWaIiB2Ju0bBByNQY6Xm/iMBxrGOqC2Bb2418Fq8FoGpl7ZTo3K0rC5tc
+ YfffoBNwmIMQ0EjLie1J4FmBGchAEPLREAwbD4rTryEFMMtOfa/jZUg2HVuCk8jLuoDttYUeT
+ f+3x7GtdGO1GtHyckQ3TDlQX0sptLwhZGjg6dXv/TzB0HE+0fJ+DHn3vboN0v5/Zoi0OXBdmU
+ mgkXF+aNcFpYMUVwlcnH21PYayg+SAPqv1Ro4w3LMBeqTcU5KI1B8oU0YvxOxNi32CtTViM1y
+ 2y5fHHKQeEqUST7myMO16tJ2sk4ndYPqwP5n0dVhpG2t1nh7rpPYU6B1vQ4U=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> In vt6655_probe, if vnt_init() fails the cleanup code needs to be called
-> like other error handling cases. The call to device_free_info() is
-> added.
+> In mwifiex_pcie_alloc_cmdrsp_buf, a new skb is allocated which should be
+> released if mwifiex_map_pci_memory() fails. The release is added.
 
 Please improve this change description.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=4ea655343ce4180fe9b2c7ec8cb8ef9884a47901#n151
 
 Regards,
 Markus

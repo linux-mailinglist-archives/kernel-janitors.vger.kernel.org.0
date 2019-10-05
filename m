@@ -2,35 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF608CCACC
-	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 17:27:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81845CCAD5
+	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 17:36:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728485AbfJEP1r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 5 Oct 2019 11:27:47 -0400
-Received: from mout.web.de ([212.227.15.14]:43909 "EHLO mout.web.de"
+        id S1728666AbfJEPgH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 5 Oct 2019 11:36:07 -0400
+Received: from mout.web.de ([212.227.15.14]:34547 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725826AbfJEP1r (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 5 Oct 2019 11:27:47 -0400
+        id S1725826AbfJEPgH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 5 Oct 2019 11:36:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1570289250;
-        bh=TGPGZ4BC982UpJnrecztHM+J1YSIyZDa1AkZc1zUtX8=;
+        s=dbaedf251592; t=1570289750;
+        bh=581eRY+k+CxI3cloKLyKONCxIwSbwThOFQSHQ+hY0IY=;
         h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=XIA4YZruqPkmBOla1K6dSDST2VEXym3xIMA8D6B1MWwpSy/20RmyJRtoB2mGm2s9P
-         v7bqpuUElAGZ7t1g635pLnACP7Zui10tpWETrQj8UV2U5TW+4iz7UFdWqjvYGGWsIC
-         AZElSY5Dnz4tA7AHv8p1ersYWD/fINV7gEavB5XE=
+        b=eOL9ZUSVP/2EME0uoFJ17CzQMUhY/8i+3Y3XZA1VzmgAcvl3IlVZ32P8VP56z0454
+         PSSgZn7OX78Ok8NF2XZNwEboYF081THWym9/umaaYospLUiQzfZFD+Vdmc7Q3mN+20
+         WvsGhHlvbUmmt8ugIfY/bm2LDNLi/w+1OQ+NZns0=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.178.111]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MVXnr-1icW4r07xP-00Z3W5; Sat, 05
- Oct 2019 17:27:30 +0200
+Received: from [192.168.1.2] ([93.135.178.111]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LZet2-1hp6KH37i0-00lSCe; Sat, 05
+ Oct 2019 17:35:49 +0200
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
         "David S. Miller" <davem@davemloft.net>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        Johannes Berg <johannes@sipsolutions.net>,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20191004193455.18348-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] crypto: user - fix memory leak in crypto_reportstat
+References: <20191004194220.19412-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] nl80211: fix memory leak in
+ nl80211_get_ftm_responder_stats
 To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-crypto@vger.kernel.org
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,48 +76,48 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <ddfd75b0-f0e7-8eaf-3631-95e2dc81bf63@web.de>
-Date:   Sat, 5 Oct 2019 17:27:28 +0200
+Message-ID: <dc0edb88-457f-fde8-4d91-d5b3b94bfb6d@web.de>
+Date:   Sat, 5 Oct 2019 17:35:44 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <20191004193455.18348-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20191004194220.19412-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:cl3hnurCDS8Um1oNZYIEd2gOJYJRGd1F019xMwreAp0J6i3V+Co
- nCBlP0b/hvKk9EOmH6AUSjnM2awnxVLV0R2O3g8MnA1TyeKNtVBvXwBJbfTog5bdAFQa/Ou
- zWsXCzJFX+jQ5jQe5esVjhQcEoNRde9GHucysQ6UFqlgbfqaI1pgyegWqF07f9jYizSriAF
- XBAeIoVabB0L/dL2Hns/g==
+X-Provags-ID: V03:K1:uMcDUnE7oPU+Igw2DRU3WfuhKqttw0gQAl2Q0UV/G7QqrDMFJb8
+ tug+60p+RaBbbf3tuGg+qK65gIbttuhv+Ee6Sk3k2lUsHMBTnpVqK5FXe0Y/DaMQos5EDwZ
+ +kw5DzWBc95E68bAqa8s+VDxgw0cei0bvfjFGfbDf7iGApCRBY2Yl3PwgspfDRm9XtP62+i
+ YyO3oRReZ+vDrICj532Qg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:nHDuIekP1tA=:S/b+1iqcU3FP6FPR1xoaRV
- MImz52vR4Jg9ppR+7jZyuoaC/xfcrrRQgDpyylDEKIzm5s83MFaFXbRFbLMx2cj4GgOI7EI3V
- MGnQPPc9z1oyp/LECt1EAS8FYHAa3OpD2YVS7TUpcM0UXsnAf8W67xtb4Vcf1r9L1ZCz4nNlp
- KrNB1sjbqECKa+DUGihCMgt/ABwzOqmegG6ngEtzFE8evwkH8YLPZp9iYmEAcDyP8SnaJYxdQ
- fXu0siOD9fZQQJ/gUv7Ey4azKI2Ff1aTe3EPa1SbaZbLiFzqf86Z0thUV3JwqAgiXK8X7vyY+
- vUXnJUkf1V35f5A+j93W8G7v2neMLLM+i2RYip6JtKGkXw/l0uhlPcbrqC7+83OkRuPVA8dHS
- Sr4sr9PpfUr2pOLlFlKvGhwD7Ym6eChHgGuZ88ySyu5ASiGQzdrnmS2tS/pdFiR/six0gpYZU
- xummSUewmB3E7k3B6VY3jutBgrzI0zSMw6nfRZR33F6I6JeYoxdsHLR12Rruo7bHjNtd+UjZ3
- i343zUhpl3No8s/ChI91PLqH8AhaATGpu8yEJ+2lSOsriO6Uxz/8fiLCzqwahWHUsBcMdtONz
- kXPP46Aa4b6CRdEktL9/ZbEmeRG20b0/qYjZOrC33/RiZKPPxeJIuI4CXBmjktnwUhgEsNdTU
- 6Zwp1Hmx4p84nOgjHpLEHfqhZZJzbgsnT91pLTI7RZN9RZ9KlfkP8oHBpn2Chogspj+1l3ewU
- S+p6S/PK4j4AWgiGfwvAdNepwjb3wk/2pZvffDlzClSCzccqxaxAXHz2dHr/XffStUlcMTcm6
- 7LOo4PBal9H4NC8PoF+W5DZgeeN2jG37jfxM5xs/IEhYc+sInDQP1kVtzEmOdoujKz4pEIZbs
- K61SK2Ioeke4n5qoP1NBFPi9U1FOP/HqeL6W+gFlYEK2bQdkDn+hdSK6yCPn0jAcQCKdVBOqM
- 2BRApn4L7xymaMeu1mAw3nIW73aCbmKij1WA+/B/i5Ox9xE2piFlgpgzIxuzCb/O082SiIWm8
- pT2sDddslOtTkNTD55eVDAuf20iKAob9l3v/m58kMAn/XXOB/QsgJ0Klf5jPRCMeMuRL+w95J
- JE+t0zehx46JTIqZvEDwOxxLO438EscAwH1mD89kRGUfNamUkITycC3ppo22GM2SoOgZcgHoS
- lylmIoQMwxgp5WuyFN/RaK2k0OWgfETd2wKsnCGd8HckKghsE1PgG7fWdvuT3txQ1Ehg74XWW
- 9QrWxaE9fPnm3rC5A+PTLg+p6x5jcdPxzAWjihDT8e6MUvsHqFYjOpKYQ85Y=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:4JWz1KDunjk=:W+D9cB5gWs6HI5aEm/DeY/
+ gm9pBjIbEixnbuypAt4CoDXxg+JRMfvBXdUPaZ5UP5+B5OHbURjThMTQvlHFK76s9cXBBqkT4
+ 6gC49ivL35sf4G1uoaxU7zVMKbhbm6ur6WX0CXf+4i4+E24c6KAdA8xlZFwPX8u1oDY8hrtbz
+ arwDdBKdT+6Scd7PxPTPzrxSz/plj40wF6hCXeMqUer7ISEouM/BQNCkQcOW1u6H1JPv+SS4Z
+ Ry69FxPybX1ML5fn8VwOGY5FXvDs9aj0jKF4zG7QaRtAzxED87AXl+8LKMWauudeMjaPYuFf3
+ qeV/C0N1Jf+Ed5D6f3lM/DUv+86WMvCNCO+mJ+ZuU8C4bGFmi/SEUenIYjWrgv/FEnHDGdwjX
+ BvJig73HaURVuDyO+l/LI+ibXpDJsV+pcNjqiy2ZspSJfo0InDGCbNhZCnWgdzuwtalCn4bp5
+ 3uRE4AkrrlLqx6pRuOBmEAKbim1DnOIDFjq0W+EXLwe8MGTguvGrci7zLuc5yc2uEzBOA1ocg
+ 5LoMwMSFs72b53e1TY1pf7AhpmbpH9SAV6VuApXfkjKdfwEpx9tn/Ed2g2u4+YTLeHz69B+fA
+ j+0g61IvLEheuDP7WJVS2SxiEunii62O5C9pIaqLwZyYSntj/bQSbW4Aq/6vKVL9TZktj9E7e
+ jyy5yvjnKb6HxpvEbDhbo5QsMUJoLqjLg/po0beCu9Di9dau/7tHSABLmOPheh6c3xUZS9y7F
+ 13KAV1QkR7okD5OvmpEfP4ws/TOIWzFqRxSYkbv9KvyZFXcf7/FBGmhr3vYfA4H7QgToSnJmj
+ 7bRM628pn4nk11s8pGxARjkmhWeHM6GS6X3MuD95M07GH+zMMzMepARgQmPBDDMeMMHatb5am
+ QRIkMrKnP+GTM3J9AhyaH2hvqDPHfKOV/TflkaVJ6h96M6Ms9CTC8XDmr3dWNWpRHF4hA7avS
+ WT2gI3QdflkF6cx5JIbmtkhDVaz3Lg5UyyVDKYwP+ZcfMxbuF9h0udYFhC4HVhPykoi7//t3v
+ BKUoc7mvYm1Plaj//ih1JHFEliKOxVU/eES8H+/vKkSbEyTxusbBGYxOGnp6gWYJps47USrh6
+ s3pVTNXFa7wHmWjpM8tf6eZns/hY5Rc486r+SP4e5dDyhPFtSQd5wT/qVoD4rwYqtwIv7wI+v
+ sHpvyN/L1gRY0tpwKNDUst1JJRELkxzcr6thyCQWVm5avU31Fso8ytIfoSFuXzc/75hpSR1uw
+ ydabGQPED+YkIzHkDiKIpgqMnl6YZvf5a9XXEqWpRlAhh3Y3NfdugLIp/X48=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> In crypto_reportstat, a new skb is created by nlmsg_new(). This skb is
-> leaked if crypto_reportstat_alg() fails. Required release for skb is
-> added.
+> In nl80211_get_ftm_responder_stats, a new skb is created via nlmsg_new
+> named msg. If nl80211hdr_put() fails, then msg should be released. The
+> return statement should be replace by goto to error handling code.
 
-Please improve this change description.
+Please improve this change description (also by avoiding a typo).
 
 Regards,
 Markus

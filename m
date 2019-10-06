@@ -2,65 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB1EDCCF30
-	for <lists+kernel-janitors@lfdr.de>; Sun,  6 Oct 2019 09:44:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92D67CCF80
+	for <lists+kernel-janitors@lfdr.de>; Sun,  6 Oct 2019 10:46:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726262AbfJFHo2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 6 Oct 2019 03:44:28 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:3250 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726216AbfJFHo2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 6 Oct 2019 03:44:28 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id C1C11CD79D031C936330;
-        Sun,  6 Oct 2019 15:44:22 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.439.0; Sun, 6 Oct 2019 15:44:14 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Alex Deucher <alexander.deucher@amd.com>,
-        <christian.koenig@amd.com>, <David1.Zhou@amd.com>,
-        <airlied@linux.ie>, <daniel@ffwll.ch>, <le.ma@amd.com>,
-        <Yong.Zhao@amd.com>, <Trigger.Huang@amd.com>, <tao.zhou1@amd.com>,
-        <Hawking.Zhang@amd.com>, <Felix.Kuehling@amd.com>
-CC:     YueHaibing <yuehaibing@huawei.com>,
-        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] drm/amdgpu: remove duplicated include from mmhub_v1_0.c
-Date:   Sun, 6 Oct 2019 07:44:04 +0000
-Message-ID: <20191006074404.48416-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726289AbfJFIqV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 6 Oct 2019 04:46:21 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46984 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726185AbfJFIqV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 6 Oct 2019 04:46:21 -0400
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A61C82084B;
+        Sun,  6 Oct 2019 08:46:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1570351580;
+        bh=hf30g4d8JZ11GzLvpR7H04sV2GMkhrx+p1kiP+B0azY=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=2LJ+/zh5VABr02frYcHGE7Cc46uW0q0IKteroMEn73P2ECn2ICmzlgpsOFSLKctp2
+         zLKV8U+y5hyjtjhfAb5xe5WQ2CmbBydYwZn974xqBBCx1dyM8g3HTy2EslMEloE7hK
+         5zjQtRSWmcIia/Xlv4Zh5FcSjJvGPkn2HQfqJ5D8=
+Date:   Sun, 6 Oct 2019 09:46:15 +0100
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     William Breathitt Gray <vilhelm.gray@gmail.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        Fabrice Gasnier <fabrice.gasnier@st.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-iio@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] counter: stm32: clean up indentation issue
+Message-ID: <20191006094615.5b798a42@archlinux>
+In-Reply-To: <20191005173004.GA7431@icarus>
+References: <20190925095126.20219-1-colin.king@canonical.com>
+        <20191005173004.GA7431@icarus>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove duplicated include.
+On Sat, 5 Oct 2019 13:30:04 -0400
+William Breathitt Gray <vilhelm.gray@gmail.com> wrote:
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c | 1 -
- 1 file changed, 1 deletion(-)
+> On Wed, Sep 25, 2019 at 10:51:26AM +0100, Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > There is an if statement that is indented one level too deeply,
+> > remove the extraneous tabs.
+> > 
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > ---
+> >  drivers/counter/stm32-timer-cnt.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
+> > index 644ba18a72ad..613dcccf79e1 100644
+> > --- a/drivers/counter/stm32-timer-cnt.c
+> > +++ b/drivers/counter/stm32-timer-cnt.c
+> > @@ -219,8 +219,8 @@ static ssize_t stm32_count_enable_write(struct counter_device *counter,
+> >  
+> >  	if (enable) {
+> >  		regmap_read(priv->regmap, TIM_CR1, &cr1);
+> > -			if (!(cr1 & TIM_CR1_CEN))
+> > -				clk_enable(priv->clk);
+> > +		if (!(cr1 & TIM_CR1_CEN))
+> > +			clk_enable(priv->clk);
+> >  
+> >  		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN,
+> >  				   TIM_CR1_CEN);
+> > -- 
+> > 2.20.1  
+> 
+> Acked-by: William Breathitt Gray <vilhelm.gray@gmail.com>
+Applied to the togreg branch of iio.git and pushed out as testing
+for the autobuilders to poke it.
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c
-index 4c7e8c64a94e..6965e1e6fa9e 100644
---- a/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c
-@@ -31,7 +31,6 @@
- #include "vega10_enum.h"
- 
- #include "soc15_common.h"
--#include "amdgpu_ras.h"
- 
- #define mmDAGB0_CNTL_MISC2_RV 0x008f
- #define mmDAGB0_CNTL_MISC2_RV_BASE_IDX 0
+Thanks,
 
+Jonathan
 
-
-
+> 
+> Fabrice,
+> 
+> I noticed the TIM_CR1_CEN check is happening before the
+> regmap_update_bits call for the enable path, while the disable path does
+> the check after. Is this logic is correct.
+> 
+> William Breathitt Gray
 

@@ -2,44 +2,39 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39E4FCCEBA
-	for <lists+kernel-janitors@lfdr.de>; Sun,  6 Oct 2019 07:35:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9197ECCECF
+	for <lists+kernel-janitors@lfdr.de>; Sun,  6 Oct 2019 07:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726097AbfJFFf1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 6 Oct 2019 01:35:27 -0400
-Received: from mout.web.de ([212.227.17.12]:40511 "EHLO mout.web.de"
+        id S1726340AbfJFFj6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 6 Oct 2019 01:39:58 -0400
+Received: from mout.web.de ([217.72.192.78]:50077 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725899AbfJFFf1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 6 Oct 2019 01:35:27 -0400
+        id S1726289AbfJFFj5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 6 Oct 2019 01:39:57 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1570340093;
-        bh=jqDEQy95paaaY/xlGarqK0guNTZVh7kmM1p09ETOPMI=;
+        s=dbaedf251592; t=1570340382;
+        bh=chjYK08RR6AxiHYkrjky48ZSi1luxWhiDDLUG0S6AAw=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=Ig1YpnHzykbLhwBSFCMeHMsUGuu2J1CzRZqbwmKtHe2hiy/6KQsDW9sxJhUN3fHyo
-         Re5Y+ghfP1EKA3ltCL44dGioL1AqTghqIfzB+MgG8HIi1ihHhzQDU3cHQ8ddsTOA60
-         /Z+ru7Gy/lodEutaBLoC6+GXQSbbs8T3kci31AWM=
+        b=Oi4e8X71MkbGDUtByNIACdVHhV6Vslt5qxSB+aeocv2h3+mzUKFL50JxFbe/50wI4
+         2Fo26lZtXAUKXT71RFeRxgCSi4rJuQSOC/tiWf+yTXKvawtjA+KM0+o6z6ELi6IWWJ
+         RW56SR4LJaZgtDlCFT60my5hKyycSzGXmVcY/Ta4=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.114.140]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LudP2-1i8DhV01ei-00zrgu; Sun, 06
- Oct 2019 07:34:53 +0200
-Subject: Re: [Cocci] [RFC] scripts: Fix coccicheck failed
-To:     Julia Lawall <julia.lawall@lip6.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        cocci@systeme.lip6.fr, kernel-janitors@vger.kernel.org,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jessica Yu <jeyu@kernel.org>,
-        Martijn Coenen <maco@android.com>,
-        =?UTF-8?Q?Matthias_M=c3=a4nnich?= <maennich@google.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Yue Haibing <yuehaibing@huawei.com>
-Cc:     linux-kernel@vger.kernel.org
-References: <CAK7LNAS2K6i+s2A_xTyRq730M6_=tyjtfwHAnEHF37_nrJa4Eg@mail.gmail.com>
- <21684307-d05c-1856-c849-95436aedeb86@web.de>
- <alpine.DEB.2.21.1910051425050.2653@hadrien>
- <f64fc086-7852-b074-6247-108b753dc272@web.de>
- <alpine.DEB.2.21.1910060727580.4623@hadrien>
+Received: from [192.168.1.2] ([2.244.114.140]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MTyDl-1ih0c32pAv-00QknY; Sun, 06
+ Oct 2019 07:39:42 +0200
+Subject: Re: staging: vt6655: Fix memory leak in vt6655_probe
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Navid Emamdoost <navid.emamdoost@gmail.com>,
+        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Navid Emamdoost <emamd001@umn.edu>,
+        Kangjie Lu <kjlu@umn.edu>, Stephen McCamant <smccaman@umn.edu>,
+        Forest Bond <forest@alittletooquiet.net>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Madhumitha Prabakaran <madhumithabiw@gmail.com>,
+        Malcolm Priestley <tvboxspy@gmail.com>
+References: <20191004200319.22394-1-navid.emamdoost@gmail.com>
+ <1d0ba4c6-99ed-e2c9-48a2-ce34b0042876@web.de>
+ <20191005184035.GA2062613@kroah.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -84,52 +79,60 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <8390d1f8-1907-ef19-c527-6bdb380d96c9@web.de>
-Date:   Sun, 6 Oct 2019 07:34:49 +0200
+Message-ID: <ea5e4945-b48f-0955-ba52-071ef1bb0e57@web.de>
+Date:   Sun, 6 Oct 2019 07:39:30 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.21.1910060727580.4623@hadrien>
+In-Reply-To: <20191005184035.GA2062613@kroah.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:LwrOLrlkxdfIiJ+lK8xrwMAnIPgg176TR6uhPc5hUcrx3iVJFCz
- LVkWgZll/5S6gWtE/hN3kORFdnNHSUl8yl+dfXBQVRyVMkw6rPeZ6RCS5LiIDvX6vLyykZr
- V03aIPhiGP0uz2+E3Kuv5YnFwZW9+CvNFrIHwwVq1Erp2t6qTUZVWlQHEA1SMXvh1kmVTAV
- vrVDjaFI5OGgZNK35jimA==
+X-Provags-ID: V03:K1:MS5LoYsk0re4zTSfMNFDJwfffuXBsSK5DkOUYDYvvdOeEdsCxod
+ 2zYoPOE2D2XJAz/QAGadoYQwLW3UiRCc8sCALGdGICB90cRxB7khmtN1BpQB6uG7f7zus+c
+ Bm3Trc198ixi1uoZIhUHax6dsrOo2R/fbfgTE+l5Gg5D+reYoJEXCIW6JmBJedOgRv4Wc97
+ abjdn3Rhcckdid17d1DWQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Ntz5E/2JQh0=:PtDTYI7NtZF5xlYInvSP/7
- YgCFQKmZyPFegVGov1rptOZZQ3nt0Op0s1yI3LgUj/BA3qJ8UYEbNvJ0yIbghhZKVBR9mksRs
- BGasHCL1bSmN+LhBkLU8wDBuP8WNlC7o/CTgZqsdUDi0qck5uL5H1v6k2tbbVrHORNf027i1R
- f2bYpaUr6FeY9NQZILhzTFOwq9sRWYUshX1UNrDe+mCjRmQ4I/YHhi4REw2H1KYKTd/yYxqM7
- rC1pRzrOZfFxqvJKad5rQt0zssTRRtKph8mFQdobLbYUrwnvmm0jQqwYlWYa+LCfaly8tbY8V
- ql0Y4/ICwbCYy3jTxgm0XjUId0tq2FaBhA5LQSVFFXxovdLsmO3kMGhqk7VIDEp/yS34ixfgc
- bDvxYyK77Jq/dzwtgDNEEWRO8USGU7LcSPDubV9YrRUFgs8SB++0Q7p5uw+xsQLdd54ngl1Sr
- AyshQO9FucLIy9XnUj1yzcPYrOmk516usR9EdCg0JbthgQLfSdyCagv4ksS17fAVW7aAmNRRF
- sJFfoaixDlqD0PA1z7XMEe/fA/N6i8pEj98D01TRw4LaM6KgBaXwToe2Zomko3kJ1T6/MEuRl
- /pt8kbalKcRIjCs9FOh3Q24gzqVRULe1E7TTJNe6Ha4HPtuzKvPaBc6jZ5zN6lj33MNRKgTPN
- M51w6t9M9BvKNedDSsbeGW+yr2KXh2a5iuubt8REwhPovXrrSBJz4EVklJiATOcaTrTjqB/gH
- 041c/hOnMQ5Z4jDgwQHZlHzHidD276aIiwNSlMTy4VubS1SPl2bC6wgclgvLcFYNL1lE6L+cl
- 0e1KPlfC3MnXdJAn9VEuM1sda17XOkbm5xXyvtWSYN8lP0bdpAfKel+0uI+Y4wv7MsqnI4OzU
- Q7FgtlmIX1qYZVc6srWvMQvO1L0a6FfHlKOb3j/Ab793IC0wytDbMxS2EZ2TV8JB8CtGUA3fV
- cNTHwpuwTGmtxv2fEIMhvBqei5p8rTPHekzds3LT14cNpPw2Ct3ZGqJlSxA/3WyK53v3k/kCD
- GRmuDNX7/sOP0u86nxTn8lwNETc67HxWq6YhOTX2or4Z3WDC5x8+9/TrWbrX7q/nwZubnx9fL
- /ZVatjXdIuaMinbXi5pA0jlUfoAZNLFU2kuuzRTcY7ap/nnFgaYyVisCU0q26NP52VpegcsJp
- fXzbejfBShtBfxEreFzQJp/pRz4mfjmG6cD4Ld2q2L2yIv3oN1sNfZCtLiPvEpnXHlRGSC0BU
- +1Uj74o6mExNFL/b59geesWxTmsugwJbCsQYn+iKbPXY833zpoE4juROtsqc=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:KOKh8ZOW0pk=:DAq9B+g6r2GmLz3evzN709
+ 8DnvTxv/sdciw3WCNpWqJ77vnTZ/l2qeJkBBAMWmL891rfzbn7wB9QCZea7lXq6E6hlAcDAaK
+ +YFJ4C9qUeCRQig7TolRSizMbHm/ZHGsUlf34GObqcNxFt7ODfjeY8/2arqFbVUNSluaqe/Df
+ Q0PSwyRAlVjzBE+MW6MXmDtWpyiZW3ZWOQ/AA1tmTteuY1vRBWur8yC6FM7hIJiUj6py9/yDF
+ MA/GCN7HXaRuOmjZpU+hC9dsxZPIJ5X0hRXBSxZjUgp6ojc/S+Z4hdvJuw3byKFKDOb/OZaYQ
+ i173Q5PxhsVINBB+4Sc9AIJA5tS7p1ZzLm2t4rq+p0rhKVZyjedhRYigHsH7W3DY/hvESKHBn
+ aj1F30mU6xxDM7jBaw9yciri8/f7Q0PwlVG0shmpJxur8EbOMD5WaxRf0AEr9ZZySdAFSANLi
+ UldS8Q1pkzwuWgvVsM+CsOBpdNmDyAqSr/BQqb4EurtMKztFFvn+mK2fVGFONOebPWxheyPGZ
+ 2a9y6NR/balX3U7/Dns2RB81AIj6m9fOPa9cDRM0EbdrOLDmtzaD1xIdDIPOCyUejE2TV1RYE
+ GBSRcZIwt17iryeLVXe4VaeacXHTtM/2sOp3eieu4E1l3MxCtwzB1MUv/K5LFRUESci9ZV0Xf
+ 1a4dPOc6pe0v5sF7nIinBqOg7EGgfdrMZ2UvllTKEJcUw9gx9Qd8OKXgpIFB69WQi/iT0iLIH
+ tsjCC4MypQ4oGE8aok/BOaB1MLVHezSJ4Ngi4jWNRKMgG/Cnu6uRHzTYhyPSS4f2ts8WseUNL
+ dcDNOdMnXuwnFJrR+MkB0Y9ZYxq7igs0pmM55YmLw+4XQmaOxvmh6NokG0IiGD5wIW92Wuape
+ ZIRiisWYbHZUwjijDkTzQnLPtMAZFLBMuQmlphp9jsXHJvErcmtKlYFErGN2ztlL30afCpoSW
+ yTrqm2xvYg5HDp+sCIbuDMN6AXUfKIpsOtDh6aTN4uua6uJASZmQMxvRkLYq5N3gnZylRBhh4
+ eUdHoaXOXVQeybBofMA3TtjJsKmflgQs2V6a1X3QztjkmQGw0M5EPXxITgkWX/fjVhy2Ba6V4
+ QOeGtr0v39iyg3u3aYMtXK+iWpC1MkwBxoG9meSw55X4WmjRE012za2rU6uGQlk/IC+i9W2ut
+ B8DA8Tb4kAzMPsqn+fcakaEFG702PoNEi+WJkBuxpiADtzWUDfMpQ4vcwN9x7XCpsNzqHUmeN
+ Dl9vJC3j+gjT3URTfwS++buCIg5XpOGXfy81NsfUztjOSB8Ahw7eaLZff53M=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> Would you like to increase your software development attention for
->> efficient system configuration on this issue?
+>>> In vt6655_probe, if vnt_init() fails the cleanup code needs to be call=
+ed
+>>> like other error handling cases. The call to device_free_info() is
+>>> added.
+>>
+>> Please improve this change description.
 >
-> No.
+> It is fine as-is, please do not confuse people.
 
-Thanks for this information.
-
-I am still curious if other contributors will care more for this aspect.
+Would you like to clarify a known guideline once more?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3D43b815c6a8e7dbccb5b8bd9c4b=
+099c24bc22d135#n151
+=E2=80=9C=E2=80=A6
+Describe your changes in imperative mood,
+=E2=80=A6=E2=80=9D
 
 Regards,
 Markus

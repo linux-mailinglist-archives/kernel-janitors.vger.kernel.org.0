@@ -2,87 +2,144 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A1BDCCC6A
-	for <lists+kernel-janitors@lfdr.de>; Sat,  5 Oct 2019 21:01:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DD68CCEB3
+	for <lists+kernel-janitors@lfdr.de>; Sun,  6 Oct 2019 07:29:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729395AbfJETAg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 5 Oct 2019 15:00:36 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:39305 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729253AbfJETAg (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 5 Oct 2019 15:00:36 -0400
-Received: by mail-io1-f67.google.com with SMTP id a1so20540426ioc.6;
-        Sat, 05 Oct 2019 12:00:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Pzgds363sVjt6tTHjuT41LayOC3pwj5qUHdeZopvI60=;
-        b=ui+99W7V8mYFpZSjc7PrqXXPh/ZCrcNkygLinlWYrtBHXo+7eqZJC4gWIuDu60/Lfv
-         1tcn/3cip9ePEQESnqt5s9iyPCRm9GGn2CqlQUgo3jQpTVXEc7YdjILr0fKbk5dDpiMx
-         AlMP7k8vNV4s70WyuH6DEqD0bLoTGC6/P3WmPwXWOYOZnVr2w/T8/cbmpn4G3C92p/As
-         MMfV+gjBhQiYXR4xRQfHlKVSlLRksrvOQdGpp5ag7YxdMBRNt7ypb2AYiso6BR6A9Bbe
-         u5ddDtaVRigcswS+EzRuVfbMf5aPCV7uu1jxJt3GCYCbmY6nsAXR7DJj1qWC9HI+i31X
-         xW4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Pzgds363sVjt6tTHjuT41LayOC3pwj5qUHdeZopvI60=;
-        b=tf5aux5MDLE2r0L//6ZSPs6nxjPD8Ebo40J6xv45NMe5tGijNtr7w4ttC8gN+78sHz
-         prA5TeqbALr847m/xlMRwyVbkUiC4cvpzJRwXQsDqIvqBXt/+hGyjrB64a0xjg8SpFux
-         R6ozIp0bBo8EVxPPCFuWzghbE7QkD+j9Lftk6w7BgjGj46teOXMREIQkZPlCHJ9yE2j7
-         3l7flQINrd8l4v3g4m60vjMpIi9SZZp3X1QdyB+qO5NvkX1CYUrT2BRQfIBq69vVCr+v
-         bSjnPFwD0SHdX5cEa35pE8dwDHDsZR0A26d8mFMlK21rfX24GYTb2/hkW8zrwDJPYuKd
-         YuXg==
-X-Gm-Message-State: APjAAAW859R0Gr6ntOpld/SLPpenHUkh8TdtnzyxrrUuX3Zs5fztYCUj
-        BCUAJfcRbKjliwg9V5Z5ScQsuVpYEhxaI8DM9gI=
-X-Google-Smtp-Source: APXvYqwM96alpXRdELBUa41V98MXAHJuLW5QCNnGTNtIreMr90WPqYbBaStyDzTrxEQ/tpThispyvpWKRwYCJVLmvqs=
-X-Received: by 2002:a92:ced0:: with SMTP id z16mr21939458ilq.172.1570302035209;
- Sat, 05 Oct 2019 12:00:35 -0700 (PDT)
+        id S1725972AbfJFFVo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 6 Oct 2019 01:21:44 -0400
+Received: from mout.web.de ([217.72.192.78]:41983 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725899AbfJFFVo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 6 Oct 2019 01:21:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1570339275;
+        bh=Gzwjj7P9wQpJ+/SFZL5s/IigHlX0dcbFlXIX9fH7eVA=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=ikJYTCbcHu82jjzFxtXbePWLIr9nCdQFyNt/ip0qveDzK5Bhu5SrwCoZwhgBln0q9
+         AD9CXYoaACmNa632XUl9mxtI92tGsvTRAeoe6XtL68nz+OEHgvU0N3TpUwWftIS2je
+         vyQnvG0KNgsEzEQ6oTpsAqpwEcO7yfaKB7oi2qcA=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([2.244.114.140]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MYO45-1icaJX306L-00VAOa; Sun, 06
+ Oct 2019 07:21:14 +0200
+Subject: Re: [Cocci] [RFC] scripts: Fix coccicheck failed
+To:     Julia Lawall <julia.lawall@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        cocci@systeme.lip6.fr, kernel-janitors@vger.kernel.org,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jessica Yu <jeyu@kernel.org>,
+        Martijn Coenen <maco@android.com>,
+        =?UTF-8?Q?Matthias_M=c3=a4nnich?= <maennich@google.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Yue Haibing <yuehaibing@huawei.com>
+Cc:     linux-kernel@vger.kernel.org
+References: <CAK7LNAS2K6i+s2A_xTyRq730M6_=tyjtfwHAnEHF37_nrJa4Eg@mail.gmail.com>
+ <21684307-d05c-1856-c849-95436aedeb86@web.de>
+ <alpine.DEB.2.21.1910051425050.2653@hadrien>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <f64fc086-7852-b074-6247-108b753dc272@web.de>
+Date:   Sun, 6 Oct 2019 07:21:01 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-References: <20191004195315.21168-1-navid.emamdoost@gmail.com> <037d04e8-4651-a657-6be6-b1eca072bb81@web.de>
-In-Reply-To: <037d04e8-4651-a657-6be6-b1eca072bb81@web.de>
-From:   Navid Emamdoost <navid.emamdoost@gmail.com>
-Date:   Sat, 5 Oct 2019 14:00:24 -0500
-Message-ID: <CAEkB2ERipLQRV3CsZ6L3EV0jXtS0HMc8yM6g5sNqJG0NThBsmw@mail.gmail.com>
-Subject: Re: [PATCH] rtlwifi: fix memory leak in rtl_usb_probe
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <alpine.DEB.2.21.1910051425050.2653@hadrien>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:XVYI1s9CF/DzmkQbhpyKPdghNbOybt89fDNSP+wQNrMXl6wQC9M
+ StU/7dwi8q0jN9nxp7vYWjtPbDyi4sbQYLyUNL/wQdlXTNq8H7CjGfzNsl9Z4CqvOd4VMg3
+ sljBvqrOZxXYlQ2Rs75cNpxWcGXu9O/j/fjAPfOtnwtbTXkyUAIus6CZcoySSV/za42AEdD
+ PMrKt5BjhtbbVMdrEGXvA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Y18Sm5TQzm0=:MlGQbqacqjgkdIs11qgG84
+ JpLb05MQe5mkGqDyWACsnsIQlaKUvOfqEhK86VFcPpMy/UmpV3WqWU7lJ6uSJehk/W3CToj9n
+ EsuOHIL4q2ZifX44NFBMA3ay1TzuRndkehTbXz2sHGCo56PbEr0VlIn3VcIFuWapLSRu/EpI7
+ K8GbD1aFkJB6EpYwzPKVN2miv2YMuZotkcUKn+MGGR7nw/h6zET3hoof1lYIEfdR5o8M8s/t4
+ lwby92SAKsYGPg2KlJaeRs8iRn27yolfaZjHriXZclB08tWeEIfr4W44/EGuC0zAwAZLmxAHl
+ jXgEYwf+Uy2UccCvq5vz95E7o/6VV403pH1U2so/wO1ifG7ClfEPZpbWva9qHtppE6CUTP0aw
+ Ozg4uR4ZM4ou303CP/2oKpEn7VBxltAWULb2Tj/CQ9NuUGgCYuP/HokIHp0mCeS5zVCSjepks
+ UjdjvChk+LEKhT1KSmy7UuhH5F7a6dKSlnyjiSD/6z3m9SwLf2pPkF2bQW8h1J1rN+FqVYZp8
+ 4vASkrrSIfNI0emDnyKWdicgwIiXh8IU7g+D3qiI9CgR3m5nE45J9PYAfataYiVQg1acm2rFH
+ R20tu5/1Z/Ga1Jt/KUlVL+aL46KTFe6nVUv7ZtY8qegIY2WxcJzDe6gR8Fwb/oik04GaEvB67
+ TUupbKGXu4dW50YbY75NtKW7jaRL9G9ZhRnvURSlz/ZuQzp+uPe3MOiPvhHGGPubCbHkRmgYQ
+ xysLgzPQqjvlUgpg4z+SZuIxVZ7pxcxOnnVM5TE7ED77p8sDbSTleKR1nvB85FRjziRsDm7Sm
+ HsOdCAWUzumeO6qPRfaZBiyL8fZ6vQ0Dk81//ubhkRUyNm751iZfmxyRXrsDqaEp/+OXMKoWu
+ PDqc6rdOt7iSty4tGC298iFJF74ksUr9hA4LD8MYGJqnaJp9U8D9wameM0ZJKZjHfi84Tu8dB
+ Gm1xopg3cf039T2HyjUar4d96PVsGSe78LOymFxDvd269Ex5qhNlRxpP8TBp4gFtGg8PUCMqo
+ iQSFi6WWwqHdHaTPdJFfvFFrFdOWlnloSJTwzYsaImxi2otCz5yObbsV0VX7FVNK5AxYun2X5
+ BklY6grplEhz93FLKNe9gxTGk9JS5qeAG+HY4aN1IqxPzxhG74VMr1c2rQC7e8hr5XsKrpMbo
+ 5LXHkvaRE6JzGayxEQH0oypaW85GpQWkLhRm+8CqPPe0rbn41hesJqa+sFgWE6B0eM/7eAY9y
+ QhHR4XvaLYzjGNgjT4UEWUq84xSHgbxp0+89wlri3byrYMyjx6CAoqhWazQU=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Oh! It's duplicate, thanks for catching that.
-
-On Sat, Oct 5, 2019 at 11:08 AM Markus Elfring <Markus.Elfring@web.de> wrote:
+>> Would you like to take the change possibility into account
+>> that the coccicheck system configuration should be adapted instead?
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/scripts/coccicheck?id=3D4ea655343ce4180fe9b2c7ec8cb8ef9884a47901#n257
 >
-> > In rtl_usb_probe, a new hw is allocated via ieee80211_alloc_hw(). This
-> > allocation should be released in case of allocation failure for
-> > rtlpriv->usb_data.
-> >
-> > Fixes: a7959c1394d4 ("rtlwifi: Preallocate USB read buffers and eliminate kalloc in read routine")
->
-> Which event did trigger the sending of this patch variant
-> after a similar change was integrated already?
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=3f93616951138a598d930dcaec40f2bfd9ce43bb
-> https://lore.kernel.org/lkml/20191001092047.71E8460A30@smtp.codeaurora.org/
-> https://lore.kernel.org/patchwork/comment/1331936/
->
-> Regards,
-> Markus
+> I prefer the one line change for now.  If more issues arise one can see
+> what is more desirable at a larger scale.
 
+I got the impression that the script =E2=80=9Cadd_namespace.cocci=E2=80=9D=
+ should never
+be automatically called by the current default setting of the tool =E2=80=
+=9Ccoccicheck=E2=80=9D
+also because it requires the input parameter =E2=80=9Cname space=E2=80=9D =
+(SmPL identifier =E2=80=9Cvirtual.ns=E2=80=9D).
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/=
+scripts/coccinelle/misc/add_namespace.cocci?id=3Deb8305aecb958e8787e7d603c=
+7765c1dcace3a2b
 
+Would you like to increase your software development attention for
+efficient system configuration on this issue?
 
--- 
-Navid.
+Regards,
+Markus

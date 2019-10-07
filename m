@@ -2,103 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D456CE8AA
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 18:08:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F823CE90A
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 18:23:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728242AbfJGQIc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Oct 2019 12:08:32 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:54589 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727711AbfJGQIc (ORCPT
+        id S1727935AbfJGQXB convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Oct 2019 12:23:01 -0400
+Received: from mail.fireflyinternet.com ([109.228.58.192]:57648 "EHLO
+        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727801AbfJGQXB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Oct 2019 12:08:32 -0400
-Received: by mail-wm1-f66.google.com with SMTP id p7so77815wmp.4;
-        Mon, 07 Oct 2019 09:08:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Z1iEZfsz63+hFaflS3INWnySuglWD+I2yD90meQjneg=;
-        b=hc6iJa4GVuhNuWWKGTrUwO7QaLE2DMH8tSuKd1N7fa2ey63T4C3Sv79QBeWNYBbDYE
-         IBuGrRoyMSkcqqgjaMBcN2U+I5kYsOZmpfe25vJ4AO9sBXoWXaqq0f1F8XeJ3dN6nuCj
-         id/bC57fyx6raHUDxh1UvEP2H/ZuD8KWZfDyFRUUAHQRLL8MC+/7k8CaMDbuIb4lr6PY
-         r6FfQh4xBIcS0GPcIpDSGfh7pmn7rxiwEW0cgQeJWM//Ojfd1i58lKyL2uopQNa6BE01
-         bGR7j88/Vab0pw636IuaEb8mq9eqk79QlZKmvc2fRSb8e+GubGoRijjFLnyJsQATvW04
-         539Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Z1iEZfsz63+hFaflS3INWnySuglWD+I2yD90meQjneg=;
-        b=ZCQPXqjBJlOCfdcK8eRbygK/RSfYKdmKZwp2KN4wCViQ6OB+cFZnhHKZE3VO6PRdJo
-         igolQgrNdutiRwTd10otapCpkSqsz82GjquV0zFYszjT42Ttg4yQalyiS4ayLIVkxHp7
-         MJqKIjBXrpuqnc0rODxVoRUn/NBOUOGIlmHsV2rRP8GcJP66hAuR7EB5+Bz9Z4fNQYu7
-         maEh4kQWVJp5VffVtiBjhQU4Y7Pz7Hay7ZP1qCMZW6KWMAGe9BPgjePYHJzzJLfvkKT5
-         hgwFLRDoPWOFt0jXh1QWwRKM/EoqdW5NUzTD0XunYcu1lJfVBxE/DOIaln7CA8d5hOt0
-         a47A==
-X-Gm-Message-State: APjAAAUoqjDp1OyIwvDEoDImpDDsCftmEV9jNR/AqRBkOcRzwviOIhiq
-        NOpCVzI1NHlWsdHy9l3aQGMClWDGH4eZCkokEnNU0A==
-X-Google-Smtp-Source: APXvYqyq4efJgRyiW1dhwc+BXSa/rMaGmKzS1bwzST3wnGDfySKyRkkUk67CpkWeFqq/cYJquUmsPhHAH94fVc4ULu0=
-X-Received: by 2002:a1c:3908:: with SMTP id g8mr64842wma.34.1570464509638;
- Mon, 07 Oct 2019 09:08:29 -0700 (PDT)
+        Mon, 7 Oct 2019 12:23:01 -0400
+X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
+Received: from localhost (unverified [78.156.65.138]) 
+        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 18754431-1500050 
+        for multiple; Mon, 07 Oct 2019 17:22:55 +0100
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20191005175808.32018-1-colin.king@canonical.com>
-In-Reply-To: <20191005175808.32018-1-colin.king@canonical.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Mon, 7 Oct 2019 12:08:17 -0400
-Message-ID: <CADnq5_PkTbzqNfesJt29SaB7=R0x4BdoNmHiNDXrHwqj02JUGg@mail.gmail.com>
-Subject: Re: [PATCH] drm/amdkfd: add missing void argument to function kgd2kfd_init
-To:     Colin King <colin.king@canonical.com>
-Cc:     Felix Kuehling <Felix.Kuehling@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
+Content-Transfer-Encoding: 8BIT
+To:     Colin King <colin.king@canonical.com>,
         Daniel Vetter <daniel@ffwll.ch>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        David Airlie <airlied@linux.ie>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+From:   Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20191007154151.23245-1-colin.king@canonical.com>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20191007154151.23245-1-colin.king@canonical.com>
+Message-ID: <157046537209.5063.10118308844290609426@skylake-alporthouse-com>
+User-Agent: alot/0.6
+Subject: Re: [PATCH] drm/i915: make array hw_engine_mask static, makes object smaller
+Date:   Mon, 07 Oct 2019 17:22:52 +0100
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Oct 5, 2019 at 1:58 PM Colin King <colin.king@canonical.com> wrote:
->
+Quoting Colin King (2019-10-07 16:41:51)
 > From: Colin Ian King <colin.king@canonical.com>
->
-> Function kgd2kfd_init is missing a void argument, add it
-> to clean up the non-ANSI function declaration.
->
+> 
+> Don't populate the array hw_engine_mask on the stack but instead make it
+> static. Makes the object code smaller by 316 bytes.
+> 
+> Before:
+>    text    data     bss     dec     hex filename
+>   34004    4388     320   38712    9738 gpu/drm/i915/gt/intel_reset.o
+> 
+> After:
+>    text    data     bss     dec     hex filename
+>   33528    4548     320   38396    95fc gpu/drm/i915/gt/intel_reset.o
+> 
+> (gcc version 9.2.1, amd64)
+> 
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Applied.  thanks!
-
-Alex
-
-> ---
->  drivers/gpu/drm/amd/amdkfd/kfd_module.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_module.c b/drivers/gpu/drm/amd/amdkfd/kfd_module.c
-> index 986ff52d5750..f4b7f7e6c40e 100644
-> --- a/drivers/gpu/drm/amd/amdkfd/kfd_module.c
-> +++ b/drivers/gpu/drm/amd/amdkfd/kfd_module.c
-> @@ -82,7 +82,7 @@ static void kfd_exit(void)
->         kfd_chardev_exit();
->  }
->
-> -int kgd2kfd_init()
-> +int kgd2kfd_init(void)
->  {
->         return kfd_init();
->  }
-> --
-> 2.20.1
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+-Chris

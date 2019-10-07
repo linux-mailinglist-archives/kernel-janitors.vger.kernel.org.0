@@ -2,60 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58F8CCE910
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 18:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 083B7CE91C
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 18:25:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728079AbfJGQXn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Oct 2019 12:23:43 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:33673 "EHLO
+        id S1728059AbfJGQZz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Oct 2019 12:25:55 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:38379 "EHLO
         mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728387AbfJGQXm (ORCPT
+        with ESMTP id S1727801AbfJGQZz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Oct 2019 12:23:42 -0400
-Received: by mail-wr1-f68.google.com with SMTP id b9so16103060wrs.0
-        for <kernel-janitors@vger.kernel.org>; Mon, 07 Oct 2019 09:23:41 -0700 (PDT)
+        Mon, 7 Oct 2019 12:25:55 -0400
+Received: by mail-wr1-f68.google.com with SMTP id w12so16094837wro.5
+        for <kernel-janitors@vger.kernel.org>; Mon, 07 Oct 2019 09:25:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=OFlhJbSi23b2NFiSK6+YKaIl+Aw85wcuS6pgAqIhXRY=;
-        b=SItsYgREmxzYuNcynIf8NfPJgmDqq38v6u6tdKmMTV7HpHdcXnEkL+ntMCEn720gsB
-         VoGn8j+nU4yJl7L0akvUFNooPq4Iaa7B3GhUk9K6uqTqohMFGd9itxWhUITLfNq6jWv0
-         l/hutITWJ7OGMJfdMQdGzsCOtg9QsLrt06R3GSx4Db4ZmNs96ywSjjVkM4rq6kE8HVVA
-         9CAOl5mt9erRDCZ0YwY1pbi1U03U4ae6iR6MqM+oytK6LKkFunia7PamfsO7RkDXqip9
-         bGJxvWJlXcdgDhRxsr04sQob4zFX+/OPpamIa1j+d74+Ek5BxzdLAgsTfEFgpI+Nwiiz
-         ikWw==
+        bh=dFgexOM9IsttNkHQUS7h3ZyAQVlKbfcnv7lks064QYM=;
+        b=usjRic7q5VlYwsBNjkevIQkhz4Aowo8HnQrZWd01Oy9PQLqhlqwGMb3QLANYjEMjl8
+         guetWX8c7viX7BSIgc+2WYiKR7bjip6IWdf9cBaS3+BaoYHfMxdfq+xuTDVzNsOt29HA
+         GMIhBvQ9PP+5Ko13cCNsGoqEEpfbNa+pYuWwwUTdMzdrGtsF72qjFcw9jmj3clDekphV
+         uqDyBCe08MpTvLe4NFgDFls+eYKNFTKWs1SzWHuqqlDbeBd3WUWqKwXe2om5Tr0GLWoL
+         xDBNjh6qUxRkwvUKc65njls/c63I1dJ+Z/lc6a3X0xr3urdrVYGjg/NdpF9Nqf7xKYGm
+         XcYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=OFlhJbSi23b2NFiSK6+YKaIl+Aw85wcuS6pgAqIhXRY=;
-        b=I2pP3HWUPj1AcDFjK8pXrftM6Cdkj2sdshM22aAw8LoUek9SuGekjth1GdtHPrNPKI
-         KFcoyI0NIEMSpGZWyCIx7qQ89rgZykX0x7P195RfYJ6uWj3Voz/iVrZ4nsiXvrzPyxUs
-         or3R6fcgPG5fgI3Zgm0bmusXIkoEXgYYoy4aRrHwud1kva7zdw6irUb5wR0Z7XVvI9Gp
-         ynZZTfPQdYIfplzXjNLTPvC7QI5dkvIVeRN2iTSqSnRoqc4JCQY4sRlf+maTFiX/8GiP
-         JxNkoQTbLGS5eaUm32tmdkpeO/zBvakBJvovj0dZIYsRL+Igo6nTlR//uVKVvZg/QhU0
-         V9qQ==
-X-Gm-Message-State: APjAAAXasOEt9e9+3kdEvzZPB36F/ObNiHyxACk38b58X+cnAMEpvNTE
-        azSLvJCMjrI9bxlXrnOOEnhF3YABC8NYDYr3J80=
-X-Google-Smtp-Source: APXvYqzHtsoox7+vQL8r8xNyNG2fI+P4YKL+4ELMDUE83Kc1Res1M3I9ltfd6U++IXXqArcxJLCXAg9VkSYS6k/8ba8=
-X-Received: by 2002:a5d:6052:: with SMTP id j18mr12936827wrt.40.1570465420545;
- Mon, 07 Oct 2019 09:23:40 -0700 (PDT)
+        bh=dFgexOM9IsttNkHQUS7h3ZyAQVlKbfcnv7lks064QYM=;
+        b=POpe3hKm5eoA8CcLpWQsfDFFMUZ8WL5rxcWV1ewfne42tcGI3dqjXhfDqpV2auS0S7
+         xFljJwk8RpUtkep7qAAJKvAJFUTc61QEGs2efY1tmkSAHBQcqvO9rXOFiuCATXpkY6pA
+         RnfeyKLqRNYALkYrcg+XVjSEGY9t6EqzTb9Vn58IiulQI7OHbDBa8UPmfrprV0OkR9jP
+         UlvUzB4Uuj/aYCdHJdOwWLmdpdmrmJC6/emNGKQ9IJW+Jg+sOp9DnqmRkdw2BqoNgOfi
+         w6p33I7p74d40z9mau7RJOHmVQaPuNrqc+o5dFV1Ty9FZpwl/G67qA9Pi1O1u3W1Y3EI
+         kcOg==
+X-Gm-Message-State: APjAAAXulWHLP9rU8Z3EMdU7ndOMxTUAmQRFnSfhmNMQxLRC4+DbrI6z
+        G+MAO3lJrw9OyRs3FDI5LWTt8VH7SQLIgzoPjbl5pRG8
+X-Google-Smtp-Source: APXvYqx8toSebirTyjDUOKQh8LLa0tvtKtQbQxF7t5JQIY7+ZfoIg4f2HTGKWpMNjDDGrIX0kjwIYfnBNjIdZk/i4aA=
+X-Received: by 2002:adf:fa0e:: with SMTP id m14mr18222912wrr.11.1570465552751;
+ Mon, 07 Oct 2019 09:25:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191007090454.GE3865@mwanda> <MN2PR12MB3296695EB3D9799B10971184A29B0@MN2PR12MB3296.namprd12.prod.outlook.com>
-In-Reply-To: <MN2PR12MB3296695EB3D9799B10971184A29B0@MN2PR12MB3296.namprd12.prod.outlook.com>
+References: <20191007090206.GD3865@mwanda> <MN2PR12MB32963D6B4480B85DC9DC379FA29B0@MN2PR12MB3296.namprd12.prod.outlook.com>
+In-Reply-To: <MN2PR12MB32963D6B4480B85DC9DC379FA29B0@MN2PR12MB3296.namprd12.prod.outlook.com>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Mon, 7 Oct 2019 12:23:27 -0400
-Message-ID: <CADnq5_N3=qpKJ2YaP4h=SMnNU1jP8Y9VhwqfhzYZos7txQgcMw@mail.gmail.com>
-Subject: Re: [PATCH] drm/amd/powerplay: unlock on error in smu_resume()
+Date:   Mon, 7 Oct 2019 12:25:38 -0400
+Message-ID: <CADnq5_PVO79Y-2YyZjovuXW9JYBg3Kfp9F7hL0-whzwhbKOr5A@mail.gmail.com>
+Subject: Re: [PATCH] drm/amd/powerplay: Fix error handling in smu_init_fb_allocations()
 To:     "Wang, Kevin(Yang)" <Kevin1.Wang@amd.com>
 Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Rex Zhu <rex.zhu@amd.com>, "Quan, Evan" <Evan.Quan@amd.com>,
+        Rex Zhu <rex.zhu@amd.com>,
+        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
         David Airlie <airlied@linux.ie>,
         "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
         "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
         "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Quan, Evan" <Evan.Quan@amd.com>,
         "Koenig, Christian" <Christian.Koenig@amd.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
@@ -64,53 +67,73 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Applied.  thanks!
+Applied.  Thanks!
 
 Alex
 
-On Mon, Oct 7, 2019 at 6:29 AM Wang, Kevin(Yang) <Kevin1.Wang@amd.com> wrot=
+On Mon, Oct 7, 2019 at 6:32 AM Wang, Kevin(Yang) <Kevin1.Wang@amd.com> wrot=
 e:
+>
+> thanks correct it.
 >
 > Reviewed-by: Kevin Wang <kevin1.wang@amd.com>
 >
 > Best Regards,
 > Kevin
 > ________________________________
-> From: amd-gfx <amd-gfx-bounces@lists.freedesktop.org> on behalf of Dan Ca=
-rpenter <dan.carpenter@oracle.com>
-> Sent: Monday, October 7, 2019 5:04 PM
-> To: Rex Zhu <rex.zhu@amd.com>; Quan, Evan <Evan.Quan@amd.com>
-> Cc: Zhou, David(ChunMing) <David1.Zhou@amd.com>; David Airlie <airlied@li=
-nux.ie>; kernel-janitors@vger.kernel.org <kernel-janitors@vger.kernel.org>;=
- amd-gfx@lists.freedesktop.org <amd-gfx@lists.freedesktop.org>; dri-devel@l=
-ists.freedesktop.org <dri-devel@lists.freedesktop.org>; Daniel Vetter <dani=
-el@ffwll.ch>; Deucher, Alexander <Alexander.Deucher@amd.com>; Koenig, Chris=
-tian <Christian.Koenig@amd.com>
-> Subject: [PATCH] drm/amd/powerplay: unlock on error in smu_resume()
+> From: Dan Carpenter <dan.carpenter@oracle.com>
+> Sent: Monday, October 7, 2019 5:02 PM
+> To: Rex Zhu <rex.zhu@amd.com>; Wang, Kevin(Yang) <Kevin1.Wang@amd.com>
+> Cc: Quan, Evan <Evan.Quan@amd.com>; Deucher, Alexander <Alexander.Deucher=
+@amd.com>; Koenig, Christian <Christian.Koenig@amd.com>; Zhou, David(ChunMi=
+ng) <David1.Zhou@amd.com>; David Airlie <airlied@linux.ie>; Daniel Vetter <=
+daniel@ffwll.ch>; amd-gfx@lists.freedesktop.org <amd-gfx@lists.freedesktop.=
+org>; dri-devel@lists.freedesktop.org <dri-devel@lists.freedesktop.org>; ke=
+rnel-janitors@vger.kernel.org <kernel-janitors@vger.kernel.org>
+> Subject: [PATCH] drm/amd/powerplay: Fix error handling in smu_init_fb_all=
+ocations()
 >
-> This function needs to drop the mutex before returning.
+> The error handling is off by one.  We should not free the first
+> "tables[i].bo" without decrementing "i" because that might result in a
+> double free.  The second problem is that when an error occurs, then the
+> zeroth element "tables[0].bo" isn't freed.
 >
-> Fixes: f7e3a5776fa6 ("drm/amd/powerplay: check SMU engine readiness befor=
-e proceeding on S3 resume")
+> I had make "i" signed int for the error handling to work, so I just
+> updated "ret" as well as a clean up.
+>
+> Fixes: f96357a991b9 ("drm/amd/powerplay: implement smu_init(fini)_fb_allo=
+cations function")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  drivers/gpu/drm/amd/powerplay/amdgpu_smu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/gpu/drm/amd/powerplay/amdgpu_smu.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
 >
 > diff --git a/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c b/drivers/gpu/drm=
 /amd/powerplay/amdgpu_smu.c
-> index 6a64f765fcd4..f1fbbc8b77ee 100644
+> index f1fbbc8b77ee..c9266ea70331 100644
 > --- a/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
 > +++ b/drivers/gpu/drm/amd/powerplay/amdgpu_smu.c
-> @@ -1384,7 +1384,7 @@ static int smu_resume(void *handle)
->          ret =3D smu_start_smc_engine(smu);
->          if (ret) {
->                  pr_err("SMU is not ready yet!\n");
-> -               return ret;
-> +               goto failed;
->          }
+> @@ -896,8 +896,7 @@ static int smu_init_fb_allocations(struct smu_context=
+ *smu)
+>          struct amdgpu_device *adev =3D smu->adev;
+>          struct smu_table_context *smu_table =3D &smu->smu_table;
+>          struct smu_table *tables =3D smu_table->tables;
+> -       uint32_t i =3D 0;
+> -       int32_t ret =3D 0;
+> +       int ret, i;
 >
->          ret =3D smu_smc_table_hw_init(smu, false);
+>          for (i =3D 0; i < SMU_TABLE_COUNT; i++) {
+>                  if (tables[i].size =3D=3D 0)
+> @@ -915,7 +914,7 @@ static int smu_init_fb_allocations(struct smu_context=
+ *smu)
+>
+>          return 0;
+>  failed:
+> -       for (; i > 0; i--) {
+> +       while (--i >=3D 0) {
+>                  if (tables[i].size =3D=3D 0)
+>                          continue;
+>                  amdgpu_bo_free_kernel(&tables[i].bo,
 > --
 > 2.20.1
 >
@@ -118,7 +141,3 @@ e proceeding on S3 resume")
 > amd-gfx mailing list
 > amd-gfx@lists.freedesktop.org
 > https://lists.freedesktop.org/mailman/listinfo/amd-gfx
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel

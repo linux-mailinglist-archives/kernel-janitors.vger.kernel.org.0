@@ -2,29 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93236CDF16
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 12:18:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1BEACDFB9
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 12:55:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727633AbfJGKSw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Oct 2019 06:18:52 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42756 "EHLO
+        id S1727496AbfJGKzR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Oct 2019 06:55:17 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:44336 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727262AbfJGKSv (ORCPT
+        with ESMTP id S1727252AbfJGKzR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Oct 2019 06:18:51 -0400
+        Mon, 7 Oct 2019 06:55:17 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iHQ6K-0001Gu-8G; Mon, 07 Oct 2019 10:18:48 +0000
+        id 1iHQfX-0004Il-2S; Mon, 07 Oct 2019 10:55:11 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Hans Verkuil <hverkuil@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org
+To:     Yisen Zhuang <yisen.zhuang@huawei.com>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] media: gspca: make array st6422_bridge_init static, makes object smaller
-Date:   Mon,  7 Oct 2019 11:18:48 +0100
-Message-Id: <20191007101848.30540-1-colin.king@canonical.com>
+Subject: [PATCH] net: hns: make arrays static, makes object smaller
+Date:   Mon,  7 Oct 2019 11:55:10 +0100
+Message-Id: <20191007105510.31858-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,37 +36,46 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Don't populate the array st6422_bridge_init on the stack but instead
-make it static. Makes the object code smaller by 231 bytes.
+Don't populate the arrays port_map and sl_map on the stack but
+instead make them static. Makes the object code smaller by 64 bytes.
 
 Before:
    text	   data	    bss	    dec	    hex	filename
-   3419	    752	     64	   4235	   108b	gspca/stv06xx/stv06xx_st6422.o
+  49575	   6872	     64	  56511	   dcbf	hisilicon/hns/hns_dsaf_main.o
 
 After:
    text	   data	    bss	    dec	    hex	filename
-   3124	    816	     64	   4004	    fa4	gspca/stv06xx/stv06xx_st6422.o
+  49350	   7032	     64	  56446	   dc7e	hisilicon/hns/hns_dsaf_main.o
 
 (gcc version 9.2.1, amd64)
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/media/usb/gspca/stv06xx/stv06xx_st6422.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/usb/gspca/stv06xx/stv06xx_st6422.c b/drivers/media/usb/gspca/stv06xx/stv06xx_st6422.c
-index 7104a88b1e43..aac19d449be2 100644
---- a/drivers/media/usb/gspca/stv06xx/stv06xx_st6422.c
-+++ b/drivers/media/usb/gspca/stv06xx/stv06xx_st6422.c
-@@ -117,7 +117,7 @@ static int st6422_init(struct sd *sd)
- {
- 	int err = 0, i;
- 
--	const u16 st6422_bridge_init[][2] = {
-+	static const u16 st6422_bridge_init[][2] = {
- 		{ STV_ISO_ENABLE, 0x00 }, /* disable capture */
- 		{ 0x1436, 0x00 },
- 		{ 0x1432, 0x03 },	/* 0x00-0x1F brightness */
+diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c
+index 3a14bbc26ea2..1c5243cc1dc6 100644
+--- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c
+@@ -3049,7 +3049,7 @@ int hns_dsaf_roce_reset(struct fwnode_handle *dsaf_fwnode, bool dereset)
+ 	u32 sl;
+ 	u32 credit;
+ 	int i;
+-	const u32 port_map[DSAF_ROCE_CREDIT_CHN][DSAF_ROCE_CHAN_MODE_NUM] = {
++	static const u32 port_map[DSAF_ROCE_CREDIT_CHN][DSAF_ROCE_CHAN_MODE_NUM] = {
+ 		{DSAF_ROCE_PORT_0, DSAF_ROCE_PORT_0, DSAF_ROCE_PORT_0},
+ 		{DSAF_ROCE_PORT_1, DSAF_ROCE_PORT_0, DSAF_ROCE_PORT_0},
+ 		{DSAF_ROCE_PORT_2, DSAF_ROCE_PORT_1, DSAF_ROCE_PORT_0},
+@@ -3059,7 +3059,7 @@ int hns_dsaf_roce_reset(struct fwnode_handle *dsaf_fwnode, bool dereset)
+ 		{DSAF_ROCE_PORT_5, DSAF_ROCE_PORT_3, DSAF_ROCE_PORT_1},
+ 		{DSAF_ROCE_PORT_5, DSAF_ROCE_PORT_3, DSAF_ROCE_PORT_1},
+ 	};
+-	const u32 sl_map[DSAF_ROCE_CREDIT_CHN][DSAF_ROCE_CHAN_MODE_NUM] = {
++	static const u32 sl_map[DSAF_ROCE_CREDIT_CHN][DSAF_ROCE_CHAN_MODE_NUM] = {
+ 		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_0, DSAF_ROCE_SL_0},
+ 		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_1, DSAF_ROCE_SL_1},
+ 		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_0, DSAF_ROCE_SL_2},
 -- 
 2.20.1
 

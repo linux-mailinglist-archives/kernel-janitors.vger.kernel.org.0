@@ -2,85 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B145CDE25
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 11:21:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60C9ECDE82
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 11:52:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727409AbfJGJVZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Oct 2019 05:21:25 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3214 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727278AbfJGJVZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Oct 2019 05:21:25 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id EE3E5EBCD1E71597C0C;
-        Mon,  7 Oct 2019 17:21:21 +0800 (CST)
-Received: from localhost (10.202.226.61) by DGGEMS407-HUB.china.huawei.com
- (10.3.19.207) with Microsoft SMTP Server id 14.3.439.0; Mon, 7 Oct 2019
- 17:21:19 +0800
-Date:   Mon, 7 Oct 2019 10:21:07 +0100
-From:   Jonathan Cameron <jonathan.cameron@huawei.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-CC:     Jonathan Cameron <jic23@kernel.org>,
-        "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>
-Subject: Re: [PATCH] iio: imu: adis16480: clean up a condition
-Message-ID: <20191007102107.000067b6@huawei.com>
-In-Reply-To: <20191006181439.GU22609@kadam>
-References: <20190926081016.GA2332@mwanda>
-        <9e40c550310d6f30e6481329e01061beb474bc33.camel@analog.com>
-        <20190926113630.GF27389@kadam>
-        <20191006095133.24fb89be@archlinux>
-        <20191006181439.GU22609@kadam>
-Organization: Huawei
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+        id S1727412AbfJGJwp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Oct 2019 05:52:45 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:42189 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726010AbfJGJwp (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 7 Oct 2019 05:52:45 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iHPh3-0007mO-7E; Mon, 07 Oct 2019 09:52:41 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Andy Walls <awalls@md.metrocast.net>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] media: cx18: make array mapping static, makes object smaller
+Date:   Mon,  7 Oct 2019 10:52:40 +0100
+Message-Id: <20191007095240.29540-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.202.226.61]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 6 Oct 2019 21:14:40 +0300
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> On Sun, Oct 06, 2019 at 09:51:33AM +0100, Jonathan Cameron wrote:
-> > On Thu, 26 Sep 2019 14:36:30 +0300
-> > Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> >   
-> > > On Thu, Sep 26, 2019 at 11:06:39AM +0000, Ardelean, Alexandru wrote:  
-> > > > On Thu, 2019-09-26 at 11:10 +0300, Dan Carpenter wrote:    
-> > > > > [External]
-> > > > > 
-> > > > > The "t" variable is unsigned so it can't be less than zero.  We really
-> > > > > are just trying to prevent divide by zero bugs so just checking against
-> > > > > zero is sufficient.  
-> > 
-> > I'm not sure that true.  It if were signed we'd be detecting that the
-> > input from userspace was negative.  
-> 
-> It does a really bad job of that though so it raises more questions than
-> answers.  Maybe just one of the parameters is negative or maybe the
-> multiply or the addition overflowed?  Should scenarios those be checked?
-> 
-> It turns out none of those situations matter, only divide by zero needs
-> to be checked.
+Don't populate the array mapping on the stack but instead make it
+static. Makes the object code smaller by 79 bytes.
 
-It isn't being nearly paranoid enough. Either val or val2 being
-negative is a reason to fault out.  Divide by zero needs handling after
-that.  Obviously divide by zero is the only one that causes a crash but
-negatives are going to cause rather 'unexpected' results.
+Before:
+   text	   data	    bss	    dec	    hex	filename
+  27572	   2096	      0	  29668	   73e4	drivers/media/pci/cx18/cx18-ioctl.o
 
-What fun.
+After:
+   text	   data	    bss	    dec	    hex	filename
+  27429	   2160	      0	  29589	   7395	drivers/media/pci/cx18/cx18-ioctl.o
 
-Jonathan
+(gcc version 9.2.1, amd64)
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/media/pci/cx18/cx18-ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/pci/cx18/cx18-ioctl.c b/drivers/media/pci/cx18/cx18-ioctl.c
+index 85f3e7307538..fa57e12f2ac8 100644
+--- a/drivers/media/pci/cx18/cx18-ioctl.c
++++ b/drivers/media/pci/cx18/cx18-ioctl.c
+@@ -664,7 +664,7 @@ static int _cx18_process_idx_data(struct cx18_buffer *buf,
+ 	struct cx18_enc_idx_entry *e_buf;
+ 
+ 	/* Frame type lookup: 1=I, 2=P, 4=B */
+-	const int mapping[8] = {
++	static const int mapping[8] = {
+ 		-1, V4L2_ENC_IDX_FRAME_I, V4L2_ENC_IDX_FRAME_P,
+ 		-1, V4L2_ENC_IDX_FRAME_B, -1, -1, -1
+ 	};
+-- 
+2.20.1
 

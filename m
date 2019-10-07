@@ -2,32 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C000CDFE8
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 13:09:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E56F2CE0EF
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 13:52:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727467AbfJGLJl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Oct 2019 07:09:41 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:44881 "EHLO
+        id S1727566AbfJGLwr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Oct 2019 07:52:47 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:46688 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727317AbfJGLJl (ORCPT
+        with ESMTP id S1727467AbfJGLwr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Oct 2019 07:09:41 -0400
+        Mon, 7 Oct 2019 07:52:47 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iHQtU-0005Nj-0p; Mon, 07 Oct 2019 11:09:36 +0000
+        id 1iHRZA-0008VF-4y; Mon, 07 Oct 2019 11:52:40 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Yisen Zhuang <yisen.zhuang@huawei.com>,
-        Salil Mehta <salil.mehta@huawei.com>,
+To:     Jakub Kicinski <jakub.kicinski@netronome.com>,
         "David S . Miller" <davem@davemloft.net>,
-        Huazhong Tan <tanhuazhong@huawei.com>,
-        Yunsheng Lin <linyunsheng@huawei.com>,
-        Peng Li <lipeng321@huawei.com>, netdev@vger.kernel.org
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        netdev@vger.kernel.org, bpf@vger.kernel.org,
+        oss-drivers@netronome.com
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] net: hns3: make array tick_array static, makes object smaller
-Date:   Mon,  7 Oct 2019 12:09:35 +0100
-Message-Id: <20191007110935.32607-1-colin.king@canonical.com>
+Subject: [PATCH] nfp: bpf: make array exp_mask static, makes object smaller
+Date:   Mon,  7 Oct 2019 12:52:39 +0100
+Message-Id: <20191007115239.1742-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,37 +41,37 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Don't populate the array tick_array on the stack but instead make it
-static. Makes the object code smaller by 29 bytes.
+Don't populate the array exp_mask on the stack but instead make it
+static. Makes the object code smaller by 224 bytes.
 
 Before:
    text	   data	    bss	    dec	    hex	filename
-  19191	    432	      0	  19623	   4ca7	hisilicon/hns3/hns3pf/hclge_tm.o
+  77832	   2290	      0	  80122	  138fa	ethernet/netronome/nfp/bpf/jit.o
 
 After:
    text	   data	    bss	    dec	    hex	filename
-  19098	    496	      0	  19594	   4c8a	hisilicon/hns3/hns3pf/hclge_tm.o
+  77544	   2354	      0	  79898	  1381a	ethernet/netronome/nfp/bpf/jit.o
 
 (gcc version 9.2.1, amd64)
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c | 2 +-
+ drivers/net/ethernet/netronome/nfp/bpf/jit.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-index 9f0e35f27789..5cce9b7f1d3d 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-@@ -46,7 +46,7 @@ static int hclge_shaper_para_calc(u32 ir, u8 shaper_level,
- #define DIVISOR_CLK		(1000 * 8)
- #define DIVISOR_IR_B_126	(126 * DIVISOR_CLK)
- 
--	const u16 tick_array[HCLGE_SHAPER_LVL_CNT] = {
-+	static const u16 tick_array[HCLGE_SHAPER_LVL_CNT] = {
- 		6 * 256,        /* Prioriy level */
- 		6 * 32,         /* Prioriy group level */
- 		6 * 8,          /* Port level */
+diff --git a/drivers/net/ethernet/netronome/nfp/bpf/jit.c b/drivers/net/ethernet/netronome/nfp/bpf/jit.c
+index 5afcb3c4c2ef..c80bb83c8ac9 100644
+--- a/drivers/net/ethernet/netronome/nfp/bpf/jit.c
++++ b/drivers/net/ethernet/netronome/nfp/bpf/jit.c
+@@ -3952,7 +3952,7 @@ static void nfp_bpf_opt_neg_add_sub(struct nfp_prog *nfp_prog)
+ static void nfp_bpf_opt_ld_mask(struct nfp_prog *nfp_prog)
+ {
+ 	struct nfp_insn_meta *meta1, *meta2;
+-	const s32 exp_mask[] = {
++	static const s32 exp_mask[] = {
+ 		[BPF_B] = 0x000000ffU,
+ 		[BPF_H] = 0x0000ffffU,
+ 		[BPF_W] = 0xffffffffU,
 -- 
 2.20.1
 

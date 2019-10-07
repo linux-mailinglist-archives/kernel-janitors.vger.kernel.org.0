@@ -2,29 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1BEACDFB9
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 12:55:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C000CDFE8
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 13:09:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727496AbfJGKzR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Oct 2019 06:55:17 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:44336 "EHLO
+        id S1727467AbfJGLJl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Oct 2019 07:09:41 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:44881 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727252AbfJGKzR (ORCPT
+        with ESMTP id S1727317AbfJGLJl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Oct 2019 06:55:17 -0400
+        Mon, 7 Oct 2019 07:09:41 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iHQfX-0004Il-2S; Mon, 07 Oct 2019 10:55:11 +0000
+        id 1iHQtU-0005Nj-0p; Mon, 07 Oct 2019 11:09:36 +0000
 From:   Colin King <colin.king@canonical.com>
 To:     Yisen Zhuang <yisen.zhuang@huawei.com>,
         Salil Mehta <salil.mehta@huawei.com>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+        "David S . Miller" <davem@davemloft.net>,
+        Huazhong Tan <tanhuazhong@huawei.com>,
+        Yunsheng Lin <linyunsheng@huawei.com>,
+        Peng Li <lipeng321@huawei.com>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] net: hns: make arrays static, makes object smaller
-Date:   Mon,  7 Oct 2019 11:55:10 +0100
-Message-Id: <20191007105510.31858-1-colin.king@canonical.com>
+Subject: [PATCH] net: hns3: make array tick_array static, makes object smaller
+Date:   Mon,  7 Oct 2019 12:09:35 +0100
+Message-Id: <20191007110935.32607-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,46 +39,37 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Don't populate the arrays port_map and sl_map on the stack but
-instead make them static. Makes the object code smaller by 64 bytes.
+Don't populate the array tick_array on the stack but instead make it
+static. Makes the object code smaller by 29 bytes.
 
 Before:
    text	   data	    bss	    dec	    hex	filename
-  49575	   6872	     64	  56511	   dcbf	hisilicon/hns/hns_dsaf_main.o
+  19191	    432	      0	  19623	   4ca7	hisilicon/hns3/hns3pf/hclge_tm.o
 
 After:
    text	   data	    bss	    dec	    hex	filename
-  49350	   7032	     64	  56446	   dc7e	hisilicon/hns/hns_dsaf_main.o
+  19098	    496	      0	  19594	   4c8a	hisilicon/hns3/hns3pf/hclge_tm.o
 
 (gcc version 9.2.1, amd64)
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c
-index 3a14bbc26ea2..1c5243cc1dc6 100644
---- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_main.c
-@@ -3049,7 +3049,7 @@ int hns_dsaf_roce_reset(struct fwnode_handle *dsaf_fwnode, bool dereset)
- 	u32 sl;
- 	u32 credit;
- 	int i;
--	const u32 port_map[DSAF_ROCE_CREDIT_CHN][DSAF_ROCE_CHAN_MODE_NUM] = {
-+	static const u32 port_map[DSAF_ROCE_CREDIT_CHN][DSAF_ROCE_CHAN_MODE_NUM] = {
- 		{DSAF_ROCE_PORT_0, DSAF_ROCE_PORT_0, DSAF_ROCE_PORT_0},
- 		{DSAF_ROCE_PORT_1, DSAF_ROCE_PORT_0, DSAF_ROCE_PORT_0},
- 		{DSAF_ROCE_PORT_2, DSAF_ROCE_PORT_1, DSAF_ROCE_PORT_0},
-@@ -3059,7 +3059,7 @@ int hns_dsaf_roce_reset(struct fwnode_handle *dsaf_fwnode, bool dereset)
- 		{DSAF_ROCE_PORT_5, DSAF_ROCE_PORT_3, DSAF_ROCE_PORT_1},
- 		{DSAF_ROCE_PORT_5, DSAF_ROCE_PORT_3, DSAF_ROCE_PORT_1},
- 	};
--	const u32 sl_map[DSAF_ROCE_CREDIT_CHN][DSAF_ROCE_CHAN_MODE_NUM] = {
-+	static const u32 sl_map[DSAF_ROCE_CREDIT_CHN][DSAF_ROCE_CHAN_MODE_NUM] = {
- 		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_0, DSAF_ROCE_SL_0},
- 		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_1, DSAF_ROCE_SL_1},
- 		{DSAF_ROCE_SL_0, DSAF_ROCE_SL_0, DSAF_ROCE_SL_2},
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
+index 9f0e35f27789..5cce9b7f1d3d 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
+@@ -46,7 +46,7 @@ static int hclge_shaper_para_calc(u32 ir, u8 shaper_level,
+ #define DIVISOR_CLK		(1000 * 8)
+ #define DIVISOR_IR_B_126	(126 * DIVISOR_CLK)
+ 
+-	const u16 tick_array[HCLGE_SHAPER_LVL_CNT] = {
++	static const u16 tick_array[HCLGE_SHAPER_LVL_CNT] = {
+ 		6 * 256,        /* Prioriy level */
+ 		6 * 32,         /* Prioriy group level */
+ 		6 * 8,          /* Port level */
 -- 
 2.20.1
 

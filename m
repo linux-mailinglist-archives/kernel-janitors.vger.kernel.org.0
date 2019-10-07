@@ -2,67 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D270ECE89B
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 18:06:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D456CE8AA
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 18:08:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727931AbfJGQGD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Oct 2019 12:06:03 -0400
-Received: from mail-wr1-f53.google.com ([209.85.221.53]:36673 "EHLO
-        mail-wr1-f53.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727791AbfJGQGD (ORCPT
+        id S1728242AbfJGQIc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Oct 2019 12:08:32 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:54589 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727711AbfJGQIc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Oct 2019 12:06:03 -0400
-Received: by mail-wr1-f53.google.com with SMTP id y19so16016482wrd.3;
-        Mon, 07 Oct 2019 09:06:02 -0700 (PDT)
+        Mon, 7 Oct 2019 12:08:32 -0400
+Received: by mail-wm1-f66.google.com with SMTP id p7so77815wmp.4;
+        Mon, 07 Oct 2019 09:08:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=UO5DnHkttF/IxDQcQKOk9eSbt7yoz0JBUdSNkQ1IXmg=;
-        b=aexpecD6viCna85hBK3lWtRFaA408/UmysRT8DRcBfpZSg93NgPsWcA4y17eJpv98+
-         Lr4S9qqYNqBe2aZaO23qbggLovVN5X3oA6Ns8RQwEbPekQN8UhAkBzKmOYpqDLiWZd1C
-         McFyohhiA3d+zVqkfkOp6KSjYyjy/Po+Uc5rT7Vqnu6YpiMwh6kljvYVoeljT5Oxy3QE
-         nrtrW7VQFOt4wI1D3bbGyRtHwkOzagybm6YggBHiXszScbjYaq8rwtiNweixbcqQMk18
-         y7OYLkU4b7xpVV7vWkW7LPNyOojdyyd0wK6FKRQMxGELi7/VnMEX/IBK9F0zv9GWPm/G
-         bClA==
+        bh=Z1iEZfsz63+hFaflS3INWnySuglWD+I2yD90meQjneg=;
+        b=hc6iJa4GVuhNuWWKGTrUwO7QaLE2DMH8tSuKd1N7fa2ey63T4C3Sv79QBeWNYBbDYE
+         IBuGrRoyMSkcqqgjaMBcN2U+I5kYsOZmpfe25vJ4AO9sBXoWXaqq0f1F8XeJ3dN6nuCj
+         id/bC57fyx6raHUDxh1UvEP2H/ZuD8KWZfDyFRUUAHQRLL8MC+/7k8CaMDbuIb4lr6PY
+         r6FfQh4xBIcS0GPcIpDSGfh7pmn7rxiwEW0cgQeJWM//Ojfd1i58lKyL2uopQNa6BE01
+         bGR7j88/Vab0pw636IuaEb8mq9eqk79QlZKmvc2fRSb8e+GubGoRijjFLnyJsQATvW04
+         539Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=UO5DnHkttF/IxDQcQKOk9eSbt7yoz0JBUdSNkQ1IXmg=;
-        b=eWJLuUNa/L3h5tbJ56LyjA3zuU26skSSJtV0/5HCxEgudzRXeMg5MLseccqlZfcjkF
-         fvjvlo1yh7xADquNPqH1HmGZcj/w1oUtSrue4PG3ZxC6eC5Jc4EC0shC73itH9348wfq
-         QHmCpA5HuqYwTOC6i8zQ+4FRKaTKo9E6ajxHnW8YqF3QiDG+gvsMrhtLRrJ68IZcchIQ
-         ANQ/JXMvbQ2TSU6xsgCu7Yusn7ZTLRQTBf/aLEdlj1hx/9dIEvoZPDammorXnINdV4Pe
-         ariUKGnLZsPjZ/h2A28/ysIc5qfumQA8N42bclILFda3qgfiP1WwMdpMMh+IBgXTv+aX
-         ASsw==
-X-Gm-Message-State: APjAAAX+172k4cZ+m5vC2EEzHC9Zf2NgPVe3SzP2pYhYsgAqt4HRiSa0
-        5+QkRSknJYM3CqsrA5ZTU+Ou0teajvIrVdwEPds=
-X-Google-Smtp-Source: APXvYqxlLQThATUxba72YxTF1mD0OWv8L5tcMETwDHaKLYWk4rFG+XmRyDyxq5Y7AfjRXQzKbNQaRcLVVW6sbUA0UYA=
-X-Received: by 2002:a5d:6052:: with SMTP id j18mr12867036wrt.40.1570464361311;
- Mon, 07 Oct 2019 09:06:01 -0700 (PDT)
+        bh=Z1iEZfsz63+hFaflS3INWnySuglWD+I2yD90meQjneg=;
+        b=ZCQPXqjBJlOCfdcK8eRbygK/RSfYKdmKZwp2KN4wCViQ6OB+cFZnhHKZE3VO6PRdJo
+         igolQgrNdutiRwTd10otapCpkSqsz82GjquV0zFYszjT42Ttg4yQalyiS4ayLIVkxHp7
+         MJqKIjBXrpuqnc0rODxVoRUn/NBOUOGIlmHsV2rRP8GcJP66hAuR7EB5+Bz9Z4fNQYu7
+         maEh4kQWVJp5VffVtiBjhQU4Y7Pz7Hay7ZP1qCMZW6KWMAGe9BPgjePYHJzzJLfvkKT5
+         hgwFLRDoPWOFt0jXh1QWwRKM/EoqdW5NUzTD0XunYcu1lJfVBxE/DOIaln7CA8d5hOt0
+         a47A==
+X-Gm-Message-State: APjAAAUoqjDp1OyIwvDEoDImpDDsCftmEV9jNR/AqRBkOcRzwviOIhiq
+        NOpCVzI1NHlWsdHy9l3aQGMClWDGH4eZCkokEnNU0A==
+X-Google-Smtp-Source: APXvYqyq4efJgRyiW1dhwc+BXSa/rMaGmKzS1bwzST3wnGDfySKyRkkUk67CpkWeFqq/cYJquUmsPhHAH94fVc4ULu0=
+X-Received: by 2002:a1c:3908:: with SMTP id g8mr64842wma.34.1570464509638;
+ Mon, 07 Oct 2019 09:08:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191006074404.48416-1-yuehaibing@huawei.com>
-In-Reply-To: <20191006074404.48416-1-yuehaibing@huawei.com>
+References: <20191005175808.32018-1-colin.king@canonical.com>
+In-Reply-To: <20191005175808.32018-1-colin.king@canonical.com>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Mon, 7 Oct 2019 12:05:48 -0400
-Message-ID: <CADnq5_Pjh2xXFHOSHg2NVQfYju21LUnWeAC4+rv-G2_hJVmOYw@mail.gmail.com>
-Subject: Re: [PATCH -next] drm/amdgpu: remove duplicated include from mmhub_v1_0.c
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Alex Deucher <alexander.deucher@amd.com>,
-        Christian Koenig <christian.koenig@amd.com>,
-        Chunming Zhou <David1.Zhou@amd.com>,
-        Dave Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, "Le.Ma" <le.ma@amd.com>,
-        Yong Zhao <Yong.Zhao@amd.com>,
-        Trigger Huang <Trigger.Huang@amd.com>,
-        Tao Zhou <tao.zhou1@amd.com>,
-        Hawking Zhang <Hawking.Zhang@amd.com>,
-        "Kuehling, Felix" <Felix.Kuehling@amd.com>,
-        kernel-janitors@vger.kernel.org,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>,
+Date:   Mon, 7 Oct 2019 12:08:17 -0400
+Message-ID: <CADnq5_PkTbzqNfesJt29SaB7=R0x4BdoNmHiNDXrHwqj02JUGg@mail.gmail.com>
+Subject: Re: [PATCH] drm/amdkfd: add missing void argument to function kgd2kfd_init
+To:     Colin King <colin.king@canonical.com>
+Cc:     Felix Kuehling <Felix.Kuehling@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
         amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -70,37 +65,40 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Sat, Oct 5, 2019 at 1:58 PM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> Function kgd2kfd_init is missing a void argument, add it
+> to clean up the non-ANSI function declaration.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
 Applied.  thanks!
 
 Alex
 
-On Sun, Oct 6, 2019 at 11:05 PM YueHaibing <yuehaibing@huawei.com> wrote:
->
-> Remove duplicated include.
->
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 > ---
->  drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c | 1 -
->  1 file changed, 1 deletion(-)
+>  drivers/gpu/drm/amd/amdkfd/kfd_module.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c
-> index 4c7e8c64a94e..6965e1e6fa9e 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/mmhub_v1_0.c
-> @@ -31,7 +31,6 @@
->  #include "vega10_enum.h"
+> diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_module.c b/drivers/gpu/drm/amd/amdkfd/kfd_module.c
+> index 986ff52d5750..f4b7f7e6c40e 100644
+> --- a/drivers/gpu/drm/amd/amdkfd/kfd_module.c
+> +++ b/drivers/gpu/drm/amd/amdkfd/kfd_module.c
+> @@ -82,7 +82,7 @@ static void kfd_exit(void)
+>         kfd_chardev_exit();
+>  }
 >
->  #include "soc15_common.h"
-> -#include "amdgpu_ras.h"
->
->  #define mmDAGB0_CNTL_MISC2_RV 0x008f
->  #define mmDAGB0_CNTL_MISC2_RV_BASE_IDX 0
->
->
->
->
+> -int kgd2kfd_init()
+> +int kgd2kfd_init(void)
+>  {
+>         return kfd_init();
+>  }
+> --
+> 2.20.1
 >
 > _______________________________________________
-> amd-gfx mailing list
-> amd-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/amd-gfx
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

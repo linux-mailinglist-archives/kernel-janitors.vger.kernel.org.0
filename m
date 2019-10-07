@@ -2,115 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D8276CE86F
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 17:56:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E631CE881
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 17:58:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728590AbfJGP4O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Oct 2019 11:56:14 -0400
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:36845 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727791AbfJGP4O (ORCPT
+        id S1728088AbfJGP6g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Oct 2019 11:58:36 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:40687 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728028AbfJGP6g (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Oct 2019 11:56:14 -0400
-Received: by mail-wr1-f66.google.com with SMTP id y19so15974239wrd.3;
-        Mon, 07 Oct 2019 08:56:11 -0700 (PDT)
+        Mon, 7 Oct 2019 11:58:36 -0400
+Received: by mail-pg1-f196.google.com with SMTP id d26so8473480pgl.7
+        for <kernel-janitors@vger.kernel.org>; Mon, 07 Oct 2019 08:58:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DKl/PfgKAr8YhYEpS+YymS2q68h7uKqU67+A+i7H4JI=;
-        b=JAkfGW2fPhaHwu0r9uGVsSnnwKsartCh6UKqSuYnahS/t+YLlfImE2qxkw0cKF1IuD
-         k8ym2ZMJljbeH0v2fLjNn0tx29Pyi1Kjmxr0QJnPF4ppQmP39wc21eO5wxswpJ5FrOA7
-         Pn1d5rIc42LYilntEcM6NsrZxRShz3m2TO3SpXLqNNq7CmgBc532yIy7+RzubAMwjbaZ
-         bOEBt2Oo7IQ1B5ROl4U+YyNc+DKU8HfWBT9iCMPsyrY4aSI2ywXr4yJ4KVpdDPEvTp6t
-         LHqxKeFN5iLPeCYKWvCeuoxU3gEOxfKG/b6D6GYjg1Uu0fYdMDrJfXUP3F6XJmGrw1Aj
-         wWTA==
+        d=netronome-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :organization:mime-version:content-transfer-encoding;
+        bh=Q7rtzjnFJDzgl/cFLK/ImgYohSqUsKxMtww2iZ3LFxI=;
+        b=L2UEzrQNyW4qR/63zw8zkgy4pyfPvUqJc191PUYuwqqFBzcRgHsTNjOtcz6sShZIPb
+         dA/SN5iqkK380QeTr1TMQyMEyXWItFVoOPj0BTJNHvHvuYLm8lwTdbOSUuFCTyIH59hE
+         pzW6qE93mQZcysE7SxfrOnzobpeM0RpPQZ9ky1GwjbHD6Kd1PNsjg2bdQ46qNOywYScA
+         hRSrZvH5pu1GKgAXwZ2wpS+5O5gmxXTtnvm6JIiCE+/vjMomuawzyr7sRW5LQh9nYmYF
+         2X+6u2WLm9hpqjydnIc+4dnn/LIoudKifm2BFrmEQJ8LHa46ej0iFH/IjS8BvBCylDv5
+         4zkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DKl/PfgKAr8YhYEpS+YymS2q68h7uKqU67+A+i7H4JI=;
-        b=Eg0JuFM3DNIqjb1pINgN8tFwJna0MB/hSUE7+BxBfu73J4n2WNSy5ILcs7cz2DNz7N
-         DlYAE/52fm6vcAs5DHLHMWpgj9RvsgQRg4pc0bPJN1vA9F7pjzHq/8QLWWwr/JBEnyeP
-         QoEDqrQbkAPfaEck2NqZkuTGSOwzpmt4focLZw8t87bJW5XRE9tk7Wj+Ppn0QA5hW9ZC
-         KflEAg4iONoxEsPt9nrRrA4wFQozVgp+xCnwLVIxXUIOwnwcjd7PzjYTuBvuMg4YhWK6
-         ProHcupv0uEOSg0kLGim1GdkFvqV7Wy7gK5fHQZp5il+VAvcB+/hqbB7tugq4WNd0m3g
-         OxYQ==
-X-Gm-Message-State: APjAAAXH2mj1Xfg5zwoffNTA+qdw0rQpHiGajc6cH0flF7zO9u1+DAi+
-        N+6wn5ORLboIAtDofqVMm95tgO7NsDkj3siBNz0=
-X-Google-Smtp-Source: APXvYqzWRusk54BRlh8Vj4kcGxAB4PQIYCfS3CJJZ8LD48feZ0ZtBtZKhBITIHTmurRV0B3SD7aw+dSJ7U9VUoYljLo=
-X-Received: by 2002:adf:fc07:: with SMTP id i7mr8222186wrr.50.1570463770859;
- Mon, 07 Oct 2019 08:56:10 -0700 (PDT)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:organization:mime-version:content-transfer-encoding;
+        bh=Q7rtzjnFJDzgl/cFLK/ImgYohSqUsKxMtww2iZ3LFxI=;
+        b=Ai8nYR77NGE8OuhybUUaSbnGqEJwkKwpDKe72UsIu5ufmpL6d1MyHtiiiwUmC2HBDP
+         hQzwIQF5vpDWQNRNlRUN9ywwDB7syCxhkZiosITaD2F41dm2q+Ha71lDV3VT39sVIPgv
+         xc/08hdpoZMxUf8gC8Pm0i7Xpe+q3bsAa/p9y02lFI4ztR9RQoF/wlBmyBlVW9NCyT/H
+         edkOzFMVf2gdndwHaIUDd/ihdfCT6cLq0dNkUKAa96JF9O2/F1HS+32kqelxJeugY6RA
+         oIRewa2jRptFm8LOUyvT/DITRbxM59FI8nGgOt78xNZ+rjQb/y/MNZjy+8k8B9D2nhOa
+         IzUw==
+X-Gm-Message-State: APjAAAV3RAA2FYkmDaNT9ZYfcRaAzQ0yWNm+/0xEbVKCVfNr4Cmi1DS0
+        Nr5jahD6oBKkaY7lMm+39Ce/7Q==
+X-Google-Smtp-Source: APXvYqyhi32l/kmuUlMffnp2RlvNzUjYV7K3wiMTR7LXwgMxFjOP7LmfHSTRyJu+7lqWRtUm/ypu7w==
+X-Received: by 2002:a63:f915:: with SMTP id h21mr31135096pgi.269.1570463914153;
+        Mon, 07 Oct 2019 08:58:34 -0700 (PDT)
+Received: from cakuba.netronome.com (c-73-202-202-92.hsd1.ca.comcast.net. [73.202.202.92])
+        by smtp.gmail.com with ESMTPSA id y2sm17266224pfe.126.2019.10.07.08.58.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Oct 2019 08:58:33 -0700 (PDT)
+Date:   Mon, 7 Oct 2019 08:58:24 -0700
+From:   Jakub Kicinski <jakub.kicinski@netronome.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        netdev@vger.kernel.org, bpf@vger.kernel.org,
+        oss-drivers@netronome.com, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] nfp: bpf: make array exp_mask static, makes object
+ smaller
+Message-ID: <20191007085824.64c89788@cakuba.netronome.com>
+In-Reply-To: <20191007115239.1742-1-colin.king@canonical.com>
+References: <20191007115239.1742-1-colin.king@canonical.com>
+Organization: Netronome Systems, Ltd.
 MIME-Version: 1.0
-References: <20191005113205.14601-1-christophe.jaillet@wanadoo.fr> <04e006aa-a354-dfe3-3d13-d674c662c300@amd.com>
-In-Reply-To: <04e006aa-a354-dfe3-3d13-d674c662c300@amd.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Mon, 7 Oct 2019 11:55:58 -0400
-Message-ID: <CADnq5_NhypGdi6z78BbWimAZVtEDxhe1Rw=D4p7JPQNH0Kdqyw@mail.gmail.com>
-Subject: Re: [PATCH] drm/amd/display: Fix typo in some comments
-To:     Harry Wentland <hwentlan@amd.com>
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        "Wentland, Harry" <Harry.Wentland@amd.com>,
-        "Li, Sun peng (Leo)" <Sunpeng.Li@amd.com>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
-        "airlied@linux.ie" <airlied@linux.ie>,
-        "daniel@ffwll.ch" <daniel@ffwll.ch>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Oct 7, 2019 at 10:13 AM Harry Wentland <hwentlan@amd.com> wrote:
->
-> On 2019-10-05 7:32 a.m., Christophe JAILLET wrote:
-> > p and g are switched in 'amdpgu_dm'
-> >
-> > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->
-> Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+On Mon,  7 Oct 2019 12:52:39 +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Don't populate the array exp_mask on the stack but instead make it
+> static. Makes the object code smaller by 224 bytes.
+> 
+> Before:
+>    text	   data	    bss	    dec	    hex	filename
+>   77832	   2290	      0	  80122	  138fa	ethernet/netronome/nfp/bpf/jit.o
+> 
+> After:
+>    text	   data	    bss	    dec	    hex	filename
+>   77544	   2354	      0	  79898	  1381a	ethernet/netronome/nfp/bpf/jit.o
+> 
+> (gcc version 9.2.1, amd64)
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Applied.  thanks!
-
-Alex
-
->
-> Harry
->
-> > ---
-> >  drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> > index 92932d521d7f..b9c2e1a930ab 100644
-> > --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> > +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> > @@ -1043,7 +1043,7 @@ static void s3_handle_mst(struct drm_device *dev, bool suspend)
-> >
-> >  /**
-> >   * dm_hw_init() - Initialize DC device
-> > - * @handle: The base driver device containing the amdpgu_dm device.
-> > + * @handle: The base driver device containing the amdgpu_dm device.
-> >   *
-> >   * Initialize the &struct amdgpu_display_manager device. This involves calling
-> >   * the initializers of each DM component, then populating the struct with them.
-> > @@ -1073,7 +1073,7 @@ static int dm_hw_init(void *handle)
-> >
-> >  /**
-> >   * dm_hw_fini() - Teardown DC device
-> > - * @handle: The base driver device containing the amdpgu_dm device.
-> > + * @handle: The base driver device containing the amdgpu_dm device.
-> >   *
-> >   * Teardown components within &struct amdgpu_display_manager that require
-> >   * cleanup. This involves cleaning up the DRM device, DC, and any modules that
-> >
-> _______________________________________________
-> amd-gfx mailing list
-> amd-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/amd-gfx
+Acked-by: Jakub Kicinski <jakub.kicinski@netronome.com>

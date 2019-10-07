@@ -2,118 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6AB3CE360
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 15:26:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70495CE3EF
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 15:41:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728191AbfJGNZ3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Oct 2019 09:25:29 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:36140 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727324AbfJGNZ2 (ORCPT
+        id S1728140AbfJGNlS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Oct 2019 09:41:18 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:49697 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726334AbfJGNlS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Oct 2019 09:25:28 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x97DJEMn044722;
-        Mon, 7 Oct 2019 13:25:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=CjAq2/qIQ+hwx+J1512MljThH+9wP2hyv7uTXzQ8/ps=;
- b=i3/yK5MrK0JFZNPBX5l974i3IlH9H9BBtbIxX5oWOGo7JVoBVKie72fW7IbWelYwRt6j
- RFduqLV/h/rz+GHDxJOEJyeabgG/AedoHFMxJGzhOue6tOy6RXX2Q3Qtap2UYBu2w6xE
- +gfkdijAx0K+maHOinBb/NAE3Ty6D2wuVPHIQpSuHR4DkH2GghY0faiMGh1buH/R60Ct
- CzP8rWKI1e8CXNshnVvDJj7YvTJzFUyCYL0pvirXXfC5FnScU4dThRIs6bYY0Wn0JFd7
- iPKHHQyxQpVE7L6CFiEyWK7nHhDp+pkwwNmlXOZQAY6dU5JZonIPM6Jih+T1frb6I+Xh FA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 2vejku6py0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 07 Oct 2019 13:25:17 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x97DHrbC037339;
-        Mon, 7 Oct 2019 13:25:17 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 2vg203rtxk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 07 Oct 2019 13:25:17 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x97DPEfm017826;
-        Mon, 7 Oct 2019 13:25:15 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 07 Oct 2019 13:25:13 +0000
-Date:   Mon, 7 Oct 2019 16:25:05 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     Liviu Dudau <liviu.dudau@arm.com>,
-        James Wang <james.qian.wang@arm.com>,
-        Brian Starkey <brian.starkey@arm.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] drm/komeda: remove redundant assignment to pointer
- disable_done
-Message-ID: <20191007132505.GV22609@kadam>
-References: <20191004162156.325-1-colin.king@canonical.com>
- <20191004192720.7eiqdvsm2yv62svg@e110455-lin.cambridge.arm.com>
- <35232014-f65a-f7a1-99db-8ed91f610a77@canonical.com>
+        Mon, 7 Oct 2019 09:41:18 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iHTGD-0008KW-IG; Mon, 07 Oct 2019 13:41:13 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Stanislaw Gruszka <sgruszka@redhat.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] iwlegacy: make array interval static, makes object smaller
+Date:   Mon,  7 Oct 2019 14:41:13 +0100
+Message-Id: <20191007134113.5647-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <35232014-f65a-f7a1-99db-8ed91f610a77@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9402 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=919
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910070134
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9402 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910070134
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Oct 04, 2019 at 10:53:44PM +0100, Colin Ian King wrote:
-> On 04/10/2019 20:27, Liviu Dudau wrote:
-> > On Fri, Oct 04, 2019 at 05:21:56PM +0100, Colin King wrote:
-> >> From: Colin Ian King <colin.king@canonical.com>
-> >>
-> >> The pointer disable_done is being initialized with a value that
-> >> is never read and is being re-assigned a little later on. The
-> >> assignment is redundant and hence can be removed.
-> > 
-> > Not really true, isn't it? The re-assignment is done under the condition that
-> > crtc->state->active is true. disable_done will be used regardless after the if
-> > block, so we can't skip this initialisation.
-> > 
-> > Not sure why Coverity flags this, but I would NAK this patch.
-> 
-> I'm patching against the driver from linux-next so I believe this is OK
-> for that. I believe your statement is true against linux which does not
-> have commit:
-> 
-> d6cb013579e743bc7bc5590ca35a1943f2b8f3c8
-> Author: Lowry Li (Arm Technology China) <Lowry.Li@arm.com>
-> Date:   Fri Sep 6 07:18:06 2019 +0000
-> 
+From: Colin Ian King <colin.king@canonical.com>
 
-It really does help reviewing patches when this is mentioned in the
-commit message.
+Don't populate the array interval on the stack but instead make it
+static. Makes the object code smaller by 121 bytes.
 
-There is some debate about whether this should be mentioned as a Fixes
-since it doesn't fix a bug.  I initialy felt it shouldn't be, but now
-I think enough people think it should be listed as Fixes that I must be
-wrong.  Either way, it's very useful information.
+Before:
+   text	   data	    bss	    dec	    hex	filename
+ 167797	  29676	    448	 197921	  30521	wireless/intel/iwlegacy/common.o
 
-The other thing is that soon get_maintainer.pl will start CC'ing people
-from the Fixes tag and right now Lowry Li is not CC'd so that's
-unfortunate.
+After:
+   text	   data	    bss	    dec	    hex	filename
+ 167580	  29772	    448	 197800	  304a8	wireless/intel/iwlegacy/common.o
 
-regards,
-dan carpenter
+(gcc version 9.2.1, amd64)
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/intel/iwlegacy/common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
+index 73f7bbf742bc..e4ea734e58d8 100644
+--- a/drivers/net/wireless/intel/iwlegacy/common.c
++++ b/drivers/net/wireless/intel/iwlegacy/common.c
+@@ -1072,7 +1072,7 @@ EXPORT_SYMBOL(il_get_channel_info);
+ static void
+ il_build_powertable_cmd(struct il_priv *il, struct il_powertable_cmd *cmd)
+ {
+-	const __le32 interval[3][IL_POWER_VEC_SIZE] = {
++	static const __le32 interval[3][IL_POWER_VEC_SIZE] = {
+ 		SLP_VEC(2, 2, 4, 6, 0xFF),
+ 		SLP_VEC(2, 4, 7, 10, 10),
+ 		SLP_VEC(4, 7, 10, 10, 0xFF)
+-- 
+2.20.1
 

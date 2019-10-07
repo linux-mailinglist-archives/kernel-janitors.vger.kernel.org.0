@@ -2,84 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01003CE805
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 17:42:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8276CE86F
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 17:56:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728071AbfJGPmC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Oct 2019 11:42:02 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:53648 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727791AbfJGPmC (ORCPT
+        id S1728590AbfJGP4O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Oct 2019 11:56:14 -0400
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:36845 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727791AbfJGP4O (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Oct 2019 11:42:02 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iHV8x-0000bB-Pu; Mon, 07 Oct 2019 15:41:51 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/i915: make array hw_engine_mask static, makes object smaller
-Date:   Mon,  7 Oct 2019 16:41:51 +0100
-Message-Id: <20191007154151.23245-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Mon, 7 Oct 2019 11:56:14 -0400
+Received: by mail-wr1-f66.google.com with SMTP id y19so15974239wrd.3;
+        Mon, 07 Oct 2019 08:56:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DKl/PfgKAr8YhYEpS+YymS2q68h7uKqU67+A+i7H4JI=;
+        b=JAkfGW2fPhaHwu0r9uGVsSnnwKsartCh6UKqSuYnahS/t+YLlfImE2qxkw0cKF1IuD
+         k8ym2ZMJljbeH0v2fLjNn0tx29Pyi1Kjmxr0QJnPF4ppQmP39wc21eO5wxswpJ5FrOA7
+         Pn1d5rIc42LYilntEcM6NsrZxRShz3m2TO3SpXLqNNq7CmgBc532yIy7+RzubAMwjbaZ
+         bOEBt2Oo7IQ1B5ROl4U+YyNc+DKU8HfWBT9iCMPsyrY4aSI2ywXr4yJ4KVpdDPEvTp6t
+         LHqxKeFN5iLPeCYKWvCeuoxU3gEOxfKG/b6D6GYjg1Uu0fYdMDrJfXUP3F6XJmGrw1Aj
+         wWTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DKl/PfgKAr8YhYEpS+YymS2q68h7uKqU67+A+i7H4JI=;
+        b=Eg0JuFM3DNIqjb1pINgN8tFwJna0MB/hSUE7+BxBfu73J4n2WNSy5ILcs7cz2DNz7N
+         DlYAE/52fm6vcAs5DHLHMWpgj9RvsgQRg4pc0bPJN1vA9F7pjzHq/8QLWWwr/JBEnyeP
+         QoEDqrQbkAPfaEck2NqZkuTGSOwzpmt4focLZw8t87bJW5XRE9tk7Wj+Ppn0QA5hW9ZC
+         KflEAg4iONoxEsPt9nrRrA4wFQozVgp+xCnwLVIxXUIOwnwcjd7PzjYTuBvuMg4YhWK6
+         ProHcupv0uEOSg0kLGim1GdkFvqV7Wy7gK5fHQZp5il+VAvcB+/hqbB7tugq4WNd0m3g
+         OxYQ==
+X-Gm-Message-State: APjAAAXH2mj1Xfg5zwoffNTA+qdw0rQpHiGajc6cH0flF7zO9u1+DAi+
+        N+6wn5ORLboIAtDofqVMm95tgO7NsDkj3siBNz0=
+X-Google-Smtp-Source: APXvYqzWRusk54BRlh8Vj4kcGxAB4PQIYCfS3CJJZ8LD48feZ0ZtBtZKhBITIHTmurRV0B3SD7aw+dSJ7U9VUoYljLo=
+X-Received: by 2002:adf:fc07:: with SMTP id i7mr8222186wrr.50.1570463770859;
+ Mon, 07 Oct 2019 08:56:10 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20191005113205.14601-1-christophe.jaillet@wanadoo.fr> <04e006aa-a354-dfe3-3d13-d674c662c300@amd.com>
+In-Reply-To: <04e006aa-a354-dfe3-3d13-d674c662c300@amd.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Mon, 7 Oct 2019 11:55:58 -0400
+Message-ID: <CADnq5_NhypGdi6z78BbWimAZVtEDxhe1Rw=D4p7JPQNH0Kdqyw@mail.gmail.com>
+Subject: Re: [PATCH] drm/amd/display: Fix typo in some comments
+To:     Harry Wentland <hwentlan@amd.com>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        "Wentland, Harry" <Harry.Wentland@amd.com>,
+        "Li, Sun peng (Leo)" <Sunpeng.Li@amd.com>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Koenig, Christian" <Christian.Koenig@amd.com>,
+        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
+        "airlied@linux.ie" <airlied@linux.ie>,
+        "daniel@ffwll.ch" <daniel@ffwll.ch>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Mon, Oct 7, 2019 at 10:13 AM Harry Wentland <hwentlan@amd.com> wrote:
+>
+> On 2019-10-05 7:32 a.m., Christophe JAILLET wrote:
+> > p and g are switched in 'amdpgu_dm'
+> >
+> > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+>
+> Reviewed-by: Harry Wentland <harry.wentland@amd.com>
 
-Don't populate the array hw_engine_mask on the stack but instead make it
-static. Makes the object code smaller by 316 bytes.
+Applied.  thanks!
 
-Before:
-   text	   data	    bss	    dec	    hex	filename
-  34004	   4388	    320	  38712	   9738	gpu/drm/i915/gt/intel_reset.o
+Alex
 
-After:
-   text	   data	    bss	    dec	    hex	filename
-  33528	   4548	    320	  38396	   95fc	gpu/drm/i915/gt/intel_reset.o
-
-(gcc version 9.2.1, amd64)
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/i915/gt/intel_reset.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/i915/gt/intel_reset.c b/drivers/gpu/drm/i915/gt/intel_reset.c
-index eeb3bd0c4d69..db58ca9bee3a 100644
---- a/drivers/gpu/drm/i915/gt/intel_reset.c
-+++ b/drivers/gpu/drm/i915/gt/intel_reset.c
-@@ -285,7 +285,7 @@ static int gen6_reset_engines(struct intel_gt *gt,
- 			      unsigned int retry)
- {
- 	struct intel_engine_cs *engine;
--	const u32 hw_engine_mask[] = {
-+	static const u32 hw_engine_mask[] = {
- 		[RCS0]  = GEN6_GRDOM_RENDER,
- 		[BCS0]  = GEN6_GRDOM_BLT,
- 		[VCS0]  = GEN6_GRDOM_MEDIA,
-@@ -408,7 +408,7 @@ static int gen11_reset_engines(struct intel_gt *gt,
- 			       intel_engine_mask_t engine_mask,
- 			       unsigned int retry)
- {
--	const u32 hw_engine_mask[] = {
-+	static const u32 hw_engine_mask[] = {
- 		[RCS0]  = GEN11_GRDOM_RENDER,
- 		[BCS0]  = GEN11_GRDOM_BLT,
- 		[VCS0]  = GEN11_GRDOM_MEDIA,
--- 
-2.20.1
-
+>
+> Harry
+>
+> > ---
+> >  drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> > index 92932d521d7f..b9c2e1a930ab 100644
+> > --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> > +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+> > @@ -1043,7 +1043,7 @@ static void s3_handle_mst(struct drm_device *dev, bool suspend)
+> >
+> >  /**
+> >   * dm_hw_init() - Initialize DC device
+> > - * @handle: The base driver device containing the amdpgu_dm device.
+> > + * @handle: The base driver device containing the amdgpu_dm device.
+> >   *
+> >   * Initialize the &struct amdgpu_display_manager device. This involves calling
+> >   * the initializers of each DM component, then populating the struct with them.
+> > @@ -1073,7 +1073,7 @@ static int dm_hw_init(void *handle)
+> >
+> >  /**
+> >   * dm_hw_fini() - Teardown DC device
+> > - * @handle: The base driver device containing the amdpgu_dm device.
+> > + * @handle: The base driver device containing the amdgpu_dm device.
+> >   *
+> >   * Teardown components within &struct amdgpu_display_manager that require
+> >   * cleanup. This involves cleaning up the DRM device, DC, and any modules that
+> >
+> _______________________________________________
+> amd-gfx mailing list
+> amd-gfx@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/amd-gfx

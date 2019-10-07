@@ -2,109 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41DDCCD890
-	for <lists+kernel-janitors@lfdr.de>; Sun,  6 Oct 2019 20:15:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AAD17CDB15
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 06:26:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726812AbfJFSPU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 6 Oct 2019 14:15:20 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:34032 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726559AbfJFSPU (ORCPT
+        id S1727010AbfJGE00 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Oct 2019 00:26:26 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:45107 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726889AbfJGE00 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 6 Oct 2019 14:15:20 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x96IB51v015859;
-        Sun, 6 Oct 2019 18:14:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=Z/8cilR+SOCZwA8hNy7Ewd1pr7qibxNHXT1a8xzhh0w=;
- b=DfS1JJHjUEaa4DK8pBL7OP4qvU6ZuGPCIVFpkKL1g2/iK1TMANTHH1cWdqe+A7dVgpT7
- Q7xeTDvlycAIAXsUr0tSm8n2A9Vi1jDR/vuGQn5FQ79TOSnD3QMuBKaMrTxA4rMXWkAr
- xtc4ovg9yaNous7DZTQ+TxSBvKKbjpYdooAvychxfrw/W8eMYXWI8WFcIdscC68so9CB
- 1+tQ31oGelOL+WX5b56D9+DnjEXMllnPdnJim0gEj4oJ2VB1Jgd0ovCfu/63s0jF2I9z
- x5rz0luXGSnKYtkLBjZHPEwDqCXKZYnKGDwAX/j33Cg4Gh61ilRygyX4f2+3+22YvLss 0g== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 2vek4q3mdm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sun, 06 Oct 2019 18:14:53 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x96I84Fb004999;
-        Sun, 6 Oct 2019 18:14:53 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 2vf4pg684a-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sun, 06 Oct 2019 18:14:53 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x96IEmtr016609;
-        Sun, 6 Oct 2019 18:14:48 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sun, 06 Oct 2019 11:14:47 -0700
-Date:   Sun, 6 Oct 2019 21:14:40 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "Popa, Stefan Serban" <StefanSerban.Popa@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>
-Subject: Re: [PATCH] iio: imu: adis16480: clean up a condition
-Message-ID: <20191006181439.GU22609@kadam>
-References: <20190926081016.GA2332@mwanda>
- <9e40c550310d6f30e6481329e01061beb474bc33.camel@analog.com>
- <20190926113630.GF27389@kadam>
- <20191006095133.24fb89be@archlinux>
+        Mon, 7 Oct 2019 00:26:26 -0400
+Received: by mail-io1-f66.google.com with SMTP id c25so25565702iot.12;
+        Sun, 06 Oct 2019 21:26:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=9cn7hWNDSYfp5yXqFFW958D3/KZM4oLb6q2uNhX0rvU=;
+        b=SUkPcE54QuOqWOsnTUJ9OupBTtoc/62vjs+pcRhRlW91ahBSnrBEF2wJljxoPdk46O
+         GQNGPESN0Ff1RrPM/aD2eDoqVXb+yyUkqzRTseS2sSq2nQQwQqXYcdkqHqgpVj9DePe8
+         tM9olm3uxcRFSegXNDygnKTMAuMofJXZ3P2N1WakZ6wdpqOh3yfXAI14bWRts8LxVczv
+         XF8H7QDA1WLazodSRkecb3uBVrzIfNoErB7x0n+nImaKizevHEHlyp7pcZAZcbrqPrl2
+         Jqe1KFZLSRNlUOZ2kuG5LaDeSZ4tMyZAc8YmsHCc2YMoeJY0aERGwrVx0T75kbkLfzFI
+         +vgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=9cn7hWNDSYfp5yXqFFW958D3/KZM4oLb6q2uNhX0rvU=;
+        b=OqoofVKhenVt9fHFEWWjwvjH0zytajUPXipp+Uqu/e6rl6CY0Dv6AgFZoCCThWEvev
+         Nmcb1tbksbQsG2VRWmYIPnlQRJhz/TC9Kx1dkRxD4R4YVB9v9yAwjmNBWjOC4wJzFA7P
+         WNuIZj4Z+Av9Cl04aC8EqHd15KFS5nrFXDYKZ16PzUUBpKDwHdpPoABnprvjA1UtKH0O
+         /7jO6jY/C2VzpaRrVzC4JmdO0gpWeMLOFVFULzqJXdiWCAYOJ/E+5RxbRahK+WiHhbEM
+         kJN6lWll1rEIR/8/+1hZXZ4cgf2HT2syZ3mTYyL6JYjgQlKIs60Vi3jZonprEpaVuWAk
+         Qw1w==
+X-Gm-Message-State: APjAAAXdHfqjXKc1sMsTyxktqAI+ogFUYreA7ISYMWPSQemciTJHAuO9
+        wf70lJ6bioMYyhYckyXVgQBy5Aj13AsA16Mzguo=
+X-Google-Smtp-Source: APXvYqwNpG0DnS9E7tcNclPV8jO9ELB64ac4Ds2ETF8/Q67RH1TZJg0YKP6QP0J6Ls8/KN4ciXE8HHJrZwThDIB7Zh8=
+X-Received: by 2002:a92:a80c:: with SMTP id o12mr25789967ilh.190.1570422383586;
+ Sun, 06 Oct 2019 21:26:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191006095133.24fb89be@archlinux>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9402 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=705
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910060187
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9402 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=781 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910060187
+References: <20191004190938.15353-1-navid.emamdoost@gmail.com> <540321eb-7699-1d51-59d5-dde5ffcb8fc4@web.de>
+In-Reply-To: <540321eb-7699-1d51-59d5-dde5ffcb8fc4@web.de>
+From:   Navid Emamdoost <navid.emamdoost@gmail.com>
+Date:   Sun, 6 Oct 2019 23:26:12 -0500
+Message-ID: <CAEkB2ETtVwtmkpup65D3wqyLn=84ZHt0QRo0dJK5GsV=-L=qVw@mail.gmail.com>
+Subject: Re: drm/imx: Checking a kmemdup() call in imx_pd_bind()
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     dri-devel@lists.freedesktop.org,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        linux-arm-kernel@lists.infradead.org,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Fabio Estevam <festevam@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Oct 06, 2019 at 09:51:33AM +0100, Jonathan Cameron wrote:
-> On Thu, 26 Sep 2019 14:36:30 +0300
-> Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> 
-> > On Thu, Sep 26, 2019 at 11:06:39AM +0000, Ardelean, Alexandru wrote:
-> > > On Thu, 2019-09-26 at 11:10 +0300, Dan Carpenter wrote:  
-> > > > [External]
-> > > > 
-> > > > The "t" variable is unsigned so it can't be less than zero.  We really
-> > > > are just trying to prevent divide by zero bugs so just checking against
-> > > > zero is sufficient.
-> 
-> I'm not sure that true.  It if were signed we'd be detecting that the
-> input from userspace was negative.
+Hi Markus,
 
-It does a really bad job of that though so it raises more questions than
-answers.  Maybe just one of the parameters is negative or maybe the
-multiply or the addition overflowed?  Should scenarios those be checked?
+I agree with you, kmemdup may fail so a null check seems necessary there.
 
-It turns out none of those situations matter, only divide by zero needs
-to be checked.
-
-regards,
-dan carpenter
+On Sun, Oct 6, 2019 at 4:33 AM Markus Elfring <Markus.Elfring@web.de> wrote=
+:
+>
+> I have taken another look also at the implementation of the function =E2=
+=80=9Cimx_pd_bind=E2=80=9D.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/d=
+rivers/gpu/drm/imx/parallel-display.c?id=3D43b815c6a8e7dbccb5b8bd9c4b099c24=
+bc22d135#n197
+> https://elixir.bootlin.com/linux/v5.4-rc1/source/drivers/gpu/drm/imx/para=
+llel-display.c#L197
+>
+> Now I find an unchecked call of the function =E2=80=9Ckmemdup=E2=80=9D su=
+spicious.
+> Will this detail trigger further software development considerations?
+>
+> Regards,
+> Markus
 
 
 
-
+--=20
+Navid.

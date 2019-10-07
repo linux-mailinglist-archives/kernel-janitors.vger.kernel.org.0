@@ -2,62 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 35D00CE489
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 16:01:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 676F6CE4A1
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 16:06:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728303AbfJGOBF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Oct 2019 10:01:05 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:53004 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727324AbfJGOBE (ORCPT
+        id S1727903AbfJGOGC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Oct 2019 10:06:02 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50516 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727490AbfJGOGC (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Oct 2019 10:01:04 -0400
-Received: from localhost (unknown [144.121.20.163])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id C86B61411EAF3;
-        Mon,  7 Oct 2019 07:01:03 -0700 (PDT)
-Date:   Mon, 07 Oct 2019 16:01:03 +0200 (CEST)
-Message-Id: <20191007.160103.449489515941198973.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     yisen.zhuang@huawei.com, salil.mehta@huawei.com,
-        tanhuazhong@huawei.com, linyunsheng@huawei.com,
-        lipeng321@huawei.com, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: hns3: make array tick_array static, makes object
- smaller
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20191007110935.32607-1-colin.king@canonical.com>
-References: <20191007110935.32607-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.2
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 07 Oct 2019 07:01:04 -0700 (PDT)
+        Mon, 7 Oct 2019 10:06:02 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iHTeC-0001ld-4b; Mon, 07 Oct 2019 14:06:00 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Geert Uytterhoeven <geert+renesas@glider.be>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-renesas-soc@vger.kernel.org, linux-gpio@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] pinctrl: rzn1: array reg_drive static, makes object smaller
+Date:   Mon,  7 Oct 2019 15:05:59 +0100
+Message-Id: <20191007140559.11840-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Mon,  7 Oct 2019 12:09:35 +0100
+From: Colin Ian King <colin.king@canonical.com>
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Don't populate the array tick_array on the stack but instead make it
-> static. Makes the object code smaller by 29 bytes.
-> 
-> Before:
->    text	   data	    bss	    dec	    hex	filename
->   19191	    432	      0	  19623	   4ca7	hisilicon/hns3/hns3pf/hclge_tm.o
-> 
-> After:
->    text	   data	    bss	    dec	    hex	filename
->   19098	    496	      0	  19594	   4c8a	hisilicon/hns3/hns3pf/hclge_tm.o
-> 
-> (gcc version 9.2.1, amd64)
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Don't populate the array reg_drive on the stack but instead make it
+static. Makes the object code smaller by 32 bytes.
 
-Applied.
+Before:
+   text	   data	    bss	    dec	    hex	filename
+  31991	  15696	      0	  47687	   ba47	drivers/pinctrl/pinctrl-rzn1.o
+
+After:
+   text	   data	    bss	    dec	    hex	filename
+  31863	  15792	      0	  47655	   ba27	drivers/pinctrl/pinctrl-rzn1.o
+
+(gcc version 9.2.1, amd64)
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/pinctrl/pinctrl-rzn1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/pinctrl/pinctrl-rzn1.c b/drivers/pinctrl/pinctrl-rzn1.c
+index 0f6f8a10a53a..39538d40dbf3 100644
+--- a/drivers/pinctrl/pinctrl-rzn1.c
++++ b/drivers/pinctrl/pinctrl-rzn1.c
+@@ -487,7 +487,7 @@ static int rzn1_pinconf_get(struct pinctrl_dev *pctldev, unsigned int pin,
+ {
+ 	struct rzn1_pinctrl *ipctl = pinctrl_dev_get_drvdata(pctldev);
+ 	enum pin_config_param param = pinconf_to_config_param(*config);
+-	const u32 reg_drive[4] = { 4, 6, 8, 12 };
++	static const u32 reg_drive[4] = { 4, 6, 8, 12 };
+ 	u32 pull, drive, l1mux;
+ 	u32 l1, l2, arg = 0;
+ 
+-- 
+2.20.1
+

@@ -2,29 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 60C9ECDE82
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 11:52:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93236CDF16
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 12:18:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727412AbfJGJwp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Oct 2019 05:52:45 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:42189 "EHLO
+        id S1727633AbfJGKSw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Oct 2019 06:18:52 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:42756 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726010AbfJGJwp (ORCPT
+        with ESMTP id S1727262AbfJGKSv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Oct 2019 05:52:45 -0400
+        Mon, 7 Oct 2019 06:18:51 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iHPh3-0007mO-7E; Mon, 07 Oct 2019 09:52:41 +0000
+        id 1iHQ6K-0001Gu-8G; Mon, 07 Oct 2019 10:18:48 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Andy Walls <awalls@md.metrocast.net>,
+To:     Hans Verkuil <hverkuil@xs4all.nl>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         linux-media@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] media: cx18: make array mapping static, makes object smaller
-Date:   Mon,  7 Oct 2019 10:52:40 +0100
-Message-Id: <20191007095240.29540-1-colin.king@canonical.com>
+Subject: [PATCH] media: gspca: make array st6422_bridge_init static, makes object smaller
+Date:   Mon,  7 Oct 2019 11:18:48 +0100
+Message-Id: <20191007101848.30540-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,37 +36,37 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Don't populate the array mapping on the stack but instead make it
-static. Makes the object code smaller by 79 bytes.
+Don't populate the array st6422_bridge_init on the stack but instead
+make it static. Makes the object code smaller by 231 bytes.
 
 Before:
    text	   data	    bss	    dec	    hex	filename
-  27572	   2096	      0	  29668	   73e4	drivers/media/pci/cx18/cx18-ioctl.o
+   3419	    752	     64	   4235	   108b	gspca/stv06xx/stv06xx_st6422.o
 
 After:
    text	   data	    bss	    dec	    hex	filename
-  27429	   2160	      0	  29589	   7395	drivers/media/pci/cx18/cx18-ioctl.o
+   3124	    816	     64	   4004	    fa4	gspca/stv06xx/stv06xx_st6422.o
 
 (gcc version 9.2.1, amd64)
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/media/pci/cx18/cx18-ioctl.c | 2 +-
+ drivers/media/usb/gspca/stv06xx/stv06xx_st6422.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/pci/cx18/cx18-ioctl.c b/drivers/media/pci/cx18/cx18-ioctl.c
-index 85f3e7307538..fa57e12f2ac8 100644
---- a/drivers/media/pci/cx18/cx18-ioctl.c
-+++ b/drivers/media/pci/cx18/cx18-ioctl.c
-@@ -664,7 +664,7 @@ static int _cx18_process_idx_data(struct cx18_buffer *buf,
- 	struct cx18_enc_idx_entry *e_buf;
+diff --git a/drivers/media/usb/gspca/stv06xx/stv06xx_st6422.c b/drivers/media/usb/gspca/stv06xx/stv06xx_st6422.c
+index 7104a88b1e43..aac19d449be2 100644
+--- a/drivers/media/usb/gspca/stv06xx/stv06xx_st6422.c
++++ b/drivers/media/usb/gspca/stv06xx/stv06xx_st6422.c
+@@ -117,7 +117,7 @@ static int st6422_init(struct sd *sd)
+ {
+ 	int err = 0, i;
  
- 	/* Frame type lookup: 1=I, 2=P, 4=B */
--	const int mapping[8] = {
-+	static const int mapping[8] = {
- 		-1, V4L2_ENC_IDX_FRAME_I, V4L2_ENC_IDX_FRAME_P,
- 		-1, V4L2_ENC_IDX_FRAME_B, -1, -1, -1
- 	};
+-	const u16 st6422_bridge_init[][2] = {
++	static const u16 st6422_bridge_init[][2] = {
+ 		{ STV_ISO_ENABLE, 0x00 }, /* disable capture */
+ 		{ 0x1436, 0x00 },
+ 		{ 0x1432, 0x03 },	/* 0x00-0x1F brightness */
 -- 
 2.20.1
 

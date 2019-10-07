@@ -2,181 +2,118 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93222CE295
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 15:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6AB3CE360
+	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 15:26:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728329AbfJGNDw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Oct 2019 09:03:52 -0400
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:50140 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728146AbfJGNDu (ORCPT
+        id S1728191AbfJGNZ3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 7 Oct 2019 09:25:29 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:36140 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727324AbfJGNZ2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Oct 2019 09:03:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
-        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
-        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=Cfep0rIWMWln/JuLOxx1Em6o0m/piiYjUQUP4jMHOv0=; b=DxajtVCIZ7TS
-        LUoA4FeiAcAzoPTrmWvtbEN1KtrYBEv1W9u2aZ7c252BXAw0zAjorz8kqWIqIWS228TtPZyt0OlxW
-        ypNHjM2RHffgNnU33MjcMIYZEikgtRvvIWjOYveK0Bd7yLHxEBw4HE4OlNyfCBKHboLT8B1KdT8jZ
-        dZuck=;
-Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <broonie@sirena.co.uk>)
-        id 1iHSfP-0003Qq-3C; Mon, 07 Oct 2019 13:03:11 +0000
-Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id 5DBE7274162F; Mon,  7 Oct 2019 14:03:09 +0100 (BST)
-From:   Mark Brown <broonie@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     alsa-devel@alsa-project.org, Fabio Estevam <festevam@gmail.com>,
-        Jaroslav Kysela <perex@perex.cz>,
-        kernel-janitors@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Mark Brown <broonie@kernel.org>,
-        Nicolin Chen <nicoleotsuka@gmail.com>,
-        Shengjiu Wang <shengjiu.wang@nxp.com>,
-        Takashi Iwai <tiwai@suse.com>, Timur Tabi <timur@kernel.org>,
-        Xiubo Li <Xiubo.Lee@gmail.com>
-Subject: Applied "ASoC: fsl_mqs: Fix error handling in probe" to the asoc tree
-In-Reply-To: <20191004102208.GB823@mwanda>
-X-Patchwork-Hint: ignore
-Message-Id: <20191007130309.5DBE7274162F@ypsilon.sirena.org.uk>
-Date:   Mon,  7 Oct 2019 14:03:09 +0100 (BST)
+        Mon, 7 Oct 2019 09:25:28 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x97DJEMn044722;
+        Mon, 7 Oct 2019 13:25:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=CjAq2/qIQ+hwx+J1512MljThH+9wP2hyv7uTXzQ8/ps=;
+ b=i3/yK5MrK0JFZNPBX5l974i3IlH9H9BBtbIxX5oWOGo7JVoBVKie72fW7IbWelYwRt6j
+ RFduqLV/h/rz+GHDxJOEJyeabgG/AedoHFMxJGzhOue6tOy6RXX2Q3Qtap2UYBu2w6xE
+ +gfkdijAx0K+maHOinBb/NAE3Ty6D2wuVPHIQpSuHR4DkH2GghY0faiMGh1buH/R60Ct
+ CzP8rWKI1e8CXNshnVvDJj7YvTJzFUyCYL0pvirXXfC5FnScU4dThRIs6bYY0Wn0JFd7
+ iPKHHQyxQpVE7L6CFiEyWK7nHhDp+pkwwNmlXOZQAY6dU5JZonIPM6Jih+T1frb6I+Xh FA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 2vejku6py0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 07 Oct 2019 13:25:17 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x97DHrbC037339;
+        Mon, 7 Oct 2019 13:25:17 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 2vg203rtxk-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 07 Oct 2019 13:25:17 +0000
+Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x97DPEfm017826;
+        Mon, 7 Oct 2019 13:25:15 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 07 Oct 2019 13:25:13 +0000
+Date:   Mon, 7 Oct 2019 16:25:05 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     Liviu Dudau <liviu.dudau@arm.com>,
+        James Wang <james.qian.wang@arm.com>,
+        Brian Starkey <brian.starkey@arm.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] drm/komeda: remove redundant assignment to pointer
+ disable_done
+Message-ID: <20191007132505.GV22609@kadam>
+References: <20191004162156.325-1-colin.king@canonical.com>
+ <20191004192720.7eiqdvsm2yv62svg@e110455-lin.cambridge.arm.com>
+ <35232014-f65a-f7a1-99db-8ed91f610a77@canonical.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <35232014-f65a-f7a1-99db-8ed91f610a77@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9402 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=919
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910070134
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9402 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910070134
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
+On Fri, Oct 04, 2019 at 10:53:44PM +0100, Colin Ian King wrote:
+> On 04/10/2019 20:27, Liviu Dudau wrote:
+> > On Fri, Oct 04, 2019 at 05:21:56PM +0100, Colin King wrote:
+> >> From: Colin Ian King <colin.king@canonical.com>
+> >>
+> >> The pointer disable_done is being initialized with a value that
+> >> is never read and is being re-assigned a little later on. The
+> >> assignment is redundant and hence can be removed.
+> > 
+> > Not really true, isn't it? The re-assignment is done under the condition that
+> > crtc->state->active is true. disable_done will be used regardless after the if
+> > block, so we can't skip this initialisation.
+> > 
+> > Not sure why Coverity flags this, but I would NAK this patch.
+> 
+> I'm patching against the driver from linux-next so I believe this is OK
+> for that. I believe your statement is true against linux which does not
+> have commit:
+> 
+> d6cb013579e743bc7bc5590ca35a1943f2b8f3c8
+> Author: Lowry Li (Arm Technology China) <Lowry.Li@arm.com>
+> Date:   Fri Sep 6 07:18:06 2019 +0000
+> 
 
-   ASoC: fsl_mqs: Fix error handling in probe
+It really does help reviewing patches when this is mentioned in the
+commit message.
 
-has been applied to the asoc tree at
+There is some debate about whether this should be mentioned as a Fixes
+since it doesn't fix a bug.  I initialy felt it shouldn't be, but now
+I think enough people think it should be listed as Fixes that I must be
+wrong.  Either way, it's very useful information.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.5
+The other thing is that soon get_maintainer.pl will start CC'ing people
+from the Fixes tag and right now Lowry Li is not CC'd so that's
+unfortunate.
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From a9d273671440c439c4f236123c59dd839c1a0eb7 Mon Sep 17 00:00:00 2001
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Fri, 4 Oct 2019 13:22:09 +0300
-Subject: [PATCH] ASoC: fsl_mqs: Fix error handling in probe
-
-There are several problems in the error handling in fsl_mqs_probe().
-
-1) "ret" isn't initialized on some paths.  GCC has a feature which
-   warns about uninitialized variables but the code initializes "ret"
-   to zero at the start of the function so the checking is turned off.
-2) "gpr_np" is a pointer so initializing it to zero is confusing and
-   generates a Sparse warning.
-3) of_parse_phandle() doesn't return error pointers on error, it returns
-   NULL.
-4) If devm_snd_soc_register_component() fails then the function should
-   free the "gpr_np".
-
-Fixes: 9e28f6532c61 ("ASoC: fsl_mqs: Add MQS component driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Link: https://lore.kernel.org/r/20191004102208.GB823@mwanda
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- sound/soc/fsl/fsl_mqs.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
-
-diff --git a/sound/soc/fsl/fsl_mqs.c b/sound/soc/fsl/fsl_mqs.c
-index 7b9cab3a62e7..f7fc44e8fb27 100644
---- a/sound/soc/fsl/fsl_mqs.c
-+++ b/sound/soc/fsl/fsl_mqs.c
-@@ -178,10 +178,10 @@ static const struct regmap_config fsl_mqs_regmap_config = {
- static int fsl_mqs_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
--	struct device_node *gpr_np = 0;
-+	struct device_node *gpr_np = NULL;
- 	struct fsl_mqs *mqs_priv;
- 	void __iomem *regs;
--	int ret = 0;
-+	int ret;
- 
- 	mqs_priv = devm_kzalloc(&pdev->dev, sizeof(*mqs_priv), GFP_KERNEL);
- 	if (!mqs_priv)
-@@ -198,17 +198,16 @@ static int fsl_mqs_probe(struct platform_device *pdev)
- 
- 	if (mqs_priv->use_gpr) {
- 		gpr_np = of_parse_phandle(np, "gpr", 0);
--		if (IS_ERR(gpr_np)) {
-+		if (!gpr_np) {
- 			dev_err(&pdev->dev, "failed to get gpr node by phandle\n");
--			ret = PTR_ERR(gpr_np);
--			goto out;
-+			return -EINVAL;
- 		}
- 
- 		mqs_priv->regmap = syscon_node_to_regmap(gpr_np);
- 		if (IS_ERR(mqs_priv->regmap)) {
- 			dev_err(&pdev->dev, "failed to get gpr regmap\n");
- 			ret = PTR_ERR(mqs_priv->regmap);
--			goto out;
-+			goto err_free_gpr_np;
- 		}
- 	} else {
- 		regs = devm_platform_ioremap_resource(pdev, 0);
-@@ -229,7 +228,7 @@ static int fsl_mqs_probe(struct platform_device *pdev)
- 		if (IS_ERR(mqs_priv->ipg)) {
- 			dev_err(&pdev->dev, "failed to get the clock: %ld\n",
- 				PTR_ERR(mqs_priv->ipg));
--			goto out;
-+			return PTR_ERR(mqs_priv->ipg);
- 		}
- 	}
- 
-@@ -237,17 +236,21 @@ static int fsl_mqs_probe(struct platform_device *pdev)
- 	if (IS_ERR(mqs_priv->mclk)) {
- 		dev_err(&pdev->dev, "failed to get the clock: %ld\n",
- 			PTR_ERR(mqs_priv->mclk));
--		goto out;
-+		ret = PTR_ERR(mqs_priv->mclk);
-+		goto err_free_gpr_np;
- 	}
- 
- 	dev_set_drvdata(&pdev->dev, mqs_priv);
- 	pm_runtime_enable(&pdev->dev);
- 
--	return devm_snd_soc_register_component(&pdev->dev, &soc_codec_fsl_mqs,
-+	ret = devm_snd_soc_register_component(&pdev->dev, &soc_codec_fsl_mqs,
- 			&fsl_mqs_dai, 1);
--out:
--	if (!IS_ERR(gpr_np))
--		of_node_put(gpr_np);
-+	if (ret)
-+		goto err_free_gpr_np;
-+	return 0;
-+
-+err_free_gpr_np:
-+	of_node_put(gpr_np);
- 
- 	return ret;
- }
--- 
-2.20.1
+regards,
+dan carpenter
 

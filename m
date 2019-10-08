@@ -2,109 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 47D54CEEB2
-	for <lists+kernel-janitors@lfdr.de>; Mon,  7 Oct 2019 23:59:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1717BCF22E
+	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Oct 2019 07:36:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729133AbfJGV7C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 7 Oct 2019 17:59:02 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:36418 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728422AbfJGV7C (ORCPT
+        id S1729876AbfJHFgm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 8 Oct 2019 01:36:42 -0400
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:34545 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729440AbfJHFgm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 7 Oct 2019 17:59:02 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iHb1t-0000lA-Lt; Mon, 07 Oct 2019 21:58:57 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/amdgpu/display: make various arrays static, makes object smaller
-Date:   Mon,  7 Oct 2019 22:58:57 +0100
-Message-Id: <20191007215857.14720-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Tue, 8 Oct 2019 01:36:42 -0400
+Received: by mail-qt1-f194.google.com with SMTP id 3so23354437qta.1
+        for <kernel-janitors@vger.kernel.org>; Mon, 07 Oct 2019 22:36:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=endlessm-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DLPHIzkkF9ezFThHyrTQhaKDEGQzpylYQSibbpf1y6w=;
+        b=x33VxGlYwPV3fXI4CVn6TCAccWkMA7kLD8FTUj+N52IOu8oY1apGxB+P7yNm6SA74X
+         iOIpxrjpy9L5HPubhg09DzBYM3Oe5QhHsC+rXQt+h04pgoymCWOsZwlEruxXI6hdf6DS
+         QUkbSivkU4vQSlfsYbNGLFgyIxmmZzvySMK2mKv10Co8McU7Y+IApTBCVlwn+KJohNco
+         FjwXflM9s2Ju/YWCrtFom9cvvA9OijB8o+MQ9DHITFw5AGYNfaH85DRQp/7+sh2+zcC5
+         IOw65MbUGb3oitfVBO8MUVQnHnjEkrUGdNwNbmFbGEByl2/8TrKPB8bPmiZjhWtK0Qzl
+         /qFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DLPHIzkkF9ezFThHyrTQhaKDEGQzpylYQSibbpf1y6w=;
+        b=pexL3rBqxgt0Scwp2CSEXfohQ/MoHtR2zyR3b8fkUgwK4m8F7ztNo3BpUufP1rfPlI
+         49xqrGmE+fYNc+LqEUyqaLNxaBSXzDMPMkwAbO8Ych7Nd/Udg9VwdO5ML50dhs2TRJh1
+         YmPXHTyP6KTYA+WYPRYANxTsauNLMVZ7JEzUaTtrHLVqGQtd47qGIuvT3XEYBF2RnKzG
+         un2p86vP7l55OxpZWrWmutk+W0c/CNDVRgA0QhGx5xYyFsXX6nsC6/MXd5WG+JmRK/e1
+         eh6NM+c6Dpf5UU+DfuLscg7VYT3vueFFCWbMLLmA/McQlQ0jLY8w4fEAM9la/8aDMHjb
+         r8Fg==
+X-Gm-Message-State: APjAAAUKo1oKdr92MiWtUezKCxoO0UEALfsfS3mrOR9Btw4MlOPXUfOb
+        Ygt341WK6K+lGYX1r79H1ZkqeAqw3qR8rVMVm+sWgg==
+X-Google-Smtp-Source: APXvYqz8dIGmMGe1TLdQVwirABfPVreobcIApuOIty+3ZDrBFsZWTLpIwa9tc6FWtMb+EXNIAFtyVGGitAImVM3qyG8=
+X-Received: by 2002:ac8:6796:: with SMTP id b22mr32097476qtp.95.1570513001536;
+ Mon, 07 Oct 2019 22:36:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20191007135313.8443-1-colin.king@canonical.com>
+In-Reply-To: <20191007135313.8443-1-colin.king@canonical.com>
+From:   Chris Chiu <chiu@endlessm.com>
+Date:   Tue, 8 Oct 2019 13:36:28 +0800
+Message-ID: <CAB4CAwdd-+Oq+qrFTzUmG39yNgd_+Zn2rii=mXWOJb5x+4VHYw@mail.gmail.com>
+Subject: Re: [PATCH] rtl8xxxu: make arrays static, makes object smaller
+To:     Colin King <colin.king@canonical.com>
+Cc:     Jes Sorensen <Jes.Sorensen@gmail.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless <linux-wireless@vger.kernel.org>,
+        netdev <netdev@vger.kernel.org>, kernel-janitors@vger.kernel.org,
+        Linux Kernel <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
-
-Don't populate the arrays on the stack but instead make them
-static. Makes the object code smaller by 158 bytes.
-
-Before:
-   text	   data	    bss	    dec	    hex	filename
-  32468	   2072	      0	  34540	   86ec	display/dc/bios/bios_parser.o
-  22198	   1088	      0	  23286	   5af6	display/dc/bios/bios_parser2.o
-  22278	   1076	      0	  23354	   5b3a	display/dc/dce/dce_mem_input.o
-
-81180
-After:
-   text	   data	    bss	    dec	    hex	filename
-  32341	   2136	      0	  34477	   86ad	display/dc/bios/bios_parser.o
-  22070	   1184	      0	  23254	   5ad6	display/dc/bios/bios_parser2.o
-  22119	   1172	      0	  23291	   5afb	display/dc/dce/dce_mem_input.o
-
-(gcc version 9.2.1, amd64)
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/amd/display/dc/bios/bios_parser.c  | 2 +-
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c | 2 +-
- drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-index 221e0f56389f..65ab225cf542 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser.c
-@@ -2745,7 +2745,7 @@ static enum bp_result bios_get_board_layout_info(
- 	struct bios_parser *bp;
- 	enum bp_result record_result;
- 
--	const unsigned int slot_index_to_vbios_id[MAX_BOARD_SLOTS] = {
-+	static const unsigned int slot_index_to_vbios_id[MAX_BOARD_SLOTS] = {
- 		GENERICOBJECT_BRACKET_LAYOUT_ENUM_ID1,
- 		GENERICOBJECT_BRACKET_LAYOUT_ENUM_ID2,
- 		0, 0
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-index dff65c0fe82f..809c4a89b899 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -1832,7 +1832,7 @@ static enum bp_result bios_get_board_layout_info(
- 	struct bios_parser *bp;
- 	enum bp_result record_result;
- 
--	const unsigned int slot_index_to_vbios_id[MAX_BOARD_SLOTS] = {
-+	static const unsigned int slot_index_to_vbios_id[MAX_BOARD_SLOTS] = {
- 		GENERICOBJECT_BRACKET_LAYOUT_ENUM_ID1,
- 		GENERICOBJECT_BRACKET_LAYOUT_ENUM_ID2,
- 		0, 0
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c b/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c
-index 8aa937f496c4..ed0031d5e021 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_mem_input.c
-@@ -395,7 +395,7 @@ static void program_size_and_rotation(
- {
- 	const struct rect *in_rect = &plane_size->surface_size;
- 	struct rect hw_rect = plane_size->surface_size;
--	const uint32_t rotation_angles[ROTATION_ANGLE_COUNT] = {
-+	static const uint32_t rotation_angles[ROTATION_ANGLE_COUNT] = {
- 			[ROTATION_ANGLE_0] = 0,
- 			[ROTATION_ANGLE_90] = 1,
- 			[ROTATION_ANGLE_180] = 2,
--- 
-2.20.1
-
+On Mon, Oct 7, 2019 at 9:53 PM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> Don't populate const arrays on the stack but instead make them
+> static. Makes the object code smaller by 60 bytes.
+>
+> Before:
+>    text    data     bss     dec     hex filename
+>   15133    8768       0   23901    5d5d realtek/rtl8xxxu/rtl8xxxu_8192e.o
+>   15209    6392       0   21601    5461 realtek/rtl8xxxu/rtl8xxxu_8723b.o
+>  103254   31202     576  135032   20f78 realtek/rtl8xxxu/rtl8xxxu_core.o
+>
+> After:
+>    text    data     bss     dec     hex filename
+>   14861    9024       0   23885    5d4d realtek/rtl8xxxu/rtl8xxxu_8192e.o
+>   14953    6616       0   21569    5441 realtek/rtl8xxxu/rtl8xxxu_8723b.o
+>  102986   31458     576  135020   20f6c realtek/rtl8xxxu/rtl8xxxu_core.o
+>
+> (gcc version 9.2.1, amd64)
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+Reviewed-by: Chris Chiu <chiu@endlessm.com>

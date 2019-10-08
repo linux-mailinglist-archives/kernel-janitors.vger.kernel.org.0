@@ -2,30 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19A5CCF4EE
-	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Oct 2019 10:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9330FCF4F6
+	for <lists+kernel-janitors@lfdr.de>; Tue,  8 Oct 2019 10:24:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730457AbfJHIWK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 8 Oct 2019 04:22:10 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:48233 "EHLO
+        id S1730428AbfJHIYd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 8 Oct 2019 04:24:33 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:48300 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728104AbfJHIWK (ORCPT
+        with ESMTP id S1730292AbfJHIYd (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 8 Oct 2019 04:22:10 -0400
+        Tue, 8 Oct 2019 04:24:33 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iHkkv-0005pC-VS; Tue, 08 Oct 2019 08:22:06 +0000
+        id 1iHknF-0005xs-1K; Tue, 08 Oct 2019 08:24:29 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
-        <jerome.pouiller@silabs.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org
+To:     Antoine Tenart <antoine.tenart@bootlin.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-crypto@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] staging: wfx: fix spelling mistake "hexdecimal" -> "hexadecimal"
-Date:   Tue,  8 Oct 2019 09:22:05 +0100
-Message-Id: <20191008082205.19740-1-colin.king@canonical.com>
+Subject: [PATCH][V2][next] crypto: inside-secure: fix spelling mistake "algorithmn" -> "algorithm"
+Date:   Tue,  8 Oct 2019 09:24:28 +0100
+Message-Id: <20191008082428.19839-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,41 +37,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in the documentation and a module parameter
-description. Fix these.
+There is a spelling mistake in a dev_err message. Fix it. Add in missing
+newline.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- .../devicetree/bindings/net/wireless/siliabs,wfx.txt            | 2 +-
- drivers/staging/wfx/main.c                                      | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/wfx/Documentation/devicetree/bindings/net/wireless/siliabs,wfx.txt b/drivers/staging/wfx/Documentation/devicetree/bindings/net/wireless/siliabs,wfx.txt
-index 15965c9b4180..26de6762b942 100644
---- a/drivers/staging/wfx/Documentation/devicetree/bindings/net/wireless/siliabs,wfx.txt
-+++ b/drivers/staging/wfx/Documentation/devicetree/bindings/net/wireless/siliabs,wfx.txt
-@@ -89,7 +89,7 @@ Some properties are recognized either by SPI and SDIO versions:
-    this property, driver will disable most of power saving features.
-  - config-file: Use an alternative file as PDS. Default is `wf200.pds`. Only
-    necessary for development/debug purpose.
-- - slk_key: String representing hexdecimal value of secure link key to use.
-+ - slk_key: String representing hexadecimal value of secure link key to use.
-    Must contains 64 hexadecimal digits. Not supported in current version.
+V2: Add in newline \n
+
+---
+ drivers/crypto/inside-secure/safexcel_cipher.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/crypto/inside-secure/safexcel_cipher.c b/drivers/crypto/inside-secure/safexcel_cipher.c
+index cecc56073337..8ccc9c59f376 100644
+--- a/drivers/crypto/inside-secure/safexcel_cipher.c
++++ b/drivers/crypto/inside-secure/safexcel_cipher.c
+@@ -437,7 +437,7 @@ static int safexcel_aead_setkey(struct crypto_aead *ctfm, const u8 *key,
+ 			goto badkey;
+ 		break;
+ 	default:
+-		dev_err(priv->dev, "aead: unsupported hash algorithmn");
++		dev_err(priv->dev, "aead: unsupported hash algorithm\n");
+ 		goto badkey;
+ 	}
  
- WFx driver also supports `mac-address` and `local-mac-address` as described in
-diff --git a/drivers/staging/wfx/main.c b/drivers/staging/wfx/main.c
-index fe9a89703897..d2508bc950fa 100644
---- a/drivers/staging/wfx/main.c
-+++ b/drivers/staging/wfx/main.c
-@@ -48,7 +48,7 @@ MODULE_PARM_DESC(gpio_wakeup, "gpio number for wakeup. -1 for none.");
- 
- static char *slk_key;
- module_param(slk_key, charp, 0600);
--MODULE_PARM_DESC(slk_key, "secret key for secure link (expect 64 hexdecimal digits).");
-+MODULE_PARM_DESC(slk_key, "secret key for secure link (expect 64 hexadecimal digits).");
- 
- #define RATETAB_ENT(_rate, _rateid, _flags) { \
- 	.bitrate  = (_rate),   \
 -- 
 2.20.1
 

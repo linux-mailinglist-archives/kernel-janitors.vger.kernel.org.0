@@ -2,104 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BAB8D0EC5
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 14:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C7CBD0FF9
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 15:26:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731133AbfJIMbq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 08:31:46 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3670 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727029AbfJIMbq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 08:31:46 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 95FD72B76B81C23962B2;
-        Wed,  9 Oct 2019 20:31:41 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 9 Oct 2019 20:31:32 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     David Howells <dhowells@redhat.com>,
+        id S1731331AbfJIN0Y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 09:26:24 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:45325 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731255AbfJIN0X (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 9 Oct 2019 09:26:23 -0400
+Received: by mail-lj1-f196.google.com with SMTP id q64so2460311ljb.12
+        for <kernel-janitors@vger.kernel.org>; Wed, 09 Oct 2019 06:26:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rasmusvillemoes.dk; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=WJWP5QMUkAgHs6BnCYZNp8h84d1YBL5Bm1yud/rHHZg=;
+        b=Jm+mF2rDsCJLcrUlB0SLiwko2Z9Ves98s22gSAsrBVZEVcVXfdwdOX7ZJbB2fF3d2T
+         vKttvPExXAug4yqPWc4vwbzwUhsxX/Uy7mwYXY4KALSDq+YjoBb0exsJD8/Ho6kGT+bE
+         dqiCaslb16ZKB+zIWqGcpDxrd2wnBcHzk+Hzg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=WJWP5QMUkAgHs6BnCYZNp8h84d1YBL5Bm1yud/rHHZg=;
+        b=VOjUz3o89vhh0P6ZDRub1PInVjcGo7DckbzpzKL2TAAFsjWoyTikKaInlkAGUHBXdh
+         463uaeQE4TjkFKgbirmyp/Hh2S+uqEimUgEggEvuk3MT0o+wyx4kY2Q7YOkTi/RA3Gnf
+         vFdoj8loQkKg8k0w0F/tMKjy6fzgitdvtWi21JRT0vZxzFsODUG7OTPmo7Tscv9L80z5
+         u4Iw8xEFU+sU2ZTpCwkDpeZEEOrd5cIES9Ng3ictnFobhlS/A5iVA9N6QHGPm/tT5e8L
+         NviLoWjpX8Ey45Ylf4nbJMaoHAyzzTxpf+4RfRB9vLxyQrsj00RtoW8241YSj5VdIdJp
+         CGLg==
+X-Gm-Message-State: APjAAAUiVPWV6MkNSxwyaF+ZJfUdWn7/qVrj8ItuduqsZjAqz3UaZ0xb
+        rW23haHSrLh3M08ARNv2pakxaQ==
+X-Google-Smtp-Source: APXvYqy4mU7KScbhHDcIf4/Gp+K03M2QERvYtcI9RxomBaOLKIoCVSOFjmrd7KC6npByX6cOnQC0jw==
+X-Received: by 2002:a2e:2943:: with SMTP id u64mr2382988lje.241.1570627580325;
+        Wed, 09 Oct 2019 06:26:20 -0700 (PDT)
+Received: from [172.16.11.28] ([81.216.59.226])
+        by smtp.gmail.com with ESMTPSA id r19sm472597ljd.95.2019.10.09.06.26.18
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 09 Oct 2019 06:26:19 -0700 (PDT)
+Subject: Re: [PATCH] string.h: Mark 34 functions with __must_check
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        kernel-janitors@vger.kernel.org,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Vitaly Wool <vitaly.wool@konsulko.com>,
-        "Henry Burns" <henryburns@google.com>,
-        Shakeel Butt <shakeelb@google.com>,
-        "Stephen Rothwell" <sfr@canb.auug.org.au>
-CC:     YueHaibing <yuehaibing@huawei.com>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] mm/z3fold.c: remove set but not used variable 'newpage'
-Date:   Wed, 9 Oct 2019 12:31:11 +0000
-Message-ID: <20191009123111.80425-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Joe Perches <joe@perches.com>,
+        Kees Cook <keescook@chromium.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Steven Rostedt <rostedt@goodmis.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>
+References: <75f70e5e-9ece-d6d1-a2c5-2f3ad79b9ccb@web.de>
+From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Message-ID: <954c5d70-742f-7b0e-57ad-ea967e93be89@rasmusvillemoes.dk>
+Date:   Wed, 9 Oct 2019 15:26:18 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+In-Reply-To: <75f70e5e-9ece-d6d1-a2c5-2f3ad79b9ccb@web.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+On 09/10/2019 14.14, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Wed, 9 Oct 2019 13:53:59 +0200
+> 
+> Several functions return values with which useful data processing
+> should be performed. These values must not be ignored then.
+> Thus use the annotation “__must_check” in the shown function declarations.
 
-mm/z3fold.c: In function 'compact_single_buddy':
-mm/z3fold.c:693:16: warning:
- variable 'newpage' set but not used [-Wunused-but-set-variable]
+This _might_ make sense for those that are basically kmalloc() wrappers
+in one way or another [1]. But what's the point of annotating pure
+functions such as strchr, strstr, memchr etc? Nobody is calling those
+for their side effects (they don't have any...), so obviously the return
+value is used. If somebody does a strcmp() without using the result, so
+what? OK, it's odd code that might be worth flagging, but I don't think
+that's the kind of thing one accidentally adds. You're also not
+consistent - strlen() is not annotated. And, for the standard C
+functions, -Wall already seems to warn about an unused call:
 
-mm/z3fold.c:664:13: warning:
- variable 'bud' set but not used [-Wunused-but-set-variable]
+ #include <string.h>
+int f(const char *s)
+{
+	strlen(s);
+	return 3;
+}
+$ gcc -Wall -o a.o -c a.c
+a.c: In function ‘f’:
+a.c:5:2: warning: statement with no effect [-Wunused-value]
+  strlen(s);
+  ^~~~~~~~~
 
-It is never used, so can be removed.
+[1] Just might. The problem is the __must_check does not mean that the
+return value must be followed by a comparison to NULL and bailing out
+(that can't really be checked), it simply ensures the return value is
+assigned somewhere or used in an if(). So foo->bar = kstrdup() not
+followed by a check of foo->bar won't warn. So one would essentially
+only catch instant-leaks. __must_check is much better suited for
+functions that mutate a passed-in or global object, e.g.
+start_engine(engine).
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- mm/z3fold.c | 6 ------
- 1 file changed, 6 deletions(-)
-
-diff --git a/mm/z3fold.c b/mm/z3fold.c
-index 25713a4a7186..d48d0ec3bcdd 100644
---- a/mm/z3fold.c
-+++ b/mm/z3fold.c
-@@ -661,7 +661,6 @@ static struct z3fold_header *compact_single_buddy(struct z3fold_header *zhdr)
- 	struct z3fold_pool *pool = zhdr_to_pool(zhdr);
- 	void *p = zhdr;
- 	unsigned long old_handle = 0;
--	enum buddy bud;
- 	size_t sz = 0;
- 	struct z3fold_header *new_zhdr = NULL;
- 	int first_idx = __idx(zhdr, FIRST);
-@@ -673,24 +672,20 @@ static struct z3fold_header *compact_single_buddy(struct z3fold_header *zhdr)
- 	 * the page lock is already taken
- 	 */
- 	if (zhdr->first_chunks && zhdr->slots->slot[first_idx]) {
--		bud = FIRST;
- 		p += ZHDR_SIZE_ALIGNED;
- 		sz = zhdr->first_chunks << CHUNK_SHIFT;
- 		old_handle = (unsigned long)&zhdr->slots->slot[first_idx];
- 	} else if (zhdr->middle_chunks && zhdr->slots->slot[middle_idx]) {
--		bud = MIDDLE;
- 		p += zhdr->start_middle << CHUNK_SHIFT;
- 		sz = zhdr->middle_chunks << CHUNK_SHIFT;
- 		old_handle = (unsigned long)&zhdr->slots->slot[middle_idx];
- 	} else if (zhdr->last_chunks && zhdr->slots->slot[last_idx]) {
--		bud = LAST;
- 		p += PAGE_SIZE - (zhdr->last_chunks << CHUNK_SHIFT);
- 		sz = zhdr->last_chunks << CHUNK_SHIFT;
- 		old_handle = (unsigned long)&zhdr->slots->slot[last_idx];
- 	}
- 
- 	if (sz > 0) {
--		struct page *newpage;
- 		enum buddy new_bud = HEADLESS;
- 		short chunks = size_to_chunks(sz);
- 		void *q;
-@@ -699,7 +694,6 @@ static struct z3fold_header *compact_single_buddy(struct z3fold_header *zhdr)
- 		if (!new_zhdr)
- 			return NULL;
- 
--		newpage = virt_to_page(new_zhdr);
- 		if (WARN_ON(new_zhdr == zhdr))
- 			goto out_fail;
-
-
-
+Rasmus

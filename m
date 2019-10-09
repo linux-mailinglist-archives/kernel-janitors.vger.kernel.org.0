@@ -2,64 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FDEED0BB0
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 11:46:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B181D0BC0
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 11:49:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730781AbfJIJqH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 05:46:07 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56423 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729761AbfJIJqH (ORCPT
+        id S1730069AbfJIJtT convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 05:49:19 -0400
+Received: from mail.fireflyinternet.com ([109.228.58.192]:51645 "EHLO
+        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725935AbfJIJtS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 05:46:07 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iI8Xj-0007JB-Go; Wed, 09 Oct 2019 09:46:03 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
-        <jerome.pouiller@silabs.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] staging: wfx: fix swapped arguments in memset call
-Date:   Wed,  9 Oct 2019 10:46:02 +0100
-Message-Id: <20191009094602.19663-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
+        Wed, 9 Oct 2019 05:49:18 -0400
+X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
+Received: from localhost (unverified [78.156.65.138]) 
+        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 18774966-1500050 
+        for multiple; Wed, 09 Oct 2019 10:49:12 +0100
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+To:     Colin King <colin.king@canonical.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+From:   Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20191009093935.17895-1-colin.king@canonical.com>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20191009093935.17895-1-colin.king@canonical.com>
+Message-ID: <157061455107.18808.11664822517679571894@skylake-alporthouse-com>
+User-Agent: alot/0.6
+Subject: Re: [PATCH][next] drm/i915: remove redundant variable err
+Date:   Wed, 09 Oct 2019 10:49:11 +0100
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Quoting Colin King (2019-10-09 10:39:35)
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> An earlier commit removed any error assignments to err and we
+> are now left with a zero assignment to err and a check that is
+> always false. Clean this up by removing the redundant variable
+> err and the error check.
 
-The memset appears to have the 2nd and 3rd arguments in the wrong
-order, fix this by swapping these around into the correct order.
-
-Addresses-Coverity: ("Memset fill truncated")
-Fixes: 4f8b7fabb15d ("staging: wfx: allow to send commands to chip")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/staging/wfx/debug.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/staging/wfx/debug.c b/drivers/staging/wfx/debug.c
-index 8de16ad7c710..761ad9b4f27e 100644
---- a/drivers/staging/wfx/debug.c
-+++ b/drivers/staging/wfx/debug.c
-@@ -226,7 +226,7 @@ static ssize_t wfx_send_hif_msg_write(struct file *file, const char __user *user
- 	// wfx_cmd_send() chekc that reply buffer is wide enough, but do not
- 	// return precise length read. User have to know how many bytes should
- 	// be read. Filling reply buffer with a memory pattern may help user.
--	memset(context->reply, sizeof(context->reply), 0xFF);
-+	memset(context->reply, 0xFF, sizeof(context->reply));
- 	request = memdup_user(user_buf, count);
- 	if (IS_ERR(request))
- 		return PTR_ERR(request);
--- 
-2.20.1
-
+Oh, we add one again shortly. Might as well wait.
+-Chris

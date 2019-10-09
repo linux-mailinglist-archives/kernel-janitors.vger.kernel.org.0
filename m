@@ -2,77 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C2CCAD1438
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 18:38:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCD67D144A
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 18:41:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731375AbfJIQii (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 12:38:38 -0400
-Received: from smtprelay0225.hostedemail.com ([216.40.44.225]:59804 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1731824AbfJIQii (ORCPT
+        id S1731083AbfJIQlO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 12:41:14 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:41860 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731417AbfJIQlO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 12:38:38 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay06.hostedemail.com (Postfix) with ESMTP id AE55918224D75;
-        Wed,  9 Oct 2019 16:38:36 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::,RULES_HIT:41:152:355:379:599:800:960:973:988:989:1260:1277:1311:1313:1314:1345:1359:1431:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2194:2199:2393:2553:2559:2562:2691:3138:3139:3140:3141:3142:3352:3622:3865:3866:3867:3868:3870:3871:3872:3873:3874:4321:5007:8660:9108:10004:10400:10848:10967:11232:11658:11914:12297:12663:12740:12895:13069:13148:13230:13311:13357:13894:14181:14659:14721:21080:21627:21790:21881:30054:30090:30091,0,RBL:error,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:25,LUA_SUMMARY:none
-X-HE-Tag: cry32_10c0bd5169c3e
-X-Filterd-Recvd-Size: 2450
-Received: from XPS-9350.home (unknown [47.151.152.152])
-        (Authenticated sender: joe@perches.com)
-        by omf03.hostedemail.com (Postfix) with ESMTPA;
-        Wed,  9 Oct 2019 16:38:34 +0000 (UTC)
-Message-ID: <4d890cae9cbbd873096cb1fadb477cf4632ddb9a.camel@perches.com>
+        Wed, 9 Oct 2019 12:41:14 -0400
+Received: by mail-pf1-f193.google.com with SMTP id q7so1960014pfh.8
+        for <kernel-janitors@vger.kernel.org>; Wed, 09 Oct 2019 09:41:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=4KCOuyU/ywH5UdEeKKy1ZD5cSa0qM6JRtRuTi6ZEGfg=;
+        b=KdRyUgsnV+XebI3lT10g3MSaM0BW6c17+YU4pUx+2eA+C9am1YEdku6d6tBGCdXm2c
+         W04Hb/MWT6rZjMR+dwzmQq1sDhw8PjMnfxOk6EG4alrLHwtojAXHHcvd1/2vZaNj1ikx
+         4lIXwa8qgSRdy9uDvik5vjDrWjfTTdwTGAmkqU1AGTC4I3a1alWEbZTXvqYuNB7MgXFh
+         RyMjomorAY5pHNMW1A29VDRSLitZHRhdG0Fz7giZTJXeaiLPM8EHhjTh7a9sVdAkXwni
+         +9xyhywhTJsFJEz/Ely4TDIoHVC0Us0NGQszz6LqNiaUU/Ulh03mZCkJGJkmBMElv0DZ
+         l6aA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4KCOuyU/ywH5UdEeKKy1ZD5cSa0qM6JRtRuTi6ZEGfg=;
+        b=ZJA8AcVsN3DyhEEA/Spgzl1ULMyDoIK2ySz8Sn6t4Z+WB0b2ZZU91beIlAvqd+fQGU
+         HDcei6NDZ86cu8m4C4Dxpb6rggUUSHiAeAmNM9fifcymITAuLfTFDbt+RA9iQEJA6SLV
+         HfJD9oo6+TRE9SnGTwL+WgTwLlwEs5DYYka8MyhGnEMWH5cWap+TVmxWUSy4ytIIu0xk
+         Y/uMt4WGCBvfYdCX1TYELXkpwQN4uf7dUh81X/b4mECVe3S1kfnXH8hoMGhYV+ZG8sRR
+         kVnzMrgcpH3VKVwFxamCuDGrkJK9w2D9vwurTK8VgzIYVLcEchjTwOBM8Vk1c6MV2WDt
+         rwXQ==
+X-Gm-Message-State: APjAAAV7cySbvywl/O2ULsq3j5oTJDpU9waCIozyVe2RvDjt8gX9mjPY
+        rWlJPE6Mjegk3LzSwzdy2Y+TaddQatdETM6trzIH7IEQ
+X-Google-Smtp-Source: APXvYqxxtqdLlqdJ+oeX5eyUnxCGbj6bA/T+ZV6iNXBuLdhXsG5XJ83Ds5MVom+4xZBSMAzFV1PS/jlj78IrXr5cH9Y=
+X-Received: by 2002:a65:464b:: with SMTP id k11mr5449394pgr.263.1570639271341;
+ Wed, 09 Oct 2019 09:41:11 -0700 (PDT)
+MIME-Version: 1.0
+References: <75f70e5e-9ece-d6d1-a2c5-2f3ad79b9ccb@web.de> <20191009110943.7ff3a08a@gandalf.local.home>
+ <CAKwvOdk3OTaAVmbV9Cu+Dzg8zuojjU6ENZfu4cUPaKS2a58d3w@mail.gmail.com> <20191009122735.17415f9c@gandalf.local.home>
+In-Reply-To: <20191009122735.17415f9c@gandalf.local.home>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Wed, 9 Oct 2019 09:40:59 -0700
+Message-ID: <CAKwvOdkvgeHnQ_SyR7QUqpsmtMPRe1SCJ_XJLQYv-gvLB6rbLg@mail.gmail.com>
 Subject: Re: [PATCH] string.h: Mark 34 functions with __must_check
-From:   Joe Perches <joe@perches.com>
-To:     Nick Desaulniers <ndesaulniers@google.com>,
-        Steven Rostedt <rostedt@goodmis.org>
+To:     Steven Rostedt <rostedt@goodmis.org>
 Cc:     Markus Elfring <Markus.Elfring@web.de>,
         kernel-janitors@vger.kernel.org,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Joe Perches <joe@perches.com>,
         Kees Cook <keescook@chromium.org>,
         LKML <linux-kernel@vger.kernel.org>
-Date:   Wed, 09 Oct 2019 09:38:33 -0700
-In-Reply-To: <CAKwvOdk3OTaAVmbV9Cu+Dzg8zuojjU6ENZfu4cUPaKS2a58d3w@mail.gmail.com>
-References: <75f70e5e-9ece-d6d1-a2c5-2f3ad79b9ccb@web.de>
-         <20191009110943.7ff3a08a@gandalf.local.home>
-         <CAKwvOdk3OTaAVmbV9Cu+Dzg8zuojjU6ENZfu4cUPaKS2a58d3w@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.1-2 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 2019-10-09 at 09:13 -0700, Nick Desaulniers wrote:
-> On Wed, Oct 9, 2019 at 8:09 AM Steven Rostedt <rostedt@goodmis.org> wrote:
-> > On Wed, 9 Oct 2019 14:14:28 +0200 Markus Elfring <Markus.Elfring@web.de> wrote:
-[]
-> > > Several functions return values with which useful data processing
-> > > should be performed. These values must not be ignored then.
-> > > Thus use the annotation “__must_check” in the shown function declarations.
-[]
-> > I'm curious. How many warnings showed up when you applied this patch?
-> 
-> I got zero for x86_64 and arm64 defconfig builds of linux-next with
-> this applied.  Hopefully that's not an argument against the more
-> liberal application of it?  I view __must_check as a good thing, and
-> encourage its application, unless someone can show that a certain
-> function would be useful to call without it.
+On Wed, Oct 9, 2019 at 9:27 AM Steven Rostedt <rostedt@goodmis.org> wrote:
+>
+> On Wed, 9 Oct 2019 09:13:17 -0700
+> Nick Desaulniers <ndesaulniers@google.com> wrote:
+>
+> > On Wed, Oct 9, 2019 at 8:09 AM Steven Rostedt <rostedt@goodmis.org> wrote:
+> > >
+> > > I'm curious. How many warnings showed up when you applied this patch?
+> >
+> > I got zero for x86_64 and arm64 defconfig builds of linux-next with
+> > this applied.  Hopefully that's not an argument against the more
+> > liberal application of it?  I view __must_check as a good thing, and
+> > encourage its application, unless someone can show that a certain
+> > function would be useful to call without it.
+>
+> Not at all, I was just curious, because I would have expected patches
+> to fix possible bugs with it.
 
-stylistic trivia, neither agreeing nor disagreeing with the patch
-as I generally avoid reading Markus' patches.
-
-I believe __must_check is best placed before the return type as
-that makes grep for function return type easier to parse.
-
-i.e. prefer
-	[static inline] __must_check <type> <function>(<args...>);
-over
-	[static inline] <type> __must_check <function>(<args...>);
-
+Ah, granted, I was surprised, too.  Maybe would be helpful to mention
+that in the commit message.
+-- 
+Thanks,
+~Nick Desaulniers

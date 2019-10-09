@@ -2,78 +2,138 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C352D0553
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 03:47:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B01ED0862
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 09:36:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728182AbfJIBrm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 8 Oct 2019 21:47:42 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:39664 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726109AbfJIBrm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 8 Oct 2019 21:47:42 -0400
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id A4AE99E700B83A829429;
-        Wed,  9 Oct 2019 09:47:39 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 9 Oct 2019 09:47:32 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <heikki.krogerus@linux.intel.com>, <gregkh@linuxfoundation.org>,
-        <biju.das@bp.renesas.com>
-CC:     <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>,
-        "Hulk Robot" <hulkci@huawei.com>
-Subject: [PATCH -next] usb: typec: add dependency for TYPEC_HD3SS3220
-Date:   Wed, 9 Oct 2019 09:47:07 +0800
-Message-ID: <20191009014707.38716-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728054AbfJIHfy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 03:35:54 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:51224 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725440AbfJIHfy (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 9 Oct 2019 03:35:54 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x997YIIH071378;
+        Wed, 9 Oct 2019 07:35:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=astRmtcxdwJfd5jGfQNYmdgoAsTRPrOTEf1/eNK/ur4=;
+ b=hMeu5JJSBXaU+qAM43MF9tr25AnwolI1wnzCjWACz0q3XiZtOrhnWSOV/8KfsrkERTY0
+ UVFyE6oPmzSJfwmMKB4ILAmYU9pMNAeT/9oexmZl8cgu5segf6qe6XuHqgiLqRQngZ1i
+ sQPyI6JBfx+jRyZLGbCbiResFVPUvavt5VULvqsjDNfsUYAcJaKNBgJrwoxPqmnqEA9x
+ 6v7aEUGiRePffRgOAN/yd1ISAJ5532GPUInMbF3hRMnFJE2kAZ9tlum+y9Yplc4vcA+y
+ +mEKnCbP3+acotURpQe6/c3C6kaKi8Si9RlTXQNdRSzrIEEgtt7EGjjWdrxvGXGVyLVj Og== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 2vek4qj8b3-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 09 Oct 2019 07:35:18 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x997YAqX112192;
+        Wed, 9 Oct 2019 07:35:17 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 2vgev0qynd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 09 Oct 2019 07:35:17 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x997ZFEG027907;
+        Wed, 9 Oct 2019 07:35:15 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 09 Oct 2019 00:35:14 -0700
+Date:   Wed, 9 Oct 2019 10:35:06 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jason Gunthorpe <jgg@ziepe.ca>
+Cc:     Doug Ledford <dledford@redhat.com>,
+        Potnuri Bharat Teja <bharat@chelsio.com>,
+        Matan Barak <matanb@mellanox.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Shamir Rabinovitch <shamir.rabinovitch@oracle.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Michael Guralnik <michaelgur@mellanox.com>,
+        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] uverbs: prevent potential underflow
+Message-ID: <20191009073506.GI25098@kadam>
+References: <20191005052337.GA20129@mwanda>
+ <20191008194425.GA28067@ziepe.ca>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191008194425.GA28067@ziepe.ca>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9404 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910090071
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9404 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910090071
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If CONFIG_TYPEC_HD3SS3220=y, CONFIG_USB_ROLE_SWITCH=m, below errors
-can be found:
-drivers/usb/typec/hd3ss3220.o: In function `hd3ss3220_remove':
-hd3ss3220.c:(.text+0x64): undefined reference to `usb_role_switch_put'
-drivers/usb/typec/hd3ss3220.o: In function `hd3ss3220_dr_set':
-hd3ss3220.c:(.text+0x154): undefined reference to `usb_role_switch_set_role'
-drivers/usb/typec/hd3ss3220.o: In function `hd3ss3220_set_role':
-hd3ss3220.c:(.text+0x294): undefined reference to `usb_role_switch_set_role'
-hd3ss3220.c:(.text+0x2f4): undefined reference to `usb_role_switch_set_role'
-hd3ss3220.c:(.text+0x348): undefined reference to `usb_role_switch_set_role'
-hd3ss3220.c:(.text+0x390): undefined reference to `usb_role_switch_set_role'
-drivers/usb/typec/hd3ss3220.o: In function `hd3ss3220_probe':
-hd3ss3220.c:(.text+0x5e8): undefined reference to `fwnode_usb_role_switch_get'
-hd3ss3220.c:(.text+0x8a4): undefined reference to `usb_role_switch_put'
-make: *** [vmlinux] Error 1
+On Tue, Oct 08, 2019 at 04:44:25PM -0300, Jason Gunthorpe wrote:
+> On Sat, Oct 05, 2019 at 08:23:37AM +0300, Dan Carpenter wrote:
+> > The issue is in drivers/infiniband/core/uverbs_std_types_cq.c in the
+> > UVERBS_HANDLER(UVERBS_METHOD_CQ_CREATE) function.  We check that:
+> > 
+> > 	if (attr.comp_vector >= attrs->ufile->device->num_comp_vectors) {
+> > 
+> > But we don't check that "attr.comp_vector" whether negative.  It
+> > could potentially lead to an array underflow.  My concern would be where
+> > cq->vector is used in the create_cq() function from the cxgb4 driver.
+> > 
+> > Fixes: 9ee79fce3642 ("IB/core: Add completion queue (cq) object actions")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> >  drivers/infiniband/core/uverbs.h | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+>  
+> > diff --git a/drivers/infiniband/core/uverbs.h b/drivers/infiniband/core/uverbs.h
+> > index 1e5aeb39f774..63f7f7db5902 100644
+> > --- a/drivers/infiniband/core/uverbs.h
+> > +++ b/drivers/infiniband/core/uverbs.h
+> > @@ -98,7 +98,7 @@ ib_uverbs_init_udata_buf_or_null(struct ib_udata *udata,
+> >  
+> >  struct ib_uverbs_device {
+> >  	atomic_t				refcount;
+> > -	int					num_comp_vectors;
+> > +	u32					num_comp_vectors;
+> >  	struct completion			comp;
+> >  	struct device				dev;
+> >  	/* First group for device attributes, NULL terminated array */
+> 
+> I would have expected you to change struct ib_cq_init_attr ? Or at
+> least both..
+> 
+> This is actually a bug as the type of
+> UVERBS_ATTR_CREATE_CQ_COMP_VECTOR for userspace is u32:
+> 
+>         UVERBS_ATTR_PTR_IN(UVERBS_ATTR_CREATE_CQ_COMP_VECTOR,
+>                            UVERBS_ATTR_TYPE(u32),
+>                            UA_MANDATORY),
+> 
+> But we are stuffing it into a int:
+> 
+>         ret = uverbs_copy_from(&attr.comp_vector, attrs,
+>                                UVERBS_ATTR_CREATE_CQ_COMP_VECTOR);
+> 
+> So very large values will become negative and switching
+> num_comp_vectors to u32 won't help??
 
-This patch add dependency USB_ROLE_SWITCH for TYPEC_HD3SS3220.
+Yeah.  You're right.  I should have changed both.  I'm not sure what I
+was thinking.
 
-Fixes: 1c48c759ef4b ("usb: typec: driver for TI HD3SS3220 USB Type-C DRP port controller")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
----
- drivers/usb/typec/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+My patch does fix the bug because of type promotion, but we should
+change both to u32.
 
-diff --git a/drivers/usb/typec/Kconfig b/drivers/usb/typec/Kconfig
-index aceb2af..b4f2aac 100644
---- a/drivers/usb/typec/Kconfig
-+++ b/drivers/usb/typec/Kconfig
-@@ -53,6 +53,7 @@ source "drivers/usb/typec/ucsi/Kconfig"
- config TYPEC_HD3SS3220
- 	tristate "TI HD3SS3220 Type-C DRP Port controller driver"
- 	depends on I2C
-+	depends on USB_ROLE_SWITCH
- 	help
- 	  Say Y or M here if your system has TI HD3SS3220 Type-C DRP Port
- 	  controller driver.
--- 
-2.7.4
+regards,
+dan carpenter
 

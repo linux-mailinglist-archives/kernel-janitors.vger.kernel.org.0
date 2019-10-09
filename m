@@ -2,56 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C2576D0C62
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 12:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E790D0E45
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 14:05:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729457AbfJIKPr convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 06:15:47 -0400
-Received: from mail.fireflyinternet.com ([109.228.58.192]:63928 "EHLO
-        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726579AbfJIKPr (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 06:15:47 -0400
-X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
-Received: from localhost (unverified [78.156.65.138]) 
-        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 18775438-1500050 
-        for multiple; Wed, 09 Oct 2019 11:15:44 +0100
-Content-Type: text/plain; charset="utf-8"
+        id S1731091AbfJIMFY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 08:05:24 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3669 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729883AbfJIMFY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 9 Oct 2019 08:05:24 -0400
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 0B8C2C8544BD8198EC56;
+        Wed,  9 Oct 2019 20:05:19 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 9 Oct 2019 20:05:10 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-usb@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] usb: typec: remove duplicated include from hd3ss3220.c
+Date:   Wed, 9 Oct 2019 12:04:49 +0000
+Message-ID: <20191009120449.44899-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-To:     Colin King <colin.king@canonical.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
-From:   Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20191009100024.23077-1-colin.king@canonical.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191009100024.23077-1-colin.king@canonical.com>
-Message-ID: <157061614282.18808.3604540678077210321@skylake-alporthouse-com>
-User-Agent: alot/0.6
-Subject: Re: [PATCH][next] drm/i915/selftests: fix null pointer dereference on
- pointer data
-Date:   Wed, 09 Oct 2019 11:15:42 +0100
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Colin King (2019-10-09 11:00:24)
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> In the case where data fails to be allocated the error exit path is
-> via label 'out' where data is dereferenced in a for-loop.  Fix this
-> by exiting via the label 'out_file' instead to avoid the null pointer
-> dereference.
-> 
-> Addresses-Coverity: ("Dereference after null check")
-> Fixes: 50d16d44cce4 ("drm/i915/selftests: Exercise context switching in parallel")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
--Chris
+Remove duplicated include.
+
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/usb/typec/hd3ss3220.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/usb/typec/hd3ss3220.c b/drivers/usb/typec/hd3ss3220.c
+index 1900910c637e..0ea5bf3c19c7 100644
+--- a/drivers/usb/typec/hd3ss3220.c
++++ b/drivers/usb/typec/hd3ss3220.c
+@@ -10,7 +10,6 @@
+ #include <linux/usb/role.h>
+ #include <linux/irqreturn.h>
+ #include <linux/interrupt.h>
+-#include <linux/module.h>
+ #include <linux/regmap.h>
+ #include <linux/slab.h>
+ #include <linux/usb/typec.h>
+
+
+
+
+

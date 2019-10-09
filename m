@@ -2,90 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BFECD098F
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 10:22:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63D7DD09C5
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 10:27:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729915AbfJIIWj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 04:22:39 -0400
-Received: from mga03.intel.com ([134.134.136.65]:64466 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725914AbfJIIWj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 04:22:39 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Oct 2019 01:22:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,273,1566889200"; 
-   d="scan'208";a="206829981"
-Received: from kuha.fi.intel.com ([10.237.72.53])
-  by fmsmga001.fm.intel.com with SMTP; 09 Oct 2019 01:22:35 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 09 Oct 2019 11:22:35 +0300
-Date:   Wed, 9 Oct 2019 11:22:35 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Mao Wenan <maowenan@huawei.com>
-Cc:     gregkh@linuxfoundation.org, biju.das@bp.renesas.com,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH -next] usb: typec: add dependency for TYPEC_HD3SS3220
-Message-ID: <20191009082235.GE12909@kuha.fi.intel.com>
-References: <20191009014707.38716-1-maowenan@huawei.com>
+        id S1727219AbfJII1S (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 04:27:18 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:60704 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725776AbfJII1S (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 9 Oct 2019 04:27:18 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 9029761230; Wed,  9 Oct 2019 08:27:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570609637;
+        bh=SlauZ4D8HLCxXEiHQM7t8QAJWzhEXJDLKsZ+hcRK+f0=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=lLQrx+AWxhce9300FQpQjXBZn8PDbkdTuajjUBgguNgnL+2e40CC8+IWiBJ9ePaqc
+         4qkUbxWMgXFhOUl45npJkzGzlfeWmSu+qcANd7zU1U4jN0sI3yRi48g8mPKSmb2RnP
+         mGCwYlPNGoLc9gld/ykPTvNFa8mEIhie6Ro/kTeE=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id E2BE261CB7;
+        Wed,  9 Oct 2019 08:27:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570609631;
+        bh=SlauZ4D8HLCxXEiHQM7t8QAJWzhEXJDLKsZ+hcRK+f0=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=X4cpT/lzoG2Y5DFNvnv7+ZtIbTKSY/C0Qd+YnOhtWfMtp7dFmghgj9fRdmal2439t
+         EwLezsU/X5qoXw0Fx7HqAxLc59yK4aD4LbDpC5OfOwdknXYlReu9E4ZCIptIl0aFdy
+         pa7NtTSoZRP+NJ1v4SdPgtswvP5bE86ro2J7dRnA=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org E2BE261CB7
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191009014707.38716-1-maowenan@huawei.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] rtw88: Fix an error message
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191007084805.GA3865@mwanda>
+References: <20191007084805.GA3865@mwanda>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191009082716.9029761230@smtp.codeaurora.org>
+Date:   Wed,  9 Oct 2019 08:27:11 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Oct 09, 2019 at 09:47:07AM +0800, Mao Wenan wrote:
-> If CONFIG_TYPEC_HD3SS3220=y, CONFIG_USB_ROLE_SWITCH=m, below errors
-> can be found:
-> drivers/usb/typec/hd3ss3220.o: In function `hd3ss3220_remove':
-> hd3ss3220.c:(.text+0x64): undefined reference to `usb_role_switch_put'
-> drivers/usb/typec/hd3ss3220.o: In function `hd3ss3220_dr_set':
-> hd3ss3220.c:(.text+0x154): undefined reference to `usb_role_switch_set_role'
-> drivers/usb/typec/hd3ss3220.o: In function `hd3ss3220_set_role':
-> hd3ss3220.c:(.text+0x294): undefined reference to `usb_role_switch_set_role'
-> hd3ss3220.c:(.text+0x2f4): undefined reference to `usb_role_switch_set_role'
-> hd3ss3220.c:(.text+0x348): undefined reference to `usb_role_switch_set_role'
-> hd3ss3220.c:(.text+0x390): undefined reference to `usb_role_switch_set_role'
-> drivers/usb/typec/hd3ss3220.o: In function `hd3ss3220_probe':
-> hd3ss3220.c:(.text+0x5e8): undefined reference to `fwnode_usb_role_switch_get'
-> hd3ss3220.c:(.text+0x8a4): undefined reference to `usb_role_switch_put'
-> make: *** [vmlinux] Error 1
-> 
-> This patch add dependency USB_ROLE_SWITCH for TYPEC_HD3SS3220.
-> 
-> Fixes: 1c48c759ef4b ("usb: typec: driver for TI HD3SS3220 USB Type-C DRP port controller")
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-
-> ---
->  drivers/usb/typec/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
+> The WARN_ON() macro doesn't take an error message, the argument is a
+> condition so this won't display the warning message.
 > 
-> diff --git a/drivers/usb/typec/Kconfig b/drivers/usb/typec/Kconfig
-> index aceb2af..b4f2aac 100644
-> --- a/drivers/usb/typec/Kconfig
-> +++ b/drivers/usb/typec/Kconfig
-> @@ -53,6 +53,7 @@ source "drivers/usb/typec/ucsi/Kconfig"
->  config TYPEC_HD3SS3220
->  	tristate "TI HD3SS3220 Type-C DRP Port controller driver"
->  	depends on I2C
-> +	depends on USB_ROLE_SWITCH
->  	help
->  	  Say Y or M here if your system has TI HD3SS3220 Type-C DRP Port
->  	  controller driver.
-> -- 
-> 2.7.4
+> Fixes: 27e117e4b01b ("rtw88: add deep power save support")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-thanks,
+Patch applied to wireless-drivers-next.git, thanks.
+
+be10b09b278f rtw88: Fix an error message
 
 -- 
-heikki
+https://patchwork.kernel.org/patch/11176989/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+

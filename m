@@ -2,32 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65486D0B78
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 11:40:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FDEED0BB0
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 11:46:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730722AbfJIJjk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 05:39:40 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56240 "EHLO
+        id S1730781AbfJIJqH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 05:46:07 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:56423 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726734AbfJIJjk (ORCPT
+        with ESMTP id S1729761AbfJIJqH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 05:39:40 -0400
+        Wed, 9 Oct 2019 05:46:07 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iI8RT-0006l2-At; Wed, 09 Oct 2019 09:39:35 +0000
+        id 1iI8Xj-0007JB-Go; Wed, 09 Oct 2019 09:46:03 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+To:     =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
+        <jerome.pouiller@silabs.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/i915: remove redundant variable err
-Date:   Wed,  9 Oct 2019 10:39:35 +0100
-Message-Id: <20191009093935.17895-1-colin.king@canonical.com>
+Subject: [PATCH][next] staging: wfx: fix swapped arguments in memset call
+Date:   Wed,  9 Oct 2019 10:46:02 +0100
+Message-Id: <20191009094602.19663-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,38 +37,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-An earlier commit removed any error assignments to err and we
-are now left with a zero assignment to err and a check that is
-always false. Clean this up by removing the redundant variable
-err and the error check.
+The memset appears to have the 2nd and 3rd arguments in the wrong
+order, fix this by swapping these around into the correct order.
 
-Addresses-Coverity: ("'Constant' variable guard")
+Addresses-Coverity: ("Memset fill truncated")
+Fixes: 4f8b7fabb15d ("staging: wfx: allow to send commands to chip")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/i915/i915_active.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/staging/wfx/debug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_active.c b/drivers/gpu/drm/i915/i915_active.c
-index aa37c07004b9..67305165c12a 100644
---- a/drivers/gpu/drm/i915/i915_active.c
-+++ b/drivers/gpu/drm/i915/i915_active.c
-@@ -438,7 +438,6 @@ static void enable_signaling(struct i915_active_fence *active)
- int i915_active_wait(struct i915_active *ref)
- {
- 	struct active_node *it, *n;
--	int err = 0;
- 
- 	might_sleep();
- 
-@@ -456,8 +455,6 @@ int i915_active_wait(struct i915_active *ref)
- 	/* Any fence added after the wait begins will not be auto-signaled */
- 
- 	i915_active_release(ref);
--	if (err)
--		return err;
- 
- 	if (wait_var_event_interruptible(ref, i915_active_is_idle(ref)))
- 		return -EINTR;
+diff --git a/drivers/staging/wfx/debug.c b/drivers/staging/wfx/debug.c
+index 8de16ad7c710..761ad9b4f27e 100644
+--- a/drivers/staging/wfx/debug.c
++++ b/drivers/staging/wfx/debug.c
+@@ -226,7 +226,7 @@ static ssize_t wfx_send_hif_msg_write(struct file *file, const char __user *user
+ 	// wfx_cmd_send() chekc that reply buffer is wide enough, but do not
+ 	// return precise length read. User have to know how many bytes should
+ 	// be read. Filling reply buffer with a memory pattern may help user.
+-	memset(context->reply, sizeof(context->reply), 0xFF);
++	memset(context->reply, 0xFF, sizeof(context->reply));
+ 	request = memdup_user(user_buf, count);
+ 	if (IS_ERR(request))
+ 		return PTR_ERR(request);
 -- 
 2.20.1
 

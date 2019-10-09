@@ -2,42 +2,41 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EFEDDD1456
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 18:43:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C23CD14D2
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 19:05:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731417AbfJIQnX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 12:43:23 -0400
-Received: from mout.web.de ([212.227.17.11]:46435 "EHLO mout.web.de"
+        id S1731432AbfJIRFD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 13:05:03 -0400
+Received: from mout.web.de ([217.72.192.78]:57299 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730708AbfJIQnX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 12:43:23 -0400
+        id S1730546AbfJIRFD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 9 Oct 2019 13:05:03 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1570639359;
-        bh=smGGKIWjcKK40LfxXzxyDhqfpPN20hSlgYA0gpL/sBQ=;
+        s=dbaedf251592; t=1570640665;
+        bh=NXrU8n/Law5n9E/yXApsMMxu2X+rcbA9DcxVWhPlL6Q=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=pojyrmQPFLUMc40gISVqiGxIQWADfuj/T13jAiJbBOBrt4aSF/lt6gxHGzaDVjZ/J
-         JWr4uyTCkuoRF2Se6xcoEYgPlbMnUr0m23aYgN8pE5J0/PcCX1Qf4qRmkARgcOufej
-         otcf0S7tHY/J46/LJyPKzb9ggULH8JaHx3qKb2ko=
+        b=otjZq1L5TKL5VDiDCGFc8TNklioexJ73T7x3IdSgkvSWjAUDcOICnwb/K2O1GrClB
+         H9dg3E6hVQcbB6htvHfyglyMor0idCEfGnCdhCsxtiRc7OfsN3E7+gCgHb7YmoB5d4
+         TtgRj+8vwNtR7NvdO89WgYoQso9AZr/7sHrv8WQI=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.177.35]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0McFPX-1iYWyW2Nrb-00Jdlz; Wed, 09
- Oct 2019 18:42:39 +0200
+Received: from [192.168.1.2] ([93.132.177.35]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MGA7n-1iLI3q2u9v-00FAec; Wed, 09
+ Oct 2019 19:04:25 +0200
 Subject: Re: string.h: Mark 34 functions with __must_check
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        kernel-janitors@vger.kernel.org,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+To:     Nick Desaulniers <ndesaulniers@google.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        kernel-janitors@vger.kernel.org
+Cc:     Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Joe Perches <joe@perches.com>,
         Kees Cook <keescook@chromium.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Aditya Pakki <pakki001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Navid Emamdoost <emamd001@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>
-Cc:     LKML <linux-kernel@vger.kernel.org>
+        LKML <linux-kernel@vger.kernel.org>
 References: <75f70e5e-9ece-d6d1-a2c5-2f3ad79b9ccb@web.de>
- <954c5d70-742f-7b0e-57ad-ea967e93be89@rasmusvillemoes.dk>
+ <20191009110943.7ff3a08a@gandalf.local.home>
+ <CAKwvOdk3OTaAVmbV9Cu+Dzg8zuojjU6ENZfu4cUPaKS2a58d3w@mail.gmail.com>
+ <20191009122735.17415f9c@gandalf.local.home>
+ <CAKwvOdkvgeHnQ_SyR7QUqpsmtMPRe1SCJ_XJLQYv-gvLB6rbLg@mail.gmail.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -82,69 +81,54 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <074dfd38-dc1d-3795-ab75-a17c24b36844@web.de>
-Date:   Wed, 9 Oct 2019 18:42:27 +0200
+Message-ID: <b8bdfb25-deb8-9da0-3572-408b19bb0507@web.de>
+Date:   Wed, 9 Oct 2019 19:04:23 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <954c5d70-742f-7b0e-57ad-ea967e93be89@rasmusvillemoes.dk>
+In-Reply-To: <CAKwvOdkvgeHnQ_SyR7QUqpsmtMPRe1SCJ_XJLQYv-gvLB6rbLg@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:tYsVpNEli7z3lMZv4vatBbZYvPfhxXoaH+ONehvlip+PITKHyXz
- 1Orn+6oP9PafpB1iRD7GQIpjUSXIYuX3FbQMaKWqUmXDuGqBX5wVWww8IyyOEGA9fZUDfSg
- yFJ5Q8l+KZmRECHgqUXzaXX3tqUqp9i/lxuLwUElNhX9dS2EybwvKCtSOML0lhX7uA+1zgX
- 3c9Oaq4X7ESvUmoULFhsA==
+X-Provags-ID: V03:K1:PUruM+8ZpvaFJjBl1R93O+WN+hQ+T/z1KVGbQhaTtAJkABNTflN
+ bhC+Fi2mtbu9RS59neOIWcBsg2wgsFaKn5NJbM07C6mtrcVRNgyT4ZtFhXHPxhVSF5sQSZJ
+ UiJHRHcg1kuXQLW+EJicHbdFKJe81DF9fKcxCpq1b0NbYol4g7eHoU1oedf/NVwQA9xDvsX
+ mD/wdEds2AEERHYdY+8ng==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:mqMEwAOJrio=:PeLMaIyql1VA9Jln58WY18
- 9H0BbX5r4pf4Dbcmke8iUPQc0YxpGzyagYMVBxmt/5KWTzKciYutL1YMnoIG2oLbslqrZeHIP
- BRu2BZaZ6IYW4xjbg9A7GvsBvsKozlbU1a54j7Yf4UAC/uzvwvG5fJzdosbLOMC/NgH69gZvx
- wNs67/sEmfN0yjemekLhNj4qUWz/Vha0Ew3KvHPPsTS8l7hEub0XOAPIT58n80K4pnyPQbOTU
- GMVvD6hYw0Q/Ima4JA2ip28L2THJ5465/9NdxwmoWSV/2sfqEMTL+JissFi1wvbM7loo/f/M1
- WJslpZlT2PimkNJvUFAJvJmfCgxs/xYUD1CltSnUFiHoQpRNpmgOq+3BjzhKns+Ek9xsgV+u4
- 3yzbt+cRINNtC+E+jaEDu+qCg3GKSouUcB/1Rnb1bjt2QWesljw6To/zbeF4UpoblYnxbWbHL
- DLruZur1/aTKmLehrY4SuFz7hX8BeY5SnWUBrLhFsDxJvcl+KD5/QuVRXUb0Huwj7O3JyM4sD
- w5OvwBJE8p2VVT67Viye0e5Rz0wYSkEAy/z2j/509CXbdR2bjDrUq0H6s5CtmZf6hDFIqT1r9
- KnSYW4f47l6x4M0XcCYTy8ABtVCB2MejnD82Tn3tWU64OoANPCGhPcTXDgDJ5INpRtT7kJ3at
- czHgUIn9MtAbq8IAIsg9XNkBtpAfGE9N2HfeEFDVdEb79gceuihkmjv39P57muAT5mQuBD6Ny
- 1uMDZy+li+BXxzhge0K6u4jd2UaCmfRQ4d2uhV7lxq7vhjZKxU8Lcb03bLO52StIby22kS52G
- J3G3XxEu7nO3KvTimGRS4cRhOOWwslif0BGkA9sKoyd363BTkVExMjVRry5tWShHHR8iRF2o5
- TcwCp9YxZZP9VIVXnPuml4dZJ8JXZyTtgFi1DFNz1m3vVC+GcCMS8hSPr9KHgHRD5e6n4l52R
- dKYM1BMQGuEzHnhroyc+NBg4A45dDqIdXHThOZu7tuuCJi8QXQnsg34m0Z928R+rE+LizJoOt
- OqI7fUKeYBmXYtsjtlZdqqmCrD24Q7YjrNTWx/SRtScbZpe/+zZYd6lkgnioytPwxdigJ+zAb
- e8FL3eAO7kyDowzGhDmgTgHPxwXpr+SXDalFnZ9/ref2NHTfWIjUl0Wq2t1nodaUHVsU9AHaC
- LNxm2M2BXBJbwM/DVXAT+Xu+1uYCnJ5MdcOiEeE5QwZ/AwamcSNDHhp99DGe3bBpAc9kfcLU0
- URqsTV0O29/iD0vkqgtKVdvQ5VV5vPsiW8jzpopXuOXU6FXhzTRgX//15P0o=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:kLWa9EPXSmc=:g4tJaaIecxZtWHegHm1XIq
+ FbX1UBVB79UeYKqQdmOyqJUPiiOvKkq2SKiGrTdi761lyC571IWiI7HfXhNJIulbYF9fnXF/I
+ IoQ6tUrf9AT61YmE2gClfqy7lXffMRmyskEDfcIrtCSJ+ZSN7of+aKZN8wwiS+q/1TWFhZQG+
+ r8MDJ7btOnQa4AK5jSXMmRxRobKvnTlPLxNEudgyuVAdL4uXEbthkCksgSBl8OqH/VVjdyyW5
+ 7ygGH4F/2MwlhwfWDNDrOeznf3wLEkDjsyAdC99h1L6MhErgsHIECB1qAwquiH8XvtWyo911G
+ 7VggBuWhUnt0DRy7fi8DL+oU7r+BYe+S0HXMsMGZZnFsWP3GmXqLR065TIgKw6ehkOGq9S0vA
+ 6QYkSAquhpFEMuYwBr2m7Vvy7oUu6ap8HZBkD+4jHEam8dQnPSxTfj/0LbjGOWO57G+xtgHvS
+ pu52cJSW89ifKlBvx2L8CR7+nbqx4HTdrlLbGcsopOIu6+Ubx9sf3BTCNvz4t1ws6egqGLmGQ
+ j7QZlymkcx1SmNNoNpvL0UEA28asuV25GOALgYkgrhzv1wm0ajDD9ADUmII0R1xaQ7cDK0QuK
+ QGPQAA5pOiyklGaBG2wXaPITAHYWrdn8tPUXsa3S1YMyZpdHEmULMA6n192UYKcD9WPJRWQ4d
+ HXimyCXlJTzTwycJuIDSBUYYs1l1Juyc/lQ+/xR9Cz+u2rkMg+4VrwWw5spQxe8IFksp+IPdt
+ 3XLZsy+Cwo1j6k/RcJm7gKJiQkAQ3PGFjqjAeqyjar9tELKSVq0G+hjE8VijXxe2MII2dubZE
+ SCFDWyIs8Hjeaj5GOhnHowt6L5RDgyDLiVaIQR3HXxQR6PRKZTYX4BQUfG5Nk0suPHsgqz5Ad
+ T3uIHkKzSq0meWQVpJZrHCMLPQhLMIOsKxayjsO/3fyXMxEyMs6yq1dwswXVvenMc2lGbCtE6
+ SFm1Zm8cmDKQXeZlobEapO1B197tpJ6c2AxkeJ4IV4GpgU5V6xZHvzlSgP+yLBNIE9KKCoJve
+ pbcg6FjBq7riHZPIp8NWp0SfKpGfZmbOpS7EDfnJbZCw+M7uW2qQjCvvTfEnSw1o04XiH7FOk
+ ylcMKRU65j1BwAd/T7rlRaprF1wtO2xcNb/yHuJl6ZIVW339j5C9hl50qwdVNcZHOJfALNW81
+ yG8lkq9uexOhm9bBx1t9CqCbNpr2V0yGIhDcsOt+ma6p2aFHcweAJ8SP+JsJRGWerHGGQvqcV
+ /xs+WofOT1+H6TkSopW69SqZm8QfRwle1l+Mw9Z+18990r8avI8gMJQIiMUw=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> You're also not consistent - strlen() is not annotated.
+> Ah, granted, I was surprised, too.
 
-Would you like to integrate any additional function annotations?
-
-
-> And, for the standard C functions, -Wall already seems to warn about
-> an unused call:
-
-This detail is nice, isn't it?
+Thanks for this view.
 
 
-> a.c:5:2: warning: statement with no effect [-Wunused-value]
->   strlen(s);
+> Maybe would be helpful to mention that in the commit message.
 
-Are there any differences to consider for the Linux function variant?
-
-
-> The problem is the __must_check does not mean that the
-> return value must be followed by a comparison to NULL and bailing out
-> (that can't really be checked), it simply ensures the return value is
-> assigned somewhere or used in an if(). So foo->bar = kstrdup() not
-> followed by a check of foo->bar won't warn. So one would essentially
-> only catch instant-leaks.
-
-How do you think about to improve the source code analysis support
-any further?
+My Linux software build resources might be too limited to take
+more system configuration variations safely into account
+for this issue.
+Would you like to achieve further checks here?
 
 Regards,
 Markus

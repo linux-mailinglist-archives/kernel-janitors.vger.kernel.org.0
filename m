@@ -2,99 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 184DED1146
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 16:31:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7F3FD121C
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 17:09:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731455AbfJIOax (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 10:30:53 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:34858 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729865AbfJIOax (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 10:30:53 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x99ET5EP091425;
-        Wed, 9 Oct 2019 14:30:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=xieOlnCZNdH9rUJsmmz2r6xC3pikyG8vEfffwj7nqrw=;
- b=OOvnWUKCQhvigjaczx/qR1uBte5t61Z/QDolYiL05qZxUCsWNHdRQKhJWREdJEd50eVy
- S5jenrGsYWmitNcsX/IDCRwufe6OiXJ5UQ5M2ppSpZWaa+AcSSoJTDT7DWzaNvZ92hVO
- uMGSXQCEW/N2FRRMCg0SbTziGa6IWx3O+KfE46GFbifC9CUGDfZt+0c7VUvcHx2pt6Gs
- NE04+Y6luipnF1BAt8CfIXyGgYtIyvqAw9xs4V9B/QLW/mdy86Nk8Lju35NBFPsrTu+E
- kiSOurdkp2EDfP9qCSs9784af8DYrJeekHVKz5Tay4qF9HKcwM/8yngIl6RdKmbPI7a4 Nw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 2vektrmsct-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 09 Oct 2019 14:30:15 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x99ENELC032173;
-        Wed, 9 Oct 2019 14:30:15 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2vgev1gx1s-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 09 Oct 2019 14:30:15 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x99EUAlf020123;
-        Wed, 9 Oct 2019 14:30:12 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 09 Oct 2019 07:30:10 -0700
-Date:   Wed, 9 Oct 2019 17:30:01 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     Markus Elfring <Markus.Elfring@web.de>,
-        kernel-janitors@vger.kernel.org,
+        id S1729865AbfJIPJq convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 11:09:46 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54812 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729644AbfJIPJq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 9 Oct 2019 11:09:46 -0400
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0DAEB20B7C;
+        Wed,  9 Oct 2019 15:09:44 +0000 (UTC)
+Date:   Wed, 9 Oct 2019 11:09:43 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     kernel-janitors@vger.kernel.org,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Joe Perches <joe@perches.com>,
         Kees Cook <keescook@chromium.org>,
         Nick Desaulniers <ndesaulniers@google.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
         LKML <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH] string.h: Mark 34 functions with __must_check
-Message-ID: <20191009143000.GD13286@kadam>
+Message-ID: <20191009110943.7ff3a08a@gandalf.local.home>
+In-Reply-To: <75f70e5e-9ece-d6d1-a2c5-2f3ad79b9ccb@web.de>
 References: <75f70e5e-9ece-d6d1-a2c5-2f3ad79b9ccb@web.de>
- <954c5d70-742f-7b0e-57ad-ea967e93be89@rasmusvillemoes.dk>
- <20191009135522.GA20194@kadam>
- <b1f055ec-b4ec-d0ed-a03d-7d9828fa9440@rasmusvillemoes.dk>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b1f055ec-b4ec-d0ed-a03d-7d9828fa9440@rasmusvillemoes.dk>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9404 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=814
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910090139
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9404 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=894 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910090140
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Oct 09, 2019 at 04:21:20PM +0200, Rasmus Villemoes wrote:
-> On 09/10/2019 15.56, Dan Carpenter wrote:
-> > That's because glibc strlen is annotated with __attribute_pure__ which
-> > means it has no side effects.
+On Wed, 9 Oct 2019 14:14:28 +0200
+Markus Elfring <Markus.Elfring@web.de> wrote:
+
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Wed, 9 Oct 2019 13:53:59 +0200
 > 
-> I know, except it has nothing to do with glibc headers. Just try the
-> same thing in the kernel. gcc itself knows this about __builtin_strlen()
-> etc. If anything, we could annotate some of our non-standard functions
-> (say, memchr_inv) with __pure - then we'd both get the Wunused-value in
-> the nonsense cases, and allow gcc to optimize or reorder the calls.
+> Several functions return values with which useful data processing
+> should be performed. These values must not be ignored then.
+> Thus use the annotation “__must_check” in the shown function declarations.
+> 
+> Add also corresponding parameter names for adjusted functions.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+>
 
-Huh.  You're right.  GCC already knows.  So this patch is pointless like
-you say.
+I'm curious. How many warnings showed up when you applied this patch?
 
-regards,
-dan carpenter
-
+-- Steve

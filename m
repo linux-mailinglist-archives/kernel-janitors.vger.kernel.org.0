@@ -2,34 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 565ECD0EAF
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 14:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BAB8D0EC5
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 14:32:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729686AbfJIM2O (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 08:28:14 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:45038 "EHLO huawei.com"
+        id S1731133AbfJIMbq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 08:31:46 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:3670 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727878AbfJIM2O (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 08:28:14 -0400
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 9F1BDB972E4E356DC9F2;
-        Wed,  9 Oct 2019 20:28:12 +0800 (CST)
+        id S1727029AbfJIMbq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 9 Oct 2019 08:31:46 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 95FD72B76B81C23962B2;
+        Wed,  9 Oct 2019 20:31:41 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 9 Oct 2019 20:28:02 +0800
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 9 Oct 2019 20:31:32 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     Andrea Arcangeli <aarcange@redhat.com>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+To:     David Howells <dhowells@redhat.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        "Mike Kravetz" <mike.kravetz@oracle.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Wei Yang <richardw.yang@linux.intel.com>,
-        Hugh Dickins <hughd@google.com>
+        Vitaly Wool <vitaly.wool@konsulko.com>,
+        "Henry Burns" <henryburns@google.com>,
+        Shakeel Butt <shakeelb@google.com>,
+        "Stephen Rothwell" <sfr@canb.auug.org.au>
 CC:     YueHaibing <yuehaibing@huawei.com>, <linux-mm@kvack.org>,
         <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] userfaultfd: remove set but not used variable 'h'
-Date:   Wed, 9 Oct 2019 12:27:40 +0000
-Message-ID: <20191009122740.70517-1-yuehaibing@huawei.com>
+Subject: [PATCH -next] mm/z3fold.c: remove set but not used variable 'newpage'
+Date:   Wed, 9 Oct 2019 12:31:11 +0000
+Message-ID: <20191009123111.80425-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -43,38 +42,64 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Fixes gcc '-Wunused-but-set-variable' warning:
 
-mm/userfaultfd.c: In function '__mcopy_atomic_hugetlb':
-mm/userfaultfd.c:217:17: warning:
- variable 'h' set but not used [-Wunused-but-set-variable]
+mm/z3fold.c: In function 'compact_single_buddy':
+mm/z3fold.c:693:16: warning:
+ variable 'newpage' set but not used [-Wunused-but-set-variable]
 
-It is not used since commit 78911d0e18ac ("userfaultfd: use vma_pagesize
-for all huge page size calculation")
+mm/z3fold.c:664:13: warning:
+ variable 'bud' set but not used [-Wunused-but-set-variable]
+
+It is never used, so can be removed.
 
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- mm/userfaultfd.c | 3 ---
- 1 file changed, 3 deletions(-)
+ mm/z3fold.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-index 4cb4ef3d9128..1b0d7abad1d4 100644
---- a/mm/userfaultfd.c
-+++ b/mm/userfaultfd.c
-@@ -214,7 +214,6 @@ static __always_inline ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
- 	unsigned long src_addr, dst_addr;
- 	long copied;
- 	struct page *page;
--	struct hstate *h;
- 	unsigned long vma_hpagesize;
- 	pgoff_t idx;
- 	u32 hash;
-@@ -271,8 +270,6 @@ static __always_inline ssize_t __mcopy_atomic_hugetlb(struct mm_struct *dst_mm,
- 			goto out_unlock;
+diff --git a/mm/z3fold.c b/mm/z3fold.c
+index 25713a4a7186..d48d0ec3bcdd 100644
+--- a/mm/z3fold.c
++++ b/mm/z3fold.c
+@@ -661,7 +661,6 @@ static struct z3fold_header *compact_single_buddy(struct z3fold_header *zhdr)
+ 	struct z3fold_pool *pool = zhdr_to_pool(zhdr);
+ 	void *p = zhdr;
+ 	unsigned long old_handle = 0;
+-	enum buddy bud;
+ 	size_t sz = 0;
+ 	struct z3fold_header *new_zhdr = NULL;
+ 	int first_idx = __idx(zhdr, FIRST);
+@@ -673,24 +672,20 @@ static struct z3fold_header *compact_single_buddy(struct z3fold_header *zhdr)
+ 	 * the page lock is already taken
+ 	 */
+ 	if (zhdr->first_chunks && zhdr->slots->slot[first_idx]) {
+-		bud = FIRST;
+ 		p += ZHDR_SIZE_ALIGNED;
+ 		sz = zhdr->first_chunks << CHUNK_SHIFT;
+ 		old_handle = (unsigned long)&zhdr->slots->slot[first_idx];
+ 	} else if (zhdr->middle_chunks && zhdr->slots->slot[middle_idx]) {
+-		bud = MIDDLE;
+ 		p += zhdr->start_middle << CHUNK_SHIFT;
+ 		sz = zhdr->middle_chunks << CHUNK_SHIFT;
+ 		old_handle = (unsigned long)&zhdr->slots->slot[middle_idx];
+ 	} else if (zhdr->last_chunks && zhdr->slots->slot[last_idx]) {
+-		bud = LAST;
+ 		p += PAGE_SIZE - (zhdr->last_chunks << CHUNK_SHIFT);
+ 		sz = zhdr->last_chunks << CHUNK_SHIFT;
+ 		old_handle = (unsigned long)&zhdr->slots->slot[last_idx];
  	}
  
--	h = hstate_vma(dst_vma);
--
- 	while (src_addr < src_start + len) {
- 		pte_t dst_pteval;
+ 	if (sz > 0) {
+-		struct page *newpage;
+ 		enum buddy new_bud = HEADLESS;
+ 		short chunks = size_to_chunks(sz);
+ 		void *q;
+@@ -699,7 +694,6 @@ static struct z3fold_header *compact_single_buddy(struct z3fold_header *zhdr)
+ 		if (!new_zhdr)
+ 			return NULL;
+ 
+-		newpage = virt_to_page(new_zhdr);
+ 		if (WARN_ON(new_zhdr == zhdr))
+ 			goto out_fail;
 
 
 

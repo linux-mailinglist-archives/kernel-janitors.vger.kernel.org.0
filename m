@@ -2,144 +2,131 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 95242D101D
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 15:30:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39FEED10B2
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 15:58:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731549AbfJIN2x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 09:28:53 -0400
-Received: from mail-eopbgr800049.outbound.protection.outlook.com ([40.107.80.49]:26720
-        "EHLO NAM03-DM3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1731181AbfJIN2w (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 09:28:52 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mlsdi+FEsN2MXsYxwPNF5NQmU1PaPwDPsSmPwoRFSnQib0QjFEdbRbFW/+rNOLlVHeb/OPrb0M7zUVJj1aatUKoTwBgZNP0DMUUYa2/qyEzy+jrLSN2giir15pvIeFlltxIhRtN8k8cuUVWVS3Vn4AqNeuu1XaRnCQ2aZsOpTgxFmJNQxTo4aHJUF+iibFrOZ593D7mmN0t5ct2H/UiTsIW6r4rEt690ZsBOz2fBo/IkkK41wrpxztNz4bJXvMXWg7YolW+dIJD5bfALGfo0a8VtpTQd3sqEqVZ3PQ5+R4Ff7fyHYlnj+wPxSqCq7bABt49G54eVjFGXxHfNkOnoPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KufVDrgc3cSmHNaiLmnxc39UBT0aFIAmnFrAJm7jr6M=;
- b=LrUHgMwYyK/UDYRD3SJNehFAtYgr0pOLo05rKFQUxZ6Xkgb5dTBcyzNr8nRUsHKCxJ1TpQNu8yeGyZiL4oAnHRjUnb7nbc6OufiTsGZhNT+MAzjOqzVRjvpgm8csteiFYuyXT/J2rzeCPWc8YFRDOZrH9yVgSHghJM5r1zpMP760cCRaNhjJe9he5epCjI1VC+hbbqWzeoTTVh+ohZVsrfqDTRtzdQGmPMgRL8cEbpLj9U3GRkTDCOavrE8eo2hBgHgRKziXoWFAxvt1RXUwC3ZG9ANP4/LihxHL1PyqfVyqMCPqC6RXnuKHwKao3qT552/I+FQPSqLaiKLJuMBP9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=verimatrix.com; dmarc=pass action=none
- header.from=verimatrix.com; dkim=pass header.d=verimatrix.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=verimatrix.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KufVDrgc3cSmHNaiLmnxc39UBT0aFIAmnFrAJm7jr6M=;
- b=MEaCa84tzoBmT7z3hEx4aJ4TNZ4zHixn41eGiTfOPG4J4UCjKFcvExn1UPP0qKmHtUfeLcY2N6U+qKqpdMkVixgmT8cc0bf16uqsyofQgr+mjRMxnrHe/ATTMxLf8ZKjqAM3aoyY+JlA4z1RsNsD/hjsVGnGsmPWYSAwnPf7kBE=
-Received: from MN2PR20MB2973.namprd20.prod.outlook.com (52.132.172.86) by
- MN2PR20MB3023.namprd20.prod.outlook.com (52.132.174.224) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2327.24; Wed, 9 Oct 2019 13:28:48 +0000
-Received: from MN2PR20MB2973.namprd20.prod.outlook.com
- ([fe80::b986:4f02:3206:31e4]) by MN2PR20MB2973.namprd20.prod.outlook.com
- ([fe80::b986:4f02:3206:31e4%7]) with mapi id 15.20.2347.016; Wed, 9 Oct 2019
- 13:28:47 +0000
-From:   Pascal Van Leeuwen <pvanleeuwen@verimatrix.com>
-To:     YueHaibing <yuehaibing@huawei.com>,
-        Antoine Tenart <antoine.tenart@bootlin.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-CC:     "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: RE: [PATCH -next] crypto: Use PTR_ERR_OR_ZERO in
- safexcel_xcbcmac_cra_init()
-Thread-Topic: [PATCH -next] crypto: Use PTR_ERR_OR_ZERO in
- safexcel_xcbcmac_cra_init()
-Thread-Index: AQHVfpoPpEbnac0BKUSyYpyAmlCIvadSTTXQ
-Date:   Wed, 9 Oct 2019 13:28:47 +0000
-Message-ID: <MN2PR20MB29737A41C34E055FB7FFD9FBCA950@MN2PR20MB2973.namprd20.prod.outlook.com>
-References: <20191009120621.45834-1-yuehaibing@huawei.com>
-In-Reply-To: <20191009120621.45834-1-yuehaibing@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=pvanleeuwen@verimatrix.com; 
-x-originating-ip: [188.204.2.113]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: c3b5499b-20f3-49a2-73b0-08d74cbc9db5
-x-ms-traffictypediagnostic: MN2PR20MB3023:
-x-ms-exchange-purlcount: 1
-x-microsoft-antispam-prvs: <MN2PR20MB30230FA02D90B51FFD3BC3DACA950@MN2PR20MB3023.namprd20.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:525;
-x-forefront-prvs: 018577E36E
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(346002)(39850400004)(396003)(136003)(366004)(376002)(13464003)(199004)(189003)(8936002)(81166006)(6116002)(71190400001)(66446008)(110136005)(316002)(305945005)(66946007)(256004)(446003)(8676002)(54906003)(81156014)(7736002)(33656002)(66556008)(64756008)(14454004)(11346002)(66476007)(52536014)(5660300002)(76116006)(74316002)(3846002)(71200400001)(25786009)(26005)(53546011)(6506007)(102836004)(99286004)(4326008)(7696005)(55016002)(6246003)(15974865002)(9686003)(478600001)(76176011)(229853002)(476003)(2906002)(186003)(486006)(66066001)(86362001)(6436002)(18886075002);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR20MB3023;H:MN2PR20MB2973.namprd20.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: verimatrix.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 9GSDfD+bcuy4NJNlTKcku2CQ8zzdlMC/HbnJ8bae1oc22ub/Ha70Q4Y7N0UGXqVySdlqHV3GIlc4jaPkPWxxrNYpcIINxutJb3c2JUmJEPKnuHHNqRorW4OoDXPGR2Stx0v8zR3aqeXaZlEiQJy6H//v85Q7GpAXmrc3sTCeChM3XemVoJgjmQE9G3Wx9fzu0l5sjvkJDeiofF9KVapZF6qtIebPlaTLDb0frGaoaD+ysHQ8nJ8Vfk6bLHGFQanUSI1koRzNhgT5WFexQnMoxJt+ooHRtx0k3wDk0RbOBs/Mgm1RCs1774LOAZw1GEGSn2IhNbd7zOdZ67AdOvHf/38o3m8z8zf0lUe28ykqT2l3AFfliJ2uflC/GPuiTpRKlc+eYIRsapzWcVS4XMbAf63v0N2/9Z7UTNrTtNX3ejM=
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="Windows-1252"
-Content-Transfer-Encoding: quoted-printable
+        id S1730490AbfJIN60 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 09:58:26 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:43584 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725879AbfJIN6Z (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 9 Oct 2019 09:58:25 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x99Ds1P4030202;
+        Wed, 9 Oct 2019 13:56:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ content-transfer-encoding : in-reply-to; s=corp-2019-08-05;
+ bh=KuFxysVjGvj9HNkv/L58Cim31ODyPhyJGS4wNznP1v0=;
+ b=YrlRJpdq5+RuPMCTXFueXKSo1WJ7EbeZc6ILfpqp/V3RnH82yVBuOjuOB4sGyueRSvx2
+ 8Tp0OAIeEap/S0ypRCu3TxosqeqRqypTgJC94SjBYkRY+2m2CDNHBfRPVdprIqUw4yen
+ oMS5q6NQgpsXB2Fadibh2DerijspBWuGhdabJx0fUpipZbbm1zM3yPV16BCcr+ewNV6J
+ 0hvbFqh8yHJrH8KU2e/DAj+D+KN/3xvlDk0lVcqFjAzQ3A1ogblVGOXi+atCy4N65np0
+ wj78tfZuwza1TF12f6hGoOMgbDBkcfAReWANH/58etQVotiJOb+879PzwNGSzpPThHIY FQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2vek4qmq5e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 09 Oct 2019 13:56:50 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x99DraOI032368;
+        Wed, 9 Oct 2019 13:56:49 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2vgefcr16q-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 09 Oct 2019 13:56:49 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x99DuiVK029752;
+        Wed, 9 Oct 2019 13:56:46 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 09 Oct 2019 06:56:44 -0700
+Date:   Wed, 9 Oct 2019 16:56:33 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc:     Markus Elfring <Markus.Elfring@web.de>,
+        kernel-janitors@vger.kernel.org,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Joe Perches <joe@perches.com>,
+        Kees Cook <keescook@chromium.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] string.h: Mark 34 functions with __must_check
+Message-ID: <20191009135522.GA20194@kadam>
+References: <75f70e5e-9ece-d6d1-a2c5-2f3ad79b9ccb@web.de>
+ <954c5d70-742f-7b0e-57ad-ea967e93be89@rasmusvillemoes.dk>
 MIME-Version: 1.0
-X-OriginatorOrg: verimatrix.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c3b5499b-20f3-49a2-73b0-08d74cbc9db5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2019 13:28:47.5564
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: dcb260f9-022d-4495-8602-eae51035a0d0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: LStnmcMsMKS8S2g7fqCuR3tVHT7XK+h++Q9S7LEfZop+BYsnf2T8cd3iZija62VWf/KGYkP6hDVBB/dFcyPHyzLwtalKxQ988Fao4gy+q18=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR20MB3023
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <954c5d70-742f-7b0e-57ad-ea967e93be89@rasmusvillemoes.dk>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9404 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=806
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910090133
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9404 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=881 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910090133
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> -----Original Message-----
-> From: linux-crypto-owner@vger.kernel.org <linux-crypto-owner@vger.kernel.=
-org> On Behalf Of
-> YueHaibing
-> Sent: Wednesday, October 9, 2019 2:06 PM
-> To: Antoine Tenart <antoine.tenart@bootlin.com>; Herbert Xu <herbert@gond=
-or.apana.org.au>
-> Cc: YueHaibing <yuehaibing@huawei.com>; linux-crypto@vger.kernel.org; ker=
-nel-
-> janitors@vger.kernel.org
-> Subject: [PATCH -next] crypto: Use PTR_ERR_OR_ZERO in safexcel_xcbcmac_cr=
-a_init()
->=20
-> Use PTR_ERR_OR_ZERO rather than if(IS_ERR(...)) + PTR_ERR
->=20
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
->
-Acked-by: Pascal van Leeuwen <pvanleeuwen@verimatrix.com>
+[ I haven't reviewed the original patch ]
 
-> ---
->  drivers/crypto/inside-secure/safexcel_hash.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
->=20
-> diff --git a/drivers/crypto/inside-secure/safexcel_hash.c b/drivers/crypt=
-o/inside-
-> secure/safexcel_hash.c
-> index 85c3a075f283..a07a2915fab1 100644
-> --- a/drivers/crypto/inside-secure/safexcel_hash.c
-> +++ b/drivers/crypto/inside-secure/safexcel_hash.c
-> @@ -2109,10 +2109,7 @@ static int safexcel_xcbcmac_cra_init(struct crypto=
-_tfm *tfm)
->=20
->  	safexcel_ahash_cra_init(tfm);
->  	ctx->kaes =3D crypto_alloc_cipher("aes", 0, 0);
-> -	if (IS_ERR(ctx->kaes))
-> -		return PTR_ERR(ctx->kaes);
-> -
-> -	return 0;
-> +	return PTR_ERR_OR_ZERO(ctx->kaes);
->
-Ah cool, you can do that in one go, didn't know that yet :-) Thanks!
+On Wed, Oct 09, 2019 at 03:26:18PM +0200, Rasmus Villemoes wrote:
+> On 09/10/2019 14.14, Markus Elfring wrote:
+> > From: Markus Elfring <elfring@users.sourceforge.net>
+> > Date: Wed, 9 Oct 2019 13:53:59 +0200
+> > 
+> > Several functions return values with which useful data processing
+> > should be performed. These values must not be ignored then.
+> > Thus use the annotation “__must_check” in the shown function declarations.
+> 
+> This _might_ make sense for those that are basically kmalloc() wrappers
+> in one way or another [1]. But what's the point of annotating pure
+> functions such as strchr, strstr, memchr etc? Nobody is calling those
+> for their side effects (they don't have any...), so obviously the return
+> value is used. If somebody does a strcmp() without using the result, so
+> what? OK, it's odd code that might be worth flagging, but I don't think
+> that's the kind of thing one accidentally adds.
 
->  }
->=20
->  static void safexcel_xcbcmac_cra_exit(struct crypto_tfm *tfm)
->=20
->=20
->=20
->=20
 
-Regards,
-Pascal van Leeuwen
-Silicon IP Architect, Multi-Protocol Engines @ Verimatrix
-www.insidesecure.com
+	if (ret) {
+		-EINVAL;
+	}
+
+People do occasionally make mistakes like this.  It can't hurt to
+warn them as early as possible about nonsense code.
+
+
+> You're also not consistent - strlen() is not annotated. And, for the
+> standard C functions, -Wall already seems to warn about an unused
+> call:
+> 
+>  #include <string.h>
+> int f(const char *s)
+> {
+> 	strlen(s);
+> 	return 3;
+> }
+> $ gcc -Wall -o a.o -c a.c
+> a.c: In function ‘f’:
+> a.c:5:2: warning: statement with no effect [-Wunused-value]
+>   strlen(s);
+>   ^~~~~~~~~
+
+That's because glibc strlen is annotated with __attribute_pure__ which
+means it has no side effects.
+
+regards,
+dan carpenter
 

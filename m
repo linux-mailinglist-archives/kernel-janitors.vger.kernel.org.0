@@ -2,131 +2,128 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39FEED10B2
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 15:58:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D2A8D10CE
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 16:06:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730490AbfJIN60 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 09:58:26 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:43584 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725879AbfJIN6Z (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 09:58:25 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x99Ds1P4030202;
-        Wed, 9 Oct 2019 13:56:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- content-transfer-encoding : in-reply-to; s=corp-2019-08-05;
- bh=KuFxysVjGvj9HNkv/L58Cim31ODyPhyJGS4wNznP1v0=;
- b=YrlRJpdq5+RuPMCTXFueXKSo1WJ7EbeZc6ILfpqp/V3RnH82yVBuOjuOB4sGyueRSvx2
- 8Tp0OAIeEap/S0ypRCu3TxosqeqRqypTgJC94SjBYkRY+2m2CDNHBfRPVdprIqUw4yen
- oMS5q6NQgpsXB2Fadibh2DerijspBWuGhdabJx0fUpipZbbm1zM3yPV16BCcr+ewNV6J
- 0hvbFqh8yHJrH8KU2e/DAj+D+KN/3xvlDk0lVcqFjAzQ3A1ogblVGOXi+atCy4N65np0
- wj78tfZuwza1TF12f6hGoOMgbDBkcfAReWANH/58etQVotiJOb+879PzwNGSzpPThHIY FQ== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 2vek4qmq5e-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 09 Oct 2019 13:56:50 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x99DraOI032368;
-        Wed, 9 Oct 2019 13:56:49 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3020.oracle.com with ESMTP id 2vgefcr16q-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 09 Oct 2019 13:56:49 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x99DuiVK029752;
-        Wed, 9 Oct 2019 13:56:46 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 09 Oct 2019 06:56:44 -0700
-Date:   Wed, 9 Oct 2019 16:56:33 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc:     Markus Elfring <Markus.Elfring@web.de>,
-        kernel-janitors@vger.kernel.org,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Joe Perches <joe@perches.com>,
-        Kees Cook <keescook@chromium.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] string.h: Mark 34 functions with __must_check
-Message-ID: <20191009135522.GA20194@kadam>
-References: <75f70e5e-9ece-d6d1-a2c5-2f3ad79b9ccb@web.de>
- <954c5d70-742f-7b0e-57ad-ea967e93be89@rasmusvillemoes.dk>
+        id S1731290AbfJIOGb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 10:06:31 -0400
+Received: from mail-eopbgr700080.outbound.protection.outlook.com ([40.107.70.80]:53185
+        "EHLO NAM04-SN1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1731259AbfJIOGa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 9 Oct 2019 10:06:30 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cJAibaNK/11jbBxvveiid2iaLQ5QtUegOUwYjj4ByCSOu6JM2nWwffuBvWIcZUbAiPa31qf6m0wj0bqfB6SvkH99Hcp743Pa0pHgtDnn693K7AMjuHXNJ8cKLRphfJ8gkuYaIz227VjZr2UNqFqaYJYRyfcXvckFRHL4Bs5KMfcwOjtwxK9iSBtVYEal1crHKD1MZW2q1rmFh2Lv+xp2DjEL4w0J1QfsZG3mwTLLOOedo49wL8H8EOUt7O5pAdB9Z8LMCxvJDtGOq1xQDzrkgULrI4Wk157jCjMfw/zYy4RuPG4s7NVTCKTrmSsiSIIZ3JgTcijJ0KYl7ws72AxTEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mwVAe0pVIWbduqRWho3sAAmCBgHR8uabmoTlUXIqPIc=;
+ b=CDmjuIVtMyJtDL4JAEodP/+XY0clxBNT1b1L6/Fum91TwE4rXJuqzBxSRUE5eEUap5BATy6SSMnJIJrRC2eNGEcW/Xpr8YXaJ31dyQ6wln+6ZKkjZr/BxXgdsewrBUxgAEwsFscvCdrYaHoNbIdl1u15rnjMqAe7J6+yXYztUEdbBaz9z/GTSyfs0r03au3EEMjqAznTP4eIXGFZB/dsxlUtsHfUtTtUCoZUWps2Mo5yN8tmLZCJ9c7WorQsqx0P7NpIRKK9rtAujbx5f6ZY4fxznzA0uMPnnICmLzNR3j6u6pYrhEdBwrs7CrDE6mBA+u5lAchoCZq4OzcF3Cy5Kw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=silabs.com; dmarc=pass action=none header.from=silabs.com;
+ dkim=pass header.d=silabs.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=silabs.onmicrosoft.com; s=selector2-silabs-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mwVAe0pVIWbduqRWho3sAAmCBgHR8uabmoTlUXIqPIc=;
+ b=WJ7+4jX1ZVM6kT37/HLw2jHL9YFHBLIbE/VGYcNkKUmjSAlfQGcApBv5puxgmeItuoxJdXe2+IPOqF8c2iDPNzSvq5QrEPkc+pwucaWTqRlgch6sio4rej13Uzm6WoJoHa2l8tsUwpDw0GwmwBXJO/nxhky1PEt8kvDKPbzYU30=
+Received: from MN2PR11MB4063.namprd11.prod.outlook.com (10.255.180.22) by
+ MN2PR11MB4301.namprd11.prod.outlook.com (52.135.36.222) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2327.24; Wed, 9 Oct 2019 14:06:28 +0000
+Received: from MN2PR11MB4063.namprd11.prod.outlook.com
+ ([fe80::ac8c:fc55:d1e2:465f]) by MN2PR11MB4063.namprd11.prod.outlook.com
+ ([fe80::ac8c:fc55:d1e2:465f%5]) with mapi id 15.20.2347.016; Wed, 9 Oct 2019
+ 14:06:27 +0000
+From:   Jerome Pouiller <Jerome.Pouiller@silabs.com>
+To:     Colin King <colin.king@canonical.com>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "devel@driverdev.osuosl.org" <devel@driverdev.osuosl.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][next] staging: wfx: fix swapped arguments in memset call
+Thread-Topic: [PATCH][next] staging: wfx: fix swapped arguments in memset call
+Thread-Index: AQHVfoZg5uodYV7VWEaEUqiihC082adSWG6A
+Date:   Wed, 9 Oct 2019 14:06:27 +0000
+Message-ID: <1869130.EaR14QUEFT@pc-42>
+References: <20191009094602.19663-1-colin.king@canonical.com>
+In-Reply-To: <20191009094602.19663-1-colin.king@canonical.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=Jerome.Pouiller@silabs.com; 
+x-originating-ip: [37.71.187.125]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 92037824-63e4-4a1d-7358-08d74cc1e0c6
+x-ms-traffictypediagnostic: MN2PR11MB4301:
+x-microsoft-antispam-prvs: <MN2PR11MB4301E4DE59EEC6996D12C65E93950@MN2PR11MB4301.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:8882;
+x-forefront-prvs: 018577E36E
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(7916004)(39850400004)(376002)(346002)(396003)(136003)(366004)(189003)(199004)(14444005)(66066001)(86362001)(33716001)(71190400001)(71200400001)(9686003)(6512007)(478600001)(256004)(486006)(5660300002)(446003)(11346002)(476003)(14454004)(66574012)(25786009)(7736002)(99286004)(91956017)(8936002)(229853002)(4326008)(186003)(6246003)(76116006)(66946007)(54906003)(64756008)(66476007)(76176011)(26005)(2906002)(81166006)(66556008)(305945005)(6506007)(66446008)(6436002)(316002)(81156014)(6916009)(102836004)(8676002)(3846002)(6116002)(6486002);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR11MB4301;H:MN2PR11MB4063.namprd11.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: silabs.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: pyiXl/ah8IDAZ5hS23Booc0fP5o2U9O1fwYmLORonu5RX20+Yr6Vv4hrpOf4Qy+lq7p6C56swwMq9b1zM4VrZMjcu8Pc448sD8iMt/6uerNKNByqT/GxPmugYCjGMEEGusH3x4Gc2JjP31ESpC3YikEBst2qqPR1b1lf2smRr3UQ7GIXWAcjvw6gJaR0XWdf05hHDDTkhtbXYF+eRc5tbB0fnm1JqpAlEGaVKJ4CoeSvgFU+dUPcLGdSCazE7NxsCPts+wDniwzy03Y/4dCGRjf+g/4bVm/i6jie3Exvwz7WTZNLsRHU6mjt5K9dYEHeqP8ZlmIsEdrXS14tllFVN9di83XGwpWnrcJlwkVhsF8kmmVvCFyAWgdm8rBFhF4fkZsdEBNYx5Dh5QauHavCagfqqUDQWuRrDICaGer8FMc=
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="iso-8859-1"
+Content-ID: <C630EBC30323AF46A1E71D8F37B57B3B@namprd11.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <954c5d70-742f-7b0e-57ad-ea967e93be89@rasmusvillemoes.dk>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9404 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=806
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910090133
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9404 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=881 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910090133
+X-OriginatorOrg: silabs.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 92037824-63e4-4a1d-7358-08d74cc1e0c6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2019 14:06:27.8226
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 54dbd822-5231-4b20-944d-6f4abcd541fb
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Ta8+jeZC3dGRupQ/AWV1fqnWKm+SnQa6PJqpi+RL3iPpShev+pQ+rqTseZCJMo062G+jpIkxjYASiwHXQGG5Aw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4301
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-[ I haven't reviewed the original patch ]
+On Wednesday 9 October 2019 11:46:08 CEST Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> The memset appears to have the 2nd and 3rd arguments in the wrong
+> order, fix this by swapping these around into the correct order.
+>=20
+> Addresses-Coverity: ("Memset fill truncated")
+> Fixes: 4f8b7fabb15d ("staging: wfx: allow to send commands to chip")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/staging/wfx/debug.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/staging/wfx/debug.c b/drivers/staging/wfx/debug.c
+> index 8de16ad7c710..761ad9b4f27e 100644
+> --- a/drivers/staging/wfx/debug.c
+> +++ b/drivers/staging/wfx/debug.c
+> @@ -226,7 +226,7 @@ static ssize_t wfx_send_hif_msg_write(struct file *fi=
+le, const char __user *user
+>         // wfx_cmd_send() chekc that reply buffer is wide enough, but do =
+not
+>         // return precise length read. User have to know how many bytes s=
+hould
+>         // be read. Filling reply buffer with a memory pattern may help u=
+ser.
+> -       memset(context->reply, sizeof(context->reply), 0xFF);
+> +       memset(context->reply, 0xFF, sizeof(context->reply));
+>         request =3D memdup_user(user_buf, count);
+>         if (IS_ERR(request))
+>                 return PTR_ERR(request);
 
-On Wed, Oct 09, 2019 at 03:26:18PM +0200, Rasmus Villemoes wrote:
-> On 09/10/2019 14.14, Markus Elfring wrote:
-> > From: Markus Elfring <elfring@users.sourceforge.net>
-> > Date: Wed, 9 Oct 2019 13:53:59 +0200
-> > 
-> > Several functions return values with which useful data processing
-> > should be performed. These values must not be ignored then.
-> > Thus use the annotation “__must_check” in the shown function declarations.
-> 
-> This _might_ make sense for those that are basically kmalloc() wrappers
-> in one way or another [1]. But what's the point of annotating pure
-> functions such as strchr, strstr, memchr etc? Nobody is calling those
-> for their side effects (they don't have any...), so obviously the return
-> value is used. If somebody does a strcmp() without using the result, so
-> what? OK, it's odd code that might be worth flagging, but I don't think
-> that's the kind of thing one accidentally adds.
+Ouch! I realize that "-Wmemset-transposed-args" and/or "-Wmemset-elt-size"
+don't catch this case.
 
+Thank you for your attentive reading.
 
-	if (ret) {
-		-EINVAL;
-	}
+Reviewed-by: J=E9r=F4me Pouiller <jerome.pouiller@silabs.com>
 
-People do occasionally make mistakes like this.  It can't hurt to
-warn them as early as possible about nonsense code.
-
-
-> You're also not consistent - strlen() is not annotated. And, for the
-> standard C functions, -Wall already seems to warn about an unused
-> call:
-> 
->  #include <string.h>
-> int f(const char *s)
-> {
-> 	strlen(s);
-> 	return 3;
-> }
-> $ gcc -Wall -o a.o -c a.c
-> a.c: In function ‘f’:
-> a.c:5:2: warning: statement with no effect [-Wunused-value]
->   strlen(s);
->   ^~~~~~~~~
-
-That's because glibc strlen is annotated with __attribute_pure__ which
-means it has no side effects.
-
-regards,
-dan carpenter
+--=20
+J=E9r=F4me Pouiller
 

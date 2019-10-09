@@ -2,39 +2,39 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 94F5ED15A0
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 19:25:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6773D15E6
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 19:26:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732366AbfJIRYd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 13:24:33 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49262 "EHLO mail.kernel.org"
+        id S1732681AbfJIR0N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 13:26:13 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49726 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732355AbfJIRYc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 13:24:32 -0400
+        id S1732457AbfJIRYr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 9 Oct 2019 13:24:47 -0400
 Received: from sasha-vm.mshome.net (unknown [167.220.2.234])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BAB42218AC;
-        Wed,  9 Oct 2019 17:24:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id D8CA020B7C;
+        Wed,  9 Oct 2019 17:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1570641871;
+        s=default; t=1570641887;
         bh=OxtsmDZcRyjTy/TwgnZe5iInYm/ARc+kAq5vsnT/P2M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BkrYZNAKzZLPTcUM8vGRYVHwbAJS23QRahKtGvtepAG/rz7nZVJpa4gZzZ1VnTf8x
-         rFgBg5LxL+gkibvpBdEw11c0rskqXe8du16MsqxUmRGfLZNprTv6Yb8ZlKBiP0Kg5L
-         K4YhMJYmbaDmF1COO0Xj5ykRN3D4QpNTvy/7GM/Y=
+        b=kojkYKNZ84BIjvqH/enoWSKQ/tPp+PqVFTmea+S64Y042dlOqU8l/dDEu97AnX8AE
+         FC5PUMLGpUXbCJU+U8VPmKbZ+iKScT3Plziiib1V8i2hANdEp+HVNNK7PuU6VqQqrJ
+         cUweVdbx8qTTqa33092nObR1/gbxAa1yl1e/aVJA=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         Paul Burton <paul.burton@mips.com>, chenhc@lemote.com,
         ralf@linux-mips.org, jhogan@kernel.org, linux-mips@vger.kernel.org,
         kernel-janitors@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 16/21] mips: Loongson: Fix the link time qualifier of 'serial_exit()'
-Date:   Wed,  9 Oct 2019 13:06:09 -0400
-Message-Id: <20191009170615.32750-16-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 10/13] mips: Loongson: Fix the link time qualifier of 'serial_exit()'
+Date:   Wed,  9 Oct 2019 13:06:29 -0400
+Message-Id: <20191009170635.536-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191009170615.32750-1-sashal@kernel.org>
-References: <20191009170615.32750-1-sashal@kernel.org>
+In-Reply-To: <20191009170635.536-1-sashal@kernel.org>
+References: <20191009170635.536-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore

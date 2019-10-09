@@ -2,126 +2,147 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CCE7D08B3
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 09:46:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E80FD08FC
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 10:00:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729616AbfJIHqi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 03:46:38 -0400
-Received: from esa3.microchip.iphmx.com ([68.232.153.233]:22667 "EHLO
-        esa3.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725848AbfJIHqi (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 03:46:38 -0400
-Received-SPF: Pass (esa3.microchip.iphmx.com: domain of
-  Ludovic.Desroches@microchip.com designates 198.175.253.82 as
-  permitted sender) identity=mailfrom;
-  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="Ludovic.Desroches@microchip.com";
-  x-conformance=spf_only; x-record-type="v=spf1";
-  x-record-text="v=spf1 mx a:ushub1.microchip.com
-  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
-  a:mx2.microchip.iphmx.com include:servers.mcsv.net
-  include:mktomail.com include:spf.protection.outlook.com ~all"
-Received-SPF: None (esa3.microchip.iphmx.com: no sender
-  authenticity information available from domain of
-  postmaster@email.microchip.com) identity=helo;
-  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
-  envelope-from="Ludovic.Desroches@microchip.com";
-  x-sender="postmaster@email.microchip.com";
-  x-conformance=spf_only
-Authentication-Results: esa3.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
-IronPort-SDR: 8v0tdMs3LlvQuSHU7rzAWhRtWIVlotOUQ8ditN56wCSdkOVwSWrpH6xpRpB5o4IFGvwz2oQWnn
- IIj3G65C0gTbgnRV+douGVZvsSs5albruElzTe2OAUWUZNsguLdlc6PBeICA8q2ZCy5PBDKLNx
- 3yOjtw6tAsg6bPGLyfJ2eavi13JhfaL84i8Mm82sgjZXzkv5jwHGouLGCzuHKtkV4ax2cf8mWS
- RojiYrUy9JaS7J+XD+q6QhVZetGADXwhPxHErHQ8eotSGUrP2WfzIOigipksHTLSF+468tjMif
- Xxk=
-X-IronPort-AV: E=Sophos;i="5.67,273,1566889200"; 
-   d="scan'208";a="52257068"
-Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 09 Oct 2019 00:46:36 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Wed, 9 Oct 2019 00:46:33 -0700
-Received: from localhost (10.10.85.251) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
- Transport; Wed, 9 Oct 2019 00:46:33 -0700
-Date:   Wed, 9 Oct 2019 09:46:42 +0200
-From:   Ludovic Desroches <ludovic.desroches@microchip.com>
-To:     Markus Elfring <Markus.Elfring@web.de>
-CC:     <dmaengine@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        "Dan Williams" <dan.j.williams@intel.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>,
-        "Nicolas Ferre" <nicolas.ferre@atmel.com>
-Subject: Re: [PATCH] dmaengine: at_xdmac: Use
- devm_platform_ioremap_resource() in at_xdmac_probe()
-Message-ID: <20191009074641.taocxbrs2vodvsgm@M43218.corp.atmel.com>
-Mail-Followup-To: Markus Elfring <Markus.Elfring@web.de>,
-        dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vinod Koul <vkoul@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Nicolas Ferre <nicolas.ferre@atmel.com>
-References: <377247f3-b53a-a9d9-66c7-4b8515de3809@web.de>
-MIME-Version: 1.0
+        id S1727814AbfJIIA2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 04:00:28 -0400
+Received: from mail-eopbgr1410122.outbound.protection.outlook.com ([40.107.141.122]:7392
+        "EHLO JPN01-OS2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725776AbfJIIA1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 9 Oct 2019 04:00:27 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=EJv/RnXXSSlJ5IhOO0/mYG2nGzkucbuwbuIoW8SNLOQwZvboesY2YfSnSlHDdvS0dgA6R347kxs0hpS6/8hRQaxJaKD9QbRWqra5A6SHVyJ1MuVaSLbWHp9zZQlU1Y7NjumV9akWWQLkbeVK1k8SS/A/lRyVYEYWjPh7F81UAOEQTx2/odTLjW8NAvwf78Cygd6g7EqgcsQFv/OSQms4djJ3to05qvw9RHOmUYANk3RE4zAuLTlglj68FCSNKqdj+MMo/u/7PtjXlujwPDDn4CtNV88U5lKOrCdYN3AbiF+5d/98Rw6+iJyn8G2oiTwdLn7BjM5Kb466sY+6B16ARQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WJHixULULdO8eZ8aXWPtCKXTThNEZY1ijYNhvzqD/JY=;
+ b=lic2VlBpUJulTXZJZuaR/R1SwqQp0FtWLPs0SM+pwCMsAe3ftgYsmvRVaNulv9oIKl4pxaB+4DG9RfIKlSbjXu0tzeGtUD8Pzn1ivMOATQ/ITWDVMoxaLtscPcBdKE+1cZPHsQcWOrwh6ucsjYbV5kHwQWlK1X5E9s5AzTS/sT8cjYc3m7Oht3TxPT0hSGfhr0+GkHydxpP8KFJchRcxvnsZ2HF3xkJ5X4VCcn3YCdygl4fa/Qtq2tr9N1jRoIBT5g/BYtF0uDoA940Q63r1IHQBLmwwE3BlAOEDhSkT9MwRjHkL5qWfEm6+p4wlb/w9jEIRHlqDyoO9eVkJJzTELA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=bp.renesas.com; dmarc=pass action=none
+ header.from=bp.renesas.com; dkim=pass header.d=bp.renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=renesasgroup.onmicrosoft.com; s=selector2-renesasgroup-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WJHixULULdO8eZ8aXWPtCKXTThNEZY1ijYNhvzqD/JY=;
+ b=Zv+GPHH0aCuwiDSbCS6wrqXPPQEjptj6z1WYs7gXk9dK19EUSofny/w4yDZ7G0Op9byyZnHCpTsnMU8AXY6MwHO29HVRrHNEkBWy/gyWJ8YWbvORljJLDzJ06o9nHpwkNHDJmEo8s89O//YZof/ngiCjQWNgPJJ/Y2WywN6v7MI=
+Received: from OSBPR01MB2103.jpnprd01.prod.outlook.com (52.134.242.17) by
+ OSBPR01MB1638.jpnprd01.prod.outlook.com (52.134.227.19) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2327.25; Wed, 9 Oct 2019 08:00:23 +0000
+Received: from OSBPR01MB2103.jpnprd01.prod.outlook.com
+ ([fe80::dc33:9b1f:4522:550e]) by OSBPR01MB2103.jpnprd01.prod.outlook.com
+ ([fe80::dc33:9b1f:4522:550e%3]) with mapi id 15.20.2347.016; Wed, 9 Oct 2019
+ 08:00:23 +0000
+From:   Biju Das <biju.das@bp.renesas.com>
+To:     Mao Wenan <maowenan@huawei.com>,
+        "heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>,
+        "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+CC:     "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: RE: [PATCH -next] usb: typec: add dependency for TYPEC_HD3SS3220
+Thread-Topic: [PATCH -next] usb: typec: add dependency for TYPEC_HD3SS3220
+Thread-Index: AQHVfkOKloVrfMGidkOyU5GyOdNjm6dR8ZyQ
+Date:   Wed, 9 Oct 2019 08:00:22 +0000
+Message-ID: <OSBPR01MB21038DCAFE45CE0FFC06EE91B8950@OSBPR01MB2103.jpnprd01.prod.outlook.com>
+References: <20191009014707.38716-1-maowenan@huawei.com>
+In-Reply-To: <20191009014707.38716-1-maowenan@huawei.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=biju.das@bp.renesas.com; 
+x-originating-ip: [193.141.220.21]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 72e3dddf-8098-4bfa-eedb-08d74c8ebcb6
+x-ms-office365-filtering-ht: Tenant
+x-ms-traffictypediagnostic: OSBPR01MB1638:
+x-microsoft-antispam-prvs: <OSBPR01MB1638F55DF223197C5239B413B8950@OSBPR01MB1638.jpnprd01.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:6790;
+x-forefront-prvs: 018577E36E
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(366004)(51914003)(189003)(199004)(25786009)(110136005)(11346002)(446003)(26005)(6246003)(74316002)(8676002)(8936002)(14454004)(71190400001)(305945005)(7736002)(71200400001)(44832011)(6436002)(256004)(229853002)(186003)(102836004)(81166006)(81156014)(86362001)(2201001)(498600001)(54906003)(55016002)(5660300002)(76176011)(2501003)(76116006)(9686003)(66066001)(64756008)(4326008)(6506007)(33656002)(486006)(66446008)(66476007)(66556008)(66946007)(476003)(99286004)(7696005)(3846002)(6116002)(52536014)(2906002);DIR:OUT;SFP:1102;SCL:1;SRVR:OSBPR01MB1638;H:OSBPR01MB2103.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:0;
+received-spf: None (protection.outlook.com: bp.renesas.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: TTl29+G9Zw0O/YCvTqksnWgGeZgW05IgKtjwokd8yuvVs/BfqHJAsy0H0AGLo5RXCGmQRHLS0JK9V7Dvac1EBMQpOxan004s6oshvrgTvbit2Ox4TBWhfDL1HKgt704SHYSFE/CYke6X3vW28B5BrGgxZK4ARx+LRF/0uiI6wS01QG176xupdcULNWMX7nK3gMFQWS8w4MrA6M/lvEnjINXeEgEq2qFuNScWRK90aV7ILcHpk7IX2KCs/0O5NARVkgfYZv/sIz8R0dqs8IFoHAJli3kBMEVO0bauBU71FGyNVnqeAHY6RNl+czaQ8/UVp3NlaUXhPSn1y8tTJw9u3W7BL9G4v/X2FlbX1Y3FJchdo7HRknfTgZSGU6ZFO8x0NuYtFmwLg9PC8BFax4zx/bi4lmBfxhnLik4lGSy/MyI=
+x-ms-exchange-transport-forked: True
 Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <377247f3-b53a-a9d9-66c7-4b8515de3809@web.de>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: bp.renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 72e3dddf-8098-4bfa-eedb-08d74c8ebcb6
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Oct 2019 08:00:22.9128
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Z4rN1M1F55uKUOjNOBEmLBWcpNjxgyXZ6MO5lUYaYxCU1WbBiQH5Xm64R8I+RsgxS6TOTR9/xg+sPENtNJqftw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSBPR01MB1638
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Sep 22, 2019 at 10:48:20AM +0200, Markus Elfring wrote:
-> 
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Sun, 22 Sep 2019 10:37:31 +0200
-> 
-> Simplify this function implementation by using a known wrapper function.
-> 
-> This issue was detected by using the Coccinelle software.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-Acked-by: Ludovic Desroches <ludovic.desroches@microchip.com> 
+Hello Mao Wenan,
 
-Thanks
+Thanks for the patch.
 
+> Subject: [PATCH -next] usb: typec: add dependency for TYPEC_HD3SS3220
+>=20
+> If CONFIG_TYPEC_HD3SS3220=3Dy, CONFIG_USB_ROLE_SWITCH=3Dm, below
+> errors can be found:
+> drivers/usb/typec/hd3ss3220.o: In function `hd3ss3220_remove':
+> hd3ss3220.c:(.text+0x64): undefined reference to `usb_role_switch_put'
+> drivers/usb/typec/hd3ss3220.o: In function `hd3ss3220_dr_set':
+> hd3ss3220.c:(.text+0x154): undefined reference to
+> `usb_role_switch_set_role'
+> drivers/usb/typec/hd3ss3220.o: In function `hd3ss3220_set_role':
+> hd3ss3220.c:(.text+0x294): undefined reference to
+> `usb_role_switch_set_role'
+> hd3ss3220.c:(.text+0x2f4): undefined reference to
+> `usb_role_switch_set_role'
+> hd3ss3220.c:(.text+0x348): undefined reference to
+> `usb_role_switch_set_role'
+> hd3ss3220.c:(.text+0x390): undefined reference to
+> `usb_role_switch_set_role'
+> drivers/usb/typec/hd3ss3220.o: In function `hd3ss3220_probe':
+> hd3ss3220.c:(.text+0x5e8): undefined reference to
+> `fwnode_usb_role_switch_get'
+> hd3ss3220.c:(.text+0x8a4): undefined reference to `usb_role_switch_put'
+> make: *** [vmlinux] Error 1
+>=20
+> This patch add dependency USB_ROLE_SWITCH for TYPEC_HD3SS3220.
+>=20
+> Fixes: 1c48c759ef4b ("usb: typec: driver for TI HD3SS3220 USB Type-C DRP
+> port controller")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+
+Reviewed-by: Biju Das <biju.das@bp.renesas.com>
+
+Regards,
+Biju
 > ---
->  drivers/dma/at_xdmac.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
-> 
-> diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
-> index b58ac720d9a1..f71c9f77d405 100644
-> --- a/drivers/dma/at_xdmac.c
-> +++ b/drivers/dma/at_xdmac.c
-> @@ -1957,21 +1957,16 @@ static int atmel_xdmac_resume(struct device *dev)
-> 
->  static int at_xdmac_probe(struct platform_device *pdev)
->  {
-> -	struct resource	*res;
->  	struct at_xdmac	*atxdmac;
->  	int		irq, size, nr_channels, i, ret;
->  	void __iomem	*base;
->  	u32		reg;
-> 
-> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	if (!res)
-> -		return -EINVAL;
-> -
->  	irq = platform_get_irq(pdev, 0);
->  	if (irq < 0)
->  		return irq;
-> 
-> -	base = devm_ioremap_resource(&pdev->dev, res);
-> +	base = devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(base))
->  		return PTR_ERR(base);
-> 
+>  drivers/usb/typec/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/drivers/usb/typec/Kconfig b/drivers/usb/typec/Kconfig index
+> aceb2af..b4f2aac 100644
+> --- a/drivers/usb/typec/Kconfig
+> +++ b/drivers/usb/typec/Kconfig
+> @@ -53,6 +53,7 @@ source "drivers/usb/typec/ucsi/Kconfig"
+>  config TYPEC_HD3SS3220
+>  	tristate "TI HD3SS3220 Type-C DRP Port controller driver"
+>  	depends on I2C
+> +	depends on USB_ROLE_SWITCH
+>  	help
+>  	  Say Y or M here if your system has TI HD3SS3220 Type-C DRP Port
+>  	  controller driver.
 > --
-> 2.23.0
-> 
+> 2.7.4
+

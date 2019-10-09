@@ -2,29 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E790D0E45
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 14:05:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55101D0E50
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 14:07:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731091AbfJIMFY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 08:05:24 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3669 "EHLO huawei.com"
+        id S1729831AbfJIMG7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 08:06:59 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3283 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1729883AbfJIMFY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 08:05:24 -0400
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 0B8C2C8544BD8198EC56;
-        Wed,  9 Oct 2019 20:05:19 +0800 (CST)
+        id S1729575AbfJIMG7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 9 Oct 2019 08:06:59 -0400
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 837312A497BF577A552D;
+        Wed,  9 Oct 2019 20:06:51 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 9 Oct 2019 20:05:10 +0800
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 9 Oct 2019 20:06:43 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     YueHaibing <yuehaibing@huawei.com>, <linux-usb@vger.kernel.org>,
+To:     Antoine Tenart <antoine.tenart@bootlin.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-crypto@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] usb: typec: remove duplicated include from hd3ss3220.c
-Date:   Wed, 9 Oct 2019 12:04:49 +0000
-Message-ID: <20191009120449.44899-1-yuehaibing@huawei.com>
+Subject: [PATCH -next] crypto: Use PTR_ERR_OR_ZERO in safexcel_xcbcmac_cra_init()
+Date:   Wed, 9 Oct 2019 12:06:21 +0000
+Message-ID: <20191009120621.45834-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -36,25 +36,29 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove duplicated include.
+Use PTR_ERR_OR_ZERO rather than if(IS_ERR(...)) + PTR_ERR
 
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/usb/typec/hd3ss3220.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/crypto/inside-secure/safexcel_hash.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/usb/typec/hd3ss3220.c b/drivers/usb/typec/hd3ss3220.c
-index 1900910c637e..0ea5bf3c19c7 100644
---- a/drivers/usb/typec/hd3ss3220.c
-+++ b/drivers/usb/typec/hd3ss3220.c
-@@ -10,7 +10,6 @@
- #include <linux/usb/role.h>
- #include <linux/irqreturn.h>
- #include <linux/interrupt.h>
--#include <linux/module.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
- #include <linux/usb/typec.h>
+diff --git a/drivers/crypto/inside-secure/safexcel_hash.c b/drivers/crypto/inside-secure/safexcel_hash.c
+index 85c3a075f283..a07a2915fab1 100644
+--- a/drivers/crypto/inside-secure/safexcel_hash.c
++++ b/drivers/crypto/inside-secure/safexcel_hash.c
+@@ -2109,10 +2109,7 @@ static int safexcel_xcbcmac_cra_init(struct crypto_tfm *tfm)
+ 
+ 	safexcel_ahash_cra_init(tfm);
+ 	ctx->kaes = crypto_alloc_cipher("aes", 0, 0);
+-	if (IS_ERR(ctx->kaes))
+-		return PTR_ERR(ctx->kaes);
+-
+-	return 0;
++	return PTR_ERR_OR_ZERO(ctx->kaes);
+ }
+ 
+ static void safexcel_xcbcmac_cra_exit(struct crypto_tfm *tfm)
 
 
 

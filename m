@@ -2,138 +2,126 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B01ED0862
-	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 09:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3CCE7D08B3
+	for <lists+kernel-janitors@lfdr.de>; Wed,  9 Oct 2019 09:46:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728054AbfJIHfy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 03:35:54 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:51224 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725440AbfJIHfy (ORCPT
+        id S1729616AbfJIHqi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 03:46:38 -0400
+Received: from esa3.microchip.iphmx.com ([68.232.153.233]:22667 "EHLO
+        esa3.microchip.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725848AbfJIHqi (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 03:35:54 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x997YIIH071378;
-        Wed, 9 Oct 2019 07:35:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=astRmtcxdwJfd5jGfQNYmdgoAsTRPrOTEf1/eNK/ur4=;
- b=hMeu5JJSBXaU+qAM43MF9tr25AnwolI1wnzCjWACz0q3XiZtOrhnWSOV/8KfsrkERTY0
- UVFyE6oPmzSJfwmMKB4ILAmYU9pMNAeT/9oexmZl8cgu5segf6qe6XuHqgiLqRQngZ1i
- sQPyI6JBfx+jRyZLGbCbiResFVPUvavt5VULvqsjDNfsUYAcJaKNBgJrwoxPqmnqEA9x
- 6v7aEUGiRePffRgOAN/yd1ISAJ5532GPUInMbF3hRMnFJE2kAZ9tlum+y9Yplc4vcA+y
- +mEKnCbP3+acotURpQe6/c3C6kaKi8Si9RlTXQNdRSzrIEEgtt7EGjjWdrxvGXGVyLVj Og== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 2vek4qj8b3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 09 Oct 2019 07:35:18 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x997YAqX112192;
-        Wed, 9 Oct 2019 07:35:17 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2vgev0qynd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 09 Oct 2019 07:35:17 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x997ZFEG027907;
-        Wed, 9 Oct 2019 07:35:15 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 09 Oct 2019 00:35:14 -0700
-Date:   Wed, 9 Oct 2019 10:35:06 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     Doug Ledford <dledford@redhat.com>,
-        Potnuri Bharat Teja <bharat@chelsio.com>,
-        Matan Barak <matanb@mellanox.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Shamir Rabinovitch <shamir.rabinovitch@oracle.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Michael Guralnik <michaelgur@mellanox.com>,
-        linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] uverbs: prevent potential underflow
-Message-ID: <20191009073506.GI25098@kadam>
-References: <20191005052337.GA20129@mwanda>
- <20191008194425.GA28067@ziepe.ca>
+        Wed, 9 Oct 2019 03:46:38 -0400
+Received-SPF: Pass (esa3.microchip.iphmx.com: domain of
+  Ludovic.Desroches@microchip.com designates 198.175.253.82 as
+  permitted sender) identity=mailfrom;
+  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
+  envelope-from="Ludovic.Desroches@microchip.com";
+  x-sender="Ludovic.Desroches@microchip.com";
+  x-conformance=spf_only; x-record-type="v=spf1";
+  x-record-text="v=spf1 mx a:ushub1.microchip.com
+  a:smtpout.microchip.com a:mx1.microchip.iphmx.com
+  a:mx2.microchip.iphmx.com include:servers.mcsv.net
+  include:mktomail.com include:spf.protection.outlook.com ~all"
+Received-SPF: None (esa3.microchip.iphmx.com: no sender
+  authenticity information available from domain of
+  postmaster@email.microchip.com) identity=helo;
+  client-ip=198.175.253.82; receiver=esa3.microchip.iphmx.com;
+  envelope-from="Ludovic.Desroches@microchip.com";
+  x-sender="postmaster@email.microchip.com";
+  x-conformance=spf_only
+Authentication-Results: esa3.microchip.iphmx.com; dkim=none (message not signed) header.i=none; spf=Pass smtp.mailfrom=Ludovic.Desroches@microchip.com; spf=None smtp.helo=postmaster@email.microchip.com; dmarc=pass (p=none dis=none) d=microchip.com
+IronPort-SDR: 8v0tdMs3LlvQuSHU7rzAWhRtWIVlotOUQ8ditN56wCSdkOVwSWrpH6xpRpB5o4IFGvwz2oQWnn
+ IIj3G65C0gTbgnRV+douGVZvsSs5albruElzTe2OAUWUZNsguLdlc6PBeICA8q2ZCy5PBDKLNx
+ 3yOjtw6tAsg6bPGLyfJ2eavi13JhfaL84i8Mm82sgjZXzkv5jwHGouLGCzuHKtkV4ax2cf8mWS
+ RojiYrUy9JaS7J+XD+q6QhVZetGADXwhPxHErHQ8eotSGUrP2WfzIOigipksHTLSF+468tjMif
+ Xxk=
+X-IronPort-AV: E=Sophos;i="5.67,273,1566889200"; 
+   d="scan'208";a="52257068"
+Received: from smtpout.microchip.com (HELO email.microchip.com) ([198.175.253.82])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 09 Oct 2019 00:46:36 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Wed, 9 Oct 2019 00:46:33 -0700
+Received: from localhost (10.10.85.251) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server id 15.1.1713.5 via Frontend
+ Transport; Wed, 9 Oct 2019 00:46:33 -0700
+Date:   Wed, 9 Oct 2019 09:46:42 +0200
+From:   Ludovic Desroches <ludovic.desroches@microchip.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+CC:     <dmaengine@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        "Dan Williams" <dan.j.williams@intel.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>,
+        "Nicolas Ferre" <nicolas.ferre@atmel.com>
+Subject: Re: [PATCH] dmaengine: at_xdmac: Use
+ devm_platform_ioremap_resource() in at_xdmac_probe()
+Message-ID: <20191009074641.taocxbrs2vodvsgm@M43218.corp.atmel.com>
+Mail-Followup-To: Markus Elfring <Markus.Elfring@web.de>,
+        dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Dan Williams <dan.j.williams@intel.com>,
+        Vinod Koul <vkoul@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Nicolas Ferre <nicolas.ferre@atmel.com>
+References: <377247f3-b53a-a9d9-66c7-4b8515de3809@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20191008194425.GA28067@ziepe.ca>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9404 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910090071
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9404 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910090071
+In-Reply-To: <377247f3-b53a-a9d9-66c7-4b8515de3809@web.de>
+User-Agent: NeoMutt/20180716
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Oct 08, 2019 at 04:44:25PM -0300, Jason Gunthorpe wrote:
-> On Sat, Oct 05, 2019 at 08:23:37AM +0300, Dan Carpenter wrote:
-> > The issue is in drivers/infiniband/core/uverbs_std_types_cq.c in the
-> > UVERBS_HANDLER(UVERBS_METHOD_CQ_CREATE) function.  We check that:
-> > 
-> > 	if (attr.comp_vector >= attrs->ufile->device->num_comp_vectors) {
-> > 
-> > But we don't check that "attr.comp_vector" whether negative.  It
-> > could potentially lead to an array underflow.  My concern would be where
-> > cq->vector is used in the create_cq() function from the cxgb4 driver.
-> > 
-> > Fixes: 9ee79fce3642 ("IB/core: Add completion queue (cq) object actions")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> >  drivers/infiniband/core/uverbs.h | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
+On Sun, Sep 22, 2019 at 10:48:20AM +0200, Markus Elfring wrote:
 > 
->  
-> > diff --git a/drivers/infiniband/core/uverbs.h b/drivers/infiniband/core/uverbs.h
-> > index 1e5aeb39f774..63f7f7db5902 100644
-> > --- a/drivers/infiniband/core/uverbs.h
-> > +++ b/drivers/infiniband/core/uverbs.h
-> > @@ -98,7 +98,7 @@ ib_uverbs_init_udata_buf_or_null(struct ib_udata *udata,
-> >  
-> >  struct ib_uverbs_device {
-> >  	atomic_t				refcount;
-> > -	int					num_comp_vectors;
-> > +	u32					num_comp_vectors;
-> >  	struct completion			comp;
-> >  	struct device				dev;
-> >  	/* First group for device attributes, NULL terminated array */
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Sun, 22 Sep 2019 10:37:31 +0200
 > 
-> I would have expected you to change struct ib_cq_init_attr ? Or at
-> least both..
+> Simplify this function implementation by using a known wrapper function.
 > 
-> This is actually a bug as the type of
-> UVERBS_ATTR_CREATE_CQ_COMP_VECTOR for userspace is u32:
+> This issue was detected by using the Coccinelle software.
 > 
->         UVERBS_ATTR_PTR_IN(UVERBS_ATTR_CREATE_CQ_COMP_VECTOR,
->                            UVERBS_ATTR_TYPE(u32),
->                            UA_MANDATORY),
-> 
-> But we are stuffing it into a int:
-> 
->         ret = uverbs_copy_from(&attr.comp_vector, attrs,
->                                UVERBS_ATTR_CREATE_CQ_COMP_VECTOR);
-> 
-> So very large values will become negative and switching
-> num_comp_vectors to u32 won't help??
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Acked-by: Ludovic Desroches <ludovic.desroches@microchip.com> 
 
-Yeah.  You're right.  I should have changed both.  I'm not sure what I
-was thinking.
+Thanks
 
-My patch does fix the bug because of type promotion, but we should
-change both to u32.
-
-regards,
-dan carpenter
-
+> ---
+>  drivers/dma/at_xdmac.c | 7 +------
+>  1 file changed, 1 insertion(+), 6 deletions(-)
+> 
+> diff --git a/drivers/dma/at_xdmac.c b/drivers/dma/at_xdmac.c
+> index b58ac720d9a1..f71c9f77d405 100644
+> --- a/drivers/dma/at_xdmac.c
+> +++ b/drivers/dma/at_xdmac.c
+> @@ -1957,21 +1957,16 @@ static int atmel_xdmac_resume(struct device *dev)
+> 
+>  static int at_xdmac_probe(struct platform_device *pdev)
+>  {
+> -	struct resource	*res;
+>  	struct at_xdmac	*atxdmac;
+>  	int		irq, size, nr_channels, i, ret;
+>  	void __iomem	*base;
+>  	u32		reg;
+> 
+> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	if (!res)
+> -		return -EINVAL;
+> -
+>  	irq = platform_get_irq(pdev, 0);
+>  	if (irq < 0)
+>  		return irq;
+> 
+> -	base = devm_ioremap_resource(&pdev->dev, res);
+> +	base = devm_platform_ioremap_resource(pdev, 0);
+>  	if (IS_ERR(base))
+>  		return PTR_ERR(base);
+> 
+> --
+> 2.23.0
+> 

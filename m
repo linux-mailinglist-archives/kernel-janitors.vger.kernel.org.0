@@ -2,211 +2,136 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 483A0D219A
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2019 09:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09855D21E1
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2019 09:39:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733057AbfJJHWI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 10 Oct 2019 03:22:08 -0400
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:45166 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1733010AbfJJHUq (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 10 Oct 2019 03:20:46 -0400
-Received: by mail-lf1-f68.google.com with SMTP id r134so3544173lff.12
-        for <kernel-janitors@vger.kernel.org>; Thu, 10 Oct 2019 00:20:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rasmusvillemoes.dk; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=plcpqejf9T5MdSd6J+r8aX/zz/fiFG8ZacCFjy1NJQo=;
-        b=hc7uuXs07PiHtau5SU6KcDOi/ahlmPUM//L1/5A0aH9wR02U3bG/HmiOgKmGIr8LTX
-         SYqKMXkCliolfNUvjmtpAtGtsuel6sikOWzitCDVyjicaVxmIblytbK/9mlc+cwvdjaK
-         XNDLYYDYEwrsMUlwjMxI0UD8KuXGauqFIBCKQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=plcpqejf9T5MdSd6J+r8aX/zz/fiFG8ZacCFjy1NJQo=;
-        b=spZqUC5koGMPMLrBRKTScW+g8sY59Ak1dxcmsj/NaUjIKUw4LzrvV/x1c0iNDa3qqr
-         Drisrw2ObqpFr/CUT4MZZ5hn7G5YTl2nTIRw6sZlucWpPoe1WA6dgNMOtn1/6csnrKEn
-         kMxUxzdWYdxPDktKIu/qnTIXkmASkkgWLCoe91+aKO0I9e/Za4RYmHR7AtX29givxUOS
-         tAaL9uY3YHhqn3VtHprssvnKWryYsvUD3AWgNtASYD/Dp3em+5oVqXFYgq7LTzVlv26q
-         lM4f1UXOHZPcX+QrsQfSH95j76p+PyTAexEmopvhp2WfIVKRkp4cILQYpwm/TcOUNOec
-         Es5Q==
-X-Gm-Message-State: APjAAAUm96N8bnmiyBOdyA7WxJOSifvYqTrUI3bX/3j/p/uKEzwNbj+S
-        yjzdBPXLklGKAZBJ/MBy8ZYyxQ==
-X-Google-Smtp-Source: APXvYqyktbMnXjYCldGZAeBnLiacwUMDkcusmFwk7rWt541gxE/G5Jf77WngFoKgUlEvqbC+tZTiFQ==
-X-Received: by 2002:ac2:5c4b:: with SMTP id s11mr5001366lfp.37.1570692041785;
-        Thu, 10 Oct 2019 00:20:41 -0700 (PDT)
-Received: from [172.16.11.28] ([81.216.59.226])
-        by smtp.gmail.com with ESMTPSA id p27sm1064294lfo.95.2019.10.10.00.20.40
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 10 Oct 2019 00:20:41 -0700 (PDT)
-Subject: Re: [PATCH] string.h: Mark 34 functions with __must_check
-To:     Nick Desaulniers <ndesaulniers@google.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Markus Elfring <Markus.Elfring@web.de>,
-        kernel-janitors@vger.kernel.org,
+        id S1733108AbfJJHiJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 10 Oct 2019 03:38:09 -0400
+Received: from mout.web.de ([212.227.15.14]:52717 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727235AbfJJH0b (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 10 Oct 2019 03:26:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1570692351;
+        bh=URPzwdq5QRFI0wpUi5CUlZE+boxu7v7c5HF0H21uNI8=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=BAilBDlmRAYd4TbEUOfa/WEwTV6TbW/TtlmRthHySaLcoMWxnnOjDamAS9IcRWASw
+         YrD5K11r9npCsStaQ5/bYb1Edvtc5s+AuQDYA91jVYR13SHtJCfEfWgJw6QwdTqxeU
+         DCrzvfcpC1NCBD/qPF0Bs9vFT5MlSlgBHhyaCblE=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.135.64.254]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Mbdf3-1iZAKp3hyf-00J36z; Thu, 10
+ Oct 2019 09:25:51 +0200
+Subject: Re: string.h: Mark 34 functions with __must_check
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        kernel-janitors@vger.kernel.org, kasan-dev@googlegroups.com
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Joe Perches <joe@perches.com>,
         Kees Cook <keescook@chromium.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        LKML <linux-kernel@vger.kernel.org>
+        Nick Desaulniers <ndesaulniers@google.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Alexander Potapenko <glider@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>
 References: <75f70e5e-9ece-d6d1-a2c5-2f3ad79b9ccb@web.de>
- <954c5d70-742f-7b0e-57ad-ea967e93be89@rasmusvillemoes.dk>
- <20191009135522.GA20194@kadam>
- <b1f055ec-b4ec-d0ed-a03d-7d9828fa9440@rasmusvillemoes.dk>
- <20191009143000.GD13286@kadam>
- <CAKwvOd=Jkd_qJULB+i1u31VJAex6KB=wFAyXO04V0UcAAEZeXw@mail.gmail.com>
-From:   Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Message-ID: <b35d2c1a-641f-b97f-8335-066693dfe37a@rasmusvillemoes.dk>
-Date:   Thu, 10 Oct 2019 09:20:39 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+ <20191009110943.7ff3a08a@gandalf.local.home>
+ <ce96b27e-5f7b-fca7-26ae-13729e886d46@web.de>
+ <CAHp75VdrUg6nBfYV-ZoiwWhu6caaQB8-FCSeQFH0GrBX33WhVg@mail.gmail.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <359bd081-44fb-e9a7-8ba9-bafeeecebc25@web.de>
+Date:   Thu, 10 Oct 2019 09:25:42 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <CAKwvOd=Jkd_qJULB+i1u31VJAex6KB=wFAyXO04V0UcAAEZeXw@mail.gmail.com>
+In-Reply-To: <CAHp75VdrUg6nBfYV-ZoiwWhu6caaQB8-FCSeQFH0GrBX33WhVg@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:foB/0idgGkWa2ab0un+ubrR3nFbOcepkKguwEx1GoSMNY40iXY0
+ dALqet59vl0aVi2yt4YoqieTFH/m8MA8UZb3RmJFY0ZVkZicm77nKx6hTkrTwz4Uj4/RIPF
+ 9ybgAvIs/p1ln2/uyj3bim8I2YenqJrPhww9iXnVhtI6xi8lHASzHfcP4gJ16JqD6xkVICn
+ +KI/+GO6xW59PMzfgH9Mw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Yz/aZJCbT+U=:EKBUuu5lulTyfCmit5Peel
+ IUxccESV+IC43UOD5fjNXmc4aBfII6AqX2rhPQIXqXadVyol/a/EDBXeDv2PHi1z6TNadqYQ5
+ 8jlMAZamV79pO/Ulm46pR4ct9kjwSpQRHu9yDDYaDAkHrEYt+IIwIfTHGI4G1sYzy+ak0CAJp
+ 5WQjLFHowEpH1zFO3BG4t64awzXbPuuYmea5dt//AsdbEmBurwA87g9yZDa6VQc6K96KcnPmc
+ /U2xm/9IyUliCk2R2M5dCbospDn0az1sjEWkNThlH8jbwtWLJrrDjJmk84oZEb+KPOR7KJmBr
+ oUp55ZJRmqY4cyHpHX68D//Y425BaxbTrpzJn3IeR847yd4YCGBZcQQkT9g58PPz05NQs6bSR
+ PTC/YlbpekvCbBRl8K/JWRNwcncGEiP8WvtRgIyddCx0GTV5WL1K7hImODC9fCw4lDtRX60K6
+ 5NPjbluQKZ1l1JRUubR3D79Of5iysDPJ7GkAI6q5gBsIM8bHaiEqEJC0o068cs1nPFSvmbhGv
+ YW9hVxO8ujSWHMi63PMmHXJ+8WB/bj7O0xx+oKvFFAJgVs66LH8DOuuuYS89Foj7ISj4FohCI
+ zDbL/pxt2jYrAYcCnLVaGrVlBphM7heXa1ktAGRB8LKhNeYYAaFZ5vtNEloQF7O6PbVV18t2S
+ rB9CRH6kIXZ+0UXccQ1/uY9PUZ+u1LsbWakQiEqx9DGl9xUY++22tIJWlJkP63f3t/f58kfdz
+ P3U+/uolPDVOZXzdGz/XqGUaRnGR65Zkofbf7ZrEeUABZBnsg8wTG90NRaAJwKy0piBdGukIU
+ 1aC+DtcE5zY/8YSYSVlwaDsm/GjXHqDdUEodyhhyTAquxOxldqf+g1gttJRwf95j9OxGJGPIn
+ 11NSzr1s/bSYIvPi9ihY9+jc17nYNmpQxQfefZISwt+faYTmBbK8k5/7wyAzOB89o5pOrIDKj
+ r0FJKPgRZeTIv34PA9p24JwECjRwXZOOktf+F2p+IO8FB7PsjZlB81RK/7eqlb7O5SvQqhrqW
+ zoRwB52QBq7MZ94MRoISh107ZyFyiV1SvWf0kiVX2TJasWN1s6ZWnhim5qOu+nM6zgkY5KtaW
+ rPZM5qiL+uiLJrc2H/1CtZZ3Py5OIPvyP+UJQPal0AS7ZEjB8USM1uUGtIdExFegZ0putf63y
+ D+9n+I5fC52jbW6Mbmd4sFhh7VkPAd1Cc1o2h09qWJiTO6I9eQSsorqZgEIjFBxn3BEkGbjQ2
+ Z7M3jTLsPmyzKh9R8bnkkK75+kKdDZlG5PeDbAky4sMajm+TgocOgT4wS/vs=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 09/10/2019 18.31, Nick Desaulniers wrote:
-> On Wed, Oct 9, 2019 at 7:30 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->>
->> On Wed, Oct 09, 2019 at 04:21:20PM +0200, Rasmus Villemoes wrote:
->>> On 09/10/2019 15.56, Dan Carpenter wrote:
->>>> That's because glibc strlen is annotated with __attribute_pure__ which
->>>> means it has no side effects.
->>>
->>> I know, except it has nothing to do with glibc headers. Just try the
->>> same thing in the kernel. gcc itself knows this about __builtin_strlen()
->>> etc. If anything, we could annotate some of our non-standard functions
->>> (say, memchr_inv) with __pure - then we'd both get the Wunused-value in
->>> the nonsense cases, and allow gcc to optimize or reorder the calls.
->>
->> Huh.  You're right.  GCC already knows.  So this patch is pointless like
->> you say.
-> 
-> Is it? None of the functions in include/linux/string.h are currently
-> marked __pure today. 
+>> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/lib/test_kasan.c?id=3Db92a953cb7f727c42a15ac2ea59bf3cf9c39370d#n595
+>
+> The *test* word must have given you a clue that the code you a looking
+> at is not an ordinary one.
 
-As I said, gcc knows this about the standard C functions, the ones it
-has a __builtin_* version of. So it doesn't matter if the user adds a
-__pure annotation or not (be it in libc or kernel headers). For example,
-here's a line from gcc's builtins.def
+The proposed extension of function annotations can be tested also together
+with this source file example, can't it?
+Other system configuration variations might become more interesting
+for further software components.
 
-DEF_LIB_BUILTIN        (BUILT_IN_STRCMP, "strcmp",
-BT_FN_INT_CONST_STRING_CONST_STRING, ATTR_PURE_NOTHROW_NONNULL_LEAF)
-
-so gcc knows that __builtin_strcmp is not just pure, but its argument
-can also be assumed to be non-NULL, etc. (OK, the kernel disables the
-use of that knowledge, but this is irrelevant to this discussion).
-
-In constrast, e.g. abs and most libm functions is
-
-DEF_LIB_BUILTIN        (BUILT_IN_ABS, "abs", BT_FN_INT_INT,
-ATTR_CONST_NOTHROW_LEAF_LIST)
-
-i.e. "attribute(__const__)" (se below).
-
- (Side note, I'm surprised that any function that
-> accepts a pointer could be considered pure. I could reassign pointed
-> to value without changing the pointers value.
-
-Probably depends on your definition of pure. What matters is gcc's, which is
-
-'const'
-     Many functions do not examine any values except their arguments,
-     and have no effects except the return value.  Basically this is
-     just slightly more strict class than the 'pure' attribute below,
-     since function is not allowed to read global memory.
-
-     Note that a function that has pointer arguments and examines the
-     data pointed to must _not_ be declared 'const'.  Likewise, a
-     function that calls a non-'const' function usually must not be
-     'const'.  It does not make sense for a 'const' function to return
-     'void'.
-
-'pure'
-     Many functions have no effects except the return value and their
-     return value depends only on the parameters and/or global
-     variables.  Such a function can be subject to common subexpression
-     elimination and loop optimization just as an arithmetic operator
-     would be.  These functions should be declared with the attribute
-     'pure'.  For example,
-
-          int square (int) __attribute__ ((pure));
-
-     says that the hypothetical function 'square' is safe to call fewer
-     times than the program says.
-
-     Some common examples of pure functions are 'strlen' or 'memcmp'.
-     Interesting non-pure functions are functions with infinite loops or
-     those depending on volatile memory or other system resource, that
-     may change between two consecutive calls (such as 'feof' in a
-     multithreading environment).
-
-And yes, gcc knows perfectly well that more or less any write to memory
-(except in the very few cases where it can prove no aliasing)
-"invalidates" the result of a pure function. In some very simple cases,
-that means it can hoist a strlen() call out of a badly written loop like
-
-for (i = 0; i < strlen(s); ++i)
-
-but the loop body can't be very complicated before that fails. Example:
-https://godbolt.org/z/f0PPRt . I gave up trying to decipher what clang
-produced.
-
-(BTW, the pure example in the docs is bad, because that function is
-likely to be const and not just pure.)
-
-I can see strlen being
-> "pure" for string literals, but not for char[].  This is something
-> I'll play with more, I've already spotted one missed optimization in
-> LLVM: https://bugs.llvm.org/show_bug.cgi?id=43624).
-
-I see that compiler_attributes unconditionally #defines __pure, but
-there's no reference to clang docs. Do they exist?
-
-> I think it would be an interesting study to see how often functions
-> that have return codes are ok to not check vs aren't ok (in a large
-> production codebase like the Linux kernel), similar to how 97% of
-> cases fallthrough is unintentional (which to me sounds like maybe the
-> default behavior of the language is incorrect).
-
-Again, _please_ do not confuse the name __must_check with what it
-actually does and means. It only means you get a warning if you throw
-away the result completely, it does not mean the return value must
-soonish be subject to some if-condition (because how'd you define or
-implement that...).
-
-To reiterate:
-
-(1) for __pure functions, it makes no sense to add __must_check, because
-gcc already warns
-(2) all the standard-C string functions are already __pure, even if
-linux/string.h does not declare them that way - so one shouldn't expect
-any new warnings at least for those functions
-(3) for the non-standard string functions (memchr_inv), I'd rather mark
-them __pure than __must_check, since the former is effectively a
-superset of the latter. We can then bikeshed whether the standard ones
-should be marked __pure as well for consistency (and perhaps benefit of
-clang, in case clang does not know __builtin_strlen is pure).
-(4) The kmalloc() wrappers (kstrdup etc.) are a whole different story.
-We're not marking kmalloc() itself, only krealloc(), so I don't see why
-kstrdup() should be __must_check. Yes, it would catch a silly
-instant-leak like
-
-  kstrdup(foo);
-
-but I really don't think that ever happens in practice. And again,
-there's no point making kstrdup() __must_check unless we also decide
-that it's worth it for kmalloc() and friends.
-
-Rasmus
+Regards,
+Markus

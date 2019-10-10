@@ -2,74 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EDDDD1DF4
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2019 03:23:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5B74D1E6C
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2019 04:27:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732488AbfJJBXm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 21:23:42 -0400
-Received: from mga07.intel.com ([134.134.136.100]:61706 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731134AbfJJBXm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 21:23:42 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Oct 2019 18:23:41 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,278,1566889200"; 
-   d="scan'208";a="197089771"
-Received: from richard.sh.intel.com (HELO localhost) ([10.239.159.54])
-  by orsmga003.jf.intel.com with ESMTP; 09 Oct 2019 18:23:39 -0700
-Date:   Thu, 10 Oct 2019 09:23:22 +0800
-From:   Wei Yang <richardw.yang@linux.intel.com>
-To:     Mike Kravetz <mike.kravetz@oracle.com>
+        id S1731155AbfJJC1z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 22:27:55 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:34668 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726465AbfJJC1y (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 9 Oct 2019 22:27:54 -0400
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9A2IqbR040330;
+        Thu, 10 Oct 2019 02:27:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=corp-2019-08-05;
+ bh=wbLroutOnvA812BxPr3bS3A0Ss61AI1f1pLVhnMY4VU=;
+ b=oD01xZzzN8C953xNDw0ic8Mj64sNc9HfcKVfx3NWoPOMYql5gqv1QMZg7YYxuhA7n+LE
+ APVtN6sixNEmpnBPStXqylYktb8GgDHsiBz4cFABCF9/c4+kgqp+gSQpRVJ263pES0Ls
+ Zvcy5APbUspoTtdfU7KUeX/fnelbvhzaltyHz6F6bBX37aAzZ9czkFxZnP5ZMOBd9+G/
+ IuOwYu2d0PZky07A5sgXVd3/5DaQbew+tRc0ZEkZReJ7/FTJZpH8vIpnIUXyrbHfg0te
+ HZLbM/eYfoGRJi+l6RFjaxq3thFOb9kAlvmEFhomMc2X3DtapxzA8/v866t+tOVyG/XQ 1A== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 2vek4qr6my-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 10 Oct 2019 02:27:23 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9A2IWwM019077;
+        Thu, 10 Oct 2019 02:25:23 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 2vhrxchwfb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 10 Oct 2019 02:25:23 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x9A2PJPT009595;
+        Thu, 10 Oct 2019 02:25:19 GMT
+Received: from [192.168.1.222] (/71.63.128.209)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 09 Oct 2019 19:25:19 -0700
+Subject: Re: [PATCH -next] userfaultfd: remove set but not used variable 'h'
+To:     Wei Yang <richardw.yang@linux.intel.com>
 Cc:     YueHaibing <yuehaibing@huawei.com>,
         Andrea Arcangeli <aarcange@redhat.com>,
         "Joel Fernandes (Google)" <joel@joelfernandes.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Stephen Rothwell <sfr@canb.auug.org.au>,
-        Wei Yang <richardw.yang@linux.intel.com>,
         Hugh Dickins <hughd@google.com>, linux-mm@kvack.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] userfaultfd: remove set but not used variable 'h'
-Message-ID: <20191010012322.GB2167@richard>
-Reply-To: Wei Yang <richardw.yang@linux.intel.com>
 References: <20191009122740.70517-1-yuehaibing@huawei.com>
  <a28da32b-5c26-21e9-4a08-722abf9fbeba@oracle.com>
+ <20191010012322.GB2167@richard>
+From:   Mike Kravetz <mike.kravetz@oracle.com>
+Message-ID: <ba62cc8f-da4d-a316-c968-80871551c863@oracle.com>
+Date:   Wed, 9 Oct 2019 19:25:18 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a28da32b-5c26-21e9-4a08-722abf9fbeba@oracle.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20191010012322.GB2167@richard>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9405 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910100021
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9405 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910100021
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Oct 09, 2019 at 05:45:57PM -0700, Mike Kravetz wrote:
->On 10/9/19 5:27 AM, YueHaibing wrote:
->> Fixes gcc '-Wunused-but-set-variable' warning:
->> 
->> mm/userfaultfd.c: In function '__mcopy_atomic_hugetlb':
->> mm/userfaultfd.c:217:17: warning:
->>  variable 'h' set but not used [-Wunused-but-set-variable]
->> 
->> It is not used since commit 78911d0e18ac ("userfaultfd: use vma_pagesize
->> for all huge page size calculation")
->> 
->
->Thanks!  That should have been removed with the recent cleanups.
->
->> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
->
->Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
+On 10/9/19 6:23 PM, Wei Yang wrote:
+> On Wed, Oct 09, 2019 at 05:45:57PM -0700, Mike Kravetz wrote:
+>> On 10/9/19 5:27 AM, YueHaibing wrote:
+>>> Fixes gcc '-Wunused-but-set-variable' warning:
+>>>
+>>> mm/userfaultfd.c: In function '__mcopy_atomic_hugetlb':
+>>> mm/userfaultfd.c:217:17: warning:
+>>>  variable 'h' set but not used [-Wunused-but-set-variable]
+>>>
+>>> It is not used since commit 78911d0e18ac ("userfaultfd: use vma_pagesize
+>>> for all huge page size calculation")
+>>>
+>>
+>> Thanks!  That should have been removed with the recent cleanups.
+>>
+>>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+>>
+>> Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
+> 
+> If I am correct, this is removed in a recent patch.
 
-If I am correct, this is removed in a recent patch.
-
->-- 
->Mike Kravetz
+I'm having a hard time figuring out what is actually in the latest mmotm
+tree.  Andrew added a build fixup patch ab169389eb5 in linux-next which
+adds the reference to h.  Is there a patch after that to remove the reference?
 
 -- 
-Wei Yang
-Help you, Help me
+Mike Kravetz

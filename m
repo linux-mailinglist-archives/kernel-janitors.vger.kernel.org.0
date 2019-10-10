@@ -2,99 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 32ED7D1F1E
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2019 05:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27BB9D2005
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2019 07:29:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732719AbfJJDxe (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 23:53:34 -0400
-Received: from mga09.intel.com ([134.134.136.24]:16106 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726659AbfJJDxe (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 23:53:34 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 09 Oct 2019 20:53:33 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,278,1566889200"; 
-   d="scan'208";a="184280680"
-Received: from richard.sh.intel.com (HELO localhost) ([10.239.159.54])
-  by orsmga007.jf.intel.com with ESMTP; 09 Oct 2019 20:53:31 -0700
-Date:   Thu, 10 Oct 2019 11:53:14 +0800
-From:   Wei Yang <richardw.yang@linux.intel.com>
-To:     Mike Kravetz <mike.kravetz@oracle.com>
-Cc:     Wei Yang <richardw.yang@linux.intel.com>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Hugh Dickins <hughd@google.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] userfaultfd: remove set but not used variable 'h'
-Message-ID: <20191010035314.GA6917@richard>
-Reply-To: Wei Yang <richardw.yang@linux.intel.com>
-References: <20191009122740.70517-1-yuehaibing@huawei.com>
- <a28da32b-5c26-21e9-4a08-722abf9fbeba@oracle.com>
- <20191010012322.GB2167@richard>
- <ba62cc8f-da4d-a316-c968-80871551c863@oracle.com>
- <20191010033045.GA5927@richard>
- <01601a94-5c52-7ef6-ce08-7a86ac70fab2@oracle.com>
+        id S1727567AbfJJF3c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 10 Oct 2019 01:29:32 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:32989 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726065AbfJJF3c (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 10 Oct 2019 01:29:32 -0400
+Received: by mail-pl1-f196.google.com with SMTP id d22so2220516pls.0;
+        Wed, 09 Oct 2019 22:29:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=4ux0oG1N3RPh/ZQT3Rg4tacx00lUapXz9BDpB0CV0W4=;
+        b=O2OVnJzNFrJ4T2mCO2MB48G0Ac2WW826iVZ4FxX5BR3EpPRSRpzRbzB+XLa98KIKmy
+         PXZsCDZVW6f9jW6c0LpJ9b1rQ04RiZlYK1FWVx+bbq4dappg5kqZcu87EvlzpsAJTqv+
+         fvI96b6MnAYXjMdVnkWOL1sznL95gFO7l6BV/OlEbchIlCKvufZeKkyCiw1B13oo1rac
+         J+vWB9QYBgGFyw5Dy4R0eirHfEBpF5y7ujD88NOkcmnFJFf0PsPgLXo5s56YkZyW/O4i
+         OA3e6D7AaAtJBwzybvI1BmlEYLsQITadG7H9bMlOdppegK4On8WWMOGvkjMs1wSoOkOK
+         VwvQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4ux0oG1N3RPh/ZQT3Rg4tacx00lUapXz9BDpB0CV0W4=;
+        b=R3A+ULQDPXtpvexCUTmk5MVBvS+JVojknPkoK4lqujpqAzhhtUyfs9rpZJW8wQ0KyL
+         mMUKf0F25zbjCjBY5l/86gnm7sdDm9QjngKQsmue+qbTn0s10W0gmOYESmPEUtvNyxGg
+         Oa4syR2yh+z1SwQh5fViwsgjxUj9W5Phkoyr7yu9DofNHo9VnlaS8I/L/FXwExAo4IV+
+         TGaArkZCmLuQ0B6YQriKMIUHH2BF5uA6e4quSQ1I+dFtd368v1MVpoDDKFCol06T7Tk9
+         XH+MwgEwzPdbsppMisdWQVOFyxPx/0YO9yDit7Bsind84gBndmgUJCP8f4eRSyDwV03x
+         QUig==
+X-Gm-Message-State: APjAAAWZwwDagfeC8NxUrLhwSMSNRqBefWhDDnTuUBK2s9A6D73TGKnD
+        oPKh+FrPa7x+7J6IqBCB4SPL08lhOECtdUiWc4c=
+X-Google-Smtp-Source: APXvYqzv7mMh81TeLXJfwEeV8BIqtzZVWD0xJ38JFShd32ro1039ZqQR+74Cz3UwLuuXrwsi0d3U1aS/sCYUjZT4Zc8=
+X-Received: by 2002:a17:902:9881:: with SMTP id s1mr7620856plp.18.1570685370251;
+ Wed, 09 Oct 2019 22:29:30 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <01601a94-5c52-7ef6-ce08-7a86ac70fab2@oracle.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+References: <75f70e5e-9ece-d6d1-a2c5-2f3ad79b9ccb@web.de> <20191009110943.7ff3a08a@gandalf.local.home>
+ <ce96b27e-5f7b-fca7-26ae-13729e886d46@web.de>
+In-Reply-To: <ce96b27e-5f7b-fca7-26ae-13729e886d46@web.de>
+From:   Andy Shevchenko <andy.shevchenko@gmail.com>
+Date:   Thu, 10 Oct 2019 08:29:18 +0300
+Message-ID: <CAHp75VdrUg6nBfYV-ZoiwWhu6caaQB8-FCSeQFH0GrBX33WhVg@mail.gmail.com>
+Subject: Re: string.h: Mark 34 functions with __must_check
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        kernel-janitors@vger.kernel.org, kasan-dev@googlegroups.com,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Joe Perches <joe@perches.com>,
+        Kees Cook <keescook@chromium.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Alexander Potapenko <glider@google.com>,
+        Dmitry Vyukov <dvyukov@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Oct 09, 2019 at 08:42:46PM -0700, Mike Kravetz wrote:
->On 10/9/19 8:30 PM, Wei Yang wrote:
->> On Wed, Oct 09, 2019 at 07:25:18PM -0700, Mike Kravetz wrote:
->>> On 10/9/19 6:23 PM, Wei Yang wrote:
->>>> On Wed, Oct 09, 2019 at 05:45:57PM -0700, Mike Kravetz wrote:
->>>>> On 10/9/19 5:27 AM, YueHaibing wrote:
->>>>>> Fixes gcc '-Wunused-but-set-variable' warning:
->>>>>>
->>>>>> mm/userfaultfd.c: In function '__mcopy_atomic_hugetlb':
->>>>>> mm/userfaultfd.c:217:17: warning:
->>>>>>  variable 'h' set but not used [-Wunused-but-set-variable]
->>>>>>
->>>>>> It is not used since commit 78911d0e18ac ("userfaultfd: use vma_pagesize
->>>>>> for all huge page size calculation")
->>>>>>
->>>>>
->>>>> Thanks!  That should have been removed with the recent cleanups.
->>>>>
->>>>>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
->>>>>
->>>>> Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
->>>>
->>>> If I am correct, this is removed in a recent patch.
->>>
->>> I'm having a hard time figuring out what is actually in the latest mmotm
->>> tree.  Andrew added a build fixup patch ab169389eb5 in linux-next which
->>> adds the reference to h.  Is there a patch after that to remove the reference?
->>>
->> 
->> I checked linux-next tree, this commit removes the reference.
->> 
->> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=add4eaeef3766b7491d70d473c48c0b6d6ca5cb7
->> 
+On Wed, Oct 9, 2019 at 11:11 PM Markus Elfring <Markus.Elfring@web.de> wrote:
 >
->Yes, but unless I am mistaken this adds it back,
+> > I'm curious. How many warnings showed up when you applied this patch?
 >
->https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=ab169389eb5ff9da7113a21737574edc6d22c072
->
+> I suggest to take another look at six places in a specific source file
+> (for example).
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/lib/test_kasan.c?id=b92a953cb7f727c42a15ac2ea59bf3cf9c39370d#n595
 
-Oops, we may leave this to Andrew.
-
->-- 
->Mike Kravetz
+The *test* word must have given you a clue that the code you a looking
+at is not an ordinary one.
 
 -- 
-Wei Yang
-Help you, Help me
+With Best Regards,
+Andy Shevchenko

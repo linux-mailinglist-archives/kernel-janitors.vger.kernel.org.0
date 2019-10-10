@@ -2,158 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EA02D2C9C
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2019 16:34:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F974D2E13
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2019 17:46:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726095AbfJJOeF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 10 Oct 2019 10:34:05 -0400
-Received: from smtprelay0014.hostedemail.com ([216.40.44.14]:46466 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726076AbfJJOeF (ORCPT
+        id S1726473AbfJJPqU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 10 Oct 2019 11:46:20 -0400
+Received: from eu-smtp-delivery-151.mimecast.com ([146.101.78.151]:38069 "EHLO
+        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726449AbfJJPqT (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 10 Oct 2019 10:34:05 -0400
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay08.hostedemail.com (Postfix) with ESMTP id F416E182CF668;
-        Thu, 10 Oct 2019 14:34:03 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::::::,RULES_HIT:41:355:379:599:800:960:973:982:988:989:1260:1277:1311:1313:1314:1345:1359:1431:1437:1515:1516:1518:1535:1543:1593:1594:1711:1730:1747:1777:1792:2194:2197:2198:2199:2200:2201:2393:2553:2559:2562:2691:2828:3138:3139:3140:3141:3142:3355:3622:3653:3834:3865:3866:3867:3868:3870:3871:3872:3873:3874:4321:4605:5007:7875:7903:7974:8957:9108:10004:10400:10848:11026:11232:11658:11914:12043:12291:12297:12438:12555:12740:12760:12895:12986:13439:14181:14659:14721:21080:21221:21325:21451:21627:21740:21972:30025:30029:30054:30070:30090:30091,0,RBL:47.151.152.152:@perches.com:.lbl8.mailshell.net-62.8.0.100 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:26,LUA_SUMMARY:none
-X-HE-Tag: paste18_623714dd4446
-X-Filterd-Recvd-Size: 5143
-Received: from XPS-9350.home (unknown [47.151.152.152])
-        (Authenticated sender: joe@perches.com)
-        by omf08.hostedemail.com (Postfix) with ESMTPA;
-        Thu, 10 Oct 2019 14:34:02 +0000 (UTC)
-Message-ID: <9b331c1184aca8a32b9132d29957cd5e8bef1c1d.camel@perches.com>
-Subject: Re: [PATCH] string.h: Mark 34 functions with __must_check
-From:   Joe Perches <joe@perches.com>
-To:     dsterba@suse.cz, Nick Desaulniers <ndesaulniers@google.com>
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        Thu, 10 Oct 2019 11:46:19 -0400
+Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
+ TLS) by relay.mimecast.com with ESMTP id
+ uk-mta-13-oDfPCZz3PYyTN3ZJuZIDKw-1; Thu, 10 Oct 2019 16:46:16 +0100
+Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
+ AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
+ Server (TLS) id 15.0.1347.2; Thu, 10 Oct 2019 16:46:15 +0100
+Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
+ AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
+ Thu, 10 Oct 2019 16:46:15 +0100
+From:   David Laight <David.Laight@ACULAB.COM>
+To:     "'dsterba@suse.cz'" <dsterba@suse.cz>,
+        Nick Desaulniers <ndesaulniers@google.com>
+CC:     Joe Perches <joe@perches.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
         Markus Elfring <Markus.Elfring@web.de>,
-        kernel-janitors@vger.kernel.org,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
         Alexander Shishkin <alexander.shishkin@linux.intel.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Kees Cook <keescook@chromium.org>,
         LKML <linux-kernel@vger.kernel.org>,
         Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Thu, 10 Oct 2019 07:34:01 -0700
-In-Reply-To: <20191010142733.GT2751@twin.jikos.cz>
+Subject: RE: [PATCH] string.h: Mark 34 functions with __must_check
+Thread-Topic: [PATCH] string.h: Mark 34 functions with __must_check
+Thread-Index: AQHVf3bZWoZwBrQ0EEKCNRVPCPIi9qdUA/tQ
+Date:   Thu, 10 Oct 2019 15:46:15 +0000
+Message-ID: <3b133d6f8742472e8a99a76fb0bd3b11@AcuMS.aculab.com>
 References: <75f70e5e-9ece-d6d1-a2c5-2f3ad79b9ccb@web.de>
-         <20191009110943.7ff3a08a@gandalf.local.home>
-         <CAKwvOdk3OTaAVmbV9Cu+Dzg8zuojjU6ENZfu4cUPaKS2a58d3w@mail.gmail.com>
-         <4d890cae9cbbd873096cb1fadb477cf4632ddb9a.camel@perches.com>
-         <CAKwvOdntBXd3OPiCV5adcDjXor886-XnsSxcStAjYBJpuEBrqQ@mail.gmail.com>
-         <20191010142733.GT2751@twin.jikos.cz>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.32.1-2 
+ <20191009110943.7ff3a08a@gandalf.local.home>
+ <CAKwvOdk3OTaAVmbV9Cu+Dzg8zuojjU6ENZfu4cUPaKS2a58d3w@mail.gmail.com>
+ <4d890cae9cbbd873096cb1fadb477cf4632ddb9a.camel@perches.com>
+ <CAKwvOdntBXd3OPiCV5adcDjXor886-XnsSxcStAjYBJpuEBrqQ@mail.gmail.com>
+ <20191010142733.GT2751@twin.jikos.cz>
+In-Reply-To: <20191010142733.GT2751@twin.jikos.cz>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.202.205.107]
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+X-MC-Unique: oDfPCZz3PYyTN3ZJuZIDKw-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 2019-10-10 at 16:27 +0200, David Sterba wrote:
-> On Wed, Oct 09, 2019 at 10:33:45AM -0700, Nick Desaulniers wrote:
-> > On Wed, Oct 9, 2019 at 9:38 AM Joe Perches <joe@perches.com> wrote:
-> > > I believe __must_check is best placed before the return type as
-> > > that makes grep for function return type easier to parse.
-> > > 
-> > > i.e. prefer
-> > >         [static inline] __must_check <type> <function>(<args...>);
-> > > over
-> > >         [static inline] <type> __must_check <function>(<args...>);
-> > > 
-> > 
-> > + Miguel
-> > So I just checked `__cold`, and `__cold` is all over the board in
-> > style.  I see it:
-> > 1. before anything fs/btrfs/super.c#L101
-> > 2. after static before return type (what you recommend) fs/btrfs/super.c#L2318
-> > 3. after return type fs/btrfs/inode.c#L9426
-> 
-> As you can see in the git history, case 1 is from 2015 and the newer
-> changes put the attribute between type and name - that's my "current"
-> but hopefully final preference.
-> 
-> > Can we pick a style and enforce it via checkpatch? (It's probably not
-> > fun to check for each function attribute in
-> > include/linux/compiler_attributes.h).
-> 
-> Anything that has the return type, attributes and function name on one
-> line works for me, but I know that there are other style preferences
-> that put function name as the first word on a separate line.  My reasons
-> are for better search results, ie.
-> 
->   extent_map.c:void __cold extent_map_exit(void)
->   extent_map.h:void __cold extent_map_exit(void);
->   file.c:void __cold btrfs_auto_defrag_exit(void)
->   inode.c:void __cold btrfs_destroy_cachep(void)
->   ordered-data.c:void __cold ordered_data_exit(void)
->   ordered-data.h:void __cold ordered_data_exit(void);
-> 
-> is better than
-> 
->   send.c:__cold
->   super.c:__cold
->   super.c:__cold
->   super.c:__cold
-> 
-> which I might get to fix eventually.
-
-When your examples have no function arguments, line
-length isn't much of an issue. But most functions
-take arguments and line length might matter there.
-
-Here's a possible checkpatch test for location of
-various __<attributes> that are not particularly
-standardized.
-
----
- scripts/checkpatch.pl | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
-
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index cf7543a9d1b2..ed7e6319e061 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -390,6 +390,19 @@ our $Attribute	= qr{
- 			____cacheline_internodealigned_in_smp|
- 			__weak
- 		  }x;
-+
-+our $PositionalAttribute	= qr{
-+			__must_check|
-+			__printf|
-+			__scanf|
-+			__pure|
-+			__cold|
-+			__hot|
-+			__visible|
-+			__weak|
-+			noinline
-+		}x;
-+
- our $Modifier;
- our $Inline	= qr{inline|__always_inline|noinline|__inline|__inline__};
- our $Member	= qr{->$Ident|\.$Ident|\[[^]]*\]};
-@@ -3773,6 +3786,17 @@ sub process {
- 			     "Avoid multiple line dereference - prefer '$ref'\n" . $hereprev);
- 		}
- 
-+# check for declarations like __must_check ($PositionalAttribute) after the type
-+		if ($line =~ /\b($Declare)\s+($PositionalAttribute)\b/) {
-+			if (WARN("ATTRIBUTE_POSITION",
-+				 "Prefer position of attribute '$2' before '$1'\n" . $herecurr) &&
-+			    $fix) {
-+				$fixed[$fixlinenr] =~ s@\b($Declare)(\s+)($PositionalAttribute)\b@$3$2$1@;
-+				# 'static void noinline' becomes 'noinline static void', so fix noinline position if necessary
-+				$fixed[$fixlinenr] =~ s@\bnoinline(\s+)static\b@static${1}noinline@;
-+			}
-+		}
-+
- # check for declarations of signed or unsigned without int
- 		while ($line =~ m{\b($Declare)\s*(?!char\b|short\b|int\b|long\b)\s*($Ident)?\s*[=,;\[\)\(]}g) {
- 			my $type = $1;
-
+RnJvbTogRGF2aWQgU3RlcmJhDQo+IFNlbnQ6IDEwIE9jdG9iZXIgMjAxOSAxNToyOA0KLi4uDQo+
+ID4gQ2FuIHdlIHBpY2sgYSBzdHlsZSBhbmQgZW5mb3JjZSBpdCB2aWEgY2hlY2twYXRjaD8gKEl0
+J3MgcHJvYmFibHkgbm90DQo+ID4gZnVuIHRvIGNoZWNrIGZvciBlYWNoIGZ1bmN0aW9uIGF0dHJp
+YnV0ZSBpbg0KPiA+IGluY2x1ZGUvbGludXgvY29tcGlsZXJfYXR0cmlidXRlcy5oKS4NCj4gDQo+
+IEFueXRoaW5nIHRoYXQgaGFzIHRoZSByZXR1cm4gdHlwZSwgYXR0cmlidXRlcyBhbmQgZnVuY3Rp
+b24gbmFtZSBvbiBvbmUNCj4gbGluZSB3b3JrcyBmb3IgbWUsIGJ1dCBJIGtub3cgdGhhdCB0aGVy
+ZSBhcmUgb3RoZXIgc3R5bGUgcHJlZmVyZW5jZXMNCj4gdGhhdCBwdXQgZnVuY3Rpb24gbmFtZSBh
+cyB0aGUgZmlyc3Qgd29yZCBvbiBhIHNlcGFyYXRlIGxpbmUuDQoNCkhhdmluZyB0aGUgZnVuY3Rp
+b24gbmFtZSBmaXJzdCBtYWtlcyBpdCBtdWNoIGVhc2llciB0byBmaW5kIHRoZSBmdW5jdGlvbiBp
+dHNlbGYuDQpJbiB0aGUgbGludXgga2VybmVsIHRyZWUgc2VhcmNoaW5nIGZvciAnRVhQT1JULipm
+dW5jdGlvbl9uYW1lJyB3b3JrcyBtb3N0IGYgdGhlIHRpbWUuDQoNCj4gTXkgcmVhc29ucyBhcmUg
+Zm9yIGJldHRlciBzZWFyY2ggcmVzdWx0cywgaWUuDQo+IA0KPiAgIGV4dGVudF9tYXAuYzp2b2lk
+IF9fY29sZCBleHRlbnRfbWFwX2V4aXQodm9pZCkNCj4gICBleHRlbnRfbWFwLmg6dm9pZCBfX2Nv
+bGQgZXh0ZW50X21hcF9leGl0KHZvaWQpOw0KPiAgIGZpbGUuYzp2b2lkIF9fY29sZCBidHJmc19h
+dXRvX2RlZnJhZ19leGl0KHZvaWQpDQo+ICAgaW5vZGUuYzp2b2lkIF9fY29sZCBidHJmc19kZXN0
+cm95X2NhY2hlcCh2b2lkKQ0KPiAgIG9yZGVyZWQtZGF0YS5jOnZvaWQgX19jb2xkIG9yZGVyZWRf
+ZGF0YV9leGl0KHZvaWQpDQo+ICAgb3JkZXJlZC1kYXRhLmg6dm9pZCBfX2NvbGQgb3JkZXJlZF9k
+YXRhX2V4aXQodm9pZCk7DQo+IA0KPiBpcyBiZXR0ZXIgdGhhbg0KPiANCj4gICBzZW5kLmM6X19j
+b2xkDQo+ICAgc3VwZXIuYzpfX2NvbGQNCj4gICBzdXBlci5jOl9fY29sZA0KPiAgIHN1cGVyLmM6
+X19jb2xkDQo+IA0KPiB3aGljaCBJIG1pZ2h0IGdldCB0byBmaXggZXZlbnR1YWxseS4NCg0KVGhh
+dCBpcyB3aGF0IC1BMSBpbiBmb3IgOi0pDQoNCglEYXZpZA0KDQotDQpSZWdpc3RlcmVkIEFkZHJl
+c3MgTGFrZXNpZGUsIEJyYW1sZXkgUm9hZCwgTW91bnQgRmFybSwgTWlsdG9uIEtleW5lcywgTUsx
+IDFQVCwgVUsNClJlZ2lzdHJhdGlvbiBObzogMTM5NzM4NiAoV2FsZXMpDQo=
 

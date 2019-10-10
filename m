@@ -2,77 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F4A7D2A58
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2019 15:06:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1913D2BA6
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2019 15:46:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387624AbfJJNGa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 10 Oct 2019 09:06:30 -0400
-Received: from mail-wm1-f66.google.com ([209.85.128.66]:35743 "EHLO
-        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387430AbfJJNGa (ORCPT
+        id S1726833AbfJJNpu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 10 Oct 2019 09:45:50 -0400
+Received: from mail-ed1-f52.google.com ([209.85.208.52]:45317 "EHLO
+        mail-ed1-f52.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726065AbfJJNpt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 10 Oct 2019 09:06:30 -0400
-Received: by mail-wm1-f66.google.com with SMTP id y21so6722731wmi.0
-        for <kernel-janitors@vger.kernel.org>; Thu, 10 Oct 2019 06:06:28 -0700 (PDT)
+        Thu, 10 Oct 2019 09:45:49 -0400
+Received: by mail-ed1-f52.google.com with SMTP id h33so5487232edh.12
+        for <kernel-janitors@vger.kernel.org>; Thu, 10 Oct 2019 06:45:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ub-ac-id.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=GO77O9NugfDMF3sM0pFxjAVwqVXEKORDEOteZl6SPpM=;
-        b=uxXWIecv67AFc+7gbbl/9eXGzxQna44hu3QaYbS5c1SRropU7MmGsj2XgaiDIjZLNW
-         kg86d2ortOEcrTnxAvUS60kitvEnPUL7pmNeuWPI8xEAAVq5fKZsLfzyIfrC+jT80ftZ
-         yDWslPLRK+C3NLAnQJJh6X78KBsxvVaZ8TZmFZMJun8TLFgJ9EtC4rvux2guiXkC6JVQ
-         TIZkM/7mxDt6nSOEXwsqFPfAYl6MbYOrHGBIaCyuQKJKnlCGcumSKu0DHnwPq9pwnP+B
-         JETQ+veKnE324ZAiGSv8SddbdBXMA5zufeShAbqqcY0+ps8ywlJ704A1bWGy3v2HmrJI
-         NmWw==
+        d=ffwll.ch; s=google;
+        h=sender:date:from:to:cc:subject:message-id:mail-followup-to
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=m/eFFXn0vur3dPmxW/iwC62E4sqoVqpwELmzMg990o4=;
+        b=SzGg1Snpvro/ax8XbsReNLXCcQ7xMcVrZVaTG+BtPXx0xM09HqnNEaPaf187SrkLA5
+         1tCRCyg04PdbAjuHlRlEdiQ9FdDWRXihCtDYZCKcOiocErL1waORxcIx+qP0wjlWt0x9
+         JdgBsOo3wevXUV/HA2mxbAtugYD/3OGXFhWRk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=GO77O9NugfDMF3sM0pFxjAVwqVXEKORDEOteZl6SPpM=;
-        b=ltOJqQYIWUQQ4dsvhOgpy3goO2vUgEP447lNe6mvO1Ay1oUmN15dMwuThlKeGSlAf3
-         WiCCd+uD852EuNmZqwD1lt2EAjhc6P035MDsCIi/LBTbJ3pZA88UcT/CkDWpQCDUQbKr
-         W8rOAZANemIk9e1SslvJQUnNLGZlj+0+/cvrkWzcO64dgboxrw6FuUqKBpS/qK29FoYl
-         Vs0FQyH1jv/AHuk3ZdwIUZOLx0xN0dmfkaQD8Ma+Xwl0k8Q1UeRTQt/w7OqC1+V2lz9l
-         S634IZmUGZHNBUVA32MsCPJYb9TBo1ecIUEyAHlLOMCYEcv6Y98MJslY9/Cf+EViR3iR
-         0UVA==
-X-Gm-Message-State: APjAAAUTKa9DBC0QOGut2/584gTnpWlrx8NL2b/jR/k86no8bqCm1D9H
-        2vA62zXachzvF9pB3fmkaf24EEWVeUjIc3ktV7tbYA==
-X-Google-Smtp-Source: APXvYqxBJCHRf9tZVDMl+zeMCrDafBzcwFEnCaoEEXRys/B5UYygeJWScce5nqQHwf5sl/2IYFvcIqsO0u09AXS9GAo=
-X-Received: by 2002:a1c:55c4:: with SMTP id j187mr7513355wmb.155.1570712787649;
- Thu, 10 Oct 2019 06:06:27 -0700 (PDT)
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to:user-agent;
+        bh=m/eFFXn0vur3dPmxW/iwC62E4sqoVqpwELmzMg990o4=;
+        b=WuEW1JdayvTTXB+YoaldKdmEEBiZ8UxQuWaaug3oyiIbbiL0yUH//mq02LMG78QP6W
+         ceyQK1ZahhhmL5RZ/r9HxWpbmh6XAquHzo4cyZSHP8p5xHG927UOu+blgh5KXshIJIBN
+         1qW3YYCjqPvtMUUf6n4MUZaM4g1KgQA9knHFiOIa/xLYQRe742OPH2/UtOmYYP3EWOK4
+         44QMKupQeYzwLwF42nhL61T47CVjEl/rzc/Qu/x9wQugSp4W4qvXqu/85q3HSs4ZFgZm
+         dEdzWJnvLvJzaMI+OYaycO3QdmSL/0icEsQZGhSMmzN1a8IDd22WcIT+Yx5qfYl3XfFw
+         R7Lw==
+X-Gm-Message-State: APjAAAUf+fMofr1lxnwZmoIwU3mFkqlNEBXiYUewBF+nQdCJQ4ZV8L8o
+        X1oRfBFNVJsTyQrBwKfag3oWog==
+X-Google-Smtp-Source: APXvYqyuWp2Bw2sOuzsNu3Opsr6/6mUt7Z18v3AUK3CH32gupRxBQK38MTAyggaQcsUO8idYoi/bvQ==
+X-Received: by 2002:a17:906:6d89:: with SMTP id h9mr7954865ejt.169.1570715148116;
+        Thu, 10 Oct 2019 06:45:48 -0700 (PDT)
+Received: from phenom.ffwll.local (212-51-149-96.fiber7.init7.net. [212.51.149.96])
+        by smtp.gmail.com with ESMTPSA id q2sm923864edh.41.2019.10.10.06.45.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Oct 2019 06:45:47 -0700 (PDT)
+Date:   Thu, 10 Oct 2019 15:45:45 +0200
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>,
+        Haneen Mohammed <hamohammed.sa@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] drm/vkms: Remove duplicated include from vkms_drv.c
+Message-ID: <20191010134545.GZ16989@phenom.ffwll.local>
+Mail-Followup-To: YueHaibing <yuehaibing@huawei.com>,
+        Rodrigo Siqueira <rodrigosiqueiramelo@gmail.com>,
+        Haneen Mohammed <hamohammed.sa@gmail.com>,
+        David Airlie <airlied@linux.ie>, dri-devel@lists.freedesktop.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20191010115213.115706-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-Received: by 2002:adf:efc4:0:0:0:0:0 with HTTP; Thu, 10 Oct 2019 06:06:26
- -0700 (PDT)
-Reply-To: sunrisefundingltd50@gmail.com
-From:   "Coryna Rizky Amelia, SST" <coryna_fk@ub.ac.id>
-Date:   Thu, 10 Oct 2019 14:06:26 +0100
-Message-ID: <CADotR_pXk0ovrYa13YuS-1nV8fQ26AyePr8SsNdfphc6PpacJA@mail.gmail.com>
-Subject: Apply For Financial investment at a lower rate 2%
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191010115213.115706-1-yuehaibing@huawei.com>
+X-Operating-System: Linux phenom 5.2.0-2-amd64 
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Thu, Oct 10, 2019 at 11:52:13AM +0000, YueHaibing wrote:
+> Remove duplicated include.
+> 
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+
+Applied, thanks.
+-Daniel
+
+> ---
+>  drivers/gpu/drm/vkms/vkms_drv.c | 1 -
+>  1 file changed, 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/vkms/vkms_drv.c b/drivers/gpu/drm/vkms/vkms_drv.c
+> index 54703463d966..d1fe144aa289 100644
+> --- a/drivers/gpu/drm/vkms/vkms_drv.c
+> +++ b/drivers/gpu/drm/vkms/vkms_drv.c
+> @@ -19,7 +19,6 @@
+>  #include <drm/drm_drv.h>
+>  #include <drm/drm_fb_helper.h>
+>  #include <drm/drm_file.h>
+> -#include <drm/drm_gem.h>
+>  #include <drm/drm_gem_framebuffer_helper.h>
+>  #include <drm/drm_ioctl.h>
+>  #include <drm/drm_probe_helper.h>
+> 
+> 
+> 
+> 
+> 
+
 -- 
-Hello,
-
-We are private lenders based in UK.
-Do you need a loan (credit) as soon as possible. Are you in search of
-money to solve your personal needs or finance your business venture,
-then get Your desired loan today! Consult us at Sunrise Funding Ltd.
-
-* We offer personal loan & huge capital loan at 2% interest rate to
-the general public both locally and internationally.
-* Credit amount range from $5,000.00 -- $500,000.00 and above.
-* Special $10,000,000.00 Loan offer for huge project also available.
-* Loan period of 6 months -- 10 years.
-* Loan is granted 24 hours after approval and accredited, directly in
-hand or bank account.
-
-Please note that you are advised to contact us for more details via
-the following e-mail address below;
-
-EMAIL : sunrisefundingltd50@gmail.com
-FIRM : Sunrise Funding Ltd UK.
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch

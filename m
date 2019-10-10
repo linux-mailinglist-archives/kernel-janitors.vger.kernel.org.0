@@ -2,107 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A5B74D1E6C
-	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2019 04:27:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76BF4D1E83
+	for <lists+kernel-janitors@lfdr.de>; Thu, 10 Oct 2019 04:36:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731155AbfJJC1z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 9 Oct 2019 22:27:55 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:34668 "EHLO
+        id S1732671AbfJJCgt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 9 Oct 2019 22:36:49 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:42732 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726465AbfJJC1y (ORCPT
+        with ESMTP id S1732637AbfJJCgt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 9 Oct 2019 22:27:54 -0400
+        Wed, 9 Oct 2019 22:36:49 -0400
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9A2IqbR040330;
-        Thu, 10 Oct 2019 02:27:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2019-08-05;
- bh=wbLroutOnvA812BxPr3bS3A0Ss61AI1f1pLVhnMY4VU=;
- b=oD01xZzzN8C953xNDw0ic8Mj64sNc9HfcKVfx3NWoPOMYql5gqv1QMZg7YYxuhA7n+LE
- APVtN6sixNEmpnBPStXqylYktb8GgDHsiBz4cFABCF9/c4+kgqp+gSQpRVJ263pES0Ls
- Zvcy5APbUspoTtdfU7KUeX/fnelbvhzaltyHz6F6bBX37aAzZ9czkFxZnP5ZMOBd9+G/
- IuOwYu2d0PZky07A5sgXVd3/5DaQbew+tRc0ZEkZReJ7/FTJZpH8vIpnIUXyrbHfg0te
- HZLbM/eYfoGRJi+l6RFjaxq3thFOb9kAlvmEFhomMc2X3DtapxzA8/v866t+tOVyG/XQ 1A== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 2vek4qr6my-1
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9A2Ytgj050883;
+        Thu, 10 Oct 2019 02:36:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : in-reply-to : references : date : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=k++36T9UIhWPmcUzJTyPAuuDtM1C47fn6am6qKCFsfk=;
+ b=I7hTV+iIn8+MIOolkYcmOG3Sp2c1vTPdICnn8zwztl65gx9CIPddSR5FYyWwLitSWzDt
+ 8M3G5fNtGt1QmwrBtVfdduO1tDtajOveesYlfIXISzxFDtjdhlwzoeJgmR8OQlphP60c
+ jpCcMuWoD/UfGZgawfc+YJMfgc79StnuxOC7t+Nn5VbsPRtD2ZCaBJvTdlLKg/ZKPCyJ
+ ymwRhJCuJtnCroGa+V8YcDCTXEo2fzu9C+6kPZnqJMhFgT1GP+v/cwWtkiRqTekY/WVj
+ 9hhOdEymKr2a9eqg4debPskq5O9Qn0ur2vq94xc6eDNX8x92e13peXlaSuW4ZgSnG2DZ UA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 2vek4qr7e3-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 10 Oct 2019 02:27:23 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9A2IWwM019077;
-        Thu, 10 Oct 2019 02:25:23 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 2vhrxchwfb-1
+        Thu, 10 Oct 2019 02:36:45 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9A2XINX018380;
+        Thu, 10 Oct 2019 02:34:45 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2vh8k1wxn6-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 10 Oct 2019 02:25:23 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x9A2PJPT009595;
-        Thu, 10 Oct 2019 02:25:19 GMT
-Received: from [192.168.1.222] (/71.63.128.209)
+        Thu, 10 Oct 2019 02:34:44 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x9A2YhQi028289;
+        Thu, 10 Oct 2019 02:34:43 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 09 Oct 2019 19:25:19 -0700
-Subject: Re: [PATCH -next] userfaultfd: remove set but not used variable 'h'
-To:     Wei Yang <richardw.yang@linux.intel.com>
-Cc:     YueHaibing <yuehaibing@huawei.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Hugh Dickins <hughd@google.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20191009122740.70517-1-yuehaibing@huawei.com>
- <a28da32b-5c26-21e9-4a08-722abf9fbeba@oracle.com>
- <20191010012322.GB2167@richard>
-From:   Mike Kravetz <mike.kravetz@oracle.com>
-Message-ID: <ba62cc8f-da4d-a316-c968-80871551c863@oracle.com>
-Date:   Wed, 9 Oct 2019 19:25:18 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+        with ESMTP ; Wed, 09 Oct 2019 19:34:43 -0700
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Sathya Prakash <sathya.prakash@broadcom.com>,
+        Sreekanth Reddy <sreekanth.reddy@broadcom.com>,
+        Chaitra P B <chaitra.basappa@broadcom.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        MPT-FusionLinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] scsi: mpt3sas: Clean up some indenting
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+In-Reply-To: <20191004100615.GA823@mwanda> (Dan Carpenter's message of "Fri, 4
+        Oct 2019 13:06:15 +0300")
+Organization: Oracle Corporation
+References: <20191004100615.GA823@mwanda>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
+Date:   Wed, 09 Oct 2019 22:34:40 -0400
+Message-ID: <yq18sptjpkv.fsf@oracle.com>
 MIME-Version: 1.0
-In-Reply-To: <20191010012322.GB2167@richard>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9405 signatures=668684
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=672
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910100021
+ engine=8.0.1-1908290000 definitions=main-1910100023
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9405 signatures=668684
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=773 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910100021
+ definitions=main-1910100024
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 10/9/19 6:23 PM, Wei Yang wrote:
-> On Wed, Oct 09, 2019 at 05:45:57PM -0700, Mike Kravetz wrote:
->> On 10/9/19 5:27 AM, YueHaibing wrote:
->>> Fixes gcc '-Wunused-but-set-variable' warning:
->>>
->>> mm/userfaultfd.c: In function '__mcopy_atomic_hugetlb':
->>> mm/userfaultfd.c:217:17: warning:
->>>  variable 'h' set but not used [-Wunused-but-set-variable]
->>>
->>> It is not used since commit 78911d0e18ac ("userfaultfd: use vma_pagesize
->>> for all huge page size calculation")
->>>
->>
->> Thanks!  That should have been removed with the recent cleanups.
->>
->>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
->>
->> Reviewed-by: Mike Kravetz <mike.kravetz@oracle.com>
-> 
-> If I am correct, this is removed in a recent patch.
 
-I'm having a hard time figuring out what is actually in the latest mmotm
-tree.  Andrew added a build fixup patch ab169389eb5 in linux-next which
-adds the reference to h.  Is there a patch after that to remove the reference?
+Dan,
+
+> This line is indented too far so it's a bit confusing.
+
+Applied to 5.5/scsi-queue. Thank you!
 
 -- 
-Mike Kravetz
+Martin K. Petersen	Oracle Linux Engineering

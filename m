@@ -2,84 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 28E80D3B85
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 10:46:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 602FDD3EAF
+	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 13:46:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727520AbfJKIq2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Oct 2019 04:46:28 -0400
-Received: from smtp.codeaurora.org ([198.145.29.96]:39634 "EHLO
-        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726508AbfJKIq1 (ORCPT
+        id S1727541AbfJKLqO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Oct 2019 07:46:14 -0400
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:45367 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727198AbfJKLqO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Oct 2019 04:46:27 -0400
-Received: by smtp.codeaurora.org (Postfix, from userid 1000)
-        id E2F5D60AA3; Fri, 11 Oct 2019 08:46:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1570783587;
-        bh=M4acdj/SpnAHRs9HrnE1kZOeO7NTUoB09Mij0APM02M=;
-        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-        b=Oo77zUcBn7GCHy8pTt/P66Fwqx+2XwlBb2Lt5RGG8yumri+oB2/th2PJT01ujXfSl
-         1fezlOBCoZzhmmD25M91z1CIuC3C14FxlEwhQrn/TNf3XUK0f953pMIZmfdjTdA7op
-         c09i21OGtVcs9rPT4u4i4q2PmOsoSDXVrhXCWl/Q=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        pdx-caf-mail.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
-        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
-        autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo@smtp.codeaurora.org)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id AB0D16070D;
-        Fri, 11 Oct 2019 08:46:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
-        s=default; t=1570783586;
-        bh=M4acdj/SpnAHRs9HrnE1kZOeO7NTUoB09Mij0APM02M=;
-        h=Subject:From:In-Reply-To:References:To:Cc:From;
-        b=f2iW8FN8ep3aygl5L2hgGUUGidm3BThqdgSxPoVxE5F0C5xby4Klaqlxgqnv4/lAf
-         AAuioDt+T/Bv7Xhm8oMFGTBhcei8uRpJl12OETYNx0C/6O+yC6nkzXvR5P82uCn1+X
-         NWQkjw/U/0QZoQ74E2mHOoXjPpHHuGM09rPSe/es=
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AB0D16070D
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Fri, 11 Oct 2019 07:46:14 -0400
+Received: by mail-ot1-f65.google.com with SMTP id 41so7667084oti.12;
+        Fri, 11 Oct 2019 04:46:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=juzV2eSp/H++DwK4H0Bphy8wWrKxuELOEBeublEi6po=;
+        b=HasfCzUE+Q/mtjS24nGWEqpouO0aP5vrvarkVTtXoWIKtksVMPCjBuylPHN0SyMswT
+         buCgK5J/BjQEMsAZ0pklLKUJmwlASr608Kub/Q4yjidJGu2v1Gw1QRwG9IO4pxD2gJk2
+         QbZ6dCCsRVAc/QdCw+3dGyGPuZC5yEes0smMov+oIWr6q0iLAulPrpIJFuj7BnbTcPv4
+         By6E9RdMYHThNGCFE0voKzWe/JzBNj1DQEYRbT0e6B9/4NfWUZefb4I8g5WbleJv6Iht
+         z2aXZ2D14wCGBOBf0kzMnsMVBuEJI0KgQJMB5/cqQx27KUlnwMDg2GR4K5ddKdzpmLlw
+         qNAg==
+X-Gm-Message-State: APjAAAVSOu9vnrdfP71xAx4PMNj+tpxa6EL1ZzdlDJft/t+rH1ie47Ed
+        +m1tCQKfF5Wd951NJ1ru6BQMA4o14L3tJ2/tv1Xf+ROj
+X-Google-Smtp-Source: APXvYqwmLjg8XGGh3E8+Mly0taJ/4b0SinKvjRPp3H99ZSjUxE3pQ9sqJWUF3CcbyUMTKBW3gKROkBPCZpbSmkASMqE=
+X-Received: by 2002:a9d:70d0:: with SMTP id w16mr11385266otj.107.1570794372939;
+ Fri, 11 Oct 2019 04:46:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] ath10k: fix null dereference on pointer crash_data
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191004160227.31577-1-colin.king@canonical.com>
-References: <20191004160227.31577-1-colin.king@canonical.com>
+References: <20191007140559.11840-1-colin.king@canonical.com>
+In-Reply-To: <20191007140559.11840-1-colin.king@canonical.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 11 Oct 2019 13:46:01 +0200
+Message-ID: <CAMuHMdUYvNaCYHDK_=HnyyAKa4Zqr+0xe0QnO0KzKpZws4YsCw@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: rzn1: array reg_drive static, makes object smaller
 To:     Colin King <colin.king@canonical.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20191011084626.E2F5D60AA3@smtp.codeaurora.org>
-Date:   Fri, 11 Oct 2019 08:46:26 +0000 (UTC)
+Cc:     Linus Walleij <linus.walleij@linaro.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+Hi Colin,
 
-> Currently when pointer crash_data is null the present null check
-> will also check that crash_data->ramdump_buf is null and will cause
-> a null pointer dereference on crash_data. Fix this by using the ||
-> operator instead of &&.
-> 
-> Fixes: 3f14b73c3843 ("ath10k: Enable MSA region dump support for WCN3990")
+On Mon, Oct 7, 2019 at 4:06 PM Colin King <colin.king@canonical.com> wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> Don't populate the array reg_drive on the stack but instead make it
+> static. Makes the object code smaller by 32 bytes.
+>
+> Before:
+>    text    data     bss     dec     hex filename
+>   31991   15696       0   47687    ba47 drivers/pinctrl/pinctrl-rzn1.o
+>
+> After:
+>    text    data     bss     dec     hex filename
+>   31863   15792       0   47655    ba27 drivers/pinctrl/pinctrl-rzn1.o
+>
+> (gcc version 9.2.1, amd64)
+>
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Patch applied to ath-next branch of ath.git, thanks.
+Thanks for your patch!
 
-a69d3bdd4d40 ath10k: fix null dereference on pointer crash_data
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+i.e. will queue in sh-pfc-for-v5.5.
+
+FTR, on arm32, it saves 64 bytes:
+
+   8594     148       0    8742    2226 drivers/pinctrl/pinctrl-rzn1.o.before
+   8530     148       0    8678    21e6 drivers/pinctrl/pinctrl-rzn1.o.after
+
+BTW, what debug options do you have enabled, to get a binary that's
+more than 5x as large? Amd64 code generation can't be that bad...
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 -- 
-https://patchwork.kernel.org/patch/11174955/
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds

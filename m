@@ -2,91 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C8BFD420D
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 16:03:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6AA5D4252
+	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 16:08:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728240AbfJKODx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Oct 2019 10:03:53 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:41590 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727950AbfJKODx (ORCPT
+        id S1728149AbfJKOIZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Oct 2019 10:08:25 -0400
+Received: from mail-lj1-f194.google.com ([209.85.208.194]:33758 "EHLO
+        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728068AbfJKOIZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Oct 2019 10:03:53 -0400
-Received: by mail-lj1-f196.google.com with SMTP id f5so9956377ljg.8;
-        Fri, 11 Oct 2019 07:03:51 -0700 (PDT)
+        Fri, 11 Oct 2019 10:08:25 -0400
+Received: by mail-lj1-f194.google.com with SMTP id a22so10006464ljd.0;
+        Fri, 11 Oct 2019 07:08:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=+f6O8XEfL+cvBwzG3ePBU9PQPGfPsgpf7I3nap3KYTo=;
-        b=gAUBzxHkuIEucihWYkceeatTBcf825TU4yOo1Tbz5qPtRxrhf1+9pQTguNNwmKJY0y
-         c0Nf7XyWO7KuPujLeHkECjxRo1UlS5737w/lwfojC2A9LM0+G1MAHTLkNdFkizyZVkY1
-         eIISamFkUmhmxKEqBpCR4zk8RbkSAl1WmjUsBbWDCWorFc5hFZn9rKi9HunuliB97Efd
-         KwCgiVHoyPKXa9RX8DbBFSCqzhJjUbPxUTseBEXoIcd/PoOYcW+toi7u1fhCr0B/JuMm
-         ZfRGfieCIJehRRPZo5HRA0lM29R7by9Ozs6pi7K4xnflG1iAoMRnI3d+QT5c9sx8ou5D
-         s4pw==
-X-Gm-Message-State: APjAAAW/rqv5ATMqTDe0JicCHL7x3Iwp9mETFMh6umZetIzyi32AoUES
-        X3XJ5/8LCGEyfWYu02FbDto=
-X-Google-Smtp-Source: APXvYqya0GotkqBXqg5+0cvpGT8UF/jzJH6rF37I+CBdEvNXZslx8nK2ztl68GAXZMURfJmxO1mHow==
-X-Received: by 2002:a2e:9cc9:: with SMTP id g9mr9629278ljj.160.1570802630421;
-        Fri, 11 Oct 2019 07:03:50 -0700 (PDT)
+        bh=kq69ey+m/z5tqfV/9IOKfxX5Rfcxt+ZNgiO1EUz+ow8=;
+        b=bE6JQ9FDGbX4JfXPKcJcm9LPO/a0MlHLlqZYmYDgcUaCRWqAnDVo7vNB91FMEZhoTd
+         A2pWp79rBtnJ8f4Tw/DaU3zUVUf0fXp6hZuyVBjWfhOH4q3guYZPrsPRvbuMN//9SDTj
+         BUeccl4PZy1HwlGJr26TuWPR2jn3eUXphjC5DQYodMxwUbTnK+38+Jvm5ff6ebqT4pRR
+         7zy91eaIVYgoOukq7v1Rg9I6aQfpwJRNj8qtTOmTEpgU7S5t93iLi6vEqFUwU5RcpLNP
+         zSFbT8o9szZsUTsyDACuu47N6rfglU1zji0921jPL+S0qnm44TgMHpbj3EWbs4imJAcc
+         ufhg==
+X-Gm-Message-State: APjAAAXnKw56sYnTJAYbBrpwxdjGDRIowVMhFTX2XKH41gC2s5zO43M4
+        PPLik/XtnnbLyvT8TJfpk54=
+X-Google-Smtp-Source: APXvYqze3lQWca18LwMM/zYo2hgKC1VfqkFxWyXmDo3h78mUHJsFxxdWHAperjG4kzVSi4kBh8belg==
+X-Received: by 2002:a2e:9707:: with SMTP id r7mr5946539lji.219.1570802900984;
+        Fri, 11 Oct 2019 07:08:20 -0700 (PDT)
 Received: from xi.terra (c-51f1e055.07-184-6d6c6d4.bbcust.telenor.se. [85.224.241.81])
-        by smtp.gmail.com with ESMTPSA id w30sm2004615lfn.82.2019.10.11.07.03.49
+        by smtp.gmail.com with ESMTPSA id n3sm2001976lfl.62.2019.10.11.07.08.19
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 11 Oct 2019 07:03:49 -0700 (PDT)
+        Fri, 11 Oct 2019 07:08:20 -0700 (PDT)
 Received: from johan by xi.terra with local (Exim 4.92.2)
         (envelope-from <johan@kernel.org>)
-        id 1iIvWS-0000uy-Go; Fri, 11 Oct 2019 16:04:01 +0200
-Date:   Fri, 11 Oct 2019 16:04:00 +0200
+        id 1iIvap-0000x9-Kb; Fri, 11 Oct 2019 16:08:31 +0200
+Date:   Fri, 11 Oct 2019 16:08:31 +0200
 From:   Johan Hovold <johan@kernel.org>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Juergen Stuber <starblue@users.sourceforge.net>,
+Cc:     walter harms <wharms@bfs.de>,
+        Juergen Stuber <starblue@users.sourceforge.net>,
         Johan Hovold <johan@kernel.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         legousb-devel@lists.sourceforge.net, linux-usb@vger.kernel.org,
         kernel-janitors@vger.kernel.org
 Subject: Re: [PATCH] USB: legousbtower: fix a signedness bug in tower_probe()
-Message-ID: <20191011140400.GI13531@localhost>
+Message-ID: <20191011140831.GJ13531@localhost>
 References: <20191011133525.GB22905@mwanda>
+ <5DA088DE.5040902@bfs.de>
+ <20191011135855.GE4774@kadam>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191011133525.GB22905@mwanda>
+In-Reply-To: <20191011135855.GE4774@kadam>
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Oct 11, 2019 at 04:35:25PM +0300, Dan Carpenter wrote:
-> The problem is that sizeof() is unsigned long so negative error codes
-> are type promoted to high positive values and the condition becomes
-> false.
+On Fri, Oct 11, 2019 at 04:58:56PM +0300, Dan Carpenter wrote:
+> On Fri, Oct 11, 2019 at 03:51:26PM +0200, walter harms wrote:
+> > 
+> > 
+> > Am 11.10.2019 15:35, schrieb Dan Carpenter:
+> > > The problem is that sizeof() is unsigned long so negative error codes
+> > > are type promoted to high positive values and the condition becomes
+> > > false.
+> > > 
+> > > Fixes: 1d427be4a39d ("USB: legousbtower: fix slab info leak at probe")
+> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > > ---
+> > >  drivers/usb/misc/legousbtower.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/usb/misc/legousbtower.c b/drivers/usb/misc/legousbtower.c
+> > > index 9d4c52a7ebe0..835908fe1e65 100644
+> > > --- a/drivers/usb/misc/legousbtower.c
+> > > +++ b/drivers/usb/misc/legousbtower.c
+> > > @@ -881,7 +881,7 @@ static int tower_probe (struct usb_interface *interface, const struct usb_device
+> > >  				  get_version_reply,
+> > >  				  sizeof(*get_version_reply),
+> > >  				  1000);
+> > > -	if (result < sizeof(*get_version_reply)) {
+> > > +	if (result < 0 || result < sizeof(*get_version_reply)) {
+> > >  		if (result >= 0)
+> > >  			result = -EIO;
+> > >  		dev_err(idev, "get version request failed: %d\n", result);
+> > 
+> > i am not an USB expert but it seems that this is a complicated way
+> > to check for result != sizeof(*get_version_reply).
 > 
-> Fixes: 1d427be4a39d ("USB: legousbtower: fix slab info leak at probe")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/usb/misc/legousbtower.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/misc/legousbtower.c b/drivers/usb/misc/legousbtower.c
-> index 9d4c52a7ebe0..835908fe1e65 100644
-> --- a/drivers/usb/misc/legousbtower.c
-> +++ b/drivers/usb/misc/legousbtower.c
-> @@ -881,7 +881,7 @@ static int tower_probe (struct usb_interface *interface, const struct usb_device
->  				  get_version_reply,
->  				  sizeof(*get_version_reply),
->  				  1000);
-> -	if (result < sizeof(*get_version_reply)) {
-> +	if (result < 0 || result < sizeof(*get_version_reply)) {
->  		if (result >= 0)
->  			result = -EIO;
->  		dev_err(idev, "get version request failed: %d\n", result);
+> Yeah.  You're right.  That would look nicer.  I will resend.
 
-Bah, I should have noticed.
+Your version, or adding an explicit cast to int, may be preferred as
+they document that there's something to watch out for here.
 
-Thanks for fixing this!
-
-Acked-by: Johan Hovold <johan@kernel.org>
+Either way you have my ack.
 
 Johan

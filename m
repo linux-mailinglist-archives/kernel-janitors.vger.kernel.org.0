@@ -2,97 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DBDA8D416C
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 15:35:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD1F7D416E
+	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 15:36:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728279AbfJKNfp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Oct 2019 09:35:45 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:38820 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727589AbfJKNfp (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Oct 2019 09:35:45 -0400
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9BDYO8q180571;
-        Fri, 11 Oct 2019 13:35:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=dLM1T4OpS5iMI4bQ0tNKPOEvox31FBZSydJh3WTIRbs=;
- b=g+8aA5gUHib/yI6o3s1FfU4x3FWhDIVkKKuIc3ZotnrFNDOu6nGAviEqBLF/QfSFNO3u
- Dq5b6Xk5NAN7F1ZQqqp96Ocx7mrXGP0DfgJMokH5PtWLd3TXAgO1ZpiLx4HuCNhiw4pb
- JX3MUnk5pLlwjSsaMvm+zde7tpxmqXbXly6cy5o5DymhGZWg/ib1k5LfS26f+VqkF6/L
- XU4WIPqo9BTj8Jh6D8aM9hUUXcAjIE+wxgTGdAduHL6nbqUT2RKF54BtwGDQ0M9VtvtF
- g6srHZPnmqx1z/+Gj1YzFMqsvqI8g6LYwdDsMB4d7ahD2IGUgRh/Ps5oPEnUHETljfsA bw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 2vekts1h81-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 11 Oct 2019 13:35:35 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9BDXDT7171873;
-        Fri, 11 Oct 2019 13:35:34 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 2vjdym0na7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 11 Oct 2019 13:35:34 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x9BDZWKQ018065;
-        Fri, 11 Oct 2019 13:35:32 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 11 Oct 2019 06:35:32 -0700
-Date:   Fri, 11 Oct 2019 16:35:25 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Juergen Stuber <starblue@users.sourceforge.net>,
-        Johan Hovold <johan@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        legousb-devel@lists.sourceforge.net, linux-usb@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] USB: legousbtower: fix a signedness bug in tower_probe()
-Message-ID: <20191011133525.GB22905@mwanda>
+        id S1728084AbfJKNgE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Oct 2019 09:36:04 -0400
+Received: from mga03.intel.com ([134.134.136.65]:39351 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727589AbfJKNgD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 11 Oct 2019 09:36:03 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Oct 2019 06:36:03 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,284,1566889200"; 
+   d="scan'208";a="207427376"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
+  by fmsmga001.fm.intel.com with SMTP; 11 Oct 2019 06:35:57 -0700
+Received: by lahna (sSMTP sendmail emulation); Fri, 11 Oct 2019 16:35:57 +0300
+Date:   Fri, 11 Oct 2019 16:35:57 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Aditya Pakki <pakki001@umn.edu>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Kangjie Lu <kjlu@umn.edu>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [v3] thunderbolt: Fix to check the return value of kmemdup
+Message-ID: <20191011133557.GF2819@lahna.fi.intel.com>
+References: <20190325212523.11799-1-pakki001@umn.edu>
+ <f2960ada-7e06-33d1-1533-78989a3e1d2a@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9406 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910110127
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9406 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910110127
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f2960ada-7e06-33d1-1533-78989a3e1d2a@web.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The problem is that sizeof() is unsigned long so negative error codes
-are type promoted to high positive values and the condition becomes
-false.
+On Fri, Oct 11, 2019 at 03:00:13PM +0200, Markus Elfring wrote:
+> > uuid in add_switch is allocted via kmemdup which can fail.
+> 
+> I have tried another script for the semantic patch language out.
+> This source code analysis approach points out that the implementation
+> of the function “icm_handle_event” contains still an unchecked call
+> of the function “kmemdup”.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/thunderbolt/icm.c?id=3cdb9446a117d5d63af823bde6fe6babc312e77b#n1627
+> https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/thunderbolt/icm.c#L1627
 
-Fixes: 1d427be4a39d ("USB: legousbtower: fix slab info leak at probe")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/usb/misc/legousbtower.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Right it misses that.
 
-diff --git a/drivers/usb/misc/legousbtower.c b/drivers/usb/misc/legousbtower.c
-index 9d4c52a7ebe0..835908fe1e65 100644
---- a/drivers/usb/misc/legousbtower.c
-+++ b/drivers/usb/misc/legousbtower.c
-@@ -881,7 +881,7 @@ static int tower_probe (struct usb_interface *interface, const struct usb_device
- 				  get_version_reply,
- 				  sizeof(*get_version_reply),
- 				  1000);
--	if (result < sizeof(*get_version_reply)) {
-+	if (result < 0 || result < sizeof(*get_version_reply)) {
- 		if (result >= 0)
- 			result = -EIO;
- 		dev_err(idev, "get version request failed: %d\n", result);
--- 
-2.20.1
+> How do you think about to improve it?
 
+Feel free to send a patch fixing it ;-) Or I can do that myself.

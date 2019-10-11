@@ -2,61 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1186CD4166
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 15:35:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBDA8D416C
+	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 15:35:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728501AbfJKNfE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Oct 2019 09:35:04 -0400
-Received: from userp2120.oracle.com ([156.151.31.85]:38084 "EHLO
+        id S1728279AbfJKNfp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Oct 2019 09:35:45 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:38820 "EHLO
         userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727589AbfJKNfE (ORCPT
+        with ESMTP id S1727589AbfJKNfp (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Oct 2019 09:35:04 -0400
+        Fri, 11 Oct 2019 09:35:45 -0400
 Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9BDYOnH180550;
-        Fri, 11 Oct 2019 13:34:35 GMT
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9BDYO8q180571;
+        Fri, 11 Oct 2019 13:35:35 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2019-08-05; bh=zYRrN4ptli6lIkl9bheayVe/eW/vl9po/KIQvkCwEPw=;
- b=QR2q3QT9nE/C5SJVUogQySBsIHkwgRTru8o3PblqA0s2xmQZD2aQ+2KWzA7H0tmWP8Ld
- CNTmjFpg2WCBxgVXF1GUOkHUjI9kSs8cM+Pxch9Uii3FuR/36K39QFuZOiRrrF5wNNhI
- t6OFc8bQGBhLUzlrJoialtemcVz4qEIJpjuV9qlPoId3jCBn8iToMVuvxyOTlqlaBonN
- zGMnWxBSH0W34uxTG9ynNUQK435vH87WMhSbgom53FmonOWZgZUeN/775HeCSjX5cW7h
- XwNhJ+r5SHMBkFwllA1vO3Yt1A0vlKK2/8in21ugj0RzcfSW3yyAwQ2GwzxaIvrSOHEt Hw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 2vekts1h27-1
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=dLM1T4OpS5iMI4bQ0tNKPOEvox31FBZSydJh3WTIRbs=;
+ b=g+8aA5gUHib/yI6o3s1FfU4x3FWhDIVkKKuIc3ZotnrFNDOu6nGAviEqBLF/QfSFNO3u
+ Dq5b6Xk5NAN7F1ZQqqp96Ocx7mrXGP0DfgJMokH5PtWLd3TXAgO1ZpiLx4HuCNhiw4pb
+ JX3MUnk5pLlwjSsaMvm+zde7tpxmqXbXly6cy5o5DymhGZWg/ib1k5LfS26f+VqkF6/L
+ XU4WIPqo9BTj8Jh6D8aM9hUUXcAjIE+wxgTGdAduHL6nbqUT2RKF54BtwGDQ0M9VtvtF
+ g6srHZPnmqx1z/+Gj1YzFMqsvqI8g6LYwdDsMB4d7ahD2IGUgRh/Ps5oPEnUHETljfsA bw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2vekts1h81-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 11 Oct 2019 13:34:33 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9BDXZvk030182;
-        Fri, 11 Oct 2019 13:34:33 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 2vj9quvudy-1
+        Fri, 11 Oct 2019 13:35:35 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9BDXDT7171873;
+        Fri, 11 Oct 2019 13:35:34 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2vjdym0na7-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 11 Oct 2019 13:34:33 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x9BDYRkr029053;
-        Fri, 11 Oct 2019 13:34:27 GMT
+        Fri, 11 Oct 2019 13:35:34 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x9BDZWKQ018065;
+        Fri, 11 Oct 2019 13:35:32 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 11 Oct 2019 06:34:27 -0700
-Date:   Fri, 11 Oct 2019 16:34:19 +0300
+        with ESMTP ; Fri, 11 Oct 2019 06:35:32 -0700
+Date:   Fri, 11 Oct 2019 16:35:25 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Doug Ledford <dledford@redhat.com>,
-        Matan Barak <matanb@mellanox.com>
-Cc:     Jason Gunthorpe <jgg@ziepe.ca>,
-        Yishai Hadas <yishaih@mellanox.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Shamir Rabinovitch <shamir.rabinovitch@oracle.com>,
-        Michael Guralnik <michaelgur@mellanox.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH v2] uverbs: prevent potential underflow
-Message-ID: <20191011133419.GA22905@mwanda>
+To:     Juergen Stuber <starblue@users.sourceforge.net>,
+        Johan Hovold <johan@kernel.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        legousb-devel@lists.sourceforge.net, linux-usb@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] USB: legousbtower: fix a signedness bug in tower_probe()
+Message-ID: <20191011133525.GB22905@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191008194425.GA28067@ziepe.ca>
 X-Mailer: git-send-email haha only kidding
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9406 signatures=668684
@@ -75,53 +70,29 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The issue is in drivers/infiniband/core/uverbs_std_types_cq.c in the
-UVERBS_HANDLER(UVERBS_METHOD_CQ_CREATE) function.  We check that:
+The problem is that sizeof() is unsigned long so negative error codes
+are type promoted to high positive values and the condition becomes
+false.
 
-        if (attr.comp_vector >= attrs->ufile->device->num_comp_vectors) {
-
-But we don't check that "attr.comp_vector" whether negative.  It
-could potentially lead to an array underflow.  My concern would be where
-cq->vector is used in the create_cq() function from the cxgb4 driver.
-
-And really "attr.comp_vector" is appears as a u32 to user space so that's
-the right type to use.
-
-Fixes: 9ee79fce3642 ("IB/core: Add completion queue (cq) object actions")
+Fixes: 1d427be4a39d ("USB: legousbtower: fix slab info leak at probe")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-v2: Change both types to u32
+ drivers/usb/misc/legousbtower.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/infiniband/core/uverbs.h | 2 +-
- include/rdma/ib_verbs.h          | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/infiniband/core/uverbs.h b/drivers/infiniband/core/uverbs.h
-index 1e5aeb39f774..63f7f7db5902 100644
---- a/drivers/infiniband/core/uverbs.h
-+++ b/drivers/infiniband/core/uverbs.h
-@@ -98,7 +98,7 @@ ib_uverbs_init_udata_buf_or_null(struct ib_udata *udata,
- 
- struct ib_uverbs_device {
- 	atomic_t				refcount;
--	int					num_comp_vectors;
-+	u32					num_comp_vectors;
- 	struct completion			comp;
- 	struct device				dev;
- 	/* First group for device attributes, NULL terminated array */
-diff --git a/include/rdma/ib_verbs.h b/include/rdma/ib_verbs.h
-index 6a47ba85c54c..e7e733add99f 100644
---- a/include/rdma/ib_verbs.h
-+++ b/include/rdma/ib_verbs.h
-@@ -366,7 +366,7 @@ struct ib_tm_caps {
- 
- struct ib_cq_init_attr {
- 	unsigned int	cqe;
--	int		comp_vector;
-+	u32		comp_vector;
- 	u32		flags;
- };
- 
+diff --git a/drivers/usb/misc/legousbtower.c b/drivers/usb/misc/legousbtower.c
+index 9d4c52a7ebe0..835908fe1e65 100644
+--- a/drivers/usb/misc/legousbtower.c
++++ b/drivers/usb/misc/legousbtower.c
+@@ -881,7 +881,7 @@ static int tower_probe (struct usb_interface *interface, const struct usb_device
+ 				  get_version_reply,
+ 				  sizeof(*get_version_reply),
+ 				  1000);
+-	if (result < sizeof(*get_version_reply)) {
++	if (result < 0 || result < sizeof(*get_version_reply)) {
+ 		if (result >= 0)
+ 			result = -EIO;
+ 		dev_err(idev, "get version request failed: %d\n", result);
 -- 
 2.20.1
 

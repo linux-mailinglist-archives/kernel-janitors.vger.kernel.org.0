@@ -2,90 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 43479D42B2
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 16:23:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25F2CD4321
+	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 16:42:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728414AbfJKOXA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Oct 2019 10:23:00 -0400
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:42162 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728068AbfJKOXA (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Oct 2019 10:23:00 -0400
-Received: by mail-lf1-f66.google.com with SMTP id c195so7167491lfg.9;
-        Fri, 11 Oct 2019 07:22:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=S3rz5KInV3mTt7kGQSPB4VeyIaD00X/PVCmOmkNi/do=;
-        b=aJsMjcKM67+5XEzCAgA296YRiWfcACsdcOUfGGSeqNqk0Yp07aoOm6OfeLW3eyU5Oj
-         q5dUnhm0kr0DcEb1d13Fos5cCCh6M/Sx+CXHk+JdiBxIbhMnsxyhEbW7orQP6L0ws22S
-         IDmpzDkU+iD0RL2gxYlNf7eewFKmie9Dp0HyweDQIF6xZQO8SC/qwx66qhrZyiLgIg0g
-         JQI1B1eVfkY6q1IPNl54hKpopBnQV1KX18qxl1Ucxf02nyW2xRw6JWbwIsz3gMuRPSHl
-         v1rR5kZ2mr1ogNvfZAF/wBsITkwX94TvLR9B/xNiJnDEi7AAfXIG70dMh9dX0NyeIVdI
-         FDRQ==
-X-Gm-Message-State: APjAAAX9Id2DDLvixcnV8jRsRy0agH8i1THYgAKdu9MSYw8lSzFbXnot
-        SRoAoJ5D6Rz7SZYZYgoWSVM=
-X-Google-Smtp-Source: APXvYqwBmbjVZw6TIud7A1nZLdwVxJ08GywE7fv8kmVetKeg62ghaCBI8EiZtR+7ENdeMime3/iNPg==
-X-Received: by 2002:ac2:4c99:: with SMTP id d25mr9618630lfl.112.1570803778483;
-        Fri, 11 Oct 2019 07:22:58 -0700 (PDT)
-Received: from xi.terra (c-51f1e055.07-184-6d6c6d4.bbcust.telenor.se. [85.224.241.81])
-        by smtp.gmail.com with ESMTPSA id i128sm1899754lji.49.2019.10.11.07.22.57
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 11 Oct 2019 07:22:57 -0700 (PDT)
-Received: from johan by xi.terra with local (Exim 4.92.2)
-        (envelope-from <johan@kernel.org>)
-        id 1iIvoz-00014c-2P; Fri, 11 Oct 2019 16:23:09 +0200
-Date:   Fri, 11 Oct 2019 16:23:09 +0200
-From:   Johan Hovold <johan@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Juergen Stuber <starblue@users.sourceforge.net>,
-        Johan Hovold <johan@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        legousb-devel@lists.sourceforge.net, linux-usb@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, walter harms <wharms@bfs.de>
-Subject: Re: [PATCH v2] USB: legousbtower: fix a signedness bug in
- tower_probe()
-Message-ID: <20191011142309.GK13531@localhost>
-References: <5DA088DE.5040902@bfs.de>
- <20191011141115.GA4521@mwanda>
+        id S1726728AbfJKOmV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Oct 2019 10:42:21 -0400
+Received: from mga05.intel.com ([192.55.52.43]:33234 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726174AbfJKOmV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 11 Oct 2019 10:42:21 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Oct 2019 07:42:20 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,284,1566889200"; 
+   d="scan'208";a="207439430"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.157])
+  by fmsmga001.fm.intel.com with SMTP; 11 Oct 2019 07:42:17 -0700
+Received: by lahna (sSMTP sendmail emulation); Fri, 11 Oct 2019 17:42:17 +0300
+Date:   Fri, 11 Oct 2019 17:42:16 +0300
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Aditya Pakki <pakki001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        kernel-janitors@vger.kernel.org,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [v3] thunderbolt: Fix to check the return value of kmemdup
+Message-ID: <20191011144216.GI2819@lahna.fi.intel.com>
+References: <20190325212523.11799-1-pakki001@umn.edu>
+ <f2960ada-7e06-33d1-1533-78989a3e1d2a@web.de>
+ <20191011133557.GF2819@lahna.fi.intel.com>
+ <c12d7c9c-8212-ba9b-252f-7dbb61698550@web.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20191011141115.GA4521@mwanda>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c12d7c9c-8212-ba9b-252f-7dbb61698550@web.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Oct 11, 2019 at 05:11:15PM +0300, Dan Carpenter wrote:
-> The problem is that sizeof() is unsigned long so negative error codes
-> are type promoted to high positive values and the condition becomes
-> false.
-> 
-> Fixes: 1d427be4a39d ("USB: legousbtower: fix slab info leak at probe")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+On Fri, Oct 11, 2019 at 04:13:22PM +0200, Markus Elfring wrote:
+> Would you like to reconsider also the addition of the function call
+> “tb_sw_warn(sw, "cannot allocate memory for switch\n")”?
 
-Acked-by: Johan Hovold <johan@kernel.org>
-
-> ---
-> v2: style improvement suggested by Walter Harms.
-> 
->  drivers/usb/misc/legousbtower.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/misc/legousbtower.c b/drivers/usb/misc/legousbtower.c
-> index 9d4c52a7ebe0..9bd240df8f4c 100644
-> --- a/drivers/usb/misc/legousbtower.c
-> +++ b/drivers/usb/misc/legousbtower.c
-> @@ -881,7 +881,7 @@ static int tower_probe (struct usb_interface *interface, const struct usb_device
->  				  get_version_reply,
->  				  sizeof(*get_version_reply),
->  				  1000);
-> -	if (result < sizeof(*get_version_reply)) {
-> +	if (result != sizeof(*get_version_reply)) {
->  		if (result >= 0)
->  			result = -EIO;
->  		dev_err(idev, "get version request failed: %d\n", result);
+For that I already have a patch as part of my USB4 support v2 series.

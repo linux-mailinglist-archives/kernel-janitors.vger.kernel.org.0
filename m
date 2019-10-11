@@ -2,67 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 76A2CD38AE
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 07:25:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28E80D3B85
+	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 10:46:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726281AbfJKFZV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Oct 2019 01:25:21 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:3694 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726099AbfJKFZV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Oct 2019 01:25:21 -0400
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 317B86ADC63DE4083DD0;
-        Fri, 11 Oct 2019 13:25:11 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 11 Oct 2019 13:25:03 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Santosh Shilimkar <ssantosh@kernel.org>,
-        Tero Kristo <t-kristo@ti.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] soc: ti: omap-prm: fix return value check in omap_prm_probe()
-Date:   Fri, 11 Oct 2019 05:24:36 +0000
-Message-ID: <20191011052436.76075-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727520AbfJKIq2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Oct 2019 04:46:28 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:39634 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726508AbfJKIq1 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 11 Oct 2019 04:46:27 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id E2F5D60AA3; Fri, 11 Oct 2019 08:46:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570783587;
+        bh=M4acdj/SpnAHRs9HrnE1kZOeO7NTUoB09Mij0APM02M=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=Oo77zUcBn7GCHy8pTt/P66Fwqx+2XwlBb2Lt5RGG8yumri+oB2/th2PJT01ujXfSl
+         1fezlOBCoZzhmmD25M91z1CIuC3C14FxlEwhQrn/TNf3XUK0f953pMIZmfdjTdA7op
+         c09i21OGtVcs9rPT4u4i4q2PmOsoSDXVrhXCWl/Q=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id AB0D16070D;
+        Fri, 11 Oct 2019 08:46:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1570783586;
+        bh=M4acdj/SpnAHRs9HrnE1kZOeO7NTUoB09Mij0APM02M=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=f2iW8FN8ep3aygl5L2hgGUUGidm3BThqdgSxPoVxE5F0C5xby4Klaqlxgqnv4/lAf
+         AAuioDt+T/Bv7Xhm8oMFGTBhcei8uRpJl12OETYNx0C/6O+yC6nkzXvR5P82uCn1+X
+         NWQkjw/U/0QZoQ74E2mHOoXjPpHHuGM09rPSe/es=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org AB0D16070D
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH][next] ath10k: fix null dereference on pointer crash_data
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191004160227.31577-1-colin.king@canonical.com>
+References: <20191004160227.31577-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191011084626.E2F5D60AA3@smtp.codeaurora.org>
+Date:   Fri, 11 Oct 2019 08:46:26 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, the function devm_ioremap_resource() returns ERR_PTR()
-and never returns NULL. The NULL test in the return value check should
-be replaced with IS_ERR().
+Colin King <colin.king@canonical.com> wrote:
 
-Fixes: 3e99cb214f03 ("soc: ti: add initial PRM driver with reset control support")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/soc/ti/omap_prm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> Currently when pointer crash_data is null the present null check
+> will also check that crash_data->ramdump_buf is null and will cause
+> a null pointer dereference on crash_data. Fix this by using the ||
+> operator instead of &&.
+> 
+> Fixes: 3f14b73c3843 ("ath10k: Enable MSA region dump support for WCN3990")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
-index db47a8bceb87..96c6f777519c 100644
---- a/drivers/soc/ti/omap_prm.c
-+++ b/drivers/soc/ti/omap_prm.c
-@@ -375,8 +375,8 @@ static int omap_prm_probe(struct platform_device *pdev)
- 	prm->data = data;
- 
- 	prm->base = devm_ioremap_resource(&pdev->dev, res);
--	if (!prm->base)
--		return -ENOMEM;
-+	if (IS_ERR(prm->base))
-+		return PTR_ERR(prm->base);
- 
- 	return omap_prm_reset_init(pdev, prm);
- }
+Patch applied to ath-next branch of ath.git, thanks.
 
+a69d3bdd4d40 ath10k: fix null dereference on pointer crash_data
 
+-- 
+https://patchwork.kernel.org/patch/11174955/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

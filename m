@@ -2,63 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05034D4808
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 20:57:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36BDED4970
+	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 22:48:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728764AbfJKS5u (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Oct 2019 14:57:50 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:56615 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728603AbfJKS5u (ORCPT
+        id S1728154AbfJKUsr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Oct 2019 16:48:47 -0400
+Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:44579 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728096AbfJKUsr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Oct 2019 14:57:50 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iJ06k-0003mW-RD; Fri, 11 Oct 2019 18:57:46 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Hans Verkuil <hverkuil@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] media: gspca: remove redundant assignment to variable ret
-Date:   Fri, 11 Oct 2019 19:57:46 +0100
-Message-Id: <20191011185746.18570-1-colin.king@canonical.com>
+        Fri, 11 Oct 2019 16:48:47 -0400
+Received: from localhost.localdomain ([93.22.132.170])
+        by mwinf5d31 with ME
+        id CLoj210093gkMzx03Lojbg; Fri, 11 Oct 2019 22:48:45 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 11 Oct 2019 22:48:45 +0200
+X-ME-IP: 93.22.132.170
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     hverkuil-cisco@xs4all.nl, mchehab@kernel.org
+Cc:     linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] media: i2c: adv7842: make array cri static and const, makes object smaller
+Date:   Fri, 11 Oct 2019 22:48:29 +0200
+Message-Id: <20191011204829.11537-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Don't populate the array 'cri' on the stack but instead make it
+static and const. Makes the object code smaller by 165 bytes.
 
-The variable ret is being initialized with a value that
-is never read and is being re-assigned a little later on. The
-assignment is redundant and hence can be removed.
+Turn the 2nd parameter of 'log_infoframe()' const accordingly.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Before:
+   text	   data	    bss	    dec	    hex	filename
+  98533	  20024	    256	 118813	  1d01d	drivers/media/i2c/adv7842.o
+
+After:
+   text	   data	    bss	    dec	    hex	filename
+  98304	  20088	    256	 118648	  1cf78	drivers/media/i2c/adv7842.o
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/media/usb/gspca/stv0680.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/adv7842.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/usb/gspca/stv0680.c b/drivers/media/usb/gspca/stv0680.c
-index f869eb6065ce..b23988d8c7bc 100644
---- a/drivers/media/usb/gspca/stv0680.c
-+++ b/drivers/media/usb/gspca/stv0680.c
-@@ -35,7 +35,7 @@ struct sd {
- static int stv_sndctrl(struct gspca_dev *gspca_dev, int set, u8 req, u16 val,
- 		       int size)
- {
--	int ret = -1;
-+	int ret;
- 	u8 req_type = 0;
- 	unsigned int pipe = 0;
+diff --git a/drivers/media/i2c/adv7842.c b/drivers/media/i2c/adv7842.c
+index 885619841719..0855f648416d 100644
+--- a/drivers/media/i2c/adv7842.c
++++ b/drivers/media/i2c/adv7842.c
+@@ -2547,7 +2547,7 @@ struct adv7842_cfg_read_infoframe {
+ 	u8 payload_addr;
+ };
  
+-static void log_infoframe(struct v4l2_subdev *sd, struct adv7842_cfg_read_infoframe *cri)
++static void log_infoframe(struct v4l2_subdev *sd, const struct adv7842_cfg_read_infoframe *cri)
+ {
+ 	int i;
+ 	u8 buffer[32];
+@@ -2585,7 +2585,7 @@ static void log_infoframe(struct v4l2_subdev *sd, struct adv7842_cfg_read_infofr
+ static void adv7842_log_infoframes(struct v4l2_subdev *sd)
+ {
+ 	int i;
+-	struct adv7842_cfg_read_infoframe cri[] = {
++	static const struct adv7842_cfg_read_infoframe cri[] = {
+ 		{ "AVI", 0x01, 0xe0, 0x00 },
+ 		{ "Audio", 0x02, 0xe3, 0x1c },
+ 		{ "SDP", 0x04, 0xe6, 0x2a },
 -- 
 2.20.1
 

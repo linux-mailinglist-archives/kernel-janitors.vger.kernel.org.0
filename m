@@ -2,28 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C4D6AD4654
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 19:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D615BD4687
+	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 19:22:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728461AbfJKRN4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Oct 2019 13:13:56 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:49055 "EHLO
+        id S1728474AbfJKRWf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Oct 2019 13:22:35 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:49169 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727984AbfJKRN4 (ORCPT
+        with ESMTP id S1728374AbfJKRWe (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Oct 2019 13:13:56 -0400
+        Fri, 11 Oct 2019 13:22:34 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iIyUE-0004eM-Ig; Fri, 11 Oct 2019 17:13:54 +0000
+        id 1iIyca-00061J-9D; Fri, 11 Oct 2019 17:22:32 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org
+To:     Michael Chan <michael.chan@broadcom.com>,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] media: lm3646: remove redundant assignment to variable rval
-Date:   Fri, 11 Oct 2019 18:13:54 +0100
-Message-Id: <20191011171354.13787-1-colin.king@canonical.com>
+Subject: [PATCH] net: b44: remove redundant assignment to variable reg
+Date:   Fri, 11 Oct 2019 18:22:32 +0100
+Message-Id: <20191011172232.14430-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,29 +35,30 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable rval is being initialized with a value that
-is never read and is being re-assigned a little later on. The
+The variable reg is being assigned a value that is never read
+and is being re-assigned in the following for-loop. The
 assignment is redundant and hence can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/media/i2c/lm3646.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/b44.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/media/i2c/lm3646.c b/drivers/media/i2c/lm3646.c
-index d8a8853f9a2b..c76ccf67a909 100644
---- a/drivers/media/i2c/lm3646.c
-+++ b/drivers/media/i2c/lm3646.c
-@@ -134,7 +134,7 @@ static int lm3646_set_ctrl(struct v4l2_ctrl *ctrl)
- {
- 	struct lm3646_flash *flash = to_lm3646_flash(ctrl);
- 	unsigned int reg_val;
--	int rval = -EINVAL;
-+	int rval;
+diff --git a/drivers/net/ethernet/broadcom/b44.c b/drivers/net/ethernet/broadcom/b44.c
+index 97ab0dd25552..035dbb1b2c98 100644
+--- a/drivers/net/ethernet/broadcom/b44.c
++++ b/drivers/net/ethernet/broadcom/b44.c
+@@ -511,9 +511,6 @@ static void b44_stats_update(struct b44 *bp)
+ 		*val++ += br32(bp, reg);
+ 	}
  
- 	switch (ctrl->id) {
- 	case V4L2_CID_FLASH_LED_MODE:
+-	/* Pad */
+-	reg += 8*4UL;
+-
+ 	for (reg = B44_RX_GOOD_O; reg <= B44_RX_NPAUSE; reg += 4UL) {
+ 		*val++ += br32(bp, reg);
+ 	}
 -- 
 2.20.1
 

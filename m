@@ -2,33 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 366A5D5193
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 20:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EC85D51A4
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 20:35:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729501AbfJLSUa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 12 Oct 2019 14:20:30 -0400
-Received: from mout.web.de ([212.227.15.3]:59313 "EHLO mout.web.de"
+        id S1729418AbfJLSev (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 12 Oct 2019 14:34:51 -0400
+Received: from mout.web.de ([212.227.15.4]:45025 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729469AbfJLSUa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 12 Oct 2019 14:20:30 -0400
+        id S1727423AbfJLSev (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 12 Oct 2019 14:34:51 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1570904407;
-        bh=aaWZ/GEhFUyuau1WLazwaF/9LjLt3tQSmn3IW5rsK9k=;
+        s=dbaedf251592; t=1570905280;
+        bh=tnUCoeFj2C0v+2VNSy0rywq/m+iexZfrWWmmse2Betw=;
         h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=ns4lRxydJaMhx7IMaqVl1woGwIegUwPnThzeQKkMqnCFlOVzZVtlPWB8WwvnnDDiR
-         nwS8v02AgU+QvXjRjNnWfh4bnHZJAjFL3oNYIo2mky3yF4q7QI1oGcQgGrtX69I1fu
-         vsj75aNJbJ+bgwe/7GMgYsBaIPCKaQawe70ce9c0=
+        b=Cy/iYMQrK2HxmrBeEidu+rEMvmriEQZWz45f3swHeDzr8gPjhNfRPrRuMzPGn+3wL
+         7k9b2M23LI/RP3atUOUwKGkseeEXv8dmhFrg+HoYm7nIyYLKCmIj4DpUorXVmS0G2F
+         7f3HyBsW/++CwtlsBRa9s65aQOAqh0y6wt+hD/NA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.155.250]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MNP6P-1iQCYJ3mYr-006u2b; Sat, 12
- Oct 2019 20:20:07 +0200
-To:     linux-nfs@vger.kernel.org,
-        Anna Schumaker <anna.schumaker@netapp.com>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>
+Received: from [192.168.1.2] ([93.132.155.250]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lfipe-1hhYcH3MhG-00pK6t; Sat, 12
+ Oct 2019 20:34:39 +0200
+To:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Johannes Berg <johannes@sipsolutions.net>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: SUNRPC: Checking a kmemdup() call in xdr_netobj_dup()
+Subject: mac80211: Checking a kmemdup() call in ieee80211_send_assoc()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -76,38 +74,38 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org, Aditya Pakki <pakki001@umn.edu>,
         Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>
-Message-ID: <9b5a5e63-2a24-ad79-20e2-4c01331ee041@web.de>
-Date:   Sat, 12 Oct 2019 20:20:04 +0200
+Message-ID: <1b2c589c-46d4-2bad-ed54-176b7c2f66bf@web.de>
+Date:   Sat, 12 Oct 2019 20:34:37 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:nKLKL3PDDdmuI9RcDSwwek58eQCcNUmIgwCtbOTx0ztaQxes30Q
- l8bYrZHDYKw5tceIOxWS5JzGW+8FTN5RUk1XaLNSMyiwLP1JR1x72vBuc9MOpkJm1AtiD5T
- 1lCRd8yHNfowLH5lR0vx9+Mx4PRBrrvGjqhjOQm7fdznf3GrPln+173YGQ3cLkxRaOioml+
- tTu0cJhrn7CUdtplADi+A==
+X-Provags-ID: V03:K1:Z0eKhyF/1qhVEuJn8+76n7DUgjpIAkCcKI8tnk3AgDF3NnwtXY9
+ wN8UhUue8mAU9m2c8hDiLmtDkFp40/Z2DRfQS0/t5QF8qMwmmy+YkXVugr8cCuuJkVEhpYr
+ lVSIuQdejpLA4OK3RshTTLe7ziHim7udHZE8PFnn0hUHAdInDAoJv0kFTuSPH9aaJtz6sDs
+ ABg9drpClLh0DJac3WM/A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:i4jvdSQpe0c=:lRFZtU5kAMdd9/Joye8SrC
- DU3buPgh7Rk1TPkBv182lGVkXEYXZKbJ5AR86DoqxL1Ulj0TRg14eGCs0DfTJ7r5nsuLeLfyK
- RW3ytmlE16u7Q/Xxcv1HBf8UKQSh7uAu0dHBgxQwvn5Ty6FBjQ5HnlSYpFcMPPzgihVr9+ZER
- bEvac3/n2biZ69DUlRTgxtVXYhAYhX6ejU15brKEf5jMXYcoDjBB7KeCzBIsgLn+OoR0tXicJ
- 6/xqwryrymcvr0m5TwicUtUKObLD8bxf/XFsITVlh7MvxZRmaMQKlmG7n36KCHLPNpjFJG0u9
- MH8RxlDDpCcAm+PzNloWZ3dLhy5fL6F91fOvvbUJGIz38iq9w+sM3XVsYCojvNP/Sj8HIQSoR
- uprZltcdG8sStbvRu/GCj9jL0E9qCzlghdLdHJqgCFV6ZL5oEVp5jn3vj+bI0/1u1u0uRRT67
- Xn1eYhfT1MUYCy/4qoe4qALOua8m3ZVklXL64vy7RkBN3QO1nKLjK31k67OFu/Oly+uXPkyo3
- S/kBLGteBIMOQBjicVauhf8iOdcxKqK2TmP8spod9GsfDK3B/itRi6pNL35ob5ZCJI+KQyKCk
- pq8ukqovPDGsTLpyjZKWCsI/oIu4zezC3GSQgCVF+1PGml78/MUf99m9jVNcsH7n3x3twHIJj
- zXnKuyAfumSvuKmCr8yai6qBBGgBUB1+SFGDbJ1aY/XYg951O8iM8mBtx7nluGlcUycdZT1ZL
- P6Ih5vQjoiBApzpGF72L8PSdPoTWpuI94rvK72HKSh9z0nwP40b+RNa8CmW+GciG0boku1NeG
- GVD4pYqxUZmMZE4LrF+b2dQsUfz9DD24Vs8CaTv5lFhx199DIlQpd+DZcAV3xCLV68gUgUGhv
- i8U451KGQ/nJVJ8VTFS0OTJQK1eD/0NiU7pazgevzo1Sttd3JEwxii9naHiIbT1eSEc6vv14K
- qd7L2qwMYPDlzyeFwFGej3TOyuBRFKHE74y+MlEdGBEa3hTqtHiKcWYUKSXcUyLqVPAN1AVjO
- /xZv8RSm+YTv+o5GnPqi5C6d5E5X32hKv0R1Cj91puq+7drMXeIDoTGnC50USA6qP6fmrwTp7
- 1r2TJblcG5JgZK7kWuayUDwZigrd6fifmOdqoiVv/t1s/Z4Ysq8xX6ZNjNkfvsC9aYMOvxtpU
- Vu0a9r7JSXTsfZbSuLfBe0NS8JDyFSTDu98CDtFpzvACHuQ+A+6zA+FOXIDVYy0OCMQuvSPOp
- egmFZCFCz3/lv0FYh/DLW+YnPyHEbbPuyda+cY4bBPftA4OjueoAyPhXFlzo=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:x/KgguxDvGA=:ESEK/BX8Khoof0DULGuntb
+ 6dntcI75FerXZa/IqZBeJKpWBPCE0HrwgoJ0wa4pcYfIwf3B9wSP26CEyXukU/c5l66nPoXZ1
+ 2+JB0cDS6BBNaZfcCGIiTn21WEY3Skv8LD5T6I0KM376ektyZCnUzZyLqZ7l+t85hu+kQjzlc
+ xblpksGkhboh8PUrZlU2EACgCcfUs3vcsy8VGftb+jdP/xk/riLwg7Qy7Kcvm8I+zK9eM5kGF
+ /OLx5GQEKd8hl7h219CxR5BB8Cz0TubMqaDBxtexESawFUywXKqPVFRj6PrNXOsYq18QQgzCf
+ hTupfj3gTIlXj5wONE1rhmBHCjpa8N78d94Ne9GymiJsgzCwsk+RKw6ky+QDbIUPZ7CkBLbXS
+ vxRwwPsCRbiuDkuKn7IuUweLmKcwkOJsT6IeDDQCCMzWtxyPaKBkZrUm8NDVyMpatHM+whac5
+ yT2UsDeut8eQHveDxU5g527J9WRuXrok8nBwVscr/Suu4avLCITN3RaRlgY79YIHzH5rvRo+o
+ HdO8EK9aLYHv7GIlv1XN1gz/kKchdSv9fiJGNbTryDUN7IqJJMb6sbDSjPQijTCU6oZX26+CG
+ JMF9dsH4iGZGvldwLuj90mEHhHBiVYmTLQZrrnXP2ulz/9hhY9NPzAw04JqzMdZiPbN4Onz7u
+ 7/03064dsysUsgGKX99iZkv/vWAZ53kQsZdZVfG6NQ14LWTS85NTNsQqmdjNv56vObLY9y+Hl
+ fb3j0VbxvP/FPVP28Z8/suF2aM9ufL+ddOhIRgy8x9u/X+excKk2M0RugYRqQDGSQNgr5oc2n
+ nbuIV7XXQWZ+vV5aECA0pQQAPGit/DWgMxfbklDXqJg2NaIF6xOSMyceHHVYG9mnN1voIAu2B
+ I4s+8uKh/u5Ou7hQf1FCbVCe81Pre5bOHjCLKDewikNz3DmIwDjIeIAyMLV2vB4VSIDUH4pme
+ HoJ8dHbPGtY+neJkJ1d03cfNp5thR1Gndn6xUIL9I6lbSmXP3gYj9L6PXmEOO/W/Ywj+efsZS
+ XplNJ57+wJb3s3SG8746A1hw2mDocDEos/r0RDJu4mhTVMroeJoiMfw01uyp0E12FXwybXZS2
+ +4nY9qH+VWklCGfvlsKm+YRr0dzkehtMq2MotAaChBPSaH7pmBm/UiyiNkrU5d0koXbfkjl2I
+ EOqiRSBGLgX7H53nM+x34opMa99Ux5h2ryocn0X7pL2rPy3TBEwqCCRTQCpVBZCz0rVtc7Bpv
+ 4Zcx63Qs8L88H1vjJqmoPnwbK9DfaQZNUUF7fwrZTgPlfMsE13oxl1cVEeuI=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -117,14 +115,12 @@ Hello,
 
 I tried another script for the semantic patch language out.
 This source code analysis approach points out that the implementation
-of the function =E2=80=9Cxdr_netobj_dup=E2=80=9D contains still an uncheck=
-ed call
+of the function =E2=80=9Cieee80211_send_assoc=E2=80=9D contains still an u=
+nchecked call
 of the function =E2=80=9Ckmemdup=E2=80=9D.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/in=
-clude/linux/sunrpc/xdr.h?id=3D1c0cc5f1ae5ee5a6913704c0d75a6e99604ee30a#n16=
-7
-https://elixir.bootlin.com/linux/v5.4-rc2/source/include/linux/sunrpc/xdr.=
-h#L167
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/ne=
+t/mac80211/mlme.c?id=3D1c0cc5f1ae5ee5a6913704c0d75a6e99604ee30a#n980
+https://elixir.bootlin.com/linux/v5.4-rc2/source/net/mac80211/mlme.c#L980
 
 How do you think about to improve it?
 

@@ -2,33 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42C1ED511A
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 18:43:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3CE6D513B
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 19:05:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729220AbfJLQnI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 12 Oct 2019 12:43:08 -0400
-Received: from mout.web.de ([212.227.15.14]:49195 "EHLO mout.web.de"
+        id S1729470AbfJLRFu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 12 Oct 2019 13:05:50 -0400
+Received: from mout.web.de ([212.227.15.3]:42905 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727939AbfJLQlI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 12 Oct 2019 12:41:08 -0400
+        id S1728888AbfJLRDt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 12 Oct 2019 13:03:49 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1570898452;
-        bh=obvEHiuTwY7nslrmcbLeBF7twJB1P7Dm6ZNUvsNfLRM=;
+        s=dbaedf251592; t=1570899794;
+        bh=bKu9xBv+qGl3khzhaq/Ts8mRANG4hVVTTgO3XdiSrJ8=;
         h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=mQ0cm3g9VKIA93OtN3pW+QrLrkOE98PJH56qem0yYXVmA52YIByzhrHERKvuYOKjK
-         sHV659MqUm1Tj7yE9DySF93bo3eVND0kYk0JoFGTbPh5E/OQbuy5lsK4wYMLKkkFx4
-         VutAAzQkHtDzUFl1u8KQZFhrQ1vzER0n3FrvKkfY=
+        b=fTEi706HNanK1tphqEfINp64DWLl5ItNjoXukH2IDwM3wLFdF+ER/GjTtJ6MMEPbl
+         78dgBz7lmaPZ0uCxNL7bHYb7MR9MSBPEUtw3HnWBLkASuo1STQeIXU/ZoRyIuKM3+8
+         olqVE0BJtLymiXsAxZ/pfnLgG4r6qK86eN/Kcd/I=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.155.250]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MfHhK-1ih4Oc1O02-00Ooxx; Sat, 12
- Oct 2019 18:40:52 +0200
-To:     linux-rdma@vger.kernel.org,
-        Dennis Dalessandro <dennis.dalessandro@intel.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Mike Marciniszyn <mike.marciniszyn@intel.com>
+Received: from [192.168.1.2] ([93.132.155.250]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0ME0v1-1iI0p31sUh-00HO7t; Sat, 12
+ Oct 2019 19:03:14 +0200
+To:     netdev@vger.kernel.org, linux-parisc@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Yang Wei <yang.wei9@zte.com.cn>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: IB/hfi1: Checking a kmemdup() call in get_platform_config()
+Subject: net: tulip: de2104x: Checking a kmemdup() call in
+ de21041_get_srom_info()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -76,38 +75,38 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org, Aditya Pakki <pakki001@umn.edu>,
         Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>
-Message-ID: <f566cf8a-96df-f145-296f-8f6d72d8fbad@web.de>
-Date:   Sat, 12 Oct 2019 18:40:50 +0200
+Message-ID: <eb1f904a-a2e4-fe9b-c50e-b8087d7e57c4@web.de>
+Date:   Sat, 12 Oct 2019 19:03:09 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:SwcYdJegrILwnr+2Wfh99SPVzHk60Y7yLV579wW92OTzGmBbKHD
- 2ljlk9n1O+EEGTDtTfGvmoFRkNQI19QIeWDuUbQIR5QO7dyviVwDfe8i1q3FpTLT2L9unbT
- IsV5qxDESXSZCZTtEadkqj9DBLz7lcI8qPShouhysDe05hSGiFMZQwR91Tqc3jPlVu9biko
- exjqgbGGz9OVReWS7SU4w==
+X-Provags-ID: V03:K1:Qq6FxykufyXcsAvMTgIVyf0wdsfAHXA/t/zL+yoRsFUacLvITvX
+ qu/2WDQoOEYQQag7m68NdoL2bQ5geqQjpBhazionC03XDQnUTzIZNMA4HdD+nG0KUwYqSkl
+ 1f74lxFLs4b6QzwlkirBhzuSeEGzzM2N0CBzGbAVk/gSwKKn3ns2EcjKKRf1XRbOO6Lxe80
+ dFEcypbQV1LEsKqausOkA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:dLD4dGWOOug=:B/NZkCexY/ybxYL1PKgHaT
- VjTflKtup49RE/o8AgJLUy3W8vdTcocZXMdqrC/eDl2j/AoqFjn1lz1M38qplt8bAuLNN65nS
- A1/8uYmF1QtE7nuZ/LtaHqCBJJFZ47zATJ4aHa52xNKPgJfFrUQM9z0wgrehFgCeAVDTC88BR
- iVCVV/XyBXRF81M68gKzbEyWEjHzvcHT0BNMLeYP83QBxVMcxp2X0XYZrMnzJtAoA3m7MgFI7
- kncmoWKPnpnrLAnFY2rpiSG9haIUXcNpA6lPYizWBDBzCwALdBgpK2iOipMROLVMinZcgjc4u
- AStf7EZasKAw6XOyFLetQTLJ34ndBYXbz2a8FKh5ZPK8u2+Mi5qj/jUOhfGwQ3sWqv+RpYWzB
- S9WuLoyGC+0L53OXVto9SF8v40mdewY2H7T3kWanKmmveJ3XKRkJMLh8U4iiig39G2U5YfVpX
- BMdwX1YFXtUDZVpjYDqWqn3BgNwfc92pExjnJwNlRMuIZ/2/acIWBJWFx3sb+W9ouR7QjGVNw
- QKQFCgXX0jAIiM3csmfFrNZb08mQ2EeWWaLep0A5xGhNaDsoEslFJKXMxcuUAbn8V36ur5bi8
- QDdzlizRTOXFRTdifdqY4OmPXdhzJLovCcm3hl4966RLdlqSo87JpPzYrI7Qc5TxNWuhizQHN
- l3dXMTW/fnoRrzCKBiTxkx5B0cf7QynmvrO2Yzt6xFtsSlLtIKUbobme+jBZQzEyh3SOA9c9/
- mcDxX2Tw5w9dv8JGpAeuJeC6JUYlVejfgtNdI7kVbOkt5hxUiJK18SnS+0q2b+SgXzZ/RlC6x
- 8s6nk7UkZjgAHt3Tvdx4btG2No+qWPwAw7AvRcS/PH9Tg6QY3wuSSC8Sye/7mh6RC6EtmvNPI
- 4Fhm+jzz/luAx3P7Yk1okaRHt/4fgV6NmV+7CKevlaAGkW+hE9S3pCQQOSGFPgO98hQ3jYYcN
- O+0tZ+QahEJGkxoe5AEu1b6646zoLHdTU27CYmkoyQurZROnN7QMQ/4Ptg0OElItoEoHqbu7t
- tqdLyT1dtThtFUWQ8CB89+J/38/JWYCttLsWiI7n/8qZTQAfg4nWhWa7L+CT3FdBqoY2NclSR
- EUpQfPx37IGL7uFtHyUUIWnuGgu/mjugTFrQRJPxvLgToAln4WWpAnMVU7go5cflYycL18NXT
- clrHA6JHJ7OKKa123VvbNxxAhmXBvkVoJByZsmJpgoXvJZUBjk3rGrrDiFdcUzJa4DI52MHCv
- OEg2TLEBxozjT6gHCwqiYmEsrC6TY6g32MGx3p6xNaA8/oiBgG+XiWaeVj6U=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:PnpVUt1TrGU=:rZkyNgDRoGFDxP0e4Ltukk
+ iPUPR3dQG7RDCE4UMKzaEELagRdltYgzc1GY6q7gAKMQaFzwSh+FJB45iLFVwc39QJqzb+KQg
+ SV+6jtmYQg40leSzsZ+5dP3MkLwt9dxPapEAjNwdjexx6VeGiVvxKCfIYu1rXHLJ0hMVY4ru1
+ bKMRghAv02jkXTMD02iXjFcUs8qxySRQFfCV+FtFIak0eB90FVXJDvnlXds46AOl/nnKSt+tL
+ c86oM11p5Dn90lGM35v4qyCRoOnaJSIvUVDyOd6Qy2ZMeshW5uTD2rfHZw5GyIk4H+xk61oG/
+ VSCj9X5MipTF+OexosVnZtbSIFUQ025ujaqhm/+hu0ngShAmLHls2xyAuIqy8XAMyNAW7jCuo
+ tRTq7VjOf+6EXzmOiayQryUyqvfpaZA2h1Evt1ktMkvjB3y9y1s/WpX9qapZHRwxYZt8fYkDX
+ XU6yJ9cIx5xp4fF1DY8Ntf3Kv6EWsBbic9PVPyJVOfS2LFO1Hja32FTUN7Kg4jsStItTmoVeY
+ SYNfzJOOErU6q2ReOWpwlNhBFGOJxCoYshZOYE2MMFEiAbuXxUASYEMrT8HMmnYwiLyhxe2uD
+ Kn7c75xaLdXCszVfXewYMQ7MPhgRGEVXLjC9EiKd4j9WXFiBdLuO/O+4UX+5gBIQ3aI2DijR7
+ NmvwobSTS+pcfYpJvNHRmNwkYxRzap492jEZrgdIv9UzgkCtNCrDUdmgFBQzlNjOB/Qw0rbeB
+ rnLmTT1Wl5uZh/haJ0QvWdmSuaKYjtrYDe4DxIThaMUyY4i9xZkIIQP5zWGqfM6yCUaWB66kr
+ 8vU6wYqS2QCppUZDI0dlFwextEUpS7vrVtqlkAehw6lTzMcCPtlS6nefrUK8e+6JHFPDZa5u+
+ yn4DeZStQpTG9QTju5+UCwfv7NetsxxO1UfbAvWMymfyLQwPwU3P/IcOPhAvGHtWKE5rdeY0T
+ Z37pixw67FNUEJtu+BRp2lhqVfkVWXbWi8PG/K5sgE2lV4jop3EaTh1x4aAYOrg862WSdo6lg
+ QkpCTmYWceIJNRE+9lLULsqHYwHoh5zlNJXb6so2QBok31nRPYPwbvqAUC7A0jpsNTo0sVYY5
+ 4bS1Q40g5L1C33cKYhHZCMhuzRhBlqzZ3XW8qJECFnFENmoPZ08WF1QvJFWhATHR0ZwLJuVch
+ rd3o7WTdrmvYPMvYswprxY4joRmK5A8n35DuK5hIWNH4DuZwiGbw/ckYueJTg7VjG0n09XHD4
+ +7tEWIEUhIKpFc2hmaAsLUN6OYqp0QIjC2lpZEe8uaOQwE85Qp2nvzSBG9KI=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -117,14 +116,14 @@ Hello,
 
 I tried another script for the semantic patch language out.
 This source code analysis approach points out that the implementation
-of the function =E2=80=9Cget_platform_config=E2=80=9D contains still an un=
-checked call
+of the function =E2=80=9Cde21041_get_srom_info=E2=80=9D contains still an =
+unchecked call
 of the function =E2=80=9Ckmemdup=E2=80=9D.
 https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
-ivers/infiniband/hw/hfi1/platform.c?id=3D1c0cc5f1ae5ee5a6913704c0d75a6e996=
-04ee30a#n187
-https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/infiniband/hw/hfi=
-1/platform.c#L187
+ivers/net/ethernet/dec/tulip/de2104x.c?id=3D1c0cc5f1ae5ee5a6913704c0d75a6e=
+99604ee30a#n1940
+https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/net/ethernet/dec/=
+tulip/de2104x.c#L1940
 
 How do you think about to improve it?
 

@@ -2,79 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36BDED4970
-	for <lists+kernel-janitors@lfdr.de>; Fri, 11 Oct 2019 22:48:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A93E4D4C32
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 04:43:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728154AbfJKUsr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Oct 2019 16:48:47 -0400
-Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:44579 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728096AbfJKUsr (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Oct 2019 16:48:47 -0400
-Received: from localhost.localdomain ([93.22.132.170])
-        by mwinf5d31 with ME
-        id CLoj210093gkMzx03Lojbg; Fri, 11 Oct 2019 22:48:45 +0200
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Fri, 11 Oct 2019 22:48:45 +0200
-X-ME-IP: 93.22.132.170
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     hverkuil-cisco@xs4all.nl, mchehab@kernel.org
-Cc:     linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] media: i2c: adv7842: make array cri static and const, makes object smaller
-Date:   Fri, 11 Oct 2019 22:48:29 +0200
-Message-Id: <20191011204829.11537-1-christophe.jaillet@wanadoo.fr>
+        id S1728735AbfJLCnN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 11 Oct 2019 22:43:13 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:35268 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728488AbfJLCnN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 11 Oct 2019 22:43:13 -0400
+Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 1FC7139D8B40F3F35743;
+        Sat, 12 Oct 2019 10:43:11 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
+ 14.3.439.0; Sat, 12 Oct 2019 10:43:04 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <codrin.ciubotariu@microchip.com>, <lgirdwood@gmail.com>,
+        <broonie@kernel.org>, <perex@perex.cz>, <tiwai@suse.com>,
+        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+        <ludovic.desroches@microchip.com>, <mirq-linux@rere.qmqm.pl>
+CC:     <alsa-devel@alsa-project.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH -next] ASoC: atmel: select SND_ATMEL_SOC_DMA for SND_ATMEL_SOC_SSC
+Date:   Sat, 12 Oct 2019 10:42:30 +0800
+Message-ID: <20191012024230.159371-1-maowenan@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Don't populate the array 'cri' on the stack but instead make it
-static and const. Makes the object code smaller by 165 bytes.
+If SND_ATMEL_SOC_SSC_PDC=y and SND_ATMEL_SOC_SSC_DMA=m,
+below errors can be found:
+sound/soc/atmel/atmel_ssc_dai.o: In function
+`atmel_ssc_set_audio':
+atmel_ssc_dai.c:(.text+0x6fe): undefined reference to
+`atmel_pcm_dma_platform_register'
+make: *** [vmlinux] Error 1
 
-Turn the 2nd parameter of 'log_infoframe()' const accordingly.
+After commit 18291410557f ("ASoC: atmel: enable
+SOC_SSC_PDC and SOC_SSC_DMA in Kconfig"), SND_ATMEL_SOC_DMA
+and SND_ATMEL_SOC_SSC are selected by SND_ATMEL_SOC_SSC_DMA,
+SND_ATMEL_SOC_SSC is also selected by SND_ATMEL_SOC_SSC_PDC,
+the results are SND_ATMEL_SOC_DMA=m but SND_ATMEL_SOC_SSC=y,
+so the errors happen.
 
-Before:
-   text	   data	    bss	    dec	    hex	filename
-  98533	  20024	    256	 118813	  1d01d	drivers/media/i2c/adv7842.o
+This patch make SND_ATMEL_SOC_SSC select SND_ATMEL_SOC_DMA.
 
-After:
-   text	   data	    bss	    dec	    hex	filename
-  98304	  20088	    256	 118648	  1cf78	drivers/media/i2c/adv7842.o
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Fixes: 18291410557f ("ASoC: atmel: enable SOC_SSC_PDC and SOC_SSC_DMA in Kconfig")
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
 ---
- drivers/media/i2c/adv7842.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/atmel/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/i2c/adv7842.c b/drivers/media/i2c/adv7842.c
-index 885619841719..0855f648416d 100644
---- a/drivers/media/i2c/adv7842.c
-+++ b/drivers/media/i2c/adv7842.c
-@@ -2547,7 +2547,7 @@ struct adv7842_cfg_read_infoframe {
- 	u8 payload_addr;
- };
+diff --git a/sound/soc/atmel/Kconfig b/sound/soc/atmel/Kconfig
+index f118c22..2938f6b 100644
+--- a/sound/soc/atmel/Kconfig
++++ b/sound/soc/atmel/Kconfig
+@@ -19,6 +19,7 @@ config SND_ATMEL_SOC_DMA
  
--static void log_infoframe(struct v4l2_subdev *sd, struct adv7842_cfg_read_infoframe *cri)
-+static void log_infoframe(struct v4l2_subdev *sd, const struct adv7842_cfg_read_infoframe *cri)
- {
- 	int i;
- 	u8 buffer[32];
-@@ -2585,7 +2585,7 @@ static void log_infoframe(struct v4l2_subdev *sd, struct adv7842_cfg_read_infofr
- static void adv7842_log_infoframes(struct v4l2_subdev *sd)
- {
- 	int i;
--	struct adv7842_cfg_read_infoframe cri[] = {
-+	static const struct adv7842_cfg_read_infoframe cri[] = {
- 		{ "AVI", 0x01, 0xe0, 0x00 },
- 		{ "Audio", 0x02, 0xe3, 0x1c },
- 		{ "SDP", 0x04, 0xe6, 0x2a },
+ config SND_ATMEL_SOC_SSC
+ 	tristate
++	select SND_ATMEL_SOC_DMA
+ 
+ config SND_ATMEL_SOC_SSC_PDC
+ 	tristate "SoC PCM DAI support for AT91 SSC controller using PDC"
 -- 
-2.20.1
+2.7.4
 

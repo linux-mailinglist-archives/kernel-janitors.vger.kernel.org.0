@@ -2,43 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0498D4F73
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 13:56:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A901D5034
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 15:56:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729210AbfJLL4e (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 12 Oct 2019 07:56:34 -0400
-Received: from mout.web.de ([212.227.15.4]:48803 "EHLO mout.web.de"
+        id S1729220AbfJLN4J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 12 Oct 2019 09:56:09 -0400
+Received: from mout.web.de ([212.227.15.4]:60579 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728978AbfJLLye (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 12 Oct 2019 07:54:34 -0400
+        id S1726751AbfJLN4J (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 12 Oct 2019 09:56:09 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1570881248;
-        bh=6rBqNUzM2LQ+qbqvfiyKiKBgp0+NLYt6FtzenMzPpa8=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=h8bf4dNVi3gjlLu11LtS6sL3jk55vmHJhYJ2IiY/s0dHiVBEsvf13bOjLzlemOr9r
-         GIMEthqa6YhoMqdCxuHwWMwzoyb2k7Ek+I1lC+fHeaGxC2/At2646O7VlRvGRWlIK3
-         Y0b8HdVu7zg/zloB4a+PgoQh69+sQ5RlrFWM8s6c=
+        s=dbaedf251592; t=1570888555;
+        bh=YdsuZrSP+jJJMluIACwENlwHKGfUwYpdRS9znBsqOH8=;
+        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+        b=UerOCV7unbMXupz5/JZ7ZHjLBGOSySWDAstzIbEciWvdUk45/iifgUfy2VQizQiUN
+         VSifMEWLXQnOoFpVv3rtGt35qOdYI4T9gb/rXn5Y5dkNhR/ZyyV7ps1ewXq9pPIgFm
+         cWmjB4R1F4CIiob1+5FmhSesFt0CP4T9VjP8TMhQ=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.155.250]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LbOuI-1hdpH821e6-00kw0W; Sat, 12
- Oct 2019 13:54:08 +0200
-Subject: Re: [PATCH] drm/imx: fix memory leak in imx_pd_bind
+Received: from [192.168.1.2] ([93.132.155.250]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lsy7e-1hvSLo3MNO-012bFA; Sat, 12
+ Oct 2019 15:55:54 +0200
+To:     linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org,
+        =?UTF-8?Q?Heiko_St=c3=bcbner?= <heiko@sntech.de>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>
 From:   Markus Elfring <Markus.Elfring@web.de>
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        dri-devel@lists.freedesktop.org,
-        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
-        kernel@pengutronix.de
-Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Fabio Estevam <festevam@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20191004190938.15353-1-navid.emamdoost@gmail.com>
- <027fde47-86b3-35c8-85e6-ea7c191e772c@web.de>
+Subject: clk: rockchip: Checking a kmemdup() call in
+ rockchip_clk_register_pll()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -82,59 +73,65 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <f90d7b4a-c4af-eac1-f326-211e932dbd22@web.de>
-Date:   Sat, 12 Oct 2019 13:54:05 +0200
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Aditya Pakki <pakki001@umn.edu>,
+        Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>
+Message-ID: <e96505a8-b554-f61e-3940-0b9e9c7850ff@web.de>
+Date:   Sat, 12 Oct 2019 15:55:44 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
-In-Reply-To: <027fde47-86b3-35c8-85e6-ea7c191e772c@web.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:dqGMq/vAHm39/dR4lleWUi6qJbQkT3h9gxOrm2XzgVDFani0qBx
- yN9tjx7pCa+DfNgBoYnj+SodZw/09onwCsKFORsAqZNxS6xpbaEIKysPidx3yO4Sa75Z5iY
- +qdB/XVUw5Yvqr1Ihp+pg+a+xCcMz50ttLtLsirHGpgLOuv8Awvh3rSQGM4zQHtv+A7nMSQ
- WJUU5yG6m2WB/1QCt1l3A==
+X-Provags-ID: V03:K1:lfuKZ77lF7iOIkLERuu8Fipch5A0vXrXLcCnxR+nhPRJzXd1O5n
+ LxtG8xETpSQLuwurZpMMSk18/YBSZFblP0REDBZ1L8B8W+J1enbIClSuRXZM2U636EPlAdU
+ S3YQIZEHCfo17jED1mBt9bw8l4iqtJbPm5M/y1b/ZwljtvrU9fXxrTkWfVmPiKECb279KRI
+ 4ooFcnZez1ZBL+Ob666AQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:TfxbhXI6wCc=:518nXADVY26Wq5v0YxTKk2
- DP5usAbuHA8IiDuPs18sK8pD2xEFOLByqy3L6WrbsklerDrWcJEjDBUBRYFGpJ2/1Ay+rGcmP
- Pc4UMYKl4bXJXpoA3yVdbhT1C+d638w+KHF+akbsntLesXw/eOysRnPyWBnqh5qfJ21m7JW/B
- CslJn1vQbO7yyTNWD7ycZefbocH4ckYRGt61xUIBwsNLASS1byvAEAjGcEtULdjn0vrNvjlFr
- WSAnZOT0+Lc3B4DIqjIQy6tT7yWOX1e/7aEoUZXrabSjnzX7hjuzVT/o/VanC/MaZnAQlmdfB
- d4CJhEOgz5gdmtJyUF+dDsIyv2HlVYPeBaLwCm1+CIyPwaNHPP1kbyuDnw2Dad54AAf5lLJMI
- hXQNkHbHmjx1uWx9Doy3lj8SbgjiJXAVnZVpZKsYrS5QG9KyrHlr9sYzAe6tghIYfrFWkMTFV
- usBCqIG6DxW2XmyyUAKw5xIDhPkDVkiYScNMCUsAHAzg8doKiG2Z6f6MFpSwSkhiBnYGuS1jl
- NbeDg2oept4aKKkoubXu5c4kmSUYqNu/4j/RTD7dnhPfYNQdIKqbsptApP2O2H9hDA/U9uar/
- D0iiTNSs2InEgQtaoG7en6ImfqFobQvhvT3ME+MzwtnInmh4VTVYIxmgDUq3MRyTW/Zijs0pP
- EzxwWsdwvXP0iaZZe2kA1bZCdixqPbvIsDl9JLuXcHq20/AfTvoaSsa4m4nB9exPDVArC//zb
- uU6pbHNWigo3v5eOtU21jOvSu0dby3vTG5nDIG1HrWdPMNIY5wwiJyFCEhIOO9ct6CBGYAFnn
- Z8uEDHBx8iTEBKeFHjvosmKtXc1xoSjFzpi8JHvUnd8HfhB6G75lS1aL6Y6GXsWnj2AQe3P5v
- YQBurvRrXu/HSm1W7LXsDaC0dRtsCTbLl0u2hB02UhXCgRa2RhfdcdLNmnk9XHLReo5o+mFMt
- ujzSInF5QlGt7H3U2XF3Muw7Uc8d1IbFd+G36Cz8lizi8WRscIBT3jAhcUa69zxIYFBAN+DnK
- Jf+yvSyVsWTak6VpEsM/c1W9J6sN2HDVwAxZq+l9vGJmAy2TOucB9VX1Hwb8K/qclyILsMTZm
- gGnu+ngYI//4Bu5ZBn7j9m/okvbSB3VDf1mIcPthwtGMxY6p9bnSbsKqIo1tHMy8Ck7lg/MHM
- /C3QdmrVaLU3+pi2Ey/bmeaRJoyMC43mR4LwoeU3kPzFkg5xGD9p8h8KyVYADWg48QyufaF9a
- AgPOUw6moZnyuxHlsJ6i4gGbvitpZNX3Nsg+sXgX/sy1Ks+H+7hjHICAI0yg=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:pQ0RpfS4Wdw=:uaTSn9e6mWPRfwImIcKNNn
+ gbKBjD+IcCl0LnR+GI7YbPxI9NHXx2bC3TJZBIOoyS5GzmoBlMO//dYkNo2uLZXnUjH200Jpt
+ 8zERy+C+52/xfGQ3X4d4fNqX5ajvNqqsg2K+C5hzZucy1Nev3vKwFOszsefvn0NPqvwqmpDTX
+ Rx1BfUG0cWG+8phexbs2k79CrpUXXsONZ2BVo/EMlto3a4ShKDN+XCCGbg7sViK9yXbF0L8dI
+ 149SfMdzlDEOHol+dP9+Mybwzb7zghMlvp5uM7bOaOds0NpXcvgKJkU4ZpX45qZg9+bNTRXMV
+ eaJXLuO3y3BWuWPVcoVQOPfL7ofA/WkioRgI7FAQMVDmgjhgx6Ca3oJVAZtxizEWL3jFYxoY+
+ XSRx+41uAh7MWnRcmSLrn1vcPuC4jZDYpr2OPMt5Lpbk8YNkLlAqCbPvM/P/A3GRmlG3wT31I
+ fFIWjRJkQlq7BOgEsXEtiutjoS7l1z4pIz9w0bP9VmdzRseH8X9bBecWfTnJ8cTwKrvPqixHr
+ UMwf7NxUmPxqlrW3m20aU6iLz7S4iDm+gvU2ODtQ8hAoRj5izjE5yqVOrGobrbYJ9ihoQlvYB
+ SV6Eqys8nJJ/Hp5E45wco1FZd6ag3U47owsGUgw2OtvC6et+X2vGy8o4z6daIxLvviQE4PVxB
+ 1i0vRfAjrBDKGQu7U4g4tT5eMoK9b+qKSVW+gw8nu9byLJ1zS3ylLB9Pj5U8f8YCmeSACyGGO
+ aJQ+J88lB0Ds325YCHmASepaOrdrZ49Y2knScabV8LxY+TBYPSoTASpTeaQxKFCpu3aVOBcVW
+ vnkDZh57/z6H3MBE/B4oNwRbtzg0cd0guB1KjdEx2zKI5Kf4iwr6apo+tuor6n/swAmhY1Mtc
+ wZFz1xYsLwM69g89dS48Ovy1CK6xDuBBr/uUDVNlV3LDqYL2DtY4R0wUF1zDym3PAB5PmyRrC
+ HKadU2KCVlpaSklYdrTdRKKt2tHNAyir0sX5e046sSwVIZFbijkerbEOf641xVdjijCbW1VAY
+ AouQ4cZ5de/BHvsRfVPQ/JN1IE5dPXFNJO0OiFm/gZ/1U6zvm9LyUaz6j2oWpG1gl3WPPPgjB
+ Y2c4halA+RbF8KESIRFoRe0+8bzeWI8RqCVbHw95cw4HHF4N7SQrUCq0/E8VzmdCSKhe7S78V
+ Ci0ZHZ3WHYbXhNmEHwAC/fyEVigjVGvbpI1HqlS0XMM7Xby6upoc1+wk7xlFsuPQ3ugnAdNyB
+ zZhdSqycu8dIa4Ue408mD2tIttdm7Uai71Zpu9lZyiU4MRA4VQ9KwZ0pM4Vs=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> +free_edid:
-> + 	kfree(imxpd->edid);
-> + 	return ret;
+Hello,
 
-I have taken another look at this change idea.
-Can the function call =E2=80=9Cdevm_kfree(dev, imxpd)=E2=80=9D become rele=
-vant
-also at this place?
+I tried another script for the semantic patch language out.
+This source code analysis approach points out that the implementation
+of the function =E2=80=9Crockchip_clk_register_pll=E2=80=9D contains also =
+a call
+of the function =E2=80=9Ckmemdup=E2=80=9D.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
+ivers/clk/rockchip/clk-pll.c?id=3D1c0cc5f1ae5ee5a6913704c0d75a6e99604ee30a=
+#n913
+https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/clk/rockchip/clk-=
+pll.c#L913
 
-Would you like to combine it with the update suggestion
-=E2=80=9CFix error handling for a kmemdup() call in imx_pd_bind()=E2=80=9D=
-?
-https://lore.kernel.org/r/3fd6aa8b-2529-7ff5-3e19-05267101b2a4@web.de/
-https://lore.kernel.org/patchwork/patch/1138912/
-https://lkml.org/lkml/2019/10/12/87
+* Do you find the usage of the format string =E2=80=9C%s: could not alloca=
+te
+  rate table for %s\n=E2=80=9D still appropriate at this place?
+
+* Is there a need to adjust the error handling here?
 
 Regards,
 Markus

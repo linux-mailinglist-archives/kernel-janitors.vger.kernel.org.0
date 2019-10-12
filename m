@@ -2,31 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BF54D517C
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 20:05:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 366A5D5193
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 20:20:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729437AbfJLSFF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 12 Oct 2019 14:05:05 -0400
-Received: from mout.web.de ([212.227.15.14]:52785 "EHLO mout.web.de"
+        id S1729501AbfJLSUa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 12 Oct 2019 14:20:30 -0400
+Received: from mout.web.de ([212.227.15.3]:59313 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729279AbfJLSFF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 12 Oct 2019 14:05:05 -0400
+        id S1729469AbfJLSUa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 12 Oct 2019 14:20:30 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1570903499;
-        bh=rpcs5HwIhbgAv6DGviS0drKxzFwBHM9ergFz9bfzkyw=;
+        s=dbaedf251592; t=1570904407;
+        bh=aaWZ/GEhFUyuau1WLazwaF/9LjLt3tQSmn3IW5rsK9k=;
         h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=Gn1iJ0AhCJtUpulGzJdFZ5afKcqB+qKjEGIVwGsN3Rz/OROjqGVWLDOGW3HsuVUsa
-         Ezrwrdqvlk92/jp4xVrkm+NomFCU1HaRCS3SI6JAFXyZ/KtqhKSrM+vyFsxUuP0Zhb
-         1eQShlxHlRsVcttK1jYsDCvbESljMtX3v8X3cbVY=
+        b=ns4lRxydJaMhx7IMaqVl1woGwIegUwPnThzeQKkMqnCFlOVzZVtlPWB8WwvnnDDiR
+         nwS8v02AgU+QvXjRjNnWfh4bnHZJAjFL3oNYIo2mky3yF4q7QI1oGcQgGrtX69I1fu
+         vsj75aNJbJ+bgwe/7GMgYsBaIPCKaQawe70ce9c0=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.132.155.250]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0M3PN2-1i1xMp113A-00r0Fp; Sat, 12
- Oct 2019 20:04:59 +0200
-To:     linux-gpio@vger.kernel.org,
-        Linus Walleij <linus.walleij@linaro.org>
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MNP6P-1iQCYJ3mYr-006u2b; Sat, 12
+ Oct 2019 20:20:07 +0200
+To:     linux-nfs@vger.kernel.org,
+        Anna Schumaker <anna.schumaker@netapp.com>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Trond Myklebust <trond.myklebust@hammerspace.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: pinctrl: lantiq: Checking two kmemdup() calls in
- ltq_pinctrl_dt_subnode_to_map()
+Subject: SUNRPC: Checking a kmemdup() call in xdr_netobj_dup()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -74,38 +76,38 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org, Aditya Pakki <pakki001@umn.edu>,
         Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>
-Message-ID: <e0284a24-08f9-01da-98d9-366a45c3c8ff@web.de>
-Date:   Sat, 12 Oct 2019 20:04:57 +0200
+Message-ID: <9b5a5e63-2a24-ad79-20e2-4c01331ee041@web.de>
+Date:   Sat, 12 Oct 2019 20:20:04 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:8m+8BtPLLZbeutX2FU65cA2TVGfkthGExFTqiQj6C+7VG9noESx
- lYFsTDJpclc9oAl4vGky4L1dVgnLKWyG1gcnvElzjUan9UIpwqZm6Z6x48mecc6fTN429vD
- xIcqIlF6MBbrh4RK6DT2r9l2jBLt1sKa582DlolEd8Io9KUukcQLlBflNd+crzgekvsnS/w
- noHuF9HQXdESb84QDcsgw==
+X-Provags-ID: V03:K1:nKLKL3PDDdmuI9RcDSwwek58eQCcNUmIgwCtbOTx0ztaQxes30Q
+ l8bYrZHDYKw5tceIOxWS5JzGW+8FTN5RUk1XaLNSMyiwLP1JR1x72vBuc9MOpkJm1AtiD5T
+ 1lCRd8yHNfowLH5lR0vx9+Mx4PRBrrvGjqhjOQm7fdznf3GrPln+173YGQ3cLkxRaOioml+
+ tTu0cJhrn7CUdtplADi+A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:BL7ykJp7yvE=:fI114RCF5aIx0CaIGeNU08
- AdWDmTjRCdkCStNY3dmc5UjOmyv4fyQGxKHx3Nx/6diOz7NkKqF6vH7MJg/Hfik4UVPzgUhOk
- HUuFu2m0akHiDzJZk83IngpRQL/Jv4y07nfQ14MHMKqoMa672ElPLRjT8wJkydoBXKSscW78g
- eV/RFx4BbKC2N2bJCXI6guMLYlIQ2G5E9dU2LY/AJkLTeO2/q1ZNIO+K5nssBJsbUsGrnUeiw
- VBTqy7l8udQs8W2eT+0XwBEjjGCEa44ZCJMPMOhWx+ObT+Sm0Rz6hHZDWxnI1y6HG8ACPzWjA
- bG7pX85W9qR9BxHXkIN+WaAUsKJ04RBBeqcKOMb7uX7feKUTOCN0QXveCGIt8ww3ROu+aDc3W
- 02JlWgMptj9T6i6+G1ed2raQwwdEI2hHpwLQ9od27m7FTh9JWbWT21OEiVO6jn6rvnRYsc5NB
- oXwrX/0jvDp2xyG+bDKAYaBCnmg+bsRETleC1b65+yyHDbObYAj88jI+xdFg/OsTJhIe3piTn
- 9uim6QYOr/fb0WQ2sgvGPyoxVyS2v5xCA5o2wsawU3IlKOoH2Bm0UckRzGOVTkLC3OZYtC6zB
- NsZhwZzoRjdrtlfR69+qqG/4m/+QVB5iFP003zXzghYmFJvTCqclx4VLrvPMJn3KaKuiGAyam
- koGAEJe7oHhT/9S5i5lg8EX9HQSwAG3DnXx4eofoYT3tuaBh11Ray8am+UcC8phocTke9rIMd
- La9KmTZk0xYoZq5XePGHcMzBDjhH1iG+kDjxJM41+bFUB5KBgIewrE+tcz4AiqI2CzvNvbz4x
- OdsYZpqkjPcEVmTLAt3/mWNy2JA06wZ0y2JgjNYmf6MyUUku5hMPNBQqAFymWQTgW9GDASNUg
- TpNysU42XlPFe98mlBrEKLQlFHfIqzUvq+MW2yrY7TT0TeAi5ZjXrFDMWfi7UM+4p5MQnmQgy
- U5YhT3z15SOQ9JNdGlg20zcsbzan6Opprm4zkMVAJ937GOpVWGwi9KWV9nnp4gDvLvlBMoAFD
- HwcQtEOoyVewyLzZhkXZUqG1g5bWKhWkgiYhnrLuZPa+toZrLQnvHGIi5NJCxwHDbHMicQ1h3
- R2RsOSqE3+7MIb+Zz5/VslpDSFKhPYhyr2cgvAYWuDlB+y+2lHD4OOieahMwozD9X+ZH5gasS
- y65YKrtF2yzvlECusy/fZ+EZ2DgwJoPK/PwhqGLGpFoj3rS1zaadMMHPIOiv/vjgkZfZ9jCca
- o/1lQYUb7b4YhFshKWj3xEZD/UFxfTQNnTXrV8ovyecbMX8pdStYoS2jQ8qM=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:i4jvdSQpe0c=:lRFZtU5kAMdd9/Joye8SrC
+ DU3buPgh7Rk1TPkBv182lGVkXEYXZKbJ5AR86DoqxL1Ulj0TRg14eGCs0DfTJ7r5nsuLeLfyK
+ RW3ytmlE16u7Q/Xxcv1HBf8UKQSh7uAu0dHBgxQwvn5Ty6FBjQ5HnlSYpFcMPPzgihVr9+ZER
+ bEvac3/n2biZ69DUlRTgxtVXYhAYhX6ejU15brKEf5jMXYcoDjBB7KeCzBIsgLn+OoR0tXicJ
+ 6/xqwryrymcvr0m5TwicUtUKObLD8bxf/XFsITVlh7MvxZRmaMQKlmG7n36KCHLPNpjFJG0u9
+ MH8RxlDDpCcAm+PzNloWZ3dLhy5fL6F91fOvvbUJGIz38iq9w+sM3XVsYCojvNP/Sj8HIQSoR
+ uprZltcdG8sStbvRu/GCj9jL0E9qCzlghdLdHJqgCFV6ZL5oEVp5jn3vj+bI0/1u1u0uRRT67
+ Xn1eYhfT1MUYCy/4qoe4qALOua8m3ZVklXL64vy7RkBN3QO1nKLjK31k67OFu/Oly+uXPkyo3
+ S/kBLGteBIMOQBjicVauhf8iOdcxKqK2TmP8spod9GsfDK3B/itRi6pNL35ob5ZCJI+KQyKCk
+ pq8ukqovPDGsTLpyjZKWCsI/oIu4zezC3GSQgCVF+1PGml78/MUf99m9jVNcsH7n3x3twHIJj
+ zXnKuyAfumSvuKmCr8yai6qBBGgBUB1+SFGDbJ1aY/XYg951O8iM8mBtx7nluGlcUycdZT1ZL
+ P6Ih5vQjoiBApzpGF72L8PSdPoTWpuI94rvK72HKSh9z0nwP40b+RNa8CmW+GciG0boku1NeG
+ GVD4pYqxUZmMZE4LrF+b2dQsUfz9DD24Vs8CaTv5lFhx199DIlQpd+DZcAV3xCLV68gUgUGhv
+ i8U451KGQ/nJVJ8VTFS0OTJQK1eD/0NiU7pazgevzo1Sttd3JEwxii9naHiIbT1eSEc6vv14K
+ qd7L2qwMYPDlzyeFwFGej3TOyuBRFKHE74y+MlEdGBEa3hTqtHiKcWYUKSXcUyLqVPAN1AVjO
+ /xZv8RSm+YTv+o5GnPqi5C6d5E5X32hKv0R1Cj91puq+7drMXeIDoTGnC50USA6qP6fmrwTp7
+ 1r2TJblcG5JgZK7kWuayUDwZigrd6fifmOdqoiVv/t1s/Z4Ysq8xX6ZNjNkfvsC9aYMOvxtpU
+ Vu0a9r7JSXTsfZbSuLfBe0NS8JDyFSTDu98CDtFpzvACHuQ+A+6zA+FOXIDVYy0OCMQuvSPOp
+ egmFZCFCz3/lv0FYh/DLW+YnPyHEbbPuyda+cY4bBPftA4OjueoAyPhXFlzo=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -115,14 +117,14 @@ Hello,
 
 I tried another script for the semantic patch language out.
 This source code analysis approach points out that the implementation
-of the function =E2=80=9Cltq_pinctrl_dt_subnode_to_map=E2=80=9D contains s=
-till
-two unchecked calls of the function =E2=80=9Ckmemdup=E2=80=9D.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
-ivers/pinctrl/pinctrl-lantiq.c?id=3D1c0cc5f1ae5ee5a6913704c0d75a6e99604ee3=
-0a#n116
-https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/gpu/drm/nouveau/n=
-ouveau_connector.c#L476
+of the function =E2=80=9Cxdr_netobj_dup=E2=80=9D contains still an uncheck=
+ed call
+of the function =E2=80=9Ckmemdup=E2=80=9D.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/in=
+clude/linux/sunrpc/xdr.h?id=3D1c0cc5f1ae5ee5a6913704c0d75a6e99604ee30a#n16=
+7
+https://elixir.bootlin.com/linux/v5.4-rc2/source/include/linux/sunrpc/xdr.=
+h#L167
 
 How do you think about to improve it?
 

@@ -2,70 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22051D520C
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 21:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7698D521A
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 21:23:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729788AbfJLTRL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 12 Oct 2019 15:17:11 -0400
-Received: from mail-io1-f65.google.com ([209.85.166.65]:37001 "EHLO
+        id S1729434AbfJLTWa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 12 Oct 2019 15:22:30 -0400
+Received: from mail-io1-f65.google.com ([209.85.166.65]:41217 "EHLO
         mail-io1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729678AbfJLTRK (ORCPT
+        with ESMTP id S1729384AbfJLTWa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 12 Oct 2019 15:17:10 -0400
-Received: by mail-io1-f65.google.com with SMTP id b19so28561399iob.4;
-        Sat, 12 Oct 2019 12:17:10 -0700 (PDT)
+        Sat, 12 Oct 2019 15:22:30 -0400
+Received: by mail-io1-f65.google.com with SMTP id n26so28477051ioj.8;
+        Sat, 12 Oct 2019 12:22:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=nnXOz+PRi58QoHjbu8c9O+WK1XkBB4tTUc2/yDJUsyM=;
-        b=nS7hNDn8VxzSjURlBE78kATwaL7qPglBjODaQGeiluWc7L3KMJe9YDZ1nbMjCPg2k1
-         NmdpST3hzIfFgjjtm2k71t7RDTL5skpsie5QY7FAslM77IIOl0JgTi9qvN5Effnmvm4F
-         QTb+x6j7CdtoOqx0Ko0vBaWDwGLJt3fUamR6zgAoIXZSs+BG6kUPAhNPbypt9dl0GbBi
-         6avvmlrRrLi3bU+ixPrRNh7CE6AxmSB4ZJTTTGxLBW8ymbvXkKkbKXHdhMDf3sn6Saua
-         tCmiBnq8pNsZV5EM1pikTlxsuxSKlPYCnEuij0vSYKUvTLc171zWgrvQIwYl/pejOLK2
-         DmXw==
+        bh=HQJU3/LoSPot9T+dJMRPqRv4aXw0MOIpjtfyaywm/aQ=;
+        b=ctY1dTvKbUjja1n+HmJ/0QdJo4l9dAMkFi10eQfrFjsqgOWit80kgCnq30q0OeiWfa
+         /aUwSbUbZJTKgMLaQRHrc735ma+8k8xg3+RuKcs08/Y27Bvp2HmB3VCXVh53JIpeepH1
+         Ex6BkyIFuWyhgQ4hj3IvriacAVaZFw7DIOvS0t56h7sEO7TnQ2FbSzJDxvuUFfVYZfpm
+         8i8ceDDgjqJO4QPLbUuA7rjn5ssg3y1AC1+0v+G8txow0cuyM+hhZA63VbZBlCaXGXA2
+         Cp4ZiJNXwdEapBQhk8X9d8hv+/l895BVSFvmchGs1gyzKBV8A4NRrRo6EFq1qAYA7zW9
+         Z1YA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=nnXOz+PRi58QoHjbu8c9O+WK1XkBB4tTUc2/yDJUsyM=;
-        b=sDG5bxhIBLDfZI5mxYUEmWfeW3th7DcKTP3Cwq3u0se8/60cmEVuo7PK1lVOcG/T6/
-         0spyhpeBBjGcs+lHCMayXs4eyFlm1bdscu0vBERzplM4buFCBePfFXZGfk2MOaBCBhOa
-         u2BtFuQhT+Mh2d/f/Hhti79/kG3vQjZ7PGv62KamnGiMcb1gYpa3bhC3PfHJo7KBSXva
-         Lv6X+rZmj6OaKzNV5gHWzoY3RZ7LOaBvgcZorDgeV03v4TV4Xn78FdJrB15A4wMRerCk
-         04A+yMoJgUj5jNmgI1AWE9Gux2IILW5jF+pV6t5FYkiAo/dZtBtjCcvf2HuPMB7Z/9pN
-         x7gg==
-X-Gm-Message-State: APjAAAVP/O3PHaCzRPdRHGy0z+RpbPBmB7oqkAOWD2mvm1kW3LAkjdIt
-        n7qLm5ivd7zhskxmV7VUsNwHAn0PQQEPQ2Zfs1w=
-X-Google-Smtp-Source: APXvYqxrom5F5F07hOHPrw4GFvS2e6x6PfewZxqWfECjkUV75TnmcPI1mn3HAIFnkC8yXUkttiOV5Yh5LUUXo7eNKzc=
-X-Received: by 2002:a02:a11e:: with SMTP id f30mr26789400jag.95.1570907829709;
- Sat, 12 Oct 2019 12:17:09 -0700 (PDT)
+        bh=HQJU3/LoSPot9T+dJMRPqRv4aXw0MOIpjtfyaywm/aQ=;
+        b=R01HaeOXcg3Pxc2lmR/f+oHrAkffh7C4DJn1wqzNGbyF+NtjbRLhDXeD7X2k/Dq+W7
+         K9nq0twVv7Kcb6Jts+XEk1UiSZIj3yEZHc1F6ral/BNkhUcS8AZ8OX4UliOjV67XyDx0
+         HRGZ1qTr+F98Z5L9vK+TBrmlEai2Vyp87lDRr/G0rRUF4K9+F0B47CXF2UDcI72juOJg
+         rL+aKi6hPPH7HY9KsvnTBPAOQOSMKmtcGeuyxnOKz1FQynvFagB8eRZkJYT9V7AUNYAt
+         KnWLoGi07vbJxSLMFmtaQcG6AT2EBmga9xb3McStmMSZzUySvl1dgdiJsHRjTu9/4eXH
+         9CCA==
+X-Gm-Message-State: APjAAAXzLvV8R6psk3vmBdGN6X+iM/lzEce0KGGAYkgqJC2Le7Ybwj84
+        vqd8wqJDhmvcfUjtBItoajKKxhN7u70Y9mtEAkc=
+X-Google-Smtp-Source: APXvYqyJteMzDjNIWw8MOM6EkZMsiXv/drPcqPJn3dGo9FtbSnM6zKB7jm0eZ0l/nvmkFQFosHWse+jWfLyMEYAymH0=
+X-Received: by 2002:a02:7b0d:: with SMTP id q13mr25703029jac.114.1570908149253;
+ Sat, 12 Oct 2019 12:22:29 -0700 (PDT)
 MIME-Version: 1.0
 References: <20191004190938.15353-1-navid.emamdoost@gmail.com>
- <540321eb-7699-1d51-59d5-dde5ffcb8fc4@web.de> <CAEkB2ETtVwtmkpup65D3wqyLn=84ZHt0QRo0dJK5GsV=-L=qVw@mail.gmail.com>
- <2abf545b-023b-853a-95ef-ce99e1896a5d@web.de> <3fd6aa8b-2529-7ff5-3e19-05267101b2a4@web.de>
-In-Reply-To: <3fd6aa8b-2529-7ff5-3e19-05267101b2a4@web.de>
+ <027fde47-86b3-35c8-85e6-ea7c191e772c@web.de> <f90d7b4a-c4af-eac1-f326-211e932dbd22@web.de>
+In-Reply-To: <f90d7b4a-c4af-eac1-f326-211e932dbd22@web.de>
 From:   Navid Emamdoost <navid.emamdoost@gmail.com>
-Date:   Sat, 12 Oct 2019 14:16:58 -0500
-Message-ID: <CAEkB2ERCGJ6abNXfPNX7nbwkwD7qYTPYjYsNGzZwynn5CbPCzg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] drm/imx: Fix error handling for a kmemdup() call in imx_pd_bind()
+Date:   Sat, 12 Oct 2019 14:22:18 -0500
+Message-ID: <CAEkB2EQUrHpfCXDQ9HV9_hw7Ke5DmX3SvKWJd+wSwXB1Uqaf5g@mail.gmail.com>
+Subject: Re: [PATCH] drm/imx: fix memory leak in imx_pd_bind
 To:     Markus Elfring <Markus.Elfring@web.de>
 Cc:     dri-devel@lists.freedesktop.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
         linux-arm-kernel@lists.infradead.org,
         NXP Linux Team <linux-imx@nxp.com>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
         Daniel Vetter <daniel@ffwll.ch>,
         David Airlie <airlied@linux.ie>,
         Fabio Estevam <festevam@gmail.com>,
         Philipp Zabel <p.zabel@pengutronix.de>,
         Sascha Hauer <s.hauer@pengutronix.de>,
         Shawn Guo <shawnguo@kernel.org>,
-        Peter Senna Tschudin <peter.senna@collabora.com>,
-        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>,
-        Rob Herring <robh@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
         LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
@@ -75,56 +71,33 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Oct 12, 2019 at 4:07 AM Markus Elfring <Markus.Elfring@web.de> wrot=
+No, that is not correct! You should not try to free imxpd here as it
+is a resource-managed allocation via devm_kzalloc(). It means memory
+allocated with this function is automatically freed on driver detach.
+So, this patch introduces a double-free.
+
+On Sat, Oct 12, 2019 at 6:54 AM Markus Elfring <Markus.Elfring@web.de> wrot=
 e:
 >
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Sat, 12 Oct 2019 10:30:21 +0200
+> > +free_edid:
+> > +     kfree(imxpd->edid);
+> > +     return ret;
 >
-> The return value from a call of the function =E2=80=9Ckmemdup=E2=80=9D wa=
-s not checked
-> in this function implementation. Thus add the corresponding error handlin=
-g.
+> I have taken another look at this change idea.
+> Can the function call =E2=80=9Cdevm_kfree(dev, imxpd)=E2=80=9D become rel=
+evant
+> also at this place?
 >
-> Fixes: 19022aaae677dfa171a719e9d1ff04823ce65a65 ("staging: drm/imx: Add p=
-arallel display support")
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
->  drivers/gpu/drm/imx/parallel-display.c | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
+> Would you like to combine it with the update suggestion
+> =E2=80=9CFix error handling for a kmemdup() call in imx_pd_bind()=E2=80=
+=9D?
+> https://lore.kernel.org/r/3fd6aa8b-2529-7ff5-3e19-05267101b2a4@web.de/
+> https://lore.kernel.org/patchwork/patch/1138912/
+> https://lkml.org/lkml/2019/10/12/87
 >
-> diff --git a/drivers/gpu/drm/imx/parallel-display.c b/drivers/gpu/drm/imx=
-/parallel-display.c
-> index 35518e5de356..39c4798f56b6 100644
-> --- a/drivers/gpu/drm/imx/parallel-display.c
-> +++ b/drivers/gpu/drm/imx/parallel-display.c
-> @@ -210,8 +210,13 @@ static int imx_pd_bind(struct device *dev, struct de=
-vice *master, void *data)
->                 return -ENOMEM;
->
->         edidp =3D of_get_property(np, "edid", &imxpd->edid_len);
-> -       if (edidp)
-> +       if (edidp) {
->                 imxpd->edid =3D kmemdup(edidp, imxpd->edid_len, GFP_KERNE=
-L);
-> +               if (!imxpd->edid) {
-> +                       devm_kfree(dev, imxpd);
+> Regards,
+> Markus
 
-You should not try to free imxpd here as it is a resource-managed
-allocation via devm_kzalloc(). It means memory allocated with this
-function is
- automatically freed on driver detach. So, this patch introduces a double-f=
-ree.
-
-> +                       return -ENOMEM;
-> +               }
-> +       }
->
->         ret =3D of_property_read_string(np, "interface-pix-fmt", &fmt);
->         if (!ret) {
-> --
-> 2.23.0
->
 
 
 --=20

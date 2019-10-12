@@ -2,119 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D9D3CD5227
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 21:25:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8553D52B8
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 23:32:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729666AbfJLTYX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 12 Oct 2019 15:24:23 -0400
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:10410
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729384AbfJLTYX (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 12 Oct 2019 15:24:23 -0400
-X-IronPort-AV: E=Sophos;i="5.67,289,1566856800"; 
-   d="scan'208";a="322500714"
-Received: from 81-65-53-202.rev.numericable.fr (HELO hadrien) ([81.65.53.202])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Oct 2019 21:24:19 +0200
-Date:   Sat, 12 Oct 2019 21:24:19 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@lip6.fr>
-X-X-Sender: jll@hadrien
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>
-cc:     Markus Elfring <Markus.Elfring@web.de>,
-        dri-devel@lists.freedesktop.org,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        linux-arm-kernel@lists.infradead.org,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Fabio Estevam <festevam@gmail.com>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Shawn Guo <shawnguo@kernel.org>,
-        Peter Senna Tschudin <peter.senna@collabora.com>,
-        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>,
-        Rob Herring <robh@kernel.org>,
-        Thierry Reding <thierry.reding@gmail.com>,
+        id S1729780AbfJLVcU convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 12 Oct 2019 17:32:20 -0400
+Received: from gloria.sntech.de ([185.11.138.130]:46566 "EHLO gloria.sntech.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729169AbfJLVcU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 12 Oct 2019 17:32:20 -0400
+Received: from ip5f5a6266.dynamic.kabel-deutschland.de ([95.90.98.102] helo=diego.localnet)
+        by gloria.sntech.de with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <heiko@sntech.de>)
+        id 1iJOzm-0000bP-6Y; Sat, 12 Oct 2019 23:32:14 +0200
+From:   Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 1/2] drm/imx: Fix error handling for a kmemdup() call in
- imx_pd_bind()
-In-Reply-To: <CAEkB2ERCGJ6abNXfPNX7nbwkwD7qYTPYjYsNGzZwynn5CbPCzg@mail.gmail.com>
-Message-ID: <alpine.DEB.2.21.1910122122370.3049@hadrien>
-References: <20191004190938.15353-1-navid.emamdoost@gmail.com> <540321eb-7699-1d51-59d5-dde5ffcb8fc4@web.de> <CAEkB2ETtVwtmkpup65D3wqyLn=84ZHt0QRo0dJK5GsV=-L=qVw@mail.gmail.com> <2abf545b-023b-853a-95ef-ce99e1896a5d@web.de> <3fd6aa8b-2529-7ff5-3e19-05267101b2a4@web.de>
- <CAEkB2ERCGJ6abNXfPNX7nbwkwD7qYTPYjYsNGzZwynn5CbPCzg@mail.gmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        kernel-janitors@vger.kernel.org, Aditya Pakki <pakki001@umn.edu>,
+        Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>
+Subject: Re: clk: rockchip: Checking a kmemdup() call in rockchip_clk_register_pll()
+Date:   Sat, 12 Oct 2019 23:32:12 +0200
+Message-ID: <5801053.xxhhKtLrcJ@diego>
+In-Reply-To: <e96505a8-b554-f61e-3940-0b9e9c7850ff@web.de>
+References: <e96505a8-b554-f61e-3940-0b9e9c7850ff@web.de>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-2018450889-1570908260=:3049"
+Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hi Markus,
 
---8323329-2018450889-1570908260=:3049
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+Am Samstag, 12. Oktober 2019, 15:55:44 CEST schrieb Markus Elfring:
+> I tried another script for the semantic patch language out.
+> This source code analysis approach points out that the implementation
+> of the function “rockchip_clk_register_pll” contains also a call
+> of the function “kmemdup”.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/clk/rockchip/clk-pll.c?id=1c0cc5f1ae5ee5a6913704c0d75a6e99604ee30a#n913
+> https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/clk/rockchip/clk-pll.c#L913
+> 
+> * Do you find the usage of the format string “%s: could not allocate
+>   rate table for %s\n” still appropriate at this place?
+
+If there is an internal "no-memory" output from inside kmemdup now,
+I guess the one in the clock driver would be a duplicate and could go away.
+
+> * Is there a need to adjust the error handling here?
+
+There is no need for additional error handling. Like if the rate-table
+could not be duplicated, the clock will still report the correct clockrate
+you can just not set a new rate.
+
+And for a system it's always better to have the clock driver present
+than for all device-drivers to fail probing. Especially as this start as
+core clock driver, so there is no deferring possible.
+
+Heiko
 
 
-
-On Sat, 12 Oct 2019, Navid Emamdoost wrote:
-
-> On Sat, Oct 12, 2019 at 4:07 AM Markus Elfring <Markus.Elfring@web.de> wrote:
-> >
-> > From: Markus Elfring <elfring@users.sourceforge.net>
-> > Date: Sat, 12 Oct 2019 10:30:21 +0200
-> >
-> > The return value from a call of the function “kmemdup” was not checked
-> > in this function implementation. Thus add the corresponding error handling.
-> >
-> > Fixes: 19022aaae677dfa171a719e9d1ff04823ce65a65 ("staging: drm/imx: Add parallel display support")
-> > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> > ---
-> >  drivers/gpu/drm/imx/parallel-display.c | 7 ++++++-
-> >  1 file changed, 6 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/gpu/drm/imx/parallel-display.c b/drivers/gpu/drm/imx/parallel-display.c
-> > index 35518e5de356..39c4798f56b6 100644
-> > --- a/drivers/gpu/drm/imx/parallel-display.c
-> > +++ b/drivers/gpu/drm/imx/parallel-display.c
-> > @@ -210,8 +210,13 @@ static int imx_pd_bind(struct device *dev, struct device *master, void *data)
-> >                 return -ENOMEM;
-> >
-> >         edidp = of_get_property(np, "edid", &imxpd->edid_len);
-> > -       if (edidp)
-> > +       if (edidp) {
-> >                 imxpd->edid = kmemdup(edidp, imxpd->edid_len, GFP_KERNEL);
-> > +               if (!imxpd->edid) {
-> > +                       devm_kfree(dev, imxpd);
->
-> You should not try to free imxpd here as it is a resource-managed
-> allocation via devm_kzalloc(). It means memory allocated with this
-> function is
->  automatically freed on driver detach. So, this patch introduces a double-free.
-
-No, it's not double freed since the proposed code frees it with a devm
-function, removing it from the list of things to free later.  One can
-wonder why the free has to be made apparent, though.
-
-julia
-
->
-> > +                       return -ENOMEM;
-> > +               }
-> > +       }
-> >
-> >         ret = of_property_read_string(np, "interface-pix-fmt", &fmt);
-> >         if (!ret) {
-> > --
-> > 2.23.0
-> >
->
->
-> --
-> Navid.
->
---8323329-2018450889-1570908260=:3049--

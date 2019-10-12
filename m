@@ -2,33 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BFD9D50D4
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 18:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42C1ED511A
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 18:43:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727939AbfJLQFD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 12 Oct 2019 12:05:03 -0400
-Received: from mout.web.de ([212.227.15.4]:53007 "EHLO mout.web.de"
+        id S1729220AbfJLQnI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 12 Oct 2019 12:43:08 -0400
+Received: from mout.web.de ([212.227.15.14]:49195 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727262AbfJLQEc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 12 Oct 2019 12:04:32 -0400
+        id S1727939AbfJLQlI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 12 Oct 2019 12:41:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1570896257;
-        bh=OLEXXVfve/Mn5qOXyqXGU5UQD25/gN2N9FJAnOdynQo=;
+        s=dbaedf251592; t=1570898452;
+        bh=obvEHiuTwY7nslrmcbLeBF7twJB1P7Dm6ZNUvsNfLRM=;
         h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=sJDOD02wHxRvR0HLbLlzPOhA2+i1S8gpYVHOfavP/cvrq2DXrOUJtOpKT+bQiMagl
-         ZGibU2BelHoZnWpXddGVQq5nNp62qpQlVBr3/soHYX8ReeccJN3rptaenvSxzlmSbG
-         V4K5E/DKnkvgEJ5pd2LTVAuWXCum/Ordqp9wdz4k=
+        b=mQ0cm3g9VKIA93OtN3pW+QrLrkOE98PJH56qem0yYXVmA52YIByzhrHERKvuYOKjK
+         sHV659MqUm1Tj7yE9DySF93bo3eVND0kYk0JoFGTbPh5E/OQbuy5lsK4wYMLKkkFx4
+         VutAAzQkHtDzUFl1u8KQZFhrQ1vzER0n3FrvKkfY=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.155.250]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MMZck-1iRY9X1pYU-008HQo; Sat, 12
- Oct 2019 18:04:17 +0200
-To:     nouveau@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>
+Received: from [192.168.1.2] ([93.132.155.250]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MfHhK-1ih4Oc1O02-00Ooxx; Sat, 12
+ Oct 2019 18:40:52 +0200
+To:     linux-rdma@vger.kernel.org,
+        Dennis Dalessandro <dennis.dalessandro@intel.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Mike Marciniszyn <mike.marciniszyn@intel.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: drm/nouveau: Checking a kmemdup() call in
- nouveau_connector_of_detect()
+Subject: IB/hfi1: Checking a kmemdup() call in get_platform_config()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -76,38 +76,38 @@ Cc:     LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org, Aditya Pakki <pakki001@umn.edu>,
         Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>
-Message-ID: <5ff56ca3-0e20-2820-f981-d2d37dded133@web.de>
-Date:   Sat, 12 Oct 2019 18:04:15 +0200
+Message-ID: <f566cf8a-96df-f145-296f-8f6d72d8fbad@web.de>
+Date:   Sat, 12 Oct 2019 18:40:50 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:eSnIYSIfwQ+qZ88AQSHhpkJEQSkiQV8bWwDZf3F/859qwwhUw2p
- yjCEEUP2esK1O7eoNBr+i2vPIvHTcJKyh/9qIA6rC7yig/ErwTU4gVgD1jwFG72yLowrxvC
- EZ+Xn1E6Br2aEk5op+xfHL+vpOsBkCiP0+GUvtvTyuGYlRhFgLuyj1O8rF2kL6XpwXVdhJ4
- SQOrJ1nQazQiiF3oBgnGA==
+X-Provags-ID: V03:K1:SwcYdJegrILwnr+2Wfh99SPVzHk60Y7yLV579wW92OTzGmBbKHD
+ 2ljlk9n1O+EEGTDtTfGvmoFRkNQI19QIeWDuUbQIR5QO7dyviVwDfe8i1q3FpTLT2L9unbT
+ IsV5qxDESXSZCZTtEadkqj9DBLz7lcI8qPShouhysDe05hSGiFMZQwR91Tqc3jPlVu9biko
+ exjqgbGGz9OVReWS7SU4w==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:TGctBN2vpf0=:Zm0dRMNMZuTyFvygAuu02A
- F9VWPbYChpxZwCmUIkNRdvOVLJQnxefkbpM1KuYofME+BWFRgBw1VlFC7ZVcweFcVGykeM8R1
- mSoX1mUYuLqn1dtHTLwhnwgX9NafAI7fzSDs9ZaIT3bBpJgVv735Gp2EQHbin3UGVBzJ7xdFF
- M42tRX+yXFznT6q0ptDrWWHhZ9o3URJ87SLN+EgmV3jmuCLYYlzam8p47i8aJPkWY7YE5M7dY
- nQpnNsssy1rQaG7g7zZx4jCpGf0Ctnkypl3A7xWvN9BrabtdnxxMs94UuToZoIN3r13FvSX8g
- Tc7yquinUVopfAWTBEntKYYXywTnIgNjG6L+0Hu2ZPNrB5TuemO7Z2qDltY8lLTc/C6anJZ4B
- KFlkew493gdqV5EdaGy0JeFIcaW/PJipetSMmvKyMCiIbJvVA6rrawH2O/VkBOnf2imlG+It6
- 5VptJTTjm2coejql5g9rioBYY/D+wv2Crl3KxPlbZ2qapeaCqL1Tmh/sp9yMYDaXdGS8UdVs2
- T/pmXrt+pKi9bvXG8/fXVABrA0vPJPcBsykNWyaG3cmB6ojvn7GcI4eVquhtULfPjFDkZkQm3
- 19KpklM7Jy38gJItXaBpSALijAA+2IQpAAAjaoOBWFiwjAGP+jQMXBDboc7JouNFJJt5AzA60
- TWC+OAa9dK7QMvmjGG3wRBYKnrUYw6TaySdNr3+NXkvxFr93sP5XiIy2o1x6xiW4JntYkBLeE
- cFhnzrzs3jMjSQAv+EqXRQgYW1fmY59xnSuk1n774vJx/SzjDlb5SCA754kL/cC+gMdTC7v5T
- LUzV4pGJuMEUD94ipy+Hz6SQJPe5Juu2Eq203B0azkWXKeG2Snotj/d0y6ZYd4dxz49I51l0I
- 4G413AJJ8eXTgA6BtJuDd3WYvIYb6CDRy6uKIpsYCoT8zKb8yvNfxCgMv/EnxiWpTKiWUiL0z
- OJi5Tyv+s/kgUErWiPRr5KmZX2Nk6wSUak079Ors5vsqr3gNjPQvONr4xZBPEvcr7UlEaqM8D
- hvxdMYtflQTBYTnIAQC/f6qu/cxE15+7meOntNU4bEMpyCmhhkCqEEs8udiBts+T20Fi54Y2H
- FHnF+R1G3M0Kt//M422ZtfAGVAhNF7wg4QnuAPjo3dMox+pPjw9eZ+Xcd9y0+PWp6LGRBhnZe
- c8+X1RcSTq/sINC/x7DwgivPeu3WMd4RaV6PhXwgXMlxVJutkOUXO0lMQNEBc/7xd70uOXOUr
- IlCc1dzWnvwBzkacPLuwDFHBNpQ162igkmIJdobG5vQVHOIfpn65FNtt+cs0=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:dLD4dGWOOug=:B/NZkCexY/ybxYL1PKgHaT
+ VjTflKtup49RE/o8AgJLUy3W8vdTcocZXMdqrC/eDl2j/AoqFjn1lz1M38qplt8bAuLNN65nS
+ A1/8uYmF1QtE7nuZ/LtaHqCBJJFZ47zATJ4aHa52xNKPgJfFrUQM9z0wgrehFgCeAVDTC88BR
+ iVCVV/XyBXRF81M68gKzbEyWEjHzvcHT0BNMLeYP83QBxVMcxp2X0XYZrMnzJtAoA3m7MgFI7
+ kncmoWKPnpnrLAnFY2rpiSG9haIUXcNpA6lPYizWBDBzCwALdBgpK2iOipMROLVMinZcgjc4u
+ AStf7EZasKAw6XOyFLetQTLJ34ndBYXbz2a8FKh5ZPK8u2+Mi5qj/jUOhfGwQ3sWqv+RpYWzB
+ S9WuLoyGC+0L53OXVto9SF8v40mdewY2H7T3kWanKmmveJ3XKRkJMLh8U4iiig39G2U5YfVpX
+ BMdwX1YFXtUDZVpjYDqWqn3BgNwfc92pExjnJwNlRMuIZ/2/acIWBJWFx3sb+W9ouR7QjGVNw
+ QKQFCgXX0jAIiM3csmfFrNZb08mQ2EeWWaLep0A5xGhNaDsoEslFJKXMxcuUAbn8V36ur5bi8
+ QDdzlizRTOXFRTdifdqY4OmPXdhzJLovCcm3hl4966RLdlqSo87JpPzYrI7Qc5TxNWuhizQHN
+ l3dXMTW/fnoRrzCKBiTxkx5B0cf7QynmvrO2Yzt6xFtsSlLtIKUbobme+jBZQzEyh3SOA9c9/
+ mcDxX2Tw5w9dv8JGpAeuJeC6JUYlVejfgtNdI7kVbOkt5hxUiJK18SnS+0q2b+SgXzZ/RlC6x
+ 8s6nk7UkZjgAHt3Tvdx4btG2No+qWPwAw7AvRcS/PH9Tg6QY3wuSSC8Sye/7mh6RC6EtmvNPI
+ 4Fhm+jzz/luAx3P7Yk1okaRHt/4fgV6NmV+7CKevlaAGkW+hE9S3pCQQOSGFPgO98hQ3jYYcN
+ O+0tZ+QahEJGkxoe5AEu1b6646zoLHdTU27CYmkoyQurZROnN7QMQ/4Ptg0OElItoEoHqbu7t
+ tqdLyT1dtThtFUWQ8CB89+J/38/JWYCttLsWiI7n/8qZTQAfg4nWhWa7L+CT3FdBqoY2NclSR
+ EUpQfPx37IGL7uFtHyUUIWnuGgu/mjugTFrQRJPxvLgToAln4WWpAnMVU7go5cflYycL18NXT
+ clrHA6JHJ7OKKa123VvbNxxAhmXBvkVoJByZsmJpgoXvJZUBjk3rGrrDiFdcUzJa4DI52MHCv
+ OEg2TLEBxozjT6gHCwqiYmEsrC6TY6g32MGx3p6xNaA8/oiBgG+XiWaeVj6U=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -117,14 +117,14 @@ Hello,
 
 I tried another script for the semantic patch language out.
 This source code analysis approach points out that the implementation
-of the function =E2=80=9Cnouveau_connector_of_detect=E2=80=9D contains sti=
-ll
-an unchecked call of the function =E2=80=9Ckmemdup=E2=80=9D.
+of the function =E2=80=9Cget_platform_config=E2=80=9D contains still an un=
+checked call
+of the function =E2=80=9Ckmemdup=E2=80=9D.
 https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
-ivers/gpu/drm/nouveau/nouveau_connector.c?id=3D1c0cc5f1ae5ee5a6913704c0d75=
-a6e99604ee30a#n476
-https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/gpu/drm/nouveau/n=
-ouveau_connector.c#L476
+ivers/infiniband/hw/hfi1/platform.c?id=3D1c0cc5f1ae5ee5a6913704c0d75a6e996=
+04ee30a#n187
+https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/infiniband/hw/hfi=
+1/platform.c#L187
 
 How do you think about to improve it?
 

@@ -2,79 +2,142 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A93E4D4C32
-	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 04:43:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AEACD4E65
+	for <lists+kernel-janitors@lfdr.de>; Sat, 12 Oct 2019 11:04:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728735AbfJLCnN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 11 Oct 2019 22:43:13 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:35268 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728488AbfJLCnN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 11 Oct 2019 22:43:13 -0400
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 1FC7139D8B40F3F35743;
-        Sat, 12 Oct 2019 10:43:11 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.439.0; Sat, 12 Oct 2019 10:43:04 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <codrin.ciubotariu@microchip.com>, <lgirdwood@gmail.com>,
-        <broonie@kernel.org>, <perex@perex.cz>, <tiwai@suse.com>,
-        <nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
-        <ludovic.desroches@microchip.com>, <mirq-linux@rere.qmqm.pl>
-CC:     <alsa-devel@alsa-project.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH -next] ASoC: atmel: select SND_ATMEL_SOC_DMA for SND_ATMEL_SOC_SSC
-Date:   Sat, 12 Oct 2019 10:42:30 +0800
-Message-ID: <20191012024230.159371-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728446AbfJLJEy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 12 Oct 2019 05:04:54 -0400
+Received: from mout.web.de ([212.227.15.14]:37427 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727654AbfJLJEy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 12 Oct 2019 05:04:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1570871069;
+        bh=4TIsx6Rh+9x/bB6zyp3SIkJW0TxwyO1lhLo1ncO+Nx8=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=ZetbjomAVPUWfUXqfoV/IeOhRbXBwp8subazL2+b4Drw+Db1AgGFuH9TMg5RJIJls
+         WGiYglvU7nJKTfb6Hu9IVxvzAAEzEPXNTHCIGHoy5dVrkZ4opw8hZg59DMpqcXMf+O
+         6MzZ/c7KRhHi/nnZuM69PuXJkPo2jv3jlkMxKAew=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.132.155.250]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Mef0K-1ihTMr09DE-00OINI; Sat, 12
+ Oct 2019 11:04:29 +0200
+Subject: [PATCH 0/2] drm/imx: Adjustments for two functions
+To:     dri-devel@lists.freedesktop.org, kernel@pengutronix.de,
+        linux-arm-kernel@lists.infradead.org, linux-imx@nxp.com,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Fabio Estevam <festevam@gmail.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Navid Emamdoost <navid.emamdoost@gmail.com>,
+        Peter Senna Tschudin <peter.senna@collabora.com>
+Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
+        Rob Herring <robh@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+References: <20191004190938.15353-1-navid.emamdoost@gmail.com>
+ <540321eb-7699-1d51-59d5-dde5ffcb8fc4@web.de>
+ <CAEkB2ETtVwtmkpup65D3wqyLn=84ZHt0QRo0dJK5GsV=-L=qVw@mail.gmail.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <2abf545b-023b-853a-95ef-ce99e1896a5d@web.de>
+Date:   Sat, 12 Oct 2019 11:04:17 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+In-Reply-To: <CAEkB2ETtVwtmkpup65D3wqyLn=84ZHt0QRo0dJK5GsV=-L=qVw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:p3z6BfH9ebETAqirXPd60wr+2NKxxK//kiJ73X05X4jlvg9xuUG
+ 6cEBPvu344s9Lw4AUkWfICL+cBHWHxeFQA7nx0FoIhDHDW+i+Yfbknv8p3IGUDlw2OsVIcF
+ 108MtTcHPxdoBx1enurcPrU0DHHceIvcIymZJSJW2za9XNasvHtqXh4c8qhtH9ZK9zGQBAU
+ bd3MIe7yH9VyUFv3OVtTg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+pmNQZf/6AA=:161fIWpKTe3YZQgN39USjy
+ F8P0HfEHQ2NOC6/T7YW5/f1KX8hqw+XIH9d3kdWB4NgefPWtznrrvsz56nJz0fKxU+CPYommG
+ ZWgMPAE/yF8/iZAGR8eNRdrnrzBUfYFKZhQQZPxyHwPFfK3Y2V8RjqFRA40Tg5rNLwxSvurKW
+ Bx+KbdqSH9P4xJdY0cuHTqia/N3m3ps4qyubqlShK95K/QJrnuD7x3iA6U1d1/Mzo9TwExfr+
+ t7IpY/4935W3iLz/z72+400JZCP272Gao9BNlWbES24rEz33NvMOQt3Eqn0ZXB1AP5+aFtu9y
+ 7c3qOGK7tcaIc0VRCn25P+Ajq2XRkYjcmrumeZddOwzcanFFkG4i7GbUCJY4jwTSjFgTOAUEo
+ 7GIpaQA82wx4ofIJCLVtL6XpgVElHD5iTumKw69SHwcNqeU35CvlziWRe/E4RUGwFNp9wVBpc
+ qvbFg0gMsmAoEwzMobDUkGphE4ELJ3p7ee1qchxoZY6OdlJCT89JgHi7EJ9zEcRoj26c3D53F
+ Bp42ULCJD5+eRhSKKHXE7AOUxs0czoiJrzjKsvXtnF5ejkCIVdObbHdX5TA1z8t1NvHlVLV/x
+ NQ8Dl3sQZKyORKkeyhbnaXgLFJ0utySLwPdYQR+8xBNmovMjcFB3MDn4wR2peb3FaRvINbjnX
+ 9PRnjdSETbNv7g9GWnBgoS8/xIJtb8ZnYV4Pii4RnbZI2WveT6qxm198WCJ7PxZpaDOauruag
+ GlV3ZOGQTaJR/sBsIs190R7RQDcdVdttTT2o1jOVJu5IB1It1ILC62j33eQhGguyCnnJ4d7va
+ a084o+P14ugiUbmf7VzaFq07UNF6Wh0moSqQJ3kdyijxKmYVcjGpSQI7rpe9LdLwCf0STjyXy
+ JiwhHHdRu6VNYDr/BRNxH9J95YLNVxlvwYiU2EbHEQfaNG64Myrc51DCM5sC1A1yU7njqwJc0
+ UIrKZA/fyZcltDpUE3snuV0x+KqSVYPZos21c77OCMg69+KNzyb7fboFhFSR3UduIC0Mx5Zro
+ yX9AUbtp3akf6yn/EFMA1TVO+DcOEZqOseLeI6HknXgqV64lyjY/VTYtbfD6GWdAFEZYRrPul
+ esousPdOZWG+htZwgsfm3wrh6o26281VAilq/zf5G6huqHaGQrp0mEN56ZZoyFPGrd7AdQ1fX
+ RD3gziNx//PTZ4paaO+FMmV3cVXMXljI3gQ3rO52KLZKh6Kf8b35zxuofnKBn7jzC47ZBXfR/
+ gEbrnjMDwwFpn1QdulO44aQxbOFz5r+lplvR1djwPmKZGYEV3AbXWWC9S5PM=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If SND_ATMEL_SOC_SSC_PDC=y and SND_ATMEL_SOC_SSC_DMA=m,
-below errors can be found:
-sound/soc/atmel/atmel_ssc_dai.o: In function
-`atmel_ssc_set_audio':
-atmel_ssc_dai.c:(.text+0x6fe): undefined reference to
-`atmel_pcm_dma_platform_register'
-make: *** [vmlinux] Error 1
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Sat, 12 Oct 2019 10:45:45 +0200
 
-After commit 18291410557f ("ASoC: atmel: enable
-SOC_SSC_PDC and SOC_SSC_DMA in Kconfig"), SND_ATMEL_SOC_DMA
-and SND_ATMEL_SOC_SSC are selected by SND_ATMEL_SOC_SSC_DMA,
-SND_ATMEL_SOC_SSC is also selected by SND_ATMEL_SOC_SSC_PDC,
-the results are SND_ATMEL_SOC_DMA=m but SND_ATMEL_SOC_SSC=y,
-so the errors happen.
+Two update suggestions were taken into account
+from static source code analysis.
 
-This patch make SND_ATMEL_SOC_SSC select SND_ATMEL_SOC_DMA.
+Markus Elfring (2):
+  Fix error handling for a kmemdup() call in imx_pd_bind()
+  Fix error handling for a kmemdup() call in imx_ldb_panel_ddc()
 
-Fixes: 18291410557f ("ASoC: atmel: enable SOC_SSC_PDC and SOC_SSC_DMA in Kconfig")
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
----
- sound/soc/atmel/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/imx/imx-ldb.c          | 2 ++
+ drivers/gpu/drm/imx/parallel-display.c | 7 ++++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/atmel/Kconfig b/sound/soc/atmel/Kconfig
-index f118c22..2938f6b 100644
---- a/sound/soc/atmel/Kconfig
-+++ b/sound/soc/atmel/Kconfig
-@@ -19,6 +19,7 @@ config SND_ATMEL_SOC_DMA
- 
- config SND_ATMEL_SOC_SSC
- 	tristate
-+	select SND_ATMEL_SOC_DMA
- 
- config SND_ATMEL_SOC_SSC_PDC
- 	tristate "SoC PCM DAI support for AT91 SSC controller using PDC"
--- 
-2.7.4
+=2D-
+2.23.0
 

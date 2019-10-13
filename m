@@ -2,61 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31FD3D5582
-	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Oct 2019 11:37:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 958D3D57DC
+	for <lists+kernel-janitors@lfdr.de>; Sun, 13 Oct 2019 21:47:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728862AbfJMJg7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 13 Oct 2019 05:36:59 -0400
-Received: from [206.81.8.171] ([206.81.8.171]:55244 "EHLO varon.localdomain"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728621AbfJMJg7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 13 Oct 2019 05:36:59 -0400
-Received: from 127.0.0.1 (varon [127.0.0.1])
-        by varon.localdomain (Postfix) with SMTP id 33C6055C554;
-        Fri, 11 Oct 2019 10:21:07 +0000 (UTC)
-Received: from [76.218.158.171] by 127.0.0.1 id <6764478-71188>; Fri, 11 Oct 2019 15:20:10 +0500
-Message-ID: <995d$$$0v$g4ou1$5-b0$qd@z0vv4wuvo>
-From:   "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
-Reply-To: "Mr Barrister Hans Erich" <dave@dbsoundfactory.com>
-To:     kenocgade@gmail.com
-Subject: RE:PERSONAL LETTER FROM MRS RASHIA AMIRA ??
-Date:   Fri, 11 Oct 19 15:20:10 GMT
-X-Mailer: AOL 7.0 for Windows US sub 118
+        id S1729125AbfJMTp5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 13 Oct 2019 15:45:57 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:40435 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728762AbfJMTp5 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 13 Oct 2019 15:45:57 -0400
+Received: by mail-pg1-f194.google.com with SMTP id e13so598046pga.7;
+        Sun, 13 Oct 2019 12:45:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=7hkgkxn5tX5Lu7EANqMWuMtKmOX/46/hM75I7oWJwRk=;
+        b=Gui7vv2/nvyKokgY5fxhfY/iBSiMluSYqbm1HMiVKDDYNHZT0etzdlFtzyR4nnyt21
+         bAaAjrGhZUNr7WQ7IyyeF3X5/3hkrMeaMZW0ncmMKYNwJT0+/wb/9T4jX8cwuMJVoCIU
+         m68IXhMditLwDuQzR0fLoVK23KNUYrI27VCeFcTABa+TucEXt5OYvrVf7vuTq/Wroi2B
+         NWhJ5Y4RsXX+DVX0BHKhvIed71GFMmeJedlfbs3G1EbFQR1GaqNyM72g1rYWKpQIB5m6
+         QME/TYC8nGZxgPBmVJihnTD6moUGBGxsQRXXHrb32SAy2i6Np6PkgONPnWx4U1bIxhBZ
+         4ybA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=7hkgkxn5tX5Lu7EANqMWuMtKmOX/46/hM75I7oWJwRk=;
+        b=Wu8+4/JxKVmynAlGP/b/mc6Mh+iLGd3yW4CaY54kaFLINkqc2hc0KgadH1oaazm8ll
+         DapKIDSbHWo0TCRDBvCwn5DnlZmLU1niTURpZuNtjfm491W392hYZ1uE/7zE2dHtvpD9
+         TXOdIvbxk1DovI9jsQpVh4iU78cpfUh7FadHRDeeftch4dnRHIDj/Ypkup2FjOsOfDjO
+         d2HppO7V6dY2paaJ7OHZ4BXCXWf1q5RckDlLmHPqBa42qnK1LRdJ/nuIWEpCwjlbwwgX
+         ww0iuQGr3ia38bZiA7Z/DRdDKwgGnCpZpK0ExIZXvYUgVmfpLzJ3J9X8FB+J9y/QCc2j
+         2FTA==
+X-Gm-Message-State: APjAAAWj2sGW7MpquRZXHkCSvM5PKZhJShp9jeIF5YTfzz70uXyMTKtO
+        6TklTg7nls8E+jf2nBAyg/Y=
+X-Google-Smtp-Source: APXvYqwItPee5hydRQfqLUl1ahdjZNyK0GLueTxXFcAuqgwUqW6nDSxU1XEPnIlLxg3eR3m/wVoN9A==
+X-Received: by 2002:a17:90a:80c2:: with SMTP id k2mr32284786pjw.92.1570995956570;
+        Sun, 13 Oct 2019 12:45:56 -0700 (PDT)
+Received: from [192.168.86.235] (c-73-241-150-70.hsd1.ca.comcast.net. [73.241.150.70])
+        by smtp.gmail.com with ESMTPSA id h70sm14384029pgc.48.2019.10.13.12.45.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 13 Oct 2019 12:45:55 -0700 (PDT)
+Subject: Re: tcp: Checking a kmemdup() call in tcp_time_wait()
+To:     Markus Elfring <Markus.Elfring@web.de>, netdev@vger.kernel.org,
+        Alexei Starovoitov <ast@kernel.org>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Hideaki Yoshifuji <yoshfuji@linux-ipv6.org>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Aditya Pakki <pakki001@umn.edu>,
+        Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>
+References: <a219235e-bad5-8a9d-0f3e-c05d5cb11df1@web.de>
+From:   Eric Dumazet <eric.dumazet@gmail.com>
+Message-ID: <124b41aa-7ba5-f00c-ab73-cb8e6a2ae75f@gmail.com>
+Date:   Sun, 13 Oct 2019 12:45:53 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary="C.F387.BA..3D"
-X-Priority: 3
-X-MSMail-Priority: Normal
+In-Reply-To: <a219235e-bad5-8a9d-0f3e-c05d5cb11df1@web.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
---C.F387.BA..3D
-Content-Type: text/plain;
-Content-Transfer-Encoding: quoted-printable
 
-Greetings
+On 10/12/19 7:51 AM, Markus Elfring wrote:
+> Hello,
+> 
+> I tried another script for the semantic patch language out.
+> This source code analysis approach points out that the implementation
+> of the function “tcp_time_wait” contains also a call of the function “kmemdup”.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/ipv4/tcp_minisocks.c?id=1c0cc5f1ae5ee5a6913704c0d75a6e99604ee30a#n306
+> https://elixir.bootlin.com/linux/v5.4-rc2/source/net/ipv4/tcp_minisocks.c#L306
+> 
+> * Do you find the usage of the macro call “BUG_ON” still appropriate at this place?
+>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/scripts/checkpatch.pl?id=1c0cc5f1ae5ee5a6913704c0d75a6e99604ee30a#n4080
+> 
+> * Is there a need to adjust the error handling here?
 
-My name is Barrister Hans Erich.
+Presumably the BUG would trigger if a really disturbing bug happened.
 
-I have a client who is interested to invest in your country, she is a well=
- known politician in her country and deserve a lucrative investment partne=
-rship with you outside her country without any delay   Please can you mana=
-ge such investment please Kindly reply for further details.
+There is no chance a timewait socket could be created with a MD5 key, 
+if the established socket that is the 'parent' of the timewait
+has not a MD5 context itself.
 
-Your full nameS -----------
+The parent socket only could have MD5 context if tcp_md5sig_pool_populated
+could have been set to true.
 
+Once tcp_md5sig_pool_populated is true it can never go back to false.
 
-Your urgent response will be appreciated
+So the bug here would be that a socket  had a successful MD5 context,
+and following tcp_alloc_md5sig_pool() would return false.
 
-Thank you and God bless you.
-
-Barrister Hans Erich
-
-Yours sincerely,
-Barrister Hans Erich
-
---C.F387.BA..3D--
+We can discuss of all BUG() in general, some people simply disable
+all of them (cf CONFIG_BUG), but this particular one does not seem
+specially bad to me, compared to others.
 

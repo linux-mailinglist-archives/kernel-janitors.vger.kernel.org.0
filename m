@@ -2,29 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AE1CD60D9
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Oct 2019 13:02:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0A76D6224
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Oct 2019 14:16:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731830AbfJNLCE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Oct 2019 07:02:04 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:34832 "EHLO
+        id S1731004AbfJNMQV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Oct 2019 08:16:21 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:37215 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731824AbfJNLCE (ORCPT
+        with ESMTP id S1730314AbfJNMQU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Oct 2019 07:02:04 -0400
+        Mon, 14 Oct 2019 08:16:20 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iJy6z-0003lu-93; Mon, 14 Oct 2019 11:02:01 +0000
+        id 1iJzGn-0001jU-Ao; Mon, 14 Oct 2019 12:16:13 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Claudiu Beznea <claudiu.beznea@gmail.com>,
-        devel@driverdev.osuosl.org
+To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Tomohiro Kusumi <kusumi.tomohiro@jp.fujitsu.com>,
+        Kei Tokunaga <tokunaga.keiich@jp.fujitsu.com>,
+        Xiao Guangrong <xiaoguangrong@cn.fujitsu.com>,
+        linux-scsi@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] staging: wlan-ng: fix exit return when sme->key_idx >= NUM_WEPKEYS
-Date:   Mon, 14 Oct 2019 12:02:01 +0100
-Message-Id: <20191014110201.9874-1-colin.king@canonical.com>
+Subject: [PATCH] scsi: fix unintended sign extension on left shifts
+Date:   Mon, 14 Oct 2019 13:16:13 +0100
+Message-Id: <20191014121613.21999-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,36 +39,86 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently the exit return path when sme->key_idx >= NUM_WEPKEYS is via
-label 'exit' and this checks if result is non-zero, however result has
-not been initialized and contains garbage.  Fix this by replacing the
-goto with a return with the error code.
+Shifting a u8 left will cause the value to be promoted to an integer. If
+the top bit of the u8 is set then the following conversion to an u64 will
+sign extend the value causing the upper 32 bits to be set in the result.
 
-Addresses-Coverity: ("Uninitialized scalar variable")
-Fixes: 0ca6d8e74489 ("Staging: wlan-ng: replace switch-case statements with macro")
+Fix this by casting the u8 value to a u64 before the shift.
 
+Fixes: bf8162354233 ("[SCSI] add scsi trace core functions and put trace points")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/staging/wlan-ng/cfg80211.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/scsi/scsi_trace.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/staging/wlan-ng/cfg80211.c b/drivers/staging/wlan-ng/cfg80211.c
-index eee1998c4b18..fac38c842ac5 100644
---- a/drivers/staging/wlan-ng/cfg80211.c
-+++ b/drivers/staging/wlan-ng/cfg80211.c
-@@ -469,10 +469,8 @@ static int prism2_connect(struct wiphy *wiphy, struct net_device *dev,
- 	/* Set the encryption - we only support wep */
- 	if (is_wep) {
- 		if (sme->key) {
--			if (sme->key_idx >= NUM_WEPKEYS) {
--				err = -EINVAL;
--				goto exit;
--			}
-+			if (sme->key_idx >= NUM_WEPKEYS)
-+				return -EINVAL;
+diff --git a/drivers/scsi/scsi_trace.c b/drivers/scsi/scsi_trace.c
+index 0f17e7dac1b0..1d3a5a2dc229 100644
+--- a/drivers/scsi/scsi_trace.c
++++ b/drivers/scsi/scsi_trace.c
+@@ -38,7 +38,7 @@ scsi_trace_rw10(struct trace_seq *p, unsigned char *cdb, int len)
+ 	const char *ret = trace_seq_buffer_ptr(p);
+ 	sector_t lba = 0, txlen = 0;
  
- 			result = prism2_domibset_uint32(wlandev,
- 				DIDMIB_DOT11SMT_PRIVACYTABLE_WEPDEFAULTKEYID,
+-	lba |= (cdb[2] << 24);
++	lba |= ((u64)cdb[2] << 24);
+ 	lba |= (cdb[3] << 16);
+ 	lba |= (cdb[4] << 8);
+ 	lba |=  cdb[5];
+@@ -63,11 +63,11 @@ scsi_trace_rw12(struct trace_seq *p, unsigned char *cdb, int len)
+ 	const char *ret = trace_seq_buffer_ptr(p);
+ 	sector_t lba = 0, txlen = 0;
+ 
+-	lba |= (cdb[2] << 24);
++	lba |= ((u64)cdb[2] << 24);
+ 	lba |= (cdb[3] << 16);
+ 	lba |= (cdb[4] << 8);
+ 	lba |=  cdb[5];
+-	txlen |= (cdb[6] << 24);
++	txlen |= ((u64)cdb[6] << 24);
+ 	txlen |= (cdb[7] << 16);
+ 	txlen |= (cdb[8] << 8);
+ 	txlen |=  cdb[9];
+@@ -90,11 +90,11 @@ scsi_trace_rw16(struct trace_seq *p, unsigned char *cdb, int len)
+ 	lba |= ((u64)cdb[3] << 48);
+ 	lba |= ((u64)cdb[4] << 40);
+ 	lba |= ((u64)cdb[5] << 32);
+-	lba |= (cdb[6] << 24);
++	lba |= ((u64)cdb[6] << 24);
+ 	lba |= (cdb[7] << 16);
+ 	lba |= (cdb[8] << 8);
+ 	lba |=  cdb[9];
+-	txlen |= (cdb[10] << 24);
++	txlen |= ((u64)cdb[10] << 24);
+ 	txlen |= (cdb[11] << 16);
+ 	txlen |= (cdb[12] << 8);
+ 	txlen |=  cdb[13];
+@@ -140,7 +140,7 @@ scsi_trace_rw32(struct trace_seq *p, unsigned char *cdb, int len)
+ 	lba |= ((u64)cdb[13] << 48);
+ 	lba |= ((u64)cdb[14] << 40);
+ 	lba |= ((u64)cdb[15] << 32);
+-	lba |= (cdb[16] << 24);
++	lba |= ((u64)cdb[16] << 24);
+ 	lba |= (cdb[17] << 16);
+ 	lba |= (cdb[18] << 8);
+ 	lba |=  cdb[19];
+@@ -148,7 +148,7 @@ scsi_trace_rw32(struct trace_seq *p, unsigned char *cdb, int len)
+ 	ei_lbrt |= (cdb[21] << 16);
+ 	ei_lbrt |= (cdb[22] << 8);
+ 	ei_lbrt |=  cdb[23];
+-	txlen |= (cdb[28] << 24);
++	txlen |= ((u64)cdb[28] << 24);
+ 	txlen |= (cdb[29] << 16);
+ 	txlen |= (cdb[30] << 8);
+ 	txlen |=  cdb[31];
+@@ -201,7 +201,7 @@ scsi_trace_service_action_in(struct trace_seq *p, unsigned char *cdb, int len)
+ 	lba |= ((u64)cdb[3] << 48);
+ 	lba |= ((u64)cdb[4] << 40);
+ 	lba |= ((u64)cdb[5] << 32);
+-	lba |= (cdb[6] << 24);
++	lba |= ((u64)cdb[6] << 24);
+ 	lba |= (cdb[7] << 16);
+ 	lba |= (cdb[8] << 8);
+ 	lba |=  cdb[9];
 -- 
 2.20.1
 

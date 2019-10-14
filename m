@@ -2,150 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7355BD5BA6
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Oct 2019 08:50:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A55CD5C01
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Oct 2019 09:14:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730198AbfJNGuq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Oct 2019 02:50:46 -0400
-Received: from mailout1.samsung.com ([203.254.224.24]:33689 "EHLO
-        mailout1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730185AbfJNGup (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Oct 2019 02:50:45 -0400
-Received: from epcas1p2.samsung.com (unknown [182.195.41.46])
-        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20191014065041epoutp0182d769fb617bb6ced13cc0ffd0fca578~NcMZDAuFH1168211682epoutp01b
-        for <kernel-janitors@vger.kernel.org>; Mon, 14 Oct 2019 06:50:41 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20191014065041epoutp0182d769fb617bb6ced13cc0ffd0fca578~NcMZDAuFH1168211682epoutp01b
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1571035841;
-        bh=1eQGo33uKjTdCkkdKahf1ARNyu1XQkPjhgfubEbxddw=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=lginjuMi+IaIM6K5HCv0ec661XLxMEJYP1prYNou+rNtOuvzUHmIpF9QXioW6u7sy
-         RuHZIacTbjA/iBw+Pj3+SpgZBfoZVt+yj0SlxS1TwVbGfyvzn8sL0nTQEmW+M4YNzP
-         AKgKkfNlpZF1HdCAAsTOQFvYjdfTBKNZyljsY7+c=
-Received: from epsnrtp5.localdomain (unknown [182.195.42.166]) by
-        epcas1p3.samsung.com (KnoxPortal) with ESMTP id
-        20191014065041epcas1p358c1ec08078fb7c3a8713c609fd83d1e~NcMYqLBoq1509415094epcas1p3T;
-        Mon, 14 Oct 2019 06:50:41 +0000 (GMT)
-Received: from epsmges1p3.samsung.com (unknown [182.195.40.154]) by
-        epsnrtp5.localdomain (Postfix) with ESMTP id 46s8Mg1RcBzMqYkh; Mon, 14 Oct
-        2019 06:50:39 +0000 (GMT)
-Received: from epcas1p4.samsung.com ( [182.195.41.48]) by
-        epsmges1p3.samsung.com (Symantec Messaging Gateway) with SMTP id
-        A9.A8.04085.FBA14AD5; Mon, 14 Oct 2019 15:50:39 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-        epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
-        20191014065038epcas1p38813e16958dbdacf5d3201b677429f22~NcMWDZjvH1290112901epcas1p34;
-        Mon, 14 Oct 2019 06:50:38 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20191014065038epsmtrp269318e5e70208b7ddacaf8a128ce1695~NcMWCkLmu1524115241epsmtrp20;
-        Mon, 14 Oct 2019 06:50:38 +0000 (GMT)
-X-AuditID: b6c32a37-e19ff70000000ff5-58-5da41abf4ee3
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        69.0D.04081.EBA14AD5; Mon, 14 Oct 2019 15:50:38 +0900 (KST)
-Received: from [10.113.221.102] (unknown [10.113.221.102]) by
-        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20191014065038epsmtip1a31c68c943611dcbd837e7577bf5392a~NcMVuCBb50984009840epsmtip1a;
-        Mon, 14 Oct 2019 06:50:38 +0000 (GMT)
-Subject: Re: clk: samsung: Checking a kmemdup() call in
- _samsung_clk_register_pll()
-To:     Markus Elfring <Markus.Elfring@web.de>, linux-clk@vger.kernel.org,
-        linux-samsung-soc@vger.kernel.org,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        Tomasz Figa <tomasz.figa@gmail.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, Aditya Pakki <pakki001@umn.edu>,
-        Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>
-From:   Chanwoo Choi <cw00.choi@samsung.com>
-Organization: Samsung Electronics
-Message-ID: <725ace30-a4a7-25dd-2351-f007bb8b35ed@samsung.com>
-Date:   Mon, 14 Oct 2019 15:55:38 +0900
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
-        Thunderbird/60.9.0
+        id S1730161AbfJNHOE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Oct 2019 03:14:04 -0400
+Received: from mail.kernel.org ([198.145.29.99]:33210 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729928AbfJNHOE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 14 Oct 2019 03:14:04 -0400
+Received: from localhost (unknown [122.167.124.160])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 638312083B;
+        Mon, 14 Oct 2019 07:14:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571037244;
+        bh=PAFFT3cTE0jAHpXoWLo9/M6t2Qj+7XgxtjVu/+SGEN8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZQ4R2MI2ZMNXkoe1tTd4su0WqdIvszSZ50M7njjgD76dWRh8WPuL7X0Y1BBQvYA6o
+         XYc02BXjIeRZ9QL+cUPbyhUHki3yImilorvNoVaH/pcn9KP3pm5LbmmUjPmKpY7jEk
+         MJxNDsNktoe+bfHWKQ34bqi1E0+Woc5X9P7iSJ4c=
+Date:   Mon, 14 Oct 2019 12:44:00 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Paul Cercueil <paul@crapouillou.net>
+Cc:     Markus Elfring <Markus.Elfring@web.de>, dmaengine@vger.kernel.org,
+        Dan Williams <dan.j.williams@intel.com>,
+        Zubair Lutfullah Kakakhel <Zubair.Kakakhel@imgtec.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Alex Smith <alex.smith@imgtec.com>
+Subject: Re: [PATCH] dmaengine: jz4780: Use devm_platform_ioremap_resource()
+ in jz4780_dma_probe()
+Message-ID: <20191014071400.GD2654@vkoul-mobl>
+References: <5dd19f28-349a-4957-ea3a-6aebbd7c97e2@web.de>
+ <1569353552.1911.0@crapouillou.net>
 MIME-Version: 1.0
-In-Reply-To: <c1bc5e4d-0802-4485-2c07-248bab2a3330@web.de>
-Content-Language: en-US
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrLJsWRmVeSWpSXmKPExsWy7bCmge5+qSWxBk8Oclo8a5zOarH1lrTF
-        iXln2S0+9txjtbi8aw6bxYzz+5gs/s96zmpx8ZSrxeLlPxktDr9pZ7X4d20ji8W0L4vYLVbt
-        +sPowOvx/kYru8fOWXfZPTat6mTz6NuyitHj6sImdo/Pm+Q8bj/bxhLAHpVtk5GamJJapJCa
-        l5yfkpmXbqvkHRzvHG9qZmCoa2hpYa6kkJeYm2qr5OIToOuWmQN0rJJCWWJOKVAoILG4WEnf
-        zqYov7QkVSEjv7jEVim1ICWnwLJArzgxt7g0L10vOT/XytDAwMgUqDAhO2PR3X7mgt2cFb93
-        /GdvYPzL3sXIySEhYCLxc+ku5i5GLg4hgR2MEhMffmKBcD4xSvS/OcYI4XxjlPg47QgLTMuB
-        3u3sEIm9jBJb7r2Ect4zSrz+OYENpEpYIFRixZO7rCAJEYE+Jom2favBqpgFLjJKLLz3jwmk
-        ik1AS2L/ixtgHfwCihJXfzxmBLF5Bewk1p34DWazCKhKLFw+Bcjm4BAViJA4/TURokRQ4uTM
-        J2AncQpYSSx+8w+snFlAXOLWk/lMELa8RPPW2WDfSQisYpe4O/cdE8QPLhJ7DhxkhLCFJV4d
-        3wINDimJz+/2skHY1RIrTx5hg2juAPpz/wVWiISxxP6lk5lADmIW0JRYv0sfIqwosfP3XKgj
-        +CTefe1hBSmREOCV6GgTgihRlrj84C7UCZISi9s72SYwKs1C8s4sJC/MQvLCLIRlCxhZVjGK
-        pRYU56anFhsWGCPH9yZGcFLWMt/BuOGczyFGAQ5GJR5ehbTFsUKsiWXFlbmHGCU4mJVEeBkm
-        LIgV4k1JrKxKLcqPLyrNSS0+xGgKDOyJzFKiyfnAjJFXEm9oamRsbGxhYmhmamioJM7Lyjg/
-        VkggPbEkNTs1tSC1CKaPiYNTqoExu2u/ikPa/Yhd2c3XC3Wq+p399k1UN+KyYbSYMWFThxb/
-        RN/S205KPxJPpm07qPdb9to1lxeWpupp3A1LxNTWPBd7EqnCfnZSU57+Cb6rCyZNfWrJZPTr
-        Co92fjzfxJP9bjF7ko7Od5nKw6FqyhxW1/X856Zfu66rPd3/IijuR8+ZgoSLm1YrsRRnJBpq
-        MRcVJwIABv194uADAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrBIsWRmVeSWpSXmKPExsWy7bCSnO4+qSWxBtuPKlk8a5zOarH1lrTF
-        iXln2S0+9txjtbi8aw6bxYzz+5gs/s96zmpx8ZSrxeLlPxktDr9pZ7X4d20ji8W0L4vYLVbt
-        +sPowOvx/kYru8fOWXfZPTat6mTz6NuyitHj6sImdo/Pm+Q8bj/bxhLAHsVlk5Kak1mWWqRv
-        l8CVsehuP3PBbs6K3zv+szcw/mXvYuTkkBAwkTjQux3I5uIQEtjNKNGzuIERIiEpMe3iUeYu
-        Rg4gW1ji8OFiiJq3jBKz3jWzgNQIC4RKrHhylxUkISIwgUliz865jCAOs8BFRolD/9azQrT0
-        MkqsO/UVrIVNQEti/4sbbCA2v4CixNUfj8HW8QrYSaw78RvMZhFQlVi4fAqYLSoQIfF8+w2o
-        GkGJkzOfgM3hFLCSWPzmH1icWUBd4s+8S8wQtrjErSfzmSBseYnmrbOZJzAKz0LSPgtJyywk
-        LbOQtCxgZFnFKJlaUJybnltsWGCYl1quV5yYW1yal66XnJ+7iREcn1qaOxgvL4k/xCjAwajE
-        w3sieXGsEGtiWXFl7iFGCQ5mJRFehgkLYoV4UxIrq1KL8uOLSnNSiw8xSnOwKInzPs07Fikk
-        kJ5YkpqdmlqQWgSTZeLglGpgrH2yJuJb7TWDadv+PwpLys84lzlH9PNUuf/W3to6zQlXzWX3
-        Bf3p3eIau7g0cJ55ionA3dQdu8Iu9xbc9PniljNlRskG1h3+AWsyV58M+8VTrzfR+rdDVcfL
-        AhXWu34TF2h82Pug5kiHiRWf7L8l0lvaWTpP1dn8UVkQfe3m3W8N/zec/1b7RImlOCPRUIu5
-        qDgRAISKLRHLAgAA
-X-CMS-MailID: 20191014065038epcas1p38813e16958dbdacf5d3201b677429f22
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: SVC_REQ_APPROVE
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20191012141739epcas3p31e41c151b30d49c94aeb933aa42dc9f7
-References: <CGME20191012141739epcas3p31e41c151b30d49c94aeb933aa42dc9f7@epcas3p3.samsung.com>
-        <c1bc5e4d-0802-4485-2c07-248bab2a3330@web.de>
+In-Reply-To: <1569353552.1911.0@crapouillou.net>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
+On 24-09-19, 21:32, Paul Cercueil wrote:
+> Hi Markus,
+> 
+> 
+> Le dim. 22 sept. 2019 � 11:25, Markus Elfring <Markus.Elfring@web.de> a
+> �crit :
+> > From: Markus Elfring <elfring@users.sourceforge.net>
+> > Date: Sun, 22 Sep 2019 11:18:27 +0200
+> > 
+> > Simplify this function implementation a bit by using
+> > a known wrapper function.
+> > 
+> > This issue was detected by using the Coccinelle software.
+> > 
+> > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> 
+> Looks good to me.
+> 
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 
-On 19. 10. 12. 오후 11:17, Markus Elfring wrote:
-> Hello,
-> 
-> I tried another script for the semantic patch language out.
-> This source code analysis approach points out that the implementation
-> of the function “_samsung_clk_register_pll” contains also a call
-> of the function “kmemdup”.
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/clk/samsung/clk-pll.c?id=1c0cc5f1ae5ee5a6913704c0d75a6e99604ee30a#n1275
-> https://protect2.fireeye.com/url?k=7e77b0ebee9a0c3e.7e763ba4-43f341fdfe1d32b1&u=https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/clk/samsung/clk-pll.c#L1275
-> 
-> * Do you find the usage of the format string “%s: could not allocate
->   rate table for %s\n” still appropriate at this place?
-> 
-> * Is there a need to adjust the error handling here?
-
-drivers/clk/samsung/clk-pll.c considers the case of 'pll->rate_table is NULL'
-So, maybe just show the warning message if failed to allocate memory
-of 'pll->rate_table'. Bu, IMHO, the error handling is necessary
-in order to support what 'pll_clk->rate_table' isn't NULL.
-
-> 
-> Regards,
-> Markus
-> 
-> 
-
+Did you mean Acked or Reviewed ...??
 
 -- 
-Best Regards,
-Chanwoo Choi
-Samsung Electronics
+~Vinod

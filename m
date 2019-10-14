@@ -2,97 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5EECD60C4
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Oct 2019 12:58:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72923D60CE
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Oct 2019 13:00:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731790AbfJNK6e (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Oct 2019 06:58:34 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:35748 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731733AbfJNK6e (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Oct 2019 06:58:34 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9EAsdlB049219;
-        Mon, 14 Oct 2019 10:58:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=JxNFKJQ1/TwQHwpYDoccS955n/1smajXveBFvYBY/vw=;
- b=P4RITGS+ZeZG4xTWChbqpoa27cvsqfcCtMiMAxd6XEZvSWrXomL1tlJgad458jnITTa7
- LQcm1T4mVWtbk5Dd7r6u7Avs2N6T9zkCyurErBEWN5MVSz1xvxvRC/mrK2pzFGOuz8Am
- 9u+xqY0G9jFRP+G5uSKreboIG8RWOP7AU+Q4MFd2I/iAZvPVadrtfx1Ch/h4gJQvQfnY
- NPB9CjNJfydgBD2+UaiyiPSEYQCgdk2IBkRPK4BuhtQ+lUaboVtAQtlc6k5OAzLs0coS
- GPc8VczDz4o7ocgnm/V2bReHcd4BZTF+5TG+pLqw6N+INOPKsjhincNuLk38lPLq8F8H eQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 2vk68u83mm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 14 Oct 2019 10:58:13 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9EAvhr6185611;
-        Mon, 14 Oct 2019 10:58:12 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2vks06j1xj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 14 Oct 2019 10:58:12 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x9EAw9WQ011035;
-        Mon, 14 Oct 2019 10:58:09 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 14 Oct 2019 10:58:08 +0000
-Date:   Mon, 14 Oct 2019 13:58:01 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Darren Hart <dvhart@infradead.org>,
-        Ayman Bagabas <ayman.bagabas@gmail.com>
-Cc:     Andy Shevchenko <andy@infradead.org>,
-        Mattias Jacobsson <2pi@mok.nu>, Takashi Iwai <tiwai@suse.de>,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] platform/x86: huawei-wmi: Fix a precision vs width printf bug
-Message-ID: <20191014105801.GA31759@mwanda>
+        id S1731733AbfJNLAJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Oct 2019 07:00:09 -0400
+Received: from mga12.intel.com ([192.55.52.136]:41434 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731305AbfJNLAJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 14 Oct 2019 07:00:09 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Oct 2019 04:00:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,295,1566889200"; 
+   d="scan'208";a="207948220"
+Received: from kuha.fi.intel.com ([10.237.72.53])
+  by fmsmga001.fm.intel.com with SMTP; 14 Oct 2019 04:00:05 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 14 Oct 2019 14:00:04 +0300
+Date:   Mon, 14 Oct 2019 14:00:04 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Biju Das <biju.das@bp.renesas.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2] usb: typec: fix an IS_ERR() vs NULL bug in
+ hd3ss3220_probe()
+Message-ID: <20191014110004.GA17542@kuha.fi.intel.com>
+References: <20191011135935.GB32191@kuha.fi.intel.com>
+ <20191011185055.GA20972@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9409 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910140107
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9409 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910140106
+In-Reply-To: <20191011185055.GA20972@mwanda>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This was supposed to be precision "%.*s" instead of width "%*s".  It's
-possible that this results in printing beyond the end of the string.
+On Fri, Oct 11, 2019 at 09:50:55PM +0300, Dan Carpenter wrote:
+> The device_get_named_child_node() function doesn't return error
+> pointers, it returns NULL on error.
+> 
+> Fixes: 1c48c759ef4b ("usb: typec: driver for TI HD3SS3220 USB Type-C DRP port controller")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Fixes: a970b95345ab ("platform/x86: huawei-wmi: Add debugfs support")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/platform/x86/huawei-wmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-diff --git a/drivers/platform/x86/huawei-wmi.c b/drivers/platform/x86/huawei-wmi.c
-index 6720f78c60c2..69a7be8dafcd 100644
---- a/drivers/platform/x86/huawei-wmi.c
-+++ b/drivers/platform/x86/huawei-wmi.c
-@@ -612,7 +612,7 @@ static void huawei_wmi_debugfs_call_dump(struct seq_file *m, void *data,
- 		seq_printf(m, "0x%llx", obj->integer.value);
- 		break;
- 	case ACPI_TYPE_STRING:
--		seq_printf(m, "\"%*s\"", obj->string.length, obj->string.pointer);
-+		seq_printf(m, "\"%.*s\"", obj->string.length, obj->string.pointer);
- 		break;
- 	case ACPI_TYPE_BUFFER:
- 		seq_puts(m, "{");
+> ---
+> v2: remove -ENODEV instead of -EIO
+> 
+>  drivers/usb/typec/hd3ss3220.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/usb/typec/hd3ss3220.c b/drivers/usb/typec/hd3ss3220.c
+> index 9715600aeb04..8afaf5768a17 100644
+> --- a/drivers/usb/typec/hd3ss3220.c
+> +++ b/drivers/usb/typec/hd3ss3220.c
+> @@ -172,8 +172,8 @@ static int hd3ss3220_probe(struct i2c_client *client,
+>  	hd3ss3220_set_source_pref(hd3ss3220,
+>  				  HD3SS3220_REG_GEN_CTRL_SRC_PREF_DRP_DEFAULT);
+>  	connector = device_get_named_child_node(hd3ss3220->dev, "connector");
+> -	if (IS_ERR(connector))
+> -		return PTR_ERR(connector);
+> +	if (!connector)
+> +		return -ENODEV;
+>  
+>  	hd3ss3220->role_sw = fwnode_usb_role_switch_get(connector);
+>  	fwnode_handle_put(connector);
+> -- 
+> 2.20.1
+
+thanks,
+
 -- 
-2.20.1
-
+heikki

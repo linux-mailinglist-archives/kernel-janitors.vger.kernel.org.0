@@ -2,81 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 72923D60CE
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Oct 2019 13:00:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5AE1CD60D9
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Oct 2019 13:02:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731733AbfJNLAJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Oct 2019 07:00:09 -0400
-Received: from mga12.intel.com ([192.55.52.136]:41434 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731305AbfJNLAJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Oct 2019 07:00:09 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Oct 2019 04:00:08 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,295,1566889200"; 
-   d="scan'208";a="207948220"
-Received: from kuha.fi.intel.com ([10.237.72.53])
-  by fmsmga001.fm.intel.com with SMTP; 14 Oct 2019 04:00:05 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 14 Oct 2019 14:00:04 +0300
-Date:   Mon, 14 Oct 2019 14:00:04 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Biju Das <biju.das@bp.renesas.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v2] usb: typec: fix an IS_ERR() vs NULL bug in
- hd3ss3220_probe()
-Message-ID: <20191014110004.GA17542@kuha.fi.intel.com>
-References: <20191011135935.GB32191@kuha.fi.intel.com>
- <20191011185055.GA20972@mwanda>
+        id S1731830AbfJNLCE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Oct 2019 07:02:04 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:34832 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731824AbfJNLCE (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 14 Oct 2019 07:02:04 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iJy6z-0003lu-93; Mon, 14 Oct 2019 11:02:01 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Claudiu Beznea <claudiu.beznea@gmail.com>,
+        devel@driverdev.osuosl.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] staging: wlan-ng: fix exit return when sme->key_idx >= NUM_WEPKEYS
+Date:   Mon, 14 Oct 2019 12:02:01 +0100
+Message-Id: <20191014110201.9874-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191011185055.GA20972@mwanda>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Oct 11, 2019 at 09:50:55PM +0300, Dan Carpenter wrote:
-> The device_get_named_child_node() function doesn't return error
-> pointers, it returns NULL on error.
-> 
-> Fixes: 1c48c759ef4b ("usb: typec: driver for TI HD3SS3220 USB Type-C DRP port controller")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Currently the exit return path when sme->key_idx >= NUM_WEPKEYS is via
+label 'exit' and this checks if result is non-zero, however result has
+not been initialized and contains garbage.  Fix this by replacing the
+goto with a return with the error code.
 
-> ---
-> v2: remove -ENODEV instead of -EIO
-> 
->  drivers/usb/typec/hd3ss3220.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/hd3ss3220.c b/drivers/usb/typec/hd3ss3220.c
-> index 9715600aeb04..8afaf5768a17 100644
-> --- a/drivers/usb/typec/hd3ss3220.c
-> +++ b/drivers/usb/typec/hd3ss3220.c
-> @@ -172,8 +172,8 @@ static int hd3ss3220_probe(struct i2c_client *client,
->  	hd3ss3220_set_source_pref(hd3ss3220,
->  				  HD3SS3220_REG_GEN_CTRL_SRC_PREF_DRP_DEFAULT);
->  	connector = device_get_named_child_node(hd3ss3220->dev, "connector");
-> -	if (IS_ERR(connector))
-> -		return PTR_ERR(connector);
-> +	if (!connector)
-> +		return -ENODEV;
->  
->  	hd3ss3220->role_sw = fwnode_usb_role_switch_get(connector);
->  	fwnode_handle_put(connector);
-> -- 
-> 2.20.1
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: 0ca6d8e74489 ("Staging: wlan-ng: replace switch-case statements with macro")
 
-thanks,
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/staging/wlan-ng/cfg80211.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
+diff --git a/drivers/staging/wlan-ng/cfg80211.c b/drivers/staging/wlan-ng/cfg80211.c
+index eee1998c4b18..fac38c842ac5 100644
+--- a/drivers/staging/wlan-ng/cfg80211.c
++++ b/drivers/staging/wlan-ng/cfg80211.c
+@@ -469,10 +469,8 @@ static int prism2_connect(struct wiphy *wiphy, struct net_device *dev,
+ 	/* Set the encryption - we only support wep */
+ 	if (is_wep) {
+ 		if (sme->key) {
+-			if (sme->key_idx >= NUM_WEPKEYS) {
+-				err = -EINVAL;
+-				goto exit;
+-			}
++			if (sme->key_idx >= NUM_WEPKEYS)
++				return -EINVAL;
+ 
+ 			result = prism2_domibset_uint32(wlandev,
+ 				DIDMIB_DOT11SMT_PRIVACYTABLE_WEPDEFAULTKEYID,
 -- 
-heikki
+2.20.1
+

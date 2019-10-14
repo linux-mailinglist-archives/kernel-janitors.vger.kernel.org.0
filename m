@@ -2,88 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68056D6391
-	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Oct 2019 15:16:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 380F7D66AB
+	for <lists+kernel-janitors@lfdr.de>; Mon, 14 Oct 2019 17:58:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730818AbfJNNQM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Oct 2019 09:16:12 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:38785 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727789AbfJNNQM (ORCPT
+        id S1731952AbfJNP6H (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 14 Oct 2019 11:58:07 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:44063 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726304AbfJNP6G (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Oct 2019 09:16:12 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iK0Cn-0005Vt-14; Mon, 14 Oct 2019 13:16:09 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jaroslav Kysela <perex@perex.cz>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+        Mon, 14 Oct 2019 11:58:06 -0400
+Received: by mail-pf1-f195.google.com with SMTP id q21so10615228pfn.11;
+        Mon, 14 Oct 2019 08:58:06 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=0z7F7bJ7/hu+WTeZGPgI6D7KPNJezuJIyaVC8SWKK1E=;
+        b=YskcesWD2beDyuMKTK8N/YROcojIIBT8xID79EK5u2yBwQ76mqb5U2cGHTgEx8iQUS
+         sLuYN2/xPZjoKByNVH2KotiL0DmDaoQVJujWIpIvCZ2cUM2Ele+O4a5DSno/0z/b8B3/
+         rF9zd0p/qLe1pVM1fOQudcXxewRWCcc6jXeigZ+QMuDSsUnVl3NRV9eW8LdCkhVhCCQ2
+         EpfE+qNJ6wDrbSukDHE7JGVlLZsPv9tjMOIbqETVhgE5482f+7cXAcGZcT0BNKFzYIlZ
+         TRBY7kaVyHWp+Svkk3TDIPDZGaLZAyu4ljrKRWvZWTbkXowxnOPqeOnE9m96tweey2xi
+         rrHw==
+X-Gm-Message-State: APjAAAUGZ2xlZJoxglv9yioUtrS82g64635ucvtplS7DWz12lq0Efd6b
+        uTmJBDQqJNrzjYveKIfQ95b462sg
+X-Google-Smtp-Source: APXvYqzjcEd43LyeZWsfCYRMvopdQ15WkebUad1/EyHRqDoR7f0gEEzovBnFPtYbHY9dYzRCBsMWFw==
+X-Received: by 2002:a65:6394:: with SMTP id h20mr33411699pgv.272.1571068685537;
+        Mon, 14 Oct 2019 08:58:05 -0700 (PDT)
+Received: from desktop-bart.svl.corp.google.com ([2620:15c:2cd:202:4308:52a3:24b6:2c60])
+        by smtp.gmail.com with ESMTPSA id 127sm16623066pfy.56.2019.10.14.08.58.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Oct 2019 08:58:04 -0700 (PDT)
+Subject: Re: [PATCH] scsi: fix unintended sign extension on left shifts
+To:     Colin King <colin.king@canonical.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Tomohiro Kusumi <kusumi.tomohiro@jp.fujitsu.com>,
+        Kei Tokunaga <tokunaga.keiich@jp.fujitsu.com>,
+        Xiao Guangrong <xiaoguangrong@cn.fujitsu.com>,
+        linux-scsi@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] PNP: fix unintended sign extension on left shifts
-Date:   Mon, 14 Oct 2019 14:16:08 +0100
-Message-Id: <20191014131608.31335-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+References: <20191014121613.21999-1-colin.king@canonical.com>
+From:   Bart Van Assche <bvanassche@acm.org>
+Message-ID: <0e2a6d4c-b346-cb1b-7941-e247a0d0f8b2@acm.org>
+Date:   Mon, 14 Oct 2019 08:58:03 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191014121613.21999-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 10/14/19 5:16 AM, Colin King wrote:
+> diff --git a/drivers/scsi/scsi_trace.c b/drivers/scsi/scsi_trace.c
+> index 0f17e7dac1b0..1d3a5a2dc229 100644
+> --- a/drivers/scsi/scsi_trace.c
+> +++ b/drivers/scsi/scsi_trace.c
+> @@ -38,7 +38,7 @@ scsi_trace_rw10(struct trace_seq *p, unsigned char *cdb, int len)
+>   	const char *ret = trace_seq_buffer_ptr(p);
+>   	sector_t lba = 0, txlen = 0;
+>   
+> -	lba |= (cdb[2] << 24);
+> +	lba |= ((u64)cdb[2] << 24);
+>   	lba |= (cdb[3] << 16);
+>   	lba |= (cdb[4] << 8);
+>   	lba |=  cdb[5];
 
-Shifting a u8 left will cause the value to be promoted to an integer. If
-the top bit of the u8 is set then the following conversion to a 64 bit
-resource_size_t will sign extend the value causing the upper 32 bits
-to be set in the result.
+Have you considered to use get/put_unaligned_be*() instead of making the 
+above change?
 
-Fix this by casting the u8 value to a resource_size_t before the shift.
-Original commit is pre-git history.
+Thanks,
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/pnp/isapnp/core.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/pnp/isapnp/core.c b/drivers/pnp/isapnp/core.c
-index 179b737280e1..c947b1673041 100644
---- a/drivers/pnp/isapnp/core.c
-+++ b/drivers/pnp/isapnp/core.c
-@@ -511,10 +511,14 @@ static void __init isapnp_parse_mem32_resource(struct pnp_dev *dev,
- 	unsigned char flags;
- 
- 	isapnp_peek(tmp, size);
--	min = (tmp[4] << 24) | (tmp[3] << 16) | (tmp[2] << 8) | tmp[1];
--	max = (tmp[8] << 24) | (tmp[7] << 16) | (tmp[6] << 8) | tmp[5];
--	align = (tmp[12] << 24) | (tmp[11] << 16) | (tmp[10] << 8) | tmp[9];
--	len = (tmp[16] << 24) | (tmp[15] << 16) | (tmp[14] << 8) | tmp[13];
-+	min = ((resource_size_t)tmp[4] << 24) | (tmp[3] << 16) |
-+              (tmp[2] << 8) | tmp[1];
-+	max = ((resource_size_t)tmp[8] << 24) | (tmp[7] << 16) |
-+              (tmp[6] << 8) | tmp[5];
-+	align = ((resource_size_t)tmp[12] << 24) | (tmp[11] << 16) |
-+              (tmp[10] << 8) | tmp[9];
-+	len = ((resource_size_t)tmp[16] << 24) | (tmp[15] << 16) |
-+              (tmp[14] << 8) | tmp[13];
- 	flags = tmp[0];
- 	pnp_register_mem_resource(dev, option_flags,
- 				  min, max, align, len, flags);
-@@ -532,8 +536,10 @@ static void __init isapnp_parse_fixed_mem32_resource(struct pnp_dev *dev,
- 	unsigned char flags;
- 
- 	isapnp_peek(tmp, size);
--	base = (tmp[4] << 24) | (tmp[3] << 16) | (tmp[2] << 8) | tmp[1];
--	len = (tmp[8] << 24) | (tmp[7] << 16) | (tmp[6] << 8) | tmp[5];
-+	base = ((resource_size_t)tmp[4] << 24) | (tmp[3] << 16) |
-+	       (tmp[2] << 8) | tmp[1];
-+	len = ((resource_size_t)tmp[8] << 24) | (tmp[7] << 16) |
-+              (tmp[6] << 8) | tmp[5];
- 	flags = tmp[0];
- 	pnp_register_mem_resource(dev, option_flags, base, base, 0, len, flags);
- }
--- 
-2.20.1
-
+Bart.

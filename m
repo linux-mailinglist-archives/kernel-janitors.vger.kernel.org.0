@@ -2,102 +2,144 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1132AD7B73
-	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Oct 2019 18:29:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 43CF5D7C88
+	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Oct 2019 18:57:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387996AbfJOQ3f (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 15 Oct 2019 12:29:35 -0400
-Received: from mga17.intel.com ([192.55.52.151]:27855 "EHLO mga17.intel.com"
+        id S1727673AbfJOQ4x (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 15 Oct 2019 12:56:53 -0400
+Received: from foss.arm.com ([217.140.110.172]:43382 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727806AbfJOQ3f (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 15 Oct 2019 12:29:35 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 15 Oct 2019 09:29:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,300,1566889200"; 
-   d="scan'208";a="189396563"
-Received: from rjwysock-mobl1.ger.corp.intel.com (HELO [10.249.148.102]) ([10.249.148.102])
-  by orsmga008.jf.intel.com with ESMTP; 15 Oct 2019 09:29:33 -0700
-Subject: Re: [PATCH] PNP: fix unintended sign extension on left shifts
-To:     Colin King <colin.king@canonical.com>
-Cc:     Jaroslav Kysela <perex@perex.cz>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20191014131608.31335-1-colin.king@canonical.com>
-From:   "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Organization: Intel Technology Poland Sp. z o. o., KRS 101882, ul. Slowackiego
- 173, 80-298 Gdansk
-Message-ID: <cda044bf-4aec-4423-007c-1d6cf6f0eecf@intel.com>
-Date:   Tue, 15 Oct 2019 18:29:32 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726360AbfJOQ4w (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 15 Oct 2019 12:56:52 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D4DFA337;
+        Tue, 15 Oct 2019 09:56:51 -0700 (PDT)
+Received: from e121166-lin.cambridge.arm.com (unknown [10.1.196.255])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B74A23F68E;
+        Tue, 15 Oct 2019 09:56:49 -0700 (PDT)
+Date:   Tue, 15 Oct 2019 17:56:47 +0100
+From:   Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-pci@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org,
+        linux-amlogic@lists.infradead.org,
+        Binghui Wang <wangbinghui@hisilicon.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Kukjin Kim <kgene@kernel.org>, Yue Wang <yue.wang@Amlogic.com>,
+        Xiaowei Song <songxiaowei@hisilicon.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        YueHaibing <yuehaibing@huawei.com>,
+        zhong jiang <zhongjiang@huawei.com>
+Subject: Re: [PATCH] PCI: dwc: Use PTR_ERR_OR_ZERO() in five functions
+Message-ID: <20191015165647.GD25674@e121166-lin.cambridge.arm.com>
+References: <95c9dfae-af81-82ad-e989-1fdf5f29808e@web.de>
 MIME-Version: 1.0
-In-Reply-To: <20191014131608.31335-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <95c9dfae-af81-82ad-e989-1fdf5f29808e@web.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 10/14/2019 3:16 PM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Shifting a u8 left will cause the value to be promoted to an integer. If
-> the top bit of the u8 is set then the following conversion to a 64 bit
-> resource_size_t will sign extend the value causing the upper 32 bits
-> to be set in the result.
->
-> Fix this by casting the u8 value to a resource_size_t before the shift.
-> Original commit is pre-git history.
->
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Please resend this with a Cc to linux-acpi@vger.kernel.org for easier 
-handling.
-
-
+On Fri, Sep 06, 2019 at 08:50:07PM +0200, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Fri, 6 Sep 2019 20:40:06 +0200
+> 
+> Simplify these function implementations by using a known function.
+> 
+> Generated by: scripts/coccinelle/api/ptr_ret.cocci
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 > ---
->   drivers/pnp/isapnp/core.c | 18 ++++++++++++------
->   1 file changed, 12 insertions(+), 6 deletions(-)
->
-> diff --git a/drivers/pnp/isapnp/core.c b/drivers/pnp/isapnp/core.c
-> index 179b737280e1..c947b1673041 100644
-> --- a/drivers/pnp/isapnp/core.c
-> +++ b/drivers/pnp/isapnp/core.c
-> @@ -511,10 +511,14 @@ static void __init isapnp_parse_mem32_resource(struct pnp_dev *dev,
->   	unsigned char flags;
->   
->   	isapnp_peek(tmp, size);
-> -	min = (tmp[4] << 24) | (tmp[3] << 16) | (tmp[2] << 8) | tmp[1];
-> -	max = (tmp[8] << 24) | (tmp[7] << 16) | (tmp[6] << 8) | tmp[5];
-> -	align = (tmp[12] << 24) | (tmp[11] << 16) | (tmp[10] << 8) | tmp[9];
-> -	len = (tmp[16] << 24) | (tmp[15] << 16) | (tmp[14] << 8) | tmp[13];
-> +	min = ((resource_size_t)tmp[4] << 24) | (tmp[3] << 16) |
-> +              (tmp[2] << 8) | tmp[1];
-> +	max = ((resource_size_t)tmp[8] << 24) | (tmp[7] << 16) |
-> +              (tmp[6] << 8) | tmp[5];
-> +	align = ((resource_size_t)tmp[12] << 24) | (tmp[11] << 16) |
-> +              (tmp[10] << 8) | tmp[9];
-> +	len = ((resource_size_t)tmp[16] << 24) | (tmp[15] << 16) |
-> +              (tmp[14] << 8) | tmp[13];
->   	flags = tmp[0];
->   	pnp_register_mem_resource(dev, option_flags,
->   				  min, max, align, len, flags);
-> @@ -532,8 +536,10 @@ static void __init isapnp_parse_fixed_mem32_resource(struct pnp_dev *dev,
->   	unsigned char flags;
->   
->   	isapnp_peek(tmp, size);
-> -	base = (tmp[4] << 24) | (tmp[3] << 16) | (tmp[2] << 8) | tmp[1];
-> -	len = (tmp[8] << 24) | (tmp[7] << 16) | (tmp[6] << 8) | tmp[5];
-> +	base = ((resource_size_t)tmp[4] << 24) | (tmp[3] << 16) |
-> +	       (tmp[2] << 8) | tmp[1];
-> +	len = ((resource_size_t)tmp[8] << 24) | (tmp[7] << 16) |
-> +              (tmp[6] << 8) | tmp[5];
->   	flags = tmp[0];
->   	pnp_register_mem_resource(dev, option_flags, base, base, 0, len, flags);
->   }
+>  drivers/pci/controller/dwc/pci-exynos.c |  5 +----
+>  drivers/pci/controller/dwc/pci-meson.c  | 10 ++--------
+>  drivers/pci/controller/dwc/pcie-kirin.c | 10 ++--------
+>  3 files changed, 5 insertions(+), 20 deletions(-)
 
+https://lore.kernel.org/linux-pci/20190527140952.GB7202@ulmo/
 
+Dropped, sorry.
+
+Lorenzo
+
+> diff --git a/drivers/pci/controller/dwc/pci-exynos.c b/drivers/pci/controller/dwc/pci-exynos.c
+> index cee5f2f590e2..b6ab1cc5d895 100644
+> --- a/drivers/pci/controller/dwc/pci-exynos.c
+> +++ b/drivers/pci/controller/dwc/pci-exynos.c
+> @@ -92,10 +92,7 @@ static int exynos5440_pcie_get_mem_resources(struct platform_device *pdev,
+> 
+>  	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+>  	ep->mem_res->elbi_base = devm_ioremap_resource(dev, res);
+> -	if (IS_ERR(ep->mem_res->elbi_base))
+> -		return PTR_ERR(ep->mem_res->elbi_base);
+> -
+> -	return 0;
+> +	return PTR_ERR_OR_ZERO(ep->mem_res->elbi_base);
+>  }
+> 
+>  static int exynos5440_pcie_get_clk_resources(struct exynos_pcie *ep)
+> diff --git a/drivers/pci/controller/dwc/pci-meson.c b/drivers/pci/controller/dwc/pci-meson.c
+> index e35e9eaa50ee..713059918002 100644
+> --- a/drivers/pci/controller/dwc/pci-meson.c
+> +++ b/drivers/pci/controller/dwc/pci-meson.c
+> @@ -182,10 +182,7 @@ static int meson_pcie_get_mems(struct platform_device *pdev,
+> 
+>  	/* Meson SoC has two PCI controllers use same phy register*/
+>  	mp->mem_res.phy_base = meson_pcie_get_mem_shared(pdev, mp, "phy");
+> -	if (IS_ERR(mp->mem_res.phy_base))
+> -		return PTR_ERR(mp->mem_res.phy_base);
+> -
+> -	return 0;
+> +	return PTR_ERR_OR_ZERO(mp->mem_res.phy_base);
+>  }
+> 
+>  static void meson_pcie_power_on(struct meson_pcie *mp)
+> @@ -259,10 +256,7 @@ static int meson_pcie_probe_clocks(struct meson_pcie *mp)
+>  		return PTR_ERR(res->general_clk);
+> 
+>  	res->clk = meson_pcie_probe_clock(dev, "pcie", 0);
+> -	if (IS_ERR(res->clk))
+> -		return PTR_ERR(res->clk);
+> -
+> -	return 0;
+> +	return PTR_ERR_OR_ZERO(res->clk);
+>  }
+> 
+>  static inline void meson_elb_writel(struct meson_pcie *mp, u32 val, u32 reg)
+> diff --git a/drivers/pci/controller/dwc/pcie-kirin.c b/drivers/pci/controller/dwc/pcie-kirin.c
+> index c19617a912bd..75b1f1dde747 100644
+> --- a/drivers/pci/controller/dwc/pcie-kirin.c
+> +++ b/drivers/pci/controller/dwc/pcie-kirin.c
+> @@ -138,10 +138,7 @@ static long kirin_pcie_get_clk(struct kirin_pcie *kirin_pcie,
+>  		return PTR_ERR(kirin_pcie->apb_sys_clk);
+> 
+>  	kirin_pcie->pcie_aclk = devm_clk_get(dev, "pcie_aclk");
+> -	if (IS_ERR(kirin_pcie->pcie_aclk))
+> -		return PTR_ERR(kirin_pcie->pcie_aclk);
+> -
+> -	return 0;
+> +	return PTR_ERR_OR_ZERO(kirin_pcie->pcie_aclk);
+>  }
+> 
+>  static long kirin_pcie_get_resource(struct kirin_pcie *kirin_pcie,
+> @@ -174,10 +171,7 @@ static long kirin_pcie_get_resource(struct kirin_pcie *kirin_pcie,
+> 
+>  	kirin_pcie->sysctrl =
+>  		syscon_regmap_lookup_by_compatible("hisilicon,hi3660-sctrl");
+> -	if (IS_ERR(kirin_pcie->sysctrl))
+> -		return PTR_ERR(kirin_pcie->sysctrl);
+> -
+> -	return 0;
+> +	return PTR_ERR_OR_ZERO(kirin_pcie->sysctrl);
+>  }
+> 
+>  static int kirin_pcie_phy_init(struct kirin_pcie *kirin_pcie)
+> --
+> 2.23.0
+> 

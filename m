@@ -2,55 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B574BD6BB6
-	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Oct 2019 00:34:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBADCD6E99
+	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Oct 2019 07:28:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731985AbfJNWdv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 14 Oct 2019 18:33:51 -0400
-Received: from fieldses.org ([173.255.197.46]:34314 "EHLO fieldses.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730121AbfJNWdv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 14 Oct 2019 18:33:51 -0400
-Received: by fieldses.org (Postfix, from userid 2815)
-        id 84B19BDB; Mon, 14 Oct 2019 18:33:50 -0400 (EDT)
-Date:   Mon, 14 Oct 2019 18:33:50 -0400
-From:   "J. Bruce Fields" <bfields@fieldses.org>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-nfs@vger.kernel.org,
-        Anna Schumaker <anna.schumaker@netapp.com>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, Aditya Pakki <pakki001@umn.edu>,
-        Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>
-Subject: Re: SUNRPC: Checking a kmemdup() call in xdr_netobj_dup()
-Message-ID: <20191014223350.GA19883@fieldses.org>
-References: <9b5a5e63-2a24-ad79-20e2-4c01331ee041@web.de>
+        id S1728340AbfJOF2G (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 15 Oct 2019 01:28:06 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:52888 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728335AbfJOF2F (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 15 Oct 2019 01:28:05 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id 0C01F60BDD; Tue, 15 Oct 2019 05:28:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571117285;
+        bh=8FGb2J/wiGU3r55lQEJRsCKstDbZ2Qwho5EqzVqSYf8=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=XDxj/4yehBuLdsC/ns/oMKGiMiMhU9FqRl/df2/ElHY8In2y0B4qdlMdfl0nZe12u
+         jNTT3iDhaCkGDtTSbkPfoJ2R9P870Z2bXkYn6EqN6XpwNmjgR0hcwWQDST6CZ2H1Dq
+         sk6m3z6g1G08NfQFaUlyBYCLdmt9+gSsdDoyo1bw=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id BD25E60610;
+        Tue, 15 Oct 2019 05:28:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1571117283;
+        bh=8FGb2J/wiGU3r55lQEJRsCKstDbZ2Qwho5EqzVqSYf8=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=VuLGlA8lk9NyjZcl8MpkH9/FQvmn9bmr9SU1UhdN/yFzeLu4OBTAyX7nXo9qB8+Y0
+         17PxNEnrlPmE62lGxKz2TQB0gDq8+ioS2p81qCejvHX+tWMxAiSBP5ZddMUUTutCaI
+         RXiTXq/az4elXX5fFhUe6TrTRvkz/b9OkPmdvU/g=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BD25E60610
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <9b5a5e63-2a24-ad79-20e2-4c01331ee041@web.de>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Subject: Re: =?utf-8?q?=5BPATCH=5D_net/wireless=3A_Delete_unnecessary_checks_bef?==?utf-8?q?ore_the_macro_call_=E2=80=9Cdev=5Fkfree=5Fskb=E2=80=9D?=
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <ea6c6fef-9868-196b-d914-23faf12d7f5c@web.de>
+References: <ea6c6fef-9868-196b-d914-23faf12d7f5c@web.de>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-wireless@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org, ath10k@lists.infradead.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Roy Luo <royluo@google.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Solomon Peachy <pizza@shaftnet.org>,
+        Stanislaw Gruszka <sgruszka@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191015052805.0C01F60BDD@smtp.codeaurora.org>
+Date:   Tue, 15 Oct 2019 05:28:04 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Oct 12, 2019 at 08:20:04PM +0200, Markus Elfring wrote:
-> I tried another script for the semantic patch language out.
-> This source code analysis approach points out that the implementation
-> of the function “xdr_netobj_dup” contains still an unchecked call
-> of the function “kmemdup”.
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/sunrpc/xdr.h?id=1c0cc5f1ae5ee5a6913704c0d75a6e99604ee30a#n167
-> https://elixir.bootlin.com/linux/v5.4-rc2/source/include/linux/sunrpc/xdr.h#L167
+Markus Elfring <Markus.Elfring@web.de> wrote:
+
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Thu, 22 Aug 2019 10:20:10 +0200
 > 
-> How do you think about to improve it?
+> The dev_kfree_skb() function performs also input parameter validation.
+> Thus the test around the shown calls is not needed.
+> 
+> This issue was detected by using the Coccinelle software.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-On a quick check--I see five xdr_netobj_dup callers, and all of them
-check whether dst->data is NULL.
+Patch applied to wireless-drivers-next.git, thanks.
 
-Sounds like a false positive for your tool?
+868ad2149602 net/wireless: Delete unnecessary checks before the macro call “dev_kfree_skb”
 
---b.
+-- 
+https://patchwork.kernel.org/patch/11108741/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+

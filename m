@@ -2,115 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C2EC5D7758
-	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Oct 2019 15:20:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57960D7921
+	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Oct 2019 16:52:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731907AbfJONUu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 15 Oct 2019 09:20:50 -0400
-Received: from mail-yw1-f65.google.com ([209.85.161.65]:35232 "EHLO
-        mail-yw1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728386AbfJONUt (ORCPT
+        id S1733058AbfJOOtv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 15 Oct 2019 10:49:51 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:46769 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732949AbfJOOtu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 15 Oct 2019 09:20:49 -0400
-Received: by mail-yw1-f65.google.com with SMTP id r134so7324640ywg.2;
-        Tue, 15 Oct 2019 06:20:47 -0700 (PDT)
+        Tue, 15 Oct 2019 10:49:50 -0400
+Received: by mail-io1-f68.google.com with SMTP id c6so46371101ioo.13;
+        Tue, 15 Oct 2019 07:49:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=D3fT6mJQ0MI3tnwGYI9a5cNsV8GCpshvfBo2XlqzibE=;
-        b=JSDWOhRTQR7mcD2V+Sv4e2n37vg6VoRXbzilaYZz3Siqcw+f2p8I8FG1NqtLQpXm+6
-         P9YGUWyf/gBw8Yze048gCOiEqBw5KI9q6h1GBINFYm5+bn38Nsa32FEJB7yysMd1S0nK
-         VJCT0MhOylRBChpMqW1d/9J/fHwVuzwDKHg/zdjHOeiySQE0yc9sdwgYyKMKl3G9wTxb
-         Uf3zdyIgL9gUe8uXeybJkZrTD2G0ddJdcoUhPwCGV0pfezLRgixaxztVeKzkkiOxyXe2
-         ASqP8dggBcyk6J0eJYVAcXxQyy62v7UsydVFnI+cEwALKPOnPg3kgBH8uOSblKtNpRU9
-         HPig==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=MnfGhBwoMQVplo0Mxn7uRwpUlFBd/nvB/PMi8g7Xh1U=;
+        b=HpChALqW5ydj92GSRYuzlp/a2ptuL2yYJa9gu43hB86GrFD2wsntp8ZwrGiipcl4Io
+         1+Jp8HIXVFih7E4dj18vLN2+zF7PktHbNlCWjgUVqLzofRBzEg5UyGO8Ytvk9VI8D+Rb
+         ixa92S1aqah9LEEOfHVsw2rfoIUvuyFFFyENM98IzYOT3NeRZEjBSZ5kvrHCpqZsQK8d
+         pkVkSYaflHnt0uHjPTtSvChOsK6mlx/tla+N6pBcZmdk1DYhNGzPtrwwEyYUTnmZ4ARc
+         KhvCYtl3MJ/HznGBMkU+jGXry/UWXhsE2hF8k+vzbIAsl5FI0/DfEoGTENgs1ff8g9q/
+         DXpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=D3fT6mJQ0MI3tnwGYI9a5cNsV8GCpshvfBo2XlqzibE=;
-        b=d989PQjvwx+3h6mMZ0PtYrG2jHZtno/XDtajLSy4giJee6WqNd4RZi/CZ4teX/sGNG
-         2B4HfLOAChOboSudlLnPzkQl30MrqKtbuH1alaGXq1eiAzoyLgw8gqyP3aXxQ+kurnEZ
-         KYl0ssvNlLiosADlB1CNbRL61ZFbW2+hFSukRPwnPr5GgJw4tjkb3OM20RHZTbA4acsv
-         CZqRLEMyvzFAGrfjs4cVkVzgVQ7qXCbg+pCqO02ciEj9FR8RGHxgm+nYnUqkQHQQl7M0
-         vF+5IzCXxG9PAHa0zs3Z1RBdQBzVm00KSQ+xTIdSvIloRDkAUSVbk1++28hA9wRCO2Om
-         k9cw==
-X-Gm-Message-State: APjAAAWDZSlFWuA5C9CLAMJjMZ9WKecT/SYD5q4jjcrZXxSqtgem820j
-        sYqoollwGaEVGTwpkFAwFA==
-X-Google-Smtp-Source: APXvYqzPaJpFM2drv34anPBYkT5+u0Wp61PBbm/yyybELyaJC0imWzJwOd60Ii1krEpXotxdd/+eNg==
-X-Received: by 2002:a81:6c4c:: with SMTP id h73mr15215118ywc.262.1571145647145;
-        Tue, 15 Oct 2019 06:20:47 -0700 (PDT)
-Received: from 960 ([12.156.111.130])
-        by smtp.gmail.com with ESMTPSA id l2sm5163256ywd.16.2019.10.15.06.20.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Oct 2019 06:20:46 -0700 (PDT)
-Message-ID: <4eaef0a107796895fc59989d1481676f794fcac5.camel@gmail.com>
-Subject: Re: [PATCH] platform/x86: huawei-wmi: make validation stricter in
- huawei_wmi_battery_set()
-From:   ayman.bagabas@gmail.com
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Takashi Iwai <tiwai@suse.de>, Mattias Jacobsson <2pi@mok.nu>,
-        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Date:   Tue, 15 Oct 2019 09:20:35 -0400
-In-Reply-To: <20191015124623.GF21344@kadam>
-References: <20191015083837.GA29104@mwanda>
-         <CAB3uXr63uUwxBjkeeoftZ6HYm_hmN+E5EUhu15_Mta2qruOugA@mail.gmail.com>
-         <20191015124623.GF21344@kadam>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=MnfGhBwoMQVplo0Mxn7uRwpUlFBd/nvB/PMi8g7Xh1U=;
+        b=ALnBrhIEsSo45W0YNxWQGRDpGq20UGLIgL51jH/IxWxdib7we+Nbx/urudcz3o/3mN
+         gvGtaWYBgfn/82bPhSydz+RP0x+KwvcJuTtwFNj4+JYe7YBdeDJB5ar6nvm4X5Jx5ZsW
+         G6hEHTMimFrmqfhnmlZ54+6FtsXErpO8OoQLXFE8ZrD8yPm/5WGolj8UbYKalBd4T59D
+         bRHqi594gvT8wORtOWGZo9p6rNyQ25d0mgHnAPgkaQ09APoGyUO/lbWfZ1gtPdGvULgK
+         Qkzf0WvFjWcip94s56wZ4J/1arMPtqxQaDP6p8qnQ2s8b+YRcWPgsy+UMVRV3fC13p7d
+         vZPQ==
+X-Gm-Message-State: APjAAAWTTAW5UlWQHVFm4b1nfkQGN06FF/2f4EROGzJqZA+CmxVd0kQS
+        1CaGN+O5+iCIv5P7rH0hvsq4UEDCWK/loDgFwDo=
+X-Google-Smtp-Source: APXvYqxTZYfSAInwbYJYC/2UZ9Wkj95sKUVbKbOdag8+jQHHQ0zR2edcTXeR50zAV5DWbzbCGXPPiw6GtJnoneBkA98=
+X-Received: by 2002:a92:9ecd:: with SMTP id s74mr2230665ilk.145.1571150989602;
+ Tue, 15 Oct 2019 07:49:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <7933ce8f-ca1b-6ed8-14b9-59679130dc47@web.de>
+In-Reply-To: <7933ce8f-ca1b-6ed8-14b9-59679130dc47@web.de>
+From:   Tomasz Figa <tomasz.figa@gmail.com>
+Date:   Tue, 15 Oct 2019 23:49:39 +0900
+Message-ID: <CA+Ln22GpcMF5e8wjwoRH0wExyoGfta4n3YuaOBNDE+rfqhSZjg@mail.gmail.com>
+Subject: Re: clk: samsung: Checking a kmemdup() call in _samsung_clk_register_pll()
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     "open list:COMMON CLK FRAMEWORK" <linux-clk@vger.kernel.org>,
+        "moderated list:SAMSUNG SOC CLOCK DRIVERS" 
+        <linux-samsung-soc@vger.kernel.org>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Aditya Pakki <pakki001@umn.edu>,
+        Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, 2019-10-15 at 15:46 +0300, Dan Carpenter wrote:
-> On Tue, Oct 15, 2019 at 08:21:59AM -0400, Ayman Bagabas wrote:
-> > Hi Dan
-> > 
-> > On Tue, Oct 15, 2019, 4:39 AM Dan Carpenter <
-> > dan.carpenter@oracle.com>
-> > wrote:
-> > 
-> > > I don't think it makes sense for "end" to be negative or for even
-> > > for it
-> > > to be less than "start".  That also means that "start" can't be
-> > > more
-> > > than 100 which is good.
-> > > 
-> > 
-> > While this makes sense, you run into issues where you cannot set
-> > "start"
-> > before "end" and vice versa.
-> > 
-> > Take this scenario, you have start=70 and end=90, now you want to
-> > set these
-> > to start=40 and end=60, you would have to set "start" first before
-> > you can
-> > change the value of "end" otherwise you will run into EINVAL. Now
-> > imagine
-> > you wanna go the opposite direction, you would have to set "end"
-> > before you
-> > can change "start".
-> > I think having a little wiggle room is fine for such scenarios.
-> > 
-> 
-> I haven't tested this code...  What you're describing sounds really
-> very weird to me, but I will accept that you know more about your
-> use cases than I do.
-> 
-> My other concern is that right now you can set start > 100 or end <
-> 0.
+Hi Markus,
 
-We should check for these cases.
+2019=E5=B9=B410=E6=9C=8812=E6=97=A5(=E5=9C=9F) 23:17 Markus Elfring <Markus=
+.Elfring@web.de>:
+>
+> Hello,
+>
+> I tried another script for the semantic patch language out.
+> This source code analysis approach points out that the implementation
+> of the function =E2=80=9C_samsung_clk_register_pll=E2=80=9D contains also=
+ a call
+> of the function =E2=80=9Ckmemdup=E2=80=9D.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/d=
+rivers/clk/samsung/clk-pll.c?id=3D1c0cc5f1ae5ee5a6913704c0d75a6e99604ee30a#=
+n1275
+> https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/clk/samsung/clk-=
+pll.c#L1275
 
-> 
-> regards,
-> dan carpenter
-> 
+Thanks for the report.
 
+>
+> * Do you find the usage of the format string =E2=80=9C%s: could not alloc=
+ate
+>   rate table for %s\n=E2=80=9D still appropriate at this place?
+
+Yes, AFAICT there is nothing wrong with that format string.
+
+>
+> * Is there a need to adjust the error handling here?
+
+No, there isn't much that can be done if we fail the allocation at
+such an early stage.
+
+That said, there is no need to print any warnings or error messages on
+allocation failure, so technically they could be removed. It doesn't
+really give us anything in case of existing code, though, and only
+makes a potential for merge conflicts, so I'd just leave it alone.
+
+Best regards,
+Tomasz

@@ -2,46 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 50ECAD7282
-	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Oct 2019 11:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF3DAD76C7
+	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Oct 2019 14:46:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727436AbfJOJvR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 15 Oct 2019 05:51:17 -0400
-Received: from 8bytes.org ([81.169.241.247]:47358 "EHLO theia.8bytes.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726525AbfJOJvR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 15 Oct 2019 05:51:17 -0400
-Received: by theia.8bytes.org (Postfix, from userid 1000)
-        id 622FF398; Tue, 15 Oct 2019 11:51:15 +0200 (CEST)
-Date:   Tue, 15 Oct 2019 11:51:14 +0200
-From:   Joerg Roedel <joro@8bytes.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     agross@kernel.org, robdclark@gmail.com,
-        linux-arm-msm@vger.kernel.org, iommu@lists.linux-foundation.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] iommu/qcom: Simplify a test in 'qcom_iommu_add_device()'
-Message-ID: <20191015095113.GA14518@8bytes.org>
-References: <20190916202936.30403-1-christophe.jaillet@wanadoo.fr>
+        id S1726502AbfJOMqy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 15 Oct 2019 08:46:54 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:53658 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725871AbfJOMqy (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 15 Oct 2019 08:46:54 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9FCivSY187110;
+        Tue, 15 Oct 2019 12:46:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=TxP0ZWs0Ifhgzr9mzKZ5K8VfBbMXyx7BesdvQuxDWL4=;
+ b=TgUlqaBGOJKG4fHX334bsbAgcF/WLNv6HPiMv80K3LFGMwN9sX0yjWJfG65KoL14Iv6l
+ jNtjc3ZBMD8bVoanWIXlAfJokXaDcxObjB5eVRqaJtJmYP8akalnuomIGNrXf8D8vav2
+ k1IB9mSrNgNG8kAn9jLOvmNkYdnJ67BE0EI5b+EHTqdVf95iV5RhTT3DjEgm8ZpJhujP
+ FTR4fQwrZplv+b7l5VntezIyN0cnLXMhRRnziZpBxzwaKZ9UG6nD0Y7Qy6V4GiIXk9RB
+ NznvbDBteI+8TMkZlUsAY/KI9ArBlIhACNl0sI1BSMVjv1415HLFZzjwbI8/HiCBkmC8 TQ== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2vk7fr7hhs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 15 Oct 2019 12:46:35 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9FCh3Le134869;
+        Tue, 15 Oct 2019 12:46:35 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 2vn7184x0m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 15 Oct 2019 12:46:35 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x9FCkXqt017011;
+        Tue, 15 Oct 2019 12:46:33 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 15 Oct 2019 12:46:32 +0000
+Date:   Tue, 15 Oct 2019 15:46:23 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Ayman Bagabas <ayman.bagabas@gmail.com>
+Cc:     Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Takashi Iwai <tiwai@suse.de>, Mattias Jacobsson <2pi@mok.nu>,
+        platform-driver-x86@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] platform/x86: huawei-wmi: make validation stricter in
+ huawei_wmi_battery_set()
+Message-ID: <20191015124623.GF21344@kadam>
+References: <20191015083837.GA29104@mwanda>
+ <CAB3uXr63uUwxBjkeeoftZ6HYm_hmN+E5EUhu15_Mta2qruOugA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190916202936.30403-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <CAB3uXr63uUwxBjkeeoftZ6HYm_hmN+E5EUhu15_Mta2qruOugA@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9410 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910150116
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9410 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910150116
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Sep 16, 2019 at 10:29:36PM +0200, Christophe JAILLET wrote:
-> 'iommu_group_get_for_dev()' never returns NULL, so this test can be
-> simplified a bit.
+On Tue, Oct 15, 2019 at 08:21:59AM -0400, Ayman Bagabas wrote:
+> Hi Dan
 > 
-> This way, the test is consistent with all other calls to
-> 'iommu_group_get_for_dev()'.
+> On Tue, Oct 15, 2019, 4:39 AM Dan Carpenter <dan.carpenter@oracle.com>
+> wrote:
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->  drivers/iommu/qcom_iommu.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> > I don't think it makes sense for "end" to be negative or for even for it
+> > to be less than "start".  That also means that "start" can't be more
+> > than 100 which is good.
+> >
+> 
+> While this makes sense, you run into issues where you cannot set "start"
+> before "end" and vice versa.
+> 
+> Take this scenario, you have start=70 and end=90, now you want to set these
+> to start=40 and end=60, you would have to set "start" first before you can
+> change the value of "end" otherwise you will run into EINVAL. Now imagine
+> you wanna go the opposite direction, you would have to set "end" before you
+> can change "start".
+> I think having a little wiggle room is fine for such scenarios.
+> 
 
-Applied, thanks.
+I haven't tested this code...  What you're describing sounds really
+very weird to me, but I will accept that you know more about your
+use cases than I do.
+
+My other concern is that right now you can set start > 100 or end < 0.
+
+regards,
+dan carpenter
+

@@ -2,54 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6941DD98F1
-	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Oct 2019 20:15:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30251D9907
+	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Oct 2019 20:19:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403827AbfJPSPA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Oct 2019 14:15:00 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:58330 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2403818AbfJPSPA (ORCPT
+        id S2436555AbfJPSTz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Oct 2019 14:19:55 -0400
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:36936 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2436542AbfJPSTx (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Oct 2019 14:15:00 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9GIEwPV062798;
-        Wed, 16 Oct 2019 13:14:58 -0500
+        Wed, 16 Oct 2019 14:19:53 -0400
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9GIJp5G082681;
+        Wed, 16 Oct 2019 13:19:51 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1571249698;
-        bh=ptFPEunnPjgZe5N6JTByY+mk1A/SSazFT48SXkQiKeQ=;
+        s=ti-com-17Q1; t=1571249991;
+        bh=+59uyIj8cvDaVeHuDErtWdqjicA/uMUOejrOVyySKNo=;
         h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=UmD9kM2JratZOPJIOVxQEAb3ADWk6DmrwgcgW3wwGAfMcUiiKvhBcZIC3tJuPCq2L
-         pMIwS6BW+QkGdJzhlfwXzEpXHmPEdBT3hQpMlLU3dkXk4JqLH48e7IK+/uLtWdn9zv
-         W2M+NKGQOrqejYAe3z+dsKcRZLWyTOcSkweGj2sY=
-Received: from DFLE112.ent.ti.com (dfle112.ent.ti.com [10.64.6.33])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9GIEw2k026229
+        b=vamFExu+pc3j3u9/xDZ0xIVr08+X1K9v7z5uL7D201LsGLfmh7FeW4Ahf73YuPKjt
+         vdoZ2gDUN9GaeeCUhMtWWZenX79ROosN3MN+poiaGQTgTx5SnyqFn1WNRA7lgRnHT3
+         SQFlGXeJJNj77jz92h05hFOTGxW9veMxZmZoXJIQ=
+Received: from DFLE114.ent.ti.com (dfle114.ent.ti.com [10.64.6.35])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9GIJpXM125461
         (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 16 Oct 2019 13:14:58 -0500
-Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+        Wed, 16 Oct 2019 13:19:51 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE114.ent.ti.com
+ (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 16
- Oct 2019 13:14:51 -0500
-Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE112.ent.ti.com
- (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ Oct 2019 13:19:51 -0500
+Received: from fllv0040.itg.ti.com (10.64.41.20) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 16 Oct 2019 13:14:51 -0500
+ Frontend Transport; Wed, 16 Oct 2019 13:19:51 -0500
 Received: from legion.dal.design.ti.com (legion.dal.design.ti.com [128.247.22.53])
-        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9GIEwQZ087886;
-        Wed, 16 Oct 2019 13:14:58 -0500
+        by fllv0040.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9GIJpnw096159;
+        Wed, 16 Oct 2019 13:19:51 -0500
 Received: from localhost ([10.250.79.55])
-        by legion.dal.design.ti.com (8.11.7p1+Sun/8.11.7) with ESMTP id x9GIEuZ02543;
-        Wed, 16 Oct 2019 13:14:57 -0500 (CDT)
+        by legion.dal.design.ti.com (8.11.7p1+Sun/8.11.7) with ESMTP id x9GIJoZ07886;
+        Wed, 16 Oct 2019 13:19:50 -0500 (CDT)
 From:   "Andrew F. Davis" <afd@ti.com>
 To:     Jiri Kosina <trivial@kernel.org>
 CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         "Andrew F . Davis" <afd@ti.com>
-Subject: [PATCH 03/10] mtd: nand: qcom: remove unneeded conversions to bool
-Date:   Wed, 16 Oct 2019 14:14:36 -0400
-Message-ID: <20191016181443.24790-2-afd@ti.com>
+Subject: [PATCH 06/10] thermal: devfreq_cooling: Remove unneeded conversions to bool
+Date:   Wed, 16 Oct 2019 14:19:40 -0400
+Message-ID: <20191016181944.25106-3-afd@ti.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191016181443.24790-1-afd@ti.com>
-References: <20191016181443.24790-1-afd@ti.com>
+In-Reply-To: <20191016181944.25106-1-afd@ti.com>
+References: <20191016181944.25106-1-afd@ti.com>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
@@ -62,23 +62,22 @@ Found with scripts/coccinelle/misc/boolconv.cocci.
 
 Signed-off-by: Andrew F. Davis <afd@ti.com>
 ---
- drivers/mtd/nand/raw/qcom_nandc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/thermal/devfreq_cooling.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/qcom_nandc.c b/drivers/mtd/nand/raw/qcom_nandc.c
-index 7bb9a7e8e1e7..b437b0c79cf2 100644
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -1767,8 +1767,7 @@ static int parse_read_errors(struct qcom_nand_host *host, u8 *data_buf,
- 			 * ERASED_CW bits are set.
- 			 */
- 			if (host->bch_enabled) {
--				erased = (erased_cw & ERASED_CW) == ERASED_CW ?
--					 true : false;
-+				erased = (erased_cw & ERASED_CW) == ERASED_CW;
- 			/*
- 			 * For RS ECC, HW reports the erased CW by placing
- 			 * special characters at certain offsets in the buffer.
+diff --git a/drivers/thermal/devfreq_cooling.c b/drivers/thermal/devfreq_cooling.c
+index ef59256887ff..e386a3241700 100644
+--- a/drivers/thermal/devfreq_cooling.c
++++ b/drivers/thermal/devfreq_cooling.c
+@@ -85,7 +85,7 @@ static int partition_enable_opps(struct devfreq_cooling_device *dfc,
+ 		struct dev_pm_opp *opp;
+ 		int ret = 0;
+ 		unsigned int freq = dfc->freq_table[i];
+-		bool want_enable = i >= cdev_state ? true : false;
++		bool want_enable = i >= cdev_state;
+ 
+ 		opp = dev_pm_opp_find_freq_exact(dev, freq, !want_enable);
+ 
 -- 
 2.17.1
 

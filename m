@@ -2,82 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6912DD9912
-	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Oct 2019 20:20:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F8CAD9ECF
+	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Oct 2019 00:04:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436604AbfJPSUM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Oct 2019 14:20:12 -0400
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:36950 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2436553AbfJPSTz (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Oct 2019 14:19:55 -0400
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9GIJs5P082711;
-        Wed, 16 Oct 2019 13:19:54 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1571249994;
-        bh=qO1QBda1j09wFru/dRnYU6qoLbxJZvjOQKHQRIr6kD0=;
-        h=From:To:CC:Subject:Date:In-Reply-To:References;
-        b=bmAcZo9wMxP3O2YDcSRNuC9jWb7Y+ezd+FCtDMePUQFM8xBruhNcM0Ae8qvF4qEgh
-         xvf7UVjrH8OQTb+IxuJev3Gp7jLTNwTnOOWF7NB7DXIVOaXS8CvzTpq66bzJsfi0o4
-         N9vUVS68wUjtPpZP+VxnQdpneGCoK5sSJDSMw2e0=
-Received: from DFLE108.ent.ti.com (dfle108.ent.ti.com [10.64.6.29])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9GIJsEE125496
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 16 Oct 2019 13:19:54 -0500
-Received: from DFLE114.ent.ti.com (10.64.6.35) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 16
- Oct 2019 13:19:47 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE114.ent.ti.com
- (10.64.6.35) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 16 Oct 2019 13:19:54 -0500
-Received: from legion.dal.design.ti.com (legion.dal.design.ti.com [128.247.22.53])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9GIJsGN074684;
-        Wed, 16 Oct 2019 13:19:54 -0500
-Received: from localhost ([10.250.79.55])
-        by legion.dal.design.ti.com (8.11.7p1+Sun/8.11.7) with ESMTP id x9GIJrZ07934;
-        Wed, 16 Oct 2019 13:19:53 -0500 (CDT)
-From:   "Andrew F. Davis" <afd@ti.com>
-To:     Jiri Kosina <trivial@kernel.org>
-CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        "Andrew F . Davis" <afd@ti.com>
-Subject: [PATCH 08/10] i40e: Remove unneeded conversions to bool
-Date:   Wed, 16 Oct 2019 14:19:42 -0400
-Message-ID: <20191016181944.25106-5-afd@ti.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20191016181944.25106-1-afd@ti.com>
-References: <20191016181944.25106-1-afd@ti.com>
+        id S2439005AbfJPWC0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Oct 2019 18:02:26 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54888 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2438611AbfJPV7o (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 16 Oct 2019 17:59:44 -0400
+Received: from localhost (unknown [192.55.54.58])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 0F986222C5;
+        Wed, 16 Oct 2019 21:59:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571263184;
+        bh=BykSuC2M0KsUSDjDN+Qux96Y+qA/cbufw6DyvJBIPU0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=V2vGkloXXPt4744b1CUxKC3MOtGztMKwG6KDgk0t636Rkx/s2r+i2ayOAyiTsBt0k
+         A8wwy1GxKPvjkbg3CmfZePQwZQB7awg1jrP8D05x4ba99uJ95tB1+CECEaSgsfiYWd
+         D4ZbfND0H6BSDGc+Sbq1nd9LzeKYEYvyqWlA/aOk=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, Colin Ian King <colin.king@canonical.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        kernel-janitors@vger.kernel.org, linux-efi@vger.kernel.org,
+        Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 5.3 111/112] efi/tpm: Fix sanity check of unsigned tbl_size being less than zero
+Date:   Wed, 16 Oct 2019 14:51:43 -0700
+Message-Id: <20191016214907.521785772@linuxfoundation.org>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20191016214844.038848564@linuxfoundation.org>
+References: <20191016214844.038848564@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Found with scripts/coccinelle/misc/boolconv.cocci.
+From: Colin Ian King <colin.king@canonical.com>
 
-Signed-off-by: Andrew F. Davis <afd@ti.com>
+commit be59d57f98065af0b8472f66a0a969207b168680 upstream.
+
+Currently the check for tbl_size being less than zero is always false
+because tbl_size is unsigned. Fix this by making it a signed int.
+
+Addresses-Coverity: ("Unsigned compared against 0")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+Cc: Jerry Snitselaar <jsnitsel@redhat.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: kernel-janitors@vger.kernel.org
+Cc: linux-efi@vger.kernel.org
+Fixes: e658c82be556 ("efi/tpm: Only set 'efi_tpm_final_log_size' after successful event log parsing")
+Link: https://lkml.kernel.org/r/20191008100153.8499-1-colin.king@canonical.com
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 2 +-
+ drivers/firmware/efi/tpm.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 6031223eafab..87a9f2b586d5 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -11435,7 +11435,7 @@ static int i40e_get_rss_aq(struct i40e_vsi *vsi, const u8 *seed,
- 	}
+--- a/drivers/firmware/efi/tpm.c
++++ b/drivers/firmware/efi/tpm.c
+@@ -40,7 +40,7 @@ int __init efi_tpm_eventlog_init(void)
+ {
+ 	struct linux_efi_tpm_eventlog *log_tbl;
+ 	struct efi_tcg2_final_events_table *final_tbl;
+-	unsigned int tbl_size;
++	int tbl_size;
+ 	int ret = 0;
  
- 	if (lut) {
--		bool pf_lut = vsi->type == I40E_VSI_MAIN ? true : false;
-+		bool pf_lut = vsi->type == I40E_VSI_MAIN;
- 
- 		ret = i40e_aq_get_rss_lut(hw, vsi->id, pf_lut, lut, lut_size);
- 		if (ret) {
--- 
-2.17.1
+ 	if (efi.tpm_log == EFI_INVALID_TABLE_ADDR) {
+
 

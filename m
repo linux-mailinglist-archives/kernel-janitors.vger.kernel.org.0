@@ -2,105 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65775D80FF
-	for <lists+kernel-janitors@lfdr.de>; Tue, 15 Oct 2019 22:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71627D851C
+	for <lists+kernel-janitors@lfdr.de>; Wed, 16 Oct 2019 02:55:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728460AbfJOU3M convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 15 Oct 2019 16:29:12 -0400
-Received: from gloria.sntech.de ([185.11.138.130]:39494 "EHLO gloria.sntech.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727994AbfJOU3L (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 15 Oct 2019 16:29:11 -0400
-Received: from remote.shanghaihotelholland.com ([46.44.148.63] helo=phil.localnet)
-        by gloria.sntech.de with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.89)
-        (envelope-from <heiko@sntech.de>)
-        id 1iKTRI-00086W-DK; Tue, 15 Oct 2019 22:29:04 +0200
-From:   Heiko Stuebner <heiko@sntech.de>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-rockchip@lists.infradead.org,
-        kernel-janitors@vger.kernel.org,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Aditya Pakki <pakki001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Navid Emamdoost <emamd001@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>,
-        LKML <linux-kernel@vger.kernel.org>
-Subject: Re: clk: rockchip: Checking a kmemdup() call in rockchip_clk_register_pll()
-Date:   Tue, 15 Oct 2019 22:29:03 +0200
-Message-ID: <5173392.uhhkXBHGmO@phil>
-In-Reply-To: <45588ab8-2a6c-3f29-61ff-bccf8d6fb291@web.de>
-References: <e96505a8-b554-f61e-3940-0b9e9c7850ff@web.de> <2588953.0pqkEXWxhN@phil> <45588ab8-2a6c-3f29-61ff-bccf8d6fb291@web.de>
+        id S2390399AbfJPAzL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 15 Oct 2019 20:55:11 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:52150 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726315AbfJPAzL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 15 Oct 2019 20:55:11 -0400
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id D0656E38D07370F6AE70;
+        Wed, 16 Oct 2019 08:55:07 +0800 (CST)
+Received: from [127.0.0.1] (10.177.96.96) by DGGEMS412-HUB.china.huawei.com
+ (10.3.19.212) with Microsoft SMTP Server id 14.3.439.0; Wed, 16 Oct 2019
+ 08:54:57 +0800
+Subject: Re: [PATCH -next] usb: typec: add dependency for TYPEC_HD3SS3220
+To:     <heikki.krogerus@linux.intel.com>, <gregkh@linuxfoundation.org>,
+        <biju.das@bp.renesas.com>
+CC:     <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+References: <20191009014707.38716-1-maowenan@huawei.com>
+From:   maowenan <maowenan@huawei.com>
+Message-ID: <ff1837bd-d6eb-a296-f7d9-f2988d5d2256@huawei.com>
+Date:   Wed, 16 Oct 2019 08:54:53 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20191009014707.38716-1-maowenan@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.96.96]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Am Montag, 14. Oktober 2019, 09:26:41 CEST schrieb Markus Elfring:
-> > The other option would be to panic, but the kernel should not
-> > panic if other options are available - and continuing with a static
-> > pll frequency is less invasive in the error case.
-> 
-> I would like to point out that this function implementation contains
-> the following source code already.
-> 
-> …
-> 	/* name the actual pll */
-> 	snprintf(pll_name, sizeof(pll_name), "pll_%s", name);
-> 
-> 	pll = kzalloc(sizeof(*pll), GFP_KERNEL);
-> 	if (!pll)
-> 		return ERR_PTR(-ENOMEM);
-> …
-> 
-> 
-> 
-> …
-> > +++ b/drivers/clk/rockchip/clk-pll.c
-> > @@ -909,14 +909,16 @@ struct clk *rockchip_clk_register_pll(struct rockchip_clk_provider *ctx,
-> …
-> > -		pll->rate_count = len;
-> >  		pll->rate_table = kmemdup(rate_table,
-> >  					pll->rate_count *
-> >  					sizeof(struct rockchip_pll_rate_table),
-> >  					GFP_KERNEL);
-> > -		WARN(!pll->rate_table,
-> > -			"%s: could not allocate rate table for %s\n",
-> > -			__func__, name);
-> > +
-> > +		/*
-> > +		 * Set num rates to 0 if kmemdup fails. That way the clock
-> > +		 * at least can report its rate and stays usable.
-> > +		 */
-> > +		pll->rate_count = pll->rate_table ? len : 0;
-> 
-> Can an other error handling strategy make sense occasionally?
->
-> 
-> …
-> 		if (!pll->rate_table) {
-> 			clk_unregister(mux_clk);
-> 			mux_clk = ERR_PTR(-ENOMEM);
-> 			goto err_mux;
-> 		}
-> …
-> 
-> 
-> Would you like to adjust such exception handling another bit?
+kindly ping.
 
-Nope.
-
-The big difference is that clocks rely heavily on their names to establish
-the clock tree parentship. So the PLL cannot work without the name
-but can provide some means of functionality without the rate-table
-especially as bootloaders do generally initialize a PLL to some form of
-sane frequency.
-
-Heiko
-
+On 2019/10/9 9:47, Mao Wenan wrote:
+> If CONFIG_TYPEC_HD3SS3220=y, CONFIG_USB_ROLE_SWITCH=m, below errors
+> can be found:
+> drivers/usb/typec/hd3ss3220.o: In function `hd3ss3220_remove':
+> hd3ss3220.c:(.text+0x64): undefined reference to `usb_role_switch_put'
+> drivers/usb/typec/hd3ss3220.o: In function `hd3ss3220_dr_set':
+> hd3ss3220.c:(.text+0x154): undefined reference to `usb_role_switch_set_role'
+> drivers/usb/typec/hd3ss3220.o: In function `hd3ss3220_set_role':
+> hd3ss3220.c:(.text+0x294): undefined reference to `usb_role_switch_set_role'
+> hd3ss3220.c:(.text+0x2f4): undefined reference to `usb_role_switch_set_role'
+> hd3ss3220.c:(.text+0x348): undefined reference to `usb_role_switch_set_role'
+> hd3ss3220.c:(.text+0x390): undefined reference to `usb_role_switch_set_role'
+> drivers/usb/typec/hd3ss3220.o: In function `hd3ss3220_probe':
+> hd3ss3220.c:(.text+0x5e8): undefined reference to `fwnode_usb_role_switch_get'
+> hd3ss3220.c:(.text+0x8a4): undefined reference to `usb_role_switch_put'
+> make: *** [vmlinux] Error 1
+> 
+> This patch add dependency USB_ROLE_SWITCH for TYPEC_HD3SS3220.
+> 
+> Fixes: 1c48c759ef4b ("usb: typec: driver for TI HD3SS3220 USB Type-C DRP port controller")
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> ---
+>  drivers/usb/typec/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/usb/typec/Kconfig b/drivers/usb/typec/Kconfig
+> index aceb2af..b4f2aac 100644
+> --- a/drivers/usb/typec/Kconfig
+> +++ b/drivers/usb/typec/Kconfig
+> @@ -53,6 +53,7 @@ source "drivers/usb/typec/ucsi/Kconfig"
+>  config TYPEC_HD3SS3220
+>  	tristate "TI HD3SS3220 Type-C DRP Port controller driver"
+>  	depends on I2C
+> +	depends on USB_ROLE_SWITCH
+>  	help
+>  	  Say Y or M here if your system has TI HD3SS3220 Type-C DRP Port
+>  	  controller driver.
+> 
 

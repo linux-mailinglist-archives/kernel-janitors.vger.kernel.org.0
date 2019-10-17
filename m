@@ -2,98 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A7AC3DAE95
-	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Oct 2019 15:39:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EFFDDAFF2
+	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Oct 2019 16:22:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2436603AbfJQNjE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 17 Oct 2019 09:39:04 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:37213 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388054AbfJQNjD (ORCPT
+        id S2440287AbfJQOWs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 17 Oct 2019 10:22:48 -0400
+Received: from relay11.mail.gandi.net ([217.70.178.231]:35601 "EHLO
+        relay11.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2437756AbfJQOWr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 17 Oct 2019 09:39:03 -0400
-Received: by mail-pf1-f196.google.com with SMTP id y5so1690028pfo.4;
-        Thu, 17 Oct 2019 06:39:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=j+SsM7b+serKOV0a1OL5fJKTRYrA8B2EbLYPvjwJqF0=;
-        b=Hxy0x9pWWQ9v1MYv0iktCe2UUJRjGUPJVPsf+fMy9I3MWgi5wa82Oc7+Aa2zGV9gmk
-         3y/dWcoYWmZR20eZ5nu4jVd/WtIQhkRStD2+lfUgZmTns6YfJmckhMGLaLwB2jVkdcC2
-         lViALbi67Xl3Ufl1frKuMSPH6BmSsSv4k3Fnnb5HvloAMxJ0xW+aeqnSN39k9c0smky9
-         lRrNNdg2E85cm5fDr37uq1KRYBU03cvg4av+it7dkIA+AeidNwqd49w3sHZn4tRt0h1a
-         yfJDEBYmHNjCrK/sffnnd4BkDDvQFWq6DmjdfTxa/F5sqoviHaC7/yuRSWCdJC6/FWoZ
-         emPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=j+SsM7b+serKOV0a1OL5fJKTRYrA8B2EbLYPvjwJqF0=;
-        b=Q8Cad6UqmwrSUQ9GAbK7A+36zIVZdVCnmVGkd+tZ29kgvOVU4iIW2X4Ju020STwoCm
-         su0+3S7VLxKU6Sbjq9+Peced6ZSak74RDAAMaQ7gUginpLxCt4N/BjCk0k6oVbu0w+wt
-         ykIc07QRUTMIyhSgoX7hbiCJqyg9Nuqs0hjg0xhwmi4kISi+KN27gUYz9gxn7BC2AZ3W
-         vAUVeBapoPufBycRq9vi4+V201Ho7he1miiMgA1DtnwQs8lKtr7z1BUvp/9zMeXeyP9z
-         W8Zte6nH67brLmHQvrguEknxLaxBvclOG0cUuTkzSqoH+iKpcTFucV1KcIcpimLDkuUK
-         FL3g==
-X-Gm-Message-State: APjAAAVt/mAyk7JaHO/LKLfYje09pOtogv5zBfZv820YxAozG4nQPLnR
-        +S3LxMYmyo+i+mWbCbQs0nt8DJsq
-X-Google-Smtp-Source: APXvYqwivP6Moq2Hf1CSOnfBIzu4CkKMzsFVoLpK9HwneTAmWn06dYrwWR97qS3wohSUnruLSo2xlw==
-X-Received: by 2002:a17:90a:9416:: with SMTP id r22mr4519604pjo.20.1571319543083;
-        Thu, 17 Oct 2019 06:39:03 -0700 (PDT)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id x23sm2962192pfq.140.2019.10.17.06.39.02
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 17 Oct 2019 06:39:02 -0700 (PDT)
-Date:   Thu, 17 Oct 2019 06:39:01 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Rudolf Marek <r.marek@assembler.cz>,
-        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] hwmon: w83793d: remove redundant assignment to variable
- res
-Message-ID: <20191017133901.GA31691@roeck-us.net>
-References: <20191011170215.11539-1-colin.king@canonical.com>
+        Thu, 17 Oct 2019 10:22:47 -0400
+Received: from localhost (aclermont-ferrand-651-1-259-53.w86-207.abo.wanadoo.fr [86.207.98.53])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay11.mail.gandi.net (Postfix) with ESMTPSA id 52B4A10000C;
+        Thu, 17 Oct 2019 14:22:45 +0000 (UTC)
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Julia Lawall <Julia.Lawall@lip6.fr>
+Cc:     Himanshu Jha <himanshujha199640@gmail.com>,
+        Linus Torvalds <torvalds@linuxfoundation.org>,
+        kernel-janitors@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        tglx@linutronix.de, Marc Zyngier <maz@kernel.org>,
+        linux-kernel@vger.kernel.org,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH] coccinelle: api/devm_platform_ioremap_resource: remove useless script
+Date:   Thu, 17 Oct 2019 16:22:37 +0200
+Message-Id: <20191017142237.9734-1-alexandre.belloni@bootlin.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191011170215.11539-1-colin.king@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Oct 11, 2019 at 06:02:15PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The variable res is being initialized with a value that
-> is never read and is being re-assigned a little later on. The
-> assignment is redundant and hence can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+While it is useful for new drivers to use devm_platform_ioremap_resource,
+this script is currently used to spam maintainers, often updating very old
+drivers. The net benefit is the removal of 2 lines of code in the driver
+but the review load for the maintainers is huge. As of now, more that 560
+patches have been sent, some of them obviously broken, as in:
 
-Applied. Note that I removed the above Addreddes-Coverity tag as
-it doesn't really make much sense.
+https://lore.kernel.org/lkml/9bbcce19c777583815c92ce3c2ff2586@www.loen.fr/
 
-Guenter
+Remove the script to reduce the spam.
 
-> ---
->  drivers/hwmon/w83793.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hwmon/w83793.c b/drivers/hwmon/w83793.c
-> index 9df48b70c70c..a0307e6761b8 100644
-> --- a/drivers/hwmon/w83793.c
-> +++ b/drivers/hwmon/w83793.c
-> @@ -2096,7 +2096,7 @@ static struct w83793_data *w83793_update_device(struct device *dev)
->  static u8 w83793_read_value(struct i2c_client *client, u16 reg)
->  {
->  	struct w83793_data *data = i2c_get_clientdata(client);
-> -	u8 res = 0xff;
-> +	u8 res;
->  	u8 new_bank = reg >> 8;
->  
->  	new_bank |= data->bank & 0xfc;
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+---
+ .../api/devm_platform_ioremap_resource.cocci  | 60 -------------------
+ 1 file changed, 60 deletions(-)
+ delete mode 100644 scripts/coccinelle/api/devm_platform_ioremap_resource.cocci
+
+diff --git a/scripts/coccinelle/api/devm_platform_ioremap_resource.cocci b/scripts/coccinelle/api/devm_platform_ioremap_resource.cocci
+deleted file mode 100644
+index 56a2e261d61d..000000000000
+--- a/scripts/coccinelle/api/devm_platform_ioremap_resource.cocci
++++ /dev/null
+@@ -1,60 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0
+-/// Use devm_platform_ioremap_resource helper which wraps
+-/// platform_get_resource() and devm_ioremap_resource() together.
+-///
+-// Confidence: High
+-// Copyright: (C) 2019 Himanshu Jha GPLv2.
+-// Copyright: (C) 2019 Julia Lawall, Inria/LIP6. GPLv2.
+-// Keywords: platform_get_resource, devm_ioremap_resource,
+-// Keywords: devm_platform_ioremap_resource
+-
+-virtual patch
+-virtual report
+-
+-@r depends on patch && !report@
+-expression e1, e2, arg1, arg2, arg3;
+-identifier id;
+-@@
+-
+-(
+-- id = platform_get_resource(arg1, IORESOURCE_MEM, arg2);
+-|
+-- struct resource *id = platform_get_resource(arg1, IORESOURCE_MEM, arg2);
+-)
+-  ... when != id
+-- e1 = devm_ioremap_resource(arg3, id);
+-+ e1 = devm_platform_ioremap_resource(arg1, arg2);
+-  ... when != id
+-? id = e2
+-
+-@r1 depends on patch && !report@
+-identifier r.id;
+-type T;
+-@@
+-
+-- T *id;
+-  ...when != id
+-
+-@r2 depends on report && !patch@
+-identifier id;
+-expression e1, e2, arg1, arg2, arg3;
+-position j0;
+-@@
+-
+-(
+-  id = platform_get_resource(arg1, IORESOURCE_MEM, arg2);
+-|
+-  struct resource *id = platform_get_resource(arg1, IORESOURCE_MEM, arg2);
+-)
+-  ... when != id
+-  e1@j0 = devm_ioremap_resource(arg3, id);
+-  ... when != id
+-? id = e2
+-
+-@script:python depends on report && !patch@
+-e1 << r2.e1;
+-j0 << r2.j0;
+-@@
+-
+-msg = "WARNING: Use devm_platform_ioremap_resource for %s" % (e1)
+-coccilib.report.print_report(j0[0], msg)
+-- 
+2.21.0
+

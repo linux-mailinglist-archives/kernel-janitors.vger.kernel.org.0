@@ -2,97 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 481B5DA824
-	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Oct 2019 11:19:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7AC3DAE95
+	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Oct 2019 15:39:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393000AbfJQJTj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 17 Oct 2019 05:19:39 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:44002 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728987AbfJQJTj (ORCPT
+        id S2436603AbfJQNjE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 17 Oct 2019 09:39:04 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:37213 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388054AbfJQNjD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 17 Oct 2019 05:19:39 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9H9JPHW067550;
-        Thu, 17 Oct 2019 09:19:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=HqGJrXdDr+L2vzzi8nOpmT45hooIBj7pFx6NpAJ8pDE=;
- b=BTMIIGNB03tk7WGXihAsFPeRnJ76O2/dqzqyHVYfNWH1N+cG9z6Mln3g/mUaehMXg0qZ
- /Zk2e2k04mP6i5aAIbgAwyju+bLOPy/VBusfKsHP3Fz2w4gCKTEUmwNFMDHNYaVco5NJ
- wASfbLRYvMZxn7wpnbb1aIk0lB3Ox8jfGN+kSPo2KhzcrnMEbUjC84oMvc185wH1JGvL
- Djohj9Zv0k8ZBevP64KNhFqJNPvpfWGWnanVWnq9gvhhEy1GF2PhpSeZ0CBJn6wf6MzD
- BdF6uojNyMKFqBvzoTQXbjrynQ2bW6vtgzhzEf/OOFQP/fzD/tO9auO1tTYnr9OixFS9 IA== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 2vk6sqw2ft-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 17 Oct 2019 09:19:33 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9H9JVcZ106375;
-        Thu, 17 Oct 2019 09:19:32 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 2vp3bk9y52-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 17 Oct 2019 09:19:32 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x9H9IdLa028892;
-        Thu, 17 Oct 2019 09:18:40 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 17 Oct 2019 09:18:39 +0000
-Date:   Thu, 17 Oct 2019 12:18:32 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Adham Abozaeid <adham.abozaeid@microchip.com>
-Cc:     Ajay Singh <ajay.kathat@microchip.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-wireless@vger.kernel.org, devel@driverdev.osuosl.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] staging: wilc1000: potential corruption in
- wilc_parse_join_bss_param()
-Message-ID: <20191017091832.GB31278@mwanda>
+        Thu, 17 Oct 2019 09:39:03 -0400
+Received: by mail-pf1-f196.google.com with SMTP id y5so1690028pfo.4;
+        Thu, 17 Oct 2019 06:39:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=j+SsM7b+serKOV0a1OL5fJKTRYrA8B2EbLYPvjwJqF0=;
+        b=Hxy0x9pWWQ9v1MYv0iktCe2UUJRjGUPJVPsf+fMy9I3MWgi5wa82Oc7+Aa2zGV9gmk
+         3y/dWcoYWmZR20eZ5nu4jVd/WtIQhkRStD2+lfUgZmTns6YfJmckhMGLaLwB2jVkdcC2
+         lViALbi67Xl3Ufl1frKuMSPH6BmSsSv4k3Fnnb5HvloAMxJ0xW+aeqnSN39k9c0smky9
+         lRrNNdg2E85cm5fDr37uq1KRYBU03cvg4av+it7dkIA+AeidNwqd49w3sHZn4tRt0h1a
+         yfJDEBYmHNjCrK/sffnnd4BkDDvQFWq6DmjdfTxa/F5sqoviHaC7/yuRSWCdJC6/FWoZ
+         emPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=j+SsM7b+serKOV0a1OL5fJKTRYrA8B2EbLYPvjwJqF0=;
+        b=Q8Cad6UqmwrSUQ9GAbK7A+36zIVZdVCnmVGkd+tZ29kgvOVU4iIW2X4Ju020STwoCm
+         su0+3S7VLxKU6Sbjq9+Peced6ZSak74RDAAMaQ7gUginpLxCt4N/BjCk0k6oVbu0w+wt
+         ykIc07QRUTMIyhSgoX7hbiCJqyg9Nuqs0hjg0xhwmi4kISi+KN27gUYz9gxn7BC2AZ3W
+         vAUVeBapoPufBycRq9vi4+V201Ho7he1miiMgA1DtnwQs8lKtr7z1BUvp/9zMeXeyP9z
+         W8Zte6nH67brLmHQvrguEknxLaxBvclOG0cUuTkzSqoH+iKpcTFucV1KcIcpimLDkuUK
+         FL3g==
+X-Gm-Message-State: APjAAAVt/mAyk7JaHO/LKLfYje09pOtogv5zBfZv820YxAozG4nQPLnR
+        +S3LxMYmyo+i+mWbCbQs0nt8DJsq
+X-Google-Smtp-Source: APXvYqwivP6Moq2Hf1CSOnfBIzu4CkKMzsFVoLpK9HwneTAmWn06dYrwWR97qS3wohSUnruLSo2xlw==
+X-Received: by 2002:a17:90a:9416:: with SMTP id r22mr4519604pjo.20.1571319543083;
+        Thu, 17 Oct 2019 06:39:03 -0700 (PDT)
+Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id x23sm2962192pfq.140.2019.10.17.06.39.02
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 17 Oct 2019 06:39:02 -0700 (PDT)
+Date:   Thu, 17 Oct 2019 06:39:01 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Rudolf Marek <r.marek@assembler.cz>,
+        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] hwmon: w83793d: remove redundant assignment to variable
+ res
+Message-ID: <20191017133901.GA31691@roeck-us.net>
+References: <20191011170215.11539-1-colin.king@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9412 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910170084
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9412 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910170084
+In-Reply-To: <20191011170215.11539-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "rates_len" value needs to be capped so that the memcpy() doesn't
-copy beyond the end of the array.
+On Fri, Oct 11, 2019 at 06:02:15PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The variable res is being initialized with a value that
+> is never read and is being re-assigned a little later on. The
+> assignment is redundant and hence can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Fixes: c5c77ba18ea6 ("staging: wilc1000: Add SDIO/SPI 802.11 driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/staging/wilc1000/wilc_hif.c | 2 ++
- 1 file changed, 2 insertions(+)
+Applied. Note that I removed the above Addreddes-Coverity tag as
+it doesn't really make much sense.
 
-diff --git a/drivers/staging/wilc1000/wilc_hif.c b/drivers/staging/wilc1000/wilc_hif.c
-index 0ac2b6ac50b0..e0a95c5cc0d5 100644
---- a/drivers/staging/wilc1000/wilc_hif.c
-+++ b/drivers/staging/wilc1000/wilc_hif.c
-@@ -479,6 +479,8 @@ void *wilc_parse_join_bss_param(struct cfg80211_bss *bss,
- 	rates_ie = cfg80211_find_ie(WLAN_EID_SUPP_RATES, ies->data, ies->len);
- 	if (rates_ie) {
- 		rates_len = rates_ie[1];
-+		if (rates_len > WILC_MAX_RATES_SUPPORTED)
-+			rates_len = WILC_MAX_RATES_SUPPORTED;
- 		param->supp_rates[0] = rates_len;
- 		memcpy(&param->supp_rates[1], rates_ie + 2, rates_len);
- 	}
--- 
-2.20.1
+Guenter
 
+> ---
+>  drivers/hwmon/w83793.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hwmon/w83793.c b/drivers/hwmon/w83793.c
+> index 9df48b70c70c..a0307e6761b8 100644
+> --- a/drivers/hwmon/w83793.c
+> +++ b/drivers/hwmon/w83793.c
+> @@ -2096,7 +2096,7 @@ static struct w83793_data *w83793_update_device(struct device *dev)
+>  static u8 w83793_read_value(struct i2c_client *client, u16 reg)
+>  {
+>  	struct w83793_data *data = i2c_get_clientdata(client);
+> -	u8 res = 0xff;
+> +	u8 res;
+>  	u8 new_bank = reg >> 8;
+>  
+>  	new_bank |= data->bank & 0xfc;

@@ -2,88 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F8CAD9ECF
-	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Oct 2019 00:04:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B03B6DA46A
+	for <lists+kernel-janitors@lfdr.de>; Thu, 17 Oct 2019 05:54:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2439005AbfJPWC0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 16 Oct 2019 18:02:26 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54888 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2438611AbfJPV7o (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 16 Oct 2019 17:59:44 -0400
-Received: from localhost (unknown [192.55.54.58])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0F986222C5;
-        Wed, 16 Oct 2019 21:59:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1571263184;
-        bh=BykSuC2M0KsUSDjDN+Qux96Y+qA/cbufw6DyvJBIPU0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V2vGkloXXPt4744b1CUxKC3MOtGztMKwG6KDgk0t636Rkx/s2r+i2ayOAyiTsBt0k
-         A8wwy1GxKPvjkbg3CmfZePQwZQB7awg1jrP8D05x4ba99uJ95tB1+CECEaSgsfiYWd
-         D4ZbfND0H6BSDGc+Sbq1nd9LzeKYEYvyqWlA/aOk=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, Colin Ian King <colin.king@canonical.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        kernel-janitors@vger.kernel.org, linux-efi@vger.kernel.org,
-        Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 5.3 111/112] efi/tpm: Fix sanity check of unsigned tbl_size being less than zero
-Date:   Wed, 16 Oct 2019 14:51:43 -0700
-Message-Id: <20191016214907.521785772@linuxfoundation.org>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191016214844.038848564@linuxfoundation.org>
-References: <20191016214844.038848564@linuxfoundation.org>
-User-Agent: quilt/0.66
+        id S2407623AbfJQDyQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 16 Oct 2019 23:54:16 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:42844 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2392243AbfJQDyQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 16 Oct 2019 23:54:16 -0400
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 0BF5C6F2F1AB8227FC87;
+        Thu, 17 Oct 2019 11:54:14 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 17 Oct 2019 11:54:07 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Steve French <sfrench@samba.org>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-cifs@vger.kernel.org>,
+        <samba-technical@lists.samba.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] CIFS: remove set but not used variables 'cinode' and 'netfid'
+Date:   Thu, 17 Oct 2019 03:53:51 +0000
+Message-ID: <20191017035351.125013-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-commit be59d57f98065af0b8472f66a0a969207b168680 upstream.
+fs/cifs/file.c: In function 'cifs_flock':
+fs/cifs/file.c:1704:8: warning:
+ variable 'netfid' set but not used [-Wunused-but-set-variable]
 
-Currently the check for tbl_size being less than zero is always false
-because tbl_size is unsigned. Fix this by making it a signed int.
+fs/cifs/file.c:1702:24: warning:
+ variable 'cinode' set but not used [-Wunused-but-set-variable]
 
-Addresses-Coverity: ("Unsigned compared against 0")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
-Cc: Jerry Snitselaar <jsnitsel@redhat.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: kernel-janitors@vger.kernel.org
-Cc: linux-efi@vger.kernel.org
-Fixes: e658c82be556 ("efi/tpm: Only set 'efi_tpm_final_log_size' after successful event log parsing")
-Link: https://lkml.kernel.org/r/20191008100153.8499-1-colin.king@canonical.com
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/firmware/efi/tpm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/cifs/file.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/drivers/firmware/efi/tpm.c
-+++ b/drivers/firmware/efi/tpm.c
-@@ -40,7 +40,7 @@ int __init efi_tpm_eventlog_init(void)
- {
- 	struct linux_efi_tpm_eventlog *log_tbl;
- 	struct efi_tcg2_final_events_table *final_tbl;
--	unsigned int tbl_size;
-+	int tbl_size;
- 	int ret = 0;
+diff --git a/fs/cifs/file.c b/fs/cifs/file.c
+index 936e03892e2a..02a81dc6861a 100644
+--- a/fs/cifs/file.c
++++ b/fs/cifs/file.c
+@@ -1699,9 +1699,7 @@ int cifs_flock(struct file *file, int cmd, struct file_lock *fl)
+ 	bool posix_lck = false;
+ 	struct cifs_sb_info *cifs_sb;
+ 	struct cifs_tcon *tcon;
+-	struct cifsInodeInfo *cinode;
+ 	struct cifsFileInfo *cfile;
+-	__u16 netfid;
+ 	__u32 type;
  
- 	if (efi.tpm_log == EFI_INVALID_TABLE_ADDR) {
+ 	rc = -EACCES;
+@@ -1716,8 +1714,6 @@ int cifs_flock(struct file *file, int cmd, struct file_lock *fl)
+ 	cifs_read_flock(fl, &type, &lock, &unlock, &wait_flag,
+ 			tcon->ses->server);
+ 	cifs_sb = CIFS_FILE_SB(file);
+-	netfid = cfile->fid.netfid;
+-	cinode = CIFS_I(file_inode(file));
+ 
+ 	if (cap_unix(tcon->ses) &&
+ 	    (CIFS_UNIX_FCNTL_CAP & le64_to_cpu(tcon->fsUnixInfo.Capability)) &&
+
 
 

@@ -2,92 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CBF9DC273
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Oct 2019 12:15:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3BBDDC51E
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Oct 2019 14:37:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2442482AbfJRKP2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 18 Oct 2019 06:15:28 -0400
-Received: from cloudserver094114.home.pl ([79.96.170.134]:53440 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389149AbfJRKP2 (ORCPT
+        id S1732418AbfJRMh7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 18 Oct 2019 08:37:59 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:59712 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728515AbfJRMh6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 18 Oct 2019 06:15:28 -0400
-Received: from 79.184.255.51.ipv4.supernova.orange.pl (79.184.255.51) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.292)
- id 07025921cfe5987f; Fri, 18 Oct 2019 12:15:26 +0200
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Jaroslav Kysela <perex@perex.cz>, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] PNP: fix unintended sign extension on left shifts
-Date:   Fri, 18 Oct 2019 12:15:26 +0200
-Message-ID: <7928372.mU7jdBj7dM@kreacher>
-In-Reply-To: <20191014131608.31335-1-colin.king@canonical.com>
-References: <20191014131608.31335-1-colin.king@canonical.com>
+        Fri, 18 Oct 2019 08:37:58 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9ICY1Te041516;
+        Fri, 18 Oct 2019 12:37:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=jjxfyzdJ1DBzufbew6BAqGAiJy4K7X6iQAV3wpA/e8Q=;
+ b=cxa/ORzpbTVYnDdbYC6MD5SKE3vjaqqgIwwL3n82CIp1PBpzp2Rd0IPa2nLBUToR/YJ0
+ gFnqF63JkHJCZSDlg951JFzqO7eRPDZ0EVR7Uk81oKshMGSiIqzi+CUcPPmY7WjtmE9O
+ mfrBnBtY8YFPDCrutVSKZVi0qOdnieLPXhqz80jHG4eKoWJYo198POj2YSQ3Z9SD8yuI
+ zjo5oVAy+6eqKhOpfQn2BW2WRhC9Nj1OK62RJXUH6/aHP+R0FQxM8ftbFf3DhEJsMlvi
+ 38dXJqMOc9mdPHbeP36IDxBDOgqBibo0o0LPo4NqXt86UchqnR8tbAXEC6mYEdV7rGY6 3A== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 2vq0q4bnr0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 18 Oct 2019 12:37:47 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9ICX7vw133010;
+        Fri, 18 Oct 2019 12:35:46 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 2vq0dxfwr5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 18 Oct 2019 12:35:46 +0000
+Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x9ICZiws009665;
+        Fri, 18 Oct 2019 12:35:44 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 18 Oct 2019 12:35:44 +0000
+Date:   Fri, 18 Oct 2019 15:35:34 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Dan Williams <dan.j.williams@intel.com>
+Cc:     Vishal Verma <vishal.l.verma@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Keith Busch <keith.busch@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <lenb@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-nvdimm@lists.01.org, linux-acpi@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] acpi/nfit: unlock on error in scrub_show()
+Message-ID: <20191018123534.GA6549@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9413 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910180118
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9413 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910180118
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Monday, October 14, 2019 3:16:08 PM CEST Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Shifting a u8 left will cause the value to be promoted to an integer. If
-> the top bit of the u8 is set then the following conversion to a 64 bit
-> resource_size_t will sign extend the value causing the upper 32 bits
-> to be set in the result.
-> 
-> Fix this by casting the u8 value to a resource_size_t before the shift.
-> Original commit is pre-git history.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/pnp/isapnp/core.c | 18 ++++++++++++------
->  1 file changed, 12 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/pnp/isapnp/core.c b/drivers/pnp/isapnp/core.c
-> index 179b737280e1..c947b1673041 100644
-> --- a/drivers/pnp/isapnp/core.c
-> +++ b/drivers/pnp/isapnp/core.c
-> @@ -511,10 +511,14 @@ static void __init isapnp_parse_mem32_resource(struct pnp_dev *dev,
->  	unsigned char flags;
->  
->  	isapnp_peek(tmp, size);
-> -	min = (tmp[4] << 24) | (tmp[3] << 16) | (tmp[2] << 8) | tmp[1];
-> -	max = (tmp[8] << 24) | (tmp[7] << 16) | (tmp[6] << 8) | tmp[5];
-> -	align = (tmp[12] << 24) | (tmp[11] << 16) | (tmp[10] << 8) | tmp[9];
-> -	len = (tmp[16] << 24) | (tmp[15] << 16) | (tmp[14] << 8) | tmp[13];
-> +	min = ((resource_size_t)tmp[4] << 24) | (tmp[3] << 16) |
-> +              (tmp[2] << 8) | tmp[1];
-> +	max = ((resource_size_t)tmp[8] << 24) | (tmp[7] << 16) |
-> +              (tmp[6] << 8) | tmp[5];
-> +	align = ((resource_size_t)tmp[12] << 24) | (tmp[11] << 16) |
-> +              (tmp[10] << 8) | tmp[9];
-> +	len = ((resource_size_t)tmp[16] << 24) | (tmp[15] << 16) |
-> +              (tmp[14] << 8) | tmp[13];
->  	flags = tmp[0];
->  	pnp_register_mem_resource(dev, option_flags,
->  				  min, max, align, len, flags);
-> @@ -532,8 +536,10 @@ static void __init isapnp_parse_fixed_mem32_resource(struct pnp_dev *dev,
->  	unsigned char flags;
->  
->  	isapnp_peek(tmp, size);
-> -	base = (tmp[4] << 24) | (tmp[3] << 16) | (tmp[2] << 8) | tmp[1];
-> -	len = (tmp[8] << 24) | (tmp[7] << 16) | (tmp[6] << 8) | tmp[5];
-> +	base = ((resource_size_t)tmp[4] << 24) | (tmp[3] << 16) |
-> +	       (tmp[2] << 8) | tmp[1];
-> +	len = ((resource_size_t)tmp[8] << 24) | (tmp[7] << 16) |
-> +              (tmp[6] << 8) | tmp[5];
->  	flags = tmp[0];
->  	pnp_register_mem_resource(dev, option_flags, base, base, 0, len, flags);
->  }
-> 
+We change the locking in this function and forgot to update this error
+path so we are accidentally still holding the "dev->lockdep_mutex".
 
-Can you please respin this with a CC to linux-acpi?
+Fixes: 87a30e1f05d7 ("driver-core, libnvdimm: Let device subsystems add local lockdep coverage")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/acpi/nfit/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-
+diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
+index 1413324982f0..14e68f202f81 100644
+--- a/drivers/acpi/nfit/core.c
++++ b/drivers/acpi/nfit/core.c
+@@ -1322,7 +1322,7 @@ static ssize_t scrub_show(struct device *dev,
+ 	nfit_device_lock(dev);
+ 	nd_desc = dev_get_drvdata(dev);
+ 	if (!nd_desc) {
+-		device_unlock(dev);
++		nfit_device_unlock(dev);
+ 		return rc;
+ 	}
+ 	acpi_desc = to_acpi_desc(nd_desc);
+-- 
+2.20.1
 

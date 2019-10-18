@@ -2,76 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B6A3DCF24
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Oct 2019 21:12:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 84F4ADD045
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Oct 2019 22:30:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2440023AbfJRTMQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 18 Oct 2019 15:12:16 -0400
-Received: from mga11.intel.com ([192.55.52.93]:51475 "EHLO mga11.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2439895AbfJRTMQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 18 Oct 2019 15:12:16 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 18 Oct 2019 12:12:15 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.67,312,1566889200"; 
-   d="scan'208";a="200798058"
-Received: from iweiny-desk2.sc.intel.com ([10.3.52.157])
-  by orsmga006.jf.intel.com with ESMTP; 18 Oct 2019 12:12:15 -0700
-Date:   Fri, 18 Oct 2019 12:12:14 -0700
-From:   Ira Weiny <ira.weiny@intel.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Keith Busch <keith.busch@intel.com>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <lenb@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-nvdimm@lists.01.org, linux-acpi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] acpi/nfit: unlock on error in scrub_show()
-Message-ID: <20191018191214.GB10455@iweiny-DESK2.sc.intel.com>
-References: <20191018123534.GA6549@mwanda>
+        id S2406240AbfJRU3t (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 18 Oct 2019 16:29:49 -0400
+Received: from mail-wm1-f54.google.com ([209.85.128.54]:34702 "EHLO
+        mail-wm1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390076AbfJRU3f (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 18 Oct 2019 16:29:35 -0400
+Received: by mail-wm1-f54.google.com with SMTP id y135so10089652wmc.1;
+        Fri, 18 Oct 2019 13:29:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ba9RrRbkLJnLGttS3tqY6uEIGZIveq6h2QQOGVun8HE=;
+        b=J7mjE8tuxxDn7+f/2dmZuzmjyVufQc43Y/oUQ4Hki3fyAfOKmoMkbpgQRZcPLHhVoR
+         29xxtFLLQCJX6vxiw0Pquh61D0zAfL5Dr2TiiX15E4kg9lwpnH6GQdeeCeXxVPyJv2iL
+         4LF0YMaBRikKmN7Pu6ZdfEo7TU+zKHFpwSZCHj2fVySkg6Q74eyYUziS3aZC3IswOSUe
+         1e+86YXklPCz3EbvhJ1CKeQXBbhPYQi60f8H/w7jcZbifM2BhviocXf5Xj9/4AYyN1f4
+         IbjUzdACzQzU7UcDjFqcKXIY0nqxjH6GPqGufSSzHVlFK5QKnRBXxfr6ACBGfffNgHGs
+         ftIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ba9RrRbkLJnLGttS3tqY6uEIGZIveq6h2QQOGVun8HE=;
+        b=JqehOrHg+qo5a2u8Zde0GcZ/A+ZjQa8+DJbzvfYbwQ+JL9eSzF7tpD7YOByNKbDixT
+         +iOlH5DBDF1lWY4nN3NHYdzhVGPIGqXNExcGxcGFYFzys3w/tpXAeyPcLT/hvIahi+GJ
+         q8UUw8AZM5kX9R8vvieE6hLmnPxqaor2xUoiEErmk66RKDGvzq+d/5RjmB0fhn5PpLOh
+         g6BtrRR0AxCv7MbLEXRsj035Rkw/dFb0nW0b0OZpQteBsbmg+IMserR2O8NK9j/Kyej/
+         C0JpvX/mZLgBoD+qah3UbgfjTFiKiR9IWPj3WMSq7z3teqy8xEZl6TT4UPeyhxb3kput
+         /ZVQ==
+X-Gm-Message-State: APjAAAXvG9UOx4SJEyj6RpxhVVDeQTQGCGLsQ/HPX1RZNI4lkqlK/Bcg
+        CSgvc1dbcpKvfpDtPsjs4zkorZEkkUIY+1dQ+sg=
+X-Google-Smtp-Source: APXvYqydu7tjGRS+9xHS/6nmdzlot6xGzdm702IYYBjChFYo3Ba935zPg0y/isfGBQU1q32AZ6rmmzMC8gX7ecdecDE=
+X-Received: by 2002:a1c:968b:: with SMTP id y133mr9000951wmd.141.1571430542263;
+ Fri, 18 Oct 2019 13:29:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191018123534.GA6549@mwanda>
-User-Agent: Mutt/1.11.1 (2018-12-01)
+References: <20191018081508.11028-1-colin.king@canonical.com>
+In-Reply-To: <20191018081508.11028-1-colin.king@canonical.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Fri, 18 Oct 2019 16:28:50 -0400
+Message-ID: <CADnq5_OfwU2yuxrkW0EjqSjxeYBRA4kw1gksDEmE+pcSOuSwAg@mail.gmail.com>
+Subject: Re: [PATCH][next] drm/amdgpu/psp: fix spelling mistake "initliaze" -> "initialize"
+To:     Colin King <colin.king@canonical.com>
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Oct 18, 2019 at 03:35:34PM +0300, Dan Carpenter wrote:
-> We change the locking in this function and forgot to update this error
-> path so we are accidentally still holding the "dev->lockdep_mutex".
-> 
-> Fixes: 87a30e1f05d7 ("driver-core, libnvdimm: Let device subsystems add local lockdep coverage")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+On Fri, Oct 18, 2019 at 4:15 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There is a spelling mistake in a DRM_ERROR error message. Fix it.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Reviewed-by: Ira Weiny <ira.weiny@intel.com>
+Applied.  thanks!
+
+Alex
 
 > ---
->  drivers/acpi/nfit/core.c | 2 +-
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/acpi/nfit/core.c b/drivers/acpi/nfit/core.c
-> index 1413324982f0..14e68f202f81 100644
-> --- a/drivers/acpi/nfit/core.c
-> +++ b/drivers/acpi/nfit/core.c
-> @@ -1322,7 +1322,7 @@ static ssize_t scrub_show(struct device *dev,
->  	nfit_device_lock(dev);
->  	nd_desc = dev_get_drvdata(dev);
->  	if (!nd_desc) {
-> -		device_unlock(dev);
-> +		nfit_device_unlock(dev);
->  		return rc;
->  	}
->  	acpi_desc = to_acpi_desc(nd_desc);
-> -- 
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+> index b996b5bc5804..fd7a73f4fa70 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+> @@ -90,7 +90,7 @@ static int psp_sw_init(void *handle)
+>
+>         ret = psp_mem_training_init(psp);
+>         if (ret) {
+> -               DRM_ERROR("Failed to initliaze memory training!\n");
+> +               DRM_ERROR("Failed to initialize memory training!\n");
+>                 return ret;
+>         }
+>         ret = psp_mem_training(psp, PSP_MEM_TRAIN_COLD_BOOT);
+> --
 > 2.20.1
-> 
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

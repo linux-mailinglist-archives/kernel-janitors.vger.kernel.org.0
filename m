@@ -2,48 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A0E0DBF46
-	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Oct 2019 10:02:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D22ADBF96
+	for <lists+kernel-janitors@lfdr.de>; Fri, 18 Oct 2019 10:15:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2504700AbfJRICx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 18 Oct 2019 04:02:53 -0400
-Received: from helcar.hmeau.com ([216.24.177.18]:37302 "EHLO fornost.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729376AbfJRICw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 18 Oct 2019 04:02:52 -0400
-Received: from gwarestrin.arnor.me.apana.org.au ([192.168.0.7])
-        by fornost.hmeau.com with smtp (Exim 4.89 #2 (Debian))
-        id 1iLNDW-0001qP-2k; Fri, 18 Oct 2019 19:02:35 +1100
-Received: by gwarestrin.arnor.me.apana.org.au (sSMTP sendmail emulation); Fri, 18 Oct 2019 19:02:34 +1100
-Date:   Fri, 18 Oct 2019 19:02:34 +1100
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Antoine Tenart <antoine.tenart@bootlin.com>,
-        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] crypto: Use PTR_ERR_OR_ZERO in
- safexcel_xcbcmac_cra_init()
-Message-ID: <20191018080233.GC25128@gondor.apana.org.au>
-References: <20191009120621.45834-1-yuehaibing@huawei.com>
+        id S1732147AbfJRIPN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 18 Oct 2019 04:15:13 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:38605 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731008AbfJRIPN (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 18 Oct 2019 04:15:13 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iLNPg-000278-RW; Fri, 18 Oct 2019 08:15:08 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/amdgpu/psp: fix spelling mistake "initliaze" -> "initialize"
+Date:   Fri, 18 Oct 2019 09:15:08 +0100
+Message-Id: <20191018081508.11028-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191009120621.45834-1-yuehaibing@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Oct 09, 2019 at 12:06:21PM +0000, YueHaibing wrote:
-> Use PTR_ERR_OR_ZERO rather than if(IS_ERR(...)) + PTR_ERR
-> 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> ---
->  drivers/crypto/inside-secure/safexcel_hash.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+From: Colin Ian King <colin.king@canonical.com>
 
-Patch applied.  Thanks.
+There is a spelling mistake in a DRM_ERROR error message. Fix it.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+index b996b5bc5804..fd7a73f4fa70 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
+@@ -90,7 +90,7 @@ static int psp_sw_init(void *handle)
+ 
+ 	ret = psp_mem_training_init(psp);
+ 	if (ret) {
+-		DRM_ERROR("Failed to initliaze memory training!\n");
++		DRM_ERROR("Failed to initialize memory training!\n");
+ 		return ret;
+ 	}
+ 	ret = psp_mem_training(psp, PSP_MEM_TRAIN_COLD_BOOT);
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.20.1
+

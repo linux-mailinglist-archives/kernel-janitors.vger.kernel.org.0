@@ -2,158 +2,155 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55577DD78F
-	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Oct 2019 10:59:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E514EDD792
+	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Oct 2019 11:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728303AbfJSI72 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 19 Oct 2019 04:59:28 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:37586 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728270AbfJSI72 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 19 Oct 2019 04:59:28 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9J8xNA3121416;
-        Sat, 19 Oct 2019 08:59:23 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=0/eTYgKMfcByarnMdtpllDVRCHrlR/j9HrDm4SXKZqM=;
- b=hIbYwfZ/2W+yKjmyRpgHIWVjV5t84x9pbVUxwyBrOS1HawbZbGBm0sSrTWzEuJLprZXd
- mgzWty+fDjlFm9oSM5ZUTjn6HPJde/I2yyopI1GUHmLSCs78SPP6EelVj+MgDHnmMoyt
- CJvhDVg+AOWRTLpdTG5thxchtyCUeUJSZSKUgbmjYWU3Vk07dCtdOLWm0tMUFRVlvY1/
- dng/qHh2szfwbsFp9GSjUc6abF8KTfDtMVE/9k9llgO6AcP1xWzoZk9NRvV7qnPAIiP5
- v1Mpr0CuJNeJb8C1s0i3AOtrGIykS3DjyI/NeEso1qcV3iCBR787VtIJiKCsE/AEGItC +w== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 2vqtep8r1g-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 19 Oct 2019 08:59:23 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9J8wNPA147162;
-        Sat, 19 Oct 2019 08:59:22 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 2vqsu7j9r4-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 19 Oct 2019 08:59:22 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x9J8xKAP017388;
-        Sat, 19 Oct 2019 08:59:21 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Sat, 19 Oct 2019 08:59:20 +0000
-Date:   Sat, 19 Oct 2019 11:59:13 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        Naresh Kumar Inna <naresh@chelsio.com>
-Cc:     "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] scsi: csiostor: Don't enable IRQs too early
-Message-ID: <20191019085913.GA14245@mwanda>
+        id S1727054AbfJSJB2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 19 Oct 2019 05:01:28 -0400
+Received: from mout.web.de ([212.227.17.11]:38137 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726565AbfJSJB1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 19 Oct 2019 05:01:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1571475658;
+        bh=Y0P275WIDbqUvVHf7QGFoPGv/7wKy4zEqthAUu1mhYM=;
+        h=X-UI-Sender-Class:Cc:References:Subject:From:To:Date:In-Reply-To;
+        b=FtDECA/5nRq2nBR1udCWmVf9gw/3il2/NlW+Rf4xEUClzFnf4iDm4Lqx1RQZY+5Uy
+         6ht5apbdF9g9vNGALWfNuISIvsIcJpj23Z0WppM4p55f5ZMI4ej1ycdYwlrb7sb2oj
+         AbTIEMJggubbtjDEVBlt+gDZ4Ae74VDvWr2Mlk3c=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.48.29.47]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lhev7-1hiJCK34a1-00mtlI; Sat, 19
+ Oct 2019 11:00:57 +0200
+Cc:     Arnd Bergmann <arnd@arndb.de>, linux-kernel@vger.kernel.org,
+        Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linus Torvalds <torvalds@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>
+References: <20191017142237.9734-1-alexandre.belloni@bootlin.com>
+Subject: Re: [PATCH] coccinelle: api/devm_platform_ioremap_resource: remove
+ useless script
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+To:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        kernel-janitors@vger.kernel.org, Coccinelle <cocci@systeme.lip6.fr>
+Message-ID: <81269cd6-e26d-b8aa-cf17-3a2285851564@web.de>
+Date:   Sat, 19 Oct 2019 11:00:47 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9414 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910190079
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9414 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910190079
+In-Reply-To: <20191017142237.9734-1-alexandre.belloni@bootlin.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+X-Provags-ID: V03:K1:n7SOa2KwYtmH3qJyG+Slf0RgFprTJOYyGnUuYDM6FZXVU0gMeCd
+ Ok5ehlGb67AWeDovehQnQwuHGKjPpxrAzNJi/Q+v4LGaPgtG104lbRO4hM410KmqeLkJ28L
+ XBbt0jBeek4zhvprVGsz4OFcNd8QWkCxiep3Um/QN8VG3IsQVXqGZD6ADNRcDCp79i/uHxW
+ d73Ca2Hv8ZipJjuhjg3FQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:8zy4gtP21y0=:/WblYARSLGCqPUUwrorxtC
+ cPJ9nBbRSEoUGVyrJbX6IyLWIRg5Kb0kZrlmsPGCiweH6dT1SS+I98bswh18/+qj7IJ8MiZhH
+ gWiL5toBYniUySE2Vb0+QEJgBqCgSLmm2V4MMhEFVVzCRrmUgwv4jlRPHEzRLKWRq/KoZ9Gnq
+ T6yhyJjhI4LmpwGH8ZaNjdDBNRwRa9yUUZv2CBpO9+L/Umso4piWOkYyVcdsJdde1XZCjJ3bh
+ vqu7a5jTrkuiTkYOuk/Jx9VG2eJ0nMalFgukM24LBreavqBtZhbqMaPxFjxZW54iY6JwAfjUI
+ PlolizvVmkjOMg0/yXOi5H9bZaZZ1nRe7vvU0M4LJuBNhFguCO/GoMCR/pGBz5ElmxhPFEw3i
+ K4fsVzvd4g9LzDZtCmTWsMRgTqdacVHn9plz1VKvWr/9mpMcWesz+Ue5stKwwLZk9A4vN4qT4
+ azJMujCoCpquJHQuFnRM/7hnmuIQec5iX30uuf4j1vGNlOxb/6tPbJoZ/0cmHvB1LlQ7BptqF
+ ZBZBXm74FgaG7TUlYweqTRJzTexadZNohvKb2QzPB3Tl5/jFkeeoh3vgUDN3fdgujDX8LFpem
+ Ln9wjF5VPpgy56yLQ14vqw3zQ37kdcMhFDBZJ9N5WkGf8DQVTw7Rs2XhA0yATJe8lCDqBjw0r
+ t0WxxcbIgAdxzxclq8TQ71nf5qWqocZUUJpyKZ6we2uzaLZrvDMpImd7OdOkOglD8CRDBv29K
+ TPI6+Fb61eJDb/NXB/2I+mzADxVRZUBgUl8wNeusfKZAeft35FVM2agRdRGjA0qaq8LKKMG/e
+ WjAS7w70eM2HtgLWqCgqCUieq+TM0+MjXeP5/FKl8ybxzfs3xQzvmWlY4ZgMVci+8KFnkm6wp
+ ph60AsRlThY2ZgpEa6xOC9OEnFs6a+X/OZwMaJDtNbZh2ZR8p+2iSefhObr985zhBT3G0Shms
+ TCjEG51Bjd1S0+yuC0m3HRZ85efBJeUcN8s2FRv4ZxPetR+BjbVRSVktpjBwIL87NQ+YSzqbD
+ iHxvdsM47HDibI+2e7N0uI4ysK16awd0GFRkzyxgFKyZfjM1k/5QeDVhyNZigLZi1WDtLEMHp
+ FY4mxA+pPTb1Oo6Xs1vD0exxpH2Vg1/jTQpJ2S7IlqTHB1aanxGIroIOMXieI4eoiLj1rp/pK
+ WzuJ/cU7pLUKO4ukNvEF+rk41yZSoOBBZ9HgLuw9FD1mlZVTsjEQHD4Mjpaz07XuXM4qHNhSE
+ 12Hyt4uBsgIIJQIGNZN9V7Ghvw0EBQINyAZt8kbbavzPwsHLPcQKclLfHL20=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-These are called with IRQs disabled from csio_mgmt_tmo_handler() so we
-can't call spin_unlock_irq() or it will enable IRQs prematurely.
+> While it is useful for new drivers to use devm_platform_ioremap_resource,
 
-Fixes: a3667aaed569 ("[SCSI] csiostor: Chelsio FCoE offload driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/scsi/csiostor/csio_lnode.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+This is nice.
 
-diff --git a/drivers/scsi/csiostor/csio_lnode.c b/drivers/scsi/csiostor/csio_lnode.c
-index 66e58f0a75dc..23cbe4cda760 100644
---- a/drivers/scsi/csiostor/csio_lnode.c
-+++ b/drivers/scsi/csiostor/csio_lnode.c
-@@ -301,6 +301,7 @@ csio_ln_fdmi_rhba_cbfn(struct csio_hw *hw, struct csio_ioreq *fdmi_req)
- 	struct fc_fdmi_port_name *port_name;
- 	uint8_t buf[64];
- 	uint8_t *fc4_type;
-+	unsigned long flags;
- 
- 	if (fdmi_req->wr_status != FW_SUCCESS) {
- 		csio_ln_dbg(ln, "WR error:%x in processing fdmi rhba cmd\n",
-@@ -385,13 +386,13 @@ csio_ln_fdmi_rhba_cbfn(struct csio_hw *hw, struct csio_ioreq *fdmi_req)
- 	len = (uint32_t)(pld - (uint8_t *)cmd);
- 
- 	/* Submit FDMI RPA request */
--	spin_lock_irq(&hw->lock);
-+	spin_lock_irqsave(&hw->lock, flags);
- 	if (csio_ln_mgmt_submit_req(fdmi_req, csio_ln_fdmi_done,
- 				FCOE_CT, &fdmi_req->dma_buf, len)) {
- 		CSIO_INC_STATS(ln, n_fdmi_err);
- 		csio_ln_dbg(ln, "Failed to issue fdmi rpa req\n");
- 	}
--	spin_unlock_irq(&hw->lock);
-+	spin_unlock_irqrestore(&hw->lock, flags);
- }
- 
- /*
-@@ -412,6 +413,7 @@ csio_ln_fdmi_dprt_cbfn(struct csio_hw *hw, struct csio_ioreq *fdmi_req)
- 	struct fc_fdmi_rpl *reg_pl;
- 	struct fs_fdmi_attrs *attrib_blk;
- 	uint8_t buf[64];
-+	unsigned long flags;
- 
- 	if (fdmi_req->wr_status != FW_SUCCESS) {
- 		csio_ln_dbg(ln, "WR error:%x in processing fdmi dprt cmd\n",
-@@ -491,13 +493,13 @@ csio_ln_fdmi_dprt_cbfn(struct csio_hw *hw, struct csio_ioreq *fdmi_req)
- 	attrib_blk->numattrs = htonl(numattrs);
- 
- 	/* Submit FDMI RHBA request */
--	spin_lock_irq(&hw->lock);
-+	spin_lock_irqsave(&hw->lock, flags);
- 	if (csio_ln_mgmt_submit_req(fdmi_req, csio_ln_fdmi_rhba_cbfn,
- 				FCOE_CT, &fdmi_req->dma_buf, len)) {
- 		CSIO_INC_STATS(ln, n_fdmi_err);
- 		csio_ln_dbg(ln, "Failed to issue fdmi rhba req\n");
- 	}
--	spin_unlock_irq(&hw->lock);
-+	spin_unlock_irqrestore(&hw->lock, flags);
- }
- 
- /*
-@@ -512,6 +514,7 @@ csio_ln_fdmi_dhba_cbfn(struct csio_hw *hw, struct csio_ioreq *fdmi_req)
- 	void *cmd;
- 	struct fc_fdmi_port_name *port_name;
- 	uint32_t len;
-+	unsigned long flags;
- 
- 	if (fdmi_req->wr_status != FW_SUCCESS) {
- 		csio_ln_dbg(ln, "WR error:%x in processing fdmi dhba cmd\n",
-@@ -542,13 +545,13 @@ csio_ln_fdmi_dhba_cbfn(struct csio_hw *hw, struct csio_ioreq *fdmi_req)
- 	len += sizeof(*port_name);
- 
- 	/* Submit FDMI request */
--	spin_lock_irq(&hw->lock);
-+	spin_lock_irqsave(&hw->lock, flags);
- 	if (csio_ln_mgmt_submit_req(fdmi_req, csio_ln_fdmi_dprt_cbfn,
- 				FCOE_CT, &fdmi_req->dma_buf, len)) {
- 		CSIO_INC_STATS(ln, n_fdmi_err);
- 		csio_ln_dbg(ln, "Failed to issue fdmi dprt req\n");
- 	}
--	spin_unlock_irq(&hw->lock);
-+	spin_unlock_irqrestore(&hw->lock, flags);
- }
- 
- /**
--- 
-2.20.1
 
+> this script is currently used to spam maintainers,
+
+This view is unfortunate.
+
+Do we stumble on a target conflict again?
+
+
+> often updating very old drivers.
+
+This can also happen.
+
+
+> The net benefit is the removal of 2 lines of code in the driver
+
+Additional effects can be reconsidered, can't they?
+
+
+> but the review load for the maintainers is huge.
+
+Does collateral evolution trigger a remarkable amount of changes occasionally?
+
+
+How will such feedback influence the development and integration of
+further scripts for the semantic patch language (Coccinelle software)?
+
+Regards,
+Markus

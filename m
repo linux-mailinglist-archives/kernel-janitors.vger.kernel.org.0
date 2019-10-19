@@ -2,139 +2,115 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 794B8DD917
-	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Oct 2019 16:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C80C4DD962
+	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Oct 2019 17:33:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725943AbfJSOaD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 19 Oct 2019 10:30:03 -0400
-Received: from mail-oi1-f193.google.com ([209.85.167.193]:43017 "EHLO
-        mail-oi1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725930AbfJSOaD (ORCPT
+        id S1725970AbfJSPdE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 19 Oct 2019 11:33:04 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:34156 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725937AbfJSPdE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 19 Oct 2019 10:30:03 -0400
-Received: by mail-oi1-f193.google.com with SMTP id t84so7569081oih.10
-        for <kernel-janitors@vger.kernel.org>; Sat, 19 Oct 2019 07:30:01 -0700 (PDT)
+        Sat, 19 Oct 2019 11:33:04 -0400
+Received: by mail-io1-f68.google.com with SMTP id q1so11022236ion.1;
+        Sat, 19 Oct 2019 08:33:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ghDSQm39Jlx5gmXnVANSIgsOJIuDnV4Wo+ABz1BaRQU=;
-        b=1tP4sHwYNnpUfkWS3qnr2mj9w0eS2pve2ZqGcA7RzVnVzMz+noVDjBSoCquw3GTUSk
-         f++M1+Rc6MGqcbC/TbG/SmndF5rQSjKZTrOEuHH9ie83u+6B1tSC005RK6D1DxL2ZlTh
-         Xllcir1nEKTJ7o0C8pxtRmkgEUBu9uehNb45RopqUyZIfHkcbzhZ9BGJiD8F8x7R1eBZ
-         FZwAgKrK8ZE1SNh4s3+j78KnVFNduRwTearMxrg3K2DGSzMocmiDQicDO/JE+c+fa5jV
-         /G6KTl3E1eIIPgv0if1LsVYBbc6ru8l7X979qo6qXHCDcLrtYbAYwp6XQ0LZYec+SXHg
-         B43g==
+         :cc;
+        bh=NIb3d/6toqZlUMcL7Zc8QdhiLzW9kKqfuVQu7v/JRyg=;
+        b=L3Vj1kOjh/KZ+NM2bYzvMPYecYR0A9+wlEwnyTyQjAO1K0vGrt5253pKMcYXllwx2T
+         YLAmBckEL++tOo2MqutwWpos6jo9jc7JYXy2krBnaV5gcqdsk22et2V+vs/zISZUbxxW
+         PPzetePYJBdaEKkDwcjswxRllw0jirERNrZoEf4w++galojWuKOb/yd7kHcduDZMJZgw
+         Nd92jBZ83FQVGSIZIRUn4we1RIm2gEXt29bv2w5+DVfWbJPK4mCqx37KpI/lkjQ4pY5f
+         W+1B3DcJpADEasmOaU8YKLNjC18+Ynu9qlH8GH3Qw4/2hVBjwa+nQ57WFvDSP6/zsOoR
+         JNtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ghDSQm39Jlx5gmXnVANSIgsOJIuDnV4Wo+ABz1BaRQU=;
-        b=rWjjicwyDpGdxGhhQChGlEsnsjvj9rMJ2QIliUNmsflKPO42LUG0hLW5p43D3KZx7G
-         q2Qzsp7Yd/bXmgvX5M/DPpnfQTvyFE8n8pV9X4nRzPWDTRiJBmbsOjw8NLKLXkLjxe5o
-         afDl3Yk19jEAeD8lDok1rjxcdUNBRx8pxLu6Dh55vpy0pVPHjv1MYMHl7aL3CoW4Vwv4
-         eaWAHBl8W0SGtHrWN2COBCVpCZUE/B5H8rKqCLxLDvIqRSscW3JzRaiONSG0Z+TWZYz+
-         tjD6/HMcQ0zHqFJvmPiFBbSIJWEYX5r8tFXA3XqH2HJj+mJvex48Ym5ybkrOhiS6dWDb
-         7Z+A==
-X-Gm-Message-State: APjAAAWwoLBIy157k00YHTL0pMcA9J2Bqv56P/5AIUg/J9wapQIOW/9k
-        WWFqwvYyPidVEey5Y26SJ1wUNQXQsNgq6uoZ//uaJg==
-X-Google-Smtp-Source: APXvYqy7kFGbeJUVk96O4myEcxmRrSHyTc66p9xYDDub/LBqYgX2CKrxiG35GXcyGwr8n6C75UtxLrayLoJT/v4Zxsk=
-X-Received: by 2002:a54:4e83:: with SMTP id c3mr12411782oiy.170.1571495400968;
- Sat, 19 Oct 2019 07:30:00 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=NIb3d/6toqZlUMcL7Zc8QdhiLzW9kKqfuVQu7v/JRyg=;
+        b=Nl5+wt3hzKOSSI4rcMqYyYxdmBkrpowwf8MDi3bMXN1dqOnFAVfRrnvHiY4fwNGXfc
+         4/WYxWsGo8FLvPnTOrUxa1xhq9NmIt+cu+JDQNfRGCFYiX1SR7GpBvXvU+dpWECJiqxY
+         6WiEhMHFI5AUJUA6Q07VI/HeqRXRnYiutl+IVRLPzhJcmTN/0DGdFXGY+BQe/kU+uNUJ
+         Phs2PI4uQgLE0JGHLggfjqyS+54Oy5XR/Bcphh+dA/46hZbm7KABTVcR4aSJZiGaWHNz
+         Y1T+pQUK7z7ZB09lpEnoYL8ZMyHkebxAz2iw7NkUoGuxGuK8FaFbSDcH8CbzpHUCylEw
+         1w4w==
+X-Gm-Message-State: APjAAAV3ZaBcg7j0W8R+f23I0spWVMmQ01YSez7T8zPRRioEpX8jWCD1
+        Xa8O+Qif4WJcJ4lilD0DcyJad7SeQ9T72ygm2l0=
+X-Google-Smtp-Source: APXvYqzctIUFoGaIl0rpBUDrpqH8GDKfSMmdOFSYgwBO7PeaqyV1oVJFIstJbr0hTlAN7tiDDzPhiyHFiSxfpgjP0/g=
+X-Received: by 2002:a5e:9405:: with SMTP id q5mr13110599ioj.5.1571499182901;
+ Sat, 19 Oct 2019 08:33:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20191017142237.9734-1-alexandre.belloni@bootlin.com>
- <81269cd6-e26d-b8aa-cf17-3a2285851564@web.de> <20191019120941.GL3125@piout.net>
-In-Reply-To: <20191019120941.GL3125@piout.net>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Sat, 19 Oct 2019 16:29:49 +0200
-Message-ID: <CAMpxmJVEXubtBhQs5wH00wvK=yp8nr0cZ04x9t8eCTLVU=O1JA@mail.gmail.com>
-Subject: Re: [PATCH] coccinelle: api/devm_platform_ioremap_resource: remove
- useless script
-To:     Alexandre Belloni <alexandre.belloni@bootlin.com>
-Cc:     Markus Elfring <Markus.Elfring@web.de>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        Himanshu Jha <himanshujha199640@gmail.com>,
-        kernel-janitors@vger.kernel.org,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Arnd Bergmann <arnd@arndb.de>,
+References: <20191017035351.125013-1-yuehaibing@huawei.com>
+In-Reply-To: <20191017035351.125013-1-yuehaibing@huawei.com>
+From:   Steve French <smfrench@gmail.com>
+Date:   Sat, 19 Oct 2019 10:32:52 -0500
+Message-ID: <CAH2r5mucpgb=cOzbq52kLojoTega3fCVh9yRtpodPe1zw9GG6Q@mail.gmail.com>
+Subject: Re: [PATCH -next] CIFS: remove set but not used variables 'cinode'
+ and 'netfid'
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     Steve French <sfrench@samba.org>,
+        CIFS <linux-cifs@vger.kernel.org>,
+        samba-technical <samba-technical@lists.samba.org>,
         LKML <linux-kernel@vger.kernel.org>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linus Torvalds <torvalds@linuxfoundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-sob., 19 pa=C5=BA 2019 o 14:09 Alexandre Belloni
-<alexandre.belloni@bootlin.com> napisa=C5=82(a):
->
-> On 19/10/2019 11:00:47+0200, Markus Elfring wrote:
-> > > While it is useful for new drivers to use devm_platform_ioremap_resou=
-rce,
-> >
-> > This is nice.
-> >
-> >
-> > > this script is currently used to spam maintainers,
-> >
-> > This view is unfortunate.
-> >
-> > Do we stumble on a target conflict again?
-> >
-> >
-> > > often updating very old drivers.
-> >
-> > This can also happen.
-> >
-> >
-> > > The net benefit is the removal of 2 lines of code in the driver
-> >
-> > Additional effects can be reconsidered, can't they?
-> >
->
-> What are the additional effects? What is the end goal of converting all
-> the existing drivers to devm_platform_ioremap_resource? The existing
-> code is currently always correct and it is difficult to see how this
-> would lead to any bug avoidance in the long term.
->
-> > > but the review load for the maintainers is huge.
-> >
-> > Does collateral evolution trigger a remarkable amount of changes occasi=
-onally?
-> >
->
-> This is not an evolution, it is unnecessary churn. Those patches have no
-> benefit and eat up very valuable reviewer time.
->
-> >
-> > How will such feedback influence the development and integration of
-> > further scripts for the semantic patch language (Coccinelle software)?
-> >
->
-> There are a few other scripts that have no added value when applied to
-> existing code, like ptr_ret.cocci.
->
-> --
-> Alexandre Belloni, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
+tentatively pushed to cifs-2.6.git for-next pending more testing of
+the flock patch it modified.
 
-Hi Alexandre,
+On Fri, Oct 18, 2019 at 1:07 AM YueHaibing <yuehaibing@huawei.com> wrote:
+>
+> Fixes gcc '-Wunused-but-set-variable' warning:
+>
+> fs/cifs/file.c: In function 'cifs_flock':
+> fs/cifs/file.c:1704:8: warning:
+>  variable 'netfid' set but not used [-Wunused-but-set-variable]
+>
+> fs/cifs/file.c:1702:24: warning:
+>  variable 'cinode' set but not used [-Wunused-but-set-variable]
+>
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> ---
+>  fs/cifs/file.c | 4 ----
+>  1 file changed, 4 deletions(-)
+>
+> diff --git a/fs/cifs/file.c b/fs/cifs/file.c
+> index 936e03892e2a..02a81dc6861a 100644
+> --- a/fs/cifs/file.c
+> +++ b/fs/cifs/file.c
+> @@ -1699,9 +1699,7 @@ int cifs_flock(struct file *file, int cmd, struct file_lock *fl)
+>         bool posix_lck = false;
+>         struct cifs_sb_info *cifs_sb;
+>         struct cifs_tcon *tcon;
+> -       struct cifsInodeInfo *cinode;
+>         struct cifsFileInfo *cfile;
+> -       __u16 netfid;
+>         __u32 type;
+>
+>         rc = -EACCES;
+> @@ -1716,8 +1714,6 @@ int cifs_flock(struct file *file, int cmd, struct file_lock *fl)
+>         cifs_read_flock(fl, &type, &lock, &unlock, &wait_flag,
+>                         tcon->ses->server);
+>         cifs_sb = CIFS_FILE_SB(file);
+> -       netfid = cfile->fid.netfid;
+> -       cinode = CIFS_I(file_inode(file));
+>
+>         if (cap_unix(tcon->ses) &&
+>             (CIFS_UNIX_FCNTL_CAP & le64_to_cpu(tcon->fsUnixInfo.Capability)) &&
+>
+>
+>
 
-Markus has been black-listed by several core maintainers already, I
-think you're wasting your time arguing. WRT the patch: when
-introducing this wrapper, I definitely didn't expect people to send
-hundreds of often wrong patches based on coccinelle reports, so I
-guess removing the script is correct.
 
-Bart
+-- 
+Thanks,
+
+Steve

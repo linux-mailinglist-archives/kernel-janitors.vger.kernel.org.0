@@ -2,115 +2,157 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C80C4DD962
-	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Oct 2019 17:33:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 71EDCDD9A6
+	for <lists+kernel-janitors@lfdr.de>; Sat, 19 Oct 2019 18:36:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725970AbfJSPdE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 19 Oct 2019 11:33:04 -0400
-Received: from mail-io1-f68.google.com ([209.85.166.68]:34156 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725937AbfJSPdE (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 19 Oct 2019 11:33:04 -0400
-Received: by mail-io1-f68.google.com with SMTP id q1so11022236ion.1;
-        Sat, 19 Oct 2019 08:33:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NIb3d/6toqZlUMcL7Zc8QdhiLzW9kKqfuVQu7v/JRyg=;
-        b=L3Vj1kOjh/KZ+NM2bYzvMPYecYR0A9+wlEwnyTyQjAO1K0vGrt5253pKMcYXllwx2T
-         YLAmBckEL++tOo2MqutwWpos6jo9jc7JYXy2krBnaV5gcqdsk22et2V+vs/zISZUbxxW
-         PPzetePYJBdaEKkDwcjswxRllw0jirERNrZoEf4w++galojWuKOb/yd7kHcduDZMJZgw
-         Nd92jBZ83FQVGSIZIRUn4we1RIm2gEXt29bv2w5+DVfWbJPK4mCqx37KpI/lkjQ4pY5f
-         W+1B3DcJpADEasmOaU8YKLNjC18+Ynu9qlH8GH3Qw4/2hVBjwa+nQ57WFvDSP6/zsOoR
-         JNtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NIb3d/6toqZlUMcL7Zc8QdhiLzW9kKqfuVQu7v/JRyg=;
-        b=Nl5+wt3hzKOSSI4rcMqYyYxdmBkrpowwf8MDi3bMXN1dqOnFAVfRrnvHiY4fwNGXfc
-         4/WYxWsGo8FLvPnTOrUxa1xhq9NmIt+cu+JDQNfRGCFYiX1SR7GpBvXvU+dpWECJiqxY
-         6WiEhMHFI5AUJUA6Q07VI/HeqRXRnYiutl+IVRLPzhJcmTN/0DGdFXGY+BQe/kU+uNUJ
-         Phs2PI4uQgLE0JGHLggfjqyS+54Oy5XR/Bcphh+dA/46hZbm7KABTVcR4aSJZiGaWHNz
-         Y1T+pQUK7z7ZB09lpEnoYL8ZMyHkebxAz2iw7NkUoGuxGuK8FaFbSDcH8CbzpHUCylEw
-         1w4w==
-X-Gm-Message-State: APjAAAV3ZaBcg7j0W8R+f23I0spWVMmQ01YSez7T8zPRRioEpX8jWCD1
-        Xa8O+Qif4WJcJ4lilD0DcyJad7SeQ9T72ygm2l0=
-X-Google-Smtp-Source: APXvYqzctIUFoGaIl0rpBUDrpqH8GDKfSMmdOFSYgwBO7PeaqyV1oVJFIstJbr0hTlAN7tiDDzPhiyHFiSxfpgjP0/g=
-X-Received: by 2002:a5e:9405:: with SMTP id q5mr13110599ioj.5.1571499182901;
- Sat, 19 Oct 2019 08:33:02 -0700 (PDT)
+        id S1726026AbfJSQgf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 19 Oct 2019 12:36:35 -0400
+Received: from mout.web.de ([212.227.15.3]:53507 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725943AbfJSQge (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 19 Oct 2019 12:36:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1571502971;
+        bh=B0hMDu2p0XqY5CPGLIJ5L0kA11pQyDcIMiKt83mRZMo=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=oaPHJjyjJTZD4vHRw/Tvqpo5Mz1tiz+f9fxvVQsTW3NHc3s+fgHf+NZ/7cY7SdRXx
+         Rub6AGrNdFJUAPKDhgoiCYyTpv5gRnRqf4thbfIkqVMhmTSiUYSNigfV3BDyooSLYn
+         2dVBSTlD2XIhB0fqZQNv6PvXA/aKnEl6Hrp5/iBA=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.48.29.47]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MIBu2-1iKD123SNa-003uva; Sat, 19
+ Oct 2019 18:36:11 +0200
+Subject: Re: [PATCH] coccinelle: api/devm_platform_ioremap_resource: remove
+ useless script
+To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        kernel-janitors@vger.kernel.org, Coccinelle <cocci@systeme.lip6.fr>
+Cc:     Julia Lawall <Julia.Lawall@lip6.fr>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linus Torvalds <torvalds@linuxfoundation.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        LKML <linux-kernel@vger.kernel.org>
+References: <20191017142237.9734-1-alexandre.belloni@bootlin.com>
+ <81269cd6-e26d-b8aa-cf17-3a2285851564@web.de>
+ <20191019120941.GL3125@piout.net>
+ <CAMpxmJVEXubtBhQs5wH00wvK=yp8nr0cZ04x9t8eCTLVU=O1JA@mail.gmail.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <88b84610-0789-3bdf-affe-de242f84554d@web.de>
+Date:   Sat, 19 Oct 2019 18:36:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.2
 MIME-Version: 1.0
-References: <20191017035351.125013-1-yuehaibing@huawei.com>
-In-Reply-To: <20191017035351.125013-1-yuehaibing@huawei.com>
-From:   Steve French <smfrench@gmail.com>
-Date:   Sat, 19 Oct 2019 10:32:52 -0500
-Message-ID: <CAH2r5mucpgb=cOzbq52kLojoTega3fCVh9yRtpodPe1zw9GG6Q@mail.gmail.com>
-Subject: Re: [PATCH -next] CIFS: remove set but not used variables 'cinode'
- and 'netfid'
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Steve French <sfrench@samba.org>,
-        CIFS <linux-cifs@vger.kernel.org>,
-        samba-technical <samba-technical@lists.samba.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAMpxmJVEXubtBhQs5wH00wvK=yp8nr0cZ04x9t8eCTLVU=O1JA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+X-Provags-ID: V03:K1:RqEjkPj0dj1gUDbQZXEho1GqQnd02nd97QjCF5lXXOl0+VfE/Df
+ mJ0RWFhmQoHlpKqGPOoWUG4C+RuL9OdcjwU/TENoQBPbs99ulFPdVbbMKsYwQ0sEY8BG+7a
+ JBJHgYE3hE6zkypvEf5Zl9M4saOVWlNT5jYc9tO5CMoFOtFlmRfKnkiMKlbGASWlJ9pOpu+
+ GWH1b7LtGhLPAqISeo7yw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:MuDYgV3wfwk=:zrzQa6oOmZTV3vpCtBOlFD
+ 80djKuQmUctIWFdbUbRVDYyeKB/wMSe4ggtb/l8UmVyXhm2VxLd4xNTgdQedBBdx3h2H/SH3g
+ GGjNWDYN6/iRhQhyQuGxWYfPuOntU5SrnXzYc0hgnJMyrQneYrzT4oNI97RMu7ozCIUfzw6bC
+ S1hT71y0qRCB9UxolL3bxPkqrq72+MRxvnD0XyblfJ8GubHQErrZAmIYdoIi++YvQWpHlBuC3
+ Jyq+CJJBQz4tDTcYVaN9kbkd4sybdWytcexEZaHzwNfmCYkSKxS58MOxyQq4lsLXTtO1obfRR
+ w0xbI2TRhYXVG1OWAFCzgSYOnPEXFiq9hTK/JkR6odFgO7flQcOGu0QrjC83CNoje4YdlkfSQ
+ 8igOroq3I70LEXboV6ic9RLImrka8m+bMbcjOktWCb72nPpkM4uclxJjdYgGKrTAwzwN9N2iS
+ vDzJgme/naJHYil7ZSHHGXE4FEHfFJINMEr7QHKy8tPmPfTthLWLu+zCbCGS+VY7Ao/MybNRr
+ Kkme/RjFW+O+7x0mqMX67NOXqznBvdOCSYc1Wp7Cz+PgTEgE8I6WCfct8OThdmWKiBlXtu4gL
+ rRrJh9tfCipJn3oyP2QdB7yvHpaAGWavNEsJlrhmpczJIHoytpUi8MWUQ7DTIdSVHEddsQSXv
+ 0aTHSgDdqwtmmbf0RprD7LwGVppnmcjdASKgVU36+QKz98ADK0xvGy8T/x9cLmE4SJ0FTsqOl
+ eUoDjHl5W6xFvl6cpMunkxj4iuxrJYai0qDL3OlUOl4/rtjZm5zWWngyD9u1y3YLwdrqjk9iM
+ w/miYYkE0z1oKjdMZI6vZsH6Uao4aAJzTOHzNtuAT/sydNHSEH/gKP48YGVfmz0/DBV28U5xF
+ 5dlvuAMjhUFCkKumehJWHkTNnoqPdXQyyN+WZDvVKwx+i4g/qouqlGNB8SBpgibiuVRN4Plzx
+ 5e25TCEao59ecdTH2hRlvGZtPD8kwdKLP6LOsZdYd+g+3/OIgtliy3uAmWy+3dCz6RJFo1jdg
+ 0l6V01lXkCC/NaRgFcYxkxZu5w7ncV5TP4dwCb2uJgd5jy5fzxLhUVcVG8pHpHd2fLz0v/j1u
+ 14EFG1gJ3ojl7Vuz71RFWtLOa7cWTbQIjfCrLEbzSEWrYBo35M4362AdpfvccWONX86R5WMjv
+ ++MA3+bRjgFNUbelYkxoDmBDlwr/D9CnHut67TtdBdjSFUyNW5wLaWZHeUz++IF1hIlkrxJXv
+ 2XdV85vi2JslK1/47cvX8/fWWWNmqwJMv+GvkClLZtKQcXDNZ82KzuS+W044=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-tentatively pushed to cifs-2.6.git for-next pending more testing of
-the flock patch it modified.
+> Markus has been black-listed by several core maintainers already,
 
-On Fri, Oct 18, 2019 at 1:07 AM YueHaibing <yuehaibing@huawei.com> wrote:
->
-> Fixes gcc '-Wunused-but-set-variable' warning:
->
-> fs/cifs/file.c: In function 'cifs_flock':
-> fs/cifs/file.c:1704:8: warning:
->  variable 'netfid' set but not used [-Wunused-but-set-variable]
->
-> fs/cifs/file.c:1702:24: warning:
->  variable 'cinode' set but not used [-Wunused-but-set-variable]
->
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> ---
->  fs/cifs/file.c | 4 ----
->  1 file changed, 4 deletions(-)
->
-> diff --git a/fs/cifs/file.c b/fs/cifs/file.c
-> index 936e03892e2a..02a81dc6861a 100644
-> --- a/fs/cifs/file.c
-> +++ b/fs/cifs/file.c
-> @@ -1699,9 +1699,7 @@ int cifs_flock(struct file *file, int cmd, struct file_lock *fl)
->         bool posix_lck = false;
->         struct cifs_sb_info *cifs_sb;
->         struct cifs_tcon *tcon;
-> -       struct cifsInodeInfo *cinode;
->         struct cifsFileInfo *cfile;
-> -       __u16 netfid;
->         __u32 type;
->
->         rc = -EACCES;
-> @@ -1716,8 +1714,6 @@ int cifs_flock(struct file *file, int cmd, struct file_lock *fl)
->         cifs_read_flock(fl, &type, &lock, &unlock, &wait_flag,
->                         tcon->ses->server);
->         cifs_sb = CIFS_FILE_SB(file);
-> -       netfid = cfile->fid.netfid;
-> -       cinode = CIFS_I(file_inode(file));
->
->         if (cap_unix(tcon->ses) &&
->             (CIFS_UNIX_FCNTL_CAP & le64_to_cpu(tcon->fsUnixInfo.Capability)) &&
->
->
->
+I am still curious if this communication filter will ever be adjusted
+in more positive directions.
 
 
--- 
-Thanks,
+> I think you're wasting your time arguing.
 
-Steve
+I hope that also this software development discussion can become
+more constructive.
+
+
+> WRT the patch: when introducing this wrapper, I definitely didn't expect
+> people to send hundreds of often wrong patches based on coccinelle reports,
+
+The reality can provide various surprises.
+
+
+> so I guess removing the script is correct.
+
+I suggest to reconsider this conclusion once more.
+The application of SmPL script variants can be continued despite
+of the recently committed file removal.
+
+
+The constraints for the usage of available scripts for the semantic patch language
+are explained to some degree.
+https://bottest.wiki.kernel.org/coccicheck
+
+Regards,
+Markus

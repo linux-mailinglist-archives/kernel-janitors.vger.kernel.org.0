@@ -2,49 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 555A0DDCE5
-	for <lists+kernel-janitors@lfdr.de>; Sun, 20 Oct 2019 07:46:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD44ADDD47
+	for <lists+kernel-janitors@lfdr.de>; Sun, 20 Oct 2019 10:21:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726205AbfJTFqi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 20 Oct 2019 01:46:38 -0400
-Received: from mout.web.de ([217.72.192.78]:38055 "EHLO mout.web.de"
+        id S1726205AbfJTIUq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 20 Oct 2019 04:20:46 -0400
+Received: from mout.web.de ([212.227.17.11]:42615 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725851AbfJTFqi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 20 Oct 2019 01:46:38 -0400
+        id S1725893AbfJTIUq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 20 Oct 2019 04:20:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1571550363;
-        bh=x7uTnJsRgEJVyfO+7N1P8ScHIbumAeuC8K7dMT+Hyj8=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=GVKXu4v/SiIevPmdVBS7Rfm4yORg5lcFF8xjkU5OmMot2DCYZ+jqj47GTZMlvgG6D
-         MoQV4vdARwGFzE67LZTbV00ymLx1hVJcFDFGb/FpLsSPF+uDfwGiCMUndPKZnVS3ag
-         s1aOtKCTMYHhyhnS1gDAbnS5F+ImsLNMcvNqwpGc=
+        s=dbaedf251592; t=1571559628;
+        bh=xwmRSOTZtbdI+Pcsog91Q9nfAPFlwKlFCuhq3pODYvk=;
+        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+        b=TBSROF6sIeC0uP/xcpjPafxovE+8VKYL83bYyKwsxyy3S8PWlRUeXhlrA6SUbEcWr
+         7EOfwf7HTSFD0SEXyXRWDAIJDwfpDyBmQn/K8hqujK+sLiDCVoRAH9b/78FDTCZttd
+         9g4Ooi5sjkh5ENW3wFKOmdJDgk9juWTYxN0p1ts4=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.48.112.181]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LpO4v-1hrvsk0ef7-00fBcn; Sun, 20
- Oct 2019 07:46:03 +0200
-Subject: Re: coccinelle: api/devm_platform_ioremap_resource: remove useless
- script
-To:     Marc Zyngier <maz@kernel.org>, kernel-janitors@vger.kernel.org,
-        Coccinelle <cocci@systeme.lip6.fr>
-Cc:     Himanshu Jha <himanshujha199640@gmail.com>,
-        Julia Lawall <julia.lawall@lip6.fr>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linus Torvalds <torvalds@linuxfoundation.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        YueHaibing <yuehaibing@huawei.com>,
-        LKML <linux-kernel@vger.kernel.org>
-References: <e895d04ef5a282b5b48fcb21cbc175d2@www.loen.fr>
- <693a3b68-a0f1-81fe-40ce-2b6ba189450c@web.de> <868spgzcti.wl-maz@kernel.org>
+Received: from [192.168.1.2] ([78.48.112.181]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lb1wz-1hcLRd2HIP-00kcIJ; Sun, 20
+ Oct 2019 10:20:28 +0200
+To:     dri-devel@lists.freedesktop.org, Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
+Subject: drm/gma500: Checking a get_config_mode() call in
+ mdfld_dsi_output_init()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -88,120 +71,77 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <36f29ea7-7d08-fde4-daa9-e75675191e50@web.de>
-Date:   Sun, 20 Oct 2019 07:45:50 +0200
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Aditya Pakki <pakki001@umn.edu>,
+        Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>
+Message-ID: <0f501ca6-0b4f-0ccd-c366-bed2a10fde03@web.de>
+Date:   Sun, 20 Oct 2019 10:20:26 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.2
 MIME-Version: 1.0
-In-Reply-To: <868spgzcti.wl-maz@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:IciyEKuuswWa2NT0frFoyIuRhO2K1QyMc8LxqHO4MZK7TJH1/dL
- A4qN/Ybt/pboksbF9tT+Ihqz1oXHRlcKF1L7K3FIlthexVcSO7yjvkt63GWwyVFJok7pqab
- xXJb3rHzHuMXDLjRQ2f1KZVT+UNHhFmWn5abevQf0brP4nsCFgZqLlKbjzZLnshDEnR/TXm
- 6a8akdypiafqM0SDo9nSg==
+X-Provags-ID: V03:K1:5fPZBLxTESUv9+AyIdrfFxJAwqNzGS297OtwOo5jOeiJZxOpbc4
+ pAJgks8CK8heLDg9EoRR03jnoZouUHXqSrhRE8dzauYe0zUDgXieUo45SDJ1hugB4OQ4XcT
+ QgUBDAlnVG/GsLrPxMzW6jZY2qqWgiIiWisvIHcjkjkABkdv2ccv0vYdASO2DeHOtav36Rf
+ duAiDfFrydELtoQqLFzqA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:xOHEacZFLho=:CLAXTGNUUBIBB5DWSUbC7k
- GNVCgBR6VoumUpG7s0VtNvuKTXwiOLAX3umokRf6iRVGAVPcxOn7i+Vkbm1CjRDNaACqydOGa
- nLZMWsOStk5cJLCHvNgjqrGKB8hnCGEAguJYpP5r5tDCgnue428l5m9w4CtrGM7h5BJp52Zww
- 4tMM69wLahV1d7QUoQuYKP9v8hnNwr/OTFnw0Q0Tpa+qv7N3dOjHm0f/VvZrTVekFFnpVmg+S
- ZNyMfdxtSfXkPrTpxdAZ2IgCI8bYQmEtOf5c4pE1m6eZE3iHovB/H+Tlu+F0k/uyd3qqOEhUn
- uGukebR0Jc/eyoRNCszk4Axs243F6Vnlq4qvFVQPROQhKqBi0ycpd5wkikFEu8NhEahVV1RBy
- v6llC8435ab947kuY4XMubx19opaaLvPuimr6eQAIysAHghRjHCxjpPf+9Z9UnlllcDMsNKl4
- vDi1gFwGgeujLB5Qh6TfVG9crQ9Cu22JHFxU5uYOdNeb5AlLlLlmS7aD6zhVXNrZHjQHKv5Im
- W/e5/tM+KdUm5XYZfJhyfrOUii1bAZv/tjk9fUDlBrOK2LEl/yfFVl4wjTW7jgD6IU/IQdHkw
- 71yY6tG+QHsQAAQZku8LHkaInCJx1CziCAZXEpilG4y0VDW8MMy05wE/DEv8qKh9cFU6O6P+U
- UVAlw1uNZ9q+pXmgVMdFNS13q0n92WEl5zSxpfLflCDW2PXS9bsvRCcI8B4kICCsl04ZCy10B
- vecIaaqBHiOOdzH3qBMPhQcynNyh1AWOKvxN4IXaV7XG94JFvaAwpc5jQ2LF1HDcYsKokdQJ9
- ng4wpDUCh6HwJDEjhKO0v5DIscufZk4V311/1vwJGj/HDm6M2MpWktvqWoKYsQEPRojefvBeD
- MJx+AdSOBbbj3jYOgL2wjuFjovscKbdWiwFdHNauo4JZQ5ojags5z2eDW/sT2xHeRWlI/qfQf
- 3912M4yokXLWXeQq6S5GlWv9ITuGxKONy1BZPNjbgBf2FtlMqHGVaw5MNy9igBHZXaDykPaiG
- gAvNH0IQXRXmmUOapCpl/744w6ZG4JlgNMMg3C9IB/5/zuVR/U0QY15CTK2+qQyjhTMbl73KW
- kppyh1i/FxiWbr+6giCQo43285fzQzzGISrCDiBTbHsfv8Jg+ZnYo7luAMa4LpsJF22VlEagY
- 30QEAWST9EMqSiJaG7rrhb0BeWyiUq2mP3ifcj1Y8d1fBNLRRKE/Qwb1xcZPZAbldxFDwJPd6
- bCocDD/byIL/ms01huKrI+3l0B8VHb+9azuoHaSpQugAtQh8axpHHOD/jAEc=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Mvr3qLK9PJ8=:ShNO/BdanB9dULxAsT+QrP
+ LMNskNNwmgB9+KATPeYRfl4peHyxnRcZmYf8XXpBSGyeld8Z9vmFA3fc2vN2o0UP2y3wgUmuP
+ +ijnQPq/P1SmYKyq6TYtk+zFW3r4g22vQsffcnIir73nmeb64gkixcraq/0h79uhjaj/fsQ12
+ wWzKdn+EjNmryX+FmiHhXZw4KjPM/aDpEatz7hGK/flq+FvlTXLt9LNPncQZVbeYcrLBSu5IB
+ BzFNxJSoALiWOSXhdCEVN7ccOrMUhxdNiGxrVCl4691UdHkiUKJF1U2+rDRzQkyXxUUTzs/OZ
+ tAfIqEm7u5oNSoIdU8oSqMGfFHKhUKOKyErYmVR+n3akmS6ZGNpWIJLULewQVml+G7OEm9GgH
+ hqXrRAKrH/UJd6wERw/akQozlXorRNHO8X2zZeFEuvmwLC7UX2OW6xwWtjW2QCbxuIA5h8yRU
+ 9/ySdbGgI1eI20SgssisaWB2T+qXCpo1aGkAvvpJtQgmwZauxEtXzLhFYu7N0bABdelA9gYC+
+ cXfIku0Ok4mGAiWS5vm6k7GaOcsIkkDD3BidrRwrUzjHRYk7dfETe5mPLiPSpN+MU0rDn1s9i
+ mXeJ4R2LUWVcwFVATtz0CPRyC7QZRTEtRR5x4/eZLyE8/SJF5uCZUyHyp3/JzJg0aE9e2n5cq
+ s1j+A4GVZN6kXSVIfGAB9lAho7kt/Sc2dXjBR0S26lrRmm0BVhs1UC/ZqqoOWeFdeWTtpn6NJ
+ jneR1mN/AVu2UglizDS9Vyp75RuDEqqTQcuOUrenu56ZESuKNyMiXkS5obXsyFjvr23HQxO2m
+ NByH3EzqEsSM9igbmKm9K7Nu2zm9e9e0DKxfX65RagYAv9k6jwHDZLsIOwfvIRFdY0j7LkpyE
+ GM8J23yv0gBX5KrFec/gtGa6t9j5sbQlfdRzHAXanRPdZmPOOXG7jUQkpTDTCrQMJUJmvSlvl
+ SXZ/kpj0xwReF90joMxmmSahBFEoZ/HmdPrluXIBzZaQtb6cUg1h9NYAgLr6xYvDHf3Omi9/e
+ NwoxAq4+kCeh/+t9KvCe2gS3Ni50VvUlEd+utZvwpmerX1OHRk5ct1F9+gc1KxVy75px5czm7
+ FrOcg6wTx7yw1uZJDAxBQsmDVoB42db4u2Lhw08whdblvWlZU1tnMskeBzq0tQsYgMSEZmPhx
+ jLXNMWcJC9/if832uZ5W+g1jnzjiAUkfmSJgqpfE2R7I6ljztYASYHdiLHNjI921GHvjJ/9lh
+ L0ejrKouyIik8wQpYKGR2a7fWoousiEbECfmduNmdrBIJ34ojm6QWIBQ5vlc=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->>> I think part of the issue is that the script reports a WARNING
+Hello,
 
-Would anybody like to change this category to =E2=80=9CINFO=E2=80=9D?
+I tried another script for the semantic patch language out.
+This source code analysis approach points a call of the member
+function =E2=80=9Cget_config_mode=E2=80=9D out for further considerations
+according to the implementation of the function =E2=80=9Cmdfld_dsi_output_=
+init=E2=80=9D.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
+ivers/gpu/drm/gma500/mdfld_dsi_output.c?id=3D531e93d11470aa2e14e6a3febef50=
+d9bc7bab7a1#n523
+https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/gpu/drm/gma500/md=
+fld_dsi_output.c#L523
 
+=E2=80=A6
+	dsi_config->fixed_mode =3D p_vid_funcs->get_config_mode(dev);
+	if (p_vid_funcs->get_panel_info(dev, pipe, &dsi_panel_info))
+			goto dsi_init_err0;
+=E2=80=A6
+	dsi_config->mode =3D dsi_config->fixed_mode;
+=E2=80=A6
+	if (!dsi_config->fixed_mode) {
+		DRM_ERROR("No pannel fixed mode was found\n");
+		goto dsi_init_err0;
+	}
+=E2=80=A6
 
->> How much does this information influence really the stress tolerance
->> and change resistance (or acceptance) for the presented collateral evol=
-ution?
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/=
-scripts/coccinelle/api/devm_platform_ioremap_resource.cocci
->
-> -ENOPARSE.
-
-* Automated processes can trigger also big amounts of possible adjustments=
-.
-
-* The software development capacity will vary for affected components
-  during the years.
-
-* Implementing changes is a recurring project management task, isn't it?
-
-
->>> for something that is definitely correct code,
->>
->> Can related software improvement possibilities be taken into account
->> again under other circumstances?
->
-> These patches provide no improvement whatsoever.
-
-* Do you find information from the description of a corresponding
-  commit 7945f929f1a77a1c8887a97ca07f87626858ff42
-  ("drivers: provide devm_platform_ioremap_resource()") reasonable?
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/log/d=
-rivers/base/platform.c
-
-* How do you think about to compare any differences with
-  software build results?
-
-
-> As pointed out, they mostly introduce bugs.
-
-Would you like to check any error statistics in more detail?
-
-
-> Providing Coccinelle scripts that scream about perfectly valid code is p=
-ointless,
-
-They usually point opportunities out for further collateral evolution,
-don't they?
-
-
-> and the result is actively harmful.
-
-You might not like some changes for a while.
-
-
-> If said script was providing a correct semantic patch
-
-I got the impression that this can also happen often enough.
-Would you like to check the concrete transformation failure rate once more=
-?
-
-
-> instead of being an incentive for people to churn untested patches
-> that span the whole tree, that'd be a different story.
-
-Various developers got motivated to achieve something (possible improvemen=
-ts?)
-also by the means of available software analysis tools.
-Mistakes can then happen as usual during such adjustment attempts.
-
-
-> But that's not what this is about.
-
-I guess that your software development concerns can be clarified a bit mor=
-e.
+How do you think about to move the condition check for the data structure
+member =E2=80=9Cfixed_mode=E2=80=9D directly after the corresponding assig=
+nment?
+Can it be helpful to reorder these statements a bit?
 
 Regards,
 Markus

@@ -2,34 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0454FDF585
-	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Oct 2019 21:01:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B4A6DF6DD
+	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Oct 2019 22:40:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730058AbfJUTBC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 21 Oct 2019 15:01:02 -0400
-Received: from mout.web.de ([212.227.17.11]:48129 "EHLO mout.web.de"
+        id S1730065AbfJUUkm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 21 Oct 2019 16:40:42 -0400
+Received: from mout.web.de ([217.72.192.78]:54975 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730026AbfJUTBC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 21 Oct 2019 15:01:02 -0400
+        id S1728914AbfJUUkm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 21 Oct 2019 16:40:42 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1571684444;
-        bh=E9JnthHTX95IhhGDDKvUesddTu58VlOGnTwXioVWz68=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=dXC9wpXPDFvaz4Sm/0U0n/LG+Rymv6glc21q0wFts94hQXooyZPRZPfsIKAN0l3K/
-         RGXwiO8PbSNHxdR8/EzaBzOKvaVHcxozYH52F7+yjZoCZGPfqJg+9BXMynFdBLYCou
-         wBRw0KbV6zNHZPnghnlmKmQExJ6ss5vCMwmCwT7I=
+        s=dbaedf251592; t=1571690424;
+        bh=4ObFiW5TE60yeh3kt8csqTOAxv9kGWcoXP4STgxDALc=;
+        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+        b=O2B/I0BWfks80C8OvTQ7nhAzG+1ldQ1dmBptgud6s/8+GZfWIBNd8kkK/KqktNY+4
+         sF2yc9SWWPLnrjiuLQyRfg6rNZoTPTIEpkDv/Jg9pUazTLHrhgu6jC0eI/+KV3PC+W
+         GvbJck79lzQ0GNSMo9kfUXrmjyrtweDznxpENqxE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.106.164]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MQelV-1iSWC913E5-00U1iU; Mon, 21
- Oct 2019 21:00:44 +0200
-To:     linux-doc@vger.kernel.org, netdev@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Nicholas Mc Guire <hofrat@osadl.org>
+Received: from [192.168.1.2] ([93.135.106.164]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MBTQo-1iCELG1Ryw-00ASVf; Mon, 21
+ Oct 2019 22:40:24 +0200
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>, Eric Anholt <eric@anholt.net>
+References: <20191021185250.26130-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] drm/v3d: Fix memory leak in v3d_submit_cl_ioctl
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        dri-devel@lists.freedesktop.org
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: sysfs.txt: Checking the documentation status for the directory layout
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -73,72 +75,74 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Message-ID: <5781c1ca-1558-48f0-84f1-678985832eed@web.de>
-Date:   Mon, 21 Oct 2019 21:00:34 +0200
+Message-ID: <a28f12a8-49c4-30f0-cc86-6a41ded96ab2@web.de>
+Date:   Mon, 21 Oct 2019 22:40:22 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.2
 MIME-Version: 1.0
+In-Reply-To: <20191021185250.26130-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:acHw5VN4paUC2wbACFW68PCnIbeWkc2czjkqq4SSCtkAhx+Sa9U
- TD3TUm4U8Ehifvgo+W6h4Ku5640TfbkqFCAtMM+9KvXC0yQrx5xkpcJIcngdUo8CCWl/ZaA
- TMH8QCHwWPDIn0568fn4DBgzkwm1oL8YGvt4sFfQvqjtuhq1igtFLzM+FUSRveW277f9lmq
- qzE3N4hvK8I6RwqHvdM7g==
+X-Provags-ID: V03:K1:+01gd9ynx1gymH7NQlk0h/6XtXzBSBIMVyyMhiE2Ri6cRR1Xt/e
+ uwBuSJHolbxSClFmj8eZiMNLk8TSIL/gEwMqUwovaelj26YFLcPqGwLvkCkY4u4SpnPFSAY
+ NLWGwkv6ZJGlPawUhKIq0T3uHdXOUgLc0sPbmnQAk4G2G8acvVi0eDK4+96yEJSqMnVrRsP
+ J/O7NOgGfGRgtLtrTJGWA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:I2K9kI3dMxI=:zN5mptROEanvfHNZ6nyQIH
- CszkddXYyTAk0kdVh9AAy25t3lylzVxsgnIsMTPsBnYpxkFybywhs/lV4WRCIhevzCmkYEEgI
- 1WKpZXNr0v4LUZJwzKF7i6yCphe7XYSYrrt+dM2amNCSZ7mmPEOD46udJM/l0ficnxQDforUv
- 9OkdqA10bDfo0g9NnNgusLvTo24rykMvQjIbYCNUNOBOx+bC2HNtKtziAA49hjx20Z2VfvrTT
- DUwUMxQGExvSvmZ/J7FoyIKscebx6Nlc6AWTTRbgv/u/ZCNEophSft86mMP65X1EqSgsXp8u8
- cFpeg/8UEQmG+VYnAdhKgnzLO9MtoSTjDbSLwDaJB1OB00t+sRgjil4IwMQIw/bo1HmBx01fx
- AqHDrOWnQd85uLhKJHDM+HLmwpYofKFNqf7TqiW+2esVXDgRbjkWcN0WyP79XoMMQxM0l6yZo
- s77voNE9SF5ndmdssRqmWvRc67hKmysNzOWfGWPrEcN1fYtsniTn/fa5rxBOAvixGRUxU54z4
- 0aHp2ZKYqVZ9X4SXN3vqI3JztIaTXyY2oZrcHkytgZuEkqJ1dWk5btLtJ0f7BNTbTw25vqXnj
- htk4wQAQTl7weqhUaJgxPlxk5tvatY902VgwXHChFmP0PcOx2Fx2ib2oaIBT4zJtql1NT2oz6
- JfMlC7e3Qsm9jvOf47N41Ev3noLa8hs56WJsYdODf6CEDMJQ+xYRUaVfs2DnQV9nABwDBLXqg
- mc1qTTGljx/7K2T7aBykW5ohCaA+R1lVPB7XimKFOgqQp6JC2QMauoeFZB8MhDi4sXj4zEj4M
- FzO+ME0CUFeeWYz4r/Dxdz0g5uvNAvU8UtBuVkthz5zihFPqkZzJGhtwlLRrYMzMIZ3g6WUAV
- CZ5LDySIp9p6oofT3t56hzn0j/kxixm+54E7cRLmiEZV0LWYuTLTHe+zh837V6Lcc5Xf1MJkr
- dsLfgBPvpFOw0nttLkkT9edeV8RK8HOgPlup47mBx0lWe3UiMSrwYQ4Jj6WA8oUV4hb0FaRJx
- HCvkhNLZX5W0QWuCNd4TbYgfbtSdzzxIZl+ZUcVkILJKGto1N4fqLWbjZ6YFC0BwAOPTCHSlC
- 5zoAB3V9mEjWiACaHGI35Ry8nVtTYjMDs+LWX9Jb12++KRd4s2HRS/gHKd+IvqQkit4+1/MMN
- zWmyqDPVRMRn/rzPTowHzygQ6GyhBYaSQ8BpqSyj6KfOXPXTynqurAgOtxPAEgt2YJL+2J1o8
- p3UhODwjyG40tLrpj1Nrap6zGDvwFXE7QAtwB5a2V0jrbErFT1lt9bn59bKg=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:Q20C1HQ9Ahk=:7CcXeV5tX5V2p60Pg5Vzj/
+ 6j6/ZzZQPL5bs4zIbtViUeecy06FqkjOVmUywQlcxFMUy5gY4lKvsGYjSYRmTJriCL4RDTA3Y
+ I79+RWPfNu9DSHoL+ElG8nGg+2jpqT6YX78js3iTOgPqkwQPkcYGvbDzjlxCRwrRVUG1CobNX
+ j8CMBhX9kdLDdJibgwCpcWSefWdLfFWAWhsAzes29hMykdCB5qi3VIZjoYpm/cOPXWSF1uf4l
+ lrmkfh5kfQN+85Tclsw4DfZkxGtgW+KozUXkpQiQwydilNb4e49frGFbiHEev6HXB2SSOgYQ+
+ 69csjV2DTmBFDLeY2+ozTiEmJHKlJ7HqvoXN+QQN9E3GCfTYPH1aJL+vjk3iWtOcwJ27r4H1c
+ ae0Y/ZKMQSrnt/uk7epO6MjwohClOvAPMb5WmmP6USoa4jh7SZXH/BtEQVTYXJKawxQRg9Xvl
+ XrSpKT89IPOIo2VLFUNYGirHgC/wkwCEZ07ScNslYbrfR8g3L7ecRZORwBGee4QzQ/dAHlXcr
+ m1eutYHYNxSM0ErQI9Iu+IXewdseQYBZpR1k3UogiGMK3k36OlcqOBdlov2nJ7ksVQkJXQZCo
+ AjoxI+b2Vs5l0TmYLqCJFF05cUbYy7JyVOOP13a2gxK4UqCl59djkB0KVwSFKyKX4YtKRMTK1
+ z8/ni4f7VFqCIxr/DYRDTPKJ8/+mogk/fsvLT7hzho/ovSHZRmQD/l63kdvWux6+jxjOKTj+m
+ XoXnmi3NYPOaVTjfPUmzeAWFjvbmbkSkjib4HOHB3l025Th1+0Ey/TmslJ0bQQLOg+bfKzFvP
+ zV6KOgtrTGaOrvpjECwyvOt8MBAuheAF16Cq/s51A740RN1ytmIVnsIOVttAVzfgKg/lGHyhI
+ i2Z9aqRQGzuhfcxs0J0SPmoBv76GvKp3COxDClDe2yg0Ru+HDEkW/7/iJPRNZ9V4PR6xnA5NN
+ wtcbVAnGAAzPGkLswOkwVtGHZc1LrHicRWxMG1a+A0i0X2ghj9iJdG6fjbM2ODYppa8JDQnGq
+ jPmj25VKTmxv5g5G+3Yb0gf1kiM4BrGO7t8Z1hT8L8S654xTJgcMmpNjAggrxlEuNDuk7tVID
+ VyBWumPCFO0OSA0FRjl1TPsnslMDmy9bOJZOS9kTR85ArM6SkUrP32tmN7UB5ahCk9PFetYOi
+ kj30qz+0gctB94Ysygzye/0IMVrWj8CLBeCYnDRkeZ5zihYIgXyZG2TJfPzNE6slQHNScCmCZ
+ 0IulH1lvaOMID+xKKJDJFhLonWBAtHFCW3yvgN2zY3fiE83pzy1/NK3DsW/o=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
+> In the impelementation of v3d_submit_cl_ioctl() there are two memory lea=
+ks.
 
-I have taken another look also at this text file.
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/D=
-ocumentation/filesystems/sysfs.txt?id=3Da6fcdcd94927a1b24dea6a9951ffa7c645=
-45ecfb#n276
+Please avoid another typo also in this change description.
 
-The following information is provided at the moment.
+
+> =E2=80=A6 If kcalloc fails to allocate memory for bin then
+> render->base should be put. Also, if v3d_job_init() fails to initialize
+> bin->base then allocated memory for bin should be released.
+
+Will an =E2=80=9Cimperative mood=E2=80=9D be more appropriate for such wor=
+dings?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3D7d194c2100ad2a6dded545887d=
+02754948ca5241#n151
+
 
 =E2=80=A6
-Top Level Directory Layout
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The sysfs directory arrangement exposes the relationship of kernel
-data structures.
+> +++ b/drivers/gpu/drm/v3d/v3d_gem.c
+> @@ -557,13 +557,16 @@ v3d_submit_cl_ioctl(struct drm_device *dev, void *=
+data,
 =E2=80=A6
-firmware/
-net/
-fs/
-=E2=80=A6
-TODO: Finish this section.
+>  		if (ret) {
+>  			v3d_job_put(&render->base);
+> +			kfree(bin);
 =E2=80=A6
 
-
-The directory =E2=80=9C/sys/net=E2=80=9D is not listed on my Linux 5.x sys=
-tem.
-Will this documentation get an update?
+Can it be helpful to move the added function call before the other
+in this if branch (if you prefer to avoid the addition of a jump target he=
+re)?
 
 Regards,
 Markus

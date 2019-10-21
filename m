@@ -2,127 +2,210 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53D89DF147
-	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Oct 2019 17:25:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 139BADF43D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Oct 2019 19:29:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727403AbfJUPZy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 21 Oct 2019 11:25:54 -0400
-Received: from mail-io1-f67.google.com ([209.85.166.67]:43843 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726847AbfJUPZy (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 21 Oct 2019 11:25:54 -0400
-Received: by mail-io1-f67.google.com with SMTP id c11so7308250iom.10;
-        Mon, 21 Oct 2019 08:25:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=CCsbvZ28JC46guXF6O4rYjXW3fCXuWIxBOZSISvE6SU=;
-        b=DXs+Kf83VRyzYDoF+84qUhVH6tRXNDr0QO+onaMzRs+jWfWCKba194bx2vNLFKaW23
-         22sPLYAevEV+a2VJniEYOih1eiUPqdK97WcmZszjQxL5LdWnj7U5uq3BXo+8HCLCz1F3
-         tDnfWc9UbtuyBCh/4+1kVSj09Vf2DJTCUwh2ccctfnGKrBBXRhMX4Lnm6eWFkQyzM6Hu
-         XtL7lN4frPNmjMdsNWNhdSk2Nnu4OJTZUBBK6j4UaiKf2rGvsxkUzpLCCWCmmEEId4KE
-         ENzpzylEoU18yDIwO0GCugDI/TQexsiI1TiYeUCy0BPV6YE/c4XH3E73H19i7IwyDscK
-         r2+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=CCsbvZ28JC46guXF6O4rYjXW3fCXuWIxBOZSISvE6SU=;
-        b=HiCi47xgrrHOahaSzHNcce9eLXdFO0Fly+9XLjnXjI6KFlq4nUwPN/h9DoD7jn3rh/
-         XIjy1GeKhPqSmeSjf/2Mj9rogPC/iRdOJe3yB9/2SFbEMgByN9I6cR7OmKckCKNpRKfm
-         dJ11xvkLYv+qkOydjCbbKqbHo3XgFfBKqnyxRBm7sVFEwS+HHwriFXKF8stYrdlSs5MB
-         NClllg9XorCl6XK8qdS6RKLPG423Uno/2APEkhU8yP5FOqhy0oJELNsrJGuXkiT9l94C
-         PgcbkBEKQdXemPX/KAN8Ceh59U0nRVaSGYN0i1m6qzYthIVtViMjtfME/6A7Z3Kdrc77
-         FYAw==
-X-Gm-Message-State: APjAAAXiLCSYSWWwpo12WHu8rhTKlHI6aZaCnXh1S4zdSDAfaD010DFw
-        wRu2MX8Fu6rnW4xTLArkoCnNKNgwmO0ntrvnA+I=
-X-Google-Smtp-Source: APXvYqylqhFAt+QkJvYPFTPhVmwmF4yLwcIEkwyyC9O8N4n+Syf/Y9fPxrrern7uh9qkFWpM4NfDPpHAFarXvCDXm+4=
-X-Received: by 2002:a5e:9706:: with SMTP id w6mr19915934ioj.252.1571671552835;
- Mon, 21 Oct 2019 08:25:52 -0700 (PDT)
-MIME-Version: 1.0
-References: <20191017014619.26708-1-navid.emamdoost@gmail.com>
- <83dcacc2-a820-fe63-a1b9-1809e8f14f2f@web.de> <57b61298-cbeb-f0ff-c6ba-b8f64d5d0287@canonical.com>
-In-Reply-To: <57b61298-cbeb-f0ff-c6ba-b8f64d5d0287@canonical.com>
-From:   Navid Emamdoost <navid.emamdoost@gmail.com>
-Date:   Mon, 21 Oct 2019 10:25:41 -0500
-Message-ID: <CAEkB2EQgv9_niKU0dagjZH-wRoHc=6+X4O7nGoVbaz9LWPwy6g@mail.gmail.com>
-Subject: Re: [PATCH] apparmor: Fix use-after-free in aa_audit_rule_init
-To:     John Johansen <john.johansen@canonical.com>
-Cc:     Markus Elfring <Markus.Elfring@web.de>,
-        linux-security-module@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Tyler Hicks <tyhicks@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        id S1728254AbfJUR3o (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 21 Oct 2019 13:29:44 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59064 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726847AbfJUR3n (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 21 Oct 2019 13:29:43 -0400
+Received: from localhost.localdomain (unknown [194.230.155.217])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 53FB72077C;
+        Mon, 21 Oct 2019 17:29:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1571678982;
+        bh=wzG2zl1ghSK1OwbPID3sQYVBbITXZvGHKVGtVFvr5hg=;
+        h=From:To:Cc:Subject:Date:From;
+        b=jJieV8BynVlayAwwVwqWEA5iVljadUKeK2shzuAnqbqrRZT4JpQyFWVvlhV7NseRG
+         /bsylD3O1cLiXEGZKhO+Qd+WO9LNfTO4OhSHEHmoIGY2JQI7De6i6BNeKa8A1tMuFC
+         93t7u6rzcuVnbvV1UPbppd2s+aRsuGYc0d4BiBJ4=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Jiri Kosina <trivial@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, kernel-janitors@vger.kernel.org,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        linux-fsdevel@vger.kernel.org, linux-nfs@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [RESEND trivial] fs: Fix Kconfig indentation
+Date:   Mon, 21 Oct 2019 19:29:30 +0200
+Message-Id: <20191021172930.27175-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Oct 20, 2019 at 1:51 PM John Johansen
-<john.johansen@canonical.com> wrote:
->
-> On 10/20/19 7:16 AM, Markus Elfring wrote:
-> >> =E2=80=A6 But after this release the the return statement
-> >> tries to access the label field of the rule which results in
-> >> use-after-free. Before releaseing the rule, copy errNo and return it
-> >> after releasing rule.
-> >
-> Navid thanks for finding this, and Markus thanks for the review
->
-> > Please avoid a duplicate word and a typo in this change description.
-> > My preference would be a v2 version of the patch with the small clean-u=
-ps
-> that Markus has pointed out.
+Adjust indentation from spaces to tab (+optional two spaces) as in
+coding style with command like:
+    $ sed -e 's/^        /\t/' -i */Kconfig
 
-John and Markus, I updated and submitted v2.
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+---
+ fs/9p/Kconfig     | 20 ++++++++++----------
+ fs/Kconfig        |  4 ++--
+ fs/Kconfig.binfmt |  4 ++--
+ fs/fuse/Kconfig   |  4 ++--
+ fs/nfs/Kconfig    |  6 +++---
+ fs/proc/Kconfig   |  8 ++++----
+ fs/qnx6/Kconfig   |  2 +-
+ fs/ufs/Kconfig    |  4 ++--
+ 8 files changed, 26 insertions(+), 26 deletions(-)
 
->
-> If I don't see a v2 this week I can pull this one in and do the revisions
-> myself adding a little fix-up note.
->
-> >
-> > =E2=80=A6
-> >> +++ b/security/apparmor/audit.c
-> > =E2=80=A6
-> >> @@ -197,8 +198,9 @@ int aa_audit_rule_init(u32 field, u32 op, char *ru=
-lestr, void **vrule)
-> >>      rule->label =3D aa_label_parse(&root_ns->unconfined->label, rules=
-tr,
-> >>                                   GFP_KERNEL, true, false);
-> >>      if (IS_ERR(rule->label)) {
-> >> +            err =3D rule->label;
-> >
-> > How do you think about to define the added local variable in this if br=
-anch directly?
-> >
-> > +             int err =3D rule->label;
-> >
->
-> yes, since err isn't defined or in use else where this would be preferabl=
-e
->
-> >>              aa_audit_rule_free(rule);
-> >> -            return PTR_ERR(rule->label);
-> >> +            return PTR_ERR(err);
-> >>      }
-> >>
-> >>      *vrule =3D rule;
-> >
-> >
-> > Regards,
-> > Markus
-> >
->
+diff --git a/fs/9p/Kconfig b/fs/9p/Kconfig
+index ac2ec4543fe1..09fd4a185fd2 100644
+--- a/fs/9p/Kconfig
++++ b/fs/9p/Kconfig
+@@ -32,13 +32,13 @@ endif
+ 
+ 
+ config 9P_FS_SECURITY
+-        bool "9P Security Labels"
+-        depends on 9P_FS
+-        help
+-          Security labels support alternative access control models
+-          implemented by security modules like SELinux.  This option
+-          enables an extended attribute handler for file security
+-          labels in the 9P filesystem.
+-
+-          If you are not using a security module that requires using
+-          extended attributes for file security labels, say N.
++	bool "9P Security Labels"
++	depends on 9P_FS
++	help
++	  Security labels support alternative access control models
++	  implemented by security modules like SELinux.  This option
++	  enables an extended attribute handler for file security
++	  labels in the 9P filesystem.
++
++	  If you are not using a security module that requires using
++	  extended attributes for file security labels, say N.
+diff --git a/fs/Kconfig b/fs/Kconfig
+index 2501e6f1f965..e65289487732 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -97,8 +97,8 @@ config FILE_LOCKING
+ 	default y
+ 	help
+ 	  This option enables standard file locking support, required
+-          for filesystems like NFS and for the flock() system
+-          call. Disabling this option saves about 11k.
++	  for filesystems like NFS and for the flock() system
++	  call. Disabling this option saves about 11k.
+ 
+ config MANDATORY_FILE_LOCKING
+ 	bool "Enable Mandatory file locking"
+diff --git a/fs/Kconfig.binfmt b/fs/Kconfig.binfmt
+index 62dc4f577ba1..8d0d16b90039 100644
+--- a/fs/Kconfig.binfmt
++++ b/fs/Kconfig.binfmt
+@@ -191,9 +191,9 @@ config BINFMT_MISC
+ 	  <file:Documentation/admin-guide/binfmt-misc.rst> to learn how to use this
+ 	  feature, <file:Documentation/admin-guide/java.rst> for information about how
+ 	  to include Java support. and <file:Documentation/admin-guide/mono.rst> for
+-          information about how to include Mono-based .NET support.
++	  information about how to include Mono-based .NET support.
+ 
+-          To use binfmt_misc, you will need to mount it:
++	  To use binfmt_misc, you will need to mount it:
+ 		mount binfmt_misc -t binfmt_misc /proc/sys/fs/binfmt_misc
+ 
+ 	  You may say M here for module support and later load the module when
+diff --git a/fs/fuse/Kconfig b/fs/fuse/Kconfig
+index 0635cba19971..eb2a585572dc 100644
+--- a/fs/fuse/Kconfig
++++ b/fs/fuse/Kconfig
+@@ -34,7 +34,7 @@ config VIRTIO_FS
+ 	select VIRTIO
+ 	help
+ 	  The Virtio Filesystem allows guests to mount file systems from the
+-          host.
++	  host.
+ 
+ 	  If you want to share files between guests or with the host, answer Y
+-          or M.
++	  or M.
+diff --git a/fs/nfs/Kconfig b/fs/nfs/Kconfig
+index 295a7a21b774..3edf122b8044 100644
+--- a/fs/nfs/Kconfig
++++ b/fs/nfs/Kconfig
+@@ -147,10 +147,10 @@ config NFS_V4_1_MIGRATION
+ 	default n
+ 	help
+ 	  This option makes the NFS client advertise to NFSv4.1 servers that
+-          it can support NFSv4 migration.
++	  it can support NFSv4 migration.
+ 
+-          The NFSv4.1 pieces of the Linux NFSv4 migration implementation are
+-          still experimental.  If you are not an NFSv4 developer, say N here.
++	  The NFSv4.1 pieces of the Linux NFSv4 migration implementation are
++	  still experimental.  If you are not an NFSv4 developer, say N here.
+ 
+ config NFS_V4_SECURITY_LABEL
+ 	bool
+diff --git a/fs/proc/Kconfig b/fs/proc/Kconfig
+index cb5629bd5fff..af2c0af60269 100644
+--- a/fs/proc/Kconfig
++++ b/fs/proc/Kconfig
+@@ -42,8 +42,8 @@ config PROC_VMCORE
+ 	bool "/proc/vmcore support"
+ 	depends on PROC_FS && CRASH_DUMP
+ 	default y
+-        help
+-        Exports the dump image of crashed kernel in ELF format.
++	help
++	Exports the dump image of crashed kernel in ELF format.
+ 
+ config PROC_VMCORE_DEVICE_DUMP
+ 	bool "Device Hardware/Firmware Log Collection"
+@@ -72,7 +72,7 @@ config PROC_SYSCTL
+ 	  a recompile of the kernel or reboot of the system.  The primary
+ 	  interface is through /proc/sys.  If you say Y here a tree of
+ 	  modifiable sysctl entries will be generated beneath the
+-          /proc/sys directory. They are explained in the files
++	  /proc/sys directory. They are explained in the files
+ 	  in <file:Documentation/admin-guide/sysctl/>.  Note that enabling this
+ 	  option will enlarge the kernel by at least 8 KB.
+ 
+@@ -88,7 +88,7 @@ config PROC_PAGE_MONITOR
+ 	  Various /proc files exist to monitor process memory utilization:
+ 	  /proc/pid/smaps, /proc/pid/clear_refs, /proc/pid/pagemap,
+ 	  /proc/kpagecount, and /proc/kpageflags. Disabling these
+-          interfaces will reduce the size of the kernel by approximately 4kb.
++	  interfaces will reduce the size of the kernel by approximately 4kb.
+ 
+ config PROC_CHILDREN
+ 	bool "Include /proc/<pid>/task/<tid>/children file"
+diff --git a/fs/qnx6/Kconfig b/fs/qnx6/Kconfig
+index 6a9d6bce1586..5ef679e51ba1 100644
+--- a/fs/qnx6/Kconfig
++++ b/fs/qnx6/Kconfig
+@@ -7,7 +7,7 @@ config QNX6FS_FS
+ 	  QNX 6 (also called QNX RTP).
+ 	  Further information is available at <http://www.qnx.com/>.
+ 	  Say Y if you intend to mount QNX hard disks or floppies formatted
+-          with a mkqnx6fs.
++	  with a mkqnx6fs.
+ 	  However, keep in mind that this currently is a readonly driver!
+ 
+ 	  To compile this file system support as a module, choose M here: the
+diff --git a/fs/ufs/Kconfig b/fs/ufs/Kconfig
+index 6d30adb6b890..f1f725c5a28c 100644
+--- a/fs/ufs/Kconfig
++++ b/fs/ufs/Kconfig
+@@ -11,8 +11,8 @@ config UFS_FS
+ 	  experimental "UFS file system write support", below. Please read the
+ 	  file <file:Documentation/admin-guide/ufs.rst> for more information.
+ 
+-          The recently released UFS2 variant (used in FreeBSD 5.x) is
+-          READ-ONLY supported.
++	  The recently released UFS2 variant (used in FreeBSD 5.x) is
++	  READ-ONLY supported.
+ 
+ 	  Note that this option is generally not needed for floppies, since a
+ 	  good portable way to transport files and directories between unixes
+-- 
+2.17.1
 
-
---=20
-Thanks,
-Navid.

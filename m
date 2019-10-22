@@ -2,26 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4027DDFF62
-	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Oct 2019 10:27:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA2B3E0002
+	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Oct 2019 10:51:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388350AbfJVI1I (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 22 Oct 2019 04:27:08 -0400
-Received: from mout.web.de ([212.227.15.3]:47223 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388155AbfJVI1H (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 22 Oct 2019 04:27:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1571732803;
-        bh=VWx2rTrvpZC0RZaMaSTUbJuSZo63JMW4L0AYgqe9ONg=;
-        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=p67MYo4vDOx2iE7SXU5Nc7PaQHGeLrs29ySqs2vsy4M+1wv5fXWFn8IBz3eZH+vG/
-         Zf52ZgkaY4F0o84g/U0abuIaTLo5Hkh04SfwgXn6fXJ04elrt7Kiwsvx/fZnY5cWND
-         xq8pdsAKJSJfch4eFuR+DyBsmQ6PpRF4DGv0uJHM=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.150.42]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MFL64-1iHH4Z2JCG-00EJI7; Tue, 22
- Oct 2019 10:26:43 +0200
+        id S2388086AbfJVIv3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 22 Oct 2019 04:51:29 -0400
+Received: from mail-eopbgr800084.outbound.protection.outlook.com ([40.107.80.84]:13098
+        "EHLO NAM03-DM3-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S2387961AbfJVIv2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 22 Oct 2019 04:51:28 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YEZnKuWNKG73R/8hQE4UoSS83Zf21pIt75Pgv9zoXJpzSd/VXE7ymf9IYV5bYh0kZF5953uoeU2bahoqtf+fAh3a8OUMhVKdhjPfgvNzs9MPtSeFIDvTXeJf9VM02O+NOR1uzdO59DBGsXFwJRVwlcuEfeNRK0OHXx8KzcPJibjMEU4keocJgmDwr/R4jkTFMEBMxKakZfYRVcD/07wCff4yrjxkDRK88Xjxc9TjghfnJQGjJGT20mmcW4xQqK6UUQPYUDHQytotd+axaIzSKPc+YMvMSq60fhwdNMGvXDHiNrtrZAa+q99I0IQwwbefp2K2IqVghAeEgnZ5QCgrUg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=56W45nPGUSRM1VFi2Z8YDVEVdGdyBXNSIhTK92cktVw=;
+ b=NlegAizUS3apKtMMlHC52WYctT/Ah3n5rXIqJ1z/Iz6puAmQRcjc2Ia+rfw9Wu0FkW6dtsUpy+G+ePsPa8OsoeZsT4rt1cw3T7+NgpUxXr7g+bRxnaPlQK1icoOiz2vw190UI8yKTpg7/qawNVbaTGrY3BTexVYdQCpsR0AfxcLXuI5jTtuq2lfBhF8pbWMUAtJ+m2YaVCD9u4Yq40E/g0qpgB8fmeA8iSXWYZQIi1V6i9tbuZ/2C7mnbtIURzQAVKrThJ02/2wak5AudSz1cLCSWyKQrma8lbb6ezH23c2TOVGJ7g/uaBb9uE5OyKaxmaqXtLRgXt7fN5b8dgU6qg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 149.199.60.83) smtp.rcpttodomain=linutronix.de smtp.mailfrom=xilinx.com;
+ dmarc=bestguesspass action=none header.from=xilinx.com; dkim=none (message
+ not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=56W45nPGUSRM1VFi2Z8YDVEVdGdyBXNSIhTK92cktVw=;
+ b=ECHMqoIawE0FkeOAHbkticeGGhmbF1DWx6+vcTUSq8mWUTiqheZYUxTt3ExYI923gislAh/9et4sKizrT5Xp42TFdAy7wikq5epHOG373fGzx2klm4ZDadUqmLFsIVcX417j/cnIboNUVspER35E+vVjxE/lop/PLtXnoKO2zcM=
+Received: from BN7PR02CA0004.namprd02.prod.outlook.com (2603:10b6:408:20::17)
+ by BN8PR02MB5955.namprd02.prod.outlook.com (2603:10b6:408:b1::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2347.17; Tue, 22 Oct
+ 2019 08:51:23 +0000
+Received: from SN1NAM02FT028.eop-nam02.prod.protection.outlook.com
+ (2a01:111:f400:7e44::200) by BN7PR02CA0004.outlook.office365.com
+ (2603:10b6:408:20::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2347.23 via Frontend
+ Transport; Tue, 22 Oct 2019 08:51:23 +0000
+Authentication-Results: spf=pass (sender IP is 149.199.60.83)
+ smtp.mailfrom=xilinx.com; linutronix.de; dkim=none (message not signed)
+ header.d=none;linutronix.de; dmarc=bestguesspass action=none
+ header.from=xilinx.com;
+Received-SPF: Pass (protection.outlook.com: domain of xilinx.com designates
+ 149.199.60.83 as permitted sender) receiver=protection.outlook.com;
+ client-ip=149.199.60.83; helo=xsj-pvapsmtpgw01;
+Received: from xsj-pvapsmtpgw01 (149.199.60.83) by
+ SN1NAM02FT028.mail.protection.outlook.com (10.152.72.105) with Microsoft SMTP
+ Server (version=TLS1_0, cipher=TLS_RSA_WITH_AES_256_CBC_SHA) id 15.20.2367.14
+ via Frontend Transport; Tue, 22 Oct 2019 08:51:23 +0000
+Received: from unknown-38-66.xilinx.com ([149.199.38.66] helo=xsj-pvapsmtp01)
+        by xsj-pvapsmtpgw01 with esmtp (Exim 4.63)
+        (envelope-from <michal.simek@xilinx.com>)
+        id 1iMpsw-0002uh-Tp; Tue, 22 Oct 2019 01:51:22 -0700
+Received: from [127.0.0.1] (helo=localhost)
+        by xsj-pvapsmtp01 with smtp (Exim 4.63)
+        (envelope-from <michal.simek@xilinx.com>)
+        id 1iMpsr-0002P5-RN; Tue, 22 Oct 2019 01:51:17 -0700
+Received: from [172.30.17.123]
+        by xsj-pvapsmtp01 with esmtp (Exim 4.63)
+        (envelope-from <michals@xilinx.com>)
+        id 1iMpso-0002DK-JO; Tue, 22 Oct 2019 01:51:14 -0700
+Subject: Re: [PATCH] clocksource/drivers: Fix memory leak in
+ ttc_setup_clockevent
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        Navid Emamdoost <navid.emamdoost@gmail.com>,
+        linux-arm-kernel@lists.infradead.org
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
@@ -29,121 +73,73 @@ Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Michal Simek <michal.simek@xilinx.com>,
         Thomas Gleixner <tglx@linutronix.de>
 References: <20191021201848.4231-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] clocksource/drivers: Fix memory leak in
- ttc_setup_clockevent
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-arm-kernel@lists.infradead.org
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <fb5d5331-9a89-8370-1e61-396dd05f291a@web.de>
-Date:   Tue, 22 Oct 2019 10:26:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.2
+ <fb5d5331-9a89-8370-1e61-396dd05f291a@web.de>
+From:   Michal Simek <michal.simek@xilinx.com>
+Message-ID: <2a6cdb63-397b-280a-7379-740e8f43ddf6@xilinx.com>
+Date:   Tue, 22 Oct 2019 10:51:11 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-In-Reply-To: <20191021201848.4231-1-navid.emamdoost@gmail.com>
+In-Reply-To: <fb5d5331-9a89-8370-1e61-396dd05f291a@web.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:77vlY4Vw7J5s2dUjjAW/OdxwC2PIkEjGDthypIiow25JGaqKBhe
- 85x+/yAvM7C1nSAJgPT82JafPm4o/U9ZgS8u7Vh1Sml3ZjzlkxsgAJ28oZB5cz/BNe1dvht
- 74wR0Kkw8cI/oEbDqcRgbeGnIq43n1f3odgRmEH2mUUj9pYlAFY2I3YCFAi6TWVRDhWjIAP
- G4vUmuLKLNLLVBmSimh3Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:zwP1lSrkeoc=:0a9XvDjX4WsXajoLmgIJ6r
- Y3aMNKL0C77+YLBRhjwPdHhYZ5Oj/EITbJhcEczNYFW4FHHj1WweCVzkl2qHLQZzFhjsxDMo2
- 0sTkcJ1JajwCTjj6F2uoUnTbOcFXBJjFQ79C7ZMziTBocKiQnDiQ6ShLHy0PfhcgTfJC5KeFA
- gsNrEhepUSl6N4SYSCGK6CIxGIvypv3hQGhaaYzc+UFIXq5VdeU+mPQGPsO/PiZvKsBwirh7s
- z2aYZvv5J5LfuscOdpACJWo19vKfYb9ZtFJ5HHzIUhcxlI/fW/EywEkGdSRGX8//YYmVhE4H4
- evsznwReaBMswadQtZO6BPXCiX4OkQRoVmZs/sP+DB/UOWeBJZ78/wC3b4/aWVoBUQj83ObqL
- qHUhQHEuR3K2nAcEWrnQPz/ldnKd4+oKLlYyBu7CKo5iCUluIcdSDbGVCHA/OsaxrpM7g9HTs
- 7ge1yNbymoeEBwXAhGtqC28t2fnOf3xQVxUDwhjSQmYE6AsJZhUgNXMKMt3SaT3F/kzmxbAUb
- PHNnNrsa/ba4Wf5NA7H/cIK4cTRNJkyZVdI1eMwlMk5zVhYvNWcjzgWChs+UdGmHKywxgoK86
- M3ZvmfYrws+ZBvRMIYNXtnr7IAZSDDMlsRRtR3tctApngS0x5TgCTtZTPyUitwGtpALjZsUcK
- IYwwKyjq+QE51AnjxQyUbD/INzyh103zPi2IW837b5MPfORdcjLD0CqlZo9JIRmYSJDTGq/qX
- QEPNLhDlZ7HojA6+vXHUiAqZOuCdVrV2dsWEEy71fW10q9Nxz4pPogFdP0lRSKEvQ98xqS/nM
- +8i0hpFQOo7dwIC2IM6QujE5u/PoGRYYbVllRvg3OA2ZQcWGlPdRvEKFiteo8oplKfbDoauKf
- dmUkuhSt1VsbINj1Tqwuuf+UABvZXjb8pxOjTIn+5/+jLhJJybnrtW+fFcrMQhzR7yijLYTwI
- 07fIEo6yUT6z9jCbMnsD/sH2MMCI+f2BACu0BKsOcIPRNhPbbjUk6z06+SCbnHdFiS0irpcGW
- X+nH9k10kA0worXOsUqz7/PuLtdmI0H8CSermeau/AKIn2vDHIQBv8LkMghgHxqAJG89uEIe8
- X5lUqeQhGDRzeOH3QJnokiQ1jT670AIXZrdfSkkkG7rb9tYL7kNByAn7l0a62NnyinEcVnaBA
- kUywuRKs7KUh498baUlG6XfOV/wJ/CATOeZPPAIx5UnUB9J9PUtko20K/Rdig67NhS2sAbBLf
- JdofDEwhcvc6JIeH24uDIFb7Tg8qs5u/7qk/OVKL2XMnqJkVkmk6q34I5/0k=
+Content-Transfer-Encoding: 8bit
+X-TM-AS-Product-Ver: IMSS-7.1.0.1224-8.2.0.1013-23620.005
+X-TM-AS-User-Approved-Sender: Yes;Yes
+X-EOPAttributedMessage: 0
+X-MS-Office365-Filtering-HT: Tenant
+X-Forefront-Antispam-Report: CIP:149.199.60.83;IPV:NLI;CTRY:US;EFV:NLI;SFV:NSPM;SFS:(10009020)(4636009)(346002)(39860400002)(376002)(396003)(136003)(189003)(199004)(36756003)(126002)(23676004)(446003)(44832011)(47776003)(316002)(50466002)(486006)(356004)(426003)(476003)(6666004)(76176011)(2616005)(11346002)(336012)(36386004)(65806001)(54906003)(26005)(229853002)(2486003)(65956001)(8676002)(81156014)(81166006)(31696002)(186003)(7416002)(8936002)(966005)(2870700001)(478600001)(5660300002)(6306002)(106002)(9786002)(6246003)(2906002)(4326008)(110136005)(58126008)(31686004)(305945005)(70586007)(70206006);DIR:OUT;SFP:1101;SCL:1;SRVR:BN8PR02MB5955;H:xsj-pvapsmtpgw01;FPR:;SPF:Pass;LANG:en;PTR:unknown-60-83.xilinx.com;MX:1;A:1;
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 2cf784a9-5f70-4fb5-1ecc-08d756cd0445
+X-MS-TrafficTypeDiagnostic: BN8PR02MB5955:
+X-MS-Exchange-PUrlCount: 2
+X-Microsoft-Antispam-PRVS: <BN8PR02MB5955F28EA42CB7AFD3AEDFB5C6680@BN8PR02MB5955.namprd02.prod.outlook.com>
+X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-Forefront-PRVS: 01986AE76B
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: MzYUZESoncFwqnQ7wPDWbdjjMVjAKIQX27d7J3FltOwQKLfjIgXZdrCMD3t+8vbdh6nkCma5IiSZ3uht2N7OdauivDdXrnGqfWAstujZeGhl8kaE3rLQARl7ZjF9kIlOL6mxbA5xh8oqGsiMF0h+oo/rN8wbqUYJQ+AJs61W7Q8OLAmFuw/8Y2KM047CzvLzU6ao8iJjFKtbEwbV4ffrn/pP/lcoZqo/VYar3KOB9DXEer/CLXuc3NGPhvK4ZAymeBcnCe2kt+9i4bLwDeOZlDyJUtkiqO9uOUWtnLjTtMBhyXucbtzQnTz4aM26MsJ8T1ePuYusf1qSUH4oLcO7A8gl7KVc7Hl7X1vVi7qs06Hd28wpIPsrQtIcHUAXT9/FIErVPW3vXQIJuhQB+93+cGxz/6yzbO3YcJbOQ846pxmejftf9kY2NMBh0eH0ywmOTfGJwbIynhhb9zm6BZINJQ==
+X-OriginatorOrg: xilinx.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Oct 2019 08:51:23.5006
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2cf784a9-5f70-4fb5-1ecc-08d756cd0445
+X-MS-Exchange-CrossTenant-Id: 657af505-d5df-48d0-8300-c31994686c5c
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=657af505-d5df-48d0-8300-c31994686c5c;Ip=[149.199.60.83];Helo=[xsj-pvapsmtpgw01]
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN8PR02MB5955
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> In the impelementation of ttc_setup_clockevent() the allocated memory
-> for ttcce should be released if clk_notifier_register() fails.
+On 22. 10. 19 10:26, Markus Elfring wrote:
+>> In the impelementation of ttc_setup_clockevent() the allocated memory
+>> for ttcce should be released if clk_notifier_register() fails.
+> 
+> * Please avoid the copying of typos from previous change descriptions.
+> 
+> * Under which circumstances will an “imperative mood” matter for you here?
+>   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=7d194c2100ad2a6dded545887d02754948ca5241#n151
+> 
+> 
+>> +++ b/drivers/clocksource/timer-cadence-ttc.c
+>> @@ -424,6 +424,7 @@ static int __init ttc_setup_clockevent(struct clk *clk,
+>>  				    &ttcce->ttc.clk_rate_change_nb);
+>>  	if (err) {
+>>  		pr_warn("Unable to register clock notifier.\n");
+>> +		kfree(ttcce);
+>>  		return err;
+>>  	}
+> 
+> This addition looks correct.
+> But I would prefer to move such exception handling code to the end of
+> this function implementation so that duplicate source code will be reduced.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?id=7d194c2100ad2a6dded545887d02754948ca5241#n450
 
-* Please avoid the copying of typos from previous change descriptions.
+Just a note. Maybe you should also consider to fix this error path in
+ttc_setup_clocksource() when notifier also can fail that there is no
+need to continue with code execution.
 
-* Under which circumstances will an =E2=80=9Cimperative mood=E2=80=9D matt=
-er for you here?
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-Documentation/process/submitting-patches.rst?id=3D7d194c2100ad2a6dded54588=
-7d02754948ca5241#n151
-
-
-> +++ b/drivers/clocksource/timer-cadence-ttc.c
-> @@ -424,6 +424,7 @@ static int __init ttc_setup_clockevent(struct clk *c=
-lk,
->  				    &ttcce->ttc.clk_rate_change_nb);
->  	if (err) {
->  		pr_warn("Unable to register clock notifier.\n");
-> +		kfree(ttcce);
->  		return err;
->  	}
-
-This addition looks correct.
-But I would prefer to move such exception handling code to the end of
-this function implementation so that duplicate source code will be reduced=
-.
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/coding-style.rst?id=3D7d194c2100ad2a6dded545887d027549=
-48ca5241#n450
-
-Regards,
-Markus
+Thanks,
+Michal

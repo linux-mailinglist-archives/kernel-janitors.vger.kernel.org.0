@@ -2,38 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FA8FDFE53
-	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Oct 2019 09:31:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4027DDFF62
+	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Oct 2019 10:27:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731007AbfJVHbM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 22 Oct 2019 03:31:12 -0400
-Received: from mout.web.de ([212.227.15.4]:55503 "EHLO mout.web.de"
+        id S2388350AbfJVI1I (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 22 Oct 2019 04:27:08 -0400
+Received: from mout.web.de ([212.227.15.3]:47223 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730619AbfJVHbM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 22 Oct 2019 03:31:12 -0400
+        id S2388155AbfJVI1H (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 22 Oct 2019 04:27:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1571729439;
-        bh=wX/j8gqDrwb6uhsmDcjCsRdsbSyGM1iP6fEUbeerslQ=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=Xr5Hzs6avALwbk5kmzQqX5cMDup5CO0WGjoVnfUNdBDS0YgGtvBjZHrfjL1YsYQuP
-         bJX128Ceq6HFAczPx+CPUMMJMMNjN4imvz5ekB17jcxpoPJ88/zE0KQVqD1nS+LY7P
-         Mlue8fms10x4Y9+8NQfi29FA77H5t6sX6yROZmKk=
+        s=dbaedf251592; t=1571732803;
+        bh=VWx2rTrvpZC0RZaMaSTUbJuSZo63JMW4L0AYgqe9ONg=;
+        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+        b=p67MYo4vDOx2iE7SXU5Nc7PaQHGeLrs29ySqs2vsy4M+1wv5fXWFn8IBz3eZH+vG/
+         Zf52ZgkaY4F0o84g/U0abuIaTLo5Hkh04SfwgXn6fXJ04elrt7Kiwsvx/fZnY5cWND
+         xq8pdsAKJSJfch4eFuR+DyBsmQ6PpRF4DGv0uJHM=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.150.42]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0M7blv-1i8ADR447r-00xJlH; Tue, 22
- Oct 2019 09:30:39 +0200
-Subject: Re: [PATCH] drm/v3d: Fix memory leak in v3d_submit_cl_ioctl
-From:   Markus Elfring <Markus.Elfring@web.de>
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+Received: from [192.168.1.2] ([93.132.150.42]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MFL64-1iHH4Z2JCG-00EJI7; Tue, 22
+ Oct 2019 10:26:43 +0200
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>, Eric Anholt <eric@anholt.net>,
-        Iago Toral Quiroga <itoral@igalia.com>
-References: <20191021185250.26130-1-navid.emamdoost@gmail.com>
- <a28f12a8-49c4-30f0-cc86-6a41ded96ab2@web.de>
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+References: <20191021201848.4231-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] clocksource/drivers: Fix memory leak in
+ ttc_setup_clockevent
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        linux-arm-kernel@lists.infradead.org
+From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -77,65 +77,73 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <f5c228b6-eb9b-445d-3055-bb966e1c5deb@web.de>
-Date:   Tue, 22 Oct 2019 09:30:34 +0200
+Message-ID: <fb5d5331-9a89-8370-1e61-396dd05f291a@web.de>
+Date:   Tue, 22 Oct 2019 10:26:41 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.2
 MIME-Version: 1.0
-In-Reply-To: <a28f12a8-49c4-30f0-cc86-6a41ded96ab2@web.de>
+In-Reply-To: <20191021201848.4231-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:/jab4DaQA76l4zX5Oew7DX1U+G/IN8y1j8LpNCgH8IzQHj5pVbC
- cIz+jnBjNsQN8y4YtiF450ijd/qZZKp4EiR+VXw+kRF6b9MkmFPabRbOvX5AD1sTH7N5hGC
- NhprSmRGqs99LbTdIZRg+Qu5qvrWn5Ev5pmBBto4Qk/3vYwnwmWadfQOfJhLrgIPd3F99Vh
- jMfXUUlnOULgPWniWw0JQ==
+X-Provags-ID: V03:K1:77vlY4Vw7J5s2dUjjAW/OdxwC2PIkEjGDthypIiow25JGaqKBhe
+ 85x+/yAvM7C1nSAJgPT82JafPm4o/U9ZgS8u7Vh1Sml3ZjzlkxsgAJ28oZB5cz/BNe1dvht
+ 74wR0Kkw8cI/oEbDqcRgbeGnIq43n1f3odgRmEH2mUUj9pYlAFY2I3YCFAi6TWVRDhWjIAP
+ G4vUmuLKLNLLVBmSimh3Q==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:kpO/68BQcpA=:8qyyuGOwWphzHADKG4Uq/F
- bhTfg7RlODvFuQ5kqcd4dBLnEXRNRcoWRyHrKk6eVj6naVklsdMeMqyy6uwy6TN61WmBnKnDX
- 9IIm+XgsHhBd1uUgrZJeMOOYjfVthWh75UljpSLEbqfdBwXy0b4Of3F/75OFWREKDk3CRCg9o
- zMcGmTOjVicRHoVkkzyBv4iR5YljSyImFF1ubpTkqA9EB3jKCcrLNeXeZ88mu6DVPGnUAk7H9
- tmhJl4WfiQPBOQyoiPh68R4yztZxOO8AkX5joGPqyzzF0BQ2tc+XdptK8AwFPpHK3LKqUMN/a
- 2aOvNAwZAidZ/KkHXP/GXu7qTULO/cA1YeJBSGvNtpmoutvYDBgYQM/uTeQhrHgKteORocXnO
- TKcfXCQOwTxGXc81HhCLDUBjiIlG4HT/zbjDJZ3c0o1/3UOo+wk5rFrCOX8EQu9uKdOH/W7WB
- cBAbUtjtSqJMa2dkrV77E6xPz9L02wp+jDoGeBwi5vjVKpdSIDOPf1fzd4LdIQALXJSZYeuKY
- KWy5NTwF/y8hhpzR6ziIrT/SdIX0Y0I00PPj4fL1LYYjE2e0q7AZZ/aF/Wh+0dtxWwPNO1q2K
- iN4f6qgo2QC6gcQMES+SlXQ+LPeuxuT1W+M9Rhv9jmpDJ2WPcTn9GYj0d/wgzzVFJEizZGVWd
- osSQ2WhwZvkN3zuFUGR2IifL2oJ4tQgOZQoAisGz001PjoyqASE64FY3YnA47F3nFcTVZQCqD
- SqhBWnUzsdYivY7+4mVlDL1qiH9Wcv6P1rh4af3BF/Pq2rb0dWttrbSd5+YTDECjhgmCGendh
- pO1nlSNSDnvDSJdZxwUozNRPaOEc3aiiRwKXfl6NkTPp+mujUj4lRaX0yXnYfnBFNNTHwuJ84
- 5ob2HuXUlUgsvpnGQXnyAJNG4ChX/XavTaX5Qvm23rZB/Hg2ybpx14cHEdS4fkmNFNvRXQfUj
- DHOA4uKKQMnW1HUtaR4nM3KaCLsS/SsUYnCEnzRxE8PLqs/Nzes0GbOipPzsw/u6343FRGAae
- 3tIK8/NRiBjnAsOsa0HQxJdVFqimq8bEN2fIXXef+RlvcXQdbamNUjazoy9ti7vhlqsL0UZ8m
- xgd5sDJJtZBxUIbUAUvoo2VcAMGoR4g6fmzSRr7hH42yAxAVVy7GTim/1oepEDGxmrCWNJ1fz
- 8aWBGgFBK6ymJHztDSD5YG7SLfngcBHCfsmv6222bs5pxncDk7xO99SykEh8OX+VSU2nOIgV3
- iZeBIRKZ9QHku1NZT3kdfxC32xn/bqMZfcU6wKlcwEBzg/mWd4Bilf0dJUzw=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:zwP1lSrkeoc=:0a9XvDjX4WsXajoLmgIJ6r
+ Y3aMNKL0C77+YLBRhjwPdHhYZ5Oj/EITbJhcEczNYFW4FHHj1WweCVzkl2qHLQZzFhjsxDMo2
+ 0sTkcJ1JajwCTjj6F2uoUnTbOcFXBJjFQ79C7ZMziTBocKiQnDiQ6ShLHy0PfhcgTfJC5KeFA
+ gsNrEhepUSl6N4SYSCGK6CIxGIvypv3hQGhaaYzc+UFIXq5VdeU+mPQGPsO/PiZvKsBwirh7s
+ z2aYZvv5J5LfuscOdpACJWo19vKfYb9ZtFJ5HHzIUhcxlI/fW/EywEkGdSRGX8//YYmVhE4H4
+ evsznwReaBMswadQtZO6BPXCiX4OkQRoVmZs/sP+DB/UOWeBJZ78/wC3b4/aWVoBUQj83ObqL
+ qHUhQHEuR3K2nAcEWrnQPz/ldnKd4+oKLlYyBu7CKo5iCUluIcdSDbGVCHA/OsaxrpM7g9HTs
+ 7ge1yNbymoeEBwXAhGtqC28t2fnOf3xQVxUDwhjSQmYE6AsJZhUgNXMKMt3SaT3F/kzmxbAUb
+ PHNnNrsa/ba4Wf5NA7H/cIK4cTRNJkyZVdI1eMwlMk5zVhYvNWcjzgWChs+UdGmHKywxgoK86
+ M3ZvmfYrws+ZBvRMIYNXtnr7IAZSDDMlsRRtR3tctApngS0x5TgCTtZTPyUitwGtpALjZsUcK
+ IYwwKyjq+QE51AnjxQyUbD/INzyh103zPi2IW837b5MPfORdcjLD0CqlZo9JIRmYSJDTGq/qX
+ QEPNLhDlZ7HojA6+vXHUiAqZOuCdVrV2dsWEEy71fW10q9Nxz4pPogFdP0lRSKEvQ98xqS/nM
+ +8i0hpFQOo7dwIC2IM6QujE5u/PoGRYYbVllRvg3OA2ZQcWGlPdRvEKFiteo8oplKfbDoauKf
+ dmUkuhSt1VsbINj1Tqwuuf+UABvZXjb8pxOjTIn+5/+jLhJJybnrtW+fFcrMQhzR7yijLYTwI
+ 07fIEo6yUT6z9jCbMnsD/sH2MMCI+f2BACu0BKsOcIPRNhPbbjUk6z06+SCbnHdFiS0irpcGW
+ X+nH9k10kA0worXOsUqz7/PuLtdmI0H8CSermeau/AKIn2vDHIQBv8LkMghgHxqAJG89uEIe8
+ X5lUqeQhGDRzeOH3QJnokiQ1jT670AIXZrdfSkkkG7rb9tYL7kNByAn7l0a62NnyinEcVnaBA
+ kUywuRKs7KUh498baUlG6XfOV/wJ/CATOeZPPAIx5UnUB9J9PUtko20K/Rdig67NhS2sAbBLf
+ JdofDEwhcvc6JIeH24uDIFb7Tg8qs5u/7qk/OVKL2XMnqJkVkmk6q34I5/0k=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> =E2=80=A6
->> +++ b/drivers/gpu/drm/v3d/v3d_gem.c
->> @@ -557,13 +557,16 @@ v3d_submit_cl_ioctl(struct drm_device *dev, void =
-*data,
-> =E2=80=A6
->>  		if (ret) {
->>  			v3d_job_put(&render->base);
->> +			kfree(bin);
-> =E2=80=A6
->
-> Can it be helpful to move the added function call before the other
-> in this if branch (if you prefer to avoid the addition of a jump target =
-here)?
+> In the impelementation of ttc_setup_clockevent() the allocated memory
+> for ttcce should be released if clk_notifier_register() fails.
 
-I got into the mood to take another look at these implementation details.
-I suggest then to look at the commit 0d352a3a8a1f26168d09f7073e61bb4b328e3=
-bb9
-("drm/v3d: don't leak bin job if v3d_job_init fails." from 2019-09-18)
-once more.
+* Please avoid the copying of typos from previous change descriptions.
 
-With which software versions did you perform your source code analysis?
+* Under which circumstances will an =E2=80=9Cimperative mood=E2=80=9D matt=
+er for you here?
+  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+Documentation/process/submitting-patches.rst?id=3D7d194c2100ad2a6dded54588=
+7d02754948ca5241#n151
+
+
+> +++ b/drivers/clocksource/timer-cadence-ttc.c
+> @@ -424,6 +424,7 @@ static int __init ttc_setup_clockevent(struct clk *c=
+lk,
+>  				    &ttcce->ttc.clk_rate_change_nb);
+>  	if (err) {
+>  		pr_warn("Unable to register clock notifier.\n");
+> +		kfree(ttcce);
+>  		return err;
+>  	}
+
+This addition looks correct.
+But I would prefer to move such exception handling code to the end of
+this function implementation so that duplicate source code will be reduced=
+.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/coding-style.rst?id=3D7d194c2100ad2a6dded545887d027549=
+48ca5241#n450
 
 Regards,
 Markus

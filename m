@@ -2,36 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EBD99E0074
-	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Oct 2019 11:12:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BD60E00EA
+	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Oct 2019 11:41:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731435AbfJVJMy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 22 Oct 2019 05:12:54 -0400
-Received: from mout.web.de ([212.227.15.4]:53889 "EHLO mout.web.de"
+        id S1731469AbfJVJk4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 22 Oct 2019 05:40:56 -0400
+Received: from mout.web.de ([212.227.15.4]:48199 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731327AbfJVJMx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 22 Oct 2019 05:12:53 -0400
+        id S1730312AbfJVJk4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 22 Oct 2019 05:40:56 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1571735561;
-        bh=7X8VPzfXyeZbtQNCoVO8DTiV4iU03bvctWw6Zpoy29A=;
-        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=fR/g9lMtRvoVFVfoSXCs5/jSsVWU6d99xFqhViPUe6CQkR3oCnAxtAlm5SI0QKVJq
-         R0i9rbT/B93kA/w7mZGAxRDNGMboor9BGSv5xtlFwN4yXUiWrHeiTEj0u8X31CIXJ3
-         TqeAvJeMdVspgxoOcm0UPMfTmQkVn3yez1PWMjnE=
+        s=dbaedf251592; t=1571737241;
+        bh=GJEH9DRR2EKHvmf2sT42XdVTXPY+Q+DE2CfuDqJ5IFo=;
+        h=X-UI-Sender-Class:Cc:References:Subject:From:To:Date:In-Reply-To;
+        b=QFQcyrHb3Wp4bxgEtd9GUiNn5t5PAf3uDuZ6Geg1a+o04GIU2IRvjDIpYS/uOXUjR
+         8R5xP/dlHyzv599YchFXexYj0m7p4tFwheNHFET56i4fD21M20U5L/dYWJa3aHtJ1o
+         jDZ1LdCnKG+5GIu67DsWhLJNsWWBQHIdV9yyUqaI=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.150.42]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MUBPu-1iV3iE41Qo-00R2EE; Tue, 22
- Oct 2019 11:12:41 +0200
-Cc:     linux-kernel@vger.kernel.org, Navid Emamdoost <emamd001@umn.edu>,
-        Kangjie Lu <kjlu@umn.edu>, Stephen McCamant <smccaman@umn.edu>,
-        Thomas Gleixner <tglx@linutronix.de>
-References: <20191021202626.5246-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] clocksource/drivers/davinci: Fix memory leak in
- davinci_timer_register
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        kernel-janitors@vger.kernel.org
+Received: from [192.168.1.2] ([93.132.150.42]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MUF50-1iV3sp0YzK-00R2yz; Tue, 22
+ Oct 2019 11:40:41 +0200
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>
+References: <20191021211449.9104-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] drm/nouveau: Fix memory leak in nouveau_bo_alloc
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,71 +74,71 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <1d9f02d3-45ac-1d2f-457b-91cae123383d@web.de>
-Date:   Tue, 22 Oct 2019 11:12:39 +0200
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        Thierry Reding <treding@nvidia.com>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Ben Skeggs <bskeggs@redhat.com>, nouveau@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
+Message-ID: <b523c3a1-75a7-d94a-6cc6-58e8a1ad73cd@web.de>
+Date:   Tue, 22 Oct 2019 11:40:38 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.2
 MIME-Version: 1.0
-In-Reply-To: <20191021202626.5246-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20191021211449.9104-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:RzN1YiacG8MmLcL8zUPl6r5PXF7Wed5b728Mu2rwRlYiPX9iNtF
- 8yL2OZ0aK0fq1+DN2qU0HZjJl0OOgWeq8XnKLTq8frRUmsrLX2OS84sNuV1Jjkft6rhYkCK
- CnBg1yiTborkcbD4PbFA+RlLjRlkgHq2wqBY9vFPbHM/AD6dW8eRCjkxUveLsrpdrPO9dtw
- WLFMLcBBCQX17zooNLfcw==
+X-Provags-ID: V03:K1:WvY3CEvOjQh0ldBwwtI83W1iznWfi71az+1lM6fbaMdOEPBE0Pr
+ mKybrcuo+tK8z4o/zULE9OUmRow5AglMvYVkmOUR3+WQLRQ+Jzwy4ysn0dwzFNX+8VQu96M
+ +kbjsojToKBr+FYcc0M+Pm0WVQ3JSrdDnRy6sDThlJLLszBdxQVXR+uZW6EBoI+aDEoQ4xc
+ L4MKJbGyZeaLaLIo5GYCw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:LEF+jN6fgpU=:ic88S6x7uFnEwcMsv/Ye3Z
- ZZHAeJUCKjtNls7e7KpaPBtPOgJAXjVkfGXe2DCkCfWs9SvsbHqqPDXY52UMClor7UfeeGQXs
- bf9nbSOe7OxYwFTu2ahy0TeiPeLSsaDECTxeqzlje097JjphQ5d6yHrp0uApw7EkKIbnTa9uE
- NzJD/rYRwo4GgHrQWkBvZgLuzTiB76rSLell4MCksV8vsKi371cr14z30hGyc+ajD44JGqBhx
- /owW/ExcxYSk6voTfe3v8eYf8kN6vm8oLew6cwYi/mqcfvTDdcP6NcE1zheK72hJQfL1iWO1e
- 6d2I23I1vHG3TZsJZxGs21ZjyX5ekWpTkjN2Dle/gz9SKTLkL68DLuanlEuZBfjeWNnC1tdm2
- kjGfC5YOrzqNkizd8GMCEXgs+qdIzfOmn18dm5cSTk0Mn0Wqd//h+hpAfRH2/r9Z//xq6rS+M
- hl+Ls26xYBwucaqvR4KJb/j4H/RQ4VqFXPjswvXjo1V6SOk2bs66OKsCizoNWh3GnPBJsP8G7
- KA+zzGJ18UMEeUbFYt1NOK+YA2EYGHFFBNuQ18wIrUEOIaHfG3pMlbcQFNvRinkPcag6lnOm6
- Ip2Ms+sEd/OAO8nQovIw9ZfQ2fBQ+gHcWewE3Lxn3ZzJTP+CDM9AS2KMXfSkAQD7o2TByLCxd
- sNDtoTRVojaL4w4m8qFnRw0IKGMke8DaaNL8XX/93GC+YXdUqEpzqHo0OqcJplnsVT8s1+q0n
- OKxJzaFr+J9Y6Exa2LJJrR7Q21PCeRHPTsbVVUYaJQ9/E+SQzt1MEWbahc9v/5BRCDAgqr1V7
- B4VDguOKssyCHGFBuI428ulAh4PdGdJMNAuTarnbj91lxIkxBK58OFKyeOS4bG0ffSpY39LJi
- 5Mmoih0tVa0ijRngQpW/UoVZUBVOs93YXqAilUOizYdydAVpOfClnQ9xuajk01fHIEKeRubjT
- 7vhRL5Sjgx7fpqG9i3NmQ+kS3dzmg12rSdXJuTWP9U9bEFpxWDhA3pCyK9jSOZIdCFoeAIBOz
- Ap0bogwQLQYLNn848wG6R2Lyyr/msIBr/rKUf/k/NiMLdziwAoWnNwBnH7U42MjBNeyALwG6y
- ft4CTISQSmCMSQAFMV+1tX8tzofCLDagbdYC8LIMQF6FHSTql9z6WZwcZYn5q9abAP4i602Qq
- yCYoDlmTuEOXIioJta4sDacJnbwzaBXUtAMD8JKSNXxck/EhOQg269ugYTCyFC9mZZXH/tAbZ
- VXe2nTUF/rckMhRdz5HMa2axBt43ued0QXmKbSKVnB7WeVb7MgL5kCJibsUs=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:lSdg4XoI/us=:bJvTb1elINsw4nvOhNrNqY
+ c4A+rllq+OJEHsQgVSr0atxtM1fHWmey4FdCiMyyuWOw0uZqK2i2ehEzBL1Ezd0V0pQOaSh3L
+ hcw3O7zOZ3JOKCv8N2pCRKmgqsPjYq7eqY9ZG6p4gtip/Ujtupbq456Hm/fYoKq2XbWyGCTYH
+ NREEAOyIqdfBjMGFs1Y7kCUSH+ULm2cicH5bZRhsnVZHe79JfVKWYiMUG1Di5RG2U1iV/17Fw
+ vd8ArfEP6SdJXjU7e1JWMy/OIy73fCQxJ97l92GJ054SsHr3ZQkRdLmfd1bMIpcJDyzIGP1e8
+ kGAI5t/iZAJhFqueI90pmGq0jXde/gyoIn9T7YcRp2Dcuj7NgJmBnnzr4GmHfFAlETHqImJu6
+ SIYkXXjbawkyHmJgj1XCW4YfomSBjeXjBp4a4+wY5TV+aGIX0xJOr5wQFzr3VUO9PpB3+7uDB
+ FIuWJipWLngDga6pBjp7QXRZcXtB5Ik8MFiNPqDDqs3DYijhkON979OLIiH17ggxyulgPBfzC
+ lHJQ1GEF55vRzDvau7WiguqFK76xjzp1Fo5wQr1b7lQHzaWXJaXQ3UDiulSpSN3IisVh92ke1
+ 397JMEGlojZiAnL18/vO0j8SpH08l5hLA6QHH0A17fwOM25IC+tA1v/epofcmPz7P5PCm0UUd
+ bd1YsPLZUTUxn/Zx9LtYQFSDmVJUz/D0PO9sVFwiK8xzEDmEcZMEI5Xa3JI2nUgxREdqABtKo
+ 6DyssGpobL42k09gVWIOPA7+FPLoQRiwcRKRw8YWI2xCfTggcla9lkI2j6xd6MDIK+HINEHlg
+ 54QcUVWZaqcvcka/0cgZXbDANpL4ys/JiGcnDFmoNhE3eWRXwfZJ/iFfWgQa/3lqj6mzGKWUW
+ Pq/2dlCCkbsacugbBpq0pbOKnTJAkNVfAAaUJ31f13hnczr/BR7tuuBpAaGEoqq/+1zZKI3wP
+ d/e5GAOWnyBduDnKJybqZU6gac3bgvRfJWIugpkJmkBst1TIKX08hLIUDi9F/koBq+CXpx5Tr
+ IcZA19TanFivlIM8Q35DtDjLQvPdfy/0+ncDUKBaOlkJ+yGkLvTlfwFfSqjcXzSKzUyfCgKyM
+ 8zQBsBBMM8iWUhzLRJK+ax2REGHmOAnM/BBgcvDtWBsbPsI4L5TThLonCwsFNmaACmKvedCqe
+ yzRO9Nj1VqxTSL/N1F/IpQ4PkBIXzdmk3ZREIMIOJETBhzq99riso62oAS5z6r8DtKHTDHvXe
+ QHtv9sYrjKsr27yX9n8zVqD60iSlTdl/SL7tDrZEgfizql2qhCINAQPelQkQ=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> In the impelementation of davinci_timer_register() the allocated memory
-> for clockevent should be released if request_irq() fails.
-
-* Please avoid the copying of typos from previous change descriptions.
-
-* Under which circumstances will an =E2=80=9Cimperative mood=E2=80=9D matt=
-er for you here?
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-Documentation/process/submitting-patches.rst?id=3D7d194c2100ad2a6dded54588=
-7d02754948ca5241#n151
-
-
-> +++ b/drivers/clocksource/timer-davinci.c
-> @@ -299,6 +299,7 @@ int __init davinci_timer_register(struct clk *clk,
->  			 "clockevent/tim12", clockevent);
->  	if (rv) {
->  		pr_err("Unable to request the clockevent interrupt");
-> +		kfree(clockevent);
->  		return rv;
+> +++ b/drivers/gpu/drm/nouveau/nouveau_bo.c
+> @@ -276,8 +276,10 @@ nouveau_bo_alloc(struct nouveau_cli *cli, u64 *size=
+, int *align, u32 flags,
+>  			break;
 >  	}
+>
+> -	if (WARN_ON(pi < 0))
+> +	if (WARN_ON(pi < 0)) {
+> +		kfree(nvbo);
+>  		return ERR_PTR(-EINVAL);
+> +	}
+>
+>  	/* Disable compression if suitable settings couldn't be found. */
+>  	if (nvbo->comp && !vmm->page[pi].comp) {
 
-* Should a complete source code analysis point out that a similar fix
-  will be needed also in the if branch after a failed call of
-  the function =E2=80=9Cclocksource_register_hz=E2=80=9D?
-
-* Can any more exception handling become relevant because of previous
-  resource allocations in this function implementation?
+This addition looks correct.
+But I would prefer to move such exception handling code to the end of
+this function implementation so that duplicate source code will be reduced=
+.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/coding-style.rst?id=3D7d194c2100ad2a6dded545887d027549=
+48ca5241#n450
 
 Regards,
 Markus

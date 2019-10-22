@@ -2,35 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B4A6DF6DD
-	for <lists+kernel-janitors@lfdr.de>; Mon, 21 Oct 2019 22:40:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8BC0DFD79
+	for <lists+kernel-janitors@lfdr.de>; Tue, 22 Oct 2019 08:02:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730065AbfJUUkm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 21 Oct 2019 16:40:42 -0400
-Received: from mout.web.de ([217.72.192.78]:54975 "EHLO mout.web.de"
+        id S2387508AbfJVGBR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 22 Oct 2019 02:01:17 -0400
+Received: from mout.web.de ([212.227.15.14]:50209 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728914AbfJUUkm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 21 Oct 2019 16:40:42 -0400
+        id S1726569AbfJVGBQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 22 Oct 2019 02:01:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1571690424;
-        bh=4ObFiW5TE60yeh3kt8csqTOAxv9kGWcoXP4STgxDALc=;
-        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=O2B/I0BWfks80C8OvTQ7nhAzG+1ldQ1dmBptgud6s/8+GZfWIBNd8kkK/KqktNY+4
-         sF2yc9SWWPLnrjiuLQyRfg6rNZoTPTIEpkDv/Jg9pUazTLHrhgu6jC0eI/+KV3PC+W
-         GvbJck79lzQ0GNSMo9kfUXrmjyrtweDznxpENqxE=
+        s=dbaedf251592; t=1571724058;
+        bh=acVU5mOSMaCDgB7gHBcOOWdOdcqUAEkvfKW+ViGn8Kc=;
+        h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
+        b=m7snXKDihF4NUOPCEU7s/jKgeUfxGFPIqX72GTQW1L0kr0K3+brqkbZ8rlCMAgre9
+         YmGS85FDzP01NMs8QTfkjqYA66HpXop3rKCeQ+wpCuB0ZwpjmezThG9q1XR6ZFhXBe
+         nP0uULxuB8UV6Xfse6IFsFXYuMiosyM/BnRm27Fk=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.106.164]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MBTQo-1iCELG1Ryw-00ASVf; Mon, 21
- Oct 2019 22:40:24 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>, Eric Anholt <eric@anholt.net>
-References: <20191021185250.26130-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] drm/v3d: Fix memory leak in v3d_submit_cl_ioctl
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        dri-devel@lists.freedesktop.org
+Received: from [192.168.1.2] ([93.132.150.42]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LaIRi-1hapxk1YLO-00m171; Tue, 22
+ Oct 2019 08:00:58 +0200
+To:     netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-doc@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, David Ahern <dsahern@gmail.com>,
+        David Miller <davem@davemloft.net>,
+        Josh Hunt <johunt@akamai.com>,
+        Stephen Hemminger <stephen@networkplumber.org>
+References: <20190601.164838.1496580524715275443.davem@davemloft.net>
+Subject: Re: [RFC] ss: Checking selected network ports
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -75,74 +74,55 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <a28f12a8-49c4-30f0-cc86-6a41ded96ab2@web.de>
-Date:   Mon, 21 Oct 2019 22:40:22 +0200
+Message-ID: <93483314-22eb-0ed6-70b3-044e6e007a34@web.de>
+Date:   Tue, 22 Oct 2019 08:00:49 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.2
 MIME-Version: 1.0
-In-Reply-To: <20191021185250.26130-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20190601.164838.1496580524715275443.davem@davemloft.net>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:+01gd9ynx1gymH7NQlk0h/6XtXzBSBIMVyyMhiE2Ri6cRR1Xt/e
- uwBuSJHolbxSClFmj8eZiMNLk8TSIL/gEwMqUwovaelj26YFLcPqGwLvkCkY4u4SpnPFSAY
- NLWGwkv6ZJGlPawUhKIq0T3uHdXOUgLc0sPbmnQAk4G2G8acvVi0eDK4+96yEJSqMnVrRsP
- J/O7NOgGfGRgtLtrTJGWA==
+X-Provags-ID: V03:K1:AtDsWwGMqmyZ6n2xHR/7FuRrDqa18Gwm/9QrkNySyB8KOnDnAJI
+ WQJI33xdCKv9yu7o3J2ZdEbQSijXaC3OwecqXGeI/qOBwSBO2LKQluVTWLobgXjcWHl3q5M
+ V3ckK2VWteuSyfHoo6ufsoN42JiScXhAKzOjqqu0JVD8iiU5J6H5+OdQPv7wE6dpjImsJNm
+ MFNnrRo13gTzMhOlL5hbQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Q20C1HQ9Ahk=:7CcXeV5tX5V2p60Pg5Vzj/
- 6j6/ZzZQPL5bs4zIbtViUeecy06FqkjOVmUywQlcxFMUy5gY4lKvsGYjSYRmTJriCL4RDTA3Y
- I79+RWPfNu9DSHoL+ElG8nGg+2jpqT6YX78js3iTOgPqkwQPkcYGvbDzjlxCRwrRVUG1CobNX
- j8CMBhX9kdLDdJibgwCpcWSefWdLfFWAWhsAzes29hMykdCB5qi3VIZjoYpm/cOPXWSF1uf4l
- lrmkfh5kfQN+85Tclsw4DfZkxGtgW+KozUXkpQiQwydilNb4e49frGFbiHEev6HXB2SSOgYQ+
- 69csjV2DTmBFDLeY2+ozTiEmJHKlJ7HqvoXN+QQN9E3GCfTYPH1aJL+vjk3iWtOcwJ27r4H1c
- ae0Y/ZKMQSrnt/uk7epO6MjwohClOvAPMb5WmmP6USoa4jh7SZXH/BtEQVTYXJKawxQRg9Xvl
- XrSpKT89IPOIo2VLFUNYGirHgC/wkwCEZ07ScNslYbrfR8g3L7ecRZORwBGee4QzQ/dAHlXcr
- m1eutYHYNxSM0ErQI9Iu+IXewdseQYBZpR1k3UogiGMK3k36OlcqOBdlov2nJ7ksVQkJXQZCo
- AjoxI+b2Vs5l0TmYLqCJFF05cUbYy7JyVOOP13a2gxK4UqCl59djkB0KVwSFKyKX4YtKRMTK1
- z8/ni4f7VFqCIxr/DYRDTPKJ8/+mogk/fsvLT7hzho/ovSHZRmQD/l63kdvWux6+jxjOKTj+m
- XoXnmi3NYPOaVTjfPUmzeAWFjvbmbkSkjib4HOHB3l025Th1+0Ey/TmslJ0bQQLOg+bfKzFvP
- zV6KOgtrTGaOrvpjECwyvOt8MBAuheAF16Cq/s51A740RN1ytmIVnsIOVttAVzfgKg/lGHyhI
- i2Z9aqRQGzuhfcxs0J0SPmoBv76GvKp3COxDClDe2yg0Ru+HDEkW/7/iJPRNZ9V4PR6xnA5NN
- wtcbVAnGAAzPGkLswOkwVtGHZc1LrHicRWxMG1a+A0i0X2ghj9iJdG6fjbM2ODYppa8JDQnGq
- jPmj25VKTmxv5g5G+3Yb0gf1kiM4BrGO7t8Z1hT8L8S654xTJgcMmpNjAggrxlEuNDuk7tVID
- VyBWumPCFO0OSA0FRjl1TPsnslMDmy9bOJZOS9kTR85ArM6SkUrP32tmN7UB5ahCk9PFetYOi
- kj30qz+0gctB94Ysygzye/0IMVrWj8CLBeCYnDRkeZ5zihYIgXyZG2TJfPzNE6slQHNScCmCZ
- 0IulH1lvaOMID+xKKJDJFhLonWBAtHFCW3yvgN2zY3fiE83pzy1/NK3DsW/o=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:M9nY+nIKi40=:JHcMCW8/HlhjnaW6mYFjdJ
+ ETXbGv7vvcbn7RkxxZ6Gm6rC7OB5mVkEIUSe0Eu/yX1th2GuS7xkslTeHu2nXfA6qzuFKg2NW
+ zOx3JbNRCBoInO0DxhP1aYEp6PUS/+YkE5h1uuIQ6+jOabWqClO1KHNQHK5cMEIHDeB9kUxFk
+ o3rnc8L3pgTR2ys3MvJAygK8JdMA8MqUi9U7OV70DyneRkNgcAH9cEnBllrCsy52pBU1sKOw/
+ uxVlV3Igu/kS6H67i/EqbgabprCz7y0oOHVI+v9NF6LjFCZSebyo92iO4l3H6aDMZQhlFLBUa
+ c9NlRRlZPgtOyX9JLiFIcjBCUSW1eUBFzR+vvNxwvuPX7nLSmwRvP92NQAVFimhb0DJodUftW
+ d9HO84FhLOlv0IvBZALadhm5R68G5xTbi0mXWO5KZHdsSsJ4yST16AjF9FkHJintI7PQVDmVJ
+ bjjTJ1fgVQb0jbX6v9CKR/QuOinxhgxiU2eQiwalyUkX0Dw+2CgWeZL3EMlp6CSmIp49A6SvY
+ A5OjT8SSI2yqtCHfzJw9sSRB0EdbVXwbmFde0oA5GQevTlgZWf2A5/TWjh+l6W6/i1hOEGAdh
+ CGAouYDTKAi38DfMey93+qQk1VbmTTlcNyr+5r51JtfXb/7Yy1JrxJUvwHvyqvnvwznEXB1Fj
+ TvyXI9sxut83Ad8VkLqwEgAeydMUaHED4/gG+KBf5Uab4QQ98ry4STa4KdxqPoel95Zk4lTNI
+ EN4OMRvyWTC9g26iZdS958HzcQv6yPUWM6V/ZjDnSTN29YJA4NnZfl8srTao/h26cAB76fF3C
+ P2lA1ePjyHtnvzltuKyGIW1mVlGyzflbpekEZjRCAE05TyThi7PH2c/1ABr3fcxBJrJfBfgzv
+ 1RAWLMtyQNHMOhV3R6EUcRrzGCReCVQvCTl1DlDOG4eYXsTvT7y/WSruOKwk7PWJHlsX21cUG
+ KcYfqD2Cwg2E/f2iC8OPQY1tviDGe1RyatsDphpQ9K5Y+E3359UxSnhMzSaniGfUQ94oAmf9e
+ t1Td3Rll5TWkUpDkEzd+7xIn+u9Hr/m1PgqJmKY50TThjBR+Fg5h9Gs5S6/riVRsRsvtZyHed
+ YHMnB6+KL5OWoOlXFKOKE0IQZ0CA20vPdyT1gBFgDTZWzYeIQAV2x18YlFMWhEkB/MNSEYW6b
+ Pjz3YjKopphSlTUh6c8cC5K083Ovwgvn/pB7eWnNVjWZ1J5W+ZrCS97WmA3EC05gEjTVGZQ1Y
+ NiU7dlEzGbHPTp1jKktXfe2gSHFwibwjGLh0RuBtoPuPqLcGtRu3VjeiAf50=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> In the impelementation of v3d_submit_cl_ioctl() there are two memory lea=
-ks.
+> If you use netlink operations directly, you can have the kernel filter
+> on various criteria and only get the socket entries you are interested in.
 
-Please avoid another typo also in this change description.
-
-
-> =E2=80=A6 If kcalloc fails to allocate memory for bin then
-> render->base should be put. Also, if v3d_job_init() fails to initialize
-> bin->base then allocated memory for bin should be released.
-
-Will an =E2=80=9Cimperative mood=E2=80=9D be more appropriate for such wor=
-dings?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?id=3D7d194c2100ad2a6dded545887d=
-02754948ca5241#n151
+Do any developers care to take another look at current software design options?
 
 
-=E2=80=A6
-> +++ b/drivers/gpu/drm/v3d/v3d_gem.c
-> @@ -557,13 +557,16 @@ v3d_submit_cl_ioctl(struct drm_device *dev, void *=
-data,
-=E2=80=A6
->  		if (ret) {
->  			v3d_job_put(&render->base);
-> +			kfree(bin);
-=E2=80=A6
+> This whole discussion has zero to do with what text format 'ss' outputs.
 
-Can it be helpful to move the added function call before the other
-in this if branch (if you prefer to avoid the addition of a jump target he=
-re)?
+Is there a need to improve the software documentation any further?
+
+Which programming interface should be used to check the receive queue
+for a single port (without retrieving more network data before)?
 
 Regards,
 Markus

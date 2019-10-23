@@ -2,116 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BCAF1E1136
-	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Oct 2019 06:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1E47E1190
+	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Oct 2019 07:27:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732792AbfJWEvJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 23 Oct 2019 00:51:09 -0400
-Received: from mail-io1-f66.google.com ([209.85.166.66]:37153 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731061AbfJWEvI (ORCPT
+        id S2389190AbfJWF1U (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 23 Oct 2019 01:27:20 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:41394 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728697AbfJWF1U (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 23 Oct 2019 00:51:08 -0400
-Received: by mail-io1-f66.google.com with SMTP id 1so11981579iou.4;
-        Tue, 22 Oct 2019 21:51:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=OKxxrxrRmQ9OEs+TDHwbhEPuOlHTRldEW91bPkMwe+Q=;
-        b=IRpEwZZlH/NAmDOc3Du/eDq/g+6Akr2uQN+kUqqLGi0wZTRTzWoKAPqu9spG3AFt5C
-         5juvxtVr6WBPWT4HaSsFXNSytOWs1BOd59LjkzyUNpWOBrwfcifGhbnB+sfIYJuXCIq1
-         1l/3l5qvC3626rlS1xRPCcTwJ9+ksmo3D3b4kcW9+Kf8x8HL60Ojp/8024pg0XDqINi+
-         VXXoKRVxuItscwoVyM8fjc8FlpWMmw+ydN4eD83AxEKSaQumjs/101MqmW9BgSMvVFbW
-         fbTb0EQHTQpxT12fe4hi3g18dPuawSTN8ZIclIeRxsy3xxiW9vNf8gTGSlVbbcb9sGCm
-         rqnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=OKxxrxrRmQ9OEs+TDHwbhEPuOlHTRldEW91bPkMwe+Q=;
-        b=Xfms6utAeQMITGKZL8+t3/y0170rCaXK2o9zewWjbuRWsSCyF9pu58pw8uIxxVXByi
-         yuBinG5CYwo8AjFXl8Em9gZ6ooSyoUmv2+e1QDq7gNZjtdVOSCZ8FUfxq2pfmefdThk9
-         btGqe0jhpNen8ykV86P74AO3ss8KbxZuoaykN3bbgVHXgtin82PU607lw+xgIwmKF2y1
-         BhBRipfVyuyfIR+9ZMB1+x7GJnOKNCeKjrLapFD4tHMPBh0Zy7oyePDcdT/h6USNxxHB
-         fNp+NGrXM3HvCf6XliS7X3E0ABBKKpTrjqGxKJILfJw1BxiuN16i5xp/jY+nEvnEskGT
-         P14w==
-X-Gm-Message-State: APjAAAVx4ycdcFK5reEhmr7SeLH4fURmDOru4vPUwqlBBOE/9bpWMCol
-        pzk/tYHostu8x1em1dUGCpkcdSk3VtZmOi467N8=
-X-Google-Smtp-Source: APXvYqzE3Bfo7kvQ7+hwzW34J5gf2Zonf08iEAJCaNyVdJIDx3jMMth3umOadUschVo/Fh/wlZsrQzPbyY+oaHCxDHs=
-X-Received: by 2002:a05:6638:632:: with SMTP id h18mr7358032jar.107.1571806266511;
- Tue, 22 Oct 2019 21:51:06 -0700 (PDT)
+        Wed, 23 Oct 2019 01:27:20 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9N5RDlI014638;
+        Wed, 23 Oct 2019 00:27:13 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1571808433;
+        bh=Ih4/uFm6sqHulM90MB4kP1Nl9YmjPSK1R8KiMD92JJw=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=IcB0MbM1BLLILAokmEkWZAYqkDRZRMYZYOjYMLK0ad12n37L4CFA/+Q+9a/w/u92V
+         refXVGfAFAbGW6uWe8CGVfQc/hZciYXOU/FMkTc4LP+LphyyD3WdQUg07Fk3OV0/Tj
+         2fuXjfRszWouDkN9eaNm/Z5eLO1vMlLItjNmtnqg=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9N5QhJD108133
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 23 Oct 2019 00:26:43 -0500
+Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 23
+ Oct 2019 00:26:43 -0500
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Wed, 23 Oct 2019 00:26:33 -0500
+Received: from [172.24.190.233] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9N5Ped0023779;
+        Wed, 23 Oct 2019 00:25:41 -0500
+Subject: Re: [PATCH] phy-mvebu-a3700-utmi: Use
+ devm_platform_ioremap_resource() in mvebu_a3700_utmi_phy_probe()
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        <kernel-janitors@vger.kernel.org>,
+        Igal Liberman <igall@marvell.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>
+CC:     LKML <linux-kernel@vger.kernel.org>
+References: <5403540b-d3de-4a29-ec84-7ce5bb8d6d9f@web.de>
+From:   Kishon Vijay Abraham I <kishon@ti.com>
+Message-ID: <5e5cfafa-ade8-6f26-9989-d949c6d5c388@ti.com>
+Date:   Wed, 23 Oct 2019 10:55:12 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <20191021201848.4231-1-navid.emamdoost@gmail.com>
- <fb5d5331-9a89-8370-1e61-396dd05f291a@web.de> <2a6cdb63-397b-280a-7379-740e8f43ddf6@xilinx.com>
-In-Reply-To: <2a6cdb63-397b-280a-7379-740e8f43ddf6@xilinx.com>
-From:   Navid Emamdoost <navid.emamdoost@gmail.com>
-Date:   Tue, 22 Oct 2019 23:50:55 -0500
-Message-ID: <CAEkB2ES=S64T9FH8bSj=muXD3hSXc3-MWEVt_0sggoTdZFQswg@mail.gmail.com>
-Subject: Re: [PATCH] clocksource/drivers: Fix memory leak in ttc_setup_clockevent
-To:     Michal Simek <michal.simek@xilinx.com>
-Cc:     Markus Elfring <Markus.Elfring@web.de>,
-        linux-arm-kernel@lists.infradead.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <5403540b-d3de-4a29-ec84-7ce5bb8d6d9f@web.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Thanks for the feedback, I updated this patch and sent v2.
-Also, I submitted a patch to fix the error handling path in
-ttc_setup_clocksource(). Here is the link to it:
-https://lore.kernel.org/patchwork/patch/1143242/
 
-On Tue, Oct 22, 2019 at 3:51 AM Michal Simek <michal.simek@xilinx.com> wrot=
-e:
->
-> On 22. 10. 19 10:26, Markus Elfring wrote:
-> >> In the impelementation of ttc_setup_clockevent() the allocated memory
-> >> for ttcce should be released if clk_notifier_register() fails.
-> >
-> > * Please avoid the copying of typos from previous change descriptions.
-> >
-> > * Under which circumstances will an =E2=80=9Cimperative mood=E2=80=9D m=
-atter for you here?
-> >   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tr=
-ee/Documentation/process/submitting-patches.rst?id=3D7d194c2100ad2a6dded545=
-887d02754948ca5241#n151
-> >
-> >
-> >> +++ b/drivers/clocksource/timer-cadence-ttc.c
-> >> @@ -424,6 +424,7 @@ static int __init ttc_setup_clockevent(struct clk =
-*clk,
-> >>                                  &ttcce->ttc.clk_rate_change_nb);
-> >>      if (err) {
-> >>              pr_warn("Unable to register clock notifier.\n");
-> >> +            kfree(ttcce);
-> >>              return err;
-> >>      }
-> >
-> > This addition looks correct.
-> > But I would prefer to move such exception handling code to the end of
-> > this function implementation so that duplicate source code will be redu=
-ced.
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/Documentation/process/coding-style.rst?id=3D7d194c2100ad2a6dded545887d0275=
-4948ca5241#n450
->
-> Just a note. Maybe you should also consider to fix this error path in
-> ttc_setup_clocksource() when notifier also can fail that there is no
-> need to continue with code execution.
->
-> Thanks,
-> Michal
+On 26/09/19 9:50 PM, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Thu, 26 Sep 2019 18:15:23 +0200
+> 
+> Simplify this function implementation by using a known wrapper function.
+> 
+> This issue was detected by using the Coccinelle software.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
+merged, thanks!
 
+-Kishon
 
---=20
-Navid.
+> ---
+>  drivers/phy/marvell/phy-mvebu-a3700-utmi.c | 9 +--------
+>  1 file changed, 1 insertion(+), 8 deletions(-)
+> 
+> diff --git a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
+> index ded900b06f5a..23bc3bf5c4c0 100644
+> --- a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
+> +++ b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
+> @@ -216,20 +216,13 @@ static int mvebu_a3700_utmi_phy_probe(struct platform_device *pdev)
+>  	struct device *dev = &pdev->dev;
+>  	struct mvebu_a3700_utmi *utmi;
+>  	struct phy_provider *provider;
+> -	struct resource *res;
+> 
+>  	utmi = devm_kzalloc(dev, sizeof(*utmi), GFP_KERNEL);
+>  	if (!utmi)
+>  		return -ENOMEM;
+> 
+>  	/* Get UTMI memory region */
+> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	if (!res) {
+> -		dev_err(dev, "Missing UTMI PHY memory resource\n");
+> -		return -ENODEV;
+> -	}
+> -
+> -	utmi->regs = devm_ioremap_resource(dev, res);
+> +	utmi->regs = devm_platform_ioremap_resource(pdev, 0);
+>  	if (IS_ERR(utmi->regs))
+>  		return PTR_ERR(utmi->regs);
+> 
+> --
+> 2.23.0
+> 

@@ -2,39 +2,39 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 57D12E1C3A
-	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Oct 2019 15:21:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63A5BE1DB7
+	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Oct 2019 16:09:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391338AbfJWNUy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 23 Oct 2019 09:20:54 -0400
-Received: from mout.web.de ([212.227.17.12]:60533 "EHLO mout.web.de"
+        id S2389316AbfJWOJV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 23 Oct 2019 10:09:21 -0400
+Received: from mout.web.de ([217.72.192.78]:51659 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732590AbfJWNUx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 23 Oct 2019 09:20:53 -0400
+        id S1730622AbfJWOJU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 23 Oct 2019 10:09:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1571836836;
-        bh=ErIr9RScqShyiJEIAF3ABEg69VIQugqYj1z3/hLTiWg=;
-        h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
-        b=C8s7W56T+rB/9N4hymgEcwoRD5OkYP/rh2AI21121Avx6QEFVYTOuo1TANQPmaIQZ
-         jwkcYQ1cekRMgfVHce0iMZMOAC5KwY/7GiOg5hpDfv+HDFVvhcayIbllnHboTZQxsz
-         A1kQqp96MjW2VeIIC9yqY4r/WEJTNEbcTtVDp/v8=
+        s=dbaedf251592; t=1571839731;
+        bh=thrBfTIZn0Xo8KD2USqAVOUR/TzBwrmlYGigvc+aavk=;
+        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+        b=jsBUv3p0ifz/k1uOqyLa5FdgqqKk0TYY96bt9qeRohBStDHfunqpcgeD7+n4A3BKl
+         4HUZO6pYrgkmch3rV63hT1+GFF+XzzvFIAPyI35s8NEbRD+LJ+CV0UgnGYOL0pEa3r
+         Xz2G21BuXrdg4R/XB0vxAOr0SCBvl7ZzZ7kxpfaQ=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.135.140.249]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LzKEH-1hspNN01C5-014SNL; Wed, 23
- Oct 2019 15:20:36 +0200
-To:     zhongshiqi <zhong.shiqi@zte.com.cn>, cocci@systeme.lip6.fr
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LxOHm-1hvIvh05G6-016vLz; Wed, 23
+ Oct 2019 16:08:51 +0200
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
         Cheng Shengyu <cheng.shengyu@zte.com.cn>,
         Gilles Muller <Gilles.Muller@lip6.fr>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
         Michal Marek <michal.lkml@markovi.net>,
         Nicolas Palix <nicolas.palix@imag.fr>,
         Yi Wang <wang.yi59@zte.com.cn>,
-        Xue Zhihong <xue.zhihong@zte.com.cn>
-References: <1571819563-18118-1-git-send-email-zhong.shiqi@zte.com.cn>
+        Xue Zhihong <xue.zhihong@zte.com.cn>,
+        zhongshiqi <zhong.shiqi@zte.com.cn>
+References: <alpine.DEB.2.21.1910231054250.2335@hadrien>
 Subject: Re: [PATCH] coccicheck: Configuring COCCI parameter for supporting a
  directory search
+To:     Julia Lawall <julia.lawall@lip6.fr>, cocci@systeme.lip6.fr
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -79,56 +79,66 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <6cab41a2-b775-7127-9d71-9b08f27111c3@web.de>
-Date:   Wed, 23 Oct 2019 15:20:32 +0200
+Message-ID: <2dc38508-b7af-b5bf-2829-52c75514e499@web.de>
+Date:   Wed, 23 Oct 2019 16:08:45 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.2
 MIME-Version: 1.0
-In-Reply-To: <1571819563-18118-1-git-send-email-zhong.shiqi@zte.com.cn>
+In-Reply-To: <alpine.DEB.2.21.1910231054250.2335@hadrien>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:an81rpUiMJMcO3jfixL+FL5vUut7susHPFbN4OCI7l56++IkQn1
- HHosAZ+vJHFkpBCuUby0LDJHgig2rcE2VkDO95ncTy/X2CAb+lbVi6a3iA3jhdOpl2R4iOT
- IlE2p0cnKwbDZphkWf+WZhg8qAQdwoEMuVrd1UsN4BEhoVdGCqyi1egiPS+ABgXvqDFcsHs
- GMh3//u3VRoo5B4Ou8MMQ==
+X-Provags-ID: V03:K1:3MsvW4J/EgMNOu/jrpLkCHoMI0E63eNLqvDaSmqdhmijs3FY0jF
+ TXq9FuAgZYSLmpfs9gnVBAxzXe1gjQ0OZdpvwLCRz0mm6vKzb/bv14q3vCIu/6fKl3ISRTZ
+ 3PCNoWh4NeKjyB27HCZbGD0n8/6Nf7MQQ8KtPvV4OdIQJwCGGwxrONB7HGDng8wbjpO5Q+0
+ PjHt51Z0zE+X499KHIvHQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:dHeIP7dgmMU=:vhyq7teClmIrPqNX+fB9uX
- NswgIPvdf9clNZVoTWxu0ln8yoEqsaKRGFNewXWEEKHXlDtzRjrDSW8AxWz1yt+M2VpRByDgK
- D0NbBJllMvqnZEVVQu8/5NcIjG070ZDF5pW5tSDTjNPU5OKUcdOqQ3Yv7RW2FYybzBz4fsZmg
- KXsIz/sypAj71BOhwg69vg+1pKImryTqO0srllZv3ar6OKYhaG0m9yVOPDWeBImH2qN72Zrnq
- YbLZ+OqlmbyQjyTZs52AOxTM4kPCaAgZ0KoBZtUeQqg4cdHPkC35tecoF/v38SK5ElzOW4Esd
- +oI1N7a+ZeP63dlMPH5tOoNFsBQIcLJEwz7ZzY3AOu11kbL1JZOZeIlm+vXsjKy34qKq/bZYG
- fW/tIVXPBsemNo3D5fQC5P8G27w1BrZ7VPoh61L6+xwKivXYHgX0UTYv/tYrJfAoxVV9d2c29
- crcSlls5C4TF1vITqGcIWbBDInzuFcIWuYeY8NBttx834znCsXR1XVkGMI56r/eLzE6qUWQIF
- DmHYU5IEvDRS1EYkkDl0HJARz7oruR/00Ff4FcqzHfhYKYooL/+GLB+Qe29Slc/fVt2gajOJA
- LTNid3u6F5WHiogrLBVyl49J5ZhwBy3efrSZTsLqXiDasCHDaqBkVoTmXvFfZaOBG/FgtHQws
- PriIL8yMtftNg63S7O5R5fp0j2upLR4e/sB2aHj8UZDtRgEniiiYEiQqP7qloF4uY0v6pPoFG
- NS//ttT5+Ig5R+wp1a8DVVKpd0MnY1CYJMhG/ew1RZbilYCZqn3tq1f89zj1QJIvXOD36Yi2i
- 0+xGnqY5L5Qb+JjuyLLxQDZVCtBl5b7OsiTRX4qUlDqmz2CMuy4nDdNh9rAsOfsMoFtGkhPGJ
- 7YVTp9R3SyZr4sSrI2Q57KAnQfQyqVkMyGZm1nC0D1nOwydJk2z/TL985k0Q05V1ICt+qhiNj
- kIZBgWLcaHk0EkljiBj7kE3dO5FQlGCxE+uvXcZmBCuSPuhq2n3dBlDRVYQB/ZJDZ5AXNBbac
- sDo26Wz+4RIW+1gFEficubMYsZq+ilmGaeCFIwer5ojZlkhNziqWo9VGG8oFHKvqDtzXxGA9N
- 4A8QS3TaQo13Vy/1gDCD0hiEDkOL50nmo7czphZejI0Uvn6af7FW8XZXGXMyu3qvhuxXKPrUi
- ZAruB0OkYjQ/OjXA7aWcFFqPK4tQLBlN70EZCxqhLgNtZf8m1bWstbV21gMQ1MYST/4B8zGTO
- E8sJWpHI2tAA2beuzPBM5sp3ymhSZlNLsxbrT+vx+bTfcQEUz3QBbEKa0Txg=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:7VG5PPrXF3c=:ZQMZee/t9aY2ckhZHUZn2q
+ nXhLj5HW1r5Zp0K9fiw4xMzE1S0KvNn4s4gDUpcvx1H2dLw1NVvZ9YfvnNDCluNqdq6Vr28Zu
+ LCtunZsZFqLp9PgEP+XS3RwbT2UcKCYxSIQ0eYhY9Ltxp4g9s5dSf6oLcpO+CV0WZSHCNZsam
+ 90eOIFzd+HQnOxpUD/5Z2B1Gce+uvelRcf0/181kjo3nIQlgiFF5sCixh55zsMgvbZ7LSty5w
+ J9CyczcWxb+EIe3ldEJLOXnSEI/3iRhKbyBgMqTJk3g+HghMIwsHy+wV+O8MRd6Vyiw6vBlrD
+ j1+0xNCQsUtsovVIN5seem37Z0XuIp+t08iU15YBMkJALQf8wWN9Yw8JFle8udo9R1aGT/B7N
+ UvhRy9nAGvSvVxfn65BL79SdNXxspsdOFzvEWXmCDwSG6+7pg8be+/jH29q5arVzXZKCMR5wE
+ FCVMgVSAn77bO6XqbQzRfzJ+4f8uS/lVRs1aQru1q+9E1s0QaUImoD3oswL8fYpm60E/1Kv4C
+ vtqazmdJUpZfq1JfOgcciW1vbDO1si/pKJ23xK6w8BIrUVH2D8GEqUElG5XuRIePIQxacckv1
+ raiqH88+klkj6FslnRwAdji/psy6N0GFYsjTNa5l30G3ygyfOchNDpx8bn5oufKU4FJWhNqrH
+ azihxe6jPb5M4IQCSeJeIulsdnFYbNemxEm+hTZCzGQWQPifAHKfBHZaWviclI8/IM0wpl7fN
+ zaz54Brbe/AV9il+ztKf3qqJriIWyrU+rKl2+ZRn0YHs77vlENfq+rxqQjOZWPtxv/5rQAWgT
+ MT1JMHiSRwD29ZZtwRNaNC646WWYHEJe2HeC+b+Rlcqf+8BZDTOFhg+lRWYhGNnQ232CxPFbB
+ detSGCg6Drs7+3oucoVhHqplGHq3DM2hHTY9G04oPsw+kwAOLjT1dLh7FQ4PMOH1BfRaUn/SX
+ oFB5W0pFOnQkG0yT3+gc78e91vuj3aSmbF52aHI127YnLs4KxyeeFPeIJzzt4jEOcertsnoUk
+ vjk0m50MoNOhaHK6HjTUEG9R2JNiEI2eSuB4vhLDc59JSrqeb+Sz1uvs5AF69AdBBQ/Gc+6i+
+ SK3DQiPASDQTiJLJy++3k32/DwONF+Axw0acfU1bEU5U9DPZfCKkBOlv6N7qMXtrrE+Ct8tF+
+ r1uHtjgB3+EBOsBwn046h6nr+t2SLjTzrp/h9Tqeyj84iaHCTZRCrxpyid5EC9OOtXqefZgDI
+ IXVDJLQQOTPixnvSf0OcnL4+Jdq5ipYn5ZqZvJh+i1bAwFVTmS9CLjvwOOkY=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> This patch puts a modification in scripts/coccicheck which supports user=
-s
-> in configuring COCCI parameter as a directory to traverse files in direc=
-tory.
+> What is the relation between the last two if branches?
 
-* I suggest to improve this change description according to a recommended
-  =E2=80=9Cimperative mood=E2=80=9D.
-  https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
-Documentation/process/submitting-patches.rst?id=3D13b86bc4cd648eae69fdcf3d=
-04b2750c76350053#n151
+A small addition is proposed for this bash script.
 
-* Please fix your patch subject.
+
+> If the first one fails, does that mean that $COCCI has no definition?
+
+No. - It was checked if an empty sting was passed.
+A file system check is tried then to determine if a valid directory was sp=
+ecified.
+This parameter could be used then for the specification of a specific star=
+t
+directory for calling the tool =E2=80=9Cfind=E2=80=9D, couldn't it?
+
+
+> In that case, is the final else useful?
+
+Hopefully, yes.
+
+Which software behaviour do you expect for a string which would not
+be recognised as an usable directory in a specific moment
+during script execution?
 
 Regards,
 Markus

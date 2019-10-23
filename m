@@ -2,30 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1924E190F
-	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Oct 2019 13:28:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A463CE1949
+	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Oct 2019 13:48:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404830AbfJWL2Q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 23 Oct 2019 07:28:16 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:58646 "EHLO
+        id S2404979AbfJWLsd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 23 Oct 2019 07:48:33 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:59025 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390623AbfJWL2Q (ORCPT
+        with ESMTP id S2404655AbfJWLsc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 23 Oct 2019 07:28:16 -0400
+        Wed, 23 Oct 2019 07:48:32 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iNEoE-0002xW-3g; Wed, 23 Oct 2019 11:28:10 +0000
+        id 1iNF7o-000451-Tl; Wed, 23 Oct 2019 11:48:24 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Maxime Ripard <mripard@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org
+To:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Vic Wu <vic.wu@mediatek.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-mediatek@lists.infradead.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] clk: sunxi-ng: a80: fix the zero'ing of bits 16 and 18
-Date:   Wed, 23 Oct 2019 12:28:09 +0100
-Message-Id: <20191023112809.27595-1-colin.king@canonical.com>
+Subject: [PATCH] crypto: mediatek: remove redundant bitwise-or
+Date:   Wed, 23 Oct 2019 12:48:24 +0100
+Message-Id: <20191023114824.30509-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,31 +40,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The zero'ing of bits 16 and 18 is incorrect. Currently the code
-is masking with the bitwise-and of BIT(16) & BIT(18) which is
-0, so the updated value for val is always zero. Fix this by bitwise
-and-ing value with the correct mask that will zero bits 16 and 18.
+Bitwise-or'ing 0xffffffff with the u32 variable ctr is the same result
+as assigning the value to ctr.  Remove the redundant bitwise-or and
+just use an assignment.
 
-Addresses-Coverity: (" Suspicious &= or |= constant expression")
-Fixes: b8eb71dcdd08 ("clk: sunxi-ng: Add A80 CCU")
+Addresses-Coverity: ("Suspicious &= or |= constant expression")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/clk/sunxi-ng/ccu-sun9i-a80.c | 2 +-
+ drivers/crypto/mediatek/mtk-aes.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/sunxi-ng/ccu-sun9i-a80.c b/drivers/clk/sunxi-ng/ccu-sun9i-a80.c
-index dcac1391767f..ef29582676f6 100644
---- a/drivers/clk/sunxi-ng/ccu-sun9i-a80.c
-+++ b/drivers/clk/sunxi-ng/ccu-sun9i-a80.c
-@@ -1224,7 +1224,7 @@ static int sun9i_a80_ccu_probe(struct platform_device *pdev)
- 
- 	/* Enforce d1 = 0, d2 = 0 for Audio PLL */
- 	val = readl(reg + SUN9I_A80_PLL_AUDIO_REG);
--	val &= (BIT(16) & BIT(18));
-+	val &= ~(BIT(16) | BIT(18));
- 	writel(val, reg + SUN9I_A80_PLL_AUDIO_REG);
- 
- 	/* Enforce P = 1 for both CPU cluster PLLs */
+diff --git a/drivers/crypto/mediatek/mtk-aes.c b/drivers/crypto/mediatek/mtk-aes.c
+index 90c9644fb8a8..d43410259113 100644
+--- a/drivers/crypto/mediatek/mtk-aes.c
++++ b/drivers/crypto/mediatek/mtk-aes.c
+@@ -591,7 +591,7 @@ static int mtk_aes_ctr_transfer(struct mtk_cryp *cryp, struct mtk_aes_rec *aes)
+ 	start = ctr;
+ 	end = start + blocks - 1;
+ 	if (end < start) {
+-		ctr |= 0xffffffff;
++		ctr = 0xffffffff;
+ 		datalen = AES_BLOCK_SIZE * -start;
+ 		fragmented = true;
+ 	}
 -- 
 2.20.1
 

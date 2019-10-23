@@ -2,67 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A463CE1949
-	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Oct 2019 13:48:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55A51E1A70
+	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Oct 2019 14:33:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404979AbfJWLsd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 23 Oct 2019 07:48:33 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59025 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404655AbfJWLsc (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 23 Oct 2019 07:48:32 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iNF7o-000451-Tl; Wed, 23 Oct 2019 11:48:24 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Vic Wu <vic.wu@mediatek.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        linux-crypto@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] crypto: mediatek: remove redundant bitwise-or
-Date:   Wed, 23 Oct 2019 12:48:24 +0100
-Message-Id: <20191023114824.30509-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S2405354AbfJWMck (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 23 Oct 2019 08:32:40 -0400
+Received: from [217.140.110.172] ([217.140.110.172]:50392 "EHLO foss.arm.com"
+        rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org with ESMTP
+        id S2405347AbfJWMck (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 23 Oct 2019 08:32:40 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AC3BC497;
+        Wed, 23 Oct 2019 05:32:17 -0700 (PDT)
+Received: from arm.com (e112269-lin.cambridge.arm.com [10.1.194.43])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3CC263F6C4;
+        Wed, 23 Oct 2019 05:32:16 -0700 (PDT)
+Date:   Wed, 23 Oct 2019 13:32:10 +0100
+From:   Steven Price <steven.price@arm.com>
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     "maz@kernel.org" <maz@kernel.org>,
+        James Morse <James.Morse@arm.com>,
+        "julien.thierry.kdev@gmail.com" <julien.thierry.kdev@gmail.com>,
+        Suzuki Poulose <Suzuki.Poulose@arm.com>,
+        Catalin Marinas <Catalin.Marinas@arm.com>,
+        "will@kernel.org" <will@kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "kvmarm@lists.cs.columbia.edu" <kvmarm@lists.cs.columbia.edu>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] KVM: arm64: Select SCHED_INFO before SCHEDSTATS
+Message-ID: <20191023123210.GA40238@arm.com>
+References: <20191023032254.159510-1-maowenan@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191023032254.159510-1-maowenan@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Wed, Oct 23, 2019 at 04:22:54AM +0100, Mao Wenan wrote:
+> If KVM=y, it will select SCHEDSTATS, below erros can
+> be seen:
+> kernel/sched/stats.h: In function rq_sched_info_arrive:
+> kernel/sched/stats.h:12:20: error: struct sched_info
+> has no member named run_delay
+>    rq->rq_sched_info.run_delay += delta;
+>                     ^
+> kernel/sched/stats.h:13:20: error: struct sched_info
+> has no member named pcount
+>    rq->rq_sched_info.pcount++;
+>                     ^
+> kernel/sched/stats.h: In function rq_sched_info_dequeued:
+> kernel/sched/stats.h:31:20: error: struct sched_info has
+> no member named run_delay
+>    rq->rq_sched_info.run_delay += delta;
+> 
+> These are because CONFIG_SCHED_INFO is not set, This patch 
+> is to select SCHED_INFO before SCHEDSTATS.
 
-Bitwise-or'ing 0xffffffff with the u32 variable ctr is the same result
-as assigning the value to ctr.  Remove the redundant bitwise-or and
-just use an assignment.
+It looks like I didn't spot this because when DEBUG_KERNEL is enabled
+then KVM selects SCHEDSTATS, which selects SCHED_INFO. Thanks for
+spotting this.
 
-Addresses-Coverity: ("Suspicious &= or |= constant expression")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/crypto/mediatek/mtk-aes.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> Fixes: 8564d6372a7d ("KVM: arm64: Support stolen time reporting via shared structure")
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
 
-diff --git a/drivers/crypto/mediatek/mtk-aes.c b/drivers/crypto/mediatek/mtk-aes.c
-index 90c9644fb8a8..d43410259113 100644
---- a/drivers/crypto/mediatek/mtk-aes.c
-+++ b/drivers/crypto/mediatek/mtk-aes.c
-@@ -591,7 +591,7 @@ static int mtk_aes_ctr_transfer(struct mtk_cryp *cryp, struct mtk_aes_rec *aes)
- 	start = ctr;
- 	end = start + blocks - 1;
- 	if (end < start) {
--		ctr |= 0xffffffff;
-+		ctr = 0xffffffff;
- 		datalen = AES_BLOCK_SIZE * -start;
- 		fragmented = true;
- 	}
--- 
-2.20.1
+Reviewed-by: Steven Price <steven.price@arm.com>
 
+> ---
+>  arch/arm64/kvm/Kconfig | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
+> index d8b88e4..3c46eac 100644
+> --- a/arch/arm64/kvm/Kconfig
+> +++ b/arch/arm64/kvm/Kconfig
+> @@ -39,6 +39,7 @@ config KVM
+>  	select IRQ_BYPASS_MANAGER
+>  	select HAVE_KVM_IRQ_BYPASS
+>  	select HAVE_KVM_VCPU_RUN_PID_CHANGE
+> +	select SCHED_INFO
+>  	select SCHEDSTATS
+>  	---help---
+>  	  Support hosting virtualized guest machines.
+> -- 
+> 2.7.4
+> 

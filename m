@@ -2,110 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1E47E1190
-	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Oct 2019 07:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAC36E11FC
+	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Oct 2019 08:18:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389190AbfJWF1U (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 23 Oct 2019 01:27:20 -0400
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:41394 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728697AbfJWF1U (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 23 Oct 2019 01:27:20 -0400
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9N5RDlI014638;
-        Wed, 23 Oct 2019 00:27:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1571808433;
-        bh=Ih4/uFm6sqHulM90MB4kP1Nl9YmjPSK1R8KiMD92JJw=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=IcB0MbM1BLLILAokmEkWZAYqkDRZRMYZYOjYMLK0ad12n37L4CFA/+Q+9a/w/u92V
-         refXVGfAFAbGW6uWe8CGVfQc/hZciYXOU/FMkTc4LP+LphyyD3WdQUg07Fk3OV0/Tj
-         2fuXjfRszWouDkN9eaNm/Z5eLO1vMlLItjNmtnqg=
-Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9N5QhJD108133
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 23 Oct 2019 00:26:43 -0500
-Received: from DLEE109.ent.ti.com (157.170.170.41) by DLEE100.ent.ti.com
- (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 23
- Oct 2019 00:26:43 -0500
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE109.ent.ti.com
- (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
- Frontend Transport; Wed, 23 Oct 2019 00:26:33 -0500
-Received: from [172.24.190.233] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9N5Ped0023779;
-        Wed, 23 Oct 2019 00:25:41 -0500
-Subject: Re: [PATCH] phy-mvebu-a3700-utmi: Use
- devm_platform_ioremap_resource() in mvebu_a3700_utmi_phy_probe()
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        <kernel-janitors@vger.kernel.org>,
-        Igal Liberman <igall@marvell.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>
-CC:     LKML <linux-kernel@vger.kernel.org>
-References: <5403540b-d3de-4a29-ec84-7ce5bb8d6d9f@web.de>
-From:   Kishon Vijay Abraham I <kishon@ti.com>
-Message-ID: <5e5cfafa-ade8-6f26-9989-d949c6d5c388@ti.com>
-Date:   Wed, 23 Oct 2019 10:55:12 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1729081AbfJWGSo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 23 Oct 2019 02:18:44 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:4706 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725947AbfJWGSo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 23 Oct 2019 02:18:44 -0400
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 7DE2C461283CA9B745CD;
+        Wed, 23 Oct 2019 14:18:40 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 23 Oct 2019 14:18:31 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>,
+        "Julien Thierry" <julien.thierry.kdev@gmail.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <kvmarm@lists.cs.columbia.edu>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] KVM: arm/arm64: Remove duplicated include from arm.c
+Date:   Wed, 23 Oct 2019 06:18:31 +0000
+Message-ID: <20191023061831.196298-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <5403540b-d3de-4a29-ec84-7ce5bb8d6d9f@web.de>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Remove duplicated include.
 
-On 26/09/19 9:50 PM, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Thu, 26 Sep 2019 18:15:23 +0200
-> 
-> Simplify this function implementation by using a known wrapper function.
-> 
-> This issue was detected by using the Coccinelle software.
-> 
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ virt/kvm/arm/arm.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-merged, thanks!
+diff --git a/virt/kvm/arm/arm.c b/virt/kvm/arm/arm.c
+index c11d6613f4ee..db508786ad6b 100644
+--- a/virt/kvm/arm/arm.c
++++ b/virt/kvm/arm/arm.c
+@@ -41,8 +41,6 @@
+ #include <asm/sections.h>
+ 
+ #include <kvm/arm_hypercalls.h>
+-#include <kvm/arm_pmu.h>
+-#include <kvm/arm_psci.h>
+ 
+ #ifdef REQUIRES_VIRT
+ __asm__(".arch_extension	virt");
 
--Kishon
 
-> ---
->  drivers/phy/marvell/phy-mvebu-a3700-utmi.c | 9 +--------
->  1 file changed, 1 insertion(+), 8 deletions(-)
-> 
-> diff --git a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
-> index ded900b06f5a..23bc3bf5c4c0 100644
-> --- a/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
-> +++ b/drivers/phy/marvell/phy-mvebu-a3700-utmi.c
-> @@ -216,20 +216,13 @@ static int mvebu_a3700_utmi_phy_probe(struct platform_device *pdev)
->  	struct device *dev = &pdev->dev;
->  	struct mvebu_a3700_utmi *utmi;
->  	struct phy_provider *provider;
-> -	struct resource *res;
-> 
->  	utmi = devm_kzalloc(dev, sizeof(*utmi), GFP_KERNEL);
->  	if (!utmi)
->  		return -ENOMEM;
-> 
->  	/* Get UTMI memory region */
-> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> -	if (!res) {
-> -		dev_err(dev, "Missing UTMI PHY memory resource\n");
-> -		return -ENODEV;
-> -	}
-> -
-> -	utmi->regs = devm_ioremap_resource(dev, res);
-> +	utmi->regs = devm_platform_ioremap_resource(pdev, 0);
->  	if (IS_ERR(utmi->regs))
->  		return PTR_ERR(utmi->regs);
-> 
-> --
-> 2.23.0
-> 
+
+
+

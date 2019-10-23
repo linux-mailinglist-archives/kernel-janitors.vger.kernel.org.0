@@ -2,37 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3F53E1301
-	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Oct 2019 09:24:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8CAD8E1386
+	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Oct 2019 10:00:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389633AbfJWHYg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 23 Oct 2019 03:24:36 -0400
-Received: from mout.web.de ([212.227.17.12]:38857 "EHLO mout.web.de"
+        id S2390035AbfJWIAq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 23 Oct 2019 04:00:46 -0400
+Received: from mout.web.de ([212.227.17.12]:42675 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389118AbfJWHYg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 23 Oct 2019 03:24:36 -0400
+        id S1732328AbfJWIAq (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 23 Oct 2019 04:00:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1571815448;
-        bh=skmrCU4cvWHof6AkZwFbDtYP1ZNwTFh6o6IDe79PtSU=;
-        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=p95C1UonUPcUS39Pk/WHerzB+WDj/RmPhsYA+pVoQN9nMA5g8bqpmGA/rs+gcWoLx
-         ryXasS++WsQXXxZ67QhyAFTLDMCwuLa7iEIyLL567YPHf2a5LGN/+jAD6fb7U1L1Zd
-         s9L+warx//TfmZ4DkMaessywKC36eD09Qkre5Dv4=
+        s=dbaedf251592; t=1571817626;
+        bh=zXQECy0cqr175PWY8oJwBGRomnEC4rcuFjHy6KY29NI=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=hR23qBeeFDwbHSjrYuUd6lU22i09oI4et1b9z/wRXUaq76Vh4yBF0UQWiKZkXWe6M
+         88r9NkZnHjWIYYHk+UyNldFAjGEBbyoqSoXjlHWTNCU4VI9oq2qLCwnmgyBcoX3M//
+         g8FTjAoiq5cblwX9Ylyn0bEYul6GRI9O1jDIqRBI=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.135.140.249]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MPHC8-1iInHM0RAu-004SpJ; Wed, 23
- Oct 2019 09:24:08 +0200
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MSJKJ-1iZ6kk36ct-00TUvy; Wed, 23
+ Oct 2019 10:00:25 +0200
+Subject: Re: [PATCH v2] clocksource/drivers: Fix memory leak in
+ ttc_setup_clockevent
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        linux-arm-kernel@lists.infradead.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Michal Simek <michal.simek@xilinx.com>,
         Thomas Gleixner <tglx@linutronix.de>
-References: <20191023044737.2824-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] clocksource/drivers: Fix error handling in
- ttc_setup_clocksource
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-arm-kernel@lists.infradead.org
+References: <2a6cdb63-397b-280a-7379-740e8f43ddf6@xilinx.com>
+ <20191023043139.31183-1-navid.emamdoost@gmail.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -77,62 +78,67 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <2cd566ee-0467-1e06-98dd-aacb3ca42e76@web.de>
-Date:   Wed, 23 Oct 2019 09:24:00 +0200
+Message-ID: <3785f6cf-e8ea-9cd8-80b3-e88b2c4d085f@web.de>
+Date:   Wed, 23 Oct 2019 10:00:24 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.2
 MIME-Version: 1.0
-In-Reply-To: <20191023044737.2824-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20191023043139.31183-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:9gF365o0UcilwO+pK5RggT1crT4SSoxmqNc/+KoSNeEL/AgGuPK
- 9bV5/6Pym0AbAidK5f1Q0ukKa1QmBh2RTA60dHhmIoh+xJyN9gtVKtQ2IQ1wcxbVEhJF6zm
- gmSqgMt5sVMxC3SLKXVWQ6SX25DApyWmLR4Vchp4fk3/j1nUXeqMxqn6nepqc+yQwF9nQ9Z
- WfU0c22/r9Zgh6xe3UCdA==
+X-Provags-ID: V03:K1:ZwerJEF5fdwavfNHN7miW3T66Gyo/LoKvX/R+eV0vTMGSbt94nI
+ 9d8fFadakbGcAV02nuJLvo5tUt1Vw1gIpodcLPaUGV4F/EZnTerEjFBzMPWm5kWwUPeII1R
+ SgErAIePGhu8uqSP/j61I/y9sPqvHQU9cSHY3o1pWtPiB6MosXw7hu7cgTZ6LqMwBCSlQv4
+ yg9Z0gezFhaQ+1Ew/RKEw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:KH10sGuqIuQ=:4PaQIEJRAGAg0EAOy5bXly
- axni38kGNM7wHEEgp7Em+n8OsvnItmOQ+zkT+Wgmyhn4U/qLGay2+kHGCTFuSQCdN7r8hcWq8
- ZrsVMR3on83PmJ8lLclXi27JqcAxSF6j9uDn24GZIIFI8GXtZHzxU7yApk6KjLQp8t2znUWNg
- 6rwMholuJwBLX77Iy5eKZPFwW3C0xcAwP4/6/yj1b2VotivK/p2TTQueLP+6C0eieaFDBEf4J
- 3WrjDRzctOF7q+MzGV8Y6z6wLgDY03f26rQqHBxdIXZvNOEktlFVE+yRStSNrcZn7j3g1Dn2M
- 1usMZ7BuV7w0xGbu2mHUL5UcZAiHnXUG4o5cKcMcDg/2QSaTh3LX0tDjrSbx50s6968XGhCmx
- NSbxLDCGeTCwVQmXnv2zmVEkhNc8la7XXCoyRefFumXrFtetY9DkAIQgD1YxtyD23n1GYZEq2
- Pgg+mCDdGVY9EOjUjPQGcHzvfwZW3h7Aaq2+ZukeXWC4mTOfDYfwKHNyj5G4iTCQEhhO5bo/e
- IqJBiQAHHXVObU4BQjI3oXZMHnQp+BNaiA6KyTZ5lrQ//wQkCLHo2UQl1DdQtsfxOT0FeicHh
- gE2DQoRRRUr/VhBfZfraSB4t07A82JZda6/cStd+ctiDYYi01nXH+aiPb+42J7Z/CtouczJMq
- X+pX4RwkTIiaB3TE99kVk5YX+JCLwSjibo7oam+UkNM9CNG/yWSrII4C6xo4d6jPh9ZeAZmgU
- +KIY7FwyAbZrL7G/lf+Cmd/4MLsVNChJ2cDOMbU7ID1hVyk7u+l3w3KxDGgGNo/TSeXQfotgG
- jJpZyJJrPpZWimXB11qJ6h7AYaPbpe7KIwzYlc3GlXu1gUlF4ONhg+g5stYb4kjGuwL9toROF
- 6zTKiY+KnR7qVvKbMZyPfayAyqSTrTPSGYVY2eT6bixHf79zyiQEl8VpXtnXJES51UiSXdckB
- czrH4OndWri+tmxE/aQXRuWgg8eK9zMnLNSIOH/MKHpCHlLxGtkEAVe9Xnz91O3gWSIjdJ4yB
- LM6yrHqgS3VyxcU0uoIUgu/TWmOXZBfsV4hF8hSyMBwoV8iwekZnhvp7DpsB9YVNnMLQqBcl3
- r9g278CxRiQTqXUnRx0sfPtE8DvKAWcaHvh50eaj9NyVQIi6HA3g8Xa6B4AXRy53lqhxaB93W
- iWPEnNeVYSG9RQIE0dp+NuTJtyMu0bxZPWTIXV+6GdvYgaKSIDI9SOlKv2FXnXORgw1g2LtP1
- zga2v0kz2uyw541cqBlcmYFL0Ev3efvRqwc8q93cjCCglPupXukAXXIzM+7E=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:/aHY+2Rxzm8=:JWBqbgiD/urYdDE5XI3aGT
+ FOostkgS7BmjqbtGTAbskQyweSLyKYVqu2PSbaSOG4D8jf5O1Z2lmzyFFNB/WUGzskAdNA3c7
+ pUXlj3jeb8GOYKbadQktWrT6BPardOhAcapyxwhdoA2aBGFHe5UQ0zMajHrpcXC2Du1fxmabq
+ FHoAFSonSZe3Lw0JKttFItffrw1b6nAk/qcZky6CdZmehMCucMZ3aK1K4FtboC+N5nVFXauWC
+ MrWw3blW4pKgT7wSo2xNG1HAqKxlBAlVBbq3ctvMo01+RZ2qqBqrNkPaKvBJCU9IrwxprVnKa
+ toLSJQFP3deibMt1l7ckLchVQL1KY1KdYvep0pTOAJhj9/3SLQBX31ohLa4xGfsBv0KD520UP
+ z4fcrU6757g0VFucDr2X8maHS7ffZHlCgKT6cexQD7xFrAVRN+rT1K+Cc2IM5008RWejVlGb5
+ /sDp7qyPOye9Grk5r8ezLyNxwYPLNlhj/nfu1VYiX8vqFACzMMjwM1vr4kHjHd2i8tvdl4rWA
+ f1s0CdjlPRMX4ng2GcqWCj1SRui86U9/UPE4FxFRaEURM0z7IBox++4B3U7nSkezCgHPwDCTl
+ Chw1KCmDaGl/+vA8uEfSQH9LqyhHteC2Fgd2PABFNWLO+bQLbS2LiiyXTpE5cx816ztRkipXw
+ BnGcxsIc9ChcvN8Xl0HXemLQW/5yLcrhXQx3MoFYyVndeGVe1rPzm7g7HzkLINQB34A5QG1M1
+ G6YOXeSnxapa9AY34cVe+Xzei9btQsMJ7PfbwYeANSwjfB2lAFWbU+OMfEIMq3ZBUZE4NvVGo
+ /ixiVbkxcjhObta6c+Pl9Oc4b05vEVidMkWWbBqx3mj/oONchea9AUbCKZau446fLY1IJoWeS
+ HILtMJ/ycs8pJ68A6AzU1VAK2crqMbWQaZWpy2V5SFMThWOF+WmKSkIeSRbdeRzHkSdz7EeTX
+ IfVYud3omC9Yb23qCa5vAt4EbzGGoBgzWb+XaceEW3MDiDLZxOSdgmDfpjUth2AchZOm9bKZr
+ 5oQGEsY4tr4vnfdDLZSeM1Pn1+MWbH4fI2J7bMNs9nM8GoHa+dKl8Na8R6UED/ZYrilGAyTfG
+ qcwctgwqK2A+bX6fwOTQ92echEHVpLZ7DEdPSvKUbds1yRZeAW6Aa0g2Iho63zWqudDd57cU3
+ OQxI6SOk2/+/wroWf8QOjvJ4+ea6+YDnbHHmuKlG/r5FUIz2wCeGpwF50PjS3dZ3RReeDA2G1
+ 6hE+q7GPzOaYdcTptIA4h7xww9Pf29Q8UF6x7FrV6OceE3elNOCPXeUDRLCg=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> In the implementation of ttc_setup_clocksource() when
-> clk_notifier_register() fails the execution should go to error handling.
-> Additionally, to avoid memory leak the allocated memory for ttccs should
-> be released, too.
+> In the implementation of ttc_setup_clockevent() release the allocated
+> memory for ttcce if clk_notifier_register() fails.
 
 I got other wording preferences. Thus I imagine that such a change
 description can still be improved another bit.
-
-How do you think about to omit the word =E2=80=9Cshould=E2=80=9D for descr=
-ibing
-the previous software situation?
-
-
-> So, goto error handling to release the memory and return.
-
 Would you like to express the addition of a jump target (according to
 the Linux coding style) for the completion of desired exception handling
 in a different way?
+
+
+=E2=80=A6
+> +++ b/drivers/clocksource/timer-cadence-ttc.c
+=E2=80=A6
+> @@ -453,15 +451,18 @@ static int __init ttc_setup_clockevent(struct clk =
+*clk,
+=E2=80=A6
+> +release_ttcce:
+> +
+> +	kfree(ttcce);
+=E2=80=A6
+
+I would prefer that a blank line will not be added directly after such a l=
+abel.
 
 Regards,
 Markus

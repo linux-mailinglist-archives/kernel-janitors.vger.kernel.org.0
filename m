@@ -2,76 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8AE1E120B
-	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Oct 2019 08:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6464BE1222
+	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Oct 2019 08:29:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730146AbfJWGYG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 23 Oct 2019 02:24:06 -0400
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:36345 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725796AbfJWGYG (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 23 Oct 2019 02:24:06 -0400
-Received: by mail-qk1-f196.google.com with SMTP id y189so18789286qkc.3;
-        Tue, 22 Oct 2019 23:24:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jms.id.au; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Yi1p/5AgQUValFkbegnxonQlGe9ds008uEI8GJ+OXbo=;
-        b=AuCfw9OIu+7nH6ya75fRfE9wSSXOEJme4h+b4Jl8lqE3QhpBP0wyip4SbHdD89k+dU
-         YXkDowI6+oNJdoRgFSF8ON+KH+nGnv9PS7lTmPjLzsl0n3+c81FqncBaSpb91bkTBQeu
-         W7CouiNjm3HxMmcdVYt1E1lY3fcVggMLerrJk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Yi1p/5AgQUValFkbegnxonQlGe9ds008uEI8GJ+OXbo=;
-        b=jQMCkLOGGe61IK461adncOqwHnapsqH5QxTUenhAZ0csTIpUfM8cCqgVri+K9lpzKY
-         t8X9aQEroYVOuXUNZnAJ7vYUspbAo8XMRnM2ojF9AUadiljHCGb6S/OK5kDTtJNVn30E
-         C5SHhHfO1hJpbfQSn18PbP5qpHkzdOmlfGL0jrvPOYGClT+zs6Qe0KV75yZIJM98C1HK
-         2M0DrlDC6RYyS5P3k0gZbnLOG1THXD7A9lDC0/564Vs49+3nVWKdC62VH6vIkKBsTGsr
-         WTlY1xoQRO8MI3M9pWD+yXDwBKmLlbf+BxawTXJYesuYbJ+4Dvbb4T8rboINMpqF2Ehi
-         hPOw==
-X-Gm-Message-State: APjAAAUBoeCu/ae06lfLcWoDv3/Ee096sc8NM7lEUBKK9mbU6GQYqlbH
-        +iUXQdNXn+yPlFxxcvucxlugCyHk8HQo+OuGP8o=
-X-Google-Smtp-Source: APXvYqzVR5Etz/Es4HiMMf1UU0Ef58kwEksY2/0I7PJeRjGUW1kKtmEKe5E3i1zok0d9FQ5uFZGtdYzcPByiBOb1fvE=
-X-Received: by 2002:a37:aa07:: with SMTP id t7mr7032088qke.414.1571811845300;
- Tue, 22 Oct 2019 23:24:05 -0700 (PDT)
+        id S1730611AbfJWG3V (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 23 Oct 2019 02:29:21 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:43706 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727574AbfJWG3V (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 23 Oct 2019 02:29:21 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id DC81D5ACD529EEF4E095;
+        Wed, 23 Oct 2019 14:29:06 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 23 Oct 2019 14:29:00 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Kevin Hilman <khilman@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Russell King <linux@armlinux.org.uk>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-omap@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] ARM: OMAP2+: Remove duplicated include from pmic-cpcap.c
+Date:   Wed, 23 Oct 2019 06:29:00 +0000
+Message-ID: <20191023062900.43576-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <baabb9e9-a1b2-3a04-9fb6-aa632de5f722@web.de>
-In-Reply-To: <baabb9e9-a1b2-3a04-9fb6-aa632de5f722@web.de>
-From:   Joel Stanley <joel@jms.id.au>
-Date:   Wed, 23 Oct 2019 06:23:53 +0000
-Message-ID: <CACPK8XfUJ5VGpTS3gwxSVZbdWZKPH6PwT2JKGGJ2yzoXYKdtZg@mail.gmail.com>
-Subject: Re: [PATCH] EDAC: Aspeed: Use devm_platform_ioremap_resource() in aspeed_probe()
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-edac@vger.kernel.org,
-        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Borislav Petkov <bp@alien8.de>,
-        James Morse <james.morse@arm.com>,
-        Robert Richter <rrichter@marvell.com>,
-        Stefan Schaeckeler <sschaeck@cisco.com>,
-        Tony Luck <tony.luck@intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 21 Sep 2019 at 16:47, Markus Elfring <Markus.Elfring@web.de> wrote:
->
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Sat, 21 Sep 2019 18:32:46 +0200
->
-> Simplify this function implementation by using a known wrapper function.
->
-> This issue was detected by using the Coccinelle software.
->
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Remove duplicated include.
 
-Acked-by: Joel Stanley <joel@jms.id.au>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ arch/arm/mach-omap2/pmic-cpcap.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/arch/arm/mach-omap2/pmic-cpcap.c b/arch/arm/mach-omap2/pmic-cpcap.c
+index 2c2a178d988d..38b0307dc79d 100644
+--- a/arch/arm/mach-omap2/pmic-cpcap.c
++++ b/arch/arm/mach-omap2/pmic-cpcap.c
+@@ -15,8 +15,6 @@
+ #include "voltage.h"
+ 
+ #include <linux/init.h>
+-#include <linux/kernel.h>
+-#include "pm.h"
+ #include "vc.h"
+ 
+ /**
+
+
+
+
+

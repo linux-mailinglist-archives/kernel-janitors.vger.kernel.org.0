@@ -2,80 +2,116 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 73FC7E107E
-	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Oct 2019 05:23:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCAF1E1136
+	for <lists+kernel-janitors@lfdr.de>; Wed, 23 Oct 2019 06:51:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732188AbfJWDXJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 22 Oct 2019 23:23:09 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:53690 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727140AbfJWDXJ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 22 Oct 2019 23:23:09 -0400
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 962BE2CD66F9CF476FA8;
-        Wed, 23 Oct 2019 11:23:05 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 23 Oct 2019 11:22:59 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <maz@kernel.org>, <james.morse@arm.com>,
-        <julien.thierry.kdev@gmail.com>, <suzuki.poulose@arm.com>,
-        <catalin.marinas@arm.com>, <will@kernel.org>,
-        <steven.price@arm.com>
-CC:     <linux-arm-kernel@lists.infradead.org>,
-        <kvmarm@lists.cs.columbia.edu>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH] KVM: arm64: Select SCHED_INFO before SCHEDSTATS
-Date:   Wed, 23 Oct 2019 11:22:54 +0800
-Message-ID: <20191023032254.159510-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1732792AbfJWEvJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 23 Oct 2019 00:51:09 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:37153 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731061AbfJWEvI (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 23 Oct 2019 00:51:08 -0400
+Received: by mail-io1-f66.google.com with SMTP id 1so11981579iou.4;
+        Tue, 22 Oct 2019 21:51:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=OKxxrxrRmQ9OEs+TDHwbhEPuOlHTRldEW91bPkMwe+Q=;
+        b=IRpEwZZlH/NAmDOc3Du/eDq/g+6Akr2uQN+kUqqLGi0wZTRTzWoKAPqu9spG3AFt5C
+         5juvxtVr6WBPWT4HaSsFXNSytOWs1BOd59LjkzyUNpWOBrwfcifGhbnB+sfIYJuXCIq1
+         1l/3l5qvC3626rlS1xRPCcTwJ9+ksmo3D3b4kcW9+Kf8x8HL60Ojp/8024pg0XDqINi+
+         VXXoKRVxuItscwoVyM8fjc8FlpWMmw+ydN4eD83AxEKSaQumjs/101MqmW9BgSMvVFbW
+         fbTb0EQHTQpxT12fe4hi3g18dPuawSTN8ZIclIeRxsy3xxiW9vNf8gTGSlVbbcb9sGCm
+         rqnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=OKxxrxrRmQ9OEs+TDHwbhEPuOlHTRldEW91bPkMwe+Q=;
+        b=Xfms6utAeQMITGKZL8+t3/y0170rCaXK2o9zewWjbuRWsSCyF9pu58pw8uIxxVXByi
+         yuBinG5CYwo8AjFXl8Em9gZ6ooSyoUmv2+e1QDq7gNZjtdVOSCZ8FUfxq2pfmefdThk9
+         btGqe0jhpNen8ykV86P74AO3ss8KbxZuoaykN3bbgVHXgtin82PU607lw+xgIwmKF2y1
+         BhBRipfVyuyfIR+9ZMB1+x7GJnOKNCeKjrLapFD4tHMPBh0Zy7oyePDcdT/h6USNxxHB
+         fNp+NGrXM3HvCf6XliS7X3E0ABBKKpTrjqGxKJILfJw1BxiuN16i5xp/jY+nEvnEskGT
+         P14w==
+X-Gm-Message-State: APjAAAVx4ycdcFK5reEhmr7SeLH4fURmDOru4vPUwqlBBOE/9bpWMCol
+        pzk/tYHostu8x1em1dUGCpkcdSk3VtZmOi467N8=
+X-Google-Smtp-Source: APXvYqzE3Bfo7kvQ7+hwzW34J5gf2Zonf08iEAJCaNyVdJIDx3jMMth3umOadUschVo/Fh/wlZsrQzPbyY+oaHCxDHs=
+X-Received: by 2002:a05:6638:632:: with SMTP id h18mr7358032jar.107.1571806266511;
+ Tue, 22 Oct 2019 21:51:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+References: <20191021201848.4231-1-navid.emamdoost@gmail.com>
+ <fb5d5331-9a89-8370-1e61-396dd05f291a@web.de> <2a6cdb63-397b-280a-7379-740e8f43ddf6@xilinx.com>
+In-Reply-To: <2a6cdb63-397b-280a-7379-740e8f43ddf6@xilinx.com>
+From:   Navid Emamdoost <navid.emamdoost@gmail.com>
+Date:   Tue, 22 Oct 2019 23:50:55 -0500
+Message-ID: <CAEkB2ES=S64T9FH8bSj=muXD3hSXc3-MWEVt_0sggoTdZFQswg@mail.gmail.com>
+Subject: Re: [PATCH] clocksource/drivers: Fix memory leak in ttc_setup_clockevent
+To:     Michal Simek <michal.simek@xilinx.com>
+Cc:     Markus Elfring <Markus.Elfring@web.de>,
+        linux-arm-kernel@lists.infradead.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If KVM=y, it will select SCHEDSTATS, below erros can
-be seen:
-kernel/sched/stats.h: In function rq_sched_info_arrive:
-kernel/sched/stats.h:12:20: error: struct sched_info
-has no member named run_delay
-   rq->rq_sched_info.run_delay += delta;
-                    ^
-kernel/sched/stats.h:13:20: error: struct sched_info
-has no member named pcount
-   rq->rq_sched_info.pcount++;
-                    ^
-kernel/sched/stats.h: In function rq_sched_info_dequeued:
-kernel/sched/stats.h:31:20: error: struct sched_info has
-no member named run_delay
-   rq->rq_sched_info.run_delay += delta;
+Thanks for the feedback, I updated this patch and sent v2.
+Also, I submitted a patch to fix the error handling path in
+ttc_setup_clocksource(). Here is the link to it:
+https://lore.kernel.org/patchwork/patch/1143242/
 
-These are because CONFIG_SCHED_INFO is not set, This patch 
-is to select SCHED_INFO before SCHEDSTATS.
+On Tue, Oct 22, 2019 at 3:51 AM Michal Simek <michal.simek@xilinx.com> wrot=
+e:
+>
+> On 22. 10. 19 10:26, Markus Elfring wrote:
+> >> In the impelementation of ttc_setup_clockevent() the allocated memory
+> >> for ttcce should be released if clk_notifier_register() fails.
+> >
+> > * Please avoid the copying of typos from previous change descriptions.
+> >
+> > * Under which circumstances will an =E2=80=9Cimperative mood=E2=80=9D m=
+atter for you here?
+> >   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tr=
+ee/Documentation/process/submitting-patches.rst?id=3D7d194c2100ad2a6dded545=
+887d02754948ca5241#n151
+> >
+> >
+> >> +++ b/drivers/clocksource/timer-cadence-ttc.c
+> >> @@ -424,6 +424,7 @@ static int __init ttc_setup_clockevent(struct clk =
+*clk,
+> >>                                  &ttcce->ttc.clk_rate_change_nb);
+> >>      if (err) {
+> >>              pr_warn("Unable to register clock notifier.\n");
+> >> +            kfree(ttcce);
+> >>              return err;
+> >>      }
+> >
+> > This addition looks correct.
+> > But I would prefer to move such exception handling code to the end of
+> > this function implementation so that duplicate source code will be redu=
+ced.
+> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/Documentation/process/coding-style.rst?id=3D7d194c2100ad2a6dded545887d0275=
+4948ca5241#n450
+>
+> Just a note. Maybe you should also consider to fix this error path in
+> ttc_setup_clocksource() when notifier also can fail that there is no
+> need to continue with code execution.
+>
+> Thanks,
+> Michal
 
-Fixes: 8564d6372a7d ("KVM: arm64: Support stolen time reporting via shared structure")
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
----
- arch/arm64/kvm/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-index d8b88e4..3c46eac 100644
---- a/arch/arm64/kvm/Kconfig
-+++ b/arch/arm64/kvm/Kconfig
-@@ -39,6 +39,7 @@ config KVM
- 	select IRQ_BYPASS_MANAGER
- 	select HAVE_KVM_IRQ_BYPASS
- 	select HAVE_KVM_VCPU_RUN_PID_CHANGE
-+	select SCHED_INFO
- 	select SCHEDSTATS
- 	---help---
- 	  Support hosting virtualized guest machines.
--- 
-2.7.4
 
+--=20
+Navid.

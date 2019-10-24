@@ -2,96 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D4E7E3388
-	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Oct 2019 15:10:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D953FE33D0
+	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Oct 2019 15:19:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388817AbfJXNKm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 24 Oct 2019 09:10:42 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:38348 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730867AbfJXNKl (ORCPT
+        id S2502493AbfJXNTO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 24 Oct 2019 09:19:14 -0400
+Received: from inca-roads.misterjones.org ([213.251.177.50]:39373 "EHLO
+        inca-roads.misterjones.org" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730061AbfJXNTO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 24 Oct 2019 09:10:41 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iNcss-0001Q3-Oz; Thu, 24 Oct 2019 13:10:34 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Lijun Ou <oulijun@huawei.com>, Wei Hu <xavier.huwei@huawei.com>,
-        Doug Ledford <dledford@redhat.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Tao Tian <tiantao6@huawei.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Yangyang Li <liyangyang20@huawei.com>,
-        linux-rdma@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] RDMA/hns: fix memory leak on 'context' on error return path
-Date:   Thu, 24 Oct 2019 14:10:34 +0100
-Message-Id: <20191024131034.19989-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Thu, 24 Oct 2019 09:19:14 -0400
+Received: from www-data by cheepnis.misterjones.org with local (Exim 4.80)
+        (envelope-from <maz@kernel.org>)
+        id 1iNd1A-0000Sw-Ge; Thu, 24 Oct 2019 15:19:08 +0200
+To:     Steven Price <steven.price@arm.com>
+Subject: Re: [PATCH] KVM: arm64: Select =?UTF-8?Q?SCHED=5FINFO=20before=20?=  =?UTF-8?Q?SCHEDSTATS?=
+X-PHP-Originating-Script: 0:main.inc
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 24 Oct 2019 14:19:08 +0100
+From:   Marc Zyngier <maz@kernel.org>
+Cc:     Mao Wenan <maowenan@huawei.com>, <catalin.marinas@arm.com>,
+        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <will@kernel.org>, <kvmarm@lists.cs.columbia.edu>,
+        <linux-arm-kernel@lists.infradead.org>
+In-Reply-To: <6d037fa1-5e8b-38cd-e947-7547c1e8dd15@arm.com>
+References: <20191023032254.159510-1-maowenan@huawei.com>
+ <26ee413334937b9530bc8f033fe378ec@www.loen.fr>
+ <6d037fa1-5e8b-38cd-e947-7547c1e8dd15@arm.com>
+Message-ID: <3abfc893613caf529b0f6a933e74068d@www.loen.fr>
+X-Sender: maz@kernel.org
+User-Agent: Roundcube Webmail/0.7.2
+X-SA-Exim-Connect-IP: <locally generated>
+X-SA-Exim-Rcpt-To: steven.price@arm.com, maowenan@huawei.com, catalin.marinas@arm.com, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, will@kernel.org, kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on cheepnis.misterjones.org); SAEximRunCond expanded to false
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 2019-10-24 12:22, Steven Price wrote:
 
-Currently, the error return path when the call to function
-dev->dfx->query_cqc_info fails will leak object 'context'. Fix this
-by making the error return path via 'err' return return codes rather
-than -EMSGSIZE, set ret appropriately for all error return paths and
-for the memory leak now return via 'err' with -EINVAL rather than
-just returning without freeing context.
+[...]
 
-Addresses-Coverity: ("Resource leak")
-Fixes: e1c9a0dc2939 ("RDMA/hns: Dump detailed driver-specific CQ")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/infiniband/hw/hns/hns_roce_restrack.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+> From 915893f5c57241cc29d90769b3f720a6135277d7 Mon Sep 17 00:00:00 
+> 2001
+> From: Steven Price <steven.price@arm.com>
+> Date: Thu, 24 Oct 2019 12:14:36 +0100
+> Subject: [PATCH] KVM: arm64: Select TASK_DELAY_ACCT rather than 
+> SCHEDSTATS
+>
+> SCHEDSTATS requires DEBUG_KERNEL (and PROC_FS) and therefore isn't a
+> good choice for enabling the scheduling statistics required for 
+> stolen
+> time.
+>
+> Instead match the x86 configuration and select TASK_DELAY_ACCT. This
+> adds the dependencies of NET && MULTIUSER for arm64 KVM.
+>
+> Suggested-by: Marc Zyngier <maz@kernel.org>
+> Fixes: 8564d6372a7d ("KVM: arm64: Support stolen time reporting via
+> shared structure")
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+>  arch/arm64/kvm/Kconfig | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
+> index d8b88e40d223..1ffb300e2d92 100644
+> --- a/arch/arm64/kvm/Kconfig
+> +++ b/arch/arm64/kvm/Kconfig
+> @@ -21,6 +21,8 @@ if VIRTUALIZATION
+>  config KVM
+>  	bool "Kernel-based Virtual Machine (KVM) support"
+>  	depends on OF
+> +	# for TASKSTATS/TASK_DELAY_ACCT:
+> +	depends on NET && MULTIUSER
+>  	select MMU_NOTIFIER
+>  	select PREEMPT_NOTIFIERS
+>  	select HAVE_KVM_CPU_RELAX_INTERCEPT
+> @@ -39,7 +41,7 @@ config KVM
+>  	select IRQ_BYPASS_MANAGER
+>  	select HAVE_KVM_IRQ_BYPASS
+>  	select HAVE_KVM_VCPU_RUN_PID_CHANGE
+> -	select SCHEDSTATS
+> +	select TASK_DELAY_ACCT
+>  	---help---
+>  	  Support hosting virtualized guest machines.
+>  	  We don't support KVM with 16K page tables yet, due to the 
+> multiple
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_restrack.c b/drivers/infiniband/hw/hns/hns_roce_restrack.c
-index a0d608ec81c1..7e4a91dd7329 100644
---- a/drivers/infiniband/hw/hns/hns_roce_restrack.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_restrack.c
-@@ -94,15 +94,21 @@ static int hns_roce_fill_res_cq_entry(struct sk_buff *msg,
- 		return -ENOMEM;
- 
- 	ret = hr_dev->dfx->query_cqc_info(hr_dev, hr_cq->cqn, (int *)context);
--	if (ret)
--		return -EINVAL;
-+	if (ret) {
-+		ret = -EINVAL;
-+		goto err;
-+	}
- 
- 	table_attr = nla_nest_start(msg, RDMA_NLDEV_ATTR_DRIVER);
--	if (!table_attr)
-+	if (!table_attr) {
-+		ret = -EMSGSIZE;
- 		goto err;
-+	}
- 
--	if (hns_roce_fill_cq(msg, context))
-+	if (hns_roce_fill_cq(msg, context)) {
-+		ret = -EMSGSIZE;
- 		goto err_cancel_table;
-+	}
- 
- 	nla_nest_end(msg, table_attr);
- 	kfree(context);
-@@ -113,7 +119,7 @@ static int hns_roce_fill_res_cq_entry(struct sk_buff *msg,
- 	nla_nest_cancel(msg, table_attr);
- err:
- 	kfree(context);
--	return -EMSGSIZE;
-+	return ret;
- }
- 
- int hns_roce_fill_res_entry(struct sk_buff *msg,
+Same issue as before: you have an implicit config symbol selection.
+TASK_DELAY_ACCT depends on TASKSTATS (which is why you have this NET &&
+MULTIUSER constraint).
+
+You need to select both TASK_DELAY_ACCT and TASKSTATS, as the comment 
+you
+add suggests.
+
+         M.
 -- 
-2.20.1
-
+Jazz is not dead. It just smells funny...

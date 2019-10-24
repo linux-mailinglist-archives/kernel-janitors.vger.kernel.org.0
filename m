@@ -2,164 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40684E303E
-	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Oct 2019 13:22:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA07FE31A7
+	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Oct 2019 13:58:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393385AbfJXLW0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 24 Oct 2019 07:22:26 -0400
-Received: from foss.arm.com ([217.140.110.172]:48200 "EHLO foss.arm.com"
+        id S2439519AbfJXL6h (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 24 Oct 2019 07:58:37 -0400
+Received: from vps0.lunn.ch ([185.16.172.187]:33370 "EHLO vps0.lunn.ch"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2393360AbfJXLW0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 24 Oct 2019 07:22:26 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 85B66B57;
-        Thu, 24 Oct 2019 04:22:10 -0700 (PDT)
-Received: from [10.1.194.43] (e112269-lin.cambridge.arm.com [10.1.194.43])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7790D3F71A;
-        Thu, 24 Oct 2019 04:22:09 -0700 (PDT)
-From:   Steven Price <steven.price@arm.com>
-Subject: Re: [PATCH] KVM: arm64: Select SCHED_INFO before SCHEDSTATS
-To:     Marc Zyngier <maz@kernel.org>, Mao Wenan <maowenan@huawei.com>
-Cc:     catalin.marinas@arm.com, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org, will@kernel.org,
-        kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org
-References: <20191023032254.159510-1-maowenan@huawei.com>
- <26ee413334937b9530bc8f033fe378ec@www.loen.fr>
-Message-ID: <6d037fa1-5e8b-38cd-e947-7547c1e8dd15@arm.com>
-Date:   Thu, 24 Oct 2019 12:22:08 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1726298AbfJXL6h (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 24 Oct 2019 07:58:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=dpdPtQ9YYpbeXJdY8m/o433LsLuOnXN6uIZDYX/6rAM=; b=fHx25Q4caYOzwuBrhSqpJ+DJEz
+        Sz/0DM3QFO3se0K96dUAlqJdoDQRXSeYUPN0pJP3qLPVWD1uGw6rx3dx2KVC9OTAZZNjE5kQEndfJ
+        pl8k3aAzUn1+iAhqf2/yNvzlYbf/+bFLPxYb+nBa4bQPwgw6RHUZzYKPVjYJbjvA3A4I=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.92.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1iNbl9-0003K5-OU; Thu, 24 Oct 2019 13:58:31 +0200
+Date:   Thu, 24 Oct 2019 13:58:31 +0200
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Vivien Didelot <vivien.didelot@gmail.com>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <jakub.kicinski@netronome.com>,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] net: dsa: fix dereference on ds->dev before null
+ check error
+Message-ID: <20191024115831.GA12631@lunn.ch>
+References: <20191024103218.2592-1-colin.king@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <26ee413334937b9530bc8f033fe378ec@www.loen.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191024103218.2592-1-colin.king@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 23/10/2019 17:51, Marc Zyngier wrote:
-> On 2019-10-23 04:22, Mao Wenan wrote:
->> If KVM=y, it will select SCHEDSTATS, below erros can
->> be seen:
->> kernel/sched/stats.h: In function rq_sched_info_arrive:
->> kernel/sched/stats.h:12:20: error: struct sched_info
->> has no member named run_delay
->>    rq->rq_sched_info.run_delay += delta;
->>                     ^
->> kernel/sched/stats.h:13:20: error: struct sched_info
->> has no member named pcount
->>    rq->rq_sched_info.pcount++;
->>                     ^
->> kernel/sched/stats.h: In function rq_sched_info_dequeued:
->> kernel/sched/stats.h:31:20: error: struct sched_info has
->> no member named run_delay
->>    rq->rq_sched_info.run_delay += delta;
->>
->> These are because CONFIG_SCHED_INFO is not set, This patch
->> is to select SCHED_INFO before SCHEDSTATS.
->>
->> Fixes: 8564d6372a7d ("KVM: arm64: Support stolen time reporting via
->> shared structure")
->> Signed-off-by: Mao Wenan <maowenan@huawei.com>
->> ---
->>  arch/arm64/kvm/Kconfig | 1 +
->>  1 file changed, 1 insertion(+)
->>
->> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
->> index d8b88e4..3c46eac 100644
->> --- a/arch/arm64/kvm/Kconfig
->> +++ b/arch/arm64/kvm/Kconfig
->> @@ -39,6 +39,7 @@ config KVM
->>      select IRQ_BYPASS_MANAGER
->>      select HAVE_KVM_IRQ_BYPASS
->>      select HAVE_KVM_VCPU_RUN_PID_CHANGE
->> +    select SCHED_INFO
->>      select SCHEDSTATS
->>      ---help---
->>        Support hosting virtualized guest machines.
+On Thu, Oct 24, 2019 at 11:32:18AM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> SCHEDSTATS is really an odd choice. Here's what I get after disabling
-> DEBUG_KERNEL (from defconfig):
+> Currently ds->dev is dereferenced on the assignments of pdata and
+> np before ds->dev is null checked, hence there is a potential null
+> pointer dereference on ds->dev.  Fix this by assigning pdata and
+> np after the ds->dev null pointer sanity check.
 > 
-> WARNING: unmet direct dependencies detected for SCHEDSTATS
->   Depends on [n]: DEBUG_KERNEL [=n] && PROC_FS [=y]
->   Selected by [y]:
->   - KVM [=y] && VIRTUALIZATION [=y] && OF [=y]
-> 
-> WARNING: unmet direct dependencies detected for SCHEDSTATS
->   Depends on [n]: DEBUG_KERNEL [=n] && PROC_FS [=y]
->   Selected by [y]:
->   - KVM [=y] && VIRTUALIZATION [=y] && OF [=y]
-> 
-> WARNING: unmet direct dependencies detected for SCHEDSTATS
->   Depends on [n]: DEBUG_KERNEL [=n] && PROC_FS [=y]
->   Selected by [y]:
->   - KVM [=y] && VIRTUALIZATION [=y] && OF [=y]
-> 
-> So clearly SCHEDSTATS isn't meant to be selected on its own.
-> 
-> We can either just select SCHED_INFO (which *nobody else does*), or go
-> the full x86 way which selects TASK_DELAY_ACCT (and thus depends on
-> NET && MULTIUSER). My gut feeling is that we shouldn't deviate too much
-> from x86...
-> 
-> Thoughts?
+> Addresses-Coverity: ("Dereference before null check")
+> Fixes: 7e99e3470172 ("net: dsa: remove dsa_switch_alloc helper")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-I suspect you're right - TASK_DELAY_ACCT seems to be the closest to what
-we need. SCHEDSTATS has the "advantage" of forcing sched_info_on() to
-return true - preventing it from being disabled. But we clearly don't
-want to require CONFIG_DEBUG_KERNEL for CONFIG_KVM.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-The next best is CONFIG_TASK_DELAY_ACCT which enables sched_info_on()
-unless "nodelayacct" is specified on the cmdline. It seems reasonable
-that the cmdline option might break stolen time.
-
-So let's just copy x86:
-
------8<-----
-From 915893f5c57241cc29d90769b3f720a6135277d7 Mon Sep 17 00:00:00 2001
-From: Steven Price <steven.price@arm.com>
-Date: Thu, 24 Oct 2019 12:14:36 +0100
-Subject: [PATCH] KVM: arm64: Select TASK_DELAY_ACCT rather than SCHEDSTATS
-
-SCHEDSTATS requires DEBUG_KERNEL (and PROC_FS) and therefore isn't a
-good choice for enabling the scheduling statistics required for stolen
-time.
-
-Instead match the x86 configuration and select TASK_DELAY_ACCT. This
-adds the dependencies of NET && MULTIUSER for arm64 KVM.
-
-Suggested-by: Marc Zyngier <maz@kernel.org>
-Fixes: 8564d6372a7d ("KVM: arm64: Support stolen time reporting via shared structure")
-Signed-off-by: Steven Price <steven.price@arm.com>
----
- arch/arm64/kvm/Kconfig | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-index d8b88e40d223..1ffb300e2d92 100644
---- a/arch/arm64/kvm/Kconfig
-+++ b/arch/arm64/kvm/Kconfig
-@@ -21,6 +21,8 @@ if VIRTUALIZATION
- config KVM
- 	bool "Kernel-based Virtual Machine (KVM) support"
- 	depends on OF
-+	# for TASKSTATS/TASK_DELAY_ACCT:
-+	depends on NET && MULTIUSER
- 	select MMU_NOTIFIER
- 	select PREEMPT_NOTIFIERS
- 	select HAVE_KVM_CPU_RELAX_INTERCEPT
-@@ -39,7 +41,7 @@ config KVM
- 	select IRQ_BYPASS_MANAGER
- 	select HAVE_KVM_IRQ_BYPASS
- 	select HAVE_KVM_VCPU_RUN_PID_CHANGE
--	select SCHEDSTATS
-+	select TASK_DELAY_ACCT
- 	---help---
- 	  Support hosting virtualized guest machines.
- 	  We don't support KVM with 16K page tables yet, due to the multiple
--- 
-2.20.1
-
+    Andrew

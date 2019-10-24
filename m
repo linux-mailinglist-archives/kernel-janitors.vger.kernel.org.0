@@ -2,83 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B03CE38CC
-	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Oct 2019 18:47:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD5A0E399E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Oct 2019 19:16:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408015AbfJXQrU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 24 Oct 2019 12:47:20 -0400
-Received: from mail-qt1-f180.google.com ([209.85.160.180]:33246 "EHLO
-        mail-qt1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405516AbfJXQrU (ORCPT
+        id S2410237AbfJXRQB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 24 Oct 2019 13:16:01 -0400
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:34925 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405901AbfJXRQB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 24 Oct 2019 12:47:20 -0400
-Received: by mail-qt1-f180.google.com with SMTP id r5so38882990qtd.0;
-        Thu, 24 Oct 2019 09:47:19 -0700 (PDT)
+        Thu, 24 Oct 2019 13:16:01 -0400
+Received: by mail-qk1-f193.google.com with SMTP id w2so24135887qkf.2
+        for <kernel-janitors@vger.kernel.org>; Thu, 24 Oct 2019 10:16:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:message-id:from:to:cc:subject:in-reply-to:references
-         :mime-version:content-disposition:content-transfer-encoding;
-        bh=359J8YcwWQeShpxfO8aTvwah7AWM03igtl5dwiYjcyk=;
-        b=lzPfneCjKpvgn4WeodHOJmtYeQRF4MBzULU9yNEo+U8qML1FQ2MPOjzZlZitXz+kKR
-         9jHwdOXN5hezHYHeAOJAAlX9tlmTk2w1jyVjB7+Jvx/ihCU8RiYoeeNCETckWDlET2y7
-         Vv7toew5L8J9BCKkWEspZsZEmytS6DalGXLW9pgi1sz2RR172Y9AJMALvWP48DEpSjwp
-         beDylJ9w4F+vqYVRu4CuiY5zulIZaybrvM4CEekF9ZHChWKuyyZXG6s7UsdmhhuBrWak
-         gd3MC0MAdrQ19idhvoJjbqT1wvJwKyIovARFkb6VtnJ1IrQlYnxKml9/kqSgQ1dmIfFN
-         xRXQ==
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=crG+DRT5ntTO6UrnZjz7Zk+aIch4CLzmhTF61MiVCPc=;
+        b=bNp+7fURF9Ol8vUPwHGKGm6mK9ijx7pSmONTo8SbOqpmSf0D+KM+IwQY2l8cYRl0tc
+         4Jlf4tFma80yY3usPo8m8fNAx2W3NJVos7I5+Fy3FYeouo5F7elc73VyeznclDfRUKJ6
+         1GQuz3/rw88FlDhwFBVqYsiDxvtt5Si747jAG4IuuZuyBtTUXxSgpxctMMsWrQHI2KXC
+         L4kMhUMuXKs1qttPbAlVMMH9KKVo9HAGMIHvPYm9S97Q9Oer5iiXEy3Yi0arikGoB0rO
+         +td1l/vUo1NwJh2Ncplo9FWjk5/JcFWW548edS3pxJbv/LR2OyPs0zvvU0VdgI5PWi4G
+         W/JQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:message-id:from:to:cc:subject:in-reply-to
-         :references:mime-version:content-disposition
-         :content-transfer-encoding;
-        bh=359J8YcwWQeShpxfO8aTvwah7AWM03igtl5dwiYjcyk=;
-        b=KKkP63Vyg03sApTjPnj/jb3XPvzk03fTXnvvfTUa40GzOEeFgAN5Gi+e7h60LPYTLp
-         /wG1EABqNzncUld4EiRo40Zduqi7tsO+tglrL32OUYe3Wk4pUH16xlENCpun06wDiWc7
-         8t7QVIV0E+xOMyeAI5Dwn115pazqYOTX8n0u6qc+iCTjzpl/rkNlL5Fcly6pJ4VKSndm
-         anMDrh4CboI42IMlUOv6xCeC0Fgk9Kshr6s/KiqYWZzOF5N8QTPznDyKtemTmSf9OyIN
-         bkxHGTd1C6TOhQbEV3S6gf7nGa2WGoc4Bgz3eK0jSWvSY/rgqDLZ7l4CxaMRdZMM07Fo
-         I7bw==
-X-Gm-Message-State: APjAAAWwTWp98L6O7GjV3NohHEWpUqVIUOPf706vv6GS8004rS6n/G86
-        d7HZft0qhr3aAKLQz8L/988=
-X-Google-Smtp-Source: APXvYqyGJ1hmw6uReyM04ZrDuiA3HGt8Ad5AiBRp77uP+V1uiGSWdM9pcx/zTqK9LjZZn/+SydvSrw==
-X-Received: by 2002:ac8:290f:: with SMTP id y15mr5300194qty.181.1571935638557;
-        Thu, 24 Oct 2019 09:47:18 -0700 (PDT)
-Received: from localhost (modemcable249.105-163-184.mc.videotron.ca. [184.163.105.249])
-        by smtp.gmail.com with ESMTPSA id c18sm12080095qkk.17.2019.10.24.09.47.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2019 09:47:17 -0700 (PDT)
-Date:   Thu, 24 Oct 2019 12:47:16 -0400
-Message-ID: <20191024124716.GB1210163@t480s.localdomain>
-From:   Vivien Didelot <vivien.didelot@gmail.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <jakub.kicinski@netronome.com>,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] net: dsa: fix dereference on ds->dev before null
- check error
-In-Reply-To: <20191024103218.2592-1-colin.king@canonical.com>
-References: <20191024103218.2592-1-colin.king@canonical.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=crG+DRT5ntTO6UrnZjz7Zk+aIch4CLzmhTF61MiVCPc=;
+        b=QIOmbdVfXpG9u+ATU3FJMZjR6pF8/fTMDTr7oJKb/juB2SUvlfjBZeiBmAD/oALde9
+         6d7pq/Lt5C+trh21Suxso+WgIasq+PG3sVkBg2yZCc9jGICX/d+KJn56vIvhjL7tcnO6
+         AYgdq062DDWCXfWTPOTBiaGvylfq7U00HtP3TwBy0B9hT6NRK1hzKfw/R9d7OpubaP/P
+         8gz+RCG4iUi0r+UTqelYRDH6uPNLtCmx5+qgUbivpDpnTaFeSGDSa//Rn0phGouTnBnn
+         zjIVepeH848gylftKaZdGVpoHfQuLpoMH9Wj6Dp0DtuJ2C392V6PenJy8HvbXTxTQHae
+         Ky5Q==
+X-Gm-Message-State: APjAAAVrioYoTOVFJliNO3ngiOhgxAfSWTSW9useuu5F8k+WRQpgIRTt
+        4yit+QIhnvO1joZO97wpxmiGTSWdE46ofkI/dNjXqw==
+X-Google-Smtp-Source: APXvYqwO+pjq/T6cA1+tZZRLnofnfCEwAKnPL1uQAxpaH1IWS8TnV2isw/FukpIexYC5euabMYGxtp47q9ysO8wbEl8=
+X-Received: by 2002:a37:9a8a:: with SMTP id c132mr14717102qke.92.1571937359669;
+ Thu, 24 Oct 2019 10:15:59 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+References: <20191024124610.18182-1-colin.king@canonical.com>
+In-Reply-To: <20191024124610.18182-1-colin.king@canonical.com>
+From:   Curtis Malainey <cujomalainey@google.com>
+Date:   Thu, 24 Oct 2019 10:15:48 -0700
+Message-ID: <CAOReqxhzYnN4vkoiJ1vDN3UwmkJs--u7cUgpoSDtMr1dSThR3Q@mail.gmail.com>
+Subject: Re: [PATCH][next] ASoC: rt5677: Add missing null check for failed
+ allocation of rt5677_dsp
+To:     Colin King <colin.king@canonical.com>
+Cc:     Bard Liao <bardliao@realtek.com>,
+        Oder Chiou <oder_chiou@realtek.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        Curtis Malainey <cujomalainey@chromium.org>,
+        Ben Zhang <benzh@chromium.org>,
+        ALSA development <alsa-devel@alsa-project.org>,
+        kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 24 Oct 2019 11:32:18 +0100, Colin King <colin.king@canonical.com> wrote:
+On Thu, Oct 24, 2019 at 5:46 AM Colin King <colin.king@canonical.com> wrote:
+>
 > From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently ds->dev is dereferenced on the assignments of pdata and
-> np before ds->dev is null checked, hence there is a potential null
-> pointer dereference on ds->dev.  Fix this by assigning pdata and
-> np after the ds->dev null pointer sanity check.
-> 
-> Addresses-Coverity: ("Dereference before null check")
-> Fixes: 7e99e3470172 ("net: dsa: remove dsa_switch_alloc helper")
+>
+> The allocation of rt5677_dsp can potentially fail and return null, so add
+> a null check and return -ENOMEM on a memory allocation failure.
+>
+> Addresses-Coverity: ("Dereference null return")
+> Fixes: a0e0d135427c ("ASoC: rt5677: Add a PCM device for streaming hotword via SPI")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Thanks
 
-Reviewed-by: Vivien Didelot <vivien.didelot@gmail.com>
+Acked-by Curtis Malainey <cujomalainey@chromium.org>
+> ---
+>  sound/soc/codecs/rt5677-spi.c | 2 ++
+>  1 file changed, 2 insertions(+)

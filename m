@@ -2,38 +2,39 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4881BE2AC6
-	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Oct 2019 09:07:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E79AE2B83
+	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Oct 2019 09:55:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392460AbfJXHHJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 24 Oct 2019 03:07:09 -0400
-Received: from mout.web.de ([217.72.192.78]:49737 "EHLO mout.web.de"
+        id S2407292AbfJXHzy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 24 Oct 2019 03:55:54 -0400
+Received: from mout.web.de ([212.227.17.12]:45255 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727635AbfJXHHI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 24 Oct 2019 03:07:08 -0400
+        id S1733188AbfJXHzy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 24 Oct 2019 03:55:54 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1571900801;
-        bh=TpHiSzxCEIcAvar3A4yeKF3u8As5hzD8I+DOTDKwT5o=;
-        h=X-UI-Sender-Class:Cc:References:Subject:From:To:Date:In-Reply-To;
-        b=G9ubtSSlv9b8l/CVhirUvglEu7nB3uh6Ntn6a3TKtjfTBHtcmnTaDEHA9ePh6hmhB
-         JRrusH8GjF6nnvuH7Ui8xOSgtVEmdM5GaPlxGzLekXoN9I1l5euaxdwh+bsgfaGE5T
-         NihT8/lHEny15gbZbo0dan5e40Sf76k7fXHz4BCA=
+        s=dbaedf251592; t=1571903738;
+        bh=UNnIzf/ltfSLiUOFsj1CvrPkRnY3Y2FSP+wrE2VuWIo=;
+        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+        b=RPHIAGcM84CLVk0uOn/n1CnlC0HydePX2L8bY2x6i6xR30RbVLCMDXvjQ3f3RdJLa
+         IqidaDWI0RLsKxhbz/Z9eobm86iRUzk5ImxHVOWtTC01Y7BT2GCfd66UBeHSe+oKsD
+         7t3WJgOJkTqjN2lZ7EKix2IisJvx9vqxh+hPJ3eE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.133.110.199]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0McWj6-1if45Y0KrQ-00Hiba; Thu, 24
- Oct 2019 09:06:40 +0200
+Received: from [192.168.1.2] ([93.133.110.199]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lc8c5-1hgYEm3WY1-00jaIj; Thu, 24
+ Oct 2019 09:55:37 +0200
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Cheng Shengyu <cheng.shengyu@zte.com.cn>,
         Gilles Muller <Gilles.Muller@lip6.fr>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
         Masahiro Yamada <yamada.masahiro@socionext.com>,
         Michal Marek <michal.lkml@markovi.net>,
         Nicolas Palix <nicolas.palix@imag.fr>,
         Yi Wang <wang.yi59@zte.com.cn>,
-        Xue Zhihong <xue.zhihong@zte.com.cn>
-References: <1571897060-32374-1-git-send-email-zhong.shiqi@zte.com.cn>
+        Xue Zhihong <xue.zhihong@zte.com.cn>,
+        Zhong Shiqi <zhong.shiqi@zte.com.cn>
+References: <alpine.DEB.2.21.1910240816040.2771@hadrien>
 Subject: Re: [PATCH v2] coccicheck: support $COCCI being defined as a
  directory
+To:     Julia Lawall <julia.lawall@lip6.fr>, cocci@systeme.lip6.fr
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -78,65 +79,65 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-To:     Zhong Shiqi <zhong.shiqi@zte.com.cn>, cocci@systeme.lip6.fr
-Message-ID: <5762844f-2c39-2106-21fa-65e8297d4235@web.de>
-Date:   Thu, 24 Oct 2019 09:06:27 +0200
+Message-ID: <37ad0bcd-941d-e02e-ae99-e89f2ce98ff0@web.de>
+Date:   Thu, 24 Oct 2019 09:55:34 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.1.2
 MIME-Version: 1.0
-In-Reply-To: <1571897060-32374-1-git-send-email-zhong.shiqi@zte.com.cn>
+In-Reply-To: <alpine.DEB.2.21.1910240816040.2771@hadrien>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:z5Cz3dlOtdVoGDAFiUwZTRszL4aVafnN1BRC72MSMqg9BTm1Kxg
- oYTIg9Nx2K7tlbFzocCpcp9gX8rwdfr/rujQgGUFdYZi1QOpR7ygZtanIEdZqVBNyVsL+Gn
- VBoFyWOtUH2bzvEmal0je9Ok4W6dLmg4ZTvacptDp3IV7hGFLqhWjbLjah0Uj8d5/b9/Ued
- QpFatQvVNVTAaw5+tOz/A==
+X-Provags-ID: V03:K1:ZolS6zwkpF+4aKEe96dbsBuAYIh+Otb7VlxxcraA79fGrm+QamX
+ W+zsbVHeGvlAtWQznFK+SvO3dbHp5vhq8hLAcooYIncmmIIjVqKE9sFicEb5DXbiwAUyJed
+ 22rEjVhQaSloYgqs7Y0ieCTZeF8ksbUR0Vj1DafIF6Djz6uSvDWHpmeDBu2DuzkakyPF2FG
+ 1S0o+oBipZwt6VSbB3MlA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:8fmZgCwGmRU=:49cATmb4XR3EEFi3d4Ng9W
- S1IsFp9q4xdL6cbzsLNzq1HOaZJ+jpK+BhcOOBRoKwHvSBXhE9VD0ME7ehP5F1pRBq6XJQA+g
- 0wXJgMhX+guQ0UnamUla/6XyvQOUsPveOcs1VN4wrhhQwcaFQgdOyRj6OHLF9MyHsEyRaf4s7
- asfAMjLlY0KvtUj6vxt3VegyaLqJZPsGVs1tM7qJJOYva+RjhSz3JpogTAgRHTC6QMtgunU3r
- IUt+5lywGnLj6zKcLjUsvRkwVLuh8CIor+wqe9eAHhH6jk1cLRyBD7NHet6fjmnx4rDxftLsg
- gy+Qhx5iwdP4FNPyVsiwd0C5XMBalG6C7tf4uHnp/iMYMNmRDSwU5r05WEmZvmszMuqgpy7No
- t8R119enSu8pPqA3pw+fNPc4HkEEZ+ox2R+yJubBhUzfivb67c78wdWERJe4CR5obQoqpXLA+
- 4/lome3/Phi7MyVMengrUB72q4ZaXEOov0nd20Ztwa9jNm0KdKyhjd96HI+nEjSmOiewhxV/3
- W0cnKipuEg52vcmoExU3xARIup3j8ugKI0dOdPqbZTXHrstUa5NPinNkOjAlmk1HoPN4Djdnx
- /cgZ9fSaW+bnq9nZC1f36AcvyN0bXBg2euv2zfoHdMRZx+miBNZdBMkRpSFl+4cIEWI3bXZKv
- 7QxGu5WkQQMzjwK5vPDmkouarqPfTe8n3UB6d7QDO/gUps4hkPvgI5fC6ot7BriYi0BTqvy0M
- ipYH7n7Olq3PK9qPgPdYQicxqRz3IIirQpeCGg3iEbD8i8wPWkK8bbhACyRpFAGCoSNbh+LQf
- Gg/BnvKOolMvFi7s0pfKo4LRaozralXerkUOxr7KblhMMmO43ZsD03dYjR1kG8+S9wiQIw2pc
- NxfqXd7QCfc5HrUWvK6Mk8fviX7f1a5sssf3HYxHGr4rZXRPWcQgdpcIWdweAUoXz8aZ19UiL
- MdYPQ/OU4/WWvfvTYNhuP/IfWW6gTgNS3JeG0PXo6lNBYiF2RVDA5Q8eBLf9UrS10XKW/vuDX
- 2nEXtjfcVlgp4617tnGxgzG5ctwWYnsEnqKU4vZraNLcp18L1wn2EP8u0uEOG+GlkNrpBfTwl
- wGTK1ZVE59FE0uSP5pnuyt8M+5JcADY3jEIj9P/l5cjU7+kvLq4wTzHPI9Ja9GoZbcz33rTDZ
- 14+BBwBuH3mf6PVVwDitNKZM2Dr8z7puJbmH8FY+/F3dEOJ4cNVZa58PgMwOpwLHyN6wfz1xg
- 9uIPFAcN0kvkAxdz8BT04CJKnH4SK3c+uTVZTr5pIB5V0n3emonA5rX2q3MM=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:7EUnImWhkE8=:AJyNbj8ZXvISOqgDREIltj
+ PIJOpXPdOv/qADDj/FlWhGmNSK80VgnDsyZJWk89nzUfrZLpmbIwlpyb/IFA/SMlB1Idp8n+g
+ 1tRd367wrWJf7mYdN35/GHZIXACSqtnL6U2WQDApYT//Y9MWkQSf4qgm27IY/LyolnaMtq6kA
+ 84gYq9TrQ2bXWJZWXt4zKt9Ag/cv95dKDGnx7tAU7hYJZ4BlrD4fsMKqLCEDzPO2VARMy0C3k
+ TN+ZzPtEjMRfQJHl6mqQg1XcfFvJtbWy4PmsEPJwpPLktUDBnnd5/yro2FTtZ8B6/vUDtiwNS
+ ftgv85e99jQqxIF114u0levL2gvcUK/tkOefgWRRC9/5fJkuFjTOvifLFuN/W3gQulZnwef7r
+ 2x6jUBiRkxddVnyfA9UVqgvcFmQIBA9Wv2J7IV0qJpmQrzmT8n87vr+l3LTJeHRbOhcIZuuph
+ bJXDOEnRT4UweupR/v6UaxuEiOtYBFMLSj9Xrzoa2IkH1oD4RdwXeE6o0ySD+AcZN0Ll6g1yi
+ HoOEH512dOsBY0U/bWdQekO+6+y+u+qCkuowed0VtNPDczhLfcXJoup9nbU8Mwb31brq4ikdV
+ vKpfv4wOl4IqzGeS0qBy8pwzivrgT4kr2mGPFc4L9k7uouxmWqjTGWGsdppgFVbbbvDjfHB6B
+ hQs3uSHvjDUoPr1ySRAHbF1ec6PuCrlFZiwbNxTHGSAU6CHZc3o82oC/54IKZpQeoYUUedhKv
+ bl/1QeecdGBvGFxdYY0MaynXXxBZhT61BgEjyu8FB/eVpIutgQz3+FN1wEb1cYJ3maRFnkctA
+ gBCZP0vP5uzzTyVMOQa/h50xeh83ebYkzoWy8yHgAsCcF+0AdgC7M2lTZi4QAD66o87jM9B+N
+ Gkm3ndN4YBwwGD9FZWvhh0kyXE+qm2GWBte9Ojs42ExK6cdn3egFhwSo6XWs/5W7d9ecBvTw6
+ 1VKze28qWQgM+t4adQcYm1nfc4y8KBDptywNf+CoktmjcCqBWkyn8TVLY6wdBUgggte5rJhnt
+ dA5fWLxVkDnbfSY+m372Vti+lRahJ9lccm2hG1ANyz137A8E9qoKOLhuZPOq5HXsaS3k48LWh
+ 66D3M2uxXJzUnG4NEM0QjFnXEuMnfF+6O8cVMQltkHrg6BxbwVznmkx8gFcvgaFAY+/CS0Qxs
+ 2lNtNDbRcdMzenCNmeq7jAKIwz4wAKzSYR71Kft3VRppILCtcwD0cLyhRTwGTT+R7+Cn/uTUJ
+ yLe7ESOVVJd9EoCcfSN4CS3gLLHJ0y8IfrDq390a9rvtD8Kxi66W6tFqBPYs=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-I find that the commit message should still be considerably improved.
-How do you think about to use the subject =E2=80=9C[PATCH] coccicheck:
-Support search for SmPL scripts within selected directory hierarchy=E2=80=
-=9D?
+> Second the commit log could be more concise as:
+
+I like your desire for choosing a more appropriate commit message.
 
 
-> Put a modification in scripts/coccicheck which supports users in
-> configuring COCCI parameter as a directory to traverse files in
-> directory whose next level directory contains rule files with Suffix of =
-cocci.
+> Allow defining COCCI as a directory that contains .cocci files.
 
-* Please avoid a typo in this change description.
+I would prefer to concentrate the patch subject on other information.
 
-* Would you like to integrate a wording approach like the following?
 
-  A search can be performed for SmPL scripts within a directory hierarchy.
-  Start a corresponding file determination if the environment variable =E2=
-=80=9CCOCCI=E2=80=9D
-  contains an acceptable path.
+> In general, at least in simple cases, it is not necessary to mention the
+> name of the file you are modifying in the comit log, because one can see
+> that just below from looking at the diffstat and the patch.
 
+This view can be reasonable. - How does it fit to the usual requirement
+for the specification of a =E2=80=9Csubsystem=E2=80=9D (or =E2=80=9Cprefix=
+=E2=80=9D) according to the
+canonical patch format?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3D13b86bc4cd648eae69fdcf3d04=
+b2750c76350053#n656
 
 Regards,
 Markus

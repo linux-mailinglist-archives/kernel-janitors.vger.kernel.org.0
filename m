@@ -2,107 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D953FE33D0
-	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Oct 2019 15:19:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65727E343D
+	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Oct 2019 15:31:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502493AbfJXNTO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 24 Oct 2019 09:19:14 -0400
-Received: from inca-roads.misterjones.org ([213.251.177.50]:39373 "EHLO
-        inca-roads.misterjones.org" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1730061AbfJXNTO (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 24 Oct 2019 09:19:14 -0400
-Received: from www-data by cheepnis.misterjones.org with local (Exim 4.80)
-        (envelope-from <maz@kernel.org>)
-        id 1iNd1A-0000Sw-Ge; Thu, 24 Oct 2019 15:19:08 +0200
-To:     Steven Price <steven.price@arm.com>
-Subject: Re: [PATCH] KVM: arm64: Select =?UTF-8?Q?SCHED=5FINFO=20before=20?=  =?UTF-8?Q?SCHEDSTATS?=
-X-PHP-Originating-Script: 0:main.inc
+        id S2393599AbfJXNbj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 24 Oct 2019 09:31:39 -0400
+Received: from foss.arm.com ([217.140.110.172]:51516 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2388827AbfJXNbj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 24 Oct 2019 09:31:39 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 17A06C8F;
+        Thu, 24 Oct 2019 06:31:24 -0700 (PDT)
+Received: from e112269-lin.cambridge.arm.com (e112269-lin.cambridge.arm.com [10.1.194.43])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D2C493F71A;
+        Thu, 24 Oct 2019 06:31:22 -0700 (PDT)
+From:   Steven Price <steven.price@arm.com>
+To:     Marc Zyngier <maz@kernel.org>
+Cc:     catalin.marinas@arm.com, kernel-janitors@vger.kernel.org,
+        Mao Wenan <maowenan@huawei.com>, linux-kernel@vger.kernel.org,
+        will@kernel.org, kvmarm@lists.cs.columbia.edu,
+        linux-arm-kernel@lists.infradead.org,
+        Steven Price <steven.price@arm.com>
+Subject: [PATCH v2] KVM: arm64: Select TASK_DELAY_ACCT+TASKSTATS rather than SCHEDSTATS
+Date:   Thu, 24 Oct 2019 14:31:11 +0100
+Message-Id: <20191024133111.27758-1-steven.price@arm.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <3abfc893613caf529b0f6a933e74068d@www.loen.fr>
+References: <3abfc893613caf529b0f6a933e74068d@www.loen.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Thu, 24 Oct 2019 14:19:08 +0100
-From:   Marc Zyngier <maz@kernel.org>
-Cc:     Mao Wenan <maowenan@huawei.com>, <catalin.marinas@arm.com>,
-        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <will@kernel.org>, <kvmarm@lists.cs.columbia.edu>,
-        <linux-arm-kernel@lists.infradead.org>
-In-Reply-To: <6d037fa1-5e8b-38cd-e947-7547c1e8dd15@arm.com>
-References: <20191023032254.159510-1-maowenan@huawei.com>
- <26ee413334937b9530bc8f033fe378ec@www.loen.fr>
- <6d037fa1-5e8b-38cd-e947-7547c1e8dd15@arm.com>
-Message-ID: <3abfc893613caf529b0f6a933e74068d@www.loen.fr>
-X-Sender: maz@kernel.org
-User-Agent: Roundcube Webmail/0.7.2
-X-SA-Exim-Connect-IP: <locally generated>
-X-SA-Exim-Rcpt-To: steven.price@arm.com, maowenan@huawei.com, catalin.marinas@arm.com, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, will@kernel.org, kvmarm@lists.cs.columbia.edu, linux-arm-kernel@lists.infradead.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on cheepnis.misterjones.org); SAEximRunCond expanded to false
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2019-10-24 12:22, Steven Price wrote:
+SCHEDSTATS requires DEBUG_KERNEL (and PROC_FS) and therefore isn't a
+good choice for enabling the scheduling statistics required for stolen
+time.
 
-[...]
+Instead match the x86 configuration and select TASK_DELAY_ACCT and
+TASKSTATS. This adds the dependencies of NET && MULTIUSER for arm64 KVM.
 
-> From 915893f5c57241cc29d90769b3f720a6135277d7 Mon Sep 17 00:00:00 
-> 2001
-> From: Steven Price <steven.price@arm.com>
-> Date: Thu, 24 Oct 2019 12:14:36 +0100
-> Subject: [PATCH] KVM: arm64: Select TASK_DELAY_ACCT rather than 
-> SCHEDSTATS
->
-> SCHEDSTATS requires DEBUG_KERNEL (and PROC_FS) and therefore isn't a
-> good choice for enabling the scheduling statistics required for 
-> stolen
-> time.
->
-> Instead match the x86 configuration and select TASK_DELAY_ACCT. This
-> adds the dependencies of NET && MULTIUSER for arm64 KVM.
->
-> Suggested-by: Marc Zyngier <maz@kernel.org>
-> Fixes: 8564d6372a7d ("KVM: arm64: Support stolen time reporting via
-> shared structure")
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
->  arch/arm64/kvm/Kconfig | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-> index d8b88e40d223..1ffb300e2d92 100644
-> --- a/arch/arm64/kvm/Kconfig
-> +++ b/arch/arm64/kvm/Kconfig
-> @@ -21,6 +21,8 @@ if VIRTUALIZATION
->  config KVM
->  	bool "Kernel-based Virtual Machine (KVM) support"
->  	depends on OF
-> +	# for TASKSTATS/TASK_DELAY_ACCT:
-> +	depends on NET && MULTIUSER
->  	select MMU_NOTIFIER
->  	select PREEMPT_NOTIFIERS
->  	select HAVE_KVM_CPU_RELAX_INTERCEPT
-> @@ -39,7 +41,7 @@ config KVM
->  	select IRQ_BYPASS_MANAGER
->  	select HAVE_KVM_IRQ_BYPASS
->  	select HAVE_KVM_VCPU_RUN_PID_CHANGE
-> -	select SCHEDSTATS
-> +	select TASK_DELAY_ACCT
->  	---help---
->  	  Support hosting virtualized guest machines.
->  	  We don't support KVM with 16K page tables yet, due to the 
-> multiple
+Suggested-by: Marc Zyngier <maz@kernel.org>
+Fixes: 8564d6372a7d ("KVM: arm64: Support stolen time reporting via shared structure")
+Signed-off-by: Steven Price <steven.price@arm.com>
+---
 
-Same issue as before: you have an implicit config symbol selection.
-TASK_DELAY_ACCT depends on TASKSTATS (which is why you have this NET &&
-MULTIUSER constraint).
+Let's try again! Somehow I'd got it into my head that TASK_DELAY_ACCT
+selected TASKSTATS not depended on. Even though I'd managed to get it
+right in the comment!
 
-You need to select both TASK_DELAY_ACCT and TASKSTATS, as the comment 
-you
-add suggests.
+ arch/arm64/kvm/Kconfig | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-         M.
+diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
+index d8b88e40d223..a475c68cbfec 100644
+--- a/arch/arm64/kvm/Kconfig
++++ b/arch/arm64/kvm/Kconfig
+@@ -21,6 +21,8 @@ if VIRTUALIZATION
+ config KVM
+ 	bool "Kernel-based Virtual Machine (KVM) support"
+ 	depends on OF
++	# for TASKSTATS/TASK_DELAY_ACCT:
++	depends on NET && MULTIUSER
+ 	select MMU_NOTIFIER
+ 	select PREEMPT_NOTIFIERS
+ 	select HAVE_KVM_CPU_RELAX_INTERCEPT
+@@ -39,7 +41,8 @@ config KVM
+ 	select IRQ_BYPASS_MANAGER
+ 	select HAVE_KVM_IRQ_BYPASS
+ 	select HAVE_KVM_VCPU_RUN_PID_CHANGE
+-	select SCHEDSTATS
++	select TASKSTATS
++	select TASK_DELAY_ACCT
+ 	---help---
+ 	  Support hosting virtualized guest machines.
+ 	  We don't support KVM with 16K page tables yet, due to the multiple
 -- 
-Jazz is not dead. It just smells funny...
+2.20.1
+

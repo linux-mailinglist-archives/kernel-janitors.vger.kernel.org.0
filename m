@@ -2,75 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1730E3495
-	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Oct 2019 15:45:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5363BE36FD
+	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Oct 2019 17:48:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393742AbfJXNpZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 24 Oct 2019 09:45:25 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:35278 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2393677AbfJXNpY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 24 Oct 2019 09:45:24 -0400
-Received: from zn.tnic (p200300EC2F0F6D006C14721BC32EDA46.dip0.t-ipconnect.de [IPv6:2003:ec:2f0f:6d00:6c14:721b:c32e:da46])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 62C761EC0CB2;
-        Thu, 24 Oct 2019 15:45:19 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1571924719;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=ZDDiIZV3N/1CCiWoHasK1HUYfVsvlhqlkoWiG1CA6ws=;
-        b=Of9iK+JsmYNONFtkeLUj9egCEHJpdvzCfczMFWtS3SdEVJQxU8uZqj3e8xgaMRKMikxKsf
-        SJ5k3neCBb/U7AEz9snyj06KhRrwswAPd2pZjSveI/Wend8ho72MXkzdeo/tLbKrb0AxL3
-        DMbvcueT96ApYV6uTfXPCcXaflemDkE=
-Date:   Thu, 24 Oct 2019 15:45:11 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Joel Stanley <joel@jms.id.au>
-Cc:     Markus Elfring <Markus.Elfring@web.de>, linux-edac@vger.kernel.org,
-        linux-aspeed <linux-aspeed@lists.ozlabs.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        James Morse <james.morse@arm.com>,
-        Robert Richter <rrichter@marvell.com>,
-        Stefan Schaeckeler <sschaeck@cisco.com>,
-        Tony Luck <tony.luck@intel.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] EDAC: Aspeed: Use devm_platform_ioremap_resource() in
- aspeed_probe()
-Message-ID: <20191024134511.GA1942@zn.tnic>
-References: <baabb9e9-a1b2-3a04-9fb6-aa632de5f722@web.de>
- <CACPK8XfUJ5VGpTS3gwxSVZbdWZKPH6PwT2JKGGJ2yzoXYKdtZg@mail.gmail.com>
+        id S2409759AbfJXPsD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 24 Oct 2019 11:48:03 -0400
+Received: from condef-10.nifty.com ([202.248.20.75]:64251 "EHLO
+        condef-10.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2409737AbfJXPsC (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 24 Oct 2019 11:48:02 -0400
+Received: from conssluserg-01.nifty.com ([10.126.8.80])by condef-10.nifty.com with ESMTP id x9OFfo0w014127
+        for <kernel-janitors@vger.kernel.org>; Fri, 25 Oct 2019 00:41:50 +0900
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170]) (authenticated)
+        by conssluserg-01.nifty.com with ESMTP id x9OFfT9D030417;
+        Fri, 25 Oct 2019 00:41:30 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com x9OFfT9D030417
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1571931690;
+        bh=l4I3j33otfIQZSfw7zL4nNKREYId00X6FYw//AMabaE=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=J7JzzEq9jjLw/A4o0vktjGoZM/o7nOPyZ8FJ0n8aolcVy3rE56fx7QD8thRLNPdul
+         mnDh+esLCS0XIygkfjxyVUEmrfI67Ks/JVCIIjjR9J9dhTRAAIdAWj7a0m5mWJ255Y
+         W76ZVDt21NQ5YpFO9usnpk7YY/YERETFjeDQ8DWSpGQbROFdWil1E1vKtBCrh+JLQU
+         E4GkkVdSdsoaCkWHzMWamdBpvGD2t65EVEaeiJdH+oRM/Zf7rgSUAgE9ZzpniLbdn3
+         Aby5i/iYIdpGmZEbLsmF0l5JBAGizqtLGrTlzsgvNSsWaOatg/Kmb0a24xTyXnDE1a
+         Cox9VvptnGKUg==
+X-Nifty-SrcIP: [209.85.221.170]
+Received: by mail-vk1-f170.google.com with SMTP id 70so5405055vkz.8;
+        Thu, 24 Oct 2019 08:41:30 -0700 (PDT)
+X-Gm-Message-State: APjAAAXNjydu3jidSu95JZarNCINHp/QuAJm2bx+Q3zTqU7VmPi3Wt8l
+        wWw+Ru0gS3qo1gUa2PpZ+hlkltsK1hY3CeAfhjk=
+X-Google-Smtp-Source: APXvYqzECnMU+WoRoqmpGp2qCaUvuGA+5Jc8kg37Z+KgqZpCHvCQICZwcWI/5OzGByPm5gI//L5m5unfHNDIvbYQnaM=
+X-Received: by 2002:a1f:a349:: with SMTP id m70mr9104948vke.26.1571931688982;
+ Thu, 24 Oct 2019 08:41:28 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CACPK8XfUJ5VGpTS3gwxSVZbdWZKPH6PwT2JKGGJ2yzoXYKdtZg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <e895d04ef5a282b5b48fcb21cbc175d2@www.loen.fr> <693a3b68-a0f1-81fe-40ce-2b6ba189450c@web.de>
+ <868spgzcti.wl-maz@kernel.org> <c8816d85b696cb96318e17b7010b84f09bc67bf7.camel@perches.com>
+In-Reply-To: <c8816d85b696cb96318e17b7010b84f09bc67bf7.camel@perches.com>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Fri, 25 Oct 2019 00:40:52 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQqSThGRM_wRGR2ou3B+Oqpr0nF9Fg4rhSR4Hvnxwnj3g@mail.gmail.com>
+Message-ID: <CAK7LNAQqSThGRM_wRGR2ou3B+Oqpr0nF9Fg4rhSR4Hvnxwnj3g@mail.gmail.com>
+Subject: Re: coccinelle: api/devm_platform_ioremap_resource: remove useless script
+To:     Joe Perches <joe@perches.com>
+Cc:     Marc Zyngier <maz@kernel.org>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        kernel-janitors@vger.kernel.org,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linus Torvalds <torvalds@linuxfoundation.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        YueHaibing <yuehaibing@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Oct 23, 2019 at 06:23:53AM +0000, Joel Stanley wrote:
-> On Sat, 21 Sep 2019 at 16:47, Markus Elfring <Markus.Elfring@web.de> wrote:
-> >
-> > From: Markus Elfring <elfring@users.sourceforge.net>
-> > Date: Sat, 21 Sep 2019 18:32:46 +0200
-> >
-> > Simplify this function implementation by using a known wrapper function.
-> >
-> > This issue was detected by using the Coccinelle software.
-> >
-> > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> 
-> Acked-by: Joel Stanley <joel@jms.id.au>
+On Sun, Oct 20, 2019 at 7:13 AM Joe Perches <joe@perches.com> wrote:
+>
+> On Sat, 2019-10-19 at 21:43 +0100, Marc Zyngier wrote:
+> > Providing Coccinelle scripts that scream about perfectly valid code is
+> > pointless, and the result is actively harmful.
+>
+> Doubtful.
+>
+> If the new code is smaller object code and correct
+> than the conversion is worthwhile.
 
-Applied, thanks.
+I agree.
+
+We use multi-platform defconfig.
+I always appreciate the code refactoring
+that reduces the object size.
+
+
+
+> fyi:
+>
+> There are already ~450 uses of this function and maybe
+> ~800 possible additional conversions.
+>
+> > If said script was providing a correct semantic patch instead of being
+> > an incentive for people to churn untested patches that span the whole
+> > tree, that'd be a different story.
+>
+> Right.
+>
+>
+
+
+Alexandre Belloni used
+https://lore.kernel.org/lkml/9bbcce19c777583815c92ce3c2ff2586@www.loen.fr/
+as a reference, but this is not the output from coccicheck.
+The patch author just created a wrong patch by hand.
+
+The deleted semantic patch supports MODE=patch,
+which creates a correct patch, and is useful.
+
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Best Regards
+Masahiro Yamada

@@ -2,117 +2,132 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5363BE36FD
-	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Oct 2019 17:48:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AB86FE381C
+	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Oct 2019 18:37:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409759AbfJXPsD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 24 Oct 2019 11:48:03 -0400
-Received: from condef-10.nifty.com ([202.248.20.75]:64251 "EHLO
-        condef-10.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2409737AbfJXPsC (ORCPT
+        id S2503487AbfJXQhv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 24 Oct 2019 12:37:51 -0400
+Received: from mail-qk1-f193.google.com ([209.85.222.193]:45485 "EHLO
+        mail-qk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2503485AbfJXQhv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 24 Oct 2019 11:48:02 -0400
-Received: from conssluserg-01.nifty.com ([10.126.8.80])by condef-10.nifty.com with ESMTP id x9OFfo0w014127
-        for <kernel-janitors@vger.kernel.org>; Fri, 25 Oct 2019 00:41:50 +0900
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170]) (authenticated)
-        by conssluserg-01.nifty.com with ESMTP id x9OFfT9D030417;
-        Fri, 25 Oct 2019 00:41:30 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com x9OFfT9D030417
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1571931690;
-        bh=l4I3j33otfIQZSfw7zL4nNKREYId00X6FYw//AMabaE=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=J7JzzEq9jjLw/A4o0vktjGoZM/o7nOPyZ8FJ0n8aolcVy3rE56fx7QD8thRLNPdul
-         mnDh+esLCS0XIygkfjxyVUEmrfI67Ks/JVCIIjjR9J9dhTRAAIdAWj7a0m5mWJ255Y
-         W76ZVDt21NQ5YpFO9usnpk7YY/YERETFjeDQ8DWSpGQbROFdWil1E1vKtBCrh+JLQU
-         E4GkkVdSdsoaCkWHzMWamdBpvGD2t65EVEaeiJdH+oRM/Zf7rgSUAgE9ZzpniLbdn3
-         Aby5i/iYIdpGmZEbLsmF0l5JBAGizqtLGrTlzsgvNSsWaOatg/Kmb0a24xTyXnDE1a
-         Cox9VvptnGKUg==
-X-Nifty-SrcIP: [209.85.221.170]
-Received: by mail-vk1-f170.google.com with SMTP id 70so5405055vkz.8;
-        Thu, 24 Oct 2019 08:41:30 -0700 (PDT)
-X-Gm-Message-State: APjAAAXNjydu3jidSu95JZarNCINHp/QuAJm2bx+Q3zTqU7VmPi3Wt8l
-        wWw+Ru0gS3qo1gUa2PpZ+hlkltsK1hY3CeAfhjk=
-X-Google-Smtp-Source: APXvYqzECnMU+WoRoqmpGp2qCaUvuGA+5Jc8kg37Z+KgqZpCHvCQICZwcWI/5OzGByPm5gI//L5m5unfHNDIvbYQnaM=
-X-Received: by 2002:a1f:a349:: with SMTP id m70mr9104948vke.26.1571931688982;
- Thu, 24 Oct 2019 08:41:28 -0700 (PDT)
+        Thu, 24 Oct 2019 12:37:51 -0400
+Received: by mail-qk1-f193.google.com with SMTP id q70so16454332qke.12
+        for <kernel-janitors@vger.kernel.org>; Thu, 24 Oct 2019 09:37:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=icUcqUpogMECyP9sH76MDAGI4PdsOcFvi0zQAXjD5gw=;
+        b=ST1oBqzm9l8vzLOyZd0hRdCTcihiK2U9o8TM/jacoBDnU4AVFGgpmdK9QyBPzIv0LT
+         XqKXh9bzvZ2CnNsSRCsquLkCF1HfYeHjxZaJtKWFtPbuoBSBKAymRWHa0E0sNJtR6cDZ
+         AaMopgtUpByu56oJEt9TxwZr5BVD8EkBQxHqDxmbTjv8JPDr8EPZ68zRRqtZh3Yu+t7/
+         TaGpCpxuVgyAJT0mj84eAQUTdDMbp5MSb3zka9FpbFq7XGbLhD51oVezSDmqoYruc5F3
+         GGv3HLNnCM0k+G9j3XEtyD6op7y7uLr4FhsZWnUuXhX7RdOzG0esFhmuBDcSpHUvVGAC
+         88ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=icUcqUpogMECyP9sH76MDAGI4PdsOcFvi0zQAXjD5gw=;
+        b=KZJkzk3heq81ShzVthctBUySLDyZmgZ5eolm/Yt2LrN/09mhY4LOukTokZsS/uOST6
+         AwXQp/W/dA7P7xhrsqTHYpfg6yrt6Dl/Tb3bbHJcd5/2+W72GqVTAOI8q9q/8FkgfpsQ
+         kWUTPyIbATik5iO07A+XxX7SJbTH9odXMmWEpv2VTBUqLWWuYzdAeWvc2rqSLE9GPlFW
+         X4N383A00AR+aNo6W1ZEXg6ayvK5c0f0pVNDhKEwf4Tvi+YOcJV1W8V42gZRR//lJb5d
+         +KDlhu33kN9UxxBYvF6fsh42iJ1jGo7xJ8JQf/+qnKMKDqjYLlOe3GFv09i4xTas+wQ1
+         AKaQ==
+X-Gm-Message-State: APjAAAXLBatGWl/r+e1OC4xSKprl7gzB1I43S0JJ2dUHlQPfGU38IZum
+        LL4G7L67nmz+NJ+gV/m/Ag+StA==
+X-Google-Smtp-Source: APXvYqzZ0VWRSwVTylmKa0BuouZZvLyySisivc4pMB71YfWx6u3wxNBWEhqw/qDGp1ExbrEwOrBvbg==
+X-Received: by 2002:a37:2fc1:: with SMTP id v184mr14897957qkh.18.1571935070042;
+        Thu, 24 Oct 2019 09:37:50 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-162-113-180.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.113.180])
+        by smtp.gmail.com with ESMTPSA id f11sm12729426qkk.76.2019.10.24.09.37.49
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 24 Oct 2019 09:37:49 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1iNg7R-0003wV-1Y; Thu, 24 Oct 2019 13:37:49 -0300
+Date:   Thu, 24 Oct 2019 13:37:49 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Lijun Ou <oulijun@huawei.com>,
+        "Wei Hu(Xavier)" <xavier.huwei@huawei.com>,
+        Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] RDMA/hns: prevent undefined behavior in
+ hns_roce_set_user_sq_size()
+Message-ID: <20191024163749.GX23952@ziepe.ca>
+References: <20190608092514.GC28890@mwanda>
+ <20191007121821.GI21515@kadam>
 MIME-Version: 1.0
-References: <e895d04ef5a282b5b48fcb21cbc175d2@www.loen.fr> <693a3b68-a0f1-81fe-40ce-2b6ba189450c@web.de>
- <868spgzcti.wl-maz@kernel.org> <c8816d85b696cb96318e17b7010b84f09bc67bf7.camel@perches.com>
-In-Reply-To: <c8816d85b696cb96318e17b7010b84f09bc67bf7.camel@perches.com>
-From:   Masahiro Yamada <yamada.masahiro@socionext.com>
-Date:   Fri, 25 Oct 2019 00:40:52 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQqSThGRM_wRGR2ou3B+Oqpr0nF9Fg4rhSR4Hvnxwnj3g@mail.gmail.com>
-Message-ID: <CAK7LNAQqSThGRM_wRGR2ou3B+Oqpr0nF9Fg4rhSR4Hvnxwnj3g@mail.gmail.com>
-Subject: Re: coccinelle: api/devm_platform_ioremap_resource: remove useless script
-To:     Joe Perches <joe@perches.com>
-Cc:     Marc Zyngier <maz@kernel.org>,
-        Markus Elfring <Markus.Elfring@web.de>,
-        Himanshu Jha <himanshujha199640@gmail.com>,
-        Julia Lawall <julia.lawall@lip6.fr>,
-        kernel-janitors@vger.kernel.org,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linus Torvalds <torvalds@linuxfoundation.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        YueHaibing <yuehaibing@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191007121821.GI21515@kadam>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Oct 20, 2019 at 7:13 AM Joe Perches <joe@perches.com> wrote:
->
-> On Sat, 2019-10-19 at 21:43 +0100, Marc Zyngier wrote:
-> > Providing Coccinelle scripts that scream about perfectly valid code is
-> > pointless, and the result is actively harmful.
->
-> Doubtful.
->
-> If the new code is smaller object code and correct
-> than the conversion is worthwhile.
+On Mon, Oct 07, 2019 at 03:18:22PM +0300, Dan Carpenter wrote:
+> This one still needs to be applied.
+> 
+> regards,
+> dan carpenter
 
-I agree.
+Weird, it is marked changes requested in patchworks. An email must
+have been lost??
 
-We use multi-platform defconfig.
-I always appreciate the code refactoring
-that reduces the object size.
+I think I probably wanted to say that:
 
+> >  	/* Sanity check SQ size before proceeding */
+> > -	if ((u32)(1 << ucmd->log_sq_bb_count) > hr_dev->caps.max_wqes ||
+> > +	if (ucmd->log_sq_bb_count > 31 ||
+> > +	    (u32)(1 << ucmd->log_sq_bb_count) > hr_dev->caps.max_wqes
+> > ||
 
+Overall should probably be coded using check_shl_overflow(), as this
+later shift:
 
-> fyi:
->
-> There are already ~450 uses of this function and maybe
-> ~800 possible additional conversions.
->
-> > If said script was providing a correct semantic patch instead of being
-> > an incentive for people to churn untested patches that span the whole
-> > tree, that'd be a different story.
->
-> Right.
->
->
+	hr_qp->sq.wqe_cnt = 1 << ucmd->log_sq_bb_count;
 
+Is storing it into an int and hardwring '31' because it magically
+matches that lower shift is pretty fragile.
 
-Alexandre Belloni used
-https://lore.kernel.org/lkml/9bbcce19c777583815c92ce3c2ff2586@www.loen.fr/
-as a reference, but this is not the output from coccicheck.
-The patch author just created a wrong patch by hand.
+More like this?
 
-The deleted semantic patch supports MODE=patch,
-which creates a correct patch, and is useful.
-
-
--- 
-Best Regards
-Masahiro Yamada
+diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
+index bec48f2593f405..6aa27d6ea3a600 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_qp.c
++++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
+@@ -332,9 +332,8 @@ static int check_sq_size_with_integrity(struct hns_roce_dev *hr_dev,
+ 	u8 max_sq_stride = ilog2(roundup_sq_stride);
+ 
+ 	/* Sanity check SQ size before proceeding */
+-	if ((u32)(1 << ucmd->log_sq_bb_count) > hr_dev->caps.max_wqes ||
+-	     ucmd->log_sq_stride > max_sq_stride ||
+-	     ucmd->log_sq_stride < HNS_ROCE_IB_MIN_SQ_STRIDE) {
++	if (ucmd->log_sq_stride > max_sq_stride ||
++	    ucmd->log_sq_stride < HNS_ROCE_IB_MIN_SQ_STRIDE) {
+ 		ibdev_err(&hr_dev->ib_dev, "check SQ size error!\n");
+ 		return -EINVAL;
+ 	}
+@@ -358,13 +357,16 @@ static int hns_roce_set_user_sq_size(struct hns_roce_dev *hr_dev,
+ 	u32 max_cnt;
+ 	int ret;
+ 
++	if (check_shl_overflow(1, ucmd->log_sq_bb_count, &hr_qp->sq.wqe_cnt) ||
++	    hr_qp->sq.wqe_cnt > hr_dev->caps.max_wqes)
++		return -EINVAL;
++
+ 	ret = check_sq_size_with_integrity(hr_dev, cap, ucmd);
+ 	if (ret) {
+ 		ibdev_err(&hr_dev->ib_dev, "Sanity check sq size failed\n");
+ 		return ret;
+ 	}
+ 
+-	hr_qp->sq.wqe_cnt = 1 << ucmd->log_sq_bb_count;
+ 	hr_qp->sq.wqe_shift = ucmd->log_sq_stride;
+ 
+ 	max_cnt = max(1U, cap->max_send_sge);

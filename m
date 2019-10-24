@@ -2,112 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 778A8E3C84
-	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Oct 2019 21:52:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C212E3DAC
+	for <lists+kernel-janitors@lfdr.de>; Thu, 24 Oct 2019 22:53:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392393AbfJXTwA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 24 Oct 2019 15:52:00 -0400
-Received: from ozlabs.org ([203.11.71.1]:47283 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390431AbfJXTwA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 24 Oct 2019 15:52:00 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 46zdDP46YWz9sPV;
-        Fri, 25 Oct 2019 06:51:48 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
-        s=201702; t=1571946716;
-        bh=UWyXQ1Iw+UMZYj2SA6HBAw1NT5T7pfbx2QffwK989yU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=jwX9fOuI11zIRK3ojPaBk/qXRXsPsMVeh2/gaacyvzQwL+V0aiYZkAhFPheFd9k0J
-         et2FGYEubuOkFNq4vzQyFgqNJo6wcYfVP2HuSgPzo9JP9B04IjIQFB2GD4D2CW362S
-         RmoMZ2HHnMqnEWbvmOCnSeko+OCrRH1U/t2yVj6g9O1O9Phf3fr5j/9TUDRDTGgSJv
-         JJpGFSBVqVfJyPLUxl37q7A5t/3+kLWuHell801boDx4L5/SwSZLopVdtrSgKgmUHR
-         HlyXd1W/5Q1x4JDtE6HM/ZlzOkwAZigTbqsjCBQeJGumdnSd+iDpplh2FiQA0aDLTr
-         R1fjqzpS8AefQ==
-Date:   Fri, 25 Oct 2019 06:51:35 +1100
-From:   Stephen Rothwell <sfr@canb.auug.org.au>
-To:     Daniel Vetter <daniel@ffwll.ch>
-Cc:     Colin Ian King <colin.king@canonical.com>,
-        Sean Paul <sean@poorly.run>,
-        Maxime Ripard <mripard@kernel.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Eric Anholt <eric@anholt.net>, David Airlie <airlied@linux.ie>,
-        Navid Emamdoost <navid.emamdoost@gmail.com>,
-        Iago Toral Quiroga <itoral@igalia.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH][next] drm/v3d: fix double free of bin
-Message-ID: <20191025065135.09175b37@canb.auug.org.au>
-In-Reply-To: <CAKMK7uGbMx21+g2kQyGu5H-L7N-guKJhsZ6b1ROnz5+kDRt3LA@mail.gmail.com>
-References: <20191024104801.3122-1-colin.king@canonical.com>
-        <20191024123853.GH11828@phenom.ffwll.local>
-        <821f0799-1f37-c853-d2c6-dd95883e02d8@canonical.com>
-        <CAKMK7uGbMx21+g2kQyGu5H-L7N-guKJhsZ6b1ROnz5+kDRt3LA@mail.gmail.com>
+        id S1728640AbfJXUxj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 24 Oct 2019 16:53:39 -0400
+Received: from userp2120.oracle.com ([156.151.31.85]:47920 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728629AbfJXUxj (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 24 Oct 2019 16:53:39 -0400
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9OKmxts114037;
+        Thu, 24 Oct 2019 20:53:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=XzYkpls0mGKqdG0KuT3/x44DM6Nq0EWYShTlbULF7VQ=;
+ b=HwvS4QFq5egQPgTBvuA02cbbyTBrC/K2DKEkfnhZlAySXlZLzKRdkU/yYFjDxMvjZYAO
+ Nf40ZL+Kfy07xdpYxYwE/igAL96NCojH2gnOuHCIw7OgDIobyIWRWNMd8vn/TJZJtO+x
+ QriwM40ddPL/HLeYJe+/mmwL+kQ45evDG+6q+RxyvL6MphcGbMxbSaX5fr3NmEvGc0Wv
+ 6B2pPwE+Xj5cndo0BDjIsMs60lecEYXMGB5CTqlQROVf56BYruCf98zMhe9jM0EXJZMR
+ tM2VxEhrEE6Vf60Gak24m/xUj8sAbUs2TZ3ePyl0+PE6Wr6eA27fF2IiprJO/Dd2jNwR PQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 2vqu4r61bf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 24 Oct 2019 20:53:21 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9OKrJWv121105;
+        Thu, 24 Oct 2019 20:53:20 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 2vu0fq2cja-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 24 Oct 2019 20:53:20 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x9OKrGkY009895;
+        Thu, 24 Oct 2019 20:53:16 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 24 Oct 2019 13:53:15 -0700
+Date:   Thu, 24 Oct 2019 23:53:06 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Eric Anholt <eric@anholt.net>,
+        Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, Eric Anholt <eric@anholt.net>,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] drm/v3d: Fix double free in v3d_submit_cl_ioctl()
+Message-ID: <20191024205306.GA14416@mwanda>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/xwrizZz4UyloQa1ZZxKFEFk";
- protocol="application/pgp-signature"; micalg=pgp-sha256
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9420 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910240196
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9420 signatures=668684
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910240195
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
---Sig_/xwrizZz4UyloQa1ZZxKFEFk
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Originally this error path used to leak "bin" but then we accidentally
+applied two separate commits to fix it and ended up with a double free.
 
-Hi all,
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+Hi Stephen,
 
-On Thu, 24 Oct 2019 14:49:36 +0200 Daniel Vetter <daniel@ffwll.ch> wrote:
->
-> Ok adding Stephen. There's a merge conflict between drm-misc-fixes and
-> drm-next (I think) and the merge double-added the kfree(bin). See
-> above for the relevant sha1. Dave is already on here as a heads-up,
-> but also adding drm-misc maintainers.
->=20
-> > >> ---
-> > >>  drivers/gpu/drm/v3d/v3d_gem.c | 1 -
-> > >>  1 file changed, 1 deletion(-)
-> > >>
-> > >> diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d=
-_gem.c
-> > >> index 549dde83408b..37515e47b47e 100644
-> > >> --- a/drivers/gpu/drm/v3d/v3d_gem.c
-> > >> +++ b/drivers/gpu/drm/v3d/v3d_gem.c
-> > >> @@ -568,7 +568,6 @@ v3d_submit_cl_ioctl(struct drm_device *dev, void=
- *data,
-> > >>              ret =3D v3d_job_init(v3d, file_priv, &bin->base,
-> > >>                                 v3d_job_free, args->in_sync_bcl);
-> > >>              if (ret) {
-> > >> -                    kfree(bin);
-> > >>                      v3d_job_put(&render->base);
-> > >>                      kfree(bin);
-> > >>                      return ret;
+I think this one is actually just a linux-next issue and the Fixes tag
+would point to commit f8593384f83f ("Merge remote-tracking branch
+'drm/drm-next'").
 
-I will add this as a merge fixup until drm-misc-fixes is merged into
-the drm tree.
+The original commits are 0d352a3a8a1f ("drm/v3d: don't leak bin job if
+v3d_job_init fails.") and commit 29cd13cfd762 ("drm/v3d: Fix memory leak
+in v3d_submit_cl_ioctl").
 
---=20
-Cheers,
-Stephen Rothwell
+I'm not totally sure how you guys address this normally but presumably
+you are experts at dealing with merge issues.  :)
 
---Sig_/xwrizZz4UyloQa1ZZxKFEFk
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
+ drivers/gpu/drm/v3d/v3d_gem.c | 1 -
+ 1 file changed, 1 deletion(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/drivers/gpu/drm/v3d/v3d_gem.c b/drivers/gpu/drm/v3d/v3d_gem.c
+index 549dde83408b..37515e47b47e 100644
+--- a/drivers/gpu/drm/v3d/v3d_gem.c
++++ b/drivers/gpu/drm/v3d/v3d_gem.c
+@@ -568,7 +568,6 @@ v3d_submit_cl_ioctl(struct drm_device *dev, void *data,
+ 		ret = v3d_job_init(v3d, file_priv, &bin->base,
+ 				   v3d_job_free, args->in_sync_bcl);
+ 		if (ret) {
+-			kfree(bin);
+ 			v3d_job_put(&render->base);
+ 			kfree(bin);
+ 			return ret;
+-- 
+2.20.1
 
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAl2yAMcACgkQAVBC80lX
-0Gy2ZggAiZaoH9RPu5iXGznPgZhzyg1plQKDAAPWiIwMq1c3Bivg6umaIroB14qg
-LGpurXf9YO+Vj8S06ukixB/b1vAycWSWXfauEZPhe6lF1YGykeZUVDeKCcIoR/oU
-we0+KgwxN1r854mdr4+OlzjC9VssQ8c3HiGztCldR0PnenNt/BP7m+4mQtmB2gdL
-H+cQREBnDZFHYKVNiDoIybIlyg34/MXC0nt2JGsY/A/UsBIFoLKEePnMc6j7Jh3O
-4mkIfZb2SYcUVz0a6Ds0XuqAOVb9IRKiTHMdE1v59cnSS+AcyNog821sMAgtwAYR
-lLyleGdyeEodrJ5AFmvnpCvc4bGZ9w==
-=RhRC
------END PGP SIGNATURE-----
-
---Sig_/xwrizZz4UyloQa1ZZxKFEFk--

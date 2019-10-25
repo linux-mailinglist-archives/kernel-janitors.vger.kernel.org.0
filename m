@@ -2,98 +2,112 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A2C2E45DA
-	for <lists+kernel-janitors@lfdr.de>; Fri, 25 Oct 2019 10:38:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B00CCE4842
+	for <lists+kernel-janitors@lfdr.de>; Fri, 25 Oct 2019 12:12:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406914AbfJYIiH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 25 Oct 2019 04:38:07 -0400
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:37354 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2404179AbfJYIiH (ORCPT
+        id S2409112AbfJYKMY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 25 Oct 2019 06:12:24 -0400
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:37732 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2409011AbfJYKMX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 25 Oct 2019 04:38:07 -0400
-X-IronPort-AV: E=Sophos;i="5.68,228,1569276000"; 
-   d="scan'208";a="408140288"
-Received: from ip-121.net-89-2-166.rev.numericable.fr (HELO hadrien) ([89.2.166.121])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Oct 2019 10:38:00 +0200
-Date:   Fri, 25 Oct 2019 10:38:00 +0200 (CEST)
-From:   Julia Lawall <julia.lawall@lip6.fr>
-X-X-Sender: jll@hadrien
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Joe Perches <joe@perches.com>, Marc Zyngier <maz@kernel.org>,
-        Markus Elfring <Markus.Elfring@web.de>,
-        Himanshu Jha <himanshujha199640@gmail.com>,
-        Julia Lawall <julia.lawall@lip6.fr>,
+        Fri, 25 Oct 2019 06:12:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+        List-Archive; bh=UIHdbuehA4W5cQC/qzKEDI4VtUGGKof8itjs+eOyx+E=; b=JF2doRefoXnQ
+        lWBOkJj9/uB6Rh/B2njgORKwRLWda76rcCGjW5aM/TE7Pb8uf+ma1bvwawEJiBBbk4x8pN4jUK+7n
+        05AiVkU+lfk5wAB/2Auucd0ZxvxZUApFlrhkCcfc1x5y7o/iZYpShdZ5K0dZPqiZ132ufI1RuPzZ0
+        6iw98=;
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.co.uk>)
+        id 1iNwZp-0006eG-Ph; Fri, 25 Oct 2019 10:12:13 +0000
+Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
+        id 3AA502743273; Fri, 25 Oct 2019 11:12:13 +0100 (BST)
+From:   Mark Brown <broonie@kernel.org>
+To:     Colin Ian King <colin.king@canonical.com>
+Cc:     alsa-devel@alsa-project.org, Bard Liao <bardliao@realtek.com>,
+        Ben Zhang <benzh@chromium.org>,
+        Curtis Malainey <cujomalainey@chromium.org>,
+        Jaroslav Kysela <perex@perex.cz>,
         kernel-janitors@vger.kernel.org,
-        Coccinelle <cocci@systeme.lip6.fr>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linus Torvalds <torvalds@linuxfoundation.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        YueHaibing <yuehaibing@huawei.com>
-Subject: Re: coccinelle: api/devm_platform_ioremap_resource: remove useless
- script
-In-Reply-To: <20191025080843.GG32742@smile.fi.intel.com>
-Message-ID: <alpine.DEB.2.21.1910251028260.2787@hadrien>
-References: <e895d04ef5a282b5b48fcb21cbc175d2@www.loen.fr> <693a3b68-a0f1-81fe-40ce-2b6ba189450c@web.de> <868spgzcti.wl-maz@kernel.org> <c8816d85b696cb96318e17b7010b84f09bc67bf7.camel@perches.com> <CAK7LNAQqSThGRM_wRGR2ou3B+Oqpr0nF9Fg4rhSR4Hvnxwnj3g@mail.gmail.com>
- <20191025080843.GG32742@smile.fi.intel.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Oder Chiou <oder_chiou@realtek.com>,
+        Takashi Iwai <tiwai@suse.com>
+Subject: Applied "ASoC: rt5677: Add missing null check for failed allocation of rt5677_dsp" to the asoc tree
+In-Reply-To: <20191024124610.18182-1-colin.king@canonical.com>
+X-Patchwork-Hint: ignore
+Message-Id: <20191025101213.3AA502743273@ypsilon.sirena.org.uk>
+Date:   Fri, 25 Oct 2019 11:12:13 +0100 (BST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+The patch
 
+   ASoC: rt5677: Add missing null check for failed allocation of rt5677_dsp
 
-On Fri, 25 Oct 2019, Andy Shevchenko wrote:
+has been applied to the asoc tree at
 
-> On Fri, Oct 25, 2019 at 12:40:52AM +0900, Masahiro Yamada wrote:
-> > On Sun, Oct 20, 2019 at 7:13 AM Joe Perches <joe@perches.com> wrote:
-> > > On Sat, 2019-10-19 at 21:43 +0100, Marc Zyngier wrote:
->
-> > Alexandre Belloni used
-> > https://lore.kernel.org/lkml/9bbcce19c777583815c92ce3c2ff2586@www.loen.fr/
-> > as a reference, but this is not the output from coccicheck.
-> > The patch author just created a wrong patch by hand.
->
-> Exactly. Removal of the script is a mistake. Like I said before is a healing
-> (incorrect by the way!) by symptoms.
->
-> > The deleted semantic patch supports MODE=patch,
-> > which creates a correct patch, and is useful.
->
-> Right!
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.5
 
-I ran it on the version of Linux that still has the script:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-fe7d2c23d748e4206f4bef9330d0dff9abed7411
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-and managed to compile 341 of the generated files in the time I had
-available, and all compiled successfully.  I can let it run again, and see
-how it goes for the rest.  Perhaps it would be acceptable if there was no
-report, and people would be forced to use the generated patch?
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-If someone is writing lots of patches on this issue by hand, then perhaps
-they don't have make coccicheck to produce patches, and then would
-overlook this case completely.
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-If it would be helpful, I could group the generated patches by maintainer
-or by subdirectory and send them out, if it would be easier to review them
-all at once.
+Thanks,
+Mark
 
-Anyway, the rule is not in the kernel at the moment.  For it's future, I'm
-open to whatever people find best.  Personally, I prefer when same things
-are done in the same way - it makes the code easier to understand and
-makes it simpler to address other issues when they arise.
+From f8a60435703bdde8f8a0ceb1aa8dad59df821583 Mon Sep 17 00:00:00 2001
+From: Colin Ian King <colin.king@canonical.com>
+Date: Thu, 24 Oct 2019 13:46:10 +0100
+Subject: [PATCH] ASoC: rt5677: Add missing null check for failed allocation of
+ rt5677_dsp
 
-julia
+The allocation of rt5677_dsp can potentially fail and return null, so add
+a null check and return -ENOMEM on a memory allocation failure.
+
+Addresses-Coverity: ("Dereference null return")
+Fixes: a0e0d135427c ("ASoC: rt5677: Add a PCM device for streaming hotword via SPI")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Link: https://lore.kernel.org/r/20191024124610.18182-1-colin.king@canonical.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/codecs/rt5677-spi.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/sound/soc/codecs/rt5677-spi.c b/sound/soc/codecs/rt5677-spi.c
+index 36c02d200cfc..3a17643fcd9f 100644
+--- a/sound/soc/codecs/rt5677-spi.c
++++ b/sound/soc/codecs/rt5677-spi.c
+@@ -376,6 +376,8 @@ static int rt5677_spi_pcm_probe(struct snd_soc_component *component)
+ 
+ 	rt5677_dsp = devm_kzalloc(component->dev, sizeof(*rt5677_dsp),
+ 			GFP_KERNEL);
++	if (!rt5677_dsp)
++		return -ENOMEM;
+ 	rt5677_dsp->dev = &g_spi->dev;
+ 	mutex_init(&rt5677_dsp->dma_lock);
+ 	INIT_DELAYED_WORK(&rt5677_dsp->copy_work, rt5677_spi_copy_work);
+-- 
+2.20.1
+

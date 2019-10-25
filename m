@@ -2,32 +2,26 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E2E5E453D
-	for <lists+kernel-janitors@lfdr.de>; Fri, 25 Oct 2019 10:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A2C2E45DA
+	for <lists+kernel-janitors@lfdr.de>; Fri, 25 Oct 2019 10:38:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2437769AbfJYIIv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 25 Oct 2019 04:08:51 -0400
-Received: from mga14.intel.com ([192.55.52.115]:10592 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2437725AbfJYIIu (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 25 Oct 2019 04:08:50 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Oct 2019 01:08:49 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,228,1569308400"; 
-   d="scan'208";a="197963295"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga007.fm.intel.com with ESMTP; 25 Oct 2019 01:08:45 -0700
-Received: from andy by smile with local (Exim 4.92.2)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1iNueJ-0001tN-QL; Fri, 25 Oct 2019 11:08:43 +0300
-Date:   Fri, 25 Oct 2019 11:08:43 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>
-Cc:     Joe Perches <joe@perches.com>, Marc Zyngier <maz@kernel.org>,
+        id S2406914AbfJYIiH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 25 Oct 2019 04:38:07 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:37354 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2404179AbfJYIiH (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 25 Oct 2019 04:38:07 -0400
+X-IronPort-AV: E=Sophos;i="5.68,228,1569276000"; 
+   d="scan'208";a="408140288"
+Received: from ip-121.net-89-2-166.rev.numericable.fr (HELO hadrien) ([89.2.166.121])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Oct 2019 10:38:00 +0200
+Date:   Fri, 25 Oct 2019 10:38:00 +0200 (CEST)
+From:   Julia Lawall <julia.lawall@lip6.fr>
+X-X-Sender: jll@hadrien
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+cc:     Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Joe Perches <joe@perches.com>, Marc Zyngier <maz@kernel.org>,
         Markus Elfring <Markus.Elfring@web.de>,
         Himanshu Jha <himanshujha199640@gmail.com>,
         Julia Lawall <julia.lawall@lip6.fr>,
@@ -47,42 +41,59 @@ Cc:     Joe Perches <joe@perches.com>, Marc Zyngier <maz@kernel.org>,
         YueHaibing <yuehaibing@huawei.com>
 Subject: Re: coccinelle: api/devm_platform_ioremap_resource: remove useless
  script
-Message-ID: <20191025080843.GG32742@smile.fi.intel.com>
-References: <e895d04ef5a282b5b48fcb21cbc175d2@www.loen.fr>
- <693a3b68-a0f1-81fe-40ce-2b6ba189450c@web.de>
- <868spgzcti.wl-maz@kernel.org>
- <c8816d85b696cb96318e17b7010b84f09bc67bf7.camel@perches.com>
- <CAK7LNAQqSThGRM_wRGR2ou3B+Oqpr0nF9Fg4rhSR4Hvnxwnj3g@mail.gmail.com>
+In-Reply-To: <20191025080843.GG32742@smile.fi.intel.com>
+Message-ID: <alpine.DEB.2.21.1910251028260.2787@hadrien>
+References: <e895d04ef5a282b5b48fcb21cbc175d2@www.loen.fr> <693a3b68-a0f1-81fe-40ce-2b6ba189450c@web.de> <868spgzcti.wl-maz@kernel.org> <c8816d85b696cb96318e17b7010b84f09bc67bf7.camel@perches.com> <CAK7LNAQqSThGRM_wRGR2ou3B+Oqpr0nF9Fg4rhSR4Hvnxwnj3g@mail.gmail.com>
+ <20191025080843.GG32742@smile.fi.intel.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK7LNAQqSThGRM_wRGR2ou3B+Oqpr0nF9Fg4rhSR4Hvnxwnj3g@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Oct 25, 2019 at 12:40:52AM +0900, Masahiro Yamada wrote:
-> On Sun, Oct 20, 2019 at 7:13 AM Joe Perches <joe@perches.com> wrote:
-> > On Sat, 2019-10-19 at 21:43 +0100, Marc Zyngier wrote:
-
-> Alexandre Belloni used
-> https://lore.kernel.org/lkml/9bbcce19c777583815c92ce3c2ff2586@www.loen.fr/
-> as a reference, but this is not the output from coccicheck.
-> The patch author just created a wrong patch by hand.
-
-Exactly. Removal of the script is a mistake. Like I said before is a healing
-(incorrect by the way!) by symptoms.
-
-> The deleted semantic patch supports MODE=patch,
-> which creates a correct patch, and is useful.
-
-Right!
-
--- 
-With Best Regards,
-Andy Shevchenko
 
 
+On Fri, 25 Oct 2019, Andy Shevchenko wrote:
+
+> On Fri, Oct 25, 2019 at 12:40:52AM +0900, Masahiro Yamada wrote:
+> > On Sun, Oct 20, 2019 at 7:13 AM Joe Perches <joe@perches.com> wrote:
+> > > On Sat, 2019-10-19 at 21:43 +0100, Marc Zyngier wrote:
+>
+> > Alexandre Belloni used
+> > https://lore.kernel.org/lkml/9bbcce19c777583815c92ce3c2ff2586@www.loen.fr/
+> > as a reference, but this is not the output from coccicheck.
+> > The patch author just created a wrong patch by hand.
+>
+> Exactly. Removal of the script is a mistake. Like I said before is a healing
+> (incorrect by the way!) by symptoms.
+>
+> > The deleted semantic patch supports MODE=patch,
+> > which creates a correct patch, and is useful.
+>
+> Right!
+
+I ran it on the version of Linux that still has the script:
+
+fe7d2c23d748e4206f4bef9330d0dff9abed7411
+
+and managed to compile 341 of the generated files in the time I had
+available, and all compiled successfully.  I can let it run again, and see
+how it goes for the rest.  Perhaps it would be acceptable if there was no
+report, and people would be forced to use the generated patch?
+
+If someone is writing lots of patches on this issue by hand, then perhaps
+they don't have make coccicheck to produce patches, and then would
+overlook this case completely.
+
+If it would be helpful, I could group the generated patches by maintainer
+or by subdirectory and send them out, if it would be easier to review them
+all at once.
+
+Anyway, the rule is not in the kernel at the moment.  For it's future, I'm
+open to whatever people find best.  Personally, I prefer when same things
+are done in the same way - it makes the code easier to understand and
+makes it simpler to address other issues when they arise.
+
+julia

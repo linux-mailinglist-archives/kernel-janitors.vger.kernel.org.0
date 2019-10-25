@@ -2,94 +2,133 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C8D10E48A5
-	for <lists+kernel-janitors@lfdr.de>; Fri, 25 Oct 2019 12:37:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 621CAE4937
+	for <lists+kernel-janitors@lfdr.de>; Fri, 25 Oct 2019 13:06:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392676AbfJYKhi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 25 Oct 2019 06:37:38 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:40712 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730471AbfJYKhi (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 25 Oct 2019 06:37:38 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9PAYLxk021001;
-        Fri, 25 Oct 2019 10:37:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=FayfNeGT6j1qewSZjEARp6f6zMucP3LRZwb6M/yZNWY=;
- b=lCeKnecvtXMgWSsSjLGU5qcZkOPvHLsrgQcG3S5kgwR4kONac5I3iHCzSctU+RaHr0UU
- 2VpHqUIIay1AdSpUzDD5yZPQPJ13tZiJSo1VpVOkWXlMC6YqFGTbv1ByR7cVIColIZTj
- i0BpIDFEuU7a5Dse6T+XfFYlXskmKfgx64mKGa8FVPhmxQWL9/Y1f7WAK4kaQpjeVl0V
- TT+7UbayQgeUEhU9BlJNvvTF/bnWWn31bzeATRgZpNTZyNaM4jP5CsE+Xp+q2reK3LYO
- JBKoQHADqBU4W78z56GGm8pbNvtuktUP3gqJCyYiq74crgChaxUokVce+kVXw5XifbpO /g== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 2vqswu28du-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 25 Oct 2019 10:37:19 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9PAY3qk133334;
-        Fri, 25 Oct 2019 10:35:18 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 2vuun0ucym-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 25 Oct 2019 10:35:18 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x9PAZFt2032481;
-        Fri, 25 Oct 2019 10:35:15 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 25 Oct 2019 03:35:15 -0700
-Date:   Fri, 25 Oct 2019 13:35:08 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Steve French <sfrench@samba.org>
-Cc:     linux-cifs@vger.kernel.org, samba-technical@lists.samba.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] cifs: rename a variable in SendReceive()
-Message-ID: <20191025103508.GA11916@mwanda>
+        id S2405405AbfJYLGj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 25 Oct 2019 07:06:39 -0400
+Received: from mout.web.de ([212.227.15.3]:53235 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2393483AbfJYLGj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 25 Oct 2019 07:06:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1572001564;
+        bh=vUOD97YDKmM1idl52vAgkHaJpLDtnh+9IX8AJaJynFY=;
+        h=X-UI-Sender-Class:Subject:Cc:References:To:From:Date:In-Reply-To;
+        b=qQKDibw8gX8BYLFPdPnqsAvblfeMhQD5bK4jCl5TFgVScV5LT9lFQlVY+1UO677Fc
+         Nr6vppn9tNdwtdhe86bNWSWz8t/r5WwNs1uXFKCrTX18qtipy1+L02rcPOn8mJsSK7
+         fyCsLyHJkfLQKU414PvqHQY7odoW/dK+Bzg/dKjQ=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([2.243.4.210]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lk8fS-1hqHME1Iok-00c8kt; Fri, 25
+ Oct 2019 13:06:04 +0200
+Subject: Re: [v3] coccicheck: Support search for SmPL scripts within selected
+ directory hierarchy
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Cheng Shengyu <cheng.shengyu@zte.com.cn>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Xue Zhihong <xue.zhihong@zte.com.cn>,
+        Yi Wang <wang.yi59@zte.com.cn>
+References: <201910251738005781441@zte.com.cn>
+To:     Zhong Shiqi <zhong.shiqi@zte.com.cn>, cocci@systeme.lip6.fr
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <8d81532a-ff38-8e78-79e0-bb8b6b8f9561@web.de>
+Date:   Fri, 25 Oct 2019 13:06:00 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9420 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910250100
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9420 signatures=668684
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910250100
+In-Reply-To: <201910251738005781441@zte.com.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+X-Provags-ID: V03:K1:VaowjKObMWms629eT8x2R3VEbY8dp4SSRE/6uRK1x0xevnr5yyo
+ ijWtr+TWyJjot9T2DEBGIa7FVGEtuTr8RGTaxrhDJ/lMPA/1COf779whlQ3XOPkf/GZLUc9
+ Xxq3yilyzMBNhIcXY2pHrFtmsdj6tUp3OIOPWoQx3C5gQ44IUynjpW9VMFsO/GKTKEJUnj4
+ 4joS1F7/0R9feuDGE+nWw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:rVj3wfSAF0g=:FqlKcZMthOv5QP1IsC13J8
+ Qz8KWGdkk6azwd9GISG8yj5kkYAF0ENEKpxqwCZ+/+6Xhksvk1T5wVNWtuDo3mEA2cfXR9CG8
+ j7jhKaQcP8NoOy47x9bcOymzM8M5Gd3CSudfkx87vWIdPVaGdVxaZJgyufS9roqZ3ZvStorST
+ Nd08RKqOxnGaGBhH9lpvzv5wyZf5/lOoiUODBC223+Ma3UK/tqRPjw4Ffn8MDJTbXmRxi8VCV
+ bqrHfINtG6c6bFFU/fAvcE8CkeYqmWHYl5nCPGOnIJSg/22RSYvCtfbnG1bBznEXZRwKV0gCp
+ J0lwbXCUdtKSgsn2k+Wq5z5iPCiJkJV/+t1jaMvQmI5fGG9Qmuunfgy83sQsHN5GV2YT58bwY
+ LyJsWJxVcJ5E7K5h1/g+HjlmcT6z4n8jz2vJomW7bBw7sFb1rwtq1QnPATpwrLKv+kgfUs0LI
+ 9/h5aBoXvmyJNy0zChhUQtlD+kpSb0hIveHzefnzOyvtES4FiLzSrgen+aWY5161MS7+s4vwR
+ kP5h0QWUVvyW5WXf9cf9qsebnWGz/jKit/jOzaiC0Bs1rP50zm+g2gG6FpVMzxIB7Nx35lwcr
+ kfHjahBkXn16M3I2dy3VROYJGdW4JP1aIvWiu0ezLbyMcE9dJxam/bNw/VXK1ByrXDPWtj8oa
+ dWkEk4YGlripdtss59lZ7mjYEwnvgAH313DR96c11ysuPvM+2hqXkZJWVtjdwKPif55ztHJzh
+ yztWQYR2KjFAGq+fv6fHh4jIax7beC7PbXcjY8G/XdwF/UsrrBemR6eWhIfBhAxPREGG1nTtG
+ 8cTt+lEnNwiZ66iS9dsYQ9THczvG7d4yqeWniYEFBTThGjksOYlb7LTzGV4i1ugAGwCandEZ4
+ Nqcr1LYEFQ0K+96iHHewjW/XZ9KOathw/9Zr1u2sTt7L4sEHIk1QrPdWqTmpbB5mDNseEWVCm
+ RKDLD7LaELH6gkgjUCuh++K32+Tc2UmT130OlbNnjFHDPy5X41CzpSZR5f4AhsoPj47m6s2Tn
+ tRzgvcm1L2DbYHRnSP5iMbVdkglStp/YwesKgwjQ8QHEi6SCYj25sy0Cj6EntPZRHSyPPa39Y
+ nYvJFF0L5N/TKbvOODeIbOWX8WSoC26mZZYOARrlguXy6+heqCcBbiyty1LX1k//ygwFqa3DX
+ WY1fkDxQBvxnq/whljGZONrML8ghdYvujtVBsaLgNKXRwbQGp9ueGgcbeeOHF6aJ7lh01fWoq
+ 8dSlKkW1qAG5WP+W/FTDJXO+VZG7nbeJqvtn56/MM6cF+0vK2J2cUS4SzOxo=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Smatch gets confused because we sometimes refer to "server->srv_mutex" and
-sometimes to "sess->server->srv_mutex".  They refer to the same lock so
-let's just make this consistent.
+> 	Thanks,i think it  would be better!
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- fs/cifs/transport.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Will this clarification trigger any further collateral evolution
+for related information sources?
 
-diff --git a/fs/cifs/transport.c b/fs/cifs/transport.c
-index 308ad0f495e1..7c3697fe7905 100644
---- a/fs/cifs/transport.c
-+++ b/fs/cifs/transport.c
-@@ -1283,7 +1283,7 @@ SendReceive(const unsigned int xid, struct cifs_ses *ses,
- 
- 	rc = allocate_mid(ses, in_buf, &midQ);
- 	if (rc) {
--		mutex_unlock(&ses->server->srv_mutex);
-+		mutex_unlock(&server->srv_mutex);
- 		/* Update # of requests on wire to server */
- 		add_credits(server, &credits, 0);
- 		return rc;
--- 
-2.20.1
+Example:
+https://bottest.wiki.kernel.org/coccicheck
 
+
+By the way:
+Would you like to take another look at the preservation of delimiters
+(like space characters) in presented messages?
+
+Regards,
+Markus

@@ -2,34 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DC716E580D
-	for <lists+kernel-janitors@lfdr.de>; Sat, 26 Oct 2019 04:22:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFC9FE582C
+	for <lists+kernel-janitors@lfdr.de>; Sat, 26 Oct 2019 04:51:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726195AbfJZCWB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 25 Oct 2019 22:22:01 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:51160 "EHLO huawei.com"
+        id S1726069AbfJZCva (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 25 Oct 2019 22:51:30 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:52296 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725954AbfJZCWB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 25 Oct 2019 22:22:01 -0400
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 5A43728DCB9BFF378242;
-        Sat, 26 Oct 2019 10:21:59 +0800 (CST)
+        id S1725957AbfJZCva (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 25 Oct 2019 22:51:30 -0400
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id AF52D9F0D7FC51A6691C;
+        Sat, 26 Oct 2019 10:51:26 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.439.0; Sat, 26 Oct 2019 10:21:53 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <andrew@lunn.ch>, <vivien.didelot@gmail.com>,
-        <f.fainelli@gmail.com>, <davem@davemloft.net>,
-        <jbe@pengutronix.de>, <robh@kernel.org>
-CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH -next] net: dsa: LAN9303: select REGMAP when LAN9303 enable
-Date:   Sat, 26 Oct 2019 10:21:39 +0800
-Message-ID: <20191026022139.179166-1-maowenan@huawei.com>
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.439.0; Sat, 26 Oct 2019 10:51:18 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Egor Pomozov <epomozov@marvell.com>,
+        Igor Russkikh <igor.russkikh@aquantia.com>,
+        "David S . Miller" <davem@davemloft.net>
+CC:     YueHaibing <yuehaibing@huawei.com>, <netdev@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH net-next] net: aquantia: remove unused including <linux/version.h>
+Date:   Sat, 26 Oct 2019 02:51:09 +0000
+Message-ID: <20191026025109.75721-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
 X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -37,35 +37,25 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-When NET_DSA_SMSC_LAN9303=y and NET_DSA_SMSC_LAN9303_MDIO=y,
-below errors can be seen:
-drivers/net/dsa/lan9303_mdio.c:87:23: error: REGMAP_ENDIAN_LITTLE
-undeclared here (not in a function)
-  .reg_format_endian = REGMAP_ENDIAN_LITTLE,
-drivers/net/dsa/lan9303_mdio.c:93:3: error: const struct regmap_config
-has no member named reg_read
-  .reg_read = lan9303_mdio_read,
+Remove including <linux/version.h> that don't need it.
 
-It should select REGMAP in config NET_DSA_SMSC_LAN9303.
-
-Fixes: dc7005831523 ("net: dsa: LAN9303: add MDIO managed mode support")
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/net/dsa/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/aquantia/atlantic/aq_ptp.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/dsa/Kconfig b/drivers/net/dsa/Kconfig
-index f6232ce..685e12b 100644
---- a/drivers/net/dsa/Kconfig
-+++ b/drivers/net/dsa/Kconfig
-@@ -77,6 +77,7 @@ config NET_DSA_REALTEK_SMI
- config NET_DSA_SMSC_LAN9303
- 	tristate
- 	select NET_DSA_TAG_LAN9303
-+	select REGMAP
- 	---help---
- 	  This enables support for the SMSC/Microchip LAN9303 3 port ethernet
- 	  switch chips.
--- 
-2.7.4
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ptp.h b/drivers/net/ethernet/aquantia/atlantic/aq_ptp.h
+index 3de4682f7c06..61486757c789 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ptp.h
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ptp.h
+@@ -9,7 +9,6 @@
+ #define AQ_PTP_H
+ 
+ #include <linux/net_tstamp.h>
+-#include <linux/version.h>
+ 
+ /* Common functions */
+ int aq_ptp_init(struct aq_nic_s *aq_nic, unsigned int idx_vec);
+
+
 

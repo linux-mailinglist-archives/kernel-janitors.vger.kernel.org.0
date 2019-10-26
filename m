@@ -2,42 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D577E5D9F
-	for <lists+kernel-janitors@lfdr.de>; Sat, 26 Oct 2019 16:19:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 415FDE5E88
+	for <lists+kernel-janitors@lfdr.de>; Sat, 26 Oct 2019 20:14:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726326AbfJZOTs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 26 Oct 2019 10:19:48 -0400
-Received: from mout.web.de ([212.227.17.11]:33553 "EHLO mout.web.de"
+        id S1726364AbfJZSOI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 26 Oct 2019 14:14:08 -0400
+Received: from mout.web.de ([212.227.17.11]:48801 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726203AbfJZOTr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 26 Oct 2019 10:19:47 -0400
+        id S1726276AbfJZSOH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 26 Oct 2019 14:14:07 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1572099566;
-        bh=srr66fuIq94zP9+uuFu6k/4aMfNygzopgHJkTjdQzoQ=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=N4CRGtopkuu4/84BgvoprXZREYnteOt+x0MAocFG2RTWCQh6Yws55r/Bm18MA1Sz/
-         7/2H8y9+KKk3/lb7ZOuyYJP9rO6f8WSqv6Tfx40EgaZNdL1TWtBgZLCSe13bsNORSZ
-         qdAbsUNVCggKrngQvzfXywv1e5s3d4gY/PiguazA=
+        s=dbaedf251592; t=1572113645;
+        bh=P0QRPzu97eM85ioKCQUZzgOlFJMIqiLQjrqtNN63F80=;
+        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+        b=OQlBZwsIID7KQdCcLI1l9vZ04GOFE1uyl8VPSfNaRh/0sSujN/OWUsDH2FkZxeHFB
+         y9ODdvKoOAQvdJ2VqbWkuCDWZiZaGgKf+M/CMgSXP4Z1txlWbUoz5eX48/u70JTiOh
+         xKm6Run+sC8zXKkRUTIJp5q+vqJmsIcGpDflQ5fc=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.48.128.16]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M2dg1-1i60Vv2RID-00sLYv; Sat, 26
- Oct 2019 16:19:26 +0200
-Subject: Re: [PATCH v4] coccicheck: Support search for SmPL scripts within
- selected directory hierarchy
-From:   Markus Elfring <Markus.Elfring@web.de>
-To:     Zhong Shiqi <zhong.shiqi@zte.com.cn>, cocci@systeme.lip6.fr
+Received: from [192.168.1.2] ([78.48.128.16]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LdmyV-1hh9Ax02yJ-00j5vR; Sat, 26
+ Oct 2019 20:08:32 +0200
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Cheng Shengyu <cheng.shengyu@zte.com.cn>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Himanshu Jha <himanshujha199640@gmail.com>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Xue Zhihong <xue.zhihong@zte.com.cn>,
-        Yi Wang <wang.yi59@zte.com.cn>
-References: <1572076248-43770-1-git-send-email-zhong.shiqi@zte.com.cn>
- <4905e8f0-6266-99b4-c3c4-9a9d29170bfc@web.de>
+        Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
+        "David S. Miller" <davem@davemloft.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Inaky Perez-Gonzalez <inaky.perez-gonzalez@intel.com>
+References: <20191026045331.1097-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] wimax: i2400: Fix memory leak in
+ i2400m_op_rfkill_sw_toggle
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>, linux-wimax@intel.com,
+        netdev@vger.kernel.org
+From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -81,55 +77,88 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <781f1507-9002-3168-9efd-ef15f0966dc8@web.de>
-Date:   Sat, 26 Oct 2019 16:19:21 +0200
+Message-ID: <fa90b9ac-9ff9-7b08-f31f-f349a9fb0a58@web.de>
+Date:   Sat, 26 Oct 2019 20:08:29 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.0
 MIME-Version: 1.0
-In-Reply-To: <4905e8f0-6266-99b4-c3c4-9a9d29170bfc@web.de>
+In-Reply-To: <20191026045331.1097-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:7YSPFAhQ//7CCYkRdbTZDkGrKOXWAR3lCNpVajN6VocY7NQWb0R
- CBuc2kgdHxn6uqGUMduhkBsaRefB/caSL/hyrdPj24KpOaf/OLPCn/WHDyAh3/U6q7NmYJZ
- GscsCHaF47BMcX0D2paXUKvgjJLomBES0Jybk8DF8q0KiFM+u8tk27lofSTH5WPx5pBGn+Q
- h4Hy5hJ8yHjOrzrChO2CA==
+X-Provags-ID: V03:K1:zMvTWzLbYsGH07KMKCzlzbEGjwD31ZAnXOGzsYIM9cYHIhd4rTj
+ 7aVubAlivkO4vId9as8vxOzJLFgbhiYyVg2YEtsthARo1b0OyLjOpEZvU5qAJoeq/O/ndKL
+ QO/x5yPWwPkmondTkdOwJ6W/+ZIANVrN/S7tUFjMl1wQqnSdVxjcI6+Y04R+/M5SJMAHARq
+ rJD8jEAQaMgZMwyyjB3ZA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:a3OF4axgjLk=:8bD3I/uobr+D2SjzZ0lk6c
- uAyVLMb4nMN39oFYDEGB9oGhrHB7/1GMhCU/IBaHJPxGQGrjnSrKLZszWD1xWNmQSDQDPwRWG
- AHoyqyhXgBIwcgV7T2ev5PbAl8btWeoyxccOHAhR43Xsq99XuRBaYXZdRs2dYOlwcWqCWqbG1
- Lk9dqYZNEZRjwoeIa6nsAc5hOgEw7jGU5jM2FO8Ms3zEAmJo6q8a8awI7NO0dZTKsKs9Dwctx
- e1DVdQ5pIg0qi086LDMgqhD9EssxGQEVkQUG2HX/cV8i9c0eHYNNuwiyqB5azMXK3uv8d9GV+
- mfKvJABfr9TJXNBYtEt8aYlZfL9k7fXfkGGeMz3oa7vuSDOwcbDFNGr2WcyLMguNsUYIf+I1N
- 5VUaEPquf/rocUzPfO4V6MX+K8/ac1WGhbZxG8nhMqLOsWYSDTJ0COrlEdTq1fH5YnwNRUNty
- IviwIjdttdT7hWr2O9dnPu0fs/ESnobRvWjdSleRYs3ylTSQHZtQRVp7+M8wqCCXIbP054mYc
- zMmTZqG6oL9i5QFDnBdIcbkTBKDFFJhXjPKJX0I8571XbcY5fLMhWCPkKyLf/tG1qn2T2QD12
- t/1uhZq1/2nULJUrb8U4JC18CpkJN5bb8EDIcG/6EnxOHXZ2ogWscq5p/As2aZyaYmu68DDBH
- XQnXqaRAcJpDVOAO5ImKS33nbwIAxAlYesixKVx4146+f+X+drtzM68xOIWeaPK5OC4WhP7me
- XofGX46w4O+W673wboJ3OfT1iB9Kp/32Yj4mS7r3Xgss4zQTYHP60YtmnbkX/yWdBO9VJ0UgG
- jMLguRyC7IvEOaBvfYHiSh14ZgVXPr4TxNLrRAYlwx/MtIb2GnMhb5TONhnyzmSL/QNCFOh/n
- DxG5CaheJie2mGJenBjo/ETV7HW9tN0D3f+kPFrTC+GE0rX2YgtVpDZzwlVRrvRndDYppJ5Px
- Y2dlpN+WCOL62uJbDEYys0m7LRMtUuyad2Wc7RpypIs9PCcm51TjIdo6Ex0w//0UYdPnX8cQi
- gdqRTG3kaiEf5qIF12F7Qwcujm0rKIhBE9Y0ZaBeRPfSBbinrzxW0g+I0UIVbz6CPMYherXWo
- s/fIGKCcZP9YSsH/eH6gnDmLONhJGOChXe+fj/mICS7gQfGd8GhBA5hIfKbUCMAUXsTqnUnKg
- qjX5DyetT77XacVQupvcxctcOyE6ZIdhNkPqhxFakJ+YDimOnSNfe6K7OpvN3/Z0LVEcRF3sr
- tla0BFb/VLEdBrEdB7FcLUrtlWMH8PfLlYIcfNX7JIlDkRSZTKyyB4CkYazU=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:yEof+5jIHUg=:YFr3NbUYp9xuaicQFYiNYY
+ g/DOMr53uAhAgrYdBHeNfqm9u7WIJXrRzxotKW/VJJ4GnQ4rlHHGx20urmD22UPvWBhSW+3cQ
+ xHkIIH/Kaclln9tGrfaBkz58nV4n5vizMl9MhGj7Z5SDf8swI00IwhVyah5Iu3kE0S2KAef+3
+ AveqjxZhnii4JQF3wwKBJmnr1MGbBLP2YgPhgM9f4G4cu2uSzZwaTTuYDUchBwGl2k4Qjqg1a
+ YE20Ryv6yAMZV757Rer/000dahNj6Ncd8M7uvCh5QfFj8eBbE2bLBKHXFGsKRh+gIZCqJqWlj
+ Ue96MEb2Urx9XQbZnSJmwuaWXOiCIv/nSRtVHojJsjuicctfQW+w59QOYbbX0qJTLWvPMlwVo
+ nx2CXkKW29MPFpFRkFR3oGJJoXfLHnmwO+L0sClIi+bZO6sDjijQl3iKzeVWTCsy0kAC1/zmK
+ Gi1ijawdnzkIiQMIYNDJ3Bl2g8DF7B6NWssBErkhJ0vSCHZEJyjQ3JpiOropnJAABvIEzIb8+
+ +yZzBY8xfoRysGsHrlM6x+rxk3i5s+lPRreZkXhGrnTJmzAHVKYV8KEHWxRfaQ9UOClNNxyNt
+ aXkABqUkNvw8TKf1h4nWYKbpKt3EmtP5m5UNB5ZMXLzbYcSmfkgetM6OD+Zh0g8WjOj8MwANn
+ YZl+RTQikfYg9otWy3fZIXzHosDG38INkrLA8LeMbdqeSU4L8IPk1LA57b9IJeuwmcwi0zgTF
+ FTorU/sveIxHCYvT5Up6xygpFfyuZEZxfgppvl2xoq+1c8UrQ+xysr1169/4uTBVA5kjgergA
+ 0EQ46o/z49AHJpzWMv/YmWDhch8t3t89LnQ8bnpxHzd/TWyDR6UL7C5ClTWHU2HjcpZ37UQC8
+ pWPA9V+09cYCrNtKQgQyshmQ4fuB1ToedQwX88508N0MboIyrweI+WieQHS3CDQzgzvISKLL7
+ Zd73RIos7FwDfgk8gqhXHGfmTD8m7Cqg/YX1lVtYxZ3U4KYhgFzQi/OBQXwcI+6YPSe7YlGe6
+ x7eL5DDFOHorYAFokpKjF+3h+CM/hhBD3X9cHYIHZdhXgfb9km7ei2Fbcsd18coN5VEF+ZRU/
+ lXjgi6pn0nG7V+U4gvsGJRGnK2rf2DGCNNgksQCikLQZsT5lfysQB8oeonpXhDWZtE2dxPfz8
+ xJWvFKxFghfhnCtNX4wTHYj3ZBOnO3bAd2L4K3z76lMmxF0zPpMvb2Lt4OnPQFcAfHRQQxiYY
+ b0s/k0mT3tvfQj/iZPmyOehkArAjjcc0Cal/kfkB0GHEi4xUOneMqrL55oHE=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Would you like to update the provided software documentation together wi=
-th
-> the small extension of this bash script?
->
-> Update candidates:
+> Move kfree(cmd) before return to be reached by all execution paths.
 
-Please reconsider also the section =E2=80=9CUsing Coccinelle with a single=
- semantic patch=E2=80=9D:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/dev-tools/coccinelle.rst?id=3Df877bee5ea0b56c39cd0a243e113a577=
-b5a4ef92#n151
+I suggest to reconsider this change suggestion once more.
+
+
+> Fixes: 2507e6ab7a9a ("wimax: i2400: fix memory leak")
+
+I find it interesting that you would like to fix your commit from 2019-09-10.
+https://lore.kernel.org/patchwork/patch/1126399/
+
+Will it be helpful to refer also to the commit 024f7f31ed15c471f80408d8b5045497e27e1135
+("i2400m: Generic probe/disconnect, reset and message passing" from 2009-01-07)?
+
+
+> +++ b/drivers/net/wimax/i2400m/op-rfkill.c
+> @@ -127,12 +127,12 @@ int i2400m_op_rfkill_sw_toggle(struct wimax_dev *wimax_dev,
+>  			"%d\n", result);
+>  	result = 0;
+>  error_cmd:
+> -	kfree(cmd);
+>  	kfree_skb(ack_skb);
+>  error_msg_to_dev:
+>  error_alloc:
+>  	d_fnend(4, dev, "(wimax_dev %p state %d) = %d\n",
+>  		wimax_dev, state, result);
+> +	kfree(cmd);
+>  	return result;
+>  }
+
+
+I would prefer to improve the exception handling like the following.
+(Would you like to avoid passing a null pointer at the end?)
+
+-error_cmd:
++free_skb:
+-	kfree(cmd);
+ 	kfree_skb(ack_skb);
+-error_msg_to_dev:
++free_cmd:
++	kfree(cmd);
+-error_alloc:
++exit:
+
+
+How do you think about this update variant?
 
 Regards,
 Markus

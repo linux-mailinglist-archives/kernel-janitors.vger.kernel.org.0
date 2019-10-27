@@ -2,34 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18B58E6527
-	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Oct 2019 20:56:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40BC4E6537
+	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Oct 2019 21:03:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726940AbfJ0T4G (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 27 Oct 2019 15:56:06 -0400
-Received: from mout.web.de ([212.227.15.4]:45547 "EHLO mout.web.de"
+        id S1727227AbfJ0UDg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 27 Oct 2019 16:03:36 -0400
+Received: from mout.web.de ([212.227.15.4]:41421 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726444AbfJ0T4F (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 27 Oct 2019 15:56:05 -0400
+        id S1726992AbfJ0UDg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 27 Oct 2019 16:03:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1572206151;
-        bh=S+5gyOKr+ARwNkrg4UcLgqHG0pbtbH+v/M3v0ME89SU=;
+        s=dbaedf251592; t=1572206602;
+        bh=5raUnm8mPTDz7MAgkaZvaJhgukfSfQNUq5CbRJt/jUk=;
         h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=QCMlP2DiqqfV1dHknpr7q4shXkfzMhxxrnOlLBv3WEsZuel6wC6izkjrzbo/IEq/r
-         HFXWNL7aL/X8QSt71+GjyTW5cZrz6ghaN0IENM6O41OWKe4GTzVVARJCQuiFLtmCof
-         AJ1NWyB4dfDgVuZ2vbgAm89senGrw1IFO6lnVyO4=
+        b=lAx37udbtRcmVgVKYpB6CytcgCiwPyfgFXfOulVvOWsf8ozkqk3+Usc9gJL4j4hg2
+         /1EY/4dMJeodill3lXyl6O9+Zwj3C1tEUVdIz/bzxIpZqptesuHvbrnoSbx1BTBmM3
+         bms+u/1gQrPybGElWMcOUiibq/xOEZ4acr2xXSe0=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.132.56.174]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LmxtE-1hmAVX0PTo-00h5Aa; Sun, 27
- Oct 2019 20:55:51 +0100
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MPrwQ-1iKx8y0zCs-004zFJ; Sun, 27
+ Oct 2019 21:03:22 +0100
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
         Daniel Vetter <daniel@ffwll.ch>,
         David Airlie <airlied@linux.ie>, Eric Anholt <eric@anholt.net>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+        kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
 References: <20191027173234.6449-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] drm/tinydrm: Fix memroy leak in hx8357d_probe
+Subject: Re: [PATCH] drm/tinydrm: Fix memory leak in hx8357d_probe()
 To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
         dri-devel@lists.freedesktop.org
 From:   Markus Elfring <Markus.Elfring@web.de>
@@ -76,67 +76,44 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <85cb5ed9-66ba-3461-dd56-017b89ba70ce@web.de>
-Date:   Sun, 27 Oct 2019 20:55:48 +0100
+Message-ID: <7c45d721-af24-c31a-173a-d87a05ffd342@web.de>
+Date:   Sun, 27 Oct 2019 21:03:21 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.0
 MIME-Version: 1.0
 In-Reply-To: <20191027173234.6449-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:V7MW5M8iAruKle95RqhSpVNYxM9qFqhKA4pmswLNyMDELGYxjx2
- vcslc4aHozqIpNn9WRRABQUfhBvsqUyFfQt2tWvRy3VfeMY3mESF+1I+7QRXu9DqW7ifDu4
- LtylbbROrEJFOHAm3I3YtR2dUL87ISo5a5N042i2cOCIPiu3hskW2qzCbvrhWAmLK1aMBma
- aZB/6u+bLCo/OGWaEL5+g==
+X-Provags-ID: V03:K1:2Uj/OCsxenX0biaM2oE4wV2qc4T27dpJlSTHlNTz7Z4iG846IKA
+ OxasXWP/drsebNmZmT9tQ5shc0MEx8ALi6LTz2okUSnvbkFzG5gZ/D4YHaGRMLHiNDjs9xJ
+ NkL46kXAjIFDOLXXVY+E7hkieyu0Qw8Z0lODUm40o9zP3B8ji/2yHsJ+R8i/6AjFYTLP+1d
+ R96YLMrkQMF0/HVVOLJAA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:lnrwGZG8EFg=:EoMYcfpeB0JPMDFX4gA8Sg
- moZvoe8BLN7e1FyVYeaozS6VOCup6q8cnrKKuOf1lgmqFZxIHXfU5QDB3x6F7mn7XJqmoCObO
- XbR8SwcIQWN68OvT3P4gesbbJTA5VROQu7AsR56G4jIYYSPvmHoSNTiWtBy11kRQZ/PWN8f5a
- kSjE3P1rZCjjl8ZC6nr4YBG0ZDzksj1sEdtB++DSPZmkEYOzg6sTlWbwVED5IOO2xck5PvYYW
- AjzQBvik3gFv+uF3/q8f2zJHQJdGQ/1uU3fY1gjVefNjR0r/I9iAwG8JTIF+t+dosC0YVqtWY
- jNOjV4gCB0ScYC1De66Mca1NWtcYzqmWP8WCJ3PmzbDI1ccS4xfRjUvo9TrQ/LssrEoly+kJh
- SFN4BmJyQBnVykdfZprk4YIuzcjZuiud6F0qUppnrgWRE+cayIPX/CbtOjONeC8LPhuDVoSjD
- najC84MbQphp/W5ycTLoeg95uP5FyIloKYYvVtsfb8HizoljK7Y3qCZ6AtRPU90Dv8+fPEvzm
- pVftWrHGwhlpZcn5grCSnFNxQHtrN/jySz/B1gb8+MA3hqhMZmQIJK3Tk0eFq1ckrMdJBxwya
- ME49rXbrvCZtHGHObpNxL9NNLFvceZYhUudRmDesR3s3s0OfOGXjt4bXif3qy4fzMOEgR3g/V
- nfbQI89B+Vl4d/EMoW42ZhvHJvUVo6JyHuDez2L08m2kiHnvaldaZn+BvjFkunZRlETKlQB7X
- OtmMw79XfIaRP9V0VOi82rzJQ+ivpQhNyaY57mmBHKG0FygPq+QkiRp08lwTeK3DbGvNLUXgG
- 32iO174qK+RyaQ1dsa3ZovzzO4UqyA2EUw+1KanyXYIopB8WLDbXO3eYT+8zPikMP6shx6ST2
- S6Uc2rbCsncEVqrAkABswMcE1R4QgUEYf97LtPe16koRk2Z5fqnZtwVJP9AoimROb+9v8LK+e
- HFL7/1pr3W+W2OT/Auz9PUozEGOn6mAz4f2Qp/SipXSBMr78NdBLNSxarmUK+uNawgS8lMhE2
- cgh6aDPQzhg1iD6uxE4xDaQ0VEqCernhtG88vFtTYraEoLUISMtAsmwTVgJBTJvFFGDgXhvX9
- J9umttKUYl21gs2GfX20f1oD3W0O6Qq6a2wmGXUJngVH5sL2vUJ/bcyIsauVRoKDAhbEQ1+0O
- Az5wfOEgAGRwlS3V4sYnBUEcaEPyhBmtQt1U5hqZKjqxYtf9jIi+FS67q66DwMc/tJyhuncRB
- 4mw5gdK9RtfCezryCOuGS2T2QAp5+5T0qyWbSG9BpzmpYmkeBIKev306pOFI=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:gU2QcMyNRLA=:XZYuiVChF7Rsqu1iXGTWBS
+ mv0jFAjF4rJBeEGzOW/TIYfOVuD1DEL3Bf9kOfT5/P/4ZRpUU6cpU3etr+I6PRGsiturQBqwS
+ b/CKPudDi6GTXZhuBkFVrhI6XI8tCWf4BgzqCC5ALaWaaaTaQ2nk42icMtZAG1dVvgnwC4yck
+ hf+B0vw4kXm11tEgDjbNul3rEPAXM1vVIZN7B/5AABdBgr9oEavONIrqBVzMwjzUod3MFev+S
+ NPklaz5X+7zRY1B/WfvEpBV+yd0DAhveFJ348OFDgiJh1W3sHsJbOFZ7fTM3VYXw9Rfuy3lfw
+ XdtenoEV9qRVBXrDqh4A3IJAmkTZhGsLc1ed6QvBden/YTu1dAnGjmn6ejAOu1KunInDLONa5
+ /70q+FRdVIW8TEXMckABgr2IgsbVCW6M57Ji/DjNhubc54Qsz36do98ZtqDyFqA4Rxi2RY9+Q
+ hqdlrRTeJYVaeHizlu2/RxTswezAk1kSwC5IHgUR/wspjPdTHkDV4yiJ/53s3+ysuk/BbxYsR
+ Mgt1vLPa09C0W01B+WRB6PfRGqKiBoQBrEqilj9Qe3M+cN6k1lQD06QZ6A6oaAuW7lP67H55V
+ bN4VLAEu+jYZxo209dWUXkxCICfdia3qoyKu3ZRe/5Q2rk154W0ft63vdpGTVCuuXqigaHA56
+ VOu/JIwjZayl4fdUSlGUlJqsIGPjCJA2oeKABe74vKk7NjjBDqP+0Hq2OUllIsQytdDxspEKw
+ UUCbSEmrDI8tmThiWt1j0CAC1uA7kgibHzCSNtSYIpDcaCH6PjdFn3rbKhdwR9Ek8loPoNdLH
+ 6Pp0O+I8cmWEcmc7VYYj/SP8uWPSEi+m92tK0K1a1DS08tHUoZTFqJYblMla1ZsK/q5jNhJk6
+ ZYgbVwM8+RXU1VHz4Ze7YSHNMdGNpQF7+XYCEoXsMVDm+LYvXM2Op8fSErzcmodLCEnadAYPf
+ M76laNbAwxr7gIVZVkZBJOYP3AUtMKQZnIMgIfmzXW9ywJQgLNxOs9gFpWlyHxKvlZ7JlRWhn
+ Eurtmr66dIdpiL9cSkO/o3qQ4xY3bLZrteL07RsqFEIBBdZTVyP2Ul/Ec3MtUTm/G71C9+oHe
+ Qir1EVs7p234xe8156DgwA5Z5/CNvMToA44yHY4Z0MuVhakAHPhH8E/TGGjPQN3eB20owLGmJ
+ v3xpseL0pQw8/TMt4muX7YI7+nU6Lbl4trS/p/gT9m34m8nZnc5MZY5W0WrPAig8KnJCEzkOp
+ cYJxDeduHX9vI77ndkqEUZID0RZKav/0ei1Naq+p4I7uC+mX0vQwF1qTg/Uc=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-=E2=80=A6
-> +++ b/drivers/gpu/drm/tiny/hx8357d.c
-> @@ -232,44 +232,49 @@ static int hx8357d_probe(struct spi_device *spi)
-=E2=80=A6
-> +		goto free_dbidev;
->
->  	spi_set_drvdata(spi, drm);
-
-I got another development concern here.
-Can it make sense to pass the variable =E2=80=9Cdbidev=E2=80=9D instead of=
- =E2=80=9Cdrm=E2=80=9D?
-
-
-=E2=80=A6
-> +free_dbidev:
-> +	kfree(dbidev);
-=E2=80=A6
-
-I became curious if there is a need for such a memory release at another p=
-lace.
-How do you think about to add this function call also to the implementatio=
-n
-of the function =E2=80=9Chx8357d_remove=E2=80=9D?
+Please avoid also another typo in the (previous) patch subject.
 
 Regards,
 Markus

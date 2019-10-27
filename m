@@ -2,36 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40BC4E6537
-	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Oct 2019 21:03:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 64770E655F
+	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Oct 2019 21:41:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727227AbfJ0UDg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 27 Oct 2019 16:03:36 -0400
-Received: from mout.web.de ([212.227.15.4]:41421 "EHLO mout.web.de"
+        id S1727458AbfJ0Ul1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 27 Oct 2019 16:41:27 -0400
+Received: from mout.web.de ([212.227.15.3]:35545 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726992AbfJ0UDg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 27 Oct 2019 16:03:36 -0400
+        id S1726956AbfJ0Ul1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 27 Oct 2019 16:41:27 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1572206602;
-        bh=5raUnm8mPTDz7MAgkaZvaJhgukfSfQNUq5CbRJt/jUk=;
-        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
-        b=lAx37udbtRcmVgVKYpB6CytcgCiwPyfgFXfOulVvOWsf8ozkqk3+Usc9gJL4j4hg2
-         /1EY/4dMJeodill3lXyl6O9+Zwj3C1tEUVdIz/bzxIpZqptesuHvbrnoSbx1BTBmM3
-         bms+u/1gQrPybGElWMcOUiibq/xOEZ4acr2xXSe0=
+        s=dbaedf251592; t=1572208824;
+        bh=fdTyo7vV8Ygs0smEv7TKyxgVnbINnmuc14/pBYAD8O8=;
+        h=X-UI-Sender-Class:Cc:References:Subject:From:To:Date:In-Reply-To;
+        b=DdxdYJybEKNcEHdVTcA1wfPlnCCpi1JHbOYWZZAemoHJOzTYBUio3G+LJoNXm8a64
+         UgqUGuMfQhAiekzGUTH/L6t4t+ahJzVnX1nts4XgLxKsFePHpCjjU5Z+7SK/n3rUF0
+         RsAPqQ1h30OVdhNFgxJMb3EcTSXQ217i+84HgWjA=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.132.56.174]) by smtp.web.de (mrweb004
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MPrwQ-1iKx8y0zCs-004zFJ; Sun, 27
- Oct 2019 21:03:22 +0100
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M1lTm-1i95w53Zko-00toSL; Sun, 27
+ Oct 2019 21:40:24 +0100
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>, Eric Anholt <eric@anholt.net>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Richard Fontana <rfontana@redhat.com>,
+        Takashi Iwai <tiwai@suse.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
         kernel-janitors@vger.kernel.org,
         LKML <linux-kernel@vger.kernel.org>
-References: <20191027173234.6449-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] drm/tinydrm: Fix memory leak in hx8357d_probe()
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        dri-devel@lists.freedesktop.org
+References: <20191027191206.30820-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] ALSA: pci: Fix memory leak in snd_korg1212_create
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,44 +77,71 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <7c45d721-af24-c31a-173a-d87a05ffd342@web.de>
-Date:   Sun, 27 Oct 2019 21:03:21 +0100
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        alsa-devel@alsa-project.org
+Message-ID: <47c90b48-8706-7860-3b87-30a7bbb726c0@web.de>
+Date:   Sun, 27 Oct 2019 21:40:21 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.0
 MIME-Version: 1.0
-In-Reply-To: <20191027173234.6449-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20191027191206.30820-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:2Uj/OCsxenX0biaM2oE4wV2qc4T27dpJlSTHlNTz7Z4iG846IKA
- OxasXWP/drsebNmZmT9tQ5shc0MEx8ALi6LTz2okUSnvbkFzG5gZ/D4YHaGRMLHiNDjs9xJ
- NkL46kXAjIFDOLXXVY+E7hkieyu0Qw8Z0lODUm40o9zP3B8ji/2yHsJ+R8i/6AjFYTLP+1d
- R96YLMrkQMF0/HVVOLJAA==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:VhIY9yFjZXbtQ6qV9/ZOcz6TJkURhYZR0SJqiaWNfE+L5z/1UZi
+ FkcIk7wdeyuAg3vJyvl+YjZTzpOuaSfJ/6njo9prBrAPchWMajontD35RmGAtTFoI7XhHaK
+ 20SqfpbEJs5FP9naT28l0uRKY6X4bMampz53e5NiDgKMxIooGACVij6M3MkvzOXFqAr5AGC
+ XiBoA30vqGtcAsp/BgUnA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:gU2QcMyNRLA=:XZYuiVChF7Rsqu1iXGTWBS
- mv0jFAjF4rJBeEGzOW/TIYfOVuD1DEL3Bf9kOfT5/P/4ZRpUU6cpU3etr+I6PRGsiturQBqwS
- b/CKPudDi6GTXZhuBkFVrhI6XI8tCWf4BgzqCC5ALaWaaaTaQ2nk42icMtZAG1dVvgnwC4yck
- hf+B0vw4kXm11tEgDjbNul3rEPAXM1vVIZN7B/5AABdBgr9oEavONIrqBVzMwjzUod3MFev+S
- NPklaz5X+7zRY1B/WfvEpBV+yd0DAhveFJ348OFDgiJh1W3sHsJbOFZ7fTM3VYXw9Rfuy3lfw
- XdtenoEV9qRVBXrDqh4A3IJAmkTZhGsLc1ed6QvBden/YTu1dAnGjmn6ejAOu1KunInDLONa5
- /70q+FRdVIW8TEXMckABgr2IgsbVCW6M57Ji/DjNhubc54Qsz36do98ZtqDyFqA4Rxi2RY9+Q
- hqdlrRTeJYVaeHizlu2/RxTswezAk1kSwC5IHgUR/wspjPdTHkDV4yiJ/53s3+ysuk/BbxYsR
- Mgt1vLPa09C0W01B+WRB6PfRGqKiBoQBrEqilj9Qe3M+cN6k1lQD06QZ6A6oaAuW7lP67H55V
- bN4VLAEu+jYZxo209dWUXkxCICfdia3qoyKu3ZRe/5Q2rk154W0ft63vdpGTVCuuXqigaHA56
- VOu/JIwjZayl4fdUSlGUlJqsIGPjCJA2oeKABe74vKk7NjjBDqP+0Hq2OUllIsQytdDxspEKw
- UUCbSEmrDI8tmThiWt1j0CAC1uA7kgibHzCSNtSYIpDcaCH6PjdFn3rbKhdwR9Ek8loPoNdLH
- 6Pp0O+I8cmWEcmc7VYYj/SP8uWPSEi+m92tK0K1a1DS08tHUoZTFqJYblMla1ZsK/q5jNhJk6
- ZYgbVwM8+RXU1VHz4Ze7YSHNMdGNpQF7+XYCEoXsMVDm+LYvXM2Op8fSErzcmodLCEnadAYPf
- M76laNbAwxr7gIVZVkZBJOYP3AUtMKQZnIMgIfmzXW9ywJQgLNxOs9gFpWlyHxKvlZ7JlRWhn
- Eurtmr66dIdpiL9cSkO/o3qQ4xY3bLZrteL07RsqFEIBBdZTVyP2Ul/Ec3MtUTm/G71C9+oHe
- Qir1EVs7p234xe8156DgwA5Z5/CNvMToA44yHY4Z0MuVhakAHPhH8E/TGGjPQN3eB20owLGmJ
- v3xpseL0pQw8/TMt4muX7YI7+nU6Lbl4trS/p/gT9m34m8nZnc5MZY5W0WrPAig8KnJCEzkOp
- cYJxDeduHX9vI77ndkqEUZID0RZKav/0ei1Naq+p4I7uC+mX0vQwF1qTg/Uc=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:yRaZ95qpk3o=:sdaI6nuqkPpaGsXk7urmt/
+ nJwu1TKvvqna9hJhB+uQoDCoqNJOxpYT1gdXDrH2rBPA7jfEIkrkPPPgXrP839FtEkoKH/TZ5
+ Us/RO6Kloaw0aoqaUQ3BDUOh4tq7WBNQKpcMM/poQdDrr2fgjbn7mvQ3yAf0UBB1ifRCmrtmy
+ JFmsg6C6iqCBqg8hDYi/k1ZjsoNZFJoUQyB4205DGA2bSJwT0KevQ7CPi87sTblobtSECHFwZ
+ A0AnLKsbOG83MyLCA0qUcZV7dcuVHWJ1u2gnTyxhIFZto1+4RYRl1b1Z35VMDEIEIzYHgi5fT
+ lWq6hJ1qrdahOHxi3YSy313Ow+vQjp+hH5pXlPjUwhLK40mUEuoaDrcQVrJr8WzqVlG/KULaC
+ RquFECUAjI6HkTLj5fAAZ+kpLjPpxdzyJ6Y6O/6Pb9gZL1KsQ1FtN2kTqrL3/C2K32Jnt0W51
+ OkKgghCf0XN4XNh9OpJ8e7HZQWEeExZis19h80Yn0bx5O/PXTCjLfcDTLnDJ7wnG9YPPqCYAx
+ ZisbQrXTzQ0iiV9ZVqdShmFwZrPA+JHp3uLsTvncff7INl/bFnB7S9hC5g+L/FeOnsDk8VfRH
+ bzZijdAfufaX9LDQxBCzb2gYu+KPcKYz1kfDpasrsfkq1me/TPqruGzG9mdgwilbikB7tcC5x
+ 932Dw53qZjWEJ+HPDwQvVQZK0YLI90io44TH/Iwak3vZZlR1wB7FklNWx5t8TmTNgwwkw3JmG
+ O/m3UodBonyHdYxa5PWpH4jgPCUXnyq5zpk3cFnpjctMzkyyGl4v6oYv64jfrSTfTHYcrEmBO
+ AeyP07O15rWVeZQtY/ocncYO3xV1IhYvOERCKDBeyg6bJGdWdRacs942RdWRhc7de2oXPj1fq
+ 83QdBUdqh55dgCqgHnNhJVwCs1W5jQRU+YGiQM9Om6hQdCx6tEc2gh0dNQuKFhGVKPmSUSghT
+ jnLL8WAKvs+uHZsL14SBv7IIawSmKAHC8B08q83rc3O/hzTTkCBziei7p3+dMjFQlyt5IZdqU
+ VSdcBfYVItKzhp5+bvj7QUKCbf2tzjSgVL/2j2LMfmbD8+aHa5vZ2JEGrU0W1spHxxl2u3naT
+ 6C4Geo3TiC0c4a/Kcm/FjK1cYsG65g7YyHitZH7F0pVviLLGkwIi0sYYV4JoLyiM8S7Sd9LM9
+ nwV33epE/vSxDluY3B9VCQiaqyNzr2W/mtD9cR5xCKGA1CxHr5m54zjzM6Cc6oNwyqKwMv1vy
+ r1MksjdnZVLsP501JJnOpNPf4Kz6D3eaW0kgqjxp8qar/GGgY3C+GeFdRlH0=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Please avoid also another typo in the (previous) patch subject.
+=E2=80=A6
+> +++ b/sound/pci/korg1212/korg1212.c
+=E2=80=A6
+> @@ -2398,8 +2403,10 @@ static int snd_korg1212_create(struct snd_card *c=
+ard, struct pci_dev *pci,
+>
+>          for (i =3D 0; i < ARRAY_SIZE(snd_korg1212_controls); i++) {
+>                  err =3D snd_ctl_add(korg1212->card, snd_ctl_new1(&snd_k=
+org1212_controls[i], korg1212));
+> -                if (err < 0)
+> +		if (err < 0) {
+> +			snd_korg1212_free(korg1212);
+>                          return err;
+> +		}
+
+I suggest to add a jump target according to the Linux coding style
+so that duplicate exception handling code can be reduced.
+
+ 	return 0;
+
++free_korg:
++	snd_korg1212_free(korg1212);
++	return err;
+ }
+
 
 Regards,
 Markus

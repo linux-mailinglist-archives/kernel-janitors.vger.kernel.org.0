@@ -2,41 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 483A1E612E
-	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Oct 2019 07:56:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 18B58E6527
+	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Oct 2019 20:56:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726211AbfJ0Gz7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 27 Oct 2019 02:55:59 -0400
-Received: from mout.web.de ([212.227.15.3]:55837 "EHLO mout.web.de"
+        id S1726940AbfJ0T4G (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 27 Oct 2019 15:56:06 -0400
+Received: from mout.web.de ([212.227.15.4]:45547 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726024AbfJ0Gz7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 27 Oct 2019 02:55:59 -0400
+        id S1726444AbfJ0T4F (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 27 Oct 2019 15:56:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1572159331;
-        bh=ARdfih51ut3Wc7cOVlkAxrqjxZ2ICiWrQ62g5bzsKEw=;
-        h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
-        b=r2WyeMku0GOiYK4eP/T7s6h8GA3hl7JMG8ca49Y5Fk/RaftH5p9c7i8NGnX0CBve4
-         yV8ooBB6Dpp8xjzZuSp4tVGHlxTfTQACHkJhzchCtKDYLg9rXVekXEZhH9Fh6tfd2t
-         OTM0xNXtF4OGruEdG5rZSnFHXNYIr/RfWzDcwlkw=
+        s=dbaedf251592; t=1572206151;
+        bh=S+5gyOKr+ARwNkrg4UcLgqHG0pbtbH+v/M3v0ME89SU=;
+        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+        b=QCMlP2DiqqfV1dHknpr7q4shXkfzMhxxrnOlLBv3WEsZuel6wC6izkjrzbo/IEq/r
+         HFXWNL7aL/X8QSt71+GjyTW5cZrz6ghaN0IENM6O41OWKe4GTzVVARJCQuiFLtmCof
+         AJ1NWyB4dfDgVuZ2vbgAm89senGrw1IFO6lnVyO4=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.132.56.174]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LfAfQ-1heV4N06Zc-00ooQ1; Sun, 27
- Oct 2019 07:55:31 +0100
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-aspeed@lists.ozlabs.org, linux-media@vger.kernel.org,
-        openbmc@lists.ozlabs.org
+Received: from [192.168.1.2] ([93.132.56.174]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LmxtE-1hmAVX0PTo-00h5Aa; Sun, 27
+ Oct 2019 20:55:51 +0100
 Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
         Stephen McCamant <smccaman@umn.edu>,
-        Andrew Jeffery <andrew@aj.id.au>,
-        Eddie James <eajames@linux.ibm.com>,
-        Joel Stanley <joel@jms.id.au>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>, Eric Anholt <eric@anholt.net>,
         LKML <linux-kernel@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
-References: <20191026042519.29446-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] media: aspeed-video: Fix memory leaks in
- aspeed_video_probe
+References: <20191027173234.6449-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] drm/tinydrm: Fix memroy leak in hx8357d_probe
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        dri-devel@lists.freedesktop.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -81,58 +76,67 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <bec85427-66b8-e0fa-9ee2-07cc77cf4a7e@web.de>
-Date:   Sun, 27 Oct 2019 07:55:15 +0100
+Message-ID: <85cb5ed9-66ba-3461-dd56-017b89ba70ce@web.de>
+Date:   Sun, 27 Oct 2019 20:55:48 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.0
 MIME-Version: 1.0
-In-Reply-To: <20191026042519.29446-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20191027173234.6449-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:FmGICvn0LmSTTD7R93PU62N8WsZYZ6cdVmszCY8Q/JcMVVRUbYb
- Vp0gqGawU/a6Qlz1JBoLAhB28rowaZFN8uoAfGXOHvvxbqZs8UpzUjC1qx/sPDrngPe0zPp
- TDOb+KZZFwULLo+UwbuDjrmLxEYbLjOg7cujUQWSEr/+ZGhJ8VPHpmBAKRY5Eyuf9HunTNI
- dGvxHMQ43a0KQ0Qu/oyjw==
+X-Provags-ID: V03:K1:V7MW5M8iAruKle95RqhSpVNYxM9qFqhKA4pmswLNyMDELGYxjx2
+ vcslc4aHozqIpNn9WRRABQUfhBvsqUyFfQt2tWvRy3VfeMY3mESF+1I+7QRXu9DqW7ifDu4
+ LtylbbROrEJFOHAm3I3YtR2dUL87ISo5a5N042i2cOCIPiu3hskW2qzCbvrhWAmLK1aMBma
+ aZB/6u+bLCo/OGWaEL5+g==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:R+xiGTDl7dA=:sh8EzI93bQRDuPvQdl9imp
- WVZ6pg9rVRaIBMXmIRLkJIQGsjcTN3UpuB6X1CT3Fv4pLgGUE+hHcLmYJa3BTIPGyXWASFsVL
- f5CRLRDjslXCy0Y8swPyZjm1tDxv7F5NA2wY2PoIRR47kA32QJa8WpyPAB69gqUOdA2++xozh
- lkjzPSJVPe0acMZPbOxKHnY1IglXSuTpVEJDtepV0tU+cwD3blaLLZ/95RviKaZWnU51KpD37
- FrWtz4J2Tes8ooQQHBrjqbiY8m4z6TZn/resnpkmygDR/VRLziWBz0nl0qUT3Ma1VbEEQ77Xj
- /TkIoR6P42m0mFXvzJ+39nktoDEgKPmiLOllLfI4UBXXsgbWFL9jJDdK6zGsh/W9FAnei92gq
- pqBqDy9H5yrTkeB2oRmyBdR2jK1qOsDvJ9IuJBccX2ibPAsPH63xAgmeJi2fNFKcfCY0fnHPU
- fWDpsEFR2bEVfQUG5daCdwOdl5bR+mZRcajh+WztfjZu1MwlN6QSNQlSDKFqMUFpax/hY7qlp
- q6V9dArr3EUCKAp2qL8AuWxrkabG115dZ0QSK8MImaleedcHRBIqUr86cPQaQpa1yzyZcgW53
- /nc7KeImYsPilO9jydJN+6auttg2r3p9RzSMzBzAfwHxTa+0kPK34dj6E+js2r3U8HdOArzPD
- cG1fGb+5QN+EGITVFHUKnjNY12VTwxWZhPK75jN2WJc7r7lEpYHs3GzIah3ITeGomDN76cwgQ
- QS9IrLmlJX81S9jOPqjIupxQn9pqKE+iQQkbZgdOi0x4WSpE+fj8SohR9/Zblf+jzy2iJVmSH
- skbYLeneiJeLIIkRL32Z0WMOcePJVFFyWZx+jo1kS27eKSrwncnbhlJ+91QUS52/ktc08d+LN
- zLhSToH9j3c2MaJ2BfJkyhWakPSwJG57LDgJwivUKWPzZhKpf0NbykBPSxTrLt05+KEnO87GS
- qQJi8UFWXYbOMdXaCwzv2Y+KFfJ0/+68bQgBEXk+YkKldpAqWg7ctGCuuSii7b4A6v9uVsktf
- ZZEjTirbgls2Iz9snx5tUuyb3dcZdGULDU+/Ks1nvG/VuloaC4CJ4PKxyzGvfs3iUs8NO4lP9
- nwv6IKNG/nEUCH78gaoQnhNIo2KsybkY/FjngMHyoTJNnzeu9mbfrRpw6HPF/5W2j/qxGhTIa
- l8j0tGAFg4Xn7EzPLJox1HMKIwjxLk64JH2r5qkrwqwIa2a3QapdxqVWJUXq1n/Eyczy6swIo
- q7Ork700yQlXLZzZOQkXsc58hZrZPx+Aa7wr1Nb8FYuDlqjQrLmOQ1lxcQAQ=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:lnrwGZG8EFg=:EoMYcfpeB0JPMDFX4gA8Sg
+ moZvoe8BLN7e1FyVYeaozS6VOCup6q8cnrKKuOf1lgmqFZxIHXfU5QDB3x6F7mn7XJqmoCObO
+ XbR8SwcIQWN68OvT3P4gesbbJTA5VROQu7AsR56G4jIYYSPvmHoSNTiWtBy11kRQZ/PWN8f5a
+ kSjE3P1rZCjjl8ZC6nr4YBG0ZDzksj1sEdtB++DSPZmkEYOzg6sTlWbwVED5IOO2xck5PvYYW
+ AjzQBvik3gFv+uF3/q8f2zJHQJdGQ/1uU3fY1gjVefNjR0r/I9iAwG8JTIF+t+dosC0YVqtWY
+ jNOjV4gCB0ScYC1De66Mca1NWtcYzqmWP8WCJ3PmzbDI1ccS4xfRjUvo9TrQ/LssrEoly+kJh
+ SFN4BmJyQBnVykdfZprk4YIuzcjZuiud6F0qUppnrgWRE+cayIPX/CbtOjONeC8LPhuDVoSjD
+ najC84MbQphp/W5ycTLoeg95uP5FyIloKYYvVtsfb8HizoljK7Y3qCZ6AtRPU90Dv8+fPEvzm
+ pVftWrHGwhlpZcn5grCSnFNxQHtrN/jySz/B1gb8+MA3hqhMZmQIJK3Tk0eFq1ckrMdJBxwya
+ ME49rXbrvCZtHGHObpNxL9NNLFvceZYhUudRmDesR3s3s0OfOGXjt4bXif3qy4fzMOEgR3g/V
+ nfbQI89B+Vl4d/EMoW42ZhvHJvUVo6JyHuDez2L08m2kiHnvaldaZn+BvjFkunZRlETKlQB7X
+ OtmMw79XfIaRP9V0VOi82rzJQ+ivpQhNyaY57mmBHKG0FygPq+QkiRp08lwTeK3DbGvNLUXgG
+ 32iO174qK+RyaQ1dsa3ZovzzO4UqyA2EUw+1KanyXYIopB8WLDbXO3eYT+8zPikMP6shx6ST2
+ S6Uc2rbCsncEVqrAkABswMcE1R4QgUEYf97LtPe16koRk2Z5fqnZtwVJP9AoimROb+9v8LK+e
+ HFL7/1pr3W+W2OT/Auz9PUozEGOn6mAz4f2Qp/SipXSBMr78NdBLNSxarmUK+uNawgS8lMhE2
+ cgh6aDPQzhg1iD6uxE4xDaQ0VEqCernhtG88vFtTYraEoLUISMtAsmwTVgJBTJvFFGDgXhvX9
+ J9umttKUYl21gs2GfX20f1oD3W0O6Qq6a2wmGXUJngVH5sL2vUJ/bcyIsauVRoKDAhbEQ1+0O
+ Az5wfOEgAGRwlS3V4sYnBUEcaEPyhBmtQt1U5hqZKjqxYtf9jIi+FS67q66DwMc/tJyhuncRB
+ 4mw5gdK9RtfCezryCOuGS2T2QAp5+5T0qyWbSG9BpzmpYmkeBIKev306pOFI=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 =E2=80=A6
-> +++ b/drivers/media/platform/aspeed-video.c
-> @@ -1663,18 +1663,24 @@ static int aspeed_video_probe(struct platform_de=
-vice *pdev)
+> +++ b/drivers/gpu/drm/tiny/hx8357d.c
+> @@ -232,44 +232,49 @@ static int hx8357d_probe(struct spi_device *spi)
 =E2=80=A6
-> +free_video:
-> +	kfree(video);
+> +		goto free_dbidev;
+>
+>  	spi_set_drvdata(spi, drm);
+
+I got another development concern here.
+Can it make sense to pass the variable =E2=80=9Cdbidev=E2=80=9D instead of=
+ =E2=80=9Cdrm=E2=80=9D?
+
+
+=E2=80=A6
+> +free_dbidev:
+> +	kfree(dbidev);
 =E2=80=A6
 
-I am curious if there is a need for such a memory release at another place=
-.
+I became curious if there is a need for such a memory release at another p=
+lace.
 How do you think about to add this function call also to the implementatio=
 n
-of the function =E2=80=9Caspeed_video_remove=E2=80=9D?
+of the function =E2=80=9Chx8357d_remove=E2=80=9D?
 
 Regards,
 Markus

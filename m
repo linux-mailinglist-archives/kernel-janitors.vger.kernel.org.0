@@ -2,27 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F09B0E6775
-	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Oct 2019 22:21:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F152E668F
+	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Oct 2019 22:13:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731868AbfJ0VVK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 27 Oct 2019 17:21:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41888 "EHLO mail.kernel.org"
+        id S1730178AbfJ0VNF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 27 Oct 2019 17:13:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60078 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1731859AbfJ0VVI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 27 Oct 2019 17:21:08 -0400
+        id S1730174AbfJ0VNE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 27 Oct 2019 17:13:04 -0400
 Received: from localhost (100.50.158.77.rev.sfr.net [77.158.50.100])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 533BF205C9;
-        Sun, 27 Oct 2019 21:21:07 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A13FA205C9;
+        Sun, 27 Oct 2019 21:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572211267;
+        s=default; t=1572210783;
         bh=OxtsmDZcRyjTy/TwgnZe5iInYm/ARc+kAq5vsnT/P2M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oN9QMqxAIW8H1riXXTEhJs1JYFVZdOGgr3ske+jRrIi8NNtm1dRcOSRmKdYB8LQYR
-         ywkFHxAEZ4vM95q9GROIfihsi9g0pU+aHN8jqAffg5o8E6J12/F5l/AbhlmiUSMDkG
-         w7Fy7Ciur0caOzSIPPl/+lkhDFkfYBgES0kliqm8=
+        b=dpl9nj8a7K2H1ULjIqcBtEI0GFzxfmgHQNZF8fnmnhvX+lKJuUa2s5agZXQGih4Om
+         LUQfYdLv6o4ji/QbeJWKxKt4E/MqbKahHVlCzbxP/a7mtACbwAOSycUMHS6pJjhMY3
+         bOICW1Vqg8taIr2BKN0YPCaJy6aaCKl/FOh5gqpo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -31,12 +31,12 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Paul Burton <paul.burton@mips.com>, chenhc@lemote.com,
         ralf@linux-mips.org, jhogan@kernel.org, linux-mips@vger.kernel.org,
         kernel-janitors@vger.kernel.org, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.3 047/197] mips: Loongson: Fix the link time qualifier of serial_exit()
-Date:   Sun, 27 Oct 2019 21:59:25 +0100
-Message-Id: <20191027203354.239642675@linuxfoundation.org>
+Subject: [PATCH 4.19 16/93] mips: Loongson: Fix the link time qualifier of serial_exit()
+Date:   Sun, 27 Oct 2019 22:00:28 +0100
+Message-Id: <20191027203255.107174272@linuxfoundation.org>
 X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20191027203351.684916567@linuxfoundation.org>
-References: <20191027203351.684916567@linuxfoundation.org>
+In-Reply-To: <20191027203251.029297948@linuxfoundation.org>
+References: <20191027203251.029297948@linuxfoundation.org>
 User-Agent: quilt/0.66
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8

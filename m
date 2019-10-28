@@ -2,38 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 688BCE7800
-	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Oct 2019 19:01:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CAEAE7B43
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Oct 2019 22:20:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404265AbfJ1SBG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Oct 2019 14:01:06 -0400
-Received: from mout.web.de ([212.227.17.12]:58237 "EHLO mout.web.de"
+        id S1729300AbfJ1VUk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Oct 2019 17:20:40 -0400
+Received: from mout.web.de ([212.227.17.11]:52529 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404245AbfJ1SBF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Oct 2019 14:01:05 -0400
+        id S1729265AbfJ1VUj (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 28 Oct 2019 17:20:39 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1572285651;
-        bh=ClXnfu9SrUz/iZuABru8LxcgIwo6AKmyyfdV4DFEU3Q=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=mn+B/DZGNQsRZHhEhpcuOKLSY3JW8zyaS1HcgPg+zw4MWpeUJfY7TiWx24uEPt4sH
-         yZVnKl203Ez7fJa24TmfFi+ThwY1jhltJcrLKE73ocRhFxU5QCE2vSv3WCDOLNddzN
-         dv5rEeTIW5rPgHN0+ApEanP4V//575d19qF8f3Fs=
+        s=dbaedf251592; t=1572297628;
+        bh=poxB/p5zs/9n07uoBnW2zlk5izmjFo4sTfzHC0tbfpE=;
+        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+        b=jd5drsSekp35cF+bbRI/lf/CPfqIKmXrn+qaFVkZUczB+rgo1imHxJHUarffVCPsr
+         aGVOr/p4wKe2p/ylvdy1DRXEoCXG+dJwEbFUNO7t1i0FY5D3SbaNU3YyOoVpsRLF9T
+         LUxOfUDCnoHVxWR4ffP/3k6w+5gDmGNhvYKT/Ens=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.155.234]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LilJB-1hqtyA19Uj-00d00Z; Mon, 28
- Oct 2019 19:00:51 +0100
-Subject: Re: drm/tinydrm: Fix memory leak in hx8357d_probe
+Received: from [192.168.1.2] ([2.244.155.234]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MZDKy-1ihpFX3myS-00L09k; Mon, 28
+ Oct 2019 22:20:28 +0100
+To:     linux-tegra@vger.kernel.org, JC Kuo <jckuo@nvidia.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Thierry Reding <treding@nvidia.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        dri-devel@lists.freedesktop.org
-Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>, Eric Anholt <eric@anholt.net>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-References: <20191027173234.6449-1-navid.emamdoost@gmail.com>
- <85cb5ed9-66ba-3461-dd56-017b89ba70ce@web.de>
+Subject: phy: tegra: xusb: Complete exception handling in five probe functions
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -77,62 +71,56 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <4deb2230-eabe-b817-8516-3dfad68d2065@web.de>
-Date:   Mon, 28 Oct 2019 19:00:48 +0100
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Kangjie Lu <kjlu@umn.edu>,
+        Navid Emamdoost <emamd001@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>
+Message-ID: <fe6868a4-01f5-2832-9081-7643be0ab4a1@web.de>
+Date:   Mon, 28 Oct 2019 22:20:25 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.0
 MIME-Version: 1.0
-In-Reply-To: <85cb5ed9-66ba-3461-dd56-017b89ba70ce@web.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Ytc3HX3oavOKQ23AqqChQpyeACjYRhzo1t5xewgBgfQXi7C6O66
- FAlqR6CuaCWePGRJJXs6Pru3JqpHhOz2i9Fpov8G2hBYZTOfngFOdqpyGGeC1uKOz7SrPVE
- 2BFRe4IU+oiBExtikJXVTJyozkesc5Sg0tA6EpMcl8bD1gqL2+oeqzbeRzuf38vIO6s11QB
- gA5iOAPXmEKRmzweyfTUQ==
+X-Provags-ID: V03:K1:S14+J9lKlHu42+pPg/HC0yE9/6IapDQzOcIDWN8D67/1jfWkINK
+ LEsmnRt5D9OBjYyZKXJBaVVRXqZBGLGWpfJs30HLXFRIwJe4v5n6oDrtMiUG3L82PXPG0aS
+ H2tm+fMonuZU29vARXkN4DiiVi1lgJfImNe4xQIbihs6Kypl3eE8rha75mtclLGTMPdaSXP
+ QsqFi425Oqfd88fZrcPgw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:n0sTILtGm7w=:blCiOjqDpeGV+//1gSOgcY
- nYr8BXLqX4vJsYy9H9axkiB5vTHnk46+JcQDo/7lqqxONbVf4mL9gfmPi5VdDuHTZjjv38q/U
- 7LfcsyQ/GRgD/eCJpkI8M2Mcfa9nS5S7H9mbIcJLMXXrUR/ae4tXvQzc1NBDHmA4nESQN56ee
- 9yRyUZITx28uuCZeuAaDyvgtoZIu+SnEtrxGSEhvd8fQxsJtwIizxHTthw/8MBrXbOmPRi7+v
- UNO5ex5On8y4FEkGdWQCpt/uy50NxaQZePUTnIFeqF53HTNmT4Iqg8IMG9F2Lhbaned7bHnAK
- 9jfFQtAQsXxxnVpbVs/9vWPuJaz54hJtwVIPmswqVJj3464PgTNNJfFHJE1UYC8WsXG6KYbx0
- r9IiHmKpBOZV+HmWmeLMkduRYwuutTqVnrfBhF4gKiqw/xg8OJ1JUmIWMp7U1EaavXfVScets
- 6GI1yHszhhnipm/A1tGt240jQEXwiKaN2QJ4XLq05xnyOoVVD4jlFcAGBUuDYUXr1ph59hkXe
- ZrI9X+LvSj3oFITHG4cCDZ4+sMdDBvbNL5y1pXrFG9Xwtr1rJWeLD0oUzI0AJ/6kgoAvh5VHx
- yQ9N3lD6nNaEDXgum2z+GqvqAjbDog32QAWuu7rZHqsvFx3JoTsykbYpnenmpHhsBtqaVkKDV
- jkI3azagDzwrtmfDPXtFOEK+Gf+LWb92m5xFL8nP8XaJhpSGvrKiS/PAljW0I3RSF8XoPDGE9
- UUIFEKcAWoe8c2oqfdiuW82LsNaMhp/XNyzSEZ8rODoaz+jGLlaU+LdmF/qsNy2YYxkH1URtW
- TtJaGA4yjAmCUe8Vno1j6qZe91L10DjjXmIcYfR2qkS34u2k/wORDpO8Tb0e4du/k9ZUGpfiN
- 389Q2jfr2PTTmzB3TV2LlOE3GxynIslLkr6RkZyoH7vbDG+pZs6dtnFrpG8Z6K13HWrTNmnD3
- qAECvRAkWKiLtBZHJuqwJ78vtAWddzQnqDzVG+vHr9fvCTVCpHGGXsCZ3N0t3sXgJfPffZJNT
- sRGfP9BSnMja0v2cWFIOFMUokfe+b2EwjoOIdVzZY9FyvLz6Wrmvn12SDBgTiym+BqzxIo3lN
- C/cgFlbF7zPESxv2GVXAsPI5xoT1vzSj9LF9nM2kSNiaPAVPNHn6+Ka+IEKxFnzmk3yBP4vNr
- MK82eyoIYxzsFJ+iQ54CqhJbxZXA8SYk9Jj3sb81cOuANCUhc+BUU072knqNdy9sKK5++YztR
- 8Ux7FwDR2mpqjCrBtYC3GcrXX2Mz5WI0ydKnv/Kpm46vxR0QIEv/DxWbPgv4=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:IlZ/wnhgbXo=:pPC2Qf58DvaZErslc/Zsn2
+ IwVBWlwcyO+lbaIOAZjEwni+Yx4kHU0Pbz9XKckUgoKokCNESN9mzf/5fmlw9VGU94CZgzKRY
+ WNWpZz1Ruygpy6inWHlRYZHLjAvilb/ElZuHd2kEkJ8lcg7AWfJCUKsxyZs/SgOZ1vPaxAF9e
+ +F+uh82k4nAMvWu7JDRVp/EZc80ueGarXq+Xed5IWIVBkKy7FCNHGmZFaYZiQ/df8MeMyBrXk
+ 1N4Uiztq76SMPrZpksMijrOo2wFU1OlRIs/KwB1N2hGS7ASzKBgscTPVY1b2BMiy8z0/7fTUX
+ aviEloHnmLXZLSO5its5adWQ4whfMsDZodQApJ2PKwoYepRp6GoPWePYWb2fLyVH13wUdx5Du
+ 9sh7oZJV7FjAOCFQca/+o0rjbLzC65etx5i1xc/CewAqlSYsxjRVGGEg+WfM5Pfb4fxGOgPvX
+ T98laYh83Y+tLCu8zI60oMAX7NXevnQy9qdYq2nc8Np/09m7wYAOgjYo55YVkQs2s/tHJMFkS
+ lC1fWUs6mJ6tEiJJRH8hADYmxmJXdh8+PWh03FWYbtemlMC7XU8boMHyrFh9wVjfogHOnAiAa
+ CLpTEMTbrEqLiRrKPKqZEI2NXmDh1JYyQpLc5x7XBHXfGbMK5P77Vn40va9gboxYNGCshljgY
+ SfJoav7F6tY9rEpwYzOSrBoOvKlGDoLsjFkAZkMmbG1s1oKYwsPV+0ox9B9WjVbs3w6BALMmN
+ uEoxhUd2qn/ZY9olfR2MLGKI78tT+voBErpyzCvfWxfF3MX1V8zdzdWXs1s++93/x8cyy94oO
+ 0Tgx1XmefMqj/cs6QRLLsoFKcxFPSjz4nYWguDlq6vDiEd1Tmag3UPIxcFcpgSy1HjWtHxhnR
+ LN7wGcyf5YzwUyxbtg2qLEBclvD+WvUYDo56FOrK9X4zqqOx5H66imUEuWOQVk5FnwYsRzqIt
+ 4ADoD9Uci4Fw+svQRTvDSvMOd1yByW0TcTsvnsTaJVmDJLlfML98mhrnGh4a0lwoDPGxpMLx5
+ VC0OduHbrD3/r22bG5z5dikyxmb4xsUcdu5YEKaY0VKpGgb4/jwbnAy2BXErLKlYK67buo+GH
+ hChMUhtnPkyMODZgXEYJbWSfH2Sa6/Bk82xe9NaaxI0pEboNN2D25NUJdB2FICAmNYuB3d8JV
+ r81DCaba/kSdi63IYLOkeBRnDCOfrduqbBJ+LWTSRfxS1BPH9FKDLwUxpl2Gie/a5ixRR11ms
+ XnX1Av/28iEPhKlOLJByqCdEskAPvu/dRnFt3c5dx97m6baDRx41pOPcUG4o=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> =E2=80=A6
->> +free_dbidev:
->> +	kfree(dbidev);
-> =E2=80=A6
->
-> I became curious if there is a need for such a memory release at another=
- place.
+Hello,
 
-I have taken another look also at a related implementation detail.
-Now I have realised that the desired clean-up should usually be achieved b=
-y
-the callback function =E2=80=9Cmipi_dbi_release=E2=80=9D for this software=
- module.
-https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/gpu/drm/drm_mipi_=
-dbi.c#L581
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
-ivers/gpu/drm/drm_mipi_dbi.c?id=3D0365fb6baeb1ebefbbdad9e3f48bab9b3ccb8df3=
-#n581
+I have taken another look also at the implementations of five probe functions.
+I have got the impression then that the exception handling is incomplete so far
+at these source code places.
+https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/phy/tegra/xusb-tegra124.c#L608
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/phy/tegra/xusb-tegra124.c?id=8005803a2ca0af49f36f6e9329b5ecda3df27347#n608
+
+How do you think about to move kfree() calls to other jump targets
+according to the Linux coding style?
 
 Regards,
 Markus

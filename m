@@ -2,33 +2,38 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C06DEE7725
-	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Oct 2019 18:00:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 688BCE7800
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Oct 2019 19:01:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2403957AbfJ1RAW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Oct 2019 13:00:22 -0400
-Received: from mout.web.de ([212.227.17.12]:48913 "EHLO mout.web.de"
+        id S2404265AbfJ1SBG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Oct 2019 14:01:06 -0400
+Received: from mout.web.de ([212.227.17.12]:58237 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730463AbfJ1RAW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Oct 2019 13:00:22 -0400
+        id S2404245AbfJ1SBF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 28 Oct 2019 14:01:05 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1572282014;
-        bh=5rIzfzjhnJLXwlwwiGj+ZvGzy+C2KIlE4d0q97AnGVg=;
-        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=QHeDw7ES0tDoO0nAEDyl0SATl61nzRBFG8GnLlWuvMoNpUXo+0b8qTuPzxcrEAWiG
-         asoP8ETMDlnWjTRYxKmS0KEggg/AieWnyYYoEoyOnRODTHfjVpMuiklxoC2tZATD7q
-         zyrDg6NMCwdrBAL+qgKksDOQ/Q+D7oLk2i1IEKQ0=
+        s=dbaedf251592; t=1572285651;
+        bh=ClXnfu9SrUz/iZuABru8LxcgIwo6AKmyyfdV4DFEU3Q=;
+        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
+        b=mn+B/DZGNQsRZHhEhpcuOKLSY3JW8zyaS1HcgPg+zw4MWpeUJfY7TiWx24uEPt4sH
+         yZVnKl203Ez7fJa24TmfFi+ThwY1jhltJcrLKE73ocRhFxU5QCE2vSv3WCDOLNddzN
+         dv5rEeTIW5rPgHN0+ApEanP4V//575d19qF8f3Fs=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.155.234]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MFcE5-1iAZeV0du9-00EfDa; Mon, 28
- Oct 2019 18:00:14 +0100
-To:     Linus Walleij <linus.walleij@linaro.org>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, David Airlie <airlied@linux.ie>
+Received: from [192.168.1.2] ([2.244.155.234]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LilJB-1hqtyA19Uj-00d00Z; Mon, 28
+ Oct 2019 19:00:51 +0100
+Subject: Re: drm/tinydrm: Fix memory leak in hx8357d_probe
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: drm/mcde: Reconsider duplicate statement in mcde_probe()
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        dri-devel@lists.freedesktop.org
+Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>, Eric Anholt <eric@anholt.net>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+References: <20191027173234.6449-1-navid.emamdoost@gmail.com>
+ <85cb5ed9-66ba-3461-dd56-017b89ba70ce@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -72,58 +77,62 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <9332a4c9-66c3-b57b-036b-a20b0e821334@web.de>
-Date:   Mon, 28 Oct 2019 18:00:04 +0100
+Message-ID: <4deb2230-eabe-b817-8516-3dfad68d2065@web.de>
+Date:   Mon, 28 Oct 2019 19:00:48 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.0
 MIME-Version: 1.0
+In-Reply-To: <85cb5ed9-66ba-3461-dd56-017b89ba70ce@web.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:ehotAqBcgX7fk2D8LPOr4iAIYKsefkFSvBfJQGUWDwDlIGXfI9L
- 9Ai5mVdd01Xa8e1WeNtAjIULTiWqSR9Ma2CShyHFL1UsQdZI6BT99aWtghkav4cIlKQeVPQ
- /4vqrzbG6/82Ddb5t+x+DQXhgUmgzSR77mC3IhRrC3Y21rIlGuIPGzF98PSONF5RRpkn/2j
- BmtBzoedLElBToj9ob2Iw==
+X-Provags-ID: V03:K1:Ytc3HX3oavOKQ23AqqChQpyeACjYRhzo1t5xewgBgfQXi7C6O66
+ FAlqR6CuaCWePGRJJXs6Pru3JqpHhOz2i9Fpov8G2hBYZTOfngFOdqpyGGeC1uKOz7SrPVE
+ 2BFRe4IU+oiBExtikJXVTJyozkesc5Sg0tA6EpMcl8bD1gqL2+oeqzbeRzuf38vIO6s11QB
+ gA5iOAPXmEKRmzweyfTUQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:fntq3CuIQXk=:qo1vgOBseRrNvBIF0joQKe
- QsHexXA9LjpNayJIAKfcstV0DaLGz3mhaUh5ij4IktFhjI+rpYRUDxKqqf/mOdbcuI4Kwwaa2
- j1Vx+NBtC6l7fI1OoLDYFVh0amdydHKP8o0H1IJ+F2uP8d4Dov190TcLnMYZ0Zctm/Y9kek3j
- Bc6tmUYUZIfZyNFIqEs+gITg3SLVkJHKvK0OF7lnunQfhuPphG2XU155wh6zxB86BrymFOK0R
- bAD8//ooWyiExmBya6giXpml3+kZiakFlS0yEupRGhfsGgKtHbVU+jEcVW1/uBwy5NO6cNBuS
- AXsZtSbLFbx3JckyJK8CZudgpHLnqnms/qtgn1JU0yixrqRP0CZkqSHwctwq9THaW8tQBDxxA
- 4rkVAtEFYJVRV2krhBIp7PNuakwUXaXk/5mgsQ5O4lB8tAgYm87ubPSux1JSOnHgbio4q1AH7
- 9dMN4nrAksVMkXwltYSx/B9TPySoqw2R5GbT+UXXvn7zj2erk0vlLiwH8SapyAmG0WLhSU0fd
- cf+CLAOBnlz0tdXoUAIe38dgAW528R5Hk74QvtCxH9Cd1GwVOedS/pdcED2agGTm+SGibOQQr
- 4H3w4Ygi486Q9sRp+EAJVSPlqRLnYtoySn0VVB0M8ddjdapMCCEf9HJeeFRpLWe/Hmw+1BOC3
- jmhY0AdrLlojYQDO4Ndg1sffADwBYVATKEdT9CnR3jnV6h3yBZHEXu2jPsbfa4Whethwl+G5v
- Xyy67/KNbX/Z9oClGY3rLUFYeIoTajK69eyepuCv1XY7X3Oe1TbE/9Dmly/h3klTfDPLUMi46
- zXEwT4BYN13kxYhoHoDoJDLx5G5ayyPeUVNNgeBLKvvWuXWmwPgiTLNTnlZen8iTNDNylszZF
- NlGbJlcSQUC9ov4rTRcy1FQ3HRNgPNjQZuywltbhTBmmzEohNZw7bJ3xnM6LUiwE6+FcuPxaQ
- dpnk3YmyfHxPzfp3Vxm3CUeU4ZKmmmHO7CusAbfEThCnNj7joCr0q7VHEbZm08gy7r9aCzdNU
- /9YN4OLf3CEeDofqiWPNVOSgXPSl5P3f4VWV3vuYTyGXQf0xdQzWvkAf6KOI3g1kXGGdVSqCu
- M6OvLt3UGVpnHbTbqo0cOD6SBlMD1RoDfyAtVQGckxKp6otdfvEpkWE9O3p9QNiVZYix5xZbo
- bPhw/Y4Q9MAfNpTFlLK7By+FaDmvxcyBN+nBBeUfrpWAX7uqbDpsTnKzdqtI5BDTmWGkqOqiU
- kxS9A7Hah5kWWZWsQDXyf+8rmQRmKZaWPpthSj1p2AEa5qoY+Kr/PLckZg6c=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:n0sTILtGm7w=:blCiOjqDpeGV+//1gSOgcY
+ nYr8BXLqX4vJsYy9H9axkiB5vTHnk46+JcQDo/7lqqxONbVf4mL9gfmPi5VdDuHTZjjv38q/U
+ 7LfcsyQ/GRgD/eCJpkI8M2Mcfa9nS5S7H9mbIcJLMXXrUR/ae4tXvQzc1NBDHmA4nESQN56ee
+ 9yRyUZITx28uuCZeuAaDyvgtoZIu+SnEtrxGSEhvd8fQxsJtwIizxHTthw/8MBrXbOmPRi7+v
+ UNO5ex5On8y4FEkGdWQCpt/uy50NxaQZePUTnIFeqF53HTNmT4Iqg8IMG9F2Lhbaned7bHnAK
+ 9jfFQtAQsXxxnVpbVs/9vWPuJaz54hJtwVIPmswqVJj3464PgTNNJfFHJE1UYC8WsXG6KYbx0
+ r9IiHmKpBOZV+HmWmeLMkduRYwuutTqVnrfBhF4gKiqw/xg8OJ1JUmIWMp7U1EaavXfVScets
+ 6GI1yHszhhnipm/A1tGt240jQEXwiKaN2QJ4XLq05xnyOoVVD4jlFcAGBUuDYUXr1ph59hkXe
+ ZrI9X+LvSj3oFITHG4cCDZ4+sMdDBvbNL5y1pXrFG9Xwtr1rJWeLD0oUzI0AJ/6kgoAvh5VHx
+ yQ9N3lD6nNaEDXgum2z+GqvqAjbDog32QAWuu7rZHqsvFx3JoTsykbYpnenmpHhsBtqaVkKDV
+ jkI3azagDzwrtmfDPXtFOEK+Gf+LWb92m5xFL8nP8XaJhpSGvrKiS/PAljW0I3RSF8XoPDGE9
+ UUIFEKcAWoe8c2oqfdiuW82LsNaMhp/XNyzSEZ8rODoaz+jGLlaU+LdmF/qsNy2YYxkH1URtW
+ TtJaGA4yjAmCUe8Vno1j6qZe91L10DjjXmIcYfR2qkS34u2k/wORDpO8Tb0e4du/k9ZUGpfiN
+ 389Q2jfr2PTTmzB3TV2LlOE3GxynIslLkr6RkZyoH7vbDG+pZs6dtnFrpG8Z6K13HWrTNmnD3
+ qAECvRAkWKiLtBZHJuqwJ78vtAWddzQnqDzVG+vHr9fvCTVCpHGGXsCZ3N0t3sXgJfPffZJNT
+ sRGfP9BSnMja0v2cWFIOFMUokfe+b2EwjoOIdVzZY9FyvLz6Wrmvn12SDBgTiym+BqzxIo3lN
+ C/cgFlbF7zPESxv2GVXAsPI5xoT1vzSj9LF9nM2kSNiaPAVPNHn6+Ka+IEKxFnzmk3yBP4vNr
+ MK82eyoIYxzsFJ+iQ54CqhJbxZXA8SYk9Jj3sb81cOuANCUhc+BUU072knqNdy9sKK5++YztR
+ 8Ux7FwDR2mpqjCrBtYC3GcrXX2Mz5WI0ydKnv/Kpm46vxR0QIEv/DxWbPgv4=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
+> =E2=80=A6
+>> +free_dbidev:
+>> +	kfree(dbidev);
+> =E2=80=A6
+>
+> I became curious if there is a need for such a memory release at another=
+ place.
 
-I have taken another look also at the implementation of the function =E2=
-=80=9Cmcde_probe=E2=80=9D.
-Now I wonder why the statement =E2=80=9Cdrm->dev_private =3D mcde;=E2=80=
-=9D was specified twice there.
-https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/gpu/drm/mcde/mcde=
-_drv.c#L339
+I have taken another look also at a related implementation detail.
+Now I have realised that the desired clean-up should usually be achieved b=
+y
+the callback function =E2=80=9Cmipi_dbi_release=E2=80=9D for this software=
+ module.
+https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/gpu/drm/drm_mipi_=
+dbi.c#L581
 https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
-ivers/gpu/drm/mcde/mcde_drv.c?id=3D0365fb6baeb1ebefbbdad9e3f48bab9b3ccb8df=
-3#n339
-
-How do you think about to delete one of them so that a duplicate assignmen=
-t
-can be avoided?
+ivers/gpu/drm/drm_mipi_dbi.c?id=3D0365fb6baeb1ebefbbdad9e3f48bab9b3ccb8df3=
+#n581
 
 Regards,
 Markus

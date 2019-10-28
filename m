@@ -2,109 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8170EE7075
-	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Oct 2019 12:32:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB5E6E70E6
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Oct 2019 13:01:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388481AbfJ1LcI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Oct 2019 07:32:08 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:50992 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729660AbfJ1LcI (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Oct 2019 07:32:08 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9SBTJxa172748;
-        Mon, 28 Oct 2019 11:32:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=fukucREF7pYggcV7oRENtQG7JbnXIcqJV4wHW6vqwwE=;
- b=PdXuUP5BvgA0vBmM8sCHvLOqeCR+zpMwspKdL/Uy0PLSDZBGJxEwYpXNGLR84Sk5HN/l
- 728h5ftahMY4wa4H/sB7dCvCmzAce5PKnD19A6HU1/e6R9P+KIJJ2hHHy4vGthyjojaU
- fqiAztZ8Ak/pnb+rOHklq6XFiQ4ryH1ohEBX+kggXy4sb3GccgdgZ+VvpjY/vbLsPntb
- 5B4AqlACNVkb6vexgfkxjZMU6mbYgqaoJDfAY29Y1caKlz4CQrjstRhXgqem1Vyo8LON
- /EKeDj/GUd2agcOVGbaU4wDXHkfjKMSAi3wJZx0Lf274HMGiENcQjszJ8arwh9fTiRy5 tw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 2vve3q1d0x-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 28 Oct 2019 11:32:05 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9SBSZkw087882;
-        Mon, 28 Oct 2019 11:32:05 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 2vvymyf5kc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 28 Oct 2019 11:32:05 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x9SBW4xI000858;
-        Mon, 28 Oct 2019 11:32:04 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 28 Oct 2019 04:32:04 -0700
-Date:   Mon, 28 Oct 2019 14:31:58 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     epomozov@marvell.com
-Cc:     kernel-janitors@vger.kernel.org
-Subject: [bug report] net: aquantia: add basic ptp_clock callbacks
-Message-ID: <20191028113158.GA32279@mwanda>
+        id S2388763AbfJ1MBs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Oct 2019 08:01:48 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:5210 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726466AbfJ1MBs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 28 Oct 2019 08:01:48 -0400
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 4D7F0CFBA305898AA362;
+        Mon, 28 Oct 2019 20:01:46 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.439.0; Mon, 28 Oct 2019 20:01:37 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Shannon Nelson <snelson@pensando.io>,
+        Pensando Drivers <drivers@pensando.io>,
+        "David S . Miller" <davem@davemloft.net>
+CC:     YueHaibing <yuehaibing@huawei.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] ionic: Remove set but not used variable 'sg_desc'
+Date:   Mon, 28 Oct 2019 12:01:21 +0000
+Message-ID: <20191028120121.20743-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9423 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=6 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=734
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910280117
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9423 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=6 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=812 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910280117
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello Egor Pomozov,
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-The patch 910479a9f793: "net: aquantia: add basic ptp_clock
-callbacks" from Oct 22, 2019, leads to the following static checker
-warning:
+drivers/net/ethernet/pensando/ionic/ionic_txrx.c: In function 'ionic_rx_empty':
+drivers/net/ethernet/pensando/ionic/ionic_txrx.c:405:28: warning:
+ variable 'sg_desc' set but not used [-Wunused-but-set-variable]
 
-	drivers/net/ethernet/aquantia/atlantic/aq_ptp.c:1208 aq_ptp_init()
-	warn: 'clock' is an error pointer or valid
+It is never used, so can be removed.
 
-drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
-  1203          spin_lock_init(&aq_ptp->ptp_ring_lock);
-  1204  
-  1205          aq_ptp->ptp_info = aq_ptp_clock;
-  1206          aq_ptp_gpio_init(&aq_ptp->ptp_info, &mbox.info);
-  1207          clock = ptp_clock_register(&aq_ptp->ptp_info, &aq_nic->ndev->dev);
-  1208          if (!clock || IS_ERR(clock)) {
-  1209                  netdev_err(aq_nic->ndev, "ptp_clock_register failed\n");
-  1210                  err = PTR_ERR(clock);
-  1211                  goto err_exit;
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/net/ethernet/pensando/ionic/ionic_txrx.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-This is a false positive in Smatch but the code is still problematic.
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
+index 0aeac3157160..97e79949b359 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
+@@ -402,7 +402,6 @@ static void ionic_rx_fill_cb(void *arg)
+ 
+ void ionic_rx_empty(struct ionic_queue *q)
+ {
+-	struct ionic_rxq_sg_desc *sg_desc;
+ 	struct ionic_desc_info *cur;
+ 	struct ionic_rxq_desc *desc;
+ 	unsigned int i;
+@@ -412,7 +411,6 @@ void ionic_rx_empty(struct ionic_queue *q)
+ 		desc->addr = 0;
+ 		desc->len = 0;
+ 
+-		sg_desc = cur->sg_desc;
+ 		for (i = 0; i < cur->npages; i++) {
+ 			if (likely(cur->pages[i].page)) {
+ 				ionic_rx_page_free(q, cur->pages[i].page,
 
-The issue is that ptp_clock_register() returns error pointers if there
-is an error and it returns NULL if the clock is disabled in the config.
-If "clock" is NULL then this code returns PTR_ERR(NULL) which is
-success but so that's a bug.
 
-The question is, is it really realistic for people to run this hardware
-without a ptp clock?  If so then we should allow it instead of erroring
-out here when clock is NULL.  If not then we should enforce that in the
-Kconfig instead of waiting until runtime.
 
-  1212          }
-  1213          aq_ptp->ptp_clock = clock;
-  1214          aq_ptp_tx_timeout_init(&aq_ptp->ptp_tx_timeout);
-  1215  
-  1216          atomic_set(&aq_ptp->offset_egress, 0);
-  1217          atomic_set(&aq_ptp->offset_ingress, 0);
-  1218  
-
-regards,
-dan carpenter

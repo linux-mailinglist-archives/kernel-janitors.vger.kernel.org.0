@@ -2,111 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F41DE6935
-	for <lists+kernel-janitors@lfdr.de>; Sun, 27 Oct 2019 22:35:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9054E6A8C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Oct 2019 02:45:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732825AbfJ0VfD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 27 Oct 2019 17:35:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54650 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728768AbfJ0Ve7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 27 Oct 2019 17:34:59 -0400
-Received: from earth.universe (unknown [46.218.74.72])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 91270205C9;
-        Sun, 27 Oct 2019 21:34:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572212098;
-        bh=RNWo0D53+Ntp+KRQWTyoCRiC9k2qRRWGq+MSH31Tp+E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=zDO/NDQeRNXDOSTjnzbTopEGwJHX6e2tM/JHpA2cK22ceN8lfqgCP9+J9K+nb7N3H
-         DWf1h6Ze8xkvjiaYhrfc4nf68Z7qkz10voMFmyJQtpQNrvQJUbQzFNDjiSPqPzfWJ2
-         WyJ9jatKVLxliYhBxA1zOiBSgd/O+sJOhHmYZtrw=
-Received: by earth.universe (Postfix, from userid 1000)
-        id 27A243C09B2; Sun, 27 Oct 2019 22:34:56 +0100 (CET)
-Date:   Sun, 27 Oct 2019 22:34:56 +0100
-From:   Sebastian Reichel <sre@kernel.org>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Linus Walleij <linus.walleij@linaro.org>, linux-pm@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] power: supply: ab8500_charger: Fix wrong pointer
- passed to PTR_ERR()
-Message-ID: <20191027213456.yexbg6kzgt7vl5fm@earth.universe>
-References: <20191022111856.44118-1-weiyongjun1@huawei.com>
+        id S1728753AbfJ1Bpo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 27 Oct 2019 21:45:44 -0400
+Received: from szxga06-in.huawei.com ([45.249.212.32]:47968 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728141AbfJ1Bpo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 27 Oct 2019 21:45:44 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id A6D1890E3AA43C01C4FF;
+        Mon, 28 Oct 2019 09:45:41 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.439.0; Mon, 28 Oct 2019 09:45:31 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <lgirdwood@gmail.com>, <broonie@kernel.org>, <perex@perex.cz>,
+        <tiwai@suse.de>, <pierre-louis.bossart@linux.intel.com>,
+        <daniel.baluta@nxp.com>, <rdunlap@infradead.org>,
+        <ranjani.sridharan@linux.intel.com>, <arnd@arndb.de>
+CC:     <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH -next] ASoC: SOF: select SND_INTEL_DSP_CONFIG in SND_SOC_SOF_PCI
+Date:   Mon, 28 Oct 2019 09:45:11 +0800
+Message-ID: <20191028014511.73472-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="ayrkqrrimiyumc6c"
-Content-Disposition: inline
-In-Reply-To: <20191022111856.44118-1-weiyongjun1@huawei.com>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+When SND_SOC_SOF_PCI=y, and SND_INTEL_DSP_CONFIG=m, below
+errors can be seen:
+sound/soc/sof/sof-pci-dev.o: In function `sof_pci_probe':
+sof-pci-dev.c:(.text+0xb9): undefined reference to
+`snd_intel_dsp_driver_probe'
 
---ayrkqrrimiyumc6c
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+After commit 82d9d54a6c0e ("ALSA: hda: add Intel DSP
+configuration / probe code"), sof_pci_probe() will call
+snd_intel_dsp_driver_probe(), so it should select
+SND_INTEL_DSP_CONFIG in Kconfig SND_SOC_SOF_PCI.
 
-Hi,
+Fixes: 82d9d54a6c0e ("ALSA: hda: add Intel DSP configuration / probe code")
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ sound/soc/sof/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Tue, Oct 22, 2019 at 11:18:56AM +0000, Wei Yongjun wrote:
-> PTR_ERR should access the value just tested by IS_ERR, otherwise
-> the wrong error code will be returned.
->=20
-> Fixes: 97ab78bac5d0 ("power: supply: ab8500_charger: Convert to IIO ADC")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
+diff --git a/sound/soc/sof/Kconfig b/sound/soc/sof/Kconfig
+index 56a3ab6..a9b2be2 100644
+--- a/sound/soc/sof/Kconfig
++++ b/sound/soc/sof/Kconfig
+@@ -16,6 +16,7 @@ config SND_SOC_SOF_PCI
+ 	select SND_SOC_ACPI if ACPI
+ 	select SND_SOC_SOF_OPTIONS
+ 	select SND_SOC_SOF_INTEL_PCI if SND_SOC_SOF_INTEL_TOPLEVEL
++	select SND_INTEL_DSP_CONFIG
+ 	help
+ 	  This adds support for PCI enumeration. This option is
+ 	  required to enable Intel Skylake+ devices
+-- 
+2.7.4
 
-Thanks for the patch. Gustavo A. R. Silva send an identical patch
-one day earlier, so I applied his patch and added an Reviewed-by
-=66rom you.
-
--- Sebastian
-
->  drivers/power/supply/ab8500_charger.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/power/supply/ab8500_charger.c b/drivers/power/supply=
-/ab8500_charger.c
-> index ff2bb4411a22..8a0f9d769690 100644
-> --- a/drivers/power/supply/ab8500_charger.c
-> +++ b/drivers/power/supply/ab8500_charger.c
-> @@ -3393,7 +3393,7 @@ static int ab8500_charger_probe(struct platform_dev=
-ice *pdev)
->  		if (PTR_ERR(di->adc_main_charger_c) =3D=3D -ENODEV)
->  			return -EPROBE_DEFER;
->  		dev_err(&pdev->dev, "failed to get ADC main charger current\n");
-> -		return PTR_ERR(di->adc_main_charger_v);
-> +		return PTR_ERR(di->adc_main_charger_c);
->  	}
->  	di->adc_vbus_v =3D devm_iio_channel_get(&pdev->dev, "vbus_v");
->  	if (IS_ERR(di->adc_vbus_v)) {
->=20
->=20
->=20
-
---ayrkqrrimiyumc6c
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl22DX8ACgkQ2O7X88g7
-+pq3AA//XlhQ9Z3XbxQL2ENPtxj3Z9vncXBd8iNpcPAupduu4bIVpeAQosMIz7i9
-1BmohV6r5Sp9tw5R0h4wN5GjZ3GCQlky9ok1XdV0P/Y3OvyKcnZVR6EIRbK+3zrn
-meSAlWvZgr8VSoXyDSKPI5s0bJmRXV8q2sGQ2pRZwHNcazTF4d43wKgEEt162CD5
-YSvS1KqRBPNA7RGE9/cupoaPzkUIG18wWvrRFQKAz3iAOyZW2j+t6KPRs7pJ4HY+
-Th0+9WW2PPt97XzGJR4Ys51M41nVJK71lgf2V5Ip2PNVVSVKhbxWkp/IVK1HeeZI
-hgjvVHqN/r132gLl3RdEeWqCIulM4349flTeR4hVLzIo2oAF+qOAb9+xMQqOwsDs
-xqyDqt656efjpPy66FNM1LbJSf35I0snX5Ca4z6xIIXmRDe+sn7WgP7hULAulYty
-SOCdmyAWJEpV8CcOQQizUldjn4vAVM7vfdaOrqRitP8dDRVJvFGGdF2AIDwWHTTQ
-xRWd0I8t2JJn9Wyvphr15UiVzh1AdcoboSPsD27GXq8cmmnE9qegYVLsMa5T9rfl
-YaroIPHc+vFYFnSwYLxaKAhWYVB4PDIeR6/aGixC9qexfMHKNuz+LLpeVbvoEvpS
-IrfO/S+9H1cxY/szm+JSNudSx+bBa4wVFq9AKO3Vwp9AH7M0yYY=
-=Rqe6
------END PGP SIGNATURE-----
-
---ayrkqrrimiyumc6c--

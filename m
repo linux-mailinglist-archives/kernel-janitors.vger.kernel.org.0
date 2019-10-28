@@ -2,41 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15A5CE6DF4
-	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Oct 2019 09:20:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5FBDE6E9C
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Oct 2019 10:00:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733255AbfJ1IUh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Oct 2019 04:20:37 -0400
-Received: from mout.web.de ([212.227.15.3]:38015 "EHLO mout.web.de"
+        id S2387622AbfJ1JAo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Oct 2019 05:00:44 -0400
+Received: from mout.web.de ([212.227.15.4]:34145 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729786AbfJ1IUh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Oct 2019 04:20:37 -0400
+        id S1730849AbfJ1JAo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 28 Oct 2019 05:00:44 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1572250776;
-        bh=QtnCetD729xeNeitMUa344p4nNWm9LknsZvUvsKn3DY=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=YzCgp4VWfIPsl/BqIGVcoOSIncJSwGrJ9tfwkvMClXzbn0mDVe3xM9WV5Vxuta09f
-         VMj4JUXe+jDrwtpEYtU2+wYdBQmnOhXZVlnBYyIwD2d7BdP0n+l52VAJ8U3L/0CIUp
-         1Rt/eIdLTpoC7T1xDbQWwF1xc419KyrfLUSZ22tc=
+        s=dbaedf251592; t=1572253224;
+        bh=ISZ1ToXiu521AwwdlpIdQQBBys/fe/KeuTmoSpj4ADM=;
+        h=X-UI-Sender-Class:Cc:References:Subject:From:To:Date:In-Reply-To;
+        b=YxjNo0QRJWXTSZCVQ8eufGHzpwbStwEH0SKvuePLJgygESkwMveT/OJhX6yRYxxIF
+         jaa5BSWwUUbPa/n5qqgrKp/A/Mw/q56NIdjWWCqAIxjVwPlm6bpHpYUz14ChqpcfgR
+         GYZyNpQ3HWJmjUlad2dY8V9fBxJ0uHfPy2XM8kkI=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([2.244.155.234]) by smtp.web.de (mrweb003
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MfqC4-1ibBTY2pZU-00N7T4; Mon, 28
- Oct 2019 09:19:36 +0100
-Subject: Re: ALSA: pci: Fix memory leak in snd_korg1212_create
-From:   Markus Elfring <Markus.Elfring@web.de>
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        alsa-devel@alsa-project.org
-Cc:     Navid Emamdoost <emamd001@umn.edu>, Kangjie Lu <kjlu@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>,
+Received: from [192.168.1.2] ([2.244.155.234]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MOS6H-1iJnpN0RVd-005skP; Mon, 28
+ Oct 2019 10:00:24 +0100
+Cc:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        Kangjie Lu <kjlu@umn.edu>, Stephen McCamant <smccaman@umn.edu>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jaroslav Kysela <perex@perex.cz>,
         Richard Fontana <rfontana@redhat.com>,
-        Takashi Iwai <tiwai@suse.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-References: <20191027191206.30820-1-navid.emamdoost@gmail.com>
- <47c90b48-8706-7860-3b87-30a7bbb726c0@web.de>
+        LKML <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org
+References: <s5hmudlmldk.wl-tiwai@suse.de>
+Subject: Re: [alsa-devel] ALSA: korg1212: Checking exception handling in
+ snd_korg1212_create()
+From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -80,54 +76,56 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <49777a3b-1fbf-06e4-b4b0-856105c86852@web.de>
-Date:   Mon, 28 Oct 2019 09:19:23 +0100
+To:     Takashi Iwai <tiwai@suse.de>, Navid Emamdoost <emamd001@umn.edu>,
+        alsa-devel@alsa-project.org
+Message-ID: <ec3647df-0e54-4aaa-7ec7-b3dec0fa1965@web.de>
+Date:   Mon, 28 Oct 2019 10:00:21 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.0
 MIME-Version: 1.0
-In-Reply-To: <47c90b48-8706-7860-3b87-30a7bbb726c0@web.de>
+In-Reply-To: <s5hmudlmldk.wl-tiwai@suse.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:EMbUgTQTVUTuX2M+l3nSZ1pKXOm265SWv4pSxyXfxdSNZsAHDyk
- Mw/9iP6ftBUtI/AC0vMLlNhNuff3GL95ubGkAlYmIZReI6I6ueKAcuf8qYo+E621y7Kh0H/
- ppeWSrZgYzlFW/OdcoXtpLNkf/KISIbg1eOQNndDCPtegIdj2UpTVNZ4cFr8fBV9e5ua9fX
- HIWWc71GW1vozeJrQupKQ==
+X-Provags-ID: V03:K1:a9Vw6F2RhASDtPnlTVi5f0T9FPP8jEdu7eDaAHEo4yD3FSvcvui
+ 3PcfJCYtR3EhuC6ZmUv6+gp2vbjhT+8JkdEcuTCX92BwIXVHy4mQpgShhX/thiN+ZHspJhE
+ b5eSiEfurbaRjuxIvick1PgFF+UwHzAbFCUTtAc0/Dsn/OLNoTmNasoa+f3ol6ebckoJJ+y
+ 2ZWCPeWlXhS2ibLboyz3Q==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:G/OxIW1A5Qs=:FLYggwabgPNNyYUqr9PfVu
- AmayUGjx9DQKfzaUJVHwfbq1rFUIYeoexWaeQ4H4M+9lk1FDSZQlFLKFsENR4WQZV/cxu0b8E
- Q2H//QJK+NjDJbJIc8oKpB6FEYZzid9LWGDwHPKmf+HLT3Gx37eN6vzRyIfS1AF8EkSxYSd5Z
- P33Vi0zB6HApUcPCKz6XjVz7EGPUmFdz7Uf4aRvXnAh8GeNGsoaPCdcNysOPAhW7/FqZvmFnC
- qDUo5oYPrjg8eNj9lAukxIwVreqghen3zGapS64DIfmLjhJoVv8pjEqBv1JpJBRk7/GdVBKcr
- 5V2T2EHGOmUC8gdmAMuYwStTwRMSU58Rup/+/6JgFvfx26PmS5V847ADT+DnHr9ZCBlLhOLkl
- kmwe9HIwObFJcuzzeNJGWZn01KAdEYABTDcbhXocnjEqMUoOYTnl1Nn+ZllwdzEHy4JdPqzcM
- ohPObiMGFLJkhHe6BvVTxSg5zLG8dRoop4amcEmbtD3cf0zL9vzT7Z2ITr69JakDWaUCsgi++
- qzEql6vkQAb72p+z18FFLNGM8Az4ff2bvU/9HH9+pZmqVHA+FiJUarjxvbPFniXydwsr5Giy8
- zLVluJrw5/kQELClFrnhJn5NcabfRHe8dFHIQYaMXo8FXqkjtKiMWxwdZAb3DRprpfQw/ihIz
- rXHMtbBPapXwO4GQYwknEB0JgkBHMJZsr6en0uWJaSk0p5QZBQamcjxscCmVJXkFzhafTkIr/
- Sr8XeES0uDC5hS3STwnRtB/tkvSK0QzJX6oWhiU3SfXZSHaJQ5SXleGBXWKoT3+i35hdaGPxG
- 3nAunCZ0j11uZVLoF7UIefg55RlI57Il77ZigZ9nZiL8fh7P1B8UCPM8JoV7gj/h9Kld1IJSZ
- LkZf0+SHTRHu96w93ZU/sad1lNBkcSbqCUvtaPRAVSKHK/OPNpUvmb4vSS/5dkKTRCxqCSjHq
- J9bR3KyLxEHYPTFgIROLOCgBLNVBrPq3bP3cRdpZyLZodIriNgmzReGPmYG2OFRORldbsmA2y
- SXRzZo9kpoOiLpIUczxqhstjw4Fb/dc6Qu3FRuX4dAkN4GxgRYEgckqsXkBbA5nujIt8QTs5J
- lPAGTYDMirUVbmvTUfSnQlGYOzOzFwUyQrwKGWmWFDdXEC+pcB8XD318RWM2MVn8PYEM4bGNl
- +ROQTk3r9FNaNTUicYYsKdw2ISC4La6Y4OoZFI+fGiHeKr6RyXwjbok1A1DbAHg6D/84Al6sC
- 06ekspYSo8iy1fUrfAjr+/Tq2lTfo5um8sy7vmse2SCJsN/Uu3Xjqou10ar8=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:tslcmDesiDE=:jjyWkd4TF4U/bPtCG439fy
+ ila4NvXgxhirVNqbVNWzNrgNl/8sEPYSRiTURRsjpnfYjbB6JvB8P577zI34kSrH+q0NDujAI
+ EYyWv6wDyO5c/4OfIAVXO3XUcVucefeC9CFHIOWIDXMenjmNA/sEGA2O/9TyX21APDOTzSjnR
+ FGvbgtZe6vG9u+uCmFw8H8hKO4Gvx/JVA4AB0wd1HfJJlD8N7dEU7m4HjGf4oRUZ3knSTU9MI
+ dyJNFjObycIPQr8ua8oJP3GYzoPkSRxziZwms/CC30iOupgBbu/e0x4FA5FxPpUwWMjfSVeWG
+ yUVDbrt3VmYvmTSgrDzJrAcrtHE1ig2JsD7Ze8Y1lMoa7TD9B0LFxCGj5O8g2MBplGEUs25Jw
+ Fo80z2dV+JKQBMx5KdTovivK2VPcfrg2yhIReP1Zi8ur/+mfQTrJVGU4HK/uteAt9t/hrK8Wf
+ asuLuv83FPx+5G4nxz8oUbUPUOXODJizPJjGOxKsOvUcqrjDPkNF3odtthSEKeU7EdFB37zyi
+ fg4mENAfoT1SFXbbkC4PIRBhi6meyxCvzv/7c0dAxiqhzPPkj2HrU9prFm+pi8KXWGhlhZtcg
+ X8p8T2obeotx/N1MZwPaTwzmOa6m535hbieav1nbXG1+yVlu/eMrwcew1RemX458SMpYcF72P
+ ng5RV/TEeXAx724HsYva7Ez1ggc2qEC8OzLt5ZZ9ZfmEkznqL8xpHH2+T3AZr1bYMV7Q9vWEO
+ ypFssibZjovfxoVdxiWNdlw3pgob4YP+QgDM+8HG3LvjaHOh3vWVJ0K+IUa6qGTJKmXQN3Me9
+ lZHiu21a9IeJp/gLetAXekjY+kaU+UpERwU1Hsm0ifwT/+vsCzhOnrhh8lfaosnNwiDrZkdK3
+ dtmsEGzUvtTRrV7rhlSSNbBHqiFP3Bz3Msken3zcbndtH3abT9JhLm+/ONpDMnvwmVYAwzt6t
+ p6brgoaQJuMB3XeVv+C+X9AFSQqkJtMCp+sG4LNesKjhjID+9/j/r/RLVZIq+d5AT8DhTAp7B
+ UCWUtK/PBiupJ9szf1Pf77fnkh513k58J79TRzmnZKGu5KB3fP4Z9omfMaPRpbMtu7WVgoZCn
+ K0F8oNgYkeTroEtYnDLRzsVNfremR/4kAQbt/OI8hmKs8Dglxmss5lxk+oRbp6IMlTel3WBVb
+ fFOF7/cPVmgUB4cVP572ROCzvURASKr6iAYfX88dQX0Z20dqALvQUt/WrSs3mzFYNwG032Prq
+ 2jevCHBv+4ckP+5ZnmprJujZQSGgqnaDbGCuP4u2q+HAa6jfwa/mkuWTSFfk=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> I suggest to add a jump target according to the Linux coding style
-> so that duplicate exception handling code can be reduced.
+> The code path is after snd_device_new() which has its own destructor callback.
 
-Do you find any information interesting from the update suggestion
-=E2=80=9CALSA: korg1212: Use common error handling code in two functions=
-=E2=80=9D?
-https://lore.kernel.org/alsa-devel/2165666c-69f9-c716-8ee8-f5071a41f37d@us=
-ers.sourceforge.net/
-https://lore.kernel.org/patchwork/patch/851723/
-https://lkml.org/lkml/2017/11/16/193
+Thanks for your reminder.
+
+Can the properties of this programming interface be documented also together
+with the function declaration for the safer handling of ALSA components?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/sound/kernel-api/writing-an-alsa-driver.rst?id=d6d5df1db6e9d7f8f76d2911707f7d5877251b02#n567
+
+
+Can any more API information help to improve automatic source code analysis
+around similar functions?
 
 Regards,
 Markus

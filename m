@@ -2,112 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6818AE7627
-	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Oct 2019 17:30:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87A25E770B
+	for <lists+kernel-janitors@lfdr.de>; Mon, 28 Oct 2019 17:54:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730711AbfJ1Qa3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 28 Oct 2019 12:30:29 -0400
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:44866 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391019AbfJ1QaY (ORCPT
+        id S1730357AbfJ1Qyi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 28 Oct 2019 12:54:38 -0400
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:37154 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726067AbfJ1Qyi (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 28 Oct 2019 12:30:24 -0400
-Received: by mail-pf1-f196.google.com with SMTP id q26so3581606pfn.11
-        for <kernel-janitors@vger.kernel.org>; Mon, 28 Oct 2019 09:30:23 -0700 (PDT)
+        Mon, 28 Oct 2019 12:54:38 -0400
+Received: by mail-qt1-f196.google.com with SMTP id g50so15567364qtb.4
+        for <kernel-janitors@vger.kernel.org>; Mon, 28 Oct 2019 09:54:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pensando.io; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=SQuBb1DCXEr8h1ECCdUIOg6XQFl3p+ONu+5Oivf+rCw=;
-        b=TZgFUJfk5s8fMqvLgcfoSfoH5/QODG8LGopHISdASnARo4nD5nanqf1siljcA53hK2
-         vJV+9nCLl0JOol9OWtGW3dmp1E7ZDBU0UEuiti6O/DqNrFSqJ77V0D3IEYEtKDcnK9Um
-         QGEeQDx4e6qmmuWaIINHFTEbknU1vbikTO+mRvMgYxMuy3yZaHEtfeVlJddlIByq/prL
-         799VU5HYR/o4NpDliCg+aylRupNiBLgPSypRvBKwYSsE6CRaVMKoaqc8TJNTvyOhaXFE
-         EN/RcKC8UUtXz5aJSwfkCKgSnPJuKEFnV3x7+pKGwJXLIWyxJ0k3Rs2Hp/eAWkBEeWeh
-         Wj2A==
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=105SgWr73rkCfFA8RUlFBrEu0cuARq8iF9sCl/XmecQ=;
+        b=D809WesW5aARmHw7dbnNX7Sk5rQ2y+pFrIc2DgjXchK/YRj5BW4EiGysxjaZzM0uPR
+         /9aG7XNER9S+OAbZ5TBLAZ62j2BYpV+/FJ5VpVII7Uyr9q684czFkxtfNuJva1Od0PtL
+         IaAF/hWU+LH3F84U64QlD/vTsl3L3/buAJDo/CFJreOCcrl7V+bfOPoDhZTxGKE5qUqj
+         cO40NzBUbRZEsFD+AhKr1UMToVI4plOC/u1pt5dsVoe8rr89XgWEa/KRZdG30obUOUEg
+         UP8KEw7bkB5uEBk381U49i2SvxSmIFLRmICiK/jcJ98HWcSl/W/MzLnh+zDyYFLFRzyT
+         z8Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=SQuBb1DCXEr8h1ECCdUIOg6XQFl3p+ONu+5Oivf+rCw=;
-        b=GHni9YgNY3DWDlRa8H+ssyrsfejGZPZPz1KO+nYdj/93rFPL51wSwdxOJhksTjo291
-         Mak02n/Uhxmo9B1PvriX6TnvVpqyPnhjjDehpim5+I5pCMIN/YBEUlZaGK1JDN8GfwQ2
-         L2NaST8zwEAmLnKHPxgSVPQ8m9pR/lY0OzPVZDI9cVFnkCLh8t49KEOWaKTlawNiOwyK
-         d6PeBYd955MrWFYg2f+6UvO0VbVbwF9z3If//LVuaEOTIq96E9xxPGj+qDielYInVR2+
-         RBF8zuy05b6z0QvPsmKel5KqXKiXJL/Dzs1GVXybQi1TbD1H083uEW6D+UFDZQPxVT57
-         4cCA==
-X-Gm-Message-State: APjAAAUEXY6o3iv25eRZAXzUoJBORnq27QXHwqFhxmGOwIIHOjgQdvjK
-        O3A36AHmt6PaG0JrUSDNYlBTlsVOynuLeA==
-X-Google-Smtp-Source: APXvYqy36OBf3DTn/iAU+tRcnAOHj5pMGpTO3ypHFAqBrCmS9Alu7BSIuIlAMijtuMScIJF29o1VQA==
-X-Received: by 2002:a62:8704:: with SMTP id i4mr21102540pfe.15.1572280223335;
-        Mon, 28 Oct 2019 09:30:23 -0700 (PDT)
-Received: from Shannons-MacBook-Pro.local (static-50-53-47-17.bvtn.or.frontiernet.net. [50.53.47.17])
-        by smtp.gmail.com with ESMTPSA id s7sm11329948pgq.91.2019.10.28.09.30.22
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 28 Oct 2019 09:30:22 -0700 (PDT)
-Subject: Re: [PATCH net-next] ionic: Remove set but not used variable
- 'sg_desc'
-To:     YueHaibing <yuehaibing@huawei.com>,
-        Pensando Drivers <drivers@pensando.io>,
-        "David S . Miller" <davem@davemloft.net>
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20191028120121.20743-1-yuehaibing@huawei.com>
-From:   Shannon Nelson <snelson@pensando.io>
-Message-ID: <a9acbf5c-a6d7-0115-2ca9-53368ba12508@pensando.io>
-Date:   Mon, 28 Oct 2019 09:30:21 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:60.0)
- Gecko/20100101 Thunderbird/60.9.0
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=105SgWr73rkCfFA8RUlFBrEu0cuARq8iF9sCl/XmecQ=;
+        b=dlEgBDjwEEOFxndBOjxvkkA/2tF9++adnz91o5E3iLdIWiR5JvdHCZBseg/Yh6+Mu3
+         wu1mZvaJ0alCcUM+6q9+0aA8cchrPr62c8iMdd1QAowSTfvPilyFBBUpvobn6N3lBiJP
+         +rihJj41PLoJaycpqbDZVMTkqYGS4ptiJrHkidsPHokWBt45v9seqUOJowEafUWzAZMO
+         NZPffQMuSsO+s7zGuKE0FqjGtQw38G5QG+6f65tNyXmo2QnhosZL8ErtJ1NoE3JfNclW
+         2F3fzCQT/IGwNXur7wlM96R6Pyy4M9ZWyY/kdVeO8EyGiHlKmPGaqat4t6plYHdsY0MN
+         HQiA==
+X-Gm-Message-State: APjAAAV8dJL2obWGevW+X172t+sZuODHJ5AjVKv7HYCJK/ta49YRMNwo
+        RGhDLSxTJzGhlXlT3jV4AhQd+A==
+X-Google-Smtp-Source: APXvYqw9v0xKTPSNMThwz+LbT4dlwgz4Y5n6SMjm1bFyq2tzXxRqh/VRyPO1cIf4bhhSN+4IX3grvQ==
+X-Received: by 2002:a0c:870d:: with SMTP id 13mr10631507qvh.245.1572281677617;
+        Mon, 28 Oct 2019 09:54:37 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-142-162-113-180.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.113.180])
+        by smtp.gmail.com with ESMTPSA id u189sm6080976qkd.62.2019.10.28.09.54.36
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 28 Oct 2019 09:54:36 -0700 (PDT)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1iP8Hs-0004oo-Ae; Mon, 28 Oct 2019 13:54:36 -0300
+Date:   Mon, 28 Oct 2019 13:54:36 -0300
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Lijun Ou <oulijun@huawei.com>, Wei Hu <xavier.huwei@huawei.com>,
+        Doug Ledford <dledford@redhat.com>,
+        Tao Tian <tiantao6@huawei.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Yangyang Li <liyangyang20@huawei.com>,
+        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] RDMA/hns: fix memory leak on 'context' on error
+ return path
+Message-ID: <20191028165436.GA18470@ziepe.ca>
+References: <20191024131034.19989-1-colin.king@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <20191028120121.20743-1-yuehaibing@huawei.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191024131034.19989-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 10/28/19 5:01 AM, YueHaibing wrote:
-> Fixes gcc '-Wunused-but-set-variable' warning:
->
-> drivers/net/ethernet/pensando/ionic/ionic_txrx.c: In function 'ionic_rx_empty':
-> drivers/net/ethernet/pensando/ionic/ionic_txrx.c:405:28: warning:
->   variable 'sg_desc' set but not used [-Wunused-but-set-variable]
->
-> It is never used, so can be removed.
->
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-
-Acked-by: Shannon Nelson <snelson@pensando.io>
-
-
+On Thu, Oct 24, 2019 at 02:10:34PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently, the error return path when the call to function
+> dev->dfx->query_cqc_info fails will leak object 'context'. Fix this
+> by making the error return path via 'err' return return codes rather
+> than -EMSGSIZE, set ret appropriately for all error return paths and
+> for the memory leak now return via 'err' with -EINVAL rather than
+> just returning without freeing context.
+> 
+> Addresses-Coverity: ("Resource leak")
+> Fixes: e1c9a0dc2939 ("RDMA/hns: Dump detailed driver-specific CQ")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->   drivers/net/ethernet/pensando/ionic/ionic_txrx.c | 2 --
->   1 file changed, 2 deletions(-)
->
-> diff --git a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-> index 0aeac3157160..97e79949b359 100644
-> --- a/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-> +++ b/drivers/net/ethernet/pensando/ionic/ionic_txrx.c
-> @@ -402,7 +402,6 @@ static void ionic_rx_fill_cb(void *arg)
->   
->   void ionic_rx_empty(struct ionic_queue *q)
->   {
-> -	struct ionic_rxq_sg_desc *sg_desc;
->   	struct ionic_desc_info *cur;
->   	struct ionic_rxq_desc *desc;
->   	unsigned int i;
-> @@ -412,7 +411,6 @@ void ionic_rx_empty(struct ionic_queue *q)
->   		desc->addr = 0;
->   		desc->len = 0;
->   
-> -		sg_desc = cur->sg_desc;
->   		for (i = 0; i < cur->npages; i++) {
->   			if (likely(cur->pages[i].page)) {
->   				ionic_rx_page_free(q, cur->pages[i].page,
->
->
->
+>  drivers/infiniband/hw/hns/hns_roce_restrack.c | 16 +++++++++++-----
+>  1 file changed, 11 insertions(+), 5 deletions(-)
 
+Applied to for-next with the note to remove the EINVAL return
+
+Thanks,
+Jason

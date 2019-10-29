@@ -2,70 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA62CE8018
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Oct 2019 07:09:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F018E8026
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Oct 2019 07:16:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732184AbfJ2GJ0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Oct 2019 02:09:26 -0400
-Received: from smtp13.smtpout.orange.fr ([80.12.242.135]:22345 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1730952AbfJ2GJ0 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Oct 2019 02:09:26 -0400
-Received: from localhost.localdomain ([93.22.151.170])
-        by mwinf5d72 with ME
-        id KJ9N210043gq7t103J9N2i; Tue, 29 Oct 2019 07:09:23 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Tue, 29 Oct 2019 07:09:23 +0100
-X-ME-IP: 93.22.151.170
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     ohad@wizery.com, bjorn.andersson@linaro.org
-Cc:     linux-remoteproc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] rpmsg: char: Simplify 'rpmsg_eptdev_release()'
-Date:   Tue, 29 Oct 2019 07:09:14 +0100
-Message-Id: <20191029060915.3650-1-christophe.jaillet@wanadoo.fr>
+        id S1732382AbfJ2GQA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Oct 2019 02:16:00 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:5217 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727462AbfJ2GQA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 29 Oct 2019 02:16:00 -0400
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 8A773CB0422BA7F5CC34;
+        Tue, 29 Oct 2019 14:15:57 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 29 Oct 2019 14:15:49 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-scsi@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] scsi: csiostor: Remove set but not used variable 'rln'
+Date:   Tue, 29 Oct 2019 06:15:30 +0000
+Message-ID: <20191029061530.98197-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Use 'skb_queue_purge()' instead of re-implementing it.
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+drivers/scsi/csiostor/csio_lnode.c: In function 'csio_ln_init':
+drivers/scsi/csiostor/csio_lnode.c:1995:21: warning:
+ variable 'rln' set but not used [-Wunused-but-set-variable]
+
+It is never used since introduction, so remove it.
+
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/rpmsg/rpmsg_char.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/scsi/csiostor/csio_lnode.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/rpmsg/rpmsg_char.c b/drivers/rpmsg/rpmsg_char.c
-index 507bfe163883..0c3a340db7d1 100644
---- a/drivers/rpmsg/rpmsg_char.c
-+++ b/drivers/rpmsg/rpmsg_char.c
-@@ -146,7 +146,6 @@ static int rpmsg_eptdev_release(struct inode *inode, struct file *filp)
+diff --git a/drivers/scsi/csiostor/csio_lnode.c b/drivers/scsi/csiostor/csio_lnode.c
+index 23cbe4cda760..74ff8adc41f7 100644
+--- a/drivers/scsi/csiostor/csio_lnode.c
++++ b/drivers/scsi/csiostor/csio_lnode.c
+@@ -1992,7 +1992,7 @@ static int
+ csio_ln_init(struct csio_lnode *ln)
  {
- 	struct rpmsg_eptdev *eptdev = cdev_to_eptdev(inode->i_cdev);
- 	struct device *dev = &eptdev->dev;
--	struct sk_buff *skb;
+ 	int rv = -EINVAL;
+-	struct csio_lnode *rln, *pln;
++	struct csio_lnode *pln;
+ 	struct csio_hw *hw = csio_lnode_to_hw(ln);
  
- 	/* Close the endpoint, if it's not already destroyed by the parent */
- 	mutex_lock(&eptdev->ept_lock);
-@@ -157,10 +156,7 @@ static int rpmsg_eptdev_release(struct inode *inode, struct file *filp)
- 	mutex_unlock(&eptdev->ept_lock);
+ 	csio_init_state(&ln->sm, csio_lns_uninit);
+@@ -2022,7 +2022,6 @@ csio_ln_init(struct csio_lnode *ln)
+ 		 * THe rest is common for non-root physical and NPIV lnodes.
+ 		 * Just get references to all other modules
+ 		 */
+-		rln = csio_root_lnode(ln);
  
- 	/* Discard all SKBs */
--	while (!skb_queue_empty(&eptdev->queue)) {
--		skb = skb_dequeue(&eptdev->queue);
--		kfree_skb(skb);
--	}
-+	skb_queue_purge(&eptdev->queue);
- 
- 	put_device(dev);
- 
--- 
-2.20.1
+ 		if (csio_is_npiv_ln(ln)) {
+ 			/* NPIV */
+
+
 

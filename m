@@ -2,55 +2,58 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E9AFE8F48
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Oct 2019 19:28:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28D60E8F53
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Oct 2019 19:32:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731548AbfJ2S2B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Oct 2019 14:28:01 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:37134 "EHLO
+        id S1731724AbfJ2ScF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Oct 2019 14:32:05 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:42186 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727282AbfJ2S2B (ORCPT
+        with ESMTP id S1725879AbfJ2ScE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Oct 2019 14:28:01 -0400
+        Tue, 29 Oct 2019 14:32:04 -0400
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9TIOKxm171399;
-        Tue, 29 Oct 2019 18:27:51 GMT
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9TIOwfb171648;
+        Tue, 29 Oct 2019 18:31:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=3AATR/URPY9uyZaZu/wUmJ2Mmcno1iZta5grAKv46Tg=;
- b=CAURuji1EtN3K6OGy/DGSnsNq4Qj9vpPCto45l5eIF6ATqG1GT6ryOu3pgZmH7zXKCSo
- XJh0NAUoOkB7TYTQHqIfWZsQi6E/LdjOwnWgHPpYYTPdgpN+PcK+GoY4Fi0V/5nKMC0m
- iuhLFcnZfdWtMQ8a1MEjLRCc5vlWyhgxOmMrjjiVwbXeuRYXwDOTNvdHxJDuVtYyDJWY
- xfQ7yt8cBntk0Uj0coyhf2vex2ThVTN+/UlLaemfy+Qh134rQ/d9lWC9l4LZwmb4H44T
- 6qT3pgVePGxMzci203Cy1u9N089JXkkZzO86jT7R7U+PHRT3wM13EIH4NE5W8bPE7nqk NQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 2vve3qb3je-1
+ bh=W5i8RaPuVxfk2wF9jP1qOXUbfa1KG3Gyj6D6MLp1DEs=;
+ b=NjXdPhBDYKdqRh4Wu+tccs0Fs6vlwdxTeMtGEOX0HssoCew4FOYZNl5boTN+bpfkvgaw
+ Ms5BwxZh/ABu+16yFvwO2JzCJA2MzXZ+BAlKbuKtuWGlZ5W6vUSZG28JbZqvTcbq7UPl
+ RL4+BeXLYB6zBl4MEqGpfAmHy7flzJBtpKl2ecAarxa5fNlNdsM04eHMykTu/xAmAQ+A
+ ZtkaVVKLeDK/T/A0WwcAU+61XwOJDBZxlS714UZvCd89pluAw6z6A/Nth8nlCYxdi94U
+ 2qXOie2NUdrkIqBtailmTlHCgnMkFu/h49Yuzw4R9RBbE6e4K9d4lfLMsPniYUGiTDvt vQ== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2vve3qb4ae-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 29 Oct 2019 18:27:51 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9TI8SEf052470;
-        Tue, 29 Oct 2019 18:27:50 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 2vxj8gqhyy-1
+        Tue, 29 Oct 2019 18:31:54 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9TISme2036943;
+        Tue, 29 Oct 2019 18:29:54 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 2vxpfdh4tj-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 29 Oct 2019 18:27:50 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x9TIRmHE013828;
-        Tue, 29 Oct 2019 18:27:48 GMT
+        Tue, 29 Oct 2019 18:29:54 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x9TITq3g015039;
+        Tue, 29 Oct 2019 18:29:52 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 29 Oct 2019 11:27:47 -0700
-Date:   Tue, 29 Oct 2019 21:27:42 +0300
+        with ESMTP ; Tue, 29 Oct 2019 11:29:51 -0700
+Date:   Tue, 29 Oct 2019 21:29:43 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Kukjin Kim <kgene@kernel.org>
-Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     Sumit Semwal <sumit.semwal@linaro.org>,
+        John Stultz <john.stultz@linaro.org>
+Cc:     "Andrew F. Davis" <afd@ti.com>,
+        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
+        Liam Mark <lmark@codeaurora.org>,
+        Laura Abbott <labbott@redhat.com>,
+        Brian Starkey <Brian.Starkey@arm.com>,
+        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linaro-mm-sig@lists.linaro.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] soc: samsung: exynos-asv: Potential NULL dereference in
- exynos_asv_update_opps()
-Message-ID: <20191029182742.GC17569@mwanda>
+Subject: [PATCH] dma-buf: Fix a warning message in dma_heap_buffer_destroy()
+Message-ID: <20191029182943.GD17569@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -60,7 +63,7 @@ X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9425 signatures=6
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
  phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1910290160
+ engine=8.0.1-1908290000 definitions=main-1910290161
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9425 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
  suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
@@ -72,36 +75,28 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The dev_pm_opp_get_opp_table() returns error pointers if it's disabled
-in the config and it returns NULL if there is an error.  This code only
-checks for error pointers so it could lead to an Oops inside the
-dev_pm_opp_put_opp_table() function.
+The first argument of WARN() is a condition so this will just print the
+function name instead of the whole warning message.
 
-Fixes: 5ea428595cc5 ("soc: samsung: Add Exynos Adaptive Supply Voltage driver")
+Fixes: 7b87ea704fd9 ("dma-buf: heaps: Add heap helpers")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
-When we add a new driver, could we specify the which prefix will be used
-going forward?  In other words commit 5ea428595cc5 could have the
-prefix "soc: samsung: exynos-asv: Add Exynos Adaptive Supply Voltage
-driver".  The "exynos-asv" bit was missing so the first person to send a
-fix has to guess what is desired.
-
- drivers/soc/samsung/exynos-asv.c | 2 +-
+ drivers/dma-buf/heaps/heap-helpers.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/samsung/exynos-asv.c b/drivers/soc/samsung/exynos-asv.c
-index 8abf4dfaa5c5..30bb7b7cc769 100644
---- a/drivers/soc/samsung/exynos-asv.c
-+++ b/drivers/soc/samsung/exynos-asv.c
-@@ -93,7 +93,7 @@ static int exynos_asv_update_opps(struct exynos_asv *asv)
- 			continue;
+diff --git a/drivers/dma-buf/heaps/heap-helpers.c b/drivers/dma-buf/heaps/heap-helpers.c
+index 750bef4e902d..a31684c0d5b2 100644
+--- a/drivers/dma-buf/heaps/heap-helpers.c
++++ b/drivers/dma-buf/heaps/heap-helpers.c
+@@ -52,7 +52,7 @@ static void *dma_heap_map_kernel(struct heap_helper_buffer *buffer)
+ static void dma_heap_buffer_destroy(struct heap_helper_buffer *buffer)
+ {
+ 	if (buffer->vmap_cnt > 0) {
+-		WARN("%s: buffer still mapped in the kernel\n", __func__);
++		WARN(1, "%s: buffer still mapped in the kernel\n", __func__);
+ 		vunmap(buffer->vaddr);
+ 	}
  
- 		opp_table = dev_pm_opp_get_opp_table(cpu);
--		if (IS_ERR(opp_table))
-+		if (IS_ERR_OR_NULL(opp_table))
- 			continue;
- 
- 		if (!last_opp_table || opp_table != last_opp_table) {
 -- 
 2.20.1
 

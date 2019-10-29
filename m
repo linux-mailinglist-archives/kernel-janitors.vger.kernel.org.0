@@ -2,78 +2,146 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 506F1E82BA
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Oct 2019 08:48:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C156E8395
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Oct 2019 09:55:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727927AbfJ2Hsg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Oct 2019 03:48:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:48634 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727861AbfJ2Hsg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Oct 2019 03:48:36 -0400
-Received: from localhost (unknown [91.217.168.176])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 66E1F20862;
-        Tue, 29 Oct 2019 07:48:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572335316;
-        bh=FXgcfNOvXeZ6eBY7zQ7oil3dfcM2q0wnJso7d5WHhxw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=dZKqDQIox/2uMUpK/QV6sPMi1BfuzxaFYWsLchJ5qWl0GxCWShvDRUhJBZbs92VRD
-         PUAOmymSQcIYE6Gf9taNX2oiMh9322kdr1JVg/8IgWcf/K3gSyuN4vf7LaJQ68tzG3
-         ZCqTUMCXNhvGpokgte0iXmwd9F+ywIBkqlrvPovM=
-Date:   Tue, 29 Oct 2019 08:43:21 +0100
-From:   Maxime Ripard <mripard@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Chen-Yu Tsai <wens@csie.org>,
-        Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] clk: sunxi-ng: a80: fix the zero'ing of bits 16 and 18
-Message-ID: <20191029074321.ftamn6qitkbfrucm@hendrix>
-References: <20191023112809.27595-1-colin.king@canonical.com>
+        id S1730043AbfJ2IzH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Oct 2019 04:55:07 -0400
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:43265 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729695AbfJ2IzH (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 29 Oct 2019 04:55:07 -0400
+X-IronPort-AV: E=Sophos;i="5.68,243,1569276000"; 
+   d="scan'208";a="409212435"
+Received: from unknown (HELO hadrien) ([91.217.168.176])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Oct 2019 09:55:03 +0100
+Date:   Tue, 29 Oct 2019 09:55:02 +0100 (CET)
+From:   Julia Lawall <julia.lawall@lip6.fr>
+X-X-Sender: julia@hadrien
+To:     Masahiro Yamada <yamada.masahiro@socionext.com>
+cc:     Julia Lawall <julia.lawall@lip6.fr>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Joe Perches <joe@perches.com>, Marc Zyngier <maz@kernel.org>,
+        Markus Elfring <Markus.Elfring@web.de>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        kernel-janitors@vger.kernel.org,
+        Coccinelle <cocci@systeme.lip6.fr>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linus Torvalds <torvalds@linuxfoundation.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        YueHaibing <yuehaibing@huawei.com>
+Subject: Re: coccinelle: api/devm_platform_ioremap_resource: remove useless
+ script
+In-Reply-To: <CAK7LNATkXYNMbquhn=SV=Hj1kqbPke8x4_a7aZYhceRAam8MHQ@mail.gmail.com>
+Message-ID: <alpine.DEB.2.21.1910290953060.2183@hadrien>
+References: <e895d04ef5a282b5b48fcb21cbc175d2@www.loen.fr> <693a3b68-a0f1-81fe-40ce-2b6ba189450c@web.de> <868spgzcti.wl-maz@kernel.org> <c8816d85b696cb96318e17b7010b84f09bc67bf7.camel@perches.com> <CAK7LNAQqSThGRM_wRGR2ou3B+Oqpr0nF9Fg4rhSR4Hvnxwnj3g@mail.gmail.com>
+ <20191025080843.GG32742@smile.fi.intel.com> <alpine.DEB.2.21.1910251028260.2787@hadrien> <CAK7LNATkXYNMbquhn=SV=Hj1kqbPke8x4_a7aZYhceRAam8MHQ@mail.gmail.com>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="gufwthkvpo2ckxgg"
-Content-Disposition: inline
-In-Reply-To: <20191023112809.27595-1-colin.king@canonical.com>
-User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
---gufwthkvpo2ckxgg
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Wed, Oct 23, 2019 at 12:28:09PM +0100, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Tue, 29 Oct 2019, Masahiro Yamada wrote:
+
+> Hi Julia
 >
-> The zero'ing of bits 16 and 18 is incorrect. Currently the code
-> is masking with the bitwise-and of BIT(16) & BIT(18) which is
-> 0, so the updated value for val is always zero. Fix this by bitwise
-> and-ing value with the correct mask that will zero bits 16 and 18.
+> On Fri, Oct 25, 2019 at 5:38 PM Julia Lawall <julia.lawall@lip6.fr> wrote:
+> >
+> >
+> >
+> > On Fri, 25 Oct 2019, Andy Shevchenko wrote:
+> >
+> > > On Fri, Oct 25, 2019 at 12:40:52AM +0900, Masahiro Yamada wrote:
+> > > > On Sun, Oct 20, 2019 at 7:13 AM Joe Perches <joe@perches.com> wrote:
+> > > > > On Sat, 2019-10-19 at 21:43 +0100, Marc Zyngier wrote:
+> > >
+> > > > Alexandre Belloni used
+> > > > https://lore.kernel.org/lkml/9bbcce19c777583815c92ce3c2ff2586@www.loen.fr/
+> > > > as a reference, but this is not the output from coccicheck.
+> > > > The patch author just created a wrong patch by hand.
+> > >
+> > > Exactly. Removal of the script is a mistake. Like I said before is a healing
+> > > (incorrect by the way!) by symptoms.
+> > >
+> > > > The deleted semantic patch supports MODE=patch,
+> > > > which creates a correct patch, and is useful.
+> > >
+> > > Right!
+> >
+> > I ran it on the version of Linux that still has the script:
+> >
+> > fe7d2c23d748e4206f4bef9330d0dff9abed7411
+> >
+> > and managed to compile 341 of the generated files in the time I had
+> > available, and all compiled successfully.
 >
-> Addresses-Coverity: (" Suspicious &= or |= constant expression")
-> Fixes: b8eb71dcdd08 ("clk: sunxi-ng: Add A80 CCU")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Yeah, this semantic patch did the correct conversion
+> as its header part showed the confidence.
+>
+> // Confidence: High
+>
+>
+>
+> >  I can let it run again, and see
+> > how it goes for the rest.  Perhaps it would be acceptable if there was no
+> > report, and people would be forced to use the generated patch?
+>
+> I do not think this is the right thing.
+> MODE=report is the default, and it is fine.
+>
+> >
+> > If someone is writing lots of patches on this issue by hand, then perhaps
+> > they don't have make coccicheck to produce patches, and then would
+> > overlook this case completely.
+> >
+> > If it would be helpful, I could group the generated patches by maintainer
+> > or by subdirectory and send them out, if it would be easier to review them
+> > all at once.
+>
+> Yes, please.
+>
+> Subsystem maintainers trust you,
+> so I think it will make things move smoothly.
+>
+> After converting most of files,
+> I want 283ea345934d277e30c841c577e0e2142b4bfcae reverted.
 
-Applied, thanks!
-Maxime
+OK.  I got 477 of the files to compile directly.  I can send patches on
+them, and then look into the issues on the remaining ones (probably
+configuration issues).
 
---gufwthkvpo2ckxgg
-Content-Type: application/pgp-signature; name="signature.asc"
+julia
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXbftmQAKCRDj7w1vZxhR
-xUkfAP9Z5pgiCu01sgdMtiTA28A0ugCnNsspfAqhabiBnF1uMAD/UtXwYMkvUTC7
-Eqx/KFAYrADVGg14oOUSrdk0eFxowwY=
-=j3Hb
------END PGP SIGNATURE-----
-
---gufwthkvpo2ckxgg--
+>
+>
+> >
+> > Anyway, the rule is not in the kernel at the moment.  For it's future, I'm
+> > open to whatever people find best.  Personally, I prefer when same things
+> > are done in the same way - it makes the code easier to understand and
+> > makes it simpler to address other issues when they arise.
+>
+>
+> We always did the same things in the same way
+> except commit 283ea345934d277e30c841c577e0e2142b4bfcae
+>
+>
+>
+>
+> --
+> Best Regards
+> Masahiro Yamada
+>

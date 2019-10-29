@@ -2,52 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8000E8F2F
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Oct 2019 19:24:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E9AFE8F48
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Oct 2019 19:28:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728087AbfJ2SYM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Oct 2019 14:24:12 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:60752 "EHLO
+        id S1731548AbfJ2S2B (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Oct 2019 14:28:01 -0400
+Received: from aserp2120.oracle.com ([141.146.126.78]:37134 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726923AbfJ2SYM (ORCPT
+        with ESMTP id S1727282AbfJ2S2B (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Oct 2019 14:24:12 -0400
+        Tue, 29 Oct 2019 14:28:01 -0400
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9TI5UUe155040;
-        Tue, 29 Oct 2019 18:24:08 GMT
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9TIOKxm171399;
+        Tue, 29 Oct 2019 18:27:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=CBucKVszmtDkvTv5jp3bH4K3Bhl/s5iJ0btzBQYUPTw=;
- b=Ba68fn1ARkOxtVaBzMD7fr/JplX/xSOKPF/C8n19nSMHdoAJBri7TREZRrhMlXdyjMSj
- ibEuYrI9UHQ+WevL07YZNrk7ypp1QYw9AhWP6pPUNxaaOoEvmHKVuNhwG291qG31SO91
- wViQ2OqL5UEZi533lG9U4TXW/kuj2/yYhYZObZYy0B7V+TyGwldlGYTVOcC51peRSpJ5
- qJMQ4u0Num+8VmIXSU3oKsbkl1cYQZc1cXoS1CZj9kYD1D4fQV4OJ/UVLcJU8dVioWjk
- Ha2pk3q2pjOegvuPhbO0+LDQ+Lbr9eg8t/NsdM03dvIB6KNog49EtKdLFlANjoHBUU71 Fw== 
+ bh=3AATR/URPY9uyZaZu/wUmJ2Mmcno1iZta5grAKv46Tg=;
+ b=CAURuji1EtN3K6OGy/DGSnsNq4Qj9vpPCto45l5eIF6ATqG1GT6ryOu3pgZmH7zXKCSo
+ XJh0NAUoOkB7TYTQHqIfWZsQi6E/LdjOwnWgHPpYYTPdgpN+PcK+GoY4Fi0V/5nKMC0m
+ iuhLFcnZfdWtMQ8a1MEjLRCc5vlWyhgxOmMrjjiVwbXeuRYXwDOTNvdHxJDuVtYyDJWY
+ xfQ7yt8cBntk0Uj0coyhf2vex2ThVTN+/UlLaemfy+Qh134rQ/d9lWC9l4LZwmb4H44T
+ 6qT3pgVePGxMzci203Cy1u9N089JXkkZzO86jT7R7U+PHRT3wM13EIH4NE5W8bPE7nqk NQ== 
 Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 2vve3qb2wc-1
+        by aserp2120.oracle.com with ESMTP id 2vve3qb3je-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 29 Oct 2019 18:24:08 +0000
+        Tue, 29 Oct 2019 18:27:51 +0000
 Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9TI8RBT052331;
-        Tue, 29 Oct 2019 18:24:07 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 2vxj8gqc81-1
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9TI8SEf052470;
+        Tue, 29 Oct 2019 18:27:50 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 2vxj8gqhyy-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 29 Oct 2019 18:24:07 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x9TIO64U007303;
-        Tue, 29 Oct 2019 18:24:06 GMT
+        Tue, 29 Oct 2019 18:27:50 +0000
+Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x9TIRmHE013828;
+        Tue, 29 Oct 2019 18:27:48 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 29 Oct 2019 11:24:06 -0700
-Date:   Tue, 29 Oct 2019 21:24:01 +0300
+        with ESMTP ; Tue, 29 Oct 2019 11:27:47 -0700
+Date:   Tue, 29 Oct 2019 21:27:42 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Sakari Ailus <sakari.ailus@linux.intel.com>
-Cc:     Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org,
+To:     Kukjin Kim <kgene@kernel.org>
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] media: smiapp: unlock on error in smiapp_start_streaming()
-Message-ID: <20191029182401.GB17569@mwanda>
+Subject: [PATCH] soc: samsung: exynos-asv: Potential NULL dereference in
+ exynos_asv_update_opps()
+Message-ID: <20191029182742.GC17569@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -63,41 +66,42 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=150
  suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1910290160
+ definitions=main-1910290161
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We added two new error paths to smiapp_start_streaming(), but we can't
-return directly without dropping the "sensor->mutex" lock.
+The dev_pm_opp_get_opp_table() returns error pointers if it's disabled
+in the config and it returns NULL if there is an error.  This code only
+checks for error pointers so it could lead to an Oops inside the
+dev_pm_opp_put_opp_table() function.
 
-Fixes: f8c4352c1bef ("media: smiapp: Move binning configuration to streaming start")
+Fixes: 5ea428595cc5 ("soc: samsung: Add Exynos Adaptive Supply Voltage driver")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/media/i2c/smiapp/smiapp-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+When we add a new driver, could we specify the which prefix will be used
+going forward?  In other words commit 5ea428595cc5 could have the
+prefix "soc: samsung: exynos-asv: Add Exynos Adaptive Supply Voltage
+driver".  The "exynos-asv" bit was missing so the first person to send a
+fix has to guess what is desired.
 
-diff --git a/drivers/media/i2c/smiapp/smiapp-core.c b/drivers/media/i2c/smiapp/smiapp-core.c
-index 77dfce7c3be9..84f9771b5fed 100644
---- a/drivers/media/i2c/smiapp/smiapp-core.c
-+++ b/drivers/media/i2c/smiapp/smiapp-core.c
-@@ -1362,13 +1362,13 @@ static int smiapp_start_streaming(struct smiapp_sensor *sensor)
- 		rval = smiapp_write(
- 			sensor, SMIAPP_REG_U8_BINNING_TYPE, binning_type);
- 		if (rval < 0)
--			return rval;
-+			goto out;
+ drivers/soc/samsung/exynos-asv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/soc/samsung/exynos-asv.c b/drivers/soc/samsung/exynos-asv.c
+index 8abf4dfaa5c5..30bb7b7cc769 100644
+--- a/drivers/soc/samsung/exynos-asv.c
++++ b/drivers/soc/samsung/exynos-asv.c
+@@ -93,7 +93,7 @@ static int exynos_asv_update_opps(struct exynos_asv *asv)
+ 			continue;
  
- 		binning_mode = 1;
- 	}
- 	rval = smiapp_write(sensor, SMIAPP_REG_U8_BINNING_MODE, binning_mode);
- 	if (rval < 0)
--		return rval;
-+		goto out;
+ 		opp_table = dev_pm_opp_get_opp_table(cpu);
+-		if (IS_ERR(opp_table))
++		if (IS_ERR_OR_NULL(opp_table))
+ 			continue;
  
- 	/* Set up PLL */
- 	rval = smiapp_pll_configure(sensor);
+ 		if (!last_opp_table || opp_table != last_opp_table) {
 -- 
 2.20.1
 

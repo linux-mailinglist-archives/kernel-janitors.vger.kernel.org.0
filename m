@@ -2,75 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F018E8026
-	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Oct 2019 07:16:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 506F1E82BA
+	for <lists+kernel-janitors@lfdr.de>; Tue, 29 Oct 2019 08:48:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732382AbfJ2GQA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Oct 2019 02:16:00 -0400
-Received: from szxga05-in.huawei.com ([45.249.212.191]:5217 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727462AbfJ2GQA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Oct 2019 02:16:00 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 8A773CB0422BA7F5CC34;
-        Tue, 29 Oct 2019 14:15:57 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.439.0; Tue, 29 Oct 2019 14:15:49 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-CC:     YueHaibing <yuehaibing@huawei.com>, <linux-scsi@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] scsi: csiostor: Remove set but not used variable 'rln'
-Date:   Tue, 29 Oct 2019 06:15:30 +0000
-Message-ID: <20191029061530.98197-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727927AbfJ2Hsg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Oct 2019 03:48:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48634 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727861AbfJ2Hsg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 29 Oct 2019 03:48:36 -0400
+Received: from localhost (unknown [91.217.168.176])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 66E1F20862;
+        Tue, 29 Oct 2019 07:48:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1572335316;
+        bh=FXgcfNOvXeZ6eBY7zQ7oil3dfcM2q0wnJso7d5WHhxw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=dZKqDQIox/2uMUpK/QV6sPMi1BfuzxaFYWsLchJ5qWl0GxCWShvDRUhJBZbs92VRD
+         PUAOmymSQcIYE6Gf9taNX2oiMh9322kdr1JVg/8IgWcf/K3gSyuN4vf7LaJQ68tzG3
+         ZCqTUMCXNhvGpokgte0iXmwd9F+ywIBkqlrvPovM=
+Date:   Tue, 29 Oct 2019 08:43:21 +0100
+From:   Maxime Ripard <mripard@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Chen-Yu Tsai <wens@csie.org>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-clk@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] clk: sunxi-ng: a80: fix the zero'ing of bits 16 and 18
+Message-ID: <20191029074321.ftamn6qitkbfrucm@hendrix>
+References: <20191023112809.27595-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="gufwthkvpo2ckxgg"
+Content-Disposition: inline
+In-Reply-To: <20191023112809.27595-1-colin.king@canonical.com>
+User-Agent: NeoMutt/20180716
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
 
-drivers/scsi/csiostor/csio_lnode.c: In function 'csio_ln_init':
-drivers/scsi/csiostor/csio_lnode.c:1995:21: warning:
- variable 'rln' set but not used [-Wunused-but-set-variable]
+--gufwthkvpo2ckxgg
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-It is never used since introduction, so remove it.
+On Wed, Oct 23, 2019 at 12:28:09PM +0100, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The zero'ing of bits 16 and 18 is incorrect. Currently the code
+> is masking with the bitwise-and of BIT(16) & BIT(18) which is
+> 0, so the updated value for val is always zero. Fix this by bitwise
+> and-ing value with the correct mask that will zero bits 16 and 18.
+>
+> Addresses-Coverity: (" Suspicious &= or |= constant expression")
+> Fixes: b8eb71dcdd08 ("clk: sunxi-ng: Add A80 CCU")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/scsi/csiostor/csio_lnode.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Applied, thanks!
+Maxime
 
-diff --git a/drivers/scsi/csiostor/csio_lnode.c b/drivers/scsi/csiostor/csio_lnode.c
-index 23cbe4cda760..74ff8adc41f7 100644
---- a/drivers/scsi/csiostor/csio_lnode.c
-+++ b/drivers/scsi/csiostor/csio_lnode.c
-@@ -1992,7 +1992,7 @@ static int
- csio_ln_init(struct csio_lnode *ln)
- {
- 	int rv = -EINVAL;
--	struct csio_lnode *rln, *pln;
-+	struct csio_lnode *pln;
- 	struct csio_hw *hw = csio_lnode_to_hw(ln);
- 
- 	csio_init_state(&ln->sm, csio_lns_uninit);
-@@ -2022,7 +2022,6 @@ csio_ln_init(struct csio_lnode *ln)
- 		 * THe rest is common for non-root physical and NPIV lnodes.
- 		 * Just get references to all other modules
- 		 */
--		rln = csio_root_lnode(ln);
- 
- 		if (csio_is_npiv_ln(ln)) {
- 			/* NPIV */
+--gufwthkvpo2ckxgg
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYIAB0WIQRcEzekXsqa64kGDp7j7w1vZxhRxQUCXbftmQAKCRDj7w1vZxhR
+xUkfAP9Z5pgiCu01sgdMtiTA28A0ugCnNsspfAqhabiBnF1uMAD/UtXwYMkvUTC7
+Eqx/KFAYrADVGg14oOUSrdk0eFxowwY=
+=j3Hb
+-----END PGP SIGNATURE-----
 
+--gufwthkvpo2ckxgg--

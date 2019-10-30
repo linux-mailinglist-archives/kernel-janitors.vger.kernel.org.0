@@ -2,64 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 44BF5E9558
-	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Oct 2019 04:41:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A16FE9673
+	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Oct 2019 07:37:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727000AbfJ3DlU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Oct 2019 23:41:20 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:58812 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726752AbfJ3DlU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Oct 2019 23:41:20 -0400
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 47CA489CA2B8A3B3E004;
-        Wed, 30 Oct 2019 11:41:18 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 30 Oct 2019 11:41:09 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Peter Chen <peter.chen@nxp.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-usb@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] usb: gadget: configfs: Fix missing spin_lock_init()
-Date:   Wed, 30 Oct 2019 03:40:46 +0000
-Message-ID: <20191030034046.188808-1-weiyongjun1@huawei.com>
+        id S1727369AbfJ3GhC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 30 Oct 2019 02:37:02 -0400
+Received: from smtp03.smtpout.orange.fr ([80.12.242.125]:30543 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726900AbfJ3GhC (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 30 Oct 2019 02:37:02 -0400
+Received: from localhost.localdomain ([93.22.133.151])
+        by mwinf5d79 with ME
+        id Kicw210073G8tn903icwwo; Wed, 30 Oct 2019 07:36:59 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 30 Oct 2019 07:36:59 +0100
+X-ME-IP: 93.22.133.151
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     davem@davemloft.net, navid.emamdoost@gmail.com
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] net: qrtr: Simplify 'qrtr_tun_release()'
+Date:   Wed, 30 Oct 2019 07:36:40 +0100
+Message-Id: <20191030063640.25794-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The driver allocates the spinlock but not initialize it.
-Use spin_lock_init() on it to initialize it correctly.
+Use 'skb_queue_purge()' instead of re-implementing it.
 
-This is detected by Coccinelle semantic patch.
-
-Fixes: 1a1c851bbd70 ("usb: gadget: configfs: fix concurrent issue between composite APIs")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/usb/gadget/configfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/qrtr/tun.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
-index 33852c2b29d1..ab9ac48a751a 100644
---- a/drivers/usb/gadget/configfs.c
-+++ b/drivers/usb/gadget/configfs.c
-@@ -1544,6 +1544,7 @@ static struct config_group *gadgets_make(
- 	gi->composite.resume = NULL;
- 	gi->composite.max_speed = USB_SPEED_SUPER;
+diff --git a/net/qrtr/tun.c b/net/qrtr/tun.c
+index e35869e81766..15ce9b642b25 100644
+--- a/net/qrtr/tun.c
++++ b/net/qrtr/tun.c
+@@ -111,15 +111,11 @@ static __poll_t qrtr_tun_poll(struct file *filp, poll_table *wait)
+ static int qrtr_tun_release(struct inode *inode, struct file *filp)
+ {
+ 	struct qrtr_tun *tun = filp->private_data;
+-	struct sk_buff *skb;
  
-+	spin_lock_init(&gi->spinlock);
- 	mutex_init(&gi->lock);
- 	INIT_LIST_HEAD(&gi->string_list);
- 	INIT_LIST_HEAD(&gi->available_func);
-
-
+ 	qrtr_endpoint_unregister(&tun->ep);
+ 
+ 	/* Discard all SKBs */
+-	while (!skb_queue_empty(&tun->queue)) {
+-		skb = skb_dequeue(&tun->queue);
+-		kfree_skb(skb);
+-	}
++	skb_queue_purge(&tun->queue);
+ 
+ 	kfree(tun);
+ 
+-- 
+2.20.1
 

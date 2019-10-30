@@ -2,122 +2,149 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B85E1E97A7
-	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Oct 2019 09:11:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E61CAE97B9
+	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Oct 2019 09:13:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726045AbfJ3ILR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 30 Oct 2019 04:11:17 -0400
-Received: from mail-eopbgr70073.outbound.protection.outlook.com ([40.107.7.73]:50887
-        "EHLO EUR04-HE1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725953AbfJ3ILQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 30 Oct 2019 04:11:16 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iSeul+evWs04N1wKpoY2GR4VtIgaX21UhX2bS2gRmlikN5zW+gqgApG6ZWCiqfeXE6encipftqFENYW+Zcu6b/sgROo79ndRPUQ6w6vM08CjZ3xwzAxq+vFBpHByW26NOI7F0YDfVftS38dZTEJI0WyszphAfAijR1vvpq2Jg2P+5hecgMr5Z6HFvBFu+9xSkp5ORWeLJNu85r2Z9+r2o4gs/x5jHXy8FnYbO+wv0d2/UJQTyRn1XAw8KPFOCnP+JPiA5hoL1JUvAO2asaK2hiFRS6kHz0SvBGb+b2ptUdNYilxoLIUToe1KAKBtszYxgHM673pg3AJgOwZdx8yYLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SUV2RghAhhQluDw5weRzqZLpo+bfQnzeuoMIJSX6oZA=;
- b=MWvOFuZIU3l+GOjtXNVygN+HW+tQx65BQODcUs4TniAoXuv84+mjW8u8mc3kQiDkZ9FejqCmm42J60yXbC7/FRtNv6JZ8kizZk11RIBjrZXIwhHpV+Ao3WH7nqPjuCeEsoR2w+oTsXq+DdyF9x/q+nUM+/S9zrloyjymRwVQaLci2LH7xQoN/nIPC/r333t1Ltmo4Fb2tQpPCsqUa457QvnXlyLj5WveXoNATQCuFX1q5zW6tHozwiKFM6CRjuwS1RRQ5sHjW0tEI3izHu2xEQPIEMWUz3X00RjctfMCA0fMFADhFXA2crVhUTbG8Ess3E09B/iB6ISHqTfNJnzXWw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SUV2RghAhhQluDw5weRzqZLpo+bfQnzeuoMIJSX6oZA=;
- b=imeJ6J2qmybODlAHZ/1ZR5mqeRq6jWjdVyP5IdkFVsPilEXrwwMduiiCVXeyBKvqL8rmWWxH2UenO+qOleVqFgM059FkbxlEaAajk0BRp+QtLI2liCmpE1rFnbAuRN7tHZ0F7bX4CBEVdvjGUJVvj+4ieoYeTEYoJzZhMw+Tkts=
-Received: from VI1PR04MB5327.eurprd04.prod.outlook.com (20.177.51.23) by
- VI1PR04MB3198.eurprd04.prod.outlook.com (10.170.228.149) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2387.24; Wed, 30 Oct 2019 08:11:12 +0000
-Received: from VI1PR04MB5327.eurprd04.prod.outlook.com
- ([fe80::68e3:e1a6:78fd:7133]) by VI1PR04MB5327.eurprd04.prod.outlook.com
- ([fe80::68e3:e1a6:78fd:7133%3]) with mapi id 15.20.2387.023; Wed, 30 Oct 2019
- 08:11:12 +0000
-From:   Peter Chen <peter.chen@nxp.com>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-CC:     Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH -next] usb: gadget: configfs: Fix missing spin_lock_init()
-Thread-Topic: [PATCH -next] usb: gadget: configfs: Fix missing
- spin_lock_init()
-Thread-Index: AQHVjtPm8Ll1Qsa1AEGGJ9d9UTCKQ6dy1XqA
-Date:   Wed, 30 Oct 2019 08:11:12 +0000
-Message-ID: <20191030081101.GF26815@b29397-desktop>
-References: <20191030034046.188808-1-weiyongjun1@huawei.com>
-In-Reply-To: <20191030034046.188808-1-weiyongjun1@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=peter.chen@nxp.com; 
-x-originating-ip: [119.31.174.66]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: ca1ac4aa-e522-4384-0a44-08d75d10ba8d
-x-ms-traffictypediagnostic: VI1PR04MB3198:
-x-microsoft-antispam-prvs: <VI1PR04MB3198EF3F6CBED45647929A588B600@VI1PR04MB3198.eurprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:3276;
-x-forefront-prvs: 02065A9E77
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(7916004)(4636009)(366004)(136003)(346002)(39860400002)(396003)(376002)(199004)(189003)(1076003)(476003)(2906002)(305945005)(446003)(66066001)(11346002)(478600001)(7736002)(71200400001)(53546011)(66476007)(66556008)(6506007)(3846002)(64756008)(6116002)(66446008)(256004)(14444005)(4744005)(33656002)(99286004)(102836004)(91956017)(76116006)(71190400001)(66946007)(76176011)(316002)(186003)(5660300002)(8936002)(81156014)(4326008)(81166006)(26005)(8676002)(6486002)(229853002)(6512007)(33716001)(6436002)(86362001)(25786009)(486006)(6916009)(9686003)(6246003)(14454004)(54906003)(44832011);DIR:OUT;SFP:1101;SCL:1;SRVR:VI1PR04MB3198;H:VI1PR04MB5327.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
-received-spf: None (protection.outlook.com: nxp.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: yachmGjSWg7ppr+Z3TYqeVQaUn0faSXfHKdSScJDYVDQOhczzkFTaWMNKnHOnJwZCMfVWihFsydJUUbgpIj+XgbZD7c7+f5mOK4j00nKPt8i1/XH2TXvhAUJVqkndr4ByianWxQX+JMQMypeOqET4mPEHvsbI8VWklx/2dMq6zr7XsPvlYwKD79Jk2jq3BVTIkIYSI+lV072hdofVg0J0DezitBiPb68U33rfcfKcBcRmJqOcDLNECdFlLakxnz3gc1SPCuhhdnDW5yD6UPqdwICQDmCrMXi2mwxYl54EwJyv1DaK9vXl6TUwbo3OBoFKusMJKK4A8E+OHqmA+crw8wUNW1d/uYrzzuK3ljO3YbUBgNdMYUScRjkYZYDyJ4h2eOrqTbfwU0w1dZc8qb24wCQdZbMKj7sNtY63wWSofBoDlCCQngJRgSShIBAE6ay
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <529ED822A2640A4496A79166D00F693B@eurprd04.prod.outlook.com>
-Content-Transfer-Encoding: quoted-printable
+        id S1726322AbfJ3IN1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 30 Oct 2019 04:13:27 -0400
+Received: from mout.web.de ([212.227.17.11]:57121 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726028AbfJ3IN1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 30 Oct 2019 04:13:27 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1572423188;
+        bh=adt5cshj7tdRkd/8kT15ltxZaEG8T8RAHqla1SWf0VU=;
+        h=X-UI-Sender-Class:Subject:Cc:References:To:From:Date:In-Reply-To;
+        b=S0MHmKcWM4F5FSkJtRRhgcnS/WTuI3caFzPequgR5MnUrHwvCA9O/3L2R04JYpOCy
+         hUqeW6cTbgn+I4uli0mD+2IMcKIeVo9OEoNkbnG4fMmcou2aLWiHZw8RTLHV5Safjo
+         KoBrQyJf9esZLDNxu2lRdUh0zVmfyk9FJ61Z3riU=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.49.104.79]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LlF9O-1hsJIA0hio-00b5vT; Wed, 30
+ Oct 2019 09:13:08 +0100
+Subject: Re: [v4] coccicheck: Support search for SmPL scripts within selected
+ directory hierarchy
+Cc:     linux-kernel@vger.kernel.org,
+        Cheng Shengyu <cheng.shengyu@zte.com.cn>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Himanshu Jha <himanshujha199640@gmail.com>,
+        Julia Lawall <julia.lawall@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Xue Zhihong <xue.zhihong@zte.com.cn>,
+        Yi Wang <wang.yi59@zte.com.cn>
+References: <201910301043292761157@zte.com.cn>
+To:     Zhong Shiqi <zhong.shiqi@zte.com.cn>, cocci@systeme.lip6.fr,
+        kernel-janitors@vger.kernel.org
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <be9a9da7-f4b6-d7de-77d2-31bfe9a5f470@web.de>
+Date:   Wed, 30 Oct 2019 09:13:03 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.0
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca1ac4aa-e522-4384-0a44-08d75d10ba8d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Oct 2019 08:11:12.6460
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: iYGqQ7HDimoWi1dt12tQNpgNiX36xCAIABptQGy51kVntoOJPamsGN9etTS0/k3aewCiZlVVmRiP1KUTjedLig==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB3198
+In-Reply-To: <201910301043292761157@zte.com.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:0Rpl9feHuvhelvex7aZWHdRTbNDfb2RuQCD4yyQ5aqoDjP1EtmB
+ 0d7bUbvaacyvLY7vlCBY3MhfjlX/XuYwhchg8YmM7L/jh3EXx6PzNiRPlQVd9fSie0LF5ns
+ GvPYoE9UkxTNvamv/ZBG+LSukgmDxEFEDDl1HsWEgFR7QHsozrt9luKhx0WUKANNJrNNKb7
+ MntUMzdm4+/ogTRkAkk4A==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:nd2FDDr86WM=:72EmFImN//6f5LTsADwzTI
+ vPjbqe0dF3HRSrg1TefnpWOLKNotNoNkL86Iw+ub+GYGnO0ZNaOuhmgwk3f1KHvGn4Pb/XdkW
+ KMK5BPA3GxuTry01tIAWQjDyRPvg2w8fLNCe2M7yZoVi8D1RI+zLT9jtxTmqnKpTN5BOI98xw
+ 1Rnz910TmhCvZ44cM32X+zpGNJzdcjv5N8BQxeojWbCxNLIKVxSWKQoDjERXvd8kO0/YMz4te
+ Xndh0pFmNTs+0YizWsuRwHfmA5+aZ5de4iDI+wJH2uAgae43cbWqyBV2NZqLyoqzg+54Y0HIS
+ Kie1knOLvJAkl+5UV+xfpovQ241OFthAH9xbh5x0TjhsnsP5uWpVwtuG0o6d2mnPreo4zNYNz
+ HLzpBODidhdPZZUuT8kmAxFdx7RMubvadXrUMWoFvSwLDZFlG8Y1e29S5JcYICQQ6nXh7zrGn
+ LQmpX+aRlQfPCrWJJudWrraw3B1togI4z4Fb3FSpJTJmcWTejPljwe3XhJzgLH0AuB82g6hym
+ Ld0tllIYtZsPr0UKdOyx/IoudI2ziOiEPTw1lHvmHIin/zShwJXxgQ3d/e60qa4jcqqfY4SY9
+ vfZXp05hpLdyYInD1srH1Z6xhHaxeY19QVgbhZxWhNyRlCROU2yBCxyA/PMN3bA1hchqkmfq9
+ NBiLGC/sprKySdneunnSOTQO2MQIe+nP9TPVj+cgou4jkqS0zw0p2mPdPwB2eRQNZ6liTKFTq
+ gFQbY3sEIzFPJxqEYaBUHYqdcyBOpHGC0yNZpqSL0g8Cedim9mVxLirPO3rcrNfuMyMn7bvud
+ eeNCyIqsplx9EgnCB6HsU6e+yg36HIopQJa5yYOSnGxqYlmvZA+Vc/boHZhPiPLBg/JZa+WMt
+ V1By7LiP2tNkFYpcS1Zxzx4LGCCbSBmASSR02nENJu9q9j5kbqkuE3NVclaxVcYwvEM57K7Ih
+ ua00c7tnJro29P45ARlcrq3frj04Nq+T4w+62WdVYiVg2tMArZORT7yKr5iF2pytQp7EVp4iG
+ LxXbmEVo7PjhLCjId0XyjhwlIV5QWcLP8e5ZboapcnW47e8CjIISoOYDtH+aftakk3YrJYCoW
+ zvl7nx1RBgMR2pZx2YgvcmInzCGhBiqHiDF2OKqLrqETWbIqE5gyVqHPcSkbX4P6LpUT2VMtr
+ K0n57fQIH1M7+RyYU23VoUz0YGJ7IDXDZojvJMtGzzN7wAcik2SlxGxel4VPcBvOZykxAeHHv
+ p+rOVMhBOkTsWmjibKDInRgx/xbjVLryN0dlUNKmJUp8CG+86jrhwroGXIuw=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 19-10-30 03:40:46, Wei Yongjun wrote:
-> The driver allocates the spinlock but not initialize it.
-> Use spin_lock_init() on it to initialize it correctly.
->=20
-> This is detected by Coccinelle semantic patch.
->=20
-> Fixes: 1a1c851bbd70 ("usb: gadget: configfs: fix concurrent issue between=
- composite APIs")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->  drivers/usb/gadget/configfs.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.=
-c
-> index 33852c2b29d1..ab9ac48a751a 100644
-> --- a/drivers/usb/gadget/configfs.c
-> +++ b/drivers/usb/gadget/configfs.c
-> @@ -1544,6 +1544,7 @@ static struct config_group *gadgets_make(
->  	gi->composite.resume =3D NULL;
->  	gi->composite.max_speed =3D USB_SPEED_SUPER;
-> =20
-> +	spin_lock_init(&gi->spinlock);
->  	mutex_init(&gi->lock);
->  	INIT_LIST_HEAD(&gi->string_list);
->  	INIT_LIST_HEAD(&gi->available_func);
->=20
+>> Would you like to update the provided software documentation together w=
+ith
+>> the small extension of this bash script?
+>
+> I'd like to but i don't have rights to update.
 
-Reviewed-by: Peter Chen <peter.chen@nxp.com>
+I suggest to take another look at change possibilities for affected docume=
+nts.
 
---=20
 
-Thanks,
-Peter Chen=
+>> Update candidates:
+
+* https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/=
+Documentation/dev-tools/coccinelle.rst?id=3D23fdb198ae81f47a574296dab5167c=
+5e136a02ba#n189
+
+This file can be directly edited in a corresponding development branch
+for your contribution, can't it?
+
+
+>> * https://bottest.wiki.kernel.org/coccicheck#controlling_which_files_ar=
+e_processed_by_coccinelle
+
+Are going to try any of the supported login options out for this wiki?
+
+Would you like to choose any other data synchronisation method?
+
+Regards,
+Markus

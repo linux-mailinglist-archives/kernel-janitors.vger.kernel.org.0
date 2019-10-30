@@ -2,73 +2,133 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A1A5E9E40
-	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Oct 2019 16:03:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 53AA7E9EAD
+	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Oct 2019 16:16:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726712AbfJ3PDA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 30 Oct 2019 11:03:00 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50216 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726175AbfJ3PDA (ORCPT
+        id S1727126AbfJ3PP4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 30 Oct 2019 11:15:56 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:35217 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726967AbfJ3PP4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 30 Oct 2019 11:03:00 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iPpUs-0001GN-AJ; Wed, 30 Oct 2019 15:02:54 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Sumit Semwal <sumit.semwal@linaro.org>,
-        "Andrew F . Davis" <afd@ti.com>,
-        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
-        Liam Mark <lmark@codeaurora.org>,
-        Laura Abbott <labbott@redhat.com>,
-        Brian Starkey <brian.starkey@arm.com>,
-        John Stultz <john.stultz@linaro.org>,
-        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linaro-mm-sig@lists.linaro.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] dma-buf: heaps: remove redundant assignment to variable ret
-Date:   Wed, 30 Oct 2019 15:02:53 +0000
-Message-Id: <20191030150253.10596-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Wed, 30 Oct 2019 11:15:56 -0400
+Received: by mail-ed1-f65.google.com with SMTP id k2so2059413edx.2;
+        Wed, 30 Oct 2019 08:15:54 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Y+WK5GKecV/KBDUIy9GWTH4bwpBGohOzkeFmBQZf1R0=;
+        b=nfWQzkkf4PhLpKtA94RjGAhAZG4wqbg/1DGKs9XoN9ILhlAKw3anczuzfN9NpGDRRJ
+         XIOP3/cVplHJCsQDuoltwlOgecJaKjLACrNJMOYsXp0Zjo3QIJWCJ+cVlmaMCIFIcWmr
+         204QilFckeUrG2141XFOBHcZ0ZwG3wA6KIL/8Zw5KADiX8djTmsh7/VzyVDTRqYVCJwy
+         DubfI8lvWWkJ1eeJZsR1sj5LwnZG41IrrsWGD3PM7UMPA4sQKucwz7+/Xp34Q8IDR3Dc
+         1npOEJOzQipz2F5HFaAuHgdQf6s0Ie8sTOgssHAcOkciUkSMjp3NL7/M2hAhZg2fLZJa
+         CR1w==
+X-Gm-Message-State: APjAAAUGQXGq6ANzKT4oW5bKtBAgfTvpAqxqIU+7lRYqXzq5Iw1ZsG2Q
+        Ph5JTp63Z0JJQ01FpI/AzNU=
+X-Google-Smtp-Source: APXvYqzW36JMfOP+9Ckkk57hi580dnNzKCE+o0IDHat7XROi4wbyfWLMRXpJoPeDKapILbXIURAeVg==
+X-Received: by 2002:a17:906:85da:: with SMTP id i26mr25000ejy.186.1572448553957;
+        Wed, 30 Oct 2019 08:15:53 -0700 (PDT)
+Received: from pi3 ([194.230.155.180])
+        by smtp.googlemail.com with ESMTPSA id 32sm6111edq.23.2019.10.30.08.15.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Oct 2019 08:15:53 -0700 (PDT)
+Date:   Wed, 30 Oct 2019 16:15:51 +0100
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Kukjin Kim <kgene@kernel.org>,
+        Sylwester Nawrocki <s.nawrocki@samsung.com>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-samsung-soc@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] soc: samsung: exynos-asv: fix potential overflow
+ in multiply
+Message-ID: <20191030151551.GA25718@pi3>
+References: <20191030145457.10120-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20191030145457.10120-1-colin.king@canonical.com>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Wed, Oct 30, 2019 at 02:54:57PM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The multiplication of opp_freq by MHZ is performed using unsigned int
+> multiplication however the result is being passed into a function where
+> the frequency is an unsigned long, so there is an expectation that the
+> result won't fit into an unsigned int. Fix any potential integer overflow
+> my making opp_freq an unsigned long.  Also change from %u to %lu format
+> specifiers
+> 
+> Addresses-Coverity: ("Unintentional integer overflow")
+> Fixes: 5ea428595cc5 ("soc: samsung: Add Exynos Adaptive Supply Voltage driver")
 
-The variable ret is being assigned with a value that is never
-read, it is being re-assigned the same value on the err0 exit
-path. The assignment is redundant and hence can be removed.
+Although I like the idea of using the same type as the
+dev_pm_opp_find_freq_exact() interface, but I do not agree with severity
+of this. This is currently only ARMv7 (32-bit) driver, so using long
+does not change anything. It's still 4 bytes and it is still up to 4
+GHz.
 
-Addresses-Coverity: ("Unused value")
-Fixes: 47a32f9c1226 ("dma-buf: heaps: Add system heap to dmabuf heaps")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/dma-buf/heaps/system_heap.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Therefore on ARMv7, the possibility of overflow is exactly the same as
+before. Nothing was fixed.
 
-diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/system_heap.c
-index 455782efbb32..817a1667bd57 100644
---- a/drivers/dma-buf/heaps/system_heap.c
-+++ b/drivers/dma-buf/heaps/system_heap.c
-@@ -55,10 +55,8 @@ static int system_heap_allocate(struct dma_heap *heap,
- 	helper_buffer->pages = kmalloc_array(helper_buffer->pagecount,
- 					     sizeof(*helper_buffer->pages),
- 					     GFP_KERNEL);
--	if (!helper_buffer->pages) {
--		ret = -ENOMEM;
-+	if (!helper_buffer->pages)
- 		goto err0;
--	}
- 
- 	for (pg = 0; pg < helper_buffer->pagecount; pg++) {
- 		/*
--- 
-2.20.1
+If we really want to fix it, then all this should be "long long" or
+value should be checked while parsing DT.
 
+Semantically I agree, so I would prefer to adjust only the commit
+message.
+
+Best regards,
+Krzysztof
+
+
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/soc/samsung/exynos-asv.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/soc/samsung/exynos-asv.c b/drivers/soc/samsung/exynos-asv.c
+> index 8abf4dfaa5c5..d66fc74379a3 100644
+> --- a/drivers/soc/samsung/exynos-asv.c
+> +++ b/drivers/soc/samsung/exynos-asv.c
+> @@ -30,7 +30,7 @@ static int exynos_asv_update_cpu_opps(struct exynos_asv *asv,
+>  {
+>  	struct exynos_asv_subsys *subsys = NULL;
+>  	struct dev_pm_opp *opp;
+> -	unsigned int opp_freq;
+> +	unsigned long opp_freq;
+>  	int i;
+>  
+>  	for (i = 0; i < ARRAY_SIZE(asv->subsys); i++) {
+> @@ -51,7 +51,7 @@ static int exynos_asv_update_cpu_opps(struct exynos_asv *asv,
+>  
+>  		opp = dev_pm_opp_find_freq_exact(cpu, opp_freq * MHZ, true);
+>  		if (IS_ERR(opp)) {
+> -			dev_info(asv->dev, "cpu%d opp%d, freq: %u missing\n",
+> +			dev_info(asv->dev, "cpu%d opp%d, freq: %lu missing\n",
+>  				 cpu->id, i, opp_freq);
+>  
+>  			continue;
+> @@ -68,11 +68,11 @@ static int exynos_asv_update_cpu_opps(struct exynos_asv *asv,
+>  						new_volt, new_volt, new_volt);
+>  		if (ret < 0)
+>  			dev_err(asv->dev,
+> -				"Failed to adjust OPP %u Hz/%u uV for cpu%d\n",
+> +				"Failed to adjust OPP %lu Hz/%u uV for cpu%d\n",
+>  				opp_freq, new_volt, cpu->id);
+>  		else
+>  			dev_dbg(asv->dev,
+> -				"Adjusted OPP %u Hz/%u -> %u uV, cpu%d\n",
+> +				"Adjusted OPP %lu Hz/%u -> %u uV, cpu%d\n",
+>  				opp_freq, volt, new_volt, cpu->id);
+>  	}
+>  
+> -- 
+> 2.20.1
+> 

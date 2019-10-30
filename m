@@ -2,53 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1E7DE93D2
-	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Oct 2019 00:44:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44BF5E9558
+	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Oct 2019 04:41:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726342AbfJ2XoT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 29 Oct 2019 19:44:19 -0400
-Received: from shards.monkeyblade.net ([23.128.96.9]:33046 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726089AbfJ2XoT (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 29 Oct 2019 19:44:19 -0400
-Received: from localhost (unknown [IPv6:2601:601:9f00:1e2::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id B34CB14EBE2F5;
-        Tue, 29 Oct 2019 16:44:18 -0700 (PDT)
-Date:   Tue, 29 Oct 2019 16:44:18 -0700 (PDT)
-Message-Id: <20191029.164418.1957595418522916270.davem@davemloft.net>
-To:     yuehaibing@huawei.com
-Cc:     snelson@pensando.io, drivers@pensando.io, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next] ionic: Remove set but not used variable
- 'sg_desc'
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20191028120121.20743-1-yuehaibing@huawei.com>
-References: <20191028120121.20743-1-yuehaibing@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 29 Oct 2019 16:44:19 -0700 (PDT)
+        id S1727000AbfJ3DlU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 29 Oct 2019 23:41:20 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:58812 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726752AbfJ3DlU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 29 Oct 2019 23:41:20 -0400
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 47CA489CA2B8A3B3E004;
+        Wed, 30 Oct 2019 11:41:18 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 30 Oct 2019 11:41:09 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Peter Chen <peter.chen@nxp.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-usb@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] usb: gadget: configfs: Fix missing spin_lock_init()
+Date:   Wed, 30 Oct 2019 03:40:46 +0000
+Message-ID: <20191030034046.188808-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: YueHaibing <yuehaibing@huawei.com>
-Date: Mon, 28 Oct 2019 12:01:21 +0000
+The driver allocates the spinlock but not initialize it.
+Use spin_lock_init() on it to initialize it correctly.
 
-> Fixes gcc '-Wunused-but-set-variable' warning:
-> 
-> drivers/net/ethernet/pensando/ionic/ionic_txrx.c: In function 'ionic_rx_empty':
-> drivers/net/ethernet/pensando/ionic/ionic_txrx.c:405:28: warning:
->  variable 'sg_desc' set but not used [-Wunused-but-set-variable]
-> 
-> It is never used, so can be removed.
-> 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+This is detected by Coccinelle semantic patch.
 
-Applied, thanks.
+Fixes: 1a1c851bbd70 ("usb: gadget: configfs: fix concurrent issue between composite APIs")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/usb/gadget/configfs.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
+index 33852c2b29d1..ab9ac48a751a 100644
+--- a/drivers/usb/gadget/configfs.c
++++ b/drivers/usb/gadget/configfs.c
+@@ -1544,6 +1544,7 @@ static struct config_group *gadgets_make(
+ 	gi->composite.resume = NULL;
+ 	gi->composite.max_speed = USB_SPEED_SUPER;
+ 
++	spin_lock_init(&gi->spinlock);
+ 	mutex_init(&gi->lock);
+ 	INIT_LIST_HEAD(&gi->string_list);
+ 	INIT_LIST_HEAD(&gi->available_func);
+
+
+

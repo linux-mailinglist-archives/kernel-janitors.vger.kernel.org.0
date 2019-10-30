@@ -2,31 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6736E9DFC
-	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Oct 2019 15:55:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A1A5E9E40
+	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Oct 2019 16:03:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726747AbfJ3OzE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 30 Oct 2019 10:55:04 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:50027 "EHLO
+        id S1726712AbfJ3PDA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 30 Oct 2019 11:03:00 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50216 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726175AbfJ3OzE (ORCPT
+        with ESMTP id S1726175AbfJ3PDA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 30 Oct 2019 10:55:04 -0400
+        Wed, 30 Oct 2019 11:03:00 -0400
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iPpNB-0000Y6-Dj; Wed, 30 Oct 2019 14:54:57 +0000
+        id 1iPpUs-0001GN-AJ; Wed, 30 Oct 2019 15:02:54 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org
+To:     Sumit Semwal <sumit.semwal@linaro.org>,
+        "Andrew F . Davis" <afd@ti.com>,
+        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
+        Liam Mark <lmark@codeaurora.org>,
+        Laura Abbott <labbott@redhat.com>,
+        Brian Starkey <brian.starkey@arm.com>,
+        John Stultz <john.stultz@linaro.org>,
+        linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linaro-mm-sig@lists.linaro.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] soc: samsung: exynos-asv: fix potential overflow in multiply
-Date:   Wed, 30 Oct 2019 14:54:57 +0000
-Message-Id: <20191030145457.10120-1-colin.king@canonical.com>
+Subject: [PATCH][next] dma-buf: heaps: remove redundant assignment to variable ret
+Date:   Wed, 30 Oct 2019 15:02:53 +0000
+Message-Id: <20191030150253.10596-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -38,56 +42,33 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The multiplication of opp_freq by MHZ is performed using unsigned int
-multiplication however the result is being passed into a function where
-the frequency is an unsigned long, so there is an expectation that the
-result won't fit into an unsigned int. Fix any potential integer overflow
-my making opp_freq an unsigned long.  Also change from %u to %lu format
-specifiers
+The variable ret is being assigned with a value that is never
+read, it is being re-assigned the same value on the err0 exit
+path. The assignment is redundant and hence can be removed.
 
-Addresses-Coverity: ("Unintentional integer overflow")
-Fixes: 5ea428595cc5 ("soc: samsung: Add Exynos Adaptive Supply Voltage driver")
+Addresses-Coverity: ("Unused value")
+Fixes: 47a32f9c1226 ("dma-buf: heaps: Add system heap to dmabuf heaps")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/soc/samsung/exynos-asv.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/dma-buf/heaps/system_heap.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/soc/samsung/exynos-asv.c b/drivers/soc/samsung/exynos-asv.c
-index 8abf4dfaa5c5..d66fc74379a3 100644
---- a/drivers/soc/samsung/exynos-asv.c
-+++ b/drivers/soc/samsung/exynos-asv.c
-@@ -30,7 +30,7 @@ static int exynos_asv_update_cpu_opps(struct exynos_asv *asv,
- {
- 	struct exynos_asv_subsys *subsys = NULL;
- 	struct dev_pm_opp *opp;
--	unsigned int opp_freq;
-+	unsigned long opp_freq;
- 	int i;
+diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/system_heap.c
+index 455782efbb32..817a1667bd57 100644
+--- a/drivers/dma-buf/heaps/system_heap.c
++++ b/drivers/dma-buf/heaps/system_heap.c
+@@ -55,10 +55,8 @@ static int system_heap_allocate(struct dma_heap *heap,
+ 	helper_buffer->pages = kmalloc_array(helper_buffer->pagecount,
+ 					     sizeof(*helper_buffer->pages),
+ 					     GFP_KERNEL);
+-	if (!helper_buffer->pages) {
+-		ret = -ENOMEM;
++	if (!helper_buffer->pages)
+ 		goto err0;
+-	}
  
- 	for (i = 0; i < ARRAY_SIZE(asv->subsys); i++) {
-@@ -51,7 +51,7 @@ static int exynos_asv_update_cpu_opps(struct exynos_asv *asv,
- 
- 		opp = dev_pm_opp_find_freq_exact(cpu, opp_freq * MHZ, true);
- 		if (IS_ERR(opp)) {
--			dev_info(asv->dev, "cpu%d opp%d, freq: %u missing\n",
-+			dev_info(asv->dev, "cpu%d opp%d, freq: %lu missing\n",
- 				 cpu->id, i, opp_freq);
- 
- 			continue;
-@@ -68,11 +68,11 @@ static int exynos_asv_update_cpu_opps(struct exynos_asv *asv,
- 						new_volt, new_volt, new_volt);
- 		if (ret < 0)
- 			dev_err(asv->dev,
--				"Failed to adjust OPP %u Hz/%u uV for cpu%d\n",
-+				"Failed to adjust OPP %lu Hz/%u uV for cpu%d\n",
- 				opp_freq, new_volt, cpu->id);
- 		else
- 			dev_dbg(asv->dev,
--				"Adjusted OPP %u Hz/%u -> %u uV, cpu%d\n",
-+				"Adjusted OPP %lu Hz/%u -> %u uV, cpu%d\n",
- 				opp_freq, volt, new_volt, cpu->id);
- 	}
- 
+ 	for (pg = 0; pg < helper_buffer->pagecount; pg++) {
+ 		/*
 -- 
 2.20.1
 

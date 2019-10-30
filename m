@@ -2,40 +2,41 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D306BE984A
-	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Oct 2019 09:41:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A1B6EE9A49
+	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Oct 2019 11:44:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726109AbfJ3IlZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 30 Oct 2019 04:41:25 -0400
-Received: from mout.web.de ([212.227.17.12]:49099 "EHLO mout.web.de"
+        id S1726833AbfJ3Kox (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 30 Oct 2019 06:44:53 -0400
+Received: from mout.web.de ([217.72.192.78]:38779 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726073AbfJ3IlY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 30 Oct 2019 04:41:24 -0400
+        id S1726713AbfJ3Kox (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 30 Oct 2019 06:44:53 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1572424858;
-        bh=Zvh6PElDHOvLvzhTAFQmYtBoj7EBVf8dG1gdmzcc9Eg=;
-        h=X-UI-Sender-Class:Subject:Cc:References:From:To:Date:In-Reply-To;
-        b=oVufxpss10/MEg9GR7sMJabX3XIszFjeYUZ68TasNm0Amam+UZ4WbDLJvQHQYVfv4
-         rEr6U0Oj/kqv+SfC4nYJJP5y0ubgT7lw74gvPy04gH/joZrR9KSSb5N+NN5U7XwBYy
-         emiyXGz3EaxNQc/qgRplqdYSqj3WBWEn8srcPwo8=
+        s=dbaedf251592; t=1572432268;
+        bh=uAXWlEiYmxo2aJOlUhC7GVJccn79q1+QQsh5oi8tbtQ=;
+        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
+        b=XLGbyR8mMNf+uTYvj8DlCZgdvFqHTJlqwoiK7uvKz/8/0oyTMSiYGKFcKSWULVLTX
+         gy1cIu4878X9p4qNNs3mf4jQlKsGQYV+E0bPudoDnxmvaJkDKjyap2MomSOBGNvzx+
+         RrSZDk3CM/R1P3ZlfGk3uLmkjzP3BNGvzzZcI06Q=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.104.79]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LxOQ2-1htOoC06zS-016yXx; Wed, 30
- Oct 2019 09:40:58 +0100
-Subject: Re: [v4] coccicheck: Support search for SmPL scripts within selected
- directory hierarchy
-Cc:     linux-kernel@vger.kernel.org,
-        Cheng Shengyu <cheng.shengyu@zte.com.cn>,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Himanshu Jha <himanshujha199640@gmail.com>,
-        Julia Lawall <julia.lawall@lip6.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Xue Zhihong <xue.zhihong@zte.com.cn>,
-        Yi Wang <wang.yi59@zte.com.cn>
-References: <201910301059095572036@zte.com.cn>
+Received: from [192.168.1.2] ([78.49.104.79]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MGign-1iCGwn0DfF-00DYzO; Wed, 30
+ Oct 2019 11:44:28 +0100
+Subject: Re: drivers/phy/tegra: Completion for exception handling in probe
+ functions with SmPL?
 From:   Markus Elfring <Markus.Elfring@web.de>
+To:     linux-tegra@vger.kernel.org, Coccinelle <cocci@systeme.lip6.fr>
+Cc:     JC Kuo <jckuo@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Thierry Reding <treding@nvidia.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Kangjie Lu <kjlu@umn.edu>,
+        Navid Emamdoost <emamd001@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        YueHaibing <yuehaibing@huawei.com>
+References: <fe6868a4-01f5-2832-9081-7643be0ab4a1@web.de>
+ <3e3f40db-2422-c64d-3825-35f8c2471eb7@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -79,80 +80,93 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-To:     Zhong Shiqi <zhong.shiqi@zte.com.cn>, cocci@systeme.lip6.fr,
-        kernel-janitors@vger.kernel.org
-Message-ID: <d457995b-fed3-d560-e6b3-b8fa4b0059a0@web.de>
-Date:   Wed, 30 Oct 2019 09:40:55 +0100
+Message-ID: <161bbb97-09d9-f128-bd25-ef9348534144@web.de>
+Date:   Wed, 30 Oct 2019 11:44:26 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.0
 MIME-Version: 1.0
-In-Reply-To: <201910301059095572036@zte.com.cn>
+In-Reply-To: <3e3f40db-2422-c64d-3825-35f8c2471eb7@web.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Plh1uJC1FphsuVWzEOoEvaOSNpyW7XB5MX+FxuNADIiNj4T4ANs
- 5xjE01LENnlQ+yN0/CeoxB1rIxTs7zEWBTLpguE6v4T1L5sGSid95MCwsjaYN6J/cIPzUtS
- WJCZVCpjMgMXg4sThq2rFNhcjIblW6kFBAh7W+AMRyAvss9vGpnnOTV38crueLqESOXKfmR
- mN9QzRUUZP+DbaHzICBWQ==
+X-Provags-ID: V03:K1:EgTK2eG0kGIb8LH20nEljck1rGiWAitgvb1fylQu6ysG1dpetPE
+ mT8E0H+pUPfhjg9Yzyh8m7xNeSzlNfn8Ysx1e3LY7JGUvNmVcsUzm4Hlf67shfkVCfBEnYC
+ SLppvbo9UA4EweSwBMpLgdaV0/3yhRy42NCKSemOYt0m5rHXFyuotnlEpn7dz32TZWCotBL
+ 8R9MfIJ4ie2Ov/MGPU4jQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:N1XjkKcbh9w=:Oo6JQjx3OCTrFdDGCudGln
- uxxiDYKmUBvgfmACwcKchSwewiZk4h/kDfNJiKNFhhSBPoxD921dZpXFEjKxeo67ShV3a1YWV
- d/aeORNFJB8FMzatFGKqLn4QTPZCYIBsLGtRBa2qCCgjIvXBoBdc3u5swjlPl7/5bpnVSoaQI
- OKpAZitFEHZPzSrkgxUkeZU0SNsc99J2WBmhsYgJbOQ/MFDUyrZxGN9E4Y3K8HtisArP2iht7
- ZVxywBDHJDO3vq+TUrZPIyWii3PNck4egmjhgMlXgfO+u4febT8nlCbWm4+IChAnVj/TbJ8PX
- nS80ike2va6LUorqZqmE2ctTs4giU+twRqWoBGL90N35fut0qU9uBRa2wBIWVYEA/zxNuF17D
- wHfAMs+ntrMy/nvo2kdkvV4n6ooWn9IeZhdArgNP5HUHxno+DuSdiveAAyz/muXHmcaKjvJfd
- mcVuy7KXUqIzZxIpZueOqWeyfLdbuPljpif79oUjSe8276pSLjzlcx/y0tHp6AxEGLE86YkfV
- Sptiabb9upLikYIrGlrWgPTht7ZDlK7otvVHKDgQu8kB0i0RCo/m2WKa+83gYI5y3cDTGjiIh
- TSd02Rd5GiSIBXGi3Kt9/2z8bfKsQWKXQdEfrALe6iKoO89UDtnRanZYeW4zp6letx8azhRM4
- OpKM/xAKX0tcwZv5/PlM1wEAbJvxyrnF1kv2Fv6mgAgMQd0jeLRD/de5N2npzfmBGBl6kaazo
- ThJNJ0JkqdLszRTWhPCtnW6tEJk0Pe9UkQq1EeM2Yqzx0l34a1R7KePjezpJgXKe9VjVQ8aQt
- 2IbU0/70qnSitiQLoDnHWLCBeQRl5v8K6uAi/u3TM3+njz5YnOF5YDs3YJSpUsNt/BYJQoISu
- AQIrGjRlwYOaejcogDzUUFXdwFy+plxfvbVPklIL/vNaD5rUU0rmARrYi5Ls7MTbL1Ab1tvQp
- iO+IMEIFFzgattPfb6+GdceUmKpXWhbv05MBNIpdg9ZhZdU7PqXGaGouHEHV7m5au3efgKT8Z
- IvYlziQPf1XoOxFIpWu96XsJCkRUF6ogGZzEoUjC+ltFcUVAMa3hQL+b7Jcq4rfxYoXTJAg1S
- Pog21xAZKNPUIULFf3k2KtvKKJqAmO9H3GR60cTBkpGpwJ0RPcD4p2wbawqQVDUe1cRARUgW8
- VSpbXEO8veHJWW9V5b1zV8OOHSVjkS9D/ZVAI/zfVznl9AKWPkNt3PMzoYIVYeeCWjyyPvwG9
- RBRj3BpfPr6IJrjQ0tpmUu/4+ubc4PZPxisN8apYdqrpTQk9e6wxgvjCALoo=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:tyXXpGMv85A=:uovQwbsWYfUhJb/p7tku9R
+ xkMgJJJ9vnAkZGxx31MbiNhswzIkH3VcITNQ8m9utpTaJp+OYSxLbUcN357oP74KasNlERhQc
+ P67C9dHxbmKuh6otKVqpLCWgPLtEwWluJRu8WPhsiuUxKqu0RS7GsEOn4TtY0j/ldn3Q5m9wq
+ qXp6vPwNn08E5e6W1paMnGcYvy1dO7Gxt1Yrcz6iT7sWxaDVyAB9rCnt59/dFku6bNunybS4v
+ OWUXH9rk4TQk1odXzsxrlbgNaUl6tYmWb4+jS5Dt9cyFua360aM6/WDtRB2uTQPJ45ftqa2Lj
+ 9rt6I2GRgpellihZik/9vfsqRCaA4/DDDfYePIKJEkCqyPsVnFF+Um7KXEDrbIOLgyKZrcWur
+ cq87jNie7Neytct0vcsFUAXbVey3OxiNjffRQfFqgLW0lWZXMMU9YL9GGrPMtCxY1t08lBYLB
+ 6slY8y4KbWAPbc1oBeRchdK61cUQjYqC4E20i0RCfdafUs0eRNbKyXQ5CAVH06ORrrQu1wg5o
+ gpmtJub/nHb0KJ1PVmcfz6BCgbVjj+K2T581Y2hPXOu+hGKa8W5MbFDruXYjuM1UP4DJwZzNz
+ WWCda//cdTmbSQvXoTqe86bWAwtVeKRzHXZscnbkKq2bhbZ2HClDG0iK0smLY40wQnP3/Xg6f
+ jsvVFZL5EjkpVj8KsJ2L9IZadaLeog85BLrE/TBujxwAPrIiSljxXjPzTaui05A5MfEQbXYJ8
+ J+dB3ns30tvL1oOuRENw31BrjPTJQt8i1PQqSJOTEcagBXjk1528baZAd28xhGMj4a+5LcvrR
+ 5pZyyyU22iLPLsfrcl0gQi3NoWY+11nT2Q8thhEkGtvavFIhMBxN11LzM3P3K66ZqLjR2bcA9
+ tEZKMuhgb8f1NXIXphpK3mJlhLR3qK+qHIhL+9wa161ebIEqIZwvxQ6gXRljnStRLwOsEIJgb
+ 7QpByrm9MyJCulCFQcl+22bz/TL02z1VYoqerQuaBxSFryXH1Sxomnhqr5fTjmtFqJHEnQNXe
+ sL4oNIinc8t2o99qMWjVAYzZ7aSWov+NFI1M80uwQuCYBCltXYXd3r3uJ4b329yYkvUnZlhCy
+ rb1m43TE3REG/txE5kpRHIEgGLpCrUEexoR7hWX/I6erj8qCMhgm/WfqRyNuU5BFtswSpklDl
+ PMkF0cf/69nu8zFD39rAUHHpPgOQfj5Jji/9oj+jmk4l/0wmn2GRE4UvrzVwPsfOPleQzx9k0
+ 5v7A2hsgNoK/CkOIJvzAL/aJKDdwo6or+4MQzOUyoNLK8+IaA1+AeDCqcqzI=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> Please reconsider also the section =E2=80=9CUsing Coccinelle with a sin=
-gle semantic patch=E2=80=9D:
->> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/Documentation/dev-tools/coccinelle.rst?id=3Df877bee5ea0b56c39cd0a243e113a=
-577b5a4ef92#n151
->
-> Could we add new lines?
+> Will any search pattern variations become more interesting for correspon=
+ding
+> automatic software transformations?
 
-Yes, of course.
+I hoped to achieve something together with the semantic patch language
+by the following transformation approach.
 
-
-> How about the following?
-
-I suggest to improve the case distinction for the make (and environment)
-variable =E2=80=9CCOCCI=E2=80=9D also by adjusting the document outline.
-* Empty string
-* Directory selection
-* File name specification
-
-See also:
-https://docutils.readthedocs.io/en/sphinx-docs/user/rst/quickstart.html#se=
-ctions
-
-
-> The optional make variable COCCI can be used to search SmPL scripts in a
-> directory. In that case, the variable must be initialized with the name =
-of
-
-=E2=80=A6 it should be set to =E2=80=A6
+@adjustment@
+expression object;
+identifier exit;
+@@
+ object =3D kzalloc(...)
+ ...
+ if (...)
+-{  kfree(object);
+    goto
+-        exit
++        release_memory
+    ;
+-}
+ ... when any
+ device_unregister(...);
+-exit
++release_memory
+ :
++kfree(object);
+ return ERR_PTR(...);
 
 
-> directory contains SmPL scripts.
+Do you find such a change suggestion reasonable (in principle)?
 
-a directory which contains scripts for the semantic patch language.
+But I stumble on another unexpected test result.
+
+elfring@Sonne:~/Projekte/Linux/next-patched> spatch drivers/phy/tegra/xusb=
+-tegra186.c ~/Projekte/Coccinelle/janitor/complete_exception_handling_in_p=
+robe_functions1.cocci
+init_defs_builtins: /usr/local/bin/../lib/coccinelle/standard.h
+HANDLING: drivers/phy/tegra/xusb-tegra186.c
+
+
+How would you like to clarify why diff hunks were not generated
+for functions like =E2=80=9Ctegra186_usb2_pad_probe=E2=80=9D and =E2=80=9C=
+tegra186_usb3_pad_probe=E2=80=9D
+in such an use case?
+https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/phy/tegra/xusb-te=
+gra186.c#L445
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
+ivers/phy/tegra/xusb-tegra186.c?id=3Dbbf711682cd570697086e88388a2c718da918=
+894#n445
 
 Regards,
 Markus

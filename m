@@ -2,125 +2,189 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 62BF9EA496
-	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Oct 2019 21:12:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 797B2EA500
+	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Oct 2019 21:51:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726695AbfJ3UMF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 30 Oct 2019 16:12:05 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:58891 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726269AbfJ3UMF (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 30 Oct 2019 16:12:05 -0400
-Received: from mail-wr1-f70.google.com ([209.85.221.70])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <andrea.righi@canonical.com>)
-        id 1iPuK3-00049T-Vh
-        for kernel-janitors@vger.kernel.org; Wed, 30 Oct 2019 20:12:03 +0000
-Received: by mail-wr1-f70.google.com with SMTP id s9so1928002wrw.23
-        for <kernel-janitors@vger.kernel.org>; Wed, 30 Oct 2019 13:12:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=AVK3dTX5VeGMLnBzR7G4n82XaLQo9FRcTOWzPDhXKnM=;
-        b=jV20uww7aa+ROQPpt9KDgk6izNdJz4BhKcyLa8Aksi2XHRxKiTsljt8xDvTOugfl7U
-         cybOO0QT8/FF7hBMGleqmNKvc6g9Lio3lZE1QVjIfJbkr+YLLwvYUIu13rWEBH/MyaKA
-         YLI3PR8WOaxN5OjpyF2yP7U0nKWV96huQqEmZxjgG57h+9yfP/F3CC+A3R7X7XthfsV5
-         IWjErbKHL8Au9L9fEshMH5oXPUk6CvBM8rTT8Vrg3M56L9j8bf2rCHTdR8c6E7u2RLzR
-         ApUduLd7mebkt6XV/z9zxGjlezJfVVay7MFhHSF/P3eeqKHPHlkxqFlZE5TXJ5UTHaZH
-         jAVQ==
-X-Gm-Message-State: APjAAAVMboIrZvF9Ph13CNOcOuM7qblhM4wnZGvmHVTBr7qPy13HbcK7
-        tdLnO3HZYEimdKuCyswEc4jT54DAwfYrgTdDinrklGxww0MQZO/W3mhsYdKCmCAOtMJpmSSenLX
-        tFwtRMGcK1NBBhLIBQuM/ttQkKZH3OneC3Igymg9SCMCeow==
-X-Received: by 2002:a5d:678e:: with SMTP id v14mr1517134wru.393.1572466323596;
-        Wed, 30 Oct 2019 13:12:03 -0700 (PDT)
-X-Google-Smtp-Source: APXvYqxlH3NbfJNwZ+iH3vOzPj9s1eHdaXQjgrBiVlMVrAzQAGIq2J05NZ48ryoa5j1osqZbWvhIHw==
-X-Received: by 2002:a5d:678e:: with SMTP id v14mr1517106wru.393.1572466323277;
-        Wed, 30 Oct 2019 13:12:03 -0700 (PDT)
-Received: from localhost ([178.18.58.186])
-        by smtp.gmail.com with ESMTPSA id j22sm1733453wrd.41.2019.10.30.13.12.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2019 13:12:02 -0700 (PDT)
-Date:   Wed, 30 Oct 2019 21:12:01 +0100
-From:   Andrea Righi <andrea.righi@canonical.com>
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Peter Rosin <peda@axentia.se>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        security@kernel.org, Kees Cook <keescook@chromium.org>,
-        Julia Lawall <Julia.Lawall@lip6.fr>
-Subject: Re: [PATCH] fbdev: potential information leak in do_fb_ioctl()
-Message-ID: <20191030201201.GA3209@xps-13>
-References: <20191029182320.GA17569@mwanda>
- <87zhhjjryk.fsf@x220.int.ebiederm.org>
- <20191030074321.GD2656@xps-13>
- <87r22ujaqq.fsf@x220.int.ebiederm.org>
+        id S1727001AbfJ3UvX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 30 Oct 2019 16:51:23 -0400
+Received: from mout.web.de ([212.227.15.14]:42727 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726261AbfJ3UvX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 30 Oct 2019 16:51:23 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1572468620;
+        bh=awYX94K/3Ef/IkgRJzU4vUFsU8ft/ilecpb3Nwonm9Q=;
+        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
+        b=cRBzJcDFRBy7tdgPLy+IzMmnVBwqCw+RTNcN90pEfAOODemmynGj2NRIFX8btHrOC
+         MWe+NGsEutjd2HpVH+82PAycT6SPq7YaEDeMdq+BZN9xFrSDae5pxwBzyeFrsqgFky
+         Cgb+WtrxFtkmirDycNJ0zyZt+HeSSlVeUo9ZvHsc=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.49.104.79]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lfipe-1hbgfp3kCo-00pPoH; Wed, 30
+ Oct 2019 21:50:20 +0100
+Subject: Re: drivers/phy/tegra: Completion for exception handling in probe
+ functions with SmPL?
+From:   Markus Elfring <Markus.Elfring@web.de>
+To:     linux-tegra@vger.kernel.org, Coccinelle <cocci@systeme.lip6.fr>
+Cc:     JC Kuo <jckuo@nvidia.com>, Jonathan Hunter <jonathanh@nvidia.com>,
+        Kishon Vijay Abraham I <kishon@ti.com>,
+        Thierry Reding <treding@nvidia.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Kangjie Lu <kjlu@umn.edu>,
+        Navid Emamdoost <emamd001@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        YueHaibing <yuehaibing@huawei.com>
+References: <fe6868a4-01f5-2832-9081-7643be0ab4a1@web.de>
+ <3e3f40db-2422-c64d-3825-35f8c2471eb7@web.de>
+ <161bbb97-09d9-f128-bd25-ef9348534144@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <205e2b3a-2934-f5d0-6b12-59beee0d58fa@web.de>
+Date:   Wed, 30 Oct 2019 21:50:17 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87r22ujaqq.fsf@x220.int.ebiederm.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <161bbb97-09d9-f128-bd25-ef9348534144@web.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:T65/O15SDHXdx23PrZy6oljaIBK8YZdtQ/lTQkgK3BJRP5lcjCi
+ Swyb/bojLr1ULUOof3qlqgp3cmahJeR3Nn+8pYYupdOfnFyIRVIpMQMXHRsZLgrouZOEFoy
+ QwUborX5BDzipL3qgMRIW/h9lCLfQ8aw5H+Q3da7ySDm7xZ9Kqeh0RiPRX47jEyQ1Ata97P
+ jfo1Xc2HasJt20xzgIfRg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:TzC8nlXS5AA=:MErmcLQ8bfDxaTJUo3mXTJ
+ feVEUnLbKQQvBKGEf70IcAueT53rA8jivlV5PrZKCiQnKIIO2rTKGZBGPVYYJPmjxxzo6uDhE
+ sebzXSPMVMXLBm9G1vtgxC7VKH8AtFnZqDX+7VPd7rWbsgSp/U/BvR34dwzHF81INSi2VPrnK
+ 4oUod/V1G82N6YFp9GzD6VQSqqgmbX2X0SKNoa+v+hm0dY+vWwAarzMK0DYyR/osC0GBzkn9F
+ O7k90bbs585RnHVjxpBMMMbjy+loD3KlwHGMTax3O93UbCJpbhL3PmIC2vyzuK9yIVGs2RfmY
+ tUViR+0VoZhX83QHQM8ypy+t+m+LOZoE3Ae7titKZx21lkmmwIlMJRWCyOmEmsNFOwrVJTQ1Z
+ JsDl0rbOxUop0OLgC/BPb+aukjM0WrRRWnOnUMFTH+Ju+62bbzAQSqGGMAIkJ7hV67aqsdTiq
+ vZMcTN/Z1LvVYZQlA6hIXp/XBr49X+u7GTkXzXzyFMI6xW7f7lz3iFuZ8xFMhkjZZBO9wSOXT
+ 9n+T4IBU2nvgRA69P5KOYyComb+8JEIEpeKyjouEX/bcD+ez3DGVo/DF+w5VvIDIxRHYx3oSj
+ W7kt6q5SyVh6jyItSS2Es/35VI1h+8y24hkO6eZXztgEnVItjGJLl+ukJsbBHeZ3OV977hu/G
+ pefBnDS6yUtB7yB6UOt7PMeNHRtzjyXnDpX1qaqBfwXeO9Iv3ADw38hi14dsS+ousROJjcX2A
+ zag4jlp9CcKyfDcEeTwY/6o4JAUr5jPIEiAyBNU/xD/e6wWS9PUkz7NkOebEmBCuGDWjeRdat
+ ZBLzoKyaV2zWSGziVYAnEgyz+5bmEW8trAV4/OpxjVk7U7oURV1eOXPmxwsLbFshks+rk0U0X
+ HhrztKHhYtCZCzDbQgmng7CHD7seq8z1mRPGkq9xcDqtso4RMG4EhrZ9YI6H7M5fGI0TCFV8a
+ MAnJQAw6iXATiXVjuOBb90+iF97nqzSramKVZ1TDnX8TbACxWsDV0GkjhPP9FZUc5Ee8En8Bf
+ wXZodSawLH8JX7HQRwM9SrGY25Hv9snLLfazcpRRwPeqjJrynRP5dVlx0aoZ9c9iwvooJWHCv
+ wu8J4CKuMVqkG3mGafHPRT+Qw6Rdc3IlrDAN3kxXEqzMz8EmbCgiJftmG3bh/oN8+PhqWuGSx
+ A6pKYFnIFaKC2CNmD2ODDRIE9Bphwx9G9K7dg1hrbS1t5fylA5etoaxXsJ0LmYjYqwWyUIcSF
+ GP6s1ZIOVqpGoGi4PqwwONlKcdmCo6q2SY623wwn7WPO7oMzhenNPKiq57Co=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Oct 30, 2019 at 02:26:21PM -0500, Eric W. Biederman wrote:
-> Andrea Righi <andrea.righi@canonical.com> writes:
-> 
-> > On Tue, Oct 29, 2019 at 02:02:11PM -0500, Eric W. Biederman wrote:
-> >> Dan Carpenter <dan.carpenter@oracle.com> writes:
-> >> 
-> >> > The "fix" struct has a 2 byte hole after ->ywrapstep and the
-> >> > "fix = info->fix;" assignment doesn't necessarily clear it.  It depends
-> >> > on the compiler.
-> >> >
-> >> > Fixes: 1f5e31d7e55a ("fbmem: don't call copy_from/to_user() with mutex held")
-> >> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> >> > ---
-> >> > I have 13 more similar places to patch...  I'm not totally sure I
-> >> > understand all the issues involved.
-> >> 
-> >> What I have done in a similar situation with struct siginfo, is that
-> >> where the structure first appears I have initialized it with memset,
-> >> and then field by field.
-> >> 
-> >> Then when the structure is copied I copy the structure with memcpy.
-> >> 
-> >> That ensures all of the bytes in the original structure are initialized
-> >> and that all of the bytes are copied.
-> >> 
-> >> The goal is to avoid memory that has values of the previous users of
-> >> that memory region from leaking to userspace.  Which depending on who
-> >> the previous user of that memory region is could tell userspace
-> >> information about what the kernel is doing that it should not be allowed
-> >> to find out.
-> >> 
-> >> I tried to trace through where "info" and thus presumably "info->fix" is
-> >> coming from and only made it as far as  register_framebuffer.  Given
-> >> that I suspect a local memset, and then a field by field copy right
-> >> before copy_to_user might be a sound solution.  But ick.  That is a lot
-> >> of fields to copy.
-> >
-> > I know it might sound quite inefficient, but what about making struct
-> > fb_fix_screeninfo __packed?
-> >
-> > This doesn't solve other potential similar issues, but for this
-> > particular case it could be a reasonable and simple fix.
-> 
-> It is part of the user space ABI.  As such you can't move the fields.
-> 
-> Eric
+> But I stumble on another unexpected test result.
 
-Oh, that's right! Then memset() + memcpy() is probably the best option,
-since copying all those fields one by one looks quite ugly to me...
+I got more promising results by the following transformation approach.
 
--Andrea
+@adjustment exists@
+expression object;
+identifier exit;
+@@
+ object =3D kzalloc(...)
+ ...
+ if (...)
+-{  kfree(object);
+    goto
+-        exit
++        release_memory
+    ;
+-}
+ ... when any
+ device_unregister(...);
+-exit
++release_memory
+ :
++kfree(object);
+ return ERR_PTR(...);
+
+
+The scope property of such a SmPL rule occasionally needs also more
+software development attention.
+https://github.com/coccinelle/coccinelle/blob/ed1eb8e06f800739d3992158d369=
+45c0c4c6f0c7/docs/manual/cocci_syntax.tex#L860
+
+I observe that the pretty-printing for the generated source code will need
+further improvements (according to the Linux coding style).
+
+Example:
+
+elfring@Sonne:~/Projekte/Linux/next-patched> spatch drivers/phy/tegra/xusb=
+-tegra186.c ~/Projekte/Coccinelle/janitor/complete_exception_handling_in_p=
+robe_functions6.cocci
+=E2=80=A6
+@@ -461,10 +461,8 @@ tegra186_usb2_pad_probe(struct tegra_xus
+ 	pad->soc =3D soc;
+
+ 	err =3D tegra_xusb_pad_init(pad, padctl, np);
+-	if (err < 0) {
+-		kfree(usb2);
+-		goto out;
+-	}
++	if (err < 0)
++		goto release_memory;
+
+ 	priv->usb2_trk_clk =3D devm_clk_get(&pad->dev, "trk");
+ 	if (IS_ERR(priv->usb2_trk_clk)) {
+@@ -483,7 +481,8 @@ tegra186_usb2_pad_probe(struct tegra_xus
+
+ unregister:
+ 	device_unregister(&pad->dev);
+-out:
++release_memory :
++kfree(usb2);
+ 	return ERR_PTR(err);
+ }
+=E2=80=A6
+
+
+How reasonable do you find the presented update suggestion?
+
+Regards,
+Markus

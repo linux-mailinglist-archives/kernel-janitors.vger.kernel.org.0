@@ -2,133 +2,118 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53AA7E9EAD
-	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Oct 2019 16:16:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C98E3E9F6F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 30 Oct 2019 16:46:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727126AbfJ3PP4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 30 Oct 2019 11:15:56 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:35217 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726967AbfJ3PP4 (ORCPT
+        id S1726476AbfJ3Ppk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 30 Oct 2019 11:45:40 -0400
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:34108 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726261AbfJ3Ppk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 30 Oct 2019 11:15:56 -0400
-Received: by mail-ed1-f65.google.com with SMTP id k2so2059413edx.2;
-        Wed, 30 Oct 2019 08:15:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Y+WK5GKecV/KBDUIy9GWTH4bwpBGohOzkeFmBQZf1R0=;
-        b=nfWQzkkf4PhLpKtA94RjGAhAZG4wqbg/1DGKs9XoN9ILhlAKw3anczuzfN9NpGDRRJ
-         XIOP3/cVplHJCsQDuoltwlOgecJaKjLACrNJMOYsXp0Zjo3QIJWCJ+cVlmaMCIFIcWmr
-         204QilFckeUrG2141XFOBHcZ0ZwG3wA6KIL/8Zw5KADiX8djTmsh7/VzyVDTRqYVCJwy
-         DubfI8lvWWkJ1eeJZsR1sj5LwnZG41IrrsWGD3PM7UMPA4sQKucwz7+/Xp34Q8IDR3Dc
-         1npOEJOzQipz2F5HFaAuHgdQf6s0Ie8sTOgssHAcOkciUkSMjp3NL7/M2hAhZg2fLZJa
-         CR1w==
-X-Gm-Message-State: APjAAAUGQXGq6ANzKT4oW5bKtBAgfTvpAqxqIU+7lRYqXzq5Iw1ZsG2Q
-        Ph5JTp63Z0JJQ01FpI/AzNU=
-X-Google-Smtp-Source: APXvYqzW36JMfOP+9Ckkk57hi580dnNzKCE+o0IDHat7XROi4wbyfWLMRXpJoPeDKapILbXIURAeVg==
-X-Received: by 2002:a17:906:85da:: with SMTP id i26mr25000ejy.186.1572448553957;
-        Wed, 30 Oct 2019 08:15:53 -0700 (PDT)
-Received: from pi3 ([194.230.155.180])
-        by smtp.googlemail.com with ESMTPSA id 32sm6111edq.23.2019.10.30.08.15.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2019 08:15:53 -0700 (PDT)
-Date:   Wed, 30 Oct 2019 16:15:51 +0100
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Kukjin Kim <kgene@kernel.org>,
-        Sylwester Nawrocki <s.nawrocki@samsung.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] soc: samsung: exynos-asv: fix potential overflow
- in multiply
-Message-ID: <20191030151551.GA25718@pi3>
-References: <20191030145457.10120-1-colin.king@canonical.com>
+        Wed, 30 Oct 2019 11:45:40 -0400
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id x9UFjUGI041498;
+        Wed, 30 Oct 2019 10:45:30 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1572450330;
+        bh=AHoLJ8adzPwxHX1a589zAeFTY5yfqdJKods3HIWHw1s=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=IRqwZzfeVWHkrLE7mi338boJPe+azr5q5rDUMCQMkGXou6X4e9scZyROk/0ifhXzU
+         Kk/6NvmtF+8+zwpb86SZaXvNILtOH0oklzh+5KKq2VIwz900c/w9WEdI5I1iwRUkV0
+         ADbIVQu84r9nzwK31Jec9Tu1qu/T404pTE1aiknc=
+Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id x9UFjUZE052981
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 30 Oct 2019 10:45:30 -0500
+Received: from DFLE101.ent.ti.com (10.64.6.22) by DFLE105.ent.ti.com
+ (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5; Wed, 30
+ Oct 2019 10:45:17 -0500
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1713.5 via
+ Frontend Transport; Wed, 30 Oct 2019 10:45:17 -0500
+Received: from [10.250.45.147] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id x9UFjTAV053464;
+        Wed, 30 Oct 2019 10:45:29 -0500
+Subject: Re: [PATCH][next] dma-buf: heaps: remove redundant assignment to
+ variable ret
+To:     Colin King <colin.king@canonical.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Benjamin Gaignard <benjamin.gaignard@linaro.org>,
+        Liam Mark <lmark@codeaurora.org>,
+        Laura Abbott <labbott@redhat.com>,
+        Brian Starkey <brian.starkey@arm.com>,
+        John Stultz <john.stultz@linaro.org>,
+        <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+        <linaro-mm-sig@lists.linaro.org>
+CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20191030150253.10596-1-colin.king@canonical.com>
+From:   "Andrew F. Davis" <afd@ti.com>
+Message-ID: <673b3e8f-9211-2fa2-c408-4560b03b4700@ti.com>
+Date:   Wed, 30 Oct 2019 11:45:29 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20191030145457.10120-1-colin.king@canonical.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+In-Reply-To: <20191030150253.10596-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Oct 30, 2019 at 02:54:57PM +0000, Colin King wrote:
+On 10/30/19 11:02 AM, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> The multiplication of opp_freq by MHZ is performed using unsigned int
-> multiplication however the result is being passed into a function where
-> the frequency is an unsigned long, so there is an expectation that the
-> result won't fit into an unsigned int. Fix any potential integer overflow
-> my making opp_freq an unsigned long.  Also change from %u to %lu format
-> specifiers
+> The variable ret is being assigned with a value that is never
+> read, it is being re-assigned the same value on the err0 exit
+> path. The assignment is redundant and hence can be removed.
 > 
-> Addresses-Coverity: ("Unintentional integer overflow")
-> Fixes: 5ea428595cc5 ("soc: samsung: Add Exynos Adaptive Supply Voltage driver")
-
-Although I like the idea of using the same type as the
-dev_pm_opp_find_freq_exact() interface, but I do not agree with severity
-of this. This is currently only ARMv7 (32-bit) driver, so using long
-does not change anything. It's still 4 bytes and it is still up to 4
-GHz.
-
-Therefore on ARMv7, the possibility of overflow is exactly the same as
-before. Nothing was fixed.
-
-If we really want to fix it, then all this should be "long long" or
-value should be checked while parsing DT.
-
-Semantically I agree, so I would prefer to adjust only the commit
-message.
-
-Best regards,
-Krzysztof
-
-
+> Addresses-Coverity: ("Unused value")
+> Fixes: 47a32f9c1226 ("dma-buf: heaps: Add system heap to dmabuf heaps")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/soc/samsung/exynos-asv.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+
+
+The root of the issue is that ret is not used in the error path, it
+should be, I suggest this fix:
+
+> --- a/drivers/dma-buf/heaps/system_heap.c
+> +++ b/drivers/dma-buf/heaps/system_heap.c
+> @@ -98,7 +98,7 @@ static int system_heap_allocate(struct dma_heap *heap,
+>  err0:
+>         kfree(helper_buffer);
+>  
+> -       return -ENOMEM;
+> +       return ret;
+>  }
+>  
+>  static const struct dma_heap_ops system_heap_ops = {
+
+Andrew
+
+
+>  drivers/dma-buf/heaps/system_heap.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 > 
-> diff --git a/drivers/soc/samsung/exynos-asv.c b/drivers/soc/samsung/exynos-asv.c
-> index 8abf4dfaa5c5..d66fc74379a3 100644
-> --- a/drivers/soc/samsung/exynos-asv.c
-> +++ b/drivers/soc/samsung/exynos-asv.c
-> @@ -30,7 +30,7 @@ static int exynos_asv_update_cpu_opps(struct exynos_asv *asv,
->  {
->  	struct exynos_asv_subsys *subsys = NULL;
->  	struct dev_pm_opp *opp;
-> -	unsigned int opp_freq;
-> +	unsigned long opp_freq;
->  	int i;
+> diff --git a/drivers/dma-buf/heaps/system_heap.c b/drivers/dma-buf/heaps/system_heap.c
+> index 455782efbb32..817a1667bd57 100644
+> --- a/drivers/dma-buf/heaps/system_heap.c
+> +++ b/drivers/dma-buf/heaps/system_heap.c
+> @@ -55,10 +55,8 @@ static int system_heap_allocate(struct dma_heap *heap,
+>  	helper_buffer->pages = kmalloc_array(helper_buffer->pagecount,
+>  					     sizeof(*helper_buffer->pages),
+>  					     GFP_KERNEL);
+> -	if (!helper_buffer->pages) {
+> -		ret = -ENOMEM;
+> +	if (!helper_buffer->pages)
+>  		goto err0;
+> -	}
 >  
->  	for (i = 0; i < ARRAY_SIZE(asv->subsys); i++) {
-> @@ -51,7 +51,7 @@ static int exynos_asv_update_cpu_opps(struct exynos_asv *asv,
->  
->  		opp = dev_pm_opp_find_freq_exact(cpu, opp_freq * MHZ, true);
->  		if (IS_ERR(opp)) {
-> -			dev_info(asv->dev, "cpu%d opp%d, freq: %u missing\n",
-> +			dev_info(asv->dev, "cpu%d opp%d, freq: %lu missing\n",
->  				 cpu->id, i, opp_freq);
->  
->  			continue;
-> @@ -68,11 +68,11 @@ static int exynos_asv_update_cpu_opps(struct exynos_asv *asv,
->  						new_volt, new_volt, new_volt);
->  		if (ret < 0)
->  			dev_err(asv->dev,
-> -				"Failed to adjust OPP %u Hz/%u uV for cpu%d\n",
-> +				"Failed to adjust OPP %lu Hz/%u uV for cpu%d\n",
->  				opp_freq, new_volt, cpu->id);
->  		else
->  			dev_dbg(asv->dev,
-> -				"Adjusted OPP %u Hz/%u -> %u uV, cpu%d\n",
-> +				"Adjusted OPP %lu Hz/%u -> %u uV, cpu%d\n",
->  				opp_freq, volt, new_volt, cpu->id);
->  	}
->  
-> -- 
-> 2.20.1
+>  	for (pg = 0; pg < helper_buffer->pagecount; pg++) {
+>  		/*
 > 

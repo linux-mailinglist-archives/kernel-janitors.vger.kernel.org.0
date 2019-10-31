@@ -2,88 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE550EB4F5
-	for <lists+kernel-janitors@lfdr.de>; Thu, 31 Oct 2019 17:45:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C942BEB558
+	for <lists+kernel-janitors@lfdr.de>; Thu, 31 Oct 2019 17:50:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728693AbfJaQpq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 31 Oct 2019 12:45:46 -0400
-Received: from dvalin.narfation.org ([213.160.73.56]:56938 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727715AbfJaQpq (ORCPT
+        id S1728692AbfJaQu0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 31 Oct 2019 12:50:26 -0400
+Received: from mail-qt1-f196.google.com ([209.85.160.196]:37976 "EHLO
+        mail-qt1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727715AbfJaQu0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 31 Oct 2019 12:45:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1572540344;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=u+tUIBYHKvIkuL4G7fc5AXLA5rHt3MekdCaxn1sE414=;
-        b=P4vIvrUd4lipMC3PeEFVUQRsUdQPvM6OSOh/PPMV99gRQ+QAiB5CWAmb9kdnSDU56Tlu9c
-        Y5b0ky0JpNSjnnBed6B/UlAxMbbbS7CozSdxZCD3QlzcxEKlcM6tZLZgdIL0LFO6mN0t9z
-        Rzj4PgXZIeN+q4U/b9ONfNCv8p6rICw=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     davem@davemloft.net, mareklindner@neomailbox.ch,
-        sw@simonwunderlich.de, a@unstable.cc,
-        b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
+        Thu, 31 Oct 2019 12:50:26 -0400
+Received: by mail-qt1-f196.google.com with SMTP id t26so9435559qtr.5;
+        Thu, 31 Oct 2019 09:50:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=sender:date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=OLaOpRAjfrbacph10qr6xdAhMPmVu1fR+AKVwIeHENE=;
+        b=kEgxMwwRbZzxEVyKWXizq7cW+YwENZDem7Gqpa2Gy1RZwd/e3m9sD3Jd5SdMEBZMmJ
+         TcozJ04JWaN3ODGNDMAoCgrZrhXQGFVyqotHzCHWIAjK06BtKaHd8ZS5wBV0G5aqJzU/
+         /Jw/gcR2hr+SQsI/fFsGsIXl7qWrDS6rgIgUBeenySZPvWKFyiD4Y3vNyp9lP/RmgEcK
+         9S/SJczxVr/7HhlWmxzH/jHwKgf6Y3NKLhwy8LZq9VdQ+hwdM3I6Jw0mxsB1ntyysnkU
+         TlaT/hE1qGfrQqm2gZWTLLCEH0aFFEchLuc2FTcyhVNOmQgSWn7di2HFzdJ3DZGjYppy
+         XvvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=OLaOpRAjfrbacph10qr6xdAhMPmVu1fR+AKVwIeHENE=;
+        b=bGZBclznMB0r62b3plHKVPpcaqKdPq0B385usytdJcCywLbPK5ErG0EZdhg+xLrRmO
+         3joMsRug1DllQu4jmvh71VXkHFWpqA81IRzuCvnOqmbDaZvesB7tEqIntqKXO/oF66OY
+         GmTd7bqtb0uM19HPL/6Y7y1afaB/yq0dkfp3aORknnEk3aCICzqCZMfru7ToBAtuoZJ0
+         sAKgvfkxzT0dTr0IDspatWe6fk6geFmOjDQgWKfuVkNz5sUK/EPFXRyJq6c1zGY2Z8VA
+         WmsLULqhvySiU80rG85woPCX5VZdoLaJd2KqvuvddfkHYgSqGAUfzApxALsoxlVk6Caz
+         Co8A==
+X-Gm-Message-State: APjAAAUKXnmTv/vfsYZlPG6arndjM0zaUvgPcO9auSeXRx5LxrwoEcBG
+        PXzVfzW4FMDGwVVHft2bjWm0wkbQ
+X-Google-Smtp-Source: APXvYqy8TB1c4Rpru49Qaq9QK03ijg1GplyOlvawK8eI65aLKQPSRzEse7c7fIE5r2DOAVG6rVB0AQ==
+X-Received: by 2002:aed:2392:: with SMTP id j18mr6468841qtc.296.1572540624862;
+        Thu, 31 Oct 2019 09:50:24 -0700 (PDT)
+Received: from localhost ([2620:10d:c091:500::314e])
+        by smtp.gmail.com with ESMTPSA id f131sm469553qkb.99.2019.10.31.09.50.23
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 31 Oct 2019 09:50:23 -0700 (PDT)
+Date:   Thu, 31 Oct 2019 09:50:19 -0700
+From:   Tejun Heo <tj@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] batman-adv: Axe 'aggr_list_lock'
-Date:   Thu, 31 Oct 2019 17:45:40 +0100
-Message-ID: <34947339.t7yNZRQCJl@sven-edge>
-In-Reply-To: <20191031085240.7116-1-christophe.jaillet@wanadoo.fr>
-References: <20191031085240.7116-1-christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH] iocost: don't nest spin_lock_irq in ioc_weight_write()
+Message-ID: <20191031165019.GL3622521@devbig004.ftw2.facebook.com>
+References: <20191031105341.GA26612@mwanda>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart1950623.Tr5mk9XeTM"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191031105341.GA26612@mwanda>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
---nextPart1950623.Tr5mk9XeTM
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-
-On Thursday, 31 October 2019 09:52:40 CET Christophe JAILLET wrote:
-> 'aggr_list.lock' can safely be used in place of another explicit spinlock
-> when access to 'aggr_list' has to be guarded.
+On Thu, Oct 31, 2019 at 01:53:41PM +0300, Dan Carpenter wrote:
+> This code causes a static analysis warning:
 > 
-> This avoids to take 2 locks, knowing that the 2nd one is always successful.
+>     block/blk-iocost.c:2113 ioc_weight_write() error: double lock 'irq'
 > 
-> Now that the 'aggr_list.lock' is handled explicitly, the lock-free
-> __sbk_something() variants should be used when dealing with 'aggr_list'.
+> We disable IRQs in blkg_conf_prep() and re-enable them in
+> blkg_conf_finish().  IRQ disable/enable should not be nested because
+> that means the IRQs will be enabled at the first unlock instead of the
+> second one.
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> Compile tested only.
+> Fixes: 7caa47151ab2 ("blkcg: implement blk-iocost")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Applied together with your other patch.
+Acked-by: Tejun Heo <tj@kernel.org>
 
-Thanks,
-	Sven
+Thanks.
 
---nextPart1950623.Tr5mk9XeTM
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl27D7QACgkQXYcKB8Em
-e0ZQrhAAwKtHzM6URp++7gAYx8jfbNu1SHKYF4CFTq0mjqjQZBLuZaWg8eYALQDa
-Quv7JVBrkEog8zGs8k9mqnL8TfgXvwKQvmvhHV4eecC/slqSn0wF+VzSdaUY3CXG
-BHCtj8kbiu0dmBPHt31agMDjNBoyF6UwhIT1SK1C8UfJq+Rsc3hUXxmPwm7BX8rU
-dzTeUTpZ+BmIVFWlnvcNYMNTmwM8U7NLZ/rpHXw+gsOFcA5F7+ven4L+2wTmutJL
-IGAhrIuGZsEhYe+xu7WRahNed8CcoeeU//qg6E6JKNETE27sf4tgzQbsQmSWAqgf
-dbm2LSby6BCdYUTYkDmQR3Ds6pNbUfg2jyhliNCrDtsvn5MMiR4RaXl0pkEoEt+v
-/EK3jrAR13mUcAcelIJrHOG0HzhX+vVGLySKegGoM5mElltIxQ3g/9hnGUvtU6t4
-JvHdQZARYGuMDGK2U9fDSO9dMVr+qq20PX3hNacE6U6Q7uknW9H2jHfmv/hg0bJO
-DjfcXdYuBw4qEPdPCRFEUkDJLvGrXBnfKqkHjARHK4DBdyWRBl5mT4lppgT5wcCk
-KWxvT9ImoWFiDAeJAMVzXyYMrYny6vqyMTgebMz98K666ue6e34znyY4cCj2kY8O
-iy5kw2J7v0u30kwHd/fdota1yKA0j28TVTDxmjyEEhZWhyb4bzA=
-=Hpom
------END PGP SIGNATURE-----
-
---nextPart1950623.Tr5mk9XeTM--
-
-
-
+-- 
+tejun

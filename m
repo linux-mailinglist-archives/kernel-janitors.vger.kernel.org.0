@@ -2,83 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 638D7EAB15
-	for <lists+kernel-janitors@lfdr.de>; Thu, 31 Oct 2019 08:43:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 92FE9EAB54
+	for <lists+kernel-janitors@lfdr.de>; Thu, 31 Oct 2019 09:08:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726913AbfJaHnO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 31 Oct 2019 03:43:14 -0400
-Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:17971 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726729AbfJaHnO (ORCPT
+        id S1726858AbfJaIIb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 31 Oct 2019 04:08:31 -0400
+Received: from dvalin.narfation.org ([213.160.73.56]:54006 "EHLO
+        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726747AbfJaIIb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 31 Oct 2019 03:43:14 -0400
-Received: from localhost.localdomain ([93.23.12.90])
-        by mwinf5d87 with ME
-        id L7j9210091waAWt037j9B8; Thu, 31 Oct 2019 08:43:12 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 31 Oct 2019 08:43:12 +0100
-X-ME-IP: 93.23.12.90
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     davem@davemloft.net, mareklindner@neomailbox.ch,
-        sw@simonwunderlich.de, a@unstable.cc, sven@narfation.org
-Cc:     b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] batman-adv: Simplify 'batadv_v_ogm_aggr_list_free()'
-Date:   Thu, 31 Oct 2019 08:42:55 +0100
-Message-Id: <20191031074255.3234-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        Thu, 31 Oct 2019 04:08:31 -0400
+X-Greylist: delayed 484 seconds by postgrey-1.27 at vger.kernel.org; Thu, 31 Oct 2019 04:08:30 EDT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1572508825;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Ia3172o3/jD2ekntHB/GkBV4C7wIggs5s/Ni/QTMMRI=;
+        b=IRBmdR7dNASrVBhBhvK6MA6irw6Nb6bC//pd3DoPAsobpxxI2+oWjxkqoytud7ilnB3P5m
+        r7HjTJ367tS1+ezqogDhtfm7ecD5rHhbpqpvmrTxHCS/CCb2Vvs2DzwKmneMZNeEm9S0/7
+        x4VDfO47VaWNDVgW1zcJWeB82zRhyi8=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     davem@davemloft.net, mareklindner@neomailbox.ch,
+        sw@simonwunderlich.de, a@unstable.cc,
+        b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] batman-adv: Simplify 'batadv_v_ogm_aggr_list_free()'
+Date:   Thu, 31 Oct 2019 09:00:21 +0100
+Message-ID: <3535726.AjB5hMM71F@sven-edge>
+In-Reply-To: <20191031074255.3234-1-christophe.jaillet@wanadoo.fr>
+References: <20191031074255.3234-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="nextPart6722122.X2YU2N7q37"; micalg="pgp-sha512"; protocol="application/pgp-signature"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Use 'skb_queue_purge()' instead of re-implementing it.
+--nextPart6722122.X2YU2N7q37
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-BTW, I don't really see the need of 'aggr_list_lock'. I think that the code
-could be refactored to drop 'aggr_list_lock' and use the already existing
-'aggr_list.lock'.
-This would require to use the lock-free __skb_... variants when working on
-'aggr_list'.
+On Thursday, 31 October 2019 08:42:55 CET Christophe JAILLET wrote:
+> Use 'skb_queue_purge()' instead of re-implementing it.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-As far as I understand, the use of 'aggr_list' and 'aggr_list_lock' is
-limited to bat_v_ogm.c'. So the impact would be limited.
-This would avoid a useless locking that never fails, so the performance
-gain should be really limited.
+Consider this patch applied. I just have to leave now and thus I will only 
+apply after my return.
 
-So, I'm not sure this would be more readable and/or future proof, so
-I just note it here to open the discussion.
+> ---
+> BTW, I don't really see the need of 'aggr_list_lock'. I think that the code
+> could be refactored to drop 'aggr_list_lock' and use the already existing
+> 'aggr_list.lock'.
+> This would require to use the lock-free __skb_... variants when working on
+> 'aggr_list'.
+>
+> As far as I understand, the use of 'aggr_list' and 'aggr_list_lock' is
+> limited to bat_v_ogm.c'. So the impact would be limited.
+> This would avoid a useless locking that never fails, so the performance
+> gain should be really limited.
+> 
+> So, I'm not sure this would be more readable and/or future proof, so
+> I just note it here to open the discussion.
+> 
+> If interested, I have a (compiled tested only) patch that implements this
+> change.
 
-If interested, I have a (compiled tested only) patch that implements this
-change.
----
- net/batman-adv/bat_v_ogm.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+Yes, please send it over.
 
-diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
-index dc4f7430cb5a..b841c83d9c3b 100644
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -177,13 +177,9 @@ static bool batadv_v_ogm_queue_left(struct sk_buff *skb,
-  */
- static void batadv_v_ogm_aggr_list_free(struct batadv_hard_iface *hard_iface)
- {
--	struct sk_buff *skb;
--
- 	lockdep_assert_held(&hard_iface->bat_v.aggr_list_lock);
- 
--	while ((skb = skb_dequeue(&hard_iface->bat_v.aggr_list)))
--		kfree_skb(skb);
--
-+	skb_queue_purge(&hard_iface->bat_v.aggr_list);
- 	hard_iface->bat_v.aggr_len = 0;
- }
- 
--- 
-2.20.1
+Kind regards,
+	Sven
+
+--nextPart6722122.X2YU2N7q37
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl26lJUACgkQXYcKB8Em
+e0YLkg//SFeu7zgzY5RZPY5HcftrEK1rjC2M7A8sCfKGM1M8vzzTA3tloEHUCNxD
+EbJLxaVmG24RWkBL6vthM2PT1lvjHRFUphtpYa5z1uyXJFEoO2YRp8hDgIOw+/+1
+OckzUOWC0Lq5OokHISYtWp673ZBLSNmshZY5eAZLec7p42UE3xnrWr7OOTGs6yTQ
+nwb734FvWvmi44PUs5DGPaW7gpUYXFY9EWyAbpJD7uuifshVIaY7ql5LAfF2VL71
+6hJ4rYPGtFN6wxMuh8QehYwiWG+Ze95uYl4oS05YdhsXGNuhFjN5Q2iOU4R4WBFD
+g+ztkU7BitUMoaZz3ICi1T31QFUFzy5OPmUo97bX7BId9aTtVMwPvW06aJU/dBZc
+pXI9vps1QPoGfTzNn+N12S5GB8ZFYJ+3ycaQjqb69uE3c8EsHVa42qoSiieaqsln
+TiYMCK67jcB+cOYR/zbsw6YRr+ZTWxPJMN9ZVEFxswbHl1H677oTBpuC0eyTil/L
+qscb04MIE0r11DJA1S4oWnidM+9zn7bGG7tVzMNsKCgvUaXkTWewahJR0ynTI/6j
+XfbztcvAlMswIcb6Mk4f5LtARZ+l3BlXll/+WMzxLSZwwWU7yAwp0QxQJwXyKafV
+PEps/jYve9O423rfIIwanNJIWi2Ab1sprc5Ka/iSmciz6hswmNk=
+=3utl
+-----END PGP SIGNATURE-----
+
+--nextPart6722122.X2YU2N7q37--
+
+
 

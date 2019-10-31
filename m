@@ -2,190 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A42DEABD8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 31 Oct 2019 09:53:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B6C64EAC4D
+	for <lists+kernel-janitors@lfdr.de>; Thu, 31 Oct 2019 10:07:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727170AbfJaIxM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 31 Oct 2019 04:53:12 -0400
-Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:57122 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726952AbfJaIxM (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 31 Oct 2019 04:53:12 -0400
-Received: from localhost.localdomain ([93.23.12.90])
-        by mwinf5d66 with ME
-        id L8sy2100A1waAWt038syit; Thu, 31 Oct 2019 09:53:11 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 31 Oct 2019 09:53:11 +0100
-X-ME-IP: 93.23.12.90
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     davem@davemloft.net, mareklindner@neomailbox.ch,
-        sw@simonwunderlich.de, a@unstable.cc, sven@narfation.org
-Cc:     b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] batman-adv: Axe 'aggr_list_lock'
-Date:   Thu, 31 Oct 2019 09:52:40 +0100
-Message-Id: <20191031085240.7116-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        id S1727012AbfJaJHM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 31 Oct 2019 05:07:12 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:35178 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726884AbfJaJHL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 31 Oct 2019 05:07:11 -0400
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 86B3DC049D67
+        for <kernel-janitors@vger.kernel.org>; Thu, 31 Oct 2019 09:07:11 +0000 (UTC)
+Received: by mail-wr1-f72.google.com with SMTP id e25so2926886wra.9
+        for <kernel-janitors@vger.kernel.org>; Thu, 31 Oct 2019 02:07:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Uv8J8WDWlm5KkI7ZZB1632xd20pA70gOpFtg9sDlJvM=;
+        b=kQqwdjBTwT/1u7bR2LtRtTCE44Keba67ukRiPjWuhT9mGYFLfjDMZAvz793GVF2O/E
+         3s1yzjdALaZUoETxuPK5jmBNUb8qBYYRsNS+p6rab8h8EBz1KMEx2M0vJiX17cfsPjTX
+         uxHfLVcRdT8ebzG7hbRQHD9+u4GumpAti8GjThbS9n+mTv+/5VpmexxcjSGYR0teJWU4
+         QFn9f3/3KkE3YMi52hoe+mc9+vIvPFCyCfwrB9iMZAhwofb1ixQfyvwLSchJUQRRHzk0
+         912CVLNAcvNKtMRwedE1xJEdPfqY36X1QvvV7Vu20jp7kcTnDecljzLJj15g4c5P79/e
+         LJ2w==
+X-Gm-Message-State: APjAAAXbzjKDBxg88lobgbj5l9ksLeD2zGRzDFTtfmG3F8Pw5yk2K210
+        KQVdbzbdKVOUuBdGPrnCsaGqHwNM7zgw/zpAITfUGSS+37QVnJ5fG3FEkddc8tf7kqspdnadOV+
+        kM4fSwZTsboSUyVhW25fUr3B+Pybo
+X-Received: by 2002:a1c:6308:: with SMTP id x8mr4076649wmb.140.1572512830193;
+        Thu, 31 Oct 2019 02:07:10 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqwfjaVx5Id/rjqKFiRz8/nIcvC1Gfp7404XpLuXKxzmGRZ2YVyve+OhEy7UlUWjEBX07Dmh7Q==
+X-Received: by 2002:a1c:6308:: with SMTP id x8mr4076626wmb.140.1572512829951;
+        Thu, 31 Oct 2019 02:07:09 -0700 (PDT)
+Received: from steredhat ([91.217.168.176])
+        by smtp.gmail.com with ESMTPSA id x205sm3535236wmb.5.2019.10.31.02.07.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Oct 2019 02:07:09 -0700 (PDT)
+Date:   Thu, 31 Oct 2019 10:07:07 +0100
+From:   Stefano Garzarella <sgarzare@redhat.com>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     davem@davemloft.net, sunilmut@microsoft.com, willemb@google.com,
+        stefanha@redhat.com, ytht.net@gmail.com, arnd@arndb.de,
+        tglx@linutronix.de, decui@microsoft.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] vsock: Simplify '__vsock_release()'
+Message-ID: <20191031090707.ec33h3z6zhux3hbq@steredhat>
+References: <20191031064741.4567-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191031064741.4567-1-christophe.jaillet@wanadoo.fr>
+User-Agent: NeoMutt/20180716
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'aggr_list.lock' can safely be used in place of another explicit spinlock
-when access to 'aggr_list' has to be guarded.
+On Thu, Oct 31, 2019 at 07:47:41AM +0100, Christophe JAILLET wrote:
+> Use '__skb_queue_purge()' instead of re-implementing it.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+>  net/vmw_vsock/af_vsock.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+> index 2ab43b2bba31..2983dc92ca63 100644
+> --- a/net/vmw_vsock/af_vsock.c
+> +++ b/net/vmw_vsock/af_vsock.c
+> @@ -641,7 +641,6 @@ EXPORT_SYMBOL_GPL(__vsock_create);
+>  static void __vsock_release(struct sock *sk, int level)
+>  {
+>  	if (sk) {
+> -		struct sk_buff *skb;
+>  		struct sock *pending;
+>  		struct vsock_sock *vsk;
+>  
+> @@ -662,8 +661,7 @@ static void __vsock_release(struct sock *sk, int level)
+>  		sock_orphan(sk);
+>  		sk->sk_shutdown = SHUTDOWN_MASK;
+>  
+> -		while ((skb = skb_dequeue(&sk->sk_receive_queue)))
+> -			kfree_skb(skb);
+> +		skb_queue_purge(&sk->sk_receive_queue);
+>  
+>  		/* Clean up any sockets that never were accepted. */
+>  		while ((pending = vsock_dequeue_accept(sk)) != NULL) {
 
-This avoids to take 2 locks, knowing that the 2nd one is always successful.
+Good clean-up!
 
-Now that the 'aggr_list.lock' is handled explicitly, the lock-free
-__sbk_something() variants should be used when dealing with 'aggr_list'.
+This patch LGTM:
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Compile tested only.
----
- net/batman-adv/bat_v.c     |  1 -
- net/batman-adv/bat_v_ogm.c | 30 +++++++++++++++---------------
- net/batman-adv/types.h     |  3 ---
- 3 files changed, 15 insertions(+), 19 deletions(-)
-
-diff --git a/net/batman-adv/bat_v.c b/net/batman-adv/bat_v.c
-index 64054edc2e3c..4ff6cf1ecae7 100644
---- a/net/batman-adv/bat_v.c
-+++ b/net/batman-adv/bat_v.c
-@@ -1085,7 +1085,6 @@ void batadv_v_hardif_init(struct batadv_hard_iface *hard_iface)
- 
- 	hard_iface->bat_v.aggr_len = 0;
- 	skb_queue_head_init(&hard_iface->bat_v.aggr_list);
--	spin_lock_init(&hard_iface->bat_v.aggr_list_lock);
- 	INIT_DELAYED_WORK(&hard_iface->bat_v.aggr_wq,
- 			  batadv_v_ogm_aggr_work);
- }
-diff --git a/net/batman-adv/bat_v_ogm.c b/net/batman-adv/bat_v_ogm.c
-index b841c83d9c3b..c9a00100f199 100644
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -151,7 +151,7 @@ static unsigned int batadv_v_ogm_len(struct sk_buff *skb)
-  * @skb: the OGM to check
-  * @hard_iface: the interface to use to send the OGM
-  *
-- * Caller needs to hold the hard_iface->bat_v.aggr_list_lock.
-+ * Caller needs to hold the hard_iface->bat_v.aggr_list.lock.
-  *
-  * Return: True, if the given OGMv2 packet still fits, false otherwise.
-  */
-@@ -162,7 +162,7 @@ static bool batadv_v_ogm_queue_left(struct sk_buff *skb,
- 				 BATADV_MAX_AGGREGATION_BYTES);
- 	unsigned int ogm_len = batadv_v_ogm_len(skb);
- 
--	lockdep_assert_held(&hard_iface->bat_v.aggr_list_lock);
-+	lockdep_assert_held(&hard_iface->bat_v.aggr_list.lock);
- 
- 	return hard_iface->bat_v.aggr_len + ogm_len <= max;
- }
-@@ -173,13 +173,13 @@ static bool batadv_v_ogm_queue_left(struct sk_buff *skb,
-  *
-  * Empties the OGMv2 aggregation queue and frees all the skbs it contained.
-  *
-- * Caller needs to hold the hard_iface->bat_v.aggr_list_lock.
-+ * Caller needs to hold the hard_iface->bat_v.aggr_list.lock.
-  */
- static void batadv_v_ogm_aggr_list_free(struct batadv_hard_iface *hard_iface)
- {
--	lockdep_assert_held(&hard_iface->bat_v.aggr_list_lock);
-+	lockdep_assert_held(&hard_iface->bat_v.aggr_list.lock);
- 
--	skb_queue_purge(&hard_iface->bat_v.aggr_list);
-+	__skb_queue_purge(&hard_iface->bat_v.aggr_list);
- 	hard_iface->bat_v.aggr_len = 0;
- }
- 
-@@ -192,7 +192,7 @@ static void batadv_v_ogm_aggr_list_free(struct batadv_hard_iface *hard_iface)
-  *
-  * The aggregation queue is empty after this call.
-  *
-- * Caller needs to hold the hard_iface->bat_v.aggr_list_lock.
-+ * Caller needs to hold the hard_iface->bat_v.aggr_list.lock.
-  */
- static void batadv_v_ogm_aggr_send(struct batadv_hard_iface *hard_iface)
- {
-@@ -201,7 +201,7 @@ static void batadv_v_ogm_aggr_send(struct batadv_hard_iface *hard_iface)
- 	unsigned int ogm_len;
- 	struct sk_buff *skb;
- 
--	lockdep_assert_held(&hard_iface->bat_v.aggr_list_lock);
-+	lockdep_assert_held(&hard_iface->bat_v.aggr_list.lock);
- 
- 	if (!aggr_len)
- 		return;
-@@ -215,7 +215,7 @@ static void batadv_v_ogm_aggr_send(struct batadv_hard_iface *hard_iface)
- 	skb_reserve(skb_aggr, ETH_HLEN + NET_IP_ALIGN);
- 	skb_reset_network_header(skb_aggr);
- 
--	while ((skb = skb_dequeue(&hard_iface->bat_v.aggr_list))) {
-+	while ((skb = __skb_dequeue(&hard_iface->bat_v.aggr_list))) {
- 		hard_iface->bat_v.aggr_len -= batadv_v_ogm_len(skb);
- 
- 		ogm_len = batadv_v_ogm_len(skb);
-@@ -242,13 +242,13 @@ static void batadv_v_ogm_queue_on_if(struct sk_buff *skb,
- 		return;
- 	}
- 
--	spin_lock_bh(&hard_iface->bat_v.aggr_list_lock);
-+	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
- 	if (!batadv_v_ogm_queue_left(skb, hard_iface))
- 		batadv_v_ogm_aggr_send(hard_iface);
- 
- 	hard_iface->bat_v.aggr_len += batadv_v_ogm_len(skb);
--	skb_queue_tail(&hard_iface->bat_v.aggr_list, skb);
--	spin_unlock_bh(&hard_iface->bat_v.aggr_list_lock);
-+	__skb_queue_tail(&hard_iface->bat_v.aggr_list, skb);
-+	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
- }
- 
- /**
-@@ -373,9 +373,9 @@ void batadv_v_ogm_aggr_work(struct work_struct *work)
- 	batv = container_of(work, struct batadv_hard_iface_bat_v, aggr_wq.work);
- 	hard_iface = container_of(batv, struct batadv_hard_iface, bat_v);
- 
--	spin_lock_bh(&hard_iface->bat_v.aggr_list_lock);
-+	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
- 	batadv_v_ogm_aggr_send(hard_iface);
--	spin_unlock_bh(&hard_iface->bat_v.aggr_list_lock);
-+	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
- 
- 	batadv_v_ogm_start_queue_timer(hard_iface);
- }
-@@ -406,9 +406,9 @@ void batadv_v_ogm_iface_disable(struct batadv_hard_iface *hard_iface)
- {
- 	cancel_delayed_work_sync(&hard_iface->bat_v.aggr_wq);
- 
--	spin_lock_bh(&hard_iface->bat_v.aggr_list_lock);
-+	spin_lock_bh(&hard_iface->bat_v.aggr_list.lock);
- 	batadv_v_ogm_aggr_list_free(hard_iface);
--	spin_unlock_bh(&hard_iface->bat_v.aggr_list_lock);
-+	spin_unlock_bh(&hard_iface->bat_v.aggr_list.lock);
- }
- 
- /**
-diff --git a/net/batman-adv/types.h b/net/batman-adv/types.h
-index be7c02aa91e2..75a72d6676ec 100644
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -126,9 +126,6 @@ struct batadv_hard_iface_bat_v {
- 	/** @aggr_len: size of the OGM aggregate (excluding ethernet header) */
- 	unsigned int aggr_len;
- 
--	/** @aggr_list_lock: protects aggr_list */
--	spinlock_t aggr_list_lock;
--
- 	/**
- 	 * @throughput_override: throughput override to disable link
- 	 *  auto-detection
--- 
-2.20.1
-
+Thanks,
+Stefano

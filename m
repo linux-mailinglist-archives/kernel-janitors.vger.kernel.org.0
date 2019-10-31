@@ -2,79 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4825EB0A7
-	for <lists+kernel-janitors@lfdr.de>; Thu, 31 Oct 2019 13:57:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE550EB4F5
+	for <lists+kernel-janitors@lfdr.de>; Thu, 31 Oct 2019 17:45:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726728AbfJaM5K (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 31 Oct 2019 08:57:10 -0400
-Received: from mail-il1-f194.google.com ([209.85.166.194]:45897 "EHLO
-        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726566AbfJaM5K (ORCPT
+        id S1728693AbfJaQpq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 31 Oct 2019 12:45:46 -0400
+Received: from dvalin.narfation.org ([213.160.73.56]:56938 "EHLO
+        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727715AbfJaQpq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 31 Oct 2019 08:57:10 -0400
-Received: by mail-il1-f194.google.com with SMTP id b12so5242409ilf.12
-        for <kernel-janitors@vger.kernel.org>; Thu, 31 Oct 2019 05:57:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=HFMClpqTeJP46m822zm9nFLSwcrgj9uvV5/DrfBRnPs=;
-        b=iEFkJ7oBRKTnH86pHzYP8n/pBPhjBfJYlldEsYn/rIGVWHnhgpxN9Caj2RqNP+Q9+v
-         /SsATlGRTx/Px6pZJL43nAcCe89USwlXPU+5W45WA+Haw1O2APUVr1TBsFo1kfQThhnf
-         m0nVawNTVYWxCd4jjbc12V1Vya3LiftKcRzhUzZmxoE/8g1BCcrGF4ZhGsg4Oie75lw9
-         JZJal9dMagDpaZUgnKqUDvRkmYQQ0EgBIXmHD53leDI77do78FYlp5HAF5lGoqqcYmrC
-         FZxsLPufmfOMu0dkVYHP7TBqJCWqlouul9OvP4+rvYTz9u+JrMVpskCCa2OztwL6Hm99
-         FnZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=HFMClpqTeJP46m822zm9nFLSwcrgj9uvV5/DrfBRnPs=;
-        b=JMRA0/s4LetEgoDH+CHIy9mnvNgd+bw0+KvPDA7j193cQGeD8DCeNYkk0oY8xDWq+d
-         6cnFiZ8ZIGS6MspaAMnheMTLy4E3WY+1WLRZoey5mSuS9BXBUoFCUwa2DfvTLPK0pVmY
-         sIL4cBbqoLxsqNjh/6sff3VaNOvk4d35fetHgFSDJQZXjLdg3qR3r9JGgo+IvVeQTOhT
-         wZlLYcAvJ/s2VCzA4fNh8MpVUJT+dd0bWEc39djgNp48RJC3JmX4+f38g/8v8IRcyKR+
-         tZPqXM4SAg/HiGot4FhPBAj8MVcpzBf8UNErSjiv7uMMLyupUCPCloe9e5n7+sps4jmn
-         Z4GQ==
-X-Gm-Message-State: APjAAAWi2BEZG2zOuVqjEygoouLtn/CzhrR9tbHTflhxzjT6jvMgwVBW
-        jCzZlPayjVENb0y2ukuw1p40gnB0rHhsZQ==
-X-Google-Smtp-Source: APXvYqy6YWgbIHTOYJsUJwrnjXnKqoqGCOzyA33ICwDU+p8YPyAoCA9Am/KjbwjsFlBj73v8w/Qhkw==
-X-Received: by 2002:a92:8c1c:: with SMTP id o28mr5805925ild.34.1572526628820;
-        Thu, 31 Oct 2019 05:57:08 -0700 (PDT)
-Received: from [192.168.1.159] ([65.144.74.34])
-        by smtp.gmail.com with ESMTPSA id l64sm508754ilh.2.2019.10.31.05.57.07
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 31 Oct 2019 05:57:07 -0700 (PDT)
-Subject: Re: [PATCH] io_uring: signedness bug in io_async_cancel()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20191031105547.GC26612@mwanda>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <a697c16b-92bb-52a3-e2e8-5f24d75f580d@kernel.dk>
-Date:   Thu, 31 Oct 2019 06:57:06 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Thu, 31 Oct 2019 12:45:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
+        s=20121; t=1572540344;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=u+tUIBYHKvIkuL4G7fc5AXLA5rHt3MekdCaxn1sE414=;
+        b=P4vIvrUd4lipMC3PeEFVUQRsUdQPvM6OSOh/PPMV99gRQ+QAiB5CWAmb9kdnSDU56Tlu9c
+        Y5b0ky0JpNSjnnBed6B/UlAxMbbbS7CozSdxZCD3QlzcxEKlcM6tZLZgdIL0LFO6mN0t9z
+        Rzj4PgXZIeN+q4U/b9ONfNCv8p6rICw=
+From:   Sven Eckelmann <sven@narfation.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     davem@davemloft.net, mareklindner@neomailbox.ch,
+        sw@simonwunderlich.de, a@unstable.cc,
+        b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] batman-adv: Axe 'aggr_list_lock'
+Date:   Thu, 31 Oct 2019 17:45:40 +0100
+Message-ID: <34947339.t7yNZRQCJl@sven-edge>
+In-Reply-To: <20191031085240.7116-1-christophe.jaillet@wanadoo.fr>
+References: <20191031085240.7116-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-In-Reply-To: <20191031105547.GC26612@mwanda>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; boundary="nextPart1950623.Tr5mk9XeTM"; micalg="pgp-sha512"; protocol="application/pgp-signature"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 10/31/19 4:55 AM, Dan Carpenter wrote:
-> The problem is that this enum is unsigned, and we do use "ret" for the
-> enum values, but we also use it for negative error codes.  If it's not
-> signed then it causes a problem in the error handling.
+--nextPart1950623.Tr5mk9XeTM
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-I noticed this one the other day, merged in a fix for it then. Not
-an issue in the current tree, though linux-next may still have the
-older one.
+On Thursday, 31 October 2019 09:52:40 CET Christophe JAILLET wrote:
+> 'aggr_list.lock' can safely be used in place of another explicit spinlock
+> when access to 'aggr_list' has to be guarded.
+> 
+> This avoids to take 2 locks, knowing that the 2nd one is always successful.
+> 
+> Now that the 'aggr_list.lock' is handled explicitly, the lock-free
+> __sbk_something() variants should be used when dealing with 'aggr_list'.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> Compile tested only.
 
--- 
-Jens Axboe
+Applied together with your other patch.
+
+Thanks,
+	Sven
+
+--nextPart1950623.Tr5mk9XeTM
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part.
+Content-Transfer-Encoding: 7Bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl27D7QACgkQXYcKB8Em
+e0ZQrhAAwKtHzM6URp++7gAYx8jfbNu1SHKYF4CFTq0mjqjQZBLuZaWg8eYALQDa
+Quv7JVBrkEog8zGs8k9mqnL8TfgXvwKQvmvhHV4eecC/slqSn0wF+VzSdaUY3CXG
+BHCtj8kbiu0dmBPHt31agMDjNBoyF6UwhIT1SK1C8UfJq+Rsc3hUXxmPwm7BX8rU
+dzTeUTpZ+BmIVFWlnvcNYMNTmwM8U7NLZ/rpHXw+gsOFcA5F7+ven4L+2wTmutJL
+IGAhrIuGZsEhYe+xu7WRahNed8CcoeeU//qg6E6JKNETE27sf4tgzQbsQmSWAqgf
+dbm2LSby6BCdYUTYkDmQR3Ds6pNbUfg2jyhliNCrDtsvn5MMiR4RaXl0pkEoEt+v
+/EK3jrAR13mUcAcelIJrHOG0HzhX+vVGLySKegGoM5mElltIxQ3g/9hnGUvtU6t4
+JvHdQZARYGuMDGK2U9fDSO9dMVr+qq20PX3hNacE6U6Q7uknW9H2jHfmv/hg0bJO
+DjfcXdYuBw4qEPdPCRFEUkDJLvGrXBnfKqkHjARHK4DBdyWRBl5mT4lppgT5wcCk
+KWxvT9ImoWFiDAeJAMVzXyYMrYny6vqyMTgebMz98K666ue6e34znyY4cCj2kY8O
+iy5kw2J7v0u30kwHd/fdota1yKA0j28TVTDxmjyEEhZWhyb4bzA=
+=Hpom
+-----END PGP SIGNATURE-----
+
+--nextPart1950623.Tr5mk9XeTM--
+
+
 

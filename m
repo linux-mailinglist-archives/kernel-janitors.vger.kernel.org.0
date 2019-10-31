@@ -2,84 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CD9BEACD7
-	for <lists+kernel-janitors@lfdr.de>; Thu, 31 Oct 2019 10:49:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 792D3EADE7
+	for <lists+kernel-janitors@lfdr.de>; Thu, 31 Oct 2019 11:54:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727197AbfJaJtD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 31 Oct 2019 05:49:03 -0400
-Received: from smtp07.smtpout.orange.fr ([80.12.242.129]:32649 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727129AbfJaJtD (ORCPT
+        id S1727366AbfJaKxy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 31 Oct 2019 06:53:54 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:33490 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727348AbfJaKxx (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 31 Oct 2019 05:49:03 -0400
-Received: from [192.168.42.210] ([93.23.12.90])
-        by mwinf5d66 with ME
-        id L9ox2100X1waAWt039oxcA; Thu, 31 Oct 2019 10:49:01 +0100
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 31 Oct 2019 10:49:01 +0100
-X-ME-IP: 93.23.12.90
-Subject: Re: [PATCH] vsock: Simplify '__vsock_release()'
-To:     Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>,
-        davem@davemloft.net, sunilmut@microsoft.com, willemb@google.com,
-        sgarzare@redhat.com, stefanha@redhat.com, ytht.net@gmail.com,
-        arnd@arndb.de, tglx@linutronix.de, decui@microsoft.com
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Thu, 31 Oct 2019 06:53:53 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9VAnUBQ188245;
+        Thu, 31 Oct 2019 10:53:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=D9Nzf3Ko7p2zNPurG7+dCpyN8iR6FjyZUSA28aOPZDs=;
+ b=k/Z7ghEEacd/WV2pC4P0YWtULQ6FAVG4OqvqdXUCyS5wRQv1ke3Tvj2kdmoqDNsdrzsb
+ 8sDsIV/Z5oO1n1oRrl5bRTjd6UXWDG40AL2mU2+SRiE3h9JlkauNNsl9OglIgFVWhgKj
+ D3U8dikt+qNQR/Y4jN0jACxKPxH5ajIKpCKOsI+yWrsw6QTuT1TGUEFWaSZ1b/nLAGeg
+ CWHPsRPvMVrMUSaoc2+AUSg+Vkatphw/Buqty9azbdBHCaZ7x4oaGXXnl+VJhUvqz3V5
+ S1wGh8PL0cNQyvi9qtAAYxTp3UjVKJen0VvX60/qBOsQnDpU/QJxk+cllWUxf9wzIrPS eg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2vxwhftc20-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 31 Oct 2019 10:53:50 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9VAqaWd157989;
+        Thu, 31 Oct 2019 10:53:49 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3020.oracle.com with ESMTP id 2vysbtx97f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 31 Oct 2019 10:53:49 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x9VArmmG010799;
+        Thu, 31 Oct 2019 10:53:48 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 31 Oct 2019 03:53:48 -0700
+Date:   Thu, 31 Oct 2019 13:53:41 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>
+Cc:     linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-References: <20191031064741.4567-1-christophe.jaillet@wanadoo.fr>
- <c7a0b6b0-96cd-1fd3-3d98-94a3692bda38@cogentembedded.com>
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-ID: <1b33ca33-a02b-1923-cbee-814e520b9700@wanadoo.fr>
-Date:   Thu, 31 Oct 2019 10:48:53 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+Subject: [PATCH] iocost: don't nest spin_lock_irq in ioc_weight_write()
+Message-ID: <20191031105341.GA26612@mwanda>
 MIME-Version: 1.0
-In-Reply-To: <c7a0b6b0-96cd-1fd3-3d98-94a3692bda38@cogentembedded.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9426 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1910310111
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9426 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1910310110
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 31/10/2019 à 10:36, Sergei Shtylyov a écrit :
-> Hello!
->
-> On 31.10.2019 9:47, Christophe JAILLET wrote:
->
->> Use '__skb_queue_purge()' instead of re-implementing it.
->
->    In don't see that double underscore below...
-This is a typo in the commit message.
+This code causes a static analysis warning:
 
-There is no need for __ because skb_dequeue was used.
+    block/blk-iocost.c:2113 ioc_weight_write() error: double lock 'irq'
 
-Could you fix it directly in the commit message (preferred solution for 
-me) or should I send a V2?
+We disable IRQs in blkg_conf_prep() and re-enable them in
+blkg_conf_finish().  IRQ disable/enable should not be nested because
+that means the IRQs will be enabled at the first unlock instead of the
+second one.
 
-CJ
+Fixes: 7caa47151ab2 ("blkcg: implement blk-iocost")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ block/blk-iocost.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
->> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
->> ---
->>   net/vmw_vsock/af_vsock.c | 4 +---
->>   1 file changed, 1 insertion(+), 3 deletions(-)
->>
->> diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
->> index 2ab43b2bba31..2983dc92ca63 100644
->> --- a/net/vmw_vsock/af_vsock.c
->> +++ b/net/vmw_vsock/af_vsock.c
-> [...]
->> @@ -662,8 +661,7 @@ static void __vsock_release(struct sock *sk, int 
->> level)
->>           sock_orphan(sk);
->>           sk->sk_shutdown = SHUTDOWN_MASK;
->>   -        while ((skb = skb_dequeue(&sk->sk_receive_queue)))
->> -            kfree_skb(skb);
->> +        skb_queue_purge(&sk->sk_receive_queue);
->>             /* Clean up any sockets that never were accepted. */
->>           while ((pending = vsock_dequeue_accept(sk)) != NULL) {
->
-> MBR, Sergei
->
+diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+index 2a3db80c1dce..a7ed434eae03 100644
+--- a/block/blk-iocost.c
++++ b/block/blk-iocost.c
+@@ -2110,10 +2110,10 @@ static ssize_t ioc_weight_write(struct kernfs_open_file *of, char *buf,
+ 			goto einval;
+ 	}
+ 
+-	spin_lock_irq(&iocg->ioc->lock);
++	spin_lock(&iocg->ioc->lock);
+ 	iocg->cfg_weight = v;
+ 	weight_updated(iocg);
+-	spin_unlock_irq(&iocg->ioc->lock);
++	spin_unlock(&iocg->ioc->lock);
+ 
+ 	blkg_conf_finish(&ctx);
+ 	return nbytes;
+-- 
+2.20.1
 

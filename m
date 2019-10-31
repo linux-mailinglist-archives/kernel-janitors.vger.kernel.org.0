@@ -2,51 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F2354EADFC
-	for <lists+kernel-janitors@lfdr.de>; Thu, 31 Oct 2019 11:57:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E60DEADF0
+	for <lists+kernel-janitors@lfdr.de>; Thu, 31 Oct 2019 11:55:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727205AbfJaK5R (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 31 Oct 2019 06:57:17 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:41464 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726932AbfJaK5Q (ORCPT
+        id S1727417AbfJaKz5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 31 Oct 2019 06:55:57 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:35394 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726864AbfJaKz5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 31 Oct 2019 06:57:16 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9VAsVqx176368;
-        Thu, 31 Oct 2019 10:57:11 GMT
+        Thu, 31 Oct 2019 06:55:57 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9VAsNb4192100;
+        Thu, 31 Oct 2019 10:55:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=1sG/Yfs8vobHE1MHtWKvt3EvUARJQXQLqUpb9M6oFB4=;
- b=NyaOBEV93IoD8pDIk/KcV4JZPe9bCa1quM606v5LfIfUChHkL7SVKTdaMLZhaCoa9qbK
- QpeZREAsGO3DROkyxkOJ1rPAB7S+Q0SFEjJc77gIr5LGjvSaYXdRnKZnBfDvMIDyzAOO
- p+ast89RAeb4i/8Nng2h0IgmK+mLiDWSeNGhmaVtiQOYqPGsuIRJjtz/D5LWx2Jd+L27
- rREJRpHfiWI1TutepPR2ChexFeXBbQqAhlMvAjVIpr66NhfdX0axQjJR/uT8Pl5jvvkE
- RribWGe9q7Td26PhuNPCR4/9jX/hmh2UvynfDDrCDD9BiGFCAk3kk3Qf6esgV7qilOOh 6w== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 2vxwhfjedb-1
+ bh=tm+ynhomfiVzszaGXuALO61BT3GqIPJ1petNTHqSuA4=;
+ b=rNyrMxADWHmk/W0nX15kbwSzDYNeeFUpT7c0LDL4KRxvxXAKnWhBYVSkNaGWSYaOMD8A
+ gWpq121IvjGexVQMbY3iYBnho72bcrbhR8bBXaR1fB6yLbwi57sh+FprEZyFLjvvyOSQ
+ nmTEyRFX47RfI8krXyHu+T1XBIWYpUFvJQYG92XzGtqEyzfolVHk40XkO0CEfpEtR5RN
+ WY9ZNE99zZRnkfUVT0Nx2OWmtqEeL/XcTU4BJoXkz3RZj/JSVSQAoEtmcWHe47vTWU+w
+ lbA9u3uhzQbJGpYPBBK+qJrn8HjqTEEvXYtkdcK5Lqdml/YX6732lO1H3VUwbPxx+9nY HQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 2vxwhftcag-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 31 Oct 2019 10:57:10 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9VArk7E160618;
-        Thu, 31 Oct 2019 10:55:10 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 2vyv9fx6ev-1
+        Thu, 31 Oct 2019 10:55:55 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id x9VAqlgh047316;
+        Thu, 31 Oct 2019 10:55:54 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 2vyqpdvky1-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 31 Oct 2019 10:55:09 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id x9VAt866005535;
-        Thu, 31 Oct 2019 10:55:08 GMT
+        Thu, 31 Oct 2019 10:55:54 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id x9VAtrJH014719;
+        Thu, 31 Oct 2019 10:55:53 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 31 Oct 2019 03:55:08 -0700
-Date:   Thu, 31 Oct 2019 13:55:01 +0300
+        with ESMTP ; Thu, 31 Oct 2019 03:55:53 -0700
+Date:   Thu, 31 Oct 2019 13:55:47 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>
-Cc:     Josef Bacik <josef@toxicpanda.com>, linux-btrfs@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] btrfs: clean up locking name in scrub_enumerate_chunks()
-Message-ID: <20191031105501.GB26612@mwanda>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     linux-fsdevel@vger.kernel.org, linux-block@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] io_uring: signedness bug in io_async_cancel()
+Message-ID: <20191031105547.GC26612@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -59,7 +59,7 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 ma
  engine=8.0.1-1908290000 definitions=main-1910310111
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9426 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
  definitions=main-1910310111
@@ -68,42 +68,30 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "&fs_info->dev_replace.rwsem" and "&dev_replace->rwsem" refer to
-the same lock but Smatch is not clever enough to figure that out so it
-leads to static checker warnings.  It's better to use it consistently
-anyway.
+The problem is that this enum is unsigned, and we do use "ret" for the
+enum values, but we also use it for negative error codes.  If it's not
+signed then it causes a problem in the error handling.
 
+Fixes: 6ec62e598211 ("io_uring: support for generic async request cancel")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- fs/btrfs/scrub.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/io_uring.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index 4a5a4e4ef707..06494304ab80 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -3620,7 +3620,7 @@ int scrub_enumerate_chunks(struct scrub_ctx *sctx,
- 			break;
- 		}
+diff --git a/fs/io_uring.c b/fs/io_uring.c
+index c4cdfe16cba7..9dcbde233657 100644
+--- a/fs/io_uring.c
++++ b/fs/io_uring.c
+@@ -2144,8 +2144,8 @@ static int io_async_cancel(struct io_kiocb *req, const struct io_uring_sqe *sqe,
+ 			   struct io_kiocb **nxt)
+ {
+ 	struct io_ring_ctx *ctx = req->ctx;
+-	enum io_wq_cancel ret;
+ 	void *sqe_addr;
++	int ret;
  
--		down_write(&fs_info->dev_replace.rwsem);
-+		down_write(&dev_replace->rwsem);
- 		dev_replace->cursor_right = found_key.offset + length;
- 		dev_replace->cursor_left = found_key.offset;
- 		dev_replace->item_needs_writeback = 1;
-@@ -3661,10 +3661,10 @@ int scrub_enumerate_chunks(struct scrub_ctx *sctx,
- 
- 		scrub_pause_off(fs_info);
- 
--		down_write(&fs_info->dev_replace.rwsem);
-+		down_write(&dev_replace->rwsem);
- 		dev_replace->cursor_left = dev_replace->cursor_right;
- 		dev_replace->item_needs_writeback = 1;
--		up_write(&fs_info->dev_replace.rwsem);
-+		up_write(&dev_replace->rwsem);
- 
- 		if (ro_set)
- 			btrfs_dec_block_group_ro(cache);
+ 	if (unlikely(ctx->flags & IORING_SETUP_IOPOLL))
+ 		return -EINVAL;
 -- 
 2.20.1
 

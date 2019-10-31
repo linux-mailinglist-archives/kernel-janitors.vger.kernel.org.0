@@ -2,102 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92FE9EAB54
-	for <lists+kernel-janitors@lfdr.de>; Thu, 31 Oct 2019 09:08:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAFB8EAB48
+	for <lists+kernel-janitors@lfdr.de>; Thu, 31 Oct 2019 09:05:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726858AbfJaIIb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 31 Oct 2019 04:08:31 -0400
-Received: from dvalin.narfation.org ([213.160.73.56]:54006 "EHLO
-        dvalin.narfation.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726747AbfJaIIb (ORCPT
+        id S1726898AbfJaIFR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 31 Oct 2019 04:05:17 -0400
+Received: from smtp.codeaurora.org ([198.145.29.96]:41816 "EHLO
+        smtp.codeaurora.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726747AbfJaIFR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 31 Oct 2019 04:08:31 -0400
-X-Greylist: delayed 484 seconds by postgrey-1.27 at vger.kernel.org; Thu, 31 Oct 2019 04:08:30 EDT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=narfation.org;
-        s=20121; t=1572508825;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=Ia3172o3/jD2ekntHB/GkBV4C7wIggs5s/Ni/QTMMRI=;
-        b=IRBmdR7dNASrVBhBhvK6MA6irw6Nb6bC//pd3DoPAsobpxxI2+oWjxkqoytud7ilnB3P5m
-        r7HjTJ367tS1+ezqogDhtfm7ecD5rHhbpqpvmrTxHCS/CCb2Vvs2DzwKmneMZNeEm9S0/7
-        x4VDfO47VaWNDVgW1zcJWeB82zRhyi8=
-From:   Sven Eckelmann <sven@narfation.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     davem@davemloft.net, mareklindner@neomailbox.ch,
-        sw@simonwunderlich.de, a@unstable.cc,
-        b.a.t.m.a.n@lists.open-mesh.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] batman-adv: Simplify 'batadv_v_ogm_aggr_list_free()'
-Date:   Thu, 31 Oct 2019 09:00:21 +0100
-Message-ID: <3535726.AjB5hMM71F@sven-edge>
-In-Reply-To: <20191031074255.3234-1-christophe.jaillet@wanadoo.fr>
-References: <20191031074255.3234-1-christophe.jaillet@wanadoo.fr>
+        Thu, 31 Oct 2019 04:05:17 -0400
+Received: by smtp.codeaurora.org (Postfix, from userid 1000)
+        id BFC5360907; Thu, 31 Oct 2019 08:05:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1572509116;
+        bh=zfPjYfxYvEa2P4UUr9Y4+q9hJp/scBvnbb1Oc55091Q=;
+        h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+        b=d8lMcHEv5opneU5qnfD78MRDQahkaNJtov+IHjpZi56KOctkfOgtrVehjPKWLDluz
+         YSS4hkBehXaHPDxSG9wDcxG9riOCtwB4A4RQtp/2QB/IAP3ecYkBnmHeB4lCpuQaBU
+         xjyCGg7y5xFry1aT8569H/moL8naxk0rZJNMn7Vk=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        pdx-caf-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.8 required=2.0 tests=ALL_TRUSTED,BAYES_00,
+        DKIM_INVALID,DKIM_SIGNED,MISSING_DATE,MISSING_MID,SPF_NONE autolearn=no
+        autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo@smtp.codeaurora.org)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 1C5B9603A3;
+        Thu, 31 Oct 2019 08:05:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=codeaurora.org;
+        s=default; t=1572509116;
+        bh=zfPjYfxYvEa2P4UUr9Y4+q9hJp/scBvnbb1Oc55091Q=;
+        h=Subject:From:In-Reply-To:References:To:Cc:From;
+        b=kDdIjhGZm21VV7lsdD7YeP4MWS3CAtGS6K5qfASN2fPkwVFs6SB4IxuVKZPRglqSw
+         EA0qA5gHnjDJ5QCPg3SOX0qcFFMMa4wm87QJ/MtHPbF18aU1xHly1saNnH4HBsmHLa
+         PXhQMk82D0HWcSICCdKQCS7thWFvMCf4NM3fqbZw=
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 1C5B9603A3
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: pdx-caf-mail.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart6722122.X2YU2N7q37"; micalg="pgp-sha512"; protocol="application/pgp-signature"
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH][next] rtw88: remove redundant null pointer check on arrays
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191025113056.19167-1-colin.king@canonical.com>
+References: <20191025113056.19167-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Chris Chiu <chiu@endlessm.com>,
+        Tzu-En Huang <tehuang@realtek.com>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191031080516.BFC5360907@smtp.codeaurora.org>
+Date:   Thu, 31 Oct 2019 08:05:16 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
---nextPart6722122.X2YU2N7q37
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Colin King <colin.king@canonical.com> wrote:
 
-On Thursday, 31 October 2019 08:42:55 CET Christophe JAILLET wrote:
-> Use 'skb_queue_purge()' instead of re-implementing it.
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-
-Consider this patch applied. I just have to leave now and thus I will only 
-apply after my return.
-
-> ---
-> BTW, I don't really see the need of 'aggr_list_lock'. I think that the code
-> could be refactored to drop 'aggr_list_lock' and use the already existing
-> 'aggr_list.lock'.
-> This would require to use the lock-free __skb_... variants when working on
-> 'aggr_list'.
->
-> As far as I understand, the use of 'aggr_list' and 'aggr_list_lock' is
-> limited to bat_v_ogm.c'. So the impact would be limited.
-> This would avoid a useless locking that never fails, so the performance
-> gain should be really limited.
+> The checks to see if swing_table->n or swing_table->p are null are
+> redundant since n and p are arrays and can never be null if
+> swing_table is non-null.  I believe these are redundant checks
+> and can be safely removed, especially the checks implies that these
+> are not arrays which can lead to confusion.
 > 
-> So, I'm not sure this would be more readable and/or future proof, so
-> I just note it here to open the discussion.
-> 
-> If interested, I have a (compiled tested only) patch that implements this
-> change.
+> Addresses-Coverity: ("Array compared against 0")
+> Fixes: c97ee3e0bea2 ("rtw88: add power tracking support")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Yes, please send it over.
+Patch applied to wireless-drivers-next.git, thanks.
 
-Kind regards,
-	Sven
+baff8da6e163 rtw88: remove redundant null pointer check on arrays
 
---nextPart6722122.X2YU2N7q37
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part.
-Content-Transfer-Encoding: 7Bit
+-- 
+https://patchwork.kernel.org/patch/11212093/
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEF10rh2Elc9zjMuACXYcKB8Eme0YFAl26lJUACgkQXYcKB8Em
-e0YLkg//SFeu7zgzY5RZPY5HcftrEK1rjC2M7A8sCfKGM1M8vzzTA3tloEHUCNxD
-EbJLxaVmG24RWkBL6vthM2PT1lvjHRFUphtpYa5z1uyXJFEoO2YRp8hDgIOw+/+1
-OckzUOWC0Lq5OokHISYtWp673ZBLSNmshZY5eAZLec7p42UE3xnrWr7OOTGs6yTQ
-nwb734FvWvmi44PUs5DGPaW7gpUYXFY9EWyAbpJD7uuifshVIaY7ql5LAfF2VL71
-6hJ4rYPGtFN6wxMuh8QehYwiWG+Ze95uYl4oS05YdhsXGNuhFjN5Q2iOU4R4WBFD
-g+ztkU7BitUMoaZz3ICi1T31QFUFzy5OPmUo97bX7BId9aTtVMwPvW06aJU/dBZc
-pXI9vps1QPoGfTzNn+N12S5GB8ZFYJ+3ycaQjqb69uE3c8EsHVa42qoSiieaqsln
-TiYMCK67jcB+cOYR/zbsw6YRr+ZTWxPJMN9ZVEFxswbHl1H677oTBpuC0eyTil/L
-qscb04MIE0r11DJA1S4oWnidM+9zn7bGG7tVzMNsKCgvUaXkTWewahJR0ynTI/6j
-XfbztcvAlMswIcb6Mk4f5LtARZ+l3BlXll/+WMzxLSZwwWU7yAwp0QxQJwXyKafV
-PEps/jYve9O423rfIIwanNJIWi2Ab1sprc5Ka/iSmciz6hswmNk=
-=3utl
------END PGP SIGNATURE-----
-
---nextPart6722122.X2YU2N7q37--
-
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

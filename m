@@ -2,31 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A3042EAA81
-	for <lists+kernel-janitors@lfdr.de>; Thu, 31 Oct 2019 06:55:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21D4FEAAB9
+	for <lists+kernel-janitors@lfdr.de>; Thu, 31 Oct 2019 07:47:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726479AbfJaFz1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 31 Oct 2019 01:55:27 -0400
-Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:33395 "EHLO
+        id S1726864AbfJaGrw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 31 Oct 2019 02:47:52 -0400
+Received: from smtp10.smtpout.orange.fr ([80.12.242.132]:28884 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726370AbfJaFz1 (ORCPT
+        with ESMTP id S1726827AbfJaGrw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 31 Oct 2019 01:55:27 -0400
+        Thu, 31 Oct 2019 02:47:52 -0400
 Received: from localhost.localdomain ([93.23.12.90])
         by mwinf5d87 with ME
-        id L5vM2100A1waAWt035vNi3; Thu, 31 Oct 2019 06:55:25 +0100
+        id L6nn210011waAWt036nnoq; Thu, 31 Oct 2019 07:47:49 +0100
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 31 Oct 2019 06:55:25 +0100
+X-ME-Date: Thu, 31 Oct 2019 07:47:49 +0100
 X-ME-IP: 93.23.12.90
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     davem@davemloft.net, vishal@chelsio.com
+To:     davem@davemloft.net, sunilmut@microsoft.com, willemb@google.com,
+        sgarzare@redhat.com, stefanha@redhat.com, ytht.net@gmail.com,
+        arnd@arndb.de, tglx@linutronix.de, decui@microsoft.com
 Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] cxgb4/l2t: Simplify 't4_l2e_free()' and '_t4_l2e_free()'
-Date:   Thu, 31 Oct 2019 06:53:45 +0100
-Message-Id: <20191031055345.32487-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] vsock: Simplify '__vsock_release()'
+Date:   Thu, 31 Oct 2019 07:47:41 +0100
+Message-Id: <20191031064741.4567-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -39,48 +41,31 @@ Use '__skb_queue_purge()' instead of re-implementing it.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/net/ethernet/chelsio/cxgb4/l2t.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ net/vmw_vsock/af_vsock.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/l2t.c b/drivers/net/ethernet/chelsio/cxgb4/l2t.c
-index 1a407d3c1d67..e9e45006632d 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/l2t.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/l2t.c
-@@ -351,15 +351,13 @@ static struct l2t_entry *find_or_alloc_l2e(struct l2t_data *d, u16 vlan,
- static void _t4_l2e_free(struct l2t_entry *e)
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 2ab43b2bba31..2983dc92ca63 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -641,7 +641,6 @@ EXPORT_SYMBOL_GPL(__vsock_create);
+ static void __vsock_release(struct sock *sk, int level)
  {
- 	struct l2t_data *d;
--	struct sk_buff *skb;
+ 	if (sk) {
+-		struct sk_buff *skb;
+ 		struct sock *pending;
+ 		struct vsock_sock *vsk;
  
- 	if (atomic_read(&e->refcnt) == 0) {  /* hasn't been recycled */
- 		if (e->neigh) {
- 			neigh_release(e->neigh);
- 			e->neigh = NULL;
- 		}
--		while ((skb = __skb_dequeue(&e->arpq)) != NULL)
+@@ -662,8 +661,7 @@ static void __vsock_release(struct sock *sk, int level)
+ 		sock_orphan(sk);
+ 		sk->sk_shutdown = SHUTDOWN_MASK;
+ 
+-		while ((skb = skb_dequeue(&sk->sk_receive_queue)))
 -			kfree_skb(skb);
-+		__skb_queue_purge(&e->arpq);
- 	}
++		skb_queue_purge(&sk->sk_receive_queue);
  
- 	d = container_of(e, struct l2t_data, l2tab[e->idx]);
-@@ -370,7 +368,6 @@ static void _t4_l2e_free(struct l2t_entry *e)
- static void t4_l2e_free(struct l2t_entry *e)
- {
- 	struct l2t_data *d;
--	struct sk_buff *skb;
- 
- 	spin_lock_bh(&e->lock);
- 	if (atomic_read(&e->refcnt) == 0) {  /* hasn't been recycled */
-@@ -378,8 +375,7 @@ static void t4_l2e_free(struct l2t_entry *e)
- 			neigh_release(e->neigh);
- 			e->neigh = NULL;
- 		}
--		while ((skb = __skb_dequeue(&e->arpq)) != NULL)
--			kfree_skb(skb);
-+		__skb_queue_purge(&e->arpq);
- 	}
- 	spin_unlock_bh(&e->lock);
- 
+ 		/* Clean up any sockets that never were accepted. */
+ 		while ((pending = vsock_dequeue_accept(sk)) != NULL) {
 -- 
 2.20.1
 

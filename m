@@ -2,36 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F78DEC96F
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Nov 2019 21:15:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E4AEEC9C4
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Nov 2019 21:43:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727662AbfKAUPC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 1 Nov 2019 16:15:02 -0400
-Received: from mout.web.de ([212.227.17.12]:54799 "EHLO mout.web.de"
+        id S1727874AbfKAUnI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 1 Nov 2019 16:43:08 -0400
+Received: from mout.web.de ([212.227.17.12]:49101 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726477AbfKAUPB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 1 Nov 2019 16:15:01 -0400
+        id S1726477AbfKAUnI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 1 Nov 2019 16:43:08 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1572639283;
-        bh=KWbCttR85rCyn/zrFxTySFggytEnyAXRs/QVJBQgKmA=;
-        h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
-        b=VHkrXC1sUFvXWPxeysveWPbxaomccrDis/BFA/Vt6qMAra5G/U0Q+IlnrDCyQewZL
-         ip6aGwYdwug1muC8HoatAkDUFz0pZfy5DI+QvYzfRIPdDzWmJsmQuOPCXYe4jDwYdv
-         401cTWcJPKY3QAZ+61QjHH9PfsNL/MoZF/sN9WOc=
+        s=dbaedf251592; t=1572640963;
+        bh=e9boskGhIkDLa3vEXHpvYq1aV9JbklBvbC4KpcTg9YU=;
+        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+        b=aUpFf8V7f1xuNAapzTMEJgw2epTjiVEFQrb555wPaCErD5HEBUx1xyzaqkb0g7UpJ
+         Tkbn933P12JVeCxMP3dk6ejH+4J19byQClqW3X8OksKXqr2bfNYJA2SpuYN+UBhpDQ
+         2dC/xWLwCcClGmfFAEewDSd/intdMlIxYN+9NgbU=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([93.131.35.66]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MSads-1iYRM71G8y-00RVKh; Fri, 01
- Nov 2019 21:14:43 +0100
-To:     Haiyang Zhang <haiyangz@microsoft.com>,
-        linux-hyperv@vger.kernel.org, netdev@vger.kernel.org
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M3k8j-1i9FQY2A6r-00rFHS; Fri, 01
+ Nov 2019 21:42:43 +0100
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
         "David S. Miller" <davem@davemloft.net>,
         "K. Y. Srinivasan" <kys@microsoft.com>,
         Olaf Hering <olaf@aepfle.de>, Sasha Levin <sashal@kernel.org>,
         Stephen Hemminger <sthemmin@microsoft.com>,
         Vitaly Kuznetsov <vkuznets@redhat.com>
-References: <1572449471-5219-3-git-send-email-haiyangz@microsoft.com>
-Subject: Re: [PATCH net, 2/2] hv_netvsc: Fix error handling in netvsc_attach()
+References: <1572296801-4789-3-git-send-email-haiyangz@microsoft.com>
+Subject: Re: [PATCH net-next, 2/4] hv_netvsc: Fix error handling in
+ netvsc_attach()
+To:     Haiyang Zhang <haiyangz@microsoft.com>,
+        linux-hyperv@vger.kernel.org, netdev@vger.kernel.org
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,43 +77,56 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <77a1611b-1609-ca74-39d0-3ecd16290219@web.de>
-Date:   Fri, 1 Nov 2019 21:14:33 +0100
+Message-ID: <cdf7b308-940a-ff9c-07ae-f42b94687e24@web.de>
+Date:   Fri, 1 Nov 2019 21:42:41 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.0
 MIME-Version: 1.0
-In-Reply-To: <1572449471-5219-3-git-send-email-haiyangz@microsoft.com>
+In-Reply-To: <1572296801-4789-3-git-send-email-haiyangz@microsoft.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:SCcExs1y5Q1jY9WmuuvG3B+2WCBC6Tr4Bcdk3s7BBEyvLqRdnKv
- iER20hZ0gNEcjlClFJ30QkoPSKWR+7b5jN1jeo8CeejVYVVFHiJY2qTFLSVAyQGeXK/auZm
- I28o3W8SFSOQE7F5k3bq4E3Cn4MveWOEnEMfrsY5CqxclxEfsWDpJbowfzlSDSnwbtHOzhN
- C3VT5sdlHZkdJiXc8J4Eg==
+X-Provags-ID: V03:K1:trtB7xvTfXGQW3iQj5cEaRfPK4WjJOXN1VzyuKucrEP7N3dujzy
+ 4DIhbGVGp+olPKG/NYTrIvStSBdsJ+x1r0gHShngR60tagw1yHnO/QG8wrK6qOJb4itKunC
+ eSyyAeiFZOWvfp+e/KIVyFeanZRdyIKugK5LxMhf1QcraH6Zx5U2XCBaHAbzYkPNKd8yxPt
+ n3rr+B9IhA3fFBz0OMl7A==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:akzISLPxtSI=:o2OUpBxYQpwOoukfWPxzDt
- iD0wQyaDjp40jnE8GcPJa3NzEfF/tfRr+Si/7dHXXHaiIF+REuiNP+Dbvn3dh3lCiJZFkBcmh
- 8uFov+YiKh45Ba6XHIvevwSPy8Ie+ssqSMiceA7FDBrVm2Q4DPq/UGJC98zUSmHCOLooL6ePS
- e5o493z4NIbEUeW29gUWOji9kHZ7gVFfL4Jq9o3bWSQglBwGaTsAW/xyYYkMEleMiGbbp5tnK
- tab7g/1qeuqoghbVBezNg2icEfEarhblyq8lOnaKqdo8rYf9npYL/qpPEXuk9262gf708bWbX
- NgzK5c6BRFDt1ihQy3yg29Mwj49+iAKRQtwhXWs9RXLgarV6EuQ4rFV0ixpgsYAOk1MOYmaEe
- pMgXt51yKlxjfqFH4hk0v7x4FJfIke1oC50EPraSknE4q6obi5hSqXXW2NQXp2UrG/A6Sc7P7
- /OCpv5R2fFmf8tWqkDPWudfDcp4w0ygIGQ/V/rOvR08O8eRjg/dxaBwbKyz05G5jdw82NTYbO
- vlw0SccqMRDF6esWtw70F013SuXa0LXvUF8Tg9JAr2Y3xAxqm0Vv30FY03bIazuKCuhHSWxvK
- 8WodFuxxJ4jNjy/t6dljB0DiAHmkms+lGF7dtSjrf+opzQayFq4p0nIlFSg2IY1WuoECdXvMe
- uFlhBZsR/S2tskLzH/Uscltu2OMAh+DNos+vdUor+YOddAWg4kw+bXOR0R7CPTdVtGIrOFFOl
- esMRX9C+tHh1cguPTl5a0v37Yv4KxVjYxFRkpMfeG26d/rba0O/OpWfxRcdcJ/yNE+pba6v8Q
- 918p65xBMG+YOUkfZ0cBJ48bExxmgTaqlsHTcOcf331rfFfb2DR0rE4UjaQdS1FqYihATSaYG
- uNM7xKfCnatGFme4NbnORQmCKLfPJLdfIsE2oOXaYWFvZw70qkXYw0Bh/6eUjsEtYSLsgjTmB
- MQ6vHRqd/njBI/jomXCxFPF/o3LryqKjnbWSQBNAmBgQ6+Au2O5tconTZetCmzWms/NphMsjR
- xAQAkxf+NSGiGceqw5xqtJyx9UctNj4yDsIm4VzZNug5PWFG9jfm9aGmS+EHBlN37o9VX+l3O
- K4n7yFYNI9WiJO3yHbqkOVNYlisDjX/b62x0iu/DVBk/b2gtJmKqHcZ67PD4V970e9SF6RC7A
- y79EV5jpBe62r3iBwAadPnbJbuCdkMDZp3qrotTrw8WXEg1WOR5GonIzm/tIJHSYycNG8DiI5
- t3dfwJJOMRppSzhdWxNwyGbjbOwSxn8r/3qv2z8uZ4dneKa0ULkuKTgodX0c=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:cgrxrmIv5nc=:1KDmVhf0QSEf8Npcwa1HH/
+ yWUIGTHNR0J8VTpYtyxFYpntiSkCQ6L9lsXNoDEXSZMCzDmUKkaoubmjmJySUfD/WL7Md8Uyu
+ Ea6uRMFroA37h5oIdsvF6UbNcT+435PA4ZZlncaFys/IpuD0uArqxu+nya0fm+eO5srC9oynw
+ Nscibx89kpSQJjcw0EX9QS/g1lrC//7Gn64yLqfRi0oMJpmD3bCXCcn/+C1l1W8FK88+DZQ88
+ Yw0tFv0iu8jOzG3LQHYSnBHs9t2HxD/tAWckzrVM0kzdb2RjFSimBGsgOV71wbCGojCJ/TyVf
+ uJGBnQb7vY158QvfnvXVbQDC52osPuLqAKasRVUoNblWR2lyioXbLWYdvgiBSMqKUO4cX1JSC
+ 2NCETCpnXuDkIdgrR4Uv+VM0n4FIzBlL4HInicKZbIJuSxnExcYqrwXdjzsdQ2tLKB7snu5sT
+ eYNI6FFaR+cajmetGLKlApY2uO8YKr5cmtO4oYJlkVcgAggv3UpvQ5AeqbnSm9A3z4QVW2Emz
+ 1NqxDtUpQc9dtJS4a3GGVKgFpbkErR19x65r6kD+TQE8o308Vq9droWcSnm+xj9TW4EDR82lG
+ zwctXjVFRRLDN17CsviO/Ro9qwFQcl2VnvJqhpNnzJm7HRSrOKRye9zzMa3vvrc+Prgaj5WBX
+ TozlGPUsRjuSZQfKR9qTO3pGggoDR4LlmkS/RrfZvgMV59fUPAPasfpYZJOz0igWnSX0mG6ec
+ JgQDK+dq4rAui7KimoA/DEW4xezh3ol2mDwOOyrWCD/s5kTHsZSB8b6kVx/yVdaWARNF2FbSY
+ PWeaqrK6cd57u+vMFqcPK+EcRAWTGSKImcR8KL0lQDH75/6ncAgiVsvdZ5p5Hp2H0wWqK0WNW
+ BTLltSoprc6aLHLZRrCexKQoUmrMRy8DaENO2jD33vLgQPUkKYTbwi3ujTLMsbLtptnN/vpc+
+ luHKOnUykjWoYgqPxTI1w1SWCte2a85fzozx8TuYOMqcWZehlN+2fO4vcKxkSGiZL9pEi1jsS
+ SqYj5RQF2dt2BAMTMgVa7T9n+eannbn0ljHke/zx0aBuvQlWhwg8YIyaaiavodpxfI5asEsel
+ Fyqe/bFeLwYtItWP/L3J2UeMjFp8zR1Y5RXV0odB/X0FjfAqRef9O1c4+leFPSxB+deRbRIId
+ 7LphlIBBNhDYZ8W9dPb8VHfmg/mFTqVKOeOchc7BWlo8VoKM44S1d+cmbA185D7pnO5WTWnyR
+ WHld4/eMlEFSvq/qeiwW7h189J9IwrGiszKsYg2QcRrfSXmMjVFeyl7C4pps=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
+
+> If rndis_filter_open() fails, we need to remove the rndis device created
+> in earlier steps, before returning an error code. Otherwise, the retry o=
+f
+> netvsc_attach() from its callers will fail and hang.
+
+How do you think about to choose a more =E2=80=9Cimperative mood=E2=80=9D =
+for your
+change description?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3D0dbe6cb8f7e05bc9611602ef45=
+980a6c57b245a3#n151
+
 
 =E2=80=A6
 > +++ b/drivers/net/hyperv/netvsc_drv.c

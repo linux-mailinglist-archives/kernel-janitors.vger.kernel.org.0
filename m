@@ -2,101 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED67CEC5E2
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Nov 2019 16:51:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 782BEEC76A
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Nov 2019 18:22:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729045AbfKAPvP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 1 Nov 2019 11:51:15 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:41828 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726720AbfKAPvP (ORCPT
+        id S1728111AbfKARWE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 1 Nov 2019 13:22:04 -0400
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:33525 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728004AbfKARWE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 1 Nov 2019 11:51:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1572623474;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=V/F/uH98yTm8/ocyS4BrLQNZoDCzFMcQkLKpDmR+yKk=;
-        b=iNqAtli853y4KaqZJMkWtgA6wIvBtN7WAY9TmzM5kiIHjPzSFHR7VWMU6++e/PCjQ0kvEz
-        D54SFWECqosQBe7i7ElKQ9GpsH0PEy3CAUa8XUaIJ982LgSA1uAJV8z0B4Ua4I3/v5Vl7F
-        Ad2qcgpX9zgqsWyN5AABW0yVciDk5fI=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-20-2R4BlIySO8-CwaNhv7pQGQ-1; Fri, 01 Nov 2019 11:51:11 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9DFD4800C77;
-        Fri,  1 Nov 2019 15:51:09 +0000 (UTC)
-Received: from pick.fieldses.org (ovpn-124-79.rdu2.redhat.com [10.10.124.79])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 4A01F5D713;
-        Fri,  1 Nov 2019 15:51:08 +0000 (UTC)
-Received: by pick.fieldses.org (Postfix, from userid 2815)
-        id 33261120054; Fri,  1 Nov 2019 11:51:06 -0400 (EDT)
-Date:   Fri, 1 Nov 2019 11:51:06 -0400
-From:   "J. Bruce Fields" <bfields@redhat.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Chuck Lever <chuck.lever@oracle.com>,
-        Mao Wenan <maowenan@huawei.com>,
-        Trond Myklebust <trond.myklebust@primarydata.com>,
-        Dros Adamson <dros@primarydata.com>,
-        jeff.layton@primarydata.com, richard.sharpe@primarydata.com,
-        Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] nfsd: Drop LIST_HEAD where the variable it
- declares is never used.
-Message-ID: <20191101155106.GA30730@pick.fieldses.org>
-References: <20191101114054.50225-1-maowenan@huawei.com>
- <7E1B5E17-FF35-472B-8316-D4C01085BAE4@oracle.com>
- <20191101144921.GA10409@kadam>
+        Fri, 1 Nov 2019 13:22:04 -0400
+Received: from localhost.localdomain ([93.22.132.57])
+        by mwinf5d40 with ME
+        id LhMz210031ETPpp03hMzam; Fri, 01 Nov 2019 18:22:00 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Fri, 01 Nov 2019 18:22:00 +0100
+X-ME-IP: 93.22.132.57
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     jerome.pouiller@silabs.com, gregkh@linuxfoundation.org
+Cc:     devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] staging: wfx: Fix a memory leak in 'wfx_upload_beacon'
+Date:   Fri,  1 Nov 2019 18:21:51 +0100
+Message-Id: <20191101172151.14295-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20191101144921.GA10409@kadam>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-MC-Unique: 2R4BlIySO8-CwaNhv7pQGQ-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Nov 01, 2019 at 05:49:21PM +0300, Dan Carpenter wrote:
-> On Fri, Nov 01, 2019 at 09:36:27AM -0400, Chuck Lever wrote:
-> > > On Nov 1, 2019, at 7:40 AM, Mao Wenan <maowenan@huawei.com> wrote:
-> > >=20
-> > > The declarations were introduced with the file, but the declared
-> > > variables were not used.
-> > >=20
-> > > Fixes: 65294c1f2c5e ("nfsd: add a new struct file caching facility to=
- nfsd")
+The current code is a no-op, because all it can do is 'dev_kfree_skb(NULL)'
+Revert the test to free skb, if not NULL.
 
-Thanks, applying for 5.5.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+This patch is purely speculative.
 
-> > I'm not sure a Fixes: tag is necessary here? 65294c1f2c5e
-> > works fine without this change, and it's not something we
-> > would need to backport into stable kernels.
-> >=20
-> > This is more of a clean up patch.
-> >=20
->=20
-> Fixes is not really related to backports or stable.  I would agree that
-> this isn't a bug but just a cleanup, but the problem is that other
-> people want Fixes tags for everything...
->=20
-> Yesterday I sent a cleanup patch and I almost put the Fixes tag under
-> the --- cut off but in the end I just deleted it...  It's hard to know
-> what the right thing is.
+The 'if  (...)' could also be removed completely if we refactor the code
+and return directly at the beginning of the function.
+Or the 'return -ENOMEM' should be 'err = -ENOMEM; goto done;' in order to
+avoid a mixup of goto and direct return.
+---
+ drivers/staging/wfx/sta.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-It doesn't have a stable cc and it's pretty obvious cleanup, so I guess
-there's no harm in it.
-
-I could go either way.  But I'll leave the patch as is unless someone
-comes up with a clear policy.
-
---b.
+diff --git a/drivers/staging/wfx/sta.c b/drivers/staging/wfx/sta.c
+index 688586e823c0..e14da8dce388 100644
+--- a/drivers/staging/wfx/sta.c
++++ b/drivers/staging/wfx/sta.c
+@@ -906,7 +906,7 @@ static int wfx_upload_beacon(struct wfx_vif *wvif)
+ 	wfx_fwd_probe_req(wvif, false);
+ 
+ done:
+-	if (!skb)
++	if (skb)
+ 		dev_kfree_skb(skb);
+ 	return ret;
+ }
+-- 
+2.20.1
 

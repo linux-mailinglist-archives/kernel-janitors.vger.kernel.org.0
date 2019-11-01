@@ -2,67 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 621B9EC50A
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Nov 2019 15:50:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82F33EC512
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Nov 2019 15:51:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727592AbfKAOuB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 1 Nov 2019 10:50:01 -0400
-Received: from aserp2120.oracle.com ([141.146.126.78]:51954 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727476AbfKAOuB (ORCPT
+        id S1727714AbfKAOvf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 1 Nov 2019 10:51:35 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:39672 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727476AbfKAOve (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 1 Nov 2019 10:50:01 -0400
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA1Emkb9163690;
-        Fri, 1 Nov 2019 14:49:32 GMT
+        Fri, 1 Nov 2019 10:51:34 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA1Emgab177701;
+        Fri, 1 Nov 2019 14:51:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : references : mime-version : content-type :
  in-reply-to; s=corp-2019-08-05;
- bh=b/zsX7xacin0Z3COe7oVyGWvFG2k0RA9kiXi2XBFznQ=;
- b=WgUzmNLs7VBxNg9uI6rVQprNhCqjhZCJwOL5YfYMxfICPNuE5PLZC2ZmxYP4fGyYNtru
- /CSbxn73QhZUi5Lc4pgqXcJ/rPP3MWAS+3IduTdPh4zy8+wuw6bhkboWaau6+Rr6DpsF
- UMBMWu4bvt4A/tiPrl0s9Vp17sXsJytLSWX1eVG9MWsA6OqA2E2nyCMIY3VACiCOc24w
- +yse3irkV/0mvVH63Jqg5gsDn8J4z48/REj3RihTJZYC6H4CnyrEAsWM/7X6d8oda94P
- NpfWy/3uamQktdIXAgheP9SR7Hibpxq8CPWSvidfgsLu9y7U7g7TX7t3+YkVoC2L68iU cg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 2vxwhftcax-1
+ bh=nGNBEJDch3Fb1hcyWxzKpmeeNUrixQaYxfvmOjhwZ7Q=;
+ b=B12Obcd5aCXe1B6pres9tgUw8b9PDsx8kbAtwAnM64iuhhEm2gzIqPgoMIm1VBOEJfY5
+ 6DftQp9m3KHqNuTJFY+Mjj1VYzfnF2SLI7hZ2nVmH7cO7yede6/5JwyWfeR4gpJyi09w
+ 0LHoDquzr0Lc4o6q/NhNQlsSMpZwxrIHkQwSVniSCXIc4ZRvWDNsgBPevbIeYg9cYP8g
+ BDLgIJNsKfmFgIjQ4q0bfEMFRmNPI33cApn0XpXTmfu684BhnBmRL4FMISQBIVezooCH
+ lq+8dpHkDUJpXqxYrPvJNb61tVCGQ/AyX24wUNXEHV9/fTXV+fthONzJlHiZNITgc7Fm hA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2vxwhg29wg-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 01 Nov 2019 14:49:32 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA1Em4F5020552;
-        Fri, 1 Nov 2019 14:49:31 GMT
+        Fri, 01 Nov 2019 14:51:27 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA1EmMrD084671;
+        Fri, 1 Nov 2019 14:51:27 GMT
 Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 2vyqpgbmky-1
+        by aserp3030.oracle.com with ESMTP id 2vykw3fqaf-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 01 Nov 2019 14:49:31 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xA1EnTiP011122;
-        Fri, 1 Nov 2019 14:49:29 GMT
+        Fri, 01 Nov 2019 14:51:26 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xA1EpP9D012233;
+        Fri, 1 Nov 2019 14:51:25 GMT
 Received: from kadam (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 01 Nov 2019 07:49:28 -0700
-Date:   Fri, 1 Nov 2019 17:49:21 +0300
+        with ESMTP ; Fri, 01 Nov 2019 07:51:24 -0700
+Date:   Fri, 1 Nov 2019 17:51:17 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Chuck Lever <chuck.lever@oracle.com>
-Cc:     Mao Wenan <maowenan@huawei.com>, Bruce Fields <bfields@redhat.com>,
-        Trond Myklebust <trond.myklebust@primarydata.com>,
-        Dros Adamson <dros@primarydata.com>,
-        jeff.layton@primarydata.com, richard.sharpe@primarydata.com,
-        Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] nfsd: Drop LIST_HEAD where the variable it
- declares is never used.
-Message-ID: <20191101144921.GA10409@kadam>
-References: <20191101114054.50225-1-maowenan@huawei.com>
- <7E1B5E17-FF35-472B-8316-D4C01085BAE4@oracle.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: rtl8192u: fix potential infinite loop because
+ loop counter being too small
+Message-ID: <20191101145117.GB10409@kadam>
+References: <20191101142604.17610-1-colin.king@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7E1B5E17-FF35-472B-8316-D4C01085BAE4@oracle.com>
+In-Reply-To: <20191101142604.17610-1-colin.king@canonical.com>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9427 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=945
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.0.1-1908290000 definitions=main-1911010148
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9427 signatures=668685
@@ -76,30 +73,35 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Nov 01, 2019 at 09:36:27AM -0400, Chuck Lever wrote:
-> Hi Mao-
+On Fri, Nov 01, 2019 at 02:26:04PM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> > On Nov 1, 2019, at 7:40 AM, Mao Wenan <maowenan@huawei.com> wrote:
-> > 
-> > The declarations were introduced with the file, but the declared
-> > variables were not used.
-> > 
-> > Fixes: 65294c1f2c5e ("nfsd: add a new struct file caching facility to nfsd")
+> Currently the for-loop counter i is a u8 however it is being checked
+> against a maximum value priv->ieee80211->LinkDetectInfo.SlotNum which is a
+> u16. Hence there is a potential wrap-around of counter i back to zero if
+> priv->ieee80211->LinkDetectInfo.SlotNum is greater than 255.  Fix this by
+> making i a u16.
 > 
-> I'm not sure a Fixes: tag is necessary here? 65294c1f2c5e
-> works fine without this change, and it's not something we
-> would need to backport into stable kernels.
+> Addresses-Coverity: ("Infinite loop")
+> Fixes: 8fc8598e61f6 ("Staging: Added Realtek rtl8192u driver to staging")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/staging/rtl8192u/r8192U_core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> This is more of a clean up patch.
-> 
+> diff --git a/drivers/staging/rtl8192u/r8192U_core.c b/drivers/staging/rtl8192u/r8192U_core.c
+> index 48f1591ed5b4..fd91b7c5ca81 100644
+> --- a/drivers/staging/rtl8192u/r8192U_core.c
+> +++ b/drivers/staging/rtl8192u/r8192U_core.c
+> @@ -3210,7 +3210,7 @@ static void rtl819x_update_rxcounts(struct r8192_priv *priv, u32 *TotalRxBcnNum,
+>  			     u32 *TotalRxDataNum)
+>  {
+>  	u16			SlotIndex;
+> -	u8			i;
+> +	u16			i;
 
-Fixes is not really related to backports or stable.  I would agree that
-this isn't a bug but just a cleanup, but the problem is that other
-people want Fixes tags for everything...
-
-Yesterday I sent a cleanup patch and I almost put the Fixes tag under
-the --- cut off but in the end I just deleted it...  It's hard to know
-what the right thing is.
+The iterator "i" should just be an int unless we know that it needs to
+be an unsigned long long.
 
 regards,
 dan carpenter

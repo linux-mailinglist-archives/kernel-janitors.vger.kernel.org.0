@@ -2,76 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4A01EC0EF
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Nov 2019 11:00:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 303E0EC1A5
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Nov 2019 12:20:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728829AbfKAKAp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 1 Nov 2019 06:00:45 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:53147 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728092AbfKAKAo (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 1 Nov 2019 06:00:44 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iQTjP-0003cs-VH; Fri, 01 Nov 2019 10:00:36 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Andy Gross <agross@kernel.org>,
-        Amit Kucheria <amit.kucheria@linaro.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next][V2] drivers: thermal: tsens: fix potential integer overflow on multiply
-Date:   Fri,  1 Nov 2019 10:00:35 +0000
-Message-Id: <20191101100035.25502-1-colin.king@canonical.com>
+        id S1730370AbfKALUi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 1 Nov 2019 07:20:38 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:5681 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728901AbfKALUh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 1 Nov 2019 07:20:37 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id ADFF87F0E42333B65E03;
+        Fri,  1 Nov 2019 19:20:34 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 1 Nov 2019 19:20:24 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <jacmet@sunsite.dk>, <gregkh@linuxfoundation.org>,
+        <jslaby@suse.com>, <shubhrajyoti.datta@xilinx.com>
+CC:     <linux-serial@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH -next] serial: uartlite: Missing uart_unregister_driver() on error in ulite_probe()
+Date:   Fri, 1 Nov 2019 19:19:50 +0800
+Message-ID: <20191101111950.47817-1-maowenan@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+If uart_register_driver(&ulite_uart_driver) is success,
+but followed function is failed in ulite_probe, it needs to call
+uart_unregister_driver to unregister.
 
-Currently a multiply operation is being performed on two int values
-and the result is being assigned to a u64, presumably because the
-end result is expected to be probably larger than an int. However,
-because the multiply is an int multiply one can get overflow. Avoid
-the overflow by casting degc to a u64 to force a u64 multiply.
-
-Also use div_u64 for the divide as suggested by Daniel Lezcano.
-
-Addresses-Coverity: ("Unintentional integer overflow")
-Fixes: fbfe1a042cfd ("drivers: thermal: tsens: Add interrupt support")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Fixes: f33cf776617b ("serial-uartlite: Move the uart register")
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
 ---
+ drivers/tty/serial/uartlite.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-V2: use div_u64 for the divide as suggested by Daniel Lezcano.
-
----
- drivers/thermal/qcom/tsens-common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/thermal/qcom/tsens-common.c b/drivers/thermal/qcom/tsens-common.c
-index 03bf1b8133ea..c6b551ec7323 100644
---- a/drivers/thermal/qcom/tsens-common.c
-+++ b/drivers/thermal/qcom/tsens-common.c
-@@ -92,7 +92,7 @@ void compute_intercept_slope(struct tsens_priv *priv, u32 *p1,
+diff --git a/drivers/tty/serial/uartlite.c b/drivers/tty/serial/uartlite.c
+index 06e79c1..2edae76 100644
+--- a/drivers/tty/serial/uartlite.c
++++ b/drivers/tty/serial/uartlite.c
+@@ -813,21 +813,29 @@ static int ulite_probe(struct platform_device *pdev)
  
- static inline u32 degc_to_code(int degc, const struct tsens_sensor *s)
- {
--	u64 code = (degc * s->slope + s->offset) / SLOPE_FACTOR;
-+	u64 code = div_u64(((u64)degc * s->slope + s->offset), SLOPE_FACTOR);
+ 	pdata = devm_kzalloc(&pdev->dev, sizeof(struct uartlite_data),
+ 			     GFP_KERNEL);
+-	if (!pdata)
++	if (!pdata) {
++		uart_unregister_driver(&ulite_uart_driver);
+ 		return -ENOMEM;
++	}
  
- 	pr_debug("%s: raw_code: 0x%llx, degc:%d\n", __func__, code, degc);
- 	return clamp_val(code, THRESHOLD_MIN_ADC_CODE, THRESHOLD_MAX_ADC_CODE);
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+-	if (!res)
++	if (!res) {
++		uart_unregister_driver(&ulite_uart_driver);
+ 		return -ENODEV;
++	}
+ 
+ 	irq = platform_get_irq(pdev, 0);
+-	if (irq <= 0)
++	if (irq <= 0) {
++		uart_unregister_driver(&ulite_uart_driver);
+ 		return -ENXIO;
++	}
+ 
+ 	pdata->clk = devm_clk_get(&pdev->dev, "s_axi_aclk");
+ 	if (IS_ERR(pdata->clk)) {
+-		if (PTR_ERR(pdata->clk) != -ENOENT)
++		if (PTR_ERR(pdata->clk) != -ENOENT) {
++			uart_unregister_driver(&ulite_uart_driver);
+ 			return PTR_ERR(pdata->clk);
++		}
+ 
+ 		/*
+ 		 * Clock framework support is optional, continue on
+@@ -840,6 +848,7 @@ static int ulite_probe(struct platform_device *pdev)
+ 	ret = clk_prepare_enable(pdata->clk);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "Failed to prepare clock\n");
++		uart_unregister_driver(&ulite_uart_driver);
+ 		return ret;
+ 	}
+ 
 -- 
-2.20.1
+2.7.4
 

@@ -2,29 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 303E0EC1A5
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Nov 2019 12:20:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63566EC216
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Nov 2019 12:41:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730370AbfKALUi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 1 Nov 2019 07:20:38 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:5681 "EHLO huawei.com"
+        id S1729381AbfKALll (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 1 Nov 2019 07:41:41 -0400
+Received: from szxga07-in.huawei.com ([45.249.212.35]:44938 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728901AbfKALUh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 1 Nov 2019 07:20:37 -0400
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id ADFF87F0E42333B65E03;
-        Fri,  1 Nov 2019 19:20:34 +0800 (CST)
+        id S1726710AbfKALlk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 1 Nov 2019 07:41:40 -0400
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 76BFF4D15B998DB7EA0E;
+        Fri,  1 Nov 2019 19:41:38 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 1 Nov 2019 19:20:24 +0800
+ DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 1 Nov 2019 19:41:28 +0800
 From:   Mao Wenan <maowenan@huawei.com>
-To:     <jacmet@sunsite.dk>, <gregkh@linuxfoundation.org>,
-        <jslaby@suse.com>, <shubhrajyoti.datta@xilinx.com>
-CC:     <linux-serial@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+To:     <bfields@redhat.com>, <chuck.lever@oracle.com>,
+        <trond.myklebust@primarydata.com>, <dros@primarydata.com>,
+        <jeff.layton@primarydata.com>, <richard.sharpe@primarydata.com>
+CC:     <linux-nfs@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH -next] serial: uartlite: Missing uart_unregister_driver() on error in ulite_probe()
-Date:   Fri, 1 Nov 2019 19:19:50 +0800
-Message-ID: <20191101111950.47817-1-maowenan@huawei.com>
+Subject: [PATCH -next] nfsd: Drop LIST_HEAD where the variable it declares is never used.
+Date:   Fri, 1 Nov 2019 19:40:54 +0800
+Message-ID: <20191101114054.50225-1-maowenan@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -36,62 +37,28 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If uart_register_driver(&ulite_uart_driver) is success,
-but followed function is failed in ulite_probe, it needs to call
-uart_unregister_driver to unregister.
+The declarations were introduced with the file, but the declared
+variables were not used.
 
-Fixes: f33cf776617b ("serial-uartlite: Move the uart register")
+Fixes: 65294c1f2c5e ("nfsd: add a new struct file caching facility to nfsd")
 Signed-off-by: Mao Wenan <maowenan@huawei.com>
 ---
- drivers/tty/serial/uartlite.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ fs/nfsd/filecache.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/tty/serial/uartlite.c b/drivers/tty/serial/uartlite.c
-index 06e79c1..2edae76 100644
---- a/drivers/tty/serial/uartlite.c
-+++ b/drivers/tty/serial/uartlite.c
-@@ -813,21 +813,29 @@ static int ulite_probe(struct platform_device *pdev)
+diff --git a/fs/nfsd/filecache.c b/fs/nfsd/filecache.c
+index ef55e9b..32a9bf2 100644
+--- a/fs/nfsd/filecache.c
++++ b/fs/nfsd/filecache.c
+@@ -685,8 +685,6 @@ nfsd_file_cache_purge(struct net *net)
+ void
+ nfsd_file_cache_shutdown(void)
+ {
+-	LIST_HEAD(dispose);
+-
+ 	set_bit(NFSD_FILE_SHUTDOWN, &nfsd_file_lru_flags);
  
- 	pdata = devm_kzalloc(&pdev->dev, sizeof(struct uartlite_data),
- 			     GFP_KERNEL);
--	if (!pdata)
-+	if (!pdata) {
-+		uart_unregister_driver(&ulite_uart_driver);
- 		return -ENOMEM;
-+	}
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	if (!res)
-+	if (!res) {
-+		uart_unregister_driver(&ulite_uart_driver);
- 		return -ENODEV;
-+	}
- 
- 	irq = platform_get_irq(pdev, 0);
--	if (irq <= 0)
-+	if (irq <= 0) {
-+		uart_unregister_driver(&ulite_uart_driver);
- 		return -ENXIO;
-+	}
- 
- 	pdata->clk = devm_clk_get(&pdev->dev, "s_axi_aclk");
- 	if (IS_ERR(pdata->clk)) {
--		if (PTR_ERR(pdata->clk) != -ENOENT)
-+		if (PTR_ERR(pdata->clk) != -ENOENT) {
-+			uart_unregister_driver(&ulite_uart_driver);
- 			return PTR_ERR(pdata->clk);
-+		}
- 
- 		/*
- 		 * Clock framework support is optional, continue on
-@@ -840,6 +848,7 @@ static int ulite_probe(struct platform_device *pdev)
- 	ret = clk_prepare_enable(pdata->clk);
- 	if (ret) {
- 		dev_err(&pdev->dev, "Failed to prepare clock\n");
-+		uart_unregister_driver(&ulite_uart_driver);
- 		return ret;
- 	}
- 
+ 	lease_unregister_notifier(&nfsd_file_lease_notifier);
 -- 
 2.7.4
 

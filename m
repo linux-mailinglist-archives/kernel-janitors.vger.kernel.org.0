@@ -2,107 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 82F33EC512
-	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Nov 2019 15:51:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED4FEEC5B7
+	for <lists+kernel-janitors@lfdr.de>; Fri,  1 Nov 2019 16:39:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727714AbfKAOvf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 1 Nov 2019 10:51:35 -0400
-Received: from userp2130.oracle.com ([156.151.31.86]:39672 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727476AbfKAOve (ORCPT
+        id S1728797AbfKAPjP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 1 Nov 2019 11:39:15 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:55686 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728786AbfKAPjO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 1 Nov 2019 10:51:34 -0400
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA1Emgab177701;
-        Fri, 1 Nov 2019 14:51:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=nGNBEJDch3Fb1hcyWxzKpmeeNUrixQaYxfvmOjhwZ7Q=;
- b=B12Obcd5aCXe1B6pres9tgUw8b9PDsx8kbAtwAnM64iuhhEm2gzIqPgoMIm1VBOEJfY5
- 6DftQp9m3KHqNuTJFY+Mjj1VYzfnF2SLI7hZ2nVmH7cO7yede6/5JwyWfeR4gpJyi09w
- 0LHoDquzr0Lc4o6q/NhNQlsSMpZwxrIHkQwSVniSCXIc4ZRvWDNsgBPevbIeYg9cYP8g
- BDLgIJNsKfmFgIjQ4q0bfEMFRmNPI33cApn0XpXTmfu684BhnBmRL4FMISQBIVezooCH
- lq+8dpHkDUJpXqxYrPvJNb61tVCGQ/AyX24wUNXEHV9/fTXV+fthONzJlHiZNITgc7Fm hA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 2vxwhg29wg-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 01 Nov 2019 14:51:27 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA1EmMrD084671;
-        Fri, 1 Nov 2019 14:51:27 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 2vykw3fqaf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 01 Nov 2019 14:51:26 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xA1EpP9D012233;
-        Fri, 1 Nov 2019 14:51:25 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 01 Nov 2019 07:51:24 -0700
-Date:   Fri, 1 Nov 2019 17:51:17 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] staging: rtl8192u: fix potential infinite loop because
- loop counter being too small
-Message-ID: <20191101145117.GB10409@kadam>
-References: <20191101142604.17610-1-colin.king@canonical.com>
+        Fri, 1 Nov 2019 11:39:14 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1572622753;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=hHv6A+h/Dq+ReB2buZXJaNywCF6LwXpddH9bma5MoT0=;
+        b=JpQi41XtIjXk13n+kVPeh1xTklckwATC/cyhm1kw3UfJDMLdJ7+E37s8rLlcpmGTGb1eWj
+        35ed93jPF0B7+JzO79g9nAREYA/xHYNbDb4lyBxNkZEu1vmpDEbHFeZeEtCzjKGR5ZqbN1
+        jQ694sINfsMrXHzGJQrf0f+xjM8zSf0=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-228-tkS-tnEbNJuwIoKMtCvYvg-1; Fri, 01 Nov 2019 11:39:09 -0400
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id E60BD1800D67;
+        Fri,  1 Nov 2019 15:39:07 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 3FFA85C3FD;
+        Fri,  1 Nov 2019 15:39:07 +0000 (UTC)
+From:   Jeff Moyer <jmoyer@redhat.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, Tejun Heo <tj@kernel.org>,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iocost: don't nest spin_lock_irq in ioc_weight_write()
+References: <20191031105341.GA26612@mwanda>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date:   Fri, 01 Nov 2019 11:39:06 -0400
+In-Reply-To: <20191031105341.GA26612@mwanda> (Dan Carpenter's message of "Thu,
+        31 Oct 2019 13:53:41 +0300")
+Message-ID: <x49d0ebd2sl.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191101142604.17610-1-colin.king@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9427 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1911010148
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9427 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1911010149
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+X-MC-Unique: tkS-tnEbNJuwIoKMtCvYvg-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Nov 01, 2019 at 02:26:04PM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently the for-loop counter i is a u8 however it is being checked
-> against a maximum value priv->ieee80211->LinkDetectInfo.SlotNum which is a
-> u16. Hence there is a potential wrap-around of counter i back to zero if
-> priv->ieee80211->LinkDetectInfo.SlotNum is greater than 255.  Fix this by
-> making i a u16.
-> 
-> Addresses-Coverity: ("Infinite loop")
-> Fixes: 8fc8598e61f6 ("Staging: Added Realtek rtl8192u driver to staging")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Dan Carpenter <dan.carpenter@oracle.com> writes:
+
+> This code causes a static analysis warning:
+>
+>     block/blk-iocost.c:2113 ioc_weight_write() error: double lock 'irq'
+>
+> We disable IRQs in blkg_conf_prep() and re-enable them in
+> blkg_conf_finish().  IRQ disable/enable should not be nested because
+> that means the IRQs will be enabled at the first unlock instead of the
+> second one.
+
+Can you please also add a comment stating that irqs were disabled in
+blkg_conf_prep?  Otherwise future readers will surely be scratching
+their heads trying to figure out why we do things two different ways in
+the same function.
+
+Thanks!
+Jeff
+
+>
+> Fixes: 7caa47151ab2 ("blkcg: implement blk-iocost")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  drivers/staging/rtl8192u/r8192U_core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/rtl8192u/r8192U_core.c b/drivers/staging/rtl8192u/r8192U_core.c
-> index 48f1591ed5b4..fd91b7c5ca81 100644
-> --- a/drivers/staging/rtl8192u/r8192U_core.c
-> +++ b/drivers/staging/rtl8192u/r8192U_core.c
-> @@ -3210,7 +3210,7 @@ static void rtl819x_update_rxcounts(struct r8192_priv *priv, u32 *TotalRxBcnNum,
->  			     u32 *TotalRxDataNum)
->  {
->  	u16			SlotIndex;
-> -	u8			i;
-> +	u16			i;
-
-The iterator "i" should just be an int unless we know that it needs to
-be an unsigned long long.
-
-regards,
-dan carpenter
+>  block/blk-iocost.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+> index 2a3db80c1dce..a7ed434eae03 100644
+> --- a/block/blk-iocost.c
+> +++ b/block/blk-iocost.c
+> @@ -2110,10 +2110,10 @@ static ssize_t ioc_weight_write(struct kernfs_ope=
+n_file *of, char *buf,
+>  =09=09=09goto einval;
+>  =09}
+> =20
+> -=09spin_lock_irq(&iocg->ioc->lock);
+> +=09spin_lock(&iocg->ioc->lock);
+>  =09iocg->cfg_weight =3D v;
+>  =09weight_updated(iocg);
+> -=09spin_unlock_irq(&iocg->ioc->lock);
+> +=09spin_unlock(&iocg->ioc->lock);
+> =20
+>  =09blkg_conf_finish(&ctx);
+>  =09return nbytes;
 

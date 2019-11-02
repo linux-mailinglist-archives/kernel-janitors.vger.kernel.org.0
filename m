@@ -2,76 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD076ECDFA
-	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Nov 2019 11:30:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 628D9ECE81
+	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Nov 2019 12:40:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726450AbfKBKat (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 2 Nov 2019 06:30:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44228 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725268AbfKBKat (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 2 Nov 2019 06:30:49 -0400
-Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 107F220862;
-        Sat,  2 Nov 2019 10:30:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1572690648;
-        bh=sF4nfLxBOEZkHO9qQsfjmcuOOEgD4OvA99sJnz6xUY4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vrpSJR+uOL5bqcduqgk2DWrD4pkHenJ+/jO01+H5uUmRIqzQSEqSlSUzp2uRfSG2n
-         Tg50Q72ftJ56no0KxlKTTpoOhgiuolf8srWn9PaCktEHS1avnBFmaOjt2tO5YE7csA
-         16VEhvvQ74pPg68t7fON5N11wk2MJgBhIp/IaGR8=
-Date:   Sat, 2 Nov 2019 11:30:45 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     jerome.pouiller@silabs.com, devel@driverdev.osuosl.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] staging: wfx: Fix a memory leak in 'wfx_upload_beacon'
-Message-ID: <20191102103045.GA135025@kroah.com>
-References: <20191101172151.14295-1-christophe.jaillet@wanadoo.fr>
+        id S1726396AbfKBLj7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 2 Nov 2019 07:39:59 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:52927 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726163AbfKBLj7 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 2 Nov 2019 07:39:59 -0400
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iQrl5-0004g7-2H; Sat, 02 Nov 2019 11:39:55 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Ben Skeggs <bskeggs@redhat.com>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/nouveau/bios/init: make const arrays probe_order static, makes object smaller
+Date:   Sat,  2 Nov 2019 11:39:54 +0000
+Message-Id: <20191102113954.25555-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191101172151.14295-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Nov 01, 2019 at 06:21:51PM +0100, Christophe JAILLET wrote:
-> The current code is a no-op, because all it can do is 'dev_kfree_skb(NULL)'
-> Revert the test to free skb, if not NULL.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> This patch is purely speculative.
-> 
-> The 'if  (...)' could also be removed completely if we refactor the code
-> and return directly at the beginning of the function.
-> Or the 'return -ENOMEM' should be 'err = -ENOMEM; goto done;' in order to
-> avoid a mixup of goto and direct return.
-> ---
->  drivers/staging/wfx/sta.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/staging/wfx/sta.c b/drivers/staging/wfx/sta.c
-> index 688586e823c0..e14da8dce388 100644
-> --- a/drivers/staging/wfx/sta.c
-> +++ b/drivers/staging/wfx/sta.c
-> @@ -906,7 +906,7 @@ static int wfx_upload_beacon(struct wfx_vif *wvif)
->  	wfx_fwd_probe_req(wvif, false);
->  
->  done:
-> -	if (!skb)
-> +	if (skb)
->  		dev_kfree_skb(skb);
+From: Colin Ian King <colin.king@canonical.com>
 
-Just remove the "if" check entirely, as dev_kfree_skb() can handle NULL
-being passed to it.
+Don't populate const arrays on the stack but instead make them
+static. Makes the object code smaller by 6 bytes.
 
-thanks,
+Before:
+   text	   data	    bss	    dec	    hex	filename
+ 103075	   9692	      0	 112767	  1b87f	nvkm/subdev/bios/init.o
 
-greg k-h
+After:
+   text	   data	    bss	    dec	    hex	filename
+ 102909	   9852	      0	 112761	  1b879	nvkm/subdev/bios/init.o
+
+(gcc version 9.2.1, amd64)
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c
+index 9de74f41dcd2..dc8625eff20a 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c
+@@ -546,9 +546,9 @@ init_tmds_reg(struct nvbios_init *init, u8 tmds)
+ 	 * CR58 for CR57 = 0 to index a table of offsets to the basic
+ 	 * 0x6808b0 address, and then flip the offset by 8.
+ 	 */
+-	const int pramdac_offset[13] = {
++	static const int pramdac_offset[13] = {
+ 		0, 0, 0x8, 0, 0x2000, 0, 0, 0, 0x2008, 0, 0, 0, 0x2000 };
+-	const u32 pramdac_table[4] = {
++	static const u32 pramdac_table[4] = {
+ 		0x6808b0, 0x6808b8, 0x6828b0, 0x6828b8 };
+ 
+ 	if (tmds >= 0x80) {
+-- 
+2.20.1
+

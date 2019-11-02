@@ -2,63 +2,42 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00B9EECFA1
-	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Nov 2019 17:00:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE197ECFDB
+	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Nov 2019 18:09:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726687AbfKBP75 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 2 Nov 2019 11:59:57 -0400
-Received: from smtp08.smtpout.orange.fr ([80.12.242.130]:25411 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726454AbfKBP75 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 2 Nov 2019 11:59:57 -0400
-Received: from localhost.localdomain ([93.22.36.232])
-        by mwinf5d68 with ME
-        id M3zt2100550WvJt033zux4; Sat, 02 Nov 2019 16:59:55 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 02 Nov 2019 16:59:55 +0100
-X-ME-IP: 93.22.36.232
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     jerome.pouiller@silabs.com, gregkh@linuxfoundation.org
-Cc:     devel@driverdev.osuosl.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH v2] staging: wfx: Fix a memory leak in 'wfx_upload_beacon'
-Date:   Sat,  2 Nov 2019 16:59:45 +0100
-Message-Id: <20191102155945.20205-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
+        id S1726554AbfKBRJZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 2 Nov 2019 13:09:25 -0400
+Received: from [211.53.128.215] ([211.53.128.215]:13957 "EHLO MAIL.isd.co.kr"
+        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726454AbfKBRJZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 2 Nov 2019 13:09:25 -0400
+Received: from 192.168.1.163 (217.217.179.17) by MAIL.isd.co.kr (10.10.10.22)
+ with Microsoft SMTP Server id 14.3.123.3; Sun, 3 Nov 2019 02:09:20 +0900
+Date:   Sat, 2 Nov 2019 18:09:17 +0100
+From:   Peter Wong <choimj@isd.co.kr>
+Reply-To: Peter Wong <peterwongpwhk@gmail.com>
+To:     <kernel-janitors@vger.kernel.org>
+Message-ID: <30934800.147894.1572714559061.JavaMail.cash@211.53.128.215>
+Subject: Your opportunity
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [217.217.179.17]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The current code is a no-op, because all it can do is 'dev_kfree_skb(NULL)'
-Remove the test before 'dev_kfree_skb()'
+Greetings,
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-V2: remove the 'if(...)', 'dev_kfree_skb()' can handle NULL.
----
- drivers/staging/wfx/sta.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Find this mail very confidential. reply for more details
 
-diff --git a/drivers/staging/wfx/sta.c b/drivers/staging/wfx/sta.c
-index 688586e823c0..93f3739b5f3a 100644
---- a/drivers/staging/wfx/sta.c
-+++ b/drivers/staging/wfx/sta.c
-@@ -906,8 +906,7 @@ static int wfx_upload_beacon(struct wfx_vif *wvif)
- 	wfx_fwd_probe_req(wvif, false);
- 
- done:
--	if (!skb)
--		dev_kfree_skb(skb);
-+	dev_kfree_skb(skb);
- 	return ret;
- }
- 
--- 
-2.20.1
+Thanks.
+Peter Wong
+
+
+
+
+----------------------------------------------------
+This email was sent by the shareware version of Postman Professional.
 

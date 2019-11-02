@@ -2,74 +2,114 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 628D9ECE81
-	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Nov 2019 12:40:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 672EDECEBE
+	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Nov 2019 13:50:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726396AbfKBLj7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 2 Nov 2019 07:39:59 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:52927 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726163AbfKBLj7 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 2 Nov 2019 07:39:59 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iQrl5-0004g7-2H; Sat, 02 Nov 2019 11:39:55 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Ben Skeggs <bskeggs@redhat.com>, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/nouveau/bios/init: make const arrays probe_order static, makes object smaller
-Date:   Sat,  2 Nov 2019 11:39:54 +0000
-Message-Id: <20191102113954.25555-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727125AbfKBMuc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 2 Nov 2019 08:50:32 -0400
+Received: from mx01-fr.bfs.de ([193.174.231.67]:59622 "EHLO mx01-fr.bfs.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726329AbfKBMuc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 2 Nov 2019 08:50:32 -0400
+Received: from mail-fr.bfs.de (mail-fr.bfs.de [10.177.18.200])
+        by mx01-fr.bfs.de (Postfix) with ESMTPS id 5196E2032C;
+        Sat,  2 Nov 2019 13:50:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1572699026; h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Jhsq0f+0IGVdmRRN9jG7Dm7XwzD7Cg/oOMoZQzdz9C0=;
+        b=JvlSafB1Nc+bbFzC6Um8392e86DH9aqG/8rdtcNC547Muc3MrLFBmeaZ9hFI/FoYeGcT5K
+        6Pn7XvIFVRlxkVBHL+jIksDD2/1AHC6nj2KWTut/6BA1Rsh9r8BKG79YO/NjS7utAJz2Zy
+        1CJ0BQ4nwxvOinPs1h1ZqiE3cshDmQ2b1rJHa3LYzPWRcS1oeGyuVOLgoTaG8ptuKJ+kBr
+        2paBJ0WFevftnAZol04Eh29P8OmIc+FYhvDpNzQAkmg6e/OQ3xUbTSjNSlyLAPY61shAKt
+        bSd9nGxqHM7HVQk47Q8+935AM2Mcg6rKRzMDGTemPcjMFtB6EutFrD2UE0bjQg==
+Received: from [134.92.181.33] (unknown [134.92.181.33])
+        by mail-fr.bfs.de (Postfix) with ESMTPS id BC30ABEEBD;
+        Sat,  2 Nov 2019 13:50:25 +0100 (CET)
+Message-ID: <5DBD7B91.8040309@bfs.de>
+Date:   Sat, 02 Nov 2019 13:50:25 +0100
+From:   walter harms <wharms@bfs.de>
+Reply-To: wharms@bfs.de
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; de; rv:1.9.1.16) Gecko/20101125 SUSE/3.0.11 Thunderbird/3.0.11
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+CC:     Colin King <colin.king@canonical.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: rtl8192u: fix potential infinite loop because
+ loop counter being too small
+References: <20191101142604.17610-1-colin.king@canonical.com> <20191101145117.GB10409@kadam>
+In-Reply-To: <20191101145117.GB10409@kadam>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.10
+Authentication-Results: mx01-fr.bfs.de
+X-Spamd-Result: default: False [-3.10 / 7.00];
+         HAS_REPLYTO(0.00)[wharms@bfs.de];
+         TO_DN_SOME(0.00)[];
+         REPLYTO_ADDR_EQ_FROM(0.00)[];
+         RCPT_COUNT_SEVEN(0.00)[7];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         MID_RHS_MATCH_FROM(0.00)[];
+         BAYES_HAM(-3.00)[100.00%];
+         ARC_NA(0.00)[];
+         FROM_HAS_DN(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         MIME_GOOD(-0.10)[text/plain];
+         DKIM_SIGNED(0.00)[];
+         NEURAL_HAM(-0.00)[-0.999,0];
+         RCVD_COUNT_TWO(0.00)[2];
+         RCVD_TLS_ALL(0.00)[]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
 
-Don't populate const arrays on the stack but instead make them
-static. Makes the object code smaller by 6 bytes.
 
-Before:
-   text	   data	    bss	    dec	    hex	filename
- 103075	   9692	      0	 112767	  1b87f	nvkm/subdev/bios/init.o
+Am 01.11.2019 15:51, schrieb Dan Carpenter:
+> On Fri, Nov 01, 2019 at 02:26:04PM +0000, Colin King wrote:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> Currently the for-loop counter i is a u8 however it is being checked
+>> against a maximum value priv->ieee80211->LinkDetectInfo.SlotNum which is a
+>> u16. Hence there is a potential wrap-around of counter i back to zero if
+>> priv->ieee80211->LinkDetectInfo.SlotNum is greater than 255.  Fix this by
+>> making i a u16.
+>>
+>> Addresses-Coverity: ("Infinite loop")
+>> Fixes: 8fc8598e61f6 ("Staging: Added Realtek rtl8192u driver to staging")
+>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>> ---
+>>  drivers/staging/rtl8192u/r8192U_core.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/staging/rtl8192u/r8192U_core.c b/drivers/staging/rtl8192u/r8192U_core.c
+>> index 48f1591ed5b4..fd91b7c5ca81 100644
+>> --- a/drivers/staging/rtl8192u/r8192U_core.c
+>> +++ b/drivers/staging/rtl8192u/r8192U_core.c
+>> @@ -3210,7 +3210,7 @@ static void rtl819x_update_rxcounts(struct r8192_priv *priv, u32 *TotalRxBcnNum,
+>>  			     u32 *TotalRxDataNum)
+>>  {
+>>  	u16			SlotIndex;
+>> -	u8			i;
+>> +	u16			i;
+> 
+> The iterator "i" should just be an int unless we know that it needs to
+> be an unsigned long long.
+> 
 
-After:
-   text	   data	    bss	    dec	    hex	filename
- 102909	   9852	      0	 112761	  1b879	nvkm/subdev/bios/init.o
++1
 
-(gcc version 9.2.1, amd64)
+i think we can spare the 2byte. ppl expect int and will get confused (as shown here).
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+re,
+ wh
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c
-index 9de74f41dcd2..dc8625eff20a 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/bios/init.c
-@@ -546,9 +546,9 @@ init_tmds_reg(struct nvbios_init *init, u8 tmds)
- 	 * CR58 for CR57 = 0 to index a table of offsets to the basic
- 	 * 0x6808b0 address, and then flip the offset by 8.
- 	 */
--	const int pramdac_offset[13] = {
-+	static const int pramdac_offset[13] = {
- 		0, 0, 0x8, 0, 0x2000, 0, 0, 0, 0x2008, 0, 0, 0, 0x2000 };
--	const u32 pramdac_table[4] = {
-+	static const u32 pramdac_table[4] = {
- 		0x6808b0, 0x6808b8, 0x6828b0, 0x6828b8 };
- 
- 	if (tmds >= 0x80) {
--- 
-2.20.1
 

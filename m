@@ -2,35 +2,40 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01B36ED3D3
-	for <lists+kernel-janitors@lfdr.de>; Sun,  3 Nov 2019 17:06:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A9193ED45D
+	for <lists+kernel-janitors@lfdr.de>; Sun,  3 Nov 2019 20:30:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727730AbfKCQGN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 3 Nov 2019 11:06:13 -0500
-Received: from mout.web.de ([212.227.17.11]:34129 "EHLO mout.web.de"
+        id S1728004AbfKCTab (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 3 Nov 2019 14:30:31 -0500
+Received: from mout.web.de ([217.72.192.78]:55033 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727523AbfKCQGM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 3 Nov 2019 11:06:12 -0500
+        id S1727913AbfKCTab (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 3 Nov 2019 14:30:31 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1572797155;
-        bh=GSIEPbeviwDPyqWBwBBoeofIwNE7sbotxn3Ui+wd03E=;
-        h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
-        b=qjM5p57w1RSlzzLKr4miqUV5mG8GAgV7vgqxXq6j1C+5JVA+SKGgkrTLI3NansRZo
-         6IbmcA0K2CEfsHH0SUKpCHk1KZ77yCXPgekCKo4MJZLlARhgNbdVkmit5nfYKB4aIp
-         5QHCzBZw2NWwMxOuxafypCNUmjD/X1x5jUVJTB9U=
+        s=dbaedf251592; t=1572809410;
+        bh=VRMNp6FcxWTOLyexVDAlmVMT6DC2B/lpC9KicmUfw7o=;
+        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+        b=U0Wl20M963zG+qRj3e43MA42Ql3tM443knYRivpEM2DOR/CJkfYvQR0y1a6Bm70V0
+         Xf+TwcpdQF1yPq40gAmRXhxVNYY76iY0lygiRXUrSN7FqbA1n8Hu5ClG4kTArclh0k
+         AP1PR0Z/NBh+YYx+mvE0vDWDJbt5zaLOgtX409tQ=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.243.72.216]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M4ZTk-1i1lj5063A-00yhUA; Sun, 03
- Nov 2019 17:05:55 +0100
-To:     Thomas Meyer <thomas@m3y3r.de>,
-        "James E. J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Vasyl Gomonovych <gomonovych@gmail.com>
-References: <1559161113902-328168114-2-diffsplit-thomas@m3y3r.de>
-Subject: Re: scsi: pmcraid: Use *_pool_zalloc rather than *_pool_alloc
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M89z3-1i5IUF2qTB-00vf8h; Sun, 03
+ Nov 2019 20:30:10 +0100
+To:     cocci@systeme.lip6.fr, kernel-janitors@vger.kernel.org,
+        Christoph Hellwig <hch@lst.de>,
+        Enrico Weigelt <lkml@metux.net>,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Thomas Gleixner <tglx@linutronix.de>
 From:   Markus Elfring <Markus.Elfring@web.de>
+Subject: [PATCH] Coccinelle: zalloc-simple: Adjust a message construction
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -74,49 +79,79 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <07841ae4-03d2-1fdd-1c32-85c55688bb2a@web.de>
-Date:   Sun, 3 Nov 2019 17:05:44 +0100
+Cc:     LKML <linux-kernel@vger.kernel.org>
+Message-ID: <042136cf-4e58-02bd-4d49-5d5055f22c65@web.de>
+Date:   Sun, 3 Nov 2019 20:30:08 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.1
 MIME-Version: 1.0
-In-Reply-To: <1559161113902-328168114-2-diffsplit-thomas@m3y3r.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:bu2cBKjnoeapiP8pw2tOQ7AuHiajnv9SZb/fEb9zSDFMcDziLwz
- 6nY2W0YwIPbiAtVf4E1MsIxJ/Kj++UGTzyY7TsuS5w1d8X5S0JPBf9K3LQI+5n583bPinQw
- OW+F1Qs1OdG3PpF2kJYW81CTaodp5WTNGSNnCLjLcOndW0kv9i0sdkVMVDekdUD4KGwgPGv
- jakfL5MlM9RF6OvgnVyJw==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:je4RSahO16yzLyydkp/2fMZQUZGxJJcj9rmzwYrhoLI40i32n+r
+ X0VPB03AjbBqnUXGnG5UuZ1fKOC4oe2TjyFT/WVbehx3KaYwSKUeR26cbxWpMGTumQyIrO2
+ M7R+hou3/v6CcX+F+g95VvRJ14HEMoO5+QhTKdpB7xoDDro2eMlL53xBO57M5kDmDGYYDkX
+ JBIpRh+UviLMK2NWVTvgA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:c2Ux9lCyc20=:NX5HGu2XeB0/6lWgdM7Da6
- ElWM0iznT3xTbBgAtxJygbUMTihf54wF62pgqiztZeaAJuZPZi0r0HL57NbwTBluB5re6qZnX
- sGBpSwYjSbehLFOaBuiv4VUNXut2Z1Yf3wBe4wklFFqK/fjzJI3zud962AQ6iWVI3/lNqdETX
- NxEjUOwoC8zxCJk2w4Zbh6Yn6cBDwNGAV70gmTikJWt2FmgqG+EUWPGM9nFsw+o0siLtihR54
- UQsy/QcegNjXEl2cRih9vxcHqPxPA5KsH+5acA2ZJw8FX/IF56gMN1NmQh4YNFgG/184VxVkq
- R8NjL3KoA7mx+lCXZG0yPXiih4kl5W/DY27V4iDf1jVG+F+YoulXwG4Y5Cu/CQQuNUn9D24Nx
- 4RPikHfI4JbOQ/G1QsQWbRGRE4pSB+CuQfQbqYNj+yx05hXBQbyBAToUZCtBIfeEcP4qT9iSD
- FQnoESwbcwFy54G7V81tLigjhkxe8wMvz+1nDKWktfHEIAefPU4xidnLC9iOLmu0fbNMzoTba
- +3OpbN/Km6ZS59ThO5mV9ssSQdxpoEl8aZg6l9E84/Kzr5cCAsDMwUh1EcJ6UIUOkhCtTdCzE
- zxaOd0z/dYoWS0NmpUufAaqf6S4awbFG334g2BpPlN107HBD/ZQqO7MHs+rVndqllP0y/omhR
- BDSa/WyB+lA2rIPs9jAgpW4PvbyLYeEJFYRHsYq/1rb348LhTCyp+5f/T9Bd5Leb7jLHc+t9s
- 6gM5uYcV84r44dpu/hBc+ZJo2Uaqw5/k730NwK0u31Na9vE+IjI3Ag2NkZ6jDygLKSGUjXJcg
- ZjfF2BcLCgOBxG/qevVQiYlZ0fiezWIpTJHpppcYhNxCOV+WooB/uEflnoHCr+B4sLrvkRMsS
- gRDazvCvY7ojCd0r+XaexA483pjGfz9h5DW1YQFfHvYR6bXAnwuT6yaWjyxfE66kWUrFAYAIH
- 2WLeBusM5PPXa+Mp0XIw5wc6A+B25ssu78swMGbmSAoSOf+7iorNA8xNUWdtA40zs26Ei5pt7
- 71Zr6yQG48w6O/405Jk35I925iwL+q9GPNvGUJRA8VvNZrDrLDDmFqE7ro30F8epNEtrUQQfz
- wVO3fnLHo9HQ5JQz6DczsnS0llzIUmAJdIc2CT2dtjyD17rWfxGrSrUfY17fAjWV3qk8vEVP1
- JNSr9tCQSUOBQnXuHsDxkqoenFHpLX25J0Dz+CS9Wx2tFMjqLZbfW5gfmm5QXDmFOfyvpORI4
- nHOHFx2tBTa2s69aNFG88DeW015yzTO1IRvbMI2Z8qt3i+N/aMqyIQtWOAug=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:z1uZZJKFNos=:D9DpBBG/wy2pNK+7+J/qNc
+ GL/HARIuXvz3Iaiu9anoIQA/P8M56RNYcmFVvFksYUT2qDKTbeTwEmRCKlx1FKnjBcYy+0zAK
+ uDXTW8yunbbv2bMt+2ZBmVO8WUZuWQ6eMeQDltI41hYIL+xQ4jdwcrIgwVCQExYFgldC3xQe2
+ gmaIDq2yREpQtYEFNMsP5P/QSy3p9VM86psQQKqJ7M9PUwjSq+cv0Exr8u95bLD55FemkLPW/
+ QSO1AXvFJ9JOp7Z+NzPveVCXcpIkt6+ttj5FzPh/A/lKiGx0tWhI31gDZLuTUP7qH8+foFMfp
+ JEWwzTDu/fa7hgN7/YbN/ASiHM2dh52h0+enPZ5atTia+FlNbbFt/N3Ao+B7D0uoTG+Jq6nLE
+ OW5huBNkRB9zYI7AKrgsl0pNpCMh9HqxVYue4li6XE2T25A2q2HAu9dXK0e3jFhkpI17AbiiW
+ KNsWohBqlnSZUO0AtCD9PCPQeweHpcYTpksPSXifPvd1Hb0ZjsNkeiDKgzl85O/oxjNfGionF
+ SQkHB3RIQWJ32S40QUNmvLBksQCzIcY8itd6EpJigNsp2I/QY+gUl420aD9SiaWBXM2LBoNTt
+ J+wQt/hREf8Rxjcfi2QMYki+ZpBkYy8ukBon2Kr8Eo6Fpp9UTbqSKl0tBPXbfS3DThLkaV5Np
+ XuuaQVbjzMnhuHmCx41A7o+mxkhQkjsoIh9YqP0WEY4nxLgOzCN0/6GGiJv7wivXqImqSCvYo
+ 2qPFjz+ToT3SaKmE8hPLYKLGRnEukREr3nofDZnhQ6Yi0hwGNFAsUw+lK9UiIp9UC5a2ncUjt
+ cXZTW1E6WnUC9T7PoFVVaxNsIJKwCqmI+v0kPtQX1a+W0xuwQA6Ngt1L6c0hq7HmAfogPNdbK
+ tqJoV+XKc/s5qLfhuFScNOl13hpzi2a8mGpX6VEJW5QGvTH7rIH/816EO8hQT5SaFdgHJdEiC
+ kvWfUZl8H7bmYW7SWxdkVU75nudi5cRRbTbqUJjOY7wGTs+hwuJ4tY2QJX8XdqHeSHJpkU9NS
+ kfu5Lj4YcdSTCZsQ6g7Y1pCcwpmaqupCTZ6SdzeHnvB1sBtKe/o9E2ymXsPB+JIkuNYYWqW/P
+ jUAV/UhS2qKPBxtOoad8FgAcBjfZ2r1Pv9ybCBE69MXE5inTTQqaT0X/tgD2EKyYCjwvTWR62
+ 2pjeDXbsrQMMSjjaTvpnIbk5Tg/EM2XqF3wGFdpiF8GO52EJcCaoN1B2nfbHB8Ie3aLJdIvo0
+ UrI/sP+Sgt86x2BjnnZ5hsh6C19ACEx0aS3IewsnB0wLnrNy77B3R4JwIrpI=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Use *_pool_zalloc rather than *_pool_alloc followed by memset with 0.
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Sun, 3 Nov 2019 20:00:30 +0100
 
-Do you find a commit message nicer from a similar change suggestion?
-scsi: pmcraid: Use dma_pool_zalloc rather than dma_pool_alloc
-https://lore.kernel.org/linux-scsi/20190718181051.22882-1-gomonovych@gmail.com/
-https://lore.kernel.org/patchwork/patch/1102040/
+* Simplify a message construction in a Python script rule
+  for the semantic patch language.
 
-Regards,
-Markus
+* Delete also a duplicate space character then.
+
+Fixes: dfd32cad146e3624970eee9329e99d2c6ef751b3 ("dma-mapping: remove dma_=
+zalloc_coherent()")
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
+ scripts/coccinelle/api/alloc/zalloc-simple.cocci | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/coccinelle/api/alloc/zalloc-simple.cocci b/scripts/co=
+ccinelle/api/alloc/zalloc-simple.cocci
+index 26cda3f48f01..c14eae1f3010 100644
+=2D-- a/scripts/coccinelle/api/alloc/zalloc-simple.cocci
++++ b/scripts/coccinelle/api/alloc/zalloc-simple.cocci
+@@ -217,8 +217,10 @@ p << r2.p;
+ x << r2.x;
+ @@
+
+-msg=3D"WARNING: dma_alloc_coherent use in %s already zeroes out memory,  =
+so memset is not needed" % (x)
+-coccilib.report.print_report(p[0], msg)
++coccilib.report.print_report(p[0],
++                             "WARNING: dma_alloc_coherent use in "
++                             + x
++                             + " already zeroes out memory. Thus memset i=
+s not needed.")
+
+ //-----------------------------------------------------------------
+ @r3 depends on org || report@
+=2D-
+2.23.0
+

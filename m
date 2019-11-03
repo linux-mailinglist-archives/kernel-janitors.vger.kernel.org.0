@@ -2,39 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A7FC7ED34A
-	for <lists+kernel-janitors@lfdr.de>; Sun,  3 Nov 2019 13:05:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DAA8ED355
+	for <lists+kernel-janitors@lfdr.de>; Sun,  3 Nov 2019 13:31:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727636AbfKCMF2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 3 Nov 2019 07:05:28 -0500
-Received: from mout.web.de ([212.227.17.12]:52995 "EHLO mout.web.de"
+        id S1727602AbfKCMb4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 3 Nov 2019 07:31:56 -0500
+Received: from mout.web.de ([212.227.17.11]:45055 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726998AbfKCMF2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 3 Nov 2019 07:05:28 -0500
+        id S1727377AbfKCMb4 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 3 Nov 2019 07:31:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1572782704;
-        bh=lqIIHx6HsCVvJIt0JzRk1dYquXktYUstmsYeoHN+jEA=;
-        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
-        b=TLpJcvFb3yD++6l5IwhECosGwS357xWF6DtizaY7I1yiGE4fe//gAIfVRw7U5t5C8
-         KLT5d9BvSzcHHyww+UH6qbEW+f4W24tJL5lCfojr+yvL1p9HW9mnwOMTL6AOzmo3jP
-         3QsiOND8n/ucXTMKoCf0r6oKRl9JHhOqLiqCwU50=
+        s=dbaedf251592; t=1572784297;
+        bh=ByqX8/BbJJMQuJK30TWcd8h/CfuGh5FVHwsdxMU69s4=;
+        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+        b=s3PlJFZP1G8E/gDRogfCOmlepuzW6IpSlaRaWpCFvGVG2NKarRA7rhSGHP0Unh9cL
+         0QXxm94nCvrQo4A36F84IFTGMqHEhw3EXE8y3m6BFXsOqNyGui8iJckkmkhNdDBYe5
+         DM7Qdhwl4lVD0qjM3ZD4NWNhIbGGET/feUY3D1LM=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.243.72.216]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LrJse-1hxNV602n6-0136St; Sun, 03
- Nov 2019 13:05:04 +0100
-To:     netdev@vger.kernel.org, Allison Randal <allison@lohutok.net>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        =?UTF-8?Q?Lars_P=c3=b6schel?= <poeschel@lemonage.de>,
-        Thomas Gleixner <tglx@linutronix.de>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Michael Thalmeier <michael.thalmeier@hale.at>,
-        Samuel Ortiz <sameo@linux.intel.com>
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Ljrdd-1hpyPg2TCz-00bs3n; Sun, 03
+ Nov 2019 13:31:37 +0100
+To:     linuxppc-dev@lists.ozlabs.org,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Oliver O'Halloran <oohall@gmail.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: =?UTF-8?Q?=5bPATCH=5d_NFC=3a_pn533=3a_Delete_unnecessary_assignment?=
- =?UTF-8?B?IGZvciB0aGUgZmllbGQg4oCcb3duZXLigJ0=?=
+Subject: =?UTF-8?Q?=5bPATCH=5d_powerpc/papr=5fscm=3a_Delete_unnecessary_assi?=
+ =?UTF-8?Q?gnment_for_the_field_=e2=80=9cowner=e2=80=9d?=
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -78,45 +76,47 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <44ef4be8-682e-0f1c-3927-c3d4db33442f@web.de>
-Date:   Sun, 3 Nov 2019 13:04:50 +0100
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Message-ID: <389022fc-71b0-7952-3404-1da136dbdfd9@web.de>
+Date:   Sun, 3 Nov 2019 13:31:33 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:xuFv58h3DbXbm5GMFkAkCReKh4EeMXgexgjy20nURaIbMW6epOn
- QEHh0zi0NkE+0nV/0qf20RwhCEXYfmKlbUYtadnx0GP1+IB6diWHdIyZ4u4r85wax2b6+7K
- XpbAGEBothPic7b2eoi2m/CEM4U0SIE7in+/KPfODKzi1CcWlRaC9XmaipwORicSlHNhUoL
- jtWFAJ9t+tRjJbNwAGpBA==
+X-Provags-ID: V03:K1:TyXkMJhJt2mjD37pIwKvEn2qwm2H7VRI+BJefISVZ6piVGVXM5v
+ CmKZQMb2hks/JwPQygp9zzlxMCFvJlmj/Cpcp4wy5aGOKncLkFJCrNWHBgE2cOf5oYRiSs5
+ foUry41e2BGV9yidaolQIh29OPF+fWyYLbHU1RmjmxXYLfam/rybqt+Vg4bdFBHg1uJW0/z
+ ZLXBM0vS8KGUBpY6LXbEA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:P+mWF51qy28=:hsEXRq1Js4X+dlLcBuIW29
- +A++7M7vNwBAKh0XWLbrHJgHny4YWo69xJRzgjNbMqCqvnPfPtiQME7Qxh07iSZxjTQ90siVD
- zYkV33D4IAluZBx221HZuzWMwkxpwLINFg4BIvvp8bj+qSiqij+k5HWeDArFk5TbFrepiju1F
- KGmcW4cMFSZvpE9IbfFvaRzsf8BrE8Zui79UNqTWWetiuurtEH2g4M4sha8I60ozKIN3AKkF5
- qwNECUzHuYN6u1Bao6/WfvqbLenp0tVffk5LYH+Yq47Timsq6gTtCgi36fFqTOVivr3bGUWay
- aFnG0H3wqe4yOYhe1TcZ+fRT+8iGREuxpn1BwpdjGhaSQebDj3xtnEMeIZo7ylnZJ4MYMXVCM
- L9aors7lTYbIB6wIwboBB9qPGFk68YvFuCs/IiW7woRUgvr5U50IfRQfkFewbZH41FN2liBuT
- Ek8bYnFcbiwAVRmv7JlQF7jwowDoAQ6xs1vy4ooa8FBYQX/yuBR/c+OA76Uro+7At7RdwL9yD
- bcqXhfKaw9/KVgH0QxaXiqsCOq9K9pu9RoB++9jR91JD3u+i2vB5gTNJBhF3Kt008Zt37QVe+
- 1nehEyTo5YzJpoJrp9m4l70l+A6gaIXHDa/abi/tZS2aR8R0qJo9rCBNIMkXLKUv8wTuedhVt
- nkXSbv0bOK38w4HI+y6AiBm0BMqQSR5c6QRTINdCZ+H4HvxYib2+g0l0eOhF0gVjNWDC8rgD2
- WzsDSAve/vnd67s/b5Af2RPvpqE3i8Bm0qMxbD7HtWquifbFoFSK5UxRM3b/d6lCXqnjP3Fr6
- Of1HIFvRkmTbx6WfXOKcRXHUSSey4n1zVHLq7yWgp4/I0vFpVkbC/IF83SXuNIEhPkbA91JQD
- HCPM4Tc/WnS9WTaH9ktDhfg3KVyLa90NJ9dqSEhLwdVAEIIUZtIxmkt59OZSim4OMyOu1EhiK
- q05RInGmqAyBuLJHJc1Ty+j6151Wq7GigK+1i/TRdKfjwzrIr0o2TEfH+eCKYbrES+NSy9uRP
- tAfZOv7mP8JpXkT+pYttcW6aEDr2mxeBX0Hqz1/lipaLm/vPDn/uF+z/PiV4dw/ukTLrCnnyZ
- PDGCEZ4q0xXFTB4FUIoLfpNjgECu6FigaWiM+nAeTTE7wPoRCUbJqVoyrK9463tSjLLVIezv7
- H1DJQyNwkGU+t7BE4GKygQxyzy7vZB4ukqIbEt1NuM952K0hTPxz3wllbFiB2xhuZ3C4tVRKn
- /1AAZS+Z5kBCJM92oHZL5C65Wx8lTd3BxDimA+EcckEkAcpNcL23h0+AWq+g=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:iOxMcFlvvJU=:NtRdSJrL/ExtCmL716gTFl
+ QppktYDM9VoxZyxUOLjYYiQn2sFytJmGY03Hv95PYW488xS6pyV/kZdGY5I/69IuaGA3nFbfu
+ 2/co1mPblwU+A4Q6kWkY4FGJWv0DjTGqcBC91eu+CxjcEIoRG/CZQYYNaC6pjByhd+Xcp02ry
+ TjYYdhazm5hiTWbWBAKf420zVFU6dSqG+VJj95AEM+U58wFECqFj9emBEL+vmD6yy8EGdueXR
+ 4A2ckdhEj3D00uaEsh1n5nVuRtwlFAddBFsI/p8vQWFtzQRL1li0XJvzyzQPvmqc5cYPkEJI+
+ koza/WLzQtPb2ULwi3C/x8fG51IPNPT+q5BPFi5PY7JlNBwNeDquY22kCu3K3aAIuWfEL1yQ+
+ NFfD5ftwnFLP3PiUh7VHAUgcod3twZpMMzfvjvswRAgNJDYAAH8QavUIKq0t2xHDm3fCStRU9
+ fIsi4859TZDIzP1Tf2e++UdbKMVBYXoPjD7jPo2jiFEyMtk9uDzapIAQEOYKgqEIJEzIN9mqf
+ mr0gia/CoawpmzWskRuAYrWR74DoSTq9mbsGLPaRol/IYWS2iwu3IWewP8qdYuWi4LJXkYwKX
+ tkyK4ltBWv5Y2dIWXInWtoqNrEAtwrcM9a91H53Ml9ZsfX0nuH4yfVTCX9z+L+8ZBA6PGoIxL
+ zJfO+Z+K5i9j4WktYmBcUGTXv0ZCt4zO5n9I7F/LStfPR9NA/PiDxXsNYWBO6wUeAc77pQ7Cx
+ ppNvIXvFvQbHGN57eT+P1vRnRFChcaOtGNkh2bf7xZ14m9axw0ajhsxy23WGvE6BNhfBfXPMt
+ IENY5JXf9AiM294pGma3vu8vePbsblBNjIFGACwLgUFSyyqmMqHyA/cxvLX3MEg1WYF8b8yn6
+ 3/ztQ5sHa+kizPQGQeliDTwi5g2rMpDPGP29ZeEzV2FXw8B7KDAoEx18c3hd+MW49wpxba/82
+ 6LwOcwytSAMpUCy9vjTn4fnbutCuRv375aBB8dLt+vFoIg4zHf+nzMTmoAr7+9vrp9ygCo8A7
+ bx1XCxJlh+IGboBlrrecpRCfjLjy0L+LWrTSM7urMJaAuIYNepZ+2S5qvi2rjzlcnH+dRpmol
+ 6cFx7zsY+kcNlQm3iAnnGC0y/3dckMYYZsuvV4AvfHxTmYtERRxczWvoqLg/OJO8q4yzUxa5w
+ JD0t+M1vFW/bmJuXdI7jzS6sG0js/zIKDE7CZsLMxWZTq/oYegZvmXNJPHWF6M+ASV+ACtZPT
+ WKUNjPpKmDM2cQcUO0lPOkODz5xqktpftLQydXrDZKj6DwNkWtNVHuw9Cw4M=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sun, 3 Nov 2019 12:50:19 +0100
+Date: Sun, 3 Nov 2019 13:23:13 +0100
 
 The field =E2=80=9Cowner=E2=80=9D is set by the core.
 Thus delete an unneeded initialisation.
@@ -125,21 +125,22 @@ Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
 
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/nfc/pn533/i2c.c | 1 -
+ arch/powerpc/platforms/pseries/papr_scm.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/nfc/pn533/i2c.c b/drivers/nfc/pn533/i2c.c
-index 7507176cca0a..0207e66cee21 100644
-=2D-- a/drivers/nfc/pn533/i2c.c
-+++ b/drivers/nfc/pn533/i2c.c
-@@ -274,7 +274,6 @@ MODULE_DEVICE_TABLE(i2c, pn533_i2c_id_table);
- static struct i2c_driver pn533_i2c_driver =3D {
+diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/plat=
+forms/pseries/papr_scm.c
+index ee07d0718bf1..f87b474d25a7 100644
+=2D-- a/arch/powerpc/platforms/pseries/papr_scm.c
++++ b/arch/powerpc/platforms/pseries/papr_scm.c
+@@ -513,7 +513,6 @@ static struct platform_driver papr_scm_driver =3D {
+ 	.remove =3D papr_scm_remove,
  	.driver =3D {
- 		   .name =3D PN533_I2C_DRIVER_NAME,
--		   .owner =3D THIS_MODULE,
- 		   .of_match_table =3D of_match_ptr(of_pn533_i2c_match),
- 		  },
- 	.probe =3D pn533_i2c_probe,
+ 		.name =3D "papr_scm",
+-		.owner =3D THIS_MODULE,
+ 		.of_match_table =3D papr_scm_match,
+ 	},
+ };
 =2D-
 2.23.0
 

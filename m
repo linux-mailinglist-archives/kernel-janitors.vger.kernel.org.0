@@ -2,141 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 60BB3ED0E8
-	for <lists+kernel-janitors@lfdr.de>; Sat,  2 Nov 2019 23:33:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27AE7ED247
+	for <lists+kernel-janitors@lfdr.de>; Sun,  3 Nov 2019 07:11:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727287AbfKBWda (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 2 Nov 2019 18:33:30 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59058 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726762AbfKBWda (ORCPT
+        id S1726719AbfKCGL0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 3 Nov 2019 01:11:26 -0500
+Received: from smtp01.smtpout.orange.fr ([80.12.242.123]:24633 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726522AbfKCGLZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 2 Nov 2019 18:33:30 -0400
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iR1xU-0005bB-2Y; Sat, 02 Nov 2019 22:33:24 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Rex Zhu <rex.zhu@amd.com>, Evan Quan <evan.quan@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/amd/powerplay: fix spelling mistake "Attemp" -> "Attempt"
-Date:   Sat,  2 Nov 2019 22:33:23 +0000
-Message-Id: <20191102223323.8453-1-colin.king@canonical.com>
+        Sun, 3 Nov 2019 01:11:25 -0500
+Received: from localhost.localdomain ([93.23.13.15])
+        by mwinf5d36 with ME
+        id MJBK2100J0KV3P903JBLU9; Sun, 03 Nov 2019 07:11:22 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 03 Nov 2019 07:11:22 +0100
+X-ME-IP: 93.23.13.15
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     davem@davemloft.net, stefanha@redhat.com, ytht.net@gmail.com,
+        sunilmut@microsoft.com, willemb@google.com, arnd@arndb.de,
+        tglx@linutronix.de, decui@microsoft.com
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Stefano Garzarella <sgarzare@redhat.com>
+Subject: [PATCH v2] vsock: Simplify '__vsock_release()'
+Date:   Sun,  3 Nov 2019 07:11:11 +0100
+Message-Id: <20191103061111.22003-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Use 'skb_queue_purge()' instead of re-implementing it.
 
-There are spelling mistakes in assert messages, fix these.
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
 ---
- drivers/gpu/drm/amd/powerplay/smumgr/vega12_smumgr.c | 12 ++++++------
- drivers/gpu/drm/amd/powerplay/smumgr/vega20_smumgr.c | 12 ++++++------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+V2: fix a typo in the commit message
+    Add R-b tags
+---
+ net/vmw_vsock/af_vsock.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/powerplay/smumgr/vega12_smumgr.c b/drivers/gpu/drm/amd/powerplay/smumgr/vega12_smumgr.c
-index 90c782c132d2..43190fa2bb33 100644
---- a/drivers/gpu/drm/amd/powerplay/smumgr/vega12_smumgr.c
-+++ b/drivers/gpu/drm/amd/powerplay/smumgr/vega12_smumgr.c
-@@ -125,20 +125,20 @@ int vega12_enable_smc_features(struct pp_hwmgr *hwmgr,
- 	if (enable) {
- 		PP_ASSERT_WITH_CODE(smu9_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_EnableSmuFeaturesLow, smu_features_low) == 0,
--				"[EnableDisableSMCFeatures] Attemp to enable SMU features Low failed!",
-+				"[EnableDisableSMCFeatures] Attempt to enable SMU features Low failed!",
- 				return -EINVAL);
- 		PP_ASSERT_WITH_CODE(smu9_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_EnableSmuFeaturesHigh, smu_features_high) == 0,
--				"[EnableDisableSMCFeatures] Attemp to enable SMU features High failed!",
-+				"[EnableDisableSMCFeatures] Attempt to enable SMU features High failed!",
- 				return -EINVAL);
- 	} else {
- 		PP_ASSERT_WITH_CODE(smu9_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_DisableSmuFeaturesLow, smu_features_low) == 0,
--				"[EnableDisableSMCFeatures] Attemp to disable SMU features Low failed!",
-+				"[EnableDisableSMCFeatures] Attempt to disable SMU features Low failed!",
- 				return -EINVAL);
- 		PP_ASSERT_WITH_CODE(smu9_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_DisableSmuFeaturesHigh, smu_features_high) == 0,
--				"[EnableDisableSMCFeatures] Attemp to disable SMU features High failed!",
-+				"[EnableDisableSMCFeatures] Attempt to disable SMU features High failed!",
- 				return -EINVAL);
- 	}
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 2ab43b2bba31..2983dc92ca63 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -641,7 +641,6 @@ EXPORT_SYMBOL_GPL(__vsock_create);
+ static void __vsock_release(struct sock *sk, int level)
+ {
+ 	if (sk) {
+-		struct sk_buff *skb;
+ 		struct sock *pending;
+ 		struct vsock_sock *vsk;
  
-@@ -155,13 +155,13 @@ int vega12_get_enabled_smc_features(struct pp_hwmgr *hwmgr,
+@@ -662,8 +661,7 @@ static void __vsock_release(struct sock *sk, int level)
+ 		sock_orphan(sk);
+ 		sk->sk_shutdown = SHUTDOWN_MASK;
  
- 	PP_ASSERT_WITH_CODE(smu9_send_msg_to_smc(hwmgr,
- 			PPSMC_MSG_GetEnabledSmuFeaturesLow) == 0,
--			"[GetEnabledSMCFeatures] Attemp to get SMU features Low failed!",
-+			"[GetEnabledSMCFeatures] Attempt to get SMU features Low failed!",
- 			return -EINVAL);
- 	smc_features_low = smu9_get_argument(hwmgr);
+-		while ((skb = skb_dequeue(&sk->sk_receive_queue)))
+-			kfree_skb(skb);
++		skb_queue_purge(&sk->sk_receive_queue);
  
- 	PP_ASSERT_WITH_CODE(smu9_send_msg_to_smc(hwmgr,
- 			PPSMC_MSG_GetEnabledSmuFeaturesHigh) == 0,
--			"[GetEnabledSMCFeatures] Attemp to get SMU features High failed!",
-+			"[GetEnabledSMCFeatures] Attempt to get SMU features High failed!",
- 			return -EINVAL);
- 	smc_features_high = smu9_get_argument(hwmgr);
- 
-diff --git a/drivers/gpu/drm/amd/powerplay/smumgr/vega20_smumgr.c b/drivers/gpu/drm/amd/powerplay/smumgr/vega20_smumgr.c
-index f604612f411f..562cb221f186 100644
---- a/drivers/gpu/drm/amd/powerplay/smumgr/vega20_smumgr.c
-+++ b/drivers/gpu/drm/amd/powerplay/smumgr/vega20_smumgr.c
-@@ -310,20 +310,20 @@ int vega20_enable_smc_features(struct pp_hwmgr *hwmgr,
- 	if (enable) {
- 		PP_ASSERT_WITH_CODE((ret = vega20_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_EnableSmuFeaturesLow, smu_features_low)) == 0,
--				"[EnableDisableSMCFeatures] Attemp to enable SMU features Low failed!",
-+				"[EnableDisableSMCFeatures] Attempt to enable SMU features Low failed!",
- 				return ret);
- 		PP_ASSERT_WITH_CODE((ret = vega20_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_EnableSmuFeaturesHigh, smu_features_high)) == 0,
--				"[EnableDisableSMCFeatures] Attemp to enable SMU features High failed!",
-+				"[EnableDisableSMCFeatures] Attempt to enable SMU features High failed!",
- 				return ret);
- 	} else {
- 		PP_ASSERT_WITH_CODE((ret = vega20_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_DisableSmuFeaturesLow, smu_features_low)) == 0,
--				"[EnableDisableSMCFeatures] Attemp to disable SMU features Low failed!",
-+				"[EnableDisableSMCFeatures] Attempt to disable SMU features Low failed!",
- 				return ret);
- 		PP_ASSERT_WITH_CODE((ret = vega20_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_DisableSmuFeaturesHigh, smu_features_high)) == 0,
--				"[EnableDisableSMCFeatures] Attemp to disable SMU features High failed!",
-+				"[EnableDisableSMCFeatures] Attempt to disable SMU features High failed!",
- 				return ret);
- 	}
- 
-@@ -341,12 +341,12 @@ int vega20_get_enabled_smc_features(struct pp_hwmgr *hwmgr,
- 
- 	PP_ASSERT_WITH_CODE((ret = vega20_send_msg_to_smc(hwmgr,
- 			PPSMC_MSG_GetEnabledSmuFeaturesLow)) == 0,
--			"[GetEnabledSMCFeatures] Attemp to get SMU features Low failed!",
-+			"[GetEnabledSMCFeatures] Attempt to get SMU features Low failed!",
- 			return ret);
- 	smc_features_low = vega20_get_argument(hwmgr);
- 	PP_ASSERT_WITH_CODE((ret = vega20_send_msg_to_smc(hwmgr,
- 			PPSMC_MSG_GetEnabledSmuFeaturesHigh)) == 0,
--			"[GetEnabledSMCFeatures] Attemp to get SMU features High failed!",
-+			"[GetEnabledSMCFeatures] Attempt to get SMU features High failed!",
- 			return ret);
- 	smc_features_high = vega20_get_argument(hwmgr);
- 
+ 		/* Clean up any sockets that never were accepted. */
+ 		while ((pending = vsock_dequeue_accept(sk)) != NULL) {
 -- 
 2.20.1
 

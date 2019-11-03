@@ -2,60 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C971ED5D9
-	for <lists+kernel-janitors@lfdr.de>; Sun,  3 Nov 2019 22:22:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E089ED658
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Nov 2019 00:07:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728475AbfKCVWJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 3 Nov 2019 16:22:09 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:48199 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728243AbfKCVWJ (ORCPT
+        id S1728213AbfKCXG5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 3 Nov 2019 18:06:57 -0500
+Received: from mail-io1-f67.google.com ([209.85.166.67]:39533 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728059AbfKCXG5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 3 Nov 2019 16:22:09 -0500
-Received: from [82.43.126.140] (helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iRNK1-0001xz-JH; Sun, 03 Nov 2019 21:22:05 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Alok Chauhan <alokc@codeaurora.org>,
-        Andy Gross <agross@kernel.org>, linux-i2c@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] i2c: qcom-geni: fix spelling mistake "unepxected" -> "unexpected"
-Date:   Sun,  3 Nov 2019 21:22:04 +0000
-Message-Id: <20191103212204.13606-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Sun, 3 Nov 2019 18:06:57 -0500
+Received: by mail-io1-f67.google.com with SMTP id k1so4621880ioj.6;
+        Sun, 03 Nov 2019 15:06:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=eVqB/l9a1uODQEPIKn/PPG0dvGYx8Wnn62KRJDPal58=;
+        b=Ogr3bRTWAqrOfrGyYdV5PvYV3ARdso9WSZmAAWAUVNFf5R6gZVAn2suhmsRBuBLR1/
+         dW53XjheV7my12jMlO6rV5CfQUMf4cXo1wi+k8bzOlFGjEPVpjfrLLMh5vOO0A/6/oXM
+         3ShKC6jxP6wSfEj0/gsdkFz+ntUu3fEZKB28AwKhWaX+O1nDNypQ6igT58up/K4ghO2l
+         uP/yIgDW/WzOw0tJLko/ylUM2k1qwMkqUx4NczjZppdGzsFkwXV2p8+YCEcQvqqtj99C
+         Ydw086InNypLfzadWcrQP8ewHM8Ag8jkwhzYrF35X5pvfHyBin3yLSe+7iNYRJiOA/QK
+         Znsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=eVqB/l9a1uODQEPIKn/PPG0dvGYx8Wnn62KRJDPal58=;
+        b=G46NPCW3lveUKOJ4CoznpD3qMbfSlciUzwpVKxx1SZ5jQ/FJcMEJ8RLaWl1QQgI68O
+         YhtnzD8NVcEBoILaZmmTRrEqKkzUadfcgCRHtRS7pS3gO2FqZxKVVzoh3i7PehUNb6/s
+         nJx32LX2SULvL1s2cspP6ejUIYtIMofCqxrqnekydMDazk9IJntsq87AyHEKXv4xFvWK
+         7Sev8CrVH1dPcQPLazCTALP5NCuz0BkFZ/A4Q+zAP9ibnL3VOf5H55laKgOCVmkAzJuJ
+         40XH3ghdvAK7Tl+e4xyxvowfzfC6a1DSLji7Sa2yExzZ64kovRxVfajH/r+Sa0psBOOj
+         OMRA==
+X-Gm-Message-State: APjAAAVM17a210c5yIkO4uhyEvgMmEeesjRT/u/FolJvErofG3cwwTyF
+        0vo2Sh06gCKRfqjAy1lr8mEvWOZJ/X4bKzihNuI=
+X-Google-Smtp-Source: APXvYqz5q7rm3u4DawQENZGNDKe1T9/EKnPlhOlSgXGAtFdFo1uj3sgE+IIUYvtkp3lzE+eEoITqKlfYsqv5wVZb2sA=
+X-Received: by 2002:a02:3903:: with SMTP id l3mr12722619jaa.72.1572822416076;
+ Sun, 03 Nov 2019 15:06:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <389022fc-71b0-7952-3404-1da136dbdfd9@web.de>
+In-Reply-To: <389022fc-71b0-7952-3404-1da136dbdfd9@web.de>
+From:   "Oliver O'Halloran" <oohall@gmail.com>
+Date:   Mon, 4 Nov 2019 10:06:45 +1100
+Message-ID: <CAOSf1CGQ7VdhHQ0L3phRwaT9VcsJaN9E7LsEarvpwZUcL6e7bg@mail.gmail.com>
+Subject: =?UTF-8?Q?Re=3A_=5BPATCH=5D_powerpc=2Fpapr=5Fscm=3A_Delete_unnecessary_ass?=
+        =?UTF-8?Q?ignment_for_the_field_=E2=80=9Cowner=E2=80=9D?=
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Sun, Nov 3, 2019 at 11:31 PM Markus Elfring <Markus.Elfring@web.de> wrot=
+e:
+>
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Sun, 3 Nov 2019 13:23:13 +0100
+>
+> The field =E2=80=9Cowner=E2=80=9D is set by the core.
+> Thus delete an unneeded initialisation.
 
-There is a spelling mistake in an error message string, fix it.
+Acked-by: Oliver O'Halloran <oohall@gmail.com>
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/i2c/busses/i2c-qcom-geni.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
-index 17abf60c94ae..387fb5a83471 100644
---- a/drivers/i2c/busses/i2c-qcom-geni.c
-+++ b/drivers/i2c/busses/i2c-qcom-geni.c
-@@ -98,7 +98,7 @@ static const struct geni_i2c_err_log gi2c_log[] = {
- 	[GP_IRQ0] = {-EIO, "Unknown I2C err GP_IRQ0"},
- 	[NACK] = {-ENXIO, "NACK: slv unresponsive, check its power/reset-ln"},
- 	[GP_IRQ2] = {-EIO, "Unknown I2C err GP IRQ2"},
--	[BUS_PROTO] = {-EPROTO, "Bus proto err, noisy/unepxected start/stop"},
-+	[BUS_PROTO] = {-EPROTO, "Bus proto err, noisy/unexpected start/stop"},
- 	[ARB_LOST] = {-EAGAIN, "Bus arbitration lost, clock line undriveable"},
- 	[GP_IRQ5] = {-EIO, "Unknown I2C err GP IRQ5"},
- 	[GENI_OVERRUN] = {-EIO, "Cmd overrun, check GENI cmd-state machine"},
--- 
-2.20.1
-
+>
+> Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
+>
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> ---
+>  arch/powerpc/platforms/pseries/papr_scm.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/pla=
+tforms/pseries/papr_scm.c
+> index ee07d0718bf1..f87b474d25a7 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -513,7 +513,6 @@ static struct platform_driver papr_scm_driver =3D {
+>         .remove =3D papr_scm_remove,
+>         .driver =3D {
+>                 .name =3D "papr_scm",
+> -               .owner =3D THIS_MODULE,
+>                 .of_match_table =3D papr_scm_match,
+>         },
+>  };
+> --
+> 2.23.0
+>

@@ -2,73 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E462EDDA5
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Nov 2019 12:22:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B0CB2EDF71
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Nov 2019 12:59:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728713AbfKDLV6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 Nov 2019 06:21:58 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:48072 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726364AbfKDLV5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 Nov 2019 06:21:57 -0500
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 9FE3BD46CE388845323F;
-        Mon,  4 Nov 2019 19:21:55 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 4 Nov 2019 19:21:47 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <felipe.balbi@linux.intel.com>, <gregkh@linuxfoundation.org>,
-        <treding@nvidia.com>, <nkristam@nvidia.com>, <arnd@arndb.de>,
-        <johan@kernel.org>, <maowenan@huawei.com>, <krzk@kernel.org>
-CC:     <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH v2 -next] usb: gadget: Add dependency for USB_TEGRA_XUDC
-Date:   Mon, 4 Nov 2019 19:21:04 +0800
-Message-ID: <20191104112104.195329-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <51315499-99d0-eca3-a7df-b8dd84628bbd@huawei.com>
-References: <51315499-99d0-eca3-a7df-b8dd84628bbd@huawei.com>
+        id S1728561AbfKDL7j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 Nov 2019 06:59:39 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:32883 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727454AbfKDL7j (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 4 Nov 2019 06:59:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1572868778;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=b/s3YEvh2xEz6f1xfLOfcSC2xtpmsXL9FCggxTE73dE=;
+        b=bD7OxtAOHJ8nqQsSxGqmTbHu9mmiSSde3c9W9d1xdn/bRR1aabFqvWgwV8IRdvtd8mrdoM
+        AZnh8JSGWjU10JarFaEi3HxXF/xCIvmrGeQD7lkwo2J9bpW/enmvO76lETgtAOs0Qgkwee
+        b2WhLKz39rtW6Oe1aar4s6637ZEwSos=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-417-wGlYFAqDPFWTCF1rJvLJaQ-1; Mon, 04 Nov 2019 06:59:35 -0500
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id EBA6E1005500;
+        Mon,  4 Nov 2019 11:59:33 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com (unknown [10.19.60.26])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 51BF560C88;
+        Mon,  4 Nov 2019 11:59:33 +0000 (UTC)
+From:   Jeff Moyer <jmoyer@redhat.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iocost: add a comment about locking in ioc_weight_write()
+References: <20191104101811.GA20821@mwanda>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date:   Mon, 04 Nov 2019 06:59:32 -0500
+In-Reply-To: <20191104101811.GA20821@mwanda> (Dan Carpenter's message of "Mon,
+        4 Nov 2019 13:18:11 +0300")
+Message-ID: <x491runq2cb.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-MC-Unique: wGlYFAqDPFWTCF1rJvLJaQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If CONFIG_USB_TEGRA_XUDC=y and CONFIG_USB_ROLE_SWITCH=m,
-below erros can be seen:
-drivers/usb/gadget/udc/tegra-xudc.o: In function `tegra_xudc_remove':
-tegra-xudc.c:(.text+0x6b0): undefined reference to `usb_role_switch_unregister'
-drivers/usb/gadget/udc/tegra-xudc.o: In function `tegra_xudc_probe':
-tegra-xudc.c:(.text+0x1b88): undefined reference to `usb_role_switch_register'
-drivers/usb/gadget/udc/tegra-xudc.o: In function `tegra_xudc_usb_role_sw_work':
-tegra-xudc.c:(.text+0x5ecc): undefined reference to `usb_role_switch_get_role'
+Dan Carpenter <dan.carpenter@oracle.com> writes:
 
-It should select USB_ROLE_SWITCH for UDC driver.
+> It wasn't very clear that blkg_conf_prep() disables IRQ and that they
+> are enabled in blkg_conf_finish() so this patch adds a comment about it.
+>
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
----
- v2: change 'depends on' to 'select'.
- drivers/usb/gadget/udc/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
 
-diff --git a/drivers/usb/gadget/udc/Kconfig b/drivers/usb/gadget/udc/Kconfig
-index acaec3a..d103154 100644
---- a/drivers/usb/gadget/udc/Kconfig
-+++ b/drivers/usb/gadget/udc/Kconfig
-@@ -445,6 +445,7 @@ config USB_TEGRA_XUDC
- 	tristate "NVIDIA Tegra Superspeed USB 3.0 Device Controller"
- 	depends on ARCH_TEGRA || COMPILE_TEST
- 	depends on PHY_TEGRA_XUSB
-+	select USB_ROLE_SWITCH
- 	help
- 	 Enables NVIDIA Tegra USB 3.0 device mode controller driver.
- 
--- 
-2.7.4
+Thanks, Dan!
+
+> ---
+> I don't know if it's too late to fold this in with the previous patch?
+>
+>  block/blk-iocost.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/block/blk-iocost.c b/block/blk-iocost.c
+> index a7ed434eae03..c5a8703ca6aa 100644
+> --- a/block/blk-iocost.c
+> +++ b/block/blk-iocost.c
+> @@ -2095,6 +2095,7 @@ static ssize_t ioc_weight_write(struct kernfs_open_=
+file *of, char *buf,
+>  =09=09return nbytes;
+>  =09}
+> =20
+> +=09/* blkg_conf_prep() takes the q->queue_lock and disables IRQs */
+>  =09ret =3D blkg_conf_prep(blkcg, &blkcg_policy_iocost, buf, &ctx);
+>  =09if (ret)
+>  =09=09return ret;
+> @@ -2115,6 +2116,7 @@ static ssize_t ioc_weight_write(struct kernfs_open_=
+file *of, char *buf,
+>  =09weight_updated(iocg);
+>  =09spin_unlock(&iocg->ioc->lock);
+> =20
+> +=09/* blkg_conf_finish() unlocks the q->queue_lock and enables IRQs */
+>  =09blkg_conf_finish(&ctx);
+>  =09return nbytes;
 

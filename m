@@ -2,107 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39D79ED8E3
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Nov 2019 07:15:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2592DEDB5B
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Nov 2019 10:15:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728144AbfKDGPf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 Nov 2019 01:15:35 -0500
-Received: from mail-ua1-f68.google.com ([209.85.222.68]:45415 "EHLO
-        mail-ua1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728121AbfKDGPf (ORCPT
+        id S1727322AbfKDJPD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 Nov 2019 04:15:03 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:48888 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726441AbfKDJPD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 Nov 2019 01:15:35 -0500
-Received: by mail-ua1-f68.google.com with SMTP id o3so4560636ual.12
-        for <kernel-janitors@vger.kernel.org>; Sun, 03 Nov 2019 22:15:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=9yIKhMPMljW03rsGEF8LljWFKxCpgqs32gHznOzRrkU=;
-        b=a5QoL30HvSEZynCl/a1K6RSYVfhOX/6DM8wEnJNPYl1VWwe6nSWllO8JV7myjdbRQh
-         t62rimg+Byea+5mVZX5GD6S/F9W/Y2Or8fhRGZm3AlG2qnfj8NCUmImGAQ7DMv8osiQw
-         EmdxwKKoChB0+/iRdGQJhWzt4ZWTiSTiswywGX8X5pIxsOf+Kib6d6vghyZxugVK8558
-         XKeFOz7xJH9hBzDGiPeaZOuwxfKO6EEOtuv9J044cs+U74fF7fLqm8DP0Hmo5Hnnb7Ei
-         r5bW4eXGuf2lmI7ZBPTTOT2pNPzzPpxL4uw1GHGjA11VzU4JsmwCPfe6MI1tUEYNFcj2
-         vJAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=9yIKhMPMljW03rsGEF8LljWFKxCpgqs32gHznOzRrkU=;
-        b=bZY9JgtQ/wGTjJy5vbev4k/6gE1vDsDlahUBd9o2XdNLQfspbAu9z8oLKh+18kgq7w
-         5y+rWchrNLi0qgk80adkImgh0pSrJDkJdPjGqL0jmoSHxf9Iv1rP84BnlAVZC0YwkDdX
-         Qib1aPop0awlOkf84QVvRw4OhxZec3bdvgPz4QHgFZIPbEqFhqoQj8GI2wOrqdzE7qPS
-         sXxNwaJ8liS0XwvaZNItBcVmhEhWP6g8tys2cXgOM1t4ZScgAVDoAhtRWuZtnrFo/44L
-         dP9BP9ItdeoC/JfuY1V4px1ao5zalxWCTAa5jmNOAp0kUAdaDbYXXBrJl9kz0Wzvm5+V
-         fiug==
-X-Gm-Message-State: APjAAAU3xv7ymeD2Muilip20OdxBDopTMdBL7nRcaEETIMvVFeSoEzg2
-        7+0TLqtNqBlw+Ox6Q+iC7n7SFBOhnkoXfjBOAND1mA==
-X-Google-Smtp-Source: APXvYqyYHUY+82qcl4WGZkgldt09N+9qQ36Lo/k74j/vgi+PP8mh49yZ4P0PxZK+XtAddRrpT8QrZOnayNJQbpG8XpU=
-X-Received: by 2002:ab0:1405:: with SMTP id b5mr11166275uae.94.1572848134047;
- Sun, 03 Nov 2019 22:15:34 -0800 (PST)
+        Mon, 4 Nov 2019 04:15:03 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA49EF8h131247;
+        Mon, 4 Nov 2019 09:14:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=hE/jxSBVe+1FqR4NlJp5P3S1KuZxeNyQgypPmuBvD4o=;
+ b=WUeVPs72wtXFQ1HcHu3qy0rYFoCPaezVIe7bcgpuMZ0sDh+c9otoOCrZO22gd6vJ3KqC
+ U7X6+lt8vRG24o0nexMr46cxs7WBHYuqvkp+sX8AreJwg2oEdgLnmrQtJuqDvIMYawpY
+ DJrNqDW02f2f8qMSUbe48as1bKRRvtRlScfhzvmjoP5IqOTUa9YavScq9fPlFDZBAvmF
+ roEoZPDH20kh4JKBpx5NkWOoTDdczNoFXdDlklv7tWECytFtfNYi+F4+hn6s2oui9vLX
+ iMtIxqBlcYvZMdaA5FittRwSR5OR/Rkm04U7MeF0G9vMArgj4lZNT+nwniASI/ugOEv8 rw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2w117tnwxf-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 04 Nov 2019 09:14:27 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA49EGTK147171;
+        Mon, 4 Nov 2019 09:14:26 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2w1kxm1895-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 04 Nov 2019 09:14:26 +0000
+Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xA49CxRu010162;
+        Mon, 4 Nov 2019 09:13:07 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 04 Nov 2019 01:12:58 -0800
+Date:   Mon, 4 Nov 2019 12:12:52 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] locking/lockdep: update the comment for __lock_release()
+Message-ID: <20191104091252.GA31509@mwanda>
 MIME-Version: 1.0
-References: <20191101100035.25502-1-colin.king@canonical.com>
-In-Reply-To: <20191101100035.25502-1-colin.king@canonical.com>
-From:   Amit Kucheria <amit.kucheria@linaro.org>
-Date:   Mon, 4 Nov 2019 11:45:22 +0530
-Message-ID: <CAHLCerPX5WPvVRxfgAQyAguomBaEsCyncJUuOafkY2cMjQmsaQ@mail.gmail.com>
-Subject: Re: [PATCH][next][V2] drivers: thermal: tsens: fix potential integer
- overflow on multiply
-To:     Colin King <colin.king@canonical.com>
-Cc:     Andy Gross <agross@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
-        Eduardo Valentin <edubezval@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Stephen Boyd <swboyd@chromium.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9430 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1911040092
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9430 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1911040092
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Nov 1, 2019 at 3:30 PM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Currently a multiply operation is being performed on two int values
-> and the result is being assigned to a u64, presumably because the
-> end result is expected to be probably larger than an int. However,
-> because the multiply is an int multiply one can get overflow. Avoid
-> the overflow by casting degc to a u64 to force a u64 multiply.
->
-> Also use div_u64 for the divide as suggested by Daniel Lezcano.
->
-> Addresses-Coverity: ("Unintentional integer overflow")
-> Fixes: fbfe1a042cfd ("drivers: thermal: tsens: Add interrupt support")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+This changes "to the list" to "from the list" and also deletes the
+obsolete comment about the "@nested" argument.  The "nested" argument
+was removed in commit 5facae4f3549 ("locking/lockdep: Remove unused
+@nested argument from lock_release()").
 
-Reviewed-by: Amit Kucheria <amit.kucheria@linaro.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ kernel/locking/lockdep.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-> ---
->
-> V2: use div_u64 for the divide as suggested by Daniel Lezcano.
->
-> ---
->  drivers/thermal/qcom/tsens-common.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/thermal/qcom/tsens-common.c b/drivers/thermal/qcom/tsens-common.c
-> index 03bf1b8133ea..c6b551ec7323 100644
-> --- a/drivers/thermal/qcom/tsens-common.c
-> +++ b/drivers/thermal/qcom/tsens-common.c
-> @@ -92,7 +92,7 @@ void compute_intercept_slope(struct tsens_priv *priv, u32 *p1,
->
->  static inline u32 degc_to_code(int degc, const struct tsens_sensor *s)
->  {
-> -       u64 code = (degc * s->slope + s->offset) / SLOPE_FACTOR;
-> +       u64 code = div_u64(((u64)degc * s->slope + s->offset), SLOPE_FACTOR);
->
->         pr_debug("%s: raw_code: 0x%llx, degc:%d\n", __func__, code, degc);
->         return clamp_val(code, THRESHOLD_MIN_ADC_CODE, THRESHOLD_MAX_ADC_CODE);
-> --
-> 2.20.1
->
+diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
+index 8123518f9045..32282e7112d3 100644
+--- a/kernel/locking/lockdep.c
++++ b/kernel/locking/lockdep.c
+@@ -4208,11 +4208,9 @@ static int __lock_downgrade(struct lockdep_map *lock, unsigned long ip)
+ }
+ 
+ /*
+- * Remove the lock to the list of currently held locks - this gets
++ * Remove the lock from the list of currently held locks - this gets
+  * called on mutex_unlock()/spin_unlock*() (or on a failed
+  * mutex_lock_interruptible()).
+- *
+- * @nested is an hysterical artifact, needs a tree wide cleanup.
+  */
+ static int
+ __lock_release(struct lockdep_map *lock, unsigned long ip)
+-- 
+2.20.1
+

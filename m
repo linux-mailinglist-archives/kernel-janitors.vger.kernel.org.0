@@ -2,102 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E089ED658
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Nov 2019 00:07:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72AECED7ED
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Nov 2019 04:00:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728213AbfKCXG5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 3 Nov 2019 18:06:57 -0500
-Received: from mail-io1-f67.google.com ([209.85.166.67]:39533 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728059AbfKCXG5 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 3 Nov 2019 18:06:57 -0500
-Received: by mail-io1-f67.google.com with SMTP id k1so4621880ioj.6;
-        Sun, 03 Nov 2019 15:06:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=eVqB/l9a1uODQEPIKn/PPG0dvGYx8Wnn62KRJDPal58=;
-        b=Ogr3bRTWAqrOfrGyYdV5PvYV3ARdso9WSZmAAWAUVNFf5R6gZVAn2suhmsRBuBLR1/
-         dW53XjheV7my12jMlO6rV5CfQUMf4cXo1wi+k8bzOlFGjEPVpjfrLLMh5vOO0A/6/oXM
-         3ShKC6jxP6wSfEj0/gsdkFz+ntUu3fEZKB28AwKhWaX+O1nDNypQ6igT58up/K4ghO2l
-         uP/yIgDW/WzOw0tJLko/ylUM2k1qwMkqUx4NczjZppdGzsFkwXV2p8+YCEcQvqqtj99C
-         Ydw086InNypLfzadWcrQP8ewHM8Ag8jkwhzYrF35X5pvfHyBin3yLSe+7iNYRJiOA/QK
-         Znsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=eVqB/l9a1uODQEPIKn/PPG0dvGYx8Wnn62KRJDPal58=;
-        b=G46NPCW3lveUKOJ4CoznpD3qMbfSlciUzwpVKxx1SZ5jQ/FJcMEJ8RLaWl1QQgI68O
-         YhtnzD8NVcEBoILaZmmTRrEqKkzUadfcgCRHtRS7pS3gO2FqZxKVVzoh3i7PehUNb6/s
-         nJx32LX2SULvL1s2cspP6ejUIYtIMofCqxrqnekydMDazk9IJntsq87AyHEKXv4xFvWK
-         7Sev8CrVH1dPcQPLazCTALP5NCuz0BkFZ/A4Q+zAP9ibnL3VOf5H55laKgOCVmkAzJuJ
-         40XH3ghdvAK7Tl+e4xyxvowfzfC6a1DSLji7Sa2yExzZ64kovRxVfajH/r+Sa0psBOOj
-         OMRA==
-X-Gm-Message-State: APjAAAVM17a210c5yIkO4uhyEvgMmEeesjRT/u/FolJvErofG3cwwTyF
-        0vo2Sh06gCKRfqjAy1lr8mEvWOZJ/X4bKzihNuI=
-X-Google-Smtp-Source: APXvYqz5q7rm3u4DawQENZGNDKe1T9/EKnPlhOlSgXGAtFdFo1uj3sgE+IIUYvtkp3lzE+eEoITqKlfYsqv5wVZb2sA=
-X-Received: by 2002:a02:3903:: with SMTP id l3mr12722619jaa.72.1572822416076;
- Sun, 03 Nov 2019 15:06:56 -0800 (PST)
+        id S1728933AbfKDDAl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 3 Nov 2019 22:00:41 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:5254 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728643AbfKDDAl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 3 Nov 2019 22:00:41 -0500
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 58D02C6956E1853EB260;
+        Mon,  4 Nov 2019 11:00:39 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.439.0; Mon, 4 Nov 2019 11:00:29 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <felipe.balbi@linux.intel.com>, <gregkh@linuxfoundation.org>,
+        <treding@nvidia.com>, <nkristam@nvidia.com>, <arnd@arndb.de>,
+        <johan@kernel.org>, <krzk@kernel.org>
+CC:     <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH -next] usb: gadget: Add dependency for USB_TEGRA_XUDC
+Date:   Mon, 4 Nov 2019 10:59:45 +0800
+Message-ID: <20191104025945.172620-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <389022fc-71b0-7952-3404-1da136dbdfd9@web.de>
-In-Reply-To: <389022fc-71b0-7952-3404-1da136dbdfd9@web.de>
-From:   "Oliver O'Halloran" <oohall@gmail.com>
-Date:   Mon, 4 Nov 2019 10:06:45 +1100
-Message-ID: <CAOSf1CGQ7VdhHQ0L3phRwaT9VcsJaN9E7LsEarvpwZUcL6e7bg@mail.gmail.com>
-Subject: =?UTF-8?Q?Re=3A_=5BPATCH=5D_powerpc=2Fpapr=5Fscm=3A_Delete_unnecessary_ass?=
-        =?UTF-8?Q?ignment_for_the_field_=E2=80=9Cowner=E2=80=9D?=
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Nov 3, 2019 at 11:31 PM Markus Elfring <Markus.Elfring@web.de> wrot=
-e:
->
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Sun, 3 Nov 2019 13:23:13 +0100
->
-> The field =E2=80=9Cowner=E2=80=9D is set by the core.
-> Thus delete an unneeded initialisation.
+If CONFIG_USB_TEGRA_XUDC=y and CONFIG_USB_ROLE_SWITCH=m,
+below erros can be seen:
+drivers/usb/gadget/udc/tegra-xudc.o: In function `tegra_xudc_remove':
+tegra-xudc.c:(.text+0x6b0): undefined reference to `usb_role_switch_unregister'
+drivers/usb/gadget/udc/tegra-xudc.o: In function `tegra_xudc_probe':
+tegra-xudc.c:(.text+0x1b88): undefined reference to `usb_role_switch_register'
+drivers/usb/gadget/udc/tegra-xudc.o: In function `tegra_xudc_usb_role_sw_work':
+tegra-xudc.c:(.text+0x5ecc): undefined reference to `usb_role_switch_get_role'
 
-Acked-by: Oliver O'Halloran <oohall@gmail.com>
+This patch add dependency USB_ROLE_SWITCH for UDC driver.
 
->
-> Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
->
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
->  arch/powerpc/platforms/pseries/papr_scm.c | 1 -
->  1 file changed, 1 deletion(-)
->
-> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/pla=
-tforms/pseries/papr_scm.c
-> index ee07d0718bf1..f87b474d25a7 100644
-> --- a/arch/powerpc/platforms/pseries/papr_scm.c
-> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
-> @@ -513,7 +513,6 @@ static struct platform_driver papr_scm_driver =3D {
->         .remove =3D papr_scm_remove,
->         .driver =3D {
->                 .name =3D "papr_scm",
-> -               .owner =3D THIS_MODULE,
->                 .of_match_table =3D papr_scm_match,
->         },
->  };
-> --
-> 2.23.0
->
+Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ drivers/usb/gadget/udc/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/usb/gadget/udc/Kconfig b/drivers/usb/gadget/udc/Kconfig
+index acaec3a..d103154 100644
+--- a/drivers/usb/gadget/udc/Kconfig
++++ b/drivers/usb/gadget/udc/Kconfig
+@@ -445,6 +445,7 @@ config USB_TEGRA_XUDC
+ 	tristate "NVIDIA Tegra Superspeed USB 3.0 Device Controller"
+ 	depends on ARCH_TEGRA || COMPILE_TEST
+ 	depends on PHY_TEGRA_XUSB
++	depends on USB_ROLE_SWITCH
+ 	help
+ 	 Enables NVIDIA Tegra USB 3.0 device mode controller driver.
+ 
+-- 
+2.7.4
+

@@ -2,88 +2,118 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DE503EDCDC
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Nov 2019 11:50:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6AF1EDD26
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Nov 2019 11:57:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728554AbfKDKuN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 Nov 2019 05:50:13 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:5257 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726071AbfKDKuN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 Nov 2019 05:50:13 -0500
-Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id DE46E2099A79968604F1;
-        Mon,  4 Nov 2019 18:50:10 +0800 (CST)
-Received: from [127.0.0.1] (10.177.96.96) by DGGEMS401-HUB.china.huawei.com
- (10.3.19.201) with Microsoft SMTP Server id 14.3.439.0; Mon, 4 Nov 2019
- 18:50:07 +0800
-Subject: Re: [PATCH -next] usb: gadget: Add dependency for USB_TEGRA_XUDC
-To:     Thierry Reding <treding@nvidia.com>
-CC:     <felipe.balbi@linux.intel.com>, <gregkh@linuxfoundation.org>,
-        <nkristam@nvidia.com>, <arnd@arndb.de>, <johan@kernel.org>,
-        <krzk@kernel.org>, <linux-usb@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-References: <20191104025945.172620-1-maowenan@huawei.com>
- <20191104100410.GB996639@ulmo>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <51315499-99d0-eca3-a7df-b8dd84628bbd@huawei.com>
-Date:   Mon, 4 Nov 2019 18:50:01 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.0
+        id S1727663AbfKDK5x convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 Nov 2019 05:57:53 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:59330 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726633AbfKDK5x (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 4 Nov 2019 05:57:53 -0500
+Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id xA4AtDsb056076
+        for <kernel-janitors@vger.kernel.org>; Mon, 4 Nov 2019 05:57:52 -0500
+Received: from e06smtp05.uk.ibm.com (e06smtp05.uk.ibm.com [195.75.94.101])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2w2htva84y-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <kernel-janitors@vger.kernel.org>; Mon, 04 Nov 2019 05:57:51 -0500
+Received: from localhost
+        by e06smtp05.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <kernel-janitors@vger.kernel.org> from <vaibhav@linux.ibm.com>;
+        Mon, 4 Nov 2019 10:57:50 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+        by e06smtp05.uk.ibm.com (192.168.101.135) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Mon, 4 Nov 2019 10:57:46 -0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xA4AvjSh39845932
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 4 Nov 2019 10:57:45 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 1C2F711C05E;
+        Mon,  4 Nov 2019 10:57:45 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9FD5811C050;
+        Mon,  4 Nov 2019 10:57:41 +0000 (GMT)
+Received: from vajain21.in.ibm.com (unknown [9.109.195.239])
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
+        Mon,  4 Nov 2019 10:57:41 +0000 (GMT)
+Received: by vajain21.in.ibm.com (sSMTP sendmail emulation); Mon, 04 Nov 2019 16:27:40 +0530
+From:   Vaibhav Jain <vaibhav@linux.ibm.com>
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        linuxppc-dev@lists.ozlabs.org,
+        "Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Oliver O'Halloran" <oohall@gmail.com>,
+        Paul Mackerras <paulus@samba.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] powerpc/papr_scm: Delete unnecessary assignment for the
+ field =?utf-8?B?4oCcb3duZXLigJ0=?=
+In-Reply-To: <389022fc-71b0-7952-3404-1da136dbdfd9@web.de>
+References: <389022fc-71b0-7952-3404-1da136dbdfd9@web.de>
+Date:   Mon, 04 Nov 2019 16:27:40 +0530
 MIME-Version: 1.0
-In-Reply-To: <20191104100410.GB996639@ulmo>
-Content-Type: text/plain; charset="windows-1252"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.96.96]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-TM-AS-GCONF: 00
+x-cbid: 19110410-0020-0000-0000-00000382562B
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19110410-0021-0000-0000-000021D87950
+Message-Id: <87k18fewnv.fsf@vajain21.in.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-11-04_08:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=1 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=989 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1908290000 definitions=main-1911040109
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Markus Elfring <Markus.Elfring@web.de> writes:
 
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Sun, 3 Nov 2019 13:23:13 +0100
+>
+> The field “owner” is set by the core.
+> Thus delete an unneeded initialisation.
+>
+> Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
+>
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> ---
+>  arch/powerpc/platforms/pseries/papr_scm.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/arch/powerpc/platforms/pseries/papr_scm.c b/arch/powerpc/platforms/pseries/papr_scm.c
+> index ee07d0718bf1..f87b474d25a7 100644
+> --- a/arch/powerpc/platforms/pseries/papr_scm.c
+> +++ b/arch/powerpc/platforms/pseries/papr_scm.c
+> @@ -513,7 +513,6 @@ static struct platform_driver papr_scm_driver = {
+>  	.remove = papr_scm_remove,
+>  	.driver = {
+>  		.name = "papr_scm",
+> -		.owner = THIS_MODULE,
+>  		.of_match_table = papr_scm_match,
+>  	},
+>  };
+> --
+> 2.23.0
+>
+LGTM
 
-On 2019/11/4 18:04, Thierry Reding wrote:
-> On Mon, Nov 04, 2019 at 10:59:45AM +0800, Mao Wenan wrote:
->> If CONFIG_USB_TEGRA_XUDC=y and CONFIG_USB_ROLE_SWITCH=m,
->> below erros can be seen:
->> drivers/usb/gadget/udc/tegra-xudc.o: In function `tegra_xudc_remove':
->> tegra-xudc.c:(.text+0x6b0): undefined reference to `usb_role_switch_unregister'
->> drivers/usb/gadget/udc/tegra-xudc.o: In function `tegra_xudc_probe':
->> tegra-xudc.c:(.text+0x1b88): undefined reference to `usb_role_switch_register'
->> drivers/usb/gadget/udc/tegra-xudc.o: In function `tegra_xudc_usb_role_sw_work':
->> tegra-xudc.c:(.text+0x5ecc): undefined reference to `usb_role_switch_get_role'
->>
->> This patch add dependency USB_ROLE_SWITCH for UDC driver.
->>
->> Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
->> Signed-off-by: Mao Wenan <maowenan@huawei.com>
->> ---
->>  drivers/usb/gadget/udc/Kconfig | 1 +
->>  1 file changed, 1 insertion(+)
->>
->> diff --git a/drivers/usb/gadget/udc/Kconfig b/drivers/usb/gadget/udc/Kconfig
->> index acaec3a..d103154 100644
->> --- a/drivers/usb/gadget/udc/Kconfig
->> +++ b/drivers/usb/gadget/udc/Kconfig
->> @@ -445,6 +445,7 @@ config USB_TEGRA_XUDC
->>  	tristate "NVIDIA Tegra Superspeed USB 3.0 Device Controller"
->>  	depends on ARCH_TEGRA || COMPILE_TEST
->>  	depends on PHY_TEGRA_XUSB
->> +	depends on USB_ROLE_SWITCH
-> 
-> It looks like most other drivers that use the USB role switch class do
-> "select" here. Now, that's suboptimal because USB_ROLE_SWITCH is a user-
-> visible symbol, which can lead to conflicts, so it should be avoided. I
-> think that in this case it might make sense to hide USB_ROLE_SWITCH and
-> then convert all "depends on USB_ROLE_SWITCH" occurrences to "select
-> USB_ROLE_SWITCH". The USB role switch class is, after all, not useful by
-> itself. It always needs a host and/or gadget driver to make use of it.
-> 
+Acked-by: Vaibhav Jain <vaibhav@linux.ibm.com>
 
-Thanks, I send v2 and change 'depends on' to 'select' for this patch.
-
-> Thierry
-> 
+Thanks,
+-- 
+Vaibhav Jain <vaibhav@linux.ibm.com>
+Linux Technology Center, IBM India Pvt. Ltd.
 

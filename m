@@ -2,51 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2592DEDB5B
-	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Nov 2019 10:15:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30E7AEDB7D
+	for <lists+kernel-janitors@lfdr.de>; Mon,  4 Nov 2019 10:18:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727322AbfKDJPD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 4 Nov 2019 04:15:03 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:48888 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726441AbfKDJPD (ORCPT
+        id S1727430AbfKDJSK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 4 Nov 2019 04:18:10 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:58446 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727138AbfKDJSK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 4 Nov 2019 04:15:03 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA49EF8h131247;
-        Mon, 4 Nov 2019 09:14:27 GMT
+        Mon, 4 Nov 2019 04:18:10 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA49EJDS119332;
+        Mon, 4 Nov 2019 09:17:51 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=hE/jxSBVe+1FqR4NlJp5P3S1KuZxeNyQgypPmuBvD4o=;
- b=WUeVPs72wtXFQ1HcHu3qy0rYFoCPaezVIe7bcgpuMZ0sDh+c9otoOCrZO22gd6vJ3KqC
- U7X6+lt8vRG24o0nexMr46cxs7WBHYuqvkp+sX8AreJwg2oEdgLnmrQtJuqDvIMYawpY
- DJrNqDW02f2f8qMSUbe48as1bKRRvtRlScfhzvmjoP5IqOTUa9YavScq9fPlFDZBAvmF
- roEoZPDH20kh4JKBpx5NkWOoTDdczNoFXdDlklv7tWECytFtfNYi+F4+hn6s2oui9vLX
- iMtIxqBlcYvZMdaA5FittRwSR5OR/Rkm04U7MeF0G9vMArgj4lZNT+nwniASI/ugOEv8 rw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 2w117tnwxf-1
+ bh=VpF3n2MgAvnlY9fnK2p5DZXyfZYTZBZEOdxJexzBBgY=;
+ b=WHXxkPBg/zyHB8fTDOt7V7tqEVbSzSVFdziz7+YrmuapIUqNxXN01fkxYeuErCCpArBU
+ h8ypWDbDEBxRUYyKQbNYgx1FGAhckqzJ+mOyE2v3sNbTZQYwP/TMu2dmwol0RXLkrNBZ
+ h8iQEqGZ00g6R+Lprzn/X0HoIA1tyEp59O9Iu+c4IIwThYBsBzyybGyC+dB8x3vvYn5z
+ NhUXtuyAHI8uYCEp9kPhULUbZtRHyp3/4myG10HrErIbnEu9KPQAL3iHgtV7CFSG8ZAy
+ bJd+AQXem25yywirWdT50lkXVQxa1hME/ZmHxICnHMtnXWMDDsA2ACWalR1sNEEmJ/kX Ew== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 2w11rpnw46-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 04 Nov 2019 09:14:27 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA49EGTK147171;
-        Mon, 4 Nov 2019 09:14:26 GMT
+        Mon, 04 Nov 2019 09:17:50 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA49ELXk104410;
+        Mon, 4 Nov 2019 09:15:50 GMT
 Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 2w1kxm1895-1
+        by userp3020.oracle.com with ESMTP id 2w1kxcvv1b-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 04 Nov 2019 09:14:26 +0000
-Received: from abhmp0022.oracle.com (abhmp0022.oracle.com [141.146.116.28])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xA49CxRu010162;
-        Mon, 4 Nov 2019 09:13:07 GMT
+        Mon, 04 Nov 2019 09:15:50 +0000
+Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xA49Fln4011621;
+        Mon, 4 Nov 2019 09:15:47 GMT
 Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 04 Nov 2019 01:12:58 -0800
-Date:   Mon, 4 Nov 2019 12:12:52 +0300
+        with ESMTP ; Mon, 04 Nov 2019 01:15:46 -0800
+Date:   Mon, 4 Nov 2019 12:15:36 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] locking/lockdep: update the comment for __lock_release()
-Message-ID: <20191104091252.GA31509@mwanda>
+To:     Alexei Starovoitov <ast@kernel.org>,
+        Jakub Kicinski <jakub.kicinski@netronome.com>
+Cc:     Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>, netdev@vger.kernel.org,
+        bpf@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH bpf] bpf: offload: unlock on error in bpf_offload_dev_create()
+Message-ID: <20191104091536.GB31509@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -68,33 +72,32 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This changes "to the list" to "from the list" and also deletes the
-obsolete comment about the "@nested" argument.  The "nested" argument
-was removed in commit 5facae4f3549 ("locking/lockdep: Remove unused
-@nested argument from lock_release()").
+We need to drop the bpf_devs_lock on error before returning.
 
+Fixes: 9fd7c5559165 ("bpf: offload: aggregate offloads per-device")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- kernel/locking/lockdep.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+Static analysis.  Not tested.
 
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 8123518f9045..32282e7112d3 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -4208,11 +4208,9 @@ static int __lock_downgrade(struct lockdep_map *lock, unsigned long ip)
- }
- 
- /*
-- * Remove the lock to the list of currently held locks - this gets
-+ * Remove the lock from the list of currently held locks - this gets
-  * called on mutex_unlock()/spin_unlock*() (or on a failed
-  * mutex_lock_interruptible()).
-- *
-- * @nested is an hysterical artifact, needs a tree wide cleanup.
-  */
- static int
- __lock_release(struct lockdep_map *lock, unsigned long ip)
+ kernel/bpf/offload.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/kernel/bpf/offload.c b/kernel/bpf/offload.c
+index ba635209ae9a..5b9da0954a27 100644
+--- a/kernel/bpf/offload.c
++++ b/kernel/bpf/offload.c
+@@ -678,8 +678,10 @@ bpf_offload_dev_create(const struct bpf_prog_offload_ops *ops, void *priv)
+ 	down_write(&bpf_devs_lock);
+ 	if (!offdevs_inited) {
+ 		err = rhashtable_init(&offdevs, &offdevs_params);
+-		if (err)
++		if (err) {
++			up_write(&bpf_devs_lock);
+ 			return ERR_PTR(err);
++		}
+ 		offdevs_inited = true;
+ 	}
+ 	up_write(&bpf_devs_lock);
 -- 
 2.20.1
 

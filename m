@@ -2,117 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 39667EFE36
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Nov 2019 14:17:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BF80EFFAD
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Nov 2019 15:27:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388938AbfKENR0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Nov 2019 08:17:26 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:39318 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388782AbfKENRZ (ORCPT
+        id S2389505AbfKEO1S (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Nov 2019 09:27:18 -0500
+Received: from mail-il1-f196.google.com ([209.85.166.196]:40998 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389386AbfKEO1S (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Nov 2019 08:17:25 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA5DED5b107142;
-        Tue, 5 Nov 2019 13:16:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=zCxj2FypOGa+nB0i3E2EHjqmNc927yWEmUrHT+72n5c=;
- b=SQQ6Y5aApPKgJEnS/ha0anIYdLmFSfo+4WUfKxNbhciq1/7JrC8FYIrsVtuF0o5iZNvF
- bqTp0g1Zf7b3pe1YbHD9HG0HXzyl0gAqezrc2n+7hXxY1HWSgoyFPCcU+Srrl99xD93p
- BGGGkTEhe2ttolx528xGiE8UMwAn1bk4V6v9oXvbvcfv0H+p3F72wpZoBmks1P92RJIh
- kKZW6vHRF5NypWTIJEQdl//or7IVtfnwvhb7pGvv/bbmFW74zpfYK93D0K9JT4Nng8Gw
- ET8cQho6Plh/9+LccGMsTZ237b2VNJnSOv2EnmZ3fNGorNigtQeG9vEzWAWgyYYIMUWJ Hg== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 2w11rpx4g7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 05 Nov 2019 13:16:14 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA5DFjwx190493;
-        Tue, 5 Nov 2019 13:16:13 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3020.oracle.com with ESMTP id 2w31619xcw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 05 Nov 2019 13:16:13 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xA5DGCZM018918;
-        Tue, 5 Nov 2019 13:16:12 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 05 Nov 2019 05:16:11 -0800
-Date:   Tue, 5 Nov 2019 16:16:05 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc:     Mao Wenan <maowenan@huawei.com>, gregkh@linuxfoundation.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] usb: roles: Hide option USB_ROLE_SWITCH
-Message-ID: <20191105131605.GF10409@kadam>
-References: <20191104135312.GD996639@ulmo>
- <20191104144850.91305-1-maowenan@huawei.com>
- <20191105124218.GB12204@kuha.fi.intel.com>
+        Tue, 5 Nov 2019 09:27:18 -0500
+Received: by mail-il1-f196.google.com with SMTP id z10so18364227ilo.8
+        for <kernel-janitors@vger.kernel.org>; Tue, 05 Nov 2019 06:27:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=XGtmsyYSIduY596DKVg4aynEyRk5RAPKYl9VkgksD6c=;
+        b=NrSlTsB4Zj+3Gww+OhWKxVIDV4MhCoUcMFmoXITucvlnFJLDVByTSZAV6Lxkvbf8rU
+         iDiCrvcZUIcmkSnIF5meHwONnmDOCEgDe4UoYQptGoih1IgfmTDOhnP1xD4VW2smoGva
+         La5yFOzh9AhRr02lozJz8kiXXRcBh4aQJJAphWpb8tqpjMVYjJQF2W3G/nI/LDDuWWTa
+         e6n2gUQuPW+rM8oPSMQOiN37FS8yCKAKIl2i7Dz58NgulrpzySwLrv+MIQDWMVFM977E
+         co/O1cF9lqhaITL82XKurkqPAUMQDAg/Kofld/m3ftZ3EjySjafINiN64S87vbs5uUmO
+         DRBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=XGtmsyYSIduY596DKVg4aynEyRk5RAPKYl9VkgksD6c=;
+        b=CIx9X7Dkrb3RSdDCa1OY8LZ9L8i6XXjlZ1fdqf28Fy2sohPCoiQ8P60pitB6RUHi0B
+         A+frG8w0OnsVg/U3lIzSIrdejMwW3JTuOlzigLlsyaY91LptUBw8tg0meO17YkzgNzGv
+         yLYB/xBn223pTiaetXjQfxqsgb1vmxjMyMTL0LJcaIK5OiwKzxuMzLxdRwMwR0HfP91l
+         W40F+uCyV7WnaZFvzCGnByFFh6d5QVcIsXBt5Dmpn82QegG04IMmMqzYaGz46P9v3roF
+         qwNoKYAbe7oqLr2AXp7UVrdsWE8P8sWxEgspCqnX1CR+7aUOBBAFDZKuJ1rw3Jdup/bi
+         ARKg==
+X-Gm-Message-State: APjAAAVepn60NWkvqiQ1biN3tshI/QhfrxlmEjdWmdDHCfwXSkDddltc
+        JzYbFS2IP6g7zcMY5Th9zhG8tPK2aQcNaA0XHfZSAWwH
+X-Google-Smtp-Source: APXvYqxzpTwAbf0mzcKPt5hPvOzJKzlzYz9JENd144JPxCEhs5pYQfrGOaSgdgQV4oQPm0nliHgWgwg/GhNuYIGKQ8k=
+X-Received: by 2002:a92:1793:: with SMTP id 19mr34422615ilx.3.1572964035760;
+ Tue, 05 Nov 2019 06:27:15 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191105124218.GB12204@kuha.fi.intel.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9431 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1911050109
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9431 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1911050109
+Reply-To: johncampbell1977062@gmail.com
+Received: by 2002:a05:6638:2b0:0:0:0:0 with HTTP; Tue, 5 Nov 2019 06:27:15
+ -0800 (PST)
+From:   John Campbell <johncampbell1977062@gmail.com>
+Date:   Tue, 5 Nov 2019 06:27:15 -0800
+X-Google-Sender-Auth: TpXnix_DTr8E5dOYJOdwzQyAidY
+Message-ID: <CAJiV6YFKZevvj7Tp1FdVPeLFX6t2-pKWhb5ku+YYtMcEKvpqMg@mail.gmail.com>
+Subject: Hi
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Nov 05, 2019 at 02:42:18PM +0200, Heikki Krogerus wrote:
-> On Mon, Nov 04, 2019 at 10:48:50PM +0800, Mao Wenan wrote:
-> > The USB role switch class is, after all,
-> > not useful by itself. Hiding USB_ROLE_SWITCH
-> > so we can avoid any of the pitfalls associated
-> > with user-visible symbols and "select".
-> > 
-> > Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> > ---
-> >  drivers/usb/roles/Kconfig | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/usb/roles/Kconfig b/drivers/usb/roles/Kconfig
-> > index f8b31aa..1da58d4 100644
-> > --- a/drivers/usb/roles/Kconfig
-> > +++ b/drivers/usb/roles/Kconfig
-> > @@ -1,7 +1,7 @@
-> >  # SPDX-License-Identifier: GPL-2.0
-> >  
-> >  config USB_ROLE_SWITCH
-> > -	tristate "USB Role Switch Support"
-> > +	tristate
-> >  	help
-> >  	  USB Role Switch is a device that can select the USB role - host or
-> >  	  device - for a USB port (connector). In most cases dual-role capable
-> 
-> You didn't actually convert the "depends on USB_ROLE_SWTICH" to
-> "select USB_ROLE_SWITCH" before this. You also left the help text that
-> is now useless.
-> 
-> I really think that instead of this, we should just convert all
-> "select USB_ROLE_SWTICH" to "depends on USB_ROLE_SWITCH".
+I am John Campbell,
 
-The you have to find USB_ROLE_SWITCH first when you want to enable your
-hardware...  It's feels really confusing when you want to create a
-.config file...
+I'm 49 years old, from the united states but I am currently in Syria
+for peace keeping mission. I am the commanding officer of the third
+Battalion soldier regime.
 
-I sometimes think maybe I'm too stupid to configure a kernel these days
-and that's sort of sad because how is Aunt Tillie supposed to manage?
+Please forgive my manners am not good when it comes to Internet
+because that is not really my field I actually connected with you from
+LinkedIn. Here in Syria we are not allowed to go out that makes it
+very bored for me so I just think I need a friend to talk to outside
+to keep me going. I would love to get to know the "real" you as a
+friend.
 
-regards,
-dan carpenter
+Respectfully,
 
+John Campbell

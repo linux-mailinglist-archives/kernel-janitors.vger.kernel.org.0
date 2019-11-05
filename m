@@ -2,100 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63D75EFAD8
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Nov 2019 11:21:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2887EFBBB
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Nov 2019 11:50:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388353AbfKEKUj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Nov 2019 05:20:39 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:41810 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388022AbfKEKUj (ORCPT
+        id S2388148AbfKEKub (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Nov 2019 05:50:31 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:43573 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726867AbfKEKub (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Nov 2019 05:20:39 -0500
-Received: by mail-wr1-f67.google.com with SMTP id p4so20629940wrm.8;
-        Tue, 05 Nov 2019 02:20:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=U7rVx6gqyBAf8/Ix0rAHegGvn59AhNGRQobMkf7SosQ=;
-        b=bzTtTwtgX5SNoprXTuL3uJvNqg+rVVN6QiEEl3vLtO2OA5ja3rtlJxNhH8T45Q55Hk
-         v3XWKTYxeFDxyegsUAXHU5jMvZNHU02o6JtDh0nkGMOGFkL0FRS3hhkvzP3Vqsnpd0Bt
-         NpGNCvSx9LMmH07fWqN5CCbQfk7twqlTQhgnHm5Rbt4KwE/DjRYQgKe0vTe4DinmBTs5
-         uIiQ/LTogvZuw3fJW7T188+zOFtN9V5fJddUzMhh9WQPk132HJLyNq7JwvY0iiaPFaUB
-         N+oxqVBG8nv94B3vvOFg8Hv68TIQh4LSdAkfWtGFEGU3w77gqtwIcJ+bnJpRe+WDmv2C
-         Nn1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=U7rVx6gqyBAf8/Ix0rAHegGvn59AhNGRQobMkf7SosQ=;
-        b=ECgofoW7RxA3L0b3JScq2fbNXcFFWAtukl6l+Nj3usgyVbhUojrNBHXuinnPY17nZb
-         fj/ELSCRPPHemgQ7HoYhoch4TxnJyioz8va0qUkO+Z32vD5gLlZrk2olJkQcybP5EyeU
-         s3yOLBzMdMi1HTEKgGKi9uwZYeX7382SgaT4sijVAgfd/ff4hdDErNHeNX4pZTyvaB1s
-         EZdMsMe2qdUjMdVBYJuk4MQP8PBSG89zbyiCrkxJ6yt1qylG42dV5vLXVIkdY9WUa4En
-         DQG0/fGnXdqjW9+5/NwUJSsQk7vutjvmi1JYDMAG8z97THV+tp0m8GoEXa/AQqmLG+Ww
-         werQ==
-X-Gm-Message-State: APjAAAX4G+kaZODNfD+LfL7Q4UfIqzwTGF3h1bvsldnlDpfHwTZ0KvjO
-        jnrk6PDlr+97AR5pVHvMj5cR/Mu4Ue+ohFidWGQ=
-X-Google-Smtp-Source: APXvYqyWKbdqV5y+fX/GlmvSFNbw7CIaOg7O75M1f/C35mhY/KY/3EDtUrS9+Q26Hy7PZ3+eHf9KeSFGTCo8vlnS3Ig=
-X-Received: by 2002:a5d:490c:: with SMTP id x12mr25443865wrq.301.1572949236565;
- Tue, 05 Nov 2019 02:20:36 -0800 (PST)
+        Tue, 5 Nov 2019 05:50:31 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iRwPq-00081q-Sr; Tue, 05 Nov 2019 10:50:26 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] phy-rockchip-inno-hdmi: fix spelling mistake "Innosilion" -> "Innosilicon"
+Date:   Tue,  5 Nov 2019 10:50:26 +0000
+Message-Id: <20191105105026.50581-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <d5c12f05-5a07-b698-ae60-2728330dd378@web.de> <CAL2rwxrdOVeO3RT_Y3mk3p-076eMMWm6VVF0C4yiYEWJ0TO5DQ@mail.gmail.com>
- <20191105093641.GE10409@kadam>
-In-Reply-To: <20191105093641.GE10409@kadam>
-From:   Julian Calaby <julian.calaby@gmail.com>
-Date:   Tue, 5 Nov 2019 21:20:25 +1100
-Message-ID: <CAGRGNgU9=Ng60QE_-f8fs5HzDTFQ_8R3taidERAocBc1nQwbXg@mail.gmail.com>
-Subject: Re: [PATCH] scsi: megaraid_sas: Use common error handling code in megasas_mgmt_ioctl_fw()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Sumit Saxena <sumit.saxena@broadcom.com>,
-        Markus Elfring <Markus.Elfring@web.de>,
-        Linux SCSI List <linux-scsi@vger.kernel.org>,
-        "PDL,MEGARAIDLINUX" <megaraidlinux.pdl@broadcom.com>,
-        "James E. J. Bottomley" <jejb@linux.ibm.com>,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>,
-        Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
-        YueHaibing <yuehaibing@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
+From: Colin Ian King <colin.king@canonical.com>
 
-On Tue, Nov 5, 2019 at 8:41 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> On Tue, Nov 05, 2019 at 02:58:35PM +0530, Sumit Saxena wrote:
-> > On Fri, Nov 1, 2019 at 3:06 AM Markus Elfring <Markus.Elfring@web.de> wrote:
-> > >
-> > > From: Markus Elfring <elfring@users.sourceforge.net>
-> > > Date: Thu, 31 Oct 2019 22:23:02 +0100
-> > >
-> > > Move the same error code assignments so that such exception handling
-> > > can be better reused at the end of this function.
-> > >
-> > > This issue was detected by using the Coccinelle software.
-> > >
-> > > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> >
-> > Acked-by: Sumit Saxena <sumit.saxena@broadcom.com>
-> >
->
-> The code was a lot better originally...  :(
+There is a spelling mistake in the module description. Fix it.
 
-Agreed, this is a lot of stuffing around to save 3 lines.
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/phy/rockchip/phy-rockchip-inno-hdmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-
+diff --git a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
+index 2b97fb1185a0..91923209a026 100644
+--- a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
+@@ -1273,5 +1273,5 @@ static struct platform_driver inno_hdmi_phy_driver = {
+ module_platform_driver(inno_hdmi_phy_driver);
+ 
+ MODULE_AUTHOR("Zheng Yang <zhengyang@rock-chips.com>");
+-MODULE_DESCRIPTION("Innosilion HDMI 2.0 Transmitter PHY Driver");
++MODULE_DESCRIPTION("Innosilicon HDMI 2.0 Transmitter PHY Driver");
+ MODULE_LICENSE("GPL v2");
 -- 
-Julian Calaby
+2.20.1
 
-Email: julian.calaby@gmail.com
-Profile: http://www.google.com/profiles/julian.calaby/

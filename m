@@ -2,72 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C631EFFEA
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Nov 2019 15:34:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CEE3F005A
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Nov 2019 15:54:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389799AbfKEOep (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Nov 2019 09:34:45 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32]:57634 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2389763AbfKEOek (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Nov 2019 09:34:40 -0500
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 5685F8DD25CC4EF26B11;
-        Tue,  5 Nov 2019 22:34:38 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.439.0; Tue, 5 Nov 2019 22:34:28 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <wangzhou1@hisilicon.com>, <herbert@gondor.apana.org.au>,
-        <davem@davemloft.net>, <tanshukun1@huawei.com>
-CC:     <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH -next] crypto: hisilicon: move label err to #ifdef CONFIG_NUMA
-Date:   Tue, 5 Nov 2019 22:33:40 +0800
-Message-ID: <20191105143340.32950-1-maowenan@huawei.com>
+        id S2388635AbfKEOyV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Nov 2019 09:54:21 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:49716 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728180AbfKEOyV (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 5 Nov 2019 09:54:21 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iS0Do-0002VU-Gw; Tue, 05 Nov 2019 14:54:16 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Saeed Mahameed <saeedm@mellanox.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-rdma@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] net/mlx5: fix spelling mistake "metdata" -> "metadata"
+Date:   Tue,  5 Nov 2019 14:54:16 +0000
+Message-Id: <20191105145416.60451-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If CONFIG_NUMA is not set, there is error in function
-find_zip_device:
-drivers/crypto/hisilicon/zip/zip_main.c:154:13: error:
-head undeclared (first use in this function)
-  free_list(&head);
+From: Colin Ian King <colin.king@canonical.com>
 
-This is because CONFIG_NUMA is not defined, it should move
-label err to #ifdef CONFIG_NUMA.
+There is a spelling mistake in a esw_warn warning message. Fix it.
 
-Fixes: 700f7d0d29c7 ("crypto: hisilicon - fix to return sub-optimal device when best device has no qps")
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/crypto/hisilicon/zip/zip_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/hisilicon/zip/zip_main.c b/drivers/crypto/hisilicon/zip/zip_main.c
-index 255b63c..0504fb2 100644
---- a/drivers/crypto/hisilicon/zip/zip_main.c
-+++ b/drivers/crypto/hisilicon/zip/zip_main.c
-@@ -150,10 +150,12 @@ struct hisi_zip *find_zip_device(int node)
- 
- 	return ret;
- 
-+#ifdef CONFIG_NUMA
- err:
- 	free_list(&head);
- 	mutex_unlock(&hisi_zip_list_lock);
- 	return NULL;
-+#endif
- }
- 
- struct hisi_zip_hw_error {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+index bd9fd59d8233..1c3fdee87588 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -1877,7 +1877,7 @@ static int esw_vport_create_ingress_acl_group(struct mlx5_eswitch *esw,
+ 	if (IS_ERR(g)) {
+ 		ret = PTR_ERR(g);
+ 		esw_warn(esw->dev,
+-			 "Failed to create vport[%d] ingress metdata group, err(%d)\n",
++			 "Failed to create vport[%d] ingress metadata group, err(%d)\n",
+ 			 vport->vport, ret);
+ 		goto grp_err;
+ 	}
 -- 
-2.7.4
+2.20.1
 

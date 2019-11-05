@@ -2,100 +2,120 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C4F2F00A8
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Nov 2019 16:04:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12F7DF0152
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Nov 2019 16:26:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731079AbfKEPEH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Nov 2019 10:04:07 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:49943 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730946AbfKEPEH (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Nov 2019 10:04:07 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iS0ND-0003AZ-ML; Tue, 05 Nov 2019 15:03:59 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Corentin Labbe <clabbe.montjoie@gmail.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        "David S . Miller" <davem@davemloft.net>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>, linux-crypto@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next][V2] crypto: allwinner: fix some spelling mistakes
-Date:   Tue,  5 Nov 2019 15:03:59 +0000
-Message-Id: <20191105150359.61379-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1731035AbfKEP02 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Nov 2019 10:26:28 -0500
+Received: from mga07.intel.com ([134.134.136.100]:31556 "EHLO mga07.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727889AbfKEP02 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 5 Nov 2019 10:26:28 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Nov 2019 07:26:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,271,1569308400"; 
+   d="scan'208";a="212559537"
+Received: from kuha.fi.intel.com ([10.237.72.53])
+  by fmsmga001.fm.intel.com with SMTP; 05 Nov 2019 07:26:24 -0800
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 05 Nov 2019 17:26:24 +0200
+Date:   Tue, 5 Nov 2019 17:26:24 +0200
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Mao Wenan <maowenan@huawei.com>, gregkh@linuxfoundation.org,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] usb: roles: Hide option USB_ROLE_SWITCH
+Message-ID: <20191105152624.GC12204@kuha.fi.intel.com>
+References: <20191104135312.GD996639@ulmo>
+ <20191104144850.91305-1-maowenan@huawei.com>
+ <20191105124218.GB12204@kuha.fi.intel.com>
+ <20191105131605.GF10409@kadam>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191105131605.GF10409@kadam>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hi Dan,
 
-There are spelling mistakes in dev_warn and dev_err messages. Fix these.
-Change "recommandation" to "recommendation" and "tryed" to "tried".
+On Tue, Nov 05, 2019 at 04:16:05PM +0300, Dan Carpenter wrote:
+> On Tue, Nov 05, 2019 at 02:42:18PM +0200, Heikki Krogerus wrote:
+> > On Mon, Nov 04, 2019 at 10:48:50PM +0800, Mao Wenan wrote:
+> > > The USB role switch class is, after all,
+> > > not useful by itself. Hiding USB_ROLE_SWITCH
+> > > so we can avoid any of the pitfalls associated
+> > > with user-visible symbols and "select".
+> > > 
+> > > Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> > > ---
+> > >  drivers/usb/roles/Kconfig | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > > 
+> > > diff --git a/drivers/usb/roles/Kconfig b/drivers/usb/roles/Kconfig
+> > > index f8b31aa..1da58d4 100644
+> > > --- a/drivers/usb/roles/Kconfig
+> > > +++ b/drivers/usb/roles/Kconfig
+> > > @@ -1,7 +1,7 @@
+> > >  # SPDX-License-Identifier: GPL-2.0
+> > >  
+> > >  config USB_ROLE_SWITCH
+> > > -	tristate "USB Role Switch Support"
+> > > +	tristate
+> > >  	help
+> > >  	  USB Role Switch is a device that can select the USB role - host or
+> > >  	  device - for a USB port (connector). In most cases dual-role capable
+> > 
+> > You didn't actually convert the "depends on USB_ROLE_SWTICH" to
+> > "select USB_ROLE_SWITCH" before this. You also left the help text that
+> > is now useless.
+> > 
+> > I really think that instead of this, we should just convert all
+> > "select USB_ROLE_SWTICH" to "depends on USB_ROLE_SWITCH".
+> 
+> The you have to find USB_ROLE_SWITCH first when you want to enable your
+> hardware...  It's feels really confusing when you want to create a
+> .config file...
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
+Unfortunately selecting the class alone is not enough. The USB role
+switch on the system may be a dual-role capable USB controller, but it
+may also be a mux that has its own separate driver.
 
-V2: Fix "tryed"
+It's equally or even more confusing for the user if the USB drivers
+are enabled, including the dual-role mode, but the connector still
+works only in one role, or in worst case not at all (if there is no
+mux driver and the mux is left in "safe mode" so that the pins on the
+connector are not connected to anything).
 
----
- drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c | 4 ++--
- drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+I still think that we should make these drivers depend on the class
+instead of just selecting it. That way we at least give the user a
+hint that there are also separate USB role switch drivers that may be
+needed.
 
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c
-index 8e4eddbcc814..73a7649f915d 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c
-@@ -469,7 +469,7 @@ static int sun8i_ce_get_clks(struct sun8i_ce_dev *ce)
- 		}
- 		if (ce->variant->ce_clks[i].max_freq > 0 &&
- 		    cr > ce->variant->ce_clks[i].max_freq)
--			dev_warn(ce->dev, "Frequency for %s (%lu hz) is higher than datasheet's recommandation (%lu hz)",
-+			dev_warn(ce->dev, "Frequency for %s (%lu hz) is higher than datasheet's recommendation (%lu hz)",
- 				 ce->variant->ce_clks[i].name, cr,
- 				 ce->variant->ce_clks[i].max_freq);
- 	}
-@@ -513,7 +513,7 @@ static int sun8i_ce_register_algs(struct sun8i_ce_dev *ce)
- 			break;
- 		default:
- 			ce_algs[i].ce = NULL;
--			dev_err(ce->dev, "ERROR: tryed to register an unknown algo\n");
-+			dev_err(ce->dev, "ERROR: tried to register an unknown algo\n");
- 		}
- 	}
- 	return 0;
-diff --git a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c
-index e58407ac256b..b90c2e6c1393 100644
---- a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c
-+++ b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c
-@@ -446,7 +446,7 @@ static int sun8i_ss_register_algs(struct sun8i_ss_dev *ss)
- 			break;
- 		default:
- 			ss_algs[i].ss = NULL;
--			dev_err(ss->dev, "ERROR: tryed to register an unknown algo\n");
-+			dev_err(ss->dev, "ERROR: tried to register an unknown algo\n");
- 		}
- 	}
- 	return 0;
-@@ -502,7 +502,7 @@ static int sun8i_ss_get_clks(struct sun8i_ss_dev *ss)
- 		}
- 		if (ss->variant->ss_clks[i].max_freq > 0 &&
- 		    cr > ss->variant->ss_clks[i].max_freq)
--			dev_warn(ss->dev, "Frequency for %s (%lu hz) is higher than datasheet's recommandation (%lu hz)",
-+			dev_warn(ss->dev, "Frequency for %s (%lu hz) is higher than datasheet's recommendation (%lu hz)",
- 				 ss->variant->ss_clks[i].name, cr,
- 				 ss->variant->ss_clks[i].max_freq);
- 	}
+> I sometimes think maybe I'm too stupid to configure a kernel these days
+> and that's sort of sad because how is Aunt Tillie supposed to manage?
+
+We can always use something like conditional comments in the
+Kconfig files to make sure that the user is told that in order to
+select the driver, a dependency must be satisfied:
+
+        config MY_AWESOME_DRIVER
+                tristate "My awesome driver!"
+                depends on USB_ROLE_SWITCH
+                help
+                  That's right! IT REALLY IS AWESOME!
+
+        comment "My awesome driver depends on USB_ROLE_SWITCH..."
+                depends on USB_ROLE_SWITCH=n
+
+thanks,
+
 -- 
-2.20.1
-
+heikki

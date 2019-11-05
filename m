@@ -2,49 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DAFC6EF9A6
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Nov 2019 10:39:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63D75EFAD8
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Nov 2019 11:21:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730891AbfKEJjG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Nov 2019 04:39:06 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:60730 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730769AbfKEJjG (ORCPT
+        id S2388353AbfKEKUj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Nov 2019 05:20:39 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:41810 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388022AbfKEKUj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Nov 2019 04:39:06 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA59crKN105088;
-        Tue, 5 Nov 2019 09:38:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=co+w0k79G3ndnVT1tw2oC6b5nHyZtabUCQzvllnx4dg=;
- b=Vl8wn86Z7TBfVgmOyWLrsHJVhFqfpWZA68lrnLDuEW4JBiN/O9rCX+UPVZPg4JGHwx7/
- ASYCraCunqDPyfllA5+UbogKpN/WF3P9tno3BAzmzDcA+g9RgCZdUwr0pev0kySL8+YV
- 5h1g0CCWiSHxQlInsE+di4F5JqXarlWoxQLFMQ+qCDDF5ulVLBH31PBX+1vm5EmUb6/W
- p06lXZOUSeWf4ZVhm8JxSFumyI1QEooQz0bVMiQjSZYTocDZllRJaHnVj65sYK+aDN3q
- To8SUomhvgChIlJOqnw8Wxi8NXoRWRs1qAEt144F4wFaSpsrAqjCA8gAxiSF1cCuiV8H jw== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 2w12er4t9n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 05 Nov 2019 09:38:53 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA59XTs4052977;
-        Tue, 5 Nov 2019 09:36:53 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 2w3160yr75-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 05 Nov 2019 09:36:52 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xA59apol018864;
-        Tue, 5 Nov 2019 09:36:51 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 05 Nov 2019 01:36:50 -0800
-Date:   Tue, 5 Nov 2019 12:36:41 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Sumit Saxena <sumit.saxena@broadcom.com>
-Cc:     Markus Elfring <Markus.Elfring@web.de>,
+        Tue, 5 Nov 2019 05:20:39 -0500
+Received: by mail-wr1-f67.google.com with SMTP id p4so20629940wrm.8;
+        Tue, 05 Nov 2019 02:20:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=U7rVx6gqyBAf8/Ix0rAHegGvn59AhNGRQobMkf7SosQ=;
+        b=bzTtTwtgX5SNoprXTuL3uJvNqg+rVVN6QiEEl3vLtO2OA5ja3rtlJxNhH8T45Q55Hk
+         v3XWKTYxeFDxyegsUAXHU5jMvZNHU02o6JtDh0nkGMOGFkL0FRS3hhkvzP3Vqsnpd0Bt
+         NpGNCvSx9LMmH07fWqN5CCbQfk7twqlTQhgnHm5Rbt4KwE/DjRYQgKe0vTe4DinmBTs5
+         uIiQ/LTogvZuw3fJW7T188+zOFtN9V5fJddUzMhh9WQPk132HJLyNq7JwvY0iiaPFaUB
+         N+oxqVBG8nv94B3vvOFg8Hv68TIQh4LSdAkfWtGFEGU3w77gqtwIcJ+bnJpRe+WDmv2C
+         Nn1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=U7rVx6gqyBAf8/Ix0rAHegGvn59AhNGRQobMkf7SosQ=;
+        b=ECgofoW7RxA3L0b3JScq2fbNXcFFWAtukl6l+Nj3usgyVbhUojrNBHXuinnPY17nZb
+         fj/ELSCRPPHemgQ7HoYhoch4TxnJyioz8va0qUkO+Z32vD5gLlZrk2olJkQcybP5EyeU
+         s3yOLBzMdMi1HTEKgGKi9uwZYeX7382SgaT4sijVAgfd/ff4hdDErNHeNX4pZTyvaB1s
+         EZdMsMe2qdUjMdVBYJuk4MQP8PBSG89zbyiCrkxJ6yt1qylG42dV5vLXVIkdY9WUa4En
+         DQG0/fGnXdqjW9+5/NwUJSsQk7vutjvmi1JYDMAG8z97THV+tp0m8GoEXa/AQqmLG+Ww
+         werQ==
+X-Gm-Message-State: APjAAAX4G+kaZODNfD+LfL7Q4UfIqzwTGF3h1bvsldnlDpfHwTZ0KvjO
+        jnrk6PDlr+97AR5pVHvMj5cR/Mu4Ue+ohFidWGQ=
+X-Google-Smtp-Source: APXvYqyWKbdqV5y+fX/GlmvSFNbw7CIaOg7O75M1f/C35mhY/KY/3EDtUrS9+Q26Hy7PZ3+eHf9KeSFGTCo8vlnS3Ig=
+X-Received: by 2002:a5d:490c:: with SMTP id x12mr25443865wrq.301.1572949236565;
+ Tue, 05 Nov 2019 02:20:36 -0800 (PST)
+MIME-Version: 1.0
+References: <d5c12f05-5a07-b698-ae60-2728330dd378@web.de> <CAL2rwxrdOVeO3RT_Y3mk3p-076eMMWm6VVF0C4yiYEWJ0TO5DQ@mail.gmail.com>
+ <20191105093641.GE10409@kadam>
+In-Reply-To: <20191105093641.GE10409@kadam>
+From:   Julian Calaby <julian.calaby@gmail.com>
+Date:   Tue, 5 Nov 2019 21:20:25 +1100
+Message-ID: <CAGRGNgU9=Ng60QE_-f8fs5HzDTFQ_8R3taidERAocBc1nQwbXg@mail.gmail.com>
+Subject: Re: [PATCH] scsi: megaraid_sas: Use common error handling code in megasas_mgmt_ioctl_fw()
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Sumit Saxena <sumit.saxena@broadcom.com>,
+        Markus Elfring <Markus.Elfring@web.de>,
         Linux SCSI List <linux-scsi@vger.kernel.org>,
         "PDL,MEGARAIDLINUX" <megaraidlinux.pdl@broadcom.com>,
         "James E. J. Bottomley" <jejb@linux.ibm.com>,
@@ -52,53 +59,43 @@ Cc:     Markus Elfring <Markus.Elfring@web.de>,
         Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
         LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
         Chandrakanth Patil <chandrakanth.patil@broadcom.com>,
         YueHaibing <yuehaibing@huawei.com>
-Subject: Re: [PATCH] scsi: megaraid_sas: Use common error handling code in
- megasas_mgmt_ioctl_fw()
-Message-ID: <20191105093641.GE10409@kadam>
-References: <d5c12f05-5a07-b698-ae60-2728330dd378@web.de>
- <CAL2rwxrdOVeO3RT_Y3mk3p-076eMMWm6VVF0C4yiYEWJ0TO5DQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAL2rwxrdOVeO3RT_Y3mk3p-076eMMWm6VVF0C4yiYEWJ0TO5DQ@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9431 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1908290000 definitions=main-1911050082
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9431 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
- definitions=main-1911050083
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Nov 05, 2019 at 02:58:35PM +0530, Sumit Saxena wrote:
-> On Fri, Nov 1, 2019 at 3:06 AM Markus Elfring <Markus.Elfring@web.de> wrote:
-> >
-> > From: Markus Elfring <elfring@users.sourceforge.net>
-> > Date: Thu, 31 Oct 2019 22:23:02 +0100
-> >
-> > Move the same error code assignments so that such exception handling
-> > can be better reused at the end of this function.
-> >
-> > This issue was detected by using the Coccinelle software.
-> >
-> > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> 
-> Acked-by: Sumit Saxena <sumit.saxena@broadcom.com>
-> 
+Hi,
 
-The code was a lot better originally...  :(
+On Tue, Nov 5, 2019 at 8:41 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> On Tue, Nov 05, 2019 at 02:58:35PM +0530, Sumit Saxena wrote:
+> > On Fri, Nov 1, 2019 at 3:06 AM Markus Elfring <Markus.Elfring@web.de> wrote:
+> > >
+> > > From: Markus Elfring <elfring@users.sourceforge.net>
+> > > Date: Thu, 31 Oct 2019 22:23:02 +0100
+> > >
+> > > Move the same error code assignments so that such exception handling
+> > > can be better reused at the end of this function.
+> > >
+> > > This issue was detected by using the Coccinelle software.
+> > >
+> > > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+> >
+> > Acked-by: Sumit Saxena <sumit.saxena@broadcom.com>
+> >
+>
+> The code was a lot better originally...  :(
 
-regards,
-dan carpenter
+Agreed, this is a lot of stuffing around to save 3 lines.
 
+Thanks,
+
+-- 
+Julian Calaby
+
+Email: julian.calaby@gmail.com
+Profile: http://www.google.com/profiles/julian.calaby/

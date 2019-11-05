@@ -2,120 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12F7DF0152
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Nov 2019 16:26:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AB7EF045E
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Nov 2019 18:51:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731035AbfKEP02 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Nov 2019 10:26:28 -0500
-Received: from mga07.intel.com ([134.134.136.100]:31556 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727889AbfKEP02 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Nov 2019 10:26:28 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 05 Nov 2019 07:26:27 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,271,1569308400"; 
-   d="scan'208";a="212559537"
-Received: from kuha.fi.intel.com ([10.237.72.53])
-  by fmsmga001.fm.intel.com with SMTP; 05 Nov 2019 07:26:24 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 05 Nov 2019 17:26:24 +0200
-Date:   Tue, 5 Nov 2019 17:26:24 +0200
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Mao Wenan <maowenan@huawei.com>, gregkh@linuxfoundation.org,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] usb: roles: Hide option USB_ROLE_SWITCH
-Message-ID: <20191105152624.GC12204@kuha.fi.intel.com>
-References: <20191104135312.GD996639@ulmo>
- <20191104144850.91305-1-maowenan@huawei.com>
- <20191105124218.GB12204@kuha.fi.intel.com>
- <20191105131605.GF10409@kadam>
+        id S2390385AbfKERvL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Nov 2019 12:51:11 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:54539 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389356AbfKERvL (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 5 Nov 2019 12:51:11 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iS2yy-00078j-Ji; Tue, 05 Nov 2019 17:51:08 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Hans de Goede <hdegoede@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-fsdevel@vger.kernel.org, devel@driverdev.osuosl.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] staging: vboxsf: fix dereference of pointer dentry before it is null checked
+Date:   Tue,  5 Nov 2019 17:51:08 +0000
+Message-Id: <20191105175108.79824-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191105131605.GF10409@kadam>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
+From: Colin Ian King <colin.king@canonical.com>
 
-On Tue, Nov 05, 2019 at 04:16:05PM +0300, Dan Carpenter wrote:
-> On Tue, Nov 05, 2019 at 02:42:18PM +0200, Heikki Krogerus wrote:
-> > On Mon, Nov 04, 2019 at 10:48:50PM +0800, Mao Wenan wrote:
-> > > The USB role switch class is, after all,
-> > > not useful by itself. Hiding USB_ROLE_SWITCH
-> > > so we can avoid any of the pitfalls associated
-> > > with user-visible symbols and "select".
-> > > 
-> > > Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> > > ---
-> > >  drivers/usb/roles/Kconfig | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/drivers/usb/roles/Kconfig b/drivers/usb/roles/Kconfig
-> > > index f8b31aa..1da58d4 100644
-> > > --- a/drivers/usb/roles/Kconfig
-> > > +++ b/drivers/usb/roles/Kconfig
-> > > @@ -1,7 +1,7 @@
-> > >  # SPDX-License-Identifier: GPL-2.0
-> > >  
-> > >  config USB_ROLE_SWITCH
-> > > -	tristate "USB Role Switch Support"
-> > > +	tristate
-> > >  	help
-> > >  	  USB Role Switch is a device that can select the USB role - host or
-> > >  	  device - for a USB port (connector). In most cases dual-role capable
-> > 
-> > You didn't actually convert the "depends on USB_ROLE_SWTICH" to
-> > "select USB_ROLE_SWITCH" before this. You also left the help text that
-> > is now useless.
-> > 
-> > I really think that instead of this, we should just convert all
-> > "select USB_ROLE_SWTICH" to "depends on USB_ROLE_SWITCH".
-> 
-> The you have to find USB_ROLE_SWITCH first when you want to enable your
-> hardware...  It's feels really confusing when you want to create a
-> .config file...
+Currently the pointer dentry is being dereferenced before it is
+being null checked.  Fix this by only dereferencing dentry once
+we know it is not null.
 
-Unfortunately selecting the class alone is not enough. The USB role
-switch on the system may be a dual-role capable USB controller, but it
-may also be a mux that has its own separate driver.
+Addresses-Coverity: ("Dereference before null check")
+Fixes: df4028658f9d ("staging: Add VirtualBox guest shared folder (vboxsf) support")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/staging/vboxsf/utils.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-It's equally or even more confusing for the user if the USB drivers
-are enabled, including the dual-role mode, but the connector still
-works only in one role, or in worst case not at all (if there is no
-mux driver and the mux is left in "safe mode" so that the pins on the
-connector are not connected to anything).
-
-I still think that we should make these drivers depend on the class
-instead of just selecting it. That way we at least give the user a
-hint that there are also separate USB role switch drivers that may be
-needed.
-
-> I sometimes think maybe I'm too stupid to configure a kernel these days
-> and that's sort of sad because how is Aunt Tillie supposed to manage?
-
-We can always use something like conditional comments in the
-Kconfig files to make sure that the user is told that in order to
-select the driver, a dependency must be satisfied:
-
-        config MY_AWESOME_DRIVER
-                tristate "My awesome driver!"
-                depends on USB_ROLE_SWITCH
-                help
-                  That's right! IT REALLY IS AWESOME!
-
-        comment "My awesome driver depends on USB_ROLE_SWITCH..."
-                depends on USB_ROLE_SWITCH=n
-
-thanks,
-
+diff --git a/drivers/staging/vboxsf/utils.c b/drivers/staging/vboxsf/utils.c
+index 1870b69c824e..34a49e6f74fc 100644
+--- a/drivers/staging/vboxsf/utils.c
++++ b/drivers/staging/vboxsf/utils.c
+@@ -174,7 +174,7 @@ int vboxsf_stat_dentry(struct dentry *dentry, struct shfl_fsobjinfo *info)
+ 
+ int vboxsf_inode_revalidate(struct dentry *dentry)
+ {
+-	struct vboxsf_sbi *sbi = VBOXSF_SBI(dentry->d_sb);
++	struct vboxsf_sbi *sbi;
+ 	struct vboxsf_inode *sf_i;
+ 	struct shfl_fsobjinfo info;
+ 	struct timespec64 prev_mtime;
+@@ -187,6 +187,7 @@ int vboxsf_inode_revalidate(struct dentry *dentry)
+ 	inode = d_inode(dentry);
+ 	prev_mtime = inode->i_mtime;
+ 	sf_i = VBOXSF_I(inode);
++	sbi = VBOXSF_SBI(dentry->d_sb);
+ 	if (!sf_i->force_restat) {
+ 		if (time_before(jiffies, dentry->d_time + sbi->o.ttl))
+ 			return 0;
 -- 
-heikki
+2.20.1
+

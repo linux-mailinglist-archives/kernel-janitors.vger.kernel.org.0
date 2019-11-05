@@ -2,28 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 80D2CF0572
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Nov 2019 19:54:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40A22F057D
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Nov 2019 19:56:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390787AbfKESyo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Nov 2019 13:54:44 -0500
-Received: from mout.web.de ([212.227.15.3]:57891 "EHLO mout.web.de"
+        id S2390791AbfKES4n (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Nov 2019 13:56:43 -0500
+Received: from mout.web.de ([212.227.15.14]:47805 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2390664AbfKESyo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Nov 2019 13:54:44 -0500
+        id S2390651AbfKES4n (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 5 Nov 2019 13:56:43 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1572980071;
-        bh=IrHoS5ELADMnGYzpkW9OXRrDyaxbfr7vW949AVfzx8E=;
+        s=dbaedf251592; t=1572980184;
+        bh=O04SOfhyjtAX9VIh+fecSSaU9Sn317YdJ9++PLMXLq8=;
         h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=c6WZIX0lhsf/FQIAGjlonMjOHUY0NYJA3EXmkh5PZ2mfJ8yGPrO/Hdl7hOg7RveH0
-         PFYHMntG90mwUsvbM08ZosbK0DpxMhD0BFSnrH1wOVDd+7+wU7XpRVhjLaWI8Vw8OY
-         A8MlCDOvumr8/IyreN5s/1Yny79pF/CjJilVSHPA=
+        b=WENQh5YTQ3eKy17V6PKei1zGcVUtIB+1GFe8G8J6qo0pvNK3ls/9o4zSzwSNHbMHm
+         s9ehralIBNbyxbfpP4/WN2TkbOkUmiD76EKLZU/wrn4KCNj0x/KVQJOOo3bBqNqMzB
+         ziwPgznkNNrpld77QE9n37bdExHBXHX3yT58lC6A=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([78.48.164.204]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Ma2lb-1iDyX2371D-00Lm1o; Tue, 05
- Nov 2019 19:54:31 +0100
-Subject: [PATCH 1/2] misc: xilinx_sdfec: Use memdup_user() rather than
- duplicating its implementation
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MPGym-1iWTqS1pke-004U1W; Tue, 05
+ Nov 2019 19:56:24 +0100
+Subject: [PATCH 2/2] misc: xilinx_sdfec: Combine three condition checks into
+ one statement in xsdfec_add_ldpc()
 From:   Markus Elfring <Markus.Elfring@web.de>
 To:     linux-arm-kernel@lists.infradead.org,
         Arnd Bergmann <arnd@arndb.de>,
@@ -77,8 +77,8 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <f6f8f94b-295f-48f5-902e-3d6d4052d76b@web.de>
-Date:   Tue, 5 Nov 2019 19:54:30 +0100
+Message-ID: <b927be91-a380-1bba-2b10-f0ca49c477b5@web.de>
+Date:   Tue, 5 Nov 2019 19:56:23 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.1
 MIME-Version: 1.0
@@ -86,73 +86,76 @@ In-Reply-To: <af1ff373-56c0-ca49-36dd-15666d183c95@web.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:dFo5RsQWKBeUoKyfql5yStMOyrlHR0rO+G9FjsXmshzGuPDZIwi
- CLmjUkjSTijRScg3Nu5tXKzCelMTVxaXX34/cCKMvw7cYr9A/Mqu9ThimDT08ZiGLfHG03F
- bKWBwOmPZXOewykclw11Bkcr3VIC6prNwanqtuPr/5og5EF35M2WpBzScE9s8WvJFVGYhjh
- PgpP0zErR5UrgvUIKosSA==
+X-Provags-ID: V03:K1:0HBPd4tfVS9jcMccgm/pU//DnE0stIF68JhMEcrKFVL2ZEm+m+Q
+ r4aFR7q/eNehC5MB9ecdxTvyVuwcnL9VGXK4cFLq7ora6uJ9fQwYPXSCSR89LgLBd7vEVX+
+ YnktlkrpiwthwSIYDnlybrKXu6Ql/h0IoMF2V9enWIKYr4CFYqcVqIif59xfSZwDfxKhzX+
+ HbBtXjzHUNcqxAU/nwMYA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:uLMQ6rGCgJE=:Ie6v7c+PMy4IqftgQ0T/kC
- RP8iGRQ/aDyPb+zGwgzdt6rEEnQ8QgY8S/ZXuv1sWP2I0dOkceEs6QMqOa0rFG24+fQ2m508u
- LS11NmuYD2m62FfUwRRhB5MzPw9ZJ+7DJAfwJISdjcUQBsS+rjZSFdLhDA2etZ0Y6Vz71BcqU
- j7hlOqnzJNHK7P3+cjUVyS2dr8SuMV04BbG1lDCEx5mlzdM5KWfiLelNzODL9iQPosPhrnJyZ
- QugPjWu0xKTU5kFH6brpyAJBy5sDvRMZG5IWO+dgzHtrgNbWXYfLrVEnNdD9ueaJkGT73LYXR
- 700lLgSHzT8SvEQPgmp3ImdcCoXA/9XPJOGgZHqsX1uQi/ySQnhrGxPqj0hb3g4zRKbQceGRw
- r3Nt5jJTFMLmACOJPNF3OFQYg0PvTQX/dR7D791A3tvVWShzyTr+t9jyCNnbm8VIWCcgzAmOC
- mHN+0IdVokz6MY5tE54Tmko6Z4m6gI/vpjLvPScayoWF1o+OuN9gKwFVj8odvxk+r2MrvgmWW
- 4m0UFG2W4u9Wr3g3kknAs6Jr2Q2zIVZtmPCuiItiaOVRsXqkplPM/MVTAHanXYgFtiNTLA8p9
- f1DITw4Vut8BngbGC/cQPgleK++PJuw17r50KValkQrvUEVVCBIN0RjhTmOhKr3gdt1445NyO
- LBB6VL0Wfu2GLzq9VTGfcuNDEbuqPtKnq2+w+mHDnRuhuocxsUnU2lscditZFDqQ9WJKVC8G9
- 9l2fKtVUS5UCrt/XzCe9pdxqZU6pT0hbicjXICVkNKAsfgeglXCQpPi4yQTuLCm5JCIclOY2a
- BsaLkf+TtSZCZ9ZDaLR6ZKqLHWVvAYh8KiBEIdw3S3IeYGlizQ4IbtY9SzBgbZOIcdQoUShxY
- 1GZKcAwIKYpJ+MbHTorX46Fay+1VTlQ728nf2Z3qeUpE9QHJuN/m+ia7CGKo05cEeVcOn5l9A
- rWzhWySHHqePI5LlT7G4Xxgzpyk0a7NwHdSnQfhCfOn1MfyfH9wLY9nFmCzyBWW/0BgfJfIiE
- 2pgtsdUMJbik91rKWj/jsVOnrtQFFGYAhK7Ac2yBmeboSt/jN22aaGDHmRy/Do0AxwsYASC+f
- wleyTJHnDlY8zlTxCKRRi2910P+PzByl8Q4UgvLbA25rHdQJzEWOe8ilv5fFsGLCOJG+8Lc1s
- 8SWjxJYw+8RKTuMNkuoVTGTTyE0tgW7yzoOTG+FnsZYOndaSgBNo9bnbgSs9a0tMdBW4oA1Qf
- HJkmLdiZeyAVhJkYbR1aWXJYg90OSr+5ouG9zLMu264ZNBqCEor/kO7H+yKU=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:vkgiOJf5RfI=:sDx8/XBVfqV9PXjQNVQ/rx
+ iM5y8XXdWb2jFSbCYOZ2KOX0Wh2w383EtzLhuAfs6beam2m/LNDJNH+Hd4g2NwRpkIt0/cR8q
+ lGNRZGGOvh3S1CBo/peyBt/NVgRnHDY5jnI32CSV1LKpHFG4DoaQY9Xdzq4EiUU4Hvw6E5oBJ
+ O2gGe80uF+NYDSp+Wh9Z3GZFzWFDeEkVOzSzF2RIf15+U7Z9iHdU6lP1lxrFx6yYOocXMJnun
+ 3LwPtZX2WdvJEPcLAKdlaiRH4u9Rc5CBsGF/uf8MFWZk2QAH0hM/k+0+diNd0X1hemuRpwpzt
+ T/whcA+8LWooa5Feb582LgFCQnvrU/E64m1levnFOcD0CkiL7KII9192qsJsauupXEdIo5gWM
+ wlR307vhMBky+6qsDbkfJBDr24yNnyaHr5EdlCwqxsv8TXlqyGAx3sQq8oF8r1CLGvXP6pTo7
+ lOlWfNqyH4HQ6dVU7dHTXp9EJrYgy4EdiV+y2sMkaDAUNa7vJulSaMYR24BwBSLnx4Cwqh0f9
+ nnE4Paf3dmmEKbvImAZ1QZwRyNFL9Ud7lWB8Wy7kP2TdAJqp9rhYIO894ZQ1k8o5pxkuBUG/a
+ st2hFcZBClIlyMF8Aoy4bmKeTT9nqZttuF6er8hWVTLympWz4wxj+hvMuEUSZkk5/n1Rxg6Ei
+ NACLoaQIc7wvvI5y9OEJ+zQ/LhKXDqJ0lfVPj4Vajy8TBkwvoNAfvh9XiVHJW/mon2ihg1LvX
+ T8fccNgJj8nJjHzKbKE8raB6jqzH+5zMOk58YJMYmQ+0O2iEXzJexY8N0obl9hbEL4Xd72EMN
+ by+Krlj35ffAbwbTHFgj8QLbZHptDlK5/nw64Mnhd4jGjp6SnFdg4DQpHL7SvcOKw26s8J0Un
+ OInrTZpvaLx7LHiVgr0qMam6Z+X5XOP3Y41zgQsJPkJn3lhCTuAAQPhEK15rWEUXyhWgT+RDl
+ KFy+7JbR1UCg7AOk1re5Ec+1f6jy3SgfzJgK6gpWas8wS2ywcbIr4wrh5KKtORCKgio0oBQkd
+ mcYLofjBtb51vV/JTadXNoSGUcnYAvt3sWJKBWbKle054NKGKjOnrVV90fj231rnBFjV90F40
+ h9TofE5LTFb+H563LgSX6BudOHJg1K/5CGJ/lvNE/MezUv2AaZW1BFZyt4ZECpN2Arv+Irx4S
+ WbdQWWI8GkNQV6Ix/nBeNKKuj/Hfzh0dMBW6ZN0BDlPjkCu7C2wJ1rgBf4KeUdYVc6f2nJHiY
+ PhMkhOqRkpH5wCTUw4dqcIAfLzWqiG6U+7pYiyz0dTuio92eVRNfeTITeB7U=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Tue, 5 Nov 2019 19:09:15 +0100
+Date: Tue, 5 Nov 2019 19:32:25 +0100
 
-Reuse existing functionality from memdup_user() instead of keeping
-duplicate source code.
-
-Generated by: scripts/coccinelle/api/memdup_user.cocci
+The same return code was set after three condition checks.
+Thus use a single statement instead.
 
 Fixes: 20ec628e8007ec75c2f884e00004f39eab6289b5 ("misc: xilinx_sdfec: Add =
 ability to configure LDPC")
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/misc/xilinx_sdfec.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/misc/xilinx_sdfec.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
 diff --git a/drivers/misc/xilinx_sdfec.c b/drivers/misc/xilinx_sdfec.c
-index 11835969e982..a622fcf4954a 100644
+index a622fcf4954a..322d5c6e6d12 100644
 =2D-- a/drivers/misc/xilinx_sdfec.c
 +++ b/drivers/misc/xilinx_sdfec.c
-@@ -649,14 +649,9 @@ static int xsdfec_add_ldpc(struct xsdfec_dev *xsdfec,=
- void __user *arg)
- 	struct xsdfec_ldpc_params *ldpc;
- 	int ret, n;
+@@ -653,18 +653,10 @@ static int xsdfec_add_ldpc(struct xsdfec_dev *xsdfec=
+, void __user *arg)
+ 	if (IS_ERR(ldpc))
+ 		return PTR_ERR(ldpc);
 
--	ldpc =3D kzalloc(sizeof(*ldpc), GFP_KERNEL);
--	if (!ldpc)
--		return -ENOMEM;
--
--	if (copy_from_user(ldpc, arg, sizeof(*ldpc))) {
--		ret =3D -EFAULT;
+-	if (xsdfec->config.code =3D=3D XSDFEC_TURBO_CODE) {
+-		ret =3D -EIO;
 -		goto err_out;
 -	}
-+	ldpc =3D memdup_user(arg, sizeof(*ldpc));
-+	if (IS_ERR(ldpc))
-+		return PTR_ERR(ldpc);
-
- 	if (xsdfec->config.code =3D=3D XSDFEC_TURBO_CODE) {
+-
+-	/* Verify Device has not started */
+-	if (xsdfec->state =3D=3D XSDFEC_STARTED) {
+-		ret =3D -EIO;
+-		goto err_out;
+-	}
+-
+-	if (xsdfec->config.code_wr_protect) {
++	if (xsdfec->config.code =3D=3D XSDFEC_TURBO_CODE ||
++	    /* Verify device has not started */
++	    xsdfec->state =3D=3D XSDFEC_STARTED ||
++	    xsdfec->config.code_wr_protect) {
  		ret =3D -EIO;
+ 		goto err_out;
+ 	}
 =2D-
 2.24.0
 

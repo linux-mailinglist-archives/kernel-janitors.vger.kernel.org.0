@@ -2,126 +2,121 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70082F0097
-	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Nov 2019 16:00:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 822E6F00A9
+	for <lists+kernel-janitors@lfdr.de>; Tue,  5 Nov 2019 16:04:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389688AbfKEPA0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 5 Nov 2019 10:00:26 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:49886 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731053AbfKEPA0 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 5 Nov 2019 10:00:26 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iS0Jj-0002th-TT; Tue, 05 Nov 2019 15:00:23 +0000
-Subject: NAK: [PATCH][next] crypto: allwinner: fix spelling mistake
- "recommandation" -> "recommendation"
-From:   Colin Ian King <colin.king@canonical.com>
-To:     Corentin Labbe <clabbe.montjoie@gmail.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        id S1731058AbfKEPEC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 5 Nov 2019 10:04:02 -0500
+Received: from mail-eopbgr10082.outbound.protection.outlook.com ([40.107.1.82]:56816
+        "EHLO EUR02-HE1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730833AbfKEPEC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 5 Nov 2019 10:04:02 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=gM6vvAlUZhsC00N0WcnqD1UyAMNZ5l2spNzzzIt7yobsNya//OUo95QzJNFRgPG2K5JzVvBhiP8ka+8I5zX4WtFHL/flkpgN+N69HRCphhgQaBjx6LcDBPetufR/lrwHZfNn4bNFgKLFIRQ4tvdGF+Iap5AVORPDFzAgF4WwczmXnpK9dy41oJ3NHW91jE3jFrYUAjty9cWAJUV5tgJeCtlU+0yhXjoaBK2FBzJhRuXSguAr0NoIkSCXRJI/yIJ33Un1BfqcqR/j4f20QT+lirtBZbk7dYUFCRlqLBJ+TBZHeqk0Sa+gUF7xjAeWkNvG9CUUqFog1E2TW8Myb/+/PA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W+YWA3/kHyGd2mPI0OSUXxwQ58Syr/JjXV4TOEeIqrc=;
+ b=fbbeyr0r77n8oCZqD6uan3/FuU2mJSpuGqkPEtk0Fni6DtzNnrlLWmc9gvAJibR5E1vpNf3j3DKy3plB31QpMb4haASJrP7ShMxn+N7TkAKPC7TWrgudaEPE7y9fPI56yHOlo7h1sy57oosyHlpoHxRENGHkb7P/9zeAOIxvuzWZI+6TfwZ6DNNiv7/PRAv9W04AO6SmUHp3oi/BxdcNzv4GQyf1LYG6fH/fAGb9t9vyj7GDBgAh9XbJvoT5FkOmQqzFywUGvdKz1GYTJFKt6F+Cf587ER8UDQlpxdROMelRKvQyZjFHmeen9CO+s8seUO20qkhZqb/98AUPHkGAkw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
+ dkim=pass header.d=mellanox.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=W+YWA3/kHyGd2mPI0OSUXxwQ58Syr/JjXV4TOEeIqrc=;
+ b=ZJ9hZZqOnGCUabwcT2Bxea7Fqi1F7+GMH6st2ZQrseKxoeW34uoN4yUEFhi2ws0ZdMK1grFGAkHL/AqROwj97XYXifh9x/FFp9qAeHD3yr+KOQvilfP29E635pb/Hsra/wWWwSSUK3blpPeBtmTyWuo7CW5aTiRtFrqPcnIdTvw=
+Received: from AM0PR05MB4866.eurprd05.prod.outlook.com (20.176.214.160) by
+ AM0PR05MB5217.eurprd05.prod.outlook.com (20.178.19.32) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2408.24; Tue, 5 Nov 2019 15:03:55 +0000
+Received: from AM0PR05MB4866.eurprd05.prod.outlook.com
+ ([fe80::e5c2:b650:f89:12d4]) by AM0PR05MB4866.eurprd05.prod.outlook.com
+ ([fe80::e5c2:b650:f89:12d4%7]) with mapi id 15.20.2430.020; Tue, 5 Nov 2019
+ 15:03:55 +0000
+From:   Parav Pandit <parav@mellanox.com>
+To:     Colin King <colin.king@canonical.com>,
+        Saeed Mahameed <saeedm@mellanox.com>,
+        Leon Romanovsky <leon@kernel.org>,
         "David S . Miller" <davem@davemloft.net>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>, linux-crypto@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191105145845.60786-1-colin.king@canonical.com>
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <ef3924ad-7534-bb14-7a71-8c60f03aa8d6@canonical.com>
-Date:   Tue, 5 Nov 2019 15:00:22 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
-MIME-Version: 1.0
-In-Reply-To: <20191105145845.60786-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH][next] net/mlx5: fix spelling mistake "metdata" ->
+ "metadata"
+Thread-Topic: [PATCH][next] net/mlx5: fix spelling mistake "metdata" ->
+ "metadata"
+Thread-Index: AQHVk+ju1UlJpWLIEk+xlXrsXBtltqd8rIFg
+Date:   Tue, 5 Nov 2019 15:03:55 +0000
+Message-ID: <AM0PR05MB4866F3706C26D06AD22BD975D17E0@AM0PR05MB4866.eurprd05.prod.outlook.com>
+References: <20191105145416.60451-1-colin.king@canonical.com>
+In-Reply-To: <20191105145416.60451-1-colin.king@canonical.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=parav@mellanox.com; 
+x-originating-ip: [2605:6000:ec82:1c00:7198:5d2b:7ff1:d0d4]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 0d593f1b-f8db-4e13-572a-08d7620160eb
+x-ms-traffictypediagnostic: AM0PR05MB5217:|AM0PR05MB5217:
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <AM0PR05MB5217C6BC9E01DD09018692F1D17E0@AM0PR05MB5217.eurprd05.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:2657;
+x-forefront-prvs: 0212BDE3BE
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(39860400002)(366004)(396003)(346002)(136003)(376002)(13464003)(199004)(189003)(8676002)(81166006)(6506007)(11346002)(110136005)(76176011)(14454004)(486006)(2906002)(8936002)(6246003)(52536014)(5660300002)(71200400001)(81156014)(7696005)(66446008)(14444005)(6436002)(6116002)(54906003)(55016002)(25786009)(2501003)(316002)(74316002)(476003)(305945005)(33656002)(229853002)(9686003)(46003)(4326008)(86362001)(99286004)(478600001)(2201001)(53546011)(186003)(102836004)(66946007)(76116006)(64756008)(66476007)(7736002)(446003)(256004)(71190400001)(66556008);DIR:OUT;SFP:1101;SCL:1;SRVR:AM0PR05MB5217;H:AM0PR05MB4866.eurprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: mellanox.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: OnRPUJHh3Hmhhgf/uOQYR9Gs4LaEpAYHWcJzJVnKJXs44LNMd/l09XVsjckeseCl/yxXATUc6FWOOCDC1ceYEk+kTejsbZNPqKfQbT5svcVd9NQQ3IOxzzEMASxCPkNQPV/EXWk4LIplclPldb7PN4+6zO/6s8KqAy4H5Hbq2kPl3bITMdnouqZEbzhbP8vJ9pzOYuIany9zcZFvZbI5dfL8jpUI8CwtWczUa1B9k5UNtNWbt9Evos61Hkew0NHQuxj1AibH6X0kb78td/f6u3vgX66aihyT+l7X7Kz+miffmr/wrkPjFM5wXS/hrLP+ynnbsy/nxQiW5AG3NwfowhuF1hB89WEPfUvTioC6Pac9d0zOLiazNsDI9cWVeJsncWNODsQYy03TQEhW+w8Vsc6AhtE3obyauJ8u4LyTONQRpWOVD7BPgIiyHzydx432
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: Mellanox.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0d593f1b-f8db-4e13-572a-08d7620160eb
+X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Nov 2019 15:03:55.5980
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: a652971c-7d2e-4d9b-a6a4-d149256f461b
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: rvFNXhR6DXcASXG3Sr/awsKg4wunsBhpV3MgJePywunI4tYpUoZqRyAiZljVyzYAolrgXJt60WLj/6N68gPM3Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR05MB5217
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-NACK, I've found some more mistakes, I'll send a V2.
-
-On 05/11/2019 14:58, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There are spelling mistakes in dev_warn messages. Fix these.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c | 2 +-
->  drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c
-> index 8e4eddbcc814..bc7ee265c51f 100644
-> --- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c
-> +++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c
-> @@ -469,7 +469,7 @@ static int sun8i_ce_get_clks(struct sun8i_ce_dev *ce)
->  		}
->  		if (ce->variant->ce_clks[i].max_freq > 0 &&
->  		    cr > ce->variant->ce_clks[i].max_freq)
-> -			dev_warn(ce->dev, "Frequency for %s (%lu hz) is higher than datasheet's recommandation (%lu hz)",
-> +			dev_warn(ce->dev, "Frequency for %s (%lu hz) is higher than datasheet's recommendation (%lu hz)",
->  				 ce->variant->ce_clks[i].name, cr,
->  				 ce->variant->ce_clks[i].max_freq);
->  	}
-> diff --git a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c
-> index e58407ac256b..04b5b90ba965 100644
-> --- a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c
-> +++ b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c
-> @@ -502,7 +502,7 @@ static int sun8i_ss_get_clks(struct sun8i_ss_dev *ss)
->  		}
->  		if (ss->variant->ss_clks[i].max_freq > 0 &&
->  		    cr > ss->variant->ss_clks[i].max_freq)
-> -			dev_warn(ss->dev, "Frequency for %s (%lu hz) is higher than datasheet's recommandation (%lu hz)",
-> +			dev_warn(ss->dev, "Frequency for %s (%lu hz) is higher than datasheet's recommendation (%lu hz)",
->  				 ss->variant->ss_clks[i].name, cr,
->  				 ss->variant->ss_clks[i].max_freq);
->  	}
-> 
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogbGludXgta2VybmVsLW93
+bmVyQHZnZXIua2VybmVsLm9yZyA8bGludXgta2VybmVsLQ0KPiBvd25lckB2Z2VyLmtlcm5lbC5v
+cmc+IE9uIEJlaGFsZiBPZiBDb2xpbiBLaW5nDQo+IFNlbnQ6IFR1ZXNkYXksIE5vdmVtYmVyIDUs
+IDIwMTkgODo1NCBBTQ0KPiBUbzogU2FlZWQgTWFoYW1lZWQgPHNhZWVkbUBtZWxsYW5veC5jb20+
+OyBMZW9uIFJvbWFub3Zza3kNCj4gPGxlb25Aa2VybmVsLm9yZz47IERhdmlkIFMgLiBNaWxsZXIg
+PGRhdmVtQGRhdmVtbG9mdC5uZXQ+Ow0KPiBuZXRkZXZAdmdlci5rZXJuZWwub3JnOyBsaW51eC1y
+ZG1hQHZnZXIua2VybmVsLm9yZw0KPiBDYzoga2VybmVsLWphbml0b3JzQHZnZXIua2VybmVsLm9y
+ZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBbUEFUQ0hdW25leHRd
+IG5ldC9tbHg1OiBmaXggc3BlbGxpbmcgbWlzdGFrZSAibWV0ZGF0YSIgLT4NCj4gIm1ldGFkYXRh
+Ig0KPiANCj4gRnJvbTogQ29saW4gSWFuIEtpbmcgPGNvbGluLmtpbmdAY2Fub25pY2FsLmNvbT4N
+Cj4gDQo+IFRoZXJlIGlzIGEgc3BlbGxpbmcgbWlzdGFrZSBpbiBhIGVzd193YXJuIHdhcm5pbmcg
+bWVzc2FnZS4gRml4IGl0Lg0KPiANCj4gU2lnbmVkLW9mZi1ieTogQ29saW4gSWFuIEtpbmcgPGNv
+bGluLmtpbmdAY2Fub25pY2FsLmNvbT4NCj4gLS0tDQo+ICBkcml2ZXJzL25ldC9ldGhlcm5ldC9t
+ZWxsYW5veC9tbHg1L2NvcmUvZXN3aXRjaF9vZmZsb2Fkcy5jIHwgMiArLQ0KPiAgMSBmaWxlIGNo
+YW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEv
+ZHJpdmVycy9uZXQvZXRoZXJuZXQvbWVsbGFub3gvbWx4NS9jb3JlL2Vzd2l0Y2hfb2ZmbG9hZHMu
+Yw0KPiBiL2RyaXZlcnMvbmV0L2V0aGVybmV0L21lbGxhbm94L21seDUvY29yZS9lc3dpdGNoX29m
+ZmxvYWRzLmMNCj4gaW5kZXggYmQ5ZmQ1OWQ4MjMzLi4xYzNmZGVlODc1ODggMTAwNjQ0DQo+IC0t
+LSBhL2RyaXZlcnMvbmV0L2V0aGVybmV0L21lbGxhbm94L21seDUvY29yZS9lc3dpdGNoX29mZmxv
+YWRzLmMNCj4gKysrIGIvZHJpdmVycy9uZXQvZXRoZXJuZXQvbWVsbGFub3gvbWx4NS9jb3JlL2Vz
+d2l0Y2hfb2ZmbG9hZHMuYw0KPiBAQCAtMTg3Nyw3ICsxODc3LDcgQEAgc3RhdGljIGludA0KPiBl
+c3dfdnBvcnRfY3JlYXRlX2luZ3Jlc3NfYWNsX2dyb3VwKHN0cnVjdCBtbHg1X2Vzd2l0Y2ggKmVz
+dywNCj4gIAlpZiAoSVNfRVJSKGcpKSB7DQo+ICAJCXJldCA9IFBUUl9FUlIoZyk7DQo+ICAJCWVz
+d193YXJuKGVzdy0+ZGV2LA0KPiAtCQkJICJGYWlsZWQgdG8gY3JlYXRlIHZwb3J0WyVkXSBpbmdy
+ZXNzIG1ldGRhdGEgZ3JvdXAsDQo+IGVyciglZClcbiIsDQo+ICsJCQkgIkZhaWxlZCB0byBjcmVh
+dGUgdnBvcnRbJWRdIGluZ3Jlc3MgbWV0YWRhdGEgZ3JvdXAsDQo+IGVyciglZClcbiIsDQo+ICAJ
+CQkgdnBvcnQtPnZwb3J0LCByZXQpOw0KPiAgCQlnb3RvIGdycF9lcnI7DQo+ICAJfQ0KPiAtLQ0K
+PiAyLjIwLjENClJldmlld2VkLWJ5OiBQYXJhdiBQYW5kaXQgPHBhcmF2QG1lbGxhbm94LmNvbT4N
+Cg0K

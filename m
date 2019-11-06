@@ -2,42 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF726F2166
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 23:09:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5076FF227D
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Nov 2019 00:23:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727073AbfKFWJd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Nov 2019 17:09:33 -0500
-Received: from [211.53.128.215] ([211.53.128.215]:22669 "EHLO MAIL.isd.co.kr"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726798AbfKFWJd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Nov 2019 17:09:33 -0500
-Received: from 192.168.1.3 (217.217.179.17) by MAIL.isd.co.kr (10.10.10.22)
- with Microsoft SMTP Server id 14.3.123.3; Thu, 7 Nov 2019 07:04:52 +0900
-Date:   Wed, 6 Nov 2019 23:04:26 +0100
-From:   Peter Wong <choimj@isd.co.kr>
-Reply-To: Peter Wong <pw178484@gmail.com>
-To:     <kernel-janitors@vger.kernel.org>
-Message-ID: <33155565.131693.1573077872073.JavaMail.cash@webmail.isd.co.kr>
-Subject: Investment opportunity
+        id S1727516AbfKFXX1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 Nov 2019 18:23:27 -0500
+Received: from www62.your-server.de ([213.133.104.62]:38674 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727316AbfKFXX1 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 Nov 2019 18:23:27 -0500
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1iSUdz-0002JK-BT; Thu, 07 Nov 2019 00:23:19 +0100
+Received: from [178.197.248.39] (helo=pc-63.home)
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1iSUdz-0000Pl-0J; Thu, 07 Nov 2019 00:23:19 +0100
+Subject: Re: [PATCH bpf] bpf: offload: unlock on error in
+ bpf_offload_dev_create()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Jakub Kicinski <jakub.kicinski@netronome.com>
+Cc:     Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>,
+        Yonghong Song <yhs@fb.com>, Andrii Nakryiko <andriin@fb.com>,
+        netdev@vger.kernel.org, bpf@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20191104091536.GB31509@mwanda>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <7c831580-49e5-6582-16df-86e70bad242e@iogearbox.net>
+Date:   Thu, 7 Nov 2019 00:23:18 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+In-Reply-To: <20191104091536.GB31509@mwanda>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [217.217.179.17]
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.101.4/25625/Wed Nov  6 10:44:04 2019)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Greetings,
+On 11/4/19 10:15 AM, Dan Carpenter wrote:
+> We need to drop the bpf_devs_lock on error before returning.
+> 
+> Fixes: 9fd7c5559165 ("bpf: offload: aggregate offloads per-device")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Find attached email very confidential. reply for more details
-
-Thanks.
-Peter Wong
-
-
-
-
-----------------------------------------------------
-This email was sent by the shareware version of Postman Professional.
-
+Applied, thanks!

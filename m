@@ -2,68 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3295AF1A7D
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 16:55:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4EC4F1A92
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 16:58:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728993AbfKFPzo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Nov 2019 10:55:44 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:5738 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726926AbfKFPzn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Nov 2019 10:55:43 -0500
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id F2D87CAD2C235EAEBD2D;
-        Wed,  6 Nov 2019 23:55:41 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 6 Nov 2019 23:55:35 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Russell King <linux@armlinux.org.uk>,
-        "Robert Hancock" <hancock@sedsystems.ca>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <netdev@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net-next] net: axienet: Fix error return code in axienet_probe()
-Date:   Wed, 6 Nov 2019 15:54:49 +0000
-Message-ID: <20191106155449.107672-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1728886AbfKFP6i (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 Nov 2019 10:58:38 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:50510 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726926AbfKFP6i (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 Nov 2019 10:58:38 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA6FvcFk095971;
+        Wed, 6 Nov 2019 15:58:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=z2DPWMc3TKp1oFbPYOXdhDkuZDHNEjaRiG/t99Bj+Vs=;
+ b=AuN18JnuOGoe/JpvfkXBWlPG1alUPMAZIK/8tDhZenMyV72fWeJ92TUOFLCE67sl5a45
+ 16XSpKbn8YLleS5zPwsX0MNrtynoaTIw7PY8ga1r0+R5ab5LTcYeZQzRlFz9WGoQI+Uk
+ Vl4dWI34rvOBbCS1VuQWxVjKL6e2mkYurfVtotKGI9bGj56VtvCshMe+FoWSD2ZYFChD
+ CqMkIF+fMOo6PbsHuii78O1FX9PL9kF/qv/ykMWTjeiDTvs3gy8H4FHNw0DmBqQrkk2b
+ ztcFuIE+MhVnS0p5optw76GYHFOzbS/DWsVm3M8nONXgj4TA6MzscXETw/FYDc1nl2id WA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 2w117u7rpn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 06 Nov 2019 15:58:35 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA6FrASK157567;
+        Wed, 6 Nov 2019 15:56:34 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 2w3163tmay-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 06 Nov 2019 15:56:34 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xA6FuXZI007616;
+        Wed, 6 Nov 2019 15:56:33 GMT
+Received: from localhost (/67.169.218.210)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 06 Nov 2019 07:56:32 -0800
+Date:   Wed, 6 Nov 2019 07:56:31 -0800
+From:   "Darrick J. Wong" <darrick.wong@oracle.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     linux-xfs@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] xfs: remove redundant assignment to variable error
+Message-ID: <20191106155631.GJ4153244@magnolia>
+References: <20191106155248.266489-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191106155248.266489-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9433 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1908290000 definitions=main-1911060153
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9433 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1908290000
+ definitions=main-1911060153
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In the DMA memory resource get failed case, the error is not
-set and 0 will be returned. Fix it by reove redundant check
-since devm_ioremap_resource() will handle it.
+On Wed, Nov 06, 2019 at 03:52:48PM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Variable error is being initialized with a value that is never read
+> and is being re-assigned a couple of statements later on. The
+> assignment is redundant and hence can be removed.
+> 
+> Addresses-Coverity: ("Unused value")
 
-Fixes: 28ef9ebdb64c ("net: axienet: make use of axistream-connected attribute optional")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
----
- drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 4 ----
- 1 file changed, 4 deletions(-)
+Er... is there a coverity id that goes with this?
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 867726d696e2..8f32db6d2c45 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -1788,10 +1788,6 @@ static int axienet_probe(struct platform_device *pdev)
- 		/* Check for these resources directly on the Ethernet node. */
- 		struct resource *res = platform_get_resource(pdev,
- 							     IORESOURCE_MEM, 1);
--		if (!res) {
--			dev_err(&pdev->dev, "unable to get DMA memory resource\n");
--			goto free_netdev;
--		}
- 		lp->dma_regs = devm_ioremap_resource(&pdev->dev, res);
- 		lp->rx_irq = platform_get_irq(pdev, 1);
- 		lp->tx_irq = platform_get_irq(pdev, 0);
+Patch looks fine otherwise.
 
+--D
 
-
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  fs/xfs/xfs_super.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
+> index b3188ea49413..2302f67d1a18 100644
+> --- a/fs/xfs/xfs_super.c
+> +++ b/fs/xfs/xfs_super.c
+> @@ -1362,7 +1362,7 @@ xfs_fc_fill_super(
+>  {
+>  	struct xfs_mount	*mp = sb->s_fs_info;
+>  	struct inode		*root;
+> -	int			flags = 0, error = -ENOMEM;
+> +	int			flags = 0, error;
+>  
+>  	mp->m_super = sb;
+>  
+> -- 
+> 2.20.1
+> 

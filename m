@@ -2,66 +2,62 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B4A3AF1A30
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 16:40:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BAF14F1A6F
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 16:53:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731938AbfKFPkf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Nov 2019 10:40:35 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:43560 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728638AbfKFPke (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Nov 2019 10:40:34 -0500
-Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 7D27A3188E9982D82CB2;
-        Wed,  6 Nov 2019 23:40:29 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 6 Nov 2019 23:40:19 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        zhengbin <zhengbin13@huawei.com>, Li Jun <jun.li@freescale.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-usb@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] usb: gadget: fix error return code in acm_ms_bind()
-Date:   Wed, 6 Nov 2019 15:39:33 +0000
-Message-ID: <20191106153933.76757-1-weiyongjun1@huawei.com>
+        id S1732135AbfKFPwv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 Nov 2019 10:52:51 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:56795 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732052AbfKFPwu (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 Nov 2019 10:52:50 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iSNc0-0002aC-Ci; Wed, 06 Nov 2019 15:52:48 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     "Darrick J . Wong" <darrick.wong@oracle.com>,
+        linux-xfs@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] xfs: remove redundant assignment to variable error
+Date:   Wed,  6 Nov 2019 15:52:48 +0000
+Message-Id: <20191106155248.266489-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return negative error code -ENOMEM from the error handling
-case instead of 0, as done elsewhere in this function.
+From: Colin Ian King <colin.king@canonical.com>
 
-Fixes: 578aa8a2b12c ("usb: gadget: acm_ms: allocate and init otg descriptor by otg capabilities")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Variable error is being initialized with a value that is never read
+and is being re-assigned a couple of statements later on. The
+assignment is redundant and hence can be removed.
+
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/usb/gadget/legacy/acm_ms.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/xfs/xfs_super.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/legacy/acm_ms.c b/drivers/usb/gadget/legacy/acm_ms.c
-index 59be2d8417c9..e8033e5f0c18 100644
---- a/drivers/usb/gadget/legacy/acm_ms.c
-+++ b/drivers/usb/gadget/legacy/acm_ms.c
-@@ -200,8 +200,10 @@ static int acm_ms_bind(struct usb_composite_dev *cdev)
- 		struct usb_descriptor_header *usb_desc;
+diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
+index b3188ea49413..2302f67d1a18 100644
+--- a/fs/xfs/xfs_super.c
++++ b/fs/xfs/xfs_super.c
+@@ -1362,7 +1362,7 @@ xfs_fc_fill_super(
+ {
+ 	struct xfs_mount	*mp = sb->s_fs_info;
+ 	struct inode		*root;
+-	int			flags = 0, error = -ENOMEM;
++	int			flags = 0, error;
  
- 		usb_desc = usb_otg_descriptor_alloc(gadget);
--		if (!usb_desc)
-+		if (!usb_desc) {
-+			status = -ENOMEM;
- 			goto fail_string_ids;
-+		}
- 		usb_otg_descriptor_init(gadget, usb_desc);
- 		otg_desc[0] = usb_desc;
- 		otg_desc[1] = NULL;
-
-
+ 	mp->m_super = sb;
+ 
+-- 
+2.20.1
 

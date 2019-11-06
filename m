@@ -2,57 +2,125 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5076FF227D
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Nov 2019 00:23:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4A13F22C9
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Nov 2019 00:43:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727516AbfKFXX1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Nov 2019 18:23:27 -0500
-Received: from www62.your-server.de ([213.133.104.62]:38674 "EHLO
-        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727316AbfKFXX1 (ORCPT
+        id S1728446AbfKFXnE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 Nov 2019 18:43:04 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:40853 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727376AbfKFXnE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Nov 2019 18:23:27 -0500
-Received: from sslproxy06.your-server.de ([78.46.172.3])
-        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89_1)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1iSUdz-0002JK-BT; Thu, 07 Nov 2019 00:23:19 +0100
-Received: from [178.197.248.39] (helo=pc-63.home)
-        by sslproxy06.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
-        (Exim 4.89)
-        (envelope-from <daniel@iogearbox.net>)
-        id 1iSUdz-0000Pl-0J; Thu, 07 Nov 2019 00:23:19 +0100
-Subject: Re: [PATCH bpf] bpf: offload: unlock on error in
- bpf_offload_dev_create()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Jakub Kicinski <jakub.kicinski@netronome.com>
-Cc:     Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>,
-        Yonghong Song <yhs@fb.com>, Andrii Nakryiko <andriin@fb.com>,
-        netdev@vger.kernel.org, bpf@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20191104091536.GB31509@mwanda>
-From:   Daniel Borkmann <daniel@iogearbox.net>
-Message-ID: <7c831580-49e5-6582-16df-86e70bad242e@iogearbox.net>
-Date:   Thu, 7 Nov 2019 00:23:18 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.2
+        Wed, 6 Nov 2019 18:43:04 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iSUx4-0002vl-3u; Wed, 06 Nov 2019 23:43:02 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Miklos Szeredi <miklos@szeredi.hu>, linux-unionfs@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ovl: create UUIDs for file systems that do not set the superblock UUID
+Date:   Wed,  6 Nov 2019 23:43:01 +0000
+Message-Id: <20191106234301.283006-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20191104091536.GB31509@mwanda>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.101.4/25625/Wed Nov  6 10:44:04 2019)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 11/4/19 10:15 AM, Dan Carpenter wrote:
-> We need to drop the bpf_devs_lock on error before returning.
-> 
-> Fixes: 9fd7c5559165 ("bpf: offload: aggregate offloads per-device")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied, thanks!
+Some file systems such as squashfs do not set the UUID in the
+superblock resulting in a zero'd UUID.  In cases were two or more
+of these file systems are overlayed on the lower layer we can hit
+overlay corruption issues because identical zero'd overlayfs UUIDs
+are impossible to differentiate between.  This can be fixed by
+creating an overlayfs UUID based on the file system from the
+superblock s_magic and s_dev fields.  (This currently seems like
+enough information to be able create a UUID, but the could be
+scope to use other super block fields such as the pointer s_fs_info
+but may need some obfuscation).
+
+This issue can be reproduced with the following commands:
+
+mkdir -p /cdrom
+mount -t iso9660 -o ro,noatime /dev/sr0 /cdrom
+sleep 1
+mkdir -p /cow
+mount -t tmpfs -o 'rw,noatime,mode=755' tmpfs /cow
+mkdir -p /cow/upper
+mkdir -p /cow/work
+modprobe -q -b overlay
+modprobe -q -b loop
+dev=$(losetup -f)
+mkdir -p /filesystem.squashfs
+losetup $dev /cdrom/casper/filesystem.squashfs
+mount -t squashfs -o ro,noatime $dev /filesystem.squashfs
+dev=$(losetup -f)
+mkdir -p /installer.squashfs
+losetup $dev /cdrom/casper/installer.squashfs
+mount -t squashfs -o ro,noatime $dev /installer.squashfs
+mkdir -p /root-tmp
+mount -t overlay -o 'upperdir=/cow/upper,lowerdir=/installer.squashfs:/filesystem.squashfs,workdir=/cow/work' /cow /root-tmp
+
+FILE=/root-tmp/etc/.pwd.lock
+
+echo foo > $FILE
+cat $FILE
+sync
+echo 3 > /proc/sys/vm/drop_caches
+cat $FILE
+
+The output from cat $FILE:
+cat: /root-tmp/etc/.pwd.lock: Input/output error
+
+dmesg reports:
+[ 42.415432] overlayfs: invalid origin (etc/.pwd.lock, ftype=8000, origin ftype=4000).
+
+BugLink: https://bugs.launchpad.net/bugs/1824407
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ fs/overlayfs/copy_up.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index b801c6353100..a578db87936b 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -231,6 +231,7 @@ struct ovl_fh *ovl_encode_real_fh(struct dentry *real, bool is_upper)
+ 	void *buf;
+ 	int buflen = MAX_HANDLE_SZ;
+ 	uuid_t *uuid = &real->d_sb->s_uuid;
++	static const uuid_t z_uuid;
+ 
+ 	buf = kmalloc(buflen, GFP_KERNEL);
+ 	if (!buf)
+@@ -272,7 +273,20 @@ struct ovl_fh *ovl_encode_real_fh(struct dentry *real, bool is_upper)
+ 	if (is_upper)
+ 		fh->flags |= OVL_FH_FLAG_PATH_UPPER;
+ 	fh->len = fh_len;
+-	fh->uuid = *uuid;
++
++	if (uuid_equal(uuid, &z_uuid)) {
++		/*
++		 * An zero'd uuid indicates the uuid in the super block was
++		 * not set by the file system, so fake one instead
++		 */
++		struct super_block *sb = real->d_sb;
++
++		memcpy(&fh->uuid.b[0], &sb->s_magic, 8);
++		memcpy(&fh->uuid.b[8], &sb->s_dev, 8);
++	} else {
++		fh->uuid = *uuid;
++	}
++
+ 	memcpy(fh->fid, buf, buflen);
+ 
+ out:
+-- 
+2.20.1
+

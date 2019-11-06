@@ -2,62 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BAF14F1A6F
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 16:53:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3295AF1A7D
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 16:55:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732135AbfKFPwv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Nov 2019 10:52:51 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:56795 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732052AbfKFPwu (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Nov 2019 10:52:50 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iSNc0-0002aC-Ci; Wed, 06 Nov 2019 15:52:48 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     "Darrick J . Wong" <darrick.wong@oracle.com>,
-        linux-xfs@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] xfs: remove redundant assignment to variable error
-Date:   Wed,  6 Nov 2019 15:52:48 +0000
-Message-Id: <20191106155248.266489-1-colin.king@canonical.com>
+        id S1728993AbfKFPzo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 Nov 2019 10:55:44 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:5738 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726926AbfKFPzn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 Nov 2019 10:55:43 -0500
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id F2D87CAD2C235EAEBD2D;
+        Wed,  6 Nov 2019 23:55:41 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 6 Nov 2019 23:55:35 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Russell King <linux@armlinux.org.uk>,
+        "Robert Hancock" <hancock@sedsystems.ca>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <netdev@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] net: axienet: Fix error return code in axienet_probe()
+Date:   Wed, 6 Nov 2019 15:54:49 +0000
+Message-ID: <20191106155449.107672-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+In the DMA memory resource get failed case, the error is not
+set and 0 will be returned. Fix it by reove redundant check
+since devm_ioremap_resource() will handle it.
 
-Variable error is being initialized with a value that is never read
-and is being re-assigned a couple of statements later on. The
-assignment is redundant and hence can be removed.
-
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Fixes: 28ef9ebdb64c ("net: axienet: make use of axistream-connected attribute optional")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- fs/xfs/xfs_super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
-index b3188ea49413..2302f67d1a18 100644
---- a/fs/xfs/xfs_super.c
-+++ b/fs/xfs/xfs_super.c
-@@ -1362,7 +1362,7 @@ xfs_fc_fill_super(
- {
- 	struct xfs_mount	*mp = sb->s_fs_info;
- 	struct inode		*root;
--	int			flags = 0, error = -ENOMEM;
-+	int			flags = 0, error;
- 
- 	mp->m_super = sb;
- 
--- 
-2.20.1
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index 867726d696e2..8f32db6d2c45 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -1788,10 +1788,6 @@ static int axienet_probe(struct platform_device *pdev)
+ 		/* Check for these resources directly on the Ethernet node. */
+ 		struct resource *res = platform_get_resource(pdev,
+ 							     IORESOURCE_MEM, 1);
+-		if (!res) {
+-			dev_err(&pdev->dev, "unable to get DMA memory resource\n");
+-			goto free_netdev;
+-		}
+ 		lp->dma_regs = devm_ioremap_resource(&pdev->dev, res);
+ 		lp->rx_irq = platform_get_irq(pdev, 1);
+ 		lp->tx_irq = platform_get_irq(pdev, 0);
+
+
 

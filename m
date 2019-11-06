@@ -2,145 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C29EFF1BDD
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 17:59:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB46DF1C7F
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 18:29:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728777AbfKFQ7l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Nov 2019 11:59:41 -0500
-Received: from mail-eopbgr800045.outbound.protection.outlook.com ([40.107.80.45]:31451
-        "EHLO NAM03-DM3-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727894AbfKFQ7l (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Nov 2019 11:59:41 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FoHaUcYaHkuCgW9Rp+TLtfcNjzWcZmkX6VanELnOA+djsXtoXYJkKkUiI6rHH0Tvn/xDj0LbryA6VZ3IHJzj3/E5RHBKF+4HkZxfIEWKQ6vwXSw4uhKQCOskN5XrUF97rIxysY2ZoIgZWSxCLqVTnS6cgagb2q6POF6pXg3eYvvNZH7n3S0cg7gn6Qpka5hlaYmJTLnqdHGvz3OwmiAKE2vQwKgAHEh1RwZ0rq1owxxNTwVo9X7Ex6r0499toIIl1kEMV7DuoRMIhlv8aGbd89N3+B9aFjCKgLNco1GCVNJ7iRiXjk+dB2lmPdDvINLnT3aL0rY1d9zXnoqnR0PoLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SZRWD9+IbAgYjBeRRtwEJzOrkgiDy3JyIMlKiZYfxFg=;
- b=nMLz42kWyZlHQ/SyBTzuAQnFcCQzKUu2Nn7/cq9LIcX7p4NdBodfC1h6I+99p+FymvEbRAr9b4mlzv8uuTSRYd8LiWlwkbzFnWoRTlx2p1lb6zm5k54GvkjMWlleev9b+VAcnyagSMEQcZtZJq0WZTeEiJA/iBjhzyXh2+Wy5RSreT+6+mZnVoWvu52P1N8RBlC83Osqo7BRrHagu9fAfr8UXjnHpC1AsUG7MT7VG0SWlM2S+GgdudgHHYD4RsXkKploPyI56FG9vm4yl2fxwtkQKqs2cs/2joAJAA75+pvYWn4M6mWXfz8iZv3W81802y+KM5Mxn22q8Gm/zPjUXg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=xilinx.com; dmarc=pass action=none header.from=xilinx.com;
- dkim=pass header.d=xilinx.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=xilinx.onmicrosoft.com; s=selector2-xilinx-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SZRWD9+IbAgYjBeRRtwEJzOrkgiDy3JyIMlKiZYfxFg=;
- b=JnzwpGJioGOrbstA76eDaa//51kVZdXgn6uOnxUV6pgDMMpFelXs579OVa8tcPIkJgqLvuBEl0sFCVeB3Iax32bwH93dVmXqKoq6+zM/4uJPJ0Uap3ApkjyW9GGMafhZr7ZASrm+sexvDFPf8qzmNITvg+iSp5+PHPARzl0ZTLM=
-Received: from CH2PR02MB7000.namprd02.prod.outlook.com (20.180.9.216) by
- CH2PR02MB6728.namprd02.prod.outlook.com (10.141.156.24) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2430.20; Wed, 6 Nov 2019 16:59:38 +0000
-Received: from CH2PR02MB7000.namprd02.prod.outlook.com
- ([fe80::701f:f4b3:5a98:dbf2]) by CH2PR02MB7000.namprd02.prod.outlook.com
- ([fe80::701f:f4b3:5a98:dbf2%7]) with mapi id 15.20.2408.024; Wed, 6 Nov 2019
- 16:59:38 +0000
-From:   Radhey Shyam Pandey <radheys@xilinx.com>
-To:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Michal Simek <michals@xilinx.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Robert Hancock <hancock@sedsystems.ca>
-CC:     "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: RE: [PATCH net-next] net: axienet: Fix error return code in
- axienet_probe()
-Thread-Topic: [PATCH net-next] net: axienet: Fix error return code in
- axienet_probe()
-Thread-Index: AQHVlLqn5FzAWnixa0CNU2pyYHx21Kd+W8Pg
-Date:   Wed, 6 Nov 2019 16:59:38 +0000
-Message-ID: <CH2PR02MB700031904CC37C8D5EE3435EC7790@CH2PR02MB7000.namprd02.prod.outlook.com>
-References: <20191106155449.107672-1-weiyongjun1@huawei.com>
-In-Reply-To: <20191106155449.107672-1-weiyongjun1@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-Auto-Response-Suppress: DR, RN, NRN, OOF, AutoReply
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=radheys@xilinx.com; 
-x-originating-ip: [183.83.136.226]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: f4f8170c-b582-4666-c9bc-08d762dab57a
-x-ms-traffictypediagnostic: CH2PR02MB6728:|CH2PR02MB6728:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <CH2PR02MB672817D4EC2119245ED34551C7790@CH2PR02MB6728.namprd02.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7219;
-x-forefront-prvs: 02135EB356
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(396003)(136003)(346002)(39860400002)(376002)(366004)(189003)(199004)(13464003)(186003)(99286004)(26005)(256004)(33656002)(5660300002)(66066001)(52536014)(7696005)(53546011)(76176011)(9686003)(229853002)(66446008)(66556008)(66946007)(66476007)(64756008)(102836004)(55016002)(6116002)(3846002)(2906002)(4326008)(76116006)(6246003)(14454004)(478600001)(54906003)(110136005)(316002)(6436002)(6506007)(305945005)(74316002)(8676002)(7736002)(476003)(486006)(8936002)(25786009)(446003)(81156014)(81166006)(71190400001)(86362001)(71200400001)(11346002);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR02MB6728;H:CH2PR02MB7000.namprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: xilinx.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: hEdnIpSMA50J+1+i9d3Q0ju7/rLTv0CQnXHeSeN/jxyYezcF7DZdpPSnITVRodnzs83ZBzm5w2i6xdee21yErJo1hRdgvA7UvDUUC4DShioPAc9FYa/Ab6hv5ZbtWWxAzpCekTwgjyYMMlSMDk1EA2Tb8AIT3J9E1mJWeSeLms2xCpXpW86sfGFm7MUriFm2XUP5TBubKQRp9Iu/dgRqZHoD9EvaGjhkhmIfxSxXUJCcsFgsS3FweyBp0XNgABNA/v8c5vPQn1mGsztN6PVBTYVbrNmhzGPsVyYLGVk0xFiH6dnDn+JDr5hejNlgob6ly8mQm9Id2/k44euCt/IUSX1rI0C7xn6s23F1HdeyUbhyyBposAwuT9afo/TBd+C8giSq2m1yfh1jPtGS8UBpwCceXwMcVIe2L970L7KYKmXew5Y3Smzzgal/FHPyf3e1
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1732246AbfKFR3r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 Nov 2019 12:29:47 -0500
+Received: from smtprelay0165.hostedemail.com ([216.40.44.165]:36993 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728983AbfKFR3q (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 Nov 2019 12:29:46 -0500
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay04.hostedemail.com (Postfix) with ESMTP id 0FBA8180A5AE6;
+        Wed,  6 Nov 2019 17:29:45 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::::::::::,RULES_HIT:41:152:355:379:599:960:982:988:989:1042:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1541:1593:1594:1711:1730:1747:1777:1792:2393:2559:2562:2693:2911:3138:3139:3140:3141:3142:3167:3352:3622:3865:3866:3867:3868:3870:3871:3872:3873:4321:4425:4605:5007:7904:10004:10400:11232:11658:11914:12043:12266:12297:12438:12740:12895:13069:13161:13229:13311:13357:13894:14096:14097:14659:14721:21080:21220:21451:21627:21772:30012:30054:30091,0,RBL:47.151.135.224:@perches.com:.lbl8.mailshell.net-62.14.0.100 64.201.201.201,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:fn,MSBL:0,DNSBL:neutral,Custom_rules:0:0:0,LFtime:24,LUA_SUMMARY:none
+X-HE-Tag: leaf04_37d3b9d49d90d
+X-Filterd-Recvd-Size: 2273
+Received: from XPS-9350.home (unknown [47.151.135.224])
+        (Authenticated sender: joe@perches.com)
+        by omf12.hostedemail.com (Postfix) with ESMTPA;
+        Wed,  6 Nov 2019 17:29:43 +0000 (UTC)
+Message-ID: <47c55ab899aafe10898e6581582363aa446b2091.camel@perches.com>
+Subject: Re: s390/pkey: Use memdup_user() rather than duplicating its
+ implementation
+From:   Joe Perches <joe@perches.com>
+To:     Markus Elfring <Markus.Elfring@web.de>, linux-s390@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Cc:     Christian =?ISO-8859-1?Q?Borntr=E4ger?= <borntraeger@de.ibm.com>,
+        Harald Freudenberger <freude@linux.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Ingo Franzki <ifranzki@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        LKML <linux-kernel@vger.kernel.org>
+Date:   Wed, 06 Nov 2019 09:29:31 -0800
+In-Reply-To: <0f90b278-7b3e-6509-1633-301d16513c5d@web.de>
+References: <08422b7e-2071-ee52-049e-c3ac55bc67a9@web.de>
+         <6137855bb4170c438c7436cbdb7dfd21639a8855.camel@perches.com>
+         <0f90b278-7b3e-6509-1633-301d16513c5d@web.de>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-X-OriginatorOrg: xilinx.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f4f8170c-b582-4666-c9bc-08d762dab57a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Nov 2019 16:59:38.2015
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 657af505-d5df-48d0-8300-c31994686c5c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: mzrwWh2Ab9ebPbwLvQ04dgraz44Fi2SH65jZ1+kxFJ3YJQVNtV3qGB5qI/0+ck+vp0c7q5IjJeYg7lXyeQcX9w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR02MB6728
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> -----Original Message-----
-> From: Wei Yongjun <weiyongjun1@huawei.com>
-> Sent: Wednesday, November 6, 2019 9:25 PM
-> To: Radhey Shyam Pandey <radheys@xilinx.com>; Michal Simek
-> <michals@xilinx.com>; Russell King <linux@armlinux.org.uk>; Robert Hancoc=
-k
-> <hancock@sedsystems.ca>
-> Cc: Wei Yongjun <weiyongjun1@huawei.com>; netdev@vger.kernel.org; linux-
-> arm-kernel@lists.infradead.org; kernel-janitors@vger.kernel.org
-> Subject: [PATCH net-next] net: axienet: Fix error return code in axienet_=
-probe()
->=20
-> In the DMA memory resource get failed case, the error is not
-> set and 0 will be returned. Fix it by reove redundant check
-:s/reove/removing
+On Wed, 2019-11-06 at 14:00 +0100, Markus Elfring wrote:
+> > > Reuse existing functionality from memdup_user() instead of keeping
+> > > duplicate source code.
+> > > 
+> > > Generated by: scripts/coccinelle/api/memdup_user.cocci
+> …
+> > > Fixes: f2bbc96e7cfad3891b7bf9bd3e566b9b7ab4553d ("s390/pkey: add CCA AES cipher key support")
+> > 
+> > This doesn't fix anything
+> 
+> How would you categorise the proposed source code reduction and software reuse?
 
-> since devm_ioremap_resource() will handle it.
->=20
-> Fixes: 28ef9ebdb64c ("net: axienet: make use of axistream-connected attri=
-bute
-> optional")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+As inappropriate for a fixes tag.
 
-The rest looks fine.
-Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@xilinx.com>
+The fixes tag is "used to make it easy to determine where a bug
+originated, which can help review a bug fix"
 
-> ---
->  drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 4 ----
->  1 file changed, 4 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> index 867726d696e2..8f32db6d2c45 100644
-> --- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> +++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-> @@ -1788,10 +1788,6 @@ static int axienet_probe(struct platform_device
-> *pdev)
->  		/* Check for these resources directly on the Ethernet node. */
->  		struct resource *res =3D platform_get_resource(pdev,
->=20
-> IORESOURCE_MEM, 1);
-> -		if (!res) {
-> -			dev_err(&pdev->dev, "unable to get DMA memory
-> resource\n");
-> -			goto free_netdev;
-> -		}
->  		lp->dma_regs =3D devm_ioremap_resource(&pdev->dev, res);
->  		lp->rx_irq =3D platform_get_irq(pdev, 1);
->  		lp->tx_irq =3D platform_get_irq(pdev, 0);
->=20
->=20
+There is no bug here.
+
+> Will the development opinions vary between contributors?
+
+Ever had a bikeshed?
+
+> > > +	return !ukey || keylen < MINKEYBLOBSIZE || keylen > KEYBLOBBUFSIZE
+> > > +	       ? ERR_PTR(-EINVAL)
+> > > +	       : memdup_user(ukey, keylen);
+> > 
+> > This is a very poor use of ternary ?: code.
+> 
+> The conditional operator is applied once more in the intended way,
+> isn't it?
+
+Please take your development efforts to obfuscated c contests.
+
 

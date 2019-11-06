@@ -2,34 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A70EF1A10
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 16:33:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DAA3F1A2E
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 16:40:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731956AbfKFPdI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Nov 2019 10:33:08 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:5737 "EHLO huawei.com"
+        id S1728488AbfKFPkS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 Nov 2019 10:40:18 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:6162 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728292AbfKFPdH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Nov 2019 10:33:07 -0500
-Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id A26C2B8C276769C42595;
-        Wed,  6 Nov 2019 23:33:05 +0800 (CST)
+        id S1727074AbfKFPkR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 Nov 2019 10:40:17 -0500
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 4B988F2B42A8133C09EB;
+        Wed,  6 Nov 2019 23:40:14 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 6 Nov 2019 23:32:58 +0800
+ DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 6 Nov 2019 23:40:03 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Jernej Skrabec <jernej.skrabec@siol.net>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Maxime Ripard <mripard@kernel.org>,
-        Chen-Yu Tsai <wens@csie.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-media@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
+To:     Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        zhengbin <zhengbin13@huawei.com>, Li Jun <jun.li@freescale.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-usb@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] media: sun8i: Remove redundant dev_err call in deinterlace_probe()
-Date:   Wed, 6 Nov 2019 15:32:12 +0000
-Message-ID: <20191106153213.13752-1-weiyongjun1@huawei.com>
+Subject: [PATCH -next] usb: gadget: mass_storage: fix error return code in msg_bind()
+Date:   Wed, 6 Nov 2019 15:39:16 +0000
+Message-ID: <20191106153916.76654-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -41,32 +37,31 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is a error message within devm_ioremap_resource
-already, so remove the dev_err call to avoid redundant
-error message.
+Fix to return negative error code -ENOMEM from the error handling
+case instead of 0, as done elsewhere in this function.
 
+Fixes: d86788979761 ("usb: gadget: mass_storage: allocate and init otg descriptor by otg capabilities")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/media/platform/sunxi/sun8i-di/sun8i-di.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/usb/gadget/legacy/mass_storage.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/sunxi/sun8i-di/sun8i-di.c b/drivers/media/platform/sunxi/sun8i-di/sun8i-di.c
-index aaa1dc159ac2..b61f3dea7c93 100644
---- a/drivers/media/platform/sunxi/sun8i-di/sun8i-di.c
-+++ b/drivers/media/platform/sunxi/sun8i-di/sun8i-di.c
-@@ -834,11 +834,8 @@ static int deinterlace_probe(struct platform_device *pdev)
+diff --git a/drivers/usb/gadget/legacy/mass_storage.c b/drivers/usb/gadget/legacy/mass_storage.c
+index f18f77584fc2..6a1e055c0e6c 100644
+--- a/drivers/usb/gadget/legacy/mass_storage.c
++++ b/drivers/usb/gadget/legacy/mass_storage.c
+@@ -175,8 +175,10 @@ static int msg_bind(struct usb_composite_dev *cdev)
+ 		struct usb_descriptor_header *usb_desc;
  
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
- 	dev->base = devm_ioremap_resource(&pdev->dev, res);
--	if (IS_ERR(dev->base)) {
--		dev_err(dev->dev, "Failed to map registers\n");
--
-+	if (IS_ERR(dev->base))
- 		return PTR_ERR(dev->base);
--	}
- 
- 	dev->bus_clk = devm_clk_get(dev->dev, "bus");
- 	if (IS_ERR(dev->bus_clk)) {
+ 		usb_desc = usb_otg_descriptor_alloc(cdev->gadget);
+-		if (!usb_desc)
++		if (!usb_desc) {
++			status = -ENOMEM;
+ 			goto fail_string_ids;
++		}
+ 		usb_otg_descriptor_init(cdev->gadget, usb_desc);
+ 		otg_desc[0] = usb_desc;
+ 		otg_desc[1] = NULL;
 
 
 

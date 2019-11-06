@@ -2,119 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BE13F1B5D
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 17:33:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 387B9F1B69
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 17:37:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732224AbfKFQd2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Nov 2019 11:33:28 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:58582 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727570AbfKFQd1 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Nov 2019 11:33:27 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iSOFI-0006sg-V3; Wed, 06 Nov 2019 16:33:25 +0000
-To:     Eric Sandeen <sandeen@sandeen.net>,
-        "Darrick J. Wong" <darrick.wong@oracle.com>
-Cc:     linux-xfs@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20191106155248.266489-1-colin.king@canonical.com>
- <20191106155631.GJ4153244@magnolia>
- <cbb99652-c6b2-c81c-128d-6d85be04fddc@canonical.com>
- <a77fff95-0591-bcca-2541-3fd68c0da908@sandeen.net>
-From:   Colin Ian King <colin.king@canonical.com>
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Subject: Re: [PATCH][next] xfs: remove redundant assignment to variable error
-Message-ID: <a022504e-ed58-8eb4-0a38-9feae2281086@canonical.com>
-Date:   Wed, 6 Nov 2019 16:33:24 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
-MIME-Version: 1.0
-In-Reply-To: <a77fff95-0591-bcca-2541-3fd68c0da908@sandeen.net>
-Content-Type: text/plain; charset=utf-8
+        id S1731973AbfKFQhI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 Nov 2019 11:37:08 -0500
+Received: from mail-eopbgr150053.outbound.protection.outlook.com ([40.107.15.53]:25001
+        "EHLO EUR01-DB5-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727699AbfKFQhI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 Nov 2019 11:37:08 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RgtgKaHM5rTLvGGlNdlii8gIy9i9vj0viLiOmIlKKlKnUKSydIcb3Ljf3lKwfY8VRrOsIIbueWs8e+6WMxEF0kCg4MtmQId/bQLjWt++eij54ROH0B+8LQ0lPkQnV2c3GYfiOUXxdz1shohzIqz5g3dAeWOhPifFxqlLW9tdUrN1PlNTVlUpDhs8ZOJe1XItPFNt+NAGtKEFHR2umXM8dtZtpnVHUArYghfYriSO32M/aZ5c4hMHJZebQ33j8Ov8cMPJ+CG6GySqPYpiqYDcI82bOZ0aU7RfabvrPcuhL5ECWPd27BgaeV+2MSn+r/w5zgzk2V5npPWp7ysPO9Uw2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZHNtKUMLPb2Vzxptn1zH3W/OY8Q0alFYgvKZHGIxfA0=;
+ b=K5AmUAlTWbLUHxxq8rQfWRB4Iie85hK2Xe5qKrYUhYA7NiHIKmR6lLBZRPzdPBv+HPMR/5p2oJlLxlAwfFJ95HFV8mWEtkM503DE8Aox0YUBoDtgHIHafooaJwml7Ztk0iKjOpjJJcWS/1zHpZziIDpFdQv4dtA6sHUBRb1YpKT7//MI0FZt8nU8lN+M9gf6oDqOsTZS9jwzHF1MA+AvnNSLG5ZJPWAwqGSm693oBmNiBCSspn8YwU5SxAhX9SdV0yj4rWkzU9Qmbbh4A+4H/WKSZ7VAiy/VeBJ7IdVxupb9TqT+wOnlBJ6/enog52HktEH8tdUuS8QPTSk/MnWPtA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ZHNtKUMLPb2Vzxptn1zH3W/OY8Q0alFYgvKZHGIxfA0=;
+ b=mkn92g+eWkPRLqGncYYJIVLhapyzPPWvhYmcMnAbTMxRWZHUEFM2ix1SpvTR1GmSq2o0wswuln/kbsLwj9H1+DYClZYVUSiqRvfRMuThpeQuKw0LxVs44V+cP/onB7rtXvneJMpun9J5+IrBXshIoasQBlbHi5ufx3Ps4G6oW80=
+Received: from DB6PR0402MB2789.eurprd04.prod.outlook.com (10.172.245.7) by
+ DB6PR0402MB2837.eurprd04.prod.outlook.com (10.172.247.9) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2430.20; Wed, 6 Nov 2019 16:37:05 +0000
+Received: from DB6PR0402MB2789.eurprd04.prod.outlook.com
+ ([fe80::4a8:4223:6954:59b9]) by DB6PR0402MB2789.eurprd04.prod.outlook.com
+ ([fe80::4a8:4223:6954:59b9%9]) with mapi id 15.20.2408.024; Wed, 6 Nov 2019
+ 16:37:05 +0000
+From:   Ioana Ciornei <ioana.ciornei@nxp.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: RE: [bug report] dpaa2-eth: add MAC/PHY support through phylink
+Thread-Topic: [bug report] dpaa2-eth: add MAC/PHY support through phylink
+Thread-Index: AQHVlHuF29raGclBMU6N8+44Yyj21Kd+V71w
+Date:   Wed, 6 Nov 2019 16:37:04 +0000
+Message-ID: <DB6PR0402MB278955B6020E0ECA1ED3992FE0790@DB6PR0402MB2789.eurprd04.prod.outlook.com>
+References: <20191106082329.GA32733@mwanda>
+In-Reply-To: <20191106082329.GA32733@mwanda>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=ioana.ciornei@nxp.com; 
+x-originating-ip: [212.146.100.6]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: f2888142-db7f-4196-bfc9-08d762d78ee1
+x-ms-traffictypediagnostic: DB6PR0402MB2837:
+x-microsoft-antispam-prvs: <DB6PR0402MB28376C8C025988B8C90D5558E0790@DB6PR0402MB2837.eurprd04.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:7691;
+x-forefront-prvs: 02135EB356
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(396003)(376002)(136003)(39860400002)(366004)(346002)(189003)(199004)(51914003)(186003)(86362001)(64756008)(66446008)(305945005)(6506007)(74316002)(7696005)(5660300002)(316002)(76116006)(99286004)(66946007)(66556008)(66476007)(52536014)(76176011)(14454004)(3846002)(6116002)(4744005)(7736002)(478600001)(81166006)(81156014)(6916009)(55016002)(14444005)(9686003)(6246003)(44832011)(476003)(71200400001)(71190400001)(8676002)(8936002)(256004)(66066001)(26005)(102836004)(2906002)(11346002)(229853002)(4326008)(446003)(25786009)(33656002)(486006)(6436002);DIR:OUT;SFP:1101;SCL:1;SRVR:DB6PR0402MB2837;H:DB6PR0402MB2789.eurprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: nxp.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 5pL5a/zVB6USLp7XOKIM+3xbCUpyD5pzYxJR9EXXm2++yXS+Ab1ZNOx03/G6C2jyfmttkwPfbTg2o/OHeSpBPC5sGahzua9x9RandOb2tFegOfbmv1kBfmubXnlMM75Lx/d+dopsa3DpjDh0/WA0d0+JXUInGKLuE+8EzNYezuxQhqoujnIKBHuObI7URj3X1AoEL7WAiSOkXleYcfpbpKtgVJ5JRg5COmwdK8FSaJO8g2x/dUHQumfUUlujPE4JreD0QyOucJ/NynzBf96/AYlLgFfpct3jqaFtR49dfQMlqEUAFrCJb+F++xGGHSBuliLwwHyav0cA7047goxDq4/tJWv/Ne94agIogdIbADKiaWvJleme5gk13nWu0nkwB/vN6jdYSfjNtQD/GVmoWTm+2UEwBL7EQxzAvjXNnPtjF2v6Ac5UYfnRou8Vl+qz
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f2888142-db7f-4196-bfc9-08d762d78ee1
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Nov 2019 16:37:04.8695
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 0M3zL6KxRcXNBJ3zcL1wetUI9KQPj/aYPKELSZjY+GpLBqnXgvzHWjiq+P5oAl3IKsgUfaCBnsueGF73HYJCrQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR0402MB2837
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 06/11/2019 16:19, Eric Sandeen wrote:
-> 
-> 
-> On 11/6/19 9:59 AM, Colin Ian King wrote:
->> On 06/11/2019 15:56, Darrick J. Wong wrote:
->>> On Wed, Nov 06, 2019 at 03:52:48PM +0000, Colin King wrote:
->>>> From: Colin Ian King <colin.king@canonical.com>
->>>>
->>>> Variable error is being initialized with a value that is never read
->>>> and is being re-assigned a couple of statements later on. The
->>>> assignment is redundant and hence can be removed.
->>>>
->>>> Addresses-Coverity: ("Unused value")
->>>
->>> Er... is there a coverity id that goes with this?
->>
->> Unfortunately it is a private one, so it does not make sense to use it.
-> 
-> If it's not in the upstream coverity scan (and AFAICT it's not),
+> Subject: [bug report] dpaa2-eth: add MAC/PHY support through phylink
+>=20
+> Hello Ioana Ciornei,
+>=20
+> The patch 719479230893: "dpaa2-eth: add MAC/PHY support through
+> phylink" from Oct 31, 2019, leads to the following static checker
+> warning:
+>=20
+> 	drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c:55
+> dpaa2_mac_get_if_mode()
+> 	warn: always true condition '(if_mode >=3D 0) =3D> (0-u32max >=3D 0)'
+>=20
+> drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c
+>     44  static int dpaa2_mac_get_if_mode(struct device_node *node,
+>     45                                   struct dpmac_attr attr)
+>     46  {
+>     47          phy_interface_t if_mode;
+>     48          int err;
+>     49
+>     50          err =3D of_get_phy_mode(node, &if_mode);
+>     51          if (!err)
+>     52                  return if_mode;
+>     53
+>     54          if_mode =3D phy_mode(attr.eth_if);
+>     55          if (if_mode >=3D 0)
+>                     ^^^^^^^^^^^^
+> This enum is unsigned so the condition is always true.
+>=20
+>     56                  return if_mode;
+>     57
+>     58          return -ENODEV;
+>     59  }
+>=20
+> regards,
+> dan carpenter
 
-that's because I'm using coverity with improved tuned coverage settings
-and coverity scan is just set on the default low setting.
+Thanks for the bug report, will send a fix.
 
-> it makes no sense to reference coverity in the commit log.
-> It's not useful to anyone IMHO.
-
-It's useful for tracking which bugs are being picked up with Coverity
-and the kind of bug issue. I'm trying to gather stats on static analysis
-fixes that land in linux to help catagorize the types of issues with
-fixes landing upstream.
-
-> 
-> -Eric
-> 
-
+Ioana

@@ -2,30 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8646CF159B
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 13:00:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 833C3F15A1
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 13:01:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729501AbfKFMAw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Nov 2019 07:00:52 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:6160 "EHLO huawei.com"
+        id S1729911AbfKFMBU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 Nov 2019 07:01:20 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:47544 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728610AbfKFMAw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Nov 2019 07:00:52 -0500
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 373DB18A898A0E92176B;
-        Wed,  6 Nov 2019 20:00:50 +0800 (CST)
+        id S1728550AbfKFMBU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 Nov 2019 07:01:20 -0500
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id E76BAB703EE466FD6D42;
+        Wed,  6 Nov 2019 20:01:16 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 6 Nov 2019 20:00:40 +0800
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 6 Nov 2019 20:01:06 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Hans de Goede <hdegoede@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Mathieu Poirier <mathieu.poirier@linaro.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Yabin Cui <yabinc@google.com>
 CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-fsdevel@vger.kernel.org>, <devel@driverdev.osuosl.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] staging: Fix error return code in vboxsf_fill_super()
-Date:   Wed, 6 Nov 2019 11:59:54 +0000
-Message-ID: <20191106115954.114678-1-weiyongjun1@huawei.com>
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] coresight: funnel: Fix missing spin_lock_init()
+Date:   Wed, 6 Nov 2019 12:00:21 +0000
+Message-ID: <20191106120021.115200-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -37,31 +39,29 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix to return negative error code -ENOMEM from the error handling
-case instead of 0, as done elsewhere in this function.
+The driver allocates the spinlock but not initialize it.
+Use spin_lock_init() on it to initialize it correctly.
 
-Fixes: df4028658f9d ("staging: Add VirtualBox guest shared folder (vboxsf) support")
+This is detected by Coccinelle semantic patch.
+
+Fixes: 0093875ad129 ("coresight: Serialize enabling/disabling a link device.")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/staging/vboxsf/super.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hwtracing/coresight/coresight-funnel.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/staging/vboxsf/super.c b/drivers/staging/vboxsf/super.c
-index 3913ffafa83b..0bf4d724aefd 100644
---- a/drivers/staging/vboxsf/super.c
-+++ b/drivers/staging/vboxsf/super.c
-@@ -176,8 +176,10 @@ static int vboxsf_fill_super(struct super_block *sb, struct fs_context *fc)
- 	/* Turn source into a shfl_string and map the folder */
- 	size = strlen(fc->source) + 1;
- 	folder_name = kmalloc(SHFLSTRING_HEADER_SIZE + size, GFP_KERNEL);
--	if (!folder_name)
-+	if (!folder_name) {
-+		err = -ENOMEM;
- 		goto fail_free;
-+	}
- 	folder_name->size = size;
- 	folder_name->length = size - 1;
- 	strlcpy(folder_name->string.utf8, fc->source, size);
+diff --git a/drivers/hwtracing/coresight/coresight-funnel.c b/drivers/hwtracing/coresight/coresight-funnel.c
+index b605889b507a..900690a9f7f0 100644
+--- a/drivers/hwtracing/coresight/coresight-funnel.c
++++ b/drivers/hwtracing/coresight/coresight-funnel.c
+@@ -253,6 +253,7 @@ static int funnel_probe(struct device *dev, struct resource *res)
+ 	}
+ 	dev->platform_data = pdata;
+ 
++	spin_lock_init(&drvdata->spinlock);
+ 	desc.type = CORESIGHT_DEV_TYPE_LINK;
+ 	desc.subtype.link_subtype = CORESIGHT_DEV_SUBTYPE_LINK_MERG;
+ 	desc.ops = &funnel_cs_ops;
 
 
 

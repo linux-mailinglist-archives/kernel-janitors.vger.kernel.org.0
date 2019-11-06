@@ -2,29 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E0EEF1944
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 16:00:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A70EF1A10
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 16:33:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731820AbfKFPAU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Nov 2019 10:00:20 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:6161 "EHLO huawei.com"
+        id S1731956AbfKFPdI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 Nov 2019 10:33:08 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:5737 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728712AbfKFPAT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Nov 2019 10:00:19 -0500
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 611C6E494CCC75930C89;
-        Wed,  6 Nov 2019 23:00:14 +0800 (CST)
+        id S1728292AbfKFPdH (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 Nov 2019 10:33:07 -0500
+Received: from DGGEMS405-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id A26C2B8C276769C42595;
+        Wed,  6 Nov 2019 23:33:05 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 6 Nov 2019 23:00:07 +0800
+ DGGEMS405-HUB.china.huawei.com (10.3.19.205) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 6 Nov 2019 23:32:58 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Egor Pomozov <epomozov@marvell.com>,
-        Igor Russkikh <igor.russkikh@aquantia.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <netdev@vger.kernel.org>,
+To:     Jernej Skrabec <jernej.skrabec@siol.net>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-media@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
         <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net-next] net: aquantia: fix return value check in aq_ptp_init()
-Date:   Wed, 6 Nov 2019 14:59:21 +0000
-Message-ID: <20191106145921.124814-1-weiyongjun1@huawei.com>
+Subject: [PATCH -next] media: sun8i: Remove redundant dev_err call in deinterlace_probe()
+Date:   Wed, 6 Nov 2019 15:32:12 +0000
+Message-ID: <20191106153213.13752-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -36,27 +41,32 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Function ptp_clock_register() returns ERR_PTR() and never returns
-NULL. The NULL test should be removed.
+There is a error message within devm_ioremap_resource
+already, so remove the dev_err call to avoid redundant
+error message.
 
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/net/ethernet/aquantia/atlantic/aq_ptp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/sunxi/sun8i-di/sun8i-di.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c b/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
-index 3ec08415e53e..252a80b6d3b6 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_ptp.c
-@@ -1205,7 +1205,7 @@ int aq_ptp_init(struct aq_nic_s *aq_nic, unsigned int idx_vec)
- 	aq_ptp->ptp_info = aq_ptp_clock;
- 	aq_ptp_gpio_init(&aq_ptp->ptp_info, &mbox.info);
- 	clock = ptp_clock_register(&aq_ptp->ptp_info, &aq_nic->ndev->dev);
--	if (!clock || IS_ERR(clock)) {
-+	if (IS_ERR(clock)) {
- 		netdev_err(aq_nic->ndev, "ptp_clock_register failed\n");
- 		err = PTR_ERR(clock);
- 		goto err_exit;
+diff --git a/drivers/media/platform/sunxi/sun8i-di/sun8i-di.c b/drivers/media/platform/sunxi/sun8i-di/sun8i-di.c
+index aaa1dc159ac2..b61f3dea7c93 100644
+--- a/drivers/media/platform/sunxi/sun8i-di/sun8i-di.c
++++ b/drivers/media/platform/sunxi/sun8i-di/sun8i-di.c
+@@ -834,11 +834,8 @@ static int deinterlace_probe(struct platform_device *pdev)
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	dev->base = devm_ioremap_resource(&pdev->dev, res);
+-	if (IS_ERR(dev->base)) {
+-		dev_err(dev->dev, "Failed to map registers\n");
+-
++	if (IS_ERR(dev->base))
+ 		return PTR_ERR(dev->base);
+-	}
+ 
+ 	dev->bus_clk = devm_clk_get(dev->dev, "bus");
+ 	if (IS_ERR(dev->bus_clk)) {
 
 
 

@@ -2,167 +2,108 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 368DDF1679
-	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 14:02:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97EC0F17DC
+	for <lists+kernel-janitors@lfdr.de>; Wed,  6 Nov 2019 15:02:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730120AbfKFNB6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 6 Nov 2019 08:01:58 -0500
-Received: from mout.web.de ([217.72.192.78]:42343 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728846AbfKFNB5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 6 Nov 2019 08:01:57 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1573045235;
-        bh=07Bw2Tj3CUPiX3AUCgDENllQxMP88jdI1Qiol2W7qIk=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=am13BAx/QmAMOS/aud2yIVix+ZoM470bz9dCSaEhTX8zXQ0ZMMNKCWDBPxGZTv2xi
-         6ZTbcVv13urXWgyTmD4NCtGI/f4dX26hOZCuq8H2YUi1gIP/aJBBEv4ZD6fqD+EM8Q
-         HHo8l83IeHakFK6Uns/IA0gS89LWxOZGNhF6qQdc=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.49.91.235]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0McWnE-1iAfVz2QrI-00HdGD; Wed, 06
- Nov 2019 14:00:35 +0100
-Subject: Re: s390/pkey: Use memdup_user() rather than duplicating its
- implementation
-To:     Joe Perches <joe@perches.com>, linux-s390@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Cc:     =?UTF-8?Q?Christian_Borntr=c3=a4ger?= <borntraeger@de.ibm.com>,
-        Harald Freudenberger <freude@linux.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Ingo Franzki <ifranzki@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        LKML <linux-kernel@vger.kernel.org>
-References: <08422b7e-2071-ee52-049e-c3ac55bc67a9@web.de>
- <6137855bb4170c438c7436cbdb7dfd21639a8855.camel@perches.com>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <0f90b278-7b3e-6509-1633-301d16513c5d@web.de>
-Date:   Wed, 6 Nov 2019 14:00:33 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
-MIME-Version: 1.0
-In-Reply-To: <6137855bb4170c438c7436cbdb7dfd21639a8855.camel@perches.com>
-Content-Type: text/plain; charset=utf-8
+        id S1731882AbfKFOCr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 6 Nov 2019 09:02:47 -0500
+Received: from mail-eopbgr1410110.outbound.protection.outlook.com ([40.107.141.110]:21152
+        "EHLO JPN01-OS2-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726926AbfKFOCr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 6 Nov 2019 09:02:47 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PgjqYiRJ3D/Hr5YHr/V2u846JHqPrCEwqguE5EZBwDln0aNM8HR41ch32RF953kF9sreVBa3dv2CpDVKYyCAuSZ0j2QgXd+Q957r6/H3Lq1oet14CCgOaYPOn58Gao3OZVI92pAM1jh7z4OIQ+10UCIfbFcfDzVhUYxlPRYnBHUxWUTre/oS7BZSt89FdsbnfqoGSgdR+jnceSPshU1CT5XeRhQ09jCBYRtNFdqK9uvwHjKOpmS/CbbonKn0Tyz6Mgz/NR1avLiaE3Pb46wVuT4c7AlYG1m5PBZY8b99E8sSoivqcetIwYhcL5ksMFI4mYwcrs+Lb3OaEzH4t/gyAA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lWeW3xOfLnJ9yvqVy4z9Pz2dveNCi9QWpys9+zyOh9g=;
+ b=NsTDb01bLtsgP+yP3g4/wdfrsJQ5E0ntI44uZk+mpZvzLoufMmul3DKdqLFXeExWVTUECJylauEoarRB0FBSBJuzpdU1M4VfTOWw6VDCge3BaUH5QYb6WJljzBDSkzSDC3X5KyhFWXkLhv0Qhy5T/KAFVWhwSrC90oV6YtXCokNhDDXmAy73UbiRy83CQiygs8YTHUMbPSmNkapMVJz/Le9onYua+nCdtxbCStHIh+pFmJAwTmHI6/9ak9ojoLVhOiNqXEqwJsAGJIRMxJw8pYGw+XFtmc2VYAkLCke3R/HkiC1cwaY4fIiS8rkjmAGxKOj1qF+fKQUauZDRvDLkgQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=renesasgroup.onmicrosoft.com; s=selector2-renesasgroup-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lWeW3xOfLnJ9yvqVy4z9Pz2dveNCi9QWpys9+zyOh9g=;
+ b=rmkp8tmL5etJfpYGt5mXEOfSLqcsPFygHdkb5aAuZnhkoK4p2tiQegxN79KP7ZhmQR0sBPmuvp8DVPw/76UM7wgQj2GmugHw7MMlZfNSzrdGZ485UZNLc+pSEh4l8jC301/hErzrqLczOIAXGSNropCnxQlLLag+DKN2nsj8C1M=
+Received: from OSAPR01MB3025.jpnprd01.prod.outlook.com (52.134.248.22) by
+ OSAPR01MB2290.jpnprd01.prod.outlook.com (52.134.235.141) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2430.20; Wed, 6 Nov 2019 14:02:43 +0000
+Received: from OSAPR01MB3025.jpnprd01.prod.outlook.com
+ ([fe80::fcbd:8130:e86:e239]) by OSAPR01MB3025.jpnprd01.prod.outlook.com
+ ([fe80::fcbd:8130:e86:e239%6]) with mapi id 15.20.2408.025; Wed, 6 Nov 2019
+ 14:02:43 +0000
+From:   Vincent Cheng <vincent.cheng.xh@renesas.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+CC:     Richard Cochran <richardcochran@gmail.com>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH -next] ptp: Fix missing unlock on error in idtcm_probe()
+Thread-Topic: [PATCH -next] ptp: Fix missing unlock on error in idtcm_probe()
+Thread-Index: AQHVlJjiCPlqzOaK1EuJpaAhEMieVad+LHYA
+Date:   Wed, 6 Nov 2019 14:02:43 +0000
+Message-ID: <20191106140228.GA28081@renesas.com>
+References: <20191106115308.112645-1-weiyongjun1@huawei.com>
+In-Reply-To: <20191106115308.112645-1-weiyongjun1@huawei.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:uw2cSBYDDm8CzyfFt5E5QxVSu3QnK8A4ms3ZiVxw9Wfk4qan/02
- fS2Z946QCAIGWJSyF02EAweObx2XTegYp0E/cxzRRcBUaURGurL8UVA+fKtmVwGAhTlcU+c
- BlSQd5LA5Dp+qG+bvBAAMKxgM3x5GuVZMF/EhhruQ4xKagWb9D3Ur0nH1ZoNKiDftrUw//R
- ADyLUV0hUVkpGRYqkq59A==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:agDceULGBOs=:0QcRp4Eqc5cNqaaDLa4TUd
- ooji1mOhEFk3iqfXGai0zIr6OrPIEi8gjqd2xpCi9oyOX43ekpEuvw+ymsM+Ue1jDaUS8J/zD
- J2+dRB+ukAgDpf5c6uZq9qw7xHX10ZDdDTpErjlGnMjUFdmoxHrosYdcGnf4wD9e8hQLK3teu
- x5BZgMFn8GlKTCEV+NwYP4qkh7JzhRNZhJ+1dIFXCWDj/Rqar+DpmHjrdFcSAH/+aR9UyjApm
- Dx1IYWbpS3nZYnOdDjxlG+/ifi9/Gy0t+w9yzMqTpg2RyhNtEOLgHvrtZdMFicSYo9b9CwwzR
- KUXJA55bosvRgX80/FWUveN8g1P4L2prnqb3paw9YHgxm6DNnCrYwSfQHLk5ssv3lqkgcYN6M
- CD3v5rE3WdUw9XM+giYZvcGar3psyvLlbpPjimcyVxphO2s75v3aIlp0D4jnGO9GKDOoR9A0f
- aSC9dcoTiAxlpKhFS7sNZVUTHzpEnfqlWufAMOWgaVBS61TToXyRINedvo5Gr4713qwU8A6eo
- eHBrWYKq/OBAHhXNhsHCKcscVDOGndNkGcnD+JLGEa19ao7OHXJ0pcMPPidEhQ65E3k7zEWGR
- 5Teis3vptD7gUt0f9jLVhAZ/HD1N4/mh+mz0z4xup8lu1J7tPtJduwP5oG+vOHmRCj5llAa2H
- RXSD7sixeM8qoB1uBIf+Bub1yAX7nq79zIUnZYdZFDvD8C5DHOz0jpbGYAdvWX2n0EWoq2j/m
- HNsNNDWlw+fiwnnTNxuqF1oM3eqyiJtdwlLTT3T7kzHymdN+A2R5wnDsCBIheiOuwIduVOuhO
- m/5UUpS3OSH9CHMk+cO0puPi93KDgPDBbXs4perEVvhA9mirqO02McA76MKEHjvC4apzxLBgL
- uyjrgiNux0nJkE0A9phyE1Weghaz9EACivu/lAurUWvuwfjGTZjaG9KS3pXIg/TGghRdyszbX
- 1ggyGzizDaR1QfXltrNJDxjY8rrqulktd/cJ55RHwSxQQWyS4ruSRO8I0N1yvjcrMXc1XGPin
- e+IfkJzgKHF21Y4SBp4uURHR+OmTiMPLHdwXRzKuSE0RlWKrgLtuTYsuEetjsl0UiWQLqF2Ft
- w0pFMV1RvsGbFX0PTFRUzM7ri1ZQWG6x1uDy4q04AtBFNvHfiruWRQQob+qYO8P5ZNBH1PEgd
- Tdd/lvJjL8ysuc0zSjzbF+CkPjlt4XX4b6XRlm+6adYv1f4JbfVjpNR1CAf5TbN6pJFv7MB4T
- NWAcY7U0ejz8lWSclebjmbrMaPfB8qSzmlu/SZii8ObevW6amvb2SrHNceks=
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [173.195.53.163]
+x-clientproxiedby: BYAPR05CA0106.namprd05.prod.outlook.com
+ (2603:10b6:a03:e0::47) To OSAPR01MB3025.jpnprd01.prod.outlook.com
+ (2603:1096:604:2::22)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=vincent.cheng.xh@renesas.com; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: 2ed47e56-aa7b-47bf-f022-08d762c1fe30
+x-ms-traffictypediagnostic: OSAPR01MB2290:
+x-microsoft-antispam-prvs: <OSAPR01MB22907A8E826E97A93056EE41D2790@OSAPR01MB2290.jpnprd01.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4303;
+x-forefront-prvs: 02135EB356
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(136003)(396003)(366004)(346002)(376002)(39850400004)(199004)(189003)(14454004)(1076003)(36756003)(11346002)(66946007)(86362001)(446003)(6246003)(66556008)(6512007)(476003)(256004)(14444005)(4326008)(316002)(66446008)(64756008)(66476007)(5660300002)(6916009)(26005)(229853002)(305945005)(102836004)(76176011)(186003)(386003)(4744005)(6506007)(8936002)(54906003)(2616005)(486006)(71190400001)(99286004)(71200400001)(7736002)(478600001)(6116002)(3846002)(33656002)(81166006)(81156014)(2906002)(66066001)(8676002)(6436002)(25786009)(52116002)(6486002);DIR:OUT;SFP:1102;SCL:1;SRVR:OSAPR01MB2290;H:OSAPR01MB3025.jpnprd01.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: renesas.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: OrpOrwCnCDUProZu9L/b9YnSdN5zIz2txbLFCX5Z7xNzeE7c4TLclEFwrAG9lLts9N5v6wsy6Du3wNgqGr8sE+lRf9f9kgLVofjl7TNFXCig7mk7y7B2dQVMOkTUiollpj9hKJil+sFOKgH/hEnx2/UygOfsxrcEXb7e9k5/GbMcsWaAHzldVds0YXTkFSBWaJMRZHKBq/WtzfBW1GdSX6qK5TDpSAM+jSNJ1B3g+LDOGIb7C87VMta2lcMfBcfZANbwD1nGGQotdo82qX8sRPkgDmLwKh1a9g9kRHiWvYDiYy/kZfQb9TH0akJyyR/ECFAZH5BYY2b66YPEaUKuJ/XBUsT0qouRI7bZY2lhjd0L9t5Bbu8sCqDJCmdc06al9n97BhRhewFTlWpbMpxbzmGIvW5DIgRApgnZWkjj3Ln9rEEdsKGZq1I6SFcm2uYL
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A13F2DF847C3B14E99E91DCE89CE208E@jpnprd01.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2ed47e56-aa7b-47bf-f022-08d762c1fe30
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Nov 2019 14:02:43.1203
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Isgd1Lw2RpTChhGx4N/lhyQ25DHTJvq1pOZN5PUTQgtLodBGGgD/ugMbBJZYNqCcfpd7EpIQ68fnWj8ZYvaUXJCIr3Ct053R2IiZIK1QaA8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSAPR01MB2290
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> Reuse existing functionality from memdup_user() instead of keeping
->> duplicate source code.
->>
->> Generated by: scripts/coccinelle/api/memdup_user.cocci
-=E2=80=A6
->> Fixes: f2bbc96e7cfad3891b7bf9bd3e566b9b7ab4553d ("s390/pkey: add CCA AE=
-S cipher key support")
->
-> This doesn't fix anything
-
-How would you categorise the proposed source code reduction and software r=
-euse?
-
-
-> and the Fixes: line is not appropriate.
-
-Will the development opinions vary between contributors?
-
-
->> +	return !ukey || keylen < MINKEYBLOBSIZE || keylen > KEYBLOBBUFSIZE
->> +	       ? ERR_PTR(-EINVAL)
->> +	       : memdup_user(ukey, keylen);
->
-> This is a very poor use of ternary ?: code.
-
-The conditional operator is applied once more in the intended way,
-isn't it?
-
-
-> This is much more readable for humans.
-
-Readability preferences can vary also for this code structure.
-
-
->> +	return uapqns && nr_apqns > 0
->> +	       ? memdup_user(uapqns, nr_apqns * sizeof(struct pkey_apqn))
->> +	       : NULL;
->
-> And here you reverse the form of the earlier block.
-
-I kept the previous condition specification.
-
-
-> Please be consistent and use this style:
-
-Would further developers like to get a more verbose variant for this
-software transformation?
-
-Regards,
-Markus
+T24gV2VkLCBOb3YgMDYsIDIwMTkgYXQgMDY6NTM6MDhBTSBFU1QsIFdlaSBZb25nanVuIHdyb3Rl
+Og0KPkFkZCB0aGUgbWlzc2luZyB1bmxvY2sgYmVmb3JlIHJldHVybiBmcm9tIGZ1bmN0aW9uIGlk
+dGNtX3Byb2JlKCkNCj5pbiB0aGUgZXJyb3IgaGFuZGxpbmcgY2FzZS4NCj4NCj5GaXhlczogM2E2
+YmE3ZGM3Nzk5ICgicHRwOiBBZGQgYSBwdHAgY2xvY2sgZHJpdmVyIGZvciBJRFQgQ2xvY2tNYXRy
+aXguIikNCj5TaWduZWQtb2ZmLWJ5OiBXZWkgWW9uZ2p1biA8d2VpeW9uZ2p1bjFAaHVhd2VpLmNv
+bT4NCj4tLS0NCj4gZHJpdmVycy9wdHAvcHRwX2Nsb2NrbWF0cml4LmMgfCA0ICsrKy0NCj4gMSBm
+aWxlIGNoYW5nZWQsIDMgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0KPg0KPmRpZmYgLS1n
+aXQgYS9kcml2ZXJzL3B0cC9wdHBfY2xvY2ttYXRyaXguYyBiL2RyaXZlcnMvcHRwL3B0cF9jbG9j
+a21hdHJpeC5jDQo+aW5kZXggY2Y1ODg5YjdkODI1Li5hNTExMGI3YjRlY2UgMTAwNjQ0DQo+LS0t
+IGEvZHJpdmVycy9wdHAvcHRwX2Nsb2NrbWF0cml4LmMNCj4rKysgYi9kcml2ZXJzL3B0cC9wdHBf
+Y2xvY2ttYXRyaXguYw0KPkBAIC0xMjk0LDggKzEyOTQsMTAgQEAgc3RhdGljIGludCBpZHRjbV9w
+cm9iZShzdHJ1Y3QgaTJjX2NsaWVudCAqY2xpZW50LA0KPiANCj4gCWVyciA9IHNldF90b2Rfd3Jp
+dGVfb3ZlcmhlYWQoaWR0Y20pOw0KPiANCj4tCWlmIChlcnIpDQo+KwlpZiAoZXJyKSB7DQo+KwkJ
+bXV0ZXhfdW5sb2NrKCZpZHRjbS0+cmVnX2xvY2spOw0KPiAJCXJldHVybiBlcnI7DQo+Kwl9DQo+
+IA0KPiAJZXJyID0gaWR0Y21fbG9hZF9maXJtd2FyZShpZHRjbSwgJmNsaWVudC0+ZGV2KTsNCj4N
+Cg0KWWVzLCBnb29kIGNhdGNoLiAgVGhhbmsteW91IGZvciB0aGUgZml4Lg0KDQpSZXZpZXdlZC1i
+eTogVmluY2VudCBDaGVuZyAgPHZpbmNlbnQuY2hlbmcueGhAcmVuZXNhcy5jb20+DQo=

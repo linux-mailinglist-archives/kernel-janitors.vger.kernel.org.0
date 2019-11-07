@@ -2,125 +2,198 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C36EF2B9F
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Nov 2019 10:56:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 72EE2F2BD1
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Nov 2019 11:06:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388081AbfKGJ4r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 Nov 2019 04:56:47 -0500
-Received: from mail-yb1-f196.google.com ([209.85.219.196]:41146 "EHLO
-        mail-yb1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727707AbfKGJ4q (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 Nov 2019 04:56:46 -0500
-Received: by mail-yb1-f196.google.com with SMTP id d95so222105ybi.8;
-        Thu, 07 Nov 2019 01:56:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=fm76nR80a/OQAHDl6S+Q4Z7EZeWE8/XJctFepQj3/cI=;
-        b=iZNmgeWrVLHUyf1/kz3lZiIqCRpishYYNgkmMmGuWYewId7m3ntRjswTyhLcujBldQ
-         a7RwMQ3Skm2bOSrpDjA7MyDMKv9wqboaX7nk3g4jvq6GelKxWZp9PEIE6vuD6wvZQU5q
-         RikVdr/gG1czRpgbEwBok3MXtY73J+Y8LQkkeFjV1hjDEw7XWJdI9+mrjZZOPhJpUopB
-         nh9pN6SpL3w4UpUxCYKD+p06vT+B1XdMcCmHIy6kj9n6RDKhiOgb2EfmYDfEjOHtE0LG
-         AD+/2Tlke5oTjj872M0nFJRDM1wV99jykwGy4pvW2+ilIgUGD3JaHvJva9a7N25nxkaE
-         mQKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fm76nR80a/OQAHDl6S+Q4Z7EZeWE8/XJctFepQj3/cI=;
-        b=aX+kS5vLIr2Eq+KhNDRrwQzpRTu5c9wKsvKYU6Pv2wI5gIaXaCxiYGPWX3PR6fcK4A
-         DHO1d3RUc1sryBYBYz6DHDpqfE3hYYhisk67Pi7hltl7Xgwx6twOP6vKzVlnZL/uSVvh
-         1MKl3RgZx8Gub8HY9/3eZn4AdILUPb3MdBBcS7Gf1vi6hEFB2FG1Ktr62Fu+9N45oqCk
-         HtZ7GtF3sUZXPthAGqV+Ba0OJ1tBw3lnSvsSQDcFHdaW4idxQNSdZ3OyQG7BrOuTi6Vo
-         k1AgMaqNUZhhJH3O+L6mOSIl9vRSg0J3Yge6uSni4S2NYb8pNhLleUOXgFNbTOhhET8b
-         S3aA==
-X-Gm-Message-State: APjAAAUXbIqeNg8qm14HdOWkzup87AEAp+sUuT73Rtl6Hp4uAXVtt39Z
-        SOe/0sDHQwY2Hn93YF9oNqGGFxbU7eQPowF2OuI=
-X-Google-Smtp-Source: APXvYqzLcmHYbQsOo9koCOUEttSezPItam+DnmJ+3DcDBLpEKbzLbwNf2xc57fFuFRVqjFVOx6hLOIyZ2xkZrMw4FFw=
-X-Received: by 2002:a25:3344:: with SMTP id z65mr2308285ybz.439.1573120604298;
- Thu, 07 Nov 2019 01:56:44 -0800 (PST)
+        id S1733264AbfKGKGQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 Nov 2019 05:06:16 -0500
+Received: from mout.web.de ([212.227.17.12]:34323 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727732AbfKGKGQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 7 Nov 2019 05:06:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1573121166;
+        bh=tGmR5calghk7RYQVWvGi9ql++YV29Qmsl3lu1QpyWeg=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=Avr1nZQEV8CnYgtItZ3YVLnof+kjMsY4SU6LXnxx2oshTGflYQLfBGtCna9Jj3U39
+         S51FhBSw5Ov9rvrL3W3G25339Qs1O87WhID5Dobc4SXy9GLWdQUFlr5XgllnA8o92w
+         7p7G4iJqeBse5LGepm45tiKvj5eUbGkJuixJ34q0=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.48.68.124]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Mb8sh-1iCMD83CoN-00KdBA; Thu, 07
+ Nov 2019 11:06:05 +0100
+Subject: [PATCH v2] s390/pkey: Use memdup_user() rather than duplicating its
+ implementation
+To:     linux-s390@vger.kernel.org, Joe Perches <joe@perches.com>,
+        =?UTF-8?Q?Christian_Borntr=c3=a4ger?= <borntraeger@de.ibm.com>,
+        Harald Freudenberger <freude@linux.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Ingo Franzki <ifranzki@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+References: <08422b7e-2071-ee52-049e-c3ac55bc67a9@web.de>
+ <6137855bb4170c438c7436cbdb7dfd21639a8855.camel@perches.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <deb7893f-3cfe-18fc-3feb-b26b290bf3c6@web.de>
+Date:   Thu, 7 Nov 2019 11:06:04 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-References: <20191106234301.283006-1-colin.king@canonical.com>
- <CAOQ4uxhT4pFzHjjKyoMOc3xVXXqyqc37zd=-pCx2+keA4e6NAg@mail.gmail.com>
- <02adb5f3-10be-1827-f48b-b621bd61783a@canonical.com> <f88a4ef7-3e2a-9e17-1573-3594288091cd@canonical.com>
- <bba96a64-a9f7-cd03-e00b-8ee369520ae7@canonical.com>
-In-Reply-To: <bba96a64-a9f7-cd03-e00b-8ee369520ae7@canonical.com>
-From:   Amir Goldstein <amir73il@gmail.com>
-Date:   Thu, 7 Nov 2019 11:56:33 +0200
-Message-ID: <CAOQ4uxgj8FO-yqtHsjh2OaTGvcF3HA5OekqiUuZEFE+LGGaTCg@mail.gmail.com>
-Subject: Re: [PATCH] ovl: create UUIDs for file systems that do not set the
- superblock UUID
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     Miklos Szeredi <miklos@szeredi.hu>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <6137855bb4170c438c7436cbdb7dfd21639a8855.camel@perches.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ma/uEGKWkEfnuuES8DbJVhQlCtL3mwvFI0yXMGIUmdtfh9w63lb
+ 67r/O6/PvxNX6h0dve5mVDcFRDDMw4GXnoiliukMyGGiVB5u/E7J0AX6jSHoBx03lZL3LUg
+ 1dJMTsgDFLXqyWtuyBhbYZLntXp+nchmmC1jSjmNd4vaJhouCzFdevzucH+KzfRTuRsfr4h
+ Ty+F097NNQi8UUxPFIFLQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:UYbxHRl+Bdc=:GCLq4K0YaKqJ9mPbXv5o4Z
+ wN+WBfiK7avtt5qyK+I626UJ/X3yqQGO4npYaER+3QwnOMSkeMtshQY8eKJB5DALFsfyOfA+i
+ WtO9xk++TijxXoVhT2GDPVFOIlir1AaBZUqH9uJ1j2z4b5DDosGOMlWe3VCvUpNHcBAgB2FpH
+ PCCOpkKYQ81pOelEmNjDCk/tLefrz3desRFtOHvSIMWcDbqBVvBSEcmotirRMk0eOz6tbXzFj
+ qFgL0aHqP+uoM0FkS9HRRme1aNvesn4IqByUShji65v42glrI2RWdRl/+0oTRgy+9bhNZLWHW
+ DgIjpAICbYc3sc2SDn4xD6FFJMcsBphuueT57/bVZAWKryR9nXiCZEPUdF3smKk8Ekuxb1cW/
+ NdHaSuX6cGXKv17QY5WuVYkfEVv0jhvanlPX846DHtn5hjSyyagp0ClxpnDB3N7fEFdktdyZ6
+ 0kLDBwrh0urD1ka9DaCUSBRm+2NLBY9uyr0Mq9ZR4xo2lly5/sRImRYs/eyVAL2amhoN48J6k
+ C2tTYYkhsAVpQCcKaPobJ5cy27R4LMS+dchmUqo68KMAwywCpJ3o3vihKkTo+EaoaKaJ49r7w
+ Wwiw/my+RAj3JQtAm3Uvbwot3oHwlyJRY3u+uFVNCayr9qXmCFTUg5ZX034JQlvVZTwxVd7xx
+ B6MmiawBdi4hEkqv6in3sBC3HFXYvgU/Ocn/01bM0gpn2vrfVm+Wy79DXIDmqbQS2cyQPi5N+
+ NFdN6InZEa8LK1jpk0eNEDsK8feiyhwlS/3REcfsJ9JaWpyqz0xuxJ4gaLX2+McRaqsx3DbZg
+ q4YAbz7bNcMWnY1/GDJYrDAEJU6Uid1hDn2uznPBJb8wXIjI3tTfcDaWQWZQ4/kDROlHcc4Aa
+ 6PBSlLqGuVlkzumTfc+D6XfVK9f/NnYV6J4GhGbL7EDeaM9gxAQ3qN9wMshPdFV2WshVkaB0J
+ xZagb5p2fV0CXgOkwQ3rkWT3HOt0QVJQIMdQgUwM2ykgGq7t6zgW8sjJwajguF5IfLX6tXvBH
+ gM+xM6pfo+5C11TlbVKTZ6ObkScp6iOfJC0y1JitSBwxoxv5yIG1KfSzawGhOSpGfRjGkFGZx
+ iqvqadMkVd29No7HW/6erXEIBM540+luOgUVjQgWm/Xg2SNqVUwXG9v0UihzSXEH2wag4uGA9
+ b7+8+oDjqeLBECfVjLZVYkybIA6QsNXzG24+BwdKW0ufRZ2gyg+Fq4semh9/SVtGLCo+i03Wo
+ brQoeXKX/Jc0GQd7psssRKve/PN5XgooAg4SUPn5EOhF3QGBobkDjrEbIC9o=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Nov 7, 2019 at 11:44 AM Colin Ian King <colin.king@canonical.com> wrote:
->
-> On 07/11/2019 09:12, Colin Ian King wrote:
-> > On 07/11/2019 08:45, Colin Ian King wrote:
-> >> On 07/11/2019 07:08, Amir Goldstein wrote:
-> >>> On Thu, Nov 7, 2019 at 1:43 AM Colin King <colin.king@canonical.com> wrote:
-> >>>>
-> >>>> From: Colin Ian King <colin.king@canonical.com>
-> >>>>
-> >>>> Some file systems such as squashfs do not set the UUID in the
-> >>>> superblock resulting in a zero'd UUID.  In cases were two or more
-> >>>> of these file systems are overlayed on the lower layer we can hit
-> >>>> overlay corruption issues because identical zero'd overlayfs UUIDs
-> >>>> are impossible to differentiate between.  This can be fixed by
-> >>>> creating an overlayfs UUID based on the file system from the
-> >>>> superblock s_magic and s_dev fields.  (This currently seems like
-> >>>> enough information to be able create a UUID, but the could be
-> >>>> scope to use other super block fields such as the pointer s_fs_info
-> >>>> but may need some obfuscation).
-> >>>>
-> >>>
-> >>> The fix is incorrent. uuid stored in xattr needs to have persistent properties.
-> >>> In the use case that you describe, the origin file handle should simply be
-> >>> ignored.
-> >>>
-> >>> Please test attached patch.
-> >>
-> >> Thanks for the patch. Tested, and the error still occurs:
-> >>
-> >> [  163.959633] overlayfs: invalid origin (etc/.pwd.lock, ftype=8000,
-> >> origin ftype=4000).
-> >
-> > Added debug, seems like nouuid is not being set to true, nouuid is false
-> > on the layers 0 and 1.
->
-> So nouuid is not being set in ovl_lower_uuid_ok() because the code is
-> returning early because of the following statement:
->
-> if (!ofs->config.nfs_export && !(ofs->config.index && ofs->upper_mnt))
->         return true;
->
-> ..and not getting to the following for-loop.
->
+From: Markus Elfring <elfring@users.sourceforge.net>
+Date: Thu, 7 Nov 2019 10:40:18 +0100
 
-Indeed. I had this bit of information in my mind for a brief moment
-and forgot about it..
+Reuse existing functionality from memdup_user() instead of keeping
+duplicate source code.
 
-Please remove this optimization and change the call to:
+Generated by: scripts/coccinelle/api/memdup_user.cocci
 
-       if (ofs->upper_mnt && !ovl_lower_uuid_ok(ofs, &sb->s_uuid)) {
-...
+Delete local variables which became unnecessary with this refactoring
+in two function implementations.
 
-Maybe change the language of "falling back to index=off..." to
-"enforcing index=off..."
+Fixes: f2bbc96e7cfad3891b7bf9bd3e566b9b7ab4553d ("s390/pkey: add CCA AES c=
+ipher key support")
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+=2D--
 
-You may then submit the patch with my Signed-off and yours.
-Please also change the name nouuid to bad_uuid per Dan's review comment.
+v2:
+Further changes were requested by Joe Perches.
+https://lore.kernel.org/r/6137855bb4170c438c7436cbdb7dfd21639a8855.camel@p=
+erches.com/
 
-Thanks,
-Amir.
+* The proposed usage of two conditional operators was replaced by
+  an other code structure.
+
+* A sanity check was adjusted for the function =E2=80=9C_copy_apqns_from_u=
+ser=E2=80=9D.
+
+
+ drivers/s390/crypto/pkey_api.c | 26 ++++----------------------
+ 1 file changed, 4 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api=
+.c
+index 9de3d46b3253..ac99fd97569d 100644
+=2D-- a/drivers/s390/crypto/pkey_api.c
++++ b/drivers/s390/crypto/pkey_api.c
+@@ -715,36 +715,18 @@ static int pkey_apqns4keytype(enum pkey_key_type kty=
+pe,
+
+ static void *_copy_key_from_user(void __user *ukey, size_t keylen)
+ {
+-	void *kkey;
+-
+ 	if (!ukey || keylen < MINKEYBLOBSIZE || keylen > KEYBLOBBUFSIZE)
+ 		return ERR_PTR(-EINVAL);
+-	kkey =3D kmalloc(keylen, GFP_KERNEL);
+-	if (!kkey)
+-		return ERR_PTR(-ENOMEM);
+-	if (copy_from_user(kkey, ukey, keylen)) {
+-		kfree(kkey);
+-		return ERR_PTR(-EFAULT);
+-	}
+
+-	return kkey;
++	return memdup_user(ukey, keylen);
+ }
+
+ static void *_copy_apqns_from_user(void __user *uapqns, size_t nr_apqns)
+ {
+-	void *kapqns =3D NULL;
+-	size_t nbytes;
+-
+-	if (uapqns && nr_apqns > 0) {
+-		nbytes =3D nr_apqns * sizeof(struct pkey_apqn);
+-		kapqns =3D kmalloc(nbytes, GFP_KERNEL);
+-		if (!kapqns)
+-			return ERR_PTR(-ENOMEM);
+-		if (copy_from_user(kapqns, uapqns, nbytes))
+-			return ERR_PTR(-EFAULT);
+-	}
++	if (!uapqns || nr_apqns <=3D 0)
++		return NULL;
+
+-	return kapqns;
++	return memdup_user(uapqns, nr_apqns * sizeof(struct pkey_apqn));
+ }
+
+ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
+=2D-
+2.24.0
+

@@ -2,222 +2,188 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E360F2E58
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Nov 2019 13:44:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98BA6F3058
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Nov 2019 14:46:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388564AbfKGMo5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 Nov 2019 07:44:57 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:46658 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388479AbfKGMo4 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 Nov 2019 07:44:56 -0500
-Received: from pps.filterd (m0098409.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id xA7CigkJ081507
-        for <kernel-janitors@vger.kernel.org>; Thu, 7 Nov 2019 07:44:55 -0500
-Received: from e06smtp02.uk.ibm.com (e06smtp02.uk.ibm.com [195.75.94.98])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 2w4h30pvm6-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <kernel-janitors@vger.kernel.org>; Thu, 07 Nov 2019 07:44:55 -0500
-Received: from localhost
-        by e06smtp02.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <kernel-janitors@vger.kernel.org> from <borntraeger@de.ibm.com>;
-        Thu, 7 Nov 2019 12:44:15 -0000
-Received: from b06cxnps4074.portsmouth.uk.ibm.com (9.149.109.196)
-        by e06smtp02.uk.ibm.com (192.168.101.132) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Thu, 7 Nov 2019 12:44:13 -0000
-Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
-        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xA7CiBSk51708100
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 7 Nov 2019 12:44:11 GMT
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id C09384C044;
-        Thu,  7 Nov 2019 12:44:11 +0000 (GMT)
-Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 752CE4C058;
-        Thu,  7 Nov 2019 12:44:11 +0000 (GMT)
-Received: from oc7455500831.ibm.com (unknown [9.152.224.123])
-        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTP;
-        Thu,  7 Nov 2019 12:44:11 +0000 (GMT)
+        id S2388368AbfKGNqQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 Nov 2019 08:46:16 -0500
+Received: from mout.web.de ([212.227.17.12]:37367 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731058AbfKGNqQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 7 Nov 2019 08:46:16 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1573134362;
+        bh=RHwsmZfu4iRzxYZNEyr0qQy3SUcUgNwBxdLZdcmUjgc=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=puTI2JbdiOsRmIMIiinGR5mqOPHqBtjvUYQGcGIUTz8eQujnVksMCSOc6iavYpfcW
+         c+RymsEqOr1K+HKCCoJkWyjBBk1lY/eH2j1uH7FKLoOu++pLEAoQuA197XT+S5s8YS
+         jNJhxVxG3qtwxwl0Rv24hcCZT+Ma3YUyKXXSWWug=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([78.48.68.124]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0M5wrF-1hj1RD2UA5-00xvBX; Thu, 07
+ Nov 2019 14:46:02 +0100
 Subject: Re: [PATCH v2] s390/pkey: Use memdup_user() rather than duplicating
  its implementation
-To:     Markus Elfring <Markus.Elfring@web.de>, linux-s390@vger.kernel.org,
-        Joe Perches <joe@perches.com>,
+To:     =?UTF-8?Q?Christian_Borntr=c3=a4ger?= <borntraeger@de.ibm.com>,
+        linux-s390@vger.kernel.org, Joe Perches <joe@perches.com>,
         Harald Freudenberger <freude@linux.ibm.com>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
         Ingo Franzki <ifranzki@linux.ibm.com>,
         Vasily Gorbik <gor@linux.ibm.com>
 Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+        kernel-janitors@vger.kernel.org, Kangjie Lu <kjlu@umn.edu>,
+        Navid Emamdoost <emamd001@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>
 References: <08422b7e-2071-ee52-049e-c3ac55bc67a9@web.de>
  <6137855bb4170c438c7436cbdb7dfd21639a8855.camel@perches.com>
  <deb7893f-3cfe-18fc-3feb-b26b290bf3c6@web.de>
-From:   Christian Borntraeger <borntraeger@de.ibm.com>
-Autocrypt: addr=borntraeger@de.ibm.com; prefer-encrypt=mutual; keydata=
- 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
- nS4h0HDFPrrp1C2EMVYIQrMokWvlFZbCpsdYbBI=
-Date:   Thu, 7 Nov 2019 13:44:11 +0100
+ <833d7d5e-6ede-6bdd-a2cc-2da7f0b03908@de.ibm.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <1b65bc81-f47a-eefa-f1f4-d5af6a1809c0@web.de>
+Date:   Thu, 7 Nov 2019 14:45:54 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.0
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-In-Reply-To: <deb7893f-3cfe-18fc-3feb-b26b290bf3c6@web.de>
+In-Reply-To: <833d7d5e-6ede-6bdd-a2cc-2da7f0b03908@de.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-x-cbid: 19110712-0008-0000-0000-0000032C6792
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19110712-0009-0000-0000-00004A4B6C88
-Message-Id: <833d7d5e-6ede-6bdd-a2cc-2da7f0b03908@de.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-11-07_03:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1910280000 definitions=main-1911070128
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ih/E6MytGxAanl6pgyvwl9rZHT10wv4oanaEBNdSe8jsW/2Sbv/
+ ilid4DM8rLEjURQV/AZIIVgsxXxGrStpGW/Q47GHMmtK5OJPbXESpWSoA6SMBrzycPx1VSS
+ Y7zsc3u4pfudlSU2p2ODfvxR2tkjM8AJkiNGkYd1brGlm/70D6RagbaxHhtyYgeJro0aLES
+ /FzfE8ca3bk7oa4t5TeDw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:uLwzaTJ+JGI=:ydqvPCFhWfiRClaXqe47uq
+ d/+dMes6X8dGWCysBu+/fkviNvTX9UQcxVVhF942Jnjd1nX5IFKiuoIlFiFaOIOhubRexTlhl
+ s5IphzPym8ivRBtlQ4X0yXmk5l2woFXMzq1py0vQ3kvK8LS3X8VDaRe5J+xejI+g+AhoFHyOR
+ jWGf7kW5ZlcaWqjsuI8ux2fccVePmFKec4OTkRay4YQb3MUnWoa0+kHhzDW+h6gbvbPJPVlFo
+ TVbCzpTtzadu1jlfjJ7I7/gmtcR5qFdgYDX7BVhq7c8yOdBQ05/lz/J7LGuTYa/SKC46SHAkD
+ QPsQzsF8qRvPDAQ0OOedzDZulScAkKOJdf5K97AX9j5fLjinMN9ASxGvY1M7lcHHB95V3bKtn
+ qIrDNFnK9pJnm5GHBx1IcWHxq06E6p9Vu3cBsBMPhq2sChZJUmKJh7uSQ0GC225FvYBh36TAU
+ F7fPkeifaQ/IjGNf7dostRAyD49rYuL+uibUYvdpIgi6dwpaZS4VZqhX8uRdKYQTMR7oTiTEK
+ LcOSJDvOHldNwrq2Fb+GDdJHNjQUFf/yDzyfXqOcJO25B4pPXL28xC+Ez5mcYWhTnMi2so0Ab
+ OxwOkHXa9vMxYoe/+Gddmlv5Hcygoy3C608VMnCa31xUbwn4tC12t4uO01CVlARsZ1EkxofJ6
+ qTY9XODFpvZDR6JxBOUcmGHOtwlfMpSHSF884IF2b11+i0h51cARsSz0ANSkn9DTnLqEuFlJA
+ A/GPiEne20allxi8ocG3yS3LECCQo/GeQk0YgtIPtycDILUY6uH7WC7YD2CtSW0Nk3yHjAkWz
+ UuesqQoje4MZwQsTxsLX63hYRKZD4b/rqIW7TGZGqAnZDyonmzgWJJjIel67hEBDIbsSz7y2v
+ gtL6WMePmn38MB3hkzZDLquHhdHfkV8gJ2RjbMcTOiBxfuTlX0RBF52iwaJda/52g1WqcU+nG
+ 5CUjl3n9Zxrlt/QNG98mOC93IkttgJ8+A7rH7Xg1E/DgqJq4r2NBcCy11a7/d0f1ZVhA3Fo3c
+ mxAtLFw5qDiThuCca8pDPPhGy/h3cv7rI4uXBLab0KQcCu9vB10s4pT6kk8FksZIQJCLwltfj
+ k2RvosviwDODttz7okBfVxDsH/QVAI8ROaEZJUWPHkiymleuuXy+3vaDw1tnUZnIDUJJqdQj1
+ 8AJDBO2PT3nZZ7Ox8XHaGhuRA+DGy7fiDVOa90hstOIqn3tTwuyp2nu9C1U1eUfMprvPQnPKX
+ ZBw3Ldby0SxXeU6kNIiZpO0wHdDG5QglnfsMH/BxgPesRlJOXvsRYFZtM7D8=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+>> Reuse existing functionality from memdup_user() instead of keeping
+>> duplicate source code.
+>>
+>> Generated by: scripts/coccinelle/api/memdup_user.cocci
+>>
+>> Delete local variables which became unnecessary with this refactoring
+>> in two function implementations.
+>>
+>> Fixes: f2bbc96e7cfad3891b7bf9bd3e566b9b7ab4553d ("s390/pkey: add CCA AE=
+S cipher key support")
+>
+> With that patch description, the Fixes tag is wrong...but (see below)
+
+I wonder about such a conclusion together with your subsequent feedback.
 
 
-On 07.11.19 11:06, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Thu, 7 Nov 2019 10:40:18 +0100
-> 
-> Reuse existing functionality from memdup_user() instead of keeping
-> duplicate source code.
-> 
-> Generated by: scripts/coccinelle/api/memdup_user.cocci
-> 
-> Delete local variables which became unnecessary with this refactoring
-> in two function implementations.
-> 
-> Fixes: f2bbc96e7cfad3891b7bf9bd3e566b9b7ab4553d ("s390/pkey: add CCA AES cipher key support")
+>>  static void *_copy_apqns_from_user(void __user *uapqns, size_t nr_apqn=
+s)
+>>  {
+>
+> This part below is not an equivalent replacement.
 
-With that patch description, the Fixes tag is wrong...but (see below)
-
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
-> ---
-> 
-> v2:
-> Further changes were requested by Joe Perches.
-> https://lore.kernel.org/r/6137855bb4170c438c7436cbdb7dfd21639a8855.camel@perches.com/
-> 
-> * The proposed usage of two conditional operators was replaced by
->   an other code structure.
-> 
-> * A sanity check was adjusted for the function “_copy_apqns_from_user”.
-> 
-> 
->  drivers/s390/crypto/pkey_api.c | 26 ++++----------------------
->  1 file changed, 4 insertions(+), 22 deletions(-)
-> 
-> diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
-> index 9de3d46b3253..ac99fd97569d 100644
-> --- a/drivers/s390/crypto/pkey_api.c
-> +++ b/drivers/s390/crypto/pkey_api.c
-> @@ -715,36 +715,18 @@ static int pkey_apqns4keytype(enum pkey_key_type ktype,
-> 
->  static void *_copy_key_from_user(void __user *ukey, size_t keylen)
->  {
-> -	void *kkey;
-> -
->  	if (!ukey || keylen < MINKEYBLOBSIZE || keylen > KEYBLOBBUFSIZE)
->  		return ERR_PTR(-EINVAL);
-> -	kkey = kmalloc(keylen, GFP_KERNEL);
-> -	if (!kkey)
-> -		return ERR_PTR(-ENOMEM);
-> -	if (copy_from_user(kkey, ukey, keylen)) {
-> -		kfree(kkey);
-> -		return ERR_PTR(-EFAULT);
-> -	}
-> 
-> -	return kkey;
-> +	return memdup_user(ukey, keylen);
-
-This part looks good
-
->  }
-> 
->  static void *_copy_apqns_from_user(void __user *uapqns, size_t nr_apqns)
->  {
-
-This part below is not an equivalent replacement. In fact you are fixing a bug here...
-
-> -	void *kapqns = NULL;
-> -	size_t nbytes;
-> -
-> -	if (uapqns && nr_apqns > 0) {
-> -		nbytes = nr_apqns * sizeof(struct pkey_apqn);
-> -		kapqns = kmalloc(nbytes, GFP_KERNEL);
-> -		if (!kapqns)
-> -			return ERR_PTR(-ENOMEM);
-> -		if (copy_from_user(kapqns, uapqns, nbytes))
-
-	.... here we would need to kfree kapqns, but we do not. So this is
-a memory leak. Isnt it?
-
-So indeed this is fixing something. But please rework your the patch 
-description accordingly.
+The shown refactoring provides also different run time characteristics,
+doesn't it?
 
 
-> -			return ERR_PTR(-EFAULT);
-> -	}
+> In fact you are fixing a bug here...
+
+Thanks for your acknowledgement.
 
 
-> +	if (!uapqns || nr_apqns <= 0)
-> +		return NULL;
-> 
-> -	return kapqns;
-> +	return memdup_user(uapqns, nr_apqns * sizeof(struct pkey_apqn));
->  }
-> 
->  static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
-> --
-> 2.24.0
-> 
+>> -	void *kapqns =3D NULL;
+>> -	size_t nbytes;
+>> -
+>> -	if (uapqns && nr_apqns > 0) {
+>> -		nbytes =3D nr_apqns * sizeof(struct pkey_apqn);
+>> -		kapqns =3D kmalloc(nbytes, GFP_KERNEL);
+>> -		if (!kapqns)
+>> -			return ERR_PTR(-ENOMEM);
+>> -		if (copy_from_user(kapqns, uapqns, nbytes))
+>
+> 	.... here we would need to kfree kapqns, but we do not. So this is
+> a memory leak. Isnt it?
 
+This is another undesirable software weakness because of incomplete
+exception handling in the previous copy approach.
+
+
+> So indeed this is fixing something. But please rework your the patch
+> description accordingly.
+
+Can the final committer pick the opportunity up to extend the change
+description another bit?
+
+
+>> +	if (!uapqns || nr_apqns <=3D 0)
+>> +		return NULL;
+>>
+>> -	return kapqns;
+>> +	return memdup_user(uapqns, nr_apqns * sizeof(struct pkey_apqn));
+>>  }
+
+
+Would you like to add any tags for the presented software improvement?
+
+Regards,
+Markus

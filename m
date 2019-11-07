@@ -2,73 +2,159 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C32C6F2CC3
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Nov 2019 11:46:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 928A0F2CC7
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Nov 2019 11:50:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387796AbfKGKqi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 Nov 2019 05:46:38 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:33258 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387629AbfKGKqh (ORCPT
+        id S2387964AbfKGKuA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 Nov 2019 05:50:00 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:55981 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727707AbfKGKuA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 Nov 2019 05:46:37 -0500
-Received: by mail-wr1-f66.google.com with SMTP id w30so2510586wra.0
-        for <kernel-janitors@vger.kernel.org>; Thu, 07 Nov 2019 02:46:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=nDQQccSHhJfL7vRd2Ya4dHqYi0017dX75meuR3WGMbw=;
-        b=hQn7H9LLfEPPjTN6/eCjuCuPCeD81xFZrbCRQ7IhL9trUJTKKG249hx5p76gMGATSN
-         rA5REE3Ha1vGjVkLJZmNj7G0aELcGLHG5j8kaEFIkktYKmgF3rYiP3JaL4GCnqfH3TWA
-         OEBIzu0rBv7BTL4vtGVRaytaJE0r+G15X8tre/1R14c6beLUGnHEx1uRz6vG1RXMalvn
-         BzY6JuXLRGBw3EBx43dg/B6rkqDl+aQ6Vajy4WvG6gPsubgsBRBeftivTxV1QiH9jvEu
-         WV+RHj7YEn4R1qs7//Zqxhs1efBppdZpd8LsWA4nhcqnwaal+V9zTSCYn7dnBzOmBmX2
-         fL9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=nDQQccSHhJfL7vRd2Ya4dHqYi0017dX75meuR3WGMbw=;
-        b=A3trrblCaE9NPQ6r4CxzT+r4tl27KD7ri8uIsvf/sEsBQ59/6rpsWA82ngtNmAKNrJ
-         04bWVlLVrzWRjlTggJ5wlL5If3rM2e4h6MuqyaMCkJbE7ttYTMPsEUKyPuMPLIz2CEfe
-         UdHiW96CZzPNEn+je5shlWb6dINZB8Pd5v7UjgN0eVaU8xKSa7t0UWQHXjkWmcn9Rw6p
-         f6CL7GXEo8qneEF6xiMXej6u6h/zPQGsR78A+5xFhfQ5IXZli9QmlfCnkV9ocwoeIJhG
-         kyI9ZfPoyxulRa7wDwqqp6J46fChTCqa1eAtsrJ4IGbzdw6imvOumZUqFXmpZYNTNhBi
-         eEVA==
-X-Gm-Message-State: APjAAAWtgm/fSekAWsolPkVjlOBooKw6Hr0ph8R2T4wzM/C2nZfdh6k+
-        xGU2TRA0U5t1cgu9Ugy+6A65+N+FgSA=
-X-Google-Smtp-Source: APXvYqyPqa6XTb9KKoMaHreHNMrYQp9C47IfASP6ga2dQK7Xw/sFxq4blMu2qX8HwsgcDkAMDyAHtw==
-X-Received: by 2002:adf:f452:: with SMTP id f18mr2290517wrp.264.1573123594583;
-        Thu, 07 Nov 2019 02:46:34 -0800 (PST)
-Received: from localhost (ip-94-113-220-175.net.upcbroadband.cz. [94.113.220.175])
-        by smtp.gmail.com with ESMTPSA id a6sm1416495wmj.1.2019.11.07.02.46.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Nov 2019 02:46:34 -0800 (PST)
-Date:   Thu, 7 Nov 2019 11:46:33 +0100
-From:   Jiri Pirko <jiri@resnulli.us>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Jiri Pirko <jiri@mellanox.com>, Ido Schimmel <idosch@mellanox.com>,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next] mlxsw: spectrum: Fix error return code in
- mlxsw_sp_port_module_info_init()
-Message-ID: <20191107104633.GD2200@nanopsycho>
-References: <20191106145231.39128-1-weiyongjun1@huawei.com>
+        Thu, 7 Nov 2019 05:50:00 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iSfMT-0007Gf-UD; Thu, 07 Nov 2019 10:49:57 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Miklos Szeredi <mszeredi@redhat.com>,
+        Amir Goldstein <amir73il@gmail.com>,
+        linux-unionfs@vger.kernel.org, stable@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][V2] ovl: fix lookup failure on multi lower squashfs
+Date:   Thu,  7 Nov 2019 10:49:57 +0000
+Message-Id: <20191107104957.306383-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191106145231.39128-1-weiyongjun1@huawei.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Wed, Nov 06, 2019 at 03:52:31PM CET, weiyongjun1@huawei.com wrote:
->Fix to return negative error code -ENOMEM from the error handling
->case instead of 0, as done elsewhere in this function.
->
->Fixes: 4a7f970f1240 ("mlxsw: spectrum: Replace port_to_module array with array of structs")
->Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Reviewed-by: Jiri Pirko <jiri@mellanox.com>
+In the past, overlayfs required that lower fs have non null uuid in
+order to support nfs export and decode copy up origin file handles.
+
+Commit 9df085f3c9a2 ("ovl: relax requirement for non null uuid of
+lower fs") relaxed this requirement for nfs export support, as long
+as uuid (even if null) is unique among all lower fs.
+
+However, said commit unintentionally also relaxed the non null uuid
+requirement for decoding copy up origin file handles, regardless of
+the unique uuid requirement.
+
+Amend this mistake by disabling decoding of copy up origin file handle
+from lower fs with a conflicting uuid.
+
+We still encode copy up origin file handles from those fs, because
+file handles like those already exist in the wild and because they
+might provide useful information in the future.
+
+Reported-by: Colin Ian King <colin.king@canonical.com>
+Link: https://lore.kernel.org/lkml/20191106234301.283006-1-colin.king@canonical.com/
+Fixes: 9df085f3c9a2 ("ovl: relax requirement for non null uuid ...")
+Cc: stable@vger.kernel.org # v4.20+
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ fs/overlayfs/namei.c     |  8 ++++++++
+ fs/overlayfs/ovl_entry.h |  2 ++
+ fs/overlayfs/super.c     | 16 ++++++++++------
+ 3 files changed, 20 insertions(+), 6 deletions(-)
+
+diff --git a/fs/overlayfs/namei.c b/fs/overlayfs/namei.c
+index e9717c2f7d45..f47c591402d7 100644
+--- a/fs/overlayfs/namei.c
++++ b/fs/overlayfs/namei.c
+@@ -325,6 +325,14 @@ int ovl_check_origin_fh(struct ovl_fs *ofs, struct ovl_fh *fh, bool connected,
+ 	int i;
+ 
+ 	for (i = 0; i < ofs->numlower; i++) {
++		/*
++		 * If lower fs uuid is not unique among lower fs we cannot match
++		 * fh->uuid to layer.
++		 */
++		if (ofs->lower_layers[i].fsid &&
++		    ofs->lower_layers[i].fs->bad_uuid)
++			continue;
++
+ 		origin = ovl_decode_real_fh(fh, ofs->lower_layers[i].mnt,
+ 					    connected);
+ 		if (origin)
+diff --git a/fs/overlayfs/ovl_entry.h b/fs/overlayfs/ovl_entry.h
+index a8279280e88d..28348c44ea5b 100644
+--- a/fs/overlayfs/ovl_entry.h
++++ b/fs/overlayfs/ovl_entry.h
+@@ -22,6 +22,8 @@ struct ovl_config {
+ struct ovl_sb {
+ 	struct super_block *sb;
+ 	dev_t pseudo_dev;
++	/* Unusable (conflicting) uuid */
++	bool bad_uuid;
+ };
+ 
+ struct ovl_layer {
+diff --git a/fs/overlayfs/super.c b/fs/overlayfs/super.c
+index afbcb116a7f1..5d4faab57ba0 100644
+--- a/fs/overlayfs/super.c
++++ b/fs/overlayfs/super.c
+@@ -1255,17 +1255,18 @@ static bool ovl_lower_uuid_ok(struct ovl_fs *ofs, const uuid_t *uuid)
+ {
+ 	unsigned int i;
+ 
+-	if (!ofs->config.nfs_export && !(ofs->config.index && ofs->upper_mnt))
+-		return true;
+-
+ 	for (i = 0; i < ofs->numlowerfs; i++) {
+ 		/*
+ 		 * We use uuid to associate an overlay lower file handle with a
+ 		 * lower layer, so we can accept lower fs with null uuid as long
+ 		 * as all lower layers with null uuid are on the same fs.
++		 * if we detect multiple lower fs with the same uuid, we
++		 * disable lower file handle decoding on all of them.
+ 		 */
+-		if (uuid_equal(&ofs->lower_fs[i].sb->s_uuid, uuid))
++		if (uuid_equal(&ofs->lower_fs[i].sb->s_uuid, uuid)) {
++			ofs->lower_fs[i].bad_uuid = true;
+ 			return false;
++		}
+ 	}
+ 	return true;
+ }
+@@ -1277,6 +1278,7 @@ static int ovl_get_fsid(struct ovl_fs *ofs, const struct path *path)
+ 	unsigned int i;
+ 	dev_t dev;
+ 	int err;
++	bool bad_uuid = false;
+ 
+ 	/* fsid 0 is reserved for upper fs even with non upper overlay */
+ 	if (ofs->upper_mnt && ofs->upper_mnt->mnt_sb == sb)
+@@ -1287,10 +1289,11 @@ static int ovl_get_fsid(struct ovl_fs *ofs, const struct path *path)
+ 			return i + 1;
+ 	}
+ 
+-	if (!ovl_lower_uuid_ok(ofs, &sb->s_uuid)) {
++	if (ofs->upper_mnt && !ovl_lower_uuid_ok(ofs, &sb->s_uuid)) {
++		bad_uuid = true;
+ 		ofs->config.index = false;
+ 		ofs->config.nfs_export = false;
+-		pr_warn("overlayfs: %s uuid detected in lower fs '%pd2', falling back to index=off,nfs_export=off.\n",
++		pr_warn("overlayfs: %s uuid detected in lower fs '%pd2', enforcing index=off,nfs_export=off.\n",
+ 			uuid_is_null(&sb->s_uuid) ? "null" : "conflicting",
+ 			path->dentry);
+ 	}
+@@ -1303,6 +1306,7 @@ static int ovl_get_fsid(struct ovl_fs *ofs, const struct path *path)
+ 
+ 	ofs->lower_fs[ofs->numlowerfs].sb = sb;
+ 	ofs->lower_fs[ofs->numlowerfs].pseudo_dev = dev;
++	ofs->lower_fs[ofs->numlowerfs].bad_uuid = bad_uuid;
+ 	ofs->numlowerfs++;
+ 
+ 	return ofs->numlowerfs;
+-- 
+2.20.1
+

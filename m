@@ -2,28 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C58FF3B73
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Nov 2019 23:33:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FFF5F3B89
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Nov 2019 23:36:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726785AbfKGWdG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 Nov 2019 17:33:06 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:45869 "EHLO
+        id S1727757AbfKGWgv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 Nov 2019 17:36:51 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:45912 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725870AbfKGWdG (ORCPT
+        with ESMTP id S1726438AbfKGWgv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 Nov 2019 17:33:06 -0500
+        Thu, 7 Nov 2019 17:36:51 -0500
 Received: from [82.43.126.140] (helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iSqKt-0004ox-LL; Thu, 07 Nov 2019 22:33:03 +0000
+        id 1iSqOV-0005un-8Q; Thu, 07 Nov 2019 22:36:47 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Josef Bacik <josef@toxicpanda.com>, Jens Axboe <axboe@kernel.dk>,
-        linux-block@vger.kernel.org, nbd@other.debian.org
+To:     Ilya Dryomov <idryomov@gmail.com>, Sage Weil <sage@redhat.com>,
+        Alex Elder <elder@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+        ceph-devel@vger.kernel.org, linux-block@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] nbd: fix spelling mistake "requeueing" -> "requeuing"
-Date:   Thu,  7 Nov 2019 22:33:02 +0000
-Message-Id: <20191107223302.416745-1-colin.king@canonical.com>
+Subject: [PATCH] rdb: fix spelling mistake "requeueing" -> "requeuing"
+Date:   Thu,  7 Nov 2019 22:36:46 +0000
+Message-Id: <20191107223646.416986-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,26 +36,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in a dev_err error message. Fix it.
+There is a spelling mistake in a debug message. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/block/nbd.c | 2 +-
+ drivers/block/rbd.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index a94ee45440b3..aca67f8b48d1 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -936,7 +936,7 @@ static int nbd_handle_cmd(struct nbd_cmd *cmd, int index)
- 	ret = nbd_send_cmd(nbd, cmd, index);
- 	if (ret == -EAGAIN) {
- 		dev_err_ratelimited(disk_to_dev(nbd->disk),
--				    "Request send failed, requeueing\n");
-+				    "Request send failed, requeuing\n");
- 		nbd_mark_nsock_dead(nbd, nsock, 1);
- 		nbd_requeue_cmd(cmd);
- 		ret = 0;
+diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
+index 39136675dae5..8e1595d09138 100644
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -4230,7 +4230,7 @@ static void rbd_acquire_lock(struct work_struct *work)
+ 		 * lock owner acked, but resend if we don't see them
+ 		 * release the lock
+ 		 */
+-		dout("%s rbd_dev %p requeueing lock_dwork\n", __func__,
++		dout("%s rbd_dev %p requeuing lock_dwork\n", __func__,
+ 		     rbd_dev);
+ 		mod_delayed_work(rbd_dev->task_wq, &rbd_dev->lock_dwork,
+ 		    msecs_to_jiffies(2 * RBD_NOTIFY_TIMEOUT * MSEC_PER_SEC));
 -- 
 2.20.1
 

@@ -2,94 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64723F2800
-	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Nov 2019 08:19:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0D1AF2864
+	for <lists+kernel-janitors@lfdr.de>; Thu,  7 Nov 2019 08:49:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727134AbfKGHTS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 7 Nov 2019 02:19:18 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:43058 "EHLO
+        id S1733164AbfKGHtG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 7 Nov 2019 02:49:06 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:41640 "EHLO
         userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726498AbfKGHTR (ORCPT
+        with ESMTP id S1726618AbfKGHtF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 7 Nov 2019 02:19:17 -0500
+        Thu, 7 Nov 2019 02:49:05 -0500
 Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA77JDA7050480;
-        Thu, 7 Nov 2019 07:19:13 GMT
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA77mfvP072483;
+        Thu, 7 Nov 2019 07:49:01 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=GqFqeBt9Nv2tXaeUwh1OqUx18xyTylz1nlXDFPRLHzI=;
- b=Tp+LL/fBSbL7lpitzgt7noUZlojt53KQUBl44AeA1QvnqSE/9bHyXNE8875aGoUk+wds
- 2kgH9znUOZNv+VAPXzH4WBw8zc/hlCwqqtIQ3L4CGNnFBheiCobmc4cAUc41g7JY8/Bp
- s1FCGnoU6greVk/mgrwEf2LQ5Kt+aHr08fW1QfRVuGwe/mVDrEHejdRHXYu+HFWUfdQQ
- itwxFhLQEqLezoFY+Rs1Kc/fC93dkEo9wJxKoBZDmSI2xkH/chjaR3iThjs76yc8AVCv
- lEeE+i6vjp8ugAhkH3Av4MmO1MIuYB88nt2syxnrSvprAJ/GQU5egsB/VzAjNWO39YQv ig== 
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=jWR+TnPhSA14NeH1OOvS+/rjTxIzSqL1OgNwBLErpNw=;
+ b=OpLiqukL6/T+yKTuQ2BDkARL+NLCwAQ005TcrCbsaeEimafivol+/8UPC7zPUuu1nv54
+ epaUzQ/riizqshB2w1fLfOpyEPJ1Lv/lV9lsDZOnsHltol3tUKdLXpLhFiUY1xpo6u6y
+ KMFG/268J0JS5hXTzOLsrzxAioakoHt4BTX0FDEOWDoNAlziOll2fk/hkZjIu56YCp2A
+ d58tqd3Pwuj7gKxFo0c5DtHdu97WLfzPw9MgcZhPa3PtNuFypeztKLXBIB/NckOsXv1o
+ 8iiWleLFY4oRDMEkvw+GZrAcoPLou5hIpM8z3p+hztdaG8Jp5LyO7liAsO5959Kt525g /w== 
 Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2w41w141fe-1
+        by userp2130.oracle.com with ESMTP id 2w41w145fy-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 07 Nov 2019 07:19:12 +0000
+        Thu, 07 Nov 2019 07:49:01 +0000
 Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA77IutG131073;
-        Thu, 7 Nov 2019 07:19:12 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2w41w92208-1
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA77mqQA008876;
+        Thu, 7 Nov 2019 07:49:00 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 2w41w93xu2-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 07 Nov 2019 07:19:12 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xA77IohQ022769;
-        Thu, 7 Nov 2019 07:18:51 GMT
-Received: from kadam (/41.57.98.10)
+        Thu, 07 Nov 2019 07:48:59 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xA77mt2T019768;
+        Thu, 7 Nov 2019 07:48:56 GMT
+Received: from mwanda (/41.57.98.10)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 06 Nov 2019 23:18:50 -0800
-Date:   Thu, 7 Nov 2019 10:18:43 +0300
+        with ESMTP ; Wed, 06 Nov 2019 23:48:55 -0800
+Date:   Thu, 7 Nov 2019 10:48:47 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ovl: create UUIDs for file systems that do not set the
- superblock UUID
-Message-ID: <20191107071843.GN10409@kadam>
-References: <20191106234301.283006-1-colin.king@canonical.com>
- <CAOQ4uxhT4pFzHjjKyoMOc3xVXXqyqc37zd=-pCx2+keA4e6NAg@mail.gmail.com>
+To:     Philipp Reisner <philipp.reisner@linbit.com>
+Cc:     Lars Ellenberg <lars.ellenberg@linbit.com>,
+        Jens Axboe <axboe@kernel.dk>, drbd-dev@tron.linbit.com,
+        linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] block: drbd: remove a stay unlock in __drbd_send_protocol()
+Message-ID: <20191107074847.GA11695@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAOQ4uxhT4pFzHjjKyoMOc3xVXXqyqc37zd=-pCx2+keA4e6NAg@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Mailer: git-send-email haha only kidding
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9433 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
  phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1910280000 definitions=main-1911070074
+ engine=8.0.1-1910280000 definitions=main-1911070078
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9433 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1910280000
- definitions=main-1911070075
+ definitions=main-1911070078
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Nov 07, 2019 at 09:08:44AM +0200, Amir Goldstein wrote:
-> diff --git a/fs/overlayfs/ovl_entry.h b/fs/overlayfs/ovl_entry.h
-> index a8279280e88d..a0227c31fe17 100644
-> --- a/fs/overlayfs/ovl_entry.h
-> +++ b/fs/overlayfs/ovl_entry.h
-> @@ -22,6 +22,8 @@ struct ovl_config {
->  struct ovl_sb {
->  	struct super_block *sb;
->  	dev_t pseudo_dev;
-> +	/* Unusable (conflicting) uuid */
-> +	bool nouuid;
+There are two callers of this function and they both unlock the mutex so
+this ends up being a double unlock.
 
-Could we name this ignore_uuid, skip_uuid or bad_uuid or something?
-Otherwise we end up with double negatives.
+Fixes: 44ed167da748 ("drbd: rcu_read_lock() and rcu_dereference() for tconn->net_conf")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+Static analisys.  Not tested.  There is a comment about the lock next to
+the caller in drbd_nl.c that I didn't understand:
 
-regards,
-dan carpenter
+drivers/block/drbd/drbd_nl.c
+  2509          crypto_free_shash(connection->integrity_tfm);
+  2510          connection->integrity_tfm = crypto.integrity_tfm;
+  2511          if (connection->cstate >= C_WF_REPORT_PARAMS && connection->agreed_pro_version >= 100)
+  2512                  /* Do this without trying to take connection->data.mutex again.  */
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+What does this mean?  We're already holding that lock.  We took it near
+the start of the function.
+
+  2513                  __drbd_send_protocol(connection, P_PROTOCOL_UPDATE);
+  2514  
+  2515          crypto_free_shash(connection->cram_hmac_tfm);
+  2516          connection->cram_hmac_tfm = crypto.cram_hmac_tfm;
+  2517  
+  2518          mutex_unlock(&connection->resource->conf_update);
+  2519          mutex_unlock(&connection->data.mutex);
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Unlocked here.
+
+ drivers/block/drbd/drbd_main.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/block/drbd/drbd_main.c b/drivers/block/drbd/drbd_main.c
+index 5b248763a672..a18155cdce41 100644
+--- a/drivers/block/drbd/drbd_main.c
++++ b/drivers/block/drbd/drbd_main.c
+@@ -786,7 +786,6 @@ int __drbd_send_protocol(struct drbd_connection *connection, enum drbd_packet cm
+ 
+ 	if (nc->tentative && connection->agreed_pro_version < 92) {
+ 		rcu_read_unlock();
+-		mutex_unlock(&sock->mutex);
+ 		drbd_err(connection, "--dry-run is not supported by peer");
+ 		return -EOPNOTSUPP;
+ 	}
+-- 
+2.20.1
 

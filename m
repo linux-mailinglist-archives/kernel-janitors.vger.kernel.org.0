@@ -2,74 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B288F4D1E
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Nov 2019 14:25:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E5F6F4D8F
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Nov 2019 14:54:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727359AbfKHNZs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 Nov 2019 08:25:48 -0500
-Received: from mail-lf1-f43.google.com ([209.85.167.43]:45320 "EHLO
-        mail-lf1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726887AbfKHNZr (ORCPT
+        id S1726853AbfKHNyr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 Nov 2019 08:54:47 -0500
+Received: from mail-io1-f67.google.com ([209.85.166.67]:36774 "EHLO
+        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726101AbfKHNyr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 Nov 2019 08:25:47 -0500
-Received: by mail-lf1-f43.google.com with SMTP id v8so4441638lfa.12
-        for <kernel-janitors@vger.kernel.org>; Fri, 08 Nov 2019 05:25:46 -0800 (PST)
+        Fri, 8 Nov 2019 08:54:47 -0500
+Received: by mail-io1-f67.google.com with SMTP id s3so6447308ioe.3
+        for <kernel-janitors@vger.kernel.org>; Fri, 08 Nov 2019 05:54:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=EoxLq8xAiahmtAG02Jh5To+ku+zEc7SRqeg+jbZoqaM=;
-        b=uwpTC9QTf7HPtj4ETXyWQnDnTlxrbasCpJck+g4wX7pU0OLcCSelaDoSd7xTTeYNVS
-         2Fg4dD5JVrZaqu+2rOGHQbsm3qv7jMTemR+jrqjMvixu/YeC+7w0+ssERZYGfwqTq/5O
-         j7AXvjVZ5jSGn3zLN68EKksBJXA2iSZkFqVCBu5UCLA2mHb4onL5stJRqmf5Kg9XeLQF
-         Ql++ch3NXH7z8aAhFHXfORXMMt2GOZNT8lnt8nfxPkh/AQPiSWoAmuD5jzV+C0Z56nZE
-         QcqkEFIs6Q02Nh2KJyqu5AegYolftHvD0nUzAoY7JMiev+6imhgfc7piTk1Z9e44UBUz
-         wqug==
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=qhj0pYG/xfb9ZXayAFQZBmgKNwxw6I0CpoVt3iCpB1E=;
+        b=SlnJ0kzDnF+zUVdem+qMS9wPqFOmE4StE78W5pCkwNeQbv3pcDv/6wbvF9Wzsyej6a
+         mVp7dDiaYBiGAGozWrA6DxU2eqJdpfSno8KXt6N44vL8mUfNvXdzzYobLagSEhGYPhrs
+         mzyYec6kzQhLmNdjY3HpzPswzummUVIV45W7ewSXze6ksqYRjkIb1DF+8/l6g8hTmj2v
+         fIX6tTXrTKWoCMPy1kBumphFKsg9wM5PQsZUGEbNAeOy7ZCati+IAS6/F2UO+ZcMlhPY
+         PGiFXKKj/j2YC08ktmwhITccWfmu87EX9XndOE3MVtY2nXzWQpsFSPja6+o5cvtUHFrd
+         VSzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=EoxLq8xAiahmtAG02Jh5To+ku+zEc7SRqeg+jbZoqaM=;
-        b=MjTYbThphxkrRDYlxEbvIMAD511Ms+JzWtTcEoeSXL7y4WpoHJdFd2TwKAbOD4VfRN
-         xbkR0lk1iO2Is46zAXAiNre8Z2kgGChwr1FT/GtTiR7iJDbHlpFQsnpxw2MT6ylcfujw
-         BoFtqG4521jpY/vm7KUKnoD5RLQYa8o3XjVyPa3ihiq16N0FgSIVjXUzdIVogX785m0P
-         oFrNKgx9RCjF4IPHRgw/fCEK7dvT0qvi6sk53/NlycYlSlxwmh1kMGKo8ZBkSyPSB8yD
-         Ks1wgVW70vrqLJiuTuNhqHwVOHvCCcX4DOUAMOFWLuaL3j4XF7X62eYR2i654iDoCDJM
-         Jo2A==
-X-Gm-Message-State: APjAAAXtwVcZAmrYAVI2pI5yfrq/pxpsCIyCV18sIdSqXZJ+i8z9HtFl
-        SXGw8NkGukXplK5ykRtfb4iM8/3BN/5nHubtTnaSsQ==
-X-Google-Smtp-Source: APXvYqwb/LRpvMMAZIgxfWG70/wUGzF+Iv52O6bA5Mu7o8I4M2h1xs4Mo6+ju8QtVBufTmiqNKv/sdxwN/xRBIU0CPk=
-X-Received: by 2002:ac2:533a:: with SMTP id f26mr5736269lfh.86.1573219545608;
- Fri, 08 Nov 2019 05:25:45 -0800 (PST)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=qhj0pYG/xfb9ZXayAFQZBmgKNwxw6I0CpoVt3iCpB1E=;
+        b=N8fVPT3EK07xZGQGgvcxQE0KHc2H01tCQsVDn9chYAAt3kCF3QPOrsCuhrklHdCOXh
+         40BSmg0gwxsBocj6guwNjWfjdGATA57sELZeD3K2ZdNFFuZv8G7r+Ty5tdu4VEjaagXp
+         TyojyBDqJOc4STW34xtaVoSAZsVCg2icgdgHgUZkaobXSwf4FjKiI1bNKC5FuOCNnPMY
+         kvCFrdvfAduP89IWheGIqaoyQ1tkNborZVXTPK1W0TL46/CElZenTLQN0sSezzF0mllS
+         uebjlDqT6FqBENpqq4R3Vo2Nban7UoklyTqqf6My7SIClxrQFb6I5hak85x/YvCbzmeM
+         RUVA==
+X-Gm-Message-State: APjAAAWjKuol094QdvWNuLpfIdayTyDHjuumUcWJghay1KO96cBl0Y8D
+        X2AnsHByHHMvYqr1qQB6a5Q//+/eCUk=
+X-Google-Smtp-Source: APXvYqxT7wKu6Rb3KLuV8PJsLUA7DGTaBKo+K+FqKHR5/THatlVz8nZOFOdzmcrdjerSlYdgOa+70A==
+X-Received: by 2002:a05:6602:198:: with SMTP id m24mr9909819ioo.34.1573221285861;
+        Fri, 08 Nov 2019 05:54:45 -0800 (PST)
+Received: from [192.168.1.159] ([65.144.74.34])
+        by smtp.gmail.com with ESMTPSA id p19sm776620ili.56.2019.11.08.05.54.44
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 08 Nov 2019 05:54:45 -0800 (PST)
+Subject: Re: [PATCH] block: drbd: remove a stay unlock in
+ __drbd_send_protocol()
+To:     Philipp Reisner <philipp.reisner@linbit.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Lars Ellenberg <lars.ellenberg@linbit.com>,
+        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20191107074847.GA11695@mwanda> <6906816.cRlsrm7Sor@fat-tyre>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <17fea9d1-39f8-1d91-5509-5f520009b9c9@kernel.dk>
+Date:   Fri, 8 Nov 2019 06:54:43 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <20191108013543.183804-1-yuehaibing@huawei.com>
-In-Reply-To: <20191108013543.183804-1-yuehaibing@huawei.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Fri, 8 Nov 2019 14:25:33 +0100
-Message-ID: <CACRpkdbb05CMkwA9Um+xgAOif76GEaA4WYuZGQS1Lq8UbUpS+A@mail.gmail.com>
-Subject: Re: [PATCH -next] gpio: xgs-iproc: Fix platform_no_drv_owner.cocci warnings
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list <bcm-kernel-feedback-list@broadcom.com>,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <6906816.cRlsrm7Sor@fat-tyre>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Nov 8, 2019 at 2:36 AM YueHaibing <yuehaibing@huawei.com> wrote:
+On 11/8/19 3:46 AM, Philipp Reisner wrote:
+> Hi Dan,
+> 
+> yes, your patch it obviously correct. The comment you are
+> referring to is badly worded. We will remove it.
+> 
+> Jens,
+> 
+> are you taking this patch as it is?
 
-> Remove .owner field if calls are used which set it automatically
-> Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
->
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Yep, I'll queue it up.
 
-Patch applied.
+-- 
+Jens Axboe
 
-Yours,
-Linus Walleij

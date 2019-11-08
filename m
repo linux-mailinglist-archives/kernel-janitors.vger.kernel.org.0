@@ -2,32 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DE97F4E9C
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Nov 2019 15:45:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D2D6F4ED3
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Nov 2019 16:00:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726763AbfKHOpb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 Nov 2019 09:45:31 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:40521 "EHLO
+        id S1726039AbfKHPAW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 Nov 2019 10:00:22 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:40842 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726537AbfKHOpb (ORCPT
+        with ESMTP id S1725995AbfKHPAW (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 Nov 2019 09:45:31 -0500
+        Fri, 8 Nov 2019 10:00:22 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iT5Vv-0007iL-Vj; Fri, 08 Nov 2019 14:45:28 +0000
+        id 1iT5kI-0000PH-5x; Fri, 08 Nov 2019 15:00:18 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Alex Deucher <alexander.deucher@amd.com>,
+To:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
         David Zhou <David1.Zhou@amd.com>,
         David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
+        Daniel Vetter <daniel@ffwll.ch>,
+        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+        Lyude Paul <lyude@redhat.com>,
+        Mikita Lipski <mikita.lipski@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/amd/display: remove duplicated assignment to grph_obj_type
-Date:   Fri,  8 Nov 2019 14:45:27 +0000
-Message-Id: <20191108144527.120927-1-colin.king@canonical.com>
+Subject: [PATCH][next] drm/amd/display: fix unsigned less than 0 comparison on error check
+Date:   Fri,  8 Nov 2019 15:00:17 +0000
+Message-Id: <20191108150017.125859-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,29 +44,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Variable grph_obj_type is being assigned twice, one of these is
-redundant so remove it.
+Currently the error check on the call to drm_dp_atomic_find_vcpi_slots
+is always false because an unsigned dm_new_connector_state->vcpi_slots
+is being checked for a less than zero. Fix this by casting this to
+an int on the comparison.
 
-Addresses-Coverity: ("Evaluation order violation")
+Addresses-Coverity: ("Unsigned compared against 0")
+Fixes: 5133c6241d9c ("drm/amd/display: Add MST atomic routines")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-index be6d0cfe41ae..9ba80d828876 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-@@ -365,8 +365,7 @@ bool amdgpu_atombios_get_connector_info_from_object_table(struct amdgpu_device *
- 			router.ddc_valid = false;
- 			router.cd_valid = false;
- 			for (j = 0; j < ((le16_to_cpu(path->usSize) - 8) / 2); j++) {
--				uint8_t grph_obj_type=
--				grph_obj_type =
-+				uint8_t grph_obj_type =
- 				    (le16_to_cpu(path->usGraphicObjIds[j]) &
- 				     OBJECT_TYPE_MASK) >> OBJECT_TYPE_SHIFT;
- 
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 37c56156a116..00e730b8d98f 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -4866,7 +4866,7 @@ static int dm_encoder_helper_atomic_check(struct drm_encoder *encoder,
+ 									   mst_mgr,
+ 									   mst_port,
+ 									   dm_new_connector_state->pbn);
+-	if (dm_new_connector_state->vcpi_slots < 0) {
++	if ((int)dm_new_connector_state->vcpi_slots < 0) {
+ 		DRM_DEBUG_ATOMIC("failed finding vcpi slots: %d\n", (int)dm_new_connector_state->vcpi_slots);
+ 		return dm_new_connector_state->vcpi_slots;
+ 	}
 -- 
 2.20.1
 

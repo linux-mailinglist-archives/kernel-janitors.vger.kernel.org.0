@@ -2,92 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD050F3F77
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Nov 2019 06:11:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7355F401B
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Nov 2019 06:50:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725794AbfKHFLr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 Nov 2019 00:11:47 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:46236 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725769AbfKHFLr (ORCPT
+        id S1726672AbfKHFtq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 Nov 2019 00:49:46 -0500
+Received: from bombadil.infradead.org ([198.137.202.133]:43622 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725877AbfKHFtp (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 Nov 2019 00:11:47 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA85B9R6166079;
-        Fri, 8 Nov 2019 05:11:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=8GWRoS/GxXB2K8S1oy7WSGsmhUI7VC/zoT/9cHq3BMU=;
- b=XZzoubpfQxqPN2K3pIaHQWOc3rCqpuf0IHLwOo3FRsvpTN82Ts/9VO0J2qpQ8cL2zM/2
- bOLU2YhTreqLzT7m48TfCQ7xa6zsbpHM+xrKCRtgFM1Dd4Fzc0/WZj94ohJC3Y5c4B64
- fx/1idgVmuWjDUeBYZnRpjqnlE88wyYQPzow/6qVxjuN96un39dKOWsJxXCFzsYvK0mi
- h+coz+BtZnWHzTUPEzttDix9fyoPT5pfrkYxeU62ALKNdQvb8KU2DWcqnGxM+MSVxKGF
- EB5vFD5fdNIN6lGlJkq/rdJBvJK53sBm4u/pBPHuGQcmbR2SSpYVZkdDcGgMnsEkO/Bf sA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 2w41w12vws-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 08 Nov 2019 05:11:30 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA8510A9156901;
-        Fri, 8 Nov 2019 05:11:30 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3020.oracle.com with ESMTP id 2w50m452dj-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 08 Nov 2019 05:11:30 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xA85BTL2002033;
-        Fri, 8 Nov 2019 05:11:29 GMT
-Received: from mwanda (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 07 Nov 2019 21:11:28 -0800
-Date:   Fri, 8 Nov 2019 08:11:22 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "Darrick J. Wong" <darrick.wong@oracle.com>,
-        Ian Kent <raven@themaw.net>
-Cc:     linux-xfs@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] xfs: remove a stray tab in xfs_remount_rw()
-Message-ID: <20191108051121.GA26279@mwanda>
+        Fri, 8 Nov 2019 00:49:45 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=lxofdiN8VU70+462RB2Oce55SU0EocOGsEJ31XrpRhs=; b=Dy6tgSLYgSfJmUE9/4rM4bgB5
+        +PMzWa6k/+uGR+2osIxCfssFsQvNLVqZ5IdZJ6XEM0QMMqdJwRI6Ffo2GcwQ2PCcl8hos/t8g03xg
+        i1Xh3yONiRUoIqcZofknb2za+OQDVB6zrEk3m10gJ8rciQ9OG4ojkzPePY3PXxisMcIjnYwGS33q1
+        gzxqsebNnkJl6mo9YUFSV3i9IFVlIdo2bO3KXx5VcwLi7YkX3IB2g5i9fAVd40q2N06+Be9F9K2ya
+        cvq+MbpWNQo9YfWP2hBUcGycxedohmOAEqV1/Z0dnsKPo/6I/6stH6B6r6rAyefJ7rJv5xTsuOEAy
+        ykPzAyvZg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1iSx9R-0006i0-Jq; Fri, 08 Nov 2019 05:49:41 +0000
+Date:   Thu, 7 Nov 2019 21:49:41 -0800
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     "Darrick J. Wong" <darrick.wong@oracle.com>,
+        Ian Kent <raven@themaw.net>, linux-xfs@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] xfs: remove a stray tab in xfs_remount_rw()
+Message-ID: <20191108054941.GA25221@infradead.org>
+References: <20191108051121.GA26279@mwanda>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9434 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1910280000 definitions=main-1911080048
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9434 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1910280000
- definitions=main-1911080050
+In-Reply-To: <20191108051121.GA26279@mwanda>
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The extra tab makes the code slightly confusing.
+On Fri, Nov 08, 2019 at 08:11:22AM +0300, Dan Carpenter wrote:
+> The extra tab makes the code slightly confusing.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- fs/xfs/xfs_super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Looks good,
 
-diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
-index b3188ea49413..ede6fac47c56 100644
---- a/fs/xfs/xfs_super.c
-+++ b/fs/xfs/xfs_super.c
-@@ -1599,7 +1599,7 @@ xfs_remount_rw(
- 	if (error) {
- 		xfs_err(mp,
- 			"Error %d recovering leftover CoW allocations.", error);
--			xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
-+		xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
- 		return error;
- 	}
- 	xfs_start_block_reaping(mp);
--- 
-2.20.1
-
+Reviewed-by: Christoph Hellwig <hch@lst.de>

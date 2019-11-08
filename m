@@ -2,55 +2,97 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B7355F401B
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Nov 2019 06:50:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97863F405C
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Nov 2019 07:30:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726672AbfKHFtq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 Nov 2019 00:49:46 -0500
-Received: from bombadil.infradead.org ([198.137.202.133]:43622 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725877AbfKHFtp (ORCPT
+        id S1726103AbfKHGaF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 Nov 2019 01:30:05 -0500
+Received: from wout3-smtp.messagingengine.com ([64.147.123.19]:52481 "EHLO
+        wout3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725372AbfKHGaF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 Nov 2019 00:49:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=lxofdiN8VU70+462RB2Oce55SU0EocOGsEJ31XrpRhs=; b=Dy6tgSLYgSfJmUE9/4rM4bgB5
-        +PMzWa6k/+uGR+2osIxCfssFsQvNLVqZ5IdZJ6XEM0QMMqdJwRI6Ffo2GcwQ2PCcl8hos/t8g03xg
-        i1Xh3yONiRUoIqcZofknb2za+OQDVB6zrEk3m10gJ8rciQ9OG4ojkzPePY3PXxisMcIjnYwGS33q1
-        gzxqsebNnkJl6mo9YUFSV3i9IFVlIdo2bO3KXx5VcwLi7YkX3IB2g5i9fAVd40q2N06+Be9F9K2ya
-        cvq+MbpWNQo9YfWP2hBUcGycxedohmOAEqV1/Z0dnsKPo/6I/6stH6B6r6rAyefJ7rJv5xTsuOEAy
-        ykPzAyvZg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1iSx9R-0006i0-Jq; Fri, 08 Nov 2019 05:49:41 +0000
-Date:   Thu, 7 Nov 2019 21:49:41 -0800
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     "Darrick J. Wong" <darrick.wong@oracle.com>,
-        Ian Kent <raven@themaw.net>, linux-xfs@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
+        Fri, 8 Nov 2019 01:30:05 -0500
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.west.internal (Postfix) with ESMTP id 2709B5A2;
+        Fri,  8 Nov 2019 01:30:04 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Fri, 08 Nov 2019 01:30:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=themaw.net; h=
+        message-id:subject:from:to:cc:date:in-reply-to:references
+        :content-type:mime-version:content-transfer-encoding; s=fm1; bh=
+        9AWth8NtH6iy/A3w/xpNONmPLTZreNK3+86K5me1qgE=; b=o7oqq6monJnK7udh
+        CK/M9HGVxLM50jG1RxAXDOyD10rl/wiCaDV6feans4P2I58hg9+2YfrZOY8NAt9c
+        Jwc4OE1x3WthILck5jNJH88cWn/TJCNzcUJTg6CZO8+gQBM3HwYJpAhF+E/a2w5i
+        9hBLPmEOfqURp7Sw5BSLm+CoPQHLwBWqI1iOqQUsYlDKhONiTySyZauFDHbYh3x8
+        qLS29Q5SqV4cqvBx7WpM/Zg0mLcevtqfgHtQa07bTULUHIn7c4+cTAoMjGdKnbOr
+        ssmp/+u24kfcA6qEIy3qpoc4Y/gI9ktBdCSUaNJQH9iriZ1rKIch2mYn+CSI/b8l
+        4drFlg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:content-type
+        :date:from:in-reply-to:message-id:mime-version:references
+        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; bh=9AWth8NtH6iy/A3w/xpNONmPLTZreNK3+86K5me1q
+        gE=; b=SRU8MFUPK9Ls4vEG1BkhythbN6gZqlKyIOeNDP+CSxnwDDYKHj8D2IOqd
+        yGtF79mEovTcj3nCbWPUhWPEftgssOJ2aQ3uobNuBpPCk+AAurw/Zh1ciJrI3z9G
+        BsitiQ0yJYAaR6ktNczuymmEn51URMLEJmvqF2sqAVXRmN5xWtLazDPjKp10h11J
+        jxPjf2lrMEgpLkQRZyrbGGTZDZda6PPNBX+A1NEWQFpQimlbIwMwfzVDDqxSucfr
+        ae+fNj6h+Op5eg2KhFb/Y+Z7H0DOD2FbxmUCtOCNxwYxsNFt9uFxOrIOCteP5GCV
+        8toFsogRmFfr1AuvRR5idCnuaHXUw==
+X-ME-Sender: <xms:awvFXR8MZs8V_JkqwB9_JplgaUjEWIibKUfjwhs4vw-78gLJ48Iuxw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedruddvtddgleejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepkffuhffvffgjfhgtfggggfesthejredttderjeenucfhrhhomhepkfgrnhcu
+    mfgvnhhtuceorhgrvhgvnhesthhhvghmrgifrdhnvghtqeenucfkphepuddukedrvddtke
+    drudekledrudeknecurfgrrhgrmhepmhgrihhlfhhrohhmpehrrghvvghnsehthhgvmhgr
+    fidrnhgvthenucevlhhushhtvghrufhiiigvpedt
+X-ME-Proxy: <xmx:awvFXRbTjRjpkdV_vLz8ZkkWF1r4hVzyvQdVBMiuMCZ2MPbjT3WbAA>
+    <xmx:awvFXZv9mCgzU7PnfT8VioRWw8inzvZtGP8W9tPj6oJk8uZPXqoRfA>
+    <xmx:awvFXWaEC8Aapn2J46WD9z5oVHtYoV6gEJfKgyg43zEmw5dU_Rdyhg>
+    <xmx:awvFXYEyEi6NpZUekZt0nnC2CSlBXJgPn0IaOHjtXVu2HZjbjlnRuQ>
+Received: from mickey.themaw.net (unknown [118.208.189.18])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 93233306005E;
+        Fri,  8 Nov 2019 01:30:00 -0500 (EST)
+Message-ID: <c87e0acc9f6cbf36a2860d7bebc28df6b1dcfc97.camel@themaw.net>
 Subject: Re: [PATCH] xfs: remove a stray tab in xfs_remount_rw()
-Message-ID: <20191108054941.GA25221@infradead.org>
-References: <20191108051121.GA26279@mwanda>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+From:   Ian Kent <raven@themaw.net>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "Darrick J. Wong" <darrick.wong@oracle.com>
+Cc:     linux-xfs@vger.kernel.org, kernel-janitors@vger.kernel.org
+Date:   Fri, 08 Nov 2019 14:29:56 +0800
 In-Reply-To: <20191108051121.GA26279@mwanda>
-User-Agent: Mutt/1.12.1 (2019-06-15)
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+References: <20191108051121.GA26279@mwanda>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Nov 08, 2019 at 08:11:22AM +0300, Dan Carpenter wrote:
+On Fri, 2019-11-08 at 08:11 +0300, Dan Carpenter wrote:
 > The extra tab makes the code slightly confusing.
 > 
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  fs/xfs/xfs_super.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
+> index b3188ea49413..ede6fac47c56 100644
+> --- a/fs/xfs/xfs_super.c
+> +++ b/fs/xfs/xfs_super.c
+> @@ -1599,7 +1599,7 @@ xfs_remount_rw(
+>  	if (error) {
+>  		xfs_err(mp,
+>  			"Error %d recovering leftover CoW allocations.", error);
+> -			xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
+> +		xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
+>  		return error;
+>  	}
+>  	xfs_start_block_reaping(mp);
 
-Looks good,
+Indeed, my bad.
+Reviewed-by: Ian Kent <raven@themaw.net>
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>

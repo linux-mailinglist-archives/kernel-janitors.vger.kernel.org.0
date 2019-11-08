@@ -2,84 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 73B95F510D
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Nov 2019 17:27:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0129F511B
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Nov 2019 17:29:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727178AbfKHQ1u (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 Nov 2019 11:27:50 -0500
-Received: from mail-io1-f67.google.com ([209.85.166.67]:37659 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726200AbfKHQ1u (ORCPT
+        id S1726576AbfKHQ3u (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 Nov 2019 11:29:50 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:43679 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726232AbfKHQ3u (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 Nov 2019 11:27:50 -0500
-Received: by mail-io1-f67.google.com with SMTP id 1so6994548iou.4
-        for <kernel-janitors@vger.kernel.org>; Fri, 08 Nov 2019 08:27:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=RiIe/nW+9AsCJyMreIOc9BvirXBLZtzkTWUj49kdOWI=;
-        b=yiW23nuA8TdhuuIrPqsnDodwAfZlz7kLEuj1pDzBF778A3B5Pri8hlJ+VYcC16b6z7
-         0hfXRCpRdcfNrWPLjHrAaxZ2qEDn8qMMaIvQ/5fOfR48fHI2qUnwlD0zX1ctDcmo30Kg
-         bFz8oQrg3pL89wBAb0enYPVHRJ/klENw/8POBBLGoFPn2sv8ZPfTTlwg685l8ZGN2XLt
-         WaHIJJmzPx/q5QKVcZSFYQd0fRgY03/ZuEZ6c+/Ev3Ks7ELhbvgbFeNrMjrlmBN7AEKu
-         NIz3ipy6kdnoXPn3akIMnGDjNXhlht2ZIIEK7C34P/dKZafL+iwwLw5OaL0En/vaR7Xw
-         xqng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=RiIe/nW+9AsCJyMreIOc9BvirXBLZtzkTWUj49kdOWI=;
-        b=reYFXmZc1X2yt3Z/qj/uCR1UA42R4RtIM5gz0vWBQh3/3g6MMUv1mGMBxuOF7cnXLu
-         BA4/8DtdEpqH1L9A7QfPkmV1EHBDSc6CDMPu3r7C/aRO4LtF1HaAROIaOfut59A9I0OI
-         duC7nkuWIC8uz0r2FQNECWLD3EfyRBVvZHtm8hpOYiBr14bSkGuK6HkjP7/fATbGGYxk
-         dFF2s8+FJp5vpJnIOr6Gpp0keKT5KuZD3nb8/tctGoUHg92Sx/fw+SA2F/97M7zWejMP
-         TvSFpT2P59ALfaYa5ox76PTwFCWmxFbWllD19k5Rciqnvwv2EADMbksUFCcX2NAd+K46
-         mbMg==
-X-Gm-Message-State: APjAAAW2STXqVwEzmMdIdn4+hLeU4PJtjlwFY13lPEdEGg/6hIjNYpMY
-        OF76fCSQoQ7eT0tN5Wi4tDJwdfDNch0=
-X-Google-Smtp-Source: APXvYqzFoIhq86iW74zmJxBejj+zma0nFYlI3I/P9W/xmwZlaX3LhI2wzB6oG6o03ZgY2UPVKy6hIw==
-X-Received: by 2002:a02:9f12:: with SMTP id z18mr12194050jal.10.1573230468826;
-        Fri, 08 Nov 2019 08:27:48 -0800 (PST)
-Received: from [192.168.1.159] ([65.144.74.34])
-        by smtp.gmail.com with ESMTPSA id u21sm827186ila.41.2019.11.08.08.27.47
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 08 Nov 2019 08:27:47 -0800 (PST)
-Subject: Re: [PATCH] block: drbd: remove a stay unlock in
- __drbd_send_protocol()
-To:     Bart Van Assche <bvanassche@acm.org>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Philipp Reisner <philipp.reisner@linbit.com>
-Cc:     Lars Ellenberg <lars.ellenberg@linbit.com>,
-        drbd-dev@tron.linbit.com, linux-block@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20191107074847.GA11695@mwanda>
- <3a2d491f-3d24-3673-07f3-f601d5fafc97@acm.org>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <26822f67-1cd7-eeda-2caa-2bc7d420f173@kernel.dk>
-Date:   Fri, 8 Nov 2019 09:27:46 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Fri, 8 Nov 2019 11:29:50 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iT78s-0006ft-4s; Fri, 08 Nov 2019 16:29:46 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/amd/display: remove redundant variable status
+Date:   Fri,  8 Nov 2019 16:29:45 +0000
+Message-Id: <20191108162945.180624-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <3a2d491f-3d24-3673-07f3-f601d5fafc97@acm.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 11/8/19 9:26 AM, Bart Van Assche wrote:
-> On 11/6/19 11:48 PM, Dan Carpenter wrote:
->> There are two callers of this function and they both unlock the mutex so
->> this ends up being a double unlock.
-> 
-> Is there a typo in the patch subject (stay -> stray)?
+From: Colin Ian King <colin.king@canonical.com>
 
-I fixed that up while applying, fwiw.
+Variable status is redundant, it is being initialized with a value
+that is over-written later and this is being returned immediately
+after the assignment.  Clean up the code by removing status and
+just returning the value returned from the call to function
+dc->hwss.dmdata_status_done.
 
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/amd/display/dc/core/dc_stream.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
+index 371d49e9b745..88a84bfaea6f 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
+@@ -565,7 +565,6 @@ bool dc_stream_get_scanoutpos(const struct dc_stream_state *stream,
+ 
+ bool dc_stream_dmdata_status_done(struct dc *dc, struct dc_stream_state *stream)
+ {
+-	bool status = true;
+ 	struct pipe_ctx *pipe = NULL;
+ 	int i;
+ 
+@@ -581,8 +580,7 @@ bool dc_stream_dmdata_status_done(struct dc *dc, struct dc_stream_state *stream)
+ 	if (i == MAX_PIPES)
+ 		return true;
+ 
+-	status = dc->hwss.dmdata_status_done(pipe);
+-	return status;
++	return dc->hwss.dmdata_status_done(pipe);
+ }
+ 
+ bool dc_stream_set_dynamic_metadata(struct dc *dc,
 -- 
-Jens Axboe
+2.20.1
 

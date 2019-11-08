@@ -2,111 +2,135 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 52EE1F4427
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Nov 2019 11:06:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F00BF44E8
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Nov 2019 11:46:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730069AbfKHKGU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 Nov 2019 05:06:20 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:59908 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729873AbfKHKGU (ORCPT
+        id S1731623AbfKHKqH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 Nov 2019 05:46:07 -0500
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:34866 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731506AbfKHKqH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 Nov 2019 05:06:20 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA8A4x9I001795;
-        Fri, 8 Nov 2019 10:05:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=lC6Rkjy3TVUxRx/UkJEpYp4pAS/Xsi+0+ID04N6qrLk=;
- b=c6h9rDXpTZeTKMt/UAHRyxcJCa3LmlwbmCwd3WfWT2FHiYjk9b1XuIHdE+Q9e+VWtEa9
- cBwQJ90CMjAzOilomMcgaXlZM2CcAhKXaFG9Nu6xmT/tGj6fBwqh1H908Lk6OwrZs7zU
- dUE9VNd2TVaBl1NGzbdqQV9MgRyaagI1EnQyq2rooCQroHr7kutic8477Jnb3E9gPOcI
- rha2gZSs2A8wjG0Uk011O0sGiWgX2KX/Y899/tCLcEcTkhmVjhqVSj4WhUMMiUqrtuZR
- s7I1Ydxoioxw7fFsMY0pYFCL1iHSK8Z0Dyz3QD3KVgQOZLnkjq/VgTk3S18UJZn8+Ao6 KA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 2w41w14btb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 08 Nov 2019 10:05:56 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA8A4Iq9024070;
-        Fri, 8 Nov 2019 10:05:55 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2w41whcqwd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 08 Nov 2019 10:05:55 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xA8A5rF7005134;
-        Fri, 8 Nov 2019 10:05:54 GMT
-Received: from kadam (/41.57.98.10)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 08 Nov 2019 02:05:52 -0800
-Date:   Fri, 8 Nov 2019 13:05:40 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Yabin Cui <yabinc@google.com>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] coresight: replicator: Fix missing spin_lock_init()
-Message-ID: <20191108100540.GQ10409@kadam>
-References: <20191106115651.113943-1-weiyongjun1@huawei.com>
- <CANLsYkxKAC9FLYkFjuehj_oFHTVyd=8_R8bAKjPxTXQyAGkwYw@mail.gmail.com>
+        Fri, 8 Nov 2019 05:46:07 -0500
+Received: by mail-wm1-f68.google.com with SMTP id 8so5718962wmo.0
+        for <kernel-janitors@vger.kernel.org>; Fri, 08 Nov 2019 02:46:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linbit-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=4CBruAMCJFKMfos8U5j6/UiYgs9P6E1HnVdReKS3MqA=;
+        b=Q0cF/YSotKrJUQ00DzbNcgg5SFbACXfUSdCuM5kA3+CYUIWwO5opO0zdGQNlY205VJ
+         MVromrhVqva64s7XtAeEGcDIxDI1qT4LP5+BWk5LLYfztAWH9P3AJx6YJoSobBT4k9Bf
+         lcgblIAZmwVazUM3hlKgNWpwpk7yy8n5m47IVr9b+5h0pL3mHHzFp8mLJdH5xXnPZOX7
+         QdAFOo3J9WRWmwwVDstsCrJqZVwQpZ4AtGEK1qw1PJrgRin4TH+oywZuAS/l4q48VOCT
+         Z/9s2jq8l2DsTSFH/y1y6uNgDs5rGrGYVM92r0DDh3cgVOitYs4jka6NHdG+6oPDtWkq
+         +0pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=4CBruAMCJFKMfos8U5j6/UiYgs9P6E1HnVdReKS3MqA=;
+        b=Pd4DOhxn28RwjomQPBsBrsLlUXKMHMz+xnBL0+uCf9sJ8rStk5pbm6MoDX/5sRVdOy
+         uUZ6+QHNi36wcWmcy3puB/VXcQF/RaBvS3Yfh/ISw5z79ExRAt3+ytKFK/tqfcTZZN5B
+         NtdBmYL1wcujFWzNJ9QtUrmOqOWZzG4AJvDYeDyJ0PaTXViIfS7FjS/lF2pdMSKOgWag
+         3/jSyTb+vz7obz7Lw9utqYa47Ivfw6/CAq4Iyf4cGApsZTn+EuY804W7M5ale8snWuWU
+         5Rfh1CRKYBW83IIATCD48vdvDvGBmSDhU7T+wdL7DW9cK9wQtGUpoj+p1TtvHeVbhLCr
+         tMHQ==
+X-Gm-Message-State: APjAAAUwEbGUuFUUNB/LbDNbDYJnFnUFGC6xJBbmexBGPvONN4AwdW6G
+        2qdocg2GBJZkAMZMYC9BPimTgw==
+X-Google-Smtp-Source: APXvYqz25njYbwovs9pg+pdBGnlz1bVNRBcz/NUAh6IHHrnzt0NMqxeo1MLcjvB3yCr+4j30r7AJSQ==
+X-Received: by 2002:a1c:3d57:: with SMTP id k84mr7225203wma.156.1573209963618;
+        Fri, 08 Nov 2019 02:46:03 -0800 (PST)
+Received: from fat-tyre.localnet ([2001:858:107:1:a5fe:1d4:97a0:40d8])
+        by smtp.gmail.com with ESMTPSA id y6sm3240108wrr.19.2019.11.08.02.46.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 Nov 2019 02:46:02 -0800 (PST)
+From:   Philipp Reisner <philipp.reisner@linbit.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Jens Axboe <axboe@kernel.dk>
+Cc:     Lars Ellenberg <lars.ellenberg@linbit.com>,
+        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] block: drbd: remove a stay unlock in __drbd_send_protocol()
+Date:   Fri, 08 Nov 2019 11:46:00 +0100
+Message-ID: <6906816.cRlsrm7Sor@fat-tyre>
+In-Reply-To: <20191107074847.GA11695@mwanda>
+References: <20191107074847.GA11695@mwanda>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANLsYkxKAC9FLYkFjuehj_oFHTVyd=8_R8bAKjPxTXQyAGkwYw@mail.gmail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9434 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1910280000 definitions=main-1911080099
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9434 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1910280000
- definitions=main-1911080099
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Nov 07, 2019 at 11:47:11AM -0700, Mathieu Poirier wrote:
-> On Wed, 6 Nov 2019 at 04:57, Wei Yongjun <weiyongjun1@huawei.com> wrote:
-> >
-> > The driver allocates the spinlock but not initialize it.
-> > Use spin_lock_init() on it to initialize it correctly.
-> >
-> > This is detected by Coccinelle semantic patch.
-> >
-> > Fixes: 0093875ad129 ("coresight: Serialize enabling/disabling a link device.")
-> > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> > ---
-> >  drivers/hwtracing/coresight/coresight-replicator.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/drivers/hwtracing/coresight/coresight-replicator.c b/drivers/hwtracing/coresight/coresight-replicator.c
-> > index 43304196a1a6..e7dc1c31d20d 100644
-> > --- a/drivers/hwtracing/coresight/coresight-replicator.c
-> > +++ b/drivers/hwtracing/coresight/coresight-replicator.c
-> > @@ -248,6 +248,7 @@ static int replicator_probe(struct device *dev, struct resource *res)
-> >         }
-> >         dev->platform_data = pdata;
-> >
-> > +       spin_lock_init(&drvdata->spinlock);
-> 
-> I have applied both patches but removed the "Fixes" line since the
-> commit is only visible in my local coresight next tree.
-> 
+Hi Dan,
 
-Unless you rebase the tree, then the Fixes tag will still be valid.
-(Probably local implies you rebase it I guess).
+yes, your patch it obviously correct. The comment you are
+referring to is badly worded. We will remove it.
 
-regards,
-dan carpenter
+Jens,
+
+are you taking this patch as it is?
+
+best regards,
+ Phil
+
+Am Donnerstag, 7. November 2019, 08:48:47 CET schrieb Dan Carpenter:
+> There are two callers of this function and they both unlock the mutex so
+> this ends up being a double unlock.
+>=20
+> Fixes: 44ed167da748 ("drbd: rcu_read_lock() and rcu_dereference() for
+> tconn->net_conf") Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+> Static analisys.  Not tested.  There is a comment about the lock next to
+> the caller in drbd_nl.c that I didn't understand:
+>=20
+> drivers/block/drbd/drbd_nl.c
+>   2509          crypto_free_shash(connection->integrity_tfm);
+>   2510          connection->integrity_tfm =3D crypto.integrity_tfm;
+>   2511          if (connection->cstate >=3D C_WF_REPORT_PARAMS &&
+> connection->agreed_pro_version >=3D 100) 2512                  /* Do this
+> without trying to take connection->data.mutex again.  */
+> ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ What does th=
+is
+> mean?  We're already holding that lock.  We took it near the start of the
+> function.
+>=20
+>   2513                  __drbd_send_protocol(connection, P_PROTOCOL_UPDAT=
+E);
+> 2514
+>   2515          crypto_free_shash(connection->cram_hmac_tfm);
+>   2516          connection->cram_hmac_tfm =3D crypto.cram_hmac_tfm;
+>   2517
+>   2518          mutex_unlock(&connection->resource->conf_update);
+>   2519          mutex_unlock(&connection->data.mutex);
+>                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+> Unlocked here.
+>=20
+>  drivers/block/drbd/drbd_main.c | 1 -
+>  1 file changed, 1 deletion(-)
+>=20
+> diff --git a/drivers/block/drbd/drbd_main.c b/drivers/block/drbd/drbd_mai=
+n.c
+> index 5b248763a672..a18155cdce41 100644
+> --- a/drivers/block/drbd/drbd_main.c
+> +++ b/drivers/block/drbd/drbd_main.c
+> @@ -786,7 +786,6 @@ int __drbd_send_protocol(struct drbd_connection
+> *connection, enum drbd_packet cm
+>=20
+>  	if (nc->tentative && connection->agreed_pro_version < 92) {
+>  		rcu_read_unlock();
+> -		mutex_unlock(&sock->mutex);
+>  		drbd_err(connection, "--dry-run is not supported by peer");
+>  		return -EOPNOTSUPP;
+>  	}
+
+
+=2D-=20
+LINBIT | Keeping The Digital World Running
+
+DRBD=AE and LINBIT=AE are registered trademarks of LINBIT, Austria.
+
+
 

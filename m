@@ -2,97 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97863F405C
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Nov 2019 07:30:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52EE1F4427
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Nov 2019 11:06:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726103AbfKHGaF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 Nov 2019 01:30:05 -0500
-Received: from wout3-smtp.messagingengine.com ([64.147.123.19]:52481 "EHLO
-        wout3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725372AbfKHGaF (ORCPT
+        id S1730069AbfKHKGU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 Nov 2019 05:06:20 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:59908 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729873AbfKHKGU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 Nov 2019 01:30:05 -0500
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailout.west.internal (Postfix) with ESMTP id 2709B5A2;
-        Fri,  8 Nov 2019 01:30:04 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Fri, 08 Nov 2019 01:30:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=themaw.net; h=
-        message-id:subject:from:to:cc:date:in-reply-to:references
-        :content-type:mime-version:content-transfer-encoding; s=fm1; bh=
-        9AWth8NtH6iy/A3w/xpNONmPLTZreNK3+86K5me1qgE=; b=o7oqq6monJnK7udh
-        CK/M9HGVxLM50jG1RxAXDOyD10rl/wiCaDV6feans4P2I58hg9+2YfrZOY8NAt9c
-        Jwc4OE1x3WthILck5jNJH88cWn/TJCNzcUJTg6CZO8+gQBM3HwYJpAhF+E/a2w5i
-        9hBLPmEOfqURp7Sw5BSLm+CoPQHLwBWqI1iOqQUsYlDKhONiTySyZauFDHbYh3x8
-        qLS29Q5SqV4cqvBx7WpM/Zg0mLcevtqfgHtQa07bTULUHIn7c4+cTAoMjGdKnbOr
-        ssmp/+u24kfcA6qEIy3qpoc4Y/gI9ktBdCSUaNJQH9iriZ1rKIch2mYn+CSI/b8l
-        4drFlg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:content-type
-        :date:from:in-reply-to:message-id:mime-version:references
-        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; bh=9AWth8NtH6iy/A3w/xpNONmPLTZreNK3+86K5me1q
-        gE=; b=SRU8MFUPK9Ls4vEG1BkhythbN6gZqlKyIOeNDP+CSxnwDDYKHj8D2IOqd
-        yGtF79mEovTcj3nCbWPUhWPEftgssOJ2aQ3uobNuBpPCk+AAurw/Zh1ciJrI3z9G
-        BsitiQ0yJYAaR6ktNczuymmEn51URMLEJmvqF2sqAVXRmN5xWtLazDPjKp10h11J
-        jxPjf2lrMEgpLkQRZyrbGGTZDZda6PPNBX+A1NEWQFpQimlbIwMwfzVDDqxSucfr
-        ae+fNj6h+Op5eg2KhFb/Y+Z7H0DOD2FbxmUCtOCNxwYxsNFt9uFxOrIOCteP5GCV
-        8toFsogRmFfr1AuvRR5idCnuaHXUw==
-X-ME-Sender: <xms:awvFXR8MZs8V_JkqwB9_JplgaUjEWIibKUfjwhs4vw-78gLJ48Iuxw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedruddvtddgleejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkffuhffvffgjfhgtfggggfesthejredttderjeenucfhrhhomhepkfgrnhcu
-    mfgvnhhtuceorhgrvhgvnhesthhhvghmrgifrdhnvghtqeenucfkphepuddukedrvddtke
-    drudekledrudeknecurfgrrhgrmhepmhgrihhlfhhrohhmpehrrghvvghnsehthhgvmhgr
-    fidrnhgvthenucevlhhushhtvghrufhiiigvpedt
-X-ME-Proxy: <xmx:awvFXRbTjRjpkdV_vLz8ZkkWF1r4hVzyvQdVBMiuMCZ2MPbjT3WbAA>
-    <xmx:awvFXZv9mCgzU7PnfT8VioRWw8inzvZtGP8W9tPj6oJk8uZPXqoRfA>
-    <xmx:awvFXWaEC8Aapn2J46WD9z5oVHtYoV6gEJfKgyg43zEmw5dU_Rdyhg>
-    <xmx:awvFXYEyEi6NpZUekZt0nnC2CSlBXJgPn0IaOHjtXVu2HZjbjlnRuQ>
-Received: from mickey.themaw.net (unknown [118.208.189.18])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 93233306005E;
-        Fri,  8 Nov 2019 01:30:00 -0500 (EST)
-Message-ID: <c87e0acc9f6cbf36a2860d7bebc28df6b1dcfc97.camel@themaw.net>
-Subject: Re: [PATCH] xfs: remove a stray tab in xfs_remount_rw()
-From:   Ian Kent <raven@themaw.net>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        "Darrick J. Wong" <darrick.wong@oracle.com>
-Cc:     linux-xfs@vger.kernel.org, kernel-janitors@vger.kernel.org
-Date:   Fri, 08 Nov 2019 14:29:56 +0800
-In-Reply-To: <20191108051121.GA26279@mwanda>
-References: <20191108051121.GA26279@mwanda>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.4 (3.32.4-1.fc30) 
+        Fri, 8 Nov 2019 05:06:20 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA8A4x9I001795;
+        Fri, 8 Nov 2019 10:05:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=lC6Rkjy3TVUxRx/UkJEpYp4pAS/Xsi+0+ID04N6qrLk=;
+ b=c6h9rDXpTZeTKMt/UAHRyxcJCa3LmlwbmCwd3WfWT2FHiYjk9b1XuIHdE+Q9e+VWtEa9
+ cBwQJ90CMjAzOilomMcgaXlZM2CcAhKXaFG9Nu6xmT/tGj6fBwqh1H908Lk6OwrZs7zU
+ dUE9VNd2TVaBl1NGzbdqQV9MgRyaagI1EnQyq2rooCQroHr7kutic8477Jnb3E9gPOcI
+ rha2gZSs2A8wjG0Uk011O0sGiWgX2KX/Y899/tCLcEcTkhmVjhqVSj4WhUMMiUqrtuZR
+ s7I1Ydxoioxw7fFsMY0pYFCL1iHSK8Z0Dyz3QD3KVgQOZLnkjq/VgTk3S18UJZn8+Ao6 KA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2w41w14btb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 08 Nov 2019 10:05:56 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xA8A4Iq9024070;
+        Fri, 8 Nov 2019 10:05:55 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 2w41whcqwd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 08 Nov 2019 10:05:55 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xA8A5rF7005134;
+        Fri, 8 Nov 2019 10:05:54 GMT
+Received: from kadam (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 08 Nov 2019 02:05:52 -0800
+Date:   Fri, 8 Nov 2019 13:05:40 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Mathieu Poirier <mathieu.poirier@linaro.org>
+Cc:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Yabin Cui <yabinc@google.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] coresight: replicator: Fix missing spin_lock_init()
+Message-ID: <20191108100540.GQ10409@kadam>
+References: <20191106115651.113943-1-weiyongjun1@huawei.com>
+ <CANLsYkxKAC9FLYkFjuehj_oFHTVyd=8_R8bAKjPxTXQyAGkwYw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANLsYkxKAC9FLYkFjuehj_oFHTVyd=8_R8bAKjPxTXQyAGkwYw@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9434 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1910280000 definitions=main-1911080099
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9434 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1910280000
+ definitions=main-1911080099
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 2019-11-08 at 08:11 +0300, Dan Carpenter wrote:
-> The extra tab makes the code slightly confusing.
+On Thu, Nov 07, 2019 at 11:47:11AM -0700, Mathieu Poirier wrote:
+> On Wed, 6 Nov 2019 at 04:57, Wei Yongjun <weiyongjun1@huawei.com> wrote:
+> >
+> > The driver allocates the spinlock but not initialize it.
+> > Use spin_lock_init() on it to initialize it correctly.
+> >
+> > This is detected by Coccinelle semantic patch.
+> >
+> > Fixes: 0093875ad129 ("coresight: Serialize enabling/disabling a link device.")
+> > Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> > ---
+> >  drivers/hwtracing/coresight/coresight-replicator.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/drivers/hwtracing/coresight/coresight-replicator.c b/drivers/hwtracing/coresight/coresight-replicator.c
+> > index 43304196a1a6..e7dc1c31d20d 100644
+> > --- a/drivers/hwtracing/coresight/coresight-replicator.c
+> > +++ b/drivers/hwtracing/coresight/coresight-replicator.c
+> > @@ -248,6 +248,7 @@ static int replicator_probe(struct device *dev, struct resource *res)
+> >         }
+> >         dev->platform_data = pdata;
+> >
+> > +       spin_lock_init(&drvdata->spinlock);
 > 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  fs/xfs/xfs_super.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> I have applied both patches but removed the "Fixes" line since the
+> commit is only visible in my local coresight next tree.
 > 
-> diff --git a/fs/xfs/xfs_super.c b/fs/xfs/xfs_super.c
-> index b3188ea49413..ede6fac47c56 100644
-> --- a/fs/xfs/xfs_super.c
-> +++ b/fs/xfs/xfs_super.c
-> @@ -1599,7 +1599,7 @@ xfs_remount_rw(
->  	if (error) {
->  		xfs_err(mp,
->  			"Error %d recovering leftover CoW allocations.", error);
-> -			xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
-> +		xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
->  		return error;
->  	}
->  	xfs_start_block_reaping(mp);
 
-Indeed, my bad.
-Reviewed-by: Ian Kent <raven@themaw.net>
+Unless you rebase the tree, then the Fixes tag will still be valid.
+(Probably local implies you rebase it I guess).
+
+regards,
+dan carpenter
 

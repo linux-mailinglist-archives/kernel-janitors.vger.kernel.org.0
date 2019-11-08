@@ -2,85 +2,157 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E5F6F4D8F
-	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Nov 2019 14:54:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9217FF4DB3
+	for <lists+kernel-janitors@lfdr.de>; Fri,  8 Nov 2019 15:06:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726853AbfKHNyr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 Nov 2019 08:54:47 -0500
-Received: from mail-io1-f67.google.com ([209.85.166.67]:36774 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726101AbfKHNyr (ORCPT
+        id S1726640AbfKHOGQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 Nov 2019 09:06:16 -0500
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:58929 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726445AbfKHOGQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 Nov 2019 08:54:47 -0500
-Received: by mail-io1-f67.google.com with SMTP id s3so6447308ioe.3
-        for <kernel-janitors@vger.kernel.org>; Fri, 08 Nov 2019 05:54:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=qhj0pYG/xfb9ZXayAFQZBmgKNwxw6I0CpoVt3iCpB1E=;
-        b=SlnJ0kzDnF+zUVdem+qMS9wPqFOmE4StE78W5pCkwNeQbv3pcDv/6wbvF9Wzsyej6a
-         mVp7dDiaYBiGAGozWrA6DxU2eqJdpfSno8KXt6N44vL8mUfNvXdzzYobLagSEhGYPhrs
-         mzyYec6kzQhLmNdjY3HpzPswzummUVIV45W7ewSXze6ksqYRjkIb1DF+8/l6g8hTmj2v
-         fIX6tTXrTKWoCMPy1kBumphFKsg9wM5PQsZUGEbNAeOy7ZCati+IAS6/F2UO+ZcMlhPY
-         PGiFXKKj/j2YC08ktmwhITccWfmu87EX9XndOE3MVtY2nXzWQpsFSPja6+o5cvtUHFrd
-         VSzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=qhj0pYG/xfb9ZXayAFQZBmgKNwxw6I0CpoVt3iCpB1E=;
-        b=N8fVPT3EK07xZGQGgvcxQE0KHc2H01tCQsVDn9chYAAt3kCF3QPOrsCuhrklHdCOXh
-         40BSmg0gwxsBocj6guwNjWfjdGATA57sELZeD3K2ZdNFFuZv8G7r+Ty5tdu4VEjaagXp
-         TyojyBDqJOc4STW34xtaVoSAZsVCg2icgdgHgUZkaobXSwf4FjKiI1bNKC5FuOCNnPMY
-         kvCFrdvfAduP89IWheGIqaoyQ1tkNborZVXTPK1W0TL46/CElZenTLQN0sSezzF0mllS
-         uebjlDqT6FqBENpqq4R3Vo2Nban7UoklyTqqf6My7SIClxrQFb6I5hak85x/YvCbzmeM
-         RUVA==
-X-Gm-Message-State: APjAAAWjKuol094QdvWNuLpfIdayTyDHjuumUcWJghay1KO96cBl0Y8D
-        X2AnsHByHHMvYqr1qQB6a5Q//+/eCUk=
-X-Google-Smtp-Source: APXvYqxT7wKu6Rb3KLuV8PJsLUA7DGTaBKo+K+FqKHR5/THatlVz8nZOFOdzmcrdjerSlYdgOa+70A==
-X-Received: by 2002:a05:6602:198:: with SMTP id m24mr9909819ioo.34.1573221285861;
-        Fri, 08 Nov 2019 05:54:45 -0800 (PST)
-Received: from [192.168.1.159] ([65.144.74.34])
-        by smtp.gmail.com with ESMTPSA id p19sm776620ili.56.2019.11.08.05.54.44
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 08 Nov 2019 05:54:45 -0800 (PST)
-Subject: Re: [PATCH] block: drbd: remove a stay unlock in
- __drbd_send_protocol()
-To:     Philipp Reisner <philipp.reisner@linbit.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Lars Ellenberg <lars.ellenberg@linbit.com>,
-        drbd-dev@lists.linbit.com, linux-block@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20191107074847.GA11695@mwanda> <6906816.cRlsrm7Sor@fat-tyre>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <17fea9d1-39f8-1d91-5509-5f520009b9c9@kernel.dk>
-Date:   Fri, 8 Nov 2019 06:54:43 -0700
+        Fri, 8 Nov 2019 09:06:16 -0500
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20191108140613euoutp01d1d548aad2b08838c801807bf3d7433e~VNQyshNmK0279802798euoutp01y
+        for <kernel-janitors@vger.kernel.org>; Fri,  8 Nov 2019 14:06:13 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20191108140613euoutp01d1d548aad2b08838c801807bf3d7433e~VNQyshNmK0279802798euoutp01y
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1573221973;
+        bh=N+JCkz4JeDOFadjc5rrFs2UE9NippHyLnoYIO9LMYBg=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=GFG8Bngh77npG5R41S8Ms7pbUOUb1LtJk00qFUfdrXwATH68iySYo8AFmnD3Rd5ke
+         Sl3Sd2ddIGaPwfuWYkGPd8+bIFuwqPzSd635rHs8kGJpgLQin33Ndzuf2n4+g2nFaw
+         6KPQdYQoYve1lUpvTyAFxYZCxk9tWu8NmeBd7fEM=
+Received: from eusmges2new.samsung.com (unknown [203.254.199.244]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20191108140613eucas1p2fff573cac0dd5366361e9a6cc2d58071~VNQylDFbo0666806668eucas1p2u;
+        Fri,  8 Nov 2019 14:06:13 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges2new.samsung.com (EUCPMTA) with SMTP id A9.18.04309.55675CD5; Fri,  8
+        Nov 2019 14:06:13 +0000 (GMT)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20191108140612eucas1p152704f9fb95a6187f536beacd66097d7~VNQyLxode0694406944eucas1p1M;
+        Fri,  8 Nov 2019 14:06:12 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20191108140612eusmtrp12ef22e7307c356a0ee608d70bfb9d664~VNQyLM8d22316223162eusmtrp1c;
+        Fri,  8 Nov 2019 14:06:12 +0000 (GMT)
+X-AuditID: cbfec7f4-afbff700000010d5-dc-5dc576555138
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 8B.24.04166.45675CD5; Fri,  8
+        Nov 2019 14:06:12 +0000 (GMT)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20191108140612eusmtip2177259d5802e85fc4f9be980128fced7~VNQx0F0MB2151621516eusmtip2X;
+        Fri,  8 Nov 2019 14:06:12 +0000 (GMT)
+Subject: Re: [PATCH][V2] ata: pata_artop: make arrays static const, makes
+ object smaller
+To:     Colin King <colin.king@canonical.com>, Jens Axboe <axboe@kernel.dk>
+Cc:     linux-ide@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <50c64370-067a-a15e-29d6-dff3fc25cc77@samsung.com>
+Date:   Fri, 8 Nov 2019 15:06:08 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <6906816.cRlsrm7Sor@fat-tyre>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20191006142956.23360-1-colin.king@canonical.com>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprGKsWRmVeSWpSXmKPExsWy7djP87qhZUdjDWY94bJYfbefzeL36l42
+        i623pC2O7XjEZHF51xw2B1aPWQ29bB6Xz5Z6fN4kF8AcxWWTkpqTWZZapG+XwJVx/uZb9oKF
+        fBV3Dp9haWD8xtXFyMkhIWAicevDAvYuRi4OIYEVjBKnrn1ihnC+MEpM+L0TyvnMKNH5aj0b
+        TEvnoUtMEInljBILNr9khXDeMkpsOXAArEpYIEri4NTN7CC2iIC7xIxds5hAbGaBOIlX5z8x
+        gthsAlYSE9tXgdm8AnYSk07+A+tlEVCReLJ3HyuILSoQIfHpwWFWiBpBiZMzn7CA2JxA9fu3
+        trBAzBSXuPVkPtR8eYntb+eAnS0h0M8usfPwC6izXSS63uxjhrCFJV4d38IOYctInJ7cwwLR
+        sI5R4m/HC6ju7YwSyyf/g+q2ljh8/CLQGRxAKzQl1u/Shwg7Siyfc4wRJCwhwCdx460gxBF8
+        EpO2TWeGCPNKdLQJQVSrSWxYtoENZm3XzpXMExiVZiF5bRaSd2YheWcWwt4FjCyrGMVTS4tz
+        01OLjfJSy/WKE3OLS/PS9ZLzczcxAlPL6X/Hv+xg3PUn6RCjAAejEg9vhMyRWCHWxLLiytxD
+        jBIczEoivJwtQCHelMTKqtSi/Pii0pzU4kOM0hwsSuK81QwPooUE0hNLUrNTUwtSi2CyTByc
+        Ug2MwlUJ/FYS/S4ftx53uv94IWdEXGNwX2zebhN2vUM7DnvYiT1d+S39xv0LUre84qTdnn1x
+        dl9rtMZivn/WopKYpX6bmUQDT1wPi5BMYFLbruG7/UddjN4n/6zLCb9aTxVN+LPxUJNH8PVf
+        v5XfaNUGt8oeePXpwoNzsW+v3dM/eFA4P0No8/4TSizFGYmGWsxFxYkAZdbd5ikDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrGIsWRmVeSWpSXmKPExsVy+t/xe7ohZUdjDZpmGFisvtvPZvF7dS+b
+        xdZb0hbHdjxisri8aw6bA6vHrIZeNo/LZ0s9Pm+SC2CO0rMpyi8tSVXIyC8usVWKNrQw0jO0
+        tNAzMrHUMzQ2j7UyMlXSt7NJSc3JLEst0rdL0Ms4f/Mte8FCvoo7h8+wNDB+4+pi5OSQEDCR
+        6Dx0iamLkYtDSGApo8SDe20sXYwcQAkZiePryyBqhCX+XOtiA7GFBF4zSlzYnARiCwtESRyc
+        upkdxBYRcJeYsWsWE4jNLBAncebYD0aImRMZJTbsngLWzCZgJTGxfRUjiM0rYCcx6eQ/sDiL
+        gIrEk737WEFsUYEIicM7ZkHVCEqcnPmEBcTmBKrfv7WFBWKBusSfeZeYIWxxiVtP5kMtlpfY
+        /nYO8wRGoVlI2mchaZmFpGUWkpYFjCyrGEVSS4tz03OLDfWKE3OLS/PS9ZLzczcxAuNo27Gf
+        m3cwXtoYfIhRgINRiYd3g9yRWCHWxLLiytxDjBIczEoivJwtQCHelMTKqtSi/Pii0pzU4kOM
+        pkDPTWSWEk3OB8Z4Xkm8oamhuYWlobmxubGZhZI4b4fAwRghgfTEktTs1NSC1CKYPiYOTqkG
+        RsHsZpaAZPWNXe/Vr79vnXa8WujmXkapxZcThZ3OFAv0SvBVhXDP3RPRrC7GNqNe2rHU4cCd
+        iL0HW9706Gy8UWEwu+KAbmm17Ld9Ydm3T374kvXZ3ynm+tJp6Sc6rLL9dPnruR44sDnc3Nz4
+        V3xZk+WkEhafW9u7lTaFG33NeTzp2L11ydkmSizFGYmGWsxFxYkAXMMIpbkCAAA=
+X-CMS-MailID: 20191108140612eucas1p152704f9fb95a6187f536beacd66097d7
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20191006143000epcas2p168872c0c7b1e1879e31931d3244dfd4d
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20191006143000epcas2p168872c0c7b1e1879e31931d3244dfd4d
+References: <CGME20191006143000epcas2p168872c0c7b1e1879e31931d3244dfd4d@epcas2p1.samsung.com>
+        <20191006142956.23360-1-colin.king@canonical.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 11/8/19 3:46 AM, Philipp Reisner wrote:
-> Hi Dan,
-> 
-> yes, your patch it obviously correct. The comment you are
-> referring to is badly worded. We will remove it.
-> 
-> Jens,
-> 
-> are you taking this patch as it is?
 
-Yep, I'll queue it up.
+On 10/6/19 4:29 PM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Don't populate the const arrays on the stack but instead make them
+> static. Makes the object code smaller by 292 bytes.
+> 
+> Before:
+>    text	   data	    bss	    dec	    hex	filename
+>    6988	   3132	    128	  10248	   2808	drivers/ata/pata_artop.o
+> 
+> After:
+>    text	   data	    bss	    dec	    hex	filename
+>    6536	   3292	    128	   9956	   26e4	drivers/ata/pata_artop.o
+> 
+> (gcc version 9.2.1, amd64)
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
--- 
-Jens Axboe
+Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
+
+> ---
+> 
+> V2: fix up commit message
+> 
+> ---
+>  drivers/ata/pata_artop.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/ata/pata_artop.c b/drivers/ata/pata_artop.c
+> index 3aa006c5ed0c..6bd2228bb6ff 100644
+> --- a/drivers/ata/pata_artop.c
+> +++ b/drivers/ata/pata_artop.c
+> @@ -100,7 +100,7 @@ static void artop6210_load_piomode(struct ata_port *ap, struct ata_device *adev,
+>  {
+>  	struct pci_dev *pdev	= to_pci_dev(ap->host->dev);
+>  	int dn = adev->devno + 2 * ap->port_no;
+> -	const u16 timing[2][5] = {
+> +	static const u16 timing[2][5] = {
+>  		{ 0x0000, 0x000A, 0x0008, 0x0303, 0x0301 },
+>  		{ 0x0700, 0x070A, 0x0708, 0x0403, 0x0401 }
+>  
+> @@ -154,7 +154,7 @@ static void artop6260_load_piomode (struct ata_port *ap, struct ata_device *adev
+>  {
+>  	struct pci_dev *pdev	= to_pci_dev(ap->host->dev);
+>  	int dn = adev->devno + 2 * ap->port_no;
+> -	const u8 timing[2][5] = {
+> +	static const u8 timing[2][5] = {
+>  		{ 0x00, 0x0A, 0x08, 0x33, 0x31 },
+>  		{ 0x70, 0x7A, 0x78, 0x43, 0x41 }
+>  

@@ -2,34 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F0322F5E33
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 Nov 2019 10:06:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 54234F5F0E
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 Nov 2019 13:29:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726446AbfKIJGN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 9 Nov 2019 04:06:13 -0500
-Received: from mout.web.de ([212.227.15.4]:60183 "EHLO mout.web.de"
+        id S1726301AbfKIM3A (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 9 Nov 2019 07:29:00 -0500
+Received: from mout.web.de ([212.227.15.14]:46267 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726136AbfKIJGN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 9 Nov 2019 04:06:13 -0500
+        id S1726281AbfKIM3A (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 9 Nov 2019 07:29:00 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1573290365;
-        bh=HJqqvOPiLrBZhZlGpdiUIZoAA6i9aylcFpOm0pxa0y4=;
-        h=X-UI-Sender-Class:Subject:From:To:Cc:References:Date:In-Reply-To;
-        b=Iw40WaYpq+WCmGktF6ar3LpEFcdcS+VItZXzCAJUVpmQQXMALz11LOan9VIG5M2Sv
-         LMZgB6syYfvypKUU5+o01/pah7MC4SgrH3pdlX1z3t904rOpppfOJa6P0cq3OtnzeB
-         sIDbS/P7wHzm1OzN+6/ZaTVHhXyzwJCZwPijPHw8=
+        s=dbaedf251592; t=1573302415;
+        bh=AQ/eXQhL7XKePKt3K1mFZFA8OiMhHng6QZbb0QmtvZc=;
+        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
+        b=f6C0TwCPIagB6oP1X11xxVjSTpgd9wv0Sg8oG4+0JQT/cKEg9pKCn+YM03FfKy11S
+         12//UomNSo6g/rIWTzmdvCpNQntbytu2O/9K0eHfGms+vAsbjFLcxRcLEmj0BkKUls
+         AbozWfrv0jiWV1nwr+CkmQ7prnDvA+8AARUVb9zc=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.243.82.67]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MCZTG-1ibePu3Pms-009NIN; Sat, 09
- Nov 2019 10:06:04 +0100
-Subject: [PATCH 3/3] fsl/fman: Return directly after a failed devm_kzalloc()
- in mac_probe()
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LjrU9-1hwZ313JYP-00bsMQ; Sat, 09
+ Nov 2019 13:26:54 +0100
+To:     linux-pwm@vger.kernel.org,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>
 From:   Markus Elfring <Markus.Elfring@web.de>
-To:     netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-        Madalin Bucur <madalin.bucur@nxp.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-References: <132e8369-c4da-249f-76b8-834e394dc6d5@web.de>
+Subject: [PATCH] pwm: omap-dmtimer: Add missing put_device() call in
+ pwm_omap_dmtimer_probe()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -73,83 +75,115 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <8ffc16a2-62cc-f948-e11b-55bae1d6aae4@web.de>
-Date:   Sat, 9 Nov 2019 10:06:03 +0100
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Grant Erickson <marathon96@gmail.com>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Neil Brown <neilb@suse.de>, Wen Yang <wen.yang99@zte.com.cn>
+Message-ID: <fd7a56e4-2a35-a6c4-e5bd-1e53a6c48687@web.de>
+Date:   Sat, 9 Nov 2019 13:26:50 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.1
 MIME-Version: 1.0
-In-Reply-To: <132e8369-c4da-249f-76b8-834e394dc6d5@web.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:eLIXJeDSxsn/QQdSB2uFUJVZ6LS8AYKedpK+I/+HDllWZmjgIqu
- MgBFt51wz25TKWTP5yGGAfPt7QWFjXSY4qx6MICNpkBW6vuVjiveWVJhw+whrVDsk9hnjWL
- pJpxX+iHNhak5SaYci5QxoKzL37Q08VcvxVh8tL5oh4kEM4YJaWtjTaEmyA5/7OvRS/WS9e
- PTsVi/3VLXDugPOJ39Ngw==
+X-Provags-ID: V03:K1:yu7LEgpvRSuXya5WnRjWw4eoR0eWF6NU212zZeHtdsg7K8WH6M6
+ cbmJ9PHfP7iT7zt7SnLrzMQYzxULIW1COc2593KKAySIVuwA3/7WcKSeegE0Y5v0/97CcJp
+ cXyiHEptIdBGq2wDMLd8AWKaXhK2JxY0Jql18rdK4Dg41F6+RyySCT90I1nlazvmwrsWzg6
+ FRYG1nFkah5/jH9ikERww==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:ZMs4svgeo8Q=:JeiHgeqUkIyjqk+cjSLHik
- P8w1zMdyPDHMLh/ysyUhA6Bgui8xDi1fvzHHS4hLT7CqoHsKxCDyGTUftVVjFJtWnF8G9hdP8
- 7MVv5zvkArClvN75IP4t+rw5Y1bE+eclxqDdeExiN+XFvCJHLCxyrjlUaiCgDdsSV/s7r0T3J
- vnf7GugR2Yeamx2Uo784CtZgsTMd8k9EIAYEZTgLaYN0/LFtJaxKvg/24l/kOnSzsB8/0fkzZ
- +5BFRWI7mK14MfiFhjfaMAp5QHvoVhNYPKxcWCKmpVE8mfPReGY3dV1rxenfbWvMhG4I7iVSc
- NG/CDzMhhnIrKDNlLOnmNmnpcbMu4JHFEgP4D+MWOxReSd0QcItDUyxXglpr2zTp6jK5hfxpo
- nbAE2aiDr5EEKrKLTpwD0530AiAawqZPJwsta7PPDfelO+S20CIkx3tFsPWbr+rBNtFY06gSA
- LrPQBHhD4vn9soc0Eyl77sV2gLXlCncaKLcqWsi3chCHqEQJol/ilvMGUuRjN2DGN4hd/h9DU
- PgqUjogKdzOJKE6dM160vkuFrt2ElSCvWlr8aiwTMyq0MW7+5sKBPdePFR9zo4PGY4brSWtHt
- V5yMvqkdlTwB55BBNRUu4ex4JxfKt0t+xL6RRwb2CdDOGydkMxFH9Qa4WGesz9FkVeABFAPCR
- nyCacuqbmW8ZCUbGNEHD8CNEvXfHjRPMVBbNK7eFXCGc0iU9omYY8dauBlNwSxAzIJ73PhANo
- 1rDoNORchiTFtv0KHVM+0yK/8rgiUPS4Gsmi92cMc8bI0/bi2PZfnSIKxqhcaJtiyTJKjhqtS
- KPqDVzcmzVcGvbpAECBe89UTrxhIbtDI3zuUl52TS1SWE9KDbgxQZBvFGcVvguWz31+aIRyzi
- r1XSPZMy4rq+QHN7/MtlqhxlQ/9cnOsZQYXTd34nGvnNuxH2iZS0ewzppZOkekEakibBKOZXP
- wVD+xJn3U/yR/uRP25XvXiFqUeiErCxXDgazvLTdghZGi8AfJ+YuKMO/Yy4zVcUSVl2kz1uiG
- rNhX6m4rTt2mchmqli7tzfV1whPwEHa2cu+FxhHm6lIaqsBlt55jo+2Knpmx6ZrDCW57vYoVb
- NpV6nzX35i9Ttt799i+8FACwH/o9CLZ3tP9MzaWJ2cENq2VB4HsuhixW1Bt+FDaT6q4ihdnHi
- BMf5G7D52Bd4u2VlmpfBu0eH3cIsDDKbZQDqQUrtd7RC7/LNmjfGPEFfz/05tUtp8IHUgLN8X
- geMewjKppsR6/nQM3EtaCnU0pVuC6FGtCcuCkTOZ1Cqy8wpvBIBj78oqmbyc=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:gxkprVtV6u4=:Cbu6CSJE9DquIpYdmSps+K
+ tDg6EPoWQHm11nhGF8fKPxm4b1yfV2YsePzUimZ8tkGHXW9mto/eJEY4i6y+ToQZ2z2VrdEXG
+ +qljeuvgX+IQdcVPeqKb13tMRSxn0ochCsnF3OpR0S/bMCWsFgaQwi06lAExWowUg/jmLiAhd
+ VhkZs6k6cEvq4cEn6IYFYFbEuYJSA8JOHRBmbGYeSvOBFiKBkdt8YDeUlGnZGz1OcEqc/4q5C
+ JzB2Kbt8XtcnIcRXvrj4gLfNYrLmBFCEMo9b9KJD3zwCWqsh70dSg9Qcy9A5jN2zjeNyGVTli
+ E1+VRi1qqww0+Z5R/IU/SyL515Tv149K9BzezU18AgktBlJWQm29ncsPesRAJVoYHQ+QAi4py
+ +PeHC/jyZfkeGG/q9l5WILQh5ERjbnJ6reS1WbnW13O1XqyyWbef3AVfJhEb/la2CzsZhRCib
+ IUNxeMXOILVGfOKpkqfML/o2JdLIr+DQAoCC0N7jexItlXfge3fPtIbog6SXrscC1QKxygqyM
+ I2HDwlXtsEAfqjkG0gdgxx2aBZmel6Jo1HgtZXgRLIb0zhztThYEGFOJLVX+wvRqQU69f6jsp
+ IZbfaEoSVLdC7aYBe74OhzDVSqmIbpxyL9dmeEJlpsQwPQCTnkIPWSaea0B5D7R25+hjA9s6s
+ T++jjJYMHIJ9T0Kp3xd7D9icocacJ4bNqxNhv4jydh8ZSckkcW9/nKPfJ8BgQJr+wwjEUGUuk
+ ArUxzCqxmNFOCYksn96kPDeAeNK1gTpqvSKmVjmPFmllrZ0m1fsAi4msozLP1YgqFa4mP8V/D
+ Ifg8gEo3jlKD3AbYDH+Tu53Gbs2wfyJBhH+VLKOseWpNre6SAlFUqey+tZ36LTwiJcjWxxGXc
+ rUc8/wxHw4ZyladEfhUqw6hMzqk0sGD9OeYoNVWzSrjiZiJueOaK3mm3iPo5nA15lVJxW9bTv
+ M9iQ2XEiQT4J8GbdgJwnx4/en+nPABXPopkhR4Dckim/WBS6MFds/IslInRjx+4T6oRgR6Atq
+ fPBEUniu2bz5ZDsFhBw4V3iIb6S1a88ls6F+q3z3juSjNW0sbOY75wMwARklr9rULau9s6alY
+ 0SJl4/E9hojWMkc4n6syui1IQzJWKE7O+lS/2yOS7ChX3kivfMpSKxswF2MN7YVrBX1TdDOpO
+ 6mzHghZP4rLGjy7lBftbTtVKoWB0nKJQNsmFh3lBXLrFJa4aEV//UpjPuikJIYEUYs/e4EIaG
+ SxHoha0bdQFGbFxZjsWr3NYpSnjp9vf9VUTXgT7a4a8jnR0VupQNQw9vvHoU=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 9 Nov 2019 09:26:12 +0100
+Date: Sat, 9 Nov 2019 13:09:42 +0100
 
-Return directly after a call of the function =E2=80=9Cdevm_kzalloc=E2=80=
-=9D failed
-at the beginning.
+A coccicheck run provided information like the following.
 
+drivers/pwm/pwm-omap-dmtimer.c:304:2-8: ERROR: missing put_device;
+call of_find_device_by_node on line 255, but without a corresponding
+object release within this function.
+
+Generated by: scripts/coccinelle/free/put_device.cocci
+
+Thus add jump targets to fix the exception handling for this
+function implementation.
+
+Fixes: b7290cf6ff7869ec12070aa146c370728cab62c2 ("pwm: pwm-omap-dmtimer: A=
+dapt driver to utilize dmtimer pdata ops")
+Fixes: 6604c6556db9e41c85f2839f66bd9d617bcf9f87 ("pwm: Add PWM driver for =
+OMAP using dual-mode timers")
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- drivers/net/ethernet/freescale/fman/mac.c | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ drivers/pwm/pwm-omap-dmtimer.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fman/mac.c b/drivers/net/ether=
-net/freescale/fman/mac.c
-index 7fbd7cc24ede..75614e2ebda3 100644
-=2D-- a/drivers/net/ethernet/freescale/fman/mac.c
-+++ b/drivers/net/ethernet/freescale/fman/mac.c
-@@ -614,15 +614,12 @@ static int mac_probe(struct platform_device *_of_dev=
-)
- 	mac_node =3D dev->of_node;
+diff --git a/drivers/pwm/pwm-omap-dmtimer.c b/drivers/pwm/pwm-omap-dmtimer=
+.c
+index 00772fc53490..958854213786 100644
+=2D-- a/drivers/pwm/pwm-omap-dmtimer.c
++++ b/drivers/pwm/pwm-omap-dmtimer.c
+@@ -301,12 +301,13 @@ static int pwm_omap_dmtimer_probe(struct platform_de=
+vice *pdev)
+ put:
+ 	of_node_put(timer);
+ 	if (ret < 0)
+-		return ret;
++		goto check_timer_pdev;
 
- 	mac_dev =3D devm_kzalloc(dev, sizeof(*mac_dev), GFP_KERNEL);
--	if (!mac_dev) {
--		err =3D -ENOMEM;
--		goto _return;
--	}
-+	if (!mac_dev)
-+		return -ENOMEM;
+ 	omap =3D devm_kzalloc(&pdev->dev, sizeof(*omap), GFP_KERNEL);
+ 	if (!omap) {
+ 		pdata->free(dm_timer);
+-		return -ENOMEM;
++		ret =3D -ENOMEM;
++		goto put_device;
+ 	}
+
+ 	omap->pdata =3D pdata;
+@@ -340,12 +341,19 @@ static int pwm_omap_dmtimer_probe(struct platform_de=
+vice *pdev)
+ 	if (ret < 0) {
+ 		dev_err(&pdev->dev, "failed to register PWM\n");
+ 		omap->pdata->free(omap->dm_timer);
+-		return ret;
++		goto put_device;
+ 	}
+
+ 	platform_set_drvdata(pdev, omap);
+
+ 	return 0;
 +
- 	priv =3D devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
--	if (!priv) {
--		err =3D -ENOMEM;
--		goto _return;
--	}
-+	if (!priv)
-+		return -ENOMEM;
++check_timer_pdev:
++	if (timer_pdev)
++put_device:
++		put_device(&timer_pdev->dev);
++
++	return ret;
+ }
 
- 	/* Save private information */
- 	mac_dev->priv =3D priv;
+ static int pwm_omap_dmtimer_remove(struct platform_device *pdev)
 =2D-
 2.24.0
 

@@ -2,78 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C4B6DF5D11
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 Nov 2019 03:45:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1909F5D54
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 Nov 2019 05:19:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726349AbfKICpG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 8 Nov 2019 21:45:06 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:5749 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726061AbfKICpG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 8 Nov 2019 21:45:06 -0500
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 07A4A3D3DC3141E17821;
-        Sat,  9 Nov 2019 10:45:04 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.439.0; Sat, 9 Nov 2019 10:44:58 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Corentin Labbe <clabbe.montjoie@gmail.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Maxime Ripard <mripard@kernel.org>,
-        "Chen-Yu Tsai" <wens@csie.org>
-CC:     YueHaibing <yuehaibing@huawei.com>, <linux-crypto@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] crypto: sun8i-ss - Fix memdup.cocci warnings
-Date:   Sat, 9 Nov 2019 02:44:03 +0000
-Message-ID: <20191109024403.47106-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726267AbfKIETV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 8 Nov 2019 23:19:21 -0500
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:37774 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726019AbfKIETV (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 8 Nov 2019 23:19:21 -0500
+Received: by mail-oi1-f195.google.com with SMTP id y194so7160994oie.4;
+        Fri, 08 Nov 2019 20:19:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=aPjQoy7oZ5u0GHXcjqq0pDVFggOBodtLQIdVNE5FTLo=;
+        b=m1OFAk12u8S+O/mQg6ziJeZ9S8MfqfP7uF33MqpUJldGMvU43ilCcRhNRjND8B63tT
+         nqv918AJFTyljnjjSa0u+veHg8TUFW7F/71LusVIJTDiDjd41hK9E/ebqQBy3EU0Wid6
+         9WIz2g14wFhChMRvySokSHtXuhR5QVa7j5CUw8f3HJq0xzJUb5t2t7yBegf+u6R9eNcJ
+         Yg6Na1/g0DGk5R97lt7jaHyxNSsleOtQfTUcXZOUQncralu80HkGQH/Z3YP3DYgeqIvb
+         kASBiSUZn07aDap4ax/TnzUsuk5oj94qPCnC2MaHIxiXTfx47TrVvlAciSlHn4HVnAYy
+         N2pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=aPjQoy7oZ5u0GHXcjqq0pDVFggOBodtLQIdVNE5FTLo=;
+        b=uFVF89ovS2VWzdWBmEQvu4gaQMKU/Q3I0HOwnVLQLqn0j7CbwvInscYSWTQJ4wZcsb
+         qwy77AeMiPaa8W7UFpX0g/qhQVWEu681XIe6CtYvMHwBUCMa/MzgSMDtRjkcVlJ51IPi
+         2GXvSQN8m7eee5C9XWumXdpJnkJwvpO2V1d2a/B2awmdgCY6XnJe8sSa/C4EnygPWVGT
+         ftrIjAKzzkeMjeETRQhbKUR+qxBvxJNDeSCZGNPFGphP+/JcjisAb/Ni6VWRRFgIP7Bn
+         RwKM2nMKUMUWJ8/BeOiggVm+KndHnEgWwC9Kghep4HU+hIRBge1CT/zMyiza3gzhC/Pj
+         Mj9g==
+X-Gm-Message-State: APjAAAWWN0X3pMlFmufDXvPOvHsoQ5mWHCGDe9Rc1Rk5mkhzBfywYc7y
+        rZxJcy5+8J7x8MTYl+EPyQalJQvt2eHf5GEj/Oc=
+X-Google-Smtp-Source: APXvYqzAGwKIcMRqRuKKEDKDDvWilS7oF8XklhKFxaceePq/ye3gdBkZu6ZVTlYYhbUWLto5H/qOAB+pAf5xUVjA3Rw=
+X-Received: by 2002:aca:5015:: with SMTP id e21mr13298346oib.174.1573273160438;
+ Fri, 08 Nov 2019 20:19:20 -0800 (PST)
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+References: <20191106082636.GB31923@mwanda> <8f7e33e9-9ae0-4f56-3bb6-b9f3db807d38@de.ibm.com>
+ <7eddf725-e034-d65d-3fb1-2babcfaa812d@redhat.com>
+In-Reply-To: <7eddf725-e034-d65d-3fb1-2babcfaa812d@redhat.com>
+From:   Wanpeng Li <kernellwp@gmail.com>
+Date:   Sat, 9 Nov 2019 12:19:14 +0800
+Message-ID: <CANRm+Cy4xpmQfv8VwA__FQzex+T0d44FKiMQ4RT9rZ4zex+Bjw@mail.gmail.com>
+Subject: Re: [PATCH] kvm: Fix NULL dereference doing kvm_create_vm()
+To:     Paolo Bonzini <pbonzini@redhat.com>
+Cc:     Christian Borntraeger <borntraeger@de.ibm.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Jim Mattson <jmattson@google.com>,
+        =?UTF-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
+        Junaid Shahid <junaids@google.com>, kvm <kvm@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Wanpeng Li <wanpengli@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Use kmemdup rather than duplicating its implementation
+On Wed, 6 Nov 2019 at 17:46, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>
+> On 06/11/19 09:30, Christian Borntraeger wrote:
+> > The same patch was already sent by Wanpeng Li.
+> >
+> > See
+> > https://lore.kernel.org/lkml/1572848879-21011-1-git-send-email-wanpengli@tencent.com/
+>
+> I'm also going to send a somewhat different version today (hopefully).
+> Stay tuned...
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+You can move forward if patches there.
 
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-index f0e7c1e12da6..b6e7c346c3ae 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c
-@@ -396,10 +396,9 @@ int sun8i_ce_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 		kfree(op->key);
- 	}
- 	op->keylen = keylen;
--	op->key = kmalloc(keylen, GFP_KERNEL | GFP_DMA);
-+	op->key = kmemdup(key, keylen, GFP_KERNEL | GFP_DMA);
- 	if (!op->key)
- 		return -ENOMEM;
--	memcpy(op->key, key, keylen);
- 
- 	crypto_sync_skcipher_clear_flags(op->fallback_tfm, CRYPTO_TFM_REQ_MASK);
- 	crypto_sync_skcipher_set_flags(op->fallback_tfm, tfm->base.crt_flags & CRYPTO_TFM_REQ_MASK);
-@@ -422,10 +421,9 @@ int sun8i_ce_des3_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 		kfree(op->key);
- 	}
- 	op->keylen = keylen;
--	op->key = kmalloc(keylen, GFP_KERNEL | GFP_DMA);
-+	op->key = kmemdup(key, keylen, GFP_KERNEL | GFP_DMA);
- 	if (!op->key)
- 		return -ENOMEM;
--	memcpy(op->key, key, keylen);
- 
- 	crypto_sync_skcipher_clear_flags(op->fallback_tfm, CRYPTO_TFM_REQ_MASK);
- 	crypto_sync_skcipher_set_flags(op->fallback_tfm, tfm->base.crt_flags & CRYPTO_TFM_REQ_MASK);
-
-
-
+    Wanpeng

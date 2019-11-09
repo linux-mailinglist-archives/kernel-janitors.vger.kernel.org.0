@@ -2,35 +2,37 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B04FF6049
-	for <lists+kernel-janitors@lfdr.de>; Sat,  9 Nov 2019 17:38:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DEC53F60CC
+	for <lists+kernel-janitors@lfdr.de>; Sat,  9 Nov 2019 19:01:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726204AbfKIQiD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 9 Nov 2019 11:38:03 -0500
-Received: from mout.web.de ([212.227.17.12]:37049 "EHLO mout.web.de"
+        id S1726556AbfKISBo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 9 Nov 2019 13:01:44 -0500
+Received: from mout.web.de ([217.72.192.78]:40275 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726112AbfKIQiD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 9 Nov 2019 11:38:03 -0500
+        id S1726227AbfKISBo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 9 Nov 2019 13:01:44 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1573317468;
-        bh=NYwwdppIlIIgfof/iyxHHWRbLQIkF3lgRlel5bM1XOE=;
-        h=X-UI-Sender-Class:To:From:Subject:Cc:Date;
-        b=cn/HAfFSac0GeWORCdEw98y0CwFCgCyRYLL0aXsd5GuITRHNsLMSifoysT6JNQRFy
-         IAhnHAcyaFj2/wkpVyoMTt2RJabhUeC5//N+yuluJ5G1EbfQr7xaocU2YulQ5ApcAT
-         mUNFCIeSv5IroTcTfiNv1YfJxTBxRNaFwwU84xAM=
+        s=dbaedf251592; t=1573322483;
+        bh=UCe2k7CqHh3KdlChITukwlNbw0nV0Wwdnyh0WUURjDY=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=jVRaPzBtZe87mlWqMa8oACWow9dDaDwZ+ov0Y3YYaFidrnEe6bZYtoE/+T9knER/p
+         CMeW/8OmDV6WfsPHXtVq9kE2Gb9ph4/Sq2tyHlWGQYjpuJuKLvQT8XDhDIG02f9R42
+         DHSrwtOBRM/0FzLovMcsAzwEX2anG4WvXZdK6ZsE=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.2] ([2.243.82.67]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LxfGh-1hrZTj1SIt-017Czy; Sat, 09
- Nov 2019 17:37:48 +0100
-To:     linux-omap@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Tomi Valkeinen <tomi.valkeinen@ti.com>,
-        Tony Lindgren <tony@atomide.com>
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0LkPjj-1hw4yX3OcF-00cR2U; Sat, 09
+ Nov 2019 19:01:22 +0100
+To:     linux-arm-kernel@lists.infradead.org,
+        Alan Tull <atull@opensource.altera.com>,
+        Dinh Nguyen <dinguyen@opensource.altera.com>,
+        Kevin Hilman <khilman@linaro.org>,
+        Russell King <linux@armlinux.org.uk>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
 From:   Markus Elfring <Markus.Elfring@web.de>
-Subject: [PATCH] ARM: OMAP2+: Add missing put_device() call in
- omapdss_init_of()
+Subject: [PATCH] ARM: socfpga: PM: Add missing put_device() call in
+ socfpga_setup_ocram_self_refresh()
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
  +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
@@ -74,77 +76,103 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Message-ID: <112eb5b9-bca7-41ca-efc9-1104b6063f75@web.de>
-Date:   Sat, 9 Nov 2019 17:37:45 +0100
+Message-ID: <c45a8e00-3fc9-adba-1a46-5f2c4149953e@web.de>
+Date:   Sat, 9 Nov 2019 19:01:19 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:+01KfvO0orns3QXKIpAhLAiSxkmbajyqMTrqiYYVqYvtnQrv61W
- fglI0HxToa1W4K2cqvnpNCJv5TrZmXJ5q83J411V86igSy/t9HiuIrmHig4jEzsgaCKj/tO
- p5zY4HhJWvwcR008s4E9Z4nBeuhimb1h7DxZOYzidLu7DbK2jjoT4CNyA9HgJ9nqi29dyqI
- Tw4mibhKt4/GJz/WMGRuA==
+X-Provags-ID: V03:K1:G5f/wc2yv1bmYEjJOFrseh4adMdLus4cBhX+dP9MkCblvtpUMgV
+ wWAl28QOhDAnJyO7irpK2vtMns4XYiuZfvcrctREEPwJE2m65MRlkzdjURp9Oc4jikZ+gNu
+ WasaGwKwAP6S4Y2cQiXu0bMXoVw5Rul5ikiFCERKrFhFyJK34cIm82QVGPE6R2zmgG1zB0S
+ jRvn9C6uScnkst/ExnlHA==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:j078fx435K0=:YE6gmmoF8el4HdE/bFU1yQ
- rBjrE67Fp6QqW83D5YP8pr9PWHWPD/BL1kzBYeJNlS8/eSwiD/bGY7zxprE2gDENGc7ouimGk
- aeLze54DdpwbNgZ9W0VBq7qVvrM8c/o9mtC4LEZGZTY/PX4h22UnakCMfUK40gix0X7SwJ07s
- pZO0GlE0Ph5IUMg1wD87SSnzSDvfFaMsAU3IZaPlmS2fYz+hfNGlQpNhE0CR8yPzXzFFWfJRd
- 958tm9DNxBy532PfMWhaJfWvu7hlAXdBH15xIW1QfsMz7OZfI4ZjUylNnbekKhvqXzvaTxbBm
- NnT75HqFm/dVGQmJUYCJ1MUnxIA4d9Vk+tY3upY3YD3hryJOJJgX5Tx2JKrQEp5F8w9PsrkyI
- lusOPj3Hpq0CorMXM07zOrcg5F2f3bhXPil4+fKTs9d+viFG0gObPIShYa9/vYjwwJFXLmZ8X
- DvMfPJOS2HRoCL282NsMkKAGBJYAamP2xCiYxG1KNCoO2DQp54HIC1JcZ32rLIo8X+3QrL+5o
- xMmjQA0nKSih0tSYXIw3KzQ8RjEKygKs9pL+mPpEDqBTqIz6hCPEs6EJg44DV2dGITPRqGXne
- TQNpT+A/UFdDJRcESXk6/7sVZbaZmBlYO+OU+dX83SCZduzSkAkRQ2Rvg5gFSYipu2Cf7vwLS
- ysjtBGjeKj6a5+jxONPWZadTV29FmHQ1ekVXrS7pOG5AHdURlbdpZbimcQpm4SDup7/tg83pe
- RDwQ6Oj4Sod6PxvLKLfFXycpiZQhfjkcNgv3Xgt4j6SV+mdK7jzoxnWdNZMd33KeVgPQCHcO1
- vFuXUtLcEx8TsWCNy7U3Sh0rXvT10V97T263fvRPvJstS9VXh42atyHh7v7c0EbQP/kHPoTIM
- nJLrtPPiYfOK9ODQLnX8iZvffLpUKHCTudim0Hp2jxExHyCHOcQ5CeN91XWsq8vyzOWdbLrUv
- 2gqoVhC/a2b4ZxIMyZ/zyZzPVoMo432zy7+6bQkAAkUIpri+JO28+WSb+pjYIn/FxA800Vh7S
- CiUzT+H3iNXAzGwDtYCU4NzRyAqHRteXsTgh5SXzQtu+uUiMoZ2iCuunp9UImqRjYkmvB/syd
- CvyKzQZXLztX4ehoynV7MRZAJ2QmGLHzpEjfSAoa1s0lqaFYTIrwghBUcHltch9xm0HybQ+M1
- C67NzdBxT8oMimLRKiRvvDTOgvBE+HI7BE5VMEnOkrAoCwHBPMru7l2KEL8up1wc9g7IhVXHv
- GpZhosRGGNNi32vEOSqwYTaXWwYboTLOVkflSX6/Q8GcXRbZ/uFFBKGZ25gY=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:epWX2u5mpCQ=:AW4Y/eWKGvjOQbaZg7ab8h
+ 9HRfLiPHIUONSbdF1RB1QrT2tzGeHQMZI1soejvZ+TQP+AhACCB2jL7O8FsnSrGJu2D/q9k34
+ UoZhPJbeaUL3j92kXsumpiIFtKjTzX0xz6L3uk2AIFE0faJO3h5B0TpWD7SdsyonNeI2Gj3EE
+ hakoeUV311WvJOnSw4FF7kdt3BdfQHNP2EnBFJxrEd1vK2DtXqOftG2ZaTyZEji4plNxCysfL
+ eFYozbra3wPzdU8//FwucB2AmzJzTIR+H9k8MLXTB8wTzq3qsbx8dRhShfL2XO+x7bK917Rgd
+ AZ0iZ3ntUEpze7m1oPAR6pAv12NzXEeghCalG79WlNVY9fnvQy+T00Nz5NCuw67ou81Gca8Yj
+ Zw88yaRniBt8t0Y5fk86QBqbvow1Nh/LqHCnF7NST/M1IkdmTYsTvldXU0eMNDjfkrDnisY+D
+ LyUxu+731B//q6hTEe6z1Jn0iPjZ0rBs5aE67X0ChCkD+RR7Ubrqw0pzsSCK0NN4mUO5tTvAU
+ 3GNjqgJZSRFmDDtioJF27cigYnnf7SPIyuoHiYTIyxBov/CLxFDYVl0Ge6M43KSK1w1M77O3R
+ SwZNixjikul9Oqy8G2pK+ST2Ng4GQHOnyXPQFdxQNu4OfKEdLva4NpPIGTKTHMNwNh6Ipawp3
+ 6pM7bvqTWkpd466/s4Q2TWO8MY96Srv8RXwGrG9Qk0WxFMjTbhk1YnIyZPVnCB2q6vDxL4Nm8
+ KhXmAjqxFIJwq3Tgo7fc5XNODfOvEhD8OJ/VqNc5/RyMe8GClwrsMIZXirrx9Xj3Ak8EAFuXx
+ 2DlGqcsvuDR1fHPJwlQFvQ84EP3Wn9VOCvdPpyqoayjTK1lFSW8A6niGHOJUcs6E8p3r9fH6Z
+ 3XGjME++ZjwxoqIqoM6gzcovobqjsNv3C7v+ERHxP8oO/eZOP2OozF6MLvz9dM3ujPe0l01ov
+ s8OJcW5H5v9KlvXi4Ly1N4s0Tdg/Jqhz3KNB5SlorsISS7YZl61Y65mHY4X7hKbSNlhONtjJy
+ uXpnYU+SxNrnNS5WSTvWPsLqATliXQHff3oeZUFJBQzSfmcDK+s36vInp9zcRRIIEVb61Ohir
+ HVVwo+HHnbv2YV6gDm2CZFWxgLEbP+l8T2kD34OdmPYD35IhNU/oSLnZZ8LznPmUTuCkqThzN
+ hK3F3cNAKoN+6CIGG1sCbyGGSzqI3Zv/6+Z7ySByyFPn8/T/CrM/3gflG92KZN57iQncrLFrH
+ XQALX9p3J7C6rsh6ZcxOocGoZJMtlqaG6jfWPflnuk46wZ7zzOnt/baMON8g=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Markus Elfring <elfring@users.sourceforge.net>
-Date: Sat, 9 Nov 2019 17:19:35 +0100
+Date: Sat, 9 Nov 2019 18:48:44 +0100
 
 A coccicheck run provided information like the following.
 
-arch/arm/mach-omap2/display.c:268:2-8: ERROR: missing put_device;
-call of_find_device_by_node on line 258, but without a corresponding
+arch/arm/mach-socfpga/pm.c:87:1-7: ERROR: missing put_device;
+call of_find_device_by_node on line 41, but without a corresponding
 object release within this function.
 
 Generated by: scripts/coccinelle/free/put_device.cocci
 
-Thus add the missed function call to fix the exception handling for
+Thus add the missed function call to fix the resource management for
 this function implementation.
 
-Fixes: e0c827aca0730b51f38081aa4e8ecf0912aab55f ("drm/omap: Populate DSS c=
-hildren in omapdss driver")
+Fixes: 44fd8c7d4005f660f48679439f0a54225ba234a4 ("ARM: socfpga: support su=
+spend to ram")
 Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 =2D--
- arch/arm/mach-omap2/display.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/mach-socfpga/pm.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/display.c b/arch/arm/mach-omap2/display.c
-index 439e143cad7b..46012ca812f4 100644
-=2D-- a/arch/arm/mach-omap2/display.c
-+++ b/arch/arm/mach-omap2/display.c
-@@ -265,6 +265,7 @@ static int __init omapdss_init_of(void)
- 	r =3D of_platform_populate(node, NULL, NULL, &pdev->dev);
- 	if (r) {
- 		pr_err("Unable to populate DSS submodule devices\n");
-+		put_device(&pdev->dev);
- 		return r;
+diff --git a/arch/arm/mach-socfpga/pm.c b/arch/arm/mach-socfpga/pm.c
+index 6ed887cf8dc9..365c0428b21b 100644
+=2D-- a/arch/arm/mach-socfpga/pm.c
++++ b/arch/arm/mach-socfpga/pm.c
+@@ -49,14 +49,14 @@ static int socfpga_setup_ocram_self_refresh(void)
+ 	if (!ocram_pool) {
+ 		pr_warn("%s: ocram pool unavailable!\n", __func__);
+ 		ret =3D -ENODEV;
+-		goto put_node;
++		goto put_device;
  	}
+
+ 	ocram_base =3D gen_pool_alloc(ocram_pool, socfpga_sdram_self_refresh_sz)=
+;
+ 	if (!ocram_base) {
+ 		pr_warn("%s: unable to alloc ocram!\n", __func__);
+ 		ret =3D -ENOMEM;
+-		goto put_node;
++		goto put_device;
+ 	}
+
+ 	ocram_pbase =3D gen_pool_virt_to_phys(ocram_pool, ocram_base);
+@@ -67,7 +67,7 @@ static int socfpga_setup_ocram_self_refresh(void)
+ 	if (!suspend_ocram_base) {
+ 		pr_warn("%s: __arm_ioremap_exec failed!\n", __func__);
+ 		ret =3D -ENOMEM;
+-		goto put_node;
++		goto put_device;
+ 	}
+
+ 	/* Copy the code that puts DDR in self refresh to ocram */
+@@ -81,6 +81,8 @@ static int socfpga_setup_ocram_self_refresh(void)
+ 	if (!socfpga_sdram_self_refresh_in_ocram)
+ 		ret =3D -EFAULT;
+
++put_device:
++	put_device(&pdev->dev);
+ put_node:
+ 	of_node_put(np);
 
 =2D-
 2.24.0

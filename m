@@ -2,106 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C78D2F69FD
-	for <lists+kernel-janitors@lfdr.de>; Sun, 10 Nov 2019 17:00:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5931AF6BBD
+	for <lists+kernel-janitors@lfdr.de>; Sun, 10 Nov 2019 23:14:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727027AbfKJQAB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 10 Nov 2019 11:00:01 -0500
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:43519 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726949AbfKJQAB (ORCPT
+        id S1726734AbfKJWOT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 10 Nov 2019 17:14:19 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:59429 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726709AbfKJWOS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 10 Nov 2019 11:00:01 -0500
-Received: by mail-oi1-f195.google.com with SMTP id l20so9424820oie.10
-        for <kernel-janitors@vger.kernel.org>; Sun, 10 Nov 2019 08:00:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=h+YUD2WvRKAp40jyOGFeoD1xEis0jky10NsQDZqufMM=;
-        b=DCyns65OmKpHr/7szeQZBS3eagcFeBLXjv4ZVnFzoV+n4a20e8HrXBrRvxI0KmBrpS
-         LOOYGOnHCEWM6Vl2YgorGNhBH+aryiMHeokXLl+ewlzIBye6/4ttf+eWp/AYvUHVwV1j
-         N7Bw5rqBWP4SykY7R9nDjtlQcbXt8Vj17FuVc/no0uBQvaGjPS8R0XbfLEw/xQC0dj+V
-         z6LcJQMA8QeivurTYYjDU8o9RT2iJtb6GRqmbnXTrB0Tlctqdwh3WXvh+Vt28E/BYpu/
-         KYs6JLyor+jiciIEIZ04R9WT4+iCH7WdFKDYcWJZUi4HX8R6A4igsFdteCcjPoNZMIw5
-         /9uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=h+YUD2WvRKAp40jyOGFeoD1xEis0jky10NsQDZqufMM=;
-        b=DMNecIlOwhQOk0Op1h1yIV448ddVviBK9Mt22BtGqy6ky1iQBCPJ6soUUSsa2ZqxPD
-         xCiYSlHEE9AHumNLly5Jc0ORSQDirBdTLAl/h1ORcX/pcWgr2zyzNxmtkpQTMOohTSc1
-         EO392X8MnQ9P3ex6879XbcQz54GfAer3fz9ZrmObjPQ9dugCEz64XofmkSj0BHGAO8TD
-         VOD2Y4Y2SqbWGB6EaxmO2s8+wglRyGYnJiqltWyXTyVotjfYXqh5an+LiXId68IK9cp3
-         +jVx2y6DUI2CDmnTr0MsV2lPv8dIARvirgwZHG8C1hC2mdvAvSEYUEVvS5SwYcYdLXqT
-         l1qg==
-X-Gm-Message-State: APjAAAVhGIpHyvfRUxWkQl1c6hjUWgefQioR6yrWIjwaNqhZupDk7vm6
-        k23X/MU1A2vWSIc9ueryskUuOwGs1NJbYfKSXFFR0Q==
-X-Google-Smtp-Source: APXvYqzX5X0Yfnv790nGV0sCxf4G6KTyIeWhAfyr21qT68AdV82YNkRSmdLC+vr4/11OZvYJK4BfueLvDckrjGo4CGo=
-X-Received: by 2002:aca:451:: with SMTP id 78mr20238408oie.170.1573401600442;
- Sun, 10 Nov 2019 08:00:00 -0800 (PST)
+        Sun, 10 Nov 2019 17:14:18 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iTvTJ-0004Ra-IT; Sun, 10 Nov 2019 22:14:13 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Felipe Balbi <balbi@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Vladimir Zapolskiy <vz@mleia.com>,
+        Sylvain Lemieux <slemieux.tyco@gmail.com>,
+        Roland Stigge <stigge@antcom.de>,
+        Arnd Bergmann <arnd@arndb.de>, linux-usb@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] usb: gadget: udc: lpc32xx: don't dereference ep until it has been null checked
+Date:   Sun, 10 Nov 2019 22:14:13 +0000
+Message-Id: <20191110221413.22321-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20191109155836.223635-1-colin.king@canonical.com>
-In-Reply-To: <20191109155836.223635-1-colin.king@canonical.com>
-From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
-Date:   Sun, 10 Nov 2019 16:59:49 +0100
-Message-ID: <CAMpxmJVC5GGhR0z_4CkF7Opfw-5HpEKD8fUrKsgBZTbz0wDd-Q@mail.gmail.com>
-Subject: Re: [PATCH] clocksource/drivers/davinci: fix memory leak on
- clockevent on error return
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc:     Colin King <colin.king@canonical.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-sob., 9 lis 2019 o 16:58 Colin King <colin.king@canonical.com> napisa=C5=82=
-(a):
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> In the case where request_irq fails, the return path does not kfree
-> clockevent and hence we have a memory leak.  Fix this by kfree'ing
-> clockevent before returning.
->
-> Addresses-Coverity: ("Resource leak")
-> Fixes: 721154f972aa ("clocksource/drivers/davinci: Add support for clocke=
-vents")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/clocksource/timer-davinci.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/drivers/clocksource/timer-davinci.c b/drivers/clocksource/ti=
-mer-davinci.c
-> index 62745c962049..910d4d2f0d64 100644
-> --- a/drivers/clocksource/timer-davinci.c
-> +++ b/drivers/clocksource/timer-davinci.c
-> @@ -299,6 +299,7 @@ int __init davinci_timer_register(struct clk *clk,
->                          "clockevent/tim12", clockevent);
->         if (rv) {
->                 pr_err("Unable to request the clockevent interrupt");
-> +               kfree(clockevent);
->                 return rv;
->         }
->
-> --
-> 2.20.1
->
+From: Colin Ian King <colin.king@canonical.com>
 
-Hi Daniel,
+The pointer ep is currently being dereferenced when initializing pointer
+udc before ep is being null checked.  Fix this by only dereferencing
+ep after it has been null checked.
 
-this is what I think the third time someone tries to "fix" this
-driver's "memory leaks". I'm not sure what the general approach in
-clocksource is but it doesn't make sense to free resources on
-non-recoverable errors, does it? Should I add a comment about it or
-you'll just take those "fixes" to stop further such submissions?
+Addresses-Coverity: ("Dereference before null check")
+Fixes: 24a28e428351 ("USB: gadget driver for LPC32xx")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/usb/gadget/udc/lpc32xx_udc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Best regards,
-Bartosz Golaszewski
+diff --git a/drivers/usb/gadget/udc/lpc32xx_udc.c b/drivers/usb/gadget/udc/lpc32xx_udc.c
+index d14b2bb3f67c..45b2a673ecba 100644
+--- a/drivers/usb/gadget/udc/lpc32xx_udc.c
++++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
+@@ -1872,7 +1872,7 @@ static int lpc32xx_ep_dequeue(struct usb_ep *_ep, struct usb_request *_req)
+ static int lpc32xx_ep_set_halt(struct usb_ep *_ep, int value)
+ {
+ 	struct lpc32xx_ep *ep = container_of(_ep, struct lpc32xx_ep, ep);
+-	struct lpc32xx_udc *udc = ep->udc;
++	struct lpc32xx_udc *udc;
+ 	unsigned long flags;
+ 
+ 	if ((!ep) || (ep->hwep_num <= 1))
+@@ -1882,6 +1882,7 @@ static int lpc32xx_ep_set_halt(struct usb_ep *_ep, int value)
+ 	if (ep->is_in)
+ 		return -EAGAIN;
+ 
++	udc = ep->udc;
+ 	spin_lock_irqsave(&udc->lock, flags);
+ 
+ 	if (value == 1) {
+-- 
+2.20.1
+

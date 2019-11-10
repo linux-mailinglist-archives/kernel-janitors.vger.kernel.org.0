@@ -2,115 +2,106 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8760CF68CB
-	for <lists+kernel-janitors@lfdr.de>; Sun, 10 Nov 2019 12:48:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C78D2F69FD
+	for <lists+kernel-janitors@lfdr.de>; Sun, 10 Nov 2019 17:00:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726709AbfKJLsc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 10 Nov 2019 06:48:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42360 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726617AbfKJLsb (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 10 Nov 2019 06:48:31 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 36BD520869;
-        Sun, 10 Nov 2019 11:48:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573386511;
-        bh=3ZlcSdnSyJm9AAdYjI6QHnNMIOARCyjlNADNfdeTPT8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=WTHwi2TjhJZ0w8Yb/sgHLW7ravV3YzqjcMs16nU6bk2gklziWbYEja9ow3DuTXFvC
-         3ywstnYdQbIpfp46s5Nho4l+Si0n56O2uqcA0oFnQUJDOoNTb0UKe3yHlcJvbKPPhh
-         EPmMsigYc79vCTdDHegk06phWBP6B2JLr3fEwoww=
-Date:   Sun, 10 Nov 2019 11:48:23 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-        "colin.king@canonical.com" <colin.king@canonical.com>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: temperature: ltc2983: fix u32 read into a unsigned
- long long
-Message-ID: <20191110114823.2bbe87b0@archlinux>
-In-Reply-To: <dab9cfd93e6affa5d94f078154c3e181303bbf47.camel@analog.com>
-References: <20191105202818.90065-1-colin.king@canonical.com>
-        <dab9cfd93e6affa5d94f078154c3e181303bbf47.camel@analog.com>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1727027AbfKJQAB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 10 Nov 2019 11:00:01 -0500
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:43519 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726949AbfKJQAB (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 10 Nov 2019 11:00:01 -0500
+Received: by mail-oi1-f195.google.com with SMTP id l20so9424820oie.10
+        for <kernel-janitors@vger.kernel.org>; Sun, 10 Nov 2019 08:00:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=h+YUD2WvRKAp40jyOGFeoD1xEis0jky10NsQDZqufMM=;
+        b=DCyns65OmKpHr/7szeQZBS3eagcFeBLXjv4ZVnFzoV+n4a20e8HrXBrRvxI0KmBrpS
+         LOOYGOnHCEWM6Vl2YgorGNhBH+aryiMHeokXLl+ewlzIBye6/4ttf+eWp/AYvUHVwV1j
+         N7Bw5rqBWP4SykY7R9nDjtlQcbXt8Vj17FuVc/no0uBQvaGjPS8R0XbfLEw/xQC0dj+V
+         z6LcJQMA8QeivurTYYjDU8o9RT2iJtb6GRqmbnXTrB0Tlctqdwh3WXvh+Vt28E/BYpu/
+         KYs6JLyor+jiciIEIZ04R9WT4+iCH7WdFKDYcWJZUi4HX8R6A4igsFdteCcjPoNZMIw5
+         /9uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=h+YUD2WvRKAp40jyOGFeoD1xEis0jky10NsQDZqufMM=;
+        b=DMNecIlOwhQOk0Op1h1yIV448ddVviBK9Mt22BtGqy6ky1iQBCPJ6soUUSsa2ZqxPD
+         xCiYSlHEE9AHumNLly5Jc0ORSQDirBdTLAl/h1ORcX/pcWgr2zyzNxmtkpQTMOohTSc1
+         EO392X8MnQ9P3ex6879XbcQz54GfAer3fz9ZrmObjPQ9dugCEz64XofmkSj0BHGAO8TD
+         VOD2Y4Y2SqbWGB6EaxmO2s8+wglRyGYnJiqltWyXTyVotjfYXqh5an+LiXId68IK9cp3
+         +jVx2y6DUI2CDmnTr0MsV2lPv8dIARvirgwZHG8C1hC2mdvAvSEYUEVvS5SwYcYdLXqT
+         l1qg==
+X-Gm-Message-State: APjAAAVhGIpHyvfRUxWkQl1c6hjUWgefQioR6yrWIjwaNqhZupDk7vm6
+        k23X/MU1A2vWSIc9ueryskUuOwGs1NJbYfKSXFFR0Q==
+X-Google-Smtp-Source: APXvYqzX5X0Yfnv790nGV0sCxf4G6KTyIeWhAfyr21qT68AdV82YNkRSmdLC+vr4/11OZvYJK4BfueLvDckrjGo4CGo=
+X-Received: by 2002:aca:451:: with SMTP id 78mr20238408oie.170.1573401600442;
+ Sun, 10 Nov 2019 08:00:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <20191109155836.223635-1-colin.king@canonical.com>
+In-Reply-To: <20191109155836.223635-1-colin.king@canonical.com>
+From:   Bartosz Golaszewski <bgolaszewski@baylibre.com>
+Date:   Sun, 10 Nov 2019 16:59:49 +0100
+Message-ID: <CAMpxmJVC5GGhR0z_4CkF7Opfw-5HpEKD8fUrKsgBZTbz0wDd-Q@mail.gmail.com>
+Subject: Re: [PATCH] clocksource/drivers/davinci: fix memory leak on
+ clockevent on error return
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     Colin King <colin.king@canonical.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, 6 Nov 2019 14:19:52 +0000
-"Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+sob., 9 lis 2019 o 16:58 Colin King <colin.king@canonical.com> napisa=C5=82=
+(a):
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> In the case where request_irq fails, the return path does not kfree
+> clockevent and hence we have a memory leak.  Fix this by kfree'ing
+> clockevent before returning.
+>
+> Addresses-Coverity: ("Resource leak")
+> Fixes: 721154f972aa ("clocksource/drivers/davinci: Add support for clocke=
+vents")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/clocksource/timer-davinci.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/clocksource/timer-davinci.c b/drivers/clocksource/ti=
+mer-davinci.c
+> index 62745c962049..910d4d2f0d64 100644
+> --- a/drivers/clocksource/timer-davinci.c
+> +++ b/drivers/clocksource/timer-davinci.c
+> @@ -299,6 +299,7 @@ int __init davinci_timer_register(struct clk *clk,
+>                          "clockevent/tim12", clockevent);
+>         if (rv) {
+>                 pr_err("Unable to request the clockevent interrupt");
+> +               kfree(clockevent);
+>                 return rv;
+>         }
+>
+> --
+> 2.20.1
+>
 
-> On Tue, 2019-11-05 at 20:28 +0000, Colin King wrote:
-> >=20
-> > From: Colin Ian King <colin.king@canonical.com>
-> >=20
-> > Currently the read of temp using of_property_read_u32_index is
-> > reading
-> > a u32 value into a unsigned long long.  This relies on machine
-> > endianness
-> > to work correctly, so fix this by reading a u32 value and setting
-> > temp
-> > to this value.
-> >=20
-> > Addresses-Coverity: ("Reliance on integer endianness")
-> > Fixes: f110f3188e56 ("iio: temperature: Add support for LTC2983")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > ---
-> >  drivers/iio/temperature/ltc2983.c | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/temperature/ltc2983.c
-> > b/drivers/iio/temperature/ltc2983.c
-> > index ddf47023364b..d39c0d6b77f1 100644
-> > --- a/drivers/iio/temperature/ltc2983.c
-> > +++ b/drivers/iio/temperature/ltc2983.c
-> > @@ -444,8 +444,10 @@ static struct ltc2983_custom_sensor
-> > *__ltc2983_custom_sensor_new(
-> >  			else
-> >  				temp =3D __convert_to_raw(temp,
-> > resolution);
-> >  		} else {
-> > -			of_property_read_u32_index(np, propname, index,
-> > -						   (u32 *)&temp);
-> > +			u32 t32;
-> > +
-> > +			of_property_read_u32_index(np, propname, index,
-> > &t32);
-> > +			temp =3D t32;
-> >  		}
-> > =20
-> >  		for (j =3D 0; j < n_size; j++) =20
->=20
-> Acked-by: Nuno S=C3=A1 <nuno.sa@analog.com>
->=20
+Hi Daniel,
 
-A slight complexity around this one. I'm not sure I'll have time for a pull
-before the merge window (as Greg will only take them to about 1 week before
-that opens so we get some exposure in Linux next).
+this is what I think the third time someone tries to "fix" this
+driver's "memory leaks". I'm not sure what the general approach in
+clocksource is but it doesn't make sense to free resources on
+non-recoverable errors, does it? Should I add a comment about it or
+you'll just take those "fixes" to stop further such submissions?
 
-As a result I'll have to sit on this one until Linus comments on rc7, proba=
-bly
-later today.  Otherwise it'll be material for stable post release.
-
-If I seem to have lost it give me a poke and we'll make sure it goes into=20
-an early rc instead of at the merge window.
-
-Thanks,
-
-Jonathan
-
-> Thanks,
-> Nuno S=C3=A1
-
+Best regards,
+Bartosz Golaszewski

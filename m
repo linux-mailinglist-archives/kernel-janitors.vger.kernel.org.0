@@ -2,68 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 387D0F73BA
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Nov 2019 13:20:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3C17F73D2
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Nov 2019 13:26:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726939AbfKKMUU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Nov 2019 07:20:20 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:48016 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726811AbfKKMUU (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Nov 2019 07:20:20 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iU8fx-0008Et-PF; Mon, 11 Nov 2019 12:20:09 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
+        id S1726932AbfKKMZ7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Nov 2019 07:25:59 -0500
+Received: from mx2.suse.de ([195.135.220.15]:47060 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726927AbfKKMZ7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 11 Nov 2019 07:25:59 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 9D9EAB14E;
+        Mon, 11 Nov 2019 12:25:57 +0000 (UTC)
+Subject: Re: [PATCH][next] xen/gntdev: remove redundant non-zero check on ret
+To:     Colin King <colin.king@canonical.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
         Stefano Stabellini <sstabellini@kernel.org>,
         xen-devel@lists.xenproject.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] xen/gntdev: remove redundant non-zero check on ret
-Date:   Mon, 11 Nov 2019 12:20:09 +0000
-Message-Id: <20191111122009.67789-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+References: <20191111122009.67789-1-colin.king@canonical.com>
+From:   =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+Message-ID: <04efe197-2914-ab1d-918b-8899aa0354af@suse.com>
+Date:   Mon, 11 Nov 2019 13:25:57 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191111122009.67789-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 11.11.19 13:20, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> The non-zero check on ret is always going to be false because
+> ret was initialized as zero and the only place it is set to
+> non-zero contains a return path before the non-zero check. Hence
+> the check is redundant and can be removed.
 
-The non-zero check on ret is always going to be false because
-ret was initialized as zero and the only place it is set to
-non-zero contains a return path before the non-zero check. Hence
-the check is redundant and can be removed.
+Which version did you patch against? In current master the above
+statement is not true.
 
-Addresses-Coverity: ("Logically dead code")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/xen/gntdev.c | 5 -----
- 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/xen/gntdev.c b/drivers/xen/gntdev.c
-index 10cc5e9e612a..07d80b176118 100644
---- a/drivers/xen/gntdev.c
-+++ b/drivers/xen/gntdev.c
-@@ -524,11 +524,6 @@ static int gntdev_open(struct inode *inode, struct file *flip)
- 	}
- #endif
- 
--	if (ret) {
--		kfree(priv);
--		return ret;
--	}
--
- 	flip->private_data = priv;
- #ifdef CONFIG_XEN_GRANT_DMA_ALLOC
- 	priv->dma_dev = gntdev_miscdev.this_device;
--- 
-2.20.1
+Juergen
+
+> 
+> Addresses-Coverity: ("Logically dead code")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>   drivers/xen/gntdev.c | 5 -----
+>   1 file changed, 5 deletions(-)
+> 
+> diff --git a/drivers/xen/gntdev.c b/drivers/xen/gntdev.c
+> index 10cc5e9e612a..07d80b176118 100644
+> --- a/drivers/xen/gntdev.c
+> +++ b/drivers/xen/gntdev.c
+> @@ -524,11 +524,6 @@ static int gntdev_open(struct inode *inode, struct file *flip)
+>   	}
+>   #endif
+>   
+> -	if (ret) {
+> -		kfree(priv);
+> -		return ret;
+> -	}
+> -
+>   	flip->private_data = priv;
+>   #ifdef CONFIG_XEN_GRANT_DMA_ALLOC
+>   	priv->dma_dev = gntdev_miscdev.this_device;
+> 
 

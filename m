@@ -2,164 +2,139 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 12FCDF7506
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Nov 2019 14:32:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE996F751F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Nov 2019 14:37:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726957AbfKKNcg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Nov 2019 08:32:36 -0500
-Received: from mout.web.de ([212.227.17.11]:42887 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726834AbfKKNcg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Nov 2019 08:32:36 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1573479151;
-        bh=lEZega4NQqb14eF8jrF2nOLSTFFT/Y2epxDcrqkCzpA=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=LksIZEZSVH8FEsI8t3Zh5h71vh5i9aWt992mzWjxI+plDm6Ggg7Wppuc3guewwC6d
-         zDwd4O6ihA0iJ+VHAjWk3Zik68OVX2fdLFAHH9OTSGb7VCiS6+8YK5qmYNR4x0rgzv
-         nVzi8Uh+dJSG4PgjX6rnJZEjd/0+pmF8Tqrf4fPc=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([78.49.55.229]) by smtp.web.de (mrweb103
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0LZedc-1i2m3v2ejs-00lXOR; Mon, 11
- Nov 2019 14:32:31 +0100
-Subject: Re: [PATCH 2/4] pwm: omap-dmtimer: simplify error handling
-To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        linux-pwm@vger.kernel.org
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Neil Brown <neilb@suse.de>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        kernel@pengutronix.de, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-References: <20191111071952.6pbswbboqreen6im@pengutronix.de>
- <20191111090357.13903-1-u.kleine-koenig@pengutronix.de>
- <20191111090357.13903-2-u.kleine-koenig@pengutronix.de>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
- +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
- mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
- lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
- YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
- GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
- rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
- 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
- jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
- BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
- cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
- Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
- g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
- OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
- CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
- LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
- sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
- kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
- i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
- g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
- q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
- NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
- nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
- 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
- 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
- wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
- riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
- DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
- fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
- 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
- xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
- qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
- Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
- Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
- +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
- hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
- /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
- tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
- qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
- Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
- x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
- pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <a7a4656d-98b4-6bbb-e389-fe7028a38f97@web.de>
-Date:   Mon, 11 Nov 2019 14:32:30 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
-MIME-Version: 1.0
-In-Reply-To: <20191111090357.13903-2-u.kleine-koenig@pengutronix.de>
-Content-Type: text/plain; charset=utf-8
+        id S1726915AbfKKNhs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Nov 2019 08:37:48 -0500
+Received: from mail-eopbgr690074.outbound.protection.outlook.com ([40.107.69.74]:52750
+        "EHLO NAM04-CO1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726834AbfKKNhs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 11 Nov 2019 08:37:48 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ci9mzfIET5HmE9gHa6go6YqlV2iytBlq91/10Zpl5WtEdLokjHOg5NjAnfhJ+uun2YyWbGLVoLoAW+tWtXtOg+dBT9hRRi+7SnEDUAxaXdw2mPuP8iaQl6MIe1O2t8TeWRI5iUmjLo2h17uaV/NrkroVm/RFmndk2wjByLLdaoh1bSV/Pwg7Sfe3Wu/d7LD66jWKfUWNLn3DbxahHNilHOOrXufpXYJQk2qoAROph8UgCN4R7PLoNCKzAjpMaXl6R/SpbhHtY1qInBOQTxOLiQ1O1P7jcynKM/CeDpiSYw3n8pJjag9hzlI6HNyTL807MJo2ViTcMtDWnt0vtw6txg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wHUQCWUslgICn8KAxgJOIo8qG3oXQB+1PYLIhSfNOh8=;
+ b=AcLD7tzASFByj623gcF2uUq1AHE7FLI4xl5M1YvFaBGTENhrnjG4Nq+z4yWW7DVghTEITsQxJO8hGvXBlDmvOHas64lsLqlY+F8wqzbz4yxNsKB4BHYz8oSUGBaphZcM8mKTYX6VD1KWpCNFyq7f2qPicZR8VCIxjQDzJrCI+vc4aK701xEN2SbzG5WQaJZC1+UraacsFdC6Wf/uO7icLkLffO+fKlTRSZkLRQ/U6afpy+/0t4wWiTNm8hBkr4Y5udcuAIrrrTYI6ifgvnqfgLLSLUwHz8oy989QEye6N6SaweYkCc5442YrIPPI6CDVtJtDOHs1OnYkzm2fM4zuiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wHUQCWUslgICn8KAxgJOIo8qG3oXQB+1PYLIhSfNOh8=;
+ b=wvGNcApPkjd0O0PUsJoCHU/NAcLQLRD0tKg81+woUgTZVLtbQsJRi691GoInfqU2xICE6EQmMc65fh2hynDL5wknQJIix+L8wrzd39ekKy6WnY9ZaOjMwMAic0x0A38gYqVsuVEtvKiIqITlDbDC2QuRuv/Z/zkWHfkrT4VGi5s=
+Authentication-Results: spf=none (sender IP is )
+ smtp.mailfrom=Nicholas.Kazlauskas@amd.com; 
+Received: from BYAPR12MB3560.namprd12.prod.outlook.com (20.178.197.10) by
+ BYAPR12MB2920.namprd12.prod.outlook.com (20.179.93.219) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2430.24; Mon, 11 Nov 2019 13:37:43 +0000
+Received: from BYAPR12MB3560.namprd12.prod.outlook.com
+ ([fe80::f950:f7be:9139:7c26]) by BYAPR12MB3560.namprd12.prod.outlook.com
+ ([fe80::f950:f7be:9139:7c26%7]) with mapi id 15.20.2408.025; Mon, 11 Nov 2019
+ 13:37:36 +0000
+Subject: Re: [PATCH][next] drm/amd/display: fix spelling mistake "exeuction"
+ -> "execution"
+To:     Colin King <colin.king@canonical.com>,
+        Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20191109194923.231655-1-colin.king@canonical.com>
+From:   "Kazlauskas, Nicholas" <nicholas.kazlauskas@amd.com>
+Message-ID: <633bbabf-56d4-ad4a-9d4e-9562e7122d17@amd.com>
+Date:   Mon, 11 Nov 2019 08:37:31 -0500
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.1
+In-Reply-To: <20191109194923.231655-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:JR0EW8xNBi+POd/MG9WbpEkvmVl78oVefTqYMfKp1EYsbLdSXc+
- Qx5gCx1cnoLy37iHpiH94s6rMlpykDOlnrc3e9Qiew2kTE+llqxwtYMQMt9bSohRN6JBLpm
- ZwDJgzHuBp9LritUXT4K4SaMxi7X8G3rWxJRB1iI8hsJLZE6NfcbVfKiDcCvMW3iBC5edvZ
- SOjQrw9VBEtFdz9LBuAjQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:a3J5GtyOYs4=:K1Qdhb8qmWE8EdilycbZMK
- 0iWPChxI5aCpqH/qy22/q1V8HA2c6Gt1Iz15Vc7WNKYEfwB2SIdjlm4RjKg/fZr4FhXE6xkfa
- CpzKW//z4F+eF3yyT2V9YVl8Ml1Se/7hDOMNxuYVzhi7z5zSoAhgwBDZLjt7dKZS5iaAsxXRL
- VblVBtAoO6YpX8TmL5Rxp4Cc5kjMfseBaB5Q0u/HqMMd8ysKaSYE8SAb30ED8E0FJfgaFqdRg
- 03IhzYDol5UNOMhsyelET2Ljwf7hFjdnczk78IFJQyBz6eBQAz8ZLAOdtb72ixobCLTAzHHqS
- p+tXoJarMHAsq/i5ADlQdEd4MPlGNvIzFlee2o2HDePnNyVbEElrAeaOzp1tRTRVatKXlyVca
- VlKrydGAxoxeQlGGXOowRWAS/RjybgEpUv5cu+7jkneGXSnud+ZVyFuSmlgpRNHhGy7mJe6yk
- U9OjTuM1HFOg0SM5fuEsjemD3Qf11fi5Sm5j5Kl5uZeyTRCQPyV2Te7cHf03fo3fbm/8ZrVEV
- xBwSeXcMl3gyaHek08BBtjOqQKuH1Pn6nSlzMHWkcSfeIj8eII7H3kax6wJnmVJ941qjchCbL
- +OU63SYMsbrQCDxU+12Ty7M1m5U+ZNNp5WfjG9pIRqmPVVEdTDjOrO81JkYUWI3oUIsSn0xxe
- mk6nG/FESkM6p8z9V5HrNsS6LAamW2qTFE16YDmfkWX91mGEA6v+KNINTH2hXJWJZbqLTYMvu
- KFJ1NDxV+vIlk1ygOAsKYdwq4dOPplO0nIrrwYUZLR7whrWv8EMC4CPIGw686NPkSnmypY4Lv
- PX3u6fpAqW0YaAF6ouT8SAZEIf33TxURMY8f/0qrIX5UtKg0Y/OtdlcAK3JBjSJnT/1DMcC70
- ePEPisDbsAsEmzgpjGGDAmkDC7T0etJGms8t98W70rzbAcs4yEO22rOqa7mJtAiuxQKNP3ki7
- MNIL775ks5fPBhy8UliZ8eP4b/jCp0KW0zK9CP/V/H93ItRVtDqyjItBqPQa5ZDfiG+W0PvET
- 70GE6mkP8Ux8eUW/qrQLZVZlUeE/PcgreI4WK5tGuNO5DxSgoj1UMSvsLbTI1ZCAFZXaO9ydh
- 6s7kyXxHSOE8egF45HqDJiOUydI1wqW0UC5XqwKxTecH8A36hHLoXu+Awmc+PuaUmpa66kD5j
- VpZ+Yf9VwkCg1RHNfeovnPPEZhmtZ51VNFCrAOgeqKucYenaohcL4xV/vcENjEdvBJJf7sVCY
- htNNBMGxwBM5fBGW1BmDvIjXDqF7sBY9MaVvZsYqRQiQg/9VlQn8YWDm08Bk=
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YT1PR01CA0029.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01::42)
+ To BYAPR12MB3560.namprd12.prod.outlook.com (2603:10b6:a03:ae::10)
+MIME-Version: 1.0
+X-Originating-IP: [165.204.55.250]
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: c8826c81-70be-4524-6303-08d766ac501d
+X-MS-TrafficTypeDiagnostic: BYAPR12MB2920:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <BYAPR12MB2920FDE24EC60807E806F8B1EC740@BYAPR12MB2920.namprd12.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:6430;
+X-Forefront-PRVS: 0218A015FA
+X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(979002)(4636009)(39860400002)(396003)(136003)(376002)(346002)(366004)(189003)(199004)(3846002)(6116002)(2906002)(6436002)(8936002)(81156014)(230700001)(81166006)(229853002)(6486002)(99286004)(8676002)(58126008)(316002)(110136005)(66946007)(6246003)(50466002)(5660300002)(66556008)(66476007)(31686004)(14454004)(478600001)(52116002)(2486003)(23676004)(66066001)(76176011)(65956001)(4326008)(47776003)(65806001)(6666004)(25786009)(11346002)(446003)(86362001)(36756003)(31696002)(305945005)(486006)(7736002)(186003)(476003)(6506007)(2616005)(26005)(6512007)(53546011)(386003)(921003)(1121003)(969003)(989001)(999001)(1009001)(1019001);DIR:OUT;SFP:1101;SCL:1;SRVR:BYAPR12MB2920;H:BYAPR12MB3560.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+Received-SPF: None (protection.outlook.com: amd.com does not designate
+ permitted sender hosts)
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: A5q2r1zA7tgqVkQmv7BCmm9pNKSB+39nwhhr2AHJ4PLr6qB6nbttNofGUAO5ead5+gABwHOF+N5rc17Pvl/ao6ZLJC7XfvbNGSyhclQ7UlHvRwK6eAZH/gvtv8AmjFPp5WOerwWwqKyHmc6Ke9F6wWGaTovnTDpStEKi5I1HPWsP+XZ2C+xlj/TZR6V3PgJxMim76ElEuPl+TsG4MPA9U9ta42WebBJ6QdBVWfSKiDwP2vqXfPdG/lcUaNLAR0CB9Ns/tqfGLQE7cKcdUqCWjZTECBUSuULQeWOQFiDR8BKW0ZGrOvzWeY5r1/uCbwiTHQ6CArlrytiP+IlATdp5GCh3pdWbDLadUzqPoqbGdSTiXTQHAmqTfg8wVIEKUvEmknKxRnF0SUUEOhNTbT8jBqNum179IKagiQrUazJcnuiUt4BPNWfhVa6rZF9FOly+
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c8826c81-70be-4524-6303-08d766ac501d
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Nov 2019 13:37:36.4513
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5YFEIXObCDkVE2XEZvAoZ9t8WpijZKIZH1isS6mbx2nY5HG1K6OdSdn3DOo40HRAY8zW+PO2ffpj42DDB3wPbw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR12MB2920
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Implementation note: The put: label was never reached without a goto and
-> ret being unequal to 0, so the removed return statement is fine.
+On 2019-11-09 2:49 p.m., Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There are spelling mistakes in a DC_ERROR message and a comment.
+> Fix these.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-This can look fine (in principle) because the label was repositioned here.
-Do you really want to call the function =E2=80=9Cof_node_put=E2=80=9D at t=
-wo places now?
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
+Thanks!
 
-> +++ b/drivers/pwm/pwm-omap-dmtimer.c
-=E2=80=A6
->  	omap =3D devm_kzalloc(&pdev->dev, sizeof(*omap), GFP_KERNEL);
->  	if (!omap) {
-> -		pdata->free(dm_timer);
-> -		return -ENOMEM;
-> +		ret =3D -ENOMEM;
-> +		goto err_alloc_omap;
->  	}
-=E2=80=A6
+Nicholas Kazlauskas
 
-I suggest to reconsider your label name selection according to
-the Linux coding style.
+> ---
+>   drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c    | 2 +-
+>   drivers/gpu/drm/amd/display/dmub/inc/dmub_srv.h | 2 +-
+>   2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+> index 61cefe0a3790..b65b66025267 100644
+> --- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+> +++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
+> @@ -92,7 +92,7 @@ void dc_dmub_srv_cmd_execute(struct dc_dmub_srv *dc_dmub_srv)
+>   
+>   	status = dmub_srv_cmd_execute(dmub);
+>   	if (status != DMUB_STATUS_OK)
+> -		DC_ERROR("Error starting DMUB exeuction: status=%d\n", status);
+> +		DC_ERROR("Error starting DMUB execution: status=%d\n", status);
+>   }
+>   
+>   void dc_dmub_srv_wait_idle(struct dc_dmub_srv *dc_dmub_srv)
+> diff --git a/drivers/gpu/drm/amd/display/dmub/inc/dmub_srv.h b/drivers/gpu/drm/amd/display/dmub/inc/dmub_srv.h
+> index aa8f0396616d..45e427d1952e 100644
+> --- a/drivers/gpu/drm/amd/display/dmub/inc/dmub_srv.h
+> +++ b/drivers/gpu/drm/amd/display/dmub/inc/dmub_srv.h
+> @@ -416,7 +416,7 @@ enum dmub_status dmub_srv_cmd_queue(struct dmub_srv *dmub,
+>    * dmub_srv_cmd_execute() - Executes a queued sequence to the dmub
+>    * @dmub: the dmub service
+>    *
+> - * Begins exeuction of queued commands on the dmub.
+> + * Begins execution of queued commands on the dmub.
+>    *
+>    * Return:
+>    *   DMUB_STATUS_OK - success
+> 
 
-
-> @@ -339,13 +334,28 @@ static int pwm_omap_dmtimer_probe(struct platform_=
-device *pdev)
-=E2=80=A6
-> +err_pwmchip_add:
-> +
-> +	/*
-> +	 * *omap is allocated using devm_kzalloc,
-> +	 * so no free necessary here
-> +	 */
-> +err_alloc_omap:
-> +
-> +	pdata->free(dm_timer);
-
-Would the use of the label =E2=80=9Cfree_dm_timer=E2=80=9D be more appropr=
-iate?
-
-
-> +put:
-> +	of_node_put(timer);
-=E2=80=A6
-
-Can the label =E2=80=9Cput_node=E2=80=9D be nicer?
-
-Regards,
-Markus

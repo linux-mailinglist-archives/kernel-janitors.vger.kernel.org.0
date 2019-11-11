@@ -2,62 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6425F7037
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Nov 2019 10:12:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDAA5F703F
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Nov 2019 10:16:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726811AbfKKJMj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Nov 2019 04:12:39 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:44753 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726804AbfKKJMj (ORCPT
+        id S1726871AbfKKJQJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Nov 2019 04:16:09 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:39441 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726768AbfKKJQJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Nov 2019 04:12:39 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iU5kS-0002aQ-LI; Mon, 11 Nov 2019 09:12:36 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Shuah Khan <shuah@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Cristian Marussi <cristian.marussi@arm.com>,
-        Dave Martin <Dave.Martin@arm.com>,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org
-Subject: [PATCH][next] kselftest: arm64: fix spelling mistake "contiguos" -> "contiguous"
-Date:   Mon, 11 Nov 2019 09:12:36 +0000
-Message-Id: <20191111091236.37165-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Mon, 11 Nov 2019 04:16:09 -0500
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iU5nr-0000hf-1h; Mon, 11 Nov 2019 10:16:07 +0100
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iU5nq-00048w-Bn; Mon, 11 Nov 2019 10:16:06 +0100
+Date:   Mon, 11 Nov 2019 10:16:06 +0100
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Thierry Reding <thierry.reding@gmail.com>
+Cc:     kernel-janitors@vger.kernel.org, Neil Brown <neilb@suse.de>,
+        Markus Elfring <elfring@users.sourceforge.net>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        linux-pwm@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH 1/4] pwm: omap-dmtimer: remove pwmchip in .remove before
+ making it unfunctional
+Message-ID: <20191111091606.qf7gj5gln3khfnsl@pengutronix.de>
+References: <20191111071952.6pbswbboqreen6im@pengutronix.de>
+ <20191111090357.13903-1-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191111090357.13903-1-u.kleine-koenig@pengutronix.de>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hello,
 
-There is a spelling mistake in an error message literal string. Fix it.
+I created a cover letter but failed to send it together with the series
+:-|
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- tools/testing/selftests/arm64/signal/testcases/testcases.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It said:
 
-diff --git a/tools/testing/selftests/arm64/signal/testcases/testcases.c b/tools/testing/selftests/arm64/signal/testcases/testcases.c
-index e3521949b800..61ebcdf63831 100644
---- a/tools/testing/selftests/arm64/signal/testcases/testcases.c
-+++ b/tools/testing/selftests/arm64/signal/testcases/testcases.c
-@@ -43,7 +43,7 @@ bool validate_extra_context(struct extra_context *extra, char **err)
- 	else if (extra->size & 0x0fUL)
- 		*err = "Extra SIZE misaligned";
- 	else if (extra->datap != (uint64_t)term + sizeof(*term))
--		*err = "Extra DATAP misplaced (not contiguos)";
-+		*err = "Extra DATAP misplaced (not contiguous)";
- 	if (*err)
- 		return false;
- 
+| I promised a cleanup patch but as I found a few more issues I have four
+| patches now. The third patch replaces Markus' patch with a more complete
+| fix that also drops the reference in .remove not only the error path of
+| .probe.
+| 
+| The last patch allows to compile the driver in more configurations, it
+| compiled successfully on amd64 and arm.
+
+Best regards
+Uwe
+
 -- 
-2.20.1
-
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |

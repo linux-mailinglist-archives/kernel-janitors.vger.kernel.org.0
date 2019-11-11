@@ -2,125 +2,128 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 207C6F6D5D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Nov 2019 04:37:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2627CF6EF8
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Nov 2019 08:20:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726853AbfKKDg6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 10 Nov 2019 22:36:58 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:54222 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726742AbfKKDg6 (ORCPT
+        id S1726915AbfKKHUD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Nov 2019 02:20:03 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:38791 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726805AbfKKHUD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 10 Nov 2019 22:36:58 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAB3abTv129761;
-        Sun, 10 Nov 2019 21:36:37 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1573443397;
-        bh=NGl+cjCsJiM7+yT+llqpQfLL+t0dbhH4tKRXyQlZxFw=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=eRv4wHEjc1UMBodvQhvEME/+xNSPrDEWxqUQk+Bx3eHbzo5anuwt9WKRN1TQ8ibgN
-         dzR9rhp5ePYMHT1zSfPrAE0RY10ZAsCps22mcIlPlkOptnQY7Y1FYnCPz3io3PVV83
-         B6XEc7zL0ArYYiQU0v6CuqNPPIEKMoXCIj7rXx6U=
-Received: from DFLE105.ent.ti.com (dfle105.ent.ti.com [10.64.6.26])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xAB3aaYP114012
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Sun, 10 Nov 2019 21:36:36 -0600
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE105.ent.ti.com
- (10.64.6.26) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Sun, 10
- Nov 2019 21:36:19 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Sun, 10 Nov 2019 21:36:19 -0600
-Received: from [172.24.190.117] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAB3aXhA043092;
-        Sun, 10 Nov 2019 21:36:33 -0600
-Subject: Re: [PATCH] irqchip/ti-sci-inta: Use ERR_CAST inlined function
- instead of ERR_PTR(PTR_ERR(...))
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Marc Zyngier <maz@kernel.org>, Nishanth Menon <nm@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Tero Kristo <t-kristo@ti.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-CC:     LKML <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <776b7135-26af-df7d-c3a9-4339f7bf1f15@web.de>
-From:   Lokesh Vutla <lokeshvutla@ti.com>
-Message-ID: <670cd9a2-2083-bb5e-7bfc-58d5c90ec756@ti.com>
-Date:   Mon, 11 Nov 2019 09:05:39 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        Mon, 11 Nov 2019 02:20:03 -0500
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iU3zQ-0005vi-5D; Mon, 11 Nov 2019 08:19:56 +0100
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iU3zM-0007yV-Kj; Mon, 11 Nov 2019 08:19:52 +0100
+Date:   Mon, 11 Nov 2019 08:19:52 +0100
+From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-pwm@vger.kernel.org,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Keerthy <j-keerthy@ti.com>,
+        Neil Armstrong <narmstrong@baylibre.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Tony Lindgren <tony@atomide.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Grant Erickson <marathon96@gmail.com>,
+        Joachim Eastwood <manabian@gmail.com>,
+        Neil Brown <neilb@suse.de>, Wen Yang <wen.yang99@zte.com.cn>
+Subject: Re: [PATCH] pwm: omap-dmtimer: Add missing put_device() call in
+ pwm_omap_dmtimer_probe()
+Message-ID: <20191111071952.6pbswbboqreen6im@pengutronix.de>
+References: <fd7a56e4-2a35-a6c4-e5bd-1e53a6c48687@web.de>
 MIME-Version: 1.0
-In-Reply-To: <776b7135-26af-df7d-c3a9-4339f7bf1f15@web.de>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <fd7a56e4-2a35-a6c4-e5bd-1e53a6c48687@web.de>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hello Markus,
 
-
-On 05/11/19 5:00 PM, Markus Elfring wrote:
+On Sat, Nov 09, 2019 at 01:26:50PM +0100, Markus Elfring wrote:
 > From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Tue, 5 Nov 2019 12:19:39 +0100
+> Date: Sat, 9 Nov 2019 13:09:42 +0100
 > 
 > A coccicheck run provided information like the following.
 > 
-> drivers/irqchip/irq-ti-sci-inta.c:250:9-16: WARNING: ERR_CAST can be used
-> with vint_desc.
+> drivers/pwm/pwm-omap-dmtimer.c:304:2-8: ERROR: missing put_device;
+> call of_find_device_by_node on line 255, but without a corresponding
+> object release within this function.
 > 
-> Generated by: scripts/coccinelle/api/err_cast.cocci
+> Generated by: scripts/coccinelle/free/put_device.cocci
 > 
-> Thus adjust the exception handling in one if branch.
+> Thus add jump targets to fix the exception handling for this
+> function implementation.
 > 
-> Fixes: 9f1463b86c13277d0bd88d5ee359577ef40f4da7 ("irqchip/ti-sci-inta: Add support for Interrupt Aggregator driver")
-
-Fixes: 9f1463b86c13 ("irqchip/ti-sci-inta: Add support for Interrupt Aggregator
-driver")
-
-With this:
-
-Reviewed-by: Lokesh Vutla <lokeshvutla@ti.com>
-
-Thanks and regards,
-Lokesh
-
-
+> Fixes: b7290cf6ff7869ec12070aa146c370728cab62c2 ("pwm: pwm-omap-dmtimer: Adapt driver to utilize dmtimer pdata ops")
+> Fixes: 6604c6556db9e41c85f2839f66bd9d617bcf9f87 ("pwm: Add PWM driver for OMAP using dual-mode timers")
 > Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 > ---
->  drivers/irqchip/irq-ti-sci-inta.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
+>  drivers/pwm/pwm-omap-dmtimer.c | 14 +++++++++++---
+>  1 file changed, 11 insertions(+), 3 deletions(-)
 > 
-> diff --git a/drivers/irqchip/irq-ti-sci-inta.c b/drivers/irqchip/irq-ti-sci-inta.c
-> index ef4d625d2d80..8f6e6b08eadf 100644
-> --- a/drivers/irqchip/irq-ti-sci-inta.c
-> +++ b/drivers/irqchip/irq-ti-sci-inta.c
-> @@ -246,8 +246,8 @@ static struct ti_sci_inta_event_desc *ti_sci_inta_alloc_irq(struct irq_domain *d
->  	/* No free bits available. Allocate a new vint */
->  	vint_desc = ti_sci_inta_alloc_parent_irq(domain);
->  	if (IS_ERR(vint_desc)) {
-> -		mutex_unlock(&inta->vint_mutex);
-> -		return ERR_PTR(PTR_ERR(vint_desc));
-> +		event_desc = ERR_CAST(vint_desc);
-> +		goto unlock;
+> diff --git a/drivers/pwm/pwm-omap-dmtimer.c b/drivers/pwm/pwm-omap-dmtimer.c
+> index 00772fc53490..958854213786 100644
+> --- a/drivers/pwm/pwm-omap-dmtimer.c
+> +++ b/drivers/pwm/pwm-omap-dmtimer.c
+> @@ -301,12 +301,13 @@ static int pwm_omap_dmtimer_probe(struct platform_device *pdev)
+>  put:
+>  	of_node_put(timer);
+>  	if (ret < 0)
+> -		return ret;
+> +		goto check_timer_pdev;
+> 
+>  	omap = devm_kzalloc(&pdev->dev, sizeof(*omap), GFP_KERNEL);
+>  	if (!omap) {
+>  		pdata->free(dm_timer);
+> -		return -ENOMEM;
+> +		ret = -ENOMEM;
+> +		goto put_device;
 >  	}
 > 
->  	free_bit = find_first_zero_bit(vint_desc->event_map,
-> @@ -259,6 +259,7 @@ static struct ti_sci_inta_event_desc *ti_sci_inta_alloc_irq(struct irq_domain *d
->  	if (IS_ERR(event_desc))
->  		clear_bit(free_bit, vint_desc->event_map);
+>  	omap->pdata = pdata;
+> @@ -340,12 +341,19 @@ static int pwm_omap_dmtimer_probe(struct platform_device *pdev)
+>  	if (ret < 0) {
+>  		dev_err(&pdev->dev, "failed to register PWM\n");
+>  		omap->pdata->free(omap->dm_timer);
+> -		return ret;
+> +		goto put_device;
+>  	}
 > 
-> +unlock:
->  	mutex_unlock(&inta->vint_mutex);
->  	return event_desc;
->  }
-> --
-> 2.23.0
+>  	platform_set_drvdata(pdev, omap);
 > 
+>  	return 0;
+> +
+> +check_timer_pdev:
+> +	if (timer_pdev)
+> +put_device:
+> +		put_device(&timer_pdev->dev);
+
+This is ugly but necessary with the driver as is because the error
+handling is interwinded within the normal path through this function.
+
+I would prefer to clean this up first, then this fix gets a bit nicer.
+Will send a patch in reply to this mail.
+
+Best regards
+Uwe
+
+-- 
+Pengutronix e.K.                           | Uwe Kleine-König            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |

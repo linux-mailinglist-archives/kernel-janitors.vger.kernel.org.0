@@ -2,60 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3254AF743F
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Nov 2019 13:44:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD040F749E
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Nov 2019 14:18:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726888AbfKKMoS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Nov 2019 07:44:18 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:48371 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726847AbfKKMoR (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Nov 2019 07:44:17 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iU93F-00014m-Ds; Mon, 11 Nov 2019 12:44:13 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Vishal Kulkarni <vishal@chelsio.com>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
+        id S1726946AbfKKNSB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Nov 2019 08:18:01 -0500
+Received: from mx2.suse.de ([195.135.220.15]:44994 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726897AbfKKNSA (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 11 Nov 2019 08:18:00 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id EC112B590;
+        Mon, 11 Nov 2019 13:17:58 +0000 (UTC)
+Subject: Re: [PATCH][next] xen/gntdev: remove redundant non-zero check on ret
+To:     Colin Ian King <colin.king@canonical.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        xen-devel@lists.xenproject.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] cxgb4: remove redundant assignment to hdr_len
-Date:   Mon, 11 Nov 2019 12:44:13 +0000
-Message-Id: <20191111124413.68782-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+References: <20191111122009.67789-1-colin.king@canonical.com>
+ <04efe197-2914-ab1d-918b-8899aa0354af@suse.com>
+ <ec4ffabf-9cfa-2db6-7e23-60f84947d0a9@canonical.com>
+From:   =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+Message-ID: <767fe18a-c3d6-4200-9eb5-31e1665811a0@suse.com>
+Date:   Mon, 11 Nov 2019 14:17:57 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.1.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <ec4ffabf-9cfa-2db6-7e23-60f84947d0a9@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On 11.11.19 13:31, Colin Ian King wrote:
+> On 11/11/2019 12:25, Jürgen Groß wrote:
+>> On 11.11.19 13:20, Colin King wrote:
+>>> From: Colin Ian King <colin.king@canonical.com>
+>>>
+>>> The non-zero check on ret is always going to be false because
+>>> ret was initialized as zero and the only place it is set to
+>>> non-zero contains a return path before the non-zero check. Hence
+>>> the check is redundant and can be removed.
+>>
+>> Which version did you patch against? In current master the above
+>> statement is not true.
+> 
+> against today's linux-next
 
-Variable hdr_len is being assigned a value that is never read.
-The assignment is redundant and hence can be removed.
+Ah, okay, this is likely the result of the recent mm-notifier patch
+series. I'll put this patch on hold until the recent patches have
+hit master.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/ethernet/chelsio/cxgb4/sge.c | 1 -
- 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/sge.c b/drivers/net/ethernet/chelsio/cxgb4/sge.c
-index e346830ebca9..09059adc3067 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/sge.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/sge.c
-@@ -3810,7 +3810,6 @@ int cxgb4_ethofld_rx_handler(struct sge_rspq *q, const __be64 *rsp,
- 				      eosw_txq->state ==
- 				      CXGB4_EO_STATE_FLOWC_CLOSE_REPLY) &&
- 				     eosw_txq->cidx == eosw_txq->flowc_idx)) {
--				hdr_len = skb->len;
- 				flits = DIV_ROUND_UP(skb->len, 8);
- 				if (eosw_txq->state ==
- 				    CXGB4_EO_STATE_FLOWC_OPEN_REPLY)
--- 
-2.20.1
-
+Juergen

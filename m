@@ -2,53 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 62518F79F0
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Nov 2019 18:29:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73506F7A09
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Nov 2019 18:35:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727024AbfKKR3J (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Nov 2019 12:29:09 -0500
-Received: from mail-wr1-f46.google.com ([209.85.221.46]:44011 "EHLO
-        mail-wr1-f46.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726845AbfKKR3I (ORCPT
+        id S1726912AbfKKRf0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Nov 2019 12:35:26 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:36812 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726763AbfKKRf0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Nov 2019 12:29:08 -0500
-Received: by mail-wr1-f46.google.com with SMTP id n1so15502168wra.10;
-        Mon, 11 Nov 2019 09:29:07 -0800 (PST)
+        Mon, 11 Nov 2019 12:35:26 -0500
+Received: by mail-wr1-f66.google.com with SMTP id r10so15586751wrx.3;
+        Mon, 11 Nov 2019 09:35:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=WvahG5W8zWbUV9iqIm0KSrs4sqEMRwt53GgRh7CNpec=;
-        b=oVKPNzZQoZ50rPMdCnJF0EIT92tbzpfWMmemCHN4JDQliBjPItaFwxO58zW1nWMHc0
-         OWw7wfQdOZvtiro0hMaTKCfv6m18CWljs4kfOrmarRWWwoPlsPAtaubiHkb4XUh1BSK/
-         w5lSdpoGfmOSHxb8zZzYF2rF0rfWuBY/zgXLuhR49CnMG1GWMSkUvIGRnOzi4KVUM1hm
-         OGTz+cNWI8Q1jJBEgwe4PHqbt0wO0gFNWwYMfBDruCvYh5sSKJD1r38etLNHsGEorCFt
-         sw4b7kZdE7tvTl1sKDZ11mT5BwzWc9HB6erR9SNuykOxLyjYFLOVtjjjA6Aq4yWjuwW6
-         5MfQ==
+        bh=6Hr0XZ+W95Fq8mqP7g5xaelC6Vx3m15yqOwH0Jnse00=;
+        b=e2Ew9GMfSUxRzx7YWxu6vGIT1uYNAUiOY9ivjlvAsecN6phDGzODfdsbD3pacZtgIq
+         1TKhZPVClxclFXrKxi25zD6ZguKi/bxPme4O5nqEjs9Q/EuaddiWwchMpHQb4ojeFI/W
+         +Z8KsqOocqbBsBqH/WUX8mpC/R2cj9PNBzLMkYizXe+M9L/QoTtzf4sJIFvMn3IUVcS8
+         1EPUUP/83jBAkAMU+kWNau2TxKgnEBfFfMdmTTvesmByRZfObnz5YIBcC1VOeqr71tgR
+         /dL6GhxmlSceWOMaL0mWSis4LnTwXehs8BaBwdsQw9+50FGstcjrZ07Acb24dJ41ZJhT
+         i2jA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=WvahG5W8zWbUV9iqIm0KSrs4sqEMRwt53GgRh7CNpec=;
-        b=nsRZPSIlZuoQCEq33YcDw3g/3lla55EKAdiC3xPAJZ5/19FsrXzqGtLLw8vU4FSsYv
-         AmNPB/HCDsAB6raTAtzXhGbi3XghpucqlR09Wud7V2LauH4pttuGga5laY+u7WzsK2PG
-         j/j1kKJbGH52x93S+L9MLQv3enHK+Yqn4B2syo2NP449jS+hLNqHrfwKnnBTf+13maON
-         1XHJOeAXXSYw8Tv6b3ev3nSsMQcmlp5Y0Z+LG05njdeGDrRikAWBomCCgvL78172pOQk
-         hyM0Z6hv9o/ZhQVVkJX1VDb1gqj8QWzg6YxxMT3fGiV0NBjXYFaZp7U71cxCBO2bDUFe
-         imEg==
-X-Gm-Message-State: APjAAAU7clKV6U2oUIg/jWkhfaeA9ALGHyZu4G3ikO9zpMrNzoSnrcBI
-        sHn9ceUK5xGAwQtM41pYwszZe6GTpS25KH/4Y7A=
-X-Google-Smtp-Source: APXvYqy15wsyeIRkSnFOQeGZoWHHrPQpkNQoIHKatY4xSgX7gHUbvRLSH0of6Tp/VF9Yf/c+URN441n7EAy5ltGu/Yw=
-X-Received: by 2002:a05:6000:18c:: with SMTP id p12mr21064238wrx.154.1573493346316;
- Mon, 11 Nov 2019 09:29:06 -0800 (PST)
+        bh=6Hr0XZ+W95Fq8mqP7g5xaelC6Vx3m15yqOwH0Jnse00=;
+        b=oFs5XNywttofbZGdEr82OmO+YVgyH3eFy43pVYvGYGy8dIyYBNpI7NOEO+xLdJpTO+
+         llo4ED2f1CzaFptw84WEHOthphjvGKuKWy+38Stb5Jqqg7nmyEihrKZqnWwVFT1CquhC
+         VGxRA8sH3xPFE867brYYKI4onxpLeq+LtiwwaLSuhMlfwMOd8Tm6NFDTTvBtZ5SF4LSf
+         1HL58+Lh+vdGqEDSGC+VwjRbRxSprRyimpg5UOHkBwrqZ1yvkhPvPPlhbWqbqmQrGLuS
+         jH27t4f0barDxnehHJWNBpa5KRcV4X7x0lIGPO1VCSkNXnqw3QfPsQCbK8uJ9ASabfVl
+         fLaA==
+X-Gm-Message-State: APjAAAW7aud6fWGop+++cOXDjF26a9f/gWtsfXrMEN8/P5BKDTAjYVK1
+        m6xB6iOqwX7XhN/4uHIf0cZeLOeFbSf1+pbRr2g=
+X-Google-Smtp-Source: APXvYqweEiabjLuuO8H9HV68rYsXJ4G5OK+vh51GktRkh2PtT8iyT8F9Kc+znoIEOavWyTstNfVv2xS3Cb9ocnbXU8Q=
+X-Received: by 2002:adf:fb0b:: with SMTP id c11mr22736594wrr.50.1573493723544;
+ Mon, 11 Nov 2019 09:35:23 -0800 (PST)
 MIME-Version: 1.0
-References: <20191109194923.231655-1-colin.king@canonical.com> <633bbabf-56d4-ad4a-9d4e-9562e7122d17@amd.com>
-In-Reply-To: <633bbabf-56d4-ad4a-9d4e-9562e7122d17@amd.com>
+References: <20191109154921.223093-1-colin.king@canonical.com> <0700f347-8590-7ab7-411d-0ae08fe9263d@amd.com>
+In-Reply-To: <0700f347-8590-7ab7-411d-0ae08fe9263d@amd.com>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Mon, 11 Nov 2019 12:28:53 -0500
-Message-ID: <CADnq5_N+WdogHBKuQah92WS6ijFe8K6Ae3RxBdO5hyGMTMGsFg@mail.gmail.com>
-Subject: Re: [PATCH][next] drm/amd/display: fix spelling mistake "exeuction"
- -> "execution"
+Date:   Mon, 11 Nov 2019 12:35:10 -0500
+Message-ID: <CADnq5_MKFh3v+qnjO-bmpepTc_XTgEKTomP0PLRJu==_UBTkZA@mail.gmail.com>
+Subject: Re: [PATCH] drm/amd/display: remove duplicated comparison expression
 To:     "Kazlauskas, Nicholas" <nicholas.kazlauskas@amd.com>
 Cc:     Colin King <colin.king@canonical.com>,
         Harry Wentland <harry.wentland@amd.com>,
@@ -58,6 +57,8 @@ Cc:     Colin King <colin.king@canonical.com>,
         David Zhou <David1.Zhou@amd.com>,
         David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
+        Charlene Liu <Charlene.Liu@amd.com>,
+        Dmytro Laktyushkin <Dmytro.Laktyushkin@amd.com>,
         amd-gfx list <amd-gfx@lists.freedesktop.org>,
         Maling list - DRI developers 
         <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
@@ -72,15 +73,17 @@ Applied.  Thanks!
 
 Alex
 
-On Mon, Nov 11, 2019 at 8:37 AM Kazlauskas, Nicholas
+On Mon, Nov 11, 2019 at 8:38 AM Kazlauskas, Nicholas
 <nicholas.kazlauskas@amd.com> wrote:
 >
-> On 2019-11-09 2:49 p.m., Colin King wrote:
+> On 2019-11-09 10:49 a.m., Colin King wrote:
 > > From: Colin Ian King <colin.king@canonical.com>
 > >
-> > There are spelling mistakes in a DC_ERROR message and a comment.
-> > Fix these.
+> > There is comparison expression that is duplicated and hence one
+> > of the expressions can be removed.  Remove it.
 > >
+> > Addresses-Coverity: ("Same on both sides")
+> > Fixes: 12e2b2d4c65f ("drm/amd/display: add dcc programming for dual plane")
 > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 >
 > Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
@@ -90,39 +93,24 @@ On Mon, Nov 11, 2019 at 8:37 AM Kazlauskas, Nicholas
 > Nicholas Kazlauskas
 >
 > > ---
-> >   drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c    | 2 +-
-> >   drivers/gpu/drm/amd/display/dmub/inc/dmub_srv.h | 2 +-
-> >   2 files changed, 2 insertions(+), 2 deletions(-)
+> >   drivers/gpu/drm/amd/display/dc/core/dc.c | 1 -
+> >   1 file changed, 1 deletion(-)
 > >
-> > diff --git a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-> > index 61cefe0a3790..b65b66025267 100644
-> > --- a/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-> > +++ b/drivers/gpu/drm/amd/display/dc/dc_dmub_srv.c
-> > @@ -92,7 +92,7 @@ void dc_dmub_srv_cmd_execute(struct dc_dmub_srv *dc_dmub_srv)
+> > diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+> > index 1fdba13b3d0f..1fa255e077d0 100644
+> > --- a/drivers/gpu/drm/amd/display/dc/core/dc.c
+> > +++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+> > @@ -1491,7 +1491,6 @@ static enum surface_update_type get_plane_info_update_type(const struct dc_surfa
+> >       }
 > >
-> >       status = dmub_srv_cmd_execute(dmub);
-> >       if (status != DMUB_STATUS_OK)
-> > -             DC_ERROR("Error starting DMUB exeuction: status=%d\n", status);
-> > +             DC_ERROR("Error starting DMUB execution: status=%d\n", status);
-> >   }
-> >
-> >   void dc_dmub_srv_wait_idle(struct dc_dmub_srv *dc_dmub_srv)
-> > diff --git a/drivers/gpu/drm/amd/display/dmub/inc/dmub_srv.h b/drivers/gpu/drm/amd/display/dmub/inc/dmub_srv.h
-> > index aa8f0396616d..45e427d1952e 100644
-> > --- a/drivers/gpu/drm/amd/display/dmub/inc/dmub_srv.h
-> > +++ b/drivers/gpu/drm/amd/display/dmub/inc/dmub_srv.h
-> > @@ -416,7 +416,7 @@ enum dmub_status dmub_srv_cmd_queue(struct dmub_srv *dmub,
-> >    * dmub_srv_cmd_execute() - Executes a queued sequence to the dmub
-> >    * @dmub: the dmub service
-> >    *
-> > - * Begins exeuction of queued commands on the dmub.
-> > + * Begins execution of queued commands on the dmub.
-> >    *
-> >    * Return:
-> >    *   DMUB_STATUS_OK - success
+> >       if (u->plane_info->plane_size.surface_pitch != u->surface->plane_size.surface_pitch
+> > -                     || u->plane_info->plane_size.surface_pitch != u->surface->plane_size.surface_pitch
+> >                       || u->plane_info->plane_size.chroma_pitch != u->surface->plane_size.chroma_pitch) {
+> >               update_flags->bits.plane_size_change = 1;
+> >               elevate_update_type(&update_type, UPDATE_TYPE_MED);
 > >
 >
 > _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+> amd-gfx mailing list
+> amd-gfx@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/amd-gfx

@@ -2,37 +2,49 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0E82F7555
-	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Nov 2019 14:48:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 55C17F76E0
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Nov 2019 15:45:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727093AbfKKNr7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Nov 2019 08:47:59 -0500
-Received: from mout.web.de ([212.227.17.11]:54315 "EHLO mout.web.de"
+        id S1727132AbfKKOpm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 11 Nov 2019 09:45:42 -0500
+Received: from mout.web.de ([217.72.192.78]:44843 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726906AbfKKNrz (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Nov 2019 08:47:55 -0500
+        id S1726889AbfKKOpl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 11 Nov 2019 09:45:41 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1573480070;
-        bh=8MyNxznkzl0xaPNTzkyqaK3UfO4Y4mVE0gO39mL9Kj4=;
+        s=dbaedf251592; t=1573483525;
+        bh=uMoDkWJUgFT1gvyvqjo2rYa3D4aad3/mfFPRtyiVCP0=;
         h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=g6saS5xVmr6ZoVR3GnJ/YfwlLz+vqwuPvsUI3zQwixOD5jV1UqYZVrACUa5tz0Cf6
-         2hraRyEAkFnG5ErbmvOPvGv7oYUgWhhWam6Gghp3Wz3S/yP8y1B86kMJbJBCdoPXTK
-         eVhJGClamMq3491k2adRBkCPR4jjSW1AiPWLtba0=
+        b=Arnr4ZLX88KyLn9xlJdLEaG2NSF8PKHfCqRmVg3by8/JRmk4nHwG2kLzNewwhwgEl
+         SG6/RYZ69JWLUUohxVTy0B5cXHHsrQD1MAdRFHK0HO9Q9AhqavvnL7jxG2kE8J9+bn
+         /lYkMH8Ybin76BUwBnfWueKEndS9TFMSi7ELUUvQ=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.3] ([78.49.55.229]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0M0ymZ-1hcbxC3LAd-00vAER; Mon, 11
- Nov 2019 14:47:49 +0100
-Subject: Re: [PATCH 4/4] pwm: omap-dmtimer: Allow compiling with COMPILE_TEST
-To:     =?UTF-8?Q?Uwe_Kleine-K=c3=b6nig?= <u.kleine-koenig@pengutronix.de>,
-        linux-pwm@vger.kernel.org
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Neil Brown <neilb@suse.de>,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        kernel@pengutronix.de, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-References: <20191111071952.6pbswbboqreen6im@pengutronix.de>
- <20191111090357.13903-1-u.kleine-koenig@pengutronix.de>
- <20191111090357.13903-4-u.kleine-koenig@pengutronix.de>
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0Lkh7Q-1hwDAX1sZw-00aTlV; Mon, 11
+ Nov 2019 15:45:25 +0100
+Subject: [PATCH v4] s390/pkey: Fix memory leak in error case by using
+ memdup_user() rather than open coding
+To:     linux-s390@vger.kernel.org,
+        =?UTF-8?Q?Christian_Borntr=c3=a4ger?= <borntraeger@de.ibm.com>,
+        Harald Freudenberger <freude@linux.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Ingo Franzki <ifranzki@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Joe Perches <joe@perches.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Kangjie Lu <kjlu@umn.edu>,
+        Navid Emamdoost <emamd001@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>
+References: <08422b7e-2071-ee52-049e-c3ac55bc67a9@web.de>
+ <6137855bb4170c438c7436cbdb7dfd21639a8855.camel@perches.com>
+ <deb7893f-3cfe-18fc-3feb-b26b290bf3c6@web.de>
+ <833d7d5e-6ede-6bdd-a2cc-2da7f0b03908@de.ibm.com>
+ <1b65bc81-f47a-eefa-f1f4-d5af6a1809c0@web.de>
+ <733b29df-207e-a165-ee80-46be8720c0c4@de.ibm.com>
+ <8f98f9fc-57df-5993-44b5-5ea4c0de7ef9@web.de>
+ <c0df9cc8-c41a-1e5d-811c-1ff045c13fcc@de.ibm.com>
+ <61244676-8ac1-20af-ed94-99e19c1f95d5@web.de>
+ <040f3e18-d97a-fc32-b237-20e7553e1733@de.ibm.com>
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -77,53 +89,142 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <7edadbe3-1f79-91ce-fafa-f3ad78c22c2c@web.de>
-Date:   Mon, 11 Nov 2019 14:47:48 +0100
+Message-ID: <aca044e8-e4b2-eda8-d724-b08772a44ed9@web.de>
+Date:   Mon, 11 Nov 2019 15:45:23 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20191111090357.13903-4-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <040f3e18-d97a-fc32-b237-20e7553e1733@de.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:gA/nE9+bLvMegnAhrLgWE079n436Xy4Z48S/AhKL6OR/MBNd2nH
- LUFVsoc2n4JX+uFgMSO7+hWY5u+dCk2UGqaPkrpLjOl/MOe0d/6Cpg+ANs+hhNvM7wpFvV5
- yJq3esIcuvBZYVuFmSV29NUsvnR5pVVcqum0ciJjz7Q4L54b5BoTP4urgqZN9cm2LguIkaC
- POaC5hIJWrT3mLy52f3sg==
+X-Provags-ID: V03:K1:vv4/yrx5YeN+Rejl3yr+6ogSVlusXLgt44atnhw2xRn0UjiymnL
+ j5XXSSKhLFP+n9hYBHZTEF3S11bOV3SDRTttmjK6EFPrAgtjfw9viUHby/eKG7zvzv+PA/Q
+ wWyx+Z8C7/dFhPuQGlvch+KSN06IFarQ7P2UbTm9rnuaYABbDo3nnr5bZltJx7LzFzdVqzN
+ DwbkqOELoOuX5eSNFbDNQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Dg/OrLlHUnw=:pWib2VFMc9aSgJK9h3OLdn
- 1cTPj7gU+vxi9kLAe6js4oVfkCG6cEk4gH2oG3CZzAt32ytd/jRAHLNvuvWshFLXHZHSEqVTK
- bJmmiDfSH40kuag4b8aKb1C/4DL+Hu4AVN3xTM/j5X2Q3p1cXqRk2KNAUKQ+wtwJc8J2u/p4w
- tmFvWKEcJcIffoKKnlIzT/zs68i5ayF93ePJh8VhQRyiVDbbjnUCu+/8u2HOnmIwHulp98CyU
- rX9o3hfbh+X5waehGwACOUq+x5NH4rLbeIPifIz1Zh5pplcLw5svGiH9vl+OGDjs3yN11xo9a
- 2x7rfUdkVavu1bwuWArRuwe+ykMSvceBuvj4h0WvrlDeY5HiDd7989CuPp3XRRILMVJGLy77X
- 3qqJYZafQnMgllZpmodzcCQfI3NCf0Wwi2rslpOFerxDvZ3i4xgcJYRYeLzLzI53ObtHC34yx
- 9dQAHj4dc+CwvyYSVU7nOeympEYvooRKkIpCZv1OXwxw4pO5NhfIQY0MYe2IHUrdo4f/jHekN
- 1dx6SpjQZpdCMZRlzMMYRF1PCrfOz9sKZUlWcb6nXyensaVORj9zJ+3hqYaTpbFnHaipFP9tJ
- slpV3PAovX9eRsPr/zwBZcnAhoWZkn9dDsnycpZrVTJ0q0CimWir1z6LHgkeF9vawZl6Qdqp7
- oJI5AI2kIGSHiTug1/pccMx1Yi90vIIjBcygxJhp8tJPh3vvc4/FE7zH0/8/i66OtYTOHE0Z+
- ueEps/8mLP4IwXjHb842WNQh/ZaDbYETbOrb/A9noOza2nHopiETa50TZIhRwMvjQ3nBHyfkM
- JUWl1RD9EWNq8HZyQnEx2nEwdF4//Vj8RXSFQEPKT8YkE/TM586NTOYA/dr6A7Da8RFN78pjK
- 6HDAtqD/4ISe4nCEKzqXoOguaBNwRhs2KSSZkV2kCFKknM7APeyVtQwHaoL6Iqum5RJL+yvK4
- 9l7Z0nELkw/VmeQIB1Hg9x/KeeS+24o3R99T2lePeMTO3aor1m1/nK6PEnaWRu6DBiLDLH00g
- yOSCROMNAcbnOJTf6Mw3HV0t5zO/r99Dn9yIhtJuCi3lhWdL/tHcNcj3wxaEV5c6NQXDMrruP
- p5sZWoXcBOCh2qQ+Fneci4N29/LtNQIJBUbGbqrm7781Es2vsaVsjivw19ulY/Tu/Ppgn08++
- UUkHpA2gAKxuQP9MfkJdXpvlUUZJq5IEvfKMT9QnRB9MthEg7DhZwzZE23U2x+Qu3Yr/9QbGd
- Ij/UU2C0va3O3lyxccUnlveyeFULTOVck6tKqII2dAHx8+iuNxYwhDoQIeLQ=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:m5Eyl2mAIT0=:znTxTalbGgJpIHiDRy2kgh
+ FXXS7+Rm35fUSyTHC1FANbwaCIjn8mc9+Ofu+w4+nBWZqynagIQWtjX9YIAqxoWVFUWXblJ2Y
+ 9Y3WnZsbvo8+c1z9qtm/NHF2TB7Jvt+1ZlAbVdluBb7UA33S7A+7vKBglo5HJrawc0V+ejNZ6
+ VJ4EigrbBzAo3dC7m8e4HnNQmwA6zWEWMTrSt8R9seThHFq6HrZlFb5sZCowQ08RWTWM969hO
+ TMXGgDFHS8/eYdDKrH8Pwjb9egKAMgoIl+0/8iqtJrQcXO+/KAsYoxo5fH9zzsnNFKQm9WBab
+ yz0jli0nTEwr1SPBueaNF7Ne9iHqtxemtFhCWaj6OADey9uXd2XydR2FOsX7e21yaH5/Z93B6
+ dvcPpIn4K9glzGpSc4rGvaucv59B0eKzrsBKLWekg5EASYPN4QjJLlLFlsYNX65mmtQD2blW6
+ gYDf3D0UTPCWl6rgmUtD2I1T2GISc+CYkkvnyx/p2+LiCk9wqcVT2Vuky8BO2vk8Di7MOkhfF
+ vxi1b0F2KyO64hxB+aL+kSuXyfz7VvuE6N9Hot36Vls1LfjJrBwt9eY2URW6/DBz/i7pR+x4T
+ xeNmDK8XwLzLDgVOfz72s1eE12MTNK79Khl25czIMUV3OmunriTRB/YFd5U+dRsPaWreG5IXe
+ BN1BazTbEYgg2+jAdPErQTu/7An6w+k0qwpvMBfrf/pCdv4KutQTxqUhRPjGHo3ViMoUyN7vz
+ t2RvIRwBdEHOJdCwcx7s8beTgCWEqSaZHrHl7zUR+iwIlMYROmSkZ5WeRttDbiXK1yaqlG/h4
+ J6T3YOVwr3ysMNyqDJOt95rJZjaS/VULEDBUM9K9UiGZjzR6MrXTXTtNnYW/QG1jozSyPr4Yn
+ //ejdiuxCoHOxhTgO9lSNga44nr47v0+EFROhQ84SID4rZ3l3LgvO0aduxCSwJayIcTA84Mpf
+ JEjzJUZH/ly3G/PHTgjYv0BW4G6xL6tAnB5mwyVIuGZsaAtBKSA8N7jJAE5C4Rj2RCy/CPyeh
+ gLchK2IlwT8wHBlYUKCOhd2QlbhwBKKNJisUqpBCbxk6pPU29NwNrvQ4H/sexRSQiXlDiiZr1
+ Vc3rpN8g6TLTtCtot7mn4AkVsQ7um/HkUOeoHqmH9PFDjMcfSjXpb8reIciUnlYEPLp5LGVcj
+ /gjZ9Z86eyAYBYxhQak6/aUanwbTMpUJiDlGMEElJ+xA3uUimias5f3duCov8+iBWi7RGEtuX
+ J7abSM7EIBeetuBqCtYgOKtz/YUXQ8X3HeWYqLXlz/9ogJO2nDQQSTL+E2Ow=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> The dependency on OMAP_DM_TIMER is only a runtime dependency. Also
-> OMAP_DM_TIMER cannot be enabled without ARCH_OMAP being enabled.
+Date: Mon, 11 Nov 2019 15:20:44 +0100
 
-Will a more =E2=80=9Cimperative mood=E2=80=9D become relevant also for thi=
-s change description?
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?id=3D31f4f5b495a62c9a8b15b1c358=
-1acd5efeb9af8c#n151
+Reuse existing functionality from memdup_user() instead of keeping
+duplicate source code.
 
-Regards,
-Markus
+Generated by: scripts/coccinelle/api/memdup_user.cocci
+
+* The function "_copy_apqns_from_user" contained a memory leak
+  because of a misssing function call "kfree(kapqns)" for an if branch.
+  Link: https://lore.kernel.org/r/833d7d5e-6ede-6bdd-a2cc-2da7f0b03908@de.=
+ibm.com/
+
+  Thus complete the exception handling by this code replacement.
+
+* Delete local variables which became unnecessary with this refactoring
+  in two function implementations.
+
+Fixes: f2bbc96e7cfad3891b7bf9bd3e566b9b7ab4553d ("s390/pkey: add CCA AES c=
+ipher key support")
+Signed-off-by: Markus Elfring <Markus.Elfring@web.de>
+=2D--
+
+v4:
+Further changes were requested by Christian Borntr=C3=A4ger.
+https://lore.kernel.org/r/040f3e18-d97a-fc32-b237-20e7553e1733@de.ibm.com/
+
+* An other patch subject was selected.
+
+* An other email address was used for the tag =E2=80=9CSigned-off-by=E2=80=
+=9D this time.
+
+v3:
+An adjustment was requested by Christian Borntr=C3=A4ger for the change de=
+scription.
+https://lore.kernel.org/r/c0df9cc8-c41a-1e5d-811c-1ff045c13fcc@de.ibm.com/
+
+v2:
+Further changes were requested by Joe Perches.
+https://lore.kernel.org/r/6137855bb4170c438c7436cbdb7dfd21639a8855.camel@p=
+erches.com/
+
+* The proposed usage of two conditional operators was replaced by
+  an other code structure.
+
+* A sanity check was adjusted for the function =E2=80=9C_copy_apqns_from_u=
+ser=E2=80=9D.
+
+
+ drivers/s390/crypto/pkey_api.c | 26 ++++----------------------
+ 1 file changed, 4 insertions(+), 22 deletions(-)
+
+diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api=
+.c
+index 9de3d46b3253..ac99fd97569d 100644
+=2D-- a/drivers/s390/crypto/pkey_api.c
++++ b/drivers/s390/crypto/pkey_api.c
+@@ -715,36 +715,18 @@ static int pkey_apqns4keytype(enum pkey_key_type kty=
+pe,
+
+ static void *_copy_key_from_user(void __user *ukey, size_t keylen)
+ {
+-	void *kkey;
+-
+ 	if (!ukey || keylen < MINKEYBLOBSIZE || keylen > KEYBLOBBUFSIZE)
+ 		return ERR_PTR(-EINVAL);
+-	kkey =3D kmalloc(keylen, GFP_KERNEL);
+-	if (!kkey)
+-		return ERR_PTR(-ENOMEM);
+-	if (copy_from_user(kkey, ukey, keylen)) {
+-		kfree(kkey);
+-		return ERR_PTR(-EFAULT);
+-	}
+
+-	return kkey;
++	return memdup_user(ukey, keylen);
+ }
+
+ static void *_copy_apqns_from_user(void __user *uapqns, size_t nr_apqns)
+ {
+-	void *kapqns =3D NULL;
+-	size_t nbytes;
+-
+-	if (uapqns && nr_apqns > 0) {
+-		nbytes =3D nr_apqns * sizeof(struct pkey_apqn);
+-		kapqns =3D kmalloc(nbytes, GFP_KERNEL);
+-		if (!kapqns)
+-			return ERR_PTR(-ENOMEM);
+-		if (copy_from_user(kapqns, uapqns, nbytes))
+-			return ERR_PTR(-EFAULT);
+-	}
++	if (!uapqns || nr_apqns <=3D 0)
++		return NULL;
+
+-	return kapqns;
++	return memdup_user(uapqns, nr_apqns * sizeof(struct pkey_apqn));
+ }
+
+ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
+=2D-
+2.24.0
 

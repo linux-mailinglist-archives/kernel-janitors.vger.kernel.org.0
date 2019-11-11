@@ -2,62 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C198F6BD5
-	for <lists+kernel-janitors@lfdr.de>; Sun, 10 Nov 2019 23:59:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F01DF6D5B
+	for <lists+kernel-janitors@lfdr.de>; Mon, 11 Nov 2019 04:35:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726710AbfKJW7V (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 10 Nov 2019 17:59:21 -0500
-Received: from mleia.com ([178.79.152.223]:57924 "EHLO mail.mleia.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726610AbfKJW7U (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 10 Nov 2019 17:59:20 -0500
-X-Greylist: delayed 355 seconds by postgrey-1.27 at vger.kernel.org; Sun, 10 Nov 2019 17:59:19 EST
-Received: from mail.mleia.com (localhost [127.0.0.1])
-        by mail.mleia.com (Postfix) with ESMTP id 8AC713AE374;
-        Sun, 10 Nov 2019 22:53:23 +0000 (UTC)
-Subject: Re: [PATCH] usb: gadget: udc: lpc32xx: don't dereference ep until it
- has been null checked
-To:     Colin King <colin.king@canonical.com>,
-        Felipe Balbi <balbi@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sylvain Lemieux <slemieux.tyco@gmail.com>,
-        Roland Stigge <stigge@antcom.de>,
-        Arnd Bergmann <arnd@arndb.de>, linux-usb@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191110221413.22321-1-colin.king@canonical.com>
-From:   Vladimir Zapolskiy <vz@mleia.com>
-Message-ID: <0e5105e3-768e-c8eb-dd73-d097bb7edfb2@mleia.com>
-Date:   Mon, 11 Nov 2019 00:53:11 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.6.0
+        id S1726847AbfKKDfl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 10 Nov 2019 22:35:41 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:6183 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726764AbfKKDfk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 10 Nov 2019 22:35:40 -0500
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id EBA2BD9CB650CF18F603;
+        Mon, 11 Nov 2019 11:35:37 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.439.0; Mon, 11 Nov 2019 11:35:28 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH] rtw88: remove duplicated include from ps.c
+Date:   Mon, 11 Nov 2019 03:34:27 +0000
+Message-ID: <20191111033427.122443-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20191110221413.22321-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-49551924 
-X-CRM114-CacheID: sfid-20191110_225323_591453_2C3ACE0D 
-X-CRM114-Status: UNSURE (   7.74  )
-X-CRM114-Notice: Please train this message. 
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 11/11/2019 12:14 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> The pointer ep is currently being dereferenced when initializing pointer
-> udc before ep is being null checked.  Fix this by only dereferencing
-> ep after it has been null checked.
-> 
-> Addresses-Coverity: ("Dereference before null check")
-> Fixes: 24a28e428351 ("USB: gadget driver for LPC32xx")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Remove duplicated include.
 
-Acked-by: Vladimir Zapolskiy <vz@mleia.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/net/wireless/realtek/rtw88/ps.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---
-Best wishes,
-Vladimir
+diff --git a/drivers/net/wireless/realtek/rtw88/ps.c b/drivers/net/wireless/realtek/rtw88/ps.c
+index 820e0a3a141c..2226e3e7d7f8 100644
+--- a/drivers/net/wireless/realtek/rtw88/ps.c
++++ b/drivers/net/wireless/realtek/rtw88/ps.c
+@@ -9,7 +9,6 @@
+ #include "mac.h"
+ #include "coex.h"
+ #include "debug.h"
+-#include "reg.h"
+ 
+ static int rtw_ips_pwr_up(struct rtw_dev *rtwdev)
+ {
+
+
+

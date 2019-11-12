@@ -2,27 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 594D8F8B98
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2019 10:21:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 35E9EF8BCC
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2019 10:30:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726376AbfKLJVp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 Nov 2019 04:21:45 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:45718 "EHLO
+        id S1725954AbfKLJaa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 Nov 2019 04:30:30 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:45856 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725944AbfKLJVp (ORCPT
+        with ESMTP id S1725834AbfKLJaa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 Nov 2019 04:21:45 -0500
+        Tue, 12 Nov 2019 04:30:30 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iUSMp-0007DW-5p; Tue, 12 Nov 2019 09:21:43 +0000
+        id 1iUSVG-0007kW-2d; Tue, 12 Nov 2019 09:30:26 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] scripts/spelling.txt: add more spellings to spelling.txt
-Date:   Tue, 12 Nov 2019 09:21:42 +0000
-Message-Id: <20191112092142.97989-1-colin.king@canonical.com>
+Subject: [PATCH][next] backlight: qcom-wled: fix spelling mistake "trigged" -> "triggered"
+Date:   Tue, 12 Nov 2019 09:30:25 +0000
+Message-Id: <20191112093025.98638-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -34,232 +41,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Here are some of the more common spelling mistakes and typos that I've
-found while fixing up spelling mistakes in the kernel since July 2019.
+There is a spelling mistake in a dev_err error message. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- scripts/spelling.txt | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/video/backlight/qcom-wled.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/spelling.txt b/scripts/spelling.txt
-index de75b9feaaed..672b5931bc8d 100644
---- a/scripts/spelling.txt
-+++ b/scripts/spelling.txt
-@@ -87,6 +87,7 @@ algorith||algorithm
- algorithmical||algorithmically
- algoritm||algorithm
- algoritms||algorithms
-+algorithmn||algorithm
- algorrithm||algorithm
- algorritm||algorithm
- aligment||alignment
-@@ -109,6 +110,7 @@ alredy||already
- altough||although
- alue||value
- ambigious||ambiguous
-+ambigous||ambiguous
- amoung||among
- amout||amount
- amplifer||amplifier
-@@ -179,6 +181,7 @@ attepmpt||attempt
- attnetion||attention
- attruibutes||attributes
- authentification||authentication
-+authenicated||authenticated
- automaticaly||automatically
- automaticly||automatically
- automatize||automate
-@@ -286,6 +289,7 @@ claread||cleared
- clared||cleared
- closeing||closing
- clustred||clustered
-+cnfiguration||configuration
- coexistance||coexistence
- colescing||coalescing
- collapsable||collapsible
-@@ -325,9 +329,11 @@ comression||compression
- comunication||communication
- conbination||combination
- conditionaly||conditionally
-+conditon||condition
- conected||connected
- conector||connector
- connecetd||connected
-+configration||configuration
- configuartion||configuration
- configuation||configuration
- configued||configured
-@@ -347,6 +353,7 @@ containts||contains
- contaisn||contains
- contant||contact
- contence||contents
-+contiguos||contiguous
- continious||continuous
- continous||continuous
- continously||continuously
-@@ -380,6 +387,7 @@ cylic||cyclic
- dafault||default
- deafult||default
- deamon||daemon
-+debouce||debounce
- decompres||decompress
- decsribed||described
- decription||description
-@@ -448,6 +456,7 @@ diffrent||different
- differenciate||differentiate
- diffrentiate||differentiate
- difinition||definition
-+digial||digital
- dimention||dimension
- dimesions||dimensions
- dispalying||displaying
-@@ -489,6 +498,7 @@ droput||dropout
- druing||during
- dynmaic||dynamic
- eanable||enable
-+eanble||enable
- easilly||easily
- ecspecially||especially
- edditable||editable
-@@ -502,6 +512,7 @@ elementry||elementary
- eletronic||electronic
- embeded||embedded
- enabledi||enabled
-+enbale||enable
- enble||enable
- enchanced||enhanced
- encorporating||incorporating
-@@ -536,6 +547,7 @@ excellant||excellent
- execeeded||exceeded
- execeeds||exceeds
- exeed||exceed
-+exeuction||execution
- existance||existence
- existant||existent
- exixt||exist
-@@ -601,10 +613,12 @@ frambuffer||framebuffer
- framming||framing
- framwork||framework
- frequncy||frequency
-+frequancy||frequency
- frome||from
- fucntion||function
- fuction||function
- fuctions||functions
-+fullill||fulfill
- funcation||function
- funcion||function
- functionallity||functionality
-@@ -642,6 +656,7 @@ happend||happened
- harware||hardware
- heirarchically||hierarchically
- helpfull||helpful
-+hexdecimal||hexadecimal
- hybernate||hibernate
- hierachy||hierarchy
- hierarchie||hierarchy
-@@ -709,12 +724,14 @@ initalize||initialize
- initation||initiation
- initators||initiators
- initialiazation||initialization
-+initializationg||initialization
- initializiation||initialization
- initialze||initialize
- initialzed||initialized
- initialzing||initializing
- initilization||initialization
- initilize||initialize
-+initliaze||initialize
- inofficial||unofficial
- inrerface||interface
- insititute||institute
-@@ -779,6 +796,7 @@ itertation||iteration
- itslef||itself
- jave||java
- jeffies||jiffies
-+jumpimng||jumping
- juse||just
- jus||just
- kown||known
-@@ -839,6 +857,7 @@ messags||messages
- messgaes||messages
- messsage||message
- messsages||messages
-+metdata||metadata
- micropone||microphone
- microprocesspr||microprocessor
- migrateable||migratable
-@@ -857,6 +876,7 @@ mismactch||mismatch
- missign||missing
- missmanaged||mismanaged
- missmatch||mismatch
-+misssing||missing
- miximum||maximum
- mmnemonic||mnemonic
- mnay||many
-@@ -912,6 +932,7 @@ occured||occurred
- occuring||occurring
- offser||offset
- offet||offset
-+offlaod||offload
- offloded||offloaded
- offseting||offsetting
- omited||omitted
-@@ -993,6 +1014,7 @@ poiter||pointer
- posible||possible
- positon||position
- possibilites||possibilities
-+potocol||protocol
- powerfull||powerful
- pramater||parameter
- preamle||preamble
-@@ -1061,11 +1083,13 @@ psychadelic||psychedelic
- pwoer||power
- queing||queuing
- quering||querying
-+queus||queues
- randomally||randomly
- raoming||roaming
- reasearcher||researcher
- reasearchers||researchers
- reasearch||research
-+receieve||receive
- recepient||recipient
- recevied||received
- receving||receiving
-@@ -1166,6 +1190,7 @@ scaleing||scaling
- scaned||scanned
- scaning||scanning
- scarch||search
-+schdule||schedule
- seach||search
- searchs||searches
- secquence||sequence
-@@ -1308,6 +1333,7 @@ taskelt||tasklet
- teh||the
- temorary||temporary
- temproarily||temporarily
-+temperture||temperature
- thead||thread
- therfore||therefore
- thier||their
-@@ -1354,6 +1380,7 @@ uknown||unknown
- usupported||unsupported
- uncommited||uncommitted
- unconditionaly||unconditionally
-+undeflow||underflow
- underun||underrun
- unecessary||unnecessary
- unexecpted||unexpected
-@@ -1414,6 +1441,7 @@ varible||variable
- varient||variant
- vaule||value
- verbse||verbose
-+veify||verify
- verisons||versions
- verison||version
- verson||version
+diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+index 33b6007c5e55..d46052d8ff41 100644
+--- a/drivers/video/backlight/qcom-wled.c
++++ b/drivers/video/backlight/qcom-wled.c
+@@ -322,7 +322,7 @@ static irqreturn_t wled_short_irq_handler(int irq, void *_wled)
+ 		wled->short_count = 1;
+ 
+ 	if (wled->short_count > WLED_SHORT_CNT_MAX) {
+-		dev_err(wled->dev, "Short trigged %d times, disabling WLED forever!\n",
++		dev_err(wled->dev, "Short triggered %d times, disabling WLED forever!\n",
+ 			wled->short_count);
+ 		wled->disabled_by_short = true;
+ 		goto unlock_mutex;
 -- 
 2.20.1
 

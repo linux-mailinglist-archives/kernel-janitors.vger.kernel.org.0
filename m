@@ -2,66 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D137F902A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2019 14:05:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B1F48F909E
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2019 14:27:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727262AbfKLNF1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 Nov 2019 08:05:27 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:49466 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727229AbfKLNF0 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 Nov 2019 08:05:26 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iUVrH-0008UC-Kk; Tue, 12 Nov 2019 13:05:23 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
+        id S1727012AbfKLN1c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 Nov 2019 08:27:32 -0500
+Received: from vps0.lunn.ch ([185.16.172.187]:35734 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725944AbfKLN1c (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 12 Nov 2019 08:27:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=euNUpgPVSFECHKrlPOqySzeXVv/LTuML8q4Esa2KSao=; b=XPrY76jGMc1pxZG3n/FWKdj1bp
+        RrmBbhUjtJid7xU9Wtv9uQvDYDjb7fXB8BjrxI3XhhjZXsUIhqNQVHD4dG5/r7MvXH5PQbG2tz+47
+        Yc8Gn5CC42pqFtluXt8wYnTFV9dwbOxENy/ub0yBeVlLE2GOQgqJuA+1E90qxSMWxKWI=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.92.2)
+        (envelope-from <andrew@lunn.ch>)
+        id 1iUWCe-0001XN-3P; Tue, 12 Nov 2019 14:27:28 +0100
+Date:   Tue, 12 Nov 2019 14:27:28 +0100
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Vivien Didelot <vivien.didelot@gmail.com>,
         Florian Fainelli <f.fainelli@gmail.com>,
         "David S . Miller" <davem@davemloft.net>,
-        Iwan R Timmer <irtimmer@gmail.com>, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] net: dsa: mv88e6xxx: fix broken if statement because of a stray semicolon
-Date:   Tue, 12 Nov 2019 13:05:23 +0000
-Message-Id: <20191112130523.232461-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Iwan R Timmer <irtimmer@gmail.com>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] net: dsa: mv88e6xxx: fix broken if statement
+ because of a stray semicolon
+Message-ID: <20191112132728.GC5090@lunn.ch>
+References: <20191112130523.232461-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191112130523.232461-1-colin.king@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Tue, Nov 12, 2019 at 01:05:23PM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a stray semicolon in an if statement that will cause a dev_err
+> message to be printed unconditionally. Fix this by removing the stray
+> semicolon.
+> 
+> Addresses-Coverity: ("Stay semicolon")
+> Fixes: f0942e00a1ab ("net: dsa: mv88e6xxx: Add support for port mirroring")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-There is a stray semicolon in an if statement that will cause a dev_err
-message to be printed unconditionally. Fix this by removing the stray
-semicolon.
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-Addresses-Coverity: ("Stay semicolon")
-Fixes: f0942e00a1ab ("net: dsa: mv88e6xxx: Add support for port mirroring")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/dsa/mv88e6xxx/chip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index e8bf6ac1e0f4..3bd988529178 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -5317,7 +5317,7 @@ static void mv88e6xxx_port_mirror_del(struct dsa_switch *ds, int port,
- 		if (chip->info->ops->set_egress_port(chip,
- 						     direction,
- 						     dsa_upstream_port(ds,
--								       port)));
-+								       port)))
- 			dev_err(ds->dev, "failed to set egress port\n");
- 	}
- 
--- 
-2.20.1
-
+    Andrew

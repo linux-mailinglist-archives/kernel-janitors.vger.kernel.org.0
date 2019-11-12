@@ -2,107 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 154DCF83A8
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2019 00:38:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE61AF885D
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2019 07:05:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727112AbfKKXhr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 11 Nov 2019 18:37:47 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:60246 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726915AbfKKXhr (ORCPT
+        id S1725795AbfKLGFo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 Nov 2019 01:05:44 -0500
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:29594 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725298AbfKLGFo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 11 Nov 2019 18:37:47 -0500
-Received: from p5b06da22.dip0.t-ipconnect.de ([91.6.218.34] helo=nanos)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1iUJFe-0001gT-0H; Tue, 12 Nov 2019 00:37:42 +0100
-Date:   Tue, 12 Nov 2019 00:37:41 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Bartosz Golaszewski <bgolaszewski@baylibre.com>
-cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Colin King <colin.king@canonical.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] clocksource/drivers/davinci: fix memory leak on clockevent
- on error return
-In-Reply-To: <CAMpxmJVC5GGhR0z_4CkF7Opfw-5HpEKD8fUrKsgBZTbz0wDd-Q@mail.gmail.com>
-Message-ID: <alpine.DEB.2.21.1911120033220.1833@nanos.tec.linutronix.de>
-References: <20191109155836.223635-1-colin.king@canonical.com> <CAMpxmJVC5GGhR0z_4CkF7Opfw-5HpEKD8fUrKsgBZTbz0wDd-Q@mail.gmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1927344373-1573515462=:1833"
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+        Tue, 12 Nov 2019 01:05:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1573538743;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8tOanLl7QbFn0dSrip+KdTPSybewknYJ8kGjOr0qWiE=;
+        b=cwu6hXgdwtJ0qGEDv6p1bODWY3mgpE92J3fhwwIoqD2HNfuJkwE+ynRK2PmHVWSN4hBQJp
+        pFYmsI9wAYjD089Pwc7IugYk+Ri9IaYRoZTm3wXDQ25CgPacdKo1rls8n7RTydh78lbJnK
+        J2deF2oY+hs9q9nb5bt4Nz8gJW/cPXA=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-6-YKQFgGKMMU2oSE1XZkk2SQ-1; Tue, 12 Nov 2019 01:05:41 -0500
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9A63F800C61;
+        Tue, 12 Nov 2019 06:05:40 +0000 (UTC)
+Received: from localhost (ovpn-112-54.rdu2.redhat.com [10.10.112.54])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 62DD461071;
+        Tue, 12 Nov 2019 06:05:38 +0000 (UTC)
+Date:   Mon, 11 Nov 2019 22:05:37 -0800 (PST)
+Message-Id: <20191111.220537.2202321483530744698.davem@redhat.com>
+To:     colin.king@canonical.com
+Cc:     vishal@chelsio.com, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] cxgb4: remove redundant assignment to hdr_len
+From:   David Miller <davem@redhat.com>
+In-Reply-To: <20191111124413.68782-1-colin.king@canonical.com>
+References: <20191111124413.68782-1-colin.king@canonical.com>
+Mime-Version: 1.0
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-MC-Unique: YKQFgGKMMU2oSE1XZkk2SQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Colin King <colin.king@canonical.com>
+Date: Mon, 11 Nov 2019 12:44:13 +0000
 
---8323329-1927344373-1573515462=:1833
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+> From: Colin Ian King <colin.king@canonical.com>
+>=20
+> Variable hdr_len is being assigned a value that is never read.
+> The assignment is redundant and hence can be removed.
+>=20
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Bartosz,
+Applied.
 
-On Sun, 10 Nov 2019, Bartosz Golaszewski wrote:
-> sob., 9 lis 2019 o 16:58 Colin King <colin.king@canonical.com> napisał(a):
-> >
-> > From: Colin Ian King <colin.king@canonical.com>
-> >
-> > In the case where request_irq fails, the return path does not kfree
-> > clockevent and hence we have a memory leak.  Fix this by kfree'ing
-
-s/we have/creates/  or whatever verb you prefer.
-
-> > clockevent before returning.
-> >
-> > Addresses-Coverity: ("Resource leak")
-> > Fixes: 721154f972aa ("clocksource/drivers/davinci: Add support for clockevents")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > ---
-> >  drivers/clocksource/timer-davinci.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/drivers/clocksource/timer-davinci.c b/drivers/clocksource/timer-davinci.c
-> > index 62745c962049..910d4d2f0d64 100644
-> > --- a/drivers/clocksource/timer-davinci.c
-> > +++ b/drivers/clocksource/timer-davinci.c
-> > @@ -299,6 +299,7 @@ int __init davinci_timer_register(struct clk *clk,
-> >                          "clockevent/tim12", clockevent);
-> >         if (rv) {
-> >                 pr_err("Unable to request the clockevent interrupt");
-> > +               kfree(clockevent);
-> >                 return rv;
-> >         }
-> >
-> > --
-> > 2.20.1
-> >
-> 
-> Hi Daniel,
-> 
-> this is what I think the third time someone tries to "fix" this
-> driver's "memory leaks". I'm not sure what the general approach in
-> clocksource is but it doesn't make sense to free resources on
-> non-recoverable errors, does it? Should I add a comment about it or
-> you'll just take those "fixes" to stop further such submissions?
-
-There are two ways to deal with that:
-
-  1) If the error is really unrecoverable, panic right there. No point
-     to continue.
-
-  2) If there is even a minimal chance to survive, free the memory and
-     return.
-
-Adding a comment is just a useless non-option.
-
-Thanks,
-
-	tglx
---8323329-1927344373-1573515462=:1833--

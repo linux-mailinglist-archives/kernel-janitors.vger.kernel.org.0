@@ -2,85 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 271E9F959C
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2019 17:27:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D5392F991F
+	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2019 19:51:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726957AbfKLQ1F (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 Nov 2019 11:27:05 -0500
-Received: from mail-ed1-f66.google.com ([209.85.208.66]:44691 "EHLO
-        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726718AbfKLQ1F (ORCPT
+        id S1727104AbfKLSv3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 Nov 2019 13:51:29 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:47630 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725997AbfKLSv2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 Nov 2019 11:27:05 -0500
-Received: by mail-ed1-f66.google.com with SMTP id a67so15386756edf.11
-        for <kernel-janitors@vger.kernel.org>; Tue, 12 Nov 2019 08:27:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=qNdulMghwGPBvmgJ8scwCvXDFRwh4jWCkPxL6qrSIjQ=;
-        b=AA7nVafHRVnoCxjFLWfGEOMI/nm374kNZl9RNKwi6kwLSbLPB+0VLk1HWnNpAnYC0H
-         AR1pzbTxfeehMaILF3xzsBEGD6FuGpJm9hCo7rxhd0G4y4QwKYFLdniBdlYL6fuHPQ6o
-         oBn9B5JU4jdfV9UfJ1MvmY+OmLCh+2JXioJnMGsems9Hh9dVyCjLJF/sofJ0LVDYjSHz
-         iUnBhQaaKZwVeMKfBmiSMPelGpqk4ZqnRRA/BRltLmAtIXpq/b9iBZRy/RagocxnIKH8
-         B62mqk/rOySiyvz8atCP4yV7ZOGTW4Azva9Mz9bcVZcZlAKDUFALBr9xzKoMfpumg5NU
-         C7QA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=qNdulMghwGPBvmgJ8scwCvXDFRwh4jWCkPxL6qrSIjQ=;
-        b=CTeDB0M1EnazepY9UyAELBea1Hlr6GzvTOjBepb4gqrZyDTAv89SgDfP1Wjz+eyntv
-         OE1JVCntt0BTh0m+NEvh6hJXWxTK0HCanR2m/AqFXg6bf5ULBLmLe8vVF6IDhCuyW0a2
-         uUO9/HohszVO8T0hwqnpMkPsiOxw4Y6zFm5P7Ns8oVKuOsn01xlzpITxPAM+31fc+BTL
-         9gErq0vGcDEOlzXbVgcwZfUSJHiQ+FOnvchTeKHkLJSm00o9TCQ/tEIa3W3IE50HD/zO
-         ZaK20F9vuYAk6FpJG7yDS/2a2pMl4hwePRAO5W8ZIBSBjIZsHtUia+KR2TZcHE/MSko+
-         fbWQ==
-X-Gm-Message-State: APjAAAX/1C8WIrt9O4BALp4816n+8uVwZlpV/n20uPlSdXnvaqcZSwCY
-        GWauNQzsS5k952B0z/5SjawCjWQX3WtsX/1tV9k=
-X-Google-Smtp-Source: APXvYqyFRvaJ+54K4oUanSd6vcpfHe3cI5fghESfoEeNjTW3V1ZHur0Z3qpH7Mxr7kAXCRuz5gVClHElxmM0AVn28l4=
-X-Received: by 2002:a50:9b10:: with SMTP id o16mr32953280edi.117.1573576023720;
- Tue, 12 Nov 2019 08:27:03 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a05:6402:1118:0:0:0:0 with HTTP; Tue, 12 Nov 2019 08:27:02
- -0800 (PST)
-Reply-To: walmart.b100263@gmail.com
-From:   "MS. MARYANNA B. THOMASON" <eco.bank1204@gmail.com>
-Date:   Tue, 12 Nov 2019 17:27:02 +0100
-Message-ID: <CAOE+jACjP4ZWV2TDVF+YPjga4khxQKQTyE6GW-zNiCpvS8MjXw@mail.gmail.com>
-Subject: CONTACT WALMART TRANSFER To pick up $5000 sent to you this morning
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+        Tue, 12 Nov 2019 13:51:28 -0500
+Received: from localhost (unknown [IPv6:2601:601:9f00:1e2::d71])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id BCA45154CC59B;
+        Tue, 12 Nov 2019 10:51:27 -0800 (PST)
+Date:   Tue, 12 Nov 2019 10:51:24 -0800 (PST)
+Message-Id: <20191112.105124.1905938227505046893.davem@davemloft.net>
+To:     maowenan@huawei.com
+Cc:     andrew@lunn.ch, grygorii.strashko@ti.com, tony@atomide.com,
+        brouer@redhat.com, jakub.kicinski@netronome.com,
+        ivan.khoronzhuk@linaro.org, tglx@linutronix.de,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] net: ethernet: ti: Add dependency for
+ TI_DAVINCI_EMAC
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20191112063358.73800-1-maowenan@huawei.com>
+References: <20191112063358.73800-1-maowenan@huawei.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 12 Nov 2019 10:51:28 -0800 (PST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
- CONTACT WALMART TRANSFER To pick up $5000 sent to you this morning
+From: Mao Wenan <maowenan@huawei.com>
+Date: Tue, 12 Nov 2019 14:33:58 +0800
 
-Attn Dear Beneficiary.
-Happy to inform you,I have deposited your payment funds
-$10.500,000MillionUS DollarsWith Walmart international money
-transfers.
-Receive the Money with Walmart | MoneyGram service.
-Walmart partners with MoneyGram to allow customers
-easily receive money transfers abroad,
-Contact Walmart international money transfers office -Benin
-Receive your approval payment funds $10.500,000MillionUS Dollars
-HERE IS WALMART CONTACT INFORMATIONS.
-Contact person. Mrs. Mary Anderson,Dir. Walmart transfers-Benin
-Email: walmart.b100263@gmail.com
-Telephone. +229 68823234
-Text Her on this international phone line. (256) 284-4886
-Ask Mrs. Mary Anderson,Dir. Walmart transfers-Benin to send the transfer
-as i instructed.
-we agreed to keep sending the transfer to you $5000.00 daily.
-Until you received your total payment $10.500,000 from the office
-Once again,
-make sure you contact Mrs. Mary Anderson,Dir. Walmart transfers-Benin
-today including your infos.
-(1) Your  Full Name==============
-(2) house address=============
-(3) Your Phone Numbers=============
-Urgent to receive your transfer now without any further delay.
-Thanks
-MS. MARYANNA B. THOMASON
+> If TI_DAVINCI_EMAC=y and GENERIC_ALLOCATOR is not set,
+> below erros can be seen:
+> drivers/net/ethernet/ti/davinci_cpdma.o: In function `cpdma_desc_pool_destroy.isra.14':
+> davinci_cpdma.c:(.text+0x359): undefined reference to `gen_pool_size'
+> davinci_cpdma.c:(.text+0x365): undefined reference to `gen_pool_avail'
+> davinci_cpdma.c:(.text+0x373): undefined reference to `gen_pool_avail'
+> davinci_cpdma.c:(.text+0x37f): undefined reference to `gen_pool_size'
+> drivers/net/ethernet/ti/davinci_cpdma.o: In function `__cpdma_chan_free':
+> davinci_cpdma.c:(.text+0x4a2): undefined reference to `gen_pool_free_owner'
+> drivers/net/ethernet/ti/davinci_cpdma.o: In function `cpdma_chan_submit_si':
+> davinci_cpdma.c:(.text+0x66c): undefined reference to `gen_pool_alloc_algo_owner'
+> davinci_cpdma.c:(.text+0x805): undefined reference to `gen_pool_free_owner'
+> drivers/net/ethernet/ti/davinci_cpdma.o: In function `cpdma_ctlr_create':
+> davinci_cpdma.c:(.text+0xabd): undefined reference to `devm_gen_pool_create'
+> davinci_cpdma.c:(.text+0xb79): undefined reference to `gen_pool_add_owner'
+> drivers/net/ethernet/ti/davinci_cpdma.o: In function `cpdma_check_free_tx_desc':
+> davinci_cpdma.c:(.text+0x16c6): undefined reference to `gen_pool_avail'
+> 
+> This patch mades TI_DAVINCI_EMAC select GENERIC_ALLOCATOR.
+> 
+> Fixes: 99f629718272 ("net: ethernet: ti: cpsw: drop TI_DAVINCI_CPDMA config option")
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+
+Applied.

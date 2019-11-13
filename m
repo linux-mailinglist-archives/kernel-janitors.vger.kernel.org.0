@@ -2,58 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6FE5F9A51
-	for <lists+kernel-janitors@lfdr.de>; Tue, 12 Nov 2019 21:12:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B2B2FA4CB
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Nov 2019 03:19:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727074AbfKLUMN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 Nov 2019 15:12:13 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:48940 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727046AbfKLUMJ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 Nov 2019 15:12:09 -0500
-Received: from localhost (unknown [IPv6:2601:601:9f00:1e2::d71])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 5411D154D2510;
-        Tue, 12 Nov 2019 12:12:09 -0800 (PST)
-Date:   Mon, 11 Nov 2019 22:05:29 -0800 (PST)
-Message-Id: <20191111.220529.1787748247936127753.davem@redhat.com>
-To:     colin.king@canonical.com
-Cc:     jon.maloy@ericsson.com, ying.xue@windreiver.com,
-        tuong.t.lien@dektech.com.au, netdev@vger.kernel.org,
-        tipc-discussion@lists.sourceforge.net,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] tipc: fix update of the uninitialized variable
- err
-From:   David Miller <davem@redhat.com>
-In-Reply-To: <20191111123334.68401-1-colin.king@canonical.com>
-References: <20191111123334.68401-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 12 Nov 2019 12:12:09 -0800 (PST)
+        id S1729229AbfKMCSg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 Nov 2019 21:18:36 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:6649 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728267AbfKMCSg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 12 Nov 2019 21:18:36 -0500
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 10EACF2AFB7F7B0C771E;
+        Wed, 13 Nov 2019 10:18:34 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 13 Nov 2019 10:18:27 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Eddie Huang <eddie.huang@mediatek.com>,
+        Sean Wang <sean.wang@mediatek.com>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        "Alexandre Belloni" <alexandre.belloni@bootlin.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Josef Friedl <josef.friedl@speed.at>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>, <linux-rtc@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] rtc: mt6397: drop free_irq of devm_ allocated irq
+Date:   Wed, 13 Nov 2019 02:17:20 +0000
+Message-ID: <20191113021720.9527-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Mon, 11 Nov 2019 12:33:34 +0000
+The devm_request_threaded_irq function allocates irq that is
+released when a driver detaches. Thus, there is no reason to
+explicitly call free_irq in probe function.
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Variable err is not uninitialized and hence can potentially contain
-> any garbage value.  This may cause an error when logical or'ing the
-> return values from the calls to functions crypto_aead_setauthsize or
-> crypto_aead_setkey.  Fix this by setting err to the return of
-> crypto_aead_setauthsize rather than or'ing in the return into the
-> uninitialized variable
-> 
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Fixes: 851b87148aa2 ("rtc: mt6397: improvements of rtc driver")
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/rtc/rtc-mt6397.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-Applied.
+diff --git a/drivers/rtc/rtc-mt6397.c b/drivers/rtc/rtc-mt6397.c
+index 5249fc99fd5f..6c585cd1ce10 100644
+--- a/drivers/rtc/rtc-mt6397.c
++++ b/drivers/rtc/rtc-mt6397.c
+@@ -286,15 +286,7 @@ static int mtk_rtc_probe(struct platform_device *pdev)
+ 
+ 	rtc->rtc_dev->ops = &mtk_rtc_ops;
+ 
+-	ret = rtc_register_device(rtc->rtc_dev);
+-	if (ret)
+-		goto out_free_irq;
+-
+-	return 0;
+-
+-out_free_irq:
+-	free_irq(rtc->irq, rtc);
+-	return ret;
++	return rtc_register_device(rtc->rtc_dev);
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
+
+
+

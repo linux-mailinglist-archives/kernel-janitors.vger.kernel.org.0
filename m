@@ -2,61 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ADEE4FADCE
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Nov 2019 10:56:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9D28FAF4B
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Nov 2019 12:06:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727412AbfKMJz4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 Nov 2019 04:55:56 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:57284 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726155AbfKMJzz (ORCPT
+        id S1727452AbfKMLGy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 13 Nov 2019 06:06:54 -0500
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:51562 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726165AbfKMLGy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 Nov 2019 04:55:55 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iUpNM-00058F-Ae; Wed, 13 Nov 2019 09:55:48 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Russell King <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] net: sfp: fix spelling mistake "requies" -> "requires"
-Date:   Wed, 13 Nov 2019 09:55:48 +0000
-Message-Id: <20191113095548.27704-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        Wed, 13 Nov 2019 06:06:54 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xADB6XsH114264;
+        Wed, 13 Nov 2019 05:06:33 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1573643193;
+        bh=gSAJ+1KpkGy+Q87mlI/tRdXnYA0Fp4XtcaHY6UfujOc=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=X8HMahfV7qdJsgEfNTulOHlp4TJPpj8nc0CC/YuUcqC+GwSC256cdrxmxhENY2e04
+         61oz5VO/LASJhQ6t8VoztScF/KDh/y35LJ2aiXKQVOJyZT17XY2kNpp2lcswkz8cfF
+         dRgCdPrCHiN/hq8y1ejhy1NM/P4Z2Pqh2ELfzubI=
+Received: from DFLE102.ent.ti.com (dfle102.ent.ti.com [10.64.6.23])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xADB6Wu9096144
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 13 Nov 2019 05:06:32 -0600
+Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE102.ent.ti.com
+ (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 13
+ Nov 2019 05:06:15 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Wed, 13 Nov 2019 05:06:15 -0600
+Received: from [172.24.190.117] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id xADB6T5G127091;
+        Wed, 13 Nov 2019 05:06:29 -0600
+Subject: Re: [PATCH] irqchip/ti-sci-inta: Use ERR_CAST inlined function
+ instead of ERR_PTR(PTR_ERR(...))
+To:     Marc Zyngier <maz@kernel.org>
+CC:     Markus Elfring <markus.elfring@web.de>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Jason Cooper <jason@lakedaemon.net>,
+        Nishanth Menon <nm@ti.com>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Tero Kristo <t-kristo@ti.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        LKML <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <776b7135-26af-df7d-c3a9-4339f7bf1f15@web.de>
+ <670cd9a2-2083-bb5e-7bfc-58d5c90ec756@ti.com>
+ <29a69991ec7726d133e54a2891159e86@www.loen.fr>
+From:   Lokesh Vutla <lokeshvutla@ti.com>
+Message-ID: <3642882b-edab-1667-f370-47e8358edc82@ti.com>
+Date:   Wed, 13 Nov 2019 16:35:34 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
+In-Reply-To: <29a69991ec7726d133e54a2891159e86@www.loen.fr>
 Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in a dev_warn message. Fix it.
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/phy/sfp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 11/11/19 3:45 PM, Marc Zyngier wrote:
+> On 2019-11-11 04:45, Lokesh Vutla wrote:
+>> On 05/11/19 5:00 PM, Markus Elfring wrote:
+>>> From: Markus Elfring <elfring@users.sourceforge.net>
+>>> Date: Tue, 5 Nov 2019 12:19:39 +0100
+>>>
+>>> A coccicheck run provided information like the following.
+>>>
+>>> drivers/irqchip/irq-ti-sci-inta.c:250:9-16: WARNING: ERR_CAST can be used
+>>> with vint_desc.
+>>>
+>>> Generated by: scripts/coccinelle/api/err_cast.cocci
+>>>
+>>> Thus adjust the exception handling in one if branch.
+>>>
+>>> Fixes: 9f1463b86c13277d0bd88d5ee359577ef40f4da7 ("irqchip/ti-sci-inta: Add
+>>> support for Interrupt Aggregator driver")
+>>
+>> Fixes: 9f1463b86c13 ("irqchip/ti-sci-inta: Add support for Interrupt
+>> Aggregator driver")
+> 
+> I fundamentally disagree with the "Fixes:" tag. This isn't a fix,
+> just a minor readability improvement. Flagging things as "Fixes:"
+> ends up triggering all kind of unnecessary backports to -stable.
+> 
+>> With this:
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index f9b8051c4247..b0f88c2c0153 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -1465,7 +1465,7 @@ static int sfp_module_parse_power(struct sfp *sfp)
- 	 */
- 	if (sfp->id.ext.diagmon & SFP_DIAGMON_ADDRMODE && power_mW > 1000) {
- 		dev_warn(sfp->dev,
--			 "Address Change Sequence not supported but module requies %u.%uW, module may not be functional\n",
-+			 "Address Change Sequence not supported but module requires %u.%uW, module may not be functional\n",
- 			 power_mW / 1000, (power_mW / 100) % 10);
- 		return 0;
- 	}
--- 
-2.20.1
+Fine with me. Please drop the fixes tag.
 
+Thanks and regards.
+Lokesh
+
+>>
+>> Reviewed-by: Lokesh Vutla <lokeshvutla@ti.com>
+> 
+> I'll otherwise take this patch in -next.
+> 
+> Thanks,
+> 
+>         M.

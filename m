@@ -2,111 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9D28FAF4B
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Nov 2019 12:06:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3578CFAFBE
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Nov 2019 12:32:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727452AbfKMLGy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 Nov 2019 06:06:54 -0500
-Received: from lelv0142.ext.ti.com ([198.47.23.249]:51562 "EHLO
-        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726165AbfKMLGy (ORCPT
+        id S1727818AbfKMLcU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 13 Nov 2019 06:32:20 -0500
+Received: from mail-wr1-f43.google.com ([209.85.221.43]:38867 "EHLO
+        mail-wr1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726339AbfKMLcU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 Nov 2019 06:06:54 -0500
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id xADB6XsH114264;
-        Wed, 13 Nov 2019 05:06:33 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1573643193;
-        bh=gSAJ+1KpkGy+Q87mlI/tRdXnYA0Fp4XtcaHY6UfujOc=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=X8HMahfV7qdJsgEfNTulOHlp4TJPpj8nc0CC/YuUcqC+GwSC256cdrxmxhENY2e04
-         61oz5VO/LASJhQ6t8VoztScF/KDh/y35LJ2aiXKQVOJyZT17XY2kNpp2lcswkz8cfF
-         dRgCdPrCHiN/hq8y1ejhy1NM/P4Z2Pqh2ELfzubI=
-Received: from DFLE102.ent.ti.com (dfle102.ent.ti.com [10.64.6.23])
-        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xADB6Wu9096144
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Wed, 13 Nov 2019 05:06:32 -0600
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE102.ent.ti.com
- (10.64.6.23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 13
- Nov 2019 05:06:15 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Wed, 13 Nov 2019 05:06:15 -0600
-Received: from [172.24.190.117] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id xADB6T5G127091;
-        Wed, 13 Nov 2019 05:06:29 -0600
-Subject: Re: [PATCH] irqchip/ti-sci-inta: Use ERR_CAST inlined function
- instead of ERR_PTR(PTR_ERR(...))
-To:     Marc Zyngier <maz@kernel.org>
-CC:     Markus Elfring <markus.elfring@web.de>,
-        <linux-arm-kernel@lists.infradead.org>,
-        Jason Cooper <jason@lakedaemon.net>,
-        Nishanth Menon <nm@ti.com>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Tero Kristo <t-kristo@ti.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <776b7135-26af-df7d-c3a9-4339f7bf1f15@web.de>
- <670cd9a2-2083-bb5e-7bfc-58d5c90ec756@ti.com>
- <29a69991ec7726d133e54a2891159e86@www.loen.fr>
-From:   Lokesh Vutla <lokeshvutla@ti.com>
-Message-ID: <3642882b-edab-1667-f370-47e8358edc82@ti.com>
-Date:   Wed, 13 Nov 2019 16:35:34 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        Wed, 13 Nov 2019 06:32:20 -0500
+Received: by mail-wr1-f43.google.com with SMTP id i12so1951786wro.5
+        for <kernel-janitors@vger.kernel.org>; Wed, 13 Nov 2019 03:32:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to
+         :user-agent;
+        bh=sS3GaEsmYVTT8e7e9aE8xCn5QY0c0oDK5wXddhigAzo=;
+        b=CYO8M14unOarpyCMrij5/QgQvuSQhghb6lNIxYwEhmTJDfQAfPVC9+D7zTsLxANKmS
+         XOhtiJRx+PgD9O/gBnG++DQiXFXLxHrROmodJu9nwj/KRsEGGR/sftjKT7S2uSI+5VLl
+         yZe9beW3UNVHVWEbNmNwB8mDKLDxLgYDXytky5cZjStLFR3FjqTa61F3vDNXnNvvHzYe
+         76Mtd4Rb98ulGoJENiFUg2nXaB9MM4MH+IALrHn9VUFjNIr1cubho30W9ayKiPYXDCGo
+         CssQBKMiFAx8N4DrCpDWlqKhpuZNe4KLEWF3QmcEx3zZjaQK6pN0pOBJYFnXcN7QiGiW
+         QAMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to:user-agent;
+        bh=sS3GaEsmYVTT8e7e9aE8xCn5QY0c0oDK5wXddhigAzo=;
+        b=KJpJsPgx9BuqKbD8d5WxejuEZKFfaRd45MN/7jjrZJfSZu2/albOr9BDkfNtal7M++
+         S+YLFXbNUY1lH8Kex40WFcvnMIC8/DFbtn6EhHEGiuyhJJBid8JNIGF41fZF/5p/dph/
+         FVmC8JSgqykMv7JOJuxG0FOu6taoE3SENeqjBZcrxaaKtliBQQ/m5AU7D8EUELoFy0mV
+         jT8BlLm8XeSMUED0qE+FWX8rxcZoL98YA3h/C5RLv9uwKp07KiXxhZE9Rn4qNevOqOSb
+         0ChR2Gf0POnpfoYwgDBKZF+vsRG8uYLXDvH0QLJXQ+qd5xmR1p98kjnFmGa0SGJpTAFC
+         HUpg==
+X-Gm-Message-State: APjAAAXxrX0RDAEI1bMQ8qsHQY4lJmCvQcrvF2oTHIbMBvZF+DeDrQe+
+        F81NEL89lQ+hyrO9JwSoPEXP0Q==
+X-Google-Smtp-Source: APXvYqznHxf9lTwtcWainnqvBciljEaqd825jlA+LPO+60naLZWLA4kld7qN7etRMPJUI7I//NyhTw==
+X-Received: by 2002:adf:e94e:: with SMTP id m14mr2414909wrn.233.1573644738184;
+        Wed, 13 Nov 2019 03:32:18 -0800 (PST)
+Received: from dell ([2.27.35.135])
+        by smtp.gmail.com with ESMTPSA id o10sm2519246wrq.92.2019.11.13.03.32.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Nov 2019 03:32:17 -0800 (PST)
+Date:   Wed, 13 Nov 2019 11:32:06 +0000
+From:   Lee Jones <lee.jones@linaro.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] backlight: qcom-wled: fix spelling mistake
+ "trigged" -> "triggered"
+Message-ID: <20191113113206.GB3285@dell>
+References: <20191112093025.98638-1-colin.king@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <29a69991ec7726d133e54a2891159e86@www.loen.fr>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+In-Reply-To: <20191112093025.98638-1-colin.king@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Tue, 12 Nov 2019, Colin King wrote:
 
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a spelling mistake in a dev_err error message. Fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/video/backlight/qcom-wled.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 11/11/19 3:45 PM, Marc Zyngier wrote:
-> On 2019-11-11 04:45, Lokesh Vutla wrote:
->> On 05/11/19 5:00 PM, Markus Elfring wrote:
->>> From: Markus Elfring <elfring@users.sourceforge.net>
->>> Date: Tue, 5 Nov 2019 12:19:39 +0100
->>>
->>> A coccicheck run provided information like the following.
->>>
->>> drivers/irqchip/irq-ti-sci-inta.c:250:9-16: WARNING: ERR_CAST can be used
->>> with vint_desc.
->>>
->>> Generated by: scripts/coccinelle/api/err_cast.cocci
->>>
->>> Thus adjust the exception handling in one if branch.
->>>
->>> Fixes: 9f1463b86c13277d0bd88d5ee359577ef40f4da7 ("irqchip/ti-sci-inta: Add
->>> support for Interrupt Aggregator driver")
->>
->> Fixes: 9f1463b86c13 ("irqchip/ti-sci-inta: Add support for Interrupt
->> Aggregator driver")
-> 
-> I fundamentally disagree with the "Fixes:" tag. This isn't a fix,
-> just a minor readability improvement. Flagging things as "Fixes:"
-> ends up triggering all kind of unnecessary backports to -stable.
-> 
->> With this:
+Applied, thanks.
 
-Fine with me. Please drop the fixes tag.
-
-Thanks and regards.
-Lokesh
-
->>
->> Reviewed-by: Lokesh Vutla <lokeshvutla@ti.com>
-> 
-> I'll otherwise take this patch in -next.
-> 
-> Thanks,
-> 
->         M.
+-- 
+Lee Jones [李琼斯]
+Linaro Services Technical Lead
+Linaro.org │ Open source software for ARM SoCs
+Follow Linaro: Facebook | Twitter | Blog

@@ -2,61 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AD9AFA60B
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Nov 2019 03:26:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 642BBFA679
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Nov 2019 03:31:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728776AbfKMC0W (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 12 Nov 2019 21:26:22 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:60796 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727695AbfKMC0V (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 12 Nov 2019 21:26:21 -0500
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 6F456F005266790D6D92;
-        Wed, 13 Nov 2019 10:26:19 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 13 Nov 2019 10:26:09 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     "Darrick J . Wong" <darrick.wong@oracle.com>,
-        Eric Sandeen <sandeen@sandeen.net>,
-        Brian Foster <bfoster@redhat.com>,
-        Dave Chinner <dchinner@redhat.com>
-CC:     YueHaibing <yuehaibing@huawei.com>, <linux-xfs@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] xfs: remove duplicated include from xfs_dir2_data.c
-Date:   Wed, 13 Nov 2019 02:25:01 +0000
-Message-ID: <20191113022501.55816-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727996AbfKMCaK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 12 Nov 2019 21:30:10 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:42978 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727740AbfKMCaK (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 12 Nov 2019 21:30:10 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAD2Tfww073918;
+        Wed, 13 Nov 2019 02:29:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=qY8JO3kNqYbiBRuEizrs4vY8sD4KRnyCvedqk4enqsQ=;
+ b=i3RwxFYu1kk9484ZobywvbwiH8qAjecMH1bDvL7Na0ibC2uo1P+IdVhe2GRfi6Go9aHp
+ gs7dEzLntAoUT2gz9x8xaFeyJ7vOVhoa12lEzM/nxqdiPHIIC+oGkvpvJ33g6E+gLP2n
+ jFn2t19LN8/eU9VtvPxn+2ume2a2o7N093jcn5bFlOBEp/15VuPQ/gdfnq0yBkSShvzw
+ HfZSB8EIoHxlQp9Ot0QkC2SNGdIZ1aP8RYTlIWXQ2FzDu5W99F+wPxp5qlak3rKEovcz
+ iv5voQy5WDzTvjtR+JTpHXmHRgVfZ+yd3/XwJ2tVkJKxg4qyxkyH5t03AJWZbLVkWFpt tg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 2w5mvts1p5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 13 Nov 2019 02:29:59 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAD2S5aX007425;
+        Wed, 13 Nov 2019 02:29:59 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 2w7khmf8ra-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 13 Nov 2019 02:29:59 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xAD2Tv3p003808;
+        Wed, 13 Nov 2019 02:29:57 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 12 Nov 2019 18:29:57 -0800
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        <linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH -next] scsi: csiostor: Remove set but not used variable 'rln'
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20191029061530.98197-1-yuehaibing@huawei.com>
+Date:   Tue, 12 Nov 2019 21:29:55 -0500
+In-Reply-To: <20191029061530.98197-1-yuehaibing@huawei.com>
+        (yuehaibing@huawei.com's message of "Tue, 29 Oct 2019 06:15:30 +0000")
+Message-ID: <yq136esqzj0.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9439 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1910280000 definitions=main-1911130019
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9439 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1910280000
+ definitions=main-1911130019
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove duplicated include.
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- fs/xfs/libxfs/xfs_dir2_data.c | 1 -
- 1 file changed, 1 deletion(-)
+YueHaibing,
 
-diff --git a/fs/xfs/libxfs/xfs_dir2_data.c b/fs/xfs/libxfs/xfs_dir2_data.c
-index 9e471a28b6c6..30293a1d03f6 100644
---- a/fs/xfs/libxfs/xfs_dir2_data.c
-+++ b/fs/xfs/libxfs/xfs_dir2_data.c
-@@ -18,7 +18,6 @@
- #include "xfs_trans.h"
- #include "xfs_buf_item.h"
- #include "xfs_log.h"
--#include "xfs_dir2_priv.h"
- 
- static xfs_failaddr_t xfs_dir2_data_freefind_verify(
- 		struct xfs_dir2_data_hdr *hdr, struct xfs_dir2_data_free *bf,
+> Fixes gcc '-Wunused-but-set-variable' warning:
+>
+> drivers/scsi/csiostor/csio_lnode.c: In function 'csio_ln_init':
+> drivers/scsi/csiostor/csio_lnode.c:1995:21: warning:
+>  variable 'rln' set but not used [-Wunused-but-set-variable]
+>
+> It is never used since introduction, so remove it.
 
+Applied to 5.5/scsi-queue, thanks.
 
-
+-- 
+Martin K. Petersen	Oracle Linux Engineering

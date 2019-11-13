@@ -2,51 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CDBAEFB789
-	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Nov 2019 19:29:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 04690FB7A1
+	for <lists+kernel-janitors@lfdr.de>; Wed, 13 Nov 2019 19:32:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728325AbfKMS3Y (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 Nov 2019 13:29:24 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:54704 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727074AbfKMS3Y (ORCPT
+        id S1728470AbfKMScK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 13 Nov 2019 13:32:10 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:32868 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728338AbfKMScK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 Nov 2019 13:29:24 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xADIT0iJ118599;
-        Wed, 13 Nov 2019 18:29:16 GMT
+        Wed, 13 Nov 2019 13:32:10 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xADITHU6127460;
+        Wed, 13 Nov 2019 18:32:06 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=sGr/DIDnGTYsdgAAQOAvzvtrIvWYjXZuC3b0kLtXOyQ=;
- b=qA7Rtcc1IjJd8veNVWpkLuSGb6JekNurHL20+l6ioCTm0Ig7SWhXpAbRiQ3x7u6epKP6
- IBS1VVe/9rTZhbbmXWlBNTfTJ4W3CQvdfpOQVnToGNSBpGACYkOo8D10B+JodCm7v5VH
- qyYmmAP3T+pPnQ2bAQWVq6GUgNMJN/pn6EC/97fVSgp6FYAtxdmlS9tyu4wdkemmtXq9
- wqGshAqHvOlsQphxP2AbxocamwN0gATjkjm6pllyPJv8KFr/ZzNs8vuqEUfgpoO2znpN
- 517d381eIE2qY5GwLT33S/lbrXPmjGMrJdIKnbR3NBZZC+TpUAMigWxuIVYSCw5bwgjt Lg== 
+ bh=wlOESdlP+I6ba8vhVLFzp7uW7rzgqu2CF/S70dfvgRY=;
+ b=J+qUVnxObzgaitTeoQEgY/Ke0/iFviBQ+jYcu8+Lc8VRUk9riMBoMp/Bx5tALjwsXiNs
+ qPVUE361JUkUiX4zYQHKYtiPpplc0xZO1ZgEfDm/5+hT/ZsJAVLMS5i109D3RR0pje2y
+ wG2/8MCFdmYdejHL0z5gQmufG6Qi5FkX3I+fj2T0stHwyIG/GR029pl/TphZrtKMknp2
+ BhTNRMJER1IXMEA4QqbqKPf/YvdwTqFofEOsVujnoFS4pYVqtA9gR6ygjfjC8davZznH
+ NQrVIQnIrJGOHs1hn8xEsisUjeK2g+Cm3n0c5MnSohmOjUtXlnl3QNRAYNs0pntdNyqV Jg== 
 Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 2w5ndqedyq-1
+        by userp2130.oracle.com with ESMTP id 2w5mvtxeth-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 13 Nov 2019 18:29:16 +0000
+        Wed, 13 Nov 2019 18:32:06 +0000
 Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xADISxlZ160232;
-        Wed, 13 Nov 2019 18:29:15 GMT
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xADISxTq160259;
+        Wed, 13 Nov 2019 18:32:05 GMT
 Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2w7vppqqp1-1
+        by aserp3030.oracle.com with ESMTP id 2w7vppqvjw-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 13 Nov 2019 18:29:03 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xADISeZw031201;
-        Wed, 13 Nov 2019 18:28:40 GMT
+        Wed, 13 Nov 2019 18:32:05 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xADIW5jM000801;
+        Wed, 13 Nov 2019 18:32:05 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 13 Nov 2019 10:28:40 -0800
-Date:   Wed, 13 Nov 2019 21:28:31 +0300
+        with ESMTP ; Wed, 13 Nov 2019 10:32:04 -0800
+Date:   Wed, 13 Nov 2019 21:31:58 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Oliver Neukum <oliver@neukum.org>
-Cc:     "David S. Miller" <davem@davemloft.net>, linux-usb@vger.kernel.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH net] net: cdc_ncm: Signedness bug in cdc_ncm_set_dgram_size()
-Message-ID: <20191113182831.yjbmhwacirh6kgzr@kili.mountain>
+To:     Igor Russkikh <irusskikh@marvell.com>,
+        Nikita Danilov <ndanilov@marvell.com>
+Cc:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] net: atlantic: Signedness bug in aq_vec_isr_legacy()
+Message-ID: <20191113183158.rogxsza632ppeen3@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -68,30 +69,37 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This code is supposed to test for negative error codes and partial
-reads, but because sizeof() is size_t (unsigned) type then negative
-error codes are type promoted to high positive values and the condition
-doesn't work as expected.
+irqreturn_t type is an enum and in this context it's unsigned, so "err"
+can't be irqreturn_t or it breaks the error handling.  In fact the "err"
+variable is only used to store integers (never irqreturn_t) so it should
+be declared as int.
 
-Fixes: 332f989a3b00 ("CDC-NCM: handle incomplete transfer of MTU")
+I removed the initialization because it's not required.  Using a bogus
+initializer turns off GCC's uninitialized variable warnings.  Secondly,
+there is a GCC warning about unused assignments and we would like to
+enable that feature eventually so we have been trying to remove these
+unnecessary initializers.
+
+Fixes: 7b0c342f1f67 ("net: atlantic: code style cleanup")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/usb/cdc_ncm.c | 2 +-
+ drivers/net/ethernet/aquantia/atlantic/aq_vec.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/cdc_ncm.c b/drivers/net/usb/cdc_ncm.c
-index a245597a3902..c2c82e6391b4 100644
---- a/drivers/net/usb/cdc_ncm.c
-+++ b/drivers/net/usb/cdc_ncm.c
-@@ -579,7 +579,7 @@ static void cdc_ncm_set_dgram_size(struct usbnet *dev, int new_size)
- 	err = usbnet_read_cmd(dev, USB_CDC_GET_MAX_DATAGRAM_SIZE,
- 			      USB_TYPE_CLASS | USB_DIR_IN | USB_RECIP_INTERFACE,
- 			      0, iface_no, &max_datagram_size, sizeof(max_datagram_size));
--	if (err < sizeof(max_datagram_size)) {
-+	if (err != sizeof(max_datagram_size)) {
- 		dev_dbg(&dev->intf->dev, "GET_MAX_DATAGRAM_SIZE failed\n");
- 		goto out;
- 	}
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_vec.c b/drivers/net/ethernet/aquantia/atlantic/aq_vec.c
+index 6e19e27b6200..f40a427970dc 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_vec.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_vec.c
+@@ -307,8 +307,8 @@ irqreturn_t aq_vec_isr(int irq, void *private)
+ irqreturn_t aq_vec_isr_legacy(int irq, void *private)
+ {
+ 	struct aq_vec_s *self = private;
+-	irqreturn_t err = 0;
+ 	u64 irq_mask = 0U;
++	int err;
+ 
+ 	if (!self)
+ 		return IRQ_NONE;
 -- 
 2.11.0
 

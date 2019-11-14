@@ -2,52 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE8CAFBEDA
-	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Nov 2019 05:58:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F530FC1F8
+	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Nov 2019 09:57:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727119AbfKNE6j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 13 Nov 2019 23:58:39 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40150 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726557AbfKNE6i (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 13 Nov 2019 23:58:38 -0500
-Received: from localhost (unknown [223.226.110.181])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7E803206EF;
-        Thu, 14 Nov 2019 04:58:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573707518;
-        bh=Fd1b+rYUESVNJ8lzpuKxKsrWmMvEjnh2hBaOkjbvHzA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=OagkJEyxcElj+s5uTZAoBD9igV+zTZt9A07difmejLDyapMnPsItTqk3hJzfTJcv4
-         p901RqVmPxOmrLE9QOOTcHuRZxJYAHQQ8ZtkdnlLXl4q1RmykRccnRf12L4yRwTkZR
-         cSuD8uELftWJ5JvNrmCnNE6zKfiixktn0p26cIF0=
-Date:   Thu, 14 Nov 2019 10:28:34 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>, dmaengine@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dmaengine: iop-adma: clean up an indentation issue
-Message-ID: <20191114045834.GK952516@vkoul-mobl>
-References: <20191112191143.282814-1-colin.king@canonical.com>
+        id S1726330AbfKNI47 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 14 Nov 2019 03:56:59 -0500
+Received: from mail-io1-f66.google.com ([209.85.166.66]:40043 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725976AbfKNI46 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 14 Nov 2019 03:56:58 -0500
+Received: by mail-io1-f66.google.com with SMTP id p6so5927163iod.7;
+        Thu, 14 Nov 2019 00:56:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=NbXXK6bu0dg2zI7R5KEkk9IUJJ7xkv0jNGRocMeqp54=;
+        b=oiT2RC/bejWLycuxKkNmrXLshuKJkpQ8QbbCzp5sZf7uCmkjcLVlsqufYaB76kVLEp
+         td9Wkb5yZErKpFF7Q3iWppBkvWx91gbXE5ErUKPMMEKvDqkOOuMLfcWATWNjxc0t23Sb
+         4oZXa5Bpvo0cLB8oKsz+NNEEvftslGUdU/L+4vMvvDxNyQ71XNXefomOoHPgbzVmjVa6
+         3GaKNTRCALTkfi1LWgbSLHqR+z6u3NMduZDEAj6utVvKx2rWvdFPI+4v57+4k4e3FuSC
+         /3HfVUjcY1QV4wW2t7T3XhaxkcBmzFiS2JGp83MiyMOzOiBEFqFn5RPTyuHMZSFvlWF+
+         9ZiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=NbXXK6bu0dg2zI7R5KEkk9IUJJ7xkv0jNGRocMeqp54=;
+        b=k5UNgxnoI85bEuTUZhLxGRh6eREez/Xtk44zo3ip878Tpo18+wUMjbVXmB355GpEHz
+         rxAG1PdyYqMuVGiXKnCXSVbpGGMmkQOr2jUDnJUqyR5XaqLexAHRgLmWpkni4UX2sgpM
+         uAx31b8jHP7JzD0M258ge+MdeLsP0lCbIzIHoHTLSgxDl3PEOFKdT2mgEIEdk5YuTn4l
+         vhpuH5qg66+B7mQk04yDg0GwBmO7hwC4J1gJcqE8v7mgeQfyaeUQuUrg5Q/nwKSRTyqt
+         JAneLqr9UdWE9AgmanDI9nLCCH3HqYj5FbWDzlN3mx260M2OJsPSAq+7CH6QysAMk40d
+         y/VA==
+X-Gm-Message-State: APjAAAWO5mubqH8cMNgA0afJIvnRa1K5Sy/PuoEKKJCVuzv5BajTcgIG
+        T6/a9EOgOdq4ilqhZZbYqKK4a5lrxhs2JdCspBg=
+X-Google-Smtp-Source: APXvYqwHjWoyL1J5Jrs+HHYpGKOUUX6fk2rrVcjRpaxLwOQPHCz3m1260WX/UfjMbtX9LCjy6k3m6aYtWim4Smtjre0=
+X-Received: by 2002:a02:ac0a:: with SMTP id a10mr7105329jao.53.1573721816302;
+ Thu, 14 Nov 2019 00:56:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191112191143.282814-1-colin.king@canonical.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+References: <1559161113902-328168114-2-diffsplit-thomas@m3y3r.de> <07841ae4-03d2-1fdd-1c32-85c55688bb2a@web.de>
+In-Reply-To: <07841ae4-03d2-1fdd-1c32-85c55688bb2a@web.de>
+From:   "Gomonovych, Vasyl" <gomonovych@gmail.com>
+Date:   Thu, 14 Nov 2019 09:56:45 +0100
+Message-ID: <CAHYXAn+hzzysj6uW6ghLDtjZ7UxEDXXzvLDW46VkJyVwBD78Lw@mail.gmail.com>
+Subject: Re: scsi: pmcraid: Use *_pool_zalloc rather than *_pool_alloc
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Thomas Meyer <thomas@m3y3r.de>,
+        "James E. J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 12-11-19, 19:11, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a statement that is indented too deeply, remove
-> the extraneous indentation.
+Hi,
 
-Applied, thanks
+Yes, maybe you are right better to use the full name, sorry.
 
--- 
-~Vinod
+Regards Vasyl
+
+On Sun, Nov 3, 2019 at 5:05 PM Markus Elfring <Markus.Elfring@web.de> wrote=
+:
+>
+> > Use *_pool_zalloc rather than *_pool_alloc followed by memset with 0.
+>
+> Do you find a commit message nicer from a similar change suggestion?
+> scsi: pmcraid: Use dma_pool_zalloc rather than dma_pool_alloc
+> https://lore.kernel.org/linux-scsi/20190718181051.22882-1-gomonovych@gmai=
+l.com/
+> https://lore.kernel.org/patchwork/patch/1102040/
+>
+> Regards,
+> Markus
+
+
+
+--=20
+=D0=94=D0=BE=D0=B1=D1=80=D0=BE=D1=97 =D0=B2=D0=B0=D0=BC =D0=BF=D0=BE=D1=80=
+=D0=B8 =D0=B4=D0=BD=D1=8F.

@@ -2,103 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B138FC9FE
-	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Nov 2019 16:35:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC5D2FCA51
+	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Nov 2019 16:54:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727031AbfKNPe4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 14 Nov 2019 10:34:56 -0500
-Received: from mail-io1-f68.google.com ([209.85.166.68]:37422 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726592AbfKNPez (ORCPT
+        id S1726984AbfKNPy2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 14 Nov 2019 10:54:28 -0500
+Received: from mail-qt1-f194.google.com ([209.85.160.194]:37425 "EHLO
+        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726640AbfKNPy2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 14 Nov 2019 10:34:55 -0500
-Received: by mail-io1-f68.google.com with SMTP id 1so7274663iou.4
-        for <kernel-janitors@vger.kernel.org>; Thu, 14 Nov 2019 07:34:53 -0800 (PST)
+        Thu, 14 Nov 2019 10:54:28 -0500
+Received: by mail-qt1-f194.google.com with SMTP id g50so7303621qtb.4
+        for <kernel-janitors@vger.kernel.org>; Thu, 14 Nov 2019 07:54:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TUlRU9cKKaNVZQJfAQT/do7G2k04lqCGA4z6vNnMsGQ=;
-        b=Gf3JcA/6I5FyJbc72sKAqamUPXFxiPVt7Hj5319gDyzsYiJMudzuRdZXmvEpYlK/My
-         4UW7i5B9KNCTYQn7nI9dTWijqpLioNvi2TfIVwOFIykEZObvThrKzFX9U8pmytRR07+e
-         elXel76PlSzf5sFKyKbZ4XcUWsTA4iLSFjtn0=
+        d=ziepe.ca; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=hHBp9Rngr0/24i035bFFf44VR2vxrTAay1OWpjjtXY0=;
+        b=nzh5H/Rr4bG7FuXZ1Xz4g+iI0YNPS96ATAeGOknO8oj5zdPPXlt4R8PgYwVWRp6K0Y
+         E1f943NVvvgL/oqVEfEQ/3uTi3qSOC6bnwnboZSY0I4OrztM+aSsFA8Tu4Q16iBh+xWJ
+         TVJQbp3DGcacD7t9jV+2MggnZ7SxZI/aVoV02RgmV0IoJB8EcokprRnlOmcmyq3N6JCn
+         /PwgdQpZViou3rjvQx+B1UHrh6skYu2olQUPJYobLEKtZEWM6wGmYHHLz81QqA8T65lc
+         qWPmKSIx7CHXE5CzEHwGLUGl/Imp3zgExvdYC9UarSsE+G4QhgeAFueRQ7RELmL9y6LF
+         hk/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TUlRU9cKKaNVZQJfAQT/do7G2k04lqCGA4z6vNnMsGQ=;
-        b=GvnrWPPhnb+d3wMitefJ75xsQrL2HW4UVbP9k48qod4PCeKx7AehAN3uc3N7+guCGS
-         c9CRWqFPql9yOZLiLjzLyzm8+Y9La6KB26ShOxhxxCXtveEDUf1sEOmKFq0mreuQQQgi
-         0LpJRT1BCWGYWH29djzG/1NTpRPfUfEZGOGTCKuStFN5XjWUPmeaOcVzAV9wEVk0APhp
-         VVHFm97GrOSfVhXvMGOk/S8gKL115kDXkvM72THr8iY1g+X6UjF0RqgNjUc6ijJuFo3L
-         YuFx+vfTSW/0Co+fnOWHZyiwM42eQfCzxDoMwNFhyS3UZ3/83z/g18TW3V2xcNx7rLMZ
-         wVsg==
-X-Gm-Message-State: APjAAAXee9FtuwqDjWsMIv0p30RIXtPJDowAyyu3uqehA8t3JcNlhyok
-        PDIKhlTqAcT8S1ZI/5SGRa1YUd4bHpp2IvCgy7Pj0A==
-X-Google-Smtp-Source: APXvYqzSGRk8kaQZw1eAWtpTrcv0aiDPDHw7DokTcyToLRrifSAcy/pMiW4l+KCNIFd1O0AHk+CEm1Ze7LF4tMBSKQc=
-X-Received: by 2002:a6b:3bca:: with SMTP id i193mr7558649ioa.285.1573745693624;
- Thu, 14 Nov 2019 07:34:53 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=hHBp9Rngr0/24i035bFFf44VR2vxrTAay1OWpjjtXY0=;
+        b=SHAiAXuXz67q0umjrQUBO/nW0KtQw80bdVDBBf6LFmut246m3F2ZZ5kMKQr3Uu8x0Y
+         pplhU9RG6dX+R9MmNY3GhfgD6J7kbi5BfUxdKVvzhTUzRe6aEUfjJDpTvGwVJmvZ0B/W
+         6D+MBu1xjoA+cnpyojKQa9whcYVc2ROy/h0KZXRIu8vSRQJh5YccrQRQ0Jjfq8hDXjfx
+         NDcuB7q6Tw3xf7FQO6ctoqbtEzh+aGC+9qcqWX6xW+EhxclZGkVt5E69lfwXngRyLlUx
+         0M2bKZOs34KLZo/YCwFpW7JMrYtB8kVvl7ioc4VqrckgjOEysMxTswR7dzgjh7xwjm8C
+         wIhg==
+X-Gm-Message-State: APjAAAXwdYLBTOidUEO1vQlO+YEyCvBIPCcvrc/NNTLVPNZkA50OQ09H
+        I39RTmj/BenvuF7UhpYTIupiHw==
+X-Google-Smtp-Source: APXvYqwpiXaK+rzDkvrMcpYhzU2ua+Ir1CVwJPJkiVyvP/2Ol1ns8TMFrdkZS8ztCtW8brsIYIbrQg==
+X-Received: by 2002:ac8:2441:: with SMTP id d1mr8981400qtd.386.1573746867195;
+        Thu, 14 Nov 2019 07:54:27 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-113-180.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.113.180])
+        by smtp.gmail.com with ESMTPSA id s42sm3253153qtk.60.2019.11.14.07.54.26
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 14 Nov 2019 07:54:26 -0800 (PST)
+Received: from jgg by mlx.ziepe.ca with local (Exim 4.90_1)
+        (envelope-from <jgg@ziepe.ca>)
+        id 1iVHRy-0007br-8c; Thu, 14 Nov 2019 11:54:26 -0400
+Date:   Thu, 14 Nov 2019 11:54:26 -0400
+From:   Jason Gunthorpe <jgg@ziepe.ca>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Doug Ledford <dledford@redhat.com>, linux-rdma@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] infiniband: ocrdma: fix spelling mistake in variable name
+Message-ID: <20191114155426.GB29207@ziepe.ca>
+References: <20191107224855.417647-1-colin.king@canonical.com>
 MIME-Version: 1.0
-References: <20191107104957.306383-1-colin.king@canonical.com>
- <CAJfpegtr_xg_VG2npTfaxC+vD7B8bKa_0n9pu5vyfU-XQ9oV9Q@mail.gmail.com>
- <CAOQ4uxhnpeyK6xW-c5NOQZ_h1uhAOUn_BbVVVYhUgZ74KSKDKQ@mail.gmail.com>
- <CAJfpegu7egxf=BVyVQKKW_icjMbjdLcLdd1FEw5hXLvDaiLNVQ@mail.gmail.com> <CAOQ4uxh8n-QW+zTe3Y56suyaQf8Tcascj337AbMmKF7jf9=sjw@mail.gmail.com>
-In-Reply-To: <CAOQ4uxh8n-QW+zTe3Y56suyaQf8Tcascj337AbMmKF7jf9=sjw@mail.gmail.com>
-From:   Miklos Szeredi <miklos@szeredi.hu>
-Date:   Thu, 14 Nov 2019 16:34:42 +0100
-Message-ID: <CAJfpegvKnWR6_aPFwjcP8E7CRPesHPc3Svk=n9=39CnM=Mjfvg@mail.gmail.com>
-Subject: Re: [PATCH][V2] ovl: fix lookup failure on multi lower squashfs
-To:     Amir Goldstein <amir73il@gmail.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        Miklos Szeredi <mszeredi@redhat.com>,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        stable <stable@vger.kernel.org>, kernel-janitors@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191107224855.417647-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Nov 14, 2019 at 3:37 PM Amir Goldstein <amir73il@gmail.com> wrote:
+On Thu, Nov 07, 2019 at 10:48:55PM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a spelling mistake in the variable nak_invalid_requst_errors,
+> rename it to nak_invalid_request_errors.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/infiniband/hw/ocrdma/ocrdma_sli.h   | 2 +-
+>  drivers/infiniband/hw/ocrdma/ocrdma_stats.c | 4 ++--
+>  2 files changed, 3 insertions(+), 3 deletions(-)
 
-> What Colin has now reported brings to light the fact that
-> decoding lower file handles was also required for making inode
-> numbers persistent.
->
-> So the bad_uuid condition is required for all of the above, not
-> just for decoding origin.
->
-> > Can we do a message that makes
-> > that somewhat more clearer?
-> >
->
-> What about the logs:
->
->                 pr_warn("overlayfs: upper fs does not support xattr,
-> falling back to index=off and metacopy=off.\n");
->                 pr_warn("overlayfs: upper fs does not support file
-> handles, falling back to index=off.\n");
->                 pr_warn("overlayfs: fs on '%s' does not support file
-> handles, falling back to index=off,nfs_export=off.\n",
->
-> Should we also change them to reflect the fact the decoding origin
-> is not supported???
->
-> Seems like a lot of hassle that will end up writing too much information
-> that most people won't understand.
->
-> IIRC, we also do not guaranty persistent inode numbers for hardlinks
-> when index=off.
->
-> As for the change in question (falling back => enforcing), if that bothers you,
-> we can get rid of this change by testing emitting the print only if
-> (ofs->config.nfs_export || ofs->config.index).
+Applied to for-next, thanks
 
-That makes sense.
-
-It would also make sense to have a section about inode number
-persistence in the documentation.
-
-Thanks,
-Miklos
+Jason

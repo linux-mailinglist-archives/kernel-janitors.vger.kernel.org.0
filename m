@@ -2,33 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C8DCFCBC9
-	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Nov 2019 18:27:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99069FCC65
+	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Nov 2019 19:00:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726443AbfKNR11 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 14 Nov 2019 12:27:27 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:44707 "EHLO
+        id S1727428AbfKNSAR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 14 Nov 2019 13:00:17 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:45993 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725601AbfKNR10 (ORCPT
+        with ESMTP id S1727344AbfKNSAQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 14 Nov 2019 12:27:26 -0500
+        Thu, 14 Nov 2019 13:00:16 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iVItt-0003AZ-5S; Thu, 14 Nov 2019 17:27:21 +0000
+        id 1iVJPb-00051J-Jk; Thu, 14 Nov 2019 18:00:07 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     "K . Y . Srinivasan" <kys@microsoft.com>,
-        Haiyang Zhang <haiyangz@microsoft.com>,
-        Stephen Hemminger <sthemmin@microsoft.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        linux-hyperv@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org
+To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Ching Huang <ching2048@areca.com.tw>,
+        linux-scsi@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] video: hyperv: hyperv_fb: fix indentation issue
-Date:   Thu, 14 Nov 2019 17:27:20 +0000
-Message-Id: <20191114172720.322023-1-colin.king@canonical.com>
+Subject: [PATCH] scsi: arcmsr: fix indentation issues
+Date:   Thu, 14 Nov 2019 18:00:07 +0000
+Message-Id: <20191114180007.325856-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -40,29 +37,37 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a block of statements that are indented
-too deeply, remove the extraneous tabs.
+There are a few statements that are indented incorrectly, fix these.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/video/fbdev/hyperv_fb.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/arcmsr/arcmsr_hba.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/hyperv_fb.c b/drivers/video/fbdev/hyperv_fb.c
-index 4cd27e5172a1..5fcf4bdf85ab 100644
---- a/drivers/video/fbdev/hyperv_fb.c
-+++ b/drivers/video/fbdev/hyperv_fb.c
-@@ -582,8 +582,8 @@ static int synthvid_get_supported_resolution(struct hv_device *hdev)
- 	t = wait_for_completion_timeout(&par->wait, VSP_TIMEOUT);
- 	if (!t) {
- 		pr_err("Time out on waiting resolution response\n");
--			ret = -ETIMEDOUT;
--			goto out;
-+		ret = -ETIMEDOUT;
-+		goto out;
+diff --git a/drivers/scsi/arcmsr/arcmsr_hba.c b/drivers/scsi/arcmsr/arcmsr_hba.c
+index 88053b15c363..db687ef8a99e 100644
+--- a/drivers/scsi/arcmsr/arcmsr_hba.c
++++ b/drivers/scsi/arcmsr/arcmsr_hba.c
+@@ -1400,7 +1400,7 @@ static void arcmsr_drain_donequeue(struct AdapterControlBlock *acb, struct Comma
+ 				, pCCB->acb
+ 				, pCCB->startdone
+ 				, atomic_read(&acb->ccboutstandingcount));
+-		  return;
++		return;
  	}
- 
- 	if (msg->resolution_resp.resolution_count == 0) {
+ 	arcmsr_report_ccb_state(acb, pCCB, error);
+ }
+@@ -3476,8 +3476,8 @@ static int arcmsr_hbaC_polling_ccbdone(struct AdapterControlBlock *acb,
+ 					, pCCB->pcmd->device->id
+ 					, (u32)pCCB->pcmd->device->lun
+ 					, pCCB);
+-					pCCB->pcmd->result = DID_ABORT << 16;
+-					arcmsr_ccb_complete(pCCB);
++				pCCB->pcmd->result = DID_ABORT << 16;
++				arcmsr_ccb_complete(pCCB);
+ 				continue;
+ 			}
+ 			printk(KERN_NOTICE "arcmsr%d: polling get an illegal ccb"
 -- 
 2.20.1
 

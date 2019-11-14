@@ -2,149 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 519F9FC43B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Nov 2019 11:33:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6274CFC742
+	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Nov 2019 14:23:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726190AbfKNKdd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 14 Nov 2019 05:33:33 -0500
-Received: from mx01-fr.bfs.de ([193.174.231.67]:64403 "EHLO mx01-fr.bfs.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726115AbfKNKdc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 14 Nov 2019 05:33:32 -0500
-Received: from mail-fr.bfs.de (mail-fr.bfs.de [10.177.18.200])
-        by mx01-fr.bfs.de (Postfix) with ESMTPS id 6AF3920346;
-        Thu, 14 Nov 2019 11:33:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1573727601; h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=cKhNKGzpQjIXpZ4KphvaUafb/xdZMCyUdnUQ1YJ5Vic=;
-        b=H6bk6suLnD4e9AdKorHz8a6XT0fRGyL1Y3ljTQKsJXuK/tiaTNrLxQkDWn6S8KmFHGy24a
-        x3MvTHlAWkcZXl7+UQTbSsmE52w9BLHviTfp0rATgm620k90hPmXq5+pEyR/r7fmgrSDLY
-        u8+nxRtEJCsriRIBoDBLSyG03lcLNjS8DlFjjR0+2wRYi3nIK0XYnGPCQNcXvnHxoS//mI
-        0fMsUO1axJyl1hPp+hmdjyFzKaXAGZ0JJRAgJZmMLAxQB4DYJD4jVCHG2W97dlhpGdonc/
-        DWlhGQpXM/YGhawoKNyTqn5BCjCOFHfatns+BiD3mH1p5PDNbsL9DgNJMNtZ2A==
-Received: from [134.92.181.33] (unknown [134.92.181.33])
-        by mail-fr.bfs.de (Postfix) with ESMTPS id F3BD6BEEBD;
-        Thu, 14 Nov 2019 11:33:10 +0100 (CET)
-Message-ID: <5DCD2D66.2050206@bfs.de>
-Date:   Thu, 14 Nov 2019 11:33:10 +0100
-From:   walter harms <wharms@bfs.de>
-Reply-To: wharms@bfs.de
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; de; rv:1.9.1.16) Gecko/20101125 SUSE/3.0.11 Thunderbird/3.0.11
+        id S1727032AbfKNNXE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 14 Nov 2019 08:23:04 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:46649 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727021AbfKNNXE (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 14 Nov 2019 08:23:04 -0500
+Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
+        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+        (envelope-from <p.zabel@pengutronix.de>)
+        id 1iVF5M-0005Uk-R9; Thu, 14 Nov 2019 14:22:56 +0100
+Message-ID: <ea47e8e7a8663d33acb44dd4473a5a150ea51526.camel@pengutronix.de>
+Subject: Re: [PATCH][next] reset: npcm: check for NULL return from
+ syscon_regmap_lookup_by_compat
+From:   Philipp Zabel <p.zabel@pengutronix.de>
+To:     Colin King <colin.king@canonical.com>,
+        Avi Fishman <avifishman70@gmail.com>,
+        Tomer Maimon <tmaimon77@gmail.com>,
+        Tali Perry <tali.perry1@gmail.com>,
+        Patrick Venture <venture@google.com>,
+        Nancy Yuen <yuenn@google.com>,
+        Benjamin Fair <benjaminfair@google.com>,
+        openbmc@lists.ozlabs.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Thu, 14 Nov 2019 14:22:56 +0100
+In-Reply-To: <20191108155524.170566-1-colin.king@canonical.com>
+References: <20191108155524.170566-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.30.5-1.1 
 MIME-Version: 1.0
-To:     linux-kernel@vger.kernel.org
-CC:     Colin King <colin.king@canonical.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] staging: rtl8192u: fix indentation issue
-References: <20191114095430.132120-1-colin.king@canonical.com>
-In-Reply-To: <20191114095430.132120-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.10
-Authentication-Results: mx01-fr.bfs.de
-X-Spamd-Result: default: False [-3.10 / 7.00];
-         ARC_NA(0.00)[];
-         HAS_REPLYTO(0.00)[wharms@bfs.de];
-         BAYES_HAM(-3.00)[100.00%];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         REPLYTO_ADDR_EQ_FROM(0.00)[];
-         RCPT_COUNT_FIVE(0.00)[5];
-         DKIM_SIGNED(0.00)[];
-         NEURAL_HAM(-0.00)[-0.999,0];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         MID_RHS_MATCH_FROM(0.00)[];
-         RCVD_TLS_ALL(0.00)[]
+X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
+X-SA-Exim-Mail-From: p.zabel@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hi Colin,
 
-
-Am 14.11.2019 10:54, schrieb Colin King:
+On Fri, 2019-11-08 at 15:55 +0000, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> There is a block of statements that are indented
-> too deeply, remove the extraneous tabs.
+> Function syscon_regmap_lookup_by_compat can return a NULL pointer, so
+
+Could you point out where that NULL pointer would come from? As far as I
+understand, syscon_regmap_lookup_by_compatible() should either return a
+negative error code, or syscon->regmap, which should never be NULL.
+
+> the IS_ERR check on the return is incorrect. Fix this by checking for
+> IS_ERR_OR_NULL and return -ENODEV if true.  This avoids a null pointer
+> dereference on gcr_regmap later on.
 > 
+> Addresses-Coverity: ("Dereference null return (stat)")
+> Fixes: b3f1d036f26d ("reset: npcm: add NPCM reset controller driver")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/staging/rtl8192u/r819xU_cmdpkt.c | 25 ++++++++++++------------
->  1 file changed, 13 insertions(+), 12 deletions(-)
+>  drivers/reset/reset-npcm.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/staging/rtl8192u/r819xU_cmdpkt.c b/drivers/staging/rtl8192u/r819xU_cmdpkt.c
-> index e064f43fd8b6..bc98cdaf61ec 100644
-> --- a/drivers/staging/rtl8192u/r819xU_cmdpkt.c
-> +++ b/drivers/staging/rtl8192u/r819xU_cmdpkt.c
-> @@ -169,19 +169,20 @@ static void cmdpkt_beacontimerinterrupt_819xusb(struct net_device *dev)
->  {
->  	struct r8192_priv *priv = ieee80211_priv(dev);
->  	u16 tx_rate;
-> -		/* 87B have to S/W beacon for DTM encryption_cmn. */
-> -		if (priv->ieee80211->current_network.mode == IEEE_A ||
-> -		    priv->ieee80211->current_network.mode == IEEE_N_5G ||
-> -		    (priv->ieee80211->current_network.mode == IEEE_N_24G &&
-> -		     (!priv->ieee80211->pHTInfo->bCurSuppCCK))) {
-> -			tx_rate = 60;
-> -			DMESG("send beacon frame  tx rate is 6Mbpm\n");
-> -		} else {
-> -			tx_rate = 10;
-> -			DMESG("send beacon frame  tx rate is 1Mbpm\n");
-> -		}
+> diff --git a/drivers/reset/reset-npcm.c b/drivers/reset/reset-npcm.c
+> index 2ea4d3136e15..9febf8bed2f6 100644
+> --- a/drivers/reset/reset-npcm.c
+> +++ b/drivers/reset/reset-npcm.c
+> @@ -161,9 +161,9 @@ static int npcm_usb_reset(struct platform_device *pdev, struct npcm_rc_data *rc)
+>  	of_match_device(dev->driver->of_match_table, dev)->data;
 >  
-> -		rtl819xusb_beacon_tx(dev, tx_rate); /* HW Beacon */
-> +	/* 87B have to S/W beacon for DTM encryption_cmn. */
-> +	if (priv->ieee80211->current_network.mode == IEEE_A ||
-> +	    priv->ieee80211->current_network.mode == IEEE_N_5G ||
-> +	    (priv->ieee80211->current_network.mode == IEEE_N_24G &&
-> +	     (!priv->ieee80211->pHTInfo->bCurSuppCCK))) {
-> +		tx_rate = 60;
-> +		DMESG("send beacon frame  tx rate is 6Mbpm\n");
-> +	} else {
-> +		tx_rate = 10;
-> +		DMESG("send beacon frame  tx rate is 1Mbpm\n");
-> +	}
-> +
-> +	rtl819xusb_beacon_tx(dev, tx_rate); /* HW Beacon */
->  }
+>  	gcr_regmap = syscon_regmap_lookup_by_compatible(gcr_dt);
+> -	if (IS_ERR(gcr_regmap)) {
+> +	if (IS_ERR_OR_NULL(gcr_regmap)) {
+>  		dev_err(&pdev->dev, "Failed to find %s\n", gcr_dt);
+> -		return PTR_ERR(gcr_regmap);
+> +		return -ENODEV;
+>  	}
 >  
->  /*-----------------------------------------------------------------------------
+>  	/* checking which USB device is enabled */
 
-this is hard to read in the first place.
-Maybe using switch() here is better to read (untested example below).
+regards
+Philipp
 
-
-	switch(priv->ieee80211->current_network.mode) {
-
-	case IEEE_A:
-	case IEEE_N_5G:
-	 tx_rate = 60;
-         break;
-        IEEE_N_24G:
-	     if ( !priv->ieee80211->pHTInfo->bCurSuppCCK )
-		tx_rate = 60;
-             // fall truh
-
-        default:
-		tx_rate = 10;
-
-	}	
-
-	if (txrate == 60 )
-	     DMESG("send beacon frame  tx rate is 6Mbpm\n");
-	else if (txrate == 10 )
-	     DMESG("send beacon frame  tx rate is 1Mbpm\n");
-
-JM2C
-
-re,
- wh

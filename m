@@ -2,87 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F530FC1F8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Nov 2019 09:57:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21DEFFC234
+	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Nov 2019 10:08:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726330AbfKNI47 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 14 Nov 2019 03:56:59 -0500
-Received: from mail-io1-f66.google.com ([209.85.166.66]:40043 "EHLO
-        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725976AbfKNI46 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 14 Nov 2019 03:56:58 -0500
-Received: by mail-io1-f66.google.com with SMTP id p6so5927163iod.7;
-        Thu, 14 Nov 2019 00:56:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=NbXXK6bu0dg2zI7R5KEkk9IUJJ7xkv0jNGRocMeqp54=;
-        b=oiT2RC/bejWLycuxKkNmrXLshuKJkpQ8QbbCzp5sZf7uCmkjcLVlsqufYaB76kVLEp
-         td9Wkb5yZErKpFF7Q3iWppBkvWx91gbXE5ErUKPMMEKvDqkOOuMLfcWATWNjxc0t23Sb
-         4oZXa5Bpvo0cLB8oKsz+NNEEvftslGUdU/L+4vMvvDxNyQ71XNXefomOoHPgbzVmjVa6
-         3GaKNTRCALTkfi1LWgbSLHqR+z6u3NMduZDEAj6utVvKx2rWvdFPI+4v57+4k4e3FuSC
-         /3HfVUjcY1QV4wW2t7T3XhaxkcBmzFiS2JGp83MiyMOzOiBEFqFn5RPTyuHMZSFvlWF+
-         9ZiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=NbXXK6bu0dg2zI7R5KEkk9IUJJ7xkv0jNGRocMeqp54=;
-        b=k5UNgxnoI85bEuTUZhLxGRh6eREez/Xtk44zo3ip878Tpo18+wUMjbVXmB355GpEHz
-         rxAG1PdyYqMuVGiXKnCXSVbpGGMmkQOr2jUDnJUqyR5XaqLexAHRgLmWpkni4UX2sgpM
-         uAx31b8jHP7JzD0M258ge+MdeLsP0lCbIzIHoHTLSgxDl3PEOFKdT2mgEIEdk5YuTn4l
-         vhpuH5qg66+B7mQk04yDg0GwBmO7hwC4J1gJcqE8v7mgeQfyaeUQuUrg5Q/nwKSRTyqt
-         JAneLqr9UdWE9AgmanDI9nLCCH3HqYj5FbWDzlN3mx260M2OJsPSAq+7CH6QysAMk40d
-         y/VA==
-X-Gm-Message-State: APjAAAWO5mubqH8cMNgA0afJIvnRa1K5Sy/PuoEKKJCVuzv5BajTcgIG
-        T6/a9EOgOdq4ilqhZZbYqKK4a5lrxhs2JdCspBg=
-X-Google-Smtp-Source: APXvYqwHjWoyL1J5Jrs+HHYpGKOUUX6fk2rrVcjRpaxLwOQPHCz3m1260WX/UfjMbtX9LCjy6k3m6aYtWim4Smtjre0=
-X-Received: by 2002:a02:ac0a:: with SMTP id a10mr7105329jao.53.1573721816302;
- Thu, 14 Nov 2019 00:56:56 -0800 (PST)
-MIME-Version: 1.0
-References: <1559161113902-328168114-2-diffsplit-thomas@m3y3r.de> <07841ae4-03d2-1fdd-1c32-85c55688bb2a@web.de>
-In-Reply-To: <07841ae4-03d2-1fdd-1c32-85c55688bb2a@web.de>
-From:   "Gomonovych, Vasyl" <gomonovych@gmail.com>
-Date:   Thu, 14 Nov 2019 09:56:45 +0100
-Message-ID: <CAHYXAn+hzzysj6uW6ghLDtjZ7UxEDXXzvLDW46VkJyVwBD78Lw@mail.gmail.com>
-Subject: Re: scsi: pmcraid: Use *_pool_zalloc rather than *_pool_alloc
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Thomas Meyer <thomas@m3y3r.de>,
-        "James E. J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        id S1727380AbfKNJIg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 14 Nov 2019 04:08:36 -0500
+Received: from bilbo.ozlabs.org ([203.11.71.1]:39427 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726428AbfKNJIe (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 14 Nov 2019 04:08:34 -0500
+Received: by ozlabs.org (Postfix, from userid 1034)
+        id 47DFyS5DKkz9sRs; Thu, 14 Nov 2019 20:08:32 +1100 (AEDT)
+X-powerpc-patch-notification: thanks
+X-powerpc-patch-commit: 090d5ab93d0b8a079dd516c16649bd00ba4f7302
+In-Reply-To: <1543498518-107601-1-git-send-email-yuehaibing@huawei.com>
+To:     YueHaibing <yuehaibing@huawei.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michal Suchanek <msuchanek@suse.de>,
+        Diana Craciun <diana.craciun@nxp.com>,
+        "Mauricio Faria de Oliveira" <mauricfo@linux.vnet.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>
+From:   Michael Ellerman <patch-notifications@ellerman.id.au>
+Cc:     linuxppc-dev@lists.ozlabs.org, kernel-janitors@vger.kernel.org,
+        YueHaibing <yuehaibing@huawei.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next] powerpc/64s: Fix debugfs_simple_attr.cocci warnings
+Message-Id: <47DFyS5DKkz9sRs@ozlabs.org>
+Date:   Thu, 14 Nov 2019 20:08:32 +1100 (AEDT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
+On Thu, 2018-11-29 at 13:35:18 UTC, YueHaibing wrote:
+> Use DEFINE_DEBUGFS_ATTRIBUTE rather than DEFINE_SIMPLE_ATTRIBUTE
+> for debugfs files.
+> 
+> Semantic patch information:
+> Rationale: DEFINE_SIMPLE_ATTRIBUTE + debugfs_create_file()
+> imposes some significant overhead as compared to
+> DEFINE_DEBUGFS_ATTRIBUTE + debugfs_create_file_unsafe().
+> 
+> Generated by: scripts/coccinelle/api/debugfs/debugfs_simple_attr.cocci
+> 
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-Yes, maybe you are right better to use the full name, sorry.
+Applied to powerpc next, thanks.
 
-Regards Vasyl
+https://git.kernel.org/powerpc/c/090d5ab93d0b8a079dd516c16649bd00ba4f7302
 
-On Sun, Nov 3, 2019 at 5:05 PM Markus Elfring <Markus.Elfring@web.de> wrote=
-:
->
-> > Use *_pool_zalloc rather than *_pool_alloc followed by memset with 0.
->
-> Do you find a commit message nicer from a similar change suggestion?
-> scsi: pmcraid: Use dma_pool_zalloc rather than dma_pool_alloc
-> https://lore.kernel.org/linux-scsi/20190718181051.22882-1-gomonovych@gmai=
-l.com/
-> https://lore.kernel.org/patchwork/patch/1102040/
->
-> Regards,
-> Markus
-
-
-
---=20
-=D0=94=D0=BE=D0=B1=D1=80=D0=BE=D1=97 =D0=B2=D0=B0=D0=BC =D0=BF=D0=BE=D1=80=
-=D0=B8 =D0=B4=D0=BD=D1=8F.
+cheers

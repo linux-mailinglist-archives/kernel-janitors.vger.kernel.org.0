@@ -2,114 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9F1FFDDBC
-	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Nov 2019 13:26:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C6FE8FDEC6
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Nov 2019 14:20:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727940AbfKOM0a (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 15 Nov 2019 07:26:30 -0500
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:32826 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727365AbfKOMZN (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 15 Nov 2019 07:25:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
-        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
-        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=qICwKqMRm4yg2Mobp12iIzV+VQB/juSAmGwdio0/GME=; b=mnFynAlTrYRB
-        cytoaSOKA8ZeJoWK3vvwmFvrKNUY9ZiWEnWS+UayPDKvWfadrWpSR/5gxz7RrzJylzOLbiiUNMG6A
-        PZHb7dQEb6MO9D74N1r9Ye8sbV06EnROVXHdxr1ipo1K5uzrYW10wCccsPRWl64JPnYbgbnUABYdQ
-        eqKSw=;
-Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=ypsilon.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <broonie@sirena.co.uk>)
-        id 1iVaer-0000Jv-Ld; Fri, 15 Nov 2019 12:25:01 +0000
-Received: by ypsilon.sirena.org.uk (Postfix, from userid 1000)
-        id 23ADF27415A7; Fri, 15 Nov 2019 12:25:01 +0000 (GMT)
-From:   Mark Brown <broonie@kernel.org>
-To:     Colin Ian King <colin.king@canonical.com>
-Cc:     alsa-devel@alsa-project.org, Jaroslav Kysela <perex@perex.cz>,
-        kernel-janitors@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Takashi Iwai <tiwai@suse.com>
-Subject: Applied "ASoC: tas2770: clean up an indentation issue" to the asoc tree
-In-Reply-To: <20191112190218.282337-1-colin.king@canonical.com>
-X-Patchwork-Hint: ignore
-Message-Id: <20191115122501.23ADF27415A7@ypsilon.sirena.org.uk>
-Date:   Fri, 15 Nov 2019 12:25:01 +0000 (GMT)
+        id S1727421AbfKONTy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 15 Nov 2019 08:19:54 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:6237 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727249AbfKONTy (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 15 Nov 2019 08:19:54 -0500
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 48828598D73E8012590F;
+        Fri, 15 Nov 2019 21:19:51 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 15 Nov 2019 21:19:44 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        Damien Le Moal <damien.lemoal@wdc.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-scsi@vger.kernel.org>,
+        <linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] scsi: sd_zbc: Remove set but not used variable 'buflen'
+Date:   Fri, 15 Nov 2019 13:18:29 +0000
+Message-ID: <20191115131829.162946-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-   ASoC: tas2770: clean up an indentation issue
+drivers/scsi/sd_zbc.c: In function 'sd_zbc_check_zones':
+drivers/scsi/sd_zbc.c:341:9: warning:
+ variable 'buflen' set but not used [-Wunused-but-set-variable]
 
-has been applied to the asoc tree at
+It is not used since commit d9dd73087a8b ("block: Enhance
+blk_revalidate_disk_zones()")
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.5
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
-From b26eb5173c85082eec7d6e18369f6f9d96bf0b21 Mon Sep 17 00:00:00 2001
-From: Colin Ian King <colin.king@canonical.com>
-Date: Tue, 12 Nov 2019 19:02:18 +0000
-Subject: [PATCH] ASoC: tas2770: clean up an indentation issue
-
-There is a block that is indented too deeply, remove
-the extraneous tabs.
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Link: https://lore.kernel.org/r/20191112190218.282337-1-colin.king@canonical.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- sound/soc/codecs/tas2770.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/scsi/sd_zbc.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/sound/soc/codecs/tas2770.c b/sound/soc/codecs/tas2770.c
-index ad76f22fcfac..54c8135fe43c 100644
---- a/sound/soc/codecs/tas2770.c
-+++ b/sound/soc/codecs/tas2770.c
-@@ -761,12 +761,12 @@ static int tas2770_i2c_probe(struct i2c_client *client,
- 	tas2770->reset_gpio = devm_gpiod_get_optional(tas2770->dev,
- 							  "reset-gpio",
- 						      GPIOD_OUT_HIGH);
--		if (IS_ERR(tas2770->reset_gpio)) {
--			if (PTR_ERR(tas2770->reset_gpio) == -EPROBE_DEFER) {
--				tas2770->reset_gpio = NULL;
--				return -EPROBE_DEFER;
--			}
-+	if (IS_ERR(tas2770->reset_gpio)) {
-+		if (PTR_ERR(tas2770->reset_gpio) == -EPROBE_DEFER) {
-+			tas2770->reset_gpio = NULL;
-+			return -EPROBE_DEFER;
- 		}
-+	}
+diff --git a/drivers/scsi/sd_zbc.c b/drivers/scsi/sd_zbc.c
+index 23281825ec38..0e5ede48f045 100644
+--- a/drivers/scsi/sd_zbc.c
++++ b/drivers/scsi/sd_zbc.c
+@@ -338,7 +338,6 @@ static int sd_zbc_check_zoned_characteristics(struct scsi_disk *sdkp,
+ static int sd_zbc_check_zones(struct scsi_disk *sdkp, unsigned char *buf,
+ 			      u32 *zblocks)
+ {
+-	size_t buflen;
+ 	u64 zone_blocks = 0;
+ 	sector_t max_lba;
+ 	unsigned char *rec;
+@@ -363,7 +362,6 @@ static int sd_zbc_check_zones(struct scsi_disk *sdkp, unsigned char *buf,
+ 	}
  
- 	tas2770->channel_size = 0;
- 	tas2770->slot_width = 0;
--- 
-2.20.1
+ 	/* Parse REPORT ZONES header */
+-	buflen = min_t(size_t, get_unaligned_be32(&buf[0]) + 64, SD_BUF_SIZE);
+ 	rec = buf + 64;
+ 	zone_blocks = get_unaligned_be64(&rec[8]);
+ 	if (!zone_blocks || !is_power_of_2(zone_blocks)) {
+
+
 

@@ -2,60 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 99B92FD0CD
-	for <lists+kernel-janitors@lfdr.de>; Thu, 14 Nov 2019 23:15:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C7AEBFD5B6
+	for <lists+kernel-janitors@lfdr.de>; Fri, 15 Nov 2019 07:06:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726997AbfKNWPN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 14 Nov 2019 17:15:13 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:52872 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726613AbfKNWPN (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 14 Nov 2019 17:15:13 -0500
-Received: from [82.43.126.140] (helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iVNOQ-0006CO-DR; Thu, 14 Nov 2019 22:15:10 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Valdis Kletnieks <valdis.kletnieks@vt.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-fsdevel@vger.kernel.org, devel@driverdev.osuosl.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] staging: exfat: fix spelling mistake "maont" -> "mount"
-Date:   Thu, 14 Nov 2019 22:15:09 +0000
-Message-Id: <20191114221509.10728-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727119AbfKOGGD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 15 Nov 2019 01:06:03 -0500
+Received: from helcar.hmeau.com ([216.24.177.18]:57828 "EHLO deadmen.hmeau.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725774AbfKOGGD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 15 Nov 2019 01:06:03 -0500
+Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
+        by deadmen.hmeau.com with esmtps (Exim 4.89 #2 (Debian))
+        id 1iVUjy-0004ff-Nx; Fri, 15 Nov 2019 14:05:54 +0800
+Received: from herbert by gondobar with local (Exim 4.89)
+        (envelope-from <herbert@gondor.apana.org.au>)
+        id 1iVUjw-00065I-Hc; Fri, 15 Nov 2019 14:05:52 +0800
+Date:   Fri, 15 Nov 2019 14:05:52 +0800
+From:   Herbert Xu <herbert@gondor.apana.org.au>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Corentin Labbe <clabbe.montjoie@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>, linux-crypto@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next][V2] crypto: allwinner: fix some spelling mistakes
+Message-ID: <20191115060552.tmmvcvahi3wyqa2v@gondor.apana.org.au>
+References: <20191105150359.61379-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191105150359.61379-1-colin.king@canonical.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Tue, Nov 05, 2019 at 03:03:59PM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There are spelling mistakes in dev_warn and dev_err messages. Fix these.
+> Change "recommandation" to "recommendation" and "tryed" to "tried".
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+> 
+> V2: Fix "tryed"
+> 
+> ---
+>  drivers/crypto/allwinner/sun8i-ce/sun8i-ce-core.c | 4 ++--
+>  drivers/crypto/allwinner/sun8i-ss/sun8i-ss-core.c | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
 
-There is a spelling mistake in a kernel info message. Fix it.
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/staging/exfat/exfat_super.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/staging/exfat/exfat_super.c b/drivers/staging/exfat/exfat_super.c
-index 23002aefc964..b0fcdbbe4579 100644
---- a/drivers/staging/exfat/exfat_super.c
-+++ b/drivers/staging/exfat/exfat_super.c
-@@ -364,7 +364,7 @@ static int ffsMountVol(struct super_block *sb)
- 	exfat_bdev_open(sb);
- 
- 	if (p_bd->sector_size < sb->s_blocksize) {
--		printk(KERN_INFO "EXFAT: maont failed - sector size %d less than blocksize %ld\n",
-+		printk(KERN_INFO "EXFAT: mount failed - sector size %d less than blocksize %ld\n",
- 			p_bd->sector_size,  sb->s_blocksize);
- 		ret = -EINVAL;
- 		goto out;
+Patch applied.  Thanks.
 -- 
-2.20.1
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt

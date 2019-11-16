@@ -2,128 +2,132 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1EB4FEB02
-	for <lists+kernel-janitors@lfdr.de>; Sat, 16 Nov 2019 07:52:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8D99FECDC
+	for <lists+kernel-janitors@lfdr.de>; Sat, 16 Nov 2019 16:15:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726197AbfKPGwN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 16 Nov 2019 01:52:13 -0500
-Received: from smtprelay0198.hostedemail.com ([216.40.44.198]:57115 "EHLO
-        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725978AbfKPGwN (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 16 Nov 2019 01:52:13 -0500
-Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
-        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 96FCD837F24D;
-        Sat, 16 Nov 2019 06:52:12 +0000 (UTC)
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,:::::::::,RULES_HIT:41:69:355:379:599:973:988:989:1260:1277:1311:1313:1314:1345:1359:1437:1515:1516:1518:1534:1543:1593:1594:1711:1730:1747:1777:1792:2194:2199:2393:2559:2562:2828:2892:2904:2914:3138:3139:3140:3141:3142:3354:3622:3867:3870:3871:3872:4250:4321:4605:5007:6119:7903:8957:9592:10004:10400:10848:11026:11232:11473:11658:11914:12043:12296:12297:12438:12555:12683:12740:12760:12895:13439:14659:14721:21080:21099:21627:21740:30046:30054:30075:30083:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
-X-HE-Tag: waste86_1326b823dc90e
-X-Filterd-Recvd-Size: 4109
-Received: from XPS-9350.home (unknown [47.151.135.224])
-        (Authenticated sender: joe@perches.com)
-        by omf08.hostedemail.com (Postfix) with ESMTPA;
-        Sat, 16 Nov 2019 06:52:11 +0000 (UTC)
-Message-ID: <1b188286647007055e90565da47f562d303aa8e2.camel@perches.com>
-Subject: Re: [PATCH] staging: rtl8192u: fix indentation issue
-From:   Joe Perches <joe@perches.com>
-To:     Colin King <colin.king@canonical.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Fri, 15 Nov 2019 22:51:52 -0800
-In-Reply-To: <3fd995ebb9ec87b202942fa1f000755c2d3cc4cb.camel@perches.com>
-References: <20191114095430.132120-1-colin.king@canonical.com>
-         <3fd995ebb9ec87b202942fa1f000755c2d3cc4cb.camel@perches.com>
-Content-Type: text/plain; charset="ISO-8859-1"
-User-Agent: Evolution 3.34.1-2 
+        id S1727773AbfKPPPc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 16 Nov 2019 10:15:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:45246 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727691AbfKPPPc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 16 Nov 2019 10:15:32 -0500
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id EC92820723;
+        Sat, 16 Nov 2019 15:15:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1573917331;
+        bh=sfswPkLkh/RNYHt16XH+PrtY9jP4ASLZcJsAC/YIzwA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=ZKJyUylVCN+a9iXLtHG8+ZWDhyNIvfOY8eNyWefAn1vTJiJ7+0AEXw0LW7gEaOPNV
+         hFK++8da/MVnZQjEU+SjYrim4yrndm0TtaxZ7aqbjL9HyJCTt4JadQD/uNR4ElTVTF
+         grVEIrpVmkAFOLQLPJ0aIo6IqNTXTfLCf1rIVOAo=
+Date:   Sat, 16 Nov 2019 15:15:25 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
+To:     "Sa, Nuno" <Nuno.Sa@analog.com>
+Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+        "colin.king@canonical.com" <colin.king@canonical.com>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: temperature: ltc2983: fix u32 read into a unsigned
+ long long
+Message-ID: <20191116151516.5c7a7555@archlinux>
+In-Reply-To: <20191110114823.2bbe87b0@archlinux>
+References: <20191105202818.90065-1-colin.king@canonical.com>
+        <dab9cfd93e6affa5d94f078154c3e181303bbf47.camel@analog.com>
+        <20191110114823.2bbe87b0@archlinux>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 2019-11-15 at 22:45 -0800, Joe Perches wrote:
-> This function might as well be deleted instead as
-> rtl819xusb_beacon_tx is a noop function in
-> drivers/staging/rtl8192u/r8192U_core.c
+On Sun, 10 Nov 2019 11:48:23 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-Perhaps:
----
- drivers/staging/rtl8192u/r8192U.h        |  1 -
- drivers/staging/rtl8192u/r8192U_core.c   |  7 -------
- drivers/staging/rtl8192u/r819xU_cmdpkt.c | 22 ----------------------
- 3 files changed, 30 deletions(-)
+> On Wed, 6 Nov 2019 14:19:52 +0000
+> "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
+>=20
+> > On Tue, 2019-11-05 at 20:28 +0000, Colin King wrote: =20
+> > >=20
+> > > From: Colin Ian King <colin.king@canonical.com>
+> > >=20
+> > > Currently the read of temp using of_property_read_u32_index is
+> > > reading
+> > > a u32 value into a unsigned long long.  This relies on machine
+> > > endianness
+> > > to work correctly, so fix this by reading a u32 value and setting
+> > > temp
+> > > to this value.
+> > >=20
+> > > Addresses-Coverity: ("Reliance on integer endianness")
+> > > Fixes: f110f3188e56 ("iio: temperature: Add support for LTC2983")
+> > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > > ---
+> > >  drivers/iio/temperature/ltc2983.c | 6 ++++--
+> > >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/drivers/iio/temperature/ltc2983.c
+> > > b/drivers/iio/temperature/ltc2983.c
+> > > index ddf47023364b..d39c0d6b77f1 100644
+> > > --- a/drivers/iio/temperature/ltc2983.c
+> > > +++ b/drivers/iio/temperature/ltc2983.c
+> > > @@ -444,8 +444,10 @@ static struct ltc2983_custom_sensor
+> > > *__ltc2983_custom_sensor_new(
+> > >  			else
+> > >  				temp =3D __convert_to_raw(temp,
+> > > resolution);
+> > >  		} else {
+> > > -			of_property_read_u32_index(np, propname, index,
+> > > -						   (u32 *)&temp);
+> > > +			u32 t32;
+> > > +
+> > > +			of_property_read_u32_index(np, propname, index,
+> > > &t32);
+> > > +			temp =3D t32;
+> > >  		}
+> > > =20
+> > >  		for (j =3D 0; j < n_size; j++)   =20
+> >=20
+> > Acked-by: Nuno S=C3=A1 <nuno.sa@analog.com>
+> >  =20
+>=20
+> A slight complexity around this one. I'm not sure I'll have time for a pu=
+ll
+> before the merge window (as Greg will only take them to about 1 week befo=
+re
+> that opens so we get some exposure in Linux next).
+>=20
+> As a result I'll have to sit on this one until Linus comments on rc7, pro=
+bably
+> later today.  Otherwise it'll be material for stable post release.
+>=20
+> If I seem to have lost it give me a poke and we'll make sure it goes into=
+=20
+> an early rc instead of at the merge window.
+I forgot about it when I sent the final pull request out.  Sorry about that,
+will have to wait for post merge window.
 
-diff --git a/drivers/staging/rtl8192u/r8192U.h b/drivers/staging/rtl8192u/r8192U.h
-index ec33fb9..0891db 100644
---- a/drivers/staging/rtl8192u/r8192U.h
-+++ b/drivers/staging/rtl8192u/r8192U.h
-@@ -1111,7 +1111,6 @@ int rtl8192_up(struct net_device *dev);
- void rtl8192_commit(struct net_device *dev);
- void rtl8192_set_chan(struct net_device *dev, short ch);
- void rtl8192_set_rxconf(struct net_device *dev);
--void rtl819xusb_beacon_tx(struct net_device *dev, u16 tx_rate);
- 
- void EnableHWSecurityConfig8192(struct net_device *dev);
- void setKey(struct net_device *dev, u8 EntryNo, u8 KeyIndex, u16 KeyType, u8 *MacAddr, u8 DefaultKey, u32 *KeyContent);
-diff --git a/drivers/staging/rtl8192u/r8192U_core.c b/drivers/staging/rtl8192u/r8192U_core.c
-index 48f1591e..98705e 100644
---- a/drivers/staging/rtl8192u/r8192U_core.c
-+++ b/drivers/staging/rtl8192u/r8192U_core.c
-@@ -1163,13 +1163,6 @@ static void rtl8192_net_update(struct net_device *dev)
- 	}
- }
- 
--/* temporary hw beacon is not used any more.
-- * open it when necessary
-- */
--void rtl819xusb_beacon_tx(struct net_device *dev, u16  tx_rate)
--{
--}
--
- short rtl819xU_tx_cmd(struct net_device *dev, struct sk_buff *skb)
- {
- 	struct r8192_priv *priv = ieee80211_priv(dev);
-diff --git a/drivers/staging/rtl8192u/r819xU_cmdpkt.c b/drivers/staging/rtl8192u/r819xU_cmdpkt.c
-index e064f4..83d1fc7 100644
---- a/drivers/staging/rtl8192u/r819xU_cmdpkt.c
-+++ b/drivers/staging/rtl8192u/r819xU_cmdpkt.c
-@@ -165,25 +165,6 @@ static void cmpk_handle_tx_feedback(struct net_device *dev, u8 *pmsg)
- 	 */
- }
- 
--static void cmdpkt_beacontimerinterrupt_819xusb(struct net_device *dev)
--{
--	struct r8192_priv *priv = ieee80211_priv(dev);
--	u16 tx_rate;
--		/* 87B have to S/W beacon for DTM encryption_cmn. */
--		if (priv->ieee80211->current_network.mode == IEEE_A ||
--		    priv->ieee80211->current_network.mode == IEEE_N_5G ||
--		    (priv->ieee80211->current_network.mode == IEEE_N_24G &&
--		     (!priv->ieee80211->pHTInfo->bCurSuppCCK))) {
--			tx_rate = 60;
--			DMESG("send beacon frame  tx rate is 6Mbpm\n");
--		} else {
--			tx_rate = 10;
--			DMESG("send beacon frame  tx rate is 1Mbpm\n");
--		}
--
--		rtl819xusb_beacon_tx(dev, tx_rate); /* HW Beacon */
--}
--
- /*-----------------------------------------------------------------------------
-  * Function:    cmpk_handle_interrupt_status()
-  *
-@@ -238,9 +219,6 @@ static void cmpk_handle_interrupt_status(struct net_device *dev, u8 *pmsg)
- 			priv->ieee80211->bibsscoordinator = false;
- 			priv->stats.txbeaconerr++;
- 		}
--
--		if (rx_intr_status.interrupt_status & ISR_BCN_TIMER_INTR)
--			cmdpkt_beacontimerinterrupt_819xusb(dev);
- 	}
- 
- 	/* Other information in interrupt status we need? */
+Applied to the fixes-togreg branch of iio.git.
 
+Thanks,
+
+Jonathan
+
+>=20
+> Thanks,
+>=20
+> Jonathan
+>=20
+> > Thanks,
+> > Nuno S=C3=A1 =20
+>=20
 

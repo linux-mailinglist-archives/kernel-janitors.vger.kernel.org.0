@@ -2,132 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D8D99FECDC
-	for <lists+kernel-janitors@lfdr.de>; Sat, 16 Nov 2019 16:15:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC1E3FF556
+	for <lists+kernel-janitors@lfdr.de>; Sat, 16 Nov 2019 20:47:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727773AbfKPPPc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 16 Nov 2019 10:15:32 -0500
-Received: from mail.kernel.org ([198.145.29.99]:45246 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727691AbfKPPPc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 16 Nov 2019 10:15:32 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EC92820723;
-        Sat, 16 Nov 2019 15:15:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1573917331;
-        bh=sfswPkLkh/RNYHt16XH+PrtY9jP4ASLZcJsAC/YIzwA=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=ZKJyUylVCN+a9iXLtHG8+ZWDhyNIvfOY8eNyWefAn1vTJiJ7+0AEXw0LW7gEaOPNV
-         hFK++8da/MVnZQjEU+SjYrim4yrndm0TtaxZ7aqbjL9HyJCTt4JadQD/uNR4ElTVTF
-         grVEIrpVmkAFOLQLPJ0aIo6IqNTXTfLCf1rIVOAo=
-Date:   Sat, 16 Nov 2019 15:15:25 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Sa, Nuno" <Nuno.Sa@analog.com>
-Cc:     "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
-        "colin.king@canonical.com" <colin.king@canonical.com>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: temperature: ltc2983: fix u32 read into a unsigned
- long long
-Message-ID: <20191116151516.5c7a7555@archlinux>
-In-Reply-To: <20191110114823.2bbe87b0@archlinux>
-References: <20191105202818.90065-1-colin.king@canonical.com>
-        <dab9cfd93e6affa5d94f078154c3e181303bbf47.camel@analog.com>
-        <20191110114823.2bbe87b0@archlinux>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1727605AbfKPTry (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 16 Nov 2019 14:47:54 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:36006 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727473AbfKPTrx (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 16 Nov 2019 14:47:53 -0500
+Received: by mail-wr1-f65.google.com with SMTP id r10so14956323wrx.3;
+        Sat, 16 Nov 2019 11:47:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=kF8bADSuYOyZZ04T0VZZ38WxPOWk9q6i2kAOnZ54aEI=;
+        b=eG8Ac8nL9fJJ4dAxSlZ5w1mlOPQ/aZ44+2vKtS/iCw26fv8FTKt6AqpoUMiPu3pOBr
+         Wm46KJ9wUiA9nhrMoDOjF80R3DNyRC8bbZ/wono9/fKwCBzuAqiDb20MjxrXNtAsY6De
+         xhEIgdFubj2LpSMBCDZZAdpMbZAbYZhggITGNS/o+rMfp0jaNipFl4Hq+nFiJVhl+1Uh
+         0JpZbxWG3JUXhbZZ4U7Huzleg/97V3LYFyoVYvXQYTG120n8YyULMVrGXOmtuuBGJeoT
+         qlr2Fgp4DE3rpVMiXtX2fj8CKHK2833jMMxeacBhAk5/2WzPrTakAsOuIGzxz3DJPKcy
+         1KuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=kF8bADSuYOyZZ04T0VZZ38WxPOWk9q6i2kAOnZ54aEI=;
+        b=BHMW4R5RfhWANla4+AW2CN3TKIbko+oBe+Vpfc7jk0Jbhlj0pIA178x8Aisuwc74XN
+         I3HpXaaKZ2wD0WgZg4vP5hTwqPeb0IGdG49zqaBGxJZlcdiMdlfRtlIn8A2DcsUo9zQm
+         KtsRMqWQ1AQm//bmdcpPvsJG/bL9sBHfVzMGopwViEYhLFABGtaQK11zawbTFk703gk5
+         DrNh/mYxiFG5s6kDJh/KUEgfryAG2odr2TKS+EmD1g/+i6mQocwgVHQWduY/7ggGMwOr
+         IMQQuW0HETh+/NtOPC0kaPp1XL/MVb3ELyH7vAmV5E+2kbSXLLv9VjEFpzkLcPabPOt5
+         laOg==
+X-Gm-Message-State: APjAAAWqnyutIzTALx0eKB45Lg6EP5KygeLTV5GaoAvf/DntzU/S0vd0
+        O3ZxzkOOWproGaA7Mg4B5oc=
+X-Google-Smtp-Source: APXvYqx1+kz8MC/TEjt8V8DXDIvq8MBgjf1a9D6+6mE2GxlbPdRhZqxKarPwAbTsKLoRZIFBdux2BA==
+X-Received: by 2002:adf:8543:: with SMTP id 61mr13202158wrh.171.1573933671822;
+        Sat, 16 Nov 2019 11:47:51 -0800 (PST)
+Received: from Red ([2a01:cb1d:147:7200:2e56:dcff:fed2:c6d6])
+        by smtp.googlemail.com with ESMTPSA id 76sm15319821wma.0.2019.11.16.11.47.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 Nov 2019 11:47:51 -0800 (PST)
+Date:   Sat, 16 Nov 2019 20:47:48 +0100
+From:   Corentin Labbe <clabbe.montjoie@gmail.com>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        Maxime Ripard <mripard@kernel.org>,
+        Chen-Yu Tsai <wens@csie.org>, linux-crypto@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2 -next] crypto: sun8i-ce - Fix memdup.cocci warnings
+Message-ID: <20191116194748.GA23118@Red>
+References: <20191109024403.47106-1-yuehaibing@huawei.com>
+ <20191112072314.145064-1-yuehaibing@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191112072314.145064-1-yuehaibing@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 10 Nov 2019 11:48:23 +0000
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Tue, Nov 12, 2019 at 07:23:14AM +0000, YueHaibing wrote:
+> Use kmemdup rather than duplicating its implementation
+> 
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> ---
+> v2: fix patch title 'sun8i-ss' -> 'sun8i-ce'
+> ---
+>  drivers/crypto/allwinner/sun8i-ce/sun8i-ce-cipher.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
+> 
 
-> On Wed, 6 Nov 2019 14:19:52 +0000
-> "Sa, Nuno" <Nuno.Sa@analog.com> wrote:
->=20
-> > On Tue, 2019-11-05 at 20:28 +0000, Colin King wrote: =20
-> > >=20
-> > > From: Colin Ian King <colin.king@canonical.com>
-> > >=20
-> > > Currently the read of temp using of_property_read_u32_index is
-> > > reading
-> > > a u32 value into a unsigned long long.  This relies on machine
-> > > endianness
-> > > to work correctly, so fix this by reading a u32 value and setting
-> > > temp
-> > > to this value.
-> > >=20
-> > > Addresses-Coverity: ("Reliance on integer endianness")
-> > > Fixes: f110f3188e56 ("iio: temperature: Add support for LTC2983")
-> > > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > > ---
-> > >  drivers/iio/temperature/ltc2983.c | 6 ++++--
-> > >  1 file changed, 4 insertions(+), 2 deletions(-)
-> > >=20
-> > > diff --git a/drivers/iio/temperature/ltc2983.c
-> > > b/drivers/iio/temperature/ltc2983.c
-> > > index ddf47023364b..d39c0d6b77f1 100644
-> > > --- a/drivers/iio/temperature/ltc2983.c
-> > > +++ b/drivers/iio/temperature/ltc2983.c
-> > > @@ -444,8 +444,10 @@ static struct ltc2983_custom_sensor
-> > > *__ltc2983_custom_sensor_new(
-> > >  			else
-> > >  				temp =3D __convert_to_raw(temp,
-> > > resolution);
-> > >  		} else {
-> > > -			of_property_read_u32_index(np, propname, index,
-> > > -						   (u32 *)&temp);
-> > > +			u32 t32;
-> > > +
-> > > +			of_property_read_u32_index(np, propname, index,
-> > > &t32);
-> > > +			temp =3D t32;
-> > >  		}
-> > > =20
-> > >  		for (j =3D 0; j < n_size; j++)   =20
-> >=20
-> > Acked-by: Nuno S=C3=A1 <nuno.sa@analog.com>
-> >  =20
->=20
-> A slight complexity around this one. I'm not sure I'll have time for a pu=
-ll
-> before the merge window (as Greg will only take them to about 1 week befo=
-re
-> that opens so we get some exposure in Linux next).
->=20
-> As a result I'll have to sit on this one until Linus comments on rc7, pro=
-bably
-> later today.  Otherwise it'll be material for stable post release.
->=20
-> If I seem to have lost it give me a poke and we'll make sure it goes into=
-=20
-> an early rc instead of at the merge window.
-I forgot about it when I sent the final pull request out.  Sorry about that,
-will have to wait for post merge window.
+Acked-by: Corentin Labbe <clabbe.montjoie@gmail.com>
 
-Applied to the fixes-togreg branch of iio.git.
-
-Thanks,
-
-Jonathan
-
->=20
-> Thanks,
->=20
-> Jonathan
->=20
-> > Thanks,
-> > Nuno S=C3=A1 =20
->=20
-
+Thanks

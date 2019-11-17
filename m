@@ -2,34 +2,34 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 997ABFFA2E
-	for <lists+kernel-janitors@lfdr.de>; Sun, 17 Nov 2019 15:16:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC6D7FFA6A
+	for <lists+kernel-janitors@lfdr.de>; Sun, 17 Nov 2019 16:01:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726366AbfKQOQD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 17 Nov 2019 09:16:03 -0500
-Received: from mout.web.de ([212.227.17.12]:46271 "EHLO mout.web.de"
+        id S1726271AbfKQPB3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 17 Nov 2019 10:01:29 -0500
+Received: from mout.web.de ([212.227.17.12]:46353 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726177AbfKQOQC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 17 Nov 2019 09:16:02 -0500
+        id S1726262AbfKQPB3 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 17 Nov 2019 10:01:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1574000146;
-        bh=khYjmsAlHeJ/yxNUCSYVsBtEtQ46bLQCesW0YQ4jjEE=;
+        s=dbaedf251592; t=1574002873;
+        bh=4y0JcFtoJHnVUVsgn9gCbYaTiaGGxKXqzTKBrHi+a54=;
         h=X-UI-Sender-Class:Cc:References:Subject:From:To:Date:In-Reply-To;
-        b=SjzxEjqWiAP30V4pokfScQR5Do0oSG9E5vofcjFjAeQwrTgicM11dAe1X6R8ZujOG
-         Rh+Tko5K85j60wTO1VJ/Yj1z1n4gv4yRGdTPBzHusRgc54ahy3HFORvcYnTt6f+QsP
-         VAceP2npgzBNLahiBxKmuGEq2gpjevSPO4D6enE4=
+        b=Clx0utPDw9li1KIIzn7ZiLIBYvt/8gSD4n3iObl3PF4KNqsLdUGPXoUlDi89U8wZW
+         4ePPzs6MegPGnsa475UfizwvVBlZYgTb6/NdkCbbkna0LYgeByJ0EuzzXPXGethODg
+         JIp/tvcxauYjlBLO/5UX9jLQ4QFvIEpI49BvtfHo=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([93.131.59.42]) by smtp.web.de (mrweb102
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MbyIM-1iGJrI0HGY-00JKlD; Sun, 17
- Nov 2019 15:15:46 +0100
+Received: from [192.168.1.3] ([93.131.59.42]) by smtp.web.de (mrweb103
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MWj2N-1iLYY61gmx-00XsYS; Sun, 17
+ Nov 2019 16:01:13 +0100
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christoph Hellwig <hch@lst.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Sungjong Seo <sj1557.seo@samsung.com>,
         =?UTF-8?Q?Valdis_Kl=c4=93tnieks?= <valdis.kletnieks@vt.edu>,
         linkinjeon@gmail.com
-References: <20191113081800.7672-4-namjae.jeon@samsung.com>
-Subject: Re: [PATCH 03/13] exfat: add inode operations
+References: <20191113081800.7672-8-namjae.jeon@samsung.com>
+Subject: Re: [PATCH 07/13] exfat: add bitmap operations
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,79 +76,57 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
 To:     Namjae Jeon <namjae.jeon@samsung.com>,
         linux-fsdevel@vger.kernel.org
-Message-ID: <82520012-9940-7f2b-3bac-bea5c2396ccd@web.de>
-Date:   Sun, 17 Nov 2019 15:15:44 +0100
+Message-ID: <bb89f610-3eac-6b28-1aff-265b358d22af@web.de>
+Date:   Sun, 17 Nov 2019 16:01:11 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <20191113081800.7672-4-namjae.jeon@samsung.com>
+In-Reply-To: <20191113081800.7672-8-namjae.jeon@samsung.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:zf5nEkDn57Q5Ka1RPQHVODxHgldyqQQEzkQAVmuz2Kwcvj/OaQs
- hXv/X/M260bK754j/ijQ6SSORwPGgZo7ytpXZtRy3FxSRSzoSZZiInPTn0icG5Rhed5NJQL
- J0yqXGWBhtDIxU+pZXmT9A5KNbzAOtuoMN+yx/qTYOA4xpTVAZCauPjXMzY0hIxhjUwts0z
- M80h4631Q6ix+y/QvO/NA==
+X-Provags-ID: V03:K1:1BcEh6UV2GsvuNc3kQjQ07WYZY+wFuuOEKg4iP+VeefPd8n2yKp
+ b7t1Pksbc5cd9o+X7KdXRfISd5tVwpWMbs3NncXgawlv75EJRGzpD8ONiNM7NGrvfrT9tTd
+ 5ABSar5iwitpMxb//a8m+Ti/KKd0jWOD2ZepyiCxTeKIb3jpvQSjIeJjegrTnLTe7yQh3HB
+ cP8GPdc4PL6KZCbUQIYeg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:Mlrv3wFmRxA=:HYZ1apU/qF5XMUnZoetoB4
- fiuuGP/QQ9nJhlSlOgVueG8H3MjiR0r2b/gbJTKyWolkevhU7p2LXcWgkcHBWrh+zbCLveede
- 2jqGCK+DSIuMrIbMOM1TTOZG8zFDtqlLBelleWhbLJQ7vC0HFMUBi6uTLUXVXxB7XidjL2IaB
- iMFkx/UbS0lwnSeG8P2KsLYQZWcczPc+b7t1/b4/0J0UF+RyFjiSHX0/4Q5YemI6IyfCF0PKH
- M49haKHYy9ESbkqcc6CKjdOJ7mZpDPPGgeF3KKxX46JY0hi4zH/MvQYCRBchP+MyABIiGoEzU
- 31za4GC5BEvCB/SKVEBawCOY9jnQCF09R7/MxDZk1qmXDrHYeCaGrIF1knaijCGeezeo87FGT
- sx8Oc/o94P8KUgzez06bK5zCEmdzM6K/kEjrATrUBc5mx2UEGvRZ/NCgiicd6q6cI4Mu5b500
- XJLrb5n5vu1hFKJk9C2XocBYLUv0J3aEU9iLDNgONo9IOWgC1IGlCjuICj0um93ejLfaaKOrF
- NX7tSVTPXpl+babhmycuxKfE7QeVAJsxOmY0l7JnVm0gAjILd/fSUsv4lKrF5wobKtYCtoWDm
- iPQHZFLesQEdyyN2Ep5haOS+IwuBXYAlGFqYeulyelK+9s4wZj4bPncFYsZTS/zhWFVcnHSAE
- wnBzEhyFlRMG+gazZtxfYrQnXbZU2W6BZk6lw1CRdge2Re3oVraGZHVSriWqoCYcnWEUadG/d
- VjaS/lXeaoWec8TdYwODxsi52w3y/MRpKptZRscdlBwrxJSuSm6qpcWi5BKhEpctLnqE8sQuF
- MDP0ZrvJglF+aU9ojE1gRstdxnqoWbLJN5hEV8IUXiDm2hUH0OeqcD7rCJ+OhCCSBGA9WuC0y
- 1pGTBSJA9XBDBne/5XGW6z4SZGKlBsqTfZ/GLMffTW9K0CAcbFNH3cypSPh5EU4EobQkcr8l3
- 5so5xKpXwqSV7bIrbkh4ucns7JSaeg5CR0hUVZ+yWz0nHkTu/4W33bAyRZGL6QoDDR9ddBrvg
- RqE2TuArzHbd6W4b/4gnlJzHsjDJGbmzGBQCrnwV62bQG6tLbJHSWJ42TeEvsA4mwGfm4qfIU
- GFCy8rWgPHaSrZxBDNjAmNa0FFNaEEQP9UyCdwNK7wBVzxm7UH+H+jnckzNr7eBOb0JTlCL09
- 3zRfcETGsPKWEAAGJr84Ab8WXeCjfckZEOOLZMU8boey3cmgpSpwMrPDraMMxfjszcIOHdPby
- Np+DzLdoOYtyAvm5XNnIXKDVf7FCAlLxtnwj0b6PjBhQkQ1HVHddD88RYNHI=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:2TMbCF1ntDs=:jYNXu0WuoM+9XypO892FN3
+ eyKA2y9pteDbhlp3Jhhpki5xoGQFWKWwOKQ3/m2snB0AmdQmBlEWxCP0Y8f12WyfImh3nfTbx
+ 1ep5ev+lwHQB24XEBuaYeGZqu8iLq/vwmz9ttUqZzr3Qm2xlRc+NM1gunFvf55rOjQMi20eAK
+ JTAbIpb1/jOK1cgm2ibTkPrMjbn5U4x/ymtO4xTzu33YJd77E9Uv3DVELA5yvcIxLbphyTrR5
+ Du3rpAp1LjLIXylCuarb2zfLy+86i7n7iHcxyeO4pgTAwpzG4s+6KgSFnsdKwTW71g1hnNWzU
+ x4hcVAxvZFIszouo1pt0wggrKC8nb60TBa9BHgz/nd8gFlbzVSfEaL+y/oQL7HExNaxdz9Dgs
+ tWAloXlBqha2uAZEZwXZxMI+5sVtDngxRzSLvDFD75czFXyF7ozpAl9WD6jImz8XnefwRp/kK
+ 6Fis0A3G24pHGkK0DudUTvBWo0cQpH3gBC5fEJBcTxg5b+gBO4y14JTs34rqktfrdsBjX+0nN
+ XDh4WOU6nicDMz5fbO2bJBYTH/K0n9v6BJBru3DujfyJf4iPiP+K4+Rls6HmWvDhAkuNAECA6
+ nA1qcyBJzN5LjCFRxwaezYvDJKKnyC6RSNvbWVqfpJtzXyAh1/srigMur/vXYbIeMNXJTPnqf
+ dTtEvP4tFagGJIUgtVHOn9YRoes7H2ehC4BYYRbPVE7gsFyaOPdoBFI6QFi0SajabrhqrdUSv
+ jWmxPMcxHs75iVfTgVebJKfHr+syMCYbXpQAxVzGUGZiQXSUxex5KhsawwmrQ3LOXcODCKDkI
+ FqRIi7Lpeb+/rDE1UMCMKBq0YPWfZw8V41tYhdBRZC/M0s7o7x4m02QLHmbrUCN3mID4PfC2t
+ n7b8U/bfDJcBgI96LqMXomjp3mfYpsFaz+aJKjr+8JaMRiVK/9HeJW+ydbDMf8NRIq9ThTBRW
+ see98NIkNdYDuKAlPH1kAJyeJReCGDhafZguMFIpEnSCk+4aT6TELtweDhFVxoaUkS68/QpCx
+ N0mx6gFD7B3aF4eYxJ+3KK48k26aVgJSTJZ8AO9p5ipnXLYAtDqeGcL4wQ2xEtpDECDwAyPIC
+ FsP5JPfWmxZhNix2tkatnyJvWEjxXGPikMau80mop21+tgXcE8VBNw5xkkCun2j0LiRgqwIwA
+ npLU0gStKtNTXcQMmSwlmOFZ288PpekrblbCOzGT2/ny9JeVVXRQn1lFTwWXiRaRBP5hgyR+H
+ bDtUCE9AErsWXoJZ9jpNhpSVQcucrAV4SPJICLZEOWiSWNifsVXBaxU+vZcg=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 =E2=80=A6
-> +++ b/fs/exfat/inode.c
+> +++ b/fs/exfat/balloc.c
 =E2=80=A6
-> +static int exfat_create(struct inode *dir, struct dentry *dentry, umode=
-_t mode,
-> +		bool excl)
-> +{
++int exfat_count_used_clusters(struct super_block *sb, unsigned int *ret_c=
+ount)
++{
 =E2=80=A6
-+out:
-+	mutex_unlock(&EXFAT_SB(sb)->s_lock);
++	/* FIXME : abnormal bitmap count should be handled as more smart */
++	if (total_clus < count)
++		count =3D total_clus;
 
-Can the label =E2=80=9Cunlock=E2=80=9D be more appropriate?
-
-
-> +static struct dentry *exfat_lookup(struct inode *dir, struct dentry *de=
-ntry,
-> +		unsigned int flags)
-> +{
-=E2=80=A6
-> +error:
-> +	mutex_unlock(&EXFAT_SB(sb)->s_lock);
-
-Would you like to use the label =E2=80=9Cunlock=E2=80=9D also at this plac=
-e (and similar ones)?
-
-
-> +static int exfat_search_empty_slot(struct super_block *sb,
-> +		struct exfat_hint_femp *hint_femp, struct exfat_chain *p_dir,
-> +		int num_entries)
-> +{
-=E2=80=A6
-> +out:
-> +	kfree(clu);
-
-How do you think about to rename the label to =E2=80=9Cfree_clu=E2=80=9D?
+Would you like to improve any implementation details according to this com=
+ment?
 
 Regards,
 Markus

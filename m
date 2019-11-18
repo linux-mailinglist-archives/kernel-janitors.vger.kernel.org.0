@@ -2,94 +2,131 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E7F8100A72
-	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Nov 2019 18:39:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C09BD100AC2
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Nov 2019 18:48:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727106AbfKRRjZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 Nov 2019 12:39:25 -0500
-Received: from mail-il1-f196.google.com ([209.85.166.196]:36263 "EHLO
-        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726370AbfKRRjZ (ORCPT
+        id S1726717AbfKRRsE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 Nov 2019 12:48:04 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:42733 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726314AbfKRRsE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 Nov 2019 12:39:25 -0500
-Received: by mail-il1-f196.google.com with SMTP id s75so16793194ilc.3;
-        Mon, 18 Nov 2019 09:39:24 -0800 (PST)
+        Mon, 18 Nov 2019 12:48:04 -0500
+Received: by mail-wr1-f68.google.com with SMTP id a15so20579853wrf.9;
+        Mon, 18 Nov 2019 09:48:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=lf4InM0YI2+1aYtMIf2xouOUlZ6aXX0k8Eyyf1Yerfk=;
-        b=i4oc0cwOD1lN3zekYlydgd3wVyZj9E5tingr6Ej4w1sYKLdWbVL4/z9VMWRLI48BQd
-         +mRdbUPx7rss752LjqQ4PC777H5o2LGZx5zouk3BvLNAbWKBi5GHOxR3vgebH3A0hjRk
-         0rZBZF58Xef2ZVLiv9pfqn+5TbSdmAx07ZLZ9trnRlUfmOUy5Jqxb8jiWS/9zgAi4LJQ
-         2yOV2dK1/Buzsp42dCx+4uKpcXXOGUdKSnjKJ2u9VHlMP35K5AfMvFFtWdK+mm46FwjI
-         JHfWNzAeaiC3TpM8XFign/ZjsBGu2/2d84ld4PkGohxC45GfWWIVxfSyvbxSeLnAggmV
-         +X+A==
+         :cc:content-transfer-encoding;
+        bh=piNHro+ZEjxTlVQYbgYFct0MWJy6Nfv3mhGBZxaqWEI=;
+        b=UcScLZd47Ox+WvIdRLwBXlvs7qK537HzRtbKDchwlW+qVieV2yoxduZiS/8bKA7ZZC
+         L1uY3ELur64yoob3gNfgGBqlVgbUWKVfrXWMTw1kE95SPQxB6i77lBTuV5OuoYL8YM5v
+         HGQsUHoVlMgfW/aM5HqdZWzChr3zx39uMDlrcRTqkHK/h7a+OWKQE6I2QKz+acfPqyDB
+         WTcv7aBh31zUuBi9K6azzO2WBylVe++dkigF4YDD8EuQ37ZPiF/KWpbyqi+EA0j+gxdN
+         bkkX1tMAeHRuRHVJhTAweZFBBDuz/9zk+KckxOUXrng7mCnpS2IuJNz5IcOGR6Djz1Qp
+         X5fA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=lf4InM0YI2+1aYtMIf2xouOUlZ6aXX0k8Eyyf1Yerfk=;
-        b=aJTSzCIJ9S8OEAcIFydKET6HejfuN++UPC5TBLUP32EbZz36ye2AvmMqu1aJBTBnec
-         jK6du1k8dSA4tWmhb8u2BuoQYvk7sylSEVFqOAO5HsxrtemA++AsJX4RACfZBXEEJ+9f
-         NowcKJe4gX5Bi5xUJNh1JhTnMKm1xLBh7qhqw0MEvHfVprPnXsW//07M3MpmZVGNujUq
-         rjGSpU4sEMeEDP0UKeqM1/8Jw2AVD76O9oh1ZwiwRfIxzE9wnDYG7dwtpBW/ylO27Mdz
-         jiIZH70VAQQQMGJ63STcLrnfHpkUXVeNHi65T6AYmJZv7zEIJR7QUttN0aH3Y5t+uMPG
-         LOyw==
-X-Gm-Message-State: APjAAAXbIozRrtpM7lO85a5Bjvjjh57prKvWA8ekEJsuLEa2HC8ksUid
-        pUrs1vANZGBvQ18IBcV/UEeOCUQXcdSKlyI2/7Y=
-X-Google-Smtp-Source: APXvYqwk9HmjMTxp6OUbjx0WTu1hIeTIFANjf/A1CwYoEuiRLsjHHiIfdliSCCJYh57WuvoQkSzW2gxuBlvaVvNqs+Q=
-X-Received: by 2002:a92:5cce:: with SMTP id d75mr17291997ilg.299.1574098763980;
- Mon, 18 Nov 2019 09:39:23 -0800 (PST)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=piNHro+ZEjxTlVQYbgYFct0MWJy6Nfv3mhGBZxaqWEI=;
+        b=D16bMPRTg9vV+liYwXSorHlQW13m8pfZOOkcNUFgMHTxzeX3lgZreyGU3BLJWK33OL
+         SJgUc1X0M4PE1ToK9oR5MUUF3zxNtVIEzMXCrCQt3+u3TxJntQn2YGaw8DQH4E7OMnQv
+         fBEt+IiJbBc50ij4FNswfn91T4ofbfrRIhW+XtTmmuDdSym3msnsn3r/1uyUkDuQsdUv
+         51IHuoVKDGHDiZRyIdhqlyMiw0ONC/CbNcGr4OrXcrL2szdWZltRnCLzjVjj+5Dd0oca
+         Ks5eEAsn/oKth1SvlKptwxQwhf3LqrnNRXbSmfJzCfttcMwy0Oa4rcvz85qW65YZqanG
+         awDQ==
+X-Gm-Message-State: APjAAAVtGn6pcUPW/P3HT5ebBwfU9xEh7Kbd6x3Qfs1J4/N4lSIT1FBV
+        6HqI1M4bJSmD8UDNzr6KvQrtfRL5edq75Y58a9I=
+X-Google-Smtp-Source: APXvYqyGywWdEXXMqyuzeVwYL9crbS3T81rogaadiKCASpSKYQ4z/YHdFapsZ0h0gIEfDTYiyLAMQrdillBqOPi1WYs=
+X-Received: by 2002:adf:9d87:: with SMTP id p7mr31061751wre.11.1574099281432;
+ Mon, 18 Nov 2019 09:48:01 -0800 (PST)
 MIME-Version: 1.0
-References: <20190923190746.10964-1-christophe.jaillet@wanadoo.fr> <20191115210020.GA29581@ziepe.ca>
-In-Reply-To: <20191115210020.GA29581@ziepe.ca>
-From:   Steve Wise <larrystevenwise@gmail.com>
-Date:   Mon, 18 Nov 2019 11:39:12 -0600
-Message-ID: <CADmRdJcWrsSWSc9_73+V==zbyxoGUdRMVKzOi6bAwVY+5k+cEQ@mail.gmail.com>
-Subject: Re: [PATCH] RDMA/iw_cgxb4: Fix an error handling path in 'c4iw_connect()'
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Potnuri Bharat Teja <bharat@chelsio.com>,
-        Doug Ledford <dledford@redhat.com>,
-        linux-rdma <linux-rdma@vger.kernel.org>,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20191115094754.40920-1-colin.king@canonical.com> <MN2PR12MB3344F8D7498FC9DA8302AD05E44D0@MN2PR12MB3344.namprd12.prod.outlook.com>
+In-Reply-To: <MN2PR12MB3344F8D7498FC9DA8302AD05E44D0@MN2PR12MB3344.namprd12.prod.outlook.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Mon, 18 Nov 2019 12:47:49 -0500
+Message-ID: <CADnq5_ODJOk3vV1QBQRQkMxZTa5reBqsPy-Q+1rrEBw4dJEtoQ@mail.gmail.com>
+Subject: Re: [PATCH][next] drm/amdgpu/powerplay: fix dereference before null
+ check of pointer hwmgr
+To:     "Quan, Evan" <Evan.Quan@amd.com>
+Cc:     Colin King <colin.king@canonical.com>, Rex Zhu <rex.zhu@amd.com>,
+        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+        "Koenig, Christian" <Christian.Koenig@amd.com>,
+        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
+        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Those horrible error labels in cxgb* are my bad.  :(   I now always
-use descriptive labels.
+Applied.  Thanks!
 
-Stevo
+Alex
 
-On Fri, Nov 15, 2019 at 3:01 PM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+On Mon, Nov 18, 2019 at 1:56 AM Quan, Evan <Evan.Quan@amd.com> wrote:
 >
-> On Mon, Sep 23, 2019 at 09:07:46PM +0200, Christophe JAILLET wrote:
-> > We should jump to fail3 in order to undo the 'xa_insert_irq()' call.
-> >
-> > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> > ---
-> > Not sure which Fixes tag to use because of the many refactorings in this
-> > area. So I've choosen to use none :).
-> > The issue was already there in 4a740838bf44c. This commit has renamed
-> > all labels because a new fail1 was introduced. I've not searched further.
-> >
-> > Naming of error labels should be improved. Having nowadays a fail5
-> > between fail2 and fail3 (because fail5 was the last
-> > error handling path added) is not that readable.
-> > However, it goes beyong the purpose of this patch.
-> >
-> > Maybe, just using a fail2a, just as already done in 9f5a9632e412 (which
-> > introduced fail5) would be enough.
-> > ---
-> >  drivers/infiniband/hw/cxgb4/cm.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
+> Reviewed-by: Evan Quan <evan.quan@amd.com>
 >
-> The disaster of the error label aside, this does fix the bug, so
-> applied to for-next
+> -----Original Message-----
+> From: Colin King <colin.king@canonical.com>
+> Sent: Friday, November 15, 2019 5:48 PM
+> To: Rex Zhu <rex.zhu@amd.com>; Quan, Evan <Evan.Quan@amd.com>; Deucher, A=
+lexander <Alexander.Deucher@amd.com>; Koenig, Christian <Christian.Koenig@a=
+md.com>; Zhou, David(ChunMing) <David1.Zhou@amd.com>; David Airlie <airlied=
+@linux.ie>; Daniel Vetter <daniel@ffwll.ch>; amd-gfx@lists.freedesktop.org;=
+ dri-devel@lists.freedesktop.org
+> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: [PATCH][next] drm/amdgpu/powerplay: fix dereference before null =
+check of pointer hwmgr
 >
-> Thanks,
-> Jason
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The assignment of adev dereferences pointer hwmgr before hwmgr is null ch=
+ecked, hence there is a potential null pointer deference issue. Fix this by=
+ assigning adev after the null check.
+>
+> Addresses-Coverity: ("Dereference before null check")
+> Fixes: 0896d2f7ba4d ("drm/amdgpu/powerplay: properly set PP_GFXOFF_MASK")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/gpu/drm/amd/powerplay/hwmgr/hwmgr.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/amd/powerplay/hwmgr/hwmgr.c b/drivers/gpu/dr=
+m/amd/powerplay/hwmgr/hwmgr.c
+> index 443625c83ec9..d2909c91d65b 100644
+> --- a/drivers/gpu/drm/amd/powerplay/hwmgr/hwmgr.c
+> +++ b/drivers/gpu/drm/amd/powerplay/hwmgr/hwmgr.c
+> @@ -81,7 +81,7 @@ static void hwmgr_init_workload_prority(struct pp_hwmgr=
+ *hwmgr)
+>
+>  int hwmgr_early_init(struct pp_hwmgr *hwmgr)  {
+> -       struct amdgpu_device *adev =3D hwmgr->adev;
+> +       struct amdgpu_device *adev;
+>
+>         if (!hwmgr)
+>                 return -EINVAL;
+> @@ -96,6 +96,8 @@ int hwmgr_early_init(struct pp_hwmgr *hwmgr)
+>         hwmgr_init_workload_prority(hwmgr);
+>         hwmgr->gfxoff_state_changed_by_workload =3D false;
+>
+> +       adev =3D hwmgr->adev;
+> +
+>         switch (hwmgr->chip_family) {
+>         case AMDGPU_FAMILY_CI:
+>                 adev->pm.pp_feature &=3D ~PP_GFXOFF_MASK;
+> --
+> 2.20.1
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

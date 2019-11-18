@@ -2,87 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D1EC110084C
-	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Nov 2019 16:33:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E7F8100A72
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Nov 2019 18:39:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727007AbfKRPdM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 Nov 2019 10:33:12 -0500
-Received: from mail-il1-f195.google.com ([209.85.166.195]:39122 "EHLO
-        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726748AbfKRPdM (ORCPT
+        id S1727106AbfKRRjZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 Nov 2019 12:39:25 -0500
+Received: from mail-il1-f196.google.com ([209.85.166.196]:36263 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726370AbfKRRjZ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 Nov 2019 10:33:12 -0500
-Received: by mail-il1-f195.google.com with SMTP id a7so16362385ild.6
-        for <kernel-janitors@vger.kernel.org>; Mon, 18 Nov 2019 07:33:11 -0800 (PST)
+        Mon, 18 Nov 2019 12:39:25 -0500
+Received: by mail-il1-f196.google.com with SMTP id s75so16793194ilc.3;
+        Mon, 18 Nov 2019 09:39:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=YS184bGN6J9aePOBe16ozqbDzE/B0ihMCWCOanLvA5g=;
-        b=vLpgu5v+D2olah9Wi43FZ6HK8MhA2Y5rf8HIDP/s70aP9Efbrd3heTA6s4ZlNIKs0n
-         ISkSRgR1l9H9wH/43ehcjXj+w70RoyMQAXC0w2YEgZm5mOifEXGN/tzKyx82wGIuCyZ3
-         L0BoWn/J9hW+h3sL+pKDbyk9J0HjIFBfir1gt6y/LWvik3ojjsSo9NysNFfNB0SL2OAu
-         mlma09eTHtOtokmu0DyHw6mHxQnlZWHr7UxcJOmXH0VK4KTtSur4B5+Y2D5WjXxlUISJ
-         3SFUNXvZNnyXedpAm5by+A9KzSpew63ijEEdTBWbNN0fMvWU3BUTjD3MvIR5aC9IoE5F
-         Rr+g==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=lf4InM0YI2+1aYtMIf2xouOUlZ6aXX0k8Eyyf1Yerfk=;
+        b=i4oc0cwOD1lN3zekYlydgd3wVyZj9E5tingr6Ej4w1sYKLdWbVL4/z9VMWRLI48BQd
+         +mRdbUPx7rss752LjqQ4PC777H5o2LGZx5zouk3BvLNAbWKBi5GHOxR3vgebH3A0hjRk
+         0rZBZF58Xef2ZVLiv9pfqn+5TbSdmAx07ZLZ9trnRlUfmOUy5Jqxb8jiWS/9zgAi4LJQ
+         2yOV2dK1/Buzsp42dCx+4uKpcXXOGUdKSnjKJ2u9VHlMP35K5AfMvFFtWdK+mm46FwjI
+         JHfWNzAeaiC3TpM8XFign/ZjsBGu2/2d84ld4PkGohxC45GfWWIVxfSyvbxSeLnAggmV
+         +X+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=YS184bGN6J9aePOBe16ozqbDzE/B0ihMCWCOanLvA5g=;
-        b=JElMW97F25rBhYhyiwnfIXRRtip2iG9uXeKgMBFdddxy0wLS71PlDBWcOaPo5he/4q
-         XsJxwUmFHmJGyiJkMq6k95rz1NRHQaEBgWayGne+xWbBK3bZPZ6wYZRJZ3PszoW+14R0
-         s2Be8lFiga7cantU2JOC0uYK53XAoY5cMfKrjHl2z6nt3hrGAFx2A1qw2h5Makzk7F7R
-         OUuPV/aG9RVHAiShpq36kqv5+o0+UFGfJHRr/s4ptHtpwFadfAYrn7aTGjtk4z9Uv2/9
-         Do5wgqP49Ix/NfA6nUFcaew6f31VFt4hBJtln0jOcbadsxOBheGfByIeLx1FevdCu22+
-         2gbw==
-X-Gm-Message-State: APjAAAUuMUqSnniETqx4MM17IUFfn7yOxyBO8yyhCELJ5DLRyQ35CMVv
-        k+2n4nbIgmaXGrp2noHe/VQHLHuUiM4=
-X-Google-Smtp-Source: APXvYqzwsBX5JB5z9XzVfjupL4dDEpkaqvxBhu+HScemh7bwuROVhXdNmpSWX/fjlI/hINiwDg/PcA==
-X-Received: by 2002:a05:6e02:d92:: with SMTP id i18mr15984126ilj.20.1574091191085;
-        Mon, 18 Nov 2019 07:33:11 -0800 (PST)
-Received: from [192.168.1.159] ([65.144.74.34])
-        by smtp.gmail.com with ESMTPSA id z69sm4547097ilc.30.2019.11.18.07.33.09
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 18 Nov 2019 07:33:10 -0800 (PST)
-Subject: Re: [PATCH -next] scsi: sd_zbc: Remove set but not used variable
- 'buflen'
-To:     YueHaibing <yuehaibing@huawei.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        Damien Le Moal <damien.lemoal@wdc.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc:     linux-scsi@vger.kernel.org, linux-block@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Hulk Robot <hulkci@huawei.com>
-References: <20191115131829.162946-1-yuehaibing@huawei.com>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <321d25d4-2216-dae2-268b-ca225c5e5caa@kernel.dk>
-Date:   Mon, 18 Nov 2019 08:33:08 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=lf4InM0YI2+1aYtMIf2xouOUlZ6aXX0k8Eyyf1Yerfk=;
+        b=aJTSzCIJ9S8OEAcIFydKET6HejfuN++UPC5TBLUP32EbZz36ye2AvmMqu1aJBTBnec
+         jK6du1k8dSA4tWmhb8u2BuoQYvk7sylSEVFqOAO5HsxrtemA++AsJX4RACfZBXEEJ+9f
+         NowcKJe4gX5Bi5xUJNh1JhTnMKm1xLBh7qhqw0MEvHfVprPnXsW//07M3MpmZVGNujUq
+         rjGSpU4sEMeEDP0UKeqM1/8Jw2AVD76O9oh1ZwiwRfIxzE9wnDYG7dwtpBW/ylO27Mdz
+         jiIZH70VAQQQMGJ63STcLrnfHpkUXVeNHi65T6AYmJZv7zEIJR7QUttN0aH3Y5t+uMPG
+         LOyw==
+X-Gm-Message-State: APjAAAXbIozRrtpM7lO85a5Bjvjjh57prKvWA8ekEJsuLEa2HC8ksUid
+        pUrs1vANZGBvQ18IBcV/UEeOCUQXcdSKlyI2/7Y=
+X-Google-Smtp-Source: APXvYqwk9HmjMTxp6OUbjx0WTu1hIeTIFANjf/A1CwYoEuiRLsjHHiIfdliSCCJYh57WuvoQkSzW2gxuBlvaVvNqs+Q=
+X-Received: by 2002:a92:5cce:: with SMTP id d75mr17291997ilg.299.1574098763980;
+ Mon, 18 Nov 2019 09:39:23 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20191115131829.162946-1-yuehaibing@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20190923190746.10964-1-christophe.jaillet@wanadoo.fr> <20191115210020.GA29581@ziepe.ca>
+In-Reply-To: <20191115210020.GA29581@ziepe.ca>
+From:   Steve Wise <larrystevenwise@gmail.com>
+Date:   Mon, 18 Nov 2019 11:39:12 -0600
+Message-ID: <CADmRdJcWrsSWSc9_73+V==zbyxoGUdRMVKzOi6bAwVY+5k+cEQ@mail.gmail.com>
+Subject: Re: [PATCH] RDMA/iw_cgxb4: Fix an error handling path in 'c4iw_connect()'
+To:     Jason Gunthorpe <jgg@ziepe.ca>
+Cc:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Potnuri Bharat Teja <bharat@chelsio.com>,
+        Doug Ledford <dledford@redhat.com>,
+        linux-rdma <linux-rdma@vger.kernel.org>,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 11/15/19 6:18 AM, YueHaibing wrote:
-> Fixes gcc '-Wunused-but-set-variable' warning:
-> 
-> drivers/scsi/sd_zbc.c: In function 'sd_zbc_check_zones':
-> drivers/scsi/sd_zbc.c:341:9: warning:
->   variable 'buflen' set but not used [-Wunused-but-set-variable]
-> 
-> It is not used since commit d9dd73087a8b ("block: Enhance
-> blk_revalidate_disk_zones()")
+Those horrible error labels in cxgb* are my bad.  :(   I now always
+use descriptive labels.
 
-Applied, thanks.
+Stevo
 
--- 
-Jens Axboe
-
+On Fri, Nov 15, 2019 at 3:01 PM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+>
+> On Mon, Sep 23, 2019 at 09:07:46PM +0200, Christophe JAILLET wrote:
+> > We should jump to fail3 in order to undo the 'xa_insert_irq()' call.
+> >
+> > Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> > ---
+> > Not sure which Fixes tag to use because of the many refactorings in this
+> > area. So I've choosen to use none :).
+> > The issue was already there in 4a740838bf44c. This commit has renamed
+> > all labels because a new fail1 was introduced. I've not searched further.
+> >
+> > Naming of error labels should be improved. Having nowadays a fail5
+> > between fail2 and fail3 (because fail5 was the last
+> > error handling path added) is not that readable.
+> > However, it goes beyong the purpose of this patch.
+> >
+> > Maybe, just using a fail2a, just as already done in 9f5a9632e412 (which
+> > introduced fail5) would be enough.
+> > ---
+> >  drivers/infiniband/hw/cxgb4/cm.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> The disaster of the error label aside, this does fix the bug, so
+> applied to for-next
+>
+> Thanks,
+> Jason

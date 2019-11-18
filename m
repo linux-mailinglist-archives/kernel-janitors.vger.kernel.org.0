@@ -2,131 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C09BD100AC2
-	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Nov 2019 18:48:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E4DBD100BE9
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Nov 2019 19:57:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726717AbfKRRsE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 Nov 2019 12:48:04 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:42733 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726314AbfKRRsE (ORCPT
+        id S1726472AbfKRS5n (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 Nov 2019 13:57:43 -0500
+Received: from pb-smtp2.pobox.com ([64.147.108.71]:59426 "EHLO
+        pb-smtp2.pobox.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726423AbfKRS5n (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 Nov 2019 12:48:04 -0500
-Received: by mail-wr1-f68.google.com with SMTP id a15so20579853wrf.9;
-        Mon, 18 Nov 2019 09:48:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=piNHro+ZEjxTlVQYbgYFct0MWJy6Nfv3mhGBZxaqWEI=;
-        b=UcScLZd47Ox+WvIdRLwBXlvs7qK537HzRtbKDchwlW+qVieV2yoxduZiS/8bKA7ZZC
-         L1uY3ELur64yoob3gNfgGBqlVgbUWKVfrXWMTw1kE95SPQxB6i77lBTuV5OuoYL8YM5v
-         HGQsUHoVlMgfW/aM5HqdZWzChr3zx39uMDlrcRTqkHK/h7a+OWKQE6I2QKz+acfPqyDB
-         WTcv7aBh31zUuBi9K6azzO2WBylVe++dkigF4YDD8EuQ37ZPiF/KWpbyqi+EA0j+gxdN
-         bkkX1tMAeHRuRHVJhTAweZFBBDuz/9zk+KckxOUXrng7mCnpS2IuJNz5IcOGR6Djz1Qp
-         X5fA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=piNHro+ZEjxTlVQYbgYFct0MWJy6Nfv3mhGBZxaqWEI=;
-        b=D16bMPRTg9vV+liYwXSorHlQW13m8pfZOOkcNUFgMHTxzeX3lgZreyGU3BLJWK33OL
-         SJgUc1X0M4PE1ToK9oR5MUUF3zxNtVIEzMXCrCQt3+u3TxJntQn2YGaw8DQH4E7OMnQv
-         fBEt+IiJbBc50ij4FNswfn91T4ofbfrRIhW+XtTmmuDdSym3msnsn3r/1uyUkDuQsdUv
-         51IHuoVKDGHDiZRyIdhqlyMiw0ONC/CbNcGr4OrXcrL2szdWZltRnCLzjVjj+5Dd0oca
-         Ks5eEAsn/oKth1SvlKptwxQwhf3LqrnNRXbSmfJzCfttcMwy0Oa4rcvz85qW65YZqanG
-         awDQ==
-X-Gm-Message-State: APjAAAVtGn6pcUPW/P3HT5ebBwfU9xEh7Kbd6x3Qfs1J4/N4lSIT1FBV
-        6HqI1M4bJSmD8UDNzr6KvQrtfRL5edq75Y58a9I=
-X-Google-Smtp-Source: APXvYqyGywWdEXXMqyuzeVwYL9crbS3T81rogaadiKCASpSKYQ4z/YHdFapsZ0h0gIEfDTYiyLAMQrdillBqOPi1WYs=
-X-Received: by 2002:adf:9d87:: with SMTP id p7mr31061751wre.11.1574099281432;
- Mon, 18 Nov 2019 09:48:01 -0800 (PST)
+        Mon, 18 Nov 2019 13:57:43 -0500
+Received: from pb-smtp2.pobox.com (unknown [127.0.0.1])
+        by pb-smtp2.pobox.com (Postfix) with ESMTP id 238FA33E3A;
+        Mon, 18 Nov 2019 13:57:41 -0500 (EST)
+        (envelope-from tdavies@darkphysics.net)
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=pobox.com; h=date:from:to
+        :cc:subject:message-id:mime-version:content-type; s=sasl; bh=1Hj
+        fEH5GpUBsOue/0NDNyGeQocU=; b=OSuKVxiF4sDXnxUrnGnXGNzKh9EhO75otZ7
+        Ytuv4vYpZkEZCYuH8Y3MpRHex3LjTZLYuaz6TkDY+d3tEPuQG5u/TQ9oRsgVVpob
+        VPKvqotGs5YQCNUK9RZXmNGMnW+gko+K14QishYqDPsj7272mkO/LDriSygsEYcv
+        1drqMQtY=
+Received: from pb-smtp2.nyi.icgroup.com (unknown [127.0.0.1])
+        by pb-smtp2.pobox.com (Postfix) with ESMTP id 17D3033E38;
+        Mon, 18 Nov 2019 13:57:41 -0500 (EST)
+        (envelope-from tdavies@darkphysics.net)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=darkphysics.net;
+ h=date:from:to:cc:subject:message-id:mime-version:content-type;
+ s=2019-09.pbsmtp; bh=8v4o8y5JnrphhdR9ew6BuE+s/ugtRTCDOoDjyiO/G/Q=;
+ b=TUNFOyuEFEdnSDSYdfISHSDagyoPPtJ6Wu2kMohPlS+ehsRAJ0JNErT2jM+lz1wLtgCnZMZ4T6Kvwt9soLAyRODwrK2JVIsZu/kpP61wsRt/CH8LXyXvjD8SbYSHRf7IO6FauRTckG2FRNdGwA7+foDWZwo/0tDSKxnp0XqV+uA=
+Received: from Cheese (unknown [24.19.107.226])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by pb-smtp2.pobox.com (Postfix) with ESMTPSA id 965D933E35;
+        Mon, 18 Nov 2019 13:57:39 -0500 (EST)
+        (envelope-from tdavies@darkphysics.net)
+Date:   Mon, 18 Nov 2019 10:57:32 -0800
+From:   Travis Davies <tdavies@darkphysics.net>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Julia Lawall <julia.lawall@lip6.fr>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/1] net: Fix comment block per style guide
+Message-ID: <20191118185724.GA32637@Cheese>
 MIME-Version: 1.0
-References: <20191115094754.40920-1-colin.king@canonical.com> <MN2PR12MB3344F8D7498FC9DA8302AD05E44D0@MN2PR12MB3344.namprd12.prod.outlook.com>
-In-Reply-To: <MN2PR12MB3344F8D7498FC9DA8302AD05E44D0@MN2PR12MB3344.namprd12.prod.outlook.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Mon, 18 Nov 2019 12:47:49 -0500
-Message-ID: <CADnq5_ODJOk3vV1QBQRQkMxZTa5reBqsPy-Q+1rrEBw4dJEtoQ@mail.gmail.com>
-Subject: Re: [PATCH][next] drm/amdgpu/powerplay: fix dereference before null
- check of pointer hwmgr
-To:     "Quan, Evan" <Evan.Quan@amd.com>
-Cc:     Colin King <colin.king@canonical.com>, Rex Zhu <rex.zhu@amd.com>,
-        "Deucher, Alexander" <Alexander.Deucher@amd.com>,
-        "Koenig, Christian" <Christian.Koenig@amd.com>,
-        "Zhou, David(ChunMing)" <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>,
-        "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.12.1 (2019-06-15)
+X-Pobox-Relay-ID: 4B46DF7C-0A35-11EA-BC5B-D1361DBA3BAF-64344220!pb-smtp2.pobox.com
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Applied.  Thanks!
+Signed-off-by: Travis Davies <tdavies@darkphysics.net>
 
-Alex
+---
 
-On Mon, Nov 18, 2019 at 1:56 AM Quan, Evan <Evan.Quan@amd.com> wrote:
->
-> Reviewed-by: Evan Quan <evan.quan@amd.com>
->
-> -----Original Message-----
-> From: Colin King <colin.king@canonical.com>
-> Sent: Friday, November 15, 2019 5:48 PM
-> To: Rex Zhu <rex.zhu@amd.com>; Quan, Evan <Evan.Quan@amd.com>; Deucher, A=
-lexander <Alexander.Deucher@amd.com>; Koenig, Christian <Christian.Koenig@a=
-md.com>; Zhou, David(ChunMing) <David1.Zhou@amd.com>; David Airlie <airlied=
-@linux.ie>; Daniel Vetter <daniel@ffwll.ch>; amd-gfx@lists.freedesktop.org;=
- dri-devel@lists.freedesktop.org
-> Cc: kernel-janitors@vger.kernel.org; linux-kernel@vger.kernel.org
-> Subject: [PATCH][next] drm/amdgpu/powerplay: fix dereference before null =
-check of pointer hwmgr
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> The assignment of adev dereferences pointer hwmgr before hwmgr is null ch=
-ecked, hence there is a potential null pointer deference issue. Fix this by=
- assigning adev after the null check.
->
-> Addresses-Coverity: ("Dereference before null check")
-> Fixes: 0896d2f7ba4d ("drm/amdgpu/powerplay: properly set PP_GFXOFF_MASK")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/gpu/drm/amd/powerplay/hwmgr/hwmgr.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/amd/powerplay/hwmgr/hwmgr.c b/drivers/gpu/dr=
-m/amd/powerplay/hwmgr/hwmgr.c
-> index 443625c83ec9..d2909c91d65b 100644
-> --- a/drivers/gpu/drm/amd/powerplay/hwmgr/hwmgr.c
-> +++ b/drivers/gpu/drm/amd/powerplay/hwmgr/hwmgr.c
-> @@ -81,7 +81,7 @@ static void hwmgr_init_workload_prority(struct pp_hwmgr=
- *hwmgr)
->
->  int hwmgr_early_init(struct pp_hwmgr *hwmgr)  {
-> -       struct amdgpu_device *adev =3D hwmgr->adev;
-> +       struct amdgpu_device *adev;
->
->         if (!hwmgr)
->                 return -EINVAL;
-> @@ -96,6 +96,8 @@ int hwmgr_early_init(struct pp_hwmgr *hwmgr)
->         hwmgr_init_workload_prority(hwmgr);
->         hwmgr->gfxoff_state_changed_by_workload =3D false;
->
-> +       adev =3D hwmgr->adev;
-> +
->         switch (hwmgr->chip_family) {
->         case AMDGPU_FAMILY_CI:
->                 adev->pm.pp_feature &=3D ~PP_GFXOFF_MASK;
-> --
-> 2.20.1
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+This patch places /* and */ on separate lines for a
+multiline block comment, in order to keep code style
+consistant with majority of blocks throughout the file.
+
+This will prevent a checkpatch.pl warning:
+'Block comments use a trailing */ on a separate line'
+
+ include/linux/netdevice.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index c20f190b4c18..a2605e043fa2 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -95,9 +95,11 @@ void netdev_set_default_ethtool_ops(struct net_device *dev,
+ #define NET_XMIT_CN		0x02	/* congestion notification	*/
+ #define NET_XMIT_MASK		0x0f	/* qdisc flags in net/sch_generic.h */
+ 
+-/* NET_XMIT_CN is special. It does not guarantee that this packet is lost. It
++/*
++ * NET_XMIT_CN is special. It does not guarantee that this packet is lost. It
+  * indicates that the device will soon be dropping packets, or already drops
+- * some packets of the same priority; prompting us to send less aggressively. */
++ * some packets of the same priority; prompting us to send less aggressively.
++ */
+ #define net_xmit_eval(e)	((e) == NET_XMIT_CN ? 0 : (e))
+ #define net_xmit_errno(e)	((e) != NET_XMIT_CN ? -ENOBUFS : 0)
+ 
+-- 
+2.21.0
+

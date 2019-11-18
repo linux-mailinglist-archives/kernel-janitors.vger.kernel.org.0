@@ -2,53 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DDD2100E94
-	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Nov 2019 23:06:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D479F100EF4
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Nov 2019 23:48:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727036AbfKRWGT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 Nov 2019 17:06:19 -0500
-Received: from pb-smtp1.pobox.com ([64.147.108.70]:61882 "EHLO
+        id S1726910AbfKRWss (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 Nov 2019 17:48:48 -0500
+Received: from pb-smtp1.pobox.com ([64.147.108.70]:55085 "EHLO
         pb-smtp1.pobox.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726647AbfKRWGS (ORCPT
+        with ESMTP id S1726717AbfKRWss (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 Nov 2019 17:06:18 -0500
+        Mon, 18 Nov 2019 17:48:48 -0500
 Received: from pb-smtp1.pobox.com (unknown [127.0.0.1])
-        by pb-smtp1.pobox.com (Postfix) with ESMTP id A9F6F1CD1D;
-        Mon, 18 Nov 2019 17:06:16 -0500 (EST)
+        by pb-smtp1.pobox.com (Postfix) with ESMTP id 4E2841D378;
+        Mon, 18 Nov 2019 17:48:46 -0500 (EST)
         (envelope-from tdavies@darkphysics.net)
 DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=pobox.com; h=date:from:to
-        :cc:subject:message-id:mime-version:content-type; s=sasl; bh=LHj
-        AIQqX0SS8A9JCuySi90I1RG0=; b=sFuu8TJenzjAzvyynLKTU6/Fgy8gQuas27j
-        g/XqYH6yyajtiKofsMOHbjC/i27ZHUq9Mq0rBVT89O8Gocca4IokCXNOAHb6Ij7E
-        EH0rLhstM2z/xGjltDVQLePYJ12xqUDdvXbYJ3G7kd5El6McQ2yM8UOU5ZP/hGzS
-        St72c0z8=
+        :cc:subject:message-id:mime-version:content-type; s=sasl; bh=aOY
+        z91GxiTw6gq3rm8N3MnoALFE=; b=mYThrQVlCiRRabVUbnjA2bf71YwlzLJO5aS
+        kBVIpdPMOIjRdCFZice/L6mMZ8vdYf69yozzx0h9PltR62oYY9vMQ/DyPc6iYk3z
+        XlO2H9z2XeLh7/s+a1/EgBWq9IsSMBv62WrLaCv3n5brUCqoZ11fOvej2LKhwxD3
+        HdKk+3Ac=
 Received: from pb-smtp1.nyi.icgroup.com (unknown [127.0.0.1])
-        by pb-smtp1.pobox.com (Postfix) with ESMTP id A21161CD1B;
-        Mon, 18 Nov 2019 17:06:16 -0500 (EST)
+        by pb-smtp1.pobox.com (Postfix) with ESMTP id 46D761D377;
+        Mon, 18 Nov 2019 17:48:46 -0500 (EST)
         (envelope-from tdavies@darkphysics.net)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed; d=darkphysics.net;
  h=date:from:to:cc:subject:message-id:mime-version:content-type;
- s=2019-09.pbsmtp; bh=KaOxpme6FNZGTPOE7sm6/XODHUtk3cS/04Nzz8GTVFM=;
- b=qBmZrVe6/UaGKa5uvn+0IVSpKd5WbdjgLRDHNBhDdIjTkfYld8hmprlKK+Orx2hwvJ7x6u7o57DHw91GuQiIUgttgivMauWbR/0KKZGc8DSMsKGBq5zje9KXum8lsCGbd+ChpzsYnhYNt1JDhbZIMQaORZpx+YxqOS58hRSMcFw=
+ s=2019-09.pbsmtp; bh=TXrgYPE6DKfCO+LTmxwgcatpSBiHwJ+V747VzWXM2Zw=;
+ b=ZGtl7/F3HT4wcJ9gjy5qSOu8Vg8KJGzn37joqE3VKd3U1i+dfMibZVuB2USqnSavreHpXyeZUAoXQ6ibZlz9OHhD2d2ebB5d/R/UWoqNEaBfgFDXBO7/xXvMCrvkFjN+IsHea/0IlKzMLz519ZDtUsqWt+k379GdJIDxQxssu8g=
 Received: from Cheese (unknown [24.19.107.226])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by pb-smtp1.pobox.com (Postfix) with ESMTPSA id 81DEA1CD1A;
-        Mon, 18 Nov 2019 17:06:15 -0500 (EST)
+        by pb-smtp1.pobox.com (Postfix) with ESMTPSA id 3C6821D376;
+        Mon, 18 Nov 2019 17:48:45 -0500 (EST)
         (envelope-from tdavies@darkphysics.net)
-Date:   Mon, 18 Nov 2019 14:06:09 -0800
+Date:   Mon, 18 Nov 2019 14:48:37 -0800
 From:   Travis Davies <tdavies@darkphysics.net>
 To:     Andrew Morton <akpm@linux-foundation.org>,
         "David S. Miller" <davem@davemloft.net>,
         Julia Lawall <julia.lawall@lip6.fr>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: [PATCH v2 1/1] net: Fix comment block per style guide
-Message-ID: <20191118220609.GA23999@Cheese>
+Message-ID: <20191118224837.GA5138@Cheese>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 User-Agent: Mutt/1.12.1 (2019-06-15)
-X-Pobox-Relay-ID: A41BC134-0A4F-11EA-9080-C28CBED8090B-64344220!pb-smtp1.pobox.com
+X-Pobox-Relay-ID: 93D587D2-0A55-11EA-AC3A-C28CBED8090B-64344220!pb-smtp1.pobox.com
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -61,10 +61,9 @@ consistant with majority of blocks throughout the file.
 This will prevent a checkpatch.pl warning:
 'Block comments use a trailing */ on a separate line'
 
-Signed-off-by: Travis Davies <tdavies@darkphysics.net>
 ---
 -v2: Fix commit description, and subject line as suggested by 
-     Julie Lawall
+     Julia Lawall.
 
  include/linux/netdevice.h | 6 ++++--
  1 file changed, 4 insertions(+), 2 deletions(-)

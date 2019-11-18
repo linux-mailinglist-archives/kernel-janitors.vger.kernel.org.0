@@ -2,161 +2,120 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A2A60FFC5E
-	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Nov 2019 00:57:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C422FFDAC
+	for <lists+kernel-janitors@lfdr.de>; Mon, 18 Nov 2019 05:59:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726315AbfKQX4s (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 17 Nov 2019 18:56:48 -0500
-Received: from esa3.hgst.iphmx.com ([216.71.153.141]:58054 "EHLO
-        esa3.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726268AbfKQX4s (ORCPT
+        id S1726563AbfKRE7p (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 17 Nov 2019 23:59:45 -0500
+Received: from mailout4.samsung.com ([203.254.224.34]:28651 "EHLO
+        mailout4.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726314AbfKRE7p (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 17 Nov 2019 18:56:48 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1574035009; x=1605571009;
-  h=from:to:cc:subject:date:message-id:references:
-   content-transfer-encoding:mime-version;
-  bh=hPWaQKGqTF9b3GIIoyC0Y3xxP883gJqlKeoYg0WOPks=;
-  b=TLnnu5djm4lEEjn5xWCBCT0OWslQMIGtGDE1xvHvN8WwAuJ3adsR9gxu
-   gEPW9/p2oZ/Y3VtMrAU5zjbVG+a6u4GLFDfyZG9NHTCjhbAsPA7UEwmnV
-   9VmoNA8/E6InVQH8N8UwDIPZ8LOFIQqBXMe/8i0YzT3cdC/98yI0vxJOY
-   SFYRSIOgHk/oM3d7eo+E9LQOpHkMVJLSynAEVpMuhwq0oGm2sV+np1Rqy
-   9R+B2Y3V6LQ6FGdhgAZAAgQ/baLXgV9eLQef2qLC8+K5wF3uilNQVsfaq
-   eioc882Uc21xtmXsBJV4K/1VzfOy2vnnn3cWwiuMcMEJwOHiGwd5hXaqO
-   Q==;
-IronPort-SDR: YTejGEgNHh/Z+WZ9z5afUg+Swmek9Rpvcw+5hOAhPQgeT45l5uD7ljnwTKLefqWpQOpTYzsBLn
- 4LcbEErtnwlVtA8uddiSTo4wsogOHhAQGKseOfwwMMxI01ta8fpTXNTlB41QgAfKlglASxQOBZ
- NUN/Nzoe5eWFUqpwK+eirohw9F5OHvlpix84GkpELb5VIc6k7iwy1KWpRo7uZ99BNRVh8UiEUO
- yReDbRaIUid7I6cnB3wf4QQ59oYQbuqgmWfe4w4UgUWC9+nav0efJ0K7ApkURenK9C7yZq+yC+
- mh0=
-X-IronPort-AV: E=Sophos;i="5.68,318,1569254400"; 
-   d="scan'208";a="127690772"
-Received: from mail-bn3nam01lp2054.outbound.protection.outlook.com (HELO NAM01-BN3-obe.outbound.protection.outlook.com) ([104.47.33.54])
-  by ob1.hgst.iphmx.com with ESMTP; 18 Nov 2019 07:56:42 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XNqpituIrY0pGeqfhKGHOn1BLU5W912NS0A4KdM4YVf35QzuOABD1sJtHAJtvsgqKm8ATs7JEAER+NY5fNzL486Jp+oAX7sm1sOIQr4R6/uGU9s8uRZYa16PSi5DhiEzRcZmJCUFeyZx964F+5NkWknJHQa1WcHDjR0rfAo7RmwwspItDG0wmDvozPrZVBUJDNOsCYwS71z32/3w0B1SxBsGF7Qwf2oNA1GBqAhMBWP8xDQQXTsTvoJobHoYA/TJqPnegjhFpuOOAngpcMub0ufuhVkknXt1ICtjOwQwLXmo0sycHApE8QfbhZ1rZYlEakbqBUPf/vPtFhGv9vRvDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=djJPsaMb19IHY9GISP1j0a2BcGtKknHQS8dlRP725Fs=;
- b=Iyl+cM2UwwmUcV6GfL8tRUOAnQTEp6JVsm97kY4eJUa2Woo6KLPdZp4hz6hjyPey8PKNnTgbPQoXmVbViM+wzlrxcop3igRTVpyLJkHpAHZ5jCLE8VmhY4UEN5qLvFphhVLCaSCatbQoRKiwU6Tur2WRqB0xugk6WkUuPseKHi7dCMzilQITElBNPfmn97FMB6n3RfMxQLglc504ZhbJIfNrtVc5sOqhUpDZYyBNEtAimzBWrLB6/PIHl2KqUGMtd9HNxpMrMRRbEfRBU0/fg20KMAShQ/UEXQ0H9gpUQ96K2DcXiDxISOyuGMMa65sROQsu/3qNe8P0NS9G7+rZKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
- header.d=wdc.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=djJPsaMb19IHY9GISP1j0a2BcGtKknHQS8dlRP725Fs=;
- b=ioE7IZ6yqJV1NLLCqR+mU2Uov/dk1KmHoPYGgdPdphT30n7Kq//Q8Qw1a8RgGTu4JyFjQX5upP7vb28r47JyOreXvpp2AX2K3zEmjpZJqQ/RUo1rooSOLOWTvM9qBaizKrFBPS979cSW8sa1v7jL+Ia77HzVDC3ndBllKovrTd0=
-Received: from BYAPR04MB5816.namprd04.prod.outlook.com (20.179.59.16) by
- BYAPR04MB4920.namprd04.prod.outlook.com (52.135.232.213) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2451.24; Sun, 17 Nov 2019 23:56:40 +0000
-Received: from BYAPR04MB5816.namprd04.prod.outlook.com
- ([fe80::4176:5eda:76a2:3c40]) by BYAPR04MB5816.namprd04.prod.outlook.com
- ([fe80::4176:5eda:76a2:3c40%7]) with mapi id 15.20.2451.029; Sun, 17 Nov 2019
- 23:56:40 +0000
-From:   Damien Le Moal <Damien.LeMoal@wdc.com>
-To:     YueHaibing <yuehaibing@huawei.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        Jens Axboe <axboe@kernel.dk>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-CC:     "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH -next] scsi: sd_zbc: Remove set but not used variable
- 'buflen'
-Thread-Topic: [PATCH -next] scsi: sd_zbc: Remove set but not used variable
- 'buflen'
-Thread-Index: AQHVm7dj0yj5L8RVIk6wU+rJbBb19w==
-Date:   Sun, 17 Nov 2019 23:56:40 +0000
-Message-ID: <BYAPR04MB58168330EBC014EAD1BBC980E7720@BYAPR04MB5816.namprd04.prod.outlook.com>
-References: <20191115131829.162946-1-yuehaibing@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Damien.LeMoal@wdc.com; 
-x-originating-ip: [199.255.47.8]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 1a7d4d97-edc3-471f-a5f4-08d76bb9ca54
-x-ms-traffictypediagnostic: BYAPR04MB4920:
-x-microsoft-antispam-prvs: <BYAPR04MB492072BABDD9D32D62A0A110E7720@BYAPR04MB4920.namprd04.prod.outlook.com>
-wdcipoutbound: EOP-TRUE
-x-ms-oob-tlc-oobclassifiers: OLM:167;
-x-forefront-prvs: 02243C58C6
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(39850400004)(366004)(396003)(346002)(376002)(136003)(189003)(199004)(54906003)(99286004)(81166006)(316002)(6116002)(5660300002)(52536014)(2906002)(3846002)(25786009)(478600001)(110136005)(305945005)(33656002)(14444005)(486006)(256004)(14454004)(74316002)(476003)(446003)(91956017)(76116006)(66066001)(53546011)(6506007)(71200400001)(71190400001)(6436002)(6246003)(76176011)(7696005)(8676002)(4326008)(26005)(7736002)(186003)(66446008)(64756008)(66556008)(66946007)(86362001)(9686003)(81156014)(8936002)(102836004)(229853002)(55016002)(66476007);DIR:OUT;SFP:1102;SCL:1;SRVR:BYAPR04MB4920;H:BYAPR04MB5816.namprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: q7AgqQlempPKtFw30Xl+537/VX6dvcnYWqxGzstxIMa+T3n+w9woyrqPL+EgDzQH9bs5mHri2qhhkqq88bhDDAh/mZdO8LMX8MOq2P1Ph5RxmhS5+IsF11BOp+gkOY1iwWotPtdbKE3NFzDrt4ESoE4z3JrO8jC9v9/3fpORVYIodg2yoyP6PyDNePZedSj0zwzfponXP+aXFBLX3ZAdGRORBqBye2/sHtrry5F2PIucGGqgGFcgvZ6ZDBBlYkqkW3941V9jDgTmLOK/4+M5DrCZh4WmKf0J+bNgk4ssVaXEu7vdBxtF/WF+BfSPnWYnYcD+teGZJLMMEfOV/Zh7wiHvDeMDmMWXhCg84XyL6ckulgCG7hMseLKp6cy+6z1GAY6XPi9ac0eeGFpHs4Z28qKyWAbQg6ymgJIgZIn7Ye7QzQmyu497Mgja0tH5bCWA
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        Sun, 17 Nov 2019 23:59:45 -0500
+Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
+        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20191118045942epoutp04ed1b44c1c63de81c67500b9de520ed4d~YKQe5mDPa2764227642epoutp04i
+        for <kernel-janitors@vger.kernel.org>; Mon, 18 Nov 2019 04:59:42 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20191118045942epoutp04ed1b44c1c63de81c67500b9de520ed4d~YKQe5mDPa2764227642epoutp04i
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1574053182;
+        bh=F/g2OIlz0/NDE5SEkzXk6lGEjX00S5KOP/k4w3J8IPk=;
+        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+        b=Ivz9MF7Hz9TAi9mILj5t2tjy1E2Od6/jrpIApC6dsqr+Zgs0Li8/BmXhHxTdyG+bl
+         UpqwWMLtccciiH/fvKACqHAO7G3ZSiYu6NbKsxSE5/k+ToaItmidTVOGK31izrO1Dw
+         gwnicg7XyLQ8BWV0SGWVshumv9hf2GnvR4TNoM20=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+        epcas1p4.samsung.com (KnoxPortal) with ESMTP id
+        20191118045942epcas1p451df2f81cbb35a60dd4ee3014e61fc7c~YKQeRI6_A1381413814epcas1p4o;
+        Mon, 18 Nov 2019 04:59:42 +0000 (GMT)
+Received: from epsmges1p4.samsung.com (unknown [182.195.40.160]) by
+        epsnrtp2.localdomain (Postfix) with ESMTP id 47GcFT4GwtzMqYkn; Mon, 18 Nov
+        2019 04:59:41 +0000 (GMT)
+Received: from epcas1p2.samsung.com ( [182.195.41.46]) by
+        epsmges1p4.samsung.com (Symantec Messaging Gateway) with SMTP id
+        BF.86.04406.D3522DD5; Mon, 18 Nov 2019 13:59:41 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
+        20191118045940epcas1p3b36eb532d8def2cafeb014eebab128e5~YKQc0r9Sr1368213682epcas1p3F;
+        Mon, 18 Nov 2019 04:59:40 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20191118045940epsmtrp1b700fb0c572b1f5afa7fb3623dd8fcf5~YKQcz_gJP0339103391epsmtrp1C;
+        Mon, 18 Nov 2019 04:59:40 +0000 (GMT)
+X-AuditID: b6c32a38-95fff70000001136-39-5dd2253d1ff7
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        E5.67.03654.C3522DD5; Mon, 18 Nov 2019 13:59:40 +0900 (KST)
+Received: from DONAMJAEJEO06 (unknown [10.88.104.63]) by
+        epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20191118045940epsmtip2a193bb5e28e862e8b4fbf8cee8a0f624~YKQcqg2142534025340epsmtip2V;
+        Mon, 18 Nov 2019 04:59:40 +0000 (GMT)
+From:   "Namjae Jeon" <namjae.jeon@samsung.com>
+To:     "'Markus Elfring'" <Markus.Elfring@web.de>
+Cc:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        "'Christoph Hellwig'" <hch@lst.de>,
+        "'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>,
+        "'Sungjong Seo'" <sj1557.seo@samsung.com>,
+        =?UTF-8?Q?'Valdis_Kl=C4=93tnieks'?= <valdis.kletnieks@vt.edu>,
+        <linkinjeon@gmail.com>, <linux-fsdevel@vger.kernel.org>
+In-Reply-To: <a4bd8e3e-fcdc-9739-5407-5345743fb0b9@web.de>
+Subject: RE: [PATCH 01/13] exfat: add in-memory and on-disk structures and
+ headers
+Date:   Mon, 18 Nov 2019 13:59:40 +0900
+Message-ID: <00ba01d59dcc$fc17e010$f447a030$@samsung.com>
 MIME-Version: 1.0
-X-OriginatorOrg: wdc.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a7d4d97-edc3-471f-a5f4-08d76bb9ca54
-X-MS-Exchange-CrossTenant-originalarrivaltime: 17 Nov 2019 23:56:40.2872
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: b9Gc+qRKXmg3pAm+Vb7vO89J72Y+kUvBHdWHLtQxdbe0U4wDi0T373DxavoGqLbgIv7KENey8aXJK+0lFYLhzQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR04MB4920
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 14.0
+Thread-Index: AQDyLF7pV5/eBb/pSO5+MuAyfY69HgGBvdAxAsnJjT2pNOSKMA==
+Content-Language: ko
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrGJsWRmVeSWpSXmKPExsWy7bCmnq6t6qVYg5/ruS2aF69ns1i5+iiT
+        xdZb0hbX795ittiz9ySLxeVdc9gs/s96zmqx5d8RVotL7z+wOHB67Jx1l91j/9w17B67bzaw
+        efRtWcXo8XmTnMeh7W/YPG4/28YSwB6VY5ORmpiSWqSQmpecn5KZl26r5B0c7xxvamZgqGto
+        aWGupJCXmJtqq+TiE6DrlpkDdJmSQlliTilQKCCxuFhJ386mKL+0JFUhI7+4xFYptSAlp8DQ
+        oECvODG3uDQvXS85P9fK0MDAyBSoMiEn48PsvawFx1kqZj1sYW1g3MbSxcjJISFgIvFh/jO2
+        LkYuDiGBHYwS21bNZ4JwPjFKLJu8gRnC+cYoMe/RVGaYlmVTt7BAJPYySrRfns8I4bxilGjb
+        080EUsUmoCvx789+NhBbREBPYtKbw6wgRcwCJ5kkvi0+DjSKg4NTwEric6sQSI2wQIhE9/Rz
+        rCA2i4CqxJrufWDbeAUsJd7+XsEKYQtKnJz5BOxwZgFtiWULX0NdpCCx4+xrRpCRIgJOEq8m
+        ckGUiEjM7mwD+0BCoJldYueqvSwgNRICLhLTv3BDtApLvDq+hR3ClpJ42d/GDlFSLfFxP9T0
+        DkaJF99tIWxjiZvrN7CClDALaEqs36UPEVaU2Pl7LiPEVj6Jd197WCGm8Ep0tAlBlKhK9F06
+        zARhS0t0tX9gn8CoNAvJW7OQvDULyf2zEJYtYGRZxSiWWlCcm55abFhgghzVmxjBaVbLYgfj
+        nnM+hxgFOBiVeHgflF+MFWJNLCuuzD3EKMHBrCTC6/foQqwQb0piZVVqUX58UWlOavEhRlNg
+        qE9klhJNzgfmgLySeENTI2NjYwsTM3MzU2MlcV6OH0BzBNITS1KzU1MLUotg+pg4OKUaGDsK
+        GffmRvk/ZdrWoOslb81h8t/AM78ns0X0saH/3O9N/FVr+B/3ZRV92Lfe3eTDNOd6Ma3p7z4a
+        cn7fpmnFdmh5XJiQcEzDQvkb5Y718f2ui3qSykzZAyOiJF5xc9X+EqgtcLr4ao1M9t2VBguW
+        r2T9LMRp16hmyPMu69AZT46HgqJLIm4psRRnJBpqMRcVJwIAjlpiCskDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrEIsWRmVeSWpSXmKPExsWy7bCSvK6N6qVYg8W71SyaF69ns1i5+iiT
+        xdZb0hbX795ittiz9ySLxeVdc9gs/s96zmqx5d8RVotL7z+wOHB67Jx1l91j/9w17B67bzaw
+        efRtWcXo8XmTnMeh7W/YPG4/28YSwB7FZZOSmpNZllqkb5fAlbGweQdzwQ+mijsvP7I2MC5i
+        6mLk5JAQMJFYNnULSxcjF4eQwG5GiStrbjFDJKQljp04A2RzANnCEocPF0PUvGCUuNk3A6yZ
+        TUBX4t+f/WwgtoiAnsSkN4dZQYqYBc4zSRyecJERbuqGXxNYQSZxClhJfG4VAmkQFgiSWLDx
+        IyuIzSKgKrGmex/YYl4BS4m3v1ewQtiCEidnPmEBsZkFtCV6H7YywtjLFr6GOlRBYsfZ14wg
+        40UEnCReTeSCKBGRmN3ZxjyBUXgWkkmzkEyahWTSLCQtCxhZVjFKphYU56bnFhsWGOallusV
+        J+YWl+al6yXn525iBMecluYOxstL4g8xCnAwKvHwWlRdjBViTSwrrsw9xCjBwawkwuv36EKs
+        EG9KYmVValF+fFFpTmrxIUZpDhYlcd6neccihQTSE0tSs1NTC1KLYLJMHJxSDYwqNQ4KwvqG
+        vw0t5kr/N6x375RLfNWiHMXkVxr9Is7eltm8aOfxD3rHXnT/9Jslvly+88U/G08FwcV3PFWs
+        t0VPiPTYWVgx61HslxcyF0QmmCiEi17Q+HC1lJn73Bqrcr67Kem/8k75qbOvnJ6xrHhWRwHn
+        kUWhch4b96xaw+9+N/K7w0/JN0osxRmJhlrMRcWJAKZvPqy1AgAA
+X-CMS-MailID: 20191118045940epcas1p3b36eb532d8def2cafeb014eebab128e5
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20191117122540epcas4p2cd0e2b9658154c81ae9d2e46882efaa0
+References: <20191113081800.7672-2-namjae.jeon@samsung.com>
+        <CGME20191117122540epcas4p2cd0e2b9658154c81ae9d2e46882efaa0@epcas4p2.samsung.com>
+        <a4bd8e3e-fcdc-9739-5407-5345743fb0b9@web.de>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2019/11/15 22:20, YueHaibing wrote:=0A=
-> Fixes gcc '-Wunused-but-set-variable' warning:=0A=
-> =0A=
-> drivers/scsi/sd_zbc.c: In function 'sd_zbc_check_zones':=0A=
-> drivers/scsi/sd_zbc.c:341:9: warning:=0A=
->  variable 'buflen' set but not used [-Wunused-but-set-variable]=0A=
-> =0A=
-> It is not used since commit d9dd73087a8b ("block: Enhance=0A=
-> blk_revalidate_disk_zones()")=0A=
-> =0A=
-> Reported-by: Hulk Robot <hulkci@huawei.com>=0A=
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>=0A=
-> ---=0A=
->  drivers/scsi/sd_zbc.c | 2 --=0A=
->  1 file changed, 2 deletions(-)=0A=
-> =0A=
-> diff --git a/drivers/scsi/sd_zbc.c b/drivers/scsi/sd_zbc.c=0A=
-> index 23281825ec38..0e5ede48f045 100644=0A=
-> --- a/drivers/scsi/sd_zbc.c=0A=
-> +++ b/drivers/scsi/sd_zbc.c=0A=
-> @@ -338,7 +338,6 @@ static int sd_zbc_check_zoned_characteristics(struct =
-scsi_disk *sdkp,=0A=
->  static int sd_zbc_check_zones(struct scsi_disk *sdkp, unsigned char *buf=
-,=0A=
->  			      u32 *zblocks)=0A=
->  {=0A=
-> -	size_t buflen;=0A=
->  	u64 zone_blocks =3D 0;=0A=
->  	sector_t max_lba;=0A=
->  	unsigned char *rec;=0A=
-> @@ -363,7 +362,6 @@ static int sd_zbc_check_zones(struct scsi_disk *sdkp,=
- unsigned char *buf,=0A=
->  	}=0A=
->  =0A=
->  	/* Parse REPORT ZONES header */=0A=
-> -	buflen =3D min_t(size_t, get_unaligned_be32(&buf[0]) + 64, SD_BUF_SIZE)=
-;=0A=
->  	rec =3D buf + 64;=0A=
->  	zone_blocks =3D get_unaligned_be64(&rec[8]);=0A=
->  	if (!zone_blocks || !is_power_of_2(zone_blocks)) {=0A=
-=0A=
-Good catch !=0A=
-=0A=
-Reviewed-by: Damien Le Moal <damien.lemoal@wdc.com>=0A=
-=0A=
--- =0A=
-Damien Le Moal=0A=
-Western Digital Research=0A=
+> =E2=80=A6=0D=0A>=20>=20+++=20b/fs/exfat/exfat_fs.h=0D=0A>=20>=20=40=40=20=
+-0,0=20+1,533=20=40=40=0D=0A>=20=E2=80=A6=0D=0A>=20>=20+/*=20time=20modes=
+=20*/=0D=0A>=20>=20+=23define=20TM_CREATE=09=090=0D=0A>=20>=20+=23define=20=
+TM_MODIFY=09=091=0D=0A>=20=E2=80=A6=0D=0A>=20=0D=0A>=20Will=20it=20be=20hel=
+pful=20to=20work=20with=20more=20enumerations=20(besides=0D=0A>=20=E2=80=9C=
+exfat_error_mode=E2=80=9D)=0D=0A>=20at=20such=20places?=0D=0AYep,=20Will=20=
+fix=20it=20on=20V2.=0D=0AThanks=20for=20your=20review=21=0D=0A>=20=0D=0A>=
+=20Regards,=0D=0A>=20Markus=0D=0A=0D=0A

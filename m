@@ -2,59 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7061D101059
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 01:47:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CE43E1010AB
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 02:24:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727014AbfKSArP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 Nov 2019 19:47:15 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:51764 "EHLO
+        id S1727200AbfKSBX7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 Nov 2019 20:23:59 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:52242 "EHLO
         shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726809AbfKSArP (ORCPT
+        with ESMTP id S1726761AbfKSBX6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 Nov 2019 19:47:15 -0500
+        Mon, 18 Nov 2019 20:23:58 -0500
 Received: from localhost (unknown [IPv6:2601:601:9f00:1e2::3d5])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 9CA53150F7646;
-        Mon, 18 Nov 2019 16:47:14 -0800 (PST)
-Date:   Mon, 18 Nov 2019 16:47:12 -0800 (PST)
-Message-Id: <20191118.164712.488135429319455452.davem@davemloft.net>
-To:     tdavies@darkphysics.net
-Cc:     akpm@linux-foundation.org, julia.lawall@lip6.fr,
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 64C49150FAE7B;
+        Mon, 18 Nov 2019 17:23:58 -0800 (PST)
+Date:   Mon, 18 Nov 2019 17:23:58 -0800 (PST)
+Message-Id: <20191118.172358.1651088156867288729.davem@davemloft.net>
+To:     colin.king@canonical.com
+Cc:     andrew@lunn.ch, f.fainelli@gmail.com, hkallweit1@gmail.com,
+        dmurphy@ti.com, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] net: Fix comment block per style guide
+Subject: Re: [PATCH][next] net: phy: dp83869: fix return of uninitialized
+ variable ret
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20191118220609.GA23999@Cheese>
-References: <20191118220609.GA23999@Cheese>
+In-Reply-To: <20191118114835.39494-1-colin.king@canonical.com>
+References: <20191118114835.39494-1-colin.king@canonical.com>
 X-Mailer: Mew version 6.8 on Emacs 26.1
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 18 Nov 2019 16:47:14 -0800 (PST)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 18 Nov 2019 17:23:58 -0800 (PST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Travis Davies <tdavies@darkphysics.net>
-Date: Mon, 18 Nov 2019 14:06:09 -0800
+From: Colin King <colin.king@canonical.com>
+Date: Mon, 18 Nov 2019 11:48:35 +0000
 
-> This patch places /* and */ on separate lines for a
-> multiline block comment, in order to keep code style
-> consistant with majority of blocks throughout the file.
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> This will prevent a checkpatch.pl warning:
-> 'Block comments use a trailing */ on a separate line'
+> In the case where the call to phy_interface_is_rgmii returns zero
+> the variable ret is left uninitialized and this is returned at
+> the end of the function dp83869_configure_rgmii.  Fix this by
+> returning 0 instead of the uninitialized value in ret.
 > 
-> Signed-off-by: Travis Davies <tdavies@darkphysics.net>
-> ---
-> -v2: Fix commit description, and subject line as suggested by 
->      Julie Lawall
+> Addresses-Coverity: ("Uninitialized scalar variable")
+> Fixes: 01db923e8377 ("net: phy: dp83869: Add TI dp83869 phy")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-The comment style used here is so pervasive in the kernel networking,
-I'm really not thrilled to start seeing these picked away one by
-one.  So much churn...
-
-Sorry I'm not applying this...
-
+Applied.

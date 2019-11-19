@@ -2,114 +2,116 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 059961024C1
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 13:44:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D9512102556
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 14:25:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728103AbfKSMn4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 Nov 2019 07:43:56 -0500
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:37684 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728093AbfKSMnz (ORCPT
+        id S1727665AbfKSNZr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 Nov 2019 08:25:47 -0500
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:53936 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726369AbfKSNZr (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 Nov 2019 07:43:55 -0500
-Received: by mail-oi1-f195.google.com with SMTP id y194so18775776oie.4;
-        Tue, 19 Nov 2019 04:43:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=5MSKtsb6iqkVQ7BW7w/AmpW5TOtiq/Srx1jW+59rrl4=;
-        b=A5CIoy8/cyb2kAwkDkjBIQilfcNoYYARax4TRe3fhm3SkqVl9OVS5JosvkDV2X3KXN
-         m0+MSBtoVctYh5DaaWPSGXBXGUXoIfeuKhIj4mU/bOa+ShHZkAApaOwVLHuG0JLKDzgy
-         GZji7nHA9iTI2hYfYSMad3BBBODYgjY+ku7u+KtGLykNA2S2+cF9wmZWA1nfKD/ubyyL
-         118Wt506P4+EeTZXiZv0lG8bl82+jVqCk5E+4FPl1yvxItrIMS1AKqU1TzcDgxrmSMsY
-         1SyeaoIE3GUn6/glg71JJ5P4bStcQTUy/9wofCA7B6Omtkpoyf+xfvIwCHAUjzaHescY
-         m5Gg==
+        Tue, 19 Nov 2019 08:25:47 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1574169945;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zuIFrepTI5XGjnmu7SZRBXm2ypngTSYro2lLoyi+D9U=;
+        b=JLQtEiSI+NwnDBeKKHxGV7Dn6VNrdnoyJjvOcG08/jhiAad552Dw2oWGSfk9jyK1rZ09MD
+        in5WpOznWffBqUBfz+Q6RFJClDxegOI4sIIcoDZRSUh/Sf+jIFJvUleQZkMjTHTJXqnyNK
+        EL24j8nv+9mM1AY4CYwA00kiMTnj+Lg=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-264-t6rx3LUZOMmZJ8HULZRaBg-1; Tue, 19 Nov 2019 08:25:44 -0500
+Received: by mail-wr1-f71.google.com with SMTP id v6so18081304wrm.18
+        for <kernel-janitors@vger.kernel.org>; Tue, 19 Nov 2019 05:25:44 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=5MSKtsb6iqkVQ7BW7w/AmpW5TOtiq/Srx1jW+59rrl4=;
-        b=QoMb4Wi356Aa1FmjvlcQYsLAZcJPdpxVRGY4qOC/9LTCMa1sFv8rgXrPkRgn+i1cJC
-         MLc8QoPtWnz02tD8lC5wy+r+rhf5sh6p/FyfJJPzx5lo4cbCJBTUjsKtEHASzqkAXFQl
-         Vc9ec/UFE/eMotDI+OtW7uE/CXdjOwrdoBX/p9qakUmSpT4rC9Df4pbrAeVIQh10Km/4
-         8px+JE6mWHxfR9WCybNHMObxivCvgYwJLZtFu5UcuGoQhLMlrj9pWFM8Rk7M6QZb5klt
-         TmEg6AmR2xL2+npP8IVIiKxkBpwE8q916gWr6FSIUEoEB7K58HtmwjYYQd1WcxOTWe42
-         dzUw==
-X-Gm-Message-State: APjAAAVBMNfj8WWv9Z6mlA5dv/+4Npwmi509Xk8i2UKSgd07IX7KLGJg
-        DvdobJDAu0QGyjtQnagkwbp8Pw1okq4+13fvEAc=
-X-Google-Smtp-Source: APXvYqwruuqBpg/77+iq6NzLKr6d47hyVlaeNzcqcdg25IMEhT9vw6mSXOz7+kCtWM2/z54d14RSWpe/BIPDc1O1VcI=
-X-Received: by 2002:aca:450:: with SMTP id 77mr3922090oie.113.1574167433319;
- Tue, 19 Nov 2019 04:43:53 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
+         :message-id:mime-version;
+        bh=UWribs4bV+tz4KZQ/7HRXELXyhGEq0/rpuN5CPg+cLU=;
+        b=chtXMmmWhwknOlOAFJ0M4qtPX5x/Lk5y39J0Qf1XfbAQrSQm68znZ2yV1rpYrIiSEk
+         iYA3BY2O9XKRIQVXwyy2y6tDaBWfJ2exDlquQrUT/xll0oKJ7518EIxGXlRzGseoxC1K
+         7nDr+0V5M5R3NULnosgj3eYXg18+3wuIxa8YkKwQ8YhUmbjMNl3Mrh9T1Ky+kH/RKcdq
+         /Te5mdA7rj7+dNqyTZtyQJfk2ajN6MVkEnqymQtpVszF2z2Nmlps3q2Df/mUj8hDSEfD
+         f60790z15gqK97zBcDC2mpT2xOiPEUOUgeJWQT1WZ0YYLiOR2mAds/QfuoUgvpOGflua
+         L1FA==
+X-Gm-Message-State: APjAAAUVfyo+e7PVBtgy8LQ2BPsDOWFtEZqtl6lpTGa1hkd3QYEyKwhb
+        QcaoLwyNZnjwdcoRP3rxUILeiAGsFkdNZ/Ps8/m8TPyMAnWOsaNjB/Fv+zJV55pXn34m971jr7w
+        9hqyQJKs56rBLjjimtcNPO7lzdfzt
+X-Received: by 2002:a05:6000:14a:: with SMTP id r10mr26061339wrx.310.1574169942736;
+        Tue, 19 Nov 2019 05:25:42 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxyt0XLcdpHWEe/n4GPIDIIm1F1+q8ZirrEBw+e15nvX+SUzCfY2GLvuKgW2pCfMt5pAjJsTA==
+X-Received: by 2002:a05:6000:14a:: with SMTP id r10mr26061309wrx.310.1574169942433;
+        Tue, 19 Nov 2019 05:25:42 -0800 (PST)
+Received: from vitty.brq.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
+        by smtp.gmail.com with ESMTPSA id u13sm2968880wmm.45.2019.11.19.05.25.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Nov 2019 05:25:41 -0800 (PST)
+From:   Vitaly Kuznetsov <vkuznets@redhat.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Mao Wenan <maowenan@huawei.com>, pbonzini@redhat.com,
+        rkrcmar@redhat.com, sean.j.christopherson@intel.com,
+        wanpengli@tencent.com, jmattson@google.com, joro@8bytes.org,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] KVM: x86: remove set but not used variable 'called'
+In-Reply-To: <20191119123956.GC5604@kadam>
+References: <20191119030640.25097-1-maowenan@huawei.com> <87o8x8gjr5.fsf@vitty.brq.redhat.com> <20191119121423.GB5604@kadam> <87imnggidr.fsf@vitty.brq.redhat.com> <20191119123956.GC5604@kadam>
+Date:   Tue, 19 Nov 2019 14:25:40 +0100
+Message-ID: <87a78sgfqj.fsf@vitty.brq.redhat.com>
 MIME-Version: 1.0
-Received: by 2002:a8a:d7:0:0:0:0:0 with HTTP; Tue, 19 Nov 2019 04:43:52 -0800 (PST)
-In-Reply-To: <2cc05215-3b44-06f0-b34a-eb841476b329@web.de>
-References: <CGME20191119094019epcas1p298d14fcf6e7a24bee431238279961c5b@epcas1p2.samsung.com>
- <20191119093718.3501-1-namjae.jeon@samsung.com> <2cc05215-3b44-06f0-b34a-eb841476b329@web.de>
-From:   Namjae Jeon <linkinjeon@gmail.com>
-Date:   Tue, 19 Nov 2019 21:43:52 +0900
-Message-ID: <CAKYAXd86mEc7fFO6TzaUm7V=dXS4HG4mMWziz_Nq=SNQ-9RWQQ@mail.gmail.com>
-Subject: Re: [PATCH v3 00/13] add the latest exfat driver
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     Namjae Jeon <namjae.jeon@samsung.com>,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-        Daniel Wagner <dwagner@suse.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sungjong Seo <sj1557.seo@samsung.com>,
-        =?UTF-8?Q?Valdis_Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>
-Content-Type: text/plain; charset="UTF-8"
+X-MC-Unique: t6rx3LUZOMmZJ8HULZRaBg-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-2019-11-19 21:15 GMT+09:00, Markus Elfring <Markus.Elfring@web.de>:
->> =E2=80=A6, an a random previous
->
-> Does this wording contain a typo?
-Yes, Will fix it on next series.
+Dan Carpenter <dan.carpenter@oracle.com> writes:
 
+> On Tue, Nov 19, 2019 at 01:28:32PM +0100, Vitaly Kuznetsov wrote:
+>> Dan Carpenter <dan.carpenter@oracle.com> writes:
+>>=20
+>> > On Tue, Nov 19, 2019 at 12:58:54PM +0100, Vitaly Kuznetsov wrote:
+>> >> Mao Wenan <maowenan@huawei.com> writes:
+>> >>=20
+>> >> > Fixes gcc '-Wunused-but-set-variable' warning:
+>> >> >
+>> >> > arch/x86/kvm/x86.c: In function kvm_make_scan_ioapic_request_mask:
+>> >> > arch/x86/kvm/x86.c:7911:7: warning: variable called set but not
+>> >> > used [-Wunused-but-set-variable]
+>> >> >
+>> >> > It is not used since commit 7ee30bc132c6 ("KVM: x86: deliver KVM
+>> >> > IOAPIC scan request to target vCPUs")
+>> >>=20
+>> >> Better expressed as=20
+>> >>=20
+>> >> Fixes: 7ee30bc132c6 ("KVM: x86: deliver KVM IOAPIC scan request to ta=
+rget vCPUs")
+>> >>=20
+>> >
+>> > There is sort of a debate about this whether the Fixes tag should be
+>> > used if it's only a cleanup.
+>> >
+>>=20
+>> I have to admit I'm involved in doing backporting sometimes and I really
+>> appreciate Fixes: tags. Just so you know on which side of the debate I
+>> am :-)
 >
+> But we're not going to backport this hopefully?
 >
->> We plan to treat this version as the future upstream for the code base
->> once merged, and all new features and bug fixes will go upstream first.
->
-> Were the following mentioned issues occasionally reviewed already
-> by other developers before?
-https://marc.info/?l=3Dlinux-fsdevel&m=3D156985252507812&w=3D2
 
->
->
->> v3:
->>  - fix wrong sbi->s_dirt set.
->>
->> v2:
->>  - Check the bitmap count up to the total clusters.
->>  - Rename proper goto labels in seveal place.
->
-> Would you like to avoid further typos in such change descriptions?
-Will fix on next series.
->
->
->>  - Change time mode type with enumeration.
->
-> How do you think about to increase the usage of enumerations
-> at any more source code places?
-I will check.
->
->
->>  - Directly return error instead of goto at first error check.
->>  - Combine seq_printfs calls into a single one.
->
-> Please refer to the correct function name.
-Okay:)
->
->
-> Thanks for your positive feedback.
-Thanks for your review!
->
-> Regards,
-> Markus
->
+In case we're speaking about stable@ kernels, 7ee30bc132c6 doesn't look
+like a good candidate (to me) but who knows, it may get pulled in
+because of some code dependency or some other 'autosel magic'. And
+that's when 'Fixes:' tags become handy.
+
+--=20
+Vitaly
+

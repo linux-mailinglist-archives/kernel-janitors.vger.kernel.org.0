@@ -2,64 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DEB19100F6B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 00:29:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7061D101059
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 01:47:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726833AbfKRX3U (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 Nov 2019 18:29:20 -0500
-Received: from vps0.lunn.ch ([185.16.172.187]:45236 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726787AbfKRX3U (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 Nov 2019 18:29:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=xzBLEuBAmReKOhXVQby8OFn3Jmtd/Rt5Q7hgYK/UCWw=; b=cg0haprZrdpQKsqvln7fj76kIU
-        MX1eUaJ7SamaxwgZf5VLiBH4UYIeGLB1l+YkR0sulZPyhQXbT9okN7cB7KMIq3RZd3vXiPt43QaC3
-        i1e5/NIgG8rwB/RrX4cGKYk/ij4/wCaCWaIsjQeyHL9dHsmhE+nNAyXT/RYshWqnoJlc=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.92.2)
-        (envelope-from <andrew@lunn.ch>)
-        id 1iWqSG-0005oY-9m; Tue, 19 Nov 2019 00:29:12 +0100
-Date:   Tue, 19 Nov 2019 00:29:12 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Florian Fainelli <f.fainelli@gmail.com>,
-        Heiner Kallweit <hkallweit1@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Dan Murphy <dmurphy@ti.com>, netdev@vger.kernel.org,
+        id S1727014AbfKSArP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 Nov 2019 19:47:15 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:51764 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726809AbfKSArP (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 18 Nov 2019 19:47:15 -0500
+Received: from localhost (unknown [IPv6:2601:601:9f00:1e2::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 9CA53150F7646;
+        Mon, 18 Nov 2019 16:47:14 -0800 (PST)
+Date:   Mon, 18 Nov 2019 16:47:12 -0800 (PST)
+Message-Id: <20191118.164712.488135429319455452.davem@davemloft.net>
+To:     tdavies@darkphysics.net
+Cc:     akpm@linux-foundation.org, julia.lawall@lip6.fr,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] net: phy: dp83869: fix return of uninitialized
- variable ret
-Message-ID: <20191118232912.GC15395@lunn.ch>
-References: <20191118114835.39494-1-colin.king@canonical.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191118114835.39494-1-colin.king@canonical.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Subject: Re: [PATCH v2 1/1] net: Fix comment block per style guide
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20191118220609.GA23999@Cheese>
+References: <20191118220609.GA23999@Cheese>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 18 Nov 2019 16:47:14 -0800 (PST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Nov 18, 2019 at 11:48:35AM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+From: Travis Davies <tdavies@darkphysics.net>
+Date: Mon, 18 Nov 2019 14:06:09 -0800
+
+> This patch places /* and */ on separate lines for a
+> multiline block comment, in order to keep code style
+> consistant with majority of blocks throughout the file.
 > 
-> In the case where the call to phy_interface_is_rgmii returns zero
-> the variable ret is left uninitialized and this is returned at
-> the end of the function dp83869_configure_rgmii.  Fix this by
-> returning 0 instead of the uninitialized value in ret.
+> This will prevent a checkpatch.pl warning:
+> 'Block comments use a trailing */ on a separate line'
 > 
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Fixes: 01db923e8377 ("net: phy: dp83869: Add TI dp83869 phy")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Signed-off-by: Travis Davies <tdavies@darkphysics.net>
+> ---
+> -v2: Fix commit description, and subject line as suggested by 
+>      Julie Lawall
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+The comment style used here is so pervasive in the kernel networking,
+I'm really not thrilled to start seeing these picked away one by
+one.  So much churn...
 
-Dan: phy_modify_mmd() could fail. You check the return value for
-phy_read and phy_write, so it would be consistent to also check
+Sorry I'm not applying this...
 
-	 Andrew

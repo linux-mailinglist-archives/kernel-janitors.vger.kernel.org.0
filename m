@@ -2,30 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E147101179
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 03:53:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBBD5101192
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 04:08:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727289AbfKSCxT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 Nov 2019 21:53:19 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32]:58072 "EHLO huawei.com"
+        id S1727354AbfKSDIV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 Nov 2019 22:08:21 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:49378 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727014AbfKSCxT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 Nov 2019 21:53:19 -0500
-Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id C122B8909482A1E8353F;
-        Tue, 19 Nov 2019 10:53:16 +0800 (CST)
+        id S1727018AbfKSDIV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 18 Nov 2019 22:08:21 -0500
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id A434E11915CCDBACB518;
+        Tue, 19 Nov 2019 11:08:18 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
- 14.3.439.0; Tue, 19 Nov 2019 10:53:06 +0800
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 19 Nov 2019 11:08:11 +0800
 From:   Mao Wenan <maowenan@huawei.com>
-To:     <vladimir.oltean@nxp.com>, <claudiu.manoil@nxp.com>,
-        <andrew@lunn.ch>, <vivien.didelot@gmail.com>,
-        <f.fainelli@gmail.com>, <davem@davemloft.net>
-CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+To:     <pbonzini@redhat.com>, <rkrcmar@redhat.com>,
+        <sean.j.christopherson@intel.com>, <vkuznets@redhat.com>,
+        <wanpengli@tencent.com>, <jmattson@google.com>, <joro@8bytes.org>,
+        <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+        <hpa@zytor.com>
+CC:     <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH net] net: dsa: ocelot: add dependency for NET_DSA_MSCC_FELIX
-Date:   Tue, 19 Nov 2019 10:51:28 +0800
-Message-ID: <20191119025128.7393-1-maowenan@huawei.com>
+Subject: [PATCH -next] KVM: x86: remove set but not used variable 'called'
+Date:   Tue, 19 Nov 2019 11:06:40 +0800
+Message-ID: <20191119030640.25097-1-maowenan@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -37,42 +39,39 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If CONFIG_NET_DSA_MSCC_FELIX=y, and CONFIG_NET_VENDOR_MICROSEMI=n,
-below errors can be found:
-drivers/net/dsa/ocelot/felix.o: In function `felix_vlan_del':
-felix.c:(.text+0x26e): undefined reference to `ocelot_vlan_del'
-drivers/net/dsa/ocelot/felix.o: In function `felix_vlan_add':
-felix.c:(.text+0x352): undefined reference to `ocelot_vlan_add'
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-and warning as below:
-WARNING: unmet direct dependencies detected for MSCC_OCELOT_SWITCH
-Depends on [n]: NETDEVICES [=y] && ETHERNET [=y] &&
-NET_VENDOR_MICROSEMI [=n] && NET_SWITCHDEV [=y] && HAS_IOMEM [=y]
-Selected by [y]:
-NET_DSA_MSCC_FELIX [=y] && NETDEVICES [=y] && HAVE_NET_DSA [=y]
-&& NET_DSA [=y] && PCI [=y]
+arch/x86/kvm/x86.c: In function kvm_make_scan_ioapic_request_mask:
+arch/x86/kvm/x86.c:7911:7: warning: variable called set but not
+used [-Wunused-but-set-variable]
 
-This patch add dependency NET_VENDOR_MICROSEMI for NET_DSA_MSCC_FELIX.
+It is not used since commit 7ee30bc132c6 ("KVM: x86: deliver KVM
+IOAPIC scan request to target vCPUs")
 
-Fixes: 56051948773e ("net: dsa: ocelot: add driver for Felix switch family")
 Signed-off-by: Mao Wenan <maowenan@huawei.com>
 ---
- drivers/net/dsa/ocelot/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/x86.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/ocelot/Kconfig b/drivers/net/dsa/ocelot/Kconfig
-index 0031ca8..61c4ce7 100644
---- a/drivers/net/dsa/ocelot/Kconfig
-+++ b/drivers/net/dsa/ocelot/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config NET_DSA_MSCC_FELIX
- 	tristate "Ocelot / Felix Ethernet switch support"
--	depends on NET_DSA && PCI
-+	depends on NET_DSA && PCI && NET_VENDOR_MICROSEMI
- 	select MSCC_OCELOT_SWITCH
- 	select NET_DSA_TAG_OCELOT
- 	help
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0d0a682..870f0bc 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -7908,12 +7908,11 @@ void kvm_make_scan_ioapic_request_mask(struct kvm *kvm,
+ 				       unsigned long *vcpu_bitmap)
+ {
+ 	cpumask_var_t cpus;
+-	bool called;
+ 
+ 	zalloc_cpumask_var(&cpus, GFP_ATOMIC);
+ 
+-	called = kvm_make_vcpus_request_mask(kvm, KVM_REQ_SCAN_IOAPIC,
+-					     vcpu_bitmap, cpus);
++	kvm_make_vcpus_request_mask(kvm, KVM_REQ_SCAN_IOAPIC,
++				    vcpu_bitmap, cpus);
+ 
+ 	free_cpumask_var(cpus);
+ }
 -- 
 2.7.4
 

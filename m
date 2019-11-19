@@ -2,90 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D5F4102206
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 11:23:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E64A5102345
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 12:37:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726510AbfKSKXg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 Nov 2019 05:23:36 -0500
-Received: from mga05.intel.com ([192.55.52.43]:57512 "EHLO mga05.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725798AbfKSKXg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 Nov 2019 05:23:36 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Nov 2019 02:23:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.68,322,1569308400"; 
-   d="scan'208";a="215511808"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga001.fm.intel.com with ESMTP; 19 Nov 2019 02:23:33 -0800
-Received: from andy by smile with local (Exim 4.93-RC1)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1iX0fU-000297-Vj; Tue, 19 Nov 2019 12:23:32 +0200
-Date:   Tue, 19 Nov 2019 12:23:32 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jonathan Cameron <jic23@kernel.org>,
-        Vincent Pelletier <plr.vincent@gmail.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: intel_mrfld_adc: Allocating too much data in
- probe()
-Message-ID: <20191119102332.GC32742@smile.fi.intel.com>
-References: <20191119062124.kgwg7ujxe6k2ft3o@kili.mountain>
+        id S1727900AbfKSLhY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 Nov 2019 06:37:24 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:59701 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727557AbfKSLhX (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 19 Nov 2019 06:37:23 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iX1oG-0007Z8-Bf; Tue, 19 Nov 2019 11:36:40 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Cezary Rojewski <cezary.rojewski@intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Jie Yang <yang.jie@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        "Subhransu S . Prusty" <subhransu.s.prusty@intel.com>,
+        Vinod Koul <vkoul@kernel.org>, alsa-devel@alsa-project.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ASoC: Intel: mrfld: fix incorrect check on p->sink
+Date:   Tue, 19 Nov 2019 11:36:40 +0000
+Message-Id: <20191119113640.166940-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191119062124.kgwg7ujxe6k2ft3o@kili.mountain>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Nov 19, 2019 at 09:21:24AM +0300, Dan Carpenter wrote:
-> This probe function is passing the wrong size to devm_iio_device_alloc().
-> It is supposed to be the size of the private data.  Fortunately,
-> sizeof(*indio_dev) is larger than sizeof(struct mrfld_adc) so it doesn't
-> cause a runtime problem.
-> 
+From: Colin Ian King <colin.king@canonical.com>
 
-Ah, indeed, thanks for fixing this!
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+The check on p->sink looks bogus, I believe it should be p->source
+since the following code blocks are related to p->source. Fix
+this by replacing p->sink with p->source.
 
-> Fixes: a7118662734a ("iio: adc: intel_mrfld_adc: Add Basin Cove ADC driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/iio/adc/intel_mrfld_adc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/intel_mrfld_adc.c b/drivers/iio/adc/intel_mrfld_adc.c
-> index 67d096f8180d..c35a1beb817c 100644
-> --- a/drivers/iio/adc/intel_mrfld_adc.c
-> +++ b/drivers/iio/adc/intel_mrfld_adc.c
-> @@ -185,7 +185,7 @@ static int mrfld_adc_probe(struct platform_device *pdev)
->  	int irq;
->  	int ret;
->  
-> -	indio_dev = devm_iio_device_alloc(dev, sizeof(*indio_dev));
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(struct mrfld_adc));
+Addresses-Coverity: ("Copy-paste error")
+Fixes: 24c8d14192cc ("ASoC: Intel: mrfld: add DSP core controls")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
 
-Many drivers use sizeof(*adc) form, but I'm okay with either.
+[ Note: this has not been tested ]
 
->  	if (!indio_dev)
->  		return -ENOMEM;
->  
-> -- 
-> 2.11.0
-> 
+---
+ sound/soc/intel/atom/sst-atom-controls.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/sound/soc/intel/atom/sst-atom-controls.c b/sound/soc/intel/atom/sst-atom-controls.c
+index baef461a99f1..f883c9340eee 100644
+--- a/sound/soc/intel/atom/sst-atom-controls.c
++++ b/sound/soc/intel/atom/sst-atom-controls.c
+@@ -1333,7 +1333,7 @@ int sst_send_pipe_gains(struct snd_soc_dai *dai, int stream, int mute)
+ 				dai->capture_widget->name);
+ 		w = dai->capture_widget;
+ 		snd_soc_dapm_widget_for_each_source_path(w, p) {
+-			if (p->connected && !p->connected(w, p->sink))
++			if (p->connected && !p->connected(w, p->source))
+ 				continue;
+ 
+ 			if (p->connect &&  p->source->power &&
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.24.0
 

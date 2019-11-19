@@ -2,55 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D5F5101C04
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 09:18:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D5F4102206
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 11:23:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727850AbfKSIRO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 Nov 2019 03:17:14 -0500
-Received: from coyote.holtmann.net ([212.227.132.17]:38385 "EHLO
-        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727742AbfKSIRJ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 Nov 2019 03:17:09 -0500
-Received: from marcel-macbook.holtmann.net (p4FF9F0D1.dip0.t-ipconnect.de [79.249.240.209])
-        by mail.holtmann.org (Postfix) with ESMTPSA id EB545CECEF;
-        Tue, 19 Nov 2019 09:26:14 +0100 (CET)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.0 \(3601.0.10\))
-Subject: Re: [PATCH] Bluetooth: delete a stray unlock
-From:   Marcel Holtmann <marcel@holtmann.org>
-In-Reply-To: <20191119053710.eflgllzyoyglrrj7@kili.mountain>
-Date:   Tue, 19 Nov 2019 09:17:08 +0100
-Cc:     Andrei Emeltchenko <andrei.emeltchenko@intel.com>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Gustavo Padovan <gustavo.padovan@collabora.co.uk>,
-        linux-bluetooth@vger.kernel.org, kernel-janitors@vger.kernel.org
-Content-Transfer-Encoding: 7bit
-Message-Id: <FD103E14-D634-48A6-9C31-9A70A54EE0BC@holtmann.org>
-References: <20191119053710.eflgllzyoyglrrj7@kili.mountain>
+        id S1726510AbfKSKXg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 Nov 2019 05:23:36 -0500
+Received: from mga05.intel.com ([192.55.52.43]:57512 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725798AbfKSKXg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 19 Nov 2019 05:23:36 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Nov 2019 02:23:35 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.68,322,1569308400"; 
+   d="scan'208";a="215511808"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga001.fm.intel.com with ESMTP; 19 Nov 2019 02:23:33 -0800
+Received: from andy by smile with local (Exim 4.93-RC1)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1iX0fU-000297-Vj; Tue, 19 Nov 2019 12:23:32 +0200
+Date:   Tue, 19 Nov 2019 12:23:32 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-X-Mailer: Apple Mail (2.3601.0.10)
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Vincent Pelletier <plr.vincent@gmail.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: intel_mrfld_adc: Allocating too much data in
+ probe()
+Message-ID: <20191119102332.GC32742@smile.fi.intel.com>
+References: <20191119062124.kgwg7ujxe6k2ft3o@kili.mountain>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191119062124.kgwg7ujxe6k2ft3o@kili.mountain>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
-
-> We used to take a lock in amp_physical_cfm() but then we moved it to
-> the caller function.  Unfortunately the unlock on this error path was
-> overlooked so it leads to a double unlock.
+On Tue, Nov 19, 2019 at 09:21:24AM +0300, Dan Carpenter wrote:
+> This probe function is passing the wrong size to devm_iio_device_alloc().
+> It is supposed to be the size of the private data.  Fortunately,
+> sizeof(*indio_dev) is larger than sizeof(struct mrfld_adc) so it doesn't
+> cause a runtime problem.
 > 
-> Fixes: a514b17fab51 ("Bluetooth: Refactor locking in amp_physical_cfm")
+
+Ah, indeed, thanks for fixing this!
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+
+> Fixes: a7118662734a ("iio: adc: intel_mrfld_adc: Add Basin Cove ADC driver")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
-> net/bluetooth/l2cap_core.c | 4 +---
-> 1 file changed, 1 insertion(+), 3 deletions(-)
+>  drivers/iio/adc/intel_mrfld_adc.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/adc/intel_mrfld_adc.c b/drivers/iio/adc/intel_mrfld_adc.c
+> index 67d096f8180d..c35a1beb817c 100644
+> --- a/drivers/iio/adc/intel_mrfld_adc.c
+> +++ b/drivers/iio/adc/intel_mrfld_adc.c
+> @@ -185,7 +185,7 @@ static int mrfld_adc_probe(struct platform_device *pdev)
+>  	int irq;
+>  	int ret;
+>  
+> -	indio_dev = devm_iio_device_alloc(dev, sizeof(*indio_dev));
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(struct mrfld_adc));
 
-patch has been applied to bluetooth-next tree.
+Many drivers use sizeof(*adc) form, but I'm okay with either.
 
-Regards
+>  	if (!indio_dev)
+>  		return -ENOMEM;
+>  
+> -- 
+> 2.11.0
+> 
 
-Marcel
+-- 
+With Best Regards,
+Andy Shevchenko
+
 

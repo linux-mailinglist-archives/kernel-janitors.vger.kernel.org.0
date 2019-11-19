@@ -2,69 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B9522101229
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 04:27:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A9D2101243
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 04:49:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727298AbfKSD1T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 Nov 2019 22:27:19 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:6250 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727018AbfKSD1S (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 Nov 2019 22:27:18 -0500
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 713B0C8CB653863E022A;
-        Tue, 19 Nov 2019 11:27:16 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.439.0; Tue, 19 Nov 2019 11:27:05 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <arnd@arndb.de>, <gregkh@linuxfoundation.org>,
-        <davem@davemloft.net>, <sgarzare@redhat.com>,
-        <kstewart@linuxfoundation.org>, <alexios.zavras@intel.com>,
-        <tglx@linutronix.de>, <maowenan@huawei.com>
-CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        "Hulk Robot" <hulkci@huawei.com>
-Subject: [PATCH -next] vsock/vmci: make vmci_vsock_cb_host_called static
-Date:   Tue, 19 Nov 2019 11:25:34 +0800
-Message-ID: <20191119032534.52090-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727506AbfKSDtN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 Nov 2019 22:49:13 -0500
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:34536 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727112AbfKSDtM (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 18 Nov 2019 22:49:12 -0500
+Received: by mail-lf1-f68.google.com with SMTP id l28so6248235lfj.1;
+        Mon, 18 Nov 2019 19:49:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=HH5PLvJ20OvC/C8kkLjRvhx1Fuae3xod4pGt4mEoHsI=;
+        b=c9nHyk7957V1XyntGICV21JU9/wwZcU3mwdanFsUk/Swjv/gqVPUIznAphXX96Z4FH
+         rlT5R5NGrbYaRIy89iMuUo7xARGpCSoernnywn99PZoOAYJwcyBG+9LU1UGUcIZ+vp6p
+         goj+yp2XKVIMfUN/ZOahxRVQp+pXN1Hi42PN5+A1OouMErWOG5lrQqHlCR/XNKJnZosT
+         YWpc58AF+QJiBY6Y1Ft6s9z3GW3vkNz+cVLTJ22pJH0oCyAXKJP8wCyuDisK6nQRSOs+
+         bZtGrD56wMwKhWfItGyzLn/ddPng6B0YhoGkvSe7VjNpLJqiKgNM3t0q5pI3OMGeQNZU
+         y7nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HH5PLvJ20OvC/C8kkLjRvhx1Fuae3xod4pGt4mEoHsI=;
+        b=l+2Rl5mPUbeK9zFYpqYLMHel8bqx4O/Tf/7zPrMO+W75OBL6UnMV9MN0B+rHtLYgJt
+         kQwHGx3NWQ/klUzwuq3IzmqjsqjJYZu0HlGxbLD1V/of+MnL+q7oUGS3HpF7u3JhFrzt
+         13IjEoz+/QYoyTOmMnNhfAl+7PXpZbGIexHcNAYc26IFiXp6Oj1KUIGcLe2YgHfVQn1f
+         UiNx84Ehs0rTf36uAeagXNAeil5VRmy+D4clczfqNTA3xB9CkOsxQ1a4gMBqWx5LdubD
+         +i8lXebtM9rGKNZa3JJmgVw8Wknr8TWvV28KW/XxVwQVabp10mnm9rSsNLhUsNEKILYx
+         HXJg==
+X-Gm-Message-State: APjAAAXWk33EiSoqHCD+uqV2m380YUWTeYjUsCIaj60PSOxRPcGr5H/5
+        Pkjyt5/A0XcEnHaOqdZaq3wQhLAe0Kw1TWXrkCA=
+X-Google-Smtp-Source: APXvYqzhk9kJlKXPByN23lPwtGWAAWCjVVpsoIoz5EET5xMu7Ch85IPo54pTA7eEfX+pP6MKyzPGNfMA0/3IbOiA4js=
+X-Received: by 2002:a05:6512:511:: with SMTP id o17mr1875902lfb.167.1574135350223;
+ Mon, 18 Nov 2019 19:49:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+References: <20191118114059.37287-1-colin.king@canonical.com>
+In-Reply-To: <20191118114059.37287-1-colin.king@canonical.com>
+From:   Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date:   Mon, 18 Nov 2019 19:48:58 -0800
+Message-ID: <CAADnVQLhoHvdnJrcG0Gj128e8w0uLvRqg+p9=GJTr=1R8VLS_A@mail.gmail.com>
+Subject: Re: [PATCH][next] bpf: fix memory leak on object 'data'
+To:     Colin King <colin.king@canonical.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>,
+        Network Development <netdev@vger.kernel.org>,
+        bpf <bpf@vger.kernel.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-When using make C=2 drivers/misc/vmw_vmci/vmci_driver.o
-to compile, below warning can be seen:
-drivers/misc/vmw_vmci/vmci_driver.c:33:6: warning:
-symbol 'vmci_vsock_cb_host_called' was not declared. Should it be static?
+On Mon, Nov 18, 2019 at 3:41 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The error return path on when bpf_fentry_test* tests fail does not
+> kfree 'data'. Fix this by adding the missing kfree.
+>
+> Addresses-Coverity: ("Resource leak")
+> Fixes: faeb2dce084a ("bpf: Add kernel test functions for fentry testing")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-This patch make symbol vmci_vsock_cb_host_called static.
-
-Fixes: b1bba80a4376 ("vsock/vmci: register vmci_transport only when VMCI guest/host are active")
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
----
- drivers/misc/vmw_vmci/vmci_driver.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/misc/vmw_vmci/vmci_driver.c b/drivers/misc/vmw_vmci/vmci_driver.c
-index 95fed46..cbb706d 100644
---- a/drivers/misc/vmw_vmci/vmci_driver.c
-+++ b/drivers/misc/vmw_vmci/vmci_driver.c
-@@ -30,7 +30,7 @@ static bool vmci_host_personality_initialized;
- 
- static DEFINE_MUTEX(vmci_vsock_mutex); /* protects vmci_vsock_transport_cb */
- static vmci_vsock_cb vmci_vsock_transport_cb;
--bool vmci_vsock_cb_host_called;
-+static bool vmci_vsock_cb_host_called;
- 
- /*
-  * vmci_get_context_id() - Gets the current context ID.
--- 
-2.7.4
-
+Applied. Thanks

@@ -2,55 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE43E1010AB
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 02:24:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E147101179
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 03:53:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727200AbfKSBX7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 Nov 2019 20:23:59 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:52242 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726761AbfKSBX6 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 Nov 2019 20:23:58 -0500
-Received: from localhost (unknown [IPv6:2601:601:9f00:1e2::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 64C49150FAE7B;
-        Mon, 18 Nov 2019 17:23:58 -0800 (PST)
-Date:   Mon, 18 Nov 2019 17:23:58 -0800 (PST)
-Message-Id: <20191118.172358.1651088156867288729.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     andrew@lunn.ch, f.fainelli@gmail.com, hkallweit1@gmail.com,
-        dmurphy@ti.com, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] net: phy: dp83869: fix return of uninitialized
- variable ret
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20191118114835.39494-1-colin.king@canonical.com>
-References: <20191118114835.39494-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 18 Nov 2019 17:23:58 -0800 (PST)
+        id S1727289AbfKSCxT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 Nov 2019 21:53:19 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:58072 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727014AbfKSCxT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 18 Nov 2019 21:53:19 -0500
+Received: from DGGEMS410-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id C122B8909482A1E8353F;
+        Tue, 19 Nov 2019 10:53:16 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS410-HUB.china.huawei.com (10.3.19.210) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 19 Nov 2019 10:53:06 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <vladimir.oltean@nxp.com>, <claudiu.manoil@nxp.com>,
+        <andrew@lunn.ch>, <vivien.didelot@gmail.com>,
+        <f.fainelli@gmail.com>, <davem@davemloft.net>
+CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH net] net: dsa: ocelot: add dependency for NET_DSA_MSCC_FELIX
+Date:   Tue, 19 Nov 2019 10:51:28 +0800
+Message-ID: <20191119025128.7393-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Mon, 18 Nov 2019 11:48:35 +0000
+If CONFIG_NET_DSA_MSCC_FELIX=y, and CONFIG_NET_VENDOR_MICROSEMI=n,
+below errors can be found:
+drivers/net/dsa/ocelot/felix.o: In function `felix_vlan_del':
+felix.c:(.text+0x26e): undefined reference to `ocelot_vlan_del'
+drivers/net/dsa/ocelot/felix.o: In function `felix_vlan_add':
+felix.c:(.text+0x352): undefined reference to `ocelot_vlan_add'
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> In the case where the call to phy_interface_is_rgmii returns zero
-> the variable ret is left uninitialized and this is returned at
-> the end of the function dp83869_configure_rgmii.  Fix this by
-> returning 0 instead of the uninitialized value in ret.
-> 
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Fixes: 01db923e8377 ("net: phy: dp83869: Add TI dp83869 phy")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+and warning as below:
+WARNING: unmet direct dependencies detected for MSCC_OCELOT_SWITCH
+Depends on [n]: NETDEVICES [=y] && ETHERNET [=y] &&
+NET_VENDOR_MICROSEMI [=n] && NET_SWITCHDEV [=y] && HAS_IOMEM [=y]
+Selected by [y]:
+NET_DSA_MSCC_FELIX [=y] && NETDEVICES [=y] && HAVE_NET_DSA [=y]
+&& NET_DSA [=y] && PCI [=y]
 
-Applied.
+This patch add dependency NET_VENDOR_MICROSEMI for NET_DSA_MSCC_FELIX.
+
+Fixes: 56051948773e ("net: dsa: ocelot: add driver for Felix switch family")
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ drivers/net/dsa/ocelot/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/dsa/ocelot/Kconfig b/drivers/net/dsa/ocelot/Kconfig
+index 0031ca8..61c4ce7 100644
+--- a/drivers/net/dsa/ocelot/Kconfig
++++ b/drivers/net/dsa/ocelot/Kconfig
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ config NET_DSA_MSCC_FELIX
+ 	tristate "Ocelot / Felix Ethernet switch support"
+-	depends on NET_DSA && PCI
++	depends on NET_DSA && PCI && NET_VENDOR_MICROSEMI
+ 	select MSCC_OCELOT_SWITCH
+ 	select NET_DSA_TAG_OCELOT
+ 	help
+-- 
+2.7.4
+

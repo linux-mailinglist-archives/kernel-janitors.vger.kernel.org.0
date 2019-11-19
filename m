@@ -2,147 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CAF56102973
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 17:32:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 44D21102ACB
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 18:29:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727560AbfKSQcn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 Nov 2019 11:32:43 -0500
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:11791
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728433AbfKSQcn (ORCPT
+        id S1728589AbfKSR3Z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 Nov 2019 12:29:25 -0500
+Received: from fllv0015.ext.ti.com ([198.47.19.141]:44686 "EHLO
+        fllv0015.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728141AbfKSR3Y (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 Nov 2019 11:32:43 -0500
-X-IronPort-AV: E=Sophos;i="5.69,218,1571695200"; 
-   d="scan'208";a="327283104"
-Received: from palace.lip6.fr ([132.227.105.202])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/AES128-SHA256; 19 Nov 2019 17:32:39 +0100
-From:   Julia Lawall <Julia.Lawall@lip6.fr>
-To:     Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Jani Nikula <jani.nikula@linux.intel.com>
-Cc:     kernel-janitors@vger.kernel.org,
-        Gilles Muller <Gilles.Muller@inria.fr>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Michal Marek <michal.lkml@markovi.net>, cocci@systeme.lip6.fr,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] Coccinelle: ptr_ret: drop PTR_ERR_OR_ZERO semantic patch
-Date:   Tue, 19 Nov 2019 16:56:57 +0100
-Message-Id: <1574179017-23787-1-git-send-email-Julia.Lawall@lip6.fr>
-X-Mailer: git-send-email 1.9.1
+        Tue, 19 Nov 2019 12:29:24 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAJHTG3L069131;
+        Tue, 19 Nov 2019 11:29:16 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1574184556;
+        bh=r/cBAHM8oY922P/6C8P9pt6goo9s2PX5XRBXQYR1CPs=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=FHa8q0AkaQO/TTYzSCJp+gu59qGkDHoWhpifhhJKOVXbe/7yw1YNPIQ+Zmioo5Fb7
+         b2ZSb14bLzq+rRZx3GI8MukkkMcDhVLWLnTt2daCpnOBJhLMQlctIbLuySr/DNx+FL
+         UjWrquOZJbvuC5FhShxZEwsyCQytFg7kpXUUXSv0=
+Received: from DLEE113.ent.ti.com (dlee113.ent.ti.com [157.170.170.24])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xAJHTGsr005655
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 19 Nov 2019 11:29:16 -0600
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE113.ent.ti.com
+ (157.170.170.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 19
+ Nov 2019 11:29:16 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Tue, 19 Nov 2019 11:29:16 -0600
+Received: from [10.250.33.226] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAJHTGpj083047;
+        Tue, 19 Nov 2019 11:29:16 -0600
+Subject: Re: [PATCH][next] net: phy: dp83869: fix return of uninitialized
+ variable ret
+To:     Andrew Lunn <andrew@lunn.ch>, Colin King <colin.king@canonical.com>
+CC:     Florian Fainelli <f.fainelli@gmail.com>,
+        Heiner Kallweit <hkallweit1@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>, <netdev@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20191118114835.39494-1-colin.king@canonical.com>
+ <20191118232912.GC15395@lunn.ch>
+From:   Dan Murphy <dmurphy@ti.com>
+Message-ID: <1346c899-2114-875a-68a7-4ce0c08307dc@ti.com>
+Date:   Tue, 19 Nov 2019 11:27:45 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
+MIME-Version: 1.0
+In-Reply-To: <20191118232912.GC15395@lunn.ch>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This mostly made changes that made the code harder
-to read, so drop it.
+Andrew
 
-Signed-off-by: Julia Lawall <Julia.Lawall@lip6.fr>
+On 11/18/19 5:29 PM, Andrew Lunn wrote:
+> On Mon, Nov 18, 2019 at 11:48:35AM +0000, Colin King wrote:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> In the case where the call to phy_interface_is_rgmii returns zero
+>> the variable ret is left uninitialized and this is returned at
+>> the end of the function dp83869_configure_rgmii.  Fix this by
+>> returning 0 instead of the uninitialized value in ret.
+>>
+>> Addresses-Coverity: ("Uninitialized scalar variable")
+>> Fixes: 01db923e8377 ("net: phy: dp83869: Add TI dp83869 phy")
+>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+>
+> Dan: phy_modify_mmd() could fail. You check the return value for
+> phy_read and phy_write, so it would be consistent to also check
 
----
- scripts/coccinelle/api/ptr_ret.cocci |   97 -----------------------------------
- 1 file changed, 97 deletions(-)
+Thanks for the heads up on this.
 
-diff --git a/scripts/coccinelle/api/ptr_ret.cocci b/scripts/coccinelle/api/ptr_ret.cocci
-deleted file mode 100644
-index e76cd5d..0000000
---- a/scripts/coccinelle/api/ptr_ret.cocci
-+++ /dev/null
-@@ -1,97 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--///
--/// Use PTR_ERR_OR_ZERO rather than if(IS_ERR(...)) + PTR_ERR
--///
--// Confidence: High
--// Copyright: (C) 2012 Julia Lawall, INRIA/LIP6.
--// Copyright: (C) 2012 Gilles Muller, INRIA/LiP6.
--// URL: http://coccinelle.lip6.fr/
--// Options: --no-includes --include-headers
--//
--// Keywords: ERR_PTR, PTR_ERR, PTR_ERR_OR_ZERO
--// Version min: 2.6.39
--//
--
--virtual context
--virtual patch
--virtual org
--virtual report
--
--@depends on patch@
--expression ptr;
--@@
--
--- if (IS_ERR(ptr)) return PTR_ERR(ptr); else return 0;
--+ return PTR_ERR_OR_ZERO(ptr);
--
--@depends on patch@
--expression ptr;
--@@
--
--- if (IS_ERR(ptr)) return PTR_ERR(ptr); return 0;
--+ return PTR_ERR_OR_ZERO(ptr);
--
--@depends on patch@
--expression ptr;
--@@
--
--- (IS_ERR(ptr) ? PTR_ERR(ptr) : 0)
--+ PTR_ERR_OR_ZERO(ptr)
--
--@r1 depends on !patch@
--expression ptr;
--position p1;
--@@
--
--* if@p1 (IS_ERR(ptr)) return PTR_ERR(ptr); else return 0;
--
--@r2 depends on !patch@
--expression ptr;
--position p2;
--@@
--
--* if@p2 (IS_ERR(ptr)) return PTR_ERR(ptr); return 0;
--
--@r3 depends on !patch@
--expression ptr;
--position p3;
--@@
--
--* IS_ERR@p3(ptr) ? PTR_ERR(ptr) : 0
--
--@script:python depends on org@
--p << r1.p1;
--@@
--
--coccilib.org.print_todo(p[0], "WARNING: PTR_ERR_OR_ZERO can be used")
--
--
--@script:python depends on org@
--p << r2.p2;
--@@
--
--coccilib.org.print_todo(p[0], "WARNING: PTR_ERR_OR_ZERO can be used")
--
--@script:python depends on org@
--p << r3.p3;
--@@
--
--coccilib.org.print_todo(p[0], "WARNING: PTR_ERR_OR_ZERO can be used")
--
--@script:python depends on report@
--p << r1.p1;
--@@
--
--coccilib.report.print_report(p[0], "WARNING: PTR_ERR_OR_ZERO can be used")
--
--@script:python depends on report@
--p << r2.p2;
--@@
--
--coccilib.report.print_report(p[0], "WARNING: PTR_ERR_OR_ZERO can be used")
--
--@script:python depends on report@
--p << r3.p3;
--@@
--
--coccilib.report.print_report(p[0], "WARNING: PTR_ERR_OR_ZERO can be used")
+I need to check the set/clear_mmd bits too.
 
+Dan
+
+
+> 	 Andrew

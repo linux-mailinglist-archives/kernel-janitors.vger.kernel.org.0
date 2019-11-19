@@ -2,99 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 56340102E4A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 22:36:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DC8610305F
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Nov 2019 00:41:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727140AbfKSVgy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 Nov 2019 16:36:54 -0500
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:60288
-        "EHLO mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727038AbfKSVgy (ORCPT
+        id S1727428AbfKSXl1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 19 Nov 2019 18:41:27 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:46666 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726874AbfKSXl1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 Nov 2019 16:36:54 -0500
-X-IronPort-AV: E=Sophos;i="5.69,219,1571695200"; 
-   d="scan'208";a="327306099"
-Received: from abo-228-123-68.mrs.modulonet.fr (HELO hadrien) ([85.68.123.228])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 19 Nov 2019 22:36:52 +0100
-Date:   Tue, 19 Nov 2019 22:36:51 +0100 (CET)
-From:   Julia Lawall <julia.lawall@lip6.fr>
-X-X-Sender: jll@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Julia Lawall <julia.lawall@lip6.fr>, cocci@systeme.lip6.fr,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>
-Subject: Re: [PATCH 2/4] coccinelle: platform_get_irq: handle 2-statement
- branches
-In-Reply-To: <d178b6b3-7ef1-4ad7-a747-d65249a9667a@web.de>
-Message-ID: <alpine.DEB.2.21.1911192235010.2592@hadrien>
-References: <1574184500-29870-3-git-send-email-Julia.Lawall@lip6.fr> <d178b6b3-7ef1-4ad7-a747-d65249a9667a@web.de>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-319011006-1574199412=:2592"
+        Tue, 19 Nov 2019 18:41:27 -0500
+Received: from localhost (unknown [IPv6:2601:601:9f00:1e2::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 1B950142C0151;
+        Tue, 19 Nov 2019 15:41:26 -0800 (PST)
+Date:   Tue, 19 Nov 2019 15:41:25 -0800 (PST)
+Message-Id: <20191119.154125.1492881397881625788.davem@davemloft.net>
+To:     maowenan@huawei.com
+Cc:     vladimir.oltean@nxp.com, claudiu.manoil@nxp.com, andrew@lunn.ch,
+        vivien.didelot@gmail.com, f.fainelli@gmail.com,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net] net: dsa: ocelot: add dependency for
+ NET_DSA_MSCC_FELIX
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20191119025128.7393-1-maowenan@huawei.com>
+References: <20191119025128.7393-1-maowenan@huawei.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 19 Nov 2019 15:41:26 -0800 (PST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Mao Wenan <maowenan@huawei.com>
+Date: Tue, 19 Nov 2019 10:51:28 +0800
 
---8323329-319011006-1574199412=:2592
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+> If CONFIG_NET_DSA_MSCC_FELIX=y, and CONFIG_NET_VENDOR_MICROSEMI=n,
+> below errors can be found:
+> drivers/net/dsa/ocelot/felix.o: In function `felix_vlan_del':
+> felix.c:(.text+0x26e): undefined reference to `ocelot_vlan_del'
+> drivers/net/dsa/ocelot/felix.o: In function `felix_vlan_add':
+> felix.c:(.text+0x352): undefined reference to `ocelot_vlan_add'
+> 
+> and warning as below:
+> WARNING: unmet direct dependencies detected for MSCC_OCELOT_SWITCH
+> Depends on [n]: NETDEVICES [=y] && ETHERNET [=y] &&
+> NET_VENDOR_MICROSEMI [=n] && NET_SWITCHDEV [=y] && HAS_IOMEM [=y]
+> Selected by [y]:
+> NET_DSA_MSCC_FELIX [=y] && NETDEVICES [=y] && HAVE_NET_DSA [=y]
+> && NET_DSA [=y] && PCI [=y]
+> 
+> This patch add dependency NET_VENDOR_MICROSEMI for NET_DSA_MSCC_FELIX.
+> 
+> Fixes: 56051948773e ("net: dsa: ocelot: add driver for Felix switch family")
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
 
+This seems more like a "select" situation, why in the world should the
+user be required to know about NET_VENDOR_MISCROSEMI at all for this
+driver?
 
+And NET_VENDOR_MICROSEMI does _NOT_ enable any code at all, you have
+to enable the individual drivers guarded by NET_VENDOR_MICROSEMI in order
+to resolve the symbols necessary for ocelot.
 
-On Tue, 19 Nov 2019, Markus Elfring wrote:
+I'm not applying this, it isn't correct.
 
-> > From: Masahiro Yamada <yamada.masahiro@socionext.com>
->
-> I wonder about this information.
-> Would you like to use the tag “Suggested-by” instead?
-
-Sorry, I seem to have done something quite wrong on this patch.  I will
-fix it.
-
->
->
-> …
-> > +++ b/scripts/coccinelle/api/platform_get_irq.cocci
-> > @@ -31,6 +31,25 @@ if ( \( ret < 0 \| ret <= 0 \) )
-> …
-> > +ret =
-> > +(
-> > +platform_get_irq
-> > +|
-> > +platform_get_irq_byname
-> > +)(E, ...);
-> > +
-> > +if ( \( ret < 0 \| ret <= 0 \) )
-> > +-{
-> > +-dev_err(...);
-> > +S
-> > +-}
->
-> How do you think about to use the following SmPL code variant?
-
-And the benefit is what?
-
-julia
-
-> + ret =
-> +(platform_get_irq
-> +|platform_get_irq_byname
-> +)(E, ...);
-> +
-> + if ( \( ret < 0 \| ret <= 0 \) )
-> +-{
-> +-dev_err(...);
-> + S
-> +-}
->
-> Regards,
-> Markus
->
---8323329-319011006-1574199412=:2592--
+Thank you.

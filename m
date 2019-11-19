@@ -2,32 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBBD5101192
-	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 04:08:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9522101229
+	for <lists+kernel-janitors@lfdr.de>; Tue, 19 Nov 2019 04:27:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727354AbfKSDIV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 18 Nov 2019 22:08:21 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32]:49378 "EHLO huawei.com"
+        id S1727298AbfKSD1T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 18 Nov 2019 22:27:19 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:6250 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727018AbfKSDIV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 18 Nov 2019 22:08:21 -0500
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id A434E11915CCDBACB518;
-        Tue, 19 Nov 2019 11:08:18 +0800 (CST)
+        id S1727018AbfKSD1S (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 18 Nov 2019 22:27:18 -0500
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 713B0C8CB653863E022A;
+        Tue, 19 Nov 2019 11:27:16 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.439.0; Tue, 19 Nov 2019 11:08:11 +0800
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 19 Nov 2019 11:27:05 +0800
 From:   Mao Wenan <maowenan@huawei.com>
-To:     <pbonzini@redhat.com>, <rkrcmar@redhat.com>,
-        <sean.j.christopherson@intel.com>, <vkuznets@redhat.com>,
-        <wanpengli@tencent.com>, <jmattson@google.com>, <joro@8bytes.org>,
-        <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
-        <hpa@zytor.com>
-CC:     <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
-Subject: [PATCH -next] KVM: x86: remove set but not used variable 'called'
-Date:   Tue, 19 Nov 2019 11:06:40 +0800
-Message-ID: <20191119030640.25097-1-maowenan@huawei.com>
+To:     <arnd@arndb.de>, <gregkh@linuxfoundation.org>,
+        <davem@davemloft.net>, <sgarzare@redhat.com>,
+        <kstewart@linuxfoundation.org>, <alexios.zavras@intel.com>,
+        <tglx@linutronix.de>, <maowenan@huawei.com>
+CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        "Hulk Robot" <hulkci@huawei.com>
+Subject: [PATCH -next] vsock/vmci: make vmci_vsock_cb_host_called static
+Date:   Tue, 19 Nov 2019 11:25:34 +0800
+Message-ID: <20191119032534.52090-1-maowenan@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -39,39 +38,33 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+When using make C=2 drivers/misc/vmw_vmci/vmci_driver.o
+to compile, below warning can be seen:
+drivers/misc/vmw_vmci/vmci_driver.c:33:6: warning:
+symbol 'vmci_vsock_cb_host_called' was not declared. Should it be static?
 
-arch/x86/kvm/x86.c: In function kvm_make_scan_ioapic_request_mask:
-arch/x86/kvm/x86.c:7911:7: warning: variable called set but not
-used [-Wunused-but-set-variable]
+This patch make symbol vmci_vsock_cb_host_called static.
 
-It is not used since commit 7ee30bc132c6 ("KVM: x86: deliver KVM
-IOAPIC scan request to target vCPUs")
-
+Fixes: b1bba80a4376 ("vsock/vmci: register vmci_transport only when VMCI guest/host are active")
+Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Mao Wenan <maowenan@huawei.com>
 ---
- arch/x86/kvm/x86.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/misc/vmw_vmci/vmci_driver.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0d0a682..870f0bc 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -7908,12 +7908,11 @@ void kvm_make_scan_ioapic_request_mask(struct kvm *kvm,
- 				       unsigned long *vcpu_bitmap)
- {
- 	cpumask_var_t cpus;
--	bool called;
+diff --git a/drivers/misc/vmw_vmci/vmci_driver.c b/drivers/misc/vmw_vmci/vmci_driver.c
+index 95fed46..cbb706d 100644
+--- a/drivers/misc/vmw_vmci/vmci_driver.c
++++ b/drivers/misc/vmw_vmci/vmci_driver.c
+@@ -30,7 +30,7 @@ static bool vmci_host_personality_initialized;
  
- 	zalloc_cpumask_var(&cpus, GFP_ATOMIC);
+ static DEFINE_MUTEX(vmci_vsock_mutex); /* protects vmci_vsock_transport_cb */
+ static vmci_vsock_cb vmci_vsock_transport_cb;
+-bool vmci_vsock_cb_host_called;
++static bool vmci_vsock_cb_host_called;
  
--	called = kvm_make_vcpus_request_mask(kvm, KVM_REQ_SCAN_IOAPIC,
--					     vcpu_bitmap, cpus);
-+	kvm_make_vcpus_request_mask(kvm, KVM_REQ_SCAN_IOAPIC,
-+				    vcpu_bitmap, cpus);
- 
- 	free_cpumask_var(cpus);
- }
+ /*
+  * vmci_get_context_id() - Gets the current context ID.
 -- 
 2.7.4
 

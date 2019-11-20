@@ -2,39 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 41D1C103CDF
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Nov 2019 15:01:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB313103CE1
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Nov 2019 15:02:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731581AbfKTOBs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 Nov 2019 09:01:48 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59632 "EHLO mail.kernel.org"
+        id S1731606AbfKTOCI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 Nov 2019 09:02:08 -0500
+Received: from mail.kernel.org ([198.145.29.99]:59744 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727988AbfKTOBs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 Nov 2019 09:01:48 -0500
+        id S1727988AbfKTOCI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 20 Nov 2019 09:02:08 -0500
 Received: from localhost.localdomain (unknown [118.189.143.39])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 41F362235D;
-        Wed, 20 Nov 2019 14:01:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BE1932235D;
+        Wed, 20 Nov 2019 14:02:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574258506;
-        bh=bfeX1RCt/G8UUJqxagx1+I2XTNvZ7HFkaCu5K4RkPQ0=;
+        s=default; t=1574258527;
+        bh=t1jxGZVRUT3++psVJjlPRe6/LZ+4yNKYPY14ryaanGc=;
         h=From:To:Cc:Subject:Date:From;
-        b=YP8C1m8j715xrksISxz+xcCz6Mmmh9/3T3IBuNwVg2x0cAQysu074PXUUFkwznA4l
-         CcPJlchnRl5DyrLxT6KuiY2WianzxgKJcGPvhHmPuodduc8MDC9bnf7BmGUqJc4Oz8
-         Vy70LWNVT5e7HPL02q6Ygl5+QjSq9iASQa3FWpSM=
+        b=DcZZdtzerNPQMVOy5kXJwHMeoiwmcosvynUMDsLtNGXOd3litogWi4exsJQHxMWCk
+         EPq6VTrxY0/c7xtsM//+Q1xV3bA0jlMppQzTCixZoXytbSIKLbi/d9U9TBuJprQ3HS
+         0QRqR2AraROZYPT1BxpnE8ykcDI20kfzTTLEebAQ=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Jiri Kosina <trivial@kernel.org>, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Randy Dunlap <rdunlap@infradead.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [RESEND PATCH] lib: Fix Kconfig indentation
-Date:   Wed, 20 Nov 2019 22:01:40 +0800
-Message-Id: <20191120140140.19148-1-krzk@kernel.org>
+Subject: [RESEND PATCH] init: Fix Kconfig indentation
+Date:   Wed, 20 Nov 2019 22:02:01 +0800
+Message-Id: <20191120140201.19274-1-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
@@ -47,139 +44,69 @@ coding style with command like:
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- lib/Kconfig       |  2 +-
- lib/Kconfig.debug | 36 ++++++++++++++++++------------------
- lib/Kconfig.kgdb  |  8 ++++----
- 3 files changed, 23 insertions(+), 23 deletions(-)
+ init/Kconfig | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 6d7c5877c9f1..6e790dc55c5b 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -572,7 +572,7 @@ config OID_REGISTRY
- 	  Enable fast lookup object identifier registry.
- 
- config UCS2_STRING
--        tristate
-+	tristate
- 
- #
- # generic vdso
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index 4217bd26e220..bfc65c6d5fdc 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -128,8 +128,8 @@ config DYNAMIC_DEBUG
- 	  lineno : line number of the debug statement
- 	  module : module that contains the debug statement
- 	  function : function that contains the debug statement
--          flags : '=p' means the line is turned 'on' for printing
--          format : the format used for the debug statement
-+	  flags : '=p' means the line is turned 'on' for printing
-+	  format : the format used for the debug statement
- 
- 	  From a live system:
- 
-@@ -190,7 +190,7 @@ config DEBUG_INFO
- 	bool "Compile the kernel with debug info"
- 	depends on DEBUG_KERNEL && !COMPILE_TEST
- 	help
--          If you say Y here the resulting kernel image will include
-+	  If you say Y here the resulting kernel image will include
- 	  debugging info resulting in a larger kernel image.
- 	  This adds debug symbols to the kernel and modules (gcc -g), and
- 	  is needed if you intend to use kernel crashdump or binary object
-@@ -287,13 +287,13 @@ config STRIP_ASM_SYMS
- 	  get_wchan() and suchlike.
- 
- config READABLE_ASM
--        bool "Generate readable assembler code"
--        depends on DEBUG_KERNEL
--        help
--          Disable some compiler optimizations that tend to generate human unreadable
--          assembler output. This may make the kernel slightly slower, but it helps
--          to keep kernel developers who have to stare a lot at assembler listings
--          sane.
-+	bool "Generate readable assembler code"
-+	depends on DEBUG_KERNEL
-+	help
-+	  Disable some compiler optimizations that tend to generate human unreadable
-+	  assembler output. This may make the kernel slightly slower, but it helps
-+	  to keep kernel developers who have to stare a lot at assembler listings
-+	  sane.
- 
- config HEADERS_INSTALL
- 	bool "Install uapi headers to usr/include"
-@@ -525,11 +525,11 @@ config DEBUG_OBJECTS_PERCPU_COUNTER
- 
- config DEBUG_OBJECTS_ENABLE_DEFAULT
- 	int "debug_objects bootup default value (0-1)"
--        range 0 1
--        default "1"
--        depends on DEBUG_OBJECTS
--        help
--          Debug objects boot parameter default value
-+	range 0 1
-+	default "1"
-+	depends on DEBUG_OBJECTS
-+	help
-+	  Debug objects boot parameter default value
- 
- config DEBUG_SLAB
- 	bool "Debug slab memory allocations"
-@@ -660,7 +660,7 @@ config DEBUG_VM
- 	depends on DEBUG_KERNEL
- 	help
- 	  Enable this to turn on extended checks in the virtual-memory system
--          that may impact performance.
-+	  that may impact performance.
- 
- 	  If unsure, say N.
- 
-@@ -1400,7 +1400,7 @@ config DEBUG_WQ_FORCE_RR_CPU
- 	  be impacted.
- 
- config DEBUG_BLOCK_EXT_DEVT
--        bool "Force extended block device numbers and spread them"
-+	bool "Force extended block device numbers and spread them"
- 	depends on DEBUG_KERNEL
- 	depends on BLOCK
- 	default n
-@@ -1532,7 +1532,7 @@ config DEBUG_AID_FOR_SYZBOT
-        bool "Additional debug code for syzbot"
-        default n
+diff --git a/init/Kconfig b/init/Kconfig
+index ff15a3c71176..4c06edc52f63 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -149,10 +149,10 @@ config BUILD_SALT
+        string "Build ID Salt"
+        default ""
         help
--         This option is intended for testing by syzbot.
-+	 This option is intended for testing by syzbot.
+-          The build ID is used to link binaries and their debug info. Setting
+-          this option will use the value in the calculation of the build id.
+-          This is mostly useful for distributions which want to ensure the
+-          build is unique between builds. It's safe to leave the default.
++	  The build ID is used to link binaries and their debug info. Setting
++	  this option will use the value in the calculation of the build id.
++	  This is mostly useful for distributions which want to ensure the
++	  build is unique between builds. It's safe to leave the default.
  
- menu "$(SRCARCH) Debugging"
+ config HAVE_KERNEL_GZIP
+ 	bool
+@@ -1311,9 +1311,9 @@ menuconfig EXPERT
+ 	select DEBUG_KERNEL
+ 	help
+ 	  This option allows certain base kernel options and settings
+-          to be disabled or tweaked. This is for specialized
+-          environments which can tolerate a "non-standard" kernel.
+-          Only use this if you really know what you are doing.
++	  to be disabled or tweaked. This is for specialized
++	  environments which can tolerate a "non-standard" kernel.
++	  Only use this if you really know what you are doing.
  
-diff --git a/lib/Kconfig.kgdb b/lib/Kconfig.kgdb
-index bbe397df04a3..933680b59e2d 100644
---- a/lib/Kconfig.kgdb
-+++ b/lib/Kconfig.kgdb
-@@ -64,9 +64,9 @@ config KGDB_LOW_LEVEL_TRAP
-        depends on X86 || MIPS
-        default n
-        help
--         This will add an extra call back to kgdb for the breakpoint
--         exception handler which will allow kgdb to step through a
--         notify handler.
-+	 This will add an extra call back to kgdb for the breakpoint
-+	 exception handler which will allow kgdb to step through a
-+	 notify handler.
+ config UID16
+ 	bool "Enable 16-bit UID system calls" if EXPERT
+@@ -1423,11 +1423,11 @@ config BUG
+ 	bool "BUG() support" if EXPERT
+ 	default y
+ 	help
+-          Disabling this option eliminates support for BUG and WARN, reducing
+-          the size of your kernel image and potentially quietly ignoring
+-          numerous fatal conditions. You should only consider disabling this
+-          option for embedded systems with no facilities for reporting errors.
+-          Just say Y.
++	  Disabling this option eliminates support for BUG and WARN, reducing
++	  the size of your kernel image and potentially quietly ignoring
++	  numerous fatal conditions. You should only consider disabling this
++	  option for embedded systems with no facilities for reporting errors.
++	  Just say Y.
  
- config KGDB_KDB
- 	bool "KGDB_KDB: include kdb frontend for kgdb"
-@@ -96,7 +96,7 @@ config KDB_DEFAULT_ENABLE
+ config ELF_CORE
+ 	depends on COREDUMP
+@@ -1443,8 +1443,8 @@ config PCSPKR_PLATFORM
+ 	select I8253_LOCK
+ 	default y
+ 	help
+-          This option allows to disable the internal PC-Speaker
+-          support, saving some memory.
++	  This option allows to disable the internal PC-Speaker
++	  support, saving some memory.
  
- 	  The config option merely sets the default at boot time. Both
- 	  issuing 'echo X > /sys/module/kdb/parameters/cmd_enable' or
--          setting with kdb.cmd_enable=X kernel command line option will
-+	  setting with kdb.cmd_enable=X kernel command line option will
- 	  override the default settings.
- 
- config KDB_KEYBOARD
+ config BASE_FULL
+ 	default y
 -- 
 2.17.1
 

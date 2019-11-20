@@ -2,134 +2,154 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D832910364E
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Nov 2019 10:02:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 710811036CB
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Nov 2019 10:39:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728105AbfKTJCQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 Nov 2019 04:02:16 -0500
-Received: from mailout1.samsung.com ([203.254.224.24]:15398 "EHLO
-        mailout1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728056AbfKTJCQ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 Nov 2019 04:02:16 -0500
-Received: from epcas1p2.samsung.com (unknown [182.195.41.46])
-        by mailout1.samsung.com (KnoxPortal) with ESMTP id 20191120090212epoutp0169c92d1cd02e5bd94c2ac5ecb59ddaf0~Y02yHceW20952409524epoutp01z
-        for <kernel-janitors@vger.kernel.org>; Wed, 20 Nov 2019 09:02:12 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20191120090212epoutp0169c92d1cd02e5bd94c2ac5ecb59ddaf0~Y02yHceW20952409524epoutp01z
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1574240532;
-        bh=dfMXCj9n8r6qNtIvUmluN1atQMpnLaKyM+8HLByEO3I=;
-        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-        b=nQ51qgjFBGg6jLiqo3Dpj8pnARr0vdaaDTc7+8j2plMqdSZ7NraA3NFwK39kJpwwj
-         WIMWVS/stzs0Nlys5ReydZPolmcQPCyLM+IOtXfjwG9ZyT0VnNuqk2MSen0M4a2syA
-         J/syA+upH0lMgOI5xPR76u0JHDqOIeRxVzCETTnk=
-Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
-        epcas1p3.samsung.com (KnoxPortal) with ESMTP id
-        20191120090212epcas1p340b21382da1d3b4cabfcbb2215b4fb62~Y02xpLbnt0972109721epcas1p3F;
-        Wed, 20 Nov 2019 09:02:12 +0000 (GMT)
-Received: from epsmges1p5.samsung.com (unknown [182.195.40.165]) by
-        epsnrtp3.localdomain (Postfix) with ESMTP id 47HxXM2qtYzMqYkV; Wed, 20 Nov
-        2019 09:02:11 +0000 (GMT)
-Received: from epcas1p3.samsung.com ( [182.195.41.47]) by
-        epsmges1p5.samsung.com (Symantec Messaging Gateway) with SMTP id
-        0D.8D.04237.31105DD5; Wed, 20 Nov 2019 18:02:11 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-        epcas1p4.samsung.com (KnoxPortal) with ESMTPA id
-        20191120090210epcas1p4d0f2fd524052392f5046495f4851809c~Y02wWQDD62759327593epcas1p4I;
-        Wed, 20 Nov 2019 09:02:10 +0000 (GMT)
-Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
-        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20191120090210epsmtrp2ce5f70798920b9d801f8ec9fa69ad4f9~Y02wVhflp0720607206epsmtrp2k;
-        Wed, 20 Nov 2019 09:02:10 +0000 (GMT)
-X-AuditID: b6c32a39-913ff7000000108d-64-5dd501135724
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        2C.DC.03814.21105DD5; Wed, 20 Nov 2019 18:02:10 +0900 (KST)
-Received: from DONAMJAEJEO06 (unknown [10.88.104.63]) by
-        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20191120090210epsmtip15237292a741392c1dc5b598a195a08db~Y02wL_zj52993029930epsmtip1D;
-        Wed, 20 Nov 2019 09:02:10 +0000 (GMT)
-From:   "Namjae Jeon" <namjae.jeon@samsung.com>
-To:     "'Markus Elfring'" <Markus.Elfring@web.de>
-Cc:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        "'Christoph Hellwig'" <hch@lst.de>,
-        "'Daniel Wagner'" <dwagner@suse.de>,
-        "'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>,
-        "'Sungjong Seo'" <sj1557.seo@samsung.com>,
-        =?UTF-8?Q?'Valdis_Kl=C4=93tnieks'?= <valdis.kletnieks@vt.edu>,
-        <linkinjeon@gmail.com>, <linux-fsdevel@vger.kernel.org>
-In-Reply-To: <705cb02b-7707-af52-c2b5-70660debc619@web.de>
-Subject: RE: [PATCH v3 10/13] exfat: add nls operations
-Date:   Wed, 20 Nov 2019 18:02:10 +0900
-Message-ID: <00b701d59f81$319c1d90$94d458b0$@samsung.com>
+        id S1728476AbfKTJiw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 Nov 2019 04:38:52 -0500
+Received: from mout.web.de ([212.227.15.3]:52759 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728060AbfKTJiw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 20 Nov 2019 04:38:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1574242716;
+        bh=Klh70ypKVZwG0vorqxo8Kr0EXRaOdGQiO6NuWZzKH/U=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=QUWCfHAW0hTXFwF70kiwSO/382XAL/zKaXMn+nz75kdXlrH4Hl1F5O+2s1o7lfhMr
+         EOGoLvq3skUp0PyMdxvlLgbAVq4l8j9jfEbuzND7SN74fu3RbLOBgXiZcXt7oR0j34
+         waaxcdoiEYyf7xQpiCOVnzaVj0gI6JdEBGyEH77U=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.3] ([93.132.176.80]) by smtp.web.de (mrweb003
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MGRYe-1iboQW10c4-00DIfr; Wed, 20
+ Nov 2019 10:38:36 +0100
+Subject: Re: [2/4] coccinelle: platform_get_irq: handle 2-statement branches
+To:     Julia Lawall <julia.lawall@lip6.fr>, cocci@systeme.lip6.fr
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>
+References: <1574184500-29870-3-git-send-email-Julia.Lawall@lip6.fr>
+ <d178b6b3-7ef1-4ad7-a747-d65249a9667a@web.de>
+ <alpine.DEB.2.21.1911192235010.2592@hadrien>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
+ +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
+ mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
+ lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
+ YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
+ GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
+ rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
+ 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
+ jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
+ BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
+ cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
+ Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
+ g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
+ OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
+ CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
+ LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
+ sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
+ kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
+ i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
+ g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
+ q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
+ NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
+ nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
+ 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
+ 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
+ wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
+ riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
+ DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
+ fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
+ 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
+ xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
+ qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
+ Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
+ Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
+ +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
+ hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
+ /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
+ tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
+ qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
+ Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
+ x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
+ pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
+Message-ID: <5de8c4b9-2537-283d-4ef0-49fb22c18fe6@web.de>
+Date:   Wed, 20 Nov 2019 10:38:33 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
+In-Reply-To: <alpine.DEB.2.21.1911192235010.2592@hadrien>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 14.0
-Content-Language: ko
-Thread-Index: AQKGiVEIZXutAv+r8fum7Kkxtbdn/QHzs3lyAdI0Re0CJVjUg6YCisKg
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Te0hTcRTut3t379Vc3KbVyajWLYkSdXNOr6IRJXUjISH6I2vYxV3U2qvd
-        GT3J6D1Kyv6IrhnWIMhFhplptaytrBVFqT20J2o5VEyLXhTV5l3kf9/5znfO+c7vQWHqW0Q8
-        VWp1Cg4rb2aIaLzRPy8lKRY9NWp/dKhZf08lye521xHsOc8dBXu5axr7/HUXxl73BnC2/epJ
-        gv0j9SnZht+3lWzbx2F8YTTXLL0muZbq8yR3rbOc4CoaahF36cE27nP9DM53ZZDgXn5oxPOp
-        AnN2icCbBIdGsBbZTKXW4hxm+crCxYWGdK0uSZfJZjAaK28RcpjcvPykJaXmkEVGs4k3l4Wo
-        fF4UmZQF2Q5bmVPQlNhEZw4j2E1mu05rTxZ5i1hmLU4uslmydFptqiGkXGcu8fSdI+3umM01
-        nj68HH0f70JRFNBpcMb7DXOhaEpNNyGobB5AcvAJQWPrW0IOviKoedSt/FcyUnURlxNeBDdq
-        n0VK+hG43wdGVQSdBL9/tRBhHEcnQ+WgXxkWYfSwAlrdARRORNFZ4Hl1KYQpKpbOgBPS4jCN
-        0wlQ3vlCEcYqOhMe3qwkZTwRAid68TDG6EQ4e3oAkx1poOnhAJL5OKg6uA+T5y4Bz+3W0blA
-        HyPh04ceUi7IhftnayPrxEL/3YYIHw+fh7xE2A/Q22CkJdL/AILgtxwZ66Gz7qIyLMHoeVB3
-        NUWmZ0Hzz+qIhQkw9OWQUu6iggP71LIkASra/AoZTwPX/mHyCGKkMYtJYxaTxiwj/R9Wg/Ba
-        NFmwi5ZiQdTZDWMvux6NPt/5mU2o9VGeD9EUYmJURzrajWolv0ncYvEhoDAmTnX9eYdRrTLx
-        W7YKDluho8wsiD5kCJ37USx+UpEt9BmszkKdIVWv17Np6RnpBj0zRUV9f2JU08W8U9ggCHbB
-        8a9OQUXFl6M5O3e+7M87NdT1NZH6kRgz25+1jjt2V3PZp20YGY7p28uu3x7lxptuVNSvXjHS
-        Fly1qJQ+tcPV3T6dkx48Tj0ZvJAwbsrjqjcbgj3McRP17n3aVHPjigVS9i6jodfVnRuNvwve
-        W7N25sIJ+UsLAmkFGu/gsrneZRs3Hr65tpd0i3sYXCzhdfMxh8j/Bd3Mn63UAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrDIsWRmVeSWpSXmKPExsWy7bCSnK4Q49VYg5lLTC0OP57EbtG8eD2b
-        xcrVR5kstt6Strh+9xazxZ69J1ksLu+aw2bxf9ZzVost/46wWlx6/4HFgctj56y77B77565h
-        99h9s4HNo2/LKkaPzaerPT5vkvM4tP0Nm8ftZ9tYAjiiuGxSUnMyy1KL9O0SuDKWbHzNXDCT
-        s+Jd3yWmBsZb7F2MnBwSAiYSH2dvYOli5OIQEtjNKLHm+wVmiIS0xLETZ4BsDiBbWOLw4WKI
-        mheMEq+XNDKB1LAJ6Er8+7OfDcQWEdCTmPTmMCtIEbPANyaJ25/PsEN0vGGUmHvxHlgHp4CV
-        xOo7mxlBpgoLmEvMnOUMEmYRUJVouHkDrIRXwFLi7IFJ7BC2oMTJmU9YQGxmAW2J3oetjDD2
-        soWvoQ5VkNhx9jVUXERidmcbM8RBbhKrjxxjncAoPAvJqFlIRs1CMmoWkvYFjCyrGCVTC4pz
-        03OLDQuM8lLL9YoTc4tL89L1kvNzNzGC41BLawfjiRPxhxgFOBiVeHgnXLkcK8SaWFZcmXuI
-        UYKDWUmEd8/1K7FCvCmJlVWpRfnxRaU5qcWHGKU5WJTEeeXzj0UKCaQnlqRmp6YWpBbBZJk4
-        OKUaGAUmzg+UNT5puy/zGueKN1kXS28L50vo+vstf9J58brWfaUvF09dZVus+iFwwocCXUHb
-        cn/bt6uOPljZ92G+5SqTkv9PmNOfvssTPKjEIqugy6P8t/+0oJx59HW941+Dl8iwZOm2diY8
-        b3Z2evb+f46AZ0Xs5gDxRPtVPR27k49eu+43ecO5zUosxRmJhlrMRcWJAF/Xf42/AgAA
-X-CMS-MailID: 20191120090210epcas1p4d0f2fd524052392f5046495f4851809c
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: SVC_REQ_APPROVE
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20191119094026epcas1p3eea5c655f3b89383e02c0097c491f0bc
-References: <20191119093718.3501-1-namjae.jeon@samsung.com>
-        <CGME20191119094026epcas1p3eea5c655f3b89383e02c0097c491f0bc@epcas1p3.samsung.com>
-        <20191119093718.3501-11-namjae.jeon@samsung.com>
-        <705cb02b-7707-af52-c2b5-70660debc619@web.de>
+X-Provags-ID: V03:K1:T+o+3+wcDZ6iHs0UNx2mVfOOUHufPMF7VJk7RRJ+wP7BSLaMwZ9
+ cFhUrtKbE30XpXwEg8wvY2awlMM7STDM1QD0wl969LprDJmSjrc1eq1kuViRn2qCDVSVjVx
+ hbQ9fWoxLU1W/xGwb1WVSZhSuOzyqwapZvPBdfv500MaMCkGpwwqrmEAjbzcXfia1Iixbix
+ 3aTM4W5qKC6dBe3ky85Fg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:SO6Z82X9oRs=:+YEvJWAqJ/mkJYmh/E8UxC
+ 8aGEg0O5MFQj5m+ngLpr7PkbyayM720Mt4NvjCpkAXEynJEwFYXfJeO/lUis7NQD/3TZTpHt+
+ Nh7qi/MQaDQGO+SDgEuq+ZlPWMWDMkIgT2NBcJ6SVQ2bMOwf0fLuxZJ17iWUvsxeQLMFuOgI8
+ +w8oOvlJTIAQ2NtbEy4iPZneIyXm9BejZD+QF3jWm+3CWfHDHpQeaqN2Mt5eDSIxoxsrpAUw+
+ FZZPyUzb1CmmBz8p8pcr2AvCR5xahCAAM9OIr4Cl+TQf2x+hMGylmEPymiB7F91Gl0amlnnJ2
+ +oKX7/qU5Zl69eNQ4Vrjw74PYoFacorAnYvhaTHlJkC/RriA0iRynrgbCvzy/yzAPoq6eW8iG
+ 9olzrxvMShgsLWmQeBpARDjZe8VTtEyCfkDjRF/7fORoTRdwftjKmlzIgq2uJF/m4DD3stH7A
+ KO9kQ4oJmyya9ETAp+Abrj+3Wq4JN+Ri8HOUvgj/y9lsF8PzOBpFtZuE22bp5+qOVTuP+GnY8
+ cC6i45AfoKifOS1TgtSrIiQa4b6qdLwWZ7vuC+JQtslajKd8yPx99YeFoPzqjNZhqc/31jm36
+ zkzbU2gQ7HXFlJ+BTfQmNYGm75JAGiQipeknjSleTAFsL9F2kz3uvvSCgdHA/x7gz/5YUlgyY
+ Smtb6YHZZ4e9cn9i41f0CS+vKszRu4Uuii4C5tahrQFX+9r3XD7dPx2/ftLCsvUBL5xzAHOWd
+ hQ/jmxduAWHZBtDwuanf8AQtdwFwTT4P7lgrpXJwej8bu4oIKEQtsCK+rj/MtkM/xFpEfQIOF
+ Sc9xLdIQJwebzndCm5JseOm2ttsLTo7IPkUwbVtBIQ9GW/VgdxmV8dQ6nO1MIpNlzI/GHPEEq
+ jztXcXxEqb+2JdO50grge3RTuIEk7G55o7arkDxJRy9y4CvB9o8I7tehuPtjFVhGxalha8/IF
+ 6+C9wY03wrCU5iLkpxba2tmH/dXcX2R2rHcD6HlHX8tfnvBvVhCNFrFds5ArYWcgMv2xCnFAc
+ lDXAYTuiYfqet5YE0jogbekX02RGwmkkNd96UqdEdQR6yg3hzyEVQjCELv+MPIHlRPK4l/aig
+ tqnwiQ9Hf9lMJw4k4NudSfIKEf5lh8ojCWwHYc9Iej9VagwKl+EpQ32Xn6k4bsnX/gIbAbK5+
+ Q3QBR24PLvYxZmLwiDipTRS5UzrwAQzp4PhyeMuuaQl7Xazfu6I0tl3Us6nTONQRpQ1cSsMTU
+ AsZ7jReEYEue6z9vOfZ0C64ThSbWDB4x4UmYzSnJz0fozbSdK7j35iyuM76Y=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> =E2=80=A6=0D=0A>=20>=20+++=20b/fs/exfat/nls.c=0D=0A>=20=E2=80=A6=0D=0A>=
-=20>=20+static=20int=20exfat_load_upcase_table(struct=20super_block=20*sb,=
-=0D=0A>=20>=20+=09=09sector_t=20sector,=20unsigned=20long=20long=20num_sect=
-ors,=0D=0A>=20>=20+=09=09unsigned=20int=20utbl_checksum)=0D=0A>=20>=20+=7B=
-=0D=0A>=20=E2=80=A6=0D=0A>=20>=20+error:=0D=0A>=20>=20+=09if=20(bh)=0D=0A>=
-=20>=20+=09=09brelse(bh);=0D=0A>=20=0D=0A>=20I=20am=20informed=20in=20the=
-=20way=20that=20this=20function=20tolerates=20the=20passing=0D=0A>=20of=20n=
-ull=20pointers.=0D=0A>=20https://protect2.fireeye.com/url?k=3D58476862-0589=
-69b1-5846e32d-000babff317b-=0D=0A>=202bdcc1db1dc57528&u=3Dhttps://git.kerne=
-l.org/pub/scm/linux/kernel/git/torvalds/=0D=0A>=20linux.git/tree/include/li=
-nux/buffer_head.h?id=3Daf42d3466bdc8f39806b26f593604f=0D=0A>=20dc54140bcb=
-=23n292=0D=0A>=20https://protect2.fireeye.com/url?k=3D625424d5-3f9a2506-625=
-5af9a-000babff317b-=0D=0A>=20a544a35424b18c18&u=3Dhttps://elixir.bootlin.co=
-m/linux/v5.4-=0D=0A>=20rc8/source/include/linux/buffer_head.h=23L292=0D=0A>=
-=20=0D=0A>=20Thus=20I=20suggest=20to=20omit=20the=20extra=20pointer=20check=
-=20also=20at=20similar=20places.=0D=0A>=20=0D=0A>=20Can=20the=20label=20=E2=
-=80=9Crelease_bh=E2=80=9D=20be=20more=20helpful?=0D=0AHi=20Markus,=0D=0A=0D=
-=0AI=20checked=20not=20only=20review=20point=20but=20also=20your=20review=
-=20points=20in=0D=0Aother=20patches,=20I=20will=20fix=20them=20on=20v4.=0D=
-=0A=0D=0AThanks=20for=20your=20review=21=0D=0A>=20=0D=0A>=20Regards,=0D=0A>=
-=20Markus=0D=0A=0D=0A
+> Sorry, I seem to have done something quite wrong on this patch.
+
+Interesting =E2=80=A6
+
+
+> I will fix it.
+
+Thanks.
+
+Development will be continued:
+https://lkml.org/lkml/2019/11/19/1681
+https://lore.kernel.org/patchwork/patch/1156089/
+https://lore.kernel.org/cocci/1574197705-31132-3-git-send-email-Julia.Lawa=
+ll@lip6.fr/
+
+
+>> How do you think about to use the following SmPL code variant?
+>
+> And the benefit is what?
+=E2=80=A6
+>> + ret =3D
+>> +(platform_get_irq
+>> +|platform_get_irq_byname
+>> +)(E, ...);
+>> +
+>> + if ( \( ret < 0 \| ret <=3D 0 \) )
+>> +-{
+>> +-dev_err(...);
+>> + S
+>> +-}
+
+* I suggest to use a different coding style for the specification of
+  two function names in the SmPL disjunction.
+
+* Would you like to avoid the mixing of code items in the first text colum=
+n?
+
+Regards,
+Markus

@@ -2,66 +2,163 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D35FA1031CB
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Nov 2019 03:53:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 842171035E6
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Nov 2019 09:19:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727383AbfKTCxY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 19 Nov 2019 21:53:24 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:48948 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727140AbfKTCxY (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 19 Nov 2019 21:53:24 -0500
-Received: from localhost (unknown [IPv6:2601:601:9f00:1e2::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 8F804146D043A;
-        Tue, 19 Nov 2019 18:53:23 -0800 (PST)
-Date:   Tue, 19 Nov 2019 18:53:23 -0800 (PST)
-Message-Id: <20191119.185323.1049045586606004090.davem@davemloft.net>
-To:     maowenan@huawei.com
-Cc:     vladimir.oltean@nxp.com, claudiu.manoil@nxp.com, andrew@lunn.ch,
-        vivien.didelot@gmail.com, f.fainelli@gmail.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net v2] net: dsa: ocelot: add dependency for
- NET_DSA_MSCC_FELIX
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20191120014722.8075-1-maowenan@huawei.com>
-References: <20191119.154125.1492881397881625788.davem@davemloft.net>
-        <20191120014722.8075-1-maowenan@huawei.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Tue, 19 Nov 2019 18:53:23 -0800 (PST)
+        id S1727758AbfKTITT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 Nov 2019 03:19:19 -0500
+Received: from mga14.intel.com ([192.55.52.115]:62914 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726038AbfKTITT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 20 Nov 2019 03:19:19 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Nov 2019 00:19:17 -0800
+X-IronPort-AV: E=Sophos;i="5.69,221,1571727600"; 
+   d="scan'208";a="200638084"
+Received: from cmhaerte-mobl.ger.corp.intel.com (HELO localhost) ([10.252.49.114])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Nov 2019 00:19:14 -0800
+From:   Jani Nikula <jani.nikula@linux.intel.com>
+To:     Julia Lawall <Julia.Lawall@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>
+Cc:     kernel-janitors@vger.kernel.org,
+        Gilles Muller <Gilles.Muller@inria.fr>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Michal Marek <michal.lkml@markovi.net>, cocci@systeme.lip6.fr,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Coccinelle: ptr_ret: drop PTR_ERR_OR_ZERO semantic patch
+In-Reply-To: <1574179017-23787-1-git-send-email-Julia.Lawall@lip6.fr>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <1574179017-23787-1-git-send-email-Julia.Lawall@lip6.fr>
+Date:   Wed, 20 Nov 2019 10:19:26 +0200
+Message-ID: <87y2wbgdtd.fsf@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Mao Wenan <maowenan@huawei.com>
-Date: Wed, 20 Nov 2019 09:47:22 +0800
+On Tue, 19 Nov 2019, Julia Lawall <Julia.Lawall@lip6.fr> wrote:
+> This mostly made changes that made the code harder
+> to read, so drop it.
 
-> If CONFIG_NET_DSA_MSCC_FELIX=y, and CONFIG_NET_VENDOR_MICROSEMI=n,
-> below errors can be found:
-> drivers/net/dsa/ocelot/felix.o: In function `felix_vlan_del':
-> felix.c:(.text+0x26e): undefined reference to `ocelot_vlan_del'
-> drivers/net/dsa/ocelot/felix.o: In function `felix_vlan_add':
-> felix.c:(.text+0x352): undefined reference to `ocelot_vlan_add'
-> 
-> and warning as below:
-> WARNING: unmet direct dependencies detected for MSCC_OCELOT_SWITCH
-> Depends on [n]: NETDEVICES [=y] && ETHERNET [=y] &&
-> NET_VENDOR_MICROSEMI [=n] && NET_SWITCHDEV [=y] && HAS_IOMEM [=y]
-> Selected by [y]:
-> NET_DSA_MSCC_FELIX [=y] && NETDEVICES [=y] && HAVE_NET_DSA [=y]
-> && NET_DSA [=y] && PCI [=y]
-> 
-> This patch is to select NET_VENDOR_MICROSEMI for NET_DSA_MSCC_FELIX.
-> 
-> Fixes: 56051948773e ("net: dsa: ocelot: add driver for Felix switch family")
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+FWIW, I welcome this change.
 
-You did not read my feedback, read it again please.
+Acked-by: Jani Nikula <jani.nikula@intel.com>
+
+>
+> Signed-off-by: Julia Lawall <Julia.Lawall@lip6.fr>
+>
+> ---
+>  scripts/coccinelle/api/ptr_ret.cocci |   97 -----------------------------------
+>  1 file changed, 97 deletions(-)
+>
+> diff --git a/scripts/coccinelle/api/ptr_ret.cocci b/scripts/coccinelle/api/ptr_ret.cocci
+> deleted file mode 100644
+> index e76cd5d..0000000
+> --- a/scripts/coccinelle/api/ptr_ret.cocci
+> +++ /dev/null
+> @@ -1,97 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0-only
+> -///
+> -/// Use PTR_ERR_OR_ZERO rather than if(IS_ERR(...)) + PTR_ERR
+> -///
+> -// Confidence: High
+> -// Copyright: (C) 2012 Julia Lawall, INRIA/LIP6.
+> -// Copyright: (C) 2012 Gilles Muller, INRIA/LiP6.
+> -// URL: http://coccinelle.lip6.fr/
+> -// Options: --no-includes --include-headers
+> -//
+> -// Keywords: ERR_PTR, PTR_ERR, PTR_ERR_OR_ZERO
+> -// Version min: 2.6.39
+> -//
+> -
+> -virtual context
+> -virtual patch
+> -virtual org
+> -virtual report
+> -
+> -@depends on patch@
+> -expression ptr;
+> -@@
+> -
+> -- if (IS_ERR(ptr)) return PTR_ERR(ptr); else return 0;
+> -+ return PTR_ERR_OR_ZERO(ptr);
+> -
+> -@depends on patch@
+> -expression ptr;
+> -@@
+> -
+> -- if (IS_ERR(ptr)) return PTR_ERR(ptr); return 0;
+> -+ return PTR_ERR_OR_ZERO(ptr);
+> -
+> -@depends on patch@
+> -expression ptr;
+> -@@
+> -
+> -- (IS_ERR(ptr) ? PTR_ERR(ptr) : 0)
+> -+ PTR_ERR_OR_ZERO(ptr)
+> -
+> -@r1 depends on !patch@
+> -expression ptr;
+> -position p1;
+> -@@
+> -
+> -* if@p1 (IS_ERR(ptr)) return PTR_ERR(ptr); else return 0;
+> -
+> -@r2 depends on !patch@
+> -expression ptr;
+> -position p2;
+> -@@
+> -
+> -* if@p2 (IS_ERR(ptr)) return PTR_ERR(ptr); return 0;
+> -
+> -@r3 depends on !patch@
+> -expression ptr;
+> -position p3;
+> -@@
+> -
+> -* IS_ERR@p3(ptr) ? PTR_ERR(ptr) : 0
+> -
+> -@script:python depends on org@
+> -p << r1.p1;
+> -@@
+> -
+> -coccilib.org.print_todo(p[0], "WARNING: PTR_ERR_OR_ZERO can be used")
+> -
+> -
+> -@script:python depends on org@
+> -p << r2.p2;
+> -@@
+> -
+> -coccilib.org.print_todo(p[0], "WARNING: PTR_ERR_OR_ZERO can be used")
+> -
+> -@script:python depends on org@
+> -p << r3.p3;
+> -@@
+> -
+> -coccilib.org.print_todo(p[0], "WARNING: PTR_ERR_OR_ZERO can be used")
+> -
+> -@script:python depends on report@
+> -p << r1.p1;
+> -@@
+> -
+> -coccilib.report.print_report(p[0], "WARNING: PTR_ERR_OR_ZERO can be used")
+> -
+> -@script:python depends on report@
+> -p << r2.p2;
+> -@@
+> -
+> -coccilib.report.print_report(p[0], "WARNING: PTR_ERR_OR_ZERO can be used")
+> -
+> -@script:python depends on report@
+> -p << r3.p3;
+> -@@
+> -
+> -coccilib.report.print_report(p[0], "WARNING: PTR_ERR_OR_ZERO can be used")
+>
+
+-- 
+Jani Nikula, Intel Open Source Graphics Center

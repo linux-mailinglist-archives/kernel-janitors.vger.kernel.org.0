@@ -2,67 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01F34103C96
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Nov 2019 14:50:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F5A2103CA3
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Nov 2019 14:54:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730889AbfKTNum (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 Nov 2019 08:50:42 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:42757 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727671AbfKTNum (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:50:42 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iXQNL-0008NI-Na; Wed, 20 Nov 2019 13:50:31 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jack Wang <jinpu.wang@cloud.ionos.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Deepak Ukey <Deepak.Ukey@microchip.com>,
-        Viswas G <Viswas.G@microchip.com>, linux-scsi@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] scsi: pm80xx: fix logic to break out of loop when register value is 2 or 3
-Date:   Wed, 20 Nov 2019 13:50:31 +0000
-Message-Id: <20191120135031.270708-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        id S1730605AbfKTNyX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 Nov 2019 08:54:23 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56072 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727671AbfKTNyW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 20 Nov 2019 08:54:22 -0500
+Received: from localhost.localdomain (unknown [118.189.143.39])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1C54622310;
+        Wed, 20 Nov 2019 13:54:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1574258062;
+        bh=e4Hx2w9CUlEMUZpsptlAxS9898JO9B+VvzwEQN+NU2w=;
+        h=From:To:Cc:Subject:Date:From;
+        b=DnDVMSDqZSs+ymUoVPy297rCTEPftTas6C1s0DfSYZ3QQy0/XhxtmFfBLvTFeoQYj
+         VTfcbBnJR1Wodt5LSSEbzrfuCADpMjronMJRRkIR+vxMpVu6sQzUeZ4qaYYLUw3rNn
+         8LYrZ5+g30MgSyL5Vjnxkqc+dkSgNXafpyGnvFao=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Ingo Molnar <mingo@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, Jiri Kosina <trivial@kernel.org>,
+        kernel-janitors@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [RESEND PATCH] arch: Fix Kconfig indentation
+Date:   Wed, 20 Nov 2019 21:54:15 +0800
+Message-Id: <20191120135415.18013-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Adjust indentation from spaces to tab (+optional two spaces) as in
+coding style with command like:
+	$ sed -e 's/^        /\t/' -i */Kconfig
 
-The condition (reg_val != 2) || (reg_val != 3) will always be true because
-reg_val cannot be equal to two different values at the same time. Fix this
-by replacing the || operator with && so that the loop will loop if reg_val
-is not a 2 and not a 3 as was originally intended.
-
-Addresses-Coverity: ("Constant expression result")
-Fixes: 50dc2f221455 ("scsi: pm80xx: Modified the logic to collect fatal dump")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- drivers/scsi/pm8001/pm80xx_hwi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/pm8001/pm80xx_hwi.c b/drivers/scsi/pm8001/pm80xx_hwi.c
-index 19601138e889..d41908b23760 100644
---- a/drivers/scsi/pm8001/pm80xx_hwi.c
-+++ b/drivers/scsi/pm8001/pm80xx_hwi.c
-@@ -348,7 +348,7 @@ ssize_t pm80xx_get_fatal_dump(struct device *cdev,
- 			do {
- 				reg_val = pm8001_mr32(fatal_table_address,
- 					MPI_FATAL_EDUMP_TABLE_STATUS);
--			} while (((reg_val != 2) || (reg_val != 3)) &&
-+			} while (((reg_val != 2) && (reg_val != 3)) &&
- 					time_before(jiffies, start));
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 3c6ec65596da..f6463f8b142f 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -76,7 +76,7 @@ config JUMP_LABEL
+        depends on HAVE_ARCH_JUMP_LABEL
+        depends on CC_HAS_ASM_GOTO
+        help
+-         This option enables a transparent branch optimization that
++	 This option enables a transparent branch optimization that
+ 	 makes certain almost-always-true or almost-always-false branch
+ 	 conditions even cheaper to execute within the kernel.
  
- 			if (reg_val < 2) {
+@@ -84,7 +84,7 @@ config JUMP_LABEL
+ 	 scheduler functionality, networking code and KVM have such
+ 	 branches and include support for this optimization technique.
+ 
+-         If it is detected that the compiler has support for "asm goto",
++	 If it is detected that the compiler has support for "asm goto",
+ 	 the kernel will compile such branches with just a nop
+ 	 instruction. When the condition flag is toggled to true, the
+ 	 nop will be converted to a jump instruction to execute the
 -- 
-2.24.0
+2.17.1
 

@@ -2,38 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F5A2103CA3
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Nov 2019 14:54:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B24C6103CBC
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Nov 2019 14:58:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730605AbfKTNyX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 Nov 2019 08:54:23 -0500
-Received: from mail.kernel.org ([198.145.29.99]:56072 "EHLO mail.kernel.org"
+        id S1730357AbfKTN6Z (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 Nov 2019 08:58:25 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58458 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727671AbfKTNyW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 Nov 2019 08:54:22 -0500
+        id S1727988AbfKTN6Y (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 20 Nov 2019 08:58:24 -0500
 Received: from localhost.localdomain (unknown [118.189.143.39])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1C54622310;
-        Wed, 20 Nov 2019 13:54:19 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C0F3722310;
+        Wed, 20 Nov 2019 13:58:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574258062;
-        bh=e4Hx2w9CUlEMUZpsptlAxS9898JO9B+VvzwEQN+NU2w=;
+        s=default; t=1574258304;
+        bh=Id5FGnBePEHJ10km5onKgh+P+DFvfIXEEipgxJQRF54=;
         h=From:To:Cc:Subject:Date:From;
-        b=DnDVMSDqZSs+ymUoVPy297rCTEPftTas6C1s0DfSYZ3QQy0/XhxtmFfBLvTFeoQYj
-         VTfcbBnJR1Wodt5LSSEbzrfuCADpMjronMJRRkIR+vxMpVu6sQzUeZ4qaYYLUw3rNn
-         8LYrZ5+g30MgSyL5Vjnxkqc+dkSgNXafpyGnvFao=
+        b=QF7dQomBetofAiw/gERCs6oMcAIKP7E4zshC/mmWrtjCgy2DrKsuHNBSKuEwa74NV
+         sRjBlN9Smq1HMsYdS8KoTatGcIviLyZOFRtiLgfGPyeTZDj4dBbCAiQtYIf8j64DJA
+         XOWvf4MISxO1zVC220MQR3alGse6QriRb/BIg548=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Ingo Molnar <mingo@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, Jiri Kosina <trivial@kernel.org>,
-        kernel-janitors@vger.kernel.org
+To:     Jiri Kosina <trivial@kernel.org>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, kernel-janitors@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>
 Cc:     Krzysztof Kozlowski <krzk@kernel.org>
-Subject: [RESEND PATCH] arch: Fix Kconfig indentation
-Date:   Wed, 20 Nov 2019 21:54:15 +0800
-Message-Id: <20191120135415.18013-1-krzk@kernel.org>
+Subject: [RESEND PATCH] virt: Fix Kconfig indentation
+Date:   Wed, 20 Nov 2019 21:58:03 +0800
+Message-Id: <20191120135803.18590-1-krzk@kernel.org>
 X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
@@ -46,31 +43,36 @@ coding style with command like:
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 ---
- arch/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/virt/Kconfig | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 3c6ec65596da..f6463f8b142f 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -76,7 +76,7 @@ config JUMP_LABEL
-        depends on HAVE_ARCH_JUMP_LABEL
-        depends on CC_HAS_ASM_GOTO
-        help
--         This option enables a transparent branch optimization that
-+	 This option enables a transparent branch optimization that
- 	 makes certain almost-always-true or almost-always-false branch
- 	 conditions even cheaper to execute within the kernel.
+diff --git a/drivers/virt/Kconfig b/drivers/virt/Kconfig
+index 363af2eaf2ba..cb5d2d89592f 100644
+--- a/drivers/virt/Kconfig
++++ b/drivers/virt/Kconfig
+@@ -18,17 +18,17 @@ config FSL_HV_MANAGER
+ 	depends on FSL_SOC
+ 	select EPAPR_PARAVIRT
+ 	help
+-          The Freescale hypervisor management driver provides several services
++	  The Freescale hypervisor management driver provides several services
+ 	  to drivers and applications related to the Freescale hypervisor:
  
-@@ -84,7 +84,7 @@ config JUMP_LABEL
- 	 scheduler functionality, networking code and KVM have such
- 	 branches and include support for this optimization technique.
+-          1) An ioctl interface for querying and managing partitions.
++	  1) An ioctl interface for querying and managing partitions.
  
--         If it is detected that the compiler has support for "asm goto",
-+	 If it is detected that the compiler has support for "asm goto",
- 	 the kernel will compile such branches with just a nop
- 	 instruction. When the condition flag is toggled to true, the
- 	 nop will be converted to a jump instruction to execute the
+-          2) A file interface to reading incoming doorbells.
++	  2) A file interface to reading incoming doorbells.
+ 
+-          3) An interrupt handler for shutting down the partition upon
++	  3) An interrupt handler for shutting down the partition upon
+ 	     receiving the shutdown doorbell from a manager partition.
+ 
+-          4) A kernel interface for receiving callbacks when a managed
++	  4) A kernel interface for receiving callbacks when a managed
+ 	     partition shuts down.
+ 
+ source "drivers/virt/vboxguest/Kconfig"
 -- 
 2.17.1
 

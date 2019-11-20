@@ -2,93 +2,42 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DA6941036CC
-	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Nov 2019 10:39:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EDD551037C6
+	for <lists+kernel-janitors@lfdr.de>; Wed, 20 Nov 2019 11:44:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728472AbfKTJiw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 Nov 2019 04:38:52 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:7150 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728456AbfKTJiv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 Nov 2019 04:38:51 -0500
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 7E4DD4BC424209F8601B;
-        Wed, 20 Nov 2019 17:38:49 +0800 (CST)
-Received: from [127.0.0.1] (10.177.96.96) by DGGEMS407-HUB.china.huawei.com
- (10.3.19.207) with Microsoft SMTP Server id 14.3.439.0; Wed, 20 Nov 2019
- 17:38:47 +0800
-Subject: Re: [PATCH net v2] net: dsa: ocelot: add dependency for
- NET_DSA_MSCC_FELIX
-To:     David Miller <davem@davemloft.net>
-CC:     <vladimir.oltean@nxp.com>, <claudiu.manoil@nxp.com>,
-        <andrew@lunn.ch>, <vivien.didelot@gmail.com>,
-        <f.fainelli@gmail.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-References: <20191119.154125.1492881397881625788.davem@davemloft.net>
- <20191120014722.8075-1-maowenan@huawei.com>
- <20191119.185323.1049045586606004090.davem@davemloft.net>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <3e9d6100-6965-da85-c310-6e1a9318f61d@huawei.com>
-Date:   Wed, 20 Nov 2019 17:38:38 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
+        id S1728797AbfKTKn7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 Nov 2019 05:43:59 -0500
+Received: from verein.lst.de ([213.95.11.211]:39415 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728777AbfKTKn7 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 20 Nov 2019 05:43:59 -0500
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 329EE68AFE; Wed, 20 Nov 2019 11:43:57 +0100 (CET)
+Date:   Wed, 20 Nov 2019 11:43:57 +0100
+From:   Christoph Hellwig <hch@lst.de>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] dma-debug: clean up put_hash_bucket()
+Message-ID: <20191120104357.GA3800@lst.de>
+References: <20191119061819.k6754frfv2wj7swd@kili.mountain>
 MIME-Version: 1.0
-In-Reply-To: <20191119.185323.1049045586606004090.davem@davemloft.net>
-Content-Type: text/plain; charset="gbk"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.177.96.96]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191119061819.k6754frfv2wj7swd@kili.mountain>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-ÔÚ 2019/11/20 10:53, David Miller Ð´µÀ:
-> From: Mao Wenan <maowenan@huawei.com>
-> Date: Wed, 20 Nov 2019 09:47:22 +0800
+On Tue, Nov 19, 2019 at 09:18:19AM +0300, Dan Carpenter wrote:
+> The put_hash_bucket() is a bit cleaner if it takes an unsigned long
+> directly instead of a pointer to unsigned long.
 > 
->> If CONFIG_NET_DSA_MSCC_FELIX=y, and CONFIG_NET_VENDOR_MICROSEMI=n,
->> below errors can be found:
->> drivers/net/dsa/ocelot/felix.o: In function `felix_vlan_del':
->> felix.c:(.text+0x26e): undefined reference to `ocelot_vlan_del'
->> drivers/net/dsa/ocelot/felix.o: In function `felix_vlan_add':
->> felix.c:(.text+0x352): undefined reference to `ocelot_vlan_add'
->>
->> and warning as below:
->> WARNING: unmet direct dependencies detected for MSCC_OCELOT_SWITCH
->> Depends on [n]: NETDEVICES [=y] && ETHERNET [=y] &&
->> NET_VENDOR_MICROSEMI [=n] && NET_SWITCHDEV [=y] && HAS_IOMEM [=y]
->> Selected by [y]:
->> NET_DSA_MSCC_FELIX [=y] && NETDEVICES [=y] && HAVE_NET_DSA [=y]
->> && NET_DSA [=y] && PCI [=y]
->>
->> This patch is to select NET_VENDOR_MICROSEMI for NET_DSA_MSCC_FELIX.
->>
->> Fixes: 56051948773e ("net: dsa: ocelot: add driver for Felix switch family")
->> Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> 
-> You did not read my feedback, read it again please.
-Sorry for that, do you mean firstly to resolve dependencies according to MSCC_OCELOT_SWITCH,
-config MSCC_OCELOT_SWITCH
-        tristate "Ocelot switch driver"
-        depends on NET_SWITCHDEV
-        depends on HAS_IOMEM
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-after that to select in MSCC_OCELOT_SWITCH in NET_DSA_MSCC_FELIX,
-config NET_DSA_MSCC_FELIX
-        tristate "Ocelot / Felix Ethernet switch support"
-        depends on NET_DSA && PCI
-+	select NET_VENDOR_MICROSEMI
-+       depends on NET_SWITCHDEV
-+	depends on HAS_IOMEM
-        select MSCC_OCELOT_SWITCH
-        select NET_DSA_TAG_OCELOT
-        help
-
-
-> 
-> .
-> 
-
+Looks reasonable to me, I'll apply it to the dma-mapping tree fo 5.5.

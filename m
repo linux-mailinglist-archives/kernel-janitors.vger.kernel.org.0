@@ -2,77 +2,124 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F91F104F77
-	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Nov 2019 10:41:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99811104F82
+	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Nov 2019 10:44:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726351AbfKUJl0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 21 Nov 2019 04:41:26 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:43484 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726014AbfKUJl0 (ORCPT
+        id S1726293AbfKUJob (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 21 Nov 2019 04:44:31 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:37608 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726014AbfKUJob (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 21 Nov 2019 04:41:26 -0500
-Received: by mail-wr1-f65.google.com with SMTP id n1so3474654wra.10;
-        Thu, 21 Nov 2019 01:41:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RHzvhSWDIF17bAOokqKZSwpGKUwX4v9Vyo2hjUcr/+k=;
-        b=l5ugN99eVoPqJAzMroS78+UwJlBGWflqU7XpwuKuaho/2AZyQTwfl8OiFO3oA+ohSt
-         KtUNfBZadkJUH9Uu/Yb8oN1MXyOVuNZvtKT5g2IEVgtIt7yl6TfhMlQT5HGJt00J2YW/
-         mObSrPqXpaUUAtiX79kHoVL19FjQPOKdsdm0lgY52NiiqCxcC2FzE1NuJe7URA6gF2qU
-         mmitP3uU3+hmHp7VcLJo4m/nUXB36caSt6Slqy6Yp/WQDaIrmFtcBemG4P0v0+pxftcA
-         9lWjT4EFx/EuQ4Z0o0gjtbh58TeMCMs4yanggLm0NrvM+Rf6cY8MZy8iAdqEIo1Tt5vV
-         tS0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RHzvhSWDIF17bAOokqKZSwpGKUwX4v9Vyo2hjUcr/+k=;
-        b=c4vhwdiLBQbFuq9x3lNRFsWZpnXnfj0gubiAWsTG59M4znCAHzPKbcd35+HzJH6Pet
-         3jZS2vlAaoDIOO+sBMxszkseczDhor18T5aCnaNnBlOz4GMj12mbG5MczM+PlfM3WW6A
-         sm8K3HpBxZN9zBvw5QIA1FSvBKBiK3LWEjKB8TUQJpclCal6yYPLnbDA9L8NE57NwDUd
-         t0XcqDAo7Da7K9fa59X/YJ6Z1VivsC9lD7yYiluiFTuyewpE9gko3yZ9ZeiJloucNQBC
-         R8BgNV3PdkdwpG35muWUDqKzfar2WVqlfvaRKjptr/kKN+FtoyXhBLgQHloC7EuJT/Ho
-         eUvw==
-X-Gm-Message-State: APjAAAVHOxYjnHIo5L6UW77krXnSdBEIB0EtgK9Nxcp/WCOl20pno5hw
-        3OZW1+ZgOGtQzUMK32nDFocU2k0GPq466YXy2/s=
-X-Google-Smtp-Source: APXvYqy+r7Kvxfm5IbjSNLg82FBuYIhyWRE4hcSw0THrmoDVd/MQsKSKqcMSk1AFRQHIbEPFE4tEibFQ0MOH5oMZHZo=
-X-Received: by 2002:a5d:4e0a:: with SMTP id p10mr8922401wrt.229.1574329284460;
- Thu, 21 Nov 2019 01:41:24 -0800 (PST)
+        Thu, 21 Nov 2019 04:44:31 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAL9d6V0090248;
+        Thu, 21 Nov 2019 09:44:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=O9XdDweROetd4IF3Ov+XTajbGB7bCaFY1hPRXJfDoGE=;
+ b=cLwpX/MOrZMlMB4pCTU4J/KveeacdfblBeboEfYiXK9XsAhECK4BC4LJlqy6R+MKlu7/
+ pPXVBK/Abs/kbOk/5FW0R6I+xxm4V/vL2IRguJn4/Rskeg2Y7QlEGotU51Cx8rFrCN42
+ jSQIGHLZJW8VHmunzdrnQFhuxqOyiPZDBTJWDkeXTNyY7SPbf76oGpdulbez+g+JFGS0
+ PL9A1uqgTyBaKbKCACv6Yvk1ELQZUEh0LDyA+I65owLOdhQBiei5uXJBMb2FkQcN+6UW
+ wbAyRYxQcpKa+KLCU3WBp0uFtluepldkONvSumCDwCP76emld92/J7h9Fp0EcnqmxVyc 1g== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 2wa92q2ygy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 21 Nov 2019 09:44:28 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAL9cINU172447;
+        Thu, 21 Nov 2019 09:44:27 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 2wda05phkx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Thu, 21 Nov 2019 09:44:27 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xAL9iQVn024050;
+        Thu, 21 Nov 2019 09:44:26 GMT
+Received: from kili.mountain (/41.210.154.230)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 21 Nov 2019 01:44:26 -0800
+Date:   Thu, 21 Nov 2019 12:44:19 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     cjacob@marvell.com
+Cc:     kernel-janitors@vger.kernel.org
+Subject: [bug report] octeontx2-af: Dump current resource provisioning status
+Message-ID: <20191121094419.ktgp5w4r7mhclzet@kili.mountain>
 MIME-Version: 1.0
-References: <20191121092146.hnvdwnzpirskw3wr@kili.mountain>
-In-Reply-To: <20191121092146.hnvdwnzpirskw3wr@kili.mountain>
-From:   Sunil Kovvuri <sunil.kovvuri@gmail.com>
-Date:   Thu, 21 Nov 2019 15:11:13 +0530
-Message-ID: <CA+sq2Cf=u509E-er_N8rzgkP4XdetNpogNqn+AVv-9AzmoQKrg@mail.gmail.com>
-Subject: Re: [PATCH net-next] octeontx2-af: Fix uninitialized variable in debugfs
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Sunil Goutham <sgoutham@marvell.com>,
-        Linu Cherian <lcherian@marvell.com>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Jerin Jacob <jerinj@marvell.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Linux Netdev List <netdev@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9447 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=974
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1911210088
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9447 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1911210088
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Nov 21, 2019 at 2:53 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> If rvu_get_blkaddr() fails, then this rvu_cgx_nix_cuml_stats() returns
-> zero and we write some uninitialized data into the debugfs output.
->
-> On the error paths, the use of the uninitialized "*stat" is harmless,
-> but it will lead to a Smatch warning (static analysis) and a UBSan
-> warning (runtime analysis) so we should prevent that as well.
->
+Hello Christina Jacob,
 
-Thanks for the fix.
+The patch 23205e6d06d4: "octeontx2-af: Dump current resource
+provisioning status" from Nov 14, 2019, leads to the following static
+checker warning:
 
-Thanks,
-Sunil.
+	drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c:167 rvu_dbg_rsrc_attach_status()
+	warn: was precision intended? '(index - 1) * 2'
+
+drivers/net/ethernet/marvell/octeontx2/af/rvu_debugfs.c
+   143  static ssize_t rvu_dbg_rsrc_attach_status(struct file *filp,
+   144                                            char __user *buffer,
+   145                                            size_t count, loff_t *ppos)
+   146  {
+   147          int index, off = 0, flag = 0, go_back = 0, off_prev;
+   148          struct rvu *rvu = filp->private_data;
+   149          int lf, pf, vf, pcifunc;
+   150          struct rvu_block block;
+   151          int bytes_not_copied;
+   152          int buf_size = 2048;
+   153          char *buf;
+   154  
+   155          /* don't allow partial reads */
+   156          if (*ppos != 0)
+   157                  return 0;
+   158  
+   159          buf = kzalloc(buf_size, GFP_KERNEL);
+   160          if (!buf)
+   161                  return -ENOSPC;
+   162          off +=  scnprintf(&buf[off], buf_size - 1 - off, "\npcifunc\t\t");
+   163          for (index = 0; index < BLK_COUNT; index++)
+   164                  if (strlen(rvu->hw->block[index].name))
+   165                          off +=  scnprintf(&buf[off], buf_size - 1 - off,
+   166                                            "%*s\t", (index - 1) * 2,
+   167                                            rvu->hw->block[index].name);
+
+This is a static checker false positive, because width is clearly
+intended but on the first iteration throught the loop the precision
+is -2 which is sort of weird.
+
+Each column here would be 2 charaters wider than the last.  That's also
+sort of weird.
+
+The other comment that I have here is that the -1 in "buf_size - 1 -
+off" is not required.  scnprintf() will always ensure that the string
+is NUL terminated.
+
+   168          off += scnprintf(&buf[off], buf_size - 1 - off, "\n");
+   169          for (pf = 0; pf < rvu->hw->total_pfs; pf++) {
+   170                  for (vf = 0; vf <= rvu->hw->total_vfs; vf++) {
+   171                          pcifunc = pf << 10 | vf;
+   172                          if (!pcifunc)
+   173                                  continue;
+   174  
+
+regards,
+dan carpenter

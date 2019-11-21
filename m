@@ -2,90 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05C3310516E
-	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Nov 2019 12:30:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E47141051D3
+	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Nov 2019 12:51:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726454AbfKULal (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 21 Nov 2019 06:30:41 -0500
-Received: from mail.kernel.org ([198.145.29.99]:54502 "EHLO mail.kernel.org"
+        id S1726546AbfKULvo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 21 Nov 2019 06:51:44 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40520 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726293AbfKULal (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 21 Nov 2019 06:30:41 -0500
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        id S1726343AbfKULvn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 21 Nov 2019 06:51:43 -0500
+Received: from localhost (83-86-89-107.cable.dynamic.v4.ziggo.nl [83.86.89.107])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6435C20714;
-        Thu, 21 Nov 2019 11:30:38 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id C172620872;
+        Thu, 21 Nov 2019 11:51:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574335840;
-        bh=Rwju7mil6tW/AfAn9a6uUogaLmvQb/zy3wNtrHb4LSE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=G5RLswA97Zv34MBS5+FVmcBxNGECL/UpHfxcNKADLc3btNtRTO5bZoE7xxZu4hxN8
-         EaWGfiTFQMDc+4ILEgRP0n74PDzh7zf0xaRGKJeF0Wbhaju13nf7OMUvEAopZb6zA1
-         LArGSNfSacOYnKFZSviCLV2etHMKB7itiCV7gUF0=
-Date:   Thu, 21 Nov 2019 20:30:35 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] perf probe: fix spelling mistake "addrees" ->
- "address"
-Message-Id: <20191121203035.5eae09a076f376472cd4465b@kernel.org>
-In-Reply-To: <20191121092623.374896-1-colin.king@canonical.com>
-References: <20191121092623.374896-1-colin.king@canonical.com>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        s=default; t=1574337103;
+        bh=l6zL6Gy4RcSUr2FRLgzwZG7nNL1nY+sRlIxH1Xba0YE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=x8fBeXkKMJjXkXlxU9qI2rNTNyon+xmHKCvIk72FP0zK4qkcN+aki0zqgy4OUhCld
+         1A/ac/mPVzxi+MllSk4kwRPXrsYfZkwZpRp3k4qWZa4rxLEvBhgcSjizfK6WR5GZD8
+         PixI4hW5dsLhIXdRXkVbs6uOYgbsCeF1gqp/o99U=
+Date:   Thu, 21 Nov 2019 12:51:40 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     Namjae Jeon <namjae.jeon@samsung.com>,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+        Daniel Wagner <dwagner@suse.de>,
+        Nikolay Borisov <nborisov@suse.com>,
+        Sungjong Seo <sj1557.seo@samsung.com>,
+        Valdis =?utf-8?Q?Kl=C4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        linkinjeon@gmail.com
+Subject: Re: [PATCH v4 03/13] exfat: add inode operations
+Message-ID: <20191121115140.GB427938@kroah.com>
+References: <20191121052618.31117-1-namjae.jeon@samsung.com>
+ <CGME20191121052916epcas1p3f00c8e510eb53f53f4e082848bd325d0@epcas1p3.samsung.com>
+ <20191121052618.31117-4-namjae.jeon@samsung.com>
+ <38716ae8-a056-4ee3-285a-a3c1ac8307a5@web.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <38716ae8-a056-4ee3-285a-a3c1ac8307a5@web.de>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Colin,
-
-On Thu, 21 Nov 2019 09:26:23 +0000
-Colin King <colin.king@canonical.com> wrote:
-
-> From: Colin Ian King <colin.king@canonical.com>
+On Thu, Nov 21, 2019 at 11:40:28AM +0100, Markus Elfring wrote:
+> > +	if (err) {
+> > +		if (err != -ENOSPC)
+> > +			return -EIO;
+> > +		return err;
+> > +	}
 > 
-> There is a spelling mistake in a pr_warning message. Fix it.
-
-Oops, good catch! (How my finger miss-typed this...)
-
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-
-Thank you!
-
+> Can such source code become more succinct?
 > 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  tools/perf/util/probe-finder.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
-> index 38d6cd22779f..c470c49a804f 100644
-> --- a/tools/perf/util/probe-finder.c
-> +++ b/tools/perf/util/probe-finder.c
-> @@ -812,7 +812,7 @@ static int verify_representive_line(struct probe_finder *pf, const char *fname,
->  	if (strcmp(fname, __fname) || lineno == __lineno)
->  		return 0;
->  
-> -	pr_warning("This line is sharing the addrees with other lines.\n");
-> +	pr_warning("This line is sharing the address with other lines.\n");
->  
->  	if (pf->pev->point.function) {
->  		/* Find best match function name and lines */
-> -- 
-> 2.24.0
-> 
+> +	if (err)
+> +		return err != -ENOSPC ? -EIO : err;
 
+No, the original is best here.  Never use ? : if you can ever help it.
 
--- 
-Masami Hiramatsu <mhiramat@kernel.org>

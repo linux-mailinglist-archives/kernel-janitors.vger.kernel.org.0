@@ -2,39 +2,39 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A849F104956
-	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Nov 2019 04:25:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D7B55104992
+	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Nov 2019 05:09:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727028AbfKUDZN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 20 Nov 2019 22:25:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:37548 "EHLO mail.kernel.org"
+        id S1725956AbfKUEJs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 20 Nov 2019 23:09:48 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50244 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725936AbfKUDZM (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 20 Nov 2019 22:25:12 -0500
+        id S1725819AbfKUEJs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 20 Nov 2019 23:09:48 -0500
 Received: from PC-kkoz.proceq.com (unknown [213.160.61.66])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id B452B20721;
-        Thu, 21 Nov 2019 03:25:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 2AB092075A;
+        Thu, 21 Nov 2019 04:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1574306711;
-        bh=NQZEd8v97Kx8SQRm2lC/02RuQn2Hi0S1xJaELXyodjA=;
-        h=From:To:Subject:Date:From;
-        b=tjuF777b81OZLTIAEISe06O6iDt7pAlIM62+iBtTa7iDAgoQaOeOYqiwRledc6MmZ
-         SYGM0S2jQSfuxk4O+A15KLBbZ0pASLcDvEf0naZPGQu0FGiAxkuAUxLhlb4j9obI2X
-         zqkjvTESFPubj46tdActXy/4psdWpw6I5odTw+9I=
+        s=default; t=1574309387;
+        bh=3kMwFuzyohxTobIMe/WYKQzxLPSq+fERLEf9Qju7v/w=;
+        h=From:To:Cc:Subject:Date:From;
+        b=XLeYjIDoQcideYRI2m9prHlmDgp2oWjnd/6p59Epr2mmqyKpj0miGLulyIIWNnhYv
+         4V8LA7IFTOkIghqe1+TaLOySdOrSFo7iR7pGvbqtMqzuDOwcKGRJbvFVELZhbkaqNV
+         I8H35ddmp4VIo6sV/LslFjj74Ca8Y9Qb2YI2YGA4=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Jiri Kosina <trivial@kernel.org>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        kvm@vger.kernel.org
-Subject: [PATCH] virt: Fix Kconfig indentation
-Date:   Thu, 21 Nov 2019 04:25:02 +0100
-Message-Id: <1574306702-7834-1-git-send-email-krzk@kernel.org>
+        kernel-janitors@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org
+Subject: [PATCH v3] video: Fix Kconfig indentation
+Date:   Thu, 21 Nov 2019 05:09:43 +0100
+Message-Id: <1574309383-31278-1-git-send-email-krzk@kernel.org>
 X-Mailer: git-send-email 2.7.4
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
@@ -46,130 +46,260 @@ coding style with command like:
 	$ sed -e 's/^        /\t/' -i */Kconfig
 
 Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Acked-by: Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
 
 ---
+
+Changes since v2:
+1. Add Bartlomiej's ack.
 
 Changes since v1:
 1. Fix also 7-space and tab+1 space indentation issues.
 ---
- drivers/virt/Kconfig | 10 +++++-----
- virt/kvm/Kconfig     | 42 +++++++++++++++++++++---------------------
- 2 files changed, 26 insertions(+), 26 deletions(-)
+ drivers/video/Kconfig           |   4 +-
+ drivers/video/backlight/Kconfig |  16 ++---
+ drivers/video/console/Kconfig   | 132 ++++++++++++++++++++--------------------
+ 3 files changed, 76 insertions(+), 76 deletions(-)
 
-diff --git a/drivers/virt/Kconfig b/drivers/virt/Kconfig
-index 363af2eaf2ba..cb5d2d89592f 100644
---- a/drivers/virt/Kconfig
-+++ b/drivers/virt/Kconfig
-@@ -18,17 +18,17 @@ config FSL_HV_MANAGER
- 	depends on FSL_SOC
- 	select EPAPR_PARAVIRT
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index 427a993c7f57..74c2f39cec90 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -26,8 +26,8 @@ endmenu
+ source "drivers/video/backlight/Kconfig"
+ 
+ config VGASTATE
+-       tristate
+-       default n
++	tristate
++	default n
+ 
+ config VIDEOMODE_HELPERS
+ 	bool
+diff --git a/drivers/video/backlight/Kconfig b/drivers/video/backlight/Kconfig
+index 403707a3e503..e25fdd8ce3e7 100644
+--- a/drivers/video/backlight/Kconfig
++++ b/drivers/video/backlight/Kconfig
+@@ -9,7 +9,7 @@ menu "Backlight & LCD device support"
+ # LCD
+ #
+ config LCD_CLASS_DEVICE
+-        tristate "Lowlevel LCD controls"
++	tristate "Lowlevel LCD controls"
  	help
--          The Freescale hypervisor management driver provides several services
-+	  The Freescale hypervisor management driver provides several services
- 	  to drivers and applications related to the Freescale hypervisor:
+ 	  This framework adds support for low-level control of LCD.
+ 	  Some framebuffer devices connect to platform-specific LCD modules
+@@ -141,10 +141,10 @@ endif # LCD_CLASS_DEVICE
+ # Backlight
+ #
+ config BACKLIGHT_CLASS_DEVICE
+-        tristate "Lowlevel Backlight controls"
++	tristate "Lowlevel Backlight controls"
+ 	help
+ 	  This framework adds support for low-level control of the LCD
+-          backlight. This includes support for brightness and power.
++	  backlight. This includes support for brightness and power.
  
--          1) An ioctl interface for querying and managing partitions.
-+	  1) An ioctl interface for querying and managing partitions.
+ 	  To have support for your specific LCD panel you will have to
+ 	  select the proper drivers which depend on this option.
+@@ -269,11 +269,11 @@ config BACKLIGHT_MAX8925
+ 	  WLED output, say Y here to enable this driver.
  
--          2) A file interface to reading incoming doorbells.
-+	  2) A file interface to reading incoming doorbells.
+ config BACKLIGHT_APPLE
+-       tristate "Apple Backlight Driver"
+-       depends on X86 && ACPI
+-       help
+-         If you have an Intel-based Apple say Y to enable a driver for its
+-	 backlight.
++	tristate "Apple Backlight Driver"
++	depends on X86 && ACPI
++	help
++	  If you have an Intel-based Apple say Y to enable a driver for its
++	  backlight.
  
--          3) An interrupt handler for shutting down the partition upon
-+	  3) An interrupt handler for shutting down the partition upon
- 	     receiving the shutdown doorbell from a manager partition.
+ config BACKLIGHT_TOSA
+ 	tristate "Sharp SL-6000 Backlight Driver"
+diff --git a/drivers/video/console/Kconfig b/drivers/video/console/Kconfig
+index c10e17fb9a9a..ed8480d324b1 100644
+--- a/drivers/video/console/Kconfig
++++ b/drivers/video/console/Kconfig
+@@ -23,26 +23,26 @@ config VGA_CONSOLE
+ 	  Say Y.
  
--          4) A kernel interface for receiving callbacks when a managed
-+	  4) A kernel interface for receiving callbacks when a managed
- 	     partition shuts down.
+ config VGACON_SOFT_SCROLLBACK
+-       bool "Enable Scrollback Buffer in System RAM"
+-       depends on VGA_CONSOLE
+-       default n
+-       help
+-         The scrollback buffer of the standard VGA console is located in
+-	 the VGA RAM.  The size of this RAM is fixed and is quite small.
+-	 If you require a larger scrollback buffer, this can be placed in
+-	 System RAM which is dynamically allocated during initialization.
+-	 Placing the scrollback buffer in System RAM will slightly slow
+-	 down the console.
+-
+-	 If you want this feature, say 'Y' here and enter the amount of
+-	 RAM to allocate for this buffer.  If unsure, say 'N'.
++	bool "Enable Scrollback Buffer in System RAM"
++	depends on VGA_CONSOLE
++	default n
++	help
++	  The scrollback buffer of the standard VGA console is located in
++	  the VGA RAM.  The size of this RAM is fixed and is quite small.
++	  If you require a larger scrollback buffer, this can be placed in
++	  System RAM which is dynamically allocated during initialization.
++	  Placing the scrollback buffer in System RAM will slightly slow
++	  down the console.
++
++	  If you want this feature, say 'Y' here and enter the amount of
++	  RAM to allocate for this buffer.  If unsure, say 'N'.
  
- source "drivers/virt/vboxguest/Kconfig"
-diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-index aad9284c043a..5f4184ecf1cf 100644
---- a/virt/kvm/Kconfig
-+++ b/virt/kvm/Kconfig
-@@ -2,61 +2,61 @@
- # KVM common configuration items and defaults
+ config VGACON_SOFT_SCROLLBACK_SIZE
+-       int "Scrollback Buffer Size (in KB)"
+-       depends on VGACON_SOFT_SCROLLBACK
+-       range 1 1024
+-       default "64"
+-       help
++	int "Scrollback Buffer Size (in KB)"
++	depends on VGACON_SOFT_SCROLLBACK
++	range 1 1024
++	default "64"
++	help
+ 	  Enter the amount of System RAM to allocate for scrollback
+ 	  buffers of VGA consoles. Each 64KB will give you approximately
+ 	  16 80x25 screenfuls of scrollback buffer.
+@@ -84,12 +84,12 @@ config MDA_CONSOLE
+ 	  If unsure, say N.
  
- config HAVE_KVM
--       bool
-+	bool
+ config SGI_NEWPORT_CONSOLE
+-        tristate "SGI Newport Console support"
++	tristate "SGI Newport Console support"
+ 	depends on SGI_IP22 && HAS_IOMEM
+-        select FONT_SUPPORT
+-        help
+-          Say Y here if you want the console on the Newport aka XL graphics
+-          card of your Indy.  Most people say Y here.
++	select FONT_SUPPORT
++	help
++	  Say Y here if you want the console on the Newport aka XL graphics
++	  card of your Indy.  Most people say Y here.
  
- config HAVE_KVM_IRQCHIP
--       bool
-+	bool
+ config DUMMY_CONSOLE
+ 	bool
+@@ -97,24 +97,24 @@ config DUMMY_CONSOLE
+ 	default y
  
- config HAVE_KVM_IRQFD
--       bool
-+	bool
+ config DUMMY_CONSOLE_COLUMNS
+-        int "Initial number of console screen columns"
+-        depends on DUMMY_CONSOLE && !ARM
+-        default 160 if PARISC
+-        default 80
+-        help
+-          On PA-RISC, the default value is 160, which should fit a 1280x1024
+-          monitor.
+-          Select 80 if you use a 640x480 resolution by default.
++	int "Initial number of console screen columns"
++	depends on DUMMY_CONSOLE && !ARM
++	default 160 if PARISC
++	default 80
++	help
++	  On PA-RISC, the default value is 160, which should fit a 1280x1024
++	  monitor.
++	  Select 80 if you use a 640x480 resolution by default.
  
- config HAVE_KVM_IRQ_ROUTING
--       bool
-+	bool
+ config DUMMY_CONSOLE_ROWS
+-        int "Initial number of console screen rows"
+-        depends on DUMMY_CONSOLE && !ARM
+-        default 64 if PARISC
+-        default 25
+-        help
+-          On PA-RISC, the default value is 64, which should fit a 1280x1024
+-          monitor.
+-          Select 25 if you use a 640x480 resolution by default.
++	int "Initial number of console screen rows"
++	depends on DUMMY_CONSOLE && !ARM
++	default 64 if PARISC
++	default 25
++	help
++	  On PA-RISC, the default value is 64, which should fit a 1280x1024
++	  monitor.
++	  Select 25 if you use a 640x480 resolution by default.
  
- config HAVE_KVM_EVENTFD
--       bool
--       select EVENTFD
-+	bool
-+	select EVENTFD
+ config FRAMEBUFFER_CONSOLE
+ 	bool "Framebuffer Console support"
+@@ -126,30 +126,30 @@ config FRAMEBUFFER_CONSOLE
+ 	  Low-level framebuffer-based console driver.
  
- config KVM_MMIO
--       bool
-+	bool
+ config FRAMEBUFFER_CONSOLE_DETECT_PRIMARY
+-       bool "Map the console to the primary display device"
+-       depends on FRAMEBUFFER_CONSOLE
+-       default n
+-       ---help---
+-         If this option is selected, the framebuffer console will
+-         automatically select the primary display device (if the architecture
+-	 supports this feature).  Otherwise, the framebuffer console will
+-         always select the first framebuffer driver that is loaded. The latter
+-         is the default behavior.
++	bool "Map the console to the primary display device"
++	depends on FRAMEBUFFER_CONSOLE
++	default n
++	---help---
++	  If this option is selected, the framebuffer console will
++	  automatically select the primary display device (if the architecture
++	  supports this feature).  Otherwise, the framebuffer console will
++	  always select the first framebuffer driver that is loaded. The latter
++	  is the default behavior.
  
- config KVM_ASYNC_PF
--       bool
-+	bool
+-	 You can always override the automatic selection of the primary device
+-	 by using the fbcon=map: boot option.
++	  You can always override the automatic selection of the primary device
++	  by using the fbcon=map: boot option.
  
- # Toggle to switch between direct notification and batch job
- config KVM_ASYNC_PF_SYNC
--       bool
-+	bool
+-	 If unsure, select n.
++	  If unsure, select n.
  
- config HAVE_KVM_MSI
--       bool
-+	bool
+ config FRAMEBUFFER_CONSOLE_ROTATION
+-       bool "Framebuffer Console Rotation"
+-       depends on FRAMEBUFFER_CONSOLE
+-       help
+-         Enable display rotation for the framebuffer console.  This is done
+-         in software and may be significantly slower than a normally oriented
+-         display.  Note that the rotation is done at the console level only
+-         such that other users of the framebuffer will remain normally
+-         oriented.
++	bool "Framebuffer Console Rotation"
++	depends on FRAMEBUFFER_CONSOLE
++	help
++	  Enable display rotation for the framebuffer console.  This is done
++	  in software and may be significantly slower than a normally oriented
++	  display.  Note that the rotation is done at the console level only
++	  such that other users of the framebuffer will remain normally
++	  oriented.
  
- config HAVE_KVM_CPU_RELAX_INTERCEPT
--       bool
-+	bool
+ config FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER
+ 	bool "Framebuffer Console Deferred Takeover"
+@@ -163,14 +163,14 @@ config FRAMEBUFFER_CONSOLE_DEFERRED_TAKEOVER
+ 	  black screen as soon as fbcon loads.
  
- config KVM_VFIO
--       bool
-+	bool
+ config STI_CONSOLE
+-        bool "STI text console"
++	bool "STI text console"
+ 	depends on PARISC && HAS_IOMEM
+-        select FONT_SUPPORT
+-        default y
+-        help
+-          The STI console is the builtin display/keyboard on HP-PARISC
+-          machines.  Say Y here to build support for it into your kernel.
+-          The alternative is to use your primary serial port as a console.
++	select FONT_SUPPORT
++	default y
++	help
++	  The STI console is the builtin display/keyboard on HP-PARISC
++	  machines.  Say Y here to build support for it into your kernel.
++	  The alternative is to use your primary serial port as a console.
  
- config HAVE_KVM_ARCH_TLB_FLUSH_ALL
--       bool
-+	bool
+ endmenu
  
- config HAVE_KVM_INVALID_WAKEUPS
--       bool
-+	bool
- 
- config KVM_GENERIC_DIRTYLOG_READ_PROTECT
--       bool
-+	bool
- 
- config KVM_COMPAT
--       def_bool y
--       depends on KVM && COMPAT && !(S390 || ARM64)
-+	def_bool y
-+	depends on KVM && COMPAT && !(S390 || ARM64)
- 
- config HAVE_KVM_IRQ_BYPASS
--       bool
-+	bool
- 
- config HAVE_KVM_VCPU_ASYNC_IOCTL
--       bool
-+	bool
- 
- config HAVE_KVM_VCPU_RUN_PID_CHANGE
--       bool
-+	bool
- 
- config HAVE_KVM_NO_POLL
--       bool
-+	bool
 -- 
 2.7.4
 

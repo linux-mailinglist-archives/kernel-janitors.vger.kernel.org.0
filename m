@@ -2,144 +2,131 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D51C4104DBA
-	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Nov 2019 09:19:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12A32104E8D
+	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Nov 2019 09:57:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726685AbfKUITj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 21 Nov 2019 03:19:39 -0500
-Received: from mailout4.samsung.com ([203.254.224.34]:50008 "EHLO
-        mailout4.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726396AbfKUITh (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 21 Nov 2019 03:19:37 -0500
-Received: from epcas1p3.samsung.com (unknown [182.195.41.47])
-        by mailout4.samsung.com (KnoxPortal) with ESMTP id 20191121081933epoutp040e80900fe789cef0dbcafc35a9e0773e~ZH60p1Mcf1480714807epoutp04Q
-        for <kernel-janitors@vger.kernel.org>; Thu, 21 Nov 2019 08:19:33 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout4.samsung.com 20191121081933epoutp040e80900fe789cef0dbcafc35a9e0773e~ZH60p1Mcf1480714807epoutp04Q
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1574324373;
-        bh=hyW9msNtcA69Qoqns6VYzom8WeRUwrXjtKPDtXTAGKQ=;
-        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-        b=MM8zl29VS7UUjHCW+lazL5/2X+WDGhmAl8L8nQJVKS+tAXqvNYzdvwE0fKZzD/zxf
-         MehChiNklNAaF+A6JjFUtIzVMNrhBDsq9DiyY7WtPwXkylLElfeDojtLmYQHyVDdTf
-         PRW05ydfKM0dhxb5NbvBF4yS/Ts3TaXYjUtpmV0k=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
-        epcas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20191121081932epcas1p1e3dffd93eb9098aeba6b0a973eb9bbc5~ZH6zt7T3Z1859818598epcas1p1b;
-        Thu, 21 Nov 2019 08:19:32 +0000 (GMT)
-Received: from epsmges1p1.samsung.com (unknown [182.195.40.164]) by
-        epsnrtp1.localdomain (Postfix) with ESMTP id 47JXXg1gdczMqYlm; Thu, 21 Nov
-        2019 08:19:31 +0000 (GMT)
-Received: from epcas1p1.samsung.com ( [182.195.41.45]) by
-        epsmges1p1.samsung.com (Symantec Messaging Gateway) with SMTP id
-        8E.87.04072.39846DD5; Thu, 21 Nov 2019 17:19:31 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-        epcas1p2.samsung.com (KnoxPortal) with ESMTPA id
-        20191121081930epcas1p2739cddbebf5cf902b27090a19cbf4406~ZH6yTg72Q0212202122epcas1p2p;
-        Thu, 21 Nov 2019 08:19:30 +0000 (GMT)
-Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
-        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20191121081930epsmtrp251f133014cbb58830231266be273307c~ZH6ySrMvV0911809118epsmtrp2b;
-        Thu, 21 Nov 2019 08:19:30 +0000 (GMT)
-X-AuditID: b6c32a35-9a5ff70000000fe8-e5-5dd648939311
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        EF.93.03654.29846DD5; Thu, 21 Nov 2019 17:19:30 +0900 (KST)
-Received: from DONAMJAEJEO06 (unknown [10.88.104.63]) by
-        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20191121081930epsmtip1e89010449c7ec453602de874dc049f54~ZH6yFwMBD0989609896epsmtip1S;
-        Thu, 21 Nov 2019 08:19:30 +0000 (GMT)
-From:   "Namjae Jeon" <namjae.jeon@samsung.com>
-To:     "'Markus Elfring'" <Markus.Elfring@web.de>
-Cc:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        "'Christoph Hellwig'" <hch@lst.de>,
-        "'Daniel Wagner'" <dwagner@suse.de>,
-        "'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>,
-        "'Nikolay Borisov'" <nborisov@suse.com>,
-        "'Sungjong Seo'" <sj1557.seo@samsung.com>,
-        =?UTF-8?Q?'Valdis_Kl=C4=93tnieks'?= <valdis.kletnieks@vt.edu>,
-        <linkinjeon@gmail.com>, <linux-fsdevel@vger.kernel.org>
-In-Reply-To: <df089831-038c-3b39-6ec7-684d1f698756@web.de>
-Subject: RE: [PATCH v4 10/13] exfat: add nls operations
-Date:   Thu, 21 Nov 2019 17:19:30 +0900
-Message-ID: <000f01d5a044$65ff7b40$31fe71c0$@samsung.com>
+        id S1726655AbfKUI5k (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 21 Nov 2019 03:57:40 -0500
+Received: from mout.web.de ([212.227.15.14]:45053 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726170AbfKUI5k (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 21 Nov 2019 03:57:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1574326562;
+        bh=649bNPQUd2HELGXn+AIHga+NRhYE3k2ynq96C6itO7Y=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=bqI9VoDCEA2KgibwK7yHMB1vHAyybuk8sF7fbYuR7tmuiJsQ05JZPWQSGLvicuc3w
+         AXW2MXLO4p8gO0h1v1rzmcgSDdNi9F5cUkGOjAaIiZ9qpPXjxkME8t5yW0XYVu08Fk
+         kZwcqMr9Q03fkhxPz+V7UuYWZWWJLo90wJvN49ZI=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.3] ([78.48.172.213]) by smtp.web.de (mrweb004
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MQ8vL-1iT1Qg3mUd-005KM3; Thu, 21
+ Nov 2019 09:56:02 +0100
+Subject: Re: [PATCH v4 00/13] add the latest exfat driver
+To:     Namjae Jeon <namjae.jeon@samsung.com>,
+        linux-fsdevel@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christoph Hellwig <hch@lst.de>,
+        Daniel Wagner <dwagner@suse.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Nikolay Borisov <nborisov@suse.com>,
+        Sungjong Seo <sj1557.seo@samsung.com>,
+        =?UTF-8?Q?Valdis_Kl=c4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        linkinjeon@gmail.com
+References: <CGME20191121052913epcas1p1b28d2727dca5df42a6f2b8eb6b6dbcbb@epcas1p1.samsung.com>
+ <20191121052618.31117-1-namjae.jeon@samsung.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <dcbf6d35-b550-53bc-0c8a-2e54497173e2@web.de>
+Date:   Thu, 21 Nov 2019 09:55:58 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
+In-Reply-To: <20191121052618.31117-1-namjae.jeon@samsung.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Mailer: Microsoft Outlook 14.0
-Content-Language: ko
-Thread-Index: AQGvn6iTTExTp6OkCy7f8aJjab+B9AJDFxe8AWy8vCACJQwQE6eyoeVA
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Te0hTcRTut3t3d2cubmvVrxmxbkVqbO42pzfR6EXdMMQIepHYTS+bucdl
-        d5MsAqOnI3rYg1xKRWhk0SqXLtMk7UEPizSzlz1IS3NkJdXAyLZdK//7zjnfd875fg8cUd7D
-        1Hiezck5bKyFxKLQmuY4rfYQ8zRL/7Y7mm5+XyKjt5/2YvTZc7ck9JUXMXRH5wuErm+4i9Jt
-        dWUYPeT5KKWHAjtQ2vf7ppRu7f+CzhvNXPV0ypjG8vMy5trzIozZ56sCjNfXjjLV97cwA5en
-        ME21AYx5+aEGzZSvtaSaOTaXc2g4W449N89mSiPTV2QvzDYm6SktNYdOJjU21sqlkYuWZWoX
-        51lCy5KaAtbiCqUyWUEgE+amOuwuJ6cx2wVnGsnxuRae0vM6gbUKLptJl2O3plB6/WxjiLne
-        Yg76j0r4AXzTpd4HSBF4J3MDOQ6JRPh6/17gBlG4kvADWNT2ChODbwC6D7ejYvADwJ6+O/8k
-        R7pPSMVCA4DHyiokYvAJwOr+YhBmYYQW/v7ViIWxitDBkkBzRIEQpQi82duChgtyIgUGn9Ug
-        YTyOSIbdteURjBIz4M6XbyKNFMQceKPuzDAeC++WdkW0CDELVp7qQ8SVNNDf0gfEvAoeL96F
-        iIMXw6fXh4DIqZTBlp5UN8BDeBF8EpglpsfBT3d8w87UcOBzAyZStsCvjcPd94Tc/0wTsQE+
-        916UhikIEQe9dQlieiq8Olg+vMAY+Pn7XqnYRQH37FKKlBlwX2uzRMQx0L37i+wAID0jbHlG
-        2PKMsOL5P+wkQKvABI4XrCZOoHhq5F1fBpF3HG/0g8MPlzUBAgdktMIc256llLIFQqG1CUAc
-        IVWK+o4nWUpFLlu4mXPYsx0uCyc0AWPo1A8i6vE59tCvsDmzKeNsg8FAJyYlJxkN5EQFHnyc
-        pSRMrJPL5ziec/zVSXC5ugg8CKxT6Ve/iS45tf4GWu/64E/J63qUHN/TVhWn7VqSETWYoZsS
-        M2nd5LlUecfyitHX1hTwCTM7jy0f7MjR5he/8xn5lab+jHzVqNrWiseJW30bFaum9VKFF/n9
-        0sr02zvmB6cbvOpBotN7AT8gk2/Y5m5s18UGFkysDG56tVRWJyVRwcxS8YhDYP8ACKk1Ed0D
-        AAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrOIsWRmVeSWpSXmKPExsWy7bCSnO4kj2uxBlPu6VgcfjyJ3aJ58Xo2
-        i5WrjzJZbL0lbXH97i1miz17T7JYXN41h83i/6znrBb/37SwWGz5d4TV4tL7DywO3B47Z91l
-        99g/dw27x+6bDWwefVtWMXqs33KVxWPz6WqPz5vkPA5tf8PmcfvZNpYAzigum5TUnMyy1CJ9
-        uwSujA1XWlgKjrBX9F59x9jA+Ja1i5GTQ0LARGLq0/lANheHkMBuRonHvz4xQiSkJY6dOMPc
-        xcgBZAtLHD5cDFHzglFi1YnNYDVsAroS//7sZwOxRQT0JCa9OQw2iFlgIbPEuTkTGCE63jFK
-        nPp5jgmkilPASuLHjW3MILawgLnE0+1zwWwWAVWJ1tv3wabyClhKHNy1HMoWlDg58wkLiM0s
-        oC3R+7CVEcZetvA1M8SlChI7zr6GiotIzO5sY4a4yE3i2r7/jBMYhWchGTULyahZSEbNQtK+
-        gJFlFaNkakFxbnpusWGBYV5quV5xYm5xaV66XnJ+7iZGcHRqae5gvLwk/hCjAAejEg9vhsbV
-        WCHWxLLiytxDjBIczEoivHuuX4kV4k1JrKxKLcqPLyrNSS0+xCjNwaIkzvs071ikkEB6Yklq
-        dmpqQWoRTJaJg1OqgTGF6aLX2ouvPJjTmQ5x3nqzcU2S/ZtrtxIPSFhxzPz81XpRexX7Hecp
-        ctmz1gTI2tzcWrouO23vHqWs7+8stj4rvpzgNUt67oOD+3i+86X0vS1703Fohfk/wVO8cQFW
-        718q5s1ePePXao9rqlOUgqKmnvjuqZIq+FLxumdaRefkQ0mL1vfYMEgqsRRnJBpqMRcVJwIA
-        CwMtH8oCAAA=
-X-CMS-MailID: 20191121081930epcas1p2739cddbebf5cf902b27090a19cbf4406
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: SVC_REQ_APPROVE
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20191121052920epcas1p3e5b6c0251e869e265d19798dbeebab4e
-References: <20191121052618.31117-1-namjae.jeon@samsung.com>
-        <CGME20191121052920epcas1p3e5b6c0251e869e265d19798dbeebab4e@epcas1p3.samsung.com>
-        <20191121052618.31117-11-namjae.jeon@samsung.com>
-        <df089831-038c-3b39-6ec7-684d1f698756@web.de>
+X-Provags-ID: V03:K1:3BjI0+iOq89U5n3SkmqNOAaf86FUTrjXBtfV9lgSFLkDymAZ4vo
+ xaSJGg8nVnPaAnD4tGnoeopYMeb/7LgEYj8s9/15zP1Xx2P7K5lmqKbHMLERfNe+FWeKpZi
+ Kc+N4SUN/2TwGQGnV2LWnjX1/FMQp63x8to9wpB7/e4QyEejw3D4NXuwEWlEQz2LJWR1dno
+ eQJ120vharO21VMAglrDA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:mWPHXbAlWhQ=:2Jswr3DWk1C7Wd1iO2wwSr
+ 05YVSYaLXf6kExXzJEPo7JtAUaJb5kSIZ2yGbYA0aCd7+Cooel8SW43oX+OXDJ/cacp1ZN4Lw
+ PZ3mrRhqAPh3V/f5kP5PKAMHs/Rdbyrqz6sSLP/ZzdZOORsFpfvs0bkMfXz/1EFbsXPAVX2En
+ TVJun44FieaQVsJVhew4OP3NGUT6hyO8z2t5A3CgoHORd1uLo6xq7hXP7r8W+Q6Lrwf1f0XNu
+ R0sLW3ASNjdnt5xkbyBzjaJaProaOVNqJburgNuNY9QllDrofqa7md5nDE3CYB/x8/UYswq5V
+ IlGb8Uu8F8K91fCyhAFAvPOHW3cyIWFdz8hWoKX3UTnDsUPfYje1lKttxOSqQzhzct144gqGF
+ AmtKBY45QlGaqCEMLCM7tAl7ZBE6L5Lp/4/d03Aakbf8VYMSO5xZQ5MMMPDSdXb66/rPNCrR+
+ ppKBSEzAGxCp4UArfhYGBFSq+iHZeRIlRVBN41yAHPMUk/zHkQUbrBkoZsN4LhlXtIzlsrpbs
+ WnLHcDOvZH31K4jUym1lmGRo6UML2pLrx8kjgsEgKr6So0VCmaL8dIZfP2HENzm5Ap2RNOQ+y
+ bJSIaVrWoSAm+SoBPwNXYoRqn75vhT16H/S94rSCJMY8igAzS8ZnUxMdIn2wCAqrAaiyySqCG
+ iizIKqfmE/NJ0U0qgn+T4O1ElIlZbSHPM5BueYBKLI9g1NjSlPktPzkecgAYl0tj2ag72Eiqn
+ Fgro04v87/1s9Cw2lohA8FjB4ax7hO+NRR+JsjlGZQR8LKziI+lOO2CeZKz7q4h9PPwBf5um8
+ 441zrRMu5YRClICAIgNWRfv9G13M3PwF4zA9zbsOjmohk3ff+eAPh81/pvrXX3aKHNxbW4LMU
+ 3ZRLIrjqHWQEwViYjpaVf/eWKCibrDUaT7o6w57+UD9u50rrfIpGXzaAiDwZ49431O5oixVdQ
+ qBCCBHf/mXQt3UV78Qwa57nYAolMEvAipQypHJF2b6FXyPxMOzYxHt/0/1ln/Jcm3EusRwUdr
+ a5Sn41oankdKP6baG2g2q20I7Wm9WurxXaIUFWq7HkqUXAtGyEeuYcNcS+MglZYubRW53vUel
+ bC/yuvAuc7xxeCwIbVeel7NSNHlREmovRGUcdzGr8znHBZSXvKQU7ULjoz47KY03NswkzJf9P
+ LC3vFI5eYYRh8FVXe5VeKrPDpOQSG3RDEeJ7HjUoKRXpF/WVYV5ZF2F7UO4WeZMnuj0isUNyQ
+ zx8dVLzmSecUE9mpze0jPX48z1hpi17e3QQU4+oc3SCIJA2vuTvkqC/QQ4IM=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> > +	exfat_msg(sb, KERN_ERR,
-> > +			=22failed to load upcase table (idx : 0x%08x, chksum :
-> 0x%08x, utbl_chksum : 0x%08x)=5Cn=22,
-> > +			index, checksum, utbl_checksum);
-> > +
-> > +	ret =3D -EINVAL;
->=20
-> Can a blank line be omitted between the message and the error code?
-Okay.
->=20
->=20
-> > +release_bh:
-> > +	brelse(bh);
-> > +	exfat_free_upcase_table(sb);
-> > +	return ret;
-> > +=7D
->=20
-> I got the impression that the resource management is still questionable
-> for this function implementation.
->=20
-> 1. Now I suggest to move the call of the function =E2=80=9Cbrelse=E2=80=
-=9D=20to=20the=20end=0D=0A>=20=20=20=20of=20the=20while=20loop.=20The=20lab=
-el=20=E2=80=9Crelease_bh=E2=80=9D=20would=20be=20renamed=20to=20=E2=80=9Cfr=
-ee_table=E2=80=9D=0D=0A>=20then.=0D=0AOkay.=0D=0A>=20=0D=0A>=202.=20Can=20a=
-=20variable=20initialisation=20be=20converted=20to=20the=20assignment=20=E2=
-=80=9Cret=20=3D=20-EIO;=E2=80=9D=0D=0A>=20=20=20=20in=20an=20if=20branch?=
-=0D=0AOkay,=20Will=20fix=20it=20on=20v5.=0D=0A=0D=0AThanks=20for=20your=20r=
-eview=21=0D=0A>=20=0D=0A>=20Regards,=0D=0A>=20Markus=0D=0A=0D=0A
+=E2=80=A6
+> v2:
+=E2=80=A6
+>  - Rename proper goto labels in several places.
+
+I find an other wording more appropriate.
+A renaming would have not been needed if these identifiers were =E2=80=9Cp=
+roper=E2=80=9D before.
+
+Were any update candidates left over according to this change pattern?
+
+Regards,
+Markus

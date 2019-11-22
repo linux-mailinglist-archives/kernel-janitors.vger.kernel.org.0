@@ -2,128 +2,144 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9776E1066FC
-	for <lists+kernel-janitors@lfdr.de>; Fri, 22 Nov 2019 08:21:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BEE2106793
+	for <lists+kernel-janitors@lfdr.de>; Fri, 22 Nov 2019 09:12:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726855AbfKVHV1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 22 Nov 2019 02:21:27 -0500
-Received: from mail-eopbgr40042.outbound.protection.outlook.com ([40.107.4.42]:6629
-        "EHLO EUR03-DB5-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726018AbfKVHV0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 22 Nov 2019 02:21:26 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=R4kF9l7OES9L8EBhrDIo7yuvbQPaItGmpsvaqHKi+mR6tZCDvKaLjl77QUY5ahslpP2wX99z44doizOvtLP7O9XUMXNCWL/VOpKdezph+XmicObPx8NxMw7MmX/VnzWTzO615Y0285/CBMjgxmjEqORXvti8v7o0mEu3eiLgsyR5QUNfZQXzNtniR1H6xiknp9S0xBlPQDSN9uAbwe350mZ6FjihK2tDi9tSYkaNIB4763CrPc9h0sL3DXNHdWyHf4IjkHyR7+X/QfI3n41zsy+lCDxyr4wEIYHDp6DIVVRfXq2VtCRpzBpvwO+8xvzsdtQCzHTf1+Ls6Je90gu2Zg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VCQVnpJusZleGQr0FG6ST8HtD+Apc0RlXUuQWYjkI2g=;
- b=B3lmNLjxxJXcGknqN0a3aEYX4ZrM6dS9nevAVWNKB3VGugCGpesSreIZHmitBXCXsIHfUOHSL8C1BaP6uMYjqHZQQpy9W8KQ/JvctbOXgxFRbVdEtsne2gSs+vmf5L1zvajAIC+AHMy0WfnWVKJ0iFuq2Wck10L/4UXMk9yeha/AyBXYbirVGBd1OPTX8F62fRCuLyt2kGdFM/B8WJBaqgvWAFEfCurxWSieqUm23PUgii1vqbPAVvz9svqc3QD05peXVSl8J0mb4WsoZM0WaJhwvqmEDAjzeMxiclocIThsWoogknwpQtTdF+V3V28G94/CmFGkfGurjciOfmqdQg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=mellanox.com; dmarc=pass action=none header.from=mellanox.com;
- dkim=pass header.d=mellanox.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Mellanox.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=VCQVnpJusZleGQr0FG6ST8HtD+Apc0RlXUuQWYjkI2g=;
- b=s4fbESPPAhPbN4gAUyzWtne0jgFmlbn0Ua4gN5ANxCEHagDLDCGlOM2ISISBYa1t4zyx23t/0ktcSlYBdXBd40BrdVaASBLiTXb0dVl8+90JnZ47mB6I2a8NPxnHQPMuZxQwhTr+dhUgAP/8tF+zPWtLs7m3/SNJGmxF1WNj0wQ=
-Received: from AM0PR05MB4866.eurprd05.prod.outlook.com (20.176.214.160) by
- AM0PR05MB5921.eurprd05.prod.outlook.com (20.178.117.91) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2474.21; Fri, 22 Nov 2019 07:21:22 +0000
-Received: from AM0PR05MB4866.eurprd05.prod.outlook.com
- ([fe80::e5c2:b650:f89:12d4]) by AM0PR05MB4866.eurprd05.prod.outlook.com
- ([fe80::e5c2:b650:f89:12d4%7]) with mapi id 15.20.2451.032; Fri, 22 Nov 2019
- 07:21:22 +0000
-From:   Parav Pandit <parav@mellanox.com>
-To:     David Miller <davem@davemloft.net>,
-        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>
-CC:     Jiri Pirko <jiri@mellanox.com>,
-        "dsahern@gmail.com" <dsahern@gmail.com>,
-        Ido Schimmel <idosch@mellanox.com>,
-        Petr Machata <petrm@mellanox.com>,
-        "jakub.kicinski@netronome.com" <jakub.kicinski@netronome.com>,
-        "nikolay@cumulusnetworks.com" <nikolay@cumulusnetworks.com>,
-        "roopa@cumulusnetworks.com" <roopa@cumulusnetworks.com>,
-        "johannes.berg@intel.com" <johannes.berg@intel.com>,
-        "mkubecek@suse.cz" <mkubecek@suse.cz>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH net] net: rtnetlink: prevent underflows in do_setvfinfo()
-Thread-Topic: [PATCH net] net: rtnetlink: prevent underflows in do_setvfinfo()
-Thread-Index: AQHVn57yqEm1l969pkuGNkZ+vIYicqeWOzmAgACQaYA=
-Date:   Fri, 22 Nov 2019 07:21:22 +0000
-Message-ID: <a3f851fb-e148-d386-e9dd-29e7d89c93fa@mellanox.com>
-References: <20191120123438.vxn2ngnxzpcaqot4@kili.mountain>
- <20191121.144429.649625073638417068.davem@davemloft.net>
-In-Reply-To: <20191121.144429.649625073638417068.davem@davemloft.net>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=parav@mellanox.com; 
-x-originating-ip: [68.203.16.89]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: a39b4d5e-14e0-4903-1cd5-08d76f1c93ed
-x-ms-traffictypediagnostic: AM0PR05MB5921:|AM0PR05MB5921:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <AM0PR05MB5921581A913111BE682306BDD1490@AM0PR05MB5921.eurprd05.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:7691;
-x-forefront-prvs: 02296943FF
-x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(396003)(39860400002)(346002)(376002)(366004)(136003)(189003)(199004)(53546011)(3846002)(66476007)(91956017)(66446008)(66556008)(64756008)(66946007)(6116002)(66066001)(31686004)(36756003)(76116006)(76176011)(316002)(229853002)(6246003)(110136005)(99286004)(54906003)(4326008)(71190400001)(256004)(14444005)(6512007)(6486002)(2906002)(81166006)(81156014)(8676002)(71200400001)(6436002)(11346002)(446003)(2616005)(2501003)(25786009)(7736002)(305945005)(7416002)(478600001)(31696002)(86362001)(14454004)(8936002)(5660300002)(186003)(102836004)(26005)(6506007);DIR:OUT;SFP:1101;SCL:1;SRVR:AM0PR05MB5921;H:AM0PR05MB4866.eurprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: mellanox.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: o92Y8vtsksRTTiQIS6UplFn5vxZ2L6Cq03HoYYVc7IDElwAlJXc0zYIy9Fq+6l9Ov4uyYWJGutvwpAgpNDUeh+asaA6Qi9Zxtq6pDXPvz/nHio3//wqzR0pjxtZ+EQqDkc/OsbrwXOgoV2kd/6K6ztjr9LodrTA0SInfnunCjFjWrp+5aKoVqeLQtYwK4SLcNYhwaoZWJw8KSccmNyA3id4nXfAH1jiO6ecHCELKAZU03p8GBFHa57ITN5oA7wpjEwsSWKTuLbE+x+nH+fnDj7fAEAhKTc58JuGWb/o8Xn2zxoaDOj4g84iugHerVm9SfAExER4J2w6qthcRD9sj4Jq4M6dFLUgfvAI3nEpotnudIM96ZiOwoeQLkrVWYuRfWkzRmgztfacj7KTQvQSTP/9rkgaLafS7JslV4W1ofE1rCgTQm8ZnyBJUTGphIJ27
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <FC8105720A638A488645302A1B8BF23A@eurprd05.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        id S1726887AbfKVIMZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 22 Nov 2019 03:12:25 -0500
+Received: from mout.web.de ([212.227.15.3]:50327 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726248AbfKVIMY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 22 Nov 2019 03:12:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1574410263;
+        bh=M0NbBfDQUkr/VgDzsbL81QG5vRwRapzFbAO9bUSc3kM=;
+        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
+        b=UfqJ+8+l1y+qSLRjScSjXU/0S0lwMXKblwz3OaIxj6wcDamh3RfBUcKXL3SexHcOd
+         7zZv5Kl+78Ghfe8zvgNzHgD1e0ZZdprJCZb2GZUYhr69US1whCElSgQdoLQ7FFh9g7
+         zRJD+NEPnghL7AyrY+Fdn2vAZzbnsjmiHv7R9los=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.3] ([2.244.174.75]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LhvYQ-1i2bAL0IE6-00n8VA; Fri, 22
+ Nov 2019 09:11:03 +0100
+Subject: Re: [PATCH v4 04/13] exfat: add directory operations
+To:     Namjae Jeon <namjae.jeon@samsung.com>,
+        linux-fsdevel@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christoph Hellwig <hch@lst.de>,
+        Daniel Wagner <dwagner@suse.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Nikolay Borisov <nborisov@suse.com>,
+        Sungjong Seo <sj1557.seo@samsung.com>,
+        =?UTF-8?Q?Valdis_Kl=c4=93tnieks?= <valdis.kletnieks@vt.edu>,
+        linkinjeon@gmail.com
+References: <20191121052618.31117-1-namjae.jeon@samsung.com>
+ <CGME20191121052917epcas1p259b8cb61ab86975cabc0cf4815a8dc38@epcas1p2.samsung.com>
+ <20191121052618.31117-5-namjae.jeon@samsung.com>
+ <498a958f-9066-09c6-7240-114234965c1a@web.de>
+ <004901d5a0e0$f7bf1030$e73d3090$@samsung.com>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <0e17c0a7-9b40-12a4-3f3f-500b9abb66de@web.de>
+Date:   Fri, 22 Nov 2019 09:11:00 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-X-OriginatorOrg: Mellanox.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a39b4d5e-14e0-4903-1cd5-08d76f1c93ed
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 Nov 2019 07:21:22.6352
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: a652971c-7d2e-4d9b-a6a4-d149256f461b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: h6PUT4tAQiGyzDLoj4LE4rTi2S98OTYLrtJIiEGlFH0zBivZtVghyXCMAnvIIvAYICcpwAyaQ4+IHqI+sVKkfw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR05MB5921
+In-Reply-To: <004901d5a0e0$f7bf1030$e73d3090$@samsung.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:sprXqfhDPylyC+PS/I3B9RUW8MbH2DypxSRx8eC5UoR4qUZatvc
+ 524I2jtKfD2Rz1pOhGm2+4iyX6vZ7uiWMKaEHLnl818fckYxp1lteGKSUcg7O637QiGZ27g
+ Ky5oQi+TFKUGoG+zL6i3x6k2CQiwCLZAmq0hIApG69q9ylyIhIYFMFAO1l2f3we2q8fURPM
+ 3NihE1Ssu3qeaW+FQNazQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+Vw750mv/qc=:WOxz6T/NdpyQa6H9Dvjl1c
+ yS8P/eoAhRnNkMMUzAOlVF2ZoeYHLcXLvlkt8YclCK/ATmV0EDuJzZMZNEh5/TWg4kKsW/1bD
+ m1qO5m1/rCTEcZcM74yYKxcsE6LeQqlVyTq5MvMVQjYHRZNl76pjUSZ4XfznhmdTLK0s5bKAf
+ ED5p2Pk+BEzhVwPi0PEBriWw/yTD85FrgVRIE+Gt/sKqpUlqHqXrZEk/TtfKQ6y38GGbn3nQs
+ pALbVnPht1KCssyTllx0kOZGLXcEC4Gmcuvo18RLElma3H3qb9ZDpNuRfH9PDSGIDLrLlRkwj
+ XQoOHJWauKiDQ1NqIUbLqPgFB59BslKLku/xWs+fpqBODnKBYwW6dxSEj0eQSqTnro7hDqHvq
+ uGuOnwwudnlqqxvnO5DrCq4aHVUU7g6YeGpkCamJIXs3DcGtqjWDFtmO3oGkWkfLeyvC96kQF
+ nM/WVfV+4Q37tWd7LzPCHRTvmArZf/Adtd1KpiIr/U+QgAo/uPORY3X78HqcUlgehRMZQkyQ+
+ A0J8kpOAjajZPH20EMHGVgUFsf29adk5Zaw5koMJD21yN3gwQwFSqfl2NmPAhyte0BZPRl5tg
+ BlZGEHlJQ/u2W0s0QgXCk6GoYKC3At9Q5mzDGxSE3SDuXQaMOGDS0uyox5tPnwJyuLM5Xx5Ep
+ Vt5cIVgX4BFPa+bJT0xA3qTjocl+qkRTpEPPJSPu3DROECY+Hiuyqg/CVsGj0auyhEnEyKnrm
+ dAatC67uzO/UUM1T6tskNMCEvARk99VXQQs2X/qSb9xHaDB4hUt+G7WnGG7EW9Ywmtq7ER0S7
+ ynlSwx0OdSJ8UUBrUNOWBfePT+F99/T49+OFJbVxJNpXWc+uuzkpGs6ULkFWpWNY7U87zL4yv
+ +mHzq0SdmQnSHd9g7qGYbg+I74u+krjntQRtI41M+pGA2FFli0OLutnICv53hK7c+ZZlwQEYR
+ Ml2TvJ1VcbEK7dqPjXcGOKnZLCWdwusgZJ4iixz1rWb8+J7OHwJUfnErBhuZ455cC6KDKRiH9
+ 9mKwy9lAmd/+y7ttiMN5hO45yUxBsXwXCwJhMhi/fiZToW1EDVXeT16s8t253FJleSoBoWrbw
+ 4LEs1FNHHD1kefJkyOW/giFjgLSpNpoAq7618RJqN5ewdonLn8hjEmyrh1s8IrIhL5JMY9spB
+ ihEp8l4mSklwFdzdFdCAsBlxnXCC+tTbXYQ/3thEqUuDu6ITAN7ut7s8v5WsF60i/WgvHs9wj
+ Ybz+I9ZGNPkApLetadAoYog1doT7YF8yD57koUtpji11sjyleJ5v1vhyU68k=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-T24gMTEvMjEvMjAxOSA0OjQ0IFBNLCBEYXZpZCBNaWxsZXIgd3JvdGU6DQo+IEZyb206IERhbiBD
-YXJwZW50ZXIgPGRhbi5jYXJwZW50ZXJAb3JhY2xlLmNvbT4NCj4gRGF0ZTogV2VkLCAyMCBOb3Yg
-MjAxOSAxNTozNDozOCArMDMwMA0KPg0KPj4gVGhlICJpdm0tPnZmIiB2YXJpYWJsZSBpcyBhIHUz
-MiwgYnV0IHRoZSBwcm9ibGVtIGlzIHRoYXQgYSBudW1iZXIgb2YNCj4+IGRyaXZlcnMgY2FzdCBp
-dCB0byBhbiBpbnQgYW5kIHRoZW4gZm9yZ2V0IHRvIGNoZWNrIGZvciBuZWdhdGl2ZXMuICBBbg0K
-Pj4gZXhhbXBsZSBvZiB0aGlzIGlzIGluIHRoZSBjeGdiNCBkcml2ZXIuDQo+Pg0KPj4gZHJpdmVy
-cy9uZXQvZXRoZXJuZXQvY2hlbHNpby9jeGdiNC9jeGdiNF9tYWluLmMNCj4+ICAgMjg5MCAgc3Rh
-dGljIGludCBjeGdiNF9tZ210X2dldF92Zl9jb25maWcoc3RydWN0IG5ldF9kZXZpY2UgKmRldiwN
-Cj4+ICAgMjg5MSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgaW50IHZmLCBz
-dHJ1Y3QgaWZsYV92Zl9pbmZvICppdmkpDQo+PiAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgIF5eXl5eXg0KPj4gICAyODkyICB7DQo+PiAgIDI4OTMgICAgICAgICAg
-c3RydWN0IHBvcnRfaW5mbyAqcGkgPSBuZXRkZXZfcHJpdihkZXYpOw0KPj4gICAyODk0ICAgICAg
-ICAgIHN0cnVjdCBhZGFwdGVyICphZGFwID0gcGktPmFkYXB0ZXI7DQo+PiAgIDI4OTUgICAgICAg
-ICAgc3RydWN0IHZmX2luZm8gKnZmaW5mbzsNCj4+ICAgMjg5NiAgDQo+PiAgIDI4OTcgICAgICAg
-ICAgaWYgKHZmID49IGFkYXAtPm51bV92ZnMpDQo+PiAgICAgICAgICAgICAgICAgICAgIF5eXl5e
-Xl5eXl5eXl5eXl5eXl4NCj4+ICAgMjg5OCAgICAgICAgICAgICAgICAgIHJldHVybiAtRUlOVkFM
-Ow0KPj4gICAyODk5ICAgICAgICAgIHZmaW5mbyA9ICZhZGFwLT52ZmluZm9bdmZdOw0KPj4gICAg
-ICAgICAgICAgICAgIF5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eDQo+Pg0KPj4gVGhlcmUgYXJl
-IDQ4IGZ1bmN0aW9ucyBhZmZlY3RlZC4NCj4gIC4uLg0KPj4gU2lnbmVkLW9mZi1ieTogRGFuIENh
-cnBlbnRlciA8ZGFuLmNhcnBlbnRlckBvcmFjbGUuY29tPg0KPiBJJ20gZ29pbmcgdG8gYXBwbHkg
-dGhpcyBhbmQgcXVldWUgaXQgdXAgZm9yIC1zdGFibGUuDQo+DQo+IFRoZSB1MzIgY29udmVyc2lv
-biBzaG91bGQgaGFwcGVuIGluIG5leHQuDQpva2F5Lg0KV2hlbiBEYW4gcmVwb3J0ZWQsIEkgcmV2
-aWV3ZWQgYW5kIHdyb3RlIHRoZSBwYXRjaCBmb3IgdTMyLCBhbmQgc29tZSBtb3JlDQpjb2RlIGNv
-bnNvbGlkYXRpb24gd2l0aCBpdC4NCkJ1dCBoaXQgdGhlIGJsb2NrIHdpdGggdTMyIGxlYWRpbmcg
-dG8gb3ZlcmZsb3cgdG8gMCB3aGljaCBtb2RpZmllcyB0aGUNCmZpcnN0IFZGIGluY29ycmVjdGx5
-Lg0KQ2hlY2tpbmcgbnVtX3ZmcyBvZiBwY2kgZGV2LCB3aXRob3V0IGRldmljZV9sb2NrKCkgaXMg
-ZXF1YWxseSBidWdneSBhcw0KaXQgc3RhbmRzIHRvZGF5Lg0KQ3JlYXRpbmcgYSBsb2NrIGluIGVh
-Y2ggdmVuZG9yIGRyaXZlcihzKSBkb2Vzbid0IG1ha2Ugc2Vuc2UuDQpIYXZlbid0IGhhZCBjaGFu
-Y2UgeWV0IGFmdGVyIHRoYXQuDQpMZXQgbWUga25vdyBpZiBzb21lb25lIGhhcyBhIHN1Z2dlc3Rp
-b24gdGhhdCBJIHNob3VsZCBpbmNvcnBvcmF0ZS4NCg0K
+>> =E2=80=A6
+>>> +++ b/fs/exfat/dir.c
+>> =E2=80=A6
+>>> +static int exfat_readdir(struct inode *inode, struct exfat_dir_entry
+>> *dir_entry)
+>>> +{
+>> =E2=80=A6
+>>> +			if (!ep) {
+>>> +				ret =3D -EIO;
+>>> +				goto free_clu;
+>>> +			}
+>>
+>> How do you think about to move a bit of common exception handling code
+>> (at similar places)?
+> Not sure it is good.
+
+The software development opinions can vary also for this change pattern
+according to different design goals.
+Is such a transformation just another possibility to reduce duplicate
+source code a bit?
+
+Regards,
+Markus

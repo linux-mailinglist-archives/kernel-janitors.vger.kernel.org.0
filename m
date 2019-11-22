@@ -2,31 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30C81107B52
-	for <lists+kernel-janitors@lfdr.de>; Sat, 23 Nov 2019 00:31:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49CF1107B8A
+	for <lists+kernel-janitors@lfdr.de>; Sat, 23 Nov 2019 00:38:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726638AbfKVXbc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 22 Nov 2019 18:31:32 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:44151 "EHLO
+        id S1726690AbfKVXio (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 22 Nov 2019 18:38:44 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:44214 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726089AbfKVXbc (ORCPT
+        with ESMTP id S1726089AbfKVXio (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 22 Nov 2019 18:31:32 -0500
+        Fri, 22 Nov 2019 18:38:44 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iYIOW-00017f-NF; Fri, 22 Nov 2019 23:31:20 +0000
+        id 1iYIVc-0001ZG-3T; Fri, 22 Nov 2019 23:38:40 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jeremy Kerr <jk@ozlabs.org>, Joel Stanley <joel@jms.id.au>,
-        Alistar Popple <alistair@popple.id.au>,
-        Eddie James <eajames@linux.ibm.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-fsi@lists.ozlabs.org
+To:     Ariel Elior <aelior@marvell.com>, GR-everest-linux-l2@marvell.com,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] fsi: fix bogos error returns from cfam_read and cfam_write
-Date:   Fri, 22 Nov 2019 23:31:20 +0000
-Message-Id: <20191122233120.110344-1-colin.king@canonical.com>
+Subject: [PATCH] qed: remove redundant assignments to rc
+Date:   Fri, 22 Nov 2019 23:38:39 +0000
+Message-Id: <20191122233839.110620-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -38,41 +35,65 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-In the case where errors occur in functions cfam_read and cfam_write
-the error return code in rc is not returned and a bogus non-error
-count size is returned instead. Fix this by returning the correct
-error code when an error occurs or the count size if the functions
-worked correctly.
+The variable rc is assigned with a value that is never read and
+it is re-assigned a new value later on.  The assignment is redundant
+and can be removed.  Clean up multiple occurrances of this pattern.
 
 Addresses-Coverity: ("Unused value")
-Fixes: d1dcd6782576 ("fsi: Add cfam char devices")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/fsi/fsi-core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/qlogic/qed/qed_sp_commands.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/fsi/fsi-core.c b/drivers/fsi/fsi-core.c
-index 8244da8a7241..c3885b138ead 100644
---- a/drivers/fsi/fsi-core.c
-+++ b/drivers/fsi/fsi-core.c
-@@ -718,7 +718,7 @@ static ssize_t cfam_read(struct file *filep, char __user *buf, size_t count,
- 	rc = count;
-  fail:
- 	*offset = off;
--	return count;
-+	return rc;
- }
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_sp_commands.c b/drivers/net/ethernet/qlogic/qed/qed_sp_commands.c
+index 7e0b795230b2..12fc5f3b5cb4 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_sp_commands.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_sp_commands.c
+@@ -331,7 +331,7 @@ int qed_sp_pf_start(struct qed_hwfn *p_hwfn,
+ 	u8 sb_index = p_hwfn->p_eq->eq_sb_index;
+ 	struct qed_spq_entry *p_ent = NULL;
+ 	struct qed_sp_init_data init_data;
+-	int rc = -EINVAL;
++	int rc;
+ 	u8 page_cnt, i;
  
- static ssize_t cfam_write(struct file *filep, const char __user *buf,
-@@ -755,7 +755,7 @@ static ssize_t cfam_write(struct file *filep, const char __user *buf,
- 	rc = count;
-  fail:
- 	*offset = off;
--	return count;
-+	return rc;
- }
+ 	/* update initial eq producer */
+@@ -447,7 +447,7 @@ int qed_sp_pf_update(struct qed_hwfn *p_hwfn)
+ {
+ 	struct qed_spq_entry *p_ent = NULL;
+ 	struct qed_sp_init_data init_data;
+-	int rc = -EINVAL;
++	int rc;
  
- static loff_t cfam_llseek(struct file *file, loff_t offset, int whence)
+ 	/* Get SPQ entry */
+ 	memset(&init_data, 0, sizeof(init_data));
+@@ -471,7 +471,7 @@ int qed_sp_pf_update_ufp(struct qed_hwfn *p_hwfn)
+ {
+ 	struct qed_spq_entry *p_ent = NULL;
+ 	struct qed_sp_init_data init_data;
+-	int rc = -EOPNOTSUPP;
++	int rc;
+ 
+ 	if (p_hwfn->ufp_info.pri_type == QED_UFP_PRI_UNKNOWN) {
+ 		DP_INFO(p_hwfn, "Invalid priority type %d\n",
+@@ -509,7 +509,7 @@ int qed_sp_pf_update_tunn_cfg(struct qed_hwfn *p_hwfn,
+ {
+ 	struct qed_spq_entry *p_ent = NULL;
+ 	struct qed_sp_init_data init_data;
+-	int rc = -EINVAL;
++	int rc;
+ 
+ 	if (IS_VF(p_hwfn->cdev))
+ 		return qed_vf_pf_tunnel_param_update(p_hwfn, p_tunn);
+@@ -546,7 +546,7 @@ int qed_sp_pf_stop(struct qed_hwfn *p_hwfn)
+ {
+ 	struct qed_spq_entry *p_ent = NULL;
+ 	struct qed_sp_init_data init_data;
+-	int rc = -EINVAL;
++	int rc;
+ 
+ 	/* Get SPQ entry */
+ 	memset(&init_data, 0, sizeof(init_data));
 -- 
 2.24.0
 

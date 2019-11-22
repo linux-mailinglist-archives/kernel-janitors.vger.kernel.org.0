@@ -2,72 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70259105CC8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 21 Nov 2019 23:44:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B642105DD1
+	for <lists+kernel-janitors@lfdr.de>; Fri, 22 Nov 2019 01:49:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726510AbfKUWoc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 21 Nov 2019 17:44:32 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:54858 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726038AbfKUWob (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 21 Nov 2019 17:44:31 -0500
-Received: from localhost (c-73-35-209-67.hsd1.wa.comcast.net [73.35.209.67])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 520E0150A92ED;
-        Thu, 21 Nov 2019 14:44:30 -0800 (PST)
-Date:   Thu, 21 Nov 2019 14:44:29 -0800 (PST)
-Message-Id: <20191121.144429.649625073638417068.davem@davemloft.net>
-To:     dan.carpenter@oracle.com
-Cc:     jiri@mellanox.com, dsahern@gmail.com, idosch@mellanox.com,
-        petrm@mellanox.com, jakub.kicinski@netronome.com,
-        nikolay@cumulusnetworks.com, parav@mellanox.com,
-        roopa@cumulusnetworks.com, johannes.berg@intel.com,
-        mkubecek@suse.cz, netdev@vger.kernel.org,
-        linux-rdma@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] net: rtnetlink: prevent underflows in
- do_setvfinfo()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20191120123438.vxn2ngnxzpcaqot4@kili.mountain>
-References: <20191120123438.vxn2ngnxzpcaqot4@kili.mountain>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 21 Nov 2019 14:44:31 -0800 (PST)
+        id S1726335AbfKVAss (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 21 Nov 2019 19:48:48 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:7161 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726038AbfKVAss (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 21 Nov 2019 19:48:48 -0500
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 72CFF34094CB0FA7DA8E;
+        Fri, 22 Nov 2019 08:48:45 +0800 (CST)
+Received: from [127.0.0.1] (10.177.96.96) by DGGEMS404-HUB.china.huawei.com
+ (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Fri, 22 Nov 2019
+ 08:48:39 +0800
+Subject: Re: [PATCH -next] KVM: x86: remove set but not used variable 'called'
+To:     Paolo Bonzini <pbonzini@redhat.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>
+CC:     <rkrcmar@redhat.com>, <sean.j.christopherson@intel.com>,
+        <wanpengli@tencent.com>, <jmattson@google.com>, <joro@8bytes.org>,
+        <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+        <hpa@zytor.com>, <kvm@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+References: <20191119030640.25097-1-maowenan@huawei.com>
+ <87o8x8gjr5.fsf@vitty.brq.redhat.com> <20191119121423.GB5604@kadam>
+ <61f534ca-7575-6716-10ec-ac5c92258452@redhat.com>
+From:   maowenan <maowenan@huawei.com>
+Message-ID: <c4f04d66-ca5c-e55c-777c-5091a099198e@huawei.com>
+Date:   Fri, 22 Nov 2019 08:48:38 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
+MIME-Version: 1.0
+In-Reply-To: <61f534ca-7575-6716-10ec-ac5c92258452@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.177.96.96]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Wed, 20 Nov 2019 15:34:38 +0300
+shall we send v2 with fixes tag?
 
-> The "ivm->vf" variable is a u32, but the problem is that a number of
-> drivers cast it to an int and then forget to check for negatives.  An
-> example of this is in the cxgb4 driver.
-> 
-> drivers/net/ethernet/chelsio/cxgb4/cxgb4_main.c
->   2890  static int cxgb4_mgmt_get_vf_config(struct net_device *dev,
->   2891                                      int vf, struct ifla_vf_info *ivi)
->                                             ^^^^^^
->   2892  {
->   2893          struct port_info *pi = netdev_priv(dev);
->   2894          struct adapter *adap = pi->adapter;
->   2895          struct vf_info *vfinfo;
->   2896  
->   2897          if (vf >= adap->num_vfs)
->                     ^^^^^^^^^^^^^^^^^^^
->   2898                  return -EINVAL;
->   2899          vfinfo = &adap->vfinfo[vf];
->                 ^^^^^^^^^^^^^^^^^^^^^^^^^^
-> 
-> There are 48 functions affected.
- ...
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+在 2019/11/21 17:13, Paolo Bonzini 写道:
+> atch IMHO does.
 
-I'm going to apply this and queue it up for -stable.
-
-The u32 conversion should happen in next.

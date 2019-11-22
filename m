@@ -2,51 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B642105DD1
-	for <lists+kernel-janitors@lfdr.de>; Fri, 22 Nov 2019 01:49:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DD2A105E7A
+	for <lists+kernel-janitors@lfdr.de>; Fri, 22 Nov 2019 03:11:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726335AbfKVAss (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 21 Nov 2019 19:48:48 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:7161 "EHLO huawei.com"
+        id S1726540AbfKVCK5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 21 Nov 2019 21:10:57 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:6698 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726038AbfKVAss (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 21 Nov 2019 19:48:48 -0500
-Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 72CFF34094CB0FA7DA8E;
-        Fri, 22 Nov 2019 08:48:45 +0800 (CST)
-Received: from [127.0.0.1] (10.177.96.96) by DGGEMS404-HUB.china.huawei.com
- (10.3.19.204) with Microsoft SMTP Server id 14.3.439.0; Fri, 22 Nov 2019
- 08:48:39 +0800
-Subject: Re: [PATCH -next] KVM: x86: remove set but not used variable 'called'
-To:     Paolo Bonzini <pbonzini@redhat.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>
-CC:     <rkrcmar@redhat.com>, <sean.j.christopherson@intel.com>,
-        <wanpengli@tencent.com>, <jmattson@google.com>, <joro@8bytes.org>,
-        <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
-        <hpa@zytor.com>, <kvm@vger.kernel.org>,
+        id S1726329AbfKVCK5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 21 Nov 2019 21:10:57 -0500
+Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id A1361C4F7D82AC032453;
+        Fri, 22 Nov 2019 10:10:54 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 22 Nov 2019 10:10:47 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Jack Wang <jinpu.wang@cloud.ionos.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-scsi@vger.kernel.org>,
         <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-References: <20191119030640.25097-1-maowenan@huawei.com>
- <87o8x8gjr5.fsf@vitty.brq.redhat.com> <20191119121423.GB5604@kadam>
- <61f534ca-7575-6716-10ec-ac5c92258452@redhat.com>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <c4f04d66-ca5c-e55c-777c-5091a099198e@huawei.com>
-Date:   Fri, 22 Nov 2019 08:48:38 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
+Subject: [PATCH -next] scsi: pm80xx: Remove unused including <linux/version.h>
+Date:   Fri, 22 Nov 2019 02:09:11 +0000
+Message-ID: <20191122020911.33269-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <61f534ca-7575-6716-10ec-ac5c92258452@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.177.96.96]
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
 X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-shall we send v2 with fixes tag?
+Remove including <linux/version.h> that don't need it.
 
-在 2019/11/21 17:13, Paolo Bonzini 写道:
-> atch IMHO does.
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/scsi/pm8001/pm80xx_hwi.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/scsi/pm8001/pm80xx_hwi.c b/drivers/scsi/pm8001/pm80xx_hwi.c
+index 19601138e889..6402629bcd40 100644
+--- a/drivers/scsi/pm8001/pm80xx_hwi.c
++++ b/drivers/scsi/pm8001/pm80xx_hwi.c
+@@ -37,7 +37,6 @@
+  * POSSIBILITY OF SUCH DAMAGES.
+  *
+  */
+- #include <linux/version.h>
+  #include <linux/slab.h>
+  #include "pm8001_sas.h"
+  #include "pm80xx_hwi.h"
+
+
 

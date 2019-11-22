@@ -2,144 +2,134 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BEE2106793
-	for <lists+kernel-janitors@lfdr.de>; Fri, 22 Nov 2019 09:12:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B126A1067B0
+	for <lists+kernel-janitors@lfdr.de>; Fri, 22 Nov 2019 09:21:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726887AbfKVIMZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 22 Nov 2019 03:12:25 -0500
-Received: from mout.web.de ([212.227.15.3]:50327 "EHLO mout.web.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726248AbfKVIMY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 22 Nov 2019 03:12:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1574410263;
-        bh=M0NbBfDQUkr/VgDzsbL81QG5vRwRapzFbAO9bUSc3kM=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=UfqJ+8+l1y+qSLRjScSjXU/0S0lwMXKblwz3OaIxj6wcDamh3RfBUcKXL3SexHcOd
-         7zZv5Kl+78Ghfe8zvgNzHgD1e0ZZdprJCZb2GZUYhr69US1whCElSgQdoLQ7FFh9g7
-         zRJD+NEPnghL7AyrY+Fdn2vAZzbnsjmiHv7R9los=
-X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([2.244.174.75]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LhvYQ-1i2bAL0IE6-00n8VA; Fri, 22
- Nov 2019 09:11:03 +0100
-Subject: Re: [PATCH v4 04/13] exfat: add directory operations
-To:     Namjae Jeon <namjae.jeon@samsung.com>,
-        linux-fsdevel@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christoph Hellwig <hch@lst.de>,
-        Daniel Wagner <dwagner@suse.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nikolay Borisov <nborisov@suse.com>,
-        Sungjong Seo <sj1557.seo@samsung.com>,
-        =?UTF-8?Q?Valdis_Kl=c4=93tnieks?= <valdis.kletnieks@vt.edu>,
-        linkinjeon@gmail.com
-References: <20191121052618.31117-1-namjae.jeon@samsung.com>
- <CGME20191121052917epcas1p259b8cb61ab86975cabc0cf4815a8dc38@epcas1p2.samsung.com>
- <20191121052618.31117-5-namjae.jeon@samsung.com>
- <498a958f-9066-09c6-7240-114234965c1a@web.de>
- <004901d5a0e0$f7bf1030$e73d3090$@samsung.com>
-From:   Markus Elfring <Markus.Elfring@web.de>
-Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
- 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 FEE=
-Message-ID: <0e17c0a7-9b40-12a4-3f3f-500b9abb66de@web.de>
-Date:   Fri, 22 Nov 2019 09:11:00 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        id S1726979AbfKVIVm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 22 Nov 2019 03:21:42 -0500
+Received: from mailout3.samsung.com ([203.254.224.33]:61582 "EHLO
+        mailout3.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726922AbfKVIVl (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 22 Nov 2019 03:21:41 -0500
+Received: from epcas1p2.samsung.com (unknown [182.195.41.46])
+        by mailout3.samsung.com (KnoxPortal) with ESMTP id 20191122082137epoutp03255aaab8779661a4ed6a1c3b48751a38~Zbl6Rd5rX0521605216epoutp03f
+        for <kernel-janitors@vger.kernel.org>; Fri, 22 Nov 2019 08:21:37 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20191122082137epoutp03255aaab8779661a4ed6a1c3b48751a38~Zbl6Rd5rX0521605216epoutp03f
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1574410897;
+        bh=dPZkvk9rCr5QXvbQHGywDicbdDPuogBkdkrVGHH2yT8=;
+        h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
+        b=aIOLCYqVCE8Xgr4KChFBrVekY1kaB0Rj3e1XApKqgItBnUT1DF7T2iqUhEeLt4/Qc
+         E44bC6/FL3ec4W3gWGgwZppm7WUPJTp/iTAVKeK2HWhISpwe2lk9OqTSj07nIGzcpR
+         PRLTtocvF/BDQzypV+XkNu6j321VrxJWbDykSz6k=
+Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
+        epcas1p3.samsung.com (KnoxPortal) with ESMTP id
+        20191122082136epcas1p31646194ba715527873e33c0fbbb30ef9~Zbl50LZZE0668106681epcas1p3r;
+        Fri, 22 Nov 2019 08:21:36 +0000 (GMT)
+Received: from epsmges1p5.samsung.com (unknown [182.195.40.160]) by
+        epsnrtp2.localdomain (Postfix) with ESMTP id 47K8Xb3VPszMqYkn; Fri, 22 Nov
+        2019 08:21:35 +0000 (GMT)
+Received: from epcas1p4.samsung.com ( [182.195.41.48]) by
+        epsmges1p5.samsung.com (Symantec Messaging Gateway) with SMTP id
+        EE.9D.51241.F8A97DD5; Fri, 22 Nov 2019 17:21:35 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+        epcas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20191122082134epcas1p1643b57445bfd70ed3e68c45ad6859904~Zbl4N8O7x2895428954epcas1p1R;
+        Fri, 22 Nov 2019 08:21:34 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20191122082134epsmtrp1c9c41d95390f43f71f55b07efcba9c67~Zbl4NPZJZ3273632736epsmtrp1a;
+        Fri, 22 Nov 2019 08:21:34 +0000 (GMT)
+X-AuditID: b6c32a39-163ff7000001c829-bc-5dd79a8fe323
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        C6.46.10238.E8A97DD5; Fri, 22 Nov 2019 17:21:34 +0900 (KST)
+Received: from DONAMJAEJEO06 (unknown [10.88.104.63]) by
+        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20191122082134epsmtip1b3b308c3e4f4b6e47dc61f7c034458b1~Zbl38dOgK1289612896epsmtip1j;
+        Fri, 22 Nov 2019 08:21:34 +0000 (GMT)
+From:   "Namjae Jeon" <namjae.jeon@samsung.com>
+To:     "'Markus Elfring'" <Markus.Elfring@web.de>
+Cc:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        "'Christoph Hellwig'" <hch@lst.de>,
+        "'Daniel Wagner'" <dwagner@suse.de>,
+        "'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>,
+        "'Nikolay Borisov'" <nborisov@suse.com>,
+        "'Sungjong Seo'" <sj1557.seo@samsung.com>,
+        =?UTF-8?Q?'Valdis_Kl=C4=93tnieks'?= <valdis.kletnieks@vt.edu>,
+        <linkinjeon@gmail.com>, <linux-fsdevel@vger.kernel.org>
+In-Reply-To: <0e17c0a7-9b40-12a4-3f3f-500b9abb66de@web.de>
+Subject: RE: [PATCH v4 04/13] exfat: add directory operations
+Date:   Fri, 22 Nov 2019 17:21:34 +0900
+Message-ID: <00a001d5a10d$da529670$8ef7c350$@samsung.com>
 MIME-Version: 1.0
-In-Reply-To: <004901d5a0e0$f7bf1030$e73d3090$@samsung.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:sprXqfhDPylyC+PS/I3B9RUW8MbH2DypxSRx8eC5UoR4qUZatvc
- 524I2jtKfD2Rz1pOhGm2+4iyX6vZ7uiWMKaEHLnl818fckYxp1lteGKSUcg7O637QiGZ27g
- Ky5oQi+TFKUGoG+zL6i3x6k2CQiwCLZAmq0hIApG69q9ylyIhIYFMFAO1l2f3we2q8fURPM
- 3NihE1Ssu3qeaW+FQNazQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+Vw750mv/qc=:WOxz6T/NdpyQa6H9Dvjl1c
- yS8P/eoAhRnNkMMUzAOlVF2ZoeYHLcXLvlkt8YclCK/ATmV0EDuJzZMZNEh5/TWg4kKsW/1bD
- m1qO5m1/rCTEcZcM74yYKxcsE6LeQqlVyTq5MvMVQjYHRZNl76pjUSZ4XfznhmdTLK0s5bKAf
- ED5p2Pk+BEzhVwPi0PEBriWw/yTD85FrgVRIE+Gt/sKqpUlqHqXrZEk/TtfKQ6y38GGbn3nQs
- pALbVnPht1KCssyTllx0kOZGLXcEC4Gmcuvo18RLElma3H3qb9ZDpNuRfH9PDSGIDLrLlRkwj
- XQoOHJWauKiDQ1NqIUbLqPgFB59BslKLku/xWs+fpqBODnKBYwW6dxSEj0eQSqTnro7hDqHvq
- uGuOnwwudnlqqxvnO5DrCq4aHVUU7g6YeGpkCamJIXs3DcGtqjWDFtmO3oGkWkfLeyvC96kQF
- nM/WVfV+4Q37tWd7LzPCHRTvmArZf/Adtd1KpiIr/U+QgAo/uPORY3X78HqcUlgehRMZQkyQ+
- A0J8kpOAjajZPH20EMHGVgUFsf29adk5Zaw5koMJD21yN3gwQwFSqfl2NmPAhyte0BZPRl5tg
- BlZGEHlJQ/u2W0s0QgXCk6GoYKC3At9Q5mzDGxSE3SDuXQaMOGDS0uyox5tPnwJyuLM5Xx5Ep
- Vt5cIVgX4BFPa+bJT0xA3qTjocl+qkRTpEPPJSPu3DROECY+Hiuyqg/CVsGj0auyhEnEyKnrm
- dAatC67uzO/UUM1T6tskNMCEvARk99VXQQs2X/qSb9xHaDB4hUt+G7WnGG7EW9Ywmtq7ER0S7
- ynlSwx0OdSJ8UUBrUNOWBfePT+F99/T49+OFJbVxJNpXWc+uuzkpGs6ULkFWpWNY7U87zL4yv
- +mHzq0SdmQnSHd9g7qGYbg+I74u+krjntQRtI41M+pGA2FFli0OLutnICv53hK7c+ZZlwQEYR
- Ml2TvJ1VcbEK7dqPjXcGOKnZLCWdwusgZJ4iixz1rWb8+J7OHwJUfnErBhuZ455cC6KDKRiH9
- 9mKwy9lAmd/+y7ttiMN5hO45yUxBsXwXCwJhMhi/fiZToW1EDVXeT16s8t253FJleSoBoWrbw
- 4LEs1FNHHD1kefJkyOW/giFjgLSpNpoAq7618RJqN5ewdonLn8hjEmyrh1s8IrIhL5JMY9spB
- ihEp8l4mSklwFdzdFdCAsBlxnXCC+tTbXYQ/3thEqUuDu6ITAN7ut7s8v5WsF60i/WgvHs9wj
- Ybz+I9ZGNPkApLetadAoYog1doT7YF8yD57koUtpji11sjyleJ5v1vhyU68k=
+X-Mailer: Microsoft Outlook 14.0
+Thread-Index: AQGvn6iTTExTp6OkCy7f8aJjab+B9AHpvZ4UAavVuMIBPbFUKQFtJvFCAqneanynm4lfkA==
+Content-Language: ko
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Ta0wTWRjdy0xnpmjXa0X9gsZ0x2AEbWmtxamxZBOJmWRNlmj0h6apExgL
+        sa90WvCRTYgiImtAZTVSNcGQNYqPKiIUAdHiE4NGUQkomgiCKBF0fWPQtqNZ/p177jnf9537
+        YAh1G5XI5Lp8otclOFgqnqxrTdZrywKdVn13zUyutXcvzW2rClLc8RNX47jz3TO4zp5ugmtq
+        vklyHRcOUdy3wICC+zZUSHK1Y1cU3L3hEfL3CXxDoIfmWw6fpPnGrgKKL62tRnyw9gHJn7u1
+        hf+vZhYfrh+i+Ef9dWSmco1jSY4oZItejejKcmfnuuwW9o+VtqU2U5reoDWYuUWsxiU4RQub
+        sTxTuyzXERmW1eQJDn+EyhQkiU1NX+J1+32iJsct+Sys6Ml2eAx6j04SnJLfZddluZ2LDXr9
+        AlNEuc6RU97QRnheMBsrm8vJAnSDKUFKBvBC2F89RpSgeEaNQwj6t5Yo5MVbBIP/nqSiKjX+
+        gOBT4ZyfjvMDf5OyqBlBZfgqJS9eIjhz6jURVVFYC2NfW2LuBKyDvUOtsbIEriDgymA7Gd1Q
+        4sUQuvMuYmCYKdgCTcWrozSJk6CooywmUWEzVDT3UjKeDDcr+mI8gefB0SOvCHkiDYTaXyG5
+        12rY908/LWsS4ODOolg2wNU0VHUcI2VDBlT2HFXIeAq8vF5LyzgRBsuK6Og8gLfAm5Yf9YsR
+        vPhokbERuoJnFFEJgZMheCFVpn+DhtHDSG77K7x+v0shV1FBcZFaliRB6b3WOBnPgJIdI/Ru
+        xAbGBQuMCxYYFyDwf7NKRFajaaJHctpFyeAxjb/rGhR7xynmELp2e3kYYQaxE1W78x9a1Qoh
+        T9rkDCNgCDZB1dR536pWZQubNotet83rd4hSGJki576HSJya5Y78CpfPZjAtMBqN3MK0RWkm
+        IztdxXy6a1Vju+ATN4iiR/T+9MUxysQCtG7+nM/a5Fn1qX0jutl5c0ffbzYeCDbSmfMLfzE9
+        ymhvf5i+Lf3t+kbd6Xr7tKp4W1+X9XTW/QFq5ejnS8Ejf+bV2Z6YhbVfQ6cCSTV/GZ83+cL6
+        u88eL00NzR3AZy/eduSXleqHh5V+zQqXeWcK/WWS4fKq7U/L89t6kSLYXZHynCWlHMGQQngl
+        4Ts1zK953QMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrKIsWRmVeSWpSXmKPExsWy7bCSnG7frOuxBn8mGFscfjyJ3aJ58Xo2
+        i5WrjzJZbL0lbXH97i1miz17T7JYXN41h83i/6znrBb/37SwWGz5d4TV4tL7DywO3B47Z91l
+        99g/dw27x+6bDWwefVtWMXqs33KVxWPz6WqPz5vkPA5tf8PmcfvZNpYAzigum5TUnMyy1CJ9
+        uwSujDdfmtkL3rFW/N60mLWBcQ9LFyMnh4SAicTW591ANheHkMBuRomeQ93sEAlpiWMnzjB3
+        MXIA2cIShw8Xg4SFBF4wSvTvtgOx2QR0Jf792c8GYosI6ElMenOYFWQOs8BCZolzcyYwQgw9
+        ySSxu30X2DZOASuJHee/gA0VFrCV2NMRBhJmEVCVaLvcD1bCK2ApMXPvYzYIW1Di5MwnYHFm
+        AW2J3oetjDD2soWvmSHuVJDYcfY1I8QRYRJTpzxjh6gRkZjd2cY8gVF4FpJRs5CMmoVk1Cwk
+        LQsYWVYxSqYWFOem5xYbFhjmpZbrFSfmFpfmpesl5+duYgRHppbmDsbLS+IPMQpwMCrx8E4o
+        vxYrxJpYVlyZe4hRgoNZSYR3z/UrsUK8KYmVValF+fFFpTmpxYcYpTlYlMR5n+YdixQSSE8s
+        Sc1OTS1ILYLJMnFwSjUwFlqeW/T3kMTh38L/9gRWb3vdd/3twrO87SeZBE4sv+1d5W+e/OmW
+        z5cfBT5HJnMxaa/tnPj9rptHcqOD5PXFR28ECm/f27mnMTSA9VnBkozIZPM1mmK7Vu84GPht
+        ys7TN3bO2yy023uCrXhvAlePhIHMDK513FbTQ64tTFj9fodT8p3ZktsTHimxFGckGmoxFxUn
+        AgAVuiAIyAIAAA==
+X-CMS-MailID: 20191122082134epcas1p1643b57445bfd70ed3e68c45ad6859904
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: SVC_REQ_APPROVE
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20191121052917epcas1p259b8cb61ab86975cabc0cf4815a8dc38
+References: <20191121052618.31117-1-namjae.jeon@samsung.com>
+        <CGME20191121052917epcas1p259b8cb61ab86975cabc0cf4815a8dc38@epcas1p2.samsung.com>
+        <20191121052618.31117-5-namjae.jeon@samsung.com>
+        <498a958f-9066-09c6-7240-114234965c1a@web.de>
+        <004901d5a0e0$f7bf1030$e73d3090$@samsung.com>
+        <0e17c0a7-9b40-12a4-3f3f-500b9abb66de@web.de>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> =E2=80=A6
->>> +++ b/fs/exfat/dir.c
->> =E2=80=A6
->>> +static int exfat_readdir(struct inode *inode, struct exfat_dir_entry
->> *dir_entry)
->>> +{
->> =E2=80=A6
->>> +			if (!ep) {
->>> +				ret =3D -EIO;
->>> +				goto free_clu;
->>> +			}
->>
->> How do you think about to move a bit of common exception handling code
->> (at similar places)?
-> Not sure it is good.
 
-The software development opinions can vary also for this change pattern
-according to different design goals.
-Is such a transformation just another possibility to reduce duplicate
-source code a bit?
-
-Regards,
-Markus
+> >> =E2=80=A6=0D=0A>=20>>>=20+++=20b/fs/exfat/dir.c=0D=0A>=20>>=20=E2=80=
+=A6=0D=0A>=20>>>=20+static=20int=20exfat_readdir(struct=20inode=20*inode,=
+=20struct=20exfat_dir_entry=0D=0A>=20>>=20*dir_entry)=0D=0A>=20>>>=20+=7B=
+=0D=0A>=20>>=20=E2=80=A6=0D=0A>=20>>>=20+=09=09=09if=20(=21ep)=20=7B=0D=0A>=
+=20>>>=20+=09=09=09=09ret=20=3D=20-EIO;=0D=0A>=20>>>=20+=09=09=09=09goto=20=
+free_clu;=0D=0A>=20>>>=20+=09=09=09=7D=0D=0A>=20>>=0D=0A>=20>>=20How=20do=
+=20you=20think=20about=20to=20move=20a=20bit=20of=20common=20exception=20ha=
+ndling=20code=0D=0A>=20>>=20(at=20similar=20places)?=0D=0A>=20>=20Not=20sur=
+e=20it=20is=20good.=0D=0A>=20=0D=0A>=20The=20software=20development=20opini=
+ons=20can=20vary=20also=20for=20this=20change=20pattern=0D=0A>=20according=
+=20to=20different=20design=20goals.=0D=0A>=20Is=20such=20a=20transformation=
+=20just=20another=20possibility=20to=20reduce=20duplicate=0D=0A>=20source=
+=20code=20a=20bit?=0D=0AI=20changed=20it=20without=20unnecessary=20goto=20a=
+buse.=20Look=20at=20the=20next=20version=20later.=0D=0AThanks=21=0D=0A>=20=
+=0D=0A>=20Regards,=0D=0A>=20Markus=0D=0A=0D=0A

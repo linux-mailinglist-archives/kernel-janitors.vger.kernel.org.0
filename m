@@ -2,32 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E720107B2C
-	for <lists+kernel-janitors@lfdr.de>; Sat, 23 Nov 2019 00:15:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30C81107B52
+	for <lists+kernel-janitors@lfdr.de>; Sat, 23 Nov 2019 00:31:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726861AbfKVXPJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 22 Nov 2019 18:15:09 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:43960 "EHLO
+        id S1726638AbfKVXbc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 22 Nov 2019 18:31:32 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:44151 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726089AbfKVXPJ (ORCPT
+        with ESMTP id S1726089AbfKVXbc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 22 Nov 2019 18:15:09 -0500
+        Fri, 22 Nov 2019 18:31:32 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iYI8n-0000Bh-7T; Fri, 22 Nov 2019 23:15:05 +0000
+        id 1iYIOW-00017f-NF; Fri, 22 Nov 2019 23:31:20 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
+To:     Jeremy Kerr <jk@ozlabs.org>, Joel Stanley <joel@jms.id.au>,
+        Alistar Popple <alistair@popple.id.au>,
+        Eddie James <eajames@linux.ibm.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linux-fsi@lists.ozlabs.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/radeon: remove redundant assignment to variable ret
-Date:   Fri, 22 Nov 2019 23:15:04 +0000
-Message-Id: <20191122231504.109948-1-colin.king@canonical.com>
+Subject: [PATCH] fsi: fix bogos error returns from cfam_read and cfam_write
+Date:   Fri, 22 Nov 2019 23:31:20 +0000
+Message-Id: <20191122233120.110344-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,29 +38,41 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable ret is being initialized with a value that is never
-read and it is being updated later with a new value. The
-initialization is redundant and can be removed.
+In the case where errors occur in functions cfam_read and cfam_write
+the error return code in rc is not returned and a bogus non-error
+count size is returned instead. Fix this by returning the correct
+error code when an error occurs or the count size if the functions
+worked correctly.
 
 Addresses-Coverity: ("Unused value")
+Fixes: d1dcd6782576 ("fsi: Add cfam char devices")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/radeon/si_dpm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/fsi/fsi-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/si_dpm.c b/drivers/gpu/drm/radeon/si_dpm.c
-index 8148a7883de4..346315b3eebe 100644
---- a/drivers/gpu/drm/radeon/si_dpm.c
-+++ b/drivers/gpu/drm/radeon/si_dpm.c
-@@ -5899,7 +5899,7 @@ static int si_patch_single_dependency_table_based_on_leakage(struct radeon_devic
+diff --git a/drivers/fsi/fsi-core.c b/drivers/fsi/fsi-core.c
+index 8244da8a7241..c3885b138ead 100644
+--- a/drivers/fsi/fsi-core.c
++++ b/drivers/fsi/fsi-core.c
+@@ -718,7 +718,7 @@ static ssize_t cfam_read(struct file *filep, char __user *buf, size_t count,
+ 	rc = count;
+  fail:
+ 	*offset = off;
+-	return count;
++	return rc;
+ }
  
- static int si_patch_dependency_tables_based_on_leakage(struct radeon_device *rdev)
- {
--	int ret = 0;
-+	int ret;
+ static ssize_t cfam_write(struct file *filep, const char __user *buf,
+@@ -755,7 +755,7 @@ static ssize_t cfam_write(struct file *filep, const char __user *buf,
+ 	rc = count;
+  fail:
+ 	*offset = off;
+-	return count;
++	return rc;
+ }
  
- 	ret = si_patch_single_dependency_table_based_on_leakage(rdev,
- 								&rdev->pm.dpm.dyn_state.vddc_dependency_on_sclk);
+ static loff_t cfam_llseek(struct file *file, loff_t offset, int whence)
 -- 
 2.24.0
 

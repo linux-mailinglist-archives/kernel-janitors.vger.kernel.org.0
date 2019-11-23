@@ -2,93 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E2A41107D9C
-	for <lists+kernel-janitors@lfdr.de>; Sat, 23 Nov 2019 09:16:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68A9E107DF2
+	for <lists+kernel-janitors@lfdr.de>; Sat, 23 Nov 2019 10:40:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726887AbfKWIPN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 23 Nov 2019 03:15:13 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36274 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726752AbfKWIPM (ORCPT
+        id S1726463AbfKWJk0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 23 Nov 2019 04:40:26 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:44039 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726141AbfKWJk0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 23 Nov 2019 03:15:12 -0500
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1iYQZI-0002W8-Ce; Sat, 23 Nov 2019 09:15:00 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id E75891C1ACC;
-        Sat, 23 Nov 2019 09:14:59 +0100 (CET)
-Date:   Sat, 23 Nov 2019 08:14:59 -0000
-From:   "tip-bot2 for Colin Ian King" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: perf/core] perf probe: Fix spelling mistake "addrees" -> "address"
-Cc:     Colin King <colin.king@canonical.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        kernel-janitors@vger.kernel.org,
-        Arnaldo Carvalho de Melo <acme@redhat.com>,
-        x86 <x86@kernel.org>, LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191121092623.374896-1-colin.king@canonical.com>
-References: <20191121092623.374896-1-colin.king@canonical.com>
+        Sat, 23 Nov 2019 04:40:26 -0500
+Received: by mail-oi1-f196.google.com with SMTP id s71so8780279oih.11;
+        Sat, 23 Nov 2019 01:40:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ZFVPcc7HYr1DXGBw6B0Y4i+GsNOxok+nW/sn0ODa37c=;
+        b=euWLHJsjDSHHUhkFQukkJpi2+WtZ1HbLt8BUlnTyoyjnbXvZphRUZ5t1XCw6ctv+A0
+         3kZEr7epA1kbMe/eyMznLKzaL5PZf4vV+oenEeRhrZz+B/Jju7kFTImB4WMidU3SYgD9
+         YiXBW5PGty7bH9evcidnP4y4UaLO7cTVUdHaYJ9MTsdLz+a+sLyTIVk0wYi+AwZJ3Hh5
+         zBopbKC8G8wFzUBY3pvfkvn8rcm3U/AABEi5gkzb7FX4L3hO83HMwDsDR8/3XxrCSdn2
+         kb0Qca99DNNeDl8qpcoy+kdLzXR9qv1REcKOsDFPpduKskFl/z+RaoXqorTpMZyNDkYQ
+         h9Uw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZFVPcc7HYr1DXGBw6B0Y4i+GsNOxok+nW/sn0ODa37c=;
+        b=W+zxHWpDP6nD7oY3HmA0NcD4VcGC64onSuWh390Sbf9rUIPPw0fpJxo88TzLcbvqI5
+         udB7dc/5q6ksOsI0KaZ9art34hfqKHqd5CErI7Ryy3hxuEvX3vkfwB8CThpDft2KUjug
+         6rjHgOCcAyLZYJcSy46fgWULc8zaCwfLWMJfTRRyLzmiSx0ckDJ9djcjD5YypTIet6/G
+         +Ed2Y98OrYyyCf3Vln0enD6N8dl2zDEViJKuOCpFti+QCplLdxVChH/EOzMk+dQMVebK
+         3LfvN5cLSkTcXAOGO7tLir0QdPQki5vaZnzssUHvKihk5qAf0h0hWrdywSnJLDwLQTNY
+         WhqA==
+X-Gm-Message-State: APjAAAWueFDSK/nmOPmlYUKaqNqfYSBXiOUxgggCNoqWnF1KyycpJ4Jf
+        b3aSOaqN7jW5N/hAFOa2Iv272TNwKXE58iBYqSk=
+X-Google-Smtp-Source: APXvYqxEobYWB+wm8NZyoL31WGqKZIHUtoRQmBKv8NBLUHjYyBjG9p7RelpPqsHHAe1j6jp5XCOopaMypuZDTUeKleI=
+X-Received: by 2002:a54:4815:: with SMTP id j21mr15579811oij.15.1574502023475;
+ Sat, 23 Nov 2019 01:40:23 -0800 (PST)
 MIME-Version: 1.0
-Message-ID: <157449689986.21853.15487968552772349737.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+References: <20191122225210.109172-1-colin.king@canonical.com>
+In-Reply-To: <20191122225210.109172-1-colin.king@canonical.com>
+From:   Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Date:   Sat, 23 Nov 2019 10:40:12 +0100
+Message-ID: <CAFBinCCd_jr7UDdQx15tnFnZwO1tCbJ+PnZtEn57LUDtiRV_eQ@mail.gmail.com>
+Subject: Re: [PATCH] rtc: meson: remove redundant assignment to variable retries
+To:     Colin King <colin.king@canonical.com>
+Cc:     Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Kevin Hilman <khilman@baylibre.com>, linux-rtc@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-amlogic@lists.infradead.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The following commit has been merged into the perf/core branch of tip:
+Hi Colin,
 
-Commit-ID:     358f98ee8a3578bbf464ac767b726c5de1ce0647
-Gitweb:        https://git.kernel.org/tip/358f98ee8a3578bbf464ac767b726c5de1ce0647
-Author:        Colin Ian King <colin.king@canonical.com>
-AuthorDate:    Thu, 21 Nov 2019 09:26:23 
-Committer:     Arnaldo Carvalho de Melo <acme@redhat.com>
-CommitterDate: Fri, 22 Nov 2019 10:48:14 -03:00
+On Fri, Nov 22, 2019 at 11:52 PM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The variable retries is being initialized with a value that is never
+> read and it is being updated later with a new value in a for-loop.
+> The initialization is redundant and can be removed.
+>
+> Addresses-Coverity: ("Unused value")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+thank you for addressing this!
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-perf probe: Fix spelling mistake "addrees" -> "address"
 
-There is a spelling mistake in a pr_warning message. Fix it.
-
-Signed-off-by: Colin King <colin.king@canonical.com>
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: kernel-janitors@vger.kernel.org
-Link: http://lore.kernel.org/lkml/20191121092623.374896-1-colin.king@canonical.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
----
- tools/perf/util/probe-finder.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
-index 38d6cd2..c470c49 100644
---- a/tools/perf/util/probe-finder.c
-+++ b/tools/perf/util/probe-finder.c
-@@ -812,7 +812,7 @@ static int verify_representive_line(struct probe_finder *pf, const char *fname,
- 	if (strcmp(fname, __fname) || lineno == __lineno)
- 		return 0;
- 
--	pr_warning("This line is sharing the addrees with other lines.\n");
-+	pr_warning("This line is sharing the address with other lines.\n");
- 
- 	if (pf->pev->point.function) {
- 		/* Find best match function name and lines */
+Martin

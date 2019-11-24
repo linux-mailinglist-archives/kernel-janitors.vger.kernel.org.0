@@ -2,52 +2,50 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CE1B8108365
-	for <lists+kernel-janitors@lfdr.de>; Sun, 24 Nov 2019 14:28:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AEC97108486
+	for <lists+kernel-janitors@lfdr.de>; Sun, 24 Nov 2019 19:37:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726962AbfKXN2E (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 24 Nov 2019 08:28:04 -0500
-Received: from mail-io1-f67.google.com ([209.85.166.67]:45513 "EHLO
-        mail-io1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726957AbfKXN2D (ORCPT
+        id S1726994AbfKXShK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 24 Nov 2019 13:37:10 -0500
+Received: from mail-il1-f196.google.com ([209.85.166.196]:46303 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726840AbfKXShJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 24 Nov 2019 08:28:03 -0500
-Received: by mail-io1-f67.google.com with SMTP id i11so2258818ioi.12
-        for <kernel-janitors@vger.kernel.org>; Sun, 24 Nov 2019 05:28:03 -0800 (PST)
+        Sun, 24 Nov 2019 13:37:09 -0500
+Received: by mail-il1-f196.google.com with SMTP id q1so12034072ile.13
+        for <kernel-janitors@vger.kernel.org>; Sun, 24 Nov 2019 10:37:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=pI7cV3FDgc1XH+A619u5I2fUvKpFMBjQiQlWPO2Scvc=;
-        b=CP5MWEb8wTkytIxoBzD2Cqkn7PoDTmuWcmkHj6WSxWamzCYEL5otu1zRjmi2vXpJ81
-         wKov3vp/sWGz+kU69gCuzPxThChoFIKb2Or4PI+ZojZl1Kyr+3e+jslKWJUjhqBq7o58
-         0ihn1K8/1kVaqDg2HjsvaNT3OAFGgtZSd7eAJ1uIDudwxLhBqtepHTxs8ncrfJqq6c16
-         v5amcg6aNEnkzQr5gqI14X236agUbNTIXRMP32WK4sEJ1tX3NYtmGzVnBHp3jtpzCDrG
-         DKA/m/lZBtSRTCZBiz5lOE4QgeI4IK734LE5E9OpO2LqCXLkZLJzGdQ/vdFMjWgzcReK
-         B4JA==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=LalpRjCzklUHb+d8yg6StCgBYUgFeAOrmf1VN5Ahg2g=;
+        b=fjx1MHUc5AokxPmj8Ln0iieIIPTZ2XLnnHsOX9tbqQLW3unG1A7sDOg3v2gsFJA+Wt
+         tI5/CY9M/Zo9fDnJS/V9lUyzX4dZ+S20sswgGAr22JKaqhvxpeiHXvbWtZWpsUOUpVY7
+         COP8KIiJJlWUty5Qgeidz0kKKCHKYftxbpb9YxUwi1p09+ta9IQcZ76WRfnxkCxXOBSJ
+         9ak1C52AWd+bRuIRxHj8d7ru3EKDWoFk0SoXBsMh9JM2Izkl7Kh8XCDYA7bnY9lHel39
+         VL2B8Bvr+Gf8vTiv5iRN4YSdUfHP1THvdZ2F4tEzRm3W234oiuKxiQlfMk9BpVZXDWjj
+         hduw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=pI7cV3FDgc1XH+A619u5I2fUvKpFMBjQiQlWPO2Scvc=;
-        b=Hlkp1aktmen/q8bH/OCmRUwLwHOdVRfnjuwwOQpbirAdcg2LhnoqqbAvX4lw7ey1Fp
-         u7K2XO+Sa02p4B+cRBXgOHolJcKpMa2QQfTXOY+593SNeoMPrdLXYoUTCoTACiIDk2fV
-         cPt4c2Ok01tCzTJwQ93L6+/lJHbkXFolHIzV6RdT7CAiWBU+sCeL09pA6xTS2XMY+MBO
-         PWhFkDk7PzCRRDTz+Z1WWFvWKTRXjdUjnZmCHZGMNJ//kYSCT6MWzfQ4aQpa0cTsasfh
-         4JcZ9JpQP7a4P1H9UwV25Wp6mLWQj6tESjHNw3BV+btCQMq5DHfzxVhKfdLQPxS5ZydH
-         5Xvg==
-X-Gm-Message-State: APjAAAXNd71pmBPmqTVRCrQha2DUarQv/5dbvRp1lb97t3KApFIAA8aU
-        6CFE+U8Lt3h1+1+Kdc2s2YnfUVbVRe5qtQaOIaM=
-X-Google-Smtp-Source: APXvYqxkTyiQaVvpbb24ntNydlvnpE5eKjF8wnNR1rm1uOXUOcrYnJ1zw33MXJoQabHBSTsdn7fkGs/BVoVfGemyoOU=
-X-Received: by 2002:a02:9047:: with SMTP id y7mr23057257jaf.13.1574602083048;
- Sun, 24 Nov 2019 05:28:03 -0800 (PST)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=LalpRjCzklUHb+d8yg6StCgBYUgFeAOrmf1VN5Ahg2g=;
+        b=FRfXCs+NT7G94rnlmBjuDFIwIIQUcSJAFG3Dc2EYDib+SHlWTbclandQ+pE99Fi7zf
+         t5LmvUlb5nZK5szsLELf7RxFjMuh0dh1jajIyUDYnpkYqSbRkdudmSLTRylHMkles0n9
+         kX55W5t+QT4ZG4+5qcxdtpS3knOecqzpaBHTBkPg9aG1SWA6Gzaq36V2KLX63DW05Hlv
+         tp0zIKu0NUDSnURGnuxuhZ0XZ18yIF3eF4NiQRh/wnLZcmPQzd0FtbWsjF5wiE7XP5WI
+         6qzg9hrm+GQfrgFosjTnk05rSwAYOU8avpgVLLAwdxBCR04jnL+eCtv5MHqeeG50S/GP
+         ty6g==
+X-Gm-Message-State: APjAAAWPiizckdNCxC+Kj7hafPMFljCiFfBFG0V0PjpHDJ3HtPiReHAZ
+        BiMQH7CfugFnyrSnCNNTOcfxTVwcxtzCaH5ezfw=
+X-Google-Smtp-Source: APXvYqxY5Bu+YKHHPtphSs0J8mm6ivdkJlimgt+zyMQmmsPBkNN3dWNz03YiNG6prPjUPrbGWON7lIZqa4WzFh+CoWg=
+X-Received: by 2002:a92:dd0f:: with SMTP id n15mr8798620ilm.146.1574620629172;
+ Sun, 24 Nov 2019 10:37:09 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a4f:4fd0:0:0:0:0:0 with HTTP; Sun, 24 Nov 2019 05:28:02
+Received: by 2002:a92:afd7:0:0:0:0:0 with HTTP; Sun, 24 Nov 2019 10:37:08
  -0800 (PST)
-Reply-To: afginvestmentbrokers@al-faisaliah.org
-From:   "Mr. Joon-Kyu Lin" <johnpfox60@gmail.com>
-Date:   Sun, 24 Nov 2019 05:28:02 -0800
-Message-ID: <CAHLmmYMfUhtA9ktHbRfePyRD2j0yBArOW=ZhsrS_vTfqhPovgw@mail.gmail.com>
-Subject: Venture Capital & Private Investors
+From:   Ernest Groth <bpatrick799@gmail.com>
+Date:   Sun, 24 Nov 2019 10:37:08 -0800
+Message-ID: <CADUzNO=tJHKjc8+d5gv4SANfKnc5hQzi6C6GXabaZDVPxx_jzQ@mail.gmail.com>
+Subject: Good day Psyborg,
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -55,26 +53,19 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Attention:
+Good day Psyborg,
 
-I am an investor that can provide funding for any viable business idea or
-venture.
+I am Mr. Ernest F.Groth from United States of America and a lawyer by
+profession.i want to use this opportunity to inform you about my late
+client whom have the same surname with you died in auto accident here
+in United States with his entire family dated 24th of June 2018 and
+this my client deposited the sum of Eighty Eight Million, Six Hundred
+Thousand Dollars (88,600,000.00 USD) in one of the bank in USA since
+his demise, none of his family members are come to claim this funds
+and i searched his relatives through CNN, VOA and other international
+media and no avail.
 
-Please do let me know if you have fund management abilities, credible
-projects in need of funding or advanced stage projects requiring Bank
-Guarantees, Loans or Partnership, Joint Venture, Equity, we would be
-delighted to work with you.
+I will like you to claims this fund and will back you up with the
+documents. Contact me now for more details.
 
-
-Best Regards,
-Mr. Joon-Kyu Lim
-Al Faisaliah Group (AFG)
-Venture Capital & Private Investors
-
---
-*This email and any attachments are intended for the named recipients only
-and contain confidential materials. Any unauthorized copying, reviewing,
-dissemination or other use by anyone other than the named recipients of
-this communication is strictly prohibited. If you received this email in
-error and/or are not a named recipient, please notify the sender (Al
-Faisaliah Group) and delete all copies of this email. Thank you.
+Barrister Ernest.

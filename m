@@ -2,78 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 49BE610891D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Nov 2019 08:25:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED8B9108AF7
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Nov 2019 10:33:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726118AbfKYHZF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 25 Nov 2019 02:25:05 -0500
-Received: from mga03.intel.com ([134.134.136.65]:8498 "EHLO mga03.intel.com"
+        id S1727339AbfKYJd2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 25 Nov 2019 04:33:28 -0500
+Received: from mga09.intel.com ([134.134.136.24]:3022 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725747AbfKYHZE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 Nov 2019 02:25:04 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
+        id S1725793AbfKYJd2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 25 Nov 2019 04:33:28 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Nov 2019 23:25:03 -0800
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Nov 2019 01:33:27 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,240,1571727600"; 
-   d="scan'208";a="206031621"
-Received: from slehanex-mobl1.ger.corp.intel.com ([10.252.10.177])
-  by fmsmga008.fm.intel.com with ESMTP; 24 Nov 2019 23:24:59 -0800
-Message-ID: <ea75c55485c0d893b15a67462728b45b775921b0.camel@intel.com>
-Subject: Re: iwlwifi: Checking a kmemdup() call in iwl_req_fw_callback()
-From:   Luciano Coelho <luciano.coelho@intel.com>
-To:     Markus Elfring <Markus.Elfring@web.de>,
-        linux-wireless@vger.kernel.org, linuxwifi@intel.com,
-        netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        Kalle Valo <kvalo@codeaurora.org>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, Aditya Pakki <pakki001@umn.edu>,
-        Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>
-Date:   Mon, 25 Nov 2019 09:24:58 +0200
-In-Reply-To: <71774617-79f9-1365-4267-a15a47422d10@web.de>
-References: <71774617-79f9-1365-4267-a15a47422d10@web.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.34.1-2+b1 
+X-IronPort-AV: E=Sophos;i="5.69,241,1571727600"; 
+   d="scan'208";a="233344925"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
+  by fmsmga004.fm.intel.com with ESMTP; 25 Nov 2019 01:33:24 -0800
+Received: from andy by smile with local (Exim 4.93-RC1)
+        (envelope-from <andriy.shevchenko@linux.intel.com>)
+        id 1iZAkF-0007pQ-Al; Mon, 25 Nov 2019 11:33:23 +0200
+Date:   Mon, 25 Nov 2019 11:33:23 +0200
+From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To:     Jonathan Cameron <jic23@kernel.org>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Vincent Pelletier <plr.vincent@gmail.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: intel_mrfld_adc: Allocating too much data in
+ probe()
+Message-ID: <20191125093323.GZ32742@smile.fi.intel.com>
+References: <20191119062124.kgwg7ujxe6k2ft3o@kili.mountain>
+ <20191119102332.GC32742@smile.fi.intel.com>
+ <20191123144206.7d3e5bd4@archlinux>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191123144206.7d3e5bd4@archlinux>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, 2019-10-12 at 19:26 +0200, Markus Elfring wrote:
-> Hello,
+On Sat, Nov 23, 2019 at 02:42:06PM +0000, Jonathan Cameron wrote:
+> On Tue, 19 Nov 2019 12:23:32 +0200
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 > 
-> I tried another script for the semantic patch language out.
-> This source code analysis approach points out that the implementation
-> of the function “iwl_req_fw_callback” contains still an unchecked call
-> of the function “kmemdup”.
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/wireless/intel/iwlwifi/iwl-drv.c?id=1c0cc5f1ae5ee5a6913704c0d75a6e99604ee30a#n1454
-> https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/net/wireless/intel/iwlwifi/iwl-drv.c#L1454
-> 
-> Can it be that just an other data structure member should be used
-> for the desired null pointer check at this place?
+> > On Tue, Nov 19, 2019 at 09:21:24AM +0300, Dan Carpenter wrote:
+> > > This probe function is passing the wrong size to devm_iio_device_alloc().
+> > > It is supposed to be the size of the private data.  Fortunately,
+> > > sizeof(*indio_dev) is larger than sizeof(struct mrfld_adc) so it doesn't
+> > > cause a runtime problem.
+> > >   
+> > 
+> > Ah, indeed, thanks for fixing this!
+> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Applied to the fixes-togreg branch of iio.git.
 
-Hi Markus,
+Thanks!
 
-Sorry for the delay in replying to this.
+> I'll wait until after the merge window now to send a pull request for this
+> one so will be rc2ish before it's in.
 
-I've checked this now and you are right.  We are checking the element
-in the array that contains the length of the allocation we requested
-instead of checking the pointer returned by kmemdup().  This was
-probably a typo.
+Sure, as pointed out by Dan it seems to work due to size of wrong structure is
+bigger than needed, thus it's not a critical fix.
 
-I have fixed this in our internal tree and it will reach the mainline
-following our normal upstreaming process.
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Thanks for reporting!
-
---
-Cheers,
-Luca.
 

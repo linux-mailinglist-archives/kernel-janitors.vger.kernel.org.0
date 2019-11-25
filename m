@@ -2,70 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AEC97108486
-	for <lists+kernel-janitors@lfdr.de>; Sun, 24 Nov 2019 19:37:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 49BE610891D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Nov 2019 08:25:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726994AbfKXShK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 24 Nov 2019 13:37:10 -0500
-Received: from mail-il1-f196.google.com ([209.85.166.196]:46303 "EHLO
-        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726840AbfKXShJ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 24 Nov 2019 13:37:09 -0500
-Received: by mail-il1-f196.google.com with SMTP id q1so12034072ile.13
-        for <kernel-janitors@vger.kernel.org>; Sun, 24 Nov 2019 10:37:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=LalpRjCzklUHb+d8yg6StCgBYUgFeAOrmf1VN5Ahg2g=;
-        b=fjx1MHUc5AokxPmj8Ln0iieIIPTZ2XLnnHsOX9tbqQLW3unG1A7sDOg3v2gsFJA+Wt
-         tI5/CY9M/Zo9fDnJS/V9lUyzX4dZ+S20sswgGAr22JKaqhvxpeiHXvbWtZWpsUOUpVY7
-         COP8KIiJJlWUty5Qgeidz0kKKCHKYftxbpb9YxUwi1p09+ta9IQcZ76WRfnxkCxXOBSJ
-         9ak1C52AWd+bRuIRxHj8d7ru3EKDWoFk0SoXBsMh9JM2Izkl7Kh8XCDYA7bnY9lHel39
-         VL2B8Bvr+Gf8vTiv5iRN4YSdUfHP1THvdZ2F4tEzRm3W234oiuKxiQlfMk9BpVZXDWjj
-         hduw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=LalpRjCzklUHb+d8yg6StCgBYUgFeAOrmf1VN5Ahg2g=;
-        b=FRfXCs+NT7G94rnlmBjuDFIwIIQUcSJAFG3Dc2EYDib+SHlWTbclandQ+pE99Fi7zf
-         t5LmvUlb5nZK5szsLELf7RxFjMuh0dh1jajIyUDYnpkYqSbRkdudmSLTRylHMkles0n9
-         kX55W5t+QT4ZG4+5qcxdtpS3knOecqzpaBHTBkPg9aG1SWA6Gzaq36V2KLX63DW05Hlv
-         tp0zIKu0NUDSnURGnuxuhZ0XZ18yIF3eF4NiQRh/wnLZcmPQzd0FtbWsjF5wiE7XP5WI
-         6qzg9hrm+GQfrgFosjTnk05rSwAYOU8avpgVLLAwdxBCR04jnL+eCtv5MHqeeG50S/GP
-         ty6g==
-X-Gm-Message-State: APjAAAWPiizckdNCxC+Kj7hafPMFljCiFfBFG0V0PjpHDJ3HtPiReHAZ
-        BiMQH7CfugFnyrSnCNNTOcfxTVwcxtzCaH5ezfw=
-X-Google-Smtp-Source: APXvYqxY5Bu+YKHHPtphSs0J8mm6ivdkJlimgt+zyMQmmsPBkNN3dWNz03YiNG6prPjUPrbGWON7lIZqa4WzFh+CoWg=
-X-Received: by 2002:a92:dd0f:: with SMTP id n15mr8798620ilm.146.1574620629172;
- Sun, 24 Nov 2019 10:37:09 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a92:afd7:0:0:0:0:0 with HTTP; Sun, 24 Nov 2019 10:37:08
- -0800 (PST)
-From:   Ernest Groth <bpatrick799@gmail.com>
-Date:   Sun, 24 Nov 2019 10:37:08 -0800
-Message-ID: <CADUzNO=tJHKjc8+d5gv4SANfKnc5hQzi6C6GXabaZDVPxx_jzQ@mail.gmail.com>
-Subject: Good day Psyborg,
-To:     undisclosed-recipients:;
+        id S1726118AbfKYHZF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 25 Nov 2019 02:25:05 -0500
+Received: from mga03.intel.com ([134.134.136.65]:8498 "EHLO mga03.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725747AbfKYHZE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 25 Nov 2019 02:25:04 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 24 Nov 2019 23:25:03 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,240,1571727600"; 
+   d="scan'208";a="206031621"
+Received: from slehanex-mobl1.ger.corp.intel.com ([10.252.10.177])
+  by fmsmga008.fm.intel.com with ESMTP; 24 Nov 2019 23:24:59 -0800
+Message-ID: <ea75c55485c0d893b15a67462728b45b775921b0.camel@intel.com>
+Subject: Re: iwlwifi: Checking a kmemdup() call in iwl_req_fw_callback()
+From:   Luciano Coelho <luciano.coelho@intel.com>
+To:     Markus Elfring <Markus.Elfring@web.de>,
+        linux-wireless@vger.kernel.org, linuxwifi@intel.com,
+        netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+        Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Kalle Valo <kvalo@codeaurora.org>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Aditya Pakki <pakki001@umn.edu>,
+        Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>
+Date:   Mon, 25 Nov 2019 09:24:58 +0200
+In-Reply-To: <71774617-79f9-1365-4267-a15a47422d10@web.de>
+References: <71774617-79f9-1365-4267-a15a47422d10@web.de>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.1-2+b1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Good day Psyborg,
+On Sat, 2019-10-12 at 19:26 +0200, Markus Elfring wrote:
+> Hello,
+> 
+> I tried another script for the semantic patch language out.
+> This source code analysis approach points out that the implementation
+> of the function “iwl_req_fw_callback” contains still an unchecked call
+> of the function “kmemdup”.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/drivers/net/wireless/intel/iwlwifi/iwl-drv.c?id=1c0cc5f1ae5ee5a6913704c0d75a6e99604ee30a#n1454
+> https://elixir.bootlin.com/linux/v5.4-rc2/source/drivers/net/wireless/intel/iwlwifi/iwl-drv.c#L1454
+> 
+> Can it be that just an other data structure member should be used
+> for the desired null pointer check at this place?
 
-I am Mr. Ernest F.Groth from United States of America and a lawyer by
-profession.i want to use this opportunity to inform you about my late
-client whom have the same surname with you died in auto accident here
-in United States with his entire family dated 24th of June 2018 and
-this my client deposited the sum of Eighty Eight Million, Six Hundred
-Thousand Dollars (88,600,000.00 USD) in one of the bank in USA since
-his demise, none of his family members are come to claim this funds
-and i searched his relatives through CNN, VOA and other international
-media and no avail.
+Hi Markus,
 
-I will like you to claims this fund and will back you up with the
-documents. Contact me now for more details.
+Sorry for the delay in replying to this.
 
-Barrister Ernest.
+I've checked this now and you are right.  We are checking the element
+in the array that contains the length of the allocation we requested
+instead of checking the pointer returned by kmemdup().  This was
+probably a typo.
+
+I have fixed this in our internal tree and it will reach the mainline
+following our normal upstreaming process.
+
+Thanks for reporting!
+
+--
+Cheers,
+Luca.
+

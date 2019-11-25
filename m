@@ -2,79 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED8B9108AF7
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Nov 2019 10:33:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B5A83108DAD
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Nov 2019 13:15:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727339AbfKYJd2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 25 Nov 2019 04:33:28 -0500
-Received: from mga09.intel.com ([134.134.136.24]:3022 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725793AbfKYJd2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 Nov 2019 04:33:28 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 25 Nov 2019 01:33:27 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,241,1571727600"; 
-   d="scan'208";a="233344925"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga004.fm.intel.com with ESMTP; 25 Nov 2019 01:33:24 -0800
-Received: from andy by smile with local (Exim 4.93-RC1)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1iZAkF-0007pQ-Al; Mon, 25 Nov 2019 11:33:23 +0200
-Date:   Mon, 25 Nov 2019 11:33:23 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Vincent Pelletier <plr.vincent@gmail.com>,
-        Hartmut Knaack <knaack.h@gmx.de>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
-        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: intel_mrfld_adc: Allocating too much data in
- probe()
-Message-ID: <20191125093323.GZ32742@smile.fi.intel.com>
-References: <20191119062124.kgwg7ujxe6k2ft3o@kili.mountain>
- <20191119102332.GC32742@smile.fi.intel.com>
- <20191123144206.7d3e5bd4@archlinux>
+        id S1727484AbfKYMPA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 25 Nov 2019 07:15:00 -0500
+Received: from a27-185.smtp-out.us-west-2.amazonses.com ([54.240.27.185]:56476
+        "EHLO a27-185.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725868AbfKYMPA (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 25 Nov 2019 07:15:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574684099;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
+        bh=FYS9WywPAdYEkfH5HwtBByCXzTvOkzfIsREpBKqsp2Q=;
+        b=k33wwE1sDLEH5lvh2dQgQ6AGE9noYYXlWHB4n28pLiGfeUroOxaFidRUYPVFPRcA
+        h9lIpEvpL8I2H5TmJyy8CQ5XWlqgAfK0ktDHHSMoD3fn2mjSq8mRROUmsoKvHSLSIdc
+        uAvxBoZp7DWDApzfrbYCOwrGwL9KbT8GA44I3olM=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574684099;
+        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
+        bh=FYS9WywPAdYEkfH5HwtBByCXzTvOkzfIsREpBKqsp2Q=;
+        b=JAQUZMQA7hAvQZk6uUmWvW6GoN24nuu4KP4Cocmn47L/RPAqE6h9NST0i0alTxDp
+        yXE6SLEmhEPayhFxW11PBHUNmccEbKgxqxJrwzUZOG+Wcts5WFBNYCEawv8XgPiH0Pk
+        1LAkIY2qWTuDqTaQfWBOGEwQuOhXp5n6BysUTH4A=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D993DC76F45
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191123144206.7d3e5bd4@archlinux>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] wil6210: fix break that is never reached because of
+ zero'ing of a retry counter
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191115120953.48137-1-colin.king@canonical.com>
+References: <20191115120953.48137-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Maya Erez <merez@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-ID: <0101016ea27c8290-6a36151e-699b-46d6-a206-290403315074-000000@us-west-2.amazonses.com>
+Date:   Mon, 25 Nov 2019 12:14:59 +0000
+X-SES-Outgoing: 2019.11.25-54.240.27.185
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Nov 23, 2019 at 02:42:06PM +0000, Jonathan Cameron wrote:
-> On Tue, 19 Nov 2019 12:23:32 +0200
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+Colin King <colin.king@canonical.com> wrote:
+
+> There is a check on the retry counter invalid_buf_id_retry that is always
+> false because invalid_buf_id_retry is initialized to zero on each iteration
+> of a while-loop.  Fix this by initializing the retry counter before the
+> while-loop starts.
 > 
-> > On Tue, Nov 19, 2019 at 09:21:24AM +0300, Dan Carpenter wrote:
-> > > This probe function is passing the wrong size to devm_iio_device_alloc().
-> > > It is supposed to be the size of the private data.  Fortunately,
-> > > sizeof(*indio_dev) is larger than sizeof(struct mrfld_adc) so it doesn't
-> > > cause a runtime problem.
-> > >   
-> > 
-> > Ah, indeed, thanks for fixing this!
-> > Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Applied to the fixes-togreg branch of iio.git.
+> Addresses-Coverity: ("Logically dead code")
+> Fixes: b4a967b7d0f5 ("wil6210: reset buff id in status message after completion")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Reviewed-by: Maya Erez <merez@codeaurora.org>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-Thanks!
+Patch applied to ath-next branch of ath.git, thanks.
 
-> I'll wait until after the merge window now to send a pull request for this
-> one so will be rc2ish before it's in.
-
-Sure, as pointed out by Dan it seems to work due to size of wrong structure is
-bigger than needed, thus it's not a critical fix.
+5b1413f00b5b wil6210: fix break that is never reached because of zero'ing of a retry counter
 
 -- 
-With Best Regards,
-Andy Shevchenko
+https://patchwork.kernel.org/patch/11246193/
 
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 

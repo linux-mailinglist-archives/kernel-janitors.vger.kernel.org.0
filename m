@@ -2,56 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 11598109030
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Nov 2019 15:39:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 36142109083
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Nov 2019 15:57:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728219AbfKYOji (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 25 Nov 2019 09:39:38 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:45467 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728071AbfKYOjf (ORCPT
+        id S1728308AbfKYO5g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 25 Nov 2019 09:57:36 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:33296 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728071AbfKYO5g (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 Nov 2019 09:39:35 -0500
-Received: by mail-wr1-f65.google.com with SMTP id z10so18269157wrs.12;
-        Mon, 25 Nov 2019 06:39:34 -0800 (PST)
+        Mon, 25 Nov 2019 09:57:36 -0500
+Received: by mail-wr1-f67.google.com with SMTP id w9so18505728wrr.0;
+        Mon, 25 Nov 2019 06:57:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ecueCuKSr37n+vkm31GM7A+71gfejKdjoOMSUhMBo2o=;
-        b=VVrUFOsJGQExRW2rDxIPa6RJmJnRc7IGGJkgd4Ak9GySSwa9AdmDhwCCuTYARJKBcT
-         e0zltgd1kPZbnQTSye+EphEnJf2yE6gIXhsm5h9IQ99Hx1qLzOadICfMyHwV1/3MK4Oq
-         uWDjDBnrLW6KwgVlhdKnTtpkIfjNI3pJuLOh16qWQ7YH3irQQf3Vo6xbXQwJHlVz+QkH
-         meJFoGpfhu07JRlCX7zcMCcgJ3fa9JZPNHbxHPdKPP2XzFx4M/JYawF8QmQXG8OBdJKW
-         Vzv/kK4zxK0wDkO5nsIvoC2oH2hJwClBj4fKkhKIT+ErrUc3kNQ5dHi1C5bJqzW2EuD9
-         Uc2w==
+        bh=jMq2KmDJf7iQgH3rZI9pg6UxlMOPDJy2jieZWQCQ8nI=;
+        b=rzMXb7o0TAY6RWesHVl44pC4iQEZk1ctSEX4GZHqmoWPZbrWKl8jb4vRyaFN4ggRw6
+         5PM+TypGT8XJRM7wGBV4OabX5ZxYTUbGu3rJRJYmuQjdCEEq7QL3zDokS8q9Ua9ZqNzD
+         5E32LPcycp+Ex493L681zivfN6C9fCq2suxi+Zir3hfzxKF/ZiaIj4GAGBPrQb5hevBf
+         NbE640+GHW6QnGlDHF1u7UdIm1oRRhrl3f18iRx2KaSd6Uk5j8BKAgOIQ6VZMF8RM8Yq
+         dj4hgxZLihzHNERrxlVZZhYy1fiMwd7Y4bSb6smaApqcL/UwG/6iWoC9mM+VUCM+Pqn7
+         F5sg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ecueCuKSr37n+vkm31GM7A+71gfejKdjoOMSUhMBo2o=;
-        b=hYP7Ecx50UhzI80kaapjz/m/S3WL559IXj7pE21MizcIgxvQumZwKZuxmLYsdXFRqX
-         lcEEAo4ELcAxRSwyBBkWWmCVZKQ/83bTOAqfyHraKYRHZt/fTW7/r3LxlPUAKb44TTno
-         pJyq86WHylprwjuamYiXMNrjs05Kti/y96iQ2s5yHXFH0AClqgUnUNxgB8OmeXqHRsWy
-         hLJcBjX7r1ngS7hfRW5MBjwt2YlDrFz+wChEaaYUL8l1rwH0O81wgYBTqD4tH/dMdk3S
-         imDRSkyvwjrZBW99bDUBH64q/WanlW4m5UTe971NrC9jEoJA0B47eDWLtOpNFW23HPOQ
-         K2Ug==
-X-Gm-Message-State: APjAAAXuaQ9QjWJAM+hnGBst5F1kIk9Q8Ua482XppBrKMegnGU9ugwRJ
-        gDM7IoYikDTo8T/xeuf+J3FZhz/0oHsV0XV444I=
-X-Google-Smtp-Source: APXvYqyjTXu9vQHknVXc4ju7K1dNWI7kc+GqpCB40hEyro6dQNA7puIeMT9WyIgbJMLN5Wo8ImF120mcCzV/rPW+ujc=
-X-Received: by 2002:adf:f54c:: with SMTP id j12mr13947842wrp.40.1574692773362;
- Mon, 25 Nov 2019 06:39:33 -0800 (PST)
+        bh=jMq2KmDJf7iQgH3rZI9pg6UxlMOPDJy2jieZWQCQ8nI=;
+        b=P8XG2GtV7zUyV9Zgn80WQYBR0MkHgM3TWMGi39yRTFpGbBiQJ/zF/dvJrf/HMcXMQ6
+         AikWQipS/hCwJDhTOxvyp1Z0n+JEWV6DV142b74OiTk8CbX/e7cyw7e2pLNtNp66TqDE
+         FUY6x5m0ed/2zlUszC3hXhp3vcoT0ECcPyTYcVit5u+uYHNU4CObr3pxnSoDiu4VmRdK
+         n7gweh4jMZlG/OP3l3Ux8xXyBAqlVaoARbdfJFGcWQTM3Wyy4HEzSEO/sy5DFtFjmF+U
+         xXqd2aC03RxTnj/4WqhlxrpBxsY/sQgoOEnYnwk2XNvUQ16zmmTwAhcKwWI/JBirmR+x
+         d2oA==
+X-Gm-Message-State: APjAAAWZ2zetqN6l/wFS5csaP0/6/w61r3buqs1fX16fIA8mowGJkVTX
+        AXg0kST7d96m3d6gzV7YMWnpf9jwqp4ls4CfSKA=
+X-Google-Smtp-Source: APXvYqyBEBz4DLhGwEqnQXuuwgtnvhxvND5xJo5P1g3sikTl//dUv2f4kUmgIXuJ3Pa/Vhr3kgUox46acpI1LPdnN2M=
+X-Received: by 2002:adf:9d87:: with SMTP id p7mr12269294wre.11.1574693853836;
+ Mon, 25 Nov 2019 06:57:33 -0800 (PST)
 MIME-Version: 1.0
-References: <20191122230407.109636-1-colin.king@canonical.com>
-In-Reply-To: <20191122230407.109636-1-colin.king@canonical.com>
+References: <20191122231504.109948-1-colin.king@canonical.com>
+In-Reply-To: <20191122231504.109948-1-colin.king@canonical.com>
 From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Mon, 25 Nov 2019 09:39:21 -0500
-Message-ID: <CADnq5_PN99cigjruAv38y2KHHdrNY2VAqKhD_K3yUoO01Q4b_w@mail.gmail.com>
-Subject: Re: [PATCH] drm/amd/powerplay: remove redundant assignment to
- variables HiSidd and LoSidd
+Date:   Mon, 25 Nov 2019 09:57:20 -0500
+Message-ID: <CADnq5_OhXB-FC8ZGVUpv3LSk2WJ1RMymHfnv5ge0yiqErFxNUA@mail.gmail.com>
+Subject: Re: [PATCH] drm/radeon: remove redundant assignment to variable ret
 To:     Colin King <colin.king@canonical.com>
-Cc:     Rex Zhu <rex.zhu@amd.com>, Evan Quan <evan.quan@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
         =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
         David Zhou <David1.Zhou@amd.com>,
         David Airlie <airlied@linux.ie>,
@@ -66,40 +64,38 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Nov 22, 2019 at 6:04 PM Colin King <colin.king@canonical.com> wrote:
+On Fri, Nov 22, 2019 at 6:15 PM Colin King <colin.king@canonical.com> wrote:
 >
 > From: Colin Ian King <colin.king@canonical.com>
 >
-> The variables HiSidd and LoSidd are being initialized with values that
-> are never read and are being updated a little later with a new value.
-> The initialization is redundant and can be removed.
+> The variable ret is being initialized with a value that is never
+> read and it is being updated later with a new value. The
+> initialization is redundant and can be removed.
 >
 > Addresses-Coverity: ("Unused value")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Applied.  Thanks!
+Applied.  thanks!
 
 Alex
 
 > ---
->  drivers/gpu/drm/amd/powerplay/smumgr/ci_smumgr.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  drivers/gpu/drm/radeon/si_dpm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/gpu/drm/amd/powerplay/smumgr/ci_smumgr.c b/drivers/gpu/drm/amd/powerplay/smumgr/ci_smumgr.c
-> index 15590fd86ef4..868e2d5f6e62 100644
-> --- a/drivers/gpu/drm/amd/powerplay/smumgr/ci_smumgr.c
-> +++ b/drivers/gpu/drm/amd/powerplay/smumgr/ci_smumgr.c
-> @@ -653,8 +653,8 @@ static int ci_min_max_v_gnbl_pm_lid_from_bapm_vddc(struct pp_hwmgr *hwmgr)
->  static int ci_populate_bapm_vddc_base_leakage_sidd(struct pp_hwmgr *hwmgr)
+> diff --git a/drivers/gpu/drm/radeon/si_dpm.c b/drivers/gpu/drm/radeon/si_dpm.c
+> index 8148a7883de4..346315b3eebe 100644
+> --- a/drivers/gpu/drm/radeon/si_dpm.c
+> +++ b/drivers/gpu/drm/radeon/si_dpm.c
+> @@ -5899,7 +5899,7 @@ static int si_patch_single_dependency_table_based_on_leakage(struct radeon_devic
+>
+>  static int si_patch_dependency_tables_based_on_leakage(struct radeon_device *rdev)
 >  {
->         struct ci_smumgr *smu_data = (struct ci_smumgr *)(hwmgr->smu_backend);
-> -       uint16_t HiSidd = smu_data->power_tune_table.BapmVddCBaseLeakageHiSidd;
-> -       uint16_t LoSidd = smu_data->power_tune_table.BapmVddCBaseLeakageLoSidd;
-> +       uint16_t HiSidd;
-> +       uint16_t LoSidd;
->         struct phm_cac_tdp_table *cac_table = hwmgr->dyn_state.cac_dtp_table;
+> -       int ret = 0;
+> +       int ret;
 >
->         HiSidd = (uint16_t)(cac_table->usHighCACLeakage / 100 * 256);
+>         ret = si_patch_single_dependency_table_based_on_leakage(rdev,
+>                                                                 &rdev->pm.dpm.dyn_state.vddc_dependency_on_sclk);
 > --
 > 2.24.0
 >

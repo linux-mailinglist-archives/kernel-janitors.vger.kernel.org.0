@@ -2,82 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5A83108DAD
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Nov 2019 13:15:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5047A108E21
+	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Nov 2019 13:44:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727484AbfKYMPA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 25 Nov 2019 07:15:00 -0500
-Received: from a27-185.smtp-out.us-west-2.amazonses.com ([54.240.27.185]:56476
-        "EHLO a27-185.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725868AbfKYMPA (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 Nov 2019 07:15:00 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574684099;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date;
-        bh=FYS9WywPAdYEkfH5HwtBByCXzTvOkzfIsREpBKqsp2Q=;
-        b=k33wwE1sDLEH5lvh2dQgQ6AGE9noYYXlWHB4n28pLiGfeUroOxaFidRUYPVFPRcA
-        h9lIpEvpL8I2H5TmJyy8CQ5XWlqgAfK0ktDHHSMoD3fn2mjSq8mRROUmsoKvHSLSIdc
-        uAvxBoZp7DWDApzfrbYCOwrGwL9KbT8GA44I3olM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574684099;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:Cc:Message-Id:Date:Feedback-ID;
-        bh=FYS9WywPAdYEkfH5HwtBByCXzTvOkzfIsREpBKqsp2Q=;
-        b=JAQUZMQA7hAvQZk6uUmWvW6GoN24nuu4KP4Cocmn47L/RPAqE6h9NST0i0alTxDp
-        yXE6SLEmhEPayhFxW11PBHUNmccEbKgxqxJrwzUZOG+Wcts5WFBNYCEawv8XgPiH0Pk
-        1LAkIY2qWTuDqTaQfWBOGEwQuOhXp5n6BysUTH4A=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D993DC76F45
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        id S1727150AbfKYMnv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 25 Nov 2019 07:43:51 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:44254 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725823AbfKYMnv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 25 Nov 2019 07:43:51 -0500
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 0B714EF4C4A529C8E644;
+        Mon, 25 Nov 2019 20:43:44 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.439.0; Mon, 25 Nov 2019 20:43:36 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <vladimir.oltean@nxp.com>, <claudiu.manoil@nxp.com>,
+        <andrew@lunn.ch>, <vivien.didelot@gmail.com>,
+        <f.fainelli@gmail.com>, <davem@davemloft.net>
+CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>
+Subject: [PATCH net v3] net: dsa: ocelot: add dependency for NET_DSA_MSCC_FELIX
+Date:   Mon, 25 Nov 2019 20:41:10 +0800
+Message-ID: <20191125124110.145595-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <3e9d6100-6965-da85-c310-6e1a9318f61d@huawei.com>
+References: <3e9d6100-6965-da85-c310-6e1a9318f61d@huawei.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wil6210: fix break that is never reached because of
- zero'ing of a retry counter
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191115120953.48137-1-colin.king@canonical.com>
-References: <20191115120953.48137-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Maya Erez <merez@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, wil6210@qti.qualcomm.com,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-ID: <0101016ea27c8290-6a36151e-699b-46d6-a206-290403315074-000000@us-west-2.amazonses.com>
-Date:   Mon, 25 Nov 2019 12:14:59 +0000
-X-SES-Outgoing: 2019.11.25-54.240.27.185
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+If CONFIG_NET_DSA_MSCC_FELIX=y, and CONFIG_NET_VENDOR_MICROSEMI=n,
+below errors can be found:
+drivers/net/dsa/ocelot/felix.o: In function `felix_vlan_del':
+felix.c:(.text+0x26e): undefined reference to `ocelot_vlan_del'
+drivers/net/dsa/ocelot/felix.o: In function `felix_vlan_add':
+felix.c:(.text+0x352): undefined reference to `ocelot_vlan_add'
 
-> There is a check on the retry counter invalid_buf_id_retry that is always
-> false because invalid_buf_id_retry is initialized to zero on each iteration
-> of a while-loop.  Fix this by initializing the retry counter before the
-> while-loop starts.
-> 
-> Addresses-Coverity: ("Logically dead code")
-> Fixes: b4a967b7d0f5 ("wil6210: reset buff id in status message after completion")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Reviewed-by: Maya Erez <merez@codeaurora.org>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+and warning as below:
+WARNING: unmet direct dependencies detected for MSCC_OCELOT_SWITCH
+Depends on [n]: NETDEVICES [=y] && ETHERNET [=y] &&
+NET_VENDOR_MICROSEMI [=n] && NET_SWITCHDEV [=y] && HAS_IOMEM [=y]
+Selected by [y]:
+NET_DSA_MSCC_FELIX [=y] && NETDEVICES [=y] && HAVE_NET_DSA [=y]
+&& NET_DSA [=y] && PCI [=y]
 
-Patch applied to ath-next branch of ath.git, thanks.
+This patch is to select NET_VENDOR_MICROSEMI and add dependency
+NET_SWITCHDEV, HAS_IOMEM for NET_DSA_MSCC_FELIX.
 
-5b1413f00b5b wil6210: fix break that is never reached because of zero'ing of a retry counter
+Fixes: 56051948773e ("net: dsa: ocelot: add driver for Felix switch family")
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ v3: add depends on NET_SWITCHDEV and HAS_IOMEM.
+ v2: modify 'depends on' to 'select'.
+ drivers/net/dsa/ocelot/Kconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
+diff --git a/drivers/net/dsa/ocelot/Kconfig b/drivers/net/dsa/ocelot/Kconfig
+index 0031ca814346..1ec2dfbd76ce 100644
+--- a/drivers/net/dsa/ocelot/Kconfig
++++ b/drivers/net/dsa/ocelot/Kconfig
+@@ -2,6 +2,9 @@
+ config NET_DSA_MSCC_FELIX
+ 	tristate "Ocelot / Felix Ethernet switch support"
+ 	depends on NET_DSA && PCI
++	depends on NET_SWITCHDEV
++	depends on HAS_IOMEM
++	select NET_VENDOR_MICROSEMI
+ 	select MSCC_OCELOT_SWITCH
+ 	select NET_DSA_TAG_OCELOT
+ 	help
 -- 
-https://patchwork.kernel.org/patch/11246193/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+2.20.1
 

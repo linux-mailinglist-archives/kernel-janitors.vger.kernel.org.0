@@ -2,144 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C2527109458
-	for <lists+kernel-janitors@lfdr.de>; Mon, 25 Nov 2019 20:42:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A37B4109863
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 05:52:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726980AbfKYTmf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 25 Nov 2019 14:42:35 -0500
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:47097 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725818AbfKYTmf (ORCPT
+        id S1729640AbfKZEwc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 25 Nov 2019 23:52:32 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:57846 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729626AbfKZEwb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 Nov 2019 14:42:35 -0500
-Received: by mail-ed1-f68.google.com with SMTP id t11so13814873eds.13;
-        Mon, 25 Nov 2019 11:42:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rf3FSO6RUL2bsEm6SKsnvhlblxptOIwHTATB1ub2D/4=;
-        b=oSZsoT+f47GWVRRm3j7pkBFxUkbOyax80NZhlw5o2tcfTYK8m6gcG7oAsJ4KNb3Dzd
-         p+GEpKoY1ufJmF6JVVgRMTT4QDkrbpz8utavFZE3LGRnn55EoSFKYHtCDRFDpjzfn/Jy
-         ejNHceETPcc9zO0k3ZtK4HeDJ5F861+/0qLrt2cqeANxp38EW5uHpOZcDw7Axtzwiq26
-         64MDwdAGMOCtVbYMd8tlB+/As4jZsiy83uLPTVLmfOh03k9FqYNs6OTwadYyQyBaquVH
-         /qZqs0Dl43hCquTl9K3GKZcJ6d8ZpBWSi0uFs2JlXk637JrOdWcmeOVoNwj2TVDX/qBs
-         YRHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rf3FSO6RUL2bsEm6SKsnvhlblxptOIwHTATB1ub2D/4=;
-        b=miyy/v90QrwLWfkbbJCQ1MZigF/tepgGUutvmNSBm5HkHpUKMxQv4XdkwJx1Ue+/zT
-         myFiabC+iIenkpg/yfLYANn6I5gZwidcRxKDLrmtztIE80k2XUIIJpreRvtdSdq61lJm
-         wDokUEENtyTsVEQXc4qcSaAl38Bh8OH1sRD8JEeUA9SKRkV71a/HZ2oHQf+qvHyy+6Lj
-         5duuRuQmtcDC/9P6B7u37oqkb7zIQpeM6ebWvJVGarC0sYdyntiCKL+M0fqrzZfSTZ7x
-         WycZraT1pds3MyjKC/ufkOLnppGUMB4mft8qgQSh0tG5dohX8fhQFYAbs/Rlo8BOlX2v
-         TvlA==
-X-Gm-Message-State: APjAAAWPDn+enVIZ05OrJ4AfsKiYNw0KcgDFYsmDi/Q9g82l9fJOkf56
-        evMxOEDwhRxVQrJzVlR2DzzlEsr5OS189LIz18s=
-X-Google-Smtp-Source: APXvYqyrTzA9w7jUCwyffl2Ii7h5REuqFEe9pHEjYqfkJ4Rk0ikLFyjWW95W5CsA4t+ayxFALMnt5vIEn160QKL2344=
-X-Received: by 2002:a17:906:4910:: with SMTP id b16mr38694023ejq.133.1574710953610;
- Mon, 25 Nov 2019 11:42:33 -0800 (PST)
-MIME-Version: 1.0
-References: <3e9d6100-6965-da85-c310-6e1a9318f61d@huawei.com> <20191125124110.145595-1-maowenan@huawei.com>
-In-Reply-To: <20191125124110.145595-1-maowenan@huawei.com>
-From:   Vladimir Oltean <olteanv@gmail.com>
-Date:   Mon, 25 Nov 2019 21:42:22 +0200
-Message-ID: <CA+h21hphrWr84wHGj1U4fVHd8OdmpGVPeouznCCPrZC05PLcig@mail.gmail.com>
-Subject: Re: [PATCH net v3] net: dsa: ocelot: add dependency for NET_DSA_MSCC_FELIX
-To:     Mao Wenan <maowenan@huawei.com>
-Cc:     Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Claudiu Manoil <claudiu.manoil@nxp.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        netdev <netdev@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
+        Mon, 25 Nov 2019 23:52:31 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQ4n5en136542;
+        Tue, 26 Nov 2019 04:52:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=px4UVOHmBMQFSbsmmo+gAq1ZrSLk2MVlqZaq1ybrBa4=;
+ b=KXvWCB5eytJ+Lf/dFLDRjZrNAzrt1wt39nIxAJbB3rLLIbrsgdnxcYpx6T+oqV4XKS4m
+ fAgoDDcc4Pl71r1v3vDovWlqKVE8jam6AJe0rGO0J6dDqLcxa2uZ2FC3hGhoosnI5wUc
+ fu79M+KkUBD+gS6bisbLELX7VjzqN90Ov5S6kjsykQ5cmHIgHuA+vgY6cSiYkIVfvOxL
+ RTaz1zW1vas0K+11SVyR3nJgX1fNbhQrY+l2RuvWyke7Vdq5oCMgggT4Zox4Hj59kQGR
+ cEBkg8egH7rY1N1ix/cl646ZlBt4KCwtPjlurmSNtYm6vaolqWq19t5NBvokV4uFfNfC wQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 2wev6u43xd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 26 Nov 2019 04:52:14 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQ4n1Jt137817;
+        Tue, 26 Nov 2019 04:50:14 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 2wgvh99tmh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 26 Nov 2019 04:50:14 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xAQ4o94a016699;
+        Tue, 26 Nov 2019 04:50:10 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 25 Nov 2019 20:50:09 -0800
+Date:   Tue, 26 Nov 2019 07:49:56 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Felix Fietkau <nbd@nbd.name>
+Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Ryder Lee <ryder.lee@mediatek.com>,
+        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
         kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: [PATCH] mt76: Off by one in mt76_calc_rx_airtime()
+Message-ID: <20191121213935.2cbgh3qmd4hv4v5a@kili.mountain>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=756
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1911260039
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=817 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1911260039
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, 25 Nov 2019 at 14:47, Mao Wenan <maowenan@huawei.com> wrote:
->
-> If CONFIG_NET_DSA_MSCC_FELIX=y, and CONFIG_NET_VENDOR_MICROSEMI=n,
-> below errors can be found:
-> drivers/net/dsa/ocelot/felix.o: In function `felix_vlan_del':
-> felix.c:(.text+0x26e): undefined reference to `ocelot_vlan_del'
-> drivers/net/dsa/ocelot/felix.o: In function `felix_vlan_add':
-> felix.c:(.text+0x352): undefined reference to `ocelot_vlan_add'
->
-> and warning as below:
-> WARNING: unmet direct dependencies detected for MSCC_OCELOT_SWITCH
-> Depends on [n]: NETDEVICES [=y] && ETHERNET [=y] &&
-> NET_VENDOR_MICROSEMI [=n] && NET_SWITCHDEV [=y] && HAS_IOMEM [=y]
-> Selected by [y]:
-> NET_DSA_MSCC_FELIX [=y] && NETDEVICES [=y] && HAVE_NET_DSA [=y]
-> && NET_DSA [=y] && PCI [=y]
->
-> This patch is to select NET_VENDOR_MICROSEMI and add dependency
-> NET_SWITCHDEV, HAS_IOMEM for NET_DSA_MSCC_FELIX.
->
-> Fixes: 56051948773e ("net: dsa: ocelot: add driver for Felix switch family")
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> ---
+The sband->bitrates[] array has "sband->n_bitrates" elements so this
+check needs to be >= instead of > or we could read beyond the end of the
+array.
 
-NET_DSA already selects NET_SWITCHDEV
-MSCC_OCELOT_SWITCH already selects HAS_IOMEM
-As for NET_VENDOR_MICROSEMI, does anyone care what are the results
-after Kconfig prints this?
+These values come from when we call mt76_register_device():
 
-WARNING: unmet direct dependencies detected for MSCC_OCELOT_SWITCH
-  Depends on [n]: NETDEVICES [=y] && ETHERNET [=y] &&
-NET_VENDOR_MICROSEMI [=n] && NET_SWITCHDEV [=y] && HAS_IOMEM [=y]
-  Selected by [y]:
-  - NET_DSA_MSCC_FELIX [=y] && NETDEVICES [=y] && HAVE_NET_DSA [=y] &&
-NET_DSA [=y] && PCI [=y]
+	ret = mt76_register_device(&dev->mt76, true, mt7603_rates,
+				   ARRAY_SIZE(mt7603_rates));
 
-WARNING: unmet direct dependencies detected for MSCC_OCELOT_SWITCH
-  Depends on [n]: NETDEVICES [=y] && ETHERNET [=y] &&
-NET_VENDOR_MICROSEMI [=n] && NET_SWITCHDEV [=y] && HAS_IOMEM [=y]
-  Selected by [y]:
-  - NET_DSA_MSCC_FELIX [=y] && NETDEVICES [=y] && HAVE_NET_DSA [=y] &&
-NET_DSA [=y] && PCI [=y]
+Here sband->bitrates[] is mt7603_rates[] and ->n_bitrates is the
+ARRAY_SIZE()
 
-WARNING: unmet direct dependencies detected for MSCC_OCELOT_SWITCH
-  Depends on [n]: NETDEVICES [=y] && ETHERNET [=y] &&
-NET_VENDOR_MICROSEMI [=n] && NET_SWITCHDEV [=y] && HAS_IOMEM [=y]
-  Selected by [y]:
-  - NET_DSA_MSCC_FELIX [=y] && NETDEVICES [=y] && HAVE_NET_DSA [=y] &&
-NET_DSA [=y] && PCI [=y]
+Fixes: 5ce09c1a7907 ("mt76: track rx airtime for airtime fairness and survey")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/net/wireless/mediatek/mt76/airtime.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-If yes. why?
+diff --git a/drivers/net/wireless/mediatek/mt76/airtime.c b/drivers/net/wireless/mediatek/mt76/airtime.c
+index 55116f395f9a..a4a785467748 100644
+--- a/drivers/net/wireless/mediatek/mt76/airtime.c
++++ b/drivers/net/wireless/mediatek/mt76/airtime.c
+@@ -242,7 +242,7 @@ u32 mt76_calc_rx_airtime(struct mt76_dev *dev, struct mt76_rx_status *status,
+ 			return 0;
+ 
+ 		sband = dev->hw->wiphy->bands[status->band];
+-		if (!sband || status->rate_idx > sband->n_bitrates)
++		if (!sband || status->rate_idx >= sband->n_bitrates)
+ 			return 0;
+ 
+ 		rate = &sband->bitrates[status->rate_idx];
+-- 
+2.11.0
 
-It's like executing code after return.
-
->  v3: add depends on NET_SWITCHDEV and HAS_IOMEM.
->  v2: modify 'depends on' to 'select'.
->  drivers/net/dsa/ocelot/Kconfig | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/drivers/net/dsa/ocelot/Kconfig b/drivers/net/dsa/ocelot/Kconfig
-> index 0031ca814346..1ec2dfbd76ce 100644
-> --- a/drivers/net/dsa/ocelot/Kconfig
-> +++ b/drivers/net/dsa/ocelot/Kconfig
-> @@ -2,6 +2,9 @@
->  config NET_DSA_MSCC_FELIX
->         tristate "Ocelot / Felix Ethernet switch support"
->         depends on NET_DSA && PCI
-> +       depends on NET_SWITCHDEV
-> +       depends on HAS_IOMEM
-> +       select NET_VENDOR_MICROSEMI
->         select MSCC_OCELOT_SWITCH
->         select NET_DSA_TAG_OCELOT
->         help
-> --
-> 2.20.1
->
-
-Regards,
--Vladimir

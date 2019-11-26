@@ -2,65 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 78326109DD3
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 13:22:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 763B5109DCD
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 13:21:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728325AbfKZMWV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Nov 2019 07:22:21 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:60536 "EHLO
+        id S1728341AbfKZMVn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Nov 2019 07:21:43 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:59772 "EHLO
         userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727646AbfKZMWU (ORCPT
+        with ESMTP id S1727733AbfKZMVn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 Nov 2019 07:22:20 -0500
+        Tue, 26 Nov 2019 07:21:43 -0500
 Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQCIx9a124963;
-        Tue, 26 Nov 2019 12:21:44 GMT
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQCIur5124856;
+        Tue, 26 Nov 2019 12:21:29 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=NTQIxt40LXfPQACIce5FWudimuSPwGtXy3yV8KLOGjQ=;
- b=MiwPrVHWn/rErJvfdi9x6MuStdUbsbeOq4GkmuccGxSZU5dmh967RQTzI0nT8PEZbazK
- 43dmaymnDA/45ZqxxGInsqfjNyQwm8djmPjirEXS7vM29+a8unEoeO4OlQwXinVw5c7H
- HnmODH4bm5jFm3i4h4oocdsvTk7PocwAsbwxFtbQV2yb0EzwrwBbqh7P6cOgLWJ5maka
- oWg/x63AofLPDPauGL/iEJDUlWPSbN3YpuWwXcpTC/vIB/VqRgCHJJfRMO3fc+6EdqWP
- /P1PyrTv9Y3BSv6g+U9dOYLRvwIrAu5bVA5MGW1Pv42zLP7R62PBIa2mE/E3MqOv4YuZ sw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 2wev6u6es0-1
+ bh=yHWs0d6oK6yP4BkI2TKi1Xcr0/D0UZ96ZCkXeVdaLPE=;
+ b=nS9IB1SuLUn7B9LfrFFRxQHsIIrBvyx1OMeyfUg5Ju4IC60w9Gmt5z1dwMm8VEjwUFky
+ AZB1oH5n3z+BCvLZPcyQnJk6fUHFYHTxML65OjLOhgYKY9CINhcNL2be8UJg/AbM4Smm
+ htv4qzYUDAH90WBr+VPBrv0uOKhCj3r1we3vSyaTTgKddp/SAobJVBPRzOkJWHIrLKh4
+ e/IzQsFHKFO539ZXOHHQ1csG0CW429ls4NXT3vHZIVIXdi+hkyngmn0XX7oQhoK+Cqr/
+ UKWC5jPZ2/0D5b+YAyMaWysxMsMsXTWNhgY0mwPUPeAUMP/2IdnF+/UiOw+G/OJtHjRH cw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2wev6u6er5-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 26 Nov 2019 12:21:44 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQC8Vxd017105;
-        Tue, 26 Nov 2019 12:19:43 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 2wh0rbe47x-1
+        Tue, 26 Nov 2019 12:21:29 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQC8Wo1050153;
+        Tue, 26 Nov 2019 12:21:28 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by aserp3030.oracle.com with ESMTP id 2wgwush3b5-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 26 Nov 2019 12:19:43 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xAQCJffZ006109;
-        Tue, 26 Nov 2019 12:19:42 GMT
+        Tue, 26 Nov 2019 12:21:28 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xAQCLRfe022357;
+        Tue, 26 Nov 2019 12:21:28 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 26 Nov 2019 04:19:41 -0800
-Date:   Tue, 26 Nov 2019 15:19:34 +0300
+        with ESMTP ; Tue, 26 Nov 2019 04:21:27 -0800
+Date:   Tue, 26 Nov 2019 15:21:20 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] Silence an uninitialized variable warning
-Message-ID: <20191126121934.kuolgbm55dirfbay@kili.mountain>
+To:     Zaibo Xu <xuzaibo@huawei.com>
+Cc:     Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>,
+        Longfang Liu <liulongfang@huawei.com>,
+        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] crypto: hisilicon - fix a NULL vs IS_ERR() bug in
+ sec_create_qp_ctx()
+Message-ID: <20191126122120.vnf6mxmvf25ppyeo@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 User-Agent: NeoMutt/20170113 (1.7.2)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=907
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.0.1-1911140001 definitions=main-1911260110
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=969 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
  definitions=main-1911260110
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -68,28 +71,36 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Smatch complains that "ret" could be uninitialized if we don't enter the
-loop.  I don't know if that's possible, but it's nicer to return a
-literal zero instead.
+The hisi_acc_create_sgl_pool() function returns error pointers, it never
+returns NULL pointers.
 
+Fixes: 416d82204df4 ("crypto: hisilicon - add HiSilicon SEC V2 driver")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- kernel/trace/trace_syscalls.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/hisilicon/sec2/sec_crypto.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/trace_syscalls.c b/kernel/trace/trace_syscalls.c
-index 73140d80dd46..63528f458826 100644
---- a/kernel/trace/trace_syscalls.c
-+++ b/kernel/trace/trace_syscalls.c
-@@ -286,7 +286,7 @@ static int __init syscall_enter_define_fields(struct trace_event_call *call)
- 		offset += sizeof(unsigned long);
+diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+index dc1eb97d57f7..62b04e19067c 100644
+--- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
++++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+@@ -179,14 +179,14 @@ static int sec_create_qp_ctx(struct hisi_qm *qm, struct sec_ctx *ctx,
+ 
+ 	qp_ctx->c_in_pool = hisi_acc_create_sgl_pool(dev, QM_Q_DEPTH,
+ 						     SEC_SGL_SGE_NR);
+-	if (!qp_ctx->c_in_pool) {
++	if (IS_ERR(qp_ctx->c_in_pool)) {
+ 		dev_err(dev, "fail to create sgl pool for input!\n");
+ 		goto err_free_req_list;
  	}
  
--	return ret;
-+	return 0;
- }
- 
- static void ftrace_syscall_enter(void *data, struct pt_regs *regs, long id)
+ 	qp_ctx->c_out_pool = hisi_acc_create_sgl_pool(dev, QM_Q_DEPTH,
+ 						      SEC_SGL_SGE_NR);
+-	if (!qp_ctx->c_out_pool) {
++	if (IS_ERR(qp_ctx->c_out_pool)) {
+ 		dev_err(dev, "fail to create sgl pool for output!\n");
+ 		goto err_free_c_in_pool;
+ 	}
 -- 
 2.11.0
 

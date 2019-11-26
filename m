@@ -2,101 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C452109B2D
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 10:23:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ADEDE109D9A
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 13:12:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727488AbfKZJXF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Nov 2019 04:23:05 -0500
-Received: from a27-56.smtp-out.us-west-2.amazonses.com ([54.240.27.56]:59502
-        "EHLO a27-56.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727426AbfKZJXE (ORCPT
+        id S1727621AbfKZMMS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Nov 2019 07:12:18 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:49126 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727400AbfKZMMS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 Nov 2019 04:23:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574760183;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding;
-        bh=7JpzEUgPOKikbM97IChytjtM3nmMVXbRuF7hhQqzTtk=;
-        b=YA/tyK82LHumSpEpCFWDLmOaetKqnkbnaoObQiDDyPIhPmZHbgvxVq1DMkIXnAE4
-        kEO/lJfbHF38htcLXE3krmVK1if+JNbWEHnIK/X/zoiggYu3518Vls3ZlVD5sVnEZNh
-        vZThe+S2zzGhqk6Pnsopfg0xZs/PEPnKvr3NOc2c=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574760183;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Feedback-ID;
-        bh=7JpzEUgPOKikbM97IChytjtM3nmMVXbRuF7hhQqzTtk=;
-        b=BjtA1MQ71QM0IztHwb5Cbc2NPlfve8mrpRE2TuhZlda6NxqcB2M9zWxfLGuvZQqY
-        GU8lLmbQ59QADwawv/S4Mh+eWq+bMkZ02Ps14wFWmb00QaDi3wVKekOMpqQCq+XhhJT
-        Z0XmlUg5uaUE6uH1BEp3hP8iWoYNDWHM3P8HfzM8=
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 3D393C447BA
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Felix Fietkau <nbd@nbd.name>,
+        Tue, 26 Nov 2019 07:12:18 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQC8pDw116272;
+        Tue, 26 Nov 2019 12:11:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type :
+ content-transfer-encoding : in-reply-to; s=corp-2019-08-05;
+ bh=/mBMxIIlBQ+XFxgJu+74RNcnTy1AckJgoUjuyVpyT6M=;
+ b=UVaFVpmuP55to/4hV4BOtz3AZvc5zUuB3/8JIbNJ3e06RElBJFpqC+Tx1TL3KyhLoQ/k
+ u3zhfsAW/k12OWQV+IEYJ5JpEacsTWx5zZTSllioxe0ChSgcQMI9QcbRcMIC8DIvsQbi
+ upraQTttR8lYgFES0JQfCJ9468zZzLIJwYtrWzrk90D9PNKBuupuh11p5E/NtF8Jhks8
+ DC58PlwnmpFUGrYu+Fe6ujIIzOHsGlQhWHDDOr9pQVDZdGs9lgMSCaxccJnAMbLDcNPk
+ UZTOBbusz+/m5gcHzW7aYZS/RCLeKsz8lPg4yjiR0XGZ9He+Mvbe+ZpVSGWszAse1HON sg== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 2wev6u6d8m-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 26 Nov 2019 12:11:53 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQC8Rtb089382;
+        Tue, 26 Nov 2019 12:09:53 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 2wgvfjddd7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 26 Nov 2019 12:09:52 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xAQC9pAO018135;
+        Tue, 26 Nov 2019 12:09:51 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 26 Nov 2019 04:09:49 -0800
+Date:   Tue, 26 Nov 2019 15:09:39 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Johannes Berg <johannes@sipsolutions.net>,
+        Toke H??iland-J??rgensen <toke@redhat.com>
+Cc:     linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
         Ryder Lee <ryder.lee@mediatek.com>,
-        Roy Luo <royluo@google.com>,
+        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] mt76: Off by one in mt76_calc_rx_airtime()
-References: <20191121213935.2cbgh3qmd4hv4v5a@kili.mountain>
-        <87v9r7ysg0.fsf@toke.dk> <20191126091150.GA1759@kadam>
-        <87h82ryp45.fsf@toke.dk>
-Date:   Tue, 26 Nov 2019 09:23:03 +0000
-In-Reply-To: <87h82ryp45.fsf@toke.dk> ("Toke \=\?utf-8\?Q\?H\=C3\=B8iland-J\?\=
- \=\?utf-8\?Q\?\=C3\=B8rgensen\=22's\?\= message of
-        "Tue, 26 Nov 2019 10:16:10 +0100")
-Message-ID: <0101016ea705771d-08dd7963-f8f7-447a-a0fb-4ad9093ec24d-000000@us-west-2.amazonses.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        linux-mediatek@lists.infradead.org
+Subject: [PATCH] mac80211: airtime: Fix an off by one in
+ ieee80211_calc_rx_airtime()
+Message-ID: <20191126120910.ftr4t7me3by32aiz@kili.mountain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-SES-Outgoing: 2019.11.26-54.240.27.56
-Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
+Content-Type: text/plain; charset=unknown-8bit
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87v9r7ysg0.fsf@toke.dk>
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1911260110
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1911260110
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com> writes:
+This code was copied from mt76 and inherited an off by one bug from
+there.  The > should be >= so that we don't read one element beyond
+the end of the array.
 
-> Dan Carpenter <dan.carpenter@oracle.com> writes:
->
->> On Tue, Nov 26, 2019 at 09:04:15AM +0100, Toke H=C3=B8iland-J=C3=B8rgens=
-en wrote:
->>> Dan Carpenter <dan.carpenter@oracle.com> writes:
->>>=20
->>> > @@ -242,7 +242,7 @@ u32 mt76_calc_rx_airtime(struct mt76_dev *dev, st=
-ruct mt76_rx_status *status,
->>> >  			return 0;
->>> >=20=20
->>> >  		sband =3D dev->hw->wiphy->bands[status->band];
->>> > -		if (!sband || status->rate_idx > sband->n_bitrates)
->>> > +		if (!sband || status->rate_idx >=3D sband->n_bitrates)
->>> >  			return 0;
->>> >=20=20
->>> >  		rate =3D &sband->bitrates[status->rate_idx];
->>>=20
->>> This code has recently been ported to mac80211 (net/mac80211/airtime.c).
->>> It seems that the bug is also present there; care to send a patch for
->>> that as well? :)
->>
->> Oh.  Thanks for pointing that out.  I actually saw the static checker
->> warning for that and ignored it thinking that it was the same code.
->> :P
->
-> Well, it's copy-pasted from the same code ;)
->
-> The plan is to get rid of the version inside mt76; was waiting for the
-> trees to converge, though, so I guess after the merge window?
+Fixes: db3e1c40cf2f ("mac80211: Import airtime calculation code from mt76")
+Reported-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ net/mac80211/airtime.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yup, as I'm not taking anything to w-d-next until -rc1 is released.
+diff --git a/net/mac80211/airtime.c b/net/mac80211/airtime.c
+index 63cb0028b02d..9fc2968856c0 100644
+--- a/net/mac80211/airtime.c
++++ b/net/mac80211/airtime.c
+@@ -442,7 +442,7 @@ u32 ieee80211_calc_rx_airtime(struct ieee80211_hw *hw,
+ 			return 0;
+ 
+ 		sband = hw->wiphy->bands[status->band];
+-		if (!sband || status->rate_idx > sband->n_bitrates)
++		if (!sband || status->rate_idx >= sband->n_bitrates)
+ 			return 0;
+ 
+ 		rate = &sband->bitrates[status->rate_idx];
+-- 
+2.11.0
 
---=20
-Kalle Valo

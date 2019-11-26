@@ -2,107 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A37B4109863
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 05:52:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75B21109876
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 06:21:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729640AbfKZEwc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 25 Nov 2019 23:52:32 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:57846 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729626AbfKZEwb (ORCPT
+        id S1725886AbfKZFVg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Nov 2019 00:21:36 -0500
+Received: from a27-187.smtp-out.us-west-2.amazonses.com ([54.240.27.187]:45928
+        "EHLO a27-187.smtp-out.us-west-2.amazonses.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725372AbfKZFVf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 25 Nov 2019 23:52:31 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQ4n5en136542;
-        Tue, 26 Nov 2019 04:52:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=px4UVOHmBMQFSbsmmo+gAq1ZrSLk2MVlqZaq1ybrBa4=;
- b=KXvWCB5eytJ+Lf/dFLDRjZrNAzrt1wt39nIxAJbB3rLLIbrsgdnxcYpx6T+oqV4XKS4m
- fAgoDDcc4Pl71r1v3vDovWlqKVE8jam6AJe0rGO0J6dDqLcxa2uZ2FC3hGhoosnI5wUc
- fu79M+KkUBD+gS6bisbLELX7VjzqN90Ov5S6kjsykQ5cmHIgHuA+vgY6cSiYkIVfvOxL
- RTaz1zW1vas0K+11SVyR3nJgX1fNbhQrY+l2RuvWyke7Vdq5oCMgggT4Zox4Hj59kQGR
- cEBkg8egH7rY1N1ix/cl646ZlBt4KCwtPjlurmSNtYm6vaolqWq19t5NBvokV4uFfNfC wQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2wev6u43xd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 26 Nov 2019 04:52:14 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQ4n1Jt137817;
-        Tue, 26 Nov 2019 04:50:14 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 2wgvh99tmh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 26 Nov 2019 04:50:14 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xAQ4o94a016699;
-        Tue, 26 Nov 2019 04:50:10 GMT
-Received: from kili.mountain (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 25 Nov 2019 20:50:09 -0800
-Date:   Tue, 26 Nov 2019 07:49:56 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Felix Fietkau <nbd@nbd.name>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Tue, 26 Nov 2019 00:21:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=zsmsymrwgfyinv5wlfyidntwsjeeldzt; d=codeaurora.org; t=1574745695;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type;
+        bh=Q30J46XsTfdEK32DLeFx32uQEy6aKHBQkOg8LyiaJ/g=;
+        b=jMSromTT4wGbqvBiGV93nCwO+mEMc/kpNfK+oxlkEx/08v4q682z65gDD5nH/B+h
+        Z4ch9CCOMF2a689j2ycXc+Qu5A/4xll8f5G9XON8Mvq1U7lhxqooMrQtTLs9Vfuu03o
+        UfqSK3kfugjZIo9KXsAWZlVzScJjjceg0bj74P40=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+        s=gdwg2y3kokkkj5a55z2ilkup5wp5hhxx; d=amazonses.com; t=1574745695;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:MIME-Version:Content-Type:Feedback-ID;
+        bh=Q30J46XsTfdEK32DLeFx32uQEy6aKHBQkOg8LyiaJ/g=;
+        b=EIbQegTp2O8Hd3lnLMdaKslAzKw+hR8KmFAAGM74WfSmjJeK0AczEMBbj2quSchB
+        z86dssDXpivxLrUTyrfiZdyakR/gV/d5ZDUqRcAF/FzC3XXPBKQwBxRwzir9b7rqlDf
+        +V7TCDdI1OCsBwDjQPPHhexy6WZq11nUBSeR2+AI=
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org BC332C447A6
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
         Ryder Lee <ryder.lee@mediatek.com>,
-        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
+        Roy Luo <royluo@google.com>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] mt76: Off by one in mt76_calc_rx_airtime()
-Message-ID: <20191121213935.2cbgh3qmd4hv4v5a@kili.mountain>
+Subject: Re: [PATCH] mt76: Off by one in mt76_calc_rx_airtime()
+References: <20191121213935.2cbgh3qmd4hv4v5a@kili.mountain>
+Date:   Tue, 26 Nov 2019 05:21:35 +0000
+In-Reply-To: <20191121213935.2cbgh3qmd4hv4v5a@kili.mountain> (Dan Carpenter's
+        message of "Tue, 26 Nov 2019 07:49:56 +0300")
+Message-ID: <0101016ea6286267-0ecbbd3d-bc20-4e42-9f86-34f3d8fc41b6-000000@us-west-2.amazonses.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=756
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1911260039
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=817 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-1911260039
+Content-Type: text/plain
+X-SES-Outgoing: 2019.11.26-54.240.27.187
+Feedback-ID: 1.us-west-2.CZuq2qbDmUIuT3qdvXlRHZZCpfZqZ4GtG9v3VKgRyF0=:AmazonSES
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The sband->bitrates[] array has "sband->n_bitrates" elements so this
-check needs to be >= instead of > or we could read beyond the end of the
-array.
+Dan Carpenter <dan.carpenter@oracle.com> writes:
 
-These values come from when we call mt76_register_device():
+> The sband->bitrates[] array has "sband->n_bitrates" elements so this
+> check needs to be >= instead of > or we could read beyond the end of the
+> array.
+>
+> These values come from when we call mt76_register_device():
+>
+> 	ret = mt76_register_device(&dev->mt76, true, mt7603_rates,
+> 				   ARRAY_SIZE(mt7603_rates));
+>
+> Here sband->bitrates[] is mt7603_rates[] and ->n_bitrates is the
+> ARRAY_SIZE()
+>
+> Fixes: 5ce09c1a7907 ("mt76: track rx airtime for airtime fairness and survey")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-	ret = mt76_register_device(&dev->mt76, true, mt7603_rates,
-				   ARRAY_SIZE(mt7603_rates));
+Should I queue this to v5.5?
 
-Here sband->bitrates[] is mt7603_rates[] and ->n_bitrates is the
-ARRAY_SIZE()
-
-Fixes: 5ce09c1a7907 ("mt76: track rx airtime for airtime fairness and survey")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/net/wireless/mediatek/mt76/airtime.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/airtime.c b/drivers/net/wireless/mediatek/mt76/airtime.c
-index 55116f395f9a..a4a785467748 100644
---- a/drivers/net/wireless/mediatek/mt76/airtime.c
-+++ b/drivers/net/wireless/mediatek/mt76/airtime.c
-@@ -242,7 +242,7 @@ u32 mt76_calc_rx_airtime(struct mt76_dev *dev, struct mt76_rx_status *status,
- 			return 0;
- 
- 		sband = dev->hw->wiphy->bands[status->band];
--		if (!sband || status->rate_idx > sband->n_bitrates)
-+		if (!sband || status->rate_idx >= sband->n_bitrates)
- 			return 0;
- 
- 		rate = &sband->bitrates[status->rate_idx];
 -- 
-2.11.0
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

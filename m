@@ -2,53 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FD72109DC4
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 13:19:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 78326109DD3
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 13:22:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728303AbfKZMTQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Nov 2019 07:19:16 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:46972 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727615AbfKZMTQ (ORCPT
+        id S1728325AbfKZMWV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Nov 2019 07:22:21 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:60536 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727646AbfKZMWU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 Nov 2019 07:19:16 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQCICW0103400;
-        Tue, 26 Nov 2019 12:19:06 GMT
+        Tue, 26 Nov 2019 07:22:20 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQCIx9a124963;
+        Tue, 26 Nov 2019 12:21:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=H5kW62GH3vPPSnBzEG0zyB0k+SIDB5HMgCv653aAMPY=;
- b=E0l4JG1iCJleF4ywLr8NRlZN4BaFWI72mYS+pjvLQxbmhtki0yd0ppXFb7TCxcg4I0cf
- wJyf0DeTGoXRYoPEgP7/uz68jO+CYDZUoQMAxdXTjTpvNbLCD3dOsjuf2zxnzYlyBhq2
- PVLWQiciHoB1RgsoTlGxoRoQTZjGLK7mbYVcpn+RciyTBA1Ts+0xcz39+duBQaKcFEJx
- s1JlpqzITQ5R1OogxygIjwGVxw32HufCuWBRLPvB9C/unpmFiNT0r4LKh+ZQketMauOU
- xZ+AdbtMJ9u4etTj18nn15Ao90uoi8117XoMrMLLA7FyRa7odcTNqIQmXIi+46X/2yke Ug== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 2wewdr6b2d-1
+ bh=NTQIxt40LXfPQACIce5FWudimuSPwGtXy3yV8KLOGjQ=;
+ b=MiwPrVHWn/rErJvfdi9x6MuStdUbsbeOq4GkmuccGxSZU5dmh967RQTzI0nT8PEZbazK
+ 43dmaymnDA/45ZqxxGInsqfjNyQwm8djmPjirEXS7vM29+a8unEoeO4OlQwXinVw5c7H
+ HnmODH4bm5jFm3i4h4oocdsvTk7PocwAsbwxFtbQV2yb0EzwrwBbqh7P6cOgLWJ5maka
+ oWg/x63AofLPDPauGL/iEJDUlWPSbN3YpuWwXcpTC/vIB/VqRgCHJJfRMO3fc+6EdqWP
+ /P1PyrTv9Y3BSv6g+U9dOYLRvwIrAu5bVA5MGW1Pv42zLP7R62PBIa2mE/E3MqOv4YuZ sw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2wev6u6es0-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 26 Nov 2019 12:19:06 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQC8j9M033395;
-        Tue, 26 Nov 2019 12:19:06 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 2wgvh9wfhh-1
+        Tue, 26 Nov 2019 12:21:44 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQC8Vxd017105;
+        Tue, 26 Nov 2019 12:19:43 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 2wh0rbe47x-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 26 Nov 2019 12:19:05 +0000
-Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xAQCJ2m1020759;
-        Tue, 26 Nov 2019 12:19:03 GMT
+        Tue, 26 Nov 2019 12:19:43 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xAQCJffZ006109;
+        Tue, 26 Nov 2019 12:19:42 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 26 Nov 2019 04:19:02 -0800
-Date:   Tue, 26 Nov 2019 15:18:54 +0300
+        with ESMTP ; Tue, 26 Nov 2019 04:19:41 -0800
+Date:   Tue, 26 Nov 2019 15:19:34 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>
-Cc:     Vivien Didelot <vivien.didelot@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH net] net: dsa: silence a static checker warning
-Message-ID: <20191126121854.6omnd7upthqsrwgj@kili.mountain>
+Subject: [PATCH] Silence an uninitialized variable warning
+Message-ID: <20191126121934.kuolgbm55dirfbay@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -61,7 +59,7 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 ma
  engine=8.0.1-1911140001 definitions=main-1911260110
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
  definitions=main-1911260110
@@ -70,30 +68,28 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This code is harmless but it triggers a Smatch static checker warning:
+Smatch complains that "ret" could be uninitialized if we don't enter the
+loop.  I don't know if that's possible, but it's nicer to return a
+literal zero instead.
 
-    net/dsa/tag_8021q.c:108 dsa_8021q_restore_pvid()
-    error: uninitialized symbol 'pvid'.
-
-I believe that UBSan will complain at run time as well.  The solution is
-to just re-order the conditions.
-
-Fixes: c80ed84e7688 ("net: dsa: tag_8021q: Fix dsa_8021q_restore_pvid for an absent pvid")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- net/dsa/tag_8021q.c | 2 +-
+ kernel/trace/trace_syscalls.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/dsa/tag_8021q.c b/net/dsa/tag_8021q.c
-index 9e5a883a9f0c..4dd1dc27bc98 100644
---- a/net/dsa/tag_8021q.c
-+++ b/net/dsa/tag_8021q.c
-@@ -106,7 +106,7 @@ static int dsa_8021q_restore_pvid(struct dsa_switch *ds, int port)
- 	slave = ds->ports[port].slave;
+diff --git a/kernel/trace/trace_syscalls.c b/kernel/trace/trace_syscalls.c
+index 73140d80dd46..63528f458826 100644
+--- a/kernel/trace/trace_syscalls.c
++++ b/kernel/trace/trace_syscalls.c
+@@ -286,7 +286,7 @@ static int __init syscall_enter_define_fields(struct trace_event_call *call)
+ 		offset += sizeof(unsigned long);
+ 	}
  
- 	err = br_vlan_get_pvid(slave, &pvid);
--	if (!pvid || err < 0)
-+	if (err < 0 || !pvid)
- 		/* There is no pvid on the bridge for this port, which is
- 		 * perfectly valid. Nothing to restore, bye-bye!
- 		 */
+-	return ret;
++	return 0;
+ }
+ 
+ static void ftrace_syscall_enter(void *data, struct pt_regs *regs, long id)
+-- 
+2.11.0
+

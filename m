@@ -2,94 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 10F29109E20
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 13:39:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AFA3109E47
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 13:50:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726005AbfKZMje (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Nov 2019 07:39:34 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:57981 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725911AbfKZMje (ORCPT
+        id S1727300AbfKZMuU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Nov 2019 07:50:20 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:57606 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727279AbfKZMuU (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 Nov 2019 07:39:34 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574771972;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=2VadMJ/aSgwHbJpMFCv+DTeYpcUUQbzgSGAFUkGztGI=;
-        b=I+n1a04PDquNnhrGADsS0lR/W+tTsiwGsngBdVd2zoihx0W50qxQ0p/yjwfdHkkKXJoj4P
-        06bd2gY6PCAdzlAaMBrc9LUrmB7IPHIt42Xd5MdNJaaeAB40SyhK+itcmf7HsRHnZpRUoz
-        WdFcFNlkxmbQmhoJenBreg40EF7dZzg=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-103-JAaqZP7uO-yxThQJn2dOPg-1; Tue, 26 Nov 2019 07:39:31 -0500
-Received: by mail-lj1-f198.google.com with SMTP id l12so3689581ljg.21
-        for <kernel-janitors@vger.kernel.org>; Tue, 26 Nov 2019 04:39:30 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version:content-transfer-encoding;
-        bh=2VadMJ/aSgwHbJpMFCv+DTeYpcUUQbzgSGAFUkGztGI=;
-        b=O+XRocRLliJygmrSUNKyUhDMMsOUDcE1FzvT40EeXbES3q1D/mD1Hmy4aH9L9as2UZ
-         aikAsM+69AsvBj2JHgS5sbRZMN5/b3oE3R4RaM4dPFtPJ1j5zbt/z8vO90EMRcO5RNuW
-         9OYppa0tmdNRCcFvxzSS48+D8qteU8sHh6D5a3kbx5QY44YBpZ5H+WSTwjb+0PVFeGAI
-         By3JVFXYrE0Kxma988g+F/OVx+bzO5BaG+wmrJ7AxAM6yuyRsiO1jnAs8x27o/fQUIBp
-         B2mzDRfKtzELz/5YwYibfd060PLsYCRh8flaerNdxrUZk+VQXUQOdeEVXEWdy0nJ2ItC
-         NtSA==
-X-Gm-Message-State: APjAAAV/S91v77tnSXX3pq8KSkOoTpCWKqQrlsxRZ/VM/gvqx43+4b+/
-        /Yh3de8Php60JrH5bpX3tY6Rnb0R8PZFXHsQJhIpNzpy4Anrl4BqvzCUKhxDLcDkXDpjtPvTnjy
-        t2QXf0PHOXZrrzPBBRtPR54FBIAWd
-X-Received: by 2002:ac2:4102:: with SMTP id b2mr25034840lfi.16.1574771969861;
-        Tue, 26 Nov 2019 04:39:29 -0800 (PST)
-X-Google-Smtp-Source: APXvYqwMUX4nVqQ+FMTokq7ORlBMBeiqIzP7BUvwDeFyDsu8c8xnsq1l+pQCS86d53A3EOuT0b0huQ==
-X-Received: by 2002:ac2:4102:: with SMTP id b2mr25034833lfi.16.1574771969730;
-        Tue, 26 Nov 2019 04:39:29 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([45.145.92.2])
-        by smtp.gmail.com with ESMTPSA id d4sm5140763lfi.32.2019.11.26.04.39.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Nov 2019 04:39:29 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 65E451818BF; Tue, 26 Nov 2019 13:39:28 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Johannes Berg <johannes@sipsolutions.net>
-Cc:     linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
-        Ryder Lee <ryder.lee@mediatek.com>,
-        Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        linux-mediatek@lists.infradead.org
-Subject: Re: [PATCH] mac80211: airtime: Fix an off by one in ieee80211_calc_rx_airtime()
-In-Reply-To: <20191126120910.ftr4t7me3by32aiz@kili.mountain>
-References: <20191126120910.ftr4t7me3by32aiz@kili.mountain>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Tue, 26 Nov 2019 13:39:28 +0100
-Message-ID: <87wobmyfpb.fsf@toke.dk>
+        Tue, 26 Nov 2019 07:50:20 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQCnLEo128298;
+        Tue, 26 Nov 2019 12:50:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=1tULCOdZtJgAhl4pLWcZ8NHA5tNDVBdmjjDfGzHnUHA=;
+ b=LdevkYMY5O3MGyGpN8JaDGmkK8LUs4mjeCIhMyoDUhdFs5HfI7Ta1IFw5KTMENHtB0ut
+ kQ3r6GMa3Q1BZ0z9NAgXlBGlqfb7mNADWpXhJjB+sk1uj2XPlVNYPo4KvH+viJjOfEOk
+ OSaXnqkAtiEYTkrjqt3keA+/ZTdcogOCALgIYXV2OlJtdg+KP8q6lcRK4OtlBj/gtDtS
+ IFMfwlxYtG0qGA1rUkRymVPmIRm+Git6CX+9bgqJf1K9a+bv4G8rLMcVkL1QuLoCqAI6
+ dpvCYqEwk7Isa2LqwqVj8HwOZFGjQGcU3E0sYTnqsPeEbsGZtc1eyxGfmNd2ikOZ5mOm BA== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2wewdr6fcc-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 26 Nov 2019 12:50:15 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQCiXo7172077;
+        Tue, 26 Nov 2019 12:50:15 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 2wgvfjf04n-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 26 Nov 2019 12:50:14 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xAQCoC3Q005686;
+        Tue, 26 Nov 2019 12:50:12 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 26 Nov 2019 04:50:12 -0800
+Date:   Tue, 26 Nov 2019 15:50:03 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Bruce Chang <yu.bruce.chang@intel.com>
+Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] drm/i915: unmap the correct pointer in
+ i915_error_object_create()
+Message-ID: <20191126125003.zpczouqpyr7njwha@kili.mountain>
 MIME-Version: 1.0
-X-MC-Unique: JAaqZP7uO-yxThQJn2dOPg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1911260114
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1911260115
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> writes:
+We should be unmapping "page" instead of "s".  This code originally used
+kmap_atomic() before it was changed to kmap().  The two mapping
+functions are different which leads to this common mistake.
 
-> This code was copied from mt76 and inherited an off by one bug from
-> there.  The > should be >=3D so that we don't read one element beyond
-> the end of the array.
->
-> Fixes: db3e1c40cf2f ("mac80211: Import airtime calculation code from mt76=
-")
-> Reported-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
+Fixes: 3e749f5199e1 ("drm/i915: Avoid atomic context for error capture")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/gpu/drm/i915/i915_gpu_error.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks!
-
-Acked-by: Toke H=C3=B8iland-J=C3=B8rgensen <toke@redhat.com>
+diff --git a/drivers/gpu/drm/i915/i915_gpu_error.c b/drivers/gpu/drm/i915/i915_gpu_error.c
+index 3c85cb0ee99f..6fe23446303b 100644
+--- a/drivers/gpu/drm/i915/i915_gpu_error.c
++++ b/drivers/gpu/drm/i915/i915_gpu_error.c
+@@ -1045,7 +1045,7 @@ i915_error_object_create(struct drm_i915_private *i915,
+ 
+ 			s = kmap(page);
+ 			ret = compress_page(compress, s, dst);
+-			kunmap(s);
++			kunmap(page);
+ 
+ 			drm_clflush_pages(&page, 1);
+ 
+-- 
+2.11.0
 

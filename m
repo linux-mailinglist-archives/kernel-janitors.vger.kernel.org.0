@@ -2,174 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F3D610A086
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 15:41:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A79A10A1E9
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 17:21:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727595AbfKZOkx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Nov 2019 09:40:53 -0500
-Received: from lelv0143.ext.ti.com ([198.47.23.248]:33112 "EHLO
-        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726101AbfKZOkw (ORCPT
+        id S1727135AbfKZQVw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Nov 2019 11:21:52 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:36157 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725972AbfKZQVv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 Nov 2019 09:40:52 -0500
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAQEeiae068708;
-        Tue, 26 Nov 2019 08:40:44 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1574779245;
-        bh=/lX0a4HRjn9vIBiDA09cjjnBJ9xLaVcrKuRQEoaNQrQ=;
-        h=From:To:CC:Subject:Date;
-        b=uB9vMWvbl3SYq7E0dGcUpV5nIkNTddbADqhKRBxjPTuQXL7p9KOCbnnBGRiI2dXjn
-         j0SkdQrkW3JWKlhZ7SpaNQFwwhvkQqPB7r72yyugJlnTKAigFur5U/XFT5o6JMzS/d
-         h/5spFLazLrGzch0C/BA6cZx13dgcZ96UiubGF0A=
-Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
-        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAQEeigl119717;
-        Tue, 26 Nov 2019 08:40:44 -0600
-Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE114.ent.ti.com
- (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 26
- Nov 2019 08:40:44 -0600
-Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE106.ent.ti.com
- (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Tue, 26 Nov 2019 08:40:44 -0600
-Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAQEeiMe086463;
-        Tue, 26 Nov 2019 08:40:44 -0600
-From:   Dan Murphy <dmurphy@ti.com>
-To:     <andrew@lunn.ch>, <f.fainelli@gmail.com>, <hkallweit1@gmail.com>,
-        <davem@davemloft.net>, <netdev@vger.kernel.org>
-CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Dan Murphy <dmurphy@ti.com>
-Subject: [PATCH] net: phy: dp83869: Fix return paths to return proper values
-Date:   Tue, 26 Nov 2019 08:38:56 -0600
-Message-ID: <20191126143856.26451-1-dmurphy@ti.com>
-X-Mailer: git-send-email 2.23.0
+        Tue, 26 Nov 2019 11:21:51 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iZdSS-0002hL-31; Tue, 26 Nov 2019 16:12:56 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Paolo Bonzini <pbonzini@redhat.com>,
+        =?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <rkrcmar@redhat.com>,
+        Sean Christopherson <sean.j.christopherson@intel.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Jim Mattson <jmattson@google.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        kvm@vger.kernel.org, clang-built-linux@googlegroups.com
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] KVM: x86/mmu: fix comparison of u8 with -1
+Date:   Tue, 26 Nov 2019 16:12:55 +0000
+Message-Id: <20191126161255.323992-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fix the return paths for all I/O operations to ensure
-that the I/O completed successfully.  Then pass the return
-to the caller for further processing
+From: Colin Ian King <colin.king@canonical.com>
 
-Reported-by: Andrew Lunn <andrew@lunn.ch>
-Fixes: 01db923e8377 ("net: phy: dp83869: Add TI dp83869 phy")
-Signed-off-by: Dan Murphy <dmurphy@ti.com>
+The comparison of the u8 value __entry->u with -1 is always
+going to be false because a __entry-u can never be negative.
+Fix this by casting it to a s8 integer.
+
+Addresses clang warning:
+arch/x86/kvm/./mmutrace.h:360:16: warning: result of comparison
+of constant -1 with expression of type 'u8' (aka 'unsigned char')
+is always false [-Wtautological-constant-out-of-range-compare]
+
+Fixes: 335e192a3fa4 ("KVM: x86: add tracepoints around __direct_map and FNAME(fetch)")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/phy/dp83869.c | 49 +++++++++++++++++++++------------------
- 1 file changed, 26 insertions(+), 23 deletions(-)
+ arch/x86/kvm/mmutrace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/dp83869.c b/drivers/net/phy/dp83869.c
-index 1c7a7c57dec3..93021904c5e4 100644
---- a/drivers/net/phy/dp83869.c
-+++ b/drivers/net/phy/dp83869.c
-@@ -151,13 +151,13 @@ static int dp83869_config_port_mirroring(struct phy_device *phydev)
- 	struct dp83869_private *dp83869 = phydev->priv;
- 
- 	if (dp83869->port_mirroring == DP83869_PORT_MIRRORING_EN)
--		phy_set_bits_mmd(phydev, DP83869_DEVADDR, DP83869_GEN_CFG3,
--				 DP83869_CFG3_PORT_MIRROR_EN);
-+		return phy_set_bits_mmd(phydev, DP83869_DEVADDR,
-+					DP83869_GEN_CFG3,
-+					DP83869_CFG3_PORT_MIRROR_EN);
- 	else
--		phy_clear_bits_mmd(phydev, DP83869_DEVADDR, DP83869_GEN_CFG3,
--				   DP83869_CFG3_PORT_MIRROR_EN);
--
--	return 0;
-+		return phy_clear_bits_mmd(phydev, DP83869_DEVADDR,
-+					  DP83869_GEN_CFG3,
-+					  DP83869_CFG3_PORT_MIRROR_EN);
- }
- 
- #ifdef CONFIG_OF_MDIO
-@@ -204,7 +204,7 @@ static int dp83869_of_init(struct phy_device *phydev)
- 				 &dp83869->tx_fifo_depth))
- 		dp83869->tx_fifo_depth = DP83869_PHYCR_FIFO_DEPTH_4_B_NIB;
- 
--	return 0;
-+	return ret;
- }
- #else
- static int dp83869_of_init(struct phy_device *phydev)
-@@ -216,7 +216,7 @@ static int dp83869_of_init(struct phy_device *phydev)
- static int dp83869_configure_rgmii(struct phy_device *phydev,
- 				   struct dp83869_private *dp83869)
- {
--	int ret, val;
-+	int ret = 0, val;
- 
- 	if (phy_interface_is_rgmii(phydev)) {
- 		val = phy_read(phydev, MII_DP83869_PHYCTRL);
-@@ -233,13 +233,13 @@ static int dp83869_configure_rgmii(struct phy_device *phydev,
- 	}
- 
- 	if (dp83869->io_impedance >= 0)
--		phy_modify_mmd(phydev, DP83869_DEVADDR,
--			       DP83869_IO_MUX_CFG,
--			       DP83869_IO_MUX_CFG_IO_IMPEDANCE_CTRL,
--			       dp83869->io_impedance &
--			       DP83869_IO_MUX_CFG_IO_IMPEDANCE_CTRL);
-+		ret = phy_modify_mmd(phydev, DP83869_DEVADDR,
-+				     DP83869_IO_MUX_CFG,
-+				     DP83869_IO_MUX_CFG_IO_IMPEDANCE_CTRL,
-+				     dp83869->io_impedance &
-+				     DP83869_IO_MUX_CFG_IO_IMPEDANCE_CTRL);
- 
--	return 0;
-+	return ret;
- }
- 
- static int dp83869_configure_mode(struct phy_device *phydev,
-@@ -284,9 +284,11 @@ static int dp83869_configure_mode(struct phy_device *phydev,
- 			return ret;
- 		break;
- 	case DP83869_RGMII_SGMII_BRIDGE:
--		phy_modify_mmd(phydev, DP83869_DEVADDR, DP83869_OP_MODE,
--			       DP83869_SGMII_RGMII_BRIDGE,
--			       DP83869_SGMII_RGMII_BRIDGE);
-+		ret = phy_modify_mmd(phydev, DP83869_DEVADDR, DP83869_OP_MODE,
-+				     DP83869_SGMII_RGMII_BRIDGE,
-+				     DP83869_SGMII_RGMII_BRIDGE);
-+		if (ret)
-+			return ret;
- 
- 		ret = phy_write_mmd(phydev, DP83869_DEVADDR,
- 				    DP83869_FX_CTRL, DP83869_FX_CTRL_DEFAULT);
-@@ -334,7 +336,7 @@ static int dp83869_configure_mode(struct phy_device *phydev,
- 		return -EINVAL;
- 	};
- 
--	return 0;
-+	return ret;
- }
- 
- static int dp83869_config_init(struct phy_device *phydev)
-@@ -358,12 +360,13 @@ static int dp83869_config_init(struct phy_device *phydev)
- 
- 	/* Clock output selection if muxing property is set */
- 	if (dp83869->clk_output_sel != DP83869_CLK_O_SEL_REF_CLK)
--		phy_modify_mmd(phydev, DP83869_DEVADDR, DP83869_IO_MUX_CFG,
--			       DP83869_IO_MUX_CFG_CLK_O_SEL_MASK,
--			       dp83869->clk_output_sel <<
--			       DP83869_IO_MUX_CFG_CLK_O_SEL_SHIFT);
-+		ret = phy_modify_mmd(phydev,
-+				     DP83869_DEVADDR, DP83869_IO_MUX_CFG,
-+				     DP83869_IO_MUX_CFG_CLK_O_SEL_MASK,
-+				     dp83869->clk_output_sel <<
-+				     DP83869_IO_MUX_CFG_CLK_O_SEL_SHIFT);
- 
--	return 0;
-+	return ret;
- }
- 
- static int dp83869_probe(struct phy_device *phydev)
+diff --git a/arch/x86/kvm/mmutrace.h b/arch/x86/kvm/mmutrace.h
+index 7ca8831c7d1a..3466cd528a67 100644
+--- a/arch/x86/kvm/mmutrace.h
++++ b/arch/x86/kvm/mmutrace.h
+@@ -357,7 +357,7 @@ TRACE_EVENT(
+ 		  __entry->r ? "r" : "-",
+ 		  __entry->spte & PT_WRITABLE_MASK ? "w" : "-",
+ 		  __entry->x ? "x" : "-",
+-		  __entry->u == -1 ? "" : (__entry->u ? "u" : "-"),
++		  (s8)__entry->u == -1 ? "" : (__entry->u ? "u" : "-"),
+ 		  __entry->level, __entry->sptep
+ 	)
+ );
 -- 
-2.23.0
+2.24.0
 

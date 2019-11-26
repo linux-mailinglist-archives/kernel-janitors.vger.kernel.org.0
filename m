@@ -2,122 +2,125 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C2C511099EA
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 09:04:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ADCC109ACA
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 10:12:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725817AbfKZIEX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Nov 2019 03:04:23 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:54121 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725372AbfKZIEW (ORCPT
+        id S1727305AbfKZJM3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Nov 2019 04:12:29 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:37380 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727028AbfKZJM2 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 Nov 2019 03:04:22 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574755461;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=p0QjVXdu4Y2AOINMSIfcze5ED2P1CMqFasZGrM6CNSw=;
-        b=EOljQEuAhS2stHtrsafrzB2zzXQ1CKrm3bpDYOx3DSJaghqEkOfsl+ZDVtUTe1HEGxKfF9
-        TjeoYbLvl9TCjbP9shqxMOhDXk83KcT7gm7FFzuu0eqJPSJWxpnAzZRHD3L2XF7cG7Lrio
-        beDORihE6zcWk0nYKEsNB53YKVP6w2M=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-151-kuIjnRWbOhuuXr7V4gOxUg-1; Tue, 26 Nov 2019 03:04:20 -0500
-Received: by mail-lf1-f72.google.com with SMTP id u14so1972568lfg.3
-        for <kernel-janitors@vger.kernel.org>; Tue, 26 Nov 2019 00:04:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=xAdyr+rwPBLDYub0Hn/ky8FJbrCeMk6nQjNxbDanCII=;
-        b=mpdCjaNR+Lvp51QkqkuvYMzJDgW2Dg5as+nfNE+taUoQ6CfLn8Wn0c+MbxPM+yxikm
-         /a5NClAJ05MSLGUrlSSvnuRZweHvktUW3qL4yCc8HLtI5wKhNH4P4pYIgQnkA17FPiiS
-         8mbnQF9HlQDV+TE+KejN+YwAagZdaZaPmnOj7d6eucEOz2XyvhtGEGp1WgUzABiBvEco
-         dGgFdKhFdgDVofT2Dx4T3Yz0sAOITsp7fD5FVKdTkT5Iimnn6zTS2Lz9LXEtLqrKMShh
-         4MlHaAocsgcvw7a8406uLhbbos6TReUVmWdG69p+4BLWluarIfhlvwecEmUU6zRYVzER
-         CNlQ==
-X-Gm-Message-State: APjAAAWPrtyl1V8ZiPSXu8SFJNhqvT1Tc+lsi/E2i6V3JOoP5iA1661F
-        B2E2c54nL7GJSN/ukTruJijUWoP9fumMyuRi+DQkp5hWjhEj6EtZUb8ySaQjKMfZtiVEoUdTtp/
-        vkvJJoJnp1S6cdQVgq8e0ikZ+h7++
-X-Received: by 2002:ac2:4553:: with SMTP id j19mr24471016lfm.142.1574755458233;
-        Tue, 26 Nov 2019 00:04:18 -0800 (PST)
-X-Google-Smtp-Source: APXvYqw32eL/XdPUwR/CzkaxG5SqjRG2kkpXaZKBrJPo2BO5WZZmA6tdOKC/JAyRfetBu+oBmdQytA==
-X-Received: by 2002:ac2:4553:: with SMTP id j19mr24470996lfm.142.1574755458008;
-        Tue, 26 Nov 2019 00:04:18 -0800 (PST)
-Received: from alrua-x1.borgediget.toke.dk ([2a0c:4d80:42:443::2])
-        by smtp.gmail.com with ESMTPSA id n14sm4744577lfe.40.2019.11.26.00.04.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Nov 2019 00:04:17 -0800 (PST)
-Received: by alrua-x1.borgediget.toke.dk (Postfix, from userid 1000)
-        id 5460B1818BF; Tue, 26 Nov 2019 09:04:15 +0100 (CET)
-From:   Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Felix Fietkau <nbd@nbd.name>
-Cc:     Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
+        Tue, 26 Nov 2019 04:12:28 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQ99ZwJ151182;
+        Tue, 26 Nov 2019 09:12:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ content-transfer-encoding : in-reply-to; s=corp-2019-08-05;
+ bh=vBFYxD5eX5SLS6j0PeqYaAQGAAnUoAlDa0EHrwQ2cYQ=;
+ b=qMQWtk+bDq0kTRJwbilMILum8GO4rnDA7RGWWqUU9uNr6nC46XzppUSSvLtpTWlcoEOk
+ HTX3adywYy9leOJ6q7ZrO8yMix2r3Tmihub+Uqs6SExe1xs+3/cWKM8P7x92DOEyqkPH
+ PTkHKes/ZHDhUewtluDDBHKbTvpTePtV03oqjUzxFDYB1g1GMbV3vYAKvoE+QCeIGyOp
+ 6wfStDdG1G2P0N3raXe0bi06u8kAj1/e/4VicfvfU92XIhFZg5VYpwGsToj1JBCuSm/j
+ O9SiVa57MokasSGmiaNPqGjATtMZbIKahJq4OEO6J1jU2ojZmnBBKbYbJ+IcVCjniwZC Jw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 2wevqq5d3c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 26 Nov 2019 09:12:02 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQ98vPV014671;
+        Tue, 26 Nov 2019 09:12:02 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2wgwus9d81-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 26 Nov 2019 09:12:02 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xAQ9C0cx025823;
+        Tue, 26 Nov 2019 09:12:00 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 26 Nov 2019 01:11:59 -0800
+Date:   Tue, 26 Nov 2019 12:11:50 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>
+Cc:     Felix Fietkau <nbd@nbd.name>,
+        Lorenzo Bianconi <lorenzo.bianconi83@gmail.com>,
         Ryder Lee <ryder.lee@mediatek.com>,
         Roy Luo <royluo@google.com>, Kalle Valo <kvalo@codeaurora.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         linux-wireless@vger.kernel.org, linux-mediatek@lists.infradead.org,
         kernel-janitors@vger.kernel.org
 Subject: Re: [PATCH] mt76: Off by one in mt76_calc_rx_airtime()
-In-Reply-To: <20191121213935.2cbgh3qmd4hv4v5a@kili.mountain>
+Message-ID: <20191126091150.GA1759@kadam>
 References: <20191121213935.2cbgh3qmd4hv4v5a@kili.mountain>
-X-Clacks-Overhead: GNU Terry Pratchett
-Date:   Tue, 26 Nov 2019 09:04:15 +0100
-Message-ID: <87v9r7ysg0.fsf@toke.dk>
+ <87v9r7ysg0.fsf@toke.dk>
 MIME-Version: 1.0
-X-MC-Unique: kuIjnRWbOhuuXr7V4gOxUg-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87v9r7ysg0.fsf@toke.dk>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1911260083
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1911260083
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> writes:
+On Tue, Nov 26, 2019 at 09:04:15AM +0100, Toke Høiland-Jørgensen wrote:
+> Dan Carpenter <dan.carpenter@oracle.com> writes:
+> 
+> > The sband->bitrates[] array has "sband->n_bitrates" elements so this
+> > check needs to be >= instead of > or we could read beyond the end of the
+> > array.
+> >
+> > These values come from when we call mt76_register_device():
+> >
+> > 	ret = mt76_register_device(&dev->mt76, true, mt7603_rates,
+> > 				   ARRAY_SIZE(mt7603_rates));
+> >
+> > Here sband->bitrates[] is mt7603_rates[] and ->n_bitrates is the
+> > ARRAY_SIZE()
+> >
+> > Fixes: 5ce09c1a7907 ("mt76: track rx airtime for airtime fairness and survey")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> >  drivers/net/wireless/mediatek/mt76/airtime.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/net/wireless/mediatek/mt76/airtime.c b/drivers/net/wireless/mediatek/mt76/airtime.c
+> > index 55116f395f9a..a4a785467748 100644
+> > --- a/drivers/net/wireless/mediatek/mt76/airtime.c
+> > +++ b/drivers/net/wireless/mediatek/mt76/airtime.c
+> > @@ -242,7 +242,7 @@ u32 mt76_calc_rx_airtime(struct mt76_dev *dev, struct mt76_rx_status *status,
+> >  			return 0;
+> >  
+> >  		sband = dev->hw->wiphy->bands[status->band];
+> > -		if (!sband || status->rate_idx > sband->n_bitrates)
+> > +		if (!sband || status->rate_idx >= sband->n_bitrates)
+> >  			return 0;
+> >  
+> >  		rate = &sband->bitrates[status->rate_idx];
+> 
+> This code has recently been ported to mac80211 (net/mac80211/airtime.c).
+> It seems that the bug is also present there; care to send a patch for
+> that as well? :)
 
-> The sband->bitrates[] array has "sband->n_bitrates" elements so this
-> check needs to be >=3D instead of > or we could read beyond the end of th=
-e
-> array.
->
-> These values come from when we call mt76_register_device():
->
-> =09ret =3D mt76_register_device(&dev->mt76, true, mt7603_rates,
-> =09=09=09=09   ARRAY_SIZE(mt7603_rates));
->
-> Here sband->bitrates[] is mt7603_rates[] and ->n_bitrates is the
-> ARRAY_SIZE()
->
-> Fixes: 5ce09c1a7907 ("mt76: track rx airtime for airtime fairness and sur=
-vey")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/net/wireless/mediatek/mt76/airtime.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/net/wireless/mediatek/mt76/airtime.c b/drivers/net/w=
-ireless/mediatek/mt76/airtime.c
-> index 55116f395f9a..a4a785467748 100644
-> --- a/drivers/net/wireless/mediatek/mt76/airtime.c
-> +++ b/drivers/net/wireless/mediatek/mt76/airtime.c
-> @@ -242,7 +242,7 @@ u32 mt76_calc_rx_airtime(struct mt76_dev *dev, struct=
- mt76_rx_status *status,
->  =09=09=09return 0;
-> =20
->  =09=09sband =3D dev->hw->wiphy->bands[status->band];
-> -=09=09if (!sband || status->rate_idx > sband->n_bitrates)
-> +=09=09if (!sband || status->rate_idx >=3D sband->n_bitrates)
->  =09=09=09return 0;
-> =20
->  =09=09rate =3D &sband->bitrates[status->rate_idx];
+Oh.  Thanks for pointing that out.  I actually saw the static checker
+warning for that and ignored it thinking that it was the same code.  :P
 
-This code has recently been ported to mac80211 (net/mac80211/airtime.c).
-It seems that the bug is also present there; care to send a patch for
-that as well? :)
+I will send a fix for it.
 
--Toke
+regards,
+dan carpenter
 

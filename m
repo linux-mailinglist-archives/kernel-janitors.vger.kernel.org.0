@@ -2,113 +2,174 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 07371109FBE
-	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 15:02:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F3D610A086
+	for <lists+kernel-janitors@lfdr.de>; Tue, 26 Nov 2019 15:41:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727939AbfKZOCb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Nov 2019 09:02:31 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:43340 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727719AbfKZOCb (ORCPT
+        id S1727595AbfKZOkx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Nov 2019 09:40:53 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:33112 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726101AbfKZOkw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 Nov 2019 09:02:31 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQDxMpj014966;
-        Tue, 26 Nov 2019 14:02:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=0KmEc5xPHzqBJVfLF5aZg5q51UGChEdbv2XLgUktmpM=;
- b=boUgzl5nwQxhp6UPWxDqvbKRCbefx/ibarVNgJtjx/rqJ0xtHAc+4RHIHE9SrvhYjNoj
- 8nBRAz+B55X8KEwM9WhMXtE9Oc5aff35JOuA5Obxh24R7zMvvo467vBysDDmRtX/bsxh
- SVLNMS2+hyihhG4118M+0ZdW1L4NIEZ8RgMPC8mPcYjjP9+vVyhJU402OK3F6JL0/nmd
- A6ptNdiTV2m60CNH7Gg5vcoEloKtXwmjvh40gVcgki8MMygah84beUbE/x+wxtARqJGz
- 4zgLYqbC8HdRJe8M4e8bFxTaLsx9UG/EojPxKsMXQh3lhl1opt7DLJ441KVmGf3A03fj sw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2130.oracle.com with ESMTP id 2wev6u6yp6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 26 Nov 2019 14:02:22 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAQDwuBU073881;
-        Tue, 26 Nov 2019 14:02:21 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 2wh0rbw7ed-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 26 Nov 2019 14:02:21 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xAQE2Jbk031353;
-        Tue, 26 Nov 2019 14:02:19 GMT
-Received: from kadam (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 26 Nov 2019 06:02:19 -0800
-Date:   Tue, 26 Nov 2019 17:02:12 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc:     Mark Brown <broonie@kernel.org>, linux-spi@vger.kernel.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Vinod Koul <vkoul@kernel.org>, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] spi: pic32: Add a comment in pic32_spi_dma_prep()
-Message-ID: <20191126140212.GC1759@kadam>
-References: <20191126135025.mligekonmv2u6dcl@kili.mountain>
- <67ddc7f2-c67e-708b-0932-af425db04604@ti.com>
+        Tue, 26 Nov 2019 09:40:52 -0500
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id xAQEeiae068708;
+        Tue, 26 Nov 2019 08:40:44 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1574779245;
+        bh=/lX0a4HRjn9vIBiDA09cjjnBJ9xLaVcrKuRQEoaNQrQ=;
+        h=From:To:CC:Subject:Date;
+        b=uB9vMWvbl3SYq7E0dGcUpV5nIkNTddbADqhKRBxjPTuQXL7p9KOCbnnBGRiI2dXjn
+         j0SkdQrkW3JWKlhZ7SpaNQFwwhvkQqPB7r72yyugJlnTKAigFur5U/XFT5o6JMzS/d
+         h/5spFLazLrGzch0C/BA6cZx13dgcZ96UiubGF0A=
+Received: from DLEE114.ent.ti.com (dlee114.ent.ti.com [157.170.170.25])
+        by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAQEeigl119717;
+        Tue, 26 Nov 2019 08:40:44 -0600
+Received: from DLEE106.ent.ti.com (157.170.170.36) by DLEE114.ent.ti.com
+ (157.170.170.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 26
+ Nov 2019 08:40:44 -0600
+Received: from lelv0327.itg.ti.com (10.180.67.183) by DLEE106.ent.ti.com
+ (157.170.170.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Tue, 26 Nov 2019 08:40:44 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0327.itg.ti.com (8.15.2/8.15.2) with ESMTP id xAQEeiMe086463;
+        Tue, 26 Nov 2019 08:40:44 -0600
+From:   Dan Murphy <dmurphy@ti.com>
+To:     <andrew@lunn.ch>, <f.fainelli@gmail.com>, <hkallweit1@gmail.com>,
+        <davem@davemloft.net>, <netdev@vger.kernel.org>
+CC:     <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Dan Murphy <dmurphy@ti.com>
+Subject: [PATCH] net: phy: dp83869: Fix return paths to return proper values
+Date:   Tue, 26 Nov 2019 08:38:56 -0600
+Message-ID: <20191126143856.26451-1-dmurphy@ti.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <67ddc7f2-c67e-708b-0932-af425db04604@ti.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1911260126
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9452 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-1911260126
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Nov 26, 2019 at 03:55:25PM +0200, Peter Ujfalusi wrote:
-> Hi Dan,
-> 
-> On 26/11/2019 15.50, Dan Carpenter wrote:
-> > This code triggers a static checker warning about missed error codes.
-> > It's slightly tricky that we fall back to PIO so let's silence the
-> > checker and add a comment for anyone who is confused.
-> > 
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> > I won't feel offended at all if people don't think it's worth applying
-> > this patch.
-> > 
-> >  drivers/spi/spi-pic32.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/spi/spi-pic32.c b/drivers/spi/spi-pic32.c
-> > index 156961b4ca86..835380ab8bf2 100644
-> > --- a/drivers/spi/spi-pic32.c
-> > +++ b/drivers/spi/spi-pic32.c
-> > @@ -633,8 +633,10 @@ static int pic32_spi_dma_prep(struct pic32_spi *pic32s, struct device *dev)
-> >  		goto out_err;
-> >  	}
-> >  
-> > -	if (pic32_spi_dma_config(pic32s, DMA_SLAVE_BUSWIDTH_1_BYTE))
-> > +	if (pic32_spi_dma_config(pic32s, DMA_SLAVE_BUSWIDTH_1_BYTE)) {
-> > +		ret = 0;  /* Fall back to PIO if DMA fails. */
-> 
-> The 'ret' is initialized to 0 in the function to handle this.
-> After looking at the code again I see that pic32_spi_dma_config() does
-> error prints for failures.
-> 
-> A comment might be enough here if it is even needed.
+Fix the return paths for all I/O operations to ensure
+that the I/O completed successfully.  Then pass the return
+to the caller for further processing
 
-Yeah.  The "ret = 0;" is just to silence static checkers.  It doesn't
-change the object code (except line numbers).  I'm not emotionally
-invested in this patch so if it's too much then that's fine.
+Reported-by: Andrew Lunn <andrew@lunn.ch>
+Fixes: 01db923e8377 ("net: phy: dp83869: Add TI dp83869 phy")
+Signed-off-by: Dan Murphy <dmurphy@ti.com>
+---
+ drivers/net/phy/dp83869.c | 49 +++++++++++++++++++++------------------
+ 1 file changed, 26 insertions(+), 23 deletions(-)
 
-regards,
-dan carpenter
+diff --git a/drivers/net/phy/dp83869.c b/drivers/net/phy/dp83869.c
+index 1c7a7c57dec3..93021904c5e4 100644
+--- a/drivers/net/phy/dp83869.c
++++ b/drivers/net/phy/dp83869.c
+@@ -151,13 +151,13 @@ static int dp83869_config_port_mirroring(struct phy_device *phydev)
+ 	struct dp83869_private *dp83869 = phydev->priv;
+ 
+ 	if (dp83869->port_mirroring == DP83869_PORT_MIRRORING_EN)
+-		phy_set_bits_mmd(phydev, DP83869_DEVADDR, DP83869_GEN_CFG3,
+-				 DP83869_CFG3_PORT_MIRROR_EN);
++		return phy_set_bits_mmd(phydev, DP83869_DEVADDR,
++					DP83869_GEN_CFG3,
++					DP83869_CFG3_PORT_MIRROR_EN);
+ 	else
+-		phy_clear_bits_mmd(phydev, DP83869_DEVADDR, DP83869_GEN_CFG3,
+-				   DP83869_CFG3_PORT_MIRROR_EN);
+-
+-	return 0;
++		return phy_clear_bits_mmd(phydev, DP83869_DEVADDR,
++					  DP83869_GEN_CFG3,
++					  DP83869_CFG3_PORT_MIRROR_EN);
+ }
+ 
+ #ifdef CONFIG_OF_MDIO
+@@ -204,7 +204,7 @@ static int dp83869_of_init(struct phy_device *phydev)
+ 				 &dp83869->tx_fifo_depth))
+ 		dp83869->tx_fifo_depth = DP83869_PHYCR_FIFO_DEPTH_4_B_NIB;
+ 
+-	return 0;
++	return ret;
+ }
+ #else
+ static int dp83869_of_init(struct phy_device *phydev)
+@@ -216,7 +216,7 @@ static int dp83869_of_init(struct phy_device *phydev)
+ static int dp83869_configure_rgmii(struct phy_device *phydev,
+ 				   struct dp83869_private *dp83869)
+ {
+-	int ret, val;
++	int ret = 0, val;
+ 
+ 	if (phy_interface_is_rgmii(phydev)) {
+ 		val = phy_read(phydev, MII_DP83869_PHYCTRL);
+@@ -233,13 +233,13 @@ static int dp83869_configure_rgmii(struct phy_device *phydev,
+ 	}
+ 
+ 	if (dp83869->io_impedance >= 0)
+-		phy_modify_mmd(phydev, DP83869_DEVADDR,
+-			       DP83869_IO_MUX_CFG,
+-			       DP83869_IO_MUX_CFG_IO_IMPEDANCE_CTRL,
+-			       dp83869->io_impedance &
+-			       DP83869_IO_MUX_CFG_IO_IMPEDANCE_CTRL);
++		ret = phy_modify_mmd(phydev, DP83869_DEVADDR,
++				     DP83869_IO_MUX_CFG,
++				     DP83869_IO_MUX_CFG_IO_IMPEDANCE_CTRL,
++				     dp83869->io_impedance &
++				     DP83869_IO_MUX_CFG_IO_IMPEDANCE_CTRL);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int dp83869_configure_mode(struct phy_device *phydev,
+@@ -284,9 +284,11 @@ static int dp83869_configure_mode(struct phy_device *phydev,
+ 			return ret;
+ 		break;
+ 	case DP83869_RGMII_SGMII_BRIDGE:
+-		phy_modify_mmd(phydev, DP83869_DEVADDR, DP83869_OP_MODE,
+-			       DP83869_SGMII_RGMII_BRIDGE,
+-			       DP83869_SGMII_RGMII_BRIDGE);
++		ret = phy_modify_mmd(phydev, DP83869_DEVADDR, DP83869_OP_MODE,
++				     DP83869_SGMII_RGMII_BRIDGE,
++				     DP83869_SGMII_RGMII_BRIDGE);
++		if (ret)
++			return ret;
+ 
+ 		ret = phy_write_mmd(phydev, DP83869_DEVADDR,
+ 				    DP83869_FX_CTRL, DP83869_FX_CTRL_DEFAULT);
+@@ -334,7 +336,7 @@ static int dp83869_configure_mode(struct phy_device *phydev,
+ 		return -EINVAL;
+ 	};
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int dp83869_config_init(struct phy_device *phydev)
+@@ -358,12 +360,13 @@ static int dp83869_config_init(struct phy_device *phydev)
+ 
+ 	/* Clock output selection if muxing property is set */
+ 	if (dp83869->clk_output_sel != DP83869_CLK_O_SEL_REF_CLK)
+-		phy_modify_mmd(phydev, DP83869_DEVADDR, DP83869_IO_MUX_CFG,
+-			       DP83869_IO_MUX_CFG_CLK_O_SEL_MASK,
+-			       dp83869->clk_output_sel <<
+-			       DP83869_IO_MUX_CFG_CLK_O_SEL_SHIFT);
++		ret = phy_modify_mmd(phydev,
++				     DP83869_DEVADDR, DP83869_IO_MUX_CFG,
++				     DP83869_IO_MUX_CFG_CLK_O_SEL_MASK,
++				     dp83869->clk_output_sel <<
++				     DP83869_IO_MUX_CFG_CLK_O_SEL_SHIFT);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int dp83869_probe(struct phy_device *phydev)
+-- 
+2.23.0
+

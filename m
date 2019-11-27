@@ -2,65 +2,89 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E9F0510A8B1
-	for <lists+kernel-janitors@lfdr.de>; Wed, 27 Nov 2019 03:21:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17FB310A8C1
+	for <lists+kernel-janitors@lfdr.de>; Wed, 27 Nov 2019 03:30:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726526AbfK0CVh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 26 Nov 2019 21:21:37 -0500
-Received: from szxga08-in.huawei.com ([45.249.212.255]:58412 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725883AbfK0CVg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 26 Nov 2019 21:21:36 -0500
-Received: from DGGEMM403-HUB.china.huawei.com (unknown [172.30.72.54])
-        by Forcepoint Email with ESMTP id CA40AF7C76B9AB5BCBC5;
-        Wed, 27 Nov 2019 10:21:33 +0800 (CST)
-Received: from dggeme715-chm.china.huawei.com (10.1.199.111) by
- DGGEMM403-HUB.china.huawei.com (10.3.20.211) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Wed, 27 Nov 2019 10:21:33 +0800
-Received: from dggeme763-chm.china.huawei.com (10.3.19.109) by
- dggeme715-chm.china.huawei.com (10.1.199.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id
- 15.1.1713.5; Wed, 27 Nov 2019 10:21:33 +0800
-Received: from dggeme763-chm.china.huawei.com ([10.6.66.36]) by
- dggeme763-chm.china.huawei.com ([10.6.66.36]) with mapi id 15.01.1713.004;
- Wed, 27 Nov 2019 10:21:33 +0800
-From:   linmiaohe <linmiaohe@huawei.com>
-To:     Colin King <colin.king@canonical.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        =?utf-8?B?UmFkaW0gS3LEjW3DocWZ?= <rkrcmar@redhat.com>,
-        Sean Christopherson <sean.j.christopherson@intel.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Jim Mattson <jmattson@google.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-        "clang-built-linux@googlegroups.com" 
-        <clang-built-linux@googlegroups.com>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] KVM: x86/mmu: fix comparison of u8 with -1
-Thread-Topic: [PATCH] KVM: x86/mmu: fix comparison of u8 with -1
-Thread-Index: AdWkyNHy+cUOsrTJRk2lD/BPSadTkg==
-Date:   Wed, 27 Nov 2019 02:21:32 +0000
-Message-ID: <141f8e0da70a400282824a09bcb56501@huawei.com>
-Accept-Language: en-US
-Content-Language: zh-CN
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.184.189.20]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+        id S1726852AbfK0Cau (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 26 Nov 2019 21:30:50 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:48432 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726576AbfK0Cau (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 26 Nov 2019 21:30:50 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAR2TIVC024463;
+        Wed, 27 Nov 2019 02:30:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : references : date : in-reply-to : message-id : mime-version :
+ content-type; s=corp-2019-08-05;
+ bh=JrGo/aJN1mHO7VqhwYPgcCJ1sYT7BsnzcntD5cWkBbM=;
+ b=O5px3CgARI4MisIKP4S7176PGnbI4gAJu45IxJfj8iU5Z2mQovu8FNcaAemuhcRHlouP
+ p5x+EKF6noEVQ1BU1UQ8TtUPa/Fij62/k+GpLETFZYumOCWXU5rnuOdxgHHRX23iQfna
+ 9OIGJpPOgsl6Santlw0uTvKPpnWu17F6TO6hyVq4KDC+cwAHN7iflL81Vyvr0mHgXw3q
+ ozqulC5L+5eAH00xijaMJprY/Wq77M5getG3oungIrU9yu4MHAr/JBBIyA4oQ7nUqMXm
+ 1Jxc5Xp5NBeUKp5UEoOfw6sL8DCMKyDolBBo9Cksnf796galju9b2MlTZwfiB+aA3tWS GA== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 2wevqqag1e-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 27 Nov 2019 02:30:43 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xAR2TBGT151171;
+        Wed, 27 Nov 2019 02:30:42 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 2wgvhb8da8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 27 Nov 2019 02:30:42 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xAR2UcuK026703;
+        Wed, 27 Nov 2019 02:30:38 GMT
+Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 26 Nov 2019 18:30:38 -0800
+To:     Colin King <colin.king@canonical.com>
+Cc:     Jack Wang <jinpu.wang@cloud.ionos.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Deepak Ukey <Deepak.Ukey@microchip.com>,
+        Viswas G <Viswas.G@microchip.com>, linux-scsi@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] scsi: pm80xx: fix logic to break out of loop when register value is 2 or 3
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+References: <20191120135031.270708-1-colin.king@canonical.com>
+Date:   Tue, 26 Nov 2019 21:30:35 -0500
+In-Reply-To: <20191120135031.270708-1-colin.king@canonical.com> (Colin King's
+        message of "Wed, 20 Nov 2019 13:50:31 +0000")
+Message-ID: <yq136ea9hkk.fsf@oracle.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
 MIME-Version: 1.0
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9453 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=975
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1911270018
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9453 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1911270018
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-DQo+IFRoZSBjb21wYXJpc29uIG9mIHRoZSB1OCB2YWx1ZSBfX2VudHJ5LT51IHdpdGggLTEgaXMg
-YWx3YXlzIGdvaW5nIHRvIGJlIGZhbHNlIGJlY2F1c2UNCj4gYSBfX2VudHJ5LXUgY2FuIG5ldmVy
-IGJlIG5lZ2F0aXZlLg0KDQpzL19fZW50cnktdS9fX2VudHJ5LT51Lw0KDQpUaGFua3MuDQo=
+
+Colin,
+
+> The condition (reg_val != 2) || (reg_val != 3) will always be true
+> because reg_val cannot be equal to two different values at the same
+> time. Fix this by replacing the || operator with && so that the loop
+> will loop if reg_val is not a 2 and not a 3 as was originally
+> intended.
+
+Applied to 5.5/scsi-queue, thanks!
+
+-- 
+Martin K. Petersen	Oracle Linux Engineering

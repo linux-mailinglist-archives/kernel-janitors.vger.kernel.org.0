@@ -2,54 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F96E10A9DA
-	for <lists+kernel-janitors@lfdr.de>; Wed, 27 Nov 2019 06:12:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0C2B10AAA6
+	for <lists+kernel-janitors@lfdr.de>; Wed, 27 Nov 2019 07:22:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726181AbfK0FMn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 27 Nov 2019 00:12:43 -0500
-Received: from helcar.hmeau.com ([216.24.177.18]:42046 "EHLO deadmen.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725827AbfK0FMn (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 27 Nov 2019 00:12:43 -0500
-Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
-        by deadmen.hmeau.com with esmtps (Exim 4.89 #2 (Debian))
-        id 1iZpcx-0002y0-KE; Wed, 27 Nov 2019 13:12:35 +0800
-Received: from herbert by gondobar with local (Exim 4.89)
-        (envelope-from <herbert@gondor.apana.org.au>)
-        id 1iZpct-0001mD-Oc; Wed, 27 Nov 2019 13:12:31 +0800
-Date:   Wed, 27 Nov 2019 13:12:31 +0800
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Zaibo Xu <xuzaibo@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Longfang Liu <liulongfang@huawei.com>,
-        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] crypto: hisilicon - fix a NULL vs IS_ERR() bug in
- sec_create_qp_ctx()
-Message-ID: <20191127051231.a3i34iawq666rbwc@gondor.apana.org.au>
-References: <20191126122120.vnf6mxmvf25ppyeo@kili.mountain>
+        id S1726112AbfK0GWI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 27 Nov 2019 01:22:08 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:58670 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726092AbfK0GWI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 27 Nov 2019 01:22:08 -0500
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id E07D67B1CFB1DC994B8D;
+        Wed, 27 Nov 2019 14:22:04 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 27 Nov 2019 14:21:54 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Richard Weinberger <richard@nod.at>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        "Vignesh Raghavendra" <vigneshr@ti.com>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <linux-mtd@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] mtd: ubi: wl: remove set but not used variable 'prev_e'
+Date:   Wed, 27 Nov 2019 06:20:02 +0000
+Message-ID: <20191127062002.23746-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191126122120.vnf6mxmvf25ppyeo@kili.mountain>
-User-Agent: NeoMutt/20170113 (1.7.2)
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Nov 26, 2019 at 03:21:20PM +0300, Dan Carpenter wrote:
-> The hisi_acc_create_sgl_pool() function returns error pointers, it never
-> returns NULL pointers.
-> 
-> Fixes: 416d82204df4 ("crypto: hisilicon - add HiSilicon SEC V2 driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  drivers/crypto/hisilicon/sec2/sec_crypto.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+drivers/mtd/ubi/wl.c: In function 'find_wl_entry':
+drivers/mtd/ubi/wl.c:322:27: warning:
+ variable 'prev_e' set but not used [-Wunused-but-set-variable]
+
+It's not used any more now, so remove it.
+
+Fixes: f9c34bb52997 ("ubi: Fix producing anchor PEBs")
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ drivers/mtd/ubi/wl.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/mtd/ubi/wl.c b/drivers/mtd/ubi/wl.c
+index 5d77a38dba54..837d690a8c60 100644
+--- a/drivers/mtd/ubi/wl.c
++++ b/drivers/mtd/ubi/wl.c
+@@ -319,7 +319,7 @@ static struct ubi_wl_entry *find_wl_entry(struct ubi_device *ubi,
+ 					  struct rb_root *root, int diff)
+ {
+ 	struct rb_node *p;
+-	struct ubi_wl_entry *e, *prev_e = NULL;
++	struct ubi_wl_entry *e;
+ 	int max;
+ 
+ 	e = rb_entry(rb_first(root), struct ubi_wl_entry, u.rb);
+@@ -334,7 +334,6 @@ static struct ubi_wl_entry *find_wl_entry(struct ubi_device *ubi,
+ 			p = p->rb_left;
+ 		else {
+ 			p = p->rb_right;
+-			prev_e = e;
+ 			e = e1;
+ 		}
+ 	}
+
+
+

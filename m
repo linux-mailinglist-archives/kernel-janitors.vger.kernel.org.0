@@ -2,97 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AF10510B486
-	for <lists+kernel-janitors@lfdr.de>; Wed, 27 Nov 2019 18:35:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 028FF10C21E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Nov 2019 03:03:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726990AbfK0RfV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 27 Nov 2019 12:35:21 -0500
-Received: from mail-il1-f193.google.com ([209.85.166.193]:42645 "EHLO
-        mail-il1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726673AbfK0RfV (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 27 Nov 2019 12:35:21 -0500
-Received: by mail-il1-f193.google.com with SMTP id f6so17735899ilh.9;
-        Wed, 27 Nov 2019 09:35:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=m/7eafJgfpqueNmh9ZRZEk1gJa1dWUpLF0+zUtuTQtk=;
-        b=kzH4NtVh4OYNO5XWK5q2X34roBeaEFv1hYVrJESPnFMoeX4x6zh9tBek7hAClUkA4g
-         k0u/lh3gbjt9kDolNMObn5NxGmBbkvjXhXKltFq5DyktQmHKmXKOzcMrleO4B9c8gL6u
-         J7mnuhFXSY7YfFoP6RPu+Bp5dJDR0woy9Z0IHdGYtYOwbPNrf/xDomR1JGfefAL0Liuz
-         Q3G9OtMFeRBKoRex2cSnSpSGpnRJaooF0TyxQo6GhD17UXeaQGoP+0UqqDl0rVRkVKQz
-         WlgoblxJza9sp4/4zTB3Z0fk6DVyt3n2DpJ/WsGkYjh9tgCL1TEagmjQp/WSOa6FD2FM
-         djXQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=m/7eafJgfpqueNmh9ZRZEk1gJa1dWUpLF0+zUtuTQtk=;
-        b=pvtV9tVfjpi6A38PjWtc4YiLQMJyWJ/9RYZzuc9Owtv61kN49PiDw8YR93AngaSos+
-         fLGzLxVTRzKn5Iq+0CTg2NsyJ8UsLphZ59yvVk9PT2NDT2Ju0RpBVmWnGIkvkwT/cFaZ
-         4WLS33zoMjHOF515SE5U9/aJkXcrrczljx2sjEMCKEaHFUdgqOEOFmT0q/X5/WS3oGlE
-         eemYcaA//ri5U686P+MD052ktbSF/cqK/ilou0OVIVZktokOXl/3bavekUlU3VCU4l1d
-         VUlxPO/x+VJPSVnwXBVq65Hh+453qBuGNml3fPvpqPtI/0CJJY6y6mFVnXU3LVCHuDrG
-         UZPw==
-X-Gm-Message-State: APjAAAXgpWVgC8XRkibQys1u5AH7bqwZ+8YDLu+zmuSm5yV8/l1/VOnz
-        lfeT1W/AUTG72yTBdRGxmLIHTMDlPak8kOMbr3E=
-X-Google-Smtp-Source: APXvYqzfpLfQOzc7XEa3BV41a6BtYeGTMMZpACmEKhIdx9LxMLKPyflnCM1JcbwVuzhbPGp9MFPcwKQVTKF6qnH46ag=
-X-Received: by 2002:a92:d642:: with SMTP id x2mr8753929ilp.169.1574876120477;
- Wed, 27 Nov 2019 09:35:20 -0800 (PST)
+        id S1728864AbfK1CDw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 27 Nov 2019 21:03:52 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:6725 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728855AbfK1CDw (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 27 Nov 2019 21:03:52 -0500
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 266E1405FE787B313E56;
+        Thu, 28 Nov 2019 10:03:50 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 28 Nov 2019 10:03:42 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Jeff Dike <jdike@addtoit.com>, Richard Weinberger <richard@nod.at>,
+        "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-um@lists.infradead.org>, <netdev@vger.kernel.org>,
+        <bpf@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] um: vector: use GFP_ATOMIC under spin lock
+Date:   Thu, 28 Nov 2019 02:01:47 +0000
+Message-ID: <20191128020147.191893-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <20191126071650.c76un267i4v6vuoz@kili.mountain>
-In-Reply-To: <20191126071650.c76un267i4v6vuoz@kili.mountain>
-From:   Steve French <smfrench@gmail.com>
-Date:   Wed, 27 Nov 2019 11:35:09 -0600
-Message-ID: <CAH2r5mvtC4Dt3XDigxp5cqwEtjYCnSK3_aATiW0Dt0s9kBtTuA@mail.gmail.com>
-Subject: Re: [PATCH] CIFS: fix a white space issue in cifs_get_inode_info()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Steve French <sfrench@samba.org>, Aurelien Aptel <aaptel@suse.com>,
-        CIFS <linux-cifs@vger.kernel.org>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>,
-        samba-technical <samba-technical@lists.samba.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-merged into cifs-2.6.git for-next
+A spin lock is taken here so we should use GFP_ATOMIC.
 
-On Tue, Nov 26, 2019 at 6:14 AM Dan Carpenter via samba-technical
-<samba-technical@lists.samba.org> wrote:
->
-> We accidentally messed up the indenting on this if statement.
->
-> Fixes: 16c696a6c300 ("CIFS: refactor cifs_get_inode_info()")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->  fs/cifs/inode.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/cifs/inode.c b/fs/cifs/inode.c
-> index 1fec2e7d796a..8a76195e8a69 100644
-> --- a/fs/cifs/inode.c
-> +++ b/fs/cifs/inode.c
-> @@ -967,7 +967,8 @@ cifs_get_inode_info(struct inode **inode,
->                 }
->         } else if (cifs_sb->mnt_cifs_flags & CIFS_MOUNT_CIFS_ACL) {
->                 rc = cifs_acl_to_fattr(cifs_sb, &fattr, *inode, false,
-> -                                      full_path, fid);         if (rc) {
-> +                                      full_path, fid);
-> +               if (rc) {
->                         cifs_dbg(FYI, "%s: Getting ACL failed with error: %d\n",
->                                  __func__, rc);
->                         goto out;
-> --
-> 2.11.0
->
->
+Fixes: 9807019a62dc ("um: Loadable BPF "Firmware" for vector drivers")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ arch/um/drivers/vector_kern.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
+index 92617e16829e..6ff0065a271d 100644
+--- a/arch/um/drivers/vector_kern.c
++++ b/arch/um/drivers/vector_kern.c
+@@ -1402,7 +1402,7 @@ static int vector_net_load_bpf_flash(struct net_device *dev,
+ 		kfree(vp->bpf->filter);
+ 		vp->bpf->filter = NULL;
+ 	} else {
+-		vp->bpf = kmalloc(sizeof(struct sock_fprog), GFP_KERNEL);
++		vp->bpf = kmalloc(sizeof(struct sock_fprog), GFP_ATOMIC);
+ 		if (vp->bpf == NULL) {
+ 			netdev_err(dev, "failed to allocate memory for firmware\n");
+ 			goto flash_fail;
+@@ -1414,7 +1414,7 @@ static int vector_net_load_bpf_flash(struct net_device *dev,
+ 	if (request_firmware(&fw, efl->data, &vdevice->pdev.dev))
+ 		goto flash_fail;
+ 
+-	vp->bpf->filter = kmemdup(fw->data, fw->size, GFP_KERNEL);
++	vp->bpf->filter = kmemdup(fw->data, fw->size, GFP_ATOMIC);
+ 	if (!vp->bpf->filter)
+ 		goto free_buffer;
 
 
--- 
-Thanks,
 
-Steve

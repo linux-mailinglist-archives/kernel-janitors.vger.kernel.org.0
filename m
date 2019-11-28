@@ -2,140 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CD5C610CE0B
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Nov 2019 18:44:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D09A610CFC0
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Nov 2019 23:31:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726692AbfK1Roi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Nov 2019 12:44:38 -0500
-Received: from ivanoab7.miniserver.com ([37.128.132.42]:51574 "EHLO
-        www.kot-begemot.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726609AbfK1Roi (ORCPT
+        id S1726612AbfK1WbM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Nov 2019 17:31:12 -0500
+Received: from out2-smtp.messagingengine.com ([66.111.4.26]:55623 "EHLO
+        out2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726582AbfK1WbM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Nov 2019 12:44:38 -0500
-Received: from tun252.jain.kot-begemot.co.uk ([192.168.18.6] helo=jain.kot-begemot.co.uk)
-        by www.kot-begemot.co.uk with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <anton.ivanov@cambridgegreys.com>)
-        id 1iaNq0-0007Yx-TF; Thu, 28 Nov 2019 17:44:21 +0000
-Received: from jain.kot-begemot.co.uk ([192.168.3.3])
-        by jain.kot-begemot.co.uk with esmtp (Exim 4.92)
-        (envelope-from <anton.ivanov@cambridgegreys.com>)
-        id 1iaNpx-000189-2a; Thu, 28 Nov 2019 17:44:18 +0000
-From:   anton.ivanov@cambridgegreys.com
-To:     linux-um@lists.infradead.org
-Cc:     richard@nod.at, dan.carpenter@oracle.com, weiyongjun1@huawei.com,
-        kernel-janitors@vger.kernel.org, songliubraving@fb.com,
-        daniel@iogearbox.net, ast@kernel.org, netdev@vger.kernel.org,
-        bpf@vger.kernel.org, kafai@fb.com,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Subject: [PATCH] um: vector: fix BPF loading in vector drivers
-Date:   Thu, 28 Nov 2019 17:44:05 +0000
-Message-Id: <20191128174405.4244-1-anton.ivanov@cambridgegreys.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.0
-X-Spam-Score: -1.0
-X-Clacks-Overhead: GNU Terry Pratchett
+        Thu, 28 Nov 2019 17:31:12 -0500
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id 2D3F32248F;
+        Thu, 28 Nov 2019 17:31:11 -0500 (EST)
+Received: from imap2 ([10.202.2.52])
+  by compute4.internal (MEProxy); Thu, 28 Nov 2019 17:31:11 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=
+        mime-version:message-id:in-reply-to:references:date:from:to:cc
+        :subject:content-type; s=fm1; bh=Z6N2dtUd2b7xlsWo9+75kmAEXEFh/6k
+        k7C70gDaO+IM=; b=aBzMWWaDQCaZLJCWK/tAw01tr3vOY/rqWJff6yXoSV/X9qn
+        9CzQ/MqA+67y5kYqX53mWISFWnpTTlSpvewPe0kSFrgodvz9YqQeItgLhO/XrQQj
+        HZci78+K9MLZ3aNSbCIVL4qNzyWmJWlxfbrEyenmED7Crk+hkyrj02uCVJuaPO18
+        v18H1bkSngAmaj/rB8SnDPKzRUA55KAMBwSJWYv6wEZzOAzoEKS0/gICVyrI+fKd
+        8ECz4DCSa4nQfNbF0+SX8fQto9FSDjjh28FacyBOi/ywSAaENPAgamzAp4g+SCtR
+        50vQ69r9KxBUg4RiDa15/D6e+ibpIBpzCzTCqWw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=Z6N2dt
+        Ud2b7xlsWo9+75kmAEXEFh/6kk7C70gDaO+IM=; b=eezsrJTWk/l1M181fX92RG
+        iS6UGzEkbjvsb+taMY2YV3cp4823HLxlWZPf1lWwjZ3Ns0PTnXzVwkcG2yEznCRV
+        88GSa7o8HeyN4kMYVomvCPxT9lIK2cPCZ7QUwhhs7orPz6vixP++Lcqf6HkSTfbu
+        cf49v/PVtvpVkfV496wckmwwE4rHvmQch6O4ChOBWnskjElcdb0jafyByM6xyfzN
+        OXGSnrbGTTM9swrwXKRGhzDZp62qo3wzhFRJr8MWV+PzsidlBy0XYqZNp3Ro/7A6
+        T5/kIGbfl0dltb/cg437o3+EyJSHxRjV6bDwgGgiQPXmB2ys8fmbmQZD3bDzwWIg
+        ==
+X-ME-Sender: <xms:rUrgXU8te6J8t4RnEp7OG_oCn-7XRY8MuBrrjmMMApd8Y1cXkAqurw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedrudeijedgudehkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpefofgggkfgjfhffhffvufgtsehttdertderreejnecuhfhrohhmpedftehn
+    ughrvgifucflvghffhgvrhihfdcuoegrnhgurhgvfiesrghjrdhiugdrrghuqeenucfrrg
+    hrrghmpehmrghilhhfrhhomheprghnughrvgifsegrjhdrihgurdgruhenucevlhhushht
+    vghrufhiiigvpedt
+X-ME-Proxy: <xmx:rUrgXYjDHS8a48sSg-3a8zqRQIlr_IMWEeYy-XSlWoPbwAnPaLG-jg>
+    <xmx:rUrgXRWflTlD87Ucw8_pnKmS3NQ1EZ1U7BhWTiSvZFRgJ3u5o96I0A>
+    <xmx:rUrgXXt9iMxMBEvXYcMW3EMFqUbMg_e3d1FexpiSstq6GQE_wyLN3w>
+    <xmx:r0rgXf_FXQQvLFD9kQYFTJEvjo8YdvbIIHok0EWDhEK3ATQeDIz6dg>
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id 4103FE00A2; Thu, 28 Nov 2019 17:31:09 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.1.7-578-g826f590-fmstable-20191119v1
+Mime-Version: 1.0
+Message-Id: <a709068c-9375-4921-a87f-c5f3a1f63cf2@www.fastmail.com>
+In-Reply-To: <20191122233120.110344-1-colin.king@canonical.com>
+References: <20191122233120.110344-1-colin.king@canonical.com>
+Date:   Fri, 29 Nov 2019 09:02:39 +1030
+From:   "Andrew Jeffery" <andrew@aj.id.au>
+To:     "Colin King" <colin.king@canonical.com>,
+        "Jeremy Kerr" <jk@ozlabs.org>, "Joel Stanley" <joel@jms.id.au>,
+        "Alistair Popple" <alistair@popple.id.au>,
+        "Eddie James" <eajames@linux.ibm.com>,
+        "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
+        linux-fsi@lists.ozlabs.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: =?UTF-8?Q?Re:_[PATCH]_fsi:_fix_bogos_error_returns_from_cfam=5Fread_and_?=
+ =?UTF-8?Q?cfam=5Fwrite?=
+Content-Type: text/plain
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Anton Ivanov <anton.ivanov@cambridgegreys.com>
 
-This fixes a possible hang in bpf firmware loading in the
-UML vector io drivers due to use of GFP_KERNEL while holding
-a spinlock.
 
-Based on a prposed fix by weiyongjun1@huawei.com and suggestions for
-improving it by dan.carpenter@oracle.com
+On Sat, 23 Nov 2019, at 10:01, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> In the case where errors occur in functions cfam_read and cfam_write
+> the error return code in rc is not returned and a bogus non-error
+> count size is returned instead. Fix this by returning the correct
+> error code when an error occurs or the count size if the functions
+> worked correctly.
+> 
+> Addresses-Coverity: ("Unused value")
+> Fixes: d1dcd6782576 ("fsi: Add cfam char devices")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Signed-off-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
----
- arch/um/drivers/vector_kern.c | 38 ++++++++++++++++++-----------------
- 1 file changed, 20 insertions(+), 18 deletions(-)
-
-diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
-index 92617e16829e..dbbc6e850fdd 100644
---- a/arch/um/drivers/vector_kern.c
-+++ b/arch/um/drivers/vector_kern.c
-@@ -1387,6 +1387,7 @@ static int vector_net_load_bpf_flash(struct net_device *dev,
- 	struct vector_private *vp = netdev_priv(dev);
- 	struct vector_device *vdevice;
- 	const struct firmware *fw;
-+	void *new_filter;
- 	int result = 0;
- 
- 	if (!(vp->options & VECTOR_BPF_FLASH)) {
-@@ -1394,6 +1395,15 @@ static int vector_net_load_bpf_flash(struct net_device *dev,
- 		return -1;
- 	}
- 
-+	vdevice = find_device(vp->unit);
-+
-+	if (request_firmware(&fw, efl->data, &vdevice->pdev.dev))
-+		return -1;
-+
-+	new_filter = kmemdup(fw->data, fw->size, GFP_KERNEL);
-+	if (!new_filter)
-+		goto free_buffer;
-+
- 	spin_lock(&vp->lock);
- 
- 	if (vp->bpf != NULL) {
-@@ -1402,41 +1412,33 @@ static int vector_net_load_bpf_flash(struct net_device *dev,
- 		kfree(vp->bpf->filter);
- 		vp->bpf->filter = NULL;
- 	} else {
--		vp->bpf = kmalloc(sizeof(struct sock_fprog), GFP_KERNEL);
-+		vp->bpf = kmalloc(sizeof(struct sock_fprog), GFP_ATOMIC);
- 		if (vp->bpf == NULL) {
- 			netdev_err(dev, "failed to allocate memory for firmware\n");
--			goto flash_fail;
-+			goto apply_flash_fail;
- 		}
- 	}
- 
--	vdevice = find_device(vp->unit);
--
--	if (request_firmware(&fw, efl->data, &vdevice->pdev.dev))
--		goto flash_fail;
--
--	vp->bpf->filter = kmemdup(fw->data, fw->size, GFP_KERNEL);
--	if (!vp->bpf->filter)
--		goto free_buffer;
--
-+	vp->bpf->filter = new_filter;
- 	vp->bpf->len = fw->size / sizeof(struct sock_filter);
--	release_firmware(fw);
- 
- 	if (vp->opened)
- 		result = uml_vector_attach_bpf(vp->fds->rx_fd, vp->bpf);
- 
- 	spin_unlock(&vp->lock);
- 
--	return result;
--
--free_buffer:
- 	release_firmware(fw);
- 
--flash_fail:
-+	return result;
-+
-+apply_flash_fail:
- 	spin_unlock(&vp->lock);
--	if (vp->bpf != NULL)
-+	if (vp->bpf)
- 		kfree(vp->bpf->filter);
- 	kfree(vp->bpf);
--	vp->bpf = NULL;
-+
-+free_buffer:
-+	release_firmware(fw);
- 	return -1;
- }
- 
--- 
-2.20.1
-
+Reviewed-by: Andrew Jeffery <andrew@aj.id.au>

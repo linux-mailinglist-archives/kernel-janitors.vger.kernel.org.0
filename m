@@ -2,63 +2,140 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D14E10C935
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Nov 2019 14:08:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD5C610CE0B
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Nov 2019 18:44:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726558AbfK1NH6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Nov 2019 08:07:58 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:43166 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726252AbfK1NH6 (ORCPT
+        id S1726692AbfK1Roi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Nov 2019 12:44:38 -0500
+Received: from ivanoab7.miniserver.com ([37.128.132.42]:51574 "EHLO
+        www.kot-begemot.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726609AbfK1Roi (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Nov 2019 08:07:58 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iaJWU-0000Ep-1V; Thu, 28 Nov 2019 13:07:54 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jason Wessel <jason.wessel@windriver.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        kgdb-bugreport@lists.sourceforge.net
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] kdb: remove redundant assignment to pointer bp
-Date:   Thu, 28 Nov 2019 13:07:53 +0000
-Message-Id: <20191128130753.181246-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
+        Thu, 28 Nov 2019 12:44:38 -0500
+Received: from tun252.jain.kot-begemot.co.uk ([192.168.18.6] helo=jain.kot-begemot.co.uk)
+        by www.kot-begemot.co.uk with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <anton.ivanov@cambridgegreys.com>)
+        id 1iaNq0-0007Yx-TF; Thu, 28 Nov 2019 17:44:21 +0000
+Received: from jain.kot-begemot.co.uk ([192.168.3.3])
+        by jain.kot-begemot.co.uk with esmtp (Exim 4.92)
+        (envelope-from <anton.ivanov@cambridgegreys.com>)
+        id 1iaNpx-000189-2a; Thu, 28 Nov 2019 17:44:18 +0000
+From:   anton.ivanov@cambridgegreys.com
+To:     linux-um@lists.infradead.org
+Cc:     richard@nod.at, dan.carpenter@oracle.com, weiyongjun1@huawei.com,
+        kernel-janitors@vger.kernel.org, songliubraving@fb.com,
+        daniel@iogearbox.net, ast@kernel.org, netdev@vger.kernel.org,
+        bpf@vger.kernel.org, kafai@fb.com,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Subject: [PATCH] um: vector: fix BPF loading in vector drivers
+Date:   Thu, 28 Nov 2019 17:44:05 +0000
+Message-Id: <20191128174405.4244-1-anton.ivanov@cambridgegreys.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-Spam-Score: -1.0
+X-Spam-Score: -1.0
+X-Clacks-Overhead: GNU Terry Pratchett
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Anton Ivanov <anton.ivanov@cambridgegreys.com>
 
-The point bp is assigned a value that is never read, it is being
-re-assigned later to bp = &kdb_breakpoints[lowbp] in a for-loop.
-Remove the redundant assignment.
+This fixes a possible hang in bpf firmware loading in the
+UML vector io drivers due to use of GFP_KERNEL while holding
+a spinlock.
 
-Addresses-Coverity ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Based on a prposed fix by weiyongjun1@huawei.com and suggestions for
+improving it by dan.carpenter@oracle.com
+
+Signed-off-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
 ---
- kernel/debug/kdb/kdb_bp.c | 1 -
- 1 file changed, 1 deletion(-)
+ arch/um/drivers/vector_kern.c | 38 ++++++++++++++++++-----------------
+ 1 file changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/kernel/debug/kdb/kdb_bp.c b/kernel/debug/kdb/kdb_bp.c
-index 62c301ad0773..d7ebb2c79cb8 100644
---- a/kernel/debug/kdb/kdb_bp.c
-+++ b/kernel/debug/kdb/kdb_bp.c
-@@ -412,7 +412,6 @@ static int kdb_bc(int argc, const char **argv)
- 		 * assume that the breakpoint number is desired.
- 		 */
- 		if (addr < KDB_MAXBPT) {
--			bp = &kdb_breakpoints[addr];
- 			lowbp = highbp = addr;
- 			highbp++;
- 		} else {
+diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
+index 92617e16829e..dbbc6e850fdd 100644
+--- a/arch/um/drivers/vector_kern.c
++++ b/arch/um/drivers/vector_kern.c
+@@ -1387,6 +1387,7 @@ static int vector_net_load_bpf_flash(struct net_device *dev,
+ 	struct vector_private *vp = netdev_priv(dev);
+ 	struct vector_device *vdevice;
+ 	const struct firmware *fw;
++	void *new_filter;
+ 	int result = 0;
+ 
+ 	if (!(vp->options & VECTOR_BPF_FLASH)) {
+@@ -1394,6 +1395,15 @@ static int vector_net_load_bpf_flash(struct net_device *dev,
+ 		return -1;
+ 	}
+ 
++	vdevice = find_device(vp->unit);
++
++	if (request_firmware(&fw, efl->data, &vdevice->pdev.dev))
++		return -1;
++
++	new_filter = kmemdup(fw->data, fw->size, GFP_KERNEL);
++	if (!new_filter)
++		goto free_buffer;
++
+ 	spin_lock(&vp->lock);
+ 
+ 	if (vp->bpf != NULL) {
+@@ -1402,41 +1412,33 @@ static int vector_net_load_bpf_flash(struct net_device *dev,
+ 		kfree(vp->bpf->filter);
+ 		vp->bpf->filter = NULL;
+ 	} else {
+-		vp->bpf = kmalloc(sizeof(struct sock_fprog), GFP_KERNEL);
++		vp->bpf = kmalloc(sizeof(struct sock_fprog), GFP_ATOMIC);
+ 		if (vp->bpf == NULL) {
+ 			netdev_err(dev, "failed to allocate memory for firmware\n");
+-			goto flash_fail;
++			goto apply_flash_fail;
+ 		}
+ 	}
+ 
+-	vdevice = find_device(vp->unit);
+-
+-	if (request_firmware(&fw, efl->data, &vdevice->pdev.dev))
+-		goto flash_fail;
+-
+-	vp->bpf->filter = kmemdup(fw->data, fw->size, GFP_KERNEL);
+-	if (!vp->bpf->filter)
+-		goto free_buffer;
+-
++	vp->bpf->filter = new_filter;
+ 	vp->bpf->len = fw->size / sizeof(struct sock_filter);
+-	release_firmware(fw);
+ 
+ 	if (vp->opened)
+ 		result = uml_vector_attach_bpf(vp->fds->rx_fd, vp->bpf);
+ 
+ 	spin_unlock(&vp->lock);
+ 
+-	return result;
+-
+-free_buffer:
+ 	release_firmware(fw);
+ 
+-flash_fail:
++	return result;
++
++apply_flash_fail:
+ 	spin_unlock(&vp->lock);
+-	if (vp->bpf != NULL)
++	if (vp->bpf)
+ 		kfree(vp->bpf->filter);
+ 	kfree(vp->bpf);
+-	vp->bpf = NULL;
++
++free_buffer:
++	release_firmware(fw);
+ 	return -1;
+ }
+ 
 -- 
-2.24.0
+2.20.1
 

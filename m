@@ -2,130 +2,75 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D80C10C5EB
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Nov 2019 10:24:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 27A1C10C8B3
+	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Nov 2019 13:30:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726520AbfK1JYW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Nov 2019 04:24:22 -0500
-Received: from ivanoab7.miniserver.com ([37.128.132.42]:50718 "EHLO
-        www.kot-begemot.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726181AbfK1JYW (ORCPT
+        id S1726446AbfK1MaC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Nov 2019 07:30:02 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:42533 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726227AbfK1MaC (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Nov 2019 04:24:22 -0500
-Received: from tun252.jain.kot-begemot.co.uk ([192.168.18.6] helo=jain.kot-begemot.co.uk)
-        by www.kot-begemot.co.uk with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <anton.ivanov@cambridgegreys.com>)
-        id 1iaG23-0006JS-1o; Thu, 28 Nov 2019 09:24:16 +0000
-Received: from jain.kot-begemot.co.uk ([192.168.3.3])
-        by jain.kot-begemot.co.uk with esmtp (Exim 4.92)
-        (envelope-from <anton.ivanov@cambridgegreys.com>)
-        id 1iaG20-0006G8-LX; Thu, 28 Nov 2019 09:24:14 +0000
-Subject: Re: [PATCH -next] um: vector: use GFP_ATOMIC under spin lock
-To:     Richard Weinberger <richard@nod.at>
-Cc:     Song Liu <songliubraving@fb.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        linux-um <linux-um@lists.infradead.org>,
-        Jeff Dike <jdike@addtoit.com>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Wei Yongjun <weiyongjun1@huawei.com>,
-        netdev <netdev@vger.kernel.org>, bpf@vger.kernel.org,
-        Martin KaFai Lau <kafai@fb.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-References: <20191128020147.191893-1-weiyongjun1@huawei.com>
- <20191128080641.GD1781@kadam>
- <5892ee7c-ff24-fb3c-6911-44e0b1d5895f@cambridgegreys.com>
- <1784077834.99875.1574930472125.JavaMail.zimbra@nod.at>
-From:   Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Message-ID: <ceedf42c-2dc0-df2e-cf3f-323c675dec78@cambridgegreys.com>
-Date:   Thu, 28 Nov 2019 09:24:12 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Thu, 28 Nov 2019 07:30:02 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iaIvn-0006Kj-A3; Thu, 28 Nov 2019 12:29:59 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Minchan Kim <minchan@kernel.org>, Nitin Gupta <ngupta@vflare.org>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-block@vger.kernel.org
+Subject: [PATCH] zram: fix error return codes not being returned in writeback_store
+Date:   Thu, 28 Nov 2019 12:29:58 +0000
+Message-Id: <20191128122958.178290-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-In-Reply-To: <1784077834.99875.1574930472125.JavaMail.zimbra@nod.at>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.0
-X-Spam-Score: -1.0
-X-Clacks-Overhead: GNU Terry Pratchett
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
+Currently when an error code -EIO or -ENOSPC in the for-loop of
+writeback_store the error code is being overwritten by a ret = len
+assignment at the end of the function and the error codes are being
+lost.  Fix this by assigning ret = len at the start of the function
+and remove the assignment from the end, hence allowing ret to be
+preserved when error codes are assigned to it.
 
-On 28/11/2019 08:41, Richard Weinberger wrote:
-> ----- Ursprüngliche Mail -----
->> Von: "anton ivanov" <anton.ivanov@cambridgegreys.com>
->> An: "Dan Carpenter" <dan.carpenter@oracle.com>, "Wei Yongjun" <weiyongjun1@huawei.com>
->> CC: "Song Liu" <songliubraving@fb.com>, "Daniel Borkmann" <daniel@iogearbox.net>, "kernel-janitors"
->> <kernel-janitors@vger.kernel.org>, "richard" <richard@nod.at>, "Jeff Dike" <jdike@addtoit.com>, "linux-um"
->> <linux-um@lists.infradead.org>, "Alexei Starovoitov" <ast@kernel.org>, "netdev" <netdev@vger.kernel.org>,
->> bpf@vger.kernel.org, "Martin KaFai Lau" <kafai@fb.com>
->> Gesendet: Donnerstag, 28. November 2019 09:18:30
->> Betreff: Re: [PATCH -next] um: vector: use GFP_ATOMIC under spin lock
-> 
->> On 28/11/2019 08:06, Dan Carpenter wrote:
->>> On Thu, Nov 28, 2019 at 02:01:47AM +0000, Wei Yongjun wrote:
->>>> A spin lock is taken here so we should use GFP_ATOMIC.
->>>>
->>>> Fixes: 9807019a62dc ("um: Loadable BPF "Firmware" for vector drivers")
->>>> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
->>>> ---
->>>>    arch/um/drivers/vector_kern.c | 4 ++--
->>>>    1 file changed, 2 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
->>>> index 92617e16829e..6ff0065a271d 100644
->>>> --- a/arch/um/drivers/vector_kern.c
->>>> +++ b/arch/um/drivers/vector_kern.c
->>>> @@ -1402,7 +1402,7 @@ static int vector_net_load_bpf_flash(struct net_device
->>>> *dev,
->>>>    		kfree(vp->bpf->filter);
->>>>    		vp->bpf->filter = NULL;
->>>>    	} else {
->>>> -		vp->bpf = kmalloc(sizeof(struct sock_fprog), GFP_KERNEL);
->>>> +		vp->bpf = kmalloc(sizeof(struct sock_fprog), GFP_ATOMIC);
->>>>    		if (vp->bpf == NULL) {
->>>>    			netdev_err(dev, "failed to allocate memory for firmware\n");
->>>>    			goto flash_fail;
->>>> @@ -1414,7 +1414,7 @@ static int vector_net_load_bpf_flash(struct net_device
->>>> *dev,
->>>>    	if (request_firmware(&fw, efl->data, &vdevice->pdev.dev))
->>>               ^^^^^^^^^^^^^^^^
->>>
->>> Is it really possible to call request_firmware() while holding a
->>> spin_lock?  I was so sure that read from the disk.
->>
->> Works, I tested the patch quite a few times.
-> 
-> It works because of the nature of UML ->no  SMP or PREEMPT.
-> But better request the firmware before taking the spinlock.
-> request_firmware() can block.
-> Same for the kmalloc(), just allocate the buffer before and then assign
-> the pointer under the lock. That way you don't need GFP_ATOMIC.
+Addresses-Coverity: ("Unused value")
+Fixes: a939888ec38b ("zram: support idle/huge page writeback")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/block/zram/zram_drv.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Ack.
-
-I will make an incremental on top of the existing patch (as that is 
-already in -next
-
-Brgds,
-
-> 
-> Thanks,
-> //richard
-> 
-> _______________________________________________
-> linux-um mailing list
-> linux-um@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-um
-> 
-
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 4285e75e52c3..1bf4a908a0bd 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -626,7 +626,7 @@ static ssize_t writeback_store(struct device *dev,
+ 	struct bio bio;
+ 	struct bio_vec bio_vec;
+ 	struct page *page;
+-	ssize_t ret;
++	ssize_t ret = len;
+ 	int mode;
+ 	unsigned long blk_idx = 0;
+ 
+@@ -762,7 +762,6 @@ static ssize_t writeback_store(struct device *dev,
+ 
+ 	if (blk_idx)
+ 		free_block_bdev(zram, blk_idx);
+-	ret = len;
+ 	__free_page(page);
+ release_init_lock:
+ 	up_read(&zram->init_lock);
 -- 
-Anton R. Ivanov
-Cambridgegreys Limited. Registered in England. Company Number 10273661
-https://www.cambridgegreys.com/
+2.24.0
+

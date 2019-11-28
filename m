@@ -2,91 +2,114 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D09A610CFC0
-	for <lists+kernel-janitors@lfdr.de>; Thu, 28 Nov 2019 23:31:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66DE710CFF0
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Nov 2019 00:20:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726612AbfK1WbM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Nov 2019 17:31:12 -0500
-Received: from out2-smtp.messagingengine.com ([66.111.4.26]:55623 "EHLO
-        out2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726582AbfK1WbM (ORCPT
+        id S1726664AbfK1XUx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Nov 2019 18:20:53 -0500
+Received: from mail-qt1-f193.google.com ([209.85.160.193]:39736 "EHLO
+        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726582AbfK1XUw (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Nov 2019 17:31:12 -0500
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-        by mailout.nyi.internal (Postfix) with ESMTP id 2D3F32248F;
-        Thu, 28 Nov 2019 17:31:11 -0500 (EST)
-Received: from imap2 ([10.202.2.52])
-  by compute4.internal (MEProxy); Thu, 28 Nov 2019 17:31:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aj.id.au; h=
-        mime-version:message-id:in-reply-to:references:date:from:to:cc
-        :subject:content-type; s=fm1; bh=Z6N2dtUd2b7xlsWo9+75kmAEXEFh/6k
-        k7C70gDaO+IM=; b=aBzMWWaDQCaZLJCWK/tAw01tr3vOY/rqWJff6yXoSV/X9qn
-        9CzQ/MqA+67y5kYqX53mWISFWnpTTlSpvewPe0kSFrgodvz9YqQeItgLhO/XrQQj
-        HZci78+K9MLZ3aNSbCIVL4qNzyWmJWlxfbrEyenmED7Crk+hkyrj02uCVJuaPO18
-        v18H1bkSngAmaj/rB8SnDPKzRUA55KAMBwSJWYv6wEZzOAzoEKS0/gICVyrI+fKd
-        8ECz4DCSa4nQfNbF0+SX8fQto9FSDjjh28FacyBOi/ywSAaENPAgamzAp4g+SCtR
-        50vQ69r9KxBUg4RiDa15/D6e+ibpIBpzCzTCqWw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=Z6N2dt
-        Ud2b7xlsWo9+75kmAEXEFh/6kk7C70gDaO+IM=; b=eezsrJTWk/l1M181fX92RG
-        iS6UGzEkbjvsb+taMY2YV3cp4823HLxlWZPf1lWwjZ3Ns0PTnXzVwkcG2yEznCRV
-        88GSa7o8HeyN4kMYVomvCPxT9lIK2cPCZ7QUwhhs7orPz6vixP++Lcqf6HkSTfbu
-        cf49v/PVtvpVkfV496wckmwwE4rHvmQch6O4ChOBWnskjElcdb0jafyByM6xyfzN
-        OXGSnrbGTTM9swrwXKRGhzDZp62qo3wzhFRJr8MWV+PzsidlBy0XYqZNp3Ro/7A6
-        T5/kIGbfl0dltb/cg437o3+EyJSHxRjV6bDwgGgiQPXmB2ys8fmbmQZD3bDzwWIg
-        ==
-X-ME-Sender: <xms:rUrgXU8te6J8t4RnEp7OG_oCn-7XRY8MuBrrjmMMApd8Y1cXkAqurw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedufedrudeijedgudehkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvufgtsehttdertderreejnecuhfhrohhmpedftehn
-    ughrvgifucflvghffhgvrhihfdcuoegrnhgurhgvfiesrghjrdhiugdrrghuqeenucfrrg
-    hrrghmpehmrghilhhfrhhomheprghnughrvgifsegrjhdrihgurdgruhenucevlhhushht
-    vghrufhiiigvpedt
-X-ME-Proxy: <xmx:rUrgXYjDHS8a48sSg-3a8zqRQIlr_IMWEeYy-XSlWoPbwAnPaLG-jg>
-    <xmx:rUrgXRWflTlD87Ucw8_pnKmS3NQ1EZ1U7BhWTiSvZFRgJ3u5o96I0A>
-    <xmx:rUrgXXt9iMxMBEvXYcMW3EMFqUbMg_e3d1FexpiSstq6GQE_wyLN3w>
-    <xmx:r0rgXf_FXQQvLFD9kQYFTJEvjo8YdvbIIHok0EWDhEK3ATQeDIz6dg>
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 4103FE00A2; Thu, 28 Nov 2019 17:31:09 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.1.7-578-g826f590-fmstable-20191119v1
-Mime-Version: 1.0
-Message-Id: <a709068c-9375-4921-a87f-c5f3a1f63cf2@www.fastmail.com>
-In-Reply-To: <20191122233120.110344-1-colin.king@canonical.com>
+        Thu, 28 Nov 2019 18:20:52 -0500
+Received: by mail-qt1-f193.google.com with SMTP id g1so21239515qtj.6;
+        Thu, 28 Nov 2019 15:20:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=jms.id.au; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=4wrtfYJ0ZRrF4xIj+YbUY5RqDD+dbVWXsMfnfGny9K0=;
+        b=DQ8SOL9lmuVc4+VIprdeMwthCtcVkZkpRiob6V8S37zLs8HMl+j2V9n8hBAOis9L4y
+         TElD3yoUACaiWPWuAbDHwJ8S3nsnO9BthUkkZwafCnzIqnvu1tWRPFLcMU7ZZkRPtKLZ
+         0QdlGBcRuUIj9joHC36DEbJiszdfYb6tGDKxk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4wrtfYJ0ZRrF4xIj+YbUY5RqDD+dbVWXsMfnfGny9K0=;
+        b=jCkBOJfQDjLmpa09/0UBCLw3JbNsuLJEJ1mJKiSiRKGbKE8JLidhb0A/lwrUMWk2/P
+         SCRm9WQDxIh43/6EUArJLrclBeOR/NpaKmCPFSyKuCjwBFENROX9CWYVn82vlkaQm3s1
+         12eODAiMyEPjM3OC0eyC7cIVLyc+CYosWINwpaQQj4i87wPs5QhnGveKm+MlbH1wGMGH
+         MU0LJFhfL1WX/UV97sT5Gk7hYgwShSwlr6SDiZRSUwea4SWjDBXYZkXbIcoPOFSZTCeA
+         ds+c5kJ4tYyfHNWymciwmavbqMmT0blKkiFNV0Z5U+8p9mmsKKMREcVc3S1cuhafo7qx
+         Zc9Q==
+X-Gm-Message-State: APjAAAUVCWqVeZVHP1X7lqsbGR+eUiU64FPAXXCeXjGwuNEVqQzfIjGA
+        Xh0h9J8BsTQ5ufYYnZcatVg2TmkArbwDhcA5n80=
+X-Google-Smtp-Source: APXvYqwatmHj0nyfkI7nUoMvvCCmElW8d4G1PMsMWzHdku2gYbzMtkvo6PKmBNcVPGflvvGM9+dpNIRGvarYvaoZgT4=
+X-Received: by 2002:ac8:8f3:: with SMTP id y48mr48872868qth.269.1574983251287;
+ Thu, 28 Nov 2019 15:20:51 -0800 (PST)
+MIME-Version: 1.0
 References: <20191122233120.110344-1-colin.king@canonical.com>
-Date:   Fri, 29 Nov 2019 09:02:39 +1030
-From:   "Andrew Jeffery" <andrew@aj.id.au>
-To:     "Colin King" <colin.king@canonical.com>,
-        "Jeremy Kerr" <jk@ozlabs.org>, "Joel Stanley" <joel@jms.id.au>,
-        "Alistair Popple" <alistair@popple.id.au>,
-        "Eddie James" <eajames@linux.ibm.com>,
-        "Benjamin Herrenschmidt" <benh@kernel.crashing.org>,
-        linux-fsi@lists.ozlabs.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: =?UTF-8?Q?Re:_[PATCH]_fsi:_fix_bogos_error_returns_from_cfam=5Fread_and_?=
- =?UTF-8?Q?cfam=5Fwrite?=
-Content-Type: text/plain
+In-Reply-To: <20191122233120.110344-1-colin.king@canonical.com>
+From:   Joel Stanley <joel@jms.id.au>
+Date:   Thu, 28 Nov 2019 23:20:38 +0000
+Message-ID: <CACPK8Xe=Xa6fo98PDBKbXDyjgJNdu30gPOtY8K4TZyEqQ2VOuw@mail.gmail.com>
+Subject: Re: [PATCH] fsi: fix bogos error returns from cfam_read and cfam_write
+To:     Colin King <colin.king@canonical.com>
+Cc:     Jeremy Kerr <jk@ozlabs.org>,
+        Alistar Popple <alistair@popple.id.au>,
+        Eddie James <eajames@linux.ibm.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linux-fsi@lists.ozlabs.org, kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hi Colin,
 
-
-On Sat, 23 Nov 2019, at 10:01, Colin King wrote:
+On Fri, 22 Nov 2019 at 23:31, Colin King <colin.king@canonical.com> wrote:
+>
 > From: Colin Ian King <colin.king@canonical.com>
-> 
+>
 > In the case where errors occur in functions cfam_read and cfam_write
 > the error return code in rc is not returned and a bogus non-error
 > count size is returned instead. Fix this by returning the correct
 > error code when an error occurs or the count size if the functions
 > worked correctly.
-> 
+
+ You're correct that if there's an error we need to return an error.
+
+However the other case is when there's a partial read that completed.
+We already advance the file offset, but I think we should also return
+the number of bytes successfully read.
+
+Cheers,
+
+Joel
+
+>
 > Addresses-Coverity: ("Unused value")
 > Fixes: d1dcd6782576 ("fsi: Add cfam char devices")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Reviewed-by: Andrew Jeffery <andrew@aj.id.au>
+> ---
+>  drivers/fsi/fsi-core.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/fsi/fsi-core.c b/drivers/fsi/fsi-core.c
+> index 8244da8a7241..c3885b138ead 100644
+> --- a/drivers/fsi/fsi-core.c
+> +++ b/drivers/fsi/fsi-core.c
+> @@ -718,7 +718,7 @@ static ssize_t cfam_read(struct file *filep, char __user *buf, size_t count,
+>         rc = count;
+>   fail:
+>         *offset = off;
+> -       return count;
+> +       return rc;
+>  }
+>
+>  static ssize_t cfam_write(struct file *filep, const char __user *buf,
+> @@ -755,7 +755,7 @@ static ssize_t cfam_write(struct file *filep, const char __user *buf,
+>         rc = count;
+>   fail:
+>         *offset = off;
+> -       return count;
+> +       return rc;
+>  }
+>
+>  static loff_t cfam_llseek(struct file *file, loff_t offset, int whence)
+> --
+> 2.24.0
+>

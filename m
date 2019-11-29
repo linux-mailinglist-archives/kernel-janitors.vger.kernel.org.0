@@ -2,193 +2,177 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E1B9B10D2E1
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Nov 2019 10:04:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 000E510D319
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Nov 2019 10:15:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726604AbfK2JD5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 29 Nov 2019 04:03:57 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:39014 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725892AbfK2JD4 (ORCPT
+        id S1726806AbfK2JPt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 29 Nov 2019 04:15:49 -0500
+Received: from www62.your-server.de ([213.133.104.62]:55780 "EHLO
+        www62.your-server.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726143AbfK2JPt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 29 Nov 2019 04:03:56 -0500
-Received: from [82.43.126.140] (helo=[192.168.0.11])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iacBs-0002nk-Cr; Fri, 29 Nov 2019 09:03:52 +0000
-Subject: Re: [PATCH] [PATCH v2] fsi: fix bogus error returns from cfam_read
- and cfam_write
-To:     Jeremy Kerr <jk@ozlabs.org>, Joel Stanley <joel@jms.id.au>,
-        Alistar Popple <alistair@popple.id.au>,
-        Eddie James <eajames@linux.ibm.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-fsi@lists.ozlabs.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191122233120.110344-1-colin.king@canonical.com>
- <20191129032429.817-1-jk@ozlabs.org>
-From:   Colin Ian King <colin.king@canonical.com>
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <a5e2570f-222b-5633-af67-6cf5650a741f@canonical.com>
-Date:   Fri, 29 Nov 2019 09:03:50 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Fri, 29 Nov 2019 04:15:49 -0500
+Received: from sslproxy06.your-server.de ([78.46.172.3])
+        by www62.your-server.de with esmtpsa (TLSv1.2:DHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89_1)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1iacN8-0004Ma-KY; Fri, 29 Nov 2019 10:15:30 +0100
+Received: from [2a02:1205:507e:bf80:bef8:7f66:49c8:72e5] (helo=pc-11.home)
+        by sslproxy06.your-server.de with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+        (Exim 4.89)
+        (envelope-from <daniel@iogearbox.net>)
+        id 1iacN8-000C4L-8d; Fri, 29 Nov 2019 10:15:30 +0100
+Subject: Re: [PATCH] um: vector: fix BPF loading in vector drivers
+To:     anton.ivanov@cambridgegreys.com, linux-um@lists.infradead.org
+Cc:     richard@nod.at, dan.carpenter@oracle.com, weiyongjun1@huawei.com,
+        kernel-janitors@vger.kernel.org, songliubraving@fb.com,
+        ast@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
+        kafai@fb.com
+References: <20191128174405.4244-1-anton.ivanov@cambridgegreys.com>
+From:   Daniel Borkmann <daniel@iogearbox.net>
+Message-ID: <1416753c-e966-e259-a84d-2a5f0a166660@iogearbox.net>
+Date:   Fri, 29 Nov 2019 10:15:29 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.2
 MIME-Version: 1.0
-In-Reply-To: <20191129032429.817-1-jk@ozlabs.org>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <20191128174405.4244-1-anton.ivanov@cambridgegreys.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.101.4/25647/Thu Nov 28 10:49:14 2019)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 29/11/2019 03:24, Jeremy Kerr wrote:
-> Based on a static analysis report and original patch from Colin Ian King
-> <colin.king@canonical.com>.
+On 11/28/19 6:44 PM, anton.ivanov@cambridgegreys.com wrote:
+> From: Anton Ivanov <anton.ivanov@cambridgegreys.com>
 > 
-> Currently, we may drop error values from cfam_read and cfam_write. This
-> change returns the actual error on failure, but a partial read/write will
-> take precedence.
+> This fixes a possible hang in bpf firmware loading in the
+> UML vector io drivers due to use of GFP_KERNEL while holding
+> a spinlock.
 > 
-> Addresses-Coverity: ("Unused value")
-> Fixes: d1dcd6782576 ("fsi: Add cfam char devices")
-> Reported-by: Colin Ian King <colin.king@canonical.com>
-> Signed-off-by: Jeremy Kerr <jk@ozlabs.org>
+> Based on a prposed fix by weiyongjun1@huawei.com and suggestions for
+> improving it by dan.carpenter@oracle.com
 > 
-> ---
-> Colin: thanks for the report and patch. I think this is a more complete
-> fix, as we want to preseve any partial read/write status if a failure
-> happens mid-way through an operation. Let me know if you (or the
-> coverity analysis) have any feedback.
+> Signed-off-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
 
-Looks good to me. Thanks Jeremy.
+Any reason why this BPF firmware loading mechanism in UML vector driver that was
+recently added [0] is plain old classic BPF? Quoting your commit log [0]:
 
+   All vector drivers now allow a BPF program to be loaded and
+   associated with the RX socket in the host kernel.
 
+   1. The program can be loaded as an extra kernel command line
+   option to any of the vector drivers.
 
+   2. The program can also be loaded as "firmware", using the
+   ethtool flash option. It is possible to turn this facility
+   on or off using a command line option.
+
+   A simplistic wrapper for generating the BPF firmware for the raw
+   socket driver out of a tcpdump/libpcap filter expression can be
+   found at: https://github.com/kot-begemot-uk/uml_vector_utilities/
+
+... it tells what it does but /nothing/ about the original rationale / use case
+why it is needed. So what is the use case? And why is this only classic BPF? Is
+there any discussion to read up that lead you to this decision of only implementing
+handling for classic BPF?
+
+I'm asking because classic BPF is /legacy/ stuff that is on feature freeze and
+only very limited in terms of functionality compared to native (e)BPF which is
+why you need this weird 'firmware' loader [1] which wraps around tcpdump to
+parse the -ddd output into BPF insns ...
+
+Thanks,
+Daniel
+
+   [0] https://git.kernel.org/pub/scm/linux/kernel/git/rw/uml.git/commit/?h=linux-next&id=9807019a62dc670c73ce8e59e09b41ae458c34b3
+   [1] https://github.com/kot-begemot-uk/uml_vector_utilities/blob/master/build_bpf_firmware.py
+
+>   arch/um/drivers/vector_kern.c | 38 ++++++++++++++++++-----------------
+>   1 file changed, 20 insertions(+), 18 deletions(-)
 > 
-> ---
-> 
->  drivers/fsi/fsi-core.c | 32 ++++++++++++++++++++++----------
->  1 file changed, 22 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/fsi/fsi-core.c b/drivers/fsi/fsi-core.c
-> index 71c6f9fef648..3158a78c2e94 100644
-> --- a/drivers/fsi/fsi-core.c
-> +++ b/drivers/fsi/fsi-core.c
-> @@ -699,6 +699,8 @@ static ssize_t cfam_read(struct file *filep, char __user *buf, size_t count,
->  	if (off > 0xffffffff || count > 0xffffffff || off + count > 0xffffffff)
->  		return -EINVAL;
->  
-> +	rc = 0;
+> diff --git a/arch/um/drivers/vector_kern.c b/arch/um/drivers/vector_kern.c
+> index 92617e16829e..dbbc6e850fdd 100644
+> --- a/arch/um/drivers/vector_kern.c
+> +++ b/arch/um/drivers/vector_kern.c
+> @@ -1387,6 +1387,7 @@ static int vector_net_load_bpf_flash(struct net_device *dev,
+>   	struct vector_private *vp = netdev_priv(dev);
+>   	struct vector_device *vdevice;
+>   	const struct firmware *fw;
+> +	void *new_filter;
+>   	int result = 0;
+>   
+>   	if (!(vp->options & VECTOR_BPF_FLASH)) {
+> @@ -1394,6 +1395,15 @@ static int vector_net_load_bpf_flash(struct net_device *dev,
+>   		return -1;
+>   	}
+>   
+> +	vdevice = find_device(vp->unit);
 > +
->  	for (total_len = 0; total_len < count; total_len += read_len) {
->  		__be32 data;
->  
-> @@ -707,18 +709,22 @@ static ssize_t cfam_read(struct file *filep, char __user *buf, size_t count,
->  
->  		rc = fsi_slave_read(slave, off, &data, read_len);
->  		if (rc)
-> -			goto fail;
-> +			break;
->  		rc = copy_to_user(buf + total_len, &data, read_len);
->  		if (rc) {
->  			rc = -EFAULT;
-> -			goto fail;
-> +			break;
->  		}
->  		off += read_len;
->  	}
-> -	rc = count;
-> - fail:
+> +	if (request_firmware(&fw, efl->data, &vdevice->pdev.dev))
+> +		return -1;
 > +
-> +	/* if we've read any data, we want that to be returned in
-> +	 * preference to an error state */
-> +	if (total_len)
-> +		rc = total_len;
+> +	new_filter = kmemdup(fw->data, fw->size, GFP_KERNEL);
+> +	if (!new_filter)
+> +		goto free_buffer;
 > +
->  	*offset = off;
-> -	return count;
-> +	return rc;
->  }
->  
->  static ssize_t cfam_write(struct file *filep, const char __user *buf,
-> @@ -736,6 +742,8 @@ static ssize_t cfam_write(struct file *filep, const char __user *buf,
->  	if (off > 0xffffffff || count > 0xffffffff || off + count > 0xffffffff)
->  		return -EINVAL;
->  
-> +	rc = 0;
+>   	spin_lock(&vp->lock);
+>   
+>   	if (vp->bpf != NULL) {
+> @@ -1402,41 +1412,33 @@ static int vector_net_load_bpf_flash(struct net_device *dev,
+>   		kfree(vp->bpf->filter);
+>   		vp->bpf->filter = NULL;
+>   	} else {
+> -		vp->bpf = kmalloc(sizeof(struct sock_fprog), GFP_KERNEL);
+> +		vp->bpf = kmalloc(sizeof(struct sock_fprog), GFP_ATOMIC);
+>   		if (vp->bpf == NULL) {
+>   			netdev_err(dev, "failed to allocate memory for firmware\n");
+> -			goto flash_fail;
+> +			goto apply_flash_fail;
+>   		}
+>   	}
+>   
+> -	vdevice = find_device(vp->unit);
+> -
+> -	if (request_firmware(&fw, efl->data, &vdevice->pdev.dev))
+> -		goto flash_fail;
+> -
+> -	vp->bpf->filter = kmemdup(fw->data, fw->size, GFP_KERNEL);
+> -	if (!vp->bpf->filter)
+> -		goto free_buffer;
+> -
+> +	vp->bpf->filter = new_filter;
+>   	vp->bpf->len = fw->size / sizeof(struct sock_filter);
+> -	release_firmware(fw);
+>   
+>   	if (vp->opened)
+>   		result = uml_vector_attach_bpf(vp->fds->rx_fd, vp->bpf);
+>   
+>   	spin_unlock(&vp->lock);
+>   
+> -	return result;
+> -
+> -free_buffer:
+>   	release_firmware(fw);
+>   
+> -flash_fail:
+> +	return result;
 > +
->  	for (total_len = 0; total_len < count; total_len += write_len) {
->  		__be32 data;
->  
-> @@ -745,17 +753,21 @@ static ssize_t cfam_write(struct file *filep, const char __user *buf,
->  		rc = copy_from_user(&data, buf + total_len, write_len);
->  		if (rc) {
->  			rc = -EFAULT;
-> -			goto fail;
-> +			break;
->  		}
->  		rc = fsi_slave_write(slave, off, &data, write_len);
->  		if (rc)
-> -			goto fail;
-> +			break;
->  		off += write_len;
->  	}
-> -	rc = count;
-> - fail:
+> +apply_flash_fail:
+>   	spin_unlock(&vp->lock);
+> -	if (vp->bpf != NULL)
+> +	if (vp->bpf)
+>   		kfree(vp->bpf->filter);
+>   	kfree(vp->bpf);
+> -	vp->bpf = NULL;
 > +
-> +	/* if we've written any data, we want to indicate that partial write
-> +	 * instead of any mid-stream error */
-> +	if (total_len)
-> +		rc = total_len;
-> +
->  	*offset = off;
-> -	return count;
-> +	return rc;
->  }
->  
->  static loff_t cfam_llseek(struct file *file, loff_t offset, int whence)
+> +free_buffer:
+> +	release_firmware(fw);
+>   	return -1;
+>   }
+>   
 > 
 

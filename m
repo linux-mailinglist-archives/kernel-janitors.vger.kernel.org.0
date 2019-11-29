@@ -2,114 +2,147 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66DE710CFF0
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Nov 2019 00:20:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 22FC710D0A1
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Nov 2019 04:25:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726664AbfK1XUx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Nov 2019 18:20:53 -0500
-Received: from mail-qt1-f193.google.com ([209.85.160.193]:39736 "EHLO
-        mail-qt1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726582AbfK1XUw (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Nov 2019 18:20:52 -0500
-Received: by mail-qt1-f193.google.com with SMTP id g1so21239515qtj.6;
-        Thu, 28 Nov 2019 15:20:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jms.id.au; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=4wrtfYJ0ZRrF4xIj+YbUY5RqDD+dbVWXsMfnfGny9K0=;
-        b=DQ8SOL9lmuVc4+VIprdeMwthCtcVkZkpRiob6V8S37zLs8HMl+j2V9n8hBAOis9L4y
-         TElD3yoUACaiWPWuAbDHwJ8S3nsnO9BthUkkZwafCnzIqnvu1tWRPFLcMU7ZZkRPtKLZ
-         0QdlGBcRuUIj9joHC36DEbJiszdfYb6tGDKxk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=4wrtfYJ0ZRrF4xIj+YbUY5RqDD+dbVWXsMfnfGny9K0=;
-        b=jCkBOJfQDjLmpa09/0UBCLw3JbNsuLJEJ1mJKiSiRKGbKE8JLidhb0A/lwrUMWk2/P
-         SCRm9WQDxIh43/6EUArJLrclBeOR/NpaKmCPFSyKuCjwBFENROX9CWYVn82vlkaQm3s1
-         12eODAiMyEPjM3OC0eyC7cIVLyc+CYosWINwpaQQj4i87wPs5QhnGveKm+MlbH1wGMGH
-         MU0LJFhfL1WX/UV97sT5Gk7hYgwShSwlr6SDiZRSUwea4SWjDBXYZkXbIcoPOFSZTCeA
-         ds+c5kJ4tYyfHNWymciwmavbqMmT0blKkiFNV0Z5U+8p9mmsKKMREcVc3S1cuhafo7qx
-         Zc9Q==
-X-Gm-Message-State: APjAAAUVCWqVeZVHP1X7lqsbGR+eUiU64FPAXXCeXjGwuNEVqQzfIjGA
-        Xh0h9J8BsTQ5ufYYnZcatVg2TmkArbwDhcA5n80=
-X-Google-Smtp-Source: APXvYqwatmHj0nyfkI7nUoMvvCCmElW8d4G1PMsMWzHdku2gYbzMtkvo6PKmBNcVPGflvvGM9+dpNIRGvarYvaoZgT4=
-X-Received: by 2002:ac8:8f3:: with SMTP id y48mr48872868qth.269.1574983251287;
- Thu, 28 Nov 2019 15:20:51 -0800 (PST)
-MIME-Version: 1.0
-References: <20191122233120.110344-1-colin.king@canonical.com>
-In-Reply-To: <20191122233120.110344-1-colin.king@canonical.com>
-From:   Joel Stanley <joel@jms.id.au>
-Date:   Thu, 28 Nov 2019 23:20:38 +0000
-Message-ID: <CACPK8Xe=Xa6fo98PDBKbXDyjgJNdu30gPOtY8K4TZyEqQ2VOuw@mail.gmail.com>
-Subject: Re: [PATCH] fsi: fix bogos error returns from cfam_read and cfam_write
-To:     Colin King <colin.king@canonical.com>
-Cc:     Jeremy Kerr <jk@ozlabs.org>,
+        id S1726957AbfK2DZR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Nov 2019 22:25:17 -0500
+Received: from ozlabs.org ([203.11.71.1]:41571 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726926AbfK2DZR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 Nov 2019 22:25:17 -0500
+Received: by ozlabs.org (Postfix, from userid 1023)
+        id 47PKdQ1fhNz9sR7; Fri, 29 Nov 2019 14:25:13 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
+        t=1574997914; bh=blTqbfE3FxGoWLMQlFpaeUlzOWBLlqs1Oq3G4TVbtd0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=tSy86PbcQQzQzfQOWn2CM+iRgGqTHakwsSKZY1Bw2oTgLLE3ga7ogZs2I5UoD70x+
+         1DwJH09EKGSYT2dwClPysTJJkRFbJalUYnY8P59FQet3mG5SnVo9Kcv88tgqhqdSPo
+         OO4wxDaYtiWwm6xMqcTkqqBjeJQeSSm/2tD1/T7XIIJI9mu3T5Ra4y2Gb6lm10SOmV
+         vpcPyI6HK07XwAKxlltc3T1EnAQb1Nxwkt02css7WZRlxze6/qYFnHuPygGK0s5lol
+         n2MxTB+9G7+1qgoLjklw4JW3krc+PzEj6lV+lM8vV6xngzY6CgE2ZfRztVrWMynQLi
+         R9nji/g1PA4aA==
+From:   Jeremy Kerr <jk@ozlabs.org>
+To:     Joel Stanley <joel@jms.id.au>,
         Alistar Popple <alistair@popple.id.au>,
         Eddie James <eajames@linux.ibm.com>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        linux-fsi@lists.ozlabs.org, kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Colin King <colin.king@canonical.com>,
+        linux-fsi@lists.ozlabs.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] [PATCH v2] fsi: fix bogus error returns from cfam_read and cfam_write
+Date:   Fri, 29 Nov 2019 11:24:29 +0800
+Message-Id: <20191129032429.817-1-jk@ozlabs.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191122233120.110344-1-colin.king@canonical.com>
+References: <20191122233120.110344-1-colin.king@canonical.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Colin,
+Based on a static analysis report and original patch from Colin Ian King
+<colin.king@canonical.com>.
 
-On Fri, 22 Nov 2019 at 23:31, Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> In the case where errors occur in functions cfam_read and cfam_write
-> the error return code in rc is not returned and a bogus non-error
-> count size is returned instead. Fix this by returning the correct
-> error code when an error occurs or the count size if the functions
-> worked correctly.
+Currently, we may drop error values from cfam_read and cfam_write. This
+change returns the actual error on failure, but a partial read/write will
+take precedence.
 
- You're correct that if there's an error we need to return an error.
+Addresses-Coverity: ("Unused value")
+Fixes: d1dcd6782576 ("fsi: Add cfam char devices")
+Reported-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: Jeremy Kerr <jk@ozlabs.org>
 
-However the other case is when there's a partial read that completed.
-We already advance the file offset, but I think we should also return
-the number of bytes successfully read.
+---
+Colin: thanks for the report and patch. I think this is a more complete
+fix, as we want to preseve any partial read/write status if a failure
+happens mid-way through an operation. Let me know if you (or the
+coverity analysis) have any feedback.
 
-Cheers,
+---
 
-Joel
+ drivers/fsi/fsi-core.c | 32 ++++++++++++++++++++++----------
+ 1 file changed, 22 insertions(+), 10 deletions(-)
 
->
-> Addresses-Coverity: ("Unused value")
-> Fixes: d1dcd6782576 ("fsi: Add cfam char devices")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/fsi/fsi-core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/fsi/fsi-core.c b/drivers/fsi/fsi-core.c
-> index 8244da8a7241..c3885b138ead 100644
-> --- a/drivers/fsi/fsi-core.c
-> +++ b/drivers/fsi/fsi-core.c
-> @@ -718,7 +718,7 @@ static ssize_t cfam_read(struct file *filep, char __user *buf, size_t count,
->         rc = count;
->   fail:
->         *offset = off;
-> -       return count;
-> +       return rc;
->  }
->
->  static ssize_t cfam_write(struct file *filep, const char __user *buf,
-> @@ -755,7 +755,7 @@ static ssize_t cfam_write(struct file *filep, const char __user *buf,
->         rc = count;
->   fail:
->         *offset = off;
-> -       return count;
-> +       return rc;
->  }
->
->  static loff_t cfam_llseek(struct file *file, loff_t offset, int whence)
-> --
-> 2.24.0
->
+diff --git a/drivers/fsi/fsi-core.c b/drivers/fsi/fsi-core.c
+index 71c6f9fef648..3158a78c2e94 100644
+--- a/drivers/fsi/fsi-core.c
++++ b/drivers/fsi/fsi-core.c
+@@ -699,6 +699,8 @@ static ssize_t cfam_read(struct file *filep, char __user *buf, size_t count,
+ 	if (off > 0xffffffff || count > 0xffffffff || off + count > 0xffffffff)
+ 		return -EINVAL;
+ 
++	rc = 0;
++
+ 	for (total_len = 0; total_len < count; total_len += read_len) {
+ 		__be32 data;
+ 
+@@ -707,18 +709,22 @@ static ssize_t cfam_read(struct file *filep, char __user *buf, size_t count,
+ 
+ 		rc = fsi_slave_read(slave, off, &data, read_len);
+ 		if (rc)
+-			goto fail;
++			break;
+ 		rc = copy_to_user(buf + total_len, &data, read_len);
+ 		if (rc) {
+ 			rc = -EFAULT;
+-			goto fail;
++			break;
+ 		}
+ 		off += read_len;
+ 	}
+-	rc = count;
+- fail:
++
++	/* if we've read any data, we want that to be returned in
++	 * preference to an error state */
++	if (total_len)
++		rc = total_len;
++
+ 	*offset = off;
+-	return count;
++	return rc;
+ }
+ 
+ static ssize_t cfam_write(struct file *filep, const char __user *buf,
+@@ -736,6 +742,8 @@ static ssize_t cfam_write(struct file *filep, const char __user *buf,
+ 	if (off > 0xffffffff || count > 0xffffffff || off + count > 0xffffffff)
+ 		return -EINVAL;
+ 
++	rc = 0;
++
+ 	for (total_len = 0; total_len < count; total_len += write_len) {
+ 		__be32 data;
+ 
+@@ -745,17 +753,21 @@ static ssize_t cfam_write(struct file *filep, const char __user *buf,
+ 		rc = copy_from_user(&data, buf + total_len, write_len);
+ 		if (rc) {
+ 			rc = -EFAULT;
+-			goto fail;
++			break;
+ 		}
+ 		rc = fsi_slave_write(slave, off, &data, write_len);
+ 		if (rc)
+-			goto fail;
++			break;
+ 		off += write_len;
+ 	}
+-	rc = count;
+- fail:
++
++	/* if we've written any data, we want to indicate that partial write
++	 * instead of any mid-stream error */
++	if (total_len)
++		rc = total_len;
++
+ 	*offset = off;
+-	return count;
++	return rc;
+ }
+ 
+ static loff_t cfam_llseek(struct file *file, loff_t offset, int whence)
+-- 
+2.20.1
+

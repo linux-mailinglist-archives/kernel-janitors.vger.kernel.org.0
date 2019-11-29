@@ -2,147 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 22FC710D0A1
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Nov 2019 04:25:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 507A110D0AC
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Nov 2019 04:37:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726957AbfK2DZR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 28 Nov 2019 22:25:17 -0500
-Received: from ozlabs.org ([203.11.71.1]:41571 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726926AbfK2DZR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 28 Nov 2019 22:25:17 -0500
-Received: by ozlabs.org (Postfix, from userid 1023)
-        id 47PKdQ1fhNz9sR7; Fri, 29 Nov 2019 14:25:13 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ozlabs.org; s=201707;
-        t=1574997914; bh=blTqbfE3FxGoWLMQlFpaeUlzOWBLlqs1Oq3G4TVbtd0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tSy86PbcQQzQzfQOWn2CM+iRgGqTHakwsSKZY1Bw2oTgLLE3ga7ogZs2I5UoD70x+
-         1DwJH09EKGSYT2dwClPysTJJkRFbJalUYnY8P59FQet3mG5SnVo9Kcv88tgqhqdSPo
-         OO4wxDaYtiWwm6xMqcTkqqBjeJQeSSm/2tD1/T7XIIJI9mu3T5Ra4y2Gb6lm10SOmV
-         vpcPyI6HK07XwAKxlltc3T1EnAQb1Nxwkt02css7WZRlxze6/qYFnHuPygGK0s5lol
-         n2MxTB+9G7+1qgoLjklw4JW3krc+PzEj6lV+lM8vV6xngzY6CgE2ZfRztVrWMynQLi
-         R9nji/g1PA4aA==
-From:   Jeremy Kerr <jk@ozlabs.org>
-To:     Joel Stanley <joel@jms.id.au>,
-        Alistar Popple <alistair@popple.id.au>,
-        Eddie James <eajames@linux.ibm.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Colin King <colin.king@canonical.com>,
-        linux-fsi@lists.ozlabs.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] [PATCH v2] fsi: fix bogus error returns from cfam_read and cfam_write
-Date:   Fri, 29 Nov 2019 11:24:29 +0800
-Message-Id: <20191129032429.817-1-jk@ozlabs.org>
+        id S1726963AbfK2Dhk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 28 Nov 2019 22:37:40 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:7176 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726773AbfK2Dhk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 28 Nov 2019 22:37:40 -0500
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 5F1338584C3E47A3F3DE;
+        Fri, 29 Nov 2019 11:37:38 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 29 Nov 2019 11:37:31 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        "Michael Turquette" <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-clk@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] clk: bm1800: Remove set but not used variable 'fref'
+Date:   Fri, 29 Nov 2019 03:35:34 +0000
+Message-ID: <20191129033534.188257-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191122233120.110344-1-colin.king@canonical.com>
-References: <20191122233120.110344-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Based on a static analysis report and original patch from Colin Ian King
-<colin.king@canonical.com>.
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-Currently, we may drop error values from cfam_read and cfam_write. This
-change returns the actual error on failure, but a partial read/write will
-take precedence.
+drivers/clk/clk-bm1880.c: In function 'bm1880_pll_rate_calc':
+drivers/clk/clk-bm1880.c:477:13: warning:
+ variable 'fref' set but not used [-Wunused-but-set-variable]
 
-Addresses-Coverity: ("Unused value")
-Fixes: d1dcd6782576 ("fsi: Add cfam char devices")
-Reported-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Jeremy Kerr <jk@ozlabs.org>
+It is never used, so remove it.
 
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
-Colin: thanks for the report and patch. I think this is a more complete
-fix, as we want to preseve any partial read/write status if a failure
-happens mid-way through an operation. Let me know if you (or the
-coverity analysis) have any feedback.
+ drivers/clk/clk-bm1880.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
----
+diff --git a/drivers/clk/clk-bm1880.c b/drivers/clk/clk-bm1880.c
+index 4cd175afce9b..e6d6599d310a 100644
+--- a/drivers/clk/clk-bm1880.c
++++ b/drivers/clk/clk-bm1880.c
+@@ -474,11 +474,10 @@ static struct bm1880_composite_clock bm1880_composite_clks[] = {
+ static unsigned long bm1880_pll_rate_calc(u32 regval, unsigned long parent_rate)
+ {
+ 	u64 numerator;
+-	u32 fbdiv, fref, refdiv;
++	u32 fbdiv, refdiv;
+ 	u32 postdiv1, postdiv2, denominator;
+ 
+ 	fbdiv = (regval >> 16) & 0xfff;
+-	fref = parent_rate;
+ 	refdiv = regval & 0x1f;
+ 	postdiv1 = (regval >> 8) & 0x7;
+ 	postdiv2 = (regval >> 12) & 0x7;
 
- drivers/fsi/fsi-core.c | 32 ++++++++++++++++++++++----------
- 1 file changed, 22 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/fsi/fsi-core.c b/drivers/fsi/fsi-core.c
-index 71c6f9fef648..3158a78c2e94 100644
---- a/drivers/fsi/fsi-core.c
-+++ b/drivers/fsi/fsi-core.c
-@@ -699,6 +699,8 @@ static ssize_t cfam_read(struct file *filep, char __user *buf, size_t count,
- 	if (off > 0xffffffff || count > 0xffffffff || off + count > 0xffffffff)
- 		return -EINVAL;
- 
-+	rc = 0;
-+
- 	for (total_len = 0; total_len < count; total_len += read_len) {
- 		__be32 data;
- 
-@@ -707,18 +709,22 @@ static ssize_t cfam_read(struct file *filep, char __user *buf, size_t count,
- 
- 		rc = fsi_slave_read(slave, off, &data, read_len);
- 		if (rc)
--			goto fail;
-+			break;
- 		rc = copy_to_user(buf + total_len, &data, read_len);
- 		if (rc) {
- 			rc = -EFAULT;
--			goto fail;
-+			break;
- 		}
- 		off += read_len;
- 	}
--	rc = count;
-- fail:
-+
-+	/* if we've read any data, we want that to be returned in
-+	 * preference to an error state */
-+	if (total_len)
-+		rc = total_len;
-+
- 	*offset = off;
--	return count;
-+	return rc;
- }
- 
- static ssize_t cfam_write(struct file *filep, const char __user *buf,
-@@ -736,6 +742,8 @@ static ssize_t cfam_write(struct file *filep, const char __user *buf,
- 	if (off > 0xffffffff || count > 0xffffffff || off + count > 0xffffffff)
- 		return -EINVAL;
- 
-+	rc = 0;
-+
- 	for (total_len = 0; total_len < count; total_len += write_len) {
- 		__be32 data;
- 
-@@ -745,17 +753,21 @@ static ssize_t cfam_write(struct file *filep, const char __user *buf,
- 		rc = copy_from_user(&data, buf + total_len, write_len);
- 		if (rc) {
- 			rc = -EFAULT;
--			goto fail;
-+			break;
- 		}
- 		rc = fsi_slave_write(slave, off, &data, write_len);
- 		if (rc)
--			goto fail;
-+			break;
- 		off += write_len;
- 	}
--	rc = count;
-- fail:
-+
-+	/* if we've written any data, we want to indicate that partial write
-+	 * instead of any mid-stream error */
-+	if (total_len)
-+		rc = total_len;
-+
- 	*offset = off;
--	return count;
-+	return rc;
- }
- 
- static loff_t cfam_llseek(struct file *file, loff_t offset, int whence)
--- 
-2.20.1
 

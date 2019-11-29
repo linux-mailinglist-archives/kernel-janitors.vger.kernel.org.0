@@ -2,230 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7168110D53D
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Nov 2019 12:54:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3996310D5A4
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Nov 2019 13:25:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726888AbfK2Lyu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 29 Nov 2019 06:54:50 -0500
-Received: from ivanoab7.miniserver.com ([37.128.132.42]:53692 "EHLO
-        www.kot-begemot.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725892AbfK2Lyu (ORCPT
+        id S1726770AbfK2MZC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 29 Nov 2019 07:25:02 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:21046 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726360AbfK2MZC (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 29 Nov 2019 06:54:50 -0500
-Received: from tun252.jain.kot-begemot.co.uk ([192.168.18.6] helo=jain.kot-begemot.co.uk)
-        by www.kot-begemot.co.uk with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <anton.ivanov@cambridgegreys.com>)
-        id 1iaerD-0001y9-9y; Fri, 29 Nov 2019 11:54:43 +0000
-Received: from jain.kot-begemot.co.uk ([192.168.3.3])
-        by jain.kot-begemot.co.uk with esmtp (Exim 4.92)
-        (envelope-from <anton.ivanov@cambridgegreys.com>)
-        id 1iaerA-0005Yv-SH; Fri, 29 Nov 2019 11:54:43 +0000
-Subject: Re: [PATCH] um: vector: fix BPF loading in vector drivers
-To:     Daniel Borkmann <daniel@iogearbox.net>,
-        linux-um@lists.infradead.org
-Cc:     richard@nod.at, dan.carpenter@oracle.com, weiyongjun1@huawei.com,
-        kernel-janitors@vger.kernel.org, songliubraving@fb.com,
-        ast@kernel.org, netdev@vger.kernel.org, bpf@vger.kernel.org,
-        kafai@fb.com
-References: <20191128174405.4244-1-anton.ivanov@cambridgegreys.com>
- <1416753c-e966-e259-a84d-2a5f0a166660@iogearbox.net>
-From:   Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Message-ID: <cccc22d6-ee0a-c219-2bf0-2b89ae07ac2b@cambridgegreys.com>
-Date:   Fri, 29 Nov 2019 11:54:40 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+        Fri, 29 Nov 2019 07:25:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1575030301;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=dRF9j5r9muNuE8Iv0Fr4lQhKRYCXnS9axqA6mDzv1bw=;
+        b=I8QMcDwbnptasY5OTyuCl6SYyMk83MbxKUB2c2sPGB14GbE3hf/EoCTE1UHiDfo3ApgJJV
+        WcGiavP4IoXuRUe8giiWHV3X/0qmTrC7eyz67l+h1oLKiSiJEJRM7sAdEygNwp42rjXrM/
+        SXcBV5OHLC309UZqsBkfLJOcjINNnBg=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-415-sgoxaXQMP4mQM1KCcoQ-RA-1; Fri, 29 Nov 2019 07:25:00 -0500
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B748780183C;
+        Fri, 29 Nov 2019 12:24:56 +0000 (UTC)
+Received: from sirius.home.kraxel.org (ovpn-116-67.ams2.redhat.com [10.36.116.67])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id ED9D7600C8;
+        Fri, 29 Nov 2019 12:24:55 +0000 (UTC)
+Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
+        id E808711AB5; Fri, 29 Nov 2019 13:24:54 +0100 (CET)
+Date:   Fri, 29 Nov 2019 13:24:54 +0100
+From:   Gerd Hoffmann <kraxel@redhat.com>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     dri-devel@lists.freedesktop.org, spice-devel@lists.freedesktop.org,
+        virtualization@lists.linux-foundation.org,
+        Anton Vasilyev <vasilyev@ispras.ru>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, Dave Airlie <airlied@redhat.com>,
+        Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
+        Stephen McCamant <smccaman@umn.edu>
+Subject: Re: [PATCH] drm/qxl: Complete exception handling in qxl_device_init()
+Message-ID: <20191129122454.2xoi43kaowmqppm5@sirius.home.kraxel.org>
+References: <5e5ef9c4-4d85-3c93-cf28-42cfcb5b0649@web.de>
 MIME-Version: 1.0
-In-Reply-To: <1416753c-e966-e259-a84d-2a5f0a166660@iogearbox.net>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.0
-X-Spam-Score: -1.0
-X-Clacks-Overhead: GNU Terry Pratchett
+In-Reply-To: <5e5ef9c4-4d85-3c93-cf28-42cfcb5b0649@web.de>
+User-Agent: NeoMutt/20180716
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+X-MC-Unique: sgoxaXQMP4mQM1KCcoQ-RA-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Thu, Nov 07, 2019 at 06:18:14PM +0100, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Thu, 7 Nov 2019 18:05:08 +0100
+>=20
+> A coccicheck run provided information like the following.
+>=20
+> drivers/gpu/drm/qxl/qxl_kms.c:295:1-7: ERROR: missing iounmap;
+> ioremap on line 178 and execution via conditional on line 185
+>=20
+> Generated by: scripts/coccinelle/free/iounmap.cocci
+>=20
+> A jump target was specified in an if branch. The corresponding function
+> call did not release the desired system resource then.
+> Thus use the label =E2=80=9Crom_unmap=E2=80=9D instead to fix the excepti=
+on handling
+> for this function implementation.
+>=20
+> Fixes: 5043348a4969ae1661c008efe929abd0d76e3792 ("drm: qxl: Fix error han=
+dling at qxl_device_init")
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
+Pushed to drm-misc-next.
 
-On 29/11/2019 09:15, Daniel Borkmann wrote:
-> On 11/28/19 6:44 PM, anton.ivanov@cambridgegreys.com wrote:
->> From: Anton Ivanov <anton.ivanov@cambridgegreys.com>
->>
->> This fixes a possible hang in bpf firmware loading in the
->> UML vector io drivers due to use of GFP_KERNEL while holding
->> a spinlock.
->>
->> Based on a prposed fix by weiyongjun1@huawei.com and suggestions for
->> improving it by dan.carpenter@oracle.com
->>
->> Signed-off-by: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-> 
-> Any reason why this BPF firmware loading mechanism in UML vector driver 
-> that was
-> recently added [0] is plain old classic BPF? Quoting your commit log [0]:
+thanks,
+  Gerd
 
-It will allow whatever is allowed by sockfilter. Looking at the 
-sockfilter implementation in the kernel it takes eBPF, however even the 
-kernel docs still state BPF.
-
-> 
->    All vector drivers now allow a BPF program to be loaded and
->    associated with the RX socket in the host kernel.
-> 
->    1. The program can be loaded as an extra kernel command line
->    option to any of the vector drivers.
-> 
->    2. The program can also be loaded as "firmware", using the
->    ethtool flash option. It is possible to turn this facility
->    on or off using a command line option.
-> 
->    A simplistic wrapper for generating the BPF firmware for the raw
->    socket driver out of a tcpdump/libpcap filter expression can be
->    found at: https://github.com/kot-begemot-uk/uml_vector_utilities/
-> 
-> ... it tells what it does but /nothing/ about the original rationale / 
-> use case
-> why it is needed. So what is the use case? And why is this only classic 
-> BPF? Is
-> there any discussion to read up that lead you to this decision of only 
-> implementing
-> handling for classic BPF?
-
-Moving processing out of the GUEST onto the HOST using a safe language. 
-The firmware load is on the GUEST and your BPF is your virtual NIC 
-"firmware" which runs on the HOST (in the host kernel in fact).
-
-It is identical as an idea to what Netronome cards do in hardware.
-
-> 
-> I'm asking because classic BPF is /legacy/ stuff that is on feature 
-> freeze and
-> only very limited in terms of functionality compared to native (e)BPF 
-> which is
-> why you need this weird 'firmware' loader [1] which wraps around tcpdump to
-> parse the -ddd output into BPF insns ...
-
-Because there is no other mechanism of retrieving it after it is 
-compiled by libpcap in any of the common scripting languages.
-
-The pcap Perl, Python, Go (or whatever else) wrappers do not give you 
-access to the compiled code after the filter has been compiled.
-
-Why is that ingenious design - you have to take it with their maintainers.
-
-So if you want to start with pcap/tcpdump syntax and you do not want to 
-rewrite that part of tcpdump as a dumper in C you have no other choice.
-
-The starting point is chosen because the idea is at some point to 
-replace the existing and very aged pcap network transport in UML. That 
-takes pcap syntax on the kernel command line.
-
-I admit it is a kludge, I will probably do the "do not want" bit and 
-rewrite that in C.
-
-In any case - the "loader" is only an example, you can compile BPF using 
-LLVM or whatever else you like.
-
-A.
-
-> 
-> Thanks,
-> Daniel
-> 
->    [0] 
-> https://git.kernel.org/pub/scm/linux/kernel/git/rw/uml.git/commit/?h=linux-next&id=9807019a62dc670c73ce8e59e09b41ae458c34b3 
-> 
->    [1] 
-> https://github.com/kot-begemot-uk/uml_vector_utilities/blob/master/build_bpf_firmware.py 
-> 
-> 
->>   arch/um/drivers/vector_kern.c | 38 ++++++++++++++++++-----------------
->>   1 file changed, 20 insertions(+), 18 deletions(-)
->>
->> diff --git a/arch/um/drivers/vector_kern.c 
->> b/arch/um/drivers/vector_kern.c
->> index 92617e16829e..dbbc6e850fdd 100644
->> --- a/arch/um/drivers/vector_kern.c
->> +++ b/arch/um/drivers/vector_kern.c
->> @@ -1387,6 +1387,7 @@ static int vector_net_load_bpf_flash(struct 
->> net_device *dev,
->>       struct vector_private *vp = netdev_priv(dev);
->>       struct vector_device *vdevice;
->>       const struct firmware *fw;
->> +    void *new_filter;
->>       int result = 0;
->>       if (!(vp->options & VECTOR_BPF_FLASH)) {
->> @@ -1394,6 +1395,15 @@ static int vector_net_load_bpf_flash(struct 
->> net_device *dev,
->>           return -1;
->>       }
->> +    vdevice = find_device(vp->unit);
->> +
->> +    if (request_firmware(&fw, efl->data, &vdevice->pdev.dev))
->> +        return -1;
->> +
->> +    new_filter = kmemdup(fw->data, fw->size, GFP_KERNEL);
->> +    if (!new_filter)
->> +        goto free_buffer;
->> +
->>       spin_lock(&vp->lock);
->>       if (vp->bpf != NULL) {
->> @@ -1402,41 +1412,33 @@ static int vector_net_load_bpf_flash(struct 
->> net_device *dev,
->>           kfree(vp->bpf->filter);
->>           vp->bpf->filter = NULL;
->>       } else {
->> -        vp->bpf = kmalloc(sizeof(struct sock_fprog), GFP_KERNEL);
->> +        vp->bpf = kmalloc(sizeof(struct sock_fprog), GFP_ATOMIC);
->>           if (vp->bpf == NULL) {
->>               netdev_err(dev, "failed to allocate memory for 
->> firmware\n");
->> -            goto flash_fail;
->> +            goto apply_flash_fail;
->>           }
->>       }
->> -    vdevice = find_device(vp->unit);
->> -
->> -    if (request_firmware(&fw, efl->data, &vdevice->pdev.dev))
->> -        goto flash_fail;
->> -
->> -    vp->bpf->filter = kmemdup(fw->data, fw->size, GFP_KERNEL);
->> -    if (!vp->bpf->filter)
->> -        goto free_buffer;
->> -
->> +    vp->bpf->filter = new_filter;
->>       vp->bpf->len = fw->size / sizeof(struct sock_filter);
->> -    release_firmware(fw);
->>       if (vp->opened)
->>           result = uml_vector_attach_bpf(vp->fds->rx_fd, vp->bpf);
->>       spin_unlock(&vp->lock);
->> -    return result;
->> -
->> -free_buffer:
->>       release_firmware(fw);
->> -flash_fail:
->> +    return result;
->> +
->> +apply_flash_fail:
->>       spin_unlock(&vp->lock);
->> -    if (vp->bpf != NULL)
->> +    if (vp->bpf)
->>           kfree(vp->bpf->filter);
->>       kfree(vp->bpf);
->> -    vp->bpf = NULL;
->> +
->> +free_buffer:
->> +    release_firmware(fw);
->>       return -1;
->>   }
->>
-> 
-> 
-
--- 
-Anton R. Ivanov
-Cambridgegreys Limited. Registered in England. Company Number 10273661
-https://www.cambridgegreys.com/

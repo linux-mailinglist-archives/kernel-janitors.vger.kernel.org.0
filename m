@@ -2,91 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3996310D5A4
-	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Nov 2019 13:25:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 90C9610D869
+	for <lists+kernel-janitors@lfdr.de>; Fri, 29 Nov 2019 17:28:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726770AbfK2MZC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 29 Nov 2019 07:25:02 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:21046 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726360AbfK2MZC (ORCPT
+        id S1726963AbfK2Q2f (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 29 Nov 2019 11:28:35 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:49959 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726909AbfK2Q2f (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 29 Nov 2019 07:25:02 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1575030301;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=dRF9j5r9muNuE8Iv0Fr4lQhKRYCXnS9axqA6mDzv1bw=;
-        b=I8QMcDwbnptasY5OTyuCl6SYyMk83MbxKUB2c2sPGB14GbE3hf/EoCTE1UHiDfo3ApgJJV
-        WcGiavP4IoXuRUe8giiWHV3X/0qmTrC7eyz67l+h1oLKiSiJEJRM7sAdEygNwp42rjXrM/
-        SXcBV5OHLC309UZqsBkfLJOcjINNnBg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-415-sgoxaXQMP4mQM1KCcoQ-RA-1; Fri, 29 Nov 2019 07:25:00 -0500
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B748780183C;
-        Fri, 29 Nov 2019 12:24:56 +0000 (UTC)
-Received: from sirius.home.kraxel.org (ovpn-116-67.ams2.redhat.com [10.36.116.67])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id ED9D7600C8;
-        Fri, 29 Nov 2019 12:24:55 +0000 (UTC)
-Received: by sirius.home.kraxel.org (Postfix, from userid 1000)
-        id E808711AB5; Fri, 29 Nov 2019 13:24:54 +0100 (CET)
-Date:   Fri, 29 Nov 2019 13:24:54 +0100
-From:   Gerd Hoffmann <kraxel@redhat.com>
-To:     Markus Elfring <Markus.Elfring@web.de>
-Cc:     dri-devel@lists.freedesktop.org, spice-devel@lists.freedesktop.org,
-        virtualization@lists.linux-foundation.org,
-        Anton Vasilyev <vasilyev@ispras.ru>,
+        Fri, 29 Nov 2019 11:28:35 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iaj88-0000bz-Lk; Fri, 29 Nov 2019 16:28:28 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Ben Skeggs <bskeggs@redhat.com>, David Airlie <airlied@linux.ie>,
         Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, Dave Airlie <airlied@redhat.com>,
-        Kangjie Lu <kjlu@umn.edu>, Navid Emamdoost <emamd001@umn.edu>,
-        Stephen McCamant <smccaman@umn.edu>
-Subject: Re: [PATCH] drm/qxl: Complete exception handling in qxl_device_init()
-Message-ID: <20191129122454.2xoi43kaowmqppm5@sirius.home.kraxel.org>
-References: <5e5ef9c4-4d85-3c93-cf28-42cfcb5b0649@web.de>
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Ralph Campbell <rcampbell@nvidia.com>,
+        dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] nouveau: fix incorrect sizeof on args.src an args.dst
+Date:   Fri, 29 Nov 2019 16:28:28 +0000
+Message-Id: <20191129162828.84570-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-In-Reply-To: <5e5ef9c4-4d85-3c93-cf28-42cfcb5b0649@web.de>
-User-Agent: NeoMutt/20180716
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
-X-MC-Unique: sgoxaXQMP4mQM1KCcoQ-RA-1
-X-Mimecast-Spam-Score: 0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Nov 07, 2019 at 06:18:14PM +0100, Markus Elfring wrote:
-> From: Markus Elfring <elfring@users.sourceforge.net>
-> Date: Thu, 7 Nov 2019 18:05:08 +0100
->=20
-> A coccicheck run provided information like the following.
->=20
-> drivers/gpu/drm/qxl/qxl_kms.c:295:1-7: ERROR: missing iounmap;
-> ioremap on line 178 and execution via conditional on line 185
->=20
-> Generated by: scripts/coccinelle/free/iounmap.cocci
->=20
-> A jump target was specified in an if branch. The corresponding function
-> call did not release the desired system resource then.
-> Thus use the label =E2=80=9Crom_unmap=E2=80=9D instead to fix the excepti=
-on handling
-> for this function implementation.
->=20
-> Fixes: 5043348a4969ae1661c008efe929abd0d76e3792 ("drm: qxl: Fix error han=
-dling at qxl_device_init")
-> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+From: Colin Ian King <colin.king@canonical.com>
 
-Pushed to drm-misc-next.
+The sizeof is currently on args.src and args.dst and should be on
+*args.src and *args.dst. Fortunately these sizes just so happen
+to be the same size so it worked, however, this should be fixed
+and it also cleans up static analysis warnings
 
-thanks,
-  Gerd
+Addresses-Coverity: ("sizeof not portable")
+Fixes: f268307ec7c7 ("nouveau: simplify nouveau_dmem_migrate_vma")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/nouveau/nouveau_dmem.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/gpu/drm/nouveau/nouveau_dmem.c b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+index fa1439941596..0ad5d87b5a8e 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_dmem.c
++++ b/drivers/gpu/drm/nouveau/nouveau_dmem.c
+@@ -635,10 +635,10 @@ nouveau_dmem_migrate_vma(struct nouveau_drm *drm,
+ 	unsigned long c, i;
+ 	int ret = -ENOMEM;
+ 
+-	args.src = kcalloc(max, sizeof(args.src), GFP_KERNEL);
++	args.src = kcalloc(max, sizeof(*args.src), GFP_KERNEL);
+ 	if (!args.src)
+ 		goto out;
+-	args.dst = kcalloc(max, sizeof(args.dst), GFP_KERNEL);
++	args.dst = kcalloc(max, sizeof(*args.dst), GFP_KERNEL);
+ 	if (!args.dst)
+ 		goto out_free_src;
+ 
+-- 
+2.24.0
 

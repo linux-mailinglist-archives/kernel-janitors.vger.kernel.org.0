@@ -2,56 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ADD6B10F1F5
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Dec 2019 22:13:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 29D3E10F21F
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Dec 2019 22:25:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726008AbfLBVN3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 2 Dec 2019 16:13:29 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:40608 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725834AbfLBVN2 (ORCPT
+        id S1725903AbfLBVZX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Dec 2019 16:25:23 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:37419 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725825AbfLBVZX (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 2 Dec 2019 16:13:28 -0500
-Received: from localhost (unknown [IPv6:2601:601:9f00:1c3::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 11AEF14CF4DEA;
-        Mon,  2 Dec 2019 13:13:28 -0800 (PST)
-Date:   Mon, 02 Dec 2019 13:13:27 -0800 (PST)
-Message-Id: <20191202.131327.1991319206654704992.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     inaky@linux.intel.com, linux-wimax@intel.com,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] i2400m/USB: fix error return when rx_size is too large
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20191202174246.77305-1-colin.king@canonical.com>
-References: <20191202174246.77305-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.1
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 02 Dec 2019 13:13:28 -0800 (PST)
+        Mon, 2 Dec 2019 16:25:23 -0500
+Received: by mail-wr1-f67.google.com with SMTP id w15so1078441wru.4;
+        Mon, 02 Dec 2019 13:25:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Pt+naxqw/fH0eKVqxRkMbRAo9MZMH9ZsIR8OD48HKxM=;
+        b=Nk32nNfdBzkzw9m7i4o2nY+rlgd3njRYG+Y7ZLPIG7N+t6YrOFqJ3nPkrVVCxPjbAD
+         YoOib11V/zdT60l2iUhNqL6Kp2xrNmT0Yb4X206a15aKTMbqVXshTBE4MMG6SHdXBuhk
+         DzYirL+2o9DILOA3AKXigQG1RMoPPIf/0TEwMgs6Vu78hG7bfQnaZ9wIoCoU8tzx9lp8
+         Fme8qUAk0vW1GazZUglQZXhGpfEOuOXJTWhxUjIYurf9sJCIZxoZ0L6LjtupG6Mzx5RY
+         +EJpRQ6VPS3VzuL/ZlMz4GKuKO1ntU6hDPll3vS++TDRbI7X3Xc5qCph2/0BAEHQA05z
+         e+vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Pt+naxqw/fH0eKVqxRkMbRAo9MZMH9ZsIR8OD48HKxM=;
+        b=pjvuUUXV6lEnwnpXDHFVFEbovEYiOU9bLKJ9qR+zB7FHQifEdrboCDa/xMO0GsrMaI
+         MrYa1R+CdXIb4UIf/XOjjhljRfo+FCr/ZddSjX0R57f8LzBXZYyPfAjNDhPjDJnPWGSK
+         1SItyIxG9MpQ8DedQ25WiEhmPLsC0UXkbQX0+GqV7fIUZHd2Ra+nRhH7GrXUKAauZa5h
+         Jvb48DWt+notSo5oYo9mulW98lFpIbkh1DQLbTRKsJPCeJiUCAz/5DFT0/KJwj2Wn08q
+         gnTJeBDe0OhgMgpodwIAul4++cTh60nCf1zpzBun6uKRCrOD846UBdbnq3Qm0WeFSiBW
+         aQaA==
+X-Gm-Message-State: APjAAAU4nbHnH0KGV/nfKy3N/l2tSsKgZTrQaNRcDS6pmhNu8d0Ys7v5
+        qItsq1UXfpfAFBJ41Tn2i1rD9FtyaQ3FXlFYIhcgfQ==
+X-Google-Smtp-Source: APXvYqw2uAWmBCbxBUOEjOUQzYSJPvI9O35Octjfy7PHavXAejTiHm0aZFlhjtyVLYvd2Lo+zpwiEix23tZpnO3ryIc=
+X-Received: by 2002:a5d:46c7:: with SMTP id g7mr1177443wrs.11.1575321921005;
+ Mon, 02 Dec 2019 13:25:21 -0800 (PST)
+MIME-Version: 1.0
+References: <20191120172242.347072-1-colin.king@canonical.com> <9056b19a-f63c-8fc0-d2f7-6df3a20c95a7@amd.com>
+In-Reply-To: <9056b19a-f63c-8fc0-d2f7-6df3a20c95a7@amd.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Mon, 2 Dec 2019 16:25:09 -0500
+Message-ID: <CADnq5_NLq7HJ6OAAW6yO9G6NC9Ytpd7mzG8TrRmsLsvHbO9wWg@mail.gmail.com>
+Subject: Re: [PATCH][next] drm/amd/display: fix double assignment to msg_id field
+To:     Harry Wentland <hwentlan@amd.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Mon,  2 Dec 2019 17:42:46 +0000
+Applied.  thanks!
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently when the rx_size is too large the intended error
-> -EINVAL is not being returned as this is being assigned to
-> result rather than rx_skb. Fix this be setting rx_skb
-> to ERR_PTR(-EINVAL) so that the error is returned in rx_skb
-> as originally intended.
-> 
-> Addresses-Coverity: ("Unused value")
-> Fixes: a8ebf98f5414 ("i2400m/USB: TX and RX path backends")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Alex
 
-This leaks rx_skb, the caller is supposed to clean up rx_skb
-by freeing it if this function doesn't transmit it successfully.
+On Wed, Nov 27, 2019 at 11:51 AM Harry Wentland <hwentlan@amd.com> wrote:
+>
+> On 2019-11-20 12:22 p.m., Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> >
+> > The msg_id field is being assigned twice. Fix this by replacing the second
+> > assignment with an assignment to msg_size.
+> >
+> > Addresses-Coverity: ("Unused value")
+> > Fixes: 11a00965d261 ("drm/amd/display: Add PSP block to verify HDCP2.2 steps")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>
+> Reviewed-by: Harry Wentland <harry.wentland>
+>
+> Harry
+>
+> > ---
+> >  drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+> > index 2dd5feec8e6c..6791c5844e43 100644
+> > --- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+> > +++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp_psp.c
+> > @@ -42,7 +42,7 @@ static void hdcp2_message_init(struct mod_hdcp *hdcp,
+> >       in->process.msg2_desc.msg_id = TA_HDCP_HDCP2_MSG_ID__NULL_MESSAGE;
+> >       in->process.msg2_desc.msg_size = 0;
+> >       in->process.msg3_desc.msg_id = TA_HDCP_HDCP2_MSG_ID__NULL_MESSAGE;
+> > -     in->process.msg3_desc.msg_id = 0;
+> > +     in->process.msg3_desc.msg_size = 0;
+> >  }
+> >  enum mod_hdcp_status mod_hdcp_remove_display_topology(struct mod_hdcp *hdcp)
+> >  {
+> >
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

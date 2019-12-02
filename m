@@ -2,29 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E35910EEAD
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Dec 2019 18:43:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AD92810EFAC
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Dec 2019 19:59:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727845AbfLBRmv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 2 Dec 2019 12:42:51 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:45277 "EHLO
+        id S1728022AbfLBS7p (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Dec 2019 13:59:45 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:47991 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727772AbfLBRmv (ORCPT
+        with ESMTP id S1727994AbfLBS7o (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 2 Dec 2019 12:42:51 -0500
+        Mon, 2 Dec 2019 13:59:44 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1ibpih-00046M-4m; Mon, 02 Dec 2019 17:42:47 +0000
+        id 1ibqv8-0002H8-KB; Mon, 02 Dec 2019 18:59:42 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Inaky Perez-Gonzalez <inaky@linux.intel.com>,
-        linux-wimax@intel.com, "David S . Miller" <davem@davemloft.net>,
-        netdev@vger.kernel.org
+To:     Steve French <sfrench@samba.org>, linux-cifs@vger.kernel.org,
+        samba-technical@lists.samba.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] i2400m/USB: fix error return when rx_size is too large
-Date:   Mon,  2 Dec 2019 17:42:46 +0000
-Message-Id: <20191202174246.77305-1-colin.king@canonical.com>
+Subject: [PATCH] cifs: remove redundant assignment to pointer pneg_ctxt
+Date:   Mon,  2 Dec 2019 18:59:42 +0000
+Message-Id: <20191202185942.81854-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,32 +35,29 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently when the rx_size is too large the intended error
--EINVAL is not being returned as this is being assigned to
-result rather than rx_skb. Fix this be setting rx_skb
-to ERR_PTR(-EINVAL) so that the error is returned in rx_skb
-as originally intended.
+The pointer pneg_ctxt is being initialized with a value that is never
+read and it is being updated later with a new value.  The assignment
+is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
-Fixes: a8ebf98f5414 ("i2400m/USB: TX and RX path backends")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/net/wimax/i2400m/usb-rx.c | 2 +-
+ fs/cifs/smb2pdu.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wimax/i2400m/usb-rx.c b/drivers/net/wimax/i2400m/usb-rx.c
-index 5b64bda7d9e7..1a5e2178bb27 100644
---- a/drivers/net/wimax/i2400m/usb-rx.c
-+++ b/drivers/net/wimax/i2400m/usb-rx.c
-@@ -256,7 +256,7 @@ struct sk_buff *i2400mu_rx(struct i2400mu *i2400mu, struct sk_buff *rx_skb)
- 			i2400mu->rx_size = rx_size;
- 		else if (printk_ratelimit()) {
- 			dev_err(dev, "BUG? rx_size up to %d\n", rx_size);
--			result = -EINVAL;
-+			rx_skb = ERR_PTR(-EINVAL);
- 			goto out;
- 		}
- 		skb_put(rx_skb, read_size);
+diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
+index ed77f94dbf1d..be0de8a63e57 100644
+--- a/fs/cifs/smb2pdu.c
++++ b/fs/cifs/smb2pdu.c
+@@ -554,7 +554,7 @@ static void
+ assemble_neg_contexts(struct smb2_negotiate_req *req,
+ 		      struct TCP_Server_Info *server, unsigned int *total_len)
+ {
+-	char *pneg_ctxt = (char *)req;
++	char *pneg_ctxt;
+ 	unsigned int ctxt_len;
+ 
+ 	if (*total_len > 200) {
 -- 
 2.24.0
 

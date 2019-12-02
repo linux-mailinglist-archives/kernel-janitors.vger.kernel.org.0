@@ -2,63 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C133C10F23F
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Dec 2019 22:39:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D99DF10F302
+	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Dec 2019 23:57:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725853AbfLBVjK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 2 Dec 2019 16:39:10 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:35495 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725775AbfLBVjK (ORCPT
+        id S1726115AbfLBW51 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Dec 2019 17:57:27 -0500
+Received: from mail-io1-f68.google.com ([209.85.166.68]:46179 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725835AbfLBW51 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 2 Dec 2019 16:39:10 -0500
-Received: by mail-wr1-f67.google.com with SMTP id g17so1151138wro.2;
-        Mon, 02 Dec 2019 13:39:08 -0800 (PST)
+        Mon, 2 Dec 2019 17:57:27 -0500
+Received: by mail-io1-f68.google.com with SMTP id i11so1320942iol.13;
+        Mon, 02 Dec 2019 14:57:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=UY7Cgt/HHbMQf0k0lCTcwkYlvT/3f+PbQ7R+5FrroJk=;
-        b=s7chfm3+NiM53pTX/biaEdej5othUb91+knoYHrtDzVY329+Y3nrxfFjxX+3GOZVAZ
-         0EMZOmm0Ve/WdcrRS185uvrmSh3kM1+G2/gblrr9/jYCwAgq0HAOc92+fHPC4hjaPjFz
-         qtamQOzOUeazrRxUZ7sn2Xz/paAL28NH0tHbKyrNn6QDf2WArTa7HdslHaTb7HWlnVD9
-         ljUhJZx+A0dvNxO7tCZ0Yv0OZ+NEZg7eJRattmzXHIOueHA2Qq4hrcToMME1dBuxKlVS
-         qVgZXuX6Fp46I3jjCW/wTI+2wu1pz0g9p3D8b5wFwdb2nz8YkosfnP+whoSGGyvsOi7J
-         bo5g==
+        bh=7OqmQQJODK9vo7ge/B5mit6aPLYvUZlqzcHChoc1YCQ=;
+        b=F22W3AgfuOPDFHPUrzCdhSGKZJ5xlcnM9mGSYTNvFr6FpKl9wy/vJ0TDsYGmK/Lmi0
+         k+7DaOUXEByM/pAYnnZjwVG+jAJXMkaoQZW/FIKAXTyKHrWNdo9PCeWqsHdtLS9jzZMl
+         FFcznrw13nyZ1FTCsnAQMpH9kEdemBNM5JSJkOoiQZRD1NRhZVke2mdAzRMYJG8ERrQn
+         vN/gyPBpQaUzOCbziR/WY250xSzZn5sBeIBRpSnc7bFX74UJzO4DZQPqdXbEe4YAcWiC
+         /vhIyZzZct+N8pgTpmOg1DLcva9ycL6G0BfkqnSMUwqYs+zSA+udV+WorBeQwdxSYcJZ
+         uNgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=UY7Cgt/HHbMQf0k0lCTcwkYlvT/3f+PbQ7R+5FrroJk=;
-        b=SuOeVlvK0xSkqluT1O/Sn1z4EnZiUyfWd4puv2SzX5LxDAptjr+TuJbp/UpPlvHUFb
-         ktrbjT4SBQc+/2YKjqgD/cY2eBVFgihKOQ05khWnfBsn9/sgGtx7J+2tjqw9Ba/vWu/9
-         EzlPQpJjeY1lL2ZOqGi4Jvbblb5OegXJBTnAhgobHEtQwI77A9pc6MgBw2DiLOeZDPID
-         JWORD8DoQW+kynim80eo5049nYjrNTWvycJFvrS/4xwfyGZh2h7pHDTcpN7lsc/lNgem
-         kmY/QWjEZIRo2D4uumH1cnfVPMHjJEKkezY1wmGf3fBVioGqS+vy16Yh7i/VIfTGbmRJ
-         5RkQ==
-X-Gm-Message-State: APjAAAUaD3JznQ3jTDGdQSmd1Ler7CPkdAUkXwtCdxRHqRSo/eIfX7yx
-        2d/zLMSoiTa9SHsmiFpyupfm/dyAU/FhbMcxLqQ=
-X-Google-Smtp-Source: APXvYqyPXuAHZoIz3Nn0IQ/EHpeMnI4NckHiE/hs2YARA1G052OhgZkNuyP7oXg26gFkZU7g4h3eUDBXwumPOYpu3uk=
-X-Received: by 2002:a5d:46c7:: with SMTP id g7mr1239920wrs.11.1575322747719;
- Mon, 02 Dec 2019 13:39:07 -0800 (PST)
+        bh=7OqmQQJODK9vo7ge/B5mit6aPLYvUZlqzcHChoc1YCQ=;
+        b=CrgiLTQWmv6KIYyeAiVbwtk4w91kQr+HYgech/hNclqvPKDI7XZmCiM6Fga+cEBRjv
+         DqpWAP58SVhuotQP19MIAblLkXnAy0tUcyP4geX2IkhuRjGf/WkKJXsfN+onXk9tU0aU
+         H4I3Yl0yMSCx2NLRZ+edSu13ycj3BWr3ZEew04a5dcEwysrNfU8Df3sYN/6tp0TA+ilN
+         vbw/whpDG61TxSda32zJTCkLYlKJgDjeUZWDGBWrFWrr/yrK/GHBRVeN67PhBYYPu3mi
+         Ux//PFkN1aMgyuRjoJKqhSr3UbQXZh5yswZvBoaw1Lg+AIrdJIwgytHhh6eDKoGjG9u/
+         tONA==
+X-Gm-Message-State: APjAAAWO6CBEaY9TR0+YPWa3ajRKdczWS+GZ4Lhy4VfNScZGgIhTmMhh
+        qLNugOYtsKl5uEi7Iier5v5VNq3Y4feOn7K+epY7eA==
+X-Google-Smtp-Source: APXvYqzqgWdV8UxJScltcaQcOuDlIwZa5df7npulO3GcZdYl61HsqySvcNsIK04eAK1TVZwGNGoelGvqxFtQSH+5kGk=
+X-Received: by 2002:a6b:8d11:: with SMTP id p17mr1252191iod.3.1575327446607;
+ Mon, 02 Dec 2019 14:57:26 -0800 (PST)
 MIME-Version: 1.0
-References: <20191202154738.56812-1-colin.king@canonical.com>
-In-Reply-To: <20191202154738.56812-1-colin.king@canonical.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Mon, 2 Dec 2019 16:38:56 -0500
-Message-ID: <CADnq5_Mtos36z7vp92ep4hQtW3KFeGb8EbWsGbhOGXJSebdVDA@mail.gmail.com>
-Subject: Re: [PATCH] drm/amd/display: remove redundant assignment to variable v_total
+References: <20191202185942.81854-1-colin.king@canonical.com>
+In-Reply-To: <20191202185942.81854-1-colin.king@canonical.com>
+From:   Steve French <smfrench@gmail.com>
+Date:   Mon, 2 Dec 2019 16:57:15 -0600
+Message-ID: <CAH2r5ms+DVGP+Wgx+cTe65sBCFskrXBNxNe1gMDr+sEQ1DbqAA@mail.gmail.com>
+Subject: Re: [PATCH] cifs: remove redundant assignment to pointer pneg_ctxt
 To:     Colin King <colin.king@canonical.com>
-Cc:     Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+Cc:     Steve French <sfrench@samba.org>,
+        CIFS <linux-cifs@vger.kernel.org>,
+        samba-technical <samba-technical@lists.samba.org>,
+        kernel-janitors <kernel-janitors@vger.kernel.org>,
         LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -66,41 +60,41 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Applied.  thanks!
+merged into cifs-2.6.git for-next
 
-Alex
-
-On Mon, Dec 2, 2019 at 10:47 AM Colin King <colin.king@canonical.com> wrote:
+On Mon, Dec 2, 2019 at 1:00 PM Colin King <colin.king@canonical.com> wrote:
 >
 > From: Colin Ian King <colin.king@canonical.com>
 >
-> The variable v_total is being initialized with a value that is never
-> read and it is being updated later with a new value.  The initialization
+> The pointer pneg_ctxt is being initialized with a value that is never
+> read and it is being updated later with a new value.  The assignment
 > is redundant and can be removed.
 >
 > Addresses-Coverity: ("Unused value")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/gpu/drm/amd/display/modules/freesync/freesync.c | 2 +-
+>  fs/cifs/smb2pdu.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/gpu/drm/amd/display/modules/freesync/freesync.c b/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
-> index 16e69bbc69aa..fa57885503d4 100644
-> --- a/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
-> +++ b/drivers/gpu/drm/amd/display/modules/freesync/freesync.c
-> @@ -122,7 +122,7 @@ static unsigned int calc_v_total_from_refresh(
->                 const struct dc_stream_state *stream,
->                 unsigned int refresh_in_uhz)
+> diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
+> index ed77f94dbf1d..be0de8a63e57 100644
+> --- a/fs/cifs/smb2pdu.c
+> +++ b/fs/cifs/smb2pdu.c
+> @@ -554,7 +554,7 @@ static void
+>  assemble_neg_contexts(struct smb2_negotiate_req *req,
+>                       struct TCP_Server_Info *server, unsigned int *total_len)
 >  {
-> -       unsigned int v_total = stream->timing.v_total;
-> +       unsigned int v_total;
->         unsigned int frame_duration_in_ns;
+> -       char *pneg_ctxt = (char *)req;
+> +       char *pneg_ctxt;
+>         unsigned int ctxt_len;
 >
->         frame_duration_in_ns =
+>         if (*total_len > 200) {
 > --
 > 2.24.0
 >
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+
+
+-- 
+Thanks,
+
+Steve

@@ -2,99 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D99DF10F302
-	for <lists+kernel-janitors@lfdr.de>; Mon,  2 Dec 2019 23:57:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 130EF10F458
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Dec 2019 02:05:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726115AbfLBW51 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 2 Dec 2019 17:57:27 -0500
-Received: from mail-io1-f68.google.com ([209.85.166.68]:46179 "EHLO
-        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725835AbfLBW51 (ORCPT
+        id S1726066AbfLCBFJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 2 Dec 2019 20:05:09 -0500
+Received: from out30-54.freemail.mail.aliyun.com ([115.124.30.54]:43094 "EHLO
+        out30-54.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725853AbfLCBFJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 2 Dec 2019 17:57:27 -0500
-Received: by mail-io1-f68.google.com with SMTP id i11so1320942iol.13;
-        Mon, 02 Dec 2019 14:57:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=7OqmQQJODK9vo7ge/B5mit6aPLYvUZlqzcHChoc1YCQ=;
-        b=F22W3AgfuOPDFHPUrzCdhSGKZJ5xlcnM9mGSYTNvFr6FpKl9wy/vJ0TDsYGmK/Lmi0
-         k+7DaOUXEByM/pAYnnZjwVG+jAJXMkaoQZW/FIKAXTyKHrWNdo9PCeWqsHdtLS9jzZMl
-         FFcznrw13nyZ1FTCsnAQMpH9kEdemBNM5JSJkOoiQZRD1NRhZVke2mdAzRMYJG8ERrQn
-         vN/gyPBpQaUzOCbziR/WY250xSzZn5sBeIBRpSnc7bFX74UJzO4DZQPqdXbEe4YAcWiC
-         /vhIyZzZct+N8pgTpmOg1DLcva9ycL6G0BfkqnSMUwqYs+zSA+udV+WorBeQwdxSYcJZ
-         uNgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=7OqmQQJODK9vo7ge/B5mit6aPLYvUZlqzcHChoc1YCQ=;
-        b=CrgiLTQWmv6KIYyeAiVbwtk4w91kQr+HYgech/hNclqvPKDI7XZmCiM6Fga+cEBRjv
-         DqpWAP58SVhuotQP19MIAblLkXnAy0tUcyP4geX2IkhuRjGf/WkKJXsfN+onXk9tU0aU
-         H4I3Yl0yMSCx2NLRZ+edSu13ycj3BWr3ZEew04a5dcEwysrNfU8Df3sYN/6tp0TA+ilN
-         vbw/whpDG61TxSda32zJTCkLYlKJgDjeUZWDGBWrFWrr/yrK/GHBRVeN67PhBYYPu3mi
-         Ux//PFkN1aMgyuRjoJKqhSr3UbQXZh5yswZvBoaw1Lg+AIrdJIwgytHhh6eDKoGjG9u/
-         tONA==
-X-Gm-Message-State: APjAAAWO6CBEaY9TR0+YPWa3ajRKdczWS+GZ4Lhy4VfNScZGgIhTmMhh
-        qLNugOYtsKl5uEi7Iier5v5VNq3Y4feOn7K+epY7eA==
-X-Google-Smtp-Source: APXvYqzqgWdV8UxJScltcaQcOuDlIwZa5df7npulO3GcZdYl61HsqySvcNsIK04eAK1TVZwGNGoelGvqxFtQSH+5kGk=
-X-Received: by 2002:a6b:8d11:: with SMTP id p17mr1252191iod.3.1575327446607;
- Mon, 02 Dec 2019 14:57:26 -0800 (PST)
+        Mon, 2 Dec 2019 20:05:09 -0500
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R771e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e07486;MF=joseph.qi@linux.alibaba.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---0TjlyP7a_1575335105;
+Received: from JosephdeMacBook-Pro.local(mailfrom:joseph.qi@linux.alibaba.com fp:SMTPD_---0TjlyP7a_1575335105)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Tue, 03 Dec 2019 09:05:05 +0800
+Subject: Re: [PATCH] ocfs2/dlm: remove redundant assignment to ret
+To:     Colin King <colin.king@canonical.com>,
+        Mark Fasheh <mark@fasheh.com>,
+        Joel Becker <jlbec@evilplan.org>, ocfs2-devel@oss.oracle.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20191202164833.62865-1-colin.king@canonical.com>
+From:   Joseph Qi <joseph.qi@linux.alibaba.com>
+Message-ID: <787d96be-b750-9fa2-19c6-30c1af86cc3c@linux.alibaba.com>
+Date:   Tue, 3 Dec 2019 09:05:05 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:60.0)
+ Gecko/20100101 Thunderbird/60.9.1
 MIME-Version: 1.0
-References: <20191202185942.81854-1-colin.king@canonical.com>
-In-Reply-To: <20191202185942.81854-1-colin.king@canonical.com>
-From:   Steve French <smfrench@gmail.com>
-Date:   Mon, 2 Dec 2019 16:57:15 -0600
-Message-ID: <CAH2r5ms+DVGP+Wgx+cTe65sBCFskrXBNxNe1gMDr+sEQ1DbqAA@mail.gmail.com>
-Subject: Re: [PATCH] cifs: remove redundant assignment to pointer pneg_ctxt
-To:     Colin King <colin.king@canonical.com>
-Cc:     Steve French <sfrench@samba.org>,
-        CIFS <linux-cifs@vger.kernel.org>,
-        samba-technical <samba-technical@lists.samba.org>,
-        kernel-janitors <kernel-janitors@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20191202164833.62865-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-merged into cifs-2.6.git for-next
 
-On Mon, Dec 2, 2019 at 1:00 PM Colin King <colin.king@canonical.com> wrote:
->
+
+On 19/12/3 00:48, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
->
-> The pointer pneg_ctxt is being initialized with a value that is never
-> read and it is being updated later with a new value.  The assignment
+> 
+> The variable ret is being initialized with a value that is never
+> read and it is being updated later with a new value.  The initialization
 > is redundant and can be removed.
->
+> 
 > Addresses-Coverity: ("Unused value")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
 > ---
->  fs/cifs/smb2pdu.c | 2 +-
+>  fs/ocfs2/dlm/dlmrecovery.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/fs/cifs/smb2pdu.c b/fs/cifs/smb2pdu.c
-> index ed77f94dbf1d..be0de8a63e57 100644
-> --- a/fs/cifs/smb2pdu.c
-> +++ b/fs/cifs/smb2pdu.c
-> @@ -554,7 +554,7 @@ static void
->  assemble_neg_contexts(struct smb2_negotiate_req *req,
->                       struct TCP_Server_Info *server, unsigned int *total_len)
+> 
+> diff --git a/fs/ocfs2/dlm/dlmrecovery.c b/fs/ocfs2/dlm/dlmrecovery.c
+> index 064ce5bbc3f6..2734867473a6 100644
+> --- a/fs/ocfs2/dlm/dlmrecovery.c
+> +++ b/fs/ocfs2/dlm/dlmrecovery.c
+> @@ -1668,7 +1668,7 @@ static int dlm_lockres_master_requery(struct dlm_ctxt *dlm,
+>  int dlm_do_master_requery(struct dlm_ctxt *dlm, struct dlm_lock_resource *res,
+>  			  u8 nodenum, u8 *real_master)
 >  {
-> -       char *pneg_ctxt = (char *)req;
-> +       char *pneg_ctxt;
->         unsigned int ctxt_len;
->
->         if (*total_len > 200) {
-> --
-> 2.24.0
->
-
-
--- 
-Thanks,
-
-Steve
+> -	int ret = -EINVAL;
+> +	int ret;
+>  	struct dlm_master_requery req;
+>  	int status = DLM_LOCK_RES_OWNER_UNKNOWN;
+>  
+> 

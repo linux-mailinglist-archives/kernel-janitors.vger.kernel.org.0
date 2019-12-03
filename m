@@ -2,106 +2,156 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CF4E10FC01
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Dec 2019 11:48:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E411310FC29
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Dec 2019 12:04:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725997AbfLCKs1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Dec 2019 05:48:27 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:49656 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725829AbfLCKs0 (ORCPT
+        id S1726224AbfLCLE0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Dec 2019 06:04:26 -0500
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:54956 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726214AbfLCLE0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Dec 2019 05:48:26 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB3AiShK094243;
-        Tue, 3 Dec 2019 10:48:24 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=hi4CpXGuNnCcVu3hArJhrhjnnFKS2F7ytcnPm3zQ5TY=;
- b=lcl97AFlhSk6RGv2P5UCdj4bGS8CzEVlbpioW0IsNNtcXup7Kee854gFYchw4FGdK0rG
- Z65pnHEYWuALsajyfD8VeEfgZfWvSlDg1mtBIpFeRap7oFyuX1DUJDF2n6JT7+qsdxpn
- 0fpew7wWdkbqgMQTSlN2yBY0Wmg5Nrs3jFXx/jwZ7us0vBEkgbsVgiFtCu2zPdN6AVya
- v6sar/e9iStq0eM0BOLT3InRcskltt3PRmCB7m0AkxNOmoxJLvkDYzl7iwPAV8+aA7f7
- ininp/nLJV71HCEGIEcK4c1taUXN0o+tCQSmhh2r2n5069YcABf3hdt+TMLT2pWUP1EC WQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 2wkfuu6wc1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 03 Dec 2019 10:48:24 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB3Ai7pk043362;
-        Tue, 3 Dec 2019 10:48:23 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3030.oracle.com with ESMTP id 2wn8k2dehe-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 03 Dec 2019 10:48:23 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xB3AmMl1012420;
-        Tue, 3 Dec 2019 10:48:22 GMT
-Received: from kili.mountain (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 03 Dec 2019 02:48:22 -0800
-Date:   Tue, 3 Dec 2019 13:48:16 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     timur@codeaurora.org
-Cc:     kernel-janitors@vger.kernel.org
-Subject: [bug report] net: emac: emac gigabit ethernet controller driver
-Message-ID: <20191203104816.qdozqfywtvtmr4ie@kili.mountain>
+        Tue, 3 Dec 2019 06:04:26 -0500
+Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xB3AvUP9118986
+        for <kernel-janitors@vger.kernel.org>; Tue, 3 Dec 2019 06:04:24 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2wkrj5hph3-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <kernel-janitors@vger.kernel.org>; Tue, 03 Dec 2019 06:04:22 -0500
+Received: from localhost
+        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <kernel-janitors@vger.kernel.org> from <rppt@linux.ibm.com>;
+        Tue, 3 Dec 2019 11:04:15 -0000
+Received: from b06cxnps4076.portsmouth.uk.ibm.com (9.149.109.198)
+        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Tue, 3 Dec 2019 11:04:12 -0000
+Received: from d06av22.portsmouth.uk.ibm.com (d06av22.portsmouth.uk.ibm.com [9.149.105.58])
+        by b06cxnps4076.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xB3B4BoU46858470
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 3 Dec 2019 11:04:11 GMT
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 579E14C04A;
+        Tue,  3 Dec 2019 11:04:11 +0000 (GMT)
+Received: from d06av22.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 986BF4C052;
+        Tue,  3 Dec 2019 11:04:10 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.148.56.131])
+        by d06av22.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Tue,  3 Dec 2019 11:04:10 +0000 (GMT)
+Date:   Tue, 3 Dec 2019 13:04:08 +0200
+From:   Mike Rapoport <rppt@linux.ibm.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Chris Mason <clm@fb.com>, Josef Bacik <jbacik@fb.com>,
+        David Sterba <dsterba@suse.com>, Qu Wenruo <wqu@suse.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        linux-btrfs@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] btrfs: Fix btrfs_find_create_tree_block() testing
+References: <20191203093036.fp4rbgm56yzbw6ku@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9459 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=520
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1912030087
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9459 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=584 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-1912030087
+In-Reply-To: <20191203093036.fp4rbgm56yzbw6ku@kili.mountain>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-TM-AS-GCONF: 00
+x-cbid: 19120311-0012-0000-0000-0000037049B0
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19120311-0013-0000-0000-000021AC051F
+Message-Id: <20191203110408.GA30629@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-03_02:2019-12-02,2019-12-03 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ suspectscore=2 lowpriorityscore=0 clxscore=1011 priorityscore=1501
+ mlxscore=0 bulkscore=0 malwarescore=0 phishscore=0 impostorscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912030088
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello Timur Tabi,
+Hi,
 
-The patch b9b17debc69d: "net: emac: emac gigabit ethernet controller
-driver" from Aug 31, 2016, leads to the following static checker
-warning:
+On Tue, Dec 03, 2019 at 12:33:04PM +0300, Dan Carpenter wrote:
+> The btrfs_find_create_tree_block() uses alloc_dummy_extent_buffer() for
+> testing and alloc_extent_buffer() for production.  The problem is that
+> the test code returns NULL and the production code returns error
+> pointers.  The callers only check for error pointers.
+> 
+> I have changed alloc_dummy_extent_buffer() to return error pointers and
 
-	drivers/net/ethernet/qualcomm/emac/emac-mac.c:1463 emac_mac_tx_buf_send()
-	error: dereferencing freed memory 'skb'
+nit:		alloc_test_extent_buffer()
 
-drivers/net/ethernet/qualcomm/emac/emac-mac.c
-  1412           * so it will be freed after unmap
-  1413           */
-  1414          tpbuf->skb = skb;
-  1415  
-  1416          return;
-  1417  
-  1418  error:
-  1419          /* One of the memory mappings failed, so undo everything */
-  1420          tx_q->tpd.produce_idx = first;
-  1421  
-  1422          while (count--) {
-  1423                  tpbuf = GET_TPD_BUFFER(tx_q, first);
-  1424                  dma_unmap_page(adpt->netdev->dev.parent, tpbuf->dma_addr,
-  1425                                 tpbuf->length, DMA_TO_DEVICE);
-  1426                  tpbuf->dma_addr = 0;
-  1427                  tpbuf->length = 0;
-  1428  
-  1429                  if (++first == tx_q->tpd.count)
-  1430                          first = 0;
-  1431          }
-  1432  
-  1433          dev_kfree_skb(skb);
-                              ^^^
-The caller has no way to know if skb is freed or not.
+> updated the two callers which use it directly.
+> 
+> Fixes: faa2dbf004e8 ("Btrfs: add sanity tests for new qgroup accounting code")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  fs/btrfs/extent_io.c                   | 6 ++++--
+>  fs/btrfs/tests/free-space-tree-tests.c | 4 ++--
+>  fs/btrfs/tests/qgroup-tests.c          | 4 ++--
+>  3 files changed, 8 insertions(+), 6 deletions(-)
+> 
+> diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+> index eb8bd0258360..2f4802f405a2 100644
+> --- a/fs/btrfs/extent_io.c
+> +++ b/fs/btrfs/extent_io.c
+> @@ -5074,12 +5074,14 @@ struct extent_buffer *alloc_test_extent_buffer(struct btrfs_fs_info *fs_info,
+>  		return eb;
+>  	eb = alloc_dummy_extent_buffer(fs_info, start);
+>  	if (!eb)
+> -		return NULL;
+> +		return ERR_PTR(-ENOMEM);
+>  	eb->fs_info = fs_info;
+>  again:
+>  	ret = radix_tree_preload(GFP_NOFS);
+> -	if (ret)
+> +	if (ret) {
+> +		exists = ERR_PTR(ret);
+>  		goto free_eb;
+> +	}
+>  	spin_lock(&fs_info->buffer_lock);
+>  	ret = radix_tree_insert(&fs_info->buffer_radix,
+>  				start >> PAGE_SHIFT, eb);
+> diff --git a/fs/btrfs/tests/free-space-tree-tests.c b/fs/btrfs/tests/free-space-tree-tests.c
+> index 1a846bf6e197..914eea5ba6a7 100644
+> --- a/fs/btrfs/tests/free-space-tree-tests.c
+> +++ b/fs/btrfs/tests/free-space-tree-tests.c
+> @@ -452,9 +452,9 @@ static int run_test(test_func_t test_func, int bitmaps, u32 sectorsize,
+>  	root->fs_info->tree_root = root;
+>  
+>  	root->node = alloc_test_extent_buffer(root->fs_info, nodesize);
+> -	if (!root->node) {
+> +	if (IS_ERR(root->node)) {
+>  		test_std_err(TEST_ALLOC_EXTENT_BUFFER);
+> -		ret = -ENOMEM;
+> +		ret = PTR_ERR(root->node);
+>  		goto out;
+>  	}
+>  	btrfs_set_header_level(root->node, 0);
+> diff --git a/fs/btrfs/tests/qgroup-tests.c b/fs/btrfs/tests/qgroup-tests.c
+> index 09aaca1efd62..ac035a6fa003 100644
+> --- a/fs/btrfs/tests/qgroup-tests.c
+> +++ b/fs/btrfs/tests/qgroup-tests.c
+> @@ -484,9 +484,9 @@ int btrfs_test_qgroups(u32 sectorsize, u32 nodesize)
+>  	 * *cough*backref walking code*cough*
+>  	 */
+>  	root->node = alloc_test_extent_buffer(root->fs_info, nodesize);
+> -	if (!root->node) {
+> +	if (IS_ERR(root->node)) {
+>  		test_err("couldn't allocate dummy buffer");
+> -		ret = -ENOMEM;
+> +		ret = PTR_ERR(root->node);
+>  		goto out;
+>  	}
+>  	btrfs_set_header_level(root->node, 0);
+> -- 
+> 2.11.0
+> 
 
-  1434  }
+-- 
+Sincerely yours,
+Mike.
 
-regards,
-dan carpenter

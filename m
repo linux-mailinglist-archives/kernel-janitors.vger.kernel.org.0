@@ -2,53 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A05610FAF6
-	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Dec 2019 10:45:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F357410FB3C
+	for <lists+kernel-janitors@lfdr.de>; Tue,  3 Dec 2019 10:59:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725907AbfLCJph (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Dec 2019 04:45:37 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:51446 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725773AbfLCJph (ORCPT
+        id S1726298AbfLCJ71 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Dec 2019 04:59:27 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:58962 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725774AbfLCJ71 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Dec 2019 04:45:37 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB39i5nr036458;
-        Tue, 3 Dec 2019 09:45:33 GMT
+        Tue, 3 Dec 2019 04:59:27 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB39mqEV046169;
+        Tue, 3 Dec 2019 09:59:14 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=0bc+ejEXF580FmDsQqhU+yk8WH9kG1K+OY+QFEAIQRE=;
- b=e5bBN0ZjLK0Jdmocp0AthNp0JvrQP7vE6vsv9cJwA3MXSMVYc7B9Le3cqiH+lJN94aFK
- h+/eMaoTyJPdg1GWi6PcCm7V8R8Dq9N7sL8kD4PGOMJ19yc3BVJlhnI3Tamm6Iy4Zs+v
- a64VKID7BjH8fIS07XZvfQkDfEgHRvLbAw/nyF1Ib2PFmLrHAsnvHo+u4mH3XE4bZSp3
- M4MvNmaoiRvNFnq+5c7ZJZHC+rNrMMCfWDFkHEboAphTTwhDFCJfjf4sVS7vtseIwiJ5
- QnrWw6UaOT9vy5f25ZTl0E9Mx+RsGQaIqeUD8aDe9UXdPN5nsVCI2Xrvzgva3JoIoENd 0g== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 2wkgcq6cnd-1
+ bh=GMmw6G30mIhLrf+EFWdyjTxFBTqyY4JokeFFwksph9A=;
+ b=lOxFiOmjrnmy0QWfJXoLjFbVVNQiOi9BcydMqsyoOtXJNRNIf69qDGV+Tgv8qtxhfBi5
+ FCwlr9xl8hv7MDb0gfxcMj7tEE2juMPv8E3mK11eDOMOR7HWm1XUXR/3+Ub405ap2yh5
+ VlWiSAFyuAkTUqjyT7Uy1T40M78PduaBCooZcFJgoi9fQz4SRM9T3v6AqdgxKw2K2S7I
+ 2sjT9xRdR33uWSimE7axv4w4nacVeGD2R3PBatj39nhMSAn2T4vaXoe2gb2ONNqlRa9e
+ MWLySRIaiQSgQE+ClNkHW5Q9zs2j3hkbDxfmWzMIXbXLCOoLfR/MTcwdZ0TmDOIbtKFr MA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2130.oracle.com with ESMTP id 2wkfuu6me6-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 03 Dec 2019 09:45:33 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB39i6sO062469;
-        Tue, 3 Dec 2019 09:45:33 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 2wn4qpn13y-1
+        Tue, 03 Dec 2019 09:59:14 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB39m0SB020392;
+        Tue, 3 Dec 2019 09:59:13 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 2wnb7xcq00-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 03 Dec 2019 09:45:32 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xB39jUwt018516;
-        Tue, 3 Dec 2019 09:45:31 GMT
+        Tue, 03 Dec 2019 09:59:13 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xB39xBMV022039;
+        Tue, 3 Dec 2019 09:59:11 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 03 Dec 2019 01:45:30 -0800
-Date:   Tue, 3 Dec 2019 12:45:09 +0300
+        with ESMTP ; Tue, 03 Dec 2019 01:59:10 -0800
+Date:   Tue, 3 Dec 2019 12:58:55 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     QLogic-Storage-Upstream@qlogic.com,
-        David Somayajulu <david.somayajulu@qlogic.com>
-Cc:     "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] iscsi: qla4xxx: fix double free in probe
-Message-ID: <20191203094421.hw7ex7qr3j2rbsmx@kili.mountain>
+To:     Arend van Spriel <arend.vanspriel@broadcom.com>,
+        Franky Lin <frankyl@broadcom.com>
+Cc:     Hante Meuleman <hante.meuleman@broadcom.com>,
+        Chi-Hsien Lin <chi-hsien.lin@cypress.com>,
+        Wright Feng <wright.feng@cypress.com>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        =?utf-8?B?UmFmYcWCIE1pxYJlY2tp?= <rafal@milecki.pl>,
+        Naveen Gupta <naveen.gupta@cypress.com>,
+        linux-wireless@vger.kernel.org,
+        brcm80211-dev-list.pdl@broadcom.com,
+        brcm80211-dev-list@cypress.com, kernel-janitors@vger.kernel.org
+Subject: [PATCH] brcmfmac: Fix use after free in brcmf_sdio_readframes()
+Message-ID: <20191203095855.c4fradmsixgbq7mc@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -56,45 +64,48 @@ X-Mailer: git-send-email haha only kidding
 User-Agent: NeoMutt/20170113 (1.7.2)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9459 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=991
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1912030079
+ engine=8.0.1-1911140001 definitions=main-1912030080
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9459 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
  suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-1912030079
+ definitions=main-1912030080
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On this error path we call qla4xxx_mem_free() and then the caller also
-calls qla4xxx_free_adapter() which calls qla4xxx_mem_free().  It leads
-to a couple double frees:
+The brcmu_pkt_buf_free_skb() function frees "pkt" so it leads to a
+static checker warning:
 
-drivers/scsi/qla4xxx/ql4_os.c:8856 qla4xxx_probe_adapter() warn: 'ha->chap_dma_pool' double freed
-drivers/scsi/qla4xxx/ql4_os.c:8856 qla4xxx_probe_adapter() warn: 'ha->fw_ddb_dma_pool' double freed
+    drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c:1974 brcmf_sdio_readframes()
+    error: dereferencing freed memory 'pkt'
 
-Fixes: afaf5a2d341d ("[SCSI] Initial Commit of qla4xxx")
+It looks like there was supposed to be a continue after we free "pkt".
+
+Fixes: 4754fceeb9a6 ("brcmfmac: streamline SDIO read frame routine")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/scsi/qla4xxx/ql4_os.c | 1 -
- 1 file changed, 1 deletion(-)
+Static analysis.  Not tested.
 
-diff --git a/drivers/scsi/qla4xxx/ql4_os.c b/drivers/scsi/qla4xxx/ql4_os.c
-index 8c674eca09f1..2323432a0edb 100644
---- a/drivers/scsi/qla4xxx/ql4_os.c
-+++ b/drivers/scsi/qla4xxx/ql4_os.c
-@@ -4275,7 +4275,6 @@ static int qla4xxx_mem_alloc(struct scsi_qla_host *ha)
- 	return QLA_SUCCESS;
- 
- mem_alloc_error_exit:
--	qla4xxx_mem_free(ha);
- 	return QLA_ERROR;
- }
- 
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+index 264ad63232f8..1dea0178832e 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/sdio.c
+@@ -1935,6 +1935,7 @@ static uint brcmf_sdio_readframes(struct brcmf_sdio *bus, uint maxframes)
+ 					       BRCMF_SDIO_FT_NORMAL)) {
+ 				rd->len = 0;
+ 				brcmu_pkt_buf_free_skb(pkt);
++				continue;
+ 			}
+ 			bus->sdcnt.rx_readahead_cnt++;
+ 			if (rd->len != roundup(rd_new.len, 16)) {
 -- 
 2.11.0
 

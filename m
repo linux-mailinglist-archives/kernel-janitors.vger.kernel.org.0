@@ -2,32 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E752C1121DC
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Dec 2019 04:35:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A00E11229D
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Dec 2019 06:44:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727015AbfLDDfb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Dec 2019 22:35:31 -0500
-Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:24332 "EHLO
+        id S1726048AbfLDFoB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Dec 2019 00:44:01 -0500
+Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:38154 "EHLO
         smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726804AbfLDDfb (ORCPT
+        with ESMTP id S1725839AbfLDFoB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Dec 2019 22:35:31 -0500
+        Wed, 4 Dec 2019 00:44:01 -0500
 Received: from localhost.localdomain ([90.126.97.183])
-        by mwinf5d59 with ME
-        id ZfbS2100A3xPcdm03fbSuu; Wed, 04 Dec 2019 04:35:29 +0100
+        by mwinf5d51 with ME
+        id Zhjw2100L3xPcdm03hjxz8; Wed, 04 Dec 2019 06:43:59 +0100
 X-ME-Helo: localhost.localdomain
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 04 Dec 2019 04:35:29 +0100
+X-ME-Date: Wed, 04 Dec 2019 06:43:59 +0100
 X-ME-IP: 90.126.97.183
 From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     jkosina@suse.cz, benjamin.tissoires@redhat.com,
-        masaki.ota@jp.alps.com
-Cc:     linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
+To:     sgruszka@redhat.com, helmut.schaa@googlemail.com,
+        kvalo@codeaurora.org, davem@davemloft.net
+Cc:     linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
         Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] HID: alps: Fix an error handling path in 'alps_input_configured()'
-Date:   Wed,  4 Dec 2019 04:35:25 +0100
-Message-Id: <20191204033525.10871-1-christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] rt2x00usb: Fix a warning message in 'rt2x00usb_watchdog_tx_dma()'
+Date:   Wed,  4 Dec 2019 06:43:55 +0100
+Message-Id: <20191204054355.11729-1-christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -36,32 +36,26 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-They are issues:
-   - if 'input_allocate_device()' fails and return NULL, there is no need
-     to free anything and 'input_free_device()' call is a no-op. It can
-     be axed.
-   - 'ret' is known to be 0 at this point, so we must set it to a
-     meaningful value before returning
+'forced' is duplicated in the message, axe one of them.
 
-Fixes: 2562756dde55 ("HID: add Alps I2C HID Touchpad-Stick support")
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/hid/hid-alps.c | 2 +-
+ drivers/net/wireless/ralink/rt2x00/rt2x00usb.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-alps.c b/drivers/hid/hid-alps.c
-index ae79a7c66737..fa704153cb00 100644
---- a/drivers/hid/hid-alps.c
-+++ b/drivers/hid/hid-alps.c
-@@ -730,7 +730,7 @@ static int alps_input_configured(struct hid_device *hdev, struct hid_input *hi)
- 	if (data->has_sp) {
- 		input2 = input_allocate_device();
- 		if (!input2) {
--			input_free_device(input2);
-+			ret = -ENOMEM;
- 			goto exit;
- 		}
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+index bc2dfef0de22..92e9e023c349 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00usb.c
+@@ -522,7 +522,7 @@ EXPORT_SYMBOL_GPL(rt2x00usb_flush_queue);
  
+ static void rt2x00usb_watchdog_tx_dma(struct data_queue *queue)
+ {
+-	rt2x00_warn(queue->rt2x00dev, "TX queue %d DMA timed out, invoke forced forced reset\n",
++	rt2x00_warn(queue->rt2x00dev, "TX queue %d DMA timed out, invoke forced reset\n",
+ 		    queue->qid);
+ 
+ 	rt2x00queue_stop_queue(queue);
 -- 
 2.20.1
 

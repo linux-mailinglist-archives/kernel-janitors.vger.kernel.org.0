@@ -2,69 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97423112D42
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Dec 2019 15:12:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FB0E112D6C
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Dec 2019 15:26:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727889AbfLDOME (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Dec 2019 09:12:04 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:57704 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727828AbfLDOME (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Dec 2019 09:12:04 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1icVNn-0002Ao-Sz; Wed, 04 Dec 2019 14:11:59 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Maxime Jourdan <mjourdan@baylibre.com>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        linux-media@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        devel@driverdev.osuosl.org, linux-arm-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] media: meson: add missing allocation failure check on new_buf
-Date:   Wed,  4 Dec 2019 14:11:59 +0000
-Message-Id: <20191204141159.1432387-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
+        id S1727948AbfLDO0n (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Dec 2019 09:26:43 -0500
+Received: from mail.kernel.org ([198.145.29.99]:58984 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727850AbfLDO0n (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 4 Dec 2019 09:26:43 -0500
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5907820675;
+        Wed,  4 Dec 2019 14:26:42 +0000 (UTC)
+Date:   Wed, 4 Dec 2019 09:26:40 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] Silence an uninitialized variable warning
+Message-ID: <20191204092640.692c95af@gandalf.local.home>
+In-Reply-To: <20191126121934.kuolgbm55dirfbay@kili.mountain>
+References: <20191126121934.kuolgbm55dirfbay@kili.mountain>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Tue, 26 Nov 2019 15:19:34 +0300
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-Currently if the allocation of new_buf fails then a null pointer
-dereference occurs when assiging new_buf->vb. Avoid this by returning
-early on a memory allocation failure as there is not much more can
-be done at this point.
+> Smatch complains that "ret" could be uninitialized if we don't enter the
+> loop.  I don't know if that's possible, but it's nicer to return a
+> literal zero instead.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  kernel/trace/trace_syscalls.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/trace/trace_syscalls.c b/kernel/trace/trace_syscalls.c
+> index 73140d80dd46..63528f458826 100644
+> --- a/kernel/trace/trace_syscalls.c
+> +++ b/kernel/trace/trace_syscalls.c
+> @@ -286,7 +286,7 @@ static int __init syscall_enter_define_fields(struct trace_event_call *call)
+>  		offset += sizeof(unsigned long);
+>  	}
+>  
+> -	return ret;
+> +	return 0;
+>  }
+>  
+>  static void ftrace_syscall_enter(void *data, struct pt_regs *regs, long id)
 
-Addresses-Coverity: ("Dereference null return")
-Fixes: 3e7f51bd9607 ("media: meson: add v4l2 m2m video decoder driver")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/staging/media/meson/vdec/vdec.c | 2 ++
- 1 file changed, 2 insertions(+)
+The current code has this:
 
-diff --git a/drivers/staging/media/meson/vdec/vdec.c b/drivers/staging/media/meson/vdec/vdec.c
-index 0a1a04fd5d13..8dd1396909d7 100644
---- a/drivers/staging/media/meson/vdec/vdec.c
-+++ b/drivers/staging/media/meson/vdec/vdec.c
-@@ -133,6 +133,8 @@ vdec_queue_recycle(struct amvdec_session *sess, struct vb2_buffer *vb)
- 	struct amvdec_buffer *new_buf;
- 
- 	new_buf = kmalloc(sizeof(*new_buf), GFP_KERNEL);
-+	if (!new_buf)
-+		return;
- 	new_buf->vb = vb;
- 
- 	mutex_lock(&sess->bufs_recycle_lock);
--- 
-2.24.0
+static int __init syscall_enter_define_fields(struct trace_event_call *call)
+{
+	struct syscall_trace_enter trace;
+	struct syscall_metadata *meta = call->data;
+	int ret;
+	int i;
+	int offset = offsetof(typeof(trace), args);
 
+	ret = trace_define_field(call, SYSCALL_FIELD(int, nr, __syscall_nr),
+				 FILTER_OTHER);
+	if (ret)
+		return ret;
+
+	for (i = 0; i < meta->nb_args; i++) {
+		ret = trace_define_field(call, meta->types[i],
+					 meta->args[i], offset,
+					 sizeof(unsigned long), 0,
+					 FILTER_OTHER);
+		offset += sizeof(unsigned long);
+	}
+
+	return ret;
+}
+
+
+How can ret possibly be uninitialized?
+
+-- Steve

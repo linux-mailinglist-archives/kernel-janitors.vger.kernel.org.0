@@ -2,140 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 46C92113522
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Dec 2019 19:44:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F23F2113612
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Dec 2019 21:01:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728380AbfLDSn5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Dec 2019 13:43:57 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:49246 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728244AbfLDSn5 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Dec 2019 13:43:57 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB4IY6on074545;
-        Wed, 4 Dec 2019 18:43:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=iW3p+lMiFZuhMFDcuCH3k9CwOvQRI86to7kQ5iH1Rq4=;
- b=S6ZibFY0lW8ejK3kFSiyqf7Vpdd9fY6E2NTXRsRhCYThgfMRpGz8vcMPSFGZaruvC3hZ
- jgEKyGaGOquOpKxZMjUgyDcx8BXEJ2JNNRm4xm2qHrD6+q11Gqy4YlRlIW3ZX9krO23X
- aIaPgqywANWpQVonrZ0vS/12Gs6nvGNhS0RUsS1cxtoJjZ1FHy7F7XWi1GSgzka2Mc1T
- jH7gnKqm2XA1B3+6+13SGIAUiwXMdTvIUCr/30qGFGcellsnE2VPvbo6ta3MF8V3LZ6+
- 06lwveWeAZ/Tf77qBCLVQ5mo600cJW8BB9jWoL2Fn5ZQgb+cXqZdWzjmW6MGydu08aji qw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 2wkh2rg5c5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 04 Dec 2019 18:43:16 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB4IhFsD014723;
-        Wed, 4 Dec 2019 18:43:16 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 2wp17en7cr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 04 Dec 2019 18:43:15 +0000
-Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xB4Igt7S024219;
-        Wed, 4 Dec 2019 18:42:56 GMT
-Received: from kadam (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 04 Dec 2019 10:42:54 -0800
-Date:   Wed, 4 Dec 2019 21:42:47 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH] Silence an uninitialized variable warning
-Message-ID: <20191204184247.GG1765@kadam>
-References: <20191126121934.kuolgbm55dirfbay@kili.mountain>
- <20191204092640.692c95af@gandalf.local.home>
+        id S1727912AbfLDUA5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Dec 2019 15:00:57 -0500
+Received: from mga18.intel.com ([134.134.136.126]:9779 "EHLO mga18.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727033AbfLDUA5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 4 Dec 2019 15:00:57 -0500
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Dec 2019 12:00:56 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,278,1571727600"; 
+   d="scan'208";a="236407731"
+Received: from jcourage-mobl.amr.corp.intel.com (HELO [10.251.152.230]) ([10.251.152.230])
+  by fmsmga004.fm.intel.com with ESMTP; 04 Dec 2019 12:00:54 -0800
+Subject: Re: [alsa-devel] [PATCH] ASoC: SOF: imx8: fix memory allocation
+ failure check on priv->pd_dev
+To:     Colin King <colin.king@canonical.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Fabio Estevam <festevam@gmail.com>,
+        NXP Linux Team <linux-imx@nxp.com>,
+        Daniel Baluta <daniel.baluta@nxp.com>,
+        alsa-devel@alsa-project.org, linux-arm-kernel@lists.infradead.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20191204124816.1415359-1-colin.king@canonical.com>
+From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Message-ID: <33fec540-e97b-25e7-83af-575f19d829d2@linux.intel.com>
+Date:   Wed, 4 Dec 2019 13:13:45 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191204092640.692c95af@gandalf.local.home>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9461 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1912040151
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9461 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-1912040150
+In-Reply-To: <20191204124816.1415359-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Dec 04, 2019 at 09:26:40AM -0500, Steven Rostedt wrote:
-> On Tue, 26 Nov 2019 15:19:34 +0300
-> Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> 
-> > Smatch complains that "ret" could be uninitialized if we don't enter the
-> > loop.  I don't know if that's possible, but it's nicer to return a
-> > literal zero instead.
-> > 
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> >  kernel/trace/trace_syscalls.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/kernel/trace/trace_syscalls.c b/kernel/trace/trace_syscalls.c
-> > index 73140d80dd46..63528f458826 100644
-> > --- a/kernel/trace/trace_syscalls.c
-> > +++ b/kernel/trace/trace_syscalls.c
-> > @@ -286,7 +286,7 @@ static int __init syscall_enter_define_fields(struct trace_event_call *call)
-> >  		offset += sizeof(unsigned long);
-> >  	}
-> >  
-> > -	return ret;
-> > +	return 0;
-> >  }
-> >  
-> >  static void ftrace_syscall_enter(void *data, struct pt_regs *regs, long id)
-> 
-> The current code has this:
-> 
-> static int __init syscall_enter_define_fields(struct trace_event_call *call)
-> {
-> 	struct syscall_trace_enter trace;
-> 	struct syscall_metadata *meta = call->data;
-> 	int ret;
-> 	int i;
-> 	int offset = offsetof(typeof(trace), args);
-> 
-> 	ret = trace_define_field(call, SYSCALL_FIELD(int, nr, __syscall_nr),
-> 				 FILTER_OTHER);
 
-In linux-next this ret = trace_define_field() assignment is removed.
-That was commit 60fdad00827c ("ftrace: Rework event_create_dir()").
 
-> 	if (ret)
-> 		return ret;
+On 12/4/19 6:48 AM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> 	for (i = 0; i < meta->nb_args; i++) {
-> 		ret = trace_define_field(call, meta->types[i],
-> 					 meta->args[i], offset,
-> 					 sizeof(unsigned long), 0,
-> 					 FILTER_OTHER);
-> 		offset += sizeof(unsigned long);
-> 	}
+> The memory allocation failure check for priv->pd_dev is incorrectly
+> pointer checking priv instead of priv->pd_dev. Fix this.
 > 
-> 	return ret;
-> }
-> 
-> 
-> How can ret possibly be uninitialized?
+> Addresses-Coverity: ("Logically dead code")
+> Fixes: 202acc565a1f ("ASoC: SOF: imx: Add i.MX8 HW support")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-I should have written this commit more carefully and verified whether
-meta->nb_args can actually be zero instead of just assuming it was a
-false positive...
+Thanks Colin
 
-regards,
-dan carpenter
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
+> ---
+>   sound/soc/sof/imx/imx8.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/sound/soc/sof/imx/imx8.c b/sound/soc/sof/imx/imx8.c
+> index cfefcfd92798..9d926b1df0d7 100644
+> --- a/sound/soc/sof/imx/imx8.c
+> +++ b/sound/soc/sof/imx/imx8.c
+> @@ -209,7 +209,7 @@ static int imx8_probe(struct snd_sof_dev *sdev)
+>   
+>   	priv->pd_dev = devm_kmalloc_array(&pdev->dev, priv->num_domains,
+>   					  sizeof(*priv->pd_dev), GFP_KERNEL);
+> -	if (!priv)
+> +	if (!priv->pd_dev)
+>   		return -ENOMEM;
+>   
+>   	priv->link = devm_kmalloc_array(&pdev->dev, priv->num_domains,
+> 

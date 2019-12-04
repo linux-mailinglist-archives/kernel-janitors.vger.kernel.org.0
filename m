@@ -2,23 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6266112C05
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Dec 2019 13:48:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20241112C23
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Dec 2019 13:57:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727552AbfLDMsl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Dec 2019 07:48:41 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:55487 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726215AbfLDMsk (ORCPT
+        id S1727752AbfLDM5L (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Dec 2019 07:57:11 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:33668 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726010AbfLDM5L (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Dec 2019 07:48:40 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1icU4m-0003ee-BC; Wed, 04 Dec 2019 12:48:16 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Wed, 4 Dec 2019 07:57:11 -0500
+Received: by mail-wr1-f65.google.com with SMTP id b6so8541235wrq.0;
+        Wed, 04 Dec 2019 04:57:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WX9DsnxjR1TLkIQAS0BjsZD23PSgQu93DSuzJlaRss8=;
+        b=CjK94ZRk2M/LKqEEX5rm/3WkZf/HiI3Q+vVXDbZOZxQNFGaqW6DwTHkkkx84vRfS+M
+         U4ORtkjPBA9iSMbi9wpu7YmMFTp+pNz3ylxcjalwvJv2KZQBId8X2noNPl++SsRNODK7
+         QHPvskaMNV5R762Lpb7nY4iTA+SdVhlMhJxfRgfvM6jxwD1ZNI97gcI1rUhzyzNaVE+Q
+         k0Bc2/yGbWtp6U/eTSBRlksg5lobZN4iEcrEFCI2rqfgwYhIgxNwI1rIPCeNNltPaVVM
+         rHvfdkl+vcc+QKkCwM59zcflNAcevYc8jww4nTJSaG3Zq6ZEE7D6XZBEvNXC3R/zck1W
+         +j6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WX9DsnxjR1TLkIQAS0BjsZD23PSgQu93DSuzJlaRss8=;
+        b=pxgNVOgwIvkOfmoXERfwOH0Kiku7SN/V9+mRNatB+tUZlpcj0uYwx5WnpaNTD/h+Bd
+         FdO7FGNayoTnSeKaMPfDIUIXSSeA7nmuZCyWmKzmCw2FcB3v4lR7G/zKeimLjUfAiz7A
+         Q2VD6++zB64LPRbGsrpdkOzZSSHvLQvPyKyZl6ISblWtB72CYBcpCxbFqp9NmQARmOyE
+         4tNKgnF6F+CHHulI5AHx3fnf3odzuVoecz2oG/+592xMabSrd0c/h5eUH1c0jIf+QRtd
+         XbeGBNNUBzhauA4atFhpwvDRAoKCd74vw33T4c76gOTH36Q10/A6S6PCU6BmM734gnrA
+         wJ3A==
+X-Gm-Message-State: APjAAAUfurpV8ZteyShaiPCn2cp8mPWYI9Py+2MaEZqvrtBKcn7EglMl
+        1NQpLXO8iycKOaavmZ+Zx2n59nnzmR3CQucjwSM=
+X-Google-Smtp-Source: APXvYqzndsNueQS92Xe4B1d71REsjlvqx9ynvD8CvVkru+ORVDr1gVmjag6dLc6gMBN+1fpeYUjla8YjTCCO/YsvQMA=
+X-Received: by 2002:adf:dd52:: with SMTP id u18mr3950790wrm.131.1575464228649;
+ Wed, 04 Dec 2019 04:57:08 -0800 (PST)
+MIME-Version: 1.0
+References: <20191204124816.1415359-1-colin.king@canonical.com>
+In-Reply-To: <20191204124816.1415359-1-colin.king@canonical.com>
+From:   Daniel Baluta <daniel.baluta@gmail.com>
+Date:   Wed, 4 Dec 2019 14:56:57 +0200
+Message-ID: <CAEnQRZAEExdNS+=aSFb86OCgWfezEFHYvoAJBV4=DshEprRGrA@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: SOF: imx8: fix memory allocation failure check on priv->pd_dev
+To:     Colin King <colin.king@canonical.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Jaroslav Kysela <perex@perex.cz>,
         Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>,
@@ -28,45 +59,48 @@ To:     Liam Girdwood <lgirdwood@gmail.com>,
         NXP Linux Team <linux-imx@nxp.com>,
         Daniel Baluta <daniel.baluta@nxp.com>,
         Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        alsa-devel@alsa-project.org, linux-arm-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: SOF: imx8: fix memory allocation failure check on priv->pd_dev
-Date:   Wed,  4 Dec 2019 12:48:16 +0000
-Message-Id: <20191204124816.1415359-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Linux-ALSA <alsa-devel@alsa-project.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Wed, Dec 4, 2019 at 2:49 PM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> The memory allocation failure check for priv->pd_dev is incorrectly
+> pointer checking priv instead of priv->pd_dev. Fix this.
+>
+> Addresses-Coverity: ("Logically dead code")
+> Fixes: 202acc565a1f ("ASoC: SOF: imx: Add i.MX8 HW support")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-The memory allocation failure check for priv->pd_dev is incorrectly
-pointer checking priv instead of priv->pd_dev. Fix this.
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
 
-Addresses-Coverity: ("Logically dead code")
-Fixes: 202acc565a1f ("ASoC: SOF: imx: Add i.MX8 HW support")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- sound/soc/sof/imx/imx8.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Good catch! Thanks Colin!
 
-diff --git a/sound/soc/sof/imx/imx8.c b/sound/soc/sof/imx/imx8.c
-index cfefcfd92798..9d926b1df0d7 100644
---- a/sound/soc/sof/imx/imx8.c
-+++ b/sound/soc/sof/imx/imx8.c
-@@ -209,7 +209,7 @@ static int imx8_probe(struct snd_sof_dev *sdev)
- 
- 	priv->pd_dev = devm_kmalloc_array(&pdev->dev, priv->num_domains,
- 					  sizeof(*priv->pd_dev), GFP_KERNEL);
--	if (!priv)
-+	if (!priv->pd_dev)
- 		return -ENOMEM;
- 
- 	priv->link = devm_kmalloc_array(&pdev->dev, priv->num_domains,
--- 
-2.24.0
-
+> ---
+>  sound/soc/sof/imx/imx8.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/sound/soc/sof/imx/imx8.c b/sound/soc/sof/imx/imx8.c
+> index cfefcfd92798..9d926b1df0d7 100644
+> --- a/sound/soc/sof/imx/imx8.c
+> +++ b/sound/soc/sof/imx/imx8.c
+> @@ -209,7 +209,7 @@ static int imx8_probe(struct snd_sof_dev *sdev)
+>
+>         priv->pd_dev = devm_kmalloc_array(&pdev->dev, priv->num_domains,
+>                                           sizeof(*priv->pd_dev), GFP_KERNEL);
+> -       if (!priv)
+> +       if (!priv->pd_dev)
+>                 return -ENOMEM;
+>
+>         priv->link = devm_kmalloc_array(&pdev->dev, priv->num_domains,
+> --
+> 2.24.0
+>

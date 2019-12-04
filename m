@@ -2,84 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D03061120F9
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Dec 2019 02:16:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15782112141
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Dec 2019 03:04:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726179AbfLDBQc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Dec 2019 20:16:32 -0500
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:42379 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726060AbfLDBQc (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Dec 2019 20:16:32 -0500
-Received: by mail-pf1-f195.google.com with SMTP id l22so2730403pff.9;
-        Tue, 03 Dec 2019 17:16:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=kVMURLAlBf3/Fz+kLTObO2tSWfvuZ8y3HS/6yJNgqJk=;
-        b=TVIdDW4wlBo5WAqSMEcGSakx0SFJZt4Et+cnEAQYghLWB0EO7HFhoQlq9nMNfvABVT
-         9FI6EGtFZbLjHjR9tx7/6LYOxN8m4ftAwuK4w0RWF2whJeUMrvIa8lYbQU4nvdUNmhsU
-         fL88RqL30QlD6/ilsP7iTC97WMXe7ZyqxhLvd6LLfi/h4AWgnownhDhOOfUUeVWeAclS
-         NtchQhkX3ALtV0/+ogOAqbDShJ24db/V9OZq+WLukIMb+Uj8P5pHLXNiig819952qRPJ
-         OuYaAkYP4MYbZcQoLpNtuW3bFUxY1tYwAET6j3f4DE+ISQ5LHn0yky40VGx8XkZsoQem
-         3n2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=kVMURLAlBf3/Fz+kLTObO2tSWfvuZ8y3HS/6yJNgqJk=;
-        b=uOtMsDnenAutM7APyeTbsm35VAUXU4aa1f7RgbTbEDPEoezsnGngjXz8ssES3dq1v7
-         yCrplGyjsl0Pj1oUf0kSPXzdymLPYS48z3SVdlqXh9nMJewlEfBSaIri+n0q/fqvc6jj
-         15s8CYBvqu7kBmPfYj6vmLorWYw98btiqH6uexRUS6b4swohNK4KYJxBFMsAWUS4ZYZB
-         OhswUiCzbdApVbkyXEWfxShq9o3Vdb3K6nXt9eRzuqZcomDOCPGKuu6OYC/7Z+YA6uqR
-         k65PXinzilRGLL5QPyGOibJy759jHodmWWhULJRFWLvXOhKyukjAN+4+zSPrEh7DGeb2
-         78vw==
-X-Gm-Message-State: APjAAAURH+ddz1HD7LWNQrWUbjI5OaDhmPP65vFM0jzZSwLgMmUYN3eI
-        ewhXaKdp/41pSXGMpnRHmsw=
-X-Google-Smtp-Source: APXvYqxK210s2BvoZGUjQ6XAf1PmqV0N2sOB9dy18+b/ZWXEhdBFM64fbqfki8SvD1ugC0TEqgdfaA==
-X-Received: by 2002:a63:184c:: with SMTP id 12mr707314pgy.418.1575422191607;
-        Tue, 03 Dec 2019 17:16:31 -0800 (PST)
-Received: from google.com ([2620:15c:211:1:3e01:2939:5992:52da])
-        by smtp.gmail.com with ESMTPSA id k15sm5545370pfg.37.2019.12.03.17.16.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Dec 2019 17:16:30 -0800 (PST)
-Date:   Tue, 3 Dec 2019 17:16:28 -0800
-From:   Minchan Kim <minchan@kernel.org>
-To:     Colin King <colin.king@canonical.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Nitin Gupta <ngupta@vflare.org>,
-        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-block@vger.kernel.org
-Subject: Re: [PATCH] zram: fix error return codes not being returned in
- writeback_store
-Message-ID: <20191204011628.GA6629@google.com>
-References: <20191128122958.178290-1-colin.king@canonical.com>
+        id S1726319AbfLDCEk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Dec 2019 21:04:40 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:7629 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726131AbfLDCEk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 3 Dec 2019 21:04:40 -0500
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 00030B68322770FDCDDD;
+        Wed,  4 Dec 2019 10:04:37 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 4 Dec 2019 10:04:27 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <eddie.huang@mediatek.com>, <sean.wang@mediatek.com>,
+        <a.zummo@towertech.it>, <alexandre.belloni@bootlin.com>,
+        <matthias.bgg@gmail.com>
+CC:     <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>, <linux-rtc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Mao Wenan <maowenan@huawei.com>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] rtc: mt6397: drop free_irq of devm_xx allocated irq
+Date:   Wed, 4 Dec 2019 10:02:09 +0800
+Message-ID: <20191204020209.10363-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191128122958.178290-1-colin.king@canonical.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Nov 28, 2019 at 12:29:58PM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently when an error code -EIO or -ENOSPC in the for-loop of
-> writeback_store the error code is being overwritten by a ret = len
-> assignment at the end of the function and the error codes are being
-> lost.  Fix this by assigning ret = len at the start of the function
-> and remove the assignment from the end, hence allowing ret to be
-> preserved when error codes are assigned to it.
-> 
-> Addresses-Coverity: ("Unused value")
-> Fixes: a939888ec38b ("zram: support idle/huge page writeback")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Acked-by: Minchan Kim <minchan@kernel.org>
+rtc->irq is requested by devm_request_threaded_irq,
+and request_threaded_irq. IRQs requested with this
+function will be automatically freed on driver detach.
 
-Thanks!
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ drivers/rtc/rtc-mt6397.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/rtc/rtc-mt6397.c b/drivers/rtc/rtc-mt6397.c
+index 5249fc99fd5f..d6a10111137a 100644
+--- a/drivers/rtc/rtc-mt6397.c
++++ b/drivers/rtc/rtc-mt6397.c
+@@ -293,7 +293,6 @@ static int mtk_rtc_probe(struct platform_device *pdev)
+ 	return 0;
+ 
+ out_free_irq:
+-	free_irq(rtc->irq, rtc);
+ 	return ret;
+ }
+ 
+-- 
+2.20.1
+

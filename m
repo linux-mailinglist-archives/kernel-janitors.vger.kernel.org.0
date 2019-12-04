@@ -2,29 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06D6E1120E1
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Dec 2019 02:07:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B998A1120EE
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Dec 2019 02:11:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726605AbfLDBHg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 3 Dec 2019 20:07:36 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:40670 "EHLO huawei.com"
+        id S1726162AbfLDBL1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 3 Dec 2019 20:11:27 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:47860 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726086AbfLDBHg (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 3 Dec 2019 20:07:36 -0500
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 6BFE199094A260B0DC59;
-        Wed,  4 Dec 2019 09:07:33 +0800 (CST)
+        id S1726008AbfLDBL0 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 3 Dec 2019 20:11:26 -0500
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 327F0256F3BED4D30C70;
+        Wed,  4 Dec 2019 09:11:24 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 4 Dec 2019 09:07:23 +0800
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 4 Dec 2019 09:11:14 +0800
 From:   Mao Wenan <maowenan@huawei.com>
-To:     <sre@kernel.org>
-CC:     <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>,
-        "Hulk Robot" <hulkci@huawei.com>
-Subject: [PATCH -next] power: supply: ab8500: Drop pointless static qualifier in ab8500_btemp_batctrl_volt_to_res()
-Date:   Wed, 4 Dec 2019 09:05:06 +0800
-Message-ID: <20191204010506.159128-1-maowenan@huawei.com>
+To:     <jiaxun.yang@flygoat.com>, <ralf@linux-mips.org>,
+        <paulburton@kernel.org>, <jhogan@kernel.org>,
+        <gregkh@linuxfoundation.org>, <tglx@linutronix.de>,
+        <maowenan@huawei.com>
+CC:     <linux-mips@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] MIPS: Loongson2ef: drop pointless static qualifier in loongson_suspend_enter()
+Date:   Wed, 4 Dec 2019 09:08:51 +0800
+Message-ID: <20191204010851.160284-1-maowenan@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
@@ -42,22 +44,22 @@ since new value always be assigned before use it.
 Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: Mao Wenan <maowenan@huawei.com>
 ---
- drivers/power/supply/ab8500_btemp.c | 2 +-
+ arch/mips/loongson2ef/common/pm.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/ab8500_btemp.c b/drivers/power/supply/ab8500_btemp.c
-index 909f0242bacb..d3d4f7327d1b 100644
---- a/drivers/power/supply/ab8500_btemp.c
-+++ b/drivers/power/supply/ab8500_btemp.c
-@@ -180,7 +180,7 @@ static int ab8500_btemp_batctrl_volt_to_res(struct ab8500_btemp *di,
- static int ab8500_btemp_read_batctrl_voltage(struct ab8500_btemp *di)
- {
- 	int vbtemp, ret;
--	static int prev;
-+	int prev;
+diff --git a/arch/mips/loongson2ef/common/pm.c b/arch/mips/loongson2ef/common/pm.c
+index 11f4cfd581fb..bcb7ae9777cf 100644
+--- a/arch/mips/loongson2ef/common/pm.c
++++ b/arch/mips/loongson2ef/common/pm.c
+@@ -91,7 +91,7 @@ static inline void stop_perf_counters(void)
  
- 	ret = iio_read_channel_processed(di->bat_ctrl, &vbtemp);
- 	if (ret < 0) {
+ static void loongson_suspend_enter(void)
+ {
+-	static unsigned int cached_cpu_freq;
++	unsigned int cached_cpu_freq;
+ 
+ 	/* setup wakeup events via enabling the IRQs */
+ 	setup_wakeup_events();
 -- 
 2.20.1
 

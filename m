@@ -2,110 +2,140 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 933C31130EF
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Dec 2019 18:39:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46C92113522
+	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Dec 2019 19:44:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727958AbfLDRj1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Dec 2019 12:39:27 -0500
-Received: from mail-pj1-f68.google.com ([209.85.216.68]:36084 "EHLO
-        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726934AbfLDRj1 (ORCPT
+        id S1728380AbfLDSn5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Dec 2019 13:43:57 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:49246 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728244AbfLDSn5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Dec 2019 12:39:27 -0500
-Received: by mail-pj1-f68.google.com with SMTP id n96so108956pjc.3;
-        Wed, 04 Dec 2019 09:39:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=LiJocrhksCvpO+19ZdExpChYK8w6nQgoAmY+U1ToVCw=;
-        b=DFVeuZX8iTexCHx8t3r9+DFmLx/hWSshdMstwuBvqeXm/taPQxGkeLpYDDdOktV7KC
-         y6oi9Y38zDn3633Eya9Ka5B6eJZSkvOO/saG/83igdkdtK/Xpf4QyZowDVvxVYdFQQ90
-         /vBCnSAbNsyWNm8sVmkVRIyfl+3n3caPM/xCmkuibaIORcQY8Hrfwvd4HjWa1n7yOQUw
-         Bt5yhDjKtOFzuthd9dVDDxbAmYbj16C/BrI8xzpXOBkI15DizyUT+rSOsE93HxZW+KNQ
-         ImGZhsnVhOd6cys76qCNeHLTRKEVdFaqD688dS4wskjOocqD9JrzmKQTAgfG5PgOHmVI
-         J+KA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=LiJocrhksCvpO+19ZdExpChYK8w6nQgoAmY+U1ToVCw=;
-        b=ISVsFWAVHjsACFml5DM6kViYQJ0tXEIV/IPOisRbwpUnc6gorkY0jF30c2JSEoZ/rC
-         NbCeUHw8/wVl0iitzh1lfMSEFYStVzn0Wrn1RevkD//XVwh84UW4uzVWmCCFdLELJVHF
-         PQohA0gIrYEKGNIxVcZRte9uiMvYXIdEjVKLZycfRCWWeogVAr5hssGZLMsoUPtciEmF
-         iq57tqadijDoT66ivoFpUFFsByCcOR4/fh4uBWqWux1pPoIKhyOuDWe8whnUJIP0RBs4
-         3qfhUj+jQP4iE3IihGiUT+3sIsqppHBzE+LWZTNF2oRlMfZsRULpVhOUZLE6mTrb+T3y
-         Uf4A==
-X-Gm-Message-State: APjAAAWAEI58tk62hBdVbV3QikgdjVqPONYvWFTV/8HeptP2EI+Yob/q
-        ndMKaDjeqVjG+Z/B6zK47W3a+ZEr
-X-Google-Smtp-Source: APXvYqwe3IcNYdntM1drGvi5vv9cb2mBcY251MgrD5fiAgLt2Jx1ESE7j+6W8y9jVGNETF4QVvvsuQ==
-X-Received: by 2002:a17:90a:bf81:: with SMTP id d1mr4465454pjs.125.1575481166109;
-        Wed, 04 Dec 2019 09:39:26 -0800 (PST)
-Received: from ?IPv6:2620:15c:2c1:200:55c7:81e6:c7d8:94b? ([2620:15c:2c1:200:55c7:81e6:c7d8:94b])
-        by smtp.gmail.com with ESMTPSA id j20sm8350166pff.182.2019.12.04.09.39.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Dec 2019 09:39:25 -0800 (PST)
-Subject: Re: [PATCH] net/decnet: fix -EFAULT error that is not getting
- returned
-To:     Colin King <colin.king@canonical.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        linux-decnet-user@lists.sourceforge.net, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191204151144.1434209-1-colin.king@canonical.com>
-From:   Eric Dumazet <eric.dumazet@gmail.com>
-Message-ID: <b75479fd-055e-3758-fc59-3385185a705b@gmail.com>
-Date:   Wed, 4 Dec 2019 09:39:24 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Wed, 4 Dec 2019 13:43:57 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB4IY6on074545;
+        Wed, 4 Dec 2019 18:43:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=iW3p+lMiFZuhMFDcuCH3k9CwOvQRI86to7kQ5iH1Rq4=;
+ b=S6ZibFY0lW8ejK3kFSiyqf7Vpdd9fY6E2NTXRsRhCYThgfMRpGz8vcMPSFGZaruvC3hZ
+ jgEKyGaGOquOpKxZMjUgyDcx8BXEJ2JNNRm4xm2qHrD6+q11Gqy4YlRlIW3ZX9krO23X
+ aIaPgqywANWpQVonrZ0vS/12Gs6nvGNhS0RUsS1cxtoJjZ1FHy7F7XWi1GSgzka2Mc1T
+ jH7gnKqm2XA1B3+6+13SGIAUiwXMdTvIUCr/30qGFGcellsnE2VPvbo6ta3MF8V3LZ6+
+ 06lwveWeAZ/Tf77qBCLVQ5mo600cJW8BB9jWoL2Fn5ZQgb+cXqZdWzjmW6MGydu08aji qw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 2wkh2rg5c5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 04 Dec 2019 18:43:16 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB4IhFsD014723;
+        Wed, 4 Dec 2019 18:43:16 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 2wp17en7cr-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 04 Dec 2019 18:43:15 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xB4Igt7S024219;
+        Wed, 4 Dec 2019 18:42:56 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 04 Dec 2019 10:42:54 -0800
+Date:   Wed, 4 Dec 2019 21:42:47 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Steven Rostedt <rostedt@goodmis.org>
+Cc:     Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH] Silence an uninitialized variable warning
+Message-ID: <20191204184247.GG1765@kadam>
+References: <20191126121934.kuolgbm55dirfbay@kili.mountain>
+ <20191204092640.692c95af@gandalf.local.home>
 MIME-Version: 1.0
-In-Reply-To: <20191204151144.1434209-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191204092640.692c95af@gandalf.local.home>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9461 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1912040151
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9461 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1912040150
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On 12/4/19 7:11 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Wed, Dec 04, 2019 at 09:26:40AM -0500, Steven Rostedt wrote:
+> On Tue, 26 Nov 2019 15:19:34 +0300
+> Dan Carpenter <dan.carpenter@oracle.com> wrote:
 > 
-> Currently an -EFAULT error on a memcpy_to_msg is not being returned
-> because it is being overwritten when variable rv is being re-assigned
-> to the number of bytes copied after breaking out of a loop. Fix this
-> by instead assigning the error to variable copied so that this error
-> code propegated to rv and hence is returned at the end of the function.
+> > Smatch complains that "ret" could be uninitialized if we don't enter the
+> > loop.  I don't know if that's possible, but it's nicer to return a
+> > literal zero instead.
+> > 
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> >  kernel/trace/trace_syscalls.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/kernel/trace/trace_syscalls.c b/kernel/trace/trace_syscalls.c
+> > index 73140d80dd46..63528f458826 100644
+> > --- a/kernel/trace/trace_syscalls.c
+> > +++ b/kernel/trace/trace_syscalls.c
+> > @@ -286,7 +286,7 @@ static int __init syscall_enter_define_fields(struct trace_event_call *call)
+> >  		offset += sizeof(unsigned long);
+> >  	}
+> >  
+> > -	return ret;
+> > +	return 0;
+> >  }
+> >  
+> >  static void ftrace_syscall_enter(void *data, struct pt_regs *regs, long id)
 > 
-> [ This bug was was introduced before the current git history ]
+> The current code has this:
 > 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  net/decnet/af_decnet.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> static int __init syscall_enter_define_fields(struct trace_event_call *call)
+> {
+> 	struct syscall_trace_enter trace;
+> 	struct syscall_metadata *meta = call->data;
+> 	int ret;
+> 	int i;
+> 	int offset = offsetof(typeof(trace), args);
 > 
-> diff --git a/net/decnet/af_decnet.c b/net/decnet/af_decnet.c
-> index e19a92a62e14..e23d9f219597 100644
-> --- a/net/decnet/af_decnet.c
-> +++ b/net/decnet/af_decnet.c
-> @@ -1759,7 +1759,7 @@ static int dn_recvmsg(struct socket *sock, struct msghdr *msg, size_t size,
->  			chunk = size - copied;
->  
->  		if (memcpy_to_msg(msg, skb->data, chunk)) {
-> -			rv = -EFAULT;
-> +			copied = -EFAULT;
+> 	ret = trace_define_field(call, SYSCALL_FIELD(int, nr, __syscall_nr),
+> 				 FILTER_OTHER);
 
-This does not look right.
+In linux-next this ret = trace_define_field() assignment is removed.
+That was commit 60fdad00827c ("ftrace: Rework event_create_dir()").
 
-We probably want :
-		if (!copied)
-			copied = -EFAULT;
-
->  			break;
->  		}
->  		copied += chunk;
+> 	if (ret)
+> 		return ret;
 > 
+> 	for (i = 0; i < meta->nb_args; i++) {
+> 		ret = trace_define_field(call, meta->types[i],
+> 					 meta->args[i], offset,
+> 					 sizeof(unsigned long), 0,
+> 					 FILTER_OTHER);
+> 		offset += sizeof(unsigned long);
+> 	}
+> 
+> 	return ret;
+> }
+> 
+> 
+> How can ret possibly be uninitialized?
+
+I should have written this commit more carefully and verified whether
+meta->nb_args can actually be zero instead of just assuming it was a
+false positive...
+
+regards,
+dan carpenter
+

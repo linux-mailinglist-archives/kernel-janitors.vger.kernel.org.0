@@ -2,148 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7ED0C113D2C
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Dec 2019 09:38:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ED56113E00
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Dec 2019 10:32:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726108AbfLEIiD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Dec 2019 03:38:03 -0500
-Received: from mx01-fr.bfs.de ([193.174.231.67]:56100 "EHLO mx01-fr.bfs.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726059AbfLEIiD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Dec 2019 03:38:03 -0500
-Received: from mail-fr.bfs.de (mail-fr.bfs.de [10.177.18.200])
-        by mx01-fr.bfs.de (Postfix) with ESMTPS id 7782D202F1;
-        Thu,  5 Dec 2019 09:37:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
-        t=1575535076; h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=N89mIBhLkn3llR08ackf1tw/9b9UA+6X9J+YpdHprTc=;
-        b=xVw37OiWCXFKBfYcm4cpaqktWxfdbvvR7mHMQgsRfDYECj3xkiWCbVAiBWI8JnJWvyAcUz
-        zOKOvQyRElw14l6T/T8THSq9CLDo9jAbNYjMsdKMTmHR6ZVtNsxZMAJFtmV8Vg6ZjqoKZQ
-        TrFeztpQBefHWudZYnvGC4I2b2z7ylccPugaMU9aAWWFxAcA/+xnWNbKGJSgagwSYUoe+M
-        zzU6fp3UIhn2RJoHQCAyOiQxaANMCtJ5Vy0TkgzgHdoRxkUs2VtKeKYfLDl9CYazklEqmV
-        rPigI2Of/Fh3nRfKon5hR+ki0IQtf1YmMNWB4PO3YQRmY2NiGGdZmqV6qLwzqw==
-Received: from [134.92.181.33] (unknown [134.92.181.33])
-        by mail-fr.bfs.de (Postfix) with ESMTPS id 1EDBABEEBD;
-        Thu,  5 Dec 2019 09:37:56 +0100 (CET)
-Message-ID: <5DE8C1E3.4080204@bfs.de>
-Date:   Thu, 05 Dec 2019 09:37:55 +0100
-From:   walter harms <wharms@bfs.de>
-Reply-To: wharms@bfs.de
-User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; de; rv:1.9.1.16) Gecko/20101125 SUSE/3.0.11 Thunderbird/3.0.11
+        id S1729087AbfLEJck (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Dec 2019 04:32:40 -0500
+Received: from merlin.infradead.org ([205.233.59.134]:40798 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728549AbfLEJck (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 5 Dec 2019 04:32:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=k6qzosDA4eixwAD25vNTaqV17qfy2EeIG32nh5n5PvI=; b=Ku7cmcS/d6dg0G8k7Kn7puxHa
+        DPzgNm2W9T/6TKenDN63Jc4fqyDw0kY3v/3jZm7OcBEET3Xkuc8r7rdPHjlPiMRgNnpgxyEJio8eu
+        DcJmWsWRmHsgqwUCOw5szKPNZZFDlNu1QOUCUt7+KeAf+Ec5nMhcMUt+BRUcWluX2bB15YOwPpPY2
+        BZs7P56LFdakUaGL+dcyOAaT+x3l6aq8+nzDAMI9vP9ZtGTDS0bW+RzRJr/t4WDjUpDBrNHn6ub3z
+        vhpWdLr5yQgkMKaocMyv3V724fVwOMVUtY7RXK8CTeeSptQdW/Ue6MAKshNr6NG4hTL1PjSp9Tusc
+        DUEvcsynA==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1icnUu-0002Nm-55; Thu, 05 Dec 2019 09:32:32 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id EA7CA301A6C;
+        Thu,  5 Dec 2019 10:31:12 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id CC2202B26E207; Thu,  5 Dec 2019 10:32:29 +0100 (CET)
+Date:   Thu, 5 Dec 2019 10:32:29 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] Silence an uninitialized variable warning
+Message-ID: <20191205093229.GE2810@hirez.programming.kicks-ass.net>
+References: <20191126121934.kuolgbm55dirfbay@kili.mountain>
+ <20191204092640.692c95af@gandalf.local.home>
+ <20191204184247.GG1765@kadam>
 MIME-Version: 1.0
-To:     =?UTF-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?= 
-        <u.kleine-koenig@pengutronix.de>
-CC:     Colin King <colin.king@canonical.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        kernel@pengutronix.de, linux-pwm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [PATCH] pwm: sun4i: Narrow scope of local variable
-References: <20191002101624.gljyf7g4nia2rcbx@pengutronix.de> <20191205072404.6858-1-u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20191205072404.6858-1-u.kleine-koenig@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.07
-Authentication-Results: mx01-fr.bfs.de
-X-Spamd-Result: default: False [-3.07 / 7.00];
-         ARC_NA(0.00)[];
-         HAS_REPLYTO(0.00)[wharms@bfs.de];
-         BAYES_HAM(-2.97)[99.88%];
-         FROM_HAS_DN(0.00)[];
-         TO_DN_SOME(0.00)[];
-         TO_MATCH_ENVRCPT_ALL(0.00)[];
-         FREEMAIL_ENVRCPT(0.00)[gmail.com];
-         TAGGED_RCPT(0.00)[];
-         MIME_GOOD(-0.10)[text/plain];
-         REPLYTO_ADDR_EQ_FROM(0.00)[];
-         DKIM_SIGNED(0.00)[];
-         RCPT_COUNT_SEVEN(0.00)[8];
-         NEURAL_HAM(-0.00)[-0.999,0];
-         FROM_EQ_ENVFROM(0.00)[];
-         MIME_TRACE(0.00)[0:+];
-         RCVD_COUNT_TWO(0.00)[2];
-         MID_RHS_MATCH_FROM(0.00)[];
-         RCVD_TLS_ALL(0.00)[]
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191204184247.GG1765@kadam>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Wed, Dec 04, 2019 at 09:42:47PM +0300, Dan Carpenter wrote:
 
-
-Am 05.12.2019 08:24, schrieb Uwe Kleine-König:
-> The variable pval is only used in a single block in the function
-> sun4i_pwm_calculate(). So declare it in a more local scope to simplify
-> the function for humans and compilers.
+> > The current code has this:
+> > 
+> > static int __init syscall_enter_define_fields(struct trace_event_call *call)
+> > {
+> > 	struct syscall_trace_enter trace;
+> > 	struct syscall_metadata *meta = call->data;
+> > 	int ret;
+> > 	int i;
+> > 	int offset = offsetof(typeof(trace), args);
+> > 
+> > 	ret = trace_define_field(call, SYSCALL_FIELD(int, nr, __syscall_nr),
+> > 				 FILTER_OTHER);
 > 
-> While the diffstat for this patch is negative for this patch I still
-> thing the advantage of having a narrower scope is beneficial.
+> In linux-next this ret = trace_define_field() assignment is removed.
+> That was commit 60fdad00827c ("ftrace: Rework event_create_dir()").
+
+Yep, mea culpa.
+
+> > 	if (ret)
+> > 		return ret;
+> > 
+> > 	for (i = 0; i < meta->nb_args; i++) {
+> > 		ret = trace_define_field(call, meta->types[i],
+> > 					 meta->args[i], offset,
+> > 					 sizeof(unsigned long), 0,
+> > 					 FILTER_OTHER);
+> > 		offset += sizeof(unsigned long);
+> > 	}
+> > 
+> > 	return ret;
+> > }
+> > 
+> > 
+> > How can ret possibly be uninitialized?
 > 
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> ---
-> Hello,
-> 
-> for the patch that became
-> 
-> 	1b98ad3b3be9 ("pwm: sun4i: Drop redundant assignment to variable pval")
-> 
-> (and which yielded the situation that pval is only used in this single
-> block) I suggested to do this change. This was ignored however by both
-> Colin and Thierry without comment. So I suggest the change here
-> separately.
-> 
-> Best regards
-> Uwe
-> 
->  drivers/pwm/pwm-sun4i.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/pwm/pwm-sun4i.c b/drivers/pwm/pwm-sun4i.c
-> index 581d23287333..8919e6ab7577 100644
-> --- a/drivers/pwm/pwm-sun4i.c
-> +++ b/drivers/pwm/pwm-sun4i.c
-> @@ -149,7 +149,7 @@ static int sun4i_pwm_calculate(struct sun4i_pwm_chip *sun4i_pwm,
->  			       u32 *dty, u32 *prd, unsigned int *prsclr)
->  {
->  	u64 clk_rate, div = 0;
-> -	unsigned int pval, prescaler = 0;
-> +	unsigned int prescaler = 0;
->  
->  	clk_rate = clk_get_rate(sun4i_pwm->clk);
->  
-> @@ -170,6 +170,8 @@ static int sun4i_pwm_calculate(struct sun4i_pwm_chip *sun4i_pwm,
->  	if (prescaler == 0) {
->  		/* Go up from the first divider */
->  		for (prescaler = 0; prescaler < PWM_PRESCAL_MASK; prescaler++) {
-> +			unsigned int pval;
-> +
->  			if (!prescaler_table[prescaler])
->  				continue;
->  			pval = prescaler_table[prescaler];
+> I should have written this commit more carefully and verified whether
+> meta->nb_args can actually be zero instead of just assuming it was a
+> false positive...
 
-
-nit picking:
-Doing the assignment first would remove the only use
-of prescaler_table[prescaler].
-
-unsigned int pval = prescaler_table[prescaler];
-if ( ! pval )
-  continue;
-
-if you feel adventures you could also replace the for() for a while()
-since we know that prescaler == 0.
-
-while ( prescaler < PWM_PRESCAL_MASK )
-{
-unsigned int pval = prescaler_table[prescaler++];
-....
-
-
-jm2c,
-
- wh
+Right, I'm thinking this is in fact possible. We have syscalls without
+arguments (sys_sched_yield for exmaple).

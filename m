@@ -2,85 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F23F2113612
-	for <lists+kernel-janitors@lfdr.de>; Wed,  4 Dec 2019 21:01:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BDD2B113910
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Dec 2019 01:59:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727912AbfLDUA5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Dec 2019 15:00:57 -0500
-Received: from mga18.intel.com ([134.134.136.126]:9779 "EHLO mga18.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727033AbfLDUA5 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Dec 2019 15:00:57 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga004.fm.intel.com ([10.253.24.48])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Dec 2019 12:00:56 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,278,1571727600"; 
-   d="scan'208";a="236407731"
-Received: from jcourage-mobl.amr.corp.intel.com (HELO [10.251.152.230]) ([10.251.152.230])
-  by fmsmga004.fm.intel.com with ESMTP; 04 Dec 2019 12:00:54 -0800
-Subject: Re: [alsa-devel] [PATCH] ASoC: SOF: imx8: fix memory allocation
- failure check on priv->pd_dev
-To:     Colin King <colin.king@canonical.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, Shawn Guo <shawnguo@kernel.org>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Pengutronix Kernel Team <kernel@pengutronix.de>,
-        Fabio Estevam <festevam@gmail.com>,
-        NXP Linux Team <linux-imx@nxp.com>,
-        Daniel Baluta <daniel.baluta@nxp.com>,
-        alsa-devel@alsa-project.org, linux-arm-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191204124816.1415359-1-colin.king@canonical.com>
-From:   Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Message-ID: <33fec540-e97b-25e7-83af-575f19d829d2@linux.intel.com>
-Date:   Wed, 4 Dec 2019 13:13:45 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
-MIME-Version: 1.0
-In-Reply-To: <20191204124816.1415359-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+        id S1728566AbfLEA7j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 4 Dec 2019 19:59:39 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:38436 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728121AbfLEA7j (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 4 Dec 2019 19:59:39 -0500
+Received: from localhost (unknown [IPv6:2601:601:9f00:1c3::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id BCD7214F3638D;
+        Wed,  4 Dec 2019 16:59:38 -0800 (PST)
+Date:   Wed, 04 Dec 2019 16:59:38 -0800 (PST)
+Message-Id: <20191204.165938.1723521846846109078.davem@davemloft.net>
+To:     maowenan@huawei.com
+Cc:     gregkh@linuxfoundation.org, alexios.zavras@intel.com,
+        oneukum@suse.com, tglx@linutronix.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        hulkci@huawei.com
+Subject: Re: [PATCH -next] NFC: port100: Convert
+ cpu_to_le16(le16_to_cpu(E1) + E2) to use le16_add_cpu().
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20191204063717.102854-1-maowenan@huawei.com>
+References: <20191204063717.102854-1-maowenan@huawei.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 04 Dec 2019 16:59:39 -0800 (PST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Mao Wenan <maowenan@huawei.com>
+Date: Wed, 4 Dec 2019 14:37:17 +0800
 
-
-On 12/4/19 6:48 AM, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+> It is better to convert cpu_to_le16(le16_to_cpu(frame->datalen) + len) to
+> use le16_add_cpu().
 > 
-> The memory allocation failure check for priv->pd_dev is incorrectly
-> pointer checking priv instead of priv->pd_dev. Fix this.
-> 
-> Addresses-Coverity: ("Logically dead code")
-> Fixes: 202acc565a1f ("ASoC: SOF: imx: Add i.MX8 HW support")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
 
-Thanks Colin
+Please resubmit when the net-next tree is open again, right now it is
+closed:
 
-Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-
-> ---
->   sound/soc/sof/imx/imx8.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/sound/soc/sof/imx/imx8.c b/sound/soc/sof/imx/imx8.c
-> index cfefcfd92798..9d926b1df0d7 100644
-> --- a/sound/soc/sof/imx/imx8.c
-> +++ b/sound/soc/sof/imx/imx8.c
-> @@ -209,7 +209,7 @@ static int imx8_probe(struct snd_sof_dev *sdev)
->   
->   	priv->pd_dev = devm_kmalloc_array(&pdev->dev, priv->num_domains,
->   					  sizeof(*priv->pd_dev), GFP_KERNEL);
-> -	if (!priv)
-> +	if (!priv->pd_dev)
->   		return -ENOMEM;
->   
->   	priv->link = devm_kmalloc_array(&pdev->dev, priv->num_domains,
-> 
+	http://vger.kernel.org/~davem/net-next.html

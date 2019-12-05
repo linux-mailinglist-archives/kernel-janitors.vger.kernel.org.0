@@ -2,98 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 91510113C44
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Dec 2019 08:24:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 589EE113CBF
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Dec 2019 09:06:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726266AbfLEHYP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Dec 2019 02:24:15 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:45805 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726177AbfLEHYP (ORCPT
+        id S1726137AbfLEIGO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Dec 2019 03:06:14 -0500
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:41045 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726032AbfLEIGO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Dec 2019 02:24:15 -0500
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1iclUg-0004Nm-EN; Thu, 05 Dec 2019 08:24:10 +0100
-Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1iclUf-00075g-Ed; Thu, 05 Dec 2019 08:24:09 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Colin King <colin.king@canonical.com>,
-        Thierry Reding <thierry.reding@gmail.com>
-Cc:     kernel@pengutronix.de, linux-pwm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: [PATCH] pwm: sun4i: Narrow scope of local variable
-Date:   Thu,  5 Dec 2019 08:24:04 +0100
-Message-Id: <20191205072404.6858-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191002101624.gljyf7g4nia2rcbx@pengutronix.de>
-References: <20191002101624.gljyf7g4nia2rcbx@pengutronix.de>
+        Thu, 5 Dec 2019 03:06:14 -0500
+Received: by mail-pf1-f193.google.com with SMTP id s18so1222802pfd.8;
+        Thu, 05 Dec 2019 00:06:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=sbOWUl/LYyug4BpNjD/sLnbb5ya8VzzTl8Cu9V2yvRY=;
+        b=nmGXMlWXu2JCqHKwG7oK8kS1mCgH+HBN4/eM/NOEeCk2in3RGF5oWu656B48kWYzV4
+         mY3bSWyZ30MR/SPNmvS/GgUUll2YMsfMQo4qX+RVLHY0NPjYtazSfiBM5ugleCHjtKdG
+         /Pbz/f5x5rYSo2Hy4VnzwlqqGlLPdKzWeC6AtTnUUMau3dNCpKjv7aAy3QyOCwm8dRb9
+         s41ylI9rrYu3yOGBb4X3BRQLyBLwUu77hjkAhn3AKb1ti3c9OPbwoPdLzlc1yuCbLZrO
+         P8A/jaKiNBktktPIGGLu3Ewlo84+vLm4GxiQksazqDrPb7d4VxWAHjyWP95q5eFbVCuR
+         KDNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=sbOWUl/LYyug4BpNjD/sLnbb5ya8VzzTl8Cu9V2yvRY=;
+        b=UEmitdjxm1vAbrx39eGB5WN7xneSAdVbVQot9uj4nmwAWC4YnFF18L1WHCMqRgJYxS
+         76lmoraRcC0jADevtaGLwvbTQyCs3u6OzoS/gpDfHm9V79coIlJLXbfcsy9C/Js+BDoR
+         qmimz9ylo7U3L+CaxfxY47kxekYcJxCoJj99MRxIjBTfdLRN9hV9cXCPPnNUv7aJU8hS
+         LALIh4O2FjhSXD7Q61Q1R5T8pHGGzYsEsIoad0kMWAVKI1eEGUrpMnnMy5NUkCoz1H0+
+         SNlZG0pPYIZ81doBSKUExdI96QX54qbtk7qEPMQHRx2ynTzerPZ3LBPL2TLEQeW8Co6b
+         5YDQ==
+X-Gm-Message-State: APjAAAWNIB5AUamyA8hEa3HK4dhyTVwmPjS+8ue79G0GGCqSZkc3h2ew
+        7rAe0AJSxDPQ6fAMjnftfl0=
+X-Google-Smtp-Source: APXvYqyk7FdG4hnofsNwSjWrXOupDwiMK/1MsIp6Jp00Uhte+xvNi4jEmcD2YJExVKTWuST0cGuFFg==
+X-Received: by 2002:a63:3cb:: with SMTP id 194mr8219400pgd.123.1575533173934;
+        Thu, 05 Dec 2019 00:06:13 -0800 (PST)
+Received: from localhost ([2401:fa00:8f:203:250d:e71d:5a0a:9afe])
+        by smtp.gmail.com with ESMTPSA id w4sm8996292pjt.21.2019.12.05.00.06.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Dec 2019 00:06:12 -0800 (PST)
+Date:   Thu, 5 Dec 2019 17:06:11 +0900
+From:   Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Maxime Jourdan <mjourdan@baylibre.com>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        linux-media@vger.kernel.org, linux-amlogic@lists.infradead.org,
+        devel@driverdev.osuosl.org, linux-arm-kernel@lists.infradead.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] media: meson: add missing allocation failure check on
+ new_buf
+Message-ID: <20191205080611.GY93017@google.com>
+References: <20191204141159.1432387-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191204141159.1432387-1-colin.king@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The variable pval is only used in a single block in the function
-sun4i_pwm_calculate(). So declare it in a more local scope to simplify
-the function for humans and compilers.
+On (19/12/04 14:11), Colin King wrote:
+[..]
+> diff --git a/drivers/staging/media/meson/vdec/vdec.c b/drivers/staging/media/meson/vdec/vdec.c
+> index 0a1a04fd5d13..8dd1396909d7 100644
+> --- a/drivers/staging/media/meson/vdec/vdec.c
+> +++ b/drivers/staging/media/meson/vdec/vdec.c
+> @@ -133,6 +133,8 @@ vdec_queue_recycle(struct amvdec_session *sess, struct vb2_buffer *vb)
+>  	struct amvdec_buffer *new_buf;
+>
+>  	new_buf = kmalloc(sizeof(*new_buf), GFP_KERNEL);
+> +	if (!new_buf)
+> +		return;
+>  	new_buf->vb = vb;
 
-While the diffstat for this patch is negative for this patch I still
-thing the advantage of having a narrower scope is beneficial.
+So the buffer is not getting recycled? IOW is leaked?
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
-Hello,
-
-for the patch that became
-
-	1b98ad3b3be9 ("pwm: sun4i: Drop redundant assignment to variable pval")
-
-(and which yielded the situation that pval is only used in this single
-block) I suggested to do this change. This was ignored however by both
-Colin and Thierry without comment. So I suggest the change here
-separately.
-
-Best regards
-Uwe
-
- drivers/pwm/pwm-sun4i.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/pwm/pwm-sun4i.c b/drivers/pwm/pwm-sun4i.c
-index 581d23287333..8919e6ab7577 100644
---- a/drivers/pwm/pwm-sun4i.c
-+++ b/drivers/pwm/pwm-sun4i.c
-@@ -149,7 +149,7 @@ static int sun4i_pwm_calculate(struct sun4i_pwm_chip *sun4i_pwm,
- 			       u32 *dty, u32 *prd, unsigned int *prsclr)
- {
- 	u64 clk_rate, div = 0;
--	unsigned int pval, prescaler = 0;
-+	unsigned int prescaler = 0;
- 
- 	clk_rate = clk_get_rate(sun4i_pwm->clk);
- 
-@@ -170,6 +170,8 @@ static int sun4i_pwm_calculate(struct sun4i_pwm_chip *sun4i_pwm,
- 	if (prescaler == 0) {
- 		/* Go up from the first divider */
- 		for (prescaler = 0; prescaler < PWM_PRESCAL_MASK; prescaler++) {
-+			unsigned int pval;
-+
- 			if (!prescaler_table[prescaler])
- 				continue;
- 			pval = prescaler_table[prescaler];
--- 
-2.24.0
-
+	-ss

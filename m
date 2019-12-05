@@ -2,127 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 97452113EFC
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Dec 2019 11:03:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 66AE31145B3
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Dec 2019 18:19:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729044AbfLEKDL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Dec 2019 05:03:11 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:42696 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726239AbfLEKDL (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Dec 2019 05:03:11 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB59s8DM008065;
-        Thu, 5 Dec 2019 10:02:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=05vzxwu12UNKNbD54baLfuh1gECkS613qjdy5dBFgIM=;
- b=bwQGX8IPVR/KB98qtE61W0h+HQk2zsbbcdvm8dNGdmUghr74ST7VgDqa6kiCjDdAlf3L
- DIWly2HJDk13Xp16BjnodJ1NBmIIpFIlegTjRgC6+uzbaqBx40jeL4uLYz+XPPOMKFQM
- gW48eiz52vzOapFcUlp9w/T++uFXGE58/OUwFGkvcGJuwteqQq9mLWgV1s+CkzWY0/SO
- bYI7ZebdY4/EVCepgV06AE3DHV3swGy9Ip54ZqEC1Boroh1GhoXHuHRbjNorgElPOkfm
- 0EWJMOiR7ojmnDKnaQ8hfGMsGUNYN00Ib3zJFIDNaozySRc6SNiLJXJKF0oE2kXZ2Wlm qA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2130.oracle.com with ESMTP id 2wkfuum8h6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 05 Dec 2019 10:02:34 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB59s0ki037084;
-        Thu, 5 Dec 2019 10:02:33 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 2wpp73usc1-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 05 Dec 2019 10:02:32 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xB5A2SRk019046;
-        Thu, 5 Dec 2019 10:02:30 GMT
-Received: from kadam (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 05 Dec 2019 02:02:27 -0800
-Date:   Thu, 5 Dec 2019 13:02:20 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] Silence an uninitialized variable warning
-Message-ID: <20191205100220.GH1765@kadam>
-References: <20191126121934.kuolgbm55dirfbay@kili.mountain>
- <20191204092640.692c95af@gandalf.local.home>
- <20191204184247.GG1765@kadam>
- <20191205093229.GE2810@hirez.programming.kicks-ass.net>
+        id S1730016AbfLERT0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Dec 2019 12:19:26 -0500
+Received: from fieldses.org ([173.255.197.46]:53172 "EHLO fieldses.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729450AbfLERTZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 5 Dec 2019 12:19:25 -0500
+Received: by fieldses.org (Postfix, from userid 2815)
+        id 34E061513; Thu,  5 Dec 2019 12:19:25 -0500 (EST)
+Date:   Thu, 5 Dec 2019 12:19:25 -0500
+From:   "J. Bruce Fields" <bfields@fieldses.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Olga Kornievskaia <olga.kornievskaia@gmail.com>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        linux-nfs@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] nfsd: unlock on error in manage_cpntf_state()
+Message-ID: <20191205171925.GD22402@fieldses.org>
+References: <20191204075935.sgdcxib4jahd5blr@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20191205093229.GE2810@hirez.programming.kicks-ass.net>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9461 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1912050080
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9461 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-1912050080
+In-Reply-To: <20191204075935.sgdcxib4jahd5blr@kili.mountain>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Dec 05, 2019 at 10:32:29AM +0100, Peter Zijlstra wrote:
-> On Wed, Dec 04, 2019 at 09:42:47PM +0300, Dan Carpenter wrote:
-> 
-> > > The current code has this:
-> > > 
-> > > static int __init syscall_enter_define_fields(struct trace_event_call *call)
-> > > {
-> > > 	struct syscall_trace_enter trace;
-> > > 	struct syscall_metadata *meta = call->data;
-> > > 	int ret;
-> > > 	int i;
-> > > 	int offset = offsetof(typeof(trace), args);
-> > > 
-> > > 	ret = trace_define_field(call, SYSCALL_FIELD(int, nr, __syscall_nr),
-> > > 				 FILTER_OTHER);
-> > 
-> > In linux-next this ret = trace_define_field() assignment is removed.
-> > That was commit 60fdad00827c ("ftrace: Rework event_create_dir()").
-> 
-> Yep, mea culpa.
-> 
-> > > 	if (ret)
-> > > 		return ret;
-> > > 
-> > > 	for (i = 0; i < meta->nb_args; i++) {
-> > > 		ret = trace_define_field(call, meta->types[i],
-> > > 					 meta->args[i], offset,
-> > > 					 sizeof(unsigned long), 0,
-> > > 					 FILTER_OTHER);
-> > > 		offset += sizeof(unsigned long);
-> > > 	}
-> > > 
-> > > 	return ret;
-> > > }
-> > > 
-> > > 
-> > > How can ret possibly be uninitialized?
-> > 
-> > I should have written this commit more carefully and verified whether
-> > meta->nb_args can actually be zero instead of just assuming it was a
-> > false positive...
-> 
-> Right, I'm thinking this is in fact possible. We have syscalls without
-> arguments (sys_sched_yield for exmaple).
+On Wed, Dec 04, 2019 at 10:59:36AM +0300, Dan Carpenter wrote:
+> We are holding the "nn->s2s_cp_lock" so we can't return directly
+> without unlocking first.
 
-Well, it would have triggered a run time bug because of that thing with
-GCC where it sometimes initializes variables to zero.
+Thanks, applying.
 
-Let me resend properly with a Fixes tag.
+--b.
 
-regards,
-dan carpenter
+> 
+> Fixes: f3dee17721a0 ("NFSD check stateids against copy stateids")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  fs/nfsd/nfs4state.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+> index 296765e693d0..390ad454a229 100644
+> --- a/fs/nfsd/nfs4state.c
+> +++ b/fs/nfsd/nfs4state.c
+> @@ -5695,13 +5695,16 @@ __be32 manage_cpntf_state(struct nfsd_net *nn, stateid_t *st,
+>  	if (cps_t) {
+>  		state = container_of(cps_t, struct nfs4_cpntf_state,
+>  				     cp_stateid);
+> -		if (state->cp_stateid.sc_type != NFS4_COPYNOTIFY_STID)
+> -			return nfserr_bad_stateid;
+> +		if (state->cp_stateid.sc_type != NFS4_COPYNOTIFY_STID) {
+> +			state = NULL;
+> +			goto unlock;
+> +		}
+>  		if (!clp)
+>  			refcount_inc(&state->cp_stateid.sc_count);
+>  		else
+>  			_free_cpntf_state_locked(nn, state);
+>  	}
+> +unlock:
+>  	spin_unlock(&nn->s2s_cp_lock);
+>  	if (!state)
+>  		return nfserr_bad_stateid;
+> -- 
+> 2.11.0

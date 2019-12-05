@@ -2,81 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 820241139FF
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Dec 2019 03:39:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 91510113C44
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Dec 2019 08:24:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728680AbfLECjJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 4 Dec 2019 21:39:09 -0500
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:42855 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728522AbfLECjI (ORCPT
+        id S1726266AbfLEHYP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Dec 2019 02:24:15 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:45805 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726177AbfLEHYP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 4 Dec 2019 21:39:08 -0500
-Received: by mail-pg1-f195.google.com with SMTP id i5so827874pgj.9
-        for <kernel-janitors@vger.kernel.org>; Wed, 04 Dec 2019 18:39:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:in-reply-to:references:date:message-id
-         :mime-version;
-        bh=27jaH0vN7Z1055mM7vLy7qQTaIl7MlRb9ifdmBrbZDM=;
-        b=2AEXe14iZdFWfADVPMho1nGLswqsSNlAEnAUgFieMyEajydA5UtIA2BcOw3cvQHdZO
-         +7SSE0yQn7fq3n4nHsbvSjKepiS29Gm5WR9rq8NTOvdFdi1YqxhsWZNbYk8a14XIStKF
-         hb74QE/F9ENthSZE3yzn0ZQDkHdLNmssNPXh/EW0qy0yWmB7IFhwbQ7Hy2WVvJXW05oI
-         H1C0sUhnHCdN0aF6ajXMtxjjgQBm0bYucIo02eLqXp6IojHQsBo24gGBGz9ZhVJZDdLp
-         4LhMKEeYfNiw1x190FxFAVW9rFhpjJNh7tIG1Cx/l25+RJ0xiWa5+IVfaItxv51z2fvq
-         fu0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:in-reply-to:references:date
-         :message-id:mime-version;
-        bh=27jaH0vN7Z1055mM7vLy7qQTaIl7MlRb9ifdmBrbZDM=;
-        b=bF67tF2T8hnn8S0ziB12VizKXZ7eushDw1ITno1Lr1Rltj2ii4kZ7a2m7PFahGS1jr
-         6OhHo+Gzqdb4HKeWFtyLSfHXSJ2/Gl6OdXOh4DeLhOvCUjy17jBI6OjaURzymfhNQ+XX
-         +Fkza4UbpztcrjgMeNzDWnhFkj9jgGbsIurc9Vab9P3lvU+tBdCAwOmnfhpMPfXD4DAT
-         qDrHtHwqUdTmwenOTby/9cPKfTTR10AT0LPQTeGA2uJM2KZr9gfcozvy5o6yCPSBxiYR
-         p1HHWRlBO1BBTA5C1mNQ10+IHKh51LHLa7ehAiLRNIF9hDaepKMDWjvjtzgj+FIxHjPf
-         +Qyw==
-X-Gm-Message-State: APjAAAXkG2NjNnwVeViALkw5aL7oc1p5Jc5yymiQS235MefjD527k0Ux
-        YaSyY15jZKgpz/KbDqgJldpTlw==
-X-Google-Smtp-Source: APXvYqyArhAsoFW/09BUx58Mqa57A85qEfp9wqhmY84drnrMDAvAJYGziHESSDaQZke2fKs6Z2jx+w==
-X-Received: by 2002:a62:6884:: with SMTP id d126mr6446169pfc.109.1575513548166;
-        Wed, 04 Dec 2019 18:39:08 -0800 (PST)
-Received: from localhost ([2601:602:9200:a1a5:18db:9496:e12f:2012])
-        by smtp.gmail.com with ESMTPSA id k21sm8765676pgt.22.2019.12.04.18.39.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Dec 2019 18:39:07 -0800 (PST)
-From:   Kevin Hilman <khilman@baylibre.com>
+        Thu, 5 Dec 2019 02:24:15 -0500
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iclUg-0004Nm-EN; Thu, 05 Dec 2019 08:24:10 +0100
+Received: from ukl by pty.hi.pengutronix.de with local (Exim 4.89)
+        (envelope-from <ukl@pengutronix.de>)
+        id 1iclUf-00075g-Ed; Thu, 05 Dec 2019 08:24:09 +0100
+From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>
 To:     Colin King <colin.king@canonical.com>,
-        Maxime Jourdan <mjourdan@baylibre.com>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        linux-media@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        devel@driverdev.osuosl.org, linux-arm-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] media: meson: add missing allocation failure check on new_buf
-In-Reply-To: <20191204141159.1432387-1-colin.king@canonical.com>
-References: <20191204141159.1432387-1-colin.king@canonical.com>
-Date:   Wed, 04 Dec 2019 18:39:06 -0800
-Message-ID: <m2a7877ayd.fsf@baylibre.com>
+        Thierry Reding <thierry.reding@gmail.com>
+Cc:     kernel@pengutronix.de, linux-pwm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        kernel-janitors@vger.kernel.org,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: [PATCH] pwm: sun4i: Narrow scope of local variable
+Date:   Thu,  5 Dec 2019 08:24:04 +0100
+Message-Id: <20191205072404.6858-1-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.24.0
+In-Reply-To: <20191002101624.gljyf7g4nia2rcbx@pengutronix.de>
+References: <20191002101624.gljyf7g4nia2rcbx@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: ukl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> writes:
+The variable pval is only used in a single block in the function
+sun4i_pwm_calculate(). So declare it in a more local scope to simplify
+the function for humans and compilers.
 
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Currently if the allocation of new_buf fails then a null pointer
-> dereference occurs when assiging new_buf->vb. Avoid this by returning
-> early on a memory allocation failure as there is not much more can
-> be done at this point.
->
-> Addresses-Coverity: ("Dereference null return")
-> Fixes: 3e7f51bd9607 ("media: meson: add v4l2 m2m video decoder driver")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+While the diffstat for this patch is negative for this patch I still
+thing the advantage of having a narrower scope is beneficial.
 
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+Hello,
+
+for the patch that became
+
+	1b98ad3b3be9 ("pwm: sun4i: Drop redundant assignment to variable pval")
+
+(and which yielded the situation that pval is only used in this single
+block) I suggested to do this change. This was ignored however by both
+Colin and Thierry without comment. So I suggest the change here
+separately.
+
+Best regards
+Uwe
+
+ drivers/pwm/pwm-sun4i.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/pwm/pwm-sun4i.c b/drivers/pwm/pwm-sun4i.c
+index 581d23287333..8919e6ab7577 100644
+--- a/drivers/pwm/pwm-sun4i.c
++++ b/drivers/pwm/pwm-sun4i.c
+@@ -149,7 +149,7 @@ static int sun4i_pwm_calculate(struct sun4i_pwm_chip *sun4i_pwm,
+ 			       u32 *dty, u32 *prd, unsigned int *prsclr)
+ {
+ 	u64 clk_rate, div = 0;
+-	unsigned int pval, prescaler = 0;
++	unsigned int prescaler = 0;
+ 
+ 	clk_rate = clk_get_rate(sun4i_pwm->clk);
+ 
+@@ -170,6 +170,8 @@ static int sun4i_pwm_calculate(struct sun4i_pwm_chip *sun4i_pwm,
+ 	if (prescaler == 0) {
+ 		/* Go up from the first divider */
+ 		for (prescaler = 0; prescaler < PWM_PRESCAL_MASK; prescaler++) {
++			unsigned int pval;
++
+ 			if (!prescaler_table[prescaler])
+ 				continue;
+ 			pval = prescaler_table[prescaler];
+-- 
+2.24.0
+

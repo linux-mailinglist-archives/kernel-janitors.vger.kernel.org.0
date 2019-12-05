@@ -2,88 +2,148 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 589EE113CBF
-	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Dec 2019 09:06:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ED0C113D2C
+	for <lists+kernel-janitors@lfdr.de>; Thu,  5 Dec 2019 09:38:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726137AbfLEIGO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 5 Dec 2019 03:06:14 -0500
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:41045 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726032AbfLEIGO (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 5 Dec 2019 03:06:14 -0500
-Received: by mail-pf1-f193.google.com with SMTP id s18so1222802pfd.8;
-        Thu, 05 Dec 2019 00:06:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=sbOWUl/LYyug4BpNjD/sLnbb5ya8VzzTl8Cu9V2yvRY=;
-        b=nmGXMlWXu2JCqHKwG7oK8kS1mCgH+HBN4/eM/NOEeCk2in3RGF5oWu656B48kWYzV4
-         mY3bSWyZ30MR/SPNmvS/GgUUll2YMsfMQo4qX+RVLHY0NPjYtazSfiBM5ugleCHjtKdG
-         /Pbz/f5x5rYSo2Hy4VnzwlqqGlLPdKzWeC6AtTnUUMau3dNCpKjv7aAy3QyOCwm8dRb9
-         s41ylI9rrYu3yOGBb4X3BRQLyBLwUu77hjkAhn3AKb1ti3c9OPbwoPdLzlc1yuCbLZrO
-         P8A/jaKiNBktktPIGGLu3Ewlo84+vLm4GxiQksazqDrPb7d4VxWAHjyWP95q5eFbVCuR
-         KDNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=sbOWUl/LYyug4BpNjD/sLnbb5ya8VzzTl8Cu9V2yvRY=;
-        b=UEmitdjxm1vAbrx39eGB5WN7xneSAdVbVQot9uj4nmwAWC4YnFF18L1WHCMqRgJYxS
-         76lmoraRcC0jADevtaGLwvbTQyCs3u6OzoS/gpDfHm9V79coIlJLXbfcsy9C/Js+BDoR
-         qmimz9ylo7U3L+CaxfxY47kxekYcJxCoJj99MRxIjBTfdLRN9hV9cXCPPnNUv7aJU8hS
-         LALIh4O2FjhSXD7Q61Q1R5T8pHGGzYsEsIoad0kMWAVKI1eEGUrpMnnMy5NUkCoz1H0+
-         SNlZG0pPYIZ81doBSKUExdI96QX54qbtk7qEPMQHRx2ynTzerPZ3LBPL2TLEQeW8Co6b
-         5YDQ==
-X-Gm-Message-State: APjAAAWNIB5AUamyA8hEa3HK4dhyTVwmPjS+8ue79G0GGCqSZkc3h2ew
-        7rAe0AJSxDPQ6fAMjnftfl0=
-X-Google-Smtp-Source: APXvYqyk7FdG4hnofsNwSjWrXOupDwiMK/1MsIp6Jp00Uhte+xvNi4jEmcD2YJExVKTWuST0cGuFFg==
-X-Received: by 2002:a63:3cb:: with SMTP id 194mr8219400pgd.123.1575533173934;
-        Thu, 05 Dec 2019 00:06:13 -0800 (PST)
-Received: from localhost ([2401:fa00:8f:203:250d:e71d:5a0a:9afe])
-        by smtp.gmail.com with ESMTPSA id w4sm8996292pjt.21.2019.12.05.00.06.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Dec 2019 00:06:12 -0800 (PST)
-Date:   Thu, 5 Dec 2019 17:06:11 +0900
-From:   Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Maxime Jourdan <mjourdan@baylibre.com>,
-        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kevin Hilman <khilman@baylibre.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        linux-media@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        devel@driverdev.osuosl.org, linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] media: meson: add missing allocation failure check on
- new_buf
-Message-ID: <20191205080611.GY93017@google.com>
-References: <20191204141159.1432387-1-colin.king@canonical.com>
+        id S1726108AbfLEIiD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 5 Dec 2019 03:38:03 -0500
+Received: from mx01-fr.bfs.de ([193.174.231.67]:56100 "EHLO mx01-fr.bfs.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726059AbfLEIiD (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 5 Dec 2019 03:38:03 -0500
+Received: from mail-fr.bfs.de (mail-fr.bfs.de [10.177.18.200])
+        by mx01-fr.bfs.de (Postfix) with ESMTPS id 7782D202F1;
+        Thu,  5 Dec 2019 09:37:56 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1575535076; h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=N89mIBhLkn3llR08ackf1tw/9b9UA+6X9J+YpdHprTc=;
+        b=xVw37OiWCXFKBfYcm4cpaqktWxfdbvvR7mHMQgsRfDYECj3xkiWCbVAiBWI8JnJWvyAcUz
+        zOKOvQyRElw14l6T/T8THSq9CLDo9jAbNYjMsdKMTmHR6ZVtNsxZMAJFtmV8Vg6ZjqoKZQ
+        TrFeztpQBefHWudZYnvGC4I2b2z7ylccPugaMU9aAWWFxAcA/+xnWNbKGJSgagwSYUoe+M
+        zzU6fp3UIhn2RJoHQCAyOiQxaANMCtJ5Vy0TkgzgHdoRxkUs2VtKeKYfLDl9CYazklEqmV
+        rPigI2Of/Fh3nRfKon5hR+ki0IQtf1YmMNWB4PO3YQRmY2NiGGdZmqV6qLwzqw==
+Received: from [134.92.181.33] (unknown [134.92.181.33])
+        by mail-fr.bfs.de (Postfix) with ESMTPS id 1EDBABEEBD;
+        Thu,  5 Dec 2019 09:37:56 +0100 (CET)
+Message-ID: <5DE8C1E3.4080204@bfs.de>
+Date:   Thu, 05 Dec 2019 09:37:55 +0100
+From:   walter harms <wharms@bfs.de>
+Reply-To: wharms@bfs.de
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; de; rv:1.9.1.16) Gecko/20101125 SUSE/3.0.11 Thunderbird/3.0.11
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191204141159.1432387-1-colin.king@canonical.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+To:     =?UTF-8?B?VXdlIEtsZWluZS1Lw7ZuaWc=?= 
+        <u.kleine-koenig@pengutronix.de>
+CC:     Colin King <colin.king@canonical.com>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        kernel@pengutronix.de, linux-pwm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org,
+        kernel-janitors@vger.kernel.org,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: Re: [PATCH] pwm: sun4i: Narrow scope of local variable
+References: <20191002101624.gljyf7g4nia2rcbx@pengutronix.de> <20191205072404.6858-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20191205072404.6858-1-u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.07
+Authentication-Results: mx01-fr.bfs.de
+X-Spamd-Result: default: False [-3.07 / 7.00];
+         ARC_NA(0.00)[];
+         HAS_REPLYTO(0.00)[wharms@bfs.de];
+         BAYES_HAM(-2.97)[99.88%];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         FREEMAIL_ENVRCPT(0.00)[gmail.com];
+         TAGGED_RCPT(0.00)[];
+         MIME_GOOD(-0.10)[text/plain];
+         REPLYTO_ADDR_EQ_FROM(0.00)[];
+         DKIM_SIGNED(0.00)[];
+         RCPT_COUNT_SEVEN(0.00)[8];
+         NEURAL_HAM(-0.00)[-0.999,0];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         RCVD_COUNT_TWO(0.00)[2];
+         MID_RHS_MATCH_FROM(0.00)[];
+         RCVD_TLS_ALL(0.00)[]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On (19/12/04 14:11), Colin King wrote:
-[..]
-> diff --git a/drivers/staging/media/meson/vdec/vdec.c b/drivers/staging/media/meson/vdec/vdec.c
-> index 0a1a04fd5d13..8dd1396909d7 100644
-> --- a/drivers/staging/media/meson/vdec/vdec.c
-> +++ b/drivers/staging/media/meson/vdec/vdec.c
-> @@ -133,6 +133,8 @@ vdec_queue_recycle(struct amvdec_session *sess, struct vb2_buffer *vb)
->  	struct amvdec_buffer *new_buf;
->
->  	new_buf = kmalloc(sizeof(*new_buf), GFP_KERNEL);
-> +	if (!new_buf)
-> +		return;
->  	new_buf->vb = vb;
 
-So the buffer is not getting recycled? IOW is leaked?
 
-	-ss
+Am 05.12.2019 08:24, schrieb Uwe Kleine-König:
+> The variable pval is only used in a single block in the function
+> sun4i_pwm_calculate(). So declare it in a more local scope to simplify
+> the function for humans and compilers.
+> 
+> While the diffstat for this patch is negative for this patch I still
+> thing the advantage of having a narrower scope is beneficial.
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> ---
+> Hello,
+> 
+> for the patch that became
+> 
+> 	1b98ad3b3be9 ("pwm: sun4i: Drop redundant assignment to variable pval")
+> 
+> (and which yielded the situation that pval is only used in this single
+> block) I suggested to do this change. This was ignored however by both
+> Colin and Thierry without comment. So I suggest the change here
+> separately.
+> 
+> Best regards
+> Uwe
+> 
+>  drivers/pwm/pwm-sun4i.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pwm/pwm-sun4i.c b/drivers/pwm/pwm-sun4i.c
+> index 581d23287333..8919e6ab7577 100644
+> --- a/drivers/pwm/pwm-sun4i.c
+> +++ b/drivers/pwm/pwm-sun4i.c
+> @@ -149,7 +149,7 @@ static int sun4i_pwm_calculate(struct sun4i_pwm_chip *sun4i_pwm,
+>  			       u32 *dty, u32 *prd, unsigned int *prsclr)
+>  {
+>  	u64 clk_rate, div = 0;
+> -	unsigned int pval, prescaler = 0;
+> +	unsigned int prescaler = 0;
+>  
+>  	clk_rate = clk_get_rate(sun4i_pwm->clk);
+>  
+> @@ -170,6 +170,8 @@ static int sun4i_pwm_calculate(struct sun4i_pwm_chip *sun4i_pwm,
+>  	if (prescaler == 0) {
+>  		/* Go up from the first divider */
+>  		for (prescaler = 0; prescaler < PWM_PRESCAL_MASK; prescaler++) {
+> +			unsigned int pval;
+> +
+>  			if (!prescaler_table[prescaler])
+>  				continue;
+>  			pval = prescaler_table[prescaler];
+
+
+nit picking:
+Doing the assignment first would remove the only use
+of prescaler_table[prescaler].
+
+unsigned int pval = prescaler_table[prescaler];
+if ( ! pval )
+  continue;
+
+if you feel adventures you could also replace the for() for a while()
+since we know that prescaler == 0.
+
+while ( prescaler < PWM_PRESCAL_MASK )
+{
+unsigned int pval = prescaler_table[prescaler++];
+....
+
+
+jm2c,
+
+ wh

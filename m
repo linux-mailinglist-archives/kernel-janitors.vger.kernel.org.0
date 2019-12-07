@@ -2,75 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45CA4115BEF
-	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Dec 2019 12:02:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC12B115D54
+	for <lists+kernel-janitors@lfdr.de>; Sat,  7 Dec 2019 16:33:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726263AbfLGLCC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 7 Dec 2019 06:02:02 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42952 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726025AbfLGLCC (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 7 Dec 2019 06:02:02 -0500
-Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6A44424673;
-        Sat,  7 Dec 2019 11:02:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1575716522;
-        bh=XfWWb2zhJ7AuVZ9dOAp6k4DacxupN3foMgPCX9OIU7A=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=xli1/JIdLkD3V6DS654kyik3cYiEiC2hsSC7fTHIbGqLG0/YIwRkNAQbrh2Ww5Hls
-         JbMFCnZRdr4+05d6S0BfJY493aTpcXGbXKY3eDPS+WdyUMQ0ohMPrNfM9o+LzYbo0f
-         +OaMjDhNtsb7ZEbi0o8beVlh3I16MbgwvwB5wxsA=
-Date:   Sat, 7 Dec 2019 11:01:57 +0000
-From:   Jonathan Cameron <jic23@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     knaack.h@gmx.de, lars@metafoo.de, pmeerw@pmeerw.net,
-        justinpopo6@gmail.com, linus.walleij@linaro.org,
-        linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ti-ads7950: Fix a typo in an error message
-Message-ID: <20191207110157.35dd39eb@archlinux>
-In-Reply-To: <20191204064535.13025-1-christophe.jaillet@wanadoo.fr>
-References: <20191204064535.13025-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S1726414AbfLGPdq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 7 Dec 2019 10:33:46 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:51090 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726409AbfLGPdq (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 7 Dec 2019 10:33:46 -0500
+Received: from [82.43.126.140] (helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1idc5Y-0006yj-3T; Sat, 07 Dec 2019 15:33:44 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     fwts-devel@lists.ubuntu.com
+Cc:     kernel-janitors@vger.kernel.org
+Subject: [PATCH] cpu: microcode: remove redundant check on pointer entry
+Date:   Sat,  7 Dec 2019 15:33:43 +0000
+Message-Id: <20191207153343.112887-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed,  4 Dec 2019 07:45:35 +0100
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> Fix a typo:
->    s/get get/to get/
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Applied,
+The check for a null entry is redundant as the while loop
+also checks for this.  Remove the redundant check. Cleans
+up cppcheck style warning:
 
-Thanks,
+src/cpu/microcode/microcode.c:203:14: style: Condition 'entry' is
+always true [knownConditionTrueFalse]
+         if (entry &&
 
-Jonathan
+src/cpu/microcode/microcode.c:202:32: note: Assuming that condition
+'(entry=readdir(dir))!=NULL' is not redundant
 
-> ---
->  drivers/iio/adc/ti-ads7950.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/ti-ads7950.c b/drivers/iio/adc/ti-ads7950.c
-> index 2e66e4d586ff..f9edc1207f75 100644
-> --- a/drivers/iio/adc/ti-ads7950.c
-> +++ b/drivers/iio/adc/ti-ads7950.c
-> @@ -602,7 +602,7 @@ static int ti_ads7950_probe(struct spi_device *spi)
->  
->  	st->reg = devm_regulator_get(&spi->dev, "vref");
->  	if (IS_ERR(st->reg)) {
-> -		dev_err(&spi->dev, "Failed get get regulator \"vref\"\n");
-> +		dev_err(&spi->dev, "Failed to get regulator \"vref\"\n");
->  		ret = PTR_ERR(st->reg);
->  		goto error_destroy_mutex;
->  	}
+ while ((entry = readdir(dir)) != NULL) {
+
+src/cpu/microcode/microcode.c:203:14: note: Condition 'entry' is
+always true
+         if (entry &&
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ src/cpu/microcode/microcode.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/src/cpu/microcode/microcode.c b/src/cpu/microcode/microcode.c
+index 974fdec9..65abe50a 100644
+--- a/src/cpu/microcode/microcode.c
++++ b/src/cpu/microcode/microcode.c
+@@ -200,8 +200,7 @@ static int microcode_test1(fwts_framework *fw)
+ 
+ 	/* Scan and check */
+ 	while ((entry = readdir(dir)) != NULL) {
+-	        if (entry &&
+-		    (strlen(entry->d_name) > 3) &&
++	        if ((strlen(entry->d_name) > 3) &&
+ 		    (strncmp(entry->d_name,"cpu", 3) == 0) &&
+ 		    (isdigit(entry->d_name[3]))) {
+ 			char path[PATH_MAX];
+-- 
+2.24.0
 

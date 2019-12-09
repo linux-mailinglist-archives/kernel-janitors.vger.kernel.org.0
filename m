@@ -2,130 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 311E4116AE2
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Dec 2019 11:22:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 28E82116DB9
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Dec 2019 14:11:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727346AbfLIKWC convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Dec 2019 05:22:02 -0500
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:58624 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726279AbfLIKWC (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Dec 2019 05:22:02 -0500
-X-IronPort-AV: E=Sophos;i="5.69,294,1571695200"; 
-   d="scan'208";a="419359771"
-X-MGA-submission: =?us-ascii?q?MDEy0mNecwNuL9Jk5yYbF2EQVnchtra1QLxSda?=
- =?us-ascii?q?LVt2y4q13qmPpebNroNPIYago/EeZChF1k1i8WrzH2uQbUIlF5P+NBEb?=
- =?us-ascii?q?zQ45Lx2dyOC7BDW8GJHNWgCr6Dib9AlaQwu2cPD16slJUMVl5OoQGXuy?=
- =?us-ascii?q?KwBuaKZZ69PpoINS8s52KQlw=3D=3D?=
-Received: from zcs-store9.inria.fr ([128.93.142.36])
-  by mail2-relais-roc.national.inria.fr with ESMTP; 09 Dec 2019 11:21:57 +0100
-Date:   Mon, 9 Dec 2019 11:21:57 +0100 (CET)
-From:   Julia Lawall <julia.lawall@inria.fr>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Thomas Hellstrom <thellstrom@vmware.com>,
-        dri-devel@lists.freedesktop.org, David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Sinclair Yeh <syeh@vmware.com>,
-        linux-graphics-maintainer@vmware.com,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-ID: <1606305704.12702713.1575886917867.JavaMail.zimbra@inria.fr>
-In-Reply-To: <20191208105328.15335-1-lukas.bulwahn@gmail.com>
-References: <20191208105328.15335-1-lukas.bulwahn@gmail.com>
-Subject: Re: [PATCH] drm/vmwgfx: Replace deprecated PTR_RET
+        id S1727617AbfLINLf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Dec 2019 08:11:35 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:52102 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727513AbfLINLf (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 9 Dec 2019 08:11:35 -0500
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 5D3AC9DB6D125A02467D;
+        Mon,  9 Dec 2019 21:11:31 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.439.0; Mon, 9 Dec 2019 21:11:22 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <davem@davemloft.net>, <gregkh@linuxfoundation.org>,
+        <alexios.zavras@intel.com>, <oneukum@suse.com>,
+        <tglx@linutronix.de>
+CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Mao Wenan <maowenan@huawei.com>,
+        "Hulk Robot" <hulkci@huawei.com>
+Subject: [PATCH v2 -next] NFC: port100: Convert cpu_to_le16(le16_to_cpu(E1) + E2) to use le16_add_cpu().
+Date:   Mon, 9 Dec 2019 21:08:45 +0800
+Message-ID: <20191209130845.47777-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [202.161.33.40]
-X-Mailer: Zimbra 8.7.11_GA_3800 (ZimbraWebClient - FF70 (Linux)/8.7.11_GA_3800)
-Thread-Topic: drm/vmwgfx: Replace deprecated PTR_RET
-Thread-Index: E97hwnQVmXIxUQ0U2XENNb5kIN+0Tw==
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> De: "Lukas Bulwahn" <lukas.bulwahn@gmail.com>
-> À: "Thomas Hellstrom" <thellstrom@vmware.com>, dri-devel@lists.freedesktop.org
-> Cc: "David Airlie" <airlied@linux.ie>, "Daniel Vetter" <daniel@ffwll.ch>, "Sinclair Yeh" <syeh@vmware.com>,
-> linux-graphics-maintainer@vmware.com, kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org, "Lukas Bulwahn"
-> <lukas.bulwahn@gmail.com>
-> Envoyé: Dimanche 8 Décembre 2019 18:53:28
-> Objet: [PATCH] drm/vmwgfx: Replace deprecated PTR_RET
+Convert cpu_to_le16(le16_to_cpu(frame->datalen) + len) to
+use le16_add_cpu(), which is more concise and does the same thing. 
 
-> Commit 508108ea2747 ("drm/vmwgfx: Don't refcount command-buffer managed
-> resource lookups during command buffer validation") slips in use of
-> deprecated PTR_RET. Use PTR_ERR_OR_ZERO instead.
-> 
-> As the PTR_ERR_OR_ZERO is a bit longer than PTR_RET, we introduce
-> local variable ret for proper indentation and line-length limits.
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ v2: change log as julia suggest.
+ drivers/nfc/port100.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Is 0 actually possible?  I have the impression that it is not, but perhaps I missed something.
+diff --git a/drivers/nfc/port100.c b/drivers/nfc/port100.c
+index 604dba4..8e4d355 100644
+--- a/drivers/nfc/port100.c
++++ b/drivers/nfc/port100.c
+@@ -565,7 +565,7 @@ static void port100_tx_update_payload_len(void *_frame, int len)
+ {
+ 	struct port100_frame *frame = _frame;
+ 
+-	frame->datalen = cpu_to_le16(le16_to_cpu(frame->datalen) + len);
++	le16_add_cpu(&frame->datalen, len);
+ }
+ 
+ static bool port100_rx_frame_is_valid(void *_frame)
+-- 
+2.7.4
 
-julia
-
-
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
-> applies cleanly on current master (9455d25f4e3b) and next-20191207
-> compile-tested on x86_64_defconfig + DRM_VMWGFX=y
-> 
-> drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 21 +++++++++++++++------
-> 1 file changed, 15 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-> b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-> index 934ad7c0c342..73489a45decb 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-> @@ -2377,9 +2377,12 @@ static int vmw_cmd_dx_clear_rendertarget_view(struct
-> vmw_private *dev_priv,
-> {
-> 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXClearRenderTargetView) =
-> 		container_of(header, typeof(*cmd), header);
-> +	struct vmw_resource *ret;
-> 
-> -	return PTR_RET(vmw_view_id_val_add(sw_context, vmw_view_rt,
-> -					   cmd->body.renderTargetViewId));
-> +	ret = vmw_view_id_val_add(sw_context, vmw_view_rt,
-> +				  cmd->body.renderTargetViewId);
-> +
-> +	return PTR_ERR_OR_ZERO(ret);
-> }
-> 
-> /**
-> @@ -2396,9 +2399,12 @@ static int vmw_cmd_dx_clear_depthstencil_view(struct
-> vmw_private *dev_priv,
-> {
-> 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXClearDepthStencilView) =
-> 		container_of(header, typeof(*cmd), header);
-> +	struct vmw_resource *ret;
-> +
-> +	ret = vmw_view_id_val_add(sw_context, vmw_view_ds,
-> +				  cmd->body.depthStencilViewId);
-> 
-> -	return PTR_RET(vmw_view_id_val_add(sw_context, vmw_view_ds,
-> -					   cmd->body.depthStencilViewId));
-> +	return PTR_ERR_OR_ZERO(ret);
-> }
-> 
-> static int vmw_cmd_dx_view_define(struct vmw_private *dev_priv,
-> @@ -2741,9 +2747,12 @@ static int vmw_cmd_dx_genmips(struct vmw_private
-> *dev_priv,
-> {
-> 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXGenMips) =
-> 		container_of(header, typeof(*cmd), header);
-> +	struct vmw_resource *ret;
-> +
-> +	ret = vmw_view_id_val_add(sw_context, vmw_view_sr,
-> +				  cmd->body.shaderResourceViewId);
-> 
-> -	return PTR_RET(vmw_view_id_val_add(sw_context, vmw_view_sr,
-> -					   cmd->body.shaderResourceViewId));
-> +	return PTR_ERR_OR_ZERO(ret);
-> }
-> 
-> /**
-> --
-> 2.17.1

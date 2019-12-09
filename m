@@ -2,89 +2,139 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DDAB6116E04
-	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Dec 2019 14:34:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CA97C116EA1
+	for <lists+kernel-janitors@lfdr.de>; Mon,  9 Dec 2019 15:08:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727567AbfLINeO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Dec 2019 08:34:14 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32]:43802 "EHLO huawei.com"
+        id S1727789AbfLIOIv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 9 Dec 2019 09:08:51 -0500
+Received: from mail-eopbgr760079.outbound.protection.outlook.com ([40.107.76.79]:10695
+        "EHLO NAM02-CY1-obe.outbound.protection.outlook.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727438AbfLINeO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Dec 2019 08:34:14 -0500
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id CEB9515513E7DF9DA6CA;
-        Mon,  9 Dec 2019 21:34:10 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.439.0; Mon, 9 Dec 2019 21:34:02 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <davem@davemloft.net>, <loke.chetan@gmail.com>,
-        <willemb@google.com>, <edumazet@google.com>,
-        <maximmi@mellanox.com>, <nhorman@tuxdriver.com>,
-        <pabeni@redhat.com>, <maowenan@huawei.com>,
-        <yuehaibing@huawei.com>, <tglx@linutronix.de>
-CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>,
-        Xiao Jiangfeng <xiaojiangfeng@huawei.com>
-Subject: [PATCH net] af_packet: set defaule value for tmo
-Date:   Mon, 9 Dec 2019 21:31:25 +0800
-Message-ID: <20191209133125.59093-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1727388AbfLIOIv (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 9 Dec 2019 09:08:51 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=G0e3LocM4MjI7K8qEZ2YFz6HjWlCLdU/frJJlb27vL6baebrlSaPBmXsCbXIQ/cMS2MI0TAAPTFzl8RbHkjPrxM7p5bWMTVigK8v0QIdA+3Jo76BvXI8CYD2/pgYLC3gqpIIwoSXn77H3l5Ky/HYcUA6TJ9MUE1Rv0OyqnfGJdzf3dxQoub0kLCXR1oqaZo2SmA8PZlrQc4e2k/W9iu/bevWKKbtKSqPkLqRypwGyGBOzcnK1ciui7UoIKvsl3XNo3L3jjBUwSXE6wxKHF36g4sWX2RXzf064yGYkfBMl3mY1ZCav7JEDjepuxMVg5tpT/gjsDr6BvZXXjKCOdydJw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=R8Pv9rEt//5mY7VBQ1ZEyoBqXBI6f8DLtt39ZBXFzOU=;
+ b=oe3BGnBouFIx5W3OZBBcMiJepwslj2tcW66hKXFZXGnbKk1cKYynn4ba6uU3A0gkH32Z7apA/gyArSAccD3CS+6krdxBIquNjU/Mwj7HHcdTgtJc9s95CHFEuAkeVtSSc62iLN1PRbYjMtkhAHJ45Rzjsv/w43+Pf+HJnetH4H0UafBS1gevgd/xVhbMDbea8IdzXZvlXb0AUKiabeDr2iZStx5RlQrJSnd0VaQOi3th1v9Vhaq0jV9sMeTUg2kXG0gGRyLbm3lOaXUoPB6rAB7uEK7MwmIbR6oehOLACdyyz4uTZdGq4Gj80L9KqZGWuxbQeOZ5VtZT5yFj64xvJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vmware.com; dmarc=pass action=none header.from=vmware.com;
+ dkim=pass header.d=vmware.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vmware.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=R8Pv9rEt//5mY7VBQ1ZEyoBqXBI6f8DLtt39ZBXFzOU=;
+ b=ctG/EtmIhaOFguUMt6vzEYA5n5DHnU4KYnS4hw/5rh+3kq63mF/u2ZDWJpiOnS+61Lbv1pCPIozvePYxRShotxCiksABT3QVwfwgNaYpv30PWg/krN8hP03/1X5PJrdQ6+d9bZEhkF8mAnk/Ku9mD6gM6NhbkGvP8NumdhpfYQ8=
+Received: from MN2PR05MB6141.namprd05.prod.outlook.com (20.178.241.217) by
+ MN2PR05MB6016.namprd05.prod.outlook.com (20.178.244.81) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2516.12; Mon, 9 Dec 2019 14:08:47 +0000
+Received: from MN2PR05MB6141.namprd05.prod.outlook.com
+ ([fe80::611e:6a6b:9109:5aa8]) by MN2PR05MB6141.namprd05.prod.outlook.com
+ ([fe80::611e:6a6b:9109:5aa8%7]) with mapi id 15.20.2538.012; Mon, 9 Dec 2019
+ 14:08:46 +0000
+From:   Thomas Hellstrom <thellstrom@vmware.com>
+To:     "dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+        "lukas.bulwahn@gmail.com" <lukas.bulwahn@gmail.com>
+CC:     "daniel@ffwll.ch" <daniel@ffwll.ch>,
+        "syeh@vmware.com" <syeh@vmware.com>,
+        Linux-graphics-maintainer <Linux-graphics-maintainer@vmware.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "airlied@linux.ie" <airlied@linux.ie>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] drm/vmwgfx: Replace deprecated PTR_RET
+Thread-Topic: [PATCH] drm/vmwgfx: Replace deprecated PTR_RET
+Thread-Index: AQHVrbXG/SePYza1EU2s4p6Lh/VQDqex2OqA
+Date:   Mon, 9 Dec 2019 14:08:46 +0000
+Message-ID: <96100f36c6fccb63afb55f6e9284c4f66282ecec.camel@vmware.com>
+References: <20191208105328.15335-1-lukas.bulwahn@gmail.com>
+In-Reply-To: <20191208105328.15335-1-lukas.bulwahn@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=thellstrom@vmware.com; 
+x-originating-ip: [155.4.205.35]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: a6344f45-e4fd-47db-9819-08d77cb14ebc
+x-ms-traffictypediagnostic: MN2PR05MB6016:|MN2PR05MB6016:
+x-ld-processed: b39138ca-3cee-4b4a-a4d6-cd83d9dd62f0,ExtAddr
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <MN2PR05MB6016282A21BC27E5F427B512A1580@MN2PR05MB6016.namprd05.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:5236;
+x-forefront-prvs: 02462830BE
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(4636009)(136003)(39860400002)(366004)(396003)(346002)(376002)(199004)(189003)(54906003)(8936002)(6512007)(2616005)(26005)(478600001)(76116006)(6486002)(186003)(229853002)(110136005)(118296001)(4326008)(305945005)(2906002)(36756003)(71190400001)(316002)(5660300002)(71200400001)(66446008)(64756008)(81166006)(66476007)(86362001)(91956017)(66946007)(6506007)(66556008)(8676002)(81156014);DIR:OUT;SFP:1101;SCL:1;SRVR:MN2PR05MB6016;H:MN2PR05MB6141.namprd05.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: vmware.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: yW6RXWhv9pML2NC1QlCwpBiM4kD8npyQsvJsd9SAV/8fcCSCHQxN2iMz6HVChgdsx508801tQBvbLo+gBjLKuIQBebWWj/Bc2+yOnD2REIaEd2rVbaCHWe9id7ji8Gku4jHoJ5MVJP6Mw9pqQ2illT+fBpHDecqiDZggBJ6hQ839xt0uT4bHhzm9jA+nq7zvMQ0vawbA2FSTzbmwH56P/FLvUtR1xudhUYQ93Ph32gb9djD3WjT15e479FitW3cDyphXXvF0a81kmVb6Sc7vtXVQCKnlmGj/GDjp9BrTnUD8ulchZcXfI2uRkbtSJQBzwbel23YnKVfrFoLlU3PwT0NuVbt3MzQQ7i88vTsOIn5mztwXTx9CVZ74rjV0qC/dHc9WnHuyxLIgmjI2McXvi46nONswv4Z4M2BXtfPHd/OI1Shnf+3tKqUFnpDF9z0f
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9233E6366B6C7B44B2FA1EA18E680838@namprd05.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+X-OriginatorOrg: vmware.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a6344f45-e4fd-47db-9819-08d77cb14ebc
+X-MS-Exchange-CrossTenant-originalarrivaltime: 09 Dec 2019 14:08:46.6503
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b39138ca-3cee-4b4a-a4d6-cd83d9dd62f0
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: BYADh6kp3laKm2nZQRSaJbFDHYOrWvZvjTN0EcR22KuAj494WTbegaokaXsnr/ezwV1w5hztSG/kV6uTQJM1gg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR05MB6016
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is softlockup when using TPACKET_V3:
-...
-NMI watchdog: BUG: soft lockup - CPU#2 stuck for 60010ms!
-(__irq_svc) from [<c0558a0c>] (_raw_spin_unlock_irqrestore+0x44/0x54)
-(_raw_spin_unlock_irqrestore) from [<c027b7e8>] (mod_timer+0x210/0x25c)
-(mod_timer) from [<c0549c30>]
-(prb_retire_rx_blk_timer_expired+0x68/0x11c)
-(prb_retire_rx_blk_timer_expired) from [<c027a7ac>]
-(call_timer_fn+0x90/0x17c)
-(call_timer_fn) from [<c027ab6c>] (run_timer_softirq+0x2d4/0x2fc)
-(run_timer_softirq) from [<c021eaf4>] (__do_softirq+0x218/0x318)
-(__do_softirq) from [<c021eea0>] (irq_exit+0x88/0xac)
-(irq_exit) from [<c0240130>] (msa_irq_exit+0x11c/0x1d4)
-(msa_irq_exit) from [<c0209cf0>] (handle_IPI+0x650/0x7f4)
-(handle_IPI) from [<c02015bc>] (gic_handle_irq+0x108/0x118)
-(gic_handle_irq) from [<c0558ee4>] (__irq_usr+0x44/0x5c)
-...
-
-If __ethtool_get_link_ksettings() is failed in
-prb_calc_retire_blk_tmo(), msec and tmo will be zero, so tov_in_jiffies
-is zero and the timer expire for retire_blk_timer is turn to
-mod_timer(&pkc->retire_blk_timer, jiffies + 0),
-which will trigger cpu usage of softirq is 100%.
-
-Fixes: f6fb8f100b80 ("af-packet: TPACKET_V3 flexible buffer implementation.")
-Tested-by: Xiao Jiangfeng <xiaojiangfeng@huawei.com>
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
----
- net/packet/af_packet.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 53c1d41fb1c9..118cd66b7516 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -544,7 +544,8 @@ static int prb_calc_retire_blk_tmo(struct packet_sock *po,
- 			msec = 1;
- 			div = ecmd.base.speed / 1000;
- 		}
--	}
-+	} else
-+		return DEFAULT_PRB_RETIRE_TOV;
- 
- 	mbits = (blk_size_in_bytes * 8) / (1024 * 1024);
- 
--- 
-2.20.1
-
+T24gU3VuLCAyMDE5LTEyLTA4IGF0IDExOjUzICswMTAwLCBMdWthcyBCdWx3YWhuIHdyb3RlOg0K
+PiBDb21taXQgNTA4MTA4ZWEyNzQ3ICgiZHJtL3Ztd2dmeDogRG9uJ3QgcmVmY291bnQgY29tbWFu
+ZC1idWZmZXINCj4gbWFuYWdlZA0KPiByZXNvdXJjZSBsb29rdXBzIGR1cmluZyBjb21tYW5kIGJ1
+ZmZlciB2YWxpZGF0aW9uIikgc2xpcHMgaW4gdXNlIG9mDQo+IGRlcHJlY2F0ZWQgUFRSX1JFVC4g
+VXNlIFBUUl9FUlJfT1JfWkVSTyBpbnN0ZWFkLg0KPiANCj4gQXMgdGhlIFBUUl9FUlJfT1JfWkVS
+TyBpcyBhIGJpdCBsb25nZXIgdGhhbiBQVFJfUkVULCB3ZSBpbnRyb2R1Y2UNCj4gbG9jYWwgdmFy
+aWFibGUgcmV0IGZvciBwcm9wZXIgaW5kZW50YXRpb24gYW5kIGxpbmUtbGVuZ3RoIGxpbWl0cy4N
+Cj4gDQo+IFNpZ25lZC1vZmYtYnk6IEx1a2FzIEJ1bHdhaG4gPGx1a2FzLmJ1bHdhaG5AZ21haWwu
+Y29tPg0KPiAtLS0NCj4gYXBwbGllcyBjbGVhbmx5IG9uIGN1cnJlbnQgbWFzdGVyICg5NDU1ZDI1
+ZjRlM2IpIGFuZCBuZXh0LTIwMTkxMjA3DQo+IGNvbXBpbGUtdGVzdGVkIG9uIHg4Nl82NF9kZWZj
+b25maWcgKyBEUk1fVk1XR0ZYPXkNCj4gDQo+ICBkcml2ZXJzL2dwdS9kcm0vdm13Z2Z4L3Ztd2dm
+eF9leGVjYnVmLmMgfCAyMSArKysrKysrKysrKysrKystLS0tLS0NCj4gIDEgZmlsZSBjaGFuZ2Vk
+LCAxNSBpbnNlcnRpb25zKCspLCA2IGRlbGV0aW9ucygtKQ0KPiANCj4gZGlmZiAtLWdpdCBhL2Ry
+aXZlcnMvZ3B1L2RybS92bXdnZngvdm13Z2Z4X2V4ZWNidWYuYw0KPiBiL2RyaXZlcnMvZ3B1L2Ry
+bS92bXdnZngvdm13Z2Z4X2V4ZWNidWYuYw0KPiBpbmRleCA5MzRhZDdjMGMzNDIuLjczNDg5YTQ1
+ZGVjYiAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9ncHUvZHJtL3Ztd2dmeC92bXdnZnhfZXhlY2J1
+Zi5jDQo+ICsrKyBiL2RyaXZlcnMvZ3B1L2RybS92bXdnZngvdm13Z2Z4X2V4ZWNidWYuYw0KPiBA
+QCAtMjM3Nyw5ICsyMzc3LDEyIEBAIHN0YXRpYyBpbnQNCj4gdm13X2NtZF9keF9jbGVhcl9yZW5k
+ZXJ0YXJnZXRfdmlldyhzdHJ1Y3Qgdm13X3ByaXZhdGUgKmRldl9wcml2LA0KPiAgew0KPiAgCVZN
+V19ERUNMQVJFX0NNRF9WQVIoKmNtZCwgU1ZHQTNkQ21kRFhDbGVhclJlbmRlclRhcmdldFZpZXcp
+ID0NCj4gIAkJY29udGFpbmVyX29mKGhlYWRlciwgdHlwZW9mKCpjbWQpLCBoZWFkZXIpOw0KPiAr
+CXN0cnVjdCB2bXdfcmVzb3VyY2UgKnJldDsNCj4gIA0KPiAtCXJldHVybiBQVFJfUkVUKHZtd192
+aWV3X2lkX3ZhbF9hZGQoc3dfY29udGV4dCwgdm13X3ZpZXdfcnQsDQo+IC0JCQkJCSAgIGNtZC0N
+Cj4gPmJvZHkucmVuZGVyVGFyZ2V0Vmlld0lkKSk7DQo+ICsJcmV0ID0gdm13X3ZpZXdfaWRfdmFs
+X2FkZChzd19jb250ZXh0LCB2bXdfdmlld19ydCwNCj4gKwkJCQkgIGNtZC0+Ym9keS5yZW5kZXJU
+YXJnZXRWaWV3SWQpOw0KPiArDQo+ICsJcmV0dXJuIFBUUl9FUlJfT1JfWkVSTyhyZXQpOw0KPiAg
+fQ0KPiAgDQo+ICAvKioNCj4gQEAgLTIzOTYsOSArMjM5OSwxMiBAQCBzdGF0aWMgaW50DQo+IHZt
+d19jbWRfZHhfY2xlYXJfZGVwdGhzdGVuY2lsX3ZpZXcoc3RydWN0IHZtd19wcml2YXRlICpkZXZf
+cHJpdiwNCj4gIHsNCj4gIAlWTVdfREVDTEFSRV9DTURfVkFSKCpjbWQsIFNWR0EzZENtZERYQ2xl
+YXJEZXB0aFN0ZW5jaWxWaWV3KSA9DQo+ICAJCWNvbnRhaW5lcl9vZihoZWFkZXIsIHR5cGVvZigq
+Y21kKSwgaGVhZGVyKTsNCj4gKwlzdHJ1Y3Qgdm13X3Jlc291cmNlICpyZXQ7DQo+ICsNCj4gKwly
+ZXQgPSB2bXdfdmlld19pZF92YWxfYWRkKHN3X2NvbnRleHQsIHZtd192aWV3X2RzLA0KPiArCQkJ
+CSAgY21kLT5ib2R5LmRlcHRoU3RlbmNpbFZpZXdJZCk7DQo+ICANCj4gLQlyZXR1cm4gUFRSX1JF
+VCh2bXdfdmlld19pZF92YWxfYWRkKHN3X2NvbnRleHQsIHZtd192aWV3X2RzLA0KPiAtCQkJCQkg
+ICBjbWQtDQo+ID5ib2R5LmRlcHRoU3RlbmNpbFZpZXdJZCkpOw0KPiArCXJldHVybiBQVFJfRVJS
+X09SX1pFUk8ocmV0KTsNCj4gIH0NCj4gIA0KPiAgc3RhdGljIGludCB2bXdfY21kX2R4X3ZpZXdf
+ZGVmaW5lKHN0cnVjdCB2bXdfcHJpdmF0ZSAqZGV2X3ByaXYsDQo+IEBAIC0yNzQxLDkgKzI3NDcs
+MTIgQEAgc3RhdGljIGludCB2bXdfY21kX2R4X2dlbm1pcHMoc3RydWN0DQo+IHZtd19wcml2YXRl
+ICpkZXZfcHJpdiwNCj4gIHsNCj4gIAlWTVdfREVDTEFSRV9DTURfVkFSKCpjbWQsIFNWR0EzZENt
+ZERYR2VuTWlwcykgPQ0KPiAgCQljb250YWluZXJfb2YoaGVhZGVyLCB0eXBlb2YoKmNtZCksIGhl
+YWRlcik7DQo+ICsJc3RydWN0IHZtd19yZXNvdXJjZSAqcmV0Ow0KPiArDQo+ICsJcmV0ID0gdm13
+X3ZpZXdfaWRfdmFsX2FkZChzd19jb250ZXh0LCB2bXdfdmlld19zciwNCj4gKwkJCQkgIGNtZC0+
+Ym9keS5zaGFkZXJSZXNvdXJjZVZpZXdJZCk7DQo+ICANCj4gLQlyZXR1cm4gUFRSX1JFVCh2bXdf
+dmlld19pZF92YWxfYWRkKHN3X2NvbnRleHQsIHZtd192aWV3X3NyLA0KPiAtCQkJCQkgICBjbWQt
+DQo+ID5ib2R5LnNoYWRlclJlc291cmNlVmlld0lkKSk7DQo+ICsJcmV0dXJuIFBUUl9FUlJfT1Jf
+WkVSTyhyZXQpOw0KPiAgfQ0KPiAgDQo+ICAvKioNCg0KUmV2aWV3ZWQtYnk6IFRob21hcyBIZWxs
+c3Ryb20gPHRoZWxsc3Ryb21Adm13YXJlLmNvbT4NCg0KSSB3aWxsIGluY2x1ZGUgdGhpcyBpbiB2
+bXdnZngtbmV4dC4NClRoYW5rcywNClRob21hcw0KDQo=

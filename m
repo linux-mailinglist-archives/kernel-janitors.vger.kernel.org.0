@@ -2,107 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C08091184EE
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Dec 2019 11:24:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F092D118625
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Dec 2019 12:25:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727145AbfLJKYy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 10 Dec 2019 05:24:54 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:49547 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726915AbfLJKYy (ORCPT
+        id S1727227AbfLJLZC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 Dec 2019 06:25:02 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:54927 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727143AbfLJLZC (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 10 Dec 2019 05:24:54 -0500
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-        by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1iechH-0002GB-4u; Tue, 10 Dec 2019 11:24:51 +0100
-Received: from ukl by dude.hi.pengutronix.de with local (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1iechG-000777-It; Tue, 10 Dec 2019 11:24:50 +0100
-From:   =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Colin King <colin.king@canonical.com>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        Walter Harms <wharms@bfs.de>
-Cc:     kernel@pengutronix.de, linux-pwm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        =?UTF-8?q?Cl=C3=A9ment=20P=C3=A9ron?= <peron.clem@gmail.com>
-Subject: [PATCH v2] pwm: sun4i: Narrow scope of local variable
-Date:   Tue, 10 Dec 2019 11:24:44 +0100
-Message-Id: <20191210102444.26594-1-u.kleine-koenig@pengutronix.de>
+        Tue, 10 Dec 2019 06:25:02 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ieddP-0006XG-Ql; Tue, 10 Dec 2019 11:24:55 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Shuah Khan <shuah@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        linux-kselftest@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] selftests: fix spelling mistake "chainged" -> "chained"
+Date:   Tue, 10 Dec 2019 11:24:55 +0000
+Message-Id: <20191210112455.171482-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.24.0
-In-Reply-To: <20191210101229.rvqelc2hanisd2cp@pengutronix.de>
-References: <20191210101229.rvqelc2hanisd2cp@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The variable pval is only used in a single block in the function
-sun4i_pwm_calculate(). So declare it in a more local scope to simplify
-the function for humans and compilers.
+From: Colin Ian King <colin.king@canonical.com>
 
-While at it also simplify assignment to pval.
+There is a spelling mistake in a literal string, fix it.
 
-While the diffstat for this patch is negative for this patch I still
-thing the advantage of having a narrower scope is beneficial.
-
-In my compiler / .config setup (gcc 8.2.1, arm/imx_v6_v7_defconfig +
-COMPILE_TEST + PWM_SUN4I) this change doesn't result in any binary
-changes.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
-Hello,
+ tools/testing/selftests/openat2/resolve_test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-changes since (implicit) v1:
-
- - also simplify assignment to pval as suggested by Walter
- - verify the patch doesn't introduce binary changes
-
-Best regards
-Uwe
-
- drivers/pwm/pwm-sun4i.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/pwm/pwm-sun4i.c b/drivers/pwm/pwm-sun4i.c
-index 1fa2057419fb..4f77ebc8ae69 100644
---- a/drivers/pwm/pwm-sun4i.c
-+++ b/drivers/pwm/pwm-sun4i.c
-@@ -152,7 +152,7 @@ static int sun4i_pwm_calculate(struct sun4i_pwm_chip *sun4i_pwm,
- 			       u32 *dty, u32 *prd, unsigned int *prsclr)
- {
- 	u64 clk_rate, div = 0;
--	unsigned int pval, prescaler = 0;
-+	unsigned int prescaler = 0;
- 
- 	clk_rate = clk_get_rate(sun4i_pwm->clk);
- 
-@@ -173,9 +173,11 @@ static int sun4i_pwm_calculate(struct sun4i_pwm_chip *sun4i_pwm,
- 	if (prescaler == 0) {
- 		/* Go up from the first divider */
- 		for (prescaler = 0; prescaler < PWM_PRESCAL_MASK; prescaler++) {
-+			unsigned int pval = prescaler_table[prescaler];
-+
--			if (!prescaler_table[prescaler])
-+			if (!pval)
- 				continue;
--			pval = prescaler_table[prescaler];
-+
- 			div = clk_rate;
- 			do_div(div, pval);
- 			div = div * state->period;
+diff --git a/tools/testing/selftests/openat2/resolve_test.c b/tools/testing/selftests/openat2/resolve_test.c
+index 7a94b1da8e7b..bbafad440893 100644
+--- a/tools/testing/selftests/openat2/resolve_test.c
++++ b/tools/testing/selftests/openat2/resolve_test.c
+@@ -230,7 +230,7 @@ void test_openat2_opath_tests(void)
+ 		{ .name = "[in_root] garbage link to /root",
+ 		  .path = "cheeky/garbageself",	.how.resolve = RESOLVE_IN_ROOT,
+ 		  .out.path = "root",		.pass = true },
+-		{ .name = "[in_root] chainged garbage links to /root",
++		{ .name = "[in_root] chained garbage links to /root",
+ 		  .path = "abscheeky/garbageself", .how.resolve = RESOLVE_IN_ROOT,
+ 		  .out.path = "root",		.pass = true },
+ 		{ .name = "[in_root] relative path to 'root'",
 -- 
 2.24.0
 

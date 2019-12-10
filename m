@@ -2,98 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 59D77118663
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Dec 2019 12:34:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0153118AB7
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Dec 2019 15:24:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727434AbfLJLei (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 10 Dec 2019 06:34:38 -0500
-Received: from mout-p-201.mailbox.org ([80.241.56.171]:57436 "EHLO
-        mout-p-201.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727380AbfLJLeh (ORCPT
+        id S1727453AbfLJOX6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 Dec 2019 09:23:58 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:58973 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727345AbfLJOX5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 10 Dec 2019 06:34:37 -0500
-X-Greylist: delayed 385 seconds by postgrey-1.27 at vger.kernel.org; Tue, 10 Dec 2019 06:34:36 EST
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 47XHqY5VslzQl9M;
-        Tue, 10 Dec 2019 12:28:09 +0100 (CET)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter01.heinlein-hosting.de (spamfilter01.heinlein-hosting.de [80.241.56.115]) (amavisd-new, port 10030)
-        with ESMTP id ORbApr3hLJrD; Tue, 10 Dec 2019 12:28:05 +0100 (CET)
-Date:   Tue, 10 Dec 2019 22:27:50 +1100
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Shuah Khan <shuah@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
-        linux-kselftest@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] selftests: fix spelling mistake "chainged" ->
- "chained"
-Message-ID: <20191210112750.5rfck3gnmobabhak@yavin.dot.cyphar.com>
-References: <20191210112455.171482-1-colin.king@canonical.com>
+        Tue, 10 Dec 2019 09:23:57 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iegQY-0001G5-IY; Tue, 10 Dec 2019 14:23:50 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/i915: remove redundant checks for a null fb pointer
+Date:   Tue, 10 Dec 2019 14:23:49 +0000
+Message-Id: <20191210142349.333171-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="l7rai3c6jadzkxag"
-Content-Disposition: inline
-In-Reply-To: <20191210112455.171482-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: Colin Ian King <colin.king@canonical.com>
 
---l7rai3c6jadzkxag
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+A prior check and return when pointer fb is null makes
+subsequent null checks on fb redundant.  Remove the redundant
+null checks.
 
-On 2019-12-10, Colin King <colin.king@canonical.com> wrote:
-> There is a spelling mistake in a literal string, fix it.
+Addresses-Coverity: ("Logically dead code")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/i915/i915_debugfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Yup, makes sense.
+diff --git a/drivers/gpu/drm/i915/i915_debugfs.c b/drivers/gpu/drm/i915/i915_debugfs.c
+index 062e5bef637a..a48478be6e8f 100644
+--- a/drivers/gpu/drm/i915/i915_debugfs.c
++++ b/drivers/gpu/drm/i915/i915_debugfs.c
+@@ -2600,8 +2600,8 @@ static void intel_plane_hw_info(struct seq_file *m, struct intel_plane *plane)
+ 		       plane_state->hw.rotation);
+ 
+ 	seq_printf(m, "\t\thw: fb=%d,%s,%dx%d, visible=%s, src=" DRM_RECT_FP_FMT ", dst=" DRM_RECT_FMT ", rotation=%s\n",
+-		   fb ? fb->base.id : 0, fb ? format_name.str : "n/a",
+-		   fb ? fb->width : 0, fb ? fb->height : 0,
++		   fb->base.id, format_name.str,
++		   fb->width, fb->height,
+ 		   yesno(plane_state->uapi.visible),
+ 		   DRM_RECT_FP_ARG(&plane_state->uapi.src),
+ 		   DRM_RECT_ARG(&plane_state->uapi.dst),
+-- 
+2.24.0
 
-Reviewed-by: Aleksa Sarai <cyphar@cyphar.com>
-
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  tools/testing/selftests/openat2/resolve_test.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/tools/testing/selftests/openat2/resolve_test.c b/tools/testi=
-ng/selftests/openat2/resolve_test.c
-> index 7a94b1da8e7b..bbafad440893 100644
-> --- a/tools/testing/selftests/openat2/resolve_test.c
-> +++ b/tools/testing/selftests/openat2/resolve_test.c
-> @@ -230,7 +230,7 @@ void test_openat2_opath_tests(void)
->  		{ .name =3D "[in_root] garbage link to /root",
->  		  .path =3D "cheeky/garbageself",	.how.resolve =3D RESOLVE_IN_ROOT,
->  		  .out.path =3D "root",		.pass =3D true },
-> -		{ .name =3D "[in_root] chainged garbage links to /root",
-> +		{ .name =3D "[in_root] chained garbage links to /root",
->  		  .path =3D "abscheeky/garbageself", .how.resolve =3D RESOLVE_IN_ROOT,
->  		  .out.path =3D "root",		.pass =3D true },
->  		{ .name =3D "[in_root] relative path to 'root'",
-> --=20
-> 2.24.0
->=20
-
-
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---l7rai3c6jadzkxag
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXe+BLwAKCRCdlLljIbnQ
-EubTAP9OptH6VWy5DMeb7HaGfXTnyuPkThnwOMh7lvkzgNvH4AEAtBUbCf5wSGnb
-yzCFDvF52CMUSP7Tzg5KEduILkkf+A4=
-=9MTh
------END PGP SIGNATURE-----
-
---l7rai3c6jadzkxag--

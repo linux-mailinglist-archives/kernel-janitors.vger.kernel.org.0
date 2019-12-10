@@ -2,86 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DD508117C01
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Dec 2019 01:04:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF40B1183E1
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Dec 2019 10:45:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727187AbfLJACk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 9 Dec 2019 19:02:40 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:48190 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726495AbfLJACk (ORCPT
+        id S1727032AbfLJJpN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 Dec 2019 04:45:13 -0500
+Received: from mail-ot1-f68.google.com ([209.85.210.68]:45985 "EHLO
+        mail-ot1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727016AbfLJJpN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 9 Dec 2019 19:02:40 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBA006Cx028284;
-        Tue, 10 Dec 2019 00:02:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2019-08-05;
- bh=nXa48o1cVQ7vSxlMzWYvYRBeRr88JUKVcjqZsAk9698=;
- b=DX1aD8HNdJuuwUu4inTgRthaMVXefe17rP1NtklYg4PF/6EBZB4L/kFYDrDKfWVTVPh6
- PBKDnGRZUv7ZJ/mtFqACpMIkegPiJusasxozPZ5dM1juPQmn22K379yicVyBZZFE0uPp
- cgJ3eFJdLqko162DJurUZh1EVCusgScbyOqDeQmO/GYrhPjJPRrz4WNDWLVeVGyegHLb
- mSu6qUg7AhoAIM4pj7HQdYRxeXTJXHLnYYesug/DLfbFxm7PC8dfzzaw3XYvXRauif7i
- AmkgbhJF5iBubUIXjXrSdVATtBAsYBKS3yLoL2H2fkVbUk+Ek4y09PY4Y/HRDnU82AAN ew== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 2wr41q2w8f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 10 Dec 2019 00:02:20 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xB9NrnOD051324;
-        Tue, 10 Dec 2019 00:02:20 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 2wsw6fyw0r-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 10 Dec 2019 00:02:19 +0000
-Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xBA02IR8013031;
-        Tue, 10 Dec 2019 00:02:18 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 09 Dec 2019 16:02:18 -0800
+        Tue, 10 Dec 2019 04:45:13 -0500
+Received: by mail-ot1-f68.google.com with SMTP id 59so14921894otp.12
+        for <kernel-janitors@vger.kernel.org>; Tue, 10 Dec 2019 01:45:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=f0hX1Q9n2M6XKrv28o3J4nDH2VccV/c+e5EpwuDXaV8=;
+        b=eYtAXHNjbJi0coWRbSWx/MvEE1yATN8Gf5ucGHbk8+GIV8B+gUo0G6Rl1iXdXwCu9h
+         AbjbQbUWzVO/Bg2sZ5hP7E2TUpAmKWVNxbhVJPF4B/wATGIilAc/aF+BL/Xc2O+uJbjy
+         fuAzaQr/FOWKBKl3+R0ue65031yPbkBhG3ZeQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=f0hX1Q9n2M6XKrv28o3J4nDH2VccV/c+e5EpwuDXaV8=;
+        b=ZtMw6dZkKMvcyUnrCsT1zOd+GjOK57H9vraBhRt/JBPmUDnqQwvImnH872cZJCFeWU
+         Q573wrAQJBd+nHdc+7xYJ5XYYc4L0fDA24OxZ0tCnlhjbes6qZbqSEw4EDIx2kv/D0kF
+         srORcOfOv09dk+SrcODn84pB0uouZad2StxPpbyvcq/qFlvN/UHCH6v/6/jmVJ6zkgVl
+         3Lq4ZHJt9YvqZ3aXkylHAXsmJhtvPXK3TzSy3GmtwYKuiFz2oWj5ipqg2GS/Wxzj1EPU
+         QuBjdoi43sfgATc2DXN2wRLWW+tt9ja/hwmoKaqb4zXwhyVU96ArN67c+QX7y2+1bG1d
+         EAGg==
+X-Gm-Message-State: APjAAAVgAW2Lv/8JMPqgQPrbLhf7Qf2MJc8+7NUPd/JDepCy++jerLL9
+        JZ5cOqWExCysodYL/0ptNM53jgj0KcvBWhuC1fuCXQ==
+X-Google-Smtp-Source: APXvYqzXmWF7kmHvwlQo+xBOGKIDgKUXO26i22KHYHNWJeQSopq7Stgp7SZXldjNy69rP8d22wWHs8UPpwcU7bWGHKg=
+X-Received: by 2002:a9d:76c5:: with SMTP id p5mr10471945otl.61.1575971112100;
+ Tue, 10 Dec 2019 01:45:12 -0800 (PST)
+MIME-Version: 1.0
+References: <20191203093652.gyntgvnkw2udatyc@kili.mountain>
+In-Reply-To: <20191203093652.gyntgvnkw2udatyc@kili.mountain>
+From:   Sreekanth Reddy <sreekanth.reddy@broadcom.com>
+Date:   Tue, 10 Dec 2019 15:15:00 +0530
+Message-ID: <CAK=zhgrQ_9R+kWhMWG7D0iqsoTb=Q6WQKhN3ydeCxt-uK-CL-g@mail.gmail.com>
+Subject: Re: [PATCH] scsi: mpt3sas: Fix double free in attach error handling
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     QLogic-Storage-Upstream@qlogic.com,
-        David Somayajulu <david.somayajulu@qlogic.com>,
+Cc:     Sathya Prakash <sathya.prakash@broadcom.com>,
+        Chaitra P B <chaitra.basappa@broadcom.com>,
+        Suganath Prabu Subramani 
+        <suganath-prabu.subramani@broadcom.com>,
         "James E.J. Bottomley" <jejb@linux.ibm.com>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] iscsi: qla4xxx: fix double free in probe
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20191203094421.hw7ex7qr3j2rbsmx@kili.mountain>
-Date:   Mon, 09 Dec 2019 19:02:15 -0500
-In-Reply-To: <20191203094421.hw7ex7qr3j2rbsmx@kili.mountain> (Dan Carpenter's
-        message of "Tue, 3 Dec 2019 12:45:09 +0300")
-Message-ID: <yq1o8whoxo8.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9466 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=700
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1912090189
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9466 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=781 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-1912090190
+        PDL-MPT-FUSIONLINUX <MPT-FusionLinux.pdl@broadcom.com>,
+        linux-scsi <linux-scsi@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Tue, Dec 3, 2019 at 3:07 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> The caller also calls _base_release_memory_pools() on error so it
+> leads to a number of double frees:
+>
+> drivers/scsi/mpt3sas/mpt3sas_base.c:7207 mpt3sas_base_attach() warn: 'ioc->chain_dma_pool' double freed
+> drivers/scsi/mpt3sas/mpt3sas_base.c:7207 mpt3sas_base_attach() warn: 'ioc->hpr_lookup' double freed
+> drivers/scsi/mpt3sas/mpt3sas_base.c:7207 mpt3sas_base_attach() warn: 'ioc->internal_lookup' double freed
+> drivers/scsi/mpt3sas/mpt3sas_base.c:7207 mpt3sas_base_attach() warn: 'ioc->pcie_sgl_dma_pool' double freed
+> drivers/scsi/mpt3sas/mpt3sas_base.c:7207 mpt3sas_base_attach() warn: 'ioc->reply_dma_pool' double freed
+> drivers/scsi/mpt3sas/mpt3sas_base.c:7207 mpt3sas_base_attach() warn: 'ioc->reply_free_dma_pool' double freed
+> drivers/scsi/mpt3sas/mpt3sas_base.c:7207 mpt3sas_base_attach() warn: 'ioc->reply_post_free_array_dma_pool' double freed
+> drivers/scsi/mpt3sas/mpt3sas_base.c:7207 mpt3sas_base_attach() warn: 'ioc->reply_post_free_dma_pool' double freed
+> drivers/scsi/mpt3sas/mpt3sas_base.c:7207 mpt3sas_base_attach() warn: 'ioc->sense_dma_pool' double freed
+>
+> Fixes: 74522a92bbf0 ("scsi: mpt3sas: Optimize I/O memory consumption in driver.")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Acked-by: Sreekanth Reddy <sreekanth.reddy@broadcom.com>
 
-Dan,
-
-> On this error path we call qla4xxx_mem_free() and then the caller also
-> calls qla4xxx_free_adapter() which calls qla4xxx_mem_free().  It leads
-> to a couple double frees:
-
-Applied to 5.5/scsi-fixes, thanks!
-
--- 
-Martin K. Petersen	Oracle Linux Engineering
+> ---
+>  drivers/scsi/mpt3sas/mpt3sas_base.c | 1 -
+>  1 file changed, 1 deletion(-)
+>
+> diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
+> index 848fbec7bda6..45fd8dfb7c40 100644
+> --- a/drivers/scsi/mpt3sas/mpt3sas_base.c
+> +++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+> @@ -5248,7 +5248,6 @@ _base_allocate_memory_pools(struct MPT3SAS_ADAPTER *ioc)
+>                                         &ct->chain_buffer_dma);
+>                         if (!ct->chain_buffer) {
+>                                 ioc_err(ioc, "chain_lookup: pci_pool_alloc failed\n");
+> -                               _base_release_memory_pools(ioc);
+>                                 goto out;
+>                         }
+>                 }
+> --
+> 2.11.0
+>

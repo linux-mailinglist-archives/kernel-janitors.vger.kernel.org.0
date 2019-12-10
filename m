@@ -2,71 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 04F4D118AFF
-	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Dec 2019 15:35:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A21ED118B65
+	for <lists+kernel-janitors@lfdr.de>; Tue, 10 Dec 2019 15:46:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727453AbfLJOe5 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 10 Dec 2019 09:34:57 -0500
-Received: from mail.fireflyinternet.com ([109.228.58.192]:56928 "EHLO
-        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727407AbfLJOe5 (ORCPT
+        id S1727407AbfLJOqN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 10 Dec 2019 09:46:13 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:59615 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727145AbfLJOqN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 10 Dec 2019 09:34:57 -0500
-X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
-Received: from localhost (unverified [78.156.65.138]) 
-        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 19527916-1500050 
-        for multiple; Tue, 10 Dec 2019 14:34:48 +0000
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-To:     Colin King <colin.king@canonical.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
+        Tue, 10 Dec 2019 09:46:13 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ieglb-0002mB-QE; Tue, 10 Dec 2019 14:46:05 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jani Nikula <jani.nikula@linux.intel.com>,
         Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Matthew Auld <matthew.auld@intel.com>,
         Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
-From:   Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20191210143205.338308-1-colin.king@canonical.com>
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>, intel-gfx@lists.freedesktop.org,
+        dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191210143205.338308-1-colin.king@canonical.com>
-Message-ID: <157598848809.15362.74032135864302866@skylake-alporthouse-com>
-User-Agent: alot/0.6
-Subject: Re: [PATCH][next] drm/i915/selftests: fix uninitialized variable sum when
- summing up values
-Date:   Tue, 10 Dec 2019 14:34:48 +0000
+Subject: [PATCH][next] drm/i915/display: remove duplicated assignment to pointer crtc_state
+Date:   Tue, 10 Dec 2019 14:45:35 +0000
+Message-Id: <20191210144535.341977-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Colin King (2019-12-10 14:32:05)
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently the variable sum is not uninitialized and hence will cause an
-> incorrect result in the summation values.  Fix this by initializing
-> sum to the first item in the summation.
-> 
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Fixes: 3c7a44bbbfa7 ("drm/i915/selftests: Perform some basic cycle counting of MI ops")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/gpu/drm/i915/gt/selftest_engine_cs.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gt/selftest_engine_cs.c b/drivers/gpu/drm/i915/gt/selftest_engine_cs.c
-> index 761d81f4bd68..f88e445a1cae 100644
-> --- a/drivers/gpu/drm/i915/gt/selftest_engine_cs.c
-> +++ b/drivers/gpu/drm/i915/gt/selftest_engine_cs.c
-> @@ -108,7 +108,7 @@ static u32 trifilter(u32 *a)
->  
->         sort(a, COUNT, sizeof(*a), cmp_u32, NULL);
->  
-> -       sum += mul_u32_u32(a[2], 2);
-> +       sum = mul_u32_u32(a[2], 2);
+From: Colin Ian King <colin.king@canonical.com>
 
-/o\
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
--Chris
+Pointer crtc_state is being assigned twice, one of these is redundant
+and can be removed.
+
+Addresses-Coverity: ("Evaluation order violation")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/i915/display/intel_display.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm/i915/display/intel_display.c
+index 5c50b7d2db25..f3389d315b19 100644
+--- a/drivers/gpu/drm/i915/display/intel_display.c
++++ b/drivers/gpu/drm/i915/display/intel_display.c
+@@ -17751,7 +17751,7 @@ intel_modeset_setup_hw_state(struct drm_device *dev,
+ 
+ 	for_each_intel_crtc(&dev_priv->drm, crtc) {
+ 		struct intel_crtc_state *crtc_state =
+-			crtc_state = to_intel_crtc_state(crtc->base.state);
++			to_intel_crtc_state(crtc->base.state);
+ 
+ 		intel_sanitize_crtc(crtc, ctx);
+ 		intel_dump_pipe_config(crtc_state, NULL, "[setup_hw_state]");
+-- 
+2.24.0
+

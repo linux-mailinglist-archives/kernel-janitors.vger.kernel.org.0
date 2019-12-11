@@ -2,99 +2,48 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16B5711A5EF
-	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Dec 2019 09:34:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 58D5A11B355
+	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Dec 2019 16:42:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728274AbfLKIex (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 11 Dec 2019 03:34:53 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:33929 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726845AbfLKIew (ORCPT
+        id S2388640AbfLKPl4 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 11 Dec 2019 10:41:56 -0500
+Received: from mailout03.3bbmail.com ([110.164.252.196]:34482 "EHLO
+        mailout03.3bb.co.th" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387890AbfLKPlx (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 11 Dec 2019 03:34:52 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iexSF-00042B-PL; Wed, 11 Dec 2019 08:34:43 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ath11k: fix several spelling mistakes
-Date:   Wed, 11 Dec 2019 08:34:43 +0000
-Message-Id: <20191211083443.372506-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
+        Wed, 11 Dec 2019 10:41:53 -0500
+X-Greylist: delayed 1352 seconds by postgrey-1.27 at vger.kernel.org; Wed, 11 Dec 2019 10:41:45 EST
+Authentication-Results: 3bb.co.th;
+        spf=fail smtp.mailfrom=infoccfoundation@amazon.com
+Received: from appserv (mx-ll-110.164.149-9.static.3bb.co.th [110.164.149.9] (may be forged))
+        by mailout03.3bb.co.th (8.16.0.27/8.16.0.27) with ESMTP id xBBFFIBO021534;
+        Wed, 11 Dec 2019 22:15:18 +0700
+Message-ID: <41452-220191231115152890@appserv>
+To:     "a" <skyteamsbiz@gmail.com>
+Reply-To: "CCULVERT FOUNDATION" <skyteamsbiz@gmail.com>
+From:   "CCULVERT FOUNDATION" <infoccfoundation@amazon.com>
+Subject: Mein letzter Wunsch.
+Date:   Wed, 11 Dec 2019 22:15:28 +0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-type: text/plain; charset=windows-874
+Content-Transfer-Encoding: 8BIT
+X-Proofpoint-SPF-Result: fail
+X-Proofpoint-SPF-Record: v=spf1 include:spf1.amazon.com include:spf2.amazon.com
+ include:amazonses.com -all
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-11-25_06:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=40 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=433
+ adultscore=0 classifier=spam adjust=40 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1911260048
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
-
-There are several spelling mistakes in warning and debug messages,
-fix them.
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/ath/ath11k/debug.c           | 4 ++--
- drivers/net/wireless/ath/ath11k/debug_htt_stats.c | 2 +-
- drivers/net/wireless/ath/ath11k/wmi.c             | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/net/wireless/ath/ath11k/debug.c b/drivers/net/wireless/ath/ath11k/debug.c
-index c27fffd13a5d..e00b5739fb00 100644
---- a/drivers/net/wireless/ath/ath11k/debug.c
-+++ b/drivers/net/wireless/ath/ath11k/debug.c
-@@ -704,7 +704,7 @@ static ssize_t ath11k_write_extd_rx_stats(struct file *file,
- 					       DP_RX_BUFFER_SIZE, &tlv_filter);
- 
- 	if (ret) {
--		ath11k_warn(ar->ab, "failed to set rx filter for moniter status ring\n");
-+		ath11k_warn(ar->ab, "failed to set rx filter for monitor status ring\n");
- 		goto exit;
- 	}
- 
-@@ -948,7 +948,7 @@ static ssize_t ath11k_write_pktlog_filter(struct file *file,
- 					       HAL_RXDMA_MONITOR_STATUS,
- 					       DP_RX_BUFFER_SIZE, &tlv_filter);
- 	if (ret) {
--		ath11k_warn(ar->ab, "failed to set rx filter for moniter status ring\n");
-+		ath11k_warn(ar->ab, "failed to set rx filter for monitor status ring\n");
- 		goto out;
- 	}
- 
-diff --git a/drivers/net/wireless/ath/ath11k/debug_htt_stats.c b/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
-index 27b301bc1a1b..a824826f562c 100644
---- a/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
-@@ -3512,7 +3512,7 @@ htt_print_rx_pdev_fw_stats_phy_err_tlv(const void *tag_buf,
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "HTT_RX_PDEV_FW_STATS_PHY_ERR_TLV:");
- 	len += HTT_DBG_OUT(buf + len, buf_len - len, "mac_id__word = %u",
- 			   htt_stats_buf->mac_id__word);
--	len += HTT_DBG_OUT(buf + len, buf_len - len, "tota_phy_err_nct = %u",
-+	len += HTT_DBG_OUT(buf + len, buf_len - len, "total_phy_err_nct = %u",
- 			   htt_stats_buf->total_phy_err_cnt);
- 
- 	ARRAY_TO_STRING(phy_errs,
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index b05642617b78..682563ccfe5a 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -2544,7 +2544,7 @@ ath11k_wmi_send_twt_disable_cmd(struct ath11k *ar, u32 pdev_id)
- 	ret = ath11k_wmi_cmd_send(wmi, skb,
- 				  WMI_TWT_DISABLE_CMDID);
- 	if (ret) {
--		ath11k_warn(ab, "Failed to send WMI_TWT_DIeABLE_CMDID");
-+		ath11k_warn(ab, "Failed to send WMI_TWT_DISABLE_CMDID");
- 		dev_kfree_skb(skb);
- 	}
- 	return ret;
--- 
-2.24.0
+Wenn Sie sich für die Finanzierung der STIFTUNG interessieren, schreiben Sie bitte heute über meinen Anwalt zurück
+Grüße,
+Mrs. Cindy Culvert.
+skyteamsbiz@gmail.com
 

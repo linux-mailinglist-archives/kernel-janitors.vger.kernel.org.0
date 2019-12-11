@@ -2,48 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58D5A11B355
-	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Dec 2019 16:42:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9681011B8A3
+	for <lists+kernel-janitors@lfdr.de>; Wed, 11 Dec 2019 17:23:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388640AbfLKPl4 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 11 Dec 2019 10:41:56 -0500
-Received: from mailout03.3bbmail.com ([110.164.252.196]:34482 "EHLO
-        mailout03.3bb.co.th" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387890AbfLKPlx (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 11 Dec 2019 10:41:53 -0500
-X-Greylist: delayed 1352 seconds by postgrey-1.27 at vger.kernel.org; Wed, 11 Dec 2019 10:41:45 EST
-Authentication-Results: 3bb.co.th;
-        spf=fail smtp.mailfrom=infoccfoundation@amazon.com
-Received: from appserv (mx-ll-110.164.149-9.static.3bb.co.th [110.164.149.9] (may be forged))
-        by mailout03.3bb.co.th (8.16.0.27/8.16.0.27) with ESMTP id xBBFFIBO021534;
-        Wed, 11 Dec 2019 22:15:18 +0700
-Message-ID: <41452-220191231115152890@appserv>
-To:     "a" <skyteamsbiz@gmail.com>
-Reply-To: "CCULVERT FOUNDATION" <skyteamsbiz@gmail.com>
-From:   "CCULVERT FOUNDATION" <infoccfoundation@amazon.com>
-Subject: Mein letzter Wunsch.
-Date:   Wed, 11 Dec 2019 22:15:28 +0700
+        id S1730523AbfLKQX1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 11 Dec 2019 11:23:27 -0500
+Received: from mga05.intel.com ([192.55.52.43]:17304 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730062AbfLKQX1 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 11 Dec 2019 11:23:27 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga003.fm.intel.com ([10.253.24.29])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 11 Dec 2019 08:23:26 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,301,1571727600"; 
+   d="scan'208";a="264926006"
+Received: from stinkbox.fi.intel.com (HELO stinkbox) ([10.237.72.174])
+  by FMSMGA003.fm.intel.com with SMTP; 11 Dec 2019 08:23:23 -0800
+Received: by stinkbox (sSMTP sendmail emulation); Wed, 11 Dec 2019 18:23:22 +0200
+Date:   Wed, 11 Dec 2019 18:23:22 +0200
+From:   Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] drm/i915: remove redundant checks for a null fb
+ pointer
+Message-ID: <20191211162322.GL1208@intel.com>
+References: <20191210142349.333171-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-type: text/plain; charset=windows-874
-Content-Transfer-Encoding: 8BIT
-X-Proofpoint-SPF-Result: fail
-X-Proofpoint-SPF-Record: v=spf1 include:spf1.amazon.com include:spf2.amazon.com
- include:amazonses.com -all
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-11-25_06:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=40 suspectscore=1 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=433
- adultscore=0 classifier=spam adjust=40 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1911260048
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20191210142349.333171-1-colin.king@canonical.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Wenn Sie sich für die Finanzierung der STIFTUNG interessieren, schreiben Sie bitte heute über meinen Anwalt zurück
-Grüße,
-Mrs. Cindy Culvert.
-skyteamsbiz@gmail.com
+On Tue, Dec 10, 2019 at 02:23:49PM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> A prior check and return when pointer fb is null makes
+> subsequent null checks on fb redundant.  Remove the redundant
+> null checks.
+> 
+> Addresses-Coverity: ("Logically dead code")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/gpu/drm/i915/i915_debugfs.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/i915_debugfs.c b/drivers/gpu/drm/i915/i915_debugfs.c
+> index 062e5bef637a..a48478be6e8f 100644
+> --- a/drivers/gpu/drm/i915/i915_debugfs.c
+> +++ b/drivers/gpu/drm/i915/i915_debugfs.c
+> @@ -2600,8 +2600,8 @@ static void intel_plane_hw_info(struct seq_file *m, struct intel_plane *plane)
+>  		       plane_state->hw.rotation);
+>  
+>  	seq_printf(m, "\t\thw: fb=%d,%s,%dx%d, visible=%s, src=" DRM_RECT_FP_FMT ", dst=" DRM_RECT_FMT ", rotation=%s\n",
+> -		   fb ? fb->base.id : 0, fb ? format_name.str : "n/a",
+> -		   fb ? fb->width : 0, fb ? fb->height : 0,
+> +		   fb->base.id, format_name.str,
+> +		   fb->width, fb->height,
 
+Thanks.
+
+Pushed to drm-intel-next-queued.
+
+>  		   yesno(plane_state->uapi.visible),
+>  		   DRM_RECT_FP_ARG(&plane_state->uapi.src),
+>  		   DRM_RECT_ARG(&plane_state->uapi.dst),
+> -- 
+> 2.24.0
+> 
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+
+-- 
+Ville Syrjälä
+Intel

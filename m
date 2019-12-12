@@ -2,87 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D61D011D3CA
-	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Dec 2019 18:27:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A42F11D42A
+	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Dec 2019 18:37:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730096AbfLLR1I (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 12 Dec 2019 12:27:08 -0500
-Received: from mga02.intel.com ([134.134.136.20]:8516 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730023AbfLLR1I (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 12 Dec 2019 12:27:08 -0500
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Dec 2019 09:27:08 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,306,1571727600"; 
-   d="scan'208";a="204035372"
-Received: from mdroper-desk1.fm.intel.com (HELO mdroper-desk1.amr.corp.intel.com) ([10.1.27.64])
-  by orsmga007.jf.intel.com with ESMTP; 12 Dec 2019 09:27:07 -0800
-Date:   Thu, 12 Dec 2019 09:27:07 -0800
-From:   Matt Roper <matthew.d.roper@intel.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jani Nikula <jani.nikula@intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Ville =?iso-8859-1?Q?Syrj=E4l=E4?= 
-        <ville.syrjala@linux.intel.com>,
-        Lucas De Marchi <lucas.demarchi@intel.com>,
-        =?iso-8859-1?Q?Jos=E9?= Roberto de Souza 
-        <jose.souza@intel.com>, Imre Deak <imre.deak@intel.com>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] drm/i915/bios: fix off by one in parse_generic_dtd()
-Message-ID: <20191212172707.GF85422@mdroper-desk1.amr.corp.intel.com>
-References: <20191212091130.zf2g53njf5u24wk6@kili.mountain>
+        id S1730133AbfLLRg4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 12 Dec 2019 12:36:56 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:58723 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730023AbfLLRg4 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 12 Dec 2019 12:36:56 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ifSOJ-0002Nd-Pz; Thu, 12 Dec 2019 17:36:43 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     "Paul E . McKenney" <paulmck@kernel.org>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Joel Fernandes <joel@joelfernandes.org>, rcu@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] rcu: fix spelling mistake "leval" -> "level"
+Date:   Thu, 12 Dec 2019 17:36:43 +0000
+Message-Id: <20191212173643.91135-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191212091130.zf2g53njf5u24wk6@kili.mountain>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Dec 12, 2019 at 12:11:30PM +0300, Dan Carpenter wrote:
-> The "num_dtd" variable is the number of elements in the
-> generic_dtd->dtd[] array so the > needs to be >= to prevent reading one
-> element beyond the end of the array.
-> 
-> Fixes: 33ef6d4fd8df ("drm/i915/vbt: Handle generic DTD block")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+There is a spelling mistake in a pr_info message. Fix it.
 
-> ---
->  drivers/gpu/drm/i915/display/intel_bios.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/display/intel_bios.c b/drivers/gpu/drm/i915/display/intel_bios.c
-> index 1aeecdd02293..d1e27ee86e53 100644
-> --- a/drivers/gpu/drm/i915/display/intel_bios.c
-> +++ b/drivers/gpu/drm/i915/display/intel_bios.c
-> @@ -338,7 +338,7 @@ parse_generic_dtd(struct drm_i915_private *dev_priv,
->  
->  	num_dtd = (get_blocksize(generic_dtd) -
->  		   sizeof(struct bdb_generic_dtd)) / generic_dtd->gdtd_size;
-> -	if (dev_priv->vbt.panel_type > num_dtd) {
-> +	if (dev_priv->vbt.panel_type >= num_dtd) {
->  		DRM_ERROR("Panel type %d not found in table of %d DTD's\n",
->  			  dev_priv->vbt.panel_type, num_dtd);
->  		return;
-> -- 
-> 2.11.0
-> 
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ kernel/rcu/tree_plugin.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index 4d4637c361b7..0765784012f8 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -57,7 +57,7 @@ static void __init rcu_bootup_announce_oddness(void)
+ 	if (qlowmark != DEFAULT_RCU_QLOMARK)
+ 		pr_info("\tBoot-time adjustment of callback low-water mark to %ld.\n", qlowmark);
+ 	if (qovld != DEFAULT_RCU_QOVLD)
+-		pr_info("\tBoot-time adjustment of callback overload leval to %ld.\n", qovld);
++		pr_info("\tBoot-time adjustment of callback overload level to %ld.\n", qovld);
+ 	if (jiffies_till_first_fqs != ULONG_MAX)
+ 		pr_info("\tBoot-time adjustment of first FQS scan delay to %ld jiffies.\n", jiffies_till_first_fqs);
+ 	if (jiffies_till_next_fqs != ULONG_MAX)
 -- 
-Matt Roper
-Graphics Software Engineer
-VTT-OSGC Platform Enablement
-Intel Corporation
-(916) 356-2795
+2.24.0
+

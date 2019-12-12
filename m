@@ -2,72 +2,160 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F4B111D752
-	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Dec 2019 20:43:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA63911D977
+	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Dec 2019 23:36:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730686AbfLLTm5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 12 Dec 2019 14:42:57 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:33151 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730284AbfLLTm5 (ORCPT
+        id S1731300AbfLLWgD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 12 Dec 2019 17:36:03 -0500
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:33591 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731195AbfLLWgC (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 12 Dec 2019 14:42:57 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1ifUMN-0002lk-QV; Thu, 12 Dec 2019 19:42:51 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
-        Ganesh Sesetti <gseset@codeaurora.org>,
-        Karthikeyan Periyasamy <periyasa@codeaurora.org>,
-        John Crispin <john@phrozen.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ath11k: fix missing free of skb on error return path
-Date:   Thu, 12 Dec 2019 19:42:51 +0000
-Message-Id: <20191212194251.108343-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
+        Thu, 12 Dec 2019 17:36:02 -0500
+Received: by mail-wm1-f68.google.com with SMTP id d139so4616340wmd.0;
+        Thu, 12 Dec 2019 14:36:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=7ZC6V8vQF8U9+ro8xLo3meGZOer4fQgS0VnuTo8ZafQ=;
+        b=gmVkTx3PNVS6vZfikSxq/vX+wmzj69MGa59qpbY2NWl3EvOhPqTOPWWmeGFZ4u5nNK
+         k+iPsYmBoYn2jmm2gMhsL+DOW/p0+hBBLkXrXnl2Gue29VucKHDwHs9wXEOG4FlnXeCu
+         EW2GY9uAHV3RCg5lDvrbeYFFf9HccOBVQuTXkk1gZi6N8LdmjxXF7vLXEawFXGUFcvNG
+         7NXTmCHO45+OuRd9ORl3FDLdwoiGL4w6UPvATpFbP50hOGvBouxIXxhrGBYCM9Z2uDYm
+         tIAXb3IKiLbvKEpArALrY0XijHMUTQ0ngJRjcTXkZlG0cVcURV/0mPSIlz7DRCqbc4HB
+         NsBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=7ZC6V8vQF8U9+ro8xLo3meGZOer4fQgS0VnuTo8ZafQ=;
+        b=aiigWuz0P1CgLY0j+vSEuJRyqo4CqOSwqGNZm6zHshzz98LsdIj+1VJ170/i+rdgDa
+         6OVIuefyUQoJvUflFUgaiuxzUQE0QQFQWTx2xW/7/+Q2twIt7ccR14k6eBd1xZ+axvIi
+         lWrz8hnIPk4Tq3nv7szJyJjvCTnaAkr58ixehz1i/Ky6l+TRdKMAfPU/Vdyk5wPQ/uNA
+         a1jIg0ct4QS5fe6QcEUWuo1t0PtxKQAh+hrPUhMMgpze7ShX4Ra2udEkKpgEb+xeKeJ8
+         gsRhRpHxYf9duVBKa7PGbl7ebhmeMfhAFf7N4vISKsWWpzR1cGv+Z6sXGn6VcCSnEVhi
+         fU2Q==
+X-Gm-Message-State: APjAAAXTu1KFZcVmAZduv+FyYOaTyFICPatYxamRn/icVcrZzhYx57x1
+        WeV+7/93L5mouKHtkSTXQfe/hAsMcAAR2hJuplzYkQ==
+X-Google-Smtp-Source: APXvYqyLeeOFUEZADqvzUcHggdMQXLsgjtOr/m/4Zvbn8hRhUCgqU1csOP5xuGbzFDCXTv1TVSbMTLSXF/7P5SsNVSc=
+X-Received: by 2002:a1c:6404:: with SMTP id y4mr4901765wmb.143.1576190160417;
+ Thu, 12 Dec 2019 14:36:00 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20191212181657.101381-1-colin.king@canonical.com>
+In-Reply-To: <20191212181657.101381-1-colin.king@canonical.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Thu, 12 Dec 2019 17:35:48 -0500
+Message-ID: <CADnq5_PXb035J7yyfX1gB3oNsVQb-L=KZHR31KxLEH-VUZfT8g@mail.gmail.com>
+Subject: Re: [PATCH][next] drm/amd/powerplay: fix various dereferences of a
+ pointer before it is null checked
+To:     Colin King <colin.king@canonical.com>
+Cc:     Evan Quan <evan.quan@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Kenneth Feng <kenneth.feng@amd.com>,
+        Yintian Tao <yttao@amd.com>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Thu, Dec 12, 2019 at 1:17 PM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There are several occurrances of the pointer hwmgr being dereferenced
+> before it is null checked.  Fix these by performing the dereference
+> of hwmgr after it has been null checked.
+>
+> Addresses-Coverity: ("Dereference before null check")
+> Fixes: 8497d2bcdee1 ("drm/amd/powerplay: enable pp one vf mode for vega10")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-The error handling when the call to ath11k_hal_srng_get_entrysize fails
-leaks skb, fix this by returning via the err_free return path that will
-ensure the skb is free'd.
+Applied.  thanks!
 
-Addresses-Coverity: ("Resource leak")
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/ath/ath11k/dp_tx.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Alex
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_tx.c b/drivers/net/wireless/ath/ath11k/dp_tx.c
-index a8b9557c2346..7123a4fc4635 100644
---- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-@@ -645,8 +645,10 @@ int ath11k_dp_tx_htt_srng_setup(struct ath11k_base *ab, u32 ring_id,
- 				 HAL_ADDR_MSB_REG_SHIFT;
- 
- 	ret = ath11k_hal_srng_get_entrysize(ring_type);
--	if (ret < 0)
--		return -EINVAL;
-+	if (ret < 0) {
-+		ret = -EINVAL;
-+		goto err_free;
-+	}
- 
- 	ring_entry_sz = ret;
- 
--- 
-2.24.0
-
+> ---
+>  drivers/gpu/drm/amd/powerplay/amd_powerplay.c |  6 +++---
+>  drivers/gpu/drm/amd/powerplay/hwmgr/hwmgr.c   | 15 +++------------
+>  2 files changed, 6 insertions(+), 15 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/powerplay/amd_powerplay.c b/drivers/gpu/drm/amd/powerplay/amd_powerplay.c
+> index 5087d6bdba60..322c2015d3a0 100644
+> --- a/drivers/gpu/drm/amd/powerplay/amd_powerplay.c
+> +++ b/drivers/gpu/drm/amd/powerplay/amd_powerplay.c
+> @@ -275,12 +275,12 @@ static int pp_dpm_load_fw(void *handle)
+>  {
+>         struct pp_hwmgr *hwmgr = handle;
+>
+> -       if (!hwmgr->not_vf)
+> -               return 0;
+> -
+>         if (!hwmgr || !hwmgr->smumgr_funcs || !hwmgr->smumgr_funcs->start_smu)
+>                 return -EINVAL;
+>
+> +       if (!hwmgr->not_vf)
+> +               return 0;
+> +
+>         if (hwmgr->smumgr_funcs->start_smu(hwmgr)) {
+>                 pr_err("fw load failed\n");
+>                 return -EINVAL;
+> diff --git a/drivers/gpu/drm/amd/powerplay/hwmgr/hwmgr.c b/drivers/gpu/drm/amd/powerplay/hwmgr/hwmgr.c
+> index e2b82c902948..f48fdc7f0382 100644
+> --- a/drivers/gpu/drm/amd/powerplay/hwmgr/hwmgr.c
+> +++ b/drivers/gpu/drm/amd/powerplay/hwmgr/hwmgr.c
+> @@ -282,10 +282,7 @@ int hwmgr_hw_init(struct pp_hwmgr *hwmgr)
+>
+>  int hwmgr_hw_fini(struct pp_hwmgr *hwmgr)
+>  {
+> -       if (!hwmgr->not_vf)
+> -               return 0;
+> -
+> -       if (!hwmgr || !hwmgr->pm_en)
+> +       if (!hwmgr || !hwmgr->pm_en || !hwmgr->not_vf)
+>                 return 0;
+>
+>         phm_stop_thermal_controller(hwmgr);
+> @@ -305,10 +302,7 @@ int hwmgr_suspend(struct pp_hwmgr *hwmgr)
+>  {
+>         int ret = 0;
+>
+> -       if (!hwmgr->not_vf)
+> -               return 0;
+> -
+> -       if (!hwmgr || !hwmgr->pm_en)
+> +       if (!hwmgr || !hwmgr->pm_en || !hwmgr->not_vf)
+>                 return 0;
+>
+>         phm_disable_smc_firmware_ctf(hwmgr);
+> @@ -327,13 +321,10 @@ int hwmgr_resume(struct pp_hwmgr *hwmgr)
+>  {
+>         int ret = 0;
+>
+> -       if (!hwmgr->not_vf)
+> -               return 0;
+> -
+>         if (!hwmgr)
+>                 return -EINVAL;
+>
+> -       if (!hwmgr->pm_en)
+> +       if (!hwmgr->not_vf || !hwmgr->pm_en)
+>                 return 0;
+>
+>         ret = phm_setup_asic(hwmgr);
+> --
+> 2.24.0
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

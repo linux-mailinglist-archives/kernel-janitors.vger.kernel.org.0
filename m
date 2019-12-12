@@ -2,77 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A2AFB11D6CD
-	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Dec 2019 20:07:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AAB811D6DF
+	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Dec 2019 20:10:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730349AbfLLTHF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 12 Dec 2019 14:07:05 -0500
-Received: from frisell.zx2c4.com ([192.95.5.64]:35121 "EHLO frisell.zx2c4.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730096AbfLLTHE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 12 Dec 2019 14:07:04 -0500
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTP id 58c28a01;
-        Thu, 12 Dec 2019 18:11:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed; d=zx2c4.com; h=mime-version
-        :references:in-reply-to:from:date:message-id:subject:to:cc
-        :content-type; s=mail; bh=Gap4hyb3YJho4i7tIDDW6ea2M7E=; b=GfeDyC
-        oTdom0f29bx7WQEfihXhBCQdSLOdasAvB0dalfeNHjtmMQm89xwF6KrDQJ3gwZ7l
-        chCkqbktrtUApPCE84fiRUalcI0PiIzvLmdGXpFf7Ao2wC9WKvbmdP8tRA75jhPI
-        jENw/TCtpC1ZR/yxQiEhJhRUGS+2rJV0+KVyRr03hmhfUNQQPrTsYAKlN15U9XPN
-        /CUYpZImVbfa7nFvkLjUTpwcUgXo6u3GQ01mcwPQeAicwi85FWduCEkPhz5MrEqc
-        kwFw5NPSSUh6VoY6raDbQuEwkyoRRX0XCAzZt2PTCqda7bHQpbDwFeJJtHZNBhvU
-        HCkuKEDj7IddxaFw==
-Received: by frisell.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id c4395c53 (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256:NO);
-        Thu, 12 Dec 2019 18:11:13 +0000 (UTC)
-Received: by mail-ot1-f45.google.com with SMTP id d17so3124526otc.0;
-        Thu, 12 Dec 2019 11:07:02 -0800 (PST)
-X-Gm-Message-State: APjAAAWc+kkh3Do9yUbgNuTwjg8nQS9x2Y06mD2aMiT6DsD0xJxw29Gb
-        rizHw9CJtC5OkAc2qIgFrmc+bGxMEYmOGgEv7HM=
-X-Google-Smtp-Source: APXvYqxCKAGJ2V7i7Z038u/aSejmowoq1mmb2+5F30wgv9JmKhhntQi57wRLGO7+Adc9XeyCGdQX/971aGYA9LxcTVo=
-X-Received: by 2002:a05:6830:1b6a:: with SMTP id d10mr10174984ote.52.1576177621494;
- Thu, 12 Dec 2019 11:07:01 -0800 (PST)
+        id S1730513AbfLLTKu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 12 Dec 2019 14:10:50 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:60870 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730355AbfLLTKt (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 12 Dec 2019 14:10:49 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ifTrI-0000w1-HG; Thu, 12 Dec 2019 19:10:44 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Kalle Valo <kvalo@codeaurora.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
+        Ganesh Sesetti <gseset@codeaurora.org>,
+        Karthikeyan Periyasamy <periyasa@codeaurora.org>,
+        John Crispin <john@phrozen.org>, ath11k@lists.infradead.org,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] ath11k: fix uninitialized variable radioup
+Date:   Thu, 12 Dec 2019 19:10:44 +0000
+Message-Id: <20191212191044.107544-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-References: <20191212091527.35293-1-yuehaibing@huawei.com> <20191212.105258.579549471896891617.davem@davemloft.net>
-In-Reply-To: <20191212.105258.579549471896891617.davem@davemloft.net>
-From:   "Jason A. Donenfeld" <Jason@zx2c4.com>
-Date:   Thu, 12 Dec 2019 20:06:50 +0100
-X-Gmail-Original-Message-ID: <CAHmME9osYEbi1BDmJL=4N+A1rbb7_MPqVijogHSFhU39rRCbdw@mail.gmail.com>
-Message-ID: <CAHmME9osYEbi1BDmJL=4N+A1rbb7_MPqVijogHSFhU39rRCbdw@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: Remove unused including <linux/version.h>
-To:     David Miller <davem@davemloft.net>
-Cc:     YueHaibing <yuehaibing@huawei.com>,
-        WireGuard mailing list <wireguard@lists.zx2c4.com>,
-        Netdev <netdev@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dave,
+From: Colin Ian King <colin.king@canonical.com>
 
-On Thu, Dec 12, 2019 at 7:53 PM David Miller <davem@davemloft.net> wrote:
->
-> From: YueHaibing <yuehaibing@huawei.com>
-> Date: Thu, 12 Dec 2019 09:15:27 +0000
->
-> > Remove including <linux/version.h> that don't need it.
-> >
-> > Signed-off-by: YueHaibing <yuehaibing@huawei.com>
->
-> Appropriate subject line for this should have been:
->
->         Subject: [PATCH net-next] wireguard: Remove unused include <linux/version.h>
->
-> 'net' is too broad a subsystem prefix as it basically encompases half of the
-> entire kernel tree.  When people look at the git shortlog output you need to
-> be specific enough that people can tell what touches what.
+The variable radioup is not uninitalized so it may contain a garbage
+value and hence the detection of a radio that is not up is buggy.
+Fix this by initializing it to zero.
 
-I have these fixed up how you like in the wireguard-linux.git repo,
-and I'll submit these in a series to net-next next week all together.
+Addresses-Coverity: ("Uninitalized scalar variable")
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/net/wireless/ath/ath11k/debug.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-https://git.kernel.org/pub/scm/linux/kernel/git/zx2c4/wireguard-linux.git/log
+diff --git a/drivers/net/wireless/ath/ath11k/debug.c b/drivers/net/wireless/ath/ath11k/debug.c
+index c27fffd13a5d..34b960453edc 100644
+--- a/drivers/net/wireless/ath/ath11k/debug.c
++++ b/drivers/net/wireless/ath/ath11k/debug.c
+@@ -541,7 +541,7 @@ static ssize_t ath11k_write_simulate_fw_crash(struct file *file,
+ 	struct ath11k *ar = ab->pdevs[0].ar;
+ 	char buf[32] = {0};
+ 	ssize_t rc;
+-	int i, ret, radioup;
++	int i, ret, radioup = 0;
+ 
+ 	for (i = 0; i < ab->num_radios; i++) {
+ 		pdev = &ab->pdevs[i];
+-- 
+2.24.0
 
-Jason

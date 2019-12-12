@@ -2,69 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6D7D11D5A7
-	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Dec 2019 19:32:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A46011D66C
+	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Dec 2019 19:53:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730429AbfLLScj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 12 Dec 2019 13:32:39 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:59939 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730418AbfLLScj (ORCPT
+        id S1730671AbfLLSw7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 12 Dec 2019 13:52:59 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:42592 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730463AbfLLSw7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 12 Dec 2019 13:32:39 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1ifTGH-0006Ah-36; Thu, 12 Dec 2019 18:32:29 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Pradeep Kumar Chitrapu <pradeepc@codeaurora.org>,
-        Ganesh Sesetti <gseset@codeaurora.org>,
-        Karthikeyan Periyasamy <periyasa@codeaurora.org>,
-        John Crispin <john@phrozen.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] ath11k: fix memory leak on reg_info
-Date:   Thu, 12 Dec 2019 18:32:28 +0000
-Message-Id: <20191212183228.105993-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Thu, 12 Dec 2019 13:52:59 -0500
+Received: from localhost (unknown [IPv6:2601:601:9f00:1c3::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id D516D153DCDBB;
+        Thu, 12 Dec 2019 10:52:58 -0800 (PST)
+Date:   Thu, 12 Dec 2019 10:52:58 -0800 (PST)
+Message-Id: <20191212.105258.579549471896891617.davem@davemloft.net>
+To:     yuehaibing@huawei.com
+Cc:     Jason@zx2c4.com, wireguard@lists.zx2c4.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net-next] net: Remove unused including <linux/version.h>
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20191212091527.35293-1-yuehaibing@huawei.com>
+References: <20191212091527.35293-1-yuehaibing@huawei.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 12 Dec 2019 10:52:59 -0800 (PST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+From: YueHaibing <yuehaibing@huawei.com>
+Date: Thu, 12 Dec 2019 09:15:27 +0000
 
-Currently a return path is leaking the previously allocate reg_info. Fix
-this by exiting via the return path mem_free.  Since the return value ret
-is defaulted to 0, there is no need to re-assign ret to the 0 before
-the goto.
+> Remove including <linux/version.h> that don't need it.
+> 
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-Addresses-Coverity: ("Resource leak")
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/ath/ath11k/wmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Appropriate subject line for this should have been:
 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index b05642617b78..acb1c03d4f70 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -4522,7 +4522,7 @@ static int ath11k_reg_chan_list_event(struct ath11k_base *ab, struct sk_buff *sk
- 	if (ab->default_regd[pdev_idx] && !ab->new_regd[pdev_idx] &&
- 	    !memcmp((char *)ab->default_regd[pdev_idx]->alpha2,
- 		    (char *)reg_info->alpha2, 2))
--		return 0;
-+		goto mem_free;
- 
- 	/* Intersect new rules with default regd if a new country setting was
- 	 * requested, i.e a default regd was already set during initialization
--- 
-2.24.0
+	Subject: [PATCH net-next] wireguard: Remove unused include <linux/version.h>
 
+'net' is too broad a subsystem prefix as it basically encompases half of the
+entire kernel tree.  When people look at the git shortlog output you need to
+be specific enough that people can tell what touches what.

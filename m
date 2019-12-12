@@ -2,103 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B6DF811CCA1
-	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Dec 2019 12:54:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 12D5111CCBC
+	for <lists+kernel-janitors@lfdr.de>; Thu, 12 Dec 2019 13:03:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729093AbfLLLyq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 12 Dec 2019 06:54:46 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:50814 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726492AbfLLLyq (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 12 Dec 2019 06:54:46 -0500
-Received: from lelv0266.itg.ti.com ([10.180.67.225])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id xBCBsTJU101938;
-        Thu, 12 Dec 2019 05:54:29 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1576151669;
-        bh=MieMtlbiOdyJGYgXkYjcjUbOFx+OjgCyFzqmplxD/X8=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=s4K0wXWsv6Kc2sOYTYJwZitaCHo/Rsmh0I4m0CpnTTcMfvSOI1Lm2btBOp4odLat+
-         tPf+yvNzogCp56q2EOGolPKE61BpSMT0X2U3+TQzEtTERLeW2l1MxfLBrG6Va3vUld
-         NWeAWZPNcCPNc7qnZ0kXCweuHgvDBIOz4hHujhAI=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id xBCBsTZa086605
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Thu, 12 Dec 2019 05:54:29 -0600
-Received: from DFLE100.ent.ti.com (10.64.6.21) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Thu, 12
- Dec 2019 05:54:29 -0600
-Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE100.ent.ti.com
- (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Thu, 12 Dec 2019 05:54:29 -0600
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id xBCBsQZb012150;
-        Thu, 12 Dec 2019 05:54:27 -0600
-Subject: Re: [PATCH -next] dmaengine: ti: edma: Fix error return code in
- edma_probe()
-To:     Wei Yongjun <weiyongjun1@huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Chuhong Yuan <hslester96@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        YueHaibing <yuehaibing@huawei.com>
-CC:     <dmaengine@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-References: <20191212114622.127322-1-weiyongjun1@huawei.com>
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-Message-ID: <abdbcd13-eb2f-fb13-2f6b-a748c0b1bc7c@ti.com>
-Date:   Thu, 12 Dec 2019 13:54:37 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        id S1729043AbfLLMDp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 12 Dec 2019 07:03:45 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:45582 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726492AbfLLMDp (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 12 Dec 2019 07:03:45 -0500
+Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 2B8B07037F60CBF7E77B;
+        Thu, 12 Dec 2019 20:03:43 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS409-HUB.china.huawei.com (10.3.19.209) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 12 Dec 2019 20:03:35 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     "Jason A . Donenfeld" <Jason@zx2c4.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <wireguard@lists.zx2c4.com>,
+        <netdev@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next] wireguard: Using kfree_rcu() to simplify the code
+Date:   Thu, 12 Dec 2019 12:00:55 +0000
+Message-ID: <20191212120055.129801-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20191212114622.127322-1-weiyongjun1@huawei.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+The callback function of call_rcu() just calls a kfree(), so we
+can use kfree_rcu() instead of call_rcu() + callback function.
+
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/net/wireguard/allowedips.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/drivers/net/wireguard/allowedips.c b/drivers/net/wireguard/allowedips.c
+index 72667d5399c3..121d9ea0f135 100644
+--- a/drivers/net/wireguard/allowedips.c
++++ b/drivers/net/wireguard/allowedips.c
+@@ -31,11 +31,6 @@ static void copy_and_assign_cidr(struct allowedips_node *node, const u8 *src,
+ #define CHOOSE_NODE(parent, key) \
+ 	parent->bit[(key[parent->bit_at_a] >> parent->bit_at_b) & 1]
+ 
+-static void node_free_rcu(struct rcu_head *rcu)
+-{
+-	kfree(container_of(rcu, struct allowedips_node, rcu));
+-}
+-
+ static void push_rcu(struct allowedips_node **stack,
+ 		     struct allowedips_node __rcu *p, unsigned int *len)
+ {
+@@ -112,7 +107,7 @@ static void walk_remove_by_peer(struct allowedips_node __rcu **top,
+ 				if (!node->bit[0] || !node->bit[1]) {
+ 					rcu_assign_pointer(*nptr, DEREF(
+ 					       &node->bit[!REF(node->bit[0])]));
+-					call_rcu(&node->rcu, node_free_rcu);
++					kfree_rcu(node, rcu);
+ 					node = DEREF(nptr);
+ 				}
+ 			}
 
 
-On 12/12/2019 13.46, Wei Yongjun wrote:
-> Fix to return negative error code -ENOMEM from the error handling
-> case instead of 0, as done elsewhere in this function.
 
-Acked-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-
-> 
-> Fixes: 2a03c1314506 ("dmaengine: ti: edma: add missed operations")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-> ---
->  drivers/dma/ti/edma.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/dma/ti/edma.c b/drivers/dma/ti/edma.c
-> index 0628ee4bf1b4..03a7f647f7b2 100644
-> --- a/drivers/dma/ti/edma.c
-> +++ b/drivers/dma/ti/edma.c
-> @@ -2342,8 +2342,10 @@ static int edma_probe(struct platform_device *pdev)
->  	ecc->channels_mask = devm_kcalloc(dev,
->  					   BITS_TO_LONGS(ecc->num_channels),
->  					   sizeof(unsigned long), GFP_KERNEL);
-> -	if (!ecc->slave_chans || !ecc->slot_inuse || !ecc->channels_mask)
-> +	if (!ecc->slave_chans || !ecc->slot_inuse || !ecc->channels_mask) {
-> +		ret = -ENOMEM;
->  		goto err_disable_pm;
-> +	}
->  
->  	/* Mark all channels available initially */
->  	bitmap_fill(ecc->channels_mask, ecc->num_channels);
-> 
-> 
-> 
-
-- Péter
-
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki

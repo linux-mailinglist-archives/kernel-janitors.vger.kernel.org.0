@@ -2,86 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 00EF911DE6D
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Dec 2019 08:11:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B0DA11DED1
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Dec 2019 08:47:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725989AbfLMHLC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Dec 2019 02:11:02 -0500
-Received: from mga09.intel.com ([134.134.136.24]:54952 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725799AbfLMHLB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Dec 2019 02:11:01 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Dec 2019 23:11:01 -0800
-X-IronPort-AV: E=Sophos;i="5.69,308,1571727600"; 
-   d="scan'208";a="204240351"
-Received: from peterhae-mobl.ger.corp.intel.com (HELO localhost) ([10.252.49.100])
-  by orsmga007-auth.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Dec 2019 23:10:56 -0800
-From:   Jani Nikula <jani.nikula@intel.com>
-To:     Matt Roper <matthew.d.roper@intel.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>,
-        Lucas De Marchi <lucas.demarchi@intel.com>,
-        =?utf-8?Q?Jos=C3=A9?= Roberto de Souza <jose.souza@intel.com>,
-        Imre Deak <imre.deak@intel.com>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] drm/i915/bios: fix off by one in parse_generic_dtd()
-In-Reply-To: <20191212172707.GF85422@mdroper-desk1.amr.corp.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <20191212091130.zf2g53njf5u24wk6@kili.mountain> <20191212172707.GF85422@mdroper-desk1.amr.corp.intel.com>
-Date:   Fri, 13 Dec 2019 09:10:58 +0200
-Message-ID: <87r2181z0d.fsf@intel.com>
+        id S1725882AbfLMHrj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Dec 2019 02:47:39 -0500
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:36958 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725809AbfLMHrj (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 13 Dec 2019 02:47:39 -0500
+Received: by mail-wm1-f68.google.com with SMTP id f129so5475029wmf.2
+        for <kernel-janitors@vger.kernel.org>; Thu, 12 Dec 2019 23:47:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=vTSxvUqfa6FoEiQTgKaCRKQ961VVqjF3zVcNDPTqeUQ=;
+        b=FygEFXPkvDTEqQFNc95GmEPQFaOALol3FJZVABII8mgatRtgdG31UxBB+q2f85tioV
+         YaDq76YgKg19kavCxLDGCXYdqM9e4pt1+h8vMM1af+h493sGTqtu8x0x0Y7pDZ9rZODl
+         D0Tmu44OHSSAi7XTfiw3ezo4lLtG/fvqKXr9UP1I7ioXEwEcTuWWl+MwWhGJYbEnMq+w
+         ALx7B4du4u7jUwnaaQoo9t+S3X/fO96NeqeTQ28Ffuy5wSsYUMg78UyAtuMEUmLPhSNZ
+         lUUoOAhyKE5fSjw0CUYEi+vy/hxr1Eua69Uhw+w3KzjGJP3OD8JUBE+JCzVqCd/mRebH
+         8ZnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=vTSxvUqfa6FoEiQTgKaCRKQ961VVqjF3zVcNDPTqeUQ=;
+        b=C1NLGUVg2kROzvR3pJ6o9FSrwu5I0H0CuOyEmSlhaz1h0RLlSz74+drBJmtCzbsX8s
+         M4MAkzFVMg/kqxBL5lYwUlfgxkhYql4wIeE/MsX54iJGUD30ybdfyPj833oRTNjqgWVw
+         lrDjpxGIkyF03ytbQuDtttQh63Dh6wvtQyAHVmsnPIx4H62kuycMQVna00L5mtY/g129
+         uKnSbxgkZy5rHsDvs21FwtVwyLu6jYojhtJQHkuzBsTLx+KrawTxc5sQP4mia8RQwNDc
+         ai92670uxi4BUgu0LLkiYCno+zM0aMaq3+BxVNZaQf+lJG/E6wSQOGF7Bf4ZmQY1mSm1
+         9O2Q==
+X-Gm-Message-State: APjAAAXVf9AVC4rU1fW//aEUhvmELgaTo6fbu9iU2i+zJilts6icQe8l
+        +PoO6aOBH3FiuCznTXDEiA73nK9c3xh/nS0Y4qePoQ==
+X-Google-Smtp-Source: APXvYqwNVH+CrxZcMnxSwclo0S3v7qgeIyd4KN1mrRn3wdEhUWxce27y0yPjv6LZIAM/PDIfAV+2naYwlAPl2eY/5zg=
+X-Received: by 2002:a7b:cd84:: with SMTP id y4mr1059323wmj.57.1576223256882;
+ Thu, 12 Dec 2019 23:47:36 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20191204141159.1432387-1-colin.king@canonical.com> <20191205080611.GY93017@google.com>
+In-Reply-To: <20191205080611.GY93017@google.com>
+From:   Maxime Jourdan <mjourdan@baylibre.com>
+Date:   Fri, 13 Dec 2019 08:47:26 +0100
+Message-ID: <CAMO6naxT0syj74xvcectWXyVGmHfOU341A+15tC+GW4hsq+yJQ@mail.gmail.com>
+Subject: Re: [PATCH] media: meson: add missing allocation failure check on new_buf
+To:     Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kevin Hilman <khilman@baylibre.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        linux-amlogic@lists.infradead.org, devel@driverdev.osuosl.org,
+        linux-arm-kernel@lists.infradead.org,
+        kernel-janitors@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 12 Dec 2019, Matt Roper <matthew.d.roper@intel.com> wrote:
-> On Thu, Dec 12, 2019 at 12:11:30PM +0300, Dan Carpenter wrote:
->> The "num_dtd" variable is the number of elements in the
->> generic_dtd->dtd[] array so the > needs to be >= to prevent reading one
->> element beyond the end of the array.
->> 
->> Fixes: 33ef6d4fd8df ("drm/i915/vbt: Handle generic DTD block")
->> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+On Thu, Dec 5, 2019 at 9:06 AM Sergey Senozhatsky
+<sergey.senozhatsky.work@gmail.com> wrote:
 >
-> Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+> On (19/12/04 14:11), Colin King wrote:
+> [..]
+> > diff --git a/drivers/staging/media/meson/vdec/vdec.c b/drivers/staging/media/meson/vdec/vdec.c
+> > index 0a1a04fd5d13..8dd1396909d7 100644
+> > --- a/drivers/staging/media/meson/vdec/vdec.c
+> > +++ b/drivers/staging/media/meson/vdec/vdec.c
+> > @@ -133,6 +133,8 @@ vdec_queue_recycle(struct amvdec_session *sess, struct vb2_buffer *vb)
+> >       struct amvdec_buffer *new_buf;
+> >
+> >       new_buf = kmalloc(sizeof(*new_buf), GFP_KERNEL);
+> > +     if (!new_buf)
+> > +             return;
+> >       new_buf->vb = vb;
 
-Pushed to drm-intel-next-queued, thanks for the patch and review.
-
-BR,
-Jani.
+Thanks for the patch Colin.
 
 >
->> ---
->>  drivers/gpu/drm/i915/display/intel_bios.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->> 
->> diff --git a/drivers/gpu/drm/i915/display/intel_bios.c b/drivers/gpu/drm/i915/display/intel_bios.c
->> index 1aeecdd02293..d1e27ee86e53 100644
->> --- a/drivers/gpu/drm/i915/display/intel_bios.c
->> +++ b/drivers/gpu/drm/i915/display/intel_bios.c
->> @@ -338,7 +338,7 @@ parse_generic_dtd(struct drm_i915_private *dev_priv,
->>  
->>  	num_dtd = (get_blocksize(generic_dtd) -
->>  		   sizeof(struct bdb_generic_dtd)) / generic_dtd->gdtd_size;
->> -	if (dev_priv->vbt.panel_type > num_dtd) {
->> +	if (dev_priv->vbt.panel_type >= num_dtd) {
->>  		DRM_ERROR("Panel type %d not found in table of %d DTD's\n",
->>  			  dev_priv->vbt.panel_type, num_dtd);
->>  		return;
->> -- 
->> 2.11.0
->> 
+> So the buffer is not getting recycled? IOW is leaked?
+>
+>         -ss
 
--- 
-Jani Nikula, Intel Open Source Graphics Center
+The "recycle" mechanism in the meson vdec is a way to tell the
+firmware that "hey, both userspace and kernel are done using this
+buffer, you can start using it again".
+
+Not queuing it for recycling means that the firmware won't use this
+buffer again, it's not desirable of course, but if there is no memory
+left to allocate a simple list element then there are bigger problems
+at hand.
+
+Either way, failing this allocation and returning instantly doesn't
+leak anything or do any damage kernel-side.

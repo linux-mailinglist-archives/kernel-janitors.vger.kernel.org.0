@@ -2,53 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CC1611E247
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Dec 2019 11:48:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8355911E252
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Dec 2019 11:51:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726463AbfLMKsS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Dec 2019 05:48:18 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:47412 "EHLO
+        id S1726705AbfLMKvD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Dec 2019 05:51:03 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:50070 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725928AbfLMKsS (ORCPT
+        with ESMTP id S1725747AbfLMKvD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Dec 2019 05:48:18 -0500
+        Fri, 13 Dec 2019 05:51:03 -0500
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBDAfs7f188788;
-        Fri, 13 Dec 2019 10:48:10 GMT
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBDAgMld189322;
+        Fri, 13 Dec 2019 10:50:45 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=6fombity6vRabx38L1gCH2OYcT2XTyLSX3hFgxt0cMg=;
- b=CYsnnwyT0QH1kBMGP3Wvay1cfG2rog3Zvs4QafEko/YiTYToFdSXQosSIdqPbQdacsck
- A/xL5rEjb/ZgCkL+TPKYr8hFJuOCQlLKOjipaiYCwT8XISqiPIYLp4FEUKC5/Haj1+6s
- Rx0tj0VsdcZXvzJJ/eN2eYCbpgbdD/jpWC9CKif55CHptQvH/X3fB+cmjPPzT26qwRPx
- 1PqHV+q2WeAvD82XT+bhTrXvUP6GfpVLkEySy4onNjdYsihJEpchWx6iy1Dc7j6eiCCt
- Le/NZteVW8yOtzUYJHiLnLL1cRFE/jDtS3SdOHHnJKeQVO+JD0l2l/VxEQ8eXGyuC+lf LA== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by aserp2120.oracle.com with ESMTP id 2wr41qrebd-1
+ bh=sEdwDE1EZ395BIdXjDm5b5a+AjIEteaEfG9Ui2sv2Rk=;
+ b=l3MvoCFUL6ulk5RsD3zeyIMGkm5wXVgfgcbgRcMwkYn2WUVSVAEgXJpUJH3LLO4ppooO
+ Q/xmVzSspSSl2C7EiSwFH/5wjf08X39l0wXrYguIU6i8dJ+me/pj3npDG4BfEBiqV67g
+ js/JJFiFlPimqqhRmUM++7VjhXSvZ3xfm/ZsJawFVRlfY2lFOei2m8BJOqOVTzMgVJQM
+ b1y0rebt+15EFo35u4RmfUXGotssMiKI4vx9o8epSKDBlMpcfpXOEW27hX/2x4IxLXPY
+ lgPkY7GkB/3ZQDbL540qe1H6WGq+CZZEMjH4F+lPiV/YxjujvcUUOGuVRMTC9FhSSh6J Pg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 2wr41qremd-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 13 Dec 2019 10:48:10 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBDAklKe061121;
-        Fri, 13 Dec 2019 10:48:09 GMT
+        Fri, 13 Dec 2019 10:50:45 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBDAkiCD107556;
+        Fri, 13 Dec 2019 10:48:44 GMT
 Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3020.oracle.com with ESMTP id 2wumsbmf1g-1
+        by userp3030.oracle.com with ESMTP id 2wumk8dyg4-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 13 Dec 2019 10:48:09 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xBDAm372000410;
-        Fri, 13 Dec 2019 10:48:05 GMT
+        Fri, 13 Dec 2019 10:48:44 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xBDAmegM001404;
+        Fri, 13 Dec 2019 10:48:40 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 13 Dec 2019 02:48:03 -0800
-Date:   Fri, 13 Dec 2019 13:47:54 +0300
+        with ESMTP ; Fri, 13 Dec 2019 02:48:38 -0800
+Date:   Fri, 13 Dec 2019 13:48:28 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Kalle Valo <kvalo@codeaurora.org>
-Cc:     Anilkumar Kolli <akolli@codeaurora.org>,
-        Rajkumar Manoharan <rmanohar@codeaurora.org>,
-        Miles Hu <milehu@codeaurora.org>, ath11k@lists.infradead.org,
-        linux-wireless@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] ath11k: delete a stray unlock in ath11k_dbg_htt_stats_req()
-Message-ID: <20191213104754.2lwrq2qqokycjjbm@kili.mountain>
+To:     Alim Akhtar <alim.akhtar@samsung.com>,
+        Bart Van Assche <bvanassche@acm.org>
+Cc:     Avri Altman <avri.altman@wdc.com>,
+        Pedro Sousa <pedrom.sousa@synopsys.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Bean Huo <beanhuo@micron.com>,
+        Stanley Chu <stanley.chu@mediatek.com>,
+        Can Guo <cang@codeaurora.org>,
+        Venkat Gopalakrishnan <venkatg@codeaurora.org>,
+        Tomas Winkler <tomas.winkler@intel.com>,
+        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH 1/2] scsi: ufs: Unlock on a couple error paths
+Message-ID: <20191213104828.7i64cpoof26rc4fw@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -56,13 +63,13 @@ X-Mailer: git-send-email haha only kidding
 User-Agent: NeoMutt/20170113 (1.7.2)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9469 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=888
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.0.1-1911140001 definitions=main-1912130086
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9469 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
  suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=947 adultscore=0
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
  definitions=main-1912130086
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -70,26 +77,61 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The callers unlock this lock so this error path has a double unlock.
+We introduced a few new error paths, but we can't return directly, we
+first have to unlock "hba->clk_scaling_lock" first.
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Fixes: a276c19e3e98 ("scsi: ufs: Avoid busy-waiting by eliminating tag conflicts")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/net/wireless/ath/ath11k/debug_htt_stats.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/scsi/ufs/ufshcd.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/debug_htt_stats.c b/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
-index 27b301bc1a1b..4b1b1ecd5eae 100644
---- a/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
-+++ b/drivers/net/wireless/ath/ath11k/debug_htt_stats.c
-@@ -4287,7 +4287,6 @@ int ath11k_dbg_htt_stats_req(struct ath11k *ar)
- 	ret = ath11k_dp_tx_htt_h2t_ext_stats_req(ar, type, &cfg_params, cookie);
- 	if (ret) {
- 		ath11k_warn(ar->ab, "failed to send htt stats request: %d\n", ret);
--		mutex_unlock(&ar->conf_mutex);
- 		return ret;
+diff --git a/drivers/scsi/ufs/ufshcd.c b/drivers/scsi/ufs/ufshcd.c
+index e5cd57e68c46..bf981f0ea74c 100644
+--- a/drivers/scsi/ufs/ufshcd.c
++++ b/drivers/scsi/ufs/ufshcd.c
+@@ -2617,8 +2617,10 @@ static int ufshcd_exec_dev_cmd(struct ufs_hba *hba,
+ 	 * the maximum wait time is bounded by SCSI request timeout.
+ 	 */
+ 	req = blk_get_request(q, REQ_OP_DRV_OUT, 0);
+-	if (IS_ERR(req))
+-		return PTR_ERR(req);
++	if (IS_ERR(req)) {
++		err = PTR_ERR(req);
++		goto out_unlock;
++	}
+ 	tag = req->tag;
+ 	WARN_ON_ONCE(!ufshcd_valid_tag(hba, tag));
+ 
+@@ -2646,6 +2648,7 @@ static int ufshcd_exec_dev_cmd(struct ufs_hba *hba,
+ 
+ out_put_tag:
+ 	blk_put_request(req);
++out_unlock:
+ 	up_read(&hba->clk_scaling_lock);
+ 	return err;
+ }
+@@ -5854,8 +5857,10 @@ static int ufshcd_issue_devman_upiu_cmd(struct ufs_hba *hba,
+ 	down_read(&hba->clk_scaling_lock);
+ 
+ 	req = blk_get_request(q, REQ_OP_DRV_OUT, 0);
+-	if (IS_ERR(req))
+-		return PTR_ERR(req);
++	if (IS_ERR(req)) {
++		err = PTR_ERR(req);
++		goto out_unlock;
++	}
+ 	tag = req->tag;
+ 	WARN_ON_ONCE(!ufshcd_valid_tag(hba, tag));
+ 
+@@ -5934,6 +5939,7 @@ static int ufshcd_issue_devman_upiu_cmd(struct ufs_hba *hba,
  	}
  
+ 	blk_put_request(req);
++out_unlock:
+ 	up_read(&hba->clk_scaling_lock);
+ 	return err;
+ }
 -- 
 2.11.0
 

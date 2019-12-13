@@ -2,104 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9175011EAB8
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Dec 2019 19:50:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC83011EB80
+	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Dec 2019 21:05:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728584AbfLMSuc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Dec 2019 13:50:32 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:53844 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728455AbfLMSub (ORCPT
+        id S1729027AbfLMUFa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Dec 2019 15:05:30 -0500
+Received: from mail-pj1-f66.google.com ([209.85.216.66]:42701 "EHLO
+        mail-pj1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728696AbfLMUFa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Dec 2019 13:50:31 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBDIiRWW187198;
-        Fri, 13 Dec 2019 18:50:21 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2019-08-05; bh=Y1W2wi3uXxlBeN2Xb66vsyWVJ11ZNi5rfxBm2aRFNdI=;
- b=qH8GQaQ9A5ldy3f7YV+ZezQxhrS7cy54VmVQT4+2IK2go0JKck0rcJgkLWX7gOu7LsHa
- 4s5f6uYn+2gIDd5lZsz37RtPUknmFiaEnJuBbguQ3VmRoqxxBliU0oQRonB7ZZe8ZRBE
- SJinH6NtlLTaI1XSaEiOOg58B6HmTUQHxIuwSp/WpMJaE5lDy0xZeZxSRv5QZNQoEfd5
- NYZHi+2QJd0kvPxESpPZtbDZijZ3sjP/KOawB3IJcrZRy/VAvs/CWwU8wJ+rEe0Ot1VN
- Ts9nGC3cabUgliNRmGs3MG8iYP7cPu3p+7wTSDdwqh99CC7Ex8na+JqR+71WGPFtlEnP cg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 2wr41qts3j-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 13 Dec 2019 18:50:20 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBDIlpXD185434;
-        Fri, 13 Dec 2019 18:50:20 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 2wvb99px40-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 13 Dec 2019 18:50:20 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xBDIoIQ7023057;
-        Fri, 13 Dec 2019 18:50:19 GMT
-Received: from kili.mountain (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 13 Dec 2019 10:50:18 -0800
-Date:   Fri, 13 Dec 2019 21:50:11 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "Theodore Ts'o" <tytso@mit.edu>, Miao Xie <miaoxie@huawei.com>
-Cc:     Andreas Dilger <adilger.kernel@dilger.ca>,
-        linux-ext4@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] ext4: unlock on error in ext4_expand_extra_isize()
-Message-ID: <20191213185010.6k7yl2tck3wlsdkt@kili.mountain>
+        Fri, 13 Dec 2019 15:05:30 -0500
+Received: by mail-pj1-f66.google.com with SMTP id o11so167420pjp.9;
+        Fri, 13 Dec 2019 12:05:29 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=Q6nTWJovcUs20rNjwQbvmvjiujOLC8p/4wdrf5F20gI=;
+        b=EajW3C4mj357gmvgubXqdUalX07Wj93y7M0bel4C8aco50iX5ah1l3jwfEUbB8RvLd
+         7LAIsrjIHjqrMMGesIe8VItflto/IK9rF+G1zsGiFyLlsINAHlVM+LLMPgZ2mBucCtFY
+         t9WpEI5nMSZ+kOX0dpaeCX60e7z0XEHembcmcPThzyw2AqZyvz0DsOPzKorvxbwVrcnW
+         Zjqg4GDmpjWYNU6ruIpWFHecffYp8Q5MmA9ZwqVYB+3IRZe59RnxqRScAesqufD7WdrP
+         hAn7W6nloTzWv023oZlUlKt9+6VtdaMDIxn8cQc75mDQSdeFTHDUMf0eNKFer51NnxA6
+         XHWw==
+X-Gm-Message-State: APjAAAVrMCde3ejouyfSw9ZobgFZUIQ5ZrGtwfNRqJN0phiABPB/nDW6
+        Dpbf/JiO1SzPgwb12flH6shRUu9q
+X-Google-Smtp-Source: APXvYqzi/mGcCSwnApHnScndJoGpE3yjogqSSJvf/CLwzYIsTBXxgelBYtiemetuAJXhLkzKgfHnZg==
+X-Received: by 2002:a17:902:5a04:: with SMTP id q4mr1236380pli.302.1576267529145;
+        Fri, 13 Dec 2019 12:05:29 -0800 (PST)
+Received: from [172.19.248.113] ([38.98.37.141])
+        by smtp.gmail.com with ESMTPSA id e6sm12594667pfh.32.2019.12.13.12.05.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 13 Dec 2019 12:05:27 -0800 (PST)
+Subject: Re: [PATCH 1/2] scsi: ufs: Unlock on a couple error paths
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Alim Akhtar <alim.akhtar@samsung.com>
+Cc:     Avri Altman <avri.altman@wdc.com>,
+        Pedro Sousa <pedrom.sousa@synopsys.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Bean Huo <beanhuo@micron.com>,
+        Stanley Chu <stanley.chu@mediatek.com>,
+        Can Guo <cang@codeaurora.org>,
+        Venkat Gopalakrishnan <venkatg@codeaurora.org>,
+        Tomas Winkler <tomas.winkler@intel.com>,
+        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org
+References: <20191213104828.7i64cpoof26rc4fw@kili.mountain>
+From:   Bart Van Assche <bvanassche@acm.org>
+Message-ID: <70d90cda-afe7-30bd-c871-c9d37bee98aa@acm.org>
+Date:   Fri, 13 Dec 2019 13:04:44 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191213113237.GF15474@quack2.suse.cz>
-X-Mailer: git-send-email haha only kidding
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9470 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=845
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1912130145
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9470 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=904 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-1912130145
+In-Reply-To: <20191213104828.7i64cpoof26rc4fw@kili.mountain>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We need to unlock the xattr before returning on this error path.
+On 12/13/19 5:48 AM, Dan Carpenter wrote:
+> We introduced a few new error paths, but we can't return directly, we
+> first have to unlock "hba->clk_scaling_lock" first.
 
-Fixes: c03b45b853f5 ("ext4, project: expand inode extra size if possible")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- fs/ext4/inode.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+This may have escaped from my attention due to having swapped the order 
+of the patch that removed that locking and the patch this patch is a fix 
+for. Anyway, thanks for this patch.
 
-diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index 28f28de0c1b6..629a25d999f0 100644
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -5692,7 +5692,7 @@ int ext4_expand_extra_isize(struct inode *inode,
- 	error = ext4_journal_get_write_access(handle, iloc->bh);
- 	if (error) {
- 		brelse(iloc->bh);
--		goto out_stop;
-+		goto out_unlock;
- 	}
- 
- 	error = __ext4_expand_extra_isize(inode, new_extra_isize, iloc,
-@@ -5702,8 +5702,8 @@ int ext4_expand_extra_isize(struct inode *inode,
- 	if (!error)
- 		error = rc;
- 
-+out_unlock:
- 	ext4_write_unlock_xattr(inode, &no_expand);
--out_stop:
- 	ext4_journal_stop(handle);
- 	return error;
- }
--- 
-2.11.0
-
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>

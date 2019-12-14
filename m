@@ -2,95 +2,135 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AAC9711F030
-	for <lists+kernel-janitors@lfdr.de>; Sat, 14 Dec 2019 05:29:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDFF811F369
+	for <lists+kernel-janitors@lfdr.de>; Sat, 14 Dec 2019 19:11:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726598AbfLNE3g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Dec 2019 23:29:36 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:51022 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726334AbfLNE3g (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Dec 2019 23:29:36 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBE4T1Zg181825;
-        Sat, 14 Dec 2019 04:29:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=KjgBjEiIi9MVL1bnPhiBy3+wluKQdQn3q4PuVYYr8Vg=;
- b=FeyU4OLOoj+kBZe2qOrXyDYIoR6VB890xEYqim0HvbSi+CKQWvqK6XpzkHCtyH6gC/de
- qobTbppK+wcU6eWnWSS+ZNTkEaHFo+mhdPc7ohwDvkjxi9aPX9UTOqliLiFpQ6viqcKO
- kxrq9GzIlOAI3EJm1t7YAnMwdootzLaYDK7x9CN78knztXWT6Q+fut4UFfPTJCdxk4nY
- F76slaK0QHtZggFN76N90+sK6uavbIVyI3UYUtzZpNHpHmEcfbs9nf9bAdiFGq/3lFT9
- rjrp86ibu6k2kcAqhNQPY6z3ZKZoCMK1TbRCXK89AbrmJcaxjmCRVE5Wi3egxxqrJFF7 vA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 2wvqppr3vb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 14 Dec 2019 04:29:01 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBE4SKbP039686;
-        Sat, 14 Dec 2019 04:29:01 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2wvnsxm5j9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sat, 14 Dec 2019 04:29:00 +0000
-Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xBE4SuD7020830;
-        Sat, 14 Dec 2019 04:28:56 GMT
-Received: from kadam (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 13 Dec 2019 20:28:55 -0800
-Date:   Sat, 14 Dec 2019 07:28:46 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Bart Van Assche <bvanassche@acm.org>
-Cc:     Alim Akhtar <alim.akhtar@samsung.com>,
-        Subhash Jadavani <subhashj@codeaurora.org>,
-        Avri Altman <avri.altman@wdc.com>,
-        Pedro Sousa <pedrom.sousa@synopsys.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Bean Huo <beanhuo@micron.com>,
-        Stanley Chu <stanley.chu@mediatek.com>,
-        Can Guo <cang@codeaurora.org>,
-        Venkat Gopalakrishnan <venkatg@codeaurora.org>,
-        Tomas Winkler <tomas.winkler@intel.com>,
-        linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 2/2] scsi: ufs: Simplify a condition
-Message-ID: <20191214042846.GA19868@kadam>
-References: <20191213104935.wgpq2epaz6zh5zus@kili.mountain>
- <b08b7848-c0da-4438-258c-19ce18fa798c@acm.org>
+        id S1726358AbfLNSLY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 14 Dec 2019 13:11:24 -0500
+Received: from mout.web.de ([217.72.192.78]:35755 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725972AbfLNSLY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 14 Dec 2019 13:11:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1576347064;
+        bh=rLZunKlfvqgHLg9f3GstT0IURilADZJAFil/F/8wa3k=;
+        h=X-UI-Sender-Class:Cc:References:Subject:To:From:Date:In-Reply-To;
+        b=l6Bnyxxqwgweld/9uMqahp97anE2/063MplNuhlITPAZiWoTEOH2V4NaOFHyDyePZ
+         6AY27nFltme+dxoImGy/dkH+e42fUetYHK4GEN0lrkVu7PAZ9sCDNQWCcf/eDu1lqG
+         LtMzFv9p/bm4Bh0fvpdDd7cOr6tZmOaMugkL5VPI=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.3] ([93.133.107.49]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MXYeQ-1iAtNG2HTy-00WWsd; Sat, 14
+ Dec 2019 19:11:04 +0100
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Keith Busch <keith.busch@intel.com>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Navid Emamdoost <emamd001@umn.edu>
+References: <20191213223751.4089-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH v2] mm/gup: Fix memory leak in __gup_benchmark_ioctl
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        Ira Weiny <ira.weiny@intel.com>,
+        John Hubbard <jhubbard@nvidia.com>, linux-mm@kvack.org
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <b167e207-f919-be9a-08cb-1d1a56e25e37@web.de>
+Date:   Sat, 14 Dec 2019 19:10:55 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b08b7848-c0da-4438-258c-19ce18fa798c@acm.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9470 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=944
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1912140031
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9470 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-1912140031
+In-Reply-To: <20191213223751.4089-1-navid.emamdoost@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Z2llYW6Q3ZSeXcueD70uzihWFfG/5gKIJOlWGa0ESJq6KmWMBa0
+ DlqOa+J1K/IYRU4SQGDrat/VJvagrPcfdazp87N44x1QIyZNbI7ADKUMF9iAPU/Ws2HyMGw
+ ua9D+7MN4Teof8XWCEQnLcIA7zMCrpRRmdZrJFDqmWbFDU+1aZW4kQxYciMowo7lreO/D7W
+ Oxyt4fqGxLk5OtFBEparw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:ugHcgFata8U=:lTaahgWn8Cdd6Uxl62UVeK
+ 4C714fl4OSE3sxAOTPWBCL5FhDtYwMlAhedUNl5XzWZWvc6ArnCcqEFV8zeAc+j437Ee0hrB+
+ HAidjA+Z3XyCioDSxpBylRbzaFQjBBM3t9UF7CdAwAci6wcgPOg8LyvXGLwQgG8/M3E7/gdKF
+ DQbfImnuDseo531mFJzB5beVG1Wt1k9+RN89oRo3bxZssABujvCiT7KeM0xY4UBBbXPt8/x1P
+ 9oY35hyZDE3cSNWyFR+txyUIwfNERVIMLben89Co+cA9yK32tQDV2PiD1g0ofoxxsaRskTjtp
+ QNJp87DvHhmKcTlzbAGaoy33tQHOzJK/Xc3OLDjffzYDI/nJQFhYCb2aaP+BiU+HgqoYs1C38
+ oWrCYZYhCWyHQ6VKutJQK2HI1TZyX2SKKoCOzYIaVm/X7klP04ack7FHUGkBoipxr+yTC/CX6
+ 3exMGLCQnRirZ97aWdO3vToHi76WzRtFTcE9LKTniK/Mkpvx9IA5SKsqtyzAvBVJ7pEdvGN5M
+ CZV+bl/pImIJV5zdX7Ph2dz8w3wVLQWlHJYAQ1DjBzTDT3lAMRrIryC8vNdtACsO229y85tzF
+ QCUPn7Rj4qib9ezLUOQH+n0lf/CHlzZL2fdOxjPSG3Ed3H1EECpPnsrkAIBMGpYENpYExPj8Z
+ 8kaQ1oChtDF+vT5gqC015HVCDrqLxCTBJkeJCpfpRBBDE8ubhW3lL+ZDUumCKbjbOsyZvLVWI
+ CWsJrtFYBLzTPMo3mz+YsIgDskAuCA47YV9A7GqfDt4Q2ssEZkvpjdKOX7woFkTRy1bK+ZcA3
+ GvYbeUbOjPUrvwQWbMyVRTUqBnE83SwCG7WzZGItkYgi6HvOVLgB4rqHftktnP84k07eD0JlN
+ j/en5MLb1T3zC1a50v2fKFAnDWXxIm3BGylB1quNc7zRRx54KSf5LsA73WCVJQxU0Nc7totX3
+ RFo4nSbPUz4P/j2Y2FuWdoISdPHlPeJwIOs0rMy/h/Jyz/Ov0V3g1vNvYdz78wqlOSDt9+Nl2
+ IJxI4mTc6QEfip/bXfKVqRTso+dNs0Ka0UYc4Z4pZcsZjt1m+rk2VQFV+UfhscbY/3Dnt6Q2n
+ 9deAZ8b/qKX/+G2bwymHF0/wuy460hrXf/Nq/u46z3m+/GJeVyFyW/lTbEpAUNtKQSqThzH7P
+ Dt6fUiEni0vcXf7MND7xn8aZ3S+K9x0qPDnhcWYFowQPzCNcyaZVquaSWieMvc4enw3asf/mj
+ Zr0qztsmUBZpg7wXXwk25SrI8mls4pGXejazQ+XKe+722BunnXIyEZQkbbWA=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Dec 13, 2019 at 01:05:55PM -0700, Bart Van Assche wrote:
-> On 12/13/19 5:49 AM, Dan Carpenter wrote:
-> > We know that "check_for_bkops" is non-zero on this side of the ||
-> > because it was checked on the other side.
-> 
-> How about also removing the superfluous parentheses? Anyway:
-> 
+=E2=80=A6
+> +++ b/mm/gup_benchmark.c
+=E2=80=A6
+> @@ -85,8 +85,9 @@  static int __gup_benchmark_ioctl(unsigned int cmd,
+>  	end_time =3D ktime_get();
+>  	gup->put_delta_usec =3D ktime_us_delta(end_time, start_time);
+>
+> +done:
+>  	kvfree(pages);
+> -	return 0;
+> +	return ret;
+>  }
+>
+>  static long gup_benchmark_ioctl(struct file *filep, unsigned int cmd,
 
-Around "(req_link_state == UIC_LINK_OFF_STATE)"?  I considered it but
-some people like them...
+Can the addition of a label like =E2=80=9Cfree_pages=E2=80=9D be more appr=
+opriate here?
 
-regards,
-dan carpenter
+Regards,
+Markus

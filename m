@@ -2,44 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 966EB11EB83
-	for <lists+kernel-janitors@lfdr.de>; Fri, 13 Dec 2019 21:06:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAC9711F030
+	for <lists+kernel-janitors@lfdr.de>; Sat, 14 Dec 2019 05:29:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728950AbfLMUGl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 13 Dec 2019 15:06:41 -0500
-Received: from mail-pj1-f65.google.com ([209.85.216.65]:45583 "EHLO
-        mail-pj1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728696AbfLMUGk (ORCPT
+        id S1726598AbfLNE3g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 13 Dec 2019 23:29:36 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:51022 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726334AbfLNE3g (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 13 Dec 2019 15:06:40 -0500
-Received: by mail-pj1-f65.google.com with SMTP id r11so162484pjp.12;
-        Fri, 13 Dec 2019 12:06:40 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=QRdsTw/j1Ix9fJZywlz3234qa71GZtf8UOa6MhdtsVI=;
-        b=VSJH4T/G1CYgONwS5osDAMFabguC2EUHjqiimBhvYJKPn4SutK8s6igxUKeAs51ckq
-         3zC+J7dtRHTb9gftUXaFzkBzn+x6DOXEKYPGf2c0ftMO6mopH0vep6rNwouJo5qu1j7H
-         94kXtkaVKgHDHvEurJ5xAIu4SrLQUO++TozPUrnRHaE6qI7/avQ7TRPxqhZnChzQbMj2
-         61UmTeeWWnE8TILJ4Ut8hjj4ZMT4Q8TUc7RIer8h4rQ+zCoP+247AA5UFXIrkCQysp5K
-         cnnAsX7/eXQjkTQNff6AHo3RtyXg29wEbvoRh4xnHRp2xYyRncBptSiNPA01Ct/x4/km
-         ZZeA==
-X-Gm-Message-State: APjAAAXG19cO6Uq6eyP2jynAhrFcJcBPfg2OaTdUTI4DhAISs6/YFbVS
-        OGQwi+d3OpMPBpZLsm9vC20PG11D
-X-Google-Smtp-Source: APXvYqzU+bscPdgRugDu234KsrieabOKgMlgnsf3IJe1OZEd+Q15IAEkZsEleJXRAe0gQkonXvP7CQ==
-X-Received: by 2002:a17:90a:86c9:: with SMTP id y9mr1338700pjv.88.1576267599659;
-        Fri, 13 Dec 2019 12:06:39 -0800 (PST)
-Received: from [172.19.248.113] ([38.98.37.141])
-        by smtp.gmail.com with ESMTPSA id q7sm12487540pfb.44.2019.12.13.12.06.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Dec 2019 12:06:38 -0800 (PST)
-Subject: Re: [PATCH 2/2] scsi: ufs: Simplify a condition
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Subhash Jadavani <subhashj@codeaurora.org>
-Cc:     Avri Altman <avri.altman@wdc.com>,
+        Fri, 13 Dec 2019 23:29:36 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBE4T1Zg181825;
+        Sat, 14 Dec 2019 04:29:01 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=KjgBjEiIi9MVL1bnPhiBy3+wluKQdQn3q4PuVYYr8Vg=;
+ b=FeyU4OLOoj+kBZe2qOrXyDYIoR6VB890xEYqim0HvbSi+CKQWvqK6XpzkHCtyH6gC/de
+ qobTbppK+wcU6eWnWSS+ZNTkEaHFo+mhdPc7ohwDvkjxi9aPX9UTOqliLiFpQ6viqcKO
+ kxrq9GzIlOAI3EJm1t7YAnMwdootzLaYDK7x9CN78knztXWT6Q+fut4UFfPTJCdxk4nY
+ F76slaK0QHtZggFN76N90+sK6uavbIVyI3UYUtzZpNHpHmEcfbs9nf9bAdiFGq/3lFT9
+ rjrp86ibu6k2kcAqhNQPY6z3ZKZoCMK1TbRCXK89AbrmJcaxjmCRVE5Wi3egxxqrJFF7 vA== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 2wvqppr3vb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 14 Dec 2019 04:29:01 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBE4SKbP039686;
+        Sat, 14 Dec 2019 04:29:01 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 2wvnsxm5j9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sat, 14 Dec 2019 04:29:00 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id xBE4SuD7020830;
+        Sat, 14 Dec 2019 04:28:56 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 13 Dec 2019 20:28:55 -0800
+Date:   Sat, 14 Dec 2019 07:28:46 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Bart Van Assche <bvanassche@acm.org>
+Cc:     Alim Akhtar <alim.akhtar@samsung.com>,
+        Subhash Jadavani <subhashj@codeaurora.org>,
+        Avri Altman <avri.altman@wdc.com>,
         Pedro Sousa <pedrom.sousa@synopsys.com>,
         "James E.J. Bottomley" <jejb@linux.ibm.com>,
         "Martin K. Petersen" <martin.petersen@oracle.com>,
@@ -49,27 +56,41 @@ Cc:     Avri Altman <avri.altman@wdc.com>,
         Venkat Gopalakrishnan <venkatg@codeaurora.org>,
         Tomas Winkler <tomas.winkler@intel.com>,
         linux-scsi@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH 2/2] scsi: ufs: Simplify a condition
+Message-ID: <20191214042846.GA19868@kadam>
 References: <20191213104935.wgpq2epaz6zh5zus@kili.mountain>
-From:   Bart Van Assche <bvanassche@acm.org>
-Message-ID: <b08b7848-c0da-4438-258c-19ce18fa798c@acm.org>
-Date:   Fri, 13 Dec 2019 13:05:55 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+ <b08b7848-c0da-4438-258c-19ce18fa798c@acm.org>
 MIME-Version: 1.0
-In-Reply-To: <20191213104935.wgpq2epaz6zh5zus@kili.mountain>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <b08b7848-c0da-4438-258c-19ce18fa798c@acm.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9470 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=944
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1912140031
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9470 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1912140031
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 12/13/19 5:49 AM, Dan Carpenter wrote:
-> We know that "check_for_bkops" is non-zero on this side of the ||
-> because it was checked on the other side.
+On Fri, Dec 13, 2019 at 01:05:55PM -0700, Bart Van Assche wrote:
+> On 12/13/19 5:49 AM, Dan Carpenter wrote:
+> > We know that "check_for_bkops" is non-zero on this side of the ||
+> > because it was checked on the other side.
+> 
+> How about also removing the superfluous parentheses? Anyway:
+> 
 
-How about also removing the superfluous parentheses? Anyway:
+Around "(req_link_state == UIC_LINK_OFF_STATE)"?  I considered it but
+some people like them...
 
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-
+regards,
+dan carpenter

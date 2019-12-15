@@ -2,152 +2,133 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4746F11F69B
-	for <lists+kernel-janitors@lfdr.de>; Sun, 15 Dec 2019 07:06:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C17411F82D
+	for <lists+kernel-janitors@lfdr.de>; Sun, 15 Dec 2019 15:28:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726078AbfLOGGh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 15 Dec 2019 01:06:37 -0500
-Received: from esa3.hgst.iphmx.com ([216.71.153.141]:11500 "EHLO
-        esa3.hgst.iphmx.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725788AbfLOGGh (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 15 Dec 2019 01:06:37 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=wdc.com; i=@wdc.com; q=dns/txt; s=dkim.wdc.com;
-  t=1576389997; x=1607925997;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=8rYYX4vygTB3N0/+YPAYRb6zZBDm490vSGCxfUAgCss=;
-  b=mlSxhO4GPQtwRf3js2cFZUWmkEZ7HqvoBKeCUhQf9mihNTKndiS2Esuq
-   kM+wSyZPnbfYBd7qdIqSqa9U8tWBadTMART0PGaBjRQ4bsNpBuuuBc40B
-   EPUqA8WE+vRwtMc1qIyh1s24VbhpuPodOK1sarlWhBO3rbZ2wTqffjnB2
-   kTnd6TFXBRzERxBFGmeSc3VO4ZQv+z6g34b5C036lT97E6RDUHg1Wi1r2
-   y5QJRmtxpqZjhTvVcAqNqM1bdEmrdLY1p0kpemEx5dz1d/ahBfmBc8qtL
-   F0Z5xlZ4PnYoIMsjPXDjBTFwTQYK4EmZ02fQ2N0FH3FIl14ozHLsIjg85
-   w==;
-IronPort-SDR: Og9C9MlwUSSgcfJUk/72s7ij2vPD2kkKSKH6ubz73wnmSZ5BD2BT5IBzGy6Zp9mJ4O9frRcRy8
- FVDVZwJ/ozMYTerNONedHIT9VhbJNeRXl/L1ze6nEojNkS2TnDFnOSEs4ggUQ9uZOl85LstN8a
- Owrjv4gO7loRuthRk6FYYpMXDloytMAuT5BG9B0KRboZlqJ8UP47xpKm5xR8yvyUbBVyizwJ/q
- pgGcM//zqn8tmlU4fFjQjBPX/hkM3Ila0stM7pXKipJskh1c2BxNY1w4+EOm3j0Bg2J8ohe11K
- slg=
-X-IronPort-AV: E=Sophos;i="5.69,316,1571673600"; 
-   d="scan'208";a="129807856"
-Received: from mail-co1nam04lp2056.outbound.protection.outlook.com (HELO NAM04-CO1-obe.outbound.protection.outlook.com) ([104.47.45.56])
-  by ob1.hgst.iphmx.com with ESMTP; 15 Dec 2019 14:06:35 +0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PHCxcTg5oNkjSbZU5a/JhFptL1rTz6XENGpjfOJn/WWBaSss3aI041e6daUiXiZmz09VMhGmt+wAvW5H+K/4f3K0KBM/pPcZq2MY2n5KhJ3zaWQiiaA/9CY+jqNFxJ54LQ5NDFO8MsfFlaMFERiWg+vmuJOsF7ZmIKj6SGIy2Nnf1DSS8Ok7wkLTG9rztaGTz12qTTzSZlWJ+3uBzSi2XEz2m6W0voloIWU2y41oZq16tTROuRmkGlq9xM11VsEhyr2rLIsMtaavQeho9hUtG30H4088C3xcLl0L+qDAeMcTlDDwJphlRh+5orq3NgHO0FCDDHXH1VCqePNBog/UDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=70niOLmNCXaoQMsAxghgvfC8Wr7jOrZopcvLNCIzi08=;
- b=DgGyWBX/HbAja9NG0UvJqwa/jag7kNWH+CA+ms0C2iEO1u4IAxgneO70QObwGzCbRTN5ThDjhC3kUGjWLrG9fLUMiMadjLObrS9XADcUVuHMyz5BsuloYN/U/OFNb/UiIFlw9iDbBizsTWRYsum3HLyTAn8pjHLmuJ0hI4NfW4o8edQnh5plMWyDUkTgDYgjZSIrhySt31s9coj/LogsWC/Ie2aTgzFAa0mbQcVanhq/90GAjgOuSqizq7Xkhf4HA+eiuwfnDl7M/6CMwmzUp3VYH6bmsN8mG/c0uLd6cuzOOn4LOVP+qwpd0p+N+eQlOClFul4NUouUp7I36+0/iQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=wdc.com; dmarc=pass action=none header.from=wdc.com; dkim=pass
- header.d=wdc.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=sharedspace.onmicrosoft.com; s=selector2-sharedspace-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=70niOLmNCXaoQMsAxghgvfC8Wr7jOrZopcvLNCIzi08=;
- b=m1UODq//YyM4sTJKmXCh6E/6l6d1oiFcykbigxCQEo/tJFYOKja3s4KgLa7ZL8/X1U8MmorlBz6/Zswc3yFkS6pPFpib6KPVvoAOM/DuimiI66KurRUE5LYZLZJYRS2aPKj70aSaCiMUhGd5QEGI8/BSxKuIM3Dt0BoAnPXCv7c=
-Received: from MN2PR04MB6991.namprd04.prod.outlook.com (10.186.144.209) by
- MN2PR04MB6464.namprd04.prod.outlook.com (52.132.170.80) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2538.17; Sun, 15 Dec 2019 06:06:33 +0000
-Received: from MN2PR04MB6991.namprd04.prod.outlook.com
- ([fe80::9447:fa71:53df:f866]) by MN2PR04MB6991.namprd04.prod.outlook.com
- ([fe80::9447:fa71:53df:f866%3]) with mapi id 15.20.2538.019; Sun, 15 Dec 2019
- 06:06:33 +0000
-From:   Avri Altman <Avri.Altman@wdc.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Alim Akhtar <alim.akhtar@samsung.com>,
-        Subhash Jadavani <subhashj@codeaurora.org>
-CC:     Pedro Sousa <pedrom.sousa@synopsys.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Bean Huo <beanhuo@micron.com>,
-        Stanley Chu <stanley.chu@mediatek.com>,
-        Can Guo <cang@codeaurora.org>,
-        Bart Van Assche <bvanassche@acm.org>,
-        Venkat Gopalakrishnan <venkatg@codeaurora.org>,
-        Tomas Winkler <tomas.winkler@intel.com>,
-        "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: RE: [PATCH 2/2] scsi: ufs: Simplify a condition
-Thread-Topic: [PATCH 2/2] scsi: ufs: Simplify a condition
-Thread-Index: AQHVsaNnMibuQ0RuH0C5boyF+d+K9Ke6uBIA
-Date:   Sun, 15 Dec 2019 06:06:32 +0000
-Message-ID: <MN2PR04MB6991BEAE05458E3C4B079720FC560@MN2PR04MB6991.namprd04.prod.outlook.com>
-References: <20191213104828.7i64cpoof26rc4fw@kili.mountain>
- <20191213104935.wgpq2epaz6zh5zus@kili.mountain>
-In-Reply-To: <20191213104935.wgpq2epaz6zh5zus@kili.mountain>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: spf=none (sender IP is )
- smtp.mailfrom=Avri.Altman@wdc.com; 
-x-originating-ip: [212.25.79.133]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-ht: Tenant
-x-ms-office365-filtering-correlation-id: 988a0c56-d532-43b5-c07e-08d78124ef55
-x-ms-traffictypediagnostic: MN2PR04MB6464:
-x-microsoft-antispam-prvs: <MN2PR04MB64649669D2870206040E13E3FC560@MN2PR04MB6464.namprd04.prod.outlook.com>
-wdcipoutbound: EOP-TRUE
-x-ms-oob-tlc-oobclassifiers: OLM:4303;
-x-forefront-prvs: 02524402D6
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(4636009)(39860400002)(366004)(136003)(396003)(346002)(376002)(189003)(199004)(9686003)(64756008)(66446008)(66946007)(66556008)(66476007)(76116006)(7416002)(55016002)(316002)(54906003)(110136005)(71200400001)(81166006)(8676002)(7696005)(6506007)(86362001)(4744005)(5660300002)(52536014)(81156014)(186003)(4326008)(478600001)(2906002)(8936002)(26005)(33656002);DIR:OUT;SFP:1102;SCL:1;SRVR:MN2PR04MB6464;H:MN2PR04MB6991.namprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: ikEtQm2Il4wWPabxf8iZp7AksWy8/G/1SgrtLllXSPtSVXJs2FvuJ4B+ASGgSXUerJYy0Ym4aSBXrUyMqQjjZMyjAH6n0HeYBWrX4+QBz/OaV+awRdQBIyJCHH0DVrVmBd12rRDuxSHPxuaQRahF0Tc4MYcHojzbx4wheYyt7OFD2fNqWwuePj+7/L4NJhKNjTpJtdNwgKk0bld7G7UljtiDTJ6O5gSO0ohoufraKg47E9zSBfvGa66hJg5FjrbQfNl1bTEGOSoZaWbJ9gj6isIfJc2GPn+oGiFpAhfAleIER9FM4m95CtY6I0+khu18JX1gCKwmmeZJgAAZCycmujteN72OIWCO3+rBUJddBTl3r56BsJ1jR1KoFZiq5NpLS2ylJJYBH62tSgFuFzGj5Cg722XgX2kDB8WVDIvekZa7zqMI1jrGyMkzDfl7zbYH
-x-ms-exchange-transport-forked: True
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1726299AbfLOO2C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 15 Dec 2019 09:28:02 -0500
+Received: from mout.web.de ([212.227.15.3]:55877 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726118AbfLOO2C (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 15 Dec 2019 09:28:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1576420062;
+        bh=UJCtRNXt9dxsHq0AklEZDJ8nbHLtOvdKysh30YDXffU=;
+        h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
+        b=GZoHx02DOy+puPGrxWYPLQ0MIHM0RlwA2FUi+b9lYvrq15e3bt4JHJo8r6cQSINkX
+         A/Lg1BOhWDP9dWRN/+reId+WZNfrg+YGPzxC6tLLCQo7iJVh6+LQtLonLT2BL4Zgo7
+         wMKQw8GNZbyl5zzL9+peiyu5GZzjDcK/y1yTrClc=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.3] ([2.243.76.50]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0MKrC4-1igUs20xGq-0000Hw; Sun, 15
+ Dec 2019 15:27:42 +0100
+To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Navid Emamdoost <emamd001@umn.edu>,
+        Hans Ulli Kroll <ulli.kroll@googlemail.com>
+References: <20191215011045.15453-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] net: gemini: Fix memory leak in gmac_setup_txqs
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <403e8b6d-57df-e8d1-316c-150f833de842@web.de>
+Date:   Sun, 15 Dec 2019 15:27:31 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-X-OriginatorOrg: wdc.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 988a0c56-d532-43b5-c07e-08d78124ef55
-X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Dec 2019 06:06:32.9100
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: b61c8803-16f3-4c35-9b17-6f65f441df86
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vGr+Osd9TDmxyLxLWsSqrgQuHdIvSfqWCk+OPBLyAqe8A4LxDbYVib6hi3EBFPBpdyyt2SLHnF4tdf5oBkKBwQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR04MB6464
+In-Reply-To: <20191215011045.15453-1-navid.emamdoost@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:tkC7z+MpYl7P5EwBkPAiILzQEkDpkdrVtcbxSxLgvaTAGE/BMwJ
+ u9MDzlGB3/OK5EzyQ8EVAcaLqbIvarTxeYyeUikZGQFBmVb12OcjNZQlpiLQ9fl8JhYMAjb
+ 0eQU3NihJQ25OHdwidyC9GWL/Ae66CcAiwbhwsmuE6AMb7vIhqsy9YFnwzXYX4hMA/teu41
+ HkokghXClEXpuTbBMl+IA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+3hLjCV0XD0=:R+iqzKOEt5TFhA0wdOtaLg
+ Hs7dw96BKPfS6/yMLdL7zkyFm6kqvDNpzvyfNzZJhUtPWKZWkKuGlKIgfsKPsz501F1x7Mffd
+ kXgvUWd5vtSPIF4FVtHZeJo6SKSY7lWdEszOvpi+1Q3hZdXxDXEVpuZSE8TsXt/ZKSVkGcauS
+ 8qE+F3yraFT0YijSt8xGUh7lktnhK1pC7/nekiuflJSZgLh4ZmYpxVeNCJ8f1jrdqX+ftjfF/
+ 5e3lI7NYILKCv5WY3ailQcM83Mxqvz9m3IVDy5T25Br7aOqtPOHJAwulOAtflk86Prd9c+fwh
+ v7yWbHvWEA4EnL/2W5BVzdoPuok6756bJpvj6hDD8MjY4U99LZ7RFJ5hJHqWLu89s2uodhQ91
+ GFyqtt6KakwceVfmfafN/QMmZWuOaD+o1WXhEapNWHDNf5buBWgO0DPw8vjKuU3ykHqKHqd1J
+ yRgzYdFZxTbSelT4NmrzkS/opT4TzMiD0+ji3j2BwsAzQOAdymA7jPCcrOUQBqgXAxDKeRV2H
+ QtR6XPne5C/D2xVj66h9zROScnILMn4O4KDjGIirUgWo4wHdKMlXsHXf9K7XygMpsb8T13CsO
+ xaPMrC8K81eVdRIW5gWweaKzqqNgChkJ88vZSaNY0qyX2OG2kgzzLh9lUZQi/KUb66SnAH2KP
+ 9LfgD2tVP3YRwLYo5+xsettkONcfNCQqU1u6bKAWu4hjZ9UFBj+OItgMVc75mnRUpB0tomwbH
+ 6JVUVKPVqjjLC2335FicySAvrOYtZjTYuHyiNWNv2RDjO3X4rI8NhlFF3fguGrjxc9xrxRFDr
+ j5IFJGHNzGLxWJQOS5EQMJM/9EvzEOjEhtOV4fLzDNGT0P1QX/P4PmOYajfLFJBNvVTrSutGS
+ nYDzMiQR1eH958RSON8p9hr879PnQxoTbWF+cOT+me7W/weMF5l67P0h/sbnnnESqaWqumF+O
+ B/BwljohSbtg9vbK0MR/RWjtxa6fk78bE+n/AWzO0mqwJhszV6V9e61VWzyTrLwJmz9V1iStC
+ 6bmJS1pyao8uU30lAOEycfQBWiBk2mE1MhhSKDI62MJhjC3BsJNKObaYn3DyHphVXkPzh/RGL
+ vwkycaBEL6pyiv75LsOS1TwQRlRYztMSouigOhtOYCqjLwrKoxxl+9iBOh+VZjkiRSHRvjuKf
+ XN57qX48I60EN3XrGNh0w+RPvTDCZGfVq/pLx73s9HUlS27yqajyKlvH6TcMLyyLZf0PVacRA
+ vrb+rIJcNmwGklqqHWEo02f99+S6uLEkSdqstAQ8var1G6ADKj87Nb9iMQnw=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-=20
->=20
-> We know that "check_for_bkops" is non-zero on this side of the || because=
- it
-> was checked on the other side.
->=20
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-Reviewed-by: Avri Altman <avri.altman@wdc.com>
+> +++ b/drivers/net/ethernet/cortina/gemini.c
+> @@ -576,6 +576,8 @@ static int gmac_setup_txqs(struct net_device *netdev=
+)
+>
+>  	if (port->txq_dma_base & ~DMA_Q_BASE_MASK) {
+>  		dev_warn(geth->dev, "TX queue base is not aligned\n");
+> +		dma_free_coherent(geth->dev, len * sizeof(*desc_ring),
+> +				  desc_ring, port->txq_dma_base);
+>  		kfree(skb_tab);
+>  		return -ENOMEM;
+>  	}
 
-> ---
->  drivers/scsi/ufs/ufshcd.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
->=20
-> diff --git a/drivers/scsi/ufs/ufshcd.c b/drivers/scsi/ufs/ufshcd.c index
-> bf981f0ea74c..c299c5feaf1a 100644
-> --- a/drivers/scsi/ufs/ufshcd.c
-> +++ b/drivers/scsi/ufs/ufshcd.c
-> @@ -7684,8 +7684,7 @@ static int ufshcd_link_state_transition(struct ufs_=
-hba
-> *hba,
->          * turning off the link would also turn off the device.
->          */
->         else if ((req_link_state =3D=3D UIC_LINK_OFF_STATE) &&
-> -                  (!check_for_bkops || (check_for_bkops &&
-> -                   !hba->auto_bkops_enabled))) {
-> +                (!check_for_bkops || !hba->auto_bkops_enabled)) {
->                 /*
->                  * Let's make sure that link is in low power mode, we are=
- doing
->                  * this currently by putting the link in Hibern8. Otherwa=
-y to
-> --
-> 2.11.0
+The added function call seems to be fine.
+Would you like to avoid a bit of duplicate code for the exception handling=
+?
 
+Regards,
+Markus

@@ -2,36 +2,36 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C17411F82D
-	for <lists+kernel-janitors@lfdr.de>; Sun, 15 Dec 2019 15:28:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D94E211F844
+	for <lists+kernel-janitors@lfdr.de>; Sun, 15 Dec 2019 16:07:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726299AbfLOO2C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 15 Dec 2019 09:28:02 -0500
-Received: from mout.web.de ([212.227.15.3]:55877 "EHLO mout.web.de"
+        id S1726136AbfLOPH0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 15 Dec 2019 10:07:26 -0500
+Received: from mout.web.de ([212.227.15.14]:48669 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726118AbfLOO2C (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 15 Dec 2019 09:28:02 -0500
+        id S1726125AbfLOPHZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 15 Dec 2019 10:07:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1576420062;
-        bh=UJCtRNXt9dxsHq0AklEZDJ8nbHLtOvdKysh30YDXffU=;
+        s=dbaedf251592; t=1576422432;
+        bh=GnIzcTEvdq/ok4EhyO4z+DWoEPJ/qPc8ZlaySopFQUc=;
         h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
-        b=GZoHx02DOy+puPGrxWYPLQ0MIHM0RlwA2FUi+b9lYvrq15e3bt4JHJo8r6cQSINkX
-         A/Lg1BOhWDP9dWRN/+reId+WZNfrg+YGPzxC6tLLCQo7iJVh6+LQtLonLT2BL4Zgo7
-         wMKQw8GNZbyl5zzL9+peiyu5GZzjDcK/y1yTrClc=
+        b=SkK/RVcL4vEW4C2FTaRN46W71yPI+/y+UEMGRqjPrfeaLNBLSitTycqQKlzkXd+Pc
+         5XJ+fWcvaK7NdHMChDKJdxb5yznEX/3monTaWibBvaWZ57YlzX69eEMFxJTZTxc5on
+         22WNNOwuWuoogv2jfMWHEIzv+mwe6YMGaLmydxyc=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
 Received: from [192.168.1.3] ([2.243.76.50]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0MKrC4-1igUs20xGq-0000Hw; Sun, 15
- Dec 2019 15:27:42 +0100
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0LmLOE-1i6tow2nqs-00ZtMa; Sun, 15
+ Dec 2019 16:07:12 +0100
 To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org
+        devel@driverdev.osuosl.org
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Navid Emamdoost <emamd001@umn.edu>,
-        Hans Ulli Kroll <ulli.kroll@googlemail.com>
-References: <20191215011045.15453-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] net: gemini: Fix memory leak in gmac_setup_txqs
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        H Hartley Sweeten <hsweeten@visionengravers.com>,
+        Ian Abbott <abbotti@mev.co.uk>,
+        Navid Emamdoost <emamd001@umn.edu>
+References: <20191215013306.18880-1-navid.emamdoost@gmail.com>
+Subject: Re: [PATCH] staging: comedi: drivers: Fix memory leak in
+ gsc_hpdi_auto_attach
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,59 +76,77 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <403e8b6d-57df-e8d1-316c-150f833de842@web.de>
-Date:   Sun, 15 Dec 2019 15:27:31 +0100
+Message-ID: <69f03714-c10e-8ff9-ae64-7b35b6a5fae9@web.de>
+Date:   Sun, 15 Dec 2019 16:07:11 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.3.0
 MIME-Version: 1.0
-In-Reply-To: <20191215011045.15453-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20191215013306.18880-1-navid.emamdoost@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:tkC7z+MpYl7P5EwBkPAiILzQEkDpkdrVtcbxSxLgvaTAGE/BMwJ
- u9MDzlGB3/OK5EzyQ8EVAcaLqbIvarTxeYyeUikZGQFBmVb12OcjNZQlpiLQ9fl8JhYMAjb
- 0eQU3NihJQ25OHdwidyC9GWL/Ae66CcAiwbhwsmuE6AMb7vIhqsy9YFnwzXYX4hMA/teu41
- HkokghXClEXpuTbBMl+IA==
+X-Provags-ID: V03:K1:lhBIYc6fG3ILpnG8gx6fjslwn8J8Y+O0t9sgEcIVRjwTRmgOf6D
+ hzxs3sa+2sZixeDokmfChOLYHEibTcxI7M+iba+fzXf8J2rThDNg/OPwdq44u6OSkBaHUd1
+ 9EAfdc8R7a6vPG9/sM+NlBjyJNRfB5SIkO27gCfqDkCp8Nqcu7/IcPgP42zj3XvPNMWVIWU
+ KBUPSXTAWbm1GP7qKRLhw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:+3hLjCV0XD0=:R+iqzKOEt5TFhA0wdOtaLg
- Hs7dw96BKPfS6/yMLdL7zkyFm6kqvDNpzvyfNzZJhUtPWKZWkKuGlKIgfsKPsz501F1x7Mffd
- kXgvUWd5vtSPIF4FVtHZeJo6SKSY7lWdEszOvpi+1Q3hZdXxDXEVpuZSE8TsXt/ZKSVkGcauS
- 8qE+F3yraFT0YijSt8xGUh7lktnhK1pC7/nekiuflJSZgLh4ZmYpxVeNCJ8f1jrdqX+ftjfF/
- 5e3lI7NYILKCv5WY3ailQcM83Mxqvz9m3IVDy5T25Br7aOqtPOHJAwulOAtflk86Prd9c+fwh
- v7yWbHvWEA4EnL/2W5BVzdoPuok6756bJpvj6hDD8MjY4U99LZ7RFJ5hJHqWLu89s2uodhQ91
- GFyqtt6KakwceVfmfafN/QMmZWuOaD+o1WXhEapNWHDNf5buBWgO0DPw8vjKuU3ykHqKHqd1J
- yRgzYdFZxTbSelT4NmrzkS/opT4TzMiD0+ji3j2BwsAzQOAdymA7jPCcrOUQBqgXAxDKeRV2H
- QtR6XPne5C/D2xVj66h9zROScnILMn4O4KDjGIirUgWo4wHdKMlXsHXf9K7XygMpsb8T13CsO
- xaPMrC8K81eVdRIW5gWweaKzqqNgChkJ88vZSaNY0qyX2OG2kgzzLh9lUZQi/KUb66SnAH2KP
- 9LfgD2tVP3YRwLYo5+xsettkONcfNCQqU1u6bKAWu4hjZ9UFBj+OItgMVc75mnRUpB0tomwbH
- 6JVUVKPVqjjLC2335FicySAvrOYtZjTYuHyiNWNv2RDjO3X4rI8NhlFF3fguGrjxc9xrxRFDr
- j5IFJGHNzGLxWJQOS5EQMJM/9EvzEOjEhtOV4fLzDNGT0P1QX/P4PmOYajfLFJBNvVTrSutGS
- nYDzMiQR1eH958RSON8p9hr879PnQxoTbWF+cOT+me7W/weMF5l67P0h/sbnnnESqaWqumF+O
- B/BwljohSbtg9vbK0MR/RWjtxa6fk78bE+n/AWzO0mqwJhszV6V9e61VWzyTrLwJmz9V1iStC
- 6bmJS1pyao8uU30lAOEycfQBWiBk2mE1MhhSKDI62MJhjC3BsJNKObaYn3DyHphVXkPzh/RGL
- vwkycaBEL6pyiv75LsOS1TwQRlRYztMSouigOhtOYCqjLwrKoxxl+9iBOh+VZjkiRSHRvjuKf
- XN57qX48I60EN3XrGNh0w+RPvTDCZGfVq/pLx73s9HUlS27yqajyKlvH6TcMLyyLZf0PVacRA
- vrb+rIJcNmwGklqqHWEo02f99+S6uLEkSdqstAQ8var1G6ADKj87Nb9iMQnw=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:H/a0YwD1GW0=:OWoMtpeCPj3aM8Bu1+Aa4Z
+ 7JeRx+jbiwFwhXwrecVDMqHyNjwIfQmrrXYHj1RnQugJ0v3xJli2WrqYJOLrW5oxUGCKmING3
+ EO/We3uUZ1tAWSgYpyTnVvmjQ9QOoKouJx7oWERjgTyP0lTiCcSaKzN0/mkSEICU9A6cJ6pwg
+ ihLasnP+0ZaH1YMPV9O3XbAWBkgoi9MB9Dtb4LTNtb3buMi6KPOCq2S82iB/dlQxixnmDHny0
+ QycE56qmx5NlLJQOkClcpb/xuL9BMeqlJED5tT5Fnl6PWpDa3tEpGd4qBXq+rQnbUxYbycMZm
+ KMNbiYU8vaqgqUD/pHqR/cAuT/tBd8bQmbjfDjfdFNmGIAXNLSBV5NyR2I3G/quNx7IKU1RV4
+ 5gEAo2zywyhqvSJmSbHv39bcTo4lzrrYhzWNXIyB1HS20PLjQVJUH66YoqffVShW+lu6hD04j
+ NcaWf6RLdvtn0SI83mQ7Q4Bo/HHRp05KkDoGPLEsYNSgOBYz6JPf5TB5NgAJeOWYKw7stiVwY
+ Mdne0ozvlYQCcpPscvxG7HyP+E9wr1g7BMXFK85W7upDzW65LZJzEYucBcRAu2xklcfSHQtk4
+ OcyfTeZ8HJKVzZgLdbbME2p9vcWtpDRyKdUbwihR46dAI2EJnNhAdcuwIP2/adSP0gOTMOAfy
+ Zra49sDd/VOAnVKAhNRVwOJn4yjVxugQOi4J1CDkEPRkwqKcizd+UmFtk2aShjvXWc5yZK3rw
+ TPLsCRkPOR2gnyaTqC7h+WA5zZCTR07zTBeAPvwY48iFaG0L2ZKHyv23wG83Hkz4+KliJOriX
+ mZe669sImev8qNpbNjHOYuUjsr7Tdi1B8hsc2P7ev371kzX2+2/YnfTQo6tst/2hix1j6o1qX
+ 73naRgqQIi7bmpmr6XHBjGhsweHDfPQ6pDt6Qxb6KWiAvk9OrC5UShpCbSYm1mZY06NvXn1WH
+ OHHXNkumF+E20JTDD3WvtzwHsE8TUcFNn40KxBlx5fXeqVOAnb9ITXH3YLA7kJZBriHdka/CQ
+ 5cbtm+3HOQmNEwYz0ULx6UTyXg3A9kFEsCA7nonPXFloyLQUHkUc/nvKmGEgXYs8sPrPzXqWy
+ ndshgwN4H0vtKGqe5KIfLQX6siT/PGUMI12X5JqqvXfH82aWZGOLgfaCqIuYvr/ktk/6Fa+VY
+ gKFbksUiDL9T5727yOUHJD9NMyBb7Zmv0jXAwFNyk16nYEmw2uHrI2J64rVOANLH39NJaBtqB
+ g2Mb97iYWILEq7lK9N2SdO9qxIn1JgrJD51QmAgDS37K4yYZOGQ4dF20I9Og=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> +++ b/drivers/net/ethernet/cortina/gemini.c
-> @@ -576,6 +576,8 @@ static int gmac_setup_txqs(struct net_device *netdev=
-)
->
->  	if (port->txq_dma_base & ~DMA_Q_BASE_MASK) {
->  		dev_warn(geth->dev, "TX queue base is not aligned\n");
-> +		dma_free_coherent(geth->dev, len * sizeof(*desc_ring),
-> +				  desc_ring, port->txq_dma_base);
->  		kfree(skb_tab);
->  		return -ENOMEM;
->  	}
+> In the implementation of gsc_hpdi_auto_attach(), the allocated dma
+> description is leaks in case of alignment error, =E2=80=A6
 
-The added function call seems to be fine.
-Would you like to avoid a bit of duplicate code for the exception handling=
-?
+Please avoid a typo in this change message.
+
+
+=E2=80=A6
++++ b/drivers/staging/comedi/drivers/gsc_hpdi.c
+=E2=80=A6
+> @@ -660,6 +661,15 @@ static int gsc_hpdi_auto_attach(struct comedi_devic=
+e *dev,
+>  	s->cancel	=3D gsc_hpdi_cancel;
+>
+>  	return gsc_hpdi_init(dev);
+> +
+> +release_dma_desc:
+> +	if (devpriv->dma_desc)
+> +		dma_free_coherent(&pcidev->dev,
+> +				  sizeof(struct plx_dma_desc) *
+> +				NUM_DMA_DESCRIPTORS,
+> +				devpriv->dma_desc,
+> +				devpriv->dma_desc_phys_addr);
+> +	return retval;
+>  }
+>
+>  static void gsc_hpdi_detach(struct comedi_device *dev)
+
+I got the impression that return values from calls of the function =E2=80=
+=9Cdma_alloc_coherent=E2=80=9D
+should be checked before.
+* Would you like to add null pointer checks at other source code places?
+* Should the jump targets be accordingly adjusted then for the completion
+  of the desired exception handling?
 
 Regards,
 Markus

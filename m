@@ -2,36 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D94E211F844
-	for <lists+kernel-janitors@lfdr.de>; Sun, 15 Dec 2019 16:07:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C9F2120019
+	for <lists+kernel-janitors@lfdr.de>; Mon, 16 Dec 2019 09:44:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726136AbfLOPH0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 15 Dec 2019 10:07:26 -0500
-Received: from mout.web.de ([212.227.15.14]:48669 "EHLO mout.web.de"
+        id S1726916AbfLPIoN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 16 Dec 2019 03:44:13 -0500
+Received: from mout.web.de ([212.227.17.12]:46903 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726125AbfLOPHZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 15 Dec 2019 10:07:25 -0500
+        id S1726808AbfLPIoN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 16 Dec 2019 03:44:13 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1576422432;
-        bh=GnIzcTEvdq/ok4EhyO4z+DWoEPJ/qPc8ZlaySopFQUc=;
-        h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
-        b=SkK/RVcL4vEW4C2FTaRN46W71yPI+/y+UEMGRqjPrfeaLNBLSitTycqQKlzkXd+Pc
-         5XJ+fWcvaK7NdHMChDKJdxb5yznEX/3monTaWibBvaWZ57YlzX69eEMFxJTZTxc5on
-         22WNNOwuWuoogv2jfMWHEIzv+mwe6YMGaLmydxyc=
+        s=dbaedf251592; t=1576485833;
+        bh=+PPbIlgj/jy3PI1TwRvB8BjPTFOceJ1biaOGTKC1qeg=;
+        h=X-UI-Sender-Class:Cc:References:Subject:From:To:Date:In-Reply-To;
+        b=iKnnmMbWzwzy4R6J2dgyxZRMfavVe2zZKvXmdrViZiIhV9uHoRskU4cBb52EX6PW8
+         106N40cS9E5jv8D2u1T0XqMgOgyRBa9a2bRsglWD8LKQZ0Q3ZmD0vINh1NcO9Af/YO
+         qIl9uUpuOhwuIhpUpXafJS0fzKgVefPni3Q0Ht/s=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.3] ([2.243.76.50]) by smtp.web.de (mrweb002
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0LmLOE-1i6tow2nqs-00ZtMa; Sun, 15
- Dec 2019 16:07:12 +0100
-To:     Navid Emamdoost <navid.emamdoost@gmail.com>,
-        devel@driverdev.osuosl.org
+Received: from [192.168.1.3] ([78.48.181.202]) by smtp.web.de (mrweb101
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MKa6N-1ieqhq1UZT-001zO6; Mon, 16
+ Dec 2019 09:43:53 +0100
 Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        H Hartley Sweeten <hsweeten@visionengravers.com>,
-        Ian Abbott <abbotti@mev.co.uk>,
-        Navid Emamdoost <emamd001@umn.edu>
-References: <20191215013306.18880-1-navid.emamdoost@gmail.com>
-Subject: Re: [PATCH] staging: comedi: drivers: Fix memory leak in
- gsc_hpdi_auto_attach
+        Chas Williams <3chas3@gmail.com>, Kangjie Lu <kjlu@umn.edu>
+References: <20191215161451.24221-1-pakki001@umn.edu>
+Subject: Re: [PATCH] fore200e: Fix incorrect checks of NULL pointer
+ dereference
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -76,77 +71,85 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <69f03714-c10e-8ff9-ae64-7b35b6a5fae9@web.de>
-Date:   Sun, 15 Dec 2019 16:07:11 +0100
+To:     Aditya Pakki <pakki001@umn.edu>,
+        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org
+Message-ID: <47757327-f6df-9146-03a1-2b32b23a37e6@web.de>
+Date:   Mon, 16 Dec 2019 09:43:43 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.3.0
 MIME-Version: 1.0
-In-Reply-To: <20191215013306.18880-1-navid.emamdoost@gmail.com>
+In-Reply-To: <20191215161451.24221-1-pakki001@umn.edu>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:lhBIYc6fG3ILpnG8gx6fjslwn8J8Y+O0t9sgEcIVRjwTRmgOf6D
- hzxs3sa+2sZixeDokmfChOLYHEibTcxI7M+iba+fzXf8J2rThDNg/OPwdq44u6OSkBaHUd1
- 9EAfdc8R7a6vPG9/sM+NlBjyJNRfB5SIkO27gCfqDkCp8Nqcu7/IcPgP42zj3XvPNMWVIWU
- KBUPSXTAWbm1GP7qKRLhw==
+X-Provags-ID: V03:K1:sVy/fXwIzJJRTix6pcw7mQIpl623Gf0miVdWobIiWboF0ElQZIh
+ P2wjT+npLvNiNv6kT6YrS8Wv6EIH0r8WzBnlqOSxqGPQVeatngJB5Yzl0JKb1M6BacE2eqb
+ 0xM9sWiU+mWVS52u15jJ6k9Jlql//6bGJEE/1uiSJ3DUxM4hnChQG5IT0/pJ/uywgmFrvFt
+ VQfrM+io7XF1e0oco0RKQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:H/a0YwD1GW0=:OWoMtpeCPj3aM8Bu1+Aa4Z
- 7JeRx+jbiwFwhXwrecVDMqHyNjwIfQmrrXYHj1RnQugJ0v3xJli2WrqYJOLrW5oxUGCKmING3
- EO/We3uUZ1tAWSgYpyTnVvmjQ9QOoKouJx7oWERjgTyP0lTiCcSaKzN0/mkSEICU9A6cJ6pwg
- ihLasnP+0ZaH1YMPV9O3XbAWBkgoi9MB9Dtb4LTNtb3buMi6KPOCq2S82iB/dlQxixnmDHny0
- QycE56qmx5NlLJQOkClcpb/xuL9BMeqlJED5tT5Fnl6PWpDa3tEpGd4qBXq+rQnbUxYbycMZm
- KMNbiYU8vaqgqUD/pHqR/cAuT/tBd8bQmbjfDjfdFNmGIAXNLSBV5NyR2I3G/quNx7IKU1RV4
- 5gEAo2zywyhqvSJmSbHv39bcTo4lzrrYhzWNXIyB1HS20PLjQVJUH66YoqffVShW+lu6hD04j
- NcaWf6RLdvtn0SI83mQ7Q4Bo/HHRp05KkDoGPLEsYNSgOBYz6JPf5TB5NgAJeOWYKw7stiVwY
- Mdne0ozvlYQCcpPscvxG7HyP+E9wr1g7BMXFK85W7upDzW65LZJzEYucBcRAu2xklcfSHQtk4
- OcyfTeZ8HJKVzZgLdbbME2p9vcWtpDRyKdUbwihR46dAI2EJnNhAdcuwIP2/adSP0gOTMOAfy
- Zra49sDd/VOAnVKAhNRVwOJn4yjVxugQOi4J1CDkEPRkwqKcizd+UmFtk2aShjvXWc5yZK3rw
- TPLsCRkPOR2gnyaTqC7h+WA5zZCTR07zTBeAPvwY48iFaG0L2ZKHyv23wG83Hkz4+KliJOriX
- mZe669sImev8qNpbNjHOYuUjsr7Tdi1B8hsc2P7ev371kzX2+2/YnfTQo6tst/2hix1j6o1qX
- 73naRgqQIi7bmpmr6XHBjGhsweHDfPQ6pDt6Qxb6KWiAvk9OrC5UShpCbSYm1mZY06NvXn1WH
- OHHXNkumF+E20JTDD3WvtzwHsE8TUcFNn40KxBlx5fXeqVOAnb9ITXH3YLA7kJZBriHdka/CQ
- 5cbtm+3HOQmNEwYz0ULx6UTyXg3A9kFEsCA7nonPXFloyLQUHkUc/nvKmGEgXYs8sPrPzXqWy
- ndshgwN4H0vtKGqe5KIfLQX6siT/PGUMI12X5JqqvXfH82aWZGOLgfaCqIuYvr/ktk/6Fa+VY
- gKFbksUiDL9T5727yOUHJD9NMyBb7Zmv0jXAwFNyk16nYEmw2uHrI2J64rVOANLH39NJaBtqB
- g2Mb97iYWILEq7lK9N2SdO9qxIn1JgrJD51QmAgDS37K4yYZOGQ4dF20I9Og=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:GUNuTZ3PO1w=:Ob4pfiD4QMwL+LRCNaBv6Q
+ SVsNhb7eVc8ekStl5WBLFFcItXq+Ah1ptWEa3mwhsh9SDy2NzCrKvDJsEbLqOYOGaDfFzf9bS
+ sCZSqOXHmPPzXW8cZmy+kE+QnzZaRynDCmj1prwa58iQlH+1edbBKiadSRg5jwW+nMK21IISy
+ d0O1dc1L5uVOsv6RgmNo6NIZ19jxTH/EFmGWgnGmg9ZL94RPBMnWT1Ul7OLxiTNDcxwC0QaTg
+ IA9deXWDUulWgqi6q0AkuIGRJ8JWTnpvPrBCefDdBMn4V8CxaWvFsOMODhmmT2ugM8QAMCNp/
+ MxrV3BYWjx3pc7inmrJcrpPuQd7s0sciZOsSbhYycvyKAAdnlVb3NUnKjRjddIprXZIlz4UcK
+ 9LPmfn/4PEujFWl8P/Scq2pBwLJQHb175+meQ1KxYCGtwDVYlDhAqtc8BoXnglbdhVdBv6mCJ
+ bqeaFqAr0w/bELDt+w98TpbPM+z6ZGjrUK4PWdj1Nk1w0YdLHwONuv8mgsg7XeKXi+f/axyoc
+ DVdASo8E8fcQiYYayjLdv6fB9yFPO5OEv/OnJZ1+A6BhB8Dl2ahtVEohBuJL1K0igiQHSjbD7
+ HVgKPZcfoPyxsgQXr/S6cR7zu6m+ySc+q0h2X33Z6rIxaO5qodqJZy6Xd5eWA0Rt/yK+wVidN
+ mzVc+Civg/PzF0VKwtcyYWrmFBelegCBsF53B9JnUAPKzmUmPqIdhjtj0Uyn9WI030k1QZfOc
+ RSB7t85RkFoVPGCOyckX1vaNIQAyM23W0PZfcaK92TxRU9Nk2EN/+ud+sRDLuSdW3AhMo93r8
+ jAaumxwRbLj4Dr1RLyccFbFxdQNv8FBLjE1DmjgvfT4FDuvWKss6oA42vJxlvnvmyTFg1APr2
+ b+os1sEXhO6srYheln7k9NMNgHSe1xX2pjdVrtxk+77QXdlc4My3ULs1svx8+GaMkKtlJb7En
+ HqFNRu4QDS2vGEa+9JxSeFfxWKpTSCPqEnlXEr5XguV7FB9AA1fZFWoM7kCOyQY2jQajUOCzs
+ Uo+KFV+RmepdtIH2EB8hlnOcOaZUY/OWCez8BIASqmBIdQkFilXWyQkyPv5dLvQgvcxSy1uhO
+ ecKnxxMFkffXMW3LEpEc8XrEGHV5MdqXmmZ7FSQq8ZJYj7TE98QlpeBETX6dbNVhW0kAiWD8l
+ MsoExuNuV+1slDutyrm+vF9aXzUCLBGtCqvnGqA550T9VzmRaHTuCAuX/Iy6KDp/w3NnGyeMm
+ Li1YFMcmpW87wrjhio9GeiBQluK6tIkMefA1cO0e5qOuQ6lBh9Q50F7PD6JY=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> In the implementation of gsc_hpdi_auto_attach(), the allocated dma
-> description is leaks in case of alignment error, =E2=80=A6
+> The patch fixes these issues by avoiding NULL pointer dereferences.
 
-Please avoid a typo in this change message.
+I suggest to choose a better wording for this change description.
+
+Will the tag =E2=80=9CFixes=E2=80=9D become helpful here?
 
 
 =E2=80=A6
-+++ b/drivers/staging/comedi/drivers/gsc_hpdi.c
+> +++ b/drivers/atm/fore200e.c
 =E2=80=A6
-> @@ -660,6 +661,15 @@ static int gsc_hpdi_auto_attach(struct comedi_devic=
-e *dev,
->  	s->cancel	=3D gsc_hpdi_cancel;
->
->  	return gsc_hpdi_init(dev);
+> @@ -1480,9 +1482,18 @@ fore200e_send(struct atm_vcc *vcc, struct sk_buff=
+ *skb)
+=E2=80=A6
+> +    fore200e =3D FORE200E_DEV(vcc->dev);
+> +    fore200e_vcc =3D FORE200E_VCC(vcc);
 > +
-> +release_dma_desc:
-> +	if (devpriv->dma_desc)
-> +		dma_free_coherent(&pcidev->dev,
-> +				  sizeof(struct plx_dma_desc) *
-> +				NUM_DMA_DESCRIPTORS,
-> +				devpriv->dma_desc,
-> +				devpriv->dma_desc_phys_addr);
-> +	return retval;
->  }
+> +    if (!fore200e)
+> +        return -EINVAL;
+> +
+> +    txq =3D &fore200e->host_txq;
+> +    if (!fore200e_vcc)
+> +        return -EINVAL;
 >
->  static void gsc_hpdi_detach(struct comedi_device *dev)
+>      if (!test_bit(ATM_VF_READY, &vcc->flags)) {
+=E2=80=A6
 
-I got the impression that return values from calls of the function =E2=80=
-=9Cdma_alloc_coherent=E2=80=9D
-should be checked before.
-* Would you like to add null pointer checks at other source code places?
-* Should the jump targets be accordingly adjusted then for the completion
-  of the desired exception handling?
+
+Can the following adjustment be nicer?
+
++    fore200e_vcc =3D FORE200E_VCC(vcc);
++    if (!fore200e_vcc)
++        return -EINVAL;
++
++    fore200e =3D FORE200E_DEV(vcc->dev);
++    if (!fore200e)
++        return -EINVAL;
++
++    txq =3D &fore200e->host_txq;
+
 
 Regards,
 Markus

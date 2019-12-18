@@ -2,54 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B43F1123F6A
-	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Dec 2019 07:11:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E440412420C
+	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Dec 2019 09:43:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725882AbfLRGLN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Dec 2019 01:11:13 -0500
-Received: from mail.kernel.org ([198.145.29.99]:49606 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725810AbfLRGLN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Dec 2019 01:11:13 -0500
-Received: from localhost (unknown [27.59.34.83])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 8EE2220733;
-        Wed, 18 Dec 2019 06:11:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576649472;
-        bh=FGH/kEOVkz0IpYK/6ZR33gCKIy3N0BmqgPpHbM5AvwY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=wJF52iRZ/ocILvxdLGVMXK2Gq20Vs9g+BudF30kmn9Gk5WN7fI/Liy5gOhRgqG1wd
-         /elbMhiJAu3bmbZz7rYoP+dfyn5+lCBkMnGnLqMAwJA71AOinZvcCXy/p3oa4gPnSb
-         NJS3u/Frr4Zwwfz75rxB3VNYUP3nXQLN0svq6R+4=
-Date:   Wed, 18 Dec 2019 11:41:06 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Chuhong Yuan <hslester96@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        YueHaibing <yuehaibing@huawei.com>, dmaengine@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] dmaengine: ti: edma: Fix error return code in
- edma_probe()
-Message-ID: <20191218061106.GR2536@vkoul-mobl>
-References: <20191212114622.127322-1-weiyongjun1@huawei.com>
+        id S1726682AbfLRInW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Dec 2019 03:43:22 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:56981 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725799AbfLRInV (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 18 Dec 2019 03:43:21 -0500
+Received: from [82.43.126.140] (helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ihUvO-00038G-Ne; Wed, 18 Dec 2019 08:43:18 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     James Smart <james.smart@broadcom.com>,
+        Dick Kennedy <dick.kennedy@broadcom.com>,
+        "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] scsi: lpfc: fix spelling mistakes of asynchronous
+Date:   Wed, 18 Dec 2019 08:43:01 +0000
+Message-Id: <20191218084301.627555-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191212114622.127322-1-weiyongjun1@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 12-12-19, 11:46, Wei Yongjun wrote:
-> Fix to return negative error code -ENOMEM from the error handling
-> case instead of 0, as done elsewhere in this function.
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied, thanks
+There are spelling mistakes of asynchronous in a lpfc_printf_log
+message and comments. Fix these.
 
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/scsi/lpfc/lpfc_init.c |  2 +-
+ drivers/scsi/lpfc/lpfc_sli.c  | 10 +++++-----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+index 6298b1729098..6a04fdb3fbf2 100644
+--- a/drivers/scsi/lpfc/lpfc_init.c
++++ b/drivers/scsi/lpfc/lpfc_init.c
+@@ -5883,7 +5883,7 @@ void lpfc_sli4_async_event_proc(struct lpfc_hba *phba)
+ 			break;
+ 		default:
+ 			lpfc_printf_log(phba, KERN_ERR, LOG_SLI,
+-					"1804 Invalid asynchrous event code: "
++					"1804 Invalid asynchronous event code: "
+ 					"x%x\n", bf_get(lpfc_trailer_code,
+ 					&cq_event->cqe.mcqe_cmpl));
+ 			break;
+diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
+index c82b5792da98..625c046ac4ef 100644
+--- a/drivers/scsi/lpfc/lpfc_sli.c
++++ b/drivers/scsi/lpfc/lpfc_sli.c
+@@ -8555,7 +8555,7 @@ lpfc_sli4_async_mbox_unblock(struct lpfc_hba *phba)
+ 	psli->sli_flag &= ~LPFC_SLI_ASYNC_MBX_BLK;
+ 	spin_unlock_irq(&phba->hbalock);
+ 
+-	/* wake up worker thread to post asynchronlous mailbox command */
++	/* wake up worker thread to post asynchronous mailbox command */
+ 	lpfc_worker_wake_up(phba);
+ }
+ 
+@@ -8823,7 +8823,7 @@ lpfc_sli_issue_mbox_s4(struct lpfc_hba *phba, LPFC_MBOXQ_t *mboxq,
+ 		return rc;
+ 	}
+ 
+-	/* Now, interrupt mode asynchrous mailbox command */
++	/* Now, interrupt mode asynchronous mailbox command */
+ 	rc = lpfc_mbox_cmd_check(phba, mboxq);
+ 	if (rc) {
+ 		lpfc_printf_log(phba, KERN_ERR, LOG_MBOX | LOG_SLI,
+@@ -13112,11 +13112,11 @@ lpfc_cq_event_setup(struct lpfc_hba *phba, void *entry, int size)
+ }
+ 
+ /**
+- * lpfc_sli4_sp_handle_async_event - Handle an asynchroous event
++ * lpfc_sli4_sp_handle_async_event - Handle an asynchronous event
+  * @phba: Pointer to HBA context object.
+  * @cqe: Pointer to mailbox completion queue entry.
+  *
+- * This routine process a mailbox completion queue entry with asynchrous
++ * This routine process a mailbox completion queue entry with asynchronous
+  * event.
+  *
+  * Return: true if work posted to worker thread, otherwise false.
+@@ -13270,7 +13270,7 @@ lpfc_sli4_sp_handle_mbox_event(struct lpfc_hba *phba, struct lpfc_mcqe *mcqe)
+  * @cqe: Pointer to mailbox completion queue entry.
+  *
+  * This routine process a mailbox completion queue entry, it invokes the
+- * proper mailbox complete handling or asynchrous event handling routine
++ * proper mailbox complete handling or asynchronous event handling routine
+  * according to the MCQE's async bit.
+  *
+  * Return: true if work posted to worker thread, otherwise false.
 -- 
-~Vinod
+2.24.0
+

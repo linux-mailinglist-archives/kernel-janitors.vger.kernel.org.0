@@ -2,95 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48570124AFE
-	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Dec 2019 16:13:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BCD4F124FB0
+	for <lists+kernel-janitors@lfdr.de>; Wed, 18 Dec 2019 18:51:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727021AbfLRPN2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Dec 2019 10:13:28 -0500
-Received: from mail-il1-f195.google.com ([209.85.166.195]:46425 "EHLO
-        mail-il1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726996AbfLRPN2 (ORCPT
+        id S1727241AbfLRRuz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 18 Dec 2019 12:50:55 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:57081 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727217AbfLRRuz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Dec 2019 10:13:28 -0500
-Received: by mail-il1-f195.google.com with SMTP id t17so1948087ilm.13
-        for <kernel-janitors@vger.kernel.org>; Wed, 18 Dec 2019 07:13:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
-        b=KZtHbK6owYTtaltO6tO3k6zmkTyoOey5lGF7KW//gJf1+AeCBmOcvuYk8zyjOWZe3c
-         bMTRWd0bh4Wvsxf0ORnbOYsdzejd/m077dN3oFjmr3eMo/xaOKkyW+/97SjEtxwc6CIi
-         XUwmiE3TZdBqAuuZ+z37khJEbHpbEloMkCce860kp20ygAMhUe6OrRZ+/9hWjdWBPlGZ
-         Lq63QocI+8c+QMn6ziCtq+ncTedbLD1+mqwyXmpOoLjsA8QBe27IzDWKmQAiFK2PLOkW
-         RFyqILqx/TDDkz2hQ26vHczCUWejBQgSPNNcjgimlJjiybe0R0EN+FVnyag9BLXrw3XX
-         Rdzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=R9l9mbjTMtC+3agOxuj88vgGSGUSi1shzIvbtHPQHDA=;
-        b=pwrupuOJiKL/Icb57cM/dZzCbAUAbpW11toXs3TTmNEt9bWQxwiTiZ5JOL53ZO0h7J
-         VvUb3kgFA2LmenYDvlqEKDK+Mj/lneqbwkKUizJrTrRVAJbpwsTIHMk6lVPUKn+IQ8bI
-         m90nMdAjLaE4kNK3dRqwY5Zm3UJmr2RvgoqRDMkfk/6YJtq3dUGneO6LbTMrGxqFwuNz
-         8bnzWenSw0bxS0Kl7R9Fzthy//NDTNm30EvPjFWjZ2Xvqaht1Dpa/G/RLmYJTS6wwtCT
-         2ZoYbWLrWIV549Dwe15+CEMb3voaBUtEWT53Zfz+zj/2opTZzPg6pzI0C8zet8Cl7Ca+
-         qGrw==
-X-Gm-Message-State: APjAAAXkTozLNFD4KTO6v5uI8kb6Td9wAfnf/W4kJ5DHRk1/Q3LfZGuW
-        1qc49dXWzkESx0aayrrEQ6c4iu+XcVXsGeyQrQ==
-X-Google-Smtp-Source: APXvYqzuIDc9fqne8niKEOip3izv9v8XPyenOJB1EJVtd7PIufYRdamuz6QrkBLARxcDqhRkkLoY1bUTbFHu10u9IUU=
-X-Received: by 2002:a92:51:: with SMTP id 78mr2337454ila.121.1576682007724;
- Wed, 18 Dec 2019 07:13:27 -0800 (PST)
+        Wed, 18 Dec 2019 12:50:55 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1576691454; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=bFXvzXoFTxvglZdtYZicMRuOxhYqT/9wAIQNclYB/7Y=;
+ b=XVy5uyzWklDOgpaM+0/RTZV/Gd8Ygf3H2S74Wk0vFI6EkpqdhYyiKPflr9nakmLx+iI+iHWy
+ kBmWw50C5+ID4TyMLAwRmtdq5PhIP05h/3akwpSSl34gWN3NidGVcMkSySiY70iiw2KNup/U
+ p4M8Kv5J6Wv/riP0jtJr2BQrOiI=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5dfa66fd.7f7b8042da40-smtp-out-n02;
+ Wed, 18 Dec 2019 17:50:53 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 099A7C4479C; Wed, 18 Dec 2019 17:50:52 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id CC4D0C433CB;
+        Wed, 18 Dec 2019 17:50:49 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org CC4D0C433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Received: by 2002:a02:6603:0:0:0:0:0 with HTTP; Wed, 18 Dec 2019 07:13:27
- -0800 (PST)
-Reply-To: dhl.expresscourier102156@outlook.fr
-From:   "MS. MARYANNA B. THOMASON" <info.zennitbankplcnigerian@gmail.com>
-Date:   Wed, 18 Dec 2019 16:13:27 +0100
-Message-ID: <CABHzvrnE4KwOd7FrVSooBdgKYK5Zt+jHFRRebDgeRZagfVhW0g@mail.gmail.com>
-Subject: =?UTF-8?Q?Urgent_delivery_Notification_of_your_ATM_MASTER_CARD?=
-        =?UTF-8?Q?_Amount=2C=2415=2E800=E2=80=99000=E2=80=9900=2C?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH][next] ath11k: fix several spelling mistakes
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191211083443.372506-1-colin.king@canonical.com>
+References: <20191211083443.372506-1-colin.king@canonical.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20191218175052.099A7C4479C@smtp.codeaurora.org>
+Date:   Wed, 18 Dec 2019 17:50:52 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Attn Dear.
+Colin King <colin.king@canonical.com> wrote:
 
-Urgent delivery Notification of your ATM MASTER CARD, Dhl-Benin is
-ready for delivery of your ATM Master card worth $15.800=E2=80=99000=E2=80=
-=9900, as
-approved this morning, Date, 18/12/2019. Through the Intruction from
-INTERNATIONAL MONETARY FUNDS, I.M.F official Directors.
+> There are several spelling mistakes in warning and debug messages,
+> fix them.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
-REGISTRATION NO :EG58945
-PARCEL NUMBER: 140479
-Delivery Schuleded now,
-Finally all we required from you is your ATM Card Proccessing Delivery
-fees $19.00 only which you must send to this DHL service to enable us
-dispatch the parcel to your destination today.
+Patch applied to ath-next branch of ath.git, thanks.
 
-Here is our receiving payment details.
-You are advised to send it Via Money Gram Service.
+345a4f223a7c ath11k: fix several spelling mistakes
 
-Receiver's Name--------Alan Ude
-Country-------Benin Republic.
-City/ Address--------Cotonou
-Test Question--------In God
-Answer-------We Trust
-Amount------------$US19.00 only
-Mtcn-------------
-Sender's Name-------
+-- 
+https://patchwork.kernel.org/patch/11284409/
 
-Your delivery  ATM card worth $15.800=E2=80=99000=E2=80=9900,
-Is Due for delivery to your address today upon confirmation of
-required fee from you asap.
-
-Call us on this phone number for any inquiry. +229 62819378
-Awaiting your urgent response.
-
-MS. MARYANNA B. THOMASON, Shipment director, DHL Express
-Courier Company-Benin
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

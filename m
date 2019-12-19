@@ -2,109 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DEA401264F8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Dec 2019 15:39:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6004E126B7F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Dec 2019 19:57:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726767AbfLSOjR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Dec 2019 09:39:17 -0500
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:38676 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726757AbfLSOjR (ORCPT
+        id S1730539AbfLSS5C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Dec 2019 13:57:02 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:50189 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730815AbfLSS4j (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Dec 2019 09:39:17 -0500
-Received: by mail-lj1-f196.google.com with SMTP id k8so6501196ljh.5;
-        Thu, 19 Dec 2019 06:39:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ETYzlEK/SKBE9MSwRXzOWbDS35XqdxpOfczqaHg4TKc=;
-        b=bF6N2eZx/MJp5NAY51e4sTEXMVHwISjjo0PKdetj3l1hlk8EBl5mFcOmJzXliHShr4
-         Qv0rBP6jIhfLuA3CYg+1GAP89gytngUDyanU8HoX8Ep7UOqEEMcsywI4fI82j79oNZDC
-         vIKrkImriDPp8C9uFKfr/6dSxwwy7pcKPHQmDAY8pzWNBwJrY/6xNGzB08dxLJtgqM5v
-         Sb+wiyOfpSXx6nI1wORv2R5/1xNgnKBBcv/DOkq14SWK+BsssmTjxvZtRgVPGAbk3Hxk
-         sOndlmLpSj0y9fidXN4WwG4jG9KByFjYzS4F7zzCP8Wh4dSoaFayAtRDQOcQB77kXXDZ
-         Ti5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ETYzlEK/SKBE9MSwRXzOWbDS35XqdxpOfczqaHg4TKc=;
-        b=PEtYRJxmmW0Hy3lUkW5t+faWgKN/3G2s93lBGWsgme5OopGu23xdZLPNyazUqMsI4m
-         /Z34ZR6tuDwoNqBMhtBWwFi1pzY7oaT6Snb0SOuAGGclPU8in+rd0hwJ6BG+11n3cv0g
-         YzBD1yRud5icL2wKgtaMH/3xSNzFqbOhTmZWstY8meUCcqMfobqZqXdXjhWFf/uZtSEB
-         vw8dTIZVydCUesU9RmqMm9e4pdtD+BMSTUydly7rqOztVKvq7JF98eugn/TPQaFXs15Y
-         IvcyMw3q4VQKDZhtm01iM2mK90jT+2DrB7geGBNESO6AKn3bKRC74YL7EHmWJsEXsH9O
-         oK+A==
-X-Gm-Message-State: APjAAAUSwo1ewANZLuILTmUhXRk3VO3HBCadvFb20SGSv8pAGwXOGWCB
-        mDebFeS2LY5JbvVWr0VNf7wi6eTeX0fmdcT4orQ=
-X-Google-Smtp-Source: APXvYqy/s+mw/ppdDLohJW+mt6r4UAY+bJ1lL980yaETjnVIH9hg0vqWdUTsurmxXhTnZAp4biAnBoy/zXdN4xmx5AI=
-X-Received: by 2002:a05:651c:2046:: with SMTP id t6mr5483542ljo.180.1576766355054;
- Thu, 19 Dec 2019 06:39:15 -0800 (PST)
+        Thu, 19 Dec 2019 13:56:39 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ii0xz-0004Ep-UI; Thu, 19 Dec 2019 18:56:08 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Alessandro Zummo <a.zummo@towertech.it>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        linux-rtc@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] rtc: rv3029: remove redundant return statement
+Date:   Thu, 19 Dec 2019 18:56:07 +0000
+Message-Id: <20191219185607.21285-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-References: <20191216162136.270114-1-colin.king@canonical.com>
-In-Reply-To: <20191216162136.270114-1-colin.king@canonical.com>
-From:   Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Date:   Thu, 19 Dec 2019 15:39:04 +0100
-Message-ID: <CAMeQTsYmqJwYrAM1bGu2VyVop3sSFcp2fOMrxD4OvhH13jad9Q@mail.gmail.com>
-Subject: Re: [PATCH][next] drm/gma500: fix null dereference of pointer fb
- before null check
-To:     Colin King <colin.king@canonical.com>
-Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        kernel-janitors@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Dec 16, 2019 at 5:21 PM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> Pointer fb is being dereferenced when assigning dev before it
-> is null checked.  Fix this by only dereferencing dev after the
-> null check.
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied to drm-misc-next
+There are two return statements at the end of the function
+rv30x9_init, the latter is redundant and can be removed. Remove
+it.
 
-Thanks
-Patrik
+Addresses-Coverity: ("Structurally dead code")
+Fixes: ef2f1df54a29 ("rtc: rv3029: remove useless error messages")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/rtc/rtc-rv3029c2.c | 2 --
+ 1 file changed, 2 deletions(-)
 
->
-> Fixes: 6b7ce2c4161a ("drm/gma500: Remove struct psb_fbdev")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/gpu/drm/gma500/accel_2d.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/gpu/drm/gma500/accel_2d.c b/drivers/gpu/drm/gma500/accel_2d.c
-> index b9e5a38632f7..adc0507545bf 100644
-> --- a/drivers/gpu/drm/gma500/accel_2d.c
-> +++ b/drivers/gpu/drm/gma500/accel_2d.c
-> @@ -228,8 +228,8 @@ static void psbfb_copyarea_accel(struct fb_info *info,
->  {
->         struct drm_fb_helper *fb_helper = info->par;
->         struct drm_framebuffer *fb = fb_helper->fb;
-> -       struct drm_device *dev = fb->dev;
-> -       struct drm_psb_private *dev_priv = dev->dev_private;
-> +       struct drm_device *dev;
-> +       struct drm_psb_private *dev_priv;
->         uint32_t offset;
->         uint32_t stride;
->         uint32_t src_format;
-> @@ -238,6 +238,8 @@ static void psbfb_copyarea_accel(struct fb_info *info,
->         if (!fb)
->                 return;
->
-> +       dev = fb->dev;
-> +       dev_priv = dev->dev_private;
->         offset = to_gtt_range(fb->obj[0])->offset;
->         stride = fb->pitches[0];
->
-> --
-> 2.24.0
->
+diff --git a/drivers/rtc/rtc-rv3029c2.c b/drivers/rtc/rtc-rv3029c2.c
+index 4eda0db72b66..7c52efb7d113 100644
+--- a/drivers/rtc/rtc-rv3029c2.c
++++ b/drivers/rtc/rtc-rv3029c2.c
+@@ -898,8 +898,6 @@ static int __init rv30x9_init(void)
+ 		return ret;
+ 
+ 	return rv3049_register_driver();
+-
+-	return ret;
+ }
+ module_init(rv30x9_init)
+ 
+-- 
+2.24.0
+

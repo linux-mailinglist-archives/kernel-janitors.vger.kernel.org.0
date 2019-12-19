@@ -2,106 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9963412594D
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Dec 2019 02:37:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 09B891263B8
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Dec 2019 14:38:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726716AbfLSBhB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 18 Dec 2019 20:37:01 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:58530 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726463AbfLSBhB (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 18 Dec 2019 20:37:01 -0500
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 8CAE8E6E34F961F4045C;
-        Thu, 19 Dec 2019 09:36:58 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.439.0; Thu, 19 Dec 2019 09:36:48 +0800
-From:   Mao Wenan <maowenan@huawei.com>
-To:     <davem@davemloft.net>, <maowenan@huawei.com>,
-        <edumazet@google.com>, <willemb@google.com>,
-        <maximmi@mellanox.com>, <pabeni@redhat.com>,
-        <yuehaibing@huawei.com>, <nhorman@tuxdriver.com>
-CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net] af_packet: refactoring code for prb_calc_retire_blk_tmo
-Date:   Thu, 19 Dec 2019 09:33:44 +0800
-Message-ID: <20191219013344.34603-1-maowenan@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726836AbfLSNi0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Dec 2019 08:38:26 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:36587 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726760AbfLSNiZ (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 19 Dec 2019 08:38:25 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1576762705; h=Content-Type: MIME-Version: Message-ID:
+ In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
+ bh=RPQGFB5PyYkICsCq/dy0eg390UyfcUdXx5VEiXg0zF4=; b=YaaTnEL/Paik9aukL5qtVKu/pQvy3pbamBE86aYgLsVbxlhHFUssCh503s+lS2JAsRabdlgP
+ 4iVmk38lc/FSHw5leu6kWAT/2puN5Kpughzj+gBMVbA9dqvwphHz0GEKQ7onWCWuVQxd6JgG
+ w3qOofwF1cUAtLNAUNay3Mf+Gc8=
+X-Mailgun-Sending-Ip: 104.130.122.26
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5dfb7d50.7f3b38c24960-smtp-out-n03;
+ Thu, 19 Dec 2019 13:38:24 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id F300DC447A4; Thu, 19 Dec 2019 13:38:23 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 44ECBC4479F;
+        Thu, 19 Dec 2019 13:38:20 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 44ECBC4479F
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+From:   Kalle Valo <kvalo@codeaurora.org>
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     <davem@davemloft.net>, <msinada@codeaurora.org>,
+        <periyasa@codeaurora.org>, <mpubbise@codeaurora.org>,
+        <julia.lawall@lip6.fr>, <milehu@codeaurora.org>,
+        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH -next] ath11k: add dependency for struct ath11k member debug
+References: <20191213012417.130719-1-maowenan@huawei.com>
+Date:   Thu, 19 Dec 2019 15:38:18 +0200
+In-Reply-To: <20191213012417.130719-1-maowenan@huawei.com> (Mao Wenan's
+        message of "Fri, 13 Dec 2019 09:24:17 +0800")
+Message-ID: <875zic77w5.fsf@kamboji.qca.qualcomm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If __ethtool_get_link_ksettings() is failed and with
-non-zero value, prb_calc_retire_blk_tmo() should return
-DEFAULT_PRB_RETIRE_TOV firstly. Refactoring code and make
-it more readable.
+Mao Wenan <maowenan@huawei.com> writes:
 
-Fixes: b43d1f9f7067 ("af_packet: set defaule value for tmo")
-Signed-off-by: Mao Wenan <maowenan@huawei.com>
----
- net/packet/af_packet.c | 26 +++++++++++---------------
- 1 file changed, 11 insertions(+), 15 deletions(-)
+> If CONFIG_ATH11K, CONFIG_MAC80211_DEBUGFS are set,
+> and CONFIG_ATH11K_DEBUGFS is not set, below error can be found,
+> drivers/net/wireless/ath/ath11k/debugfs_sta.c: In function ath11k_dbg_sta_open_htt_peer_stats:
+> drivers/net/wireless/ath/ath11k/debugfs_sta.c:411:4: error: struct ath11k has no member named debug
+>   ar->debug.htt_stats.stats_req = stats_req;
+>
+> It is to add the dependency for the member of struct ath11k.
+>
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
+> ---
+>  drivers/net/wireless/ath/ath11k/debugfs_sta.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/net/wireless/ath/ath11k/debugfs_sta.c b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
+> index 3c5f931..bcc51d7 100644
+> --- a/drivers/net/wireless/ath/ath11k/debugfs_sta.c
+> +++ b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
+> @@ -408,7 +408,9 @@ ath11k_dbg_sta_open_htt_peer_stats(struct inode *inode, struct file *file)
+>  		return -ENOMEM;
+>  
+>  	mutex_lock(&ar->conf_mutex);
+> +#ifdef CONFIG_ATH11K_DEBUGFS
+>  	ar->debug.htt_stats.stats_req = stats_req;
+> +#endif
 
-diff --git a/net/packet/af_packet.c b/net/packet/af_packet.c
-index 118cd66..843ebf8 100644
---- a/net/packet/af_packet.c
-+++ b/net/packet/af_packet.c
-@@ -520,7 +520,7 @@ static int prb_calc_retire_blk_tmo(struct packet_sock *po,
- 				int blk_size_in_bytes)
- {
- 	struct net_device *dev;
--	unsigned int mbits = 0, msec = 0, div = 0, tmo = 0;
-+	unsigned int mbits = 0, msec = 1, div = 0, tmo = 0;
- 	struct ethtool_link_ksettings ecmd;
- 	int err;
- 
-@@ -532,21 +532,17 @@ static int prb_calc_retire_blk_tmo(struct packet_sock *po,
- 	}
- 	err = __ethtool_get_link_ksettings(dev, &ecmd);
- 	rtnl_unlock();
--	if (!err) {
--		/*
--		 * If the link speed is so slow you don't really
--		 * need to worry about perf anyways
--		 */
--		if (ecmd.base.speed < SPEED_1000 ||
--		    ecmd.base.speed == SPEED_UNKNOWN) {
--			return DEFAULT_PRB_RETIRE_TOV;
--		} else {
--			msec = 1;
--			div = ecmd.base.speed / 1000;
--		}
--	} else
-+	if (err)
-+		return DEFAULT_PRB_RETIRE_TOV;
-+
-+	/* If the link speed is so slow you don't really
-+	 * need to worry about perf anyways
-+	 */
-+	if (ecmd.base.speed < SPEED_1000 ||
-+	    ecmd.base.speed == SPEED_UNKNOWN)
- 		return DEFAULT_PRB_RETIRE_TOV;
- 
-+	div = ecmd.base.speed / 1000;
- 	mbits = (blk_size_in_bytes * 8) / (1024 * 1024);
- 
- 	if (div)
-@@ -555,7 +551,7 @@ static int prb_calc_retire_blk_tmo(struct packet_sock *po,
- 	tmo = mbits * msec;
- 
- 	if (div)
--		return tmo+1;
-+		return tmo + 1;
- 	return tmo;
- }
- 
+ifdefs are ugly and I don't think this is the root cause for the
+problem. I suspect (but not sure!) that ATH11K_DEBUGFS should depend on
+MAC80211_DEBUGFS, not DEBUG_FS like it does now. Or would there be a
+valid reason to have ATH11K_DEBUGFS enabled but not MAC80211_DEBUGFS?
+
+Then we could also change Makefile to this:
+
+ath11k-$(CONFIG_ATH11K_DEBUGFS) += debugfs_sta.o
+
+And hopefully get rid of an ifdef:
+
+drivers/net/wireless/ath/ath11k/debug.h:#ifdef CONFIG_MAC80211_DEBUGFS
+drivers/net/wireless/ath/ath11k/debug.h:#else /* !CONFIG_MAC80211_DEBUGFS */
+drivers/net/wireless/ath/ath11k/debug.h:#endif /* CONFIG_MAC80211_DEBUGFS*/
+
+Care to try this out?
+
 -- 
-2.7.4
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

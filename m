@@ -2,29 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6004E126B7F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Dec 2019 19:57:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E746126D3E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Dec 2019 20:09:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730539AbfLSS5C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Dec 2019 13:57:02 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:50189 "EHLO
+        id S1728244AbfLSTJ1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Dec 2019 14:09:27 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:50374 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730815AbfLSS4j (ORCPT
+        with ESMTP id S1727504AbfLSTJ0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Dec 2019 13:56:39 -0500
+        Thu, 19 Dec 2019 14:09:26 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1ii0xz-0004Ep-UI; Thu, 19 Dec 2019 18:56:08 +0000
+        id 1ii1Aj-0004qM-07; Thu, 19 Dec 2019 19:09:17 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Alessandro Zummo <a.zummo@towertech.it>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        linux-rtc@vger.kernel.org
+To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] rtc: rv3029: remove redundant return statement
-Date:   Thu, 19 Dec 2019 18:56:07 +0000
-Message-Id: <20191219185607.21285-1-colin.king@canonical.com>
+Subject: [PATCH][next] drm/i915: fix uninitialized pointer reads on pointers to and from
+Date:   Thu, 19 Dec 2019 19:09:16 +0000
+Message-Id: <20191219190916.24693-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,29 +40,30 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There are two return statements at the end of the function
-rv30x9_init, the latter is redundant and can be removed. Remove
-it.
+Currently pointers to and from are not initialized and may contain
+garbage values. This will cause uninitialized pointer reads in the
+call to intel_frontbuffer_track and later checks to see if to and from
+are null.  Fix this by ensuring to and from are initialized to NULL.
 
-Addresses-Coverity: ("Structurally dead code")
-Fixes: ef2f1df54a29 ("rtc: rv3029: remove useless error messages")
+Addresses-Coverity: ("Uninitialised pointer read)"
+Fixes: da42104f589d ("drm/i915: Hold reference to intel_frontbuffer as we track activity")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/rtc/rtc-rv3029c2.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/gpu/drm/i915/display/intel_overlay.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-rv3029c2.c b/drivers/rtc/rtc-rv3029c2.c
-index 4eda0db72b66..7c52efb7d113 100644
---- a/drivers/rtc/rtc-rv3029c2.c
-+++ b/drivers/rtc/rtc-rv3029c2.c
-@@ -898,8 +898,6 @@ static int __init rv30x9_init(void)
- 		return ret;
+diff --git a/drivers/gpu/drm/i915/display/intel_overlay.c b/drivers/gpu/drm/i915/display/intel_overlay.c
+index 6097594468a9..e869a3d86522 100644
+--- a/drivers/gpu/drm/i915/display/intel_overlay.c
++++ b/drivers/gpu/drm/i915/display/intel_overlay.c
+@@ -279,7 +279,7 @@ static void intel_overlay_flip_prepare(struct intel_overlay *overlay,
+ 				       struct i915_vma *vma)
+ {
+ 	enum pipe pipe = overlay->crtc->pipe;
+-	struct intel_frontbuffer *from, *to;
++	struct intel_frontbuffer *from = NULL, *to = NULL;
  
- 	return rv3049_register_driver();
--
--	return ret;
- }
- module_init(rv30x9_init)
+ 	WARN_ON(overlay->old_vma);
  
 -- 
 2.24.0

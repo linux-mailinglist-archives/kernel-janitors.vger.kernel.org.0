@@ -2,109 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 09B891263B8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Dec 2019 14:38:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42561126414
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Dec 2019 14:57:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726836AbfLSNi0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Dec 2019 08:38:26 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:36587 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726760AbfLSNiZ (ORCPT
+        id S1726836AbfLSN5c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Dec 2019 08:57:32 -0500
+Received: from mail-yw1-f68.google.com ([209.85.161.68]:38274 "EHLO
+        mail-yw1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726744AbfLSN5b (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Dec 2019 08:38:25 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1576762705; h=Content-Type: MIME-Version: Message-ID:
- In-Reply-To: Date: References: Subject: Cc: To: From: Sender;
- bh=RPQGFB5PyYkICsCq/dy0eg390UyfcUdXx5VEiXg0zF4=; b=YaaTnEL/Paik9aukL5qtVKu/pQvy3pbamBE86aYgLsVbxlhHFUssCh503s+lS2JAsRabdlgP
- 4iVmk38lc/FSHw5leu6kWAT/2puN5Kpughzj+gBMVbA9dqvwphHz0GEKQ7onWCWuVQxd6JgG
- w3qOofwF1cUAtLNAUNay3Mf+Gc8=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5dfb7d50.7f3b38c24960-smtp-out-n03;
- Thu, 19 Dec 2019 13:38:24 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id F300DC447A4; Thu, 19 Dec 2019 13:38:23 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 44ECBC4479F;
-        Thu, 19 Dec 2019 13:38:20 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 44ECBC4479F
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-From:   Kalle Valo <kvalo@codeaurora.org>
-To:     Mao Wenan <maowenan@huawei.com>
-Cc:     <davem@davemloft.net>, <msinada@codeaurora.org>,
-        <periyasa@codeaurora.org>, <mpubbise@codeaurora.org>,
-        <julia.lawall@lip6.fr>, <milehu@codeaurora.org>,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-wireless@vger.kernel.org, ath11k@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH -next] ath11k: add dependency for struct ath11k member debug
-References: <20191213012417.130719-1-maowenan@huawei.com>
-Date:   Thu, 19 Dec 2019 15:38:18 +0200
-In-Reply-To: <20191213012417.130719-1-maowenan@huawei.com> (Mao Wenan's
-        message of "Fri, 13 Dec 2019 09:24:17 +0800")
-Message-ID: <875zic77w5.fsf@kamboji.qca.qualcomm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/24.5 (gnu/linux)
+        Thu, 19 Dec 2019 08:57:31 -0500
+Received: by mail-yw1-f68.google.com with SMTP id 10so2174053ywv.5
+        for <kernel-janitors@vger.kernel.org>; Thu, 19 Dec 2019 05:57:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=1yn+mK/5xEg4fegs3phGOsQ7/Ct6TERF9p632E4MnVU=;
+        b=Z+70zlfpfDFUhG4zCZN0o7aK311Wb9wqmTfhJspMn390U/L7t8E4FJKmpey+FMMx+m
+         MTrrHYTduZesm6fol+ZJfFmbXUWIpqMnwaYzeIw4f74e8jT8uVqAV65Rga3P/rBzQz12
+         t3fhOs6j8YhRorlFhHq64M1oHtQQOHmkXE/UgtMGS/SQwbqOXSNKOW3/cr9q2XF8EoaT
+         S8zSoSXCT9OwRrk+rJUEubK+m3qxHSe5oZ1JUCTlhyjI8QrEfKD/sOXaX44xHEOlYR0P
+         QJU5pdTCLdk9Pu7p6orkgIjjgAjT/7ZDfZ4a49i0E9kzIhy8mQRWWEl8xV8Bzxfk+rQo
+         u7/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=1yn+mK/5xEg4fegs3phGOsQ7/Ct6TERF9p632E4MnVU=;
+        b=g5p5hTByK8xrQfiKg0QtWoQc5aehRpSMu4KPJLLSVJ9RH+oNgcrpgeDadIvXYxu/bA
+         jupTl0jN2jjcVXPIwtMiTfOGRjyS1Itm/unHD11oJe/kR3PSF6pQSk5rk9cP8n9P8X7l
+         X5pY5DZEu1BglfFyu5OAaTivOqrsfHxTNoBHogHAbX/TLNrHDY6YP0GHF9bJY5GdCcSb
+         tPA4zV394kUlcdAV0taBMJGTz6kmmB53oGefujTVfU56FUaqfJX7onQIepab/pJYoQra
+         zIlOtFslHhzMoq+WMHvkguFBvxnzs/C/7JELrNapq9PSYqfGTIOrXgP+xqtM+fe9SpQc
+         nfYQ==
+X-Gm-Message-State: APjAAAU7Zy0EgqoPOxi9t9LBwiMVUzPvAUlKRZYtvFlCt0YnUTozjLzz
+        z/I/rUpb6gcVC0FWNR0dKf+DwLQa
+X-Google-Smtp-Source: APXvYqwCVAXxQiSJp1kjqXWtw+qZOPDl2MOyKSOtVVwqeQR+xy7pMHkWYbY0WeXNhzh/wYbEfYxrgA==
+X-Received: by 2002:a81:3a06:: with SMTP id h6mr6268938ywa.170.1576763849474;
+        Thu, 19 Dec 2019 05:57:29 -0800 (PST)
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com. [209.85.219.170])
+        by smtp.gmail.com with ESMTPSA id e187sm2450546ywd.7.2019.12.19.05.57.27
+        for <kernel-janitors@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Dec 2019 05:57:28 -0800 (PST)
+Received: by mail-yb1-f170.google.com with SMTP id x14so2193191ybr.4
+        for <kernel-janitors@vger.kernel.org>; Thu, 19 Dec 2019 05:57:27 -0800 (PST)
+X-Received: by 2002:a5b:348:: with SMTP id q8mr6431302ybp.83.1576763847446;
+ Thu, 19 Dec 2019 05:57:27 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20191219013344.34603-1-maowenan@huawei.com>
+In-Reply-To: <20191219013344.34603-1-maowenan@huawei.com>
+From:   Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Date:   Thu, 19 Dec 2019 08:56:50 -0500
+X-Gmail-Original-Message-ID: <CA+FuTScgWi905_NhGNsRzpwaQ+OPwahj6NtKgPjLZRjuqJvhXQ@mail.gmail.com>
+Message-ID: <CA+FuTScgWi905_NhGNsRzpwaQ+OPwahj6NtKgPjLZRjuqJvhXQ@mail.gmail.com>
+Subject: Re: [PATCH net] af_packet: refactoring code for prb_calc_retire_blk_tmo
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     David Miller <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, maximmi@mellanox.com,
+        Paolo Abeni <pabeni@redhat.com>, yuehaibing@huawei.com,
+        Neil Horman <nhorman@tuxdriver.com>,
+        Network Development <netdev@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Mao Wenan <maowenan@huawei.com> writes:
-
-> If CONFIG_ATH11K, CONFIG_MAC80211_DEBUGFS are set,
-> and CONFIG_ATH11K_DEBUGFS is not set, below error can be found,
-> drivers/net/wireless/ath/ath11k/debugfs_sta.c: In function ath11k_dbg_sta_open_htt_peer_stats:
-> drivers/net/wireless/ath/ath11k/debugfs_sta.c:411:4: error: struct ath11k has no member named debug
->   ar->debug.htt_stats.stats_req = stats_req;
+On Wed, Dec 18, 2019 at 8:37 PM Mao Wenan <maowenan@huawei.com> wrote:
 >
-> It is to add the dependency for the member of struct ath11k.
+> If __ethtool_get_link_ksettings() is failed and with
+> non-zero value, prb_calc_retire_blk_tmo() should return
+> DEFAULT_PRB_RETIRE_TOV firstly. Refactoring code and make
+> it more readable.
 >
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> ---
->  drivers/net/wireless/ath/ath11k/debugfs_sta.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/net/wireless/ath/ath11k/debugfs_sta.c b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-> index 3c5f931..bcc51d7 100644
-> --- a/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-> +++ b/drivers/net/wireless/ath/ath11k/debugfs_sta.c
-> @@ -408,7 +408,9 @@ ath11k_dbg_sta_open_htt_peer_stats(struct inode *inode, struct file *file)
->  		return -ENOMEM;
->  
->  	mutex_lock(&ar->conf_mutex);
-> +#ifdef CONFIG_ATH11K_DEBUGFS
->  	ar->debug.htt_stats.stats_req = stats_req;
-> +#endif
+> Fixes: b43d1f9f7067 ("af_packet: set defaule value for tmo")
 
-ifdefs are ugly and I don't think this is the root cause for the
-problem. I suspect (but not sure!) that ATH11K_DEBUGFS should depend on
-MAC80211_DEBUGFS, not DEBUG_FS like it does now. Or would there be a
-valid reason to have ATH11K_DEBUGFS enabled but not MAC80211_DEBUGFS?
+This is a pure refactor, not a fix.
 
-Then we could also change Makefile to this:
+Code refactors make backporting fixes across releases harder, among
+other things. I think this code is better left as is. Either way, it
+would be a candidate for net-next, not net.
 
-ath11k-$(CONFIG_ATH11K_DEBUGFS) += debugfs_sta.o
+> -       unsigned int mbits = 0, msec = 0, div = 0, tmo = 0;
+> +       unsigned int mbits = 0, msec = 1, div = 0, tmo = 0;
 
-And hopefully get rid of an ifdef:
-
-drivers/net/wireless/ath/ath11k/debug.h:#ifdef CONFIG_MAC80211_DEBUGFS
-drivers/net/wireless/ath/ath11k/debug.h:#else /* !CONFIG_MAC80211_DEBUGFS */
-drivers/net/wireless/ath/ath11k/debug.h:#endif /* CONFIG_MAC80211_DEBUGFS*/
-
-Care to try this out?
-
--- 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+Most of these do not need to be initialized here at all, really.

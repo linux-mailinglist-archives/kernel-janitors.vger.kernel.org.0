@@ -2,57 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D17B126E22
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Dec 2019 20:43:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC2AC126FBB
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Dec 2019 22:32:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727215AbfLSTnO convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Dec 2019 14:43:14 -0500
-Received: from mail.fireflyinternet.com ([109.228.58.192]:57660 "EHLO
-        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727120AbfLSTnN (ORCPT
+        id S1726996AbfLSVc4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Dec 2019 16:32:56 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:53176 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726880AbfLSVcz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Dec 2019 14:43:13 -0500
-X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
-Received: from localhost (unverified [78.156.65.138]) 
-        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 19638651-1500050 
-        for multiple; Thu, 19 Dec 2019 19:43:08 +0000
-Content-Type: text/plain; charset="utf-8"
+        Thu, 19 Dec 2019 16:32:55 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ii3Pb-0003YV-O2; Thu, 19 Dec 2019 21:32:48 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org
+Cc:     kernel-janitors@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: [PATCH] clocksource/drivers/bcm2835_timer: fix memory leak of timer
+Date:   Thu, 19 Dec 2019 21:32:46 +0000
+Message-Id: <20191219213246.34437-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-To:     Colin King <colin.king@canonical.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
-From:   Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20191219190916.24693-1-colin.king@canonical.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191219190916.24693-1-colin.king@canonical.com>
-Message-ID: <157678458608.6469.7303602517496484124@skylake-alporthouse-com>
-User-Agent: alot/0.6
-Subject: Re: [PATCH][next] drm/i915: fix uninitialized pointer reads on pointers to
- and from
-Date:   Thu, 19 Dec 2019 19:43:06 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Colin King (2019-12-19 19:09:16)
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently pointers to and from are not initialized and may contain
-> garbage values. This will cause uninitialized pointer reads in the
-> call to intel_frontbuffer_track and later checks to see if to and from
-> are null.  Fix this by ensuring to and from are initialized to NULL.
-> 
-> Addresses-Coverity: ("Uninitialised pointer read)"
-> Fixes: da42104f589d ("drm/i915: Hold reference to intel_frontbuffer as we track activity")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-"D'oh"
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
--Chris
+Currently when setup_irq fails the error exit path will leak the
+recently allocated timer structure.  Originally the code would
+throw a panic but a later commit changed the behaviour to return
+via the err_iounmap path and hence we now have a memory leak. Fix
+this by adding a err_timer_free error path that kfree's timer.
+
+Addresses-Coverity: ("Resource Leak")
+Fixes: 524a7f08983d ("clocksource/drivers/bcm2835_timer: Convert init function to return error")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/clocksource/bcm2835_timer.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/clocksource/bcm2835_timer.c b/drivers/clocksource/bcm2835_timer.c
+index 2b196cbfadb6..b235f446ee50 100644
+--- a/drivers/clocksource/bcm2835_timer.c
++++ b/drivers/clocksource/bcm2835_timer.c
+@@ -121,7 +121,7 @@ static int __init bcm2835_timer_init(struct device_node *node)
+ 	ret = setup_irq(irq, &timer->act);
+ 	if (ret) {
+ 		pr_err("Can't set up timer IRQ\n");
+-		goto err_iounmap;
++		goto err_timer_free;
+ 	}
+ 
+ 	clockevents_config_and_register(&timer->evt, freq, 0xf, 0xffffffff);
+@@ -130,6 +130,9 @@ static int __init bcm2835_timer_init(struct device_node *node)
+ 
+ 	return 0;
+ 
++err_timer_free:
++	kfree(timer);
++
+ err_iounmap:
+ 	iounmap(base);
+ 	return ret;
+-- 
+2.24.0
+

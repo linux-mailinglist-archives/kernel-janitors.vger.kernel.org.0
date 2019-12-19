@@ -2,35 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EC2AC126FBB
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Dec 2019 22:32:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9618B1271BC
+	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Dec 2019 00:45:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726996AbfLSVc4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Dec 2019 16:32:56 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:53176 "EHLO
+        id S1727020AbfLSXpm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Dec 2019 18:45:42 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:55314 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726880AbfLSVcz (ORCPT
+        with ESMTP id S1726963AbfLSXpm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Dec 2019 16:32:55 -0500
+        Thu, 19 Dec 2019 18:45:42 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1ii3Pb-0003YV-O2; Thu, 19 Dec 2019 21:32:48 +0000
+        id 1ii5U7-0002w7-Lq; Thu, 19 Dec 2019 23:45:35 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH] clocksource/drivers/bcm2835_timer: fix memory leak of timer
-Date:   Thu, 19 Dec 2019 21:32:46 +0000
-Message-Id: <20191219213246.34437-1-colin.king@canonical.com>
+To:     Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ice: remove redundant assignment to variable xmit_done
+Date:   Thu, 19 Dec 2019 23:45:35 +0000
+Message-Id: <20191219234535.37103-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -42,42 +36,30 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently when setup_irq fails the error exit path will leak the
-recently allocated timer structure.  Originally the code would
-throw a panic but a later commit changed the behaviour to return
-via the err_iounmap path and hence we now have a memory leak. Fix
-this by adding a err_timer_free error path that kfree's timer.
+The variable xmit_done is being initialized with a value that is never
+read and it is being updated later with a new value. The initialization
+is redundant and can be removed.
 
-Addresses-Coverity: ("Resource Leak")
-Fixes: 524a7f08983d ("clocksource/drivers/bcm2835_timer: Convert init function to return error")
+Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/clocksource/bcm2835_timer.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_xsk.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/bcm2835_timer.c b/drivers/clocksource/bcm2835_timer.c
-index 2b196cbfadb6..b235f446ee50 100644
---- a/drivers/clocksource/bcm2835_timer.c
-+++ b/drivers/clocksource/bcm2835_timer.c
-@@ -121,7 +121,7 @@ static int __init bcm2835_timer_init(struct device_node *node)
- 	ret = setup_irq(irq, &timer->act);
- 	if (ret) {
- 		pr_err("Can't set up timer IRQ\n");
--		goto err_iounmap;
-+		goto err_timer_free;
- 	}
+diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
+index cf9b8b22d24f..03c1e9bcf790 100644
+--- a/drivers/net/ethernet/intel/ice/ice_xsk.c
++++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
+@@ -1019,8 +1019,8 @@ bool ice_clean_tx_irq_zc(struct ice_ring *xdp_ring, int budget)
+ 	s16 ntc = xdp_ring->next_to_clean;
+ 	struct ice_tx_desc *tx_desc;
+ 	struct ice_tx_buf *tx_buf;
+-	bool xmit_done = true;
+ 	u32 xsk_frames = 0;
++	bool xmit_done;
  
- 	clockevents_config_and_register(&timer->evt, freq, 0xf, 0xffffffff);
-@@ -130,6 +130,9 @@ static int __init bcm2835_timer_init(struct device_node *node)
- 
- 	return 0;
- 
-+err_timer_free:
-+	kfree(timer);
-+
- err_iounmap:
- 	iounmap(base);
- 	return ret;
+ 	tx_desc = ICE_TX_DESC(xdp_ring, ntc);
+ 	tx_buf = &xdp_ring->tx_buf[ntc];
 -- 
 2.24.0
 

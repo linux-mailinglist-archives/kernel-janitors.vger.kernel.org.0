@@ -2,92 +2,109 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42561126414
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Dec 2019 14:57:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DEA401264F8
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Dec 2019 15:39:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726836AbfLSN5c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Dec 2019 08:57:32 -0500
-Received: from mail-yw1-f68.google.com ([209.85.161.68]:38274 "EHLO
-        mail-yw1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726744AbfLSN5b (ORCPT
+        id S1726767AbfLSOjR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Dec 2019 09:39:17 -0500
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:38676 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726757AbfLSOjR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Dec 2019 08:57:31 -0500
-Received: by mail-yw1-f68.google.com with SMTP id 10so2174053ywv.5
-        for <kernel-janitors@vger.kernel.org>; Thu, 19 Dec 2019 05:57:30 -0800 (PST)
+        Thu, 19 Dec 2019 09:39:17 -0500
+Received: by mail-lj1-f196.google.com with SMTP id k8so6501196ljh.5;
+        Thu, 19 Dec 2019 06:39:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=1yn+mK/5xEg4fegs3phGOsQ7/Ct6TERF9p632E4MnVU=;
-        b=Z+70zlfpfDFUhG4zCZN0o7aK311Wb9wqmTfhJspMn390U/L7t8E4FJKmpey+FMMx+m
-         MTrrHYTduZesm6fol+ZJfFmbXUWIpqMnwaYzeIw4f74e8jT8uVqAV65Rga3P/rBzQz12
-         t3fhOs6j8YhRorlFhHq64M1oHtQQOHmkXE/UgtMGS/SQwbqOXSNKOW3/cr9q2XF8EoaT
-         S8zSoSXCT9OwRrk+rJUEubK+m3qxHSe5oZ1JUCTlhyjI8QrEfKD/sOXaX44xHEOlYR0P
-         QJU5pdTCLdk9Pu7p6orkgIjjgAjT/7ZDfZ4a49i0E9kzIhy8mQRWWEl8xV8Bzxfk+rQo
-         u7/Q==
+        bh=ETYzlEK/SKBE9MSwRXzOWbDS35XqdxpOfczqaHg4TKc=;
+        b=bF6N2eZx/MJp5NAY51e4sTEXMVHwISjjo0PKdetj3l1hlk8EBl5mFcOmJzXliHShr4
+         Qv0rBP6jIhfLuA3CYg+1GAP89gytngUDyanU8HoX8Ep7UOqEEMcsywI4fI82j79oNZDC
+         vIKrkImriDPp8C9uFKfr/6dSxwwy7pcKPHQmDAY8pzWNBwJrY/6xNGzB08dxLJtgqM5v
+         Sb+wiyOfpSXx6nI1wORv2R5/1xNgnKBBcv/DOkq14SWK+BsssmTjxvZtRgVPGAbk3Hxk
+         sOndlmLpSj0y9fidXN4WwG4jG9KByFjYzS4F7zzCP8Wh4dSoaFayAtRDQOcQB77kXXDZ
+         Ti5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=1yn+mK/5xEg4fegs3phGOsQ7/Ct6TERF9p632E4MnVU=;
-        b=g5p5hTByK8xrQfiKg0QtWoQc5aehRpSMu4KPJLLSVJ9RH+oNgcrpgeDadIvXYxu/bA
-         jupTl0jN2jjcVXPIwtMiTfOGRjyS1Itm/unHD11oJe/kR3PSF6pQSk5rk9cP8n9P8X7l
-         X5pY5DZEu1BglfFyu5OAaTivOqrsfHxTNoBHogHAbX/TLNrHDY6YP0GHF9bJY5GdCcSb
-         tPA4zV394kUlcdAV0taBMJGTz6kmmB53oGefujTVfU56FUaqfJX7onQIepab/pJYoQra
-         zIlOtFslHhzMoq+WMHvkguFBvxnzs/C/7JELrNapq9PSYqfGTIOrXgP+xqtM+fe9SpQc
-         nfYQ==
-X-Gm-Message-State: APjAAAU7Zy0EgqoPOxi9t9LBwiMVUzPvAUlKRZYtvFlCt0YnUTozjLzz
-        z/I/rUpb6gcVC0FWNR0dKf+DwLQa
-X-Google-Smtp-Source: APXvYqwCVAXxQiSJp1kjqXWtw+qZOPDl2MOyKSOtVVwqeQR+xy7pMHkWYbY0WeXNhzh/wYbEfYxrgA==
-X-Received: by 2002:a81:3a06:: with SMTP id h6mr6268938ywa.170.1576763849474;
-        Thu, 19 Dec 2019 05:57:29 -0800 (PST)
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com. [209.85.219.170])
-        by smtp.gmail.com with ESMTPSA id e187sm2450546ywd.7.2019.12.19.05.57.27
-        for <kernel-janitors@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 19 Dec 2019 05:57:28 -0800 (PST)
-Received: by mail-yb1-f170.google.com with SMTP id x14so2193191ybr.4
-        for <kernel-janitors@vger.kernel.org>; Thu, 19 Dec 2019 05:57:27 -0800 (PST)
-X-Received: by 2002:a5b:348:: with SMTP id q8mr6431302ybp.83.1576763847446;
- Thu, 19 Dec 2019 05:57:27 -0800 (PST)
+        bh=ETYzlEK/SKBE9MSwRXzOWbDS35XqdxpOfczqaHg4TKc=;
+        b=PEtYRJxmmW0Hy3lUkW5t+faWgKN/3G2s93lBGWsgme5OopGu23xdZLPNyazUqMsI4m
+         /Z34ZR6tuDwoNqBMhtBWwFi1pzY7oaT6Snb0SOuAGGclPU8in+rd0hwJ6BG+11n3cv0g
+         YzBD1yRud5icL2wKgtaMH/3xSNzFqbOhTmZWstY8meUCcqMfobqZqXdXjhWFf/uZtSEB
+         vw8dTIZVydCUesU9RmqMm9e4pdtD+BMSTUydly7rqOztVKvq7JF98eugn/TPQaFXs15Y
+         IvcyMw3q4VQKDZhtm01iM2mK90jT+2DrB7geGBNESO6AKn3bKRC74YL7EHmWJsEXsH9O
+         oK+A==
+X-Gm-Message-State: APjAAAUSwo1ewANZLuILTmUhXRk3VO3HBCadvFb20SGSv8pAGwXOGWCB
+        mDebFeS2LY5JbvVWr0VNf7wi6eTeX0fmdcT4orQ=
+X-Google-Smtp-Source: APXvYqy/s+mw/ppdDLohJW+mt6r4UAY+bJ1lL980yaETjnVIH9hg0vqWdUTsurmxXhTnZAp4biAnBoy/zXdN4xmx5AI=
+X-Received: by 2002:a05:651c:2046:: with SMTP id t6mr5483542ljo.180.1576766355054;
+ Thu, 19 Dec 2019 06:39:15 -0800 (PST)
 MIME-Version: 1.0
-References: <20191219013344.34603-1-maowenan@huawei.com>
-In-Reply-To: <20191219013344.34603-1-maowenan@huawei.com>
-From:   Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Date:   Thu, 19 Dec 2019 08:56:50 -0500
-X-Gmail-Original-Message-ID: <CA+FuTScgWi905_NhGNsRzpwaQ+OPwahj6NtKgPjLZRjuqJvhXQ@mail.gmail.com>
-Message-ID: <CA+FuTScgWi905_NhGNsRzpwaQ+OPwahj6NtKgPjLZRjuqJvhXQ@mail.gmail.com>
-Subject: Re: [PATCH net] af_packet: refactoring code for prb_calc_retire_blk_tmo
-To:     Mao Wenan <maowenan@huawei.com>
-Cc:     David Miller <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, maximmi@mellanox.com,
-        Paolo Abeni <pabeni@redhat.com>, yuehaibing@huawei.com,
-        Neil Horman <nhorman@tuxdriver.com>,
-        Network Development <netdev@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+References: <20191216162136.270114-1-colin.king@canonical.com>
+In-Reply-To: <20191216162136.270114-1-colin.king@canonical.com>
+From:   Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Date:   Thu, 19 Dec 2019 15:39:04 +0100
+Message-ID: <CAMeQTsYmqJwYrAM1bGu2VyVop3sSFcp2fOMrxD4OvhH13jad9Q@mail.gmail.com>
+Subject: Re: [PATCH][next] drm/gma500: fix null dereference of pointer fb
+ before null check
+To:     Colin King <colin.king@canonical.com>
+Cc:     David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        kernel-janitors@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Dec 18, 2019 at 8:37 PM Mao Wenan <maowenan@huawei.com> wrote:
+On Mon, Dec 16, 2019 at 5:21 PM Colin King <colin.king@canonical.com> wrote:
 >
-> If __ethtool_get_link_ksettings() is failed and with
-> non-zero value, prb_calc_retire_blk_tmo() should return
-> DEFAULT_PRB_RETIRE_TOV firstly. Refactoring code and make
-> it more readable.
+> From: Colin Ian King <colin.king@canonical.com>
 >
-> Fixes: b43d1f9f7067 ("af_packet: set defaule value for tmo")
+> Pointer fb is being dereferenced when assigning dev before it
+> is null checked.  Fix this by only dereferencing dev after the
+> null check.
 
-This is a pure refactor, not a fix.
+Applied to drm-misc-next
 
-Code refactors make backporting fixes across releases harder, among
-other things. I think this code is better left as is. Either way, it
-would be a candidate for net-next, not net.
+Thanks
+Patrik
 
-> -       unsigned int mbits = 0, msec = 0, div = 0, tmo = 0;
-> +       unsigned int mbits = 0, msec = 1, div = 0, tmo = 0;
-
-Most of these do not need to be initialized here at all, really.
+>
+> Fixes: 6b7ce2c4161a ("drm/gma500: Remove struct psb_fbdev")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/gpu/drm/gma500/accel_2d.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/gma500/accel_2d.c b/drivers/gpu/drm/gma500/accel_2d.c
+> index b9e5a38632f7..adc0507545bf 100644
+> --- a/drivers/gpu/drm/gma500/accel_2d.c
+> +++ b/drivers/gpu/drm/gma500/accel_2d.c
+> @@ -228,8 +228,8 @@ static void psbfb_copyarea_accel(struct fb_info *info,
+>  {
+>         struct drm_fb_helper *fb_helper = info->par;
+>         struct drm_framebuffer *fb = fb_helper->fb;
+> -       struct drm_device *dev = fb->dev;
+> -       struct drm_psb_private *dev_priv = dev->dev_private;
+> +       struct drm_device *dev;
+> +       struct drm_psb_private *dev_priv;
+>         uint32_t offset;
+>         uint32_t stride;
+>         uint32_t src_format;
+> @@ -238,6 +238,8 @@ static void psbfb_copyarea_accel(struct fb_info *info,
+>         if (!fb)
+>                 return;
+>
+> +       dev = fb->dev;
+> +       dev_priv = dev->dev_private;
+>         offset = to_gtt_range(fb->obj[0])->offset;
+>         stride = fb->pitches[0];
+>
+> --
+> 2.24.0
+>

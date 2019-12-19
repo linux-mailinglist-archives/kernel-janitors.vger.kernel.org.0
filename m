@@ -2,69 +2,57 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E746126D3E
-	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Dec 2019 20:09:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D17B126E22
+	for <lists+kernel-janitors@lfdr.de>; Thu, 19 Dec 2019 20:43:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728244AbfLSTJ1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Dec 2019 14:09:27 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:50374 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727504AbfLSTJ0 (ORCPT
+        id S1727215AbfLSTnO convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Dec 2019 14:43:14 -0500
+Received: from mail.fireflyinternet.com ([109.228.58.192]:57660 "EHLO
+        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727120AbfLSTnN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Dec 2019 14:09:26 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1ii1Aj-0004qM-07; Thu, 19 Dec 2019 19:09:17 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Thu, 19 Dec 2019 14:43:13 -0500
+X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
+Received: from localhost (unverified [78.156.65.138]) 
+        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 19638651-1500050 
+        for multiple; Thu, 19 Dec 2019 19:43:08 +0000
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+To:     Colin King <colin.king@canonical.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
         Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
         Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+From:   Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20191219190916.24693-1-colin.king@canonical.com>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/i915: fix uninitialized pointer reads on pointers to and from
-Date:   Thu, 19 Dec 2019 19:09:16 +0000
-Message-Id: <20191219190916.24693-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20191219190916.24693-1-colin.king@canonical.com>
+Message-ID: <157678458608.6469.7303602517496484124@skylake-alporthouse-com>
+User-Agent: alot/0.6
+Subject: Re: [PATCH][next] drm/i915: fix uninitialized pointer reads on pointers to
+ and from
+Date:   Thu, 19 Dec 2019 19:43:06 +0000
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Quoting Colin King (2019-12-19 19:09:16)
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently pointers to and from are not initialized and may contain
+> garbage values. This will cause uninitialized pointer reads in the
+> call to intel_frontbuffer_track and later checks to see if to and from
+> are null.  Fix this by ensuring to and from are initialized to NULL.
+> 
+> Addresses-Coverity: ("Uninitialised pointer read)"
+> Fixes: da42104f589d ("drm/i915: Hold reference to intel_frontbuffer as we track activity")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Currently pointers to and from are not initialized and may contain
-garbage values. This will cause uninitialized pointer reads in the
-call to intel_frontbuffer_track and later checks to see if to and from
-are null.  Fix this by ensuring to and from are initialized to NULL.
-
-Addresses-Coverity: ("Uninitialised pointer read)"
-Fixes: da42104f589d ("drm/i915: Hold reference to intel_frontbuffer as we track activity")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/i915/display/intel_overlay.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/i915/display/intel_overlay.c b/drivers/gpu/drm/i915/display/intel_overlay.c
-index 6097594468a9..e869a3d86522 100644
---- a/drivers/gpu/drm/i915/display/intel_overlay.c
-+++ b/drivers/gpu/drm/i915/display/intel_overlay.c
-@@ -279,7 +279,7 @@ static void intel_overlay_flip_prepare(struct intel_overlay *overlay,
- 				       struct i915_vma *vma)
- {
- 	enum pipe pipe = overlay->crtc->pipe;
--	struct intel_frontbuffer *from, *to;
-+	struct intel_frontbuffer *from = NULL, *to = NULL;
- 
- 	WARN_ON(overlay->old_vma);
- 
--- 
-2.24.0
-
+"D'oh"
+Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
+-Chris

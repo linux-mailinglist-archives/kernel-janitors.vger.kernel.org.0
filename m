@@ -2,181 +2,131 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DC231278A9
-	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Dec 2019 10:58:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93B62127BAE
+	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Dec 2019 14:30:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727382AbfLTJ6l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 20 Dec 2019 04:58:41 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:37356 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727359AbfLTJ6l (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 20 Dec 2019 04:58:41 -0500
-Received: by mail-wr1-f65.google.com with SMTP id w15so8832095wru.4
-        for <kernel-janitors@vger.kernel.org>; Fri, 20 Dec 2019 01:58:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=zUo+s3iHkIq6ZX21xZzTA13c15oTkP7/ZbrMONJHKBE=;
-        b=Bxj1O3TYWHzwzNrQPoNQIGv0OHDXKEjBbfXha9I2V7n2Q4YkOfmrz3Qf1s5qHRo09B
-         7rluWrZ1Z3lgnoaB3lWhhvRKVtn5IRDjwddtpnOIuMpmjNNv4ds4uATZslE1Wm+h6vGH
-         nnboM9B9XFaxZ/NsnIVmIAwlXsDfvJ1sWBRYbUSZhckAVrlIFzRFGoaBCCKJXwTqd5qg
-         o7oiq+1s2Gvf1LD8HDT7qKSUd3NUMGH7prJcpV9cu0nULoONNM0mRGjyahImEcLACnaF
-         FAYOrA7lpV3tIlBsjg1TFnTq25p1nyU45e5pjnmMLMao5SMGslZrWmRY/RFV3ZXW+yth
-         fLoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=zUo+s3iHkIq6ZX21xZzTA13c15oTkP7/ZbrMONJHKBE=;
-        b=p6F/pRkDKQj3baEuvZRH2StjnsaPq7W5Hhxq1BdjBox5MyA9j28Y7vBvOfkefiHEkC
-         y7YXh0j4F+HSijGJt4lR9dYL1eaDl2CByOViDq99VScmZDclDVLIGPnwvZhyw6X0t8fn
-         hjjIszQ9xIHC6fuZ3dpZTUyohLnRnDLDWS3YrlUtRUFWPV+afy2LkmLcudLKLug5ajVo
-         g24pAY8XU0FbUbYt6VgOFb5yKmzdhennmp4FHxKipoLBaOyaizuA2fLWhNIicD4WbUEn
-         fYvxX2an52bUZr+224YgSxekPerdlV/FgXs6un6yXEHWWMD6quU+ktA3zzDTddu35gbb
-         +k6Q==
-X-Gm-Message-State: APjAAAXLFr8mdiLrsaMFr1dAgVrtoP6uGZWsk63u79OEWJ39sTvIc3Dv
-        1EJxSrxGiisq8QiPa4ub0fsonQ==
-X-Google-Smtp-Source: APXvYqweHMiky02KMmh0fPCEH32NLvHopUjCCSZemVt4X1a1SxGsbGiVkBWmMhfrj/gxEIxadf223w==
-X-Received: by 2002:adf:81c2:: with SMTP id 60mr13912657wra.8.1576835917886;
-        Fri, 20 Dec 2019 01:58:37 -0800 (PST)
-Received: from ?IPv6:2a01:e34:ed2f:f020:d0dd:3c81:4925:289e? ([2a01:e34:ed2f:f020:d0dd:3c81:4925:289e])
-        by smtp.googlemail.com with ESMTPSA id f207sm10448564wme.9.2019.12.20.01.58.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Dec 2019 01:58:37 -0800 (PST)
-Subject: Re: [PATCH] clocksource/drivers/bcm2835_timer: fix memory leak of
- timer
-To:     Colin King <colin.king@canonical.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Ray Jui <rjui@broadcom.com>,
-        Scott Branden <sbranden@broadcom.com>,
-        bcm-kernel-feedback-list@broadcom.com,
-        linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org
-Cc:     kernel-janitors@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-References: <20191219213246.34437-1-colin.king@canonical.com>
-From:   Daniel Lezcano <daniel.lezcano@linaro.org>
-Autocrypt: addr=daniel.lezcano@linaro.org; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <85475b50-5617-1ed0-3fe6-3dbaa18c236c@linaro.org>
-Date:   Fri, 20 Dec 2019 10:58:36 +0100
+        id S1727397AbfLTNaT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 20 Dec 2019 08:30:19 -0500
+Received: from mout.web.de ([212.227.17.11]:56129 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727346AbfLTNaT (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 20 Dec 2019 08:30:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1576848617;
+        bh=cI6AYJUnh8pWd1W0cxEpgJYIwvjTtzuqJraTqNbsfiM=;
+        h=X-UI-Sender-Class:To:Cc:From:Subject:Date;
+        b=aLIDCm0cVTZ8wBBg4sNhXDX0vBSf/8GXPNUCyXF+0coF454voRdeQc+WgYllWEWTP
+         4TqHsAm/aJ6lPFWk5jQ1ZfwiLgXH45U3eCayqIIJpGkLf5TEM9tBtwCcRjhwxe8ZhC
+         ZAxNY1F7pevzz1eXTRwKltJ+7Ie1OqWl8gURBmoQ=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([2.244.94.196]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MEEeC-1iSwHB0Yye-00FVIX; Fri, 20
+ Dec 2019 14:30:17 +0100
+To:     linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org
+Cc:     LKML <linux-kernel@vger.kernel.org>
+From:   Markus Elfring <Markus.Elfring@web.de>
+Subject: Improving documentation for programming interfaces
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ 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 FEE=
+Message-ID: <350cd156-9080-24fe-c49e-96e758d3ca45@web.de>
+Date:   Fri, 20 Dec 2019 14:30:10 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-In-Reply-To: <20191219213246.34437-1-colin.king@canonical.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:1BudEKRhl8kLMveIOn15uFBzOJOMQN9WihPu/dckERqp8uzqQtO
+ 3MNnf/5CIO7g+ON5iwI8/UFMloQi0xwYK2WFkgZo4x8sJxrOVboukj3l2N/VZk5+mvjzzGP
+ 2XHniE0b5KKCH/qiUt+z8ATRIyaU0EuaWBIbnZifqE1ZZ8KwM0+0ffpaUovCW79vloaRLbM
+ evLyZlkj8bRQCMLQwafAg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:/EZgPWnVHLk=:HHrw+1orFmebAw13DwgnJh
+ 5Uy8T1nSzfrerVT+o2A54+2cZ+ij2e6s1OGMAvkWGs6xcmagzS6RaBqe+E9WgTjW9y7sG8gfE
+ xKByH4rYoBMn4SZwWwzop8Lj5Lm6C4s6GdGZHeMYlMqQzP86rWpwK2DIULtTnbQtR5iRqvK/C
+ Y7sw/G0BShFtolobssRjRLNwKbGMJzXI/7J3+kNB12QrtmhnFh+KD3xuIZ4ajr9QmckaARxdl
+ XABJ2mDq8TWwb56UnAauGLgk71jCMhbKv61IRgLZqmLL/94TifbRZKmTFLd16tlK+jAjH4WuM
+ 0VZbPrgO5cSEoG5+4u1FhTlVd1XNuIKWztHK55GmaVD+LRDTk9z4yvPqR1+/knT65U7EXoN8J
+ RYORF4uM8BqJHFBvTiAvkBjB8oL366kSs+wv0i/7m+PFL7uftF/jiZ0cbEOqJvqYzPQ9d3Cnm
+ bUmBQ54hmuHhlQdxG6CMyemo4snYGI7RaTUgMuWkl8Wl5e3cZmnPm+z4Ost5sBnpRIhEei2yC
+ QvolH5z9VCbFhF92xKthBMtcZEp63xAawxE2OIYBtXmRZAQQtrbCsy5e3l8IcDGddF4Xeef2Z
+ I81t/ts432Dmy22OB4Ali9ZqrFscl31RIE93diXBAgiLyfyfO+VpE2t4DWdgGD9k0UP94/enr
+ 4rS1yblM3hYDDRhlptkYyq1WgTspdJfZuepbffNuGIQCjujwYcSHRTUUrLvE9tHxcP/TkFwoD
+ Yw12AqzM8aH95qPI7haW6JfZDaFxWfT1uG1TfLZliVTbecoZ/Nmi25lwQsBHuha8aSklJblLW
+ m0N+hCydS2rQAIL+IP28V6i6CAkVcCnKeE4IG+sIHR5xb0hoU6ArM+fdz062sD+ADfg+1zmmt
+ rhQ1FhnWHEkhuTSM+4dkb/ykKMulizZTFzUxC3BtJH3NdrGH37OKWgO9pM4ZcLMqcpWZM05ar
+ Ky279XX8jNVvQr2r4XviLJC7KkcHAihOlXbfveikO7Gkt9juQ+M7pLZc1A58CXFjnrDxJPZaU
+ IWdQFWPO/daRP6TCsYEZfc3CNDalG0NywjMGxDKf71ODNQ4JzGtMOGi1mdH3HJ0icVsZ35Q1Z
+ wQi9Us+onz7Fs2vlm3w0UwRAekJBaILGa/WiqIusbnpdcGEMyaF7DZUlIm0tQLZrhnlqJKZdE
+ dRGOmKvt8+k3wuw0X2En8cBca6wnSfkDc7Ow8LbWwe1skTUp/DmYtlxbvH5yPn5FiYGwaQTXa
+ 8+1nN0g/Pst0RzImCRRxdpeNMcfkGJJcBUZNKxRomVwDqW+zvRSsiKkerg7U=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hello,
 
-Applied, thanks!
+Linux supports some programming interfaces. Several functions are provided
+as usual. Their application documentation is an ongoing development challe=
+nge.
 
-On 19/12/2019 22:32, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently when setup_irq fails the error exit path will leak the
-> recently allocated timer structure.  Originally the code would
-> throw a panic but a later commit changed the behaviour to return
-> via the err_iounmap path and hence we now have a memory leak. Fix
-> this by adding a err_timer_free error path that kfree's timer.
-> 
-> Addresses-Coverity: ("Resource Leak")
-> Fixes: 524a7f08983d ("clocksource/drivers/bcm2835_timer: Convert init function to return error")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/clocksource/bcm2835_timer.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/clocksource/bcm2835_timer.c b/drivers/clocksource/bcm2835_timer.c
-> index 2b196cbfadb6..b235f446ee50 100644
-> --- a/drivers/clocksource/bcm2835_timer.c
-> +++ b/drivers/clocksource/bcm2835_timer.c
-> @@ -121,7 +121,7 @@ static int __init bcm2835_timer_init(struct device_node *node)
->  	ret = setup_irq(irq, &timer->act);
->  	if (ret) {
->  		pr_err("Can't set up timer IRQ\n");
-> -		goto err_iounmap;
-> +		goto err_timer_free;
->  	}
->  
->  	clockevents_config_and_register(&timer->evt, freq, 0xf, 0xffffffff);
-> @@ -130,6 +130,9 @@ static int __init bcm2835_timer_init(struct device_node *node)
->  
->  	return 0;
->  
-> +err_timer_free:
-> +	kfree(timer);
-> +
->  err_iounmap:
->  	iounmap(base);
->  	return ret;
-> 
+Now I would like to clarify possibilities for the specification of desired
+information together with data types besides properties which are handled =
+by
+the programming language =E2=80=9CC=E2=80=9D so far.
+It seems that no customised attributes are supported at the moment.
+Thus I imagine to specify helpful annotations as macros.
 
+Example:
+Some functions allocate resources to which a pointer (or handle) is return=
+ed.
+I would find it nice then if such a pointer would contain also the backgro=
+und
+information by which functions the resource should usually be released.
 
--- 
- <http://www.linaro.org/> Linaro.org │ Open source software for ARM SoCs
+Can it become easier to determine such data?
 
-Follow Linaro:  <http://www.facebook.com/pages/Linaro> Facebook |
-<http://twitter.com/#!/linaroorg> Twitter |
-<http://www.linaro.org/linaro-blog/> Blog
-
+Regards,
+Markus

@@ -2,76 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CE98127367
-	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Dec 2019 03:19:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5134B127563
+	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Dec 2019 06:43:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727070AbfLTCTl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Dec 2019 21:19:41 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:8156 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726963AbfLTCTl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Dec 2019 21:19:41 -0500
-Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 658332DE0C0B8ACCE7E0;
-        Fri, 20 Dec 2019 10:19:39 +0800 (CST)
-Received: from [127.0.0.1] (10.177.96.96) by DGGEMS408-HUB.china.huawei.com
- (10.3.19.208) with Microsoft SMTP Server id 14.3.439.0; Fri, 20 Dec 2019
- 10:19:33 +0800
-Subject: Re: [PATCH net] af_packet: refactoring code for
- prb_calc_retire_blk_tmo
-To:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-CC:     David Miller <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, <maximmi@mellanox.com>,
-        Paolo Abeni <pabeni@redhat.com>, <yuehaibing@huawei.com>,
-        Neil Horman <nhorman@tuxdriver.com>,
-        "Network Development" <netdev@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-References: <20191219013344.34603-1-maowenan@huawei.com>
- <CA+FuTScgWi905_NhGNsRzpwaQ+OPwahj6NtKgPjLZRjuqJvhXQ@mail.gmail.com>
-From:   maowenan <maowenan@huawei.com>
-Message-ID: <c0944cb6-eb63-b1e6-01da-4cddd2ab7f91@huawei.com>
-Date:   Fri, 20 Dec 2019 10:19:34 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+        id S1727089AbfLTFm6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 20 Dec 2019 00:42:58 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:60334 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725781AbfLTFm6 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 20 Dec 2019 00:42:58 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBK5dU4b125511;
+        Fri, 20 Dec 2019 05:42:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=EmlhOLMZ/XL52F0CFZwbVdaEIMBrdzeizGPp4YA+ooo=;
+ b=dk6VejbafNmmn0RDFlG81mjQOf1hRAjfDEWIHpFRp1WyFhZO8kHcZv3si+jG57P1aJAc
+ D9vghhpojyhodMi2f4qfgXRfwj85Fc0HLqGyd1cJPvjWvL+qh6FH0x/92XTLK6d6+o5n
+ oeuvG7Ghc66gfmZ87FZML7CDBehU5Og6eEo9ZsmKBaVhe1Wq7IaFsXAj1EEw0pZqsCoB
+ dlm7lXiL1jTtfM+BfAAiMmdoYqCesfOcrxNdUIQuc81k43cJ/+Bp8sDvh5+LJPXmgMmp
+ KkWpbVs4BOMFET/5ekkNXs7ZRcMBplBeITf76OkJDyj0DZAfueQyiPm2SVFchzJ8dEgr Ug== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 2x01knpryp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 20 Dec 2019 05:42:51 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id xBK5dQub185823;
+        Fri, 20 Dec 2019 05:40:50 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3020.oracle.com with ESMTP id 2x0bgmyyd4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 20 Dec 2019 05:40:50 +0000
+Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id xBK5emwe016315;
+        Fri, 20 Dec 2019 05:40:49 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 19 Dec 2019 21:40:48 -0800
+Date:   Fri, 20 Dec 2019 08:40:39 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Amit Daniel Kachhap <amit.kachhap@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>
+Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
+        Javi Merino <javi.merino@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        linux-pm@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] thermal/drivers/cpu_cooling: Fix an IS_ERR() vs NULL bug
+Message-ID: <20191220053750.4wcxgieqmceyhwo5@kili.mountain>
 MIME-Version: 1.0
-In-Reply-To: <CA+FuTScgWi905_NhGNsRzpwaQ+OPwahj6NtKgPjLZRjuqJvhXQ@mail.gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.96.96]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9476 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-1912200044
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9476 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-1912200044
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+The idle_inject_register() function returns NULL on error, it never
+returns error pointers.
 
+Fixes: 1e044f70e5c2 ("thermal/drivers/cpu_cooling: Introduce the cpu idle cooling driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/thermal/cpuidle_cooling.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-On 2019/12/19 21:56, Willem de Bruijn wrote:
-> On Wed, Dec 18, 2019 at 8:37 PM Mao Wenan <maowenan@huawei.com> wrote:
->>
->> If __ethtool_get_link_ksettings() is failed and with
->> non-zero value, prb_calc_retire_blk_tmo() should return
->> DEFAULT_PRB_RETIRE_TOV firstly. Refactoring code and make
->> it more readable.
->>
->> Fixes: b43d1f9f7067 ("af_packet: set defaule value for tmo")
-> 
-> This is a pure refactor, not a fix.
-yes , it is not a fix.
-> 
-> Code refactors make backporting fixes across releases harder, among
-> other things. I think this code is better left as is. Either way, it
-> would be a candidate for net-next, not net.
-sorry, it would be net-next.
-> 
->> -       unsigned int mbits = 0, msec = 0, div = 0, tmo = 0;
->> +       unsigned int mbits = 0, msec = 1, div = 0, tmo = 0;
-> 
-> Most of these do not need to be initialized here at all, really.
-> 
-some of them do not need to be initialized,
-msec=1 can be reserved because it can indicate tmo is for millisecond and msec
-initialized value is 1ms.
+diff --git a/drivers/thermal/cpuidle_cooling.c b/drivers/thermal/cpuidle_cooling.c
+index 6d778acefeec..ab48387ce868 100644
+--- a/drivers/thermal/cpuidle_cooling.c
++++ b/drivers/thermal/cpuidle_cooling.c
+@@ -187,8 +187,8 @@ __init cpuidle_of_cooling_register(struct device_node *np,
+ 	}
+ 
+ 	ii_dev = idle_inject_register(drv->cpumask);
+-	if (IS_ERR(ii_dev)) {
+-		ret = PTR_ERR(ii_dev);
++	if (!ii_dev) {
++		ret = -ENOMEM;
+ 		goto out_id;
+ 	}
+ 
+-- 
+2.11.0
 

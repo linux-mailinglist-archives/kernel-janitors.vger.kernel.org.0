@@ -2,60 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C82C8127C65
-	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Dec 2019 15:20:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F02DD127F28
+	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Dec 2019 16:20:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727413AbfLTOU2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 20 Dec 2019 09:20:28 -0500
-Received: from mail.kernel.org ([198.145.29.99]:59352 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727347AbfLTOU2 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 20 Dec 2019 09:20:28 -0500
-Received: from [192.168.1.20] (cpe-24-28-70-126.austin.res.rr.com [24.28.70.126])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 3952F222C2;
-        Fri, 20 Dec 2019 14:20:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576851628;
-        bh=TjXYv2XWlJjKvxWvTY76Dq/6W8AtNpr91zwOv2hzrn8=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=HVgwDkknfsEJq1Jwdr16JSdjPKuq8dR5FzcrGG4wEyc1QsRDmCk+byUT1vMoYusFi
-         dlmBL3x3MJrmhNKgt3/O6+TGkRKdsdcxDuXXTzHYoXAqR3PUapJSHTtRrrCBo9/Mho
-         JWKw1Q3iIyVqELQHUHEzJpiOf47vJvbaugS9fMAc=
-Subject: Re: [PATCH] serial: ucc_uart: remove redundant assignment to pointer
- bdp
-To:     Colin King <colin.king@canonical.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-serial@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191220001000.39859-1-colin.king@canonical.com>
-From:   Timur Tabi <timur@kernel.org>
-Message-ID: <2714d205-245a-a4e1-8335-53405608a286@kernel.org>
-Date:   Fri, 20 Dec 2019 08:20:24 -0600
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:60.0)
- Gecko/20100101 Thunderbird/60.9.1
+        id S1727451AbfLTPTy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 20 Dec 2019 10:19:54 -0500
+Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:60324 "EHLO
+        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727233AbfLTPTy (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 20 Dec 2019 10:19:54 -0500
+Received: from callcc.thunk.org (guestnat-104-133-0-111.corp.google.com [104.133.0.111] (may be forged))
+        (authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id xBKFJkke015295
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 20 Dec 2019 10:19:49 -0500
+Received: by callcc.thunk.org (Postfix, from userid 15806)
+        id 8749A420822; Fri, 20 Dec 2019 10:19:45 -0500 (EST)
+Date:   Fri, 20 Dec 2019 10:19:45 -0500
+From:   "Theodore Y. Ts'o" <tytso@mit.edu>
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Subject: Re: Improving documentation for programming interfaces
+Message-ID: <20191220151945.GD59959@mit.edu>
+References: <350cd156-9080-24fe-c49e-96e758d3ca45@web.de>
 MIME-Version: 1.0
-In-Reply-To: <20191220001000.39859-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <350cd156-9080-24fe-c49e-96e758d3ca45@web.de>
+User-Agent: Mutt/1.12.2 (2019-09-21)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 12/19/19 6:10 PM, Colin King wrote:
-> From: Colin Ian King<colin.king@canonical.com>
+On Fri, Dec 20, 2019 at 02:30:10PM +0100, Markus Elfring wrote:
+> Linux supports some programming interfaces. Several functions are provided
+> as usual. Their application documentation is an ongoing development challenge.
 > 
-> The variable bdp is being initialized with a value that is never
-> read and it is being updated later with a new value. The initialization
-> is redundant and can be removed.
+> Now I would like to clarify possibilities for the specification of desired
+> information together with data types besides properties which are handled by
+> the programming language “C” so far.
+> It seems that no customised attributes are supported at the moment.
+> Thus I imagine to specify helpful annotations as macros.
 > 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King<colin.king@canonical.com>
+> Example:
+> Some functions allocate resources to which a pointer (or handle) is returned.
+> I would find it nice then if such a pointer would contain also the background
+> information by which functions the resource should usually be released.
+> 
+> Can it become easier to determine such data?
 
-Acked-by: Timur Tabi <timur@kernel.org>
+Markus,
 
-Looks like this bug has been there since day 1.
+It's unclear to me what you are requesting/proposing?  Can you be a
+bit more concrete?
+
+						- Ted

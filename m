@@ -2,59 +2,63 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C5B1E127727
-	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Dec 2019 09:29:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DC231278A9
+	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Dec 2019 10:58:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727176AbfLTI3N (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 20 Dec 2019 03:29:13 -0500
-Received: from mail-wr1-f66.google.com ([209.85.221.66]:44359 "EHLO
-        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726327AbfLTI3N (ORCPT
+        id S1727382AbfLTJ6l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 20 Dec 2019 04:58:41 -0500
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:37356 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727359AbfLTJ6l (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 20 Dec 2019 03:29:13 -0500
-Received: by mail-wr1-f66.google.com with SMTP id q10so8519669wrm.11
-        for <kernel-janitors@vger.kernel.org>; Fri, 20 Dec 2019 00:29:10 -0800 (PST)
+        Fri, 20 Dec 2019 04:58:41 -0500
+Received: by mail-wr1-f65.google.com with SMTP id w15so8832095wru.4
+        for <kernel-janitors@vger.kernel.org>; Fri, 20 Dec 2019 01:58:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=i0HDJajvmaB+3dnmWEXerMLKZ2bDg3WhZwLfxRU9+QI=;
-        b=kbG6eYgtlXHCqHqWXC4zUbDO9z7/9C/Syd5yJtbiSjSVvZM8IpHi5nB0cxxf9rdBXl
-         h45xkyG/H7J8gFlfbX0mAKQ91VqHTvN06fMdS7ySB7mtV16feC8svMti0wNRk+bM/PC+
-         wpTiqSnx0Okp3NHBPZ+2tYwlsaYeMndLICBTkQ8zQJsskhxiMoikWJzRISChjEcpjLDU
-         xk4vZ5i46zHAlxdEs92/Z2V5PZr8XF1SBO+5zrgQpMEpmILduuLoXuUfpbwZuX+3sVYA
-         +DS4vSoObMyIw1u54RyTpuh8XDmyJZOgFJbyN0HgAl/j7pmLYXmDpUR63/ul32Hp6weA
-         pFpg==
+        bh=zUo+s3iHkIq6ZX21xZzTA13c15oTkP7/ZbrMONJHKBE=;
+        b=Bxj1O3TYWHzwzNrQPoNQIGv0OHDXKEjBbfXha9I2V7n2Q4YkOfmrz3Qf1s5qHRo09B
+         7rluWrZ1Z3lgnoaB3lWhhvRKVtn5IRDjwddtpnOIuMpmjNNv4ds4uATZslE1Wm+h6vGH
+         nnboM9B9XFaxZ/NsnIVmIAwlXsDfvJ1sWBRYbUSZhckAVrlIFzRFGoaBCCKJXwTqd5qg
+         o7oiq+1s2Gvf1LD8HDT7qKSUd3NUMGH7prJcpV9cu0nULoONNM0mRGjyahImEcLACnaF
+         FAYOrA7lpV3tIlBsjg1TFnTq25p1nyU45e5pjnmMLMao5SMGslZrWmRY/RFV3ZXW+yth
+         fLoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:cc:references:from:autocrypt
          :message-id:date:user-agent:mime-version:in-reply-to
          :content-language:content-transfer-encoding;
-        bh=i0HDJajvmaB+3dnmWEXerMLKZ2bDg3WhZwLfxRU9+QI=;
-        b=gZWCtFnPn+i0OmGyIAnxoBQfzcGG3ruEeuifQywW9osui0c+Q42SZ8j8dAFYGRmc+8
-         8l+lTjqAWiAJUyJj8ZaZzHqMqzQ3OXzf0YB5B81tr1Cyfa5lv7vZu7wP7kFrn692VK61
-         4uaZXT1NW9mLpXgsF8nqXDyuk+419ukrl3lKT+7wtTXovxT2KOQQbBnS8bcd47BHXE27
-         M3UQA7FfWePynCJNlsRFtOUZgRix+EBjIbx7VoimhNdVEkT9ygqCD2gUDZmAf0f2f4qL
-         /lHioAfbHjZy6gm2RjTNv1PoN2fABGktFpI3I+XwoFe70+I3rn6etfwNkPvyVYVwIbur
-         N9Lw==
-X-Gm-Message-State: APjAAAVlkw5kQICdgAe8WtgucxhreQbRip34/SzYzft2zGZqVUw+BHQs
-        J6zkvktz8NknwXrBdQYEt6bvtUW8zvQ=
-X-Google-Smtp-Source: APXvYqwyNMqiuaOt1nmo+OQVSMPjWdc78v6myGsm4pV4U05YUeQwZgFQ3EcKqJn0HePqsuBFw+PXRA==
-X-Received: by 2002:adf:82e7:: with SMTP id 94mr14099947wrc.60.1576830549945;
-        Fri, 20 Dec 2019 00:29:09 -0800 (PST)
+        bh=zUo+s3iHkIq6ZX21xZzTA13c15oTkP7/ZbrMONJHKBE=;
+        b=p6F/pRkDKQj3baEuvZRH2StjnsaPq7W5Hhxq1BdjBox5MyA9j28Y7vBvOfkefiHEkC
+         y7YXh0j4F+HSijGJt4lR9dYL1eaDl2CByOViDq99VScmZDclDVLIGPnwvZhyw6X0t8fn
+         hjjIszQ9xIHC6fuZ3dpZTUyohLnRnDLDWS3YrlUtRUFWPV+afy2LkmLcudLKLug5ajVo
+         g24pAY8XU0FbUbYt6VgOFb5yKmzdhennmp4FHxKipoLBaOyaizuA2fLWhNIicD4WbUEn
+         fYvxX2an52bUZr+224YgSxekPerdlV/FgXs6un6yXEHWWMD6quU+ktA3zzDTddu35gbb
+         +k6Q==
+X-Gm-Message-State: APjAAAXLFr8mdiLrsaMFr1dAgVrtoP6uGZWsk63u79OEWJ39sTvIc3Dv
+        1EJxSrxGiisq8QiPa4ub0fsonQ==
+X-Google-Smtp-Source: APXvYqweHMiky02KMmh0fPCEH32NLvHopUjCCSZemVt4X1a1SxGsbGiVkBWmMhfrj/gxEIxadf223w==
+X-Received: by 2002:adf:81c2:: with SMTP id 60mr13912657wra.8.1576835917886;
+        Fri, 20 Dec 2019 01:58:37 -0800 (PST)
 Received: from ?IPv6:2a01:e34:ed2f:f020:d0dd:3c81:4925:289e? ([2a01:e34:ed2f:f020:d0dd:3c81:4925:289e])
-        by smtp.googlemail.com with ESMTPSA id v22sm8444653wml.11.2019.12.20.00.29.08
+        by smtp.googlemail.com with ESMTPSA id f207sm10448564wme.9.2019.12.20.01.58.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Dec 2019 00:29:09 -0800 (PST)
-Subject: Re: [PATCH] thermal/drivers/cpu_cooling: Fix an IS_ERR() vs NULL bug
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Amit Daniel Kachhap <amit.kachhap@gmail.com>
-Cc:     Viresh Kumar <viresh.kumar@linaro.org>,
-        Javi Merino <javi.merino@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Amit Kucheria <amit.kucheria@verdurent.com>,
-        linux-pm@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20191220053750.4wcxgieqmceyhwo5@kili.mountain>
+        Fri, 20 Dec 2019 01:58:37 -0800 (PST)
+Subject: Re: [PATCH] clocksource/drivers/bcm2835_timer: fix memory leak of
+ timer
+To:     Colin King <colin.king@canonical.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Nicolas Saenz Julienne <nsaenzjulienne@suse.de>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Ray Jui <rjui@broadcom.com>,
+        Scott Branden <sbranden@broadcom.com>,
+        bcm-kernel-feedback-list@broadcom.com,
+        linux-kernel@vger.kernel.org, linux-rpi-kernel@lists.infradead.org
+Cc:     kernel-janitors@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org
+References: <20191219213246.34437-1-colin.king@canonical.com>
 From:   Daniel Lezcano <daniel.lezcano@linaro.org>
 Autocrypt: addr=daniel.lezcano@linaro.org; prefer-encrypt=mutual; keydata=
  xsFNBFv/yykBEADDdW8RZu7iZILSf3zxq5y8YdaeyZjI/MaqgnvG/c3WjFaunoTMspeusiFE
@@ -110,12 +114,12 @@ Autocrypt: addr=daniel.lezcano@linaro.org; prefer-encrypt=mutual; keydata=
  i6D9VoMMi6ICko/CXUZ77OgLtMsy3JtzTRbn/wRySOY2AsMgg0Sw6yJ0wfrVk6XAMoLGjaVt
  X4iPTvwocEhjvrO4eXCicRBocsIB2qZaIj3mlhk2u4AkSpkKm9cN0KWYFUxlENF4/NKWMK+g
  fGfsCsS3cXXiZpufZFGr+GoHwiELqfLEAQ9AhlrHGCKcgVgTOI6NHg==
-Message-ID: <2b3e9f1d-8a78-8cfa-3452-1ef4b3b91a39@linaro.org>
-Date:   Fri, 20 Dec 2019 09:29:08 +0100
+Message-ID: <85475b50-5617-1ed0-3fe6-3dbaa18c236c@linaro.org>
+Date:   Fri, 20 Dec 2019 10:58:36 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.2.1
 MIME-Version: 1.0
-In-Reply-To: <20191220053750.4wcxgieqmceyhwo5@kili.mountain>
+In-Reply-To: <20191219213246.34437-1-colin.king@canonical.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -125,17 +129,48 @@ List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
-Hi Dan,
+Applied, thanks!
 
-On 20/12/2019 06:40, Dan Carpenter wrote:
-> The idle_inject_register() function returns NULL on error, it never
-> returns error pointers.
+On 19/12/2019 22:32, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Fixes: 1e044f70e5c2 ("thermal/drivers/cpu_cooling: Introduce the cpu idle cooling driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-Thanks for the fix. It was fixed with the V5 version.
-
+> Currently when setup_irq fails the error exit path will leak the
+> recently allocated timer structure.  Originally the code would
+> throw a panic but a later commit changed the behaviour to return
+> via the err_iounmap path and hence we now have a memory leak. Fix
+> this by adding a err_timer_free error path that kfree's timer.
+> 
+> Addresses-Coverity: ("Resource Leak")
+> Fixes: 524a7f08983d ("clocksource/drivers/bcm2835_timer: Convert init function to return error")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/clocksource/bcm2835_timer.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/clocksource/bcm2835_timer.c b/drivers/clocksource/bcm2835_timer.c
+> index 2b196cbfadb6..b235f446ee50 100644
+> --- a/drivers/clocksource/bcm2835_timer.c
+> +++ b/drivers/clocksource/bcm2835_timer.c
+> @@ -121,7 +121,7 @@ static int __init bcm2835_timer_init(struct device_node *node)
+>  	ret = setup_irq(irq, &timer->act);
+>  	if (ret) {
+>  		pr_err("Can't set up timer IRQ\n");
+> -		goto err_iounmap;
+> +		goto err_timer_free;
+>  	}
+>  
+>  	clockevents_config_and_register(&timer->evt, freq, 0xf, 0xffffffff);
+> @@ -130,6 +130,9 @@ static int __init bcm2835_timer_init(struct device_node *node)
+>  
+>  	return 0;
+>  
+> +err_timer_free:
+> +	kfree(timer);
+> +
+>  err_iounmap:
+>  	iounmap(base);
+>  	return ret;
+> 
 
 
 -- 

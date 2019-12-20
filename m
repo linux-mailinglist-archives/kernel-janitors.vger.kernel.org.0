@@ -2,64 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 414EA127209
-	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Dec 2019 01:10:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CE98127367
+	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Dec 2019 03:19:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727084AbfLTAKH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 19 Dec 2019 19:10:07 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:55691 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726952AbfLTAKH (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 19 Dec 2019 19:10:07 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1ii5rl-0004At-8J; Fri, 20 Dec 2019 00:10:01 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Timur Tabi <timur@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jiri Slaby <jslaby@suse.com>, linuxppc-dev@lists.ozlabs.org,
-        linux-serial@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] serial: ucc_uart: remove redundant assignment to pointer bdp
-Date:   Fri, 20 Dec 2019 00:10:00 +0000
-Message-Id: <20191220001000.39859-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
+        id S1727070AbfLTCTl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 19 Dec 2019 21:19:41 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:8156 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726963AbfLTCTl (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 19 Dec 2019 21:19:41 -0500
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 658332DE0C0B8ACCE7E0;
+        Fri, 20 Dec 2019 10:19:39 +0800 (CST)
+Received: from [127.0.0.1] (10.177.96.96) by DGGEMS408-HUB.china.huawei.com
+ (10.3.19.208) with Microsoft SMTP Server id 14.3.439.0; Fri, 20 Dec 2019
+ 10:19:33 +0800
+Subject: Re: [PATCH net] af_packet: refactoring code for
+ prb_calc_retire_blk_tmo
+To:     Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+CC:     David Miller <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, <maximmi@mellanox.com>,
+        Paolo Abeni <pabeni@redhat.com>, <yuehaibing@huawei.com>,
+        Neil Horman <nhorman@tuxdriver.com>,
+        "Network Development" <netdev@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+References: <20191219013344.34603-1-maowenan@huawei.com>
+ <CA+FuTScgWi905_NhGNsRzpwaQ+OPwahj6NtKgPjLZRjuqJvhXQ@mail.gmail.com>
+From:   maowenan <maowenan@huawei.com>
+Message-ID: <c0944cb6-eb63-b1e6-01da-4cddd2ab7f91@huawei.com>
+Date:   Fri, 20 Dec 2019 10:19:34 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
+In-Reply-To: <CA+FuTScgWi905_NhGNsRzpwaQ+OPwahj6NtKgPjLZRjuqJvhXQ@mail.gmail.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.96.96]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
 
-The variable bdp is being initialized with a value that is never
-read and it is being updated later with a new value. The initialization
-is redundant and can be removed.
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/tty/serial/ucc_uart.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/tty/serial/ucc_uart.c b/drivers/tty/serial/ucc_uart.c
-index afc2a5d69202..99a069ed3636 100644
---- a/drivers/tty/serial/ucc_uart.c
-+++ b/drivers/tty/serial/ucc_uart.c
-@@ -336,8 +336,6 @@ static int qe_uart_tx_pump(struct uart_qe_port *qe_port)
- 	struct uart_port *port = &qe_port->port;
- 	struct circ_buf *xmit = &port->state->xmit;
- 
--	bdp = qe_port->rx_cur;
--
- 	/* Handle xon/xoff */
- 	if (port->x_char) {
- 		/* Pick next descriptor and fill from buffer */
--- 
-2.24.0
+On 2019/12/19 21:56, Willem de Bruijn wrote:
+> On Wed, Dec 18, 2019 at 8:37 PM Mao Wenan <maowenan@huawei.com> wrote:
+>>
+>> If __ethtool_get_link_ksettings() is failed and with
+>> non-zero value, prb_calc_retire_blk_tmo() should return
+>> DEFAULT_PRB_RETIRE_TOV firstly. Refactoring code and make
+>> it more readable.
+>>
+>> Fixes: b43d1f9f7067 ("af_packet: set defaule value for tmo")
+> 
+> This is a pure refactor, not a fix.
+yes , it is not a fix.
+> 
+> Code refactors make backporting fixes across releases harder, among
+> other things. I think this code is better left as is. Either way, it
+> would be a candidate for net-next, not net.
+sorry, it would be net-next.
+> 
+>> -       unsigned int mbits = 0, msec = 0, div = 0, tmo = 0;
+>> +       unsigned int mbits = 0, msec = 1, div = 0, tmo = 0;
+> 
+> Most of these do not need to be initialized here at all, really.
+> 
+some of them do not need to be initialized,
+msec=1 can be reserved because it can indicate tmo is for millisecond and msec
+initialized value is 1ms.
 

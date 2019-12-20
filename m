@@ -2,32 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C49BA128444
-	for <lists+kernel-janitors@lfdr.de>; Fri, 20 Dec 2019 23:05:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC9B3128593
+	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Dec 2019 00:33:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727621AbfLTWFi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 20 Dec 2019 17:05:38 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:57542 "EHLO
+        id S1726666AbfLTXd0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 20 Dec 2019 18:33:26 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:59026 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727604AbfLTWFh (ORCPT
+        with ESMTP id S1726470AbfLTXd0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 20 Dec 2019 17:05:37 -0500
+        Fri, 20 Dec 2019 18:33:26 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iiQOl-0005Ku-8o; Fri, 20 Dec 2019 22:05:27 +0000
+        id 1iiRlr-0001A8-48; Fri, 20 Dec 2019 23:33:23 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Andreas Noever <andreas.noever@gmail.com>,
-        Michael Jamet <michael.jamet@intel.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Yehezkel Bernat <YehezkelShB@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rajmohan Mani <rajmohan.mani@intel.com>
+To:     Jens Axboe <axboe@kernel.dk>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        io-uring@vger.kernel.org, linux-fsdevel@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] thunderbolt: fix memory leak of object sw
-Date:   Fri, 20 Dec 2019 22:05:26 +0000
-Message-Id: <20191220220526.11307-1-colin.king@canonical.com>
+Subject: [PATCH][next] io_uring: fix missing error return when percpu_ref_init fails
+Date:   Fri, 20 Dec 2019 23:33:22 +0000
+Message-Id: <20191220233322.13599-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,36 +36,30 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-In the case where the call tb_switch_exceeds_max_depth is true
-the error reurn path leaks memory in sw.  Fix this by setting
-the return error code to -EADDRNOTAVAIL and returning via the
-error exit path err_free_sw_ports to free sw. sw has been kzalloc'd
-so the free of the NULL sw->ports is fine.
+Currently when the call to percpu_ref_init fails ctx->file_data is
+set to null and because there is a missing return statement the
+following statement dereferences this null pointer causing an oops.
+Fix this by adding the missing -ENOMEM return to avoid the oops.
 
-Addresses-Coverity: ("Resource leak")
-Fixes: b04079837b20 ("thunderbolt: Add initial support for USB4")
+Addresses-Coverity: ("Explicit null dereference")
+Fixes: cbb537634780 ("io_uring: avoid ring quiesce for fixed file set unregister and update")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/thunderbolt/switch.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/io_uring.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/thunderbolt/switch.c b/drivers/thunderbolt/switch.c
-index 3454e6154958..ad5479f21174 100644
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -1885,8 +1885,10 @@ struct tb_switch *tb_switch_alloc(struct tb *tb, struct device *parent,
- 	sw->config.enabled = 0;
- 
- 	/* Make sure we do not exceed maximum topology limit */
--	if (tb_switch_exceeds_max_depth(sw, depth))
--		return ERR_PTR(-EADDRNOTAVAIL);
-+	if (tb_switch_exceeds_max_depth(sw, depth)) {
-+		ret = -EADDRNOTAVAIL;
-+		goto err_free_sw_ports;
-+	}
- 
- 	/* initialize ports */
- 	sw->ports = kcalloc(sw->config.max_port_number + 1, sizeof(*sw->ports),
+diff --git a/fs/io_uring.c b/fs/io_uring.c
+index c756b8fc44c6..1d31294f5914 100644
+--- a/fs/io_uring.c
++++ b/fs/io_uring.c
+@@ -4937,6 +4937,7 @@ static int io_sqe_files_register(struct io_ring_ctx *ctx, void __user *arg,
+ 		kfree(ctx->file_data->table);
+ 		kfree(ctx->file_data);
+ 		ctx->file_data = NULL;
++		return -ENOMEM;
+ 	}
+ 	ctx->file_data->put_llist.first = NULL;
+ 	INIT_WORK(&ctx->file_data->ref_work, io_ring_file_ref_switch);
 -- 
 2.24.0
 

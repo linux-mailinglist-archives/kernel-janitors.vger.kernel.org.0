@@ -2,91 +2,134 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C3E861285B2
-	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Dec 2019 00:51:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8F901285EB
+	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Dec 2019 01:15:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726485AbfLTXvK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 20 Dec 2019 18:51:10 -0500
-Received: from mail-pl1-f180.google.com ([209.85.214.180]:33015 "EHLO
-        mail-pl1-f180.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726470AbfLTXvJ (ORCPT
+        id S1726565AbfLUAPu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 20 Dec 2019 19:15:50 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:59724 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726462AbfLUAPt (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 20 Dec 2019 18:51:09 -0500
-Received: by mail-pl1-f180.google.com with SMTP id c13so4778573pls.0
-        for <kernel-janitors@vger.kernel.org>; Fri, 20 Dec 2019 15:51:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=NKQ9URZBMeV3OPseAAh2Xx7y2pXyxLatIKtNl8iLvXQ=;
-        b=ykJu8gvYo2ySI4MYq3KAx12I/84YrqF+Q/U5WMmy9QswF5KWC7Km1ht1FtGvNaAqEP
-         O5N9mcr7Ry87YOOCeMm9G9FT4U2Eg8KXvUxER0cexg2PiLXMO8kzbyibp6yHj99A0BwQ
-         azvWMwgMPEzz53V3OcaFGUZMscgQ49MExbyF4PTQYnrMpJNaDUSPsxshj/pv3lDgiSEa
-         V6iwl5I4A5vmr+Ob3uN9MzIuG2rz8qbK9VqN9mLJejdnI3ZW3+2VKhK3LRj+FC/uePhi
-         Swb8KNcr8jc974+Q3z6dOxdd6nhs7IAAlnnRfXigkKsfolnY0ljiBl0xJMN8YmjPXtYj
-         1Gjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=NKQ9URZBMeV3OPseAAh2Xx7y2pXyxLatIKtNl8iLvXQ=;
-        b=ZMIWXRmft8NgyWB3CRGRsSS+BVtHCZN46YzqbUPUzjPjxjTdT2n4HwYoC97N0QwvFM
-         f1raB8T12liXd+huJWeqhjCIx38+lNMU11NrxLj1+Cpa/SIRqnEbbCvP0qLF5N0n+BWY
-         tpM+9HP2FLYaq8MwJQZUyRbHWY/KuWHabQVA1OdcPbnwUqCY9crmcYEf72jYx1gVm6SQ
-         2b9zp8bUezfkrscIu6cvp1tC3W530sQ0H1jx6fBZb1hvtoHZlusSVkvigM9L+OuhGzln
-         +jkyZcAPwp02r3+efSFSCf2kmdOc67trtIHmniO7IgNz5DnVmcxG+JQ/2UkZz729cfPH
-         pi8g==
-X-Gm-Message-State: APjAAAXuvn31egQab5/a9MlItKy7vts8qlWe4yqVQL/d+R4GWC1mwKn/
-        eAKSbXdx+/MWRDbTZkd3vDYu5g==
-X-Google-Smtp-Source: APXvYqzmkZWiV7MicyHExsLOg3UvxPLhXwAkPmhB5mHQM5D5YzarwPE7bcTHy/sqhKiuGY4VEVe9RA==
-X-Received: by 2002:a17:902:76c9:: with SMTP id j9mr8890271plt.21.1576885852697;
-        Fri, 20 Dec 2019 15:50:52 -0800 (PST)
-Received: from [192.168.1.188] ([66.219.217.145])
-        by smtp.gmail.com with ESMTPSA id w38sm13024578pgk.45.2019.12.20.15.50.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 Dec 2019 15:50:52 -0800 (PST)
-Subject: Re: [PATCH][next] io_uring: fix missing error return when
- percpu_ref_init fails
-To:     Colin Ian King <colin.king@canonical.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        io-uring@vger.kernel.org, linux-fsdevel@vger.kernel.org
+        Fri, 20 Dec 2019 19:15:49 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iiSQq-0003Lv-B8; Sat, 21 Dec 2019 00:15:44 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     =?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= 
+        <jerome.pouiller@silabs.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20191220233322.13599-1-colin.king@canonical.com>
- <398f514a-e2ce-8b4f-16cf-4edeec5fa1e7@kernel.dk>
- <cf270359-fd06-3175-d0ef-ec2adc628235@canonical.com>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <a1a36f72-50ff-9cce-bcde-6639f7ab6406@kernel.dk>
-Date:   Fri, 20 Dec 2019 16:50:50 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
+Subject: [PATCH][next] staging: wfx: check for memory allocation failures from wfx_alloc_hif
+Date:   Sat, 21 Dec 2019 00:15:43 +0000
+Message-Id: <20191221001543.15255-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-In-Reply-To: <cf270359-fd06-3175-d0ef-ec2adc628235@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 12/20/19 4:49 PM, Colin Ian King wrote:
-> On 20/12/2019 23:48, Jens Axboe wrote:
->> On 12/20/19 4:33 PM, Colin King wrote:
->>> From: Colin Ian King <colin.king@canonical.com>
->>>
->>> Currently when the call to percpu_ref_init fails ctx->file_data is
->>> set to null and because there is a missing return statement the
->>> following statement dereferences this null pointer causing an oops.
->>> Fix this by adding the missing -ENOMEM return to avoid the oops.
->>
->> Nice, thanks! I'm guessing I didn't have the necessary magic debug
->> options to allow failure injection for failing.
-> 
-> Fortunately we have Coverity to the rescue :-)
+From: Colin Ian King <colin.king@canonical.com>
 
-Indeed!
+Currently calls to wfx_alloc_hif are not checking for a null return
+when a memory allocation fails and this leads to null pointer
+dereferencing issues.  Fix this by adding null pointer checks and
+returning passing down -ENOMEM errors where necessary. The error
+checking in the current driver is a bit sparse, so this may need
+some extra attention later if required.
 
+Fixes: f95a29d40782 ("staging: wfx: add HIF commands helpers")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/staging/wfx/hif_tx.c |  6 ++++++
+ drivers/staging/wfx/sta.c    | 13 +++++++------
+ 2 files changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/staging/wfx/hif_tx.c b/drivers/staging/wfx/hif_tx.c
+index 8a34a52dd5b9..d8e159670eae 100644
+--- a/drivers/staging/wfx/hif_tx.c
++++ b/drivers/staging/wfx/hif_tx.c
+@@ -366,6 +366,9 @@ int hif_set_edca_queue_params(struct wfx_vif *wvif, u16 queue,
+ 	struct hif_req_edca_queue_params *body = wfx_alloc_hif(sizeof(*body),
+ 							       &hif);
+ 
++	if (!body)
++		return -ENOMEM;
++
+ 	WARN_ON(arg->aifs > 255);
+ 	body->aifsn = arg->aifs;
+ 	body->cw_min = cpu_to_le16(arg->cw_min);
+@@ -390,6 +393,9 @@ int hif_set_pm(struct wfx_vif *wvif, bool ps, int dynamic_ps_timeout)
+ 	struct hif_msg *hif;
+ 	struct hif_req_set_pm_mode *body = wfx_alloc_hif(sizeof(*body), &hif);
+ 
++	if (!body)
++		return -ENOMEM;
++
+ 	if (ps) {
+ 		body->pm_mode.enter_psm = 1;
+ 		// Firmware does not support more than 128ms
+diff --git a/drivers/staging/wfx/sta.c b/drivers/staging/wfx/sta.c
+index 9a61478d98f8..c08d691fe870 100644
+--- a/drivers/staging/wfx/sta.c
++++ b/drivers/staging/wfx/sta.c
+@@ -316,6 +316,7 @@ int wfx_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ {
+ 	struct wfx_dev *wdev = hw->priv;
+ 	struct wfx_vif *wvif = (struct wfx_vif *) vif->drv_priv;
++	int ret = 0;
+ 
+ 	WARN_ON(queue >= hw->queues);
+ 
+@@ -326,10 +327,10 @@ int wfx_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 	if (wvif->vif->type == NL80211_IFTYPE_STATION) {
+ 		hif_set_uapsd_info(wvif, wvif->uapsd_mask);
+ 		if (wvif->setbssparams_done && wvif->state == WFX_STATE_STA)
+-			wfx_update_pm(wvif);
++			ret = wfx_update_pm(wvif);
+ 	}
+ 	mutex_unlock(&wdev->conf_mutex);
+-	return 0;
++	return ret;
+ }
+ 
+ int wfx_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
+@@ -1322,7 +1323,7 @@ int wfx_config(struct ieee80211_hw *hw, u32 changed)
+ 	if (changed & IEEE80211_CONF_CHANGE_PS) {
+ 		wvif = NULL;
+ 		while ((wvif = wvif_iterate(wdev, wvif)) != NULL)
+-			wfx_update_pm(wvif);
++			ret = wfx_update_pm(wvif);
+ 		wvif = wdev_to_wvif(wdev, 0);
+ 	}
+ 
+@@ -1333,7 +1334,7 @@ int wfx_config(struct ieee80211_hw *hw, u32 changed)
+ 
+ int wfx_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
+ {
+-	int i;
++	int i, ret = 0;
+ 	struct wfx_dev *wdev = hw->priv;
+ 	struct wfx_vif *wvif = (struct wfx_vif *) vif->drv_priv;
+ 
+@@ -1417,9 +1418,9 @@ int wfx_add_interface(struct ieee80211_hw *hw, struct ieee80211_vif *vif)
+ 		else
+ 			hif_set_block_ack_policy(wvif, 0x00, 0x00);
+ 		// Combo force powersave mode. We can re-enable it now
+-		wfx_update_pm(wvif);
++		ret = wfx_update_pm(wvif);
+ 	}
+-	return 0;
++	return ret;
+ }
+ 
+ void wfx_remove_interface(struct ieee80211_hw *hw,
 -- 
-Jens Axboe
+2.24.0
 

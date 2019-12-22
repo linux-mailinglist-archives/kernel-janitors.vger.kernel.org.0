@@ -2,75 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 83C0B128A83
-	for <lists+kernel-janitors@lfdr.de>; Sat, 21 Dec 2019 18:01:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98E3012902C
+	for <lists+kernel-janitors@lfdr.de>; Sun, 22 Dec 2019 23:22:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726567AbfLURAm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 21 Dec 2019 12:00:42 -0500
-Received: from mail.nic.cz ([217.31.204.67]:46844 "EHLO mail.nic.cz"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726107AbfLURAm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 21 Dec 2019 12:00:42 -0500
-Received: from localhost (unknown [172.20.6.135])
-        by mail.nic.cz (Postfix) with ESMTPSA id C0D6F140E64;
-        Sat, 21 Dec 2019 18:00:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nic.cz; s=default;
-        t=1576947640; bh=syvtdT4FCeJPdP11/qcAox6n6e58pSFJbJE5mMlIACM=;
-        h=Date:From:To;
-        b=Q7N++Ej/AZ47yHBYghFaIyDGfxiOLxQvseo1WJ1IUhmIBcXRnPiiO0o12/cYoaxTa
-         +NJ//P+oVPgIc1gerFAVw48Sr29F0N373W+dCGa6unvWGqHPLyM+wOOaXoA8OTSudC
-         IMm/NNY3LS/jzxQ8wrrcm93SZJ5A9CZ4o2FzZDdI=
-Date:   Sat, 21 Dec 2019 18:00:40 +0100
-From:   Marek Behun <marek.behun@nic.cz>
-To:     Colin King <colin.king@canonical.com>
+        id S1726616AbfLVWW2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 22 Dec 2019 17:22:28 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:43448 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726162AbfLVWW2 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 22 Dec 2019 17:22:28 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ij9cH-0003Sn-FC; Sun, 22 Dec 2019 22:22:25 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] firmware: turris-mox-rwtm: fix indentation issue
-Message-ID: <20191221180040.4e22c245@nic.cz>
-In-Reply-To: <20191221153623.32564-1-colin.king@canonical.com>
-References: <20191221153623.32564-1-colin.king@canonical.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Subject: [PATCH] misc: pti: remove redundant assignments to retval
+Date:   Sun, 22 Dec 2019 22:22:24 +0000
+Message-Id: <20191222222224.732340-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.101.4 at mail
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-1.0 required=5.0 tests=ALL_TRUSTED,SHORTCIRCUIT
-        shortcircuit=ham autolearn=disabled version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.nic.cz
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Colin,
-this was sent to mvebu-next, Gregory did not apply it yet but replied
-that he is going to.
-Marek
+From: Colin Ian King <colin.king@canonical.com>
 
-On Sat, 21 Dec 2019 15:36:23 +0000
-Colin King <colin.king@canonical.com> wrote:
+The variable retval is assigned with a value that is never read and
+it is re-assigned a new value later on.  The assignment is redundant
+and can be removed.  Clean up multiple occurrances of this pattern.
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a statement that is indented one level too deeply, remove
-> the extraneous tab.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/firmware/turris-mox-rwtm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/firmware/turris-mox-rwtm.c b/drivers/firmware/turris-mox-rwtm.c
-> index 72be58960e54..e27f68437b56 100644
-> --- a/drivers/firmware/turris-mox-rwtm.c
-> +++ b/drivers/firmware/turris-mox-rwtm.c
-> @@ -197,7 +197,7 @@ static int mox_get_board_info(struct mox_rwtm *rwtm)
->  		rwtm->serial_number = reply->status[1];
->  		rwtm->serial_number <<= 32;
->  		rwtm->serial_number |= reply->status[0];
-> -			rwtm->board_version = reply->status[2];
-> +		rwtm->board_version = reply->status[2];
->  		rwtm->ram_size = reply->status[3];
->  		reply_to_mac_addr(rwtm->mac_address1, reply->status[4],
->  				  reply->status[5]);
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/misc/pti.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/misc/pti.c b/drivers/misc/pti.c
+index 063e4419cd7e..b7f510676cd6 100644
+--- a/drivers/misc/pti.c
++++ b/drivers/misc/pti.c
+@@ -792,7 +792,7 @@ static int pti_pci_probe(struct pci_dev *pdev,
+ 		const struct pci_device_id *ent)
+ {
+ 	unsigned int a;
+-	int retval = -EINVAL;
++	int retval;
+ 	int pci_bar = 1;
+ 
+ 	dev_dbg(&pdev->dev, "%s %s(%d): PTI PCI ID %04x:%04x\n", __FILE__,
+@@ -910,7 +910,7 @@ static struct pci_driver pti_pci_driver = {
+  */
+ static int __init pti_init(void)
+ {
+-	int retval = -EINVAL;
++	int retval;
+ 
+ 	/* First register module as tty device */
+ 
+-- 
+2.24.0
 

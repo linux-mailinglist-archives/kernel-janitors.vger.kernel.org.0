@@ -2,71 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98E3012902C
-	for <lists+kernel-janitors@lfdr.de>; Sun, 22 Dec 2019 23:22:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6A7D129402
+	for <lists+kernel-janitors@lfdr.de>; Mon, 23 Dec 2019 11:13:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726616AbfLVWW2 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 22 Dec 2019 17:22:28 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:43448 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726162AbfLVWW2 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 22 Dec 2019 17:22:28 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1ij9cH-0003Sn-FC; Sun, 22 Dec 2019 22:22:25 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] misc: pti: remove redundant assignments to retval
-Date:   Sun, 22 Dec 2019 22:22:24 +0000
-Message-Id: <20191222222224.732340-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
+        id S1726233AbfLWKNV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 23 Dec 2019 05:13:21 -0500
+Received: from mga11.intel.com ([192.55.52.93]:44066 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725799AbfLWKNV (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 23 Dec 2019 05:13:21 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 Dec 2019 02:13:21 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,347,1571727600"; 
+   d="scan'208";a="222995369"
+Received: from lahna.fi.intel.com (HELO lahna) ([10.237.72.163])
+  by fmsmga001.fm.intel.com with SMTP; 23 Dec 2019 02:13:18 -0800
+Received: by lahna (sSMTP sendmail emulation); Mon, 23 Dec 2019 12:13:17 +0200
+Date:   Mon, 23 Dec 2019 12:13:17 +0200
+From:   Mika Westerberg <mika.westerberg@linux.intel.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Andreas Noever <andreas.noever@gmail.com>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Yehezkel Bernat <YehezkelShB@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Rajmohan Mani <rajmohan.mani@intel.com>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] thunderbolt: fix memory leak of object sw
+Message-ID: <20191223101317.GF2628@lahna.fi.intel.com>
+References: <20191220220526.11307-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191220220526.11307-1-colin.king@canonical.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Fri, Dec 20, 2019 at 10:05:26PM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> In the case where the call tb_switch_exceeds_max_depth is true
+> the error reurn path leaks memory in sw.  Fix this by setting
+> the return error code to -EADDRNOTAVAIL and returning via the
+> error exit path err_free_sw_ports to free sw. sw has been kzalloc'd
+> so the free of the NULL sw->ports is fine.
+>
+> Addresses-Coverity: ("Resource leak")
+> Fixes: b04079837b20 ("thunderbolt: Add initial support for USB4")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-The variable retval is assigned with a value that is never read and
-it is re-assigned a new value later on.  The assignment is redundant
-and can be removed.  Clean up multiple occurrances of this pattern.
+Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/misc/pti.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Greg, can you take this to your usb-next branch where the rest of the
+USB4 stuff is?
 
-diff --git a/drivers/misc/pti.c b/drivers/misc/pti.c
-index 063e4419cd7e..b7f510676cd6 100644
---- a/drivers/misc/pti.c
-+++ b/drivers/misc/pti.c
-@@ -792,7 +792,7 @@ static int pti_pci_probe(struct pci_dev *pdev,
- 		const struct pci_device_id *ent)
- {
- 	unsigned int a;
--	int retval = -EINVAL;
-+	int retval;
- 	int pci_bar = 1;
- 
- 	dev_dbg(&pdev->dev, "%s %s(%d): PTI PCI ID %04x:%04x\n", __FILE__,
-@@ -910,7 +910,7 @@ static struct pci_driver pti_pci_driver = {
-  */
- static int __init pti_init(void)
- {
--	int retval = -EINVAL;
-+	int retval;
- 
- 	/* First register module as tty device */
- 
--- 
-2.24.0
-
+Thanks!

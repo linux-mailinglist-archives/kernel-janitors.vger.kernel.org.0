@@ -2,84 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E989212A02D
-	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Dec 2019 11:45:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 14C8312A074
+	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Dec 2019 12:25:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726222AbfLXKpI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 24 Dec 2019 05:45:08 -0500
-Received: from mail.nic.cz ([217.31.204.67]:42568 "EHLO mail.nic.cz"
+        id S1726184AbfLXLZX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 24 Dec 2019 06:25:23 -0500
+Received: from vps0.lunn.ch ([185.16.172.187]:39140 "EHLO vps0.lunn.ch"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726076AbfLXKpI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 24 Dec 2019 05:45:08 -0500
-Received: from localhost (unknown [172.20.6.135])
-        by mail.nic.cz (Postfix) with ESMTPSA id 36316140A69;
-        Tue, 24 Dec 2019 11:45:06 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nic.cz; s=default;
-        t=1577184306; bh=q9JcRnvVRFN2Kpu3lsOtU8eTAnkcYLLURVCH8NtB0Ks=;
-        h=Date:From:To;
-        b=QOR8w2ifoKjy+rOiyWuZCFtmh6Z0Yem9ycl5XBt/68uGUzIxiRuxZwPI1CtKBAofe
-         Wtwvl4WZ8yMsjUXcvVDZ1IKRP4i36nMBQ2tNCmvD3jgvT6niVv8ThrBYsaEYaOOGqJ
-         jFnGEGIH4N1kwNhDrnbiWmaafVNwzdMOHxg297Kk=
-Date:   Tue, 24 Dec 2019 11:45:04 +0100
-From:   Marek Behun <marek.behun@nic.cz>
+        id S1726102AbfLXLZX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 24 Dec 2019 06:25:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=RlgHb21b1QROs2UcIgO+a02Y6c38zuK0+5BmDk4rpWk=; b=a634Z6nfsEg2DuTjgk0y38H9Aj
+        eHijwgzBFVvP96OpECb5Qi7CryXjfxc8xCZzbzQ8aKE0zIlh1L2GIM57KkQ8BwqI2QUtgHxvll7BL
+        o7m6Tg/te4WWhrENOytd67H6kHwxSAZsw1moLIcICSws6yrouXMsJ4y8bRpMA4UrGKgE=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.93)
+        (envelope-from <andrew@lunn.ch>)
+        id 1ijiJP-0002Ib-2P; Tue, 24 Dec 2019 12:25:15 +0100
+Date:   Tue, 24 Dec 2019 12:25:15 +0100
+From:   Andrew Lunn <andrew@lunn.ch>
 To:     Mao Wenan <maowenan@huawei.com>
-Cc:     <andrew@lunn.ch>, <vivien.didelot@gmail.com>,
-        <f.fainelli@gmail.com>, <davem@davemloft.net>,
-        <linux@rempel-privat.de>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Cc:     vivien.didelot@gmail.com, f.fainelli@gmail.com,
+        davem@davemloft.net, linux@rempel-privat.de,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
 Subject: Re: [PATCH net-next] net: dsa: drop pointless static qualifier in
  ar9331_sw_mbus_init
-Message-ID: <20191224114504.2f256ab9@nic.cz>
-In-Reply-To: <20191224024059.184847-1-maowenan@huawei.com>
+Message-ID: <20191224112515.GE3395@lunn.ch>
 References: <20191224024059.184847-1-maowenan@huawei.com>
-X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.101.4 at mail
-X-Virus-Status: Clean
-X-Spam-Status: No, score=-1.0 required=5.0 tests=ALL_TRUSTED,SHORTCIRCUIT
-        shortcircuit=ham autolearn=disabled version=3.4.2
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on mail.nic.cz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191224024059.184847-1-maowenan@huawei.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Mao,
-the commit title should be something of the form
-  net: dsa: qca: ar9331: drop pointless static qualifier
-or
-  net: dsa: ar9331: drop pointless static qualifier
-
-If it begins only with
-  net: dsa:
-then it makes people think you are changing stuff in main dsa code.
-
-Marek
-
-On Tue, 24 Dec 2019 10:40:59 +0800
-Mao Wenan <maowenan@huawei.com> wrote:
-
+On Tue, Dec 24, 2019 at 10:40:59AM +0800, Mao Wenan wrote:
 > There is no need to have the 'T *v' variable static
-> since new value always be assigned before use it.
-> 
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> ---
->  drivers/net/dsa/qca/ar9331.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/dsa/qca/ar9331.c b/drivers/net/dsa/qca/ar9331.c
-> index 0d1a7cd85fe8..da3bece75e21 100644
-> --- a/drivers/net/dsa/qca/ar9331.c
-> +++ b/drivers/net/dsa/qca/ar9331.c
-> @@ -266,7 +266,7 @@ static int ar9331_sw_mbus_read(struct mii_bus *mbus, int port, int regnum)
->  static int ar9331_sw_mbus_init(struct ar9331_sw_priv *priv)
->  {
->  	struct device *dev = priv->dev;
-> -	static struct mii_bus *mbus;
-> +	struct mii_bus *mbus;
->  	struct device_node *np, *mnp;
->  	int ret;
->  
 
+What does 'T *v' mean?
+
+The patch itself looks O.K, but the description should be better, and
+the subject line.
+
+    Andrew

@@ -2,53 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14C8312A074
-	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Dec 2019 12:25:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75D8512A0FC
+	for <lists+kernel-janitors@lfdr.de>; Tue, 24 Dec 2019 13:02:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726184AbfLXLZX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 24 Dec 2019 06:25:23 -0500
-Received: from vps0.lunn.ch ([185.16.172.187]:39140 "EHLO vps0.lunn.ch"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726102AbfLXLZX (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 24 Dec 2019 06:25:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=RlgHb21b1QROs2UcIgO+a02Y6c38zuK0+5BmDk4rpWk=; b=a634Z6nfsEg2DuTjgk0y38H9Aj
-        eHijwgzBFVvP96OpECb5Qi7CryXjfxc8xCZzbzQ8aKE0zIlh1L2GIM57KkQ8BwqI2QUtgHxvll7BL
-        o7m6Tg/te4WWhrENOytd67H6kHwxSAZsw1moLIcICSws6yrouXMsJ4y8bRpMA4UrGKgE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.93)
-        (envelope-from <andrew@lunn.ch>)
-        id 1ijiJP-0002Ib-2P; Tue, 24 Dec 2019 12:25:15 +0100
-Date:   Tue, 24 Dec 2019 12:25:15 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
-To:     Mao Wenan <maowenan@huawei.com>
-Cc:     vivien.didelot@gmail.com, f.fainelli@gmail.com,
-        davem@davemloft.net, linux@rempel-privat.de,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net-next] net: dsa: drop pointless static qualifier in
- ar9331_sw_mbus_init
-Message-ID: <20191224112515.GE3395@lunn.ch>
-References: <20191224024059.184847-1-maowenan@huawei.com>
+        id S1726262AbfLXMBs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 24 Dec 2019 07:01:48 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:36468 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726102AbfLXMBr (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 24 Dec 2019 07:01:47 -0500
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 1EA0F613C9AA1A03BDCA;
+        Tue, 24 Dec 2019 20:01:42 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 24 Dec 2019 20:01:34 +0800
+From:   Mao Wenan <maowenan@huawei.com>
+To:     <andrew@lunn.ch>, <vivien.didelot@gmail.com>,
+        <f.fainelli@gmail.com>, <davem@davemloft.net>,
+        <linux@rempel-privat.de>, <maowenan@huawei.com>,
+        <marek.behun@nic.cz>
+CC:     <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH net-next v2] net: dsa: qca: ar9331: drop pointless static qualifier in ar9331_sw_mbus_init
+Date:   Tue, 24 Dec 2019 19:58:12 +0800
+Message-ID: <20191224115812.166927-1-maowenan@huawei.com>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20191224112515.GE3395@lunn.ch>
+References: <20191224112515.GE3395@lunn.ch>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191224024059.184847-1-maowenan@huawei.com>
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Dec 24, 2019 at 10:40:59AM +0800, Mao Wenan wrote:
-> There is no need to have the 'T *v' variable static
+There is no need to set variable 'mbus' static
+since new value always be assigned before use it.
 
-What does 'T *v' mean?
+Signed-off-by: Mao Wenan <maowenan@huawei.com>
+---
+ v2: change subject and description.
+ drivers/net/dsa/qca/ar9331.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The patch itself looks O.K, but the description should be better, and
-the subject line.
+diff --git a/drivers/net/dsa/qca/ar9331.c b/drivers/net/dsa/qca/ar9331.c
+index 0d1a7cd85fe8..da3bece75e21 100644
+--- a/drivers/net/dsa/qca/ar9331.c
++++ b/drivers/net/dsa/qca/ar9331.c
+@@ -266,7 +266,7 @@ static int ar9331_sw_mbus_read(struct mii_bus *mbus, int port, int regnum)
+ static int ar9331_sw_mbus_init(struct ar9331_sw_priv *priv)
+ {
+ 	struct device *dev = priv->dev;
+-	static struct mii_bus *mbus;
++	struct mii_bus *mbus;
+ 	struct device_node *np, *mnp;
+ 	int ret;
+ 
+-- 
+2.20.1
 
-    Andrew

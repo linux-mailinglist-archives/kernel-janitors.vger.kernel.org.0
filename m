@@ -2,68 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E494B12AD79
-	for <lists+kernel-janitors@lfdr.de>; Thu, 26 Dec 2019 17:31:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7882312AFA1
+	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Dec 2019 00:20:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726511AbfLZQbO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Dec 2019 11:31:14 -0500
-Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:48914 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726450AbfLZQbO (ORCPT
+        id S1726806AbfLZXUS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 26 Dec 2019 18:20:18 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:44524 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725909AbfLZXUS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Dec 2019 11:31:14 -0500
-Received: from localhost.localdomain ([90.40.29.152])
-        by mwinf5d81 with ME
-        id igX92100B3Gv28S03gX9u9; Thu, 26 Dec 2019 17:31:12 +0100
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Thu, 26 Dec 2019 17:31:12 +0100
-X-ME-IP: 90.40.29.152
-From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     brian.austin@cirrus.com, Paul.Handrigan@cirrus.com,
-        ckeepax@opensource.cirrus.com, rf@opensource.cirrus.com,
-        lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz,
-        tiwai@suse.com
-Cc:     alsa-devel@alsa-project.org, patches@opensource.cirrus.com,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH] ASoC: cs47l92: Simplify error handling code in 'cs47l92_probe()'
-Date:   Thu, 26 Dec 2019 17:29:07 +0100
-Message-Id: <20191226162907.9490-1-christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        Thu, 26 Dec 2019 18:20:18 -0500
+Received: from localhost (unknown [IPv6:2601:601:9f00:1c3::3d5])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 7214015399BE5;
+        Thu, 26 Dec 2019 15:20:17 -0800 (PST)
+Date:   Thu, 26 Dec 2019 15:20:16 -0800 (PST)
+Message-Id: <20191226.152016.1920270671846157194.davem@davemloft.net>
+To:     maowenan@huawei.com
+Cc:     edumazet@google.com, willemb@google.com, maximmi@mellanox.com,
+        pabeni@redhat.com, yuehaibing@huawei.com, nhorman@tuxdriver.com,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, willemdebruijn.kernel@gmail.com
+Subject: Re: [PATCH net-next v2] af_packet: refactoring code for
+ prb_calc_retire_blk_tmo
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20191223104257.132354-1-maowenan@huawei.com>
+References: <CA+FuTScgWi905_NhGNsRzpwaQ+OPwahj6NtKgPjLZRjuqJvhXQ@mail.gmail.com>
+        <20191223104257.132354-1-maowenan@huawei.com>
+X-Mailer: Mew version 6.8 on Emacs 26.1
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 26 Dec 2019 15:20:17 -0800 (PST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If 'madera_init_bus_error_irq()' fails,
-'wm_adsp2_remove(&cs47l92->core.adsp[0])' will be called twice.
-Once in the 'if' block, and once in the error handling path.
-This is harmless, but one of this call can be axed.
+From: Mao Wenan <maowenan@huawei.com>
+Date: Mon, 23 Dec 2019 18:42:57 +0800
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
- sound/soc/codecs/cs47l92.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+> If __ethtool_get_link_ksettings() is failed and with
+> non-zero value, prb_calc_retire_blk_tmo() should return
+> DEFAULT_PRB_RETIRE_TOV firstly. 
+> 
+> This patch is to refactory code and make it more readable.
+> 
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
 
-diff --git a/sound/soc/codecs/cs47l92.c b/sound/soc/codecs/cs47l92.c
-index d50f75f3b3e4..536b7d35d6b2 100644
---- a/sound/soc/codecs/cs47l92.c
-+++ b/sound/soc/codecs/cs47l92.c
-@@ -1959,10 +1959,8 @@ static int cs47l92_probe(struct platform_device *pdev)
- 		goto error_dsp_irq;
- 
- 	ret = madera_init_bus_error_irq(&cs47l92->core, 0, wm_adsp2_bus_error);
--	if (ret != 0) {
--		wm_adsp2_remove(&cs47l92->core.adsp[0]);
-+	if (ret != 0)
- 		goto error_adsp;
--	}
- 
- 	madera_init_fll(madera, 1, MADERA_FLL1_CONTROL_1 - 1,
- 			&cs47l92->fll[0]);
--- 
-2.20.1
-
+Applied, thanks.

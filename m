@@ -2,31 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A22312BD73
-	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Dec 2019 12:31:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 26F4912BD8C
+	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Dec 2019 13:26:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726248AbfL1LbF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 28 Dec 2019 06:31:05 -0500
-Received: from mout.web.de ([217.72.192.78]:57905 "EHLO mout.web.de"
+        id S1726509AbfL1M0C (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 28 Dec 2019 07:26:02 -0500
+Received: from mout.web.de ([212.227.17.11]:47723 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726071AbfL1LbF (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 28 Dec 2019 06:31:05 -0500
+        id S1726377AbfL1M0C (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 28 Dec 2019 07:26:02 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1577532655;
-        bh=E1BK6vUQv8ZXc/sK0REslLgkOUzrVdpqSTNQg6koqQQ=;
+        s=dbaedf251592; t=1577535951;
+        bh=n6RC+2F495ghd/0ICzcAKDXGWf8tVEvndTkoVgGfxHE=;
         h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
-        b=UjTPZC8KcCV+s6gGvXvzfxUCexm++CBfLyYma9JqdFojErZs56KN6dzzpCjGKrz/F
-         OzqlFtdapZlgaXhAcPYGTR0vqikXhl3RZ9OKRsu9mI2q2gRvO1tWBmOpyRQdm8aKof
-         NGcs2wqgIR78x9YcHoM3Ae6FXZQPQdju/xPOTeN8=
+        b=ltveeDlNccmcd0mKt4h090+1FqDokYC8PuJCjLghVRe2UmQx/NfDu/GExObQjveuD
+         7xlR/+3n7x1nwDdpSDIVnkOiU0M37m5+neX68OP7ayxyK1Yxhlk9SONtDdXSo0yAfF
+         o1P+c5gA0x9uvLFQd0KHn4odq814agre7KQbl8oY=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([78.48.3.151]) by smtp.web.de (mrweb101
- [213.165.67.124]) with ESMTPSA (Nemesis) id 0MORiL-1ioAaA0NFN-005p0X; Sat, 28
- Dec 2019 12:30:55 +0100
-To:     Xu Wang <vulab@iscas.ac.cn>, kernel-janitors@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Received: from [192.168.1.2] ([78.48.3.151]) by smtp.web.de (mrweb102
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 0MGzXS-1ixsku3aa2-00DrXX; Sat, 28
+ Dec 2019 13:25:50 +0100
+To:     Xu Wang <vulab@iscas.ac.cn>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+        kernel-janitors@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
 References: <1577438434-9945-1-git-send-email-vulab@iscas.ac.cn>
-Subject: Re: [PATCH] nvmem: core: Fix a potential use after free
+Subject: Re: nvmem: core: Checking the decrementing of reference counters
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -71,55 +72,55 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <278a19c4-c794-8de7-7cb4-1e1da3b80e83@web.de>
-Date:   Sat, 28 Dec 2019 12:30:42 +0100
+Message-ID: <2a95fa07-dfae-54ef-9d19-682bace02e5f@web.de>
+Date:   Sat, 28 Dec 2019 13:25:49 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.3.1
 MIME-Version: 1.0
 In-Reply-To: <1577438434-9945-1-git-send-email-vulab@iscas.ac.cn>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-X-Provags-ID: V03:K1:0rRpjfdE+4rKlZIO7CdeBK6THX4fbmIoBTpoLDvVsj6JZQbg843
- hENwhCvM2jVCKYUQ/QbRh2GlviFKZzfndmBASTel4GOzRo7v/PWowNksJlfaVbpCB9qgFTN
- UynPqBY3zpjiZaEfxEQhbSCNapHywamS19fXZVpWi3NhYvqYaQo6u1eiG4pUTeRV+SQMInb
- 6VhyTKBwG1agFeB/hJkhw==
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:8JmaXCBanrGdFXwC198kewP5yhXVBp0/zIcjsLSX/6KWvOhh70B
+ GANw32gXJ3hT5OdEox4NV4aoCZfBsLyKM7jKM0SjjECngd5VZIFfPG09fkzcijZlCZKok+V
+ ccVDe+VPJGM0BTfSJFvYMQacNgP0Viy+6R+XZZ4rFEVTYWm/EvSjvYQ8sqfuMUiRyXtWd5z
+ TbAdGtQVpWRrO0WXtpwAw==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:YA6wQjWsMPY=:uZiTmNTviztqNBolF0wc52
- t/1i+0j9D1/dIlhW08EbqSXJ1WyZ5ZG7yJ6avL6o17vlx5O0/+oSAm5iYXi4QCQK4yLfXVnjU
- FH8tG+63GBA+PbjXdRz4rSlW78Doo+qvVyjZzN3JTTz5/g97PpNV+TT1QgoBqIKkTbfcl6v7/
- FK0YJobFF/a6ChmSJ+qxAidYVMB9hcjaU3WU8rGwvhcx4H6mMYfhEVxzzEAGto8CUgb8op6JV
- gEpiUQtPs2d1J8uvYVwaQIy8LNOUL0mk3opKKsoyriYKuY1uqyxv3cxn/R6q69kNnYWGYnYk6
- fKU8a5FuzBc8Uwv5hbJ/F5O1dot+JamGWXxiXD6/Z1H6+mNymtl1oRnmT+KDKJS4qZJc6zkvW
- 8Bcqec/Kkh9iJANGrO5wltZwne91uDhVZ1/yLTxeQXjipdetMw0RRw0oY0iKX67Ks1PiQUpEQ
- FPb5oOLyhT2rSfOlT+BlVBLV8bU4v8MFAWjJokVkx+Ic2UcdLRyVIpT99COc8rmvA3s2cq6s2
- uSG2LRwLDSuH0KSqvnmj004K51m1v+98sJwKfZMJb9/LLPYOf+5oixvziVvJu/AJE2TWLvspx
- jUUUlELEQt6e9Pf8eMh0Lc60yX9bymq9WQU5+JQ+BB47Npt2P4Rf5HBJ4IpZsl2y7zUSMFqRW
- KnMxCRZZ6Pt9QLzek6ZMZnBslVZzY93F4mFlmkVUljtS8tvnsUN4RtO2mICNb14foUebeuf2h
- Gsi6Z6CjQMO+4ifarBfdKVq34A+UQyKJLxjO9QX+mgcYTFCQZMxm7AY9B/4j7LbDWevpOuCuk
- wEfzRMCFT50xlG3pktuOw2vO3oNCmaROriBgdkpkxA9+FIACaS+otl5qYEfcVlMjblfqJPUav
- by5zUCL0MXBFycGg0Dwkb3Ew3wDEQfYMw+GjF80TaH0yVttBkWr+J3ZVwr7uUGhM8ggSwm5Xq
- Cz0wThc0kwSLOcrltcvpCbUnTLGRgbWYY6j3MA2hbBwF9cqW38tdb3kFKcKlOjDYQX2JMpUU+
- rS4xEKh2Z2CCLkrV/GcIuCu65jB7Gd+J0Xs0MI/KFcs3yeaVpZyp2zeGYnO2iggm1UJdQ2JS4
- kbPQCz9IZMw8RsXqS4yhjfsQbQDu9ZZuYXeBUX6tgjC8bkFxXbdegUvo9OhtkoFN/NfVoj832
- 4BunjPF1evTBW9GpY2TYx+Mu3AoTi8CBdND6UYUTmkd7EnWJ2WbvZDTD0QXS67rOoKiiYPlJv
- iiwYZslzGvatdK6EOHzfEL2f0KCJO8WliZEBxFf9Oawz9Nh1+UjMiBe/LQRw=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:nycj1l2HX9Q=:8NKg6aYWXtlCZF0mxMQ7Jx
+ C8mLYCUaEyMJp9zxn5HSHpPFcGc3CgKjtzUj9uN8hE7BcouCsaQ2xk3ee25ApPGZ3l+9IfLyn
+ T6d0ZILfZntrWZKrP8Y4jAL+SP5Cx0z6S4641l4fhGX4c/uQx7K3VfYKM70w8ca36YUKSj5iq
+ hQp3yuUTZlzWRyD69xQDDV4VOubHAn7plObShKr9OlJDeLJAYgbVeUU3dDMdYTAvvTPw6rZ81
+ nXc74Hqm5+8Qe3MqiPxxw0Y6Vybtt0t06AZYnzGTHbuPjMsrEVBImO4/1Bv2hHiDmTPHXwQUg
+ EZL5ppD/uYw3QryuqifcX0TCZFd/hnF5fcur56VGHrQFS+B8+Kvv27BdYZZYorAwXC1ojW6qD
+ kcqTg1VccEnY5MA0jFbJEDNXWpgH7KnCSzJTTAN9SKiOy+Ft2dD+hDIxw72viGm6S6kU6Qlrv
+ 6D4S5GHIQq7NgtYeerjHlCadDSqTkGKsx7yCvKjlC9xiLK328Uu+wBPBaw7gKbVaLw86HYgeq
+ ZeYVxtDDJO1qozhGCS2zgTBsZ3VtBqgCrWBtAX4rJYS5h8IRNBhqAmSit05OwTmMGE4EXSFY0
+ s2Xz5hDaHIJ+26OMp9xRjxY4XuAl+AqhjbXyV3Wv+8U6lqOE6txgxbc7J5BWQqzZll2TDAyu2
+ 4jec3wxNwwg09+wxcOeUIMGxwIMuT09sx5MaMcnW2un8FjeD2hgIeBlmA7f9U10DXOjUT4xvT
+ Fbqn56JFVmETBAeYxHKXaux5a8WgFqzK+4CYFg74l1jszA/bjpjNPOXHvQTGuHVNj+4gwspFH
+ CBVCj7yUkUsN1pc9laYSw/Gh73gcQ1KXuVTQsrk4UrcLSsItn486Kic5EvVhEFrKC/oST3nZn
+ gmItsVEhHjMg3h9FStEtjSuzN30yB7fB74GlG1iRqcrOEdoEsiYlhRMwV+3hXvOVXpUeDryJP
+ BpOdz5DmaViEUN33myFEhaavDNcSSm7OSOkS9c8MIUeHyPAJSGDeSN56R4E1uknhvwmRPW0Ui
+ JPAQPfnwFd4EMb3CGYbzuqayotH6HIShZ3KyEyxTpT8opJ4bG992gKitrlc3HfY6afy7XCEeG
+ DJQbjgHjIyjy2cmsjNQUcSWV3AnABrVaAhejI+rurx0/xeE11vlozu274NZaS/jK+rCxlc114
+ v+C8rLmJDfe8xULk0GseVdLC6icvF1NS/6eRQsVZs0mgCW7Q7zJ87J527x+sAdwlpZaWXQ7vf
+ 5uAwzeQBQs13wxhoPFHImB+QTs4MMSZHuw6rhTOM524i4vb44dB5sbRjMuM8=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> Free the nvmem structure only after we are done using it.
+I have taken another look at the implementation of the function =E2=80=9Cn=
+vmem_device_release=E2=80=9D.
+https://elixir.bootlin.com/linux/v5.5-rc3/source/drivers/nvmem/core.c#L421
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/dr=
+ivers/nvmem/core.c?id=3Dbf8d1cd4386535004c4afe7f03d37f9864c9940e#n421
 
-This information can be reasonable.
-
-
-> This patch just moves the put_device() down a bit to avoid the
-> use after free.
-
-I suggest to reconsider such a change because a device reference count
-should eventually be decremented before decrementing the reference count
-for the module which is managed by this programming interface.
-Are you also looking for better software documentation for such an use case?
+Now I wonder why the statement =E2=80=9Cput_device(&nvmem->dev)=E2=80=9D i=
+s performed here
+after it was also executed by the function =E2=80=9C__nvmem_device_put=E2=
+=80=9D before.
+How often should the device reference count be decremented (at the end)?
 
 Regards,
 Markus

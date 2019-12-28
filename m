@@ -2,54 +2,50 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7882312AFA1
-	for <lists+kernel-janitors@lfdr.de>; Fri, 27 Dec 2019 00:20:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40F0112BBEF
+	for <lists+kernel-janitors@lfdr.de>; Sat, 28 Dec 2019 01:32:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726806AbfLZXUS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 26 Dec 2019 18:20:18 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:44524 "EHLO
+        id S1726080AbfL1AcT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 27 Dec 2019 19:32:19 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:53730 "EHLO
         shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725909AbfLZXUS (ORCPT
+        with ESMTP id S1725306AbfL1AcS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 26 Dec 2019 18:20:18 -0500
+        Fri, 27 Dec 2019 19:32:18 -0500
 Received: from localhost (unknown [IPv6:2601:601:9f00:1c3::3d5])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 7214015399BE5;
-        Thu, 26 Dec 2019 15:20:17 -0800 (PST)
-Date:   Thu, 26 Dec 2019 15:20:16 -0800 (PST)
-Message-Id: <20191226.152016.1920270671846157194.davem@davemloft.net>
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 22BA5154D114C;
+        Fri, 27 Dec 2019 16:32:18 -0800 (PST)
+Date:   Fri, 27 Dec 2019 16:32:17 -0800 (PST)
+Message-Id: <20191227.163217.1055599246835779278.davem@davemloft.net>
 To:     maowenan@huawei.com
-Cc:     edumazet@google.com, willemb@google.com, maximmi@mellanox.com,
-        pabeni@redhat.com, yuehaibing@huawei.com, nhorman@tuxdriver.com,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, willemdebruijn.kernel@gmail.com
-Subject: Re: [PATCH net-next v2] af_packet: refactoring code for
- prb_calc_retire_blk_tmo
+Cc:     andrew@lunn.ch, vivien.didelot@gmail.com, f.fainelli@gmail.com,
+        linux@rempel-privat.de, marek.behun@nic.cz, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net-next v2] net: dsa: qca: ar9331: drop pointless
+ static qualifier in ar9331_sw_mbus_init
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20191223104257.132354-1-maowenan@huawei.com>
-References: <CA+FuTScgWi905_NhGNsRzpwaQ+OPwahj6NtKgPjLZRjuqJvhXQ@mail.gmail.com>
-        <20191223104257.132354-1-maowenan@huawei.com>
+In-Reply-To: <20191224115812.166927-1-maowenan@huawei.com>
+References: <20191224112515.GE3395@lunn.ch>
+        <20191224115812.166927-1-maowenan@huawei.com>
 X-Mailer: Mew version 6.8 on Emacs 26.1
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 26 Dec 2019 15:20:17 -0800 (PST)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 27 Dec 2019 16:32:18 -0800 (PST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Mao Wenan <maowenan@huawei.com>
-Date: Mon, 23 Dec 2019 18:42:57 +0800
+Date: Tue, 24 Dec 2019 19:58:12 +0800
 
-> If __ethtool_get_link_ksettings() is failed and with
-> non-zero value, prb_calc_retire_blk_tmo() should return
-> DEFAULT_PRB_RETIRE_TOV firstly. 
-> 
-> This patch is to refactory code and make it more readable.
+> There is no need to set variable 'mbus' static
+> since new value always be assigned before use it.
 > 
 > Signed-off-by: Mao Wenan <maowenan@huawei.com>
 
-Applied, thanks.
+Applied, thank you.

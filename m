@@ -2,108 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 13E6512C388
-	for <lists+kernel-janitors@lfdr.de>; Sun, 29 Dec 2019 17:53:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BB7712CB2F
+	for <lists+kernel-janitors@lfdr.de>; Sun, 29 Dec 2019 23:38:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726621AbfL2Qxi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 29 Dec 2019 11:53:38 -0500
-Received: from mail3-relais-sop.national.inria.fr ([192.134.164.104]:3657 "EHLO
-        mail3-relais-sop.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726455AbfL2Qxi (ORCPT
+        id S1726684AbfL2Wia (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 29 Dec 2019 17:38:30 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:47016 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726490AbfL2Wia (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 29 Dec 2019 11:53:38 -0500
-X-IronPort-AV: E=Sophos;i="5.69,372,1571695200"; 
-   d="scan'208";a="334379783"
-Received: from abo-154-110-68.mrs.modulonet.fr (HELO hadrien) ([85.68.110.154])
-  by mail3-relais-sop.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 29 Dec 2019 17:53:36 +0100
-Date:   Sun, 29 Dec 2019 17:53:35 +0100 (CET)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     rhysperry111 <rhysperry111@gmail.com>
-cc:     kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] Added AU6625 to list of supported PCI_IDs
-In-Reply-To: <20191229164339.7227-1-rhysperry111@gmail.com>
-Message-ID: <alpine.DEB.2.21.1912291750150.2988@hadrien>
-References: <20191229164339.7227-1-rhysperry111@gmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        Sun, 29 Dec 2019 17:38:30 -0500
+Received: from pps.filterd (m0098421.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBTMbrC8048377
+        for <kernel-janitors@vger.kernel.org>; Sun, 29 Dec 2019 17:38:28 -0500
+Received: from e06smtp03.uk.ibm.com (e06smtp03.uk.ibm.com [195.75.94.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 2x6nj98u85-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <kernel-janitors@vger.kernel.org>; Sun, 29 Dec 2019 17:38:28 -0500
+Received: from localhost
+        by e06smtp03.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <kernel-janitors@vger.kernel.org> from <ajd@linux.ibm.com>;
+        Sun, 29 Dec 2019 22:38:26 -0000
+Received: from b06avi18626390.portsmouth.uk.ibm.com (9.149.26.192)
+        by e06smtp03.uk.ibm.com (192.168.101.133) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Sun, 29 Dec 2019 22:38:23 -0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id xBTMbbiI49676742
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 29 Dec 2019 22:37:37 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 8C72BA405B;
+        Sun, 29 Dec 2019 22:38:22 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 3D1B7A4057;
+        Sun, 29 Dec 2019 22:38:22 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Sun, 29 Dec 2019 22:38:22 +0000 (GMT)
+Received: from [9.81.216.204] (unknown [9.81.216.204])
+        (using TLSv1.2 with cipher DHE-RSA-AES128-SHA (128/128 bits))
+        (No client certificate requested)
+        by ozlabs.au.ibm.com (Postfix) with ESMTPSA id B990CA0204;
+        Mon, 30 Dec 2019 09:38:18 +1100 (AEDT)
+Subject: Re: [PATCH 1/4] misc: cxl: use mmgrab
+To:     Julia Lawall <Julia.Lawall@inria.fr>,
+        Frederic Barrat <fbarrat@linux.ibm.com>
+Cc:     kernel-janitors@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <1577634178-22530-1-git-send-email-Julia.Lawall@inria.fr>
+ <1577634178-22530-2-git-send-email-Julia.Lawall@inria.fr>
+From:   Andrew Donnellan <ajd@linux.ibm.com>
+Date:   Mon, 30 Dec 2019 09:38:19 +1100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <1577634178-22530-2-git-send-email-Julia.Lawall@inria.fr>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+x-cbid: 19122922-0012-0000-0000-0000037905B0
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19122922-0013-0000-0000-000021B50E18
+Message-Id: <1d992f7f-25df-7195-14f3-a13c2dccbc96@linux.ibm.com>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
+ definitions=2019-12-29_06:2019-12-27,2019-12-29 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=703 bulkscore=0
+ spamscore=0 suspectscore=0 mlxscore=0 impostorscore=0 phishscore=0
+ lowpriorityscore=0 adultscore=0 priorityscore=1501 malwarescore=0
+ clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-1912290214
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 29 Dec 2019, rhysperry111 wrote:
+On 30/12/19 2:42 am, Julia Lawall wrote:
+> Mmgrab was introduced in commit f1f1007644ff ("mm: add new mmgrab()
+> helper") and most of the kernel was updated to use it. Update a
+> remaining file.
+> 
+> The semantic patch that makes this change is as follows:
+> (http://coccinelle.lip6.fr/)
+> 
+> <smpl>
+> @@ expression e; @@
+> - atomic_inc(&e->mm_count);
+> + mmgrab(e);
+> </smpl>
+> 
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
-> From: Rhys Perry <rhysperry111@gmail.com>
->
-> This is my first kernel patch!
+Thanks!
 
-The subject line should give some hint of what file this applies to.  Use
-git log --oneline to see what others have done for this file.
+Acked-by: Andrew Donnellan <ajd@linux.ibm.com>
 
-The patch should not just be sent to this list, but also to the
-maintainers for the file.  You can find them with
-scripts/get_maintainer.pl
+-- 
+Andrew Donnellan              OzLabs, ADL Canberra
+ajd@linux.ibm.com             IBM Australia Limited
 
-The fact that this is your first patch is nice to know for the person
-reviewing, but is not necessary for posterity.  Put it under the ---.
-
->
-> I have added the AU6625 PCI_ID to the list of supported IDs and done some
-> general formatting to make it fit in a bit more with the code that is already
-> there. From general usage there seems to be no problems.
-
-Use the imperative to express what you have done ("Add...").
-
-Look at some other patches and see how yours is different from them with
-respect to the above points.
-
-julia
-
-> Signed-off-by: Rhys Perry <rhysperry111@gmail.com>
-> ---
->  drivers/misc/cardreader/alcor_pci.c | 8 +++++++-
->  include/linux/alcor_pci.h           | 1 +
->  2 files changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/misc/cardreader/alcor_pci.c b/drivers/misc/cardreader/alcor_pci.c
-> index 259fe1dfe..cd402c891 100644
-> --- a/drivers/misc/cardreader/alcor_pci.c
-> +++ b/drivers/misc/cardreader/alcor_pci.c
-> @@ -38,12 +38,18 @@ static const struct alcor_dev_cfg au6621_cfg = {
->  	.dma = 1,
->  };
->
-> +static const struct alcor_dev_cfg au6625_cfg = {
-> +	.dma = 0,
-> +};
-> +
->  static const struct pci_device_id pci_ids[] = {
->  	{ PCI_DEVICE(PCI_ID_ALCOR_MICRO, PCI_ID_AU6601),
->  		.driver_data = (kernel_ulong_t)&alcor_cfg },
->  	{ PCI_DEVICE(PCI_ID_ALCOR_MICRO, PCI_ID_AU6621),
->  		.driver_data = (kernel_ulong_t)&au6621_cfg },
-> -	{ },
-> +	{ PCI_DEVICE(PCI_ID_ALCOR_MICRO, PCI_ID_AU6625),
-> +		.driver_data = (kernel_ulong_t)&au6625_cfg },
-> +	{},
->  };
->  MODULE_DEVICE_TABLE(pci, pci_ids);
->
-> diff --git a/include/linux/alcor_pci.h b/include/linux/alcor_pci.h
-> index 4416df597..8274ed525 100644
-> --- a/include/linux/alcor_pci.h
-> +++ b/include/linux/alcor_pci.h
-> @@ -17,6 +17,7 @@
->  #define PCI_ID_ALCOR_MICRO			0x1AEA
->  #define PCI_ID_AU6601				0x6601
->  #define PCI_ID_AU6621				0x6621
-> +#define PCI_ID_AU6625				0x6625
->
->  #define MHZ_TO_HZ(freq)				((freq) * 1000 * 1000)
->
-> --
-> 2.24.1
->
->

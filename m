@@ -2,84 +2,114 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24E7B12CEF9
-	for <lists+kernel-janitors@lfdr.de>; Mon, 30 Dec 2019 11:45:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40E7E12D54B
+	for <lists+kernel-janitors@lfdr.de>; Tue, 31 Dec 2019 01:31:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727322AbfL3Kpq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 30 Dec 2019 05:45:46 -0500
-Received: from mx0a-001ae601.pphosted.com ([67.231.149.25]:20128 "EHLO
-        mx0b-001ae601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726196AbfL3Kpq (ORCPT
+        id S1727827AbfLaAao (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 30 Dec 2019 19:30:44 -0500
+Received: from heliosphere.sirena.org.uk ([172.104.155.198]:46324 "EHLO
+        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727781AbfLaAao (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 30 Dec 2019 05:45:46 -0500
-Received: from pps.filterd (m0077473.ppops.net [127.0.0.1])
-        by mx0a-001ae601.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBUAiuYh031107;
-        Mon, 30 Dec 2019 04:44:56 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cirrus.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=PODMain02222019;
- bh=VaGdZjmNiXn+e3fOnWQrXgYdyILFsmQJFn+WM/zYtm0=;
- b=EL9pLURoWu6MMb/eWLf4ZX5kFN6ry+j+qQpivxaRJZmWfVwKB7SYbu/+SDoD7CCYrI3u
- qy7MFjCKgsb/wb/oj3XzVlJD4nyyZ1KpT4xTGQrC7GjUFCibux0y0ujB7tfqjdxWH0F5
- 8uMCesle9JyUjxEM3T7yv4lfDCU9E8P23VAF3rJGVn2iiKSRxIhNnTv/87+rKnGfeBCh
- EdqamZxeUWsPo0vAew34N4mFrfM3Df/F4KTTNpVlgUxGYqJptoZyQ33JjABFphhAxsSp
- 1hPeFr00w3ndZLLc0Eu93X+U+UJDpHE2si4sqmqMEk87j34igfVez4i/J9J2pVC0S06w 0Q== 
-Authentication-Results: ppops.net;
-        spf=fail smtp.mailfrom=ckeepax@opensource.cirrus.com
-Received: from ediex02.ad.cirrus.com ([5.172.152.52])
-        by mx0a-001ae601.pphosted.com with ESMTP id 2x65b7a5sm-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-        Mon, 30 Dec 2019 04:44:56 -0600
-Received: from EDIEX01.ad.cirrus.com (198.61.84.80) by EDIEX02.ad.cirrus.com
- (198.61.84.81) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1591.10; Mon, 30 Dec
- 2019 10:44:54 +0000
-Received: from ediswmail.ad.cirrus.com (198.61.86.93) by EDIEX01.ad.cirrus.com
- (198.61.84.80) with Microsoft SMTP Server id 15.1.1591.10 via Frontend
- Transport; Mon, 30 Dec 2019 10:44:54 +0000
-Received: from ediswmail.ad.cirrus.com (ediswmail.ad.cirrus.com [198.61.86.93])
-        by ediswmail.ad.cirrus.com (Postfix) with ESMTP id 55B8E2A1;
-        Mon, 30 Dec 2019 10:44:53 +0000 (UTC)
-Date:   Mon, 30 Dec 2019 10:44:53 +0000
-From:   Charles Keepax <ckeepax@opensource.cirrus.com>
+        Mon, 30 Dec 2019 19:30:44 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
+        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
+        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
+        List-Archive; bh=q9DgC2JorIRoqJhF31krGorwxtftpf4/q1uLy/wL7Rk=; b=tB/IfDFnF3Fh
+        dMnBqp4+ZZmSaDOKLYo4X2z67JeplcAANmUjrQeNCKSiwjYlm2UZctXBCqeMqxpdmTP/ZR72gN0fE
+        Fdyq9rbtfSWEIEab5wB2YRw0ZFs8E3pGLPtiise0oq1f1ZJczZF4TE5DeoZ1s444yjBO8UmqGfcz0
+        7hPvQ=;
+Received: from cpc102320-sgyl38-2-0-cust46.18-2.cable.virginm.net ([82.37.168.47] helo=fitzroy.sirena.org.uk)
+        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <broonie@sirena.org.uk>)
+        id 1im5Qg-0002nr-Rs; Tue, 31 Dec 2019 00:30:34 +0000
+Received: by fitzroy.sirena.org.uk (Postfix, from userid 1000)
+        id 62549D01A24; Tue, 31 Dec 2019 00:30:34 +0000 (GMT)
+From:   Mark Brown <broonie@kernel.org>
 To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-CC:     <brian.austin@cirrus.com>, <Paul.Handrigan@cirrus.com>,
-        <rf@opensource.cirrus.com>, <lgirdwood@gmail.com>,
-        <broonie@kernel.org>, <perex@perex.cz>, <tiwai@suse.com>,
-        <alsa-devel@alsa-project.org>, <patches@opensource.cirrus.com>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH] ASoC: cs47l92: Simplify error handling code in
- 'cs47l92_probe()'
-Message-ID: <20191230104453.GG10451@ediswmail.ad.cirrus.com>
-References: <20191226162907.9490-1-christophe.jaillet@wanadoo.fr>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
+Cc:     alsa-devel@alsa-project.org, brian.austin@cirrus.com,
+        broonie@kernel.org, Charles Keepax <ckeepax@opensource.cirrus.com>,
+        ckeepax@opensource.cirrus.com, kernel-janitors@vger.kernel.org,
+        lgirdwood@gmail.com, linux-kernel@vger.kernel.org,
+        Mark Brown <broonie@kernel.org>, patches@opensource.cirrus.com,
+        Paul.Handrigan@cirrus.com, perex@perex.cz,
+        rf@opensource.cirrus.com, tiwai@suse.com
+Subject: Applied "ASoC: cs47l92: Simplify error handling code in 'cs47l92_probe()'" to the asoc tree
 In-Reply-To: <20191226162907.9490-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-X-Proofpoint-SPF-Result: fail
-X-Proofpoint-SPF-Record: v=spf1 include:spf-001ae601.pphosted.com include:spf.protection.outlook.com
- -all
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
- bulkscore=0 mlxlogscore=999 spamscore=0 mlxscore=0 lowpriorityscore=0
- priorityscore=1501 impostorscore=0 clxscore=1011 phishscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-1910280000
- definitions=main-1912300099
+Message-Id: <applied-20191226162907.9490-1-christophe.jaillet@wanadoo.fr>
+X-Patchwork-Hint: ignore
+Date:   Tue, 31 Dec 2019 00:30:34 +0000 (GMT)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Dec 26, 2019 at 05:29:07PM +0100, Christophe JAILLET wrote:
-> If 'madera_init_bus_error_irq()' fails,
-> 'wm_adsp2_remove(&cs47l92->core.adsp[0])' will be called twice.
-> Once in the 'if' block, and once in the error handling path.
-> This is harmless, but one of this call can be axed.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
+The patch
 
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+   ASoC: cs47l92: Simplify error handling code in 'cs47l92_probe()'
+
+has been applied to the asoc tree at
+
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.6
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
 Thanks,
-Charles
+Mark
+
+From 9ea7a991cc27e9af1099b7a628c0ab210dc70a69 Mon Sep 17 00:00:00 2001
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Thu, 26 Dec 2019 17:29:07 +0100
+Subject: [PATCH] ASoC: cs47l92: Simplify error handling code in
+ 'cs47l92_probe()'
+
+If 'madera_init_bus_error_irq()' fails,
+'wm_adsp2_remove(&cs47l92->core.adsp[0])' will be called twice.
+Once in the 'if' block, and once in the error handling path.
+This is harmless, but one of this call can be axed.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20191226162907.9490-1-christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ sound/soc/codecs/cs47l92.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/sound/soc/codecs/cs47l92.c b/sound/soc/codecs/cs47l92.c
+index d50f75f3b3e4..536b7d35d6b2 100644
+--- a/sound/soc/codecs/cs47l92.c
++++ b/sound/soc/codecs/cs47l92.c
+@@ -1959,10 +1959,8 @@ static int cs47l92_probe(struct platform_device *pdev)
+ 		goto error_dsp_irq;
+ 
+ 	ret = madera_init_bus_error_irq(&cs47l92->core, 0, wm_adsp2_bus_error);
+-	if (ret != 0) {
+-		wm_adsp2_remove(&cs47l92->core.adsp[0]);
++	if (ret != 0)
+ 		goto error_adsp;
+-	}
+ 
+ 	madera_init_fll(madera, 1, MADERA_FLL1_CONTROL_1 - 1,
+ 			&cs47l92->fll[0]);
+-- 
+2.20.1
+

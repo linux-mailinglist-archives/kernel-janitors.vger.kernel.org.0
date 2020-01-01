@@ -2,84 +2,74 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16AFE12DF36
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jan 2020 15:52:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B22CC12DF50
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jan 2020 16:44:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727158AbgAAOwz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Jan 2020 09:52:55 -0500
-Received: from perceval.ideasonboard.com ([213.167.242.64]:38836 "EHLO
-        perceval.ideasonboard.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725872AbgAAOwz (ORCPT
+        id S1727166AbgAAPn6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Jan 2020 10:43:58 -0500
+Received: from mail-pj1-f67.google.com ([209.85.216.67]:39848 "EHLO
+        mail-pj1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725792AbgAAPn6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Jan 2020 09:52:55 -0500
-Received: from pendragon.ideasonboard.com (81-175-216-236.bb.dnainternet.fi [81.175.216.236])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 53F4B516;
-        Wed,  1 Jan 2020 15:52:52 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1577890372;
-        bh=Rk0K6LoFLxyI8BtA7Uh6mo1W3SlxSPy+7j4y/shJEn0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ThSsbgXR31D2hjqfzLrK8ukO7yklGCAxOK3T0Kg1IEDNXqQrxCqYshaHKs6ppwuYd
-         VdDeu3jNG9N8HT7qHpdyyUfbR5eurnQbR3fiHC8SepYstUtT8iOvHhA3n/1+rMXd5W
-         dv/xS9QDQ7XLYKIIAfOn2VZkDHqFwLDAiwiGTfFc=
-Date:   Wed, 1 Jan 2020 16:52:42 +0200
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+        Wed, 1 Jan 2020 10:43:58 -0500
+Received: by mail-pj1-f67.google.com with SMTP id t101so2285986pjb.4;
+        Wed, 01 Jan 2020 07:43:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=VdaVqR2ujWwMtU+rRnAVHf5ttw+w7rhJxthTZ3o7ZdQ=;
+        b=pXz7cfi3EsWcEnPF2R7r6XUehvtBhb8oLqgYGXM1qmty3/xRgtWPNrc5iwQrvGuzcp
+         gll7CuU2fOve7A+HNTtB/hbvtIu9nig7s63HSFlNa2q0D+DitiPXWnCaTg7dnQT/C8MQ
+         0MzjFuvTfkH5zZl7gg7XmX1O8KUQOVKi6bWSPDlQcltdo3ZSClqYmMDSW4H4msFN2o+B
+         5AtFu3lm4XiD7hlmgtVx0T/exmkZ+I19+AsSqLt4dqwNQPdujDRkdyejxZ1Bs0QnuLzJ
+         Ys3haTm0PUQsjoxGWGCjgOFOWE0QvmHo2NEm1kUBTQ1jHpbPMpWyeSXFLAg3O5BmnFWz
+         kk2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=VdaVqR2ujWwMtU+rRnAVHf5ttw+w7rhJxthTZ3o7ZdQ=;
+        b=SBWj9rWEsHi+M9KBu3jCZFI02GbuCJ7Ms/OFDnyy7DEfzyrT1+tAAcIxBdWIDARrIs
+         AAih8tn12NoMdcrvOX9f3WlAO86sF/GLn0WtCE+x3/yTeuPh098tS511SkU25PF5iEKZ
+         Qx46Z8yR+UtTgMEMo3RKcLDa+LYrGfBCDBgYudX5Mx0+79LUKTNhAaf0QhN5YIPMRQ2v
+         WrhTwIXW+wHYxjJO3NvPWiH3D3F167/l9X0PjCu8wiM6kYB26+wHVEhxbniZUvk874pR
+         VQcTOTmE1qo9ZyExS3+X/1ys2lZkbgpsrxHtRjnKiOPaxY7ojCgVQrNYMEDlFzsPIq7D
+         e5kg==
+X-Gm-Message-State: APjAAAVNP0Su31Pgh2DMY1gx6cxBzURWr6IwPeayRD0p9WWFoYHT2wd7
+        t/mKwG3W+j9oqhvUDN6VMzQ=
+X-Google-Smtp-Source: APXvYqxy864mqKVWWZVzvp8LHO7Vz1nEwOFv5RJYWjdi22BGg2ETNlOr2YHhBAtNvgUjlvjdpJ4d8Q==
+X-Received: by 2002:a17:902:8f97:: with SMTP id z23mr80638474plo.170.1577893437376;
+        Wed, 01 Jan 2020 07:43:57 -0800 (PST)
+Received: from localhost (c-73-241-114-122.hsd1.ca.comcast.net. [73.241.114.122])
+        by smtp.gmail.com with ESMTPSA id m6sm7589154pjv.23.2020.01.01.07.43.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jan 2020 07:43:56 -0800 (PST)
+Date:   Wed, 1 Jan 2020 07:43:54 -0800
+From:   Richard Cochran <richardcochran@gmail.com>
 To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     Andrzej Hajda <a.hajda@samsung.com>,
-        kernel-janitors@vger.kernel.org,
-        Neil Armstrong <narmstrong@baylibre.com>,
-        Jonas Karlman <jonas@kwiboo.se>,
-        Jernej Skrabec <jernej.skrabec@siol.net>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 15/16] drm: bridge: dw-hdmi: constify copied structure
-Message-ID: <20200101145242.GA4855@pendragon.ideasonboard.com>
+Cc:     kernel-janitors@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 13/16] ptp: ptp_clockmatrix: constify copied structure
+Message-ID: <20200101154354.GA1524@localhost>
 References: <1577864614-5543-1-git-send-email-Julia.Lawall@inria.fr>
- <1577864614-5543-16-git-send-email-Julia.Lawall@inria.fr>
+ <1577864614-5543-14-git-send-email-Julia.Lawall@inria.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1577864614-5543-16-git-send-email-Julia.Lawall@inria.fr>
+In-Reply-To: <1577864614-5543-14-git-send-email-Julia.Lawall@inria.fr>
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Julia,
-
-Thank you for the patch.
-
-On Wed, Jan 01, 2020 at 08:43:33AM +0100, Julia Lawall wrote:
-> The dw_hdmi_hw structure is only copied into another structure,
+On Wed, Jan 01, 2020 at 08:43:31AM +0100, Julia Lawall wrote:
+> The idtcm_caps structure is only copied into another structure,
 > so make it const.
 > 
 > The opportunity for this change was found using Coccinelle.
 > 
 > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-> ---
->  drivers/gpu/drm/bridge/synopsys/dw-hdmi-ahb-audio.c |    2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-ahb-audio.c b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-ahb-audio.c
-> index 2b7539701b42..dd56996fe9c7 100644
-> --- a/drivers/gpu/drm/bridge/synopsys/dw-hdmi-ahb-audio.c
-> +++ b/drivers/gpu/drm/bridge/synopsys/dw-hdmi-ahb-audio.c
-> @@ -291,7 +291,7 @@ static irqreturn_t snd_dw_hdmi_irq(int irq, void *data)
->  	return IRQ_HANDLED;
->  }
->  
-> -static struct snd_pcm_hardware dw_hdmi_hw = {
-> +static const struct snd_pcm_hardware dw_hdmi_hw = {
->  	.info = SNDRV_PCM_INFO_INTERLEAVED |
->  		SNDRV_PCM_INFO_BLOCK_TRANSFER |
->  		SNDRV_PCM_INFO_MMAP |
-
--- 
-Regards,
-
-Laurent Pinchart
+Acked-by: Richard Cochran <richardcochran@gmail.com>

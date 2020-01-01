@@ -2,28 +2,27 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE28312DE48
-	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jan 2020 09:21:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BF33012DE35
+	for <lists+kernel-janitors@lfdr.de>; Wed,  1 Jan 2020 09:20:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727426AbgAAIVQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 1 Jan 2020 03:21:16 -0500
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:56955 "EHLO
+        id S1727201AbgAAIUQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 1 Jan 2020 03:20:16 -0500
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:56920 "EHLO
         mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725916AbgAAIUO (ORCPT
+        by vger.kernel.org with ESMTP id S1726820AbgAAIUP (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 1 Jan 2020 03:20:14 -0500
+        Wed, 1 Jan 2020 03:20:15 -0500
 X-IronPort-AV: E=Sophos;i="5.69,382,1571695200"; 
-   d="scan'208";a="429578756"
+   d="scan'208";a="429578757"
 Received: from palace.rsr.lip6.fr (HELO palace.lip6.fr) ([132.227.105.202])
   by mail2-relais-roc.national.inria.fr with ESMTP/TLS/AES128-SHA256; 01 Jan 2020 09:20:08 +0100
 From:   Julia Lawall <Julia.Lawall@inria.fr>
-To:     Jacopo Mondi <jacopo@jmondi.org>
-Cc:     kernel-janitors@vger.kernel.org,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 06/16] media: mt9v111: constify copied structure
-Date:   Wed,  1 Jan 2020 08:43:24 +0100
-Message-Id: <1577864614-5543-7-git-send-email-Julia.Lawall@inria.fr>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     kernel-janitors@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 07/16] video: sa1100fb: constify copied structure
+Date:   Wed,  1 Jan 2020 08:43:25 +0100
+Message-Id: <1577864614-5543-8-git-send-email-Julia.Lawall@inria.fr>
 X-Mailer: git-send-email 1.9.1
 In-Reply-To: <1577864614-5543-1-git-send-email-Julia.Lawall@inria.fr>
 References: <1577864614-5543-1-git-send-email-Julia.Lawall@inria.fr>
@@ -32,7 +31,7 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The mt9v111_def_fmt structure is only copied into another structure,
+The monspecs structure is only copied into another structure,
 so make it const.
 
 The opportunity for this change was found using Coccinelle.
@@ -40,20 +39,20 @@ The opportunity for this change was found using Coccinelle.
 Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
 
 ---
- drivers/media/i2c/mt9v111.c |    2 +-
+ drivers/video/fbdev/sa1100fb.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/mt9v111.c b/drivers/media/i2c/mt9v111.c
-index bb41bea950ac..61ae6a0d5679 100644
---- a/drivers/media/i2c/mt9v111.c
-+++ b/drivers/media/i2c/mt9v111.c
-@@ -103,7 +103,7 @@
- #define MT9V111_MAX_CLKIN				27000000
+diff --git a/drivers/video/fbdev/sa1100fb.c b/drivers/video/fbdev/sa1100fb.c
+index 4680cc3efb81..c77b43dbc256 100644
+--- a/drivers/video/fbdev/sa1100fb.c
++++ b/drivers/video/fbdev/sa1100fb.c
+@@ -1053,7 +1053,7 @@ static int sa1100fb_map_video_memory(struct sa1100fb_info *fbi)
+ }
  
- /* The default sensor configuration at startup time. */
--static struct v4l2_mbus_framefmt mt9v111_def_fmt = {
-+static const struct v4l2_mbus_framefmt mt9v111_def_fmt = {
- 	.width		= 640,
- 	.height		= 480,
- 	.code		= MEDIA_BUS_FMT_UYVY8_2X8,
+ /* Fake monspecs to fill in fbinfo structure */
+-static struct fb_monspecs monspecs = {
++static const struct fb_monspecs monspecs = {
+ 	.hfmin	= 30000,
+ 	.hfmax	= 70000,
+ 	.vfmin	= 50,
 

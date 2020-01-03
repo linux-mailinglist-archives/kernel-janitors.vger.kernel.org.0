@@ -2,82 +2,160 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 01FC312F56F
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Jan 2020 09:28:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C0E0412F731
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Jan 2020 12:27:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727368AbgACI16 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 Jan 2020 03:27:58 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:56005 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726181AbgACI16 (ORCPT
+        id S1727590AbgACL07 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 Jan 2020 06:26:59 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:55390 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727470AbgACL07 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 Jan 2020 03:27:58 -0500
-Received: by mail-wm1-f67.google.com with SMTP id q9so7673005wmj.5
-        for <kernel-janitors@vger.kernel.org>; Fri, 03 Jan 2020 00:27:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=netronome-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=FXt9Ea7eVpmqdgqD/d6S8/ecEY7tdm3e/NMg1aAm5XM=;
-        b=ADLtimg6KlZkPLLdjc0r9LfFI9j/VWKfyc75TtjPZrZsZcKxBUtnJ7FxqorA705POF
-         2R8hn1fXxncSxIV+ZFpawD2C/XLPZTFp0NfFAPIWZFqIk0aefbISbbHmAhmt5bBFxvAc
-         fSom+uM0nvRxlhg8qQxivbRQ+Czv13RSX5yuRGOTsr+WkSmJn5hjkXdhF+nn0pmmoeLE
-         oPISBgCVW8KoJeQpgf3edBC7oHH03XwoODgd0Nslb7PuAJu7uEKMBCWx1BeGSHJpmb1h
-         QFknZEnWDjorohm4WJJXGt1MbxDJwmWTyC96kfJDWYiGKVr42Z8s5FQFu8uDpoD/JzRd
-         3o6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=FXt9Ea7eVpmqdgqD/d6S8/ecEY7tdm3e/NMg1aAm5XM=;
-        b=nRuwTMehZV8Bhk2/Ho4cNBHq7OsrvoA3bdjoRihu8rvW+QvVeU6H7WiN4PLqZJq5iv
-         bOUG3GjxAh9C6GuLgWndDtwyva4oobO/X3CeP9pNKR+cZqKHZdFNhcgmlh/TCNolQ4O0
-         YTogO78LGi3+8hUHgbx6FMxyHsekCmrTmEp1IJrM9knejLORlONATjFw+XiFvBJc+GJ5
-         Ii0wESbN4JnLo/874VIJMuBgs3VL3fD8AJTdVo/tbd6ucbUAeuGqxY7TOLKrDxHoq0Me
-         MBmeOoowHIk9adLX7aHRtF/E9+uygld5u4X2Ws2QTZZHwba+JZwx2gzhx+Ro9IL4ZEec
-         Lf8g==
-X-Gm-Message-State: APjAAAVg00zNPYLtOjOWY9YYphT9oP3yH1QB8lQyDe/6qaiyu6mJZbYq
-        9ZDnzSFigeyWflRbbf+wkmhQsv9IUNo=
-X-Google-Smtp-Source: APXvYqw28jyBu2JzBdV9zAXZbzHl68ctcOJhBKtghcdQS8y2Um9+IjJGW6D0BW7l3bbKpZgyUcIDiA==
-X-Received: by 2002:a05:600c:20f:: with SMTP id 15mr18724830wmi.128.1578040076129;
-        Fri, 03 Jan 2020 00:27:56 -0800 (PST)
-Received: from netronome.com ([2001:982:756:703:d63d:7eff:fe99:ac9d])
-        by smtp.gmail.com with ESMTPSA id v3sm60211640wru.32.2020.01.03.00.27.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jan 2020 00:27:56 -0800 (PST)
-Date:   Fri, 3 Jan 2020 09:27:55 +0100
-From:   Simon Horman <simon.horman@netronome.com>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Michal Kubecek <mkubecek@suse.cz>, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH net-next] ethtool: remove set but not used variable
- 'lsettings'
-Message-ID: <20200103082755.GG12930@netronome.com>
-References: <20200103034856.177906-1-yuehaibing@huawei.com>
+        Fri, 3 Jan 2020 06:26:59 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 003BKKWm045431;
+        Fri, 3 Jan 2020 11:26:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=FmqANtUSeaOQWjkgeURWw7G38QnUhkhAohkw9ZJbr+I=;
+ b=DfFgaLAadLQN1Ya6bjWGReBuhrMi62hhaBzjR3HnJ6Pr8jqj/FHHFt4D9AOehwGQMz2b
+ 6EEzmfakFn0+7a8UmtmEv8JRfLgkJaX8hYJvXysiGJ/tQ0poW3shf0Gg/7nVLBZkgkkb
+ 1NabjHpa6XrO5m7TbgiNRsYW1BZTbNzk1cqAvbg+7xPeSg3C0WRkcmEtte2NYh6v7+d5
+ 29F0fnUpmADqIdKnXHKNr8MDo0gc/PvfYIhPys3HRntBBnRC4oSAfX3hDO2ei/1sSSAG
+ dY2LjgarIWoTVBKsdwvPdkk4ckAgnKc5173kKAlSYKna4dpQLwig4ij8A8Lm3955G3kZ fQ== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 2x5ypquvk0-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 03 Jan 2020 11:26:52 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 003BJUkR147494;
+        Fri, 3 Jan 2020 11:26:52 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 2x8gjbtc7f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 03 Jan 2020 11:26:52 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 003BQoh8010674;
+        Fri, 3 Jan 2020 11:26:50 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Fri, 03 Jan 2020 03:26:50 -0800
+Date:   Fri, 3 Jan 2020 14:26:41 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] staging: wfx: check for memory allocation failures
+ from wfx_alloc_hif
+Message-ID: <20200103112641.GH3911@kadam>
+References: <20191221001543.15255-1-colin.king@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200103034856.177906-1-yuehaibing@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20191221001543.15255-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9488 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001030108
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9488 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001030108
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jan 03, 2020 at 03:48:56AM +0000, YueHaibing wrote:
-> Fixes gcc '-Wunused-but-set-variable' warning:
+On Sat, Dec 21, 2019 at 12:15:43AM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> net/ethtool/linkmodes.c: In function 'ethnl_set_linkmodes':
-> net/ethtool/linkmodes.c:326:32: warning:
->  variable 'lsettings' set but not used [-Wunused-but-set-variable]
->   struct ethtool_link_settings *lsettings;
->                                 ^
-> It is never used, so remove it.
+> Currently calls to wfx_alloc_hif are not checking for a null return
+> when a memory allocation fails and this leads to null pointer
+> dereferencing issues.  Fix this by adding null pointer checks and
+> returning passing down -ENOMEM errors where necessary. The error
+> checking in the current driver is a bit sparse, so this may need
+> some extra attention later if required.
 > 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> Fixes: f95a29d40782 ("staging: wfx: add HIF commands helpers")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/staging/wfx/hif_tx.c |  6 ++++++
+>  drivers/staging/wfx/sta.c    | 13 +++++++------
+>  2 files changed, 13 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/staging/wfx/hif_tx.c b/drivers/staging/wfx/hif_tx.c
+> index 8a34a52dd5b9..d8e159670eae 100644
+> --- a/drivers/staging/wfx/hif_tx.c
+> +++ b/drivers/staging/wfx/hif_tx.c
+> @@ -366,6 +366,9 @@ int hif_set_edca_queue_params(struct wfx_vif *wvif, u16 queue,
+>  	struct hif_req_edca_queue_params *body = wfx_alloc_hif(sizeof(*body),
+>  							       &hif);
+>  
 
-Reviewed-by: Simon Horman <simon.horman@netronome.com>
+I hate allocations in declaration block.  It's way more likely to have
+a bug like this where it's missing the NULL check.
 
+> +	if (!body)
+> +		return -ENOMEM;
+> +
+>  	WARN_ON(arg->aifs > 255);
+>  	body->aifsn = arg->aifs;
+>  	body->cw_min = cpu_to_le16(arg->cw_min);
+> @@ -390,6 +393,9 @@ int hif_set_pm(struct wfx_vif *wvif, bool ps, int dynamic_ps_timeout)
+>  	struct hif_msg *hif;
+>  	struct hif_req_set_pm_mode *body = wfx_alloc_hif(sizeof(*body), &hif);
+>  
+> +	if (!body)
+> +		return -ENOMEM;
+> +
+>  	if (ps) {
+>  		body->pm_mode.enter_psm = 1;
+>  		// Firmware does not support more than 128ms
+> diff --git a/drivers/staging/wfx/sta.c b/drivers/staging/wfx/sta.c
+> index 9a61478d98f8..c08d691fe870 100644
+> --- a/drivers/staging/wfx/sta.c
+> +++ b/drivers/staging/wfx/sta.c
+> @@ -316,6 +316,7 @@ int wfx_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+>  {
+>  	struct wfx_dev *wdev = hw->priv;
+>  	struct wfx_vif *wvif = (struct wfx_vif *) vif->drv_priv;
+> +	int ret = 0;
+>  
+>  	WARN_ON(queue >= hw->queues);
+>  
+> @@ -326,10 +327,10 @@ int wfx_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+>  	if (wvif->vif->type == NL80211_IFTYPE_STATION) {
+>  		hif_set_uapsd_info(wvif, wvif->uapsd_mask);
+>  		if (wvif->setbssparams_done && wvif->state == WFX_STATE_STA)
+> -			wfx_update_pm(wvif);
+> +			ret = wfx_update_pm(wvif);
+>  	}
+>  	mutex_unlock(&wdev->conf_mutex);
+> -	return 0;
+> +	return ret;
+>  }
+>  
+>  int wfx_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
+> @@ -1322,7 +1323,7 @@ int wfx_config(struct ieee80211_hw *hw, u32 changed)
+>  	if (changed & IEEE80211_CONF_CHANGE_PS) {
+>  		wvif = NULL;
+>  		while ((wvif = wvif_iterate(wdev, wvif)) != NULL)
+> -			wfx_update_pm(wvif);
+> +			ret = wfx_update_pm(wvif);
+
+We reset "ret" on every iteration through the loop and only use the
+last value.  Probably we should break out of the loop on failure.
+
+>  		wvif = wdev_to_wvif(wdev, 0);
+>  	}
+>  
+
+regards,
+dan carpenter

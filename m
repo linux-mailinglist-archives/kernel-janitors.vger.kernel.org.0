@@ -2,160 +2,169 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0E0412F731
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Jan 2020 12:27:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 706F612F7E3
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Jan 2020 13:00:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727590AbgACL07 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 Jan 2020 06:26:59 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:55390 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727470AbgACL07 (ORCPT
+        id S1727521AbgACMA1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 Jan 2020 07:00:27 -0500
+Received: from mailout2.w1.samsung.com ([210.118.77.12]:50654 "EHLO
+        mailout2.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727350AbgACMA0 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 Jan 2020 06:26:59 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 003BKKWm045431;
-        Fri, 3 Jan 2020 11:26:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=FmqANtUSeaOQWjkgeURWw7G38QnUhkhAohkw9ZJbr+I=;
- b=DfFgaLAadLQN1Ya6bjWGReBuhrMi62hhaBzjR3HnJ6Pr8jqj/FHHFt4D9AOehwGQMz2b
- 6EEzmfakFn0+7a8UmtmEv8JRfLgkJaX8hYJvXysiGJ/tQ0poW3shf0Gg/7nVLBZkgkkb
- 1NabjHpa6XrO5m7TbgiNRsYW1BZTbNzk1cqAvbg+7xPeSg3C0WRkcmEtte2NYh6v7+d5
- 29F0fnUpmADqIdKnXHKNr8MDo0gc/PvfYIhPys3HRntBBnRC4oSAfX3hDO2ei/1sSSAG
- dY2LjgarIWoTVBKsdwvPdkk4ckAgnKc5173kKAlSYKna4dpQLwig4ij8A8Lm3955G3kZ fQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 2x5ypquvk0-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 Jan 2020 11:26:52 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 003BJUkR147494;
-        Fri, 3 Jan 2020 11:26:52 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 2x8gjbtc7f-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 Jan 2020 11:26:52 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 003BQoh8010674;
-        Fri, 3 Jan 2020 11:26:50 GMT
-Received: from kadam (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 03 Jan 2020 03:26:50 -0800
-Date:   Fri, 3 Jan 2020 14:26:41 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     =?iso-8859-1?B?Suly9G1l?= Pouiller <jerome.pouiller@silabs.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        devel@driverdev.osuosl.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] staging: wfx: check for memory allocation failures
- from wfx_alloc_hif
-Message-ID: <20200103112641.GH3911@kadam>
-References: <20191221001543.15255-1-colin.king@canonical.com>
+        Fri, 3 Jan 2020 07:00:26 -0500
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20200103120025euoutp0238533ff1dd2a30ffa8a779e021e1cf2a~mXq8K2dkn1199811998euoutp023
+        for <kernel-janitors@vger.kernel.org>; Fri,  3 Jan 2020 12:00:25 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20200103120025euoutp0238533ff1dd2a30ffa8a779e021e1cf2a~mXq8K2dkn1199811998euoutp023
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1578052825;
+        bh=Nml4FDopp8Lof2IWO413DHUK8c3U5jKvH/nyKhNvprQ=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=EEwn0zB6+kd5BnaZ+N6mVf0+VDSbFS1PjVq7Bb+MOOOdOAA6KGh3UpUVm+vlhDjBJ
+         KwzWxA0J6KmrcAQhe8RIyROXleoyNXdBT9HOEpbS5dbx3wrf8yDMoNbHuCTPkzY/4v
+         T8/WkY/UsxvzxbMlkXHNQYlsdKIUtL9m1cm3cAMQ=
+Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200103120025eucas1p10bb3252f431a1fbe3d364b01c4efaee6~mXq8EUUbJ0406604066eucas1p1B;
+        Fri,  3 Jan 2020 12:00:25 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges3new.samsung.com (EUCPMTA) with SMTP id CC.C7.60698.9DC2F0E5; Fri,  3
+        Jan 2020 12:00:25 +0000 (GMT)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200103120024eucas1p167363029c80159dc57e02b7fcba04da3~mXq70BEwD0404704047eucas1p1B;
+        Fri,  3 Jan 2020 12:00:24 +0000 (GMT)
+Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200103120024eusmtrp1f6ddcd1048267ad0d764b595b70e81ac~mXq7yfkCS1619416194eusmtrp1H;
+        Fri,  3 Jan 2020 12:00:24 +0000 (GMT)
+X-AuditID: cbfec7f5-a29ff7000001ed1a-4b-5e0f2cd9a253
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms2.samsung.com (EUCPMTA) with SMTP id D1.82.07950.8DC2F0E5; Fri,  3
+        Jan 2020 12:00:24 +0000 (GMT)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200103120024eusmtip14bae2f131f4163bd69d1fda15052b2d1~mXq7ay2dK2450524505eusmtip12;
+        Fri,  3 Jan 2020 12:00:24 +0000 (GMT)
+Subject: Re: [PATCH] pxa168fb: Fix the function used to release some memory
+ in an error handling path
+To:     Lubomir Rintel <lkundrak@v3.sk>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     yuehaibing@huawei.com, dri-devel@lists.freedesktop.org,
+        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <1700b70d-7766-bd6b-10ad-149c73e3998e@samsung.com>
+Date:   Fri, 3 Jan 2020 13:00:23 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191221001543.15255-1-colin.king@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9488 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001030108
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9488 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001030108
+In-Reply-To: <ca0213fd439a2b569e0d3bdb000712ee62ff4836.camel@v3.sk>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrNKsWRmVeSWpSXmKPExsWy7djP87o3dfjjDFY3c1psPTiX1eLK1/ds
+        FltvSVuc6PvAanF51xw2i3svZ7NY3Pn6nMWB3aPlyFtWj/vdx5k8lhxczujxeZOcx+e761kD
+        WKO4bFJSczLLUov07RK4Mj5Me8tW0CdUsWXbG8YGxk7+LkZODgkBE4nT/c+Zuhi5OIQEVjBK
+        nNy8hBXC+cIoseX1ZWaQKiGBz4wSLS+tYDrOvzsGVbScUaL9RTczhPOWUWLytPXsIFXCAukS
+        x5Z2M4LYIgKRErO/tzGCFDELzGKUeLz+IxNIgk3ASmJi+yqwIl4BO4nJG5pZQWwWARWJSWcO
+        gK0WFYiQ+PTgMCtEjaDEyZlPWEBsTgFniVedt8DizALiEreezGeCsOUltr+dA3aRhMA2dom9
+        nzqYIe52kXj97i4jhC0s8er4FnYIW0bi9OQeFoiGdYwSfzteQHVvZ5RYPvkfG0SVtcSdc7+A
+        bA6gFZoS63fpQ4QdJfZuOsQMEpYQ4JO48VYQ4gg+iUnbpkOFeSU62oQgqtUkNizbwAaztmvn
+        SuYJjEqzkLw2C8k7s5C8Mwth7wJGllWM4qmlxbnpqcXGeanlesWJucWleel6yfm5mxiBSej0
+        v+NfdzDu+5N0iFGAg1GJhzdBmT9OiDWxrLgy9xCjBAezkghveSBvnBBvSmJlVWpRfnxRaU5q
+        8SFGaQ4WJXFe40UvY4UE0hNLUrNTUwtSi2CyTBycUg2Mt2cxz8zovBjLnPn99GvDZ662Fv+3
+        PJ8Sv5HvcVv6z5+BzlIzsmvXTVpll7Zh8wdN9U6Omkcbrhl6KrKfsp18Tu6PaWia/atNX9bO
+        sHg0VTB07oH1ylP2dFt1W7vrnPp57oZ/XEdL0roopucR4X/mTV/T9DPefZF8RuqM5S0L1pZf
+        DJEJb9yxSomlOCPRUIu5qDgRANPMJrc+AwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrLIsWRmVeSWpSXmKPExsVy+t/xu7o3dPjjDJb+M7PYenAuq8WVr+/Z
+        LLbekrY40feB1eLyrjlsFvdezmaxuPP1OYsDu0fLkbesHve7jzN5LDm4nNHj8yY5j89317MG
+        sEbp2RTll5akKmTkF5fYKkUbWhjpGVpa6BmZWOoZGpvHWhmZKunb2aSk5mSWpRbp2yXoZXyY
+        9patoE+oYsu2N4wNjJ38XYycHBICJhLn3x1j7WLk4hASWMoo8fLPVaYuRg6ghIzE8fVlEDXC
+        En+udbFB1LxmlGg+8oARJCEskC4x/dVGdhBbRCBS4kL7V3aQImaBWYwS/TduMUJ0nGOUWHLr
+        CFgVm4CVxMT2VWDdvAJ2EpM3NLOC2CwCKhKTzhxgBrFFBSIkDu+YBVUjKHFy5hMWEJtTwFni
+        VectsHpmAXWJP/MuMUPY4hK3nsxngrDlJba/ncM8gVFoFpL2WUhaZiFpmYWkZQEjyypGkdTS
+        4tz03GIjveLE3OLSvHS95PzcTYzAqNt27OeWHYxd74IPMQpwMCrx8HIo8scJsSaWFVfmHmKU
+        4GBWEuEtD+SNE+JNSaysSi3Kjy8qzUktPsRoCvTcRGYp0eR8YELIK4k3NDU0t7A0NDc2Nzaz
+        UBLn7RA4GCMkkJ5YkpqdmlqQWgTTx8TBKdXA6Ct5bKeAjI7i72MSkTLqe9snN986vchW6H1Z
+        1if5C9cV4plkdzzd02mwc1lNm9KXxtUyaZvnxaXpah3vYelZteudwh3Xk23zuGe675opnsNz
+        b/O2z6cVCx9uEPz/7Mmc4+V3AlV25sc/jhDaWmrtOSFxpuukn5sPBXy+/D9V/JeDzxeJgDUp
+        J5RYijMSDbWYi4oTAVWbtj7QAgAA
+X-CMS-MailID: 20200103120024eucas1p167363029c80159dc57e02b7fcba04da3
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190902091106epcas2p3519910dfea9c3515cdbe08263a1bcada
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190902091106epcas2p3519910dfea9c3515cdbe08263a1bcada
+References: <20190831100024.3248-1-christophe.jaillet@wanadoo.fr>
+        <CGME20190902091106epcas2p3519910dfea9c3515cdbe08263a1bcada@epcas2p3.samsung.com>
+        <ca0213fd439a2b569e0d3bdb000712ee62ff4836.camel@v3.sk>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Dec 21, 2019 at 12:15:43AM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+
+On 9/2/19 11:10 AM, Lubomir Rintel wrote:
+> On Sat, 2019-08-31 at 12:00 +0200, Christophe JAILLET wrote:
+>> In the probe function, some resources are allocated using 'dma_alloc_wc()',
+>> they should be released with 'dma_free_wc()', not 'dma_free_coherent()'.
+>>
+>> We already use 'dma_free_wc()' in the remove function, but not in the
+>> error handling path of the probe function.
+>>
+>> Also, remove a useless 'PAGE_ALIGN()'. 'info->fix.smem_len' is already
+>> PAGE_ALIGNed.
+>>
+>> Fixes: 638772c7553f ("fb: add support of LCD display controller on pxa168/910 (base layer)")
+>> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 > 
-> Currently calls to wfx_alloc_hif are not checking for a null return
-> when a memory allocation fails and this leads to null pointer
-> dereferencing issues.  Fix this by adding null pointer checks and
-> returning passing down -ENOMEM errors where necessary. The error
-> checking in the current driver is a bit sparse, so this may need
-> some extra attention later if required.
+> Reviewed-by: Lubomir Rintel <lkundrak@v3.sk>
+
+Thanks, patch queued for v5.6 (also sorry for the delay).
+
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
+
+> Thanks,
+> Lubo
 > 
-> Fixes: f95a29d40782 ("staging: wfx: add HIF commands helpers")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/staging/wfx/hif_tx.c |  6 ++++++
->  drivers/staging/wfx/sta.c    | 13 +++++++------
->  2 files changed, 13 insertions(+), 6 deletions(-)
+>> ---
+>> The change about PAGE_ALIGN should probably be part of a separate commit.
+>> However, git history for this driver is really quiet. If you think it
+>> REALLY deserves a separate patch, either split it by yourself or axe this
+>> part of the patch. I won't bother resubmitting for this lonely cleanup.
+>> Hoping for your understanding.
+>> ---
+>>  drivers/video/fbdev/pxa168fb.c | 6 +++---
+>>  1 file changed, 3 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/video/fbdev/pxa168fb.c b/drivers/video/fbdev/pxa168fb.c
+>> index 1410f476e135..1fc50fc0694b 100644
+>> --- a/drivers/video/fbdev/pxa168fb.c
+>> +++ b/drivers/video/fbdev/pxa168fb.c
+>> @@ -766,8 +766,8 @@ static int pxa168fb_probe(struct platform_device *pdev)
+>>  failed_free_clk:
+>>  	clk_disable_unprepare(fbi->clk);
+>>  failed_free_fbmem:
+>> -	dma_free_coherent(fbi->dev, info->fix.smem_len,
+>> -			info->screen_base, fbi->fb_start_dma);
+>> +	dma_free_wc(fbi->dev, info->fix.smem_len,
+>> +		    info->screen_base, fbi->fb_start_dma);
+>>  failed_free_info:
+>>  	kfree(info);
+>>  
+>> @@ -801,7 +801,7 @@ static int pxa168fb_remove(struct platform_device *pdev)
+>>  
+>>  	irq = platform_get_irq(pdev, 0);
+>>  
+>> -	dma_free_wc(fbi->dev, PAGE_ALIGN(info->fix.smem_len),
+>> +	dma_free_wc(fbi->dev, info->fix.smem_len,
+>>  		    info->screen_base, info->fix.smem_start);
+>>  
+>>  	clk_disable_unprepare(fbi->clk);
 > 
-> diff --git a/drivers/staging/wfx/hif_tx.c b/drivers/staging/wfx/hif_tx.c
-> index 8a34a52dd5b9..d8e159670eae 100644
-> --- a/drivers/staging/wfx/hif_tx.c
-> +++ b/drivers/staging/wfx/hif_tx.c
-> @@ -366,6 +366,9 @@ int hif_set_edca_queue_params(struct wfx_vif *wvif, u16 queue,
->  	struct hif_req_edca_queue_params *body = wfx_alloc_hif(sizeof(*body),
->  							       &hif);
->  
 
-I hate allocations in declaration block.  It's way more likely to have
-a bug like this where it's missing the NULL check.
-
-> +	if (!body)
-> +		return -ENOMEM;
-> +
->  	WARN_ON(arg->aifs > 255);
->  	body->aifsn = arg->aifs;
->  	body->cw_min = cpu_to_le16(arg->cw_min);
-> @@ -390,6 +393,9 @@ int hif_set_pm(struct wfx_vif *wvif, bool ps, int dynamic_ps_timeout)
->  	struct hif_msg *hif;
->  	struct hif_req_set_pm_mode *body = wfx_alloc_hif(sizeof(*body), &hif);
->  
-> +	if (!body)
-> +		return -ENOMEM;
-> +
->  	if (ps) {
->  		body->pm_mode.enter_psm = 1;
->  		// Firmware does not support more than 128ms
-> diff --git a/drivers/staging/wfx/sta.c b/drivers/staging/wfx/sta.c
-> index 9a61478d98f8..c08d691fe870 100644
-> --- a/drivers/staging/wfx/sta.c
-> +++ b/drivers/staging/wfx/sta.c
-> @@ -316,6 +316,7 @@ int wfx_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
->  {
->  	struct wfx_dev *wdev = hw->priv;
->  	struct wfx_vif *wvif = (struct wfx_vif *) vif->drv_priv;
-> +	int ret = 0;
->  
->  	WARN_ON(queue >= hw->queues);
->  
-> @@ -326,10 +327,10 @@ int wfx_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
->  	if (wvif->vif->type == NL80211_IFTYPE_STATION) {
->  		hif_set_uapsd_info(wvif, wvif->uapsd_mask);
->  		if (wvif->setbssparams_done && wvif->state == WFX_STATE_STA)
-> -			wfx_update_pm(wvif);
-> +			ret = wfx_update_pm(wvif);
->  	}
->  	mutex_unlock(&wdev->conf_mutex);
-> -	return 0;
-> +	return ret;
->  }
->  
->  int wfx_set_rts_threshold(struct ieee80211_hw *hw, u32 value)
-> @@ -1322,7 +1323,7 @@ int wfx_config(struct ieee80211_hw *hw, u32 changed)
->  	if (changed & IEEE80211_CONF_CHANGE_PS) {
->  		wvif = NULL;
->  		while ((wvif = wvif_iterate(wdev, wvif)) != NULL)
-> -			wfx_update_pm(wvif);
-> +			ret = wfx_update_pm(wvif);
-
-We reset "ret" on every iteration through the loop and only use the
-last value.  Probably we should break out of the loop on failure.
-
->  		wvif = wdev_to_wvif(wdev, 0);
->  	}
->  
-
-regards,
-dan carpenter

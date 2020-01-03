@@ -2,86 +2,157 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3190112F839
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Jan 2020 13:31:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EFEC12F83E
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Jan 2020 13:34:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727678AbgACMbh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 Jan 2020 07:31:37 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:41406 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727350AbgACMbg (ORCPT
+        id S1727703AbgACMd6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 Jan 2020 07:33:58 -0500
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:36673 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727523AbgACMd5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 Jan 2020 07:31:36 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 003CSxKW111446;
-        Fri, 3 Jan 2020 12:31:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=b3uRmQvNfEosDDjOkW8sRh5UcyCobfd0n7/rf6Tc50w=;
- b=L6k+3As/gutJ1nFXFNf51TfYYr4/IWOK5zSdB/AtXuvzPsMXxeoUeZUwxuKC8APMBDav
- XkNZMhBqMaeqiODQS0N6h19Lp+Y/bwD12NCwSREB3PLJgCS5iOndUcNJGMxC4itHIPHO
- pqEIp1vAPFlDyx3cLAupwZ3OxkuPTR8GtCSSFp2lKcnyE7l2sK8T2823+1e7WSupgIkD
- ExSJOHcwC3FxuqUwhcggphRSRu7JRhxTJd/jm4N8qe5OQ2+2FkQiltqAj+kE8A2gMtmG
- 6Oi48LSuDov6CCqf/MX5cOkDd/I8fNHEKKOMCZ61d8588vB0XPFmwjC7NjhPmobl7ofP pw== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2x5xftv8k5-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 Jan 2020 12:31:13 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 003CS2BE076479;
-        Fri, 3 Jan 2020 12:31:13 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by userp3030.oracle.com with ESMTP id 2xa5fg8es7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 03 Jan 2020 12:31:13 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 003CV7mt008844;
-        Fri, 3 Jan 2020 12:31:08 GMT
-Received: from kadam (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 03 Jan 2020 04:31:06 -0800
-Date:   Fri, 3 Jan 2020 15:31:00 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     kvm@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        Cornelia Huck <cohuck@redhat.com>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        openrisc@lists.librecores.org
-Subject: Re: [PATCH 0/4] use mmgrab
-Message-ID: <20200103123059.GI3911@kadam>
-References: <1577634178-22530-1-git-send-email-Julia.Lawall@inria.fr>
+        Fri, 3 Jan 2020 07:33:57 -0500
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200103123355euoutp014db45db77becf3a1ca7e0f43979920b5~mYIMNeoKx2104721047euoutp01d
+        for <kernel-janitors@vger.kernel.org>; Fri,  3 Jan 2020 12:33:55 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200103123355euoutp014db45db77becf3a1ca7e0f43979920b5~mYIMNeoKx2104721047euoutp01d
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1578054835;
+        bh=wqpvlc5dc6EaKv/qmjbhZPAOqfxHg+4cZNkZ0Hpa7lM=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=jVIVL/paiDHrY+HwVpYzg4vCwmV3FhmiY4FM6u2Op3FPSX9iFV9Kn0DnBctzhht4S
+         ZlHOcfB/dDJDjccLOwueSrjv36x4qc9juOk4zb0zh9O19IsQ1jEaL6QqoZ1AVk4Qco
+         sJJv9f9DskIcfICJ/RFS7rwRX0ATe2bBagWt0MZ8=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTP id
+        20200103123355eucas1p2873eb62ac1d4b07b38c59b5a721453ed~mYIL_wNCD1877118771eucas1p23;
+        Fri,  3 Jan 2020 12:33:55 +0000 (GMT)
+Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id 0C.6B.61286.3B43F0E5; Fri,  3
+        Jan 2020 12:33:55 +0000 (GMT)
+Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200103123354eucas1p28317fdf62e31014ea563baed8ff08c20~mYILqJyjU2296222962eucas1p2l;
+        Fri,  3 Jan 2020 12:33:54 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20200103123354eusmtrp2ed33b4f922e74bb3f8cfcb50ec193fbd~mYILpJLNd0551105511eusmtrp2X;
+        Fri,  3 Jan 2020 12:33:54 +0000 (GMT)
+X-AuditID: cbfec7f2-f0bff7000001ef66-f6-5e0f34b32075
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 1E.85.08375.2B43F0E5; Fri,  3
+        Jan 2020 12:33:54 +0000 (GMT)
+Received: from [106.120.51.71] (unknown [106.120.51.71]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200103123354eusmtip16cd9c58f869a4d80172f5d6a5d37e2a8~mYILIz9bH1469514695eusmtip1l;
+        Fri,  3 Jan 2020 12:33:54 +0000 (GMT)
+Subject: Re: [PATCH] video: ocfb: Use devm_platform_ioremap_resource() in
+ ocfb_probe()
+To:     Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Himanshu Jha <himanshujha199640@gmail.com>
+From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Message-ID: <94a71d4e-25c2-5aa4-208f-70e46b6a964e@samsung.com>
+Date:   Fri, 3 Jan 2020 13:33:54 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+        Thunderbird/60.8.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1577634178-22530-1-git-send-email-Julia.Lawall@inria.fr>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9488 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=698
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001030119
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9488 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=761 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001030119
+In-Reply-To: <61b75aa6-ff92-e0ed-53f2-50a95d93d1f6@web.de>
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrFKsWRmVeSWpSXmKPExsWy7djP87qbTfjjDOZ/YbX4MvcUi8WVr+/Z
+        LKataWG12HpL2uJE3wdWi8u75rBZ/J/1nNWB3eP9jVZ2j52z7rJ73O8+zuTxeZOcx+1n21gC
+        WKO4bFJSczLLUov07RK4Mh6cO8tWsJmnYtbyacwNjBO4uhg5OSQETCTevX/M1sXIxSEksIJR
+        4u6MHywQzhdGif9PW5khnM+MEvuv3WGEaTk45xAjRGI5o8Sv54vZIZy3jBIdj3+ygFQJC0RI
+        LGtbyNTFyMEhIqAl8fSxCUgNs8BLRolNe64zgdSwCVhJTGxfBTaVV8BOYsqRWWC9LAIqEvtf
+        z2AGsUWB5nx6cJgVokZQ4uTMJ2A1nEC917+uZgOxmQXEJW49mc8EYctLbH87B+xsCYFt7BKP
+        9nexgxwhIeAiMeVcIMQHwhKvjm9hh7BlJP7vBOkFqV/HKPG34wVU83ZGieWT/7FBVFlL3Dn3
+        iw1kELOApsT6XfoQYUeJ96cboObzSdx4KwhxA5/EpG3TmSHCvBIdbUIQ1WoSG5ZtYINZ27Vz
+        JfMERqVZSD6bheSbWUi+mYWwdwEjyypG8dTS4tz01GLDvNRyveLE3OLSvHS95PzcTYzAFHT6
+        3/FPOxi/Xko6xCjAwajEw5ugzB8nxJpYVlyZe4hRgoNZSYS3PJA3Tog3JbGyKrUoP76oNCe1
+        +BCjNAeLkjiv8aKXsUIC6YklqdmpqQWpRTBZJg5OqQZGs7QrjS5m+yoNN/PMFs53E/TLluGu
+        NFvKWjzjxZray5e02+S1n76tavFNmlNffGp51DS9I6Wr73ozpBibs/2frqnC5WBmbOepvCtf
+        sXidqsy+sPun15yN717w3Iw7p3iLwceVbQk3ph6ZkP3vVKr68uS7bAcX7P8zfXOR9AGeB862
+        d99WdMspsRRnJBpqMRcVJwIApoaJdj0DAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrDIsWRmVeSWpSXmKPExsVy+t/xu7qbTPjjDP5d07f4MvcUi8WVr+/Z
+        LKataWG12HpL2uJE3wdWi8u75rBZ/J/1nNWB3eP9jVZ2j52z7rJ73O8+zuTxeZOcx+1n21gC
+        WKP0bIryS0tSFTLyi0tslaINLYz0DC0t9IxMLPUMjc1jrYxMlfTtbFJSczLLUov07RL0Mh6c
+        O8tWsJmnYtbyacwNjBO4uhg5OSQETCQOzjnE2MXIxSEksJRRYsv8H6xdjBxACRmJ4+vLIGqE
+        Jf5c62KDqHnNKNH9Zx07SEJYIEJiWdtCJpB6EQEtiaePTUBqmAVeMkrc+fKYGaKhl1HiyNcu
+        sAY2ASuJie2rGEFsXgE7iSlHZrGA2CwCKhL7X89gBrFFgYYe3jELqkZQ4uTMJ2A1nEC917+u
+        ZgOxmQXUJf7Mu8QMYYtL3HoynwnClpfY/nYO8wRGoVlI2mchaZmFpGUWkpYFjCyrGEVSS4tz
+        03OLDfWKE3OLS/PS9ZLzczcxAmNu27Gfm3cwXtoYfIhRgINRiYc3QZk/Tog1say4MvcQowQH
+        s5IIb3kgb5wQb0piZVVqUX58UWlOavEhRlOg5yYyS4km5wPTQV5JvKGpobmFpaG5sbmxmYWS
+        OG+HwMEYIYH0xJLU7NTUgtQimD4mDk6pBkbGmaeWBmgUv7lb1f1BhXfe5opd0W9jzjWeF5KP
+        Xhwmk3//ttu6mrNM0iymR0yKvkgnz/749GLssh9nHwatkRBOMnTY86RLfPGLnSl9D1w13gaG
+        zjUM5066NPfXlcgqlcmMpQul2F7m3S+csfPX5cppHyddPJi9hcVl96sJXFzX7dR1p03/c0pT
+        iaU4I9FQi7moOBEAIZLzu88CAAA=
+X-CMS-MailID: 20200103123354eucas1p28317fdf62e31014ea563baed8ff08c20
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20190919143339epcas5p2ca00bc034be8e478353a40475683de13
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20190919143339epcas5p2ca00bc034be8e478353a40475683de13
+References: <CGME20190919143339epcas5p2ca00bc034be8e478353a40475683de13@epcas5p2.samsung.com>
+        <61b75aa6-ff92-e0ed-53f2-50a95d93d1f6@web.de>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, Dec 29, 2019 at 04:42:54PM +0100, Julia Lawall wrote:
-> Mmgrab was introduced in commit f1f1007644ff ("mm: add new mmgrab()
-> helper") and most of the kernel was updated to use it. Update a few
-> remaining files.
 
-I wonder if there is an automatic way to generate these kind of
-Coccinelle scripts which use inlines instead of open coding.  Like maybe
-make a list of one line functions, and then auto generate a recipe.  Or
-the mmgrab() function could have multiple lines if the first few were
-just sanity checks for NULL or something...
+On 9/19/19 4:33 PM, Markus Elfring wrote:
+> From: Markus Elfring <elfring@users.sourceforge.net>
+> Date: Thu, 19 Sep 2019 16:26:56 +0200
+> 
+> Simplify this function implementation by using a known wrapper function.
+> 
+> This issue was detected by using the Coccinelle software.
+> 
+> Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
 
-regards,
-dan carpenter
+Thanks, patch queued for v5.6 (also sorry for the delay).
+
+Best regards,
+--
+Bartlomiej Zolnierkiewicz
+Samsung R&D Institute Poland
+Samsung Electronics
+
+> ---
+>  drivers/video/fbdev/ocfb.c | 9 +--------
+>  1 file changed, 1 insertion(+), 8 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/ocfb.c b/drivers/video/fbdev/ocfb.c
+> index a970edc2a6f8..be308b4dc91d 100644
+> --- a/drivers/video/fbdev/ocfb.c
+> +++ b/drivers/video/fbdev/ocfb.c
+> @@ -297,7 +297,6 @@ static int ocfb_probe(struct platform_device *pdev)
+>  {
+>  	int ret = 0;
+>  	struct ocfb_dev *fbdev;
+> -	struct resource *res;
+>  	int fbsize;
+> 
+>  	fbdev = devm_kzalloc(&pdev->dev, sizeof(*fbdev), GFP_KERNEL);
+> @@ -319,13 +318,7 @@ static int ocfb_probe(struct platform_device *pdev)
+>  	ocfb_init_var(fbdev);
+>  	ocfb_init_fix(fbdev);
+> 
+> -	/* Request I/O resource */
+> -	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> -	if (!res) {
+> -		dev_err(&pdev->dev, "I/O resource request failed\n");
+> -		return -ENXIO;
+> -	}
+> -	fbdev->regs = devm_ioremap_resource(&pdev->dev, res);
+> +	fbdev->regs = devm_platform_ioremap_resource(pdev, 0);
+>  	if (IS_ERR(fbdev->regs))
+>  		return PTR_ERR(fbdev->regs);
+> 
+> --
+> 2.23.0

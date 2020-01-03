@@ -2,92 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FB0A12F565
-	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Jan 2020 09:25:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01FC312F56F
+	for <lists+kernel-janitors@lfdr.de>; Fri,  3 Jan 2020 09:28:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726640AbgACIZd (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 3 Jan 2020 03:25:33 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:8664 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726054AbgACIZd (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 3 Jan 2020 03:25:33 -0500
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id A244BD010FAE0F605C51;
-        Fri,  3 Jan 2020 16:25:29 +0800 (CST)
-Received: from [127.0.0.1] (10.133.213.239) by DGGEMS402-HUB.china.huawei.com
- (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0; Fri, 3 Jan 2020
- 16:25:23 +0800
+        id S1727368AbgACI16 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 3 Jan 2020 03:27:58 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:56005 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726181AbgACI16 (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 3 Jan 2020 03:27:58 -0500
+Received: by mail-wm1-f67.google.com with SMTP id q9so7673005wmj.5
+        for <kernel-janitors@vger.kernel.org>; Fri, 03 Jan 2020 00:27:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=netronome-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=FXt9Ea7eVpmqdgqD/d6S8/ecEY7tdm3e/NMg1aAm5XM=;
+        b=ADLtimg6KlZkPLLdjc0r9LfFI9j/VWKfyc75TtjPZrZsZcKxBUtnJ7FxqorA705POF
+         2R8hn1fXxncSxIV+ZFpawD2C/XLPZTFp0NfFAPIWZFqIk0aefbISbbHmAhmt5bBFxvAc
+         fSom+uM0nvRxlhg8qQxivbRQ+Czv13RSX5yuRGOTsr+WkSmJn5hjkXdhF+nn0pmmoeLE
+         oPISBgCVW8KoJeQpgf3edBC7oHH03XwoODgd0Nslb7PuAJu7uEKMBCWx1BeGSHJpmb1h
+         QFknZEnWDjorohm4WJJXGt1MbxDJwmWTyC96kfJDWYiGKVr42Z8s5FQFu8uDpoD/JzRd
+         3o6w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=FXt9Ea7eVpmqdgqD/d6S8/ecEY7tdm3e/NMg1aAm5XM=;
+        b=nRuwTMehZV8Bhk2/Ho4cNBHq7OsrvoA3bdjoRihu8rvW+QvVeU6H7WiN4PLqZJq5iv
+         bOUG3GjxAh9C6GuLgWndDtwyva4oobO/X3CeP9pNKR+cZqKHZdFNhcgmlh/TCNolQ4O0
+         YTogO78LGi3+8hUHgbx6FMxyHsekCmrTmEp1IJrM9knejLORlONATjFw+XiFvBJc+GJ5
+         Ii0wESbN4JnLo/874VIJMuBgs3VL3fD8AJTdVo/tbd6ucbUAeuGqxY7TOLKrDxHoq0Me
+         MBmeOoowHIk9adLX7aHRtF/E9+uygld5u4X2Ws2QTZZHwba+JZwx2gzhx+Ro9IL4ZEec
+         Lf8g==
+X-Gm-Message-State: APjAAAVg00zNPYLtOjOWY9YYphT9oP3yH1QB8lQyDe/6qaiyu6mJZbYq
+        9ZDnzSFigeyWflRbbf+wkmhQsv9IUNo=
+X-Google-Smtp-Source: APXvYqw28jyBu2JzBdV9zAXZbzHl68ctcOJhBKtghcdQS8y2Um9+IjJGW6D0BW7l3bbKpZgyUcIDiA==
+X-Received: by 2002:a05:600c:20f:: with SMTP id 15mr18724830wmi.128.1578040076129;
+        Fri, 03 Jan 2020 00:27:56 -0800 (PST)
+Received: from netronome.com ([2001:982:756:703:d63d:7eff:fe99:ac9d])
+        by smtp.gmail.com with ESMTPSA id v3sm60211640wru.32.2020.01.03.00.27.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 03 Jan 2020 00:27:56 -0800 (PST)
+Date:   Fri, 3 Jan 2020 09:27:55 +0100
+From:   Simon Horman <simon.horman@netronome.com>
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Michal Kubecek <mkubecek@suse.cz>, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, Hulk Robot <hulkci@huawei.com>
 Subject: Re: [PATCH net-next] ethtool: remove set but not used variable
  'lsettings'
-To:     Michal Kubecek <mkubecek@suse.cz>, <netdev@vger.kernel.org>
+Message-ID: <20200103082755.GG12930@netronome.com>
 References: <20200103034856.177906-1-yuehaibing@huawei.com>
- <20200103073923.GA4769@unicorn.suse.cz>
-CC:     "David S . Miller" <davem@davemloft.net>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-From:   Yuehaibing <yuehaibing@huawei.com>
-Message-ID: <532c6c68-4dd6-bd08-2a86-a257f3384156@huawei.com>
-Date:   Fri, 3 Jan 2020 16:25:22 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.2.0
 MIME-Version: 1.0
-In-Reply-To: <20200103073923.GA4769@unicorn.suse.cz>
-Content-Type: text/plain; charset="windows-1252"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.133.213.239]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200103034856.177906-1-yuehaibing@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020/1/3 15:39, Michal Kubecek wrote:
-> On Fri, Jan 03, 2020 at 03:48:56AM +0000, YueHaibing wrote:
->> Fixes gcc '-Wunused-but-set-variable' warning:
->>
->> net/ethtool/linkmodes.c: In function 'ethnl_set_linkmodes':
->> net/ethtool/linkmodes.c:326:32: warning:
->>  variable 'lsettings' set but not used [-Wunused-but-set-variable]
->>   struct ethtool_link_settings *lsettings;
->>                                 ^
->> It is never used, so remove it.
->>
->> Reported-by: Hulk Robot <hulkci@huawei.com>
->> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
->> ---
->>  net/ethtool/linkmodes.c | 2 --
->>  1 file changed, 2 deletions(-)
->>
->> diff --git a/net/ethtool/linkmodes.c b/net/ethtool/linkmodes.c
->> index 0b99f494ad3b..96f20be64553 100644
->> --- a/net/ethtool/linkmodes.c
->> +++ b/net/ethtool/linkmodes.c
->> @@ -323,7 +323,6 @@ int ethnl_set_linkmodes(struct sk_buff *skb, struct genl_info *info)
->>  {
->>  	struct nlattr *tb[ETHTOOL_A_LINKMODES_MAX + 1];
->>  	struct ethtool_link_ksettings ksettings = {};
->> -	struct ethtool_link_settings *lsettings;
->>  	struct ethnl_req_info req_info = {};
->>  	struct net_device *dev;
->>  	bool mod = false;
->> @@ -354,7 +353,6 @@ int ethnl_set_linkmodes(struct sk_buff *skb, struct genl_info *info)
->>  			GENL_SET_ERR_MSG(info, "failed to retrieve link settings");
->>  		goto out_ops;
->>  	}
->> -	lsettings = &ksettings.base;
->>  
->>  	ret = ethnl_update_linkmodes(info, tb, &ksettings, &mod);
->>  	if (ret < 0)
+On Fri, Jan 03, 2020 at 03:48:56AM +0000, YueHaibing wrote:
+> Fixes gcc '-Wunused-but-set-variable' warning:
 > 
-> Reviewed-by: Michal Kubecek <mkubecek@suse.cz>
+> net/ethtool/linkmodes.c: In function 'ethnl_set_linkmodes':
+> net/ethtool/linkmodes.c:326:32: warning:
+>  variable 'lsettings' set but not used [-Wunused-but-set-variable]
+>   struct ethtool_link_settings *lsettings;
+>                                 ^
+> It is never used, so remove it.
 > 
-> Thank you. I wonder why my compiler does not complain.
+> Reported-by: Hulk Robot <hulkci@huawei.com>
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-Using make W=1
-
-> 
-> Michal
-> 
-> .
-> 
+Reviewed-by: Simon Horman <simon.horman@netronome.com>
 

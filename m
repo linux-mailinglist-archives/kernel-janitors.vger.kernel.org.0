@@ -2,137 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BF95E1313F8
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jan 2020 15:45:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BDA2131421
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jan 2020 15:54:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726477AbgAFOpj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Jan 2020 09:45:39 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:58656 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726303AbgAFOpj (ORCPT
+        id S1726548AbgAFOxw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Jan 2020 09:53:52 -0500
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:39582 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726303AbgAFOxu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Jan 2020 09:45:39 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 006Egre7060448;
-        Mon, 6 Jan 2020 14:45:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=y6Yf0Tj3nApnNA9jMdUffxaonp7W12V1dGrGOMpEJEs=;
- b=KZAS/9jgYbJYUWelkrCfBVA1iF8Tduijy60JmFC/xnanGW+4BeeONdNUxaIMVgED8aCM
- NUKzOXUkv/ECMSb4WnnarCme0Rdnyf8Pn/NgBy3zSBuvrAchPlJoGarYHK8EDod2TAwU
- /m7SsNOgVO3rq2D5irEcsgPOoWhRmA2We5YdmI/r24SLbIxtmr3sk9RuaNVNR6gH/n/v
- PNuUL3R346pgeGuXJky4+E5iPfuVxKan5Ka3dNXM+KMe5JoHj8ylw46upFEw3YY1IkN6
- tTBweIYqtJA/L8Os7RCUWdvobxfgEz2JoiDLoofsEsbqgacLSEqCGAKptvMl9oDn5U75 tQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 2xaj4tqqk7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 06 Jan 2020 14:45:32 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 006EipJi181815;
-        Mon, 6 Jan 2020 14:45:31 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2xb4v12q70-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 06 Jan 2020 14:45:31 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 006EjUAT027182;
-        Mon, 6 Jan 2020 14:45:30 GMT
-Received: from kadam (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 06 Jan 2020 06:45:29 -0800
-Date:   Mon, 6 Jan 2020 17:45:22 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Himanshu Madhani <hmadhani@marvell.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Quinn Tran <qutran@marvell.com>, linux-scsi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH][next] scsi: qla2xxx: fix null pointer dereference on
- null_fcport
-Message-ID: <20200106144522.GL3911@kadam>
-References: <20200106141144.52888-1-colin.king@canonical.com>
+        Mon, 6 Jan 2020 09:53:50 -0500
+Received: by mail-pf1-f194.google.com with SMTP id q10so27071155pfs.6;
+        Mon, 06 Jan 2020 06:53:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=7XaSQ/EximSmFGX8/V3EJ80TFSF4aq77AU2UpijSJZI=;
+        b=Ik5AnhpvAImEgN0p68Hf/k9umrhsuqXm4qs4u1YkY6jd3OiUdRu9W1AWJ5x0/nw7FO
+         0qu3x8xEPb/n6HoM5qFhztMzyR0T1k7hjFDX8l4lkfRqFaoG5SCnK4DOKDGA2eUmpzYb
+         PlmW6sZk6qfLbaO8+8VVPoz1GrYrj967PNenLmYB1U70QsW7vB86h2NM6C953J8gYsG6
+         mWyOAYo8eHHXfCwkDvSfQR5wVbR0Xhn7vy5QxTUM35CePfOWGKGmK3qW1NZss9LXbx36
+         +gAsR7V7Dbj4eBNdtu7XYWkdZZegcEZ3ygCCYjiyV4PU8/Vf8tLJwGozZyVAuUdyDXlU
+         7qeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=7XaSQ/EximSmFGX8/V3EJ80TFSF4aq77AU2UpijSJZI=;
+        b=Fbq6hAv0cvBDUrqN57dW+IW6QiOvobSfBV9ddDRXdhvPVZlIx0J+U4W5pTqhtiGNv1
+         QjE/YmVpE6Xo/Zho8/nY/2OPJIcTstUK6YV2LnyMZZRMlIEC3qRGkSgtlNOX1DFIRBOD
+         6CUKCZZcNjFhxTXyHxing7AiP76qei8GI0bSt4ZSoPqCvHyN85x72yaZImv1InHhb/nk
+         WcPHHBUp6gtNAEzJuxe76E1tanfjbJCZnRZI4HDq6bC+GMKxlJc68gK2ZPOpM5CgwH0O
+         iPOAOkHZRBU1kz1TUzUVcrQ32rhN6wzWWzbE1w/NiMz8mwGT7bH44ULG9d6eYvaenNsX
+         lWtQ==
+X-Gm-Message-State: APjAAAV8OL+LjK6GtzJvwZ4kqtjb2sMr/FVwU383I0FZmvolit+EFzyY
+        3uzMG+OmMFEswfL0GU+cKjo=
+X-Google-Smtp-Source: APXvYqw7X+6XPNP8y15lx7qSPoqnIH26+3MN77S1SiKjqMSEGFmpmGs8DCFCMg4IJCS/+hFNtusRHQ==
+X-Received: by 2002:a63:358a:: with SMTP id c132mr4412983pga.286.1578322429849;
+        Mon, 06 Jan 2020 06:53:49 -0800 (PST)
+Received: from localhost (g52.222-224-164.ppp.wakwak.ne.jp. [222.224.164.52])
+        by smtp.gmail.com with ESMTPSA id k21sm68949754pgt.22.2020.01.06.06.53.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 06 Jan 2020 06:53:49 -0800 (PST)
+Date:   Mon, 6 Jan 2020 23:53:47 +0900
+From:   Stafford Horne <shorne@gmail.com>
+To:     kbuild test robot <lkp@intel.com>
+Cc:     Julia Lawall <Julia.Lawall@inria.fr>, kbuild-all@lists.01.org,
+        Jonas Bonn <jonas@southpole.se>,
+        kernel-janitors@vger.kernel.org,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        openrisc@lists.librecores.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/4] openrisc: use mmgrab
+Message-ID: <20200106145347.GT24874@lianli.shorne-pla.net>
+References: <1577634178-22530-5-git-send-email-Julia.Lawall@inria.fr>
+ <201912301238.xfn6pKut%lkp@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200106141144.52888-1-colin.king@canonical.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9491 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001060134
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9491 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001060134
+In-Reply-To: <201912301238.xfn6pKut%lkp@intel.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jan 06, 2020 at 02:11:44PM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On Mon, Dec 30, 2019 at 12:49:19PM +0800, kbuild test robot wrote:
+> Hi Julia,
 > 
-> Currently several error exit return paths end up passing a null
-> new_fcport pointer to function qla2x00_free_fcport and this causes
-> a null pointer dereference.  Fix this by moving and renaming the
-> exit path label to be after the call to qla2x00_free_fcport to avoid
-> the errorneous and unnecessary call to qla2x00_free_fcport.
+> I love your patch! Yet something to improve:
+>
+> [auto build test ERROR on vfio/next]
+> [also build test ERROR on char-misc/char-misc-testing v5.5-rc3 next-20191220]
+> [if your patch is applied to the wrong git tree, please drop us a note to help
+> improve the system. BTW, we also suggest to use '--base' option to specify the
+> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
 > 
-> Addresses-Coverity: ("Dereference after null check")
-> Fixes: 3dae220595ba ("scsi: qla2xxx: Use common routine to free fcport struct")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/scsi/qla2xxx/qla_init.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
+> url:    https://github.com/0day-ci/linux/commits/Julia-Lawall/use-mmgrab/20191230-011611
+> base:   https://github.com/awilliam/linux-vfio.git next
+> config: openrisc-simple_smp_defconfig (attached as .config)
+> compiler: or1k-linux-gcc (GCC) 9.2.0
+> reproduce:
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # save the attached .config to linux build tree
+>         GCC_VERSION=9.2.0 make.cross ARCH=openrisc 
 > 
-> diff --git a/drivers/scsi/qla2xxx/qla_init.c b/drivers/scsi/qla2xxx/qla_init.c
-> index a5076f43edea..ed056626d7a3 100644
-> --- a/drivers/scsi/qla2xxx/qla_init.c
-> +++ b/drivers/scsi/qla2xxx/qla_init.c
-> @@ -5108,7 +5108,7 @@ qla2x00_configure_local_loop(scsi_qla_host_t *vha)
->  	rval = qla2x00_get_id_list(vha, ha->gid_list, ha->gid_list_dma,
->  	    &entries);
->  	if (rval != QLA_SUCCESS)
-> -		goto cleanup_allocation;
-> +		goto exit;
->  
->  	ql_dbg(ql_dbg_disc, vha, 0x2011,
->  	    "Entries in ID list (%d).\n", entries);
-> @@ -5138,7 +5138,7 @@ qla2x00_configure_local_loop(scsi_qla_host_t *vha)
->  		ql_log(ql_log_warn, vha, 0x2012,
->  		    "Memory allocation failed for fcport.\n");
->  		rval = QLA_MEMORY_ALLOC_FAILED;
-> -		goto cleanup_allocation;
-> +		goto exit;
->  	}
->  	new_fcport->flags &= ~FCF_FABRIC_DEVICE;
->  
-> @@ -5228,7 +5228,7 @@ qla2x00_configure_local_loop(scsi_qla_host_t *vha)
->  				ql_log(ql_log_warn, vha, 0xd031,
->  				    "Failed to allocate memory for fcport.\n");
->  				rval = QLA_MEMORY_ALLOC_FAILED;
-> -				goto cleanup_allocation;
-> +				goto exit;
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    arch/openrisc/kernel/smp.c: In function 'secondary_start_kernel':
+> >> arch/openrisc/kernel/smp.c:116:2: error: implicit declaration of function 'mmgrab'; did you mean 'igrab'? [-Werror=implicit-function-declaration]
+>      116 |  mmgrab(mm);
+>          |  ^~~~~~
+>          |  igrab
+>    cc1: some warnings being treated as errors
 
-This leaks now.
+Hi Julia,
 
->  			}
->  			spin_lock_irqsave(&vha->hw->tgt.sess_lock, flags);
->  			new_fcport->flags &= ~FCF_FABRIC_DEVICE;
-> @@ -5239,7 +5239,6 @@ qla2x00_configure_local_loop(scsi_qla_host_t *vha)
->  		/* Base iIDMA settings on HBA port speed. */
->  		fcport->fp_speed = ha->link_data_rate;
->  
-> -		found_devs++;
+It looks like this is just an include issue, do you want to revise the patch?
 
-Delete "found_devs" completely.  Also remove the "new_fcport = NULL;"
-line because that's not required any more.
+Once fixed, how do you plan to get this patch series merged?  I can add the
+OpenRISC part to my queue or do you have a cleanups queue you can manage?
 
-regards,
-dan carpenter
+-Stafford
 

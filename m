@@ -2,94 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E86751315A6
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jan 2020 17:06:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2DBC131778
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jan 2020 19:29:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726641AbgAFQGK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Jan 2020 11:06:10 -0500
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:34918 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726478AbgAFQGK (ORCPT
+        id S1726622AbgAFS3D (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Jan 2020 13:29:03 -0500
+Received: from baldur.buserror.net ([165.227.176.147]:48280 "EHLO
+        baldur.buserror.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726569AbgAFS3D (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Jan 2020 11:06:10 -0500
-Received: by mail-lf1-f66.google.com with SMTP id 15so36731677lfr.2
-        for <kernel-janitors@vger.kernel.org>; Mon, 06 Jan 2020 08:06:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:organization:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=3Hm+N1Mfv4cvEt8AsOyDtrwsor+OkWnHkb2xIR+PFvE=;
-        b=0wFl8U6vnb/amTRB9H7VChfQh2usnHN4k6f/dsIR+GRPdketwrRkBZ6zxRFv/Iy6Vn
-         cVP0zQv/M5i47wcGbuYZ+skIBGKxYxdP36SknHyhILLUKJRXVoNwFAtjW2h/ZQAk+B/i
-         nCTfm2vDxpDljMl2xFjLuSYIP7FTsL8NvoTlHeKcS6t86ayC9UvMEMPnRNzJKXTGTQL4
-         rH+chiO9gAVkJV1PsUIuBAn2F6yETNSqOyzVMT6xzviC++6r2lwbUkTiDZrYRhD+cHzy
-         k7YXwTB2aNpqMw2/3Fz2GycYAEIF4bMMRJ2wh0M1G4EEGL9YdWvJgueuVrgddLjyo3fy
-         sz6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=3Hm+N1Mfv4cvEt8AsOyDtrwsor+OkWnHkb2xIR+PFvE=;
-        b=iDixTy/zcMgkzyTk3hGFvWCPb+VXvwHoVqdV6mfhcoZ6ByPN771Ew1XGuJnrBrnaML
-         XDxUbxRN0NzNOk0/ZvqZ0XsoWRf0UVNsDBgtH3mKgBNZDpaVE7ES+wUkCQO+ukWKeKyS
-         6YmY/UHE6tWEbC7pxd5gIAPF9RH3QoTojHQuAC4hIzh9dF8xJOZRiAaJyyjNKZ8+0mvw
-         Z9FjeLVjd6YChs3q42OMpQbEg9rgEx9yQyaDmQV+Ch+Js1vZayk3ka6+tyjMx2DOF/jP
-         dfvtJeD4dAFzHXGG7Ayj4dCUZIR/ZyVhSONlW8VFeBtvqeWnvxI5uyGzSbcx18WcSxW8
-         iTUw==
-X-Gm-Message-State: APjAAAVMkz+6XPvymDSRdpVKrFIh0UZ1UhsO8prQF6/UZKDH7opOa920
-        VJzQWCz4pxQEwlkD8LCqDDeQCBrF6HszoQ==
-X-Google-Smtp-Source: APXvYqzVSIjqm4qAseu8cComyUZgjNefdGBqk7/YYwSKdRakaxIfT54mr9Nz6+Y1grtbJ1+gcKmMfw==
-X-Received: by 2002:ac2:5604:: with SMTP id v4mr53198337lfd.152.1578326768489;
-        Mon, 06 Jan 2020 08:06:08 -0800 (PST)
-Received: from wasted.cogentembedded.com ([2a00:1fa0:4253:5f51:223d:4ed1:dff6:3b2e])
-        by smtp.gmail.com with ESMTPSA id u3sm29142343lfm.37.2020.01.06.08.06.07
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 06 Jan 2020 08:06:07 -0800 (PST)
-Subject: Re: [PATCH] usb: ohci-da8xx: ensure error return on variable error is
- set
-To:     Colin King <colin.king@canonical.com>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sekhar Nori <nsekhar@ti.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        linux-usb@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200106130609.51174-1-colin.king@canonical.com>
-From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
-Organization: Cogent Embedded
-Message-ID: <2c3b944c-6d31-ec50-234b-c203460ea06a@cogentembedded.com>
-Date:   Mon, 6 Jan 2020 19:06:06 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.2.1
-MIME-Version: 1.0
-In-Reply-To: <20200106130609.51174-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-MW
+        Mon, 6 Jan 2020 13:29:03 -0500
+X-Greylist: delayed 1081 seconds by postgrey-1.27 at vger.kernel.org; Mon, 06 Jan 2020 13:29:02 EST
+Received: from [2601:449:8480:af0:12bf:48ff:fe84:c9a0]
+        by baldur.buserror.net with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.89)
+        (envelope-from <oss@buserror.net>)
+        id 1ioWls-0008DE-B8; Mon, 06 Jan 2020 12:06:33 -0600
+Message-ID: <88cb950e3ad4040a368d946909d8818c4372894f.camel@buserror.net>
+From:   Scott Wood <oss@buserror.net>
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     kernel-janitors@vger.kernel.org,
+        Kumar Gala <galak@kernel.crashing.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Date:   Mon, 06 Jan 2020 12:06:31 -0600
+In-Reply-To: <1577900990-8588-6-git-send-email-Julia.Lawall@inria.fr>
+References: <1577900990-8588-1-git-send-email-Julia.Lawall@inria.fr>
+         <1577900990-8588-6-git-send-email-Julia.Lawall@inria.fr>
+Organization: Red Hat
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
+Mime-Version: 1.0
 Content-Transfer-Encoding: 7bit
+X-SA-Exim-Connect-IP: 2601:449:8480:af0:12bf:48ff:fe84:c9a0
+X-SA-Exim-Rcpt-To: Julia.Lawall@inria.fr, kernel-janitors@vger.kernel.org, galak@kernel.crashing.org, benh@kernel.crashing.org, paulus@samba.org, mpe@ellerman.id.au, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+X-SA-Exim-Mail-From: oss@buserror.net
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on baldur.localdomain
+X-Spam-Level: 
+X-Spam-Status: No, score=-17.5 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+        *  -15 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+        *      [score: 0.0000]
+        * -1.5 GREYLIST_ISWHITE The incoming server has been whitelisted for
+        *      this recipient and sender
+Subject: Re: [PATCH 05/10] powerpc/83xx: use resource_size
+X-SA-Exim-Version: 4.2.1 (built Tue, 02 Aug 2016 21:08:31 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 01/06/2020 04:06 PM, Colin King wrote:
-
-> From: Colin Ian King <colin.king@canonical.com>
+On Wed, 2020-01-01 at 18:49 +0100, Julia Lawall wrote:
+> Use resource_size rather than a verbose computation on
+> the end and start fields.
 > 
-> Currently when an error in da8xx_ohci->oc_gpi occurs causes an
+> The semantic patch that makes this change is as follows:
+> (http://coccinelle.lip6.fr/)
+> 
+> <smpl>
+> @@ struct resource ptr; @@
+> - (ptr.end - ptr.start + 1)
+> + resource_size(&ptr)
+> </smpl>
+> 
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> 
+> ---
+>  arch/powerpc/platforms/83xx/km83xx.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-   s/gpi/gpio/. And you missed a noun between 2 verbs.
+Acked-by: Scott Wood <oss@buserror.net>
 
-> uninitialized error value in variable 'error' to be returned. 
-> Fix this by ensuring the error variable is set to the error value
-> in da8xx_ohci->oc_gpi.
+-Scott
 
-   oc_gpio again.
 
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Fixes: d193abf1c913 ("usb: ohci-da8xx: add vbus and overcurrent gpios")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-[...]
-
-MBR, Sergei

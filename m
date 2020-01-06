@@ -2,110 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BDA2131421
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jan 2020 15:54:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E86751315A6
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jan 2020 17:06:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726548AbgAFOxw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Jan 2020 09:53:52 -0500
-Received: from mail-pf1-f194.google.com ([209.85.210.194]:39582 "EHLO
-        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726303AbgAFOxu (ORCPT
+        id S1726641AbgAFQGK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Jan 2020 11:06:10 -0500
+Received: from mail-lf1-f66.google.com ([209.85.167.66]:34918 "EHLO
+        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726478AbgAFQGK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Jan 2020 09:53:50 -0500
-Received: by mail-pf1-f194.google.com with SMTP id q10so27071155pfs.6;
-        Mon, 06 Jan 2020 06:53:50 -0800 (PST)
+        Mon, 6 Jan 2020 11:06:10 -0500
+Received: by mail-lf1-f66.google.com with SMTP id 15so36731677lfr.2
+        for <kernel-janitors@vger.kernel.org>; Mon, 06 Jan 2020 08:06:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=7XaSQ/EximSmFGX8/V3EJ80TFSF4aq77AU2UpijSJZI=;
-        b=Ik5AnhpvAImEgN0p68Hf/k9umrhsuqXm4qs4u1YkY6jd3OiUdRu9W1AWJ5x0/nw7FO
-         0qu3x8xEPb/n6HoM5qFhztMzyR0T1k7hjFDX8l4lkfRqFaoG5SCnK4DOKDGA2eUmpzYb
-         PlmW6sZk6qfLbaO8+8VVPoz1GrYrj967PNenLmYB1U70QsW7vB86h2NM6C953J8gYsG6
-         mWyOAYo8eHHXfCwkDvSfQR5wVbR0Xhn7vy5QxTUM35CePfOWGKGmK3qW1NZss9LXbx36
-         +gAsR7V7Dbj4eBNdtu7XYWkdZZegcEZ3ygCCYjiyV4PU8/Vf8tLJwGozZyVAuUdyDXlU
-         7qeA==
+        d=cogentembedded-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:organization:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=3Hm+N1Mfv4cvEt8AsOyDtrwsor+OkWnHkb2xIR+PFvE=;
+        b=0wFl8U6vnb/amTRB9H7VChfQh2usnHN4k6f/dsIR+GRPdketwrRkBZ6zxRFv/Iy6Vn
+         cVP0zQv/M5i47wcGbuYZ+skIBGKxYxdP36SknHyhILLUKJRXVoNwFAtjW2h/ZQAk+B/i
+         nCTfm2vDxpDljMl2xFjLuSYIP7FTsL8NvoTlHeKcS6t86ayC9UvMEMPnRNzJKXTGTQL4
+         rH+chiO9gAVkJV1PsUIuBAn2F6yETNSqOyzVMT6xzviC++6r2lwbUkTiDZrYRhD+cHzy
+         k7YXwTB2aNpqMw2/3Fz2GycYAEIF4bMMRJ2wh0M1G4EEGL9YdWvJgueuVrgddLjyo3fy
+         sz6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=7XaSQ/EximSmFGX8/V3EJ80TFSF4aq77AU2UpijSJZI=;
-        b=Fbq6hAv0cvBDUrqN57dW+IW6QiOvobSfBV9ddDRXdhvPVZlIx0J+U4W5pTqhtiGNv1
-         QjE/YmVpE6Xo/Zho8/nY/2OPJIcTstUK6YV2LnyMZZRMlIEC3qRGkSgtlNOX1DFIRBOD
-         6CUKCZZcNjFhxTXyHxing7AiP76qei8GI0bSt4ZSoPqCvHyN85x72yaZImv1InHhb/nk
-         WcPHHBUp6gtNAEzJuxe76E1tanfjbJCZnRZI4HDq6bC+GMKxlJc68gK2ZPOpM5CgwH0O
-         iPOAOkHZRBU1kz1TUzUVcrQ32rhN6wzWWzbE1w/NiMz8mwGT7bH44ULG9d6eYvaenNsX
-         lWtQ==
-X-Gm-Message-State: APjAAAV8OL+LjK6GtzJvwZ4kqtjb2sMr/FVwU383I0FZmvolit+EFzyY
-        3uzMG+OmMFEswfL0GU+cKjo=
-X-Google-Smtp-Source: APXvYqw7X+6XPNP8y15lx7qSPoqnIH26+3MN77S1SiKjqMSEGFmpmGs8DCFCMg4IJCS/+hFNtusRHQ==
-X-Received: by 2002:a63:358a:: with SMTP id c132mr4412983pga.286.1578322429849;
-        Mon, 06 Jan 2020 06:53:49 -0800 (PST)
-Received: from localhost (g52.222-224-164.ppp.wakwak.ne.jp. [222.224.164.52])
-        by smtp.gmail.com with ESMTPSA id k21sm68949754pgt.22.2020.01.06.06.53.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2020 06:53:49 -0800 (PST)
-Date:   Mon, 6 Jan 2020 23:53:47 +0900
-From:   Stafford Horne <shorne@gmail.com>
-To:     kbuild test robot <lkp@intel.com>
-Cc:     Julia Lawall <Julia.Lawall@inria.fr>, kbuild-all@lists.01.org,
-        Jonas Bonn <jonas@southpole.se>,
-        kernel-janitors@vger.kernel.org,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        openrisc@lists.librecores.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] openrisc: use mmgrab
-Message-ID: <20200106145347.GT24874@lianli.shorne-pla.net>
-References: <1577634178-22530-5-git-send-email-Julia.Lawall@inria.fr>
- <201912301238.xfn6pKut%lkp@intel.com>
+        h=x-gm-message-state:subject:to:cc:references:from:organization
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=3Hm+N1Mfv4cvEt8AsOyDtrwsor+OkWnHkb2xIR+PFvE=;
+        b=iDixTy/zcMgkzyTk3hGFvWCPb+VXvwHoVqdV6mfhcoZ6ByPN771Ew1XGuJnrBrnaML
+         XDxUbxRN0NzNOk0/ZvqZ0XsoWRf0UVNsDBgtH3mKgBNZDpaVE7ES+wUkCQO+ukWKeKyS
+         6YmY/UHE6tWEbC7pxd5gIAPF9RH3QoTojHQuAC4hIzh9dF8xJOZRiAaJyyjNKZ8+0mvw
+         Z9FjeLVjd6YChs3q42OMpQbEg9rgEx9yQyaDmQV+Ch+Js1vZayk3ka6+tyjMx2DOF/jP
+         dfvtJeD4dAFzHXGG7Ayj4dCUZIR/ZyVhSONlW8VFeBtvqeWnvxI5uyGzSbcx18WcSxW8
+         iTUw==
+X-Gm-Message-State: APjAAAVMkz+6XPvymDSRdpVKrFIh0UZ1UhsO8prQF6/UZKDH7opOa920
+        VJzQWCz4pxQEwlkD8LCqDDeQCBrF6HszoQ==
+X-Google-Smtp-Source: APXvYqzVSIjqm4qAseu8cComyUZgjNefdGBqk7/YYwSKdRakaxIfT54mr9Nz6+Y1grtbJ1+gcKmMfw==
+X-Received: by 2002:ac2:5604:: with SMTP id v4mr53198337lfd.152.1578326768489;
+        Mon, 06 Jan 2020 08:06:08 -0800 (PST)
+Received: from wasted.cogentembedded.com ([2a00:1fa0:4253:5f51:223d:4ed1:dff6:3b2e])
+        by smtp.gmail.com with ESMTPSA id u3sm29142343lfm.37.2020.01.06.08.06.07
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 06 Jan 2020 08:06:07 -0800 (PST)
+Subject: Re: [PATCH] usb: ohci-da8xx: ensure error return on variable error is
+ set
+To:     Colin King <colin.king@canonical.com>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sekhar Nori <nsekhar@ti.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        linux-usb@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200106130609.51174-1-colin.king@canonical.com>
+From:   Sergei Shtylyov <sergei.shtylyov@cogentembedded.com>
+Organization: Cogent Embedded
+Message-ID: <2c3b944c-6d31-ec50-234b-c203460ea06a@cogentembedded.com>
+Date:   Mon, 6 Jan 2020 19:06:06 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.2.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <201912301238.xfn6pKut%lkp@intel.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+In-Reply-To: <20200106130609.51174-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-MW
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Dec 30, 2019 at 12:49:19PM +0800, kbuild test robot wrote:
-> Hi Julia,
-> 
-> I love your patch! Yet something to improve:
->
-> [auto build test ERROR on vfio/next]
-> [also build test ERROR on char-misc/char-misc-testing v5.5-rc3 next-20191220]
-> [if your patch is applied to the wrong git tree, please drop us a note to help
-> improve the system. BTW, we also suggest to use '--base' option to specify the
-> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
-> 
-> url:    https://github.com/0day-ci/linux/commits/Julia-Lawall/use-mmgrab/20191230-011611
-> base:   https://github.com/awilliam/linux-vfio.git next
-> config: openrisc-simple_smp_defconfig (attached as .config)
-> compiler: or1k-linux-gcc (GCC) 9.2.0
-> reproduce:
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # save the attached .config to linux build tree
->         GCC_VERSION=9.2.0 make.cross ARCH=openrisc 
-> 
-> If you fix the issue, kindly add following tag
-> Reported-by: kbuild test robot <lkp@intel.com>
-> 
-> All errors (new ones prefixed by >>):
-> 
->    arch/openrisc/kernel/smp.c: In function 'secondary_start_kernel':
-> >> arch/openrisc/kernel/smp.c:116:2: error: implicit declaration of function 'mmgrab'; did you mean 'igrab'? [-Werror=implicit-function-declaration]
->      116 |  mmgrab(mm);
->          |  ^~~~~~
->          |  igrab
->    cc1: some warnings being treated as errors
+On 01/06/2020 04:06 PM, Colin King wrote:
 
-Hi Julia,
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently when an error in da8xx_ohci->oc_gpi occurs causes an
 
-It looks like this is just an include issue, do you want to revise the patch?
+   s/gpi/gpio/. And you missed a noun between 2 verbs.
 
-Once fixed, how do you plan to get this patch series merged?  I can add the
-OpenRISC part to my queue or do you have a cleanups queue you can manage?
+> uninitialized error value in variable 'error' to be returned. 
+> Fix this by ensuring the error variable is set to the error value
+> in da8xx_ohci->oc_gpi.
 
--Stafford
+   oc_gpio again.
 
+> Addresses-Coverity: ("Uninitialized scalar variable")
+> Fixes: d193abf1c913 ("usb: ohci-da8xx: add vbus and overcurrent gpios")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+[...]
+
+MBR, Sergei

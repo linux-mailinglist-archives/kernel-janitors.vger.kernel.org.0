@@ -2,67 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A2E35131A9B
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jan 2020 22:40:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9794131C09
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 00:05:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726891AbgAFVkG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Jan 2020 16:40:06 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:36379 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726731AbgAFVkF (ORCPT
+        id S1727001AbgAFXFM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Jan 2020 18:05:12 -0500
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:24592 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726930AbgAFXFM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Jan 2020 16:40:05 -0500
+        Mon, 6 Jan 2020 18:05:12 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1578346804;
+        s=mimecast20190719; t=1578351910;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=92IBDcXHrCniaPpYzIDDSbya4Iw/pUq5jseI84k5wbg=;
-        b=YapnuVqdzHjiTKWi2t/GNa1WK3AtQxGeKso78MkqvQCM65aIWCzGUynduWBAmhdQHkt7tT
-        +hHlZb23ch4tZd6jfc+aix3Et5OAmC2W6UcKLPQggW2kU3Dh2y67K+qRIX7g0QQRdOf8ub
-        PKEBljmJdfFePiupz3Tvgd3pGE8Z1ms=
+        bh=5FUwndBIrFS376iq6UZxigDCdyXQx4W62Bo2bpWtvvU=;
+        b=G4Y7lI8pUX8BE2TKDRr4TeCkJFEjUL58XMd+os1uJcyMyrO4L9j5epDHJkNoIciRxxSMEv
+        D5DLV44uVLbH+1MZNd/w2z2cBX/ZpsaxdWVHAdt6OW04B3uv7L+N9kBP1kuhYzeWf4sWjA
+        zFzVyMiNW9hDa/daa+JD2qOr6klFGC8=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-226-VkcnwEa9M_2i3M_AYQK7-Q-1; Mon, 06 Jan 2020 16:40:00 -0500
-X-MC-Unique: VkcnwEa9M_2i3M_AYQK7-Q-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+ us-mta-190-iBhoNrFePfelJiDunoLm6A-1; Mon, 06 Jan 2020 18:05:08 -0500
+X-MC-Unique: iBhoNrFePfelJiDunoLm6A-1
+Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 598AF10054E3;
-        Mon,  6 Jan 2020 21:39:58 +0000 (UTC)
-Received: from localhost (ovpn-112-4.rdu2.redhat.com [10.10.112.4])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 0154D60E1C;
-        Mon,  6 Jan 2020 21:39:55 +0000 (UTC)
-Date:   Mon, 06 Jan 2020 13:39:54 -0800 (PST)
-Message-Id: <20200106.133954.516759492863458363.davem@redhat.com>
-To:     christophe.jaillet@wanadoo.fr
-Cc:     pablo@netfilter.org, laforge@gnumonks.org,
-        osmocom-net-gprs@lists.osmocom.org, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] gtp: simplify error handling code in
- 'gtp_encap_enable()'
-From:   David Miller <davem@redhat.com>
-In-Reply-To: <20200105173607.5456-1-christophe.jaillet@wanadoo.fr>
-References: <20200105173607.5456-1-christophe.jaillet@wanadoo.fr>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 834CB1800D4E;
+        Mon,  6 Jan 2020 23:05:06 +0000 (UTC)
+Received: from w520.home (ovpn-116-26.phx2.redhat.com [10.3.116.26])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 257F65D9D6;
+        Mon,  6 Jan 2020 23:05:05 +0000 (UTC)
+Date:   Mon, 6 Jan 2020 16:05:05 -0700
+From:   Alex Williamson <alex.williamson@redhat.com>
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     kernel-janitors@vger.kernel.org, Cornelia Huck <cohuck@redhat.com>,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/4] vfio: vfio_pci_nvlink2: use mmgrab
+Message-ID: <20200106160505.2f962d38@w520.home>
+In-Reply-To: <1577634178-22530-3-git-send-email-Julia.Lawall@inria.fr>
+References: <1577634178-22530-1-git-send-email-Julia.Lawall@inria.fr>
+        <1577634178-22530-3-git-send-email-Julia.Lawall@inria.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Sun,  5 Jan 2020 18:36:07 +0100
+On Sun, 29 Dec 2019 16:42:56 +0100
+Julia Lawall <Julia.Lawall@inria.fr> wrote:
 
-> 'gtp_encap_disable_sock(sk)' handles the case where sk is NULL, so there
-> is no need to test it before calling the function.
+> Mmgrab was introduced in commit f1f1007644ff ("mm: add new mmgrab()
+> helper") and most of the kernel was updated to use it. Update a
+> remaining file.
 > 
-> This saves a few line of code.
+> The semantic patch that makes this change is as follows:
+> (http://coccinelle.lip6.fr/)
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> <smpl>
+> @@ expression e; @@
+> - atomic_inc(&e->mm_count);
+> + mmgrab(e);
+> </smpl>
+> 
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> 
+> ---
+>  drivers/vfio/pci/vfio_pci_nvlink2.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_nvlink2.c b/drivers/vfio/pci/vfio_pci_nvlink2.c
+> index f2983f0f84be..43df10af7f66 100644
+> --- a/drivers/vfio/pci/vfio_pci_nvlink2.c
+> +++ b/drivers/vfio/pci/vfio_pci_nvlink2.c
+> @@ -159,7 +159,7 @@ static int vfio_pci_nvgpu_mmap(struct vfio_pci_device *vdev,
+>  	data->useraddr = vma->vm_start;
+>  	data->mm = current->mm;
+>  
+> -	atomic_inc(&data->mm->mm_count);
+> +	mmgrab(data->mm);
+>  	ret = (int) mm_iommu_newdev(data->mm, data->useraddr,
+>  			vma_pages(vma), data->gpu_hpa, &data->mem);
+>  
+> 
 
-Applied to net-next.
+Acked-by: Alex Williamson <alex.williamson@redhat.com>
+
+Thanks!  I'm assuming these will be routed via janitors tree, please
+let me know if you intend me to grab these two vfio patches from the
+series.  Thanks,
+
+Alex
 

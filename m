@@ -2,105 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E804131875
-	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jan 2020 20:16:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A2E35131A9B
+	for <lists+kernel-janitors@lfdr.de>; Mon,  6 Jan 2020 22:40:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726683AbgAFTPC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 6 Jan 2020 14:15:02 -0500
-Received: from mail-pj1-f68.google.com ([209.85.216.68]:56316 "EHLO
-        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726793AbgAFTPC (ORCPT
+        id S1726891AbgAFVkG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 6 Jan 2020 16:40:06 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:36379 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726731AbgAFVkF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 6 Jan 2020 14:15:02 -0500
-Received: by mail-pj1-f68.google.com with SMTP id d5so7930365pjz.5
-        for <kernel-janitors@vger.kernel.org>; Mon, 06 Jan 2020 11:15:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=GFwzTDfVSEsQlAMMcJbbQMcZerRfZ61wXIEvCkNUZdQ=;
-        b=s9VOlBQnwNsApUHOQQ2PUWXHKhgrwqrmhv8WBjlrxXSF27zy+XeWF/hA6zXnaatq0l
-         EVDNxLaF77qE9ebp+sEHfaS2d3stCllbQouOS8kipKrzF+/8iS2kFvsNodIiujx7Y3aC
-         yZK5gq0y5gtU5NA6PdJ6IM4YDylADfIzFCNmjPU8IGzyzndZhP1OBF+Sk5Vsm50KHwfz
-         Yjv9yIKAUl3tsnTB5FPV9EmFZR7cYeoZZhChIWReipv8C5/c3Ido6yZKa1xH3q+Y1fqM
-         Ewao0SzZ3Iy1XQw+t7y+5UlkZLf9dB8ZamsB+eh4To0t1SbVWIwVS4REjkxXbwO01/Hc
-         fGWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=GFwzTDfVSEsQlAMMcJbbQMcZerRfZ61wXIEvCkNUZdQ=;
-        b=EldmD9wX1wRinP/BvCMhN49FHxQSZw+8PRsXpiu/+TIcgjHxdmj+5IyvmJbHRoYjFo
-         6s0QEWNb7cWc/aQOdvtaIAO93BYQmMxqkr7cd8tKD8I1wbjzJD8HlwhHE28sSV/n+q8u
-         H0I6PAtgS6xFCXAijRiNLc9Q4anWFqNjWXVYSUA2j9E22Tmls76klitRuWcQXrMGjblx
-         v6VXszJSlvEu8TU7D7UviXxUZk7CcDVRN02i0OnJ2DThQe/voX8AYg7c9AegY7RtiONQ
-         zRpFLtzohzqwwQ0n9vJ9Jatat72iwjyV7XrCwGSEJ4/BBXagHy1EiFPKM4nRvYp30gUL
-         5rdQ==
-X-Gm-Message-State: APjAAAWYSTTP9Ahih8Qb6agJxx8aFS0t2C1dpOzoLDq1SRhygKacpD75
-        21aTCGg7mDqxg6+TW/f8CDs11w==
-X-Google-Smtp-Source: APXvYqxa4AUZrWKk56M6JY/TJLxdtIqbX+Uo+ysj7McsHKpTpJ2onOc3GwFjpLOQcKAu1t9I6vxC0Q==
-X-Received: by 2002:a17:902:b788:: with SMTP id e8mr109469537pls.1.1578338101538;
-        Mon, 06 Jan 2020 11:15:01 -0800 (PST)
-Received: from builder (104-188-17-28.lightspeed.sndgca.sbcglobal.net. [104.188.17.28])
-        by smtp.gmail.com with ESMTPSA id i2sm71718552pgi.94.2020.01.06.11.15.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jan 2020 11:15:00 -0800 (PST)
-Date:   Mon, 6 Jan 2020 11:14:58 -0800
-From:   Bjorn Andersson <bjorn.andersson@linaro.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Niklas Cassel <niklas.cassel@linaro.org>,
-        Kevin Hilman <khilman@kernel.org>, Nishanth Menon <nm@ti.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Jorge Ramirez-Ortiz <jorge.ramirez-ortiz@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] power: avs: fix uninitialized error return on
- failed cpr_read_fuse_uV call
-Message-ID: <20200106191458.GV3755841@builder>
-References: <20200106120558.37758-1-colin.king@canonical.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200106120558.37758-1-colin.king@canonical.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+        Mon, 6 Jan 2020 16:40:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1578346804;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=92IBDcXHrCniaPpYzIDDSbya4Iw/pUq5jseI84k5wbg=;
+        b=YapnuVqdzHjiTKWi2t/GNa1WK3AtQxGeKso78MkqvQCM65aIWCzGUynduWBAmhdQHkt7tT
+        +hHlZb23ch4tZd6jfc+aix3Et5OAmC2W6UcKLPQggW2kU3Dh2y67K+qRIX7g0QQRdOf8ub
+        PKEBljmJdfFePiupz3Tvgd3pGE8Z1ms=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-226-VkcnwEa9M_2i3M_AYQK7-Q-1; Mon, 06 Jan 2020 16:40:00 -0500
+X-MC-Unique: VkcnwEa9M_2i3M_AYQK7-Q-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 598AF10054E3;
+        Mon,  6 Jan 2020 21:39:58 +0000 (UTC)
+Received: from localhost (ovpn-112-4.rdu2.redhat.com [10.10.112.4])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0154D60E1C;
+        Mon,  6 Jan 2020 21:39:55 +0000 (UTC)
+Date:   Mon, 06 Jan 2020 13:39:54 -0800 (PST)
+Message-Id: <20200106.133954.516759492863458363.davem@redhat.com>
+To:     christophe.jaillet@wanadoo.fr
+Cc:     pablo@netfilter.org, laforge@gnumonks.org,
+        osmocom-net-gprs@lists.osmocom.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] gtp: simplify error handling code in
+ 'gtp_encap_enable()'
+From:   David Miller <davem@redhat.com>
+In-Reply-To: <20200105173607.5456-1-christophe.jaillet@wanadoo.fr>
+References: <20200105173607.5456-1-christophe.jaillet@wanadoo.fr>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon 06 Jan 04:05 PST 2020, Colin King wrote:
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Sun,  5 Jan 2020 18:36:07 +0100
 
-> From: Colin Ian King <colin.king@canonical.com>
+> 'gtp_encap_disable_sock(sk)' handles the case where sk is NULL, so there
+> is no need to test it before calling the function.
 > 
-> Currently when the call cpr_read_fuse_uV returns an error the value in the
-> uninitialized variable ret is returned. Fix this by instread returning the
-> error value in the variable uV.
+> This saves a few line of code.
 > 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Applied to net-next.
 
-> Addresses-Coverity: ("Uninitialized scalar variable")
-> Fixes: bf6910abf548 ("power: avs: Add support for CPR (Core Power Reduction)")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
->  drivers/power/avs/qcom-cpr.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/power/avs/qcom-cpr.c b/drivers/power/avs/qcom-cpr.c
-> index 9247f53550b3..0321729431a5 100644
-> --- a/drivers/power/avs/qcom-cpr.c
-> +++ b/drivers/power/avs/qcom-cpr.c
-> @@ -922,7 +922,7 @@ static int cpr_fuse_corner_init(struct cpr_drv *drv)
->  		uV = cpr_read_fuse_uV(desc, fdata, fuses->init_voltage,
->  				      step_volt, drv);
->  		if (uV < 0)
-> -			return ret;
-> +			return uV;
->  
->  		fuse->min_uV = fdata->min_uV;
->  		fuse->max_uV = fdata->max_uV;
-> -- 
-> 2.24.0
-> 

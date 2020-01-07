@@ -2,55 +2,55 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DE22132402
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 11:44:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DBD9C132407
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 11:44:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727858AbgAGKn6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jan 2020 05:43:58 -0500
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:39259 "EHLO
+        id S1727883AbgAGKok (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jan 2020 05:44:40 -0500
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:35243 "EHLO
         mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727705AbgAGKn6 (ORCPT
+        with ESMTP id S1727862AbgAGKok (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jan 2020 05:43:58 -0500
-Received: by mail-lf1-f68.google.com with SMTP id y1so38503337lfb.6
-        for <kernel-janitors@vger.kernel.org>; Tue, 07 Jan 2020 02:43:56 -0800 (PST)
+        Tue, 7 Jan 2020 05:44:40 -0500
+Received: by mail-lf1-f68.google.com with SMTP id 15so38545098lfr.2
+        for <kernel-janitors@vger.kernel.org>; Tue, 07 Jan 2020 02:44:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Ij45+y4tQbjswuhc/ASM64hxiBChi1v4xQfYvXcYB6s=;
-        b=H0GsPYhVqTjf0ta9+KsTEWOsl8hYTozJg22rau4LHG6gVZDFkftjFg6m6ivAvrew9+
-         w6SQ9vWlurV7I7uMUGuJ2MFZWAvwEjc0g9tesLRrgHOIueQ89kWtwxkX2EMeuyhEm4Bc
-         ev6hfj2CYGkr6rEZvPPxaufcm3fKBink56/CEXq2AFrAGsbf5O6MxZeWQe8+9iwLYMHv
-         8W9MebwA3kDNbKrwIt8wcDAg913dOlEX1+9Mxk0ZSY5pFwl3vy0tECVjQvWSQruqxgWT
-         C/TKRJ7priMWYWtbANZnP1AkjqGSZvydwd87XQ9ucfwBtsxPtmJD1GQtgnp+iAJCDd4z
-         EqMg==
+        bh=RgFKZhJDfhjP3daFjJ6Yf6/c2a34ejzl3DxxsqYxSK4=;
+        b=DllIUpp1Q6kXzivnO5X2buqDRRTX00jpFdjqNjevqokIijabbCuM9jomITXwHgjUof
+         /+C195g6oInaXzgI+yid4TLVNxbPEuZlRYhPe+ociG+hHlLhNAYn3DtW88rHCxRkQVHZ
+         zcH0zmtcTQlBCzt2YYQnpM0U3occFF39huSzirUhJ0eu/cxxQvobisdH6TZN401xKwp5
+         cBHAjYyOoHG9zIC1fRyJCsBEoS8Tc96J2WHE7WUnrQA7BHqXaMk7iC8+5kqAkmReWSCa
+         v0peScJcrLidcsLRn1+e6r4ETxrH0OCOvIbWEtZliknbhUC41peP2xZphiLk+3Axrg3b
+         HvZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Ij45+y4tQbjswuhc/ASM64hxiBChi1v4xQfYvXcYB6s=;
-        b=Xn23t7/U+zPFRbzOZvIvf6JGp0nlG9BgnjXorJS2lsAvvJblk3nptqeRFzHl5btWrE
-         DyaOuePOBKdCKiCrVz7IyG6msD7ejzC3NNnhTwGLV4YcAfMXQeyig93NpL33MURlBxAv
-         GcnWum457ftoB61FU8P4I1Formme4EBffQK3BlyQ3AcaCDSGwUv/ADUsJmz787mK/c3k
-         lfqNHF/Cc5gvO4hJUthhuPcSP9tqY49Rvm3ylCh7PyjOJUs8d57+DPAJX7UZ/kcirLrl
-         GeyZ0cR5tGyODmBnPNQ8Wz0beg7L/OZgEf8xqkt2fencP6Rhzqvp++fYdjvSwfocK+tE
-         FMdA==
-X-Gm-Message-State: APjAAAU4hI4mG/8RX2WItFk3BUukobinMtT4Cwqv8V6fiLI81ng1FgSX
-        GfdVxQGwMza8JzwR2P8byYD/4tcyJoHqmreMN5uxUA==
-X-Google-Smtp-Source: APXvYqz+jQpx/la/O2K0/budtRMX6KFmWmOMeG9QERQ6JtTLWAO+vG67nfJvEFSWtJY427WX0m7HLcUZUjplSCki6YQ=
-X-Received: by 2002:ac2:4945:: with SMTP id o5mr58271999lfi.93.1578393835746;
- Tue, 07 Jan 2020 02:43:55 -0800 (PST)
+        bh=RgFKZhJDfhjP3daFjJ6Yf6/c2a34ejzl3DxxsqYxSK4=;
+        b=XhQuRUzKwEjx6uBVCwX9DYzwegCQYon2/RjwYZuixTtSQJSHH68yq49taZlucFtdxV
+         9vBINwT7jcPrcOdorcyD4kQH/D8e9O0MVK4pOnnqNSHmn/ZzqROjZ19flJJC3XXbIOA4
+         83QnCGC/WnhYIuFBNEEQu3jtK0sYc+OXgBV64DehYAsZ6nBK2BauVZzEp4TsnXOFd8eC
+         LRRtbYcFW2XtzrPd/trMR4CSZ8OfAbwd4gHN/3oP6seuVJZ/jecwH+8+4cGpdUDgFAkp
+         ml9dngwTAJwuEQkLq4GrP/J7LATSuE2X+Ubflgz+ZSgXF4Be5+vviXqnYcb+Q6Y3123K
+         Y9WA==
+X-Gm-Message-State: APjAAAU1C56Dx63OuJyzgrlJNid4htGfmbL2vmEER/wWZIi1j/+uDj7W
+        44YiK52XPQ65ej5PuQ2JMVtyCKiI0aDtSf7HHapyHQ==
+X-Google-Smtp-Source: APXvYqwCT73xBkNQ+g3rH+LQGftKRSrUx+BJ1w6jdMAWsxD0kcF9OCy3oy4cYwg0gSxNlboPKwLt9C01SWBHwRa7UkI=
+X-Received: by 2002:ac2:55a8:: with SMTP id y8mr58604010lfg.117.1578393877863;
+ Tue, 07 Jan 2020 02:44:37 -0800 (PST)
 MIME-Version: 1.0
-References: <1577864614-5543-1-git-send-email-Julia.Lawall@inria.fr> <1577864614-5543-9-git-send-email-Julia.Lawall@inria.fr>
-In-Reply-To: <1577864614-5543-9-git-send-email-Julia.Lawall@inria.fr>
+References: <1577864614-5543-1-git-send-email-Julia.Lawall@inria.fr> <1577864614-5543-15-git-send-email-Julia.Lawall@inria.fr>
+In-Reply-To: <1577864614-5543-15-git-send-email-Julia.Lawall@inria.fr>
 From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Tue, 7 Jan 2020 11:43:44 +0100
-Message-ID: <CACRpkdYQfiuziMyu+oCyh-8wmgpzVY7V5+CPNqoSLm3+ZEFmVA@mail.gmail.com>
-Subject: Re: [PATCH 08/16] pinctrl: ssbi-mpp: constify copied structure
+Date:   Tue, 7 Jan 2020 11:44:27 +0100
+Message-ID: <CACRpkdackV3fDDr4SKPc-GVcW3TcCCYvumN4ibfPcvdfnBdHzA@mail.gmail.com>
+Subject: Re: [PATCH 14/16] pinctrl: qcom: ssbi-gpio: constify copied structure
 To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     Andy Gross <agross@kernel.org>, kernel-janitors@vger.kernel.org,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        kernel-janitors@vger.kernel.org, Andy Gross <agross@kernel.org>,
         MSM <linux-arm-msm@vger.kernel.org>,
         "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
@@ -62,14 +62,12 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 On Wed, Jan 1, 2020 at 9:20 AM Julia Lawall <Julia.Lawall@inria.fr> wrote:
 
-> The pm8xxx_pinctrl_desc structure is only copied into another structure,
-> so make it const.
+> The pm8xxx_pinctrl_desc structure is only copied into another
+> structure, so make it const.
 >
 > The opportunity for this change was found using Coccinelle.
 >
 > Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-
-That's a pretty cool semantic check finding things like this!
 
 Patch applied.
 

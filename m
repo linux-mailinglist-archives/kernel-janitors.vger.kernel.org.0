@@ -2,31 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED929132671
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 13:39:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE80E1326D9
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 13:59:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728157AbgAGMjG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jan 2020 07:39:06 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:51918 "EHLO
+        id S1727900AbgAGM73 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jan 2020 07:59:29 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:52317 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728138AbgAGMjF (ORCPT
+        with ESMTP id S1727730AbgAGM73 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jan 2020 07:39:05 -0500
+        Tue, 7 Jan 2020 07:59:29 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1ioo8T-0002Dm-Op; Tue, 07 Jan 2020 12:39:01 +0000
+        id 1iooSD-0004Ax-NG; Tue, 07 Jan 2020 12:59:25 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Alan Stern <stern@rowland.harvard.edu>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sekhar Nori <nsekhar@ti.com>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        linux-usb@vger.kernel.org
+To:     Kishon Vijay Abraham I <kishon@ti.com>,
+        Anil Varughese <aniljoy@cadence.com>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][V3] usb: ohci-da8xx: ensure error return on variable error is set
-Date:   Tue,  7 Jan 2020 12:39:01 +0000
-Message-Id: <20200107123901.101190-1-colin.king@canonical.com>
+Subject: [PATCH][next] phy: cadence: Sierra: remove redundant initialization of pointer regmap
+Date:   Tue,  7 Jan 2020 12:59:25 +0000
+Message-Id: <20200107125925.102082-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -38,50 +35,30 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently when an error occurs when calling devm_gpiod_get_optional or
-calling gpiod_to_irq it causes an uninitialized error return in variable
-'error' to be returned.  Fix this by ensuring the error variable is set
-from da8xx_ohci->oc_gpio and oc_irq.
+The pointer regmap is being initialized with a value that is never
+read and it is being updated later with a new value from
+phy->regmap_common_cdb.  The initialization is redundant and can be
+removed.
 
-Thanks to Dan Carpenter for spotting the uninitialized error in the
-gpiod_to_irq failure case.
-
-Addresses-Coverity: ("Uninitialized scalar variable")
-Fixes: d193abf1c913 ("usb: ohci-da8xx: add vbus and overcurrent gpios")
+Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
+ drivers/phy/cadence/phy-cadence-sierra.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-V2: fix typo and grammar in commit message
-V3: fix gpiod_to_irq error case, re-write commit message
-
----
- drivers/usb/host/ohci-da8xx.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/usb/host/ohci-da8xx.c b/drivers/usb/host/ohci-da8xx.c
-index 38183ac438c6..1371b0c249ec 100644
---- a/drivers/usb/host/ohci-da8xx.c
-+++ b/drivers/usb/host/ohci-da8xx.c
-@@ -415,13 +415,17 @@ static int ohci_da8xx_probe(struct platform_device *pdev)
- 	}
- 
- 	da8xx_ohci->oc_gpio = devm_gpiod_get_optional(dev, "oc", GPIOD_IN);
--	if (IS_ERR(da8xx_ohci->oc_gpio))
-+	if (IS_ERR(da8xx_ohci->oc_gpio)) {
-+		error = PTR_ERR(da8xx_ohci->oc_gpio);
- 		goto err;
-+	}
- 
- 	if (da8xx_ohci->oc_gpio) {
- 		oc_irq = gpiod_to_irq(da8xx_ohci->oc_gpio);
--		if (oc_irq < 0)
-+		if (oc_irq < 0) {
-+			error = oc_irq;
- 			goto err;
-+		}
- 
- 		error = devm_request_threaded_irq(dev, oc_irq, NULL,
- 				ohci_da8xx_oc_thread, IRQF_TRIGGER_RISING |
+diff --git a/drivers/phy/cadence/phy-cadence-sierra.c b/drivers/phy/cadence/phy-cadence-sierra.c
+index eb87f1a0a596..ecfb1f9de2e3 100644
+--- a/drivers/phy/cadence/phy-cadence-sierra.c
++++ b/drivers/phy/cadence/phy-cadence-sierra.c
+@@ -272,7 +272,7 @@ static int cdns_sierra_phy_init(struct phy *gphy)
+ {
+ 	struct cdns_sierra_inst *ins = phy_get_drvdata(gphy);
+ 	struct cdns_sierra_phy *phy = dev_get_drvdata(gphy->dev.parent);
+-	struct regmap *regmap = phy->regmap;
++	struct regmap *regmap;
+ 	int i, j;
+ 	struct cdns_reg_pairs *cmn_vals, *ln_vals;
+ 	u32 num_cmn_regs, num_ln_regs;
 -- 
 2.24.0
 

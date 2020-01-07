@@ -2,94 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F1511132454
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 11:59:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D174113257B
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 12:59:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727857AbgAGK7S (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jan 2020 05:59:18 -0500
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:41979 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727177AbgAGK7R (ORCPT
+        id S1728014AbgAGL7j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jan 2020 06:59:39 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:54754 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726690AbgAGL7j (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jan 2020 05:59:17 -0500
-Received: by mail-ot1-f66.google.com with SMTP id r27so75933016otc.8;
-        Tue, 07 Jan 2020 02:59:17 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TzQpxAWpBjjHGr3KKrvvbrwcil+/kjftdWNGOuYtDAI=;
-        b=ckSDLWvXjqH+BkAbu/8h/nMInKjjHV1uCp0oQXsOIx0YIH9kmf0PtOpuPwYmJKMsEZ
-         hqgy8zmliCvevGi6KHDq0zl34NQaf61KlgjJkEKZrNWu7CI2ZURAGQ6TCNJtrDJHGpdY
-         DBkqrpAWpuxjThy1XIdYUpeVlVDoYS4YK7HAVMNxTu6y2EG50NN+YPBNPq3W8JsE+SbA
-         mtB3UoLFDT9+pcXMzG2FKwbMSejZxfn5wE/dF4jFVERRXSZj8JVK8Bv9dyk0YVBY1h7U
-         /Kgpt5hWlUNMNaBVQEOE3H5TZpX4ZEFviAr1Sje0ujcmkbuVxl7+/iACv14Mwfm4bNGO
-         e4Jw==
-X-Gm-Message-State: APjAAAXRv04VdjkwQRvsrCyOrTRUNJZtmhfGwBVDp3jxwwEO9Fc0B+Te
-        eomv/o5w4uH7UDqF8eMb7QyFvyNzeNOrvFjQMqg=
-X-Google-Smtp-Source: APXvYqxDfK07U/wMncRfQCZHxtfHO04TlLY8Ae2d+UTpTfFq86JlFtKF5/CqpNnccY1AB/fvpOWFP/U/y2yLWMZ29KM=
-X-Received: by 2002:a05:6830:1651:: with SMTP id h17mr114709103otr.167.1578394756732;
- Tue, 07 Jan 2020 02:59:16 -0800 (PST)
+        Tue, 7 Jan 2020 06:59:39 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 007BxVZp039432;
+        Tue, 7 Jan 2020 05:59:31 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1578398371;
+        bh=9f+EURYDVK8DvqsdPDWz6PKR3Gmyc0NgzwaKz2rZZqc=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=k7CraodJJAgLom/FV7vcp7q6wpkNFj4haAqS6Aj+H4+UHXCCjQ6Dbs7VT9TN+kmQn
+         ueQv0e9MhunDK9gaFN8FeYTsGOScPbkpggjcV75oMVKaxctL37GVb9/VR4e2m50jgx
+         fjk655GpjMOkec1DpOi3dzhA1aSfaUtffuFHmsgo=
+Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 007BxVTD124337
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 7 Jan 2020 05:59:31 -0600
+Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 7 Jan
+ 2020 05:59:30 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Tue, 7 Jan 2020 05:59:30 -0600
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 007BxSIe032947;
+        Tue, 7 Jan 2020 05:59:29 -0600
+Subject: Re: [PATCH][next] dmaengine: ti: omap-dma: don't allow a null
+ od->plat pointer to be dereferenced
+To:     Colin King <colin.king@canonical.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Tony Lindgren <tony@atomide.com>, <dmaengine@vger.kernel.org>
+CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20200106122325.39121-1-colin.king@canonical.com>
+From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
+Message-ID: <b7200998-c8e7-0841-ce91-ad3834c63cae@ti.com>
+Date:   Tue, 7 Jan 2020 13:59:58 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-References: <20200106120558.37758-1-colin.king@canonical.com> <20200106191458.GV3755841@builder>
-In-Reply-To: <20200106191458.GV3755841@builder>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Tue, 7 Jan 2020 11:59:05 +0100
-Message-ID: <CAJZ5v0jxEv8UKUuf+PBtaGR95Dpie3vdSOd=VDw21RgYTqM5DQ@mail.gmail.com>
-Subject: Re: [PATCH][next] power: avs: fix uninitialized error return on
- failed cpr_read_fuse_uV call
-To:     Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Colin King <colin.king@canonical.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Niklas Cassel <niklas.cassel@linaro.org>,
-        Kevin Hilman <khilman@kernel.org>, Nishanth Menon <nm@ti.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Jorge Ramirez-Ortiz <jorge.ramirez-ortiz@linaro.org>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200106122325.39121-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jan 6, 2020 at 8:15 PM Bjorn Andersson
-<bjorn.andersson@linaro.org> wrote:
->
-> On Mon 06 Jan 04:05 PST 2020, Colin King wrote:
->
-> > From: Colin Ian King <colin.king@canonical.com>
-> >
-> > Currently when the call cpr_read_fuse_uV returns an error the value in the
-> > uninitialized variable ret is returned. Fix this by instread returning the
-> > error value in the variable uV.
-> >
->
-> Reviewed-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Colin,
 
-Applied, thanks!
+On 06/01/2020 14.23, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently when the call to dev_get_platdata returns null the driver issues
+> a warning and then later dereferences the null pointer.  Avoid this issue
+> by returning -EPROBE_DEFER errror rather when the platform data is null.
 
-> > Addresses-Coverity: ("Uninitialized scalar variable")
-> > Fixes: bf6910abf548 ("power: avs: Add support for CPR (Core Power Reduction)")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > ---
-> >  drivers/power/avs/qcom-cpr.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/power/avs/qcom-cpr.c b/drivers/power/avs/qcom-cpr.c
-> > index 9247f53550b3..0321729431a5 100644
-> > --- a/drivers/power/avs/qcom-cpr.c
-> > +++ b/drivers/power/avs/qcom-cpr.c
-> > @@ -922,7 +922,7 @@ static int cpr_fuse_corner_init(struct cpr_drv *drv)
-> >               uV = cpr_read_fuse_uV(desc, fdata, fuses->init_voltage,
-> >                                     step_volt, drv);
-> >               if (uV < 0)
-> > -                     return ret;
-> > +                     return uV;
-> >
-> >               fuse->min_uV = fdata->min_uV;
-> >               fuse->max_uV = fdata->max_uV;
-> > --
+Thank you for noticing it!
+
+Acked-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+
+> Addresses-Coverity: ("Dereference after null check")
+> Fixes: 211010aeb097 ("dmaengine: ti: omap-dma: Pass sdma auxdata to driver and use it")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/dma/ti/omap-dma.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/dma/ti/omap-dma.c b/drivers/dma/ti/omap-dma.c
+> index fc8f7b2fc7b3..335c3fa7a3b1 100644
+> --- a/drivers/dma/ti/omap-dma.c
+> +++ b/drivers/dma/ti/omap-dma.c
+> @@ -1658,8 +1658,10 @@ static int omap_dma_probe(struct platform_device *pdev)
+>  	if (conf) {
+>  		od->cfg = conf;
+>  		od->plat = dev_get_platdata(&pdev->dev);
+> -		if (!od->plat)
+> +		if (!od->plat) {
+>  			dev_warn(&pdev->dev, "no sdma auxdata needed?\n");
+> +			return -EPROBE_DEFER;
+> +		}
+>  	} else {
+>  		od->cfg = &default_cfg;
+>  
+> 
+
+- Péter
+
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki

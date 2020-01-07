@@ -2,28 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D3196132D9A
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 18:52:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31309132DDB
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 19:00:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728553AbgAGRwh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jan 2020 12:52:37 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:60981 "EHLO
+        id S1728533AbgAGSAQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jan 2020 13:00:16 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:32919 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728358AbgAGRwg (ORCPT
+        with ESMTP id S1728391AbgAGSAQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jan 2020 12:52:36 -0500
+        Tue, 7 Jan 2020 13:00:16 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iot1u-00082s-Hf; Tue, 07 Jan 2020 17:52:34 +0000
+        id 1iot9J-0000p9-CV; Tue, 07 Jan 2020 18:00:13 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] misc: tsl2550: remove redundant initialization to variable r
-Date:   Tue,  7 Jan 2020 17:52:34 +0000
-Message-Id: <20200107175234.121298-1-colin.king@canonical.com>
+Subject: [PATCH] Bluetooth: remove redundant assignment to variable icid
+Date:   Tue,  7 Jan 2020 18:00:13 +0000
+Message-Id: <20200107180013.124501-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,43 +37,27 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable r is being initialized with a value that is never
-read and it is being updated later with a new value. Remove
-the redundant initialization and move the declaration into a
-deeper code block.
+Variable icid is being rc is assigned with a value that is never
+read. The assignment is redundant and can be removed.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/misc/tsl2550.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ net/bluetooth/l2cap_core.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/misc/tsl2550.c b/drivers/misc/tsl2550.c
-index 09db397df287..6d71865c8042 100644
---- a/drivers/misc/tsl2550.c
-+++ b/drivers/misc/tsl2550.c
-@@ -148,16 +148,14 @@ static int tsl2550_calculate_lux(u8 ch0, u8 ch1)
- 	u16 c0 = count_lut[ch0];
- 	u16 c1 = count_lut[ch1];
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 1bca608e0170..195459a1e53e 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -5081,7 +5081,6 @@ static inline int l2cap_move_channel_req(struct l2cap_conn *conn,
+ 	chan->move_role = L2CAP_MOVE_ROLE_RESPONDER;
+ 	l2cap_move_setup(chan);
+ 	chan->move_id = req->dest_amp_id;
+-	icid = chan->dcid;
  
--	/*
--	 * Calculate ratio.
--	 * Note: the "128" is a scaling factor
--	 */
--	u8 r = 128;
--
- 	/* Avoid division by 0 and count 1 cannot be greater than count 0 */
- 	if (c1 <= c0)
- 		if (c0) {
--			r = c1 * 128 / c0;
-+			/*
-+			 * Calculate ratio.
-+			 * Note: the "128" is a scaling factor
-+			 */
-+			u8 r = c1 * 128 / c0;
- 
- 			/* Calculate LUX */
- 			lux = ((c0 - c1) * ratio_lut[r]) / 256;
+ 	if (req->dest_amp_id == AMP_ID_BREDR) {
+ 		/* Moving to BR/EDR */
 -- 
 2.24.0
 

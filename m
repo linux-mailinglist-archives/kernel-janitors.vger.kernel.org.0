@@ -2,73 +2,66 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E360132854
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 15:02:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAA8913285E
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 15:02:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728266AbgAGOBm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jan 2020 09:01:42 -0500
-Received: from mga02.intel.com ([134.134.136.20]:22658 "EHLO mga02.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728243AbgAGOBm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jan 2020 09:01:42 -0500
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Jan 2020 06:01:42 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,406,1571727600"; 
-   d="scan'208";a="211153910"
-Received: from fmsmsx108.amr.corp.intel.com ([10.18.124.206])
-  by orsmga007.jf.intel.com with ESMTP; 07 Jan 2020 06:01:41 -0800
-Received: from fmsmsx158.amr.corp.intel.com (10.18.116.75) by
- FMSMSX108.amr.corp.intel.com (10.18.124.206) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Tue, 7 Jan 2020 06:01:41 -0800
-Received: from fmsmsx116.amr.corp.intel.com ([169.254.2.67]) by
- fmsmsx158.amr.corp.intel.com ([169.254.15.85]) with mapi id 14.03.0439.000;
- Tue, 7 Jan 2020 06:01:41 -0800
-From:   "Souza, Jose" <jose.souza@intel.com>
-To:     "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>
-Subject: Re: [PATCH] drm/i915: fix an error code in intel_modeset_all_tiles()
-Thread-Topic: [PATCH] drm/i915: fix an error code in
- intel_modeset_all_tiles()
-Thread-Index: AQHVxVr9POwPSwHQ70mVoce+ZHUekKffwVkA
-Date:   Tue, 7 Jan 2020 14:01:40 +0000
-Message-ID: <04c2960a11f5361288d7d3a8a3bd16301b05c5e5.camel@intel.com>
-References: <20200107130322.gdk5b6jurifr26c2@kili.mountain>
-In-Reply-To: <20200107130322.gdk5b6jurifr26c2@kili.mountain>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.251.129.53]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <44888AABAAB8484D846749EDE05267A9@intel.com>
-Content-Transfer-Encoding: base64
+        id S1728286AbgAGOCM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jan 2020 09:02:12 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:53814 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728064AbgAGOCL (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 7 Jan 2020 09:02:11 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iopQs-0002Js-TP; Tue, 07 Jan 2020 14:02:07 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Arnd Bergmann <arnd@arndb.de>, linux-media@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] media: v4l2-core: fix uninitialized structure fields being returned to userspace
+Date:   Tue,  7 Jan 2020 14:02:06 +0000
+Message-Id: <20200107140206.103711-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-T24gVHVlLCAyMDIwLTAxLTA3IGF0IDE2OjAzICswMzAwLCBEYW4gQ2FycGVudGVyIHdyb3RlOg0K
-PiBUaGVyZSBpcyBhIGN1dCBhbmQgcGFzdGUgYnVnIHNvIHdlIHJldHVybiB0aGUgd3JvbmcgZXJy
-b3IgY29kZS4NCj4gDQo+IEZpeGVzOiBhNjAzZjViZDE2OTEgKCJkcm0vaTkxNS9kcDogTWFrZSBz
-dXJlIGFsbCB0aWxlZCBjb25uZWN0b3JzIGdldA0KPiBhZGRlZCB0byB0aGUgc3RhdGUgd2l0aCBm
-dWxsIG1vZGVzZXQiKQ0KDQpSZXZpZXdlZC1ieTogSm9zw6kgUm9iZXJ0byBkZSBTb3V6YSA8am9z
-ZS5zb3V6YUBpbnRlbC5jb20+DQoNCj4gU2lnbmVkLW9mZi1ieTogRGFuIENhcnBlbnRlciA8ZGFu
-LmNhcnBlbnRlckBvcmFjbGUuY29tPg0KPiAtLS0NCj4gIGRyaXZlcnMvZ3B1L2RybS9pOTE1L2Rp
-c3BsYXkvaW50ZWxfZGlzcGxheS5jIHwgMiArLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0
-aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9ncHUvZHJt
-L2k5MTUvZGlzcGxheS9pbnRlbF9kaXNwbGF5LmMNCj4gYi9kcml2ZXJzL2dwdS9kcm0vaTkxNS9k
-aXNwbGF5L2ludGVsX2Rpc3BsYXkuYw0KPiBpbmRleCBkYTUyNjZlNzY3MzguLmE5NmJlZTY5OWE1
-ZSAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9ncHUvZHJtL2k5MTUvZGlzcGxheS9pbnRlbF9kaXNw
-bGF5LmMNCj4gKysrIGIvZHJpdmVycy9ncHUvZHJtL2k5MTUvZGlzcGxheS9pbnRlbF9kaXNwbGF5
-LmMNCj4gQEAgLTE0NDI0LDcgKzE0NDI0LDcgQEAgaW50ZWxfbW9kZXNldF9hbGxfdGlsZXMoc3Ry
-dWN0DQo+IGludGVsX2F0b21pY19zdGF0ZSAqc3RhdGUsIGludCB0aWxlX2dycF9pZCkNCj4gIAkJ
-Y3J0Y19zdGF0ZSA9IGRybV9hdG9taWNfZ2V0X2NydGNfc3RhdGUoJnN0YXRlLT5iYXNlLA0KPiAg
-CQkJCQkJICAgICAgIGNvbm5fc3RhdGUtDQo+ID5jcnRjKTsNCj4gIAkJaWYgKElTX0VSUihjcnRj
-X3N0YXRlKSkgew0KPiAtCQkJcmV0ID0gUFRSX0VSUihjb25uX3N0YXRlKTsNCj4gKwkJCXJldCA9
-IFBUUl9FUlIoY3J0Y19zdGF0ZSk7DQo+ICAJCQlicmVhazsNCj4gIAkJfQ0KPiAgCQljcnRjX3N0
-YXRlLT5tb2RlX2NoYW5nZWQgPSB0cnVlOw0K
+From: Colin Ian King <colin.king@canonical.com>
+
+In the case where v4l2_event_dequeue fails the structure ev is not
+being filled and this garbage data from the stack is being copied
+to the ev32 structure and being copied back to userspace on the
+VIDIOC_DQEVENT_TIME32 ioctl.  Fix this by ensuring the ev structure
+is zero'd to ensure uninitialized data is not leaked back.
+
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: 1a6c0b36dd19 ("media: v4l2-core: fix VIDIOC_DQEVENT for time64 ABI")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/media/v4l2-core/v4l2-subdev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
+index de926e311348..a376b351135f 100644
+--- a/drivers/media/v4l2-core/v4l2-subdev.c
++++ b/drivers/media/v4l2-core/v4l2-subdev.c
+@@ -394,7 +394,7 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
+ 
+ 	case VIDIOC_DQEVENT_TIME32: {
+ 		struct v4l2_event_time32 *ev32 = arg;
+-		struct v4l2_event ev;
++		struct v4l2_event ev = { };
+ 
+ 		if (!(sd->flags & V4L2_SUBDEV_FL_HAS_EVENTS))
+ 			return -ENOIOCTLCMD;
+-- 
+2.24.0
+

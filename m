@@ -2,28 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 869B6132CB3
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 18:11:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3196132D9A
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 18:52:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728487AbgAGRLJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jan 2020 12:11:09 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:59860 "EHLO
+        id S1728553AbgAGRwh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jan 2020 12:52:37 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:60981 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728466AbgAGRLJ (ORCPT
+        with ESMTP id S1728358AbgAGRwg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jan 2020 12:11:09 -0500
+        Tue, 7 Jan 2020 12:52:36 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iosNn-0000yc-9V; Tue, 07 Jan 2020 17:11:07 +0000
+        id 1iot1u-00082s-Hf; Tue, 07 Jan 2020 17:52:34 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org
+To:     Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] media: drxj: remove redundant assignments to variable rc
-Date:   Tue,  7 Jan 2020 17:11:07 +0000
-Message-Id: <20200107171107.120294-1-colin.king@canonical.com>
+Subject: [PATCH] misc: tsl2550: remove redundant initialization to variable r
+Date:   Tue,  7 Jan 2020 17:52:34 +0000
+Message-Id: <20200107175234.121298-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -35,38 +35,43 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The variable rc is being initialized with a value that is never
-read and it is being updated later with a new value.  The initialization
-is redundant and can be removed.
+The variable r is being initialized with a value that is never
+read and it is being updated later with a new value. Remove
+the redundant initialization and move the declaration into a
+deeper code block.
 
 Addresses-Coverity: ("Unused value")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/media/dvb-frontends/drx39xyj/drxj.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/tsl2550.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/drx39xyj/drxj.c b/drivers/media/dvb-frontends/drx39xyj/drxj.c
-index ac7be872f460..5de016412c42 100644
---- a/drivers/media/dvb-frontends/drx39xyj/drxj.c
-+++ b/drivers/media/dvb-frontends/drx39xyj/drxj.c
-@@ -2182,7 +2182,7 @@ int drxj_dap_atomic_read_reg32(struct i2c_device_addr *dev_addr,
- 				     u32 *data, u32 flags)
- {
- 	u8 buf[sizeof(*data)] = { 0 };
--	int rc = -EIO;
-+	int rc;
- 	u32 word = 0;
+diff --git a/drivers/misc/tsl2550.c b/drivers/misc/tsl2550.c
+index 09db397df287..6d71865c8042 100644
+--- a/drivers/misc/tsl2550.c
++++ b/drivers/misc/tsl2550.c
+@@ -148,16 +148,14 @@ static int tsl2550_calculate_lux(u8 ch0, u8 ch1)
+ 	u16 c0 = count_lut[ch0];
+ 	u16 c1 = count_lut[ch1];
  
- 	if (!data)
-@@ -4229,7 +4229,7 @@ int drxj_dap_scu_atomic_write_reg16(struct i2c_device_addr *dev_addr,
- 					  u16 data, u32 flags)
- {
- 	u8 buf[2];
--	int rc = -EIO;
-+	int rc;
+-	/*
+-	 * Calculate ratio.
+-	 * Note: the "128" is a scaling factor
+-	 */
+-	u8 r = 128;
+-
+ 	/* Avoid division by 0 and count 1 cannot be greater than count 0 */
+ 	if (c1 <= c0)
+ 		if (c0) {
+-			r = c1 * 128 / c0;
++			/*
++			 * Calculate ratio.
++			 * Note: the "128" is a scaling factor
++			 */
++			u8 r = c1 * 128 / c0;
  
- 	buf[0] = (u8) (data & 0xff);
- 	buf[1] = (u8) ((data >> 8) & 0xff);
+ 			/* Calculate LUX */
+ 			lux = ((c0 - c1) * ratio_lut[r]) / 256;
 -- 
 2.24.0
 

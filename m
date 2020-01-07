@@ -2,52 +2,101 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0513A13286D
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 15:05:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A05A31328A9
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 15:18:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727880AbgAGOFb convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jan 2020 09:05:31 -0500
-Received: from mail.fireflyinternet.com ([109.228.58.192]:55201 "EHLO
-        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1727658AbgAGOFb (ORCPT
+        id S1728284AbgAGORz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jan 2020 09:17:55 -0500
+Received: from mout.kundenserver.de ([212.227.126.187]:39485 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727658AbgAGORz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jan 2020 09:05:31 -0500
-X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
-Received: from localhost (unverified [78.156.65.138]) 
-        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 19796537-1500050 
-        for multiple; Tue, 07 Jan 2020 14:05:29 +0000
-Content-Type: text/plain; charset="utf-8"
+        Tue, 7 Jan 2020 09:17:55 -0500
+Received: from mail-qv1-f42.google.com ([209.85.219.42]) by
+ mrelayeu.kundenserver.de (mreue011 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1MlwJv-1jXY6E1mKJ-00iyZU; Tue, 07 Jan 2020 15:17:53 +0100
+Received: by mail-qv1-f42.google.com with SMTP id y8so20562979qvk.6;
+        Tue, 07 Jan 2020 06:17:53 -0800 (PST)
+X-Gm-Message-State: APjAAAVeY5/9RThue05d/4MfEEzkJzkPPHbNbWYwRq29moJYmxjhsmH7
+        JjOFlpn7kSl6BBezwoB7fmlENYCpthq3sMxjOFs=
+X-Google-Smtp-Source: APXvYqy51UL4Zeay2TwOyIQycEzFRWrZb+DrqwPiR6CAwZxpyKtTIzW5iI+bGs5sCSE61a3nBD3KM024WJ6UxuEBNYs=
+X-Received: by 2002:a0c:e7c7:: with SMTP id c7mr84471578qvo.222.1578406672121;
+ Tue, 07 Jan 2020 06:17:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-To:     "Souza, Jose" <jose.souza@intel.com>,
-        "dan.carpenter@oracle.com" <dan.carpenter@oracle.com>
-From:   Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <04c2960a11f5361288d7d3a8a3bd16301b05c5e5.camel@intel.com>
-Cc:     "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-References: <20200107130322.gdk5b6jurifr26c2@kili.mountain>
- <04c2960a11f5361288d7d3a8a3bd16301b05c5e5.camel@intel.com>
-Message-ID: <157840592663.2273.15929240102084093971@skylake-alporthouse-com>
-User-Agent: alot/0.6
-Subject: Re: [Intel-gfx] [PATCH] drm/i915: fix an error code in
- intel_modeset_all_tiles()
-Date:   Tue, 07 Jan 2020 14:05:26 +0000
+References: <20200107140206.103711-1-colin.king@canonical.com>
+In-Reply-To: <20200107140206.103711-1-colin.king@canonical.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Tue, 7 Jan 2020 15:17:36 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a0bJdKiX+=OMgCgmF158zEdgW9jYL85WqHWefhFk=ZF8Q@mail.gmail.com>
+Message-ID: <CAK8P3a0bJdKiX+=OMgCgmF158zEdgW9jYL85WqHWefhFk=ZF8Q@mail.gmail.com>
+Subject: Re: [PATCH][next] media: v4l2-core: fix uninitialized structure
+ fields being returned to userspace
+To:     Colin King <colin.king@canonical.com>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:DWrDb/Q0NjT0yWOGZE1jy/FzS9fcImgrM1hxfU3Oa5o8X3P7rMq
+ cJcj2cVMAfI3MqyZdRygMTvlWMQZpgI+fDUlSir2hHyixIZIWGzoFNa4RZXt56QQPLKU2tv
+ 8364jchyNM5qJXhVl2VUxL8NigDx+eB04khNQ1HExuCf/GRl44jm4Dag5pWoJWWDQ2dkAQ9
+ 9n5Oh92iUr5Fqvd4CD3vg==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:xT0TWYcULic=:hkRLwd1O+0mIih0c6pRCvQ
+ e5UZCFcqGIe5UK4Mn09Cqf1pHfjVa3MvE9BMBMjfM5goz8yJhkakzSk3iFeq+gZNEz6BT6PNs
+ lwGqJZAcsCoYtIRNVSwd7eLp9U6DsfwoDVFb6VnmnZxlCnjxtciKuLhzrasawyn2mBeNZIuRb
+ ui3BG2T+Ad4K83vi7sZ86ewx7OynVP5UObhDkNqWbxfOYjQ4T14vfwbiSw5wIHUrTe2yF741D
+ xShsapng5bgtYTRTAkz8pk4JC+UkCsxjpJ54HuvWL40sJl86JJ2XEBO/+8/nVMf7UUyZ3UssU
+ tB1WEHaTtltEwe7G/TTuugVaouFWiQ4YjtyrkiOVcGqj/4/sr2BzqrbxFIcsG/Mrl/zrAQNmL
+ ThW511uvkEmea8d6D55MAultYpCWWWasyFdmDwyE0GQ0VI4HsirXY17YVFg7WMbgiAzY2cECQ
+ ztVapzX/FgDdjwLHJ+dcu1wY3MmdKu0hXAgqU7kkKRPtv53DXs+FenkoZyPrHMHWjNkmJjHne
+ LGhz1w5gaiLOokjx4IKQ3Yf/oWrg6uuvMfGIEO7phqBJarV29MToHHMdGiN/20x/DQx3Cnq+C
+ LTsDRH4ZQU+vt2DKZ1nVdV84l7dNbtWW/Lo20Xn6i7YumQzYjzTqfFt6AsT7/hFAplcyWeXN1
+ QeGJ7GdQw/mhGPqUG+FuCsw3CsSG8HvY5SxL8oSxpqAd3H28nnYzEzpUx+p7khSJFbGrqpqmt
+ Fk4sffIRhHtMa6kMwHzyXUvpsVlsglqjuyuMdcOv2iIiLhJJwfcB/8hJCvT1SDWL107YOf9Uj
+ FRlBVvQK9C3uzEwXnTVKSpHAIWMYmVfx5re/pigbxxcvSLI43013dtkmb1DGkVNBToxLR6gX8
+ X0zflAgm4pdUcZ+qYrrw==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Souza, Jose (2020-01-07 14:01:40)
-> On Tue, 2020-01-07 at 16:03 +0300, Dan Carpenter wrote:
-> > There is a cut and paste bug so we return the wrong error code.
-> > 
-> > Fixes: a603f5bd1691 ("drm/i915/dp: Make sure all tiled connectors get
-> > added to the state with full modeset")
-> 
-> Reviewed-by: José Roberto de Souza <jose.souza@intel.com>
-> 
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+On Tue, Jan 7, 2020 at 3:02 PM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> In the case where v4l2_event_dequeue fails the structure ev is not
+> being filled and this garbage data from the stack is being copied
+> to the ev32 structure and being copied back to userspace on the
+> VIDIOC_DQEVENT_TIME32 ioctl.  Fix this by ensuring the ev structure
+> is zero'd to ensure uninitialized data is not leaked back.
+>
+> Addresses-Coverity: ("Uninitialized scalar variable")
+> Fixes: 1a6c0b36dd19 ("media: v4l2-core: fix VIDIOC_DQEVENT for time64 ABI")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Pushed. Thanks for the patch,
--Chris
+Good catch, thanks for fixing!
+
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+
+> ---
+>  drivers/media/v4l2-core/v4l2-subdev.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
+> index de926e311348..a376b351135f 100644
+> --- a/drivers/media/v4l2-core/v4l2-subdev.c
+> +++ b/drivers/media/v4l2-core/v4l2-subdev.c
+> @@ -394,7 +394,7 @@ static long subdev_do_ioctl(struct file *file, unsigned int cmd, void *arg)
+>
+>         case VIDIOC_DQEVENT_TIME32: {
+>                 struct v4l2_event_time32 *ev32 = arg;
+> -               struct v4l2_event ev;
+> +               struct v4l2_event ev = { };
+>
+>                 if (!(sd->flags & V4L2_SUBDEV_FL_HAS_EVENTS))
+>                         return -ENOIOCTLCMD;
+> --
+> 2.24.0
+>

@@ -2,62 +2,87 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 31309132DDB
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 19:00:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B485C132FD2
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 20:47:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728533AbgAGSAQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jan 2020 13:00:16 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:32919 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728391AbgAGSAQ (ORCPT
+        id S1728561AbgAGTrp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jan 2020 14:47:45 -0500
+Received: from iolanthe.rowland.org ([192.131.102.54]:48230 "HELO
+        iolanthe.rowland.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with SMTP id S1728358AbgAGTro (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jan 2020 13:00:16 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iot9J-0000p9-CV; Tue, 07 Jan 2020 18:00:13 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] Bluetooth: remove redundant assignment to variable icid
-Date:   Tue,  7 Jan 2020 18:00:13 +0000
-Message-Id: <20200107180013.124501-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
+        Tue, 7 Jan 2020 14:47:44 -0500
+Received: (qmail 7650 invoked by uid 2102); 7 Jan 2020 14:47:43 -0500
+Received: from localhost (sendmail-bs@127.0.0.1)
+  by localhost with SMTP; 7 Jan 2020 14:47:43 -0500
+Date:   Tue, 7 Jan 2020 14:47:43 -0500 (EST)
+From:   Alan Stern <stern@rowland.harvard.edu>
+X-X-Sender: stern@iolanthe.rowland.org
+To:     Colin King <colin.king@canonical.com>
+cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sekhar Nori <nsekhar@ti.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        <linux-usb@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][V3] usb: ohci-da8xx: ensure error return on variable
+ error is set
+In-Reply-To: <20200107123901.101190-1-colin.king@canonical.com>
+Message-ID: <Pine.LNX.4.44L0.2001071447300.1567-100000@iolanthe.rowland.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: TEXT/PLAIN; charset=US-ASCII
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Tue, 7 Jan 2020, Colin King wrote:
 
-Variable icid is being rc is assigned with a value that is never
-read. The assignment is redundant and can be removed.
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently when an error occurs when calling devm_gpiod_get_optional or
+> calling gpiod_to_irq it causes an uninitialized error return in variable
+> 'error' to be returned.  Fix this by ensuring the error variable is set
+> from da8xx_ohci->oc_gpio and oc_irq.
+> 
+> Thanks to Dan Carpenter for spotting the uninitialized error in the
+> gpiod_to_irq failure case.
+> 
+> Addresses-Coverity: ("Uninitialized scalar variable")
+> Fixes: d193abf1c913 ("usb: ohci-da8xx: add vbus and overcurrent gpios")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+> 
+> V2: fix typo and grammar in commit message
+> V3: fix gpiod_to_irq error case, re-write commit message
+> 
+> ---
+>  drivers/usb/host/ohci-da8xx.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/usb/host/ohci-da8xx.c b/drivers/usb/host/ohci-da8xx.c
+> index 38183ac438c6..1371b0c249ec 100644
+> --- a/drivers/usb/host/ohci-da8xx.c
+> +++ b/drivers/usb/host/ohci-da8xx.c
+> @@ -415,13 +415,17 @@ static int ohci_da8xx_probe(struct platform_device *pdev)
+>  	}
+>  
+>  	da8xx_ohci->oc_gpio = devm_gpiod_get_optional(dev, "oc", GPIOD_IN);
+> -	if (IS_ERR(da8xx_ohci->oc_gpio))
+> +	if (IS_ERR(da8xx_ohci->oc_gpio)) {
+> +		error = PTR_ERR(da8xx_ohci->oc_gpio);
+>  		goto err;
+> +	}
+>  
+>  	if (da8xx_ohci->oc_gpio) {
+>  		oc_irq = gpiod_to_irq(da8xx_ohci->oc_gpio);
+> -		if (oc_irq < 0)
+> +		if (oc_irq < 0) {
+> +			error = oc_irq;
+>  			goto err;
+> +		}
+>  
+>  		error = devm_request_threaded_irq(dev, oc_irq, NULL,
+>  				ohci_da8xx_oc_thread, IRQF_TRIGGER_RISING |
 
-Addresses-Coverity: ("Unused value")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- net/bluetooth/l2cap_core.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 1bca608e0170..195459a1e53e 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -5081,7 +5081,6 @@ static inline int l2cap_move_channel_req(struct l2cap_conn *conn,
- 	chan->move_role = L2CAP_MOVE_ROLE_RESPONDER;
- 	l2cap_move_setup(chan);
- 	chan->move_id = req->dest_amp_id;
--	icid = chan->dcid;
- 
- 	if (req->dest_amp_id == AMP_ID_BREDR) {
- 		/* Moving to BR/EDR */
--- 
-2.24.0
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
 

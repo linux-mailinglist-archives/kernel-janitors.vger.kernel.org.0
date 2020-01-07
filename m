@@ -2,104 +2,117 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D174113257B
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 12:59:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 848961325BC
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 13:10:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728014AbgAGL7j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jan 2020 06:59:39 -0500
-Received: from fllv0016.ext.ti.com ([198.47.19.142]:54754 "EHLO
-        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726690AbgAGL7j (ORCPT
+        id S1727806AbgAGMKl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jan 2020 07:10:41 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:54696 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727177AbgAGMKk (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jan 2020 06:59:39 -0500
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 007BxVZp039432;
-        Tue, 7 Jan 2020 05:59:31 -0600
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-        s=ti-com-17Q1; t=1578398371;
-        bh=9f+EURYDVK8DvqsdPDWz6PKR3Gmyc0NgzwaKz2rZZqc=;
-        h=Subject:To:CC:References:From:Date:In-Reply-To;
-        b=k7CraodJJAgLom/FV7vcp7q6wpkNFj4haAqS6Aj+H4+UHXCCjQ6Dbs7VT9TN+kmQn
-         ueQv0e9MhunDK9gaFN8FeYTsGOScPbkpggjcV75oMVKaxctL37GVb9/VR4e2m50jgx
-         fjk655GpjMOkec1DpOi3dzhA1aSfaUtffuFHmsgo=
-Received: from DFLE113.ent.ti.com (dfle113.ent.ti.com [10.64.6.34])
-        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 007BxVTD124337
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-        Tue, 7 Jan 2020 05:59:31 -0600
-Received: from DFLE107.ent.ti.com (10.64.6.28) by DFLE113.ent.ti.com
- (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Tue, 7 Jan
- 2020 05:59:30 -0600
-Received: from lelv0326.itg.ti.com (10.180.67.84) by DFLE107.ent.ti.com
- (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
- Frontend Transport; Tue, 7 Jan 2020 05:59:30 -0600
-Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
-        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 007BxSIe032947;
-        Tue, 7 Jan 2020 05:59:29 -0600
-Subject: Re: [PATCH][next] dmaengine: ti: omap-dma: don't allow a null
- od->plat pointer to be dereferenced
-To:     Colin King <colin.king@canonical.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Tony Lindgren <tony@atomide.com>, <dmaengine@vger.kernel.org>
-CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20200106122325.39121-1-colin.king@canonical.com>
-From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
-Message-ID: <b7200998-c8e7-0841-ce91-ad3834c63cae@ti.com>
-Date:   Tue, 7 Jan 2020 13:59:58 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Tue, 7 Jan 2020 07:10:40 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 007C4jgC070313;
+        Tue, 7 Jan 2020 12:10:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=fSKSjlLTPjWUAzNU/T9Nml0/rwLj5FBYEeuVAecNbms=;
+ b=QrGRTgNZh/Q51zDbQ+Ta514KXQS2KfaBVXsHvx6h1K89k6sDwBKV1MHn0kabLGwcXT97
+ RbFwJfrbLVljkf5WqHpb6z3WuixBpldjTmk0IDgOrpN9lHxCE3XDiZNS/ndSWzOimvBl
+ bogBlh8g1J/xDB719aE9qKJdWbijvfvXrtGrIxb8sJftZLmWKrU9g2P2bAy+LQd+Fc/F
+ Z0WCjvO1YaHD0CLTx3vKw06sId+//vUgJskX1VV5cTvDV/kO5QnHI2dlAaZWUG+JYY2c
+ Jg/cCx+Tu9S+xHSSsVY93Q+5ko3rUkvsuOydB6mjWgkig/LVfP6YEyXy1tEqx1RXb4NH bA== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 2xaj4tw7tx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 07 Jan 2020 12:10:23 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 007C9IGp187178;
+        Tue, 7 Jan 2020 12:10:23 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 2xcjvd1cr7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 07 Jan 2020 12:10:23 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 007CAKYA017404;
+        Tue, 7 Jan 2020 12:10:20 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 07 Jan 2020 04:10:19 -0800
+Date:   Tue, 7 Jan 2020 15:10:10 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Alan Stern <stern@rowland.harvard.edu>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sekhar Nori <nsekhar@ti.com>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][V2] usb: ohci-da8xx: ensure error return on variable
+ error is set
+Message-ID: <20200107121010.GN3911@kadam>
+References: <20200107103035.19481-1-colin.king@canonical.com>
 MIME-Version: 1.0
-In-Reply-To: <20200106122325.39121-1-colin.king@canonical.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200107103035.19481-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9492 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001070100
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9492 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001070100
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin,
-
-On 06/01/2020 14.23, Colin King wrote:
+On Tue, Jan 07, 2020 at 10:30:35AM +0000, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> Currently when the call to dev_get_platdata returns null the driver issues
-> a warning and then later dereferences the null pointer.  Avoid this issue
-> by returning -EPROBE_DEFER errror rather when the platform data is null.
-
-Thank you for noticing it!
-
-Acked-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-
-> Addresses-Coverity: ("Dereference after null check")
-> Fixes: 211010aeb097 ("dmaengine: ti: omap-dma: Pass sdma auxdata to driver and use it")
+> Currently when an error in da8xx_ohci->oc_gpio occurs it causes an
+> uninitialized error return in variable 'error' to be returned.  Fix
+> this by ensuring the error variable is set to the error value in
+> da8xx_ohci->oc_gpio.
+> 
+> Addresses-Coverity: ("Uninitialized scalar variable")
+> Fixes: d193abf1c913 ("usb: ohci-da8xx: add vbus and overcurrent gpios")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/dma/ti/omap-dma.c | 4 +++-
+> 
+> V2: fix typo and grammar in commit message
+> 
+> ---
+>  drivers/usb/host/ohci-da8xx.c | 4 +++-
 >  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/dma/ti/omap-dma.c b/drivers/dma/ti/omap-dma.c
-> index fc8f7b2fc7b3..335c3fa7a3b1 100644
-> --- a/drivers/dma/ti/omap-dma.c
-> +++ b/drivers/dma/ti/omap-dma.c
-> @@ -1658,8 +1658,10 @@ static int omap_dma_probe(struct platform_device *pdev)
->  	if (conf) {
->  		od->cfg = conf;
->  		od->plat = dev_get_platdata(&pdev->dev);
-> -		if (!od->plat)
-> +		if (!od->plat) {
->  			dev_warn(&pdev->dev, "no sdma auxdata needed?\n");
-> +			return -EPROBE_DEFER;
-> +		}
->  	} else {
->  		od->cfg = &default_cfg;
+> diff --git a/drivers/usb/host/ohci-da8xx.c b/drivers/usb/host/ohci-da8xx.c
+> index 38183ac438c6..9cdf787055b7 100644
+> --- a/drivers/usb/host/ohci-da8xx.c
+> +++ b/drivers/usb/host/ohci-da8xx.c
+> @@ -415,8 +415,10 @@ static int ohci_da8xx_probe(struct platform_device *pdev)
+>  	}
 >  
-> 
+>  	da8xx_ohci->oc_gpio = devm_gpiod_get_optional(dev, "oc", GPIOD_IN);
+> -	if (IS_ERR(da8xx_ohci->oc_gpio))
+> +	if (IS_ERR(da8xx_ohci->oc_gpio)) {
+> +		error = PTR_ERR(da8xx_ohci->oc_gpio);
+>  		goto err;
+> +	}
+>  
+>  	if (da8xx_ohci->oc_gpio) {
+>  		oc_irq = gpiod_to_irq(da8xx_ohci->oc_gpio);
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Also uninitialized here.
 
-- Péter
+regards,
+dan carpenter
 
-Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
-Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki

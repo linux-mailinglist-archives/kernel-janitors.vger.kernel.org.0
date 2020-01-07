@@ -2,73 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4C7E13217F
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 09:37:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F66B1321FE
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 10:14:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727680AbgAGIgx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jan 2020 03:36:53 -0500
-Received: from mga14.intel.com ([192.55.52.115]:52636 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726485AbgAGIgx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jan 2020 03:36:53 -0500
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Jan 2020 00:36:31 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.69,405,1571727600"; 
-   d="scan'208";a="225629527"
-Received: from kuha.fi.intel.com ([10.237.72.53])
-  by fmsmga001.fm.intel.com with SMTP; 07 Jan 2020 00:36:28 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 07 Jan 2020 10:36:28 +0200
-Date:   Tue, 7 Jan 2020 10:36:28 +0200
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Ajay Gupta <ajayg@nvidia.com>, linux-usb@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] usb: typec: ucsi: fix spelling mistake "connetor"
- -> "connector"
-Message-ID: <20200107083628.GA7440@kuha.fi.intel.com>
-References: <20200106111124.28100-1-colin.king@canonical.com>
+        id S1727718AbgAGJOV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jan 2020 04:14:21 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:59871 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726327AbgAGJOT (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 7 Jan 2020 04:14:19 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1578388458;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=mzHsx/Rrd3lLiiC7W87+hNI2uYZ3BAUjcjxT/JMbIlA=;
+        b=ftV4kYU2/k6g14FEgGqhi709qQHZj1fkD2EVZcixEhz25be+ddsCA0O1eZYi+s9wpvxPLW
+        +UKvbtjURSiBkxfK/R4p8yJReBbOZDKfgsBmJOH+pFjOpBOkTiuFh5YlLgyLixxThsfw81
+        XG65NEOU0JqJhleQSNOJedISVGOZZDk=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-126--LRj-Qx8NKOoRGZjA9y0Xw-1; Tue, 07 Jan 2020 04:14:12 -0500
+X-MC-Unique: -LRj-Qx8NKOoRGZjA9y0Xw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 3644F801E6C;
+        Tue,  7 Jan 2020 09:14:11 +0000 (UTC)
+Received: from gondolin (ovpn-117-222.ams2.redhat.com [10.36.117.222])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 63B501C4;
+        Tue,  7 Jan 2020 09:14:07 +0000 (UTC)
+Date:   Tue, 7 Jan 2020 10:14:04 +0100
+From:   Cornelia Huck <cohuck@redhat.com>
+To:     Julia Lawall <Julia.Lawall@inria.fr>
+Cc:     Alex Williamson <alex.williamson@redhat.com>,
+        kernel-janitors@vger.kernel.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/4] vfio: vfio_pci_nvlink2: use mmgrab
+Message-ID: <20200107101404.340a3442.cohuck@redhat.com>
+In-Reply-To: <1577634178-22530-3-git-send-email-Julia.Lawall@inria.fr>
+References: <1577634178-22530-1-git-send-email-Julia.Lawall@inria.fr>
+        <1577634178-22530-3-git-send-email-Julia.Lawall@inria.fr>
+Organization: Red Hat GmbH
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200106111124.28100-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Jan 06, 2020 at 11:11:24AM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in a dev_dbg message. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+On Sun, 29 Dec 2019 16:42:56 +0100
+Julia Lawall <Julia.Lawall@inria.fr> wrote:
 
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-
+> Mmgrab was introduced in commit f1f1007644ff ("mm: add new mmgrab()
+> helper") and most of the kernel was updated to use it. Update a
+> remaining file.
+> 
+> The semantic patch that makes this change is as follows:
+> (http://coccinelle.lip6.fr/)
+> 
+> <smpl>
+> @@ expression e; @@
+> - atomic_inc(&e->mm_count);
+> + mmgrab(e);
+> </smpl>
+> 
+> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> 
 > ---
->  drivers/usb/typec/ucsi/ucsi.c | 2 +-
+>  drivers/vfio/pci/vfio_pci_nvlink2.c |    2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-> index 466bd8afceea..1b1e36178317 100644
-> --- a/drivers/usb/typec/ucsi/ucsi.c
-> +++ b/drivers/usb/typec/ucsi/ucsi.c
-> @@ -669,7 +669,7 @@ void ucsi_connector_change(struct ucsi *ucsi, u8 num)
->  	struct ucsi_connector *con = &ucsi->connector[num - 1];
->  
->  	if (!(ucsi->ntfy & UCSI_ENABLE_NTFY_CONNECTOR_CHANGE)) {
-> -		dev_dbg(ucsi->dev, "Bogus connetor change event\n");
-> +		dev_dbg(ucsi->dev, "Bogus connector change event\n");
->  		return;
->  	}
->  
-> -- 
-> 2.24.0
 
--- 
-heikki
+Reviewed-by: Cornelia Huck <cohuck@redhat.com>
+

@@ -2,55 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B183313270C
-	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 14:06:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D358613274E
+	for <lists+kernel-janitors@lfdr.de>; Tue,  7 Jan 2020 14:13:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728043AbgAGNGY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jan 2020 08:06:24 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:57410 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727900AbgAGNGY (ORCPT
+        id S1728045AbgAGNMB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jan 2020 08:12:01 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:43980 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727814AbgAGNMB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jan 2020 08:06:24 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 007D4BKB099322;
-        Tue, 7 Jan 2020 13:06:16 GMT
+        Tue, 7 Jan 2020 08:12:01 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 007D9Xld095298;
+        Tue, 7 Jan 2020 13:11:53 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type : in-reply-to;
- s=corp-2019-08-05; bh=/BsV9yew9Md2YaVOcaWenrT+g7/QmqTL5GV77n4TgO8=;
- b=O7wh9mEmW1U/roYJObLTwupWPbSzaAFgFmqD4pEmVVi+y6+9kSJS0Nc5u+xNEHkDE1b2
- nu6pQLiZr7KLNHpwl2I30zHsbv4rAHKEfgZoMvL8V/6RNDxlE20hnLqsFUzq6hMEHFlI
- 85PQjudOEy3XLjVVwazx/EiQVvMkIhaZOZ/J+j9ZF/CInOEmfjOfFVIVa/MqlBC0dnWy
- iRuUHHlJJShQtaHMiX5Q75slIncNjghPRq9nSE8L+c1RfcGJwM4OtKqQYbi05/8bNWlV
- hkYGR+XSDWGx+JNrwExy7JUqeJsUUEwKan2ko7o4FqRMBka/uX3a96RwsEikcmz7bgtR wQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 2xakbqn8u7-1
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=g7nkYe1ARDrVKx7na1mVAWf8BhUTVbUMNdy8zKM4VjY=;
+ b=igFaqiZEbD8KP3BJ+EQV9Gtq2QRSC4xIWQURvW7BcUEs5vRr/VwRsmgF5mjmskAF+0He
+ eUXOClMz/QeQnXT4B6pE7LDD3JYFxIVt/WTJCpUPv0o7hCHQjPkvKkwaFUsgJ3HMl1ZP
+ xs1RBl6elszKcQcr/t91Bbp5Y+sqUMg1/Lzan4nZYyLN06Lht0QPdAit9VBEdSFOm9Qp
+ tc3X9aaW2t51WveNc+7/lTiJQ/5lU5fM1QjCofkDzIa4lDyb/GpjGz26aLcCtsoq8uHl
+ dODhTilOLp+lDL/sPSgAeBFrM2l2jkXd39eApuGXwHebQCxH7X3n05McbU0gZfd7vdsq Xg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 2xajnpwc3d-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 07 Jan 2020 13:06:16 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 007D4P3S120479;
-        Tue, 7 Jan 2020 13:06:15 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2xcjvd4f4s-1
+        Tue, 07 Jan 2020 13:11:53 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 007D4B8C022179;
+        Tue, 7 Jan 2020 13:11:53 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2xcpamgbny-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 07 Jan 2020 13:06:15 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 007D6Eqn019320;
-        Tue, 7 Jan 2020 13:06:14 GMT
+        Tue, 07 Jan 2020 13:11:53 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 007DBpI9017448;
+        Tue, 7 Jan 2020 13:11:51 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 07 Jan 2020 05:06:14 -0800
-Date:   Tue, 7 Jan 2020 16:06:07 +0300
+        with ESMTP ; Tue, 07 Jan 2020 05:11:51 -0800
+Date:   Tue, 7 Jan 2020 16:11:43 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "David S. Miller" <davem@davemloft.net>
-Cc:     linux-ide@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH 2/2] ide: serverworks: potential overflow in
- svwks_set_pio_mode()
-Message-ID: <20200107130607.tv3uosduwkw3yka6@kili.mountain>
+To:     Claudiu Manoil <claudiu.manoil@nxp.com>, Po Liu <po.liu@nxp.com>
+Cc:     "David S. Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH net-next] enetc: Fix an off by one in enetc_setup_tc_txtime()
+Message-ID: <20200107131143.jqytedvewberqp5c@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200107130441.y3owvcnxdljailt5@kili.mountain>
 X-Mailer: git-send-email haha only kidding
 User-Agent: NeoMutt/20170113 (1.7.2)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9492 signatures=668685
@@ -63,43 +62,35 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=150
  suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001070109
+ definitions=main-2001070110
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "drive->dn" variable is a u8 controlled by root.
+The priv->tx_ring[] has 16 elements but only priv->num_tx_rings are
+set up, the rest are NULL.  This ">" comparison should be ">=" to avoid
+a potential crash.
 
+Fixes: 0d08c9ec7d6e ("enetc: add support time specific departure base on the qos etf")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/ide/serverworks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/freescale/enetc/enetc_qos.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ide/serverworks.c b/drivers/ide/serverworks.c
-index ac6fc3fffa0d..458e72e034b0 100644
---- a/drivers/ide/serverworks.c
-+++ b/drivers/ide/serverworks.c
-@@ -115,6 +115,9 @@ static void svwks_set_pio_mode(ide_hwif_t *hwif, ide_drive_t *drive)
- 	struct pci_dev *dev = to_pci_dev(hwif->dev);
- 	const u8 pio = drive->pio_mode - XFER_PIO_0;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_qos.c b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
+index e910aaf0f5ec..00382b7c5bd8 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_qos.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_qos.c
+@@ -315,7 +315,7 @@ int enetc_setup_tc_txtime(struct net_device *ndev, void *type_data)
  
-+	if (drive->dn >= ARRAY_SIZE(drive_pci))
-+		return;
-+
- 	pci_write_config_byte(dev, drive_pci[drive->dn], pio_modes[pio]);
+ 	tc = qopt->queue;
  
- 	if (svwks_csb_check(dev)) {
-@@ -141,6 +144,9 @@ static void svwks_set_dma_mode(ide_hwif_t *hwif, ide_drive_t *drive)
+-	if (tc < 0 || tc > priv->num_tx_rings)
++	if (tc < 0 || tc >= priv->num_tx_rings)
+ 		return -EINVAL;
  
- 	u8 ultra_enable	 = 0, ultra_timing = 0, dma_timing = 0;
- 
-+	if (drive->dn >= ARRAY_SIZE(drive_pci2))
-+		return;
-+
- 	pci_read_config_byte(dev, (0x56|hwif->channel), &ultra_timing);
- 	pci_read_config_byte(dev, 0x54, &ultra_enable);
- 
+ 	/* Do not support TXSTART and TX CSUM offload simutaniously */
 -- 
 2.11.0
 

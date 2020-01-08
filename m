@@ -2,31 +2,33 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 45FE51339E9
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 05:03:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C58A1339EC
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 05:04:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726263AbgAHEDt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jan 2020 23:03:49 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:41662 "EHLO huawei.com"
+        id S1726530AbgAHEEL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jan 2020 23:04:11 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:35840 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725908AbgAHEDs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jan 2020 23:03:48 -0500
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id 579E4F99BDD60A28DFBC;
-        Wed,  8 Jan 2020 12:03:46 +0800 (CST)
+        id S1725908AbgAHEEL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 7 Jan 2020 23:04:11 -0500
+Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id EF6DA3285E508FE6DC2B;
+        Wed,  8 Jan 2020 12:04:08 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 8 Jan 2020 12:03:36 +0800
+ DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 8 Jan 2020 12:03:58 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Balakrishna Godavarthi <bgodavar@codeaurora.org>
+To:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>,
+        "Ravulapati Vishnu vardhan rao" <Vishnuvardhanrao.Ravulapati@amd.com>
 CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <linux-bluetooth@vger.kernel.org>,
+        <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] Bluetooth: hci_qca: Use vfree() instead of kfree()
-Date:   Wed, 8 Jan 2020 03:59:31 +0000
-Message-ID: <20200108035931.51209-1-weiyongjun1@huawei.com>
+Subject: [PATCH -next]  ASoC: amd: acp3x: Fix return value check in acp3x_dai_probe()
+Date:   Wed, 8 Jan 2020 03:59:54 +0000
+Message-ID: <20200108035954.51317-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -38,37 +40,31 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Use vfree() instead of kfree() to free vmalloc()
-allocated data.
+In case of error, the function devm_ioremap() returns NULL pointer not
+ERR_PTR(). The IS_ERR() test in the return value check should be
+replaced with NULL test.
 
-Fixes: d841502c79e3 ("Bluetooth: hci_qca: Collect controller memory dump during SSR")
+Fixes: c9fe7db6e884 ("ASoC: amd: Refactoring of DAI from DMA driver")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/bluetooth/hci_qca.c | 4 ++--
+ sound/soc/amd/raven/acp3x-i2s.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 9392cc7f9908..a17260641283 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -529,7 +529,7 @@ static void hci_memdump_timeout(struct timer_list *t)
- 	bt_dev_err(hu->hdev, "clearing allocated memory due to memdump timeout");
- 	/* Inject hw error event to reset the device and driver. */
- 	hci_reset_dev(hu->hdev);
--	kfree(memdump_buf);
-+	vfree(memdump_buf);
- 	kfree(qca_memdump);
- 	qca->memdump_state = QCA_MEMDUMP_TIMEOUT;
- 	del_timer(&qca->memdump_timer);
-@@ -1437,7 +1437,7 @@ static void qca_wait_for_dump_collection(struct hci_dev *hdev)
- 		bt_dev_err(hu->hdev, "Clearing the buffers due to timeout");
- 		if (qca_memdump)
- 			memdump_buf = qca_memdump->memdump_buf_tail;
--		kfree(memdump_buf);
-+		vfree(memdump_buf);
- 		kfree(qca_memdump);
- 		qca->memdump_state = QCA_MEMDUMP_TIMEOUT;
- 		del_timer(&qca->memdump_timer);
+diff --git a/sound/soc/amd/raven/acp3x-i2s.c b/sound/soc/amd/raven/acp3x-i2s.c
+index d9b287b8396c..bf51cadf8682 100644
+--- a/sound/soc/amd/raven/acp3x-i2s.c
++++ b/sound/soc/amd/raven/acp3x-i2s.c
+@@ -321,8 +321,8 @@ static int acp3x_dai_probe(struct platform_device *pdev)
+ 	}
+ 	adata->acp3x_base = devm_ioremap(&pdev->dev, res->start,
+ 						resource_size(res));
+-	if (IS_ERR(adata->acp3x_base))
+-		return PTR_ERR(adata->acp3x_base);
++	if (!adata->acp3x_base)
++		return -ENOMEM;
+ 
+ 	adata->i2s_irq = res->start;
+ 	dev_set_drvdata(&pdev->dev, adata);
 
 
 

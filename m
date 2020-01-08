@@ -2,34 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AEBA01338F8
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 03:03:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DC4E1339C5
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 04:49:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726390AbgAHCDE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jan 2020 21:03:04 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:8238 "EHLO huawei.com"
+        id S1726281AbgAHDtc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jan 2020 22:49:32 -0500
+Received: from szxga06-in.huawei.com ([45.249.212.32]:47738 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725601AbgAHCDE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jan 2020 21:03:04 -0500
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id DA696E820EC056E7C97E;
-        Wed,  8 Jan 2020 10:03:01 +0800 (CST)
+        id S1726142AbgAHDtc (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 7 Jan 2020 22:49:32 -0500
+Received: from DGGEMS408-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 2F056623AA071B0ADDD8;
+        Wed,  8 Jan 2020 11:49:29 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 8 Jan 2020 10:02:53 +0800
+ DGGEMS408-HUB.china.huawei.com (10.3.19.208) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 8 Jan 2020 11:49:19 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Niklas Cassel <nks@flawful.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Nishanth Menon <nm@ti.com>
-CC:     YueHaibing <yuehaibing@huawei.com>,
-        <linux-arm-msm@vger.kernel.org>, <linux-pm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] power: avs: qcom-cpr: remove duplicated include from qcom-cpr.c
-Date:   Wed, 8 Jan 2020 01:58:49 +0000
-Message-ID: <20200108015849.54289-1-yuehaibing@huawei.com>
+To:     Jean Delvare <jdelvare@suse.com>,
+        "Dr . David Alan Gilbert" <linux@treblig.org>,
+        Guenter Roeck <linux@roeck-us.net>
+CC:     YueHaibing <yuehaibing@huawei.com>, <linux-hwmon@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] hwmon: (w83627ehf) Remove set but not used variable 'fan4min'
+Date:   Wed, 8 Jan 2020 03:45:14 +0000
+Message-ID: <20200108034514.50130-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -41,24 +38,47 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove duplicated include.
+Fixes gcc '-Wunused-but-set-variable' warning:
 
+drivers/hwmon/w83627ehf.c: In function 'w83627ehf_check_fan_inputs':
+drivers/hwmon/w83627ehf.c:1296:24: warning:
+ variable 'fan4min' set but not used [-Wunused-but-set-variable]
+
+commit 62000264cfa8 ("hwmon: (w83627ehf) remove nct6775 and nct6776 support")
+left behind this unused variable.
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/power/avs/qcom-cpr.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/hwmon/w83627ehf.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/power/avs/qcom-cpr.c b/drivers/power/avs/qcom-cpr.c
-index 9247f53550b3..9b1d7d919ee9 100644
---- a/drivers/power/avs/qcom-cpr.c
-+++ b/drivers/power/avs/qcom-cpr.c
-@@ -25,7 +25,6 @@
- #include <linux/regulator/consumer.h>
- #include <linux/clk.h>
- #include <linux/nvmem-consumer.h>
--#include <linux/bitops.h>
+diff --git a/drivers/hwmon/w83627ehf.c b/drivers/hwmon/w83627ehf.c
+index 5a7239eb1c15..7ffadc2da57b 100644
+--- a/drivers/hwmon/w83627ehf.c
++++ b/drivers/hwmon/w83627ehf.c
+@@ -1293,7 +1293,7 @@ static void
+ w83627ehf_check_fan_inputs(const struct w83627ehf_sio_data *sio_data,
+ 			   struct w83627ehf_data *data)
+ {
+-	int fan3pin, fan4pin, fan4min, fan5pin, regval;
++	int fan3pin, fan4pin, fan5pin, regval;
  
- /* Register Offsets for RB-CPR and Bit Definitions */
+ 	/* The W83627UHG is simple, only two fan inputs, no config */
+ 	if (sio_data->kind == w83627uhg) {
+@@ -1307,12 +1307,10 @@ w83627ehf_check_fan_inputs(const struct w83627ehf_sio_data *sio_data,
+ 		fan3pin = 1;
+ 		fan4pin = superio_inb(sio_data->sioreg, 0x27) & 0x40;
+ 		fan5pin = superio_inb(sio_data->sioreg, 0x27) & 0x20;
+-		fan4min = fan4pin;
+ 	} else {
+ 		fan3pin = 1;
+ 		fan4pin = !(superio_inb(sio_data->sioreg, 0x29) & 0x06);
+ 		fan5pin = !(superio_inb(sio_data->sioreg, 0x24) & 0x02);
+-		fan4min = fan4pin;
+ 	}
+ 
+ 	data->has_fan = data->has_fan_min = 0x03; /* fan1 and fan2 */
 
 
 

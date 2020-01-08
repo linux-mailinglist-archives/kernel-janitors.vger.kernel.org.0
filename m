@@ -2,97 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 599F1134465
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 14:57:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A17B1345CE
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 16:09:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728532AbgAHN5c (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Jan 2020 08:57:32 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:39317 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728530AbgAHN5b (ORCPT
+        id S1728613AbgAHPIf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Jan 2020 10:08:35 -0500
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:57694 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727884AbgAHPIe (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Jan 2020 08:57:31 -0500
-Received: by mail-wr1-f65.google.com with SMTP id y11so3478020wrt.6
-        for <kernel-janitors@vger.kernel.org>; Wed, 08 Jan 2020 05:57:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=netronome-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Tjibdcrm0F2gBrVSaGaYRxNAqKq2VCoLQH5KirTsjuc=;
-        b=m/kaMwLbBcSL4lPor8Mo+VgfcRizesHQjejcmUNPWa7XkwV5ZIn7hrCEOLYXHV9/T8
-         AaorCkeLtPS27njH+cQJo1u7AjgxISd32W4iSFFzARbEBSavlQnGrJCL1+RmIuxT1/V9
-         EYPiqhCCxh3giok7xWROLKif3J9WBqOWxHUSYERvNjIB4pLaQOVgoAWB1wgDn7N/cp8Q
-         HrcG/pYdnG8SQgS4r0w4ZaOZ+aZ4otAmnLWRyQCl4LOoZrfCY4PUhSiPeeKtzqoBKh+r
-         dxN7riv+TNU9KNrl55J3szBIMR2vXJqksOoHTGffMk69SAmPkAk7inrwmVnwG/M5ps9W
-         UZLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Tjibdcrm0F2gBrVSaGaYRxNAqKq2VCoLQH5KirTsjuc=;
-        b=IK+TO3gaoRThb4fn+UDEwRTMPlCa7YLo7TtIhR7tSnJfijuOB+mbh8Kk/Xu4YiJMm0
-         29qqRWPs8lRfpqQUy2xgZ0BHJ/yD2zyTIpIW8gpz/WJowfKDaB7U08lswK1OWzYhRhOY
-         2aROR4tcLP8o31n04V8KDPb3smnrj09jTZECX1h4w0DMiSwhaBjS/uzuG+GLBoweZVr8
-         DAVGKoetUYSOYiq39Yf1wRox1iZ40DUDOd7c4cFoDO0K3fb3wPsnp0xydaVM1+YP1LYx
-         fRm/tfcTbKVr/gQmXyi/Eefpduh8zxS0zuSMLVS/FGn1Q2rsHvn33Xwk6UYoGe8p1hKT
-         iJMA==
-X-Gm-Message-State: APjAAAXrEB2GqJ9FEx9hR0Bs/ALEHmw6NQKt3EyNAewpcd/H0glXfCrq
-        zx6HOFRyP74jylPbH9ruKgUWxA==
-X-Google-Smtp-Source: APXvYqx0hay0UMpM7/Vwis+yM8OlqmCCEDSkMJxGOVcZg7bXXpcCn/9V1E3VQGokgXSL6zJJcnAMOA==
-X-Received: by 2002:a5d:404b:: with SMTP id w11mr4973101wrp.171.1578491850026;
-        Wed, 08 Jan 2020 05:57:30 -0800 (PST)
-Received: from netronome.com ([2001:982:756:703:d63d:7eff:fe99:ac9d])
-        by smtp.gmail.com with ESMTPSA id p15sm3678288wma.40.2020.01.08.05.57.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jan 2020 05:57:29 -0800 (PST)
-Date:   Wed, 8 Jan 2020 14:57:28 +0100
-From:   Simon Horman <simon.horman@netronome.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Bluetooth: remove redundant assignment to variable icid
-Message-ID: <20200108135728.GA19220@netronome.com>
-References: <20200107180013.124501-1-colin.king@canonical.com>
+        Wed, 8 Jan 2020 10:08:34 -0500
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: ezequiel)
+        with ESMTPSA id DBC04292E56
+Message-ID: <1118f946572b3da0562fa1c0347fceaeda93f38f.camel@collabora.com>
+Subject: Re: [PATCH] media: hantro: remove a pointless NULL check
+From:   Ezequiel Garcia <ezequiel@collabora.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
+        kernel-janitors@vger.kernel.org
+Date:   Wed, 08 Jan 2020 12:08:21 -0300
+In-Reply-To: <20200108053534.6rwxk2httwoflbgv@kili.mountain>
+References: <20200108053534.6rwxk2httwoflbgv@kili.mountain>
+Organization: Collabora
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.1-2 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200107180013.124501-1-colin.king@canonical.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jan 07, 2020 at 06:00:13PM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Variable icid is being rc is assigned with a value that is never
-> read. The assignment is redundant and can be removed.
-> 
-> Addresses-Coverity: ("Unused value")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Hi Dan,
 
-Reviewed-by: Simon Horman <simon.horman@netronome.com>
+Thanks for the patch.
 
+On Wed, 2020-01-08 at 08:35 +0300, Dan Carpenter wrote:
+> This can't be NULL and we've already dereferenced it so let's remove
+> the check.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  net/bluetooth/l2cap_core.c | 1 -
->  1 file changed, 1 deletion(-)
+>  drivers/staging/media/hantro/hantro_v4l2.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-> index 1bca608e0170..195459a1e53e 100644
-> --- a/net/bluetooth/l2cap_core.c
-> +++ b/net/bluetooth/l2cap_core.c
-> @@ -5081,7 +5081,6 @@ static inline int l2cap_move_channel_req(struct l2cap_conn *conn,
->  	chan->move_role = L2CAP_MOVE_ROLE_RESPONDER;
->  	l2cap_move_setup(chan);
->  	chan->move_id = req->dest_amp_id;
-> -	icid = chan->dcid;
+> diff --git a/drivers/staging/media/hantro/hantro_v4l2.c b/drivers/staging/media/hantro/hantro_v4l2.c
+> index 85af1b96fd34..0198bcda26b7 100644
+> --- a/drivers/staging/media/hantro/hantro_v4l2.c
+> +++ b/drivers/staging/media/hantro/hantro_v4l2.c
+> @@ -688,7 +688,7 @@ static int hantro_start_streaming(struct vb2_queue *q, unsigned int count)
+>  	return ret;
 >  
->  	if (req->dest_amp_id == AMP_ID_BREDR) {
->  		/* Moving to BR/EDR */
-> -- 
-> 2.24.0
-> 
+>  err_codec_exit:
+> -	if (ctx->codec_ops && ctx->codec_ops->exit)
+> +	if (ctx->codec_ops->exit)
+
+Since you are here, can you remove the other unneeded
+checks in the driver?
+
+We are assuming ctx->codec_op is non-NULL, so perhaps
+a check in .probe, to check it explicitly would be better.
+
+Thanks,
+Ezequiel
+

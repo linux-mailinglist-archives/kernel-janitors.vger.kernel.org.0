@@ -2,128 +2,116 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E4B9A133BFA
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 08:04:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F430133C1B
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 08:20:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726667AbgAHHDx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Jan 2020 02:03:53 -0500
-Received: from mail-eopbgr770051.outbound.protection.outlook.com ([40.107.77.51]:11648
-        "EHLO NAM02-SN1-obe.outbound.protection.outlook.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726079AbgAHHDx (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Jan 2020 02:03:53 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ih/mPthNnhrkM2tzJXoxHPcQA4WChnq5NzTqLkjfPcE6vJP483U5w/9oGe3kXVfMZLlNV/730tpPH4Vk40ouuFwIAx2aR6P4UqzJJYDBdDSk5eIBiuE69Rbeg+1nhJVnCYGYn4xJo5WeaJvkGzbXq/RMc5a7iXPYvOT90U+C5sYW4Tmepxer+L+fGvtixgkNpsbpPRt5BgPCQIMwfLHK1hV2P1NiZfvmVXz+G6fial3Pnni7JxAVuaDbM9SbF5RZly4um1ahLL/WRA8F2YyyMwzQHGOHfCaC91okWQ/fIcsQ7s0VMmqzApYZpz23wsmZ1Ye9iRBKRZRZWi0hRR8tiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j41qF1+hLtEV+4ccB2oV3859/aVT6qDeQErygfdK7ac=;
- b=EYTARfcRC1QC0I0/olN2v3tRQJYjJkblCNMQMCZ1Mq22kmYTOpMP00otN+TbRYD5rI5SUKCSKC0qcClrtgVWd+GNt+kbTWva8vEVk+42butzUKL6P4dFt0qRGK38GThZacT590cpLCGWvULqBIF6z7citH8M5pRuC5vFF2cSj1T6slUQYq6mpNSQFo1KtOpMPyZQYSLfaTcv1LHQcHtZaH/fIS1uq3/rdqAWYbj2g1sMjZlEd5pHU/oOSNmwqDym+EIOcQE+kKFtW36U9w2eTRzL81AH9xXjy8Dg/a/AeUFVYVcib4iX9Hj5qn5R2VDs1h120D+JjcU/1kTkc7Qhzw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=amdcloud.onmicrosoft.com; s=selector2-amdcloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j41qF1+hLtEV+4ccB2oV3859/aVT6qDeQErygfdK7ac=;
- b=sTmrIvem7Ir3BBCisZ/zsLpck9xAqERsVWa38TqntNj2o9b1tS4svq6CAci+EADIIiBVhpTHDNNoBsT/26qEmNz4imyAvZngYUcDI9pcsa/gq6qa9L9ELqlfIj1r+1CvnhWbcLal0fCxte9b+0ydPhQWdTXnskiT/KFd93qsrwA=
-Authentication-Results: spf=none (sender IP is )
- smtp.mailfrom=Rijo-john.Thomas@amd.com; 
-Received: from CY4PR12MB1925.namprd12.prod.outlook.com (10.175.62.7) by
- CY4PR12MB1557.namprd12.prod.outlook.com (10.172.69.23) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2602.13; Wed, 8 Jan 2020 07:03:48 +0000
-Received: from CY4PR12MB1925.namprd12.prod.outlook.com
- ([fe80::9be:baba:170f:3e2]) by CY4PR12MB1925.namprd12.prod.outlook.com
- ([fe80::9be:baba:170f:3e2%3]) with mapi id 15.20.2602.016; Wed, 8 Jan 2020
- 07:03:47 +0000
-Subject: Re: [PATCH][next] tee: fix memory allocation failure checks on
- drv_data and amdtee
+        id S1726179AbgAHHUS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Jan 2020 02:20:18 -0500
+Received: from lelv0142.ext.ti.com ([198.47.23.249]:60138 "EHLO
+        lelv0142.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725944AbgAHHUS (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 8 Jan 2020 02:20:18 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+        by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 0087K943109419;
+        Wed, 8 Jan 2020 01:20:09 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1578468009;
+        bh=FJ3teLAvbwRM2WJYAekO+RSHLFywCtxF35xCkLlqUqA=;
+        h=Subject:From:To:CC:References:Date:In-Reply-To;
+        b=oGAl/IP9zA5+AA3lnIQXAMcyQpL+eu/kArxP+VD4NTwXFbNTwIhm6YATsayn7EwpE
+         2/td1lP8Q7dURdFSxtFUJGY9uSApx1tZUP/reEUibOJnWP+/ydFWJtz63ZKCDMR+/o
+         JOIOxzBpoB3WYnkCl0UTw1RVL64uHUNlivVOmEZk=
+Received: from DLEE109.ent.ti.com (dlee109.ent.ti.com [157.170.170.41])
+        by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 0087K8bU058642
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 8 Jan 2020 01:20:08 -0600
+Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE109.ent.ti.com
+ (157.170.170.41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 8 Jan
+ 2020 01:20:08 -0600
+Received: from lelv0326.itg.ti.com (10.180.67.84) by DLEE104.ent.ti.com
+ (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Wed, 8 Jan 2020 01:20:08 -0600
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by lelv0326.itg.ti.com (8.15.2/8.15.2) with ESMTP id 0087K6Pf005166;
+        Wed, 8 Jan 2020 01:20:07 -0600
+Subject: Re: [PATCH][next] dmaengine: ti: omap-dma: don't allow a null
+ od->plat pointer to be dereferenced
+From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
 To:     Colin King <colin.king@canonical.com>,
-        Jens Wiklander <jens.wiklander@linaro.org>,
-        Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Gary R Hook <gary.hook@amd.com>, tee-dev@lists.linaro.org,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200107143601.105321-1-colin.king@canonical.com>
-From:   "Thomas, Rijo-john" <Rijo-john.Thomas@amd.com>
-Message-ID: <747f9c93-7465-99aa-0b91-a05fd64c7d1f@amd.com>
-Date:   Wed, 8 Jan 2020 12:33:08 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.2
-In-Reply-To: <20200107143601.105321-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA1PR01CA0078.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00::18)
- To CY4PR12MB1925.namprd12.prod.outlook.com (2603:10b6:903:120::7)
+        Dan Williams <dan.j.williams@intel.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Tony Lindgren <tony@atomide.com>, <dmaengine@vger.kernel.org>
+CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20200106122325.39121-1-colin.king@canonical.com>
+ <b7200998-c8e7-0841-ce91-ad3834c63cae@ti.com>
+Message-ID: <f6b24302-a90e-7aa5-b2e8-3c459e6d0598@ti.com>
+Date:   Wed, 8 Jan 2020 09:20:37 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Received: from [10.138.134.82] (165.204.156.251) by MA1PR01CA0078.INDPRD01.PROD.OUTLOOK.COM (2603:1096:a00::18) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2602.12 via Frontend Transport; Wed, 8 Jan 2020 07:03:45 +0000
-X-Originating-IP: [165.204.156.251]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: bc1ea619-ab58-4c72-d567-08d79408e84d
-X-MS-TrafficTypeDiagnostic: CY4PR12MB1557:|CY4PR12MB1557:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: <CY4PR12MB1557FB714FF49BE43189CDEACF3E0@CY4PR12MB1557.namprd12.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:3044;
-X-Forefront-PRVS: 02760F0D1C
-X-Forefront-Antispam-Report: SFV:NSPM;SFS:(10009020)(4636009)(366004)(136003)(346002)(39860400002)(376002)(396003)(189003)(199004)(16576012)(81166006)(8676002)(316002)(81156014)(8936002)(110136005)(186003)(16526019)(31696002)(4326008)(86362001)(26005)(36756003)(66946007)(5660300002)(66476007)(53546011)(66556008)(6486002)(31686004)(6666004)(52116002)(478600001)(2906002)(2616005)(956004);DIR:OUT;SFP:1101;SCL:1;SRVR:CY4PR12MB1557;H:CY4PR12MB1925.namprd12.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-Received-SPF: None (protection.outlook.com: amd.com does not designate
- permitted sender hosts)
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: TriQ7SV4XFNIHz+qLVgQvYPsIT/eEw1T9jzAjHfRTKrHgFaeSOH8BwcBzuVuSdwlc5jNLRxKamZTcU5LYe3tdc2zVL/Gx3FkBPsMtYGv/hfXsBU3/3W8vEwSZ8ASQMU+yqJSgqTwVWBLHPcjQmO3OweVhfqvWb7qKuVlI+Ims4feEbDHWVoXxKRbVU0xBmiznw9E9x2brsHpg0tea0BHNKWB+f0ijOQ5q8lcHMFVEbhjwTdgmJnwbEzzZnbahqIk5eVs/B8n4jVqO30QsiV3+ySRWkyvVLPp83QdjIlEkq7UNxp4V3Ex9XF94Bi7Y1pkwyonF25TKhzYjrWfgE8SKKPx1DB4D2/u6x03s9FvPJL/6yIyhFM+0mDQRj9cpy/DluoudYhs4F75JI2moyrFtfw/Nlfn5bRxRiGPu2cwaphxod0FZLe9mrAcgfwchuWg
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bc1ea619-ab58-4c72-d567-08d79408e84d
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2020 07:03:47.8297
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xWGquLv59fe939Cx2otjDoF9Pk/KWn05SHOg8e6zpieihYL7LbRa3Otvq9UOdp9rvCyln3ClB0BhDB6CKDLFvA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR12MB1557
+In-Reply-To: <b7200998-c8e7-0841-ce91-ad3834c63cae@ti.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-+linux-crypto
+Colin, Tony,
 
-On 07/01/20 8:06 pm, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
+On 07/01/2020 13.59, Peter Ujfalusi wrote:
+> Colin,
 > 
-> Currently the memory allocation failure checks on drv_data and
-> amdtee are using IS_ERR rather than checking for a null pointer.
-> Fix these checks to use the conventional null pointer check.
+> On 06/01/2020 14.23, Colin King wrote:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> Currently when the call to dev_get_platdata returns null the driver issues
+>> a warning and then later dereferences the null pointer.  Avoid this issue
+>> by returning -EPROBE_DEFER errror rather when the platform data is null.
 > 
-> Addresses-Coverity: ("Dereference null return")
-> Fixes: 757cc3e9ff1d ("tee: add AMD-TEE driver")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> Thank you for noticing it!
+> 
+> Acked-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+> 
+>> Addresses-Coverity: ("Dereference after null check")
+>> Fixes: 211010aeb097 ("dmaengine: ti: omap-dma: Pass sdma auxdata to driver and use it")
+>> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+>> ---
+>>  drivers/dma/ti/omap-dma.c | 4 +++-
+>>  1 file changed, 3 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/dma/ti/omap-dma.c b/drivers/dma/ti/omap-dma.c
+>> index fc8f7b2fc7b3..335c3fa7a3b1 100644
+>> --- a/drivers/dma/ti/omap-dma.c
+>> +++ b/drivers/dma/ti/omap-dma.c
+>> @@ -1658,8 +1658,10 @@ static int omap_dma_probe(struct platform_device *pdev)
+>>  	if (conf) {
+>>  		od->cfg = conf;
+>>  		od->plat = dev_get_platdata(&pdev->dev);
+>> -		if (!od->plat)
+>> +		if (!od->plat) {
+>>  			dev_warn(&pdev->dev, "no sdma auxdata needed?\n");
+>> +			return -EPROBE_DEFER;
 
-Reviewed-by: Rijo Thomas <Rijo-john.Thomas@amd.com>
+I think we should make the print as dev_err("&pdev->dev,
+"omap_system_dma_plat_info is missing") and return with -ENODEV. The
+omap_system_dma_plat_info is _needed_ and if we have booted with device
+tree it is not going to appear later.
 
-> ---
->  drivers/tee/amdtee/core.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/tee/amdtee/core.c b/drivers/tee/amdtee/core.c
-> index 9d0cee1c837f..5fda810c79dc 100644
-> --- a/drivers/tee/amdtee/core.c
-> +++ b/drivers/tee/amdtee/core.c
-> @@ -444,11 +444,11 @@ static int __init amdtee_driver_init(void)
->  		goto err_fail;
->  
->  	drv_data = kzalloc(sizeof(*drv_data), GFP_KERNEL);
-> -	if (IS_ERR(drv_data))
-> +	if (!drv_data)
->  		return -ENOMEM;
->  
->  	amdtee = kzalloc(sizeof(*amdtee), GFP_KERNEL);
-> -	if (IS_ERR(amdtee)) {
-> +	if (!amdtee) {
->  		rc = -ENOMEM;
->  		goto err_kfree_drv_data;
->  	}
-> 
+Tony, what do you think?
+
+>> +		}
+>>  	} else {
+>>  		od->cfg = &default_cfg;
+>>  
+>>
+
+- Péter
+
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki

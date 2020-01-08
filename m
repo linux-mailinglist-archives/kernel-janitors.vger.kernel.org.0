@@ -2,93 +2,76 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98EC0133EA9
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 10:54:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 185B8133F13
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 11:17:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727697AbgAHJyV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Jan 2020 04:54:21 -0500
-Received: from pio-pvt-msa1.bahnhof.se ([79.136.2.40]:46686 "EHLO
-        pio-pvt-msa1.bahnhof.se" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726368AbgAHJyV (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Jan 2020 04:54:21 -0500
-X-Greylist: delayed 509 seconds by postgrey-1.27 at vger.kernel.org; Wed, 08 Jan 2020 04:54:20 EST
-Received: from localhost (localhost [127.0.0.1])
-        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTP id 2550D3F4AC;
-        Wed,  8 Jan 2020 10:45:49 +0100 (CET)
-Authentication-Results: pio-pvt-msa1.bahnhof.se;
-        dkim=pass (1024-bit key; unprotected) header.d=flawful.org header.i=@flawful.org header.b="hSnh9X1+";
-        dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at bahnhof.se
-X-Spam-Flag: NO
-X-Spam-Score: -2.099
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.099 tagged_above=-999 required=6.31
-        tests=[BAYES_00=-1.9, DKIM_SIGNED=0.1, DKIM_VALID=-0.1,
-        DKIM_VALID_AU=-0.1, DKIM_VALID_EF=-0.1, URIBL_BLOCKED=0.001]
-        autolearn=ham autolearn_force=no
-Received: from pio-pvt-msa1.bahnhof.se ([127.0.0.1])
-        by localhost (pio-pvt-msa1.bahnhof.se [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id 0b6EX6t8R-PL; Wed,  8 Jan 2020 10:45:48 +0100 (CET)
-Received: from flawful.org (ua-84-217-220-205.bbcust.telenor.se [84.217.220.205])
-        (Authenticated sender: mb274189)
-        by pio-pvt-msa1.bahnhof.se (Postfix) with ESMTPA id 29CF53F322;
-        Wed,  8 Jan 2020 10:45:46 +0100 (CET)
-Received: by flawful.org (Postfix, from userid 1001)
-        id BF694234; Wed,  8 Jan 2020 10:45:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flawful.org; s=mail;
-        t=1578476745; bh=b8ABfWyk18Jn/VMg7nHgfFeaiagOwhh3UDBYQ/J+09E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=hSnh9X1+rz2qVIYAFOcfVuwVtxldo91kSc4g8LK9aEstmdx7AP7hCJrLIcHtKOOVw
-         BFwBtd0SgGnYsXCvD++zJ/AWkh/PaG1B3baUHRNORGjy1Jdjg3+n0TmenXSkEtVGcf
-         C5foHsAQKMQcRLeA098+/L3Faybs5R/aDOLi+pcA=
-Date:   Wed, 8 Jan 2020 10:45:45 +0100
-From:   Niklas Cassel <nks@flawful.org>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <bjorn.andersson@linaro.org>,
-        Kevin Hilman <khilman@kernel.org>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        Nishanth Menon <nm@ti.com>, linux-arm-msm@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] power: avs: qcom-cpr: remove duplicated include
- from qcom-cpr.c
-Message-ID: <20200108094545.o5o4tpwt4eu5fpye@flawful.org>
-References: <20200108015849.54289-1-yuehaibing@huawei.com>
+        id S1727502AbgAHKRZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Jan 2020 05:17:25 -0500
+Received: from mx2.suse.de ([195.135.220.15]:44898 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726368AbgAHKRZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 8 Jan 2020 05:17:25 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id C179EAE44;
+        Wed,  8 Jan 2020 10:17:23 +0000 (UTC)
+Date:   Wed, 8 Jan 2020 11:17:19 +0100
+From:   Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Shuah Khan <shuah@kernel.org>, Tejun Heo <tj@kernel.org>,
+        Roman Gushchin <guro@fb.com>,
+        Alex Shi <alex.shi@linux.alibaba.com>,
+        linux-kselftest@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] selftests: Uninitialized variable in
+ test_cgcore_proc_migration()
+Message-ID: <20200108101719.GA9281@blackbody.suse.cz>
+References: <20200108054629.jtq36feyhxsfhf6u@kili.mountain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="UlVJffcvxoiEqYs2"
 Content-Disposition: inline
-In-Reply-To: <20200108015849.54289-1-yuehaibing@huawei.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20200108054629.jtq36feyhxsfhf6u@kili.mountain>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jan 08, 2020 at 01:58:49AM +0000, YueHaibing wrote:
-> Remove duplicated include.
-> 
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> ---
->  drivers/power/avs/qcom-cpr.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/power/avs/qcom-cpr.c b/drivers/power/avs/qcom-cpr.c
-> index 9247f53550b3..9b1d7d919ee9 100644
-> --- a/drivers/power/avs/qcom-cpr.c
-> +++ b/drivers/power/avs/qcom-cpr.c
-> @@ -25,7 +25,6 @@
->  #include <linux/regulator/consumer.h>
->  #include <linux/clk.h>
->  #include <linux/nvmem-consumer.h>
-> -#include <linux/bitops.h>
->  
->  /* Register Offsets for RB-CPR and Bit Definitions */
-> 
-> 
-> 
 
-Thank you for this fix.
+--UlVJffcvxoiEqYs2
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Acked-by: Niklas Cassel <nks@flawful.org>
+On Wed, Jan 08, 2020 at 08:46:29AM +0300, Dan Carpenter <dan.carpenter@orac=
+le.com> wrote:
+> The "c_threads" variable is used in the error handling code before it
+> has been initialized
+Thank you for fixing this.
+
+Acked-by: Michal Koutn=FD <mkoutny@suse.com>
+
+Michal
+
+--UlVJffcvxoiEqYs2
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: Digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEEoQaUCWq8F2Id1tNia1+riC5qSgFAl4VrCsACgkQia1+riC5
+qSgepg//at1PmnH0lpT7396h7qrWalZ4jjmOy4BAYL9bIz/HPJL3CLWMCkCC1Dmv
+Egja2j6GHvgEiOpHkOlFlgqrOyz0oFpt3p0VfBlhPNtRoy4LtjniopYgO4vQj6eM
+tr7AsHEpwaGTYSgxxs5RtSwA/Ddn7N3pnrB8VdSsJ396HffBMK4yIjYfLsGCVRst
+0l6z5pRW1eiS4BKjbk3FSJ7ga6e0+Fgb+YcLBjEQ9W1rOYTjpxOt4RC5+Dd6SosS
+P4HT80ftJw71aljyjLp5gdR3Pvc/wubw2IQf5EwFvre/k20Ct8a5osGNXlAo5a+h
+ElNvs/6fHarqR4BSrX4J+IhDv42pIvyTZtBw8oXudN0wft5li6qWzKQH18Cwrfp/
+6rSaE2ArTGRsM1A9IFGsKmi808OHEZfTcR/PcLDt2J19F918dgi8ymseOgzHFr94
+NV4sUiTq7pu7SmUGL7NeAq9yUl1gJGKFIn6qyWq5U7q9dK1Au8krQ5wmtrI65hRT
+Gs+jWygma54Vb7jdKYKC6SZGvrC2DN8iuQdzY+NoqrSNirZv9+C5O+3hib2+DX7x
+90GYj7j0jbCueAswzsAnS0o5vuPWjFffKizeTvH8m4WoN4HbcBpu/8qR7y+m+2P6
+PCvttwIx9lfv/W7MW+W0Y5xJUjD7XI1Bdnhr1YUPAguhb0sLW7k=
+=40fW
+-----END PGP SIGNATURE-----
+
+--UlVJffcvxoiEqYs2--

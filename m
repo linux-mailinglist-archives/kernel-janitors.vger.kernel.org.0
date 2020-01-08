@@ -2,78 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A91D1348CB
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 18:06:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE459134AF7
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 19:51:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729579AbgAHRGY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Jan 2020 12:06:24 -0500
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:35316 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729540AbgAHRGY (ORCPT
+        id S1729487AbgAHSv3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Jan 2020 13:51:29 -0500
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:32928 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729479AbgAHSv3 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Jan 2020 12:06:24 -0500
-Received: by mail-lf1-f67.google.com with SMTP id 15so3013880lfr.2
-        for <kernel-janitors@vger.kernel.org>; Wed, 08 Jan 2020 09:06:23 -0800 (PST)
+        Wed, 8 Jan 2020 13:51:29 -0500
+Received: by mail-wm1-f66.google.com with SMTP id d139so296685wmd.0
+        for <kernel-janitors@vger.kernel.org>; Wed, 08 Jan 2020 10:51:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ZG5mwCvO/8hHzDnaJkWUXAlThWqWwO0oMCIc1jFVaF8=;
-        b=TS8kRNJ63oRSoj916IeOJ0PSYySbhpJVts40N/G6X/Liosb+K6ymAHraHW/2+OH/67
-         e3eJjovLYr3Ci6qG5WYWYT9rkVkqlI50jkBp3TP9GZRr2Oge/dVfEZaCDebNkdcyLppo
-         haAUiiVrcK7Y56QF9jZ571DcYLvG2NInKbOja7r62OAi/VqD7dt04zVVIFr8iE533lwp
-         AoTpiaJHNmxiLeGW0U08Rd0AZYoiqtEVqyQrTZHhXEIQbE3rCqdVjgisd27wysNXFasU
-         alVEi0kDrmLKaKWG1rBKga3afcDzjQrT1vO8vYiBRztodkPw73R0gKFEfOlvIP5IBvqb
-         STsg==
+        d=ffwll.ch; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=eN+hXr5eBKpt1ztp3NuaboZ7DHSPkAz5GKoRsde+TT4=;
+        b=XMM6zGO1EO3trQQoyvOMb4qSTOIfv57RK7vkC7tFnQ+RYj1va/QNSJfervVIMsSceW
+         40SV/C8QiJeglg46Za9VvO1fWS6GNDBORleOlrIXRDWZJz1jso0jBEj10fWHqlM6J5Ts
+         KThwjWnrINw8j6Hw9qYjpYnEiNRLpEknKyDiU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZG5mwCvO/8hHzDnaJkWUXAlThWqWwO0oMCIc1jFVaF8=;
-        b=isgmwoyOfvhob1qWsAemHDXy3SquzdobmFhX4TsCE3iaJnQRgxuGe6iAOt29gIQ3i8
-         GKHPPWAoTc/YVjBNtpOyEYvOsFb3EetE2RPhVLFOGFIQ3I486XUWv/c54EIR5KeGwqc9
-         boPJbF/JwypYFgtO/BQjAyOuYYpO/8CBftdaUTBqjcJ+lz4Cmz6tulqBdmehL9wmcIZY
-         Uk+suDKNe3y/f0B4GpDNJPm/mhdPhzAjuNmyzTJqZaI+mhg2AgEk4AtVRmu8hTin7Ghb
-         XbZ0f45jQtDNCA3QcbcdtYcrw4hN40R2mGNjwfH1PC7yTvs0RaZan9VcFlZKNsBcW65w
-         ii7g==
-X-Gm-Message-State: APjAAAU4n9O79P1GSe3iT6FanY5ixSbl0x7rRjWZBI4UUawxtfrC+OHQ
-        JkT4Z9SoKS37TvvDvIBlST+T2tQCTeE0yD1rtVa52Q==
-X-Google-Smtp-Source: APXvYqy4CrhXJ4b/8g3RMkCam7ca/MhZfkbfOrlpD7xBB9Cw6TsTScAGa+ViToMmlgE2pl5ieDU41zioyn0u52uwhcU=
-X-Received: by 2002:ac2:5e78:: with SMTP id a24mr3376017lfr.5.1578503182554;
- Wed, 08 Jan 2020 09:06:22 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=eN+hXr5eBKpt1ztp3NuaboZ7DHSPkAz5GKoRsde+TT4=;
+        b=PO4jlvePXyDo35YAqh8vWN2YcjUKeIStXGWPJ9G3g51Lw/ZVEroDgWdoiXWPNyoN2X
+         vs3UpPwuDkh44vDASjLANW71kOWdBDvb646QdHWa5DhZqzDMPJ6FKrnhm+jCXFRMDjPZ
+         QHIAVbNbPLRjsuhtcPxR0hTK/pnluK/2KMjTDXQ1GwQxHm/Ri2gfHCcWjvKJBUGl+6fO
+         0hYypUxnmRJTZCLrOEEl7j+9hyoC7LPjhvwD4GwbLYkPP71GK2z9OfAbJcxCZONbT4pG
+         /gc5TLibsp2BZHdZHA0F5yE7Z7Dwckd1fnqbdwTutxX07B/ZhnLNByXIjE9OchJHEC8T
+         ylSQ==
+X-Gm-Message-State: APjAAAUZdccrd+5402I/SFo0CCTR17gx0+wxd51ENM4wF0og6kQUBnA1
+        GM9YDvoUUjPVEtpm2JYa1c/WwQ==
+X-Google-Smtp-Source: APXvYqx7yGU3B6sFjaxjZa1yKnn8UVAi8M+Lwg0iGqjTkYZsweb3pFt3NLxBlU+XKuFu6VSDExRLKw==
+X-Received: by 2002:a1c:f210:: with SMTP id s16mr15176wmc.57.1578509488026;
+        Wed, 08 Jan 2020 10:51:28 -0800 (PST)
+Received: from phenom.ffwll.local ([2a02:168:564b:0:7567:bb67:3d7f:f863])
+        by smtp.gmail.com with ESMTPSA id p18sm29510wmb.8.2020.01.08.10.51.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 08 Jan 2020 10:51:27 -0800 (PST)
+Date:   Wed, 8 Jan 2020 19:51:25 +0100
+From:   Daniel Vetter <daniel@ffwll.ch>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Maxime Ripard <mripard@kernel.org>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] gpu/drm: clean up white space in
+ drm_legacy_lock_master_cleanup()
+Message-ID: <20200108185125.GJ43062@phenom.ffwll.local>
+References: <20200108054312.yzlj5wmbdktejgob@kili.mountain>
 MIME-Version: 1.0
-References: <20200108015322.51103-1-yuehaibing@huawei.com>
-In-Reply-To: <20200108015322.51103-1-yuehaibing@huawei.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 8 Jan 2020 18:06:11 +0100
-Message-ID: <CACRpkdYz0UwAj0Ncs9SKWbN8vN-5E14GHL2KkANMb6H5OqEW7A@mail.gmail.com>
-Subject: Re: [PATCH -next] leds: leds-bd2802: remove set but not used variable 'pdata'
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>, Dan Murphy <dmurphy@ti.com>,
-        Linux LED Subsystem <linux-leds@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200108054312.yzlj5wmbdktejgob@kili.mountain>
+X-Operating-System: Linux phenom 5.3.0-3-amd64 
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jan 8, 2020 at 2:57 AM YueHaibing <yuehaibing@huawei.com> wrote:
+On Wed, Jan 08, 2020 at 08:43:12AM +0300, Dan Carpenter wrote:
+> We moved this code to a different file and accidentally deleted a
+> newline.
+> 
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-> Fixes gcc '-Wunused-but-set-variable' warning:
->
-> drivers/leds/leds-bd2802.c: In function 'bd2802_probe':
-> drivers/leds/leds-bd2802.c:663:35: warning:
->  variable 'pdata' set but not used [-Wunused-but-set-variable]
->
-> commit 4c3718f9d6a6 ("leds: bd2802: Convert to use GPIO descriptors")
-> left behind this unused variable.
->
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+Oops, thanks for catching, patch applied!
+-Daniel
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+> ---
+>  drivers/gpu/drm/drm_lock.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/drm_lock.c b/drivers/gpu/drm/drm_lock.c
+> index 2e8ce99d0baa..2c79e8199e3c 100644
+> --- a/drivers/gpu/drm/drm_lock.c
+> +++ b/drivers/gpu/drm/drm_lock.c
+> @@ -360,7 +360,8 @@ void drm_legacy_lock_master_cleanup(struct drm_device *dev, struct drm_master *m
+>  	/*
+>  	 * Since the master is disappearing, so is the
+>  	 * possibility to lock.
+> -	 */	mutex_lock(&dev->struct_mutex);
+> +	 */
+> +	mutex_lock(&dev->struct_mutex);
+>  	if (master->lock.hw_lock) {
+>  		if (dev->sigdata.lock == master->lock.hw_lock)
+>  			dev->sigdata.lock = NULL;
+> -- 
+> 2.11.0
+> 
 
-Yours,
-Linus Walleij
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch

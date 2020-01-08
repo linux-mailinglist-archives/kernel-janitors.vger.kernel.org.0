@@ -2,31 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 734471338CA
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 02:57:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE80E1338DD
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 02:58:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726199AbgAHB5j (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jan 2020 20:57:39 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:8236 "EHLO huawei.com"
+        id S1726290AbgAHB6r (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 7 Jan 2020 20:58:47 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:8237 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725601AbgAHB5j (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jan 2020 20:57:39 -0500
-Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 065854DCD4BCE0D4F0B9;
-        Wed,  8 Jan 2020 09:57:36 +0800 (CST)
+        id S1726281AbgAHB6r (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 7 Jan 2020 20:58:47 -0500
+Received: from DGGEMS412-HUB.china.huawei.com (unknown [172.30.72.60])
+        by Forcepoint Email with ESMTP id 3B879F3BA94340F21B4D;
+        Wed,  8 Jan 2020 09:58:46 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 8 Jan 2020 09:57:26 +0800
+ DGGEMS412-HUB.china.huawei.com (10.3.19.212) with Microsoft SMTP Server id
+ 14.3.439.0; Wed, 8 Jan 2020 09:58:35 +0800
 From:   YueHaibing <yuehaibing@huawei.com>
-To:     Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-        Pavel Machek <pavel@ucw.cz>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Dan Murphy <dmurphy@ti.com>
-CC:     YueHaibing <yuehaibing@huawei.com>, <linux-leds@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] leds: leds-bd2802: remove set but not used variable 'pdata'
-Date:   Wed, 8 Jan 2020 01:53:22 +0000
-Message-ID: <20200108015322.51103-1-yuehaibing@huawei.com>
+To:     Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <linux-bluetooth@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH -next] Bluetooth: hci_qca: Remove set but not used variable 'opcode'
+Date:   Wed, 8 Jan 2020 01:54:31 +0000
+Message-ID: <20200108015431.51996-1-yuehaibing@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -40,38 +39,39 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 Fixes gcc '-Wunused-but-set-variable' warning:
 
-drivers/leds/leds-bd2802.c: In function 'bd2802_probe':
-drivers/leds/leds-bd2802.c:663:35: warning:
- variable 'pdata' set but not used [-Wunused-but-set-variable]
+drivers/bluetooth/hci_qca.c: In function 'qca_controller_memdump':
+drivers/bluetooth/hci_qca.c:980:6: warning:
+ variable 'opcode' set but not used [-Wunused-but-set-variable]
 
-commit 4c3718f9d6a6 ("leds: bd2802: Convert to use GPIO descriptors")
-left behind this unused variable.
+It is never used since commit d841502c79e3 ("Bluetooth: hci_qca: Collect
+controller memory dump during SSR"), so remove it.
 
+Reported-by: Hulk Robot <hulkci@huawei.com>
 Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/leds/leds-bd2802.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/bluetooth/hci_qca.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/leds/leds-bd2802.c b/drivers/leds/leds-bd2802.c
-index bd61a823d0ca..8bbaef5a2986 100644
---- a/drivers/leds/leds-bd2802.c
-+++ b/drivers/leds/leds-bd2802.c
-@@ -660,7 +660,6 @@ static int bd2802_probe(struct i2c_client *client,
- 			const struct i2c_device_id *id)
- {
- 	struct bd2802_led *led;
--	struct bd2802_led_platform_data *pdata;
- 	int ret, i;
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index 9392cc7f9908..c9a0c55ef832 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -977,7 +977,7 @@ static void qca_controller_memdump(struct work_struct *work)
+ 	struct qca_dump_size *dump;
+ 	char *memdump_buf;
+ 	char nullBuff[QCA_DUMP_PACKET_SIZE] = { 0 };
+-	u16 opcode, seq_no;
++	u16 seq_no;
+ 	u32 dump_size;
  
- 	led = devm_kzalloc(&client->dev, sizeof(struct bd2802_led), GFP_KERNEL);
-@@ -668,7 +667,6 @@ static int bd2802_probe(struct i2c_client *client,
- 		return -ENOMEM;
+ 	while ((skb = skb_dequeue(&qca->rx_memdump_q))) {
+@@ -993,7 +993,6 @@ static void qca_controller_memdump(struct work_struct *work)
  
- 	led->client = client;
--	pdata = led->pdata = dev_get_platdata(&client->dev);
- 	i2c_set_clientdata(client, led);
- 
- 	/*
+ 		qca->memdump_state = QCA_MEMDUMP_COLLECTING;
+ 		cmd_hdr = (void *) skb->data;
+-		opcode = __le16_to_cpu(cmd_hdr->opcode);
+ 		seq_no = __le16_to_cpu(cmd_hdr->seq_no);
+ 		skb_pull(skb, sizeof(struct qca_memdump_event_hdr));
 
 
 

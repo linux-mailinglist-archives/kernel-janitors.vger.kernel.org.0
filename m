@@ -2,119 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96903134169
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 13:05:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AAFA61341C2
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 13:31:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727319AbgAHMFH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Jan 2020 07:05:07 -0500
-Received: from mout.kundenserver.de ([212.227.126.135]:36843 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726252AbgAHMFH (ORCPT
+        id S1727975AbgAHMbO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Jan 2020 07:31:14 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:34416 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727967AbgAHMbN (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Jan 2020 07:05:07 -0500
-Received: from [192.168.1.155] ([95.114.105.36]) by mrelayeu.kundenserver.de
- (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1MF3Y8-1ivoyl0GfA-00FPKS; Wed, 08 Jan 2020 13:05:03 +0100
-Subject: Re: Improving documentation for programming interfaces
-To:     "Theodore Y. Ts'o" <tytso@mit.edu>,
-        Markus Elfring <Markus.Elfring@web.de>
-Cc:     linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-References: <350cd156-9080-24fe-c49e-96e758d3ca45@web.de>
- <20191220151945.GD59959@mit.edu>
-From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Message-ID: <17931ddd-76ec-d342-912c-faed6084e863@metux.net>
-Date:   Wed, 8 Jan 2020 13:04:31 +0100
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.0
+        Wed, 8 Jan 2020 07:31:13 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1578486673; h=Message-ID: References: In-Reply-To: Subject:
+ Cc: To: From: Date: Content-Transfer-Encoding: Content-Type:
+ MIME-Version: Sender; bh=7BY+YDpvD+FCZPPlZGH7NQ/yH7pyhZGmScGsJHBppFg=;
+ b=X4bDFRjQ4QpiMwCe0rxuq2h7QRAWz0d4WkWjkJ9zP+fthhPsxtley2DiQeNuwR2pQiIJRg26
+ YIn9mRDw0qTjh4c3RhXZl5NtN6dXz/27YYq+sld/phxUzBoG9ewKqRwBRWKyyo9t7anBuU9o
+ t7vJRGsKUQV0U1/T++CN53VOJxI=
+X-Mailgun-Sending-Ip: 104.130.122.25
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e15cb8e.7f5f3e7c85e0-smtp-out-n03;
+ Wed, 08 Jan 2020 12:31:10 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 4B977C447A3; Wed,  8 Jan 2020 12:31:10 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-1.0 required=2.0 tests=ALL_TRUSTED,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.0
+Received: from mail.codeaurora.org (localhost.localdomain [127.0.0.1])
+        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: bgodavar)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 526B1C43383;
+        Wed,  8 Jan 2020 12:31:09 +0000 (UTC)
 MIME-Version: 1.0
-In-Reply-To: <20191220151945.GD59959@mit.edu>
-Content-Type: text/plain; charset=utf-8
-Content-Language: tl
-Content-Transfer-Encoding: 8bit
-X-Provags-ID: V03:K1:B81xQSAt90W7lKrrHbjV2P/OStxg7GmU8RRfjIZnD94fGPlyUN/
- ECLkuwC3UHDDAAYknhhOpl1QAl2Xy7sc9ZtfITFQVmbXQHsh3DwREx9a1hCttSmo7eqTmW1
- YqfL/rGoi/9eJGscTWr1GZ9Nf3OZQDn2ab6Z5wRutxW1oln/RAjdMZxxWBSJeyWREOz0a8j
- vhEBidMjdWEj2dZeh0V2Q==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:CRH5PUTDk9Q=:i9V6hMthikniIpFD7M0JuY
- 8rbpaLYYW5YSM+oslMj8zDgENE9stI9O8t4TyNaqDDQH27rCX/kbm39kt2GuEyXiTm84bc1Uz
- 5dPfhv5xYU+rShdyG7SodeqiZODv11UpnTI/O6gBJLZIdK4Eg4Enom0gmCYuRZduEsjVtLUpN
- fnbpTjouqi0wSRSpiJnLFnL1elvxQsE9X6Vzo0zQeDX1NrFCrPh9X5K52/Cysqp7y1tsbiUGA
- w9F0ZExYweZF2yS8e8lwdbwIyR8Fm4ZlyYj4qwwYimsdAxB0H3TAa2CCuacOlepJ2O79gpsBH
- seSXLOYR0TYqjCm/v210A0oz3PfvFQwwQeXe21GxQZ6vLsWaQE6Kvynjit3j0vyA6DbxCkXSP
- WYJThR3FpTSTBaFhvIyLk2TxmA9E75Mp+mv6y+f72QsZB4aEUb2EEqOuBa5w7AxEqAcZayVOP
- bCOlLDemlsa96wcOLvRHDqztiMbEyzH33RPY7Rw1nkd+VxSyOCV6fFNaNhNjfJvff6EPI5thr
- PvgkJxpNGBwnAyeIaA/hTq9p5Z27W4Ucy0oEiP+8mIyVFmBU3DcZCIpuZEry4xyM83BcNbyVH
- bAioHzLIYZSl4xE84r8K334nb2RQzanNLlL/uBsM7gs+Holjp6hff2Sp27HR/NPhtRl8YF0yB
- bEnUnbkya9B9zgIhmLEaCbzD3EYCFxyQiVMpJ/XtgbU2BOxMku104jgbke99PPgQ6SbJ/nCxd
- BWL70pRhPhvrgiIP8KbKqesNflqre5C8HPBLM/0dMtwgR0Wp5Xasdy2T1N82dwus8rSOZHFoU
- ktn5UQvxOixr84drSRBmdE7nvnbXtUCzrcd/NElFCQON7Uy8TFIPosVqrXX5k1PqMWB+DK21N
- MVhIqNhdsAH690qpOZDA==
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Wed, 08 Jan 2020 18:01:09 +0530
+From:   bgodavar@codeaurora.org
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Marcel Holtmann <marcel@holtmann.org>,
+        Johan Hedberg <johan.hedberg@gmail.com>,
+        linux-bluetooth@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        hemantg@codeaurora.org
+Subject: Re: [PATCH -next] Bluetooth: hci_qca: Use vfree() instead of kfree()
+In-Reply-To: <20200108035931.51209-1-weiyongjun1@huawei.com>
+References: <20200108035931.51209-1-weiyongjun1@huawei.com>
+Message-ID: <79e6ab011f21bc6edad81fc8a01aaf9a@codeaurora.org>
+X-Sender: bgodavar@codeaurora.org
+User-Agent: Roundcube Webmail/1.3.9
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 20.12.19 16:19, Theodore Y. Ts'o wrote:
+On 2020-01-08 09:29, Wei Yongjun wrote:
+> Use vfree() instead of kfree() to free vmalloc()
+> allocated data.
+> 
+> Fixes: d841502c79e3 ("Bluetooth: hci_qca: Collect controller memory
+> dump during SSR")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  drivers/bluetooth/hci_qca.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+> index 9392cc7f9908..a17260641283 100644
+> --- a/drivers/bluetooth/hci_qca.c
+> +++ b/drivers/bluetooth/hci_qca.c
+> @@ -529,7 +529,7 @@ static void hci_memdump_timeout(struct timer_list 
+> *t)
+>  	bt_dev_err(hu->hdev, "clearing allocated memory due to memdump 
+> timeout");
+>  	/* Inject hw error event to reset the device and driver. */
+>  	hci_reset_dev(hu->hdev);
+> -	kfree(memdump_buf);
+> +	vfree(memdump_buf);
+>  	kfree(qca_memdump);
+>  	qca->memdump_state = QCA_MEMDUMP_TIMEOUT;
+>  	del_timer(&qca->memdump_timer);
+> @@ -1437,7 +1437,7 @@ static void qca_wait_for_dump_collection(struct
+> hci_dev *hdev)
+>  		bt_dev_err(hu->hdev, "Clearing the buffers due to timeout");
+>  		if (qca_memdump)
+>  			memdump_buf = qca_memdump->memdump_buf_tail;
+> -		kfree(memdump_buf);
+> +		vfree(memdump_buf);
+>  		kfree(qca_memdump);
+>  		qca->memdump_state = QCA_MEMDUMP_TIMEOUT;
+>  		del_timer(&qca->memdump_timer);
 
-Hi folks,
-
-> On Fri, Dec 20, 2019 at 02:30:10PM +0100, Markus Elfring wrote:
->> Linux supports some programming interfaces. Several functions are provided
->> as usual. Their application documentation is an ongoing development challenge.
->>
->> Now I would like to clarify possibilities for the specification of desired
->> information together with data types besides properties which are handled by
->> the programming language “C” so far.
-
-@Markus:
-
-hmm, maybe we could add some kinda-OOP-style metadata into the type
-documentation ? Or maybe extend doxygen to crossref types vs functions
-operating on them.
-
->> It seems that no customised attributes are supported at the moment.
->> Thus I imagine to specify helpful annotations as macros.
-
-Do you mean _attribute__(...) or comments ?
-
-<snip>
-
-> It's unclear to me what you are requesting/proposing?  Can you be a
-> bit more concrete?
-
-@Ted:
-
-I guess he's thinking about some kind of meta-language for expressing
-common things we know from oop-world, like ctors, dtors, getters, etc.
-
-
-Maybe some doxygen experts here, who could tell what we already could
-extract from existing sources ?
-
-
-For start, I'd like to propose a few rules:
-
-* consistent naming of 'release' functions (AFAIK, many of them are
-  already named <foo>_put()).
-* for each non-trivial (non-private) object/struct, there should be
-  a corresponding release function (even if it's just an alias to
-  kfree()
-* consistent nameing of list-type structs, so generic macros can
-  be used on the struct itself (instead just a container list header
-  struct)
-
-
-
---mtx
-
--- 
----
-Hinweis: unverschlüsselte E-Mails können leicht abgehört und manipuliert
-werden ! Für eine vertrauliche Kommunikation senden Sie bitte ihren
-GPG/PGP-Schlüssel zu.
----
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+Reviewed-by: Balakrishna Godavarthi <bgodavar@codeaurora.org>

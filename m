@@ -2,88 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D51DC134F45
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 23:05:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FFBC134F5F
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 23:29:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726836AbgAHWFZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Jan 2020 17:05:25 -0500
-Received: from muru.com ([72.249.23.125]:50508 "EHLO muru.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726179AbgAHWFZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Jan 2020 17:05:25 -0500
-Received: from atomide.com (localhost [127.0.0.1])
-        by muru.com (Postfix) with ESMTPS id B46DC80C5;
-        Wed,  8 Jan 2020 22:06:04 +0000 (UTC)
-Date:   Wed, 8 Jan 2020 14:05:20 -0800
-From:   Tony Lindgren <tony@atomide.com>
-To:     Peter Ujfalusi <peter.ujfalusi@ti.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Vinod Koul <vkoul@kernel.org>, dmaengine@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] dmaengine: ti: omap-dma: don't allow a null
- od->plat pointer to be dereferenced
-Message-ID: <20200108220520.GJ5885@atomide.com>
-References: <20200106122325.39121-1-colin.king@canonical.com>
- <b7200998-c8e7-0841-ce91-ad3834c63cae@ti.com>
- <f6b24302-a90e-7aa5-b2e8-3c459e6d0598@ti.com>
+        id S1727352AbgAHW3H (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Jan 2020 17:29:07 -0500
+Received: from mail-ot1-f42.google.com ([209.85.210.42]:33432 "EHLO
+        mail-ot1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726390AbgAHW3H (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 8 Jan 2020 17:29:07 -0500
+Received: by mail-ot1-f42.google.com with SMTP id b18so5277931otp.0;
+        Wed, 08 Jan 2020 14:29:07 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+a/lGXYfLEUg+4efxvfGj3tzvmxmZTietPHkfeZLMXY=;
+        b=F1XyY4ZBUrK9RamkVbpnu0sachGo0KbTNBmfChaPL/+U0izr6UwJ0941Lj8Dp2a9cy
+         VEb+trRn6MGg6sPGK8+H8jUYQdsc3kWWWZkVQBQDKAcTpU+bEzPrwd/E69kipHM0GWDN
+         3l2xwrmWRltXHTnZuM88mIX4E+WiQd6MCQanQR7zVycAiiw8BYMpZENAvcY1Nem2TEzY
+         CY02Dfl9QHfKmwyM5Sd+goC7EiAS0d7xKXNZOwC5UW7dCocbRMfQehmRu9SjzDXu2fRa
+         L3bV2682OF7zdvHGhpq6TZIS81yunRkothtncpjc5l/9KgYOhHewRYjRccE5RqCbXBnw
+         mtXA==
+X-Gm-Message-State: APjAAAUyhj3M4USjiufZboGp7Umag/wVy33kwbpecHkxYnKdd81hk3To
+        CrQKAUsnrUpFJ6cTW/eY76ddulCeHmFdAx1APFN/TA==
+X-Google-Smtp-Source: APXvYqwvIgS83UK9jzFqkaszIl5FpXWSY+MfLb4T3V5879VzzZHhi+yzF4uTQb4OpUTqlO9IJwE+cbz0t+TFbTwupDU=
+X-Received: by 2002:a05:6830:1e67:: with SMTP id m7mr6087797otr.262.1578522546582;
+ Wed, 08 Jan 2020 14:29:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f6b24302-a90e-7aa5-b2e8-3c459e6d0598@ti.com>
+References: <20200108015849.54289-1-yuehaibing@huawei.com> <20200108094545.o5o4tpwt4eu5fpye@flawful.org>
+In-Reply-To: <20200108094545.o5o4tpwt4eu5fpye@flawful.org>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Wed, 8 Jan 2020 23:28:55 +0100
+Message-ID: <CAJZ5v0g3PXB=iCad20+Xsmbn5ewjFNB6WTURe-FhDLJrb3rXZw@mail.gmail.com>
+Subject: Re: [PATCH -next] power: avs: qcom-cpr: remove duplicated include
+ from qcom-cpr.c
+To:     Niklas Cassel <nks@flawful.org>, YueHaibing <yuehaibing@huawei.com>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Kevin Hilman <khilman@kernel.org>,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+        Nishanth Menon <nm@ti.com>,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-* Peter Ujfalusi <peter.ujfalusi@ti.com> [200108 07:20]:
-> Colin, Tony,
-> 
-> On 07/01/2020 13.59, Peter Ujfalusi wrote:
-> > Colin,
-> > 
-> > On 06/01/2020 14.23, Colin King wrote:
-> >> From: Colin Ian King <colin.king@canonical.com>
-> >>
-> >> Currently when the call to dev_get_platdata returns null the driver issues
-> >> a warning and then later dereferences the null pointer.  Avoid this issue
-> >> by returning -EPROBE_DEFER errror rather when the platform data is null.
-> > 
-> > Thank you for noticing it!
-> > 
-> > Acked-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
-> > 
-> >> Addresses-Coverity: ("Dereference after null check")
-> >> Fixes: 211010aeb097 ("dmaengine: ti: omap-dma: Pass sdma auxdata to driver and use it")
-> >> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> >> ---
-> >>  drivers/dma/ti/omap-dma.c | 4 +++-
-> >>  1 file changed, 3 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/dma/ti/omap-dma.c b/drivers/dma/ti/omap-dma.c
-> >> index fc8f7b2fc7b3..335c3fa7a3b1 100644
-> >> --- a/drivers/dma/ti/omap-dma.c
-> >> +++ b/drivers/dma/ti/omap-dma.c
-> >> @@ -1658,8 +1658,10 @@ static int omap_dma_probe(struct platform_device *pdev)
-> >>  	if (conf) {
-> >>  		od->cfg = conf;
-> >>  		od->plat = dev_get_platdata(&pdev->dev);
-> >> -		if (!od->plat)
-> >> +		if (!od->plat) {
-> >>  			dev_warn(&pdev->dev, "no sdma auxdata needed?\n");
-> >> +			return -EPROBE_DEFER;
-> 
-> I think we should make the print as dev_err("&pdev->dev,
-> "omap_system_dma_plat_info is missing") and return with -ENODEV. The
-> omap_system_dma_plat_info is _needed_ and if we have booted with device
-> tree it is not going to appear later.
-> 
-> Tony, what do you think?
+On Wed, Jan 8, 2020 at 10:45 AM Niklas Cassel <nks@flawful.org> wrote:
+>
+> On Wed, Jan 08, 2020 at 01:58:49AM +0000, YueHaibing wrote:
+> > Remove duplicated include.
+> >
+> > Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> > ---
+> >  drivers/power/avs/qcom-cpr.c | 1 -
+> >  1 file changed, 1 deletion(-)
+> >
+> > diff --git a/drivers/power/avs/qcom-cpr.c b/drivers/power/avs/qcom-cpr.c
+> > index 9247f53550b3..9b1d7d919ee9 100644
+> > --- a/drivers/power/avs/qcom-cpr.c
+> > +++ b/drivers/power/avs/qcom-cpr.c
+> > @@ -25,7 +25,6 @@
+> >  #include <linux/regulator/consumer.h>
+> >  #include <linux/clk.h>
+> >  #include <linux/nvmem-consumer.h>
+> > -#include <linux/bitops.h>
+> >
+> >  /* Register Offsets for RB-CPR and Bit Definitions */
+> >
+> >
+> >
+>
+> Thank you for this fix.
+>
+> Acked-by: Niklas Cassel <nks@flawful.org>
 
-Yes makes sense, the auxdata is needed for the quirks for now.
-Eventually the quirks can be set directly in the dmaengine driver
-based on compatible and soc_device_match().
-
-Regards,
-
-Tony
+Applied, thanks!

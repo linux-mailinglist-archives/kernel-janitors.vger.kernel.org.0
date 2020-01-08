@@ -2,76 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 185B8133F13
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 11:17:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96903134169
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 13:05:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727502AbgAHKRZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Jan 2020 05:17:25 -0500
-Received: from mx2.suse.de ([195.135.220.15]:44898 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726368AbgAHKRZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Jan 2020 05:17:25 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id C179EAE44;
-        Wed,  8 Jan 2020 10:17:23 +0000 (UTC)
-Date:   Wed, 8 Jan 2020 11:17:19 +0100
-From:   Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Shuah Khan <shuah@kernel.org>, Tejun Heo <tj@kernel.org>,
-        Roman Gushchin <guro@fb.com>,
-        Alex Shi <alex.shi@linux.alibaba.com>,
-        linux-kselftest@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] selftests: Uninitialized variable in
- test_cgcore_proc_migration()
-Message-ID: <20200108101719.GA9281@blackbody.suse.cz>
-References: <20200108054629.jtq36feyhxsfhf6u@kili.mountain>
+        id S1727319AbgAHMFH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Jan 2020 07:05:07 -0500
+Received: from mout.kundenserver.de ([212.227.126.135]:36843 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726252AbgAHMFH (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 8 Jan 2020 07:05:07 -0500
+Received: from [192.168.1.155] ([95.114.105.36]) by mrelayeu.kundenserver.de
+ (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MF3Y8-1ivoyl0GfA-00FPKS; Wed, 08 Jan 2020 13:05:03 +0100
+Subject: Re: Improving documentation for programming interfaces
+To:     "Theodore Y. Ts'o" <tytso@mit.edu>,
+        Markus Elfring <Markus.Elfring@web.de>
+Cc:     linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+References: <350cd156-9080-24fe-c49e-96e758d3ca45@web.de>
+ <20191220151945.GD59959@mit.edu>
+From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
+Message-ID: <17931ddd-76ec-d342-912c-faed6084e863@metux.net>
+Date:   Wed, 8 Jan 2020 13:04:31 +0100
+User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="UlVJffcvxoiEqYs2"
-Content-Disposition: inline
-In-Reply-To: <20200108054629.jtq36feyhxsfhf6u@kili.mountain>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20191220151945.GD59959@mit.edu>
+Content-Type: text/plain; charset=utf-8
+Content-Language: tl
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:B81xQSAt90W7lKrrHbjV2P/OStxg7GmU8RRfjIZnD94fGPlyUN/
+ ECLkuwC3UHDDAAYknhhOpl1QAl2Xy7sc9ZtfITFQVmbXQHsh3DwREx9a1hCttSmo7eqTmW1
+ YqfL/rGoi/9eJGscTWr1GZ9Nf3OZQDn2ab6Z5wRutxW1oln/RAjdMZxxWBSJeyWREOz0a8j
+ vhEBidMjdWEj2dZeh0V2Q==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:CRH5PUTDk9Q=:i9V6hMthikniIpFD7M0JuY
+ 8rbpaLYYW5YSM+oslMj8zDgENE9stI9O8t4TyNaqDDQH27rCX/kbm39kt2GuEyXiTm84bc1Uz
+ 5dPfhv5xYU+rShdyG7SodeqiZODv11UpnTI/O6gBJLZIdK4Eg4Enom0gmCYuRZduEsjVtLUpN
+ fnbpTjouqi0wSRSpiJnLFnL1elvxQsE9X6Vzo0zQeDX1NrFCrPh9X5K52/Cysqp7y1tsbiUGA
+ w9F0ZExYweZF2yS8e8lwdbwIyR8Fm4ZlyYj4qwwYimsdAxB0H3TAa2CCuacOlepJ2O79gpsBH
+ seSXLOYR0TYqjCm/v210A0oz3PfvFQwwQeXe21GxQZ6vLsWaQE6Kvynjit3j0vyA6DbxCkXSP
+ WYJThR3FpTSTBaFhvIyLk2TxmA9E75Mp+mv6y+f72QsZB4aEUb2EEqOuBa5w7AxEqAcZayVOP
+ bCOlLDemlsa96wcOLvRHDqztiMbEyzH33RPY7Rw1nkd+VxSyOCV6fFNaNhNjfJvff6EPI5thr
+ PvgkJxpNGBwnAyeIaA/hTq9p5Z27W4Ucy0oEiP+8mIyVFmBU3DcZCIpuZEry4xyM83BcNbyVH
+ bAioHzLIYZSl4xE84r8K334nb2RQzanNLlL/uBsM7gs+Holjp6hff2Sp27HR/NPhtRl8YF0yB
+ bEnUnbkya9B9zgIhmLEaCbzD3EYCFxyQiVMpJ/XtgbU2BOxMku104jgbke99PPgQ6SbJ/nCxd
+ BWL70pRhPhvrgiIP8KbKqesNflqre5C8HPBLM/0dMtwgR0Wp5Xasdy2T1N82dwus8rSOZHFoU
+ ktn5UQvxOixr84drSRBmdE7nvnbXtUCzrcd/NElFCQON7Uy8TFIPosVqrXX5k1PqMWB+DK21N
+ MVhIqNhdsAH690qpOZDA==
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On 20.12.19 16:19, Theodore Y. Ts'o wrote:
 
---UlVJffcvxoiEqYs2
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi folks,
 
-On Wed, Jan 08, 2020 at 08:46:29AM +0300, Dan Carpenter <dan.carpenter@orac=
-le.com> wrote:
-> The "c_threads" variable is used in the error handling code before it
-> has been initialized
-Thank you for fixing this.
+> On Fri, Dec 20, 2019 at 02:30:10PM +0100, Markus Elfring wrote:
+>> Linux supports some programming interfaces. Several functions are provided
+>> as usual. Their application documentation is an ongoing development challenge.
+>>
+>> Now I would like to clarify possibilities for the specification of desired
+>> information together with data types besides properties which are handled by
+>> the programming language “C” so far.
 
-Acked-by: Michal Koutn=FD <mkoutny@suse.com>
+@Markus:
 
-Michal
+hmm, maybe we could add some kinda-OOP-style metadata into the type
+documentation ? Or maybe extend doxygen to crossref types vs functions
+operating on them.
 
---UlVJffcvxoiEqYs2
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: Digital signature
+>> It seems that no customised attributes are supported at the moment.
+>> Thus I imagine to specify helpful annotations as macros.
 
------BEGIN PGP SIGNATURE-----
+Do you mean _attribute__(...) or comments ?
 
-iQIzBAEBCAAdFiEEEoQaUCWq8F2Id1tNia1+riC5qSgFAl4VrCsACgkQia1+riC5
-qSgepg//at1PmnH0lpT7396h7qrWalZ4jjmOy4BAYL9bIz/HPJL3CLWMCkCC1Dmv
-Egja2j6GHvgEiOpHkOlFlgqrOyz0oFpt3p0VfBlhPNtRoy4LtjniopYgO4vQj6eM
-tr7AsHEpwaGTYSgxxs5RtSwA/Ddn7N3pnrB8VdSsJ396HffBMK4yIjYfLsGCVRst
-0l6z5pRW1eiS4BKjbk3FSJ7ga6e0+Fgb+YcLBjEQ9W1rOYTjpxOt4RC5+Dd6SosS
-P4HT80ftJw71aljyjLp5gdR3Pvc/wubw2IQf5EwFvre/k20Ct8a5osGNXlAo5a+h
-ElNvs/6fHarqR4BSrX4J+IhDv42pIvyTZtBw8oXudN0wft5li6qWzKQH18Cwrfp/
-6rSaE2ArTGRsM1A9IFGsKmi808OHEZfTcR/PcLDt2J19F918dgi8ymseOgzHFr94
-NV4sUiTq7pu7SmUGL7NeAq9yUl1gJGKFIn6qyWq5U7q9dK1Au8krQ5wmtrI65hRT
-Gs+jWygma54Vb7jdKYKC6SZGvrC2DN8iuQdzY+NoqrSNirZv9+C5O+3hib2+DX7x
-90GYj7j0jbCueAswzsAnS0o5vuPWjFffKizeTvH8m4WoN4HbcBpu/8qR7y+m+2P6
-PCvttwIx9lfv/W7MW+W0Y5xJUjD7XI1Bdnhr1YUPAguhb0sLW7k=
-=40fW
------END PGP SIGNATURE-----
+<snip>
 
---UlVJffcvxoiEqYs2--
+> It's unclear to me what you are requesting/proposing?  Can you be a
+> bit more concrete?
+
+@Ted:
+
+I guess he's thinking about some kind of meta-language for expressing
+common things we know from oop-world, like ctors, dtors, getters, etc.
+
+
+Maybe some doxygen experts here, who could tell what we already could
+extract from existing sources ?
+
+
+For start, I'd like to propose a few rules:
+
+* consistent naming of 'release' functions (AFAIK, many of them are
+  already named <foo>_put()).
+* for each non-trivial (non-private) object/struct, there should be
+  a corresponding release function (even if it's just an alias to
+  kfree()
+* consistent nameing of list-type structs, so generic macros can
+  be used on the struct itself (instead just a container list header
+  struct)
+
+
+
+--mtx
+
+-- 
+---
+Hinweis: unverschlüsselte E-Mails können leicht abgehört und manipuliert
+werden ! Für eine vertrauliche Kommunikation senden Sie bitte ihren
+GPG/PGP-Schlüssel zu.
+---
+Enrico Weigelt, metux IT consult
+Free software and Linux embedded engineering
+info@metux.net -- +49-151-27565287

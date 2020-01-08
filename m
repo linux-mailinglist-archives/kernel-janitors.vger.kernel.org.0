@@ -2,112 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FC23133C79
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 08:53:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 687C3133DD3
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 10:07:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726789AbgAHHx1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 8 Jan 2020 02:53:27 -0500
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:35495 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726180AbgAHHx1 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 8 Jan 2020 02:53:27 -0500
-Received: by mail-oi1-f195.google.com with SMTP id k4so1888668oik.2
-        for <kernel-janitors@vger.kernel.org>; Tue, 07 Jan 2020 23:53:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=camziUii29p0luivFHpHfiIofvd34K0/ntq20cnWejQ=;
-        b=EYsjZsFAsUzuW2XCUGVOeJWRTDpsijA5eG5WJTpjNPOKwMOlWw6m74WmBpygMw4Wal
-         CHfd15+K/BxFl/GhaT6DN+6B6+5nGqFEgtbS87PFoKKF44WyOu59XGPLdRtdKjUOyCV6
-         d4aWD2Xh3x5tCfggne33yy9ezgsieutkI6AXqPXkYIZI8vMDMsimzfC5yfaslwdYKx0T
-         KINyphhUgkHEd8YOel3atJFy5i4FBC9bCRSI7pQxWUVe7+S2BkNzWsohuJ1BDQzbpb2G
-         0tQY7yXDvwPrQMH6R+Cz4bfge1cUOvyUnR/n4ZfuAseGuET2OvABs6s2SHmxbtHAcQ7w
-         Uf+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=camziUii29p0luivFHpHfiIofvd34K0/ntq20cnWejQ=;
-        b=lyDxhG//v1VF4YZIY2ThOdcfXn3cdENjjEWIzXZNYGwIV/HwyE9acsillvstYtRLNz
-         lmBWG2r6x8/kpg6ciuH5F0dB9n1cCgLO3uDuhK8MiX+qU842XhJanAG5FCY/+eoHILI+
-         28DcQimRuoJqrWMmul8drpRhqI+D2E5rr0dmCYZ5AKvUHvh97BJEJPBa7Sengs9mWArE
-         lVEH2sAhrI6oD0jD4reQNM3NN/cFprBKYHk5ugRj444r2HyQAek2KjtP+NdtUZ7jtfgR
-         1QXaXCQxzV5ICYdxgCgDHOIadec8X0u/p6uq5gGkA0DpZMfUyOI9CGekYxvmqnE5y6H3
-         7nEg==
-X-Gm-Message-State: APjAAAX777nGxWbZIh5ecyeOvtNi/0Ih6BnC0G0GMiUJ/c5fFG8y6Gg/
-        4MLNPwJadrPb+eVjnniFNxI8I23raC4Omwx4Ur9l2Q==
-X-Google-Smtp-Source: APXvYqxsAtXexafEFaXtmUeIIS4EH/aSV390STPoMyxFSIwMe1yBuRA3WSSQE9MEkVKLcLWGmgrgMHKiWL6UBoFX72g=
-X-Received: by 2002:a05:6808:b37:: with SMTP id t23mr2101890oij.149.1578470006357;
- Tue, 07 Jan 2020 23:53:26 -0800 (PST)
+        id S1727505AbgAHJGt (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Jan 2020 04:06:49 -0500
+Received: from mx2.suse.de ([195.135.220.15]:47748 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726891AbgAHJGs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 8 Jan 2020 04:06:48 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 5A333AF38;
+        Wed,  8 Jan 2020 09:06:47 +0000 (UTC)
+Received: by unicorn.suse.cz (Postfix, from userid 1000)
+        id D3664E008B; Wed,  8 Jan 2020 10:06:45 +0100 (CET)
+Date:   Wed, 8 Jan 2020 10:06:45 +0100
+From:   Michal Kubecek <mkubecek@suse.cz>
+To:     netdev@vger.kernel.org
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Andrew Lunn <andrew@lunn.ch>, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net-next] ethtool: fix a memory leak in
+ ethnl_default_start()
+Message-ID: <20200108090645.GJ22387@unicorn.suse.cz>
+References: <20200108053947.776s3sp3op6v7a6r@kili.mountain>
 MIME-Version: 1.0
-References: <20200107143601.105321-1-colin.king@canonical.com> <747f9c93-7465-99aa-0b91-a05fd64c7d1f@amd.com>
-In-Reply-To: <747f9c93-7465-99aa-0b91-a05fd64c7d1f@amd.com>
-From:   Jens Wiklander <jens.wiklander@linaro.org>
-Date:   Wed, 8 Jan 2020 08:53:15 +0100
-Message-ID: <CAHUa44E7H0wPWQFNQrmAuDtOw=514mxx6fHVAcTpH05HKPvtzA@mail.gmail.com>
-Subject: Re: [PATCH][next] tee: fix memory allocation failure checks on
- drv_data and amdtee
-To:     "Thomas, Rijo-john" <Rijo-john.Thomas@amd.com>
-Cc:     Colin King <colin.king@canonical.com>,
-        Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Gary R Hook <gary.hook@amd.com>,
-        "tee-dev @ lists . linaro . org" <tee-dev@lists.linaro.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200108053947.776s3sp3op6v7a6r@kili.mountain>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jan 8, 2020 at 8:03 AM Thomas, Rijo-john
-<Rijo-john.Thomas@amd.com> wrote:
->
-> +linux-crypto
->
-> On 07/01/20 8:06 pm, Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> >
-> > Currently the memory allocation failure checks on drv_data and
-> > amdtee are using IS_ERR rather than checking for a null pointer.
-> > Fix these checks to use the conventional null pointer check.
-> >
-> > Addresses-Coverity: ("Dereference null return")
-> > Fixes: 757cc3e9ff1d ("tee: add AMD-TEE driver")
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
->
-> Reviewed-by: Rijo Thomas <Rijo-john.Thomas@amd.com>
+On Wed, Jan 08, 2020 at 08:39:48AM +0300, Dan Carpenter wrote:
+> If ethnl_default_parse() fails then we need to free a couple
+> memory allocations before returning.
+> 
+> Fixes: 728480f12442 ("ethtool: default handlers for GET requests")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  net/ethtool/netlink.c | 13 ++++++++++---
+>  1 file changed, 10 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
+> index 4ca96c7b86b3..5d16436498ac 100644
+> --- a/net/ethtool/netlink.c
+> +++ b/net/ethtool/netlink.c
+> @@ -472,8 +472,8 @@ static int ethnl_default_start(struct netlink_callback *cb)
+>  		return -ENOMEM;
+>  	reply_data = kmalloc(ops->reply_data_size, GFP_KERNEL);
+>  	if (!reply_data) {
+> -		kfree(req_info);
+> -		return -ENOMEM;
+> +		ret = -ENOMEM;
+> +		goto free_req_info;
+>  	}
 
-Acked-by: Jens Wiklander <jens.wiklander@linaro.org>
+We could avoid the block statement by setting ret unconditionally but
+this is OK.
+>  
+>  	ret = ethnl_default_parse(req_info, cb->nlh, sock_net(cb->skb->sk), ops,
+> @@ -487,7 +487,7 @@ static int ethnl_default_start(struct netlink_callback *cb)
+>  		req_info->dev = NULL;
+>  	}
+>  	if (ret < 0)
+> -		return ret;
+> +		goto free_reply_data;
+>  
+>  	ctx->ops = ops;
+>  	ctx->req_info = req_info;
+> @@ -496,6 +496,13 @@ static int ethnl_default_start(struct netlink_callback *cb)
+>  	ctx->pos_idx = 0;
+>  
+>  	return 0;
+> +
+> +free_reply_data:
+> +	kfree(reply_data);
+> +free_req_info:
+> +	kfree(req_info);
+> +
+> +	return ret;
+>  }
+>  
+>  /* default ->done() handler for GET requests */
 
-Thanks,
-Jens
-
->
-> > ---
-> >  drivers/tee/amdtee/core.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/tee/amdtee/core.c b/drivers/tee/amdtee/core.c
-> > index 9d0cee1c837f..5fda810c79dc 100644
-> > --- a/drivers/tee/amdtee/core.c
-> > +++ b/drivers/tee/amdtee/core.c
-> > @@ -444,11 +444,11 @@ static int __init amdtee_driver_init(void)
-> >               goto err_fail;
-> >
-> >       drv_data = kzalloc(sizeof(*drv_data), GFP_KERNEL);
-> > -     if (IS_ERR(drv_data))
-> > +     if (!drv_data)
-> >               return -ENOMEM;
-> >
-> >       amdtee = kzalloc(sizeof(*amdtee), GFP_KERNEL);
-> > -     if (IS_ERR(amdtee)) {
-> > +     if (!amdtee) {
-> >               rc = -ENOMEM;
-> >               goto err_kfree_drv_data;
-> >       }
-> >
+Reviewed-by: Michal Kubecek <mkubecek@suse.cz>

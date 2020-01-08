@@ -2,69 +2,100 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C58A1339EC
-	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 05:04:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C45A0133B38
+	for <lists+kernel-janitors@lfdr.de>; Wed,  8 Jan 2020 06:34:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726530AbgAHEEL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 7 Jan 2020 23:04:11 -0500
-Received: from szxga06-in.huawei.com ([45.249.212.32]:35840 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725908AbgAHEEL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 7 Jan 2020 23:04:11 -0500
-Received: from DGGEMS407-HUB.china.huawei.com (unknown [172.30.72.60])
-        by Forcepoint Email with ESMTP id EF6DA3285E508FE6DC2B;
-        Wed,  8 Jan 2020 12:04:08 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS407-HUB.china.huawei.com (10.3.19.207) with Microsoft SMTP Server id
- 14.3.439.0; Wed, 8 Jan 2020 12:03:58 +0800
-From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>,
-        "Ravulapati Vishnu vardhan rao" <Vishnuvardhanrao.Ravulapati@amd.com>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>,
-        <alsa-devel@alsa-project.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next]  ASoC: amd: acp3x: Fix return value check in acp3x_dai_probe()
-Date:   Wed, 8 Jan 2020 03:59:54 +0000
-Message-ID: <20200108035954.51317-1-weiyongjun1@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1726346AbgAHFem (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 8 Jan 2020 00:34:42 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:44314 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726079AbgAHFem (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 8 Jan 2020 00:34:42 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 0085TZAE073063;
+        Wed, 8 Jan 2020 05:34:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=Y0nRxvFnlwm/w8fldZ84iPvdgUL+DTApQsSuDHD8AsM=;
+ b=mwJJ5uC2acnj6s3YSsWWpSCE0E/pwqD7nT7W7vlTBTU4bbJy4sQT5jxgAiQBiAy5HRF8
+ h16OlD44RutT0UJEc9TkA5MRY+Nc8kQWGBFZBgnSDbF8u3AdzSuvdtS3cD4pDQOhbsh1
+ yU/YcKhFaERv5vsEROy3/058cY7dtqxzsCa8tBqmSARM9C2t8hvsgoiykhNTkI9Ab0d9
+ h9hVDYffOdmIvotqBQqNz6S4vax8RQA1X49q0B/RWpc2XQ2sn+SLW1EQ9JudMEnlnbQt
+ eaWcu3ATtTsaOIirb9z5r6LfhoZnZ8p44lwCZfBxR7xMOI5K1GK51TmMzyvGMLWGbnr/ nw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 2xajnq1mud-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 08 Jan 2020 05:34:32 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 0085YA2c014405;
+        Wed, 8 Jan 2020 05:34:31 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 2xcjvesuxb-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 08 Jan 2020 05:34:31 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 0085YTN6010818;
+        Wed, 8 Jan 2020 05:34:29 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 07 Jan 2020 21:34:29 -0800
+Date:   Wed, 8 Jan 2020 08:34:18 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Andy Gross <agross@kernel.org>,
+        Niklas Cassel <niklas.cassel@linaro.org>
+Cc:     Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Kevin Hilman <khilman@kernel.org>, Nishanth Menon <nm@ti.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Jorge Ramirez-Ortiz <jorge.ramirez-ortiz@linaro.org>,
+        Ulf Hansson <ulf.hansson@linaro.org>, linux-pm@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] power: avs: qcom-cpr: Fix error code in
+ cpr_fuse_corner_init()
+Message-ID: <20200108053418.tjc62uppube6q4q3@kili.mountain>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9493 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001080048
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9493 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001080048
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-In case of error, the function devm_ioremap() returns NULL pointer not
-ERR_PTR(). The IS_ERR() test in the return value check should be
-replaced with NULL test.
+We're returning the wrong variable.  "ret" isn't initialized.
 
-Fixes: c9fe7db6e884 ("ASoC: amd: Refactoring of DAI from DMA driver")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Fixes: bf6910abf548 ("power: avs: Add support for CPR (Core Power Reduction)")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- sound/soc/amd/raven/acp3x-i2s.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/power/avs/qcom-cpr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/raven/acp3x-i2s.c b/sound/soc/amd/raven/acp3x-i2s.c
-index d9b287b8396c..bf51cadf8682 100644
---- a/sound/soc/amd/raven/acp3x-i2s.c
-+++ b/sound/soc/amd/raven/acp3x-i2s.c
-@@ -321,8 +321,8 @@ static int acp3x_dai_probe(struct platform_device *pdev)
- 	}
- 	adata->acp3x_base = devm_ioremap(&pdev->dev, res->start,
- 						resource_size(res));
--	if (IS_ERR(adata->acp3x_base))
--		return PTR_ERR(adata->acp3x_base);
-+	if (!adata->acp3x_base)
-+		return -ENOMEM;
+diff --git a/drivers/power/avs/qcom-cpr.c b/drivers/power/avs/qcom-cpr.c
+index 9247f53550b3..0321729431a5 100644
+--- a/drivers/power/avs/qcom-cpr.c
++++ b/drivers/power/avs/qcom-cpr.c
+@@ -922,7 +922,7 @@ static int cpr_fuse_corner_init(struct cpr_drv *drv)
+ 		uV = cpr_read_fuse_uV(desc, fdata, fuses->init_voltage,
+ 				      step_volt, drv);
+ 		if (uV < 0)
+-			return ret;
++			return uV;
  
- 	adata->i2s_irq = res->start;
- 	dev_set_drvdata(&pdev->dev, adata);
-
-
+ 		fuse->min_uV = fdata->min_uV;
+ 		fuse->max_uV = fdata->max_uV;
+-- 
+2.11.0
 

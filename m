@@ -2,45 +2,32 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A0443135912
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Jan 2020 13:22:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D03851359E6
+	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Jan 2020 14:17:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730352AbgAIMWH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Jan 2020 07:22:07 -0500
-Received: from mout.web.de ([212.227.15.4]:49553 "EHLO mout.web.de"
+        id S1730796AbgAINR0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Jan 2020 08:17:26 -0500
+Received: from mout.web.de ([212.227.15.14]:53577 "EHLO mout.web.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728653AbgAIMWG (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Jan 2020 07:22:06 -0500
+        id S1730589AbgAINRZ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 9 Jan 2020 08:17:25 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
-        s=dbaedf251592; t=1578572502;
-        bh=CSXsj6t0RTSO4YRv1nSUE0N/GlaH5Nkr8SaLrdtEFAk=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=Kv0pSjTYvMS263YNMLClGtW4YNeZwuwwefLjRR4Me1j6zTMrzRaPV6UnbnUTpxYyt
-         zDnCwr3UgHEmxLv/bHPFapN2hx4bIUuYpreaB5px0zvzKhJkGhFdVihFwkWf8KG2+l
-         jrHEPfik2ojMyA60QJvgKkPRi5zycMYyRwdL3jJo=
+        s=dbaedf251592; t=1578575807;
+        bh=H/fsRroKuS7Xgd5EvW7+3X9Jlrp4RB0PxIVhW0E8Lw4=;
+        h=X-UI-Sender-Class:To:Cc:References:Subject:From:Date:In-Reply-To;
+        b=IKVUBcz/OwLBTqEnNC4yaGpt8jQtSEBOwY2VzvTiAmk03+lcW1pDsqGlBw/cjvBYZ
+         +AozzPWaKPkeu0IKbtACnSbcrb8ihCnRnsnJffRsOaSTQCS5oDR8BT5le4zrHw63aW
+         MGMKk+tZMixGEcVoLevW69To0x1oK91GIUue68rU=
 X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
-Received: from [192.168.1.2] ([93.135.1.10]) by smtp.web.de (mrweb001
- [213.165.67.108]) with ESMTPSA (Nemesis) id 0Lhedd-1jT0RI3uan-00mskx; Thu, 09
- Jan 2020 13:21:42 +0100
-Subject: Re: [v2] coccinelle: semantic patch to check for inappropriate
- do_div() calls
-To:     Julia Lawall <julia.lawall@inria.fr>,
-        Wen Yang <wenyang@linux.alibaba.com>, cocci@systeme.lip6.fr
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        =?UTF-8?Q?Matthias_M=c3=a4nnich?= <maennich@google.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Thomas Gleixner <tglx@linutronix.de>
-References: <20200107170240.47207-1-wenyang@linux.alibaba.com>
- <9a2b7d00-442e-0c1b-73cc-aed2bbecd13a@web.de>
- <alpine.DEB.2.21.2001091140380.10786@hadrien>
- <e479c5c7-2556-eb77-9e9c-8833fb883a39@web.de>
- <alpine.DEB.2.21.2001091304310.10786@hadrien>
- <d0d7eda5-6f4b-8501-624c-1f25b481520a@web.de>
- <alpine.DEB.2.21.2001091315560.10786@hadrien>
+Received: from [192.168.1.2] ([93.135.1.10]) by smtp.web.de (mrweb002
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M40na-1jfzbh1UHq-00rZ83; Thu, 09
+ Jan 2020 14:16:47 +0100
+To:     yangliuxm34@gmail.com, kernel-janitors@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, liuyang34@xiaomi.com,
+        Ingo Molnar <mingo@redhat.com>,
+        Steven Rostedt <rostedt@goodmis.org>
+References: <27225bf0ec9b4e2f3d313456aee75e294361d550.1578561009.git.liuyang34@xiaomi.com>
+Subject: Re: [PATCH] trace: code optimization
 From:   Markus Elfring <Markus.Elfring@web.de>
 Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
@@ -85,60 +72,57 @@ Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
  Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
  x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
  pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
-Message-ID: <d9680368-fb50-fc89-48fc-2c31cf8ee614@web.de>
-Date:   Thu, 9 Jan 2020 13:21:40 +0100
+Message-ID: <4f4bed1d-9dc0-0665-4b61-8afc9ebf8201@web.de>
+Date:   Thu, 9 Jan 2020 14:16:46 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.3.1
 MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.21.2001091315560.10786@hadrien>
+In-Reply-To: <27225bf0ec9b4e2f3d313456aee75e294361d550.1578561009.git.liuyang34@xiaomi.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:eNqo905W2DdbUb9E2KrdOIxr9wk41Z3e2zArRSQuNj/ADv9GILk
- vPY3SifbiF7+slf+E8y/nptBVl6A95SH8G2vqHVfUj560UI/KRGO/ZMB8WXtLGsHAVA4bPF
- Tt0P/CPQ8hOG/zhBV+TZNkZ6W5YUg/qCpmdpSAD2woiJod/T9OL86le/5Rr7fcjeceEkbsN
- PcSkebRMd+3WvbvMO37nA==
+X-Provags-ID: V03:K1:sdNdtRt5Em4m6UC26wtrgHbUBrqGbXHSv2EeVy3RJmk6IadsB1G
+ 3qswSieAV1K7gY2JA8ec0Rz1YzJG+WGKzysu4FCcZ8Ni2PODDZZgpqbXl6flzXZG2lgieLp
+ IGNJ7nBe/tjlqL12Mgsn1Wx9lNhHv1uw4SNcw96S+rwfSUg22vhlt6BjTic+oQajcQcMmWH
+ Jo3DpqrUKb0YiJSZO3tcg==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:j7UgzT0PWxg=:qdSy5aqir//UXvb+zH3XkY
- Z4vP22ZgJXtgL3YqNzAM61OTiploj7PUrm+KjvOVOOQeNH3+1a0JwacsDOFDKk0vg1x52NsVa
- WY38CH0/b/uyghlMcbtYQ9gTpfmMa3HY3l1b1o/d7QVITNeWJH3gjpWD/oY1EH2IeVqx3yBmo
- WqnA8PPfjlz6pf7e4eRBZg8KFUIW10vX0p/8V4UgPoG/shbDbSal/c7IIx/JoGKeWirUNkWi2
- yqnh/VdrI8JQhhjXqBdUm7DPzwbGZJ6vSJP2O0bqWm4fTrB9gfyyHe8gINGC/Swvv5WbaYKGn
- VvOxisBS58JowVd5sLV43Txet6IP5v9DpNJUs5ZUMuvXdLe91LRtrpXd3RDDQbxLPu56nRA26
- ILDkHafeoU2pufivvXOWDBWE67CWR9h2EsWXhp5UJ1CsRYndw/lxqhvHTnVBzgaL+GAXOdzHp
- ODb/jGkTHa/KVbCRgvqTXxXDbzR6OR1hlDLfdDGS84TIYPbh1rlAFnzFO6hRxiujXcOfRj58o
- WK7MFWBs5n+7vzsFB6sAs9prd3Ihf99KNiWFwAl9AzC0FUNTFU/HwycpZLF1K4d0LGF5HN4lH
- 1anmDvYFxoUgZz9c1sfIFcyK7Oe62hAUsdmETErw5U1McjhmqVoKMhSEMayeBeIChlFSPU7bG
- 1H9srHfZWXE+DeUY+IwrlSDYlVDQqTmPNhgQhT7l0eQloHb3A/J6TNA+4DnWY3Lkt7Ezw/oyP
- Dob2PfPAcjDnRDo3g4AARDUpkm/D/n9QixZxPBXVdjQKeV9Xx1tn9Ev9yimFXbka8OYym6Ttu
- 4ytbY/OX9VVcyaEByXDuAHvceU6Ih1UlYpI6ZCo0S+iGygdaAVz0k0rq90yW/HVcvsGJ4g7ZF
- v7GnoRpcoHRZMQnCVqnT7IIMruhoYmsb6McVNlLZCiOA0WkTLJmSqPtdrgDuB9WKhPooYwODf
- wc+53ChDAYa3vVJdh582g5hezLTgy7+/pMEscDHrDXpKSGrRc/lcHXZAmLTKn9JZyOWE8mkjQ
- qlKGLE9O5ckmZsEry1V1vuOBl4DgJBZePJ7aGNfccN+nWFb4SYrCK9tpgSUhL9R/cSKT0BKpw
- /Nr1HIM+Rjt84Eo2jit/oMNO0Xr9SQQn9T93uqmLjq6di5d8oXs/gRZLU/0j33wB4w5p5Y+rt
- SNk2BXtnILXG9uujC4p5tUnI1nnZYP8eeH8DKxen0P9puX1Ac70ojp7tV79SqtZ0tuNMdYiSt
- fTT2QuZ/4cr190laHJNRhf69gMSrQuOzZwonKMx4pF8+1FnYGZXH0x/dh97w=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:t4LM9FE8fsA=:A2Dfv4Z7A840dYDo0i3Kce
+ tL2gBdD6271damqoVrMOczBSqOB5KxQeWc6DD29a8RYSi4VHCHsLl8NtYXYh2rFla+wUHpLhP
+ qGYp8Jt6o/yVdMaeEGywzTk3FMYaYfl2uJ1xwEPoaWF780iHFjWwTw70qrHQG9QxndekCue9A
+ vFC9CXMd/0pHE2LyTbR/yVU9mOcipVEF6qwj53hDQ6tvdSQlxZcNFR0zMJgnhXi6i+msJ7nji
+ hLRMUZeK0e4Nwgg2DagGTXhwyXYs+v/FgnNr+O4hoxW6839YFeX7sYKhGUeFi484VGOY6shtP
+ 091gFOSolSZkuYvWZzPquotxGk7qpOmQiFM5z2LZdvjL+FhZ+V1TyQVFQapn1O6NN/1D+q0nJ
+ gltqoUWd+ogyJmS2XdxoVi7CStXeWMsMKzpFf+K8p8u+jNj8IIu2Ms5E+3Kzfxcck9ZnWcQge
+ TBzwnOvXitXLr4VRJA0WXXLQRATE+PuSrAjDrMxVHfErdi++voFS6Ixv5OF04hd8TJhlaqFa5
+ 8rD1RW6CXTOyU49frXQGWPzjK2NVMQv6FNnpyIYf6bDWguZO+qYQiCLFEUTnhi1iVNpoeYP/h
+ loKrJfHgemvLKRlAlW6NmpazXClBb5mWARk4fOI5cGGVcaUc350l4l5iQtohylZRa7fKXXfdI
+ DBNNZm/XKVkaPIZXblgC7YPAYLt1mhEBtM4lsmFIa5OXlBJDBTSx1cZjGIcgnK2jP5V7eKH0r
+ d0qCKzZ6ZM0rb6G2t8YK5gmH96vhdZ2t630Av45ImKUyo551w2/+cvGZpgfdtGyWzxySy33U4
+ Zfcj/rtr0OyA63Wbp1KkoqXtyZQny3s+VjGtS2Qu3cCKtRHPeWvYMtu2woBU7FW7sDb/Q8ZhL
+ zAlgijwIizJC3V26YTMZph8bEbkXCksNQ06A8mTUrrLnAfjSEbcPVCaBA+M16UvhTRwmbLYXp
+ A0d+byVosqdXJeZLNNSw+TrCFAQOyqJvOZwsy3eX4WKnaajiDLnw5ClqrlCKPtvds+SoZEIT4
+ ooApYQWuLyX+OMosTt78GsAN/Hqyq7/UBNe2z1dZk+by1dR91EC/KISHGxHpTQNFKs2PkSpAG
+ LvV2o+vJUxcfTDT1PLcedoWvrUddD4IYbLG5xk+mfJqYdmcm1l7J/qRWdBtP3NN7ATq/vPdzg
+ QxOMunmG8yFVUuwPC/RQgLIqHfd9H0L68y2HJF8EbZJX7bWyA11BncidJpGvrHjaWzRphOotS
+ aPEzHUp5zOukFbMyY5/ete02ooM6Xflnkd4TBxaNAbV+dv/jsmLUGTD3b14E=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
->> Does the dependency management around the application of SmPL disjuncti=
-ons
->> need any further clarification?
->
-> I already clarified it.  The python code will only be executed if the
-> variables that it references have values.  The criterion is not just
-> whether the rule r was matched.
+> use scnprintf instead of snprinr and no need to check
 
-Thanks for this information.
+Will a typo be avoided in the final change description?
 
 
-> To see that this is the case, all or you have to do is try it.  Or read
-> the Coccinelle source code.
+> Signed-off-by: liuyang34 =E2=80=A6
 
-I would prefer a software documentation format which can be easier to read=
-.
+Will this information need also an adjustment for the desired specificatio=
+n
+of a real name?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?id=3Db07f636fca1c8fbba124b00824=
+87c0b3890a0e0c#n458
 
 Regards,
 Markus

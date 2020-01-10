@@ -2,111 +2,105 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BC40D13696E
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 10:14:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EEE2136996
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 10:21:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726759AbgAJJOX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Jan 2020 04:14:23 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:48040 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726641AbgAJJOX (ORCPT
+        id S1726823AbgAJJVv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Jan 2020 04:21:51 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:43929 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727223AbgAJJVv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Jan 2020 04:14:23 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00A9DGPR004818;
-        Fri, 10 Jan 2020 09:14:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=subject : to : cc :
- references : from : message-id : date : mime-version : in-reply-to :
- content-type : content-transfer-encoding; s=corp-2019-08-05;
- bh=BI76oBg7CTKePu5KfZhXAvNSxNcFF8BfPHLFY2Kwy/w=;
- b=ZAzDjXx0RkaUfnYhaiBsY340re+SflUk+hwi5wGuPxwATamYqg8PIoIZFKP7SNQc4xTl
- 0enWiSUUTZjpILVfnNNmk7sepsa2H6UUNCAI10WlrVJRKQoJwSHEKtHldYgoSEaAz4PP
- Yfz4ahKw1DyFgsB2/+Yq8NzReZFu+Lsyxb8HEudqCY0JMPRmO1X2J9E6k2fySZKHUPNH
- ZnWcNxkxcVEPZhZGkSHUHU5narnBVfB00g5Il58tKybtp7rANKjTdR2+wp0CoXLgZHEb
- hlutdAkUFohrkCJ1aqSWAYN2eOkmLax3Sf4tUqQYQloSZ3ObrNJrsvL+Mh5qoCJnyF4v /w== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 2xajnqgq7c-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 10 Jan 2020 09:14:16 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00A9E53v031338;
-        Fri, 10 Jan 2020 09:14:16 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 2xenn8y3wh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 10 Jan 2020 09:14:13 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 00A9De7d003418;
-        Fri, 10 Jan 2020 09:13:40 GMT
-Received: from [10.190.130.61] (/192.188.170.109)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 10 Jan 2020 01:13:40 -0800
-Subject: Re: [PATCH] btrfs: Fix error code in btrfs_sysfs_add_mounted()
-To:     Dan Carpenter <dan.carpenter@oracle.com>, Chris Mason <clm@fb.com>,
-        Dennis Zhou <dennis@kernel.org>
-Cc:     Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20200110055126.4rhhfsotll6puma7@kili.mountain>
-From:   Anand Jain <anand.jain@oracle.com>
-Message-ID: <b5d47473-8dc1-6780-a774-95fa9a5bf8ee@oracle.com>
-Date:   Fri, 10 Jan 2020 17:13:35 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:52.0)
- Gecko/20100101 Thunderbird/52.9.1
+        Fri, 10 Jan 2020 04:21:51 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212])
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ipqUH-0003hj-1c; Fri, 10 Jan 2020 09:21:49 +0000
+Subject: Re: [PATCH][next][V2] dmaengine: ti: omap-dma: don't allow a null
+ od->plat pointer to be dereferenced
+To:     Vinod Koul <vkoul@kernel.org>
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Tony Lindgren <tony@atomide.com>, dmaengine@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200109131953.157154-1-colin.king@canonical.com>
+ <20200110074605.GD2818@vkoul-mobl>
+From:   Colin Ian King <colin.king@canonical.com>
+Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
+ 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
+Message-ID: <f2116091-3023-ee5d-f3f7-07ec02425da0@canonical.com>
+Date:   Fri, 10 Jan 2020 09:21:48 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-In-Reply-To: <20200110055126.4rhhfsotll6puma7@kili.mountain>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <20200110074605.GD2818@vkoul-mobl>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9495 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001100078
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9495 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001100078
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On 10/1/20 1:51 PM, Dan Carpenter wrote:
-> The error code wasn't set on this error path.
- >
-> Fixes: e12ebce8a4a8 ("btrfs: sysfs: make UUID/debug have its own kobject")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> ---
->   fs/btrfs/sysfs.c | 4 +++-
->   1 file changed, 3 insertions(+), 1 deletion(-)
+On 10/01/2020 07:46, Vinod Koul wrote:
+> On 09-01-20, 13:19, Colin King wrote:
+>> From: Colin Ian King <colin.king@canonical.com>
+>>
+>> Currently when the call to dev_get_platdata returns null the driver issues
+>> a warning and then later dereferences the null pointer.  Avoid this issue
+>> by returning -ENODEV errror rather when the platform data is null and
 > 
-> diff --git a/fs/btrfs/sysfs.c b/fs/btrfs/sysfs.c
-> index 58486229be95..55e4ed1af29c 100644
-> --- a/fs/btrfs/sysfs.c
-> +++ b/fs/btrfs/sysfs.c
-> @@ -1288,8 +1288,10 @@ int btrfs_sysfs_add_mounted(struct btrfs_fs_info *fs_info)
->   
->   #ifdef CONFIG_BTRFS_DEBUG
->   	fs_info->debug_kobj = kobject_create_and_add("debug", fsid_kobj);
-> -	if (!fs_info->debug_kobj)
-> +	if (!fs_info->debug_kobj) {
-> +		error = -ENOMEM;
+> s/errror/error :) never thought would correct Colin on spelling :)
 
+Doh, I need to add that to the checkpatch dictionary ;-)
 
-  uh-oh right.
+If this can be fixed up before it's applied then this would be
+appreciated rather than me sending a V3.
 
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-
-Thanks, Anand
-
->   		goto failure;
-> +	}
->   
->   	error = sysfs_create_files(fs_info->debug_kobj, btrfs_debug_mount_attrs);
->   	if (error)
 > 
+> With the typo fixes:
+> 
+> Acked-by: Vinod Koul <vkoul@kernel.org>
+> 
+

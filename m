@@ -2,52 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7449C137463
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 18:07:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DABAE137482
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 18:14:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727405AbgAJRGu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Jan 2020 12:06:50 -0500
-Received: from mx2.suse.de ([195.135.220.15]:49030 "EHLO mx2.suse.de"
+        id S1726977AbgAJROE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Jan 2020 12:14:04 -0500
+Received: from ms.lwn.net ([45.79.88.28]:52024 "EHLO ms.lwn.net"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727207AbgAJRGt (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Jan 2020 12:06:49 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id EC29DAD4F;
-        Fri, 10 Jan 2020 17:06:47 +0000 (UTC)
-Received: by ds.suse.cz (Postfix, from userid 10065)
-        id 033D3DA78B; Fri, 10 Jan 2020 18:06:35 +0100 (CET)
-Date:   Fri, 10 Jan 2020 18:06:34 +0100
-From:   David Sterba <dsterba@suse.cz>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Chris Mason <clm@fb.com>, Dennis Zhou <dennis@kernel.org>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>,
-        Anand Jain <anand.jain@oracle.com>,
-        linux-btrfs@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] btrfs: Fix error code in btrfs_sysfs_add_mounted()
-Message-ID: <20200110170634.GR3929@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-Mail-Followup-To: dsterba@suse.cz, Dan Carpenter <dan.carpenter@oracle.com>,
-        Chris Mason <clm@fb.com>, Dennis Zhou <dennis@kernel.org>,
-        Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
-        Anand Jain <anand.jain@oracle.com>, linux-btrfs@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20200110055126.4rhhfsotll6puma7@kili.mountain>
+        id S1726114AbgAJROE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 10 Jan 2020 12:14:04 -0500
+Received: from lwn.net (localhost [127.0.0.1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ms.lwn.net (Postfix) with ESMTPSA id F24AE77D;
+        Fri, 10 Jan 2020 17:14:03 +0000 (UTC)
+Date:   Fri, 10 Jan 2020 10:14:03 -0700
+From:   Jonathan Corbet <corbet@lwn.net>
+To:     Colin King <colin.king@canonical.com>
+Cc:     linux-doc@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] devices.txt: fix spelling mistake: "shapshot" ->
+ "snapshot"
+Message-ID: <20200110101403.67edea17@lwn.net>
+In-Reply-To: <20200110100427.236530-1-colin.king@canonical.com>
+References: <20200110100427.236530-1-colin.king@canonical.com>
+Organization: LWN.net
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200110055126.4rhhfsotll6puma7@kili.mountain>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jan 10, 2020 at 08:51:27AM +0300, Dan Carpenter wrote:
-> The error code wasn't set on this error path.
-> 
-> Fixes: e12ebce8a4a8 ("btrfs: sysfs: make UUID/debug have its own kobject")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+On Fri, 10 Jan 2020 10:04:27 +0000
+Colin King <colin.king@canonical.com> wrote:
 
-Thanks, folded to the original patch.
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Fix spelling mistake in text.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  Documentation/admin-guide/devices.txt | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/admin-guide/devices.txt b/Documentation/admin-guide/devices.txt
+> index 1c5d2281efc9..2a97aaec8b12 100644
+> --- a/Documentation/admin-guide/devices.txt
+> +++ b/Documentation/admin-guide/devices.txt
+> @@ -319,7 +319,7 @@
+>  		182 = /dev/perfctr	Performance-monitoring counters
+>  		183 = /dev/hwrng	Generic random number generator
+>  		184 = /dev/cpu/microcode CPU microcode update interface
+> -		186 = /dev/atomicps	Atomic shapshot of process state data
+> +		186 = /dev/atomicps	Atomic snapshot of process state data
+>  		187 = /dev/irnet	IrNET device
+>  		188 = /dev/smbusbios	SMBus BIOS
+>  		189 = /dev/ussp_ctl	User space serial port control
+
+Applied, thanks.
+
+jon

@@ -2,59 +2,165 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C001F136879
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 08:46:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 508841368F3
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 09:28:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726561AbgAJHqO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Jan 2020 02:46:14 -0500
-Received: from mail.kernel.org ([198.145.29.99]:34158 "EHLO mail.kernel.org"
+        id S1727035AbgAJI2Q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Jan 2020 03:28:16 -0500
+Received: from mx2.suse.de ([195.135.220.15]:44946 "EHLO mx2.suse.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726276AbgAJHqO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Jan 2020 02:46:14 -0500
-Received: from localhost (unknown [223.226.110.118])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A90E42080D;
-        Fri, 10 Jan 2020 07:46:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578642373;
-        bh=8ADsNC4aByvOIz1Pl29Go90LRKxU6fl1luPK7QjlgWo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=szWnKRft82X+GbunxqZ3pu0hXwcVAwCZLFfKRZY8Mke2USKX8z12JHL8OM04UP8l5
-         YA0KCp8m78f1vFwR3rqz7fdSW3q3FPj0/Q1Ho/RskDr2UQF7lw/bUHH01L380L582g
-         m1uhyeN0AwP2HJWXyDuigxX3uTQobOINIUkw70Hs=
-Date:   Fri, 10 Jan 2020 13:16:05 +0530
-From:   Vinod Koul <vkoul@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Tony Lindgren <tony@atomide.com>, dmaengine@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next][V2] dmaengine: ti: omap-dma: don't allow a null
- od->plat pointer to be dereferenced
-Message-ID: <20200110074605.GD2818@vkoul-mobl>
-References: <20200109131953.157154-1-colin.king@canonical.com>
+        id S1726990AbgAJI2Q (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 10 Jan 2020 03:28:16 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx2.suse.de (Postfix) with ESMTP id 337F7AFA7;
+        Fri, 10 Jan 2020 08:28:12 +0000 (UTC)
+Subject: Re: [PATCH -next] drm/mgag200: Fix typo in parameter description
+To:     Wei Yongjun <weiyongjun1@huawei.com>,
+        Dave Airlie <airlied@redhat.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>
+Cc:     dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+References: <20200110012523.33053-1-weiyongjun1@huawei.com>
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ mQENBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAG0J1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPokBVAQTAQgAPhYh
+ BHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsDBQkDwmcABQsJCAcCBhUKCQgLAgQWAgMB
+ Ah4BAheAAAoJEGgNwR1TC3ojR80H/jH+vYavwQ+TvO8ksXL9JQWc3IFSiGpuSVXLCdg62AmR
+ irxW+qCwNncNQyb9rd30gzdectSkPWL3KSqEResBe24IbA5/jSkPweJasgXtfhuyoeCJ6PXo
+ clQQGKIoFIAEv1s8l0ggPZswvCinegl1diyJXUXmdEJRTWYAtxn/atut1o6Giv6D2qmYbXN7
+ mneMC5MzlLaJKUtoH7U/IjVw1sx2qtxAZGKVm4RZxPnMCp9E1MAr5t4dP5gJCIiqsdrVqI6i
+ KupZstMxstPU//azmz7ZWWxT0JzgJqZSvPYx/SATeexTYBP47YFyri4jnsty2ErS91E6H8os
+ Bv6pnSn7eAq5AQ0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRH
+ UE9eosYbT6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgT
+ RjP+qbU63Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+R
+ dhgATnWWGKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zb
+ ehDda8lvhFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r
+ 12+lqdsAEQEAAYkBPAQYAQgAJhYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJbOdLgAhsMBQkD
+ wmcAAAoJEGgNwR1TC3ojpfcIAInwP5OlcEKokTnHCiDTz4Ony4GnHRP2fXATQZCKxmu4AJY2
+ h9ifw9Nf2TjCZ6AMvC3thAN0rFDj55N9l4s1CpaDo4J+0fkrHuyNacnT206CeJV1E7NYntxU
+ n+LSiRrOdywn6erjxRi9EYTVLCHcDhBEjKmFZfg4AM4GZMWX1lg0+eHbd5oL1as28WvvI/uI
+ aMyV8RbyXot1r/8QLlWldU3NrTF5p7TMU2y3ZH2mf5suSKHAMtbE4jKJ8ZHFOo3GhLgjVrBW
+ HE9JXO08xKkgD+w6v83+nomsEuf6C6LYrqY/tsZvyEX6zN8CtirPdPWu/VXNRYAl/lat7lSI
+ 3H26qrE=
+Message-ID: <ce1a17c8-2af9-a449-16d5-36ddfd7a976e@suse.de>
+Date:   Fri, 10 Jan 2020 09:28:07 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200109131953.157154-1-colin.king@canonical.com>
+In-Reply-To: <20200110012523.33053-1-weiyongjun1@huawei.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="iiEN0Yah1UoVVqZjMQ0y6D7O9EtL3DPmr"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 09-01-20, 13:19, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently when the call to dev_get_platdata returns null the driver issues
-> a warning and then later dereferences the null pointer.  Avoid this issue
-> by returning -ENODEV errror rather when the platform data is null and
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--iiEN0Yah1UoVVqZjMQ0y6D7O9EtL3DPmr
+Content-Type: multipart/mixed; boundary="pTTiHLHFEWOhHClrPak37aP8iw00UOEbU";
+ protected-headers="v1"
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Wei Yongjun <weiyongjun1@huawei.com>, Dave Airlie <airlied@redhat.com>,
+ David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+ Thomas Gleixner <tglx@linutronix.de>, Gerd Hoffmann <kraxel@redhat.com>,
+ Sam Ravnborg <sam@ravnborg.org>, Kate Stewart <kstewart@linuxfoundation.org>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
+Message-ID: <ce1a17c8-2af9-a449-16d5-36ddfd7a976e@suse.de>
+Subject: Re: [PATCH -next] drm/mgag200: Fix typo in parameter description
+References: <20200110012523.33053-1-weiyongjun1@huawei.com>
+In-Reply-To: <20200110012523.33053-1-weiyongjun1@huawei.com>
 
-s/errror/error :) never thought would correct Colin on spelling :)
+--pTTiHLHFEWOhHClrPak37aP8iw00UOEbU
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
-With the typo fixes:
+Hi
 
-Acked-by: Vinod Koul <vkoul@kernel.org>
+Am 10.01.20 um 02:25 schrieb Wei Yongjun:
+> Fix typo in parameter description.
 
--- 
-~Vinod
+As Dan said, please mention that it's about a module parameter. The
+current commit message appears to refer to a function's parameter.
+
+With the commit message fixed, you can add
+
+Reviewed-by: Thomas Zimemrmann <tzimmermann@suse.de>
+
+Thanks for fixing this bug.
+
+Best regards
+Thomas
+
+>=20
+> Fixes: 3cacb2086e41 ("drm/mgag200: Add module parameter to pin all buff=
+ers at offset 0")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> ---
+>  drivers/gpu/drm/mgag200/mgag200_drv.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.c b/drivers/gpu/drm/mg=
+ag200/mgag200_drv.c
+> index 7a5bad2f57d7..2236f8ef20a4 100644
+> --- a/drivers/gpu/drm/mgag200/mgag200_drv.c
+> +++ b/drivers/gpu/drm/mgag200/mgag200_drv.c
+> @@ -28,7 +28,7 @@ MODULE_PARM_DESC(modeset, "Disable/Enable modesetting=
+");
+>  module_param_named(modeset, mgag200_modeset, int, 0400);
+> =20
+>  int mgag200_hw_bug_no_startadd =3D -1;
+> -MODULE_PARM_DESC(modeset, "HW does not interpret scanout-buffer start =
+address correctly");
+> +MODULE_PARM_DESC(hw_bug_no_startadd, "HW does not interpret scanout-bu=
+ffer start address correctly");
+>  module_param_named(hw_bug_no_startadd, mgag200_hw_bug_no_startadd, int=
+, 0400);
+> =20
+>  static struct drm_driver driver;
+>=20
+>=20
+>=20
+
+--=20
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Maxfeldstr. 5, 90409 N=C3=BCrnberg, Germany
+(HRB 36809, AG N=C3=BCrnberg)
+Gesch=C3=A4ftsf=C3=BChrer: Felix Imend=C3=B6rffer
+
+
+--pTTiHLHFEWOhHClrPak37aP8iw00UOEbU--
+
+--iiEN0Yah1UoVVqZjMQ0y6D7O9EtL3DPmr
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEchf7rIzpz2NEoWjlaA3BHVMLeiMFAl4YNZsACgkQaA3BHVML
+eiM+UQf+J92/hICo707Qje0Q7uVRT1riV5XCPhxBuOUCzDNPRDH15zvvJdL9HbJ0
+KG4QGNjuVTGJbndQiglQZXl2pNPOA+zoG7JZAq5x1E7ICGmussuxx3UtLIYY6dak
+kyosKHWwu5rzgT2iCPvxbuk1+RNrTrAhj3w+ZfGzD1AX08dJr8Ks2jVgPf55lGzc
+u7Of3a6qfJ5OGjYRf4CCMKG8yEKTa/oXQGdSCECmZhlBw1KJQppFt9ME0oj5v7r3
+eS3SFcK7TRrD3dAOBizkSZMGpVlmlJscSRmlqy1j3uwfkaPcAEBczStm6ajqSNBO
+XMhUrIhoiDfRiKgtaZufX598XDFXIA==
+=Gnga
+-----END PGP SIGNATURE-----
+
+--iiEN0Yah1UoVVqZjMQ0y6D7O9EtL3DPmr--

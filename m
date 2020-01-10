@@ -2,31 +2,35 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 493681364C2
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 02:29:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF4721364C4
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 02:29:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730601AbgAJB3g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Jan 2020 20:29:36 -0500
-Received: from szxga05-in.huawei.com ([45.249.212.191]:8688 "EHLO huawei.com"
+        id S1730626AbgAJB3m (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Jan 2020 20:29:42 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:9144 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730567AbgAJB3g (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Jan 2020 20:29:36 -0500
-Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 1ABE61B3A44A0AF8283D;
-        Fri, 10 Jan 2020 09:29:33 +0800 (CST)
+        id S1730567AbgAJB3m (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 9 Jan 2020 20:29:42 -0500
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 5D29D34CFD4DE76F7EB0;
+        Fri, 10 Jan 2020 09:29:40 +0800 (CST)
 Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 10 Jan 2020 09:29:25 +0800
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 10 Jan 2020 09:29:34 +0800
 From:   Wei Yongjun <weiyongjun1@huawei.com>
-To:     <thierry.reding@gmail.com>, <u.kleine-koenig@pengutronix.de>,
-        <mripard@kernel.org>, <wens@csie.org>, <p.zabel@pengutronix.de>,
-        "Jernej Skrabec" <jernej.skrabec@siol.net>
-CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-pwm@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
+To:     Dave Airlie <airlied@redhat.com>, David Airlie <airlied@linux.ie>,
+        "Daniel Vetter" <daniel@ffwll.ch>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Thomas Zimmermann" <tzimmermann@suse.de>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        "Sam Ravnborg" <sam@ravnborg.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>,
         <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] pwm: sun4i: Fix wrong pointer passed to PTR_ERR()
-Date:   Fri, 10 Jan 2020 01:25:15 +0000
-Message-ID: <20200110012515.32965-1-weiyongjun1@huawei.com>
+Subject: [PATCH -next] drm/mgag200: Fix typo in parameter description
+Date:   Fri, 10 Jan 2020 01:25:23 +0000
+Message-ID: <20200110012523.33053-1-weiyongjun1@huawei.com>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Type:   text/plain; charset=US-ASCII
@@ -38,46 +42,27 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-PTR_ERR should access the value just tested by IS_ERR, otherwise
-the wrong error code will be returned.
+Fix typo in parameter description.
 
-Fixes: 5b090b430d75 ("pwm: sun4i: Add an optional probe for bus clock")
+Fixes: 3cacb2086e41 ("drm/mgag200: Add module parameter to pin all buffers at offset 0")
 Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 ---
- drivers/pwm/pwm-sun4i.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/mgag200/mgag200_drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-sun4i.c b/drivers/pwm/pwm-sun4i.c
-index 1afd41ebd3fd..a805c347ee84 100644
---- a/drivers/pwm/pwm-sun4i.c
-+++ b/drivers/pwm/pwm-sun4i.c
-@@ -423,7 +423,7 @@ static int sun4i_pwm_probe(struct platform_device *pdev)
- 	 */
- 	pwm->clk = devm_clk_get_optional(&pdev->dev, "mod");
- 	if (IS_ERR(pwm->clk)) {
--		if (PTR_ERR(pwm->rst) != -EPROBE_DEFER)
-+		if (PTR_ERR(pwm->clk) != -EPROBE_DEFER)
- 			dev_err(&pdev->dev, "get mod clock failed %pe\n",
- 				pwm->clk);
- 		return PTR_ERR(pwm->clk);
-@@ -432,7 +432,7 @@ static int sun4i_pwm_probe(struct platform_device *pdev)
- 	if (!pwm->clk) {
- 		pwm->clk = devm_clk_get(&pdev->dev, NULL);
- 		if (IS_ERR(pwm->clk)) {
--			if (PTR_ERR(pwm->rst) != -EPROBE_DEFER)
-+			if (PTR_ERR(pwm->clk) != -EPROBE_DEFER)
- 				dev_err(&pdev->dev, "get unnamed clock failed %pe\n",
- 					pwm->clk);
- 			return PTR_ERR(pwm->clk);
-@@ -441,7 +441,7 @@ static int sun4i_pwm_probe(struct platform_device *pdev)
+diff --git a/drivers/gpu/drm/mgag200/mgag200_drv.c b/drivers/gpu/drm/mgag200/mgag200_drv.c
+index 7a5bad2f57d7..2236f8ef20a4 100644
+--- a/drivers/gpu/drm/mgag200/mgag200_drv.c
++++ b/drivers/gpu/drm/mgag200/mgag200_drv.c
+@@ -28,7 +28,7 @@ MODULE_PARM_DESC(modeset, "Disable/Enable modesetting");
+ module_param_named(modeset, mgag200_modeset, int, 0400);
  
- 	pwm->bus_clk = devm_clk_get_optional(&pdev->dev, "bus");
- 	if (IS_ERR(pwm->bus_clk)) {
--		if (PTR_ERR(pwm->rst) != -EPROBE_DEFER)
-+		if (PTR_ERR(pwm->bus_clk) != -EPROBE_DEFER)
- 			dev_err(&pdev->dev, "get bus clock failed %pe\n",
- 				pwm->bus_clk);
- 		return PTR_ERR(pwm->bus_clk);
+ int mgag200_hw_bug_no_startadd = -1;
+-MODULE_PARM_DESC(modeset, "HW does not interpret scanout-buffer start address correctly");
++MODULE_PARM_DESC(hw_bug_no_startadd, "HW does not interpret scanout-buffer start address correctly");
+ module_param_named(hw_bug_no_startadd, mgag200_hw_bug_no_startadd, int, 0400);
+ 
+ static struct drm_driver driver;
 
 
 

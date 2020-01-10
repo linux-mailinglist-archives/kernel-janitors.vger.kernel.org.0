@@ -2,64 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B160113681F
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 08:16:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C001F136879
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 08:46:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726162AbgAJHQh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Jan 2020 02:16:37 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:40083 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725881AbgAJHQh (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Jan 2020 02:16:37 -0500
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ipoWy-0001uc-Ik; Fri, 10 Jan 2020 08:16:28 +0100
-Received: from ukl by ptx.hi.pengutronix.de with local (Exim 4.89)
-        (envelope-from <ukl@pengutronix.de>)
-        id 1ipoWw-0002B5-MH; Fri, 10 Jan 2020 08:16:26 +0100
-Date:   Fri, 10 Jan 2020 08:16:26 +0100
-From:   Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>
-To:     Wei Yongjun <weiyongjun1@huawei.com>
-Cc:     thierry.reding@gmail.com, mripard@kernel.org, wens@csie.org,
-        p.zabel@pengutronix.de, Jernej Skrabec <jernej.skrabec@siol.net>,
-        linux-pwm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH -next] pwm: sun4i: Fix wrong pointer passed to PTR_ERR()
-Message-ID: <20200110071626.5xmthg43j24p5ha2@pengutronix.de>
-References: <20200110012515.32965-1-weiyongjun1@huawei.com>
+        id S1726561AbgAJHqO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Jan 2020 02:46:14 -0500
+Received: from mail.kernel.org ([198.145.29.99]:34158 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726276AbgAJHqO (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 10 Jan 2020 02:46:14 -0500
+Received: from localhost (unknown [223.226.110.118])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id A90E42080D;
+        Fri, 10 Jan 2020 07:46:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1578642373;
+        bh=8ADsNC4aByvOIz1Pl29Go90LRKxU6fl1luPK7QjlgWo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=szWnKRft82X+GbunxqZ3pu0hXwcVAwCZLFfKRZY8Mke2USKX8z12JHL8OM04UP8l5
+         YA0KCp8m78f1vFwR3rqz7fdSW3q3FPj0/Q1Ho/RskDr2UQF7lw/bUHH01L380L582g
+         m1uhyeN0AwP2HJWXyDuigxX3uTQobOINIUkw70Hs=
+Date:   Fri, 10 Jan 2020 13:16:05 +0530
+From:   Vinod Koul <vkoul@kernel.org>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Dan Williams <dan.j.williams@intel.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Tony Lindgren <tony@atomide.com>, dmaengine@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next][V2] dmaengine: ti: omap-dma: don't allow a null
+ od->plat pointer to be dereferenced
+Message-ID: <20200110074605.GD2818@vkoul-mobl>
+References: <20200109131953.157154-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20200110012515.32965-1-weiyongjun1@huawei.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c0
-X-SA-Exim-Mail-From: ukl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
+In-Reply-To: <20200109131953.157154-1-colin.king@canonical.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jan 10, 2020 at 01:25:15AM +0000, Wei Yongjun wrote:
-> PTR_ERR should access the value just tested by IS_ERR, otherwise
-> the wrong error code will be returned.
+On 09-01-20, 13:19, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Fixes: 5b090b430d75 ("pwm: sun4i: Add an optional probe for bus clock")
-> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+> Currently when the call to dev_get_platdata returns null the driver issues
+> a warning and then later dereferences the null pointer.  Avoid this issue
+> by returning -ENODEV errror rather when the platform data is null and
 
-there is already a patch, see
+s/errror/error :) never thought would correct Colin on spelling :)
 
-	https://patchwork.ozlabs.org/patch/1220206/
+With the typo fixes:
 
-Best regards
-Uwe
+Acked-by: Vinod Koul <vkoul@kernel.org>
 
 -- 
-Pengutronix e.K.                           | Uwe Kleine-König            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+~Vinod

@@ -2,74 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F002136090
-	for <lists+kernel-janitors@lfdr.de>; Thu,  9 Jan 2020 19:53:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 493681364C2
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 02:29:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388639AbgAISww (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Jan 2020 13:52:52 -0500
-Received: from mail-pg1-f194.google.com ([209.85.215.194]:41061 "EHLO
-        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730273AbgAISwv (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Jan 2020 13:52:51 -0500
-Received: by mail-pg1-f194.google.com with SMTP id x8so3625488pgk.8;
-        Thu, 09 Jan 2020 10:52:51 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:date:from:to:cc:cc:cc:subject
-         :references:in-reply-to;
-        bh=hBV74Ydk6mDQDuE/3ONK0QaQ31FjZx8A18SMygQocsM=;
-        b=OGfAgD+0djo97dIWnUmXMIDBh/t0JOEs/u6FkS1IW6oV4LcCp0K/NPTzYaQJ+Kg408
-         Air9xZYESNuE2C1z6h8wodgs4b4fK3/cxJ5UzYQnsqOXn/4/drL53fcY7lmnBOg0tiA+
-         wBDOBgMNg1e6yjUoJj9x8KIjAXmGmhlljHjVpx/b4WV+Caze37FQ6RS/EF4Ufw8OTdao
-         BpS9Xn+BROzHTK27DMu5bIuCoM7/apJvUnuZbyedJKAr1gEDKvIyDILZQoUCHte7KeE3
-         bUO8IUFT2F6p+m9XzSXHCLXhrHXU0FGk3BWGIYqQtjA4MNx7vBWV79y3x4UhbWbLuBUi
-         9GeA==
-X-Gm-Message-State: APjAAAVAwAPMUAtYrbXgnmm4U7JUdoU0TNzXQtbpZRXKv8JaywdZ92YE
-        /EzThN1Crd6ewJ1KPN+dv6o=
-X-Google-Smtp-Source: APXvYqzM1MC2kDmR4PiizMSnJKZKBlArFoxv+nUHDf4ftkSK3NfkN/tZ4G1n2hyNM/upXaE85qLq6w==
-X-Received: by 2002:a63:d411:: with SMTP id a17mr13541550pgh.333.1578595970656;
-        Thu, 09 Jan 2020 10:52:50 -0800 (PST)
-Received: from localhost (MIPS-TECHNO.ear1.SanJose1.Level3.net. [4.15.122.74])
-        by smtp.gmail.com with ESMTPSA id e2sm8956379pfh.84.2020.01.09.10.52.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jan 2020 10:52:50 -0800 (PST)
-Message-ID: <5e177682.1c69fb81.b79ec.61f3@mx.google.com>
-Date:   Thu, 09 Jan 2020 10:52:49 -0800
-From:   Paul Burton <paulburton@kernel.org>
-To:     Mao Wenan <maowenan@huawei.com>
-CC:     <jiaxun.yang@flygoat.com>, <ralf@linux-mips.org>,
-        <paulburton@kernel.org>, <jhogan@kernel.org>,
-        <gregkh@linuxfoundation.org>, <tglx@linutronix.de>,
-        <maowenan@huawei.com>
-CC:     <linux-mips@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>, Hulk Robot <hulkci@huawei.com>
-CC:     linux-mips@vger.kernel.org
-Subject: Re: [PATCH -next] MIPS: Loongson2ef: drop pointless static qualifier in  loongson_suspend_enter()
-References:  <20191204010851.160284-1-maowenan@huawei.com>
-In-Reply-To:  <20191204010851.160284-1-maowenan@huawei.com>
+        id S1730601AbgAJB3g (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Jan 2020 20:29:36 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:8688 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1730567AbgAJB3g (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 9 Jan 2020 20:29:36 -0500
+Received: from DGGEMS406-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 1ABE61B3A44A0AF8283D;
+        Fri, 10 Jan 2020 09:29:33 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS406-HUB.china.huawei.com (10.3.19.206) with Microsoft SMTP Server id
+ 14.3.439.0; Fri, 10 Jan 2020 09:29:25 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     <thierry.reding@gmail.com>, <u.kleine-koenig@pengutronix.de>,
+        <mripard@kernel.org>, <wens@csie.org>, <p.zabel@pengutronix.de>,
+        "Jernej Skrabec" <jernej.skrabec@siol.net>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <linux-pwm@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] pwm: sun4i: Fix wrong pointer passed to PTR_ERR()
+Date:   Fri, 10 Jan 2020 01:25:15 +0000
+Message-ID: <20200110012515.32965-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
+PTR_ERR should access the value just tested by IS_ERR, otherwise
+the wrong error code will be returned.
 
-Mao Wenan wrote:
-> There is no need to have the 'T *v' variable static
-> since new value always be assigned before use it.
+Fixes: 5b090b430d75 ("pwm: sun4i: Add an optional probe for bus clock")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ drivers/pwm/pwm-sun4i.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Applied to mips-next.
+diff --git a/drivers/pwm/pwm-sun4i.c b/drivers/pwm/pwm-sun4i.c
+index 1afd41ebd3fd..a805c347ee84 100644
+--- a/drivers/pwm/pwm-sun4i.c
++++ b/drivers/pwm/pwm-sun4i.c
+@@ -423,7 +423,7 @@ static int sun4i_pwm_probe(struct platform_device *pdev)
+ 	 */
+ 	pwm->clk = devm_clk_get_optional(&pdev->dev, "mod");
+ 	if (IS_ERR(pwm->clk)) {
+-		if (PTR_ERR(pwm->rst) != -EPROBE_DEFER)
++		if (PTR_ERR(pwm->clk) != -EPROBE_DEFER)
+ 			dev_err(&pdev->dev, "get mod clock failed %pe\n",
+ 				pwm->clk);
+ 		return PTR_ERR(pwm->clk);
+@@ -432,7 +432,7 @@ static int sun4i_pwm_probe(struct platform_device *pdev)
+ 	if (!pwm->clk) {
+ 		pwm->clk = devm_clk_get(&pdev->dev, NULL);
+ 		if (IS_ERR(pwm->clk)) {
+-			if (PTR_ERR(pwm->rst) != -EPROBE_DEFER)
++			if (PTR_ERR(pwm->clk) != -EPROBE_DEFER)
+ 				dev_err(&pdev->dev, "get unnamed clock failed %pe\n",
+ 					pwm->clk);
+ 			return PTR_ERR(pwm->clk);
+@@ -441,7 +441,7 @@ static int sun4i_pwm_probe(struct platform_device *pdev)
+ 
+ 	pwm->bus_clk = devm_clk_get_optional(&pdev->dev, "bus");
+ 	if (IS_ERR(pwm->bus_clk)) {
+-		if (PTR_ERR(pwm->rst) != -EPROBE_DEFER)
++		if (PTR_ERR(pwm->bus_clk) != -EPROBE_DEFER)
+ 			dev_err(&pdev->dev, "get bus clock failed %pe\n",
+ 				pwm->bus_clk);
+ 		return PTR_ERR(pwm->bus_clk);
 
-> commit 11d06df7b9f2
-> https://git.kernel.org/mips/c/11d06df7b9f2
-> 
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: Mao Wenan <maowenan@huawei.com>
-> Signed-off-by: Paul Burton <paulburton@kernel.org>
 
-Thanks,
-    Paul
 
-[ This message was auto-generated; if you believe anything is incorrect
-  then please email paulburton@kernel.org to report it. ]

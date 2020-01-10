@@ -2,95 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C0B791366F8
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 06:54:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13DBA136702
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 07:00:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726682AbgAJFyW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Jan 2020 00:54:22 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:37840 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726384AbgAJFyW (ORCPT
+        id S1726682AbgAJGAb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Jan 2020 01:00:31 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:38163 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726671AbgAJGAb (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Jan 2020 00:54:22 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00A5rUEL050818;
-        Fri, 10 Jan 2020 05:54:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=5JBntCtAE8aub1WbJjIcxc7ITMNSfHCdwR0Pl1xG8hY=;
- b=oOJhofvzKJzyBo8FnF3+GqppIDh3rSoXHI/Ik9U8XqQftXb7IJT1m61rdusR3EkRceIj
- QK8sFNbOMhrTrL8WfZfo/29zZZUTtUQvNnzBhk83laOHEeIOYMQeuSYeYcoKuVxmaCRp
- gc8xd7XGyJv4P6Hhv93qBNlEE+dOvFs3iNB80n15+zfJRsrP+LysY/qlvdVwL5kRzIE+
- rboPB5hI4GhXg4COPS+/xbxHoMOKCYX9eW1Do9Pom5JnlSBeRBYdHlBMr/w7r6pSiklM
- ePwPE5GQAFYb8WYTlcQDKZQUhI4XGdy1N2whD3GLVvmSPX+ZiCOmhVrgmdCuX2m3iG1+ cA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by aserp2120.oracle.com with ESMTP id 2xajnqfsgw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 10 Jan 2020 05:54:15 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00A5sAlI175765;
-        Fri, 10 Jan 2020 05:54:15 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3020.oracle.com with ESMTP id 2xdrxf6kg2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 10 Jan 2020 05:54:11 +0000
-Received: from abhmp0008.oracle.com (abhmp0008.oracle.com [141.146.116.14])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00A5r3Zh009111;
-        Fri, 10 Jan 2020 05:53:03 GMT
-Received: from kili.mountain (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 09 Jan 2020 21:53:02 -0800
-Date:   Fri, 10 Jan 2020 08:52:52 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Liam Girdwood <lgirdwood@gmail.com>,
-        Markus Reichl <m.reichl@fivetechno.de>
-Cc:     Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] regulator: mp8859: tidy up white space in probe
-Message-ID: <20200110055252.rvelu4ysvoxsbmlg@kili.mountain>
+        Fri, 10 Jan 2020 01:00:31 -0500
+Received: by mail-ot1-f66.google.com with SMTP id d7so885146otf.5
+        for <kernel-janitors@vger.kernel.org>; Thu, 09 Jan 2020 22:00:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
+        b=qfW4tOmS7uShBEhFd1NiacHJtx2rN1og5klK75+F/4gRozjKNeHqlJGaSO5LJZc5G2
+         r9enTybUjZ78JoDJ0o3LRaibS1VmFQTrlSX6VTXSsinciMzhtAeahNjSLqC6hI/9Upw+
+         WIJDSAn7es7mjLXNRC1RKJprFl17Zti+KrTnQ+Ogk8lpic57/f8w2LovKw5QznF/f/70
+         uOI88wZ9mqf8gBAlrLRBL00gj9wtxEGid9krsNgCewmkQH+9ytpkMC9COE6Vcf8xBJqd
+         2Dc+muDdDyhjHHFkbwrOwJCxyHCpwBmNFnYvlENVbLUlgKoAlYHD7TflT5XDWQGIjOYJ
+         Bg1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
+        b=sXr6AgpntJfnovhVpe3YEEr/hm/+NgAAmKABis7ek7mOOQk16U64oNX5DRQj9DX2ZU
+         12F90OsWbHNn2YW/ka4NDa9pdMaSyuCoihdwCoetEA2SkR5miwrp2x/q54YNJirrcPvx
+         cQa1gLM6NuzpolelB3+89Si29BWFx1rYEf1JYORbdZRLJ7jml1Tu/vqzzzG3CZ14NINx
+         lnXXSAqicQZ81gy5jET0bbztqOwehCNzus5mg5rJb61JLmFmJwoL3CBIDGdgsaMMV96t
+         zdRsO3tN2N5XXZP1NUg8Zw+CDKs3x46rBlIydXLRU7AISa5TslUKv1hWjRYQC6J9YLhy
+         i3AA==
+X-Gm-Message-State: APjAAAWoz5PyUCbMSPpYYRruOg655FQn3jem0/frSEM32WzDXXiy2UeV
+        4Y8PbB3BkpJdIwswrP1+r+ht3iwrL5DZ6nrDbK0=
+X-Google-Smtp-Source: APXvYqxb+oi3qgxkihUnwgYI2w56QPldfKLlHWQdA2Ia9qmnRibXfX9pVUhNn2Xj+CGdbndqlF7o2WNUhxLYNriaPAQ=
+X-Received: by 2002:a9d:674f:: with SMTP id w15mr1263833otm.243.1578636030654;
+ Thu, 09 Jan 2020 22:00:30 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9495 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001100050
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9495 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001100050
+Received: by 2002:a4a:41cb:0:0:0:0:0 with HTTP; Thu, 9 Jan 2020 22:00:30 -0800 (PST)
+Reply-To: rickschaech@gmail.com
+From:   Rick Schaech <cathben72@gmail.com>
+Date:   Fri, 10 Jan 2020 02:00:30 -0400
+Message-ID: <CAEcBxOmGvEZMaVJR7q6yOesCqXsvtm18wH+RSPqDXJP2S_3GEg@mail.gmail.com>
+Subject: I wait for your swift response
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-These two lines are indented an extra tab.
+Dear, I'm Mr Rick Schaech, I am the General Account Auditor, Though i
+know we have not meet each other before but sometimes in life God have
+a reason of bringing two people from two different countries together
+as business partners or life partners.
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/regulator/mp8859.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+My dear friend, I have the sum of 15.7 Million USD i wish to put in
+your name due to the death of my late client who died several years
+ago as his next of kin column still remain blank. Though the internet
+medium is highly abuse these days but am assuring you that this
+transaction is legitimate and I am contacting you that we may have a
+deal, note for your cooperation and collaboration 40% of the sum will
+be for you while the other 60% will be for me as well. I wait for your
+swift response for more details. please forward your response to my
+personal E-mail: rickschaech@gmail.com
 
-diff --git a/drivers/regulator/mp8859.c b/drivers/regulator/mp8859.c
-index e804a5267301..1d26b506ee5b 100644
---- a/drivers/regulator/mp8859.c
-+++ b/drivers/regulator/mp8859.c
-@@ -123,8 +123,8 @@ static int mp8859_i2c_probe(struct i2c_client *i2c)
- 		ret = PTR_ERR(rdev);
- 		dev_err(&i2c->dev, "failed to register %s: %d\n",
- 			mp8859_regulators[0].name, ret);
--			return ret;
--		}
-+		return ret;
-+	}
- 	return 0;
- }
- 
--- 
-2.11.0
-
+Yours sincerely,
+Rick Schaech.

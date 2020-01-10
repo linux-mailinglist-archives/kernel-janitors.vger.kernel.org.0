@@ -2,75 +2,93 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E61D136D24
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 13:34:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F3D7136E36
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 14:38:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728180AbgAJMen (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Jan 2020 07:34:43 -0500
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:18852 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728094AbgAJMen (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Jan 2020 07:34:43 -0500
-X-IronPort-AV: E=Sophos;i="5.69,416,1571695200"; 
-   d="scan'208";a="430787412"
-Received: from dt-lawall.paris.inria.fr ([128.93.67.65])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 Jan 2020 13:34:41 +0100
-Date:   Fri, 10 Jan 2020 13:34:41 +0100 (CET)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: julia@hadrien
-To:     Markus Elfring <Markus.Elfring@web.de>
-cc:     Wen Yang <wenyang@linux.alibaba.com>, cocci@systeme.lip6.fr,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        =?ISO-8859-15?Q?Matthias_M=E4nnich?= <maennich@google.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v2] coccinelle: semantic patch to check for inappropriate
- do_div() calls
-In-Reply-To: <b6e7b8ac-4de8-00a0-d12c-ebf727af3e26@web.de>
-Message-ID: <alpine.DEB.2.21.2001101334160.2897@hadrien>
-References: <20200107170240.47207-1-wenyang@linux.alibaba.com> <b6e7b8ac-4de8-00a0-d12c-ebf727af3e26@web.de>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-1162816898-1578659682=:2897"
+        id S1728149AbgAJNiR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Jan 2020 08:38:17 -0500
+Received: from foss.arm.com ([217.140.110.172]:44594 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727928AbgAJNiQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 10 Jan 2020 08:38:16 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7F6FF1063;
+        Fri, 10 Jan 2020 05:38:16 -0800 (PST)
+Received: from localhost (unknown [10.37.6.21])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 07EC93F73B;
+        Fri, 10 Jan 2020 05:38:15 -0800 (PST)
+Date:   Fri, 10 Jan 2020 13:38:14 +0000
+From:   Mark Brown <broonie@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     kernel-janitors@vger.kernel.org,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
+        Markus Reichl <m.reichl@fivetechno.de>
+Subject: Applied "regulator: mp8859: tidy up white space in probe" to the regulator tree
+In-Reply-To: <20200110055252.rvelu4ysvoxsbmlg@kili.mountain>
+Message-Id: <applied-20200110055252.rvelu4ysvoxsbmlg@kili.mountain>
+X-Patchwork-Hint: ignore
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+The patch
 
---8323329-1162816898-1578659682=:2897
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+   regulator: mp8859: tidy up white space in probe
 
+has been applied to the regulator tree at
 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-5.6
 
-On Fri, 10 Jan 2020, Markus Elfring wrote:
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.  
 
-> > +@initialize:python@
-> …
-> > +def construct_warnings(str, suggested_fun):
->
-> This function will be used only for the operation modes “org” and “report”.
-> Thus I suggest to replace the specification “initialize” by a corresponding dependency
-> which is already applied for the SmPL rule “r”.
->
->
-> Can subsequent SmPL disjunctions become more succinct?
->
->
-> The passing of function name variants contains a bit of duplicate Python code.
-> Will a feature request like “Support for SmPL rule groups” become more interesting
-> for the shown use case?
-> https://github.com/coccinelle/coccinelle/issues/164
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
-The code is fine as it is in these respects.
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
-julia
---8323329-1162816898-1578659682=:2897--
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
+From b83380512e955f538366c33dd79d660cdac2875c Mon Sep 17 00:00:00 2001
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Date: Fri, 10 Jan 2020 08:52:52 +0300
+Subject: [PATCH] regulator: mp8859: tidy up white space in probe
+
+These two lines are indented an extra tab.
+
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+Link: https://lore.kernel.org/r/20200110055252.rvelu4ysvoxsbmlg@kili.mountain
+Signed-off-by: Mark Brown <broonie@kernel.org>
+---
+ drivers/regulator/mp8859.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/regulator/mp8859.c b/drivers/regulator/mp8859.c
+index e804a5267301..1d26b506ee5b 100644
+--- a/drivers/regulator/mp8859.c
++++ b/drivers/regulator/mp8859.c
+@@ -123,8 +123,8 @@ static int mp8859_i2c_probe(struct i2c_client *i2c)
+ 		ret = PTR_ERR(rdev);
+ 		dev_err(&i2c->dev, "failed to register %s: %d\n",
+ 			mp8859_regulators[0].name, ret);
+-			return ret;
+-		}
++		return ret;
++	}
+ 	return 0;
+ }
+ 
+-- 
+2.20.1
+

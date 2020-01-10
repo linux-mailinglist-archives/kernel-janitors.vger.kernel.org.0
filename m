@@ -2,105 +2,142 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EEE2136996
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 10:21:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC7B9136A68
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 11:01:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726823AbgAJJVv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Jan 2020 04:21:51 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:43929 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727223AbgAJJVv (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Jan 2020 04:21:51 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1ipqUH-0003hj-1c; Fri, 10 Jan 2020 09:21:49 +0000
-Subject: Re: [PATCH][next][V2] dmaengine: ti: omap-dma: don't allow a null
- od->plat pointer to be dereferenced
-To:     Vinod Koul <vkoul@kernel.org>
-Cc:     Dan Williams <dan.j.williams@intel.com>,
-        Peter Ujfalusi <peter.ujfalusi@ti.com>,
-        Tony Lindgren <tony@atomide.com>, dmaengine@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200109131953.157154-1-colin.king@canonical.com>
- <20200110074605.GD2818@vkoul-mobl>
-From:   Colin Ian King <colin.king@canonical.com>
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <f2116091-3023-ee5d-f3f7-07ec02425da0@canonical.com>
-Date:   Fri, 10 Jan 2020 09:21:48 +0000
+        id S1727435AbgAJKBE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Jan 2020 05:01:04 -0500
+Received: from mout.web.de ([212.227.15.3]:57235 "EHLO mout.web.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727336AbgAJKBE (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 10 Jan 2020 05:01:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1578650442;
+        bh=i7u0dEdG+1HRoiQBreS19z9Ai2z+JNRMC/5uuUcDg/k=;
+        h=X-UI-Sender-Class:Cc:References:Subject:From:To:Date:In-Reply-To;
+        b=oOYBrlLh9LMMfmh8rAlevK4TwSELeJVUORccIP2sFmAUa5RxBfV6INVem4t4fmkCN
+         47uCP7r6ILmC/4jJaPcYlUFJNvmMhGuBOmdphWb378q0cEnOv0ZykuqA3kXTy3l4jb
+         PDcwMSzTSKa3n8x42sPiGJHIcfGomAZaJTq9/vHk=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.1.2] ([93.135.170.191]) by smtp.web.de (mrweb001
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 0M7blv-1jeGSc3nTb-00xM8x; Fri, 10
+ Jan 2020 11:00:42 +0100
+Cc:     linux-kernel@vger.kernel.org,
+        Gilles Muller <Gilles.Muller@lip6.fr>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Julia Lawall <Julia.Lawall@lip6.fr>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        =?UTF-8?Q?Matthias_M=c3=a4nnich?= <maennich@google.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nicolas Palix <nicolas.palix@imag.fr>,
+        Thomas Gleixner <tglx@linutronix.de>
+References: <20200107170240.47207-1-wenyang@linux.alibaba.com>
+Subject: Re: [PATCH v2] coccinelle: semantic patch to check for inappropriate
+ do_div() calls
+From:   Markus Elfring <Markus.Elfring@web.de>
+Autocrypt: addr=Markus.Elfring@web.de; prefer-encrypt=mutual; keydata=
+ mQINBFg2+xABEADBJW2hoUoFXVFWTeKbqqif8VjszdMkriilx90WB5c0ddWQX14h6w5bT/A8
+ +v43YoGpDNyhgA0w9CEhuwfZrE91GocMtjLO67TAc2i2nxMc/FJRDI0OemO4VJ9RwID6ltwt
+ mpVJgXGKkNJ1ey+QOXouzlErVvE2fRh+KXXN1Q7fSmTJlAW9XJYHS3BDHb0uRpymRSX3O+E2
+ lA87C7R8qAigPDZi6Z7UmwIA83ZMKXQ5stA0lhPyYgQcM7fh7V4ZYhnR0I5/qkUoxKpqaYLp
+ YHBczVP+Zx/zHOM0KQphOMbU7X3c1pmMruoe6ti9uZzqZSLsF+NKXFEPBS665tQr66HJvZvY
+ GMDlntZFAZ6xQvCC1r3MGoxEC1tuEa24vPCC9RZ9wk2sY5Csbva0WwYv3WKRZZBv8eIhGMxs
+ rcpeGShRFyZ/0BYO53wZAPV1pEhGLLxd8eLN/nEWjJE0ejakPC1H/mt5F+yQBJAzz9JzbToU
+ 5jKLu0SugNI18MspJut8AiA1M44CIWrNHXvWsQ+nnBKHDHHYZu7MoXlOmB32ndsfPthR3GSv
+ jN7YD4Ad724H8fhRijmC1+RpuSce7w2JLj5cYj4MlccmNb8YUxsE8brY2WkXQYS8Ivse39MX
+ BE66MQN0r5DQ6oqgoJ4gHIVBUv/ZwgcmUNS5gQkNCFA0dWXznQARAQABtCZNYXJrdXMgRWxm
+ cmluZyA8TWFya3VzLkVsZnJpbmdAd2ViLmRlPokCVAQTAQgAPhYhBHDP0hzibeXjwQ/ITuU9
+ Figxg9azBQJYNvsQAhsjBQkJZgGABQsJCAcCBhUICQoLAgQWAgMBAh4BAheAAAoJEOU9Figx
+ g9azcyMP/iVihZkZ4VyH3/wlV3nRiXvSreqg+pGPI3c8J6DjP9zvz7QHN35zWM++1yNek7Ar
+ OVXwuKBo18ASlYzZPTFJZwQQdkZSV+atwIzG3US50ZZ4p7VyUuDuQQVVqFlaf6qZOkwHSnk+
+ CeGxlDz1POSHY17VbJG2CzPuqMfgBtqIU1dODFLpFq4oIAwEOG6fxRa59qbsTLXxyw+PzRaR
+ LIjVOit28raM83Efk07JKow8URb4u1n7k9RGAcnsM5/WMLRbDYjWTx0lJ2WO9zYwPgRykhn2
+ sOyJVXk9xVESGTwEPbTtfHM+4x0n0gC6GzfTMvwvZ9G6xoM0S4/+lgbaaa9t5tT/PrsvJiob
+ kfqDrPbmSwr2G5mHnSM9M7B+w8odjmQFOwAjfcxoVIHxC4Cl/GAAKsX3KNKTspCHR0Yag78w
+ i8duH/eEd4tB8twcqCi3aCgWoIrhjNS0myusmuA89kAWFFW5z26qNCOefovCx8drdMXQfMYv
+ g5lRk821ZCNBosfRUvcMXoY6lTwHLIDrEfkJQtjxfdTlWQdwr0mM5ye7vd83AManSQwutgpI
+ q+wE8CNY2VN9xAlE7OhcmWXlnAw3MJLW863SXdGlnkA3N+U4BoKQSIToGuXARQ14IMNvfeKX
+ NphLPpUUnUNdfxAHu/S3tPTc/E/oePbHo794dnEm57LuuQINBFg2+xABEADZg/T+4o5qj4cw
+ nd0G5pFy7ACxk28mSrLuva9tyzqPgRZ2bdPiwNXJUvBg1es2u81urekeUvGvnERB/TKekp25
+ 4wU3I2lEhIXj5NVdLc6eU5czZQs4YEZbu1U5iqhhZmKhlLrhLlZv2whLOXRlLwi4jAzXIZAu
+ 76mT813jbczl2dwxFxcT8XRzk9+dwzNTdOg75683uinMgskiiul+dzd6sumdOhRZR7YBT+xC
+ wzfykOgBKnzfFscMwKR0iuHNB+VdEnZw80XGZi4N1ku81DHxmo2HG3icg7CwO1ih2jx8ik0r
+ riIyMhJrTXgR1hF6kQnX7p2mXe6K0s8tQFK0ZZmYpZuGYYsV05OvU8yqrRVL/GYvy4Xgplm3
+ DuMuC7/A9/BfmxZVEPAS1gW6QQ8vSO4zf60zREKoSNYeiv+tURM2KOEj8tCMZN3k3sNASfoG
+ fMvTvOjT0yzMbJsI1jwLwy5uA2JVdSLoWzBD8awZ2X/eCU9YDZeGuWmxzIHvkuMj8FfX8cK/
+ 2m437UA877eqmcgiEy/3B7XeHUipOL83gjfq4ETzVmxVswkVvZvR6j2blQVr+MhCZPq83Ota
+ xNB7QptPxJuNRZ49gtT6uQkyGI+2daXqkj/Mot5tKxNKtM1Vbr/3b+AEMA7qLz7QjhgGJcie
+ qp4b0gELjY1Oe9dBAXMiDwARAQABiQI8BBgBCAAmFiEEcM/SHOJt5ePBD8hO5T0WKDGD1rMF
+ Alg2+xACGwwFCQlmAYAACgkQ5T0WKDGD1rOYSw/+P6fYSZjTJDAl9XNfXRjRRyJSfaw6N1pA
+ Ahuu0MIa3djFRuFCrAHUaaFZf5V2iW5xhGnrhDwE1Ksf7tlstSne/G0a+Ef7vhUyeTn6U/0m
+ +/BrsCsBUXhqeNuraGUtaleatQijXfuemUwgB+mE3B0SobE601XLo6MYIhPh8MG32MKO5kOY
+ hB5jzyor7WoN3ETVNQoGgMzPVWIRElwpcXr+yGoTLAOpG7nkAUBBj9n9TPpSdt/npfok9ZfL
+ /Q+ranrxb2Cy4tvOPxeVfR58XveX85ICrW9VHPVq9sJf/a24bMm6+qEg1V/G7u/AM3fM8U2m
+ tdrTqOrfxklZ7beppGKzC1/WLrcr072vrdiN0icyOHQlfWmaPv0pUnW3AwtiMYngT96BevfA
+ qlwaymjPTvH+cTXScnbydfOQW8220JQwykUe+sHRZfAF5TS2YCkQvsyf7vIpSqo/ttDk4+xc
+ Z/wsLiWTgKlih2QYULvW61XU+mWsK8+ZlYUrRMpkauN4CJ5yTpvp+Orcz5KixHQmc5tbkLWf
+ x0n1QFc1xxJhbzN+r9djSGGN/5IBDfUqSANC8cWzHpWaHmSuU3JSAMB/N+yQjIad2ztTckZY
+ pwT6oxng29LzZspTYUEzMz3wK2jQHw+U66qBFk8whA7B2uAU1QdGyPgahLYSOa4XAEGb6wbI FEE=
+To:     Wen Yang <wenyang@linux.alibaba.com>, cocci@systeme.lip6.fr,
+        kernel-janitors@vger.kernel.org
+Message-ID: <b6e7b8ac-4de8-00a0-d12c-ebf727af3e26@web.de>
+Date:   Fri, 10 Jan 2020 11:00:34 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+ Thunderbird/68.3.1
 MIME-Version: 1.0
-In-Reply-To: <20200110074605.GD2818@vkoul-mobl>
+In-Reply-To: <20200107170240.47207-1-wenyang@linux.alibaba.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:fSGc6wyCT3FrYyBtnOzeymSNpMPTNYU48InLxdnbDmwKwrglERK
+ s4rDmV76Q6ZTiiQhFkXNJ12SY+/NHnFzBGazv4D3DYFDpUuKrY0RoRC5ViBBVtmWfFprAbF
+ 7VfX22MspQr8I8+JtTlUfE47+oDJHyZQ8SfqzzjTraa1QDoS+pCVibgLGUVHzao9AiFP9C8
+ kZ80yY22FEuhp1s9D1baQ==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:+HZr2eRRuu0=:RnoWqOfAdgsShgcvEdRNvM
+ Ds41z/5wD+zAGJMS5lBDDIq2DnwzIz0KCtoKgmP/68is01ahDZrkPPOkckhwXM1/c1zpEhMmD
+ 7Z2PuhkASaAqnJ9JTxmG+xJvBaGrNzMD2F0dT0HaMYF7I33hEDLEyYmpVTo89MUDgqrtHYIDH
+ kPWej82t0u7hdMuVZ5jKt0eaqPhopmoSxTcnTu0Jpomyiyemr89raEyptLcDSwvLCi6blSUXi
+ lr8KryIwFEaIrYYrhYIX3PXkNzdQuKL7cgCqEcyd6PUW3CpAok60V2UQKh5vA3Wq1vMEj3oIQ
+ MQvufef22uJOjcf5QfuTDIZhBZv2kb+1SQ07xR01o4vcXvUhDc8uJsoVxGtUdTBXBS6bEPY2e
+ ehCnKjOi3NtdeU1rhkCaUROauFooK8fxP9tETAjieLEQdESphZuvLBKeUfKzEmMDCEm9Yq+Gt
+ h4Jc1J+U57LI+K//ul56vBOF8I9qUp+2tMOD63KI4w/8xttJgvG3/3IR2NTLm83jyauvt9fcW
+ KgGShM4qOEackGtnLV9J4+GfnSqHmb8WP5CF0Oq7792kHm7EdEzD6/tBuZunlmaTWODLnddqu
+ ooyg5ZkTwYqoGOhlK8etKP6uxZ5Wuz4tSKdrABeeBgydII0QE6LeqgWEHUn2itRd1NLc02Vb4
+ 3iX6mfU0SEyBkTWPoUVEWa5t/mI9UZ5nv9oMlZYAOcZpCny70bYiJ/lnqZ5jjlROdse1DSlmk
+ oOoNxmqRJbdnopYtlgiLMXjMZPEBRrTWLDJCBNLhkDKbig6EugFvoC+uk7tkp/tYIFs6HX+u2
+ vswZQDs35zevUF9YtgsGkFtU6iqTBC9BAh2OMkf10nEwgrlb9ujsWrR7fFrRxvS1ai5UnJM6c
+ OyQcx5NeavezPZXieTdlOTiHJYcqr0Y2io/NOgC7XnPp4k4hE7TZIq3ycjtpkLAiVRUXdXLxu
+ PvoGgeX876bjt4lH6bIv0eZw9YTvoBUUMuz3eMxTudEvd8Tv16rE++FnkqJDtwm/y953sHsMv
+ g3EyL4AwM262P2ei4lsVOiPHrB/FATyyXdjs1fjuQf4JAZwN2LDTkpJ0oGDjzJVx+YlD0wBR6
+ grglnKrsJS7HrtX0OSr5MNwiRwYDIuYBQW9l0FWwGpDksdPyP+5KTsfLNkxCYsHoU1ffFYZnf
+ PkV8c8ohz4U4MXiQrAn4oo8cicGV6ZvOCF5x8dCx+vPvOqylGWEt/nz6cmAMAqLJX/dox4QwI
+ GO+P+4i18gFbCx3i36l4KNh4T3jrbGQtzcBz/kccWonQZCfckYDxu9nHlb/A=
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 10/01/2020 07:46, Vinod Koul wrote:
-> On 09-01-20, 13:19, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> Currently when the call to dev_get_platdata returns null the driver issues
->> a warning and then later dereferences the null pointer.  Avoid this issue
->> by returning -ENODEV errror rather when the platform data is null and
-> 
-> s/errror/error :) never thought would correct Colin on spelling :)
+> +@initialize:python@
+=E2=80=A6
+> +def construct_warnings(str, suggested_fun):
 
-Doh, I need to add that to the checkpatch dictionary ;-)
+This function will be used only for the operation modes =E2=80=9Corg=E2=80=
+=9D and =E2=80=9Creport=E2=80=9D.
+Thus I suggest to replace the specification =E2=80=9Cinitialize=E2=80=9D b=
+y a corresponding dependency
+which is already applied for the SmPL rule =E2=80=9Cr=E2=80=9D.
 
-If this can be fixed up before it's applied then this would be
-appreciated rather than me sending a V3.
 
-> 
-> With the typo fixes:
-> 
-> Acked-by: Vinod Koul <vkoul@kernel.org>
-> 
+Can subsequent SmPL disjunctions become more succinct?
 
+
+The passing of function name variants contains a bit of duplicate Python c=
+ode.
+Will a feature request like =E2=80=9CSupport for SmPL rule groups=E2=80=9D=
+ become more interesting
+for the shown use case?
+https://github.com/coccinelle/coccinelle/issues/164
+
+Regards,
+Markus

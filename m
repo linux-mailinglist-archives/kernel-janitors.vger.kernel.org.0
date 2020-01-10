@@ -2,60 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BC883136A98
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 11:08:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 264C5136BC7
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 12:16:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727526AbgAJKIQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Jan 2020 05:08:16 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:45009 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727412AbgAJKIQ (ORCPT
+        id S1727787AbgAJLQR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Jan 2020 06:16:17 -0500
+Received: from cloudserver094114.home.pl ([79.96.170.134]:42514 "EHLO
+        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727717AbgAJLQR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Jan 2020 05:08:16 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iprDA-0008VQ-EW; Fri, 10 Jan 2020 10:08:12 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
-        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
-        linux-pm@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] PM: hibernate: fix spelling mistake "shapshot" -> "snapshot"
-Date:   Fri, 10 Jan 2020 10:08:12 +0000
-Message-Id: <20200110100812.236881-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
+        Fri, 10 Jan 2020 06:16:17 -0500
+Received: from 79.184.255.90.ipv4.supernova.orange.pl (79.184.255.90) (HELO kreacher.localnet)
+ by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.320)
+ id 5cd8c14a109a28dc; Fri, 10 Jan 2020 12:16:14 +0100
+From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        linux-pm@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] PM: hibernate: fix spelling mistake "shapshot" -> "snapshot"
+Date:   Fri, 10 Jan 2020 12:16:14 +0100
+Message-ID: <1732016.surcVlZrUL@kreacher>
+In-Reply-To: <20200110100812.236881-1-colin.king@canonical.com>
+References: <20200110100812.236881-1-colin.king@canonical.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Friday, January 10, 2020 11:08:12 AM CET Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There is a spelling mistake in a pr_info message. Fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  kernel/power/snapshot.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+> index 353c5e9070ed..befe3c94767c 100644
+> --- a/kernel/power/snapshot.c
+> +++ b/kernel/power/snapshot.c
+> @@ -1841,7 +1841,7 @@ int hibernate_preallocate_memory(void)
+>  
+>   out:
+>  	stop = ktime_get();
+> -	pr_info("Allocated %lu pages for shapshot\n", pages);
+> +	pr_info("Allocated %lu pages for snapshot\n", pages);
+>  	swsusp_show_speed(start, stop, pages, "Allocated");
+>  
+>  	return 0;
+> 
 
-There is a spelling mistake in a pr_info message. Fix it.
+Applied, thanks!
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- kernel/power/snapshot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
-index 353c5e9070ed..befe3c94767c 100644
---- a/kernel/power/snapshot.c
-+++ b/kernel/power/snapshot.c
-@@ -1841,7 +1841,7 @@ int hibernate_preallocate_memory(void)
- 
-  out:
- 	stop = ktime_get();
--	pr_info("Allocated %lu pages for shapshot\n", pages);
-+	pr_info("Allocated %lu pages for snapshot\n", pages);
- 	swsusp_show_speed(start, stop, pages, "Allocated");
- 
- 	return 0;
--- 
-2.24.0
+
 

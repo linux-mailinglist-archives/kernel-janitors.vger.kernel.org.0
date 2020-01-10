@@ -2,27 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24455136A74
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 11:04:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BC883136A98
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 11:08:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727387AbgAJKE3 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Jan 2020 05:04:29 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:44924 "EHLO
+        id S1727526AbgAJKIQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Jan 2020 05:08:16 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:45009 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727315AbgAJKE3 (ORCPT
+        with ESMTP id S1727412AbgAJKIQ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Jan 2020 05:04:29 -0500
+        Fri, 10 Jan 2020 05:08:16 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1ipr9X-00086a-HO; Fri, 10 Jan 2020 10:04:27 +0000
+        id 1iprDA-0008VQ-EW; Fri, 10 Jan 2020 10:08:12 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org
+To:     "Rafael J . Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        linux-pm@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] devices.txt: fix spelling mistake: "shapshot" -> "snapshot"
-Date:   Fri, 10 Jan 2020 10:04:27 +0000
-Message-Id: <20200110100427.236530-1-colin.king@canonical.com>
+Subject: [PATCH][next] PM: hibernate: fix spelling mistake "shapshot" -> "snapshot"
+Date:   Fri, 10 Jan 2020 10:08:12 +0000
+Message-Id: <20200110100812.236881-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -34,26 +36,26 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Fix spelling mistake in text.
+There is a spelling mistake in a pr_info message. Fix it.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- Documentation/admin-guide/devices.txt | 2 +-
+ kernel/power/snapshot.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/admin-guide/devices.txt b/Documentation/admin-guide/devices.txt
-index 1c5d2281efc9..2a97aaec8b12 100644
---- a/Documentation/admin-guide/devices.txt
-+++ b/Documentation/admin-guide/devices.txt
-@@ -319,7 +319,7 @@
- 		182 = /dev/perfctr	Performance-monitoring counters
- 		183 = /dev/hwrng	Generic random number generator
- 		184 = /dev/cpu/microcode CPU microcode update interface
--		186 = /dev/atomicps	Atomic shapshot of process state data
-+		186 = /dev/atomicps	Atomic snapshot of process state data
- 		187 = /dev/irnet	IrNET device
- 		188 = /dev/smbusbios	SMBus BIOS
- 		189 = /dev/ussp_ctl	User space serial port control
+diff --git a/kernel/power/snapshot.c b/kernel/power/snapshot.c
+index 353c5e9070ed..befe3c94767c 100644
+--- a/kernel/power/snapshot.c
++++ b/kernel/power/snapshot.c
+@@ -1841,7 +1841,7 @@ int hibernate_preallocate_memory(void)
+ 
+  out:
+ 	stop = ktime_get();
+-	pr_info("Allocated %lu pages for shapshot\n", pages);
++	pr_info("Allocated %lu pages for snapshot\n", pages);
+ 	swsusp_show_speed(start, stop, pages, "Allocated");
+ 
+ 	return 0;
 -- 
 2.24.0
 

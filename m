@@ -2,62 +2,94 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6AF1B1364EB
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 02:39:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E6CA1365E4
+	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 04:50:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730666AbgAJBjh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 9 Jan 2020 20:39:37 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:9146 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730596AbgAJBjh (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 9 Jan 2020 20:39:37 -0500
-Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id E8A7C6512FD905BCFAA9;
-        Fri, 10 Jan 2020 09:39:34 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS402-HUB.china.huawei.com (10.3.19.202) with Microsoft SMTP Server id
- 14.3.439.0; Fri, 10 Jan 2020 09:39:28 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     "David S . Miller" <davem@davemloft.net>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jakub Kicinski <jakub.kicinski@netronome.com>
-CC:     YueHaibing <yuehaibing@huawei.com>, <netdev@vger.kernel.org>,
-        <bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <kernel-janitors@vger.kernel.org>
-Subject: [PATCH net-next] sfc: remove duplicated include from ef10.c
-Date:   Fri, 10 Jan 2020 01:35:17 +0000
-Message-ID: <20200110013517.37685-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1731164AbgAJDuj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 9 Jan 2020 22:50:39 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:59442 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731136AbgAJDui (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 9 Jan 2020 22:50:38 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00A3i4bp172345;
+        Fri, 10 Jan 2020 03:50:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=hb+RMY33Xy+NtaD9xu3jQrdOQUcFpiM5I8zLdhDCgD4=;
+ b=E6JYVX25p0gIs6+QjGwmiNGRJj8EfihqDHupJ/3reWPPdNFJzS2uewbJVC6wxmeBUim5
+ 5yGhQfNslpWYGYGcdefbGz6v/DTdibUmRmXJCrrzP7pz7OaoN4KDFH6bOD5b/2gemWoq
+ 6EsYvGLtRs3DbFjGiZGMWH4vtcRHTgSDnBjaSqlAkTlF5oBHzjlbs9ABb6fyQuD7G6in
+ VuUzVpRXKr3voC/sh7c6SYbJvuRFR9TqmNKf569Vkg0aKMRO8mzpVqgxoRhM2pirsotP
+ IlXYxFkBdxebE2Nc8O38ORb2ou8zPHPlV0nDc4UpMMoz0M5CatXN40awjQPKbwVADQVg iw== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2120.oracle.com with ESMTP id 2xakbr7aev-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 10 Jan 2020 03:50:07 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00A3iMkY012693;
+        Fri, 10 Jan 2020 03:50:07 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 2xdsa5t65a-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 10 Jan 2020 03:50:06 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00A3nxMv004191;
+        Fri, 10 Jan 2020 03:50:00 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Thu, 09 Jan 2020 19:49:58 -0800
+Date:   Fri, 10 Jan 2020 06:49:49 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Wei Yongjun <weiyongjun1@huawei.com>
+Cc:     Dave Airlie <airlied@redhat.com>, David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        Gerd Hoffmann <kraxel@redhat.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Kate Stewart <kstewart@linuxfoundation.org>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH -next] drm/mgag200: Fix typo in parameter description
+Message-ID: <20200110034949.GA1792@kadam>
+References: <20200110012523.33053-1-weiyongjun1@huawei.com>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200110012523.33053-1-weiyongjun1@huawei.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9495 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001100030
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9495 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001100030
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Remove duplicated include.
+On Fri, Jan 10, 2020 at 01:25:23AM +0000, Wei Yongjun wrote:
+> Fix typo in parameter description.
+> 
 
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- drivers/net/ethernet/sfc/ef10.c | 1 -
- 1 file changed, 1 deletion(-)
+This commit message isn't totally clear.  Maybe say something like:
 
-diff --git a/drivers/net/ethernet/sfc/ef10.c b/drivers/net/ethernet/sfc/ef10.c
-index dc037dd927f8..fa460831af7d 100644
---- a/drivers/net/ethernet/sfc/ef10.c
-+++ b/drivers/net/ethernet/sfc/ef10.c
-@@ -16,7 +16,6 @@
- #include "workarounds.h"
- #include "selftest.h"
- #include "ef10_sriov.h"
--#include "rx_common.h"
- #include <linux/in.h>
- #include <linux/jhash.h>
- #include <linux/wait.h>
+There was a typo in the MODULE_PARM_DESC().  It said that the module
+parameter was "modeset" but it's actually the description for
+"hw_bug_no_startadd".
 
+> Fixes: 3cacb2086e41 ("drm/mgag200: Add module parameter to pin all buffers at offset 0")
+> Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
 
+regards,
+dan carpenter
 

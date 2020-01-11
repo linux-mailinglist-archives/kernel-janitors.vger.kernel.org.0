@@ -2,103 +2,47 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 441DB137B76
-	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jan 2020 06:06:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 02C34137BF3
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jan 2020 08:11:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725934AbgAKFGn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 11 Jan 2020 00:06:43 -0500
-Received: from out30-56.freemail.mail.aliyun.com ([115.124.30.56]:37793 "EHLO
-        out30-56.freemail.mail.aliyun.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725816AbgAKFGn (ORCPT
+        id S1728501AbgAKHLf (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 11 Jan 2020 02:11:35 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:44208 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728471AbgAKHLf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 11 Jan 2020 00:06:43 -0500
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R311e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e07486;MF=wenyang@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0TnNYIC5_1578719194;
-Received: from IT-C02W23QPG8WN.local(mailfrom:wenyang@linux.alibaba.com fp:SMTPD_---0TnNYIC5_1578719194)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Sat, 11 Jan 2020 13:06:39 +0800
-Subject: Re: [PATCH v3] coccinelle: semantic patch to check for inappropriate
- do_div() calls
-To:     Markus Elfring <Markus.Elfring@web.de>, cocci@systeme.lip6.fr,
-        kernel-janitors@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Gilles Muller <Gilles.Muller@lip6.fr>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Julia Lawall <Julia.Lawall@lip6.fr>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        =?UTF-8?Q?Matthias_M=c3=a4nnich?= <maennich@google.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Thomas Gleixner <tglx@linutronix.de>
-References: <20200110131526.60180-1-wenyang@linux.alibaba.com>
- <91abb141-57b8-7659-25ec-8080e290d846@web.de>
-From:   Wen Yang <wenyang@linux.alibaba.com>
-Message-ID: <c4ada2f2-19b0-91ef-ddf3-a1999f4209ea@linux.alibaba.com>
-Date:   Sat, 11 Jan 2020 13:06:34 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:68.0)
- Gecko/20100101 Thunderbird/68.1.1
-MIME-Version: 1.0
-In-Reply-To: <91abb141-57b8-7659-25ec-8080e290d846@web.de>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+        Sat, 11 Jan 2020 02:11:35 -0500
+Received: from localhost (unknown [IPv6:2601:601:9f00:1c3::f0c])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 6EBBF14FA41BF;
+        Fri, 10 Jan 2020 23:11:34 -0800 (PST)
+Date:   Fri, 10 Jan 2020 23:11:33 -0800 (PST)
+Message-Id: <20200110.231133.366069857384555250.davem@davemloft.net>
+To:     yuehaibing@huawei.com
+Cc:     ast@kernel.org, daniel@iogearbox.net, jakub.kicinski@netronome.com,
+        netdev@vger.kernel.org, bpf@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net-next] sfc: remove duplicated include from ef10.c
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200110013517.37685-1-yuehaibing@huawei.com>
+References: <20200110013517.37685-1-yuehaibing@huawei.com>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Fri, 10 Jan 2020 23:11:34 -0800 (PST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+From: YueHaibing <yuehaibing@huawei.com>
+Date: Fri, 10 Jan 2020 01:35:17 +0000
 
-
-On 2020/1/11 12:35 上午, Markus Elfring wrote:
->> +@initialize:python@
-> …
->> +def filter_out_safe_constants(str):
-> …
->> +def construct_warnings(str, suggested_fun):
+> Remove duplicated include.
 > 
-> * I suggest once more to adjust the dependency specifications for the usage
->    of these functions by SmPL rules.
-> 
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 
-Most of the functions here are for all operation modes.
-
-
-> * Can the local variable “msg” be omitted?
-> 
-> 
->> +coccilib.org.print_todo(p[0], construct_warnings("div64_ul"))
-> 
-> I suggest again to move the prefix “div64_” into the string literal
-> of the function implementation.
-> 
-
-“div64_ul” indicates the function name we recommend.
-As shown in the patch:
-
-+def construct_warnings(suggested_fun):
-+    msg="WARNING: do_div() does a 64-by-32 division, please consider 
-using %s instead."
-+    return  msg % suggested_fun
-...
-+coccilib.org.print_todo(p[0], construct_warnings("div64_ul"))
-
-If we delete the prefix "div64_", it may reduce readability.
-
-> 
-> The SmPL code for two disjunctions could become shorter.
-> 
-
-You may suggest to modify it as follows:
-+@@
-+*do_div(f, \( l \| ul \| ul64 \| sl64 \) );
-
-We agree with Julia:
-I don't se any point to this.  The code matched will be the same in both
-cases.  The original code is quite readable, without the ugly \( etc.
-
---
-Regards，
-Wen
-
-> Regards,
-> Markus
-> 
+Applied, thanks.

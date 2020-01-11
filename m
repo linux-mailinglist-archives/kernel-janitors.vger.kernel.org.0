@@ -2,78 +2,79 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 434C0138148
-	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jan 2020 12:57:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D910138370
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jan 2020 21:02:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729659AbgAKL5P (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 11 Jan 2020 06:57:15 -0500
-Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:60677 "EHLO
-        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729356AbgAKL5P (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 11 Jan 2020 06:57:15 -0500
-Received: from [192.168.42.210] ([93.22.149.238])
-        by mwinf5d27 with ME
-        id ozxC2100d58rESd03zxDWh; Sat, 11 Jan 2020 12:57:13 +0100
-X-ME-Helo: [192.168.42.210]
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sat, 11 Jan 2020 12:57:13 +0100
-X-ME-IP: 93.22.149.238
-Subject: Re: [PATCH][next] ath11k: avoid null pointer dereference when pointer
- band is null
-From:   Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To:     Colin King <colin.king@canonical.com>
-Cc:     David Miller <davem@davemloft.net>, linux-wireless@vger.kernel.org,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        Kernel Janitors <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <05d5d54e035e4d69ad4ffb4a835a495a@huawei.com>
- <64797126-0c77-4c2c-ad2b-29d7af452c13@wanadoo.fr>
-Message-ID: <17571eee-9d72-98cb-00f5-d714a28b853b@wanadoo.fr>
-Date:   Sat, 11 Jan 2020 12:57:11 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+        id S1731191AbgAKUCR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 11 Jan 2020 15:02:17 -0500
+Received: from mail.kernel.org ([198.145.29.99]:56194 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1731181AbgAKUCR (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 11 Jan 2020 15:02:17 -0500
+Received: from localhost (unknown [62.119.166.9])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 1D42F20866;
+        Sat, 11 Jan 2020 20:02:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1578772936;
+        bh=rZ14m4/Xf8VG4iosR3a8Y22bJ5hwOmuW1l+ZW+ePd1M=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=UrMJyuogI5VRAPX0mxzxAMSLAxpgCDFCAlr/CeXQZN+uFrTkORsB4v9uuH8Hokoc+
+         RrQvapZDxRiebeTh+sTP/iyr7fjBBItBfF/YOlz+47HVBaQfWHVtKUZFuJuFCPlPH7
+         9jMcJg6jgIQ0IvgG/90pn1N2eU4/KjQn9G84udJM=
+Date:   Sat, 11 Jan 2020 21:01:36 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        Arnd Bergmann <arnd@arndb.de>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drivers/misc: ti-st: remove redundant assignment to
+ variable i
+Message-ID: <20200111200136.GC438314@kroah.com>
+References: <20191202151352.55139-1-colin.king@canonical.com>
+ <20191203072824.GA1765@kadam>
 MIME-Version: 1.0
-In-Reply-To: <64797126-0c77-4c2c-ad2b-29d7af452c13@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: fr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20191203072824.GA1765@kadam>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Le 11/01/2020 à 10:50, linmiaohe a écrit :
-> Colin Ian King<colin.king@canonical.com>  wrote：
->> From: Colin Ian King<colin.king@canonical.com>
->>
->> In the unlikely event that cap->supported_bands has neither WMI_HOST_WLAN_2G_CAP set or WMI_HOST_WLAN_5G_CAP set then pointer band is null and a null dereference occurs when assigning
->> band->n_iftype_data.  Move the assignment to the if blocks to
->> avoid this.  Cleans up static analysis warnings.
->>
->> Addresses-Coverity: ("Explicit null dereference")
->> Fixes: 9f056ed8ee01 ("ath11k: add HE support")
->> Signed-off-by: Colin Ian King<colin.king@canonical.com>
->> ---
->> drivers/net/wireless/ath/ath11k/mac.c | 8 ++++----
->> 1 file changed, 4 insertions(+), 4 deletions(-)
-> It looks fine for me. Thanks.
-> Reviewed-by: Miaohe Lin<linmiaohe@huawei.com>
-(sorry for incomplete mail and mailing list addresses, my newsreader ate 
-them, and I cannot get the list from get_maintainer.pl because my 
-(outdated) tree does not have ath11k/...
-I've only including the ones in memory of my mail writer.
+On Tue, Dec 03, 2019 at 10:28:24AM +0300, Dan Carpenter wrote:
+> On Mon, Dec 02, 2019 at 03:13:52PM +0000, Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > The variable i is being initialized with a value that is never
+> > read and it is being updated later with a new value in a for-loop.
+> > The initialization is redundant and can be removed.
+> > 
+> > Addresses-Coverity: ("Unused value")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > ---
+> >  drivers/misc/ti-st/st_core.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/misc/ti-st/st_core.c b/drivers/misc/ti-st/st_core.c
+> > index 2ae9948a91e1..6255d9b88122 100644
+> > --- a/drivers/misc/ti-st/st_core.c
+> > +++ b/drivers/misc/ti-st/st_core.c
+> > @@ -736,7 +736,7 @@ static int st_tty_open(struct tty_struct *tty)
+> >  
+> >  static void st_tty_close(struct tty_struct *tty)
+> >  {
+> > -	unsigned char i = ST_MAX_CHANNELS;
+> > +	unsigned char i;
+> >  	unsigned long flags = 0;
+> 
+> I'm surprised that flags doesn't generate a warning as well.
 
-Please forward if needed)
+Yes, flags should be not initialized as well.
 
+Colin, can you resend a v2 with that added?
 
-Hi
+thanks,
 
-Shouldn't there be a
-
-|
-
-- band->n_iftype_data  =  count; at the end of the patch if the assignment is *moved*? Without it, 
-'band' (as well as 'count') could be un-initialized, and lead to memory 
-corruption. Just my 2c. CJ |
-
+greg k-h

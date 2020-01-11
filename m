@@ -2,82 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 912A913774E
-	for <lists+kernel-janitors@lfdr.de>; Fri, 10 Jan 2020 20:36:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5558A137B00
+	for <lists+kernel-janitors@lfdr.de>; Sat, 11 Jan 2020 02:57:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728556AbgAJTgJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 10 Jan 2020 14:36:09 -0500
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:39286 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727709AbgAJTgJ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 10 Jan 2020 14:36:09 -0500
-Received: by mail-pf1-f196.google.com with SMTP id q10so1596825pfs.6;
-        Fri, 10 Jan 2020 11:36:08 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:date:from:to:cc:cc:cc:subject
-         :references:in-reply-to;
-        bh=Ubz1pY/rEGbBUXDLqdjiVBBYYj5VCsEXF78ESs6AqOE=;
-        b=Cd+eptk/5ytFyFd9qQefKPJFdBwhFPbc0OQ6BtItgkQDgKgX1ccw4gOMKM3/3/AN4G
-         Jg7aEIjUUoaCycAqHZHEOznrReCKcnv8Y0Iq/5QK4JYRcHBPB9RpnieZmaW55Dbf4Wje
-         q8eWvcihYfa2s380XnlinvbiaVCw7Mhp25lY3aK9aTpV6JJNNtvqphLXpXHlHkXffLVc
-         VujdVjaaj2xW4JDWdDKZXKFu9EJoS5I+yjQl7JbZKP44/uEEx4nTAJvh/sfzuRfYHOdq
-         GpXb9wB4Yp8Yc1/NIbTWnQ2aXKA2VRVw3Lo9QJU0kraqndGsLvgwOt1yAHmsJKib/iqP
-         k8Yg==
-X-Gm-Message-State: APjAAAU0SFa7d7hT6Djq0XSn0srjEcg/zPvRWq6/epGYajJhki4m07MC
-        BwNy9gr69dMp7KjvVxG9HFE=
-X-Google-Smtp-Source: APXvYqzUEK5E5gQm6s08F5JZgLDlunfuz/bHMRDVSrxXDeQ79nBQWHA3qHAc11JsvEo2Ste9lYxd+w==
-X-Received: by 2002:a62:e912:: with SMTP id j18mr6008649pfh.4.1578684968302;
-        Fri, 10 Jan 2020 11:36:08 -0800 (PST)
-Received: from localhost (MIPS-TECHNO.ear1.SanJose1.Level3.net. [4.15.122.74])
-        by smtp.gmail.com with ESMTPSA id y203sm4145509pfb.65.2020.01.10.11.36.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jan 2020 11:36:07 -0800 (PST)
-Message-ID: <5e18d227.1c69fb81.44066.9d0d@mx.google.com>
-Date:   Fri, 10 Jan 2020 11:36:06 -0800
-From:   Paul Burton <paulburton@kernel.org>
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-CC:     Ralf Baechle <ralf@linux-mips.org>
-CC:     kernel-janitors@vger.kernel.org,
-        Paul Burton <paulburton@kernel.org>,
-        James Hogan <jhogan@kernel.org>, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-CC:     linux-mips@vger.kernel.org
-Subject: Re: [PATCH 08/10] MIPS: use resource_size
-References:  <1577900990-8588-9-git-send-email-Julia.Lawall@inria.fr>
-In-Reply-To:  <1577900990-8588-9-git-send-email-Julia.Lawall@inria.fr>
+        id S1728005AbgAKB5E (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 10 Jan 2020 20:57:04 -0500
+Received: from szxga07-in.huawei.com ([45.249.212.35]:56626 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1727943AbgAKB5E (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 10 Jan 2020 20:57:04 -0500
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id BBB6A48F3719B66B1AB3;
+        Sat, 11 Jan 2020 09:57:02 +0800 (CST)
+Received: from [127.0.0.1] (10.133.213.239) by DGGEMS403-HUB.china.huawei.com
+ (10.3.19.203) with Microsoft SMTP Server id 14.3.439.0; Sat, 11 Jan 2020
+ 09:56:59 +0800
+Subject: Re: [PATCH net-next] sfc: remove duplicated include from ef10.c
+To:     Edward Cree <ecree@solarflare.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Jakub Kicinski <jakub.kicinski@netronome.com>
+References: <20200110013517.37685-1-yuehaibing@huawei.com>
+ <422eff3d-05ea-d967-ff1b-448b6dc9dcb5@solarflare.com>
+CC:     <netdev@vger.kernel.org>, <bpf@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+From:   Yuehaibing <yuehaibing@huawei.com>
+Message-ID: <db6af9a7-3229-edf0-d650-af4287e32661@huawei.com>
+Date:   Sat, 11 Jan 2020 09:56:52 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.2.0
+MIME-Version: 1.0
+In-Reply-To: <422eff3d-05ea-d967-ff1b-448b6dc9dcb5@solarflare.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.133.213.239]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
+On 2020/1/10 19:57, Edward Cree wrote:
+> On 10/01/2020 01:35, YueHaibing wrote:
+>> Remove duplicated include.
+>>
+>> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+> Acked-by: Edward Cree <ecree@solarflare.com>
+> but you seem to have come up with a strange CC list, full of bpf maintainers
+>  rather than sfc driver maintainers; check your submission scripts?  (AFAIK
+>  the MAINTAINERS file has the right things in.)
 
-Julia Lawall wrote:
-> Use resource_size rather than a verbose computation on
-> the end and start fields.
+Thanks, I will check this.
 > 
-> The semantic patch that makes these changes is as follows:
-> (http://coccinelle.lip6.fr/)
+> -Ed
+>> ---
+>>  drivers/net/ethernet/sfc/ef10.c | 1 -
+>>  1 file changed, 1 deletion(-)
+>>
+>> diff --git a/drivers/net/ethernet/sfc/ef10.c b/drivers/net/ethernet/sfc/ef10.c
+>> index dc037dd927f8..fa460831af7d 100644
+>> --- a/drivers/net/ethernet/sfc/ef10.c
+>> +++ b/drivers/net/ethernet/sfc/ef10.c
+>> @@ -16,7 +16,6 @@
+>>  #include "workarounds.h"
+>>  #include "selftest.h"
+>>  #include "ef10_sriov.h"
+>> -#include "rx_common.h"
+>>  #include <linux/in.h>
+>>  #include <linux/jhash.h>
+>>  #include <linux/wait.h>
+>>
+>>
+>>
 > 
-> <smpl>
-> @@ struct resource ptr; @@
-> - (ptr.end - ptr.start + 1)
-> + resource_size(&ptr)
-> </smpl>
-
-Applied to mips-next.
-
-> commit ecb983790fe8
-> https://git.kernel.org/mips/c/ecb983790fe8
 > 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
-> Reviewed-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
-> Signed-off-by: Paul Burton <paulburton@kernel.org>
+> .
+> 
 
-Thanks,
-    Paul
-
-[ This message was auto-generated; if you believe anything is incorrect
-  then please email paulburton@kernel.org to report it. ]

@@ -2,98 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 65DAA13917B
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jan 2020 13:59:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 537031391C3
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jan 2020 14:06:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726985AbgAMM7s (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Jan 2020 07:59:48 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:49198 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726399AbgAMM7s (ORCPT
+        id S1727323AbgAMNGa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Jan 2020 08:06:30 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:52472 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726567AbgAMNGa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Jan 2020 07:59:48 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00DCwcl9062900;
-        Mon, 13 Jan 2020 12:59:44 GMT
+        Mon, 13 Jan 2020 08:06:30 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00DD2u0w075613;
+        Mon, 13 Jan 2020 13:06:27 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=ZfQ1LgEbn14jkZf0Ql+4WtMf3jaMLStq+biPvvi5LeY=;
- b=aHSFk8cCApgGWGP9EVWzSjLQdiG2Bpi9zxuSrvIVNMKnFz4ekCONCWcx4xcSeZLOX55D
- aM8DohhHK0kwdp9UeShe1Bx8n91QLMOChpyAMw1HJLU8YQdgqaDp9SuVcnCiZwSARTFy
- MhNWao7CBnUQvOI5wqv6upPCvtMFRbTQNL3sPNhzatrYm6IzcKOeFPm6AjcHO5VGptlM
- XxRvgeBe+d1CSpoCiQH9T568qZcwQ/UOuYu94b1V8YDe2JzrX9GWgq7Hz4pImRRXAU8y
- y4jmXd4yrVt8pFCycTcddauB+lLWyX+qZUOM5rJ66Uw1I77eDhXx6O2BpZuf77TCRnFL Gg== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 2xf73tesk9-1
+ bh=X3UonPiagZ3iS7v/6gRl57sh7wtvQXOCdDIqvbUEHu0=;
+ b=LK4MSVQChRWDVqVzxvZhAXWT7sx8Zj0Ih+JKSPfSfsEbE9yq9qaMZvWU16Kng2rGkDGZ
+ BipqVAMGRzB7JHZt5b9LCUTFcv2qht2K8bfud785HqcgO7wkppNoSVpBPwWFJpRpeEEh
+ vK4/0TyEhf6C/meOY10P2C+p0k+zVH8kdTIx/C6S0ia//J5M1ZWq9WRVGMYq7Joyfffz
+ z0+y3GSYlxLcaISc64zBIe3/YwYujn02MTnmJi3TIWkucS77RrCUJDLPC7kEfzUW/JWa
+ 8SBvUQaGoaeg2vybLo5R6uYJYDoTq3jMcd/HZg/zLnEdUsRDTjQ8vOgynXbxt4yB9KUJ dw== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 2xf73y6syp-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 13 Jan 2020 12:59:44 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00DCwaqv020336;
-        Mon, 13 Jan 2020 12:59:44 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 2xfrh61xqa-1
+        Mon, 13 Jan 2020 13:06:27 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00DD437Q127551;
+        Mon, 13 Jan 2020 13:06:26 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 2xfqvr3w44-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 13 Jan 2020 12:59:44 +0000
-Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00DCxg8o012055;
-        Mon, 13 Jan 2020 12:59:42 GMT
+        Mon, 13 Jan 2020 13:06:26 +0000
+Received: from abhmp0018.oracle.com (abhmp0018.oracle.com [141.146.116.24])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00DD6QOH014193;
+        Mon, 13 Jan 2020 13:06:26 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 13 Jan 2020 04:59:42 -0800
-Date:   Mon, 13 Jan 2020 15:59:33 +0300
+        with ESMTP ; Mon, 13 Jan 2020 05:06:25 -0800
+Date:   Mon, 13 Jan 2020 16:06:17 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Saravanan Sekar <sravanhome@gmail.com>
-Cc:     Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] regulator: mpq7920: Check the correct variable in
- mpq7920_regulator_register()
-Message-ID: <20200113125805.xri6jqoxy2ldzqyg@kili.mountain>
+To:     kafai@fb.com
+Cc:     kernel-janitors@vger.kernel.org
+Subject: [bug report] bpf: Introduce BPF_MAP_TYPE_STRUCT_OPS
+Message-ID: <20200113130617.7ecdrglwlmofhvrx@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
 User-Agent: NeoMutt/20170113 (1.7.2)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9498 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=1 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=331
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001130108
+ engine=8.0.1-1911140001 definitions=main-2001130109
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9498 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ suspectscore=1 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=396 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001130108
+ definitions=main-2001130109
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-There is a typo in the error checking.  We should be checking
-"->rdev[i]" instead of just "->rdev".
+Hello Martin KaFai Lau,
 
-Fixes: 6501c1f54a17 ("regulator: mpq7920: add mpq7920 regulator driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- drivers/regulator/mpq7920.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+The patch 85d33df357b6: "bpf: Introduce BPF_MAP_TYPE_STRUCT_OPS" from
+Jan 8, 2020, leads to the following static checker warning:
 
-diff --git a/drivers/regulator/mpq7920.c b/drivers/regulator/mpq7920.c
-index ab1b847c57e5..80f3131f0d1b 100644
---- a/drivers/regulator/mpq7920.c
-+++ b/drivers/regulator/mpq7920.c
-@@ -274,8 +274,8 @@ static inline int mpq7920_regulator_register(
- 
- 		info->rdev[i] = devm_regulator_register(info->dev, rdesc,
- 					 config);
--		if (IS_ERR(info->rdev))
--			return PTR_ERR(info->rdev);
-+		if (IS_ERR(info->rdev[i]))
-+			return PTR_ERR(info->rdev[i]);
- 	}
- 
- 	return 0;
--- 
-2.11.0
+	kernel/bpf/bpf_struct_ops.c:501 bpf_struct_ops_map_seq_show_elem()
+	warn: 'value' is an error pointer or valid
 
+kernel/bpf/bpf_struct_ops.c
+   495  static void bpf_struct_ops_map_seq_show_elem(struct bpf_map *map, void *key,
+   496                                               struct seq_file *m)
+   497  {
+   498          void *value;
+   499  
+   500          value = bpf_struct_ops_map_lookup_elem(map, key);
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This is just a dummy function that only returns -EINVAL.
+
+   501          if (!value)
+   502                  return;
+   503  
+   504          btf_type_seq_show(btf_vmlinux, map->btf_vmlinux_value_type_id,
+   505                            value, m);
+   506          seq_puts(m, "\n");
+   507  }
+
+
+regards,
+dan carpenter

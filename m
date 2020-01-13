@@ -2,70 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 228BA139109
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jan 2020 13:27:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B44C2139121
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jan 2020 13:31:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726399AbgAMM1Q (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Jan 2020 07:27:16 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43868 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725832AbgAMM1Q (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Jan 2020 07:27:16 -0500
-Received: from pobox.suse.cz (prg-ext-pat.suse.com [213.151.95.130])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D58002084D;
-        Mon, 13 Jan 2020 12:27:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1578918435;
-        bh=MFEPfdA+QsEVeUYS3nDx77LbmgiN2tk3SkvZyVQ4qII=;
-        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-        b=hcvfvV+T3tJ4URMj1PE3ed49mkd7Sg3fyhShjEZFDPfg6xwZpkA/XL9vZq5Koyz3p
-         ezaDqG+/zlwhK+mgp7LD+ZVohdP+Q6d+ijrGgyWn9SiFy++P5nzHg0j+jD5u1Zm2n/
-         JC/9epXhXbvmNBYZxQc89MqeA/9OLoqcf38otedQ=
-Date:   Mon, 13 Jan 2020 13:27:12 +0100 (CET)
-From:   Jiri Kosina <jikos@kernel.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-cc:     benjamin.tissoires@redhat.com, linux-input@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] HID: logitech-hidpp: avoid duplicate error handling code
- in 'hidpp_probe()'
-In-Reply-To: <20191226145435.8262-1-christophe.jaillet@wanadoo.fr>
-Message-ID: <nycvar.YFH.7.76.2001131327020.31058@cbobk.fhfr.pm>
-References: <20191226145435.8262-1-christophe.jaillet@wanadoo.fr>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+        id S1726567AbgAMMbw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Jan 2020 07:31:52 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:39398 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726505AbgAMMbv (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 13 Jan 2020 07:31:51 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iqysn-0005RE-Ej; Mon, 13 Jan 2020 12:31:49 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next][V2] drivers/misc: ti-st: remove redundant assignment to variables i and flags
+Date:   Mon, 13 Jan 2020 12:31:49 +0000
+Message-Id: <20200113123149.187555-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 26 Dec 2019, Christophe JAILLET wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> 'hid_hw_stop()' is already in the error handling path when branching to
-> the 'hid_hw_open_fail' label.
-> There is no point in calling it twice, so remove one.
-> 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
->  drivers/hid/hid-logitech-hidpp.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
-> index bb063e7d48df..70e1cb928bf0 100644
-> --- a/drivers/hid/hid-logitech-hidpp.c
-> +++ b/drivers/hid/hid-logitech-hidpp.c
-> @@ -3817,7 +3817,6 @@ static int hidpp_probe(struct hid_device *hdev, const struct hid_device_id *id)
->  	if (ret < 0) {
->  		dev_err(&hdev->dev, "%s:hid_hw_open returned error:%d\n",
->  			__func__, ret);
-> -		hid_hw_stop(hdev);
->  		goto hid_hw_open_fail;
+The variables i and flags are being initialized with values that are
+never read.  The initializations are redundant and can be removed.
 
-Thanks for catching this. Applied now.
+Addresses-Coverity: ("Unused value")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
 
+V2: remove assignment to flags too, thanks to Dan Carpenter for spotting that.
+
+---
+ drivers/misc/ti-st/st_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/misc/ti-st/st_core.c b/drivers/misc/ti-st/st_core.c
+index 2ae9948a91e1..14136d2cc8f9 100644
+--- a/drivers/misc/ti-st/st_core.c
++++ b/drivers/misc/ti-st/st_core.c
+@@ -736,8 +736,8 @@ static int st_tty_open(struct tty_struct *tty)
+ 
+ static void st_tty_close(struct tty_struct *tty)
+ {
+-	unsigned char i = ST_MAX_CHANNELS;
+-	unsigned long flags = 0;
++	unsigned char i;
++	unsigned long flags;
+ 	struct	st_data_s *st_gdata = tty->disc_data;
+ 
+ 	pr_info("%s ", __func__);
 -- 
-Jiri Kosina
-SUSE Labs
+2.24.0
 

@@ -2,86 +2,145 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 63E5D138C6D
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jan 2020 08:37:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B8C9138D34
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jan 2020 09:49:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728760AbgAMHhR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Jan 2020 02:37:17 -0500
-Received: from mail02.vodafone.es ([217.130.24.81]:63461 "EHLO
-        mail02.vodafone.es" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728687AbgAMHhQ (ORCPT
+        id S1728800AbgAMItS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Jan 2020 03:49:18 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:49288 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728783AbgAMItR (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Jan 2020 02:37:16 -0500
-IronPort-SDR: YQAuI+dxN4x4fWMv7aYRtXPCXjJgmH5HWq5162oX+xhILzrBOGQcFlxQMv0tPIvtJ0bSsIOOg5
- GxGjft0rLKmw==
-IronPort-PHdr: =?us-ascii?q?9a23=3ACljHMBLMVIW+hhy3QNmcpTZWNBhigK39O0sv0r?=
- =?us-ascii?q?FitYgfKvTxwZ3uMQTl6Ol3ixeRBMOHsqkC0bSH+Pm5ASQp2tWoiDg6aptCVh?=
- =?us-ascii?q?sI2409vjcLJ4q7M3D9N+PgdCcgHc5PBxdP9nC/NlVJSo6lPwWB6nK94iQPFR?=
- =?us-ascii?q?rhKAF7Ovr6GpLIj8Swyuu+54Dfbx9HiTagb75+Ngu6oATVu8UZnIduN7o9wQ?=
- =?us-ascii?q?bVr3VVfOhb2XlmLk+JkRbm4cew8p9j8yBOtP8k6sVNT6b0cbkmQLJBFDgpPH?=
- =?us-ascii?q?w768PttRnYUAuA/WAcXXkMkhpJGAfK8hf3VYrsvyTgt+p93C6aPdDqTb0xRD?=
- =?us-ascii?q?+v4btnRAPuhSwaMTI193zZhdBqg6JeoBOtvgJyw4nOYIGNM/p+ZLnSfc8ESm?=
- =?us-ascii?q?ZYQMlRUTVND5+gb4sTFeUOIeZYoJf4p1QQqxu+GRCgC/3pyjNRgXH22qs63P?=
- =?us-ascii?q?ohEA3fwgMgGc8FvHDaodnpKKseVOa4x7TKwzredfNbwTnz5ojSch4/ov+CQL?=
- =?us-ascii?q?1/ftbex0Q0CwPIjEmfpZD5Mz+JyOgAtXWQ4ep6VeKojm4qsxt/rSazxsgykI?=
- =?us-ascii?q?nCm4IaylfC9SV23Y04IsW4R1BnYdG6CptRuSaaN415Qs45Q2Fooz01xaEctZ?=
- =?us-ascii?q?GneygKzY4rxx7ca/GedYWD/xHtVP6JLDtmmX5oeqiziwu8/ES80OHwSMa53E?=
- =?us-ascii?q?xEoydFlNTHq2oD2AbJ6sedT/tw5kKh2TGS2A/N8uxEOkU0lbbDK54m374wio?=
- =?us-ascii?q?IfsUTdES/yn0X7lKqWeV8l+uis8eTofLHmqoOTOoNulAH+NbkhldaxAeQ/NA?=
- =?us-ascii?q?gBQXKX9vqn1LH7/E35RqtFjuEun6XHrZzXJ94XqrO3DgNJyIov9RmyAy2o3d?=
- =?us-ascii?q?kYhXUHKUhKeBODj4jnIVHOJ/X4AO+ng1uyjDdk2erGP7PmApXLIXjOi7fhfa?=
- =?us-ascii?q?1m5EFA0gY80ddf55dOBrEBI/L/QlXxu8DADh8lLwy0xP7qCNZj2YMEX2KAHK?=
- =?us-ascii?q?uZPLrQsVCS4OIvIvWMZIgPuDbmMPUl+fHugmEjmVMHfqmmw4EXaHamEfRiOU?=
- =?us-ascii?q?mZZmDsgthSWVsN6wkzVurnjBiAWDhSe3GoRIoi6TwhToGrF4HOQsaqmrPS5i?=
- =?us-ascii?q?qjGoxqYTV+B0yBCz/XcIOLE6MUZT6fONBmlDMEVri6QYQJ2hSntQu8wL1ieL?=
- =?us-ascii?q?n64Cod4KruyNVvr9LUkx56oSR5E8mHzGaLQEl0hWkDATQx2eZ/ohoumR+4za?=
- =?us-ascii?q?FkjqkBRpRo7PRTX1JhbcbR?=
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2HDKwADHRxeeiMYgtkUBjMYGwEBAQE?=
- =?us-ascii?q?BAQEFAQEBEQEBAwMBAQGBewIBARcBAYEjAgmBTVIgEpNQgU0fg0OLY4EAgx4?=
- =?us-ascii?q?VhggTDIFbDQEBAQEBGxoCAQGEQE4BF4ESJDoEDQIDDQEBBQEBAQEBBQQBAQI?=
- =?us-ascii?q?QAQEJDQsEK4VKgh0MHgEEAQEBAQMDAwEBDAGDXQcZDzlKDEABDgFThU8BATO?=
- =?us-ascii?q?FJJc8AYQEiQANDQKFHYJFBAqBCYEaI4E0AgEBjBcagUE/gSMhgisIAYIBgn8?=
- =?us-ascii?q?BEgFsgkiCWQSNQhIhgQeIKZgXgkEEdolMjAKCNwEPiAGEMQMQgkUPgQmIA4R?=
- =?us-ascii?q?OgX2jN1eBDA16cTMagiYagSBPGA2WSECBFhACT4kugjIBAQ?=
-X-IPAS-Result: =?us-ascii?q?A2HDKwADHRxeeiMYgtkUBjMYGwEBAQEBAQEFAQEBEQEBA?=
- =?us-ascii?q?wMBAQGBewIBARcBAYEjAgmBTVIgEpNQgU0fg0OLY4EAgx4VhggTDIFbDQEBA?=
- =?us-ascii?q?QEBGxoCAQGEQE4BF4ESJDoEDQIDDQEBBQEBAQEBBQQBAQIQAQEJDQsEK4VKg?=
- =?us-ascii?q?h0MHgEEAQEBAQMDAwEBDAGDXQcZDzlKDEABDgFThU8BATOFJJc8AYQEiQAND?=
- =?us-ascii?q?QKFHYJFBAqBCYEaI4E0AgEBjBcagUE/gSMhgisIAYIBgn8BEgFsgkiCWQSNQ?=
- =?us-ascii?q?hIhgQeIKZgXgkEEdolMjAKCNwEPiAGEMQMQgkUPgQmIA4ROgX2jN1eBDA16c?=
- =?us-ascii?q?TMagiYagSBPGA2WSECBFhACT4kugjIBAQ?=
-X-IronPort-AV: E=Sophos;i="5.69,428,1571695200"; 
-   d="scan'208";a="323897012"
-Received: from mailrel04.vodafone.es ([217.130.24.35])
-  by mail02.vodafone.es with ESMTP; 13 Jan 2020 08:37:15 +0100
-Received: (qmail 27882 invoked from network); 12 Jan 2020 04:18:43 -0000
-Received: from unknown (HELO 192.168.1.3) (quesosbelda@[217.217.179.17])
-          (envelope-sender <peterwong@hsbc.com.hk>)
-          by mailrel04.vodafone.es (qmail-ldap-1.03) with SMTP
-          for <kernel-janitors@vger.kernel.org>; 12 Jan 2020 04:18:43 -0000
-Date:   Sun, 12 Jan 2020 05:18:43 +0100 (CET)
-From:   Peter Wong <peterwong@hsbc.com.hk>
-Reply-To: Peter Wong <peterwonghkhsbc@gmail.com>
-To:     kernel-janitors@vger.kernel.org
-Message-ID: <31665681.328893.1578802723614.JavaMail.cash@217.130.24.55>
-Subject: Investment opportunity
+        Mon, 13 Jan 2020 03:49:17 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00D8mev4053829;
+        Mon, 13 Jan 2020 08:49:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ content-transfer-encoding : in-reply-to; s=corp-2019-08-05;
+ bh=lMx21tGcjb+jsEbRtABZz15Zz4x8qwLIqH7vx+tLHy0=;
+ b=QAtIetbIzElkUUiTe/pxyaKmXwng6vbZ1v5NDNRT6l/qp1JS3dBkZkyiM/1dtc1qwIwu
+ E0a6NJRrmGjM8dcXr8cuk449QA3F4Xj0ibSDrO/mtExqscsX5n9seKFhYEFRsx+GB7C0
+ AIrxB2FjJM7mW6+0ihQhgU61iuQaQM+DoQISkaGyM5+8x2wAaChEZ7dnsu2VOVKxvIjM
+ 0yrNFv2/J/JzI6WzXtoRMzV1XPZjwKha7z7xssCN/3YOMkyHkA16kWehp54NBajgsBYl
+ MoglJSF6brE6dEgxZZ8pXGfaaWpsEKuKBELD+XanouscNtmkghxuuMnxTdX109e6OsKt 4w== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2120.oracle.com with ESMTP id 2xf73tdgdy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 13 Jan 2020 08:49:08 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00D8n4gM117794;
+        Mon, 13 Jan 2020 08:49:08 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3020.oracle.com with ESMTP id 2xfqvpxaen-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 13 Jan 2020 08:49:07 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00D8m2Ue014690;
+        Mon, 13 Jan 2020 08:48:02 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 13 Jan 2020 00:48:01 -0800
+Date:   Mon, 13 Jan 2020 11:47:53 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Marion & Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     Colin King <colin.king@canonical.com>,
+        David Miller <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+        Kernel Janitors <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][next] ath11k: avoid null pointer dereference when
+ pointer band is null
+Message-ID: <20200113084753.GA9510@kadam>
+References: <05d5d54e035e4d69ad4ffb4a835a495a@huawei.com>
+ <64797126-0c77-4c2c-ad2b-29d7af452c13@wanadoo.fr>
+ <17571eee-9d72-98cb-00f5-d714a28b853b@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <17571eee-9d72-98cb-00f5-d714a28b853b@wanadoo.fr>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9498 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001130074
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9498 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001130074
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Greetings,
-Please read the attached investment proposal and reply for more details.
-Are you interested in loan?
-Sincerely: Peter Wong
+On Sat, Jan 11, 2020 at 12:57:11PM +0100, Marion & Christophe JAILLET wrote:
+> Le 11/01/2020 à 10:50, linmiaohe a écrit :
+> > Colin Ian King<colin.king@canonical.com>  wrote：
+> > > From: Colin Ian King<colin.king@canonical.com>
+> > > 
+> > > In the unlikely event that cap->supported_bands has neither WMI_HOST_WLAN_2G_CAP set or WMI_HOST_WLAN_5G_CAP set then pointer band is null and a null dereference occurs when assigning
+> > > band->n_iftype_data.  Move the assignment to the if blocks to
+> > > avoid this.  Cleans up static analysis warnings.
+> > > 
+> > > Addresses-Coverity: ("Explicit null dereference")
+> > > Fixes: 9f056ed8ee01 ("ath11k: add HE support")
+> > > Signed-off-by: Colin Ian King<colin.king@canonical.com>
+> > > ---
+> > > drivers/net/wireless/ath/ath11k/mac.c | 8 ++++----
+> > > 1 file changed, 4 insertions(+), 4 deletions(-)
+> > It looks fine for me. Thanks.
+> > Reviewed-by: Miaohe Lin<linmiaohe@huawei.com>
+> (sorry for incomplete mail and mailing list addresses, my newsreader ate
+> them, and I cannot get the list from get_maintainer.pl because my (outdated)
+> tree does not have ath11k/...
+> I've only including the ones in memory of my mail writer.
+> 
+> Please forward if needed)
+> 
+> 
+> Hi
+> 
+> Shouldn't there be a
+> 
+> |
+> 
+> - band->n_iftype_data  =  count; at the end of the patch if the assignment
+> is *moved*? Without it, 'band' (as well as 'count') could be un-initialized,
+> and lead to memory corruption. Just my 2c. CJ |
 
+You must be looking at different code.  There is no uninitialized
+variable.  The patched code looks like:
 
+drivers/net/wireless/ath/ath11k/mac.c
+  3520  static void ath11k_mac_setup_he_cap(struct ath11k *ar,
+  3521                                      struct ath11k_pdev_cap *cap)
+  3522  {
+  3523          struct ieee80211_supported_band *band;
+  3524          int count;
+  3525  
+  3526          if (cap->supported_bands & WMI_HOST_WLAN_2G_CAP) {
+  3527                  count = ath11k_mac_copy_he_cap(ar, cap,
+  3528                                                 ar->mac.iftype[NL80211_BAND_2GHZ],
+  3529                                                 NL80211_BAND_2GHZ);
+  3530                  band = &ar->mac.sbands[NL80211_BAND_2GHZ];
+  3531                  band->iftype_data = ar->mac.iftype[NL80211_BAND_2GHZ];
+  3532                  band->n_iftype_data = count;
+  3533          }
+  3534  
+  3535          if (cap->supported_bands & WMI_HOST_WLAN_5G_CAP) {
+  3536                  count = ath11k_mac_copy_he_cap(ar, cap,
+  3537                                                 ar->mac.iftype[NL80211_BAND_5GHZ],
+  3538                                                 NL80211_BAND_5GHZ);
+  3539                  band = &ar->mac.sbands[NL80211_BAND_5GHZ];
+  3540                  band->iftype_data = ar->mac.iftype[NL80211_BAND_5GHZ];
+  3541                  band->n_iftype_data = count;
+  3542          }
+  3543  }
 
-
-----------------------------------------------------
-This email was sent by the shareware version of Postman Professional.
-
+regards,
+dan carpenter

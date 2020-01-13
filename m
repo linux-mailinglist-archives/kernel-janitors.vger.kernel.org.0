@@ -2,30 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B23EE139315
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jan 2020 15:05:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 077681393EB
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jan 2020 15:46:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728738AbgAMOFk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Jan 2020 09:05:40 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:41577 "EHLO
+        id S1728512AbgAMOqc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Jan 2020 09:46:32 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:42804 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728558AbgAMOFj (ORCPT
+        with ESMTP id S1726505AbgAMOqc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Jan 2020 09:05:39 -0500
+        Mon, 13 Jan 2020 09:46:32 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1ir0LW-0004fy-Oz; Mon, 13 Jan 2020 14:05:34 +0000
+        id 1ir0z5-0000RA-C9; Mon, 13 Jan 2020 14:46:27 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        dri-devel@lists.freedesktop.org
+To:     Antonino Daplas <adaplas@gmail.com>,
+        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
+        linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/gma500: clean up two indentation issues
-Date:   Mon, 13 Jan 2020 14:05:34 +0000
-Message-Id: <20200113140534.209440-1-colin.king@canonical.com>
+Subject: [PATCH] video: fbdev: nvidia: clean up indentation issues and comment block
+Date:   Mon, 13 Jan 2020 14:46:27 +0000
+Message-Id: <20200113144627.219967-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,38 +36,68 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There are a couple of statements that are indented too deeply,
-clean these up by removing the extraneous tabs. Also remove an
-empty line.
+There is a hunk of code that is incorrectly indented, clean up the
+indentation and a comment block. Also remove block braces around a
+one line statement on an if condition and add missing spaces after
+if keywords.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/gpu/drm/gma500/cdv_intel_dp.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/nvidia/nvidia.c | 41 ++++++++++++++---------------
+ 1 file changed, 20 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/gpu/drm/gma500/cdv_intel_dp.c b/drivers/gpu/drm/gma500/cdv_intel_dp.c
-index 5772b2dce0d6..b5360bd405c5 100644
---- a/drivers/gpu/drm/gma500/cdv_intel_dp.c
-+++ b/drivers/gpu/drm/gma500/cdv_intel_dp.c
-@@ -1529,8 +1529,7 @@ cdv_intel_dp_start_link_train(struct gma_encoder *encoder)
- 	clock_recovery = false;
+diff --git a/drivers/video/fbdev/nvidia/nvidia.c b/drivers/video/fbdev/nvidia/nvidia.c
+index c583c018304d..c24de9107958 100644
+--- a/drivers/video/fbdev/nvidia/nvidia.c
++++ b/drivers/video/fbdev/nvidia/nvidia.c
+@@ -168,27 +168,26 @@ static int nvidia_panel_tweak(struct nvidia_par *par,
+ {
+ 	int tweak = 0;
  
- 	DRM_DEBUG_KMS("Start train\n");
--		reg = DP | DP_LINK_TRAIN_PAT_1;
+-   if (par->paneltweak) {
+-	   tweak = par->paneltweak;
+-   } else {
+-	   /* begin flat panel hacks */
+-	   /* This is unfortunate, but some chips need this register
+-	      tweaked or else you get artifacts where adjacent pixels are
+-	      swapped.  There are no hard rules for what to set here so all
+-	      we can do is experiment and apply hacks. */
 -
-+	reg = DP | DP_LINK_TRAIN_PAT_1;
+-	   if(((par->Chipset & 0xffff) == 0x0328) && (state->bpp == 32)) {
+-		   /* At least one NV34 laptop needs this workaround. */
+-		   tweak = -1;
+-	   }
+-
+-	   if((par->Chipset & 0xfff0) == 0x0310) {
+-		   tweak = 1;
+-	   }
+-	   /* end flat panel hacks */
+-   }
+-
+-   return tweak;
++	if (par->paneltweak) {
++		tweak = par->paneltweak;
++	} else {
++		/* Begin flat panel hacks.
++		 * This is unfortunate, but some chips need this register
++		 * tweaked or else you get artifacts where adjacent pixels are
++		 * swapped.  There are no hard rules for what to set here so all
++		 * we can do is experiment and apply hacks.
++		 */
++		if (((par->Chipset & 0xffff) == 0x0328) && (state->bpp == 32)) {
++			/* At least one NV34 laptop needs this workaround. */
++			tweak = -1;
++		}
++
++		if ((par->Chipset & 0xfff0) == 0x0310)
++			tweak = 1;
++		/* end flat panel hacks */
++	}
++
++	return tweak;
+ }
  
- 	for (;;) {
- 		/* Use intel_dp->train_set[0] to set the voltage and pre emphasis values */
-@@ -1603,7 +1602,7 @@ cdv_intel_dp_complete_link_train(struct gma_encoder *encoder)
- 	cr_tries = 0;
- 
- 	DRM_DEBUG_KMS("\n");
--		reg = DP | DP_LINK_TRAIN_PAT_2;
-+	reg = DP | DP_LINK_TRAIN_PAT_2;
- 
- 	for (;;) {
- 
+ static void nvidia_screen_off(struct nvidia_par *par, int on)
 -- 
 2.24.0
 

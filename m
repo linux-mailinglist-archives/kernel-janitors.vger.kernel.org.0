@@ -2,65 +2,69 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D077E13921A
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jan 2020 14:23:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CC9413921D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jan 2020 14:24:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726523AbgAMNXz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Jan 2020 08:23:55 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:39564 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726277AbgAMNXz (ORCPT
+        id S1727289AbgAMNYp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Jan 2020 08:24:45 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:46810 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726277AbgAMNYp (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Jan 2020 08:23:55 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00DDMe1h091442;
-        Mon, 13 Jan 2020 13:23:49 GMT
+        Mon, 13 Jan 2020 08:24:45 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00DDMeRq116202;
+        Mon, 13 Jan 2020 13:24:16 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=8OZxeanEuptXF8CJ0FdPIwRdmEuBYU+V1UcaAab/WP4=;
- b=alF88qWnhtZBwRxjsDU+LhxfvFBhR8wdyI+nL8HIQYD7YOU859JkAYSrHQFjj3fsenhd
- XvPaAPm2M7lQmDJKzhHQtmJcZzU8HvquwNQFO6ASTQea2tmtMERPad/lnnUnovDK0SVW
- neiRQhgdgYq8tMOQ3YH32A8NztpVVb+TyB4xooUMO/CcaRXMZm/G9hQjxPzAQ5q8K389
- 4RRFtevsA63LWAKWJDgaRdYI02HNCkTkroVM9aVRul7jC9LEGlzeVDtqAbFzuZUJA1cZ
- H/85nOqumdRDi9bX1Jhj9Bjh8aN0decsUWpzmsS9aUw1Svn+k8sXnnlgfaR0HT89oRdE AQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 2xf73y6vnb-1
+ bh=Ga946dKjkWL6cw2gC4q2vcikz/DRqUl8k49hkbQNN44=;
+ b=erLYBBdiZE73upde6C3zUurIz10Re6RCdcFehNJt5jWIAw483zwcjJWdhlkxZH2OFd89
+ Lgb8W+YkosBsiDLtSmKCbtDZjUwMjxqU6kCM5tlJ+hpcUmnXkB20Dz/1unzU3mlRaEbT
+ Bj1k4uvo3Qj1HzB+zkK5Bqmh0zrXxXSenehl1G44As3VTICecYWxwfe1ZYIZZ3kvcJyj
+ Rz/YugKSoeMH3Kx9SYn+6BP1HSapP/i4nGkepPndqIJuJ2edKjaCKRYqTOtqLqkfFZKF
+ FZ3WE81olddiQLsVr9sogOnOUM+gpUTcMF3lf0odJoxCM7RZKXawICWOecSULmnwsLCx uQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2xf74rxw6f-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 13 Jan 2020 13:23:49 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00DDNnvl154646;
-        Mon, 13 Jan 2020 13:23:49 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2xfqu4hufy-1
+        Mon, 13 Jan 2020 13:24:16 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00DDOBx0084936;
+        Mon, 13 Jan 2020 13:24:15 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2xfrh62vs6-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 13 Jan 2020 13:23:49 +0000
-Received: from abhmp0009.oracle.com (abhmp0009.oracle.com [141.146.116.15])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00DDNEGb024717;
-        Mon, 13 Jan 2020 13:23:14 GMT
+        Mon, 13 Jan 2020 13:24:15 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 00DDNsNN007011;
+        Mon, 13 Jan 2020 13:23:55 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 13 Jan 2020 05:23:14 -0800
-Date:   Mon, 13 Jan 2020 16:23:07 +0300
+        with ESMTP ; Mon, 13 Jan 2020 05:23:54 -0800
+Date:   Mon, 13 Jan 2020 16:23:46 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "J. Bruce Fields" <bfields@fieldses.org>,
-        Olga Kornievskaia <kolga@netapp.com>
-Cc:     Chuck Lever <chuck.lever@oracle.com>, linux-nfs@vger.kernel.org,
+To:     Richard Weinberger <richard@nod.at>
+Cc:     Miquel Raynal <miquel.raynal@bootlin.com>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        linux-mtd@lists.infradead.org,
+        linux-stm32@st-md-mailman.stormreply.com,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] nfsd4: fix double free in nfsd4_do_async_copy()
-Message-ID: <20200113132307.frp6ur5zhzolu5ys@kili.mountain>
+Subject: [PATCH] ubi: Fix an error pointer dereference in error handling code
+Message-ID: <20200113132346.rmeamdmbxwvo7kgj@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 User-Agent: NeoMutt/20170113 (1.7.2)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9498 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
  phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.0.1-1911140001 definitions=main-2001130112
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9498 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
  definitions=main-2001130112
@@ -69,26 +73,96 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This frees "copy->nf_src" before and again after the goto.
+If "seen_pebs = init_seen(ubi);" fails then "seen_pebs" is an error pointer
+and we try to kfree() it which results in an Oops.
 
-Fixes: ce0887ac96d3 ("NFSD add nfs4 inter ssc to nfsd4_copy")
+This patch re-arranges the error handling so now it only frees things
+which have been allocated successfully.
+
+Fixes: daef3dd1f0ae ("UBI: Fastmap: Add self check to detect absent PEBs")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- fs/nfsd/nfs4proc.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/mtd/ubi/fastmap.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
+---
+ drivers/mtd/ubi/fastmap.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 1e14b3ed5674..c90c24c35b2e 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1469,7 +1469,6 @@ static int nfsd4_do_async_copy(void *data)
- 		copy->nf_src->nf_file = nfs42_ssc_open(copy->ss_mnt, &copy->c_fh,
- 					      &copy->stateid);
- 		if (IS_ERR(copy->nf_src->nf_file)) {
--			kfree(copy->nf_src);
- 			copy->nfserr = nfserr_offload_denied;
- 			nfsd4_interssc_disconnect(copy->ss_mnt);
- 			goto do_callback;
+diff --git a/drivers/mtd/ubi/fastmap.c b/drivers/mtd/ubi/fastmap.c
+index 1c7be4eb3ba6..6b544665318a 100644
+--- a/drivers/mtd/ubi/fastmap.c
++++ b/drivers/mtd/ubi/fastmap.c
+@@ -1137,7 +1137,7 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
+ 	struct rb_node *tmp_rb;
+ 	int ret, i, j, free_peb_count, used_peb_count, vol_count;
+ 	int scrub_peb_count, erase_peb_count;
+-	unsigned long *seen_pebs = NULL;
++	unsigned long *seen_pebs;
+ 
+ 	fm_raw = ubi->fm_buf;
+ 	memset(ubi->fm_buf, 0, ubi->fm_size);
+@@ -1151,7 +1151,7 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
+ 	dvbuf = new_fm_vbuf(ubi, UBI_FM_DATA_VOLUME_ID);
+ 	if (!dvbuf) {
+ 		ret = -ENOMEM;
+-		goto out_kfree;
++		goto out_free_avbuf;
+ 	}
+ 
+ 	avhdr = ubi_get_vid_hdr(avbuf);
+@@ -1160,7 +1160,7 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
+ 	seen_pebs = init_seen(ubi);
+ 	if (IS_ERR(seen_pebs)) {
+ 		ret = PTR_ERR(seen_pebs);
+-		goto out_kfree;
++		goto out_free_dvbuf;
+ 	}
+ 
+ 	spin_lock(&ubi->volumes_lock);
+@@ -1328,7 +1328,7 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
+ 	ret = ubi_io_write_vid_hdr(ubi, new_fm->e[0]->pnum, avbuf);
+ 	if (ret) {
+ 		ubi_err(ubi, "unable to write vid_hdr to fastmap SB!");
+-		goto out_kfree;
++		goto out_free_seen;
+ 	}
+ 
+ 	for (i = 0; i < new_fm->used_blocks; i++) {
+@@ -1350,7 +1350,7 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
+ 		if (ret) {
+ 			ubi_err(ubi, "unable to write vid_hdr to PEB %i!",
+ 				new_fm->e[i]->pnum);
+-			goto out_kfree;
++			goto out_free_seen;
+ 		}
+ 	}
+ 
+@@ -1360,7 +1360,7 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
+ 		if (ret) {
+ 			ubi_err(ubi, "unable to write fastmap to PEB %i!",
+ 				new_fm->e[i]->pnum);
+-			goto out_kfree;
++			goto out_free_seen;
+ 		}
+ 	}
+ 
+@@ -1370,10 +1370,13 @@ static int ubi_write_fastmap(struct ubi_device *ubi,
+ 	ret = self_check_seen(ubi, seen_pebs);
+ 	dbg_bld("fastmap written!");
+ 
+-out_kfree:
+-	ubi_free_vid_buf(avbuf);
+-	ubi_free_vid_buf(dvbuf);
++out_free_seen:
+ 	free_seen(seen_pebs);
++out_free_dvbuf:
++	ubi_free_vid_buf(dvbuf);
++out_free_avbuf:
++	ubi_free_vid_buf(avbuf);
++
+ out:
+ 	return ret;
+ }
 -- 
 2.11.0
 

@@ -2,134 +2,98 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F749139164
-	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jan 2020 13:49:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 65DAA13917B
+	for <lists+kernel-janitors@lfdr.de>; Mon, 13 Jan 2020 13:59:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726976AbgAMMtv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 13 Jan 2020 07:49:51 -0500
-Received: from mout.kundenserver.de ([212.227.17.13]:59001 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726375AbgAMMtu (ORCPT
+        id S1726985AbgAMM7s (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 13 Jan 2020 07:59:48 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:49198 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726399AbgAMM7s (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 13 Jan 2020 07:49:50 -0500
-Received: from mail-qt1-f178.google.com ([209.85.160.178]) by
- mrelayeu.kundenserver.de (mreue109 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1MGi6m-1ivuqF03wQ-00DrnK; Mon, 13 Jan 2020 13:49:49 +0100
-Received: by mail-qt1-f178.google.com with SMTP id d5so8957935qto.0;
-        Mon, 13 Jan 2020 04:49:48 -0800 (PST)
-X-Gm-Message-State: APjAAAUL/nH/v9bWPYRP8YJpHanBsQwHTVZb607yHl2wwT5fuWQyIxSM
-        qlDNPAIcKddfz+9xeQUDwo61b4pqsbU3Y2SPP0I=
-X-Google-Smtp-Source: APXvYqzFNee6oMqlwdnJFaK96+kqQeTvX1mVko2+fsSOjGGm7mJkzAnLuZGtaJ8nkF1quBL2liWsixLifYLOWUujuDc=
-X-Received: by 2002:ac8:709a:: with SMTP id y26mr13837250qto.304.1578919787752;
- Mon, 13 Jan 2020 04:49:47 -0800 (PST)
+        Mon, 13 Jan 2020 07:59:48 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00DCwcl9062900;
+        Mon, 13 Jan 2020 12:59:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=ZfQ1LgEbn14jkZf0Ql+4WtMf3jaMLStq+biPvvi5LeY=;
+ b=aHSFk8cCApgGWGP9EVWzSjLQdiG2Bpi9zxuSrvIVNMKnFz4ekCONCWcx4xcSeZLOX55D
+ aM8DohhHK0kwdp9UeShe1Bx8n91QLMOChpyAMw1HJLU8YQdgqaDp9SuVcnCiZwSARTFy
+ MhNWao7CBnUQvOI5wqv6upPCvtMFRbTQNL3sPNhzatrYm6IzcKOeFPm6AjcHO5VGptlM
+ XxRvgeBe+d1CSpoCiQH9T568qZcwQ/UOuYu94b1V8YDe2JzrX9GWgq7Hz4pImRRXAU8y
+ y4jmXd4yrVt8pFCycTcddauB+lLWyX+qZUOM5rJ66Uw1I77eDhXx6O2BpZuf77TCRnFL Gg== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2120.oracle.com with ESMTP id 2xf73tesk9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 13 Jan 2020 12:59:44 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00DCwaqv020336;
+        Mon, 13 Jan 2020 12:59:44 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2xfrh61xqa-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 13 Jan 2020 12:59:44 +0000
+Received: from abhmp0013.oracle.com (abhmp0013.oracle.com [141.146.116.19])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00DCxg8o012055;
+        Mon, 13 Jan 2020 12:59:42 GMT
+Received: from kili.mountain (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 13 Jan 2020 04:59:42 -0800
+Date:   Mon, 13 Jan 2020 15:59:33 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Saravanan Sekar <sravanhome@gmail.com>
+Cc:     Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] regulator: mpq7920: Check the correct variable in
+ mpq7920_regulator_register()
+Message-ID: <20200113125805.xri6jqoxy2ldzqyg@kili.mountain>
 MIME-Version: 1.0
-References: <20191029182320.GA17569@mwanda> <CGME20191029190229epcas3p4e9b24bd8cde962681ef3dc4644ed2c2e@epcas3p4.samsung.com>
- <87zhhjjryk.fsf@x220.int.ebiederm.org> <fd4e6f01-074b-def7-7ffb-9a9197930c31@samsung.com>
-In-Reply-To: <fd4e6f01-074b-def7-7ffb-9a9197930c31@samsung.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Mon, 13 Jan 2020 13:49:30 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a2uLm9pJtx42qDXJSdD71-dVW6+iDcRAnEB85Ajak-HLw@mail.gmail.com>
-Message-ID: <CAK8P3a2uLm9pJtx42qDXJSdD71-dVW6+iDcRAnEB85Ajak-HLw@mail.gmail.com>
-Subject: Re: [PATCH] fbdev: potential information leak in do_fb_ioctl()
-To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
-        Joe Perches <joe@perches.com>,
-        Dan Carpenter <dan.carpenter@oracle.com>,
-        Andrea Righi <righi.andrea@gmail.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Peter Rosin <peda@axentia.se>,
-        Gerd Hoffmann <kraxel@redhat.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org, security@kernel.org,
-        Kees Cook <keescook@chromium.org>,
-        Julia Lawall <Julia.Lawall@lip6.fr>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:Z86KGNz51oiEIbBwBmTRv1ygKjG0C0oJVToiYX8G7GmKClLf85N
- NxX50AhreeFufMRAYcsX5mIWe4vF1q9dqwzjp1me5o9Om9Wzb9DVtsQMhOXuXWvKCjz3Wht
- Fh/iCbvwpJOj3Wi6jtF9ISpm9Xw8l9kX7Yku9tQwJGTbpwbeb9Zq1lVn8KRVF6ImrXa000T
- PBOk7r2qkNiADqHmh/adQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:9wOE/U8AERY=:AyuhiL5DijWN3TEddRb/Vh
- RXvq/IR8r+JpcYSRGy3udJCcE7aKqDhokzRZN7q6EOKhFcLZhSGBQLIt6Swp//hcYAcEPfiSK
- BuMqRA1UOsO5ftu1CHaNCyOKlVi2yvQCPpt25UKVu3ImQwebEe2jILvL63oXQYFUJgWbVytSg
- CXiFleX9B+hI3Ou5/5PCdxlz95kHHEGrzdsAZlQJ6gtand+Jo+x9Vb0Keu8QaH6QY5v4ZDGK/
- Q1NIewK1EptszTFZhm4Tj0OWxxxMIQDfTTaRRwUUIp0URIyGn3Lk6l1PHALMbt/RPyNbb/g1Q
- p4K5PujpLsdnPdOAfwT4LaRlwF6+quugJiWLQA5yyLGxZ63DuaclfDTPcxWm5A72kjdeHbMaT
- B4jYnGIMbCltmcWQjx/lo1OgXR8hoYCKGGaS6LMOTvWhXAt9kDmXa+4AP3sC+TYZ+cs+km+Ht
- kpCCIZNjDyBb0BqjOmrA8oBlVp4QwU5aMK2u2j3d2HTZjhkee0NvYuPu/2Q5RRTXuUEtRhZ6r
- uABrdiRsbwOXThMhbsftOa/COk1O86y18Vs8Vdkb8rlv8+TjAaTZ8IYU6TZmQCmm5o6CYB6+5
- 6JQB40q4vK4fQS4sXxYI0RoOmoNZfHHOAYHkQiqiXNz8kh+iVwsNy6FEP/Ze97lqR9YrUL+ws
- +NaK1plV8BoqQtHD7v+3wa+HdKXQ8sYHKgEiphjEvTUF3KXXtxHt3IAmW97iGoc5UcF4k1sx+
- +41lZMgHtGK3nz6LZ88B5UXwju2Pi6yBkQGs5kfcCMM7ZnwN+52HHYLqFcT27JzhGwNULgKK+
- FrFUGEKDdn4OHPDjpdRKsz/pkmiTJnjoYRa8xIjokp1fdeQAGjcvzhgfxGMX7jOSkihqNr2QW
- f2eMJznjCBvCzqPcocMg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9498 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001130108
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9498 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001130108
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jan 3, 2020 at 2:09 PM Bartlomiej Zolnierkiewicz
-<b.zolnierkie@samsung.com> wrote:
-> On 10/29/19 8:02 PM, Eric W. Biederman wrote:
-> >
-> > The goal is to avoid memory that has values of the previous users of
-> > that memory region from leaking to userspace.  Which depending on who
-> > the previous user of that memory region is could tell userspace
-> > information about what the kernel is doing that it should not be allowed
-> > to find out.
-> >
-> > I tried to trace through where "info" and thus presumably "info->fix" is
-> > coming from and only made it as far as  register_framebuffer.  Given
->
-> "info" (and thus "info->fix") comes from framebuffer_alloc() (which is
-> called by fbdev device drivers prior to registering "info" with
-> register_framebuffer()). framebuffer_alloc() does kzalloc() on "info".
->
-> Therefore shouldn't memcpy() (as suggested by Jeo Perches) be enough?
+There is a typo in the error checking.  We should be checking
+"->rdev[i]" instead of just "->rdev".
 
-Is it guaranteed that all drivers call framebuffer_alloc() rather than
-open-coding it somewhere?
+Fixes: 6501c1f54a17 ("regulator: mpq7920: add mpq7920 regulator driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/regulator/mpq7920.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Here is a list of all files that call register_framebuffer() without first
-calling framebuffer_alloc:
+diff --git a/drivers/regulator/mpq7920.c b/drivers/regulator/mpq7920.c
+index ab1b847c57e5..80f3131f0d1b 100644
+--- a/drivers/regulator/mpq7920.c
++++ b/drivers/regulator/mpq7920.c
+@@ -274,8 +274,8 @@ static inline int mpq7920_regulator_register(
+ 
+ 		info->rdev[i] = devm_regulator_register(info->dev, rdesc,
+ 					 config);
+-		if (IS_ERR(info->rdev))
+-			return PTR_ERR(info->rdev);
++		if (IS_ERR(info->rdev[i]))
++			return PTR_ERR(info->rdev[i]);
+ 	}
+ 
+ 	return 0;
+-- 
+2.11.0
 
-$ git grep -wl register_framebuffer | xargs grep -L framebuffer_alloc
-Documentation/fb/framebuffer.rst
-drivers/media/pci/ivtv/ivtvfb.c
-drivers/media/platform/vivid/vivid-osd.c
-drivers/video/fbdev/68328fb.c
-drivers/video/fbdev/acornfb.c
-drivers/video/fbdev/amba-clcd.c
-drivers/video/fbdev/atafb.c
-drivers/video/fbdev/au1100fb.c
-drivers/video/fbdev/controlfb.c
-drivers/video/fbdev/core/fbmem.c
-drivers/video/fbdev/cyber2000fb.c
-drivers/video/fbdev/fsl-diu-fb.c
-drivers/video/fbdev/g364fb.c
-drivers/video/fbdev/goldfishfb.c
-drivers/video/fbdev/hpfb.c
-drivers/video/fbdev/macfb.c
-drivers/video/fbdev/matrox/matroxfb_base.c
-drivers/video/fbdev/matrox/matroxfb_crtc2.c
-drivers/video/fbdev/maxinefb.c
-drivers/video/fbdev/ocfb.c
-drivers/video/fbdev/pxafb.c
-drivers/video/fbdev/sa1100fb.c
-drivers/video/fbdev/stifb.c
-drivers/video/fbdev/valkyriefb.c
-drivers/video/fbdev/vermilion/vermilion.c
-drivers/video/fbdev/vt8500lcdfb.c
-drivers/video/fbdev/wm8505fb.c
-drivers/video/fbdev/xilinxfb.c
-
-It's possible (even likely, the ones I looked at are fine) that they
-all correctly
-zero out the fb_info structure first, but it seems hard to guarantee, so
-Eric's suggestion would possibly still be the safer choice.
-
-      Arnd

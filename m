@@ -2,51 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9933D13A06B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jan 2020 06:10:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5922013A0C7
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jan 2020 06:52:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725956AbgANFKV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jan 2020 00:10:21 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:60254 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725306AbgANFKV (ORCPT
+        id S1725936AbgANFwA (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jan 2020 00:52:00 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:46002 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725854AbgANFwA (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jan 2020 00:10:21 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00E53u6M065284;
-        Tue, 14 Jan 2020 05:10:15 GMT
+        Tue, 14 Jan 2020 00:52:00 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00E5nJQD112741;
+        Tue, 14 Jan 2020 05:51:36 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=t5sAJiY39rW/ek9JECHLXl/bJS25lwDROySS7gkpZgY=;
- b=oSvYhbOn4Jg9so5RP4iJt5RjBZb1oE3B06FCvAsf+zps8OPjS3ZjkWKOMbKW4e3tQrvi
- 8HUEQvjXjIEMzzSH9Zc+Pjt9AKt/6pESaJXqaBRZ7D5F25/qicSg7CwCZosG14ozXLoT
- /8OEB64kxsG/dA+jqRc+ugx03MAnwZyK8eT5U3t/iTfTuesFhJlg3wz9fNIB0YyxyE4B
- roMVh0ecyjD5agfQe4h6MOvqBj5c7M2T4UEWZQKB1cz7+nDDb6qlKcR9lLKPfbu0Ivdc
- B9N/xn16AGPfmVxX5JkMNSm/8w8fV4CywTkS7KReUxZOLLxK2gqXBQZ1v8JoCtXbb6JV AA== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 2xf73tkfd7-1
+ bh=BAaV0c/xm/TzcUkVjeTotwCF5q0/dynqsi7TFS3d+Ao=;
+ b=EzwZJeJbJV+wc3TurS1UUNSKv6Ba3d2NatnVAqrFEHGvv74K/gCxiqRJi5ROf6qQOTty
+ VRelRMQWpIWMvG1nMcmkti0LhiwESVJc0TuY0q4kNL6X7EcfOQ7zLoMC25cdR0bqztoc
+ lUaDbH7kEhYYv/X/JisOniPl0QpB522bVE2Nyg48HJCJlt9YJa3swpSeplUxd02oo9zY
+ CqqujK2Xxvhj2M5nvniTlmQ94m5fjWDoa6tq5Emaak27A7Cdv6vHr9I1nFjNbdXowYF0
+ Qlbe2BRukiD0FKt4n3jovvwF0L3y1byKmTDBTY5UrW4nwooK4wZwCu49jUt+vf80S4pE gg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 2xf73ybp5c-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 14 Jan 2020 05:10:15 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00E53Ubm165187;
-        Tue, 14 Jan 2020 05:10:15 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2xh2tn2g1w-1
+        Tue, 14 Jan 2020 05:51:36 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00E5nLd7150330;
+        Tue, 14 Jan 2020 05:51:35 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3030.oracle.com with ESMTP id 2xh2sbwc42-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 14 Jan 2020 05:10:15 +0000
-Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00E5AEL0016746;
-        Tue, 14 Jan 2020 05:10:14 GMT
+        Tue, 14 Jan 2020 05:51:35 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 00E5pYQq010456;
+        Tue, 14 Jan 2020 05:51:34 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 13 Jan 2020 21:10:13 -0800
-Date:   Tue, 14 Jan 2020 08:10:05 +0300
+        with ESMTP ; Mon, 13 Jan 2020 21:51:33 -0800
+Date:   Tue, 14 Jan 2020 08:51:25 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc:     Patrice Chotard <patrice.chotard@st.com>,
-        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] media: c8sectpfe: clean up some indenting
-Message-ID: <20200114051005.njxf5d6s6ycyxhfi@kili.mountain>
+To:     Beniamin Bia <beniamin.bia@analog.com>
+Cc:     Michael Hennerich <Michael.Hennerich@analog.com>,
+        Jean Delvare <jdelvare@suse.com>,
+        Guenter Roeck <linux@roeck-us.net>,
+        linux-hwmon@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] hwmon: (adm1177) Fix adm1177_write_alert_thr()
+Message-ID: <20200114055125.ro5slro6zewr56tx@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -56,42 +58,40 @@ X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9499 signatures=6
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
  phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001140044
+ engine=8.0.1-1911140001 definitions=main-2001140051
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9499 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
  suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001140044
+ definitions=main-2001140051
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "seg_num," line wasn't indented.  All the arguments can fit nicely
-on two lines.
+There is a reversed condition so the adm1177_write_alert_thr() function
+doesn't update "st->alert_threshold_ua".
 
+Fixes: 829091f9c56c ("hwmon: (adm1177) Add ADM1177 Hot Swap Controller and Digital Power Monitor driver")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/hwmon/adm1177.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c b/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
-index 5baada4f65e5..d1518a6770fa 100644
---- a/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
-+++ b/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
-@@ -1034,9 +1034,8 @@ static void load_imem_segment(struct c8sectpfei *fei, Elf32_Phdr *phdr,
+diff --git a/drivers/hwmon/adm1177.c b/drivers/hwmon/adm1177.c
+index 1f2ff7a29306..d314223a404a 100644
+--- a/drivers/hwmon/adm1177.c
++++ b/drivers/hwmon/adm1177.c
+@@ -63,7 +63,7 @@ static int adm1177_write_alert_thr(struct adm1177_state *st,
  
- 	dev_dbg(fei->dev,
- 		"Loading IMEM segment %d 0x%08x\n\t (0x%x bytes) -> 0x%p (0x%x bytes)\n",
--seg_num,
--		phdr->p_paddr, phdr->p_filesz,
--		dest, phdr->p_memsz + phdr->p_memsz / 3);
-+		seg_num, phdr->p_paddr, phdr->p_filesz, dest,
-+		phdr->p_memsz + phdr->p_memsz / 3);
+ 	ret = i2c_smbus_write_byte_data(st->client, ADM1177_REG_ALERT_TH,
+ 					val);
+-	if (!ret)
++	if (ret)
+ 		return ret;
  
- 	for (i = 0; i < phdr->p_filesz; i++) {
- 
+ 	st->alert_threshold_ua = alert_threshold_ua;
 -- 
 2.11.0
 

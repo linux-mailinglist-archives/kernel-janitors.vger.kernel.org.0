@@ -2,105 +2,122 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64F4D13AE9B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jan 2020 17:10:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3757213AF4E
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jan 2020 17:27:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729401AbgANQKI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jan 2020 11:10:08 -0500
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:37548 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728990AbgANQJX (ORCPT
+        id S1726495AbgANQ1s (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jan 2020 11:27:48 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:36580 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725904AbgANQ1s (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jan 2020 11:09:23 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
-        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
-        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=lh+DEYlWEE8IeDo6mbUYEZA5GlV0CUS8nFY9iiqzleU=; b=vbhqamHJyj6s
-        g7bTD5W9Mqkmww/8HP9nMEqje7ClX+fLpvxOFs/gWotdma/Eh/QQaklsbEx4+ea0s7JhoYZSwlSD6
-        97OXkh00fYl7FUfg5D66q8S0NUJbQVlDi9t7YVzF0UK6gm50hzdCNT1do5bZfxpcMsHAcj5n84pbO
-        eESV4=;
-Received: from fw-tnat-cam7.arm.com ([217.140.106.55] helo=fitzroy.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1irOkh-0001X4-IH; Tue, 14 Jan 2020 16:09:11 +0000
-Received: by fitzroy.sirena.org.uk (Postfix, from userid 1000)
-        id 049C9D02C7F; Tue, 14 Jan 2020 16:09:11 +0000 (GMT)
-From:   Mark Brown <broonie@kernel.org>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     alsa-devel@alsa-project.org, Jaroslav Kysela <perex@perex.cz>,
-        kernel-janitors@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Oder Chiou <oder_chiou@realtek.com>,
-        Shuming Fan <shumingf@realtek.com>,
-        Takashi Iwai <tiwai@suse.com>
-Subject: Applied "ASoC: rt700: remove unused including <linux/version.h>" to the asoc tree
-In-Reply-To: <20200114011319.173401-1-yuehaibing@huawei.com>
-Message-Id: <applied-20200114011319.173401-1-yuehaibing@huawei.com>
-X-Patchwork-Hint: ignore
-Date:   Tue, 14 Jan 2020 16:09:11 +0000 (GMT)
+        Tue, 14 Jan 2020 11:27:48 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00EGOLtL062079;
+        Tue, 14 Jan 2020 16:27:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=Szp+fenuVidVKCwoLovB578DWbHbG8s4Yk8KG/WNI9s=;
+ b=rQoz3TPZXaqDhqkNzigF65xvxKM/gQVDNP4gbF5e+AvdLWkNDloV68LhNYRhuba5y9ug
+ ycLFsls33Sqt90NYZP/Yi0ULow0elpP1deDAcJCZiHPHd5RrjTw8DHebNRXyhHRzrhXB
+ JXRfaaC9krIJqRp8E8f1OF9w1v2I80bvLvFWbn9Ha7QiOLNo1XmEFEGlRxgtJqgKHEFt
+ I2w+02gOYp8qFmH98r8cMPFiDHr5hkGLa62J7EO+jEjdRIwZHsVAn7FArrDlk+TFxWAM
+ fO3hXyN2v3iMBSwstrqrwCTzPXNkaHfcM4sh7ynAK95RbLsibQHzKyhkMFdjYEWZxapk Gw== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2120.oracle.com with ESMTP id 2xf73yf340-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 14 Jan 2020 16:27:45 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00EG9OCC008538;
+        Tue, 14 Jan 2020 16:27:45 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by userp3030.oracle.com with ESMTP id 2xh2scu9f5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 14 Jan 2020 16:27:44 +0000
+Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 00EGRiUp003351;
+        Tue, 14 Jan 2020 16:27:44 GMT
+Received: from kadam (/10.175.194.72)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 14 Jan 2020 08:27:39 -0800
+Date:   Tue, 14 Jan 2020 19:27:36 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     kernel-janitors@vger.kernel.org
+Cc:     Colin King <colin.king@canonical.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: syzbot is quite fun
+Message-ID: <20200114162736.GD3719@kadam>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9499 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001140137
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9499 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001140137
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
+Hi Everyone,
 
-   ASoC: rt700: remove unused including <linux/version.h>
+I joined the syzbot mailing list last week.  It seems quite fun.
 
-has been applied to the asoc tree at
+I'm puzzling over this one right now.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-5.6
+https://syzkaller.appspot.com/bug?extid=9a48339b077c5a80b869
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Notice the kernel is 5.5.0-rc3-syzkaller (git checkout v5.5-rc3).
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+  1801  static int uvc_scan_device(struct uvc_device *dev)
+  1802  {
+  1803          struct uvc_video_chain *chain;
+  1804          struct uvc_entity *term;
+  1805  
+  1806          list_for_each_entry(term, &dev->entities, list) {
+  1807                  if (!UVC_ENTITY_IS_OTERM(term))
+  1808                          continue;
+  1809  
+  1810                  /* If the terminal is already included in a chain, skip it.
+  1811                   * This can happen for chains that have multiple output
+  1812                   * terminals, where all output terminals beside the first one
+  1813                   * will be inserted in the chain in forward scans.
+  1814                   */
+  1815                  if (term->chain.next || term->chain.prev)
+  1816                          continue;
+  1817  
+  1818                  chain = uvc_alloc_chain(dev);
+  1819                  if (chain == NULL)
+  1820                          return -ENOMEM;
+  1821  
+  1822                  term->flags |= UVC_ENTITY_FLAG_DEFAULT;
+  1823  
+  1824                  if (uvc_scan_chain(chain, term) < 0) {
+  1825                          kfree(chain);
+                                      ^^^^^
+Somehow this "chain" is used after it has been freed.  That doesn't
+seem possible because uvc_scan_chain() doesn't store any reference to
+it.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+  1826                          continue;
+  1827                  }
+  1828  
+  1829                  uvc_trace(UVC_TRACE_PROBE, "Found a valid video chain (%s).\n",
+  1830                            uvc_print_chain(chain));
+  1831  
+  1832                  list_add_tail(&chain->list, &dev->chains);
+  1833          }
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Its like solving a puzzle.  Reviewing code skills etc.
 
-Thanks,
-Mark
-
-From 5615b7a2784331d115e5774e80c1fb0c1ce80644 Mon Sep 17 00:00:00 2001
-From: YueHaibing <yuehaibing@huawei.com>
-Date: Tue, 14 Jan 2020 01:13:19 +0000
-Subject: [PATCH] ASoC: rt700: remove unused including <linux/version.h>
-
-Remove including <linux/version.h> that don't need it.
-
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Link: https://lore.kernel.org/r/20200114011319.173401-1-yuehaibing@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- sound/soc/codecs/rt700.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/sound/soc/codecs/rt700.c b/sound/soc/codecs/rt700.c
-index b1830c1ebf8a..ff68f0e4f629 100644
---- a/sound/soc/codecs/rt700.c
-+++ b/sound/soc/codecs/rt700.c
-@@ -8,7 +8,6 @@
- 
- #include <linux/module.h>
- #include <linux/moduleparam.h>
--#include <linux/version.h>
- #include <linux/kernel.h>
- #include <linux/init.h>
- #include <linux/delay.h>
--- 
-2.20.1
+regards,
+dan carpenter
 

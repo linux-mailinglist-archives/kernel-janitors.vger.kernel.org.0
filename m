@@ -2,96 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B39513ABF6
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jan 2020 15:12:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3625F13AC7A
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jan 2020 15:40:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728813AbgANOMn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jan 2020 09:12:43 -0500
-Received: from mail-pf1-f196.google.com ([209.85.210.196]:39538 "EHLO
-        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725904AbgANOMn (ORCPT
+        id S1728868AbgANOkh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jan 2020 09:40:37 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:51621 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726106AbgANOkh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jan 2020 09:12:43 -0500
-Received: by mail-pf1-f196.google.com with SMTP id q10so6643277pfs.6;
-        Tue, 14 Jan 2020 06:12:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=MRgBvCtjRNlYz6e9qjURgTK4XgDrJzyI0jj9xZ4LvTc=;
-        b=dJlHb1/yR4hekA5crCHMwlnpiKYsK17WvxA6GbktTtF7C3RsqqzancL5DoycJSejlq
-         APjYrPscu//sYsxdrdsq8PHBUkk6AbDYl5oZ8mPOCR58EyVNvrJcV4V0CC5ThpjGqx2S
-         bBHtQvE4McD41TiFYJ6Cd5b7rLaVTlw14fy+8zKsvH2z6HO3L6PupgL1aZ9LVRnszR6y
-         jfa0H1bIMvfttVztDDMjYAXuuOwgwGJdaGlJ+sQATK+4CLqoNiIbft1crP6Uhu6XyXJZ
-         m1TBtDDuhc4CqxmjvBASywC8tESrYa5Zeu705EkjEtoNlMkGA3dGweSu/uXk1slHX/p7
-         ioaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=MRgBvCtjRNlYz6e9qjURgTK4XgDrJzyI0jj9xZ4LvTc=;
-        b=nzdGLfztDOHK3LDXWBWCMpKzJHziYnsIijxPPvlCYOyHlWGeAORyQWC3lbPLjgNaKu
-         NN/Jcg7+JzRZFvaRSOx5s5J0p/nsqehB0WgCKA7ILQyNvrdlZQHFqNg/C/Q7YFXrdTRn
-         GuNU57jTsIx1uiisOO1aVp/YlV8LYadzLgajz7fgNPem5wx8B4oV3kMA5g5JWT0Cisw0
-         wC4UxI+00muSx/uyexcwzVuTDO1h8fSOfRd752he5PRpE5j3nMJWiW2/uTY6D6v9zoug
-         SEe8Jw5njoQEPH3OwaGIc0fMi30ifZIzDDR6bqK9uaGBaIGuX8ny22j1wVsJsidN6hTT
-         E4jA==
-X-Gm-Message-State: APjAAAV9W+tp1WeAUfLvql8iApsZeRvoLcqAYa5p+L1GGBaAJ3pOSxHk
-        s9BtBAqqtET28GnepKUcKmo=
-X-Google-Smtp-Source: APXvYqzZMBywXhuDjnf1dNp/5C/bgOFlEk20gy7PJ8mqOPsagytkZhMfyVlMFTrgG3LvCligS2EdNw==
-X-Received: by 2002:aa7:9629:: with SMTP id r9mr25712036pfg.51.1579011162152;
-        Tue, 14 Jan 2020 06:12:42 -0800 (PST)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id t63sm18550655pfb.70.2020.01.14.06.12.41
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 14 Jan 2020 06:12:41 -0800 (PST)
-Date:   Tue, 14 Jan 2020 06:12:40 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Beniamin Bia <beniamin.bia@analog.com>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jean Delvare <jdelvare@suse.com>, linux-hwmon@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] hwmon: (adm1177) Fix adm1177_write_alert_thr()
-Message-ID: <20200114141240.GA16302@roeck-us.net>
-References: <20200114055125.ro5slro6zewr56tx@kili.mountain>
+        Tue, 14 Jan 2020 09:40:37 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1irNMt-0006dY-Tg; Tue, 14 Jan 2020 14:40:32 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Corey Minyard <cminyard@mvista.com>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        vadimp@mellanox.com, Asmaa Mnebhi <Asmaa@mellanox.com>,
+        openipmi-developer@lists.sourceforge.net
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drivers: ipmi: fix off-by-one bounds check that leads to a out-of-bounds write
+Date:   Tue, 14 Jan 2020 14:40:31 +0000
+Message-Id: <20200114144031.358003-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200114055125.ro5slro6zewr56tx@kili.mountain>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jan 14, 2020 at 08:51:25AM +0300, Dan Carpenter wrote:
-> There is a reversed condition so the adm1177_write_alert_thr() function
-> doesn't update "st->alert_threshold_ua".
-> 
-> Fixes: 829091f9c56c ("hwmon: (adm1177) Add ADM1177 Hot Swap Controller and Digital Power Monitor driver")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-The fix was folded into v4 of the series, so I took that.
+The end of buffer check is off-by-one since the check is against
+an index that is pre-incremented before a store to buf[]. Fix this
+adjusting the bounds check appropriately.
 
-Thanks for reporting!
+Addresses-Coverity: ("Out-of-bounds write")
+Fixes: 51bd6f291583 ("Add support for IPMB driver")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/char/ipmi/ipmb_dev_int.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Guenter
+diff --git a/drivers/char/ipmi/ipmb_dev_int.c b/drivers/char/ipmi/ipmb_dev_int.c
+index 9fdae83e59e0..382b28f1cf2f 100644
+--- a/drivers/char/ipmi/ipmb_dev_int.c
++++ b/drivers/char/ipmi/ipmb_dev_int.c
+@@ -279,7 +279,7 @@ static int ipmb_slave_cb(struct i2c_client *client,
+ 		break;
+ 
+ 	case I2C_SLAVE_WRITE_RECEIVED:
+-		if (ipmb_dev->msg_idx >= sizeof(struct ipmb_msg))
++		if (ipmb_dev->msg_idx >= sizeof(struct ipmb_msg) - 1)
+ 			break;
+ 
+ 		buf[++ipmb_dev->msg_idx] = *val;
+-- 
+2.24.0
 
-> ---
->  drivers/hwmon/adm1177.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/hwmon/adm1177.c b/drivers/hwmon/adm1177.c
-> index 1f2ff7a29306..d314223a404a 100644
-> --- a/drivers/hwmon/adm1177.c
-> +++ b/drivers/hwmon/adm1177.c
-> @@ -63,7 +63,7 @@ static int adm1177_write_alert_thr(struct adm1177_state *st,
->  
->  	ret = i2c_smbus_write_byte_data(st->client, ADM1177_REG_ALERT_TH,
->  					val);
-> -	if (!ret)
-> +	if (ret)
->  		return ret;
->  
->  	st->alert_threshold_ua = alert_threshold_ua;

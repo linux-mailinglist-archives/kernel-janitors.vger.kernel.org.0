@@ -2,53 +2,51 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3591313A06A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jan 2020 06:09:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9933D13A06B
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jan 2020 06:10:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725860AbgANFJX (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jan 2020 00:09:23 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:55292 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725306AbgANFJW (ORCPT
+        id S1725956AbgANFKV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jan 2020 00:10:21 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:60254 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725306AbgANFKV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jan 2020 00:09:22 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00E53VVR104071;
-        Tue, 14 Jan 2020 05:09:13 GMT
+        Tue, 14 Jan 2020 00:10:21 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00E53u6M065284;
+        Tue, 14 Jan 2020 05:10:15 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=FFkb9dUxlR4b36xvK0yY4DOE0GIA2jJ1lfGv3hBEnsY=;
- b=gHNGf1ez8G+enHPFVUqPNj6uYqSpFZN12ELD6W3EWiF5MsrsuLSCGmCndyrHNSsYiBKS
- j78WZf6e3/D8ctxrBHBwyfbI9QewdWtrx8Tpse8kyZSuJ50XzVASYHFxSRos+YKfF/AJ
- iJ85sSKgmA1HBXqC7Cjsg2fG0Ft1MIjGbD/O99tfYOf/jjyu3SXbmxhDApUUxu87C83i
- BGW8JnSVeIzjTS+HhpGi1aS4JzNHwuBAI4WHTCpypEbVc/SU+E09NmvwSuYqMp5I5d9P
- oBY/8BR3HV0YizTS84X30Ks96h9ztUDeSgQDhTh//GoGC3vYnDEBciztjK1GE/3ljzHI 4Q== 
+ bh=t5sAJiY39rW/ek9JECHLXl/bJS25lwDROySS7gkpZgY=;
+ b=oSvYhbOn4Jg9so5RP4iJt5RjBZb1oE3B06FCvAsf+zps8OPjS3ZjkWKOMbKW4e3tQrvi
+ 8HUEQvjXjIEMzzSH9Zc+Pjt9AKt/6pESaJXqaBRZ7D5F25/qicSg7CwCZosG14ozXLoT
+ /8OEB64kxsG/dA+jqRc+ugx03MAnwZyK8eT5U3t/iTfTuesFhJlg3wz9fNIB0YyxyE4B
+ roMVh0ecyjD5agfQe4h6MOvqBj5c7M2T4UEWZQKB1cz7+nDDb6qlKcR9lLKPfbu0Ivdc
+ B9N/xn16AGPfmVxX5JkMNSm/8w8fV4CywTkS7KReUxZOLLxK2gqXBQZ1v8JoCtXbb6JV AA== 
 Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 2xf74s3hqy-1
+        by aserp2120.oracle.com with ESMTP id 2xf73tkfd7-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 14 Jan 2020 05:09:13 +0000
+        Tue, 14 Jan 2020 05:10:15 +0000
 Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00E53UXE165200;
-        Tue, 14 Jan 2020 05:09:12 GMT
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00E53Ubm165187;
+        Tue, 14 Jan 2020 05:10:15 GMT
 Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2xh2tn2eps-1
+        by aserp3030.oracle.com with ESMTP id 2xh2tn2g1w-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 14 Jan 2020 05:09:12 +0000
-Received: from abhmp0019.oracle.com (abhmp0019.oracle.com [141.146.116.25])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00E59Alh016266;
-        Tue, 14 Jan 2020 05:09:10 GMT
+        Tue, 14 Jan 2020 05:10:15 +0000
+Received: from abhmp0002.oracle.com (abhmp0002.oracle.com [141.146.116.8])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00E5AEL0016746;
+        Tue, 14 Jan 2020 05:10:14 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 13 Jan 2020 21:09:09 -0800
-Date:   Tue, 14 Jan 2020 08:09:02 +0300
+        with ESMTP ; Mon, 13 Jan 2020 21:10:13 -0800
+Date:   Tue, 14 Jan 2020 08:10:05 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Seth Jennings <sjenning@redhat.com>,
-        Vitaly Wool <vitaly.wool@konsulko.com>
-Cc:     Dan Streetman <ddstreet@ieee.org>,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] zswap: potential NULL dereference on error in init_zswap()
-Message-ID: <20200114050902.og32fkllkod5ycf5@kili.mountain>
+To:     Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc:     Patrice Chotard <patrice.chotard@st.com>,
+        linux-media@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] media: c8sectpfe: clean up some indenting
+Message-ID: <20200114051005.njxf5d6s6ycyxhfi@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -70,32 +68,30 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "pool" pointer can be NULL at the end of the init_zswap().  (We
-would allocate a new pool later in that situation.)  So in the error
-handling then we need to make sure pool is a valid pointer before
-calling "zswap_pool_destroy(pool);" because that function dereferences
-the argument.
+The "seg_num," line wasn't indented.  All the arguments can fit nicely
+on two lines.
 
-Fixes: 93d4dfa9fbd0 ("mm/zswap.c: add allocation hysteresis if pool limit is hit")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- mm/zswap.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/mm/zswap.c b/mm/zswap.c
-index 7ec8bd912d13..55094e63b72d 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -1359,7 +1359,8 @@ static int __init init_zswap(void)
- 	return 0;
+diff --git a/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c b/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
+index 5baada4f65e5..d1518a6770fa 100644
+--- a/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
++++ b/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
+@@ -1034,9 +1034,8 @@ static void load_imem_segment(struct c8sectpfei *fei, Elf32_Phdr *phdr,
  
- fallback_fail:
--	zswap_pool_destroy(pool);
-+	if (pool)
-+		zswap_pool_destroy(pool);
- hp_fail:
- 	cpuhp_remove_state(CPUHP_MM_ZSWP_MEM_PREPARE);
- dstmem_fail:
+ 	dev_dbg(fei->dev,
+ 		"Loading IMEM segment %d 0x%08x\n\t (0x%x bytes) -> 0x%p (0x%x bytes)\n",
+-seg_num,
+-		phdr->p_paddr, phdr->p_filesz,
+-		dest, phdr->p_memsz + phdr->p_memsz / 3);
++		seg_num, phdr->p_paddr, phdr->p_filesz, dest,
++		phdr->p_memsz + phdr->p_memsz / 3);
+ 
+ 	for (i = 0; i < phdr->p_filesz; i++) {
+ 
 -- 
 2.11.0
 

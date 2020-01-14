@@ -2,30 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3625F13AC7A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jan 2020 15:40:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EBEA13ACAF
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jan 2020 15:55:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728868AbgANOkh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jan 2020 09:40:37 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:51621 "EHLO
+        id S1728773AbgANOyy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jan 2020 09:54:54 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:52117 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726106AbgANOkh (ORCPT
+        with ESMTP id S1725904AbgANOyx (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jan 2020 09:40:37 -0500
+        Tue, 14 Jan 2020 09:54:53 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1irNMt-0006dY-Tg; Tue, 14 Jan 2020 14:40:32 +0000
+        id 1irNai-0008I2-I6; Tue, 14 Jan 2020 14:54:48 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Corey Minyard <cminyard@mvista.com>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        vadimp@mellanox.com, Asmaa Mnebhi <Asmaa@mellanox.com>,
-        openipmi-developer@lists.sourceforge.net
+To:     Zhao Qiang <qiang.zhao@nxp.com>,
+        "David S . Miller" <davem@davemloft.net>, netdev@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drivers: ipmi: fix off-by-one bounds check that leads to a out-of-bounds write
-Date:   Tue, 14 Jan 2020 14:40:31 +0000
-Message-Id: <20200114144031.358003-1-colin.king@canonical.com>
+Subject: [PATCH] net/wan/fsl_ucc_hdlc: fix out of bounds write on array utdm_info
+Date:   Tue, 14 Jan 2020 14:54:48 +0000
+Message-Id: <20200114145448.361888-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,30 +36,32 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The end of buffer check is off-by-one since the check is against
-an index that is pre-incremented before a store to buf[]. Fix this
-adjusting the bounds check appropriately.
+Array utdm_info is declared as an array of MAX_HDLC_NUM (4) elements
+however up to UCC_MAX_NUM (8) elements are potentially being written
+to it.  Currently we have an array out-of-bounds write error on the
+last 4 elements. Fix this by making utdm_info UCC_MAX_NUM elements in
+size.
 
 Addresses-Coverity: ("Out-of-bounds write")
-Fixes: 51bd6f291583 ("Add support for IPMB driver")
+Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/char/ipmi/ipmb_dev_int.c | 2 +-
+ drivers/net/wan/fsl_ucc_hdlc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/char/ipmi/ipmb_dev_int.c b/drivers/char/ipmi/ipmb_dev_int.c
-index 9fdae83e59e0..382b28f1cf2f 100644
---- a/drivers/char/ipmi/ipmb_dev_int.c
-+++ b/drivers/char/ipmi/ipmb_dev_int.c
-@@ -279,7 +279,7 @@ static int ipmb_slave_cb(struct i2c_client *client,
- 		break;
+diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
+index 94e870f48e21..9edd94679283 100644
+--- a/drivers/net/wan/fsl_ucc_hdlc.c
++++ b/drivers/net/wan/fsl_ucc_hdlc.c
+@@ -73,7 +73,7 @@ static struct ucc_tdm_info utdm_primary_info = {
+ 	},
+ };
  
- 	case I2C_SLAVE_WRITE_RECEIVED:
--		if (ipmb_dev->msg_idx >= sizeof(struct ipmb_msg))
-+		if (ipmb_dev->msg_idx >= sizeof(struct ipmb_msg) - 1)
- 			break;
+-static struct ucc_tdm_info utdm_info[MAX_HDLC_NUM];
++static struct ucc_tdm_info utdm_info[UCC_MAX_NUM];
  
- 		buf[++ipmb_dev->msg_idx] = *val;
+ static int uhdlc_init(struct ucc_hdlc_private *priv)
+ {
 -- 
 2.24.0
 

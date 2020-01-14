@@ -2,94 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4901013A30B
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jan 2020 09:33:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E489013A819
+	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jan 2020 12:15:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727083AbgANIdw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jan 2020 03:33:52 -0500
-Received: from mx07-00178001.pphosted.com ([62.209.51.94]:27324 "EHLO
-        mx07-00178001.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725820AbgANIdw (ORCPT
+        id S1728914AbgANLPV (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jan 2020 06:15:21 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:45235 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725956AbgANLPV (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jan 2020 03:33:52 -0500
-Received: from pps.filterd (m0046668.ppops.net [127.0.0.1])
-        by mx07-00178001.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00E8WfYL030731;
-        Tue, 14 Jan 2020 09:33:41 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=st.com; h=from : to : cc : subject
- : date : message-id : references : in-reply-to : content-type : content-id
- : content-transfer-encoding : mime-version; s=STMicroelectronics;
- bh=aH+VgKhntPJejCKotmGf4u8BN12HEJsiXYdcTd5+R1Q=;
- b=1EtTanosCjM10pmbL4b9PdRjwIbEYQqZwmF1pEv5cbonN8fXtrY5/Skitbi1dcu4+lPV
- DUDM4xap9ruGArtlmbDvrXLPrbixZdal9jAMXpHaOE0U4Ur0jMcSAqKtKqOJq9drVFqS
- 20eOTtTgu8lnvH8ufLTGhEZ3URSH+KwyrXzWTKG53zwCkcTsQZHj7y6ffrhjCc3KUvF7
- 3s/Xnvq6yXVoiLMQdIkmQU0lUgc+TZV1gPZ8WwGRsWiT10vGuca7ma1JkB36MBZQbzO0
- OlCLwq19DOCWYp0aWf6NpTHwpww3eHsQDcGaFbqzv1JkVviV9nDLM7r2OZH4RwDMzojK HQ== 
-Received: from beta.dmz-eu.st.com (beta.dmz-eu.st.com [164.129.1.35])
-        by mx07-00178001.pphosted.com with ESMTP id 2xf77avamc-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Jan 2020 09:33:41 +0100
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-        by beta.dmz-eu.st.com (STMicroelectronics) with ESMTP id AD5EA100039;
-        Tue, 14 Jan 2020 09:33:36 +0100 (CET)
-Received: from Webmail-eu.st.com (sfhdag6node1.st.com [10.75.127.16])
-        by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 9400F20C173;
-        Tue, 14 Jan 2020 09:33:36 +0100 (CET)
-Received: from SFHDAG6NODE3.st.com (10.75.127.18) by SFHDAG6NODE1.st.com
- (10.75.127.16) with Microsoft SMTP Server (TLS) id 15.0.1473.3; Tue, 14 Jan
- 2020 09:33:36 +0100
-Received: from SFHDAG6NODE3.st.com ([fe80::d04:5337:ab17:b6f6]) by
- SFHDAG6NODE3.st.com ([fe80::d04:5337:ab17:b6f6%20]) with mapi id
- 15.00.1473.003; Tue, 14 Jan 2020 09:33:36 +0100
-From:   Patrice CHOTARD <patrice.chotard@st.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>
-CC:     "linux-media@vger.kernel.org" <linux-media@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH] media: c8sectpfe: clean up some indenting
-Thread-Topic: [PATCH] media: c8sectpfe: clean up some indenting
-Thread-Index: AQHVypjqlAXDnxjPb0SJzrxmeKcFr6fpxKmA
-Date:   Tue, 14 Jan 2020 08:33:36 +0000
-Message-ID: <5eba4701-3460-5b2b-6fc7-f4f75481fae4@st.com>
-References: <20200114051005.njxf5d6s6ycyxhfi@kili.mountain>
-In-Reply-To: <20200114051005.njxf5d6s6ycyxhfi@kili.mountain>
-Accept-Language: fr-FR, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.75.127.49]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <948CCDA2404F4A409317526ADB82D400@st.com>
-Content-Transfer-Encoding: base64
+        Tue, 14 Jan 2020 06:15:21 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1irKA6-0004SV-1T; Tue, 14 Jan 2020 11:15:06 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Borislav Petkov <bp@suse.de>, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] x86/microcode/amd: fix uninitalized structure cp
+Date:   Tue, 14 Jan 2020 11:15:05 +0000
+Message-Id: <20200114111505.320186-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
- definitions=2020-01-14_02:2020-01-13,2020-01-14 signatures=0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-SGkgRGFuDQoNCk9uIDEvMTQvMjAgNjoxMCBBTSwgRGFuIENhcnBlbnRlciB3cm90ZToNCj4gVGhl
-ICJzZWdfbnVtLCIgbGluZSB3YXNuJ3QgaW5kZW50ZWQuICBBbGwgdGhlIGFyZ3VtZW50cyBjYW4g
-Zml0IG5pY2VseQ0KPiBvbiB0d28gbGluZXMuDQo+DQo+IFNpZ25lZC1vZmYtYnk6IERhbiBDYXJw
-ZW50ZXIgPGRhbi5jYXJwZW50ZXJAb3JhY2xlLmNvbT4NCj4gLS0tDQo+ICBkcml2ZXJzL21lZGlh
-L3BsYXRmb3JtL3N0aS9jOHNlY3RwZmUvYzhzZWN0cGZlLWNvcmUuYyB8IDUgKystLS0NCj4gIDEg
-ZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQo+DQo+IGRpZmYg
-LS1naXQgYS9kcml2ZXJzL21lZGlhL3BsYXRmb3JtL3N0aS9jOHNlY3RwZmUvYzhzZWN0cGZlLWNv
-cmUuYyBiL2RyaXZlcnMvbWVkaWEvcGxhdGZvcm0vc3RpL2M4c2VjdHBmZS9jOHNlY3RwZmUtY29y
-ZS5jDQo+IGluZGV4IDViYWFkYTRmNjVlNS4uZDE1MThhNjc3MGZhIDEwMDY0NA0KPiAtLS0gYS9k
-cml2ZXJzL21lZGlhL3BsYXRmb3JtL3N0aS9jOHNlY3RwZmUvYzhzZWN0cGZlLWNvcmUuYw0KPiAr
-KysgYi9kcml2ZXJzL21lZGlhL3BsYXRmb3JtL3N0aS9jOHNlY3RwZmUvYzhzZWN0cGZlLWNvcmUu
-Yw0KPiBAQCAtMTAzNCw5ICsxMDM0LDggQEAgc3RhdGljIHZvaWQgbG9hZF9pbWVtX3NlZ21lbnQo
-c3RydWN0IGM4c2VjdHBmZWkgKmZlaSwgRWxmMzJfUGhkciAqcGhkciwNCj4gIA0KPiAgCWRldl9k
-YmcoZmVpLT5kZXYsDQo+ICAJCSJMb2FkaW5nIElNRU0gc2VnbWVudCAlZCAweCUwOHhcblx0ICgw
-eCV4IGJ5dGVzKSAtPiAweCVwICgweCV4IGJ5dGVzKVxuIiwNCj4gLXNlZ19udW0sDQo+IC0JCXBo
-ZHItPnBfcGFkZHIsIHBoZHItPnBfZmlsZXN6LA0KPiAtCQlkZXN0LCBwaGRyLT5wX21lbXN6ICsg
-cGhkci0+cF9tZW1zeiAvIDMpOw0KPiArCQlzZWdfbnVtLCBwaGRyLT5wX3BhZGRyLCBwaGRyLT5w
-X2ZpbGVzeiwgZGVzdCwNCj4gKwkJcGhkci0+cF9tZW1zeiArIHBoZHItPnBfbWVtc3ogLyAzKTsN
-Cj4gIA0KPiAgCWZvciAoaSA9IDA7IGkgPCBwaGRyLT5wX2ZpbGVzejsgaSsrKSB7DQo+ICANCg0K
-UmV2aWV3ZWQtYnk6IFBhdHJpY2UgQ2hvdGFyZCA8cGF0cmljZS5jaG90YXJkQHN0LmNvbT4NCg0K
-VGhhbmtzDQo=
+From: Colin Ian King <colin.king@canonical.com>
+
+In the case where cp is not assigned to the return from
+the call to find_microcode_in_initrd cp is uninitialized when
+it is assigned to *ret.   Functions that call __load_ucode_amd
+such as load_ucode_amd_bsp can therefore end up checking bogus
+values cp.data and cp.size.  Fix this by ensuring cp is
+initialized as all zero and remove the redundant initialization
+of cp in load_ucode_amd_bsp.
+
+Addresses-Coverity: ("Uninitialized scalar variable")
+Fixes: e71bb4ec0739 ("x86/microcode/AMD: Unify load_ucode_amd_ap()")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ arch/x86/kernel/cpu/microcode/amd.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
+index 3f6b137ef4e6..675704019df2 100644
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -473,7 +473,7 @@ static bool get_builtin_microcode(struct cpio_data *cp, unsigned int family)
+ static void __load_ucode_amd(unsigned int cpuid_1_eax, struct cpio_data *ret)
+ {
+ 	struct ucode_cpu_info *uci;
+-	struct cpio_data cp;
++	struct cpio_data cp = { };
+ 	const char *path;
+ 	bool use_pa;
+ 
+@@ -498,7 +498,7 @@ static void __load_ucode_amd(unsigned int cpuid_1_eax, struct cpio_data *ret)
+ 
+ void __init load_ucode_amd_bsp(unsigned int cpuid_1_eax)
+ {
+-	struct cpio_data cp = { };
++	struct cpio_data cp;
+ 
+ 	__load_ucode_amd(cpuid_1_eax, &cp);
+ 	if (!(cp.data && cp.size))
+-- 
+2.24.0
+

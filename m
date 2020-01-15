@@ -2,123 +2,119 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DC3D13C8D9
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Jan 2020 17:10:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE30C13C918
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Jan 2020 17:19:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728899AbgAOQKQ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 Jan 2020 11:10:16 -0500
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:44384 "EHLO
+        id S1729009AbgAOQTH (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 Jan 2020 11:19:07 -0500
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:46617 "EHLO
         mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726132AbgAOQKQ (ORCPT
+        with ESMTP id S1728904AbgAOQTH (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 Jan 2020 11:10:16 -0500
+        Wed, 15 Jan 2020 11:19:07 -0500
 Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200115161014euoutp019011f6075221f4ebfd4cc1edc6c82ae5~qG0fiI3Ve0888608886euoutp01Y
-        for <kernel-janitors@vger.kernel.org>; Wed, 15 Jan 2020 16:10:14 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200115161014euoutp019011f6075221f4ebfd4cc1edc6c82ae5~qG0fiI3Ve0888608886euoutp01Y
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200115161906euoutp01db29e274c785bcd8bbd04517a79ea50f~qG8OKXfJn1405414054euoutp015
+        for <kernel-janitors@vger.kernel.org>; Wed, 15 Jan 2020 16:19:05 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200115161906euoutp01db29e274c785bcd8bbd04517a79ea50f~qG8OKXfJn1405414054euoutp015
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1579104614;
-        bh=SwsmES8/B7/gtwjkWBPVe1WG06nTczZJgPIYHkwKQt8=;
+        s=mail20170921; t=1579105146;
+        bh=ncRAnEl+POE1Y5QLwdp3gNB9GHD8c9MdSU3l2ecI1nc=;
         h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=E5jqhAlH1ka7RI76VWMRy7MmYHB4AQwX+ZhbpGpp8FKMKNhVGUddrvIFqnlLeTUQk
-         kUclcnnN+yDI/OVADpjQwfrwMjghu2IwW2QHXBJGYfL/UmeLovDRSME+U/+XTiLuod
-         /dKUz4E0S0u1sQA0d19N0Ibqb5Ta3lY/fNh8ALFQ=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
+        b=nYY/KOn2/pxQSS7NwmLVs1iBfmePp5oi7xqqjtnJa/3Ej/j4wCRz+gYJKzEObMFYL
+         17mh3fTN802do4XRyFtd1B8yZDOdLVOc+KbFzKM6iUQO2FL30vo6225IqtkJEcNMYe
+         NDtkr/dpzk4cIMcbWw0Lwt0X1r2e9rD5TUP2Tt+Q=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
         eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200115161014eucas1p1e69903f7054ec92d134ad000e451e177~qG0fOYulW3134931349eucas1p12;
-        Wed, 15 Jan 2020 16:10:14 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id B9.28.60698.6693F1E5; Wed, 15
-        Jan 2020 16:10:14 +0000 (GMT)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200115161014eucas1p12af23923229bcc615b0c24da8af3e01d~qG0e1hR_u2545225452eucas1p1J;
-        Wed, 15 Jan 2020 16:10:14 +0000 (GMT)
-Received: from eusmgms2.samsung.com (unknown [182.198.249.180]) by
-        eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-        20200115161014eusmtrp28b7f87c1655bb2ccb2176d7d59e8bf2c~qG0e1AcE-2526025260eusmtrp2J;
-        Wed, 15 Jan 2020 16:10:14 +0000 (GMT)
-X-AuditID: cbfec7f5-a0fff7000001ed1a-db-5e1f3966a853
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms2.samsung.com (EUCPMTA) with SMTP id C5.D3.07950.6693F1E5; Wed, 15
-        Jan 2020 16:10:14 +0000 (GMT)
+        20200115161905eucas1p155d50e6f51933f2342b5d1df64ef0054~qG8N9tPQC1203412034eucas1p1A;
+        Wed, 15 Jan 2020 16:19:05 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id 6A.59.61286.97B3F1E5; Wed, 15
+        Jan 2020 16:19:05 +0000 (GMT)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
+        20200115161905eucas1p21ba0a0cc496c4c20c10d88967b337006~qG8Njxu4-1153211532eucas1p28;
+        Wed, 15 Jan 2020 16:19:05 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200115161905eusmtrp15507b380e74fa61a412ec90b306ae611~qG8NjIAKs1743517435eusmtrp1u;
+        Wed, 15 Jan 2020 16:19:05 +0000 (GMT)
+X-AuditID: cbfec7f2-f0bff7000001ef66-e9-5e1f3b793a21
+Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id 78.B4.08375.97B3F1E5; Wed, 15
+        Jan 2020 16:19:05 +0000 (GMT)
 Received: from [106.120.51.71] (unknown [106.120.51.71]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200115161013eusmtip1c65aed0da24d6b1aa658b8b69341a52e~qG0elKdGG1743117431eusmtip1H;
-        Wed, 15 Jan 2020 16:10:13 +0000 (GMT)
-Subject: Re: [PATCH 07/10] video: fbdev: use resource_size
-To:     Julia Lawall <Julia.Lawall@inria.fr>
-Cc:     kernel-janitors@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        linux-fbdev@vger.kernel.org, linux-kernel@vger.kernel.org
+        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+        20200115161904eusmtip2d3b57e42959cbce3a73c8e4759520175~qG8M4k3Fw1686316863eusmtip2H;
+        Wed, 15 Jan 2020 16:19:04 +0000 (GMT)
+Subject: Re: [PATCH] video: fbdev: nvidia: clean up indentation issues and
+ comment block
+To:     Colin King <colin.king@canonical.com>
+Cc:     Antonino Daplas <adaplas@gmail.com>, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
 From:   Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
-Message-ID: <b6cf85ce-895e-cfb0-fc59-c1814d276516@samsung.com>
-Date:   Wed, 15 Jan 2020 17:10:13 +0100
+Message-ID: <26ccc9eb-6edb-3ec6-5714-0bb470366b17@samsung.com>
+Date:   Wed, 15 Jan 2020 17:19:04 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
         Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <1577900990-8588-8-git-send-email-Julia.Lawall@inria.fr>
+In-Reply-To: <20200113144627.219967-1-colin.king@canonical.com>
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprOKsWRmVeSWpSXmKPExsWy7djP87pplvJxBs135C2ufH3PZtG0qp/Z
-        YustaYsTfR9YLS7vmsPmwOox6cUhFo/73ceZPD5vkgtgjuKySUnNySxLLdK3S+DK+PVpMVvB
-        Ua6KWYe7GRsYD3B0MXJySAiYSNy+O5uli5GLQ0hgBaPEnG0r2SGcL4wSZ5+tZINwPjNKvPox
-        lw2m5cXMbmaIxHJGiaNHVzCDJIQE3jJK/NjAA2ILC1hJbNuxmQXEFhHQkFi6cQXYDmaBRkaJ
-        WVv2gE1iAyqa2L6KEcTmFbCTeLPhMFicRUBVoqfhNlhcVCBC4tODw6wQNYISJ2c+ARvKKeAq
-        8WnyMTCbWUBc4taT+UwQtrzE9rdzwK6TEJjMLnHg9g2os10kHnXsY4GwhSVeHd/CDmHLSPzf
-        CdIM0rCOUeJvxwuo7u2MEssn/4Pqtpa4c+4XkM0BtEJTYv0ufYiwo8Tx6wcZQcISAnwSN94K
-        QhzBJzFp23RmiDCvREebEES1msSGZRvYYNZ27VzJPIFRaRaS12YheWcWkndmIexdwMiyilE8
-        tbQ4Nz212DgvtVyvODG3uDQvXS85P3cTIzC5nP53/OsOxn1/kg4xCnAwKvHwZvyRixNiTSwr
-        rsw9xCjBwawkwntyhmycEG9KYmVValF+fFFpTmrxIUZpDhYlcV7jRS9jhQTSE0tSs1NTC1KL
-        YLJMHJxSDYxKmi9n8TIdemM4R/j77974um2rFoTZP7xfy8f8j9ckzWvtugN9++7J3lZjS1q5
-        OMVS7M3/XMPVyTIy2Ys2sG85smSN0/2YyXunrshnbN3Vmvpob/pFrv22uXLWCXYxz0qf3pXf
-        7StZNmOOfY/3wTtO/7XvsXEvPn8pbcnSiphls7k2nXM/NDVYiaU4I9FQi7moOBEA/dsFPyoD
-        AAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrJIsWRmVeSWpSXmKPExsVy+t/xu7pplvJxBl/XsFtc+fqezaJpVT+z
-        xdZb0hYn+j6wWlzeNYfNgdVj0otDLB73u48zeXzeJBfAHKVnU5RfWpKqkJFfXGKrFG1oYaRn
-        aGmhZ2RiqWdobB5rZWSqpG9nk5Kak1mWWqRvl6CX8evTYraCo1wVsw53MzYwHuDoYuTkkBAw
-        kXgxs5u5i5GLQ0hgKaPE6ls7gBwOoISMxPH1ZRA1whJ/rnWxQdS8ZpSY+esFC0hCWMBKYtuO
-        zWC2iICGxNKNK1hAipgFGhkl+vdsZILouMwocWXCTFaQKjagjontqxhBbF4BO4k3Gw6zgdgs
-        AqoSPQ23weKiAhESh3fMgqoRlDg58wnYBk4BV4lPk4+B2cwC6hJ/5l1ihrDFJW49mc8EYctL
-        bH87h3kCo9AsJO2zkLTMQtIyC0nLAkaWVYwiqaXFuem5xUZ6xYm5xaV56XrJ+bmbGIHRtO3Y
-        zy07GLveBR9iFOBgVOLhPfBPLk6INbGsuDL3EKMEB7OSCO/JGbJxQrwpiZVVqUX58UWlOanF
-        hxhNgZ6byCwlmpwPjPS8knhDU0NzC0tDc2NzYzMLJXHeDoGDMUIC6YklqdmpqQWpRTB9TByc
-        Ug2MOv6dlXfV//hMW1780bT8icyM/Uax858IyVzVUxHsvFPyZ370onLmHUpOnrp551Pm5NaV
-        /RQQ+rTx4/ENm1bMW+arXffx4YuignKbNtsTCotULp0yNrZ9MvHKRdNTlfafY/vjV7zY6pZ7
-        51XIRMaUMwz585XyFZna2517TmXckPUQOtvh7DZZiaU4I9FQi7moOBEAQbOt4LwCAAA=
-X-CMS-MailID: 20200115161014eucas1p12af23923229bcc615b0c24da8af3e01d
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprLKsWRmVeSWpSXmKPExsWy7djPc7qV1vJxBi9Oalv87P7CZvF7dS+b
+        xZWv79kstt6StjjR94HV4vKuOWwObB6zGnrZPHbOusvucb/7OJPH501yASxRXDYpqTmZZalF
+        +nYJXBlbF8gWtAtXXJl/nLGBcQ1fFyMnh4SAicSMFZcZuxi5OIQEVjBK9M0+xgLhfGGUuHB3
+        LTuE85lR4uOVo4wwLSsvTmGGSCxnlLjf+BvKecso8fLzGqYuRg4OYYEoiWsvskBMEQFNifPn
+        ikBKmEFWrFi2hA1kEJuAlcTE9lVgQ3kF7CTaXvSygtgsAqoSbX3N7CC2qECExKcHh1khagQl
+        Ts58wgJicwrYS8zctIEJxGYWEJe49WQ+lC0vsf3tHLB7JAQWsUuceXmXGeQICQEXiXnLlSAe
+        EJZ4dXwLO4QtI3F6cg8LRP06Rom/HS+gmrczSiyf/I8Nospa4s65X2wgg5iBvlm/Sx9ipqPE
+        qUW2ECafxI23ghAn8ElM2jYdaiuvREebEMQMNYkNyzawwWzt2rmSeQKj0iwkj81C8swsJM/M
+        Qli7gJFlFaN4amlxbnpqsWFearlecWJucWleul5yfu4mRmCiOf3v+KcdjF8vJR1iFOBgVOLh
+        zfgjFyfEmlhWXJl7iFGCg1lJhPfkDNk4Id6UxMqq1KL8+KLSnNTiQ4zSHCxK4rzGi17GCgmk
+        J5akZqemFqQWwWSZODilGhinp003Tu/7u1W1w4vhz2J13c0P55152ujsd6hv8ZK/278ePtRe
+        IZCQxbqjr4q3ZfnUgwcOndh9dtIb1UBbsx3SM+TtMx81dFaenGA5xStA7HXE14n8629F/JHl
+        zDrjrS/Ld1PI1dDlaMsGP5MZJYreW3wzpnFeuHKnL0Pho6PnZ52VB2y6g+YpsRRnJBpqMRcV
+        JwIAnGZjVTADAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrPIsWRmVeSWpSXmKPExsVy+t/xe7qV1vJxBus/81n87P7CZvF7dS+b
+        xZWv79kstt6StjjR94HV4vKuOWwObB6zGnrZPHbOusvucb/7OJPH501yASxRejZF+aUlqQoZ
+        +cUltkrRhhZGeoaWFnpGJpZ6hsbmsVZGpkr6djYpqTmZZalF+nYJehlbF8gWtAtXXJl/nLGB
+        cQ1fFyMnh4SAicTKi1OYQWwhgaWMEiemO3cxcgDFZSSOry+DKBGW+HOti62LkQuo5DWjxMv2
+        DmaQGmGBKIlrL7JATBEBTYnz54pASpgFVjBKXL5ygRGifhKjxJWrMxhBBrEJWElMbF8FZvMK
+        2Em0vehlBbFZBFQl2vqa2UFsUYEIicM7ZkHVCEqcnPmEBcTmFLCXmLlpAxOIzSygLvFn3iVm
+        CFtc4taT+VBxeYntb+cwT2AUmoWkfRaSlllIWmYhaVnAyLKKUSS1tDg3PbfYUK84Mbe4NC9d
+        Lzk/dxMjMLK2Hfu5eQfjpY3BhxgFOBiVeHgz/sjFCbEmlhVX5h5ilOBgVhLhPTlDNk6INyWx
+        siq1KD++qDQntfgQoynQcxOZpUST84FRn1cSb2hqaG5haWhubG5sZqEkztshcDBGSCA9sSQ1
+        OzW1ILUIpo+Jg1OqgVGwMWbtgV7ufmnhoL5tFaYmffddLn6a9DFGLDSh+Y23SWrSPbdQq1rX
+        GJ7y66u0V2+4el5xoUnDucxQndfHxLXi3Wo7lZzmLeN+dDttQ0LDHveUtwrqT5sOZuw7sDzP
+        M3PD5fLNIc1L/dvO3vu5UyWzP1341ZoIjlt9+2WvT1L9bn8/a31qjhJLcUaioRZzUXEiAOrJ
+        MTfCAgAA
+X-CMS-MailID: 20200115161905eucas1p21ba0a0cc496c4c20c10d88967b337006
 X-Msg-Generator: CA
 Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200101182632eucas1p27d81f37ef59ae274ac54316823de212c
+X-RootMTR: 20200113144633eucas1p191c367b401a4c984fbf593794534aa7a
 X-EPHeader: CA
 CMS-TYPE: 201P
-X-CMS-RootMailID: 20200101182632eucas1p27d81f37ef59ae274ac54316823de212c
-References: <1577900990-8588-1-git-send-email-Julia.Lawall@inria.fr>
-        <CGME20200101182632eucas1p27d81f37ef59ae274ac54316823de212c@eucas1p2.samsung.com>
-        <1577900990-8588-8-git-send-email-Julia.Lawall@inria.fr>
+X-CMS-RootMailID: 20200113144633eucas1p191c367b401a4c984fbf593794534aa7a
+References: <CGME20200113144633eucas1p191c367b401a4c984fbf593794534aa7a@eucas1p1.samsung.com>
+        <20200113144627.219967-1-colin.king@canonical.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
 
-On 1/1/20 6:49 PM, Julia Lawall wrote:
-> Use resource_size rather than a verbose computation on
-> the end and start fields.
+On 1/13/20 3:46 PM, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> The semantic patch that makes this change is as follows:
-> (http://coccinelle.lip6.fr/)
+> There is a hunk of code that is incorrectly indented, clean up the
+> indentation and a comment block. Also remove block braces around a
+> one line statement on an if condition and add missing spaces after
+> if keywords.
 > 
-> <smpl>
-> @@ struct resource ptr; @@
-> - (ptr.end - ptr.start + 1)
-> + resource_size(&ptr)
-> </smpl>
-> 
-> Signed-off-by: Julia Lawall <Julia.Lawall@inria.fr>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Patch queued for v5.6 (with patch summary modified slightly to
-reflect that this a change for cg14fb fbdev driver), thanks.
- 
+Patch queued for v5.6, thanks.
+
 Best regards,
 --
 Bartlomiej Zolnierkiewicz
@@ -126,22 +122,59 @@ Samsung R&D Institute Poland
 Samsung Electronics
 
 > ---
->  drivers/video/fbdev/cg14.c |    3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  drivers/video/fbdev/nvidia/nvidia.c | 41 ++++++++++++++---------------
+>  1 file changed, 20 insertions(+), 21 deletions(-)
 > 
-> diff --git a/drivers/video/fbdev/cg14.c b/drivers/video/fbdev/cg14.c
-> index a620b51cf7d0..6a745eb46ca1 100644
-> --- a/drivers/video/fbdev/cg14.c
-> +++ b/drivers/video/fbdev/cg14.c
-> @@ -509,8 +509,7 @@ static int cg14_probe(struct platform_device *op)
->  	if (!par->regs || !par->clut || !par->cursor || !info->screen_base)
->  		goto out_unmap_regs;
+> diff --git a/drivers/video/fbdev/nvidia/nvidia.c b/drivers/video/fbdev/nvidia/nvidia.c
+> index c583c018304d..c24de9107958 100644
+> --- a/drivers/video/fbdev/nvidia/nvidia.c
+> +++ b/drivers/video/fbdev/nvidia/nvidia.c
+> @@ -168,27 +168,26 @@ static int nvidia_panel_tweak(struct nvidia_par *par,
+>  {
+>  	int tweak = 0;
 >  
-> -	is_8mb = (((op->resource[1].end - op->resource[1].start) + 1) ==
-> -		  (8 * 1024 * 1024));
-> +	is_8mb = (resource_size(&op->resource[1]) == (8 * 1024 * 1024));
+> -   if (par->paneltweak) {
+> -	   tweak = par->paneltweak;
+> -   } else {
+> -	   /* begin flat panel hacks */
+> -	   /* This is unfortunate, but some chips need this register
+> -	      tweaked or else you get artifacts where adjacent pixels are
+> -	      swapped.  There are no hard rules for what to set here so all
+> -	      we can do is experiment and apply hacks. */
+> -
+> -	   if(((par->Chipset & 0xffff) == 0x0328) && (state->bpp == 32)) {
+> -		   /* At least one NV34 laptop needs this workaround. */
+> -		   tweak = -1;
+> -	   }
+> -
+> -	   if((par->Chipset & 0xfff0) == 0x0310) {
+> -		   tweak = 1;
+> -	   }
+> -	   /* end flat panel hacks */
+> -   }
+> -
+> -   return tweak;
+> +	if (par->paneltweak) {
+> +		tweak = par->paneltweak;
+> +	} else {
+> +		/* Begin flat panel hacks.
+> +		 * This is unfortunate, but some chips need this register
+> +		 * tweaked or else you get artifacts where adjacent pixels are
+> +		 * swapped.  There are no hard rules for what to set here so all
+> +		 * we can do is experiment and apply hacks.
+> +		 */
+> +		if (((par->Chipset & 0xffff) == 0x0328) && (state->bpp == 32)) {
+> +			/* At least one NV34 laptop needs this workaround. */
+> +			tweak = -1;
+> +		}
+> +
+> +		if ((par->Chipset & 0xfff0) == 0x0310)
+> +			tweak = 1;
+> +		/* end flat panel hacks */
+> +	}
+> +
+> +	return tweak;
+>  }
 >  
->  	BUILD_BUG_ON(sizeof(par->mmap_map) != sizeof(__cg14_mmap_map));
->  		
-> 
+>  static void nvidia_screen_off(struct nvidia_par *par, int on)
 > 

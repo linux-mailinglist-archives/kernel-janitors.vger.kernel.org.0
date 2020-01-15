@@ -2,154 +2,81 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E07413B35A
-	for <lists+kernel-janitors@lfdr.de>; Tue, 14 Jan 2020 21:05:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16B3113B731
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Jan 2020 02:47:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728777AbgANUFD (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jan 2020 15:05:03 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:33604 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728733AbgANUFD (ORCPT
+        id S1728883AbgAOBrF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jan 2020 20:47:05 -0500
+Received: from rtits2.realtek.com ([211.75.126.72]:35876 "EHLO
+        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728834AbgAOBrF (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jan 2020 15:05:03 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1irSQv-000376-D1; Tue, 14 Jan 2020 20:05:01 +0000
-Subject: Re: [PATCH] ALSA: hda - fix out of bounds read on spec->smux_paths
-To:     Takashi Iwai <tiwai@suse.de>
-Cc:     Jaroslav Kysela <perex@perex.cz>, alsa-devel@alsa-project.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200114154412.365395-1-colin.king@canonical.com>
- <s5ho8v5renx.wl-tiwai@suse.de>
-From:   Colin Ian King <colin.king@canonical.com>
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <c826c500-1573-b42b-3c72-5c9f3123d0ed@canonical.com>
-Date:   Tue, 14 Jan 2020 20:05:01 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        Tue, 14 Jan 2020 20:47:05 -0500
+Authenticated-By: 
+X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 00F1kVaC029300, This message is accepted by code: ctloc85258
+Received: from mail.realtek.com (RTITCAS11.realtek.com.tw[172.21.6.12])
+        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 00F1kVaC029300
+        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 15 Jan 2020 09:46:31 +0800
+Received: from RTEXMB01.realtek.com.tw (172.21.6.94) by
+ RTITCAS11.realtek.com.tw (172.21.6.12) with Microsoft SMTP Server (TLS) id
+ 14.3.468.0; Wed, 15 Jan 2020 09:46:31 +0800
+Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
+ RTEXMB01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1779.2; Wed, 15 Jan 2020 09:46:30 +0800
+Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
+ RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
+ 15.01.1779.005; Wed, 15 Jan 2020 09:46:30 +0800
+From:   Pkshih <pkshih@realtek.com>
+To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
+        "colin.king@canonical.com" <colin.king@canonical.com>,
+        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
+        "davem@davemloft.net" <davem@davemloft.net>,
+        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
+Subject: Re: [PATCH] rtlwifi: rtl8188ee: remove redundant assignment to variable cond
+Thread-Topic: [PATCH] rtlwifi: rtl8188ee: remove redundant assignment to
+ variable cond
+Thread-Index: AQHVyvuETGjMBYS3AkaSVjAm0Ae8WKfqbyKA
+Date:   Wed, 15 Jan 2020 01:46:30 +0000
+Message-ID: <1579052789.2871.0.camel@realtek.com>
+References: <20200114165601.374597-1-colin.king@canonical.com>
+In-Reply-To: <20200114165601.374597-1-colin.king@canonical.com>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [172.21.69.111]
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <9FBABB5D96EED04FB83EA5521F5E7308@realtek.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-In-Reply-To: <s5ho8v5renx.wl-tiwai@suse.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 14/01/2020 20:01, Takashi Iwai wrote:
-> On Tue, 14 Jan 2020 16:44:12 +0100,
-> Colin King wrote:
->>
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> It is possible for the call to snd_hda_get_num_conns to fail and return
->> a negative error code that gets assigned to num_conns. In that specific
->> case, the check of very large values of val against num_conns will not
->> fail the -EINVAL check and later on an out of bounds array read on
->> spec->smux_paths will occur.  Fix this by sanity checking for an error
->> return from the call to snd_hda_get_num_conns.
-> 
-> Thanks for the patch, but this can't happen.
-> The ad1988_auto_smux_enum_put() is used only for IEC958 Playback
-> Source element, and it's added in ad1988_add_spdif_mux_ctl().  And
-> there at the beginning, there is already a check of the value:
-> 
-> 	num_conns = snd_hda_get_num_conns(codec, 0x0b) + 1;
-> 	if (num_conns != 3 && num_conns != 4)
-> 		return 0;
-> 				
-> And the snd_hda_get_num_conns() function returns the cached value,
-> hence it's always same at the second and later calls, so it can't be a
-> negative error.
-
-Ah, OK, sorry about the noise.
-
-> 
-> That said, I don't think we need to apply the change as is.  But if we
-> were to improve something, we can rather record this number more
-> explicitly e.g. introduce a new field spec->num_spdif_mux_conns and
-> keep there instead of calling snd_hda_get_num_conns() at each place.
-
-That would seem more optimal for sure.
-
-Colin
-> 
-> 
-> thanks,
-> 
-> Takashi
-> 
->>
->> Addresses-Coverity: ("Out-of-bounds read")
->> Fixes: 272f3ea31776 ("ALSA: hda - Add SPDIF mux control to AD codec auto-parser")
->> Signed-off-by: Colin Ian King <colin.king@canonical.com>
->> ---
->>  sound/pci/hda/patch_analog.c | 6 ++++--
->>  1 file changed, 4 insertions(+), 2 deletions(-)
->>
->> diff --git a/sound/pci/hda/patch_analog.c b/sound/pci/hda/patch_analog.c
->> index 88c46b051d14..399561369495 100644
->> --- a/sound/pci/hda/patch_analog.c
->> +++ b/sound/pci/hda/patch_analog.c
->> @@ -756,9 +756,11 @@ static int ad1988_auto_smux_enum_put(struct snd_kcontrol *kcontrol,
->>  	struct ad198x_spec *spec = codec->spec;
->>  	unsigned int val = ucontrol->value.enumerated.item[0];
->>  	struct nid_path *path;
->> -	int num_conns = snd_hda_get_num_conns(codec, 0x0b) + 1;
->> +	int num_conns = snd_hda_get_num_conns(codec, 0x0b);
->>  
->> -	if (val >= num_conns)
->> +	if (num_conns < 0)
->> +		return num_conns;
->> +	if (val >= num_conns + 1)
->>  		return -EINVAL;
->>  	if (spec->cur_smux == val)
->>  		return 0;
->> -- 
->> 2.24.0
->>
-
+T24gVHVlLCAyMDIwLTAxLTE0IGF0IDE2OjU2ICswMDAwLCBDb2xpbiBLaW5nIHdyb3RlOg0KPiBG
+cm9tOiBDb2xpbiBJYW4gS2luZyA8Y29saW4ua2luZ0BjYW5vbmljYWwuY29tPg0KPiANCj4gVmFy
+aWFibGUgY29uZCBpcyBiZWluZyBhc3NpZ25lZCB3aXRoIGEgdmFsdWUgdGhhdCBpcyBuZXZlcg0K
+PiByZWFkLCBpdCBpcyBhc3NpZ25lZCBhIG5ldyB2YWx1ZSBsYXRlciBvbi4gVGhlIGFzc2lnbm1l
+bnQgaXMNCj4gcmVkdW5kYW50IGFuZCBjYW4gYmUgcmVtb3ZlZC4NCj4gDQo+IEFkZHJlc3Nlcy1D
+b3Zlcml0eTogKCJVbnVzZWQgdmFsdWUiKQ0KPiBTaWduZWQtb2ZmLWJ5OiBDb2xpbiBJYW4gS2lu
+ZyA8Y29saW4ua2luZ0BjYW5vbmljYWwuY29tPg0KDQpBY2tlZC1ieTogUGluZy1LZSBTaGloIDxw
+a3NoaWhAcmVhbHRlay5jb20+DQoNClRoYW5rIHlvdSEhDQoNCj4gLS0tDQo+IMKgZHJpdmVycy9u
+ZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxODhlZS9waHkuYyB8IDIgKy0NCj4gwqAx
+IGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkNCj4gDQo+IGRpZmYg
+LS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE4OGVlL3Bo
+eS5jDQo+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxODhlZS9w
+aHkuYw0KPiBpbmRleCA1Y2E5MDBmOTdkNjYuLmQxMzk4M2VjMDlhZCAxMDA2NDQNCj4gLS0tIGEv
+ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxODhlZS9waHkuYw0KPiAr
+KysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE4OGVlL3BoeS5j
+DQo+IEBAIC0yNjQsNyArMjY0LDcgQEAgc3RhdGljIGJvb2wgX3J0bDg4ZV9jaGVja19jb25kaXRp
+b24oc3RydWN0IGllZWU4MDIxMV9odw0KPiAqaHcsDQo+IMKgCXUzMiBfYm9hcmQgPSBydGxlZnVz
+ZS0+Ym9hcmRfdHlwZTsgLypuZWVkIGVmdXNlIGRlZmluZSovDQo+IMKgCXUzMiBfaW50ZXJmYWNl
+ID0gcnRsaGFsLT5pbnRlcmZhY2U7DQo+IMKgCXUzMiBfcGxhdGZvcm0gPSAweDA4Oy8qU3VwcG9y
+dFBsYXRmb3JtICovDQo+IC0JdTMyIGNvbmQgPSBjb25kaXRpb247DQo+ICsJdTMyIGNvbmQ7DQo+
+IMKgDQo+IMKgCWlmIChjb25kaXRpb24gPT0gMHhDRENEQ0RDRCkNCj4gwqAJCXJldHVybiB0cnVl
+Ow0K

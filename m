@@ -2,81 +2,104 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16B3113B731
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Jan 2020 02:47:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E964113B8AE
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Jan 2020 05:27:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728883AbgAOBrF (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jan 2020 20:47:05 -0500
-Received: from rtits2.realtek.com ([211.75.126.72]:35876 "EHLO
-        rtits2.realtek.com.tw" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728834AbgAOBrF (ORCPT
+        id S1728890AbgAOE1M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 14 Jan 2020 23:27:12 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:42788 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728882AbgAOE1M (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jan 2020 20:47:05 -0500
-Authenticated-By: 
-X-SpamFilter-By: BOX Solutions SpamTrap 5.62 with qID 00F1kVaC029300, This message is accepted by code: ctloc85258
-Received: from mail.realtek.com (RTITCAS11.realtek.com.tw[172.21.6.12])
-        by rtits2.realtek.com.tw (8.15.2/2.57/5.78) with ESMTPS id 00F1kVaC029300
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 15 Jan 2020 09:46:31 +0800
-Received: from RTEXMB01.realtek.com.tw (172.21.6.94) by
- RTITCAS11.realtek.com.tw (172.21.6.12) with Microsoft SMTP Server (TLS) id
- 14.3.468.0; Wed, 15 Jan 2020 09:46:31 +0800
-Received: from RTEXMB04.realtek.com.tw (172.21.6.97) by
- RTEXMB01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1779.2; Wed, 15 Jan 2020 09:46:30 +0800
-Received: from RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999]) by
- RTEXMB04.realtek.com.tw ([fe80::d9c5:a079:495e:b999%6]) with mapi id
- 15.01.1779.005; Wed, 15 Jan 2020 09:46:30 +0800
-From:   Pkshih <pkshih@realtek.com>
-To:     "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>,
-        "colin.king@canonical.com" <colin.king@canonical.com>,
-        "kvalo@codeaurora.org" <kvalo@codeaurora.org>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>
-Subject: Re: [PATCH] rtlwifi: rtl8188ee: remove redundant assignment to variable cond
-Thread-Topic: [PATCH] rtlwifi: rtl8188ee: remove redundant assignment to
- variable cond
-Thread-Index: AQHVyvuETGjMBYS3AkaSVjAm0Ae8WKfqbyKA
-Date:   Wed, 15 Jan 2020 01:46:30 +0000
-Message-ID: <1579052789.2871.0.camel@realtek.com>
-References: <20200114165601.374597-1-colin.king@canonical.com>
-In-Reply-To: <20200114165601.374597-1-colin.king@canonical.com>
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [172.21.69.111]
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <9FBABB5D96EED04FB83EA5521F5E7308@realtek.com>
-Content-Transfer-Encoding: base64
+        Tue, 14 Jan 2020 23:27:12 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00F4NGYK022687;
+        Wed, 15 Jan 2020 04:26:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=MuixGUpf9tJQLi8Di1I6NZorE+teX0wGz5msomgVjUs=;
+ b=KnF0+PVnx5EwNkbIaX2JflUyHPYMAjZVsCi5qrsvIBGGe2IThtrS+8c93wknQfkISkkd
+ B/9UngUyLU4scWlE1TKeTAEsViqtVh3PQQMQo1cdQY1ny731umNzveEl3tRkBjI1R7Ut
+ 694mlLwctGaGSsJg+8jzKFQPoSjxljfbP/QvvrdaFg6FbV1OEvXfvR2ZnELmxEjnVeGx
+ zKXCKXcmAmH+EvJdzpWODoAGqXC374Pw8t27LgInflE0l0z/OOkwuXwtoXiavkwyA7a2
+ VwK9T4KpZzFKxejGMZKtlVx5+p/OSAKfx9tkQuWvjfdzmyk4j5RklzLw+eHsw7BpIBJe Zg== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 2xf73yj0gh-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 15 Jan 2020 04:26:53 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00F4OBDY110914;
+        Wed, 15 Jan 2020 04:24:52 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3020.oracle.com with ESMTP id 2xh315edqa-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 15 Jan 2020 04:24:52 +0000
+Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00F4OoFj023206;
+        Wed, 15 Jan 2020 04:24:50 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 14 Jan 2020 20:24:50 -0800
+Date:   Wed, 15 Jan 2020 07:25:07 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Borislav Petkov <bp@alien8.de>
+Cc:     Colin Ian King <colin.king@canonical.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] x86/microcode/amd: fix uninitalized structure cp
+Message-ID: <20200115042507.GE3719@kadam>
+References: <20200114111505.320186-1-colin.king@canonical.com>
+ <20200114113834.GE31032@zn.tnic>
+ <b59bb156-891e-3a26-3204-f5a0a1cc60d3@canonical.com>
+ <20200114120156.GG31032@zn.tnic>
+ <54eca4f8-33ca-24b1-9123-70df3b164043@canonical.com>
+ <20200114121000.GH31032@zn.tnic>
+ <fcbb34b0-203e-0c7c-66cc-a3ae6fa3680c@canonical.com>
+ <20200114150153.GJ31032@zn.tnic>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200114150153.GJ31032@zn.tnic>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9500 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=871
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001150035
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9500 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=931 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001150035
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-T24gVHVlLCAyMDIwLTAxLTE0IGF0IDE2OjU2ICswMDAwLCBDb2xpbiBLaW5nIHdyb3RlOg0KPiBG
-cm9tOiBDb2xpbiBJYW4gS2luZyA8Y29saW4ua2luZ0BjYW5vbmljYWwuY29tPg0KPiANCj4gVmFy
-aWFibGUgY29uZCBpcyBiZWluZyBhc3NpZ25lZCB3aXRoIGEgdmFsdWUgdGhhdCBpcyBuZXZlcg0K
-PiByZWFkLCBpdCBpcyBhc3NpZ25lZCBhIG5ldyB2YWx1ZSBsYXRlciBvbi4gVGhlIGFzc2lnbm1l
-bnQgaXMNCj4gcmVkdW5kYW50IGFuZCBjYW4gYmUgcmVtb3ZlZC4NCj4gDQo+IEFkZHJlc3Nlcy1D
-b3Zlcml0eTogKCJVbnVzZWQgdmFsdWUiKQ0KPiBTaWduZWQtb2ZmLWJ5OiBDb2xpbiBJYW4gS2lu
-ZyA8Y29saW4ua2luZ0BjYW5vbmljYWwuY29tPg0KDQpBY2tlZC1ieTogUGluZy1LZSBTaGloIDxw
-a3NoaWhAcmVhbHRlay5jb20+DQoNClRoYW5rIHlvdSEhDQoNCj4gLS0tDQo+IMKgZHJpdmVycy9u
-ZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxODhlZS9waHkuYyB8IDIgKy0NCj4gwqAx
-IGZpbGUgY2hhbmdlZCwgMSBpbnNlcnRpb24oKyksIDEgZGVsZXRpb24oLSkNCj4gDQo+IGRpZmYg
-LS1naXQgYS9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE4OGVlL3Bo
-eS5jDQo+IGIvZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxODhlZS9w
-aHkuYw0KPiBpbmRleCA1Y2E5MDBmOTdkNjYuLmQxMzk4M2VjMDlhZCAxMDA2NDQNCj4gLS0tIGEv
-ZHJpdmVycy9uZXQvd2lyZWxlc3MvcmVhbHRlay9ydGx3aWZpL3J0bDgxODhlZS9waHkuYw0KPiAr
-KysgYi9kcml2ZXJzL25ldC93aXJlbGVzcy9yZWFsdGVrL3J0bHdpZmkvcnRsODE4OGVlL3BoeS5j
-DQo+IEBAIC0yNjQsNyArMjY0LDcgQEAgc3RhdGljIGJvb2wgX3J0bDg4ZV9jaGVja19jb25kaXRp
-b24oc3RydWN0IGllZWU4MDIxMV9odw0KPiAqaHcsDQo+IMKgCXUzMiBfYm9hcmQgPSBydGxlZnVz
-ZS0+Ym9hcmRfdHlwZTsgLypuZWVkIGVmdXNlIGRlZmluZSovDQo+IMKgCXUzMiBfaW50ZXJmYWNl
-ID0gcnRsaGFsLT5pbnRlcmZhY2U7DQo+IMKgCXUzMiBfcGxhdGZvcm0gPSAweDA4Oy8qU3VwcG9y
-dFBsYXRmb3JtICovDQo+IC0JdTMyIGNvbmQgPSBjb25kaXRpb247DQo+ICsJdTMyIGNvbmQ7DQo+
-IMKgDQo+IMKgCWlmIChjb25kaXRpb24gPT0gMHhDRENEQ0RDRCkNCj4gwqAJCXJldHVybiB0cnVl
-Ow0K
+On Tue, Jan 14, 2020 at 04:01:53PM +0100, Borislav Petkov wrote:
+> On Tue, Jan 14, 2020 at 02:08:50PM +0000, Colin Ian King wrote:
+> > If I understand the question, it seems that get_builtin_microcode()
+> > tries to load in the appropriate amd microcode binary from the cpio data
+> > and this can potentially fail if the microcode is not provided for the
+> > specific processor family, so I believe this is a legitimate fix.
+> 
+> If the microcode for the specific processor family is not provided,
+> get_builtin_firmware() will return false and then we'll call
+> find_microcode_in_initrd() which will definitely return either a proper
+> pointer or a NULL-initialized cpio_data struct.
+> 
+> So I still don't see it.
+
+It's probably complaining that cp.name[] isn't initialized.  UBSan will
+probably generate a warning at runtime when we do:
+
+	*ret = cp;
+
+But otherwise it's harmless.
+
+regards,
+dan carpenter

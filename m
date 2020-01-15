@@ -2,86 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BDB8213BC46
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Jan 2020 10:19:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A01DB13C146
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Jan 2020 13:43:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729471AbgAOJTG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 Jan 2020 04:19:06 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:24324 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729377AbgAOJTF (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 Jan 2020 04:19:05 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1579079945; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=2o0fFlApbWK5OFnQjFIIAF4ECTyKAd32LPLprQ0QcMA=;
- b=V6KbAQQgcWxuhpT0uj/myJCy/sPUIeF0ONt6Qz7TnaSfrZJGNtaCySyrLpgBz7aK5V1aKJJi
- Sp/HhdJZAYWgIHlU9+wYUgSfovECwBJidIADveeXtVC0lak9hSLPOjDo6p19WcPbzuwxaGy2
- s1DdSau3PbSWHZTtMr9p6iZvJsM=
-X-Mailgun-Sending-Ip: 104.130.122.25
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e1ed908.7fb92ec15688-smtp-out-n02;
- Wed, 15 Jan 2020 09:19:04 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 7EC3FC4479C; Wed, 15 Jan 2020 09:19:03 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        id S1726418AbgAOMm6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 Jan 2020 07:42:58 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:46176 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725999AbgAOMm6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 15 Jan 2020 07:42:58 -0500
+Received: from zn.tnic (p200300EC2F0C7700ACD7CA379FB916C9.dip0.t-ipconnect.de [IPv6:2003:ec:2f0c:7700:acd7:ca37:9fb9:16c9])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 47829C43383;
-        Wed, 15 Jan 2020 09:19:01 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 47829C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] ath11k: fix up some error paths
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20191213105448.b7lic5ddih6c3sqy@kili.mountain>
-References: <20191213105448.b7lic5ddih6c3sqy@kili.mountain>
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A157F1EC05B5;
+        Wed, 15 Jan 2020 13:42:56 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1579092176;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=y3oho2aNY8UwvRDfCx5mQ3BUUigA9TYFqaFmO03HUTI=;
+        b=OJA9TUseIhqEsTmr0tvqaXy4uA1+8UcXTxVhQwezUI9NJL5hpqB71BAj1flDE8xQmLZXyb
+        tdkWyFVvwEfkxSSpIPHNWwdmUdYN20o9qLjN6bYR3cQ4NyZuqvO1l2OaE+0E16Abc4IhBq
+        Zz0VLvmnJgmTEB4ni1832ddDo1i/leg=
+Date:   Wed, 15 Jan 2020 13:42:52 +0100
+From:   Borislav Petkov <bp@alien8.de>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     John Crispin <john@phrozen.org>,
-        Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>,
-        Anilkumar Kolli <akolli@codeaurora.org>,
-        Bhagavathi Perumal S <bperumal@codeaurora.org>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200115091903.7EC3FC4479C@smtp.codeaurora.org>
-Date:   Wed, 15 Jan 2020 09:19:03 +0000 (UTC)
+Cc:     Colin Ian King <colin.king@canonical.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] x86/microcode/amd: fix uninitalized structure cp
+Message-ID: <20200115124252.GD20975@zn.tnic>
+References: <20200114111505.320186-1-colin.king@canonical.com>
+ <20200114113834.GE31032@zn.tnic>
+ <b59bb156-891e-3a26-3204-f5a0a1cc60d3@canonical.com>
+ <20200114120156.GG31032@zn.tnic>
+ <54eca4f8-33ca-24b1-9123-70df3b164043@canonical.com>
+ <20200114121000.GH31032@zn.tnic>
+ <fcbb34b0-203e-0c7c-66cc-a3ae6fa3680c@canonical.com>
+ <20200114150153.GJ31032@zn.tnic>
+ <20200115042507.GE3719@kadam>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20200115042507.GE3719@kadam>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Dan Carpenter <dan.carpenter@oracle.com> wrote:
+On Wed, Jan 15, 2020 at 07:25:07AM +0300, Dan Carpenter wrote:
+> It's probably complaining that cp.name[] isn't initialized.
 
-> There are two error paths where "ret" wasn't set.  Ideally the compiler
-> would have warned about these bugs, but we initialized "ret" to zero so
-> it silenced the warning.  I have removed that.  Also if
-> ath11k_hal_srng_get_entrysize() fails then we need to free some
-> resources before returning.
+That is possible.
+
+> UBSan will probably generate a warning at runtime when we do:
 > 
-> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> 	*ret = cp;
+> 
+> But otherwise it's harmless.
 
-Failed to apply:
-
-error: patch failed: drivers/net/wireless/ath/ath11k/dp_tx.c:646
-error: drivers/net/wireless/ath/ath11k/dp_tx.c: patch does not apply
-stg import: Diff does not apply cleanly
-
-Patch set to Changes Requested.
+Yes, because we don't do anything with cpio_data.name.
 
 -- 
-https://patchwork.kernel.org/patch/11290443/
+Regards/Gruss,
+    Boris.
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://people.kernel.org/tglx/notes-about-netiquette

@@ -2,104 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E964113B8AE
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Jan 2020 05:27:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08BA713BC43
+	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Jan 2020 10:18:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728890AbgAOE1M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 14 Jan 2020 23:27:12 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:42788 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728882AbgAOE1M (ORCPT
+        id S1729436AbgAOJS1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 Jan 2020 04:18:27 -0500
+Received: from mail25.static.mailgun.info ([104.130.122.25]:24324 "EHLO
+        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1729413AbgAOJS1 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 14 Jan 2020 23:27:12 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00F4NGYK022687;
-        Wed, 15 Jan 2020 04:26:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=MuixGUpf9tJQLi8Di1I6NZorE+teX0wGz5msomgVjUs=;
- b=KnF0+PVnx5EwNkbIaX2JflUyHPYMAjZVsCi5qrsvIBGGe2IThtrS+8c93wknQfkISkkd
- B/9UngUyLU4scWlE1TKeTAEsViqtVh3PQQMQo1cdQY1ny731umNzveEl3tRkBjI1R7Ut
- 694mlLwctGaGSsJg+8jzKFQPoSjxljfbP/QvvrdaFg6FbV1OEvXfvR2ZnELmxEjnVeGx
- zKXCKXcmAmH+EvJdzpWODoAGqXC374Pw8t27LgInflE0l0z/OOkwuXwtoXiavkwyA7a2
- VwK9T4KpZzFKxejGMZKtlVx5+p/OSAKfx9tkQuWvjfdzmyk4j5RklzLw+eHsw7BpIBJe Zg== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 2xf73yj0gh-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 15 Jan 2020 04:26:53 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00F4OBDY110914;
-        Wed, 15 Jan 2020 04:24:52 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3020.oracle.com with ESMTP id 2xh315edqa-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 15 Jan 2020 04:24:52 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00F4OoFj023206;
-        Wed, 15 Jan 2020 04:24:50 GMT
-Received: from kadam (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 14 Jan 2020 20:24:50 -0800
-Date:   Wed, 15 Jan 2020 07:25:07 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Colin Ian King <colin.king@canonical.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        "H . Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] x86/microcode/amd: fix uninitalized structure cp
-Message-ID: <20200115042507.GE3719@kadam>
-References: <20200114111505.320186-1-colin.king@canonical.com>
- <20200114113834.GE31032@zn.tnic>
- <b59bb156-891e-3a26-3204-f5a0a1cc60d3@canonical.com>
- <20200114120156.GG31032@zn.tnic>
- <54eca4f8-33ca-24b1-9123-70df3b164043@canonical.com>
- <20200114121000.GH31032@zn.tnic>
- <fcbb34b0-203e-0c7c-66cc-a3ae6fa3680c@canonical.com>
- <20200114150153.GJ31032@zn.tnic>
+        Wed, 15 Jan 2020 04:18:27 -0500
+DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
+ s=smtp; t=1579079906; h=Date: Message-Id: Cc: To: References:
+ In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
+ Content-Type: Sender; bh=LwpyJ0UYPR60KAvjTtDBpUcnBmCujeM5UzXPAG1UXVM=;
+ b=OqdshJ+skMLiMQKXatqTOXUU7eZ4OwaAdF3lEl71m0TrFWFY9kO8lY4EJrknYBEcXkah3S0l
+ jLwKDjIpZBkdC8QqPPqX5HzlvX5BLy+NqGVqphTdIXBvei4W16IsUI2c3RqM72nC9LgAEh8i
+ cOvIcgFcAupo7Ya6CSipsqRH9rg=
+X-Mailgun-Sending-Ip: 104.130.122.25
+X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
+Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
+ by mxa.mailgun.org with ESMTP id 5e1ed8dd.7f4002311fb8-smtp-out-n02;
+ Wed, 15 Jan 2020 09:18:21 -0000 (UTC)
+Received: by smtp.codeaurora.org (Postfix, from userid 1001)
+        id 1A5C0C43383; Wed, 15 Jan 2020 09:18:20 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
+        aws-us-west-2-caf-mail-1.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
+        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
+Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: kvalo)
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id 8CF1EC433CB;
+        Wed, 15 Jan 2020 09:18:16 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 8CF1EC433CB
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
+Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200114150153.GJ31032@zn.tnic>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9500 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=871
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001150035
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9500 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=931 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001150035
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH -next] ath11k: add dependency for struct ath11k member
+ debug
+From:   Kalle Valo <kvalo@codeaurora.org>
+In-Reply-To: <20191213012417.130719-1-maowenan@huawei.com>
+References: <20191213012417.130719-1-maowenan@huawei.com>
+To:     Mao Wenan <maowenan@huawei.com>
+Cc:     <davem@davemloft.net>, <msinada@codeaurora.org>,
+        <periyasa@codeaurora.org>, <mpubbise@codeaurora.org>,
+        <julia.lawall@lip6.fr>, <milehu@codeaurora.org>,
+        <ath11k@lists.infradead.org>, <linux-wireless@vger.kernel.org>,
+        <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
+Message-Id: <20200115091820.1A5C0C43383@smtp.codeaurora.org>
+Date:   Wed, 15 Jan 2020 09:18:20 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jan 14, 2020 at 04:01:53PM +0100, Borislav Petkov wrote:
-> On Tue, Jan 14, 2020 at 02:08:50PM +0000, Colin Ian King wrote:
-> > If I understand the question, it seems that get_builtin_microcode()
-> > tries to load in the appropriate amd microcode binary from the cpio data
-> > and this can potentially fail if the microcode is not provided for the
-> > specific processor family, so I believe this is a legitimate fix.
+Mao Wenan <maowenan@huawei.com> wrote:
+
+> If CONFIG_ATH11K, CONFIG_MAC80211_DEBUGFS are set,
+> and CONFIG_ATH11K_DEBUGFS is not set, below error can be found,
+> drivers/net/wireless/ath/ath11k/debugfs_sta.c: In function ath11k_dbg_sta_open_htt_peer_stats:
+> drivers/net/wireless/ath/ath11k/debugfs_sta.c:411:4: error: struct ath11k has no member named debug
+>   ar->debug.htt_stats.stats_req = stats_req;
 > 
-> If the microcode for the specific processor family is not provided,
-> get_builtin_firmware() will return false and then we'll call
-> find_microcode_in_initrd() which will definitely return either a proper
-> pointer or a NULL-initialized cpio_data struct.
+> It is to add the dependency for the member of struct ath11k.
 > 
-> So I still don't see it.
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Signed-off-by: Mao Wenan <maowenan@huawei.com>
 
-It's probably complaining that cp.name[] isn't initialized.  UBSan will
-probably generate a warning at runtime when we do:
+Arnd already did something what I proposed:
+https://patchwork.kernel.org/patch/11321921/
 
-	*ret = cp;
+Patch set to Superseded.
 
-But otherwise it's harmless.
+-- 
+https://patchwork.kernel.org/patch/11289709/
 
-regards,
-dan carpenter
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

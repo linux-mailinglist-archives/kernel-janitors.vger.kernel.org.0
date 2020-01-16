@@ -2,86 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BCE8713FABC
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Jan 2020 21:37:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52D7813FE97
+	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Jan 2020 00:36:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731489AbgAPUh1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Jan 2020 15:37:27 -0500
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:36478 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729637AbgAPUh1 (ORCPT
+        id S2391743AbgAPXgo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Jan 2020 18:36:44 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:40032 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391725AbgAPXgg (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Jan 2020 15:37:27 -0500
-Received: by mail-oi1-f194.google.com with SMTP id c16so20124570oic.3;
-        Thu, 16 Jan 2020 12:37:27 -0800 (PST)
+        Thu, 16 Jan 2020 18:36:36 -0500
+Received: by mail-wr1-f67.google.com with SMTP id c14so20923850wrn.7;
+        Thu, 16 Jan 2020 15:36:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bF3317OGHK5krTcjjbGSkGwDhwphNfmQD5j464wXOIU=;
+        b=WDs7ULy3CVS+9iYfA/uB0wYPil83dz50LkBF9KNZwmshPSasfn3BYIC4m5XuJRwO61
+         df7ja6uqCjtAyFCyHU2OhUANcR58YrZVowl6/oJXV4y3SnnCaVZdumXIqdVrOIGvWvhR
+         vwf7Help7agnC25Ynsy6QnnXyQcYOiZqcPDG4wJ8pJ0gcBHc9ZNypb9O+2dPrkZw3maK
+         8hgVFRIOXqzbAeF1JaODBtfq31bMms3Gzd7Y3aj1EvKVLS/T9HtvaPC7UmmIaE/Y2v+B
+         qUffVEGJNimwW/9xf5yNYwOZop03NeiXCeslZSXPYkOkKtLFaUEwDVBF6+n2PREwsHo8
+         I30g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=XzWrcINvZxQSS9EFoJ8JAh0Ay/OFSJ2Xnh3lSR9maO8=;
-        b=LmnV1FaEkLTu1xywbj6yHsDT76EYg+7Q1DFseRK3v1g3eQA6DKZdwFMTJ4x+0svKzK
-         zWke3D9TZYo7+ZF/atprr5jrsAOL5dbZHrf1y610GCEUC4Cy3qNQs4+IuDpISNCkgJy1
-         zhVi9iQV+Hh9VrsmjIFD8heoBDP4gKY4fCncqRX3X6zXjKadh98OsaZNRKHn2CQDDRAT
-         5jAN3SOBqdsY7A8NwKz1907kY8aRiC59WIOFNlSQ5e1fntFyk9XZF+eTRuRoYRSUetVP
-         zqgs2v0T7k67qmDTEBwDebYsKphBTGhxWSWPGX9d9eYpP/jIXTBTjGJLXmYl6v43DMBn
-         /MgA==
-X-Gm-Message-State: APjAAAXNRw3PQuq1lR1RJrjTFocm26xhFDT5Mc/yzoidhapWd0xIi5t8
-        A6DTiFqcyANhxeoy7cHedTLllZ8gbD4vXnCJ4Flybw==
-X-Google-Smtp-Source: APXvYqwevY8vXym4/KmtJM9N/WrO3KvTg89GKTAbO5hB2oqV0y7TrCsouYiIwEBhP6IfYgqRT+pKItiYHeGjHQfeRgY=
-X-Received: by 2002:aca:cd92:: with SMTP id d140mr776903oig.68.1579207046782;
- Thu, 16 Jan 2020 12:37:26 -0800 (PST)
+        bh=bF3317OGHK5krTcjjbGSkGwDhwphNfmQD5j464wXOIU=;
+        b=jPmxhAgOyzp8AdeCESh812N2zHnjeAdZFGbIB1n8jKkuAD4soGdWHl4kq9hjdgdjU4
+         bXEEb1VtMVzt+cLGylJKQOVb3NJWLuMjKZU5wosiYa2vAgHx0C8Yyf0CHnWxvRHKzR3R
+         PGKKiqKh3tzTEe1VrpM364uOWc70pxGWXhdAEF1uk9IhvgvRvyfm4YE0QLgkAdL65KHs
+         /lJloOsBHzD/hZ0U68z7KuOdnanUKdjWCiVGewl+aVCOb9ekFxDWOsBHVPiVRwCB+R5g
+         jKtc+/2CGvCZT08iBgZHTVdGHuDmYU3cepO7+sVyFNv8Xoa9u3dSS99i9uOeaAO1s9R0
+         USQA==
+X-Gm-Message-State: APjAAAWoeoXqCHJ2Yr12Jla4GuuiISp5UYokcb02olEJXr+622loeIek
+        +DkZCPTrz1wPFB9427Vk3tRZbaE7DImP+tsP+qc=
+X-Google-Smtp-Source: APXvYqwp34QgYzpaQTk3I5h4ff2xMWUbBxY86gwE9O7Q81Pi8YEFrvCVPdsmJzanpQx1SHOiplE2IKkdo/FyXRllplw=
+X-Received: by 2002:adf:e5ce:: with SMTP id a14mr5708414wrn.214.1579217794610;
+ Thu, 16 Jan 2020 15:36:34 -0800 (PST)
 MIME-Version: 1.0
-References: <20200116175758.88396-1-colin.king@canonical.com>
-In-Reply-To: <20200116175758.88396-1-colin.king@canonical.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Thu, 16 Jan 2020 21:37:16 +0100
-Message-ID: <CAJZ5v0hpn2mdp88B46xaaVPkHSPESadJd3A4ZwijHAW5nOidwg@mail.gmail.com>
-Subject: Re: [PATCH][next] driver core: platform: fix u32 greater or equal to
- zero comparison
-To:     Colin King <colin.king@canonical.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Simon Schwartz <kern.simon@theschwartz.xyz>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+References: <20191127062002.23746-1-yuehaibing@huawei.com>
+In-Reply-To: <20191127062002.23746-1-yuehaibing@huawei.com>
+From:   Richard Weinberger <richard.weinberger@gmail.com>
+Date:   Fri, 17 Jan 2020 00:36:23 +0100
+Message-ID: <CAFLxGvyqyhCa7gvhRHT6oNML0+XJ-Fyexf4xK=bm7bViusuGFg@mail.gmail.com>
+Subject: Re: [PATCH -next] mtd: ubi: wl: remove set but not used variable 'prev_e'
+To:     YueHaibing <yuehaibing@huawei.com>
+Cc:     Richard Weinberger <richard@nod.at>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Vignesh Raghavendra <vigneshr@ti.com>,
+        linux-mtd@lists.infradead.org, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, Jan 16, 2020 at 6:58 PM Colin King <colin.king@canonical.com> wrote:
+On Wed, Nov 27, 2019 at 7:22 AM YueHaibing <yuehaibing@huawei.com> wrote:
 >
-> From: Colin Ian King <colin.king@canonical.com>
+> Fixes gcc '-Wunused-but-set-variable' warning:
 >
-> Currently the check that a u32 variable i is >= 0 is always true because
-> the unsigned variable will never be negative, causing the loop to run
-> forever.  Fix this by changing the pre-decrement check to a zero check on
-> i followed by a decrement of i.
+> drivers/mtd/ubi/wl.c: In function 'find_wl_entry':
+> drivers/mtd/ubi/wl.c:322:27: warning:
+>  variable 'prev_e' set but not used [-Wunused-but-set-variable]
 >
-> Addresses-Coverity: ("Unsigned compared against 0")
-> Fixes: 39cc539f90d0 ("driver core: platform: Prevent resouce overflow from causing infinite loops")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Reviewed-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-
+> It's not used any more now, so remove it.
+>
+> Fixes: f9c34bb52997 ("ubi: Fix producing anchor PEBs")
+> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 > ---
->  drivers/base/platform.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-> index 864b53b3d598..7fa654f1288b 100644
-> --- a/drivers/base/platform.c
-> +++ b/drivers/base/platform.c
-> @@ -571,7 +571,7 @@ int platform_device_add(struct platform_device *pdev)
->                 pdev->id = PLATFORM_DEVID_AUTO;
->         }
->
-> -       while (--i >= 0) {
-> +       while (i--) {
->                 struct resource *r = &pdev->resource[i];
->                 if (r->parent)
->                         release_resource(r);
-> --
-> 2.24.0
->
+>  drivers/mtd/ubi/wl.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+
+Applied. Thanks!
+
+-- 
+Thanks,
+//richard

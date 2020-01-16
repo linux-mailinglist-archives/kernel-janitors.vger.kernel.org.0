@@ -2,72 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D13E313D73F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Jan 2020 10:50:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B519C13D775
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Jan 2020 11:03:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731753AbgAPJuB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Jan 2020 04:50:01 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:60799 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726832AbgAPJuB (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Jan 2020 04:50:01 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1is1ml-0007F2-1S; Thu, 16 Jan 2020 09:49:55 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jens Wiklander <jens.wiklander@linaro.org>,
-        Gary R Hook <gary.hook@amd.com>,
-        Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>,
-        Rijo Thomas <Rijo-john.Thomas@amd.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        tee-dev@lists.linaro.org, linux-crypto@vger.kernel.org
+        id S1727047AbgAPKCo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Jan 2020 05:02:44 -0500
+Received: from mail.kernel.org ([198.145.29.99]:37466 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726897AbgAPKCo (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 16 Jan 2020 05:02:44 -0500
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 48C802073A;
+        Thu, 16 Jan 2020 10:02:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579168963;
+        bh=b84RQj8x0DMKLMv9t2vscFneZeX2tkylffgXrZRESgw=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=py5Mo5TaXZBuACmO7OjggDYQGWBN+amS7dJwyYwl1W2Vx7lEcg72timSbJ0DJdFCi
+         5hPi7joemJJ907Jo5KdN1g4BZLgNv8rxp4QGGF0/1wGVWQQwV5TyoTJaQ9paDZtRxb
+         HpwvoDS3mYwOh0k0mxFrm/CkedZVamBCth2EA+wI=
+Date:   Thu, 16 Jan 2020 19:02:39 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Colin King <colin.king@canonical.com>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next][resend] tee: fix memory allocation failure checks on drv_data and amdtee
-Date:   Thu, 16 Jan 2020 09:49:54 +0000
-Message-Id: <20200116094954.54476-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH][next] tools: bootconfig: fix spelling mistake "faile"
+ -> "failed"
+Message-Id: <20200116190239.9b318b2faa14465ece414f16@kernel.org>
+In-Reply-To: <20200116092206.52192-1-colin.king@canonical.com>
+References: <20200116092206.52192-1-colin.king@canonical.com>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Hi Colin,
 
-Currently the memory allocation failure checks on drv_data and
-amdtee are using IS_ERR rather than checking for a null pointer.
-Fix these checks to use the conventional null pointer check.
+On Thu, 16 Jan 2020 09:22:06 +0000
+Colin King <colin.king@canonical.com> wrote:
 
-Addresses-Coverity: ("Dereference null return")
-Fixes: 757cc3e9ff1d ("tee: add AMD-TEE driver")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/tee/amdtee/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> There are two spelling mistakes in printf statements, fix these.
 
-diff --git a/drivers/tee/amdtee/core.c b/drivers/tee/amdtee/core.c
-index 9d0cee1c837f..5fda810c79dc 100644
---- a/drivers/tee/amdtee/core.c
-+++ b/drivers/tee/amdtee/core.c
-@@ -444,11 +444,11 @@ static int __init amdtee_driver_init(void)
- 		goto err_fail;
- 
- 	drv_data = kzalloc(sizeof(*drv_data), GFP_KERNEL);
--	if (IS_ERR(drv_data))
-+	if (!drv_data)
- 		return -ENOMEM;
- 
- 	amdtee = kzalloc(sizeof(*amdtee), GFP_KERNEL);
--	if (IS_ERR(amdtee)) {
-+	if (!amdtee) {
- 		rc = -ENOMEM;
- 		goto err_kfree_drv_data;
- 	}
+Good catch!
+
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+
+Thanks!
+
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  tools/bootconfig/main.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
+> index b8f174fd2a0a..91c9a5c0c499 100644
+> --- a/tools/bootconfig/main.c
+> +++ b/tools/bootconfig/main.c
+> @@ -140,7 +140,7 @@ int load_xbc_from_initrd(int fd, char **buf)
+>  		return 0;
+>  
+>  	if (lseek(fd, -8, SEEK_END) < 0) {
+> -		printf("Faile to lseek: %d\n", -errno);
+> +		printf("Failed to lseek: %d\n", -errno);
+>  		return -errno;
+>  	}
+>  
+> @@ -155,7 +155,7 @@ int load_xbc_from_initrd(int fd, char **buf)
+>  		return 0;
+>  
+>  	if (lseek(fd, stat.st_size - 8 - size, SEEK_SET) < 0) {
+> -		printf("Faile to lseek: %d\n", -errno);
+> +		printf("Failed to lseek: %d\n", -errno);
+>  		return -errno;
+>  	}
+>  
+> -- 
+> 2.24.0
+> 
+
+
 -- 
-2.24.0
-
+Masami Hiramatsu <mhiramat@kernel.org>

@@ -2,32 +2,29 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A065713DF31
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Jan 2020 16:50:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AE4A813ECB6
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Jan 2020 18:58:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726908AbgAPPs5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Jan 2020 10:48:57 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:43263 "EHLO
+        id S2406763AbgAPR6D (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Jan 2020 12:58:03 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:47028 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726343AbgAPPs4 (ORCPT
+        with ESMTP id S2406471AbgAPR6B (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Jan 2020 10:48:56 -0500
+        Thu, 16 Jan 2020 12:58:01 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1is7O8-0003V8-IY; Thu, 16 Jan 2020 15:48:52 +0000
+        id 1is9P5-00070X-0R; Thu, 16 Jan 2020 17:57:59 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Jens Wiklander <jens.wiklander@linaro.org>,
-        Devaraj Rangasamy <Devaraj.Rangasamy@amd.com>,
-        Gary R Hook <gary.hook@amd.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Rijo Thomas <Rijo-john.Thomas@amd.com>,
-        linux-crypto@vger.kernel.org
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Simon Schwartz <kern.simon@theschwartz.xyz>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next][V2] tee: fix memory allocation failure checks on drv_data and amdtee
-Date:   Thu, 16 Jan 2020 15:48:52 +0000
-Message-Id: <20200116154852.84532-1-colin.king@canonical.com>
+Subject: [PATCH][next] driver core: platform: fix u32 greater or equal to zero comparison
+Date:   Thu, 16 Jan 2020 17:57:58 +0000
+Message-Id: <20200116175758.88396-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -39,37 +36,31 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-Currently the memory allocation failure checks on drv_data and
-amdtee are using IS_ERR rather than checking for a null pointer.
-Fix these checks to use the conventional null pointer check.
+Currently the check that a u32 variable i is >= 0 is always true because
+the unsigned variable will never be negative, causing the loop to run
+forever.  Fix this by changing the pre-decrement check to a zero check on
+i followed by a decrement of i.
 
-Addresses-Coverity: ("Dereference null return")
-Fixes: 757cc3e9ff1d ("tee: add AMD-TEE driver")
+Addresses-Coverity: ("Unsigned compared against 0")
+Fixes: 39cc539f90d0 ("driver core: platform: Prevent resouce overflow from causing infinite loops")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
-V2: update to apply against cryptodev-2.6 tree tip
----
- drivers/tee/amdtee/core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/base/platform.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tee/amdtee/core.c b/drivers/tee/amdtee/core.c
-index be8937eb5d43..6370bb55f512 100644
---- a/drivers/tee/amdtee/core.c
-+++ b/drivers/tee/amdtee/core.c
-@@ -446,11 +446,11 @@ static int __init amdtee_driver_init(void)
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index 864b53b3d598..7fa654f1288b 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -571,7 +571,7 @@ int platform_device_add(struct platform_device *pdev)
+ 		pdev->id = PLATFORM_DEVID_AUTO;
  	}
  
- 	drv_data = kzalloc(sizeof(*drv_data), GFP_KERNEL);
--	if (IS_ERR(drv_data))
-+	if (!drv_data)
- 		return -ENOMEM;
- 
- 	amdtee = kzalloc(sizeof(*amdtee), GFP_KERNEL);
--	if (IS_ERR(amdtee)) {
-+	if (!amdtee) {
- 		rc = -ENOMEM;
- 		goto err_kfree_drv_data;
- 	}
+-	while (--i >= 0) {
++	while (i--) {
+ 		struct resource *r = &pdev->resource[i];
+ 		if (r->parent)
+ 			release_resource(r);
 -- 
 2.24.0
 

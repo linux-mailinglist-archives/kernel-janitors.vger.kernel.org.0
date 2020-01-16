@@ -2,103 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EAA9113F9A8
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Jan 2020 20:39:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CD0F13FA46
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Jan 2020 21:13:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730121AbgAPTi1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Jan 2020 14:38:27 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:60582 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729076AbgAPTi1 (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Jan 2020 14:38:27 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: sre)
-        with ESMTPSA id A047C294582
-Received: by earth.universe (Postfix, from userid 1000)
-        id 9E4203C0C7C; Thu, 16 Jan 2020 20:38:21 +0100 (CET)
-Date:   Thu, 16 Jan 2020 20:38:21 +0100
-From:   Sebastian Reichel <sebastian.reichel@collabora.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Yauhen Kharuzhy <jekhor@gmail.com>, linux-pm@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] power: supply: bq25890_charger: fix incorrect
- error return when bq25890_field_read fails
-Message-ID: <20200116193821.eahey33llmtmahhj@earth.universe>
-References: <20200116170900.86548-1-colin.king@canonical.com>
+        id S2387547AbgAPUNM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Jan 2020 15:13:12 -0500
+Received: from mail.kernel.org ([198.145.29.99]:35612 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730031AbgAPUNL (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 16 Jan 2020 15:13:11 -0500
+Received: from [192.168.1.112] (c-24-9-64-241.hsd1.co.comcast.net [24.9.64.241])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6B3CB20663;
+        Thu, 16 Jan 2020 20:13:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579205590;
+        bh=fPP11jfjDsjW6JkTbSPKOQE44w8JcAdCqd6Zok8K0Rk=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=MjYBJTb4mO0VQE47tEHcptW+/xfnm8QuiiE8Z1Ru88f4hTrfdiYh7WnjYvvbx1mrD
+         03v48LZXueLLw5+ZWjTSx0oX9S0Mswd+RSAynxTUcewAeCLgOEO6SeNkGMsUrEr/Qb
+         vAKYYdmQ4EF+NCi+ruEEaqhu6rLxIZKSah6Laa1U=
+Subject: Re: [PATCH][next] selftests: fix spelling mistake "chainged" ->
+ "chained"
+To:     Colin King <colin.king@canonical.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        linux-kselftest@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        shuah <shuah@kernel.org>
+References: <20191210112455.171482-1-colin.king@canonical.com>
+From:   shuah <shuah@kernel.org>
+Message-ID: <2a02d10f-2ae1-acfc-d5c3-fe49dee9cba3@kernel.org>
+Date:   Thu, 16 Jan 2020 13:13:09 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="gsoxf3b5hpk7troz"
-Content-Disposition: inline
-In-Reply-To: <20200116170900.86548-1-colin.king@canonical.com>
+In-Reply-To: <20191210112455.171482-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
---gsoxf3b5hpk7troz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hi Colin,
-
-Thanks, queued.
-
--- Sebastian
-
-On Thu, Jan 16, 2020 at 05:09:00PM +0000, Colin King wrote:
+On 12/10/19 4:24 AM, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
->=20
-> Currently a read failure by bq25890_field_read on F_DEV_REV is returning
-> an error in id instead of rev. Fix this by returning the value in rev.
->=20
-> Addresses-Coverity: ("Copy-paste error")
-> Fixes: d20267c9a98e ("power: supply: bq25890_charger: Add support of BQ25=
-892 and BQ25896 chips")
+> 
+> There is a spelling mistake in a literal string, fix it.
+> 
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/power/supply/bq25890_charger.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/drivers/power/supply/bq25890_charger.c b/drivers/power/suppl=
-y/bq25890_charger.c
-> index 785dbc6307b0..aebd1253dbc9 100644
-> --- a/drivers/power/supply/bq25890_charger.c
-> +++ b/drivers/power/supply/bq25890_charger.c
-> @@ -765,7 +765,7 @@ static int bq25890_get_chip_version(struct bq25890_de=
-vice *bq)
->  	rev =3D bq25890_field_read(bq, F_DEV_REV);
->  	if (rev < 0) {
->  		dev_err(bq->dev, "Cannot read chip revision.\n");
-> -		return id;
-> +		return rev;
->  	}
-> =20
->  	switch (id) {
-> --=20
-> 2.24.0
->=20
+>   tools/testing/selftests/openat2/resolve_test.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/testing/selftests/openat2/resolve_test.c b/tools/testing/selftests/openat2/resolve_test.c
+> index 7a94b1da8e7b..bbafad440893 100644
+> --- a/tools/testing/selftests/openat2/resolve_test.c
+> +++ b/tools/testing/selftests/openat2/resolve_test.c
+> @@ -230,7 +230,7 @@ void test_openat2_opath_tests(void)
+>   		{ .name = "[in_root] garbage link to /root",
+>   		  .path = "cheeky/garbageself",	.how.resolve = RESOLVE_IN_ROOT,
+>   		  .out.path = "root",		.pass = true },
+> -		{ .name = "[in_root] chainged garbage links to /root",
+> +		{ .name = "[in_root] chained garbage links to /root",
+>   		  .path = "abscheeky/garbageself", .how.resolve = RESOLVE_IN_ROOT,
+>   		  .out.path = "root",		.pass = true },
+>   		{ .name = "[in_root] relative path to 'root'",
+> 
 
---gsoxf3b5hpk7troz
-Content-Type: application/pgp-signature; name="signature.asc"
+It didn't apply to linux-kselftest next
 
------BEGIN PGP SIGNATURE-----
+If this is going through opennat2 tree then,
 
-iQIzBAEBCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAl4gu6oACgkQ2O7X88g7
-+pr00w/+JvbtQgu/7hNLNnfksPXRdxDSAaS0OB0CPRvhxOqxunWKTkvZPZdj1RP3
-JZj97mi5SblDGr9qHbIzAVg/Sj0pn0vHlnkwSuqKsB7MgKtTMPRNud6Pk1FaSuMJ
-bWWLNTOwWG+yetuiMHGqT9QvVKdBNb3HaWQJN+I4JvRzpf69hp75fhV0A1Q7lIvw
-y3S8v1F2e/Y2o3f2ajdryRd1uYf+agfSeW7gZ+aQbY8gUICV6e5II27pvvxjylFn
-V1qgy0yDlCjvP9uifQ8yK74baZHDpyU0flSylHOPIV8/V16m5WLzCRW5Dxauzsx0
-3Ulqyg34JSd3eri/7oFzmHyWHEgxE7yBnXuc+ngroXF8ljR6cpz/xoBjczIbSsdc
-CZRlYZqGBnuXroUACy1oyR81ial3wPYt6zSs4uhE9+cl4YYeAZ/tKnq13Re75I5s
-h/tNfwR8007mEVHVpqxo1aUVfDfbYiQZkGrGSOgB58n6Ulhq+nmNJIF6/TSd54qb
-uR3uy2kHdBb9q7OtMiV/QQNiLzcf17VwJEzauRdSKng8zo5n65z7qPW2UlDwu345
-tnGiriKqwMJROFMoKaKTXDS8zdK2Ae/72ooLKH9qXfZDKfbaDnp/GAE6BAHBeJCs
-dMXbeDN9hwTMBBnl8Iwo4haNowWD/SvldJb6Ha/yOT7xg5sF14s=
-=RT7i
------END PGP SIGNATURE-----
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
 
---gsoxf3b5hpk7troz--
+If not I can this for 5.6-rc2
+
+thanks,
+-- Shuah

@@ -2,56 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D62F13CFBC
-	for <lists+kernel-janitors@lfdr.de>; Wed, 15 Jan 2020 23:07:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A772013D21B
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Jan 2020 03:18:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729797AbgAOWGn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 15 Jan 2020 17:06:43 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:60632 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729016AbgAOWGn (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 15 Jan 2020 17:06:43 -0500
-Received: from localhost (unknown [62.21.130.100])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 7093815A0EE0A;
-        Wed, 15 Jan 2020 14:06:41 -0800 (PST)
-Date:   Wed, 15 Jan 2020 14:06:40 -0800 (PST)
-Message-Id: <20200115.140640.367212385869999160.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     qiang.zhao@nxp.com, netdev@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net/wan/fsl_ucc_hdlc: fix out of bounds write on array
- utdm_info
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200114145448.361888-1-colin.king@canonical.com>
-References: <20200114145448.361888-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 15 Jan 2020 14:06:42 -0800 (PST)
+        id S1730166AbgAPCQU (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 15 Jan 2020 21:16:20 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:9624 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729098AbgAPCQU (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 15 Jan 2020 21:16:20 -0500
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 71B3E92359EE4E118E14;
+        Thu, 16 Jan 2020 10:16:18 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 16 Jan 2020 10:16:11 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Jack Yu <jack.yu@realtek.com>, Oder Chiou <oder_chiou@realtek.com>,
+        "Liam Girdwood" <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        "Jaroslav Kysela" <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
+CC:     YueHaibing <yuehaibing@huawei.com>, <alsa-devel@alsa-project.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] ASoC: rt715: remove unused including <linux/version.h>
+Date:   Thu, 16 Jan 2020 02:11:42 +0000
+Message-ID: <20200116021142.149000-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Tue, 14 Jan 2020 14:54:48 +0000
+Remove including <linux/version.h> that don't need it.
 
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> Array utdm_info is declared as an array of MAX_HDLC_NUM (4) elements
-> however up to UCC_MAX_NUM (8) elements are potentially being written
-> to it.  Currently we have an array out-of-bounds write error on the
-> last 4 elements. Fix this by making utdm_info UCC_MAX_NUM elements in
-> size.
-> 
-> Addresses-Coverity: ("Out-of-bounds write")
-> Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+---
+ sound/soc/codecs/rt715.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Applied and queued up for -stable.
+diff --git a/sound/soc/codecs/rt715.c b/sound/soc/codecs/rt715.c
+index 4c746938a062..2cbc57b16b13 100644
+--- a/sound/soc/codecs/rt715.c
++++ b/sound/soc/codecs/rt715.c
+@@ -10,7 +10,6 @@
+ 
+ #include <linux/module.h>
+ #include <linux/moduleparam.h>
+-#include <linux/version.h>
+ #include <linux/kernel.h>
+ #include <linux/init.h>
+ #include <linux/delay.h>
+
+
+

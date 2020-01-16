@@ -2,62 +2,91 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AA33413F4C5
-	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Jan 2020 19:53:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C2BD13F453
+	for <lists+kernel-janitors@lfdr.de>; Thu, 16 Jan 2020 19:49:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389660AbgAPSva (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Jan 2020 13:51:30 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:45870 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389571AbgAPRJD (ORCPT
+        id S2389803AbgAPSs4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 16 Jan 2020 13:48:56 -0500
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:38374 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2390036AbgAPSsv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Jan 2020 12:09:03 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1is8dh-0001uN-1q; Thu, 16 Jan 2020 17:09:01 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Sebastian Reichel <sebastian.reichel@collabora.com>,
-        Yauhen Kharuzhy <jekhor@gmail.com>, linux-pm@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] power: supply: bq25890_charger: fix incorrect error return when bq25890_field_read fails
-Date:   Thu, 16 Jan 2020 17:09:00 +0000
-Message-Id: <20200116170900.86548-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+        Thu, 16 Jan 2020 13:48:51 -0500
+Received: by mail-wm1-f68.google.com with SMTP id u2so4920338wmc.3;
+        Thu, 16 Jan 2020 10:48:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=W6L5M8NGDU85SsLDQmYbLaPSihnBnJlX3fanr790LTQ=;
+        b=M2ncpFHVDkDQJXFmSFyILtg5dfcgBMwp+/GDwfV0ypOJ3vRQp74CewosmQhXTj7EdA
+         TK1BjIlnP/mh+uYnRk77S/ysqHcbubzppvOap7bkqwZ09LK+pMxYdyA75Yx/NorPI4rj
+         XCP+iEcl2TmRooOl3ZAGi1kJcq4tU/dX8636my5k00oyhmBwN5ezSxXkEJjNJjy1u+tY
+         wIT+JqJw1sCuCCFy8N2CoaCSW2NM8iJbG4eaWe6UkXTXUn6ydkC3ws3cDEjfilCtqemD
+         /1FYY92btOopD1j1Jnv2q90KRWgiddRpdZhIBhXLxm5XGNLmUxJMdlEI51Ecvjls/uwB
+         yZHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=W6L5M8NGDU85SsLDQmYbLaPSihnBnJlX3fanr790LTQ=;
+        b=V0owF16lujqJ0riKGVAj19c4pKakKzkjN5PrRwNlV7MWdp/QNbit4j72+KqYi/9PLM
+         ksr7imVAFsQ5hj2FE2iBjmimZNFRRVBQ2aaXFY7oTgZrIkSWvjG6OV3e7jEKiTSkt/AQ
+         YvootNORMago/yoOBfjJO6ZFqmGd+C1hO+6fWbNmSuVqf8Ek5PX6MI7RryD3xr1Bh7oL
+         DYcpRM83rplELk65bSqp35WblYmOErIbwmoSDW56/XPRzfSXdjIu9qCfeV+xvX9iHCW0
+         A0o+U7EFH/DVvkTUUbZiezecmB6PLzI2DuLWPakFt9c095SV52KqcyYrs9HJhS+UhhyH
+         UMPQ==
+X-Gm-Message-State: APjAAAWikHLx8fKDsw2k8+XX8ar+24WljUcISIx8QGkQBqKxQEwUVTnO
+        VusnYsA9X1dp6c3JLmqteWI=
+X-Google-Smtp-Source: APXvYqxhkMJzX4Sq/b4oFH8dHiEfu0uRVsCPQXLvta8K0yXhLaMLfpTTKQzh6yknwnzeizGJswmEAQ==
+X-Received: by 2002:a1c:628b:: with SMTP id w133mr438122wmb.25.1579200529189;
+        Thu, 16 Jan 2020 10:48:49 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2dbe:4a00:e092:254d:41ed:2e49])
+        by smtp.gmail.com with ESMTPSA id n67sm6090068wmf.46.2020.01.16.10.48.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jan 2020 10:48:48 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Philipp Zabel <p.zabel@pengutronix.de>
+Cc:     Joe Perches <joe@perches.com>, kernel@pengutronix.de,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH RESEND] MAINTAINERS: fix style in RESET CONTROLLER FRAMEWORK
+Date:   Thu, 16 Jan 2020 19:48:36 +0100
+Message-Id: <20200116184836.10256-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Commit 37859277374d ("MAINTAINERS: add reset controller framework
+keywords") slips in some formatting with spaces instead of tabs, which
+./scripts/checkpatch.pl -f MAINTAINERS complains about:
 
-Currently a read failure by bq25890_field_read on F_DEV_REV is returning
-an error in id instead of rev. Fix this by returning the value in rev.
+  WARNING: MAINTAINERS entries use one tab after TYPE:
+  #14047: FILE: MAINTAINERS:14047:
+  +K:      \b(?:devm_|of_)?reset_control(?:ler_[a-z]+|_[a-z_]+)?\b
 
-Addresses-Coverity: ("Copy-paste error")
-Fixes: d20267c9a98e ("power: supply: bq25890_charger: Add support of BQ25892 and BQ25896 chips")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Fixes: 37859277374d ("MAINTAINERS: add reset controller framework keywords")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
- drivers/power/supply/bq25890_charger.c | 2 +-
+applies cleanly on v5.5-rc6 and next-20200116
+Philipp, please pick this patch.
+
+ MAINTAINERS | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/bq25890_charger.c b/drivers/power/supply/bq25890_charger.c
-index 785dbc6307b0..aebd1253dbc9 100644
---- a/drivers/power/supply/bq25890_charger.c
-+++ b/drivers/power/supply/bq25890_charger.c
-@@ -765,7 +765,7 @@ static int bq25890_get_chip_version(struct bq25890_device *bq)
- 	rev = bq25890_field_read(bq, F_DEV_REV);
- 	if (rev < 0) {
- 		dev_err(bq->dev, "Cannot read chip revision.\n");
--		return id;
-+		return rev;
- 	}
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d2aa9db61ab6..83eae48ad4f2 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14067,7 +14067,7 @@ F:	include/dt-bindings/reset/
+ F:	include/linux/reset.h
+ F:	include/linux/reset/
+ F:	include/linux/reset-controller.h
+-K:      \b(?:devm_|of_)?reset_control(?:ler_[a-z]+|_[a-z_]+)?\b
++K:	\b(?:devm_|of_)?reset_control(?:ler_[a-z]+|_[a-z_]+)?\b
  
- 	switch (id) {
+ RESTARTABLE SEQUENCES SUPPORT
+ M:	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
 -- 
-2.24.0
+2.17.1
 

@@ -2,52 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A888A140397
-	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Jan 2020 06:31:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ACEAA14039F
+	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Jan 2020 06:34:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726364AbgAQFas (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 17 Jan 2020 00:30:48 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:43786 "EHLO
+        id S1726899AbgAQFes (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 17 Jan 2020 00:34:48 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:47158 "EHLO
         userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725813AbgAQFas (ORCPT
+        with ESMTP id S1726371AbgAQFes (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 17 Jan 2020 00:30:48 -0500
+        Fri, 17 Jan 2020 00:34:48 -0500
 Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00H5SsBd157673;
-        Fri, 17 Jan 2020 05:30:18 GMT
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00H5YeL0161775;
+        Fri, 17 Jan 2020 05:34:44 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=aWiEefB1h7tIO6YvK1XsMNLlgppTykwjcM4m1HSnw1I=;
- b=DgKVSt/pr20CKdnnBYvE1aCz2BMU7Nmny7cEtKsz4ovsgY72aQtktRNGEdgj+2FU3rry
- +s0kEyLBFG2cSTQ3k7q/7gLGqMQ08HNXgPI6+Vj02Am+dA4VdTKFxnBgXd0HrWpyGgqt
- Q10GTx+H7rll7S7Qw22UoMq1nGblOqVk1tUkGwKgYKRRDPVjTEbLZz71CL/LhKa/74al
- ygtyWkXrtx2HbH26kmL/RvCdO+CEU9Hl4+KGOCosqsuPYtDz0sL1qQC1x7WokG1JHAtt
- 7MI6Vwf5GRodxp3Rm8CZd8vOMfPJEZFCYLI0oMGVR2Yt95T+RAAeWf/UojJkKSH8K+FC ow== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 2xf74spkau-1
+ bh=inIRk5XUY06eqAh9VbxMgcZkldFBCm9mzf3e+846xsw=;
+ b=oiIx7FQwtOF4UF5KteKXA1i8ySJO/HglS584eZW0mF5c8WxPUr4yULsj7/nKZMHwYr/5
+ PDxVF34nigtWp62r/A8uslcMFQA05loyw/kpa4nCHSXIfy5OzpTO8ECppuDoZCzTWxj9
+ EOx0cqQsfS5Itr2HQBgS9++YhpZQRMYVp2FQN+gp7rbckiG9fbdWFUGWfSUT+T2Q6ojz
+ bS74HKJG+Mdj4QCnqUkEoD/wO17OAB7Ruo1IzEfEXBBKmM6l0dGFcsMh+JJhIjr3391g
+ PCUYCNy6sPKMm1PZNRwsWAKP7Fyq6vn9b0kwGYTj9v5ej/dWPlTcnRkad65wB9z8v3KS 6g== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by userp2130.oracle.com with ESMTP id 2xf74spks1-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 17 Jan 2020 05:30:17 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00H5TPuk075883;
-        Fri, 17 Jan 2020 05:30:17 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2xk24ec533-1
+        Fri, 17 Jan 2020 05:34:44 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00H5Ya5X049927;
+        Fri, 17 Jan 2020 05:34:43 GMT
+Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
+        by userp3020.oracle.com with ESMTP id 2xjxp4f21x-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 17 Jan 2020 05:30:17 +0000
+        Fri, 17 Jan 2020 05:34:43 +0000
 Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00H5UGq1003447;
-        Fri, 17 Jan 2020 05:30:16 GMT
+        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 00H5Yg8l008111;
+        Fri, 17 Jan 2020 05:34:42 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 16 Jan 2020 21:30:15 -0800
-Date:   Fri, 17 Jan 2020 08:30:07 +0300
+        with ESMTP ; Thu, 16 Jan 2020 21:34:41 -0800
+Date:   Fri, 17 Jan 2020 08:34:32 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>
-Cc:     Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org,
+To:     Chris Mason <clm@fb.com>, Nikolay Borisov <nborisov@suse.com>
+Cc:     Josef Bacik <josef@toxicpanda.com>,
+        David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] tracing/boot: Fix an IS_ERR() vs NULL bug
-Message-ID: <20200117053007.5h2juv272pokqhtq@kili.mountain>
+Subject: [PATCH] btrfs: tests: Fix an NULL vs IS_ERR() test
+Message-ID: <20200117053432.k46ftoqf67dezauh@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -55,42 +55,45 @@ X-Mailer: git-send-email haha only kidding
 User-Agent: NeoMutt/20170113 (1.7.2)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9502 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=932
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001170042
+ engine=8.0.1-1911140001 definitions=main-2001170043
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9502 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
  suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=984 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001170042
+ definitions=main-2001170043
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The trace_array_get_by_name() function doesn't return error pointers,
-it returns NULL on error.
+The btrfs_alloc_dummy_device() function never returns NULL, it returns
+error pointers.
 
-Fixes: 4f712a4d04a4 ("tracing/boot: Add instance node support")
+Fixes: 5d9a4f871168 ("btrfs: Add self-tests for btrfs_rmap_block")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- kernel/trace/trace_boot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/tests/extent-map-tests.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/trace_boot.c b/kernel/trace/trace_boot.c
-index fa9603dc6469..cd541ac1cbc1 100644
---- a/kernel/trace/trace_boot.c
-+++ b/kernel/trace/trace_boot.c
-@@ -322,7 +322,7 @@ trace_boot_init_instances(struct xbc_node *node)
- 			continue;
+diff --git a/fs/btrfs/tests/extent-map-tests.c b/fs/btrfs/tests/extent-map-tests.c
+index b7f2c4398e92..70a2f0dc9a78 100644
+--- a/fs/btrfs/tests/extent-map-tests.c
++++ b/fs/btrfs/tests/extent-map-tests.c
+@@ -490,9 +490,9 @@ static int test_rmap_block(struct btrfs_fs_info *fs_info,
+ 	for (i = 0; i < map->num_stripes; i++) {
+ 		struct btrfs_device *dev = btrfs_alloc_dummy_device(fs_info);
  
- 		tr = trace_array_get_by_name(p);
--		if (IS_ERR(tr)) {
-+		if (!tr) {
- 			pr_err("Failed to get trace instance %s\n", p);
- 			continue;
+-		if (!dev) {
++		if (IS_ERR(dev)) {
+ 			test_err("cannot allocate device");
+-			ret = -ENOMEM;
++			ret = PTR_ERR(dev);
+ 			goto out;
  		}
+ 		map->stripes[i].dev = dev;
 -- 
 2.11.0
 

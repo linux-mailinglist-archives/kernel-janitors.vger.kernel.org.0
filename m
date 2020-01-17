@@ -2,103 +2,95 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2099B140330
-	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Jan 2020 06:04:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A888A140397
+	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Jan 2020 06:31:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725834AbgAQFEg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 17 Jan 2020 00:04:36 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:33916 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725379AbgAQFEf (ORCPT
+        id S1726364AbgAQFas (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 17 Jan 2020 00:30:48 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:43786 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725813AbgAQFas (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 17 Jan 2020 00:04:35 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00H4wCkp099355;
-        Fri, 17 Jan 2020 05:04:28 GMT
+        Fri, 17 Jan 2020 00:30:48 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00H5SsBd157673;
+        Fri, 17 Jan 2020 05:30:18 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=C7E4rn681XeGsLrdspXx5S23srOIn+BD9EH2JlLOmaE=;
- b=jE2GHbQ66yJlYqI9aR2paG/a63EAhcgEEsDn6YJcXT2E3NQ3D3YQkiaYOaUr5dOJleae
- PrD2fUsXzC1TJYrTp7TVVFrbbR5Z6IRJIFJUZ6sveihY7h3IZlguynathhBEulSUawld
- cAI91IakEI9WiNBoKm+n3eGFlC8//MKB8rWMiJegKQ80QzZV8REyXnNi+eT6i3e8w3jX
- ePIfiQ2jm8ByKCQ6gjXEFJyj7RKk++pt+60onw61fhF3h1+5+OFzaKcndGSygJaC3tO+
- ZxVmzd3Rz/BqN9GckXvM8pyK7+y6mxP4Rj2SRsZh9jXS2Pz1MK2vPqksa6vQaVRoLXdt yQ== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 2xf73u6f42-1
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=aWiEefB1h7tIO6YvK1XsMNLlgppTykwjcM4m1HSnw1I=;
+ b=DgKVSt/pr20CKdnnBYvE1aCz2BMU7Nmny7cEtKsz4ovsgY72aQtktRNGEdgj+2FU3rry
+ +s0kEyLBFG2cSTQ3k7q/7gLGqMQ08HNXgPI6+Vj02Am+dA4VdTKFxnBgXd0HrWpyGgqt
+ Q10GTx+H7rll7S7Qw22UoMq1nGblOqVk1tUkGwKgYKRRDPVjTEbLZz71CL/LhKa/74al
+ ygtyWkXrtx2HbH26kmL/RvCdO+CEU9Hl4+KGOCosqsuPYtDz0sL1qQC1x7WokG1JHAtt
+ 7MI6Vwf5GRodxp3Rm8CZd8vOMfPJEZFCYLI0oMGVR2Yt95T+RAAeWf/UojJkKSH8K+FC ow== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2xf74spkau-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 17 Jan 2020 05:04:28 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00H4wHkF085171;
-        Fri, 17 Jan 2020 05:04:27 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by userp3030.oracle.com with ESMTP id 2xjxm868nx-1
+        Fri, 17 Jan 2020 05:30:17 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00H5TPuk075883;
+        Fri, 17 Jan 2020 05:30:17 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by aserp3030.oracle.com with ESMTP id 2xk24ec533-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 17 Jan 2020 05:04:27 +0000
-Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00H54Qq6021453;
-        Fri, 17 Jan 2020 05:04:26 GMT
-Received: from kadam (/129.205.23.165)
+        Fri, 17 Jan 2020 05:30:17 +0000
+Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00H5UGq1003447;
+        Fri, 17 Jan 2020 05:30:16 GMT
+Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 16 Jan 2020 21:04:26 -0800
-Date:   Fri, 17 Jan 2020 08:06:09 +0300
+        with ESMTP ; Thu, 16 Jan 2020 21:30:15 -0800
+Date:   Fri, 17 Jan 2020 08:30:07 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Simon Schwartz <kern.simon@theschwartz.xyz>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] driver core: platform: fix u32 greater or equal to
- zero comparison
-Message-ID: <20200117050609.GD19765@kadam>
-References: <20200116175758.88396-1-colin.king@canonical.com>
- <20200117044216.GC21151@kadam>
+To:     "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] tracing/boot: Fix an IS_ERR() vs NULL bug
+Message-ID: <20200117053007.5h2juv272pokqhtq@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200117044216.GC21151@kadam>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9502 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=860
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001170038
+ engine=8.0.1-1911140001 definitions=main-2001170042
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9502 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=922 adultscore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001170038
+ definitions=main-2001170042
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jan 17, 2020 at 07:42:16AM +0300, Dan Carpenter wrote:
-> On Thu, Jan 16, 2020 at 05:57:58PM +0000, Colin King wrote:
-> > From: Colin Ian King <colin.king@canonical.com>
-> > 
-> > Currently the check that a u32 variable i is >= 0 is always true because
-> > the unsigned variable will never be negative, causing the loop to run
-> > forever.  Fix this by changing the pre-decrement check to a zero check on
-> > i followed by a decrement of i.
-> > 
-> > Addresses-Coverity: ("Unsigned compared against 0")
-> > Fixes: 39cc539f90d0 ("driver core: platform: Prevent resouce overflow from causing infinite loops")
-> 
+The trace_array_get_by_name() function doesn't return error pointers,
+it returns NULL on error.
 
-Also by the way say you have:
+Fixes: 4f712a4d04a4 ("tracing/boot: Add instance node support")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ kernel/trace/trace_boot.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-	unsigned int limit = (unsigned)INT_MAX + 4;
-	int i;
+diff --git a/kernel/trace/trace_boot.c b/kernel/trace/trace_boot.c
+index fa9603dc6469..cd541ac1cbc1 100644
+--- a/kernel/trace/trace_boot.c
++++ b/kernel/trace/trace_boot.c
+@@ -322,7 +322,7 @@ trace_boot_init_instances(struct xbc_node *node)
+ 			continue;
+ 
+ 		tr = trace_array_get_by_name(p);
+-		if (IS_ERR(tr)) {
++		if (!tr) {
+ 			pr_err("Failed to get trace instance %s\n", p);
+ 			continue;
+ 		}
+-- 
+2.11.0
 
-	for (i = 0; i < limit; i++)
-		;
-	printf("%d\n", i);
-
-
-The loop will work the same way regardless of if int is signed or not
-because of type promotion.
-
-regards,
-dan carpenter

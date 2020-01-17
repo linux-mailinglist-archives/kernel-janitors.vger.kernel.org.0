@@ -2,51 +2,131 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77383140BCB
-	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Jan 2020 14:55:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C644140C97
+	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Jan 2020 15:35:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727007AbgAQNzs (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 17 Jan 2020 08:55:48 -0500
-Received: from mx2.suse.de ([195.135.220.15]:56816 "EHLO mx2.suse.de"
+        id S1726974AbgAQOfN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 17 Jan 2020 09:35:13 -0500
+Received: from mx01-fr.bfs.de ([193.174.231.67]:9092 "EHLO mx01-fr.bfs.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726688AbgAQNzs (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 17 Jan 2020 08:55:48 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx2.suse.de (Postfix) with ESMTP id 4EDB6AE74;
-        Fri, 17 Jan 2020 13:55:46 +0000 (UTC)
-Received: by ds.suse.cz (Postfix, from userid 10065)
-        id 5E374DA871; Fri, 17 Jan 2020 14:55:32 +0100 (CET)
-Date:   Fri, 17 Jan 2020 14:55:32 +0100
-From:   David Sterba <dsterba@suse.cz>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Chris Mason <clm@fb.com>, Nikolay Borisov <nborisov@suse.com>,
-        Josef Bacik <josef@toxicpanda.com>,
-        David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] btrfs: tests: Fix an NULL vs IS_ERR() test
-Message-ID: <20200117135532.GE3929@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-Mail-Followup-To: dsterba@suse.cz, Dan Carpenter <dan.carpenter@oracle.com>,
-        Chris Mason <clm@fb.com>, Nikolay Borisov <nborisov@suse.com>,
-        Josef Bacik <josef@toxicpanda.com>, David Sterba <dsterba@suse.com>,
-        linux-btrfs@vger.kernel.org, kernel-janitors@vger.kernel.org
-References: <20200117053432.k46ftoqf67dezauh@kili.mountain>
+        id S1726890AbgAQOfN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 17 Jan 2020 09:35:13 -0500
+X-Greylist: delayed 502 seconds by postgrey-1.27 at vger.kernel.org; Fri, 17 Jan 2020 09:35:11 EST
+Received: from mail-fr.bfs.de (mail-fr.bfs.de [10.177.18.200])
+        by mx01-fr.bfs.de (Postfix) with ESMTPS id 94FDE2036D;
+        Fri, 17 Jan 2020 15:26:44 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bfs.de; s=dkim201901;
+        t=1579271204; h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=vklTv1W7/ocwmfCw1yXAs37PNEse48aUNTXTC6C3H0c=;
+        b=C+HDCZgeGXwzghdLLVb2Z0kGY2gmufm+jURg6DQu2im7bC26WaFaEGGZHoHUTepbTyVNE3
+        LyPcEiGpaelRbhLIZxMf2/0n8H5ErY6WVaFrhdQNBhHOUqWJoPfU8+ev2pa2q+WGha2Dhr
+        Ydcuq/q7qL4JBz6PFxmasSmfMsD1Ho//QAmoocevBaA5r/j/nTJcybSFRFFRGGOFfLkfg2
+        5TPNV4ogtJVZMnOmeGpdz6H9aDulCYBnpqa5GGpZSXChfJwis1KO7DA/zNxAcsiW+VVv4C
+        DgnFGrOBYi9G6qmPOwXcIrmZ9ZEGyUaTHx5tUCILIMs9N9nshMW6WSsNdoPFsQ==
+Received: from [134.92.181.33] (unknown [134.92.181.33])
+        by mail-fr.bfs.de (Postfix) with ESMTPS id 204E5BEEBD;
+        Fri, 17 Jan 2020 15:26:43 +0100 (CET)
+Message-ID: <5E21C422.6040708@bfs.de>
+Date:   Fri, 17 Jan 2020 15:26:42 +0100
+From:   walter harms <wharms@bfs.de>
+Reply-To: wharms@bfs.de
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; de; rv:1.9.1.16) Gecko/20101125 SUSE/3.0.11 Thunderbird/3.0.11
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200117053432.k46ftoqf67dezauh@kili.mountain>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+To:     Colin King <colin.king@canonical.com>
+CC:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?B?Q2hyaXN0aWFuIEvDtm5pZw==?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        Nikola Cornij <Nikola.Cornij@amd.com>,
+        Wenjing Liu <Wenjing.Liu@amd.com>,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next] drm/amd/display: fix for-loop with incorrectly
+ sized loop counter
+References: <20200117133305.113280-1-colin.king@canonical.com>
+In-Reply-To: <20200117133305.113280-1-colin.king@canonical.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.10
+Authentication-Results: mx01-fr.bfs.de
+X-Spamd-Result: default: False [-3.10 / 7.00];
+         ARC_NA(0.00)[];
+         HAS_REPLYTO(0.00)[wharms@bfs.de];
+         BAYES_HAM(-3.00)[100.00%];
+         FROM_HAS_DN(0.00)[];
+         TO_DN_SOME(0.00)[];
+         TO_MATCH_ENVRCPT_ALL(0.00)[];
+         MIME_GOOD(-0.10)[text/plain];
+         REPLYTO_ADDR_EQ_FROM(0.00)[];
+         DKIM_SIGNED(0.00)[];
+         RCPT_COUNT_TWELVE(0.00)[15];
+         NEURAL_HAM(-0.00)[-0.999,0];
+         FROM_EQ_ENVFROM(0.00)[];
+         MIME_TRACE(0.00)[0:+];
+         RCVD_COUNT_TWO(0.00)[2];
+         MID_RHS_MATCH_FROM(0.00)[];
+         RCVD_TLS_ALL(0.00)[]
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jan 17, 2020 at 08:34:32AM +0300, Dan Carpenter wrote:
-> The btrfs_alloc_dummy_device() function never returns NULL, it returns
-> error pointers.
-> 
-> Fixes: 5d9a4f871168 ("btrfs: Add self-tests for btrfs_rmap_block")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-Thanks, folded to the original patch.
+
+Am 17.01.2020 14:33, schrieb Colin King:
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> A for-loop is iterating from 0 up to 1000 however the loop variable count
+> is a u8 and hence not large enough.  Fix this by making count an int.
+> Also remove the redundant initialization of count since this is never used
+> and add { } on the loop statement make the loop block clearer.
+> 
+> Addresses-Coverity: ("Operands don't affect result")
+> Fixes: ed581a0ace44 ("drm/amd/display: wait for update when setting dpg test pattern")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>  drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c b/drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c
+> index 6ab298c65247..cbed738a4246 100644
+> --- a/drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c
+> +++ b/drivers/gpu/drm/amd/display/dc/core/dc_link_dp.c
+> @@ -3680,7 +3680,7 @@ static void set_crtc_test_pattern(struct dc_link *link,
+>  			struct pipe_ctx *odm_pipe;
+>  			enum controller_dp_color_space controller_color_space;
+>  			int opp_cnt = 1;
+> -			uint8_t count = 0;
+> +			int count;
+>  
+>  			switch (test_pattern_color_space) {
+>  			case DP_TEST_PATTERN_COLOR_SPACE_RGB:
+> @@ -3725,11 +3725,12 @@ static void set_crtc_test_pattern(struct dc_link *link,
+>  				width,
+>  				height);
+>  			/* wait for dpg to blank pixel data with test pattern */
+> -			for (count = 0; count < 1000; count++)
+> +			for (count = 0; count < 1000; count++) {
+>  				if (opp->funcs->dpg_is_blanked(opp))
+>  					break;
+>  				else
+>  					udelay(100);
+> +			}
+>  		}
+>  	}
+>  	break;
+
+Nitpick:
+the else is useless you can remove it.
+
+re,
+ wh
+

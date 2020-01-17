@@ -2,46 +2,46 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BBF7E140317
-	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Jan 2020 05:45:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2099B140330
+	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Jan 2020 06:04:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729903AbgAQEo4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 16 Jan 2020 23:44:56 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:35594 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726370AbgAQEo4 (ORCPT
+        id S1725834AbgAQFEg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 17 Jan 2020 00:04:36 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:33916 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725379AbgAQFEf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 16 Jan 2020 23:44:56 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00H4cu8W123496;
-        Fri, 17 Jan 2020 04:44:49 GMT
+        Fri, 17 Jan 2020 00:04:35 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00H4wCkp099355;
+        Fri, 17 Jan 2020 05:04:28 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : references : mime-version : content-type :
  in-reply-to; s=corp-2019-08-05;
- bh=kei4/bh5MHiyU6Xb1JUCnPX298eNmKPXG3KGKMXdG2U=;
- b=ZC2DR7zHE/Z6E+kKSHYV3aSz6EfolElzN6YKOI3lzNNWoYFc68PweWCZP3oRkdx/PWs5
- OZDL2668kyrUWwbwYlPjPgfHZEJH2URlqPu9I9DgNgyKEE0BQC2OdtwtNdF1ynOFzgq/
- 4rbO+lthATkTFLpGdrHzmcZIWeewh8PEuinjRY/6kJK5tggZ7Wn493rwrbNfbyIoiM5s
- AzVbIZJleoS8BkcbraIAkLqlRO2EV8QmnsoL54gu+xB/odbZYFIv4yIzKYBusIWx1L5c
- JbaZmY9F5eZbQFmHDTtDLm5HALVxWOeo/2GxQf0gD+JWQjn8nTvnHH1XvkZt+TLfVnI0 vQ== 
+ bh=C7E4rn681XeGsLrdspXx5S23srOIn+BD9EH2JlLOmaE=;
+ b=jE2GHbQ66yJlYqI9aR2paG/a63EAhcgEEsDn6YJcXT2E3NQ3D3YQkiaYOaUr5dOJleae
+ PrD2fUsXzC1TJYrTp7TVVFrbbR5Z6IRJIFJUZ6sveihY7h3IZlguynathhBEulSUawld
+ cAI91IakEI9WiNBoKm+n3eGFlC8//MKB8rWMiJegKQ80QzZV8REyXnNi+eT6i3e8w3jX
+ ePIfiQ2jm8ByKCQ6gjXEFJyj7RKk++pt+60onw61fhF3h1+5+OFzaKcndGSygJaC3tO+
+ ZxVmzd3Rz/BqN9GckXvM8pyK7+y6mxP4Rj2SRsZh9jXS2Pz1MK2vPqksa6vQaVRoLXdt yQ== 
 Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2130.oracle.com with ESMTP id 2xf74spexn-1
+        by aserp2120.oracle.com with ESMTP id 2xf73u6f42-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 17 Jan 2020 04:44:49 +0000
+        Fri, 17 Jan 2020 05:04:28 +0000
 Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00H4d1Ss050604;
-        Fri, 17 Jan 2020 04:44:48 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 2xjxm85c5w-1
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00H4wHkF085171;
+        Fri, 17 Jan 2020 05:04:27 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 2xjxm868nx-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 17 Jan 2020 04:44:48 +0000
-Received: from abhmp0003.oracle.com (abhmp0003.oracle.com [141.146.116.9])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 00H4il8S027494;
-        Fri, 17 Jan 2020 04:44:47 GMT
+        Fri, 17 Jan 2020 05:04:27 +0000
+Received: from abhmp0011.oracle.com (abhmp0011.oracle.com [141.146.116.17])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00H54Qq6021453;
+        Fri, 17 Jan 2020 05:04:26 GMT
 Received: from kadam (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 16 Jan 2020 20:44:47 -0800
-Date:   Fri, 17 Jan 2020 07:46:30 +0300
+        with ESMTP ; Thu, 16 Jan 2020 21:04:26 -0800
+Date:   Fri, 17 Jan 2020 08:06:09 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
 To:     Colin King <colin.king@canonical.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -50,7 +50,7 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH][next] driver core: platform: fix u32 greater or equal to
  zero comparison
-Message-ID: <20200117044629.GC19765@kadam>
+Message-ID: <20200117050609.GD19765@kadam>
 References: <20200116175758.88396-1-colin.king@canonical.com>
  <20200117044216.GC21151@kadam>
 MIME-Version: 1.0
@@ -60,15 +60,15 @@ In-Reply-To: <20200117044216.GC21151@kadam>
 User-Agent: Mutt/1.9.4 (2018-02-28)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9502 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=477
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=860
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001170035
+ engine=8.0.1-1911140001 definitions=main-2001170038
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9502 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
  suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=537 adultscore=0
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=922 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001170035
+ definitions=main-2001170038
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
@@ -86,15 +86,19 @@ On Fri, Jan 17, 2020 at 07:42:16AM +0300, Dan Carpenter wrote:
 > > Addresses-Coverity: ("Unsigned compared against 0")
 > > Fixes: 39cc539f90d0 ("driver core: platform: Prevent resouce overflow from causing infinite loops")
 > 
-> A better fix would be to revert this patch.  It doesn't fix a real bug.
-> The ->num_resources is typically under 5.  It's not going to overflow
-> INT_MAX any time soon.  There are "architectures with smaller ints."
 
-I left out a word.  There are *no* "architectures with smaller ints."...
+Also by the way say you have:
 
-I mean there used to be systems with 16 bit int but that was before I
-was born.  You could never run linux on them.
+	unsigned int limit = (unsigned)INT_MAX + 4;
+	int i;
+
+	for (i = 0; i < limit; i++)
+		;
+	printf("%d\n", i);
+
+
+The loop will work the same way regardless of if int is signed or not
+because of type promotion.
 
 regards,
 dan carpenter
-

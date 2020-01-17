@@ -2,104 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 89FE6140E16
-	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Jan 2020 16:45:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 623011414FC
+	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jan 2020 00:59:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729151AbgAQPo0 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 17 Jan 2020 10:44:26 -0500
-Received: from heliosphere.sirena.org.uk ([172.104.155.198]:53778 "EHLO
-        heliosphere.sirena.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727043AbgAQPoY (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 17 Jan 2020 10:44:24 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=sirena.org.uk; s=20170815-heliosphere; h=Date:Message-Id:In-Reply-To:
-        Subject:Cc:To:From:Sender:Reply-To:MIME-Version:Content-Type:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:References:
-        List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:
-        List-Archive; bh=NE/N8VtkiipQl3VBVzmYt9gJcFUcLftJQcwc5ZFwzXA=; b=aNWCPA4xdQCf
-        WlN1oHAGK+F0aHNGpc4pYzaCW2bJWQ/BXTmd8Mq4P8Ied98KpcwnfqaMnUAnLMUzBUZR29dufReXL
-        v6jKxpC2bwZEOGmWbRbAgiyK6MKOY3n5lbxhv7YRXcWqQxvURL/eVV4ehlYrOZg9atCwBs9NrsNS4
-        7KyIQ=;
-Received: from fw-tnat-cam4.arm.com ([217.140.106.52] helo=fitzroy.sirena.org.uk)
-        by heliosphere.sirena.org.uk with esmtpsa (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <broonie@sirena.org.uk>)
-        id 1isTnG-0006tx-J0; Fri, 17 Jan 2020 15:44:18 +0000
-Received: by fitzroy.sirena.org.uk (Postfix, from userid 1000)
-        id 42D66D02BD9; Fri, 17 Jan 2020 15:44:18 +0000 (GMT)
-From:   Mark Brown <broonie@kernel.org>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Axel Lin <axel.lin@ingics.com>, kernel-janitors@vger.kernel.org,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>,
-        Robert Marko <robert.marko@sartura.hr>
-Subject: Applied "regulator: vqmmc-ipq4019: Fix platform_no_drv_owner.cocci warnings" to the regulator tree
-In-Reply-To: <20200116023344.163592-1-yuehaibing@huawei.com>
-Message-Id: <applied-20200116023344.163592-1-yuehaibing@huawei.com>
-X-Patchwork-Hint: ignore
-Date:   Fri, 17 Jan 2020 15:44:18 +0000 (GMT)
+        id S1730263AbgAQX7L (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 17 Jan 2020 18:59:11 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40826 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730232AbgAQX7L (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 17 Jan 2020 18:59:11 -0500
+Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 7D4F720717;
+        Fri, 17 Jan 2020 23:59:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579305551;
+        bh=zAUirHknzyCrPw3f1vqCRAaZQ5jKzbFghZwz7UyEeqc=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=NQybTlf/azDADcURHNKH3sGwDthlr59qbYTOA3BzvTP70SOQTY6KnrxRha9c1ojrE
+         NWylGX/ckg6nhGNvX6v13PoAllyq6t5exFW5h7jkm7FcpffUxsHdm5sP95MWHZBjeq
+         6/BPNznXU1vsGgSNaHA723ZXXR7Els/ktBMrCvdU=
+Date:   Sat, 18 Jan 2020 08:59:07 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] tracing/boot: Fix an IS_ERR() vs NULL bug
+Message-Id: <20200118085907.639cd8d683f961bb9310239d@kernel.org>
+In-Reply-To: <20200117053007.5h2juv272pokqhtq@kili.mountain>
+References: <20200117053007.5h2juv272pokqhtq@kili.mountain>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The patch
+On Fri, 17 Jan 2020 08:30:07 +0300
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-   regulator: vqmmc-ipq4019: Fix platform_no_drv_owner.cocci warnings
+> The trace_array_get_by_name() function doesn't return error pointers,
+> it returns NULL on error.
 
-has been applied to the regulator tree at
+Good catch! It used to use trace_array_create() which returns err_ptr,
+but trace_array_get_by_name() doesn't anymore.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-5.6
+Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.  
+Thank you!
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+> 
+> Fixes: 4f712a4d04a4 ("tracing/boot: Add instance node support")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  kernel/trace/trace_boot.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/trace/trace_boot.c b/kernel/trace/trace_boot.c
+> index fa9603dc6469..cd541ac1cbc1 100644
+> --- a/kernel/trace/trace_boot.c
+> +++ b/kernel/trace/trace_boot.c
+> @@ -322,7 +322,7 @@ trace_boot_init_instances(struct xbc_node *node)
+>  			continue;
+>  
+>  		tr = trace_array_get_by_name(p);
+> -		if (IS_ERR(tr)) {
+> +		if (!tr) {
+>  			pr_err("Failed to get trace instance %s\n", p);
+>  			continue;
+>  		}
+> -- 
+> 2.11.0
+> 
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
 
-Thanks,
-Mark
-
-From 493a31ee0dbdb58d23aa3b06da2da7901f55f76b Mon Sep 17 00:00:00 2001
-From: YueHaibing <yuehaibing@huawei.com>
-Date: Thu, 16 Jan 2020 02:33:44 +0000
-Subject: [PATCH] regulator: vqmmc-ipq4019: Fix platform_no_drv_owner.cocci
- warnings
-
-Remove .owner field if calls are used which set it automatically
-Generated by: scripts/coccinelle/api/platform_no_drv_owner.cocci
-
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-Link: https://lore.kernel.org/r/20200116023344.163592-1-yuehaibing@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
----
- drivers/regulator/vqmmc-ipq4019-regulator.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/regulator/vqmmc-ipq4019-regulator.c b/drivers/regulator/vqmmc-ipq4019-regulator.c
-index 685b585b39a1..6d5ae25d08d1 100644
---- a/drivers/regulator/vqmmc-ipq4019-regulator.c
-+++ b/drivers/regulator/vqmmc-ipq4019-regulator.c
-@@ -91,7 +91,6 @@ static struct platform_driver ipq4019_regulator_driver = {
- 	.probe = ipq4019_regulator_probe,
- 	.driver = {
- 		.name = "vqmmc-ipq4019-regulator",
--		.owner = THIS_MODULE,
- 		.of_match_table = of_match_ptr(regulator_ipq4019_of_match),
- 	},
- };
 -- 
-2.20.1
-
+Masami Hiramatsu <mhiramat@kernel.org>

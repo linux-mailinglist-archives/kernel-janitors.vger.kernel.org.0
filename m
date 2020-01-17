@@ -2,79 +2,61 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DA0B1405E9
-	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Jan 2020 10:16:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F4B51406B6
+	for <lists+kernel-janitors@lfdr.de>; Fri, 17 Jan 2020 10:46:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726887AbgAQJQG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 17 Jan 2020 04:16:06 -0500
-Received: from metis.ext.pengutronix.de ([85.220.165.71]:54971 "EHLO
-        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726406AbgAQJQG (ORCPT
+        id S1729147AbgAQJpK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 17 Jan 2020 04:45:10 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:39873 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726812AbgAQJpK (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 17 Jan 2020 04:16:06 -0500
-Received: from lupine.hi.pengutronix.de ([2001:67c:670:100:3ad5:47ff:feaf:1a17] helo=lupine)
-        by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-        (envelope-from <p.zabel@pengutronix.de>)
-        id 1isNjX-0007eJ-Le; Fri, 17 Jan 2020 10:16:03 +0100
-Message-ID: <f1d39d02b558f2255ed3270110bbf051a8f76f6c.camel@pengutronix.de>
-Subject: Re: [PATCH RESEND] MAINTAINERS: fix style in RESET CONTROLLER
- FRAMEWORK
-From:   Philipp Zabel <p.zabel@pengutronix.de>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Joe Perches <joe@perches.com>, kernel@pengutronix.de,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date:   Fri, 17 Jan 2020 10:16:02 +0100
-In-Reply-To: <20200116184836.10256-1-lukas.bulwahn@gmail.com>
-References: <20200116184836.10256-1-lukas.bulwahn@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.30.5-1.1 
+        Fri, 17 Jan 2020 04:45:10 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1isNvP-0005lD-Gc; Fri, 17 Jan 2020 09:28:19 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Zaibo Xu <xuzaibo@huawei.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S . Miller" <davem@davemloft.net>,
+        linux-crypto@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] crypto: hisilicon: fix spelling mistake "disgest" -> "digest"
+Date:   Fri, 17 Jan 2020 09:28:19 +0000
+Message-Id: <20200117092819.97640-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2001:67c:670:100:3ad5:47ff:feaf:1a17
-X-SA-Exim-Mail-From: p.zabel@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Lukas,
+From: Colin Ian King <colin.king@canonical.com>
 
-On Thu, 2020-01-16 at 19:48 +0100, Lukas Bulwahn wrote:
-> Commit 37859277374d ("MAINTAINERS: add reset controller framework
-> keywords") slips in some formatting with spaces instead of tabs, which
-> ./scripts/checkpatch.pl -f MAINTAINERS complains about:
-> 
->   WARNING: MAINTAINERS entries use one tab after TYPE:
->   #14047: FILE: MAINTAINERS:14047:
->   +K:      \b(?:devm_|of_)?reset_control(?:ler_[a-z]+|_[a-z_]+)?\b
-> 
-> Fixes: 37859277374d ("MAINTAINERS: add reset controller framework keywords")
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> ---
-> applies cleanly on v5.5-rc6 and next-20200116
-> Philipp, please pick this patch.
-> 
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index d2aa9db61ab6..83eae48ad4f2 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -14067,7 +14067,7 @@ F:	include/dt-bindings/reset/
->  F:	include/linux/reset.h
->  F:	include/linux/reset/
->  F:	include/linux/reset-controller.h
-> -K:      \b(?:devm_|of_)?reset_control(?:ler_[a-z]+|_[a-z_]+)?\b
-> +K:	\b(?:devm_|of_)?reset_control(?:ler_[a-z]+|_[a-z_]+)?\b
->  
->  RESTARTABLE SEQUENCES SUPPORT
->  M:	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+There is a spelling mistake in an error message. Fix it.
 
-Thank you, applied to reset/fixes now.
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/crypto/hisilicon/sec2/sec_crypto.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-regards
-Philipp
+diff --git a/drivers/crypto/hisilicon/sec2/sec_crypto.c b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+index a0a35685e838..a2cfcc9ccd94 100644
+--- a/drivers/crypto/hisilicon/sec2/sec_crypto.c
++++ b/drivers/crypto/hisilicon/sec2/sec_crypto.c
+@@ -690,7 +690,7 @@ static int sec_aead_auth_set_key(struct sec_auth_ctx *ctx,
+ 		ret = crypto_shash_digest(shash, keys->authkey,
+ 					  keys->authkeylen, ctx->a_key);
+ 		if (ret) {
+-			pr_err("hisi_sec2: aead auth disgest error!\n");
++			pr_err("hisi_sec2: aead auth digest error!\n");
+ 			return -EINVAL;
+ 		}
+ 		ctx->a_key_len = blocksize;
+-- 
+2.24.0
 

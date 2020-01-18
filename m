@@ -2,39 +2,46 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 623011414FC
-	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jan 2020 00:59:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B425B1417AE
+	for <lists+kernel-janitors@lfdr.de>; Sat, 18 Jan 2020 14:34:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730263AbgAQX7L (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 17 Jan 2020 18:59:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40826 "EHLO mail.kernel.org"
+        id S1728670AbgARNec (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 18 Jan 2020 08:34:32 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50090 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730232AbgAQX7L (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 17 Jan 2020 18:59:11 -0500
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
+        id S1727032AbgARNec (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 18 Jan 2020 08:34:32 -0500
+Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7D4F720717;
-        Fri, 17 Jan 2020 23:59:09 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 87E8C24699;
+        Sat, 18 Jan 2020 13:34:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579305551;
-        bh=zAUirHknzyCrPw3f1vqCRAaZQ5jKzbFghZwz7UyEeqc=;
+        s=default; t=1579354472;
+        bh=/omhXstJLHdtzfL5ZXSP8ni+4NjJtg5VWsRMdJIlRc0=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NQybTlf/azDADcURHNKH3sGwDthlr59qbYTOA3BzvTP70SOQTY6KnrxRha9c1ojrE
-         NWylGX/ckg6nhGNvX6v13PoAllyq6t5exFW5h7jkm7FcpffUxsHdm5sP95MWHZBjeq
-         6/BPNznXU1vsGgSNaHA723ZXXR7Els/ktBMrCvdU=
-Date:   Sat, 18 Jan 2020 08:59:07 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
+        b=gN2+giLR8KsEq+xbkU6SDX15RgiV/I3Ly1v4hIefxhkGzKWy9EcQIvmgdO7oigbBD
+         y6kBIJ8dOhizPLSl09bxI54rieOQU6OpGX5WHDweDWwH9MveG6nzmnB2rx6AmomTly
+         eVY+NzKYRBpSL7TpAPo0l/JnXoqQt7p8gE+78vek=
+Date:   Sat, 18 Jan 2020 13:34:27 +0000
+From:   Jonathan Cameron <jic23@kernel.org>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] tracing/boot: Fix an IS_ERR() vs NULL bug
-Message-Id: <20200118085907.639cd8d683f961bb9310239d@kernel.org>
-In-Reply-To: <20200117053007.5h2juv272pokqhtq@kili.mountain>
-References: <20200117053007.5h2juv272pokqhtq@kili.mountain>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+Cc:     Dan Robertson <dan@dlrobertson.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2] iio: accel: bma400: prevent setting accel scale too
+ low
+Message-ID: <20200118133427.07a665f6@archlinux>
+In-Reply-To: <20200116100829.thq77nvyqtasdu4j@kili.mountain>
+References: <20200115181717.GA22797@nessie>
+        <20200116100829.thq77nvyqtasdu4j@kili.mountain>
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
@@ -42,44 +49,42 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, 17 Jan 2020 08:30:07 +0300
+On Thu, 16 Jan 2020 13:08:29 +0300
 Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-> The trace_array_get_by_name() function doesn't return error pointers,
-> it returns NULL on error.
-
-Good catch! It used to use trace_array_create() which returns err_ptr,
-but trace_array_get_by_name() doesn't anymore.
-
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-
-Thank you!
-
-
+> This puts an upper bound on "val2" but it also needs to have a lower
+> bound (BMA400_SCALE_MIN).
 > 
-> Fixes: 4f712a4d04a4 ("tracing/boot: Add instance node support")
+> Fixes: 465c811f1f20 ("iio: accel: Add driver for the BMA400")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+
+Applied to the togreg branch of iio.git and pushed out as testing.
+Hopefully I'll sneak in a pull request to get this lined up for
+the merge window.
+
+Thanks,
+
+Jonathan
+
 > ---
->  kernel/trace/trace_boot.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> v2: the first version just capped it at zero but it should be
+>     BMA400_SCALE_MIN (38357).
 > 
-> diff --git a/kernel/trace/trace_boot.c b/kernel/trace/trace_boot.c
-> index fa9603dc6469..cd541ac1cbc1 100644
-> --- a/kernel/trace/trace_boot.c
-> +++ b/kernel/trace/trace_boot.c
-> @@ -322,7 +322,7 @@ trace_boot_init_instances(struct xbc_node *node)
->  			continue;
+>  drivers/iio/accel/bma400_core.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/accel/bma400_core.c b/drivers/iio/accel/bma400_core.c
+> index ab4a158b35af..cc77f89c048b 100644
+> --- a/drivers/iio/accel/bma400_core.c
+> +++ b/drivers/iio/accel/bma400_core.c
+> @@ -752,7 +752,8 @@ static int bma400_write_raw(struct iio_dev *indio_dev,
+>  		mutex_unlock(&data->mutex);
+>  		return ret;
+>  	case IIO_CHAN_INFO_SCALE:
+> -		if (val != 0 || val2 > BMA400_SCALE_MAX)
+> +		if (val != 0 ||
+> +		    val2 < BMA400_SCALE_MIN || val2 > BMA400_SCALE_MAX)
+>  			return -EINVAL;
 >  
->  		tr = trace_array_get_by_name(p);
-> -		if (IS_ERR(tr)) {
-> +		if (!tr) {
->  			pr_err("Failed to get trace instance %s\n", p);
->  			continue;
->  		}
-> -- 
-> 2.11.0
-> 
+>  		mutex_lock(&data->mutex);
 
-
--- 
-Masami Hiramatsu <mhiramat@kernel.org>

@@ -2,47 +2,80 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A204142C55
-	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Jan 2020 14:40:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 391D4142CBF
+	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Jan 2020 15:04:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727121AbgATNku (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 20 Jan 2020 08:40:50 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:56856 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726626AbgATNku (ORCPT
+        id S1727688AbgATOEK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 20 Jan 2020 09:04:10 -0500
+Received: from fllv0016.ext.ti.com ([198.47.19.142]:46636 "EHLO
+        fllv0016.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726626AbgATOEJ (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 20 Jan 2020 08:40:50 -0500
-Received: from localhost (82-95-191-104.ip.xs4all.nl [82.95.191.104])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 4575B14EAD444;
-        Mon, 20 Jan 2020 05:40:49 -0800 (PST)
-Date:   Mon, 20 Jan 2020 14:40:47 +0100 (CET)
-Message-Id: <20200120.144047.202754056310659523.davem@davemloft.net>
-To:     dan.carpenter@oracle.com
-Cc:     linux-ide@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 2/2] ide: serverworks: potential overflow in
- svwks_set_pio_mode()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200107130607.tv3uosduwkw3yka6@kili.mountain>
-References: <20200107130441.y3owvcnxdljailt5@kili.mountain>
-        <20200107130607.tv3uosduwkw3yka6@kili.mountain>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 20 Jan 2020 05:40:49 -0800 (PST)
+        Mon, 20 Jan 2020 09:04:09 -0500
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+        by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 00KE46cM114806;
+        Mon, 20 Jan 2020 08:04:07 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1579529047;
+        bh=+Xv3pRHSeD5+/rifxAd4m2FjGsvidIUYqZb4HrDmSXQ=;
+        h=Date:From:To:CC:Subject:References:In-Reply-To;
+        b=BA3YxcrFmBPZM1+WdJ8GlunF2BXoKDJpNoFlR5A2KP6BvwXTXIOUnrgcBMtM3dxsv
+         lpNhi6mpF3EfGWJhNubzZbXBBP8puwbfj9DiCmt6PqzgFnTWo4+gciaEgwMz50ZhNQ
+         5cmFRcLZ4GlXlnTlcl2vjA5pcJMwYsGYZ7FrLeMw=
+Received: from DLEE101.ent.ti.com (dlee101.ent.ti.com [157.170.170.31])
+        by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 00KE462Q049612
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Mon, 20 Jan 2020 08:04:06 -0600
+Received: from DLEE108.ent.ti.com (157.170.170.38) by DLEE101.ent.ti.com
+ (157.170.170.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Mon, 20
+ Jan 2020 08:04:06 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DLEE108.ent.ti.com
+ (157.170.170.38) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Mon, 20 Jan 2020 08:04:06 -0600
+Received: from localhost (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 00KE46Yk064611;
+        Mon, 20 Jan 2020 08:04:06 -0600
+Date:   Mon, 20 Jan 2020 08:04:06 -0600
+From:   Bin Liu <b-liu@ti.com>
+To:     Colin King <colin.king@canonical.com>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <linux-usb@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][next] usb: musb: fix spelling mistake: "periperal" ->
+ "peripheral"
+Message-ID: <20200120140406.GA9789@iaqt7>
+Mail-Followup-To: Bin Liu <b-liu@ti.com>,
+        Colin King <colin.king@canonical.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20200117093124.97965-1-colin.king@canonical.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20200117093124.97965-1-colin.king@canonical.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Tue, 7 Jan 2020 16:06:07 +0300
+Hi Greg,
 
-> The "drive->dn" variable is a u8 controlled by root.
+On Fri, Jan 17, 2020 at 09:31:24AM +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> There is a spelling mistake in a dev_err error message. Fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Applied.
+Do you mind to take this directly? Here is my Acked-by:
+
+Acked-by: Bin Liu <b-liu@ti.com>
+
+Thanks,
+-Bin.
+

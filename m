@@ -2,48 +2,47 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6485142C42
-	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Jan 2020 14:39:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F3EA142C53
+	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Jan 2020 14:40:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727665AbgATNjR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 20 Jan 2020 08:39:17 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:56790 "EHLO
+        id S1727048AbgATNkq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 20 Jan 2020 08:40:46 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:56852 "EHLO
         shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726738AbgATNjR (ORCPT
+        with ESMTP id S1726626AbgATNkq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 20 Jan 2020 08:39:17 -0500
+        Mon, 20 Jan 2020 08:40:46 -0500
 Received: from localhost (82-95-191-104.ip.xs4all.nl [82.95.191.104])
         (using TLSv1 with cipher AES256-SHA (256/256 bits))
         (Client did not present a certificate)
         (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 3631C14EAD04B;
-        Mon, 20 Jan 2020 05:39:16 -0800 (PST)
-Date:   Mon, 20 Jan 2020 14:39:07 +0100 (CET)
-Message-Id: <20200120.143907.404082019388749442.davem@davemloft.net>
-To:     christophe.jaillet@wanadoo.fr
-Cc:     linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] ide: tx4939ide: Fix the name used in a
- 'devm_request_mem_region()' call
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 84A0B14EAD059;
+        Mon, 20 Jan 2020 05:40:43 -0800 (PST)
+Date:   Mon, 20 Jan 2020 14:40:42 +0100 (CET)
+Message-Id: <20200120.144042.1810086369376110530.davem@davemloft.net>
+To:     dan.carpenter@oracle.com
+Cc:     linux-ide@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH 1/2] cmd64x: potential buffer overflow in
+ cmd64x_program_timings()
 From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20190724220145.17282-1-christophe.jaillet@wanadoo.fr>
-References: <20190724220145.17282-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20200107130441.y3owvcnxdljailt5@kili.mountain>
+References: <20200107130441.y3owvcnxdljailt5@kili.mountain>
 X-Mailer: Mew version 6.8 on Emacs 26.3
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 20 Jan 2020 05:39:17 -0800 (PST)
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Mon, 20 Jan 2020 05:40:44 -0800 (PST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Date: Thu, 25 Jul 2019 00:01:45 +0200
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Date: Tue, 7 Jan 2020 16:04:41 +0300
 
-> This should be "tx4939ide" instead of "tx4938ide", but here MODNAME is even
-> better.
+> The "drive->dn" value is a u8 and it is controlled by root only, but
+> it could be out of bounds here so let's check.
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
 Applied.

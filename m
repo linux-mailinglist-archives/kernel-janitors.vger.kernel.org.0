@@ -2,108 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D5F071421D4
-	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Jan 2020 04:04:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ABE4C142663
+	for <lists+kernel-janitors@lfdr.de>; Mon, 20 Jan 2020 09:59:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729016AbgATDEI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 19 Jan 2020 22:04:08 -0500
-Received: from mail.kernel.org ([198.145.29.99]:41090 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728949AbgATDEI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 19 Jan 2020 22:04:08 -0500
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 045BD20684;
-        Mon, 20 Jan 2020 03:04:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579489447;
-        bh=0jQ9913S4gDo8T/c+PJSV4lL6X2toy3JSqfR7RWcRfQ=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GHn8C2hY9owHXVoJN+4shV2wL0c4JIoPHByEZpY+w845wEqhaxBljPo+rU2ZUfflc
-         AQuUXqfM+aGXEoKr0RA63Ym5gyGpB3Qt9kBQ8Kkla+OAzOg3elhWqiHdW9werVLoP9
-         uevtoJH69x6njPg0WNfi0yBNDR4JC8v6qgdWdPsE=
-Date:   Mon, 20 Jan 2020 12:04:03 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     Colin King <colin.king@canonical.com>,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Masami Hiramatsu <mhiramat@kernel.org>
-Subject: Re: [PATCH][next] tools: bootconfig: fix spelling mistake "faile"
- -> "failed"
-Message-Id: <20200120120403.2f34d49759884d26e96a6384@kernel.org>
-In-Reply-To: <20200116190239.9b318b2faa14465ece414f16@kernel.org>
-References: <20200116092206.52192-1-colin.king@canonical.com>
-        <20200116190239.9b318b2faa14465ece414f16@kernel.org>
-X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S1726761AbgATI7E (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 20 Jan 2020 03:59:04 -0500
+Received: from szxga05-in.huawei.com ([45.249.212.191]:9211 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726465AbgATI7E (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 20 Jan 2020 03:59:04 -0500
+Received: from DGGEMS401-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id 522D414C753858038CAE;
+        Mon, 20 Jan 2020 16:59:02 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS401-HUB.china.huawei.com (10.3.19.201) with Microsoft SMTP Server id
+ 14.3.439.0; Mon, 20 Jan 2020 16:58:54 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     David Howells <dhowells@redhat.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] watch_queue: Fix error return code in watch_queue_set_size()
+Date:   Mon, 20 Jan 2020 08:54:11 +0000
+Message-ID: <20200120085411.116252-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Steve,
+Fix to return a negative error code from the error handling
+case instead of 0, as done elsewhere in this function.
 
-Could you pick this fix too?
+Fixes: d9a34f010efd ("pipe: Add general notification queue support")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ kernel/watch_queue.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-Thank you,
-
-On Thu, 16 Jan 2020 19:02:39 +0900
-Masami Hiramatsu <mhiramat@kernel.org> wrote:
-
-> Hi Colin,
-> 
-> On Thu, 16 Jan 2020 09:22:06 +0000
-> Colin King <colin.king@canonical.com> wrote:
-> 
-> > From: Colin Ian King <colin.king@canonical.com>
-> > 
-> > There are two spelling mistakes in printf statements, fix these.
-> 
-> Good catch!
-> 
-> Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-> 
-> Thanks!
-> 
-> > 
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> > ---
-> >  tools/bootconfig/main.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/tools/bootconfig/main.c b/tools/bootconfig/main.c
-> > index b8f174fd2a0a..91c9a5c0c499 100644
-> > --- a/tools/bootconfig/main.c
-> > +++ b/tools/bootconfig/main.c
-> > @@ -140,7 +140,7 @@ int load_xbc_from_initrd(int fd, char **buf)
-> >  		return 0;
-> >  
-> >  	if (lseek(fd, -8, SEEK_END) < 0) {
-> > -		printf("Faile to lseek: %d\n", -errno);
-> > +		printf("Failed to lseek: %d\n", -errno);
-> >  		return -errno;
-> >  	}
-> >  
-> > @@ -155,7 +155,7 @@ int load_xbc_from_initrd(int fd, char **buf)
-> >  		return 0;
-> >  
-> >  	if (lseek(fd, stat.st_size - 8 - size, SEEK_SET) < 0) {
-> > -		printf("Faile to lseek: %d\n", -errno);
-> > +		printf("Failed to lseek: %d\n", -errno);
-> >  		return -errno;
-> >  	}
-> >  
-> > -- 
-> > 2.24.0
-> > 
-> 
-> 
-> -- 
-> Masami Hiramatsu <mhiramat@kernel.org>
+diff --git a/kernel/watch_queue.c b/kernel/watch_queue.c
+index f195cbbbb3d3..3051cf4e35c6 100644
+--- a/kernel/watch_queue.c
++++ b/kernel/watch_queue.c
+@@ -252,21 +252,27 @@ long watch_queue_set_size(struct pipe_inode_info *pipe, unsigned int nr_notes)
+ 		goto error;
+ 
+ 	pages = kcalloc(sizeof(struct page *), nr_pages, GFP_KERNEL);
+-	if (!pages)
++	if (!pages) {
++		ret = -ENOMEM;
+ 		goto error;
++	}
+ 
+ 	for (i = 0; i < nr_pages; i++) {
+ 		pages[i] = alloc_page(GFP_KERNEL);
+-		if (!pages[i])
++		if (!pages[i]) {
++			ret = -ENOMEM;
+ 			goto error_p;
++		}
+ 		pages[i]->index = i * WATCH_QUEUE_NOTES_PER_PAGE;
+ 	}
+ 
+ 	bmsize = (nr_notes + BITS_PER_LONG - 1) / BITS_PER_LONG;
+ 	bmsize *= sizeof(unsigned long);
+ 	bitmap = kmalloc(bmsize, GFP_KERNEL);
+-	if (!bitmap)
++	if (!bitmap) {
++		ret = -ENOMEM;
+ 		goto error_p;
++	}
+ 
+ 	memset(bitmap, 0xff, bmsize);
+ 	wqueue->notes = pages;
 
 
--- 
-Masami Hiramatsu <mhiramat@kernel.org>
+

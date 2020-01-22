@@ -2,54 +2,107 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 79A9F14524A
-	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Jan 2020 11:15:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D16B145375
+	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Jan 2020 12:09:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729436AbgAVKPk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 22 Jan 2020 05:15:40 -0500
-Received: from helcar.hmeau.com ([216.24.177.18]:39194 "EHLO deadmen.hmeau.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728609AbgAVKPk (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 22 Jan 2020 05:15:40 -0500
-Received: from gondobar.mordor.me.apana.org.au ([192.168.128.4] helo=gondobar)
-        by deadmen.hmeau.com with esmtps (Exim 4.89 #2 (Debian))
-        id 1iuD2s-0000ZQ-LG; Wed, 22 Jan 2020 18:15:34 +0800
-Received: from herbert by gondobar with local (Exim 4.89)
-        (envelope-from <herbert@gondor.apana.org.au>)
-        id 1iuD2q-00044P-OY; Wed, 22 Jan 2020 18:15:32 +0800
-Date:   Wed, 22 Jan 2020 18:15:32 +0800
-From:   Herbert Xu <herbert@gondor.apana.org.au>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Zaibo Xu <xuzaibo@huawei.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-crypto@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] crypto: hisilicon: fix spelling mistake "disgest"
- -> "digest"
-Message-ID: <20200122101532.lz7i3wa7htkrv3gv@gondor.apana.org.au>
-References: <20200117092819.97640-1-colin.king@canonical.com>
+        id S1729567AbgAVLJR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 22 Jan 2020 06:09:17 -0500
+Received: from lelv0143.ext.ti.com ([198.47.23.248]:35514 "EHLO
+        lelv0143.ext.ti.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727847AbgAVLJR (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 22 Jan 2020 06:09:17 -0500
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+        by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 00MB9C23110570;
+        Wed, 22 Jan 2020 05:09:12 -0600
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+        s=ti-com-17Q1; t=1579691352;
+        bh=QiTKBCrOrs/Oulx9bRiWu/vkDu5PxUpL8so9E0WLCc4=;
+        h=Subject:To:CC:References:From:Date:In-Reply-To;
+        b=u8NPj5axgMQ263rEbZ+NH/ZsY+pejCWmkhntBoAG28oVeMPpXbohMB6q6/Lt6U//t
+         Z8Z1PNKU2z93PJbxoIW05vvxHvyv7eM35rEjccn048JIEEtQigBxmPJxw7NcqxtkUc
+         kB6Yg+Xu5afIiCtUAFV2Cf7onmzbzO9ZgKPqD0BY=
+Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
+        by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 00MB9Cxw115954
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Wed, 22 Jan 2020 05:09:12 -0600
+Received: from DFLE106.ent.ti.com (10.64.6.27) by DFLE115.ent.ti.com
+ (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3; Wed, 22
+ Jan 2020 05:09:10 -0600
+Received: from fllv0039.itg.ti.com (10.64.41.19) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.1847.3 via
+ Frontend Transport; Wed, 22 Jan 2020 05:09:10 -0600
+Received: from [192.168.2.6] (ileax41-snat.itg.ti.com [10.172.224.153])
+        by fllv0039.itg.ti.com (8.15.2/8.15.2) with ESMTP id 00MB986c035872;
+        Wed, 22 Jan 2020 05:09:09 -0600
+Subject: Re: [PATCH][next] dmaengine: ti: k3-udma: fix spelling mistake
+ "limted" -> "limited"
+To:     Colin King <colin.king@canonical.com>,
+        Vinod Koul <vkoul@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        <dmaengine@vger.kernel.org>
+CC:     <kernel-janitors@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20200122093818.2800743-1-colin.king@canonical.com>
+From:   Peter Ujfalusi <peter.ujfalusi@ti.com>
+Message-ID: <e642e0c4-b712-a3de-1444-0c7de6243284@ti.com>
+Date:   Wed, 22 Jan 2020 13:09:50 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.9.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200117092819.97640-1-colin.king@canonical.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <20200122093818.2800743-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jan 17, 2020 at 09:28:19AM +0000, Colin King wrote:
+Colin,
+
+On 22/01/2020 11.38, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> There is a spelling mistake in an error message. Fix it.
-> 
+> There are spelling mistakes in dev_err messages. Fix them.
+
+This slipped through, thanks for catching it!
+
+Acked-by: Peter Ujfalusi <peter.ujfalusi@ti.com>
+
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/crypto/hisilicon/sec2/sec_crypto.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/dma/ti/k3-udma.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
+> index 9974e72cdc50..ea79c2df28e0 100644
+> --- a/drivers/dma/ti/k3-udma.c
+> +++ b/drivers/dma/ti/k3-udma.c
+> @@ -2300,7 +2300,7 @@ udma_prep_slave_sg(struct dma_chan *chan, struct scatterlist *sgl,
+>  	/* static TR for remote PDMA */
+>  	if (udma_configure_statictr(uc, d, dev_width, burst)) {
+>  		dev_err(uc->ud->dev,
+> -			"%s: StaticTR Z is limted to maximum 4095 (%u)\n",
+> +			"%s: StaticTR Z is limited to maximum 4095 (%u)\n",
+>  			__func__, d->static_tr.bstcnt);
+>  
+>  		udma_free_hwdesc(uc, d);
+> @@ -2483,7 +2483,7 @@ udma_prep_dma_cyclic(struct dma_chan *chan, dma_addr_t buf_addr, size_t buf_len,
+>  	/* static TR for remote PDMA */
+>  	if (udma_configure_statictr(uc, d, dev_width, burst)) {
+>  		dev_err(uc->ud->dev,
+> -			"%s: StaticTR Z is limted to maximum 4095 (%u)\n",
+> +			"%s: StaticTR Z is limited to maximum 4095 (%u)\n",
+>  			__func__, d->static_tr.bstcnt);
+>  
+>  		udma_free_hwdesc(uc, d);
+> 
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+- Péter
+
+Texas Instruments Finland Oy, Porkkalankatu 22, 00180 Helsinki.
+Y-tunnus/Business ID: 0615521-4. Kotipaikka/Domicile: Helsinki

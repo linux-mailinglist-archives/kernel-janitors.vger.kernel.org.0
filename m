@@ -2,30 +2,31 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B2240145182
-	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Jan 2020 10:54:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 52BBF1450F9
+	for <lists+kernel-janitors@lfdr.de>; Wed, 22 Jan 2020 10:50:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730679AbgAVJdw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 22 Jan 2020 04:33:52 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:36079 "EHLO
+        id S1730540AbgAVJu1 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 22 Jan 2020 04:50:27 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:36150 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729668AbgAVJdt (ORCPT
+        with ESMTP id S1732960AbgAVJiY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 22 Jan 2020 04:33:49 -0500
+        Wed, 22 Jan 2020 04:38:24 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1iuCOK-0003Me-Dh; Wed, 22 Jan 2020 09:33:40 +0000
+        id 1iuCSp-0003cj-3Y; Wed, 22 Jan 2020 09:38:19 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+To:     Vinod Koul <vkoul@kernel.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Ujfalusi <peter.ujfalusi@ti.com>,
+        Grygorii Strashko <grygorii.strashko@ti.com>,
+        dmaengine@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] rtlwifi: btcoex: fix spelling mistake "initilized" -> "initialized"
-Date:   Wed, 22 Jan 2020 09:33:40 +0000
-Message-Id: <20200122093340.2800226-1-colin.king@canonical.com>
+Subject: [PATCH][next] dmaengine: ti: k3-udma: fix spelling mistake "limted" -> "limited"
+Date:   Wed, 22 Jan 2020 09:38:18 +0000
+Message-Id: <20200122093818.2800743-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -37,55 +38,35 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-There is a spelling mistake in one of the fields in the btc_coexist struct,
-fix it.
+There are spelling mistakes in dev_err messages. Fix them.
 
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- .../net/wireless/realtek/rtlwifi/btcoexist/halbtc8192e2ant.c    | 2 +-
- drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c   | 2 +-
- drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.h   | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/dma/ti/k3-udma.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8192e2ant.c b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8192e2ant.c
-index 3c96c320236c..658ff425c256 100644
---- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8192e2ant.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtc8192e2ant.c
-@@ -862,7 +862,7 @@ static void btc8192e2ant_set_sw_rf_rx_lpf_corner(struct btc_coexist *btcoexist,
- 		/* Resume RF Rx LPF corner
- 		 * After initialized, we can use coex_dm->btRf0x1eBackup
- 		 */
--		if (btcoexist->initilized) {
-+		if (btcoexist->initialized) {
- 			RT_TRACE(rtlpriv, COMP_BT_COEXIST, DBG_LOUD,
- 				 "[BTCoex], Resume RF Rx LPF corner!!\n");
- 			btcoexist->btc_set_rf_reg(btcoexist, BTC_RF_A, 0x1e,
-diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
-index 191dafd03189..a4940a3842de 100644
---- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.c
-@@ -1461,7 +1461,7 @@ void exhalbtc_init_coex_dm(struct btc_coexist *btcoexist)
- 			ex_btc8192e2ant_init_coex_dm(btcoexist);
- 	}
+diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
+index 9974e72cdc50..ea79c2df28e0 100644
+--- a/drivers/dma/ti/k3-udma.c
++++ b/drivers/dma/ti/k3-udma.c
+@@ -2300,7 +2300,7 @@ udma_prep_slave_sg(struct dma_chan *chan, struct scatterlist *sgl,
+ 	/* static TR for remote PDMA */
+ 	if (udma_configure_statictr(uc, d, dev_width, burst)) {
+ 		dev_err(uc->ud->dev,
+-			"%s: StaticTR Z is limted to maximum 4095 (%u)\n",
++			"%s: StaticTR Z is limited to maximum 4095 (%u)\n",
+ 			__func__, d->static_tr.bstcnt);
  
--	btcoexist->initilized = true;
-+	btcoexist->initialized = true;
- }
+ 		udma_free_hwdesc(uc, d);
+@@ -2483,7 +2483,7 @@ udma_prep_dma_cyclic(struct dma_chan *chan, dma_addr_t buf_addr, size_t buf_len,
+ 	/* static TR for remote PDMA */
+ 	if (udma_configure_statictr(uc, d, dev_width, burst)) {
+ 		dev_err(uc->ud->dev,
+-			"%s: StaticTR Z is limted to maximum 4095 (%u)\n",
++			"%s: StaticTR Z is limited to maximum 4095 (%u)\n",
+ 			__func__, d->static_tr.bstcnt);
  
- void exhalbtc_ips_notify(struct btc_coexist *btcoexist, u8 type)
-diff --git a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.h b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.h
-index 8c0a7fdbf200..a96a995dd850 100644
---- a/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/btcoexist/halbtcoutsrc.h
-@@ -679,7 +679,7 @@ struct btc_coexist {
- 	bool auto_report_2ant;
- 	bool dbg_mode_1ant;
- 	bool dbg_mode_2ant;
--	bool initilized;
-+	bool initialized;
- 	bool stop_coex_dm;
- 	bool manual_control;
- 	struct btc_statistics statistics;
+ 		udma_free_hwdesc(uc, d);
 -- 
 2.24.0
 

@@ -2,71 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DDF411471FD
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jan 2020 20:44:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41E8614733E
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jan 2020 22:39:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729277AbgAWToq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Jan 2020 14:44:46 -0500
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:40097 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729012AbgAWTop (ORCPT
+        id S1728057AbgAWVjM (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Jan 2020 16:39:12 -0500
+Received: from mail-wr1-f66.google.com ([209.85.221.66]:46879 "EHLO
+        mail-wr1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726191AbgAWVjM (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Jan 2020 14:44:45 -0500
-Received: by mail-pl1-f195.google.com with SMTP id s21so1778241plr.7;
-        Thu, 23 Jan 2020 11:44:45 -0800 (PST)
+        Thu, 23 Jan 2020 16:39:12 -0500
+Received: by mail-wr1-f66.google.com with SMTP id z7so4854477wrl.13;
+        Thu, 23 Jan 2020 13:39:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=YcgCOt08ESne+tYHU6zwz+Uk0GGpvUG34jW5hND2KP8=;
+        b=q0KRmVU2sUjnBvb4qvh2OEJINZpXn9noQIvxIE69SLeV/GEO/eu1lzkAlV/+zuW6wB
+         wpiBZQyCrtBKdMJ5QWE6RhC3Fh6nPl3vXmESKni5iyNkfF1PaVFBTNpAg86lcjSaWh69
+         mdbNe4Zs1rBH2AANOpEnTbwQCcgFGfAJ4tFW4LoG4EorFH9340W2ImqDS7E433CvOfYc
+         /1s+k3mc8znMZ6jQNoHtmUxBV+FDlES4Rotwrqz6/wtJdw0naYJlpdU/tpkz8Us7noyw
+         MSsus3NVQuh/jbqDN6HF4IfSBN2QiVokCpm89hhpgrmA/5dmsDw13hB42R1EemZQwUdW
+         P+8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:date:from:to:cc:cc:cc:subject
-         :references:in-reply-to;
-        bh=WyxbAGrKMxKf8dZitmu6cKPMSnHKtEQpit0i2sDj4/s=;
-        b=mEpjL6/xj3I7Uik5MmvCvZecsUt9KlqBN1vepUl8BtNTw1bfk6P31fhOb3mOwQzhM2
-         PTGEJywOih12AHfBuOrpqDMUDYFMl19gHliSe0eGn529awUsuZ6c0UvFZqCsDhvq06uU
-         RO226ZSYYM0mBLwEuPR/EiPRqWZbEn0lhZjyzb+8FMp59kwDbicbtGJu4MD1IVE4PIkR
-         tovLYB9Va+ZD5mK2nhiUYdHQbFUrgVAFOpnNILwCvHGcE5z7rDr1/EUE19bpYgIVsExq
-         Wq+ocHjjKd5qyAvd6JBypUlDu6ux02gFS888b5iFK4i+TGxEDm40lfR+CRiIoxNsymKn
-         xOSQ==
-X-Gm-Message-State: APjAAAUqfNbIAW8dcFXgCzQ63JtTvQkNWqm7w2bZYXzl8SwmmQpCYl3u
-        u4c7lOW4cKRGqBWD9ffizuU=
-X-Google-Smtp-Source: APXvYqxjRorsbk5SBO/J4vgOmFCsvGdtVWavmWrgQsY76cgp07w9JXpcaiDwJGkvh2FFrFB6qvv7rg==
-X-Received: by 2002:a17:90a:ac18:: with SMTP id o24mr6401850pjq.33.1579808684886;
-        Thu, 23 Jan 2020 11:44:44 -0800 (PST)
-Received: from localhost (MIPS-TECHNO.ear1.SanJose1.Level3.net. [4.15.122.74])
-        by smtp.gmail.com with ESMTPSA id s21sm3571104pfe.20.2020.01.23.11.44.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jan 2020 11:44:44 -0800 (PST)
-Message-ID: <5e29f7ac.1c69fb81.34b3.880c@mx.google.com>
-Date:   Thu, 23 Jan 2020 11:44:43 -0800
-From:   Paul Burton <paulburton@kernel.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=YcgCOt08ESne+tYHU6zwz+Uk0GGpvUG34jW5hND2KP8=;
+        b=udSQALTrVqcg20cLD+NAcS1hwocT3bG8K89rYplda2qA3tW/INj+iM+msHcuI0MLOo
+         w4Q58t2yK1xwSQhKJEcVrwljWT1Gvi4Mf06gK8Y1MrrsbgGcSJchOsbQzY99GQswqFfZ
+         NSj7gY0F48hs03NLY0dBeh7v/tHBEyM9eYS5KRhsXOKh3usckR+edU8jegwtMpBSPqiN
+         1+3jhkGqtxOk99IpsnYX5tQ+dz/mDyUd5P7GQIuQcGpipP6GRcaTjJrt/GFBRagl4TYV
+         lrh4oyYbdjUhR6EgsFtHs0e5FJaQ5Z95H3P64/s68dTZHHdWR2Ikr7gyiZcA1/BMsmsO
+         0EIQ==
+X-Gm-Message-State: APjAAAXUAc3hGaFs7d+ao7TQ2OH69IPt8IgIHOWfZL6/EXza+6Cx4mbG
+        S6Mwl1TMKKUdHdOZCyN7J5pagSkbPJqE8tayg1k=
+X-Google-Smtp-Source: APXvYqwyoTgYy4ctf0PLUzPnRY8IPNUxXoBdOgVGKMbrmgEQQz7/8JgA9GdcqM2NRA60zyf9FJXevk5qAuK+53xj0IE=
+X-Received: by 2002:a5d:5491:: with SMTP id h17mr106054wrv.374.1579815550332;
+ Thu, 23 Jan 2020 13:39:10 -0800 (PST)
+MIME-Version: 1.0
+References: <20200123002216.2832146-1-colin.king@canonical.com>
+In-Reply-To: <20200123002216.2832146-1-colin.king@canonical.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Thu, 23 Jan 2020 16:38:57 -0500
+Message-ID: <CADnq5_PxfM2i0BxpKtOUeL2+hxLUbwocyWNmd9qzXnOesJfuWg@mail.gmail.com>
+Subject: Re: [PATCH] drm/amd/amdgpu: fix spelling mistake "to" -> "too"
 To:     Colin King <colin.king@canonical.com>
-CC:     Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paulburton@kernel.org>, linux-mips@vger.kernel.org
-CC:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-CC:     linux-mips@vger.kernel.org
-Subject: Re: [PATCH] MIPS: OCTEON: octeon-irq: fix spelling mistake "to" -> "too"
-References:  <20200123005422.2834063-1-colin.king@canonical.com>
-In-Reply-To:  <20200123005422.2834063-1-colin.king@canonical.com>
+Cc:     Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hello,
-
-Colin King wrote:
+On Wed, Jan 22, 2020 at 7:22 PM Colin King <colin.king@canonical.com> wrote:
+>
 > From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in a dev_err message. Fix it.
-
-Applied to mips-next.
-
-> commit 636e9d23dd45
-> https://git.kernel.org/mips/c/636e9d23dd45
-> 
+>
+> There is a spelling mistake in a DRM_ERROR message. Fix it.
+>
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Signed-off-by: Paul Burton <paulburton@kernel.org>
 
-Thanks,
-    Paul
+Applied.  thanks!
 
-[ This message was auto-generated; if you believe anything is incorrect
-  then please email paulburton@kernel.org to report it. ]
+Alex
+
+> ---
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c
+> index ceb0dbf685f1..59ddba137946 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c
+> @@ -652,7 +652,7 @@ static int amdgpu_vce_cs_reloc(struct amdgpu_cs_parser *p, uint32_t ib_idx,
+>
+>         if ((addr + (uint64_t)size) >
+>             (mapping->last + 1) * AMDGPU_GPU_PAGE_SIZE) {
+> -               DRM_ERROR("BO to small for addr 0x%010Lx %d %d\n",
+> +               DRM_ERROR("BO too small for addr 0x%010Lx %d %d\n",
+>                           addr, lo, hi);
+>                 return -EINVAL;
+>         }
+> --
+> 2.24.0
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

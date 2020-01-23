@@ -2,78 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E623146C67
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jan 2020 16:14:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5687B146C8F
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jan 2020 16:24:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728779AbgAWPOS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Jan 2020 10:14:18 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:43608 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727278AbgAWPOS (ORCPT
+        id S1727523AbgAWPYu convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Jan 2020 10:24:50 -0500
+Received: from mail.fireflyinternet.com ([109.228.58.192]:50517 "EHLO
+        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726968AbgAWPYu (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Jan 2020 10:14:18 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iueBK-0001Dl-AD; Thu, 23 Jan 2020 15:14:06 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Thu, 23 Jan 2020 10:24:50 -0500
+X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
+Received: from localhost (unverified [78.156.65.138]) 
+        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 19984240-1500050 
+        for multiple; Thu, 23 Jan 2020 15:24:46 +0000
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8BIT
+To:     "Michael J . Ruhl" <michael.j.ruhl@intel.com>,
+        Colin King <colin.king@canonical.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Airlie <airlied@linux.ie>,
+        Jani Nikula <jani.nikula@linux.intel.com>,
         Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
         Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        "Michael J . Ruhl" <michael.j.ruhl@intel.com>,
-        Chris Wilson <chris@chris-wilson.co.uk>,
         Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
+From:   Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20200123151406.51679-1-colin.king@canonical.com>
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] drm/i915/gem: fix null pointer dereference on vm
-Date:   Thu, 23 Jan 2020 15:14:06 +0000
-Message-Id: <20200123151406.51679-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20200123151406.51679-1-colin.king@canonical.com>
+Message-ID: <157979308341.19995.6106728840274572701@skylake-alporthouse-com>
+User-Agent: alot/0.6
+Subject: Re: [PATCH][next] drm/i915/gem: fix null pointer dereference on vm
+Date:   Thu, 23 Jan 2020 15:24:43 +0000
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Quoting Colin King (2020-01-23 15:14:06)
+> From: Colin Ian King <colin.king@canonical.com>
+> 
+> Currently if the call to function context_get_vm_rcu returns
+> a null pointer for vm then the error exit path via label err_put
+> will call i915_vm_put on the null vm, causing a null pointer
+> dereference.  Fix this by adding a null check on vm and returning
+> without calling the i915_vm_put.
+> 
+> Fixes: 5dbd2b7be61e ("drm/i915/gem: Convert vm idr to xarray")
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Currently if the call to function context_get_vm_rcu returns
-a null pointer for vm then the error exit path via label err_put
-will call i915_vm_put on the null vm, causing a null pointer
-dereference.  Fix this by adding a null check on vm and returning
-without calling the i915_vm_put.
+Hmm. Actually, we can drop the rcu_read_lock as soon as we've acquire
+the local ref to ctx->vm. So something like,
 
-Fixes: 5dbd2b7be61e ("drm/i915/gem: Convert vm idr to xarray")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/gpu/drm/i915/gem/i915_gem_context.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+        if (!rcu_access_pointer(ctx->vm))
+                return -ENODEV;
 
-diff --git a/drivers/gpu/drm/i915/gem/i915_gem_context.c b/drivers/gpu/drm/i915/gem/i915_gem_context.c
-index 5d4157e1ccf7..3e6e34ec9fa8 100644
---- a/drivers/gpu/drm/i915/gem/i915_gem_context.c
-+++ b/drivers/gpu/drm/i915/gem/i915_gem_context.c
-@@ -1005,9 +1005,12 @@ static int get_ppgtt(struct drm_i915_file_private *file_priv,
- 	err = -ENODEV;
- 	rcu_read_lock();
- 	vm = context_get_vm_rcu(ctx);
--	if (vm)
--		err = xa_alloc(&file_priv->vm_xa, &id, vm,
--			       xa_limit_32b, GFP_KERNEL);
-+	if (!vm) {
-+		rcu_read_unlock();
-+		return err;
-+	}
-+	err = xa_alloc(&file_priv->vm_xa, &id, vm,
-+		       xa_limit_32b, GFP_KERNEL);
- 	rcu_read_unlock();
- 	if (err)
- 		goto err_put;
--- 
-2.24.0
+-       err = -ENODEV;
+        rcu_read_lock();
+        vm = context_get_vm_rcu(ctx);
+-       if (vm)
+-               err = xa_alloc(&file_priv->vm_xa, &id, vm,
+-                              xa_limit_32b, GFP_KERNEL);
+        rcu_read_unlock();
++       if (!vm)
++               return -ENODEV;
++
++       err = xa_alloc(&file_priv->vm_xa, &id, vm,
++                      xa_limit_32b, GFP_KERNEL);
+        if (err)
+                goto err_put;
 
+would work.
+-Chris

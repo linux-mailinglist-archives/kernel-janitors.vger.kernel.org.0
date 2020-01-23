@@ -2,78 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5687B146C8F
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jan 2020 16:24:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B48CB146CC9
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jan 2020 16:28:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727523AbgAWPYu convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Jan 2020 10:24:50 -0500
-Received: from mail.fireflyinternet.com ([109.228.58.192]:50517 "EHLO
-        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726968AbgAWPYu (ORCPT
+        id S1728665AbgAWP2l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Jan 2020 10:28:41 -0500
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:45609 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727296AbgAWP2l (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Jan 2020 10:24:50 -0500
-X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
-Received: from localhost (unverified [78.156.65.138]) 
-        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 19984240-1500050 
-        for multiple; Thu, 23 Jan 2020 15:24:46 +0000
-Content-Type: text/plain; charset="utf-8"
+        Thu, 23 Jan 2020 10:28:41 -0500
+Received: by mail-lj1-f196.google.com with SMTP id j26so3860107ljc.12
+        for <kernel-janitors@vger.kernel.org>; Thu, 23 Jan 2020 07:28:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+Qr9BdbkkgkuLaABxg1maqPFbi8IH41Lo7L1VxAqiyw=;
+        b=iGZFnSn+vi28+z3do2lW+WbQQJIwuMVk+nTR6JGwyfDav1RKSSd7CcJ6KK6LcpVCo2
+         0fiNppfjuAfjdpSLuQenKgpCS4QV+Vufpcl2FY4z+ARDLnP0QoKMSlqBVFoiIMk4AcaP
+         lY10C7psqauI55WjsxDwb5YlBe6knaX/slmuyLZvhmUMmFDoRBFAadi1km59bjfF5J4d
+         kWzkfEIo6Hyh8axepy05Q0Y0SukHwLD8Y5KSTFVXhwDfNAMU65YRWb91H4NB0tbBm1YZ
+         /lXTng/W2mJRJ1Q/Wi2BdLzvpkQQ6oKyIgnKelSCPWF84hqCw0+9+1BojMj7gyxKItx7
+         jPEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+Qr9BdbkkgkuLaABxg1maqPFbi8IH41Lo7L1VxAqiyw=;
+        b=XHPJOt30C2BfsATReOxXWZ4EWNYhj6OjDvmTkvJccgO/1Ysz4KEK0A9zZ454zMgM46
+         xvmYPLS95yi5Cl6ksM0f1EaGGtDhssMoxy3uLOFs9ku1dAey2gDLWt95pcxSk6etJs5B
+         bx27Jo1+akUCYwCxQjEA5MCx5KAn+FLFuNxOsOrOUWpx9wqn5F7Gppdz3VFt7EvC2mV/
+         XswltWZyORsfwRH9NdGr9eh94mq5ofFioIdhrx8zZKrIuxd2OimPqA8iMCec69Ui0CJ2
+         bE/urUavx5tcGdXHBnxKUzRVKQya2c10IrTYHgdHbXaFmZ1FUybIgVzlKRv7wRFyf5ZR
+         AX+w==
+X-Gm-Message-State: APjAAAW28jK5PX/0ByP1V1Ss+1OmMet6yNDa8AkubfvFMX0/nxJMJ9XX
+        4tXYqu4PfXHKghXodYuQiAfOfJ1e9/YhrFl8j+lD/w==
+X-Google-Smtp-Source: APXvYqz9aT6DBqL1eSjmsf3APA52AKWR+11VI/tOJBRr1Zl3oa9tmU2n9K3uxQplpdd8BuXZX19EDE3gZHHtzgDtTcc=
+X-Received: by 2002:a2e:81c3:: with SMTP id s3mr23654693ljg.168.1579793319446;
+ Thu, 23 Jan 2020 07:28:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-To:     "Michael J . Ruhl" <michael.j.ruhl@intel.com>,
-        Colin King <colin.king@canonical.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Airlie <airlied@linux.ie>,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-        dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org
-From:   Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20200123151406.51679-1-colin.king@canonical.com>
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200123151406.51679-1-colin.king@canonical.com>
-Message-ID: <157979308341.19995.6106728840274572701@skylake-alporthouse-com>
-User-Agent: alot/0.6
-Subject: Re: [PATCH][next] drm/i915/gem: fix null pointer dereference on vm
-Date:   Thu, 23 Jan 2020 15:24:43 +0000
+References: <20200121161757.1498082-1-colin.king@canonical.com>
+In-Reply-To: <20200121161757.1498082-1-colin.king@canonical.com>
+From:   Linus Walleij <linus.walleij@linaro.org>
+Date:   Thu, 23 Jan 2020 16:28:28 +0100
+Message-ID: <CACRpkdYzd13xu9ETj_a4eWrm4FMrVnF1NQ5G+=d_Ch=6SzRoxA@mail.gmail.com>
+Subject: Re: [PATCH][next] iio: st_sensors: handle memory allocation failure
+ to fix null pointer dereference
+To:     Colin King <colin.king@canonical.com>
+Cc:     Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Colin King (2020-01-23 15:14:06)
+On Tue, Jan 21, 2020 at 5:18 PM Colin King <colin.king@canonical.com> wrote:
+
 > From: Colin Ian King <colin.king@canonical.com>
-> 
-> Currently if the call to function context_get_vm_rcu returns
-> a null pointer for vm then the error exit path via label err_put
-> will call i915_vm_put on the null vm, causing a null pointer
-> dereference.  Fix this by adding a null check on vm and returning
-> without calling the i915_vm_put.
-> 
-> Fixes: 5dbd2b7be61e ("drm/i915/gem: Convert vm idr to xarray")
+>
+> A null pointer deference on pdata can occur if the allocation of
+> pdata fails.  Fix this by adding a null pointer check and handle
+> the -ENOMEM failure in the caller.
+>
+> Addresses-Coverity: ("Dereference null return value")
+
+That's a weirdo tag, but I suppose you have aligned with the maintainers
+about this.
+
+> Fixes: 3ce85cc4fbb7 ("iio: st_sensors: get platform data from device tree")
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Hmm. Actually, we can drop the rcu_read_lock as soon as we've acquire
-the local ref to ctx->vm. So something like,
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-        if (!rcu_access_pointer(ctx->vm))
-                return -ENODEV;
-
--       err = -ENODEV;
-        rcu_read_lock();
-        vm = context_get_vm_rcu(ctx);
--       if (vm)
--               err = xa_alloc(&file_priv->vm_xa, &id, vm,
--                              xa_limit_32b, GFP_KERNEL);
-        rcu_read_unlock();
-+       if (!vm)
-+               return -ENODEV;
-+
-+       err = xa_alloc(&file_priv->vm_xa, &id, vm,
-+                      xa_limit_32b, GFP_KERNEL);
-        if (err)
-                goto err_put;
-
-would work.
--Chris
+Yours,
+Linus Walleij

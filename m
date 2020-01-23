@@ -2,83 +2,78 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58F6C146BF7
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jan 2020 15:55:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E623146C67
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jan 2020 16:14:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729021AbgAWOzi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Jan 2020 09:55:38 -0500
-Received: from eu-smtp-delivery-151.mimecast.com ([146.101.78.151]:38033 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728998AbgAWOzi (ORCPT
+        id S1728779AbgAWPOS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Jan 2020 10:14:18 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:43608 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727278AbgAWPOS (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Jan 2020 09:55:38 -0500
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-91-RsylZuVmMgWTGjNZgnMSUg-1; Thu, 23 Jan 2020 14:55:34 +0000
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:43c:695e:880f:8750) with Microsoft SMTP
- Server (TLS) id 15.0.1347.2; Thu, 23 Jan 2020 14:55:33 +0000
-Received: from AcuMS.Aculab.com ([fe80::43c:695e:880f:8750]) by
- AcuMS.aculab.com ([fe80::43c:695e:880f:8750%12]) with mapi id 15.00.1347.000;
- Thu, 23 Jan 2020 14:55:33 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     "'Ardelean, Alexandru'" <alexandru.Ardelean@analog.com>,
-        "zzzzPopa, zzzzStefan Serban" <StefanSerban.Popa@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "jic23@kernel.org" <jic23@kernel.org>,
-        "colin.king@canonical.com" <colin.king@canonical.com>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>
-CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] iio: ad5755: fix spelling mistake "to" -> "too"
-Thread-Topic: [PATCH] iio: ad5755: fix spelling mistake "to" -> "too"
-Thread-Index: AQHV0X/sP6h7qhLTzEuBaVo2SdpnK6f31A8AgACC+qA=
-Date:   Thu, 23 Jan 2020 14:55:33 +0000
-Message-ID: <69bbc2af79d9463681b54d0aa240f89b@AcuMS.aculab.com>
-References: <20200122235839.2830850-1-colin.king@canonical.com>
- <c32a44272aa593c3d0cda71a50b08f33338a2dc0.camel@analog.com>
-In-Reply-To: <c32a44272aa593c3d0cda71a50b08f33338a2dc0.camel@analog.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        Thu, 23 Jan 2020 10:14:18 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iueBK-0001Dl-AD; Thu, 23 Jan 2020 15:14:06 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        "Michael J . Ruhl" <michael.j.ruhl@intel.com>,
+        Chris Wilson <chris@chris-wilson.co.uk>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] drm/i915/gem: fix null pointer dereference on vm
+Date:   Thu, 23 Jan 2020 15:14:06 +0000
+Message-Id: <20200123151406.51679-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-X-MC-Unique: RsylZuVmMgWTGjNZgnMSUg-1
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-RnJvbSBBcmRlbGVhbiwgQWxleGFuZHJ1DQo+IFNlbnQ6IDIzIEphbnVhcnkgMjAyMCAwNzowMw0K
-PiANCj4gT24gV2VkLCAyMDIwLTAxLTIyIGF0IDIzOjU4ICswMDAwLCBDb2xpbiBLaW5nIHdyb3Rl
-Og0KPiA+IFtFeHRlcm5hbF0NCj4gPg0KPiA+IEZyb206IENvbGluIElhbiBLaW5nIDxjb2xpbi5r
-aW5nQGNhbm9uaWNhbC5jb20+DQo+ID4NCj4gPiBUaGVyZSBpcyBhIHNwZWxsaW5nIG1pc3Rha2Ug
-aW4gYSBkZXZfZXJyIG1lc3NhZ2UuIEZpeCBpdC4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IENv
-bGluIElhbiBLaW5nIDxjb2xpbi5raW5nQGNhbm9uaWNhbC5jb20+DQo+ID4gLS0tDQo+ID4gIGRy
-aXZlcnMvaWlvL2RhYy9hZDU3NTUuYyB8IDIgKy0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5z
-ZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZHJpdmVycy9p
-aW8vZGFjL2FkNTc1NS5jIGIvZHJpdmVycy9paW8vZGFjL2FkNTc1NS5jDQo+ID4gaW5kZXggYjkx
-NzVmYjRjOGFiLi5kYWQwYjI2MjI4YTIgMTAwNjQ0DQo+ID4gLS0tIGEvZHJpdmVycy9paW8vZGFj
-L2FkNTc1NS5jDQo+ID4gKysrIGIvZHJpdmVycy9paW8vZGFjL2FkNTc1NS5jDQo+ID4gQEAgLTY1
-NSw3ICs2NTUsNyBAQCBzdGF0aWMgc3RydWN0IGFkNTc1NV9wbGF0Zm9ybV9kYXRhICphZDU3NTVf
-cGFyc2VfZHQoc3RydWN0DQo+ID4gZGV2aWNlICpkZXYpDQo+ID4gIAlmb3JfZWFjaF9jaGlsZF9v
-Zl9ub2RlKG5wLCBwcCkgew0KPiA+ICAJCWlmIChkZXZuciA+PSBBRDU3NTVfTlVNX0NIQU5ORUxT
-KSB7DQo+ID4gIAkJCWRldl9lcnIoZGV2LA0KPiA+IC0JCQkJIlRoZXJlIGlzIHRvIG1hbnkgY2hh
-bm5lbHMgZGVmaW5lZCBpbiBEVFxuIik7DQo+ID4gKwkJCQkiVGhlcmUgaXMgdG9vIG1hbnkgY2hh
-bm5lbHMgZGVmaW5lZCBpbiBEVFxuIik7DQo+IA0KPiBJZiBnb2luZyBmb3IgdGhlIHNwZWxsaW5n
-IHN0dWZmLCBtYXliZSBhbHNvIGNoYW5nZSAiaXMiIHRvICJhcmUiOg0KPiAnVGhlcmUgYXJlIHRv
-byBtYW55IGNoYW5uZWxzIGRlZmluZWQgaW4gRFRcbicNCg0KUHJvYmFibHkgYmV0dGVyIHN0aWxs
-OiAiVGhlIERUIGRlZmluZXMgdG9vIG1hbnkgY2hhbm5lbHNcbiINCg0KCURhdmlkDQoNCi0NClJl
-Z2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJtLCBNaWx0
-b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChXYWxlcykN
-Cg==
+From: Colin Ian King <colin.king@canonical.com>
+
+Currently if the call to function context_get_vm_rcu returns
+a null pointer for vm then the error exit path via label err_put
+will call i915_vm_put on the null vm, causing a null pointer
+dereference.  Fix this by adding a null check on vm and returning
+without calling the i915_vm_put.
+
+Fixes: 5dbd2b7be61e ("drm/i915/gem: Convert vm idr to xarray")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/gpu/drm/i915/gem/i915_gem_context.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/gem/i915_gem_context.c b/drivers/gpu/drm/i915/gem/i915_gem_context.c
+index 5d4157e1ccf7..3e6e34ec9fa8 100644
+--- a/drivers/gpu/drm/i915/gem/i915_gem_context.c
++++ b/drivers/gpu/drm/i915/gem/i915_gem_context.c
+@@ -1005,9 +1005,12 @@ static int get_ppgtt(struct drm_i915_file_private *file_priv,
+ 	err = -ENODEV;
+ 	rcu_read_lock();
+ 	vm = context_get_vm_rcu(ctx);
+-	if (vm)
+-		err = xa_alloc(&file_priv->vm_xa, &id, vm,
+-			       xa_limit_32b, GFP_KERNEL);
++	if (!vm) {
++		rcu_read_unlock();
++		return err;
++	}
++	err = xa_alloc(&file_priv->vm_xa, &id, vm,
++		       xa_limit_32b, GFP_KERNEL);
+ 	rcu_read_unlock();
+ 	if (err)
+ 		goto err_put;
+-- 
+2.24.0
 

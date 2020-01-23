@@ -2,94 +2,126 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C205C1466E0
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jan 2020 12:36:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 918191467BA
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jan 2020 13:16:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729017AbgAWLgx (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Jan 2020 06:36:53 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:38607 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726584AbgAWLgw (ORCPT
+        id S1727194AbgAWMQY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Jan 2020 07:16:24 -0500
+Received: from mx0b-00128a01.pphosted.com ([148.163.139.77]:18548 "EHLO
+        mx0b-00128a01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726260AbgAWMQY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Jan 2020 06:36:52 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212])
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iuan3-0008M3-MY; Thu, 23 Jan 2020 11:36:49 +0000
-Subject: Re: [PATCH] dmaengine: fix spelling mistake "to" -> "too"
-To:     Vinod Koul <vkoul@kernel.org>
-Cc:     Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, dmaengine@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200123092359.10714-1-colin.king@canonical.com>
- <20200123113522.GY2841@vkoul-mobl>
-From:   Colin Ian King <colin.king@canonical.com>
-Autocrypt: addr=colin.king@canonical.com; prefer-encrypt=mutual; keydata=
- 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
-Message-ID: <37684969-d807-7dfd-3a9f-4d0ee86f408d@canonical.com>
-Date:   Thu, 23 Jan 2020 11:36:49 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
-MIME-Version: 1.0
-In-Reply-To: <20200123113522.GY2841@vkoul-mobl>
-Content-Type: text/plain; charset=utf-8
+        Thu, 23 Jan 2020 07:16:24 -0500
+Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
+        by mx0b-00128a01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00NCAXfC006081;
+        Thu, 23 Jan 2020 07:16:04 -0500
+Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2105.outbound.protection.outlook.com [104.47.58.105])
+        by mx0b-00128a01.pphosted.com with ESMTP id 2xkvnfnn80-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Thu, 23 Jan 2020 07:16:04 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RnxxAUSlxQpLPtysdFcThDKdo5qk4Mp0MAmaS0GZlke1F09SnqgjfRT3wg9yw1KLp5KSFaRpDqcI1wkYDb9v9cGQ2bXIFJmlnzmLIvAdc47wqf4LoKHz6xLIcr63lF8irCIJZPono4c3yIsRmFnZKj7d+jpuRpP4gxJfZYJh64hjEyrBVMPJRkXyogfuW7sGvceYdHOuvIIkFjPnOKucewkjbGLivXdgcMEBUtduavREQve44WldIZm2YB0cwSg2o0UMWVoUSqZEalrzPXDP3GMt3P2E5mmQG+qJZeTjsEaQtOQnSr4KFhGISMxijbW0we1k3b+v3phcL+JWoK6XYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=b3K/vK92riidWeUCR96kAdqloUtnTdU4FLOt1dJlXzk=;
+ b=Ic/e3A8iM7X9N175fLePLX9W1PjY6VrzgsxJk6c8UPmStG8DcMZVn5+ezBRFhRQzcb60jt4u6KT4NlrmGN5wUHsGt1kSHSUOmj0Q/NFI7Ab7S5Aajc5efgZ6gAXCWndcVvaJA1H8IP/EnkluobrFGO66aB4nWM1hx+YM0cTjfSmF3E3UDYSdEteHx1J3vAK/5gMJMJDoxpwSzi81bFoLcxVmB+UG64RbD1xWNLvk9S8PucLIPxgAAgDiTBPO8tXhNVK8LDLOMCNvxSS2S7IoZwheSyKETcxYqxxucogFfb6aCxj27urLpJF0VGvCRvtUSb8F8OhPp9hKZdgtaqpgNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=analog.onmicrosoft.com; s=selector2-analog-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=b3K/vK92riidWeUCR96kAdqloUtnTdU4FLOt1dJlXzk=;
+ b=6R+2t5ZSPJ6+0Kt4eaYx5Ar8BiTXJh0uEdIeR00JioXyXoV/ZgxmRZ91yq/BvoRXRNZzyGxqMZV1CoLUwpZtEXi1AFwRiUN7o3L5Q2i1iODbUGgPzoZbNlC/uiR5vQKzAQO4C5/v+9c3I8vfmytN7WVVv7FKJNvRShBKMTT/HF0=
+Received: from CH2PR03MB5192.namprd03.prod.outlook.com (20.180.12.152) by
+ CH2PR03MB5174.namprd03.prod.outlook.com (20.180.4.83) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2644.19; Thu, 23 Jan 2020 12:16:03 +0000
+Received: from CH2PR03MB5192.namprd03.prod.outlook.com
+ ([fe80::dce7:7fec:f33f:ad39]) by CH2PR03MB5192.namprd03.prod.outlook.com
+ ([fe80::dce7:7fec:f33f:ad39%7]) with mapi id 15.20.2665.017; Thu, 23 Jan 2020
+ 12:16:03 +0000
+From:   "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
+To:     "zzzzPopa, zzzzStefan Serban" <StefanSerban.Popa@analog.com>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "jic23@kernel.org" <jic23@kernel.org>,
+        "colin.king@canonical.com" <colin.king@canonical.com>,
+        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+        "lars@metafoo.de" <lars@metafoo.de>,
+        "knaack.h@gmx.de" <knaack.h@gmx.de>,
+        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>
+CC:     "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][V2] iio: ad5755: fix spelling mistake "to" -> "too" and
+ grammar
+Thread-Topic: [PATCH][V2] iio: ad5755: fix spelling mistake "to" -> "too" and
+ grammar
+Thread-Index: AQHV0c5ZypUSLkSV6060pzkn0y8YJ6f4KskA
+Date:   Thu, 23 Jan 2020 12:16:03 +0000
+Message-ID: <aae729269a5ab110fae379f88b72a8cbca6c8b13.camel@analog.com>
+References: <20200123091954.10506-1-colin.king@canonical.com>
+In-Reply-To: <20200123091954.10506-1-colin.king@canonical.com>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [137.71.226.54]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-ht: Tenant
+x-ms-office365-filtering-correlation-id: f4085ad4-785a-46eb-97b4-08d79ffe03ed
+x-ms-traffictypediagnostic: CH2PR03MB5174:
+x-ld-processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
+x-ms-exchange-transport-forked: True
+x-microsoft-antispam-prvs: <CH2PR03MB51744D781A41F1AC9F07B11AF90F0@CH2PR03MB5174.namprd03.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:5516;
+x-forefront-prvs: 029174C036
+x-forefront-antispam-report: SFV:NSPM;SFS:(10009020)(136003)(39860400002)(366004)(346002)(396003)(376002)(199004)(189003)(4744005)(5660300002)(81156014)(36756003)(8676002)(2906002)(81166006)(4326008)(6512007)(8936002)(54906003)(86362001)(2616005)(6506007)(186003)(316002)(26005)(110136005)(66476007)(478600001)(76116006)(66556008)(64756008)(6486002)(71200400001)(66946007)(66446008)(921003)(1121003);DIR:OUT;SFP:1101;SCL:1;SRVR:CH2PR03MB5174;H:CH2PR03MB5192.namprd03.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;A:1;MX:1;
+received-spf: None (protection.outlook.com: analog.com does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: iK1fX5QrPMhVLl7cR6DjlwAjM3rTEG+KbjXVV2D21Ad6wCr93UcHG5Rh5g9C7l1EW+hBF5IOhcR3yLbwDXrle1k0yZv1VIEe0JgZpMupIxGyiHCsAW48HpwseJ8wnPnu0D6e3aB8EnTsLAta+QM5XrI6QRMmG/W9bB8B+QYd8tsd/bysrLe6vaxkoRDEilz0IfVmq8kmd4Ug0+vZt57imK567ldwSC0R9Hxu0UhwR5J45VT8G1yu6k8E0xojRtP6YdRrtLi4eeZ5iJdAIc11nYJ7mw3+AdoyRGSKAssQWDFeWfbynDPHZJaSjywysm+9xgEkvIVISaf1iuxyJHr+xke6EqyhfDlkN3L5rLb6TbDif0qHx2/Bvn0Gjc3/++GWyRVZCZYrGEhTMzCa/fyrkHOb2mcD9+RtTK4DV4V8Gzghn1Cz3QvRPOi8KoffSljf39D5det+yYxvuk6XcEFPDKt8qPz954ivtURNLLxKkOE0XXR89sI2GLchHJr5LtVg
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <5DF19E837EB5674EA591FB0A5C9060EE@namprd03.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f4085ad4-785a-46eb-97b4-08d79ffe03ed
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jan 2020 12:16:03.0485
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: nFZmEOfsHZxjUVvAIv3P8qfLpNR0b4rIwrvKoNYnDUK/Brbmtep99UZcBI5W5Y5ek5UEWnEtdNNJjTR0DaZpDelcQJqwvnjIyDDUjHEwoGc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR03MB5174
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-01-23_08:2020-01-23,2020-01-23 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=0 clxscore=1015 mlxlogscore=999 phishscore=0
+ lowpriorityscore=0 spamscore=0 mlxscore=0 impostorscore=0 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1910280000 definitions=main-2001230105
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 23/01/2020 11:35, Vinod Koul wrote:
-> On 23-01-20, 09:23, Colin King wrote:
->> From: Colin Ian King <colin.king@canonical.com>
->>
->> There is a spelling mistake in a dev_err message. Fix it.
-> 
-> You had sent this earlier, I have picked that one already!
-> 
-Oops. I'm going mad.
+T24gVGh1LCAyMDIwLTAxLTIzIGF0IDA5OjE5ICswMDAwLCBDb2xpbiBLaW5nIHdyb3RlOg0KPiBG
+cm9tOiBDb2xpbiBJYW4gS2luZyA8Y29saW4ua2luZ0BjYW5vbmljYWwuY29tPg0KPiANCj4gVGhl
+cmUgaXMgYSBzcGVsbGluZyBtaXN0YWtlIGFuZCBncmFtbWFyIG1pc3Rha2UgaW4gYSBkZXZfZXJy
+DQo+IG1lc3NhZ2UuIEZpeCBpdC4NCj4gDQoNClJldmlld2VkLWJ5OiBBbGV4YW5kcnUgQXJkZWxl
+YW4gPGFsZXhhbmRydS5hcmRlbGVhbkBhbmFsb2cuY29tPg0KDQo+IFNpZ25lZC1vZmYtYnk6IENv
+bGluIElhbiBLaW5nIDxjb2xpbi5raW5nQGNhbm9uaWNhbC5jb20+DQo+IC0tLQ0KPiBWMjogZml4
+IGdyYW1tYXIgdG9vLCB0aGFua3MgdG8gQWxleGFuZHJ1IEFyZGVsZWFuIGZvciBzcG90dGluZyB0
+aGlzLg0KPiAtLS0NCj4gIGRyaXZlcnMvaWlvL2RhYy9hZDU3NTUuYyB8IDIgKy0NCj4gIDEgZmls
+ZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KPiANCj4gZGlmZiAtLWdp
+dCBhL2RyaXZlcnMvaWlvL2RhYy9hZDU3NTUuYyBiL2RyaXZlcnMvaWlvL2RhYy9hZDU3NTUuYw0K
+PiBpbmRleCBiOTE3NWZiNGM4YWIuLjEzNTlhMWE5MmZkYyAxMDA2NDQNCj4gLS0tIGEvZHJpdmVy
+cy9paW8vZGFjL2FkNTc1NS5jDQo+ICsrKyBiL2RyaXZlcnMvaWlvL2RhYy9hZDU3NTUuYw0KPiBA
+QCAtNjU1LDcgKzY1NSw3IEBAIHN0YXRpYyBzdHJ1Y3QgYWQ1NzU1X3BsYXRmb3JtX2RhdGEgKmFk
+NTc1NV9wYXJzZV9kdChzdHJ1Y3QNCj4gZGV2aWNlICpkZXYpDQo+ICAJZm9yX2VhY2hfY2hpbGRf
+b2Zfbm9kZShucCwgcHApIHsNCj4gIAkJaWYgKGRldm5yID49IEFENTc1NV9OVU1fQ0hBTk5FTFMp
+IHsNCj4gIAkJCWRldl9lcnIoZGV2LA0KPiAtCQkJCSJUaGVyZSBpcyB0byBtYW55IGNoYW5uZWxz
+IGRlZmluZWQgaW4gRFRcbiIpOw0KPiArCQkJCSJUaGVyZSBhcmUgdG9vIG1hbnkgY2hhbm5lbHMg
+ZGVmaW5lZCBpbiBEVFxuIik7DQo+ICAJCQlnb3RvIGVycm9yX291dDsNCj4gIAkJfQ0KPiAgDQo=

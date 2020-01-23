@@ -2,68 +2,67 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0016614632C
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jan 2020 09:17:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 75774146447
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jan 2020 10:20:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727194AbgAWIRb (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 23 Jan 2020 03:17:31 -0500
-Received: from mail-lj1-f195.google.com ([209.85.208.195]:42335 "EHLO
-        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725785AbgAWIRa (ORCPT
+        id S1726590AbgAWJUB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Jan 2020 04:20:01 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:36198 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725785AbgAWJUB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 23 Jan 2020 03:17:30 -0500
-Received: by mail-lj1-f195.google.com with SMTP id y4so2213019ljj.9;
-        Thu, 23 Jan 2020 00:17:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=I9GTPaar5aE0tOtbRNaaUNbpax0uU828acGGECrevW8=;
-        b=WrA/gkR1vzAXoaUaXO7zIr5dx400WT9+gcGzWZp/Tqzl5dxnd9YY9Wt51bT3N7rcbu
-         piMXjEAt3JMvtfxVUVSfI0YDSGBZfq6hk4H2Pp5HBokQuWK0AZOkjtwpb63wvKiZ53vj
-         B10LQi65VDgSqZtQpGyKSNr8ACwGFoxwRl4MX5QaBSFq8m0Tbyzr+xhaCRqiCF9GGnGV
-         oFPCTrPzIDubsAGY3WkEwCUa32ycydZ0UUgwS8Jz7xZ4GvvJcJKh/DU/t+mg5VYdrd7O
-         kJLnJ2b8HvXxvp40M4IJGCu/xoM6DVyk43PLyIs5cf8ezb8e8KO7ycDt/x3cdOg7mA6h
-         M6Eg==
-X-Gm-Message-State: APjAAAV/Ft4XAafRah44PuOzz45DHBKnKVfVX323UjE5/85YtN6nqRUN
-        tCuougqsgThswmEGONw4slkeV2A/
-X-Google-Smtp-Source: APXvYqygxodQS2zX6OmaUQosbre6s51cwrezgdx5y6e3eeya9A6s4urmjzPyt7+hvDMRDTh19gWEUQ==
-X-Received: by 2002:a2e:3a12:: with SMTP id h18mr22615722lja.81.1579767448416;
-        Thu, 23 Jan 2020 00:17:28 -0800 (PST)
-Received: from xi.terra (c-14b8e655.07-184-6d6c6d4.bbcust.telenor.se. [85.230.184.20])
-        by smtp.gmail.com with ESMTPSA id r21sm703627ljn.64.2020.01.23.00.17.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jan 2020 00:17:27 -0800 (PST)
-Received: from johan by xi.terra with local (Exim 4.92.3)
-        (envelope-from <johan@kernel.org>)
-        id 1iuXg6-0001f2-9e; Thu, 23 Jan 2020 09:17:26 +0100
-Date:   Thu, 23 Jan 2020 09:17:26 +0100
-From:   Johan Hovold <johan@kernel.org>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Johan Hovold <johan@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] USB: serial: cyberjack: fix spelling mistake "To" ->
- "Too"
-Message-ID: <20200123081726.GG8375@localhost>
-References: <20200122233955.2829493-1-colin.king@canonical.com>
+        Thu, 23 Jan 2020 04:20:01 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iuYeZ-0007Cn-1G; Thu, 23 Jan 2020 09:19:55 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Stefan Popa <stefan.popa@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][V2] iio: ad5755: fix spelling mistake "to" -> "too" and grammar
+Date:   Thu, 23 Jan 2020 09:19:54 +0000
+Message-Id: <20200123091954.10506-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200122233955.2829493-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jan 22, 2020 at 11:39:55PM +0000, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There is a spelling mistake in a dev_dbg message. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied, thanks.
+There is a spelling mistake and grammar mistake in a dev_err
+message. Fix it.
 
-Johan
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+V2: fix grammar too, thanks to Alexandru Ardelean for spotting this.
+---
+ drivers/iio/dac/ad5755.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/dac/ad5755.c b/drivers/iio/dac/ad5755.c
+index b9175fb4c8ab..1359a1a92fdc 100644
+--- a/drivers/iio/dac/ad5755.c
++++ b/drivers/iio/dac/ad5755.c
+@@ -655,7 +655,7 @@ static struct ad5755_platform_data *ad5755_parse_dt(struct device *dev)
+ 	for_each_child_of_node(np, pp) {
+ 		if (devnr >= AD5755_NUM_CHANNELS) {
+ 			dev_err(dev,
+-				"There is to many channels defined in DT\n");
++				"There are too many channels defined in DT\n");
+ 			goto error_out;
+ 		}
+ 
+-- 
+2.24.0
+

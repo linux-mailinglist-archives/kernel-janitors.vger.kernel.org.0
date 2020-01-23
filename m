@@ -2,95 +2,88 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 652ED146119
-	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jan 2020 05:07:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 74819146154
+	for <lists+kernel-janitors@lfdr.de>; Thu, 23 Jan 2020 06:19:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726135AbgAWEHL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 22 Jan 2020 23:07:11 -0500
-Received: from mail.kernel.org ([198.145.29.99]:55694 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725989AbgAWEHK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 22 Jan 2020 23:07:10 -0500
-Received: from localhost (unknown [106.200.244.96])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DFCAF2465A;
-        Thu, 23 Jan 2020 04:07:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1579752429;
-        bh=Ljk4aNTIh5qaY+LhyrDRlPXS83l3MsxY6wI4fyIxdgs=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gM30JBU2phcjbEoMCePoUQn2rPt1Ihug1K8uZwpGvusdGIx57rgswEklYC9QRH7YE
-         UBiWP7DuubGSSHNBvCqfhX2VwQbAKPZMoFWwV26JoB1mk4Yn/DQd7KdwfqiHkhNTfu
-         4Xz7wn+Yf7zMXBk6HSkObzgWO75i3AOtFxCO6hik=
-Date:   Thu, 23 Jan 2020 09:37:05 +0530
-From:   Vinod Koul <vkoul@kernel.org>
+        id S1726188AbgAWFTi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 23 Jan 2020 00:19:38 -0500
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:40825 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725535AbgAWFTh (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 23 Jan 2020 00:19:37 -0500
+Received: by mail-pf1-f194.google.com with SMTP id q8so965061pfh.7;
+        Wed, 22 Jan 2020 21:19:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=5KoYChdrAVEnywaOk6umNrkcUxLVAh4soDP+1zybkIw=;
+        b=MAMt+hkx8kzQYK1bOTg3zO+yF9aTna1Dcsqc0k92EN2yS8jbzTX3mSI7l+3pFrszLI
+         GnpGabhLZLfTd0xzKwhk6ZYNsO6mysVSQP4UOXRBLv/TK0tpRmmp6T6XzTWonWB2dW/w
+         y1C26tyLD1TTaCQQhJU4pE6dx1dPUwdjtBGQSBWPP1SOZWw7cYZ1XA4b7t88mxT2RsLi
+         QQbVDDlOHzCNZ5PtACMXX5CSlvFWPFjf2Myrj1fb8C73TXFawcsLB9qlPJiF0ukc4Cef
+         AlROAkT9dC+3mcjD2luCZwAGM2ZBly/dYZuLH4XRbEVpCrfFtic+2Px+kRQDdYo7gMEG
+         UoVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=5KoYChdrAVEnywaOk6umNrkcUxLVAh4soDP+1zybkIw=;
+        b=M3QWPsQKg79c6SDQ1atYyAU0GMsoaREzbE1KG4mPTppVobY9qMagmT/OMHBtfXR/E8
+         hMtQ5LmCZ4GvrVVvueZe+seX9TjcnikmN4CHdjuXwukd60QzZvoipwKVBuhrZa/hLzdz
+         RfJZYeQa4sfy3J9GN8TKES0Q3gDqgFZ4VTjg4WtEXhyqi+gatlKipgwQzDAxsE7zzQLT
+         1R7KEMrypgIUuSYqlh8qa6AltMIHjWuDZrrVlzTTON7ozR2hBeOrsHiYtQWwHEtrv6g1
+         oGlDCl8E5nz3RcsVIS/9pKX63jOsVVJ+0s+ITUFmsJAU5Lg6Xt0TAscMtIKJhxP88CgQ
+         ddPg==
+X-Gm-Message-State: APjAAAX+oVtDfWkwMs3SGUqmpcG5C+/g5cq0hvrINl+60gG88HUgE9D7
+        JEoWgP52wBOZvqSVM4cb3ieE13FJ
+X-Google-Smtp-Source: APXvYqx0UXNrAGRj0IpnERWcVQq9uWc0hjJ6AOHNdPe6nyGIjSs+HDemstFt0YMAjdcjSkqYMdC48Q==
+X-Received: by 2002:a63:ba45:: with SMTP id l5mr2044688pgu.380.1579756777148;
+        Wed, 22 Jan 2020 21:19:37 -0800 (PST)
+Received: from f3 (ag119225.dynamic.ppp.asahi-net.or.jp. [157.107.119.225])
+        by smtp.gmail.com with ESMTPSA id e16sm817911pgk.77.2020.01.22.21.19.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 Jan 2020 21:19:36 -0800 (PST)
+Date:   Thu, 23 Jan 2020 14:19:31 +0900
+From:   Benjamin Poirier <benjamin.poirier@gmail.com>
 To:     Colin King <colin.king@canonical.com>
-Cc:     Kukjin Kim <kgene@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        linux-arm-kernel@lists.infradead.org,
-        linux-samsung-soc@vger.kernel.org, dmaengine@vger.kernel.org,
-        linux-hams@vger.kernel.org, netdev@vger.kernel.org,
+Cc:     Manish Chopra <manishc@marvell.com>, GR-Linux-NIC-Dev@marvell.com,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        netdev@vger.kernel.org, devel@driverdev.osuosl.org,
         kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net/rose: fix spelling mistake "to" -> "too"
-Message-ID: <20200123040705.GT2841@vkoul-mobl>
-References: <20200123010133.2834467-1-colin.king@canonical.com>
+Subject: Re: [PATCH] staging: qlge: fix spelling mistake "to" -> "too"
+Message-ID: <20200123051931.GA419949@f3>
+References: <20200123000707.2831321-1-colin.king@canonical.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200123010133.2834467-1-colin.king@canonical.com>
+In-Reply-To: <20200123000707.2831321-1-colin.king@canonical.com>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Colin,
-
-On 23-01-20, 01:01, Colin King wrote:
+On 2020/01/23 00:07 +0000, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> There is a spelling mistake in a printk message. Fix it.
+> There is a spelling mistake in a netif_printk message. Fix it.
 > 
 > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > ---
->  drivers/dma/s3c24xx-dma.c | 2 +-
->  net/rose/af_rose.c        | 2 +-
-
-Care to split the two..?
-
-Thanks
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  drivers/staging/qlge/qlge_main.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/dma/s3c24xx-dma.c b/drivers/dma/s3c24xx-dma.c
-> index 8e14c72d03f0..63f1453ca250 100644
-> --- a/drivers/dma/s3c24xx-dma.c
-> +++ b/drivers/dma/s3c24xx-dma.c
-> @@ -826,7 +826,7 @@ static struct dma_async_tx_descriptor *s3c24xx_dma_prep_memcpy(
->  			len, s3cchan->name);
->  
->  	if ((len & S3C24XX_DCON_TC_MASK) != len) {
-> -		dev_err(&s3cdma->pdev->dev, "memcpy size %zu to large\n", len);
-> +		dev_err(&s3cdma->pdev->dev, "memcpy size %zu too large\n", len);
->  		return NULL;
->  	}
->  
-> diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
-> index 46b8ff24020d..1e8eeb044b07 100644
-> --- a/net/rose/af_rose.c
-> +++ b/net/rose/af_rose.c
-> @@ -1475,7 +1475,7 @@ static int __init rose_proto_init(void)
->  	int rc;
->  
->  	if (rose_ndevs > 0x7FFFFFFF/sizeof(struct net_device *)) {
-> -		printk(KERN_ERR "ROSE: rose_proto_init - rose_ndevs parameter to large\n");
-> +		printk(KERN_ERR "ROSE: rose_proto_init - rose_ndevs parameter too large\n");
->  		rc = -EINVAL;
->  		goto out;
->  	}
-> -- 
-> 2.24.0
+> diff --git a/drivers/staging/qlge/qlge_main.c b/drivers/staging/qlge/qlge_main.c
+> index ef8037d0b52e..115dfa2ffabd 100644
+> --- a/drivers/staging/qlge/qlge_main.c
+> +++ b/drivers/staging/qlge/qlge_main.c
+> @@ -1758,7 +1758,7 @@ static struct sk_buff *ql_build_rx_skb(struct ql_adapter *qdev,
+>  	} else if (ib_mac_rsp->flags3 & IB_MAC_IOCB_RSP_DL) {
+>  		if (ib_mac_rsp->flags4 & IB_MAC_IOCB_RSP_HS) {
+>  			netif_printk(qdev, rx_status, KERN_DEBUG, qdev->ndev,
+> -				     "Header in small, %d bytes in large. Chain large to small!\n",
+> +				     "Header in small, %d bytes in large. Chain large too small!\n",
 
--- 
-~Vinod
+The "to" is correct here.
+~chaining a large buffer to a small buffer~

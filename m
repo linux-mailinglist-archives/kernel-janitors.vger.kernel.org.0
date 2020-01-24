@@ -2,78 +2,103 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D93821480EC
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Jan 2020 12:15:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 695B31485DA
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Jan 2020 14:20:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390296AbgAXLPi convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 Jan 2020 06:15:38 -0500
-Received: from mail.fireflyinternet.com ([109.228.58.192]:49841 "EHLO
-        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2390020AbgAXLPg (ORCPT
+        id S2389497AbgAXNUn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 Jan 2020 08:20:43 -0500
+Received: from ivanoab7.miniserver.com ([37.128.132.42]:57830 "EHLO
+        www.kot-begemot.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387722AbgAXNUn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 Jan 2020 06:15:36 -0500
-X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
-Received: from localhost (unverified [78.156.65.138]) 
-        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 19993546-1500050 
-        for multiple; Fri, 24 Jan 2020 11:15:33 +0000
-Content-Type: text/plain; charset="utf-8"
+        Fri, 24 Jan 2020 08:20:43 -0500
+X-Greylist: delayed 1681 seconds by postgrey-1.27 at vger.kernel.org; Fri, 24 Jan 2020 08:20:43 EST
+Received: from tun252.jain.kot-begemot.co.uk ([192.168.18.6] helo=jain.kot-begemot.co.uk)
+        by www.kot-begemot.co.uk with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <anton.ivanov@cambridgegreys.com>)
+        id 1iuyRn-0000J2-Hu; Fri, 24 Jan 2020 12:52:27 +0000
+Received: from jain.kot-begemot.co.uk ([192.168.3.3])
+        by jain.kot-begemot.co.uk with esmtp (Exim 4.92)
+        (envelope-from <anton.ivanov@cambridgegreys.com>)
+        id 1iuyRf-0002ve-9o; Fri, 24 Jan 2020 12:52:24 +0000
+Subject: Re: [PATCH] um: Fix some error handling in uml_vector_user_bpf()
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Jeff Dike <jdike@addtoit.com>
+Cc:     Song Liu <songliubraving@fb.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        kernel-janitors@vger.kernel.org,
+        Richard Weinberger <richard@nod.at>,
+        linux-um@lists.infradead.org, Alexei Starovoitov <ast@kernel.org>,
+        Alex Dewar <alex.dewar@gmx.co.uk>, Yonghong Song <yhs@fb.com>,
+        bpf@vger.kernel.org, Andrii Nakryiko <andriin@fb.com>,
+        Martin KaFai Lau <kafai@fb.com>
+References: <20200124101450.jxfzsh6sz7v324hv@kili.mountain>
+From:   Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Message-ID: <36070c96-8e75-7d06-d945-87a9d366d0b9@cambridgegreys.com>
+Date:   Fri, 24 Jan 2020 12:52:18 +0000
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-From:   Chris Wilson <chris@chris-wilson.co.uk>
-In-Reply-To: <20200124103123.GL1847@kadam>
-Cc:     Sumit Semwal <sumit.semwal@linaro.org>,
-        Gustavo Padovan <gustavo.padovan@collabora.com>,
-        Sean Paul <seanpaul@chromium.org>, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        kernel-janitors@vger.kernel.org
-References: <20200124101311.drryaegcdc7d4x7e@kili.mountain>
- <157986125623.2524.13979010293671565726@skylake-alporthouse-com>
- <20200124103123.GL1847@kadam>
-Message-ID: <157986453128.2524.3980064063029834231@skylake-alporthouse-com>
-User-Agent: alot/0.6
-Subject: Re: [PATCH] dma-buf: fix locking in sync_print_obj()
-Date:   Fri, 24 Jan 2020 11:15:31 +0000
+In-Reply-To: <20200124101450.jxfzsh6sz7v324hv@kili.mountain>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -1.0
+X-Spam-Score: -1.0
+X-Clacks-Overhead: GNU Terry Pratchett
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Quoting Dan Carpenter (2020-01-24 10:31:23)
-> On Fri, Jan 24, 2020 at 10:20:56AM +0000, Chris Wilson wrote:
-> > Quoting Dan Carpenter (2020-01-24 10:13:12)
-> > > This is always called with IRQs disabled and we don't actually want to
-> > > enable IRQs at the end.
-> > > 
-> > > Fixes: a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from known context")
-> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > > ---
-> > >  drivers/dma-buf/sync_debug.c | 5 +++--
-> > >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/drivers/dma-buf/sync_debug.c b/drivers/dma-buf/sync_debug.c
-> > > index 101394f16930..952331344b1c 100644
-> > > --- a/drivers/dma-buf/sync_debug.c
-> > > +++ b/drivers/dma-buf/sync_debug.c
-> > > @@ -107,15 +107,16 @@ static void sync_print_fence(struct seq_file *s,
-> > >  static void sync_print_obj(struct seq_file *s, struct sync_timeline *obj)
-> > >  {
-> > >         struct list_head *pos;
-> > > +       unsigned long flags;
-> > >  
-> > >         seq_printf(s, "%s: %d\n", obj->name, obj->value);
-> > >  
-> > > -       spin_lock_irq(&obj->lock);
-> > > +       spin_lock_irqsave(&obj->lock, flags);
-> > 
-> > Exactly, it can be just spin_lock() as the irq state is known.
-> > 
+
+
+On 24/01/2020 10:14, Dan Carpenter wrote:
+> 1) The uml_vector_user_bpf() returns pointers so it should return NULL
+>     instead of false.
+> 2) If the "bpf_prog" allocation failed, it would have eventually lead to
+>     a crash.  We can't succeed after the error happens so it should just
+>     return.
 > 
-> I did consider that but I wasn't sure how this is going to be used in
-> the future so I took a conservative approach.
+> Fixes: 9807019a62dc ("um: Loadable BPF "Firmware" for vector drivers")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>   arch/um/drivers/vector_user.c | 10 +++++-----
+>   1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/um/drivers/vector_user.c b/arch/um/drivers/vector_user.c
+> index ddcd917be0af..88483f5b034c 100644
+> --- a/arch/um/drivers/vector_user.c
+> +++ b/arch/um/drivers/vector_user.c
+> @@ -732,13 +732,13 @@ void *uml_vector_user_bpf(char *filename)
+>   
+>   	if (stat(filename, &statbuf) < 0) {
+>   		printk(KERN_ERR "Error %d reading bpf file", -errno);
+> -		return false;
+> +		return NULL;
 
-Sure, it's debug so not critical (lists within lists to a seqfile, ouch)
+I will sort this one out, thanks for noticing.
 
-Reviewed-by: Chris Wilson <chris@chris-wilson.co.uk>
--Chris
+>   	}
+>   	bpf_prog = uml_kmalloc(sizeof(struct sock_fprog), UM_GFP_KERNEL);
+> -	if (bpf_prog != NULL) {
+> -		bpf_prog->len = statbuf.st_size / sizeof(struct sock_filter);
+> -		bpf_prog->filter = NULL;
+> -	}
+> +	if (!pfg_prog)
+
+^^^^^ ?
+
+> +		return NULL;
+> +	bpf_prog->len = statbuf.st_size / sizeof(struct sock_filter);
+> +	bpf_prog->filter = NULL;
+>   	ffd = os_open_file(filename, of_read(OPENFLAGS()), 0);
+>   	if (ffd < 0) {
+>   		printk(KERN_ERR "Error %d opening bpf file", -errno);
+> 
+
+-- 
+Anton R. Ivanov
+Cambridgegreys Limited. Registered in England. Company Number 10273661
+https://www.cambridgegreys.com/

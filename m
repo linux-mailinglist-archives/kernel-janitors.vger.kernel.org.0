@@ -2,54 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EABF147E8E
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Jan 2020 11:15:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1D54147E9D
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Jan 2020 11:18:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731597AbgAXKOW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 Jan 2020 05:14:22 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:42394 "EHLO
+        id S2387479AbgAXKR7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 Jan 2020 05:17:59 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:45802 "EHLO
         userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729509AbgAXKOW (ORCPT
+        with ESMTP id S1729351AbgAXKR7 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 Jan 2020 05:14:22 -0500
+        Fri, 24 Jan 2020 05:17:59 -0500
 Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00OAE3dI055653;
-        Fri, 24 Jan 2020 10:14:10 GMT
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00OADBEW055164;
+        Fri, 24 Jan 2020 10:17:11 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=GvzYLeUyuVQWpzt7gg0XJtSGKYxLaeZVtpQtQuR3R94=;
- b=MT8AynOCMi5+ggL3XII/s7bkC3XHxZeQLZ0JAjeCEy5zFQmjSJwhobgrXRbKXI597u+J
- CMh2JvA/6ZY7oKOeKeZ0rgt5P4YZlVRsIiOEni0vjIJnazEhNbkjvvymvhFNxDVrcFPz
- vwxEhYOT1YoZ8+oumveQOmd/QdmOMSPlPhCmnjtxvlSrw/u05sVyyQcJbQD/zX5agyCi
- GZrPcR8tO3baGm6kVth3oY+35Ck+b8V+WiYPeqZkPFnKyUdnM33AiXTzmCx2RXF3FDsF
- b0Vs9+NlSjGtqMFE5GfkoKkg7gNGMxjt7Qd7cW10sQpjDarewIL8L2rPlv7rB78aZ5/e pA== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 2xktnrqy8f-1
+ bh=5hxTBTG6Mu7hZsPfWtdleEXaVRIuzNQLCWb5b2m8Ros=;
+ b=Vp4RaNfm9g7aNmv+7hwNw/IT8vdoQmBxQ5puaO/sQ8440mAdxlrQBqk+3tmpubfC+CaI
+ dRLa7zGTIoN2dNen/q+K+S5TMzZMDGWPjkRgdEkT4Jlfq+x8fxnJzvCqkJR7XomUkt6Z
+ iCC39WXMfvVDdAFSVbfgM39IwkOOfMivz627fCbmrZu7d2l/4mD2ukpCmARqxzCGIECX
+ z4YGSVn0zIZ9jsUMmioZUATD8Mocu9Cbs3568wFj/SCD3rmhzB2fCBr7KJGFRuAUEuTQ
+ i7EoYSebanfA+bGtBhCcfGZobOvOAT/4gfL93cyUXPXYJpWkxrivrC7Zme64n4aDI9tU WQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2120.oracle.com with ESMTP id 2xktnrqypy-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 24 Jan 2020 10:14:10 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00OAE2vD065231;
-        Fri, 24 Jan 2020 10:14:09 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 2xqmwe5kww-1
+        Fri, 24 Jan 2020 10:17:11 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00OADxTn067060;
+        Fri, 24 Jan 2020 10:15:10 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 2xqmuenna6-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 24 Jan 2020 10:14:09 +0000
-Received: from abhmp0001.oracle.com (abhmp0001.oracle.com [141.146.116.7])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 00OADLDS028027;
-        Fri, 24 Jan 2020 10:13:21 GMT
+        Fri, 24 Jan 2020 10:15:10 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00OAF1ZM012262;
+        Fri, 24 Jan 2020 10:15:07 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 24 Jan 2020 02:13:20 -0800
-Date:   Fri, 24 Jan 2020 13:13:12 +0300
+        with ESMTP ; Fri, 24 Jan 2020 02:15:01 -0800
+Date:   Fri, 24 Jan 2020 13:14:50 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Sumit Semwal <sumit.semwal@linaro.org>,
-        Chris Wilson <chris@chris-wilson.co.uk>
-Cc:     Gustavo Padovan <gustavo.padovan@collabora.com>,
-        Sean Paul <seanpaul@chromium.org>, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+To:     Jeff Dike <jdike@addtoit.com>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>
+Cc:     Richard Weinberger <richard@nod.at>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>,
+        Alex Dewar <alex.dewar@gmx.co.uk>,
+        linux-um@lists.infradead.org, bpf@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] dma-buf: fix locking in sync_print_obj()
-Message-ID: <20200124101311.drryaegcdc7d4x7e@kili.mountain>
+Subject: [PATCH] um: Fix some error handling in uml_vector_user_bpf()
+Message-ID: <20200124101450.jxfzsh6sz7v324hv@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -71,38 +76,41 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This is always called with IRQs disabled and we don't actually want to
-enable IRQs at the end.
+1) The uml_vector_user_bpf() returns pointers so it should return NULL
+   instead of false.
+2) If the "bpf_prog" allocation failed, it would have eventually lead to
+   a crash.  We can't succeed after the error happens so it should just
+   return.
 
-Fixes: a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from known context")
+Fixes: 9807019a62dc ("um: Loadable BPF "Firmware" for vector drivers")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/dma-buf/sync_debug.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/um/drivers/vector_user.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/dma-buf/sync_debug.c b/drivers/dma-buf/sync_debug.c
-index 101394f16930..952331344b1c 100644
---- a/drivers/dma-buf/sync_debug.c
-+++ b/drivers/dma-buf/sync_debug.c
-@@ -107,15 +107,16 @@ static void sync_print_fence(struct seq_file *s,
- static void sync_print_obj(struct seq_file *s, struct sync_timeline *obj)
- {
- 	struct list_head *pos;
-+	unsigned long flags;
+diff --git a/arch/um/drivers/vector_user.c b/arch/um/drivers/vector_user.c
+index ddcd917be0af..88483f5b034c 100644
+--- a/arch/um/drivers/vector_user.c
++++ b/arch/um/drivers/vector_user.c
+@@ -732,13 +732,13 @@ void *uml_vector_user_bpf(char *filename)
  
- 	seq_printf(s, "%s: %d\n", obj->name, obj->value);
- 
--	spin_lock_irq(&obj->lock);
-+	spin_lock_irqsave(&obj->lock, flags);
- 	list_for_each(pos, &obj->pt_list) {
- 		struct sync_pt *pt = container_of(pos, struct sync_pt, link);
- 		sync_print_fence(s, &pt->base, false);
+ 	if (stat(filename, &statbuf) < 0) {
+ 		printk(KERN_ERR "Error %d reading bpf file", -errno);
+-		return false;
++		return NULL;
  	}
--	spin_unlock_irq(&obj->lock);
-+	spin_unlock_irqrestore(&obj->lock, flags);
- }
- 
- static void sync_print_sync_file(struct seq_file *s,
+ 	bpf_prog = uml_kmalloc(sizeof(struct sock_fprog), UM_GFP_KERNEL);
+-	if (bpf_prog != NULL) {
+-		bpf_prog->len = statbuf.st_size / sizeof(struct sock_filter);
+-		bpf_prog->filter = NULL;
+-	}
++	if (!pfg_prog)
++		return NULL;
++	bpf_prog->len = statbuf.st_size / sizeof(struct sock_filter);
++	bpf_prog->filter = NULL;
+ 	ffd = os_open_file(filename, of_read(OPENFLAGS()), 0);
+ 	if (ffd < 0) {
+ 		printk(KERN_ERR "Error %d opening bpf file", -errno);
 -- 
 2.11.0
 

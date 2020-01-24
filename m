@@ -2,51 +2,64 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B0FF1478DA
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Jan 2020 08:12:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DD55147979
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Jan 2020 09:36:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730381AbgAXHMr (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 Jan 2020 02:12:47 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:37730 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725817AbgAXHMq (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 Jan 2020 02:12:46 -0500
-Received: from localhost (unknown [62.209.224.147])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id D59BA157D8EFE;
-        Thu, 23 Jan 2020 23:12:44 -0800 (PST)
-Date:   Fri, 24 Jan 2020 08:12:43 +0100 (CET)
-Message-Id: <20200124.081243.840308996159716293.davem@davemloft.net>
-To:     colin.king@canonical.com
-Cc:     ralf@linux-mips.org, kuba@kernel.org, linux-hams@vger.kernel.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][V2] net/rose: fix spelling mistake "to" -> "too"
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200123092730.10909-1-colin.king@canonical.com>
-References: <20200123092730.10909-1-colin.king@canonical.com>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 23 Jan 2020 23:12:46 -0800 (PST)
+        id S1729893AbgAXIgN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 Jan 2020 03:36:13 -0500
+Received: from mail.kernel.org ([198.145.29.99]:57078 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725843AbgAXIgN (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 24 Jan 2020 03:36:13 -0500
+Received: from localhost (unknown [145.15.244.15])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 88FD52071A;
+        Fri, 24 Jan 2020 08:36:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1579854972;
+        bh=kY6uLDU53WJk7136qvLKPKYP/af1SJ9cRZV/kzzqJuM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=arZCrcphoIKyZIzdqFweXTfxMxylrS+mWFhIj9c0O5vLHP7LOtxGGlFdCLBsRHaoO
+         9jr3YaokIfkg0nfx14YzhoLLFUxHTsPmdb5LrsWKSzxzF1rmY/UC4ICid9opeGU7N8
+         Eu4YDYyMov67wjrdHIYkcOFpBJwCvkTQj+h+JwEg=
+Date:   Fri, 24 Jan 2020 09:36:10 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Felipe Balbi <balbi@kernel.org>
+Cc:     Colin King <colin.king@canonical.com>,
+        Felipe Balbi <felipe.balbi@linux.intel.com>,
+        Pawel Laszczak <pawell@cadence.com>, linux-usb@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] usb: cdns3: fix spelling mistake and rework grammar in
+ text
+Message-ID: <20200124083610.GA2923791@kroah.com>
+References: <20200122234437.2829803-1-colin.king@canonical.com>
+ <87zhee4p7y.fsf@kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87zhee4p7y.fsf@kernel.org>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin King <colin.king@canonical.com>
-Date: Thu, 23 Jan 2020 09:27:30 +0000
-
-> From: Colin Ian King <colin.king@canonical.com>
+On Thu, Jan 23, 2020 at 09:16:33AM +0200, Felipe Balbi wrote:
+> Colin King <colin.king@canonical.com> writes:
 > 
-> There is a spelling mistake in a printk message. Fix it.
+> > From: Colin Ian King <colin.king@canonical.com>
+> >
+> > The text contains a spelling mistake, "to" should be "too"
+> > so fix this and re-work the grammar to make it more readable.
+> >
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
 > 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> ---
-> V2: split the patch, the V1 included another fix.
+> Greg,
+> 
+> if you want to squeeze this in:
+> 
+> Acked-by: Felipe Balbi <balbi@kernel.org>
 
-Applied.
+Thanks, will do.
+
+greg k-h

@@ -2,103 +2,70 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 695B31485DA
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Jan 2020 14:20:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 246BC14858F
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Jan 2020 14:03:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389497AbgAXNUn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 Jan 2020 08:20:43 -0500
-Received: from ivanoab7.miniserver.com ([37.128.132.42]:57830 "EHLO
-        www.kot-begemot.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387722AbgAXNUn (ORCPT
+        id S2388876AbgAXNDm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 Jan 2020 08:03:42 -0500
+Received: from metis.ext.pengutronix.de ([85.220.165.71]:47575 "EHLO
+        metis.ext.pengutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388485AbgAXNDm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 Jan 2020 08:20:43 -0500
-X-Greylist: delayed 1681 seconds by postgrey-1.27 at vger.kernel.org; Fri, 24 Jan 2020 08:20:43 EST
-Received: from tun252.jain.kot-begemot.co.uk ([192.168.18.6] helo=jain.kot-begemot.co.uk)
-        by www.kot-begemot.co.uk with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        Fri, 24 Jan 2020 08:03:42 -0500
+Received: from litschi.hi.pengutronix.de ([2001:67c:670:100:feaa:14ff:fe6a:8db5])
+        by metis.ext.pengutronix.de with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
         (Exim 4.92)
-        (envelope-from <anton.ivanov@cambridgegreys.com>)
-        id 1iuyRn-0000J2-Hu; Fri, 24 Jan 2020 12:52:27 +0000
-Received: from jain.kot-begemot.co.uk ([192.168.3.3])
-        by jain.kot-begemot.co.uk with esmtp (Exim 4.92)
-        (envelope-from <anton.ivanov@cambridgegreys.com>)
-        id 1iuyRf-0002ve-9o; Fri, 24 Jan 2020 12:52:24 +0000
-Subject: Re: [PATCH] um: Fix some error handling in uml_vector_user_bpf()
-To:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Jeff Dike <jdike@addtoit.com>
-Cc:     Song Liu <songliubraving@fb.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        kernel-janitors@vger.kernel.org,
-        Richard Weinberger <richard@nod.at>,
-        linux-um@lists.infradead.org, Alexei Starovoitov <ast@kernel.org>,
-        Alex Dewar <alex.dewar@gmx.co.uk>, Yonghong Song <yhs@fb.com>,
-        bpf@vger.kernel.org, Andrii Nakryiko <andriin@fb.com>,
-        Martin KaFai Lau <kafai@fb.com>
-References: <20200124101450.jxfzsh6sz7v324hv@kili.mountain>
-From:   Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Message-ID: <36070c96-8e75-7d06-d945-87a9d366d0b9@cambridgegreys.com>
-Date:   Fri, 24 Jan 2020 12:52:18 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        (envelope-from <m.tretter@pengutronix.de>)
+        id 1iuycb-0002Uo-Lp; Fri, 24 Jan 2020 14:03:37 +0100
+Date:   Fri, 24 Jan 2020 14:03:35 +0100
+From:   Michael Tretter <m.tretter@pengutronix.de>
+To:     Colin King <colin.king@canonical.com>
+Cc:     Pengutronix Kernel Team <kernel@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-media@vger.kernel.org, devel@driverdev.osuosl.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] media: allegro: fix spelling mistake "to" -> "too"
+Message-ID: <20200124140335.1900eef7@litschi.hi.pengutronix.de>
+In-Reply-To: <20200123010643.2834801-1-colin.king@canonical.com>
+References: <20200123010643.2834801-1-colin.king@canonical.com>
+Organization: Pengutronix
+X-Mailer: Claws Mail 3.14.1 (GTK+ 2.24.31; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-In-Reply-To: <20200124101450.jxfzsh6sz7v324hv@kili.mountain>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0
-X-Spam-Score: -1.0
-X-Clacks-Overhead: GNU Terry Pratchett
+X-SA-Exim-Connect-IP: 2001:67c:670:100:feaa:14ff:fe6a:8db5
+X-SA-Exim-Mail-From: m.tretter@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: kernel-janitors@vger.kernel.org
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-
-
-On 24/01/2020 10:14, Dan Carpenter wrote:
-> 1) The uml_vector_user_bpf() returns pointers so it should return NULL
->     instead of false.
-> 2) If the "bpf_prog" allocation failed, it would have eventually lead to
->     a crash.  We can't succeed after the error happens so it should just
->     return.
+On Thu, 23 Jan 2020 01:06:43 +0000, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Fixes: 9807019a62dc ("um: Loadable BPF "Firmware" for vector drivers")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> There is a spelling mistake in a v4l2_err message. Fix it.
+> 
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+
+Reviewed-by: Michael Tretter <m.tretter@pengutronix.de>
+
 > ---
->   arch/um/drivers/vector_user.c | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
+>  drivers/staging/media/allegro-dvt/allegro-core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/um/drivers/vector_user.c b/arch/um/drivers/vector_user.c
-> index ddcd917be0af..88483f5b034c 100644
-> --- a/arch/um/drivers/vector_user.c
-> +++ b/arch/um/drivers/vector_user.c
-> @@ -732,13 +732,13 @@ void *uml_vector_user_bpf(char *filename)
->   
->   	if (stat(filename, &statbuf) < 0) {
->   		printk(KERN_ERR "Error %d reading bpf file", -errno);
-> -		return false;
-> +		return NULL;
-
-I will sort this one out, thanks for noticing.
-
->   	}
->   	bpf_prog = uml_kmalloc(sizeof(struct sock_fprog), UM_GFP_KERNEL);
-> -	if (bpf_prog != NULL) {
-> -		bpf_prog->len = statbuf.st_size / sizeof(struct sock_filter);
-> -		bpf_prog->filter = NULL;
-> -	}
-> +	if (!pfg_prog)
-
-^^^^^ ?
-
-> +		return NULL;
-> +	bpf_prog->len = statbuf.st_size / sizeof(struct sock_filter);
-> +	bpf_prog->filter = NULL;
->   	ffd = os_open_file(filename, of_read(OPENFLAGS()), 0);
->   	if (ffd < 0) {
->   		printk(KERN_ERR "Error %d opening bpf file", -errno);
-> 
-
--- 
-Anton R. Ivanov
-Cambridgegreys Limited. Registered in England. Company Number 10273661
-https://www.cambridgegreys.com/
+> diff --git a/drivers/staging/media/allegro-dvt/allegro-core.c b/drivers/staging/media/allegro-dvt/allegro-core.c
+> index 3be41698df4c..9908d851d4be 100644
+> --- a/drivers/staging/media/allegro-dvt/allegro-core.c
+> +++ b/drivers/staging/media/allegro-dvt/allegro-core.c
+> @@ -781,7 +781,7 @@ static int allegro_mbox_write(struct allegro_dev *dev,
+>  
+>  	if (size > mbox->size) {
+>  		v4l2_err(&dev->v4l2_dev,
+> -			 "message (%zu bytes) to large for mailbox (%zu bytes)\n",
+> +			 "message (%zu bytes) too large for mailbox (%zu bytes)\n",
+>  			 size, mbox->size);
+>  		return -EINVAL;
+>  	}

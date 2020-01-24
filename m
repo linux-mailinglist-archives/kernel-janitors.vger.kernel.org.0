@@ -2,97 +2,68 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F7FF147E91
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Jan 2020 11:16:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20645147EAA
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Jan 2020 11:21:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731659AbgAXKQJ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 Jan 2020 05:16:09 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:44168 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731492AbgAXKQJ (ORCPT
+        id S1731227AbgAXKVD convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 Jan 2020 05:21:03 -0500
+Received: from mail.fireflyinternet.com ([109.228.58.192]:59758 "EHLO
+        fireflyinternet.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727215AbgAXKVD (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 Jan 2020 05:16:09 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00OAE0Zr055558;
-        Fri, 24 Jan 2020 10:15:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=cVQtWFJTwo+bQ4fJ1+0B4WO3kZcnxRAQMDZGeSg5h08=;
- b=T+sXul6eg4ELRGH0KED6mFMjbOOFn79OfQ603e46p75OLvBJkb4hk0qQIE8ZqvHMbVCv
- 4GKyr8cLsIUba/rOZnGmAOnHCzLMSi3nyFTm1jSVJXeGHKr9wnskHJTv+9IOkjDhrbH7
- S4qJD76iICOePXwV2/3dGDsOvmGGeCzN5JJ+6XUCnBNbv+WMXFS01T1CKW9Xnb33pa/s
- eu0qrIN6cmPpvvSLpN+Cq8h48lJ4cNrqLlrqVnvfgbd8aVHX0fufrfsFkaxN78svvDYJ
- VKKI2e5AIM2qmK/Tg/vrfe+KjqV0Fna8m4y6My32H6G/t7r1jLUXeJBHFLbphS4yNHRW +g== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by userp2120.oracle.com with ESMTP id 2xktnrqyh6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 24 Jan 2020 10:15:51 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00OAE17p013863;
-        Fri, 24 Jan 2020 10:15:50 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2xqmuyn5pu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 24 Jan 2020 10:15:50 +0000
-Received: from abhmp0006.oracle.com (abhmp0006.oracle.com [141.146.116.12])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00OAFkd0006163;
-        Fri, 24 Jan 2020 10:15:48 GMT
-Received: from kili.mountain (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Fri, 24 Jan 2020 02:15:45 -0800
-Date:   Fri, 24 Jan 2020 13:15:37 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Russell King <rmk+kernel@armlinux.org.uk>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Enrico Weigelt <info@metux.net>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH] fs/adfs: bigdir: Fix an error code in adfs_fplus_read()
-Message-ID: <20200124101537.z6n242eovocfbdha@kili.mountain>
+        Fri, 24 Jan 2020 05:21:03 -0500
+X-Default-Received-SPF: pass (skip=forwardok (res=PASS)) x-ip-name=78.156.65.138;
+Received: from localhost (unverified [78.156.65.138]) 
+        by fireflyinternet.com (Firefly Internet (M1)) with ESMTP (TLS) id 19992557-1500050 
+        for multiple; Fri, 24 Jan 2020 10:20:58 +0000
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9509 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=754
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001240084
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9509 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=809 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001240084
+Content-Transfer-Encoding: 8BIT
+To:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>
+From:   Chris Wilson <chris@chris-wilson.co.uk>
+In-Reply-To: <20200124101311.drryaegcdc7d4x7e@kili.mountain>
+Cc:     Gustavo Padovan <gustavo.padovan@collabora.com>,
+        Sean Paul <seanpaul@chromium.org>, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        kernel-janitors@vger.kernel.org
+References: <20200124101311.drryaegcdc7d4x7e@kili.mountain>
+Message-ID: <157986125623.2524.13979010293671565726@skylake-alporthouse-com>
+User-Agent: alot/0.6
+Subject: Re: [PATCH] dma-buf: fix locking in sync_print_obj()
+Date:   Fri, 24 Jan 2020 10:20:56 +0000
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-This code accidentally returns success, but it should return the
--EIO error code from adfs_fplus_validate_header().
+Quoting Dan Carpenter (2020-01-24 10:13:12)
+> This is always called with IRQs disabled and we don't actually want to
+> enable IRQs at the end.
+> 
+> Fixes: a6aa8fca4d79 ("dma-buf/sw-sync: Reduce irqsave/irqrestore from known context")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/dma-buf/sync_debug.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/dma-buf/sync_debug.c b/drivers/dma-buf/sync_debug.c
+> index 101394f16930..952331344b1c 100644
+> --- a/drivers/dma-buf/sync_debug.c
+> +++ b/drivers/dma-buf/sync_debug.c
+> @@ -107,15 +107,16 @@ static void sync_print_fence(struct seq_file *s,
+>  static void sync_print_obj(struct seq_file *s, struct sync_timeline *obj)
+>  {
+>         struct list_head *pos;
+> +       unsigned long flags;
+>  
+>         seq_printf(s, "%s: %d\n", obj->name, obj->value);
+>  
+> -       spin_lock_irq(&obj->lock);
+> +       spin_lock_irqsave(&obj->lock, flags);
 
-Fixes: d79288b4f61b ("fs/adfs: bigdir: calculate and validate directory checkbyte")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
- fs/adfs/dir_fplus.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Exactly, it can be just spin_lock() as the irq state is known.
 
-diff --git a/fs/adfs/dir_fplus.c b/fs/adfs/dir_fplus.c
-index 48ea299b6ece..4a15924014da 100644
---- a/fs/adfs/dir_fplus.c
-+++ b/fs/adfs/dir_fplus.c
-@@ -114,7 +114,8 @@ static int adfs_fplus_read(struct super_block *sb, u32 indaddr,
- 		return ret;
- 
- 	dir->bighead = h = (void *)dir->bhs[0]->b_data;
--	if (adfs_fplus_validate_header(h)) {
-+	ret = adfs_fplus_validate_header(h);
-+	if (ret) {
- 		adfs_error(sb, "dir %06x has malformed header", indaddr);
- 		goto out;
- 	}
--- 
-2.11.0
-
+Once again I question why this [sync_debug.c] code even exists.
+-Chris

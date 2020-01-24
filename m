@@ -2,116 +2,90 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C0E3148C7A
-	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Jan 2020 17:48:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6F62148EAC
+	for <lists+kernel-janitors@lfdr.de>; Fri, 24 Jan 2020 20:24:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389130AbgAXQsR (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 24 Jan 2020 11:48:17 -0500
-Received: from ivanoab7.miniserver.com ([37.128.132.42]:58060 "EHLO
-        www.kot-begemot.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387674AbgAXQsR (ORCPT
+        id S2391783AbgAXTYi (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 24 Jan 2020 14:24:38 -0500
+Received: from mail-il1-f196.google.com ([209.85.166.196]:36433 "EHLO
+        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389871AbgAXTYh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 24 Jan 2020 11:48:17 -0500
-Received: from tun252.jain.kot-begemot.co.uk ([192.168.18.6] helo=jain.kot-begemot.co.uk)
-        by www.kot-begemot.co.uk with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <anton.ivanov@cambridgegreys.com>)
-        id 1iv27r-0006Gu-PM; Fri, 24 Jan 2020 16:48:08 +0000
-Received: from jain.kot-begemot.co.uk ([192.168.3.3])
-        by jain.kot-begemot.co.uk with esmtp (Exim 4.92)
-        (envelope-from <anton.ivanov@cambridgegreys.com>)
-        id 1iv27n-0005K8-Ga; Fri, 24 Jan 2020 16:48:06 +0000
-Subject: Re: [PATCH] um: Fix some error handling in uml_vector_user_bpf()
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     kernel-janitors@vger.kernel.org,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Richard Weinberger <richard@nod.at>,
-        Jeff Dike <jdike@addtoit.com>, linux-um@lists.infradead.org,
-        Song Liu <songliubraving@fb.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Yonghong Song <yhs@fb.com>, Alex Dewar <alex.dewar@gmx.co.uk>,
-        bpf@vger.kernel.org, Andrii Nakryiko <andriin@fb.com>,
-        Martin KaFai Lau <kafai@fb.com>
-References: <20200124101450.jxfzsh6sz7v324hv@kili.mountain>
- <36070c96-8e75-7d06-d945-87a9d366d0b9@cambridgegreys.com>
- <20200124164427.GF1870@kadam>
-From:   Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Message-ID: <de3bdae8-2dcd-490f-cdf2-67bf92a552e8@cambridgegreys.com>
-Date:   Fri, 24 Jan 2020 16:48:03 +0000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        Fri, 24 Jan 2020 14:24:37 -0500
+Received: by mail-il1-f196.google.com with SMTP id b15so2506008iln.3
+        for <kernel-janitors@vger.kernel.org>; Fri, 24 Jan 2020 11:24:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=cloud.ionos.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zTrhZTWTBa6fbnuanJX9UETavS1HBvI+zV8WEYtCar4=;
+        b=WxKKIIml4Ui5ytxZYSYxc5mWUe2jiNCMFWp9WRNlNHm9byXQ4jO9tXIdnU98JOyeSf
+         zMcvd+f18CJKEOcPStuvL5N6sOEoFTzuREXpJwPJjzZQi0W3GpXVsRH6kWZaYF+NvW/1
+         ATH3Qv7ZH6hG0NxOEJGdjVQyJ+noXMSYeY3OIq5nrk0QIR/sPKWzIbBZu9hK4NP8CFtx
+         sJLuPDhBAOfga+YrpC6XBzcS7HoCT/At5VQrxHLbJNFk9u7q6/SNrZ4ulujm2xbT1hSD
+         h0JplRXR5w/wVU59hXvKU+70c5A0uKaLyXzf9lu56ICNKCLZd/zYV6X044DSR/HSWYiV
+         VOpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zTrhZTWTBa6fbnuanJX9UETavS1HBvI+zV8WEYtCar4=;
+        b=B6FZwgAO12UlKBAM3VXN35ZboA2mjzf5QrpoVw/zOCYlKe8XfiATrboIRv5aeG2KE7
+         uxzUQKomm/Tnmw116zw4QTAqG2jRayjB2gkMq8HPuP7xFD9ZlfCAqWnO/TINYykFEolX
+         Ne+oHg9xNn2RiUgoZFbumcNSp1PnsS1y94UcGOot2F9Uj7zKuhW66syrNzj4+LFAU4PT
+         Fud2EX+iJZmG6k9rx52ESIp7Q9xaCtcFLJXZtodFNp7QWv6ru52rQQv/dqR17kG9KkUj
+         pyYkGt2TOFmj4FaE8ujVC9NNw9QHMIPeXh2gyms7A6jAs6tC3gj2UphYLx1Omb3R1V2z
+         99YA==
+X-Gm-Message-State: APjAAAVkwCDszi3rvGkMWy2SQ/r9zWiRTfVTgZW9Wa66o7t7qFcCzR9k
+        vp9YCagHLD4K2ZWNjTE01bBzkKOho+da7L7LhZNnrQ==
+X-Google-Smtp-Source: APXvYqxu3gXyV2O9AvGS2dPitr9zp0vFAbhvXmnKMEXqes1zfto3DseyBApJ2k7vkTKq+SI6psjzJkriamJ/KMjw/Oo=
+X-Received: by 2002:a92:d2:: with SMTP id 201mr4689380ila.22.1579893877312;
+ Fri, 24 Jan 2020 11:24:37 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20200124164427.GF1870@kadam>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -1.0
-X-Spam-Score: -1.0
-X-Clacks-Overhead: GNU Terry Pratchett
+References: <20200123005706.2834281-1-colin.king@canonical.com>
+In-Reply-To: <20200123005706.2834281-1-colin.king@canonical.com>
+From:   Jinpu Wang <jinpu.wang@cloud.ionos.com>
+Date:   Fri, 24 Jan 2020 20:24:28 +0100
+Message-ID: <CAMGffEmhGxasQ=-S4akOLnDvVBpY1e42R=pvaFqKTH0R+TM-6w@mail.gmail.com>
+Subject: Re: [PATCH] scsi: pm80xx: fix spelling mistake "to" -> "too"
+To:     Colin King <colin.king@canonical.com>
+Cc:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        Linux SCSI Mailinglist <linux-scsi@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Thu, Jan 23, 2020 at 1:57 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There is a spelling mistake in a pm8001_printk message. Fix it.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Acked-by: Jack Wang <jinpu.wang@cloud.ionos.com>
 
-
-On 24/01/2020 16:44, Dan Carpenter wrote:
-> On Fri, Jan 24, 2020 at 12:52:18PM +0000, Anton Ivanov wrote:
->>
->>
->> On 24/01/2020 10:14, Dan Carpenter wrote:
->>> 1) The uml_vector_user_bpf() returns pointers so it should return NULL
->>>      instead of false.
->>> 2) If the "bpf_prog" allocation failed, it would have eventually lead to
->>>      a crash.  We can't succeed after the error happens so it should just
->>>      return.
->>>
->>> Fixes: 9807019a62dc ("um: Loadable BPF "Firmware" for vector drivers")
->>> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
->>> ---
->>>    arch/um/drivers/vector_user.c | 10 +++++-----
->>>    1 file changed, 5 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/arch/um/drivers/vector_user.c b/arch/um/drivers/vector_user.c
->>> index ddcd917be0af..88483f5b034c 100644
->>> --- a/arch/um/drivers/vector_user.c
->>> +++ b/arch/um/drivers/vector_user.c
->>> @@ -732,13 +732,13 @@ void *uml_vector_user_bpf(char *filename)
->>>    	if (stat(filename, &statbuf) < 0) {
->>>    		printk(KERN_ERR "Error %d reading bpf file", -errno);
->>> -		return false;
->>> +		return NULL;
->>
->> I will sort this one out, thanks for noticing.
->>
->>>    	}
->>>    	bpf_prog = uml_kmalloc(sizeof(struct sock_fprog), UM_GFP_KERNEL);
->>> -	if (bpf_prog != NULL) {
->>> -		bpf_prog->len = statbuf.st_size / sizeof(struct sock_filter);
->>> -		bpf_prog->filter = NULL;
->>> -	}
->>> +	if (!pfg_prog)
->>
->> ^^^^^ ?
-> 
-> If we don't return here it leads to a NULL dereference.
-
-It says pfg_prog
-
-I cannot find this identifier :)
-
-> 
-> regards,
-> dan carpenter
-> 
-> 
-> _______________________________________________
-> linux-um mailing list
-> linux-um@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-um
-> 
-
--- 
-Anton R. Ivanov
-Cambridgegreys Limited. Registered in England. Company Number 10273661
-https://www.cambridgegreys.com/
+Thanks Colin.
+> ---
+>  drivers/scsi/pm8001/pm80xx_hwi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/scsi/pm8001/pm80xx_hwi.c b/drivers/scsi/pm8001/pm80xx_hwi.c
+> index 98dcdbd146d5..d1d95f1a2c6a 100644
+> --- a/drivers/scsi/pm8001/pm80xx_hwi.c
+> +++ b/drivers/scsi/pm8001/pm80xx_hwi.c
+> @@ -2377,7 +2377,7 @@ mpi_sata_completion(struct pm8001_hba_info *pm8001_ha, void *piomb)
+>                                 ts->buf_valid_size = sizeof(*resp);
+>                         } else
+>                                 PM8001_IO_DBG(pm8001_ha,
+> -                                       pm8001_printk("response to large\n"));
+> +                                       pm8001_printk("response too large\n"));
+>                 }
+>                 if (pm8001_dev)
+>                         pm8001_dev->running_req--;
+> --
+> 2.24.0
+>

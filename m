@@ -2,50 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C67E1496A2
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Jan 2020 17:33:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 94E341497C0
+	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Jan 2020 21:20:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726232AbgAYQdB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 25 Jan 2020 11:33:01 -0500
-Received: from zeniv.linux.org.uk ([195.92.253.2]:33922 "EHLO
-        ZenIV.linux.org.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725710AbgAYQdB (ORCPT
+        id S1727177AbgAYUUY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 25 Jan 2020 15:20:24 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:43472 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726454AbgAYUUY (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 25 Jan 2020 11:33:01 -0500
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1ivOMd-002TGu-VY; Sat, 25 Jan 2020 16:32:52 +0000
-Date:   Sat, 25 Jan 2020 16:32:51 +0000
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Kate Stewart <kstewart@linuxfoundation.org>,
-        Enrico Weigelt <info@metux.net>, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] fs/adfs: bigdir: Fix an error code in adfs_fplus_read()
-Message-ID: <20200125163251.GL23230@ZenIV.linux.org.uk>
-References: <20200124101537.z6n242eovocfbdha@kili.mountain>
- <20200125092930.GQ25745@shell.armlinux.org.uk>
+        Sat, 25 Jan 2020 15:20:24 -0500
+Received: from [82.43.126.140] (helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ivRun-0001hK-Ro; Sat, 25 Jan 2020 20:20:21 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Jean Delvare <jdelvare@suse.com>, linux-i2c@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] i2c: parport: fix spelling mistake: "Atmost" -> "At most"
+Date:   Sat, 25 Jan 2020 20:20:20 +0000
+Message-Id: <20200125202020.12861-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200125092930.GQ25745@shell.armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Jan 25, 2020 at 09:29:30AM +0000, Russell King - ARM Linux admin wrote:
-> On Fri, Jan 24, 2020 at 01:15:37PM +0300, Dan Carpenter wrote:
-> > This code accidentally returns success, but it should return the
-> > -EIO error code from adfs_fplus_validate_header().
-> > 
-> > Fixes: d79288b4f61b ("fs/adfs: bigdir: calculate and validate directory checkbyte")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> 
-> Good catch.
-> 
-> Acked-by: Russell King <rmk+kernel@armlinux.org.uk>
-> 
-> Al, please apply, thanks.
+From: Colin Ian King <colin.king@canonical.com>
 
-Applied and pushed out.
+There is a spelling mistake in a module parameter description.
+Fix it.
+
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/i2c/busses/i2c-parport.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/i2c/busses/i2c-parport.c b/drivers/i2c/busses/i2c-parport.c
+index f8f94a25af26..81eb441b2387 100644
+--- a/drivers/i2c/busses/i2c-parport.c
++++ b/drivers/i2c/busses/i2c-parport.c
+@@ -129,7 +129,7 @@ static int parport[MAX_DEVICE] = {0, -1, -1, -1};
+ module_param_array(parport, int, NULL, 0);
+ MODULE_PARM_DESC(parport,
+ 		 "List of parallel ports to bind to, by index.\n"
+-		 " Atmost " __stringify(MAX_DEVICE) " devices are supported.\n"
++		 " At most " __stringify(MAX_DEVICE) " devices are supported.\n"
+ 		 " Default is one device connected to parport0.\n"
+ );
+ 
+-- 
+2.24.0
+

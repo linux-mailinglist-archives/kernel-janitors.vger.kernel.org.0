@@ -2,142 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 20B991497C7
-	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Jan 2020 21:26:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D3AC61497E8
+	for <lists+kernel-janitors@lfdr.de>; Sat, 25 Jan 2020 22:19:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727278AbgAYU0T (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 25 Jan 2020 15:26:19 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:43541 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726448AbgAYU0S (ORCPT
+        id S1727699AbgAYVS4 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 25 Jan 2020 16:18:56 -0500
+Received: from smtp12.smtpout.orange.fr ([80.12.242.134]:49920 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726780AbgAYVS4 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 25 Jan 2020 15:26:18 -0500
-Received: from [82.43.126.140] (helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1ivS0T-00022J-I3; Sat, 25 Jan 2020 20:26:13 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Evan Quan <evan.quan@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>, amd-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/amd/powerplay: fix spelling mistake "Attemp" -> "Attempt"
-Date:   Sat, 25 Jan 2020 20:26:13 +0000
-Message-Id: <20200125202613.13448-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
+        Sat, 25 Jan 2020 16:18:56 -0500
+Received: from localhost.localdomain ([92.140.214.230])
+        by mwinf5d35 with ME
+        id ulJo210054ypjRG03lJoUA; Sat, 25 Jan 2020 22:18:53 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sat, 25 Jan 2020 22:18:53 +0100
+X-ME-IP: 92.140.214.230
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     jiri@mellanox.com, idosch@mellanox.com, davem@davemloft.net,
+        vadimp@mellanox.com
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] mlxsw: minimal: Fix an error handling path in 'mlxsw_m_port_create()'
+Date:   Sat, 25 Jan 2020 22:18:47 +0100
+Message-Id: <20200125211847.12755-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+An 'alloc_etherdev()' called is not ballanced by a corresponding
+'free_netdev()' call in one error handling path.
 
-There are several spelling mistakes in PP_ASSERT_WITH_CODE messages.
-Fix these.
+Slighly reorder the error handling code to catch the missed case.
 
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+Fixes: c100e47caa8e ("mlxsw: minimal: Add ethtool support")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
- drivers/gpu/drm/amd/powerplay/smumgr/vega12_smumgr.c | 12 ++++++------
- drivers/gpu/drm/amd/powerplay/smumgr/vega20_smumgr.c | 12 ++++++------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/minimal.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/powerplay/smumgr/vega12_smumgr.c b/drivers/gpu/drm/amd/powerplay/smumgr/vega12_smumgr.c
-index a3915bfcce81..275dbf65f1a0 100644
---- a/drivers/gpu/drm/amd/powerplay/smumgr/vega12_smumgr.c
-+++ b/drivers/gpu/drm/amd/powerplay/smumgr/vega12_smumgr.c
-@@ -128,20 +128,20 @@ int vega12_enable_smc_features(struct pp_hwmgr *hwmgr,
- 	if (enable) {
- 		PP_ASSERT_WITH_CODE(smu9_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_EnableSmuFeaturesLow, smu_features_low) == 0,
--				"[EnableDisableSMCFeatures] Attemp to enable SMU features Low failed!",
-+				"[EnableDisableSMCFeatures] Attempt to enable SMU features Low failed!",
- 				return -EINVAL);
- 		PP_ASSERT_WITH_CODE(smu9_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_EnableSmuFeaturesHigh, smu_features_high) == 0,
--				"[EnableDisableSMCFeatures] Attemp to enable SMU features High failed!",
-+				"[EnableDisableSMCFeatures] Attempt to enable SMU features High failed!",
- 				return -EINVAL);
- 	} else {
- 		PP_ASSERT_WITH_CODE(smu9_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_DisableSmuFeaturesLow, smu_features_low) == 0,
--				"[EnableDisableSMCFeatures] Attemp to disable SMU features Low failed!",
-+				"[EnableDisableSMCFeatures] Attempt to disable SMU features Low failed!",
- 				return -EINVAL);
- 		PP_ASSERT_WITH_CODE(smu9_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_DisableSmuFeaturesHigh, smu_features_high) == 0,
--				"[EnableDisableSMCFeatures] Attemp to disable SMU features High failed!",
-+				"[EnableDisableSMCFeatures] Attempt to disable SMU features High failed!",
- 				return -EINVAL);
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/minimal.c b/drivers/net/ethernet/mellanox/mlxsw/minimal.c
+index 2b543911ae00..c4caeeadcba9 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/minimal.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/minimal.c
+@@ -213,8 +213,8 @@ mlxsw_m_port_create(struct mlxsw_m *mlxsw_m, u8 local_port, u8 module)
  
-@@ -158,13 +158,13 @@ int vega12_get_enabled_smc_features(struct pp_hwmgr *hwmgr,
- 
- 	PP_ASSERT_WITH_CODE(smu9_send_msg_to_smc(hwmgr,
- 			PPSMC_MSG_GetEnabledSmuFeaturesLow) == 0,
--			"[GetEnabledSMCFeatures] Attemp to get SMU features Low failed!",
-+			"[GetEnabledSMCFeatures] Attempt to get SMU features Low failed!",
- 			return -EINVAL);
- 	smc_features_low = smu9_get_argument(hwmgr);
- 
- 	PP_ASSERT_WITH_CODE(smu9_send_msg_to_smc(hwmgr,
- 			PPSMC_MSG_GetEnabledSmuFeaturesHigh) == 0,
--			"[GetEnabledSMCFeatures] Attemp to get SMU features High failed!",
-+			"[GetEnabledSMCFeatures] Attempt to get SMU features High failed!",
- 			return -EINVAL);
- 	smc_features_high = smu9_get_argument(hwmgr);
- 
-diff --git a/drivers/gpu/drm/amd/powerplay/smumgr/vega20_smumgr.c b/drivers/gpu/drm/amd/powerplay/smumgr/vega20_smumgr.c
-index 0db57fb83d30..49e5ef3e3876 100644
---- a/drivers/gpu/drm/amd/powerplay/smumgr/vega20_smumgr.c
-+++ b/drivers/gpu/drm/amd/powerplay/smumgr/vega20_smumgr.c
-@@ -316,20 +316,20 @@ int vega20_enable_smc_features(struct pp_hwmgr *hwmgr,
- 	if (enable) {
- 		PP_ASSERT_WITH_CODE((ret = vega20_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_EnableSmuFeaturesLow, smu_features_low)) == 0,
--				"[EnableDisableSMCFeatures] Attemp to enable SMU features Low failed!",
-+				"[EnableDisableSMCFeatures] Attempt to enable SMU features Low failed!",
- 				return ret);
- 		PP_ASSERT_WITH_CODE((ret = vega20_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_EnableSmuFeaturesHigh, smu_features_high)) == 0,
--				"[EnableDisableSMCFeatures] Attemp to enable SMU features High failed!",
-+				"[EnableDisableSMCFeatures] Attempt to enable SMU features High failed!",
- 				return ret);
- 	} else {
- 		PP_ASSERT_WITH_CODE((ret = vega20_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_DisableSmuFeaturesLow, smu_features_low)) == 0,
--				"[EnableDisableSMCFeatures] Attemp to disable SMU features Low failed!",
-+				"[EnableDisableSMCFeatures] Attempt to disable SMU features Low failed!",
- 				return ret);
- 		PP_ASSERT_WITH_CODE((ret = vega20_send_msg_to_smc_with_parameter(hwmgr,
- 				PPSMC_MSG_DisableSmuFeaturesHigh, smu_features_high)) == 0,
--				"[EnableDisableSMCFeatures] Attemp to disable SMU features High failed!",
-+				"[EnableDisableSMCFeatures] Attempt to disable SMU features High failed!",
- 				return ret);
- 	}
- 
-@@ -347,12 +347,12 @@ int vega20_get_enabled_smc_features(struct pp_hwmgr *hwmgr,
- 
- 	PP_ASSERT_WITH_CODE((ret = vega20_send_msg_to_smc(hwmgr,
- 			PPSMC_MSG_GetEnabledSmuFeaturesLow)) == 0,
--			"[GetEnabledSMCFeatures] Attemp to get SMU features Low failed!",
-+			"[GetEnabledSMCFeatures] Attempt to get SMU features Low failed!",
- 			return ret);
- 	smc_features_low = vega20_get_argument(hwmgr);
- 	PP_ASSERT_WITH_CODE((ret = vega20_send_msg_to_smc(hwmgr,
- 			PPSMC_MSG_GetEnabledSmuFeaturesHigh)) == 0,
--			"[GetEnabledSMCFeatures] Attemp to get SMU features High failed!",
-+			"[GetEnabledSMCFeatures] Attempt to get SMU features High failed!",
- 			return ret);
- 	smc_features_high = vega20_get_argument(hwmgr);
- 
+ err_register_netdev:
+ 	mlxsw_m->ports[local_port] = NULL;
+-	free_netdev(dev);
+ err_dev_addr_get:
++	free_netdev(dev);
+ err_alloc_etherdev:
+ 	mlxsw_core_port_fini(mlxsw_m->core, local_port);
+ 	return err;
 -- 
-2.24.0
+2.20.1
 

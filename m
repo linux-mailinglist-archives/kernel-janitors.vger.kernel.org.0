@@ -2,77 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9ACBA1499A1
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 09:23:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A08901499CA
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 10:20:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727221AbgAZITp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 Jan 2020 03:19:45 -0500
-Received: from out3-smtp.messagingengine.com ([66.111.4.27]:48247 "EHLO
-        out3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726438AbgAZITp (ORCPT
+        id S1726725AbgAZJUz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Jan 2020 04:20:55 -0500
+Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:45913 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726303AbgAZJUz (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 Jan 2020 03:19:45 -0500
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id D9E0E21EC3;
-        Sun, 26 Jan 2020 03:19:43 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Sun, 26 Jan 2020 03:19:43 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-type:date:from:in-reply-to
-        :message-id:mime-version:references:subject:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=OwfykH
-        ST6emhj2qWXbkJDIvppm6lZI4tYBHZDFu02j4=; b=vY8KB5IY8uC3RgCweCMkct
-        Ts7HKVZonwawtRHzi7wVju60LoK3uPkvMx+h4GR9XARhiQX6+loHiOGlIv3Lpbqv
-        eP4Lz0KIxnekEMxlgCtmdWLbIQLNJM6PFY1bg6VO3BwJhL4kxb2InqhzgByY7BnA
-        3RuhQZ86tzsYhgBgxXAMCkaC/gbxRBa5f+x55axdUGZRgYNtvK7tVtAqJyErJnON
-        90ZLLxJjv3caQflx4eqfI6C3Ne7YLzC4vuqMbOGONuYQktE6i4L5GJJHvvH6ne7s
-        RmXlfb8Z5VscKzuaOSBFYyBP9809ZVXJFqLdLcbhuAjAviU/HTj4S1n1cJMtxtpQ
-        ==
-X-ME-Sender: <xms:n0stXtEj2g4vXOty7h8TYiIJWo3kNQBZavIcJlonLlYAgTSJMbe7Iw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedrvdelgddvgecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepkfguohcuufgt
-    hhhimhhmvghluceoihguohhstghhsehiughoshgthhdrohhrgheqnecukfhppeduleefrd
-    egjedrudeihedrvdehudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgr
-    ihhlfhhrohhmpehiughoshgthhesihguohhstghhrdhorhhg
-X-ME-Proxy: <xmx:n0stXjl6kD2gxBiW5EXnrQrbrvBnzJyEIw79kSbAlmnKyh_G4udnaQ>
-    <xmx:n0stXsOd8bls5iQM77WU5ZOGQ_UAtXtbENyGVLhPa5E5OGEA9UKL7A>
-    <xmx:n0stXmFghZwLwr4iQQrFFpkzxjTNQEMsRonbImnaeV1yLp9u4w2ELw>
-    <xmx:n0stXnZLoq0fNxvP5g2M-q2eAPmmfMgXScRr1WRcaYgxYIGq1cXgXQ>
-Received: from localhost (unknown [193.47.165.251])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 3B81430673CF;
-        Sun, 26 Jan 2020 03:19:43 -0500 (EST)
-Date:   Sun, 26 Jan 2020 10:19:41 +0200
-From:   Ido Schimmel <idosch@idosch.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc:     jiri@mellanox.com, idosch@mellanox.com, davem@davemloft.net,
-        vadimp@mellanox.com, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] mlxsw: minimal: Fix an error handling path in
- 'mlxsw_m_port_create()'
-Message-ID: <20200126081941.GA794072@splinter>
-References: <20200125211847.12755-1-christophe.jaillet@wanadoo.fr>
+        Sun, 26 Jan 2020 04:20:55 -0500
+Received: from localhost.localdomain ([93.23.15.185])
+        by mwinf5d07 with ME
+        id uxLl2100n3zZxD103xLmMA; Sun, 26 Jan 2020 10:20:54 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 26 Jan 2020 10:20:54 +0100
+X-ME-IP: 93.23.15.185
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     claudiu.manoil@nxp.com, davem@davemloft.net
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] gianfar: Allocate the correct number of rx queues in 'gfar_of_init()'
+Date:   Sun, 26 Jan 2020 10:20:28 +0100
+Message-Id: <20200126092028.14246-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200125211847.12755-1-christophe.jaillet@wanadoo.fr>
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sat, Jan 25, 2020 at 10:18:47PM +0100, Christophe JAILLET wrote:
-> An 'alloc_etherdev()' called is not ballanced by a corresponding
-> 'free_netdev()' call in one error handling path.
-> 
-> Slighly reorder the error handling code to catch the missed case.
-> 
-> Fixes: c100e47caa8e ("mlxsw: minimal: Add ethtool support")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+We can get values for rx and tx queues from "fsl,num_rx_queues" and
+"fsl,num_tx_queues". However, when 'alloc_etherdev_mq()' is called, the
+value for "tx" is used for both.
 
-For net:
+Use 'alloc_etherdev_mqs()' instead.
 
-Reviewed-by: Ido Schimmel <idosch@mellanox.com>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+WARNING: This patch is purely speculative!
 
-Thanks!
+I don't fully understand the code, and tx and rx queues seem to be
+allocated by 'gfar_alloc_[rt]x_queues()' and handled with priv-> fields.
+I don't know the relationship between queues provided by the core, and the
+ones specificly handled in this driver.
+
+'netif_set_real_num_rx_queues()' a few lines below is also spurious to me.
+If "fsl,num_rx_queues" > "fsl,num_tx_queues" it will return an error and
+things then look out of synch (i.e. 'priv->num_rx_queues' is set to a value
+bigger than what is allocated by core, that is to say the one from
+'priv->num_tx_queues')
+
+If my assumptions are correct, I guess that the call to
+'netif_set_real_num_rx_queues()' is useless
+
+
+Sorry for the noise if I'm completly wrong.
+In such a case, some explanation would be appreciated.
+---
+ drivers/net/ethernet/freescale/gianfar.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/freescale/gianfar.c b/drivers/net/ethernet/freescale/gianfar.c
+index 72868a28b621..5e934069682e 100644
+--- a/drivers/net/ethernet/freescale/gianfar.c
++++ b/drivers/net/ethernet/freescale/gianfar.c
+@@ -708,7 +708,7 @@ static int gfar_of_init(struct platform_device *ofdev, struct net_device **pdev)
+ 		return -EINVAL;
+ 	}
+ 
+-	*pdev = alloc_etherdev_mq(sizeof(*priv), num_tx_qs);
++	*pdev = alloc_etherdev_mqs(sizeof(*priv), num_tx_qs, num_rx_qs);
+ 	dev = *pdev;
+ 	if (NULL == dev)
+ 		return -ENOMEM;
+-- 
+2.20.1
+

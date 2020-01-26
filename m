@@ -2,84 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 96D24149C82
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 20:23:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 724ED149D20
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 23:05:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727233AbgAZTXE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 Jan 2020 14:23:04 -0500
-Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:63695 "EHLO
-        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726382AbgAZTXE (ORCPT
+        id S1726599AbgAZWFy (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Jan 2020 17:05:54 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:37060 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726438AbgAZWFy (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 Jan 2020 14:23:04 -0500
-X-IronPort-AV: E=Sophos;i="5.70,366,1574118000"; 
-   d="scan'208";a="433065460"
-Received: from ip-241.net-89-2-7.rev.numericable.fr (HELO hadrien) ([89.2.7.241])
-  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Jan 2020 20:23:02 +0100
-Date:   Sun, 26 Jan 2020 20:23:01 +0100 (CET)
-From:   Julia Lawall <julia.lawall@inria.fr>
-X-X-Sender: jll@hadrien
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-cc:     Kernel Janitors <kernel-janitors@vger.kernel.org>,
-        David Miller <davem@davemloft.net>,
-        Dan Carpenter <dan.carpenter@oracle.com>
-Subject: Re: [RFC] Simplify flush_workqueue/destroy_workqueue pattern
-In-Reply-To: <c610718c-4e98-749b-13a8-c23f57988383@wanadoo.fr>
-Message-ID: <alpine.DEB.2.21.2001262016340.2576@hadrien>
-References: <c610718c-4e98-749b-13a8-c23f57988383@wanadoo.fr>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        Sun, 26 Jan 2020 17:05:54 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ivq2P-0008LG-Hh; Sun, 26 Jan 2020 22:05:49 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        devel@driverdev.osuosl.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] staging: rtl8723bs: fix copy of overlapping memory
+Date:   Sun, 26 Jan 2020 22:05:49 +0000
+Message-Id: <20200126220549.9849-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323329-2016873295-1580066582=:2576"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Colin Ian King <colin.king@canonical.com>
 
---8323329-2016873295-1580066582=:2576
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+Currently the rtw_sprintf prints the contents of thread_name
+onto thread_name and this can lead to a potential copy of a
+string over itself. Avoid this by printing the literal string RTWHALXT
+instread of the contents of thread_name.
 
-On Sun, 26 Jan 2020, Christophe JAILLET wrote:
+Addresses-Coverity: ("copy of overlapping memory")
+Fixes: 554c0a3abf21 ("staging: Add rtl8723bs sdio wifi driver")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/staging/rtl8723bs/hal/rtl8723bs_xmit.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-> Hi,
->
-> According to description of 'destroy_workqueue()':
->    "Safely destroy a workqueue. All work currently pending will be done first"
->
-> Looking deeper at the code, it turns out that the call chain is:
->        destroy_workqueue
->    --> drain_workqueue
->    --> flush_workqueue
->
-> So, calling explicitly 'flush_workqueue()' before 'destroy_workqueue()' looks
-> redundant.
->
-> Using following coccinelle script spots ~90 occurrences, in ~80 files, which
-> can be simplified.
->
-> >>>>>>>>>>>>>>>
-> @r@
-> expression e;
-> @@
-> -    flush_workqueue(e);
->      destroy_workqueue(e);
-> >>>>>>>>>>>>>>>
->
-> This is way to much for me because my patch submission process is mainly
-> manual.
->
-> If you agree with my analysis, think that removing these redundant calls is
-> useful and have a much more automated patch submission process than me (or
-> just have time :), please feel free to submit patches.
+diff --git a/drivers/staging/rtl8723bs/hal/rtl8723bs_xmit.c b/drivers/staging/rtl8723bs/hal/rtl8723bs_xmit.c
+index b44e902ed338..890e0ecbeb2e 100644
+--- a/drivers/staging/rtl8723bs/hal/rtl8723bs_xmit.c
++++ b/drivers/staging/rtl8723bs/hal/rtl8723bs_xmit.c
+@@ -476,14 +476,13 @@ int rtl8723bs_xmit_thread(void *context)
+ 	s32 ret;
+ 	struct adapter *padapter;
+ 	struct xmit_priv *pxmitpriv;
+-	u8 thread_name[20] = "RTWHALXT";
+-
++	u8 thread_name[20];
+ 
+ 	ret = _SUCCESS;
+ 	padapter = context;
+ 	pxmitpriv = &padapter->xmitpriv;
+ 
+-	rtw_sprintf(thread_name, 20, "%s-"ADPT_FMT, thread_name, ADPT_ARG(padapter));
++	rtw_sprintf(thread_name, 20, "RTWHALXT-" ADPT_FMT, ADPT_ARG(padapter));
+ 	thread_enter(thread_name);
+ 
+ 	DBG_871X("start "FUNC_ADPT_FMT"\n", FUNC_ADPT_ARG(padapter));
+-- 
+2.24.0
 
-The Coccinelle distriubution contains a program splitpatch (make
-splitpatch in the tools subdirectory) that can be used for cutting up
-patches and sending them to their various maintainers.  There is a file
-tools/README.splitpatch that explains how to use it (although I am not
-sure that this README is completely up to date...).
-
-julia
---8323329-2016873295-1580066582=:2576--

@@ -2,76 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C354149B27
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 15:40:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 67AA5149B5C
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 16:17:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728235AbgAZOks (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 Jan 2020 09:40:48 -0500
-Received: from mail26.static.mailgun.info ([104.130.122.26]:45764 "EHLO
-        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727084AbgAZOkr (ORCPT
+        id S1726323AbgAZPRv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Jan 2020 10:17:51 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:32834 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725907AbgAZPRv (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 Jan 2020 09:40:47 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580049646; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=9sMjeGzVmtWR/JgOPqhY5RyLWmR/C12M4XwDVCgFpws=;
- b=GB8uQ35vK0+6+brhZ9gi89Kt6iBmgjuYiE7rrD8bqharxIZho2dCsjr/Tbhojlk2OOurORuY
- FpNisdoV51XZfjw9/rOJL5ak+wPCD0AHdS2nODLnVA57VIJdsRbuK+cFDezdTIUvN8dB/n0L
- NyYMDnkupGGGtH3lTdv/Il2mVso=
-X-Mailgun-Sending-Ip: 104.130.122.26
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e2da4ec.7f0f2cd2d378-smtp-out-n03;
- Sun, 26 Jan 2020 14:40:44 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 3971CC447A1; Sun, 26 Jan 2020 14:40:44 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 138E0C43383;
-        Sun, 26 Jan 2020 14:40:41 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 138E0C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
+        Sun, 26 Jan 2020 10:17:51 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ivjfX-00088L-B9; Sun, 26 Jan 2020 15:17:47 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] scsi: mvsas: ensure loop counter phy_no  does not wrap and cause an infinite loop
+Date:   Sun, 26 Jan 2020 15:17:47 +0000
+Message-Id: <20200126151747.33320-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH] wcn36xx: rockchip: fix spelling mistake "to" -> "too"
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200123005117.2833765-1-colin.king@canonical.com>
-References: <20200123005117.2833765-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200126144044.3971CC447A1@smtp.codeaurora.org>
-Date:   Sun, 26 Jan 2020 14:40:44 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+From: Colin Ian King <colin.king@canonical.com>
 
-> There is a spelling mistake in a wcn36xx_err message. Fix it.
-> 
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+The loop counter phy_no is a u8 where as the upper limit of the loop
+is a u32. In the event that upper limit is greater than 255 we end
+up with an infinite loop since phy_no will wrap around an never reach
+upper loop limit. Fix this by making phy_no a u32.
 
-Patch applied to ath-next branch of ath.git, thanks.
+Addresses-Coverity: ("Infinite loop")
+Fixes: 20b09c2992fe ("[SCSI] mvsas: add support for 94xx; layout change; bug fixes")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/scsi/mvsas/mv_sas.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-d7809bd9eae6 wcn36xx: fix spelling mistake "to" -> "too"
-
+diff --git a/drivers/scsi/mvsas/mv_sas.c b/drivers/scsi/mvsas/mv_sas.c
+index a920eced92ec..9c03f23bde54 100644
+--- a/drivers/scsi/mvsas/mv_sas.c
++++ b/drivers/scsi/mvsas/mv_sas.c
+@@ -1940,7 +1940,7 @@ static void mvs_sig_time_out(struct timer_list *t)
+ {
+ 	struct mvs_phy *phy = from_timer(phy, t, timer);
+ 	struct mvs_info *mvi = phy->mvi;
+-	u8 phy_no;
++	u32 phy_no;
+ 
+ 	for (phy_no = 0; phy_no < mvi->chip->n_phy; phy_no++) {
+ 		if (&mvi->phy[phy_no] == phy) {
 -- 
-https://patchwork.kernel.org/patch/11346629/
+2.24.0
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

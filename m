@@ -2,70 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6894C149847
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 01:10:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ACBA1499A1
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 09:23:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728266AbgAZAKB (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sat, 25 Jan 2020 19:10:01 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:45648 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727307AbgAZAKB (ORCPT
+        id S1727221AbgAZITp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Jan 2020 03:19:45 -0500
+Received: from out3-smtp.messagingengine.com ([66.111.4.27]:48247 "EHLO
+        out3-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726438AbgAZITp (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sat, 25 Jan 2020 19:10:01 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1ivVUx-0006OK-4l; Sun, 26 Jan 2020 00:09:55 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Stanislaw Gruszka <stf_xl@wp.pl>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Meenakshi Venkataraman <meenakshi.venkataraman@intel.com>,
-        Wey-Yi Guy <wey-yi.w.guy@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] iwlegacy: ensure loop counter addr does not wrap and cause an infinite loop
-Date:   Sun, 26 Jan 2020 00:09:54 +0000
-Message-Id: <20200126000954.22807-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
+        Sun, 26 Jan 2020 03:19:45 -0500
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.nyi.internal (Postfix) with ESMTP id D9E0E21EC3;
+        Sun, 26 Jan 2020 03:19:43 -0500 (EST)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Sun, 26 Jan 2020 03:19:43 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-type:date:from:in-reply-to
+        :message-id:mime-version:references:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; bh=OwfykH
+        ST6emhj2qWXbkJDIvppm6lZI4tYBHZDFu02j4=; b=vY8KB5IY8uC3RgCweCMkct
+        Ts7HKVZonwawtRHzi7wVju60LoK3uPkvMx+h4GR9XARhiQX6+loHiOGlIv3Lpbqv
+        eP4Lz0KIxnekEMxlgCtmdWLbIQLNJM6PFY1bg6VO3BwJhL4kxb2InqhzgByY7BnA
+        3RuhQZ86tzsYhgBgxXAMCkaC/gbxRBa5f+x55axdUGZRgYNtvK7tVtAqJyErJnON
+        90ZLLxJjv3caQflx4eqfI6C3Ne7YLzC4vuqMbOGONuYQktE6i4L5GJJHvvH6ne7s
+        RmXlfb8Z5VscKzuaOSBFYyBP9809ZVXJFqLdLcbhuAjAviU/HTj4S1n1cJMtxtpQ
+        ==
+X-ME-Sender: <xms:n0stXtEj2g4vXOty7h8TYiIJWo3kNQBZavIcJlonLlYAgTSJMbe7Iw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedrvdelgddvgecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepkfguohcuufgt
+    hhhimhhmvghluceoihguohhstghhsehiughoshgthhdrohhrgheqnecukfhppeduleefrd
+    egjedrudeihedrvdehudenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgr
+    ihhlfhhrohhmpehiughoshgthhesihguohhstghhrdhorhhg
+X-ME-Proxy: <xmx:n0stXjl6kD2gxBiW5EXnrQrbrvBnzJyEIw79kSbAlmnKyh_G4udnaQ>
+    <xmx:n0stXsOd8bls5iQM77WU5ZOGQ_UAtXtbENyGVLhPa5E5OGEA9UKL7A>
+    <xmx:n0stXmFghZwLwr4iQQrFFpkzxjTNQEMsRonbImnaeV1yLp9u4w2ELw>
+    <xmx:n0stXnZLoq0fNxvP5g2M-q2eAPmmfMgXScRr1WRcaYgxYIGq1cXgXQ>
+Received: from localhost (unknown [193.47.165.251])
+        by mail.messagingengine.com (Postfix) with ESMTPA id 3B81430673CF;
+        Sun, 26 Jan 2020 03:19:43 -0500 (EST)
+Date:   Sun, 26 Jan 2020 10:19:41 +0200
+From:   Ido Schimmel <idosch@idosch.org>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc:     jiri@mellanox.com, idosch@mellanox.com, davem@davemloft.net,
+        vadimp@mellanox.com, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] mlxsw: minimal: Fix an error handling path in
+ 'mlxsw_m_port_create()'
+Message-ID: <20200126081941.GA794072@splinter>
+References: <20200125211847.12755-1-christophe.jaillet@wanadoo.fr>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200125211847.12755-1-christophe.jaillet@wanadoo.fr>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+On Sat, Jan 25, 2020 at 10:18:47PM +0100, Christophe JAILLET wrote:
+> An 'alloc_etherdev()' called is not ballanced by a corresponding
+> 'free_netdev()' call in one error handling path.
+> 
+> Slighly reorder the error handling code to catch the missed case.
+> 
+> Fixes: c100e47caa8e ("mlxsw: minimal: Add ethtool support")
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-The loop counter addr is a u16 where as the upper limit of the loop
-is a an int. In the unlikely event that the il->cfg->eeprom_size is
-greater than 64K then we end up with an infinite loop since addr will
-wrap around an never reach upper loop limit. Fix this by making addr
-an int.
+For net:
 
-Addresses-Coverity: ("Infinite loop")
-Fixes: be663ab67077 ("iwlwifi: split the drivers for agn and legacy devices 3945/4965")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
----
- drivers/net/wireless/intel/iwlegacy/common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Reviewed-by: Ido Schimmel <idosch@mellanox.com>
 
-diff --git a/drivers/net/wireless/intel/iwlegacy/common.c b/drivers/net/wireless/intel/iwlegacy/common.c
-index d966b29b45ee..348c17ce72f5 100644
---- a/drivers/net/wireless/intel/iwlegacy/common.c
-+++ b/drivers/net/wireless/intel/iwlegacy/common.c
-@@ -699,7 +699,7 @@ il_eeprom_init(struct il_priv *il)
- 	u32 gp = _il_rd(il, CSR_EEPROM_GP);
- 	int sz;
- 	int ret;
--	u16 addr;
-+	int addr;
- 
- 	/* allocate eeprom */
- 	sz = il->cfg->eeprom_size;
--- 
-2.24.0
-
+Thanks!

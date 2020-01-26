@@ -2,30 +2,30 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E00F149A3E
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 11:48:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D3B7149A41
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 11:51:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387416AbgAZKsk (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 Jan 2020 05:48:40 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:50071 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726571AbgAZKsg (ORCPT
+        id S1729337AbgAZKvo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Jan 2020 05:51:44 -0500
+Received: from mail26.static.mailgun.info ([104.130.122.26]:39394 "EHLO
+        mail26.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726571AbgAZKvn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 Jan 2020 05:48:36 -0500
+        Sun, 26 Jan 2020 05:51:43 -0500
 DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580035715; h=Date: Message-Id: Cc: To: References:
+ s=smtp; t=1580035903; h=Date: Message-Id: Cc: To: References:
  In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=6dvZlOi6F0EoCpr+/HJGOxTRA67L4SDOxF1/MIi3hmM=;
- b=S+WVMguowmeZ2la/kuBisiJuF3PxYBlDKakMXuoELTt3q5vywujy9I0lXsYY0rWDYgSjW41r
- aReqD2+32c6uu6umcvKFRaFf25LcZeI2PoaFZ7LdM1Kl+7KIbUw4J3E+UNoAs5amWiKWcKRT
- epQbQwlXU6Z3LorxCE4yaVlUuYQ=
-X-Mailgun-Sending-Ip: 104.130.122.25
+ Content-Type: Sender; bh=jh3KcYIcK3fpyqI5D5qIbgxY95iJ5LcxRI3DTIlMrss=;
+ b=pd5gqTi10Rm6vojFQb+3zWAnHkerKHclgFeKQuRrXJrRZtWuc7zfpGrnmMhT5O7j364znKmp
+ NHoVaTn1nzuGp9rKzjIebiFyoA04qVmj/wjCMxdwvXrGbl+kwu6yVhDEjJDtRoo5iuPsz5Im
+ 9K3EE9jqYv9BHBWf35G5MdjyX5o=
+X-Mailgun-Sending-Ip: 104.130.122.26
 X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
 Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e2d6e82.7fe8bb133458-smtp-out-n03;
- Sun, 26 Jan 2020 10:48:34 -0000 (UTC)
+ by mxa.mailgun.org with ESMTP id 5e2d6f3e.7f52250f6ea0-smtp-out-n01;
+ Sun, 26 Jan 2020 10:51:42 -0000 (UTC)
 Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 26455C4479C; Sun, 26 Jan 2020 10:48:34 +0000 (UTC)
+        id F0F6DC433CB; Sun, 26 Jan 2020 10:51:41 +0000 (UTC)
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
         aws-us-west-2-caf-mail-1.web.codeaurora.org
 X-Spam-Level: 
@@ -35,52 +35,51 @@ Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
         (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 7D7C8C433CB;
-        Sun, 26 Jan 2020 10:48:31 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 7D7C8C433CB
+        by smtp.codeaurora.org (Postfix) with ESMTPSA id B3051C43383;
+        Sun, 26 Jan 2020 10:51:39 +0000 (UTC)
+DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org B3051C43383
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
 Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] ath11k: avoid null pointer dereference when pointer
- band is null
+Subject: Re: [PATCH v2] ath11k: fix up some error paths
 From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200111090824.9999-1-colin.king@canonical.com>
-References: <20200111090824.9999-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     "David S . Miller" <davem@davemloft.net>,
-        John Crispin <john@phrozen.org>,
-        Shashidhar Lakkavalli <slakkavalli@datto.com>,
-        ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        netdev@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+In-Reply-To: <20200115174652.dvkmznhfvjaoc47l@kili.mountain>
+References: <20200115174652.dvkmznhfvjaoc47l@kili.mountain>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     ath11k@lists.infradead.org, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, John Crispin <john@phrozen.org>,
+        Vasanthakumar Thiagarajan <vthiagar@codeaurora.org>,
+        Anilkumar Kolli <akolli@codeaurora.org>,
+        Bhagavathi Perumal S <bperumal@codeaurora.org>
 User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200126104834.26455C4479C@smtp.codeaurora.org>
-Date:   Sun, 26 Jan 2020 10:48:34 +0000 (UTC)
+Message-Id: <20200126105141.F0F6DC433CB@smtp.codeaurora.org>
+Date:   Sun, 26 Jan 2020 10:51:41 +0000 (UTC)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
+Dan Carpenter <dan.carpenter@oracle.com> wrote:
 
-> In the unlikely event that cap->supported_bands has neither
-> WMI_HOST_WLAN_2G_CAP set or WMI_HOST_WLAN_5G_CAP set then pointer
-> band is null and a null dereference occurs when assigning
-> band->n_iftype_data.  Move the assignment to the if blocks to
-> avoid this.  Cleans up static analysis warnings.
+> There are two error paths where "ret" wasn't set.  Also one error path
+> we set the error code to -EINVAL but we should just preserve the error
+> code from ath11k_hal_srng_get_entrysize().  That function only returns
+> -EINVAL so this doesn't change anything.
 > 
-> Addresses-Coverity: ("Explicit null dereference")
-> Fixes: 9f056ed8ee01 ("ath11k: add HE support")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> I removed the "ret = 0;" initializers so that hopefully GCC will be able
+> to detect these sorts of bugs in the future.
+> 
+> Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
 
 Patch applied to ath-next branch of ath.git, thanks.
 
-3b4516838eaa ath11k: avoid null pointer dereference when pointer band is null
+7195c8747e87 ath11k: fix up some error paths
 
 -- 
-https://patchwork.kernel.org/patch/11328755/
+https://patchwork.kernel.org/patch/11335489/
 
 https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

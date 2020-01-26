@@ -2,29 +2,28 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 67AA5149B5C
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 16:17:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 256EC149B89
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 16:43:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726323AbgAZPRv (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 Jan 2020 10:17:51 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:32834 "EHLO
+        id S1727084AbgAZPnC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Jan 2020 10:43:02 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:33004 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725907AbgAZPRv (ORCPT
+        with ESMTP id S1725838AbgAZPnB (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 Jan 2020 10:17:51 -0500
+        Sun, 26 Jan 2020 10:43:01 -0500
 Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <colin.king@canonical.com>)
-        id 1ivjfX-00088L-B9; Sun, 26 Jan 2020 15:17:47 +0000
+        id 1ivk3t-0000kU-Tf; Sun, 26 Jan 2020 15:42:57 +0000
 From:   Colin King <colin.king@canonical.com>
-To:     "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        linux-scsi@vger.kernel.org
+To:     Michal Simek <michal.simek@xilinx.com>,
+        linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org
 Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] scsi: mvsas: ensure loop counter phy_no  does not wrap and cause an infinite loop
-Date:   Sun, 26 Jan 2020 15:17:47 +0000
-Message-Id: <20200126151747.33320-1-colin.king@canonical.com>
+Subject: [PATCH][next] i2c: xiic: fix indentation issue
+Date:   Sun, 26 Jan 2020 15:42:57 +0000
+Message-Id: <20200126154257.41336-1-colin.king@canonical.com>
 X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
@@ -36,31 +35,27 @@ X-Mailing-List: kernel-janitors@vger.kernel.org
 
 From: Colin Ian King <colin.king@canonical.com>
 
-The loop counter phy_no is a u8 where as the upper limit of the loop
-is a u32. In the event that upper limit is greater than 255 we end
-up with an infinite loop since phy_no will wrap around an never reach
-upper loop limit. Fix this by making phy_no a u32.
+There is a statment that is indented one level too deeply, remove
+the extraneous tab.
 
-Addresses-Coverity: ("Infinite loop")
-Fixes: 20b09c2992fe ("[SCSI] mvsas: add support for 94xx; layout change; bug fixes")
 Signed-off-by: Colin Ian King <colin.king@canonical.com>
 ---
- drivers/scsi/mvsas/mv_sas.c | 2 +-
+ drivers/i2c/busses/i2c-xiic.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mvsas/mv_sas.c b/drivers/scsi/mvsas/mv_sas.c
-index a920eced92ec..9c03f23bde54 100644
---- a/drivers/scsi/mvsas/mv_sas.c
-+++ b/drivers/scsi/mvsas/mv_sas.c
-@@ -1940,7 +1940,7 @@ static void mvs_sig_time_out(struct timer_list *t)
- {
- 	struct mvs_phy *phy = from_timer(phy, t, timer);
- 	struct mvs_info *mvi = phy->mvi;
--	u8 phy_no;
-+	u32 phy_no;
+diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
+index b17d30c9ab40..90c1c362394d 100644
+--- a/drivers/i2c/busses/i2c-xiic.c
++++ b/drivers/i2c/busses/i2c-xiic.c
+@@ -261,7 +261,7 @@ static int xiic_clear_rx_fifo(struct xiic_i2c *i2c)
+ 		xiic_getreg8(i2c, XIIC_DRR_REG_OFFSET);
+ 		if (time_after(jiffies, timeout)) {
+ 			dev_err(i2c->dev, "Failed to clear rx fifo\n");
+-				return -ETIMEDOUT;
++			return -ETIMEDOUT;
+ 		}
+ 	}
  
- 	for (phy_no = 0; phy_no < mvi->chip->n_phy; phy_no++) {
- 		if (&mvi->phy[phy_no] == phy) {
 -- 
 2.24.0
 

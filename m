@@ -2,95 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36444149BE9
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 17:46:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1759149C2B
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 18:51:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727212AbgAZQqN (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 Jan 2020 11:46:13 -0500
-Received: from mail-pj1-f68.google.com ([209.85.216.68]:37024 "EHLO
-        mail-pj1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725838AbgAZQqN (ORCPT
+        id S1726771AbgAZRvP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Jan 2020 12:51:15 -0500
+Received: from smtp05.smtpout.orange.fr ([80.12.242.127]:36791 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726087AbgAZRvO (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 Jan 2020 11:46:13 -0500
-Received: by mail-pj1-f68.google.com with SMTP id m13so2119318pjb.2;
-        Sun, 26 Jan 2020 08:46:12 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=TX3rCe1oZ/mdJwXtKZ6rZXEfKMpZQ+M+MAsaxsc7U6w=;
-        b=ULsh9wHBeakSufsKgTGBo9tmeHUBc2/mJ8uIRcd7suuWZDb38Pd7/h51wpqoHRPMRA
-         cnLDM3XwpUlMT5x8c7jLI9DxJA3Ao0um9KfZz2M2nKqjIis8d4cdi9zvucKdTNGf9Ju6
-         aunroUagJ3C0kyX7G20vh0ACaxu2Pqz4jEsP2Z0+RNoxk29meKyA6zgJ+c4tCSXu6nHo
-         yS38EivjV/lsdFvSTEd55D4jm6nuqkwZuj7zLG8ve/JJJNG1sTIgPgTg+erOptFasvs6
-         5kY0LFQRyQzmHyCvrQACjiyif8k0e5Jln6i+PgndtcqFrDm33H1UziWisz4dHT2PKZg1
-         MSFw==
-X-Gm-Message-State: APjAAAUz2qkXuC9dFsM+OJw4xAAT9G2AlwFWa9uuYHtCcieWCTTWQJi0
-        yS6fy7JrvP+CFzccYa9c8JbFzCdetIo=
-X-Google-Smtp-Source: APXvYqzQtOpVlzXpQ0Wg1Lov789ffgatzhare2njb5j50oR9wPymplckuHghP/qBLIMhD0iflwQtcg==
-X-Received: by 2002:a17:902:467:: with SMTP id 94mr14072511ple.267.1580057172060;
-        Sun, 26 Jan 2020 08:46:12 -0800 (PST)
-Received: from ?IPv6:2601:647:4000:d7:6466:47b0:1887:defe? ([2601:647:4000:d7:6466:47b0:1887:defe])
-        by smtp.gmail.com with ESMTPSA id o134sm13197289pfg.137.2020.01.26.08.46.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Jan 2020 08:46:11 -0800 (PST)
-Subject: Re: [PATCH][next] scsi: megaraid_sas: fix indentation issue
-To:     Colin King <colin.king@canonical.com>,
-        Kashyap Desai <kashyap.desai@broadcom.com>,
-        Sumit Saxena <sumit.saxena@broadcom.com>,
-        Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        megaraidlinux.pdl@broadcom.com, linux-scsi@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200126154757.42530-1-colin.king@canonical.com>
-From:   Bart Van Assche <bvanassche@acm.org>
-Autocrypt: addr=bvanassche@acm.org; prefer-encrypt=mutual; keydata=
- mQENBFSOu4oBCADcRWxVUvkkvRmmwTwIjIJvZOu6wNm+dz5AF4z0FHW2KNZL3oheO3P8UZWr
- LQOrCfRcK8e/sIs2Y2D3Lg/SL7qqbMehGEYcJptu6mKkywBfoYbtBkVoJ/jQsi2H0vBiiCOy
- fmxMHIPcYxaJdXxrOG2UO4B60Y/BzE6OrPDT44w4cZA9DH5xialliWU447Bts8TJNa3lZKS1
- AvW1ZklbvJfAJJAwzDih35LxU2fcWbmhPa7EO2DCv/LM1B10GBB/oQB5kvlq4aA2PSIWkqz4
- 3SI5kCPSsygD6wKnbRsvNn2mIACva6VHdm62A7xel5dJRfpQjXj2snd1F/YNoNc66UUTABEB
- AAG0JEJhcnQgVmFuIEFzc2NoZSA8YnZhbmFzc2NoZUBhY20ub3JnPokBOQQTAQIAIwUCVI67
- igIbAwcLCQgHAwIBBhUIAgkKCwQWAgMBAh4BAheAAAoJEHFcPTXFzhAJ8QkH/1AdXblKL65M
- Y1Zk1bYKnkAb4a98LxCPm/pJBilvci6boefwlBDZ2NZuuYWYgyrehMB5H+q+Kq4P0IBbTqTa
- jTPAANn62A6jwJ0FnCn6YaM9TZQjM1F7LoDX3v+oAkaoXuq0dQ4hnxQNu792bi6QyVdZUvKc
- macVFVgfK9n04mL7RzjO3f+X4midKt/s+G+IPr4DGlrq+WH27eDbpUR3aYRk8EgbgGKvQFdD
- CEBFJi+5ZKOArmJVBSk21RHDpqyz6Vit3rjep7c1SN8s7NhVi9cjkKmMDM7KYhXkWc10lKx2
- RTkFI30rkDm4U+JpdAd2+tP3tjGf9AyGGinpzE2XY1K5AQ0EVI67igEIAKiSyd0nECrgz+H5
- PcFDGYQpGDMTl8MOPCKw/F3diXPuj2eql4xSbAdbUCJzk2ETif5s3twT2ER8cUTEVOaCEUY3
- eOiaFgQ+nGLx4BXqqGewikPJCe+UBjFnH1m2/IFn4T9jPZkV8xlkKmDUqMK5EV9n3eQLkn5g
- lco+FepTtmbkSCCjd91EfThVbNYpVQ5ZjdBCXN66CKyJDMJ85HVr5rmXG/nqriTh6cv1l1Js
- T7AFvvPjUPknS6d+BETMhTkbGzoyS+sywEsQAgA+BMCxBH4LvUmHYhpS+W6CiZ3ZMxjO8Hgc
- ++w1mLeRUvda3i4/U8wDT3SWuHcB3DWlcppECLkAEQEAAYkBHwQYAQIACQUCVI67igIbDAAK
- CRBxXD01xc4QCZ4dB/0QrnEasxjM0PGeXK5hcZMT9Eo998alUfn5XU0RQDYdwp6/kMEXMdmT
- oH0F0xB3SQ8WVSXA9rrc4EBvZruWQ+5/zjVrhhfUAx12CzL4oQ9Ro2k45daYaonKTANYG22y
- //x8dLe2Fv1By4SKGhmzwH87uXxbTJAUxiWIi1np0z3/RDnoVyfmfbbL1DY7zf2hYXLLzsJR
- mSsED/1nlJ9Oq5fALdNEPgDyPUerqHxcmIub+pF0AzJoYHK5punqpqfGmqPbjxrJLPJfHVKy
- goMj5DlBMoYqEgpbwdUYkH6QdizJJCur4icy8GUNbisFYABeoJ91pnD4IGei3MTdvINSZI5e
-Message-ID: <be4d6a2a-fd83-f2ad-450a-c00b95def734@acm.org>
-Date:   Sun, 26 Jan 2020 08:46:09 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+        Sun, 26 Jan 2020 12:51:14 -0500
+Received: from localhost.localdomain ([92.140.214.230])
+        by mwinf5d28 with ME
+        id v5r62100Q4ypjRG035r7tt; Sun, 26 Jan 2020 18:51:12 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 26 Jan 2020 18:51:12 +0100
+X-ME-IP: 92.140.214.230
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     borisp@mellanox.com, saeedm@mellanox.com, leon@kernel.org,
+        davem@davemloft.net
+Cc:     linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] net/mlx5: Remove a useless 'drain_workqueue()' call in 'mlx5e_ipsec_cleanup()'
+Date:   Sun, 26 Jan 2020 18:51:04 +0100
+Message-Id: <20200126175104.17948-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20200126154757.42530-1-colin.king@canonical.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 2020-01-26 07:47, Colin King wrote:
-> From: Colin Ian King <colin.king@canonical.com>
-> 
-> There are two statments that are indented one level too deeply, remove
-                ^^^^^^^^^
-                statements?
-> the extraneous tabs.
+'destroy_workqueue()' already calls 'drain_workqueue()', there is no need
+to call it explicitly.
 
-Anyway:
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+index cf58c9637904..29626c6c9c25 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec.c
+@@ -433,7 +433,6 @@ void mlx5e_ipsec_cleanup(struct mlx5e_priv *priv)
+ 	if (!ipsec)
+ 		return;
+ 
+-	drain_workqueue(ipsec->wq);
+ 	destroy_workqueue(ipsec->wq);
+ 
+ 	ida_destroy(&ipsec->halloc);
+-- 
+2.20.1
+

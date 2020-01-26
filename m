@@ -2,116 +2,84 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DF568149C55
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 19:35:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 96D24149C82
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 20:23:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728901AbgAZSfG (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 Jan 2020 13:35:06 -0500
-Received: from mail-pg1-f195.google.com ([209.85.215.195]:44445 "EHLO
-        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727233AbgAZSfG (ORCPT
+        id S1727233AbgAZTXE (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Jan 2020 14:23:04 -0500
+Received: from mail2-relais-roc.national.inria.fr ([192.134.164.83]:63695 "EHLO
+        mail2-relais-roc.national.inria.fr" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726382AbgAZTXE (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 Jan 2020 13:35:06 -0500
-Received: by mail-pg1-f195.google.com with SMTP id x7so4002416pgl.11
-        for <kernel-janitors@vger.kernel.org>; Sun, 26 Jan 2020 10:35:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pensando.io; s=google;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=buJqycnRJmE0klBvQ3jUgMDQeTjnHb0PShrMhrfuVB8=;
-        b=0ld6Ez34Qsy5L3zKymuv8E6s6kzPBTjfgjQExASj5271nr04uZjgejw/GxVmrYGSq3
-         bPaIDolal+2F38wWFPyNSQmA7WddKehD390EXrXeKt23g0Vh1LKITI+f3zlGcRDBgf9d
-         z0xAsaSsde/YRQdkq9D6PEzUdwsds0vDwWDZw2gj18W4zOXxpgSw74hC/Iij7np58XAQ
-         Sok2aEho84XWfHCmkvMfwsfF/CW7rAJOTq3ZyrrQVIwoWE5Ql0/8yBvmDhZ/sO3ia7ko
-         VoDvP1nyMu3y8PgBlt6d4xAuEXXSbWdoFX91Vj6H0/coJAZ0DKZsYL4/GsQdZp+We76Y
-         14qA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=buJqycnRJmE0klBvQ3jUgMDQeTjnHb0PShrMhrfuVB8=;
-        b=TR7x5mJo2KAQsUnHPMjLaqOXQ+l+YBs5ODLR4M49HsiKzTM4i4uC21kJwx2+O/JiJk
-         4f/7nFvaigBy9Gr+KoCFOUGtPczbX7KrvqYhbOjj74N7Mwm7mUXuPeq9wIxydwOyDBvP
-         T3Famy8COD2i1PuCsbg2QmSFX7fd5yoj0fjJh5vICaCnifyQXeQ8m55Zt83Itp1O3+WH
-         kQZ3tphnfjWvvYzefcSXeaQGYRUt3b/KLPAL2UJ2In8UOtgUNSSr2rtL4aBmHEffIjKI
-         e0gZIE9fX47XC+f8ECdZDgQ2jJnWnkPRxgzeA4hePx2R/jiB+62G8qpRNho7nuJHSMj/
-         wSlw==
-X-Gm-Message-State: APjAAAVYWLY1K20uPuXgbddD0k0z/wFJkGyS/LRT8HSQYJFjvgP/MqMb
-        WZ2vdLHN7MSqBaZ7llyB73MY6k4ZDOD/5Q==
-X-Google-Smtp-Source: APXvYqyhSoh0s6Ekkqi2sNDxODbKwJ831I0jnyBSCMndArKyHIgMKJixjEHLPA+aFoo/LdQTaooSYQ==
-X-Received: by 2002:aa7:9796:: with SMTP id o22mr12683626pfp.101.1580063705781;
-        Sun, 26 Jan 2020 10:35:05 -0800 (PST)
-Received: from Shannons-MacBook-Pro.local (static-50-53-47-17.bvtn.or.frontiernet.net. [50.53.47.17])
-        by smtp.gmail.com with ESMTPSA id s25sm12426540pfh.110.2020.01.26.10.35.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 26 Jan 2020 10:35:05 -0800 (PST)
-Subject: Re: [PATCH] ionic: Fix rx queue allocation in 'ionic_lif_alloc()'
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        drivers@pensando.io, jakub.kicinski@netronome.com,
-        davem@davemloft.net
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20200126102540.14812-1-christophe.jaillet@wanadoo.fr>
-From:   Shannon Nelson <snelson@pensando.io>
-Message-ID: <0a90fbcb-430e-d059-cd1c-7960e7ec6806@pensando.io>
-Date:   Sun, 26 Jan 2020 10:36:00 -0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.3.1
+        Sun, 26 Jan 2020 14:23:04 -0500
+X-IronPort-AV: E=Sophos;i="5.70,366,1574118000"; 
+   d="scan'208";a="433065460"
+Received: from ip-241.net-89-2-7.rev.numericable.fr (HELO hadrien) ([89.2.7.241])
+  by mail2-relais-roc.national.inria.fr with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 26 Jan 2020 20:23:02 +0100
+Date:   Sun, 26 Jan 2020 20:23:01 +0100 (CET)
+From:   Julia Lawall <julia.lawall@inria.fr>
+X-X-Sender: jll@hadrien
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+cc:     Kernel Janitors <kernel-janitors@vger.kernel.org>,
+        David Miller <davem@davemloft.net>,
+        Dan Carpenter <dan.carpenter@oracle.com>
+Subject: Re: [RFC] Simplify flush_workqueue/destroy_workqueue pattern
+In-Reply-To: <c610718c-4e98-749b-13a8-c23f57988383@wanadoo.fr>
+Message-ID: <alpine.DEB.2.21.2001262016340.2576@hadrien>
+References: <c610718c-4e98-749b-13a8-c23f57988383@wanadoo.fr>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-In-Reply-To: <20200126102540.14812-1-christophe.jaillet@wanadoo.fr>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+Content-Type: multipart/mixed; boundary="8323329-2016873295-1580066582=:2576"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On 1/26/20 2:25 AM, Christophe JAILLET wrote:
-> The 'struct ionic' has a 'nrxqs_per_lif' field. So use it instead of
-> using two times the value of 'ntxqs_per_lif'.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
+
+--8323329-2016873295-1580066582=:2576
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+
+On Sun, 26 Jan 2020, Christophe JAILLET wrote:
+
+> Hi,
 >
-> Note that with the current implementation, this patch is a no-op because
-> both fields are set to the same value in 'ionic_lifs_size()' which
-> is called before reaching 'ionic_lif_alloc()'.
+> According to description of 'destroy_workqueue()':
+>    "Safely destroy a workqueue. All work currently pending will be done first"
 >
-> However, it is more future-proof.
+> Looking deeper at the code, it turns out that the call chain is:
+>        destroy_workqueue
+>    --> drain_workqueue
+>    --> flush_workqueue
 >
-> Fixes: 1a58e196467f ("ionic: Add basic lif support")
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> Another alternative could be to use 'alloc_etherdev_mq()' if really using
-> the same value for both fields is what is expected.
-> ---
->   drivers/net/ethernet/pensando/ionic/ionic_lif.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> So, calling explicitly 'flush_workqueue()' before 'destroy_workqueue()' looks
+> redundant.
 >
-> diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-> index 60fd14df49d7..96d3b3e993ad 100644
-> --- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-> +++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-> @@ -1663,7 +1663,7 @@ static struct ionic_lif *ionic_lif_alloc(struct ionic *ionic, unsigned int index
->   	int err;
->   
->   	netdev = alloc_etherdev_mqs(sizeof(*lif),
-> -				    ionic->ntxqs_per_lif, ionic->ntxqs_per_lif);
-> +				    ionic->ntxqs_per_lif, ionic->nrxqs_per_lif);
->   	if (!netdev) {
->   		dev_err(dev, "Cannot allocate netdev, aborting\n");
->   		return ERR_PTR(-ENOMEM);
+> Using following coccinelle script spots ~90 occurrences, in ~80 files, which
+> can be simplified.
+>
+> >>>>>>>>>>>>>>>
+> @r@
+> expression e;
+> @@
+> -    flush_workqueue(e);
+>      destroy_workqueue(e);
+> >>>>>>>>>>>>>>>
+>
+> This is way to much for me because my patch submission process is mainly
+> manual.
+>
+> If you agree with my analysis, think that removing these redundant calls is
+> useful and have a much more automated patch submission process than me (or
+> just have time :), please feel free to submit patches.
 
-NAK
+The Coccinelle distriubution contains a program splitpatch (make
+splitpatch in the tools subdirectory) that can be used for cutting up
+patches and sending them to their various maintainers.  There is a file
+tools/README.splitpatch that explains how to use it (although I am not
+sure that this README is completely up to date...).
 
-Even though the NIC configuration seems to allow for different values, 
-the rest of the driver assumes that the values are equal and things will 
-likely break if they aren't.  This is why the ethtool service 
-ionic_set_channels() only allows the user to change the Combined value, 
-and not the individual rx or tx values.
-
-If you really want to tweak this, a better change might be to use the 
-min of ntxqs and nrxqs, and maybe add a warning log message that they 
-are configured with different values.
-
-sln
-
+julia
+--8323329-2016873295-1580066582=:2576--

@@ -2,88 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AC4CA149BB3
-	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 16:52:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C19D149BDF
+	for <lists+kernel-janitors@lfdr.de>; Sun, 26 Jan 2020 17:19:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728292AbgAZPwS (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 26 Jan 2020 10:52:18 -0500
-Received: from mail25.static.mailgun.info ([104.130.122.25]:64697 "EHLO
-        mail25.static.mailgun.info" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728236AbgAZPwM (ORCPT
+        id S1727493AbgAZQSc (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 26 Jan 2020 11:18:32 -0500
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:18470 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725838AbgAZQSc (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 26 Jan 2020 10:52:12 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1580053932; h=Date: Message-Id: Cc: To: References:
- In-Reply-To: From: Subject: Content-Transfer-Encoding: MIME-Version:
- Content-Type: Sender; bh=JD2pxB6M6Wq/L05zP++/dLn61nN2ob1L8mfn2pSrEp8=;
- b=PDMdgcadGhva1dHiXk+4OkbglbbXewu61ZfYngflmFPlz92BBc2Et9aYpVAq9vHFKM20LyLT
- kyEU/s3flj138oEBVdeSsUaC5AAOAO5AaBef0eEtVTk8FaWCqB7f0y6OTwPhowyaifUoGpp+
- QgbLfgjHKjxiOhbT3GAuXJ21Sn8=
-X-Mailgun-Sending-Ip: 104.130.122.25
-X-Mailgun-Sid: WyI5NDExNyIsICJrZXJuZWwtamFuaXRvcnNAdmdlci5rZXJuZWwub3JnIiwgImJlOWU0YSJd
-Received: from smtp.codeaurora.org (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171])
- by mxa.mailgun.org with ESMTP id 5e2db5a7.7f0d7ee0c340-smtp-out-n02;
- Sun, 26 Jan 2020 15:52:07 -0000 (UTC)
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id 5337DC4479C; Sun, 26 Jan 2020 15:52:06 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=2.0 tests=ALL_TRUSTED,MISSING_DATE,
-        MISSING_MID,SPF_NONE autolearn=no autolearn_force=no version=3.4.0
-Received: from potku.adurom.net (88-114-240-156.elisa-laajakaista.fi [88.114.240.156])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        (Authenticated sender: kvalo)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id 75FB2C43383;
-        Sun, 26 Jan 2020 15:52:03 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org 75FB2C43383
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=none smtp.mailfrom=kvalo@codeaurora.org
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH][next] iwlegacy: ensure loop counter addr does not wrap
+        Sun, 26 Jan 2020 11:18:32 -0500
+Received: from pps.filterd (m0098416.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 00QGEEH3153606;
+        Sun, 26 Jan 2020 11:18:28 -0500
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2xrg6142hd-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 26 Jan 2020 11:18:27 -0500
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+        by ppma02dal.us.ibm.com (8.16.0.27/8.16.0.27) with SMTP id 00QGF2jp014682;
+        Sun, 26 Jan 2020 16:18:27 GMT
+Received: from b01cxnp22034.gho.pok.ibm.com (b01cxnp22034.gho.pok.ibm.com [9.57.198.24])
+        by ppma02dal.us.ibm.com with ESMTP id 2xrda5wk0h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 26 Jan 2020 16:18:27 +0000
+Received: from b01ledav006.gho.pok.ibm.com (b01ledav006.gho.pok.ibm.com [9.57.199.111])
+        by b01cxnp22034.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 00QGIQKc48365894
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 26 Jan 2020 16:18:26 GMT
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 70468AC05F;
+        Sun, 26 Jan 2020 16:18:26 +0000 (GMT)
+Received: from b01ledav006.gho.pok.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 906EBAC05E;
+        Sun, 26 Jan 2020 16:18:25 +0000 (GMT)
+Received: from jarvis.ext.hansenpartnership.com (unknown [9.85.196.120])
+        by b01ledav006.gho.pok.ibm.com (Postfix) with ESMTP;
+        Sun, 26 Jan 2020 16:18:25 +0000 (GMT)
+Message-ID: <1580055504.4964.2.camel@linux.ibm.com>
+Subject: Re: [PATCH] scsi: mvsas: ensure loop counter phy_no  does not wrap
  and cause an infinite loop
-From:   Kalle Valo <kvalo@codeaurora.org>
-In-Reply-To: <20200126000954.22807-1-colin.king@canonical.com>
-References: <20200126000954.22807-1-colin.king@canonical.com>
-To:     Colin King <colin.king@canonical.com>
-Cc:     Stanislaw Gruszka <stf_xl@wp.pl>,
-        "David S . Miller" <davem@davemloft.net>,
-        Meenakshi Venkataraman <meenakshi.venkataraman@intel.com>,
-        Wey-Yi Guy <wey-yi.w.guy@intel.com>,
-        Johannes Berg <johannes.berg@intel.com>,
-        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-User-Agent: pwcli/0.0.0-git (https://github.com/kvalo/pwcli/) Python/2.7.12
-Message-Id: <20200126155206.5337DC4479C@smtp.codeaurora.org>
-Date:   Sun, 26 Jan 2020 15:52:06 +0000 (UTC)
+From:   James Bottomley <jejb@linux.ibm.com>
+To:     Colin King <colin.king@canonical.com>,
+        "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-scsi@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Date:   Sun, 26 Jan 2020 08:18:24 -0800
+In-Reply-To: <20200126151747.33320-1-colin.king@canonical.com>
+References: <20200126151747.33320-1-colin.king@canonical.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.138,18.0.572
+ definitions=2020-01-26_02:2020-01-24,2020-01-26 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxlogscore=999
+ malwarescore=0 suspectscore=0 phishscore=0 adultscore=0 mlxscore=0
+ lowpriorityscore=0 clxscore=1011 bulkscore=0 impostorscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-1911200001 definitions=main-2001260140
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Colin King <colin.king@canonical.com> wrote:
-
+On Sun, 2020-01-26 at 15:17 +0000, Colin King wrote:
 > From: Colin Ian King <colin.king@canonical.com>
 > 
-> The loop counter addr is a u16 where as the upper limit of the loop
-> is an int. In the unlikely event that the il->cfg->eeprom_size is
-> greater than 64K then we end up with an infinite loop since addr will
-> wrap around an never reach upper loop limit. Fix this by making addr
-> an int.
-> 
-> Addresses-Coverity: ("Infinite loop")
-> Fixes: be663ab67077 ("iwlwifi: split the drivers for agn and legacy devices 3945/4965")
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-> Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+> The loop counter phy_no is a u8 where as the upper limit of the loop
+> is a u32. In the event that upper limit is greater than 255 we end
+> up with an infinite loop since phy_no will wrap around an never reach
+> upper loop limit. Fix this by making phy_no a u32.
 
-Patch applied to wireless-drivers-next.git, thanks.
+This value is limited to MVS_MAX_PHYS (i.e. 8) so I don't see where the
+concern comes from.  If we were ever to overrun that, we'd corrupt the
+chip info structure, because it only allows MVS_MAX_PHYS for the amount
+of space.
 
-c2f9a4e4a5ab iwlegacy: ensure loop counter addr does not wrap and cause an infinite loop
+James
 
--- 
-https://patchwork.kernel.org/patch/11351769/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches

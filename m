@@ -2,87 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 724C514A375
-	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jan 2020 13:04:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 23C3114A37D
+	for <lists+kernel-janitors@lfdr.de>; Mon, 27 Jan 2020 13:06:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730367AbgA0MEP (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jan 2020 07:04:15 -0500
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:43122 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728981AbgA0MEP (ORCPT
+        id S1730435AbgA0MGj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 27 Jan 2020 07:06:39 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:45922 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728981AbgA0MGj (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jan 2020 07:04:15 -0500
-Received: by mail-pl1-f193.google.com with SMTP id p23so3668752plq.10;
-        Mon, 27 Jan 2020 04:04:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=mbGosBGsyuv+lmcdBTGzW/Sctu3s1c7RllqCHsUWLtE=;
-        b=cI98Ast4BM6oCG197UHLAKlLPa9AATMLdDvUczPi3/aWkMZF2BfUS0YsZ9ozStgo/I
-         fgrOhvWGI8TlHnjph9PJeW/+pWB7CaFc1arfq1QGYCH3/quq9OLulT+LDw9mY96trTIV
-         H5YEhUQZKETi2Ix8DvB8kqDhr88SRRH+9PSpXCgfXeSgeGSQ/ijIZicENUfsO0dEfi3d
-         48VLE2MiBmVDj9T1lUtBeiy0ecpAQhIKiLI/rXJ9zr34PEWGiJcmTVBW6uMGZvdCgQXj
-         oDbmdGXbElHUFivlXivkWENlA5+q7jaCLD8cNUOLXfYe75/iYi5K53cnQp7dTIW+8Ufk
-         qGvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=mbGosBGsyuv+lmcdBTGzW/Sctu3s1c7RllqCHsUWLtE=;
-        b=PB+dpwVY0W1tzK3MAv1+eeA84MGJ/MkKG3cbjAnSsx4pOm9eD6JvQF5wbIXDXkvRun
-         POj757h+3EjQ/7wkAElnH6EKHsjag6H1Ol2wLPXO1Yp+fWhI6GQ1P/8p6F26l7ftLJl3
-         8erP5L0BCq3H8qc2xBSoZ6f0K+Xi70E5bB9K3qsivjgsxmoYd4GXKA99NkIZKJcod4vQ
-         8XhXd72lBpWdxSTZW/4RkAPKmFMr0VVPd+2HJnalP5jQhzPXG56mveicr5TdK57ZcgEC
-         ZgIOxOFpB/7nlVY3RcD8mL/GtHGg+1P1EMnPQTVYrWfrwzm6Jb8Dp/00/IAa/In6iCzl
-         FV6w==
-X-Gm-Message-State: APjAAAWXtlAVlqq+v1HecRw6SpdBKiqwv+jVdJL3z2WnlilUTkmoGk2k
-        D7t25q/c5UtebJU2T+OudcJyNJhI6xA=
-X-Google-Smtp-Source: APXvYqyH5yGQA4JteZYp6k8qa92vWNERBII0FVJ57uJbXRMeoj9ODohNngv0VvCFWgwHKM38I26C9w==
-X-Received: by 2002:a17:902:d918:: with SMTP id c24mr17574054plz.167.1580126654908;
-        Mon, 27 Jan 2020 04:04:14 -0800 (PST)
-Received: from localhost.localdomain ([116.126.226.81])
-        by smtp.googlemail.com with ESMTPSA id u18sm16857352pgn.9.2020.01.27.04.04.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jan 2020 04:04:14 -0800 (PST)
-From:   JieunKim <jieun.kim4758@gmail.com>
-To:     lorenzo.bianconi83@gmail.com
-Cc:     jic23@kernel.org, knaack.h@gmx.de, lars@metafoo.de,
-        pmeerw@pmeerw.net, linux-iio@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-        JieunKim <jieun.kim4758@gmail.com>
-Subject: [PATCH] iio: imu: st_lsm6dsx: Fix mismatched comments
-Date:   Mon, 27 Jan 2020 21:03:59 +0900
-Message-Id: <20200127120359.3955-1-jieun.kim4758@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Mon, 27 Jan 2020 07:06:39 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00RBwWka035440;
+        Mon, 27 Jan 2020 12:06:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=aCpiRvcuT1SWusCh3YSBSKuWGL7xUj4sNNEyF3C+GSc=;
+ b=dQW1ulFpPNxI1R48GdMIaGJz6BAQRc71iwu4zWxezUnY6OsrBJuxWxNnZQW0KejlXfkg
+ ucwB3oon3CYcBcd9ML8VbSfHDSZwe643lqZh3nYYzKmUqy0rTHhiCdOUWZ1Q6q8v721z
+ lntBkuupp0ajIMZ/ws6rU89g0CiwQokRaSwpIDp5ZZIM6q1QSZj4tUuPHIEQCCTTgG5/
+ 5OhKxQ/CTd6WxsugkdJyQghKRdUGlTI/rwoc6VM9uKS/kHOtwmT+sIuSzvu2t1UNiCJh
+ BWAdNo7m9f8f5O3qL8rPXm5GBdabd32crjNib/v/cqHjjHtQRl13WJ+zN3mtK/8qArCN 2g== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by userp2130.oracle.com with ESMTP id 2xrd3txxck-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 27 Jan 2020 12:06:27 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00RBwIqV098559;
+        Mon, 27 Jan 2020 12:06:27 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 2xry4u7p22-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 27 Jan 2020 12:06:26 +0000
+Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00RC6Pmt000832;
+        Mon, 27 Jan 2020 12:06:25 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 27 Jan 2020 04:06:24 -0800
+Date:   Mon, 27 Jan 2020 15:05:35 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Michal Simek <michal.simek@xilinx.com>
+Cc:     Colin King <colin.king@canonical.com>,
+        linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH][next][V2] i2c: xiic: fix indentation issue
+Message-ID: <20200127120535.GC1847@kadam>
+References: <20200127102303.44133-1-colin.king@canonical.com>
+ <2dd84ab2-a7a3-fdd8-6bd6-07f1b3d5cd00@xilinx.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2dd84ab2-a7a3-fdd8-6bd6-07f1b3d5cd00@xilinx.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9512 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2001270103
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9512 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2001270103
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-odr to odr_table
-gain to fs_table
+On Mon, Jan 27, 2020 at 12:03:02PM +0100, Michal Simek wrote:
+> On 27. 01. 20 11:23, Colin King wrote:
+> > From: Colin Ian King <colin.king@canonical.com>
+> > 
+> > There is a statement that is indented one level too deeply, remove
+> > the extraneous tab.
+> > 
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> > ---
+> > V2: fix type in commit message
+> > ---
+> >  drivers/i2c/busses/i2c-xiic.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/i2c/busses/i2c-xiic.c b/drivers/i2c/busses/i2c-xiic.c
+> > index b17d30c9ab40..90c1c362394d 100644
+> > --- a/drivers/i2c/busses/i2c-xiic.c
+> > +++ b/drivers/i2c/busses/i2c-xiic.c
+> > @@ -261,7 +261,7 @@ static int xiic_clear_rx_fifo(struct xiic_i2c *i2c)
+> >  		xiic_getreg8(i2c, XIIC_DRR_REG_OFFSET);
+> >  		if (time_after(jiffies, timeout)) {
+> >  			dev_err(i2c->dev, "Failed to clear rx fifo\n");
+> > -				return -ETIMEDOUT;
+> > +			return -ETIMEDOUT;
+> >  		}
+> >  	}
+> >  
+> > 
+> 
+> As was suggested by Peter you should also add Fixes: <sha1> ("patch
+> subject")
+> 
 
-'gain' is actually in 'st_lsm6dsx_fs' structure of 'fs_table'
+It's not really a bugfix, it's just a cleanup.
 
-Signed-off-by: JieunKim <jieun.kim4758@gmail.com>
----
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index 9c3486a8134f..f2113a63721a 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -230,8 +230,8 @@ enum st_lsm6dsx_ext_sensor_id {
-  * @i2c_addr: I2c slave address list.
-  * @wai: Wai address info.
-  * @id: external sensor id.
-- * @odr: Output data rate of the sensor [Hz].
-- * @gain: Configured sensor sensitivity.
-+ * @odr_table: Output data rate of the sensor [Hz].
-+ * @fs_table: Configured sensor sensitivity table depending on full scale.
-  * @temp_comp: Temperature compensation register info (addr + mask).
-  * @pwr_table: Power on register info (addr + mask).
-  * @off_canc: Offset cancellation register info (addr + mask).
--- 
-2.17.1
+regards,
+dan carpenter
 

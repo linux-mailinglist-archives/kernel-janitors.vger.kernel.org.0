@@ -2,87 +2,54 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 945BA14AE84
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jan 2020 04:53:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA3E814B008
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jan 2020 08:04:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726885AbgA1Dxo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 27 Jan 2020 22:53:44 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:57712 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726164AbgA1Dxo (ORCPT
+        id S1725901AbgA1HD7 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Jan 2020 02:03:59 -0500
+Received: from coyote.holtmann.net ([212.227.132.17]:35896 "EHLO
+        mail.holtmann.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725797AbgA1HD6 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 27 Jan 2020 22:53:44 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00S3nMUO175514;
-        Tue, 28 Jan 2020 03:53:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
- from : references : date : in-reply-to : message-id : mime-version :
- content-type; s=corp-2019-08-05;
- bh=jf6o1qVdeu9loigwrRoxvlvoZlkKnYmsOaE3jQ1ohnM=;
- b=aVeruAWmfSCNiZKw/BwFher+/RRrq6W610GtjbUoebQX0ia3q+PP3Bdj2rmgY1qkQ1D6
- hj7GpRkXaRA8skSZ+EjDilAFt13fcR6m3c7zuFN++hSb2lgQTQt3n7ehbqtK9LzWX4NH
- DaFsjRIPWRJgnSEwdwwGdRivpWRsAeZp4iBkgUxqqnMtk5yKCdeyqvClHai12dLXsNf5
- 4d5ccSs38T7FT7TqCvw8j5q+S+9Gp1b54gZZQcPswbP/JDwfpU5cPDT/4JBzCn3/l4dy
- pFuHhUGzH9Y7PXf518yywQ7d+gsCnBFOUM41tskuQWLImPKLrLPLq9WLYUisGv4HDWad Eg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 2xrdmqbett-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 28 Jan 2020 03:53:39 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00S3nO41043561;
-        Tue, 28 Jan 2020 03:53:39 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3030.oracle.com with ESMTP id 2xry4vqfv6-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 28 Jan 2020 03:53:38 +0000
-Received: from abhmp0005.oracle.com (abhmp0005.oracle.com [141.146.116.11])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00S3rb3x007110;
-        Tue, 28 Jan 2020 03:53:37 GMT
-Received: from ca-mkp.ca.oracle.com (/10.159.214.123)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Mon, 27 Jan 2020 19:53:37 -0800
-To:     Colin King <colin.king@canonical.com>
-Cc:     Kashyap Desai <kashyap.desai@broadcom.com>,
-        Sumit Saxena <sumit.saxena@broadcom.com>,
-        Shivasharan S <shivasharan.srikanteshwara@broadcom.com>,
-        "James E . J . Bottomley" <jejb@linux.ibm.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        megaraidlinux.pdl@broadcom.com, linux-scsi@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH][next] scsi: megaraid_sas: fix indentation issue
-From:   "Martin K. Petersen" <martin.petersen@oracle.com>
-Organization: Oracle Corporation
-References: <20200126154757.42530-1-colin.king@canonical.com>
-Date:   Mon, 27 Jan 2020 22:53:34 -0500
-In-Reply-To: <20200126154757.42530-1-colin.king@canonical.com> (Colin King's
-        message of "Sun, 26 Jan 2020 15:47:57 +0000")
-Message-ID: <yq1r1zk9qyp.fsf@oracle.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1.92 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9513 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=997
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001280029
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9513 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001280029
+        Tue, 28 Jan 2020 02:03:58 -0500
+Received: from marcel-macbook.fritz.box (p4FEFC5A7.dip0.t-ipconnect.de [79.239.197.167])
+        by mail.holtmann.org (Postfix) with ESMTPSA id B5D75CECDB;
+        Tue, 28 Jan 2020 08:13:16 +0100 (CET)
+Content-Type: text/plain;
+        charset=us-ascii
+Mime-Version: 1.0 (Mac OS X Mail 13.0 \(3608.40.2.2.4\))
+Subject: Re: [PATCH] Bluetooth: SMP: Fix SALT value in some comments
+From:   Marcel Holtmann <marcel@holtmann.org>
+In-Reply-To: <20200127223609.15066-1-christophe.jaillet@wanadoo.fr>
+Date:   Tue, 28 Jan 2020 08:03:56 +0100
+Cc:     Johan Hedberg <johan.hedberg@gmail.com>, kuba@kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-bluetooth@vger.kernel.org, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <03F1C6B2-0F04-4991-8912-7220F9F88F5C@holtmann.org>
+References: <20200127223609.15066-1-christophe.jaillet@wanadoo.fr>
+To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+X-Mailer: Apple Mail (2.3608.40.2.2.4)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+Hi Christophe,
 
-Colin,
+> Salts are 16 bytes long.
+> Remove some extra and erroneous '0' in the human readable format used
+> in comments.
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> ---
+> net/bluetooth/smp.c | 4 ++--
+> 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> There are two statments that are indented one level too deeply, remove
-> the extraneous tabs.
+patch has been applied to bluetooth-next tree.
 
-Fixed typo and applied to 5.7/scsi-queue. Thanks.
+Regards
 
--- 
-Martin K. Petersen	Oracle Linux Engineering
+Marcel
+

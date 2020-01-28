@@ -2,156 +2,143 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C56E814C20E
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jan 2020 22:20:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEFCC14C24C
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jan 2020 22:45:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726320AbgA1VUL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Jan 2020 16:20:11 -0500
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:33704 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726211AbgA1VUL (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Jan 2020 16:20:11 -0500
-Received: by mail-wr1-f67.google.com with SMTP id b6so17806466wrq.0;
-        Tue, 28 Jan 2020 13:20:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zI+cNUNLF3kaXSaB95jriRVjzozM0k40b3VUnBQ2hL4=;
-        b=cr1Eugxz1jDRTs5xXm0mdslOFP/LW6r93aHJoQ549mVFWqHrC7WNncFStX/6Q9ce9v
-         nz/ilbtGXaVqmwnuUOtPzEEhhnZbi3G+ArTMvX9t3TNlebra7xCRIRaoIySvpHIHToPn
-         ZIniEsnYZOL+8NM4M6/QoQ7Yn43VBVyPuanKM45xtbmRasmAHJluexqc8RsEXCiIJ2Y5
-         ULKgK92O+HRsoauqf+y8qkpWo0+kSEedvad0oMmKLIq8QKCz2+K4HunTYzUN4LPIveRF
-         yFnleba3CQRXqMwll04l9z6s5L9y3Xgoqx8P/n6lFGMEIWPn1inGG3AfqJtGjWK0k+K2
-         q6ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zI+cNUNLF3kaXSaB95jriRVjzozM0k40b3VUnBQ2hL4=;
-        b=gedW94dCJU+2a0/7HDXn16HWENtZUHvyApJ2/Ydd4agQafEfcqug7BENFNJ9PcOVa8
-         LNkg2P4G84KgWzxBLFMFikTlGACe43z3gCxJVBNOhFfoAY3t2VpAMrVxDArJUFqwPjZN
-         G986DsGB8SElwpFfgAfZLZUrDYMynvsbo+AXVrIpncdW/8UOzyGqnofDDNYzPo6Uh6Ct
-         rUCc5yzWCOx0SXxWgn5KyvwSJ2eBm4v2iqAsmROZvq69K94iosaj7656M2vIoMT2VboF
-         /QFuBkZ1eF8smFj9eluVguMwzLpO+7w+2UTM77xjRnYFx9roN/3dvLG/ycJsxPy/Dmf2
-         6WYw==
-X-Gm-Message-State: APjAAAVe3WYKf2agc8uMbcbof+5wF825cDBU4CupHi3/DuSsuilv8ALk
-        a6ojWrWjLx+qacwIUOh3mb38mH1E32YG2b9oekI=
-X-Google-Smtp-Source: APXvYqzxeqjTVGWhGxKoLAamd10Qlofs6anWK7unOqW4V0Q59Aa6fL+sO2cRfdjqYiyhrmbqNf2yQCOAN4GC6qOHll4=
-X-Received: by 2002:adf:f2c1:: with SMTP id d1mr30178824wrp.111.1580246408308;
- Tue, 28 Jan 2020 13:20:08 -0800 (PST)
+        id S1726266AbgA1Vpa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Jan 2020 16:45:30 -0500
+Received: from mail-eopbgr80135.outbound.protection.outlook.com ([40.107.8.135]:11502
+        "EHLO EUR04-VI1-obe.outbound.protection.outlook.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726211AbgA1Vpa (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Tue, 28 Jan 2020 16:45:30 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GhIZaeayxZfPek2QkKKCAP/fDIJYQ2llofP2ohAm81jZEbvGid7h3jkQH1PKWh93q96mLpsgz6vvw3s3OnYWNWgdELJw4c0YWxtbvmLslD6iEKwa1v3Lxi2XWGjf151J9DqyTZy4JZ4DTAXcbGrIXvGe2pq3va0h5n1+kNzph+mavSPEBBv94h652YYePe0oR0A3a/KBbX1MHyolOFrPnAaCfgMZkNFh6SKTVbrz0gUmm4Ez6lWAWKqFKm8A1WCVhiFcC5qieJQn/PSuQefi7F5PswjPNZG9mruPt3QqWEMYwUFid0YUz0GT9WBiuk8QmQeZKu0SjJ0pTpFXWXIkbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=htIqDUmDB/HkjJLnaky6uCfhtrGm0jQ51y4ZfpwlidM=;
+ b=deECpXI87GjG+U2Xn9WQspafk9NGrVVaKZIF/0p0yDfmGhmOUM6esnpmUVt91pDMmS+jSMEKzYg6w1fUBNOAp0icZzdA8pk+MvxEek8YMFSUPXIfuCYOMvdskrXQO9YPOD80zyQo65iIHFFSR2cupq5dkzyltZJQ6lSRSrK6z79sYlTGinlPO7aWkmvWGcxNUM0VjVPnORRZpe0v9M1AUNJWC9yqbiYWzw6nsIJ6U9b04DS6eGFZ9y2XDWWEKBvl3uvZbcR6ypxe/Hb34J9eGkYsQmGkiMZ8KJkit1XsmsIrQQGzsM29NHkgb0EQ8a4llOgJhZUbyszcW+OREx22Ng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=axentia.se; dmarc=pass action=none header.from=axentia.se;
+ dkim=pass header.d=axentia.se; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=htIqDUmDB/HkjJLnaky6uCfhtrGm0jQ51y4ZfpwlidM=;
+ b=dFZhbDjx9xCcBWKmPyCYpM3qeWgIN+IfEl0MXYDUCtT8BShk/3mTb5JraqKBuMvFj/OtnoGCh+hlGPBDFncPr079FBMiUnopI4r1ef6XSNhG+6IGvTD72gsteCA3jb8Vw7RyUS0WkzFIDxa9bGgHJHov7g22+nLTNCk+O2nEWbU=
+Received: from DB3PR0202MB3434.eurprd02.prod.outlook.com (52.134.66.158) by
+ DB3PR0202MB3306.eurprd02.prod.outlook.com (52.134.70.13) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.2665.24; Tue, 28 Jan 2020 21:45:24 +0000
+Received: from DB3PR0202MB3434.eurprd02.prod.outlook.com
+ ([fe80::cd85:a8a5:da14:db13]) by DB3PR0202MB3434.eurprd02.prod.outlook.com
+ ([fe80::cd85:a8a5:da14:db13%7]) with mapi id 15.20.2665.026; Tue, 28 Jan 2020
+ 21:45:24 +0000
+Received: from [192.168.13.3] (213.112.137.122) by HE1P189CA0036.EURP189.PROD.OUTLOOK.COM (2603:10a6:7:53::49) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2665.22 via Frontend Transport; Tue, 28 Jan 2020 21:45:23 +0000
+From:   Peter Rosin <peda@axentia.se>
+To:     Colin Ian King <colin.king@canonical.com>,
+        Dan Carpenter <dan.carpenter@oracle.com>,
+        Michal Simek <michal.simek@xilinx.com>,
+        Johan Hovold <johan@kernel.org>
+CC:     "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][next][V2] i2c: xiic: fix indentation issue
+Thread-Topic: [PATCH][next][V2] i2c: xiic: fix indentation issue
+Thread-Index: AQHV1PvGmbkS3JsMKku+pbwF3sqcKKf+WLcAgAAReoCAAADJgIACM4iA
+Date:   Tue, 28 Jan 2020 21:45:24 +0000
+Message-ID: <35ed6501-3b26-36a9-d332-d4ed3366ebd8@axentia.se>
+References: <20200127102303.44133-1-colin.king@canonical.com>
+ <2dd84ab2-a7a3-fdd8-6bd6-07f1b3d5cd00@xilinx.com>
+ <20200127120535.GC1847@kadam>
+ <89661e5e-7662-81a5-ec36-57367825de5e@canonical.com>
+In-Reply-To: <89661e5e-7662-81a5-ec36-57367825de5e@canonical.com>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+user-agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
+x-originating-ip: [213.112.137.122]
+x-clientproxiedby: HE1P189CA0036.EURP189.PROD.OUTLOOK.COM (2603:10a6:7:53::49)
+ To DB3PR0202MB3434.eurprd02.prod.outlook.com (2603:10a6:8:5::30)
+authentication-results: spf=none (sender IP is )
+ smtp.mailfrom=peda@axentia.se; 
+x-ms-exchange-messagesentrepresentingtype: 1
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 61d0b376-f696-4ccf-83a1-08d7a43b618c
+x-ms-traffictypediagnostic: DB3PR0202MB3306:
+x-microsoft-antispam-prvs: <DB3PR0202MB33064B43FA7EFD46D89FC50FBC0A0@DB3PR0202MB3306.eurprd02.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:644;
+x-forefront-prvs: 029651C7A1
+x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(366004)(39830400003)(376002)(346002)(136003)(396003)(189003)(199004)(86362001)(31696002)(54906003)(66556008)(110136005)(52116002)(26005)(316002)(6486002)(66446008)(66476007)(4326008)(31686004)(66946007)(53546011)(16576012)(2906002)(64756008)(36756003)(186003)(81166006)(16526019)(81156014)(8676002)(956004)(5660300002)(508600001)(2616005)(8936002)(71200400001);DIR:OUT;SFP:1102;SCL:1;SRVR:DB3PR0202MB3306;H:DB3PR0202MB3434.eurprd02.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
+received-spf: None (protection.outlook.com: axentia.se does not designate
+ permitted sender hosts)
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: cx0gO0oEphHe4jvfcR5Vko6CJaKzrkbM0Je6K+qVjBVppbsvCNWsSArKGtG7ECuQ64QiAQgQwaiAh5NJv3/KliJKxRyQud/KOd6owJnbeablr0vRvh81txjYpb5WbZnqtnP9Z+TQ/UjzdNuDrHcmvAXo1fU8r8ReZXWbZ+jDNwOFVFOmvvQmMTicIA2AIeb3jsSYd5CskPH6p4GEcXYfo1yuRI26YouYogd62JLHzRxkgHhWwZOf59ZXSEzJ9ZI4kh/fJSGyK/On5cCwn8iycexYMUVkpBSQMJa5o0+Q7sPGwBlog/+Znb4X7HmIWmbr5K3UflDswrCe3fRKgNN8waA1vyRhDiXOIg74ms6EkJqHCiSGWR3cFk87SWN7HO+D1CHntSqoo2P7BShXtq0tDL8KlsK72gt+mGEdbN8ircnyAp8Z+ADP3FCui7KRb+fA
+x-ms-exchange-antispam-messagedata: +RJttpQ7vyqtRIPRZ5vFEsCXU8foIiVpQgGGs13OubyrtZgD7UxxN5/eKaqXiGMOaVIP3PwbD8wNGj89Hii301n2TC5rZOqG9jHJryIVugXwhoR1uDdsmkkBjcKZgRcyJRr7R5jERFjAw+ozlZwqwg==
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <46710B87C475CD45A9ED51494BE6860C@eurprd02.prod.outlook.com>
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-References: <20200128112827.43682-1-colin.king@canonical.com>
-In-Reply-To: <20200128112827.43682-1-colin.king@canonical.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Tue, 28 Jan 2020 16:19:56 -0500
-Message-ID: <CADnq5_O=W6TFFCGZsdvtuLPijanxX4vdkdmedh2OxZauG6M58w@mail.gmail.com>
-Subject: Re: [PATCH] drm/amd/display: fix spelling mistake link_integiry_check
- -> link_integrity_check
-To:     Colin King <colin.king@canonical.com>
-Cc:     Harry Wentland <harry.wentland@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Zhou <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        Maling list - DRI developers 
-        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+X-OriginatorOrg: axentia.se
+X-MS-Exchange-CrossTenant-Network-Message-Id: 61d0b376-f696-4ccf-83a1-08d7a43b618c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Jan 2020 21:45:24.4857
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 4ee68585-03e1-4785-942a-df9c1871a234
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: nv2YsKb43HlgiZBhN6f0NrX2asVE5+XMbMAlZD88o09hiInjS3H2k+AFT7kVOntI
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR0202MB3306
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Tue, Jan 28, 2020 at 6:28 AM Colin King <colin.king@canonical.com> wrote:
->
-> From: Colin Ian King <colin.king@canonical.com>
->
-> There is a spelling mistake on the struct field name link_integiry_check,
-> fix this by renaming it.
->
-> Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-Applied.  Thanks!
-
-Alex
-
-> ---
->  drivers/gpu/drm/amd/display/modules/hdcp/hdcp.h           | 2 +-
->  .../gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c    | 8 ++++----
->  .../gpu/drm/amd/display/modules/hdcp/hdcp1_transition.c   | 4 ++--
->  3 files changed, 7 insertions(+), 7 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.h b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.h
-> index f98d3d9ecb6d..af78e4f1be68 100644
-> --- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.h
-> +++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.h
-> @@ -63,7 +63,7 @@ struct mod_hdcp_transition_input_hdcp1 {
->         uint8_t hdcp_capable_dp;
->         uint8_t binfo_read_dp;
->         uint8_t r0p_available_dp;
-> -       uint8_t link_integiry_check;
-> +       uint8_t link_integrity_check;
->         uint8_t reauth_request_check;
->         uint8_t stream_encryption_dp;
->  };
-> diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
-> index 04845e43df15..37670db64855 100644
-> --- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
-> +++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
-> @@ -283,8 +283,8 @@ static enum mod_hdcp_status wait_for_ready(struct mod_hdcp *hdcp,
->                                 hdcp, "bstatus_read"))
->                         goto out;
->                 if (!mod_hdcp_execute_and_set(check_link_integrity_dp,
-> -                               &input->link_integiry_check, &status,
-> -                               hdcp, "link_integiry_check"))
-> +                               &input->link_integrity_check, &status,
-> +                               hdcp, "link_integrity_check"))
->                         goto out;
->                 if (!mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
->                                 &input->reauth_request_check, &status,
-> @@ -431,8 +431,8 @@ static enum mod_hdcp_status authenticated_dp(struct mod_hdcp *hdcp,
->                         hdcp, "bstatus_read"))
->                 goto out;
->         if (!mod_hdcp_execute_and_set(check_link_integrity_dp,
-> -                       &input->link_integiry_check, &status,
-> -                       hdcp, "link_integiry_check"))
-> +                       &input->link_integrity_check, &status,
-> +                       hdcp, "link_integrity_check"))
->                 goto out;
->         if (!mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
->                         &input->reauth_request_check, &status,
-> diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_transition.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_transition.c
-> index 21ebc62bb9d9..76edcbe51f71 100644
-> --- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_transition.c
-> +++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_transition.c
-> @@ -241,7 +241,7 @@ enum mod_hdcp_status mod_hdcp_hdcp1_dp_transition(struct mod_hdcp *hdcp,
->                 }
->                 break;
->         case D1_A4_AUTHENTICATED:
-> -               if (input->link_integiry_check != PASS ||
-> +               if (input->link_integrity_check != PASS ||
->                                 input->reauth_request_check != PASS) {
->                         /* 1A-07: restart hdcp on a link integrity failure */
->                         fail_and_restart_in_ms(0, &status, output);
-> @@ -249,7 +249,7 @@ enum mod_hdcp_status mod_hdcp_hdcp1_dp_transition(struct mod_hdcp *hdcp,
->                 }
->                 break;
->         case D1_A6_WAIT_FOR_READY:
-> -               if (input->link_integiry_check == FAIL ||
-> +               if (input->link_integrity_check == FAIL ||
->                                 input->reauth_request_check == FAIL) {
->                         fail_and_restart_in_ms(0, &status, output);
->                         break;
-> --
-> 2.24.0
->
-> _______________________________________________
-> dri-devel mailing list
-> dri-devel@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/dri-devel
+T24gMjAyMC0wMS0yNyAxMzowOCwgQ29saW4gSWFuIEtpbmcgd3JvdGU6DQo+IE9uIDI3LzAxLzIw
+MjAgMTI6MDUsIERhbiBDYXJwZW50ZXIgd3JvdGU6DQo+PiBPbiBNb24sIEphbiAyNywgMjAyMCBh
+dCAxMjowMzowMlBNICswMTAwLCBNaWNoYWwgU2ltZWsgd3JvdGU6DQo+Pj4gT24gMjcuIDAxLiAy
+MCAxMToyMywgQ29saW4gS2luZyB3cm90ZToNCj4+Pj4gRnJvbTogQ29saW4gSWFuIEtpbmcgPGNv
+bGluLmtpbmdAY2Fub25pY2FsLmNvbT4NCj4+Pj4NCj4+Pj4gVGhlcmUgaXMgYSBzdGF0ZW1lbnQg
+dGhhdCBpcyBpbmRlbnRlZCBvbmUgbGV2ZWwgdG9vIGRlZXBseSwgcmVtb3ZlDQo+Pj4+IHRoZSBl
+eHRyYW5lb3VzIHRhYi4NCj4+Pj4NCj4+Pj4gU2lnbmVkLW9mZi1ieTogQ29saW4gSWFuIEtpbmcg
+PGNvbGluLmtpbmdAY2Fub25pY2FsLmNvbT4NCj4+Pj4gLS0tDQo+Pj4+IFYyOiBmaXggdHlwZSBp
+biBjb21taXQgbWVzc2FnZQ0KPj4+PiAtLS0NCj4+Pj4gIGRyaXZlcnMvaTJjL2J1c3Nlcy9pMmMt
+eGlpYy5jIHwgMiArLQ0KPj4+PiAgMSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCspLCAxIGRl
+bGV0aW9uKC0pDQo+Pj4+DQo+Pj4+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2kyYy9idXNzZXMvaTJj
+LXhpaWMuYyBiL2RyaXZlcnMvaTJjL2J1c3Nlcy9pMmMteGlpYy5jDQo+Pj4+IGluZGV4IGIxN2Qz
+MGM5YWI0MC4uOTBjMWMzNjIzOTRkIDEwMDY0NA0KPj4+PiAtLS0gYS9kcml2ZXJzL2kyYy9idXNz
+ZXMvaTJjLXhpaWMuYw0KPj4+PiArKysgYi9kcml2ZXJzL2kyYy9idXNzZXMvaTJjLXhpaWMuYw0K
+Pj4+PiBAQCAtMjYxLDcgKzI2MSw3IEBAIHN0YXRpYyBpbnQgeGlpY19jbGVhcl9yeF9maWZvKHN0
+cnVjdCB4aWljX2kyYyAqaTJjKQ0KPj4+PiAgCQl4aWljX2dldHJlZzgoaTJjLCBYSUlDX0RSUl9S
+RUdfT0ZGU0VUKTsNCj4+Pj4gIAkJaWYgKHRpbWVfYWZ0ZXIoamlmZmllcywgdGltZW91dCkpIHsN
+Cj4+Pj4gIAkJCWRldl9lcnIoaTJjLT5kZXYsICJGYWlsZWQgdG8gY2xlYXIgcnggZmlmb1xuIik7
+DQo+Pj4+IC0JCQkJcmV0dXJuIC1FVElNRURPVVQ7DQo+Pj4+ICsJCQlyZXR1cm4gLUVUSU1FRE9V
+VDsNCj4+Pj4gIAkJfQ0KPj4+PiAgCX0NCj4+Pj4gIA0KPj4+Pg0KPj4+DQo+Pj4gQXMgd2FzIHN1
+Z2dlc3RlZCBieSBQZXRlciB5b3Ugc2hvdWxkIGFsc28gYWRkIEZpeGVzOiA8c2hhMT4gKCJwYXRj
+aA0KPj4+IHN1YmplY3QiKQ0KPj4+DQo+Pg0KPj4gSXQncyBub3QgcmVhbGx5IGEgYnVnZml4LCBp
+dCdzIGp1c3QgYSBjbGVhbnVwLg0KPiANCj4gSSdtIHN1cnByaXNlZCBpIHdhc24ndCBhc2tlZCBm
+b3IgYSBidWcgbnVtYmVyIHRvby4NCg0KVmVyeSBmdW5ueS4NCg0KSSByZWFsaXplIHRoYXQgeW91
+LCB0aGUgdGhyZWUgY29tcGxhaW5lcnMgKEpvaGFuLCBEYW4gYW5kIENvbGluKSwgdG9nZXRoZXIN
+CmhhdmUgYWxtb3N0IDEwMDAwIGNvbW1pdHMuIFNvLCBJIGZlZWwgYSBiaXQgb3V0cmFua2VkLg0K
+DQpIb3dldmVyLCB0aGlzIHJpZGljdWxlIGlzIHVuZmFpci4NCg0KVGhlIHByb2JsZW0gaGVyZSBp
+cyB0aGF0IENvbGluIHNlbnQgYSB2MiwgaWdub3JpbmcgbXkgc3VnZ2VzdGlvbiB0byBhZGQNCmEg
+Zml4ZXMtdGFnIHdpdGhvdXQgbWVudGlvbmluZyB0aGF0IG15IHN1Z2dlc3Rpb24gd2FzIGluIGZh
+Y3QgaWdub3JlZA0KKGFuZCB3aHkpLiBUaGF0IGlzIGEgc3VyZSB3YXkgdG8gaW52aXRlIHNvbWVv
+bmUgZWxzZSB0byBwb2ludCBvdXQgd2hhdA0Kc2VlbWVkIGxpa2UgYW4gb21pc3Npb24uIFdoaWNo
+IGhhcHBlbmVkLiBBbmQgdGhlbiB0aGlzIGZhcmNlIGVuc3VlZC4NCg0KU28sIENvbGluLCB0YWtl
+IGEgbG9uZyBsb29rIGluIHRoZSBtaXJyb3IgYW5kIGRpcmVjdCB5b3VyIHNhcmNhc20gaW4NCndo
+YXRldmVyIGRpcmVjdGlvbiB5b3UgZmVlbCBhcHByb3ByaWF0ZS4NCg0KSSBhbHNvIG1haW50YWlu
+IHRoYXQgbm9vbmUgd3JpdGVzIGNvZGUgbGlrZSB0aGlzIG9uIHB1cnBvc2UgKGF0IGxlYXN0DQpu
+b3Qgd2l0aG91dCBzb21lIHVsdGVyaW9yIG1vdGl2ZSkuIFRoaXMgaXMgdGhlIGtpbmQgb2Ygc3R1
+ZmYgdGhhdCBjYXVzZQ0KcHJvYmxlbXMgYW5kIHdhc3RlcyB0aW1lIGxhdGVyIHdoZW4gc29tZW9u
+ZSBtaXMtcmVhZHMgdGhlIGNvZGUuIFlvdSB0aHJlZQ0KcGVvcGxlLCB3aXRoIGFsbCB0aG9zZSBj
+b21taXRzLCBzaG91bGQga25vdyB0aGF0LiBNeSBwb2ludCBpcyB0aGF0IHRoaXMNCmlzIG1vcmUg
+dGhhbiBqdXN0IGNsZWFudXAgYW5kIGlzIGluZGVlZCBmaXhpbmcgYSBidWcuIENsYWltaW5nIG90
+aGVyd2lzZQ0KaXMganVzdCBzaWxseS4gVGhlIGNvbXBpbGVyIGlzIG5vdCB0aGUgb25seSBjb25z
+dW1lciBvZiB0aGUgY29kZS4NCg0KQ2hlZXJzLA0KUGV0ZXINCg==

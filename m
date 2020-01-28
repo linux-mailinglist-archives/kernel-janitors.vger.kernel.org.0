@@ -2,118 +2,156 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6504214BCCF
-	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jan 2020 16:27:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C56E814C20E
+	for <lists+kernel-janitors@lfdr.de>; Tue, 28 Jan 2020 22:20:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726391AbgA1P14 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Tue, 28 Jan 2020 10:27:56 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:43366 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726141AbgA1P1z (ORCPT
+        id S1726320AbgA1VUL (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 28 Jan 2020 16:20:11 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:33704 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726211AbgA1VUL (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Tue, 28 Jan 2020 10:27:55 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00SFPE0v163707;
-        Tue, 28 Jan 2020 15:27:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=WcLyX1UMG6Kg6oHwrdXVffPNT7Y4MkPcD5QG5ETvnRs=;
- b=JaWHNw8eNuWyb6qCiCvH0wRTnG33BCaFS63Vnlig3GKtn3SVeKCOgxickiFJJzVytNuc
- YzeuPbcdpGGedRyKcRdc1pp9mSgvIa0tRb9vdngo795tO9MgjDp1yf90RCGDYih54FFM
- zmqOW+pf1eP6SrkE5U3jcnCWP8V9oUhlQjBYatuknZHvcH1xiOmBBU5NiIQKVEC9Urkn
- l06M546WMqukbsgqp1qx/mekaFEE+2ZCbZqD8ZR3Jcd55YJD0EaDxB1sRI15uEcVLUhF
- X+ttiSrGxOEVqeK/aam8YuMWLrV1da344+fFXKGjukGgdD4CegqaNU61ciLnIHx+tZnS 2w== 
-Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
-        by userp2120.oracle.com with ESMTP id 2xrear6vwr-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 28 Jan 2020 15:27:18 +0000
-Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
-        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00SFLJHo033398;
-        Tue, 28 Jan 2020 15:27:18 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by userp3020.oracle.com with ESMTP id 2xta8hyfgw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 28 Jan 2020 15:27:18 +0000
-Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00SFRD0k029151;
-        Tue, 28 Jan 2020 15:27:13 GMT
-Received: from kadam (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Tue, 28 Jan 2020 07:27:12 -0800
-Date:   Tue, 28 Jan 2020 18:27:03 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Jeff Dike <jdike@addtoit.com>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc:     Richard Weinberger <richard@nod.at>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Martin KaFai Lau <kafai@fb.com>,
-        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
-        Andrii Nakryiko <andriin@fb.com>,
-        Alex Dewar <alex.dewar@gmx.co.uk>,
-        linux-um@lists.infradead.org, bpf@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: [PATCH v3] um: Fix some error handling in uml_vector_user_bpf()
-Message-ID: <20200128151000.kx2bwayuuxpuqn6t@kili.mountain>
+        Tue, 28 Jan 2020 16:20:11 -0500
+Received: by mail-wr1-f67.google.com with SMTP id b6so17806466wrq.0;
+        Tue, 28 Jan 2020 13:20:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zI+cNUNLF3kaXSaB95jriRVjzozM0k40b3VUnBQ2hL4=;
+        b=cr1Eugxz1jDRTs5xXm0mdslOFP/LW6r93aHJoQ549mVFWqHrC7WNncFStX/6Q9ce9v
+         nz/ilbtGXaVqmwnuUOtPzEEhhnZbi3G+ArTMvX9t3TNlebra7xCRIRaoIySvpHIHToPn
+         ZIniEsnYZOL+8NM4M6/QoQ7Yn43VBVyPuanKM45xtbmRasmAHJluexqc8RsEXCiIJ2Y5
+         ULKgK92O+HRsoauqf+y8qkpWo0+kSEedvad0oMmKLIq8QKCz2+K4HunTYzUN4LPIveRF
+         yFnleba3CQRXqMwll04l9z6s5L9y3Xgoqx8P/n6lFGMEIWPn1inGG3AfqJtGjWK0k+K2
+         q6ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zI+cNUNLF3kaXSaB95jriRVjzozM0k40b3VUnBQ2hL4=;
+        b=gedW94dCJU+2a0/7HDXn16HWENtZUHvyApJ2/Ydd4agQafEfcqug7BENFNJ9PcOVa8
+         LNkg2P4G84KgWzxBLFMFikTlGACe43z3gCxJVBNOhFfoAY3t2VpAMrVxDArJUFqwPjZN
+         G986DsGB8SElwpFfgAfZLZUrDYMynvsbo+AXVrIpncdW/8UOzyGqnofDDNYzPo6Uh6Ct
+         rUCc5yzWCOx0SXxWgn5KyvwSJ2eBm4v2iqAsmROZvq69K94iosaj7656M2vIoMT2VboF
+         /QFuBkZ1eF8smFj9eluVguMwzLpO+7w+2UTM77xjRnYFx9roN/3dvLG/ycJsxPy/Dmf2
+         6WYw==
+X-Gm-Message-State: APjAAAVe3WYKf2agc8uMbcbof+5wF825cDBU4CupHi3/DuSsuilv8ALk
+        a6ojWrWjLx+qacwIUOh3mb38mH1E32YG2b9oekI=
+X-Google-Smtp-Source: APXvYqzxeqjTVGWhGxKoLAamd10Qlofs6anWK7unOqW4V0Q59Aa6fL+sO2cRfdjqYiyhrmbqNf2yQCOAN4GC6qOHll4=
+X-Received: by 2002:adf:f2c1:: with SMTP id d1mr30178824wrp.111.1580246408308;
+ Tue, 28 Jan 2020 13:20:08 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9514 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001280122
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9514 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001280122
+References: <20200128112827.43682-1-colin.king@canonical.com>
+In-Reply-To: <20200128112827.43682-1-colin.king@canonical.com>
+From:   Alex Deucher <alexdeucher@gmail.com>
+Date:   Tue, 28 Jan 2020 16:19:56 -0500
+Message-ID: <CADnq5_O=W6TFFCGZsdvtuLPijanxX4vdkdmedh2OxZauG6M58w@mail.gmail.com>
+Subject: Re: [PATCH] drm/amd/display: fix spelling mistake link_integiry_check
+ -> link_integrity_check
+To:     Colin King <colin.king@canonical.com>
+Cc:     Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        David Zhou <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
+        amd-gfx list <amd-gfx@lists.freedesktop.org>,
+        Maling list - DRI developers 
+        <dri-devel@lists.freedesktop.org>, kernel-janitors@vger.kernel.org,
+        LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-1) The uml_vector_user_bpf() returns pointers so it should return NULL
-   instead of false.
-2) If the "bpf_prog" allocation failed, it would have eventually lead to
-   a crash.  We can't succeed after the error happens so it should just
-   return.
+On Tue, Jan 28, 2020 at 6:28 AM Colin King <colin.king@canonical.com> wrote:
+>
+> From: Colin Ian King <colin.king@canonical.com>
+>
+> There is a spelling mistake on the struct field name link_integiry_check,
+> fix this by renaming it.
+>
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
 
-Fixes: 9807019a62dc ("um: Loadable BPF "Firmware" for vector drivers")
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
----
-v3: Fix screwed up subject.  Sorry.  Not my most shining hour.
-v2: The first version broke the build.  Shame upon me.
+Applied.  Thanks!
 
- arch/um/drivers/vector_user.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+Alex
 
-diff --git a/arch/um/drivers/vector_user.c b/arch/um/drivers/vector_user.c
-index ddcd917be0af..1403cbadf92b 100644
---- a/arch/um/drivers/vector_user.c
-+++ b/arch/um/drivers/vector_user.c
-@@ -732,13 +732,14 @@ void *uml_vector_user_bpf(char *filename)
- 
- 	if (stat(filename, &statbuf) < 0) {
- 		printk(KERN_ERR "Error %d reading bpf file", -errno);
--		return false;
-+		return NULL;
- 	}
- 	bpf_prog = uml_kmalloc(sizeof(struct sock_fprog), UM_GFP_KERNEL);
--	if (bpf_prog != NULL) {
--		bpf_prog->len = statbuf.st_size / sizeof(struct sock_filter);
--		bpf_prog->filter = NULL;
--	}
-+	if (bpf_prog == NULL)
-+		return NULL;
-+	bpf_prog->len = statbuf.st_size / sizeof(struct sock_filter);
-+	bpf_prog->filter = NULL;
-+
- 	ffd = os_open_file(filename, of_read(OPENFLAGS()), 0);
- 	if (ffd < 0) {
- 		printk(KERN_ERR "Error %d opening bpf file", -errno);
--- 
-2.11.0
-
+> ---
+>  drivers/gpu/drm/amd/display/modules/hdcp/hdcp.h           | 2 +-
+>  .../gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c    | 8 ++++----
+>  .../gpu/drm/amd/display/modules/hdcp/hdcp1_transition.c   | 4 ++--
+>  3 files changed, 7 insertions(+), 7 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.h b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.h
+> index f98d3d9ecb6d..af78e4f1be68 100644
+> --- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.h
+> +++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp.h
+> @@ -63,7 +63,7 @@ struct mod_hdcp_transition_input_hdcp1 {
+>         uint8_t hdcp_capable_dp;
+>         uint8_t binfo_read_dp;
+>         uint8_t r0p_available_dp;
+> -       uint8_t link_integiry_check;
+> +       uint8_t link_integrity_check;
+>         uint8_t reauth_request_check;
+>         uint8_t stream_encryption_dp;
+>  };
+> diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
+> index 04845e43df15..37670db64855 100644
+> --- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
+> +++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
+> @@ -283,8 +283,8 @@ static enum mod_hdcp_status wait_for_ready(struct mod_hdcp *hdcp,
+>                                 hdcp, "bstatus_read"))
+>                         goto out;
+>                 if (!mod_hdcp_execute_and_set(check_link_integrity_dp,
+> -                               &input->link_integiry_check, &status,
+> -                               hdcp, "link_integiry_check"))
+> +                               &input->link_integrity_check, &status,
+> +                               hdcp, "link_integrity_check"))
+>                         goto out;
+>                 if (!mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
+>                                 &input->reauth_request_check, &status,
+> @@ -431,8 +431,8 @@ static enum mod_hdcp_status authenticated_dp(struct mod_hdcp *hdcp,
+>                         hdcp, "bstatus_read"))
+>                 goto out;
+>         if (!mod_hdcp_execute_and_set(check_link_integrity_dp,
+> -                       &input->link_integiry_check, &status,
+> -                       hdcp, "link_integiry_check"))
+> +                       &input->link_integrity_check, &status,
+> +                       hdcp, "link_integrity_check"))
+>                 goto out;
+>         if (!mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
+>                         &input->reauth_request_check, &status,
+> diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_transition.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_transition.c
+> index 21ebc62bb9d9..76edcbe51f71 100644
+> --- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_transition.c
+> +++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_transition.c
+> @@ -241,7 +241,7 @@ enum mod_hdcp_status mod_hdcp_hdcp1_dp_transition(struct mod_hdcp *hdcp,
+>                 }
+>                 break;
+>         case D1_A4_AUTHENTICATED:
+> -               if (input->link_integiry_check != PASS ||
+> +               if (input->link_integrity_check != PASS ||
+>                                 input->reauth_request_check != PASS) {
+>                         /* 1A-07: restart hdcp on a link integrity failure */
+>                         fail_and_restart_in_ms(0, &status, output);
+> @@ -249,7 +249,7 @@ enum mod_hdcp_status mod_hdcp_hdcp1_dp_transition(struct mod_hdcp *hdcp,
+>                 }
+>                 break;
+>         case D1_A6_WAIT_FOR_READY:
+> -               if (input->link_integiry_check == FAIL ||
+> +               if (input->link_integrity_check == FAIL ||
+>                                 input->reauth_request_check == FAIL) {
+>                         fail_and_restart_in_ms(0, &status, output);
+>                         break;
+> --
+> 2.24.0
+>
+> _______________________________________________
+> dri-devel mailing list
+> dri-devel@lists.freedesktop.org
+> https://lists.freedesktop.org/mailman/listinfo/dri-devel

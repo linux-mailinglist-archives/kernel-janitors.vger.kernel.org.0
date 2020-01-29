@@ -2,52 +2,52 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A52514CFAF
-	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Jan 2020 18:30:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E635014CFC4
+	for <lists+kernel-janitors@lfdr.de>; Wed, 29 Jan 2020 18:39:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727330AbgA2Rav (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 29 Jan 2020 12:30:51 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:50964 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726679AbgA2Rav (ORCPT
+        id S1727354AbgA2Rjm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 29 Jan 2020 12:39:42 -0500
+Received: from userp2130.oracle.com ([156.151.31.86]:35198 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726679AbgA2Rjm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 29 Jan 2020 12:30:51 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00THOBeq090532;
-        Wed, 29 Jan 2020 17:30:47 GMT
+        Wed, 29 Jan 2020 12:39:42 -0500
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00THd9BE126228;
+        Wed, 29 Jan 2020 17:39:35 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=4fZPT885TxZ35f6+rhIV3ZtDEyJ0UC5S/Wy0U+wEPS4=;
- b=sRMcaqtL6Ak8Zbxaw85wnwECGRVklof9xwk0VmfSk+2O5vPVgyMh1YI83tPG56VFw5zN
- PI0TWWswL9Ks/czkV/+ADZmAw4Z+DTrIDnuwJtz546Tel5s2nePhqCgGzQnlYUW2nJKg
- M5Q8nscyurCRFmh51BUKBwtiXhSLhEK+1l/97Dv8EnzQf2VlN0CUw+3OWKnmSSAtl6KQ
- Lele6/ew+1ui7+dMUhfAsq0Z25X9ATvDvqpTJC3NqkFlDTiqS0w2ZvOl7VwTyAKSjqwf
- UvIllTkrO/ZXovVLtOPeOg7UV3vKRAEsFeSBZe73dMidtr8oE6F4talLfj7wLa4MAKRX xw== 
-Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
-        by userp2120.oracle.com with ESMTP id 2xrearev32-1
+ bh=tr7gEXy7VyEAfiCPoAPHT51+Uv8d46qh3HaBdWx9DyY=;
+ b=InmgxSRfxnrmXMUdd6hZFTwq7ROQ9hM65S0xFOTPX51KwAV0J3cBVl9lwsU2GdQySnfT
+ a5qIIvSmmb59lFVQNaySczLjKBgNfN0Ri6H1TCGkBAPba4OdnKUdyD0jp0jFv120Tb7H
+ H1vM+3ZZgCmAqN2FGBhfXVK8vZyR1J9QRgPlhyoD3/zHgS6Vi5/S8whjTrjySFabNHz0
+ 5Q3lyW+hjH7nGAIz9Z00m1++eiCXkAFHBkJJitv+h/d1zCPYZ8tMb3SCtTkdR+qd9Ft7
+ /2bOVq2o6XaHpO5rbd1ftNy6X1tvZXskBi3hAwsIl4gN8ljX2eddf3IkDJGiTqB42pxt kw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 2xrd3uf1tt-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 29 Jan 2020 17:30:47 +0000
-Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
-        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00THNjF7165026;
-        Wed, 29 Jan 2020 17:30:46 GMT
-Received: from aserv0121.oracle.com (aserv0121.oracle.com [141.146.126.235])
-        by aserp3020.oracle.com with ESMTP id 2xtmrafjxg-1
+        Wed, 29 Jan 2020 17:39:35 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00THcFVl127704;
+        Wed, 29 Jan 2020 17:39:34 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3030.oracle.com with ESMTP id 2xuc2x4mjy-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 29 Jan 2020 17:30:46 +0000
-Received: from abhmp0012.oracle.com (abhmp0012.oracle.com [141.146.116.18])
-        by aserv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 00THUjoL025380;
-        Wed, 29 Jan 2020 17:30:45 GMT
+        Wed, 29 Jan 2020 17:39:34 +0000
+Received: from abhmp0004.oracle.com (abhmp0004.oracle.com [141.146.116.10])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 00THdWMi012513;
+        Wed, 29 Jan 2020 17:39:32 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 29 Jan 2020 09:30:45 -0800
-Date:   Wed, 29 Jan 2020 20:30:37 +0300
+        with ESMTP ; Wed, 29 Jan 2020 09:39:31 -0800
+Date:   Wed, 29 Jan 2020 20:39:24 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Johan Hovold <johan@kernel.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] USB: serial: ir-usb: Silence harmless uninitialized variable
- warning
-Message-ID: <20200129173037.cvrb3lcddsml54h5@kili.mountain>
+To:     Yan-Hsuan Chuang <yhchuang@realtek.com>,
+        Chin-Yen Lee <timlee@realtek.com>
+Cc:     Kalle Valo <kvalo@codeaurora.org>, linux-wireless@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: [PATCH] rtw88: Use kfree_skb() instead of kfree()
+Message-ID: <20200129173923.rfufhv5c5pxwodm6@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -55,43 +55,41 @@ X-Mailer: git-send-email haha only kidding
 User-Agent: NeoMutt/20170113 (1.7.2)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9514 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=982
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2001290142
+ engine=8.0.1-1911140001 definitions=main-2001290145
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9514 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2001290142
+ definitions=main-2001290145
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The "actual_length" variable might be uninitialized on some failure
-paths.  It's harmless but static analysis tools like Smatch complain
-and at runtime the UBSan tool will likely complain as well.
+sk_buff structs need to be freed with kfree_skb(), not kfree().
 
-Fixes: e7542bc382f8 ("USB: serial: ir-usb: make set_termios synchronous")
+Fixes: b6c12908a33e ("rtw88: Add wowlan net-detect support")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/usb/serial/ir-usb.c | 2 +-
+ drivers/net/wireless/realtek/rtw88/fw.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/serial/ir-usb.c b/drivers/usb/serial/ir-usb.c
-index 79d0586e2b33..172261a908d8 100644
---- a/drivers/usb/serial/ir-usb.c
-+++ b/drivers/usb/serial/ir-usb.c
-@@ -448,7 +448,7 @@ static void ir_set_termios(struct tty_struct *tty,
- 			usb_sndbulkpipe(udev, port->bulk_out_endpointAddress),
- 			transfer_buffer, 1, &actual_length, 5000);
- 	if (ret || actual_length != 1) {
--		if (actual_length != 1)
-+		if (!ret)
- 			ret = -EIO;
- 		dev_err(&port->dev, "failed to change line speed: %d\n", ret);
- 	}
+diff --git a/drivers/net/wireless/realtek/rtw88/fw.c b/drivers/net/wireless/realtek/rtw88/fw.c
+index 243441453ead..5bdfc70c4529 100644
+--- a/drivers/net/wireless/realtek/rtw88/fw.c
++++ b/drivers/net/wireless/realtek/rtw88/fw.c
+@@ -745,7 +745,7 @@ static struct sk_buff *rtw_nlo_info_get(struct ieee80211_hw *hw)
+ 		loc  = rtw_get_rsvd_page_probe_req_location(rtwdev, ssid);
+ 		if (!loc) {
+ 			rtw_err(rtwdev, "failed to get probe req rsvd loc\n");
+-			kfree(skb);
++			kfree_skb(skb);
+ 			return NULL;
+ 		}
+ 		nlo_hdr->location[i] = loc;
 -- 
 2.11.0
 

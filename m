@@ -2,52 +2,65 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A0BD14D88E
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Jan 2020 11:03:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8FBB14D897
+	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Jan 2020 11:05:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726947AbgA3KDw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 Jan 2020 05:03:52 -0500
-Received: from shards.monkeyblade.net ([23.128.96.9]:52642 "EHLO
-        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726882AbgA3KDw (ORCPT
+        id S1726947AbgA3KFn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 Jan 2020 05:05:43 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:55036 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726873AbgA3KFn (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 Jan 2020 05:03:52 -0500
-Received: from localhost (unknown [IPv6:2001:982:756:1:57a7:3bfd:5e85:defb])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id B0F4D15AB0D1A;
-        Thu, 30 Jan 2020 02:03:50 -0800 (PST)
-Date:   Thu, 30 Jan 2020 11:03:49 +0100 (CET)
-Message-Id: <20200130.110349.1758084246617103502.davem@davemloft.net>
-To:     dan.carpenter@oracle.com
-Cc:     b.zolnierkie@samsung.com, linux-ide@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] ide: make drive->dn read only
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200121125942.hkr3zg77i5gtgc7v@kili.mountain>
-References: <89d856ef-7c00-a2b7-bfcc-483c78092d20@samsung.com>
-        <20200121125942.hkr3zg77i5gtgc7v@kili.mountain>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 30 Jan 2020 02:03:51 -0800 (PST)
+        Thu, 30 Jan 2020 05:05:43 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1ix6hd-00070v-NY; Thu, 30 Jan 2020 10:05:37 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Zhang Rui <rui.zhang@intel.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amit.kucheria@verdurent.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Pascal Paillet <p.paillet@st.com>, linux-pm@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        linux-arm-kernel@lists.infradead.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] thermal: stm32: fix spelling mistake "preprare" -> "prepare"
+Date:   Thu, 30 Jan 2020 10:05:37 +0000
+Message-Id: <20200130100537.18069-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Dan Carpenter <dan.carpenter@oracle.com>
-Date: Tue, 21 Jan 2020 16:06:42 +0300
+From: Colin Ian King <colin.king@canonical.com>
 
-> The IDE core always sets ->dn correctly so changing it is never
-> required.
-> 
-> Setting it to a different value than assigned by IDE core is very likely
-> to result in data corruption (due to wrong transfer timings being set on
-> the controller etc.)
-> 
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+There is a spelling mistake in a dev_err error message. Fix it.
 
-Applied, thanks Dan.
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/thermal/st/stm_thermal.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/thermal/st/stm_thermal.c b/drivers/thermal/st/stm_thermal.c
+index 1cc5e6c5709e..ad9e3bf8fdf6 100644
+--- a/drivers/thermal/st/stm_thermal.c
++++ b/drivers/thermal/st/stm_thermal.c
+@@ -535,7 +535,7 @@ static int stm_thermal_probe(struct platform_device *pdev)
+ 	/* Configure and enable HW sensor */
+ 	ret = stm_thermal_prepare(sensor);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "Error preprare sensor: %d\n", ret);
++		dev_err(&pdev->dev, "Error prepare sensor: %d\n", ret);
+ 		return ret;
+ 	}
+ 
+-- 
+2.24.0
+

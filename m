@@ -2,86 +2,71 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 108A514D8BB
-	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Jan 2020 11:12:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89B2B14DD66
+	for <lists+kernel-janitors@lfdr.de>; Thu, 30 Jan 2020 15:56:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727170AbgA3KMq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 Jan 2020 05:12:46 -0500
-Received: from mail-lf1-f66.google.com ([209.85.167.66]:33214 "EHLO
-        mail-lf1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726873AbgA3KMq (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 Jan 2020 05:12:46 -0500
-Received: by mail-lf1-f66.google.com with SMTP id n25so1926152lfl.0;
-        Thu, 30 Jan 2020 02:12:45 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=t34ozib48UgJTKZw3pjG8Zw0StLaVvJ9LaBH/uiswSs=;
-        b=o5RZrLs8ZiTD+VcNNyFojhsnVngxuyRzWdV30UX9Xk/mBRF7TbbmhAUFtCCWkhxHrJ
-         pYVqyyaUYwUpK/76Wm0iD2pMGtKyqyR30HJk8nbBKWeyFzLhF//wBYHpNujWnhFYt0ec
-         OZC3Ob5rQlKyWKbPdWF2jAQCruzbnm61WIMvdpZy9XrajSO7AjIaeETyneg3ERu8X1J6
-         iiQNlyFSr74U7P9ZRpZ4grs9ZENvmT2jvbndEuHmcjFXHrg9edl+kHUBX9yxGdYlh+rv
-         mKT79qUrf9oiPJKulwY/SPLC47Mr8OlN0Yx64rS4kQXuOAGTKv3b/rXd28FSgynYdQND
-         oI5w==
-X-Gm-Message-State: APjAAAXuO1Kqqx3ey4yLLcGrMF/ZpDImE2iqFqiubmegYcs4+FfKFulS
-        7iHRCB77YvIrxy0vcF8DkZQ=
-X-Google-Smtp-Source: APXvYqwdV37BvbKtQUJC8YOIzREL70imDWSEU6rvapJHknci4Jx7KKf3qUcC4cUdW/+mQhl4oAIk1A==
-X-Received: by 2002:a19:cc11:: with SMTP id c17mr2156146lfg.161.1580379164267;
-        Thu, 30 Jan 2020 02:12:44 -0800 (PST)
-Received: from xi.terra (c-12aae455.07-184-6d6c6d4.bbcust.telenor.se. [85.228.170.18])
-        by smtp.gmail.com with ESMTPSA id i5sm2609623ljj.29.2020.01.30.02.12.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jan 2020 02:12:43 -0800 (PST)
-Received: from johan by xi.terra with local (Exim 4.92.3)
-        (envelope-from <johan@kernel.org>)
-        id 1ix6oa-0000Em-0A; Thu, 30 Jan 2020 11:12:48 +0100
-Date:   Thu, 30 Jan 2020 11:12:47 +0100
-From:   Johan Hovold <johan@kernel.org>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Johan Hovold <johan@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-usb@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] USB: serial: ir-usb: Silence harmless uninitialized
- variable warning
-Message-ID: <20200130101247.GB8871@localhost>
-References: <20200129173037.cvrb3lcddsml54h5@kili.mountain>
+        id S1727283AbgA3O4M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 30 Jan 2020 09:56:12 -0500
+Received: from fieldses.org ([173.255.197.46]:54150 "EHLO fieldses.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727132AbgA3O4M (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 30 Jan 2020 09:56:12 -0500
+Received: by fieldses.org (Postfix, from userid 2815)
+        id 7654689A; Thu, 30 Jan 2020 09:56:11 -0500 (EST)
+Date:   Thu, 30 Jan 2020 09:56:11 -0500
+To:     Olga Kornievskaia <aglo@umich.edu>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        "J. Bruce Fields" <bfields@redhat.com>,
+        Olga Kornievskaia <kolga@netapp.com>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        linux-nfs <linux-nfs@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] nfsd4: fix double free in nfsd4_do_async_copy()
+Message-ID: <20200130145611.GA18127@fieldses.org>
+References: <20200113132307.frp6ur5zhzolu5ys@kili.mountain>
+ <CAN-5tyEEPq6JX7mMRwX+7DTJJ3zy3-=SVqfqQyXvvbOQxqgDJQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200129173037.cvrb3lcddsml54h5@kili.mountain>
+In-Reply-To: <CAN-5tyEEPq6JX7mMRwX+7DTJJ3zy3-=SVqfqQyXvvbOQxqgDJQ@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+From:   bfields@fieldses.org (J. Bruce Fields)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Jan 29, 2020 at 08:30:37PM +0300, Dan Carpenter wrote:
-> The "actual_length" variable might be uninitialized on some failure
-> paths.  It's harmless but static analysis tools like Smatch complain
-> and at runtime the UBSan tool will likely complain as well.
+On Tue, Jan 21, 2020 at 04:56:31PM -0500, Olga Kornievskaia wrote:
+> On Mon, Jan 13, 2020 at 8:24 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> >
+> > This frees "copy->nf_src" before and again after the goto.
+> >
+> > Fixes: ce0887ac96d3 ("NFSD add nfs4 inter ssc to nfsd4_copy")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> >  fs/nfsd/nfs4proc.c | 1 -
+> >  1 file changed, 1 deletion(-)
+> >
+> > diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+> > index 1e14b3ed5674..c90c24c35b2e 100644
+> > --- a/fs/nfsd/nfs4proc.c
+> > +++ b/fs/nfsd/nfs4proc.c
+> > @@ -1469,7 +1469,6 @@ static int nfsd4_do_async_copy(void *data)
+> >                 copy->nf_src->nf_file = nfs42_ssc_open(copy->ss_mnt, &copy->c_fh,
+> >                                               &copy->stateid);
+> >                 if (IS_ERR(copy->nf_src->nf_file)) {
+> > -                       kfree(copy->nf_src);
+> >                         copy->nfserr = nfserr_offload_denied;
+> >                         nfsd4_interssc_disconnect(copy->ss_mnt);
+> >                         goto do_callback;
+> > --
+> > 2.11.0
+> >
 > 
-> Fixes: e7542bc382f8 ("USB: serial: ir-usb: make set_termios synchronous")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-
-Nice catch, I'll queue this up for 5.6-rc.
-
-> ---
->  drivers/usb/serial/ir-usb.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Reviewed-by: Olga Kornievskaia <kolga@netapp.com>
 > 
-> diff --git a/drivers/usb/serial/ir-usb.c b/drivers/usb/serial/ir-usb.c
-> index 79d0586e2b33..172261a908d8 100644
-> --- a/drivers/usb/serial/ir-usb.c
-> +++ b/drivers/usb/serial/ir-usb.c
-> @@ -448,7 +448,7 @@ static void ir_set_termios(struct tty_struct *tty,
->  			usb_sndbulkpipe(udev, port->bulk_out_endpointAddress),
->  			transfer_buffer, 1, &actual_length, 5000);
->  	if (ret || actual_length != 1) {
-> -		if (actual_length != 1)
-> +		if (!ret)
->  			ret = -EIO;
->  		dev_err(&port->dev, "failed to change line speed: %d\n", ret);
->  	}
+> Bruce, can you add this to your nfsd-next?
 
-Johan
+Done, thanks for the reminder.
+
+--b.

@@ -2,75 +2,83 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 261F314E80D
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jan 2020 05:58:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2076614E81B
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jan 2020 06:02:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728027AbgAaE6l (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 30 Jan 2020 23:58:41 -0500
-Received: from userp2130.oracle.com ([156.151.31.86]:37970 "EHLO
-        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727933AbgAaE6l (ORCPT
+        id S1725939AbgAaFCg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 31 Jan 2020 00:02:36 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:47796 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725263AbgAaFCf (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 30 Jan 2020 23:58:41 -0500
-Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
-        by userp2130.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00V4vt2U194365;
-        Fri, 31 Jan 2020 04:58:33 GMT
+        Fri, 31 Jan 2020 00:02:35 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00V4w2Fb163740;
+        Fri, 31 Jan 2020 05:00:17 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=+I6RfZxDTErkgikWYprG/z/JStkYXUsW5y5QJH/rzTA=;
- b=jCb7+HfwhDDI3Oacu5UPSWDNzB4Y29Dr2c7zc/4XiOhrfaoRVuRO8/8uKvSSjHfLoTe/
- KPasM4qmSjyJCrtNTvcbCPBBkMM17SdAhV1GVbPwdEOH1i3975ANxXdq+i8lvQFTL/Cu
- PFCAByzxMOMMnTGv+fQ6R9sFjfG7MMOMfai0fqpWlcclAFS51hfnVv4T1qJUJFXYoXjW
- jtPxtCdvWX6USFoBFri2EaJWPCAwOrwGfyeUbR6ENw3Kwc5C7lkKdm9Q8Ex9mrj7bhd3
- WxqMSRvmwOe0CCtfx2myA+evreQoc6IE5aOPjydzMvh0V03GssvsgJUES3aOnW6yPvyx Sw== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2130.oracle.com with ESMTP id 2xrd3ur3sw-1
+ bh=ZQU5pjagovfzj67UlXMMtovHXCYgxqsUWqAbT7eBLpo=;
+ b=LAWtH3+sIYNNX5aUn+3YLF3Vytzinb38A2xKWulszer98DKCjNnT9D6TTmdDpKHSE04A
+ FBbzPoHSFl7M89txI4ENIeFSYuRC0lomDTMlveHW0Bu8MTaNEjj7wKSoMfBlyer+h1FD
+ 4FUlPl1zgsBC4BKpeTp09vPRei3WygTzwpud4fYEvMYEwflEwFFH/SbsujMuCKeTdLUT
+ ND6vOJu/+XS8713VXKtt6Y4pcu+utaP9SX2637HhZFtEOuloy102yzr46+s8FcPiBO3l
+ rpTxVJdCpucKn03lddjZHlKTl/HzEG5todFZ24mGEXygKLcn9ujGYXUWkj3O4MiWV907 +A== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 2xrdmr0651-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 31 Jan 2020 04:58:33 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00V4wVv6182854;
-        Fri, 31 Jan 2020 04:58:32 GMT
-Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
-        by aserp3030.oracle.com with ESMTP id 2xv8nq0s6f-1
+        Fri, 31 Jan 2020 05:00:17 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 00V4w1Y3123010;
+        Fri, 31 Jan 2020 05:00:16 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3030.oracle.com with ESMTP id 2xv9bvtw95-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 31 Jan 2020 04:58:32 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00V4vpEQ009294;
-        Fri, 31 Jan 2020 04:57:51 GMT
+        Fri, 31 Jan 2020 05:00:15 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 00V50508006695;
+        Fri, 31 Jan 2020 05:00:06 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Thu, 30 Jan 2020 20:57:50 -0800
-Date:   Fri, 31 Jan 2020 07:57:39 +0300
+        with ESMTP ; Thu, 30 Jan 2020 21:00:05 -0800
+Date:   Fri, 31 Jan 2020 07:59:53 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Harry Wentland <harry.wentland@amd.com>,
-        Lewis Huang <Lewis.Huang@amd.com>
-Cc:     Leo Li <sunpeng.li@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        "David (ChunMing) Zhou" <David1.Zhou@amd.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
-        Jun Lei <Jun.Lei@amd.com>, Charlene Liu <charlene.liu@amd.com>,
-        Tony Cheng <Tony.Cheng@amd.com>, Derek Lai <Derek.Lai@amd.com>,
-        Dmytro Laktyushkin <Dmytro.Laktyushkin@amd.com>,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ajay Gupta <ajayg@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+        Keyur Chudgar <keyur@os.amperecomputing.com>,
+        Quan Nguyen <quan@os.amperecomputing.com>,
+        Steve Glendinning <steve.glendinning@shawell.net>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
         kernel-janitors@vger.kernel.org
-Subject: [PATCH] drm/amd/display: Possible divide by zero in set_speed()
-Message-ID: <20200131045739.ault4d6yk2lqlbed@kili.mountain>
+Subject: [PATCH net] device property: change device_get_phy_mode() to prevent
+ signedess bugs
+Message-ID: <20200131045953.wbj66jkvijnmf5s2@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 X-Mailer: git-send-email haha only kidding
 User-Agent: NeoMutt/20170113 (1.7.2)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9516 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=2 malwarescore=0
  phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.0.1-1911140001 definitions=main-2001310043
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9516 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ suspectscore=2 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
  lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
  definitions=main-2001310043
@@ -79,56 +87,214 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-If "speed" is zero then we use it as a divisor to find "prescale".  It's
-better to move the check for zero to the very start of the function.
+The device_get_phy_mode() was returning negative error codes on
+failure and positive phy_interface_t values on success.  The problem is
+that the phy_interface_t type is an enum which GCC treats as unsigned.
+This lead to recurring signedness bugs where we check "if (phy_mode < 0)"
+and "phy_mode" is unsigned.
 
-Fixes: 9eeec26a1339 ("drm/amd/display: Refine i2c frequency calculating sequence")
+In the commit 0c65b2b90d13 ("net: of_get_phy_mode: Change API to solve
+int/unit warnings") we updated of_get_phy_mode() take a pointer to
+phy_mode and only return zero on success and negatives on failure.  This
+patch does the same thing for device_get_phy_mode().  Plus it's just
+nice for the API to be the same in both places.
+
+Fixes: b9f0b2f634c0 ("net: stmmac: platform: fix probe for ACPI devices")
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/gpu/drm/amd/display/dc/dce/dce_i2c_hw.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+This is a change to drivers/base/ but all the users are ethernet drivers
+so probably it makes sense for Dave to take this?
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_i2c_hw.c b/drivers/gpu/drm/amd/display/dc/dce/dce_i2c_hw.c
-index 066188ba7949..24adec407972 100644
---- a/drivers/gpu/drm/amd/display/dc/dce/dce_i2c_hw.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce/dce_i2c_hw.c
-@@ -267,6 +267,9 @@ static void set_speed(
- 	uint32_t xtal_ref_div = 0;
- 	uint32_t prescale = 0;
- 
-+	if (speed == 0)
-+		return;
+Also this fixes a bug in stmmac.  If you wanted I could make a one
+liner fix for that and then write this change on top of that.  The bug
+is only in v5.6 so it doesn't affect old kernels.
+
+ drivers/base/property.c                               | 13 +++++++++++--
+ drivers/net/ethernet/apm/xgene-v2/main.c              |  9 ++++-----
+ drivers/net/ethernet/apm/xgene-v2/main.h              |  2 +-
+ drivers/net/ethernet/apm/xgene/xgene_enet_main.c      |  6 +++---
+ drivers/net/ethernet/apm/xgene/xgene_enet_main.h      |  2 +-
+ drivers/net/ethernet/smsc/smsc911x.c                  |  8 +++-----
+ drivers/net/ethernet/socionext/netsec.c               |  5 ++---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c |  6 +++---
+ include/linux/property.h                              |  3 ++-
+ 9 files changed, 30 insertions(+), 24 deletions(-)
+
+diff --git a/drivers/base/property.c b/drivers/base/property.c
+index 511f6d7acdfe..8854cfbd213b 100644
+--- a/drivers/base/property.c
++++ b/drivers/base/property.c
+@@ -863,9 +863,18 @@ EXPORT_SYMBOL_GPL(fwnode_get_phy_mode);
+  * 'phy-connection-type', and return its index in phy_modes table, or errno in
+  * error case.
+  */
+-int device_get_phy_mode(struct device *dev)
++int device_get_phy_mode(struct device *dev, phy_interface_t *interface)
+ {
+-	return fwnode_get_phy_mode(dev_fwnode(dev));
++	int mode;
 +
- 	REG_GET(MICROSECOND_TIME_BASE_DIV, XTAL_REF_DIV, &xtal_ref_div);
- 
- 	if (xtal_ref_div == 0)
-@@ -274,17 +277,15 @@ static void set_speed(
- 
- 	prescale = ((dce_i2c_hw->reference_frequency * 2) / xtal_ref_div) / speed;
- 
--	if (speed) {
--		if (dce_i2c_hw->masks->DC_I2C_DDC1_START_STOP_TIMING_CNTL)
--			REG_UPDATE_N(SPEED, 3,
--				     FN(DC_I2C_DDC1_SPEED, DC_I2C_DDC1_PRESCALE), prescale,
--				     FN(DC_I2C_DDC1_SPEED, DC_I2C_DDC1_THRESHOLD), 2,
--				     FN(DC_I2C_DDC1_SPEED, DC_I2C_DDC1_START_STOP_TIMING_CNTL), speed > 50 ? 2:1);
--		else
--			REG_UPDATE_N(SPEED, 2,
--				     FN(DC_I2C_DDC1_SPEED, DC_I2C_DDC1_PRESCALE), prescale,
--				     FN(DC_I2C_DDC1_SPEED, DC_I2C_DDC1_THRESHOLD), 2);
--	}
-+	if (dce_i2c_hw->masks->DC_I2C_DDC1_START_STOP_TIMING_CNTL)
-+		REG_UPDATE_N(SPEED, 3,
-+			     FN(DC_I2C_DDC1_SPEED, DC_I2C_DDC1_PRESCALE), prescale,
-+			     FN(DC_I2C_DDC1_SPEED, DC_I2C_DDC1_THRESHOLD), 2,
-+			     FN(DC_I2C_DDC1_SPEED, DC_I2C_DDC1_START_STOP_TIMING_CNTL), speed > 50 ? 2:1);
-+	else
-+		REG_UPDATE_N(SPEED, 2,
-+			     FN(DC_I2C_DDC1_SPEED, DC_I2C_DDC1_PRESCALE), prescale,
-+			     FN(DC_I2C_DDC1_SPEED, DC_I2C_DDC1_THRESHOLD), 2);
++	*interface = PHY_INTERFACE_MODE_NA;
++
++	mode = fwnode_get_phy_mode(dev_fwnode(dev));
++	if (mode < 0)
++		return mode;
++
++	*interface = mode;
++	return 0;
  }
+ EXPORT_SYMBOL_GPL(device_get_phy_mode);
  
- static bool setup_engine(
+diff --git a/drivers/net/ethernet/apm/xgene-v2/main.c b/drivers/net/ethernet/apm/xgene-v2/main.c
+index c48f60996761..706602918dd1 100644
+--- a/drivers/net/ethernet/apm/xgene-v2/main.c
++++ b/drivers/net/ethernet/apm/xgene-v2/main.c
+@@ -15,7 +15,7 @@ static int xge_get_resources(struct xge_pdata *pdata)
+ {
+ 	struct platform_device *pdev;
+ 	struct net_device *ndev;
+-	int phy_mode, ret = 0;
++	int ret = 0;
+ 	struct resource *res;
+ 	struct device *dev;
+ 
+@@ -41,12 +41,11 @@ static int xge_get_resources(struct xge_pdata *pdata)
+ 
+ 	memcpy(ndev->perm_addr, ndev->dev_addr, ndev->addr_len);
+ 
+-	phy_mode = device_get_phy_mode(dev);
+-	if (phy_mode < 0) {
++	ret = device_get_phy_mode(dev, &pdata->resources.phy_mode);
++	if (ret) {
+ 		dev_err(dev, "Unable to get phy-connection-type\n");
+-		return phy_mode;
++		return ret;
+ 	}
+-	pdata->resources.phy_mode = phy_mode;
+ 
+ 	if (pdata->resources.phy_mode != PHY_INTERFACE_MODE_RGMII) {
+ 		dev_err(dev, "Incorrect phy-connection-type specified\n");
+diff --git a/drivers/net/ethernet/apm/xgene-v2/main.h b/drivers/net/ethernet/apm/xgene-v2/main.h
+index d41439d2709d..d687f0185908 100644
+--- a/drivers/net/ethernet/apm/xgene-v2/main.h
++++ b/drivers/net/ethernet/apm/xgene-v2/main.h
+@@ -35,7 +35,7 @@
+ 
+ struct xge_resource {
+ 	void __iomem *base_addr;
+-	int phy_mode;
++	phy_interface_t phy_mode;
+ 	u32 irq;
+ };
+ 
+diff --git a/drivers/net/ethernet/apm/xgene/xgene_enet_main.c b/drivers/net/ethernet/apm/xgene/xgene_enet_main.c
+index 6aee2f0fc0db..da35e70ccceb 100644
+--- a/drivers/net/ethernet/apm/xgene/xgene_enet_main.c
++++ b/drivers/net/ethernet/apm/xgene/xgene_enet_main.c
+@@ -1736,10 +1736,10 @@ static int xgene_enet_get_resources(struct xgene_enet_pdata *pdata)
+ 
+ 	memcpy(ndev->perm_addr, ndev->dev_addr, ndev->addr_len);
+ 
+-	pdata->phy_mode = device_get_phy_mode(dev);
+-	if (pdata->phy_mode < 0) {
++	ret = device_get_phy_mode(dev, &pdata->phy_mode);
++	if (ret) {
+ 		dev_err(dev, "Unable to get phy-connection-type\n");
+-		return pdata->phy_mode;
++		return ret;
+ 	}
+ 	if (!phy_interface_mode_is_rgmii(pdata->phy_mode) &&
+ 	    pdata->phy_mode != PHY_INTERFACE_MODE_SGMII &&
+diff --git a/drivers/net/ethernet/apm/xgene/xgene_enet_main.h b/drivers/net/ethernet/apm/xgene/xgene_enet_main.h
+index 18f4923b1723..600cddf1942d 100644
+--- a/drivers/net/ethernet/apm/xgene/xgene_enet_main.h
++++ b/drivers/net/ethernet/apm/xgene/xgene_enet_main.h
+@@ -209,7 +209,7 @@ struct xgene_enet_pdata {
+ 	void __iomem *pcs_addr;
+ 	void __iomem *ring_csr_addr;
+ 	void __iomem *ring_cmd_addr;
+-	int phy_mode;
++	phy_interface_t phy_mode;
+ 	enum xgene_enet_rm rm;
+ 	struct xgene_enet_cle cle;
+ 	u64 *extd_stats;
+diff --git a/drivers/net/ethernet/smsc/smsc911x.c b/drivers/net/ethernet/smsc/smsc911x.c
+index 49a6a9167af4..2d773e5e67f8 100644
+--- a/drivers/net/ethernet/smsc/smsc911x.c
++++ b/drivers/net/ethernet/smsc/smsc911x.c
+@@ -2361,14 +2361,12 @@ static const struct smsc911x_ops shifted_smsc911x_ops = {
+ static int smsc911x_probe_config(struct smsc911x_platform_config *config,
+ 				 struct device *dev)
+ {
+-	int phy_interface;
+ 	u32 width = 0;
+ 	int err;
+ 
+-	phy_interface = device_get_phy_mode(dev);
+-	if (phy_interface < 0)
+-		phy_interface = PHY_INTERFACE_MODE_NA;
+-	config->phy_interface = phy_interface;
++	err = device_get_phy_mode(dev, &config->phy_interface);
++	if (err)
++		config->phy_interface = PHY_INTERFACE_MODE_NA;
+ 
+ 	device_get_mac_address(dev, config->mac, ETH_ALEN);
+ 
+diff --git a/drivers/net/ethernet/socionext/netsec.c b/drivers/net/ethernet/socionext/netsec.c
+index e8224b543dfc..95ff91230523 100644
+--- a/drivers/net/ethernet/socionext/netsec.c
++++ b/drivers/net/ethernet/socionext/netsec.c
+@@ -1994,10 +1994,9 @@ static int netsec_probe(struct platform_device *pdev)
+ 	priv->msg_enable = NETIF_MSG_TX_ERR | NETIF_MSG_HW | NETIF_MSG_DRV |
+ 			   NETIF_MSG_LINK | NETIF_MSG_PROBE;
+ 
+-	priv->phy_interface = device_get_phy_mode(&pdev->dev);
+-	if ((int)priv->phy_interface < 0) {
++	ret = device_get_phy_mode(&pdev->dev, &priv->phy_interface);
++	if (ret) {
+ 		dev_err(&pdev->dev, "missing required property 'phy-mode'\n");
+-		ret = -ENODEV;
+ 		goto free_ndev;
+ 	}
+ 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index d10ac54bf385..aa77c332ea1d 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -412,9 +412,9 @@ stmmac_probe_config_dt(struct platform_device *pdev, const char **mac)
+ 		*mac = NULL;
+ 	}
+ 
+-	plat->phy_interface = device_get_phy_mode(&pdev->dev);
+-	if (plat->phy_interface < 0)
+-		return ERR_PTR(plat->phy_interface);
++	rc = device_get_phy_mode(&pdev->dev, &plat->phy_interface);
++	if (rc)
++		return ERR_PTR(rc);
+ 
+ 	plat->interface = stmmac_of_get_mac_mode(np);
+ 	if (plat->interface < 0)
+diff --git a/include/linux/property.h b/include/linux/property.h
+index d86de017c689..2ffe9842c997 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -12,6 +12,7 @@
+ 
+ #include <linux/bits.h>
+ #include <linux/fwnode.h>
++#include <linux/phy.h>
+ #include <linux/types.h>
+ 
+ struct device;
+@@ -368,7 +369,7 @@ enum dev_dma_attr device_get_dma_attr(struct device *dev);
+ 
+ const void *device_get_match_data(struct device *dev);
+ 
+-int device_get_phy_mode(struct device *dev);
++int device_get_phy_mode(struct device *dev, phy_interface_t *interface);
+ 
+ void *device_get_mac_address(struct device *dev, char *addr, int alen);
+ 
 -- 
 2.11.0
 

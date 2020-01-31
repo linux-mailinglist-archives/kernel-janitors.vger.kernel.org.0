@@ -2,78 +2,145 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8120E14ED1A
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jan 2020 14:17:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69CE114ED34
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jan 2020 14:26:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728663AbgAaNRw (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 Jan 2020 08:17:52 -0500
-Received: from mail-pj1-f65.google.com ([209.85.216.65]:51999 "EHLO
-        mail-pj1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728579AbgAaNRw (ORCPT
+        id S1728667AbgAaNZq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 31 Jan 2020 08:25:46 -0500
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:34763 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728514AbgAaNZq (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 Jan 2020 08:17:52 -0500
-Received: by mail-pj1-f65.google.com with SMTP id fa20so2820489pjb.1
-        for <kernel-janitors@vger.kernel.org>; Fri, 31 Jan 2020 05:17:52 -0800 (PST)
+        Fri, 31 Jan 2020 08:25:46 -0500
+Received: by mail-pg1-f196.google.com with SMTP id j4so3464721pgi.1;
+        Fri, 31 Jan 2020 05:25:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=4RbjksI4ZVf8jlMAui9QSDoZFwWF9mQNUo5m2497TSc=;
-        b=sw0BNkY2xodLl19tF1NzSAwlrgB/f0xz/drT1C8nMWvnI44LGv/UHTZDSZv93CiLPc
-         GnNuM9xVL6klOq9cj1I9TMAI68M111pw3maiRrp2U/0drrI/GGnFN7KpfTXErG9vxvma
-         TYO8AqqrzJY9afrm07s2Go9klVwC7dkCNlolrb67wEXGquYz/RzIJ6vHYQwNcIhz2pzZ
-         FJK5Nu0T3J4yVl+laCkNHcpEtKMJBlyx+wNqn7tg/lkcbqrbY+QSIrJPUn+X8l2UhJe0
-         HPiIU/onHOS68R80wRZh4Tr2LxSKJ6ClI8HYJrUIalHaTw8ZGCEcITHGU4EyK+sdo4Pc
-         aWdA==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=Uw1FQaJ7B7AC5+CVRylYzOQ0kTnjKrLEQb7DZzSA/4Y=;
+        b=gNWV8Sbx6ScYTDYJ64qE+QmSC0CcNXwNBov85Rbgtcoq60E/gJuRzF3sa8kHAUXIJP
+         58L7Dr3G5zt65WHFz/ANSvk1GG6q/Q+zaFlW0i1WWjrWKZIiDRqQAy7erEGGyh8iHq1M
+         njRkcSrYOEWMVtGijmDGF/NSUWjJCJEpS+7qA/qLfBIGcd+IOYB4ITOWFCCsKjNnJo1b
+         0ajDUvQcs0NfvetIRZztrHzeE80KcezUL4ubQL2Qx2RpRcvR678e9533fvXHRmmIGAWt
+         c+fkvufa3kcA+WHnbdvl1Mg7OPP0j2TOanwCmY0NDYGhJLDcligaOTVPDyT1mc4LyF7C
+         bz6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=4RbjksI4ZVf8jlMAui9QSDoZFwWF9mQNUo5m2497TSc=;
-        b=Sw5aM/DKGUZgoZyEtLz1v9ANnzv0hXtEk+TuK/bWkE0/foOm434OHZGSGLtiCb63KK
-         Cp/yX5Zhbfrogt5zksURm1mkiVZmR0UPhW0SN0T1iNKYc10YLtgETDyDzGtHdXSzssYC
-         kuHTnr6734zMOpFtEgg/gbt9/9gCiUQbItX2/blUaYxmAdXdH3HIKouPJbiPmuZ4Aovv
-         VJCwkxxFSy90nHUqZp3pQ0KEvtPxgLMXBi1n+NWzepFc0jkOq98JM6JyzOFajTsK3hmI
-         t21SlQSza15epidrVvl/piU3ZZtDNh4uyxeu1f7xOfh3Hc99/mwqcplk8n10XQDACBNU
-         uN4A==
-X-Gm-Message-State: APjAAAU8hq2H2ZKrVQVJ4hjNsH58X5MnAinI7FOF+7DIzJ4xuZs7bWM2
-        61oZJ4sR78BE7O4JIA5up3HV9xvt8878v2rVJt4=
-X-Google-Smtp-Source: APXvYqwE7DlH1YiQJsaWn8qGn6NiK6RbKG8AfadkZhmxhL2Mo9Tt20NUDrRGnKXy1I6/GdXv06q/saQe3WAUsnWZZIs=
-X-Received: by 2002:a17:902:8549:: with SMTP id d9mr9925631plo.153.1580476671348;
- Fri, 31 Jan 2020 05:17:51 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=Uw1FQaJ7B7AC5+CVRylYzOQ0kTnjKrLEQb7DZzSA/4Y=;
+        b=NjEc1kPwWqP2b8Xt8vd13r4LMejCxXmFXTqQfJJng1zdmw+yf6WdX9Tq5VW22TzGfS
+         XmhpXuCpOkXHrsMJvtGICxyKLkzXZsjU6pR2lO7r4sb3KB2tPImsu7BOf8hKiRQ73pOm
+         dwYP0HVpQClHrpf0qtl6M1GSOi2rQXCvX3kgDdT2KzhWijx54CzhaJK0n1WKDzEzSq2Y
+         m+xD8eSmSm5ITXh6gmDtJrMCDI4st71FiufzjcDoVfwR7QJ8HfbVU2/byD8+ism1zV93
+         igwd51gHxUb/MuSl3qg0gxyRPfzGbmTYwaZh/7dzTw9FoXTs8qOQBd/KKnmCg2eXTAif
+         Qs1A==
+X-Gm-Message-State: APjAAAWq3pMqp9LuTInL00nGbGRUolnBIjoi/W8DBnmyGpwAUczcvnds
+        keQsDyagOFZAzZw/Rfc+49o=
+X-Google-Smtp-Source: APXvYqzJZa0hq1t1IkczddY1sn7dC2Nwyv/xkjvgnEZRNzMIFUYnDNpERPVWmI6YbILlckNXdk9bkQ==
+X-Received: by 2002:a62:1b4f:: with SMTP id b76mr10986760pfb.163.1580477145176;
+        Fri, 31 Jan 2020 05:25:45 -0800 (PST)
+Received: from localhost (g52.222-224-164.ppp.wakwak.ne.jp. [222.224.164.52])
+        by smtp.gmail.com with ESMTPSA id g18sm10448004pfi.80.2020.01.31.05.25.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Jan 2020 05:25:44 -0800 (PST)
+Date:   Fri, 31 Jan 2020 22:25:42 +0900
+From:   Stafford Horne <shorne@gmail.com>
+To:     kbuild test robot <lkp@intel.com>
+Cc:     Julia Lawall <Julia.Lawall@inria.fr>, kbuild-all@lists.01.org,
+        Jonas Bonn <jonas@southpole.se>,
+        kernel-janitors@vger.kernel.org,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        openrisc@lists.librecores.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/4] openrisc: use mmgrab
+Message-ID: <20200131132542.GY24874@lianli.shorne-pla.net>
+References: <1577634178-22530-5-git-send-email-Julia.Lawall@inria.fr>
+ <201912301238.xfn6pKut%lkp@intel.com>
 MIME-Version: 1.0
-Received: by 2002:a17:90a:480d:0:0:0:0 with HTTP; Fri, 31 Jan 2020 05:17:50
- -0800 (PST)
-Reply-To: aakkaavvii@gmail.com
-From:   Abraham Morrison <drjameswilliams1924@gmail.com>
-Date:   Fri, 31 Jan 2020 05:17:50 -0800
-Message-ID: <CAPBADDFtdL8K1HRjpLn8+ah0=O=MzQOy-WqoP10nXsT0SVimMA@mail.gmail.com>
-Subject: Good day!
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <201912301238.xfn6pKut%lkp@intel.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-RGVhciBGcmllbmQsDQpJIGFtIEJhcnJpc3RlciBBYnJhaGFtIE1vcnJpc29uLCBEaWQgeW91IHJl
-Y2VpdmUgbXkgcHJldmlvdXMgbWVzc2FnZQ0KdG8geW91PyBJIGhhdmUgYW4gaW1wb3J0YW50IGlu
-Zm9ybWF0aW9uIGZvciB5b3UgYWJvdXQgeW91ciBpbmhlcml0YW5jZQ0KZnVuZCB3b3J0aCBvZiAo
-JDIwLDUwMCwwMDAuMDApIE1pbGxpb24gd2hpY2ggd2FzIGxlZnQgZm9yIHlvdSBieSB5b3VyDQps
-YXRlIHJlbGF0aXZlLCBNci4gQWxleGFuZGVyLiBTbyBpZiB5b3UgYXJlIGludGVyZXN0ZWQgZ2V0
-IGJhY2sgdG8gbWUNCmZvciBtb3JlIGRldGFpbHMuDQpUaGFuayB5b3UuDQpCYXJyaXN0ZXIgQWJy
-YWhhbSBNb3JyaXNvbi4NCi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4uLi4u
-Li4uLi4uLi4uLi4uLi4uLi4uDQrQlNC+0YDQvtCz0L7QuSDQtNGA0YPQsywNCtCvINCR0LDRgNGA
-0LjRgdGC0LXRgCDQkNCy0YDQsNCw0Lwg0JzQvtGA0YDQuNGB0L7QvSwg0JLRiyDQv9C+0LvRg9GH
-0LjQu9C4INC80L7QtSDQv9GA0LXQtNGL0LTRg9GJ0LXQtSDRgdC+0L7QsdGJ0LXQvdC40LUg0LTQ
-u9GPDQrQstCw0YE/INCjINC80LXQvdGPINC10YHRgtGMINC00LvRjyDQstCw0YEg0LLQsNC20L3Q
-sNGPINC40L3RhNC+0YDQvNCw0YbQuNGPINC+INCy0LDRiNC10Lwg0L3QsNGB0LvQtdC00YHRgtCy
-0LXQvdC90L7QvA0K0YTQvtC90LTQtSDQsiDRgNCw0LfQvNC10YDQtSAoMjAgNTAwIDAwMCwwMCkg
-0LzQuNC70LvQuNC+0L3QvtCyINC00L7Qu9C70LDRgNC+0LIsINC+0YHRgtCw0LLQu9C10L3QvdC+
-0Lwg0LLQsNC8DQrQv9C+0LrQvtC50L3Ri9C8INGA0L7QtNGB0YLQstC10L3QvdC40LrQvtC8LCDQ
-vNC40YHRgtC10YAg0JDQu9C10LrRgdCw0L3QtNGALiDQotCw0Log0YfRgtC+LCDQtdGB0LvQuCDQ
-stGLDQrQt9Cw0LjQvdGC0LXRgNC10YHQvtCy0LDQvdGLLCDRgdCy0Y/QttC40YLQtdGB0Ywg0YHQ
-viDQvNC90L7QuSDQtNC70Y8g0LHQvtC70LXQtSDQv9C+0LTRgNC+0LHQvdC+0Lkg0LjQvdGE0L7R
-gNC80LDRhtC40LguDQrQodC/0LDRgdC40LHQvi4NCtCR0LDRgNGA0LjRgdGC0LXRgCDQkNCy0YDQ
-sNCw0Lwg0JzQvtGA0YDQuNGB0L7QvS4NCg==
+On Mon, Dec 30, 2019 at 12:49:19PM +0800, kbuild test robot wrote:
+> Hi Julia,
+> 
+> I love your patch! Yet something to improve:
+> 
+> [auto build test ERROR on vfio/next]
+> [also build test ERROR on char-misc/char-misc-testing v5.5-rc3 next-20191220]
+> [if your patch is applied to the wrong git tree, please drop us a note to help
+> improve the system. BTW, we also suggest to use '--base' option to specify the
+> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
+> 
+> url:    https://github.com/0day-ci/linux/commits/Julia-Lawall/use-mmgrab/20191230-011611
+> base:   https://github.com/awilliam/linux-vfio.git next
+> config: openrisc-simple_smp_defconfig (attached as .config)
+> compiler: or1k-linux-gcc (GCC) 9.2.0
+> reproduce:
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # save the attached .config to linux build tree
+>         GCC_VERSION=9.2.0 make.cross ARCH=openrisc 
+> 
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    arch/openrisc/kernel/smp.c: In function 'secondary_start_kernel':
+> >> arch/openrisc/kernel/smp.c:116:2: error: implicit declaration of function 'mmgrab'; did you mean 'igrab'? [-Werror=implicit-function-declaration]
+>      116 |  mmgrab(mm);
+>          |  ^~~~~~
+>          |  igrab
+>    cc1: some warnings being treated as errors
+> 
+> vim +116 arch/openrisc/kernel/smp.c
+> 
+>    107	
+>    108	asmlinkage __init void secondary_start_kernel(void)
+>    109	{
+>    110		struct mm_struct *mm = &init_mm;
+>    111		unsigned int cpu = smp_processor_id();
+>    112		/*
+>    113		 * All kernel threads share the same mm context; grab a
+>    114		 * reference and switch to it.
+>    115		 */
+>  > 116		mmgrab(mm);
+>    117		current->active_mm = mm;
+>    118		cpumask_set_cpu(cpu, mm_cpumask(mm));
+>    119	
+>    120		pr_info("CPU%u: Booted secondary processor\n", cpu);
+>    121	
+>    122		setup_cpuinfo();
+>    123		openrisc_clockevent_init();
+>    124	
+>    125		notify_cpu_starting(cpu);
+>    126	
+>    127		/*
+>    128		 * OK, now it's safe to let the boot CPU continue
+>    129		 */
+>    130		complete(&cpu_running);
+>    131	
+>    132		synchronise_count_slave(cpu);
+>    133		set_cpu_online(cpu, true);
+>    134	
+>    135		local_irq_enable();
+>    136	
+>    137		preempt_disable();
+>    138		/*
+>    139		 * OK, it's off to the idle thread for us
+>    140		 */
+>    141		cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
+>    142	}
+>    143	
+> 
+
+Hello,  FYI I have fixed this commit and queued it on my 5.7 branch.
+
+-Stafford

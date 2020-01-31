@@ -2,145 +2,85 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 69CE114ED34
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jan 2020 14:26:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2474514EE0A
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jan 2020 14:58:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728667AbgAaNZq (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 Jan 2020 08:25:46 -0500
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:34763 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728514AbgAaNZq (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 Jan 2020 08:25:46 -0500
-Received: by mail-pg1-f196.google.com with SMTP id j4so3464721pgi.1;
-        Fri, 31 Jan 2020 05:25:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=Uw1FQaJ7B7AC5+CVRylYzOQ0kTnjKrLEQb7DZzSA/4Y=;
-        b=gNWV8Sbx6ScYTDYJ64qE+QmSC0CcNXwNBov85Rbgtcoq60E/gJuRzF3sa8kHAUXIJP
-         58L7Dr3G5zt65WHFz/ANSvk1GG6q/Q+zaFlW0i1WWjrWKZIiDRqQAy7erEGGyh8iHq1M
-         njRkcSrYOEWMVtGijmDGF/NSUWjJCJEpS+7qA/qLfBIGcd+IOYB4ITOWFCCsKjNnJo1b
-         0ajDUvQcs0NfvetIRZztrHzeE80KcezUL4ubQL2Qx2RpRcvR678e9533fvXHRmmIGAWt
-         c+fkvufa3kcA+WHnbdvl1Mg7OPP0j2TOanwCmY0NDYGhJLDcligaOTVPDyT1mc4LyF7C
-         bz6g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=Uw1FQaJ7B7AC5+CVRylYzOQ0kTnjKrLEQb7DZzSA/4Y=;
-        b=NjEc1kPwWqP2b8Xt8vd13r4LMejCxXmFXTqQfJJng1zdmw+yf6WdX9Tq5VW22TzGfS
-         XmhpXuCpOkXHrsMJvtGICxyKLkzXZsjU6pR2lO7r4sb3KB2tPImsu7BOf8hKiRQ73pOm
-         dwYP0HVpQClHrpf0qtl6M1GSOi2rQXCvX3kgDdT2KzhWijx54CzhaJK0n1WKDzEzSq2Y
-         m+xD8eSmSm5ITXh6gmDtJrMCDI4st71FiufzjcDoVfwR7QJ8HfbVU2/byD8+ism1zV93
-         igwd51gHxUb/MuSl3qg0gxyRPfzGbmTYwaZh/7dzTw9FoXTs8qOQBd/KKnmCg2eXTAif
-         Qs1A==
-X-Gm-Message-State: APjAAAWq3pMqp9LuTInL00nGbGRUolnBIjoi/W8DBnmyGpwAUczcvnds
-        keQsDyagOFZAzZw/Rfc+49o=
-X-Google-Smtp-Source: APXvYqzJZa0hq1t1IkczddY1sn7dC2Nwyv/xkjvgnEZRNzMIFUYnDNpERPVWmI6YbILlckNXdk9bkQ==
-X-Received: by 2002:a62:1b4f:: with SMTP id b76mr10986760pfb.163.1580477145176;
-        Fri, 31 Jan 2020 05:25:45 -0800 (PST)
-Received: from localhost (g52.222-224-164.ppp.wakwak.ne.jp. [222.224.164.52])
-        by smtp.gmail.com with ESMTPSA id g18sm10448004pfi.80.2020.01.31.05.25.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jan 2020 05:25:44 -0800 (PST)
-Date:   Fri, 31 Jan 2020 22:25:42 +0900
-From:   Stafford Horne <shorne@gmail.com>
-To:     kbuild test robot <lkp@intel.com>
-Cc:     Julia Lawall <Julia.Lawall@inria.fr>, kbuild-all@lists.01.org,
-        Jonas Bonn <jonas@southpole.se>,
-        kernel-janitors@vger.kernel.org,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        openrisc@lists.librecores.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] openrisc: use mmgrab
-Message-ID: <20200131132542.GY24874@lianli.shorne-pla.net>
-References: <1577634178-22530-5-git-send-email-Julia.Lawall@inria.fr>
- <201912301238.xfn6pKut%lkp@intel.com>
+        id S1728840AbgAaN6M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 31 Jan 2020 08:58:12 -0500
+Received: from vps0.lunn.ch ([185.16.172.187]:60002 "EHLO vps0.lunn.ch"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728500AbgAaN6M (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 31 Jan 2020 08:58:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=M1F71jvBqrpDNfAxNP559L2v7vOR6DOGsr1UJQiyE0E=; b=AQOn2fybqbDTF0u5okJfCrxC6z
+        5g8Wyei/0tS7qnYFWdLg5ZpWmKOUaVwF//RM6mbKQfZzYeDv7d6np87N5VvOavsAQWgijt+vD6IKP
+        Dx5EI3JKfG7LoNltgG/F4XYL0TFjRN76iXfrUfTrFM0kX5BgRJw0uHXl5UrCcYWOqC3A=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.93)
+        (envelope-from <andrew@lunn.ch>)
+        id 1ixWnq-0007SO-NR; Fri, 31 Jan 2020 14:57:46 +0100
+Date:   Fri, 31 Jan 2020 14:57:46 +0100
+From:   Andrew Lunn <andrew@lunn.ch>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ajay Gupta <ajayg@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+        Keyur Chudgar <keyur@os.amperecomputing.com>,
+        Quan Nguyen <quan@os.amperecomputing.com>,
+        Steve Glendinning <steve.glendinning@shawell.net>,
+        Jassi Brar <jaswinder.singh@linaro.org>,
+        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+        Alexandre Torgue <alexandre.torgue@st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        linux-stm32@st-md-mailman.stormreply.com,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH net] device property: change device_get_phy_mode() to
+ prevent signedess bugs
+Message-ID: <20200131135746.GF9639@lunn.ch>
+References: <20200131045953.wbj66jkvijnmf5s2@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <201912301238.xfn6pKut%lkp@intel.com>
-User-Agent: Mutt/1.11.4 (2019-03-13)
+In-Reply-To: <20200131045953.wbj66jkvijnmf5s2@kili.mountain>
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Dec 30, 2019 at 12:49:19PM +0800, kbuild test robot wrote:
-> Hi Julia,
-> 
-> I love your patch! Yet something to improve:
-> 
-> [auto build test ERROR on vfio/next]
-> [also build test ERROR on char-misc/char-misc-testing v5.5-rc3 next-20191220]
-> [if your patch is applied to the wrong git tree, please drop us a note to help
-> improve the system. BTW, we also suggest to use '--base' option to specify the
-> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
-> 
-> url:    https://github.com/0day-ci/linux/commits/Julia-Lawall/use-mmgrab/20191230-011611
-> base:   https://github.com/awilliam/linux-vfio.git next
-> config: openrisc-simple_smp_defconfig (attached as .config)
-> compiler: or1k-linux-gcc (GCC) 9.2.0
-> reproduce:
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # save the attached .config to linux build tree
->         GCC_VERSION=9.2.0 make.cross ARCH=openrisc 
-> 
-> If you fix the issue, kindly add following tag
-> Reported-by: kbuild test robot <lkp@intel.com>
-> 
-> All errors (new ones prefixed by >>):
-> 
->    arch/openrisc/kernel/smp.c: In function 'secondary_start_kernel':
-> >> arch/openrisc/kernel/smp.c:116:2: error: implicit declaration of function 'mmgrab'; did you mean 'igrab'? [-Werror=implicit-function-declaration]
->      116 |  mmgrab(mm);
->          |  ^~~~~~
->          |  igrab
->    cc1: some warnings being treated as errors
-> 
-> vim +116 arch/openrisc/kernel/smp.c
-> 
->    107	
->    108	asmlinkage __init void secondary_start_kernel(void)
->    109	{
->    110		struct mm_struct *mm = &init_mm;
->    111		unsigned int cpu = smp_processor_id();
->    112		/*
->    113		 * All kernel threads share the same mm context; grab a
->    114		 * reference and switch to it.
->    115		 */
->  > 116		mmgrab(mm);
->    117		current->active_mm = mm;
->    118		cpumask_set_cpu(cpu, mm_cpumask(mm));
->    119	
->    120		pr_info("CPU%u: Booted secondary processor\n", cpu);
->    121	
->    122		setup_cpuinfo();
->    123		openrisc_clockevent_init();
->    124	
->    125		notify_cpu_starting(cpu);
->    126	
->    127		/*
->    128		 * OK, now it's safe to let the boot CPU continue
->    129		 */
->    130		complete(&cpu_running);
->    131	
->    132		synchronise_count_slave(cpu);
->    133		set_cpu_online(cpu, true);
->    134	
->    135		local_irq_enable();
->    136	
->    137		preempt_disable();
->    138		/*
->    139		 * OK, it's off to the idle thread for us
->    140		 */
->    141		cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
->    142	}
->    143	
-> 
+> diff --git a/drivers/net/ethernet/apm/xgene-v2/main.c b/drivers/net/ethernet/apm/xgene-v2/main.c
+> index c48f60996761..706602918dd1 100644
+> --- a/drivers/net/ethernet/apm/xgene-v2/main.c
+> +++ b/drivers/net/ethernet/apm/xgene-v2/main.c
+> @@ -15,7 +15,7 @@ static int xge_get_resources(struct xge_pdata *pdata)
+>  {
+>  	struct platform_device *pdev;
+>  	struct net_device *ndev;
+> -	int phy_mode, ret = 0;
+> +	int ret = 0;
+>  	struct resource *res;
+>  	struct device *dev;
 
-Hello,  FYI I have fixed this commit and queued it on my 5.7 branch.
+Hi Dan
 
--Stafford
+DaveM likes reverse christmas tree. So you need to move ret later to
+keep the tree.
+
+Apart from that:
+
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+    Andrew
+

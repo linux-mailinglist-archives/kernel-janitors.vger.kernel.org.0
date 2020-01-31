@@ -2,85 +2,86 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2474514EE0A
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jan 2020 14:58:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF2F514F136
+	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jan 2020 18:23:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728840AbgAaN6M (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 Jan 2020 08:58:12 -0500
-Received: from vps0.lunn.ch ([185.16.172.187]:60002 "EHLO vps0.lunn.ch"
+        id S1726758AbgAaRW6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Fri, 31 Jan 2020 12:22:58 -0500
+Received: from mga12.intel.com ([192.55.52.136]:41014 "EHLO mga12.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728500AbgAaN6M (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 Jan 2020 08:58:12 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-        s=20171124; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-        List-Post:List-Owner:List-Archive;
-        bh=M1F71jvBqrpDNfAxNP559L2v7vOR6DOGsr1UJQiyE0E=; b=AQOn2fybqbDTF0u5okJfCrxC6z
-        5g8Wyei/0tS7qnYFWdLg5ZpWmKOUaVwF//RM6mbKQfZzYeDv7d6np87N5VvOavsAQWgijt+vD6IKP
-        Dx5EI3JKfG7LoNltgG/F4XYL0TFjRN76iXfrUfTrFM0kX5BgRJw0uHXl5UrCcYWOqC3A=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.93)
-        (envelope-from <andrew@lunn.ch>)
-        id 1ixWnq-0007SO-NR; Fri, 31 Jan 2020 14:57:46 +0100
-Date:   Fri, 31 Jan 2020 14:57:46 +0100
-From:   Andrew Lunn <andrew@lunn.ch>
+        id S1726139AbgAaRW6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Fri, 31 Jan 2020 12:22:58 -0500
+X-Amp-Result: UNSCANNABLE
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Jan 2020 09:22:57 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.70,386,1574150400"; 
+   d="scan'208";a="428774593"
+Received: from ranger.igk.intel.com ([10.102.21.164])
+  by fmsmga005.fm.intel.com with ESMTP; 31 Jan 2020 09:22:55 -0800
+Date:   Fri, 31 Jan 2020 11:15:43 +0100
+From:   Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ajay Gupta <ajayg@nvidia.com>,
+Cc:     Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         "David S. Miller" <davem@davemloft.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-        Keyur Chudgar <keyur@os.amperecomputing.com>,
-        Quan Nguyen <quan@os.amperecomputing.com>,
-        Steve Glendinning <steve.glendinning@shawell.net>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
+        Henry Tieman <henry.w.tieman@intel.com>,
+        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] device property: change device_get_phy_mode() to
- prevent signedess bugs
-Message-ID: <20200131135746.GF9639@lunn.ch>
-References: <20200131045953.wbj66jkvijnmf5s2@kili.mountain>
+Subject: Re: [PATCH net] ice: Fix a couple off by one bugs
+Message-ID: <20200131101543.GA4872@ranger.igk.intel.com>
+References: <20200131045658.ahliv7jvubpwoeru@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200131045953.wbj66jkvijnmf5s2@kili.mountain>
+In-Reply-To: <20200131045658.ahliv7jvubpwoeru@kili.mountain>
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-> diff --git a/drivers/net/ethernet/apm/xgene-v2/main.c b/drivers/net/ethernet/apm/xgene-v2/main.c
-> index c48f60996761..706602918dd1 100644
-> --- a/drivers/net/ethernet/apm/xgene-v2/main.c
-> +++ b/drivers/net/ethernet/apm/xgene-v2/main.c
-> @@ -15,7 +15,7 @@ static int xge_get_resources(struct xge_pdata *pdata)
+On Fri, Jan 31, 2020 at 07:56:59AM +0300, Dan Carpenter wrote:
+> The hw->blk[blk]->es.ref_count[] array has hw->blk[blk].es.count
+> elements.  It gets allocated in ice_init_hw_tbls().  So the > should be
+> >= to prevent accessing one element beyond the end of the array.
+> 
+> Fixes: 2c61054c5fda ("ice: Optimize table usage")
+
+You should also provide:
+Fixes: 31ad4e4ee1e4 ("ice: Allocate flow profile")
+
+prof_id can be 0 so thanks for catching this. You can take my:
+Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> ---
+>  drivers/net/ethernet/intel/ice/ice_flex_pipe.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
+> index 99208946224c..38a7041fe774 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
+> @@ -1950,7 +1950,7 @@ ice_free_prof_id(struct ice_hw *hw, enum ice_block blk, u8 prof_id)
+>  static enum ice_status
+>  ice_prof_inc_ref(struct ice_hw *hw, enum ice_block blk, u8 prof_id)
 >  {
->  	struct platform_device *pdev;
->  	struct net_device *ndev;
-> -	int phy_mode, ret = 0;
-> +	int ret = 0;
->  	struct resource *res;
->  	struct device *dev;
-
-Hi Dan
-
-DaveM likes reverse christmas tree. So you need to move ret later to
-keep the tree.
-
-Apart from that:
-
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-
-    Andrew
-
+> -	if (prof_id > hw->blk[blk].es.count)
+> +	if (prof_id >= hw->blk[blk].es.count)
+>  		return ICE_ERR_PARAM;
+>  
+>  	hw->blk[blk].es.ref_count[prof_id]++;
+> @@ -1991,7 +1991,7 @@ ice_write_es(struct ice_hw *hw, enum ice_block blk, u8 prof_id,
+>  static enum ice_status
+>  ice_prof_dec_ref(struct ice_hw *hw, enum ice_block blk, u8 prof_id)
+>  {
+> -	if (prof_id > hw->blk[blk].es.count)
+> +	if (prof_id >= hw->blk[blk].es.count)
+>  		return ICE_ERR_PARAM;
+>  
+>  	if (hw->blk[blk].es.ref_count[prof_id] > 0) {
+> -- 
+> 2.11.0
+> 

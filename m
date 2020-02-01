@@ -2,86 +2,92 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CF2F514F136
-	for <lists+kernel-janitors@lfdr.de>; Fri, 31 Jan 2020 18:23:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E71514FA4C
+	for <lists+kernel-janitors@lfdr.de>; Sat,  1 Feb 2020 20:38:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726758AbgAaRW6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Fri, 31 Jan 2020 12:22:58 -0500
-Received: from mga12.intel.com ([192.55.52.136]:41014 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726139AbgAaRW6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Fri, 31 Jan 2020 12:22:58 -0500
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 Jan 2020 09:22:57 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,386,1574150400"; 
-   d="scan'208";a="428774593"
-Received: from ranger.igk.intel.com ([10.102.21.164])
-  by fmsmga005.fm.intel.com with ESMTP; 31 Jan 2020 09:22:55 -0800
-Date:   Fri, 31 Jan 2020 11:15:43 +0100
-From:   Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jeff Kirsher <jeffrey.t.kirsher@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Henry Tieman <henry.w.tieman@intel.com>,
-        intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] ice: Fix a couple off by one bugs
-Message-ID: <20200131101543.GA4872@ranger.igk.intel.com>
-References: <20200131045658.ahliv7jvubpwoeru@kili.mountain>
+        id S1726469AbgBATiz (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sat, 1 Feb 2020 14:38:55 -0500
+Received: from mail-oi1-f194.google.com ([209.85.167.194]:35968 "EHLO
+        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726335AbgBATiz (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Sat, 1 Feb 2020 14:38:55 -0500
+Received: by mail-oi1-f194.google.com with SMTP id c16so10849555oic.3;
+        Sat, 01 Feb 2020 11:38:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=H/PPExul7A4Ds+5Y5uM+zLNiIJBYrh9YzHJkgqjwchw=;
+        b=I6/5VqtkK1DA9kR4owFDJ1Hd8fXcRw5DJBr9CbRcydL58KaihiBPZPSR9KIwTuN9Sx
+         04Ky84VcQw14F59+9/wfUSOg+KMhT2pe8nviYk3P7+wNg3ilheniwGc0BH0R4qLQxSpz
+         sMPbP1ObQFUXgbFlyfvA2l8piO8CDKJH4cxgmghCVAAGHTQDjcZyh9DQV00G/bvwAP0J
+         8TpJr316+/JBaevtQrj402gREF7RqthO5hAAGZTz/x7ZIfHvpLzFWdhr50jX/tYbrz9+
+         gK30ipt72uohxW0fD8/YaGDLqhlF0nINym95/39ue+HWIGU1oXyiiS1d+JpprmLj0+dL
+         ug3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=H/PPExul7A4Ds+5Y5uM+zLNiIJBYrh9YzHJkgqjwchw=;
+        b=m78DHHP+WTarGMyvogRGrbLFq6ZJCoZV1MvS5skl6XOgPRmiu6ZRr83Eepqo/QQPfb
+         z314tWCiNFTGvFl9prkDtCKpHtNxQ+8piDPXAjl+5uzkpGqqBUh9UcCocFh39Owb06SL
+         s+/eNEy/wxc6AQE7iidmzLuW1QgFl2bG4gBpugR8NRBnhAnKErjv2oAWmyAOQ3dDvzcG
+         17LttSmPiEPB18g3ngT2byjxkVqpwzyuw8HrFRKjUgg2kYMFsZbY48I4Q76Xsdlc9OBQ
+         vhzi0AqCEInq4dQP7rqXjGGW7iOb7Fsqynv/3IjTXZIb5HPqqkUjjR8BbTx63UqZom7v
+         dUtw==
+X-Gm-Message-State: APjAAAXZLBx4K4UivYt8JzRKE2qt+qarlr87Pyl3xAIcuh4ntSO6aNCQ
+        G7y+TpHOrKyNYtBtmemZdefyJOKhKVeQkavFuns=
+X-Google-Smtp-Source: APXvYqw6e9wLUxqr05SLdvBCLr1imqhVa9HITdmw8n9SPlf6FfaIzEUf13nK72woJcT9nz1Ah146/PiTq9DYDGz/5ds=
+X-Received: by 2002:aca:f08:: with SMTP id 8mr10467321oip.60.1580585934724;
+ Sat, 01 Feb 2020 11:38:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200131045658.ahliv7jvubpwoeru@kili.mountain>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+References: <20200131065647.joonbg3wzcw26x3b@kili.mountain>
+In-Reply-To: <20200131065647.joonbg3wzcw26x3b@kili.mountain>
+From:   Cong Wang <xiyou.wangcong@gmail.com>
+Date:   Sat, 1 Feb 2020 11:38:43 -0800
+Message-ID: <CAM_iQpUYv9vEVpYc-WfMNfCc9QaBzmTYs66-GEfwOKiqOXHxew@mail.gmail.com>
+Subject: Re: [PATCH net] net: sched: prevent a use after free
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Mohit Bhasi <mohitbhasi1998@gmail.com>,
+        "Mohit P. Tahiliani" <tahiliani@nitk.edu.in>,
+        "V. Saicharan" <vsaicharan1998@gmail.com>,
+        Gautam Ramakrishnan <gautamramk@gmail.com>,
+        Linux Kernel Network Developers <netdev@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Fri, Jan 31, 2020 at 07:56:59AM +0300, Dan Carpenter wrote:
-> The hw->blk[blk]->es.ref_count[] array has hw->blk[blk].es.count
-> elements.  It gets allocated in ice_init_hw_tbls().  So the > should be
-> >= to prevent accessing one element beyond the end of the array.
-> 
-> Fixes: 2c61054c5fda ("ice: Optimize table usage")
-
-You should also provide:
-Fixes: 31ad4e4ee1e4 ("ice: Allocate flow profile")
-
-prof_id can be 0 so thanks for catching this. You can take my:
-Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-
+On Thu, Jan 30, 2020 at 10:57 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> The code calls kfree_skb(skb); and then re-uses "skb" on the next line.
+> Let's re-order these lines to solve the problem.
+>
+> Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
 > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
->  drivers/net/ethernet/intel/ice/ice_flex_pipe.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
-> index 99208946224c..38a7041fe774 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_flex_pipe.c
-> @@ -1950,7 +1950,7 @@ ice_free_prof_id(struct ice_hw *hw, enum ice_block blk, u8 prof_id)
->  static enum ice_status
->  ice_prof_inc_ref(struct ice_hw *hw, enum ice_block blk, u8 prof_id)
->  {
-> -	if (prof_id > hw->blk[blk].es.count)
-> +	if (prof_id >= hw->blk[blk].es.count)
->  		return ICE_ERR_PARAM;
->  
->  	hw->blk[blk].es.ref_count[prof_id]++;
-> @@ -1991,7 +1991,7 @@ ice_write_es(struct ice_hw *hw, enum ice_block blk, u8 prof_id,
->  static enum ice_status
->  ice_prof_dec_ref(struct ice_hw *hw, enum ice_block blk, u8 prof_id)
->  {
-> -	if (prof_id > hw->blk[blk].es.count)
-> +	if (prof_id >= hw->blk[blk].es.count)
->  		return ICE_ERR_PARAM;
->  
->  	if (hw->blk[blk].es.ref_count[prof_id] > 0) {
-> -- 
-> 2.11.0
-> 
+>  net/sched/sch_fq_pie.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
+> index bbd0dea6b6b9..78472e0773e9 100644
+> --- a/net/sched/sch_fq_pie.c
+> +++ b/net/sched/sch_fq_pie.c
+> @@ -349,9 +349,9 @@ static int fq_pie_change(struct Qdisc *sch, struct nlattr *opt,
+>         while (sch->q.qlen > sch->limit) {
+>                 struct sk_buff *skb = fq_pie_qdisc_dequeue(sch);
+>
+> -               kfree_skb(skb);
+>                 len_dropped += qdisc_pkt_len(skb);
+>                 num_dropped += 1;
+> +               kfree_skb(skb);
+
+Or even better: use rtnl_kfree_skbs().
+
+Thanks.

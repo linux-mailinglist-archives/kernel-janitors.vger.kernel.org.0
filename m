@@ -2,54 +2,72 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AAA014FEDD
-	for <lists+kernel-janitors@lfdr.de>; Sun,  2 Feb 2020 20:22:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AD6414FF11
+	for <lists+kernel-janitors@lfdr.de>; Sun,  2 Feb 2020 21:19:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726967AbgBBTWO (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 2 Feb 2020 14:22:14 -0500
-Received: from eddie.linux-mips.org ([148.251.95.138]:56892 "EHLO
-        cvs.linux-mips.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726893AbgBBTWO (ORCPT
+        id S1726976AbgBBUTa (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 2 Feb 2020 15:19:30 -0500
+Received: from smtp06.smtpout.orange.fr ([80.12.242.128]:33480 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726943AbgBBUTa (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 2 Feb 2020 14:22:14 -0500
-X-Greylist: delayed 598 seconds by postgrey-1.27 at vger.kernel.org; Sun, 02 Feb 2020 14:22:13 EST
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S23990824AbgBBTMNY3IIg (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org> + 1 other);
-        Sun, 2 Feb 2020 20:12:13 +0100
-Date:   Sun, 2 Feb 2020 19:12:13 +0000 (GMT)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-cc:     Ralf Baechle <ralf@linux-mips.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH] defxx: Fix a sentinel at the end of a 'eisa_device_id'
- structure
-In-Reply-To: <20200202142341.22124-1-christophe.jaillet@wanadoo.fr>
-Message-ID: <alpine.LFD.2.21.2002021858330.683661@eddie.linux-mips.org>
-References: <20200202142341.22124-1-christophe.jaillet@wanadoo.fr>
+        Sun, 2 Feb 2020 15:19:30 -0500
+Received: from localhost.localdomain ([93.22.149.209])
+        by mwinf5d11 with ME
+        id xwKT210044XJket03wKTjT; Sun, 02 Feb 2020 21:19:28 +0100
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 02 Feb 2020 21:19:28 +0100
+X-ME-IP: 93.22.149.209
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     ralf@linux-mips.org, paulburton@kernel.org
+Cc:     linux-mips@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] MIPS: VPE: Fix a double free and a memory leak in 'release_vpe()'
+Date:   Sun,  2 Feb 2020 21:19:22 +0100
+Message-Id: <20200202201922.22852-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Sun, 2 Feb 2020, Christophe JAILLET wrote:
+Pointer on the memory allocated by 'alloc_progmem()' is stored in
+'v->load_addr'. So this is this memory that should be freed by
+'release_progmem()'.
 
-> 'struct eisa_device_id' must be ended by an empty string, not a NULL
-> pointer. Otherwise, a NULL pointer dereference may occur in
-> 'eisa_bus_match()'.
+'release_progmem()' is only a call to 'kfree()'.
 
- Umm, that's weird code there in `eisa_bus_match' (I do hope at least GCC 
-optimises the `strlen' away nowadays and checks for the character pointed 
-being null instead), but as usually with old stuff let's keep changes to 
-the minimum.  So:
+With the current code, there is both a double free and a memory leak.
+Fix it by passing the correct pointer to 'release_progmem()'.
 
-Acked-by: Maciej W. Rozycki <macro@linux-mips.org>
+Fixes: e01402b115ccc ("More AP / SP bits for the 34K, the Malta bits and things. Still wants")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Un-tested
 
- Thanks for the fix!
+The 'if (v->load_addr)' looks also redundant, but, well, the code is old
+and I feel lazy tonight to send another patch for only that.
+---
+ arch/mips/kernel/vpe.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  Maciej
+diff --git a/arch/mips/kernel/vpe.c b/arch/mips/kernel/vpe.c
+index 6176b9acba95..d0d832ab3d3b 100644
+--- a/arch/mips/kernel/vpe.c
++++ b/arch/mips/kernel/vpe.c
+@@ -134,7 +134,7 @@ void release_vpe(struct vpe *v)
+ {
+ 	list_del(&v->list);
+ 	if (v->load_addr)
+-		release_progmem(v);
++		release_progmem(v->load_addr);
+ 	kfree(v);
+ }
+ 
+-- 
+2.20.1
+

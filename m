@@ -2,46 +2,43 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C4A014FE31
-	for <lists+kernel-janitors@lfdr.de>; Sun,  2 Feb 2020 16:53:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AA1E814FE46
+	for <lists+kernel-janitors@lfdr.de>; Sun,  2 Feb 2020 17:25:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726909AbgBBPxK (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Sun, 2 Feb 2020 10:53:10 -0500
-Received: from mail.kernel.org ([198.145.29.99]:35014 "EHLO mail.kernel.org"
+        id S1726907AbgBBQZI (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Sun, 2 Feb 2020 11:25:08 -0500
+Received: from mail.kernel.org ([198.145.29.99]:38426 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726881AbgBBPxK (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Sun, 2 Feb 2020 10:53:10 -0500
+        id S1726526AbgBBQZI (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Sun, 2 Feb 2020 11:25:08 -0500
 Received: from archlinux (cpc149474-cmbg20-2-0-cust94.5-4.cable.virginm.net [82.4.196.95])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A4E3E20658;
-        Sun,  2 Feb 2020 15:53:07 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 00BA320679;
+        Sun,  2 Feb 2020 16:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1580658789;
-        bh=D+ST12kFPCpEiSy3YyflnXlRJxJQO2zccYaR8lwSiRU=;
+        s=default; t=1580660707;
+        bh=4fpAHuM+ORaLHkMigKzwC+4vFfeAAgSFS4zhLjmWCy4=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GDjVsnebGOoYehlsYa1rp2PZEwY02Qphx1BbM9SmBclOwYI6myjVJ4JeFwsonY89M
-         igvkk5Q+xxEcRK/c3omw31KYuUOfbCgxb/OKtSk0mopcU8/hukWhHOZDw5KUXu+l0p
-         hc1e8lH6xiaLhkKhAVyxSaHh6T76g9ry9SuAclaQ=
-Date:   Sun, 2 Feb 2020 15:53:04 +0000
+        b=hRfKgmOYa0/m0I5C83M3OC2SNaJSoXCNK/7kjaOfDR2PaOeWQenvCYxTeXj96kpiQ
+         Wz1sA9La22Gsh6eZB2f89Rd8O8/uLSTwuz3YtuJ/m8sI/daFrT2h3YCgnUY7zKJHKR
+         DOaiYZFPUpk7pH8D1H2jfNOdtSC7UX266wiaIYfc=
+Date:   Sun, 2 Feb 2020 16:25:02 +0000
 From:   Jonathan Cameron <jic23@kernel.org>
-To:     "Ardelean, Alexandru" <alexandru.Ardelean@analog.com>
-Cc:     "zzzzPopa, zzzzStefan Serban" <StefanSerban.Popa@analog.com>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "colin.king@canonical.com" <colin.king@canonical.com>,
-        "Hennerich, Michael" <Michael.Hennerich@analog.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "knaack.h@gmx.de" <knaack.h@gmx.de>,
-        "pmeerw@pmeerw.net" <pmeerw@pmeerw.net>,
-        "kernel-janitors@vger.kernel.org" <kernel-janitors@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Joe Perches <joe@perches.com>
-Subject: Re: [PATCH][V2] iio: ad5755: fix spelling mistake "to" -> "too" and
- grammar
-Message-ID: <20200202155304.5eb84ee8@archlinux>
-In-Reply-To: <aae729269a5ab110fae379f88b72a8cbca6c8b13.camel@analog.com>
-References: <20200123091954.10506-1-colin.king@canonical.com>
-        <aae729269a5ab110fae379f88b72a8cbca6c8b13.camel@analog.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+Cc:     Colin King <colin.king@canonical.com>,
+        Hartmut Knaack <knaack.h@gmx.de>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Peter Meerwald-Stadler <pmeerw@pmeerw.net>,
+        linux-iio <linux-iio@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH][next] iio: st_sensors: handle memory allocation failure
+ to fix null pointer dereference
+Message-ID: <20200202162502.0ab50117@archlinux>
+In-Reply-To: <CACRpkdYzd13xu9ETj_a4eWrm4FMrVnF1NQ5G+=d_Ch=6SzRoxA@mail.gmail.com>
+References: <20200121161757.1498082-1-colin.king@canonical.com>
+        <CACRpkdYzd13xu9ETj_a4eWrm4FMrVnF1NQ5G+=d_Ch=6SzRoxA@mail.gmail.com>
 X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -51,55 +48,35 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Thu, 23 Jan 2020 12:16:03 +0000
-"Ardelean, Alexandru" <alexandru.Ardelean@analog.com> wrote:
+On Thu, 23 Jan 2020 16:28:28 +0100
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-> On Thu, 2020-01-23 at 09:19 +0000, Colin King wrote:
+> On Tue, Jan 21, 2020 at 5:18 PM Colin King <colin.king@canonical.com> wrote:
+> 
 > > From: Colin Ian King <colin.king@canonical.com>
-> > 
-> > There is a spelling mistake and grammar mistake in a dev_err
-> > message. Fix it.
-> >   
+> >
+> > A null pointer deference on pdata can occur if the allocation of
+> > pdata fails.  Fix this by adding a null pointer check and handle
+> > the -ENOMEM failure in the caller.
+> >
+> > Addresses-Coverity: ("Dereference null return value")  
 > 
-> Reviewed-by: Alexandru Ardelean <alexandru.ardelean@analog.com>
+> That's a weirdo tag, but I suppose you have aligned with the maintainers
+> about this.
 > 
-> > Signed-off-by: Colin Ian King <colin.king@canonical.com>
-
-This crossed with Joe observing there are quite a few other nice little bits
-of janitorial work to be done in this driver. 
-
-I merged the two together and fiddled the patch description to cover
-the result.  Hope no one minds.  Seemed like it would save everyone
-some time rather than asking for a v3.
-
-Shout out if I've messed it up or you would rather I change the
-various tags.
+> > Fixes: 3ce85cc4fbb7 ("iio: st_sensors: get platform data from device tree")
+> > Signed-off-by: Colin Ian King <colin.king@canonical.com>  
+> 
+> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
 Applied to the togreg branch of iio.git and pushed out as testing for
 the autobuilders to play with it.
 
-Thanks all,
+Thanks,
 
 Jonathan
 
-> > ---
-> > V2: fix grammar too, thanks to Alexandru Ardelean for spotting this.
-> > ---
-> >  drivers/iio/dac/ad5755.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/iio/dac/ad5755.c b/drivers/iio/dac/ad5755.c
-> > index b9175fb4c8ab..1359a1a92fdc 100644
-> > --- a/drivers/iio/dac/ad5755.c
-> > +++ b/drivers/iio/dac/ad5755.c
-> > @@ -655,7 +655,7 @@ static struct ad5755_platform_data *ad5755_parse_dt(struct
-> > device *dev)
-> >  	for_each_child_of_node(np, pp) {
-> >  		if (devnr >= AD5755_NUM_CHANNELS) {
-> >  			dev_err(dev,
-> > -				"There is to many channels defined in DT\n");
-> > +				"There are too many channels defined in DT\n");
-> >  			goto error_out;
-> >  		}
-> >    
+> 
+> Yours,
+> Linus Walleij
 

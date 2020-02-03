@@ -2,114 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24BA7150120
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Feb 2020 06:12:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F8D91502B9
+	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Feb 2020 09:39:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726535AbgBCFMj (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Feb 2020 00:12:39 -0500
-Received: from mga09.intel.com ([134.134.136.24]:65101 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726018AbgBCFMi (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Feb 2020 00:12:38 -0500
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from fmsmga003.fm.intel.com ([10.253.24.29])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 02 Feb 2020 21:12:37 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,396,1574150400"; 
-   d="scan'208";a="278639647"
-Received: from lkp-server01.sh.intel.com (HELO lkp-server01) ([10.239.97.150])
-  by FMSMGA003.fm.intel.com with ESMTP; 02 Feb 2020 21:12:33 -0800
-Received: from kbuild by lkp-server01 with local (Exim 4.89)
-        (envelope-from <lkp@intel.com>)
-        id 1iyU2D-00040h-80; Mon, 03 Feb 2020 13:12:33 +0800
-Date:   Mon, 3 Feb 2020 13:11:49 +0800
-From:   kbuild test robot <lkp@intel.com>
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     kbuild-all@lists.01.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Ajay Gupta <ajayg@nvidia.com>,
+        id S1727564AbgBCIjW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Feb 2020 03:39:22 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:42356 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726082AbgBCIjW (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 3 Feb 2020 03:39:22 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 0138c3np067675;
+        Mon, 3 Feb 2020 08:39:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=lh1h0yHtzO5kI/7xMb6UmPUubBBS5DwI9HPKs5tX72Q=;
+ b=p64DxnizsgWHOspKnbq/b5YcvY1r18L37bAHRpY9G0pudaRqmOXnup5CbP3ab4Uz5eul
+ J4SM66Vdf50nWAln7YsxuihXWEskwQB7oE32Saaar2SiKuh7jBVcOCF6f5nl6EWzL50s
+ 6V8lCAvHHonPVNI7MuJoM5ZWjvnPAS2/j/ubQhwdZEqg9x87++sFn2fHa3w/FNGj3q8z
+ TtoVEjJQSdH7ZticzzAHCJjfdvZe1yp5NSQTkjzCb5oIJzaRDma0daDjNZYOMOBQsMzo
+ j6Qr2AjmReh5oKXjg8i9PMdEM7ce5J1cFcl8Ov3eHHz62870UvpJRJgSV2Xf0bdcRd3v Ew== 
+Received: from userp3020.oracle.com (userp3020.oracle.com [156.151.31.79])
+        by aserp2120.oracle.com with ESMTP id 2xw19q656c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 03 Feb 2020 08:39:07 +0000
+Received: from pps.filterd (userp3020.oracle.com [127.0.0.1])
+        by userp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 0138YFUB091185;
+        Mon, 3 Feb 2020 08:39:07 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by userp3020.oracle.com with ESMTP id 2xwkfsrhac-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 03 Feb 2020 08:39:07 +0000
+Received: from abhmp0015.oracle.com (abhmp0015.oracle.com [141.146.116.21])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0138d35A022392;
+        Mon, 3 Feb 2020 08:39:03 GMT
+Received: from kadam (/41.210.143.134)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 03 Feb 2020 00:39:03 -0800
+Date:   Mon, 3 Feb 2020 11:38:53 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Cong Wang <xiyou.wangcong@gmail.com>
+Cc:     Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
         "David S. Miller" <davem@davemloft.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-        Keyur Chudgar <keyur@os.amperecomputing.com>,
-        Quan Nguyen <quan@os.amperecomputing.com>,
-        Steve Glendinning <steve.glendinning@shawell.net>,
-        Jassi Brar <jaswinder.singh@linaro.org>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-        Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-        Alexandre Torgue <alexandre.torgue@st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-        linux-stm32@st-md-mailman.stormreply.com,
+        Jakub Kicinski <kuba@kernel.org>,
+        Mohit Bhasi <mohitbhasi1998@gmail.com>,
+        "Mohit P. Tahiliani" <tahiliani@nitk.edu.in>,
+        "V. Saicharan" <vsaicharan1998@gmail.com>,
+        Gautam Ramakrishnan <gautamramk@gmail.com>,
+        Linux Kernel Network Developers <netdev@vger.kernel.org>,
         kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH net] device property: change device_get_phy_mode() to
- prevent signedess bugs
-Message-ID: <202002031247.fhmzF9z1%lkp@intel.com>
-References: <20200131045953.wbj66jkvijnmf5s2@kili.mountain>
+Subject: Re: [PATCH net] net: sched: prevent a use after free
+Message-ID: <20200203083853.GH11068@kadam>
+References: <20200131065647.joonbg3wzcw26x3b@kili.mountain>
+ <CAM_iQpUYv9vEVpYc-WfMNfCc9QaBzmTYs66-GEfwOKiqOXHxew@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200131045953.wbj66jkvijnmf5s2@kili.mountain>
-User-Agent: NeoMutt/20170113 (1.7.2)
+In-Reply-To: <CAM_iQpUYv9vEVpYc-WfMNfCc9QaBzmTYs66-GEfwOKiqOXHxew@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9519 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2002030069
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9519 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2002030069
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi Dan,
+On Sat, Feb 01, 2020 at 11:38:43AM -0800, Cong Wang wrote:
+> On Thu, Jan 30, 2020 at 10:57 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> >
+> > The code calls kfree_skb(skb); and then re-uses "skb" on the next line.
+> > Let's re-order these lines to solve the problem.
+> >
+> > Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > ---
+> >  net/sched/sch_fq_pie.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
+> > index bbd0dea6b6b9..78472e0773e9 100644
+> > --- a/net/sched/sch_fq_pie.c
+> > +++ b/net/sched/sch_fq_pie.c
+> > @@ -349,9 +349,9 @@ static int fq_pie_change(struct Qdisc *sch, struct nlattr *opt,
+> >         while (sch->q.qlen > sch->limit) {
+> >                 struct sk_buff *skb = fq_pie_qdisc_dequeue(sch);
+> >
+> > -               kfree_skb(skb);
+> >                 len_dropped += qdisc_pkt_len(skb);
+> >                 num_dropped += 1;
+> > +               kfree_skb(skb);
+> 
+> Or even better: use rtnl_kfree_skbs().
 
-Thank you for the patch! Perhaps something to improve:
+Why is that better?
 
-[auto build test WARNING on net/master]
-[also build test WARNING on driver-core/driver-core-testing linus/master v5.5 next-20200131]
-[cannot apply to sparc-next/master]
-[if your patch is applied to the wrong git tree, please drop us a note to help
-improve the system. BTW, we also suggest to use '--base' option to specify the
-base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
+regards,
+dan carpenter
 
-url:    https://github.com/0day-ci/linux/commits/Dan-Carpenter/device-property-change-device_get_phy_mode-to-prevent-signedess-bugs/20200203-043126
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/davem/net.git b7c3a17c6062701d97a0959890a2c882bfaac537
-reproduce:
-        # apt-get install sparse
-        # sparse version: v0.6.1-154-g1dc00f87-dirty
-        make ARCH=x86_64 allmodconfig
-        make C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__'
-
-If you fix the issue, kindly add following tag
-Reported-by: kbuild test robot <lkp@intel.com>
-
-
-sparse warnings: (new ones prefixed by >>)
-
-   arch/x86/boot/compressed/cmdline.c:5:20: sparse: sparse: multiple definitions for function 'set_fs'
->> arch/x86/include/asm/uaccess.h:29:20: sparse:  the previous one is here
-   arch/x86/boot/compressed/../cmdline.c:28:5: sparse: sparse: symbol '__cmdline_find_option' was not declared. Should it be static?
-   arch/x86/boot/compressed/../cmdline.c:100:5: sparse: sparse: symbol '__cmdline_find_option_bool' was not declared. Should it be static?
-
-vim +29 arch/x86/include/asm/uaccess.h
-
-ca23386216b9d4 include/asm-x86/uaccess.h      Glauber Costa   2008-06-13  27  
-13d4ea097d18b4 arch/x86/include/asm/uaccess.h Andy Lutomirski 2016-07-14  28  #define get_fs()	(current->thread.addr_limit)
-5ea0727b163cb5 arch/x86/include/asm/uaccess.h Thomas Garnier  2017-06-14 @29  static inline void set_fs(mm_segment_t fs)
-5ea0727b163cb5 arch/x86/include/asm/uaccess.h Thomas Garnier  2017-06-14  30  {
-5ea0727b163cb5 arch/x86/include/asm/uaccess.h Thomas Garnier  2017-06-14  31  	current->thread.addr_limit = fs;
-5ea0727b163cb5 arch/x86/include/asm/uaccess.h Thomas Garnier  2017-06-14  32  	/* On user-mode return, check fs is correct */
-5ea0727b163cb5 arch/x86/include/asm/uaccess.h Thomas Garnier  2017-06-14  33  	set_thread_flag(TIF_FSCHECK);
-5ea0727b163cb5 arch/x86/include/asm/uaccess.h Thomas Garnier  2017-06-14  34  }
-ca23386216b9d4 include/asm-x86/uaccess.h      Glauber Costa   2008-06-13  35  
-
-:::::: The code at line 29 was first introduced by commit
-:::::: 5ea0727b163cb5575e36397a12eade68a1f35f24 x86/syscalls: Check address limit on user-mode return
-
-:::::: TO: Thomas Garnier <thgarnie@google.com>
-:::::: CC: Thomas Gleixner <tglx@linutronix.de>
-
----
-0-DAY kernel test infrastructure                 Open Source Technology Center
-https://lists.01.org/hyperkitty/list/kbuild-all@lists.01.org Intel Corporation

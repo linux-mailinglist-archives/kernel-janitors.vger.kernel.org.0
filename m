@@ -2,62 +2,56 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 08888150A7C
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Feb 2020 17:04:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CFF7A150EC1
+	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Feb 2020 18:38:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728499AbgBCQEW (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Feb 2020 11:04:22 -0500
-Received: from szxga07-in.huawei.com ([45.249.212.35]:43912 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1728389AbgBCQEW (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Feb 2020 11:04:22 -0500
-Received: from DGGEMS411-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id 2956C9F6897AF4149922;
-        Tue,  4 Feb 2020 00:04:19 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS411-HUB.china.huawei.com (10.3.19.211) with Microsoft SMTP Server id
- 14.3.439.0; Tue, 4 Feb 2020 00:04:12 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Benjamin Coddington <bcodding@redhat.com>,
-        Anna Schumaker <anna.schumaker@netapp.com>
-CC:     YueHaibing <yuehaibing@huawei.com>, <linux-nfs@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>
-Subject: [PATCH -next] NFS: use correct 'verifier' in nfs_lookup_revalidate_dentry
-Date:   Mon, 3 Feb 2020 15:58:45 +0000
-Message-ID: <20200203155845.50239-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
+        id S1729078AbgBCRiT (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Feb 2020 12:38:19 -0500
+Received: from mail.kernel.org ([198.145.29.99]:51844 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726561AbgBCRiQ (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 3 Feb 2020 12:38:16 -0500
+Received: from cakuba.hsd1.ca.comcast.net (unknown [199.201.64.133])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 4FC1A2080C;
+        Mon,  3 Feb 2020 17:38:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1580751495;
+        bh=7DceEA2M6fJ7fQhDMyXvM99m0I7lcjwIRZp76B2Fz5w=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=sbHsOQXISEkqWPmrGiUsPIeqH6iLYLzuJ2YxqocZovcivw4CZPVv4cRZmNghrCCGI
+         qF5wM1/NgCX9fokH92XwCVASySLaE7Zcx60ysmoEA0v6sGZiF7SdrCRHou2I1RNC+z
+         8zV/XEnjasxEQbQCOBxII28a3QDW8qc416XXSjuw=
+Date:   Mon, 3 Feb 2020 09:38:14 -0800
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     "Maciej W. Rozycki" <macro@linux-mips.org>
+Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] defxx: Fix a sentinel at the end of a 'eisa_device_id'
+ structure
+Message-ID: <20200203093814.69d33a2a@cakuba.hsd1.ca.comcast.net>
+In-Reply-To: <alpine.LFD.2.21.2002031015530.752735@eddie.linux-mips.org>
+References: <20200202142341.22124-1-christophe.jaillet@wanadoo.fr>
+        <20200203095553.GN1778@kadam>
+        <alpine.LFD.2.21.2002031015530.752735@eddie.linux-mips.org>
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-'verifier' is already set but not used in nfs_set_verifier().
+On Mon, 3 Feb 2020 10:20:46 +0000 (GMT), Maciej W. Rozycki wrote:
+>  Right, the code is good as it stands (I should have more faith in my past 
+> achievements ;) ).  Except for the whitespace issue, which I suppose might 
+> not be worth bothering to fix.  Thanks for your meticulousness!
 
-Fixes: 1346d280eafa ("NFS: Revalidate once when holding a delegation")
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
----
- fs/nfs/dir.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index 289052c0ae93..882ea5337627 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -1180,7 +1180,7 @@ nfs_lookup_revalidate_dentry(struct inode *dir, struct dentry *dentry,
- 		verifier = nfs_save_change_attribute(dir);
- 
- 	nfs_setsecurity(inode, fattr, label);
--	nfs_set_verifier(dentry, nfs_save_change_attribute(dir));
-+	nfs_set_verifier(dentry, verifier);
- 
- 	/* set a readdirplus hint that we had a cache miss */
- 	nfs_force_use_readdirplus(dir);
-
-
-
+For the white space clean up please resend after the merge window
+(if you care), networking trees are only taking fixes fixes now :)

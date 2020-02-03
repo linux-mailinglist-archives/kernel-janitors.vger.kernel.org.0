@@ -2,83 +2,73 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B83BD15110E
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Feb 2020 21:33:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48B4B151271
+	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Feb 2020 23:37:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727015AbgBCUdn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Feb 2020 15:33:43 -0500
-Received: from mail-ot1-f65.google.com ([209.85.210.65]:34173 "EHLO
-        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726369AbgBCUdm (ORCPT
+        id S1727093AbgBCWhl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Feb 2020 17:37:41 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:56231 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726331AbgBCWhl (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Feb 2020 15:33:42 -0500
-Received: by mail-ot1-f65.google.com with SMTP id a15so14987118otf.1;
-        Mon, 03 Feb 2020 12:33:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=GQ4U+YXAWR+1bgsw2pgVAqxYtocJASYPniZ3B9G2x4c=;
-        b=abQ+GYCFbu+Xn58JN+D1PFRJkEDcBZSO4UUT5Q2fxuxaUd8v4RM0YQYHsdGYFnqRot
-         VbRbyHVHVFot7dHY17/cdSTAZ/qjVYoyrZnqabNqXWREdlEe3XnrORE7CUDC3aV5+1in
-         nDt2PDxfh1lrkzqQHA+xLXAW20o0sMEJDMFz2aN3+qu41w864Ls6ifrJ/ypdr+re+kPG
-         UpsyXElCCi8H8gB3g/opxU7LyzfEDpGJq6zwH8P1o1sWTf8dx/BS57TkDy8D6BhpdIjd
-         8zup5eS9rtj2i2AGLj7RmdM18oM7h62s8OA3EX9zg3YvFq5xzcxzZYWJiJoLPYW4ytYJ
-         0pzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=GQ4U+YXAWR+1bgsw2pgVAqxYtocJASYPniZ3B9G2x4c=;
-        b=ohIuCuybkx9oBiXKlhnd1jqsnkTXdlnmsnxGqxLdPTsKcKBbYby4M0SFCtIzKLueM0
-         +o5JH8nE05QgJhMJ9UPaU0FiRS/KcAX69gVLAwYe2ItcUxulHRdF/pcDae0+/slzZDky
-         wUTX7m0F/Hv31hL2g+k6DaN66LRWdTXthB+3VKvFtIMdS5m28gcQZsi0zQDHOlmID8YK
-         ty2tOJZ8wualB60QjzkBdLUH/wICXz2TwtHe6LBAejSikKnBBq2ug1Ns+0fJO+9P+QFc
-         bNu22fTVbnHL1C9oKfHUouehV6ugV3/00VFrvdx9OnzIPDY3hU3FYqAuHaXi3UdfqN/3
-         vR1A==
-X-Gm-Message-State: APjAAAVFizUfv6ImU7vAwuazzEX+2LEKS+2R9C69fjPZYP+Gd5CR5DHZ
-        piwCz2u+u8r5Kb/hic/GySqDAmSBozchndn1qZ4=
-X-Google-Smtp-Source: APXvYqyEcNFqhS9JnvYt2BzNTYgMDSOWs+FAaBBM+wP0S6VpNJNjjeoKvclWp5b9t2iQsT4P/67CDvDIJ+/eX39S2m8=
-X-Received: by 2002:a9d:53c4:: with SMTP id i4mr20051104oth.48.1580762021874;
- Mon, 03 Feb 2020 12:33:41 -0800 (PST)
+        Mon, 3 Feb 2020 17:37:41 -0500
+Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <colin.king@canonical.com>)
+        id 1iykLZ-0001K0-1D; Mon, 03 Feb 2020 22:37:37 +0000
+From:   Colin King <colin.king@canonical.com>
+To:     Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, Wen He <wen.he_1@nxp.com>,
+        Michael Walle <michael@walle.cc>, linux-clk@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH][next] clk: ls1028a: fix a dereference of pointer 'parent' before a null check
+Date:   Mon,  3 Feb 2020 22:37:36 +0000
+Message-Id: <20200203223736.99645-1-colin.king@canonical.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-References: <20200131065647.joonbg3wzcw26x3b@kili.mountain>
- <CAM_iQpUYv9vEVpYc-WfMNfCc9QaBzmTYs66-GEfwOKiqOXHxew@mail.gmail.com>
- <20200203083853.GH11068@kadam> <CAM_iQpWu=EuAj709=wL0ZgbLvFgBbaaVZcMjYm0ZmTeLJ7nkCg@mail.gmail.com>
-In-Reply-To: <CAM_iQpWu=EuAj709=wL0ZgbLvFgBbaaVZcMjYm0ZmTeLJ7nkCg@mail.gmail.com>
-From:   Cong Wang <xiyou.wangcong@gmail.com>
-Date:   Mon, 3 Feb 2020 12:33:30 -0800
-Message-ID: <CAM_iQpVrckjFViizKZH+S=8GC_3T5Gm1vTAUeFkpmqJ_A66x1Q@mail.gmail.com>
-Subject: Re: [PATCH net] net: sched: prevent a use after free
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Mohit Bhasi <mohitbhasi1998@gmail.com>,
-        "Mohit P. Tahiliani" <tahiliani@nitk.edu.in>,
-        "V. Saicharan" <vsaicharan1998@gmail.com>,
-        Gautam Ramakrishnan <gautamramk@gmail.com>,
-        Linux Kernel Network Developers <netdev@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Feb 3, 2020 at 11:58 AM Cong Wang <xiyou.wangcong@gmail.com> wrote:
->
-> On Mon, Feb 3, 2020 at 12:39 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> > Why is that better?
->
-> Because it is designed to be used in this scenario,
-> as it defers the free after RTNL unlock which is after
-> sch_tree_unlock() too.
+From: Colin Ian King <colin.king@canonical.com>
 
-Just in case of misunderstanding: I am _not_ suggesting to
-use rtnl_kfree_skbs() to workaround this use-after-free,
-rtnl_kfree_skbs() still has to be called after qdisc_pkt_len(),
-at least for readability, despite that it could indeed
-workaround the bug.
+Currently the pointer 'parent' is being dereferenced before it is
+being null checked. Fix this by performing the null check before
+it is dereferenced.
 
-Thanks.
+Addresses-Coverity: ("Dereference before null check")
+Fixes: d37010a3c162 ("clk: ls1028a: Add clock driver for Display output interface")
+Signed-off-by: Colin Ian King <colin.king@canonical.com>
+---
+ drivers/clk/clk-plldig.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/clk/clk-plldig.c b/drivers/clk/clk-plldig.c
+index a5da08f98d01..f7c349d9c2dc 100644
+--- a/drivers/clk/clk-plldig.c
++++ b/drivers/clk/clk-plldig.c
+@@ -187,7 +187,7 @@ static int plldig_init(struct clk_hw *hw)
+ {
+ 	struct clk_plldig *data = to_clk_plldig(hw);
+ 	struct clk_hw *parent = clk_hw_get_parent(hw);
+-	unsigned long parent_rate = clk_hw_get_rate(parent);
++	unsigned long parent_rate;
+ 	unsigned long val;
+ 	unsigned long long lltmp;
+ 	unsigned int mfd, fracdiv = 0;
+@@ -195,6 +195,8 @@ static int plldig_init(struct clk_hw *hw)
+ 	if (!parent)
+ 		return -EINVAL;
+ 
++	parent_rate = clk_hw_get_rate(parent);
++
+ 	if (data->vco_freq) {
+ 		mfd = data->vco_freq / parent_rate;
+ 		lltmp = data->vco_freq % parent_rate;
+-- 
+2.24.0
+

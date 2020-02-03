@@ -2,113 +2,102 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A304151026
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Feb 2020 20:12:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2685315109D
+	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Feb 2020 20:59:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727148AbgBCTMn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Feb 2020 14:12:43 -0500
-Received: from bhuna.collabora.co.uk ([46.235.227.227]:55956 "EHLO
-        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726192AbgBCTMn (ORCPT
+        id S1726853AbgBCT67 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Feb 2020 14:58:59 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:43521 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726250AbgBCT67 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Feb 2020 14:12:43 -0500
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: alyssa)
-        with ESMTPSA id 7B45929040D
-Date:   Mon, 3 Feb 2020 14:12:36 -0500
-From:   Alyssa Rosenzweig <alyssa.rosenzweig@collabora.com>
-To:     YueHaibing <yuehaibing@huawei.com>
-Cc:     Rob Herring <robh@kernel.org>,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        Tomeu Vizoso <tomeu.vizoso@collabora.com>,
-        Steven Price <steven.price@arm.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
-        linaro-mm-sig@lists.linaro.org, kernel-janitors@vger.kernel.org,
-        Hulk Robot <hulkci@huawei.com>
-Subject: Re: [PATCH -next] drm/panfrost: Remove set but not used variable 'bo'
-Message-ID: <20200203191236.GA2913@kevin>
-References: <20200203152724.42611-1-yuehaibing@huawei.com>
+        Mon, 3 Feb 2020 14:58:59 -0500
+Received: by mail-oi1-f196.google.com with SMTP id p125so15977620oif.10;
+        Mon, 03 Feb 2020 11:58:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BmohpHCjIq9+chn6leBdsiG1usxcQIIK/dXJdjoXWPg=;
+        b=PvsWLNrz0lHlb2+2kVEf2pwV/TizuSmB41RqZHYosaNycHkAx8v72d/t224QlPmgKv
+         zb6ZNvNrJ1NIBvK72yldA79QXcSPCbT8m2kqcxh8N99SFAGiiHy8Aw/oZYA5UPw+zkrh
+         Gheu3XjMf62B9S7GWrdMWdLlBp4T76G45TGrdbhtmBI4f0/n9vlzBde/cWNq62tNjMOK
+         Ib6vBoGXQ6q9BtLARRWdMn92RItARsxydAGP7RvDTxGoEJA4+9+/8zGg+clIoCMk5+1s
+         BMPDKVkiYBbEqJtwZmcjsofBDb0SKI/Yzvm2h7q2JdIZ39qRrCAgOQPfi4nQmjCrE09J
+         WFWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BmohpHCjIq9+chn6leBdsiG1usxcQIIK/dXJdjoXWPg=;
+        b=pL3zoTZGZk6KGrx5GgWIpj7PsDs5zev4l7fuxPcVdc0l85C71FONupA13/KFnol+9g
+         cA4Z141H6kvGRsWd999egfw3ou+6Pef//hczIrglqnsmdnq+PNJb3XRMIyl3PO13d8o3
+         KsWRQDBAQlNxx8qsU0lM+CDIiPuG312zOt10yUfrDwYSAiDRA4LB0dO9NTmdAsAArY8z
+         /hHrFAH2RVmyy+ow00jN7Lk/QKGfcZ3iVFkqOeALkEfitJstSmhhMPPnvLeCTwshlisg
+         NBi86wC9xIjjwhJbUDcgiYitB8U0SjwzTEZg0Zv6L0VkTDuEbuBxInlkZ42O2e1x6AWZ
+         ZKfQ==
+X-Gm-Message-State: APjAAAX17V8pg+v9SOSXBIZ+3jV2umoomot46mphxU2vKo4WtEcTYXpm
+        Eb3fNMf+OwIP3vy4LjAkXttevnbbdgKuK4+Usk4=
+X-Google-Smtp-Source: APXvYqykPtXOUjCIXrNKF10ltdfIkcjOcKhB5uft5Xsbm38UAyEEjYVQRciKIW9RvlyLH/a5KNEl4RS77WrhJMUj89o=
+X-Received: by 2002:aca:f08:: with SMTP id 8mr530912oip.60.1580759938556; Mon,
+ 03 Feb 2020 11:58:58 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="3V7upXqbjpZ4EhLz"
-Content-Disposition: inline
-In-Reply-To: <20200203152724.42611-1-yuehaibing@huawei.com>
-User-Agent: Mutt/1.12.2 (2019-09-21)
+References: <20200131065647.joonbg3wzcw26x3b@kili.mountain>
+ <CAM_iQpUYv9vEVpYc-WfMNfCc9QaBzmTYs66-GEfwOKiqOXHxew@mail.gmail.com> <20200203083853.GH11068@kadam>
+In-Reply-To: <20200203083853.GH11068@kadam>
+From:   Cong Wang <xiyou.wangcong@gmail.com>
+Date:   Mon, 3 Feb 2020 11:58:47 -0800
+Message-ID: <CAM_iQpWu=EuAj709=wL0ZgbLvFgBbaaVZcMjYm0ZmTeLJ7nkCg@mail.gmail.com>
+Subject: Re: [PATCH net] net: sched: prevent a use after free
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Mohit Bhasi <mohitbhasi1998@gmail.com>,
+        "Mohit P. Tahiliani" <tahiliani@nitk.edu.in>,
+        "V. Saicharan" <vsaicharan1998@gmail.com>,
+        Gautam Ramakrishnan <gautamramk@gmail.com>,
+        Linux Kernel Network Developers <netdev@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
+On Mon, Feb 3, 2020 at 12:39 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> On Sat, Feb 01, 2020 at 11:38:43AM -0800, Cong Wang wrote:
+> > On Thu, Jan 30, 2020 at 10:57 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> > >
+> > > The code calls kfree_skb(skb); and then re-uses "skb" on the next line.
+> > > Let's re-order these lines to solve the problem.
+> > >
+> > > Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
+> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+> > > ---
+> > >  net/sched/sch_fq_pie.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
+> > > index bbd0dea6b6b9..78472e0773e9 100644
+> > > --- a/net/sched/sch_fq_pie.c
+> > > +++ b/net/sched/sch_fq_pie.c
+> > > @@ -349,9 +349,9 @@ static int fq_pie_change(struct Qdisc *sch, struct nlattr *opt,
+> > >         while (sch->q.qlen > sch->limit) {
+> > >                 struct sk_buff *skb = fq_pie_qdisc_dequeue(sch);
+> > >
+> > > -               kfree_skb(skb);
+> > >                 len_dropped += qdisc_pkt_len(skb);
+> > >                 num_dropped += 1;
+> > > +               kfree_skb(skb);
+> >
+> > Or even better: use rtnl_kfree_skbs().
+>
+> Why is that better?
 
---3V7upXqbjpZ4EhLz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Because it is designed to be used in this scenario,
+as it defers the free after RTNL unlock which is after
+sch_tree_unlock() too.
 
-Reviewed-by: Alyssas Rosenzweig <alyssa.rosenzweig@collabora.com>, thank
-you!
-
-On Mon, Feb 03, 2020 at 03:27:24PM +0000, YueHaibing wrote:
-> Fixes gcc '-Wunused-but-set-variable' warning:
->=20
-> drivers/gpu/drm/panfrost/panfrost_job.c: In function 'panfrost_job_cleanu=
-p':
-> drivers/gpu/drm/panfrost/panfrost_job.c:278:31: warning:
->  variable 'bo' set but not used [-Wunused-but-set-variable]
->=20
-> commit bdefca2d8dc0 ("drm/panfrost: Add the panfrost_gem_mapping concept")
-> involved this unused variable.
->=20
-> Reported-by: Hulk Robot <hulkci@huawei.com>
-> Signed-off-by: YueHaibing <yuehaibing@huawei.com>
-> ---
->  drivers/gpu/drm/panfrost/panfrost_job.c | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
->=20
-> diff --git a/drivers/gpu/drm/panfrost/panfrost_job.c b/drivers/gpu/drm/pa=
-nfrost/panfrost_job.c
-> index 7c36ec675b73..ccb8546a9342 100644
-> --- a/drivers/gpu/drm/panfrost/panfrost_job.c
-> +++ b/drivers/gpu/drm/panfrost/panfrost_job.c
-> @@ -275,12 +275,8 @@ static void panfrost_job_cleanup(struct kref *ref)
->  	}
-> =20
->  	if (job->bos) {
-> -		struct panfrost_gem_object *bo;
-> -
-> -		for (i =3D 0; i < job->bo_count; i++) {
-> -			bo =3D to_panfrost_bo(job->bos[i]);
-> +		for (i =3D 0; i < job->bo_count; i++)
->  			drm_gem_object_put_unlocked(job->bos[i]);
-> -		}
-> =20
->  		kvfree(job->bos);
->  	}
->=20
->=20
->=20
-
---3V7upXqbjpZ4EhLz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEQ17gm7CvANAdqvY4/v5QWgr1WA0FAl44cJoACgkQ/v5QWgr1
-WA1MQA//eHYgx1kcsdR+AmUM+1kdx1sYRUsvVzSaADRg0iMTcRTZEmlBXAlu6hak
-WYuhLq96Cw6+kkmAoWSizha3jij7Vg1HwMsaHsbQMSnocIQVyp2BqfjlOMBtWcMm
-OyUzFz5QWvGFEEGh9DjSxZ8TGT4BoRzzCj0FF60d2JEEguRMSvT9xvq2Hi/JRsaN
-Mx0cfCAMjmPzaPv091TR8KhTuGPIHg+Im0agoY1rd2sTARywX9abYShLIQA2ZtEj
-mNSjuKGPDz7LlTdKpcgkQHK/7VQeQr63J8ymCTUDPfSFJd0qhVVAHB31knjkLLss
-nTtbMjKhGYtEXB7l64s+VqxUUJvRafsRJEc/7zUaqfjEtQb0iEt0AEecDxnkAyS6
-9cfC0hSMcUVYGRXENQTy0Pp8a5hFZFc25TxQq5zD36u4ndvVDs29ZCQ1iqAmg9K+
-m3zOWxJdcw9+kyyyFvSjbB8GM5+CcV8jfCe5pSxdwBsXILZ5Tb+8F32Y2y9EIORV
-RK9m32/mDJaZUsIPaeEmpMwkV/efHn9qTfA77iIVm9EkTRTzLBXWBjSodTC+a5mD
-9y5xR5RmSIuBY4FlcVsZNlZj2d/js6+UxtPj/qqVOYv9lnrqKJr/Ji+KqRYIGEyB
-QwjLFAQeOkINXhqRGfTlKgPaNwj+gFBse10UjwyLHRzL5HpLexg=
-=+/k/
------END PGP SIGNATURE-----
-
---3V7upXqbjpZ4EhLz--
+Thanks.

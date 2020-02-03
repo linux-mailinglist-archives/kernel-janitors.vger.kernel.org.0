@@ -2,52 +2,53 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2685315109D
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Feb 2020 20:59:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B83BD15110E
+	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Feb 2020 21:33:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726853AbgBCT67 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Feb 2020 14:58:59 -0500
-Received: from mail-oi1-f196.google.com ([209.85.167.196]:43521 "EHLO
-        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726250AbgBCT67 (ORCPT
+        id S1727015AbgBCUdn (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Feb 2020 15:33:43 -0500
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:34173 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726369AbgBCUdm (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Feb 2020 14:58:59 -0500
-Received: by mail-oi1-f196.google.com with SMTP id p125so15977620oif.10;
-        Mon, 03 Feb 2020 11:58:58 -0800 (PST)
+        Mon, 3 Feb 2020 15:33:42 -0500
+Received: by mail-ot1-f65.google.com with SMTP id a15so14987118otf.1;
+        Mon, 03 Feb 2020 12:33:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=BmohpHCjIq9+chn6leBdsiG1usxcQIIK/dXJdjoXWPg=;
-        b=PvsWLNrz0lHlb2+2kVEf2pwV/TizuSmB41RqZHYosaNycHkAx8v72d/t224QlPmgKv
-         zb6ZNvNrJ1NIBvK72yldA79QXcSPCbT8m2kqcxh8N99SFAGiiHy8Aw/oZYA5UPw+zkrh
-         Gheu3XjMf62B9S7GWrdMWdLlBp4T76G45TGrdbhtmBI4f0/n9vlzBde/cWNq62tNjMOK
-         Ib6vBoGXQ6q9BtLARRWdMn92RItARsxydAGP7RvDTxGoEJA4+9+/8zGg+clIoCMk5+1s
-         BMPDKVkiYBbEqJtwZmcjsofBDb0SKI/Yzvm2h7q2JdIZ39qRrCAgOQPfi4nQmjCrE09J
-         WFWg==
+        bh=GQ4U+YXAWR+1bgsw2pgVAqxYtocJASYPniZ3B9G2x4c=;
+        b=abQ+GYCFbu+Xn58JN+D1PFRJkEDcBZSO4UUT5Q2fxuxaUd8v4RM0YQYHsdGYFnqRot
+         VbRbyHVHVFot7dHY17/cdSTAZ/qjVYoyrZnqabNqXWREdlEe3XnrORE7CUDC3aV5+1in
+         nDt2PDxfh1lrkzqQHA+xLXAW20o0sMEJDMFz2aN3+qu41w864Ls6ifrJ/ypdr+re+kPG
+         UpsyXElCCi8H8gB3g/opxU7LyzfEDpGJq6zwH8P1o1sWTf8dx/BS57TkDy8D6BhpdIjd
+         8zup5eS9rtj2i2AGLj7RmdM18oM7h62s8OA3EX9zg3YvFq5xzcxzZYWJiJoLPYW4ytYJ
+         0pzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=BmohpHCjIq9+chn6leBdsiG1usxcQIIK/dXJdjoXWPg=;
-        b=pL3zoTZGZk6KGrx5GgWIpj7PsDs5zev4l7fuxPcVdc0l85C71FONupA13/KFnol+9g
-         cA4Z141H6kvGRsWd999egfw3ou+6Pef//hczIrglqnsmdnq+PNJb3XRMIyl3PO13d8o3
-         KsWRQDBAQlNxx8qsU0lM+CDIiPuG312zOt10yUfrDwYSAiDRA4LB0dO9NTmdAsAArY8z
-         /hHrFAH2RVmyy+ow00jN7Lk/QKGfcZ3iVFkqOeALkEfitJstSmhhMPPnvLeCTwshlisg
-         NBi86wC9xIjjwhJbUDcgiYitB8U0SjwzTEZg0Zv6L0VkTDuEbuBxInlkZ42O2e1x6AWZ
-         ZKfQ==
-X-Gm-Message-State: APjAAAX17V8pg+v9SOSXBIZ+3jV2umoomot46mphxU2vKo4WtEcTYXpm
-        Eb3fNMf+OwIP3vy4LjAkXttevnbbdgKuK4+Usk4=
-X-Google-Smtp-Source: APXvYqykPtXOUjCIXrNKF10ltdfIkcjOcKhB5uft5Xsbm38UAyEEjYVQRciKIW9RvlyLH/a5KNEl4RS77WrhJMUj89o=
-X-Received: by 2002:aca:f08:: with SMTP id 8mr530912oip.60.1580759938556; Mon,
- 03 Feb 2020 11:58:58 -0800 (PST)
+        bh=GQ4U+YXAWR+1bgsw2pgVAqxYtocJASYPniZ3B9G2x4c=;
+        b=ohIuCuybkx9oBiXKlhnd1jqsnkTXdlnmsnxGqxLdPTsKcKBbYby4M0SFCtIzKLueM0
+         +o5JH8nE05QgJhMJ9UPaU0FiRS/KcAX69gVLAwYe2ItcUxulHRdF/pcDae0+/slzZDky
+         wUTX7m0F/Hv31hL2g+k6DaN66LRWdTXthB+3VKvFtIMdS5m28gcQZsi0zQDHOlmID8YK
+         ty2tOJZ8wualB60QjzkBdLUH/wICXz2TwtHe6LBAejSikKnBBq2ug1Ns+0fJO+9P+QFc
+         bNu22fTVbnHL1C9oKfHUouehV6ugV3/00VFrvdx9OnzIPDY3hU3FYqAuHaXi3UdfqN/3
+         vR1A==
+X-Gm-Message-State: APjAAAVFizUfv6ImU7vAwuazzEX+2LEKS+2R9C69fjPZYP+Gd5CR5DHZ
+        piwCz2u+u8r5Kb/hic/GySqDAmSBozchndn1qZ4=
+X-Google-Smtp-Source: APXvYqyEcNFqhS9JnvYt2BzNTYgMDSOWs+FAaBBM+wP0S6VpNJNjjeoKvclWp5b9t2iQsT4P/67CDvDIJ+/eX39S2m8=
+X-Received: by 2002:a9d:53c4:: with SMTP id i4mr20051104oth.48.1580762021874;
+ Mon, 03 Feb 2020 12:33:41 -0800 (PST)
 MIME-Version: 1.0
 References: <20200131065647.joonbg3wzcw26x3b@kili.mountain>
- <CAM_iQpUYv9vEVpYc-WfMNfCc9QaBzmTYs66-GEfwOKiqOXHxew@mail.gmail.com> <20200203083853.GH11068@kadam>
-In-Reply-To: <20200203083853.GH11068@kadam>
+ <CAM_iQpUYv9vEVpYc-WfMNfCc9QaBzmTYs66-GEfwOKiqOXHxew@mail.gmail.com>
+ <20200203083853.GH11068@kadam> <CAM_iQpWu=EuAj709=wL0ZgbLvFgBbaaVZcMjYm0ZmTeLJ7nkCg@mail.gmail.com>
+In-Reply-To: <CAM_iQpWu=EuAj709=wL0ZgbLvFgBbaaVZcMjYm0ZmTeLJ7nkCg@mail.gmail.com>
 From:   Cong Wang <xiyou.wangcong@gmail.com>
-Date:   Mon, 3 Feb 2020 11:58:47 -0800
-Message-ID: <CAM_iQpWu=EuAj709=wL0ZgbLvFgBbaaVZcMjYm0ZmTeLJ7nkCg@mail.gmail.com>
+Date:   Mon, 3 Feb 2020 12:33:30 -0800
+Message-ID: <CAM_iQpVrckjFViizKZH+S=8GC_3T5Gm1vTAUeFkpmqJ_A66x1Q@mail.gmail.com>
 Subject: Re: [PATCH net] net: sched: prevent a use after free
 To:     Dan Carpenter <dan.carpenter@oracle.com>
 Cc:     Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
@@ -65,39 +66,19 @@ Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Mon, Feb 3, 2020 at 12:39 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+On Mon, Feb 3, 2020 at 11:58 AM Cong Wang <xiyou.wangcong@gmail.com> wrote:
 >
-> On Sat, Feb 01, 2020 at 11:38:43AM -0800, Cong Wang wrote:
-> > On Thu, Jan 30, 2020 at 10:57 PM Dan Carpenter <dan.carpenter@oracle.com> wrote:
-> > >
-> > > The code calls kfree_skb(skb); and then re-uses "skb" on the next line.
-> > > Let's re-order these lines to solve the problem.
-> > >
-> > > Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
-> > > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > > ---
-> > >  net/sched/sch_fq_pie.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/net/sched/sch_fq_pie.c b/net/sched/sch_fq_pie.c
-> > > index bbd0dea6b6b9..78472e0773e9 100644
-> > > --- a/net/sched/sch_fq_pie.c
-> > > +++ b/net/sched/sch_fq_pie.c
-> > > @@ -349,9 +349,9 @@ static int fq_pie_change(struct Qdisc *sch, struct nlattr *opt,
-> > >         while (sch->q.qlen > sch->limit) {
-> > >                 struct sk_buff *skb = fq_pie_qdisc_dequeue(sch);
-> > >
-> > > -               kfree_skb(skb);
-> > >                 len_dropped += qdisc_pkt_len(skb);
-> > >                 num_dropped += 1;
-> > > +               kfree_skb(skb);
-> >
-> > Or even better: use rtnl_kfree_skbs().
+> On Mon, Feb 3, 2020 at 12:39 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+> > Why is that better?
 >
-> Why is that better?
+> Because it is designed to be used in this scenario,
+> as it defers the free after RTNL unlock which is after
+> sch_tree_unlock() too.
 
-Because it is designed to be used in this scenario,
-as it defers the free after RTNL unlock which is after
-sch_tree_unlock() too.
+Just in case of misunderstanding: I am _not_ suggesting to
+use rtnl_kfree_skbs() to workaround this use-after-free,
+rtnl_kfree_skbs() still has to be called after qdisc_pkt_len(),
+at least for readability, despite that it could indeed
+workaround the bug.
 
 Thanks.

@@ -2,130 +2,96 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CBBC01514F5
-	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Feb 2020 05:27:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 10F711515FD
+	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Feb 2020 07:28:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727127AbgBDE1u (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Feb 2020 23:27:50 -0500
-Received: from mail-lf1-f68.google.com ([209.85.167.68]:42089 "EHLO
-        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726994AbgBDE1u (ORCPT
+        id S1726220AbgBDG17 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Tue, 4 Feb 2020 01:27:59 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:36406 "EHLO
+        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725813AbgBDG17 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Feb 2020 23:27:50 -0500
-Received: by mail-lf1-f68.google.com with SMTP id y19so11238363lfl.9
-        for <kernel-janitors@vger.kernel.org>; Mon, 03 Feb 2020 20:27:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=to:subject:from:message-id:date:user-agent:mime-version
-         :content-transfer-encoding:content-language;
-        bh=5DXJZafQyQRmmbE8a6x6lpcdfOQ30RalBnjyqkaknYo=;
-        b=gFp1/RDF9QejW9svL1V4sqXnHCOFbXbDYekm/kUgXoKr98wRPyu/fqwdfJMCINhIOj
-         YL/cOTnxljK23Ewku4Z/YBsTjHc6NCGZbqy1iO4xCzkGku4cIYPnClj4cTgLEWnVi5BZ
-         AgGjL8DDZm+Zmq9TrzJ/PTvxDAEtiBD2X7D/hVy5PP77079LrTMddYG7PAJHe1zbAxyx
-         F6Q5mmNipT/lPL36VWmPXTy4m7Ks8uAnfjNVw7YIlH7/GigqSV3RlEv7kHQ+F9LxTwdU
-         4gMsZahxxDZNMtBqwr2uG4TWs2UMJiCUoPF4jrOaCQ52BNAkPSdM8H/Jv7QJRh8gGbWM
-         ckVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:subject:from:message-id:date:user-agent
-         :mime-version:content-transfer-encoding:content-language;
-        bh=5DXJZafQyQRmmbE8a6x6lpcdfOQ30RalBnjyqkaknYo=;
-        b=OWztqd1HOIzMwL6LY6XFLiVoJCb0WbyPfm3RSPC6MyqaTb8fZ42lCTXpOMjJoxCstJ
-         YFZHX8zQR3t3JA6l7HluYs9aniafEYg8C5Lq+cvOmriuTtDqoVi+d+MxyFWso4qHfv5f
-         LKNvH/ocd+0AvYJPRJrYje59Mw4MyLrfEpH2VtVSTcr3zQFpTklqG8sEkG4z/XJyV7Rz
-         mDnElElvJ6HVXOQSgCXMdSPkypoaB4bbrYN9B+Qmk1kNV4fhlDQaQjfJ06HDi00Y4imc
-         t030NCS0DJ43hbD09HN++91bcy0dncEw3jc3FfqQ0XPNxINESIvSutudhmPLpwhCHT6d
-         w6wg==
-X-Gm-Message-State: APjAAAXGQXzAApvsuZ71+4/GLeB4biXtZAvVJYiVQIfrbFAhJpI4WKYE
-        GNvBm24ZH0wTJYyI/b1OB2vdKyP38M4=
-X-Google-Smtp-Source: APXvYqxvFBh1eFX0iS078Purkh0zhqxLPv+6G+6aEGZn8xgDkrZVeJwevjeLfUnR/n4O4gbnHJuCdw==
-X-Received: by 2002:a19:9d5:: with SMTP id 204mr13519851lfj.120.1580790467447;
-        Mon, 03 Feb 2020 20:27:47 -0800 (PST)
-Received: from ?IPv6:2001:2003:f41e:c300:224:1dff:fe12:e61a? ([2001:2003:f41e:c300:224:1dff:fe12:e61a])
-        by smtp.gmail.com with ESMTPSA id h9sm5646958ljg.3.2020.02.03.20.27.46
-        for <kernel-janitors@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Feb 2020 20:27:46 -0800 (PST)
-To:     kernel-janitors@vger.kernel.org
-Subject: [PATCH] USB HID random timeout failures fixed by trying 20 times
-From:   Lauri Jakku <ljakku77@gmail.com>
-Message-ID: <d15b7fa7-596c-96f8-dd07-7831a9fa2f0e@gmail.com>
-Date:   Tue, 4 Feb 2020 06:27:45 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+        Tue, 4 Feb 2020 01:27:59 -0500
+Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 014687Nc134548;
+        Tue, 4 Feb 2020 06:27:57 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=corp-2019-08-05;
+ bh=u/G+KOX+LjtSK03l2X8IFjsVt+vBtMXHKVHpaogp/qU=;
+ b=IfZNu7s3VIl9MxayTKvHf2zLY1LNM9yCRZ5w/ngeJ2NU49LGAsVJHVWu5UOuczONiwjz
+ F7nn2s/LyA8FIA2zfoDlfSeVPuuJJeGrrxRPItpHXJ11oyiK/LTmBRrBzraHXGtG+c9x
+ 0D5eYb0O+Ji8EG2dsxNfCc4y1HcZbpprED3GmEafk9k5thLAojl3+DWSA34h7Xlc0IXo
+ +a/XFtk0CDldICboNYPeJn5vvPeZRgCiY/hc/egVBzO7rpGYizEF8A6Ef4kaZEx9cfxR
+ 5hy0sWUp7rRpL9rFE0MLuTBF/BM83ZRXCwkLmgFbb9wxvJyOvFAJ+3/SPKzScF9gA/h7 OA== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 2xw19qcdn4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 04 Feb 2020 06:27:57 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 0146I9eJ074833;
+        Tue, 4 Feb 2020 06:27:56 GMT
+Received: from aserv0122.oracle.com (aserv0122.oracle.com [141.146.126.236])
+        by userp3030.oracle.com with ESMTP id 2xxvuqwyn7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 04 Feb 2020 06:27:56 +0000
+Received: from abhmp0016.oracle.com (abhmp0016.oracle.com [141.146.116.22])
+        by aserv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 0146RtmT020587;
+        Tue, 4 Feb 2020 06:27:55 GMT
+Received: from kadam (/129.205.23.165)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Mon, 03 Feb 2020 22:27:55 -0800
+Date:   Tue, 4 Feb 2020 09:27:49 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Lauri Jakku <ljakku77@gmail.com>
+Cc:     kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] USB HID random timeout failures fixed by trying 20 times
+Message-ID: <20200204062749.GP1778@kadam>
+References: <d15b7fa7-596c-96f8-dd07-7831a9fa2f0e@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d15b7fa7-596c-96f8-dd07-7831a9fa2f0e@gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9520 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2002040046
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9520 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2002040046
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-send, 20ms apart, control messages, if error is timeout.
+Hi Lauri,
 
-Signed-off-by: Lauri Jakku <lja@iki.fi>
----
-drivers/usb/core/message.c | 30 +++++++++++++++++++++++++-----
-1 file changed, 25 insertions(+), 5 deletions(-)
+There are a bunch of issues with this patch.
 
-diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
-index 5adf489428aa..5d615b2f92d8 100644
---- a/drivers/usb/core/message.c
-+++ b/drivers/usb/core/message.c
-@@ -20,6 +20,7 @@
-#include <linux/usb/hcd.h> /* for usbcore internals */
-#include <linux/usb/of.h>
-#include <asm/byteorder.h>
-+#include <linux/errno.h>
+1)  There is no way we're going to add a retry loop to
+    usb_control_msg().  We might add it to a driver, but probably we
+    would suspect that the hardware is bad.  Maybe the cable is faulty?
+    Or I could be wrong on that...
 
-#include "usb.h"
+2)  You would need to send this to a different list.  Use
+    ./scripts/get_maintainer.pl to find out who.  The
+    linux-usb@vger.kernel.org is the main USB list.
 
-@@ -137,7 +138,10 @@ int usb_control_msg(struct usb_device *dev, unsigned int pipe, __u8 request,
-__u16 size, int timeout)
-{
-struct usb_ctrlrequest *dr;
-- int ret;
-+ int ret = -ETIMEDOUT;
-+
-+ /* retry_cnt * 10ms, max retry time set to 400ms */
-+ int retry_cnt = 20;
+3)  The patch doesn't apply.  Read the first paragraph of
+    Documentation/process/email-clients.rst
 
-dr = kmalloc(sizeof(struct usb_ctrlrequest), GFP_NOIO);
-if (!dr)
-@@ -149,11 +153,27 @@ int usb_control_msg(struct usb_device *dev, unsigned int pipe, __u8 request,
-dr->wIndex = cpu_to_le16(index);
-dr->wLength = cpu_to_le16(size);
+4) The subject needs to be formatted slightly differently.
+    [PATCH] USB: HID: Fix timeout by adding retry loop
 
-- ret = usb_internal_control_msg(dev, pipe, dr, data, size, timeout);
-+ do {
-+ ret = usb_internal_control_msg(dev,
-+ pipe,
-+ dr,
-+ data,
-+ size,
-+ timeout);
-+
-+ /*
-+ * Linger a bit, prior to the next control message
-+ * or if return value is timeout, but do try few
-+ * times (max 200ms) before quitting.
-+ */
-+ if (dev->quirks & USB_QUIRK_DELAY_CTRL_MSG)
-+ msleep(200);
-+ else if (ret == -ETIMEDOUT)
-+ msleep(20);
-+
-+ /* Loop while timeout, max retry_cnt times. */
-+ } while ((retry_cnt-- > 0) && (ret == -ETIMEDOUT));
+5) The commit message should be more clear what was affected.  Don't
+   start the commit message in the middle of a sentence.
 
-- /* Linger a bit, prior to the next control message. */
-- if (dev->quirks & USB_QUIRK_DELAY_CTRL_MSG)
-- msleep(200);
-
-kfree(dr);
-
--- 
-2.25.0
+regards,
+dan carpenter
 
 

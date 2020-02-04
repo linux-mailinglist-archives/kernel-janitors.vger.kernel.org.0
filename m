@@ -2,111 +2,130 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A19931514D3
-	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Feb 2020 05:04:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CBBC01514F5
+	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Feb 2020 05:27:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727023AbgBDEEu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Feb 2020 23:04:50 -0500
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:38708 "EHLO
-        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726924AbgBDEEu (ORCPT
+        id S1727127AbgBDE1u (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Feb 2020 23:27:50 -0500
+Received: from mail-lf1-f68.google.com ([209.85.167.68]:42089 "EHLO
+        mail-lf1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726994AbgBDE1u (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Feb 2020 23:04:50 -0500
-Received: by mail-wm1-f65.google.com with SMTP id a9so1810703wmj.3;
-        Mon, 03 Feb 2020 20:04:48 -0800 (PST)
+        Mon, 3 Feb 2020 23:27:50 -0500
+Received: by mail-lf1-f68.google.com with SMTP id y19so11238363lfl.9
+        for <kernel-janitors@vger.kernel.org>; Mon, 03 Feb 2020 20:27:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=T86mG0bltjiPTMfNeP1GOcuNJTtwAcIRWIfAg+3wbfQ=;
-        b=J9P02RW6Y4diY3q5hZmw8DyihPLh54rTCa88cyaE0GFWGYu9sZf0TeOh4Qxyeb8BMO
-         +s6h5ZYt524Es6UeBcRmBKLWZzGF72TMyXyoo8qZ2WjCT9zNpEglZ6uHsXgN2bV0wqF4
-         aOGIPrOv/IrXDwsnPy1qX7UhVHCvckX9iSIL5RARnNfHEIISv1DHTOFvkODI90WMTTQz
-         LLg/E0BanSUXMq3terW3K7I85yLvGz15P+3ozEiGOrd1IwwpufQJZPOo+4ja08EC4DXq
-         hE64rm17+Qaxw23NhOu0RjOZKfwev34V+BtbhP5LNOlYjO6hGspEVlGmkEsREgLAax3b
-         PH+g==
+        h=to:subject:from:message-id:date:user-agent:mime-version
+         :content-transfer-encoding:content-language;
+        bh=5DXJZafQyQRmmbE8a6x6lpcdfOQ30RalBnjyqkaknYo=;
+        b=gFp1/RDF9QejW9svL1V4sqXnHCOFbXbDYekm/kUgXoKr98wRPyu/fqwdfJMCINhIOj
+         YL/cOTnxljK23Ewku4Z/YBsTjHc6NCGZbqy1iO4xCzkGku4cIYPnClj4cTgLEWnVi5BZ
+         AgGjL8DDZm+Zmq9TrzJ/PTvxDAEtiBD2X7D/hVy5PP77079LrTMddYG7PAJHe1zbAxyx
+         F6Q5mmNipT/lPL36VWmPXTy4m7Ks8uAnfjNVw7YIlH7/GigqSV3RlEv7kHQ+F9LxTwdU
+         4gMsZahxxDZNMtBqwr2uG4TWs2UMJiCUoPF4jrOaCQ52BNAkPSdM8H/Jv7QJRh8gGbWM
+         ckVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=T86mG0bltjiPTMfNeP1GOcuNJTtwAcIRWIfAg+3wbfQ=;
-        b=moTauuhSH6lquUIlzqvILpc31RGKyK+x6RsTTiS5jlpjIqS4dN8Hhj9Fu13u2tKOY9
-         eoRMeaW8JiW8GV/1Nrje0FfJJsLInfTerU0zDG0TBK+z2UNGuCvlnS7R41DFAXqoP4FT
-         warhbsXs+1B3gVWthODHW2ZZQFbhdaBTN+3eW09l3PMmE414fm2MnvjjZsmcNU0bBOxK
-         9Y+yjHAgGCvcJSoS7r3bdTJZ1NS6WoEYue8ZXZp6EOq8bZkmVTJsVoMW7UvDFRFPJUnm
-         WUwix3SNklLrSnADLDV90XQJVIqDGo0n4AaUf+qpx1STq+Qa0LK7RGFPF6v88kWbkNWw
-         JLpw==
-X-Gm-Message-State: APjAAAUKjrJ9Oz09GtlcQQ9KX3RFIDsxKR+piuFdTc5lrAIU0U+GPRpT
-        hZeo4DpkvSzvx+dYiG0HNcc=
-X-Google-Smtp-Source: APXvYqy3zZLu0ZuoHgUuoiFa0e/pa0wnDN4n9oVpraD2cQHHCy2xseb2CJdY42n/cf6BN8oyJoRZyA==
-X-Received: by 2002:a1c:9ac6:: with SMTP id c189mr2990359wme.59.1580789087566;
-        Mon, 03 Feb 2020 20:04:47 -0800 (PST)
-Received: from felia.fritz.box ([2001:16b8:2daa:dc00:2c0a:8928:125e:2b0f])
-        by smtp.gmail.com with ESMTPSA id z19sm1914623wmi.35.2020.02.03.20.04.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Feb 2020 20:04:46 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-To:     Micah Morton <mortonm@chromium.org>
-Cc:     Joe Perches <joe@perches.com>,
-        Andy Shevchenko <andy.shevchenko@gmail.com>,
-        linux-security-module@vger.kernel.org,
-        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Subject: [PATCH SECOND RESEND] MAINTAINERS: fix style in SAFESETID SECURITY MODULE
-Date:   Tue,  4 Feb 2020 05:04:34 +0100
-Message-Id: <20200204040434.7173-1-lukas.bulwahn@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        h=x-gm-message-state:to:subject:from:message-id:date:user-agent
+         :mime-version:content-transfer-encoding:content-language;
+        bh=5DXJZafQyQRmmbE8a6x6lpcdfOQ30RalBnjyqkaknYo=;
+        b=OWztqd1HOIzMwL6LY6XFLiVoJCb0WbyPfm3RSPC6MyqaTb8fZ42lCTXpOMjJoxCstJ
+         YFZHX8zQR3t3JA6l7HluYs9aniafEYg8C5Lq+cvOmriuTtDqoVi+d+MxyFWso4qHfv5f
+         LKNvH/ocd+0AvYJPRJrYje59Mw4MyLrfEpH2VtVSTcr3zQFpTklqG8sEkG4z/XJyV7Rz
+         mDnElElvJ6HVXOQSgCXMdSPkypoaB4bbrYN9B+Qmk1kNV4fhlDQaQjfJ06HDi00Y4imc
+         t030NCS0DJ43hbD09HN++91bcy0dncEw3jc3FfqQ0XPNxINESIvSutudhmPLpwhCHT6d
+         w6wg==
+X-Gm-Message-State: APjAAAXGQXzAApvsuZ71+4/GLeB4biXtZAvVJYiVQIfrbFAhJpI4WKYE
+        GNvBm24ZH0wTJYyI/b1OB2vdKyP38M4=
+X-Google-Smtp-Source: APXvYqxvFBh1eFX0iS078Purkh0zhqxLPv+6G+6aEGZn8xgDkrZVeJwevjeLfUnR/n4O4gbnHJuCdw==
+X-Received: by 2002:a19:9d5:: with SMTP id 204mr13519851lfj.120.1580790467447;
+        Mon, 03 Feb 2020 20:27:47 -0800 (PST)
+Received: from ?IPv6:2001:2003:f41e:c300:224:1dff:fe12:e61a? ([2001:2003:f41e:c300:224:1dff:fe12:e61a])
+        by smtp.gmail.com with ESMTPSA id h9sm5646958ljg.3.2020.02.03.20.27.46
+        for <kernel-janitors@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 03 Feb 2020 20:27:46 -0800 (PST)
+To:     kernel-janitors@vger.kernel.org
+Subject: [PATCH] USB HID random timeout failures fixed by trying 20 times
+From:   Lauri Jakku <ljakku77@gmail.com>
+Message-ID: <d15b7fa7-596c-96f8-dd07-7831a9fa2f0e@gmail.com>
+Date:   Tue, 4 Feb 2020 06:27:45 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Commit fc5b34a35458 ("Add entry in MAINTAINERS file for SafeSetID LSM")
-slips in some formatting with spaces instead of tabs, which
-./scripts/checkpatch.pl -f MAINTAINERS complains about:
+send, 20ms apart, control messages, if error is timeout.
 
-  WARNING: MAINTAINERS entries use one tab after TYPE:
-  #14394: FILE: MAINTAINERS:14394:
-  +M:     Micah Morton <mortonm@chromium.org>
-
-  WARNING: MAINTAINERS entries use one tab after TYPE:
-  #14395: FILE: MAINTAINERS:14395:
-  +S:     Supported
-
-  WARNING: MAINTAINERS entries use one tab after TYPE:
-  #14396: FILE: MAINTAINERS:14396:
-  +F:     security/safesetid/
-
-  WARNING: MAINTAINERS entries use one tab after TYPE:
-  #14397: FILE: MAINTAINERS:14397:
-  +F:     Documentation/admin-guide/LSM/SafeSetID.rst
-
-Fixes: fc5b34a35458 ("Add entry in MAINTAINERS file for SafeSetID LSM")
-Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Signed-off-by: Lauri Jakku <lja@iki.fi>
 ---
-applies cleanly on current master and next-20200203
-Micah, please pick this patch.
+drivers/usb/core/message.c | 30 +++++++++++++++++++++++++-----
+1 file changed, 25 insertions(+), 5 deletions(-)
 
- MAINTAINERS | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
+index 5adf489428aa..5d615b2f92d8 100644
+--- a/drivers/usb/core/message.c
++++ b/drivers/usb/core/message.c
+@@ -20,6 +20,7 @@
+#include <linux/usb/hcd.h> /* for usbcore internals */
+#include <linux/usb/of.h>
+#include <asm/byteorder.h>
++#include <linux/errno.h>
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1f77fb8cdde3..83c7879aa4b2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14578,10 +14578,10 @@ F:	drivers/media/pci/saa7146/
- F:	include/media/drv-intf/saa7146*
- 
- SAFESETID SECURITY MODULE
--M:     Micah Morton <mortonm@chromium.org>
--S:     Supported
--F:     security/safesetid/
--F:     Documentation/admin-guide/LSM/SafeSetID.rst
-+M:	Micah Morton <mortonm@chromium.org>
-+S:	Supported
-+F:	security/safesetid/
-+F:	Documentation/admin-guide/LSM/SafeSetID.rst
- 
- SAMSUNG AUDIO (ASoC) DRIVERS
- M:	Krzysztof Kozlowski <krzk@kernel.org>
+#include "usb.h"
+
+@@ -137,7 +138,10 @@ int usb_control_msg(struct usb_device *dev, unsigned int pipe, __u8 request,
+__u16 size, int timeout)
+{
+struct usb_ctrlrequest *dr;
+- int ret;
++ int ret = -ETIMEDOUT;
++
++ /* retry_cnt * 10ms, max retry time set to 400ms */
++ int retry_cnt = 20;
+
+dr = kmalloc(sizeof(struct usb_ctrlrequest), GFP_NOIO);
+if (!dr)
+@@ -149,11 +153,27 @@ int usb_control_msg(struct usb_device *dev, unsigned int pipe, __u8 request,
+dr->wIndex = cpu_to_le16(index);
+dr->wLength = cpu_to_le16(size);
+
+- ret = usb_internal_control_msg(dev, pipe, dr, data, size, timeout);
++ do {
++ ret = usb_internal_control_msg(dev,
++ pipe,
++ dr,
++ data,
++ size,
++ timeout);
++
++ /*
++ * Linger a bit, prior to the next control message
++ * or if return value is timeout, but do try few
++ * times (max 200ms) before quitting.
++ */
++ if (dev->quirks & USB_QUIRK_DELAY_CTRL_MSG)
++ msleep(200);
++ else if (ret == -ETIMEDOUT)
++ msleep(20);
++
++ /* Loop while timeout, max retry_cnt times. */
++ } while ((retry_cnt-- > 0) && (ret == -ETIMEDOUT));
+
+- /* Linger a bit, prior to the next control message. */
+- if (dev->quirks & USB_QUIRK_DELAY_CTRL_MSG)
+- msleep(200);
+
+kfree(dr);
+
 -- 
-2.17.1
+2.25.0
+
 

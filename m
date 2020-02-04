@@ -2,77 +2,111 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FB79151437
-	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Feb 2020 03:30:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A19931514D3
+	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Feb 2020 05:04:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727102AbgBDCaY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Feb 2020 21:30:24 -0500
-Received: from szxga04-in.huawei.com ([45.249.212.190]:10145 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726561AbgBDCaY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Feb 2020 21:30:24 -0500
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id E46E62EEB371C5BD5695;
-        Tue,  4 Feb 2020 10:30:21 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
- 14.3.439.0; Tue, 4 Feb 2020 10:30:11 +0800
-From:   YueHaibing <yuehaibing@huawei.com>
-To:     Ariel Elior <aelior@marvell.com>,
-        Michal Kalderon <michal.kalderon@marvell.com>,
-        "David S . Miller" <davem@davemloft.net>
-CC:     YueHaibing <yuehaibing@huawei.com>,
-        <GR-everest-linux-l2@marvell.com>, <netdev@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
-        Hulk Robot <hulkci@huawei.com>
-Subject: [PATCH net-next] qed: Remove set but not used variable 'p_link'
-Date:   Tue, 4 Feb 2020 02:24:41 +0000
-Message-ID: <20200204022442.109809-1-yuehaibing@huawei.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+        id S1727023AbgBDEEu (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Feb 2020 23:04:50 -0500
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:38708 "EHLO
+        mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726924AbgBDEEu (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 3 Feb 2020 23:04:50 -0500
+Received: by mail-wm1-f65.google.com with SMTP id a9so1810703wmj.3;
+        Mon, 03 Feb 2020 20:04:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=T86mG0bltjiPTMfNeP1GOcuNJTtwAcIRWIfAg+3wbfQ=;
+        b=J9P02RW6Y4diY3q5hZmw8DyihPLh54rTCa88cyaE0GFWGYu9sZf0TeOh4Qxyeb8BMO
+         +s6h5ZYt524Es6UeBcRmBKLWZzGF72TMyXyoo8qZ2WjCT9zNpEglZ6uHsXgN2bV0wqF4
+         aOGIPrOv/IrXDwsnPy1qX7UhVHCvckX9iSIL5RARnNfHEIISv1DHTOFvkODI90WMTTQz
+         LLg/E0BanSUXMq3terW3K7I85yLvGz15P+3ozEiGOrd1IwwpufQJZPOo+4ja08EC4DXq
+         hE64rm17+Qaxw23NhOu0RjOZKfwev34V+BtbhP5LNOlYjO6hGspEVlGmkEsREgLAax3b
+         PH+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=T86mG0bltjiPTMfNeP1GOcuNJTtwAcIRWIfAg+3wbfQ=;
+        b=moTauuhSH6lquUIlzqvILpc31RGKyK+x6RsTTiS5jlpjIqS4dN8Hhj9Fu13u2tKOY9
+         eoRMeaW8JiW8GV/1Nrje0FfJJsLInfTerU0zDG0TBK+z2UNGuCvlnS7R41DFAXqoP4FT
+         warhbsXs+1B3gVWthODHW2ZZQFbhdaBTN+3eW09l3PMmE414fm2MnvjjZsmcNU0bBOxK
+         9Y+yjHAgGCvcJSoS7r3bdTJZ1NS6WoEYue8ZXZp6EOq8bZkmVTJsVoMW7UvDFRFPJUnm
+         WUwix3SNklLrSnADLDV90XQJVIqDGo0n4AaUf+qpx1STq+Qa0LK7RGFPF6v88kWbkNWw
+         JLpw==
+X-Gm-Message-State: APjAAAUKjrJ9Oz09GtlcQQ9KX3RFIDsxKR+piuFdTc5lrAIU0U+GPRpT
+        hZeo4DpkvSzvx+dYiG0HNcc=
+X-Google-Smtp-Source: APXvYqy3zZLu0ZuoHgUuoiFa0e/pa0wnDN4n9oVpraD2cQHHCy2xseb2CJdY42n/cf6BN8oyJoRZyA==
+X-Received: by 2002:a1c:9ac6:: with SMTP id c189mr2990359wme.59.1580789087566;
+        Mon, 03 Feb 2020 20:04:47 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:2daa:dc00:2c0a:8928:125e:2b0f])
+        by smtp.gmail.com with ESMTPSA id z19sm1914623wmi.35.2020.02.03.20.04.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Feb 2020 20:04:46 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+To:     Micah Morton <mortonm@chromium.org>
+Cc:     Joe Perches <joe@perches.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        linux-security-module@vger.kernel.org,
+        kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH SECOND RESEND] MAINTAINERS: fix style in SAFESETID SECURITY MODULE
+Date:   Tue,  4 Feb 2020 05:04:34 +0100
+Message-Id: <20200204040434.7173-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Fixes gcc '-Wunused-but-set-variable' warning:
+Commit fc5b34a35458 ("Add entry in MAINTAINERS file for SafeSetID LSM")
+slips in some formatting with spaces instead of tabs, which
+./scripts/checkpatch.pl -f MAINTAINERS complains about:
 
-drivers/net/ethernet/qlogic/qed/qed_cxt.c: In function 'qed_qm_init_pf':
-drivers/net/ethernet/qlogic/qed/qed_cxt.c:1401:29: warning:
- variable 'p_link' set but not used [-Wunused-but-set-variable]
+  WARNING: MAINTAINERS entries use one tab after TYPE:
+  #14394: FILE: MAINTAINERS:14394:
+  +M:     Micah Morton <mortonm@chromium.org>
 
-commit 92fae6fb231f ("qed: FW 8.42.2.0 Queue Manager changes")
-leave behind this unused variable.
+  WARNING: MAINTAINERS entries use one tab after TYPE:
+  #14395: FILE: MAINTAINERS:14395:
+  +S:     Supported
 
-Reported-by: Hulk Robot <hulkci@huawei.com>
-Signed-off-by: YueHaibing <yuehaibing@huawei.com>
+  WARNING: MAINTAINERS entries use one tab after TYPE:
+  #14396: FILE: MAINTAINERS:14396:
+  +F:     security/safesetid/
+
+  WARNING: MAINTAINERS entries use one tab after TYPE:
+  #14397: FILE: MAINTAINERS:14397:
+  +F:     Documentation/admin-guide/LSM/SafeSetID.rst
+
+Fixes: fc5b34a35458 ("Add entry in MAINTAINERS file for SafeSetID LSM")
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 ---
- drivers/net/ethernet/qlogic/qed/qed_cxt.c | 3 ---
- 1 file changed, 3 deletions(-)
+applies cleanly on current master and next-20200203
+Micah, please pick this patch.
 
-diff --git a/drivers/net/ethernet/qlogic/qed/qed_cxt.c b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-index fbfff2b1dc93..1a636bad717d 100644
---- a/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-+++ b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
-@@ -1398,14 +1398,11 @@ void qed_qm_init_pf(struct qed_hwfn *p_hwfn,
- {
- 	struct qed_qm_info *qm_info = &p_hwfn->qm_info;
- 	struct qed_qm_pf_rt_init_params params;
--	struct qed_mcp_link_state *p_link;
- 	struct qed_qm_iids iids;
+ MAINTAINERS | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 1f77fb8cdde3..83c7879aa4b2 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -14578,10 +14578,10 @@ F:	drivers/media/pci/saa7146/
+ F:	include/media/drv-intf/saa7146*
  
- 	memset(&iids, 0, sizeof(iids));
- 	qed_cxt_qm_iids(p_hwfn, &iids);
+ SAFESETID SECURITY MODULE
+-M:     Micah Morton <mortonm@chromium.org>
+-S:     Supported
+-F:     security/safesetid/
+-F:     Documentation/admin-guide/LSM/SafeSetID.rst
++M:	Micah Morton <mortonm@chromium.org>
++S:	Supported
++F:	security/safesetid/
++F:	Documentation/admin-guide/LSM/SafeSetID.rst
  
--	p_link = &QED_LEADING_HWFN(p_hwfn->cdev)->mcp_info->link_output;
--
- 	memset(&params, 0, sizeof(params));
- 	params.port_id = p_hwfn->port_id;
- 	params.pf_id = p_hwfn->rel_pf_id;
-
-
+ SAMSUNG AUDIO (ASoC) DRIVERS
+ M:	Krzysztof Kozlowski <krzk@kernel.org>
+-- 
+2.17.1
 

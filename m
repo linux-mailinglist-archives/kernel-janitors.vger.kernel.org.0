@@ -2,73 +2,77 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 48B4B151271
-	for <lists+kernel-janitors@lfdr.de>; Mon,  3 Feb 2020 23:37:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FB79151437
+	for <lists+kernel-janitors@lfdr.de>; Tue,  4 Feb 2020 03:30:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727093AbgBCWhl (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Mon, 3 Feb 2020 17:37:41 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:56231 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726331AbgBCWhl (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Mon, 3 Feb 2020 17:37:41 -0500
-Received: from 1.general.cking.uk.vpn ([10.172.193.212] helo=localhost)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <colin.king@canonical.com>)
-        id 1iykLZ-0001K0-1D; Mon, 03 Feb 2020 22:37:37 +0000
-From:   Colin King <colin.king@canonical.com>
-To:     Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd <sboyd@kernel.org>, Wen He <wen.he_1@nxp.com>,
-        Michael Walle <michael@walle.cc>, linux-clk@vger.kernel.org
-Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH][next] clk: ls1028a: fix a dereference of pointer 'parent' before a null check
-Date:   Mon,  3 Feb 2020 22:37:36 +0000
-Message-Id: <20200203223736.99645-1-colin.king@canonical.com>
-X-Mailer: git-send-email 2.24.0
+        id S1727102AbgBDCaY (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Mon, 3 Feb 2020 21:30:24 -0500
+Received: from szxga04-in.huawei.com ([45.249.212.190]:10145 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726561AbgBDCaY (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Mon, 3 Feb 2020 21:30:24 -0500
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id E46E62EEB371C5BD5695;
+        Tue,  4 Feb 2020 10:30:21 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS413-HUB.china.huawei.com (10.3.19.213) with Microsoft SMTP Server id
+ 14.3.439.0; Tue, 4 Feb 2020 10:30:11 +0800
+From:   YueHaibing <yuehaibing@huawei.com>
+To:     Ariel Elior <aelior@marvell.com>,
+        Michal Kalderon <michal.kalderon@marvell.com>,
+        "David S . Miller" <davem@davemloft.net>
+CC:     YueHaibing <yuehaibing@huawei.com>,
+        <GR-everest-linux-l2@marvell.com>, <netdev@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-janitors@vger.kernel.org>,
+        Hulk Robot <hulkci@huawei.com>
+Subject: [PATCH net-next] qed: Remove set but not used variable 'p_link'
+Date:   Tue, 4 Feb 2020 02:24:41 +0000
+Message-ID: <20200204022442.109809-1-yuehaibing@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-From: Colin Ian King <colin.king@canonical.com>
+Fixes gcc '-Wunused-but-set-variable' warning:
 
-Currently the pointer 'parent' is being dereferenced before it is
-being null checked. Fix this by performing the null check before
-it is dereferenced.
+drivers/net/ethernet/qlogic/qed/qed_cxt.c: In function 'qed_qm_init_pf':
+drivers/net/ethernet/qlogic/qed/qed_cxt.c:1401:29: warning:
+ variable 'p_link' set but not used [-Wunused-but-set-variable]
 
-Addresses-Coverity: ("Dereference before null check")
-Fixes: d37010a3c162 ("clk: ls1028a: Add clock driver for Display output interface")
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
+commit 92fae6fb231f ("qed: FW 8.42.2.0 Queue Manager changes")
+leave behind this unused variable.
+
+Reported-by: Hulk Robot <hulkci@huawei.com>
+Signed-off-by: YueHaibing <yuehaibing@huawei.com>
 ---
- drivers/clk/clk-plldig.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/qlogic/qed/qed_cxt.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/clk/clk-plldig.c b/drivers/clk/clk-plldig.c
-index a5da08f98d01..f7c349d9c2dc 100644
---- a/drivers/clk/clk-plldig.c
-+++ b/drivers/clk/clk-plldig.c
-@@ -187,7 +187,7 @@ static int plldig_init(struct clk_hw *hw)
+diff --git a/drivers/net/ethernet/qlogic/qed/qed_cxt.c b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
+index fbfff2b1dc93..1a636bad717d 100644
+--- a/drivers/net/ethernet/qlogic/qed/qed_cxt.c
++++ b/drivers/net/ethernet/qlogic/qed/qed_cxt.c
+@@ -1398,14 +1398,11 @@ void qed_qm_init_pf(struct qed_hwfn *p_hwfn,
  {
- 	struct clk_plldig *data = to_clk_plldig(hw);
- 	struct clk_hw *parent = clk_hw_get_parent(hw);
--	unsigned long parent_rate = clk_hw_get_rate(parent);
-+	unsigned long parent_rate;
- 	unsigned long val;
- 	unsigned long long lltmp;
- 	unsigned int mfd, fracdiv = 0;
-@@ -195,6 +195,8 @@ static int plldig_init(struct clk_hw *hw)
- 	if (!parent)
- 		return -EINVAL;
+ 	struct qed_qm_info *qm_info = &p_hwfn->qm_info;
+ 	struct qed_qm_pf_rt_init_params params;
+-	struct qed_mcp_link_state *p_link;
+ 	struct qed_qm_iids iids;
  
-+	parent_rate = clk_hw_get_rate(parent);
-+
- 	if (data->vco_freq) {
- 		mfd = data->vco_freq / parent_rate;
- 		lltmp = data->vco_freq % parent_rate;
--- 
-2.24.0
+ 	memset(&iids, 0, sizeof(iids));
+ 	qed_cxt_qm_iids(p_hwfn, &iids);
+ 
+-	p_link = &QED_LEADING_HWFN(p_hwfn->cdev)->mcp_info->link_output;
+-
+ 	memset(&params, 0, sizeof(params));
+ 	params.port_id = p_hwfn->port_id;
+ 	params.pf_id = p_hwfn->rel_pf_id;
+
+
 

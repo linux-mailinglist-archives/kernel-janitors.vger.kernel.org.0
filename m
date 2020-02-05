@@ -2,82 +2,140 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 478CE153730
-	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Feb 2020 19:04:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A1F315384B
+	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Feb 2020 19:39:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727369AbgBESD5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 5 Feb 2020 13:03:57 -0500
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:41708 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727309AbgBESD5 (ORCPT
+        id S1727079AbgBESjh (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 5 Feb 2020 13:39:37 -0500
+Received: from userp2120.oracle.com ([156.151.31.85]:38864 "EHLO
+        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726822AbgBESjh (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 5 Feb 2020 13:03:57 -0500
-Received: by mail-ot1-f66.google.com with SMTP id r27so2778090otc.8;
-        Wed, 05 Feb 2020 10:03:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/Ih9RtrHu8vyKZeW7+8zC+TiPKZDe2wMByy4RUVTScM=;
-        b=iEKfi2AYJiouQ7kp8rw6kG+k5CLo0wRLc2VYQrSayux0UNtwBZua1UtoUQAowKJoFn
-         8zpUZQxzHr9leLUWG2Vga0At8tOuOZR5Xu1UwmavytUKcOBMkajAyhozcd/J9z0jhT+e
-         U9Y+ovDy0LzbF/gh9xlsWgPO8WLcJLLxg/Fn2goHekT0h90f1sz1WsRFA443kYTq4GjN
-         wpdRM/p11funU7cUtGwQg5XbbG0cqalsWcKAYhXSvU140aRe2XX4x56UCVfLw3k2xk7a
-         X+qq1onVgT5Q/M6pypEalZ+DjAERrXz9CAhR2XqSvKsgU3uQZA8oXMMqIwdlNDYfL38S
-         8vew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/Ih9RtrHu8vyKZeW7+8zC+TiPKZDe2wMByy4RUVTScM=;
-        b=l69dl8NdYWGbfnETEsd+wvJOE+9rRwHlH0XeOBtkFr1J2kxUwRnTfqaKuAHV2io1xy
-         BRjEw8eQXJDNN43K+ci61LHd3yMVRk5XHA4K8NSnn2loZfxRHTxHH38FLuAqpSdw0Eoo
-         iaJQrz8JCSJURVElbTGGnYUmgvgJ6CpuG/4UCWQiZUQ8LgdzZIYjfDtMel2EEgT/wTNJ
-         qgzVZ0BFj8PatJH6oP5oIrU4S+MkBC1rbJHvdtPpHijWOuA8wWFYvyjFkF2fuTKFWQII
-         Trq6drRPgdsvV1TSFe+9bwWN4RJU6OyIYcE1mLec77g+Ci1x1p6hn+5Q7tkQB6fCzgg/
-         IOqw==
-X-Gm-Message-State: APjAAAXKUvtTrUfLSs+IV51CJL6+6fbj6L3DybZRxZNA6K9Jr9Ua1hS8
-        Xm5jkrQAM2fkeyw28EUTlutWlgtxmzf13otNthH8q/a+
-X-Google-Smtp-Source: APXvYqybQKNOX1bnc4wfXLCFX2pHg77AqPgQqonzSogFrNOx3kCejlWYeJCVcTIXcv8h3Dnpv+rZmJvRTbU4F44IZVI=
-X-Received: by 2002:a9d:7559:: with SMTP id b25mr26032956otl.189.1580925836460;
- Wed, 05 Feb 2020 10:03:56 -0800 (PST)
+        Wed, 5 Feb 2020 13:39:37 -0500
+Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
+        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 015IcSdv182156;
+        Wed, 5 Feb 2020 18:39:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=Z+FS+vVUNB+rW/GXdOwYEx9fArjcCjQAyAkF5v3k+l0=;
+ b=rd0AJbrYkH8HZJt7lYa1u6+Rs3B/yyJAc5CjVt3BEbC3tLzjg/gqy2Y0GoMHY1JmtJMH
+ RXx0PrkUXjUoxx/CW6c3qvQCo2aaGzGphwkwCvF/WWhkuFO5aX3dvjbYcrSRC9e1lPnp
+ Gq+g9Vj+X2qNeM94kIYCO/k9tsX49RIICHnzspLLiWYpFav1cJajGPASd2vKuMM8vEW/
+ KfwtTllNTSD/kc9a3HzgAQDEkLI2ih2bRvT1J1TMp/+5j5XzOUYdibSmEQ6xsDt0/7KO
+ Teltu/Fu3kLoxfarGxZytfMNvQnczqTG7s9IkabuHPAOJU919Y+M4l0hG8oepf4qlHxm yw== 
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
+ bh=Z+FS+vVUNB+rW/GXdOwYEx9fArjcCjQAyAkF5v3k+l0=;
+ b=Q/URagNpI9jPADQJUaO/d+RwSN5dZA7m0fxHyD6w28iJSG+/FFY5i62cBOzDnhbYxNND
+ nYrkniKvDDC3Hun9JILmOteYT1dGfl9aPEpFkZTM/Bu+e4aiASGEFIP+ZfK+Wt2bFNda
+ uznG2MYyIpdNAQluSLfqWGATQxNR6tBFDYmnIpkn3wbwSm/TUBYkbhcmzbxpOAyI7Jsm
+ b4YsyMAuSvOR00iX8xORJN10j3IdYpaADfN21m8k29b+oPCyKDxHS0XakPsjHt92CxMy
+ w3Fhk3p7hAO193anNAzgpFlBbHDJq/PEXLKbD/j7Xny7w1+RXeykPhI3ngFgZxW1U1KT GA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by userp2120.oracle.com with ESMTP id 2xykbpcx66-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 05 Feb 2020 18:39:24 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 015IdGHE169356;
+        Wed, 5 Feb 2020 18:39:23 GMT
+Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
+        by aserp3020.oracle.com with ESMTP id 2xykc7vvhq-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 05 Feb 2020 18:39:23 +0000
+Received: from abhmp0007.oracle.com (abhmp0007.oracle.com [141.146.116.13])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 015Icert019042;
+        Wed, 5 Feb 2020 18:38:40 GMT
+Received: from kili.mountain (/10.175.200.151)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Wed, 05 Feb 2020 10:38:39 -0800
+Date:   Wed, 5 Feb 2020 21:38:27 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     Harry Wentland <harry.wentland@amd.com>,
+        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+Cc:     Leo Li <sunpeng.li@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        "David (ChunMing) Zhou" <David1.Zhou@amd.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        Zhan Liu <zhan.liu@amd.com>, zhengbin <zhengbin13@huawei.com>,
+        amd-gfx@lists.freedesktop.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] drm/amd/display: Fix some use after free bugs
+Message-ID: <20200205183714.6t5c7ewyovwjicm6@kili.mountain>
 MIME-Version: 1.0
-References: <CAM_iQpVrckjFViizKZH+S=8GC_3T5Gm1vTAUeFkpmqJ_A66x1Q@mail.gmail.com>
- <20200205115330.7x2qgaks7racy5wj@kili.mountain>
-In-Reply-To: <20200205115330.7x2qgaks7racy5wj@kili.mountain>
-From:   Cong Wang <xiyou.wangcong@gmail.com>
-Date:   Wed, 5 Feb 2020 10:03:45 -0800
-Message-ID: <CAM_iQpWKQ+59GfAP8RTntEM55FC7AYvZgo_hhPXNMbxCpo-c=g@mail.gmail.com>
-Subject: Re: [PATCH v2 net] net: sched: prevent a use after free
-To:     Dan Carpenter <dan.carpenter@oracle.com>
-Cc:     Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Mohit Bhasi <mohitbhasi1998@gmail.com>,
-        "V. Saicharan" <vsaicharan1998@gmail.com>,
-        Leslie Monis <lesliemonis@gmail.com>,
-        "Sachin D. Patil" <sdp.sachin@gmail.com>,
-        Gautam Ramakrishnan <gautamramk@gmail.com>,
-        Linux Kernel Network Developers <netdev@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Mailer: git-send-email haha only kidding
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9522 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.0.1-1911140001 definitions=main-2002050142
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9522 signatures=668685
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
+ definitions=main-2002050142
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-On Wed, Feb 5, 2020 at 3:56 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
->
-> The bug is that we call kfree_skb(skb) and then pass "skb" to
-> qdisc_pkt_len(skb) on the next line, which is a use after free.
-> Also Cong Wang points out that it's better to delay the actual
-> frees until we drop the rtnl lock so we should use rtnl_kfree_skbs()
-> instead of kfree_skb().
->
-> Cc: Cong Wang <xiyou.wangcong@gmail.com>
-> Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
-> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+These frees need to be re-ordered so that we don't dereference "hdcp_work"
+right after it's freed.  Also in hdcp_create_workqueue() there is a
+problem that "hdcp_work" can be NULL if the allocation fails so it would
+lead to a NULL dereference in the cleanup code.
 
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Fixes: 9aeb8a134a0a ("drm/amd/display: Add sysfs interface for set/get srm")
+Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-Thanks!
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
+index 1768a33b1dc3..f3330df782a4 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
+@@ -380,9 +380,9 @@ void hdcp_destroy(struct hdcp_workqueue *hdcp_work)
+ 		cancel_delayed_work_sync(&hdcp_work[i].watchdog_timer_dwork);
+ 	}
+ 
+-	kfree(hdcp_work);
+ 	kfree(hdcp_work->srm);
+ 	kfree(hdcp_work->srm_temp);
++	kfree(hdcp_work);
+ }
+ 
+ static void update_config(void *handle, struct cp_psp_stream_config *config)
+@@ -555,11 +555,12 @@ struct hdcp_workqueue *hdcp_create_workqueue(struct amdgpu_device *adev, struct
+ {
+ 
+ 	int max_caps = dc->caps.max_links;
+-	struct hdcp_workqueue *hdcp_work = kzalloc(max_caps*sizeof(*hdcp_work), GFP_KERNEL);
++	struct hdcp_workqueue *hdcp_work;
+ 	int i = 0;
+ 
++	hdcp_work = kcalloc(max_caps, sizeof(*hdcp_work), GFP_KERNEL);
+ 	if (hdcp_work == NULL)
+-		goto fail_alloc_context;
++		return NULL;
+ 
+ 	hdcp_work->srm = kcalloc(PSP_HDCP_SRM_FIRST_GEN_MAX_SIZE, sizeof(*hdcp_work->srm), GFP_KERNEL);
+ 
+@@ -602,9 +603,9 @@ struct hdcp_workqueue *hdcp_create_workqueue(struct amdgpu_device *adev, struct
+ 	return hdcp_work;
+ 
+ fail_alloc_context:
+-	kfree(hdcp_work);
+ 	kfree(hdcp_work->srm);
+ 	kfree(hdcp_work->srm_temp);
++	kfree(hdcp_work);
+ 
+ 	return NULL;
+ 
+-- 
+2.11.0
+

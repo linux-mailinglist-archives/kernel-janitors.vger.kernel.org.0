@@ -2,145 +2,82 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18FA1153605
-	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Feb 2020 18:12:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 478CE153730
+	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Feb 2020 19:04:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727079AbgBERMp (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 5 Feb 2020 12:12:45 -0500
-Received: from userp2120.oracle.com ([156.151.31.85]:42642 "EHLO
-        userp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726534AbgBERMo (ORCPT
+        id S1727369AbgBESD5 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 5 Feb 2020 13:03:57 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:41708 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727309AbgBESD5 (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 5 Feb 2020 12:12:44 -0500
-Received: from pps.filterd (userp2120.oracle.com [127.0.0.1])
-        by userp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 015H8g19104907;
-        Wed, 5 Feb 2020 17:12:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2020-01-29;
- bh=ziwhBfJxsYkUa+0mSTF33rekI68awnjLAEV5+KGHLCY=;
- b=ND81bfTq/GF4ljFXH9RwdKTDJtySfewfKemjZGjUMcss2hdf9td5dAaq8Y7/qIOmWjk4
- pzV2v099LTIyOhKmH1TINHea/R0nH3tWb6uM7sA9UNWRDpqpIqe27sRiz8t1S0Pnm9Fo
- HMvfBh9+OavidgMoP2ZN5+hm9U9v8JddYthRJPotNfKc6Pq834CpIfnXSWLynSlpC4Xl
- 8bJ07iUPlhFr2Ie6vzqmslwIrN6Lp4yf6bO5+y9HDzw7K+CPJYBr7VuvzpLz9kmqG16v
- bWeyphQRyhfBDuX5nuX7VKwGTGbarQQVYAr3J8YUVdgp1qpuODDZgezNnZmxz1xhFyJ7 mg== 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : mime-version : content-type :
- in-reply-to; s=corp-2019-08-05;
- bh=ziwhBfJxsYkUa+0mSTF33rekI68awnjLAEV5+KGHLCY=;
- b=rKScMxSDV9CZJdWUhn32Zt3TWCfh8ZAQEs3IpzJeA6Bj+dBEv/3/pkrvGQbj3xIf0/rU
- G5Yn3awMLmp23gCoGXw/gg2XqOJKP9iH0PxXdpj4L5UPlA2FbNUEyeXeH9ki9FhAq314
- hqXR4IsUlNiboHVgOeH8vdKgGOzXbcBGxLXBH0C0JnOHuz8DgmOq9ABaX5jAcV68OrD8
- Uao+LYWgzpE5hur5U4Ldo2/hhNu5gWGg3/R3407kPgVAEfbV0YlS2vCggth4Hj46UV9U
- rjy2RPBsXfb4krx1GY0aDW45pZP3ZVbmqpLROvaHUk8//SDuZ/rBcRvETMX+46q6pKKZ +w== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by userp2120.oracle.com with ESMTP id 2xykbpce8p-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 05 Feb 2020 17:12:39 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 015H90Sm086537;
-        Wed, 5 Feb 2020 17:12:38 GMT
-Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
-        by aserp3030.oracle.com with ESMTP id 2xykbsb4nd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 05 Feb 2020 17:12:38 +0000
-Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
-        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 015HCbiC009013;
-        Wed, 5 Feb 2020 17:12:37 GMT
-Received: from kadam (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 05 Feb 2020 09:12:36 -0800
-Date:   Wed, 5 Feb 2020 20:12:30 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Lauri Jakku <lja@iki.fi>
-Cc:     kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH v6] USB: HID: random timeout failures tackle try.
-Message-ID: <20200205171230.GV1778@kadam>
-References: <20200205153944.11955-1-lja@iki.fi>
+        Wed, 5 Feb 2020 13:03:57 -0500
+Received: by mail-ot1-f66.google.com with SMTP id r27so2778090otc.8;
+        Wed, 05 Feb 2020 10:03:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/Ih9RtrHu8vyKZeW7+8zC+TiPKZDe2wMByy4RUVTScM=;
+        b=iEKfi2AYJiouQ7kp8rw6kG+k5CLo0wRLc2VYQrSayux0UNtwBZua1UtoUQAowKJoFn
+         8zpUZQxzHr9leLUWG2Vga0At8tOuOZR5Xu1UwmavytUKcOBMkajAyhozcd/J9z0jhT+e
+         U9Y+ovDy0LzbF/gh9xlsWgPO8WLcJLLxg/Fn2goHekT0h90f1sz1WsRFA443kYTq4GjN
+         wpdRM/p11funU7cUtGwQg5XbbG0cqalsWcKAYhXSvU140aRe2XX4x56UCVfLw3k2xk7a
+         X+qq1onVgT5Q/M6pypEalZ+DjAERrXz9CAhR2XqSvKsgU3uQZA8oXMMqIwdlNDYfL38S
+         8vew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/Ih9RtrHu8vyKZeW7+8zC+TiPKZDe2wMByy4RUVTScM=;
+        b=l69dl8NdYWGbfnETEsd+wvJOE+9rRwHlH0XeOBtkFr1J2kxUwRnTfqaKuAHV2io1xy
+         BRjEw8eQXJDNN43K+ci61LHd3yMVRk5XHA4K8NSnn2loZfxRHTxHH38FLuAqpSdw0Eoo
+         iaJQrz8JCSJURVElbTGGnYUmgvgJ6CpuG/4UCWQiZUQ8LgdzZIYjfDtMel2EEgT/wTNJ
+         qgzVZ0BFj8PatJH6oP5oIrU4S+MkBC1rbJHvdtPpHijWOuA8wWFYvyjFkF2fuTKFWQII
+         Trq6drRPgdsvV1TSFe+9bwWN4RJU6OyIYcE1mLec77g+Ci1x1p6hn+5Q7tkQB6fCzgg/
+         IOqw==
+X-Gm-Message-State: APjAAAXKUvtTrUfLSs+IV51CJL6+6fbj6L3DybZRxZNA6K9Jr9Ua1hS8
+        Xm5jkrQAM2fkeyw28EUTlutWlgtxmzf13otNthH8q/a+
+X-Google-Smtp-Source: APXvYqybQKNOX1bnc4wfXLCFX2pHg77AqPgQqonzSogFrNOx3kCejlWYeJCVcTIXcv8h3Dnpv+rZmJvRTbU4F44IZVI=
+X-Received: by 2002:a9d:7559:: with SMTP id b25mr26032956otl.189.1580925836460;
+ Wed, 05 Feb 2020 10:03:56 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200205153944.11955-1-lja@iki.fi>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9522 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2002050131
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9522 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2002050131
+References: <CAM_iQpVrckjFViizKZH+S=8GC_3T5Gm1vTAUeFkpmqJ_A66x1Q@mail.gmail.com>
+ <20200205115330.7x2qgaks7racy5wj@kili.mountain>
+In-Reply-To: <20200205115330.7x2qgaks7racy5wj@kili.mountain>
+From:   Cong Wang <xiyou.wangcong@gmail.com>
+Date:   Wed, 5 Feb 2020 10:03:45 -0800
+Message-ID: <CAM_iQpWKQ+59GfAP8RTntEM55FC7AYvZgo_hhPXNMbxCpo-c=g@mail.gmail.com>
+Subject: Re: [PATCH v2 net] net: sched: prevent a use after free
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Mohit Bhasi <mohitbhasi1998@gmail.com>,
+        "V. Saicharan" <vsaicharan1998@gmail.com>,
+        Leslie Monis <lesliemonis@gmail.com>,
+        "Sachin D. Patil" <sdp.sachin@gmail.com>,
+        Gautam Ramakrishnan <gautamramk@gmail.com>,
+        Linux Kernel Network Developers <netdev@vger.kernel.org>,
+        kernel-janitors@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-I never recieved v2-v5 so I can't really comment on those.  If you
-didn't send those to linux-usb then let's just pretend we're still on
-v1 otherwise it's just confusing.
+On Wed, Feb 5, 2020 at 3:56 AM Dan Carpenter <dan.carpenter@oracle.com> wrote:
+>
+> The bug is that we call kfree_skb(skb) and then pass "skb" to
+> qdisc_pkt_len(skb) on the next line, which is a use after free.
+> Also Cong Wang points out that it's better to delay the actual
+> frees until we drop the rtnl lock so we should use rtnl_kfree_skbs()
+> instead of kfree_skb().
+>
+> Cc: Cong Wang <xiyou.wangcong@gmail.com>
+> Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 
-This is not how we send v2 patches.  Put [PATCH v6], that's good.
-Then the normal changelog and the Signed-off-by: then under the ---
-cut off put a small comment.
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
 
-Signed-off-by: you
----
-v6: changed commit message
-v5: fixed error reported by kbuild
-v4: blah blah
-
-
-> +/* Wrapper function to send control messages */
-
-Don't include obvious comments like this.
-
-> +static int usbhid_control_msg(struct usb_device *dev, unsigned int pipe,
-> +				_u8 request, __u8 requesttype, __u16 value,
-> +				__u16 index, void *data, __u16 size,
-> +				int timeout)
-> +{
-> +	/* calculate timeout per call, to archieve total timeout requested */
-
-This should be obvious if the variables and functions are named well.
-
-It's weird that we're passing the total timeout and then dividing it
-into littler chunks...  Normally we would know the timeout from the
-spec and then the total would be something like "a timeout of 400ms
-won't annoy users."  (This seems wrong).
-
-
-> +	int call_timeout = USBHID_CONTROL_COMMAND_TIMEOUT_CALC(timeout);
-
-CALC is a bad name because obviously it's going to calculate something.
-
-> +	int call_count   = USBHID_CONTROL_COMMAND_RETRY_COUNT;
-
-Just call it "int retry = USBHID_CONTROL_COMMAND_RETRY_COUNT;".  Don't
-do anything fancy with the white space.
-
-> +	int ret;
-> +	int timeout_looping;
-> +
-> +	do {
-> +		ret = usb_control_msg(dev, pipe, request, requesttype,
-> +				value, index, data, size, call_timeout);
-
-The indenting is wrong.  Use checkpatch.pl --strict
-
-> +
-> +		timeout_looping =	(call_count-- > 0) &&
-> +					(ret == -ETIMEDOUT);
-> +	} while (timeout_looping);
-
-Delete the "timeout_looping" variable.
-
-	} while (ret == -ETIMEDOUT && retry-- > 0);
-
-Have you tested with just one retry?
-
-regards,
-dan carpenter
-
+Thanks!

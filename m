@@ -2,53 +2,59 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 70DF01530D7
-	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Feb 2020 13:33:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 260991533D3
+	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Feb 2020 16:24:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728000AbgBEMdC (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 5 Feb 2020 07:33:02 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:57254 "EHLO
+        id S1727000AbgBEPYo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 5 Feb 2020 10:24:44 -0500
+Received: from aserp2120.oracle.com ([141.146.126.78]:52912 "EHLO
         aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726308AbgBEMdC (ORCPT
+        with ESMTP id S1726678AbgBEPYo (ORCPT
         <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 5 Feb 2020 07:33:02 -0500
+        Wed, 5 Feb 2020 10:24:44 -0500
 Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 015CDQWe030562;
-        Wed, 5 Feb 2020 12:32:58 GMT
+        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 015FF3LH185647;
+        Wed, 5 Feb 2020 15:24:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=m9gewJPVHDrEhwAN+PDBSGWKOSvNYN9vA2Z00MKrHoc=;
+ b=DsUJBbSQ3IxYNbWbc2RIHY7SrB6ciZJ8X7Pp1K+UjRECvTIFAzDI7M40YRI/sg/Lq0oU
+ Dy72HhilJdy9e0kLye0XT/du6kchIi2ue+AsuqkTIMuCeIjYMv7P2su2QfC4ViNA0o9H
+ KVfL7G1oe4qPmMqsZfyBDP6kxcaz1v0IIQvU3FqCkSO5idjJzopABLaVqNQPVnHGzRvs
+ kXhVBu5BiCLEX52j3MQAZYrMw81Yq5Lyk5Fq4XdXE0oUzO243oNG0njcOlrh1dGEzXOM
+ Y7+Q++miyX9XkIgK+vKPU34J42bSRggeIaJVdzmgdgBxZ84Gz81bKJddgPFfH1K8Wsfi nA== 
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
  : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=1vnf/xgw4kqXc7IRy8A9QgU6nxV7YLB/grjPo7sqFho=;
- b=FsnHxU8Br70a5kYGqN/iDp+Y1G5cNNwmHhDtm+K8M3q8jLCbrztd3o89lvyzKuo1whIT
- KwzEIW0jzsaU+o6V5pkxIx1ojVo55vYRvylXZYNmjnXOMaiL8MKrvguLba5HLTpvZTfA
- YE19Tn965M+4uHyLQVk3S9pNT/7372YFdt8ErKaK6xUedIZEb6COe2dUvrZfnkt3FUFr
- wpwp/PDRBQN4NcHqnTqiuzGLSDa6YxMVgOIjg/32ZOp6vixiC3ifVrGhNlQmFsYyrJrd
- EGRVBMIb0c9cWP0/wOkcYn0+EqaScjVFo2b5sY5NDKj9xcM8PFlYfeAcJqPNvau5c9Kp eQ== 
-Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
-        by aserp2120.oracle.com with ESMTP id 2xykbp2q0b-1
+ bh=m9gewJPVHDrEhwAN+PDBSGWKOSvNYN9vA2Z00MKrHoc=;
+ b=QP6TQOFbV5B8yqXdPB0cvCD4v/wkycO9+BSy36VBDzOWzgqIxqhCSGvayh+p6eOQNKGf
+ xYeM+VQkj0/zMBQ3a/3sgjmh7aK3+/8xYPc0kwCzSuSGoEo7viW4LyDCy1C7bSqczbpX
+ u33o+O6eIISFd/jHP2QuCPt+N7ntSLMJO79oIkuX1j/AYhtNle61N7ewdATdBQS3dicf
+ 0iE59g0FhvRRQPfryIlpK7pstipSERtDMT8qAD7mGC3xeSt3jW7sA4WLmwAPs5xfMwEV
+ g88Qbi1CXhe1ONvYdErY8PraJDm8Ydy8Lwtvt2sYW1lvFHOTyjvXNR/xHwWEYJVLeyGm wg== 
+Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
+        by aserp2120.oracle.com with ESMTP id 2xykbp3qcx-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 05 Feb 2020 12:32:58 +0000
-Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
-        by aserp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 015CEQwj144182;
-        Wed, 5 Feb 2020 12:32:58 GMT
+        Wed, 05 Feb 2020 15:24:39 +0000
+Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
+        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 015FE43x043983;
+        Wed, 5 Feb 2020 15:24:39 GMT
 Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by aserp3030.oracle.com with ESMTP id 2xykbrrmkh-1
+        by userp3030.oracle.com with ESMTP id 2xymusyyq3-1
         (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 05 Feb 2020 12:32:58 +0000
-Received: from abhmp0017.oracle.com (abhmp0017.oracle.com [141.146.116.23])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 015CWuiC032025;
-        Wed, 5 Feb 2020 12:32:57 GMT
+        Wed, 05 Feb 2020 15:24:39 +0000
+Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
+        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 015FOcui002882;
+        Wed, 5 Feb 2020 15:24:38 GMT
 Received: from kili.mountain (/129.205.23.165)
         by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 05 Feb 2020 04:32:56 -0800
-Date:   Wed, 5 Feb 2020 15:32:48 +0300
+        with ESMTP ; Wed, 05 Feb 2020 07:24:37 -0800
+Date:   Wed, 5 Feb 2020 18:24:29 +0300
 From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Dave Jiang <dave.jiang@intel.com>
-Cc:     Vinod Koul <vkoul@kernel.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        dmaengine@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] dmaengine: idxd: Fix error handling in
- idxd_wq_cdev_dev_setup()
-Message-ID: <20200205123248.hmtog7qa2eiqaagh@kili.mountain>
+To:     Joe Perches <joe@perches.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
+Subject: [PATCH] get_maintainer: Prefer MAINTAINER address over S-o-b
+Message-ID: <20200205152429.ejgx2on2z4hoycus@kili.mountain>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
@@ -56,59 +62,60 @@ X-Mailer: git-send-email haha only kidding
 User-Agent: NeoMutt/20170113 (1.7.2)
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9521 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=999
+ phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=773
  adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2002050100
+ engine=8.0.1-1911140001 definitions=main-2002050121
 X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9521 signatures=668685
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
  suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=999 adultscore=0
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=843 adultscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2002050100
+ definitions=main-2002050121
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-We can't call kfree(dev) after calling device_register(dev).  The "dev"
-pointer has to be freed using put_device().
+The get_maintainer.pl script looks at git history to create the CC list,
+but unfortunately sometimes those email addresses are out of date.  The
+script also looks at the MAINTAINERS file, of course, but if it already
+found an email address for a maintainer in the git history then the
+deduplicate_email() function will remove the second address.
 
-Fixes: 42d279f9137a ("dmaengine: idxd: add char driver to expose submission portal to userland")
+It should save the MAINTAINERS address first, before loading the commit
+signer addresses.
+
 Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 ---
- drivers/dma/idxd/cdev.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+We will have to add a special case if the Dan Williamses ever decide
+to work on the same subsystem.
 
-diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
-index 1d7347825b95..df47be612ebb 100644
---- a/drivers/dma/idxd/cdev.c
-+++ b/drivers/dma/idxd/cdev.c
-@@ -204,6 +204,7 @@ static int idxd_wq_cdev_dev_setup(struct idxd_wq *wq)
- 	minor = ida_simple_get(&cdev_ctx->minor_ida, 0, MINORMASK, GFP_KERNEL);
- 	if (minor < 0) {
- 		rc = minor;
-+		kfree(dev);
- 		goto ida_err;
+ scripts/get_maintainer.pl | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/scripts/get_maintainer.pl b/scripts/get_maintainer.pl
+index 34085d146fa2..e5bdd3143a49 100755
+--- a/scripts/get_maintainer.pl
++++ b/scripts/get_maintainer.pl
+@@ -932,14 +932,14 @@ sub get_maintainers {
  	}
+     }
  
-@@ -212,7 +213,6 @@ static int idxd_wq_cdev_dev_setup(struct idxd_wq *wq)
- 	rc = device_register(dev);
- 	if (rc < 0) {
- 		dev_err(&idxd->pdev->dev, "device register failed\n");
--		put_device(dev);
- 		goto dev_reg_err;
- 	}
- 	idxd_cdev->minor = minor;
-@@ -221,8 +221,8 @@ static int idxd_wq_cdev_dev_setup(struct idxd_wq *wq)
+-    foreach my $fix (@fixes) {
+-	vcs_add_commit_signers($fix, "blamed_fixes");
+-    }
+-
+     foreach my $email (@email_to, @list_to) {
+ 	$email->[0] = deduplicate_email($email->[0]);
+     }
  
-  dev_reg_err:
- 	ida_simple_remove(&cdev_ctx->minor_ida, MINOR(dev->devt));
-+	put_device(dev);
-  ida_err:
--	kfree(dev);
- 	idxd_cdev->dev = NULL;
- 	return rc;
- }
++    foreach my $fix (@fixes) {
++	vcs_add_commit_signers($fix, "blamed_fixes");
++    }
++
+     foreach my $file (@files) {
+ 	if ($email &&
+ 	    ($email_git || ($email_git_fallback &&
 -- 
 2.11.0
 

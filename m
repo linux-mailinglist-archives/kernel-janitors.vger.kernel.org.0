@@ -2,120 +2,254 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 260991533D3
-	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Feb 2020 16:24:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 461E8153487
+	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Feb 2020 16:46:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727000AbgBEPYo (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 5 Feb 2020 10:24:44 -0500
-Received: from aserp2120.oracle.com ([141.146.126.78]:52912 "EHLO
-        aserp2120.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726678AbgBEPYo (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 5 Feb 2020 10:24:44 -0500
-Received: from pps.filterd (aserp2120.oracle.com [127.0.0.1])
-        by aserp2120.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 015FF3LH185647;
-        Wed, 5 Feb 2020 15:24:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
- bh=m9gewJPVHDrEhwAN+PDBSGWKOSvNYN9vA2Z00MKrHoc=;
- b=DsUJBbSQ3IxYNbWbc2RIHY7SrB6ciZJ8X7Pp1K+UjRECvTIFAzDI7M40YRI/sg/Lq0oU
- Dy72HhilJdy9e0kLye0XT/du6kchIi2ue+AsuqkTIMuCeIjYMv7P2su2QfC4ViNA0o9H
- KVfL7G1oe4qPmMqsZfyBDP6kxcaz1v0IIQvU3FqCkSO5idjJzopABLaVqNQPVnHGzRvs
- kXhVBu5BiCLEX52j3MQAZYrMw81Yq5Lyk5Fq4XdXE0oUzO243oNG0njcOlrh1dGEzXOM
- Y7+Q++miyX9XkIgK+vKPU34J42bSRggeIaJVdzmgdgBxZ84Gz81bKJddgPFfH1K8Wsfi nA== 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : mime-version : content-type; s=corp-2019-08-05;
- bh=m9gewJPVHDrEhwAN+PDBSGWKOSvNYN9vA2Z00MKrHoc=;
- b=QP6TQOFbV5B8yqXdPB0cvCD4v/wkycO9+BSy36VBDzOWzgqIxqhCSGvayh+p6eOQNKGf
- xYeM+VQkj0/zMBQ3a/3sgjmh7aK3+/8xYPc0kwCzSuSGoEo7viW4LyDCy1C7bSqczbpX
- u33o+O6eIISFd/jHP2QuCPt+N7ntSLMJO79oIkuX1j/AYhtNle61N7ewdATdBQS3dicf
- 0iE59g0FhvRRQPfryIlpK7pstipSERtDMT8qAD7mGC3xeSt3jW7sA4WLmwAPs5xfMwEV
- g88Qbi1CXhe1ONvYdErY8PraJDm8Ydy8Lwtvt2sYW1lvFHOTyjvXNR/xHwWEYJVLeyGm wg== 
-Received: from userp3030.oracle.com (userp3030.oracle.com [156.151.31.80])
-        by aserp2120.oracle.com with ESMTP id 2xykbp3qcx-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 05 Feb 2020 15:24:39 +0000
-Received: from pps.filterd (userp3030.oracle.com [127.0.0.1])
-        by userp3030.oracle.com (8.16.0.27/8.16.0.27) with SMTP id 015FE43x043983;
-        Wed, 5 Feb 2020 15:24:39 GMT
-Received: from userv0121.oracle.com (userv0121.oracle.com [156.151.31.72])
-        by userp3030.oracle.com with ESMTP id 2xymusyyq3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 05 Feb 2020 15:24:39 +0000
-Received: from abhmp0014.oracle.com (abhmp0014.oracle.com [141.146.116.20])
-        by userv0121.oracle.com (8.14.4/8.13.8) with ESMTP id 015FOcui002882;
-        Wed, 5 Feb 2020 15:24:38 GMT
-Received: from kili.mountain (/129.205.23.165)
-        by default (Oracle Beehive Gateway v4.0)
-        with ESMTP ; Wed, 05 Feb 2020 07:24:37 -0800
-Date:   Wed, 5 Feb 2020 18:24:29 +0300
-From:   Dan Carpenter <dan.carpenter@oracle.com>
-To:     Joe Perches <joe@perches.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] get_maintainer: Prefer MAINTAINER address over S-o-b
-Message-ID: <20200205152429.ejgx2on2z4hoycus@kili.mountain>
+        id S1727529AbgBEPqm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Wed, 5 Feb 2020 10:46:42 -0500
+Received: from mta-out1.inet.fi ([62.71.2.226]:52984 "EHLO johanna1.inet.fi"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726896AbgBEPqm (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Wed, 5 Feb 2020 10:46:42 -0500
+X-Greylist: delayed 385 seconds by postgrey-1.27 at vger.kernel.org; Wed, 05 Feb 2020 10:46:41 EST
+Received: from MinistryOfSillyWalk.home (84.248.30.195) by johanna1.inet.fi (9.0.019.26-1)
+        id 5E1C39AA170CC789; Wed, 5 Feb 2020 17:40:12 +0200
+From:   Lauri Jakku <lja@iki.fi>
+To:     kernel-janitors@vger.kernel.org
+Cc:     Lauri Jakku <lja@iki.fi>
+Subject: [PATCH v6] USB: HID: random timeout failures tackle try.
+Date:   Wed,  5 Feb 2020 17:39:45 +0200
+Message-Id: <20200205153944.11955-1-lja@iki.fi>
+X-Mailer: git-send-email 2.25.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9521 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=773
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-2002050121
-X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9521 signatures=668685
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 priorityscore=1501 malwarescore=0
- suspectscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- lowpriorityscore=0 mlxscore=0 impostorscore=0 mlxlogscore=843 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.0.1-1911140001
- definitions=main-2002050121
+Content-Transfer-Encoding: 8bit
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-The get_maintainer.pl script looks at git history to create the CC list,
-but unfortunately sometimes those email addresses are out of date.  The
-script also looks at the MAINTAINERS file, of course, but if it already
-found an email address for a maintainer in the git history then the
-deduplicate_email() function will remove the second address.
+ -- v1 ------------------------------------------------------------
+ send, 20ms apart, control messages, if error is timeout.
 
-It should save the MAINTAINERS address first, before loading the commit
-signer addresses.
+ There is multiple reports of random behaviour of USB HID devices.
 
-Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
+ I have mouse that acts sometimes quite randomly, I debugged with
+ logs others have published that there is HW timeouts that leave
+ device in state that it is errorneus.
+
+ To fix this I introduced retry mechanism in root of USB HID drivers.
+
+ Fix does not slow down operations at all if there is no -ETIMEDOUT
+ got from control message sending. If there is one, then sleep 20ms
+ and try again. Retry count is 20 witch translates maximum of 400ms
+ before giving up.
+
+ NOTE: This does not sleep anymore then before, if all is golden.
+
+ -- v2 ------------------------------------------------------------
+
+ If there is timeout, then sleep 20ms and try again. Retry count is 20
+ witch translates maximum of 400ms before giving up. If the 400ms
+ boundary is reached the HW is really bad.
+
+ JUST to be clear:
+     This does not make USB HID devices to sleep anymore than
+     before, if all is golden.
+
+ Why modify usb-core: No need to modify driver by driver.
+
+ -- v3 ------------------------------------------------------------
+
+ Timeout given is divided by 100, but taken care that it is always
+ at least 10ms.
+
+ so total time in common worst-case-scenario is:
+
+  sleep of 20ms + common timeout divided by 100 (50ms) makes
+  70ms per loop, 20 loops => 1.4sec .
+
+ -- v4 ------------------------------------------------------------
+ No changes in code, just elaborating what is done in v[1,2,3].
+
+ -- v5 ------------------------------------------------------------
+ changes in code: what the build robot found:
+    drivers/usb/core/message.c: In function 'usb_control_msg':
+ >> drivers/usb/core/message.c:173:11: error: type defaults to
+    'int' in declaration of 'timeout_happened' [-Werror=implicit-int]
+
+        static timeout_happened = 0;
+               ^~~~~~~~~~~~~~~~
+    cc1: some warnings being treated as errors
+
+ -- v6 ------------------------------------------------------------
+ Moved and simplified code from usb/core to hid/usbhid/hid-core.
+
+ Made wrapper function to handle actual usb_control_msg() call.
+
+ Timeout is now divided by constant, witch is loop iteration
+ count. This way the timeout is kept what user have requested,
+ and no additional time is spent.
+
+Signed-off-by: Lauri Jakku <lja@iki.fi>
+
+USB: HID: random timeout failures tackle try.
+
+ -- v1 ------------------------------------------------------------
+ send, 20ms apart, control messages, if error is timeout.
+
+ There is multiple reports of random behaviour of USB HID devices.
+
+ I have mouse that acts sometimes quite randomly, I debugged with
+ logs others have published that there is HW timeouts that leave
+ device in state that it is errorneus.
+
+ To fix this I introduced retry mechanism in root of USB HID drivers.
+
+ Fix does not slow down operations at all if there is no -ETIMEDOUT
+ got from control message sending. If there is one, then sleep 20ms
+ and try again. Retry count is 20 witch translates maximum of 400ms
+ before giving up.
+
+ NOTE: This does not sleep anymore then before, if all is golden.
+
+ -- v2 ------------------------------------------------------------
+
+ If there is timeout, then sleep 20ms and try again. Retry count is 20
+ witch translates maximum of 400ms before giving up. If the 400ms
+ boundary is reached the HW is really bad.
+
+ JUST to be clear:
+     This does not make USB HID devices to sleep anymore than
+     before, if all is golden.
+
+ Why modify usb-core: No need to modify driver by driver.
+
+
+ Timeout given is divided by 100, but taken care that it is always
+ at least 10ms.
+
+ so total time in common worst-case-scenario is:
+
+  sleep of 20ms + common timeout divided by 100 (50ms) makes
+  70ms per loop, 20 loops => 1.4sec .
+
+ -- v4 ------------------------------------------------------------
+ No changes in code, just elaborating what is done in v[1,2,3].
+
+ -- v5 ------------------------------------------------------------
+ changes in code: what the build robot found:
+    drivers/usb/core/message.c: In function 'usb_control_msg':
+ >> drivers/usb/core/message.c:173:11: error: type defaults to
+    'int' in declaration of 'timeout_happened' [-Werror=implicit-int]
+
+        static timeout_happened = 0;
+               ^~~~~~~~~~~~~~~~
+    cc1: some warnings being treated as errors
+
+ -- v6 ------------------------------------------------------------
+ Moved and simplified code from usb/core to hid/usbhid/hid-core.
+
+ Made wrapper function to handle actual usb_control_msg() call.
+
+ Timeout is now divided by constant, witch is loop iteration
+ count. This way the timeout is kept what user have requested,
+ and no additional time is spent.
+
+Signed-off-by: Lauri Jakku <lja@iki.fi>
 ---
-We will have to add a special case if the Dan Williamses ever decide
-to work on the same subsystem.
+ drivers/hid/usbhid/hid-core.c | 35 +++++++++++++++++++++++++++++++----
+ drivers/hid/usbhid/usbhid.h   |  4 ++++
+ 2 files changed, 35 insertions(+), 4 deletions(-)
 
- scripts/get_maintainer.pl | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/scripts/get_maintainer.pl b/scripts/get_maintainer.pl
-index 34085d146fa2..e5bdd3143a49 100755
---- a/scripts/get_maintainer.pl
-+++ b/scripts/get_maintainer.pl
-@@ -932,14 +932,14 @@ sub get_maintainers {
- 	}
-     }
- 
--    foreach my $fix (@fixes) {
--	vcs_add_commit_signers($fix, "blamed_fixes");
--    }
--
-     foreach my $email (@email_to, @list_to) {
- 	$email->[0] = deduplicate_email($email->[0]);
-     }
- 
-+    foreach my $fix (@fixes) {
-+	vcs_add_commit_signers($fix, "blamed_fixes");
-+    }
+diff --git a/drivers/hid/usbhid/hid-core.c b/drivers/hid/usbhid/hid-core.c
+index c7bc9db5b192..d1f9668df42b 100644
+--- a/drivers/hid/usbhid/hid-core.c
++++ b/drivers/hid/usbhid/hid-core.c
+@@ -75,6 +75,33 @@ static void hid_io_error(struct hid_device *hid);
+ static int hid_submit_out(struct hid_device *hid);
+ static int hid_submit_ctrl(struct hid_device *hid);
+ static void hid_cancel_delayed_stuff(struct usbhid_device *usbhid);
++static int usbhid_control_msg(struct usb_device *dev, unsigned int pipe,
++				_u8 request, __u8 requesttype, __u16 value,
++				__u16 index, void *data, __u16 size,
++				int timeout);
 +
-     foreach my $file (@files) {
- 	if ($email &&
- 	    ($email_git || ($email_git_fallback &&
++/* Wrapper function to send control messages */
++static int usbhid_control_msg(struct usb_device *dev, unsigned int pipe,
++				_u8 request, __u8 requesttype, __u16 value,
++				__u16 index, void *data, __u16 size,
++				int timeout)
++{
++	/* calculate timeout per call, to archieve total timeout requested */
++	int call_timeout = USBHID_CONTROL_COMMAND_TIMEOUT_CALC(timeout);
++	int call_count   = USBHID_CONTROL_COMMAND_RETRY_COUNT;
++	int ret;
++	int timeout_looping;
++
++	do {
++		ret = usb_control_msg(dev, pipe, request, requesttype,
++				value, index, data, size, call_timeout);
++
++		timeout_looping =	(call_count-- > 0) &&
++					(ret == -ETIMEDOUT);
++	} while (timeout_looping);
++
++	return ret;
++}
+ 
+ /* Start up the input URB */
+ static int hid_start_in(struct hid_device *hid)
+@@ -656,7 +683,7 @@ static int usbhid_wait_io(struct hid_device *hid)
+ 
+ static int hid_set_idle(struct usb_device *dev, int ifnum, int report, int idle)
+ {
+-	return usb_control_msg(dev, usb_sndctrlpipe(dev, 0),
++	return usbhid_control_msg(dev, usb_sndctrlpipe(dev, 0),
+ 		HID_REQ_SET_IDLE, USB_TYPE_CLASS | USB_RECIP_INTERFACE, (idle << 8) | report,
+ 		ifnum, NULL, 0, USB_CTRL_SET_TIMEOUT);
+ }
+@@ -669,7 +696,7 @@ static int hid_get_class_descriptor(struct usb_device *dev, int ifnum,
+ 	memset(buf, 0, size);
+ 
+ 	do {
+-		result = usb_control_msg(dev, usb_rcvctrlpipe(dev, 0),
++		result = usbhid_control_msg(dev, usb_rcvctrlpipe(dev, 0),
+ 				USB_REQ_GET_DESCRIPTOR, USB_RECIP_INTERFACE | USB_DIR_IN,
+ 				(type << 8), ifnum, buf, size, USB_CTRL_GET_TIMEOUT);
+ 		retries--;
+@@ -877,7 +904,7 @@ static int usbhid_get_raw_report(struct hid_device *hid,
+ 		count--;
+ 		skipped_report_id = 1;
+ 	}
+-	ret = usb_control_msg(dev, usb_rcvctrlpipe(dev, 0),
++	ret = usbhid_control_msg(dev, usb_rcvctrlpipe(dev, 0),
+ 		HID_REQ_GET_REPORT,
+ 		USB_DIR_IN | USB_TYPE_CLASS | USB_RECIP_INTERFACE,
+ 		((report_type + 1) << 8) | report_number,
+@@ -914,7 +941,7 @@ static int usbhid_set_raw_report(struct hid_device *hid, unsigned int reportnum,
+ 		skipped_report_id = 1;
+ 	}
+ 
+-	ret = usb_control_msg(dev, usb_sndctrlpipe(dev, 0),
++	ret = usbhid_control_msg(dev, usb_sndctrlpipe(dev, 0),
+ 			HID_REQ_SET_REPORT,
+ 			USB_DIR_OUT | USB_TYPE_CLASS | USB_RECIP_INTERFACE,
+ 			((rtype + 1) << 8) | reportnum,
+diff --git a/drivers/hid/usbhid/usbhid.h b/drivers/hid/usbhid/usbhid.h
+index 8620408bd7af..f72ac754eb31 100644
+--- a/drivers/hid/usbhid/usbhid.h
++++ b/drivers/hid/usbhid/usbhid.h
+@@ -48,6 +48,10 @@ struct usb_interface *usbhid_find_interface(int minor);
+  */
+ #define HID_IN_POLLING		14
+ 
++#define USBHID_CONTROL_COMMAND_RETRY_COUNT			10
++#define USBHID_CONTROL_COMMAND_TIMEOUT_CALC(TotalTimeoutInMS) \
++		((TotalTimeoutInMS) / USBHID_CONTROL_COMMAND_RETRY_COUNT)
++
+ /*
+  * USB-specific HID struct, to be pointed to
+  * from struct hid_device->driver_data
 -- 
-2.11.0
+2.25.0
 

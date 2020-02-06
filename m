@@ -2,110 +2,60 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 40F0C154232
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Feb 2020 11:45:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F3C46154471
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Feb 2020 14:01:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728610AbgBFKot (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Feb 2020 05:44:49 -0500
-Received: from mta-out1.inet.fi ([62.71.2.202]:50926 "EHLO julia1.inet.fi"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728601AbgBFKor (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Feb 2020 05:44:47 -0500
-X-Greylist: delayed 418 seconds by postgrey-1.27 at vger.kernel.org; Thu, 06 Feb 2020 05:44:47 EST
-Received: from [192.168.44.164] (84.248.30.195) by julia1.inet.fi (9.0.019.26-1) (authenticated as laujak-3)
-        id 5E3B5CC700018B0A; Thu, 6 Feb 2020 12:37:46 +0200
-Subject: Re: [PATCH v6] USB: HID: random timeout failures tackle try.
-To:     Dan Carpenter <dan.carpenter@oracle.com>, Lauri Jakku <lja@iki.fi>
-Cc:     kernel-janitors@vger.kernel.org
-References: <20200205153944.11955-1-lja@iki.fi> <20200205171230.GV1778@kadam>
-From:   Lauri Jakku <lauri.jakku@pp.inet.fi>
-Message-ID: <14bdd24e-1e69-60b4-f5f6-2def804710c1@pp.inet.fi>
-Date:   Thu, 6 Feb 2020 12:37:44 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
-MIME-Version: 1.0
-In-Reply-To: <20200205171230.GV1778@kadam>
-Content-Type: text/plain; charset=utf-8
+        id S1727569AbgBFNBm (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Feb 2020 08:01:42 -0500
+Received: from shards.monkeyblade.net ([23.128.96.9]:59224 "EHLO
+        shards.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727478AbgBFNBm (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 6 Feb 2020 08:01:42 -0500
+Received: from localhost (unknown [IPv6:2001:982:756:1:57a7:3bfd:5e85:defb])
+        (using TLSv1 with cipher AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        (Authenticated sender: davem-davemloft)
+        by shards.monkeyblade.net (Postfix) with ESMTPSA id 6EC7714C652DA;
+        Thu,  6 Feb 2020 05:01:39 -0800 (PST)
+Date:   Thu, 06 Feb 2020 14:01:37 +0100 (CET)
+Message-Id: <20200206.140137.826534991746807346.davem@davemloft.net>
+To:     dan.carpenter@oracle.com
+Cc:     jhs@mojatatu.com, xiyou.wangcong@gmail.com, jiri@resnulli.us,
+        kuba@kernel.org, mohitbhasi1998@gmail.com,
+        vsaicharan1998@gmail.com, lesliemonis@gmail.com,
+        sdp.sachin@gmail.com, gautamramk@gmail.com, netdev@vger.kernel.org,
+        kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH v2 net] net: sched: prevent a use after free
+From:   David Miller <davem@davemloft.net>
+In-Reply-To: <20200205115330.7x2qgaks7racy5wj@kili.mountain>
+References: <CAM_iQpVrckjFViizKZH+S=8GC_3T5Gm1vTAUeFkpmqJ_A66x1Q@mail.gmail.com>
+        <20200205115330.7x2qgaks7racy5wj@kili.mountain>
+X-Mailer: Mew version 6.8 on Emacs 26.3
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Thu, 06 Feb 2020 05:01:41 -0800 (PST)
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
+From: Dan Carpenter <dan.carpenter@oracle.com>
+Date: Wed, 5 Feb 2020 14:53:30 +0300
 
-I make small descriptions as you suggested and remove dumb comments
-
-.. this is my first time patching kernel publicly so, I'm not used to
-
-the Proper way, but i'm learning all the time :)
-
-
---Lauri Jakku
-
-On 5.2.2020 19.12, Dan Carpenter wrote:
-> I never recieved v2-v5 so I can't really comment on those.  If you
-> didn't send those to linux-usb then let's just pretend we're still on
-> v1 otherwise it's just confusing.
->
-> This is not how we send v2 patches.  Put [PATCH v6], that's good.
-> Then the normal changelog and the Signed-off-by: then under the ---
-> cut off put a small comment.
->
-> Signed-off-by: you
+> The bug is that we call kfree_skb(skb) and then pass "skb" to
+> qdisc_pkt_len(skb) on the next line, which is a use after free.
+> Also Cong Wang points out that it's better to delay the actual
+> frees until we drop the rtnl lock so we should use rtnl_kfree_skbs()
+> instead of kfree_skb().
+> 
+> Cc: Cong Wang <xiyou.wangcong@gmail.com>
+> Fixes: ec97ecf1ebe4 ("net: sched: add Flow Queue PIE packet scheduler")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
-> v6: changed commit message
-> v5: fixed error reported by kbuild
-> v4: blah blah
->
->
->> +/* Wrapper function to send control messages */
-> Don't include obvious comments like this.
->
->> +static int usbhid_control_msg(struct usb_device *dev, unsigned int pipe,
->> +				_u8 request, __u8 requesttype, __u16 value,
->> +				__u16 index, void *data, __u16 size,
->> +				int timeout)
->> +{
->> +	/* calculate timeout per call, to archieve total timeout requested */
-> This should be obvious if the variables and functions are named well.
->
-> It's weird that we're passing the total timeout and then dividing it
-> into littler chunks...  Normally we would know the timeout from the
-> spec and then the total would be something like "a timeout of 400ms
-> won't annoy users."  (This seems wrong).
->
->
->> +	int call_timeout = USBHID_CONTROL_COMMAND_TIMEOUT_CALC(timeout);
-> CALC is a bad name because obviously it's going to calculate something.
->
->> +	int call_count   = USBHID_CONTROL_COMMAND_RETRY_COUNT;
-> Just call it "int retry = USBHID_CONTROL_COMMAND_RETRY_COUNT;".  Don't
-> do anything fancy with the white space.
->
->> +	int ret;
->> +	int timeout_looping;
->> +
->> +	do {
->> +		ret = usb_control_msg(dev, pipe, request, requesttype,
->> +				value, index, data, size, call_timeout);
-> The indenting is wrong.  Use checkpatch.pl --strict
->
->> +
->> +		timeout_looping =	(call_count-- > 0) &&
->> +					(ret == -ETIMEDOUT);
->> +	} while (timeout_looping);
-> Delete the "timeout_looping" variable.
->
-> 	} while (ret == -ETIMEDOUT && retry-- > 0);
->
-> Have you tested with just one retry?
->
-> regards,
-> dan carpenter
->
--- 
-Br,
-Lauri J.
+> v2: Use rtnl_kfree_skbs() instead of kfree_skb().  From static analysis.
+>     Not tested, but I have audited the code pretty close and I think
+>     switing to rtnl_kfree_skbs() is harmless.
 
+Applied, thanks Dan.

@@ -2,134 +2,110 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F48B15393E
-	for <lists+kernel-janitors@lfdr.de>; Wed,  5 Feb 2020 20:43:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 40F0C154232
+	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Feb 2020 11:45:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727309AbgBETnZ (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Wed, 5 Feb 2020 14:43:25 -0500
-Received: from mail-wm1-f68.google.com ([209.85.128.68]:50874 "EHLO
-        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727085AbgBETnZ (ORCPT
-        <rfc822;kernel-janitors@vger.kernel.org>);
-        Wed, 5 Feb 2020 14:43:25 -0500
-Received: by mail-wm1-f68.google.com with SMTP id a5so3793876wmb.0
-        for <kernel-janitors@vger.kernel.org>; Wed, 05 Feb 2020 11:43:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=SO/yJ+CxLWdlzSzvECpxjBgfng5aHRexC/OIl5nXatw=;
-        b=tm7U5PG9ZNs1PTr3+vNBvUgYP4V0OtlInjm+sLI/Sr6Ukigb0rL6F+GaQUGq/ks5PS
-         GTn/fP42y4UwRlKwUZlF+NE5X7sPsUThZQPxZehITfD2VjPj7Zgw+aL/vWij/LQl1UTl
-         JBNt8UqxE1rwRT6R8qsa1qyNymJbiAF8TpD1ygafl6ur8ERSU8aLL8Le4LT2ztiZOQZ5
-         dbft7c8yd9oDos1kRI0b6ZYVEK9xZ79UVhXmEYmrJB0SIvFddrsYW9K7W0d51Bmk2AxH
-         iIbSCRotAZOl8DupPIpOqOUaIVPf3SHir7phZlNleBFk6opILxXMPznlXwILLEcuaHSH
-         IhQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=SO/yJ+CxLWdlzSzvECpxjBgfng5aHRexC/OIl5nXatw=;
-        b=qE5YkVU4f4n29HcKJU23/Mc3gTxASxGry31AaRY4xKAvlr/Rqugz20vUu+YFCKJ7N4
-         N2L24YVG8w6JZQKpoPJMoLLQplNH69oTWy4odDn93cfb3nCsb+rYcMjye1F5lreU2eC+
-         1+RrGQCVcAuJlKvPVWry8EVDDxrbND00UG5ZxyeGigCCs/nbnfZuUlcO+bbiFv5RUp1T
-         TX0iJjZEFHsKRm7YMOga4ij4vqGFIflDLEXrd/RLLgO80VwIE/JDQyllwkoj6QQRedqU
-         FXPryMS6H8JNQiJh7K3/YGAMxQeI6l3kXbu9espAhepOp01jbMW9EfA1fJxWtZbvV8IK
-         FxiQ==
-X-Gm-Message-State: APjAAAV4QzGLv4UmFaYCpy2KnyIx7AqjzWPgJqyXw6rgD41rnP0qwFMb
-        Y3rrCjpuSVfZtsm8orjtlQdIH1L+4VObSsNx1Ypt5g==
-X-Google-Smtp-Source: APXvYqxIxtXoHtTYG5ylAB7gXVxDFgOzGgFWCRiAV4cXnT5LMYKpT5GVtyZfz4DAD2Mcg/SZ2SQEnZ6vugyLxxJn784=
-X-Received: by 2002:a1c:f009:: with SMTP id a9mr7326145wmb.73.1580931803092;
- Wed, 05 Feb 2020 11:43:23 -0800 (PST)
+        id S1728610AbgBFKot (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Feb 2020 05:44:49 -0500
+Received: from mta-out1.inet.fi ([62.71.2.202]:50926 "EHLO julia1.inet.fi"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728601AbgBFKor (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 6 Feb 2020 05:44:47 -0500
+X-Greylist: delayed 418 seconds by postgrey-1.27 at vger.kernel.org; Thu, 06 Feb 2020 05:44:47 EST
+Received: from [192.168.44.164] (84.248.30.195) by julia1.inet.fi (9.0.019.26-1) (authenticated as laujak-3)
+        id 5E3B5CC700018B0A; Thu, 6 Feb 2020 12:37:46 +0200
+Subject: Re: [PATCH v6] USB: HID: random timeout failures tackle try.
+To:     Dan Carpenter <dan.carpenter@oracle.com>, Lauri Jakku <lja@iki.fi>
+Cc:     kernel-janitors@vger.kernel.org
+References: <20200205153944.11955-1-lja@iki.fi> <20200205171230.GV1778@kadam>
+From:   Lauri Jakku <lauri.jakku@pp.inet.fi>
+Message-ID: <14bdd24e-1e69-60b4-f5f6-2def804710c1@pp.inet.fi>
+Date:   Thu, 6 Feb 2020 12:37:44 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
 MIME-Version: 1.0
-References: <20200205183714.6t5c7ewyovwjicm6@kili.mountain> <b9a18739-cada-05e8-d894-be8dcba9fb43@amd.com>
-In-Reply-To: <b9a18739-cada-05e8-d894-be8dcba9fb43@amd.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Wed, 5 Feb 2020 14:43:11 -0500
-Message-ID: <CADnq5_PF2ofuZM9NNeDoWHo-atHQd=ExcWNFDg9yCC9R4v9Tuw@mail.gmail.com>
-Subject: Re: [PATCH] drm/amd/display: Fix some use after free bugs
-To:     Bhawanpreet Lakha <Bhawanpreet.lakha@amd.com>
-Cc:     Dan Carpenter <dan.carpenter@oracle.com>,
-        Harry Wentland <harry.wentland@amd.com>,
-        "David (ChunMing) Zhou" <David1.Zhou@amd.com>,
-        kernel-janitors@vger.kernel.org, Leo Li <sunpeng.li@amd.com>,
-        Zhan Liu <zhan.liu@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        amd-gfx list <amd-gfx@lists.freedesktop.org>,
-        zhengbin <zhengbin13@huawei.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200205171230.GV1778@kadam>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Applied.  Thanks!
+Hi,
 
-Alex
+I make small descriptions as you suggested and remove dumb comments
 
-On Wed, Feb 5, 2020 at 1:44 PM Bhawanpreet Lakha
-<Bhawanpreet.lakha@amd.com> wrote:
+.. this is my first time patching kernel publicly so, I'm not used to
+
+the Proper way, but i'm learning all the time :)
+
+
+--Lauri Jakku
+
+On 5.2.2020 19.12, Dan Carpenter wrote:
+> I never recieved v2-v5 so I can't really comment on those.  If you
+> didn't send those to linux-usb then let's just pretend we're still on
+> v1 otherwise it's just confusing.
 >
-> Reviewed-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+> This is not how we send v2 patches.  Put [PATCH v6], that's good.
+> Then the normal changelog and the Signed-off-by: then under the ---
+> cut off put a small comment.
 >
-> On 2020-02-05 1:38 p.m., Dan Carpenter wrote:
-> > These frees need to be re-ordered so that we don't dereference "hdcp_work"
-> > right after it's freed.  Also in hdcp_create_workqueue() there is a
-> > problem that "hdcp_work" can be NULL if the allocation fails so it would
-> > lead to a NULL dereference in the cleanup code.
-> >
-> > Fixes: 9aeb8a134a0a ("drm/amd/display: Add sysfs interface for set/get srm")
-> > Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
-> > ---
-> >   drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c | 9 +++++----
-> >   1 file changed, 5 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-> > index 1768a33b1dc3..f3330df782a4 100644
-> > --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-> > +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-> > @@ -380,9 +380,9 @@ void hdcp_destroy(struct hdcp_workqueue *hdcp_work)
-> >               cancel_delayed_work_sync(&hdcp_work[i].watchdog_timer_dwork);
-> >       }
-> >
-> > -     kfree(hdcp_work);
-> >       kfree(hdcp_work->srm);
-> >       kfree(hdcp_work->srm_temp);
-> > +     kfree(hdcp_work);
-> >   }
-> >
-> >   static void update_config(void *handle, struct cp_psp_stream_config *config)
-> > @@ -555,11 +555,12 @@ struct hdcp_workqueue *hdcp_create_workqueue(struct amdgpu_device *adev, struct
-> >   {
-> >
-> >       int max_caps = dc->caps.max_links;
-> > -     struct hdcp_workqueue *hdcp_work = kzalloc(max_caps*sizeof(*hdcp_work), GFP_KERNEL);
-> > +     struct hdcp_workqueue *hdcp_work;
-> >       int i = 0;
-> >
-> > +     hdcp_work = kcalloc(max_caps, sizeof(*hdcp_work), GFP_KERNEL);
-> >       if (hdcp_work == NULL)
-> > -             goto fail_alloc_context;
-> > +             return NULL;
-> >
-> >       hdcp_work->srm = kcalloc(PSP_HDCP_SRM_FIRST_GEN_MAX_SIZE, sizeof(*hdcp_work->srm), GFP_KERNEL);
-> >
-> > @@ -602,9 +603,9 @@ struct hdcp_workqueue *hdcp_create_workqueue(struct amdgpu_device *adev, struct
-> >       return hdcp_work;
-> >
-> >   fail_alloc_context:
-> > -     kfree(hdcp_work);
-> >       kfree(hdcp_work->srm);
-> >       kfree(hdcp_work->srm_temp);
-> > +     kfree(hdcp_work);
-> >
-> >       return NULL;
-> >
-> _______________________________________________
-> amd-gfx mailing list
-> amd-gfx@lists.freedesktop.org
-> https://lists.freedesktop.org/mailman/listinfo/amd-gfx
+> Signed-off-by: you
+> ---
+> v6: changed commit message
+> v5: fixed error reported by kbuild
+> v4: blah blah
+>
+>
+>> +/* Wrapper function to send control messages */
+> Don't include obvious comments like this.
+>
+>> +static int usbhid_control_msg(struct usb_device *dev, unsigned int pipe,
+>> +				_u8 request, __u8 requesttype, __u16 value,
+>> +				__u16 index, void *data, __u16 size,
+>> +				int timeout)
+>> +{
+>> +	/* calculate timeout per call, to archieve total timeout requested */
+> This should be obvious if the variables and functions are named well.
+>
+> It's weird that we're passing the total timeout and then dividing it
+> into littler chunks...  Normally we would know the timeout from the
+> spec and then the total would be something like "a timeout of 400ms
+> won't annoy users."  (This seems wrong).
+>
+>
+>> +	int call_timeout = USBHID_CONTROL_COMMAND_TIMEOUT_CALC(timeout);
+> CALC is a bad name because obviously it's going to calculate something.
+>
+>> +	int call_count   = USBHID_CONTROL_COMMAND_RETRY_COUNT;
+> Just call it "int retry = USBHID_CONTROL_COMMAND_RETRY_COUNT;".  Don't
+> do anything fancy with the white space.
+>
+>> +	int ret;
+>> +	int timeout_looping;
+>> +
+>> +	do {
+>> +		ret = usb_control_msg(dev, pipe, request, requesttype,
+>> +				value, index, data, size, call_timeout);
+> The indenting is wrong.  Use checkpatch.pl --strict
+>
+>> +
+>> +		timeout_looping =	(call_count-- > 0) &&
+>> +					(ret == -ETIMEDOUT);
+>> +	} while (timeout_looping);
+> Delete the "timeout_looping" variable.
+>
+> 	} while (ret == -ETIMEDOUT && retry-- > 0);
+>
+> Have you tested with just one retry?
+>
+> regards,
+> dan carpenter
+>
+-- 
+Br,
+Lauri J.
+

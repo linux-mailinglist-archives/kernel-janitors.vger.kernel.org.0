@@ -2,109 +2,99 @@ Return-Path: <kernel-janitors-owner@vger.kernel.org>
 X-Original-To: lists+kernel-janitors@lfdr.de
 Delivered-To: lists+kernel-janitors@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CD941546FC
-	for <lists+kernel-janitors@lfdr.de>; Thu,  6 Feb 2020 16:03:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2568B155184
+	for <lists+kernel-janitors@lfdr.de>; Fri,  7 Feb 2020 05:25:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727456AbgBFPD6 (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
-        Thu, 6 Feb 2020 10:03:58 -0500
-Received: from mta-out1.inet.fi ([62.71.2.226]:46496 "EHLO julia1.inet.fi"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727443AbgBFPD6 (ORCPT <rfc822;kernel-janitors@vger.kernel.org>);
-        Thu, 6 Feb 2020 10:03:58 -0500
-Received: from [192.168.44.164] (84.248.30.195) by julia1.inet.fi (9.0.019.26-1) (authenticated as laujak-3)
-        id 5E3B5CC700028567; Thu, 6 Feb 2020 17:03:55 +0200
-From:   Lauri Jakku <lauri.jakku@pp.inet.fi>
-Subject: Re: [PATCH v6] USB: HID: random timeout failures tackle try.
-To:     Dan Carpenter <dan.carpenter@oracle.com>, Lauri Jakku <lja@iki.fi>
-Cc:     kernel-janitors@vger.kernel.org
-References: <20200205153944.11955-1-lja@iki.fi> <20200205171230.GV1778@kadam>
-Message-ID: <0febac0f-6727-3d08-87c8-4d45c761654a@pp.inet.fi>
-Date:   Thu, 6 Feb 2020 17:03:54 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+        id S1727068AbgBGEZg (ORCPT <rfc822;lists+kernel-janitors@lfdr.de>);
+        Thu, 6 Feb 2020 23:25:36 -0500
+Received: from mail-pg1-f195.google.com ([209.85.215.195]:41441 "EHLO
+        mail-pg1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726674AbgBGEZf (ORCPT
+        <rfc822;kernel-janitors@vger.kernel.org>);
+        Thu, 6 Feb 2020 23:25:35 -0500
+Received: by mail-pg1-f195.google.com with SMTP id l3so441472pgi.8
+        for <kernel-janitors@vger.kernel.org>; Thu, 06 Feb 2020 20:25:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=rNcYUtTsPqkrH6ZfJIfLrMnGelkyhmdQa1AyNh1VxbQ=;
+        b=MiHRdw7uACrDHqHDakCZSDRYpDsUjXL2Kyi5hv8QZDyo+X5O+kUk1Hdo1wHTMo6vbz
+         1tGmqV3qVQl3ihj17GfJ+D8Ju4eC4ne8z7BFTblczI6tnytqe47p9lNauJUKS2ICOcaD
+         pHdMF64lFByvQ22Em+1oGqXNIymcFiusRbegDh4NhING/mqV6UFgD9AfpVCbY8eAi01R
+         PMCQC/J+5oZUUsNCZZTfp5gxPMR5mViHS0ZhiUPPVAYdaEf2wRbPfCbqs2nmsrFDlu0F
+         92iqNSU3ly9dX7mtu0L0WGVZjayn7VvxA178ryPFFxbvHZYlx7HzsQBBNYQApSCEH3zv
+         oybA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=rNcYUtTsPqkrH6ZfJIfLrMnGelkyhmdQa1AyNh1VxbQ=;
+        b=fmKr/d84TCzOtLs01jJtwga7CWQhrR3zN3ZaRF1EitxJEwpAgwyYvfJfGhV2TdKay+
+         ZIwflnHrj6PM/mh/hTZWTkEAd/u7U1MECVYOUko6I8M+0c6kJqpSbzWFdlLXjvS6ilVF
+         RBxsmMby/gzr5bjLjOgsNHzdLQrwqXX/mpnF2hfyebuLkjVfh3cGt5l95tT7e1wzl3mm
+         RNdT1SSKsRLMF2HT1VQ6i9aKZXvrtIZO7eqXYpNlZcTU4M6muP6ialsMMl7uvzcT72lN
+         f7Hs1uI/544jMGUFuMjPzv+ggx9Pq1rGl7o6kd6Wi4UDK9HfhHLg6lYYUDDDlXxEUoSM
+         Fxiw==
+X-Gm-Message-State: APjAAAVk5Hf9ZajrhXNTTy9iTmFK0e8SA3UK6aNo4gH/+3hUAeVbYsf6
+        YHilTj8Ty8unWJ873T268gSE/GzJP3U=
+X-Google-Smtp-Source: APXvYqwbj1LOAB7Q0rVogoZppMmiC9WAS8IonLQ3JSwpMPj6jXu3d4sUkvA6Ej4CYQbF8vsemAzkcg==
+X-Received: by 2002:a65:6402:: with SMTP id a2mr7663930pgv.142.1581049535185;
+        Thu, 06 Feb 2020 20:25:35 -0800 (PST)
+Received: from localhost ([122.172.141.204])
+        by smtp.gmail.com with ESMTPSA id p123sm952706pfg.84.2020.02.06.20.25.34
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 06 Feb 2020 20:25:34 -0800 (PST)
+Date:   Fri, 7 Feb 2020 09:55:32 +0530
+From:   Viresh Kumar <viresh.kumar@linaro.org>
+To:     Dan Carpenter <dan.carpenter@oracle.com>
+Cc:     Vaibhav Agarwal <vaibhav.sr@gmail.com>,
+        Dinko Mironov <dmironov@mm-sol.com>,
+        devel@driverdev.osuosl.org, Alex Elder <elder@kernel.org>,
+        kernel-janitors@vger.kernel.org, Johan Hovold <johan@kernel.org>,
+        greybus-dev@lists.linaro.org,
+        Greg Kroah-Hartman <gregkh@google.com>
+Subject: Re: [greybus-dev] [PATCH] staging: greybus: use after free in
+ gb_audio_manager_remove_all()
+Message-ID: <20200207042532.wwd6jh6cfuptr7tz@vireshk-i7>
+References: <20200205123217.jreendkyxulqsool@kili.mountain>
 MIME-Version: 1.0
-In-Reply-To: <20200205171230.GV1778@kadam>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200205123217.jreendkyxulqsool@kili.mountain>
+User-Agent: NeoMutt/20180716-391-311a52
 Sender: kernel-janitors-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <kernel-janitors.vger.kernel.org>
 X-Mailing-List: kernel-janitors@vger.kernel.org
 
-Hi,
-
-I make small descriptions as you suggested and remove dumb comments
-
-.. this is my first time patching kernel publicly so, I'm not used to
-
-the Proper way, but i'm learning all the time :)
-
-
---Lauri Jakku
-
-On 5.2.2020 19.12, Dan Carpenter wrote:
-> I never recieved v2-v5 so I can't really comment on those.  If you
-> didn't send those to linux-usb then let's just pretend we're still on
-> v1 otherwise it's just confusing.
->
-> This is not how we send v2 patches.  Put [PATCH v6], that's good.
-> Then the normal changelog and the Signed-off-by: then under the ---
-> cut off put a small comment.
->
-> Signed-off-by: you
+On 05-02-20, 15:32, Dan Carpenter wrote:
+> When we call kobject_put() and it's the last reference to the kobject
+> then it calls gb_audio_module_release() and frees module.  We dereference
+> "module" on the next line which is a use after free.
+> 
+> Fixes: c77f85bbc91a ("greybus: audio: Fix incorrect counting of 'ida'")
+> Signed-off-by: Dan Carpenter <dan.carpenter@oracle.com>
 > ---
-> v6: changed commit message
-> v5: fixed error reported by kbuild
-> v4: blah blah
->
->
->> +/* Wrapper function to send control messages */
-> Don't include obvious comments like this.
->
->> +static int usbhid_control_msg(struct usb_device *dev, unsigned int pipe,
->> +				_u8 request, __u8 requesttype, __u16 value,
->> +				__u16 index, void *data, __u16 size,
->> +				int timeout)
->> +{
->> +	/* calculate timeout per call, to archieve total timeout requested */
-> This should be obvious if the variables and functions are named well.
->
-> It's weird that we're passing the total timeout and then dividing it
-> into littler chunks...  Normally we would know the timeout from the
-> spec and then the total would be something like "a timeout of 400ms
-> won't annoy users."  (This seems wrong).
->
->
->> +	int call_timeout = USBHID_CONTROL_COMMAND_TIMEOUT_CALC(timeout);
-> CALC is a bad name because obviously it's going to calculate something.
->
->> +	int call_count   = USBHID_CONTROL_COMMAND_RETRY_COUNT;
-> Just call it "int retry = USBHID_CONTROL_COMMAND_RETRY_COUNT;".  Don't
-> do anything fancy with the white space.
->
->> +	int ret;
->> +	int timeout_looping;
->> +
->> +	do {
->> +		ret = usb_control_msg(dev, pipe, request, requesttype,
->> +				value, index, data, size, call_timeout);
-> The indenting is wrong.  Use checkpatch.pl --strict
->
->> +
->> +		timeout_looping =	(call_count-- > 0) &&
->> +					(ret == -ETIMEDOUT);
->> +	} while (timeout_looping);
-> Delete the "timeout_looping" variable.
->
-> 	} while (ret == -ETIMEDOUT && retry-- > 0);
->
-> Have you tested with just one retry?
->
-> regards,
-> dan carpenter
->
--- 
-Br,
-Lauri J.
+>  drivers/staging/greybus/audio_manager.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/staging/greybus/audio_manager.c b/drivers/staging/greybus/audio_manager.c
+> index 9b19ea9d3fa1..9a3f7c034ab4 100644
+> --- a/drivers/staging/greybus/audio_manager.c
+> +++ b/drivers/staging/greybus/audio_manager.c
+> @@ -92,8 +92,8 @@ void gb_audio_manager_remove_all(void)
+>  
+>  	list_for_each_entry_safe(module, next, &modules_list, list) {
+>  		list_del(&module->list);
+> -		kobject_put(&module->kobj);
+>  		ida_simple_remove(&module_id, module->id);
+> +		kobject_put(&module->kobj);
+>  	}
+>  
+>  	is_empty = list_empty(&modules_list);
 
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+
+-- 
+viresh
